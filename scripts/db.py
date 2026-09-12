@@ -31,11 +31,50 @@ def connect() -> sqlite3.Connection:
 
 
 def init_db(conn: sqlite3.Connection = None) -> None:
-    """根据 schema.sql 建库。当前为空库即可安全执行。"""
+    """根据 schema.sql 建库。空库或已存在库均可安全执行（增量迁移见 migrate()）。"""
     own = conn is None
     conn = conn or connect()
     with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
         conn.executescript(f.read())
+    conn.commit()
+    if own:
+        conn.close()
+
+
+def _table_exists(conn, name) -> bool:
+    r = conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (name,)).fetchone()
+    return r is not None
+
+
+def _column_exists(conn, table, col) -> bool:
+    try:
+        cols = [r[1] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
+    except Exception:
+        return False
+    return col in cols
+
+
+def migrate(conn: sqlite3.Connection = None) -> None:
+    """v1.5 增量迁移：对已有数据库补建新表/新列，不破坏既有数据。幂等。"""
+    own = conn is None
+    conn = conn or connect()
+
+    # 1) 新增 evidences.independence_group 列
+    if _table_exists(conn, "evidences") and not _column_exists(conn, "evidences", "independence_group"):
+        conn.execute("ALTER TABLE evidences ADD COLUMN independence_group TEXT")
+        print("[migrate] + evidences.independence_group")
+
+    # 2) 新增 campaign_evidences 桥表
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS campaign_evidences (
+            campaign_id     TEXT NOT NULL REFERENCES campaigns(campaign_id),
+            evidence_id     TEXT NOT NULL REFERENCES evidences(evidence_id),
+            role            TEXT NOT NULL CHECK (role IN ('supporting','contradicting','context')),
+            created_at      TEXT DEFAULT (datetime('now')),
+            PRIMARY KEY (campaign_id, evidence_id)
+        );
+    """)
     conn.commit()
     if own:
         conn.close()

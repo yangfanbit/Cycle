@@ -5,6 +5,23 @@
 
 ---
 
+## 0. v1.5 Schema Fix（数据关系修复，已实施）
+
+试运行暴露的核心问题是 **Campaign ↔ Evidence 无显式关联**：旧 `export.py` 会把全库证据导入每个 Campaign。本轮已完成修复：
+
+```
+Campaign  ↕  CampaignEvidence  ↕  Evidence  ↕  Source
+```
+
+- **新增 `campaign_evidences(campaign_id, evidence_id, role)` 桥表**，显式绑定每个 Campaign 与其真实证据；`export.py` 现只经桥表取证据（隔离测试 PASS：C-2019-AD 3 条 / C-2020-NEV 4 条，无交叉）。
+- **`evidences.independence_group`**：同源转引（`same_origin_xxx`）与真正独立来源（不同 group）分开标记。**“媒体数量” ≠ “独立证据数量”。**
+- **Confirmed 门槛程序化检查**：`scripts/validate_db.py` 校验 Confirmed Campaign 需 ≥2 条证据且 ≥2 个独立组。
+- **Source Tier 修复**：`S-2020-03` / `S-2020-04` 由 `media_tier3` 改为 `media_tier4`（实属雪球经验帖 Tier4）；sources 表已全局复核，`source_type` 与 `tier` 一致。
+- **日期 basis 兼容设计**：未来推荐拆分为 `*_basis_code`（observed/inferred/official_event/unknown）+ `*_basis_note`，本轮未迁移旧文本字段（不破坏试点）。
+- **2018–2020 结论未变化**：2018 `no_clear_campaign`、2019 `weak`、2020 `strong`，保持不变。
+
+---
+
 ## 1. 数据模型是否够用
 
 **基本够用。** `sources → evidences → research_rules → annual_reviews → campaigns → (themes/events/securities/phases)` 关系能承载大多数场景。

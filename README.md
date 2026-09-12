@@ -68,7 +68,18 @@ Cycle-research/
 
 ## 4. 数据库核心表
 
-`research_rules` → `annual_reviews`（每年一条母记录）→ `campaigns` → `campaign_themes` / `campaign_events` / `campaign_securities` / `campaign_phases`；以及 `sources` / `evidences` / `themes` / `events` / `securities`。
+`research_rules` → `annual_reviews`（每年一条母记录）→ `campaigns` → `campaign_themes` / `campaign_events` / `campaign_evidences` / `campaign_securities` / `campaign_phases`；以及 `sources` / `evidences` / `themes` / `events` / `securities`。
+
+**Campaign ↔ Evidence 显式关联（v1.5）**：
+
+```
+Campaign  ↕  CampaignEvidence  ↕  Evidence  ↕  Source
+```
+
+- `campaign_evidences(campaign_id, evidence_id, role)` 桥表显式绑定每个 Campaign 与其真实证据。
+- **一个 Campaign 只能引用它自己的证据；export.py 只经桥表取证据，不会混入全库。**
+- **“媒体数量” ≠ “独立证据数量”。** `evidences.independence_group` 标记同源转引（`same_origin_xxx`）与真正独立来源（不同 group）。同一事实被多个媒体转载，不得自动算作多条独立证据。
+- Confirmed Campaign 门槛：**≥2 条 Evidence 且 ≥2 个 independence_group**，否则不得标 `confirmed`（由 `scripts/validate_db.py` 程序化检查）。
 
 关键判定枚举：
 - `annual_reviews.status`: `strong / medium / weak / no_clear_campaign / unknown`（`no_clear_campaign` 是合法结果）
@@ -77,6 +88,8 @@ Cycle-research/
 - `evidences.evidence_role`: `supporting / contradicting / context`
 
 Campaign 判定**至少**需：主题可识别、持续性、市场关注、可解释的启动与结束、有 Evidence。若能只证明"行业上涨"，`classification=industry_trend`。
+
+**日期 basis（v1.5 兼容设计，未强制迁移）**：未来推荐将 `start_date_basis` / `end_date_basis` 拆分为 `start_date_basis_code` / `start_date_basis_note` 与 `end_date_basis_code` / `end_date_basis_note`；`code ∈ {observed, inferred, official_event, unknown}`。当前旧长文本字段保留，不破坏试点。
 
 ## 5. 来源优先级
 
@@ -90,9 +103,10 @@ Campaign 判定**至少**需：主题可识别、持续性、市场关注、可�
 Python 需含 sqlite3（标准库即可）。示例：
 
 ```powershell
-python scripts/seed.py        # 初始化并录入当前年份
-python scripts/export.py      # 生成 CSV 与 verified_candidates.json
-python scripts/gen_annual.py  # 生成 research/annual/*.md
+python scripts/seed.py          # 初始化并录入当前年份
+python scripts/validate_db.py   # 一致性检查（PASS/FAIL，含 confirmed 门槛、source-tier、引用完整性）
+python scripts/export.py        # 生成 CSV 与 verified_candidates.json
+python scripts/gen_annual.py    # 生成 research/annual/*.md
 ```
 
 ## 7. 当前状态（试点：2018–2020）

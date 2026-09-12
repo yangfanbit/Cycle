@@ -12,6 +12,7 @@ from scripts import db
 
 conn = db.connect()
 db.init_db(conn)
+db.migrate(conn)   # v1.5：对已存在数据库增量建表/加列（幂等）
 
 
 def ins(table, row):
@@ -38,7 +39,7 @@ sources = [
     dict(source_id="S-2018-01", source_type="media_tier2", title="7月份传统汽车产销双降 新能源车逆势增长", author="刘瑾", url="http://www.ce.cn/cysc/newmain/yc/jsxw/201808/21/t20180821_30080840.shtml", published_at="2018-08-21", publisher="中国经济网/经济日报", tier=2, description="中汽协7月数据：汽车产销量同比双降，进入负增长；新能源汽车逆势高增。含6月销量同比下滑、7月转负的表述。"),
     dict(source_id="S-2018-02", source_type="media_tier2", title="汽车股半年盘点：一汽东风比亚迪跌20% 上汽小幅上涨", author="新浪财经", url="https://finance.sina.com.cn/stock/marketresearch/2018-07-02/doc-ihespqry6410552.shtml", published_at="2018-07-02", publisher="新浪财经", tier=2, description="上半年汽车板块整体跌22.59%，26只汽车股仅上汽上涨。汽车板块持续走弱。"),
     dict(source_id="S-2018-03", source_type="media_tier2", title="国内建厂利好提振特斯拉相关概念走势活跃", author="中国证券报", url="https://www.cs.com.cn/gppd/gsyj/201807/t20180712_5840061.html", published_at="2018-07-12", publisher="中国证券报", tier=2, description="7/10特斯拉与临港签署协议，7/11特斯拉/锂电概念逆势走强，宁德时代涨6.44%创新高。短期事件驱动。"),
-    dict(source_id="S-2018-04", source_type="media_tier3", title="汽车行业估值见底 龙头公司投资价值凸显", author="杨苏", url="https://news.cnstock.com/industry,rdjj-201807-4244790.htm", published_at="2018-07-11", publisher="证券时报", tier=2, description="2018H1股价跌幅超30%的汽车公司50多家。板块整体下跌，估值回落。"),
+    dict(source_id="S-2018-04", source_type="media_tier2", title="汽车行业估值见底 龙头公司投资价值凸显", author="杨苏", url="https://news.cnstock.com/industry,rdjj-201807-4244790.htm", published_at="2018-07-11", publisher="证券时报", tier=2, description="2018H1股价跌幅超30%的汽车公司50多家。板块整体下跌，估值回落。"),
     # ---- 2019 ----
     dict(source_id="S-2019-01", source_type="media_tier2", title="6月份乘用车销量环比增长10.7% 汽车市场迎来“促销式”回暖", author="刘瑾", url="http://paper.ce.cn/jjrb/html/2019-07/11/content_395466.htm", published_at="2019-07-11", publisher="经济日报·中国经济网", tier=2, description="6月汽车销量205.6万辆环比+7.5%同比-9.6%；乘用车环比+10.7%。国五/国六切换+促销导致回暖，非真实需求改善。6/26补贴退坡过渡期结束。"),
     dict(source_id="S-2019-02", source_type="media_tier2", title="新能源汽车再现负增长 市场情绪有望9月回升", author="崔小粟", url="http://www.ce.cn/cysc/ny/gdxw/201908/13/t20190813_32888607.shtml", published_at="2019-08-13", publisher="中国证券报/中经网", tier=2, description="7月新能源销量同比-4.7%近三年首次负增长；汽车销量连续13个月同比下降。补贴退坡致7月后新能源汽车降温。"),
@@ -48,8 +49,8 @@ sources = [
     # ---- 2020 ----
     dict(source_id="S-2020-01", source_type="media_tier2", title="'全球车王'狂掀涨停潮 3400亿巨头暴涨8%", author="莫飞", url="https://www.stcn.com/article/detail/185209.html", published_at="2020-06-11", publisher="中国基金报/证券时报", tier=2, description="6/10特斯拉破千美元超丰田成全球市值最大车企；6/11 A股特斯拉板块涨近4%，旭升/亚玛顿/秀强/模塑涨停，宁德时代涨超8%。"),
     dict(source_id="S-2020-02", source_type="media_tier2", title="汽车股集体走强：比亚迪涨停，宁德时代市值逼近五千亿", author="21世纪经济报道", url="http://static.nfapp.southcn.com/content/202007/13/c3761026.html", published_at="2020-07-13", publisher="南方+/21世纪经济报道", tier=2, description="7/13比亚迪涨停，江淮两连板，宁德时代涨9.91%市值逼近5000亿。6月汽车产销同比+11.6%回暖。7/12比亚迪汉(刀片电池)上市。"),
-    dict(source_id="S-2020-03", source_type="media_tier3", title="比亚迪2020年6月来的走势复盘", author="轻舟已过万重山186", url="https://xueqiu.com/3795379662/269009043", published_at="2023-11-30", publisher="雪球（经验帖，Tier4线索）", tier=4, description="口径为线索：比亚迪2020/6/1爆发突破40-50平台，7/13阶段高点96.44，随后回调，8/21二次启动突破100，11/6涨到197.46。含二次启动/Wave。仅作线索，需行情数据核验。"),
-    dict(source_id="S-2020-04", source_type="media_tier3", title="2017-2025年汽车整车板块炒作周期分析", author="跃渊SH", url="https://xueqiu.com/5184598984/398548787", published_at="2026-07-06", publisher="雪球（经验帖，Tier4线索）", tier=4, description="2020年汽车整车板块从4月底启动到年底涨幅82.66%，特斯拉国产化图腾。口径为线索，需独立数据核验。"),
+    dict(source_id="S-2020-03", source_type="media_tier4", title="比亚迪2020年6月来的走势复盘", author="轻舟已过万重山186", url="https://xueqiu.com/3795379662/269009043", published_at="2023-11-30", publisher="雪球（经验帖，Tier4线索）", tier=4, description="口径为线索：比亚迪2020/6/1爆发突破40-50平台，7/13阶段高点96.44，随后回调，8/21二次启动突破100，11/6涨到197.46。含二次启动/Wave。仅作线索，需行情数据核验。"),
+    dict(source_id="S-2020-04", source_type="media_tier4", title="2017-2025年汽车整车板块炒作周期分析", author="跃渊SH", url="https://xueqiu.com/5184598984/398548787", published_at="2026-07-06", publisher="雪球（经验帖，Tier4线索）", tier=4, description="2020年汽车整车板块从4月底启动到年底涨幅82.66%，特斯拉国产化图腾。口径为线索，需独立数据核验。"),
 ]
 for s in sources:
     ins("sources", s)
@@ -59,21 +60,21 @@ for s in sources:
 # ------------------------------------------------------------
 evidences = [
     # 2018
-    dict(evidence_id="E-2018-01", source_id="S-2018-01", date="2018-07-01", evidence_type="行业月度产销数据", description="中汽协：2018年7月汽车销量188.9万辆，同比-4%，为年内第二个同比下降月份；6月乘用车销量已同比下滑。高房价/贸易摩擦/消费贷收紧导致需求走弱。", evidence_role="contradicting", confidence="high"),
-    dict(evidence_id="E-2018-02", source_id="S-2018-02", date="2018-07-02", evidence_type="行情数据", description="申万汽车/同花顺汽车板块2018上半年整体跌约22.59%，26只汽车股仅上汽上涨，余25只普跌。板块整体走弱，无夏季上攻。", evidence_role="contradicting", confidence="high"),
-    dict(evidence_id="E-2018-03", source_id="S-2018-03", date="2018-07-11", evidence_type="行情数据", description="7/10特斯拉临港建厂消息，7/11特斯拉/锂电概念逆势走强，宁德时代涨6.44%收于创新高，成交37亿居A股首位。系事件驱动脉冲，非板块级持续行情。", evidence_role="context", confidence="high"),
-    dict(evidence_id="E-2018-04", source_id="S-2018-04", date="2018-07-11", evidence_type="行情数据", description="2018上半年涨幅>40%的汽车公司20多家、>30%的50多家；汽车零部件PE降至19倍历史底部。板块整体估值系统性下移。", evidence_role="contradicting", confidence="high"),
+    dict(evidence_id="E-2018-01", source_id="S-2018-01", date="2018-07-01", evidence_type="行业月度产销数据", description="中汽协：2018年7月汽车销量188.9万辆，同比-4%，为年内第二个同比下降月份；6月乘用车销量已同比下滑。高房价/贸易摩擦/消费贷收紧导致需求走弱。", evidence_role="contradicting", confidence="high", independence_group="orig_cn_sales_data"),
+    dict(evidence_id="E-2018-02", source_id="S-2018-02", date="2018-07-02", evidence_type="行情数据", description="申万汽车/同花顺汽车板块2018上半年整体跌约22.59%，26只汽车股仅上汽上涨，余25只普跌。板块整体走弱，无夏季上攻。", evidence_role="contradicting", confidence="high", independence_group="orig_sector_price"),
+    dict(evidence_id="E-2018-03", source_id="S-2018-03", date="2018-07-11", evidence_type="行情数据", description="7/10特斯拉临港建厂消息，7/11特斯拉/锂电概念逆势走强，宁德时代涨6.44%收于创新高，成交37亿居A股首位。系事件驱动脉冲，非板块级持续行情。", evidence_role="context", confidence="high", independence_group="orig_tesla_sh"),
+    dict(evidence_id="E-2018-04", source_id="S-2018-04", date="2018-07-11", evidence_type="行情数据", description="2018上半年涨幅>40%的汽车公司20多家、>30%的50多家；汽车零部件PE降至19倍历史底部。板块整体估值系统性下移。", evidence_role="contradicting", confidence="high", independence_group="orig_sector_valuation"),
     # 2019
-    dict(evidence_id="E-2019-01", source_id="S-2019-01", date="2019-06-01", evidence_type="行业月度产销数据", description="6月汽车销量205.6万辆环比+7.5%同比-9.6%，乘用车环比+10.7%。此回暖主要来自国五/国六切换与经销商清仓促销、补贴过渡期前抢装，非真实需求增长。", evidence_role="context", confidence="high"),
-    dict(evidence_id="E-2019-02", source_id="S-2019-02", date="2019-07-01", evidence_type="行业月度产销数据", description="7月汽车销量连续13个月同比下降；7月新能源销量8万辆同比-4.7%，近三年首次负增长。6/26补贴退坡近70%致7月后新能源汽车降温。", evidence_role="contradicting", confidence="high"),
-    dict(evidence_id="E-2019-03", source_id="S-2019-03", date="2019-06-06", evidence_type="政策文件", description="6/6发改委等印发《推动重点消费品更新升级方案2019-2020》，汽车限购解禁关键词，鼓励促进汽车消费；但未含实质补贴，属温和信号。", evidence_role="context", confidence="high"),
-    dict(evidence_id="E-2019-04", source_id="S-2019-04", date="2019-08-27", evidence_type="行情数据", description="8/27智能汽车概念午后走强，万安科技封板，亚太/浙江世宝/路畅跟涨；交通部研究自动驾驶法规与指导意见。属8月底事件驱动脉冲。", evidence_role="supporting", confidence="medium"),
-    dict(evidence_id="E-2019-05", source_id="S-2019-05", date="2019-08-15", evidence_type="行情数据", description="无人驾驶指数自8/15(2210.96)涨至9/24(2733.92)，累计+23.65%。《交通强国建设纲要》+自动驾驶商用牌照+华为5G方案催化。窗口偏8月中下旬起，近9月。", evidence_role="supporting", confidence="medium"),
+    dict(evidence_id="E-2019-01", source_id="S-2019-01", date="2019-06-01", evidence_type="行业月度产销数据", description="6月汽车销量205.6万辆环比+7.5%同比-9.6%，乘用车环比+10.7%。此回暖主要来自国五/国六切换与经销商清仓促销、补贴过渡期前抢装，非真实需求增长。", evidence_role="context", confidence="high", independence_group="orig_cn_sales_data"),
+    dict(evidence_id="E-2019-02", source_id="S-2019-02", date="2019-07-01", evidence_type="行业月度产销数据", description="7月汽车销量连续13个月同比下降；7月新能源销量8万辆同比-4.7%，近三年首次负增长。6/26补贴退坡近70%致7月后新能源汽车降温。", evidence_role="contradicting", confidence="high", independence_group="orig_cn_sales_data"),
+    dict(evidence_id="E-2019-03", source_id="S-2019-03", date="2019-06-06", evidence_type="政策文件", description="6/6发改委等印发《推动重点消费品更新升级方案2019-2020》，汽车限购解禁关键词，鼓励促进汽车消费；但未含实质补贴，属温和信号。", evidence_role="context", confidence="high", independence_group="orig_policy"),
+    dict(evidence_id="E-2019-04", source_id="S-2019-04", date="2019-08-27", evidence_type="行情数据", description="8/27智能汽车概念午后走强，万安科技封板，亚太/浙江世宝/路畅跟涨；交通部研究自动驾驶法规与指导意见。属8月底事件驱动脉冲。", evidence_role="supporting", confidence="medium", independence_group="orig_ad_momentum"),
+    dict(evidence_id="E-2019-05", source_id="S-2019-05", date="2019-08-15", evidence_type="行情数据", description="无人驾驶指数自8/15(2210.96)涨至9/24(2733.92)，累计+23.65%。《交通强国建设纲要》+自动驾驶商用牌照+华为5G方案催化。窗口偏8月中下旬起，近9月。", evidence_role="supporting", confidence="medium", independence_group="orig_ad_momentum"),
     # 2020
-    dict(evidence_id="E-2020-01", source_id="S-2020-01", date="2020-06-11", evidence_type="行情数据", description="6/10特斯拉破千美元超丰田成全球市值最大车企；6/11 A股特斯拉板块大涨近4%，旭升/亚玛顿/秀强/模塑涨停，宁德时代涨超8%。板块半日市值增450亿。", evidence_role="supporting", confidence="high"),
-    dict(evidence_id="E-2020-02", source_id="S-2020-02", date="2020-07-13", evidence_type="行情数据", description="7/13汽车整车走强，比亚迪首板涨停、江淮两连板，宁德时代涨9.91%市值逼近5000亿。6月汽车产销同比+11.6%持续回暖。7/12比亚迪汉(刀片电池)上市。", evidence_role="supporting", confidence="high"),
-    dict(evidence_id="E-2020-03", source_id="S-2020-03", date="2020-06-01", evidence_type="行情数据", description="线索(Tier4)：比亚迪2020/6/1突破40-50平台启动，6月+25%，7/13阶段高点96.44，7月中回调后8/21二次启动破100，11/6至197.46。反映Wave/二次启动，需行情数据二次核验确认。", evidence_role="supporting", confidence="low"),
-    dict(evidence_id="E-2020-04", source_id="S-2020-04", date="2020-04-28", evidence_type="行情数据", description="线索(Tier4)：汽车整车板块2020年自4月底启动至年底涨幅82.66%，特斯拉国产化为核心驱动。全年视角可能早于6/1启动，窗口漂移需核验。", evidence_role="context", confidence="low"),
+    dict(evidence_id="E-2020-01", source_id="S-2020-01", date="2020-06-11", evidence_type="行情数据", description="6/10特斯拉破千美元超丰田成全球市值最大车企；6/11 A股特斯拉板块大涨近4%，旭升/亚玛顿/秀强/模塑涨停，宁德时代涨超8%。板块半日市值增450亿。", evidence_role="supporting", confidence="high", independence_group="orig_tesla_momentum"),
+    dict(evidence_id="E-2020-02", source_id="S-2020-02", date="2020-07-13", evidence_type="行情数据", description="7/13汽车整车走强，比亚迪首板涨停、江淮两连板，宁德时代涨9.91%市值逼近5000亿。6月汽车产销同比+11.6%持续回暖。7/12比亚迪汉(刀片电池)上市。", evidence_role="supporting", confidence="high", independence_group="orig_tesla_momentum"),
+    dict(evidence_id="E-2020-03", source_id="S-2020-03", date="2020-06-01", evidence_type="行情数据", description="线索(Tier4)：比亚迪2020/6/1突破40-50平台启动，6月+25%，7/13阶段高点96.44，7月中回调后8/21二次启动破100，11/6至197.46。反映Wave/二次启动，需行情数据二次核验确认。", evidence_role="supporting", confidence="low", independence_group="same_origin_xueqiu_byd"),
+    dict(evidence_id="E-2020-04", source_id="S-2020-04", date="2020-04-28", evidence_type="行情数据", description="线索(Tier4)：汽车整车板块2020年自4月底启动至年底涨幅82.66%，特斯拉国产化为核心驱动。全年视角可能早于6/1启动，窗口漂移需核验。", evidence_role="context", confidence="low", independence_group="same_origin_xueqiu_byd"),
 ]
 for e in evidences:
     ins("evidences", e)
@@ -188,6 +189,21 @@ campaign_events = [
 ]
 for ce in campaign_events:
     ins("campaign_events", ce)
+
+# campaign_evidences（v1.5：显式关联，禁止混入全库证据）
+campaign_evidences = [
+    # C-2019-AD（智能驾驶事件驱动）
+    dict(campaign_id="C-2019-AD", evidence_id="E-2019-04", role="supporting"),
+    dict(campaign_id="C-2019-AD", evidence_id="E-2019-05", role="supporting"),
+    dict(campaign_id="C-2019-AD", evidence_id="E-2019-03", role="context"),
+    # C-2020-NEV（特斯拉/新能源主题）
+    dict(campaign_id="C-2020-NEV", evidence_id="E-2020-01", role="supporting"),
+    dict(campaign_id="C-2020-NEV", evidence_id="E-2020-02", role="supporting"),
+    dict(campaign_id="C-2020-NEV", evidence_id="E-2020-03", role="supporting"),
+    dict(campaign_id="C-2020-NEV", evidence_id="E-2020-04", role="context"),
+]
+for cew in campaign_evidences:
+    ins("campaign_evidences", cew)
 
 # campaign_securities（leader 需证据支撑）
 campaign_securities = [

@@ -40,7 +40,22 @@ CREATE TABLE IF NOT EXISTS evidences (
     evidence_role   TEXT NOT NULL CHECK (evidence_role IN
                         ('supporting','contradicting','context')),
     confidence      TEXT NOT NULL CHECK (confidence IN ('high','medium','low')),
+    -- 独立性分组：同一事实被多个媒体转载时，仅为转引、不得自动计为多条独立证据。
+    -- 同源转引填 same_origin_xxx；真正独立来源使用不同 group。
+    independence_group TEXT,
     created_at      TEXT DEFAULT (datetime('now'))
+);
+
+-- ------------------------------------------------------------
+-- Campaign ↔ Evidence 显式关联（v1.5 新增）
+-- 一个 Campaign 只能引用其真实支撑/反驳/背景证据，禁止全库混入。
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS campaign_evidences (
+    campaign_id     TEXT NOT NULL REFERENCES campaigns(campaign_id),
+    evidence_id     TEXT NOT NULL REFERENCES evidences(evidence_id),
+    role            TEXT NOT NULL CHECK (role IN ('supporting','contradicting','context')),
+    created_at      TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (campaign_id, evidence_id)
 );
 
 -- ------------------------------------------------------------
@@ -91,6 +106,10 @@ CREATE TABLE IF NOT EXISTS campaigns (
                             ('theme_campaign','industry_trend','event_driven','mixed','unclear')),
     start_date_basis   TEXT,
     end_date_basis     TEXT,
+    -- [v1.5 兼容设计] 未来推荐拆分为：
+    --   start_date_basis_code / end_date_basis_code: observed | inferred | official_event | unknown
+    --   start_date_basis_note / end_date_basis_note: 具体依据说明
+    -- 当前旧字段保留长说明文本，暂不迁移（不破坏试点结论）。
     date_confidence    TEXT CHECK (date_confidence IN ('high','medium','low')),
     description        TEXT,
     -- 窗口漂移

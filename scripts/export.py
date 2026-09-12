@@ -67,7 +67,6 @@ def main():
         "verified_candidates": [],
     }
 
-    ars = query_all("SELECT * FROM annual_reviews WHERE rule_id='rule_auto_summer'")
     cands = query_all("SELECT * FROM campaigns WHERE rule_id='rule_auto_summer'")
     for c in cands:
         cid = c["campaign_id"]
@@ -82,12 +81,16 @@ def main():
             SELECT e.*, ce.role FROM campaign_events ce
             JOIN events e ON e.event_id = ce.event_id WHERE ce.campaign_id=?""", cid)
         phases = query_all("SELECT * FROM campaign_phases WHERE campaign_id=?", cid)
+        # 只导出属于当前 Campaign 的证据（经 campaign_evidences 桥表），禁止混入全库
         evidences = query_all("""
-            SELECT ev.*, s.title AS source_title, s.url AS source_url, s.tier AS source_tier
-            FROM evidences ev LEFT JOIN sources s ON s.source_id = ev.source_id
-            WHERE ev.evidence_id IN (
-                SELECT ev2.evidence_id FROM evidences ev2 WHERE 1
-            )""")  # 全量证据即本次分析依据；此处全量导出
+            SELECT ev.*, ce.role AS bridge_role,
+                   s.title AS source_title, s.url AS source_url, s.tier AS source_tier
+            FROM campaign_evidences ce
+            JOIN evidences ev ON ev.evidence_id = ce.evidence_id
+            LEFT JOIN sources s ON s.source_id = ev.source_id
+            WHERE ce.campaign_id = ?
+            ORDER BY ev.date
+        """, cid)  # v1.5 修复：仅该 Campaign 关联的 Evidence
 
         cand = {
             "campaign_id": cid,
@@ -115,7 +118,9 @@ def main():
             "evidences": evidences,
             "validation": {
                 "status": "awaiting_human_review",
-                "min_independent_evidence_met": None,  # 人工决定
+                "evidence_count": len(evidences),
+                "independence_groups": len({e.get("independence_group") for e in evidences if e.get("independence_group")}),
+                "min_independent_evidence_met": (len(evidences) >= 2 and len({e.get("independence_group") for e in evidences if e.get("independence_group")}) >= 2),
                 "reviewed_by": None,
                 "reviewed_at": None,
             },
@@ -128,6 +133,33 @@ def main():
     print(f"JSON: {EXPORT_JSON} ({len(out['verified_candidates'])} candidates)")
 
 
+def _test_evidence_isolation() -> None:
+    """隔离测试：Campaign A 只能拿到 A1/A2，B 只能拿到 B1，不得交叉污染。"""
+    c = db.connect()
+    by_camp = {}
+    for r in c.execute(
+        "SELECT ce.campaign_id, ce.evidence_id FROM campaign_evidences ce ORDER BY ce.campaign_id, ce.evidence_id"):
+        by_camp.setdefault(r[0], set()).add(r[1])
+    errors = []
+    ids = list(by_camp.keys())
+    for i in range(len(ids)):
+        for j in range(len(ids)):
+            if i == j:
+                continue
+            overlap = by_camp[ids[i]] & by_camp[ids[j]]
+            if overlap:
+                errors.append(f"证据在 {ids[i]} 与 {ids[j]} 之间错配: {overlap}")
+    if errors:
+        print("FAIL evidence isolation:", errors)
+        c.close()
+        sys.exit(1)
+    detail = "; ".join(f"{k}:{len(v)}条" for k, v in sorted(by_camp.items()))
+    print(f"PASS evidence isolation —— {detail}（无交叉）")
+    c.close()
+
+
 if __name__ == "__main__":
     main()
     conn.close()
+    # 隔离测试：验证各 Campaign 的证据不会交叉污染
+    _test_evidence_isolation()
