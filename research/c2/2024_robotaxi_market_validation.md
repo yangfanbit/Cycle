@@ -3,7 +3,8 @@
 > 对象：`C-2024-ROBOTAXI`（research candidate：start 2024-07-08 / peak 2024-07-29 / end 2024-07-31）。
 > 本轮为 **计算方法校准**：修正等权组合、raw/adjusted 口径、verified_date 语义。**未**改任何 Campaign / annual_status / Rule。
 > **方法学关键**：`signal_price = raw close`（判 start/peak/first-decline/end/phase）；`return_price = adjusted(qfq) close`（算收益/回撤/相对基准）。
-> **等权组合 = EqualWeightIndex（逐股归一化后横截面平均，起始=100）**，不再用“平均股价/平均起始价”。
+> **等权组合 = Historical Leader Equal-Weight Index（逐股归一化后横截面平均，起始=100）**，不再用“平均股价/平均起始价”。
+> 术语（Pilot 1-C1.2）：表中 `EW_RAW` ≡ **Historical Leader Equal-Weight Index**（raw close、信号口径）；`EW_ADJ` 为 adjusted 收益口径。均基于**事后选定的 5 只核心股票**，非板块指数。
 > 数据=真实日线（腾讯 GTIMG），仅用现有：沪深300、汽车ETF 516110、5只核心股票；原始结果见 `_calib_raw.json`。
 
 ---
