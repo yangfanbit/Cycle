@@ -2,7 +2,7 @@
   "meta": {
     "project": "Cycle-Research",
     "purpose": "research 阶段已整理、等待人工最终确认的候选数据（非 Cycle 正式 verified）",
-    "exported_at": "2026-09-13T00:37:18.369337",
+    "exported_at": "2026-09-13T00:42:52.092790",
     "rule": "rule_auto_summer",
     "notes": "仅在人工 Review 后，才由人工/指定 Agent 转入 Cycle/data/verified/"
   },
