@@ -1,6 +1,7 @@
 """导出脚本：
-1. research/summary/auto_2018_2025.csv  （试运行阶段仅含已录入年份）
+1. research/summary/campaign_2018_2025.csv  （按 Campaign 的扁平明细表）
 2. exports/cycle_verified_candidates.json（Research 已整理、等待人工确认的候选数据）
+注：年度级汇总见 scripts/gen_summary.py → research/summary/auto_2018_2025.csv / .md
 
 用法: python scripts/export.py
 """
@@ -12,7 +13,7 @@ from scripts import db
 ROOT = db.ROOT
 conn = db.connect()
 
-SUMMARY_CSV = os.path.join(ROOT, "research", "summary", "auto_2018_2025.csv")
+SUMMARY_CSV = os.path.join(ROOT, "research", "summary", "campaign_2018_2025.csv")
 EXPORT_JSON = os.path.join(ROOT, "exports", "cycle_verified_candidates.json")
 
 CSV_FIELDS = [

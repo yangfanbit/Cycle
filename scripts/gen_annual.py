@@ -36,12 +36,24 @@ def build(year):
     ar = dict(ar)
     camps = getall(
         "SELECT * FROM campaigns WHERE rule_id='rule_auto_summer' AND campaign_year=? ORDER BY campaign_id", year)
-    evs = getall(
-        "SELECT ev.*, s.title AS source_title, s.url, s.tier FROM evidences ev "
-        "LEFT JOIN sources s ON s.source_id=ev.source_id "
-        "WHERE ev.date LIKE ? OR ev.evidence_id IN (SELECT evidence_id FROM evidences ev2 "
-        "WHERE ev2.source_id IN (SELECT source_id FROM sources s2 WHERE s2.published_at LIKE ?)) "
-        "ORDER BY ev.date", f"{year}%", f"{year}%")
+    # 证据仅经 campaign_evidences 显式绑定（禁止按年份/日期弱关联）。
+    # 每年度：各 Campaign 只带自己的绑定证据；未绑定任何 Campaign 的年度级 contradicting/context 证据单列于反例段。
+    bound = getall(
+        "SELECT e.evidence_id, e.date, e.evidence_type, e.description, e.evidence_role, e.confidence, "
+        "       s.title AS source_title, s.url, s.tier, ce.campaign_id, ce.role AS bridge_role "
+        "FROM campaign_evidences ce "
+        "JOIN evidences e ON e.evidence_id = ce.evidence_id "
+        "LEFT JOIN sources s ON s.source_id = e.source_id "
+        "WHERE ce.campaign_id IN (SELECT campaign_id FROM campaigns "
+        "                          WHERE rule_id='rule_auto_summer' AND campaign_year=?) "
+        "ORDER BY ce.campaign_id, e.date", year)
+    unbound = getall(
+        "SELECT e.evidence_id, e.date, e.evidence_type, e.description, e.evidence_role, e.confidence, "
+        "       s.title AS source_title, s.url, s.tier "
+        "FROM evidences e LEFT JOIN sources s ON s.source_id = e.source_id "
+        "WHERE e.date LIKE ? "
+        "  AND e.evidence_id NOT IN (SELECT evidence_id FROM campaign_evidences) "
+        "ORDER BY e.date", f"{year}%")
     phases = []
     themes_yearly = getall(
         "SELECT DISTINCT t.name, t.theme_type, ct.role FROM campaign_themes ct "
@@ -111,13 +123,26 @@ def build(year):
         L.append("（证据不充分，暂不记录）")
 
     L.append("\n## Evidence\n")
-    # 去重 by evidence_id
-    seen = {}
-    for e in evs:
-        seen.setdefault(e["evidence_id"], e)
-    if not seen:
-        L.append("（暂无独立证据，需补充）")
-    for e in seen.values():
+    # 按 Campaign 分组展示各自绑定证据（隔离）
+    if camps:
+        for c in camps:
+            cid = c["campaign_id"]
+            cev = [e for e in bound if e["campaign_id"] == cid]
+            L.append(f"### Campaign {cid}（绑定 {len(cev)} 条证据）")
+            if not cev:
+                L.append("（该 Campaign 未绑定独立证据，需补充）")
+            for e in cev:
+                tier = f"Tier{e['tier']}" if e["tier"] else "?"
+                L.append(f"- **{e['source_title'] or e['evidence_id']}**（{tier} · 角色: {e['evidence_role']} · 置信度: {e['confidence']} · {e['date']}）")
+                L.append(f"  - URL: {e['url']}")
+                L.append(f"  - {e['description']}")
+            L.append("")
+    # 年度级反例 / 行业证据（未绑定任何 Campaign）
+    unbound_disp = [e for e in unbound if e["evidence_role"] in ("contradicting", "context")]
+    L.append(f"### 年度反例 / 行业证据（未绑定 Campaign，{len(unbound_disp)} 条）")
+    if not unbound_disp:
+        L.append("（无）")
+    for e in unbound_disp:
         tier = f"Tier{e['tier']}" if e["tier"] else "?"
         L.append(f"- **{e['source_title'] or e['evidence_id']}**（{tier} · 角色: {e['evidence_role']} · 置信度: {e['confidence']} · {e['date']}）")
         L.append(f"  - URL: {e['url']}")
