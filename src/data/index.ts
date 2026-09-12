@@ -4,11 +4,15 @@
  * 语义见 data/README.md 与 docs/HISTORICAL_VALIDATION.md），
  * 应用代码只从本文件导入，不直接引用 data/ 内部路径。
  */
-import type { CampaignTheme, Event, HistoricalCampaign } from '../models';
+import type { CampaignSecurity, CampaignTheme, Event, HistoricalCampaign } from '../models';
 import { resolveEventForYear } from '../utils';
-import { campaignThemes } from '../../data/candidate/campaigns';
+import { campaignSecurities, campaignThemes } from '../../data/candidate/campaigns';
 import { events } from '../../data/candidate/events';
-import { verifiedCampaigns, verifiedCampaignThemes } from '../../data/verified/campaigns';
+import {
+  verifiedCampaigns,
+  verifiedCampaignSecurities,
+  verifiedCampaignThemes,
+} from '../../data/verified/campaigns';
 
 export * from '../../data/raw/sources';
 export * from '../../data/raw/excerpts';
@@ -51,3 +55,9 @@ const allCampaignThemes: CampaignTheme[] = [...campaignThemes, ...verifiedCampai
 export function themesOfCampaign(campaignId: string): CampaignTheme[] {
   return allCampaignThemes.filter((ct) => ct.campaign_id === campaignId);
 }
+
+/** 生产层全部行情-股票关联（verified 层录入后自动可见；candidate 层恒空） */
+export const allCampaignSecurities: CampaignSecurity[] = [
+  ...campaignSecurities,
+  ...verifiedCampaignSecurities,
+];

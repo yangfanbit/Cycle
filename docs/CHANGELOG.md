@@ -1,5 +1,48 @@
 # CHANGELOG.md — 变更记录
 
+## 2026-09-12 · Pilot 1 录入入口准备：verified 层数据录入路径（第七轮）
+
+### 目标
+
+为人工核验「6—8月汽车」提供干净、可追溯的 verified 录入路径。**本轮未录入任何
+真实历史数据**（无 2023/2024 汽车 Campaign、无真实龙头 / 涨幅 / 日期），
+verified 层保持空状态。
+
+### 新增：Verified Campaign 录入流程（HISTORICAL_VALIDATION.md 12B）
+
+标准流程：先登记 Evidence → 人工确认事实 → 创建 HistoricalCampaign →
+写入 `data/verified/campaigns.ts`（含配套 themes / securities 关联）→
+Campaign 必须至少被一条 Evidence 追溯（evidencesOfCampaign）→ 新增 campaign 级
+ValidationRecord（scope = 'campaign'、L2）→ Rule 保持 not_tested / under_review。
+明确「某一年 Campaign 被核验 ≠ 整条 Rule 已经验证成立」。
+
+### 补齐：verified 层龙头关联落脚点
+
+- `data/verified/campaigns.ts` 新增 `verifiedCampaignSecurities`（空表）：
+  人工核验后的真实龙头（CampaignSecurity）有明确归宿，不落入 candidate 层。
+- barrel 新增聚合导出 `allCampaignSecurities`（candidate 恒空 + verified），
+  CampaignDetail 改用聚合导出——verified 数据录入后 UI 自动可见，当前无视觉变化。
+
+### 修复：validationByRuleId 键冲突隐患
+
+- 该索引以 rule_id 为键；campaign 级记录与所属 Rule 的 rule_id 相同，
+  直接全量建 Map 会在追加 campaign 级记录后覆盖 rule 级记录。
+  改为只索引 `validation_scope = 'rule'` 的记录（1 行防御性修复，当前无生产消费方）。
+
+### 三层关联链确认
+
+Evidence（campaign_id 反向指向）→ HistoricalCampaign（verifiedCampaigns）→
+ValidationRecord（scope = 'campaign' + L2）已可闭环，模型未做任何修改。
+
+### 测试
+
+- 49 → 52 项：新增「Pilot 1 录入入口准备」3 项（verified 三张表与聚合层全空、
+  validationByRuleId 只索引 rule 级记录、录入链路演练——fixture 验证
+  campaign + evidence(campaign_id) + campaign 级记录的关联约束，不入生产层）。
+- 验证：`npm test` 52/52 通过；`npx tsc -b` 通过；`npm run build` 成功。
+
+---
+
 ## 2026-09-12 · V1.5 Final Preparation：进入历史核验前的最后语义准备（第六轮）
 
 ### 修正：Source URL

@@ -1,7 +1,7 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import type { TimeWindow } from '../../models';
+import type { Evidence, HistoricalCampaign, TimeWindow, ValidationRecord } from '../../models';
 import {
   addDaysISO,
   compareISO,
@@ -542,5 +542,94 @@ describe('V1.5 Final Preparation：进入历史核验前的最后语义检查', 
     expect(campaigns).toEqual([]);
     expect(verifiedCampaigns).toEqual([]);
     expect(allCampaigns).toEqual([]);
+  });
+});
+
+describe('Pilot 1 录入入口准备：verified 层录入路径', () => {
+  it('verified 层三张表与聚合层当前全为空，candidate 线索不进入生产视图', async () => {
+    const {
+      verifiedCampaigns,
+      verifiedCampaignThemes,
+      verifiedCampaignSecurities,
+      campaigns,
+      campaignSecurities,
+      allCampaigns,
+      allCampaignSecurities,
+    } = await import('../../data');
+    expect(verifiedCampaigns).toEqual([]);
+    expect(verifiedCampaignThemes).toEqual([]);
+    expect(verifiedCampaignSecurities).toEqual([]);
+    expect(campaigns).toEqual([]);
+    expect(campaignSecurities).toEqual([]);
+    expect(allCampaigns).toEqual([]);
+    expect(allCampaignSecurities).toEqual([]);
+  });
+
+  it('validationByRuleId 只索引 rule 级记录：追加 campaign 级记录后不覆盖 rule 级状态', async () => {
+    const { validationByRuleId } = await import('../../data');
+    for (const [ruleId, r] of validationByRuleId) {
+      expect(r.validation_scope).toBe('rule');
+      expect(r.rule_id).toBe(ruleId);
+      expect(r.campaign_id).toBeUndefined();
+    }
+    expect(validationByRuleId.has('rule_auto_summer')).toBe(true);
+    expect(validationByRuleId.has('rule_media_year_end')).toBe(true);
+    expect(validationByRuleId.has('rule_consumption_year_end')).toBe(true);
+  });
+
+  it('录入链路演练：campaign + evidence(campaign_id) + campaign 级核验记录的关联约束（fixture 不入生产层）', async () => {
+    const { evidencesOfCampaign } = await import('../../data');
+    // 模拟人工核验后的一条完整录入（只存在于测试内，不写入 data/）
+    const campaign: HistoricalCampaign = {
+      campaign_id: 'cmp_rehearsal_2023',
+      rule_id: 'rule_auto_summer',
+      season_id: '2023',
+      campaign_year: 2023,
+      start_date: '2023-06-05',
+      end_date: '2023-08-20',
+      cross_year: false,
+      strength: 'medium',
+      result: 'positive',
+      source_id: 'src_exp_001',
+      start_date_basis: 'observed',
+      end_date_basis: 'observed',
+      date_confidence: 'high',
+    };
+    const evidence: Evidence = {
+      evidence_id: 'ev_rehearsal',
+      source_id: 'src_exp_001',
+      evidence_type: 'market_data',
+      description: '演练：行情数据证据（保留来源口吻）',
+      date: '2023-06-05',
+      confidence: 'high',
+      rule_id: campaign.rule_id,
+      campaign_id: campaign.campaign_id,
+    };
+    const record: ValidationRecord = {
+      validation_id: 'val_rehearsal_2023',
+      validation_scope: 'campaign',
+      rule_id: campaign.rule_id,
+      campaign_id: campaign.campaign_id,
+      evidence_status: 'L2',
+      verification_status: 'under_review',
+      reviewer: '人工核验（演练）',
+      created_at: '2026-09-12',
+      reviewed_at: '2026-09-12',
+      notes: '录入流程演练记录',
+      method_version: 'v1.5-rehearsal-001',
+    };
+    // Evidence → Campaign 追溯
+    expect(evidencesOfCampaign(campaign.campaign_id, [evidence])).toHaveLength(1);
+    expect(evidencesOfCampaign(campaign.campaign_id, [evidence])[0].evidence_id).toBe(
+      evidence.evidence_id,
+    );
+    // campaign 级核验记录约束（12B 录入流程）
+    expect(record.validation_scope).toBe('campaign');
+    expect(record.campaign_id).toBe(campaign.campaign_id);
+    expect(record.evidence_status).toBe('L2');
+    // 单年事实核验完成不推高规律验证状态
+    expect(['not_tested', 'under_review']).toContain(record.verification_status);
+    // 有核验人时必须同时有核验完成日期
+    expect(record.reviewed_at).not.toBeNull();
   });
 });

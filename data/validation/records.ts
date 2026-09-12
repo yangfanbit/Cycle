@@ -65,4 +65,10 @@ export const validationRecords: ValidationRecord[] = [
   },
 ];
 
-export const validationByRuleId = new Map(validationRecords.map((r) => [r.rule_id, r]));
+/**
+ * rule 级核验记录索引（rule_id → ValidationRecord）。
+ * campaign 级记录的 rule_id 与所属 Rule 相同，不得覆盖 rule 级记录，故只索引 scope = 'rule'。
+ */
+export const validationByRuleId = new Map(
+  validationRecords.filter((r) => r.validation_scope === 'rule').map((r) => [r.rule_id, r]),
+);

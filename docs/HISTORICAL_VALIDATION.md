@@ -263,6 +263,37 @@ rule_textile_year_end）属于**复合时间窗口**：固定起点（国庆后�
 后续阶段统一支持 mixed anchor window（固定锚点 + 相对锚点组合），不在本轮
 扩展窗口 Schema。
 
+## 12B. Verified Campaign 录入流程（Pilot 1 起生效）
+
+人工核验产出真实历史事实后，按以下标准流程录入（模型见第 1、7、10 节，
+数据层语义见 data/README.md）：
+
+1. **先登记 Evidence**：核验依据的行情证据（market_data / manual_review 型）
+   先写入 `data/validation/evidence.ts`；已有 article 证据被核验采纳的，
+   补填 `campaign_id` 反向指向新 Campaign。
+2. **人工确认历史事实**：起止日期（basis + confidence）、强度、结果、题材、
+   龙头均以人工核验结果为准。Agent 只负责把经过人工确认的数据准确录入，
+   禁止自行搜索判断或推断补充。
+3. **创建 HistoricalCampaign**：字段按第 1 节规范填写；失败 / 弱年份同样录入
+   （第 4 节失败年份原则），不得只录成功年份。
+4. **写入 verified 层**：Campaign 追加到 `data/verified/campaigns.ts` 的
+   `verifiedCampaigns`，配套题材关联写入 `verifiedCampaignThemes`、
+   代表股票关联写入 `verifiedCampaignSecurities`，并在 CHANGELOG.md 留痕
+   （注明依据的 evidence_id）。
+5. **Campaign 必须至少被一条 Evidence 追溯**：`Evidence.campaign_id` 指向它，
+   查询入口 `evidencesOfCampaign(campaignId)`。无证据的"事实"不得录入
+   （防回归测试已就位，verified 层有数据后自动生效）。
+6. **新增 campaign 级 ValidationRecord**（`data/validation/records.ts`）：
+   `validation_scope = 'campaign'`、`campaign_id` 必填、`evidence_status = 'L2'`、
+   `reviewer` / `reviewed_at` 填实际核验人与完成日期；其 `verification_status`
+   填录入时所属 Rule 的实际状态（not_tested / under_review）。
+7. **Rule 本身保持 not_tested / under_review**：除非以后完成统计验证（L3+），
+   不得因单年核验完成而标记 statistically_supported。
+
+**"某一年 Campaign 被核验" ≠ "整条 Rule 已经验证成立"**：前者是 L2（事实层），
+后者需要 L3+ 统计验证。录入顺序不可颠倒：无 Evidence 不建 Campaign，
+无 Campaign 不建 campaign 级 ValidationRecord。
+
 ## 13. V1.5 Pilot（3 条样本规律）
 
 | Pilot | 规律 | 窗口 | 用途 | 当前状态 |

@@ -1,4 +1,4 @@
-import { campaignSecurities, ruleById, sourceById, themeById, themesOfCampaign } from '../../data';
+import { allCampaignSecurities, ruleById, sourceById, themeById, themesOfCampaign } from '../../data';
 import type { HistoricalCampaign } from '../../models';
 import { diffDays } from '../../utils';
 import { RESULT_LABEL, ROLE_LABEL, RULE_STATUS_LABEL, STRENGTH_LABEL } from '../labels';
@@ -12,7 +12,7 @@ interface CampaignDetailProps {
 export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetailProps) {
   const rule = ruleById.get(campaign.rule_id);
   const themes = themesOfCampaign(campaign.campaign_id);
-  const securities = campaignSecurities.filter((cs) => cs.campaign_id === campaign.campaign_id);
+  const securities = allCampaignSecurities.filter((cs) => cs.campaign_id === campaign.campaign_id);
   const source = sourceById.get(campaign.source_id);
   const duration = diffDays(campaign.start_date, campaign.end_date) + 1;
 

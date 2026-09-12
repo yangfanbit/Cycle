@@ -133,6 +133,10 @@ V1 为空表。**不得凭空生成龙头股。**
 
 字段：campaign_id, security_id, role（leader / second_leader / follow / representative）
 
+已核验行情的关联存于 `data/verified/campaigns.ts`（verifiedCampaignSecurities），
+经 barrel 聚合为 `allCampaignSecurities`；candidate 层为空表。龙头必须来自
+人工核验结果（见 HISTORICAL_VALIDATION.md 12B 录入流程），禁止凭空生成。
+
 ## 9. Event — 日历事件
 
 `src/models/event.ts`
@@ -213,7 +217,7 @@ average_duration, excess_return, repeat_rate, seasonality_score。
 | 实体字段 | 与概念模型一致，无冲突 |
 | Rule.status 维度 | 单维生命周期字段；治理规范已区分 Evidence / Verification 双维度（见 DATA_GOVERNANCE.md 映射表），字段拆分列入 ROADMAP，当前不改代码 |
 | 数据源形态 | 类型化 TS 模块，位于根目录 `data/` 四层目录（raw / candidate / verified / validation），经 `src/data/index.ts` barrel 导出。字段名与 SQL 对齐，迁移时按目录语义建表 |
-| verified 层 | 已建目录与空表（`data/verified/campaigns.ts`，0 条）——人工核验完成前保持为空 |
+| verified 层 | 已建目录与空表（`data/verified/campaigns.ts`：verifiedCampaigns / verifiedCampaignThemes / verifiedCampaignSecurities，均 0 条）——人工核验完成前保持为空；录入流程见 HISTORICAL_VALIDATION.md 12B |
 | 市场日期基准 | `marketTodayISO()`（src/utils/date/dateUtils.ts）：A 股"今天"固定基于 Asia/Shanghai，不随用户机器时区漂移；纯日期运算仍用 UTC |
 | Observation | 已建模，V1 UI 未实现（符合预期） |
 | Security / CampaignSecurity | 已建模，V1 为空表（符合"缺少数据是合法状态"原则） |
