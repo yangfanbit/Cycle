@@ -1,14 +1,17 @@
-import type { CampaignSecurity, CampaignTheme, HistoricalCampaign } from '../models';
+import type { CampaignSecurity, CampaignTheme, HistoricalCampaign } from '../../src/models';
 
 /**
- * 历史行情（HistoricalCampaign）。
+ * 候选行情记录（candidate 层）。
  *
  * 数据诚信说明：
  * - 仅录入"来源材料明确提到"的题材—年份对应关系（2023汽车=减速器、2024汽车=自动驾驶）。
- * - 材料未提供精确起止日期，下列日期为该规律典型窗口的近似，description 中已注明。
+ * - 材料未提供精确起止日期，下列日期为该规律典型窗口的近似：
+ *   start/end_date_basis = inferred，date_confidence = low，待人工核验后修正。
  * - 未编造成交、涨幅等任何量化数据；result 一律记为 unknown，待历史数据验证。
  * - cmp_media_2026_2027 为需求文档中的跨年结构示例，用于验证跨年渲染，非真实历史记录。
- * - 其余规律暂无历史案例资料，UI 显示"历史案例待补充"。
+ * - 材料另提及广电 2021/2022/2023 年行情，但因缺少日期与强度细节，
+ *   暂不创建对应 Campaign（不得凭仅有年份的提及编造记录），待人工核验。
+ * - 完成人工核验的行情应移入 data/verified/campaigns.ts。
  */
 export const campaigns: HistoricalCampaign[] = [
   {
@@ -18,13 +21,17 @@ export const campaigns: HistoricalCampaign[] = [
     campaign_year: 2023,
     start_date: '2023-06-01',
     end_date: '2023-08-31',
+    peak_date: null,
     cross_year: false,
     strength: 'medium',
     result: 'unknown',
     description:
       '来源材料提及：2023年汽车方向的具体题材为"减速器"。' +
-      '起止日期为该规律典型窗口（6—8月）的近似，精确日期、强度与结果待历史数据核实。',
+      '起止日期为该规律典型窗口（6—8月）的近似，精确日期、峰值、强度与结果待历史数据核实。',
     source_id: 'src_exp_001',
+    start_date_basis: 'inferred',
+    end_date_basis: 'inferred',
+    date_confidence: 'low',
   },
   {
     campaign_id: 'cmp_auto_2024',
@@ -33,13 +40,17 @@ export const campaigns: HistoricalCampaign[] = [
     campaign_year: 2024,
     start_date: '2024-06-01',
     end_date: '2024-08-31',
+    peak_date: null,
     cross_year: false,
     strength: 'medium',
     result: 'unknown',
     description:
       '来源材料提及：2024年汽车方向的具体题材为"自动驾驶"。' +
-      '起止日期为该规律典型窗口（6—8月）的近似，精确日期、强度与结果待历史数据核实。',
+      '起止日期为该规律典型窗口（6—8月）的近似，精确日期、峰值、强度与结果待历史数据核实。',
     source_id: 'src_exp_001',
+    start_date_basis: 'inferred',
+    end_date_basis: 'inferred',
+    date_confidence: 'low',
   },
   {
     campaign_id: 'cmp_media_2026_2027',
@@ -48,6 +59,7 @@ export const campaigns: HistoricalCampaign[] = [
     campaign_year: 2026,
     start_date: '2026-11-01',
     end_date: '2027-01-15',
+    peak_date: null,
     cross_year: true,
     strength: 'medium',
     result: 'unknown',
@@ -55,6 +67,9 @@ export const campaigns: HistoricalCampaign[] = [
       '跨年结构示例数据（来自项目需求文档），用于验证跨年行情作为一条完整 Campaign ' +
       '在2026与2027两个自然年中的连续渲染。不是真实历史行情记录。',
     source_id: 'src_spec_001',
+    start_date_basis: 'unknown',
+    end_date_basis: 'unknown',
+    date_confidence: 'low',
   },
 ];
 

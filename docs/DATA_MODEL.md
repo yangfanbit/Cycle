@@ -3,6 +3,10 @@
 本文件记录 **当前代码中实际存在** 的数据模型（`src/models/`），字段命名一律 snake_case，
 与未来 SQLite / PostgreSQL 表结构一一对应。
 
+数据文件自 V1.5 起位于根目录 `data/`（raw / candidate / verified / validation 四层，
+语义见 data/README.md 与 docs/HISTORICAL_VALIDATION.md）；
+`src/data/index.ts` 是唯一 re-export 出口。
+
 当前实现与概念模型无已知冲突；差异在文末"差异记录"中标注。
 
 ---
@@ -20,6 +24,12 @@
 | captured_at | string (ISO) | 收录日期 |
 
 经验材料的 source_type 只能是 `personal` / `article`，不能直接当作事实数据。
+
+### RawExcerpt — 原始材料摘录（同文件）
+
+字段：excerpt_id, source_id, text（保留原始口吻）, captured_at, related_rule_ids?
+
+raw 层数据（`data/raw/excerpts.ts`），是 candidate Rule 与 Evidence 的最上游审计依据。
 
 ## 2. Rule — 一条待研究的历史规律假设
 
@@ -58,11 +68,15 @@ window_type 五种表达，**不可混用语义**：
 
 `src/models/campaign.ts`
 
-字段：campaign_id, rule_id, season_id, campaign_year, start_date, end_date, cross_year, strength, result, description?, source_id
+字段：campaign_id, rule_id, season_id, campaign_year, start_date, end_date, peak_date?, cross_year, strength, result, description?, source_id, start_date_basis?, end_date_basis?, date_confidence?
 
 - strength：`strong | medium | weak`
 - result：`positive | neutral | weak | failed | unknown` —— **必须允许失败/弱表现年份，不能只保存成功案例**。
-- start_date / end_date 为完整 ISO 日期。
+- start_date / end_date 为完整 ISO 日期；`peak_date` 为行情峰值，未核验时为 null（合法状态）。
+- `start_date_basis` / `end_date_basis`：`observed | inferred | official_event | unknown`
+  （启动/结束日期判定方式，人工核验机制，见 HISTORICAL_VALIDATION.md）。
+- `date_confidence`：`high | medium | low`。
+- 约束：end_date ≥ start_date；跨年时 cross_year=true 且 end 年份 > start 年份。
 
 ### Cross-Year 定义
 
@@ -133,7 +147,39 @@ date_rule 三种形态：
 
 **Observation 不得直接修改 Rule。** V1 已建模，UI 尚未实现。
 
-## 11. Statistics — 统计占位
+## 11. Evidence — 历史证据（V1.5 新增）
+
+`src/models/evidence.ts`
+
+字段：evidence_id, source_id, evidence_type, description, date?（可 null）, confidence, rule_id?, campaign_id?, theme_id?, notes?
+
+- evidence_type：`market_data | article | official | news | manual_review | other`
+- confidence：`high | medium | low`
+- 概念链：Source → Evidence → Historical Fact / Campaign。
+- **Evidence 是证据，不是结论**：只记录"来源说了 / 显示了什么"，是人工核验的输入。
+- date 为 null 表示来源未提供日期（合法状态，禁止编造）。
+- 数据位于 `data/validation/evidence.ts`；当前 6 条，全部为 article 型（src_exp_001）。
+
+## 12. ValidationRecord — 核验记录（V1.5 新增）
+
+`src/models/validation.ts`
+
+字段：validation_id, rule_id, campaign_id?, evidence_status, verification_status, reviewer, reviewed_at, notes, method_version
+
+- evidence_status：`L0 | L1 | L2 | L3 | L4`（证据等级，见 DATA_GOVERNANCE.md）
+- verification_status：`not_tested | under_review | statistically_supported | cross_validated | unsupported`
+- 只记录"事实是否核验"，**不计算统计分数**。
+- reviewer 人工核验前为 `'pending'`；method_version 保证核验方法可追溯。
+- 数据位于 `data/validation/records.ts`；当前 3 条（对应 3 条 Pilot），全部 not_tested。
+
+### PilotPlan — 核验计划（同文件）
+
+字段：pilot_id, rule_id, sample_name, base_pattern, test_focus[], status, created_at
+
+status：`planned | in_progress | fact_verified | statistically_verified`。
+数据位于 `data/validation/pilot.ts`；当前 3 条 Pilot（夏季汽车 / 年底广电 / 国庆后大消费）。
+
+## 13. Statistics — 统计占位
 
 `src/models/common.ts` 的 `StatisticsPlaceholder`
 
@@ -151,6 +197,7 @@ average_duration, excess_return, repeat_rate, seasonality_score。
 |----|------|
 | 实体字段 | 与概念模型一致，无冲突 |
 | Rule.status 维度 | 单维生命周期字段；治理规范已区分 Evidence / Verification 双维度（见 DATA_GOVERNANCE.md 映射表），字段拆分列入 ROADMAP，当前不改代码 |
-| V1 数据源形态 | 当前为 `src/data/*.ts` 类型化 TS 模块（非 JSON/SQLite）。字段名与 SQL 对齐，迁移时逐表导出即可 |
+| 数据源形态 | 类型化 TS 模块，位于根目录 `data/` 四层目录（raw / candidate / verified / validation），经 `src/data/index.ts` barrel 导出。字段名与 SQL 对齐，迁移时按目录语义建表 |
+| verified 层 | 已建目录与空表（`data/verified/campaigns.ts`，0 条）——人工核验完成前保持为空 |
 | Observation | 已建模，V1 UI 未实现（符合预期） |
 | Security / CampaignSecurity | 已建模，V1 为空表（符合"缺少数据是合法状态"原则） |

@@ -57,6 +57,32 @@
 - `article` / `personal` 来源的规律只能是 candidate（L0 / not_tested）。
 - `quant_verification` 来源才能支撑 verified（statistically_supported 及以上）。
 
+## Evidence 原则（V1.5 起）
+
+概念链：**Source → Evidence → Historical Fact / Campaign**。
+
+- **Evidence 是证据，不是结论**：只记录"某来源说了 / 显示了什么"（字段见 DATA_MODEL.md 第 11 节），
+  是人工核验的输入，本身不构成历史事实，更不得被改写成市场事实。
+- 每条 Evidence 必须引用存在的 Source（evidence_id → source_id 可追溯）。
+- 来源未提供日期时 `date = null`；未提供就是没有，禁止补写。
+- "材料提及 2021 / 2022 / 2023 年广电行情"只能作为 L1 证据线索，
+  不足以直接创建 Campaign 记录——必须逐年人工核验。
+- 人工核验产出的历史事实进入 `data/verified/`，并保留指向 Evidence 的引用。
+
+## 数据目录治理（V1.5 起）
+
+```
+data/
+  raw/         原始数据（来源注册表 + 材料摘录）
+  candidate/   未经核验的候选知识（规则 / 候选行情 / 题材 / 事件）
+  verified/    已人工核验的历史事实（L2，当前 0 条）
+  validation/  证据、核验记录、Pilot 计划
+```
+
+- candidate → verified 的每次升层必须在 CHANGELOG.md 留痕（依据 source_id / evidence_id）。
+- 禁止为了填充 verified 层而编造事实；核验发现失败年份应更新 result 而非删除记录。
+- 应用代码只能经 `src/data/index.ts` barrel 访问数据。
+
 ## 不允许的行为
 
 - 不得伪造历史案例
@@ -85,5 +111,15 @@
 ## 当前种子数据的诚信边界（V1 基线）
 
 - 10 条候选规律：全部来自用户经验材料（src_exp_001），status = candidate。
-- cmp_auto_2023 / cmp_auto_2024：材料明确提到题材—年份对应；起止日期为典型窗口近似，已在 description 注明。
+- cmp_auto_2023 / cmp_auto_2024：材料明确提到题材—年份对应；起止日期为典型窗口近似
+  （start/end_date_basis = inferred，date_confidence = low），已在 description 注明。
 - cmp_media_2026_2027：需求文档的跨年结构示例（src_spec_001），**不是真实历史行情**，已在 description 注明。
+- 材料"提及 2021 / 2022 / 2023 年广电行情"但无任何细节：**未创建对应 Campaign**（仅登记 L1 证据线索），
+  待人工核验——不得凭仅有年份的提及编造记录。
+
+## V1.5 核验数据基线
+
+- Evidence：6 条（`data/validation/evidence.ts`），全部 article 型、来自 src_exp_001、confidence = low。
+- ValidationRecord：3 条（`data/validation/records.ts`），对应 3 条 Pilot
+  （汽车 L1 / 广电 L1 / 大消费 L0），verification_status 全部 not_tested。
+- verified 层：0 条。等待人工 Review 后进入"3 条 Pilot 规律的历史事实核验"阶段。

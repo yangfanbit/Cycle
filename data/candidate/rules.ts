@@ -1,4 +1,4 @@
-import type { Rule, TimeWindow } from '../models';
+import type { Rule, TimeWindow } from '../../src/models';
 
 const NOW = '2026-09-12';
 const NOT_VERIFIED = { status: 'not_verified' } as const;

@@ -1,4 +1,4 @@
-import type { Event } from '../models';
+import type { Event } from '../../src/models';
 
 /**
  * 日历事件。事件不是规律：

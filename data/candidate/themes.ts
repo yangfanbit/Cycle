@@ -1,4 +1,4 @@
-import type { CampaignTheme, Theme } from '../models';
+import type { CampaignTheme, Theme } from '../../src/models';
 
 /**
  * 题材库。Base Pattern（底层行业）与 Annual Theme（年度具体题材）分离：

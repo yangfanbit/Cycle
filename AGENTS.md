@@ -3,7 +3,7 @@
 本文件是 **A股机会时间轴** 仓库的最高级开发规范。
 任何 AI Agent / 模型 / 人类协作者在开始修改本仓库前，**必须先完整阅读本文件**。
 
-阅读顺序：AGENTS.md → docs/PRODUCT.md → docs/DATA_MODEL.md → docs/DATA_GOVERNANCE.md → docs/ARCHITECTURE.md → docs/UI_SPEC.md → 具体任务 Prompt。
+阅读顺序：AGENTS.md → docs/PRODUCT.md → docs/DATA_MODEL.md → docs/DATA_GOVERNANCE.md → docs/HISTORICAL_VALIDATION.md → docs/ARCHITECTURE.md → docs/UI_SPEC.md → 具体任务 Prompt。
 
 ---
 
@@ -34,14 +34,18 @@
 
 ## 2. 数据与认知边界（不可逾越）
 
-四个概念严格区分，逐级不可跳跃：
+以下概念严格区分，逐级不可跳跃：
 
 ```
-Source（来源） ≠ Rule（规律假设） ≠ Historical Fact（历史事实） ≠ Verification（统计验证） ≠ Prediction（预测）
+Source（来源） ≠ Evidence（证据） ≠ Rule（规律假设） ≠ Historical Fact（历史事实）
+≠ Verification（统计验证） ≠ Prediction（预测）
 ```
 
 - 别人提出的经验，只能作为**候选规律来源**（Source → candidate Rule）。
 - 不得因为数据"看起来合理"，就自行把 `candidate` 改成 `verified`。
+- **Evidence 是证据，不是结论**：它只记录"某来源说了 / 显示了什么"，是人工核验的输入，
+  本身不构成历史事实。材料提及 ≠ 发生过，更 ≠ 规律成立。
+- 核验数据（`data/`）的录入与升层规则见 docs/HISTORICAL_VALIDATION.md。
 
 ### 两个独立维度：证据 ≠ 验证
 
@@ -92,7 +96,10 @@ not_tested → under_review → statistically_supported / cross_validated / unsu
 3. 检查现有实现，搜索是否已有相关代码。
 4. **优先修改已有实现**，避免重复逻辑。
 5. 修改后运行相关测试（`npm test`）与类型检查（`npx tsc -b`）。
-6. 如修改数据模型，必须同步更新 docs/DATA_MODEL.md 与 docs/CHANGELOG.md。
+6. 如修改数据模型或核验数据（`data/`），必须同步更新 docs/DATA_MODEL.md、
+   docs/HISTORICAL_VALIDATION.md 与 docs/CHANGELOG.md。
+7. 修改 `data/` 核验数据前必须阅读 docs/HISTORICAL_VALIDATION.md；
+   candidate → verified 的升层必须在 CHANGELOG.md 留痕，禁止为填充 verified 层而编造事实。
 
 任何 Agent 不得：
 

@@ -1,7 +1,7 @@
-import type { Source } from '../models';
+import type { Source } from '../../src/models';
 
 /**
- * 信息来源。
+ * 信息来源（raw 层）。
  * 注意：当前全部规律来自用户提供的个人经验材料，
  * 属于 article / experience source，不能直接当作已验证事实。
  */

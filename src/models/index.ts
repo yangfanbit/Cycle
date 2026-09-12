@@ -6,3 +6,5 @@ export * from './campaign';
 export * from './theme';
 export * from './event';
 export * from './security';
+export * from './evidence';
+export * from './validation';
