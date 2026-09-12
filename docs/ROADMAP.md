@@ -15,6 +15,16 @@
 
 ## V1.5 — 历史规律核验与季节性验证
 
+### 第零阶段（已完成，2026-09-12）：Preflight 数据语义清理
+
+- 跨年结构示例（cmp_media_2026_2027）迁出生产层 → tests/fixtures/campaignFixtures.ts
+- 方案 A：candidate 层不再承载未核验 HistoricalCampaign，线索仅存 Evidence；
+  生产层行情聚合 allCampaigns = verifiedCampaigns
+- Timeline 第三层改为「已核验历史行情」+ 空态文案
+- ValidationRecord 审计字段修正：created_at（建记录）/ reviewed_at 可空（无核验人不得有核验日期）
+- 市场日期基准 marketTodayISO（Asia/Shanghai），App / Pre-heat / Radar 统一接入
+- Source URL 补登记（src_exp_001）
+
 ### 第一阶段（已完成）：核验基础建设
 
 - 核验规范文档 docs/HISTORICAL_VALIDATION.md（Campaign / 启动结束定义 / 结果分类 / 人工优先）
@@ -29,6 +39,23 @@
 - 夏季汽车 / 年底广电 / 国庆后大消费的逐年人工核验（L0/L1 → L2）
 - 核验产出的历史事实迁入 data/verified/，CHANGELOG 留痕
 - 广电 2021—2023、大消费各子方向的事实补齐（以核验到的事实为准）
+
+### 待治理（V1.5 后续）：Event 日期精度治理
+
+Preflight 审计结论（2026-09-12，仅记录，本轮未改数据）：
+
+| Event | 当前建模 | 审计结论 |
+|-------|---------|---------|
+| 春节 evt_spring_festival | variable，dates 登记至 2028 | 逐年精确 ✅；2028 之后回退 approx_md（已有 approximate 机制，可接受） |
+| 全国两会 evt_two_sessions | range 03-03 → 03-11 固定 | **近似被当作确定**：实际会期逐年公告（如近年多为 03-04 / 03-05 开幕），应改 variable + 逐年登记，或标注 approximate |
+| 一季报披露期 evt_q1_report | range 04-01 → 04-30 | 法定披露期 ✅ |
+| 五一 evt_labor_day | fixed 05-01 | 事件日固定 ✅（放假安排变动不影响事件本日） |
+| 中报披露期 evt_interim_report | range 07-01 → 08-31 | 法定披露期 ✅ |
+| 国庆节 evt_national_day | range 10-01 → 10-07 | 基本精确；个别年份长假安排与中秋连休（如 8 天假）会偏离 7 天固定段，近似可接受，可在 description 说明 |
+| 三季报披露期 evt_q3_report | range 10-08 → 10-31 | 法定披露期近似 ✅（披露截止 10-31 精确） |
+
+处理要求：两会会期是唯一"近似日期被当成确定事实"的明显问题；
+后续将其改为 variable 或加 approximate 标注，不得大规模改动其他 Event。
 
 ### 第三阶段：统计验证（L3）
 

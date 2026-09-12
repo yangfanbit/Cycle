@@ -7,6 +7,8 @@ import type { Evidence } from '../../src/models';
  * - 只登记"来源说了什么 / 行情数据显示了什么"，由人工核验决定它支撑哪条 Campaign。
  * - 全部来自 src_exp_001 的为 article 型证据（二手经验材料），confidence 一律 low。
  * - date 为 null 表示来源未提供日期——禁止编造。
+ * - Preflight 方案 A：证据不引用 candidate Campaign（其已从生产层移除）；
+ *   仅关联 rule / theme。人工核验后创建的 verified Campaign 反向引用证据。
  * - 当前无 market_data / official 型证据（未接行情数据源）。
  */
 export const evidences: Evidence[] = [
@@ -31,7 +33,6 @@ export const evidences: Evidence[] = [
     date: null,
     confidence: 'low',
     rule_id: 'rule_auto_summer',
-    campaign_id: 'cmp_auto_2023',
     theme_id: 'th_auto_reducer',
   },
   {
@@ -44,7 +45,6 @@ export const evidences: Evidence[] = [
     date: null,
     confidence: 'low',
     rule_id: 'rule_auto_summer',
-    campaign_id: 'cmp_auto_2024',
     theme_id: 'th_auto_adas',
   },
 

@@ -1,5 +1,82 @@
 # CHANGELOG.md — 变更记录
 
+## 2026-09-12 · V1.5 第零阶段：Preflight 数据语义清理（第五轮）
+
+### 修复：示例数据进入生产历史行情层
+
+- `cmp_media_2026_2027`（需求文档跨年结构示例 2026-11-01 → 2027-01-15）从
+  `data/candidate/campaigns.ts` 移至 `tests/fixtures/campaignFixtures.ts`。
+  生产层不再展示结构示例；跨年渲染测试改用 fixture，测试语义不变。
+  禁止测试数据回归 `data/` 目录。
+
+### 修复：未核验 Candidate Campaign 伪装"历史行情"（方案 A）
+
+- `cmp_auto_2023` / `cmp_auto_2024` 从生产层移除：材料提及的年度题材
+  （2023 汽车=减速器、2024 汽车=自动驾驶）仅保留在 data/validation/evidence.ts
+  的 Evidence 记录中，避免 inferred/low 日期被误读为历史事实。
+- `data/candidate/campaigns.ts` 置空：candidate 层不再承载未核验 HistoricalCampaign；
+  人工核验完成的真实行情直接写入 `data/verified/campaigns.ts`（L2）。
+- `src/data/index.ts`：生产层聚合改为 `allCampaigns = [...verifiedCampaigns]`。
+
+### 修复：Timeline 第三层语义
+
+- 层标题「历史题材 / 历史行情」→「已核验历史行情」；
+  数据源由 candidate `campaigns` 改为 `allCampaigns`（verified）。
+- 空态文案：「暂无已核验历史行情（历史核验尚未开始）」。
+
+### 修复：ValidationRecord 审计字段语义
+
+- 模型（src/models/validation.ts）：新增 `created_at`（记录建立日期）；
+  `reviewed_at` 改为 `string | null`（人工核验完成日期）。
+- 未审核状态：`reviewer = 'pending'` 且 `reviewed_at = null`——
+  没有核验人就不得有核验完成日期。data/validation/records.ts 同步更新。
+
+### 新增：A 股市场日期基准 Asia/Shanghai
+
+- `marketTodayISO()`（src/utils/date/dateUtils.ts）：A 股"今天"固定基于
+  Asia/Shanghai（原生 Intl，零新依赖），不随用户机器时区漂移；
+  App 的 TODAY / Pre-heat / OpportunityRadar 统一接入。
+- 纯日期运算（diffDays / addDaysISO 等）保持 UTC，与市场日期基准分离。
+
+### 补充：Source URL
+
+- `src_exp_001` 补登记原始来源 URL（知乎问题页），title 保持不变（不编造）。
+  来源追溯规则写入 DATA_GOVERNANCE.md。
+
+### 审计：Event 日期精度（仅记录，未改数据）
+
+- 逐事件审计结论记入 ROADMAP.md「Event 日期精度治理」：
+  两会会期为近似日期被当成确定事实（待改 variable / approximate），
+  其余事件（春节 / 披露期 / 法定节假日）建模基本准确。
+
+### 文档修订
+
+- DATA_MODEL.md：ValidationRecord 字段更新（created_at / reviewed_at 语义）、
+  差异记录补市场日期基准。
+- HISTORICAL_VALIDATION.md：新增 12A「Preflight 数据语义决策」（方案 A 全文）、
+  第 10 节审计字段语义、Pilot 表状态更新。
+- DATA_GOVERNANCE.md：Source URL 追溯规则、市场日期基准章节、
+  种子数据诚信边界更新为 Preflight 后基线。
+- ROADMAP.md：V1.5 第零阶段记录 + Event 日期精度治理待办。
+
+### 测试
+
+- 33 → 43 项：新增「V1.5 Preflight：生产层数据语义」7 项
+  （示例不属生产层、候选不进 allCampaigns、聚合=verified、广电零 Campaign、
+  Source URL、reviewer/reviewed_at 不变式、Timeline 空态渲染）
+  与「测试 fixture 语义」8 项（fixture 存在性、跨年双视图延续、日期约束、
+  unknown/null 合法、引用完整、Base/Annual 并存、一 Base 多 Theme、failed 标签）；
+  新增 marketTodayISO Asia/Shanghai 确定性测试 4 项（含中国午夜边界）。
+- 验证：`npm test` 43/43 通过；`npx tsc -b` 通过；`npm run build` 成功。
+
+### 未做（按任务边界停止）
+
+- 未接行情 / AkShare / Tushare；未做回测、季节性评分、胜率、SQLite、
+  实时数据、AI、历史相似度、新页面、消息推送；未开始批量历史核验。
+- 下一轮等待人工启动：「Pilot 1：夏季汽车历史事实核验」。
+
+---
+
 ## 2026-09-12 · V1.5 第一阶段：历史规律核验基础建设（第四轮）
 
 ### 新增：核验规范与数据结构

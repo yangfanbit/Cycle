@@ -122,9 +122,16 @@ evidence_type：`market_data | article | official | news | manual_review | other
 
 ## 10. ValidationRecord（核验记录）
 
-字段（`src/models/validation.ts`）：validation_id, rule_id, campaign_id?, evidence_status, verification_status, reviewer, reviewed_at, notes, method_version。
+字段（`src/models/validation.ts`）：validation_id, rule_id, campaign_id?, evidence_status, verification_status, reviewer, created_at, reviewed_at, notes, method_version。
 
 记录的是"事实是否核验"，**不计算 seasonality_score 等统计分数**。
+
+审计字段语义：
+
+- `created_at`：核验记录的**建立日期**。
+- `reviewed_at`：**人工核验完成日期**（`string | null`）。
+  未核验时 `reviewer = 'pending'` 且 `reviewed_at = null`——
+  **没有核验人就不得有核验完成日期**，两者必须同时成立。
 
 两个独立维度（详见 DATA_GOVERNANCE.md）：
 
@@ -151,11 +158,35 @@ data/
 
 升层（candidate → verified）必须在 CHANGELOG.md 留痕。
 
+## 12A. Preflight 数据语义决策（2026-09-12，历史核验前清理）
+
+本轮解决"候选经验 / 测试示例 / 历史事实"之间的语义污染，为人工核验做准备：
+
+### 方案 A：未核验线索不进入行情层
+
+- **结构示例不是历史行情**：需求文档的跨年结构示例（2026-11-01 → 2027-01-15）
+  已从 `data/candidate/campaigns.ts` 移至 `tests/fixtures/campaignFixtures.ts`，
+  生产层与测试数据彻底分离。禁止测试数据回到 `data/` 目录。
+- **candidate 层不再承载未核验 HistoricalCampaign**：材料提及的年度题材
+  （2023 汽车=减速器、2024 汽车=自动驾驶）只保留在 Evidence 记录中，
+  不以 Campaign 形态存在——避免 `inferred/low` 日期被误读为历史事实。
+- **人工核验完成后**，真实 HistoricalCampaign 直接写入 `data/verified/campaigns.ts`（L2），
+  不经过 candidate 层。生产层聚合入口 `allCampaigns = [...verifiedCampaigns]`。
+- Timeline 第三层语义改为「**已核验历史行情**」：verifiedCampaigns 为空时显示
+  「暂无已核验历史行情（历史核验尚未开始）」，不为填充页面而混入 candidate 数据。
+- 未来如需展示候选线索，应另做「候选历史线索」视图并采用明显区别于
+  verified 的视觉样式（列入 ROADMAP，本轮不做）。
+
+### 市场日期基准
+
+- A 股"今天"统一使用 `marketTodayISO()`（Asia/Shanghai），不依赖用户机器时区。
+- 纯日期运算（diffDays / addDaysISO 等）仍使用 UTC 毫秒，两者分离。
+
 ## 13. V1.5 Pilot（3 条样本规律）
 
 | Pilot | 规律 | 窗口 | 用途 | 当前状态 |
 |-------|------|------|------|----------|
-| 1 夏季汽车 | rule_auto_summer | 约6—8月 | 季节性行业 + Annual Theme 切换 | L1：材料提及 2023减速器 / 2024自动驾驶；候选 Campaign 日期为推断 |
+| 1 夏季汽车 | rule_auto_summer | 约6—8月 | 季节性行业 + Annual Theme 切换 | L1：材料提及 2023减速器 / 2024自动驾驶，仅存 Evidence（无 Campaign） |
 | 2 年底广电 | rule_media_year_end | 约11月—次年1月中旬 | 跨年 + 小板块 + 题材 + 龙头 + 生命周期 | L1：材料提及 2021/2022/2023，但无任何年份细节，未创建 Campaign |
 | 3 国庆后大消费 | rule_consumption_year_end | 国庆后—春节 | 大行业 + 多 Theme + 跨年 | L0：仅经验窗口描述，无年份案例证据 |
 

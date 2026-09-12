@@ -164,12 +164,15 @@ date_rule 三种形态：
 
 `src/models/validation.ts`
 
-字段：validation_id, rule_id, campaign_id?, evidence_status, verification_status, reviewer, reviewed_at, notes, method_version
+字段：validation_id, rule_id, campaign_id?, evidence_status, verification_status, reviewer, created_at, reviewed_at, notes, method_version
 
 - evidence_status：`L0 | L1 | L2 | L3 | L4`（证据等级，见 DATA_GOVERNANCE.md）
 - verification_status：`not_tested | under_review | statistically_supported | cross_validated | unsupported`
 - 只记录"事实是否核验"，**不计算统计分数**。
-- reviewer 人工核验前为 `'pending'`；method_version 保证核验方法可追溯。
+- `created_at`：核验记录的建立日期（ISO）。
+- `reviewed_at`：**人工核验完成日期，可空**（`string | null`）。未核验时
+  `reviewer = 'pending'` 且 `reviewed_at = null`——没有核验人就不得有核验完成日期。
+- method_version 保证核验方法可追溯。
 - 数据位于 `data/validation/records.ts`；当前 3 条（对应 3 条 Pilot），全部 not_tested。
 
 ### PilotPlan — 核验计划（同文件）
@@ -199,5 +202,6 @@ average_duration, excess_return, repeat_rate, seasonality_score。
 | Rule.status 维度 | 单维生命周期字段；治理规范已区分 Evidence / Verification 双维度（见 DATA_GOVERNANCE.md 映射表），字段拆分列入 ROADMAP，当前不改代码 |
 | 数据源形态 | 类型化 TS 模块，位于根目录 `data/` 四层目录（raw / candidate / verified / validation），经 `src/data/index.ts` barrel 导出。字段名与 SQL 对齐，迁移时按目录语义建表 |
 | verified 层 | 已建目录与空表（`data/verified/campaigns.ts`，0 条）——人工核验完成前保持为空 |
+| 市场日期基准 | `marketTodayISO()`（src/utils/date/dateUtils.ts）：A 股"今天"固定基于 Asia/Shanghai，不随用户机器时区漂移；纯日期运算仍用 UTC |
 | Observation | 已建模，V1 UI 未实现（符合预期） |
 | Security / CampaignSecurity | 已建模，V1 为空表（符合"缺少数据是合法状态"原则） |

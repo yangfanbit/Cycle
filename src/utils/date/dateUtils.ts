@@ -81,9 +81,15 @@ export function yearFraction(iso: string): number {
   return (dayOfYearISO(iso) - 1) / daysInYear(y);
 }
 
-/** 今天的 ISO 日期 */
-export function todayISO(now: Date = new Date()): string {
-  return toISO({ y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate() });
+/** 今天的 ISO 日期（A股市场日期基准：Asia/Shanghai，不依赖浏览器本地时区） */
+export function marketTodayISO(now: Date = new Date()): string {
+  // en-CA 区域的年月日格式恰为 'YYYY-MM-DD'；时区固定为市场时区
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(now);
 }
 
 export function minISO(a: string, b: string): string {

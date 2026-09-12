@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
+  allCampaigns,
   anchorResolver,
-  campaigns,
   events,
   ruleById,
   rules,
@@ -109,9 +109,9 @@ export function Timeline({ year, today, selection, onSelect }: TimelineProps) {
     });
   }, [year, today]);
 
-  // ---------- 历史题材层 ----------
+  // ---------- 已核验历史行情层（仅 verified；candidate 线索不入本层） ----------
   const campaignRows = useMemo(() => {
-    return campaigns
+    return allCampaigns
       .map((c) => ({ campaign: c, segment: segmentForYear(c.start_date, c.end_date, year) }))
       .filter((r) => r.segment !== null);
   }, [year]);
@@ -246,11 +246,11 @@ export function Timeline({ year, today, selection, onSelect }: TimelineProps) {
           })}
         </section>
 
-        {/* 第三层：历史题材 / 历史行情 */}
+        {/* 第三层：已核验历史行情（仅展示 verified 层；candidate 线索不入本层） */}
         <section className="tl-layer">
-          <h3 className="tl-layer-title">历史题材 / 历史行情</h3>
+          <h3 className="tl-layer-title">已核验历史行情</h3>
           {campaignRows.length === 0 && (
-            <div className="empty-note">本年暂无已录入的历史行情（历史案例待补充）。</div>
+            <div className="empty-note">暂无已核验历史行情（历史核验尚未开始）。</div>
           )}
           {campaignRows.map(({ campaign, segment }) => {
             const rule = ruleById.get(campaign.rule_id);

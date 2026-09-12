@@ -1,3 +1,5 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import type { TimeWindow } from '../../models';
 import {
@@ -8,6 +10,7 @@ import {
   dayOfYearISO,
   diffDays,
   isCrossYearMD,
+  marketTodayISO,
   mdToISO,
   occurrenceForSeason,
   segmentForYear,
@@ -15,6 +18,11 @@ import {
   yearFraction,
 } from '..';
 import { anchorResolver } from '../../data';
+import {
+  fixtureCampaigns,
+  fixtureCampaignThemes,
+  fixtureCrossYearMedia,
+} from '../../../tests/fixtures/campaignFixtures';
 
 /** 跨年窗口：11-01 → 01-15，预热 20 天（对应年底广电规律） */
 const crossYearWindow: TimeWindow = {
@@ -56,6 +64,29 @@ describe('dateUtils 基础', () => {
     expect(dayOfYearISO('2026-12-31')).toBe(365);
     expect(dayOfYearISO('2024-12-31')).toBe(366);
     expect(yearFraction('2026-01-01')).toBe(0);
+  });
+});
+
+describe('A股市场日期基准（Asia/Shanghai）', () => {
+  it('marketTodayISO 基于 Asia/Shanghai 而非 UTC：北京已跨日、UTC 未跨日时返回北京日期', () => {
+    // UTC 2026-06-15T18:30Z = 北京 2026-06-16 02:30 → 市场日期应为 06-16（若误用 UTC 会返回 06-15）
+    expect(marketTodayISO(new Date('2026-06-15T18:30:00Z'))).toBe('2026-06-16');
+  });
+
+  it('UTC 日期与北京日期相同时返回同一天', () => {
+    // UTC 2026-06-15T02:30Z = 北京 2026-06-15 10:30
+    expect(marketTodayISO(new Date('2026-06-15T02:30:00Z'))).toBe('2026-06-15');
+  });
+
+  it('接近中国午夜的时刻：23:59:59 仍属当日，00:00:00 属次日（不依赖运行机器时区）', () => {
+    // 北京 23:59:59 = UTC 15:59:59 → 仍为当日
+    expect(marketTodayISO(new Date('2026-06-15T15:59:59Z'))).toBe('2026-06-15');
+    // 北京次日 00:00:00 = UTC 16:00:00 → 次日
+    expect(marketTodayISO(new Date('2026-06-15T16:00:00Z'))).toBe('2026-06-16');
+  });
+
+  it('输出为合法 ISO 日期格式', () => {
+    expect(marketTodayISO(new Date('2026-01-01T00:00:00Z'))).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
 
@@ -195,22 +226,13 @@ describe('数据完整性', () => {
     }
   });
 
-  it('所有历史行情都关联到存在的规律与来源', async () => {
-    const { campaigns, ruleById, sourceById } = await import('../../data');
-    for (const c of campaigns) {
+  it('所有历史行情都关联到存在的规律与来源（当前生产层仅含 verified）', async () => {
+    const { allCampaigns, ruleById, sourceById } = await import('../../data');
+    for (const c of allCampaigns) {
       expect(ruleById.has(c.rule_id)).toBe(true);
       expect(sourceById.has(c.source_id)).toBe(true);
       expect(c.start_date <= c.end_date).toBe(true);
     }
-  });
-
-  it('跨年示例行情 2026-11-01 → 2027-01-15 是一条完整记录', async () => {
-    const { campaigns } = await import('../../data');
-    const c = campaigns.find((x) => x.campaign_id === 'cmp_media_2026_2027')!;
-    expect(c.cross_year).toBe(true);
-    expect(c.season_id).toBe('2026-2027');
-    expect(c.start_date).toBe('2026-11-01');
-    expect(c.end_date).toBe('2027-01-15');
   });
 });
 
@@ -227,18 +249,11 @@ describe('数据治理规范', () => {
 
   it('缺失 HistoricalCampaign 是合法状态：查询返回空数组而非报错', async () => {
     const { campaignsOfRule, rules } = await import('../../data');
-    // 大部分候选规律暂无历史案例
-    const noCaseRules = rules.filter((r) => campaignsOfRule(r.rule_id).length === 0);
-    expect(noCaseRules.length).toBeGreaterThan(0);
-    expect(campaignsOfRule('rule_not_exist')).toEqual([]);
-  });
-
-  it('CampaignTheme 关联完整：两端引用必须存在', async () => {
-    const { campaignThemes, campaignById, themeById } = await import('../../data');
-    for (const ct of campaignThemes) {
-      expect(campaignById.has(ct.campaign_id)).toBe(true);
-      expect(themeById.has(ct.theme_id)).toBe(true);
+    // 当前全部规律暂无已核验历史案例（verified 层为空）
+    for (const rule of rules) {
+      expect(campaignsOfRule(rule.rule_id)).toEqual([]);
     }
+    expect(campaignsOfRule('rule_not_exist')).toEqual([]);
   });
 
   it('缺失关联数据时查询辅助返回空值而非异常', async () => {
@@ -247,20 +262,6 @@ describe('数据治理规范', () => {
     expect(campaignById.get('cmp_not_exist')).toBeUndefined();
     expect(windowsOfRule('rule_not_exist')).toEqual([]);
     expect(ruleById.get('rule_not_exist')).toBeUndefined();
-  });
-
-  it('跨年种子行情在两个视图年中渲染为同一 Campaign 的延续分段', async () => {
-    const { campaigns } = await import('../../data');
-    const c = campaigns.find((x) => x.campaign_id === 'cmp_media_2026_2027')!;
-    const segA = segmentForYear(c.start_date, c.end_date, 2026)!;
-    const segB = segmentForYear(c.start_date, c.end_date, 2027)!;
-    // 同一条 Campaign：两段都标注延续，且持续时间为正
-    expect(segA.continuesIntoNextYear).toBe(true);
-    expect(segB.continuesFromPrevYear).toBe(true);
-    expect(diffDays(c.start_date, c.end_date)).toBeGreaterThan(0);
-    // 完整生命周期不被年份裁剪丢失
-    expect(segA.start).toBe('2026-11-01');
-    expect(segB.end).toBe('2027-01-15');
   });
 });
 
@@ -275,37 +276,6 @@ describe('V1.5 核验数据完整性', () => {
       if (ev.theme_id) expect(themeById.has(ev.theme_id)).toBe(true);
       // 材料来源的日期未提供时必须为 null，不得编造
       if (ev.date != null) expect(ev.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-    }
-  });
-
-  it('Cross-Year Campaign 日期不能错乱：起止有序、cross_year 与年份一致、V1.5 日期标注齐全', async () => {
-    const { campaigns } = await import('../../data');
-    for (const c of campaigns) {
-      expect(c.start_date <= c.end_date).toBe(true);
-      const startYear = Number(c.start_date.slice(0, 4));
-      const endYear = Number(c.end_date.slice(0, 4));
-      expect(c.cross_year).toBe(endYear > startYear);
-      expect(c.campaign_year).toBe(startYear);
-      // V1.5：候选行情必须标注日期判定方式与置信度（禁止裸日期冒充已核验）
-      expect(c.start_date_basis).toBeDefined();
-      expect(c.end_date_basis).toBeDefined();
-      expect(c.date_confidence).toBeDefined();
-      // 峰值日期若存在，必须落在窗口内
-      if (c.peak_date != null) {
-        expect(c.start_date <= c.peak_date).toBe(true);
-        expect(c.peak_date <= c.end_date).toBe(true);
-      }
-    }
-  });
-
-  it('无法核验的数据可以为 unknown/null（不编造填空）', async () => {
-    const { evidences, campaigns } = await import('../../data');
-    // 证据：来源未提供日期 → null 是合法状态且实际存在
-    expect(evidences.some((e) => e.date === null)).toBe(true);
-    // 行情：未核验 → result=unknown、peak_date=null、低置信
-    expect(campaigns.some((c) => c.result === 'unknown' && c.peak_date === null)).toBe(true);
-    for (const c of campaigns) {
-      if (c.result === 'unknown') expect(c.date_confidence).toBe('low');
     }
   });
 
@@ -327,43 +297,6 @@ describe('V1.5 核验数据完整性', () => {
     }
   });
 
-  it('失败年份不会被过滤：查询不做 result 过滤，标签体系覆盖 failed', async () => {
-    const { campaigns, campaignsOfRule, rules } = await import('../../data');
-    for (const rule of rules) {
-      const viaHelper = campaignsOfRule(rule.rule_id).length;
-      const direct = campaigns.filter((c) => c.rule_id === rule.rule_id).length;
-      expect(viaHelper).toBe(direct);
-    }
-    // 结构必须支持 failed / weak 年份（不得只保存成功案例）
-    const { RESULT_LABEL } = await import('../../components/labels');
-    for (const r of ['positive', 'neutral', 'weak', 'failed', 'unknown'] as const) {
-      expect(RESULT_LABEL[r]).toBeTruthy();
-    }
-  });
-
-  it('Base Pattern 与 Annual Theme 可以同时存在且不混淆', async () => {
-    const { campaignThemes, themeById } = await import('../../data');
-    // cmp_auto_2023 同时关联底层行业（汽车，related）与年度题材（减速器，main）
-    const links = campaignThemes.filter((ct) => ct.campaign_id === 'cmp_auto_2023');
-    const roles = new Map(links.map((l) => [l.theme_id, l.role]));
-    expect(roles.get('th_auto')).toBe('related');
-    expect(roles.get('th_auto_reducer')).toBe('main');
-    // Annual Theme 挂在 Base Pattern 之下（父子层级）
-    expect(themeById.get('th_auto_reducer')!.parent_theme_id).toBe('th_auto');
-    expect(themeById.get('th_auto')!.theme_type).toBe('sector');
-    expect(themeById.get('th_auto_reducer')!.theme_type).toBe('concept');
-  });
-
-  it('同一 Base Pattern 可以关联多个 Theme（不同年份不同年度题材）', async () => {
-    const { childrenOf, campaignThemes } = await import('../../data');
-    // 汽车下挂多个年度题材
-    expect(childrenOf('th_auto').length).toBeGreaterThanOrEqual(3);
-    // 两条不同年份的汽车 Campaign 使用不同的 main 题材
-    const main2023 = campaignThemes.find((ct) => ct.campaign_id === 'cmp_auto_2023' && ct.role === 'main')!;
-    const main2024 = campaignThemes.find((ct) => ct.campaign_id === 'cmp_auto_2024' && ct.role === 'main')!;
-    expect(main2023.theme_id).not.toBe(main2024.theme_id);
-  });
-
   it('3 条 Pilot 骨架结构完整：计划 / 证据 / 核验记录一一对应', async () => {
     const { pilots, validationRecords, evidencesOfRule, ruleById } = await import('../../data');
     expect(pilots.length).toBe(3);
@@ -383,13 +316,146 @@ describe('V1.5 核验数据完整性', () => {
     const { verifiedCampaigns } = await import('../../data');
     expect(verifiedCampaigns).toEqual([]);
   });
+});
+
+describe('V1.5 Preflight：生产层数据语义', () => {
+  it('cmp_media_2026_2027（跨年结构示例）不属于生产 data/candidate campaigns', async () => {
+    const { campaigns, campaignById } = await import('../../data');
+    expect(campaigns.find((c) => c.campaign_id === 'cmp_media_2026_2027')).toBeUndefined();
+    expect(campaignById.has('cmp_media_2026_2027')).toBe(false);
+  });
+
+  it('候选行情 cmp_auto_2023 / cmp_auto_2024 不再出现在生产层（方案 A：仅存于 Evidence）', async () => {
+    const { allCampaigns } = await import('../../data');
+    const ids = allCampaigns.map((c) => c.campaign_id);
+    expect(ids).not.toContain('cmp_auto_2023');
+    expect(ids).not.toContain('cmp_auto_2024');
+  });
+
+  it('生产层全部行情 = verified 层（candidate 恒空，不得被 Timeline 当作历史行情）', async () => {
+    const { allCampaigns, verifiedCampaigns } = await import('../../data');
+    expect(allCampaigns).toEqual(verifiedCampaigns);
+  });
 
   it('仅有年份提及、无细节的材料不产生 Campaign（广电 2021—2023 待核验）', async () => {
-    const { campaigns } = await import('../../data');
-    // 材料"提及"2021/2022/2023 年广电行情，但无任何日期/强度/结果细节，
-    // 因此不得创建对应 Campaign 记录（防编造的最小事实原则）
-    const mediaCampaigns = campaigns.filter((c) => c.rule_id === 'rule_media_year_end');
-    expect(mediaCampaigns.length).toBe(1); // 仅跨年结构示例
-    expect(mediaCampaigns[0].campaign_id).toBe('cmp_media_2026_2027');
+    const { allCampaigns } = await import('../../data');
+    const mediaCampaigns = allCampaigns.filter((c) => c.rule_id === 'rule_media_year_end');
+    // 材料仅"提及"2021/2022/2023 年广电行情，无任何日期/强度/结果细节，不得创建 Campaign
+    expect(mediaCampaigns).toEqual([]);
+  });
+
+  it('Source URL 已登记且格式合法（来源可追溯）', async () => {
+    const { sourceById } = await import('../../data');
+    const src = sourceById.get('src_exp_001')!;
+    expect(src).toBeTruthy();
+    expect(src.url).toBeTruthy();
+    expect(src.url).toMatch(/^https?:\/\//);
+  });
+
+  it('ValidationRecord：未审核时 reviewer = pending 且 reviewed_at = null（无核验人就不得有核验日期）', async () => {
+    const { validationRecords } = await import('../../data');
+    for (const r of validationRecords) {
+      expect(r.created_at).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      if (r.reviewer === 'pending') {
+        expect(r.reviewed_at).toBeNull();
+        expect(r.verification_status).toBe('not_tested');
+      } else {
+        // 已有核验人的记录必须有核验完成日期
+        expect(r.reviewed_at).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      }
+    }
+  });
+
+  it('Timeline 第三层在 verifiedCampaigns 为空时显示「暂无已核验历史行情」', async () => {
+    const { Timeline } = await import('../../components/Timeline/Timeline');
+    const html = renderToStaticMarkup(
+      createElement(Timeline, { year: 2026, today: '2026-09-12', selection: null, onSelect: () => {} }),
+    );
+    expect(html).toContain('已核验历史行情');
+    expect(html).toContain('暂无已核验历史行情（历史核验尚未开始）');
+    // 结构示例不得再被渲染为历史行情
+    expect(html).not.toContain('cmp_media_2026_2027');
+    expect(html).not.toContain('2026-2027');
+  });
+});
+
+describe('V1.5 Preflight：测试 fixture 语义（跨年结构示例迁至 tests/fixtures）', () => {
+  it('跨年 fixture 仍存在且结构完整（2026-11-01 → 2027-01-15）', () => {
+    expect(fixtureCrossYearMedia.campaign_id).toBe('cmp_media_2026_2027');
+    expect(fixtureCrossYearMedia.cross_year).toBe(true);
+    expect(fixtureCrossYearMedia.season_id).toBe('2026-2027');
+    expect(fixtureCrossYearMedia.start_date).toBe('2026-11-01');
+    expect(fixtureCrossYearMedia.end_date).toBe('2027-01-15');
+  });
+
+  it('跨年 fixture 在两个视图年中渲染为同一 Campaign 的延续分段', () => {
+    const segA = segmentForYear(fixtureCrossYearMedia.start_date, fixtureCrossYearMedia.end_date, 2026)!;
+    const segB = segmentForYear(fixtureCrossYearMedia.start_date, fixtureCrossYearMedia.end_date, 2027)!;
+    expect(segA.continuesIntoNextYear).toBe(true);
+    expect(segB.continuesFromPrevYear).toBe(true);
+    expect(diffDays(fixtureCrossYearMedia.start_date, fixtureCrossYearMedia.end_date)).toBeGreaterThan(0);
+    expect(segA.start).toBe('2026-11-01');
+    expect(segB.end).toBe('2027-01-15');
+  });
+
+  it('fixture 行情日期约束：起止有序、cross_year 与年份一致、V1.5 日期标注齐全', () => {
+    for (const c of fixtureCampaigns) {
+      expect(c.start_date <= c.end_date).toBe(true);
+      const startYear = Number(c.start_date.slice(0, 4));
+      const endYear = Number(c.end_date.slice(0, 4));
+      expect(c.cross_year).toBe(endYear > startYear);
+      expect(c.campaign_year).toBe(startYear);
+      expect(c.start_date_basis).toBeDefined();
+      expect(c.end_date_basis).toBeDefined();
+      expect(c.date_confidence).toBeDefined();
+      if (c.peak_date != null) {
+        expect(c.start_date <= c.peak_date).toBe(true);
+        expect(c.peak_date <= c.end_date).toBe(true);
+      }
+    }
+  });
+
+  it('无法核验的数据可以为 unknown/null（fixture 保留推断日期的低置信语义）', () => {
+    expect(fixtureCampaigns.some((c) => c.result === 'unknown' && c.peak_date === null)).toBe(true);
+    for (const c of fixtureCampaigns) {
+      if (c.result === 'unknown') expect(c.date_confidence).toBe('low');
+    }
+  });
+
+  it('fixtureCampaignThemes 引用完整：campaign 端与 theme 端（生产 themes）均存在', async () => {
+    const { themeById } = await import('../../data');
+    for (const ct of fixtureCampaignThemes) {
+      expect(fixtureCampaigns.some((c) => c.campaign_id === ct.campaign_id)).toBe(true);
+      expect(themeById.has(ct.theme_id)).toBe(true);
+    }
+  });
+
+  it('Base Pattern 与 Annual Theme 在 fixture 中同时存在且不混淆', async () => {
+    const { themeById } = await import('../../data');
+    // cmp_auto_2023 同时关联底层行业（汽车，related）与年度题材（减速器，main）
+    const links = fixtureCampaignThemes.filter((ct) => ct.campaign_id === 'cmp_auto_2023');
+    const roles = new Map(links.map((l) => [l.theme_id, l.role]));
+    expect(roles.get('th_auto')).toBe('related');
+    expect(roles.get('th_auto_reducer')).toBe('main');
+    expect(themeById.get('th_auto_reducer')!.parent_theme_id).toBe('th_auto');
+    expect(themeById.get('th_auto')!.theme_type).toBe('sector');
+    expect(themeById.get('th_auto_reducer')!.theme_type).toBe('concept');
+  });
+
+  it('同一 Base Pattern 可以关联多个 Theme（不同年份不同年度题材）', async () => {
+    const { childrenOf } = await import('../../data');
+    // 汽车下挂多个年度题材
+    expect(childrenOf('th_auto').length).toBeGreaterThanOrEqual(3);
+    // 两条不同年份的汽车 Campaign 使用不同的 main 题材
+    const main2023 = fixtureCampaignThemes.find((ct) => ct.campaign_id === 'cmp_auto_2023' && ct.role === 'main')!;
+    const main2024 = fixtureCampaignThemes.find((ct) => ct.campaign_id === 'cmp_auto_2024' && ct.role === 'main')!;
+    expect(main2023.theme_id).not.toBe(main2024.theme_id);
+  });
+
+  it('失败年份不会被过滤：结果标签体系覆盖 failed（结构支持，不得只存成功案例）', async () => {
+    const { RESULT_LABEL } = await import('../../components/labels');
+    for (const r of ['positive', 'neutral', 'weak', 'failed', 'unknown'] as const) {
+      expect(RESULT_LABEL[r]).toBeTruthy();
+    }
   });
 });

@@ -4,10 +4,11 @@ import { OpportunityRadar } from './components/OpportunityRadar/OpportunityRadar
 import { RuleDetail } from './components/RuleDetail/RuleDetail';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
 import { campaignById, ruleById } from './data';
-import { todayISO } from './utils';
+import { marketTodayISO } from './utils';
 
 export default function App() {
-  const today = useMemo(() => todayISO(), []);
+  // A股市场日期基准：Asia/Shanghai（不随用户机器时区漂移）
+  const today = useMemo(() => marketTodayISO(), []);
   const [year, setYear] = useState(() => Number(today.slice(0, 4)));
   const [selection, setSelection] = useState<Selection>(null);
 

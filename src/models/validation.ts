@@ -32,8 +32,10 @@ export interface ValidationRecord {
   verification_status: VerificationStatus;
   /** 核验人；人工核验前为 'pending' */
   reviewer: string;
-  /** ISO date */
-  reviewed_at: string;
+  /** 记录建立日期（ISO date） */
+  created_at: string;
+  /** 人工核验完成日期（ISO date）；未核验为 null —— 无 reviewer 就不得有 reviewed_at */
+  reviewed_at: string | null;
   notes: string;
   /** 核验方法版本，如 'v1.5-manual-skeleton-001'，保证可追溯 */
   method_version: string;

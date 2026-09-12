@@ -56,6 +56,20 @@
 
 - `article` / `personal` 来源的规律只能是 candidate（L0 / not_tested）。
 - `quant_verification` 来源才能支撑 verified（statistically_supported 及以上）。
+- **来源 URL 追溯**：已知原始来源 URL 的 Source 必须登记 `url` 字段
+  （如 src_exp_001 登记了知乎问题页原始链接），保证"经验从哪里来"可回溯；
+  title 不确定时保持原 title，不得编造，但 URL 缺失不是合法状态——
+  拿到 URL 后必须补登记。
+
+## 市场日期基准（V1.5 Preflight 起）
+
+本项目为 A 股研究工具，"市场今天是什么日期"固定基于 **Asia/Shanghai**
+（`marketTodayISO()`，src/utils/date/dateUtils.ts），不随用户机器本地时区漂移：
+
+- App 的 TODAY、Pre-heat / OpportunityRadar 的"今天"一律使用市场日期。
+- 纯日期运算（diffDays / addDaysISO / 跨年分段等）仍使用 UTC 毫秒，
+  与市场日期基准分离，避免 DST / 本地时区误差。
+- 文档与数据中涉及"今天 / 当前窗口"的判断，基准均为 Asia/Shanghai。
 
 ## Evidence 原则（V1.5 起）
 
@@ -108,18 +122,22 @@ data/
 - 推测性机理写入 mechanism 字段并标注「待验证」。
 - 近似日期必须在 description 或 note 中说明是近似值。
 
-## 当前种子数据的诚信边界（V1 基线）
+## 当前种子数据的诚信边界（V1.5 Preflight 后基线）
 
 - 10 条候选规律：全部来自用户经验材料（src_exp_001），status = candidate。
-- cmp_auto_2023 / cmp_auto_2024：材料明确提到题材—年份对应；起止日期为典型窗口近似
-  （start/end_date_basis = inferred，date_confidence = low），已在 description 注明。
-- cmp_media_2026_2027：需求文档的跨年结构示例（src_spec_001），**不是真实历史行情**，已在 description 注明。
-- 材料"提及 2021 / 2022 / 2023 年广电行情"但无任何细节：**未创建对应 Campaign**（仅登记 L1 证据线索），
-  待人工核验——不得凭仅有年份的提及编造记录。
+- 生产行情层（allCampaigns = verifiedCampaigns）：**0 条**。人工核验未开始前，
+  Timeline 第三层显示「暂无已核验历史行情（历史核验尚未开始）」。
+- 材料"2023 汽车=减速器 / 2024 汽车=自动驾驶"的年度题材对应：仅登记为 Evidence
+  （L1 线索），**不创建 Campaign**——未核验的 inferred/low 日期不得伪装为历史事实。
+- 需求文档的跨年结构示例（2026-11-01 → 2027-01-15）：**不是真实历史行情**，
+  已迁至 `tests/fixtures/campaignFixtures.ts`（测试专用），禁止进入 `data/` 任何层。
+- 材料"提及 2021 / 2022 / 2023 年广电行情"但无任何细节：**未创建对应 Campaign**
+  （仅登记 L1 证据线索），待人工核验——不得凭仅有年份的提及编造记录。
 
 ## V1.5 核验数据基线
 
 - Evidence：6 条（`data/validation/evidence.ts`），全部 article 型、来自 src_exp_001、confidence = low。
 - ValidationRecord：3 条（`data/validation/records.ts`），对应 3 条 Pilot
-  （汽车 L1 / 广电 L1 / 大消费 L0），verification_status 全部 not_tested。
+  （汽车 L1 / 广电 L1 / 大消费 L0），verification_status 全部 not_tested，
+  reviewer = 'pending'、reviewed_at = null（审计字段语义见 DATA_MODEL.md 第 12 节）。
 - verified 层：0 条。等待人工 Review 后进入"3 条 Pilot 规律的历史事实核验"阶段。
