@@ -23,10 +23,19 @@ export type VerificationStatus =
   | 'cross_validated'
   | 'unsupported';
 
+/**
+ * 核验范围。Rule ≠ Campaign，两者不得混淆：
+ * - 'rule'：验证整条 Rule（规律假设本身），此时 campaign_id 应省略
+ * - 'campaign'：验证具体 HistoricalCampaign 的历史事实，此时 campaign_id 必填
+ */
+export type ValidationScope = 'rule' | 'campaign';
+
 export interface ValidationRecord {
   validation_id: string;
+  /** 核验范围（Rule / Campaign 不得混淆） */
+  validation_scope: ValidationScope;
   rule_id: string;
-  /** 可选：针对单条 Campaign 的核验记录（省略则为整条 Rule 的核验状态） */
+  /** 可选：scope = 'campaign' 时必填（针对单条 Campaign 的核验记录）；scope = 'rule' 时省略 */
   campaign_id?: string;
   evidence_status: EvidenceStatusLevel;
   verification_status: VerificationStatus;

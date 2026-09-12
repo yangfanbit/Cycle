@@ -1,5 +1,68 @@
 # CHANGELOG.md — 变更记录
 
+## 2026-09-12 · V1.5 Final Preparation：进入历史核验前的最后语义准备（第六轮）
+
+### 修正：Source URL
+
+- `src_exp_001` URL 由知乎问题页（question/464198498）修正为核对后的原始来源
+  `https://www.zhihu.com/question/663265687/answer/3583512483`；
+  title / author 等其他字段不变，未新建 source_id。
+
+### 修正：「国庆后→春节前」复合时间窗口的近似表达
+
+- `rule_consumption_year_end` / `rule_education_year_end` / `rule_textile_year_end`
+  的窗口（10-08 → 01-31，empirical）实为复合窗口：固定起点 + 相对春节终点。
+  **不扩展 TimeWindow Schema**，采取最小近似表达：
+  - TimeWindow 新增 `approximate?: boolean` 字段（src/models/timeWindow.ts）；
+  - 三条窗口标记 `approximate: true`，note 说明终点随春节浮动；
+  - 新增共享 `windowRangeLabel()`（src/components/labels.ts）：approximate 窗口
+    一律渲染为「约 … → …（近似）」，RuleDetail / Timeline tooltip / OpportunityRadar
+    三处统一接入，**UI 不再把 01-31 显示为精确结束日**。
+- 决策记录写入 DATA_MODEL.md（第 3 节）与 HISTORICAL_VALIDATION.md（12A）：
+  国庆后→春节前属于复合时间窗口，V1.5 暂采用近似表达，后续统一支持
+  mixed anchor window。
+
+### 新增：ValidationRecord.validation_scope（Rule ≠ Campaign）
+
+- 模型新增 `validation_scope: 'rule' | 'campaign'`：
+  - `'rule'`：验证整条 Rule，campaign_id 省略；
+  - `'campaign'`：验证具体 HistoricalCampaign 的历史事实，campaign_id 必填。
+- data/validation/records.ts 三条 Pilot 记录均置 `validation_scope: 'rule'`。
+- 语义写入 AGENTS.md（核验范围章节）、DATA_MODEL.md（第 12 节）、
+  HISTORICAL_VALIDATION.md（第 10 节），并强调 L2 ≠ statistically_supported。
+
+### 新增：Evidence → Campaign 查询
+
+- `evidencesOfCampaign(campaignId)`（data/validation/evidence.ts，经 barrel 导出），
+  与既有 `evidencesOfRule` 并列；UI 统一从 src/data/index.ts 使用。
+- 明确不变式：未来 verified Campaign 必须能追溯到至少一条 Evidence
+  （已入防回归测试，verified 层有数据后自动生效）。
+
+### 新增：Campaign 判定方法论与失败年份原则
+
+- HISTORICAL_VALIDATION.md 新增「1A. Campaign 判定原则 V1」：
+  不能仅因行业上涨建 Campaign（持续性 / 可识别主题 / 市场关注 / 可解释起止
+  四项齐备）；Theme Campaign 与 Industry Trend 区分（当前只研究前者）；
+  启动 / 结束 / 强度 / 结果的判定字段；第一阶段人工核验、不设数学阈值。
+- 第 4 节新增「失败年份原则」：核验必须主动寻找成功 / 弱 / 失败 / 无行情
+  四类年份，防 survivorship bias 与 confirmation bias。
+
+### 测试
+
+- 43 → 49 项：新增「V1.5 Final Preparation」6 项（scope 约束不变式、当前全为
+  rule scope、evidencesOfCampaign 注入查询、verified Campaign 证据可追溯不变式、
+  approximate 窗口 + windowRangeLabel 文本、三层行情全空）；Source URL 测试
+  收紧为精确 URL + title/author 不变断言。
+- 验证：`npm test` 49/49 通过；`npx tsc -b` 通过；`npm run build` 成功。
+
+### 未做（按任务边界停止）
+
+- 未查询行情、未新增 2023/2024 汽车真实 Campaign、未加真实龙头 / 涨幅 /
+  胜率 / 季节性分数；未开始实际历史核验。
+- 下一轮正式进入：Pilot 1「6—8月汽车」历史事实核验（先核验事实，不是证明规律成立）。
+
+---
+
 ## 2026-09-12 · V1.5 第零阶段：Preflight 数据语义清理（第五轮）
 
 ### 修复：示例数据进入生产历史行情层

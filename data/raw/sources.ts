@@ -11,7 +11,7 @@ export const sources: Source[] = [
     source_type: 'article',
     title: '用户提供的A股季节性经验材料（原始经验描述，未经验证）',
     author: '用户提供',
-    url: 'https://www.zhihu.com/question/464198498',
+    url: 'https://www.zhihu.com/question/663265687/answer/3583512483',
     captured_at: '2026-09-12',
     description:
       '项目启动时用户提供的个人经验判断汇总（原始来源为知乎问题页）。' +

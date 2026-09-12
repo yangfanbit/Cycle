@@ -57,7 +57,7 @@
 - `article` / `personal` 来源的规律只能是 candidate（L0 / not_tested）。
 - `quant_verification` 来源才能支撑 verified（statistically_supported 及以上）。
 - **来源 URL 追溯**：已知原始来源 URL 的 Source 必须登记 `url` 字段
-  （如 src_exp_001 登记了知乎问题页原始链接），保证"经验从哪里来"可回溯；
+  （如 src_exp_001 登记了知乎原文链接），保证"经验从哪里来"可回溯；
   title 不确定时保持原 title，不得编造，但 URL 缺失不是合法状态——
   拿到 URL 后必须补登记。
 

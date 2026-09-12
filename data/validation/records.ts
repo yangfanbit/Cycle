@@ -10,6 +10,9 @@ import type { ValidationRecord } from '../../src/models';
  *   但历史事实核验尚未开始（等待人工 Review）。
  * - reviewer = 'pending' 且 reviewed_at = null：无核验人就不得有核验完成日期，
  *   记录建立时间由 created_at 表达。
+ * - validation_scope 明确核验范围（Rule ≠ Campaign）：
+ *   当前 3 条均为 scope = 'rule'（整条规律）；
+ *   Pilot 逐年核验产生 Campaign 级记录时使用 scope = 'campaign' + campaign_id。
  */
 const CREATED_AT = '2026-09-12';
 const METHOD_VERSION = 'v1.5-manual-skeleton-001';
@@ -17,6 +20,7 @@ const METHOD_VERSION = 'v1.5-manual-skeleton-001';
 export const validationRecords: ValidationRecord[] = [
   {
     validation_id: 'val_rule_auto_summer',
+    validation_scope: 'rule',
     rule_id: 'rule_auto_summer',
     evidence_status: 'L1',
     verification_status: 'not_tested',
@@ -31,6 +35,7 @@ export const validationRecords: ValidationRecord[] = [
   },
   {
     validation_id: 'val_rule_media_year_end',
+    validation_scope: 'rule',
     rule_id: 'rule_media_year_end',
     evidence_status: 'L1',
     verification_status: 'not_tested',
@@ -45,6 +50,7 @@ export const validationRecords: ValidationRecord[] = [
   },
   {
     validation_id: 'val_rule_consumption_year_end',
+    validation_scope: 'rule',
     rule_id: 'rule_consumption_year_end',
     evidence_status: 'L0',
     verification_status: 'not_tested',

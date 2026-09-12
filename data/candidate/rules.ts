@@ -212,7 +212,8 @@ export const timeWindows: TimeWindow[] = [
     start_md: '10-08',
     end_md: '01-31',
     preheat_days: 20,
-    note: '经验窗口：国庆后至春节前。终点随春节浮动，此处以01-31近似，跨年窗口。',
+    approximate: true,
+    note: '复合窗口（国庆后→春节前）的近似表达：终点随春节逐年浮动，此处以01-31近似展示，非精确结束日；跨年窗口。后续统一支持 mixed anchor window。',
   },
   {
     window_id: 'win_media_year_end',
@@ -230,7 +231,8 @@ export const timeWindows: TimeWindow[] = [
     start_md: '10-08',
     end_md: '01-31',
     preheat_days: 20,
-    note: '经验窗口：国庆后至春节前。终点随春节浮动，此处以01-31近似，跨年窗口。',
+    approximate: true,
+    note: '复合窗口（国庆后→春节前）的近似表达：终点随春节逐年浮动，此处以01-31近似展示，非精确结束日；跨年窗口。后续统一支持 mixed anchor window。',
   },
   {
     window_id: 'win_textile_year_end',
@@ -239,7 +241,8 @@ export const timeWindows: TimeWindow[] = [
     start_md: '10-08',
     end_md: '01-31',
     preheat_days: 20,
-    note: '经验窗口：国庆后至春节前。终点随春节浮动，此处以01-31近似，跨年窗口。',
+    approximate: true,
+    note: '复合窗口（国庆后→春节前）的近似表达：终点随春节逐年浮动，此处以01-31近似展示，非精确结束日；跨年窗口。后续统一支持 mixed anchor window。',
   },
   {
     window_id: 'win_disclosure_q3',

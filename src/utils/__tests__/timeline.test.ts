@@ -344,12 +344,14 @@ describe('V1.5 Preflight：生产层数据语义', () => {
     expect(mediaCampaigns).toEqual([]);
   });
 
-  it('Source URL 已登记且格式合法（来源可追溯）', async () => {
+  it('Source URL 为核对后的原始来源链接（src_exp_001）', async () => {
     const { sourceById } = await import('../../data');
     const src = sourceById.get('src_exp_001')!;
     expect(src).toBeTruthy();
-    expect(src.url).toBeTruthy();
-    expect(src.url).toMatch(/^https?:\/\//);
+    expect(src.url).toBe('https://www.zhihu.com/question/663265687/answer/3583512483');
+    // title / author 不因 URL 修正而改动
+    expect(src.title).toBe('用户提供的A股季节性经验材料（原始经验描述，未经验证）');
+    expect(src.author).toBe('用户提供');
   });
 
   it('ValidationRecord：未审核时 reviewer = pending 且 reviewed_at = null（无核验人就不得有核验日期）', async () => {
@@ -457,5 +459,88 @@ describe('V1.5 Preflight：测试 fixture 语义（跨年结构示例迁至 test
     for (const r of ['positive', 'neutral', 'weak', 'failed', 'unknown'] as const) {
       expect(RESULT_LABEL[r]).toBeTruthy();
     }
+  });
+});
+
+describe('V1.5 Final Preparation：进入历史核验前的最后语义检查', () => {
+  it('ValidationRecord 全部有 validation_scope，且 scope 约束不被违反（Rule ≠ Campaign）', async () => {
+    const { validationRecords, campaignById } = await import('../../data');
+    expect(validationRecords.length).toBeGreaterThan(0);
+    for (const r of validationRecords) {
+      expect(['rule', 'campaign']).toContain(r.validation_scope);
+      if (r.validation_scope === 'rule') {
+        // rule scope：验证整条 Rule，不得携带 campaign_id（避免范围混淆）
+        expect(r.campaign_id).toBeUndefined();
+      } else {
+        // campaign scope：campaign_id 必填且必须指向存在的 Campaign
+        expect(r.campaign_id).toBeTruthy();
+        expect(campaignById.has(r.campaign_id!)).toBe(true);
+      }
+    }
+  });
+
+  it('当前 3 条 Pilot 核验记录 scope 均为 rule（campaign 级核验尚未开始）', async () => {
+    const { validationRecords } = await import('../../data');
+    for (const r of validationRecords) {
+      expect(r.validation_scope).toBe('rule');
+    }
+  });
+
+  it('evidencesOfCampaign：带 campaign_id 的 Evidence 可正确查询（注入列表验证）', async () => {
+    const { evidencesOfCampaign } = await import('../../data');
+    const list = [
+      {
+        evidence_id: 'ev_test_a',
+        source_id: 'src_exp_001',
+        evidence_type: 'market_data' as const,
+        description: '测试证据 A',
+        date: '2023-06-15',
+        confidence: 'high' as const,
+        campaign_id: 'cmp_verified_2023',
+      },
+      {
+        evidence_id: 'ev_test_b',
+        source_id: 'src_exp_001',
+        evidence_type: 'market_data' as const,
+        description: '测试证据 B',
+        date: null,
+        confidence: 'low' as const,
+      },
+    ];
+    const hit = evidencesOfCampaign('cmp_verified_2023', list);
+    expect(hit.length).toBe(1);
+    expect(hit[0].evidence_id).toBe('ev_test_a');
+    // 未关联 campaign 的证据不被误返回
+    expect(evidencesOfCampaign('cmp_verified_2024', list)).toEqual([]);
+  });
+
+  it('不变式：verified Campaign 必须能追溯到至少一条 Evidence（未来生效）', async () => {
+    const { verifiedCampaigns, evidencesOfCampaign } = await import('../../data');
+    for (const c of verifiedCampaigns) {
+      expect(evidencesOfCampaign(c.campaign_id).length).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it('「国庆后→春节前」三条复合窗口标记 approximate，UI 以"约"呈现', async () => {
+    const { windowsOfRule } = await import('../../data');
+    const { windowRangeLabel } = await import('../../components/labels');
+    for (const ruleId of ['rule_consumption_year_end', 'rule_education_year_end', 'rule_textile_year_end']) {
+      const w = windowsOfRule(ruleId)[0];
+      expect(w.approximate).toBe(true);
+      // UI 文本：约 … → …（近似），不得显示为精确起止日
+      const text = windowRangeLabel(w.start_md ?? '未定', w.end_md ?? '未定', w.approximate);
+      expect(text).toBe('约 10-08 → 01-31（近似）');
+    }
+    // 非近似窗口不加"约"（如夏季汽车 calendar 窗口）
+    const auto = windowsOfRule('rule_auto_summer')[0];
+    expect(auto.approximate).toBeFalsy();
+    expect(windowRangeLabel(auto.start_md!, auto.end_md!, auto.approximate)).toBe('06-01 → 08-31');
+  });
+
+  it('本轮不产生任何真实历史 Campaign：candidate / verified / 聚合层全为空', async () => {
+    const { campaigns, verifiedCampaigns, allCampaigns } = await import('../../data');
+    expect(campaigns).toEqual([]);
+    expect(verifiedCampaigns).toEqual([]);
+    expect(allCampaigns).toEqual([]);
   });
 });

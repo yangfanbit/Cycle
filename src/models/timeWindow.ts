@@ -24,6 +24,12 @@ export interface TimeWindow {
   end_offset_days?: number;
   /** 提前观察天数（Pre-heat） */
   preheat_days: number;
+  /**
+   * 窗口日期为近似展示（如"国庆后→春节前"以 10-08 → 01-31 近似表达，
+   * 终点实际随春节逐年浮动）。UI 必须以"约"呈现，不得显示为精确起止日。
+   * 复合锚点窗口（固定起点 + 相对事件终点）的完整支持列入后续阶段。
+   */
+  approximate?: boolean;
   /** 窗口描述（经验窗口的文字说明，如"国庆后—春节"） */
   note?: string;
 }

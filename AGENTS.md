@@ -67,6 +67,16 @@ not_tested → under_review → statistically_supported / cross_validated / unsu
 不代表 `verification_status = statistically_supported`（规律验证完成）。
 只有真正完成统计验证后才能标记 `statistically_supported`。
 
+### 核验范围：Rule ≠ Campaign
+
+ValidationRecord 的 `validation_scope` 必须区分核验对象：
+
+- `'rule'`：验证整条 Rule（规律假设本身），campaign_id 省略；
+- `'campaign'`：验证具体 HistoricalCampaign 的历史事实，campaign_id 必填。
+
+两者不得混淆：Campaign 事实核验完成（L2）不等于其所属 Rule 成立；
+Rule 成立必须经过统计验证（L3+，statistically_supported）。
+
 ### 前瞻性分析 ≠ 确定性预测
 
 本项目禁止：

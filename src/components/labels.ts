@@ -66,3 +66,11 @@ export const SECTOR_COLORS: Record<string, string> = {
 export function sectorColor(baseSector: string): string {
   return SECTOR_COLORS[baseSector] ?? '#7a8494';
 }
+
+/**
+ * 窗口日期范围文本。approximate 窗口（如"国庆后→春节前"以 10-08 → 01-31
+ * 近似表达）必须带"约"与"（近似）"，UI 不得把它显示为精确起止日。
+ */
+export function windowRangeLabel(start: string, end: string, approximate?: boolean): string {
+  return approximate ? `约 ${start} → ${end}（近似）` : `${start} → ${end}`;
+}

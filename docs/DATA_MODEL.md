@@ -49,7 +49,7 @@ raw 层数据（`data/raw/excerpts.ts`），是 candidate Rule 与 Evidence 的�
 
 `src/models/timeWindow.ts`
 
-字段：window_id, rule_id, window_type, start_md?, end_md?, anchor_event?, start_offset_days?, end_offset_days?, preheat_days, note?
+字段：window_id, rule_id, window_type, start_md?, end_md?, anchor_event?, start_offset_days?, end_offset_days?, preheat_days, approximate?, note?
 
 window_type 五种表达，**不可混用语义**：
 
@@ -63,6 +63,12 @@ window_type 五种表达，**不可混用语义**：
 
 - `start_md` / `end_md` 为 `MM-DD`；`end_md < start_md` 表示跨年窗口。
 - `relative_event` 的跨年由锚点日期 + 偏移的实际结果决定，不写死。
+- `approximate: true`：窗口日期为**近似展示**，UI 必须以"约 … → …（近似）"呈现，
+  不得显示为精确起止日。当前用于"国庆后→春节前"三条复合窗口
+  （终点随春节逐年浮动，以 01-31 近似表达）。
+- **复合时间窗口**（固定起点 + 相对事件终点，如"国庆后→春节前"）：
+  V1.5 暂采用近似表达（empirical + approximate），后续统一支持
+  mixed anchor window，不为单条经验扩展 Schema。
 
 ## 4. HistoricalCampaign — 一次真实发生的历史行情
 
@@ -164,16 +170,22 @@ date_rule 三种形态：
 
 `src/models/validation.ts`
 
-字段：validation_id, rule_id, campaign_id?, evidence_status, verification_status, reviewer, created_at, reviewed_at, notes, method_version
+字段：validation_id, validation_scope, rule_id, campaign_id?, evidence_status, verification_status, reviewer, created_at, reviewed_at, notes, method_version
 
 - evidence_status：`L0 | L1 | L2 | L3 | L4`（证据等级，见 DATA_GOVERNANCE.md）
 - verification_status：`not_tested | under_review | statistically_supported | cross_validated | unsupported`
+- **validation_scope：`'rule' | 'campaign'`**（Rule ≠ Campaign，不得混淆）：
+  - `'rule'`：验证整条 Rule（规律假设本身），campaign_id 省略；
+  - `'campaign'`：验证具体 HistoricalCampaign 的历史事实，campaign_id 必填。
 - 只记录"事实是否核验"，**不计算统计分数**。
 - `created_at`：核验记录的建立日期（ISO）。
 - `reviewed_at`：**人工核验完成日期，可空**（`string | null`）。未核验时
   `reviewer = 'pending'` 且 `reviewed_at = null`——没有核验人就不得有核验完成日期。
 - method_version 保证核验方法可追溯。
-- 数据位于 `data/validation/records.ts`；当前 3 条（对应 3 条 Pilot），全部 not_tested。
+- 数据位于 `data/validation/records.ts`；当前 3 条（对应 3 条 Pilot，scope 均为 'rule'），全部 not_tested。
+- Evidence 查询辅助：`evidencesOfRule(ruleId)` / `evidencesOfCampaign(campaignId)`
+  （data/validation/evidence.ts，经 barrel 导出）；未来 verified Campaign
+  必须能追溯到至少一条 Evidence。
 
 ### PilotPlan — 核验计划（同文件）
 

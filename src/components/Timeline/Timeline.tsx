@@ -23,7 +23,7 @@ import {
   type WindowStatusResult,
   type YearSegment,
 } from '../../utils';
-import { PHASE_LABEL, sectorColor } from '../labels';
+import { PHASE_LABEL, sectorColor, windowRangeLabel } from '../labels';
 
 export type Selection =
   | { kind: 'rule'; id: string }
@@ -210,7 +210,11 @@ export function Timeline({ year, today, selection, onSelect }: TimelineProps) {
                   ))}
                   {segments.map((seg, i) => {
                     const occ = status?.occurrence;
-                    const rangeText = occ ? `${occ.start} → ${occ.end}` : `${window?.start_md} → ${window?.end_md}`;
+                    const rangeText = windowRangeLabel(
+                      occ ? occ.start : (window?.start_md ?? '未定'),
+                      occ ? occ.end : (window?.end_md ?? '未定'),
+                      window?.approximate,
+                    );
                     return (
                       <div
                         key={`w${i}`}

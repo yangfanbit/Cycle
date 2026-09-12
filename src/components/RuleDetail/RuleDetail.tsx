@@ -1,7 +1,7 @@
 import { anchorResolver, campaignsOfRule, eventById, sourceById, windowsOfRule } from '../../data';
 import type { Rule } from '../../models';
 import { computeWindowStatus } from '../../utils';
-import { PHASE_LABEL, RESULT_LABEL, RULE_STATUS_LABEL, RULE_TYPE_LABEL, STRENGTH_LABEL } from '../labels';
+import { PHASE_LABEL, RESULT_LABEL, RULE_STATUS_LABEL, RULE_TYPE_LABEL, STRENGTH_LABEL, windowRangeLabel } from '../labels';
 
 interface RuleDetailProps {
   rule: Rule;
@@ -42,8 +42,10 @@ export function RuleDetail({ rule, today, onOpenCampaign, onClose }: RuleDetailP
                     ? `相对「${eventById.get(w.anchor_event ?? '')?.name ?? w.anchor_event ?? '未知事件'}」：${
                         w.start_offset_days
                       } 天 → +${w.end_offset_days} 天`
-                    : `${w.start_md ?? '未定'} → ${w.end_md ?? '未定'}`}
-                  {status ? `（本季实例：${status.occurrence.start} → ${status.occurrence.end}）` : ''}
+                    : windowRangeLabel(w.start_md ?? '未定', w.end_md ?? '未定', w.approximate)}
+                  {status
+                    ? `（本季${w.approximate ? '近似' : ''}实例：${status.occurrence.start} → ${status.occurrence.end}）`
+                    : ''}
                 </div>
                 {w.note && <div className="phase-text">{w.note}</div>}
                 <div className="phase-text">

@@ -93,3 +93,12 @@ export const evidenceById = new Map(evidences.map((e) => [e.evidence_id, e]));
 export function evidencesOfRule(ruleId: string): Evidence[] {
   return evidences.filter((e) => e.rule_id === ruleId);
 }
+
+/**
+ * 查询某条 HistoricalCampaign 的支撑证据。
+ * 未来 verified Campaign 必须能追溯到至少一条 Evidence（不允许无证据的事实）。
+ * 可选 list 参数仅用于测试注入，生产代码从 src/data/index.ts 正常调用。
+ */
+export function evidencesOfCampaign(campaignId: string, list: Evidence[] = evidences): Evidence[] {
+  return list.filter((e) => e.campaign_id === campaignId);
+}

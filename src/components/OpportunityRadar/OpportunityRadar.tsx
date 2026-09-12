@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { anchorResolver, rules, windowsOfRule } from '../../data';
 import { computeWindowStatus, diffDays, type WindowPhase } from '../../utils';
+import { windowRangeLabel } from '../labels';
 
 interface RadarItem {
   ruleId: string;
@@ -48,7 +49,7 @@ export function OpportunityRadar({ today, onSelectRule }: OpportunityRadarProps)
         phase,
         daysToPreheat,
         daysToStart,
-        windowRange: `${occurrence.start} → ${occurrence.end}`,
+        windowRange: windowRangeLabel(occurrence.start, occurrence.end, window.approximate),
       });
     }
     return list;

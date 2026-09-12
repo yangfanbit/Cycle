@@ -34,6 +34,50 @@ Source（来源） → Evidence（证据） → Historical Fact / Campaign（历
 
 **Campaign ≠ Rule**：Rule 是待验证的规律假设；Campaign 是具体某年发生过（或材料提及）的行情记录。一条 Rule 下可以有多个年份的 Campaign，包括失败年份。
 
+## 1A. Campaign 判定原则 V1（人工核验阶段）
+
+进入历史事实核验前，核验人必须按以下原则判断"某年某方向是否构成一条 Campaign"。
+
+### 不能仅因为行业上涨就建立 Campaign
+
+一次合格的 Theme Campaign 至少同时具备：
+
+- **一定持续性**：数周以上的行情过程，不是单日 / 数日脉冲；
+- **可识别的主题 / 题材**：市场有明确的炒作主线（如 2023 减速器、2024 自动驾驶），
+  而不是"行业普涨但说不出为什么"；
+- **相对明显的市场关注度或价格表现**：板块内出现可观察的领涨与聚焦现象；
+- **可以解释的启动与结束过程**：能说清行情"从何时、因何种催化开始，到何时、
+  因何种信号消退"。
+
+四项中任何一项无法满足时，宁可不建 Campaign（"缺少数据"是合法状态），
+也不得为了凑案例而放宽。
+
+### Campaign 与 Industry Trend 区分
+
+- **Industry Trend（行业趋势）**：行业整体的价格 / 业绩表现，持续性以季度或年计。
+- **Theme Campaign（题材行情）**：具有明确炒作主题、市场关注聚焦的阶段性行情。
+
+**本项目当前主要研究 Theme Campaign**；Industry Seasonality（行业季节性指数）
+留待后续单独增加，两者不得混录在同一 Campaign 表中。
+
+### 启动（start_date）
+
+判定方式（`start_date_basis`）：`observed | inferred | official_event | unknown`，
+并必须标注 `date_confidence`（high / medium / low）。
+
+### 结束（end_date）
+
+同启动：`end_date_basis` + `date_confidence`；`end_date >= start_date`。
+
+### 强度（strength）
+
+`strong | medium | weak`。V1 人工核验阶段凭核验到的行情事实定性判断，
+**不设精确数学阈值**（L3 统计阶段再定量化标准）。
+
+### 结果（result）
+
+`positive | neutral | weak | failed | unknown`。允许失败年份入表（见第 4 节）。
+
 ## 2. 启动（start_date）定义
 
 V1.5 第一阶段采用**人工核验机制**，不做自动识别。
@@ -72,6 +116,19 @@ V1.5 第一阶段采用**人工核验机制**，不做自动识别。
 ```
 
 为了让规律"看起来成立"而删除失败年份，属于最严重的治理违规（见 DATA_GOVERNANCE.md）。
+
+### 失败年份原则（防偏差）
+
+历史核验时**必须主动寻找**以下四类年份，而不是只找支持原始经验的年份：
+
+- 成功年份（行情明显、符合经验窗口）
+- 弱年份（行情较弱或窗口偏移）
+- 失败年份（窗口期内无明显行情甚至反向）
+- 无明显行情年份（全年该方向均无 Theme Campaign）
+
+这是对 **survivorship bias**（只保留成功案例）与 **confirmation bias**
+（只寻找支持性证据）的制度性防御。核验一条 Rule 时，四类年份的搜索范围必须一致
+（同一段时间轴、同一数据口径），不得对支持性年份多查、对反证年份少查。
 
 ## 5. Base Pattern 与 Annual Theme
 
@@ -122,11 +179,20 @@ evidence_type：`market_data | article | official | news | manual_review | other
 
 ## 10. ValidationRecord（核验记录）
 
-字段（`src/models/validation.ts`）：validation_id, rule_id, campaign_id?, evidence_status, verification_status, reviewer, created_at, reviewed_at, notes, method_version。
+字段（`src/models/validation.ts`）：validation_id, validation_scope, rule_id, campaign_id?, evidence_status, verification_status, reviewer, created_at, reviewed_at, notes, method_version。
 
 记录的是"事实是否核验"，**不计算 seasonality_score 等统计分数**。
 
-审计字段语义：
+### 核验范围（validation_scope）：Rule ≠ Campaign
+
+- `validation_scope = 'rule'`：验证**整条 Rule**（规律假设本身），此时 campaign_id 省略。
+- `validation_scope = 'campaign'`：验证**具体 HistoricalCampaign 的历史事实**，
+  此时 campaign_id 必填（且必须指向存在的 Campaign）。
+
+两种 scope 不得混淆：Rule 是假设，Campaign 是某年发生过的事实；对 Campaign 完成
+事实核验（L2）不等于其所属 Rule 成立——**L2 ≠ statistically_supported**。
+
+### 审计字段语义
 
 - `created_at`：核验记录的**建立日期**。
 - `reviewed_at`：**人工核验完成日期**（`string | null`）。
@@ -181,6 +247,21 @@ data/
 
 - A 股"今天"统一使用 `marketTodayISO()`（Asia/Shanghai），不依赖用户机器时区。
 - 纯日期运算（diffDays / addDaysISO 等）仍使用 UTC 毫秒，两者分离。
+
+### 复合时间窗口的表达（Final Preparation 决策）
+
+"国庆后 → 春节前"（rule_consumption_year_end / rule_education_year_end /
+rule_textile_year_end）属于**复合时间窗口**：固定起点（国庆后）+ 相对事件终点
+（春节前，逐年浮动）。当前 TimeWindow Schema 无法优雅表达混合锚点，V1.5 采取
+**近似表达**：
+
+- 保留 `empirical` + `10-08 → 01-31` 作为近似展示；
+- 新增 `approximate: true` 标记（TimeWindow 字段），note 说明终点随春节浮动；
+- **UI 一律以"约 … → …（近似）"呈现，不得把 01-31 显示为精确结束日**
+  （RuleDetail / Timeline tooltip / OpportunityRadar 统一走 windowRangeLabel）。
+
+后续阶段统一支持 mixed anchor window（固定锚点 + 相对锚点组合），不在本轮
+扩展窗口 Schema。
 
 ## 13. V1.5 Pilot（3 条样本规律）
 
