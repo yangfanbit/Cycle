@@ -9,7 +9,9 @@
 ### 数据库状态
 - **Tables**: 18 个表全部正常 populated
 - **Campaigns**: 8 个（2018-2025，2018 为 no_clear_campaign）
-- **Evidences**: 46 条，全部通过 campaign_evidences 显式绑定
+- **Evidences**: 46 条总计
+  - **Campaign-bound**: 39 条（通过 campaign_evidences 显式绑定）
+  - **Unbound**: 7 条（合法状态，支持整个 Rule 或无法属于特定 Campaign 的反例）
 - **Sources**: 49 个，tier/type 一致性验证通过
 - **Market Data**: 4,934 条日线数据，25 个 series
 - **Trading Calendar**: 371 个交易日（从 SH000300 推导）
