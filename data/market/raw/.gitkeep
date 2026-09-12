@@ -1,0 +1,7 @@
+# data/market/raw
+
+存放原始下载的行情数据（未经统一字段处理），保证可追溯。
+- 每来源一个子目录或带 provider 前缀的命名。
+- 不在此处做字段统一 / 复权 / 清洗。
+
+示例命名：`akshare_AUTO_SW_daily.csv`（provider_series_freq）。

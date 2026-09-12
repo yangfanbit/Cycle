@@ -52,17 +52,26 @@ Cycle-research/
 ├── database/
 │   └── cycle_research.db        # 研究数据库
 ├── scripts/
-│   ├── db.py                    # 连接/建库/插入工具
-│   ├── seed.py                  # 录入 2018–2020 种子数据
+│   ├── db.py                    # 连接/建库/迁移/插入工具
+│   ├── seed.py                  # 录入 2018–2025 种子数据
+│   ├── seed_market_series.py    # 注册行情序列(Market Series)
+│   ├── seed_campaign_dates.py   # 快照候选日期(Date Observation)
+│   ├── market_metrics.py        # 基础行情指标函数库
 │   ├── export.py                # 导出 CSV + verified_candidates.json
-│   └── gen_annual.py            # 生成年度研究报告
+│   ├── gen_annual.py            # 生成年度研究报告
+│   ├── gen_summary.py           # 生成年度汇总
+│   └── validate_db.py           # 一致性检查（含行情基建 11 项）
 ├── research/
 │   ├── templates/annual_template.md
 │   ├── annual/{2018..2025}.md   # 年度研究报告
-│   └── summary/auto_2018_2025.csv
+│   ├── summary/auto_2018_2025.csv / .md
+│   └── methodology/market_data_validation.md  # 行情核验方法学(Pilot 1-C1)
 ├── exports/
 │   └── cycle_verified_candidates.json  # 待人工确认的候选（非 Cycle 正式 verified）
-├── data/                        # 原始抓取源（预留）
+├── data/
+│   └── market/
+│       ├── raw/                 # 原始下载行情（未统一字段，可追溯）
+│       └── normalized/          # 统一字段后的行情（对应 market_daily）
 └── README.md
 ```
 
@@ -90,6 +99,34 @@ Campaign  ↕  CampaignEvidence  ↕  Evidence  ↕  Source
 Campaign 判定**至少**需：主题可识别、持续性、市场关注、可解释的启动与结束、有 Evidence。若能只证明"行业上涨"，`classification=industry_trend`。
 
 **日期 basis（v1.5 兼容设计，未强制迁移）**：未来推荐将 `start_date_basis` / `end_date_basis` 拆分为 `start_date_basis_code` / `start_date_basis_note` 与 `end_date_basis_code` / `end_date_basis_note`；`code ∈ {observed, inferred, official_event, unknown}`。当前旧长文本字段保留，不破坏试点。
+
+### 行情核验基础设施（Pilot 1-C1）
+
+数据流：`Market Series → Daily Market Data → Date Verification → Historical Campaign`
+
+新增四表（详见 `research/methodology/market_data_validation.md`）：
+
+- **`market_series`**：行情序列定义（series_id/name/series_type/provider/symbol/frequency/price_type/adjustment_method）。只填真实可确认的 `symbol`，不确定留空、不编造。
+- **`market_daily`**：日线（open/high/low/close/adj_close/volume/amount），**每行必须明确 `price_type`（raw/adjusted）**；`(series_id, trade_date, price_type)` 唯一，禁止自动覆盖已有数据。
+- **`trading_calendar`**：交易日历。只填交易日（`is_trading_day=1`）；无独立源时允许由 benchmark series 的 `distinct trade_date` 推导。
+- **`campaign_date_observations`**：Campaign 日期核验观测。`candidate_date`（原始研究日期，保留不改）与 `verified_date`（核验后，可空）分列；`date_role ∈ {start,end,peak}`，不覆盖 `campaigns.*_date`。
+
+**基础指标**：`scripts/market_metrics.py` 提供 `daily_return / cumulative_return / rolling_return / relative_return_vs_benchmark / drawdown / volume_change`；Breadth 仅预留接口（`ThemeBreadthSnapshot`），因缺可靠历史成分数据不生成结果。
+
+## 4.1 Price Policy
+
+- **raw close**：用于日期判断（启动/峰值/终点，在原始交易日序列上识别）与真实成交价叙述。
+- **adjusted close**：用于收益率计算（避免股本/送转/分红干扰）。
+- 日期判断优先使用**交易日原始价格序列**；收益计算必须明确价格口径。
+- **不允许在同一指标中混合不同调整口径**。
+- `market_daily` 每一行都带 `price_type` 字段显式声明口径，禁止同源混用。
+
+## 4.2 Trading Day vs Calendar Day
+
+- **Calendar Day（自然日）** = 含周末与节假日的日历日。
+- **Trading Day（交易日）** = 该市场实际开市日（跳过周末与法定休市）。
+- `market_daily.trade_date` 与 `trading_calendar.trade_date` **均只取交易日**；窗口漂移/启动天数等应基于交易日而非自然日口径。
+- 无独立日历源时，可用 benchmark series 的交易日集合推导日平衡。
 
 ## 5. 来源优先级
 

@@ -20,6 +20,11 @@ CAMPAIGN_CLASS = ("theme_campaign", "industry_trend", "event_driven", "mixed", "
 THEME_TYPE = ("sector", "industry", "concept")
 EVENT_TYPE = ("policy", "industry", "macro", "company", "market", "news", "holiday", "other")
 SECURITY_ROLE = ("leader", "second_leader", "representative", "follow")
+# Pilot 1-C1
+SERIES_TYPE = ("industry_index", "sector_index", "concept_index", "stock", "benchmark", "other")
+PRICE_TYPE = ("raw", "adjusted", "other")
+DATE_ROLE = ("start", "end", "peak")
+VERIFY_METHOD = ("manual", "market_data", "market_data_plus_event", "unknown")
 
 
 def connect() -> sqlite3.Connection:
@@ -56,7 +61,10 @@ def _column_exists(conn, table, col) -> bool:
 
 
 def migrate(conn: sqlite3.Connection = None) -> None:
-    """v1.5 增量迁移：对已有数据库补建新表/新列，不破坏既有数据。幂等。"""
+    """增量迁移：对已有数据库补建新表/新列，不破坏既有数据。幂等。
+    v1.5 → evidences.independence_group、campaign_evidences
+    Pilot 1-C1 → market_series / market_daily / trading_calendar / campaign_date_observations
+    """
     own = conn is None
     conn = conn or connect()
 
@@ -74,6 +82,57 @@ def migrate(conn: sqlite3.Connection = None) -> None:
             created_at      TEXT DEFAULT (datetime('now')),
             PRIMARY KEY (campaign_id, evidence_id)
         );
+    """)
+
+    # ---- Pilot 1-C1 行情核验基础设施（新增 4 表，幂等）----
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS market_series (
+            series_id         TEXT PRIMARY KEY,
+            name              TEXT NOT NULL,
+            series_type       TEXT NOT NULL CHECK (series_type IN
+                                ('industry_index','sector_index','concept_index','stock','benchmark','other')),
+            provider          TEXT,
+            symbol            TEXT,
+            frequency         TEXT NOT NULL DEFAULT 'daily'
+                                CHECK (frequency IN ('daily','weekly','monthly','intraday','other')),
+            price_type        TEXT NOT NULL CHECK (price_type IN ('raw','adjusted','other')),
+            adjustment_method TEXT,
+            description       TEXT,
+            created_at        TEXT DEFAULT (datetime('now'))
+        );
+        CREATE TABLE IF NOT EXISTS market_daily (
+            series_id     TEXT NOT NULL REFERENCES market_series(series_id),
+            trade_date    TEXT NOT NULL,
+            open          REAL, high REAL, low REAL, close REAL,
+            adj_close     REAL,
+            price_type    TEXT NOT NULL CHECK (price_type IN ('raw','adjusted')),
+            volume        REAL,
+            amount        REAL,
+            data_source   TEXT,
+            retrieved_at  TEXT DEFAULT (datetime('now')),
+            PRIMARY KEY (series_id, trade_date, price_type)
+        );
+        CREATE TABLE IF NOT EXISTS trading_calendar (
+            trade_date      TEXT PRIMARY KEY,
+            is_trading_day  INTEGER NOT NULL CHECK (is_trading_day IN (0,1)),
+            calendar_type   TEXT NOT NULL DEFAULT 'cn',
+            created_at      TEXT DEFAULT (datetime('now'))
+        );
+        CREATE TABLE IF NOT EXISTS campaign_date_observations (
+            observation_id     TEXT PRIMARY KEY,
+            campaign_id        TEXT NOT NULL REFERENCES campaigns(campaign_id),
+            date_role          TEXT NOT NULL CHECK (date_role IN ('start','end','peak')),
+            candidate_date     TEXT NOT NULL,
+            verified_date      TEXT,
+            verification_method TEXT NOT NULL CHECK (verification_method IN
+                                ('manual','market_data','market_data_plus_event','unknown')),
+            confidence         TEXT NOT NULL CHECK (confidence IN ('high','medium','low')),
+            evidence_id        TEXT REFERENCES evidences(evidence_id),
+            notes              TEXT,
+            created_at         TEXT DEFAULT (datetime('now'))
+        );
+        CREATE INDEX IF NOT EXISTS idx_mdaily_series ON market_daily(series_id, trade_date);
+        CREATE INDEX IF NOT EXISTS idx_cdo_campaign  ON campaign_date_observations(campaign_id);
     """)
     conn.commit()
     if own:

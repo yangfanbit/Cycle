@@ -189,6 +189,67 @@ CREATE TABLE IF NOT EXISTS campaign_phases (
     description     TEXT
 );
 
+-- ============================================================
+-- Pilot 1-C1：行情事实核验基础设施
+-- Market Series → Daily Market Data → Date Verification → Campaign
+-- 数据只用于“核验每个已存在 Campaign 的日期事实”，不用于自动判定 Campaign
+-- ============================================================
+
+-- 行情序列（指数/行业/概念/个股/基准）。只填真实可确认的 symbol，否则留空待补。
+CREATE TABLE IF NOT EXISTS market_series (
+    series_id         TEXT PRIMARY KEY,
+    name              TEXT NOT NULL,
+    series_type       TEXT NOT NULL CHECK (series_type IN
+                        ('industry_index','sector_index','concept_index','stock','benchmark','other')),
+    provider          TEXT,             -- 数据提供方（如 akshare / sw / csi），非付费 token
+    symbol            TEXT,             -- 真实可确认代码；不确定则为 NULL
+    frequency         TEXT NOT NULL DEFAULT 'daily'
+                        CHECK (frequency IN ('daily','weekly','monthly','intraday','other')),
+    price_type        TEXT NOT NULL CHECK (price_type IN ('raw','adjusted','other')),
+    adjustment_method TEXT,             -- adjusted 时填充：前复权/后复权(hfq/qfq)；raw 为 NULL
+    description       TEXT,
+    created_at        TEXT DEFAULT (datetime('now'))
+);
+
+-- 日线行情。每行必须明确价格口径（raw / adjusted），禁止同一行混用。
+-- 同一 series 同一交易日同一口径唯一（原始数据可追溯，勿自动覆盖）。
+CREATE TABLE IF NOT EXISTS market_daily (
+    series_id     TEXT NOT NULL REFERENCES market_series(series_id),
+    trade_date    TEXT NOT NULL,        -- ISO YYYY-MM-DD，仅交易日
+    open          REAL, high REAL, low REAL, close REAL,
+    adj_close     REAL,                 -- 仅当 price_type='adjusted' 时使用
+    price_type    TEXT NOT NULL CHECK (price_type IN ('raw','adjusted')),
+    volume        REAL,
+    amount        REAL,
+    data_source   TEXT,
+    retrieved_at  TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (series_id, trade_date, price_type)
+);
+
+-- 交易日历。calendar_type 标识市场（如 cn）。
+-- 若无独立数据源，允许由 benchmark series 的 distinct trade_date 推导（见 README）。
+CREATE TABLE IF NOT EXISTS trading_calendar (
+    trade_date      TEXT PRIMARY KEY,
+    is_trading_day  INTEGER NOT NULL CHECK (is_trading_day IN (0,1)),
+    calendar_type   TEXT NOT NULL DEFAULT 'cn',
+    created_at      TEXT DEFAULT (datetime('now'))
+);
+
+-- Campaign 日期核验观测。分开保存 candidate（原始研究日期，不得被覆盖）与 verified（核验后日期）。
+CREATE TABLE IF NOT EXISTS campaign_date_observations (
+    observation_id     TEXT PRIMARY KEY,
+    campaign_id        TEXT NOT NULL REFERENCES campaigns(campaign_id),
+    date_role          TEXT NOT NULL CHECK (date_role IN ('start','end','peak')),
+    candidate_date     TEXT NOT NULL,   -- 原始 Research Candidate（抄自 campaigns，保留不改）
+    verified_date      TEXT,            -- 行情/人工核验后日期（可空=未核验）
+    verification_method TEXT NOT NULL CHECK (verification_method IN
+                            ('manual','market_data','market_data_plus_event','unknown')),
+    confidence         TEXT NOT NULL CHECK (confidence IN ('high','medium','low')),
+    evidence_id        TEXT REFERENCES evidences(evidence_id),  -- 若有则必须有效
+    notes              TEXT,
+    created_at         TEXT DEFAULT (datetime('now'))
+);
+
 -- ------------------------------------------------------------
 -- 索引
 -- ------------------------------------------------------------
@@ -196,3 +257,5 @@ CREATE INDEX IF NOT EXISTS idx_evidence_source   ON evidences(source_id);
 CREATE INDEX IF NOT EXISTS idx_campaign_rule     ON campaigns(rule_id);
 CREATE INDEX IF NOT EXISTS idx_campaign_review   ON campaigns(annual_review_id);
 CREATE INDEX IF NOT EXISTS idx_event_date        ON events(date);
+CREATE INDEX IF NOT EXISTS idx_mdaily_series      ON market_daily(series_id, trade_date);
+CREATE INDEX IF NOT EXISTS idx_cdo_campaign       ON campaign_date_observations(campaign_id);

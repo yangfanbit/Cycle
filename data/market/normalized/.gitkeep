@@ -1,0 +1,8 @@
+# data/market/normalized
+
+存放统一字段后的行情数据（对应 market_daily 表口径）。
+- 统一字段：series_id / trade_date / open / high / low / close / adj_close / price_type / volume / amount。
+- 每行必须明确 price_type（raw 或 adjusted），禁止混用。
+- 与 market_daily 表一致，可导入回数据库做 Campaign 日期核验。
+
+命名示例：`AUTO_SW_daily_raw.csv`、`AUTO_SW_daily_adjusted.csv`。
