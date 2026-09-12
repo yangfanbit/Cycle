@@ -1,7 +1,7 @@
 """生成各年份年度研究报告 research/annual/{year}.md（基于模板 + 数据库数据）。
 
 用法: python scripts/gen_annual.py [year ...]
-不传年份则生 2018, 2019, 2020。
+不传年份则生成全部年度 2018–2025。
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,7 +11,7 @@ ROOT = db.ROOT
 TEMPLATE = os.path.join(ROOT, "research", "templates", "annual_template.md")
 OUT_DIR = os.path.join(ROOT, "research", "annual")
 
-YEARS = sys.argv[1:] or ["2018", "2019", "2020"]
+YEARS = sys.argv[1:] or [str(y) for y in range(2018, 2026)]
 
 conn = db.connect()
 
