@@ -87,8 +87,8 @@ evidences = [
     # 2020
     dict(evidence_id="E-2020-01", source_id="S-2020-01", date="2020-06-11", evidence_type="行情数据", description="6/10特斯拉破千美元超丰田成全球市值最大车企；6/11 A股特斯拉板块大涨近4%，旭升/亚玛顿/秀强/模塑涨停，宁德时代涨超8%。板块半日市值增450亿。", evidence_role="supporting", confidence="high", independence_group="orig_tesla_momentum"),
     dict(evidence_id="E-2020-02", source_id="S-2020-02", date="2020-07-13", evidence_type="行情数据", description="7/13汽车整车走强，比亚迪首板涨停、江淮两连板，宁德时代涨9.91%市值逼近5000亿。6月汽车产销同比+11.6%持续回暖。7/12比亚迪汉(刀片电池)上市。", evidence_role="supporting", confidence="high", independence_group="orig_tesla_momentum"),
-    dict(evidence_id="E-2020-03", source_id="S-2020-03", date="2020-06-01", evidence_type="行情数据", description="线索(Tier4)：比亚迪2020/6/1突破40-50平台启动，6月+25%，7/13阶段高点96.44，7月中回调后8/21二次启动破100，11/6至197.46。反映Wave/二次启动，需行情数据二次核验确认。", evidence_role="supporting", confidence="low", independence_group="same_origin_xueqiu_byd"),
-    dict(evidence_id="E-2020-04", source_id="S-2020-04", date="2020-04-28", evidence_type="行情数据", description="线索(Tier4)：汽车整车板块2020年自4月底启动至年底涨幅82.66%，特斯拉国产化为核心驱动。全年视角可能早于6/1启动，窗口漂移需核验。", evidence_role="context", confidence="low", independence_group="same_origin_xueqiu_byd"),
+    dict(evidence_id="E-2020-03", source_id="S-2020-03", date="2020-06-01", evidence_type="行情数据", description="线索(Tier4)：比亚迪2020/6/1突破40-50平台启动，6月+25%，7/13阶段高点96.44，7月中回调后8/21二次启动破100，11/6至197.46。反映Wave/二次启动，需行情数据二次核验确认。", evidence_role="supporting", confidence="low", independence_group="same_origin_xueqiu_byd", temporal_relation="retrospective"),
+    dict(evidence_id="E-2020-04", source_id="S-2020-04", date="2020-04-28", evidence_type="行情数据", description="线索(Tier4)：汽车整车板块2020年自4月底启动至年底涨幅82.66%，特斯拉国产化为核心驱动。全年视角可能早于6/1启动，窗口漂移需核验。", evidence_role="context", confidence="low", independence_group="same_origin_xueqiu_byd", temporal_relation="retrospective"),
     # 2021
     dict(evidence_id="E-2021-01", source_id="S-2021-01", date="2021-07-09", evidence_type="行业月度产销数据", description="工信部/中汽协：6月整体汽车销量201.5万辆同比-12.4%(芯片短缺、原材料涨)；但新能源汽车产销24.8/25.6万辆同比+1.3/1.4倍，6月新能源渗透率超12%，刷新历史。", evidence_role="supporting", confidence="high", independence_group="orig_nev_sales_data"),
     dict(evidence_id="E-2021-02", source_id="S-2021-02", date="2021-08-13", evidence_type="行业月度产销数据", description="中汽协7月数据：整体汽车销量同比-11.9%(缺芯)；新能源产销28.4/27.1万辆同比+1.7/1.6倍创新高，前7月累计已超历年全年，渗透率10%。新能源“淡季不淡”。", evidence_role="supporting", confidence="high", independence_group="orig_nev_sales_data"),
@@ -389,23 +389,23 @@ evidences_2023_25 = [
     dict(evidence_id="E-2023-03", source_id="S-2023-03", date="2023-07-11", evidence_type="行情数据", description="7/11智能驾驶涨势加速带动汽车产业链爆发，浙江世宝8天6板、瑞玛精密6天5板、万安科技2连板，'主线地位确认'。", evidence_role="supporting", confidence="high", independence_group="orig_ad_momentum"),
     dict(evidence_id="E-2023-04", source_id="S-2023-05", date="2023-07-13", evidence_type="行情数据", description="龙头区间涨幅：浙江世宝近一月翻倍(8→18)、德赛西威+80%、万安+70%、赛力斯6/8见底后一月近翻倍。启动早于6/1(6/12预热、赛力斯6/8见底)。", evidence_role="supporting", confidence="high", independence_group="orig_ad_stock_price"),
     dict(evidence_id="E-2023-05", source_id="S-2023-06", date="2023-07-03", evidence_type="行业数据", description="6月底-7月初汽车销量回暖+出口高增(上半年214万辆+75.7%)+小鹏港股+80%、理想+88%、比亚迪6月+88.79%。政策(6/21吹风+7/21发改委十三部门)+销量+出口共振。", evidence_role="supporting", confidence="medium", independence_group="orig_sales_trend"),
-    dict(evidence_id="E-2023-06", source_id="S-2023-07", date="2023-11-17", evidence_type="政策文件", description="反证：正式L3准入文件成文2023-11-17、非夏季；2023年FSD未在华落地(2024-01财报仅员工Beta)。夏季行情系'政策预期'而非'落地'驱动，需降档强度。", evidence_role="contradicting", confidence="high", independence_group="orig_policy_schedule"),
+    dict(evidence_id="E-2023-06", source_id="S-2023-07", date="2023-11-17", evidence_type="政策文件", description="反证：正式L3准入文件成文2023-11-17、非夏季；2023年FSD未在华落地(2024-01财报仅员工Beta)。夏季行情系'政策预期'而非'落地'驱动，需降档强度。", evidence_role="contradicting", confidence="high", independence_group="orig_policy_schedule", temporal_relation="subsequent"),
     dict(evidence_id="E-2023-07", source_id="S-2023-03", date="2023-07-19", evidence_type="行情数据", description="反例：7月中下汽车让位地产/顺周期，市场快速轮动/存量资金博弈(财联社7/12'主题频繁高切低')；汽车非贯穿夏季单极主线，呈波段/脉冲式。", evidence_role="contradicting", confidence="medium", independence_group="orig_structure_pulse"),
     dict(evidence_id="E-2023-08", source_id="S-2023-08", date="2023-09-04", evidence_type="行业数据", description="减速器5月中-7月初大涨主逻辑系人形机器人(特斯拉Optimus/具身智能)，中马传动(车辆零部股)被当机器人炒被迫澄清；中大力德产品机器人/自动化各占约50%。归机器人Base Pattern，不计汽车。", evidence_role="context", confidence="high", independence_group="orig_robot_reducer"),
     # 2024
-    dict(evidence_id="E-2024-01", source_id="S-2024-01", date="2024-07-03", evidence_type="政策文件", description="7/3五部门公布20个车路云一体化试点城市；叠加6/14武汉170.84亿备案、5/31北京99.39亿招标。顶层政策+大单驱动。", evidence_role="supporting", confidence="high", independence_group="orig_v2x_policy"),
+    dict(evidence_id="E-2024-01", source_id="S-2024-01", date="2024-07-03", evidence_type="政策文件", description="7/3五部门公布20个车路云一体化试点城市；叠加6/14武汉170.84亿备案、5/31北京99.39亿招标。顶层政策+大单驱动。", evidence_role="supporting", confidence="high", independence_group="orig_v2x_policy", temporal_relation="subsequent"),
     dict(evidence_id="E-2024-02", source_id="S-2024-02", date="2024-06-18", evidence_type="行情数据", description="6/18车路云全线爆发，华铭/金溢/索菱/长江通信等10余股涨停、多股2连板——行情高峰。", evidence_role="supporting", confidence="high", independence_group="orig_v2x_momentum"),
     dict(evidence_id="E-2024-03", source_id="S-2024-02", date="2024-06-21", evidence_type="行情数据", description="车联网(车路协同)概念指数6/11-6/21涨超9%，229家概念股近八成上涨；6/21索菱5连板后巨量分歧。", evidence_role="supporting", confidence="medium", independence_group="orig_v2x_momentum"),
     dict(evidence_id="E-2024-04", source_id="S-2024-03", date="2024-06-24", evidence_type="行情数据", description="反例/退潮：6/24-25车路云分化退潮，索菱断板跌停、金溢逼近跌停、华铭跌近15%；公司多公告'未参与'仍连板。约2周脉冲炒作、快涨快退、缺持续主线。", evidence_role="contradicting", confidence="high", independence_group="orig_v2x_retreat"),
     dict(evidence_id="E-2024-05", source_id="S-2024-04", date="2024-07-10", evidence_type="行情数据", description="7月上中旬萝卜快跑武汉跑出圈订单暴涨；7/10无人驾驶板块+4%，天迈/经纬恒润20cm涨停、德赛西威涨停、港股百度+12%。", evidence_role="supporting", confidence="high", independence_group="orig_robotaxi_momentum"),
     dict(evidence_id="E-2024-06", source_id="S-2024-05", date="2024-07-29", evidence_type="行情数据", description="7月下旬高峰：大众交通16日涨233%、锦江15天9板、金龙12天7板、7/23大众交通12日+142%。龙头梯队明确。", evidence_role="supporting", confidence="high", independence_group="orig_robotaxi_leader"),
     dict(evidence_id="E-2024-07", source_id="S-2024-06", date="2024-07-31", evidence_type="行情数据", description="反例/退潮：7/31大众交通9连板终结(-2.65%)、大众公用天地板港股暴跌22.75%；7/24高位亏钱效应放大(锦江/金溢跌停)。约3周脉冲、快涨快退。", evidence_role="contradicting", confidence="high", independence_group="orig_robotaxi_retreat"),
-    dict(evidence_id="E-2024-08", source_id="S-2024-06", date="2024-10-11", evidence_type="行情数据", description="10/10-11特斯拉Robotaxi发布会(无方向盘Cybercab)仅带来一日A股脉冲后回落，强度弱、不构成独立Campaign。", evidence_role="context", confidence="medium", independence_group="orig_robotaxi_thirdwave"),
+    dict(evidence_id="E-2024-08", source_id="S-2024-06", date="2024-10-11", evidence_type="行情数据", description="10/10-11特斯拉Robotaxi发布会(无方向盘Cybercab)仅带来一日A股脉冲后回落，强度弱、不构成独立Campaign。", evidence_role="context", confidence="medium", independence_group="orig_robotaxi_thirdwave", temporal_relation="subsequent"),
     # 2025
     dict(evidence_id="E-2025-01", source_id="S-2025-02", date="2025-06-24", evidence_type="行情数据", description="6/22特斯拉奥斯汀Robotaxi收费试点(点火)→6/24 A股无人驾驶板块全线爆发涨3%三友30%、万马/恒帅/星源卓镁20%、海马/浙江世宝涨停。板块级启动。", evidence_role="supporting", confidence="high", independence_group="orig_robotaxi_2025"),
     dict(evidence_id="E-2025-02", source_id="S-2025-03", date="2025-08-31", evidence_type="行业数据", description="8月CS汽车+11.72%、CS汽车零部件+16.04%、乘用车+8.01%，跑赢沪深300；小马智行8/11第7代Robotaxi量产超200辆。汽零8月独立走强。", evidence_role="supporting", confidence="medium", independence_group="orig_sector_momentum"),
     dict(evidence_id="E-2025-03", source_id="S-2025-07", date="2025-08-29", evidence_type="行情数据", description="反例：8月A股整体大牛(沪指+8%、创业板+24%、科创50+28%)，汽车为强势板块之一非唯一主线；夏季涨幅部分来自系统性牛市β，需降档汽车独立Campaign强度。", evidence_role="contradicting", confidence="medium", independence_group="orig_beta_mask"),
-    dict(evidence_id="E-2025-04", source_id="S-2025-06", date="2025-08-31", evidence_type="行业数据", description="反例：特斯拉FSD 2025年未正式在华落地(2026-05-21才宣布监督版可用)；智驾行业分化出清(毫末停摆/纵目破产)，一级投资降至<120亿。点火源是'Robotaxi试点'而非'FSD入华'。", evidence_role="contradicting", confidence="high", independence_group="orig_fsd_not_landed"),
+    dict(evidence_id="E-2025-04", source_id="S-2025-06", date="2025-08-31", evidence_type="行业数据", description="反例：特斯拉FSD 2025年未正式在华落地(2026-05-21才宣布监督版可用)；智驾行业分化出清(毫末停摆/纵目破产)，一级投资降至<120亿。点火源是'Robotaxi试点'而非'FSD入华'。", evidence_role="contradicting", confidence="high", independence_group="orig_fsd_not_landed", temporal_relation="retrospective"),
     dict(evidence_id="E-2025-05", source_id="S-2025-05", date="2025-10-15", evidence_type="行情数据", description="反例/剥离：渤海汽车重组获批、众泰阿尔及利亚订单、中通客车同业竞争重组、天汽模/天迈控股权变更等个股资本运作单独暴涨，均不能算汽车行业Campaign。", evidence_role="contradicting", confidence="high", independence_group="orig_single_stock_events"),
 ]
 for e in evidences_2023_25:
@@ -531,7 +531,7 @@ campaign_events_2023_25 = [
     dict(campaign_id="C-2023-AD", event_id="EV-2023-02", role="catalyst"),
     dict(campaign_id="C-2023-AD", event_id="EV-2023-03", role="context"),
     dict(campaign_id="C-2024-V2X", event_id="EV-2024-01", role="trigger"),
-    dict(campaign_id="C-2024-V2X", event_id="EV-2024-02", role="catalyst"),
+    dict(campaign_id="C-2024-V2X", event_id="EV-2024-02", role="follow_up"),  # 7/3>6/25 end，改为 follow_up（Pilot 1-C0），不再作 catalyst
     dict(campaign_id="C-2024-ROBOTAXI", event_id="EV-2024-03", role="trigger"),
     dict(campaign_id="C-2025-ROBOTAXI", event_id="EV-2025-01", role="trigger"),
     dict(campaign_id="C-2025-ROBOTAXI", event_id="EV-2025-02", role="catalyst"),
@@ -601,6 +601,48 @@ phases_2023_25 = [
 ]
 for p in phases_2023_25:
     ins("campaign_phases", p)
+
+# ---- Pilot 1-C0 时间关系自动补全 ----
+# 为 temporal_relation 仍为 NULL 的证据按“相对其绑定 Campaign”的日期推导：
+#   date < start -> prior ; start<=date<=end -> contemporaneous ; date>end -> subsequent
+# 已显式标注（retrospective/subsequent）的不覆盖；未绑定任何 Campaign 的 -> unknown。
+def _tag_temporal_relations():
+    cam = {r["campaign_id"]: (r["start_date"], r["end_date"])
+           for r in conn.execute("SELECT campaign_id, start_date, end_date FROM campaigns")}
+    rows = conn.execute(
+        "SELECT e.evidence_id FROM evidences e WHERE e.temporal_relation IS NULL").fetchall()
+    changed = 0
+    for (eid,) in rows:
+        binds = conn.execute(
+            "SELECT ce.campaign_id FROM campaign_evidences ce WHERE ce.evidence_id=?", (eid,)).fetchall()
+        if not binds:
+            new_val = "unknown"
+        else:
+            dates = [cam[b["campaign_id"]] for b in binds if b["campaign_id"] in cam]
+            if not dates:
+                new_val = "unknown"
+            elif len(dates) > 1:
+                # 多 Campaign 绑定且时间跨度不一：保守置 unknown（不作无证据臆断）
+                new_val = "unknown"
+            else:
+                (s, e) = dates[0]
+                rel = conn.execute(
+                    "SELECT date FROM evidences WHERE evidence_id=?", (eid,)).fetchone()["date"]
+                if not rel or not s or not e:
+                    new_val = "unknown"
+                elif rel < s:
+                    new_val = "prior"
+                elif rel <= e:
+                    new_val = "contemporaneous"
+                else:
+                    new_val = "subsequent"
+        conn.execute("UPDATE evidences SET temporal_relation=? WHERE evidence_id=?", (new_val, eid))
+        changed += 1
+    if changed:
+        print(f"[Pilot 1-C0] tagged {changed} evidences temporal_relation")
+    return changed
+
+_tag_temporal_relations()
 
 conn.commit()
 conn.close()

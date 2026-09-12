@@ -26,6 +26,12 @@ Pilot 1-C1（行情核验基础设施，§15 的 11 项）：
 18. evidence_id 若存在必须有效
 19. Date Observation 枚举合法
 20. 不使用未来成分股回填历史 / export 不混入无关 Market Data
+
+Pilot 1-C0（时间一致性）：
+21. Event→Campaign 时间一致性（trigger/catalyst 不得晚于 end）
+22. 绑定 Campaign 的证据必须标 temporal_relation
+23. 事后证据(retrospective/subsequent)不得伪装 contemporaneous
+24. 2018-2025 annual_status 熔断（本轮不得改动）
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -117,6 +123,77 @@ def check_orphan_evidences():
                   AND e.evidence_role='supporting'""")
     for r in rows:
         warn("orphan-supporting-evidence", f"{r[0]} 为 supporting 但未关联任何 Campaign，需核对其归属")
+
+
+# ============================================================
+# Pilot 1-C0：Evidence / Event / Campaign 时间一致性
+# ============================================================
+
+def check_event_temporal_consistency():
+    """Campaign 事件时间一致性：
+    - trigger/catalyst：event.date 不得晚于 campaign.end_date（催化/触发须在 window 内或之前）
+    - follow_up：允许晚于 end；context：允许前后
+    - trigger：若远早于 start（不合理范围）给 warning
+    """
+    rows = q("""SELECT ce.campaign_id, ce.event_id, ce.role, e.date AS ev_date,
+                       cp.start_date, cp.end_date
+                FROM campaign_events ce
+                JOIN events e ON e.event_id=ce.event_id
+                JOIN campaigns cp ON cp.campaign_id=ce.campaign_id""")
+    for cid, eid, role, ev, s, e in rows:
+        if not ev or not e:
+            continue
+        if role in ("trigger", "catalyst") and ev > e:
+            fail("event-temporal",
+                 f"{cid} {eid} role={role} 日期{ev} 晚于 Campaign end {e}（不允许，应改 follow_up/context）")
+        if role == "trigger" and s and ev < s:
+            # 触发可略早于 start（政策预期），但不应跨度太大
+            try:
+                from datetime import date
+                d0 = date.fromisoformat(ev); d1 = date.fromisoformat(s)
+                if (d1 - d0).days > 90:
+                    warn("event-temporal", f"{cid} {eid} trigger 日期{ev} 远早于 start {s}（>90天），需人工复核")
+            except ValueError:
+                pass
+
+
+def check_evidence_temporal_present():
+    """绑定到 Campaign 的证据必须有 temporal_relation（不为空且合法）。"""
+    rows = q("""SELECT ce.evidence_id, ce.campaign_id, e.temporal_relation
+                FROM campaign_evidences ce
+                JOIN evidences e ON e.evidence_id=ce.evidence_id""")
+    for eid, cid, tr in rows:
+        if not tr:
+            fail("evidence-temporal-missing", f"{eid}(bound to {cid}) 缺 temporal_relation")
+        elif tr not in db.TEMPORAL_RELATION:
+            fail("evidence-temporal-enum", f"{eid} temporal_relation='{tr}' 非法")
+
+
+def check_retrospective_not_contemporaneous():
+    """“事后证据”不得伪装成 contemporaneous：
+    若证据 tagged contemporaneous，但其日期明显落在其绑定 Campaign 之后 -> warning。
+    反向：retrospective 专门用于事后资料，允许出现在任意时点。
+    """
+    rows = q("""SELECT ce.evidence_id, ce.campaign_id, e.date AS ev_date, e.temporal_relation,
+                       cp.end_date
+                FROM campaign_evidences ce
+                JOIN evidences e ON e.evidence_id=ce.evidence_id
+                JOIN campaigns cp ON cp.campaign_id=ce.campaign_id
+                WHERE e.temporal_relation='contemporaneous'""")
+    for eid, cid, ev, tr, end in rows:
+        if ev and end and ev > end:
+            warn("evidence-temporal-mislabel",
+                 f"{eid}(bound to {cid}) 标 contemporaneous 但日期{ev} 晚于 end {end}，疑似应标 subsequent/retrospective")
+
+
+def check_annual_status_frozen(expect_map):
+    """Annual Status 熔断：确保本轮未改动往年定稿（2018-2025）。"""
+    rows = q("SELECT year, status FROM annual_reviews WHERE rule_id='rule_auto_summer' ORDER BY year")
+    got = {y: s for y, s in rows}
+    for y, expect in expect_map.items():
+        if got.get(y) != expect:
+            fail("annual-status-changed",
+                 f"{y} annual_status 由 '{got.get(y)}' 变为应为 '{expect}'——本轮不得改动")
 
 
 # ============================================================
@@ -266,6 +343,17 @@ def main():
     check_cdo_evidence_ref()
     check_cdo_enum()
     check_no_future_backfill()
+
+    # ---- Pilot 1-C0 时间一致性检查 ----
+    check_event_temporal_consistency()
+    check_evidence_temporal_present()
+    check_retrospective_not_contemporaneous()
+    # Annual status 熔断：往年定稿不得改动
+    check_annual_status_frozen({
+        2018: "no_clear_campaign", 2019: "weak", 2020: "strong",
+        2021: "strong", 2022: "strong", 2023: "medium",
+        2024: "medium", 2025: "medium",
+    })
 
     print(f"PASS: {len(FAILS)==0 and len(WARNS)>=0}")
     print("-" * 40)

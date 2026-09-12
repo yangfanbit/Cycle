@@ -25,6 +25,8 @@ SERIES_TYPE = ("industry_index", "sector_index", "concept_index", "stock", "benc
 PRICE_TYPE = ("raw", "adjusted", "other")
 DATE_ROLE = ("start", "end", "peak")
 VERIFY_METHOD = ("manual", "market_data", "market_data_plus_event", "unknown")
+# Pilot 1-C0
+TEMPORAL_RELATION = ("contemporaneous", "prior", "subsequent", "retrospective", "unknown")
 
 
 def connect() -> sqlite3.Connection:
@@ -83,6 +85,11 @@ def migrate(conn: sqlite3.Connection = None) -> None:
             PRIMARY KEY (campaign_id, evidence_id)
         );
     """)
+
+    # 3) 新增 evidences.temporal_relation 列（Pilot 1-C0）
+    if _table_exists(conn, "evidences") and not _column_exists(conn, "evidences", "temporal_relation"):
+        conn.execute("ALTER TABLE evidences ADD COLUMN temporal_relation TEXT")
+        print("[migrate] + evidences.temporal_relation")
 
     # ---- Pilot 1-C1 行情核验基础设施（新增 4 表，幂等）----
     conn.executescript("""

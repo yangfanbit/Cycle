@@ -43,6 +43,14 @@ CREATE TABLE IF NOT EXISTS evidences (
     -- 独立性分组：同一事实被多个媒体转载时，仅为转引、不得自动计为多条独立证据。
     -- 同源转引填 same_origin_xxx；真正独立来源使用不同 group。
     independence_group TEXT,
+    -- 时间关系（Pilot 1-C0）：相对其关联 Campaign 的时间语义，防止"事后证据"伪装成"当时信息"。
+    --   contemporaneous : 发生/发布于 Campaign 期间
+    --   prior           : 发生于 Campaign 开始前
+    --   subsequent      : Campaign 后，用于解释结果/退潮/反证
+    --   retrospective   : 更晚的历史资料，站在未来回顾过去（hindsight）
+    --   unknown         : 无法判断
+    temporal_relation TEXT CHECK (temporal_relation IN
+                        ('contemporaneous','prior','subsequent','retrospective','unknown')),
     created_at      TEXT DEFAULT (datetime('now'))
 );
 
