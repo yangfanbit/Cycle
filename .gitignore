@@ -39,6 +39,11 @@ build/
 Thumbs.db
 desktop.ini
 
+# ---- 工具/项目元数据（本地，不提交） ----
+.workbuddy/
+_temp_*.txt
+_*.ps1
+
 # ---- 迁移/审计临时文件（不提交） ----
 _audit_*.txt
 _baseline_*.txt
