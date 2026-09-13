@@ -19,10 +19,10 @@
 
 ## Current Phase
 
-**Phase 4：Monorepo Integration + Project Handoff Infrastructure —— 已完成。**
+**Phase 5：Current Time Lens v0 —— IMPLEMENTED / READY FOR USER REVIEW。**
 
-单一仓库 `ThreeC`、单一 Git、单一 canonical export、两个逻辑模块（Research + Product）、
-一个项目目标。当前**等待下一轮 Review**。
+「今天这个时间点，历史上附近发生过什么？」已作为**页面顶部入口**实现。
+**不做**预测 / 荐股 / 交易信号。当前处于**等待真实用户体验 Review** 状态。
 
 ---
 
@@ -34,6 +34,7 @@
 | Phase 2 | Historical Data Production v1（2018–2025 批量研究） | ✅ |
 | Phase 3 | Timeline MVP（+ Conflict Visual / Phase Window / Drivers / SamePeriod / Research Export Adapter / Preview-Production 隔离） | ✅ |
 | Phase 4 | Monorepo Integration + Handoff Infrastructure | ✅ |
+| Phase 5 | **Current Time Lens v0**（今天入口：时间定位 → 历史同期 → 历史阶段映射 → 可能驱动） | ✅ IMPLEMENTED / READY FOR USER REVIEW |
 
 ---
 
@@ -76,11 +77,16 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Product Status
 
+- **Current Time Lens v0**（Phase 5，页面顶部入口）：打开即回答
+  「今天这个时间点，历史上附近发生过什么？」——
+  A 时间定位 → B 历史同期（按年份）→ C 历史阶段映射（**当时处于**，非当前阶段）→ D 可能驱动 / 相关因素。
+  只消费 canonical export；**不做**预测 / 概率 / 荐股 / 交易信号。
 - Timeline MVP 可用：365 天全年时间轴、Campaign 生命周期视觉、
-  Peak Window、Conflict 分级视觉、Drivers 四问、SamePeriodView、OpportunityRadar。
-- **生产模式**：消费 `data/verified/`（当前为空 → 显示空态 + 预览入口）。
+  Peak Window、Conflict 分级视觉、Drivers 四问、SamePeriodView。
+- **生产模式**：消费 `data/verified/`（当前为空 → Lens 显示「当前研究数据未覆盖」空态 + 预览入口）。
 - **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
-- 测试：`npm test` **111 项通过**；`tsc -b` 通过；`build` 通过。
+- `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
+- 测试：`npm test` **139 项通过**；`tsc -b` 通过；`build` 通过。
 
 ---
 
@@ -120,18 +126,22 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Current Blockers
 
-**无硬性阻塞。** 处于等待 Review 状态。
+**无硬性阻塞。** Phase 5 Current Time Lens v0 已实现，处于**等待真实用户体验 Review**状态。
 
 ---
 
 ## Next Single Goal
 
-> **等待下一轮 Review。**
+> **真实用户体验 Review。**
 >
-> Monorepo Integration 完成后**立即停止**。未经明确授权，不启动任何新功能。
+> Phase 4 Monorepo Integration 已完成；Phase 5 Current Time Lens v0 已实现。
+> 本轮到此为止，**不启动 Phase 5.1，不继续加功能**。
+>
+> 请用户在真实使用中回答：打开页面 5 秒内，Lens 是否真正成为「今天入口」？
+> 它是否仍只是「历史列表」？是否存在任何误导用户做预测的文案？
 
 Review 后可能的方向（**仅供参考，须经授权**）：
-Phase 5 Historical Opportunity Map 深化 → Phase 6 Multi-theme → Phase 7 Current Market Mapping
+Phase 6 Multi-theme → Phase 7 Current Market Mapping
 → Phase 8 Opportunity Discovery / Radar（**Radar 不是交易信号**）。
 
 ---

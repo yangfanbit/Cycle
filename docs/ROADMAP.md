@@ -48,7 +48,7 @@
 
 ---
 
-## Phase 4 · Monorepo Integration（已完成 · 本轮）
+## Phase 4 · Monorepo Integration（已完成）
 
 **目标**：一个项目、一个 Git、一个 canonical export、两个逻辑模块。
 
@@ -63,7 +63,26 @@
 
 ---
 
-## Phase 5 · Historical Opportunity Map（待 Review 后启动）
+## Phase 5 · Current Time Lens v0（已完成 · IMPLEMENTED / READY FOR USER REVIEW）
+
+**目标**：把「今天」变成产品入口 —— 打开即回答「今天这个时间点，历史上附近发生过什么？」
+**不做**预测 / 荐股 / 交易信号。
+
+- 新增 `src/data/timeline/currentTimeLens.ts`：`currentTimeLens(source, today)`
+  - 复用 `samePeriodWindow()` / `samePeriodCampaigns()`，不发明第二套日期逻辑
+  - 输出：A 时间定位 / B 历史同期（按年份）/ C 历史阶段映射（**当时处于**）/ D 可能驱动
+- 新增 `src/components/CurrentTimeLens/CurrentTimeLens.tsx`：页面顶部入口，点击经现有
+  `selection` 打开 Campaign Detail
+- `src/App.tsx`：Lens 置于 Timeline 之上；`OpportunityRadar` 不再渲染（文件保留）
+- 新增测试 `src/data/timeline/__tests__/currentTimeLens.test.tsx`（28 项）
+- 数据源仍为唯一 canonical `exports/timeline_export_v1.json`，**零**新数据 / 新 Schema / 新 Export 字段
+
+**验收**：2026-09-13 打开 5 秒内读到「今天附近历史上发生过什么」。
+下一步：**真实用户体验 Review**（不启动 Phase 5.1）。
+
+---
+
+## Phase 5.1 · Historical Opportunity Map 深化（待 Review 后启动）
 
 **目标**：从"看得见历史"到"看得懂机会结构"。
 

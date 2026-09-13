@@ -7,7 +7,60 @@
 
 ---
 
-## 2026-09-13 · Phase 4 Monorepo Integration + Project Handoff Infrastructure
+## 2026-09-13 · Phase 5 Current Time Lens v0
+
+### 目标
+
+把「今天」变成产品入口 —— 打开即回答
+**「今天这个时间点，历史上附近发生过什么？」**
+**不做**预测 / 荐股 / 交易信号 / 概率统计。本轮**不扩大功能**、不改 Research Model、
+不改历史研究结论、不改 Schema / Export Contract、不新增数据。
+
+### 新增文件
+
+| 文件 | 说明 |
+|---|---|
+| `src/data/timeline/currentTimeLens.ts` | `currentTimeLens(source, today)` 纯函数；导出 `historicalPhasesInWindow` / `possibleDriversOf` / `stageLabel` 及类型 |
+| `src/components/CurrentTimeLens/CurrentTimeLens.tsx` | 页面顶部入口组件（A–D 四块） |
+| `src/data/timeline/__tests__/currentTimeLens.test.tsx` | 28 项测试（数据逻辑 1–8 / 联动 9–10 / 产品 11–13 + SSR 渲染 3 项） |
+
+### 修改文件
+
+| 文件 | 变化 |
+|---|---|
+| `src/App.tsx` | `<CurrentTimeLens>` 置于 `<Timeline>` 之上，复用现有 `selection` / `setSelection`；移除 `<OpportunityRadar>` 渲染与其 import（组件文件保留） |
+| `src/styles.css` | 新增 `.ctl-*` 样式块（Lens 面板 / 年份行 / 条目 grid / 驱动 chip） |
+| `docs/PROJECT_STATE.md` | Phase 4 → Phase 5；Completed 表 / Product Status / Next Single Goal / Blockers 更新 |
+| `docs/ROADMAP.md` | Phase 5 改为 Current Time Lens v0（已完成）；原机会地图深化顺延为 Phase 5.1 |
+| `AGENTS.md` | §2 当前阶段、§4 目录、§9 测试数、§12 下一目标 |
+| `docs/CHANGELOG.md` | 本条目 |
+
+### 设计要点（严格遵守约束）
+
+- **复用 `samePeriodWindow()` / `samePeriodCampaigns()`**：不发明第二套日期逻辑（9 月 → 08-15 ~ 10-15）。
+- **只消费 canonical `TimelineDataSource`**（= `exports/timeline_export_v1.json`）：零新数据 / 新 Schema / 新 Export 字段。
+- **「当时处于」语义**：`historicalPhasesInWindow()` 返回 Campaign 在**历史那个窗口内**命中的
+  lifecycle 阶段（历史事实），**绝不写成「当前处于」** —— 技术上防止「历史相似 = 今年重演」的误读。
+- **不做「N 次」**：结果对象无 probability / frequency / score 字段；仅以「覆盖 N 个年份」提示覆盖度。
+- **未覆盖措辞**：无数据 → 「当前研究数据未覆盖（不是「历史没有机会」）」。
+- **不编造**：无 `lifecycle` → 「历史阶段未标注」；Research 原始归因标签（含 `unknown（…）`）原样展示。
+
+### 验证结果（全绿）
+
+- Node：`npm test` **139 项通过**（lens 28 + adapter 59 + utils 52）；`tsc -b` 通过；`build` 通过
+  （56 modules，229.50 kB JS / 16.52 kB CSS）。
+- Python：`validate_db.py` / `validate_timeline_export.py` / `validate_batch_research.py` 全部 PASS。
+- SSR 实测（2026-09-13，preview）：2019 智能驾驶「主升」/ 2020 新能源「次级行情」/ 2021「退潮」/
+  2022 购置税「退潮」/ 2023 RC-华为「主升」(09-20~10-15) / 2024 RC-次级「早期信号」/ 2025「主段结束」。
+- 生产 verified 空 → Lens 正确落「当前研究数据未覆盖」空态。
+
+### 未做（明确）
+
+未新增 Rule / 主题 / 数据 / Schema / Export 字段 / Statistics / Similarity / Probability /
+Prediction / Recommendation / Realtime / Radar Upgrade / Dashboard；未删 `OpportunityRadar.tsx`；
+未改 `schema.sql` / `database/cycle_research.db` / Research 研究语义。
+
+---
 
 ### 目标
 

@@ -37,10 +37,13 @@
 
 ## 2. 当前阶段
 
-**Phase 4：Monorepo Integration + Project Handoff Infrastructure（已完成）。**
+**Phase 5：Current Time Lens v0（IMPLEMENTED / READY FOR USER REVIEW）。**
 
-- Cycle（产品 / PWA / Timeline 前端）与 Cycle-Research（研究 / 数据生产）已合并为**单一仓库 `ThreeC`**，单一 Git，保留双方完整历史。
-- 当前处于 **等待下一轮 Review** 状态。
+- Phase 4 Monorepo Integration 已完成：Cycle（产品 / PWA / Timeline 前端）与
+  Cycle-Research（研究 / 数据生产）已合并为**单一仓库 `ThreeC`**，单一 Git，保留双方完整历史。
+- Phase 5 Current Time Lens v0 已实现：「今天这个时间点，历史上附近发生过什么？」
+  已作为页面顶部入口；**不做**预测 / 荐股 / 交易信号。
+- 当前处于 **等待真实用户体验 Review** 状态。**不启动 Phase 5.1，不继续加功能。**
 
 阶段全景见 `docs/ROADMAP.md`。下一个唯一目标见 `docs/PROJECT_STATE.md`「Next Single Goal」。
 
@@ -70,7 +73,7 @@ ThreeC/
 ├─ package.json / tsconfig.json / vite.config.ts
 │
 ├─ src/                        ← Product：前端源码
-│   ├─ components/             ← Timeline / CampaignDetail / SamePeriodView / OpportunityRadar …
+│   ├─ components/             ← CurrentTimeLens（Phase 5 入口）/ Timeline / CampaignDetail / SamePeriodView / OpportunityRadar（未引用，待清理）…
 │   ├─ data/
 │   │   └─ timeline/           ← Timeline Adapter（消费 exports/）
 │   ├─ models/                 ← 核心数据模型（禁擅改）
@@ -179,7 +182,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 111 项
+npm test          # Vitest，当前 139 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -235,5 +238,6 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**等待下一轮 Review。** Monorepo Integration 完成后已**停止**：
-不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。
+**真实用户体验 Review。** Phase 5 Current Time Lens v0 实现完成后已**停止**：
+不启动 Phase 5.1，不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。
+请用户在真实使用中判断：Lens 是否真正成为「今天入口」，是否仍只是历史列表，是否存在误导预测的文案。

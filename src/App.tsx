@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
-import { OpportunityRadar } from './components/OpportunityRadar/OpportunityRadar';
+import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { RuleDetail } from './components/RuleDetail/RuleDetail';
 import { SamePeriodView } from './components/SamePeriodView/SamePeriodView';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
@@ -104,6 +104,14 @@ export default function App() {
       )}
 
       <main className="app-main">
+        {/* Current Time Lens v0：页面顶部入口 —— 「今天这个时间点，历史上附近发生过什么？」
+            数据源与 Timeline 一致（verified / preview），并与 Timeline 共用 selection 联动。 */}
+        <CurrentTimeLens
+          dataSource={dataSource}
+          today={today}
+          selection={selection}
+          onSelect={setSelection}
+        />
         <Timeline
           year={year}
           today={today}
@@ -113,7 +121,8 @@ export default function App() {
           researchEvents={yearData.researchEvents}
           sourceKind={dataSource.kind}
         />
-        {/* 历史同周期查看：选择月份 → 历史各年同期 Campaign 列表（非统计模型） */}
+        {/* 历史同周期查看：选择月份 → 历史各年同期 Campaign 列表（非统计模型）。
+            Current Time Lens 已是主入口，本视图作为按月切换的补充查看保留。 */}
         <SamePeriodView dataSource={dataSource} today={today} />
         {/* 生产模式且 verified 为空：提供开发预览入口（不把 preview 当生产数据） */}
         {!preview && allCampaigns.length === 0 && (
@@ -124,10 +133,6 @@ export default function App() {
             </a>
           </div>
         )}
-        <OpportunityRadar
-          today={today}
-          onSelectRule={(id) => setSelection({ kind: 'rule', id })}
-        />
       </main>
 
       {selectedRule && (

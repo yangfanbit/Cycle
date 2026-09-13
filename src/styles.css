@@ -727,9 +727,155 @@ html, body {
 /* 详情面板：关联事件 / 研究信号行 */
 .event-line { font-size: 12.5px; line-height: 1.7; }
 
+/* ---------- Current Time Lens v0（页面顶部入口） ---------- */
+.ctl-view {
+  margin: 4px 0 20px;
+  padding: 14px 16px 16px;
+  border: 1px solid #d9e2ea;
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  background: #f7fafc;
+}
+
+.ctl-tag {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border: 1px solid #c7d7e4;
+  border-radius: 999px;
+  background: #eef5fa;
+  color: #33556f;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+.ctl-position {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 2px 0 2px;
+}
+.ctl-date { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--ink); }
+.ctl-month { font-size: 13px; font-weight: 600; color: var(--accent); }
+.ctl-window { font-size: 12.5px; color: var(--ink-2); }
+.ctl-window em { font-family: var(--mono); font-style: normal; font-weight: 600; color: var(--ink); }
+.ctl-hint { color: var(--ink-3); font-size: 11px; }
+
+.ctl-question {
+  margin: 6px 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ctl-empty {
+  margin: 6px 0;
+  padding: 10px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: #fbfbfa;
+  color: var(--ink-2);
+  font-size: 12.5px;
+}
+
+.ctl-years { display: flex; flex-direction: column; gap: 8px; }
+.ctl-year { display: flex; gap: 12px; align-items: flex-start; }
+.ctl-year-label {
+  flex: none;
+  width: 46px;
+  padding-top: 6px;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: #33556f;
+}
+.ctl-entries { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+
+/* 单条历史同期条目：Year + Campaign + Phase 为视觉主体 */
+.ctl-entry {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'badge title status'
+    'badge dates status'
+    'phase phase phase';
+  align-items: center;
+  gap: 2px 8px;
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  border: 1px solid #d5dfe8;
+  border-radius: var(--radius);
+  background: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+}
+.ctl-entry:hover { background: #f1f7fb; border-color: #b9cddd; }
+.ctl-entry.on { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(47, 93, 138, 0.14); }
+.ctl-entry .rc-badge { grid-area: badge; align-self: start; margin-top: 2px; }
+.ctl-entry-title { grid-area: title; font-weight: 600; }
+.ctl-entry-dates { grid-area: dates; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); }
+.ctl-entry .st-badge { grid-area: status; align-self: start; }
+.ctl-entry-phase { grid-area: phase; margin-top: 3px; font-size: 12px; color: var(--ink-2); }
+.ctl-entry-phase strong { color: #8a5a1f; }
+.ctl-phase-hit { color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
+.ctl-phase-also { color: var(--ink-3); font-size: 11px; }
+.ctl-phase-none { color: var(--ink-3); font-style: italic; }
+
+.ctl-coverage {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.ctl-drivers {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+.ctl-drivers-title {
+  margin: 0 0 2px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.ctl-drivers-sub { margin: 0 0 8px; font-size: 11.5px; color: var(--ink-3); }
+.ctl-driver-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ctl-driver-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px; }
+.ctl-driver-year { font-family: var(--mono); font-size: 12px; font-weight: 700; color: #33556f; min-width: 34px; }
+.ctl-driver-title {
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+}
+.ctl-driver-title:hover { text-decoration: underline; }
+.ctl-driver-labels { display: inline-flex; flex-wrap: wrap; gap: 5px; }
+.ctl-driver-chip {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid #e0dccf;
+  border-radius: 999px;
+  background: #fbf9f4;
+  font-size: 11px;
+  color: #6d6250;
+}
+
 @media (max-width: 720px) {
   .app-main { padding: 12px 12px 40px; }
   .app-header { padding: 14px 14px 10px; }
   .app-today { margin-left: 0; width: 100%; }
   .preview-banner { margin: 12px 12px 0; }
+  .ctl-entry { grid-template-columns: auto 1fr; grid-template-areas: 'badge title' 'badge dates' 'status status' 'phase phase'; }
+  .ctl-entry .st-badge { justify-self: start; }
 }
