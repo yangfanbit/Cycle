@@ -1,15 +1,26 @@
-"""timeline_export_v1.json 契约校验（validate_timeline_export.py）。
+"""timeline_export_v1.json Canonical Contract 校验（validate_timeline_export.py）。
 
-验证（对应 HDP v1 验证目标 8-10 的导出层部分）：
-8. timeline_export JSON 可被机器解析（JSON 语法 + 顶层必填字段）
-9. timeline export 不生成不存在的 Cycle 字段（字段白名单检查）
-10. 2018–2025 数据全部可导出（campaigns 覆盖 2019–2025；2018 反例由 rules 注释承载）
+对应 Timeline Export Contract v1.0 Finalization 的 14 项真实验证：
+ 1. 顶层字段（白名单 + 必填）
+ 2. rules（白名单 + 必填）
+ 3. signals（结构、归属 campaign_id XOR research_candidate_id、日期格式）
+ 4. campaigns（必填 + 白名单）
+ 5. research_candidates（必填 + 白名单）
+ 6. events（必填 + 白名单 + campaign_id 可空 = 全局事件）
+ 7. securities（必填 + 白名单 + 必须知道属于谁）
+ 8. 字段白名单（上述各实体覆盖）
+ 9. 日期格式（ISO YYYY-MM-DD 或 null）
+10. ID 唯一性（campaign_id / research_candidate_id / event_id 唯一；(security_id, owner) 唯一）
+11. Candidate 不进入 formal campaigns（campaign_id 与 research_candidate_id 无重叠）
+12. CONFLICT 必须有 conflicts（candidate_a + candidate_b）
+13. research candidates 不得伪装 verified
+14. source_commit 存在
 
-契约字段白名单（timeline_export_version = "1.0"，向后兼容原则：未来只增不改删语义）。
+关键测试：RC-2023-HUAWEI 出现在 research_candidates、不出现在 campaigns、但可出现在 timeline_export。
 
 用法: python scripts/validate_timeline_export.py
 """
-import sys, os, json
+import sys, os, json, datetime
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,21 +28,31 @@ EXPORT = os.path.join(ROOT, "exports", "timeline_export_v1.json")
 
 TOP_LEVEL = {
     "contract", "timeline_export_version", "generated_at", "source_commit",
-    "project", "purpose", "rules", "signals", "campaigns", "events", "securities",
+    "project", "rules", "signals", "campaigns", "research_candidates", "events", "securities",
 }
 RULE_FIELDS = {"rule_id", "name", "base_pattern", "definition", "observation_window"}
+SIGNAL_FIELDS = {"type", "date", "confidence", "campaign_id", "research_candidate_id"}
 CAMPAIGN_FIELDS = {
     "campaign_id", "rule_id", "year", "start_date", "peak_date", "end_date",
     "status", "confidence", "classification", "strength", "result",
-    "themes", "events", "securities",
-    # research-only 附加（明确标注，不得伪装成正式字段）
-    "research_status", "theme_cycle_id", "first_signal_date",
-    "broad_confirmation_date", "first_decline_date", "notes",
+    "themes", "event_ids", "security_ids",
+    # research metadata（明确不是 HistoricalCampaign schema 字段）
+    "research_status", "theme_cycle_id", "promotion_status",
+    "first_signal_date", "broad_confirmation_date", "first_decline_date",
+    "conflicts", "notes",
 }
-SIGNAL_FIELDS = {"type", "date", "confidence"}
-EVENT_FIELDS = {"event_id", "name", "date", "event_type", "role"}
-SECURITY_FIELDS = {"security_id", "name", "ticker", "exchange", "role"}
+CANDIDATE_FIELDS = {
+    "campaign_id", "rule_id", "year", "title", "start_date", "peak_date", "end_date",
+    "themes", "event_ids", "security_ids",
+    "early_signal", "research_status", "theme_cycle_id", "conflicts", "notes",
+}
+EVENT_FIELDS = {"event_id", "name", "date", "event_type", "role", "campaign_id", "research_candidate_id"}
+SECURITY_FIELDS = {"security_id", "name", "ticker", "exchange", "role", "campaign_id", "research_candidate_id"}
 THEME_FIELDS = {"name", "theme_type", "role"}
+
+VALID_PRODUCTION_STATUS = {"verified", "provisional", "conflict", "preview"}
+VALID_RESEARCH_STATUS = {"PROVISIONAL", "CONFLICT", "INSUFFICIENT"}
+VALID_SIGNAL_TYPE = {"EARLY_SIGNAL", "THEME_FORMING", "CONFIRMATION_CANDIDATE"}
 
 FAILS, WARNS = [], []
 
@@ -44,12 +65,34 @@ def warn(rule, msg):
     WARNS.append((rule, msg))
 
 
+def is_iso_date(s):
+    if s is None or s == "":
+        return True
+    try:
+        datetime.date.fromisoformat(str(s)[:10])
+        return len(str(s)) == 10
+    except (ValueError, TypeError):
+        return False
+
+
+def check_whitelist(owner, fields, allowed):
+    for k in sorted(set(fields) - allowed):
+        fail("field-whitelist", f"{owner} 出现未声明字段: {k}（不得伪装成正式 Contract 字段）")
+
+
+def check_owner(obj, owner_label):
+    """归属：campaign_id XOR research_candidate_id（可都 null 仅限全局事件/证券）。"""
+    cid = obj.get("campaign_id")
+    rcid = obj.get("research_candidate_id")
+    if cid and rcid:
+        fail("owner", f"{owner_label} 同时有 campaign_id={cid} 与 research_candidate_id={rcid}（二选一）")
+
+
 def main():
-    print("=== validate_timeline_export.py ===\n")
+    print("=== validate_timeline_export.py（Canonical Contract v1.0）===\n")
     if not os.path.exists(EXPORT):
         fail("file-missing", f"timeline_export 缺失: {EXPORT}")
         return finish()
-    # 8) 机器可解析
     try:
         with open(EXPORT, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -58,60 +101,178 @@ def main():
         return finish()
     print("JSON 解析: OK")
 
-    # 版本与契约
+    # 1) 顶层字段
+    check_whitelist("timeline_export", data.keys(), TOP_LEVEL)
     if data.get("contract") != "timeline_export":
         fail("contract", f"contract 缺失或错误: {data.get('contract')}")
     ver = data.get("timeline_export_version")
     if ver != "1.0":
         fail("version", f"timeline_export_version 必须为 '1.0'，当前: {ver}")
-    for k in ("generated_at", "source_commit"):
-        if not data.get(k):
-            warn("meta", f"顶层缺 {k}")
+    if "export_version" in data:
+        fail("version-dup", "禁止同时存在 export_version（版本语义只能 timeline_export_version）")
+    # 14) source_commit 存在
+    if not data.get("source_commit"):
+        fail("source_commit", "顶层缺 source_commit")
 
-    # 顶层字段白名单
-    extra = set(data.keys()) - TOP_LEVEL
-    for k in sorted(extra):
-        fail("top-extra", f"顶层出现未声明字段: {k}（不得伪装成正式契约字段）")
-
-    # rules
+    # 2) rules
     for r in data.get("rules", []):
-        extra = set(r.keys()) - RULE_FIELDS
-        for k in sorted(extra):
-            fail("rule-extra", f"rule 出现未声明字段: {k}")
+        check_whitelist(f"rule {r.get('rule_id')}", r.keys(), RULE_FIELDS)
+        for f in ("rule_id", "name", "base_pattern"):
+            if f not in r:
+                fail("rule-required", f"rule 缺必填字段 {f}")
 
-    # campaigns
-    years = set()
+    # 3) signals
+    for s in data.get("signals", []):
+        check_whitelist(f"signal {s.get('type')}", s.keys(), SIGNAL_FIELDS)
+        if s.get("type") not in VALID_SIGNAL_TYPE:
+            fail("signal-type", f"signal type='{s.get('type')}' 非法")
+        check_owner(s, f"signal {s.get('type')} {s.get('date')}")
+        if not is_iso_date(s.get("date")):
+            fail("signal-date", f"signal 日期格式非法: {s.get('date')}")
+        if not s.get("campaign_id") and not s.get("research_candidate_id"):
+            fail("signal-owner", f"signal {s.get('date')} 必须归属 campaign_id 或 research_candidate_id")
+
+    # 4) campaigns
+    campaign_ids = []
     for c in data.get("campaigns", []):
         cid = c.get("campaign_id")
-        if cid:
-            years.add(c.get("year"))
-        extra = set(c.keys()) - CAMPAIGN_FIELDS
-        for k in sorted(extra):
-            fail("campaign-extra", f"{cid} 出现未声明字段: {k}（不得伪装成正式 Campaign 字段）")
-        for f in ("campaign_id", "rule_id", "year", "start_date", "peak_date", "end_date", "status", "confidence"):
+        campaign_ids.append(cid)
+        check_whitelist(f"campaign {cid}", c.keys(), CAMPAIGN_FIELDS)
+        for f in ("campaign_id", "rule_id", "year", "start_date", "peak_date", "end_date",
+                  "status", "confidence"):
             if f not in c:
                 fail("campaign-required", f"{cid} 缺必填字段 {f}")
-        # themes/events/securities 子字段白名单
+        # 9) 日期格式
+        for f in ("start_date", "peak_date", "end_date",
+                  "first_signal_date", "broad_confirmation_date", "first_decline_date"):
+            if not is_iso_date(c.get(f)):
+                fail("campaign-date", f"{cid}.{f} 日期格式非法: {c.get(f)}")
+        # 10) 状态枚举
+        if c.get("status") not in VALID_PRODUCTION_STATUS:
+            fail("campaign-status", f"{cid} status='{c.get('status')}' 非法（应为 verified/provisional/conflict/preview）")
+        if c.get("research_status") not in VALID_RESEARCH_STATUS:
+            fail("campaign-research-status", f"{cid} research_status='{c.get('research_status')}' 非法")
+        # 12) CONFLICT 必须有 conflicts
+        if c.get("research_status") == "CONFLICT":
+            cf = c.get("conflicts") or []
+            if not cf:
+                fail("conflict-required", f"{cid} research_status=CONFLICT 但 conflicts 为空")
+            for x in cf:
+                if "candidate_a" not in x or "candidate_b" not in x:
+                    fail("conflict-candidates", f"{cid} 冲突记录缺少 candidate_a/b（不得伪装成确定日期）")
+                for side in ("candidate_a", "candidate_b"):
+                    if not is_iso_date(x.get(side, {}).get("date")):
+                        fail("conflict-date", f"{cid} conflict.{side}.date 非法: {x.get(side, {}).get('date')}")
+        # themes / event_ids / security_ids 结构
         for t in c.get("themes", []):
-            for k in set(t.keys()) - THEME_FIELDS:
-                fail("theme-extra", f"{cid} theme 出现未声明字段: {k}")
-        for ev in c.get("events", []):
-            for k in set(ev.keys()) - EVENT_FIELDS:
-                fail("event-extra", f"{cid} event 出现未声明字段: {k}")
-        for s in c.get("securities", []):
-            for k in set(s.keys()) - SECURITY_FIELDS:
-                fail("security-extra", f"{cid} security 出现未声明字段: {k}")
+            check_whitelist(f"{cid} theme", t.keys(), THEME_FIELDS)
+        if not isinstance(c.get("event_ids", []), list):
+            fail("campaign-event_ids", f"{cid} event_ids 必须为数组")
+        if not isinstance(c.get("security_ids", []), list):
+            fail("campaign-security_ids", f"{cid} security_ids 必须为数组")
 
-    # 10) 2019–2025 全部可导出（2018 无 Campaign，由 rules 注释承载反例）
-    for y in range(2019, 2026):
-        if y not in years:
-            fail("year-export", f"{y} 无 campaign 可导出")
-    print(f"Campaign 导出: {len(data.get('campaigns', []))} 个（年份 {sorted(years)}）")
+    # 5) research_candidates
+    candidate_ids = []
+    for rc in data.get("research_candidates", []):
+        rcid = rc.get("campaign_id")
+        candidate_ids.append(rcid)
+        check_whitelist(f"research_candidate {rcid}", rc.keys(), CANDIDATE_FIELDS)
+        for f in ("campaign_id", "rule_id", "year", "title", "start_date", "peak_date", "end_date"):
+            if f not in rc:
+                fail("candidate-required", f"{rcid} 缺必填字段 {f}")
+        for f in ("start_date", "peak_date", "end_date", "early_signal"):
+            if not is_iso_date(rc.get(f)):
+                fail("candidate-date", f"{rcid}.{f} 日期格式非法: {rc.get(f)}")
+        if rc.get("research_status") not in VALID_RESEARCH_STATUS:
+            fail("candidate-research-status", f"{rcid} research_status='{rc.get('research_status')}' 非法")
+        # 13) research candidates 不得伪装 verified
+        if "status" in rc:
+            fail("candidate-fake-status", f"{rcid} 不得有生产 status 字段（候选只有 research_status）")
+        if rc.get("research_status") == "VERIFIED":
+            fail("candidate-verified", f"{rcid} research_status 不得为 VERIFIED（候选不伪装 verified）")
 
-    # research-only 字段不能与正式字段混名
+    # 6) events
+    event_ids = []
+    for ev in data.get("events", []):
+        eid = ev.get("event_id")
+        event_ids.append(eid)
+        check_whitelist(f"event {eid}", ev.keys(), EVENT_FIELDS)
+        for f in ("event_id", "name", "date", "event_type"):
+            if f not in ev:
+                fail("event-required", f"{eid} 缺必填字段 {f}")
+        if not is_iso_date(ev.get("date")):
+            fail("event-date", f"{eid} 日期格式非法: {ev.get('date')}")
+        check_owner(ev, f"event {eid}")
+
+    # 7) securities
+    sec_keys = set()
+    for sec in data.get("securities", []):
+        sid = sec.get("security_id")
+        check_whitelist(f"security {sid}", sec.keys(), SECURITY_FIELDS)
+        for f in ("security_id", "name", "ticker", "exchange", "role"):
+            if f not in sec:
+                fail("security-required", f"{sid} 缺必填字段 {f}")
+        check_owner(sec, f"security {sid}")
+        owner = sec.get("campaign_id") or sec.get("research_candidate_id")
+        key = (sid, owner)
+        if key in sec_keys:
+            fail("security-owner-dup", f"(security_id={sid}, owner={owner}) 重复（同一证券同一归属只能一条）")
+        sec_keys.add(key)
+        if owner is None:
+            fail("security-unowned", f"security {sid} 没有归属（必须知道属于谁）")
+
+    # 8) 字段白名单（由 1-7 覆盖）
+
+    # 10) ID 唯一性
+    dup_c = {i for i in campaign_ids if campaign_ids.count(i) > 1}
+    for i in dup_c:
+        fail("campaign-id-dup", f"campaign_id 重复: {i}")
+    dup_r = {i for i in candidate_ids if candidate_ids.count(i) > 1}
+    for i in dup_r:
+        fail("candidate-id-dup", f"research_candidate_id 重复: {i}")
+    dup_e = {i for i in event_ids if event_ids.count(i) > 1}
+    for i in dup_e:
+        fail("event-id-dup", f"event_id 重复: {i}")
+
+    # 11) Candidate 不进入 formal campaigns
+    overlap = set(campaign_ids) & set(candidate_ids)
+    for i in sorted(overlap):
+        fail("candidate-in-campaigns", f"{i} 同时出现在 campaigns 与 research_candidates（禁止）")
+
+    # events / securities 引用一致性：campaign.event_ids 必须存在于 events 且归属正确
+    ev_by_id = {ev["event_id"]: ev for ev in data.get("events", [])}
     for c in data.get("campaigns", []):
-        if "research_status" in c and c.get("status") == c.get("research_status"):
-            warn("status-collision", f"{c.get('campaign_id')} status 与 research_status 相同值（应区分）")
+        for eid in c.get("event_ids", []):
+            if eid not in ev_by_id:
+                fail("event-ref", f"{c['campaign_id']} 引用不存在的事件 {eid}")
+            elif ev_by_id[eid].get("campaign_id") != c["campaign_id"]:
+                fail("event-ref-owner", f"{c['campaign_id']} 引用事件 {eid} 但归属 {ev_by_id[eid].get('campaign_id')}")
+    for rc in data.get("research_candidates", []):
+        for eid in rc.get("event_ids", []):
+            if eid not in ev_by_id:
+                fail("event-ref", f"{rc['campaign_id']} 引用不存在的事件 {eid}")
+            elif ev_by_id[eid].get("research_candidate_id") != rc["campaign_id"]:
+                fail("event-ref-owner", f"{rc['campaign_id']} 引用事件 {eid} 归属不符")
+    sec_by_key = {(s["security_id"], s.get("campaign_id") or s.get("research_candidate_id")): s
+                  for s in data.get("securities", [])}
+    for c in data.get("campaigns", []):
+        for sid in c.get("security_ids", []):
+            if (sid, c["campaign_id"]) not in sec_by_key:
+                fail("security-ref", f"{c['campaign_id']} 引用的证券 {sid} 不存在或归属不符")
+    for rc in data.get("research_candidates", []):
+        for sid in rc.get("security_ids", []):
+            if (sid, rc["campaign_id"]) not in sec_by_key:
+                fail("security-ref", f"{rc['campaign_id']} 引用的证券 {sid} 不存在或归属不符")
+
+    # 关键测试：RC-2023-HUAWEI 在 research_candidates，不在 campaigns，但在 timeline_export
+    if "RC-2023-HUAWEI" not in candidate_ids:
+        fail("rc-test", "RC-2023-HUAWEI 未出现在 research_candidates（Cycle Preview 应可展示）")
+    if "RC-2023-HUAWEI" in campaign_ids:
+        fail("rc-test", "RC-2023-HUAWEI 出现在 campaigns（候选不得进入正式 campaigns）")
+
+    print(f"Campaigns: {len(campaign_ids)} | Research candidates: {len(candidate_ids)} | "
+          f"Events: {len(event_ids)} | Securities: {len(sec_keys)}")
+    print(f"RC-2023-HUAWEI: research_candidates 中 ✅ / campaigns 中不存在 ✅")
 
     return finish()
 

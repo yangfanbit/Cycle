@@ -1,10 +1,9 @@
 {
   "contract": "timeline_export",
   "timeline_export_version": "1.0",
-  "generated_at": "2026-09-13T11:39:14",
-  "source_commit": "67b5adc1bb06eb97c6220c0bea162182419de1d6",
+  "generated_at": "2026-09-13T11:49:39",
+  "source_commit": "49797cc217f810733200c8e3c0e26f60b6505445",
   "project": "Cycle-Research",
-  "purpose": "Research → Cycle Timeline MVP 的机器可解析导出契约（v1.0）",
   "rules": [
     {
       "rule_id": "rule_auto_summer",
@@ -16,64 +15,58 @@
   ],
   "signals": [
     {
-      "campaign_id": "C-2022-POLICY",
-      "signals": [
-        {
-          "type": "EARLY_SIGNAL",
-          "date": "2022-04-27",
-          "confidence": "medium"
-        },
-        {
-          "type": "THEME_FORMING",
-          "date": "2022-05-23",
-          "confidence": "high"
-        }
-      ]
+      "type": "EARLY_SIGNAL",
+      "date": "2022-04-27",
+      "confidence": "medium",
+      "campaign_id": "C-2022-POLICY"
     },
     {
-      "campaign_id": "C-2023-AD",
-      "signals": [
-        {
-          "type": "EARLY_SIGNAL",
-          "date": "2023-06-12",
-          "confidence": "medium"
-        },
-        {
-          "type": "THEME_FORMING",
-          "date": "2023-06-21",
-          "confidence": "high"
-        }
-      ]
+      "type": "THEME_FORMING",
+      "date": "2022-05-23",
+      "confidence": "high",
+      "campaign_id": "C-2022-POLICY"
     },
     {
-      "campaign_id": "C-2024-V2X",
-      "signals": [
-        {
-          "type": "EARLY_SIGNAL",
-          "date": "2024-06-11",
-          "confidence": "medium"
-        }
-      ]
+      "type": "EARLY_SIGNAL",
+      "date": "2023-06-12",
+      "confidence": "medium",
+      "campaign_id": "C-2023-AD"
     },
     {
-      "campaign_id": "C-2024-ROBOTAXI",
-      "signals": [
-        {
-          "type": "EARLY_SIGNAL",
-          "date": "2024-07-08",
-          "confidence": "medium"
-        }
-      ]
+      "type": "THEME_FORMING",
+      "date": "2023-06-21",
+      "confidence": "high",
+      "campaign_id": "C-2023-AD"
     },
     {
-      "campaign_id": "C-2025-ROBOTAXI",
-      "signals": [
-        {
-          "type": "EARLY_SIGNAL",
-          "date": "2025-06-22",
-          "confidence": "medium"
-        }
-      ]
+      "type": "EARLY_SIGNAL",
+      "date": "2024-07-08",
+      "confidence": "medium",
+      "campaign_id": "C-2024-ROBOTAXI"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2024-06-11",
+      "confidence": "medium",
+      "campaign_id": "C-2024-V2X"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2025-06-22",
+      "confidence": "medium",
+      "campaign_id": "C-2025-ROBOTAXI"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2023-08-29",
+      "confidence": "low",
+      "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "type": "THEME_FORMING",
+      "date": "2023-09-04",
+      "confidence": "medium",
+      "research_candidate_id": "RC-2023-HUAWEI"
     }
   ],
   "campaigns": [
@@ -84,7 +77,7 @@
       "start_date": "2019-08-15",
       "peak_date": "2019-09-24",
       "end_date": "2019-09-30",
-      "status": "RESEARCH_CANDIDATE",
+      "status": "provisional",
       "confidence": "medium",
       "classification": "event_driven",
       "strength": "weak",
@@ -96,43 +89,21 @@
           "role": "main"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2019-03",
-          "name": "交通部研究自动驾驶法规与指导意见",
-          "date": "2019-08-27",
-          "event_type": "policy",
-          "role": "trigger"
-        }
+      "event_ids": [
+        "EV-2019-03"
       ],
-      "securities": [
-        {
-          "security_id": "ROUTE",
-          "name": "路畅科技",
-          "ticker": "002813",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "WANAN",
-          "name": "万安科技",
-          "ticker": "002590",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "YATAI",
-          "name": "亚太股份",
-          "ticker": "002284",
-          "exchange": "SZ",
-          "role": "representative"
-        }
+      "security_ids": [
+        "WANAN",
+        "ROUTE",
+        "YATAI"
       ],
       "research_status": "PROVISIONAL",
       "theme_cycle_id": "auto_ad_2019",
+      "promotion_status": null,
       "first_signal_date": null,
       "broad_confirmation_date": null,
       "first_decline_date": null,
+      "conflicts": [],
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）"
     },
     {
@@ -142,7 +113,7 @@
       "start_date": "2020-06-01",
       "peak_date": "2020-07-13",
       "end_date": "2020-09-30",
-      "status": "RESEARCH_CANDIDATE",
+      "status": "provisional",
       "confidence": "medium",
       "classification": "theme_campaign",
       "strength": "strong",
@@ -164,64 +135,24 @@
           "role": "main"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2020-01",
-          "name": "特斯拉股价破千美元、市值超丰田居全球车企第一",
-          "date": "2020-06-10",
-          "event_type": "company",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2020-02",
-          "name": "比亚迪汉上市（首搭刀片电池）",
-          "date": "2020-07-12",
-          "event_type": "company",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2020-03",
-          "name": "宁德时代与本田战略合作+为特斯拉供货",
-          "date": "2020-07-10",
-          "event_type": "company",
-          "role": "follow_up"
-        }
+      "event_ids": [
+        "EV-2020-01",
+        "EV-2020-03",
+        "EV-2020-02"
       ],
-      "securities": [
-        {
-          "security_id": "BIDI",
-          "name": "比亚迪",
-          "ticker": "002594",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CATL",
-          "name": "宁德时代",
-          "ticker": "300750",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "JAC",
-          "name": "江淮汽车",
-          "ticker": "600418",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "XUSHENG",
-          "name": "旭升股份",
-          "ticker": "603305",
-          "exchange": "SH",
-          "role": "representative"
-        }
+      "security_ids": [
+        "BIDI",
+        "CATL",
+        "XUSHENG",
+        "JAC"
       ],
       "research_status": "PROVISIONAL",
       "theme_cycle_id": "auto_nev_2020",
+      "promotion_status": null,
       "first_signal_date": null,
       "broad_confirmation_date": null,
       "first_decline_date": null,
+      "conflicts": [],
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）"
     },
     {
@@ -231,7 +162,7 @@
       "start_date": "2021-06-01",
       "peak_date": "2021-08-06",
       "end_date": "2021-09-30",
-      "status": "RESEARCH_CANDIDATE",
+      "status": "provisional",
       "confidence": "medium",
       "classification": "theme_campaign",
       "strength": "strong",
@@ -248,71 +179,25 @@
           "role": "main"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2021-01",
-          "name": "宁德时代市值突破万亿",
-          "date": "2021-05-31",
-          "event_type": "market",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2021-02",
-          "name": "比亚迪7月产销快报：新能源销量5.05万辆创新高",
-          "date": "2021-08-05",
-          "event_type": "company",
-          "role": "follow_up"
-        },
-        {
-          "event_id": "EV-2021-03",
-          "name": "宁德时代四川宜宾产能一期投运",
-          "date": "2021-06-17",
-          "event_type": "company",
-          "role": "catalyst"
-        }
+      "event_ids": [
+        "EV-2021-01",
+        "EV-2021-03",
+        "EV-2021-02"
       ],
-      "securities": [
-        {
-          "security_id": "BIDI",
-          "name": "比亚迪",
-          "ticker": "002594",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CATL",
-          "name": "宁德时代",
-          "ticker": "300750",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CHANGAN",
-          "name": "长安汽车",
-          "ticker": "000625",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "GWM",
-          "name": "长城汽车",
-          "ticker": "601633",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "XIAOKANG",
-          "name": "小康股份",
-          "ticker": "601127",
-          "exchange": "SH",
-          "role": "representative"
-        }
+      "security_ids": [
+        "BIDI",
+        "CATL",
+        "XIAOKANG",
+        "CHANGAN",
+        "GWM"
       ],
       "research_status": "PROVISIONAL",
       "theme_cycle_id": "auto_nev_2021",
+      "promotion_status": null,
       "first_signal_date": null,
       "broad_confirmation_date": null,
       "first_decline_date": null,
+      "conflicts": [],
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）"
     },
     {
@@ -322,7 +207,7 @@
       "start_date": "2022-04-27",
       "peak_date": "2022-06-10",
       "end_date": "2022-08-31",
-      "status": "READY_FOR_HUMAN_REVIEW",
+      "status": "conflict",
       "confidence": "medium",
       "classification": "theme_campaign",
       "strength": "strong",
@@ -344,78 +229,38 @@
           "role": "related"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2022-01",
-          "name": "国常会：阶段性减征乘用车购置税600亿元",
-          "date": "2022-05-23",
-          "event_type": "policy",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2022-02",
-          "name": "财政部/税务总局发布购置税减半细则+新能源下乡启动",
-          "date": "2022-05-31",
-          "event_type": "policy",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2022-03",
-          "name": "国常会再促汽车消费(取消二手车限迁等)",
-          "date": "2022-06-22",
-          "event_type": "policy",
-          "role": "follow_up"
-        },
-        {
-          "event_id": "EV-2022-04",
-          "name": "比亚迪A股市值首破万亿",
-          "date": "2022-06-10",
-          "event_type": "market",
-          "role": "follow_up"
-        }
+      "event_ids": [
+        "EV-2022-01",
+        "EV-2022-02",
+        "EV-2022-04",
+        "EV-2022-03"
       ],
-      "securities": [
-        {
-          "security_id": "ANKA",
-          "name": "安凯客车",
-          "ticker": "000868",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "BIDI",
-          "name": "比亚迪",
-          "ticker": "002594",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CHANGAN",
-          "name": "长安汽车",
-          "ticker": "000625",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "GAC",
-          "name": "广汽集团",
-          "ticker": "601238",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "GWM",
-          "name": "长城汽车",
-          "ticker": "601633",
-          "exchange": "SH",
-          "role": "leader"
-        }
+      "security_ids": [
+        "BIDI",
+        "GWM",
+        "ANKA",
+        "CHANGAN",
+        "GAC"
       ],
       "research_status": "CONFLICT",
       "theme_cycle_id": "auto_policy_2022",
+      "promotion_status": "READY_FOR_HUMAN_REVIEW",
       "first_signal_date": "2022-04-27",
       "broad_confirmation_date": "2022-06-01",
       "first_decline_date": "2022-07-01",
+      "conflicts": [
+        {
+          "field": "start_date",
+          "candidate_a": {
+            "date": "2022-04-27",
+            "label": "DB Candidate（Setup 起点）"
+          },
+          "candidate_b": {
+            "date": "2022-05-23",
+            "label": "Research Review Candidate（Theme Formation/政策催化日）"
+          }
+        }
+      ],
       "notes": "日期口径未收敛：start_date（见 conflicts.json）"
     },
     {
@@ -425,7 +270,7 @@
       "start_date": "2023-06-12",
       "peak_date": "2023-07-11",
       "end_date": "2023-07-19",
-      "status": "READY_FOR_HUMAN_REVIEW",
+      "status": "provisional",
       "confidence": "medium",
       "classification": "theme_campaign",
       "strength": "medium",
@@ -442,64 +287,24 @@
           "role": "related"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2023-01",
-          "name": "工信部吹风会：支持L3及以上自动驾驶商业化、启动准入和上路通行试点",
-          "date": "2023-06-21",
-          "event_type": "policy",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2023-02",
-          "name": "比亚迪首发'天神之眼'高阶智驾(腾势N7)",
-          "date": "2023-07-03",
-          "event_type": "company",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2023-03",
-          "name": "四部委《智能网联汽车准入和上路通行试点》通知",
-          "date": "2023-11-17",
-          "event_type": "policy",
-          "role": "context"
-        }
+      "event_ids": [
+        "EV-2023-01",
+        "EV-2023-02",
+        "EV-2023-03"
       ],
-      "securities": [
-        {
-          "security_id": "DESAYSV",
-          "name": "德赛西威",
-          "ticker": "002920",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "WANAN",
-          "name": "万安科技",
-          "ticker": "002590",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "ZHEJIANGSHISHI",
-          "name": "浙江世宝",
-          "ticker": "002703",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "ZTELEVISION",
-          "name": "众泰汽车",
-          "ticker": "000980",
-          "exchange": "SZ",
-          "role": "representative"
-        }
+      "security_ids": [
+        "ZHEJIANGSHISHI",
+        "ZTELEVISION",
+        "DESAYSV",
+        "WANAN"
       ],
       "research_status": "PROVISIONAL",
       "theme_cycle_id": "auto_intelligence_2023",
+      "promotion_status": "READY_FOR_HUMAN_REVIEW",
       "first_signal_date": "2023-06-12",
       "broad_confirmation_date": "2023-07-03",
       "first_decline_date": null,
+      "conflicts": [],
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）"
     },
     {
@@ -509,7 +314,7 @@
       "start_date": "2024-06-11",
       "peak_date": "2024-06-18",
       "end_date": "2024-06-25",
-      "status": "RESEARCH_CANDIDATE",
+      "status": "provisional",
       "confidence": "medium",
       "classification": "theme_campaign",
       "strength": "medium",
@@ -526,57 +331,23 @@
           "role": "main"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2024-01",
-          "name": "武汉车路云一体化示范项目备案170.84亿",
-          "date": "2024-06-14",
-          "event_type": "policy",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2024-02",
-          "name": "五部门公布20个车路云一体化试点城市",
-          "date": "2024-07-03",
-          "event_type": "policy",
-          "role": "follow_up"
-        }
+      "event_ids": [
+        "EV-2024-01",
+        "EV-2024-02"
       ],
-      "securities": [
-        {
-          "security_id": "HUAMING",
-          "name": "华铭智能",
-          "ticker": "300462",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "JINYI",
-          "name": "金溢科技",
-          "ticker": "002869",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "SUOLING",
-          "name": "索菱股份",
-          "ticker": "002766",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "VANJI",
-          "name": "万集科技",
-          "ticker": "300552",
-          "exchange": "SZ",
-          "role": "second_leader"
-        }
+      "security_ids": [
+        "SUOLING",
+        "HUAMING",
+        "JINYI",
+        "VANJI"
       ],
       "research_status": "PROVISIONAL",
       "theme_cycle_id": "auto_v2x_2024",
+      "promotion_status": null,
       "first_signal_date": "2024-06-11",
       "broad_confirmation_date": "2024-06-18",
       "first_decline_date": null,
+      "conflicts": [],
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）"
     },
     {
@@ -586,7 +357,7 @@
       "start_date": "2024-07-08",
       "peak_date": "2024-07-29",
       "end_date": "2024-07-31",
-      "status": "READY_FOR_HUMAN_REVIEW",
+      "status": "conflict",
       "confidence": "medium",
       "classification": "theme_campaign",
       "strength": "strong",
@@ -603,50 +374,45 @@
           "role": "main"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2024-03",
-          "name": "萝卜快跑武汉跑出圈，无人驾驶板块大涨4%",
-          "date": "2024-07-10",
-          "event_type": "market",
-          "role": "trigger"
-        }
+      "event_ids": [
+        "EV-2024-03"
       ],
-      "securities": [
-        {
-          "security_id": "DADONGTRAFFIC",
-          "name": "大众交通",
-          "ticker": "600611",
-          "exchange": "SH",
-          "role": "leader"
-        },
-        {
-          "security_id": "JIANGLING",
-          "name": "江铃汽车",
-          "ticker": "000550",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "JINJIANGONLINE",
-          "name": "锦江在线",
-          "ticker": "600650",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "JINLONG",
-          "name": "金龙汽车",
-          "ticker": "600686",
-          "exchange": "SH",
-          "role": "second_leader"
-        }
+      "security_ids": [
+        "DADONGTRAFFIC",
+        "JIANGLING",
+        "JINJIANGONLINE",
+        "JINLONG"
       ],
       "research_status": "CONFLICT",
       "theme_cycle_id": "robotaxi_2024",
+      "promotion_status": "READY_FOR_HUMAN_REVIEW",
       "first_signal_date": "2024-07-08",
       "broad_confirmation_date": "2024-07-10",
       "first_decline_date": "2024-08-06",
+      "conflicts": [
+        {
+          "field": "peak_date",
+          "candidate_a": {
+            "date": "2024-07-29",
+            "label": "DB Candidate"
+          },
+          "candidate_b": {
+            "date": "2024-08-05",
+            "label": "Research Review Candidate（EW 等权指数 raw 峰值）"
+          }
+        },
+        {
+          "field": "end_date",
+          "candidate_a": {
+            "date": "2024-07-31",
+            "label": "DB Candidate"
+          },
+          "candidate_b": {
+            "date": "2024-08-23",
+            "label": "Research Review Candidate（Main Campaign End）"
+          }
+        }
+      ],
       "notes": "日期口径未收敛：peak_date, end_date（见 conflicts.json）"
     },
     {
@@ -656,7 +422,7 @@
       "start_date": "2025-06-22",
       "peak_date": "2025-06-24",
       "end_date": "2025-08-31",
-      "status": "RESEARCH_CANDIDATE",
+      "status": "provisional",
       "confidence": "medium",
       "classification": "theme_campaign",
       "strength": "medium",
@@ -678,478 +444,671 @@
           "role": "main"
         }
       ],
-      "events": [
-        {
-          "event_id": "EV-2025-01",
-          "name": "特斯拉奥斯汀启动Robotaxi有偿试运营",
-          "date": "2025-06-22",
-          "event_type": "company",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2025-02",
-          "name": "A股无人驾驶板块全线爆发涨停潮",
-          "date": "2025-06-24",
-          "event_type": "market",
-          "role": "catalyst"
-        }
+      "event_ids": [
+        "EV-2025-01",
+        "EV-2025-02"
       ],
-      "securities": [
-        {
-          "security_id": "DESAYSV",
-          "name": "德赛西威",
-          "ticker": "002920",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "ZHEJIANGSHISHI",
-          "name": "浙江世宝",
-          "ticker": "002703",
-          "exchange": "SZ",
-          "role": "leader"
-        }
+      "security_ids": [
+        "ZHEJIANGSHISHI",
+        "DESAYSV"
       ],
       "research_status": "PROVISIONAL",
       "theme_cycle_id": "robotaxi_2025",
+      "promotion_status": null,
       "first_signal_date": "2025-06-22",
       "broad_confirmation_date": "2025-06-24",
       "first_decline_date": null,
+      "conflicts": [],
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）"
+    }
+  ],
+  "research_candidates": [
+    {
+      "campaign_id": "RC-2023-HUAWEI",
+      "rule_id": "rule_auto_summer",
+      "year": 2023,
+      "title": "Huawei Auto 2023（华为汽车 / AITO M7 / ADS2.0）",
+      "start_date": "2023-09-12",
+      "peak_date": null,
+      "end_date": null,
+      "themes": [
+        {
+          "name": "华为汽车",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-RC-2023-HUAWEI-01"
+      ],
+      "security_ids": [
+        "XIAOKANG",
+        "JAC",
+        "DEMEISHI",
+        "MINGKEJINGJI",
+        "HUAYANG"
+      ],
+      "early_signal": "2023-08-29",
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "auto_intelligence_2023",
+      "conflicts": [],
+      "notes": "Research Candidate（未达正式 Campaign 门槛，不进入 campaigns）：问界M7催化 09-12、Broad Confirmation 09-18、主升 09下~10 仍升；08-29 Early Signal 存在市场 Beta contamination（low）；与 C-2023-AD 同属 auto_intelligence_2023（Theme Drift：Smart Driving → Huawei Auto）"
+    },
+    {
+      "campaign_id": "RC-2024-SECONDARY",
+      "rule_id": "rule_auto_summer",
+      "year": 2024,
+      "title": "2024 Robotaxi Secondary（弱次级行情候选）",
+      "start_date": "2024-09-05",
+      "peak_date": null,
+      "end_date": "2024-09-06",
+      "themes": [
+        {
+          "name": "Robotaxi/无人驾驶/智能网约车",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "DADONGTRAFFIC",
+        "JINJIANGONLINE",
+        "JINLONG"
+      ],
+      "early_signal": null,
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "robotaxi_2024",
+      "conflicts": [],
+      "notes": "Weak Secondary Campaign Candidate：主 Campaign C-2024-ROBOTAXI（07-08~08-23）结束后 09-05~06 次级活跃，强度不足；不作为正式 Campaign。2024-10-10 特斯拉 Robotaxi 发布会仅一日脉冲后回落，亦不作为候选"
     }
   ],
   "events": [
     {
+      "event_id": "EV-2019-03",
+      "name": "交通部研究自动驾驶法规与指导意见",
+      "date": "2019-08-27",
+      "event_type": "policy",
+      "role": "trigger",
       "campaign_id": "C-2019-AD",
-      "events": [
-        {
-          "event_id": "EV-2019-03",
-          "name": "交通部研究自动驾驶法规与指导意见",
-          "date": "2019-08-27",
-          "event_type": "policy",
-          "role": "trigger"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "event_id": "EV-2020-01",
+      "name": "特斯拉股价破千美元、市值超丰田居全球车企第一",
+      "date": "2020-06-10",
+      "event_type": "company",
+      "role": "trigger",
       "campaign_id": "C-2020-NEV",
-      "events": [
-        {
-          "event_id": "EV-2020-01",
-          "name": "特斯拉股价破千美元、市值超丰田居全球车企第一",
-          "date": "2020-06-10",
-          "event_type": "company",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2020-02",
-          "name": "比亚迪汉上市（首搭刀片电池）",
-          "date": "2020-07-12",
-          "event_type": "company",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2020-03",
-          "name": "宁德时代与本田战略合作+为特斯拉供货",
-          "date": "2020-07-10",
-          "event_type": "company",
-          "role": "follow_up"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "event_id": "EV-2020-03",
+      "name": "宁德时代与本田战略合作+为特斯拉供货",
+      "date": "2020-07-10",
+      "event_type": "company",
+      "role": "follow_up",
+      "campaign_id": "C-2020-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2020-02",
+      "name": "比亚迪汉上市（首搭刀片电池）",
+      "date": "2020-07-12",
+      "event_type": "company",
+      "role": "catalyst",
+      "campaign_id": "C-2020-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2021-01",
+      "name": "宁德时代市值突破万亿",
+      "date": "2021-05-31",
+      "event_type": "market",
+      "role": "catalyst",
       "campaign_id": "C-2021-NEV",
-      "events": [
-        {
-          "event_id": "EV-2021-01",
-          "name": "宁德时代市值突破万亿",
-          "date": "2021-05-31",
-          "event_type": "market",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2021-02",
-          "name": "比亚迪7月产销快报：新能源销量5.05万辆创新高",
-          "date": "2021-08-05",
-          "event_type": "company",
-          "role": "follow_up"
-        },
-        {
-          "event_id": "EV-2021-03",
-          "name": "宁德时代四川宜宾产能一期投运",
-          "date": "2021-06-17",
-          "event_type": "company",
-          "role": "catalyst"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "event_id": "EV-2021-03",
+      "name": "宁德时代四川宜宾产能一期投运",
+      "date": "2021-06-17",
+      "event_type": "company",
+      "role": "catalyst",
+      "campaign_id": "C-2021-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2021-02",
+      "name": "比亚迪7月产销快报：新能源销量5.05万辆创新高",
+      "date": "2021-08-05",
+      "event_type": "company",
+      "role": "follow_up",
+      "campaign_id": "C-2021-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2022-01",
+      "name": "国常会：阶段性减征乘用车购置税600亿元",
+      "date": "2022-05-23",
+      "event_type": "policy",
+      "role": "trigger",
       "campaign_id": "C-2022-POLICY",
-      "events": [
-        {
-          "event_id": "EV-2022-01",
-          "name": "国常会：阶段性减征乘用车购置税600亿元",
-          "date": "2022-05-23",
-          "event_type": "policy",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2022-02",
-          "name": "财政部/税务总局发布购置税减半细则+新能源下乡启动",
-          "date": "2022-05-31",
-          "event_type": "policy",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2022-03",
-          "name": "国常会再促汽车消费(取消二手车限迁等)",
-          "date": "2022-06-22",
-          "event_type": "policy",
-          "role": "follow_up"
-        },
-        {
-          "event_id": "EV-2022-04",
-          "name": "比亚迪A股市值首破万亿",
-          "date": "2022-06-10",
-          "event_type": "market",
-          "role": "follow_up"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "event_id": "EV-2022-02",
+      "name": "财政部/税务总局发布购置税减半细则+新能源下乡启动",
+      "date": "2022-05-31",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2022-04",
+      "name": "比亚迪A股市值首破万亿",
+      "date": "2022-06-10",
+      "event_type": "market",
+      "role": "follow_up",
+      "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2022-03",
+      "name": "国常会再促汽车消费(取消二手车限迁等)",
+      "date": "2022-06-22",
+      "event_type": "policy",
+      "role": "follow_up",
+      "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2023-01",
+      "name": "工信部吹风会：支持L3及以上自动驾驶商业化、启动准入和上路通行试点",
+      "date": "2023-06-21",
+      "event_type": "policy",
+      "role": "trigger",
       "campaign_id": "C-2023-AD",
-      "events": [
-        {
-          "event_id": "EV-2023-01",
-          "name": "工信部吹风会：支持L3及以上自动驾驶商业化、启动准入和上路通行试点",
-          "date": "2023-06-21",
-          "event_type": "policy",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2023-02",
-          "name": "比亚迪首发'天神之眼'高阶智驾(腾势N7)",
-          "date": "2023-07-03",
-          "event_type": "company",
-          "role": "catalyst"
-        },
-        {
-          "event_id": "EV-2023-03",
-          "name": "四部委《智能网联汽车准入和上路通行试点》通知",
-          "date": "2023-11-17",
-          "event_type": "policy",
-          "role": "context"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "event_id": "EV-2023-02",
+      "name": "比亚迪首发'天神之眼'高阶智驾(腾势N7)",
+      "date": "2023-07-03",
+      "event_type": "company",
+      "role": "catalyst",
+      "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2023-03",
+      "name": "四部委《智能网联汽车准入和上路通行试点》通知",
+      "date": "2023-11-17",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2024-01",
+      "name": "武汉车路云一体化示范项目备案170.84亿",
+      "date": "2024-06-14",
+      "event_type": "policy",
+      "role": "trigger",
       "campaign_id": "C-2024-V2X",
-      "events": [
-        {
-          "event_id": "EV-2024-01",
-          "name": "武汉车路云一体化示范项目备案170.84亿",
-          "date": "2024-06-14",
-          "event_type": "policy",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2024-02",
-          "name": "五部门公布20个车路云一体化试点城市",
-          "date": "2024-07-03",
-          "event_type": "policy",
-          "role": "follow_up"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "event_id": "EV-2024-02",
+      "name": "五部门公布20个车路云一体化试点城市",
+      "date": "2024-07-03",
+      "event_type": "policy",
+      "role": "follow_up",
+      "campaign_id": "C-2024-V2X",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2024-03",
+      "name": "萝卜快跑武汉跑出圈，无人驾驶板块大涨4%",
+      "date": "2024-07-10",
+      "event_type": "market",
+      "role": "trigger",
       "campaign_id": "C-2024-ROBOTAXI",
-      "events": [
-        {
-          "event_id": "EV-2024-03",
-          "name": "萝卜快跑武汉跑出圈，无人驾驶板块大涨4%",
-          "date": "2024-07-10",
-          "event_type": "market",
-          "role": "trigger"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "event_id": "EV-2025-01",
+      "name": "特斯拉奥斯汀启动Robotaxi有偿试运营",
+      "date": "2025-06-22",
+      "event_type": "company",
+      "role": "trigger",
       "campaign_id": "C-2025-ROBOTAXI",
-      "events": [
-        {
-          "event_id": "EV-2025-01",
-          "name": "特斯拉奥斯汀启动Robotaxi有偿试运营",
-          "date": "2025-06-22",
-          "event_type": "company",
-          "role": "trigger"
-        },
-        {
-          "event_id": "EV-2025-02",
-          "name": "A股无人驾驶板块全线爆发涨停潮",
-          "date": "2025-06-24",
-          "event_type": "market",
-          "role": "catalyst"
-        }
-      ]
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2025-02",
+      "name": "A股无人驾驶板块全线爆发涨停潮",
+      "date": "2025-06-24",
+      "event_type": "market",
+      "role": "catalyst",
+      "campaign_id": "C-2025-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2018-01",
+      "name": "特斯拉与上海临港签署建厂协议",
+      "date": "2018-07-10",
+      "event_type": "company",
+      "role": null,
+      "campaign_id": null,
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2019-01",
+      "name": "《推动重点消费品更新升级方案2019-2020》印发",
+      "date": "2019-06-06",
+      "event_type": "policy",
+      "role": null,
+      "campaign_id": null,
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2019-02",
+      "name": "2019年新能源汽车补贴退坡新政实施",
+      "date": "2019-06-26",
+      "event_type": "policy",
+      "role": null,
+      "campaign_id": null,
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2023-04",
+      "name": "马斯克股东会展示人形机器人Optimus进展",
+      "date": "2023-05-17",
+      "event_type": "company",
+      "role": null,
+      "campaign_id": null,
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2024-04",
+      "name": "特斯拉Robotaxi发布会(无方向盘Cybercab)",
+      "date": "2024-10-10",
+      "event_type": "company",
+      "role": null,
+      "campaign_id": null,
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-2025-03",
+      "name": "渤海汽车重组获批涨停(个股事件)",
+      "date": "2025-10-15",
+      "event_type": "company",
+      "role": null,
+      "campaign_id": null,
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-RC-2023-HUAWEI-01",
+      "name": "问界新M7上市发布会（HUAWEI ADS 2.0 随车亮相）",
+      "date": "2023-09-12",
+      "event_type": "company",
+      "role": "trigger",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2023-HUAWEI"
     }
   ],
   "securities": [
     {
+      "security_id": "WANAN",
+      "name": "万安科技",
+      "ticker": "002590",
+      "exchange": "SZ",
+      "role": "leader",
       "campaign_id": "C-2019-AD",
-      "securities": [
-        {
-          "security_id": "ROUTE",
-          "name": "路畅科技",
-          "ticker": "002813",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "WANAN",
-          "name": "万安科技",
-          "ticker": "002590",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "YATAI",
-          "name": "亚太股份",
-          "ticker": "002284",
-          "exchange": "SZ",
-          "role": "representative"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "security_id": "ROUTE",
+      "name": "路畅科技",
+      "ticker": "002813",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "YATAI",
+      "name": "亚太股份",
+      "ticker": "002284",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "BIDI",
+      "name": "比亚迪",
+      "ticker": "002594",
+      "exchange": "SZ",
+      "role": "leader",
       "campaign_id": "C-2020-NEV",
-      "securities": [
-        {
-          "security_id": "BIDI",
-          "name": "比亚迪",
-          "ticker": "002594",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CATL",
-          "name": "宁德时代",
-          "ticker": "300750",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "JAC",
-          "name": "江淮汽车",
-          "ticker": "600418",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "XUSHENG",
-          "name": "旭升股份",
-          "ticker": "603305",
-          "exchange": "SH",
-          "role": "representative"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "security_id": "CATL",
+      "name": "宁德时代",
+      "ticker": "300750",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2020-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "XUSHENG",
+      "name": "旭升股份",
+      "ticker": "603305",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2020-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JAC",
+      "name": "江淮汽车",
+      "ticker": "600418",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": "C-2020-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "BIDI",
+      "name": "比亚迪",
+      "ticker": "002594",
+      "exchange": "SZ",
+      "role": "leader",
       "campaign_id": "C-2021-NEV",
-      "securities": [
-        {
-          "security_id": "BIDI",
-          "name": "比亚迪",
-          "ticker": "002594",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CATL",
-          "name": "宁德时代",
-          "ticker": "300750",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CHANGAN",
-          "name": "长安汽车",
-          "ticker": "000625",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "GWM",
-          "name": "长城汽车",
-          "ticker": "601633",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "XIAOKANG",
-          "name": "小康股份",
-          "ticker": "601127",
-          "exchange": "SH",
-          "role": "representative"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "security_id": "CATL",
+      "name": "宁德时代",
+      "ticker": "300750",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2021-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "XIAOKANG",
+      "name": "小康股份",
+      "ticker": "601127",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2021-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "CHANGAN",
+      "name": "长安汽车",
+      "ticker": "000625",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2021-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "GWM",
+      "name": "长城汽车",
+      "ticker": "601633",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": "C-2021-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "BIDI",
+      "name": "比亚迪",
+      "ticker": "002594",
+      "exchange": "SZ",
+      "role": "leader",
       "campaign_id": "C-2022-POLICY",
-      "securities": [
-        {
-          "security_id": "ANKA",
-          "name": "安凯客车",
-          "ticker": "000868",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "BIDI",
-          "name": "比亚迪",
-          "ticker": "002594",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "CHANGAN",
-          "name": "长安汽车",
-          "ticker": "000625",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "GAC",
-          "name": "广汽集团",
-          "ticker": "601238",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "GWM",
-          "name": "长城汽车",
-          "ticker": "601633",
-          "exchange": "SH",
-          "role": "leader"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "security_id": "GWM",
+      "name": "长城汽车",
+      "ticker": "601633",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "ANKA",
+      "name": "安凯客车",
+      "ticker": "000868",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "CHANGAN",
+      "name": "长安汽车",
+      "ticker": "000625",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "GAC",
+      "name": "广汽集团",
+      "ticker": "601238",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "ZHEJIANGSHISHI",
+      "name": "浙江世宝",
+      "ticker": "002703",
+      "exchange": "SZ",
+      "role": "leader",
       "campaign_id": "C-2023-AD",
-      "securities": [
-        {
-          "security_id": "DESAYSV",
-          "name": "德赛西威",
-          "ticker": "002920",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "WANAN",
-          "name": "万安科技",
-          "ticker": "002590",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "ZHEJIANGSHISHI",
-          "name": "浙江世宝",
-          "ticker": "002703",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "ZTELEVISION",
-          "name": "众泰汽车",
-          "ticker": "000980",
-          "exchange": "SZ",
-          "role": "representative"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
-      "campaign_id": "C-2024-V2X",
-      "securities": [
-        {
-          "security_id": "HUAMING",
-          "name": "华铭智能",
-          "ticker": "300462",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "JINYI",
-          "name": "金溢科技",
-          "ticker": "002869",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "SUOLING",
-          "name": "索菱股份",
-          "ticker": "002766",
-          "exchange": "SZ",
-          "role": "leader"
-        },
-        {
-          "security_id": "VANJI",
-          "name": "万集科技",
-          "ticker": "300552",
-          "exchange": "SZ",
-          "role": "second_leader"
-        }
-      ]
+      "security_id": "ZTELEVISION",
+      "name": "众泰汽车",
+      "ticker": "000980",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
     },
     {
+      "security_id": "DESAYSV",
+      "name": "德赛西威",
+      "ticker": "002920",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "WANAN",
+      "name": "万安科技",
+      "ticker": "002590",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "DADONGTRAFFIC",
+      "name": "大众交通",
+      "ticker": "600611",
+      "exchange": "SH",
+      "role": "leader",
       "campaign_id": "C-2024-ROBOTAXI",
-      "securities": [
-        {
-          "security_id": "DADONGTRAFFIC",
-          "name": "大众交通",
-          "ticker": "600611",
-          "exchange": "SH",
-          "role": "leader"
-        },
-        {
-          "security_id": "JIANGLING",
-          "name": "江铃汽车",
-          "ticker": "000550",
-          "exchange": "SZ",
-          "role": "representative"
-        },
-        {
-          "security_id": "JINJIANGONLINE",
-          "name": "锦江在线",
-          "ticker": "600650",
-          "exchange": "SH",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "JINLONG",
-          "name": "金龙汽车",
-          "ticker": "600686",
-          "exchange": "SH",
-          "role": "second_leader"
-        }
-      ]
+      "research_candidate_id": null
     },
     {
+      "security_id": "JIANGLING",
+      "name": "江铃汽车",
+      "ticker": "000550",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2024-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JINJIANGONLINE",
+      "name": "锦江在线",
+      "ticker": "600650",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": "C-2024-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JINLONG",
+      "name": "金龙汽车",
+      "ticker": "600686",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": "C-2024-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SUOLING",
+      "name": "索菱股份",
+      "ticker": "002766",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2024-V2X",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "HUAMING",
+      "name": "华铭智能",
+      "ticker": "300462",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2024-V2X",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JINYI",
+      "name": "金溢科技",
+      "ticker": "002869",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2024-V2X",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "VANJI",
+      "name": "万集科技",
+      "ticker": "300552",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2024-V2X",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "ZHEJIANGSHISHI",
+      "name": "浙江世宝",
+      "ticker": "002703",
+      "exchange": "SZ",
+      "role": "leader",
       "campaign_id": "C-2025-ROBOTAXI",
-      "securities": [
-        {
-          "security_id": "DESAYSV",
-          "name": "德赛西威",
-          "ticker": "002920",
-          "exchange": "SZ",
-          "role": "second_leader"
-        },
-        {
-          "security_id": "ZHEJIANGSHISHI",
-          "name": "浙江世宝",
-          "ticker": "002703",
-          "exchange": "SZ",
-          "role": "leader"
-        }
-      ]
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "DESAYSV",
+      "name": "德赛西威",
+      "ticker": "002920",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2025-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "XIAOKANG",
+      "name": "赛力斯(原小康股份)",
+      "ticker": "601127",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "security_id": "JAC",
+      "name": "江淮汽车",
+      "ticker": "600418",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "security_id": "DEMEISHI",
+      "name": "德迈仕",
+      "ticker": "301007",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "security_id": "MINGKEJINGJI",
+      "name": "铭科精技",
+      "ticker": "001319",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "security_id": "HUAYANG",
+      "name": "华阳集团",
+      "ticker": "002906",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "security_id": "DADONGTRAFFIC",
+      "name": "大众交通",
+      "ticker": "600611",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2024-SECONDARY"
+    },
+    {
+      "security_id": "JINJIANGONLINE",
+      "name": "锦江在线",
+      "ticker": "600650",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2024-SECONDARY"
+    },
+    {
+      "security_id": "JINLONG",
+      "name": "金龙汽车",
+      "ticker": "600686",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2024-SECONDARY"
     }
   ]
 }
