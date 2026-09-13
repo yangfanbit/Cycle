@@ -133,8 +133,16 @@ export const EVENT_TYPE_LABEL: Record<string, string> = {
   holiday: '假期',
 };
 
+/** 分歧字段的中文标签（详情 / tooltip 显示用） */
+export const CONFLICT_FIELD_LABEL: Record<string, string> = {
+  start_date: '起点',
+  peak_date: '峰值',
+  end_date: '终点',
+};
+
 /** 日期口径分歧单行文本：保留 candidate A / B 双方，不自行选一个 */
 export function conflictLine(c: ExportConflictV1): string {
-  return `⚠ ${c.field}：A ${c.candidate_a.date}（${c.candidate_a.label}） vs B ${c.candidate_b.date}（${c.candidate_b.label}）`;
+  const field = CONFLICT_FIELD_LABEL[c.field] ?? c.field;
+  return `⚠ ${field}：A ${c.candidate_a.date}（${c.candidate_a.label}） vs B ${c.candidate_b.date}（${c.candidate_b.label}）`;
 }
 

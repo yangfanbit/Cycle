@@ -168,10 +168,15 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
         <dt>完整日期</dt>
         <dd>
           {m.start} → {m.end}
-          {m.openEnded && (
+          {m.conflicts && m.conflicts.length > 0 ? (
+            <span className="phase-text">
+              （日期存在研究分歧，A / B 候选见下方；本区间为 DB Candidate 口径）
+            </span>
+          ) : m.openEnded ? (
             <span className="phase-text">（候选观察中，结束日期未记录，end 为年末近似）</span>
+          ) : (
+            <span className="phase-text">（共 {duration} 天）</span>
           )}
-          {!m.openEnded && <span className="phase-text">（共 {duration} 天）</span>}
         </dd>
 
         <dt>峰值</dt>
@@ -249,11 +254,13 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
           <>
             <dt>研究分歧</dt>
             <dd>
-              {m.conflicts.map((c, i) => (
-                <div key={i} className="conflict-line">
-                  {conflictLine(c)}
-                </div>
-              ))}
+              {[...m.conflicts]
+                .sort((a, b) => a.field.localeCompare(b.field))
+                .map((c) => (
+                  <div key={`${c.field}-${c.candidate_a.date}`} className="conflict-line">
+                    {conflictLine(c)}
+                  </div>
+                ))}
               <div className="phase-text">（保留 candidate A / B 双方口径，未自行取舍；非历史事实）</div>
             </dd>
           </>

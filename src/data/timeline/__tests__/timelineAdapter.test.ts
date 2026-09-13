@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   derivePhases,
   fromTimelineExportV1,
+  getConflictBoundaryCandidates,
   previewTimelineSource,
   validateTimelineExportV1,
   verifiedTimelineSource,
@@ -139,6 +140,91 @@ describe('Conflict：2022 / 2024 保留 candidate A / B 双方', () => {
     expect(c!.status).toBe('conflict');
     expect(c!.conflicts!.some((x) => x.field === 'peak_date')).toBe(true);
     expect(c!.conflicts!.some((x) => x.field === 'end_date')).toBe(true);
+  });
+});
+
+describe('Conflict 边界候选推导：getConflictBoundaryCandidates', () => {
+  const source = previewTimelineSource();
+  const c2022 = source.yearData(2022).campaigns.find((x) => x.campaign_id === 'C-2022-POLICY')!;
+  const c2024 = source.yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
+  const normal = source.yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-V2X')!;
+
+  it('conflict start 有 2 个候选（2022：04-27 / 05-23）', () => {
+    const { startCandidates } = getConflictBoundaryCandidates(c2022);
+    expect(startCandidates).toEqual(['2022-04-27', '2022-05-23']);
+  });
+
+  it('conflict peak 有 2 个候选 marker（2024：07-29 / 08-05）', () => {
+    const { peakCandidates } = getConflictBoundaryCandidates(c2024);
+    expect(peakCandidates).toEqual(['2024-07-29', '2024-08-05']);
+  });
+
+  it('conflict end 有 2 个候选（2024：07-31 / 08-23）', () => {
+    const { endCandidates } = getConflictBoundaryCandidates(c2024);
+    expect(endCandidates).toEqual(['2024-07-31', '2024-08-23']);
+  });
+
+  it('非 conflict Campaign 保持原状：三个候选集均为 null', () => {
+    expect(getConflictBoundaryCandidates(normal)).toEqual({
+      startCandidates: null,
+      peakCandidates: null,
+      endCandidates: null,
+    });
+  });
+
+  it('2022 start 分歧保留：不自动选择 04-27 或 05-23', () => {
+    const { startCandidates } = getConflictBoundaryCandidates(c2022);
+    expect(startCandidates).toContain('2022-04-27');
+    expect(startCandidates).toContain('2022-05-23');
+    expect(startCandidates).toHaveLength(2);
+  });
+
+  it('2024 peak 分歧保留：双方日期均在候选集', () => {
+    const { peakCandidates } = getConflictBoundaryCandidates(c2024);
+    expect(peakCandidates).toContain('2024-07-29');
+    expect(peakCandidates).toContain('2024-08-05');
+  });
+
+  it('2024 end 分歧保留：双方日期均在候选集', () => {
+    const { endCandidates } = getConflictBoundaryCandidates(c2024);
+    expect(endCandidates).toContain('2024-07-31');
+    expect(endCandidates).toContain('2024-08-23');
+  });
+
+  it('不自动选择候选：campaign 正式字段仍为 DB Candidate（A），未被 B 覆盖', () => {
+    // C-2024-ROBOTAXI 正式字段 = Candidate A（start 07-08 / peak 07-29 / end 07-31）
+    expect(c2024.start).toBe('2024-07-08');
+    expect(c2024.peak).toBe('2024-07-29');
+    expect(c2024.end).toBe('2024-07-31');
+    // C-2022-POLICY 正式起点 = Candidate A（04-27），未采用 B（05-23）
+    expect(c2022.start).toBe('2022-04-27');
+  });
+
+  it('conflict Campaign 保持 status=conflict（视觉分歧语义的触发条件）', () => {
+    expect(c2022.status).toBe('conflict');
+    expect(c2024.status).toBe('conflict');
+    // helper 仅对 conflict 状态生效（防御性验证）
+    expect(getConflictBoundaryCandidates({ status: 'conflict', conflicts: undefined })).toEqual({
+      startCandidates: null,
+      peakCandidates: null,
+      endCandidates: null,
+    });
+  });
+
+  it('verified / provisional / preview Campaign 不触发 conflict 视觉（状态与候选集）', () => {
+    // C-2024-V2X = provisional；RC 候选 = preview
+    expect(normal.status).toBe('provisional');
+    const rc = source.yearData(2023).campaigns.find((x) => x.campaign_id === 'RC-2023-HUAWEI')!;
+    expect(rc.status).toBe('preview');
+    expect(getConflictBoundaryCandidates(rc).startCandidates).toBeNull();
+    // verified fixture 同样无候选集
+    const verifiedCmp = verifiedTimelineSource(fixtureCampaigns).yearData(2023).campaigns[0];
+    expect(verifiedCmp.status).toBe('verified');
+    expect(getConflictBoundaryCandidates(verifiedCmp)).toEqual({
+      startCandidates: null,
+      peakCandidates: null,
+      endCandidates: null,
+    });
   });
 });
 

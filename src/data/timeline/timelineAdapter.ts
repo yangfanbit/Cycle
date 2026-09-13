@@ -389,6 +389,43 @@ function candidateStatus(rs: ExportResearchStatus): TimelineCampaign['status'] {
   return rs === 'CONFLICT' ? 'conflict' : 'preview';
 }
 
+/* ---------------- Conflict 边界候选（视图辅助，不改 TimelineCampaign 模型） ---------------- */
+
+export interface ConflictBoundaryCandidates {
+  /** start 存在分歧时的候选日期（升序去重；null = 无分歧） */
+  startCandidates: string[] | null;
+  peakCandidates: string[] | null;
+  endCandidates: string[] | null;
+}
+
+/**
+ * 从 campaign.conflicts 推导 start / peak / end 的 A/B 候选日期。
+ * 仅 status = conflict 时返回非空；候选按日期升序去重（不做任何取舍——
+ * 视觉必须同时呈现双方，避免"自动选择 Candidate A/B"）。
+ */
+export function getConflictBoundaryCandidates(
+  c: Pick<TimelineCampaign, 'status' | 'conflicts'>,
+): ConflictBoundaryCandidates {
+  const empty: ConflictBoundaryCandidates = {
+    startCandidates: null,
+    peakCandidates: null,
+    endCandidates: null,
+  };
+  if (c.status !== 'conflict' || !c.conflicts || c.conflicts.length === 0) return empty;
+  const pick = (field: string): string[] | null => {
+    const dates = c
+      .conflicts!.filter((x) => x.field === field)
+      .flatMap((x) => [x.candidate_a.date, x.candidate_b.date]);
+    if (dates.length === 0) return null;
+    return [...new Set(dates)].sort();
+  };
+  return {
+    startCandidates: pick('start_date'),
+    peakCandidates: pick('peak_date'),
+    endCandidates: pick('end_date'),
+  };
+}
+
 function mainThemeName(themes: { name: string; role?: string | null }[]): string | null {
   return themes.find((t) => t.role === 'main')?.name ?? themes[0]?.name ?? null;
 }

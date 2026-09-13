@@ -461,6 +461,95 @@ html, body {
   text-shadow: 0 0 3px #fff, 0 0 3px #fff;
 }
 
+/* ---------- Conflict Campaign：日期尚未确定的视觉语义 ---------- */
+
+/* 主体条：低透明度 + 斜纹（叠加在生命周期分段上） */
+.bar.cmp.st-conflict-visual {
+  opacity: 0.62;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.38) 0 5px,
+    rgba(255, 255, 255, 0) 5px 10px
+  );
+}
+
+/* 起点研究分歧区间（candidate envelope）：贯穿竖高的半透明斜纹 + 虚线边界 */
+.conflict-envelope {
+  position: absolute;
+  top: 0;
+  height: 28px;
+  z-index: 2;
+  border: 1.5px dashed #a83226;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(168, 50, 38, 0.14) 0 4px,
+    rgba(168, 50, 38, 0) 4px 9px
+  );
+  cursor: help;
+  pointer-events: auto;
+}
+
+/* End 候选区间：从 Candidate A 到 B 的 dotted 延伸（非正式延伸） */
+.end-extension {
+  position: absolute;
+  top: 5px;
+  height: 18px;
+  z-index: 2;
+  border: 1.5px dotted #a83226;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(168, 50, 38, 0.12) 0 4px,
+    rgba(168, 50, 38, 0) 4px 9px
+  );
+  cursor: help;
+  pointer-events: auto;
+}
+
+.end-extension .bar-label {
+  color: #a83226;
+  font-size: 9.5px;
+  white-space: nowrap;
+}
+
+/* 候选日期 marker：顶部 A / B 字母 + 下方贯穿竖线（不依赖颜色） */
+.cand-marker {
+  position: absolute;
+  top: -11px;
+  z-index: 4;
+  width: 10px;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: #a83226;
+  text-align: center;
+  cursor: default;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+}
+
+.cand-marker::after {
+  content: '';
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  width: 1.5px;
+  height: 27px;
+  background: #a83226;
+}
+
+/* 峰值候选双标记：▲ + 上标 A/B */
+.peak-marker.cand {
+  font-size: 12px;
+}
+
+.peak-marker.cand sup {
+  font-size: 8px;
+  font-weight: 700;
+  margin-left: -1px;
+}
+
 /* 详情面板：预览说明与分歧行 */
 .preview-note {
   margin: 12px 0 4px;

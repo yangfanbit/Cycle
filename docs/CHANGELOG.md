@@ -1,5 +1,43 @@
 # CHANGELOG.md — 变更记录
 
+## 2026-09-13 · V1.6.2 附：Conflict Campaign Timeline Visualization（第十轮）
+
+### 问题
+
+C-2024-ROBOTAXI 等冲突行情的时间轴主体使用 Candidate A 日期（07-08 → 07-31），
+仅附 ⚠ 警示——视觉上暗示 07-31 = 已确定 End。研究分歧被弱化为"警告"而非"未定"。
+
+### 修复：conflict 视觉语义 = "日期尚未确定"
+
+- **Adapter**：新增 `getConflictBoundaryCandidates(campaign)`（视图辅助函数，从
+  conflicts 推导 start / peak / end 的 A/B 候选日期，升序去重，不做任何取舍）；
+  **未修改 TimelineCampaign 核心模型**。
+- **Timeline**（仅 status = conflict 启用新视觉；verified / provisional / preview 不变）：
+  - 主体条：低透明度 + 白色斜纹（`st-conflict-visual`），表达"非确定状态"；
+  - **Start 分歧**：A → B 区间渲染"起点研究分歧区间"信封（虚线边框 + 斜纹），
+    两端 A / B 候选 marker（竖线 + 字母）；
+  - **Peak 分歧**：渲染 ▲ᴬ / ▲ᴮ 两个峰值候选标记（tooltip：Peak Candidate A/B）；
+  - **End 分歧**：从 Candidate A 到 B 渲染"End 候选区间"dotted 延伸（非正式延续），
+    两端 A / B 候选 marker；不再让 07-31 视觉上成为绝对 End。
+- **CampaignDetail**：完整日期标注"日期存在研究分歧，A / B 候选见下方；
+  本区间为 DB Candidate 口径"；研究分歧按 起点 / 峰值 / 终点 字段排序显示。
+- **labels**：`CONFLICT_FIELD_LABEL`（start_date→起点 等）；
+  `conflictLine` 显示中文字段标签。
+- 均不依赖颜色（形状 / 线型 / 字母 / 斜纹区分）。
+
+### 边界（不变量）
+
+- 不自动选择 Candidate A 或 B（测试断言正式字段 = A 且候选集含双方）；
+- 未修改 Research Export / TimelineExportV1 / 核心模型 / RC 逻辑；
+- RC Candidate 不因 conflict 升级为 verified。
+
+### 测试
+
+- 83 → 93 项：新增 `getConflictBoundaryCandidates` 10 项
+  （start 2 候选 / peak 2 marker / end 2 候选 / 非 conflict 全 null /
+  2022 start 保留 / 2024 peak 保留 / 2024 end 保留 / 不自动选择 /
+  保持 conflict 状态 / verified·provisional·preview 不受影响）。
+
 ## 2026-09-13 · V1.6.1 Real Research Export Integration（第九轮）
 
 ### 目标

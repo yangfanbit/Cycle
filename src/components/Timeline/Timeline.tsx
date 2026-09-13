@@ -7,6 +7,7 @@ import {
   sourceById,
   windowsOfRule,
 } from '../../data';
+import { getConflictBoundaryCandidates } from '../../data/timeline/timelineAdapter';
 import type { TimelineCampaign, TimelineResearchEvent } from '../../data/timeline/timelineTypes';
 import type { TimeWindow } from '../../models';
 import {
@@ -22,6 +23,7 @@ import {
   type YearSegment,
 } from '../../utils';
 import {
+  CONFLICT_FIELD_LABEL,
   conflictLine,
   DATA_STATUS_CLASS,
   DATA_STATUS_LABEL,
@@ -331,12 +333,30 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
             const earlySeg = campaign.early_signal
               ? segmentForYear(campaign.early_signal.start, campaign.early_signal.end, year)
               : null;
+            // Conflict 边界候选（从 conflicts 推导；不做任何取舍）
+            const conflictCandidates =
+              campaign.status === 'conflict' ? getConflictBoundaryCandidates(campaign) : null;
+            const startCands = conflictCandidates?.startCandidates ?? null;
+            const peakCands = conflictCandidates?.peakCandidates ?? null;
+            const endCands = conflictCandidates?.endCandidates ?? null;
+            // 起点分歧区间：A → B（研究分歧区间，非正式起点）
+            const startEnvelopeSeg = startCands
+              ? segmentForYear(startCands[0], startCands[startCands.length - 1], year)
+              : null;
+            // End 候选区间：DB Candidate（campaign.end）与候选日期的整体包络
+            const endEnvelopeSeg = endCands
+              ? segmentForYear(
+                  [campaign.end, ...endCands].reduce((a, b) => (a < b ? a : b)),
+                  [campaign.end, ...endCands].reduce((a, b) => (a > b ? a : b)),
+                  year,
+                )
+              : null;
             const peakInYear = campaign.peak && campaign.peak.startsWith(`${year}-`);
             const peakFrac = peakInYear ? yearFraction(campaign.peak!) : 0;
             const themeNames = campaign.themes.map((t) => t.name).join('、');
             const statusLabel = DATA_STATUS_LABEL[campaign.status];
             const tooltipLines = [
-              `完整区间：${campaign.start} → ${campaign.end}${
+              `完整区间${conflictCandidates ? '（日期存在研究分歧）' : ''}：${campaign.start} → ${campaign.end}${
                 campaign.openEnded ? '（候选观察中，end 为年末近似）' : ''
               }`,
               campaign.kind === 'candidate'
@@ -354,6 +374,37 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
               ...(campaign.conflicts ?? []).map((c) => conflictLine(c)),
               `来源：${campaign.sourceNote ?? '—'}`,
             ];
+            /** 候选 marker 渲染（A / B 竖线，不依赖颜色） */
+            const renderCandMarkers = (
+              dates: string[] | null,
+              field: 'start_date' | 'end_date',
+            ) => {
+              if (!dates) return null;
+              const fieldLabel = CONFLICT_FIELD_LABEL[field];
+              return dates.map((d) => {
+                if (!d.startsWith(`${year}-`)) return null;
+                const side = campaign.conflicts!.find((c) => c.field === field)!
+                  .candidate_a.date === d
+                  ? 'A'
+                  : 'B';
+                return (
+                  <span
+                    key={`cand-${field}-${d}`}
+                    className={`cand-marker cand-${side.toLowerCase()}`}
+                    style={{ left: pct(yearFraction(d)) }}
+                    onMouseEnter={(e) =>
+                      showTooltip(e, `${campaign.title} · ${fieldLabel}候选 ${side}`, [
+                        `${fieldLabel}候选 ${side}：${d}`,
+                        `${fieldLabel}日期存在研究分歧（A / B 均未确认）`,
+                      ])
+                    }
+                    onMouseLeave={hideTooltip}
+                  >
+                    {side}
+                  </span>
+                );
+              });
+            };
             return (
               <div className="tl-row cmp-row" key={campaign.campaign_id}>
                 <div className="tl-row-label">
@@ -401,7 +452,7 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                         ps.continuesIntoNextYear ? ' cont-next' : ''
                       }${selected ? ' selected' : ''}${
                         campaign.status === 'provisional' || campaign.status === 'preview' ? ' st-dashed' : ''
-                      }`}
+                      }${conflictCandidates ? ' st-conflict-visual' : ''}`}
                       style={{
                         left: pct(ps.startFraction),
                         width: pct(Math.max(ps.endFraction - ps.startFraction, 0.004)),
@@ -424,18 +475,87 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                       </span>
                     </div>
                   ))}
-                  {/* 峰值标记（Peak Cluster 中心点） */}
-                  {peakInYear && (
-                    <span
-                      className="peak-marker"
-                      style={{ left: pct(peakFrac) }}
+                  {/* 起点研究分歧区间（Start Conflict：A → B，均未确认） */}
+                  {startEnvelopeSeg && startCands && (
+                    <div
+                      className="conflict-envelope"
+                      style={{
+                        left: pct(startEnvelopeSeg.startFraction),
+                        width: pct(
+                          Math.max(startEnvelopeSeg.endFraction - startEnvelopeSeg.startFraction, 0.004),
+                        ),
+                      }}
                       onMouseEnter={(e) =>
-                        showTooltip(e, `${campaign.title} · 峰值`, [`峰值日期：${campaign.peak}`])
+                        showTooltip(e, `${campaign.title} · 起点研究分歧区间`, [
+                          `起点候选：${startCands.join(' / ')}`,
+                          '起点日期存在研究分歧（A / B 均未确认），本区间不是正式起点。',
+                        ])
+                      }
+                      onMouseLeave={hideTooltip}
+                    />
+                  )}
+                  {/* End 候选区间（End Conflict：A → B 虚线延伸，非正式延伸） */}
+                  {endEnvelopeSeg && endCands && (
+                    <div
+                      className="end-extension"
+                      style={{
+                        left: pct(endEnvelopeSeg.startFraction),
+                        width: pct(
+                          Math.max(endEnvelopeSeg.endFraction - endEnvelopeSeg.startFraction, 0.004),
+                        ),
+                      }}
+                      onMouseEnter={(e) =>
+                        showTooltip(e, `${campaign.title} · End 候选区间`, [
+                          `结束候选：${endCands.join(' / ')}`,
+                          '结束日期存在研究分歧（A / B 均未确认），延伸部分不是正式行情延续。',
+                        ])
                       }
                       onMouseLeave={hideTooltip}
                     >
-                      ▲
-                    </span>
+                      <span className="bar-label">End 候选区间</span>
+                    </div>
+                  )}
+                  {/* 起点候选 marker（A / B） */}
+                  {renderCandMarkers(startCands, 'start_date')}
+                  {/* 结束候选 marker（A / B） */}
+                  {renderCandMarkers(endCands, 'end_date')}
+                  {/* 峰值标记：无分歧时单标记；有分歧时 A / B 双候选标记 */}
+                  {peakCands ? (
+                    peakCands
+                      .filter((d) => d.startsWith(`${year}-`))
+                      .map((d) => {
+                        const isA =
+                          campaign.conflicts!.find((c) => c.field === 'peak_date')!.candidate_a.date === d;
+                        return (
+                          <span
+                            key={`peak-cand-${d}`}
+                            className="peak-marker cand"
+                            style={{ left: pct(yearFraction(d)) }}
+                            onMouseEnter={(e) =>
+                              showTooltip(e, `${campaign.title} · 峰值候选 ${isA ? 'A' : 'B'}`, [
+                                `Peak Candidate ${isA ? 'A' : 'B'}：${d}`,
+                                '峰值日期存在研究分歧（A / B 均未确认）。',
+                              ])
+                            }
+                            onMouseLeave={hideTooltip}
+                          >
+                            ▲<sup>{isA ? 'A' : 'B'}</sup>
+                          </span>
+                        );
+                      })
+                  ) : (
+                    peakInYear && (
+                      <span
+                        className="peak-marker"
+                        style={{ left: pct(peakFrac) }}
+                        onMouseEnter={(e) =>
+                          showTooltip(e, `${campaign.title} · 峰值`, [`峰值日期：${campaign.peak}`])
+                        }
+                        onMouseLeave={hideTooltip}
+                      >
+                        ▲
+                      </span>
+                    )
                   )}
                   {/* 研究分歧警示（CONFLICT 不得被描述成历史事实） */}
                   {campaign.status === 'conflict' && (
