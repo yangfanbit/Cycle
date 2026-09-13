@@ -13,9 +13,10 @@
 
 ### 属性
 - `rule_id`：规则标识（如 `rule_auto_summer`）
-- `rule_type`：规则类型（seasonal / thematic / event-driven）
 - `status`：candidate / under_review / confirmed / weak / rejected
 - **属于 Research Prior / Hypothesis**，不是市场事实
+
+**注**：`rule_type` 为 conceptual classification / future candidate，当前 SQLite schema 未持久化此字段。
 
 ### 示例
 - `rule_auto_summer`：汽车夏季历史观察窗口（6-8月）
@@ -108,7 +109,10 @@
 | **weak** | 弱，证据不足 |
 | **rejected** | 已拒绝 |
 
-**注意**：`confirmed` 是 Campaign status，不是 Campaign Phase。
+**注意**：
+- `confirmed` 是 Campaign status，不是 Campaign Phase。
+- **Campaign status 是研究层概念**，当前正式 SQLite schema 不单独持久化 `status` 字段。
+- 当前数据库正式字段仍是：`classification`、`strength`、`result`、`date_confidence`。
 
 ---
 
@@ -177,9 +181,10 @@ Campaign 相关的股票 / 指数 / ETF。
 
 ### 属性
 - `security_id`：证券标识
-- `security_type`：stock / index / etf
 - `role`：leader / second_leader / representative / follow
 - **Layer 1 Fact**：客观数据
+
+**注**：`security_type`（stock / index / etf）为 research-level conceptual classification，当前 SQLite schema 未持久化此字段。
 
 ---
 
@@ -314,17 +319,19 @@ Campaign 相关的股票 / 指数 / ETF。
 
 ### 2023 Auto Intelligence（theme_cycle_id = auto_intelligence_2023）
 
-**Campaign 1: Smart Driving**
+**Formal Campaign: C-2023-AD (Smart Driving)**
 - Research Signals: 06-12 (EARLY_SIGNAL), 06-21 (THEME_FORMING)
-- Campaign Start: 06-21
+- Campaign Start: 06-12
 - Main Rise: 07-03 ~ 07-19
-- End: ≈09-12
+- End: 07-19
 
-**Campaign 2: Huawei Auto**
+**Research Candidate: RC-2023-HUAWEI (Huawei Auto)**
 - Research Signals: 08-29 (EARLY_SIGNAL Candidate), 09-04 (THEME_FORMING)
 - Campaign Start Candidate: 09-12
 - Broad Confirmation: 09-18
 - Main Rise: 09下~10
+
+**09-12**：原 Smart Driving 后验结束/转折观察点，**不是**正式 Campaign end_date
 
 **Theme Drift**：Smart Driving → Huawei Auto
 **Campaign Overlap**：08-29~09-12 重叠

@@ -200,10 +200,11 @@
 - 中通客车 = Observation
 
 ### 2023 Auto Intelligence
-- Campaign 1 (Smart Driving): 06-21 → 09-12
-- Campaign 2 (Huawei Auto): Research Candidate (RC-2023-HUAWEI)
-- Theme Drift: Smart Driving → Huawei Auto
-- Campaign Overlap: 08-29~09-12
+- **Formal Campaign**: C-2023-AD (Smart Driving): 06-12 → 07-19
+- **Research Candidate**: RC-2023-HUAWEI (Huawei Auto)
+- **09-12**: 原 Smart Driving 后验结束/转折观察点，**不是**正式 Campaign end_date
+- **Theme Drift**: Smart Driving → Huawei Auto
+- **Campaign Overlap**: 08-29~09-12
 
 ### 2024 Robotaxi
 - Main Campaign: 07-08 → 08-23
