@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { SamePeriodView } from '../../../components/SamePeriodView/SamePeriodView';
 import { CurrentTimeLens } from '../../../components/CurrentTimeLens/CurrentTimeLens';
 import {
+  formationAnchorOf,
   historicalPreObservationDays,
   isInPreObservation,
   PRE_OBSERVATION_HINT,
@@ -16,7 +17,7 @@ import { previewTimelineSource, verifiedTimelineSource } from '../timelineAdapte
 import { fixtureCampaigns } from '../../../../tests/fixtures/campaignFixtures';
 
 /**
- * V1.8.2 Timeline Detail UX + Pre-observation Window 测试（10 项 + 附加）。
+ * V1.8.2 / V1.8.2.1 Timeline Detail UX + Pre-observation Window 测试（10 项 + 附加）。
  *
  * 分组：
  *   1. inline summary appears on selection（就地展开，非侧栏）
@@ -24,7 +25,8 @@ import { fixtureCampaigns } from '../../../../tests/fixtures/campaignFixtures';
  *   3. full detail opens only on explicit action
  *   4. mobile bottom sheet fallback
  *   5. pre-observation window starts 30 days before formation
- *   6. early signal follows pre-observation
+ *      ★ V1.8.2.1：Formation Anchor 规则（THEME_FORMING → BROAD_CONFIRMATION → Campaign.start）
+ *   6. early signal follows pre-observation（Early Signal ≠ Formation）
  *   7. no prediction language
  *   8. no buy/sell language
  *   9. preview / production isolation
@@ -136,7 +138,8 @@ describe('5. pre-observation window starts 30 days before formation', () => {
     expect(historicalPreObservationDays).toBe(30);
     const src = read('src/data/timeline/preObservation.ts');
     expect(src).toContain('不代表历史平均领先期');
-    expect(src).toContain('UI research buffer');
+    // V1.8.2.1：措辞改为「研究浏览参考 / Research browsing buffer」
+    expect(src).toContain('Research browsing buffer');
   });
 
   it('窗口 = [formation-30, formation-1]（不含形成日本身）', () => {
@@ -146,23 +149,79 @@ describe('5. pre-observation window starts 30 days before formation', () => {
     expect(win!.start).toBe('2025-08-02'); // 09-01 - 30 天
     expect(win!.end).toBe('2025-08-31'); // 09-01 - 1 天
     expect(win!.days).toBe(30);
+    expect(win!.formationAnchor).toBe('campaign_start');
   });
 
-  it('formation 优先取 lifecycle 最早阶段起点（主题形成边界）', () => {
+  /* ---------- V1.8.2.1 Formation Anchor 规则 ---------- */
+
+  it('① THEME_FORMING 存在 → formation = THEME_FORMING.start（不是最早的 EARLY_SIGNAL）', () => {
     const campaign = {
       start: '2023-09-20',
       lifecycle: [
         { stage: 'EARLY_SIGNAL', start: '2023-08-29', end: '2023-09-01', precision: 'EXACT_DATE' },
+        { stage: 'THEME_FORMING', start: '2023-09-04', end: '2023-09-04', precision: 'EXACT_DATE' },
+        { stage: 'BROAD_CONFIRMATION', start: '2023-09-18', end: '2023-09-18', precision: 'EXACT_DATE' },
         { stage: 'MAIN_RISE', start: '2023-09-20', end: '2023-10-31', precision: 'DATE_WINDOW' },
       ],
     };
-    expect(themeFormationDate(campaign)).toBe('2023-08-29');
+    expect(themeFormationDate(campaign)).toBe('2023-09-04');
+    expect(formationAnchorOf(campaign)).toBe('THEME_FORMING');
     const win = preObservationWindowOf(campaign)!;
-    expect(win.formation).toBe('2023-08-29');
-    expect(win.start).toBe('2023-07-30');
+    expect(win.formation).toBe('2023-09-04');
+    expect(win.formationAnchor).toBe('THEME_FORMING');
+    // 回归断言：绝不可退化为 lifecycle 最早阶段（EARLY_SIGNAL 2023-08-29）
+    expect(win.formation).not.toBe('2023-08-29');
+    expect(win.start).toBe('2023-08-05'); // 09-04 - 30 天
+    expect(win.end).toBe('2023-09-03'); // 09-04 - 1 天
   });
 
-  it('真实导出（RC-2023-HUAWEI）提前观察区起点 = 形成日 - 30 天', () => {
+  it('② 无 THEME_FORMING 但有 BROAD_CONFIRMATION → formation = BROAD_CONFIRMATION.start', () => {
+    const campaign = {
+      start: '2024-07-08',
+      lifecycle: [
+        { stage: 'EARLY_SIGNAL', start: '2024-07-08', end: '2024-07-08', precision: 'EXACT_DATE' },
+        { stage: 'BROAD_CONFIRMATION', start: '2024-07-10', end: '2024-07-10', precision: 'EXACT_DATE' },
+        { stage: 'MAIN_RISE', start: '2024-07-11', end: '2024-07-29', precision: 'EXACT_DATE' },
+      ],
+    };
+    expect(themeFormationDate(campaign)).toBe('2024-07-10');
+    expect(formationAnchorOf(campaign)).toBe('BROAD_CONFIRMATION');
+    expect(themeFormationDate(campaign)).not.toBe('2024-07-08');
+    const win = preObservationWindowOf(campaign)!;
+    expect(win.formation).toBe('2024-07-10');
+    expect(win.start).toBe('2024-06-10'); // 07-10 - 30 天
+    expect(win.end).toBe('2024-07-09');
+  });
+
+  it('③ 无形成类 lifecycle → formation = Campaign.start（anchor = campaign_start）', () => {
+    const campaign = {
+      start: '2019-08-15',
+      lifecycle: [
+        { stage: 'EARLY_SIGNAL', start: '2019-08-15', end: '2019-08-15', precision: 'EXACT_DATE' },
+        { stage: 'MAIN_RISE', start: '2019-08-15', end: '2019-09-24', precision: 'DATE_WINDOW' },
+      ],
+    };
+    expect(themeFormationDate(campaign)).toBe('2019-08-15');
+    expect(formationAnchorOf(campaign)).toBe('campaign_start');
+    expect(preObservationWindowOf(campaign)!.formation).toBe('2019-08-15');
+  });
+
+  it('④ 既无 start 也无形成阶段 → null（不编造）', () => {
+    const empty = { start: '', lifecycle: [] as never[] };
+    expect(themeFormationDate(empty as never)).toBeNull();
+    expect(formationAnchorOf(empty as never)).toBeNull();
+    expect(preObservationWindowOf(empty as never)).toBeNull();
+    expect(preObservationChainOf(empty as never)).toBeNull();
+  });
+
+  it('⑤ 禁止「取 lifecycle 最早阶段」—— EARLY_SIGNAL 首阶段永远不等于 formation', () => {
+    const src = read('src/data/timeline/preObservation.ts');
+    // 源码必须按 stage 名称查找，而非 reduce 取最小 start
+    expect(src).toContain("stage === STAGE_THEME_FORMING");
+    expect(src).not.toMatch(/stages\.reduce\(\(min/); // 旧的「取最早 start」实现已移除
+  });
+
+  it('真实导出（RC-2023-HUAWEI）提前观察参考区起点 = 形成日 - 30 天', () => {
     const rc = previewTimelineSource()
       .yearData(2023)
       .campaigns.find((c) => c.campaign_id === 'RC-2023-HUAWEI')!;
@@ -173,11 +232,33 @@ describe('5. pre-observation window starts 30 days before formation', () => {
       .slice(0, 10);
     expect(chain.preObservation.start).toBe(expectedStart);
   });
+
+  it('真实导出快照：所有 campaign 的 formation 均不再误取 EARLY_SIGNAL', () => {
+    const src = previewTimelineSource();
+    const all = src.years().flatMap((y) => src.yearData(y).campaigns);
+    let checked = 0;
+    for (const c of all) {
+      const chain = preObservationChainOf(c);
+      if (!chain) continue;
+      checked += 1;
+      const earlyStage = c.lifecycle?.find((s) => s.stage === 'EARLY_SIGNAL');
+      if (earlyStage) {
+        const hasFormingStage = c.lifecycle!.some(
+          (s) => s.stage === 'THEME_FORMING' || s.stage === 'BROAD_CONFIRMATION',
+        );
+        // 存在形成阶段时，formation 绝不可等于 EARLY_SIGNAL.start
+        if (hasFormingStage) {
+          expect(chain.formation).not.toBe(earlyStage.start);
+        }
+      }
+    }
+    expect(checked).toBeGreaterThan(0);
+  });
 });
 
 /* ---------------- 6. Early signal follows pre-observation --------- */
 
-describe('6. early signal follows pre-observation（层级：观察区 → 早期信号 → 形成）', () => {
+describe('6. early signal follows pre-observation（层级：参考区 → 早期信号 → 形成）', () => {
   it('有 Early Signal 时为三段式 hasEarlySignal=true', () => {
     const withEs = {
       start: '2023-09-20',
@@ -187,7 +268,7 @@ describe('6. early signal follows pre-observation（层级：观察区 → 早�
     const chain = preObservationChainOf(withEs)!;
     expect(chain.hasEarlySignal).toBe(true);
     expect(chain.earlySignal?.start).toBe('2023-08-29');
-    // 观察区终点早于形成日（不与 Campaign 主体重叠）
+    // 参考区终点早于形成日（不与 Campaign 主体重叠）
     expect(chain.preObservation.end < chain.preObservation.formation).toBe(true);
   });
 
@@ -198,13 +279,62 @@ describe('6. early signal follows pre-observation（层级：观察区 → 早�
     expect(chain.earlySignal).toBeNull();
   });
 
-  it('真实导出：RC-2023-HUAWEI 存在早期信号（导出既有字段，非本层编造）', () => {
+  /* ---------- V1.8.2.1：Early Signal 与 Formation 必须分开 ---------- */
+
+  it('④ Early Signal 独立于 Formation：二者不是同一个锚点', () => {
+    const campaign = {
+      start: '2023-09-20',
+      lifecycle: [
+        { stage: 'EARLY_SIGNAL', start: '2023-08-29', end: '2023-09-01', precision: 'EXACT_DATE' },
+        { stage: 'THEME_FORMING', start: '2023-09-04', end: '2023-09-04', precision: 'EXACT_DATE' },
+        { stage: 'MAIN_RISE', start: '2023-09-20', end: '2023-10-31', precision: 'DATE_WINDOW' },
+      ],
+      early_signal: { start: '2023-08-29', end: '2023-09-01' },
+    };
+    const chain = preObservationChainOf(campaign)!;
+    expect(chain.earlySignal!.start).toBe('2023-08-29');
+    expect(chain.formation).toBe('2023-09-04');
+    expect(chain.formation).not.toBe(chain.earlySignal!.start); // 关键：不是同一锚点
+    // 三层顺序：参考区终点 < 形成日；早期信号早于形成
+    expect(chain.preObservation.end < chain.formation).toBe(true);
+    expect(chain.earlySignal!.start < chain.formation).toBe(true);
+  });
+
+  it('⑤ 参考区终点紧邻形成日之前（end = formation - 1）', () => {
+    const campaign = {
+      start: '2023-09-20',
+      lifecycle: [
+        { stage: 'THEME_FORMING', start: '2023-09-04', end: '2023-09-04', precision: 'EXACT_DATE' },
+      ],
+    };
+    const win = preObservationWindowOf(campaign)!;
+    const expected = new Date(Date.parse(win.formation + 'T00:00:00Z') - 86400000)
+      .toISOString()
+      .slice(0, 10);
+    expect(win.end).toBe(expected);
+    expect(win.end < win.formation).toBe(true);
+  });
+
+  it('⑥ RC-2023-HUAWEI：参考区 → 早期信号 → 形成，Formation anchor 不是 EARLY_SIGNAL', () => {
     const rc = previewTimelineSource()
       .yearData(2023)
       .campaigns.find((c) => c.campaign_id === 'RC-2023-HUAWEI')!;
     const chain = preObservationChainOf(rc)!;
-    // 该 RC lifecycle 首阶段为 EARLY_SIGNAL；early_signal 字段存在性按导出数据决定
-    expect(chain.preObservation.formation).toBe('2023-08-29');
+    // 导出实际值：EARLY_SIGNAL 2023-08-29 / THEME_FORMING 2023-09-04
+    const earlyStage = rc.lifecycle!.find((s) => s.stage === 'EARLY_SIGNAL')!;
+    expect(earlyStage.start).toBe('2023-08-29');
+    // ★ 修正前这里是 2023-08-29（错误地把早期信号当形成）；修正后必须为 09-04
+    expect(chain.formation).toBe('2023-09-04');
+    expect(chain.formationAnchor).toBe('THEME_FORMING');
+    expect(chain.formation).not.toBe('2023-08-29');
+    // 三段式齐全
+    expect(chain.hasEarlySignal).toBe(true);
+    expect(chain.earlySignal!.start).toBe('2023-08-29');
+    // 顺序：参考区 08-05 ~ 09-03 → 早期信号 08-29 → 形成 09-04
+    expect(chain.preObservation.start).toBe('2023-08-05');
+    expect(chain.preObservation.end).toBe('2023-09-03');
+    expect(chain.preObservation.end < chain.formation).toBe(true);
+    expect(chain.earlySignal!.start).not.toBe(chain.formation);
   });
 });
 
@@ -227,7 +357,7 @@ describe('7. no prediction language（无预测措辞）', () => {
     }
   });
 
-  it('提前观察区的**界面输出**不含禁用文案（源码 doc-comment 中的反例说明不计）', () => {
+  it('⑧ 提前观察参考区的**界面输出**不含禁用文案（源码 doc-comment 中的反例说明不计）', () => {
     // 断言渲染输出，而非源码注释；源码注释中以「✗ 不是…」形式列出反例属合规文档。
     const html = renderToStaticMarkup(
       <SamePeriodView dataSource={previewTimelineSource()} today={TODAY} />,
@@ -260,8 +390,20 @@ describe('8. no buy/sell language（无买卖建议措辞）', () => {
     }
   });
 
-  it('标签统一为「历史提前观察区」，未使用买入区 / 布局区 / 信号区', () => {
-    expect(PRE_OBSERVATION_LABEL).toBe('历史提前观察区');
+  it('⑦ 标签统一为「提前观察参考区」，未使用买入区 / 布局区 / 信号区', () => {
+    expect(PRE_OBSERVATION_LABEL).toBe('提前观察参考区');
+    // 旧标签不得残留
+    expect(PRE_OBSERVATION_LABEL).not.toBe('历史提前观察区');
+    const src = read('src/components/SamePeriodView/SamePeriodView.tsx');
+    expect(src).not.toContain('历史提前观察区');
+    const tl = read('src/components/Timeline/Timeline.tsx');
+    expect(tl).not.toContain('历史提前观察区');
+  });
+
+  it('说明文案含「研究浏览参考」+「不代表历史平均领先期」+「不是买入建议」', () => {
+    expect(PRE_OBSERVATION_HINT).toContain('研究浏览参考');
+    expect(PRE_OBSERVATION_HINT).toContain('不代表历史平均领先期');
+    expect(PRE_OBSERVATION_HINT).toContain('不是买入建议');
   });
 });
 
@@ -305,17 +447,17 @@ describe('10. candidate / conflict preserved', () => {
   });
 });
 
-/* ---------------- 附加：Current Time Context 提前观察区说明 --------- */
+/* ---------------- 附加：Current Time Context 提前观察参考区说明 --------- */
 
-describe('附加. Current Time Context 提前观察区说明（含非预测限定语）', () => {
+describe('附加. Current Time Context 提前观察参考区说明（含非预测限定语）', () => {
   it('isInPreObservation 语义正确：窗口内 true，形成日之后 false', () => {
     const c = { start: '2025-09-01', lifecycle: [] as never[] };
     expect(isInPreObservation(c as never, '2025-08-15')).toBe(true);
-    expect(isInPreObservation(c as never, '2025-09-01')).toBe(false); // 形成日不在观察区（半开区间）
+    expect(isInPreObservation(c as never, '2025-09-01')).toBe(false); // 形成日不在参考区（半开区间）
     expect(isInPreObservation(c as never, '2025-07-01')).toBe(false);
   });
 
-  it('渲染含「历史提前观察区」时必须同时出现「不代表本年度预测」限定', () => {
+  it('渲染含提前观察参考区时必须同时出现「不代表本年度预测」限定', () => {
     const src = read('src/components/CurrentTimeLens/CurrentTimeLens.tsx');
     if (src.includes(PRE_OBSERVATION_LABEL)) {
       expect(src).toContain('不代表本年度预测');
@@ -323,7 +465,7 @@ describe('附加. Current Time Context 提前观察区说明（含非预测限�
     expect(src).toContain('不代表本年度预测');
   });
 
-  it('Timeline 渲染提前观察区条形（pre-obs 类名存在）', () => {
+  it('Timeline 渲染提前观察参考区条形（pre-obs 类名存在）', () => {
     const src = read('src/components/Timeline/Timeline.tsx');
     expect(src).toContain('pre-obs');
     expect(src).toContain('preObservationChainOf');
@@ -331,5 +473,37 @@ describe('附加. Current Time Context 提前观察区说明（含非预测限�
     expect(css).toContain('.bar.pre-obs');
     // 极淡：低透明度 + 斜纹
     expect(css).toMatch(/\.bar\.pre-obs[\s\S]{0,400}opacity:\s*0\.\d/);
+  });
+
+  it('视觉层级：Campaign > Early Signal > 提前观察参考区（opacity 与 z-index 双降序）', () => {
+    const css = read('src/styles.css');
+    const block = (sel: string) => {
+      const i = css.indexOf(sel + ' {');
+      expect(i).toBeGreaterThan(-1);
+      return css.slice(i, css.indexOf('}', i));
+    };
+    const num = (s: string, prop: string) => {
+      const m = s.match(new RegExp(prop + ':\\s*(-?[\\d.]+)'));
+      return m ? Number(m[1]) : null;
+    };
+    const preObs = block('.bar.pre-obs');
+    const early = block('.bar.early-signal');
+    const cmpRise = block('.bar.cmp-main_rise');
+
+    const opPre = num(preObs, 'opacity')!;
+    const opEarly = num(early, 'opacity')!;
+    const opCmp = num(cmpRise, 'opacity')!;
+    // Campaign 最突出 > Early Signal > 提前观察参考区
+    expect(opCmp).toBeGreaterThan(opEarly);
+    expect(opEarly).toBeGreaterThan(opPre);
+
+    const zPre = num(preObs, 'z-index')!;
+    const zEarly = num(early, 'z-index')!;
+    expect(zEarly).toBeGreaterThan(zPre);
+
+    // 提前观察参考区：点线 / 斜纹 / 低 z-index
+    expect(preObs).toMatch(/border:\s*1px dotted/);
+    expect(preObs).toContain('repeating-linear-gradient');
+    expect(zPre).toBe(0);
   });
 });

@@ -7,6 +7,89 @@
 
 ---
 
+## 2026-09-13 · Phase 5.2.1 V1.8.2.1 Pre-observation Semantic Fix（Formation Anchor）
+
+### 目标
+
+修正提前观察区的**语义锚点错误**，并把文案统一为「提前观察参考区」。
+本轮**不改 Research / Schema / Database / Export Contract / TimelineExportV1 / Research Model**，
+不新增主题，不增加资金 / 筹码 / 情绪，不改 Theme Row 逻辑，不改 CampaignDetail UX。
+
+### 原语义问题
+
+`themeFormationDate()` 原实现为「取 lifecycle 中最早阶段 start」。但 lifecycle 通常以
+`EARLY_SIGNAL` 开头，导致把**早期信号误当成主题形成**。
+
+真实案例 `RC-2023-HUAWEI`：
+
+| | 修正前（错误） | 修正后（正确） |
+|---|---|---|
+| Formation | 2023-08-29（= EARLY_SIGNAL）✗ | **2023-09-04**（THEME_FORMING）✓ |
+| 参考区 | 07-30 ~ 08-28 | **08-05 ~ 09-03** |
+| Early Signal | 08-29（与 Formation 同日） | **08-29**（独立锚点，不等于 Formation） |
+
+### 新 Formation Anchor 规则
+
+```
+1. lifecycle.stage === 'THEME_FORMING'      → 该 stage.start
+2. 否则 'BROAD_CONFIRMATION'                → 该 stage.start
+3. 否则 Campaign.start                      → campaign_start
+4. 都没有                                    → null（不编造）
+```
+
+**禁止**直接取 lifecycle 最早 stage。新增 `formationAnchorOf()` 暴露锚点来源，
+`PreObservationWindow` 新增 `formationAnchor` 字段（`THEME_FORMING` / `BROAD_CONFIRMATION` / `campaign_start`）。
+
+### Early Signal 与 Formation 的关系
+
+- Early Signal **继续使用** `TimelineCampaign.early_signal` 与 Research Export 既有数据，**不重新推导**。
+- 二者是**两个独立边界**：`参考区 → 早期信号 → 主题形成 → 主升`。
+- 顺序保证：`preObservation.end < formation`，且 `earlySignal.start !== formation`。
+
+### 30 天的真实含义（不变）
+
+`historicalPreObservationDays = 30` 保持不变，含义为 **UI / Research browsing buffer**：
+不是历史统计领先期、不是预测、不是买入时间。
+
+### 文案变化
+
+| 位置 | 旧 | 新 |
+|---|---|---|
+| `PRE_OBSERVATION_LABEL` | 历史提前观察区 | **提前观察参考区** |
+| `PRE_OBSERVATION_HINT` | 仅为研究浏览缓冲，不代表历史平均领先期，也不是买入建议。 | **仅用于研究浏览参考**，不代表历史平均领先期，也不是买入建议。 |
+
+### 视觉层级（Section 八）
+
+`Campaign > Early Signal > 提前观察参考区`，opacity 与 z-index 双降序：
+
+| 元素 | opacity | z-index |
+|---|---|---|
+| `.bar.cmp-main_rise`（Campaign） | 0.95 | — |
+| `.bar.early-signal` | 0.5 | **1**（新增） |
+| `.bar.pre-obs` | **0.4**（原 0.62） | 0 |
+
+参考区继续：点线边框 + 斜纹 + 低 z-index，不抢 Campaign / Peak / Early Signal。
+
+### 修改文件
+
+| 文件 | 变化 |
+|---|---|
+| `src/data/timeline/preObservation.ts` | 重写 `themeFormationDate()`（锚点优先级）；新增 `formationAnchorOf()`；`PreObservationWindow.formationAnchor`；`PreObservationChain.formationAnchor`；标签与 hint 文案更新 |
+| `src/components/Timeline/Timeline.tsx` | tooltip 文案改「提前观察参考区」+「主升」层级；注释更新 |
+| `src/components/CurrentTimeLens/CurrentTimeLens.tsx` | 移除脆弱的 `.replace('历史','')`；文案改「研究浏览参考」 |
+| `src/components/SamePeriodView/SamePeriodView.tsx` | 仅注释更新（标签走常量） |
+| `src/data/timeline/themeRows.ts` | 仅注释更新 |
+| `src/styles.css` | `.bar.pre-obs` opacity 0.62→0.4；`.bar.early-signal` 加 `z-index:1`；注释更新 |
+| `src/data/timeline/__tests__/preObservation.test.tsx` | 重写 Section 5/6（锚点规则 + Early Signal 独立性）；新增视觉层级测试 |
+
+### 验证
+
+- `npm test` **191 项通过**（182 → 191，+9）；`tsc -b` 通过；`build` 通过（58 modules）。
+- **未运行** Python 校验脚本（本轮零 Research / Schema / Export 变更）。
+- diff 零触及 `schema.sql` / `research/**` / `exports/**` / `src/models/` / `contracts/`。
+
+---
+
 ## 2026-09-13 · Phase 5.2 V1.8.2 Timeline Detail UX + Historical Pre-observation Window
 
 ### 目标

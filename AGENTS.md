@@ -37,7 +37,7 @@
 
 ## 2. 当前阶段
 
-**Phase 5.2：V1.8.2 Timeline Detail UX + Historical Pre-observation Window（IMPLEMENTED / READY FOR USER EXPERIENCE REVIEW）。**
+**Phase 5.2.1：V1.8.2.1 Pre-observation Semantic Fix（Formation Anchor）（IMPLEMENTED / READY FOR USER VISUAL REVIEW）。**
 
 - Phase 4 Monorepo Integration 已完成：Cycle（产品 / PWA / Timeline 前端）与
   Cycle-Research（研究 / 数据生产）已合并为**单一仓库 `ThreeC`**，单一 Git，保留双方完整历史。
@@ -48,10 +48,16 @@
 - Phase 5.2 V1.8.2 已完成：**两级详情**（Level 1 就地 Inline Summary，点击主题行触发
   `onToggle`，不离开主页面；Level 2 仅「查看完整历史案例」触发 `onSelect` 打开既有
   `CampaignDetail`）；Timeline 恒为第一视觉，不新增大型 modal / 永久右侧大面板；
-  移动端详情退化为 Bottom Sheet。新增 **「历史提前观察区」**（`historicalPreObservationDays = 30`，
-  UI research buffer，代码注释注明「仅为研究浏览缓冲，不代表历史平均领先期」）。
+  移动端详情退化为 Bottom Sheet。新增 **「提前观察参考区」**（`historicalPreObservationDays = 30`，
+  UI / Research browsing buffer，代码注释注明「不代表历史平均领先期」）。
+- Phase 5.2.1 V1.8.2.1 已完成：修正 Formation Anchor——
+  `themeFormationDate()` 按 `THEME_FORMING → BROAD_CONFIRMATION → Campaign.start → null` 取锚点，
+  **禁止**取 lifecycle 最早 stage（原实现会把 EARLY_SIGNAL 误认为形成）；
+  Early Signal 与 Formation 为**两个独立边界**（Early Signal 沿用导出既有字段，不重新推导）；
+  文案「历史提前观察区」→「**提前观察参考区**」；
+  视觉层级 `Campaign > Early Signal > 参考区`（opacity / z-index 双降序）。
   **不做**预测 / 荐股 / 交易信号。
-- 当前处于 **等待真实用户体验 Review** 状态。**不继续加功能。**
+- 当前处于 **等待真实用户视觉 Review** 状态。**不继续加功能。**
 
 阶段全景见 `docs/ROADMAP.md`。下一个唯一目标见 `docs/PROJECT_STATE.md`「Next Single Goal」。
 
@@ -190,7 +196,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 182 项
+npm test          # Vitest，当前 191 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -246,15 +252,12 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**真实用户体验 Review。** Phase 5.2 V1.8.2 实现完成后已**停止**：
+**真实用户视觉 Review。** Phase 5.2.1 V1.8.2.1 实现完成后已**停止**：
 不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。
 
-请用户在真实使用中依次判断 7 个产品目的问题：
+请用户在真实使用中依次判断 4 个产品目的问题：
 
-1. Timeline 是否仍是第一视觉？
-2. 详情是否不再打断时间轴阅读？
-3. 用户能否先快速理解主题，再决定是否深入？
-4. 提前观察区是否帮助「提前开始研究」？
-5. 是否避免把提前观察区误认为预测？
-6. 是否仍保持「一行一个主题」？
-7. 是否保持页面简单？
+1. Early Signal 与 Theme Formation 是否真正分开？（参考区 → 早期信号 → 主题形成，不再同日）
+2. 提前观察参考区是否只是浏览参考，而不是历史事实？
+3. Campaign 是否仍然最突出？（视觉层级 Campaign > Early Signal > 参考区）
+4. 用户是否仍能理解「先观察 → 出现早期信号 → 主题形成」？

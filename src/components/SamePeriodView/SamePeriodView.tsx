@@ -259,7 +259,7 @@ function InlineThemeSummary({
           <span className="sp-inline-note">（历史窗口内的阶段，不是当前状态）</span>
         </dd>
 
-        {/* 提前观察区：三层链 Pre-observation → Early Signal? → Formation */}
+        {/* 提前观察参考区：三层链 Pre-observation Reference → Early Signal? → Formation */}
         {focus.preObservation && (
           <>
             <dt>{PRE_OBSERVATION_LABEL}</dt>

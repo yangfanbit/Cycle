@@ -19,11 +19,13 @@
 
 ## Current Phase
 
-**Phase 5.2：V1.8.2 Timeline Detail UX + Historical Pre-observation Window —— IMPLEMENTED / READY FOR USER EXPERIENCE REVIEW。**
+**Phase 5.2.1：V1.8.2.1 Pre-observation Semantic Fix（Formation Anchor）—— IMPLEMENTED / READY FOR USER VISUAL REVIEW。**
 
-详情改为**两级**：Level 1 就地 Inline Summary（不离开主页面、不遮挡 Timeline）→
-Level 2 显式点「查看完整历史案例」才打开完整 CampaignDetail（移动端 Bottom Sheet）。
-新增**历史提前观察区**（主题形成前 30 个自然日的**研究浏览缓冲**，非预测 / 非建议 / 非历史统计事实）。
+修正提前观察区的**语义锚点错误**：`themeFormationDate()` 原取 lifecycle 最早阶段，会把
+`EARLY_SIGNAL` 误当 `THEME_FORMING`。新规则按优先级 `THEME_FORMING → BROAD_CONFIRMATION →
+Campaign.start → null`，禁止取最早 stage；Early Signal 与 Formation 为**两个独立边界**。
+文案统一为「**提前观察参考区**」，说明为「仅用于研究浏览参考，不代表历史平均领先期」。
+30 天宽度不变（UI / Research browsing buffer）。视觉层级 `Campaign > Early Signal > 参考区`。
 **不做**预测 / 荐股 / 交易信号。
 
 ---
@@ -38,7 +40,8 @@ Level 2 显式点「查看完整历史案例」才打开完整 CampaignDetail（
 | Phase 4 | Monorepo Integration + Handoff Infrastructure | ✅ |
 | Phase 5 | **Current Time Lens v0**（今天入口：时间定位 → 历史同期 → 历史阶段映射 → 可能驱动） | ✅ IMPLEMENTED |
 | Phase 5.1 | **V1.8.1 主题级历史机会视图**（IA 重排：Timeline 第一视觉 + 历史同周期主题行 + Lens 降级） | ✅ IMPLEMENTED |
-| Phase 5.2 | **V1.8.2 Timeline Detail UX + 提前观察区**（两级详情 / Inline Summary / Bottom Sheet / Pre-observation Window） | ✅ IMPLEMENTED / READY FOR USER EXPERIENCE REVIEW |
+| Phase 5.2 | **V1.8.2 Timeline Detail UX + 提前观察区**（两级详情 / Inline Summary / Bottom Sheet / Pre-observation Window） | ✅ IMPLEMENTED |
+| Phase 5.2.1 | **V1.8.2.1 Pre-observation Semantic Fix**（Formation Anchor 优先级 / Early Signal 与 Formation 分离 / 文案改「提前观察参考区」/ 视觉层级降序） | ✅ IMPLEMENTED / READY FOR USER VISUAL REVIEW |
 
 ---
 
@@ -89,10 +92,20 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
     提前观察区 / 可能相关因素 / 数据状态 / RC / Conflict），**不离开主页面**。
   - **Level 2 Full CampaignDetail**：仅点「查看完整历史案例」才打开；保留 lifecycle / 精确日期 /
     日期候选 / conflict / securities / events / evidence / source。桌面为右侧浮层；**移动端为 Bottom Sheet**。
-- **历史提前观察区（V1.8.2）**：`historicalPreObservationDays = 30`（**UI research buffer**）。
+- **提前观察参考区（V1.8.2 / V1.8.2.1）**：`historicalPreObservationDays = 30`
+  （**UI / Research browsing buffer**）。
   语义 = 「主题正式形成前可开始关注的时间缓冲区」；**不是**预测 / 买入建议 / 未来信号 / 历史统计事实。
-  层级：`Pre-observation → Early Signal? → Theme Formation`。Timeline 中以**极淡**点划线 + 斜纹 + 低透明度呈现，
-  不抢 Campaign 主体与 Peak。文案统一「历史提前观察区」（禁止「买入区 / 布局区 / 信号区」）。
+  层级：`Pre-observation Reference → Early Signal? → Theme Formation → Main Rise`。
+  - **Formation Anchor（V1.8.2.1 修正）**：`THEME_FORMING.start → BROAD_CONFIRMATION.start →
+    Campaign.start → null`；**禁止**取 lifecycle 最早 stage（会把 EARLY_SIGNAL 误认为形成）。
+    锚点来源由 `formationAnchorOf()` / `formationAnchor` 暴露。
+  - Early Signal 继续使用导出既有 `early_signal` 字段，**不重新推导**，与 Formation 相互独立
+    （`earlySignal.start !== formation`，`preObservation.end < formation`）。
+  - Timeline 中以**极淡**点划线 + 斜纹 + `opacity 0.4` + `z-index 0` 呈现，
+    视觉层级 `Campaign(0.95) > Early Signal(0.5/z-1) > 参考区(0.4/z-0)`，
+    不抢 Campaign 主体 / Peak / Early Signal。
+  - 文案统一「**提前观察参考区**」，说明「仅用于研究浏览参考，不代表历史平均领先期，也不是买入建议。」
+    （禁止「买入区 / 布局区 / 信号区」）。
 - **历史同周期主题**（`SamePeriodView`，主题级）：一行 = 一个主主题（`themeRows.ts` 的 `TimelineThemeRow`，
   **纯 UI/Adapter 视图概念，非 DB 实体**）；同主题多条独立行情**不合并**，RC 保留 badge、状态不升级；
   仅**重大冲突**（>10 天）显示 ⚠。
@@ -103,7 +116,7 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - **生产模式**：消费 `data/verified/`（当前为空 → 显示「当前研究数据未覆盖」空态 + 预览入口）。
 - **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
 - `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
-- 测试：`npm test` **182 项通过**；`tsc -b` 通过；`build` 通过。
+- 测试：`npm test` **191 项通过**（V1.8.2.1 后 182 → 191，+9）；`tsc -b` 通过；`build` 通过。
 
 ---
 
@@ -150,16 +163,13 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Next Single Goal
 
-> **真实用户体验 Review（V1.8.2）。**
+> **真实用户视觉 Review（V1.8.2.1）。**
 >
 > 请在真实使用中回答（Product Purpose Check）：
-> 1. Timeline 是否仍然是第一视觉？
-> 2. 详情是否不再打断时间轴阅读？
-> 3. 用户能否先快速理解主题，再决定是否深入？
-> 4. 提前观察区是否帮助「提前开始研究」？
-> 5. 是否避免把提前观察区误认为预测？
-> 6. 是否仍保持「一行一个主题」？
-> 7. 是否保持页面简单？
+> 1. **Early Signal 与 Theme Formation 是否真正分开？**（参考区 → 早期信号 → 主题形成，不再同日）
+> 2. **提前观察参考区是否只是浏览参考，而不是历史事实？**（文案 + 极淡视觉是否已表达「参考」而非「客观阶段」）
+> 3. **Campaign 是否仍然最突出？**（视觉层级 Campaign > Early Signal > 参考区）
+> 4. **用户是否仍能理解「先观察 → 出现早期信号 → 主题形成」？**（三层链是否清晰、不误导）
 
 Review 后可能的方向（**仅供参考，须经授权**）：
 Phase 5.3 资金 / 筹码 / 情绪 / 广度维度（**仅记录，未实现**）

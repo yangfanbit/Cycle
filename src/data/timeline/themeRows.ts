@@ -43,7 +43,7 @@ export interface ThemeCampaignEntry {
   mainTheme: string | null;
   /** 是否存在【重大】冲突（minor 不升级为告警视觉） */
   hasMajorConflict: boolean;
-  /** 提前观察区三层链（Pre-observation → Early Signal? → Formation；无 start → null） */
+  /** 提前观察参考区三层链（Pre-observation Reference → Early Signal? → Formation；无锚点 → null） */
   preObservation: PreObservationChain | null;
   /** 原始视图对象（供 UI 经现有 selection 打开 Campaign Detail） */
   campaign: TimelineCampaign;

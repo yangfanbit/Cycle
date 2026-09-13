@@ -50,7 +50,7 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
 
   const yearsWithData = lens.samePeriod.filter((r) => r.entries.length > 0);
 
-  // 提前观察区（V1.8.2）：今天是否落在某历史行情 / 主题的提前观察区内。
+  // 提前观察参考区（V1.8.2 / V1.8.2.1）：今天是否落在某历史行情 / 主题的提前观察参考区内。
   // 语义严格为「历史研究位置」，必须同时给出「不代表本年度预测」的限定。
   const preObsHits = yearsWithData.flatMap((row) =>
     row.entries.filter((e) => isInPreObservation(e.campaign, today)),
@@ -74,13 +74,13 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
       </div>
       <p className="ctl-question">历史上这个时间窗口附近，出现过哪些主题？</p>
 
-      {/* 提前观察区提示（若有）：今天落在历史某主题的提前观察区内 */}
+      {/* 提前观察参考区提示（若有）：今天落在历史某主题的提前观察参考区内 */}
       {preObsHits.length > 0 && (
         <div className="ctl-pre-obs" role="note">
           <strong>{PRE_OBSERVATION_LABEL}</strong>
           <span className="ctl-pre-obs-body">
-            今天处于历史主题「{preObsHits.map((e) => e.title).join('、')}」的{PRE_OBSERVATION_LABEL.replace('历史', '')}内
-            （主题形成前 30 个自然日的研究浏览缓冲）。
+            今天处于历史主题「{preObsHits.map((e) => e.title).join('、')}」的{PRE_OBSERVATION_LABEL}
+            内（主题形成前 30 个自然日的研究浏览参考）。
           </span>
           <span className="ctl-pre-obs-warn">
             仅为历史研究位置，不代表本年度预测，也不是买入建议。

@@ -127,6 +127,30 @@
 
 ---
 
+## Phase 5.2.1 · V1.8.2.1 Pre-observation Semantic Fix（已完成 · IMPLEMENTED / READY FOR USER VISUAL REVIEW）
+
+**目标**：修正提前观察区的语义锚点错误，统一文案为「提前观察参考区」。
+
+- **Formation Anchor 规则**（`themeFormationDate()` 重写）：
+  `THEME_FORMING.start → BROAD_CONFIRMATION.start → Campaign.start → null`
+  **禁止**取 lifecycle 最早 stage（原实现会把 `EARLY_SIGNAL` 误认为 `THEME_FORMING`）。
+  新增 `formationAnchorOf()` 与 `formationAnchor` 字段暴露锚点来源。
+- **Early Signal 与 Formation 分离**：Early Signal 继续用导出既有 `early_signal`，**不重新推导**；
+  层级 `提前观察参考区 → Early Signal? → Theme Formation → Main Rise`，二者为独立边界。
+- **30 天含义不变**：`historicalPreObservationDays = 30` = **UI / Research browsing buffer**，
+  不是历史统计领先期 / 预测 / 买入时间。
+- **文案**：「历史提前观察区」→「**提前观察参考区**」；
+  hint →「仅用于研究浏览参考，不代表历史平均领先期，也不是买入建议。」
+- **视觉层级**：`Campaign > Early Signal > 提前观察参考区`
+  （`.bar.cmp-main_rise` 0.95 > `.bar.early-signal` 0.5 / z-1 > `.bar.pre-obs` 0.4 / z-0）。
+- 更新测试 `preObservation.test.tsx`（+9 项：锚点规则 ①②③④⑤ / Early Signal 独立性 ④⑤⑥ / 视觉层级）
+- **明确不做**：Research / Schema / Database / Export Contract / TimelineExportV1 / Research Model /
+  新主题 / 资金 / 筹码 / 情绪 / Theme Row 逻辑 / CampaignDetail UX
+
+**验收**：`RC-2023-HUAWEI` 参考区 08-05 ~ 09-03 → 早期信号 08-29 → 形成 09-04（三者不再同日）。
+
+---
+
 ## Phase 5.3 · 资金 / 筹码 / 情绪 / 广度维度（仅记录 · 未实现）
 
 **目标**：为「机会地图」补充量的维度。

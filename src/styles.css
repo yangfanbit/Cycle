@@ -458,7 +458,8 @@ html, body {
 .bar.cmp-main_rise:only-of-type,
 .bar.cmp-main_rise + .bar.cmp-declining:only-of-type { border-radius: 5px; }
 
-/* 早期信号：淡显 + 虚线边框（不得呈现为正式 Campaign） */
+/* 早期信号：淡显 + 虚线边框（不得呈现为正式 Campaign）
+   视觉层级：Campaign > Early Signal > 提前观察参考区（opacity / z-index 双降序） */
 .bar.early-signal {
   top: 10px;
   height: 16px;
@@ -466,23 +467,26 @@ html, body {
   border-radius: 4px;
   background: transparent !important;
   opacity: 0.5;
+  z-index: 1;
 }
 .bar.early-signal .es-label { color: var(--ink-2); text-shadow: none; font-weight: 600; }
 
-/* 提前观察区（V1.8.2 Historical Pre-observation Window）
-   极淡：点划线 + 斜纹 + 低透明度；不得抢 Campaign 主体与 Peak。 */
+/* 提前观察参考区（V1.8.2.1 Historical Pre-observation Reference Window）
+   极淡：点划线 + 斜纹 + 最低透明度 + 最低 z-index；
+   视觉层级 Campaign(0.95/z:auto|2) > Early Signal(0.5/z:1) > 提前观察参考区(0.4/z:0)，
+   不得抢 Campaign 主体、Early Signal 与 Peak。 */
 .bar.pre-obs {
   top: 12px;
   height: 12px;
-  border: 1px dotted rgba(90, 122, 154, 0.55);
+  border: 1px dotted rgba(90, 122, 154, 0.45);
   border-radius: 3px;
-  background-color: rgba(120, 150, 178, 0.06);
+  background-color: rgba(120, 150, 178, 0.05);
   background-image: repeating-linear-gradient(
     45deg,
-    rgba(120, 150, 178, 0.16) 0 3px,
+    rgba(120, 150, 178, 0.14) 0 3px,
     transparent 3px 8px
   );
-  opacity: 0.62;
+  opacity: 0.4;
   z-index: 0;
 }
 .bar.pre-obs .pre-obs-label {
@@ -1121,7 +1125,7 @@ html, body {
   color: var(--ink);
 }
 
-/* 提前观察区提示（Current Time Context） */
+/* 提前观察参考区提示（Current Time Context） */
 .ctl-pre-obs {
   display: flex;
   flex-direction: column;

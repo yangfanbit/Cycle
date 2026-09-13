@@ -338,9 +338,10 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
             const earlySeg = campaign.early_signal
               ? segmentForYear(campaign.early_signal.start, campaign.early_signal.end, year)
               : null;
-            // 提前观察区（V1.8.2）：主题形成前 historicalPreObservationDays(30) 天的研究浏览缓冲。
-            // 极淡视觉；层级 Pre-observation → Early Signal? → Theme Formation。
-            // 语义：不是预测、不是买入建议、不是历史统计事实。
+            // 提前观察参考区（V1.8.2 / V1.8.2.1）：主题形成前 historicalPreObservationDays(30) 天的
+            // 研究浏览参考缓冲。formation 锚点 = THEME_FORMING → BROAD_CONFIRMATION → Campaign.start。
+            // 极淡视觉；层级 Pre-observation Reference → Early Signal? → Theme Formation → Main Rise。
+            // 语义：不是预测、不是买入建议、不是历史统计事实（30 天不代表历史平均领先期）。
             const preObsChain = preObservationChainOf(campaign);
             const preObsSeg = preObsChain
               ? segmentForYear(
@@ -456,7 +457,7 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                 </div>
                 <div className="tl-track">
                   <MonthGrid year={year} />
-                  {/* 提前观察区：最淡的一层，位于 Campaign 主体之前（不抢主升 / Peak） */}
+                  {/* 提前观察参考区：最淡的一层，位于 Campaign 主体之前（不抢主升 / Peak / Early Signal） */}
                   {preObsSeg && preObsChain && (
                     <div
                       className="bar cmp pre-obs"
@@ -466,22 +467,22 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                         borderColor: color,
                       }}
                       onMouseEnter={(e) =>
-                        showTooltip(e, `${campaign.title} · 历史提前观察区`, [
-                          `观察区：${preObsChain.preObservation.start} → ${preObsChain.preObservation.end}（${preObsChain.preObservation.days} 天）`,
+                        showTooltip(e, `${campaign.title} · 提前观察参考区`, [
+                          `参考区：${preObsChain.preObservation.start} → ${preObsChain.preObservation.end}（${preObsChain.preObservation.days} 天）`,
                           `主题形成：${preObsChain.formation}`,
                           ...(preObsChain.hasEarlySignal
                             ? [`早期信号：${preObsChain.earlySignal!.start} → ${preObsChain.earlySignal!.end}`]
                             : []),
-                          '层级：提前观察区 → ' +
+                          '层级：提前观察参考区 → ' +
                             (preObsChain.hasEarlySignal ? '早期信号 → ' : '') +
-                            '主题形成',
-                          '仅为研究浏览缓冲，不代表历史平均领先期；不是预测，也不是买入建议。',
+                            '主题形成 → 主升',
+                          '仅用于研究浏览参考，不代表历史平均领先期；不是预测，也不是买入建议。',
                         ])
                       }
                       onMouseLeave={hideTooltip}
                       onClick={() => onSelect({ kind: 'campaign', id: campaign.campaign_id })}
                     >
-                      <span className="bar-label pre-obs-label">提前观察区</span>
+                      <span className="bar-label pre-obs-label">提前观察参考区</span>
                     </div>
                   )}
                   {/* 早期信号：较淡显示，不得呈现为正式 Campaign */}
