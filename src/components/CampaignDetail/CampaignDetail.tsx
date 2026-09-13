@@ -1,5 +1,6 @@
 import { allCampaignSecurities, ruleById, themeById, themesOfCampaign } from '../../data';
 import type { HistoricalCampaign } from '../../models';
+import { campaignDrivers } from '../../data/timeline/timelineAdapter';
 import type { ExportConflictV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
 import { diffDays } from '../../utils';
 import {
@@ -120,6 +121,20 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
   const m = normalize(campaign);
   const rule = ruleById.get(m.ruleId);
   const duration = diffDays(m.start, m.end) + 1;
+  // 驱动因素四问（基于研究事件时间归组；无数据组 → "暂无可靠归因"，不编造）
+  const drivers = campaignDrivers({
+    start: m.start,
+    peak: m.peak,
+    end: m.end,
+    openEnded: m.openEnded,
+    events: m.events,
+  });
+  const driverRows: { q: string; tags: string[] }[] = [
+    { q: '为什么启动？', tags: drivers.start },
+    { q: '为什么加速？', tags: drivers.accelerate },
+    { q: '为什么转折？', tags: drivers.turn },
+    { q: '为什么结束？', tags: drivers.end },
+  ];
 
   return (
     <aside className="detail-panel">
@@ -300,6 +315,27 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
             </dd>
           </>
         )}
+
+        <dt>驱动因素（为什么）</dt>
+        <dd className="drivers">
+          {driverRows.map(({ q, tags }) => (
+            <div key={q} className="driver-row">
+              <span className="driver-q">{q}</span>
+              {tags.length > 0 ? (
+                tags.map((t) => (
+                  <span className="tag" key={t} title={t}>
+                    {t}
+                  </span>
+                ))
+              ) : (
+                <span className="phase-text">暂无可靠归因</span>
+              )}
+            </div>
+          ))}
+          <div className="phase-text">
+            （基于研究事件的时间归组线索，非因果结论；{m.production ? '生产数据暂无关联事件。' : ''}）
+          </div>
+        </dd>
 
         <dt>备注</dt>
         <dd>{m.description ?? '—'}</dd>

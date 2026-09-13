@@ -1,5 +1,67 @@
 # CHANGELOG.md — 变更记录
 
+## 2026-09-13 · V1.7 Historical Opportunity Map UX（第十一轮）
+
+### 目标
+
+用户打开页面 5 秒内回答"现在这个时间点，历史上通常发生什么"，
+并进一步理解"这些行情为什么开始 / 加速 / 转折 / 结束"。
+**精确日期不再作为主要视觉信息**（窗口优先于日期）。
+未修改核心数据模型与 TimelineExportV1 Contract。
+
+### 1. Phase Window（窗口优先于精确日期）
+
+- **Adapter**：`peakWindowOf(campaign)` →
+  - 正常峰值：peak ± 7 天（`PEAK_WINDOW_HALF_DAYS`）；
+  - 轻微峰值分歧（≤ 阈值）：候选 A → B 构成窗口（`disputed: true`）；
+  - 严重峰值分歧：返回 null（交由双候选标记 ▲ᴬ / ▲ᴮ 表达，V1.6.2 视觉保留）。
+- **Timeline**：Campaign 行上方渲染 Peak Window 窄条（悬停显示完整窗口日期）；
+  分歧窗口用斜纹 + 虚线边框区分；Detail 抽屉仍显示 Exact Dates 与候选 A / B。
+
+### 2. Date Conflict 分级（轻微不喧宾夺主）
+
+- **Adapter**：`conflictSeverity(conflict)` → minor（候选间隔 ≤ 10 天，
+  `MINOR_CONFLICT_THRESHOLD_DAYS`）/ major（> 10 天，跨月份或影响生命周期判断）。
+- **Timeline**：只有 major 冲突使用 V1.6.2 大型 Conflict 视觉
+  （主体斜纹 + Start/End 分歧信封）；minor 冲突显示 Peak Window 并在
+  tooltip / Detail 保留 Candidate A / B 双方口径，不画大型 Conflict。
+- 测试断言：2024 peak（07-29 vs 08-05，7 天）= minor；2022 start
+  （04-27 vs 05-23，26 天）= major；边界 10 天 = minor、11 天 = major。
+
+### 3. 驱动因素四问（Campaign Detail）
+
+- **Adapter**：`campaignDrivers(campaign)` 从 Campaign 关联研究事件按时间归组：
+  - 启动 [start-30, start+15] / 加速 (start+15, peak-7] / 转折 [peak-10, peak+10] /
+    结束 [end-25, end+7]（openEnded 候选不归组结束，end 为年末近似）；
+  - 每组最多 3 个标签，trigger / catalyst 角色优先；无 peak 时以区间中点近似转折位置。
+- **CampaignDetail**：新增「驱动因素（为什么）」区块——为什么启动 / 加速 / 转折 / 结束；
+  无事件落入的组显示「暂无可靠归因」（不编造）；标注"时间归组线索，非因果结论"。
+- Timeline 主轴不显示 Drivers（保持简洁，详情才展开）。
+
+### 4. 历史同周期查看（轻量 Year Comparison）
+
+- **Adapter**：`samePeriodWindow(year, month)`（选中月份 → [m-1 月 15 日, m+1 月 15 日]
+  两个月宽窗口，跨年自动处理）+ `samePeriodCampaigns(source, month)`
+  （各年份与窗口相交的 Campaign 列表，仅日期相交匹配，**不是统计模型 / 相似度评分**）。
+- **新组件 SamePeriodView**：月份选择（默认当前月）+ 历史各年同期 Campaign 列表；
+  RC 候选带徽章、非 verified 状态虚线淡化；空年份显示「无同期行情」；
+  文案明确"仅历史列表，不构成任何预测"。
+- **App**：接入 Timeline 下方（单一页面流，不加新仪表盘）。
+
+### 边界（不变量）
+
+- Production（verified 空态）/ Preview（Research 导出）隔离不变：同周期查询
+  在生产数据源下不消费 preview 数据（测试断言）；
+- TODAY 仅表示日期位置，≠ 当前市场状态；
+- 不实现实时资金流 / AI 预测 / 股票推荐 / 胜率 / 相似度评分 / 自动埋伏建议 / 通知 / 后端；
+- 未修改 src/models/ 核心模型、TimelineExportV1 Contract、RC 并列语义。
+
+### 测试
+
+- 93 → 108 项：新增 15 项（Peak Window 3 / 冲突分级 4 / 驱动因素四问 4 /
+  历史同周期 4，含 preview/production 隔离与空态 fallback）。
+- `npm test` 108/108 通过；`npx tsc -b` 通过；`npm run build` 通过。
+
 ## 2026-09-13 · V1.6.2 附：Conflict Campaign Timeline Visualization（第十轮）
 
 ### 问题

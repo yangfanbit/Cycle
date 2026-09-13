@@ -550,6 +550,137 @@ html, body {
   margin-left: -1px;
 }
 
+/* Peak Window（窗口优先于精确日期）：bar 上方的窗口条 */
+.peak-window {
+  position: absolute;
+  top: 0;
+  height: 4px;
+  z-index: 4;
+  background: #b3541e;
+  border-radius: 2px;
+  cursor: help;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+/* 轻微分歧窗口（候选 A → B）：虚线边框表达"研究分歧但同一窗口" */
+.peak-window.disputed {
+  background: repeating-linear-gradient(
+    -45deg,
+    #b3541e 0 3px,
+    rgba(179, 84, 30, 0.35) 3px 6px
+  );
+  border: 1px dashed #b3541e;
+}
+
+/* ---------- 详情面板：驱动因素四问 ---------- */
+.drivers .driver-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 3px 0;
+}
+
+.drivers .driver-q {
+  font-size: 12px;
+  color: #6d6250;
+  flex: none;
+  min-width: 70px;
+}
+
+.drivers .tag {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- 历史同周期查看 ---------- */
+.sp-view {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid #e5ddcc;
+  border-radius: 10px;
+  background: #fbfaf6;
+}
+
+.sp-sub {
+  margin: 4px 0 10px;
+  font-size: 12px;
+  color: #6d6250;
+}
+
+.sp-months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.sp-month {
+  border: 1px solid #d8cfb9;
+  background: #fff;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+  color: #4a4234;
+}
+
+.sp-month.active {
+  background: #4a4234;
+  color: #fff;
+  border-color: #4a4234;
+}
+
+.sp-years {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sp-year-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 26px;
+}
+
+.sp-year {
+  font-weight: 600;
+  font-size: 13px;
+  color: #4a4234;
+  min-width: 44px;
+}
+
+.sp-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #d8cfb9;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  background: #fff;
+  max-width: 100%;
+}
+
+.sp-item .rc-badge {
+  font-size: 8.5px;
+  padding: 0 3px;
+}
+
+.sp-item .sp-dates {
+  color: #8b8272;
+  font-size: 11px;
+}
+
+.sp-item .st-badge {
+  font-size: 9.5px;
+  padding: 0 5px;
+}
+
 /* 详情面板：预览说明与分歧行 */
 .preview-note {
   margin: 12px 0 4px;

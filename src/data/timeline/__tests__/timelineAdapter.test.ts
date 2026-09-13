@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+  campaignDrivers,
+  conflictSeverity,
   derivePhases,
   fromTimelineExportV1,
   getConflictBoundaryCandidates,
+  peakWindowOf,
   previewTimelineSource,
+  samePeriodCampaigns,
+  samePeriodWindow,
   validateTimelineExportV1,
   verifiedTimelineSource,
 } from '../timelineAdapter';
@@ -225,6 +230,128 @@ describe('Conflict 边界候选推导：getConflictBoundaryCandidates', () => {
       peakCandidates: null,
       endCandidates: null,
     });
+  });
+});
+
+/* ---------------- V1.7：Phase Window / 冲突分级 / 驱动因素 / 同周期 ---------------- */
+
+describe('V1.7：Peak Window（窗口优先于精确日期）', () => {
+  it('正常峰值：peak ± 7 天窗口（C-2020-NEV：07-06 ~ 07-20，非分歧）', () => {
+    const c = previewTimelineSource().yearData(2020).campaigns.find((x) => x.campaign_id === 'C-2020-NEV')!;
+    const w = peakWindowOf(c);
+    expect(w).toEqual({ start: '2020-07-06', end: '2020-07-20', disputed: false });
+  });
+
+  it('轻微峰值分歧：候选 A → B 构成 Peak Window（C-2024-ROBOTAXI：07-29 ~ 08-05）', () => {
+    const c = previewTimelineSource().yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
+    const w = peakWindowOf(c);
+    expect(w).toEqual({ start: '2024-07-29', end: '2024-08-05', disputed: true });
+  });
+
+  it('无 peak（null）→ 无窗口；openEnded 候选同样安全', () => {
+    expect(peakWindowOf({ peak: null, status: 'preview', conflicts: undefined })).toBeNull();
+  });
+});
+
+describe('V1.7：冲突分级阈值（同一窗口 ≤ 10 天 = minor）', () => {
+  it('2024 peak 分歧（07-29 vs 08-05，7 天）→ minor：显示窗口，不画大型 Conflict', () => {
+    const c = previewTimelineSource().yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
+    const peak = c.conflicts!.find((x) => x.field === 'peak_date')!;
+    expect(conflictSeverity(peak)).toBe('minor');
+  });
+
+  it('2022 start 分歧（04-27 vs 05-23，26 天）→ major：大型 Conflict 视觉', () => {
+    const c = previewTimelineSource().yearData(2022).campaigns.find((x) => x.campaign_id === 'C-2022-POLICY')!;
+    const start = c.conflicts!.find((x) => x.field === 'start_date')!;
+    expect(conflictSeverity(start)).toBe('major');
+  });
+
+  it('2024 end 分歧（07-31 vs 08-23，23 天）→ major：End 候选区间保留', () => {
+    const c = previewTimelineSource().yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
+    const end = c.conflicts!.find((x) => x.field === 'end_date')!;
+    expect(conflictSeverity(end)).toBe('major');
+  });
+
+  it('边界：恰好 10 天 → minor；11 天 → major', () => {
+    const mk = (a: string, b: string) => ({
+      field: 'peak_date',
+      candidate_a: { date: a, label: 'A' },
+      candidate_b: { date: b, label: 'B' },
+    });
+    expect(conflictSeverity(mk('2024-07-01', '2024-07-11'))).toBe('minor');
+    expect(conflictSeverity(mk('2024-07-01', '2024-07-12'))).toBe('major');
+  });
+});
+
+describe('V1.7：驱动因素四问（研究事件时间归组）', () => {
+  it('C-2022-POLICY：加速 / 转折有归因标签，启动 / 结束为空（不编造）', () => {
+    const c = previewTimelineSource().yearData(2022).campaigns.find((x) => x.campaign_id === 'C-2022-POLICY')!;
+    const d = campaignDrivers(c);
+    // start 04-27，peak 06-10，end 08-31；events：05-23 国常会 / 05-31 财政部 / 06-10 比亚迪 / 06-22 国常会再促
+    expect(d.start).toEqual([]);
+    expect(d.accelerate.length).toBe(2);
+    expect(d.accelerate.some((t) => t.includes('国常会'))).toBe(true);
+    expect(d.accelerate.some((t) => t.includes('财政部'))).toBe(true);
+    expect(d.turn.length).toBe(1);
+    expect(d.turn[0]).toContain('比亚迪');
+    expect(d.end).toEqual([]);
+  });
+
+  it('C-2024-ROBOTAXI：启动期事件归入启动组（first-match，不重复归组）', () => {
+    const c = previewTimelineSource().yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
+    const d = campaignDrivers(c);
+    expect(d.start.length).toBe(1);
+    expect(d.start[0]).toContain('萝卜快跑');
+    expect(d.end).toEqual([]); // 07-10 已归启动组，不重复进结束组
+  });
+
+  it('无事件的 Campaign：四问全空 → UI 显示"暂无可靠归因"（verified fixture）', () => {
+    const cmp = verifiedTimelineSource(fixtureCampaigns).yearData(2023).campaigns[0];
+    expect(cmp.events).toEqual([]);
+    const d = campaignDrivers(cmp);
+    expect(d).toEqual({ start: [], accelerate: [], turn: [], end: [] });
+  });
+
+  it('openEnded 候选：无结束归因（end 为年末近似，不归组）', () => {
+    const rc = previewTimelineSource().yearData(2023).campaigns.find((x) => x.campaign_id === 'RC-2023-HUAWEI')!;
+    const d = campaignDrivers(rc);
+    expect(d.end).toEqual([]);
+    expect(d.start.length).toBeGreaterThan(0); // 问界 M7 上市归启动
+  });
+});
+
+describe('V1.7：历史同周期查看（列表，非统计模型）', () => {
+  it('窗口口径：9 月 → 08-15 ~ 10-15；1 月跨年 → 前年 12-15 ~ 当年 02-15', () => {
+    expect(samePeriodWindow(2026, 9)).toEqual({ start: '2026-08-15', end: '2026-10-15' });
+    expect(samePeriodWindow(2026, 1)).toEqual({ start: '2025-12-15', end: '2026-02-15' });
+    expect(samePeriodWindow(2026, 12)).toEqual({ start: '2026-11-15', end: '2027-01-15' });
+  });
+
+  it('9 月同期：2018 空、2019-2022 与 2025 有正式 Campaign、2023/2024 仅 Research Candidate', () => {
+    const rows = samePeriodCampaigns(previewTimelineSource(), 9);
+    expect(rows.map((r) => r.year)).toEqual([2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
+    expect(rows[0].campaigns).toEqual([]); // 2018 反例年
+    expect(rows[1].campaigns.map((c) => c.campaign_id)).toEqual(['C-2019-AD']);
+    expect(rows[4].campaigns.map((c) => c.campaign_id)).toEqual(['C-2022-POLICY']);
+    expect(rows[5].campaigns.map((c) => c.campaign_id)).toEqual(['RC-2023-HUAWEI']);
+    // 2024：仅 RC-2024-SECONDARY（Robotaxi end 07-31 < 08-15 不相交）
+    expect(rows[6].campaigns.map((c) => c.campaign_id)).toEqual(['RC-2024-SECONDARY']);
+    expect(rows[7].campaigns.map((c) => c.campaign_id)).toEqual(['C-2025-ROBOTAXI']);
+  });
+
+  it('2 月同期：历史各年均无 Campaign（淡季窗口空态合法）', () => {
+    const rows = samePeriodCampaigns(previewTimelineSource(), 2);
+    for (const r of rows) {
+      expect(r.campaigns).toEqual([]);
+    }
+  });
+
+  it('preview / production 隔离：生产 verified 空 → 同周期无结果，不消费 preview 数据', () => {
+    expect(samePeriodCampaigns(verifiedTimelineSource(), 9)).toEqual([]);
+    // fixture 注入的 verified 源可用（同一接口），但不混入 preview 行情
+    const fixtureRows = samePeriodCampaigns(verifiedTimelineSource(fixtureCampaigns), 6);
+    expect(fixtureRows.length).toBeGreaterThan(0);
+    expect(fixtureRows.some((r) => r.campaigns.some((c) => c.campaign_id.startsWith('C-20')))).toBe(false);
   });
 });
 

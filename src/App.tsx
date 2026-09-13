@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { OpportunityRadar } from './components/OpportunityRadar/OpportunityRadar';
 import { RuleDetail } from './components/RuleDetail/RuleDetail';
+import { SamePeriodView } from './components/SamePeriodView/SamePeriodView';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
 import { allCampaigns, campaignById, ruleById } from './data';
 import { previewTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
@@ -112,6 +113,8 @@ export default function App() {
           researchEvents={yearData.researchEvents}
           sourceKind={dataSource.kind}
         />
+        {/* 历史同周期查看：选择月份 → 历史各年同期 Campaign 列表（非统计模型） */}
+        <SamePeriodView dataSource={dataSource} today={today} />
         {/* 生产模式且 verified 为空：提供开发预览入口（不把 preview 当生产数据） */}
         {!preview && allCampaigns.length === 0 && (
           <div className="prod-empty-note">

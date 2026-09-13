@@ -7,7 +7,11 @@ import {
   sourceById,
   windowsOfRule,
 } from '../../data';
-import { getConflictBoundaryCandidates } from '../../data/timeline/timelineAdapter';
+import {
+  conflictSeverity,
+  getConflictBoundaryCandidates,
+  peakWindowOf,
+} from '../../data/timeline/timelineAdapter';
 import type { TimelineCampaign, TimelineResearchEvent } from '../../data/timeline/timelineTypes';
 import type { TimeWindow } from '../../models';
 import {
@@ -333,12 +337,28 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
             const earlySeg = campaign.early_signal
               ? segmentForYear(campaign.early_signal.start, campaign.early_signal.end, year)
               : null;
-            // Conflict 边界候选（从 conflicts 推导；不做任何取舍）
+            // 冲突分级：minor（同一 Phase Window 内，≤10 天）→ 显示窗口；major（跨月份/影响生命周期）→ 大型 Conflict 视觉
+            const majorConflicts = (campaign.conflicts ?? []).filter(
+              (c) => conflictSeverity(c) === 'major',
+            );
+            const hasMajorConflict = majorConflicts.length > 0;
+            // Conflict 边界候选（仅 major 字段触发大视觉；从 conflicts 推导，不做任何取舍）
             const conflictCandidates =
               campaign.status === 'conflict' ? getConflictBoundaryCandidates(campaign) : null;
-            const startCands = conflictCandidates?.startCandidates ?? null;
-            const peakCands = conflictCandidates?.peakCandidates ?? null;
-            const endCands = conflictCandidates?.endCandidates ?? null;
+            const startCands = majorConflicts.some((c) => c.field === 'start_date')
+              ? conflictCandidates?.startCandidates ?? null
+              : null;
+            const peakMajorCands = majorConflicts.some((c) => c.field === 'peak_date')
+              ? conflictCandidates?.peakCandidates ?? null
+              : null;
+            const endCands = majorConflicts.some((c) => c.field === 'end_date')
+              ? conflictCandidates?.endCandidates ?? null
+              : null;
+            // Peak Window：时间轴优先显示窗口（±7 天）而非单一精确日期；轻微分歧时为候选 A→B 窗口
+            const peakWin = peakWindowOf(campaign);
+            const peakWinSeg = peakWin
+              ? segmentForYear(peakWin.start, peakWin.end, year)
+              : null;
             // 起点分歧区间：A → B（研究分歧区间，非正式起点）
             const startEnvelopeSeg = startCands
               ? segmentForYear(startCands[0], startCands[startCands.length - 1], year)
@@ -356,7 +376,7 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
             const themeNames = campaign.themes.map((t) => t.name).join('、');
             const statusLabel = DATA_STATUS_LABEL[campaign.status];
             const tooltipLines = [
-              `完整区间${conflictCandidates ? '（日期存在研究分歧）' : ''}：${campaign.start} → ${campaign.end}${
+              `完整区间${hasMajorConflict ? '（日期存在研究分歧）' : ''}：${campaign.start} → ${campaign.end}${
                 campaign.openEnded ? '（候选观察中，end 为年末近似）' : ''
               }`,
               campaign.kind === 'candidate'
@@ -367,7 +387,9 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
               ...(campaign.early_signal
                 ? [`早期信号：${campaign.early_signal.start} → ${campaign.early_signal.end}${campaign.early_signal.label ? `（${campaign.early_signal.label}）` : ''}`]
                 : []),
-              campaign.peak ? `峰值：${campaign.peak}` : '峰值：未核验',
+              peakWin
+                ? `峰值窗口：${peakWin.start} ~ ${peakWin.end}${peakWin.disputed ? '（研究分歧窗口：候选 A / B）' : ''}`
+                : '峰值：未核验',
               `题材：${themeNames || '待补充'}`,
               `所属规律：${rule?.name ?? campaign.rule_id}`,
               `数据状态：${statusLabel}${campaign.status !== 'verified' ? '（非正式历史事实）' : ''}`,
@@ -452,7 +474,7 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                         ps.continuesIntoNextYear ? ' cont-next' : ''
                       }${selected ? ' selected' : ''}${
                         campaign.status === 'provisional' || campaign.status === 'preview' ? ' st-dashed' : ''
-                      }${conflictCandidates ? ' st-conflict-visual' : ''}`}
+                      }${hasMajorConflict ? ' st-conflict-visual' : ''}`}
                       style={{
                         left: pct(ps.startFraction),
                         width: pct(Math.max(ps.endFraction - ps.startFraction, 0.004)),
@@ -519,9 +541,32 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                   {renderCandMarkers(startCands, 'start_date')}
                   {/* 结束候选 marker（A / B） */}
                   {renderCandMarkers(endCands, 'end_date')}
-                  {/* 峰值标记：无分歧时单标记；有分歧时 A / B 双候选标记 */}
-                  {peakCands ? (
-                    peakCands
+                  {/* Peak Window（优先显示窗口而非单一精确日期；轻微分歧 = 候选 A→B 窗口） */}
+                  {peakWinSeg && peakWin && (
+                    <div
+                      className={`peak-window${peakWin.disputed ? ' disputed' : ''}`}
+                      style={{
+                        left: pct(peakWinSeg.startFraction),
+                        width: pct(
+                          Math.max(peakWinSeg.endFraction - peakWinSeg.startFraction, 0.006),
+                        ),
+                      }}
+                      onMouseEnter={(e) =>
+                        showTooltip(e, `${campaign.title} · Peak Window`, [
+                          `峰值窗口：${peakWin.start} ~ ${peakWin.end}`,
+                          ...(peakWin.disputed
+                            ? [
+                                '窗口由研究分歧候选 A / B 构成（同一窗口内，不画大型 Conflict）。',
+                              ]
+                            : []),
+                        ])
+                      }
+                      onMouseLeave={hideTooltip}
+                    />
+                  )}
+                  {/* 峰值标记：无分歧 → 中心 ▲；严重分歧 → A / B 双候选标记 */}
+                  {peakMajorCands ? (
+                    peakMajorCands
                       .filter((d) => d.startsWith(`${year}-`))
                       .map((d) => {
                         const isA =
@@ -557,8 +602,8 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                       </span>
                     )
                   )}
-                  {/* 研究分歧警示（CONFLICT 不得被描述成历史事实） */}
-                  {campaign.status === 'conflict' && (
+                  {/* 研究分歧警示（仅严重分歧；CONFLICT 不得被描述成历史事实） */}
+                  {hasMajorConflict && (
                     <span
                       className="conflict-flag"
                       onMouseEnter={(e) =>

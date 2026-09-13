@@ -12,6 +12,7 @@ import { addDaysISO, diffDays, minISO, maxISO, resolveEventForYear } from '../..
 import type {
   ExportCandidateV1,
   ExportCampaignV1,
+  ExportConflictV1,
   ExportResearchStatus,
   ExportSecurityV1,
   ExportSignalV1,
@@ -424,6 +425,167 @@ export function getConflictBoundaryCandidates(
     peakCandidates: pick('peak_date'),
     endCandidates: pick('end_date'),
   };
+}
+
+/* ---------------- V1.7：冲突分级 + Peak Window + 驱动因素 + 同周期查询 ---------------- */
+
+/** 轻微分歧阈值：候选间隔 ≤ 10 天视为同一窗口（不画大型 Conflict 视觉） */
+export const MINOR_CONFLICT_THRESHOLD_DAYS = 10;
+
+/** 正常峰值窗口半宽：peak ± 7 天（Phase Window 优先于精确日期展示） */
+export const PEAK_WINDOW_HALF_DAYS = 7;
+
+/**
+ * 冲突分级：
+ * - minor：候选间隔 ≤ 阈值（同一 Phase Window 内，如 07-29 vs 08-05）→ 显示窗口，保留详情 A/B；
+ * - major：间隔超阈值（跨月份 / 影响生命周期判断，如 04-27 vs 05-23）→ ⚠ Conflict 大型视觉。
+ */
+export function conflictSeverity(c: ExportConflictV1): 'minor' | 'major' {
+  const gap = Math.abs(diffDays(c.candidate_a.date, c.candidate_b.date));
+  return gap <= MINOR_CONFLICT_THRESHOLD_DAYS ? 'minor' : 'major';
+}
+
+export interface PeakWindow {
+  start: string;
+  end: string;
+  /** 是否为研究分歧窗口（由候选 A/B 构成） */
+  disputed: boolean;
+}
+
+/**
+ * Peak Window（时间轴优先显示窗口而非单一精确日期）：
+ * - 无峰值冲突：peak ± 7 天；
+ * - 轻微峰值冲突（≤ 阈值）：候选 A → B 构成窗口（disputed）；
+ * - 严重峰值冲突（> 阈值）：返回 null（由双候选标记 ▲A/▲B 表达）。
+ */
+export function peakWindowOf(
+  c: Pick<TimelineCampaign, 'peak' | 'status' | 'conflicts'>,
+): PeakWindow | null {
+  const peakConflict =
+    c.status === 'conflict' ? (c.conflicts ?? []).find((x) => x.field === 'peak_date') : undefined;
+  if (peakConflict) {
+    if (conflictSeverity(peakConflict) === 'major') return null;
+    return {
+      start: minISO(peakConflict.candidate_a.date, peakConflict.candidate_b.date),
+      end: maxISO(peakConflict.candidate_a.date, peakConflict.candidate_b.date),
+      disputed: true,
+    };
+  }
+  if (!c.peak) return null;
+  return {
+    start: addDaysISO(c.peak, -PEAK_WINDOW_HALF_DAYS),
+    end: addDaysISO(c.peak, PEAK_WINDOW_HALF_DAYS),
+    disputed: false,
+  };
+}
+
+/** 驱动因素四问（基于研究事件的时间归组；每组最多 3 个标签，trigger/catalyst 优先） */
+export interface CampaignDrivers {
+  /** 为什么启动？ */
+  start: string[];
+  /** 为什么加速？ */
+  accelerate: string[];
+  /** 为什么转折？ */
+  turn: string[];
+  /** 为什么结束？ */
+  end: string[];
+}
+
+const DRIVER_ROLE_WEIGHT: Record<string, number> = {
+  trigger: 0,
+  catalyst: 1,
+  follow_up: 2,
+  context: 3,
+};
+
+/**
+ * 从 Campaign 关联研究事件推导"为什么启动 / 加速 / 转折 / 结束"。
+ * 事件按时间顺序归组（每个事件只进最先匹配的组）：
+ * - 启动：[start-30, start+15]；
+ * - 加速：(start+15, peak-7]（无 peak 时用区间中点近似分界）；
+ * - 转折：[peak-10, peak+10]；
+ * - 结束：[end-25, end+7]（openEnded 候选无结束 → 不归组）。
+ * 无事件落入的组返回空数组（UI 显示"暂无可靠归因"，不编造）。
+ */
+export function campaignDrivers(
+  c: Pick<TimelineCampaign, 'start' | 'peak' | 'end' | 'openEnded' | 'events'>,
+): CampaignDrivers {
+  type Ev = { name: string; date: string; role?: string | null };
+  const groups: Record<keyof CampaignDrivers, Ev[]> = {
+    start: [],
+    accelerate: [],
+    turn: [],
+    end: [],
+  };
+  // 无 peak 时以 start→end 中点近似转折位置（仅归组用途，不对外展示为精确日期）
+  const turnPivot = c.peak ?? addDaysISO(c.start, Math.floor(diffDays(c.start, c.end) / 2));
+  const bounds = {
+    start: [addDaysISO(c.start, -30), addDaysISO(c.start, 15)] as const,
+    accelerate: [addDaysISO(c.start, 15), addDaysISO(turnPivot, -7)] as const,
+    turn: [addDaysISO(turnPivot, -10), addDaysISO(turnPivot, 10)] as const,
+    end: (c.openEnded ? null : [addDaysISO(c.end, -25), addDaysISO(c.end, 7)]) as readonly [string, string] | null,
+  };
+  const inRange = (d: string, r: readonly [string, string]) => r[0] <= d && d <= r[1];
+  for (const ev of c.events) {
+    if (inRange(ev.date, bounds.start)) groups.start.push(ev);
+    else if (inRange(ev.date, bounds.accelerate)) groups.accelerate.push(ev);
+    else if (inRange(ev.date, bounds.turn)) groups.turn.push(ev);
+    else if (bounds.end && inRange(ev.date, bounds.end)) groups.end.push(ev);
+    // 其余事件不归组（避免牵强归因）
+  }
+  // 每组最多 3 个标签，trigger / catalyst 优先
+  const top = (evs: Ev[]): string[] =>
+    [...evs]
+      .sort(
+        (a, b) =>
+          (DRIVER_ROLE_WEIGHT[a.role ?? ''] ?? 9) - (DRIVER_ROLE_WEIGHT[b.role ?? ''] ?? 9),
+      )
+      .slice(0, 3)
+      .map((e) => e.name);
+  return {
+    start: top(groups.start),
+    accelerate: top(groups.accelerate),
+    turn: top(groups.turn),
+    end: top(groups.end),
+  };
+}
+
+/** 历史同周期窗口：选中月份 m → [m-1 月 15 日, m+1 月 15 日]（两个月宽，如 9 月 → 08-15 ~ 10-15） */
+export function samePeriodWindow(year: number, month: number): { start: string; end: string } {
+  const midMonth = (y: number, m: number, day: number) => `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  let prevY = year;
+  let prevM = month - 1;
+  if (prevM === 0) {
+    prevM = 12;
+    prevY -= 1;
+  }
+  let nextY = year;
+  let nextM = month + 1;
+  if (nextM === 13) {
+    nextM = 1;
+    nextY += 1;
+  }
+  return { start: midMonth(prevY, prevM, 15), end: midMonth(nextY, nextM, 15) };
+}
+
+export interface SamePeriodYear {
+  year: number;
+  /** 与同周期窗口相交的 Campaign（正式 + Research Candidate） */
+  campaigns: TimelineCampaign[];
+}
+
+/**
+ * 历史同周期查看：各年份在选中月份窗口内出现过的 Campaign 列表。
+ * 仅做日期相交匹配（列表视图，不是统计模型 / 相似度评分）。
+ */
+export function samePeriodCampaigns(source: TimelineDataSource, month: number): SamePeriodYear[] {
+  return source.years().map((year) => {
+    const win = samePeriodWindow(year, month);
+    const campaigns = source
+      .yearData(year)
+      .campaigns.filter((c) => c.start <= win.end && c.end >= win.start);
+    return { year, campaigns };
+  });
 }
 
 function mainThemeName(themes: { name: string; role?: string | null }[]): string | null {

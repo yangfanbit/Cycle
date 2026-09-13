@@ -64,6 +64,23 @@
 - App：researchEvents 透传；预览横幅带 Research 源 commit；初始年份回退
   （preview 源 2018—2025、当前 2026 → 打开即显示 2025）
 
+### V1.7（已完成，2026-09-13）— Historical Opportunity Map UX
+
+> 5 秒理解目标：打开页面即知"现在这个时间点，历史上通常发生什么"。
+
+- Phase Window 优先于精确日期：Timeline 显示 Peak Window（peak ± 7 天 /
+  轻微分歧候选 A→B 窗口），Detail 保留 Exact Dates 与候选 A / B
+- Date Conflict 分级：minor（候选间隔 ≤ 10 天，同一窗口）只显示窗口不画大型
+  Conflict；major（> 10 天 / 跨月份 / 影响生命周期判断）保留 ⚠ 大型视觉
+- 驱动因素四问（Campaign Detail）：为什么启动 / 加速 / 转折 / 结束——
+  基于研究事件时间归组（每组最多 3 标签，trigger/catalyst 优先）；
+  无数据组显示「暂无可靠归因」，不编造
+- 历史同周期查看（SamePeriodView）：选月份 → 各年同期（[m-1 月 15 日,
+  m+1 月 15 日] 窗口）Campaign 列表；仅列表不是统计模型，不做相似度评分
+- 主轴只显示 Campaign / Phase / Peak Window；Drivers / Evidence / Source
+  全部收敛到 Detail（Timeline 保持简洁）
+- Production / Preview 隔离不变；TODAY 仅表示日期位置 ≠ 市场状态
+
 ### V1.6 后续（待人工 Review 后）
 
 - Research 导出升级 v1.1+ 时同步 Adapter（Contract 变更回 Research 项目）
