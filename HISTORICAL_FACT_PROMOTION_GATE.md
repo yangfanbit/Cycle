@@ -3,6 +3,8 @@
 > Historical Fact Promotion Gate 报告：Research → Cycle 晋级包准备完成。
 > 日期：2026-09-13
 
+> ⚠️ **勘误（2026-09-13，Red Team v1.1）**：本文档第 6 节"Phase ✅ 1:1 可映射"与第 9 节"Start / End / Peak 已确认"的表述已被 Promotion Mapping Red Team v1.1 修正：Phase 为 research-only（当前 Cycle 无落点）；日期为 DB Candidate / Research Review Candidate，未经人工最终确认前不得称"已确认"。最新口径以 `research/promotion/promotion_gate_v1.md`（v1.1）、`cycle_mapping_v1.md`（v1.1）、`promotion_mapping_matrix_v1.md` 及 `PROMOTION_MAPPING_RED_TEAM_V1_1.md` 为准。本文其余内容保留作为当轮历史记录。
+
 ---
 
 ## 执行摘要

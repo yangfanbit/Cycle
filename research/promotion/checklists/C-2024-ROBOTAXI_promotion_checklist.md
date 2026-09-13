@@ -19,8 +19,8 @@
 - [x] 无严重 temporal conflict（start <= peak <= end，无 look-ahead）
 - [ ] reviewer 已填写（当前 pending）
 - [ ] reviewed_at 已填写（当前 null）
-- [x] Cycle mapping 完整（见 cycle_mapping_v1.md，13 个核心字段全部直接映射）
-- [x] Phase mapping 完整（startup / main_rise / decline → 1:1 可映射）
+- [x] Cycle mapping 规则已备（见 cycle_mapping_v1.md v1.1 / promotion_mapping_matrix_v1.md；TRANSFORM 项：season_id 格式、cross_year 计算、source_id 派生、classification 留 package）
+- [x] Phase 处理已明确（research-only：NOT PERSISTED IN CURRENT CYCLE，非晋级必要条件；startup/main_rise/decline 保留在 Research）
 - [x] Theme mapping 完整（main: TH-ROBOTAXI；related: TH-AUTO）
 - [x] Security mapping 完整（leader: DADONGTRAFFIC；second_leader: JINJIANGONLINE / JINLONG；representative: JIANGLING）
 
