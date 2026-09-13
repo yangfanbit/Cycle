@@ -1,159 +1,239 @@
-# AGENTS.md — 项目宪法
+# AGENTS.md — ThreeC 接班入口（项目宪法）
 
-本文件是 **A股机会时间轴** 仓库的最高级开发规范。
-任何 AI Agent / 模型 / 人类协作者在开始修改本仓库前，**必须先完整阅读本文件**。
-
-阅读顺序：AGENTS.md → docs/PRODUCT.md → docs/DATA_MODEL.md → docs/DATA_GOVERNANCE.md → docs/HISTORICAL_VALIDATION.md → docs/ARCHITECTURE.md → docs/UI_SPEC.md → 具体任务 Prompt。
+> **任何 AI 模型 / Agent / 协作者接手本仓库时，先读本文件，再读 `docs/PROJECT_STATE.md`。**
+> 只有在具体任务需要时，才进一步深入 `research/AGENTS.md` 或产品侧文档。
+> **不要为了"了解项目"而通读全部文档** —— 本文件 + PROJECT_STATE 已覆盖 90% 的接手上下文。
 
 ---
 
-## 1. 项目定位
+## 1. 项目初心（最高优先级）
 
-项目名称：**A股机会时间轴**（A-Share Opportunity Timeline）
+**ThreeC = A股历史机会时间轴 / 历史机会地图。**
 
-核心定位：
+这个项目最终**不是**：
 
-> 以时间为主线，把 A 股历史上反复出现的行业、题材、事件与行情窗口放在同一条轴上，
-> 对比历史、观察当年偏离，寻找下一阶段值得提前关注的方向。
-
-核心问题只有三个：
-
-1. 今天处于全年时间轴的什么位置？
-2. 历史上这个时间附近发生过什么？
-3. 接下来哪些历史规律值得提前观察？
-
-本项目**不是**：
-
-- 荐股软件
+- 学术型历史数据库
+- 炒股预测软件
+- 自动荐股 / 选股工具
 - 买卖信号系统
-- 收益预测系统
-- 大盘预测系统
-- 自动交易系统
+- AI 预测系统
+
+**真正目标**——帮助用户回答：
+
+1. 今天处于一年中的哪个时间位置？
+2. 历史上这个时间附近发生过什么主题 / 行情？
+3. 这些主题通常如何形成、发展、转折、结束？
+4. 有没有提前信号？
+5. 为什么启动 / 加速 / 转折 / 结束？
+6. 通过历史规律，发现当前值得继续研究的方向。
+
+**用户自己负责**：基本面、技术面、个股选择、入场时机。ThreeC 不做这些。
+
+> **核心价值 = 机会发现，不是交易决策。**
+> 每个任务开始前先自问：「这个工作是否提高了历史对比与机会发现能力？」
+> 如果只是工程复杂化 —— **不要做**。
 
 ---
 
-## 2. 数据与认知边界（不可逾越）
+## 2. 当前阶段
 
-以下概念严格区分，逐级不可跳跃：
+**Phase 4：Monorepo Integration + Project Handoff Infrastructure（已完成）。**
 
-```
-Source（来源） ≠ Evidence（证据） ≠ Rule（规律假设） ≠ Historical Fact（历史事实）
-≠ Verification（统计验证） ≠ Prediction（预测）
-```
+- Cycle（产品 / PWA / Timeline 前端）与 Cycle-Research（研究 / 数据生产）已合并为**单一仓库 `ThreeC`**，单一 Git，保留双方完整历史。
+- 当前处于 **等待下一轮 Review** 状态。
 
-- 别人提出的经验，只能作为**候选规律来源**（Source → candidate Rule）。
-- 不得因为数据"看起来合理"，就自行把 `candidate` 改成 `verified`。
-- **Evidence 是证据，不是结论**：它只记录"某来源说了 / 显示了什么"，是人工核验的输入，
-  本身不构成历史事实。材料提及 ≠ 发生过，更 ≠ 规律成立。
-- 核验数据（`data/`）的录入与升层规则见 docs/HISTORICAL_VALIDATION.md。
-
-### 两个独立维度：证据 ≠ 验证
-
-**Evidence Status（证据状态）**——我们掌握了多少历史证据：
-
-```
-L0 原始经验/未核验 → L1 找到历史证据 → L2 人工完成历史事实核验
-→ L3 已完成程序统计验证 → L4 多来源交叉验证
-```
-
-**Verification Status（验证状态）**——规律是否已通过验证：
-
-```
-not_tested → under_review → statistically_supported / cross_validated / unsupported
-```
-
-关键：**L2 ≠ 规律成立**。
-例："已逐年核验 2018—2025 年广电行情"只说明 `evidence_status = L2`（事实核验完成），
-不代表 `verification_status = statistically_supported`（规律验证完成）。
-只有真正完成统计验证后才能标记 `statistically_supported`。
-
-### 核验范围：Rule ≠ Campaign
-
-ValidationRecord 的 `validation_scope` 必须区分核验对象：
-
-- `'rule'`：验证整条 Rule（规律假设本身），campaign_id 省略；
-- `'campaign'`：验证具体 HistoricalCampaign 的历史事实，campaign_id 必填。
-
-两者不得混淆：Campaign 事实核验完成（L2）不等于其所属 Rule 成立；
-Rule 成立必须经过统计验证（L3+，statistically_supported）。
-
-### 前瞻性分析 ≠ 确定性预测
-
-本项目禁止：
-
-- 确定性未来预测
-- 保证收益
-- 个股买卖建议
-- "必涨 / 必跌"等结论
-- 自动交易信号
-
-但允许（未来阶段）：
-
-- 历史统计、历史相似案例、当前状态识别
-- 时间窗口分析、历史条件分布、情景分析
-- 前瞻性观察窗口、"提前观察"提示
-
-即使未来完成统计验证，展示的也是"历史统计特征"，不是未来承诺。
+阶段全景见 `docs/ROADMAP.md`。下一个唯一目标见 `docs/PROJECT_STATE.md`「Next Single Goal」。
 
 ---
 
-## 3. Agent 开发原则
+## 3. 产品 / Research 边界
 
-任何 Agent 开始修改代码前必须：
+| | Product（Cycle） | Research（Cycle-Research） |
+|---|---|---|
+| 位置 | 仓库根（`src/`、`public/`、`package.json`） | `research/` |
+| 职责 | Timeline UI、PWA、历史对比、机会发现呈现 | 数据收集、Source、Evidence、Market Data、Campaign、Lifecycle、Drivers、Research Export |
+| 不做 | 数据生产、改 Research Model | UI、Timeline 排版、PWA、前端交互 |
+| 语言 | TypeScript / React / Vite | Python（标准库 sqlite3） |
 
-1. 阅读 AGENTS.md。
-2. 阅读 docs/ 下与任务相关的文档。
-3. 检查现有实现，搜索是否已有相关代码。
-4. **优先修改已有实现**，避免重复逻辑。
-5. 修改后运行相关测试（`npm test`）与类型检查（`npx tsc -b`）。
-6. 如修改数据模型或核验数据（`data/`），必须同步更新 docs/DATA_MODEL.md、
-   docs/HISTORICAL_VALIDATION.md 与 docs/CHANGELOG.md。
-7. 修改 `data/` 核验数据前必须阅读 docs/HISTORICAL_VALIDATION.md；
-   candidate → verified 的升层必须在 CHANGELOG.md 留痕，禁止为填充 verified 层而编造事实。
-
-任何 Agent 不得：
-
-- 擅自重构核心数据模型（`src/models/`）。
-- 擅自改变产品定位（见第 1 节）。
-- 擅自增加实时交易、荐股、买卖信号逻辑。
-- 擅自把经验描述改写为"市场事实"。
-- 擅自引入新的测试框架、构建工具或数据库（变更技术栈需先修改 docs/ARCHITECTURE.md 并在任务 Prompt 中明确授权）。
+**两个逻辑模块，一个项目目标。** 边界必须清晰：Research 只产出数据，Product 只消费数据。
 
 ---
 
-## 4. 冲突处理
+## 4. 目录结构
 
-如果任务 Prompt 与本规范冲突：
+```
+ThreeC/
+├─ .git/                       ← 唯一 Git
+├─ .gitignore
+├─ AGENTS.md                   ← 本文件（接班入口）
+├─ README.md
+├─ package.json / tsconfig.json / vite.config.ts
+│
+├─ src/                        ← Product：前端源码
+│   ├─ components/             ← Timeline / CampaignDetail / SamePeriodView / OpportunityRadar …
+│   ├─ data/
+│   │   └─ timeline/           ← Timeline Adapter（消费 exports/）
+│   ├─ models/                 ← 核心数据模型（禁擅改）
+│   └─ utils/
+├─ public/
+├─ index.html
+│
+├─ docs/                       ← 项目级文档
+│   ├─ PROJECT_STATE.md        ← 接班必读②
+│   ├─ PRODUCT_PURPOSE.md
+│   ├─ ROADMAP.md
+│   ├─ CHANGELOG.md            ← 统一变更记录
+│   └─ (Cycle 原有) PRODUCT.md / DATA_MODEL.md / DATA_GOVERNANCE.md /
+│        HISTORICAL_VALIDATION.md / ARCHITECTURE.md / UI_SPEC.md
+│
+├─ exports/                    ← ★ Research → Product 唯一交换目录
+│   └─ timeline_export_v1.json ← ★ 唯一 canonical export
+├─ contracts/
+│   └─ timeline_export_v1.md   ← 跨模块接口契约
+│
+├─ research/                   ← Research 子系统（原 Cycle-Research 仓库）
+│   ├─ AGENTS.md               ← Research 职责书
+│   ├─ README.md               ← 原 Cycle-Research README
+│   ├─ database/cycle_research.db  ← 研究数据库（提交 Git，见 §11）
+│   ├─ schema/schema.sql       ← 冻结（禁改）
+│   ├─ data/market/            ← raw / normalized 行情 CSV
+│   ├─ exports/cycle_verified_candidates.json
+│   ├─ scripts/                ← Python 流水线
+│   └─ research/               ← 研究产物：annual / batch / c2 / methodology / promotion / summary / templates
+│
+├─ data/                       ← Product 侧核验数据（raw / candidate / verified / validation）
+└─ tests/
+```
 
-- **优先遵守本规范**。
-- 不得偷偷选择其中一个执行。
-- 必须在最终报告中明确指出冲突点。
-- 若确有必要变更规范，说明建议如何修改规范本身，并等待确认。
+> 注：`research/research/` 是历史既有嵌套（Research 仓库内原本就有 `research/` 产物目录），
+> 迁移时**刻意保留**该相对结构以维持零语义漂移与历史可追溯，不是冗余。
 
 ---
 
-## 5. 最小修改原则
+## 5. 数据流（单向，禁止手工 Copy）
 
-- 除非存在明确 Bug 或架构性问题，不重写已有功能。
-- 优先 incremental change，不做"为了更优雅"的重构。
-- "未来可能需要"不是现在实现的理由——记入 docs/ROADMAP.md，而不是代码。
-- 每轮修改必须说明：改了什么、为什么改、为什么属于必要修改。
+```
+research/                      Python 研究流水线
+    ↓  Research scripts
+exports/timeline_export_v1.json   ← ★ 唯一 canonical
+    ↓  Cycle Timeline Adapter（src/data/timeline/timelinePreview.ts → timelineAdapter.ts）
+Timeline UI
+```
+
+**禁止**：Research → 手工 Copy → Cycle 内 JSON。
+**禁止**：在仓库内长期存在两个 canonical JSON 副本。
 
 ---
 
-## 6. 产品红线（V1 及默认状态）
+## 6. Export Contract
 
-除非任务 Prompt 明确授权进入对应阶段（见 docs/ROADMAP.md），否则禁止：
+- 唯一版本：`timeline_export_version = "1.0"`。
+- 契约正文：`contracts/timeline_export_v1.md`。
+- 顶层 11 字段白名单：`contract / timeline_export_version / generated_at / source_commit / project / rules / signals / campaigns / research_candidates / events / securities`。
+- 守门人：`research/scripts/validate_timeline_export.py`。
+- **Schema 变更必须同时更新三处**：`contracts/` + Research exporter + Cycle adapter。
+  任何一侧不得单方面改变。
 
-- 接实时行情 / 实时资金流 / 实时异动监控
-- AI 预测、确定性未来预测
-- "必涨 / 必跌"等结论
-- 买入 / 卖出 / 建仓 / 清仓等操作建议
-- 股票推荐
-- 自动交易信号
-- 自动消息推送
-- 用户登录 / 权限系统
-- 自动爬虫
-- 伪造胜率、季节性评分等量化结论
+---
 
-UI 文案中 "买入/卖出/建仓/清仓/推荐" 等词只允许出现在**否定性免责声明**中（如"不构成买卖建议"）。
+## 7. 数据状态（严格分层，禁止越级）
+
+```
+Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction
+```
+
+**Research 研究状态**（大写）：`RAW / PROVISIONAL / CONFLICT / INSUFFICIENT / VERIFIED`
+**生产状态**（小写，Cycle 消费）：`verified / provisional / conflict / preview`
+
+- `PROVISIONAL ≠ VERIFIED`。PROVISIONAL 可用于预览，**不得**自动进入 verified。
+- Research Candidate（`RC-` 前缀）**永不**映射为 verified；与正式 Campaign 是**并列**来源，非升级关系。
+- 生产 `verified` 数据位于 `data/verified/`；前端 `?preview=1` 消费 `exports/`，默认生产模式消费 `data/verified/`。
+
+---
+
+## 8. 禁止事项（红线）
+
+**数据与模型**
+
+- 修改 Research Model v1.0
+- 新增 ThemeCycle / CampaignRelation schema 或数据库实体
+- 修改 `research/schema/schema.sql`
+- 修改 2018–2025 已有历史研究结论（Campaign / Theme / Evidence / Market Data / Lifecycle / Drivers）
+- 让 PROVISIONAL 自动进入 verified；把 Candidate 当 confirmed
+- 丢 Git 历史 / 丢 Research 数据
+
+**产品**
+
+- 实时行情 / 资金流 / 异动监控
+- AI 预测、确定性未来预测、"必涨 / 必跌"
+- 买入 / 卖出 / 建仓 / 清仓建议；股票推荐；自动交易信号
+- 伪造胜率 / 季节性评分等量化结论
+- 用户登录 / 权限系统 / 后端 / 自动爬虫
+
+UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**否定性免责声明**中。
+
+---
+
+## 9. 测试策略
+
+**Product（Node）**
+
+```bash
+npm test          # Vitest，当前 111 项
+npx tsc -b        # 类型检查
+npm run build     # 生产构建
+```
+
+**Research（Python，标准库 sqlite3）**
+
+```bash
+cd research
+python scripts/validate_db.py
+python scripts/validate_timeline_export.py
+python scripts/validate_batch_research.py
+python scripts/validate_promotion_manifest.py
+python scripts/check_doc_schema_consistency.py
+```
+
+**Integrity**
+
+```bash
+python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯一性 / 数据流
+```
+
+改动后必须运行相关测试；不得删除现有测试。
+
+---
+
+## 10. 修改规则
+
+1. 先搜索是否已有实现；**优先修改已有实现**，不重复造轮子。
+2. 最小修改原则：不做「为了更优雅」的重构；不做「未来可能需要」的预留。
+   "未来可能需要" 记入 `docs/ROADMAP.md`，不写进代码。
+3. 不擅自重构核心数据模型（`src/models/`）或改变产品定位（§1）。
+4. 若任务与本文件冲突：**优先遵守本文件**，在最终报告中明确指出冲突点，等待确认。
+5. 每轮修改必须说明：改了什么、为什么改、为什么属于必要修改。
+
+---
+
+## 11. Git 规则
+
+- **唯一 Git**：仓库根 `.git`。`research/` 内**不再**有独立 `.git`。
+- **唯一远程**：`origin` → `https://github.com/yangfanbit/Cycle.git`。不新建第三个仓库。
+- `research/database/cycle_research.db` **继续提交 Git**（Research 明确依赖可回查数据库）；
+  不因通用最佳实践自动忽略 SQLite。
+- 禁止 `force push`。若遇无法解决的问题，先停止并报告。
+- 默认普通 fast-forward push。
+- 提交前确认：工作树干净、`origin` 正确、`main` 正确、历史完整。
+
+**Research 历史追溯**：`git log -- research/` 可回溯原 Cycle-Research 全部历史提交
+（经 `git subtree` 并入，原始 author / date / message 保留）。
+
+---
+
+## 12. 当前唯一下一目标
+
+> 见 `docs/PROJECT_STATE.md`。
+
+**等待下一轮 Review。** Monorepo Integration 完成后已**停止**：
+不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。

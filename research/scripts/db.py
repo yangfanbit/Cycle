@@ -1,4 +1,11 @@
-"""Cycle-Research 共享配置与数据库工具。
+"""ThreeC Research 子系统共享配置与数据库工具。
+
+Monorepo（ThreeC）说明：
+- 本文件位于 `<repo>/research/scripts/`，因此 `ROOT` = `<repo>/research`（Research 子系统根）。
+- Research 侧的 `database/`、`schema/`、`research/`、`data/` 均相对 `ROOT` 解析。
+- **canonical Research Export 不在本子系统内**：唯一源为 `<repo>/exports/timeline_export_v1.json`
+  （Research → Product 交换文件），由 `EXPORTS_DIR` 指向。Research 脚本只写入该目录，
+  Product（前端）只消费该目录，禁止在任一子系统内维护第二份副本。
 
 运行环境：需要 Python3（含 sqlite3 标准库）。
 用法：确保本项目根目录在 sys.path 中，import scripts.db as db。
@@ -9,6 +16,11 @@ import sqlite3
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(ROOT, "database", "cycle_research.db")
 SCHEMA_PATH = os.path.join(ROOT, "schema", "schema.sql")
+
+# canonical Research Export 目录：Monorepo 根的 exports/（= research/ 的上一级）
+REPO_ROOT = os.path.dirname(ROOT)
+EXPORTS_DIR = os.path.join(REPO_ROOT, "exports")
+TIMELINE_EXPORT_PATH = os.path.join(EXPORTS_DIR, "timeline_export_v1.json")
 
 # 常用枚举（与 schema CHECK 保持一致）
 EVIDENCE_ROLE = ("supporting", "contradicting", "context")

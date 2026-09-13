@@ -29,7 +29,7 @@ conn = db.connect()
 BATCH_DIR = os.path.join(ROOT, "research", "batch")
 MANIFEST = os.path.join(BATCH_DIR, "auto_2018_2025_batch_manifest.json")
 CONFLICTS = os.path.join(BATCH_DIR, "conflicts.json")
-EXPORT = os.path.join(ROOT, "exports", "timeline_export_v1.json")
+EXPORT = db.TIMELINE_EXPORT_PATH  # canonical: <repo>/exports/timeline_export_v1.json
 
 RULE = "rule_auto_summer"
 

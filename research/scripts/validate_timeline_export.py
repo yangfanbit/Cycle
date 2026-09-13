@@ -22,9 +22,10 @@
 """
 import sys, os, json, datetime
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from scripts import db
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-EXPORT = os.path.join(ROOT, "exports", "timeline_export_v1.json")
+ROOT = db.ROOT
+EXPORT = db.TIMELINE_EXPORT_PATH  # canonical: <repo>/exports/timeline_export_v1.json
 
 TOP_LEVEL = {
     "contract", "timeline_export_version", "generated_at", "source_commit",

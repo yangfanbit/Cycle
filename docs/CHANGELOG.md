@@ -1,4 +1,107 @@
-# CHANGELOG.md — 变更记录
+# CHANGELOG.md — ThreeC 变更记录
+
+> 本文件为 ThreeC 统一变更记录（Monorepo Integration 后）。
+> 原 `Cycle/docs/CHANGELOG.md` 的 V1–V1.7 全部历史**完整保留在下方**。
+> 原 Cycle-Research 的历史记录保留在 `research/` 内的报告文件中
+> （`RESEARCH_MODEL_V1_FREEZE_REPORT.md`、`HISTORICAL_DATA_PRODUCTION_V1_REPORT.md` 等）。
+
+---
+
+## 2026-09-13 · Phase 4 Monorepo Integration + Project Handoff Infrastructure
+
+### 目标
+
+把 `Cycle`（产品）与 `Cycle-Research`（研究）合并为**单一仓库 `ThreeC`**：
+一个项目、一个 Git、一个 canonical export、两个逻辑模块、一个项目目标。
+**本轮不扩大功能**；不改 Research Model、不改历史研究结论、不新增 UI。
+
+### 迁移事实
+
+| 项 | 值 |
+|---|---|
+| 原 Cycle HEAD | `d37950027380037970447c163c8159f14f64d5f8`（11 commits） |
+| 原 Cycle-Research HEAD | `eadf06a1555b2c46817c543c3e8454d4326a5efb`（28 commits） |
+| 迁移方式 | Cycle 为根仓库；Cycle-Research 经 `git subtree add --prefix=research` 并入 |
+| 结果 | 40 commits（11 + 28 + 1 join）；双方原始 author / date / message 保留 |
+| 唯一远程 | `origin` → `https://github.com/yangfanbit/Cycle.git` |
+
+`git log -- research/` 可完整追溯原 Cycle-Research 历史。
+
+### 结构变化
+
+- `Cycle/` 内容提升为仓库根（`src/`、`package.json`、`vite.config.ts`、`data/`、`tests/`、`docs/`）。
+  **未**新建 `apps/cycle/`。
+- `Cycle-Research/` 内容并入 `research/`（`database/`、`schema/`、`scripts/`、`data/`、`research/`）。
+- 删除内层 `.git`（`Cycle/.git`、`Cycle-Research/.git`）——**在历史安全迁移且内容确认无丢失之后**。
+
+### Canonical Export 唯一化
+
+- **唯一源**：`exports/timeline_export_v1.json`
+  （SHA256 `BF36FF7B419F4BFA982527B15F5853E3BB67F7CA4D8941D2932B358574EFD01E`，内容零变化）。
+- **移除**前端手工副本 `src/data/timeline/data/timeline_export_v1.json`（原为逐字节拷贝）。
+- 前端消费路径：`src/data/timeline/timelinePreview.ts` → `@exports/timeline_export_v1.json`。
+  - `vite.config.ts`：新增 `resolve.alias['@exports']` → `./exports`
+  - `tsconfig.json`：新增 `paths["@exports/*"]`、`include` 加入 `exports`、
+    `types` 加入 `node`（新增 devDependency `@types/node`）
+- 数据流统一为：
+
+```
+research/ → Research scripts → exports/timeline_export_v1.json
+  → Cycle Timeline Adapter → Timeline UI
+```
+
+不再存在 `Research → 手工 Copy → Cycle JSON` 路径；仓库内**只有一个** canonical JSON。
+
+### Research 脚本路径适配（3 个文件，仅路径语义）
+
+| 文件 | 变化 |
+|---|---|
+| `research/scripts/db.py` | 新增 `REPO_ROOT` / `EXPORTS_DIR` / `TIMELINE_EXPORT_PATH`（canonical 在 `research/` 上一级）；`ROOT` 语义 = `research/` |
+| `research/scripts/batch_auto_research.py` | `EXPORT = db.TIMELINE_EXPORT_PATH` |
+| `research/scripts/validate_timeline_export.py` | `ROOT = db.ROOT`；`EXPORT = db.TIMELINE_EXPORT_PATH` |
+
+**未改动**任何研究数据内容、Model、schema、历史结论。
+
+### 新增接班文档
+
+- `AGENTS.md`（根，重写为 12 节接班入口：初心 / 阶段 / 边界 / 目录 / 数据流 / Contract /
+  数据状态 / 禁止事项 / 测试 / 修改规则 / Git 规则 / 下一目标）
+- `research/AGENTS.md`（Research 职责书：Model v1.0 Frozen、负责 / 不负责、工作流、红线）
+- `docs/PROJECT_STATE.md`（一至两页：Purpose / Phase / Completed / Architecture / Status /
+  Contract / Limitations / Blockers / Next Goal / Not Doing）
+- `docs/PRODUCT_PURPOSE.md`（基于历史时间轴的 A 股机会地图；核心 / 非核心 / 边界声明）
+- `README.md`（根，重写：ThreeC = Research + Cycle Product）
+- `docs/ROADMAP.md`（Phase 1–8 重新整理，非拼接）
+- `contracts/timeline_export_v1.md`（契约副本，跨模块接口单一出处）
+- `research/scripts/validate_monorepo_integrity.py`（15 项完整性校验）
+
+### 验证结果
+
+| 项 | 结果 |
+|---|---|
+| Cycle `npm test` | **111 / 111 通过**（迁移前后一致） |
+| `npx tsc -b` | 通过 |
+| `npm run build` | 通过（55 modules，225.82 kB） |
+| Research `validate_db.py` | PASS |
+| Research `validate_timeline_export.py` | PASS（8 Campaigns / 2 Candidates / 26 Events / 39 Securities） |
+| Research `validate_batch_research.py` | PASS（PROVISIONAL 8 / CONFLICT 1） |
+| Research `validate_promotion_manifest.py` | PASS（5/5） |
+| Research `check_doc_schema_consistency.py` | PASS（17 表 / 125 字段） |
+| 历史研究 semantic diff | **未修改文件 zero diff**；仅 3 个脚本路径调整 |
+| canonical export 哈希 | 迁移前后**完全一致** |
+
+### 明确未做
+
+- 未修改 Research Model v1.0 / `schema.sql` / 历史研究结论
+- 未新增数据库实体 / ThemeCycle / CampaignRelation schema
+- 未新增 UI 功能 / Dashboard / Statistics / Prediction / Radar / Notification / Backend
+- 未重新生产 Research 数据
+- 未删除任何测试
+- 未 force push
+
+---
+
+# 以下为原 `Cycle/docs/CHANGELOG.md` 历史（完整保留）
 
 ## 2026-09-13 · V1.7 Historical Opportunity Map UX（第十一轮）
 

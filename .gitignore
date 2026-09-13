@@ -1,5 +1,73 @@
+# ============================================================
+# ThreeC .gitignore（Monorepo 合并版）
+# 合并自原 Cycle/.gitignore 与 Cycle-Research/.gitignore
+# ============================================================
+
+# ---- Node / 前端 ----
 node_modules/
 dist/
 *.local
 *.tsbuildinfo
+
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+
+# ---- 构建产物 / 缓存 ----
+build/
+.cache/
+.vite/
+
+# ---- 本地环境 / 密钥 ----
+.env
+.env.*
+!.env.example
+
+# ---- IDE / 编辑器 ----
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---- 系统 ----
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 迁移/审计临时文件（不提交） ----
+_audit_*.txt
+_baseline_*.txt
+_backup_*.txt
+_migrate_*.txt
+_migrate_*.ps1
+_migrate_*.sh
+_post_*.txt
+_post_*.ps1
+_semantic_diff*.txt
+_semantic_diff*.ps1
+_script_diffs.txt
+_scriptdiff.ps1
+_cleanup*.ps1
+_unify_export*.ps1
+_install_*.ps1
+_run_subtree*.ps1
+_prep_ascii.ps1
+_diag_*.ps1
+_layout_check.ps1
+_verify_subtree.ps1
+_subtree.sh
+_probe*.sh
+
+# ============================================================
+# 明确【不】忽略（重要）
+# ============================================================
+# research/database/cycle_research.db
+#   —— Research 明确依赖可回查数据库，继续提交 Git。
+#      不因通用最佳实践自动忽略 SQLite。
+# research/data/market/**/*.csv
+#   —— 行情原始与归一化 CSV，研究对象，提交 Git。

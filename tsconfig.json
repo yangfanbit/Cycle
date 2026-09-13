@@ -16,7 +16,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@exports/*": ["exports/*"]
+    }
   },
-  "include": ["src", "data", "tests", "vite.config.ts"]
+  "include": ["src", "data", "exports", "tests", "vite.config.ts"]
 }
