@@ -1,57 +1,9 @@
 {
   "version": "1.0",
-  "generated_at": "2026-09-13T12:53:04",
-  "source_commit": "4bbe257d37d5991a2c6ce33def205df9a67e2593",
+  "generated_at": "2026-09-13T13:46:20",
+  "source_commit": "2ff6fad0fb75e19310158796f9cfc297180d6190",
   "rule": "conflicts 记录研究日期口径冲突；candidate_a=DB 冻结值，candidate_b=研究复核候选",
   "conflicts": [
-    {
-      "research_campaign_id": "C-2022-POLICY",
-      "field": "start_date",
-      "candidate_a": {
-        "date": "2022-04-27",
-        "label": "DB Candidate（Setup 起点）",
-        "basis": "campaigns.start_date 冻结值"
-      },
-      "candidate_b": {
-        "date": "2022-05-23",
-        "label": "Research Review Candidate（Theme Formation/政策催化日）",
-        "basis": "theme_lifecycle_v0_2：05-23 国常会购置税600亿政策催化"
-      },
-      "supporting_evidence_a": [
-        "E-2022-01",
-        "E-2022-02",
-        "E-2022-03",
-        "E-2022-04"
-      ],
-      "supporting_evidence_b": [],
-      "contradicting_evidence": [],
-      "decision": "pending_human_review",
-      "blocker_type": "RESEARCH_UNCERTAINTY",
-      "notes": "不强行解决；由人工最终 Review 裁决为 Verified Date 后才允许进入 Cycle"
-    },
-    {
-      "research_campaign_id": "C-2024-ROBOTAXI",
-      "field": "peak_date",
-      "candidate_a": {
-        "date": "2024-07-29",
-        "label": "DB Candidate",
-        "basis": "campaigns.peak_date 冻结值"
-      },
-      "candidate_b": {
-        "date": "2024-08-05",
-        "label": "Research Review Candidate（EW 等权指数 raw 峰值）",
-        "basis": "calibrate_robotaxi：等权指数 08-05 为 raw 峰值"
-      },
-      "supporting_evidence_a": [
-        "E-2024-05",
-        "E-2024-06"
-      ],
-      "supporting_evidence_b": [],
-      "contradicting_evidence": [],
-      "decision": "pending_human_review",
-      "blocker_type": "RESEARCH_UNCERTAINTY",
-      "notes": "不强行解决；由人工最终 Review 裁决为 Verified Date 后才允许进入 Cycle"
-    },
     {
       "research_campaign_id": "C-2024-ROBOTAXI",
       "field": "end_date",

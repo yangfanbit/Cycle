@@ -75,24 +75,20 @@ PHASE_TIME_FIELDS = {
     "C-2025-ROBOTAXI": {"broad_confirmation_date": "2025-06-24"},
 }
 
-# ---- 已记录的研究日期冲突（来自 promotion_gate_v1.md RESEARCH_UNCERTAINTY） ----
-# 不强行解决；保留 candidate_a（DB 冻结值）与 candidate_b（研究复核候选）。
+# ---- 日期精度（V1.7：日期精度不再是核心瓶颈）----
+# EXACT_DATE：真实行情/正式事件单日；DATE_WINDOW：多指标/来源轻微差异区间；PHASE_WINDOW：用户周期阶段。
+# 仅当差异足以改变 Campaign 生命周期判断时才进入 CONFLICT（见 CONFLICT_MAP）。
+TIME_PRECISION = ("EXACT_DATE", "DATE_WINDOW", "PHASE_WINDOW")
+
+# ---- 重大冲突（V1.7 新标准：只处理重大冲突）----
+# 判定：1) 起点相差 >20 交易日；2) Peak Window 落完全不同月份；3) End 候选改变生命周期；
+#       4) Theme classification 完全不同；5) Evidence 直接事实冲突。
+# 已降级（非 CONFLICT，用 date_window 表达）：
+#   - C-2022-POLICY start 04-27 vs 05-23（15 交易日 ≤20；语义上 EARLY_SIGNAL 04-27 + THEME_FORMING 05-23，见 lifecycle）
+#   - C-2024-ROBOTAXI peak 07-29 vs 08-05（仅 5 交易日、相邻月份 → Peak Window 07-29~08-05）
+# 保留 CONFLICT：C-2024-ROBOTAXI end 07-31 vs 08-23（17 交易日且改变 Main Campaign 生命周期）。
 CONFLICT_MAP = {
-    "C-2022-POLICY": {
-        "start_date": {
-            "candidate_a": {"date": "2022-04-27", "label": "DB Candidate（Setup 起点）",
-                            "basis": "campaigns.start_date 冻结值"},
-            "candidate_b": {"date": "2022-05-23", "label": "Research Review Candidate（Theme Formation/政策催化日）",
-                            "basis": "theme_lifecycle_v0_2：05-23 国常会购置税600亿政策催化"},
-        }
-    },
     "C-2024-ROBOTAXI": {
-        "peak_date": {
-            "candidate_a": {"date": "2024-07-29", "label": "DB Candidate",
-                            "basis": "campaigns.peak_date 冻结值"},
-            "candidate_b": {"date": "2024-08-05", "label": "Research Review Candidate（EW 等权指数 raw 峰值）",
-                            "basis": "calibrate_robotaxi：等权指数 08-05 为 raw 峰值"},
-        },
         "end_date": {
             "candidate_a": {"date": "2024-07-31", "label": "DB Candidate",
                             "basis": "campaigns.end_date 冻结值"},
@@ -170,6 +166,175 @@ RESEARCH_CANDIDATES = [
         "notes": "Weak Secondary Campaign Candidate：主 Campaign C-2024-ROBOTAXI（07-08~08-23）结束后 09-05~06 次级活跃，强度不足；不作为正式 Campaign。2024-10-10 特斯拉 Robotaxi 发布会仅一日脉冲后回落，亦不作为候选",
     },
 ]
+
+# ---- Lifecycle（Phase Windows）与 Drivers（V1.7 核心产出）----
+# 依据 theme_lifecycle_v0_2 / auto_lifecycle_2022_2024 / 年度研究 / campaign_phases。
+# 时间精度：EXACT_DATE / DATE_WINDOW / PHASE_WINDOW；无可靠依据的阶段不写或标 unknown，不编造。
+# drivers 内嵌来源引用（EV-/E-/S- 编号）；无可靠来源写 "unknown"。
+
+CAMPAIGN_LIFECYCLE = {
+    "C-2019-AD": [
+        {"stage": "EARLY_SIGNAL", "start": "2019-08-15", "end": "2019-08-15", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2019-08-15", "end": "2019-09-24", "precision": "DATE_WINDOW"},
+        {"stage": "PEAK", "start": "2019-09-24", "end": "2019-09-24", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_END", "start": "2019-09-30", "end": "2019-09-30", "precision": "EXACT_DATE"},
+    ],
+    "C-2020-NEV": [
+        {"stage": "EARLY_SIGNAL", "start": "2020-06-01", "end": "2020-06-01", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2020-06-11", "end": "2020-07-13", "precision": "EXACT_DATE"},
+        {"stage": "PEAK", "start": "2020-07-13", "end": "2020-07-13", "precision": "EXACT_DATE"},
+        {"stage": "RETRACEMENT", "start": "2020-07-14", "end": "2020-08-20", "precision": "EXACT_DATE"},
+        {"stage": "SECONDARY", "start": "2020-08-21", "end": "2020-09-30", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2020-09-30", "end": "2020-09-30", "precision": "EXACT_DATE"},
+    ],
+    "C-2021-NEV": [
+        {"stage": "EARLY_SIGNAL", "start": "2021-06-01", "end": "2021-06-01", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2021-06-01", "end": "2021-08-06", "precision": "EXACT_DATE"},
+        {"stage": "PEAK", "start": "2021-08-06", "end": "2021-08-06", "precision": "EXACT_DATE"},
+        {"stage": "DECLINING", "start": "2021-08-07", "end": "2021-09-30", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_END", "start": "2021-09-30", "end": "2021-09-30", "precision": "EXACT_DATE"},
+    ],
+    "C-2022-POLICY": [
+        {"stage": "EARLY_SIGNAL", "start": "2022-04-27", "end": "2022-04-27", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2022-05-23", "end": "2022-05-23", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2022-06-01", "end": "2022-06-01", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2022-05-23", "end": "2022-06-28", "precision": "DATE_WINDOW"},
+        {"stage": "PEAK", "start": "2022-06-10", "end": "2022-06-28", "precision": "DATE_WINDOW"},
+        {"stage": "SECONDARY", "start": "2022-06-22", "end": "2022-06-30", "precision": "EXACT_DATE"},
+        {"stage": "RETRACEMENT", "start": "2022-07-01", "end": "2022-07-31", "precision": "PHASE_WINDOW"},
+        {"stage": "DECLINING", "start": "2022-08-01", "end": "2022-08-31", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2022-08-31", "end": "2022-08-31", "precision": "EXACT_DATE"},
+    ],
+    "C-2023-AD": [
+        {"stage": "EARLY_SIGNAL", "start": "2023-06-12", "end": "2023-06-12", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2023-06-21", "end": "2023-06-21", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2023-07-03", "end": "2023-07-03", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2023-07-03", "end": "2023-07-19", "precision": "EXACT_DATE"},
+        {"stage": "PEAK", "start": "2023-07-11", "end": "2023-07-19", "precision": "DATE_WINDOW"},
+        {"stage": "SECONDARY", "start": "2023-08-04", "end": "2023-08-04", "precision": "EXACT_DATE"},
+        {"stage": "DECLINING", "start": "2023-07-19", "end": "2023-09-12", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2023-07-19", "end": "2023-07-19", "precision": "EXACT_DATE"},
+    ],
+    "C-2024-V2X": [
+        {"stage": "EARLY_SIGNAL", "start": "2024-06-11", "end": "2024-06-11", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2024-06-14", "end": "2024-06-14", "precision": "EXACT_DATE"},
+        {"stage": "PEAK", "start": "2024-06-18", "end": "2024-06-18", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_END", "start": "2024-06-25", "end": "2024-06-25", "precision": "EXACT_DATE"},
+    ],
+    "C-2024-ROBOTAXI": [
+        {"stage": "EARLY_SIGNAL", "start": "2024-07-08", "end": "2024-07-08", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2024-07-10", "end": "2024-07-10", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2024-07-11", "end": "2024-07-29", "precision": "EXACT_DATE"},
+        {"stage": "PEAK", "start": "2024-07-29", "end": "2024-08-05", "precision": "DATE_WINDOW"},
+        {"stage": "FIRST_DECLINE", "start": "2024-08-06", "end": "2024-08-06", "precision": "EXACT_DATE"},
+        {"stage": "DECLINING", "start": "2024-08-06", "end": "2024-08-23", "precision": "DATE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2024-07-31", "end": "2024-08-23", "precision": "DATE_WINDOW"},
+        {"stage": "SECONDARY", "start": "2024-09-05", "end": "2024-09-06", "precision": "EXACT_DATE"},
+    ],
+    "C-2025-ROBOTAXI": [
+        {"stage": "EARLY_SIGNAL", "start": "2025-06-22", "end": "2025-06-22", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2025-06-24", "end": "2025-06-24", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2025-06-22", "end": "2025-06-24", "precision": "EXACT_DATE"},
+        {"stage": "PEAK", "start": "2025-06-24", "end": "2025-06-24", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_END", "start": "2025-08-31", "end": "2025-08-31", "precision": "EXACT_DATE"},
+    ],
+}
+
+CANDIDATE_LIFECYCLE = {
+    "RC-2023-HUAWEI": [
+        {"stage": "EARLY_SIGNAL", "start": "2023-08-29", "end": "2023-08-29", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2023-09-04", "end": "2023-09-04", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2023-09-18", "end": "2023-09-18", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2023-09-20", "end": "2023-10-31", "precision": "PHASE_WINDOW"},
+    ],
+    "RC-2024-SECONDARY": [
+        {"stage": "EARLY_SIGNAL", "start": "2024-09-05", "end": "2024-09-05", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_END", "start": "2024-09-06", "end": "2024-09-06", "precision": "EXACT_DATE"},
+    ],
+}
+
+CAMPAIGN_DRIVERS = {
+    "C-2019-AD": {
+        "start": ["交通部研究自动驾驶法规与指导意见（EV-2019-03 trigger, 2019-08-27）",
+                  "6月国五/六切换促销式回暖后市场寻找新方向（S-2019-01）"],
+        "accelerator": ["智能汽车概念午后走强（E-2019-04, 2019-09）", "无人驾驶板块活跃（E-2019-05）"],
+        "turning": ["新能源汽车7月起负增长、行业基本面弱（S-2019-02 contradicting）"],
+        "ending": ["事件驱动脉冲退潮、无持续主线（result=weak）"],
+    },
+    "C-2020-NEV": {
+        "start": ["特斯拉国产化落地 + 股价破千美元预期（S-2020-01）", "比亚迪汉上市（首搭刀片电池）（EV-2020-02）"],
+        "accelerator": ["特斯拉市值超丰田居全球车企第一（EV-2020-01, 06-10）",
+                        "宁德时代与本田战略合作 + 为特斯拉供货（EV-2020-03）",
+                        "比亚迪涨停、宁德市值逼近五千亿（S-2020-02）"],
+        "turning": ["7/14 特斯拉过山车带动A股调整（phase retracement 07-14~08-20）", "获利盘回吐"],
+        "ending": ["主升 7/13 见顶后回调；8/21 二次启动为弱（S-2020-03 Tier4 线索）", "9月末宽窗口结束（暂定）"],
+    },
+    "C-2021-NEV": {
+        "start": ["新能源车产销持续翻倍、渗透率升至12%+（S-2021-01/02）"],
+        "accelerator": ["宁德时代市值破万亿（EV-2021-01）", "宁德宜宾产能一期投运（EV-2021-03）",
+                        "比亚迪创新高、市值一度超9000亿（S-2021-05）", "板块爆发多股涨停（S-2021-03）"],
+        "turning": ["整体车市缺芯负增长（S-2021-06 contradicting）", "8/6 比亚迪新高后高位震荡分化"],
+        "ending": ["8/6 峰值后分化、9月主线衰减（phase decline 08-07~09-30）", "9月末宽窗口结束（暂定）"],
+    },
+    "C-2022-POLICY": {
+        "start": ["行业修复/Setup + 复工复产预期（EARLY_SIGNAL 04-27）",
+                  "国常会阶段性减征乘用车购置税600亿元（EV-2022-01, 05-23 THEME_FORMING）",
+                  "地方补贴加码（S-2022-02）"],
+        "accelerator": ["5/31 财政部/税务总局购置税减半细则 + 新能源下乡（EV-2022-02）",
+                        "6/1 细则落地次日整车集体涨停（Broad Confirmation）",
+                        "6/22 国常会再促消费（取消二手车限迁）（EV-2022-03）",
+                        "比亚迪A股市值破万亿（EV-2022-04, 06-10）"],
+        "turning": ["7月后政策边际减弱", "获利盘/估值高位（6/10 比亚迪破万亿后）", "板块分化回调"],
+        "ending": ["8月 declining（08-01 二高点后持续衰减）", "政策催化缺失、板块失去同步"],
+    },
+    "C-2023-AD": {
+        "start": ["工信部吹风会：支持L3商业化 + 启动准入和上路通行试点（EV-2023-01, 06-21 THEME_FORMING）",
+                  "L3政策预期（E-2023-01/07）"],
+        "accelerator": ["比亚迪首发'天神之眼'高阶智驾（腾势N7）（EV-2023-02, 07-03）",
+                        "7/3-4 25股涨停全面爆发（S-2023-02）", "浙江世宝8天6板（S-2023-05）"],
+        "turning": ["7/11 峰值后板块让位地产/顺周期、快速轮动（phase decline）", "获利盘兑现"],
+        "ending": ["7/19 主升结束、8-9月主题衰减（至09-12 德赛/浙江见顶转跌）",
+                   "正式L3文件11/17成文为后续（EV-2023-03 subsequent），夏季系预期驱动",
+                   "FSD 2023未在华落地（反例约束）"],
+    },
+    "C-2024-V2X": {
+        "start": ["武汉车路云一体化示范项目备案170.84亿（EV-2024-01, 06-14 THEME_FORMING）", "政策试点预期"],
+        "accelerator": ["车路云概念全线爆发、华铭智能等10余股涨停（S-2024-02）"],
+        "turning": ["公司多公告'未参与'（题材证伪）", "6/18 高峰后分化"],
+        "ending": ["索菱断板跌停、金溢逼近跌停（S-2024-03）", "快涨快退（约2周）题材退潮",
+                   "5部门20城试点（EV-2024-02, 07-03）为后续事件，不充当窗口内催化"],
+    },
+    "C-2024-ROBOTAXI": {
+        "start": ["萝卜快跑武汉跑出圈（EV-2024-03, 07-10 Broad Confirmation）", "无人驾驶板块大涨4%（S-2024-04）"],
+        "accelerator": ["大众交通16日涨233%（S-2024-05）", "锦江15天9板、金龙12天7板",
+                        "板块指数大涨超4%、天迈/经纬恒润20cm涨停（S-2024-04）"],
+        "turning": ["7/31 大众交通9连板终结、大众公用'天地板'（S-2024-06）", "8/6 首次明显回撤",
+                    "高位题材亏钱效应放大（S-2024-07）"],
+        "ending": ["08-23 Main Campaign End（Major Breakpoint）", "板块同步性消失、龙头退潮"],
+    },
+    "C-2025-ROBOTAXI": {
+        "start": ["特斯拉奥斯汀启动Robotaxi有偿试运营（EV-2025-01, 06-22）",
+                  "萝卜快跑/小马智行Robotaxi规模化（S-2025-01）"],
+        "accelerator": ["A股无人驾驶板块全线爆发涨停潮（EV-2025-02, 06-24）", "汽零8月板块行情（S-2025-03）"],
+        "turning": ["大盘β contamination（8月沪指+8%、创业板+24%）（S-2025-07）", "FSD 2025未落地（S-2025-06 retrospective）"],
+        "ending": ["8/31 暂定边界（9/12月另有催化波次）", "beta 驱动为主、主题独立性弱"],
+    },
+}
+
+CANDIDATE_DRIVERS = {
+    "RC-2023-HUAWEI": {
+        "start": ["问界新M7上市发布会（EV-RC-2023-HUAWEI-01, 09-12）", "赛力斯首次明显突破（THEME_FORMING 09-04）"],
+        "accelerator": ["华为汽车核心扩散 + 多股同步（Broad Confirmation 09-18）", "HUAWEI ADS 2.0 随车亮相"],
+        "turning": ["08-29 Early Signal 存在市场 Beta contamination（low confidence）"],
+        "ending": ["unknown（至2023-10-31仍升，未确认结束）"],
+    },
+    "RC-2024-SECONDARY": {
+        "start": ["主 Campaign 退潮后 09-05 次级活跃（weak）"],
+        "accelerator": ["unknown（强度不足）"],
+        "turning": ["unknown"],
+        "ending": ["09-06 后回落，弱候选不成势"],
+    },
+}
 
 # 每个 Campaign 用于行情快照的代理序列（行业代理不可得时用真实龙头个股，标注代理性质）
 PROXY_SERIES = {
@@ -334,6 +499,8 @@ def build_campaign(c):
         "notes": "; ".join(status_notes) or c.get("research_notes") or "",
         "research_notes": c.get("research_notes"),
         "conflict": conflict,
+        "lifecycle": CAMPAIGN_LIFECYCLE.get(cid, []),
+        "drivers": CAMPAIGN_DRIVERS.get(cid, {"start": [], "accelerator": [], "turning": [], "ending": []}),
     }
     return entry
 
@@ -526,6 +693,9 @@ def main():
             "first_decline_date": ph.get("first_decline_date"),
             "conflicts": conflicts_out,
             "notes": e["notes"],
+            # ---- V1.7 新增（backward-compatible optional）----
+            "lifecycle": e["lifecycle"],          # phase windows + 时间精度
+            "drivers": e["drivers"],              # start/accelerator/turning/ending
         })
 
     # 6) research_candidates（不进入 campaigns，可在 Cycle Preview 展示）
@@ -548,6 +718,9 @@ def main():
             "theme_cycle_id": rc["theme_cycle_id"],
             "conflicts": rc["conflicts"],
             "notes": rc["notes"],
+            # ---- V1.7 新增（backward-compatible optional）----
+            "lifecycle": CANDIDATE_LIFECYCLE.get(rcid, []),
+            "drivers": CANDIDATE_DRIVERS.get(rcid, {"start": [], "accelerator": [], "turning": [], "ending": []}),
         })
 
     export = {

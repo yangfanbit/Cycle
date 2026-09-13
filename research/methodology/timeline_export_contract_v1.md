@@ -4,6 +4,18 @@
 > 版本：`timeline_export_version = "1.0"`。未来修改走 1.1 / 2.0，保持向后兼容。
 > 项目初心：让 Cycle Timeline 直接消费历史 Campaign / Research Signal / Research Candidate / Event / Security / Rule，服务"看历史时间轴 → 找当前相似阶段 → 提前观察"。
 
+## 0. 时间精度（V1.7 引入，三档统一）
+
+日期精度不再是核心瓶颈。统一三种时间精度：
+
+| 精度 | 含义 | 用途 |
+|---|---|---|
+| `EXACT_DATE` | 来自真实行情 / 正式事件 | 底层追溯 |
+| `DATE_WINDOW` | 多指标/来源存在轻微差异（如 Peak 07-29 ~ 08-05） | 研究 |
+| `PHASE_WINDOW` | 用户层面周期阶段（"8月上旬进入 Peak/Declining"） | 产品展示 |
+
+不要求三者相同。仅当日期差异**足以改变 Campaign 生命周期判断**时才进入 CONFLICT（新标准：起点差 >20 交易日 / Peak 落完全不同月份 / End 改变生命周期 / Theme classification 完全不同 / Evidence 直接事实冲突）。轻微差异用 `lifecycle` 的 `DATE_WINDOW` / `PHASE_WINDOW` 表达，不阻塞生产。
+
 ---
 
 ## 1. Contract
@@ -85,11 +97,25 @@
   "broad_confirmation_date": "2022-06-01",
   "first_decline_date": "2022-07-01",
   "conflicts": [{ "field": "start_date", "candidate_a": {...}, "candidate_b": {...} }],
-  "notes": "..."
+  "notes": "...",
+  "lifecycle": [
+    { "stage": "EARLY_SIGNAL", "start": "2022-04-27", "end": "2022-04-27", "precision": "EXACT_DATE" },
+    { "stage": "THEME_FORMING", "start": "2022-05-23", "end": "2022-05-23", "precision": "EXACT_DATE" },
+    { "stage": "PEAK", "start": "2022-06-10", "end": "2022-06-28", "precision": "DATE_WINDOW" },
+    { "stage": "DECLINING", "start": "2022-08-01", "end": "2022-08-31", "precision": "PHASE_WINDOW" }
+  ],
+  "drivers": {
+    "start": ["行业修复/Setup + 复工复产预期（EARLY_SIGNAL 04-27）", "国常会购置税600亿（EV-2022-01）"],
+    "accelerator": ["5/31 细则落地（EV-2022-02）", "6/1 整车集体涨停", "比亚迪市值破万亿（EV-2022-04）"],
+    "turning": ["7月后政策边际减弱", "获利盘/估值高位"],
+    "ending": ["8月 declining（08-01 二高点后）", "政策催化缺失"]
+  }
 }
 ```
 
 - `event_ids` / `security_ids` 引用顶层 `events` / `securities`（**禁止**把整个证券表复制进每个 Campaign）。
+- `lifecycle`（V1.7 新增，backward-compatible optional）：Phase Windows，`stage ∈ {EARLY_SIGNAL, THEME_FORMING, BROAD_CONFIRMATION, MAIN_RISE, PEAK, RETRACEMENT, DECLINING, SECONDARY, FIRST_DECLINE, MAIN_END, ENDED}`，`precision ∈ {EXACT_DATE, DATE_WINDOW, PHASE_WINDOW}`。
+- `drivers`（V1.7 新增，backward-compatible optional）：`{start, accelerator, turning, ending}` 字符串数组，内嵌来源引用（EV-/E-/S-）；无可靠来源写 `unknown`，不编造因果。
 - 日期为研究候选日期（candidate date），除非 `status=verified`，否则**不伪装成 Verified**。
 
 ## 6. Research Candidates
@@ -112,11 +138,21 @@
   "research_status": "PROVISIONAL",
   "theme_cycle_id": "auto_intelligence_2023",
   "conflicts": [],
-  "notes": "..."
+  "notes": "...",
+  "lifecycle": [
+    { "stage": "THEME_FORMING", "start": "2023-09-04", "end": "2023-09-04", "precision": "EXACT_DATE" },
+    { "stage": "MAIN_RISE", "start": "2023-09-20", "end": "2023-10-31", "precision": "PHASE_WINDOW" }
+  ],
+  "drivers": {
+    "start": ["问界新M7发布（09-12）", "赛力斯首次突破（09-04）"],
+    "accelerator": ["华为汽车核心扩散（09-18）"],
+    "turning": ["08-29 Early Signal 存在 Beta contamination"],
+    "ending": ["unknown（至10-31仍升）"]
+  }
 }
 ```
 
-当前候选：`RC-2023-HUAWEI`、`RC-2024-SECONDARY`。候选**没有**生产 `status` 字段，只有 `research_status`；**不得伪装 verified**。
+当前候选：`RC-2023-HUAWEI`、`RC-2024-SECONDARY`。候选**没有**生产 `status` 字段，只有 `research_status`；**不得伪装 verified**。候选同样可带 `lifecycle` / `drivers`（V1.7 可选）。
 
 ## 7. Events
 
@@ -165,7 +201,7 @@
 ## 11. Compatibility
 
 - **Cycle-compatible fields**：`campaign_id / rule_id / year / start_date / peak_date / end_date / status / confidence / classification / strength / result / themes / events / securities`（经 `event_ids`/`security_ids` 引用）。
-- **Research-only metadata**（明确不是 HistoricalCampaign schema 字段，可进入 Export 但标注来源）：`research_status / theme_cycle_id / promotion_status / first_signal_date / broad_confirmation_date / first_decline_date / conflicts / notes / early_signal / title / event_ids / security_ids`。
+- **Research-only metadata**（明确不是 HistoricalCampaign schema 字段，可进入 Export 但标注来源）：`research_status / theme_cycle_id / promotion_status / first_signal_date / broad_confirmation_date / first_decline_date / conflicts / notes / early_signal / title / event_ids / security_ids / lifecycle / drivers`。
 - 禁止把 research-only 字段伪装成 Cycle 正式字段。
 
 ## 12. Example（最小可消费片段）
@@ -189,6 +225,7 @@
 ## 13. Backward Compatibility
 
 - v1.0 为 canonical；v1.0 中任何字段不允许被 v1.1 删除或改变语义（只允许新增可选字段）。
+- **V1.7 已按此原则新增可选字段**：`campaigns[].lifecycle`、`campaigns[].drivers`、`research_candidates[].lifecycle`、`research_candidates[].drivers`（顶层 11 字段与既有字段语义完全不变，Cycle 现有 Adapter 不受影响）。
 - 破坏性变更必须升主版本（2.0）并提供迁移说明。
 - 校验器 `scripts/validate_timeline_export.py` 是接口守门人：任何字段漂移都会 FAIL。
 - Cycle Adapter 应只读取 `timeline_export_version` 判定兼容版本，不读取其他版本字段。
@@ -196,4 +233,4 @@
 ---
 
 **生成**：`python scripts/batch_auto_research.py`（只读数据库，不写 DB；不改 SQLite schema）。
-**校验**：`python scripts/validate_timeline_export.py`（14 项 + RC-2023-HUAWEI 关键测试）。
+**校验**：`python scripts/validate_timeline_export.py`（14 项 + RC-2023-HUAWEI 关键测试；含 lifecycle/drivers 白名单与枚举校验）。

@@ -40,19 +40,30 @@ CAMPAIGN_FIELDS = {
     "research_status", "theme_cycle_id", "promotion_status",
     "first_signal_date", "broad_confirmation_date", "first_decline_date",
     "conflicts", "notes",
+    # V1.7 backward-compatible optional（时间精度 + Drivers）
+    "lifecycle", "drivers",
 }
 CANDIDATE_FIELDS = {
     "campaign_id", "rule_id", "year", "title", "start_date", "peak_date", "end_date",
     "themes", "event_ids", "security_ids",
     "early_signal", "research_status", "theme_cycle_id", "conflicts", "notes",
+    # V1.7 backward-compatible optional
+    "lifecycle", "drivers",
 }
 EVENT_FIELDS = {"event_id", "name", "date", "event_type", "role", "campaign_id", "research_candidate_id"}
 SECURITY_FIELDS = {"security_id", "name", "ticker", "exchange", "role", "campaign_id", "research_candidate_id"}
 THEME_FIELDS = {"name", "theme_type", "role"}
+LIFECYCLE_FIELDS = {"stage", "start", "end", "precision"}
+DRIVERS_FIELDS = {"start", "accelerator", "turning", "ending"}
 
 VALID_PRODUCTION_STATUS = {"verified", "provisional", "conflict", "preview"}
 VALID_RESEARCH_STATUS = {"PROVISIONAL", "CONFLICT", "INSUFFICIENT"}
 VALID_SIGNAL_TYPE = {"EARLY_SIGNAL", "THEME_FORMING", "CONFIRMATION_CANDIDATE"}
+VALID_LIFECYCLE_STAGE = {
+    "EARLY_SIGNAL", "THEME_FORMING", "BROAD_CONFIRMATION", "MAIN_RISE", "PEAK",
+    "RETRACEMENT", "DECLINING", "SECONDARY", "FIRST_DECLINE", "MAIN_END", "ENDED",
+}
+VALID_PRECISION = {"EXACT_DATE", "DATE_WINDOW", "PHASE_WINDOW"}
 
 FAILS, WARNS = [], []
 
@@ -86,6 +97,40 @@ def check_owner(obj, owner_label):
     rcid = obj.get("research_candidate_id")
     if cid and rcid:
         fail("owner", f"{owner_label} 同时有 campaign_id={cid} 与 research_candidate_id={rcid}（二选一）")
+
+
+def check_lifecycle(owner, lifecycle):
+    """lifecycle（V1.7 phase windows）：stage/precision 枚举 + 日期格式。"""
+    if lifecycle is None:
+        return
+    if not isinstance(lifecycle, list):
+        fail("lifecycle-type", f"{owner} lifecycle 必须为数组")
+        return
+    for lc in lifecycle:
+        check_whitelist(f"{owner} lifecycle[{lc.get('stage')}]", lc.keys(), LIFECYCLE_FIELDS)
+        if lc.get("stage") not in VALID_LIFECYCLE_STAGE:
+            fail("lifecycle-stage", f"{owner} lifecycle stage='{lc.get('stage')}' 非法")
+        if lc.get("precision") not in VALID_PRECISION:
+            fail("lifecycle-precision", f"{owner} lifecycle {lc.get('stage')} precision='{lc.get('precision')}' 非法（应为 EXACT_DATE/DATE_WINDOW/PHASE_WINDOW）")
+        for f in ("start", "end"):
+            if not is_iso_date(lc.get(f)):
+                fail("lifecycle-date", f"{owner} lifecycle {lc.get('stage')}.{f} 日期非法: {lc.get(f)}")
+
+
+def check_drivers(owner, drivers):
+    """drivers（V1.7）：start/accelerator/turning/ending 均为字符串数组；无来源写 unknown。"""
+    if drivers is None:
+        return
+    if not isinstance(drivers, dict):
+        fail("drivers-type", f"{owner} drivers 必须为对象")
+        return
+    check_whitelist(f"{owner} drivers", drivers.keys(), DRIVERS_FIELDS)
+    for k in DRIVERS_FIELDS:
+        v = drivers.get(k)
+        if v is None:
+            continue
+        if not isinstance(v, list) or not all(isinstance(x, str) for x in v):
+            fail("drivers-format", f"{owner} drivers.{k} 必须为字符串数组")
 
 
 def main():
@@ -170,6 +215,9 @@ def main():
             fail("campaign-event_ids", f"{cid} event_ids 必须为数组")
         if not isinstance(c.get("security_ids", []), list):
             fail("campaign-security_ids", f"{cid} security_ids 必须为数组")
+        # V1.7: lifecycle（phase windows）+ drivers
+        check_lifecycle(cid, c.get("lifecycle"))
+        check_drivers(cid, c.get("drivers"))
 
     # 5) research_candidates
     candidate_ids = []
@@ -190,6 +238,9 @@ def main():
             fail("candidate-fake-status", f"{rcid} 不得有生产 status 字段（候选只有 research_status）")
         if rc.get("research_status") == "VERIFIED":
             fail("candidate-verified", f"{rcid} research_status 不得为 VERIFIED（候选不伪装 verified）")
+        # V1.7: lifecycle + drivers
+        check_lifecycle(rcid, rc.get("lifecycle"))
+        check_drivers(rcid, rc.get("drivers"))
 
     # 6) events
     event_ids = []
