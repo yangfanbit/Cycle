@@ -15,10 +15,10 @@ interface CurrentTimeLensProps {
 }
 
 /**
- * Current Time Lens v0 —— 页面顶部入口。
+ * Current Time Lens v0（V1.8.1 起：降级为「当前时间上下文」补充摘要，不再是页面第一视觉）。
  *
  * 回答：「今天这个时间点，历史上附近发生过什么？」
- * 呈现：A 时间定位 → B 同期行情（按年份）→ C 历史阶段映射 → D 可能驱动 / 相关因素。
+ * 呈现：A 时间定位 → B 同期行情（按年份，压缩为一行一年）→ C/D 可能相关因素。
  *
  * 刻意不做：预测（今年一定会发生什么）、交易建议（现在应该买什么）、
  * 概率 / 频次统计（把「N 次」当视觉重点）。
@@ -32,8 +32,11 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
   // 无数据源年份（生产 verified 为空）→ 明确说明，不伪装成「历史没有机会」
   if (dataSource.years().length === 0) {
     return (
-      <section className="ctl-view">
-        <h3 className="tl-layer-title">Current Time Lens</h3>
+      <section className="ctl-view" aria-label="当前时间上下文">
+        <h3 className="tl-layer-title">
+          当前时间上下文
+          <span className="ctl-tag">补充查看 · 非主视图</span>
+        </h3>
         <p className="ctl-sub">
           今天（{lens.position.today}）位于约 {lens.position.windowLabel} 这一时间窗口。
         </p>
@@ -47,10 +50,10 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
   const yearsWithData = lens.samePeriod.filter((r) => r.entries.length > 0);
 
   return (
-    <section className="ctl-view" aria-label="Current Time Lens">
+    <section className="ctl-view" aria-label="当前时间上下文">
       <h3 className="tl-layer-title">
-        Current Time Lens
-        <span className="ctl-tag">历史机会时间轴 · 机会发现</span>
+        当前时间上下文
+        <span className="ctl-tag">补充查看 · 非主视图</span>
       </h3>
 
       {/* ---------- A. 时间定位 ---------- */}
@@ -62,9 +65,9 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
           <span className="ctl-hint">（{lens.position.window.start} ~ {lens.position.window.end}）</span>
         </span>
       </div>
-      <p className="ctl-question">历史上这个时间窗口附近，发生过什么？</p>
+      <p className="ctl-question">历史上这个时间窗口附近，出现过哪些主题？</p>
 
-      {/* ---------- B + C. 历史同期（按年份）+ 历史阶段映射 ---------- */}
+      {/* ---------- B + C. 历史同期（按年份，压缩呈现） ---------- */}
       {lens.uncovered ? (
         <p className="ctl-empty">
           当前研究数据未覆盖：历史各年的同期窗口内均无研究数据（不是「历史没有机会」）。
@@ -94,15 +97,15 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
         </>
       )}
 
-      {/* ---------- D. 可能驱动 / 相关因素 ---------- */}
+      {/* ---------- D. 可能相关因素（标签从「可调驱动」改为「可能相关因素」） ---------- */}
       <div className="ctl-drivers">
-        <h4 className="ctl-drivers-title">可能驱动 / 相关因素</h4>
+        <h4 className="ctl-drivers-title">可能相关因素</h4>
         {lens.possibleDrivers.length === 0 ? (
           <p className="ctl-empty">当前研究数据未覆盖：暂无可用归因（不编造）。</p>
         ) : (
           <>
             <p className="ctl-drivers-sub">
-              以下为历史同期行情在 Research 层记录的相关因素，语义为「可能驱动 / 相关因素」，不是因果结论。
+              以下为历史同期行情在 Research 层记录的相关因素，语义为「可能相关因素」，不是因果结论、不是交易建议。
             </p>
             <ul className="ctl-driver-list">
               {lens.possibleDrivers.map((d) => (

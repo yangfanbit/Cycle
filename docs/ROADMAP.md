@@ -63,7 +63,7 @@
 
 ---
 
-## Phase 5 · Current Time Lens v0（已完成 · IMPLEMENTED / READY FOR USER REVIEW）
+## Phase 5 · Current Time Lens v0（已完成 · IMPLEMENTED）
 
 **目标**：把「今天」变成产品入口 —— 打开即回答「今天这个时间点，历史上附近发生过什么？」
 **不做**预测 / 荐股 / 交易信号。
@@ -71,25 +71,46 @@
 - 新增 `src/data/timeline/currentTimeLens.ts`：`currentTimeLens(source, today)`
   - 复用 `samePeriodWindow()` / `samePeriodCampaigns()`，不发明第二套日期逻辑
   - 输出：A 时间定位 / B 历史同期（按年份）/ C 历史阶段映射（**当时处于**）/ D 可能驱动
-- 新增 `src/components/CurrentTimeLens/CurrentTimeLens.tsx`：页面顶部入口，点击经现有
+- 新增 `src/components/CurrentTimeLens/CurrentTimeLens.tsx`：点击经现有
   `selection` 打开 Campaign Detail
-- `src/App.tsx`：Lens 置于 Timeline 之上；`OpportunityRadar` 不再渲染（文件保留）
 - 新增测试 `src/data/timeline/__tests__/currentTimeLens.test.tsx`（28 项）
 - 数据源仍为唯一 canonical `exports/timeline_export_v1.json`，**零**新数据 / 新 Schema / 新 Export 字段
 
-**验收**：2026-09-13 打开 5 秒内读到「今天附近历史上发生过什么」。
-下一步：**真实用户体验 Review**（不启动 Phase 5.1）。
+> 注：Phase 5 原将 Lens 置于页面顶部；**Phase 5.1（V1.8.1）已将其降级为③补充摘要**，
+> 恢复 Timeline 为第一视觉。
 
 ---
 
-## Phase 5.1 · Historical Opportunity Map 深化（待 Review 后启动）
+## Phase 5.1 · V1.8.1 主题级历史机会视图（已完成 · IMPLEMENTED / READY FOR USER VISUAL REVIEW）
 
-**目标**：从"看得见历史"到"看得懂机会结构"。
+**目标**：把「历史同期」从「一行一个 Campaign」升级为「**一行一个主主题**」，
+并重排页面 IA，恢复 Timeline 为第一视觉。
 
-- 机会地图视图：一年中哪些时间窗历史上反复出现主题
-- 主题生命周期的横向对比（同类主题不同年份的形态差异）
-- 提前信号的系统性呈现（多早 / 多可靠 / 后续如何）
-- **不含**预测、评分、推荐
+- 页面 IA 重排：**① Timeline → ② 历史同周期主题 → ③ 当前时间上下文**
+- 新增 `src/data/timeline/themeRows.ts`：`themeRowsOf(source, month)` → `ThemeRowsResult`
+  - **`TimelineThemeRow` 为纯 UI / Adapter 视图概念**（无 `theme_cycles` / `theme_relations` / schema 变更）
+  - 步骤：`samePeriodCampaigns` → Theme Grouping（按主主题）→ Theme Rows
+  - 行字段：`themeKey / title / years / campaigns / primaryPhase / phaseSummary /
+    relatedConcepts / statuses`
+  - 同主题多条**独立行情不合并**；RC 保留 badge、状态不升级；仅**重大冲突**显示 ⚠
+- `SamePeriodView` 重构为主题级（组件名与能力保留）：主题行 + 展开明细
+- `CurrentTimeLens` 降级为③；标签「可能驱动 / 相关因素」→「**可能相关因素**」（仅 UI 文案）
+- 新增测试 `src/data/timeline/__tests__/themeRows.test.tsx`（18 项，含 11 场景）
+- **明确不做**：新数据 / 新 Schema / 新主题 / Export Contract 变更 / Research 语义变更 /
+  由 Event 自动生成「相关因素」
+
+**验收**：2026-09-13 打开页面，Timeline 为第一视觉；历史同周期以主题行呈现。
+下一步：**真实用户界面 Review**。
+
+---
+
+## Phase 5.2 · 资金 / 筹码 / 情绪 / 广度维度（仅记录 · 未实现）
+
+**目标**：为「机会地图」补充量的维度。
+> ⚠️ V1.8.1 仅**记录**本方向，**未实现**任何代码 / 数据 / 字段。
+
+- 资金流（北向 / 主力）、筹码分布、情绪指标、市场广度
+- 数据来源与合规性需届时单独评估授权
 
 ---
 

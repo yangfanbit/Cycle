@@ -37,13 +37,16 @@
 
 ## 2. 当前阶段
 
-**Phase 5：Current Time Lens v0（IMPLEMENTED / READY FOR USER REVIEW）。**
+**Phase 5.1：V1.8.1 主题级历史机会视图（IMPLEMENTED / READY FOR USER VISUAL REVIEW）。**
 
 - Phase 4 Monorepo Integration 已完成：Cycle（产品 / PWA / Timeline 前端）与
   Cycle-Research（研究 / 数据生产）已合并为**单一仓库 `ThreeC`**，单一 Git，保留双方完整历史。
-- Phase 5 Current Time Lens v0 已实现：「今天这个时间点，历史上附近发生过什么？」
-  已作为页面顶部入口；**不做**预测 / 荐股 / 交易信号。
-- 当前处于 **等待真实用户体验 Review** 状态。**不启动 Phase 5.1，不继续加功能。**
+- Phase 5 Current Time Lens v0 已实现（后降级为③补充摘要）。
+- Phase 5.1 V1.8.1 已完成：页面 IA 重排为
+  **① Timeline（第一视觉）→ ② 历史同周期主题（主题级）→ ③ 当前时间上下文**；
+  「历史同期」由「一行一个 Campaign」升级为「**一行一个主主题**」。
+  **不做**预测 / 荐股 / 交易信号。
+- 当前处于 **等待真实用户界面 Review** 状态。**不继续加功能。**
 
 阶段全景见 `docs/ROADMAP.md`。下一个唯一目标见 `docs/PROJECT_STATE.md`「Next Single Goal」。
 
@@ -73,7 +76,7 @@ ThreeC/
 ├─ package.json / tsconfig.json / vite.config.ts
 │
 ├─ src/                        ← Product：前端源码
-│   ├─ components/             ← CurrentTimeLens（Phase 5 入口）/ Timeline / CampaignDetail / SamePeriodView / OpportunityRadar（未引用，待清理）…
+│   ├─ components/             ← Timeline（第一视觉）/ SamePeriodView（主题级历史同周期）/ CurrentTimeLens（③当前时间上下文）/ CampaignDetail / OpportunityRadar（未引用，待清理）…
 │   ├─ data/
 │   │   └─ timeline/           ← Timeline Adapter（消费 exports/）
 │   ├─ models/                 ← 核心数据模型（禁擅改）
@@ -182,7 +185,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 139 项
+npm test          # Vitest，当前 157 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -238,6 +241,7 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**真实用户体验 Review。** Phase 5 Current Time Lens v0 实现完成后已**停止**：
-不启动 Phase 5.1，不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。
-请用户在真实使用中判断：Lens 是否真正成为「今天入口」，是否仍只是历史列表，是否存在误导预测的文案。
+**真实用户界面 Review。** Phase 5.1 V1.8.1 实现完成后已**停止**：
+不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。
+请用户在真实使用中判断：Timeline 是否成为第一视觉？「历史同周期主题」是否以**主题**（而非个股）为一行？
+降级后的「当前时间上下文」是否仍清晰且不误导预测？

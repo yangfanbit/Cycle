@@ -324,8 +324,9 @@ describe('渲染：CurrentTimeLens SSR 输出关键文案与历史事实', () =>
     // C. 历史阶段映射：明确写成「当时处于」，不是「当前」
     expect(html).toContain('当时处于');
     expect(html).toContain('主升');
-    // D. 可能驱动 / 相关因素
-    expect(html).toContain('可能驱动 / 相关因素');
+    // D. 可能相关因素（V1.8.1 起标签由「可能驱动 / 相关因素」改为「可能相关因素」）
+    expect(html).toContain('可能相关因素');
+    expect(html).not.toContain('可能驱动 / 相关因素');
     // 不做概率口径：不出现「N 次」（频次计数；排除「次级行情」这一固有名词）
     expect(html).not.toMatch(/\d+\s*次(?!级)/);
     expect(html).not.toMatch(/(出现概率|上涨概率|胜率|可能性为|大概率)/);

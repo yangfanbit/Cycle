@@ -7,7 +7,67 @@
 
 ---
 
-## 2026-09-13 · Phase 5 Current Time Lens v0
+## 2026-09-13 · Phase 5.1 V1.8.1 主题级历史机会视图
+
+### 目标
+
+把「历史同期」从「一行一个 Campaign / 个股」升级为「**一行一个主主题**」，
+并重排页面 IA，恢复 **Timeline 为第一视觉**。本轮**不增加新数据 / 新主题 /
+新 Schema / Export Contract 变更 / Research 语义变更**。
+
+### 页面 IA（重排）
+
+```
+① Timeline（第一视觉）
+② 历史同周期主题（主题级：一行 = 一个主主题，展开见独立行情）
+③ 当前时间上下文（原 Current Time Lens，降级为补充摘要）
+```
+
+### 新增文件
+
+| 文件 | 说明 |
+|---|---|
+| `src/data/timeline/themeRows.ts` | `themeRowsOf(source, month)` → `ThemeRowsResult`；导出 `TimelineThemeRow` / `ThemeCampaignEntry` / `primaryThemeName` |
+| `src/data/timeline/__tests__/themeRows.test.tsx` | 18 项测试（主题分组 1–8 / IA 9 / 产品 10–11） |
+
+### 修改文件
+
+| 文件 | 变化 |
+|---|---|
+| `src/components/SamePeriodView/SamePeriodView.tsx` | 重构为主题级：主题行（`sp-theme-*`）+ 展开明细（`sp-item-line`）；标题「历史同周期主题」；新增 `selection` / `onSelect` props |
+| `src/App.tsx` | IA 重排：`<Timeline>` → `<SamePeriodView>` → `<CurrentTimeLens>` |
+| `src/components/CurrentTimeLens/CurrentTimeLens.tsx` | 标题改「当前时间上下文」+「补充查看 · 非主视图」标签；「可能驱动 / 相关因素」→「**可能相关因素**」（仅 UI 文案） |
+| `src/styles.css` | 新增 `.sp-theme-*` / `.sp-item-line` / `.sp-related-chip` / `.sp-conflict-flag` 样式 |
+| `src/data/timeline/__tests__/currentTimeLens.test.tsx` | D 块断言随标签改名更新（仍断言旧标签**不出现**） |
+| `docs/PROJECT_STATE.md` | Phase 5.1；Completed 表 / Product Status / Next Single Goal / Explicitly Not Doing 更新 |
+| `docs/ROADMAP.md` | 新增 Phase 5.1（已完成）+ Phase 5.2（仅记录） |
+| `docs/CHANGELOG.md` | 本条目 |
+
+### 设计要点（严格遵守约束）
+
+- **`TimelineThemeRow` = 纯 UI / Adapter 视图概念**，**不是** DB 实体：
+  无 `theme_cycles` / `theme_relations`，不改 `src/models/`、不改 `schema.sql`。
+- **日期口径完全复用** `samePeriodCampaigns()`（内部即 `samePeriodWindow()`）；
+  阶段口径复用 `currentTimeLens.historicalPhasesInWindow()`，不另造第二套逻辑。
+- **同主题多条独立行情不合并**：分组只决定"行归属"，行内仍是各自 Campaign；
+  RC 保留 badge、状态不升级（`candidate` 永不 verified）。
+- **主题信息完全来自导出既有 `themes` 字段**：`primaryThemeName` = `role='main'` 优先，
+  否则第一个；无 theme → 归入「未标注主题」占位组（不编造）。
+- **仅重大冲突显示 ⚠**：`>10 天` 计为 major；轻微分歧不升级告警视觉。
+- **「可能相关因素」不由 Event 自动生成**：沿用 `campaignDrivers()` 研究层归因口径；
+  改名仅 UI 文案，Research 数据与 API 未变。
+- **不删除 `SamePeriodView` / `currentTimeLens.ts`**：组件名与能力保留，仅内部重构 / 降级。
+- **未实现**：资金 / 筹码 / 情绪 / 广度维度——仅在 Roadmap Phase 5.2 **记录**。
+
+### 验证
+
+- `npm test` **157 项通过**（139 → 157，+18）；`tsc -b` 通过；`build` 通过。
+- 真实导出 SSR 复核（9 月）：5 个主题行 / 7 条独立行情，RC 2023–2024 保留 badge。
+- **未运行** Python 校验脚本（本轮无 Research / Schema / Export 变更）。
+
+---
+
+## 2026-09-13 · Phase 5 Current Time Lens v0（现已被 Phase 5.1 降级为③补充摘要）
 
 ### 目标
 

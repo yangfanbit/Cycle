@@ -104,14 +104,8 @@ export default function App() {
       )}
 
       <main className="app-main">
-        {/* Current Time Lens v0：页面顶部入口 —— 「今天这个时间点，历史上附近发生过什么？」
-            数据源与 Timeline 一致（verified / preview），并与 Timeline 共用 selection 联动。 */}
-        <CurrentTimeLens
-          dataSource={dataSource}
-          today={today}
-          selection={selection}
-          onSelect={setSelection}
-        />
+        {/* IA（V1.8.1）：① Timeline 第一视觉 ② 历史同期主题 ③ 当前时间上下文。
+            Timeline 是主视图（历史规律 × 题材轮动 × 事件节奏），其余为补充查看。 */}
         <Timeline
           year={year}
           today={today}
@@ -121,9 +115,22 @@ export default function App() {
           researchEvents={yearData.researchEvents}
           sourceKind={dataSource.kind}
         />
-        {/* 历史同周期查看：选择月份 → 历史各年同期 Campaign 列表（非统计模型）。
-            Current Time Lens 已是主入口，本视图作为按月切换的补充查看保留。 */}
-        <SamePeriodView dataSource={dataSource} today={today} />
+        {/* ② 历史同周期主题（主题级）：一行 = 一个主主题；展开可见同主题下的独立行情。
+            与 Timeline 共用 selection，点击明细进入 Campaign Detail。 */}
+        <SamePeriodView
+          dataSource={dataSource}
+          today={today}
+          selection={selection}
+          onSelect={setSelection}
+        />
+        {/* ③ 当前时间上下文（降级为补充摘要）：今天位于一年的什么位置、附近历史上出现过哪些主题。
+            不再是页面第一视觉；数据源与 Timeline 一致，共用 selection。 */}
+        <CurrentTimeLens
+          dataSource={dataSource}
+          today={today}
+          selection={selection}
+          onSelect={setSelection}
+        />
         {/* 生产模式且 verified 为空：提供开发预览入口（不把 preview 当生产数据） */}
         {!preview && allCampaigns.length === 0 && (
           <div className="prod-empty-note">

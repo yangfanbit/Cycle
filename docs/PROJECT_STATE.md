@@ -19,10 +19,11 @@
 
 ## Current Phase
 
-**Phase 5：Current Time Lens v0 —— IMPLEMENTED / READY FOR USER REVIEW。**
+**Phase 5.1：V1.8.1 主题级历史机会视图 —— IMPLEMENTED / READY FOR USER VISUAL REVIEW。**
 
-「今天这个时间点，历史上附近发生过什么？」已作为**页面顶部入口**实现。
-**不做**预测 / 荐股 / 交易信号。当前处于**等待真实用户体验 Review** 状态。
+页面 IA 重排为：**① Timeline（第一视觉）→ ② 历史同周期主题（主题级）→ ③ 当前时间上下文**。
+「历史同期」由「一行一个 Campaign」升级为「**一行一个主主题**」（同为一条行内仍保留独立行情）。
+Current Time Lens 由原「顶部入口」**降级为③补充摘要**。**不做**预测 / 荐股 / 交易信号。
 
 ---
 
@@ -34,7 +35,8 @@
 | Phase 2 | Historical Data Production v1（2018–2025 批量研究） | ✅ |
 | Phase 3 | Timeline MVP（+ Conflict Visual / Phase Window / Drivers / SamePeriod / Research Export Adapter / Preview-Production 隔离） | ✅ |
 | Phase 4 | Monorepo Integration + Handoff Infrastructure | ✅ |
-| Phase 5 | **Current Time Lens v0**（今天入口：时间定位 → 历史同期 → 历史阶段映射 → 可能驱动） | ✅ IMPLEMENTED / READY FOR USER REVIEW |
+| Phase 5 | **Current Time Lens v0**（今天入口：时间定位 → 历史同期 → 历史阶段映射 → 可能驱动） | ✅ IMPLEMENTED |
+| Phase 5.1 | **V1.8.1 主题级历史机会视图**（IA 重排：Timeline 第一视觉 + 历史同周期主题行 + Lens 降级） | ✅ IMPLEMENTED / READY FOR USER VISUAL REVIEW |
 
 ---
 
@@ -77,16 +79,21 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Product Status
 
-- **Current Time Lens v0**（Phase 5，页面顶部入口）：打开即回答
-  「今天这个时间点，历史上附近发生过什么？」——
-  A 时间定位 → B 历史同期（按年份）→ C 历史阶段映射（**当时处于**，非当前阶段）→ D 可能驱动 / 相关因素。
-  只消费 canonical export；**不做**预测 / 概率 / 荐股 / 交易信号。
+- **页面 IA（V1.8.1）**：① **Timeline（第一视觉）** → ② **历史同周期主题** → ③ **当前时间上下文**。
+- **历史同周期主题**（`SamePeriodView`，主题级）：选择月份 → 历史各年同期出现过的**主题**。
+  一行 = 一个主主题（`themeRows.ts` 的 `TimelineThemeRow`，**纯 UI/Adapter 视图概念，非 DB 实体**）；
+  展开可见该主题下的**独立行情**（正式 Campaign / Research Candidate 逐条展示，**同主题多条不合并**，
+  RC 保留 badge、状态不升级）。主题行含：年份、代表阶段（`primaryPhase`）、相关概念（`relatedConcepts`）、
+  数据状态（`statuses`）；仅**重大冲突**（>10 天）显示 ⚠，轻微分歧不升级告警。
+- **当前时间上下文**（`CurrentTimeLens`，原「顶部入口」，V1.8.1 起**降级为③补充摘要**）：
+  A 时间定位 → B 历史同期（按年份）→ D **可能相关因素**（标签由「可能驱动 / 相关因素」改名，
+  仅 UI 文案变更，Research 数据未变；不由 Event 自动生成，沿用 `campaignDrivers` 研究层归因口径）。
 - Timeline MVP 可用：365 天全年时间轴、Campaign 生命周期视觉、
-  Peak Window、Conflict 分级视觉、Drivers 四问、SamePeriodView。
-- **生产模式**：消费 `data/verified/`（当前为空 → Lens 显示「当前研究数据未覆盖」空态 + 预览入口）。
+  Peak Window、Conflict 分级视觉、Drivers 四问。
+- **生产模式**：消费 `data/verified/`（当前为空 → 显示「当前研究数据未覆盖」空态 + 预览入口）。
 - **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
 - `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
-- 测试：`npm test` **139 项通过**；`tsc -b` 通过；`build` 通过。
+- 测试：`npm test` **157 项通过**；`tsc -b` 通过；`build` 通过。
 
 ---
 
@@ -126,22 +133,23 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Current Blockers
 
-**无硬性阻塞。** Phase 5 Current Time Lens v0 已实现，处于**等待真实用户体验 Review**状态。
+**无硬性阻塞。** Phase 5.1 V1.8.1 主题级历史机会视图已实现，处于
+**等待真实用户界面 Review**状态。
 
 ---
 
 ## Next Single Goal
 
-> **真实用户体验 Review。**
+> **真实用户界面 Review（V1.8.1）。**
 >
-> Phase 4 Monorepo Integration 已完成；Phase 5 Current Time Lens v0 已实现。
-> 本轮到此为止，**不启动 Phase 5.1，不继续加功能**。
->
-> 请用户在真实使用中回答：打开页面 5 秒内，Lens 是否真正成为「今天入口」？
-> 它是否仍只是「历史列表」？是否存在任何误导用户做预测的文案？
+> 请在真实使用中回答：
+> 1. 打开页面 5 秒内，**Timeline 是否成为第一视觉**？
+> 2. 「历史同周期主题」是否以**主题**（而非个股 / Campaign）为一行，一眼可读？
+> 3. 当前时间上下文（原 Lens）降级后是否仍清晰，且**不误导用户做预测**？
 
 Review 后可能的方向（**仅供参考，须经授权**）：
-Phase 6 Multi-theme → Phase 7 Current Market Mapping
+Phase 5.2 资金 / 筹码 / 情绪 / 广度维度（**仅记录，V1.8.1 未实现**）
+→ Phase 6 Multi-theme → Phase 7 Current Market Mapping
 → Phase 8 Opportunity Discovery / Radar（**Radar 不是交易信号**）。
 
 ---
@@ -153,9 +161,10 @@ Phase 6 Multi-theme → Phase 7 Current Market Mapping
 - 新行业 / 新 Rule / 新统计 / 新 Radar / 新预测 / 新 UI
 - Timeline 新功能、UI redesign、Dashboard、Statistics、Notification、Backend
 - 修改 Research Model v1.0 / `schema.sql` / 已有历史研究结论
-- 新增数据库实体
+- 新增数据库实体（含 `theme_cycles` / `theme_relations`；`TimelineThemeRow` **仅为视图概念**）
+- 新建主题 / 修改 Export Contract / 重新生产 Research 数据
 - 自动升级 verified；把 Research Candidate 当 confirmed
-- 重新生产 Research 数据
+- 改动 `src/models/` 与 Research 侧语义
 - force push
 - 为迁移引入无必要的新框架
 - 删除现有测试
