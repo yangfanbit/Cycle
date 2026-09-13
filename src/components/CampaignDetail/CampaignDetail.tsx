@@ -1,7 +1,7 @@
 import { allCampaignSecurities, ruleById, themeById, themesOfCampaign } from '../../data';
 import type { HistoricalCampaign } from '../../models';
 import { campaignDrivers } from '../../data/timeline/timelineAdapter';
-import type { ExportConflictV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
+import type { ExportConflictV1, ExportDriversV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
 import { diffDays } from '../../utils';
 import {
   conflictLine,
@@ -37,6 +37,8 @@ interface CampaignDetailModel {
   securities: { name: string; ticker?: string; role?: string }[];
   events: { name: string; date: string; event_type: string; role?: string | null }[];
   signals: { type: string; date: string; confidence?: string }[];
+  /** Research V1.7 驱动因素归因（仅 Research 导出数据源提供；生产 verified 无） */
+  drivers?: ExportDriversV1;
   description?: string;
   sourceText: string;
   status: 'verified' | 'provisional' | 'preview' | 'conflict';
@@ -104,6 +106,7 @@ function normalize(c: HistoricalCampaign | TimelineCampaign): CampaignDetailMode
     securities: c.securities,
     events: c.events,
     signals: c.signals,
+    drivers: c.drivers,
     description: c.description,
     sourceText: c.sourceNote ?? '—',
     status: c.status,
@@ -121,13 +124,15 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
   const m = normalize(campaign);
   const rule = ruleById.get(m.ruleId);
   const duration = diffDays(m.start, m.end) + 1;
-  // 驱动因素四问（基于研究事件时间归组；无数据组 → "暂无可靠归因"，不编造）
+  // 驱动因素四问（Research V1.7 人工归因优先；缺失时基于研究事件时间归组；
+  // 无数据组 → "暂无可靠归因"，不编造）
   const drivers = campaignDrivers({
     start: m.start,
     peak: m.peak,
     end: m.end,
     openEnded: m.openEnded,
     events: m.events,
+    drivers: m.drivers,
   });
   const driverRows: { q: string; tags: string[] }[] = [
     { q: '为什么启动？', tags: drivers.start },
@@ -333,7 +338,9 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
             </div>
           ))}
           <div className="phase-text">
-            （基于研究事件的时间归组线索，非因果结论；{m.production ? '生产数据暂无关联事件。' : ''}）
+            {m.drivers
+              ? '（来自 Cycle-Research V1.7 研究归因，原样展示；非因果结论，不构成买卖建议。）'
+              : `（基于研究事件的时间归组线索，非因果结论；${m.production ? '生产数据暂无关联事件。' : ''}）`}
           </div>
         </dd>
 

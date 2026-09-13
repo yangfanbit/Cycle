@@ -26,12 +26,14 @@ function cloneExport(): TimelineExportV1 {
 }
 
 /**
- * 数据快照回归：锁定当前消费的 Research 导出版本（V1.6.2 同步）。
+ * 数据快照回归：锁定当前消费的 Research 导出版本（V1.7.1 同步）。
  * 注意：这不是永久业务常量——Research 导出更新后需同步更新此快照值。
+ * 本文件为 Cycle-Research commit eadf06a（V1.7 Phase Windows + Drivers）提交版本；
+ * JSON 内嵌 source_commit 按 Research 生成约定指向生成时的父 commit（2ff6fad）。
  */
 describe('数据快照回归：timeline_export_v1 版本', () => {
-  it('source_commit 为当前同步的 Research 导出（4bbe257）', () => {
-    expect(timelineExportData.source_commit).toBe('4bbe257d37d5991a2c6ce33def205df9a67e2593');
+  it('source_commit 为当前同步的 Research 导出（2ff6fad，eadf06a 提交版本的生成时引用）', () => {
+    expect(timelineExportData.source_commit).toBe('2ff6fad0fb75e19310158796f9cfc297180d6190');
   });
 
   it('数据量快照：8 Campaign / 2 Candidate / 9 Signal / 26 Event / 39 Security', () => {
@@ -40,6 +42,48 @@ describe('数据快照回归：timeline_export_v1 版本', () => {
     expect(timelineExportData.signals).toHaveLength(9);
     expect(timelineExportData.events).toHaveLength(26);
     expect(timelineExportData.securities).toHaveLength(39);
+  });
+});
+
+describe('V1.7.1：lifecycle / drivers 新字段（Research V1.7 同步）', () => {
+  it('全部 8 Campaign 与 2 Research Candidate 均携带非空 lifecycle', () => {
+    for (const c of timelineExportData.campaigns) {
+      expect(c.lifecycle!.length).toBeGreaterThan(0);
+    }
+    for (const rc of timelineExportData.research_candidates) {
+      expect(rc.lifecycle!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('全部主体均携带 drivers 四问（start / accelerator / turning / ending）', () => {
+    const all = [...timelineExportData.campaigns, ...timelineExportData.research_candidates];
+    for (const c of all) {
+      expect(Array.isArray(c.drivers!.start)).toBe(true);
+      expect(Array.isArray(c.drivers!.accelerator)).toBe(true);
+      expect(Array.isArray(c.drivers!.turning)).toBe(true);
+      expect(Array.isArray(c.drivers!.ending)).toBe(true);
+    }
+  });
+
+  it('抽查：C-2019-AD / C-2022-POLICY / C-2024-ROBOTAXI 的 lifecycle 与 drivers 均存在', () => {
+    for (const id of ['C-2019-AD', 'C-2022-POLICY', 'C-2024-ROBOTAXI']) {
+      const c = timelineExportData.campaigns.find((x) => x.campaign_id === id)!;
+      expect(c.lifecycle!.length).toBeGreaterThan(0);
+      expect(c.drivers!.start.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('视图层透传：preview 数据源的 TimelineCampaign 携带 lifecycle / drivers（生产 verified 无）', () => {
+    const source = previewTimelineSource();
+    for (const y of source.years()) {
+      for (const c of source.yearData(y).campaigns) {
+        expect(c.lifecycle!.length).toBeGreaterThan(0);
+        expect(c.drivers).toBeDefined();
+      }
+    }
+    const verifiedCmp = verifiedTimelineSource(fixtureCampaigns).yearData(2023).campaigns[0];
+    expect(verifiedCmp.lifecycle).toBeUndefined();
+    expect(verifiedCmp.drivers).toBeUndefined();
   });
 });
 
@@ -122,29 +166,31 @@ describe('年份推导与 2018 反例年份', () => {
   });
 });
 
-describe('Conflict：2022 / 2024 保留 candidate A / B 双方', () => {
-  it('C-2022-POLICY：start_date 分歧（04-27 vs 05-23），status=conflict', () => {
+describe('Conflict：保留 candidate A / B 双方（V1.7.1 数据现状）', () => {
+  it('C-2022-POLICY：研究已解决 start 分歧 → provisional，无 conflicts', () => {
     const c = previewTimelineSource()
       .yearData(2022)
       .campaigns.find((x) => x.campaign_id === 'C-2022-POLICY');
     expect(c).toBeDefined();
-    expect(c!.status).toBe('conflict');
-    const startConflict = c!.conflicts!.find((x) => x.field === 'start_date');
-    expect(startConflict).toBeDefined();
-    expect(startConflict!.candidate_a.date).toBe('2022-04-27');
-    expect(startConflict!.candidate_b.date).toBe('2022-05-23');
-    // 冲突数据仍渲染 Campaign 本体，不因分歧消失
+    // 旧导出（4bbe257）为 CONFLICT（start 04-27 vs 05-23）；V1.7 导出（eadf06a）
+    // 研究结论已定：起点 04-27，05-23 为 THEME_FORMING 信号（不再渲染分歧）
+    expect(c!.status).toBe('provisional');
+    expect(c!.conflicts ?? []).toEqual([]);
+    expect(c!.start).toBe('2022-04-27');
     expect(c!.start <= c!.end).toBe(true);
   });
 
-  it('C-2024-ROBOTAXI：peak / end 双分歧，status=conflict', () => {
+  it('C-2024-ROBOTAXI：end 单分歧（peak 分歧已解决），status=conflict', () => {
     const c = previewTimelineSource()
       .yearData(2024)
       .campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI');
     expect(c).toBeDefined();
     expect(c!.status).toBe('conflict');
-    expect(c!.conflicts!.some((x) => x.field === 'peak_date')).toBe(true);
+    // 旧导出为 peak + end 双分歧；V1.7 研究将 peak 定为 07-29（lifecycle PEAK 窗口 07-29 ~ 08-05）
+    expect(c!.conflicts!.some((x) => x.field === 'peak_date')).toBe(false);
     expect(c!.conflicts!.some((x) => x.field === 'end_date')).toBe(true);
+    // 冲突数据仍渲染 Campaign 本体，不因分歧消失
+    expect(c!.start <= c!.end).toBe(true);
   });
 });
 
@@ -154,19 +200,24 @@ describe('Conflict 边界候选推导：getConflictBoundaryCandidates', () => {
   const c2024 = source.yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
   const normal = source.yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-V2X')!;
 
-  it('conflict start 有 2 个候选（2022：04-27 / 05-23）', () => {
-    const { startCandidates } = getConflictBoundaryCandidates(c2022);
-    expect(startCandidates).toEqual(['2022-04-27', '2022-05-23']);
-  });
-
-  it('conflict peak 有 2 个候选 marker（2024：07-29 / 08-05）', () => {
-    const { peakCandidates } = getConflictBoundaryCandidates(c2024);
-    expect(peakCandidates).toEqual(['2024-07-29', '2024-08-05']);
-  });
-
   it('conflict end 有 2 个候选（2024：07-31 / 08-23）', () => {
     const { endCandidates } = getConflictBoundaryCandidates(c2024);
     expect(endCandidates).toEqual(['2024-07-31', '2024-08-23']);
+  });
+
+  it('V1.7.1 数据现状：2022 start 分歧已解决 → 三个候选集均为 null（不再渲染分歧）', () => {
+    expect(c2022.status).toBe('provisional');
+    expect(getConflictBoundaryCandidates(c2022)).toEqual({
+      startCandidates: null,
+      peakCandidates: null,
+      endCandidates: null,
+    });
+  });
+
+  it('V1.7.1 数据现状：2024 peak 分歧已解决 → peak 候选集为 null（Peak 由 lifecycle 窗口表达）', () => {
+    const { peakCandidates, startCandidates } = getConflictBoundaryCandidates(c2024);
+    expect(peakCandidates).toBeNull();
+    expect(startCandidates).toBeNull();
   });
 
   it('非 conflict Campaign 保持原状：三个候选集均为 null', () => {
@@ -177,20 +228,7 @@ describe('Conflict 边界候选推导：getConflictBoundaryCandidates', () => {
     });
   });
 
-  it('2022 start 分歧保留：不自动选择 04-27 或 05-23', () => {
-    const { startCandidates } = getConflictBoundaryCandidates(c2022);
-    expect(startCandidates).toContain('2022-04-27');
-    expect(startCandidates).toContain('2022-05-23');
-    expect(startCandidates).toHaveLength(2);
-  });
-
-  it('2024 peak 分歧保留：双方日期均在候选集', () => {
-    const { peakCandidates } = getConflictBoundaryCandidates(c2024);
-    expect(peakCandidates).toContain('2024-07-29');
-    expect(peakCandidates).toContain('2024-08-05');
-  });
-
-  it('2024 end 分歧保留：双方日期均在候选集', () => {
+  it('2024 end 分歧保留：双方日期均在候选集（不自动选择）', () => {
     const { endCandidates } = getConflictBoundaryCandidates(c2024);
     expect(endCandidates).toContain('2024-07-31');
     expect(endCandidates).toContain('2024-08-23');
@@ -201,13 +239,14 @@ describe('Conflict 边界候选推导：getConflictBoundaryCandidates', () => {
     expect(c2024.start).toBe('2024-07-08');
     expect(c2024.peak).toBe('2024-07-29');
     expect(c2024.end).toBe('2024-07-31');
-    // C-2022-POLICY 正式起点 = Candidate A（04-27），未采用 B（05-23）
+    // C-2022-POLICY 正式起点 = 研究确定值 04-27（旧 start 分歧已解决）
     expect(c2022.start).toBe('2022-04-27');
   });
 
   it('conflict Campaign 保持 status=conflict（视觉分歧语义的触发条件）', () => {
-    expect(c2022.status).toBe('conflict');
     expect(c2024.status).toBe('conflict');
+    // 2022 已不再 conflict（研究解决）——conflict 是数据属性，不是历史包袱
+    expect(c2022.status).not.toBe('conflict');
     // helper 仅对 conflict 状态生效（防御性验证）
     expect(getConflictBoundaryCandidates({ status: 'conflict', conflicts: undefined })).toEqual({
       startCandidates: null,
@@ -217,8 +256,9 @@ describe('Conflict 边界候选推导：getConflictBoundaryCandidates', () => {
   });
 
   it('verified / provisional / preview Campaign 不触发 conflict 视觉（状态与候选集）', () => {
-    // C-2024-V2X = provisional；RC 候选 = preview
+    // C-2024-V2X / C-2022-POLICY（V1.7.1 起）= provisional；RC 候选 = preview
     expect(normal.status).toBe('provisional');
+    expect(c2022.status).toBe('provisional');
     const rc = source.yearData(2023).campaigns.find((x) => x.campaign_id === 'RC-2023-HUAWEI')!;
     expect(rc.status).toBe('preview');
     expect(getConflictBoundaryCandidates(rc).startCandidates).toBeNull();
@@ -242,10 +282,10 @@ describe('V1.7：Peak Window（窗口优先于精确日期）', () => {
     expect(w).toEqual({ start: '2020-07-06', end: '2020-07-20', disputed: false });
   });
 
-  it('轻微峰值分歧：候选 A → B 构成 Peak Window（C-2024-ROBOTAXI：07-29 ~ 08-05）', () => {
+  it('lifecycle PEAK 窗口（V1.7.1）：C-2024-ROBOTAXI 07-29 ~ 08-05（DATE_WINDOW，peak 分歧已解决）', () => {
     const c = previewTimelineSource().yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
     const w = peakWindowOf(c);
-    expect(w).toEqual({ start: '2024-07-29', end: '2024-08-05', disputed: true });
+    expect(w).toEqual({ start: '2024-07-29', end: '2024-08-05', disputed: false });
   });
 
   it('无 peak（null）→ 无窗口；openEnded 候选同样安全', () => {
@@ -254,16 +294,15 @@ describe('V1.7：Peak Window（窗口优先于精确日期）', () => {
 });
 
 describe('V1.7：冲突分级阈值（同一窗口 ≤ 10 天 = minor）', () => {
-  it('2024 peak 分歧（07-29 vs 08-05，7 天）→ minor：显示窗口，不画大型 Conflict', () => {
+  it('2024 peak 分歧已解决（V1.7.1 数据现状）：无 peak_date conflict，窗口改由 lifecycle 提供', () => {
     const c = previewTimelineSource().yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
-    const peak = c.conflicts!.find((x) => x.field === 'peak_date')!;
-    expect(conflictSeverity(peak)).toBe('minor');
+    expect(c.conflicts!.find((x) => x.field === 'peak_date')).toBeUndefined();
   });
 
-  it('2022 start 分歧（04-27 vs 05-23，26 天）→ major：大型 Conflict 视觉', () => {
+  it('2022 start 分歧已解决（V1.7.1 数据现状）：provisional，无 conflict 视觉', () => {
     const c = previewTimelineSource().yearData(2022).campaigns.find((x) => x.campaign_id === 'C-2022-POLICY')!;
-    const start = c.conflicts!.find((x) => x.field === 'start_date')!;
-    expect(conflictSeverity(start)).toBe('major');
+    expect(c.status).toBe('provisional');
+    expect(c.conflicts ?? []).toEqual([]);
   });
 
   it('2024 end 分歧（07-31 vs 08-23，23 天）→ major：End 候选区间保留', () => {
@@ -284,25 +323,23 @@ describe('V1.7：冲突分级阈值（同一窗口 ≤ 10 天 = minor）', () =>
 });
 
 describe('V1.7：驱动因素四问（研究事件时间归组）', () => {
-  it('C-2022-POLICY：加速 / 转折有归因标签，启动 / 结束为空（不编造）', () => {
+  it('C-2022-POLICY（V1.7.1）：研究归因优先，四问均有标签且每组封顶 3 条', () => {
     const c = previewTimelineSource().yearData(2022).campaigns.find((x) => x.campaign_id === 'C-2022-POLICY')!;
     const d = campaignDrivers(c);
-    // start 04-27，peak 06-10，end 08-31；events：05-23 国常会 / 05-31 财政部 / 06-10 比亚迪 / 06-22 国常会再促
-    expect(d.start).toEqual([]);
-    expect(d.accelerate.length).toBe(2);
-    expect(d.accelerate.some((t) => t.includes('国常会'))).toBe(true);
+    // Research drivers：start 3 条 / accelerator 原始 4 条 → 封顶 3 / turning 3 / ending 2
+    expect(d.start.some((t) => t.includes('国常会'))).toBe(true);
+    expect(d.accelerate).toHaveLength(3);
     expect(d.accelerate.some((t) => t.includes('财政部'))).toBe(true);
-    expect(d.turn.length).toBe(1);
-    expect(d.turn[0]).toContain('比亚迪');
-    expect(d.end).toEqual([]);
+    expect(d.turn.some((t) => t.includes('比亚迪'))).toBe(true);
+    expect(d.end.length).toBeGreaterThan(0);
   });
 
-  it('C-2024-ROBOTAXI：启动期事件归入启动组（first-match，不重复归组）', () => {
+  it('C-2024-ROBOTAXI（V1.7.1）：研究归因——启动含萝卜快跑、转折含 8/6 回撤、结束含 08-23', () => {
     const c = previewTimelineSource().yearData(2024).campaigns.find((x) => x.campaign_id === 'C-2024-ROBOTAXI')!;
     const d = campaignDrivers(c);
-    expect(d.start.length).toBe(1);
-    expect(d.start[0]).toContain('萝卜快跑');
-    expect(d.end).toEqual([]); // 07-10 已归启动组，不重复进结束组
+    expect(d.start.some((t) => t.includes('萝卜快跑'))).toBe(true);
+    expect(d.turn.some((t) => t.includes('8/6'))).toBe(true);
+    expect(d.end.some((t) => t.includes('08-23'))).toBe(true);
   });
 
   it('无事件的 Campaign：四问全空 → UI 显示"暂无可靠归因"（verified fixture）', () => {
@@ -312,11 +349,30 @@ describe('V1.7：驱动因素四问（研究事件时间归组）', () => {
     expect(d).toEqual({ start: [], accelerate: [], turn: [], end: [] });
   });
 
-  it('openEnded 候选：无结束归因（end 为年末近似，不归组）', () => {
+  it('openEnded 候选（V1.7.1）：研究归因 ending = unknown 原样展示（未确认结束，不编造）', () => {
     const rc = previewTimelineSource().yearData(2023).campaigns.find((x) => x.campaign_id === 'RC-2023-HUAWEI')!;
     const d = campaignDrivers(rc);
-    expect(d.end).toEqual([]);
-    expect(d.start.length).toBeGreaterThan(0); // 问界 M7 上市归启动
+    expect(d.end).toEqual(['unknown（至2023-10-31仍升，未确认结束）']);
+    expect(d.start.some((t) => t.includes('问界新M7'))).toBe(true);
+  });
+
+  it('无 drivers 回退路径（生产 verified / 旧导出）：事件按时间归组（first-match，不重复归组）', () => {
+    const d = campaignDrivers({
+      start: '2024-07-01',
+      peak: '2024-08-01',
+      end: '2024-08-31',
+      openEnded: false,
+      events: [
+        { name: '事件甲（07-10 启动期）', date: '2024-07-10', event_type: 'policy', role: 'trigger' },
+        { name: '事件乙（07-20 加速期）', date: '2024-07-20', event_type: 'market', role: 'catalyst' },
+        { name: '事件丙（07-28 峰值附近）', date: '2024-07-28', event_type: 'market', role: null },
+        { name: '事件丁（08-20 尾声）', date: '2024-08-20', event_type: 'market', role: null },
+      ],
+    });
+    expect(d.start).toEqual(['事件甲（07-10 启动期）']);
+    expect(d.accelerate).toEqual(['事件乙（07-20 加速期）']);
+    expect(d.turn).toEqual(['事件丙（07-28 峰值附近）']);
+    expect(d.end).toEqual(['事件丁（08-20 尾声）']);
   });
 });
 

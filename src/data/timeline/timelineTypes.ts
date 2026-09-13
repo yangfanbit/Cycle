@@ -86,6 +86,30 @@ export interface ExportConflictV1 {
   candidate_b: ExportConflictSideV1;
 }
 
+/**
+ * Research V1.7 生命周期阶段（campaigns / research_candidates 可选新增字段）。
+ * stage 为研究层枚举（EARLY_SIGNAL / THEME_FORMING / BROAD_CONFIRMATION / MAIN_RISE /
+ * PEAK / SECONDARY / FIRST_DECLINE / RETRACEMENT / DECLINING / MAIN_END 等）；
+ * precision 区分 EXACT_DATE（单日）与 DATE_WINDOW / PHASE_WINDOW（区间）。
+ */
+export interface ExportLifecycleStageV1 {
+  stage: string;
+  start: string;
+  end: string;
+  precision: string;
+}
+
+/**
+ * Research V1.7 驱动因素归因（四问；keys：start / accelerator / turning / ending）。
+ * 研究层人工归因，非因果结论；数组可空（研究未归因时不编造）。
+ */
+export interface ExportDriversV1 {
+  start: string[];
+  accelerator: string[];
+  turning: string[];
+  ending: string[];
+}
+
 /** 正式 HistoricalCampaign（Research 导出；不含 research candidates） */
 export interface ExportCampaignV1 {
   campaign_id: string;
@@ -110,6 +134,10 @@ export interface ExportCampaignV1 {
   first_decline_date?: string | null;
   conflicts: ExportConflictV1[];
   notes?: string | null;
+  /** Research V1.7 新增：生命周期阶段（可选；旧导出无此字段） */
+  lifecycle?: ExportLifecycleStageV1[];
+  /** Research V1.7 新增：驱动因素四问归因（可选；旧导出无此字段） */
+  drivers?: ExportDriversV1;
 }
 
 /**
@@ -132,6 +160,10 @@ export interface ExportCandidateV1 {
   theme_cycle_id?: string | null;
   conflicts: ExportConflictV1[];
   notes?: string | null;
+  /** Research V1.7 新增：生命周期阶段（可选；旧导出无此字段） */
+  lifecycle?: ExportLifecycleStageV1[];
+  /** Research V1.7 新增：驱动因素四问归因（可选；旧导出无此字段） */
+  drivers?: ExportDriversV1;
 }
 
 /** 事件（顶层扁平数组；Campaign 经 event_ids 引用，不要求嵌套在 Campaign 内） */
@@ -205,6 +237,10 @@ export interface TimelineCampaign {
   events: { name: string; date: string; event_type: string; role?: string | null }[];
   /** 研究信号（研究层信息，不是交易信号） */
   signals: { type: string; date: string; confidence?: string }[];
+  /** Research V1.7 生命周期阶段（仅 Research 导出数据源提供；生产 verified 无此字段） */
+  lifecycle?: ExportLifecycleStageV1[];
+  /** Research V1.7 驱动因素归因（四问；仅 Research 导出数据源提供） */
+  drivers?: ExportDriversV1;
   description?: string;
   /** 来源说明（生产数据来自 Source 注册表；预览数据来自 Research） */
   sourceNote?: string;

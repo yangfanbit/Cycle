@@ -454,12 +454,13 @@ export interface PeakWindow {
 
 /**
  * Peak Window（时间轴优先显示窗口而非单一精确日期）：
- * - 无峰值冲突：peak ± 7 天；
  * - 轻微峰值冲突（≤ 阈值）：候选 A → B 构成窗口（disputed）；
- * - 严重峰值冲突（> 阈值）：返回 null（由双候选标记 ▲A/▲B 表达）。
+ * - 严重峰值冲突（> 阈值）：返回 null（由双候选标记 ▲A/▲B 表达）；
+ * - Research V1.7 lifecycle PEAK 阶段为真实区间（DATE_WINDOW，start < end）时直接采用；
+ * - 其余（EXACT_DATE 单日或无 lifecycle）：peak ± 7 天近似。
  */
 export function peakWindowOf(
-  c: Pick<TimelineCampaign, 'peak' | 'status' | 'conflicts'>,
+  c: Pick<TimelineCampaign, 'peak' | 'status' | 'conflicts' | 'lifecycle'>,
 ): PeakWindow | null {
   const peakConflict =
     c.status === 'conflict' ? (c.conflicts ?? []).find((x) => x.field === 'peak_date') : undefined;
@@ -471,6 +472,10 @@ export function peakWindowOf(
       disputed: true,
     };
   }
+  const stage = (c.lifecycle ?? []).find((x) => x.stage === 'PEAK');
+  if (stage && stage.start < stage.end) {
+    return { start: stage.start, end: stage.end, disputed: false };
+  }
   if (!c.peak) return null;
   return {
     start: addDaysISO(c.peak, -PEAK_WINDOW_HALF_DAYS),
@@ -479,7 +484,7 @@ export function peakWindowOf(
   };
 }
 
-/** 驱动因素四问（基于研究事件的时间归组；每组最多 3 个标签，trigger/catalyst 优先） */
+/** 驱动因素四问（Research V1.7 人工归因优先；缺失时基于研究事件时间归组；每组最多 3 个标签） */
 export interface CampaignDrivers {
   /** 为什么启动？ */
   start: string[];
@@ -500,6 +505,8 @@ const DRIVER_ROLE_WEIGHT: Record<string, number> = {
 
 /**
  * 从 Campaign 关联研究事件推导"为什么启动 / 加速 / 转折 / 结束"。
+ * Research V1.7 导出携带 drivers（研究层人工归因）时优先采用（原样展示，每组最多 3 条，
+ * 不编造、不解读）；无 drivers 字段（生产 verified / 旧导出）时按事件时间归组：
  * 事件按时间顺序归组（每个事件只进最先匹配的组）：
  * - 启动：[start-30, start+15]；
  * - 加速：(start+15, peak-7]（无 peak 时用区间中点近似分界）；
@@ -508,8 +515,17 @@ const DRIVER_ROLE_WEIGHT: Record<string, number> = {
  * 无事件落入的组返回空数组（UI 显示"暂无可靠归因"，不编造）。
  */
 export function campaignDrivers(
-  c: Pick<TimelineCampaign, 'start' | 'peak' | 'end' | 'openEnded' | 'events'>,
+  c: Pick<TimelineCampaign, 'start' | 'peak' | 'end' | 'openEnded' | 'events' | 'drivers'>,
 ): CampaignDrivers {
+  if (c.drivers) {
+    const cap = (xs: string[] | undefined): string[] => (xs ?? []).slice(0, 3);
+    return {
+      start: cap(c.drivers.start),
+      accelerate: cap(c.drivers.accelerator),
+      turn: cap(c.drivers.turning),
+      end: cap(c.drivers.ending),
+    };
+  }
   type Ev = { name: string; date: string; role?: string | null };
   const groups: Record<keyof CampaignDrivers, Ev[]> = {
     start: [],
@@ -677,6 +693,9 @@ function formalCampaignToTimeline(c: ExportCampaignV1, ctx: ExportContext): Time
     securities,
     events,
     signals,
+    // Research V1.7 新增字段透传（lifecycle 供 Peak Window / drivers 供详情四问消费）
+    lifecycle: c.lifecycle,
+    drivers: c.drivers,
     description: c.notes ?? undefined,
     sourceNote: `Cycle-Research timeline_export_v1（commit ${ctx.data.source_commit.slice(0, 7)}，${status}）——非正式历史事实`,
   };
@@ -727,6 +746,9 @@ function candidateToTimeline(rc: ExportCandidateV1, ctx: ExportContext): Timelin
     securities,
     events,
     signals,
+    // Research V1.7 新增字段透传（候选同样携带 lifecycle / drivers）
+    lifecycle: rc.lifecycle,
+    drivers: rc.drivers,
     description: rc.notes ?? undefined,
     sourceNote: `Cycle-Research Research Candidate（commit ${ctx.data.source_commit.slice(0, 7)}）——未达正式 Campaign 门槛，非正式历史事实`,
   };
