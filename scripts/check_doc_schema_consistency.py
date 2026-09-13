@@ -1,19 +1,25 @@
-"""文档与 Schema 一致性检查器。
+"""文档与 Schema 一致性检查器（Schema Contract Checker）。
 
 真正实现 Document ↔ SQLite Schema Consistency Check：
-1. 从 schema.sql 提取实际表/字段
-2. 维护 DOCUMENTED_SCHEMA_FIELDS（文档声称的正式字段）
+1. 使用 SQLite introspection 提取真实 schema（不修改 schema.sql）
+2. 维护 DOCUMENTED_SCHEMA_FIELDS（文档声称的正式字段合约）
 3. 维护 DOCUMENT_ONLY_CONCEPTS（允许的非 schema 字段）
 4. 逐项比较，发现冲突时 FAIL
 
+重要说明：
+- 这是 Schema Contract Check，不是自动理解所有 Markdown
+- DOCUMENTED_SCHEMA_FIELDS 是显式合约，不是自动解析文档
+- 允许 document-only concepts（不进入 SQLite）
+
 用法: python scripts/check_doc_schema_consistency.py
 """
-import sys, os, re
+import sys, os, sqlite3
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ==================== 显式声明 ====================
 
 # 文档声称的正式数据库字段（必须与 schema 一致）
+# 基于真实 SQLite introspection 结果
 DOCUMENTED_SCHEMA_FIELDS = {
     "research_rules": [
         "rule_id",
@@ -146,6 +152,9 @@ DOCUMENTED_SCHEMA_FIELDS = {
         "series_id",
         "trade_date",
         "open",
+        "high",
+        "low",
+        "close",
         "adj_close",
         "price_type",
         "volume",
@@ -157,6 +166,7 @@ DOCUMENTED_SCHEMA_FIELDS = {
         "trade_date",
         "is_trading_day",
         "calendar_type",
+        "created_at",
     ],
     "campaign_date_observations": [
         "observation_id",
@@ -185,48 +195,55 @@ DOCUMENT_ONLY_CONCEPTS = {
 # ==================== Schema 提取 ====================
 
 def extract_schema_fields():
-    """从 schema.sql 提取所有表和字段"""
+    """使用 SQLite introspection 提取真实 schema"""
     from scripts import db
     schema_path = os.path.join(db.ROOT, "schema", "schema.sql")
     
     with open(schema_path, "r", encoding="utf-8") as f:
-        content = f.read()
+        schema_sql = f.read()
     
-    tables = {}
-    current_table = None
+    # 创建内存数据库
+    conn = sqlite3.connect(":memory:")
+    conn.execute("PRAGMA foreign_keys = ON")
     
-    for line in content.split('\n'):
-        line = line.strip()
+    try:
+        # 执行 schema.sql
+        conn.executescript(schema_sql)
         
-        # 提取表名
-        if line.startswith('CREATE TABLE'):
-            match = re.search(r'CREATE TABLE IF NOT EXISTS (\w+)', line)
-            if match:
-                current_table = match.group(1)
-                tables[current_table] = []
+        # 提取所有表
+        tables = {}
+        cursor = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+        )
         
-        # 提取字段名
-        elif current_table and line and not line.startswith('--') and not line.startswith(')'):
-            # 跳过约束行
-            if any(line.startswith(x) for x in ['PRIMARY', 'FOREIGN', 'CHECK', 'UNIQUE', 'CONSTRAINT']):
-                continue
+        for row in cursor.fetchall():
+            table_name = row[0]
             
-            # 提取字段名（第一个单词）
-            match = re.match(r'(\w+)\s+', line)
-            if match:
-                field = match.group(1)
-                # 排除 SQL 关键字
-                if field not in ['PRIMARY', 'FOREIGN', 'CHECK', 'UNIQUE', 'NOT', 'DEFAULT', 'REFERENCES']:
-                    tables[current_table].append(field)
-    
-    return tables
+            # 提取表的字段
+            fields = []
+            field_cursor = conn.execute(f"PRAGMA table_info({table_name})")
+            for field_row in field_cursor.fetchall():
+                # field_row: (cid, name, type, notnull, dflt_value, pk)
+                field_name = field_row[1]
+                fields.append(field_name)
+            
+            tables[table_name] = fields
+        
+        return tables
+        
+    finally:
+        conn.close()
 
 # ==================== 一致性检查 ====================
 
 def check_consistency():
-    """执行文档与 Schema 一致性检查"""
+    """执行文档与 Schema 一致性检查（Schema Contract Check）
     
-    print("=== Document ↔ Schema Consistency Check ===\n")
+    Returns:
+        bool: True 表示一致，False 表示存在冲突
+    """
+    
+    print("=== Schema Contract Check ===\n")
     
     # 提取实际 schema
     actual_schema = extract_schema_fields()
@@ -235,13 +252,16 @@ def check_consistency():
     total_tables = len(DOCUMENTED_SCHEMA_FIELDS)
     total_fields = sum(len(fields) for fields in DOCUMENTED_SCHEMA_FIELDS.values())
     
-    print(f"Tables to check: {total_tables}")
-    print(f"Fields to check: {total_fields}\n")
+    print(f"Contract tables: {total_tables}")
+    print(f"Contract fields: {total_fields}")
+    print(f"Actual schema tables: {len(actual_schema)}")
+    print(f"Actual schema fields: {sum(len(fields) for fields in actual_schema.values())}\n")
     
     # 检查结果
     pass_items = []
     fail_items = []
     document_only = []
+    schema_only = []
     
     # 1. 检查 DOCUMENTED_SCHEMA_FIELDS 中的字段是否都存在于实际 schema
     for table, documented_fields in DOCUMENTED_SCHEMA_FIELDS.items():
@@ -265,7 +285,7 @@ def check_consistency():
         missing_in_docs = actual_fields - documented_fields_set
         if missing_in_docs:
             for field in missing_in_docs:
-                pass_items.append(f"Field '{table}.{field}' exists in schema but not documented")
+                schema_only.append(f"{table}.{field}")
     
     # 2. 检查实际 schema 中的表是否都在文档中
     documented_tables = set(DOCUMENTED_SCHEMA_FIELDS.keys())
@@ -274,7 +294,7 @@ def check_consistency():
     undocumented_tables = actual_tables - documented_tables
     if undocumented_tables:
         for table in undocumented_tables:
-            pass_items.append(f"Table '{table}' exists in schema but not documented")
+            schema_only.append(f"{table} (entire table)")
     
     # 3. 检查 document-only concepts 是否被正确标记
     for concept in DOCUMENT_ONLY_CONCEPTS:
@@ -282,15 +302,23 @@ def check_consistency():
     
     # ==================== 输出结果 ====================
     
-    print("=== PASS ===")
-    for item in pass_items:
-        print(f"✓ {item}")
-    print()
+    if pass_items:
+        print("=== PASS ===")
+        for item in pass_items:
+            print(f"✓ {item}")
+        print()
     
-    print("=== Document-Only Concepts ===")
-    for item in document_only:
-        print(f"ℹ {item}")
-    print()
+    if schema_only:
+        print("=== Schema-Only Fields (INFO) ===")
+        for item in schema_only:
+            print(f"ℹ {item}")
+        print()
+    
+    if document_only:
+        print("=== Document-Only Concepts ===")
+        for item in document_only:
+            print(f"ℹ {item}")
+        print()
     
     if fail_items:
         print("=== FAIL ===")
@@ -301,11 +329,10 @@ def check_consistency():
         return False
     else:
         print("=== SUMMARY ===")
-        print(f"Tables checked: {total_tables}")
-        print(f"Fields checked: {total_fields}")
+        print(f"Contract tables: {total_tables}")
+        print(f"Contract fields: {total_fields}")
         print(f"Document-only concepts: {len(DOCUMENT_ONLY_CONCEPTS)}")
-        print(f"Schema tables: {len(actual_tables)}")
-        print(f"Schema fields: {sum(len(fields) for fields in actual_schema.values())}")
+        print(f"Schema-only fields: {len(schema_only)}")
         print()
         print("PASS: 0 FAIL")
         return True
@@ -318,7 +345,7 @@ def main():
         success = check_consistency()
         if success:
             print("\n=== RESULT ===")
-            print("PASS: Document ↔ Schema consistency verified")
+            print("PASS: Schema Contract Check verified")
             sys.exit(0)
         else:
             print("\n=== RESULT ===")

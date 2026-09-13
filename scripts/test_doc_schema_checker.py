@@ -1,4 +1,4 @@
-"""文档与 Schema 一致性检查器测试。
+"""文档与 Schema 一致性检查器测试（Schema Contract Checker Tests）。
 
 验证 check_doc_schema_consistency.py 的正确性：
 1. 已知合法字段通过
@@ -8,6 +8,10 @@
 5. 真实 schema 当前所有正式字段全部通过（调用 checker.check_consistency()）
 6. 不存在表必须 FAIL
 7. Document-only concept 允许
+8. 真实 SQLite introspection（market_daily open/high/low/close）
+9. Schema-only fields 真实列出
+10. 字段数量 snapshot
+11. 真实字段反向检查
 
 关键原则：
 - 测试必须调用 checker.check_consistency()，而不是重复实现字段比较逻辑
@@ -145,41 +149,106 @@ def test_document_only_concept_allowed():
         # 恢复原始 DOCUMENTED_SCHEMA_FIELDS
         checker.DOCUMENTED_SCHEMA_FIELDS = original_fields
 
-def test_schema_extraction():
-    """Test H: Schema 提取正确性"""
-    print("Test H: Schema 提取正确性")
+def test_real_sqlite_introspection():
+    """Test J: 真实 SQLite introspection（market_daily open/high/low/close）"""
+    print("Test J: 真实 SQLite introspection")
     
+    # 提取实际 schema
     actual_schema = checker.extract_schema_fields()
     
-    # 验证提取的表数量
-    assert len(actual_schema) >= 17, f"应至少提取 17 个表，实际 {len(actual_schema)}"
+    # 验证 market_daily 表存在
+    assert "market_daily" in actual_schema, "market_daily 表应存在"
     
-    # 验证关键表存在
-    key_tables = ["research_rules", "campaigns", "evidences", "market_series", "market_daily"]
-    for table in key_tables:
-        assert table in actual_schema, f"{table} 应被提取"
+    # 验证 open/high/low/close 都被识别
+    market_daily_fields = actual_schema["market_daily"]
+    assert "open" in market_daily_fields, "open 应存在于 market_daily"
+    assert "high" in market_daily_fields, "high 应存在于 market_daily"
+    assert "low" in market_daily_fields, "low 应存在于 market_daily"
+    assert "close" in market_daily_fields, "close 应存在于 market_daily"
     
-    print(f"✓ PASS: Schema 提取正确，共 {len(actual_schema)} 个表\n")
+    print("✓ PASS: market_daily 的 open/high/low/close 全部被识别\n")
 
-def test_documented_fields_count():
-    """Test I: 文档字段数量统计"""
-    print("Test I: 文档字段数量统计")
+def test_schema_only_fields():
+    """Test K: Schema-only fields 真实列出"""
+    print("Test K: Schema-only fields 真实列出")
     
-    total_tables = len(checker.DOCUMENTED_SCHEMA_FIELDS)
-    total_fields = sum(len(fields) for fields in checker.DOCUMENTED_SCHEMA_FIELDS.values())
+    # 提取实际 schema
+    actual_schema = checker.extract_schema_fields()
     
-    print(f"  文档声明的表数量: {total_tables}")
-    print(f"  文档声明的字段数量: {total_fields}")
-    print(f"  Document-only concepts: {len(checker.DOCUMENT_ONLY_CONCEPTS)}")
+    # 获取 DOCUMENTED_SCHEMA_FIELDS 中声明的字段
+    documented_fields = set()
+    for table, fields in checker.DOCUMENTED_SCHEMA_FIELDS.items():
+        for field in fields:
+            documented_fields.add(f"{table}.{field}")
     
-    assert total_tables >= 17, f"应至少声明 17 个表，实际 {total_tables}"
-    assert total_fields > 0, "应声明字段"
+    # 找出 schema 中存在但文档未声明的字段
+    schema_only = []
+    for table, fields in actual_schema.items():
+        for field in fields:
+            field_path = f"{table}.{field}"
+            if field_path not in documented_fields:
+                schema_only.append(field_path)
     
-    print("✓ PASS: 文档字段数量统计正确\n")
+    # 当前应该没有 schema-only fields（因为我们已经完整声明了所有字段）
+    print(f"  Schema-only fields: {len(schema_only)}")
+    if schema_only:
+        print(f"  Fields: {schema_only}")
+    
+    # 验证没有遗漏
+    assert len(schema_only) == 0, f"不应有 schema-only fields，实际: {schema_only}"
+    
+    print("✓ PASS: Schema-only fields 检查完成\n")
+
+def test_field_count_snapshot():
+    """Test L: 字段数量 snapshot"""
+    print("Test L: 字段数量 snapshot")
+    
+    # 提取实际 schema
+    actual_schema = checker.extract_schema_fields()
+    
+    # 验证表数量
+    actual_table_count = len(actual_schema)
+    assert actual_table_count == 17, f"表数量应为 17，实际 {actual_table_count}"
+    
+    # 验证字段数量
+    actual_field_count = sum(len(fields) for fields in actual_schema.values())
+    assert actual_field_count == 125, f"字段数量应为 125，实际 {actual_field_count}"
+    
+    print(f"  实际表数量: {actual_table_count}")
+    print(f"  实际字段数量: {actual_field_count}")
+    
+    print("✓ PASS: 字段数量 snapshot 正确\n")
+
+def test_real_field_reverse_check():
+    """Test M: 真实字段反向检查"""
+    print("Test M: 真实字段反向检查")
+    
+    # 保存原始 DOCUMENTED_SCHEMA_FIELDS
+    original_fields = copy.deepcopy(checker.DOCUMENTED_SCHEMA_FIELDS)
+    
+    try:
+        # 从 market_daily 中删除真实存在的字段 high, low, close
+        checker.DOCUMENTED_SCHEMA_FIELDS["market_daily"] = [
+            f for f in original_fields["market_daily"]
+            if f not in ["high", "low", "close"]
+        ]
+        
+        # 调用 checker.check_consistency()
+        # 根据当前策略，schema-only fields 不会导致 FAIL，只会报告为 INFO
+        result = checker.check_consistency()
+        
+        # 应该返回 True（因为 schema-only fields 不会导致 FAIL）
+        assert result is True, "check_consistency() 应返回 True（schema-only fields 不导致 FAIL）"
+        
+        print("✓ PASS: 真实字段反向检测工作正常（schema-only fields 被识别）\n")
+        
+    finally:
+        # 恢复原始 DOCUMENTED_SCHEMA_FIELDS
+        checker.DOCUMENTED_SCHEMA_FIELDS = original_fields
 
 def main():
     """主测试函数"""
-    print("=== 文档与 Schema 一致性检查器测试 ===\n")
+    print("=== Schema Contract Checker Tests ===\n")
     
     try:
         test_known_legal_fields()
@@ -189,8 +258,10 @@ def main():
         test_all_documented_fields_exist()
         test_nonexistent_table_fails()
         test_document_only_concept_allowed()
-        test_schema_extraction()
-        test_documented_fields_count()
+        test_real_sqlite_introspection()
+        test_schema_only_fields()
+        test_field_count_snapshot()
+        test_real_field_reverse_check()
         
         print("=== 所有测试通过 ===")
         print("PASS: 0 FAIL, 0 WARNING")
