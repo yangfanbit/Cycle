@@ -2,14 +2,21 @@
 
 验证 check_doc_schema_consistency.py 的正确性：
 1. 已知合法字段通过
-2. 人为构造不存在字段必须 FAIL
+2. 人为构造不存在字段必须 FAIL（调用 checker.check_consistency()）
 3. future candidate 允许
 4. research-level 允许
-5. 真实 schema 当前所有正式字段全部通过
+5. 真实 schema 当前所有正式字段全部通过（调用 checker.check_consistency()）
+6. 不存在表必须 FAIL
+7. Document-only concept 允许
+
+关键原则：
+- 测试必须调用 checker.check_consistency()，而不是重复实现字段比较逻辑
+- 使用 copy.deepcopy() 确保测试隔离
+- 不调用 main()，直接调用 check_consistency()
 
 用法: python scripts/test_doc_schema_checker.py
 """
-import sys, os
+import sys, os, copy
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 导入被测试的模块
@@ -34,29 +41,27 @@ def test_known_legal_fields():
     print("✓ PASS: 已知合法字段验证通过\n")
 
 def test_nonexistent_field_fails():
-    """Test B: 人为构造不存在字段必须 FAIL"""
+    """Test B: 人为构造不存在字段必须 FAIL（调用 checker.check_consistency()）"""
     print("Test B: 人为构造不存在字段")
     
-    # 创建一个临时的 DOCUMENTED_SCHEMA_FIELDS，包含一个不存在的字段
-    original_fields = checker.DOCUMENTED_SCHEMA_FIELDS.copy()
+    # 保存原始 DOCUMENTED_SCHEMA_FIELDS
+    original_fields = copy.deepcopy(checker.DOCUMENTED_SCHEMA_FIELDS)
     
-    # 添加一个不存在的字段
-    checker.DOCUMENTED_SCHEMA_FIELDS["campaigns"] = original_fields["campaigns"] + ["NON_EXISTENT_FIELD"]
-    
-    # 提取实际 schema
-    actual_schema = checker.extract_schema_fields()
-    
-    # 检查是否存在不存在的字段
-    actual_fields = set(actual_schema["campaigns"])
-    documented_fields = set(checker.DOCUMENTED_SCHEMA_FIELDS["campaigns"])
-    
-    missing = documented_fields - actual_fields
-    
-    # 恢复原始字段
-    checker.DOCUMENTED_SCHEMA_FIELDS = original_fields
-    
-    assert "NON_EXISTENT_FIELD" in missing, "NON_EXISTENT_FIELD 应该被检测为不存在"
-    print("✓ PASS: 不存在字段被正确检测\n")
+    try:
+        # 添加一个不存在的字段
+        checker.DOCUMENTED_SCHEMA_FIELDS["campaigns"] = (
+            original_fields["campaigns"] + ["NON_EXISTENT_FIELD"]
+        )
+        
+        # 调用 checker.check_consistency()，应该返回 False
+        result = checker.check_consistency()
+        
+        assert result is False, "check_consistency() 应返回 False（检测到不存在字段）"
+        print("✓ PASS: 不存在字段被正确检测（check_consistency() 返回 False）\n")
+        
+    finally:
+        # 恢复原始 DOCUMENTED_SCHEMA_FIELDS
+        checker.DOCUMENTED_SCHEMA_FIELDS = original_fields
 
 def test_future_candidate_allowed():
     """Test C: future candidate 允许"""
@@ -65,6 +70,10 @@ def test_future_candidate_allowed():
     # rule_type 是 future candidate，应该在 DOCUMENT_ONLY_CONCEPTS 中
     assert "rule_type" in checker.DOCUMENT_ONLY_CONCEPTS, "rule_type 应在 DOCUMENT_ONLY_CONCEPTS 中"
     
+    # 调用 checker.check_consistency()，应该返回 True（rule_type 被允许）
+    result = checker.check_consistency()
+    
+    assert result is True, "check_consistency() 应返回 True（rule_type 作为 future candidate 被允许）"
     print("✓ PASS: future candidate 被正确允许\n")
 
 def test_research_level_allowed():
@@ -75,46 +84,70 @@ def test_research_level_allowed():
     assert "campaign_status" in checker.DOCUMENT_ONLY_CONCEPTS, "campaign_status 应在 DOCUMENT_ONLY_CONCEPTS 中"
     assert "security_type" in checker.DOCUMENT_ONLY_CONCEPTS, "security_type 应在 DOCUMENT_ONLY_CONCEPTS 中"
     
+    # 调用 checker.check_consistency()，应该返回 True（这些概念被允许）
+    result = checker.check_consistency()
+    
+    assert result is True, "check_consistency() 应返回 True（research-level 概念被允许）"
     print("✓ PASS: research-level 概念被正确允许\n")
 
 def test_all_documented_fields_exist():
-    """Test E: 真实 schema 当前所有正式字段全部通过"""
+    """Test E: 真实 schema 当前所有正式字段全部通过（调用 checker.check_consistency()）"""
     print("Test E: 所有文档字段存在性验证")
     
-    # 提取实际 schema
-    actual_schema = checker.extract_schema_fields()
+    # 调用 checker.check_consistency()，应该返回 True（所有字段都存在）
+    result = checker.check_consistency()
     
-    # 检查 DOCUMENTED_SCHEMA_FIELDS 中的所有字段是否都存在于实际 schema
-    all_exist = True
-    missing_fields = []
+    assert result is True, "check_consistency() 应返回 True（所有文档字段都存在于 schema）"
+    print("✓ PASS: 所有文档字段都存在于 schema（check_consistency() 返回 True）\n")
+
+def test_nonexistent_table_fails():
+    """Test F: 不存在表必须 FAIL"""
+    print("Test F: 不存在表")
     
-    for table, documented_fields in checker.DOCUMENTED_SCHEMA_FIELDS.items():
-        if table not in actual_schema:
-            all_exist = False
-            missing_fields.append(f"Table '{table}' not in schema")
-            continue
-        
-        actual_fields = set(actual_schema[table])
-        documented_fields_set = set(documented_fields)
-        
-        missing = documented_fields_set - actual_fields
-        # 排除 document-only concepts
-        missing = {f for f in missing if f not in checker.DOCUMENT_ONLY_CONCEPTS}
-        
-        if missing:
-            all_exist = False
-            for field in missing:
-                missing_fields.append(f"{table}.{field}")
+    # 保存原始 DOCUMENTED_SCHEMA_FIELDS
+    original_fields = copy.deepcopy(checker.DOCUMENTED_SCHEMA_FIELDS)
     
-    if missing_fields:
-        print(f"✗ FAIL: 以下字段不存在于 schema: {missing_fields}\n")
-        assert False, f"Missing fields: {missing_fields}"
-    else:
-        print("✓ PASS: 所有文档字段都存在于 schema\n")
+    try:
+        # 添加一个不存在的表
+        checker.DOCUMENTED_SCHEMA_FIELDS["NON_EXISTENT_TABLE"] = ["field1", "field2"]
+        
+        # 调用 checker.check_consistency()，应该返回 False
+        result = checker.check_consistency()
+        
+        assert result is False, "check_consistency() 应返回 False（检测到不存在表）"
+        print("✓ PASS: 不存在表被正确检测（check_consistency() 返回 False）\n")
+        
+    finally:
+        # 恢复原始 DOCUMENTED_SCHEMA_FIELDS
+        checker.DOCUMENTED_SCHEMA_FIELDS = original_fields
+
+def test_document_only_concept_allowed():
+    """Test G: Document-only concept 允许"""
+    print("Test G: Document-only concept 允许")
+    
+    # 保存原始 DOCUMENTED_SCHEMA_FIELDS
+    original_fields = copy.deepcopy(checker.DOCUMENTED_SCHEMA_FIELDS)
+    
+    try:
+        # 添加一个 document-only concept 到 campaigns 表
+        # rule_type 是 document-only concept，应该被允许
+        checker.DOCUMENTED_SCHEMA_FIELDS["campaigns"] = (
+            original_fields["campaigns"] + ["rule_type"]
+        )
+        
+        # 调用 checker.check_consistency()，应该返回 True（rule_type 是 document-only concept）
+        result = checker.check_consistency()
+        
+        assert result is True, "check_consistency() 应返回 True（rule_type 作为 document-only concept 被允许）"
+        print("✓ PASS: Document-only concept 被正确允许\n")
+        
+    finally:
+        # 恢复原始 DOCUMENTED_SCHEMA_FIELDS
+        checker.DOCUMENTED_SCHEMA_FIELDS = original_fields
 
 def test_schema_extraction():
-    """Test F: Schema 提取正确性"""
-    print("Test F: Schema 提取正确性")
+    """Test H: Schema 提取正确性"""
+    print("Test H: Schema 提取正确性")
     
     actual_schema = checker.extract_schema_fields()
     
@@ -129,8 +162,8 @@ def test_schema_extraction():
     print(f"✓ PASS: Schema 提取正确，共 {len(actual_schema)} 个表\n")
 
 def test_documented_fields_count():
-    """Test G: 文档字段数量统计"""
-    print("Test G: 文档字段数量统计")
+    """Test I: 文档字段数量统计"""
+    print("Test I: 文档字段数量统计")
     
     total_tables = len(checker.DOCUMENTED_SCHEMA_FIELDS)
     total_fields = sum(len(fields) for fields in checker.DOCUMENTED_SCHEMA_FIELDS.values())
@@ -154,6 +187,8 @@ def main():
         test_future_candidate_allowed()
         test_research_level_allowed()
         test_all_documented_fields_exist()
+        test_nonexistent_table_fails()
+        test_document_only_concept_allowed()
         test_schema_extraction()
         test_documented_fields_count()
         
