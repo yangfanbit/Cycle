@@ -1,15 +1,13 @@
 import { useMemo, useState } from 'react';
 import {
-  allCampaigns,
   anchorResolver,
   events,
   ruleById,
   rules,
   sourceById,
-  themeById,
-  themesOfCampaign,
   windowsOfRule,
 } from '../../data';
+import type { TimelineCampaign } from '../../data/timeline/timelineTypes';
 import type { TimeWindow } from '../../models';
 import {
   computeWindowStatus,
@@ -23,7 +21,14 @@ import {
   type WindowStatusResult,
   type YearSegment,
 } from '../../utils';
-import { PHASE_LABEL, sectorColor, windowRangeLabel } from '../labels';
+import {
+  DATA_STATUS_CLASS,
+  DATA_STATUS_LABEL,
+  LIFECYCLE_LABEL,
+  PHASE_LABEL,
+  sectorColor,
+  windowRangeLabel,
+} from '../labels';
 
 export type Selection =
   | { kind: 'rule'; id: string }
@@ -42,6 +47,10 @@ interface TimelineProps {
   today: string;
   selection: Selection;
   onSelect: (sel: Selection) => void;
+  /** 第三层数据：由 TimelineDataSource（verified / preview）经 App 注入 */
+  campaigns: TimelineCampaign[];
+  /** 数据源类型：verified = 生产；preview = Research 开发预览 */
+  sourceKind: 'verified' | 'preview';
 }
 
 const MONTHS = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
@@ -68,7 +77,7 @@ function MonthGrid({ year }: { year: number }) {
   );
 }
 
-export function Timeline({ year, today, selection, onSelect }: TimelineProps) {
+export function Timeline({ year, today, selection, onSelect, campaigns, sourceKind }: TimelineProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
   const showTooltip = (e: React.MouseEvent, title: string, lines: string[]) => {
@@ -109,12 +118,12 @@ export function Timeline({ year, today, selection, onSelect }: TimelineProps) {
     });
   }, [year, today]);
 
-  // ---------- 已核验历史行情层（仅 verified；candidate 线索不入本层） ----------
+  // ---------- 历史行情层（verified 生产数据或 Research 预览，经 Adapter 注入） ----------
   const campaignRows = useMemo(() => {
-    return allCampaigns
-      .map((c) => ({ campaign: c, segment: segmentForYear(c.start_date, c.end_date, year) }))
-      .filter((r) => r.segment !== null);
-  }, [year]);
+    return campaigns.filter(
+      (c) => segmentForYear(c.start, c.end, year) !== null,
+    );
+  }, [campaigns, year]);
 
   const showTodayLine = today.startsWith(`${year}-`);
   const todayFrac = showTodayLine ? yearFraction(today) : 0;
@@ -250,54 +259,141 @@ export function Timeline({ year, today, selection, onSelect }: TimelineProps) {
           })}
         </section>
 
-        {/* 第三层：已核验历史行情（仅展示 verified 层；candidate 线索不入本层） */}
-        <section className="tl-layer">
-          <h3 className="tl-layer-title">已核验历史行情</h3>
+        {/* 第三层：历史行情（Campaign 为视觉主体；verified 或 Research 预览） */}
+        <section className="tl-layer layer-campaigns">
+          <h3 className="tl-layer-title">
+            {sourceKind === 'preview' ? '历史行情（Research 预览，非正式历史事实）' : '已核验历史行情'}
+          </h3>
           {campaignRows.length === 0 && (
-            <div className="empty-note">暂无已核验历史行情（历史核验尚未开始）。</div>
+            <div className="empty-note">
+              {sourceKind === 'preview'
+                ? '该年份暂无预览数据。'
+                : '当前暂无已核验历史行情（历史核验尚未开始）。'}
+            </div>
           )}
-          {campaignRows.map(({ campaign, segment }) => {
+          {campaignRows.map((campaign) => {
             const rule = ruleById.get(campaign.rule_id);
-            const seg = segment!;
-            const mainTheme = themesOfCampaign(campaign.campaign_id).find((ct) => ct.role === 'main');
-            const themeName = mainTheme ? themeById.get(mainTheme.theme_id)?.name : undefined;
             const color = sectorColor(rule?.base_sector ?? '');
+            const selected = selection?.kind === 'campaign' && selection.id === campaign.campaign_id;
+            // 生命周期分段裁剪到当前年份（跨年行情在两年各显示覆盖段）
+            const phaseSegs = campaign.phases
+              .map((p) => ({ phase: p.phase, seg: segmentForYear(p.start, p.end, year) }))
+              .filter((r): r is { phase: typeof r.phase; seg: YearSegment } => r.seg !== null);
+            const earlySeg = campaign.early_signal
+              ? segmentForYear(campaign.early_signal.start, campaign.early_signal.end, year)
+              : null;
+            const peakInYear = campaign.peak && campaign.peak.startsWith(`${year}-`);
+            const peakFrac = peakInYear ? yearFraction(campaign.peak!) : 0;
+            const themeNames = campaign.themes.map((t) => t.name).join('、');
+            const statusLabel = DATA_STATUS_LABEL[campaign.status];
+            const tooltipLines = [
+              `完整区间：${campaign.start} → ${campaign.end}`,
+              `生命周期：${campaign.phases
+                .map((p) => `${LIFECYCLE_LABEL[p.phase]} ${p.start.slice(5)}→${p.end.slice(5)}`)
+                .join(' / ')}`,
+              ...(campaign.early_signal
+                ? [`早期信号：${campaign.early_signal.start} → ${campaign.early_signal.end}${campaign.early_signal.label ? `（${campaign.early_signal.label}）` : ''}`]
+                : []),
+              campaign.peak ? `峰值：${campaign.peak}` : '峰值：未核验',
+              `题材：${themeNames || '待补充'}`,
+              `所属规律：${rule?.name ?? campaign.rule_id}`,
+              `数据状态：${statusLabel}${campaign.status !== 'verified' ? '（非正式历史事实）' : ''}`,
+              ...(campaign.conflicts ?? []).map((c) => `⚠ 分歧：${c}`),
+              `来源：${campaign.sourceNote ?? '—'}`,
+            ];
             return (
-              <div className="tl-row" key={campaign.campaign_id}>
+              <div className="tl-row cmp-row" key={campaign.campaign_id}>
                 <div className="tl-row-label">
-                  <span className="name">{campaign.season_id}</span>
-                  <span className="sub">{themeName ?? rule?.base_sector ?? ''}</span>
+                  <span className={`st-badge ${DATA_STATUS_CLASS[campaign.status]}`}>{statusLabel}</span>
+                  <span className="name">{campaign.title}</span>
+                  <span className="sub">
+                    {campaign.season_id}
+                    {campaign.cross_year ? ' ↻' : ''}
+                  </span>
                 </div>
                 <div className="tl-track">
                   <MonthGrid year={year} />
-                  <div
-                    className={`bar window${seg.continuesFromPrevYear ? ' cont-prev' : ''}${
-                      seg.continuesIntoNextYear ? ' cont-next' : ''
-                    }${selection?.kind === 'campaign' && selection.id === campaign.campaign_id ? ' selected' : ''}`}
-                    style={{
-                      left: pct(seg.startFraction),
-                      width: pct(Math.max(seg.endFraction - seg.startFraction, 0.003)),
-                      background: color,
-                      boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.18)',
-                    }}
-                    onMouseEnter={(e) =>
-                      showTooltip(e, `${campaign.season_id} ${themeName ?? ''}`.trim(), [
-                        `完整区间：${campaign.start_date} → ${campaign.end_date}`,
-                        `跨年：${campaign.cross_year ? '是' : '否'}`,
-                        `所属规律：${rule?.name ?? campaign.rule_id}`,
-                        `来源：${sourceById.get(campaign.source_id)?.title ?? campaign.source_id}`,
-                      ])
-                    }
-                    onMouseLeave={hideTooltip}
-                    onClick={() => onSelect({ kind: 'campaign', id: campaign.campaign_id })}
-                  >
-                    {seg.continuesFromPrevYear && <span className="bar-arrow left">◂</span>}
-                    {seg.continuesIntoNextYear && <span className="bar-arrow right">▸</span>}
-                    <span className="bar-label">
-                      {themeName ?? campaign.season_id}
-                      {campaign.cross_year ? ' ↻' : ''}
+                  {/* 早期信号：较淡显示，不得呈现为正式 Campaign */}
+                  {earlySeg && (
+                    <div
+                      className="bar cmp early-signal"
+                      style={{
+                        left: pct(earlySeg.startFraction),
+                        width: pct(Math.max(earlySeg.endFraction - earlySeg.startFraction, 0.004)),
+                        borderColor: color,
+                      }}
+                      onMouseEnter={(e) =>
+                        showTooltip(e, `${campaign.title} · 早期信号`, [
+                          `信号区间：${campaign.early_signal!.start} → ${campaign.early_signal!.end}`,
+                          ...(campaign.early_signal!.label ? [campaign.early_signal!.label] : []),
+                          '早期信号为前置观察，不是正式行情起点。',
+                        ])
+                      }
+                      onMouseLeave={hideTooltip}
+                      onClick={() => onSelect({ kind: 'campaign', id: campaign.campaign_id })}
+                    >
+                      <span className="bar-label es-label">早期信号</span>
+                    </div>
+                  )}
+                  {/* 生命周期分段：主升（实色）→ 高位回撤（条纹）→ 退潮（虚线纹理） */}
+                  {phaseSegs.map(({ phase, seg: ps }) => (
+                    <div
+                      key={phase}
+                      className={`bar cmp cmp-${phase}${ps.continuesFromPrevYear ? ' cont-prev' : ''}${
+                        ps.continuesIntoNextYear ? ' cont-next' : ''
+                      }${selected ? ' selected' : ''}${
+                        campaign.status === 'provisional' || campaign.status === 'preview' ? ' st-dashed' : ''
+                      }`}
+                      style={{
+                        left: pct(ps.startFraction),
+                        width: pct(Math.max(ps.endFraction - ps.startFraction, 0.004)),
+                        background: color,
+                      }}
+                      onMouseEnter={(e) => showTooltip(e, campaign.title, tooltipLines)}
+                      onMouseLeave={hideTooltip}
+                      onClick={() => onSelect({ kind: 'campaign', id: campaign.campaign_id })}
+                    >
+                      {ps.continuesFromPrevYear && phase === campaign.phases[0].phase && (
+                        <span className="bar-arrow left">◂</span>
+                      )}
+                      {ps.continuesIntoNextYear &&
+                        phase === campaign.phases[campaign.phases.length - 1].phase && (
+                          <span className="bar-arrow right">▸</span>
+                        )}
+                      <span className="bar-label">
+                        {LIFECYCLE_LABEL[phase]}
+                        {campaign.cross_year ? ' ↻' : ''}
+                      </span>
+                    </div>
+                  ))}
+                  {/* 峰值标记（Peak Cluster 中心点） */}
+                  {peakInYear && (
+                    <span
+                      className="peak-marker"
+                      style={{ left: pct(peakFrac) }}
+                      onMouseEnter={(e) =>
+                        showTooltip(e, `${campaign.title} · 峰值`, [`峰值日期：${campaign.peak}`])
+                      }
+                      onMouseLeave={hideTooltip}
+                    >
+                      ▲
                     </span>
-                  </div>
+                  )}
+                  {/* 研究分歧警示（CONFLICT 不得被描述成历史事实） */}
+                  {campaign.status === 'conflict' && (
+                    <span
+                      className="conflict-flag"
+                      onMouseEnter={(e) =>
+                        showTooltip(e, `${campaign.title} · 研究分歧`, [
+                          ...(campaign.conflicts ?? []).map((c) => `⚠ ${c}`),
+                          '分歧数据仅用于研究预览，不构成历史事实。',
+                        ])
+                      }
+                      onMouseLeave={hideTooltip}
+                    >
+                      ⚠
+                    </span>
+                  )}
                   {showTodayLine && <TodayLine frac={todayFrac} />}
                 </div>
               </div>
@@ -318,10 +414,10 @@ export function Timeline({ year, today, selection, onSelect }: TimelineProps) {
                   <span className="phase-text">
                     {phase ? PHASE_LABEL[phase] : '暂无相关窗口'}
                     {phase === 'NOT_ACTIVE' && status && status.daysToStart > 0
-                      ? `（约 ${status.daysToStart} 天后）`
+                      ? `（历史观察窗口将在约 ${status.daysToStart} 天后进入）`
                       : ''}
-                    {phase === 'PRE_HEAT' && status ? `（约 ${status.daysToStart} 天后进入窗口）` : ''}
-                    {phase === 'ACTIVE' && status ? `（余 ${status.daysToEnd} 天）` : ''}
+                    {phase === 'PRE_HEAT' && status ? `（历史观察窗口将在约 ${status.daysToStart} 天后进入）` : ''}
+                    {phase === 'ACTIVE' && status ? `（观察窗口余 ${status.daysToEnd} 天）` : ''}
                   </span>
                 </div>
               );

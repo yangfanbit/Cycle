@@ -1,5 +1,6 @@
 import type { CampaignResult, CampaignStrength, RuleStatus } from '../models';
 import type { WindowPhase } from '../utils';
+import type { LifecyclePhase, TimelineDataStatus } from '../data/timeline/timelineTypes';
 
 export const PHASE_LABEL: Record<WindowPhase, string> = {
   ACTIVE: '当前窗口',
@@ -74,3 +75,31 @@ export function sectorColor(baseSector: string): string {
 export function windowRangeLabel(start: string, end: string, approximate?: boolean): string {
   return approximate ? `约 ${start} → ${end}（近似）` : `${start} → ${end}`;
 }
+
+/* ---------------- Timeline 生命周期 / 数据状态（MVP 新增） ---------------- */
+
+/** Campaign 生命周期阶段的显示文本（形状 / 线型之外的第二重表达，避免只靠颜色） */
+export const LIFECYCLE_LABEL: Record<LifecyclePhase, string> = {
+  early_signal: '早期信号',
+  main_rise: '主升',
+  peak: '峰值',
+  retracement: '高位回撤',
+  declining: '退潮',
+  ended: '已结束',
+};
+
+/** Timeline 数据状态的显示文本 */
+export const DATA_STATUS_LABEL: Record<TimelineDataStatus, string> = {
+  verified: '已核验',
+  provisional: '初步核验',
+  preview: '研究预览',
+  conflict: '研究分歧',
+};
+
+export const DATA_STATUS_CLASS: Record<TimelineDataStatus, string> = {
+  verified: 'st-verified',
+  provisional: 'st-provisional',
+  preview: 'st-preview',
+  conflict: 'st-conflict',
+};
+

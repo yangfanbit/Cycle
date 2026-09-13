@@ -13,6 +13,29 @@
 - 10 条候选规律种子数据（全部 candidate，来源可追溯）
 - 治理文档体系（AGENTS.md + docs/）
 
+## V1.6（当前进行中）— Cycle Timeline MVP
+
+> 2026-09-13 启动。Research 与 Timeline MVP 并行：不再等待全部人工 Review 后才开发 UI。
+
+- Timeline Data Adapter 层（src/data/timeline/）：`TimelineDataSource` 统一接口
+  - `verified` 数据源：来自 data/verified/（allCampaigns / events / themes / securities）
+  - `preview` 数据源：timeline_export_v1 兼容的本地 Research 预览 fixture（2022 Auto Policy /
+    2023 Smart Driving / 2024 Robotaxi），status = preview，不进入 data/verified、不污染 allCampaigns
+- 365 天全年时间轴：按真实日期比例布局（月份长度不同），非 12 等分
+- Campaign 生命周期视觉主体：Early Signal（淡显，前置观察）→ 主升（实色）→ 峰值（标记）→
+  高位回撤（条纹）→ 退潮（虚线纹理）→ 结束；形状 / 线型 / 透明度 / 标签区分，不单靠颜色
+- 数据状态视觉区分：VERIFIED 实色 / PROVISIONAL·PREVIEW 虚线淡化 / CONFLICT 警示标记
+- URL Preview：`?preview=1` 启用，顶部「开发预览数据」横幅；默认生产数据
+- 年份切换接入数据源（不硬编码年份）；TODAY 标记沿用 Asia/Shanghai 基准
+- CampaignDetail 支持 Research Preview 数据并明确标注「非正式 Verified 数据」
+- 提前观察中性表达：如「历史观察窗口将在约 N 天后进入」，禁止买卖建议用语
+- timeline_export_v1.json 本地导入 Adapter 预留（不 fetch GitHub，静态 PWA 不变）
+
+### V1.6 后续（待人工 Review 后）
+
+- Research 全量 2018—2025 数据经 timeline_export_v1 接入，逐年替换 fixture
+- preview → provisional → verified 数据源演进（Timeline UI 不变）
+
 ## V1.5 — 历史规律核验与季节性验证
 
 ### 第零阶段（已完成，2026-09-12）：Preflight 数据语义清理

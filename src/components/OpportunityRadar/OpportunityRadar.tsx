@@ -80,10 +80,10 @@ export function OpportunityRadar({ today, onSelectRule }: OpportunityRadarProps)
                   </div>
                   <div className="r-meta">
                     {it.phase === 'ACTIVE'
-                      ? '当前窗口'
+                      ? '历史观察窗口进行中'
                       : it.phase === 'PRE_HEAT'
-                        ? `提前观察中 ｜ 约 ${it.daysToStart} 天后进入窗口`
-                        : `距离典型窗口 ${it.daysToStart} 天`}
+                        ? `提前观察中 ｜ 历史观察窗口将在约 ${it.daysToStart} 天后进入`
+                        : `历史观察窗口将在约 ${it.daysToStart} 天后进入`}
                   </div>
                   <div className="r-meta">{it.windowRange}</div>
                 </div>

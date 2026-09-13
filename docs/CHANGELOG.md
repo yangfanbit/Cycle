@@ -1,5 +1,68 @@
 # CHANGELOG.md — 变更记录
 
+## 2026-09-13 · V1.6 Cycle Timeline MVP：时间轴 + 历史对比 + 提前观察（第八轮）
+
+### 目标
+
+Timeline MVP：365 天全年时间轴（真实日期比例）、Campaign 生命周期视觉主体、
+Preview / Production 数据源分离。**未修改核心数据模型**（无 ThemeCycle /
+CampaignRelation / CampaignPhase，HistoricalCampaign 未动），全部经 Timeline
+Adapter 层解决。
+
+### 新增：Timeline Data Adapter（src/data/timeline/）
+
+- `timelineTypes.ts`：`TimelineDataSource` 接口（kind: verified | preview）、
+  `TimelineCampaign` 视图模型、生命周期分段（early_signal / main_rise / peak /
+  retracement / declining / ended）、数据状态（verified / provisional / preview /
+  conflict）、`TimelineExportV1` 导入格式。
+- `timelineAdapter.ts`：
+  - `verifiedTimelineDataSource`：生产数据（data/verified/ 的 allCampaigns /
+    themes / securities + data/candidate/events.ts）→ 视图模型；
+  - `previewTimelineDataSource`：Research 预览 fixture → 视图模型；
+  - `fromTimelineExportV1`：timeline_export_v1.json 本地导入 Adapter（不 fetch
+    GitHub，静态 PWA 不变）；
+  - `derivePhases`：由 start / peak / end / retracement_start 推导生命周期分段
+    （retracement 缺省以 peak→end 中点近似，仅渲染用）。
+- `timelinePreview.ts`：2022 Auto Policy / 2023 Smart Driving（Huawei Auto
+  Research Candidate）/ 2024 Robotaxi 三个已研究案例的 preview fixture，
+  `status = preview`（2023 华为案例标 conflict 供分歧视觉验证）。
+  **不进入 data/verified、不污染 allCampaigns**（测试断言保证）。
+
+### UI：Campaign 生命周期 + Preview 模式
+
+- Timeline 第三层（Campaign）成为视觉主体：
+  - 生命周期分段渲染：主升实色 → 高位回撤条纹 → 退潮虚线纹理；
+  - Peak 三角标记 + Peak Cluster；Early Signal 淡显于 Campaign 前方
+    （虚线边框 + 降低透明度，标注「前置观察，非正式行情起点」）；
+  - provisional / preview 虚线淡化；conflict ⚠ 警示标记；
+  - 跨年延续箭头（◂ ▸）沿用现有逻辑。
+- App：`?preview=1` 启用 Preview（默认生产数据）；预览横幅「开发预览数据，
+  非正式历史事实」+ 返回生产数据链接；生产层为空时显示空态 +
+  「开发预览：查看 Research Preview」入口；年份切换接入数据源（不硬编码年份）。
+- CampaignDetail：归一化生产 / 预览两种输入；预览数据明确标注
+  「Research Preview · 非正式 Verified 数据」；conflict 展示研究分歧描述。
+- 提前观察中性表达：OpportunityRadar 改为「历史观察窗口将在约 N 天后进入」
+  等中性文案（无买卖建议用语）。
+- 样式：形状 / 线型 / 透明度 / 标签区分生命周期（不单靠颜色，避免色盲不可分辨）。
+
+### 数据边界（不变量）
+
+- Preview fixture 只存在于 src/data/timeline/，不写入 data/ 任何目录；
+- allCampaigns = verifiedCampaigns（生产聚合不含 preview，测试断言）；
+- 核心数据模型（HistoricalCampaign / Rule / Theme 等）零修改。
+
+### 测试
+
+- 52 → 66 项：新增 Timeline adapter 测试 14 项，覆盖：
+  preview 数据不进入 allCampaigns / verifiedCampaigns / campaignById、
+  verified 数据源空态、年份推导、日期比例定位（非 12 等分）、跨年分段、
+  preview 徽标、conflict 徽标、TODAY 定位、生命周期分段推导（含 retracement
+  中点近似与无 peak 回退）、timeline_export_v1 导入兼容。
+- 既有 Timeline 渲染测试更新为新 props 签名（campaigns + sourceKind）。
+- 验证：`npm test` 66/66 通过；`npx tsc -b` 通过；`npm run build` 成功。
+
+---
+
 ## 2026-09-12 · Pilot 1 录入入口准备：verified 层数据录入路径（第七轮）
 
 ### 目标

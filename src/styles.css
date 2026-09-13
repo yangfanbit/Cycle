@@ -322,8 +322,162 @@ html, body {
 .radar-item .r-name { font-weight: 600; }
 .radar-item .r-meta { font-size: 12px; color: var(--ink-2); font-family: var(--mono); }
 
+/* ---------- Timeline MVP：预览横幅 / 年份 chips / Campaign 生命周期 ---------- */
+.preview-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin: 12px 28px 0;
+  padding: 10px 14px;
+  background: #fff8e6;
+  border: 1px dashed #d9a821;
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: #6d5a14;
+}
+.preview-banner strong {
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: #8a6d1f;
+}
+.preview-banner .banner-link {
+  margin-left: auto;
+  color: #2f5d8a;
+  white-space: nowrap;
+}
+.prod-empty-note {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--ink-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: baseline;
+}
+.prod-empty-note .banner-link,
+.banner-link { color: #2f5d8a; }
+
+.year-chips { display: inline-flex; gap: 4px; }
+.year-chip {
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 2px 8px;
+  cursor: pointer;
+  color: var(--ink-2);
+}
+.year-chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* Campaign 行（视觉主体）：更高的轨道与更粗的条 */
+.layer-campaigns .tl-layer-title { color: #4a5560; }
+.tl-row.cmp-row { min-height: 44px; }
+.tl-row.cmp-row .tl-track { height: 36px; }
+.tl-row.cmp-row .tl-row-label { flex-direction: column; align-items: flex-start; gap: 0; }
+
+/* 数据状态徽章 */
+.st-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 0 5px;
+  letter-spacing: 0.04em;
+  flex: none;
+}
+.st-verified { background: #e2efe5; color: #2e6b3a; }
+.st-provisional { background: #eee7f5; color: #6a4a8a; }
+.st-preview { background: #fdf3d7; color: #8a6d1f; }
+.st-conflict { background: #fbe4e0; color: #a83226; }
+
+/* Campaign 生命周期分段：主升实色 / 回撤条纹 / 退潮虚线纹理（不只靠颜色区分） */
+.bar.cmp {
+  top: 6px;
+  height: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+.bar.cmp-main_rise { border-radius: 5px 0 0 5px; opacity: 0.95; }
+.bar.cmp-retracement {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55) 0 5px,
+    transparent 5px 10px
+  ) !important;
+  opacity: 0.8;
+}
+.bar.cmp-declining {
+  border-style: dashed;
+  border-radius: 0 5px 5px 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.7) 0 3px,
+    transparent 3px 7px
+  ) !important;
+  opacity: 0.55;
+}
+.bar.cmp.st-dashed { border-style: dashed; }
+/* 单段（无 peak）时保留圆角 */
+.bar.cmp-main_rise:only-of-type,
+.bar.cmp-main_rise + .bar.cmp-declining:only-of-type { border-radius: 5px; }
+
+/* 早期信号：淡显 + 虚线边框（不得呈现为正式 Campaign） */
+.bar.early-signal {
+  top: 10px;
+  height: 16px;
+  border: 1.5px dashed;
+  border-radius: 4px;
+  background: transparent !important;
+  opacity: 0.5;
+}
+.bar.early-signal .es-label { color: var(--ink-2); text-shadow: none; font-weight: 600; }
+
+/* 峰值标记 */
+.peak-marker {
+  position: absolute;
+  top: -8px;
+  transform: translateX(-50%);
+  font-size: 13px;
+  line-height: 1;
+  color: #b3541e;
+  cursor: default;
+  z-index: 3;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+}
+
+/* 研究分歧警示标记 */
+.conflict-flag {
+  position: absolute;
+  top: -9px;
+  right: 6px;
+  font-size: 14px;
+  color: #a83226;
+  cursor: default;
+  z-index: 3;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+}
+
+/* 详情面板：预览说明与分歧行 */
+.preview-note {
+  margin: 12px 0 4px;
+  padding: 10px 12px;
+  background: #fff8e6;
+  border: 1px dashed #d9a821;
+  border-radius: var(--radius);
+  font-size: 12.5px;
+  color: #6d5a14;
+}
+.preview-note strong { display: block; margin-bottom: 2px; letter-spacing: 0.06em; }
+.preview-note p { margin: 0; }
+.conflict-line { color: #a83226; font-size: 12.5px; }
+
 @media (max-width: 720px) {
   .app-main { padding: 12px 12px 40px; }
   .app-header { padding: 14px 14px 10px; }
   .app-today { margin-left: 0; width: 100%; }
+  .preview-banner { margin: 12px 12px 0; }
 }

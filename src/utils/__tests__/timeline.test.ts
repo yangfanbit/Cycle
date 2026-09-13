@@ -371,7 +371,15 @@ describe('V1.5 Preflight：生产层数据语义', () => {
   it('Timeline 第三层在 verifiedCampaigns 为空时显示「暂无已核验历史行情」', async () => {
     const { Timeline } = await import('../../components/Timeline/Timeline');
     const html = renderToStaticMarkup(
-      createElement(Timeline, { year: 2026, today: '2026-09-12', selection: null, onSelect: () => {} }),
+      createElement(Timeline, {
+        year: 2026,
+        today: '2026-09-12',
+        selection: null,
+        onSelect: () => {},
+        // Timeline MVP：第三层数据由 TimelineDataSource（verified / preview）注入
+        campaigns: [],
+        sourceKind: 'verified',
+      }),
     );
     expect(html).toContain('已核验历史行情');
     expect(html).toContain('暂无已核验历史行情（历史核验尚未开始）');
