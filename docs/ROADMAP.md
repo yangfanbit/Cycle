@@ -13,28 +13,62 @@
 - 10 条候选规律种子数据（全部 candidate，来源可追溯）
 - 治理文档体系（AGENTS.md + docs/）
 
-## V1.6（当前进行中）— Cycle Timeline MVP
+## V1.6（当前进行中）— Cycle Timeline MVP + Real Research Export Integration
 
 > 2026-09-13 启动。Research 与 Timeline MVP 并行：不再等待全部人工 Review 后才开发 UI。
 
 - Timeline Data Adapter 层（src/data/timeline/）：`TimelineDataSource` 统一接口
   - `verified` 数据源：来自 data/verified/（allCampaigns / events / themes / securities）
-  - `preview` 数据源：timeline_export_v1 兼容的本地 Research 预览 fixture（2022 Auto Policy /
-    2023 Smart Driving / 2024 Robotaxi），status = preview，不进入 data/verified、不污染 allCampaigns
+  - `preview` 数据源：Cycle-Research 真实导出 timeline_export_v1.json（canonical Contract
+    v1.0，commit 49797cc），2018—2025 全量；不进入 data/verified、不污染 allCampaigns
 - 365 天全年时间轴：按真实日期比例布局（月份长度不同），非 12 等分
 - Campaign 生命周期视觉主体：Early Signal（淡显，前置观察）→ 主升（实色）→ 峰值（标记）→
   高位回撤（条纹）→ 退潮（虚线纹理）→ 结束；形状 / 线型 / 透明度 / 标签区分，不单靠颜色
 - 数据状态视觉区分：VERIFIED 实色 / PROVISIONAL·PREVIEW 虚线淡化 / CONFLICT 警示标记
-- URL Preview：`?preview=1` 启用，顶部「开发预览数据」横幅；默认生产数据
+- URL Preview：`?preview=1` 启用，顶部「开发预览数据」横幅（含 Research commit）；默认生产数据
 - 年份切换接入数据源（不硬编码年份）；TODAY 标记沿用 Asia/Shanghai 基准
 - CampaignDetail 支持 Research Preview 数据并明确标注「非正式 Verified 数据」
 - 提前观察中性表达：如「历史观察窗口将在约 N 天后进入」，禁止买卖建议用语
-- timeline_export_v1.json 本地导入 Adapter 预留（不 fetch GitHub，静态 PWA 不变）
+
+### V1.6.1（已完成，2026-09-13）— Real Research Export Integration
+
+- 接入 Cycle-Research canonical Contract `timeline_export_version = "1.0"`（冻结版
+  research/methodology/timeline_export_contract_v1.md，Research commit 4bbe257）：
+  - `TimelineExportV1` 类型与 Contract 11 字段白名单对齐；旧字段（export_version /
+    source_project / purpose）不再兼容，Cycle 内不维护第二套 v1 格式
+  - `validateTimelineExportV1`：只验证 Cycle 实际消费的部分（顶层白名单 / version /
+    status 一致性 / candidate 无生产 status / 引用完整性 / signals XOR 归属 /
+    CONFLICT ⇔ conflicts），不重写完整 Research Validator
+- 真实导出替换手工 fixture：`src/data/timeline/data/timeline_export_v1.json`
+  （逐字节拷贝，Cycle 只消费不修改）；`timelinePreview.ts` 静态 import JSON
+  （无运行时网络请求，静态 PWA 不变）
+- Campaign / Candidate / Signal / Event / Security 完整映射：
+  - 正式 Campaign：research_status → Timeline 状态（PROVISIONAL→provisional /
+    CONFLICT→conflict / VERIFIED→verified）
+  - Research Candidate（RC- 前缀）：kind = candidate，status 只为 preview / conflict，
+    永不 verified；与正式 Campaign 并列（非"候选→正式"升级关系）
+  - Signals：EARLY_SIGNAL 早于正式起点 → TimelineEarlySignal（淡显 / 虚线）；
+    研究信号是"值得观察"，不是交易信号
+  - Events / Securities：顶层扁平数组 + owner 引用，Adapter 建 lookup 解析
+    （不要求嵌套在 Campaign 内）
+  - first_decline_date 作回撤起点；缺省以 peak→end 中点近似（仅渲染）
+- Conflict 结构化显示：保留 candidate A / B 双方口径（2022 C-2022-POLICY start
+  04-27 vs 05-23；2024 C-2024-ROBOTAXI peak / end 双分歧），不自行选一个
+- 年份自动推导：campaigns + research_candidates + events → 连续区间 2018—2025
+  （2018 反例年份可见但无 Campaign，空态合法，不编造行情）
+- Timeline UI：研究事件行（Research Export 具体日期事件）；Candidate RC 徽章；
+  空态文案「该年份当前无正式 Historical Campaign 数据」
+- CampaignDetail：结构化分歧（⚠ field：A date（label） vs B date（label））、
+  关联事件（日期 + 类型 + 角色）、研究信号（类型 + 置信度）、Candidate 标记、
+  openEnded（候选观察中，end 为年末近似）
+- App：researchEvents 透传；预览横幅带 Research 源 commit；初始年份回退
+  （preview 源 2018—2025、当前 2026 → 打开即显示 2025）
 
 ### V1.6 后续（待人工 Review 后）
 
-- Research 全量 2018—2025 数据经 timeline_export_v1 接入，逐年替换 fixture
+- Research 导出升级 v1.1+ 时同步 Adapter（Contract 变更回 Research 项目）
 - preview → provisional → verified 数据源演进（Timeline UI 不变）
+- verified 层逐年录入后，生产首页逐步从空态过渡到真实历史数据
 
 ## V1.5 — 历史规律核验与季节性验证
 

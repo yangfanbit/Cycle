@@ -7,7 +7,7 @@ import {
   sourceById,
   windowsOfRule,
 } from '../../data';
-import type { TimelineCampaign } from '../../data/timeline/timelineTypes';
+import type { TimelineCampaign, TimelineResearchEvent } from '../../data/timeline/timelineTypes';
 import type { TimeWindow } from '../../models';
 import {
   computeWindowStatus,
@@ -22,10 +22,13 @@ import {
   type YearSegment,
 } from '../../utils';
 import {
+  conflictLine,
   DATA_STATUS_CLASS,
   DATA_STATUS_LABEL,
+  EVENT_TYPE_LABEL,
   LIFECYCLE_LABEL,
   PHASE_LABEL,
+  ROLE_LABEL,
   sectorColor,
   windowRangeLabel,
 } from '../labels';
@@ -49,6 +52,8 @@ interface TimelineProps {
   onSelect: (sel: Selection) => void;
   /** 第三层数据：由 TimelineDataSource（verified / preview）经 App 注入 */
   campaigns: TimelineCampaign[];
+  /** Research 导出的具体日期事件（仅 preview 数据源提供） */
+  researchEvents?: TimelineResearchEvent[];
   /** 数据源类型：verified = 生产；preview = Research 开发预览 */
   sourceKind: 'verified' | 'preview';
 }
@@ -77,7 +82,7 @@ function MonthGrid({ year }: { year: number }) {
   );
 }
 
-export function Timeline({ year, today, selection, onSelect, campaigns, sourceKind }: TimelineProps) {
+export function Timeline({ year, today, selection, onSelect, campaigns, researchEvents, sourceKind }: TimelineProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
   const showTooltip = (e: React.MouseEvent, title: string, lines: string[]) => {
@@ -124,6 +129,11 @@ export function Timeline({ year, today, selection, onSelect, campaigns, sourceKi
       (c) => segmentForYear(c.start, c.end, year) !== null,
     );
   }, [campaigns, year]);
+
+  // 事件归属标题查询（研究事件 tooltip 用：正式 Campaign 与 Research Candidate 并列）
+  const campaignTitleById = useMemo(() => {
+    return new Map(campaigns.map((c) => [c.campaign_id, c.title]));
+  }, [campaigns]);
 
   const showTodayLine = today.startsWith(`${year}-`);
   const todayFrac = showTodayLine ? yearFraction(today) : 0;
@@ -177,6 +187,45 @@ export function Timeline({ year, today, selection, onSelect, campaigns, sourceKi
               {showTodayLine && <TodayLine frac={todayFrac} />}
             </div>
           </div>
+          {/* 研究事件（Research Export 具体日期事件；非正式历史事实） */}
+          {(researchEvents?.length ?? 0) > 0 && (
+            <div className="tl-row">
+              <div className="tl-row-label">
+                <span className="sub">研究事件（Research）</span>
+              </div>
+              <div className="tl-track" style={{ height: 46 }}>
+                <MonthGrid year={year} />
+                {researchEvents!.map((ev, i) => {
+                  const f = yearFraction(ev.date);
+                  const ownerId = ev.campaign_id ?? ev.research_candidate_id;
+                  const owner = ownerId
+                    ? campaignTitleById.get(ownerId) ?? ownerId
+                    : null;
+                  return (
+                    <div
+                      key={ev.event_id}
+                      className="evt-chip res point"
+                      style={{ left: pct(f), top: i % 2 === 0 ? 2 : 24 }}
+                      onMouseEnter={(e) =>
+                        showTooltip(e, ev.name, [
+                          ev.date,
+                          `${EVENT_TYPE_LABEL[ev.event_type] ?? ev.event_type}${
+                            ev.role ? ` · ${ROLE_LABEL[ev.role] ?? ev.role}` : ''
+                          }`,
+                          owner ? `关联：${owner}` : '全局事件（不绑定 Campaign）',
+                          '研究事件为 Research 导出，非正式历史事实。',
+                        ])
+                      }
+                      onMouseLeave={hideTooltip}
+                    >
+                      {ev.name}
+                    </div>
+                  );
+                })}
+                {showTodayLine && <TodayLine frac={todayFrac} />}
+              </div>
+            </div>
+          )}
         </section>
 
         {/* 第二层：行业 / 季节性规律 */}
@@ -267,7 +316,7 @@ export function Timeline({ year, today, selection, onSelect, campaigns, sourceKi
           {campaignRows.length === 0 && (
             <div className="empty-note">
               {sourceKind === 'preview'
-                ? '该年份暂无预览数据。'
+                ? '该年份当前无正式 Historical Campaign 数据。'
                 : '当前暂无已核验历史行情（历史核验尚未开始）。'}
             </div>
           )}
@@ -287,10 +336,14 @@ export function Timeline({ year, today, selection, onSelect, campaigns, sourceKi
             const themeNames = campaign.themes.map((t) => t.name).join('、');
             const statusLabel = DATA_STATUS_LABEL[campaign.status];
             const tooltipLines = [
-              `完整区间：${campaign.start} → ${campaign.end}`,
-              `生命周期：${campaign.phases
-                .map((p) => `${LIFECYCLE_LABEL[p.phase]} ${p.start.slice(5)}→${p.end.slice(5)}`)
-                .join(' / ')}`,
+              `完整区间：${campaign.start} → ${campaign.end}${
+                campaign.openEnded ? '（候选观察中，end 为年末近似）' : ''
+              }`,
+              campaign.kind === 'candidate'
+                ? 'Research Candidate：未达正式 Campaign 门槛，非 Historical Confirmed Campaign'
+                : `生命周期：${campaign.phases
+                    .map((p) => `${LIFECYCLE_LABEL[p.phase]} ${p.start.slice(5)}→${p.end.slice(5)}`)
+                    .join(' / ')}`,
               ...(campaign.early_signal
                 ? [`早期信号：${campaign.early_signal.start} → ${campaign.early_signal.end}${campaign.early_signal.label ? `（${campaign.early_signal.label}）` : ''}`]
                 : []),
@@ -298,12 +351,17 @@ export function Timeline({ year, today, selection, onSelect, campaigns, sourceKi
               `题材：${themeNames || '待补充'}`,
               `所属规律：${rule?.name ?? campaign.rule_id}`,
               `数据状态：${statusLabel}${campaign.status !== 'verified' ? '（非正式历史事实）' : ''}`,
-              ...(campaign.conflicts ?? []).map((c) => `⚠ 分歧：${c}`),
+              ...(campaign.conflicts ?? []).map((c) => conflictLine(c)),
               `来源：${campaign.sourceNote ?? '—'}`,
             ];
             return (
               <div className="tl-row cmp-row" key={campaign.campaign_id}>
                 <div className="tl-row-label">
+                  {campaign.kind === 'candidate' && (
+                    <span className="rc-badge" title="Research Candidate：研究候选，非正式 Historical Campaign">
+                      RC
+                    </span>
+                  )}
                   <span className={`st-badge ${DATA_STATUS_CLASS[campaign.status]}`}>{statusLabel}</span>
                   <span className="name">{campaign.title}</span>
                   <span className="sub">
@@ -385,9 +443,9 @@ export function Timeline({ year, today, selection, onSelect, campaigns, sourceKi
                       className="conflict-flag"
                       onMouseEnter={(e) =>
                         showTooltip(e, `${campaign.title} · 研究分歧`, [
-                          ...(campaign.conflicts ?? []).map((c) => `⚠ ${c}`),
-                          '分歧数据仅用于研究预览，不构成历史事实。',
-                        ])
+                        ...(campaign.conflicts ?? []).map((c) => conflictLine(c)),
+                        '分歧数据仅用于研究预览，不构成历史事实。',
+                      ])
                       }
                       onMouseLeave={hideTooltip}
                     >

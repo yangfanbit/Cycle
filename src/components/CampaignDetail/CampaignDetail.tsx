@@ -1,13 +1,17 @@
 import { allCampaignSecurities, ruleById, themeById, themesOfCampaign } from '../../data';
 import type { HistoricalCampaign } from '../../models';
-import type { TimelineCampaign } from '../../data/timeline/timelineTypes';
+import type { ExportConflictV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
 import { diffDays } from '../../utils';
 import {
+  conflictLine,
   DATA_STATUS_LABEL,
+  EVENT_TYPE_LABEL,
   LIFECYCLE_LABEL,
   RESULT_LABEL,
   ROLE_LABEL,
   RULE_STATUS_LABEL,
+  SIGNAL_CONFIDENCE_LABEL,
+  SIGNAL_TYPE_LABEL,
   STRENGTH_LABEL,
 } from '../labels';
 
@@ -18,8 +22,34 @@ interface CampaignDetailProps {
   onClose: () => void;
 }
 
+interface CampaignDetailModel {
+  title: string;
+  seasonId: string;
+  start: string;
+  end: string;
+  peak: string | null;
+  crossYear: boolean;
+  ruleId: string;
+  kind: 'campaign' | 'candidate';
+  openEnded: boolean;
+  themes: { name: string; role?: string }[];
+  securities: { name: string; ticker?: string; role?: string }[];
+  events: { name: string; date: string; event_type: string; role?: string | null }[];
+  signals: { type: string; date: string; confidence?: string }[];
+  description?: string;
+  sourceText: string;
+  status: 'verified' | 'provisional' | 'preview' | 'conflict';
+  conflicts: ExportConflictV1[] | undefined;
+  phases: { phase: keyof typeof LIFECYCLE_LABEL; start: string; end: string }[];
+  earlySignal: { start: string; end: string; label?: string } | null;
+  strength?: HistoricalCampaign['strength'];
+  result?: HistoricalCampaign['result'];
+  production: boolean;
+  campaignId: string;
+}
+
 /** 归一化详情视图模型：生产 / 预览两种输入共用同一渲染 */
-function normalize(c: HistoricalCampaign | TimelineCampaign) {
+function normalize(c: HistoricalCampaign | TimelineCampaign): CampaignDetailModel {
   if ('start_date' in c) {
     // 生产 verified 层：题材 / 龙头关系从 barrel 查询
     const themes = themesOfCampaign(c.campaign_id)
@@ -40,13 +70,17 @@ function normalize(c: HistoricalCampaign | TimelineCampaign) {
       peak: c.peak_date ?? null,
       crossYear: c.cross_year,
       ruleId: c.rule_id,
+      kind: 'campaign',
+      openEnded: false,
       themes,
       securities,
+      events: [],
+      signals: [],
       description: c.description,
       sourceText: `data/verified（已人工核验 L2）`,
       status: 'verified' as const,
-      conflicts: undefined as string[] | undefined,
-      phases: [] as { phase: keyof typeof LIFECYCLE_LABEL; start: string; end: string }[],
+      conflicts: undefined,
+      phases: [],
       earlySignal: null,
       strength: c.strength,
       result: c.result,
@@ -54,7 +88,7 @@ function normalize(c: HistoricalCampaign | TimelineCampaign) {
       campaignId: c.campaign_id,
     };
   }
-  // Timeline（预览 / provisional / conflict）
+  // Timeline（预览 / provisional / conflict；含 Research Candidate）
   return {
     title: c.title,
     seasonId: c.season_id,
@@ -63,8 +97,12 @@ function normalize(c: HistoricalCampaign | TimelineCampaign) {
     peak: c.peak ?? null,
     crossYear: c.cross_year,
     ruleId: c.rule_id,
+    kind: c.kind,
+    openEnded: c.openEnded ?? false,
     themes: c.themes,
     securities: c.securities,
+    events: c.events,
+    signals: c.signals,
     description: c.description,
     sourceText: c.sourceNote ?? '—',
     status: c.status,
@@ -88,8 +126,16 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
       <button className="detail-close" onClick={onClose} aria-label="关闭">
         ×
       </button>
-      <h2>历史行情 · {m.seasonId}</h2>
+      <h2>
+        {m.kind === 'candidate' ? '研究候选 · ' : '历史行情 · '}
+        {m.seasonId}
+      </h2>
       <div>
+        {m.kind === 'candidate' && !m.production && (
+          <span className="rc-badge" title="Research Candidate：研究候选，非正式 Historical Campaign">
+            Research Candidate
+          </span>
+        )}
         {m.crossYear && <span className="badge badge-cross">跨年行情</span>}
         {m.production ? (
           <>
@@ -103,9 +149,11 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
 
       {!m.production && (
         <div className="preview-note">
-          <strong>Research Preview</strong>
+          <strong>{m.kind === 'candidate' ? 'Research Candidate（研究候选）' : 'Research Preview'}</strong>
           <p>
-            本条为 Cycle-Research 研究预览数据，非正式 Verified 数据；
+            {m.kind === 'candidate'
+              ? '本条为 Cycle-Research 研究候选（未达正式 Campaign 门槛），与 Historical Campaign 并列展示；'
+              : '本条为 Cycle-Research 研究预览数据，非正式 Verified 数据；'}
             {m.status === 'conflict'
               ? '且研究结论存在分歧，仅供模式探索，不得视为历史事实。'
               : '尚未完成人工最终核验，仅供界面与历史模式探索。'}
@@ -120,7 +168,10 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
         <dt>完整日期</dt>
         <dd>
           {m.start} → {m.end}
-          <span className="phase-text">（共 {duration} 天）</span>
+          {m.openEnded && (
+            <span className="phase-text">（候选观察中，结束日期未记录，end 为年末近似）</span>
+          )}
+          {!m.openEnded && <span className="phase-text">（共 {duration} 天）</span>}
         </dd>
 
         <dt>峰值</dt>
@@ -185,9 +236,10 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
             </span>
           ) : (
             m.securities.map((s) => (
-              <span className="tag" key={s.name}>
+              <span className="tag" key={`${s.ticker ?? ''}-${s.name}`}>
                 {s.name}
-                {s.role ? `（${ROLE_LABEL[s.role] ?? s.role}）` : ''}
+                {s.ticker ? `（${s.ticker}）` : ''}
+                {s.role ? ` · ${ROLE_LABEL[s.role] ?? s.role}` : ''}
               </span>
             ))
           )}
@@ -199,9 +251,45 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
             <dd>
               {m.conflicts.map((c, i) => (
                 <div key={i} className="conflict-line">
-                  ⚠ {c}
+                  {conflictLine(c)}
                 </div>
               ))}
+              <div className="phase-text">（保留 candidate A / B 双方口径，未自行取舍；非历史事实）</div>
+            </dd>
+          </>
+        )}
+
+        {m.events.length > 0 && (
+          <>
+            <dt>关联事件</dt>
+            <dd>
+              {m.events.map((ev) => (
+                <div key={`${ev.date}-${ev.name}`} className="event-line">
+                  <span className="phase-text">{ev.date}</span> {ev.name}
+                  <span className="phase-text">
+                    （{EVENT_TYPE_LABEL[ev.event_type] ?? ev.event_type}
+                    {ev.role ? ` · ${ROLE_LABEL[ev.role] ?? ev.role}` : ''}）
+                  </span>
+                </div>
+              ))}
+            </dd>
+          </>
+        )}
+
+        {m.signals.length > 0 && (
+          <>
+            <dt>研究信号</dt>
+            <dd>
+              {m.signals.map((s, i) => (
+                <div key={i} className="event-line">
+                  <span className="phase-text">{s.date}</span>{' '}
+                  {SIGNAL_TYPE_LABEL[s.type] ?? s.type}
+                  <span className="phase-text">
+                    （置信度 {SIGNAL_CONFIDENCE_LABEL[s.confidence ?? ''] ?? s.confidence ?? '—'}）
+                  </span>
+                </div>
+              ))}
+              <div className="phase-text">（研究层"值得观察"信息，不是交易信号）</div>
             </dd>
           </>
         )}

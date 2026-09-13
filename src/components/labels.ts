@@ -1,6 +1,10 @@
 import type { CampaignResult, CampaignStrength, RuleStatus } from '../models';
 import type { WindowPhase } from '../utils';
-import type { LifecyclePhase, TimelineDataStatus } from '../data/timeline/timelineTypes';
+import type {
+  ExportConflictV1,
+  LifecyclePhase,
+  TimelineDataStatus,
+} from '../data/timeline/timelineTypes';
 
 export const PHASE_LABEL: Record<WindowPhase, string> = {
   ACTIVE: '当前窗口',
@@ -48,6 +52,8 @@ export const ROLE_LABEL: Record<string, string> = {
   second_leader: '二龙',
   follow: '跟风',
   representative: '代表',
+  follow_up: '跟进',
+  context: '背景',
 };
 
 /** 各底层行业的条形配色（克制、低饱和） */
@@ -102,4 +108,33 @@ export const DATA_STATUS_CLASS: Record<TimelineDataStatus, string> = {
   preview: 'st-preview',
   conflict: 'st-conflict',
 };
+
+/* ---------------- Research Export（v1.0）标签 ---------------- */
+
+/** 研究信号类型：研究层"值得观察"信息，不是交易信号 */
+export const SIGNAL_TYPE_LABEL: Record<string, string> = {
+  EARLY_SIGNAL: '早期信号',
+  THEME_FORMING: '主题形成',
+  CONFIRMATION_CANDIDATE: '确认候选',
+};
+
+export const SIGNAL_CONFIDENCE_LABEL: Record<string, string> = {
+  low: '低',
+  medium: '中',
+  high: '高',
+};
+
+/** Research 导出事件类型 */
+export const EVENT_TYPE_LABEL: Record<string, string> = {
+  policy: '政策',
+  company: '公司',
+  market: '市场',
+  regulatory: '监管',
+  holiday: '假期',
+};
+
+/** 日期口径分歧单行文本：保留 candidate A / B 双方，不自行选一个 */
+export function conflictLine(c: ExportConflictV1): string {
+  return `⚠ ${c.field}：A ${c.candidate_a.date}（${c.candidate_a.label}） vs B ${c.candidate_b.date}（${c.candidate_b.label}）`;
+}
 

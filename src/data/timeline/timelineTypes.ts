@@ -3,10 +3,15 @@
  *
  * 边界（见 docs/ARCHITECTURE.md / AGENTS.md）：
  * - 本层的类型只服务时间轴渲染，不落库、不替代 src/models/ 的核心模型
- *   （HistoricalCampaign / Theme / CampaignSecurity 等保持不变）。
- * - 未来 Cycle-Research 数据从 preview → provisional → verified 演进时，
- *   只改 Adapter 实现，不改 Timeline UI。
+ *   （HistoricalCampaign / Theme / Security 等保持不变）。
+ * - timeline_export_v1 类型与 Cycle-Research canonical Contract 对齐
+ *   （research/methodology/timeline_export_contract_v1.md，commit 4bbe257 冻结版）。
+ *   Cycle 只消费、不修改该 JSON；所有结构变更回 Research 项目完成。
+ * - Research-only 字段（research_status / theme_cycle_id / promotion_status /
+ *   first_signal_date 等）是 research metadata，不伪装成 HistoricalCampaign 正式字段。
  */
+
+/* ---------------- 视图层：数据状态 / 生命周期 ---------------- */
 
 /** 数据状态：verified 已核验 / provisional 初步核验 / preview 研究预览 / conflict 研究存在分歧 */
 export type TimelineDataStatus = 'verified' | 'provisional' | 'preview' | 'conflict';
@@ -31,9 +36,152 @@ export interface TimelineEarlySignal {
   label?: string;
 }
 
-/** Timeline 行情视图对象：由 Adapter 从 verified 生产数据或 Research 预览数据映射 */
+/* ---------------- timeline_export_v1 canonical Contract（v1.0） ---------------- */
+
+/** 研究层状态（research metadata，大写枚举） */
+export type ExportResearchStatus = 'PROVISIONAL' | 'CONFLICT' | 'INSUFFICIENT' | 'VERIFIED';
+
+/** 生产兼容状态（Cycle 消费，小写枚举） */
+export type ExportProductionStatus = 'verified' | 'provisional' | 'conflict' | 'preview';
+
+export type ExportSignalType = 'EARLY_SIGNAL' | 'THEME_FORMING' | 'CONFIRMATION_CANDIDATE';
+export type ExportSignalConfidence = 'low' | 'medium' | 'high';
+
+export interface ExportRuleV1 {
+  rule_id: string;
+  name?: string | null;
+  base_pattern?: string | null;
+  definition?: string | null;
+  observation_window?: string | null;
+}
+
+export interface ExportThemeV1 {
+  name: string;
+  theme_type?: string | null;
+  role?: string | null;
+}
+
+/**
+ * 研究信号（扁平数组）。归属：campaign_id XOR research_candidate_id（二选一）。
+ * Research Signal 是"值得观察"的研究层信息，不是交易信号。
+ * 注：导出中未归属的一侧字段可以缺省（如仅含 campaign_id 的信号没有 research_candidate_id 键）。
+ */
+export interface ExportSignalV1 {
+  type: ExportSignalType;
+  date: string;
+  confidence: ExportSignalConfidence;
+  campaign_id?: string | null;
+  research_candidate_id?: string | null;
+}
+
+/** 日期口径分歧：保留 candidate A / B 双方，不自行选一个 */
+export interface ExportConflictSideV1 {
+  date: string;
+  label: string;
+}
+
+export interface ExportConflictV1 {
+  field: string;
+  candidate_a: ExportConflictSideV1;
+  candidate_b: ExportConflictSideV1;
+}
+
+/** 正式 HistoricalCampaign（Research 导出；不含 research candidates） */
+export interface ExportCampaignV1 {
+  campaign_id: string;
+  rule_id: string;
+  year: number;
+  start_date: string;
+  peak_date: string | null;
+  end_date: string;
+  status: ExportProductionStatus;
+  confidence?: string | null;
+  classification?: string | null;
+  strength?: string | null;
+  result?: string | null;
+  themes: ExportThemeV1[];
+  event_ids: string[];
+  security_ids: string[];
+  research_status: ExportResearchStatus;
+  theme_cycle_id?: string | null;
+  promotion_status?: string | null;
+  first_signal_date?: string | null;
+  broad_confirmation_date?: string | null;
+  first_decline_date?: string | null;
+  conflicts: ExportConflictV1[];
+  notes?: string | null;
+}
+
+/**
+ * Research Candidate（未达正式 Campaign 门槛的候选；RC- 前缀）。
+ * 没有生产 `status` 字段，只有 research_status；不得伪装 verified。
+ */
+export interface ExportCandidateV1 {
+  campaign_id: string;
+  rule_id: string;
+  year: number;
+  title: string;
+  start_date: string;
+  peak_date: string | null;
+  end_date: string | null;
+  themes: ExportThemeV1[];
+  event_ids: string[];
+  security_ids: string[];
+  early_signal: string | null;
+  research_status: ExportResearchStatus;
+  theme_cycle_id?: string | null;
+  conflicts: ExportConflictV1[];
+  notes?: string | null;
+}
+
+/** 事件（顶层扁平数组；Campaign 经 event_ids 引用，不要求嵌套在 Campaign 内） */
+export interface ExportEventV1 {
+  event_id: string;
+  name: string;
+  date: string;
+  event_type: string;
+  role: string | null;
+  campaign_id: string | null;
+  research_candidate_id: string | null;
+}
+
+/** 证券（顶层扁平数组；每 (security_id, owner) 一条，禁止无归属） */
+export interface ExportSecurityV1 {
+  security_id: string;
+  name: string;
+  ticker: string;
+  exchange: string;
+  role: string;
+  campaign_id: string | null;
+  research_candidate_id: string | null;
+}
+
+/** timeline_export_v1.json 顶层结构（canonical，11 字段白名单） */
+export interface TimelineExportV1 {
+  contract: 'timeline_export';
+  timeline_export_version: '1.0';
+  generated_at: string;
+  source_commit: string;
+  project: string;
+  rules: ExportRuleV1[];
+  signals: ExportSignalV1[];
+  campaigns: ExportCampaignV1[];
+  research_candidates: ExportCandidateV1[];
+  events: ExportEventV1[];
+  securities: ExportSecurityV1[];
+}
+
+/* ---------------- Timeline 视图模型 ---------------- */
+
+/**
+ * Timeline 行情视图对象：由 Adapter 从 verified 生产数据或 Research 导出映射。
+ * kind = 'campaign'：正式 Historical Campaign（Research Export 或 data/verified）；
+ * kind = 'candidate'：Research Candidate（并列来源，非"候选→正式"升级关系；
+ *   不得显示为 Historical Confirmed Campaign，永不映射为 verified）。
+ */
 export interface TimelineCampaign {
   campaign_id: string;
+  kind: 'campaign' | 'candidate';
   rule_id: string;
   season_id: string;
   year: number;
@@ -41,19 +189,36 @@ export interface TimelineCampaign {
   title: string;
   start: string;
   end: string;
+  /** 结束日期缺省（候选观察中）：end 为年末近似，仅渲染用 */
+  openEnded?: boolean;
   peak?: string | null;
   cross_year: boolean;
   status: TimelineDataStatus;
-  /** status = conflict 时的分歧说明（不得被描述成历史事实） */
-  conflicts?: string[];
+  /** status = conflict 时的日期口径分歧（candidate A / B 双方保留） */
+  conflicts?: ExportConflictV1[];
   early_signal?: TimelineEarlySignal | null;
   /** 生命周期分段（start → end 内部，按序覆盖不留空隙） */
   phases: TimelinePhaseSegment[];
-  themes: { id?: string; name: string; role?: string }[];
-  securities: { name: string; role?: string }[];
+  themes: { name: string; role?: string }[];
+  securities: { name: string; ticker?: string; role?: string }[];
+  /** 关联事件（经 event_id → 顶层 events lookup 解析） */
+  events: { name: string; date: string; event_type: string; role?: string | null }[];
+  /** 研究信号（研究层信息，不是交易信号） */
+  signals: { type: string; date: string; confidence?: string }[];
   description?: string;
   /** 来源说明（生产数据来自 Source 注册表；预览数据来自 Research） */
   sourceNote?: string;
+}
+
+/** Research 导出的具体日期事件（区别于生产日历事件：单日、带归属） */
+export interface TimelineResearchEvent {
+  event_id: string;
+  name: string;
+  date: string;
+  event_type: string;
+  role: string | null;
+  campaign_id: string | null;
+  research_candidate_id: string | null;
 }
 
 export interface TimelineEventPoint {
@@ -70,48 +235,20 @@ export interface TimelineEventPoint {
 export interface TimelineYearData {
   year: number;
   campaigns: TimelineCampaign[];
+  /** 生产日历事件（节假日 / 披露期，两个数据源共用） */
   events: TimelineEventPoint[];
+  /** Research 导出的研究事件（仅 preview 数据源；生产数据源不提供） */
+  researchEvents?: TimelineResearchEvent[];
 }
 
 /**
  * 时间轴数据源：Timeline UI 只面对本接口。
  * kind = 'verified'：生产数据（data/verified，经 src/data barrel 聚合）；
- * kind = 'preview'：Cycle-Research 导出预览（本地 fixture / 导入文件，非正式历史事实）。
+ * kind = 'preview'：Cycle-Research 导出预览（timeline_export_v1，非正式历史事实）。
  */
 export interface TimelineDataSource {
   kind: 'verified' | 'preview';
   /** 数据源可展示的年份（UI 不硬编码年份） */
   years(): number[];
   yearData(year: number): TimelineYearData;
-}
-
-/* ---------------- timeline_export_v1 兼容格式 ---------------- */
-
-/** Cycle-Research 导出的单条研究行情（timeline_export_v1.json 兼容） */
-export interface ExportCampaignV1 {
-  campaign_id: string;
-  rule_id: string;
-  year: number;
-  season_id: string;
-  title: string;
-  themes: { name: string; role?: string }[];
-  start_date: string;
-  peak_date?: string | null;
-  end_date: string;
-  early_signal?: { start_date: string; end_date: string; label?: string } | null;
-  /** 高位回撤起点；缺省时 Adapter 以 peak → end 中点近似分段 */
-  retracement_start?: string | null;
-  securities?: { name: string; role?: string }[];
-  description?: string;
-  research_status?: 'preview' | 'provisional' | 'conflict';
-  conflicts?: string[];
-  notes?: string;
-}
-
-/** timeline_export_v1.json 顶层结构（Cycle-Research 导出） */
-export interface TimelineExportV1 {
-  export_version: '1';
-  generated_at: string;
-  source_project: string;
-  campaigns: ExportCampaignV1[];
 }

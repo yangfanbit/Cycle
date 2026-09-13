@@ -5,6 +5,7 @@ import { RuleDetail } from './components/RuleDetail/RuleDetail';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
 import { allCampaigns, campaignById, ruleById } from './data';
 import { previewTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
+import { timelineExportData } from './data/timeline/timelinePreview';
 import type { TimelineCampaign } from './data/timeline/timelineTypes';
 import { marketTodayISO } from './utils';
 
@@ -26,7 +27,14 @@ export default function App() {
   );
   const availableYears = useMemo(() => dataSource.years(), [dataSource]);
 
-  const [year, setYear] = useState(() => Number(today.slice(0, 4)));
+  // 初始年份：当前年不在数据源年份内时回退到最近的可用年份
+  // （如 preview 源 2018–2025、当前 2026 → 打开即显示 2025，而不是空白年）
+  const [year, setYear] = useState(() => {
+    const current = Number(today.slice(0, 4));
+    if (availableYears.length === 0 || availableYears.includes(current)) return current;
+    const earlier = availableYears.filter((y) => y < current);
+    return earlier.length > 0 ? Math.max(...earlier) : Math.min(...availableYears);
+  });
   const [selection, setSelection] = useState<Selection>(null);
 
   const yearData = useMemo(() => dataSource.yearData(year), [dataSource, year]);
@@ -85,7 +93,8 @@ export default function App() {
         <div className="preview-banner" role="status">
           <strong>开发预览数据</strong>
           <span>
-            数据来自 Cycle-Research，尚未全部完成人工最终核验，仅用于界面与历史模式探索；非正式历史事实。
+            数据来自 Cycle-Research timeline_export_v1（commit{' '}
+            {timelineExportData.source_commit.slice(0, 7)}），尚未全部完成人工最终核验，仅用于界面与历史模式探索；非正式历史事实。
           </span>
           <a className="banner-link" href={window.location.pathname}>
             返回生产数据
@@ -100,6 +109,7 @@ export default function App() {
           selection={selection}
           onSelect={setSelection}
           campaigns={yearData.campaigns}
+          researchEvents={yearData.researchEvents}
           sourceKind={dataSource.kind}
         />
         {/* 生产模式且 verified 为空：提供开发预览入口（不把 preview 当生产数据） */}

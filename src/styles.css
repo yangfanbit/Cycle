@@ -475,6 +475,38 @@ html, body {
 .preview-note p { margin: 0; }
 .conflict-line { color: #a83226; font-size: 12.5px; }
 
+/* 研究事件（Research Export 具体日期事件；区别于日历事件） */
+.evt-chip.res {
+  background: #f4f0ea;
+  border: 1px dashed #b8a88e;
+  border-left: 3px solid #b8a88e;
+  color: #6d6250;
+  font-size: 10.5px;
+  padding: 0 4px;
+  line-height: 20px;
+  white-space: nowrap;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Research Candidate 标记：与正式 Campaign 明显区分 */
+.rc-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 0 5px;
+  letter-spacing: 0.04em;
+  flex: none;
+  color: #7a5c9e;
+  border: 1px dashed #7a5c9e;
+  background: #f5f1fa;
+}
+
+/* 详情面板：关联事件 / 研究信号行 */
+.event-line { font-size: 12.5px; line-height: 1.7; }
+
 @media (max-width: 720px) {
   .app-main { padding: 12px 12px 40px; }
   .app-header { padding: 14px 14px 10px; }

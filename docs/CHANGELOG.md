@@ -1,5 +1,83 @@
 # CHANGELOG.md — 变更记录
 
+## 2026-09-13 · V1.6.1 Real Research Export Integration（第九轮）
+
+### 目标
+
+Cycle-Research 2018—2025 历史研究数据（timeline_export_v1，canonical Contract v1.0）
+真正进入 Cycle Timeline MVP。**未修改核心数据模型**（src/models/ 零改动），
+全部经 Timeline Adapter 层解决。
+
+### Canonical Contract v1.0 接入
+
+- `timelineTypes.ts`：`TimelineExportV1` 与 Research 冻结 Contract（Research commit
+  4bbe257）11 字段白名单对齐；新增 `ExportCampaignV1` / `ExportCandidateV1` /
+  `ExportSignalV1` / `ExportEventV1` / `ExportSecurityV1` / `ExportConflictV1`。
+  旧字段（export_version / source_project / purpose）不再兼容，Cycle 内不维护第二套 v1 格式。
+- `timelineAdapter.ts` `validateTimelineExportV1`：只验证 Cycle 实际消费的部分——
+  顶层白名单（未知字段拒绝）、version / contract、campaigns（必填字段 +
+  status ⇔ research_status 一致性 + CONFLICT ⇔ conflicts）、research_candidates
+  （无生产 status + ID 不与 formal campaigns 冲突）、events（唯一 ID + 归属回指）、
+  signals（campaign_id XOR research_candidate_id）、securities（恰好一个 owner）、
+  event_ids / security_ids 引用完整性。非法数据抛错并携带问题清单。
+- 修复：顶层校验只在「缺少必填字段」时提前返回（未知字段不阻断后续 version 检查）。
+
+### 真实导出替换手工 fixture
+
+- `src/data/timeline/data/timeline_export_v1.json`：Cycle-Research 导出的逐字节拷贝
+  （source_commit 49797cc；8 条正式 Campaign + 2 条 Research Candidate +
+  26 事件 + 9 信号 + 39 证券）。**Cycle 只消费、不修改**；业务结构变更回 Research 项目。
+- `timelinePreview.ts`：静态 import JSON（tsconfig 开启 resolveJsonModule），
+  无运行时网络请求，静态 PWA 不变。
+
+### Adapter 映射（Research Export → Timeline）
+
+- 正式 Campaign：research_status → 状态（PROVISIONAL→provisional / CONFLICT→conflict /
+  VERIFIED→verified）；first_decline_date 作回撤起点（缺省 peak→end 中点近似）。
+- Research Candidate（RC-2023-HUAWEI / RC-2024-SECONDARY）：kind = candidate，
+  status 只为 preview / conflict（永不 verified）；与正式 Campaign 并列展示，
+  非升级关系；end_date 缺省时 openEnded = true（end 为年末近似，仅渲染）。
+- Signals：EARLY_SIGNAL 且早于正式起点 → TimelineEarlySignal（淡显 / 虚线）；
+  全部研究信号进入详情（类型 + 置信度）。研究信号是"值得观察"，不是交易信号。
+- Events / Securities：顶层扁平数组 + owner 引用；Adapter 建 lookup
+  （eventById / securitiesByOwner / signalsByCampaign / signalsByCandidate）解析，
+  不要求嵌套在 Campaign 内。
+- 年份自动推导：campaigns + research_candidates + events → 连续区间 2018—2025
+  （2018 反例年份可见、无 Campaign、空态合法，不编造行情）。
+
+### UI
+
+- Timeline：研究事件行（.evt-chip.res 虚线暖色区分日历事件；tooltip 含归属 +
+  「非正式历史事实」）；Candidate RC 徽章；conflict tooltip 用 `conflictLine`
+  结构化显示（修复对象数组误拼 [object Object]）；空态文案
+  「该年份当前无正式 Historical Campaign 数据」。
+- CampaignDetail：结构化研究分歧（⚠ field：A date（label） vs B date（label），
+  保留双方不自行取舍）；关联事件（日期 + 类型 + 角色）；研究信号（类型 +
+  置信度 + "不是交易信号"注明）；Research Candidate 徽章与说明；openEnded 文案；
+  证券显示 ticker。
+- App：researchEvents 透传；预览横幅带 Research 源 commit；初始年份回退
+  （preview 源 2018—2025、当前 2026 → 打开即显示 2025，而不是空白年）。
+- `labels.ts`：SIGNAL_TYPE_LABEL / SIGNAL_CONFIDENCE_LABEL / EVENT_TYPE_LABEL +
+  `conflictLine`（A/B 双方口径单行文本）。
+
+### 数据边界（不变量）
+
+- timeline_export_v1.json 只存在于 src/data/timeline/data/，不写入 data/ 任何目录；
+- Research Candidate / preview 数据不进入 allCampaigns / verifiedCampaigns /
+  campaignById（测试断言保证）；
+- 核心数据模型（HistoricalCampaign / Rule / Theme / Security 等）零修改。
+
+### 测试
+
+- 66 → 81 项：重写 timelineAdapter 测试，覆盖 Contract 校验（真实导出通过 /
+  export_version 拒绝 / source_project 拒绝 / version 必须 1.0 / 未知字段拒绝 /
+  status 一致性 / candidate 无生产 status / signals XOR / 引用缺失）、
+  年份推导（2018—2025 全可见 / 2018 空态 / 2019—2025 有数据）、
+  Conflict（2022 start 分歧 04-27 vs 05-23 / 2024 peak+end 双分歧）、
+  Candidate（kind=candidate / 不进生产 / 与 Campaign 并列共存）、
+  徽章（preview 来源标注 / conflict 携带分歧）、引用解析（events / securities /
+  signals 挂正确主体）、verified 隔离与跨年回归、生命周期分段推导。
+
 ## 2026-09-13 · V1.6 Cycle Timeline MVP：时间轴 + 历史对比 + 提前观察（第八轮）
 
 ### 目标

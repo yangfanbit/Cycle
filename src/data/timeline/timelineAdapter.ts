@@ -10,23 +10,28 @@ import {
 import type { HistoricalCampaign } from '../../models';
 import { addDaysISO, diffDays, minISO, maxISO, resolveEventForYear } from '../../utils';
 import type {
+  ExportCandidateV1,
   ExportCampaignV1,
+  ExportResearchStatus,
+  ExportSecurityV1,
+  ExportSignalV1,
   TimelineCampaign,
   TimelineDataSource,
   TimelineEventPoint,
   TimelineExportV1,
   TimelinePhaseSegment,
+  TimelineResearchEvent,
   TimelineYearData,
 } from './timelineTypes';
-import { timelinePreviewExport } from './timelinePreview';
+import { timelineExportData } from './timelinePreview';
 
 /**
  * Timeline Data Adapter：把两类来源映射成统一的 TimelineDataSource。
  *
  * - verified：生产数据（data/verified → src/data barrel 聚合 allCampaigns 等）。
- * - preview：Cycle-Research 导出（timeline_export_v1 兼容），本地 fixture 或
- *   未来导入的本地文件数据。**预览数据不是生产数据出口**：不写入 data/verified，
- *   不混入 allCampaigns。
+ * - preview：Cycle-Research 真实导出（timeline_export_v1，canonical Contract v1.0），
+ *   经 validateTimelineExportV1 校验后消费。**预览数据不是生产数据出口**：
+ *   不写入 data/verified，不混入 allCampaigns。
  *
  * UI（Timeline / App）只依赖 TimelineDataSource，未来 preview → provisional →
  * verified 的切换只改本层。
@@ -94,7 +99,7 @@ function verifiedCampaignToTimeline(c: HistoricalCampaign): TimelineCampaign {
   const themes = themeRels
     .map((ct) => {
       const theme = themeById.get(ct.theme_id);
-      return theme ? { id: ct.theme_id, name: theme.name, role: ct.role } : null;
+      return theme ? { name: theme.name, role: ct.role } : null;
     })
     .filter((t): t is NonNullable<typeof t> => t !== null);
   const mainTheme = themes.find((t) => t.role === 'main');
@@ -105,6 +110,7 @@ function verifiedCampaignToTimeline(c: HistoricalCampaign): TimelineCampaign {
   const sector = ruleSector.get(c.rule_id) ?? '行情';
   return {
     campaign_id: c.campaign_id,
+    kind: 'campaign',
     rule_id: c.rule_id,
     season_id: c.season_id,
     year: c.campaign_year,
@@ -123,6 +129,8 @@ function verifiedCampaignToTimeline(c: HistoricalCampaign): TimelineCampaign {
     }),
     themes,
     securities,
+    events: [],
+    signals: [],
     description: c.description,
     sourceNote: source ? `${source.title}（${source.source_type}）` : c.source_id,
   };
@@ -158,68 +166,420 @@ export function verifiedTimelineSource(
   };
 }
 
+/* ---------------- Contract 校验（只验证 Cycle 实际消费的部分） ---------------- */
+
+const TOP_LEVEL_KEYS = [
+  'contract',
+  'timeline_export_version',
+  'generated_at',
+  'source_commit',
+  'project',
+  'rules',
+  'signals',
+  'campaigns',
+  'research_candidates',
+  'events',
+  'securities',
+] as const;
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const SIGNAL_TYPES = new Set(['EARLY_SIGNAL', 'THEME_FORMING', 'CONFIRMATION_CANDIDATE']);
+const FORMAL_RESEARCH_STATUS: Record<string, string> = {
+  PROVISIONAL: 'provisional',
+  CONFLICT: 'conflict',
+  VERIFIED: 'verified',
+};
+
+/**
+ * 校验 timeline_export_v1（v1.0 canonical Contract）中 Cycle 实际消费的部分。
+ * 不在 Cycle 端重写完整 Research Validator（scripts/validate_timeline_export.py 是接口守门人）。
+ * 返回问题清单；空数组 = 通过。
+ */
+export function validateTimelineExportV1(data: unknown): string[] {
+  const issues: string[] = [];
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+    return ['顶层必须是 JSON 对象'];
+  }
+  const obj = data as Record<string, unknown>;
+
+  // 1-2. 顶层白名单（未知字段拒绝；旧字段 export_version / source_project / purpose 已废弃）
+  const missingTop: string[] = [];
+  for (const key of Object.keys(obj)) {
+    if (!(TOP_LEVEL_KEYS as readonly string[]).includes(key)) {
+      issues.push(`未知顶层字段 "${key}"（v1.0 白名单外；export_version / source_project / purpose 等旧字段已废弃）`);
+    }
+  }
+  for (const key of TOP_LEVEL_KEYS) {
+    if (!(key in obj)) missingTop.push(key);
+  }
+  if (missingTop.length > 0) {
+    // 顶层结构不完整时不再深入（version 等检查依赖字段存在）
+    for (const key of missingTop) issues.push(`缺少顶层字段 "${key}"`);
+    return issues;
+  }
+
+  // 3. version / contract
+  if (obj.contract !== 'timeline_export') issues.push('contract 必须为 "timeline_export"');
+  if (obj.timeline_export_version !== '1.0') issues.push('timeline_export_version 必须为 "1.0"');
+
+  const arr = (name: string): unknown[] => {
+    const v = obj[name];
+    if (!Array.isArray(v)) {
+      issues.push(`"${name}" 必须为数组`);
+      return [];
+    }
+    return v;
+  };
+
+  const campaigns = arr('campaigns');
+  const candidates = arr('research_candidates');
+  const signals = arr('signals');
+  const events = arr('events');
+  const securities = arr('securities');
+  const ruleRows = arr('rules');
+
+  // 4. campaigns：必填字段 + 状态一致性 + conflict ⇔ conflicts
+  const campaignIds = new Set<string>();
+  campaigns.forEach((c, i) => {
+    const row = c as Record<string, unknown>;
+    const tag = `campaigns[${i}]`;
+    for (const f of ['campaign_id', 'rule_id', 'year', 'start_date', 'end_date', 'status', 'research_status', 'themes', 'event_ids', 'security_ids', 'conflicts']) {
+      if (!(f in row)) issues.push(`${tag} 缺少必填字段 "${f}"`);
+    }
+    if (typeof row.campaign_id !== 'string' || !row.campaign_id) return;
+    campaignIds.add(row.campaign_id);
+    const rs = row.research_status as string;
+    const expected = FORMAL_RESEARCH_STATUS[rs];
+    if (!expected) {
+      issues.push(`${tag}（${row.campaign_id}）research_status "${rs}" 不允许出现在正式 Campaign（不编造）`);
+    } else if (row.status !== expected) {
+      issues.push(`${tag}（${row.campaign_id}）status "${row.status}" 与 research_status "${rs}" 不一致`);
+    }
+    const conflicts = row.conflicts;
+    if (rs === 'CONFLICT' && (!Array.isArray(conflicts) || conflicts.length === 0)) {
+      issues.push(`${tag}（${row.campaign_id}）research_status=CONFLICT 必须携带 conflicts（candidate_a/b）`);
+    }
+    if (rs !== 'CONFLICT' && Array.isArray(conflicts) && conflicts.length > 0) {
+      issues.push(`${tag}（${row.campaign_id}）非 CONFLICT 不应携带 conflicts`);
+    }
+  });
+
+  // 5. research_candidates：必填字段 + 无生产 status + 不得进入 formal campaigns
+  const candidateIds = new Set<string>();
+  candidates.forEach((c, i) => {
+    const row = c as Record<string, unknown>;
+    const tag = `research_candidates[${i}]`;
+    for (const f of ['campaign_id', 'rule_id', 'year', 'title', 'start_date', 'research_status', 'themes', 'event_ids', 'security_ids', 'conflicts']) {
+      if (!(f in row)) issues.push(`${tag} 缺少必填字段 "${f}"`);
+    }
+    if ('status' in row) {
+      issues.push(`${tag} 候选不得携带生产 status 字段（候选只有 research_status）`);
+    }
+    if (typeof row.campaign_id === 'string' && row.campaign_id) {
+      if (campaignIds.has(row.campaign_id)) {
+        issues.push(`${tag}（${row.campaign_id}）与 formal campaigns ID 冲突：候选不得进入正式 Campaign`);
+      }
+      candidateIds.add(row.campaign_id);
+    }
+  });
+
+  // 6. events：唯一 ID + 日期格式 + 归属回指
+  const eventIds = new Set<string>();
+  events.forEach((e, i) => {
+    const row = e as Record<string, unknown>;
+    const tag = `events[${i}]`;
+    if (typeof row.event_id !== 'string' || !row.event_id) return;
+    if (eventIds.has(row.event_id)) issues.push(`${tag} event_id "${row.event_id}" 重复`);
+    eventIds.add(row.event_id);
+    if (typeof row.date !== 'string' || !ISO_DATE.test(row.date)) issues.push(`${tag}（${row.event_id}）date 必须为 ISO 日期`);
+    if (row.campaign_id != null && !campaignIds.has(row.campaign_id as string)) {
+      issues.push(`${tag}（${row.event_id}）campaign_id "${row.campaign_id}" 不存在`);
+    }
+    if (row.research_candidate_id != null && !candidateIds.has(row.research_candidate_id as string)) {
+      issues.push(`${tag}（${row.event_id}）research_candidate_id "${row.research_candidate_id}" 不存在`);
+    }
+  });
+
+  // 7. signals：归属 XOR（campaign_id XOR research_candidate_id）+ 引用存在
+  signals.forEach((s, i) => {
+    const row = s as Record<string, unknown>;
+    const tag = `signals[${i}]`;
+    if (!SIGNAL_TYPES.has(row.type as string)) issues.push(`${tag} type "${row.type}" 不在枚举内`);
+    const hasCampaign = row.campaign_id != null;
+    const hasCandidate = row.research_candidate_id != null;
+    if (hasCampaign === hasCandidate) {
+      issues.push(`${tag} 归属必须是 campaign_id XOR research_candidate_id（二选一）`);
+    } else if (hasCampaign && !campaignIds.has(row.campaign_id as string)) {
+      issues.push(`${tag} campaign_id "${row.campaign_id}" 不存在`);
+    } else if (hasCandidate && !candidateIds.has(row.research_candidate_id as string)) {
+      issues.push(`${tag} research_candidate_id "${row.research_candidate_id}" 不存在`);
+    }
+  });
+
+  // 8. securities：必须知道属于谁（每行恰好一个 owner）+ 回指存在
+  securities.forEach((s, i) => {
+    const row = s as Record<string, unknown>;
+    const tag = `securities[${i}]`;
+    const hasCampaign = row.campaign_id != null;
+    const hasCandidate = row.research_candidate_id != null;
+    if (hasCampaign === hasCandidate) {
+      issues.push(`${tag}（${row.security_id}）必须归属恰好一个 owner（campaign_id 或 research_candidate_id）`);
+    } else if (hasCampaign && !campaignIds.has(row.campaign_id as string)) {
+      issues.push(`${tag}（${row.security_id}）campaign_id "${row.campaign_id}" 不存在`);
+    } else if (hasCandidate && !candidateIds.has(row.research_candidate_id as string)) {
+      issues.push(`${tag}（${row.security_id}）research_candidate_id "${row.research_candidate_id}" 不存在`);
+    }
+  });
+
+  // 9. campaign / candidate 引用完整性（event_ids / security_ids 必须可解析）
+  const securitiesByOwner = new Map<string, Set<string>>();
+  securities.forEach((s) => {
+    const row = s as ExportSecurityV1;
+    const owner = row.campaign_id ?? row.research_candidate_id;
+    if (!owner) return;
+    if (!securitiesByOwner.has(owner)) securitiesByOwner.set(owner, new Set());
+    securitiesByOwner.get(owner)!.add(row.security_id);
+  });
+  const checkRefs = (row: Record<string, unknown>, id: string, kind: string) => {
+    for (const eid of (row.event_ids as string[]) ?? []) {
+      if (!eventIds.has(eid)) issues.push(`${kind} ${id} 引用的 event_id "${eid}" 不存在`);
+    }
+    const owned = securitiesByOwner.get(id) ?? new Set<string>();
+    for (const sid of (row.security_ids as string[]) ?? []) {
+      if (!owned.has(sid)) issues.push(`${kind} ${id} 引用的 security_id "${sid}" 无归属行（必须 (security_id, owner) 成对）`);
+    }
+  };
+  campaigns.forEach((c) => {
+    const row = c as Record<string, unknown>;
+    if (typeof row.campaign_id === 'string') checkRefs(row, row.campaign_id, 'campaign');
+  });
+  candidates.forEach((c) => {
+    const row = c as Record<string, unknown>;
+    if (typeof row.campaign_id === 'string') checkRefs(row, row.campaign_id, 'research_candidate');
+  });
+
+  // rules：rule_id 唯一（Cycle 用于标题前缀）
+  const ruleIds = new Set<string>();
+  ruleRows.forEach((r, i) => {
+    const row = r as Record<string, unknown>;
+    if (typeof row.rule_id !== 'string' || !row.rule_id) {
+      issues.push(`rules[${i}] 缺少 rule_id`);
+    } else if (ruleIds.has(row.rule_id)) {
+      issues.push(`rules[${i}] rule_id "${row.rule_id}" 重复`);
+    } else {
+      ruleIds.add(row.rule_id);
+    }
+  });
+
+  return issues;
+}
+
 /* ---------------- export v1 → TimelineCampaign ---------------- */
 
-export function exportCampaignToTimeline(c: ExportCampaignV1): TimelineCampaign {
-  const status = c.research_status ?? 'preview';
+/** 正式 Campaign：research_status（大写研究层）→ Timeline 状态（小写生产兼容） */
+function formalStatus(rs: ExportResearchStatus): TimelineCampaign['status'] {
+  if (rs === 'VERIFIED') return 'verified';
+  if (rs === 'CONFLICT') return 'conflict';
+  if (rs === 'PROVISIONAL') return 'provisional';
+  throw new Error(`正式 Campaign 不允许 research_status=${rs}（不编造）`);
+}
+
+/** Research Candidate：永不映射 verified；PROVISIONAL → preview */
+function candidateStatus(rs: ExportResearchStatus): TimelineCampaign['status'] {
+  return rs === 'CONFLICT' ? 'conflict' : 'preview';
+}
+
+function mainThemeName(themes: { name: string; role?: string | null }[]): string | null {
+  return themes.find((t) => t.role === 'main')?.name ?? themes[0]?.name ?? null;
+}
+
+interface ExportContext {
+  data: TimelineExportV1;
+  ruleBase: Map<string, string>;
+  eventById: Map<string, TimelineResearchEvent>;
+  securitiesByOwner: Map<string, ExportSecurityV1[]>;
+  signalsByCampaign: Map<string, ExportSignalV1[]>;
+  signalsByCandidate: Map<string, ExportSignalV1[]>;
+}
+
+function buildContext(data: TimelineExportV1): ExportContext {
+  const ruleBase = new Map(data.rules.map((r) => [r.rule_id, r.base_pattern ?? r.rule_id]));
+  const eventById = new Map<string, TimelineResearchEvent>(
+    data.events.map((e) => [e.event_id, { ...e }]),
+  );
+  const securitiesByOwner = new Map<string, ExportSecurityV1[]>();
+  for (const s of data.securities) {
+    const owner = s.campaign_id ?? s.research_candidate_id;
+    if (!owner) continue;
+    if (!securitiesByOwner.has(owner)) securitiesByOwner.set(owner, []);
+    securitiesByOwner.get(owner)!.push(s);
+  }
+  const signalsByCampaign = new Map<string, ExportSignalV1[]>();
+  const signalsByCandidate = new Map<string, ExportSignalV1[]>();
+  for (const s of data.signals) {
+    if (s.campaign_id != null) {
+      if (!signalsByCampaign.has(s.campaign_id)) signalsByCampaign.set(s.campaign_id, []);
+      signalsByCampaign.get(s.campaign_id)!.push(s);
+    } else if (s.research_candidate_id != null) {
+      if (!signalsByCandidate.has(s.research_candidate_id)) signalsByCandidate.set(s.research_candidate_id, []);
+      signalsByCandidate.get(s.research_candidate_id)!.push(s);
+    }
+  }
+  return { data, ruleBase, eventById, securitiesByOwner, signalsByCampaign, signalsByCandidate };
+}
+
+/** 正式 Campaign → TimelineCampaign（Timeline UI 不需要全部 Research 字段） */
+function formalCampaignToTimeline(c: ExportCampaignV1, ctx: ExportContext): TimelineCampaign {
+  const status = formalStatus(c.research_status);
+  const securities = (ctx.securitiesByOwner.get(c.campaign_id) ?? []).map((s) => ({
+    name: s.name,
+    ticker: s.ticker,
+    role: s.role,
+  }));
+  const events = c.event_ids
+    .map((id) => ctx.eventById.get(id))
+    .filter((e): e is TimelineResearchEvent => e != null)
+    .map((e) => ({ name: e.name, date: e.date, event_type: e.event_type, role: e.role }));
+  const signals = (ctx.signalsByCampaign.get(c.campaign_id) ?? []).map((s) => ({
+    type: s.type,
+    date: s.date,
+    confidence: s.confidence,
+  }));
+  // Early Signal 只取早于正式起点的 EARLY_SIGNAL（与 start 重合的信号不渲染为前置条）
+  const early = (ctx.signalsByCampaign.get(c.campaign_id) ?? []).find(
+    (s) => s.type === 'EARLY_SIGNAL' && s.date < c.start_date,
+  );
+  const base = ctx.ruleBase.get(c.rule_id) ?? '行情';
+  const main = mainThemeName(c.themes);
   return {
     campaign_id: c.campaign_id,
+    kind: 'campaign',
     rule_id: c.rule_id,
+    season_id: String(c.year),
     year: c.year,
-    season_id: c.season_id,
-    title: c.title,
+    title: main ? `${base} · ${main}` : `${base} · ${c.campaign_id}`,
     start: c.start_date,
     end: c.end_date,
-    peak: c.peak_date ?? null,
+    peak: c.peak_date,
     cross_year: c.start_date.slice(0, 4) !== c.end_date.slice(0, 4),
     status,
-    conflicts: c.conflicts,
-    early_signal: c.early_signal
-      ? { start: c.early_signal.start_date, end: c.early_signal.end_date, label: c.early_signal.label }
+    conflicts: c.conflicts.length > 0 ? c.conflicts : undefined,
+    early_signal: early
+      ? { start: early.date, end: c.start_date, label: `Research Early Signal（${early.confidence}）` }
       : null,
+    // first_decline_date 作回撤起点；缺省以 peak→end 中点近似（仅渲染）
     phases: derivePhases({
       start: c.start_date,
       end: c.end_date,
-      peak: c.peak_date ?? null,
-      retracement_start: c.retracement_start ?? null,
+      peak: c.peak_date,
+      retracement_start: c.first_decline_date ?? null,
     }),
-    themes: c.themes.map((t) => ({ name: t.name, role: t.role })),
-    securities: (c.securities ?? []).map((s) => ({ name: s.name, role: s.role })),
-    description: c.description,
-    sourceNote: `Cycle-Research 预览数据（${status}）——非正式历史事实`,
+    themes: c.themes.map((t) => ({ name: t.name, role: t.role ?? undefined })),
+    securities,
+    events,
+    signals,
+    description: c.notes ?? undefined,
+    sourceNote: `Cycle-Research timeline_export_v1（commit ${ctx.data.source_commit.slice(0, 7)}，${status}）——非正式历史事实`,
+  };
+}
+
+/** Research Candidate → TimelineCampaign（kind = candidate，明显区别于正式 Campaign） */
+function candidateToTimeline(rc: ExportCandidateV1, ctx: ExportContext): TimelineCampaign {
+  const status = candidateStatus(rc.research_status);
+  const openEnded = rc.end_date == null;
+  const end = rc.end_date ?? `${rc.year}-12-31`;
+  const securities = (ctx.securitiesByOwner.get(rc.campaign_id) ?? []).map((s) => ({
+    name: s.name,
+    ticker: s.ticker,
+    role: s.role,
+  }));
+  const events = rc.event_ids
+    .map((id) => ctx.eventById.get(id))
+    .filter((e): e is TimelineResearchEvent => e != null)
+    .map((e) => ({ name: e.name, date: e.date, event_type: e.event_type, role: e.role }));
+  const signals = (ctx.signalsByCandidate.get(rc.campaign_id) ?? []).map((s) => ({
+    type: s.type,
+    date: s.date,
+    confidence: s.confidence,
+  }));
+  const earlyDate =
+    rc.early_signal ??
+    (ctx.signalsByCandidate.get(rc.campaign_id) ?? []).find((s) => s.type === 'EARLY_SIGNAL')?.date ??
+    null;
+  return {
+    campaign_id: rc.campaign_id,
+    kind: 'candidate',
+    rule_id: rc.rule_id,
+    season_id: String(rc.year),
+    year: rc.year,
+    title: rc.title,
+    start: rc.start_date,
+    end,
+    openEnded,
+    peak: rc.peak_date,
+    cross_year: rc.start_date.slice(0, 4) !== end.slice(0, 4),
+    status,
+    conflicts: rc.conflicts.length > 0 ? rc.conflicts : undefined,
+    early_signal: earlyDate && earlyDate < rc.start_date
+      ? { start: earlyDate, end: rc.start_date, label: 'Research Early Signal' }
+      : null,
+    phases: derivePhases({ start: rc.start_date, end, peak: rc.peak_date, retracement_start: null }),
+    themes: rc.themes.map((t) => ({ name: t.name, role: t.role ?? undefined })),
+    securities,
+    events,
+    signals,
+    description: rc.notes ?? undefined,
+    sourceNote: `Cycle-Research Research Candidate（commit ${ctx.data.source_commit.slice(0, 7)}）——未达正式 Campaign 门槛，非正式历史事实`,
   };
 }
 
 /**
- * timeline_export_v1 兼容导入接口。
- * 仅支持本地生成的数据（fetch 传入已解析对象 / 本地 fixture），
- * 不做运行时网络请求——Cycle 保持静态 PWA。
+ * timeline_export_v1（canonical v1.0）→ preview 数据源。
+ * 仅支持本地生成的数据（静态 import / 已解析对象），不做运行时网络请求——静态 PWA。
+ * 数据非法时抛错（含校验问题清单）。
  */
-export function timelineSourceFromExportV1(data: TimelineExportV1): TimelineDataSource {
-  const timeline = data.campaigns.map(exportCampaignToTimeline);
+export function fromTimelineExportV1(data: TimelineExportV1): TimelineDataSource {
+  const issues = validateTimelineExportV1(data);
+  if (issues.length > 0) {
+    throw new Error(`timeline_export_v1 校验失败（${issues.length} 项）：\n- ${issues.join('\n- ')}`);
+  }
+  const ctx = buildContext(data);
+  const formal = data.campaigns.map((c) => formalCampaignToTimeline(c, ctx));
+  const candidates = data.research_candidates.map((rc) => candidateToTimeline(rc, ctx));
+  // 正式 Campaign 与 Research Candidate 是并列来源：统一进入 yearData.campaigns，
+  // 以 kind 区分（Candidate 不进入生产 allCampaigns / campaignById —— 由数据隔离保证）
+  const all = [...formal, ...candidates].sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : 0));
+
   return {
     kind: 'preview',
     years() {
+      // 年份自动推导：campaigns + research_candidates + events（含 2018 反例年份），
+      // 取连续区间——UI 不硬编码年份
       const set = new Set<number>();
-      for (const c of timeline) {
-        set.add(Number(c.start.slice(0, 4)));
-        set.add(Number(c.end.slice(0, 4)));
-      }
-      return [...set].sort((a, b) => a - b);
+      for (const c of data.campaigns) set.add(c.year);
+      for (const rc of data.research_candidates) set.add(rc.year);
+      for (const ev of data.events) set.add(Number(ev.date.slice(0, 4)));
+      if (set.size === 0) return [];
+      const min = Math.min(...set);
+      const max = Math.max(...set);
+      const years: number[] = [];
+      for (let y = min; y <= max; y += 1) years.push(y);
+      return years;
     },
     yearData(year: number): TimelineYearData {
       const yStart = `${year}-01-01`;
       const yEnd = `${year}-12-31`;
       return {
         year,
-        campaigns: timeline.filter((c) => c.start <= yEnd && c.end >= yStart),
+        campaigns: all.filter((c) => c.start <= yEnd && c.end >= yStart),
         events: timelineEventsForYear(year),
+        researchEvents: data.events.filter((ev) => ev.date.startsWith(`${year}-`)),
       };
     },
   };
 }
 
-/** 开发预览数据源：本地 fixture（Cycle-Research 已研究的 2022 / 2023 / 2024 案例） */
+/** 开发预览数据源：Cycle-Research 真实导出（src/data/timeline/data/timeline_export_v1.json） */
 export function previewTimelineSource(): TimelineDataSource {
-  return timelineSourceFromExportV1(timelinePreviewExport);
+  return fromTimelineExportV1(timelineExportData);
 }
