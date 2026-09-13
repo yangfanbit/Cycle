@@ -1,0 +1,6 @@
+﻿security_id,name,identified_date,identification_source,identification_type,confidence,notes
+DAZHONGTONG,大众交通,2024-07-08,7/8放量+6.12%启动、7/9一字板，无人驾驶-网约车叙事早段(公开盘面/7/9媒体归因),market_breadth,medium,识别较早：7/8当日已有可观察异动(低置信主题归因)，7/9一字板获媒体归入无人驾驶
+JINJIANG,锦江在线,2024-07-09,7/9无人驾驶概念一字连板（当日市场盘面/媒体复盘报道）,media_identified,medium,与星网宇达同为首批一字连板的无人驾驶/智能网约车标的
+XINGYUYUDA,星网宇达,2024-07-09,7/9无人驾驶概念一字连板（当日市场盘面/媒体复盘报道）,media_identified,medium,首批无人驾驶概念一字连板标的
+TIANMAI,天迈科技,2024-07-10,证券时报7/10报道：天迈科技20cm涨停（无人驾驶+车路云共涨）【E-2024-05】,media_identified,high,7/10有当日Tier2公开报道直接点名其为无人驾驶热点
+JINLONG,金龙汽车,2024-07-12,7/12金龙汽车涨停（无人驾驶客车/萝卜快跑概念公开报道）,media_identified,medium,识别晚于前四只；7/12涨停获公开归因

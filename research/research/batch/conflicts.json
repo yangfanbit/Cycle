@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-09-13T13:46:20",
+  "source_commit": "2ff6fad0fb75e19310158796f9cfc297180d6190",
+  "rule": "conflicts 记录研究日期口径冲突；candidate_a=DB 冻结值，candidate_b=研究复核候选",
+  "conflicts": [
+    {
+      "research_campaign_id": "C-2024-ROBOTAXI",
+      "field": "end_date",
+      "candidate_a": {
+        "date": "2024-07-31",
+        "label": "DB Candidate",
+        "basis": "campaigns.end_date 冻结值"
+      },
+      "candidate_b": {
+        "date": "2024-08-23",
+        "label": "Research Review Candidate（Main Campaign End）",
+        "basis": "theme_lifecycle_v0_2：08-23 Major Breakpoint"
+      },
+      "supporting_evidence_a": [
+        "E-2024-05",
+        "E-2024-06"
+      ],
+      "supporting_evidence_b": [],
+      "contradicting_evidence": [],
+      "decision": "pending_human_review",
+      "blocker_type": "RESEARCH_UNCERTAINTY",
+      "notes": "不强行解决；由人工最终 Review 裁决为 Verified Date 后才允许进入 Cycle"
+    }
+  ]
+}

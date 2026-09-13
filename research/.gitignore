@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 编辑/系统
+.DS_Store
+Thumbs.db
+
+# 研究数据库为研究对象，保留提交；若体积过大可改为忽略数据库，仅保留 schema
+# database/*.db

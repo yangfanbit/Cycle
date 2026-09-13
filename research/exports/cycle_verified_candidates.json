@@ -1,0 +1,1613 @@
+{
+  "meta": {
+    "project": "Cycle-Research",
+    "purpose": "research 阶段已整理、等待人工最终确认的候选数据（非 Cycle 正式 verified）",
+    "exported_at": "2026-09-13T09:28:59.980286",
+    "rule": "rule_auto_summer",
+    "notes": "仅在人工 Review 后，才由人工/指定 Agent 转入 Cycle/data/verified/"
+  },
+  "verified_candidates": [
+    {
+      "campaign_id": "C-2019-AD",
+      "rule": "rule_auto_summer",
+      "year": 2019,
+      "classification": "event_driven",
+      "dates": {
+        "start_date": "2019-08-15",
+        "end_date": "2019-09-30",
+        "peak_date": "2019-09-24",
+        "date_confidence": "medium",
+        "drift_vs_jun01": 75,
+        "drift_vs_jul01": 45,
+        "drift_vs_aug01": 14,
+        "start_date_basis": "无人驾驶指数自8/15起持续走强(据S-2019-05)；8/27智能汽车脉冲(据S-2019-04)",
+        "end_date_basis": "9/24指数高点后回落(据S-2019-05)"
+      },
+      "result": "weak",
+      "strength": "weak",
+      "description": "8月中下旬启动的智能驾驶/无人驾驶事件驱动行情，起点落在6-8月窗口尾部（近9月），非整车主线，强度弱。",
+      "research_notes": "classification=event_driven 而非 theme_campaign，因持续时间与强度不足；且主题更偏智能网联而非整车。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AD",
+          "name": "智能驾驶/无人驾驶",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-AUTO",
+          "description": "自动驾驶、车联网（2023年后主升）",
+          "role": "main"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "ROUTE",
+          "ticker": "002813",
+          "name": "路畅科技",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "WANAN",
+          "ticker": "002590",
+          "name": "万安科技",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "YATAI",
+          "ticker": "002284",
+          "name": "亚太股份",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2019-03",
+          "date": "2019-08-27",
+          "name": "交通部研究自动驾驶法规与指导意见",
+          "event_type": "policy",
+          "description": "围绕自动驾驶法律/法规开展专项研究",
+          "source_id": "S-2019-04",
+          "role": "trigger"
+        }
+      ],
+      "campaign_phases": null,
+      "evidences": [
+        {
+          "evidence_id": "E-2019-03",
+          "source_id": "S-2019-03",
+          "date": "2019-06-06",
+          "evidence_type": "政策文件",
+          "description": "6/6发改委等印发《推动重点消费品更新升级方案2019-2020》，汽车限购解禁关键词，鼓励促进汽车消费；但未含实质补贴，属温和信号。",
+          "evidence_role": "context",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:49",
+          "independence_group": "orig_policy",
+          "temporal_relation": "prior",
+          "bridge_role": "context",
+          "source_title": "上半年汽车相关政策盘点",
+          "source_url": "http://m.toutiao.com/group/6715160839256539659/",
+          "source_tier": 3
+        },
+        {
+          "evidence_id": "E-2019-05",
+          "source_id": "S-2019-05",
+          "date": "2019-08-15",
+          "evidence_type": "行情数据",
+          "description": "无人驾驶指数自8/15(2210.96)涨至9/24(2733.92)，累计+23.65%。《交通强国建设纲要》+自动驾驶商用牌照+华为5G方案催化。窗口偏8月中下旬起，近9月。",
+          "evidence_role": "supporting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:24:49",
+          "independence_group": "orig_ad_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "无人驾驶板块",
+          "source_url": "http://m.toutiao.com/group/6748910614548054542/",
+          "source_tier": 3
+        },
+        {
+          "evidence_id": "E-2019-04",
+          "source_id": "S-2019-04",
+          "date": "2019-08-27",
+          "evidence_type": "行情数据",
+          "description": "8/27智能汽车概念午后走强，万安科技封板，亚太/浙江世宝/路畅跟涨；交通部研究自动驾驶法规与指导意见。属8月底事件驱动脉冲。",
+          "evidence_role": "supporting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:24:49",
+          "independence_group": "orig_ad_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "快讯：智能汽车概念股午后走强",
+          "source_url": "https://www.cls.cn/detail/381973",
+          "source_tier": 2
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 3,
+        "independence_groups": 2,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    },
+    {
+      "campaign_id": "C-2020-NEV",
+      "rule": "rule_auto_summer",
+      "year": 2020,
+      "classification": "theme_campaign",
+      "dates": {
+        "start_date": "2020-06-01",
+        "end_date": "2020-09-30",
+        "peak_date": "2020-07-13",
+        "date_confidence": "medium",
+        "drift_vs_jun01": 0,
+        "drift_vs_jul01": -30,
+        "drift_vs_aug01": -61,
+        "start_date_basis": "6/10特斯拉破千美元+6/11 A股特斯拉板块涨停潮(据S-2020-01)；比亚迪6/1启动(线索S-2020-03)",
+        "end_date_basis": "9月末后进入震荡；注意全年或延续至年底(线索S-2020-04)。窗口暂记至9/30"
+      },
+      "result": "positive",
+      "strength": "strong",
+      "description": "特斯拉国产化+新能源主题 Campaign。主线：特斯拉链+比亚迪刀片电池+宁德时代。6/11特斯拉板块涨停潮为明确信号。龙头比亚迪、宁德时代。存在 Wave（8/21二次启动）。",
+      "research_notes": "全年视角可能4月底提前启动(线索)；日线行情数据需二次核验精确起点与终点。wave 已用 campaign_phases 记录。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AUTO",
+          "name": "汽车",
+          "theme_type": "industry",
+          "parent_theme_id": null,
+          "description": "Base Pattern 汽车",
+          "role": "related"
+        },
+        {
+          "theme_id": "TH-NEV",
+          "name": "新能源汽车/电池",
+          "theme_type": "industry",
+          "parent_theme_id": "TH-AUTO",
+          "description": "电动化产业链",
+          "role": "main"
+        },
+        {
+          "theme_id": "TH-TESLA-CHAIN",
+          "name": "特斯拉产业链",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-NEV",
+          "description": "特斯拉国产化受益标的",
+          "role": "main"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "BIDI",
+          "ticker": "002594",
+          "name": "比亚迪",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "CATL",
+          "ticker": "300750",
+          "name": "宁德时代",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "JAC",
+          "ticker": "600418",
+          "name": "江淮汽车",
+          "exchange": "SH",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "XUSHENG",
+          "ticker": "603305",
+          "name": "旭升股份",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2020-01",
+          "date": "2020-06-10",
+          "name": "特斯拉股价破千美元、市值超丰田居全球车企第一",
+          "event_type": "company",
+          "description": "特斯拉市值破1900亿美元成全球市值最大车企；5月华销量11095辆环比+205%",
+          "source_id": "S-2020-01",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-2020-02",
+          "date": "2020-07-12",
+          "name": "比亚迪汉上市（首搭刀片电池）",
+          "event_type": "company",
+          "description": "对标特斯拉Model 3的旗舰新能源车型上市",
+          "source_id": "S-2020-02",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-2020-03",
+          "date": "2020-07-10",
+          "name": "宁德时代与本田战略合作+为特斯拉供货",
+          "event_type": "company",
+          "description": "本田认购宁德时代1%股权；本月起为特斯拉上海工厂供电池",
+          "source_id": "S-2020-02",
+          "role": "follow_up"
+        }
+      ],
+      "campaign_phases": [
+        {
+          "phase_id": "PH-2020-01",
+          "campaign_id": "C-2020-NEV",
+          "phase_type": "startup",
+          "start_date": "2020-06-01",
+          "end_date": "2020-06-10",
+          "description": "特斯拉破千美元前，板块蓄势/启动"
+        },
+        {
+          "phase_id": "PH-2020-02",
+          "campaign_id": "C-2020-NEV",
+          "phase_type": "main_rise",
+          "start_date": "2020-06-11",
+          "end_date": "2020-07-13",
+          "description": "特斯拉涨停潮驱动主升；7/13比亚迪涨停、宁德逼近5000亿"
+        },
+        {
+          "phase_id": "PH-2020-03",
+          "campaign_id": "C-2020-NEV",
+          "phase_type": "retracement",
+          "start_date": "2020-07-14",
+          "end_date": "2020-08-20",
+          "description": "7/14特斯拉过山车带动A股调整，比亚迪回调后横盘"
+        },
+        {
+          "phase_id": "PH-2020-04",
+          "campaign_id": "C-2020-NEV",
+          "phase_type": "secondary_rally",
+          "start_date": "2020-08-21",
+          "end_date": "2020-09-30",
+          "description": "8/21比亚迪二次启动破100(线索S-2020-03)，是否再加速需核验"
+        }
+      ],
+      "evidences": [
+        {
+          "evidence_id": "E-2020-04",
+          "source_id": "S-2020-04",
+          "date": "2020-04-28",
+          "evidence_type": "行情数据",
+          "description": "线索(Tier4)：汽车整车板块2020年自4月底启动至年底涨幅82.66%，特斯拉国产化为核心驱动。全年视角可能早于6/1启动，窗口漂移需核验。",
+          "evidence_role": "context",
+          "confidence": "low",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "same_origin_xueqiu_byd",
+          "temporal_relation": "retrospective",
+          "bridge_role": "context",
+          "source_title": "2017-2025年汽车整车板块炒作周期分析",
+          "source_url": "https://xueqiu.com/5184598984/398548787",
+          "source_tier": 4
+        },
+        {
+          "evidence_id": "E-2020-03",
+          "source_id": "S-2020-03",
+          "date": "2020-06-01",
+          "evidence_type": "行情数据",
+          "description": "线索(Tier4)：比亚迪2020/6/1突破40-50平台启动，6月+25%，7/13阶段高点96.44，7月中回调后8/21二次启动破100，11/6至197.46。反映Wave/二次启动，需行情数据二次核验确认。",
+          "evidence_role": "supporting",
+          "confidence": "low",
+          "created_at": "2026-09-12 14:24:49",
+          "independence_group": "same_origin_xueqiu_byd",
+          "temporal_relation": "retrospective",
+          "bridge_role": "supporting",
+          "source_title": "比亚迪2020年6月来的走势复盘",
+          "source_url": "https://xueqiu.com/3795379662/269009043",
+          "source_tier": 4
+        },
+        {
+          "evidence_id": "E-2020-01",
+          "source_id": "S-2020-01",
+          "date": "2020-06-11",
+          "evidence_type": "行情数据",
+          "description": "6/10特斯拉破千美元超丰田成全球市值最大车企；6/11 A股特斯拉板块大涨近4%，旭升/亚玛顿/秀强/模塑涨停，宁德时代涨超8%。板块半日市值增450亿。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:49",
+          "independence_group": "orig_tesla_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "'全球车王'狂掀涨停潮 3400亿巨头暴涨8%",
+          "source_url": "https://www.stcn.com/article/detail/185209.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2020-02",
+          "source_id": "S-2020-02",
+          "date": "2020-07-13",
+          "evidence_type": "行情数据",
+          "description": "7/13汽车整车走强，比亚迪首板涨停、江淮两连板，宁德时代涨9.91%市值逼近5000亿。6月汽车产销同比+11.6%持续回暖。7/12比亚迪汉(刀片电池)上市。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:49",
+          "independence_group": "orig_tesla_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "汽车股集体走强：比亚迪涨停，宁德时代市值逼近五千亿",
+          "source_url": "http://static.nfapp.southcn.com/content/202007/13/c3761026.html",
+          "source_tier": 2
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 4,
+        "independence_groups": 2,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    },
+    {
+      "campaign_id": "C-2021-NEV",
+      "rule": "rule_auto_summer",
+      "year": 2021,
+      "classification": "theme_campaign",
+      "dates": {
+        "start_date": "2021-06-01",
+        "end_date": "2021-09-30",
+        "peak_date": "2021-08-06",
+        "date_confidence": "medium",
+        "drift_vs_jun01": 0,
+        "drift_vs_jul01": -30,
+        "drift_vs_aug01": -61,
+        "start_date_basis": "趋势自5月底启动(5/31宁德市值破万亿)，6/18新能源板块爆发涨停潮(据S-2021-03)，6/28宁德创历史新高(据S-2021-04)",
+        "end_date_basis": "8/6比亚迪新高9000亿后高位震荡，9月后主线衰减；精确终点需日线核验。窗口暂记至9/30"
+      },
+      "result": "positive",
+      "strength": "strong",
+      "description": "新能源汽车/电池主题 Campaign。整体汽车销量受芯片短缺拖累同比转负，但新能源汽车产销翻倍高增(渗透率12%+)，资金集中炒作新能源+电池主线。6/18板块爆发、7月延续、8/6龙头比亚迪创新高。龙头比亚迪、宁德时代、长城、长安。",
+      "research_notes": "classification=theme_campaign(新能源主线)，但非全面汽车行情；整体车市缺芯负增长为反例约束。需以新能源指数日线核验精确峰/终点。存在个股层面二次催化。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AUTO",
+          "name": "汽车",
+          "theme_type": "industry",
+          "parent_theme_id": null,
+          "description": "Base Pattern 汽车",
+          "role": "related"
+        },
+        {
+          "theme_id": "TH-NEV",
+          "name": "新能源汽车/电池",
+          "theme_type": "industry",
+          "parent_theme_id": "TH-AUTO",
+          "description": "电动化产业链",
+          "role": "main"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "BIDI",
+          "ticker": "002594",
+          "name": "比亚迪",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "CATL",
+          "ticker": "300750",
+          "name": "宁德时代",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "CHANGAN",
+          "ticker": "000625",
+          "name": "长安汽车",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "GWM",
+          "ticker": "601633",
+          "name": "长城汽车",
+          "exchange": "SH",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "XIAOKANG",
+          "ticker": "601127",
+          "name": "小康股份",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2021-01",
+          "date": "2021-05-31",
+          "name": "宁德时代市值突破万亿",
+          "event_type": "market",
+          "description": "5/31宁德时代总市值首破万亿，动力电池龙头走强",
+          "source_id": "S-2021-04",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-2021-02",
+          "date": "2021-08-05",
+          "name": "比亚迪7月产销快报：新能源销量5.05万辆创新高",
+          "event_type": "company",
+          "description": "7月新能源销量5.05万辆同比+234.38%再创新高",
+          "source_id": "S-2021-05",
+          "role": "follow_up"
+        },
+        {
+          "event_id": "EV-2021-03",
+          "date": "2021-06-17",
+          "name": "宁德时代四川宜宾产能一期投运",
+          "event_type": "company",
+          "description": "四川时代动力电池一期在宜宾投运，累计六期投资超300亿",
+          "source_id": "S-2021-04",
+          "role": "catalyst"
+        }
+      ],
+      "campaign_phases": [
+        {
+          "phase_id": "PH-2021-01",
+          "campaign_id": "C-2021-NEV",
+          "phase_type": "main_rise",
+          "start_date": "2021-06-01",
+          "end_date": "2021-08-06",
+          "description": "新能源板块6月中加速，6/28宁德创历史新高(1.15万亿)，8/6比亚迪新高9000亿；主线延续"
+        },
+        {
+          "phase_id": "PH-2021-02",
+          "campaign_id": "C-2021-NEV",
+          "phase_type": "decline",
+          "start_date": "2021-08-07",
+          "end_date": "2021-09-30",
+          "description": "8/6峰值后高位震荡/分化，9月主线衰减(需日线核验)"
+        }
+      ],
+      "evidences": [
+        {
+          "evidence_id": "E-2021-03",
+          "source_id": "S-2021-03",
+          "date": "2021-06-18",
+          "evidence_type": "行情数据",
+          "description": "6/18新能源车板块爆发，蓝海华腾/金银河/精达/长安/华友钴业/天赐材料/小康等十余股涨停，长城、比亚迪涨幅均超8%。板块级主升信号。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_sector_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "新能源车板块爆发 长安汽车等多股涨停",
+          "source_url": "https://news.cnstock.com/news,bwkx-202106-4718320.htm",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2021-04",
+          "source_id": "S-2021-04",
+          "date": "2021-06-29",
+          "evidence_type": "行情数据",
+          "description": "6/28新能源板块全线走强，宁德时代盘中最高502.98元创历史新高，总市值约1.15万亿；5/31市值已破万亿，一年涨188%。动力电池6月产量同比+165.8%。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_nev_stock_price",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "宁德时代盘中站上500元 持续布局产能扩张",
+          "source_url": "http://finance.ce.cn/stock/gsgdbd/202106/29/t20210629_36677047.shtml",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2021-07",
+          "source_id": "S-2021-07",
+          "date": "2021-07-01",
+          "evidence_type": "行业数据",
+          "description": "7月新能源乘用车零售22.2万辆同比+169.4%，渗透率升至14.8%；长城7月市值增长超千亿、江淮7月股价+42.8%。新能源Beta外溢至整车个股。",
+          "evidence_role": "context",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_nev_retail_sales",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "context",
+          "source_title": "个股市值增长千亿 新能源车市场淡季不淡",
+          "source_url": "https://finance.sina.com.cn/stock/hkstock/hkstocknews/2021-08-21/doc-ikqciyzm2723001.shtml",
+          "source_tier": 3
+        },
+        {
+          "evidence_id": "E-2021-01",
+          "source_id": "S-2021-01",
+          "date": "2021-07-09",
+          "evidence_type": "行业月度产销数据",
+          "description": "工信部/中汽协：6月整体汽车销量201.5万辆同比-12.4%(芯片短缺、原材料涨)；但新能源汽车产销24.8/25.6万辆同比+1.3/1.4倍，6月新能源渗透率超12%，刷新历史。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_nev_sales_data",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "2021年6月汽车工业经济运行情况",
+          "source_url": "https://wap.miit.gov.cn/jgsj/zbys/gzdt/art/2021/art_064b511ebcb340fb9952570930e06e85.html",
+          "source_tier": 1
+        },
+        {
+          "evidence_id": "E-2021-06",
+          "source_id": "S-2021-06",
+          "date": "2021-08-01",
+          "evidence_type": "行业数据",
+          "description": "反例视角：受芯片短缺加剧，4-7月乘用车产销同比连续三个月下滑(7月乘用车产量同比-10.7%)；整体汽车产销总量负增长，传统车承压。Campaign集中于新能源/电池，非全面汽车行情。",
+          "evidence_role": "contradicting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_counter_chip",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "contradicting",
+          "source_title": "“芯”常态下看车企 几家欢喜几家愁",
+          "source_url": "http://epaper.ynet.com/images/2021-08/18/C03/bjqnb20210818C03.pdf",
+          "source_tier": 3
+        },
+        {
+          "evidence_id": "E-2021-05",
+          "source_id": "S-2021-05",
+          "date": "2021-08-06",
+          "evidence_type": "行情数据",
+          "description": "8/6比亚迪大涨逾5%创历史新高，总市值一度超9000亿；7月新能源销量5.05万辆再创新高同比+234.38%。龙头持续创新高，主线延续至8月。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_nev_stock_price",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "比亚迪盘中大涨逾5%再创新高 总市值一度超9000亿元",
+          "source_url": "https://www.stcn.com/stock/djjd/202108/t20210806_3516040.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2021-02",
+          "source_id": "S-2021-02",
+          "date": "2021-08-13",
+          "evidence_type": "行业月度产销数据",
+          "description": "中汽协7月数据：整体汽车销量同比-11.9%(缺芯)；新能源产销28.4/27.1万辆同比+1.7/1.6倍创新高，前7月累计已超历年全年，渗透率10%。新能源“淡季不淡”。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_nev_sales_data",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "淡季不淡 新能源前7月累计销量已超历年全年",
+          "source_url": "http://auto.ce.cn/auto/gundong/202108/13/t20210813_36803370.shtml",
+          "source_tier": 2
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 7,
+        "independence_groups": 5,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    },
+    {
+      "campaign_id": "C-2022-POLICY",
+      "rule": "rule_auto_summer",
+      "year": 2022,
+      "classification": "theme_campaign",
+      "dates": {
+        "start_date": "2022-04-27",
+        "end_date": "2022-08-31",
+        "peak_date": "2022-06-10",
+        "date_confidence": "medium",
+        "drift_vs_jun01": -35,
+        "drift_vs_jul01": -65,
+        "drift_vs_aug01": -96,
+        "start_date_basis": "Wind汽车指数自4月以来不到两个月累计涨超60%，4月底已启动(据S-2022-03)；5/23国常会购置税600亿为政策信号(据S-2022-02)",
+        "end_date_basis": "7月中后板块分化/回调(需日线核验)；8月后政策边际减弱。窗口暂记至8/31"
+      },
+      "result": "positive",
+      "strength": "strong",
+      "description": "汽车消费刺激政策主题 Campaign。5/23国常会购置税600亿→5/31细则→6/1落地次日整车集体涨停；叠加复工复产、新能源下乡。6/10比亚迪破万亿，6/22国常会再刺激触发二次上攻。龙头比亚迪、长城、长安、广汽。启动早于6-8月经验窗口(4月底/5月初)。",
+      "research_notes": "启动明显提前(4月底)，不强行限定6-8月。中通客车13连板系‘核酸检测车’个股事件，不计入Campaign主线。7月后分化，需日线核验精确终点。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AUTO",
+          "name": "汽车",
+          "theme_type": "industry",
+          "parent_theme_id": null,
+          "description": "Base Pattern 汽车",
+          "role": "related"
+        },
+        {
+          "theme_id": "TH-CAR-CONSUMPTION",
+          "name": "汽车消费/购置税刺激",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-AUTO",
+          "description": "购置税减半、汽车下乡、汽车消费政策刺激 (2022主升)",
+          "role": "main"
+        },
+        {
+          "theme_id": "TH-NEV",
+          "name": "新能源汽车/电池",
+          "theme_type": "industry",
+          "parent_theme_id": "TH-AUTO",
+          "description": "电动化产业链",
+          "role": "related"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "ANKA",
+          "ticker": "000868",
+          "name": "安凯客车",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "BIDI",
+          "ticker": "002594",
+          "name": "比亚迪",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "CHANGAN",
+          "ticker": "000625",
+          "name": "长安汽车",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "GAC",
+          "ticker": "601238",
+          "name": "广汽集团",
+          "exchange": "SH",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "GWM",
+          "ticker": "601633",
+          "name": "长城汽车",
+          "exchange": "SH",
+          "role": "leader"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2022-01",
+          "date": "2022-05-23",
+          "name": "国常会：阶段性减征乘用车购置税600亿元",
+          "event_type": "policy",
+          "description": "国务院常务会议部署稳经济一揽子措施，明确减征部分乘用车购置税600亿",
+          "source_id": "S-2022-02",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-2022-02",
+          "date": "2022-05-31",
+          "name": "财政部/税务总局发布购置税减半细则+新能源下乡启动",
+          "event_type": "policy",
+          "description": "6/1-12/31对30万内2.0L及以下乘用车减半征收购置税；工信部等四部门启动新能源下乡",
+          "source_id": "S-2022-02",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-2022-03",
+          "date": "2022-06-22",
+          "name": "国常会再促汽车消费(取消二手车限迁等)",
+          "event_type": "policy",
+          "description": "活跃二手车市场、取消非营运小汽车迁入限制、研究新能源购置税减免延期",
+          "source_id": "S-2022-03",
+          "role": "follow_up"
+        },
+        {
+          "event_id": "EV-2022-04",
+          "date": "2022-06-10",
+          "name": "比亚迪A股市值首破万亿",
+          "event_type": "market",
+          "description": "6/10比亚迪报348.8元+8.19%，A股市值破万亿，自主品牌首家",
+          "source_id": "S-2022-04",
+          "role": "follow_up"
+        }
+      ],
+      "campaign_phases": [
+        {
+          "phase_id": "PH-2022-01",
+          "campaign_id": "C-2022-POLICY",
+          "phase_type": "startup",
+          "start_date": "2022-04-27",
+          "end_date": "2022-05-22",
+          "description": "复工复产预期+地方补贴，Wind汽车指数自4月底启动"
+        },
+        {
+          "phase_id": "PH-2022-02",
+          "campaign_id": "C-2022-POLICY",
+          "phase_type": "main_rise",
+          "start_date": "2022-05-23",
+          "end_date": "2022-06-10",
+          "description": "5/23国常会购置税600亿→6/1细则落地整车涨停潮→6/10比亚迪破万亿"
+        },
+        {
+          "phase_id": "PH-2022-03",
+          "campaign_id": "C-2022-POLICY",
+          "phase_type": "secondary_rally",
+          "start_date": "2022-06-22",
+          "end_date": "2022-06-30",
+          "description": "6/22国常会再促消费(取消二手车限迁)，6/23整车板块+5.8%多股涨停二次上攻"
+        },
+        {
+          "phase_id": "PH-2022-04",
+          "campaign_id": "C-2022-POLICY",
+          "phase_type": "decline",
+          "start_date": "2022-07-01",
+          "end_date": "2022-08-31",
+          "description": "7月后板块分化/回调，政策边际减弱(需日线核验)"
+        }
+      ],
+      "evidences": [
+        {
+          "evidence_id": "E-2022-05",
+          "source_id": "S-2022-05",
+          "date": "2022-05-30",
+          "evidence_type": "行情数据",
+          "description": "反例视角：中通客车5/13-5/30收12连板累计+214.52%，系“核酸检测车”概念个股事件(1-4月仅售20台)，深交所发关注函；非汽车行业Campaign主线，属单只个股事件驱动。",
+          "evidence_role": "contradicting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:51",
+          "independence_group": "orig_counter_single_stock",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "contradicting",
+          "source_title": "中通客车“12天12板” 监管发函质问是否存内幕交易？",
+          "source_url": "http://m.zqrb.cn/gscy/gongsi/2022-05-30/A1653910621458.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2022-01",
+          "source_id": "S-2022-01",
+          "date": "2022-06-02",
+          "evidence_type": "行情数据",
+          "description": "5/31财政部/税务总局发布购置税减半细则(6/1-12/31, 30万内2.0L以下)；6/1次日汽车整车指数盘中拉涨逾4%，安凯/东风/海马/小康涨停，中通/广汽涨超6%，板块居申万一级涨幅第一。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_policy_tax_catalyst",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "车企加码送福利，助力政策“大礼包”，汽车股继续狂欢！",
+          "source_url": "http://finance.ce.cn/stock//gsgdbd/202206/02/t20220602_37702442.shtml",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2022-02",
+          "source_id": "S-2022-02",
+          "date": "2022-06-02",
+          "evidence_type": "政策文件",
+          "description": "5/23国常会部署稳经济一揽子措施：阶段性减征购置税600亿；5/31国务院《扎实稳住经济一揽子措施》+财政部购置税细则+工信部新能源下乡启动；超20家车企响应加码补贴。政策组合拳。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_policy_tax_catalyst",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "政策东风频吹 多家车企自掏腰包补贴消费者",
+          "source_url": "https://www.cs.com.cn/qc/202206/t20220602_6274329.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2022-03",
+          "source_id": "S-2022-04",
+          "date": "2022-06-10",
+          "evidence_type": "行情数据",
+          "description": "6/10比亚迪A股市值首破万亿(报348.80元+8.19%)，自主品牌首家；5月新能源乘用车零售36万辆同比+91.2%；上海6月初解封+购置税6/1实施，供给与需求双击。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_nev_stock_price",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "涨疯了！超越大众后，比亚迪市值突破万亿大关",
+          "source_url": "http://finance.ce.cn/stock/gsgdbd/202206/10/t20220610_37743414.shtml",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2022-04",
+          "source_id": "S-2022-03",
+          "date": "2022-06-26",
+          "evidence_type": "行情数据",
+          "description": "6/22国常会再促汽车消费(取消二手车限迁/新能源购置税延期研究)；6/23汽车整车板块涨5.8%多股涨停(二次催化)；Wind汽车指数自4月以来不到两个月累计涨超60%，证明启动早于经验窗口。",
+          "evidence_role": "supporting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:24:50",
+          "independence_group": "orig_sector_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "国常会促进汽车消费举措提振市场 数十家汽车企业股价触及涨停",
+          "source_url": "http://www.zqrb.cn/finance/hangyedongtai/2022-06-26/A1656238702392.html",
+          "source_tier": 3
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 5,
+        "independence_groups": 4,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    },
+    {
+      "campaign_id": "C-2023-AD",
+      "rule": "rule_auto_summer",
+      "year": 2023,
+      "classification": "theme_campaign",
+      "dates": {
+        "start_date": "2023-06-12",
+        "end_date": "2023-07-19",
+        "peak_date": "2023-07-11",
+        "date_confidence": "medium",
+        "drift_vs_jun01": 11,
+        "drift_vs_jul01": -19,
+        "drift_vs_aug01": -50,
+        "start_date_basis": "6/12汽车产业链爆发展开预热(赛力斯等10余股涨停)；6/21工信部吹风表态支持L3及以上商业化(据S-2023-01)；赛力斯6/8见底",
+        "end_date_basis": "7/11主线确认后，7月中下汽车让位地产/顺周期、存量资金快速轮动(据E-2023-07)；窗口暂记至7/19，需日线核验精确终点"
+      },
+      "result": "positive",
+      "strength": "medium",
+      "description": "智能驾驶/无人驾驶+汽车产业链 波段题材 Campaign。6月政策预期(工信部L3吹风)+销量回暖预热，7/3-4整车/智驾全面爆发(25股涨停、整车指数创4月新高、申万汽车涨幅居首)，7/11主线确认后7月中下退潮。龙头：浙江世宝(总龙/翻倍)、德赛西威(+80%)、万安科技(+70%)、众泰、赛力斯。减速器(5月-7月初)系人形机器人题材不计入。",
+      "research_notes": "关键反例：正式L3准入文件成文2023-11-17、非夏季；2023年FSD未在华落地。夏季系'政策预期+销量回暖'驱动、结构性/脉冲式、非贯穿夏季单极主线，故strength=medium。classification=theme_campaign。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AD",
+          "name": "智能驾驶/无人驾驶",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-AUTO",
+          "description": "自动驾驶、车联网（2023年后主升）",
+          "role": "main"
+        },
+        {
+          "theme_id": "TH-AUTO",
+          "name": "汽车",
+          "theme_type": "industry",
+          "parent_theme_id": null,
+          "description": "Base Pattern 汽车",
+          "role": "related"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "DESAYSV",
+          "ticker": "002920",
+          "name": "德赛西威",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "WANAN",
+          "ticker": "002590",
+          "name": "万安科技",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "ZHEJIANGSHISHI",
+          "ticker": "002703",
+          "name": "浙江世宝",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "ZTELEVISION",
+          "ticker": "000980",
+          "name": "众泰汽车",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2023-01",
+          "date": "2023-06-21",
+          "name": "工信部吹风会：支持L3及以上自动驾驶商业化、启动准入和上路通行试点",
+          "event_type": "policy",
+          "description": "政策预期信号(非落地)；7月智能驾驶行情的起点",
+          "source_id": "S-2023-01",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-2023-02",
+          "date": "2023-07-03",
+          "name": "比亚迪首发'天神之眼'高阶智驾(腾势N7)",
+          "event_type": "company",
+          "description": "智能驾驶高端化催化，7/4无人驾驶涨停潮导火索",
+          "source_id": "S-2023-04",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-2023-03",
+          "date": "2023-11-17",
+          "name": "四部委《智能网联汽车准入和上路通行试点》通知",
+          "event_type": "policy",
+          "description": "正式L3文件成文、非夏季；作为夏季行情'未落地'反证",
+          "source_id": "S-2023-07",
+          "role": "context"
+        }
+      ],
+      "campaign_phases": [
+        {
+          "phase_id": "PH-2023-01",
+          "campaign_id": "C-2023-AD",
+          "phase_type": "startup",
+          "start_date": "2023-06-12",
+          "end_date": "2023-07-02",
+          "description": "6月政策预期(L3吹风)+销量回暖预热，赛力斯6/8见底后启动"
+        },
+        {
+          "phase_id": "PH-2023-02",
+          "campaign_id": "C-2023-AD",
+          "phase_type": "main_rise",
+          "start_date": "2023-07-03",
+          "end_date": "2023-07-11",
+          "description": "7/3-4全面爆发(25股涨停)，7/11智驾主线确认(浙江世宝8天6板)"
+        },
+        {
+          "phase_id": "PH-2023-03",
+          "campaign_id": "C-2023-AD",
+          "phase_type": "decline",
+          "start_date": "2023-07-11",
+          "end_date": "2023-07-19",
+          "description": "7/11峰值后板块让位地产/顺周期、快速轮动退潮(需日线核验)"
+        }
+      ],
+      "evidences": [
+        {
+          "evidence_id": "E-2023-01",
+          "source_id": "S-2023-01",
+          "date": "2023-06-21",
+          "evidence_type": "政策文件",
+          "description": "6/21工信部吹风会明确支持L3及以上自动驾驶商业化、启动准入和上路通行试点，属政策预期信号。是7月智能驾驶行情的起点。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:03",
+          "independence_group": "orig_l3_policy_expectation",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "国新办吹风会：支持L3级及以上自动驾驶商业化应用、启动智能网联汽车准入和上路通行试点",
+          "source_url": "https://www.gov.cn/zhengce/202306/content_6887704.htm",
+          "source_tier": 1
+        },
+        {
+          "evidence_id": "E-2023-05",
+          "source_id": "S-2023-06",
+          "date": "2023-07-03",
+          "evidence_type": "行业数据",
+          "description": "6月底-7月初汽车销量回暖+出口高增(上半年214万辆+75.7%)+小鹏港股+80%、理想+88%、比亚迪6月+88.79%。政策(6/21吹风+7/21发改委十三部门)+销量+出口共振。",
+          "evidence_role": "supporting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:25:04",
+          "independence_group": "orig_sales_trend",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "产销数据亮眼 汽车股狂欢",
+          "source_url": "https://www.stcn.com/article/detail/907975.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2023-02",
+          "source_id": "S-2023-02",
+          "date": "2023-07-04",
+          "evidence_type": "行情数据",
+          "description": "7/4 25只汽车股集体涨停、申万汽车涨幅居首+2.67%，整车指数创4月新高，机构称汽车产业链替代AI成新主线。板块级主升信号。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:03",
+          "independence_group": "orig_sector_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "25只汽车股携手涨停！汽车产业链成新主线",
+          "source_url": "http://m.zqrb.cn/stock/bankuaijujiao/2023-07-04/A1688467267535.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2023-03",
+          "source_id": "S-2023-03",
+          "date": "2023-07-11",
+          "evidence_type": "行情数据",
+          "description": "7/11智能驾驶涨势加速带动汽车产业链爆发，浙江世宝8天6板、瑞玛精密6天5板、万安科技2连板，'主线地位确认'。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:03",
+          "independence_group": "orig_ad_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "焦点复盘：智能驾驶再度引爆汽车产业链，主线地位就此确认？",
+          "source_url": "https://m.cls.cn/detail/1401009",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2023-04",
+          "source_id": "S-2023-05",
+          "date": "2023-07-13",
+          "evidence_type": "行情数据",
+          "description": "龙头区间涨幅：浙江世宝近一月翻倍(8→18)、德赛西威+80%、万安+70%、赛力斯6/8见底后一月近翻倍。启动早于6/1(6/12预热、赛力斯6/8见底)。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:04",
+          "independence_group": "orig_ad_stock_price",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "浙江世宝股价翻倍、万安科技等多股涨停，谁是真正智能驾驶概念股？",
+          "source_url": "https://www.stcn.com/article/detail/919083.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2023-07",
+          "source_id": "S-2023-03",
+          "date": "2023-07-19",
+          "evidence_type": "行情数据",
+          "description": "反例：7月中下汽车让位地产/顺周期，市场快速轮动/存量资金博弈(财联社7/12'主题频繁高切低')；汽车非贯穿夏季单极主线，呈波段/脉冲式。",
+          "evidence_role": "contradicting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:25:04",
+          "independence_group": "orig_structure_pulse",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "contradicting",
+          "source_title": "焦点复盘：智能驾驶再度引爆汽车产业链，主线地位就此确认？",
+          "source_url": "https://m.cls.cn/detail/1401009",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2023-06",
+          "source_id": "S-2023-07",
+          "date": "2023-11-17",
+          "evidence_type": "政策文件",
+          "description": "反证：正式L3准入文件成文2023-11-17、非夏季；2023年FSD未在华落地(2024-01财报仅员工Beta)。夏季行情系'政策预期'而非'落地'驱动，需降档强度。",
+          "evidence_role": "contradicting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:04",
+          "independence_group": "orig_policy_schedule",
+          "temporal_relation": "subsequent",
+          "bridge_role": "contradicting",
+          "source_title": "《关于开展智能网联汽车准入和上路通行试点工作的通知》",
+          "source_url": "https://www.gov.cn/zhengce/zhengceku/202311/content_6915788.htm",
+          "source_tier": 1
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 7,
+        "independence_groups": 7,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    },
+    {
+      "campaign_id": "C-2024-V2X",
+      "rule": "rule_auto_summer",
+      "year": 2024,
+      "classification": "theme_campaign",
+      "dates": {
+        "start_date": "2024-06-11",
+        "end_date": "2024-06-25",
+        "peak_date": "2024-06-18",
+        "date_confidence": "medium",
+        "drift_vs_jun01": 10,
+        "drift_vs_jul01": -20,
+        "drift_vs_aug01": -51,
+        "start_date_basis": "6/11车联网概念指数起涨；6/14武汉车路云170.84亿备案、6/18车路云全线爆发10余股涨停(据S-2024-02/S-2024-08)",
+        "end_date_basis": "6/24-25退潮：索菱断板跌停、金溢逼近跌停、华铭跌近15%(据E-2024-04)"
+      },
+      "result": "positive",
+      "strength": "medium",
+      "description": "车路云一体化(V2X/车路协同)主题 Campaign。政策+大单驱动(5/31北京99亿招标、6/14武汉170亿、7/3五部门20城试点)。6/18高峰10余股涨停，核心股华铭/金溢/索菱/万集。约2周脉冲、6/24-25退潮。",
+      "research_notes": "属性=政策驱动题材，但快涨快退(约2周)、公司多公告'未参与'实为题材炒作；与Robotaxi为先后衔接两波、资金同源但不同时段。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AUTO",
+          "name": "汽车",
+          "theme_type": "industry",
+          "parent_theme_id": null,
+          "description": "Base Pattern 汽车",
+          "role": "related"
+        },
+        {
+          "theme_id": "TH-V2X",
+          "name": "车路云一体化/车路协同",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-AUTO",
+          "description": "V2X/车路协同设备与试点(2024主升)",
+          "role": "main"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "HUAMING",
+          "ticker": "300462",
+          "name": "华铭智能",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "JINYI",
+          "ticker": "002869",
+          "name": "金溢科技",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "SUOLING",
+          "ticker": "002766",
+          "name": "索菱股份",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "VANJI",
+          "ticker": "300552",
+          "name": "万集科技",
+          "exchange": "SZ",
+          "role": "second_leader"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2024-01",
+          "date": "2024-06-14",
+          "name": "武汉车路云一体化示范项目备案170.84亿",
+          "event_type": "policy",
+          "description": "紧随北京99亿招标，车路云启动导火索",
+          "source_id": "S-2024-08",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-2024-02",
+          "date": "2024-07-03",
+          "name": "五部门公布20个车路云一体化试点城市",
+          "event_type": "policy",
+          "description": "顶层政策信号",
+          "source_id": "S-2024-01",
+          "role": "follow_up"
+        }
+      ],
+      "campaign_phases": null,
+      "evidences": [
+        {
+          "evidence_id": "E-2024-02",
+          "source_id": "S-2024-02",
+          "date": "2024-06-18",
+          "evidence_type": "行情数据",
+          "description": "6/18车路云全线爆发，华铭/金溢/索菱/长江通信等10余股涨停、多股2连板——行情高峰。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:04",
+          "independence_group": "orig_v2x_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "车路云概念全线爆发 华铭智能等10余股涨停",
+          "source_url": "https://m.cls.cn/detail/1707526",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2024-03",
+          "source_id": "S-2024-02",
+          "date": "2024-06-21",
+          "evidence_type": "行情数据",
+          "description": "车联网(车路协同)概念指数6/11-6/21涨超9%，229家概念股近八成上涨；6/21索菱5连板后巨量分歧。",
+          "evidence_role": "supporting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:25:04",
+          "independence_group": "orig_v2x_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "车路云概念全线爆发 华铭智能等10余股涨停",
+          "source_url": "https://m.cls.cn/detail/1707526",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2024-04",
+          "source_id": "S-2024-03",
+          "date": "2024-06-24",
+          "evidence_type": "行情数据",
+          "description": "反例/退潮：6/24-25车路云分化退潮，索菱断板跌停、金溢逼近跌停、华铭跌近15%；公司多公告'未参与'仍连板。约2周脉冲炒作、快涨快退、缺持续主线。",
+          "evidence_role": "contradicting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:05",
+          "independence_group": "orig_v2x_retreat",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "contradicting",
+          "source_title": "车路云持续分化退潮：索菱断板跌停，金溢逼近跌停",
+          "source_url": "https://www.cls.cn/detail/1712879",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2024-01",
+          "source_id": "S-2024-01",
+          "date": "2024-07-03",
+          "evidence_type": "政策文件",
+          "description": "7/3五部门公布20个车路云一体化试点城市；叠加6/14武汉170.84亿备案、5/31北京99.39亿招标。顶层政策+大单驱动。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:04",
+          "independence_group": "orig_v2x_policy",
+          "temporal_relation": "subsequent",
+          "bridge_role": "supporting",
+          "source_title": "五部门公布'车路云一体化'应用试点城市名单（20城）",
+          "source_url": "https://www.gov.cn/zhengce/zhengceku/202407/content_6965771.htm",
+          "source_tier": 1
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 4,
+        "independence_groups": 3,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    },
+    {
+      "campaign_id": "C-2024-ROBOTAXI",
+      "rule": "rule_auto_summer",
+      "year": 2024,
+      "classification": "theme_campaign",
+      "dates": {
+        "start_date": "2024-07-08",
+        "end_date": "2024-07-31",
+        "peak_date": "2024-07-29",
+        "date_confidence": "medium",
+        "drift_vs_jun01": 37,
+        "drift_vs_jul01": 7,
+        "drift_vs_aug01": -24,
+        "start_date_basis": "7月上旬萝卜快跑武汉出圈订单暴涨；7/8大众交通启动、7/10无人驾驶板块大涨4%天迈/经纬恒润20cm涨停(据S-2024-04)",
+        "end_date_basis": "7/31大众交通9连板终结、大众公用天地板、港股暴跌22.75%；7/24高位亏钱效应放大(据E-2024-07)"
+      },
+      "result": "positive",
+      "strength": "strong",
+      "description": "Robotaxi/无人驾驶主题 Campaign。催化：萝卜快跑武汉跑出圈(订单暴涨)+7/10板块+4%。龙头：大众交通(16日涨233%)、锦江在线(15天9板)、金龙汽车(12天7板)、江铃。约3周脉冲、7月下旬高峰、7/31退潮。",
+      "research_notes": "与车路云同属'智能驾驶大主线'但时间错开、核心标的不重叠，拆为独立Campaign。10/10特斯拉Robotaxi发布会仅一日脉冲后回落，不作为独立Campaign。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AUTO",
+          "name": "汽车",
+          "theme_type": "industry",
+          "parent_theme_id": null,
+          "description": "Base Pattern 汽车",
+          "role": "related"
+        },
+        {
+          "theme_id": "TH-ROBOTAXI",
+          "name": "Robotaxi/无人驾驶/智能网约车",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-AUTO",
+          "description": "无人驾驶商业化运营、网约车(2024/2025主升)",
+          "role": "main"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "DADONGTRAFFIC",
+          "ticker": "600611",
+          "name": "大众交通",
+          "exchange": "SH",
+          "role": "leader"
+        },
+        {
+          "security_id": "JIANGLING",
+          "ticker": "000550",
+          "name": "江铃汽车",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "JINJIANGONLINE",
+          "ticker": "600650",
+          "name": "锦江在线",
+          "exchange": "SH",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "JINLONG",
+          "ticker": "600686",
+          "name": "金龙汽车",
+          "exchange": "SH",
+          "role": "second_leader"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2024-03",
+          "date": "2024-07-10",
+          "name": "萝卜快跑武汉跑出圈，无人驾驶板块大涨4%",
+          "event_type": "market",
+          "description": "Robotaxi主线点火(订单暴涨+百度港股+12%)",
+          "source_id": "S-2024-04",
+          "role": "trigger"
+        }
+      ],
+      "campaign_phases": [
+        {
+          "phase_id": "PH-2024-01",
+          "campaign_id": "C-2024-ROBOTAXI",
+          "phase_type": "startup",
+          "start_date": "2024-07-08",
+          "end_date": "2024-07-10",
+          "description": "萝卜快跑出圈点火，大众交通启动、7/10板块+4%"
+        },
+        {
+          "phase_id": "PH-2024-02",
+          "campaign_id": "C-2024-ROBOTAXI",
+          "phase_type": "main_rise",
+          "start_date": "2024-07-11",
+          "end_date": "2024-07-29",
+          "description": "主升，大众交通16日涨233%、锦江15天9板、金龙12天7板"
+        },
+        {
+          "phase_id": "PH-2024-03",
+          "campaign_id": "C-2024-ROBOTAXI",
+          "phase_type": "decline",
+          "start_date": "2024-07-30",
+          "end_date": "2024-07-31",
+          "description": "7/31大众交通9连板终结、大众公用天地板退潮"
+        }
+      ],
+      "evidences": [
+        {
+          "evidence_id": "E-2024-05",
+          "source_id": "S-2024-04",
+          "date": "2024-07-10",
+          "evidence_type": "行情数据",
+          "description": "7月上中旬萝卜快跑武汉跑出圈订单暴涨；7/10无人驾驶板块+4%，天迈/经纬恒润20cm涨停、德赛西威涨停、港股百度+12%。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:05",
+          "independence_group": "orig_robotaxi_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "无人驾驶+车路云共涨：板块指数大涨超4%，天迈/经纬恒润20cm涨停，德赛西威涨停",
+          "source_url": "http://www.stcn.com/article/detail/1254813.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2024-06",
+          "source_id": "S-2024-05",
+          "date": "2024-07-29",
+          "evidence_type": "行情数据",
+          "description": "7月下旬高峰：大众交通16日涨233%、锦江15天9板、金龙12天7板、7/23大众交通12日+142%。龙头梯队明确。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:05",
+          "independence_group": "orig_robotaxi_leader",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "焦点复盘：大众交通16日涨233%，锦江15天9板、金龙12天7板",
+          "source_url": "https://m.cls.cn/detail/1747242",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2024-07",
+          "source_id": "S-2024-06",
+          "date": "2024-07-31",
+          "evidence_type": "行情数据",
+          "description": "反例/退潮：7/31大众交通9连板终结(-2.65%)、大众公用天地板港股暴跌22.75%；7/24高位亏钱效应放大(锦江/金溢跌停)。约3周脉冲、快涨快退。",
+          "evidence_role": "contradicting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:05",
+          "independence_group": "orig_robotaxi_retreat",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "contradicting",
+          "source_title": "大众交通终结9连板神话，大众公用A股'天地板'",
+          "source_url": "https://finance.sina.cn/2024-08-01/detail-inchecpv7805389.d.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2024-08",
+          "source_id": "S-2024-06",
+          "date": "2024-10-11",
+          "evidence_type": "行情数据",
+          "description": "10/10-11特斯拉Robotaxi发布会(无方向盘Cybercab)仅带来一日A股脉冲后回落，强度弱、不构成独立Campaign。",
+          "evidence_role": "context",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:25:05",
+          "independence_group": "orig_robotaxi_thirdwave",
+          "temporal_relation": "subsequent",
+          "bridge_role": "context",
+          "source_title": "大众交通终结9连板神话，大众公用A股'天地板'",
+          "source_url": "https://finance.sina.cn/2024-08-01/detail-inchecpv7805389.d.html",
+          "source_tier": 2
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 4,
+        "independence_groups": 4,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    },
+    {
+      "campaign_id": "C-2025-ROBOTAXI",
+      "rule": "rule_auto_summer",
+      "year": 2025,
+      "classification": "theme_campaign",
+      "dates": {
+        "start_date": "2025-06-22",
+        "end_date": "2025-08-31",
+        "peak_date": "2025-06-24",
+        "date_confidence": "medium",
+        "drift_vs_jun01": 21,
+        "drift_vs_jul01": -9,
+        "drift_vs_aug01": -40,
+        "start_date_basis": "6/22特斯拉奥斯汀Robotaxi收费试点；6/24 A股无人驾驶板块涨停潮(据S-2025-01/02)",
+        "end_date_basis": "8月板块随大盘牛β放量但缺乏独立主线；9月/12月另有两轮L3/智驾催化超出夏季窗口；窗口暂记至8/31"
+      },
+      "result": "positive",
+      "strength": "medium",
+      "description": "Robotaxi/L4商业化主题 Campaign。6/24 A股无人驾驶涨停潮，叠加萝卜快跑/小马智行Robotaxi规模化、汽零8月独立走强(+16.04%)。龙头浙江世宝、德赛西威。但夏季涨幅部分来自8月大盘牛市β、特斯拉FSD 2025年未落地，且渤海汽车重组/众泰订单/中通客车重组等个股事件需剥离。",
+      "research_notes": "classification=theme_campaign但强度medium；FSD 2025未正式落地系重要反例(2026-05-21才宣布监督版入华)，点火源为'Robotaxi试点'而非'FSD入华'；个股资本运作不算行业Campaign。",
+      "campaign_themes": [
+        {
+          "theme_id": "TH-AD",
+          "name": "智能驾驶/无人驾驶",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-AUTO",
+          "description": "自动驾驶、车联网（2023年后主升）",
+          "role": "secondary"
+        },
+        {
+          "theme_id": "TH-AUTO",
+          "name": "汽车",
+          "theme_type": "industry",
+          "parent_theme_id": null,
+          "description": "Base Pattern 汽车",
+          "role": "related"
+        },
+        {
+          "theme_id": "TH-ROBOTAXI",
+          "name": "Robotaxi/无人驾驶/智能网约车",
+          "theme_type": "concept",
+          "parent_theme_id": "TH-AUTO",
+          "description": "无人驾驶商业化运营、网约车(2024/2025主升)",
+          "role": "main"
+        }
+      ],
+      "campaign_securities": [
+        {
+          "security_id": "DESAYSV",
+          "ticker": "002920",
+          "name": "德赛西威",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "ZHEJIANGSHISHI",
+          "ticker": "002703",
+          "name": "浙江世宝",
+          "exchange": "SZ",
+          "role": "leader"
+        }
+      ],
+      "campaign_events": [
+        {
+          "event_id": "EV-2025-01",
+          "date": "2025-06-22",
+          "name": "特斯拉奥斯汀启动Robotaxi有偿试运营",
+          "event_type": "company",
+          "description": "2025年夏季板块启动点火",
+          "source_id": "S-2025-02",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-2025-02",
+          "date": "2025-06-24",
+          "name": "A股无人驾驶板块全线爆发涨停潮",
+          "event_type": "market",
+          "description": "板块级启动确认",
+          "source_id": "S-2025-01",
+          "role": "catalyst"
+        }
+      ],
+      "campaign_phases": [
+        {
+          "phase_id": "PH-2025-01",
+          "campaign_id": "C-2025-ROBOTAXI",
+          "phase_type": "main_rise",
+          "start_date": "2025-06-22",
+          "end_date": "2025-06-24",
+          "description": "特斯拉奥斯汀试点→6/24 A股无人驾驶涨停潮；后续受大盘β驱动较杂、不单独记Wave"
+        }
+      ],
+      "evidences": [
+        {
+          "evidence_id": "E-2025-01",
+          "source_id": "S-2025-02",
+          "date": "2025-06-24",
+          "evidence_type": "行情数据",
+          "description": "6/22特斯拉奥斯汀Robotaxi收费试点(点火)→6/24 A股无人驾驶板块全线爆发涨3%三友30%、万马/恒帅/星源卓镁20%、海马/浙江世宝涨停。板块级启动。",
+          "evidence_role": "supporting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:05",
+          "independence_group": "orig_robotaxi_2025",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "特斯拉在美奥斯汀启动首批Robotaxi有偿试运营",
+          "source_url": "https://www.stcn.com/article/detail/2242282.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2025-03",
+          "source_id": "S-2025-07",
+          "date": "2025-08-29",
+          "evidence_type": "行情数据",
+          "description": "反例：8月A股整体大牛(沪指+8%、创业板+24%、科创50+28%)，汽车为强势板块之一非唯一主线；夏季涨幅部分来自系统性牛市β，需降档汽车独立Campaign强度。",
+          "evidence_role": "contradicting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:25:06",
+          "independence_group": "orig_beta_mask",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "contradicting",
+          "source_title": "8月A股整体大牛：沪指+8%、创业板+24%、科创50+28%",
+          "source_url": "https://www.stcn.com/article/detail/3308400.html",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2025-02",
+          "source_id": "S-2025-03",
+          "date": "2025-08-31",
+          "evidence_type": "行业数据",
+          "description": "8月CS汽车+11.72%、CS汽车零部件+16.04%、乘用车+8.01%，跑赢沪深300；小马智行8/11第7代Robotaxi量产超200辆。汽零8月独立走强。",
+          "evidence_role": "supporting",
+          "confidence": "medium",
+          "created_at": "2026-09-12 14:25:05",
+          "independence_group": "orig_sector_momentum",
+          "temporal_relation": "contemporaneous",
+          "bridge_role": "supporting",
+          "source_title": "8月行业月报：CS汽车+11.72%，CS汽车零部件+16.04%",
+          "source_url": "https://finance.sina.com.cn/stock/stockzmt/2025-09-13/",
+          "source_tier": 3
+        },
+        {
+          "evidence_id": "E-2025-04",
+          "source_id": "S-2025-06",
+          "date": "2025-08-31",
+          "evidence_type": "行业数据",
+          "description": "反例：特斯拉FSD 2025年未正式在华落地(2026-05-21才宣布监督版可用)；智驾行业分化出清(毫末停摆/纵目破产)，一级投资降至<120亿。点火源是'Robotaxi试点'而非'FSD入华'。",
+          "evidence_role": "contradicting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:06",
+          "independence_group": "orig_fsd_not_landed",
+          "temporal_relation": "retrospective",
+          "bridge_role": "contradicting",
+          "source_title": "特斯拉FSD正式入华宣布为2026年5月21日，2025年仅预期",
+          "source_url": "https://www.thepaper.cn/newsDetail_forward_32566555",
+          "source_tier": 2
+        },
+        {
+          "evidence_id": "E-2025-05",
+          "source_id": "S-2025-05",
+          "date": "2025-10-15",
+          "evidence_type": "行情数据",
+          "description": "反例/剥离：渤海汽车重组获批、众泰阿尔及利亚订单、中通客车同业竞争重组、天汽模/天迈控股权变更等个股资本运作单独暴涨，均不能算汽车行业Campaign。",
+          "evidence_role": "contradicting",
+          "confidence": "high",
+          "created_at": "2026-09-12 14:25:06",
+          "independence_group": "orig_single_stock_events",
+          "temporal_relation": "subsequent",
+          "bridge_role": "contradicting",
+          "source_title": "渤海汽车重组获批涨停，10月累计+30%",
+          "source_url": "https://www.stcn.com/article/detail/3382998.html",
+          "source_tier": 2
+        }
+      ],
+      "validation": {
+        "status": "awaiting_human_review",
+        "evidence_count": 5,
+        "independence_groups": 5,
+        "min_independent_evidence_met": true,
+        "reviewed_by": null,
+        "reviewed_at": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+ "method": "corrected",
+ "start": "2024-07-08",
+ "series": [
+  "DAZHONGTONG",
+  "JINJIANG",
+  "JINLONG",
+  "XINGYUYUDA",
+  "TIANMAI"
+ ],
+ "table": [
+  {
+   "date": "2024-07-08",
+   "equal_weight_index(EW_RAW)": 100.0,
+   "equal_weight_index(EW_ADJ)": 100.0,
+   "auto_etf(516110)": 1.022,
+   "hs300": 3401.76
+  },
+  {
+   "date": "2024-07-09",
+   "equal_weight_index(EW_RAW)": 110.05,
+   "equal_weight_index(EW_ADJ)": 110.23,
+   "auto_etf(516110)": 1.057,
+   "hs300": 3439.81
+  },
+  {
+   "date": "2024-07-10",
+   "equal_weight_index(EW_RAW)": 123.4,
+   "equal_weight_index(EW_ADJ)": 123.87,
+   "auto_etf(516110)": 1.08,
+   "hs300": 3428.97
+  },
+  {
+   "date": "2024-07-11",
+   "equal_weight_index(EW_RAW)": 137.05,
+   "equal_weight_index(EW_ADJ)": 137.87,
+   "auto_etf(516110)": 1.09,
+   "hs300": 3468.17
+  },
+  {
+   "date": "2024-07-18",
+   "equal_weight_index(EW_RAW)": 165.0,
+   "equal_weight_index(EW_ADJ)": 166.82,
+   "auto_etf(516110)": 1.101,
+   "hs300": 3520.93
+  },
+  {
+   "date": "2024-07-29",
+   "equal_weight_index(EW_RAW)": 210.75,
+   "equal_weight_index(EW_ADJ)": 214.77,
+   "auto_etf(516110)": 1.04,
+   "hs300": 3390.74
+  },
+  {
+   "date": "2024-07-30",
+   "equal_weight_index(EW_RAW)": 230.33,
+   "equal_weight_index(EW_ADJ)": 235.01,
+   "auto_etf(516110)": 1.03,
+   "hs300": 3369.38
+  },
+  {
+   "date": "2024-07-31",
+   "equal_weight_index(EW_RAW)": 218.19,
+   "equal_weight_index(EW_ADJ)": 222.43,
+   "auto_etf(516110)": 1.059,
+   "hs300": 3442.08
+  },
+  {
+   "date": "2024-08-05",
+   "equal_weight_index(EW_RAW)": 234.78,
+   "equal_weight_index(EW_ADJ)": 239.95,
+   "auto_etf(516110)": 0.995,
+   "hs300": 3343.32
+  },
+  {
+   "date": "2024-08-06",
+   "equal_weight_index(EW_RAW)": 214.07,
+   "equal_weight_index(EW_ADJ)": 218.48,
+   "auto_etf(516110)": 0.996,
+   "hs300": 3342.98
+  },
+  {
+   "date": "2024-08-07",
+   "equal_weight_index(EW_RAW)": 212.15,
+   "equal_weight_index(EW_ADJ)": 216.4,
+   "auto_etf(516110)": 1.007,
+   "hs300": 3341.49
+  },
+  {
+   "date": "2024-08-15",
+   "equal_weight_index(EW_RAW)": 213.14,
+   "equal_weight_index(EW_ADJ)": 217.91,
+   "auto_etf(516110)": 0.994,
+   "hs300": 3341.95
+  },
+  {
+   "date": "2024-08-21",
+   "equal_weight_index(EW_RAW)": 207.61,
+   "equal_weight_index(EW_ADJ)": 212.14,
+   "auto_etf(516110)": 0.984,
+   "hs300": 3321.64
+  }
+ ],
+ "peak_raw": [
+  "2024-08-05",
+  234.7794653637849
+ ],
+ "peak_adj": [
+  "2024-08-05",
+  239.94739102514626
+ ],
+ "first_decline": [
+  "2024-08-06",
+  214.07301277757864
+ ],
+ "cum_0731_adj": 1.2242838213875347,
+ "cum_last_aug_adj": 0.9251024909139147,
+ "last_aug": "2024-08-30",
+ "mdd_adj_all": -0.3503750563767264,
+ "leader_peaks_raw": {
+  "DAZHONGTONG": [
+   "2024-08-05",
+   11.22
+  ],
+  "JINJIANG": [
+   "2024-07-30",
+   16.07
+  ],
+  "JINLONG": [
+   "2024-08-15",
+   19.79
+  ],
+  "XINGYUYUDA": [
+   "2024-08-02",
+   23.84
+  ],
+  "TIANMAI": [
+   "2024-07-18",
+   41.41
+  ]
+ },
+ "rel_auto_etf_pp": 1.1880802988826424,
+ "rel_hs300_pp": 1.2124311333672158,
+ "auto_etf_cum_0731": 0.03620352250489223,
+ "hs300_cum_0731": 0.011852688020318913
+}
