@@ -19,6 +19,7 @@
 import type { TimelineCampaign, TimelineDataSource } from './timelineTypes';
 import { samePeriodCampaigns, samePeriodWindow } from './timelineAdapter';
 import { historicalPhasesInWindow } from './currentTimeLens';
+import { preObservationChainOf, type PreObservationChain } from './preObservation';
 import { diffDays } from '../../utils';
 
 /* ---------------- 视图模型（非 DB 实体） ---------------- */
@@ -42,6 +43,8 @@ export interface ThemeCampaignEntry {
   mainTheme: string | null;
   /** 是否存在【重大】冲突（minor 不升级为告警视觉） */
   hasMajorConflict: boolean;
+  /** 提前观察区三层链（Pre-observation → Early Signal? → Formation；无 start → null） */
+  preObservation: PreObservationChain | null;
   /** 原始视图对象（供 UI 经现有 selection 打开 Campaign Detail） */
   campaign: TimelineCampaign;
 }
@@ -189,6 +192,7 @@ export function themeRowsOf(source: TimelineDataSource, month: number): ThemeRow
         phaseAlso: ph.also,
         mainTheme: main,
         hasMajorConflict: majorConflict(c),
+        preObservation: preObservationChainOf(c),
         campaign: c,
       });
       if (!g.years.includes(row.year)) g.years.push(row.year);

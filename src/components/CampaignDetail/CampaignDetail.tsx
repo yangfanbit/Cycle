@@ -142,7 +142,7 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
   ];
 
   return (
-    <aside className="detail-panel">
+    <aside className="detail-panel" role="dialog" aria-label="完整历史案例">
       <button className="detail-close" onClick={onClose} aria-label="关闭">
         ×
       </button>

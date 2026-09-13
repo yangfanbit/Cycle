@@ -37,7 +37,7 @@
 
 ## 2. 当前阶段
 
-**Phase 5.1：V1.8.1 主题级历史机会视图（IMPLEMENTED / READY FOR USER VISUAL REVIEW）。**
+**Phase 5.2：V1.8.2 Timeline Detail UX + Historical Pre-observation Window（IMPLEMENTED / READY FOR USER EXPERIENCE REVIEW）。**
 
 - Phase 4 Monorepo Integration 已完成：Cycle（产品 / PWA / Timeline 前端）与
   Cycle-Research（研究 / 数据生产）已合并为**单一仓库 `ThreeC`**，单一 Git，保留双方完整历史。
@@ -45,8 +45,13 @@
 - Phase 5.1 V1.8.1 已完成：页面 IA 重排为
   **① Timeline（第一视觉）→ ② 历史同周期主题（主题级）→ ③ 当前时间上下文**；
   「历史同期」由「一行一个 Campaign」升级为「**一行一个主主题**」。
+- Phase 5.2 V1.8.2 已完成：**两级详情**（Level 1 就地 Inline Summary，点击主题行触发
+  `onToggle`，不离开主页面；Level 2 仅「查看完整历史案例」触发 `onSelect` 打开既有
+  `CampaignDetail`）；Timeline 恒为第一视觉，不新增大型 modal / 永久右侧大面板；
+  移动端详情退化为 Bottom Sheet。新增 **「历史提前观察区」**（`historicalPreObservationDays = 30`，
+  UI research buffer，代码注释注明「仅为研究浏览缓冲，不代表历史平均领先期」）。
   **不做**预测 / 荐股 / 交易信号。
-- 当前处于 **等待真实用户界面 Review** 状态。**不继续加功能。**
+- 当前处于 **等待真实用户体验 Review** 状态。**不继续加功能。**
 
 阶段全景见 `docs/ROADMAP.md`。下一个唯一目标见 `docs/PROJECT_STATE.md`「Next Single Goal」。
 
@@ -76,9 +81,9 @@ ThreeC/
 ├─ package.json / tsconfig.json / vite.config.ts
 │
 ├─ src/                        ← Product：前端源码
-│   ├─ components/             ← Timeline（第一视觉）/ SamePeriodView（主题级历史同周期）/ CurrentTimeLens（③当前时间上下文）/ CampaignDetail / OpportunityRadar（未引用，待清理）…
+│   ├─ components/             ← Timeline（第一视觉）/ SamePeriodView（主题级历史同周期 + 两级详情）/ CurrentTimeLens（③当前时间上下文）/ CampaignDetail（Level 2 完整历史案例）/ OpportunityRadar（未引用，待清理）…
 │   ├─ data/
-│   │   └─ timeline/           ← Timeline Adapter（消费 exports/）
+│   │   └─ timeline/           ← Timeline Adapter（消费 exports/）+ preObservation.ts（提前观察区，纯 UI 层）
 │   ├─ models/                 ← 核心数据模型（禁擅改）
 │   └─ utils/
 ├─ public/
@@ -185,7 +190,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 157 项
+npm test          # Vitest，当前 182 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -241,7 +246,15 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**真实用户界面 Review。** Phase 5.1 V1.8.1 实现完成后已**停止**：
+**真实用户体验 Review。** Phase 5.2 V1.8.2 实现完成后已**停止**：
 不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。
-请用户在真实使用中判断：Timeline 是否成为第一视觉？「历史同周期主题」是否以**主题**（而非个股）为一行？
-降级后的「当前时间上下文」是否仍清晰且不误导预测？
+
+请用户在真实使用中依次判断 7 个产品目的问题：
+
+1. Timeline 是否仍是第一视觉？
+2. 详情是否不再打断时间轴阅读？
+3. 用户能否先快速理解主题，再决定是否深入？
+4. 提前观察区是否帮助「提前开始研究」？
+5. 是否避免把提前观察区误认为预测？
+6. 是否仍保持「一行一个主题」？
+7. 是否保持页面简单？

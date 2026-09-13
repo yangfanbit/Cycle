@@ -19,11 +19,12 @@
 
 ## Current Phase
 
-**Phase 5.1：V1.8.1 主题级历史机会视图 —— IMPLEMENTED / READY FOR USER VISUAL REVIEW。**
+**Phase 5.2：V1.8.2 Timeline Detail UX + Historical Pre-observation Window —— IMPLEMENTED / READY FOR USER EXPERIENCE REVIEW。**
 
-页面 IA 重排为：**① Timeline（第一视觉）→ ② 历史同周期主题（主题级）→ ③ 当前时间上下文**。
-「历史同期」由「一行一个 Campaign」升级为「**一行一个主主题**」（同为一条行内仍保留独立行情）。
-Current Time Lens 由原「顶部入口」**降级为③补充摘要**。**不做**预测 / 荐股 / 交易信号。
+详情改为**两级**：Level 1 就地 Inline Summary（不离开主页面、不遮挡 Timeline）→
+Level 2 显式点「查看完整历史案例」才打开完整 CampaignDetail（移动端 Bottom Sheet）。
+新增**历史提前观察区**（主题形成前 30 个自然日的**研究浏览缓冲**，非预测 / 非建议 / 非历史统计事实）。
+**不做**预测 / 荐股 / 交易信号。
 
 ---
 
@@ -36,7 +37,8 @@ Current Time Lens 由原「顶部入口」**降级为③补充摘要**。**不�
 | Phase 3 | Timeline MVP（+ Conflict Visual / Phase Window / Drivers / SamePeriod / Research Export Adapter / Preview-Production 隔离） | ✅ |
 | Phase 4 | Monorepo Integration + Handoff Infrastructure | ✅ |
 | Phase 5 | **Current Time Lens v0**（今天入口：时间定位 → 历史同期 → 历史阶段映射 → 可能驱动） | ✅ IMPLEMENTED |
-| Phase 5.1 | **V1.8.1 主题级历史机会视图**（IA 重排：Timeline 第一视觉 + 历史同周期主题行 + Lens 降级） | ✅ IMPLEMENTED / READY FOR USER VISUAL REVIEW |
+| Phase 5.1 | **V1.8.1 主题级历史机会视图**（IA 重排：Timeline 第一视觉 + 历史同周期主题行 + Lens 降级） | ✅ IMPLEMENTED |
+| Phase 5.2 | **V1.8.2 Timeline Detail UX + 提前观察区**（两级详情 / Inline Summary / Bottom Sheet / Pre-observation Window） | ✅ IMPLEMENTED / READY FOR USER EXPERIENCE REVIEW |
 
 ---
 
@@ -79,21 +81,29 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Product Status
 
-- **页面 IA（V1.8.1）**：① **Timeline（第一视觉）** → ② **历史同周期主题** → ③ **当前时间上下文**。
-- **历史同周期主题**（`SamePeriodView`，主题级）：选择月份 → 历史各年同期出现过的**主题**。
-  一行 = 一个主主题（`themeRows.ts` 的 `TimelineThemeRow`，**纯 UI/Adapter 视图概念，非 DB 实体**）；
-  展开可见该主题下的**独立行情**（正式 Campaign / Research Candidate 逐条展示，**同主题多条不合并**，
-  RC 保留 badge、状态不升级）。主题行含：年份、代表阶段（`primaryPhase`）、相关概念（`relatedConcepts`）、
-  数据状态（`statuses`）；仅**重大冲突**（>10 天）显示 ⚠，轻微分歧不升级告警。
-- **当前时间上下文**（`CurrentTimeLens`，原「顶部入口」，V1.8.1 起**降级为③补充摘要**）：
-  A 时间定位 → B 历史同期（按年份）→ D **可能相关因素**（标签由「可能驱动 / 相关因素」改名，
-  仅 UI 文案变更，Research 数据未变；不由 Event 自动生成，沿用 `campaignDrivers` 研究层归因口径）。
+- **页面 IA（V1.8.1 起）**：① **Timeline（第一视觉）** → ② **历史同周期主题** → ③ **当前时间上下文**。
+- **Timeline 永远保持第一视觉（V1.8.2 硬约束）**：点击主题 / Campaign **不遮挡** Timeline；
+  无大型 modal 覆盖、无永久右侧大面板压缩。
+- **两级详情（V1.8.2）**：
+  - **Level 1 Inline Summary**：点击主题行 → **就地**展开摘要（主题 / 年份 / 阶段 / 关键阶段 /
+    提前观察区 / 可能相关因素 / 数据状态 / RC / Conflict），**不离开主页面**。
+  - **Level 2 Full CampaignDetail**：仅点「查看完整历史案例」才打开；保留 lifecycle / 精确日期 /
+    日期候选 / conflict / securities / events / evidence / source。桌面为右侧浮层；**移动端为 Bottom Sheet**。
+- **历史提前观察区（V1.8.2）**：`historicalPreObservationDays = 30`（**UI research buffer**）。
+  语义 = 「主题正式形成前可开始关注的时间缓冲区」；**不是**预测 / 买入建议 / 未来信号 / 历史统计事实。
+  层级：`Pre-observation → Early Signal? → Theme Formation`。Timeline 中以**极淡**点划线 + 斜纹 + 低透明度呈现，
+  不抢 Campaign 主体与 Peak。文案统一「历史提前观察区」（禁止「买入区 / 布局区 / 信号区」）。
+- **历史同周期主题**（`SamePeriodView`，主题级）：一行 = 一个主主题（`themeRows.ts` 的 `TimelineThemeRow`，
+  **纯 UI/Adapter 视图概念，非 DB 实体**）；同主题多条独立行情**不合并**，RC 保留 badge、状态不升级；
+  仅**重大冲突**（>10 天）显示 ⚠。
+- **当前时间上下文**（`CurrentTimeLens`，③补充摘要）：可提示「今天处于某历史主题的提前观察区」，
+  必须附「历史研究位置，不代表本年度预测」。相关因素统一称「**可能相关因素**」。
 - Timeline MVP 可用：365 天全年时间轴、Campaign 生命周期视觉、
   Peak Window、Conflict 分级视觉、Drivers 四问。
 - **生产模式**：消费 `data/verified/`（当前为空 → 显示「当前研究数据未覆盖」空态 + 预览入口）。
 - **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
 - `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
-- 测试：`npm test` **157 项通过**；`tsc -b` 通过；`build` 通过。
+- 测试：`npm test` **182 项通过**；`tsc -b` 通过；`build` 通过。
 
 ---
 
@@ -133,22 +143,26 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Current Blockers
 
-**无硬性阻塞。** Phase 5.1 V1.8.1 主题级历史机会视图已实现，处于
-**等待真实用户界面 Review**状态。
+**无硬性阻塞。** Phase 5.2 V1.8.2 Timeline Detail UX + 提前观察区已实现，处于
+**等待真实用户体验 Review**状态。
 
 ---
 
 ## Next Single Goal
 
-> **真实用户界面 Review（V1.8.1）。**
+> **真实用户体验 Review（V1.8.2）。**
 >
-> 请在真实使用中回答：
-> 1. 打开页面 5 秒内，**Timeline 是否成为第一视觉**？
-> 2. 「历史同周期主题」是否以**主题**（而非个股 / Campaign）为一行，一眼可读？
-> 3. 当前时间上下文（原 Lens）降级后是否仍清晰，且**不误导用户做预测**？
+> 请在真实使用中回答（Product Purpose Check）：
+> 1. Timeline 是否仍然是第一视觉？
+> 2. 详情是否不再打断时间轴阅读？
+> 3. 用户能否先快速理解主题，再决定是否深入？
+> 4. 提前观察区是否帮助「提前开始研究」？
+> 5. 是否避免把提前观察区误认为预测？
+> 6. 是否仍保持「一行一个主题」？
+> 7. 是否保持页面简单？
 
 Review 后可能的方向（**仅供参考，须经授权**）：
-Phase 5.2 资金 / 筹码 / 情绪 / 广度维度（**仅记录，V1.8.1 未实现**）
+Phase 5.3 资金 / 筹码 / 情绪 / 广度维度（**仅记录，未实现**）
 → Phase 6 Multi-theme → Phase 7 Current Market Mapping
 → Phase 8 Opportunity Discovery / Radar（**Radar 不是交易信号**）。
 
@@ -163,8 +177,9 @@ Phase 5.2 资金 / 筹码 / 情绪 / 广度维度（**仅记录，V1.8.1 未实�
 - 修改 Research Model v1.0 / `schema.sql` / 已有历史研究结论
 - 新增数据库实体（含 `theme_cycles` / `theme_relations`；`TimelineThemeRow` **仅为视图概念**）
 - 新建主题 / 修改 Export Contract / 重新生产 Research 数据
+- 新增资金 / 筹码 / 情绪数据（仅保留未来扩展接口）
 - 自动升级 verified；把 Research Candidate 当 confirmed
 - 改动 `src/models/` 与 Research 侧语义
+- 把提前观察区做成「预测 / 买入建议 / 历史统计事实」
 - force push
-- 为迁移引入无必要的新框架
 - 删除现有测试

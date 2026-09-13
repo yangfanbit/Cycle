@@ -3,6 +3,7 @@ import { currentTimeLens, type LensHistoricalEntry } from '../../data/timeline/c
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
 import type { Selection } from '../Timeline/Timeline';
 import { DATA_STATUS_CLASS, DATA_STATUS_LABEL } from '../labels';
+import { isInPreObservation, PRE_OBSERVATION_LABEL } from '../../data/timeline/preObservation';
 
 interface CurrentTimeLensProps {
   dataSource: TimelineDataSource;
@@ -49,6 +50,12 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
 
   const yearsWithData = lens.samePeriod.filter((r) => r.entries.length > 0);
 
+  // 提前观察区（V1.8.2）：今天是否落在某历史行情 / 主题的提前观察区内。
+  // 语义严格为「历史研究位置」，必须同时给出「不代表本年度预测」的限定。
+  const preObsHits = yearsWithData.flatMap((row) =>
+    row.entries.filter((e) => isInPreObservation(e.campaign, today)),
+  );
+
   return (
     <section className="ctl-view" aria-label="当前时间上下文">
       <h3 className="tl-layer-title">
@@ -66,6 +73,20 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
         </span>
       </div>
       <p className="ctl-question">历史上这个时间窗口附近，出现过哪些主题？</p>
+
+      {/* 提前观察区提示（若有）：今天落在历史某主题的提前观察区内 */}
+      {preObsHits.length > 0 && (
+        <div className="ctl-pre-obs" role="note">
+          <strong>{PRE_OBSERVATION_LABEL}</strong>
+          <span className="ctl-pre-obs-body">
+            今天处于历史主题「{preObsHits.map((e) => e.title).join('、')}」的{PRE_OBSERVATION_LABEL.replace('历史', '')}内
+            （主题形成前 30 个自然日的研究浏览缓冲）。
+          </span>
+          <span className="ctl-pre-obs-warn">
+            仅为历史研究位置，不代表本年度预测，也不是买入建议。
+          </span>
+        </div>
+      )}
 
       {/* ---------- B + C. 历史同期（按年份，压缩呈现） ---------- */}
       {lens.uncovered ? (

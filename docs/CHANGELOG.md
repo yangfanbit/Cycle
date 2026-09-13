@@ -7,6 +7,55 @@
 
 ---
 
+## 2026-09-13 · Phase 5.2 V1.8.2 Timeline Detail UX + Historical Pre-observation Window
+
+### 目标
+
+详情不再打断时间轴阅读（两级详情）；新增「历史提前观察区」帮助用户提前开始研究。
+本轮**不新增主题 / Research / 资金流 / 筹码 / 情绪 / 预测 / Radar / Statistics / Dashboard / Notification**。
+
+### 新增文件
+
+| 文件 | 说明 |
+|---|---|
+| `src/data/timeline/preObservation.ts` | `historicalPreObservationDays = 30`；`preObservationWindowOf` / `preObservationChainOf` / `isInPreObservation` / `themeFormationDate`；`PRE_OBSERVATION_LABEL` / `PRE_OBSERVATION_HINT` |
+| `src/data/timeline/__tests__/preObservation.test.tsx` | 25 项测试（10 场景 + 附加） |
+
+### 修改文件
+
+| 文件 | 变化 |
+|---|---|
+| `src/components/SamePeriodView/SamePeriodView.tsx` | 两级详情：Level 1 Inline Summary（就地展开，`sp-inline-*`）；「查看完整历史案例」为唯一 Level 2 入口 |
+| `src/components/Timeline/Timeline.tsx` | 新增提前观察区条形（`bar cmp pre-obs`），位于 Campaign 主体之前 |
+| `src/components/CampaignDetail/CampaignDetail.tsx` | 增加 `role="dialog"` / `aria-label`（Level 2 语义） |
+| `src/components/CurrentTimeLens/CurrentTimeLens.tsx` | 新增「今天处于某历史主题的提前观察区」提示 + 「不代表本年度预测」限定 |
+| `src/data/timeline/themeRows.ts` | `ThemeCampaignEntry` 新增 `preObservation`（三层链） |
+| `src/styles.css` | 新增 `.sp-inline-*` / `.pre-*` / `.ctl-pre-obs` / `.bar.pre-obs`；详情面板移动端改为 Bottom Sheet；清理 V1.8.1 废弃 `.sp-item-line` / `.sp-campaigns` 等样式 |
+| `docs/PROJECT_STATE.md` / `docs/ROADMAP.md` / `AGENTS.md` / `docs/CHANGELOG.md` | 阶段 / 状态 / 阶段规划更新 |
+
+### 设计要点（严格遵守约束）
+
+- **Timeline 永远第一视觉**：点击主题行调用 `onToggle`（就地展开），**不**调用 `onSelect`；
+  仅「查看完整历史案例」调用 `onSelect`（测试断言源码中 `onSelect?.(` 仅 1 处）。
+- **提前观察区语义**：`historicalPreObservationDays = 30` 为 **UI research buffer**，
+  代码注释明确「仅为研究浏览缓冲，不代表历史平均领先期」。
+- **层级**：`Pre-observation → Early Signal? → Theme Formation`（无 Early Signal 退化为两段式，不编造）。
+- **窗口口径**：`[formation-30, formation-1]`（不含形成日，避免与 Campaign 主体重叠）；
+  `formation` 取 lifecycle 最早阶段起点，否则 `Campaign.start`。
+- **禁止文案**：买入区 / 布局区 / 信号区 / 30天后大概率上涨 / 建议提前布局 / 最佳埋伏。
+- **一行一个主题**保持不变；同主题多条独立行情不合并；RC 保留 badge；仅重大冲突显示 ⚠。
+- **未实现**：资金 / 筹码 / 情绪 / 广度 —— 仅在 Roadmap Phase 5.3 **记录**。
+
+### 验证
+
+- `npm test` **182 项通过**（157 → 182，+25）；`tsc -b` 通过；`build` 通过（58 modules）。
+- 真实导出复核：提前观察区逐条 30 天；`RC-2023-HUAWEI` 三层链完整
+  （观察区 07-30 ~ 08-28 → 早期信号 08-29 → 形成 08-29）。
+- **未运行** Python 校验脚本（本轮无 Research / Schema / Export 变更）。
+- diff 零触及 `schema.sql` / `research/**` / `exports/**` / `src/models/` / `contracts/`。
+
+---
+
 ## 2026-09-13 · Phase 5.1 V1.8.1 主题级历史机会视图
 
 ### 目标

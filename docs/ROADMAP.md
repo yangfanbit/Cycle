@@ -104,10 +104,33 @@
 
 ---
 
-## Phase 5.2 · 资金 / 筹码 / 情绪 / 广度维度（仅记录 · 未实现）
+## Phase 5.2 · V1.8.2 Timeline Detail UX + Historical Pre-observation Window（已完成 · IMPLEMENTED / READY FOR USER EXPERIENCE REVIEW）
+
+**目标**：详情不再打断 Timeline 阅读；新增「提前观察区」帮助用户提前开始研究。
+
+- **两级详情**：
+  - **Level 1 Inline Summary**：点击主题行 → 就地展开摘要（主题 / 年份 / 阶段 / 关键阶段 /
+    提前观察区 / 可能相关因素 / 数据状态 / RC / Conflict），不离开主页面、不遮挡 Timeline。
+  - **Level 2**：仅点「查看完整历史案例」才打开完整 `CampaignDetail`（保留全部字段）。
+- **Timeline 永远第一视觉**：点击主题 / Campaign 不遮挡 Timeline；无大型 modal、无永久右侧大面板压缩。
+- **移动端**：详情为 **Bottom Sheet**（非固定 Side Drawer）。
+- **历史提前观察区**（新增 `src/data/timeline/preObservation.ts`）：
+  - `historicalPreObservationDays = 30`（**UI research buffer**，注明「不代表历史平均领先期」）
+  - 层级：`Pre-observation → Early Signal? → Theme Formation`
+  - Timeline 视觉：极淡点划线 + 斜纹 + 低透明度，不抢 Campaign 主体与 Peak
+  - 文案统一「历史提前观察区」；**禁止**「买入区 / 布局区 / 信号区」
+- 新增测试 `src/data/timeline/__tests__/preObservation.test.tsx`（25 项）
+- **明确不做**：新主题 / 新 Research / 资金流 / 筹码 / 情绪 / 预测 / Radar / Statistics / Dashboard / Notification
+
+**验收**：Timeline 保持第一视觉；点击主题就地展开摘要；提前观察区不被误认为预测。
+下一步：**真实用户体验 Review**。
+
+---
+
+## Phase 5.3 · 资金 / 筹码 / 情绪 / 广度维度（仅记录 · 未实现）
 
 **目标**：为「机会地图」补充量的维度。
-> ⚠️ V1.8.1 仅**记录**本方向，**未实现**任何代码 / 数据 / 字段。
+> ⚠️ V1.8.2 仅**记录**本方向，**未实现**任何代码 / 数据 / 字段（只保留未来扩展接口）。
 
 - 资金流（北向 / 主力）、筹码分布、情绪指标、市场广度
 - 数据来源与合规性需届时单独评估授权
