@@ -257,8 +257,68 @@ html, body {
   border-left: 1px solid var(--line-strong);
   box-shadow: -8px 0 28px rgba(0,0,0,0.08);
   z-index: 40;
+  /* 纵向可滚动；横向禁止溢出滚动条 —— 内容一律在面板宽度内换行（V1.8.2.2） */
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px 22px 40px;
+}
+
+/* ---------- 详情面板：内容自适应（无横向滚动）----------
+   面板内所有文本 / 标签 / 键值对一律在面板宽度内换行或省略，
+   不出现需要左右滑动才能看全的情况。仅作用于 .detail-panel 内部，
+   不影响 Timeline 及其他区域的 .kv / .tag / .phase-text。 */
+.detail-panel .kv {
+  /* 1fr 列默认 min-width:auto 会被长内容撑开 → 用 minmax(0,1fr) 允许收缩 */
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+.detail-panel .kv dd {
+  /* 长串（URL / 无空格英文）也强制断行，避免撑破面板 */
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.detail-panel .kv dt {
+  /* 侧栏收窄后标签列允许折行（如「驱动因素（为什么）」） */
+  overflow-wrap: anywhere;
+}
+/* 面板内的说明性小字改为可折行（面板外仍保持 nowrap 不变） */
+.detail-panel .phase-text {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+/* 面板内的标签：长文本折行显示，而不是横向溢出或截断 */
+.detail-panel .tag {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+  vertical-align: top;
+}
+.detail-panel .preview-note p,
+.detail-panel .conflict-line,
+.detail-panel .event-line,
+.detail-panel .disclaimer,
+.detail-panel .empty-note {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+/* 驱动因素：长归因文本折行（覆盖桌面端 240px 单行省略规则） */
+.detail-panel .drivers .tag {
+  max-width: 100%;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+.detail-panel .drivers .driver-row {
+  align-items: flex-start;
+}
+.detail-panel .drivers .driver-q {
+  min-width: 64px;
+}
+/* 标题（历史行情 · 2022）在窄面板内也换行 */
+.detail-panel h2 {
+  overflow-wrap: anywhere;
+  padding-right: 28px;
 }
 
 /* 移动端：Bottom Sheet（不固定 Side Drawer 覆盖 Timeline） */
@@ -275,6 +335,7 @@ html, body {
     border-radius: 14px 14px 0 0;
     box-shadow: 0 -8px 28px rgba(0,0,0,0.14);
     padding: 16px 16px 28px;
+    overflow-x: hidden;
   }
   .detail-panel::before {
     content: '';
