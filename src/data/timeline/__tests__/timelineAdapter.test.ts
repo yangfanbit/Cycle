@@ -19,6 +19,24 @@ function cloneExport(): TimelineExportV1 {
   return JSON.parse(JSON.stringify(timelineExportData)) as TimelineExportV1;
 }
 
+/**
+ * 数据快照回归：锁定当前消费的 Research 导出版本（V1.6.2 同步）。
+ * 注意：这不是永久业务常量——Research 导出更新后需同步更新此快照值。
+ */
+describe('数据快照回归：timeline_export_v1 版本', () => {
+  it('source_commit 为当前同步的 Research 导出（4bbe257）', () => {
+    expect(timelineExportData.source_commit).toBe('4bbe257d37d5991a2c6ce33def205df9a67e2593');
+  });
+
+  it('数据量快照：8 Campaign / 2 Candidate / 9 Signal / 26 Event / 39 Security', () => {
+    expect(timelineExportData.campaigns).toHaveLength(8);
+    expect(timelineExportData.research_candidates).toHaveLength(2);
+    expect(timelineExportData.signals).toHaveLength(9);
+    expect(timelineExportData.events).toHaveLength(26);
+    expect(timelineExportData.securities).toHaveLength(39);
+  });
+});
+
 describe('Contract v1.0：canonical 校验', () => {
   it('真实 timeline_export_v1.json 通过校验（无问题项）', () => {
     expect(validateTimelineExportV1(timelineExportData)).toEqual([]);
