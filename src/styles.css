@@ -252,7 +252,9 @@ html, body {
   top: 0;
   right: 0;
   bottom: 0;
-  width: min(420px, 92vw);
+  /* V1.8.2.3：420px → 540px，阅读更舒适；仍为「浮层」而非压缩 Timeline 的常驻面板，
+     且 92vw 上限保证窄屏不会把 Timeline 完全遮住。 */
+  width: min(540px, 92vw);
   background: var(--panel);
   border-left: 1px solid var(--line-strong);
   box-shadow: -8px 0 28px rgba(0,0,0,0.08);
@@ -260,7 +262,7 @@ html, body {
   /* 纵向可滚动；横向禁止溢出滚动条 —— 内容一律在面板宽度内换行（V1.8.2.2） */
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 20px 22px 40px;
+  padding: 24px 26px 40px;
 }
 
 /* ---------- 详情面板：内容自适应（无横向滚动）----------
@@ -268,8 +270,9 @@ html, body {
    不出现需要左右滑动才能看全的情况。仅作用于 .detail-panel 内部，
    不影响 Timeline 及其他区域的 .kv / .tag / .phase-text。 */
 .detail-panel .kv {
-  /* 1fr 列默认 min-width:auto 会被长内容撑开 → 用 minmax(0,1fr) 允许收缩 */
-  grid-template-columns: 72px minmax(0, 1fr);
+  /* 1fr 列默认 min-width:auto 会被长内容撑开 → 用 minmax(0,1fr) 允许收缩。
+     V1.8.2.3：面板加宽后标签列回调至 96px（原为 72px），标签基本单行显示。 */
+  grid-template-columns: 96px minmax(0, 1fr);
 }
 .detail-panel .kv dd {
   /* 长串（URL / 无空格英文）也强制断行，避免撑破面板 */
