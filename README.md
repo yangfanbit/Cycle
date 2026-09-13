@@ -2,7 +2,39 @@
 
 **A股历史题材 / 行业季节性研究数据库（先行版）**
 
-> ⚠️ 本项目（`Cycle-Research`）与生产项目 `yangfanbit/Cycle` 完全独立。禁止直接修改 `Cycle` 及直接写入其 `data/verified/`。本项目的结论为研究候选，必须经人工 Review 后才转入 `Cycle`。
+> ⚠️ 本项目（`Cycle-Research`）与生产项目 `yangfanbit/Cycle` 完全独立。禁止直接修改 `Cycle` 及直接写入其 `data/verified/`。
+
+## 定位（HDP v1 更新）
+
+**Cycle-Research 是"持续生产历史研究数据的研究层"**，最终服务于 **A股机会时间轴**（主 Cycle Timeline MVP）：
+
+1. 看某个时间点历史上发生过什么
+2. 看某类主题通常如何形成
+3. 看提前多久出现信号
+4. 看 Campaign 如何发展
+5. 看什么时候进入退潮
+6. 为主 Cycle 的时间轴提供可靠历史数据
+
+> **产品价值 > 研究工程复杂度**。研究严谨性必须保留，但不能成为数据生产瓶颈。
+
+### 生产哲学（正式改变）
+
+过去：`Research → Human Review → Verified`
+
+现在：
+
+```
+Raw → Multi-source Collection → Cross-check → PROVISIONAL
+    ├── 无冲突 → PROVISIONAL
+    ├── 有冲突 → CONFLICT
+    └── 来源不足 → INSUFFICIENT
+→ Human Review → VERIFIED
+```
+
+**PROVISIONAL ≠ VERIFIED**，但 **PROVISIONAL 可以用于研究预览和主 Cycle 开发预览**。
+**人工 Review 不再是批量生产的前置条件**（不再"等人工 Review 后再继续下一个年份"）。
+
+研究级状态（`RAW / PROVISIONAL / CONFLICT / INSUFFICIENT / VERIFIED`）表达在 `research/batch/` 与 export manifest 层，**不改 SQLite 正式 schema**。
 
 ```
 Cycle-Research → Raw Evidence → Research Fact → Campaign Draft
@@ -48,7 +80,7 @@ Cycle-Research → Raw Evidence → Research Fact → Campaign Draft
 ```
 Cycle-research/
 ├── schema/
-│   └── schema.sql               # SQLite 建库脚本
+│   └── schema.sql               # SQLite 建库脚本（模型 v1.0 冻结，不新增实体）
 ├── database/
 │   └── cycle_research.db        # 研究数据库
 ├── scripts/
@@ -57,6 +89,11 @@ Cycle-research/
 │   ├── seed_market_series.py    # 注册行情序列(Market Series)
 │   ├── seed_campaign_dates.py   # 快照候选日期(Date Observation)
 │   ├── market_metrics.py        # 基础行情指标函数库
+│   ├── fetch_market_tx.py       # 腾讯行情拉取（Pilot 1-C1 校准）
+│   ├── fetch_market_batch.py    # 批量补齐 2018–2025 行情（幂等）
+│   ├── batch_auto_research.py   # 批量研究：生成 manifest/conflicts/timeline_export
+│   ├── validate_batch_research.py    # 批量研究输出校验
+│   ├── validate_timeline_export.py   # 时间轴导出契约校验
 │   ├── export.py                # 导出 CSV + verified_candidates.json
 │   ├── gen_annual.py            # 生成年度研究报告
 │   ├── gen_summary.py           # 生成年度汇总
@@ -64,10 +101,15 @@ Cycle-research/
 ├── research/
 │   ├── templates/annual_template.md
 │   ├── annual/{2018..2025}.md   # 年度研究报告
+│   ├── batch/                   # 批量研究层（HDP v1）
+│   │   ├── README.md
+│   │   ├── auto_2018_2025_batch_manifest.json  # 研究状态/日期候选/证据/行情快照
+│   │   └── conflicts.json       # 日期口径冲突（candidate_a vs candidate_b）
 │   ├── summary/auto_2018_2025.csv / .md
 │   └── methodology/market_data_validation.md  # 行情核验方法学(Pilot 1-C1)
 ├── exports/
-│   └── cycle_verified_candidates.json  # 待人工确认的候选（非 Cycle 正式 verified）
+│   ├── cycle_verified_candidates.json  # 待人工确认的候选（非 Cycle 正式 verified）
+│   └── timeline_export_v1.json         # Research → Cycle Timeline MVP 导出契约 v1.0
 ├── data/
 │   └── market/
 │       ├── raw/                 # 原始下载行情（未统一字段，可追溯）
@@ -144,11 +186,21 @@ python scripts/seed.py          # 初始化并录入当前年份
 python scripts/validate_db.py   # 一致性检查（PASS/FAIL，含 confirmed 门槛、source-tier、引用完整性）
 python scripts/export.py        # 生成 CSV 与 verified_candidates.json
 python scripts/gen_annual.py    # 生成 research/annual/*.md
+# HDP v1 批量研究流水线：
+python scripts/fetch_market_batch.py       # 补齐缺失行情（幂等，腾讯免费接口）
+python scripts/batch_auto_research.py      # 生成 batch manifest / conflicts / timeline_export_v1
+python scripts/validate_batch_research.py  # 校验批量研究输出
+python scripts/validate_timeline_export.py # 校验时间轴导出契约
 ```
 
-## 7. 当前状态（试点：2018–2020）
+## 7. 当前状态（HDP v1：2018–2025 批量研究）
 
-已完成 2018、2019、2020 三年试运行并生成：
-`research/annual/2018.md`、`2019.md`、`2020.md`、`research/summary/auto_2018_2025.csv`、`exports/cycle_verified_candidates.json`。
+已完成 2018–2025 八年度研究（8 个正式 Campaign + 2018 反例年份保留）：
+- `research/annual/{2018..2025}.md`、`research/summary/campaign_2018_2025.csv`、`exports/cycle_verified_candidates.json`
+- `research/batch/auto_2018_2025_batch_manifest.json`（PROVISIONAL / CONFLICT 研究状态）
+- `research/batch/conflicts.json`（C-2022-POLICY start、C-2024-ROBOTAXI peak/end 口径冲突）
+- `exports/timeline_export_v1.json`（Research → Cycle Timeline MVP 契约 v1.0）
 
-**试点结论（含歧义与调整项）见 `research/pilot_report.md`。** 在人工 Review 前，继续批量研究被暂停（停止条件）。
+**最终 Rule 结论**："6–8 月汽车" = **历史观察窗口**（Historical Observation Window），**Partially Supported**，非固定买入窗口。详见 `research/summary/auto_2018_2025_final_review.md`。
+
+> 停止条件已解除：人工 Review 不再是批量生产的前置条件；PROVISIONAL 可用于研究预览与主 Cycle 开发预览。
