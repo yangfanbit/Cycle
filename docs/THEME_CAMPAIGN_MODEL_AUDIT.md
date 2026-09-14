@@ -141,6 +141,9 @@ Research Signal       研究信号（EARLY_SIGNAL / THEME_FORMING / CONFIRMATION
 | Phase / Signal | 行情走到哪一步 / 有无提前信号？ | ✅ `campaign_phases` / export | ❌ |
 
 > **判据**：Sub-theme 是「解释维度」，Campaign 是「独立行情阶段」。**解释维度不产生新行。**
+>
+> **形态分类见 §11**：Theme Cycle 内部 Campaign 的组织方式分为
+> **Sequential / Parallel / Hybrid**（v1.1 新增，§11.2）。
 
 ---
 
@@ -183,6 +186,9 @@ Case A 的典型形态：同一主线下的一个细分方向、一个行业分�
 > **兼容性声明**：以上是**判据与禁令**，不新增持久化实体、不新增表、不新增必填字段；
 > 因此与 `research_model_v1_0.md` §18「不扩展新的模型概念」**不冲突**（详见 §6 与
 > `theme_campaign_separation_v1.md`）。
+>
+> **Q1 反例见 §11.4**：**不同名称 ≠ 不同 Campaign** —— 若资金来源 / 代表资产 / 交易逻辑高度重叠，
+> 应判为「同一 Campaign + 不同 Sub-theme」。
 
 ---
 
@@ -380,5 +386,83 @@ Case A 的典型形态：同一主线下的一个细分方向、一个行业分�
 
 ---
 
+## 11. v1.1 Methodology Patch（方法论补丁）
+
+> **背景**：本审计（汽车）与 `Medical_Health_Theme_Cycle_Discovery_v0.1.md`（医药）的实证对比表明 ——
+> **同一套分层可以装下两种形态不同的 Theme Cycle**，但**缺少对"形态"与"测量口径"的成文规则**。
+> v1.1 补强三项判据。**无新实体 / 无新字段 / 不改既有结论。**
+
+### 11.1 形态对比：汽车是 Sequential，医药是 Parallel
+
+| | **汽车（Automotive）** | **医药健康（Medical Health）** |
+|---|---|---|
+| 组织形态 | **Sequential Cycle** | **Parallel Cycle** |
+| 叙事演进 | 沿时间**先后**演进 | 同一 Cycle 内**多叙事并存** |
+| Campaign 关系 | 后续**继承 / 替代 / 迁移**前者 | **不一定互相替代**，横向展开 |
+| 关注中心 | 发生 **Attention shift** | 各自保有注意力中心 |
+| 见顶节奏 | 前一个结束/衰减后下一个接棒 | **不同 Campaign 可在不同时间见顶** |
+| 实例 | `auto_intelligence_2023`：Smart Driving → Huawei Auto（Theme Drift） | `medical_structural_upgrade_2019_2022`：创新药/CXO ‖ 疫情医疗 ‖ 中药 |
+
+> **关键洞察**：汽车是「**纵向时间分期**」，医药是「**横向叙事并存**」。
+> 分层的价值正在于 —— **同一套 `Macro Theme → Theme Cycle → Campaign → Sub-theme → Phase/Signal`
+> 同时装得下这两种形态，不需要两套模型。**
+
+### 11.2 Theme Cycle Pattern（形态分类）
+
+| Pattern | 定义 | 识别特征 | 实例 |
+|---|---|---|---|
+| **A. Sequential** | Campaign 按时间顺序演进，后续**继承 / 替代 / 迁移**前者的市场关注 | Narrative migration · Attention shift · Overlap possible · 后者吸收前者资金与关注 | 汽车智能化 |
+| **B. Parallel** | 同一 Cycle 内多个 Campaign **并行展开**，各自具有独立生命周期 | 多叙事同时存在 · **Peak 时间可能不同** · 不要求相互替代 | 医药结构升级 |
+| **C. Hybrid** | 同时存在**时间迁移**与**横向并存** | 既有时序接续（A→B），又有并行分支（B ‖ C） | 待未来案例 |
+
+**约束**：Pattern 是**研究描述**（第 3 层 Grouping），不是市场客观结论；
+**不得为「凑成某一种 Pattern」而改写 Campaign 边界**；一个 Cycle 的 Pattern 可随时期变化。
+
+### 11.3 Campaign Lifecycle Measurement Rule（测量口径）
+
+**Peak 定义** —— `Campaign Peak` **≠** Macro Theme 指数最高点 **≠** 行业指数最高点 **≠** 单一股票最高点。
+
+应优先依据三者综合判断：**Campaign Core Narrative + Representative Assets + Market Attention**。
+
+> **推论**：Peak 口径应以**该 Campaign 自己的代表标的 / 子指数**为准，
+> **不得用上位板块指数代替**；同 Cycle 内多个 Campaign 的 Peak **分列记录**；允许 Peak cluster。
+
+**End 定义** —— `Campaign End` **≠** 行业指数下跌 **≠** 某股票见顶 **≠** 新闻减少。
+
+需判断是否发生：**市场注意力消失 · Narrative 失效 · 资金中心迁移 · 新 Campaign 替代**。
+
+**❌ 错误**：医药指数 2021-07 下跌 → 认为医药 Campaign End
+**✅ 正确**：Macro Theme Peak（板块口径）→ 某 Sub-theme Peak（各自口径）→ **另一个 Campaign 延续**
+
+> **概括**：**Macro Theme 的顶 ≠ 某个 Campaign 的 End。**（Pattern B 的常态）
+> **一致性**：汽车 `2022_auto_boundary_review.md` 已实际采用「龙头峰值 vs 行业代理峰值分列记录」，
+> v1.1 把该做法**上升为所有 Macro Theme 的通用判据**。
+
+### 11.4 Gate Q1 Anti-example（反例）
+
+**不同名称 ≠ 不同 Campaign。**
+
+若两个候选 **资金来源高度重叠 / 核心代表资产高度重叠 / 市场交易逻辑一致**，
+则**优先**判为 `Same Campaign + Different Sub-theme`，而**不是** `New Campaign`。
+
+**典型反例**：不能因为「创新药 / CXO / 医疗服务」都上涨就自动创建三个 Campaign ——
+若它们同属医药核心资产资金池、共享同一「政策免疫 + 高景气」逻辑，即为同一 Campaign 的三个 Sub-theme。
+
+### 11.5 兼容性确认
+
+| 项 | v1.1 是否改变 |
+|---|---|
+| Data / DB | ❌ 不变 |
+| `schema.sql` | ❌ 不变 |
+| Export | ❌ 不变 |
+| Contracts | ❌ 不变 |
+| Product / Timeline UI | ❌ 不变 |
+| 汽车既有研究结论 | ❌ 不变 |
+| 医药研究数据 | ❌ **不录入** |
+| `research_model_v1_0.md` §18 冻结 | ✅ **保持有效**（本补丁为判据层，非模型扩展） |
+
+---
+
 *本审计为只读 + 文档级变更；未修改 schema / DB 数据 / export 数据 / 历史研究结论 / Timeline 行为。
-配套方法论见 `research/research/methodology/theme_campaign_separation_v1.md`。*
+配套方法论见 `research/research/methodology/theme_campaign_separation_v1.md`（v1.1）。
+医药实证见 `research/research/medical/Medical_Health_Theme_Cycle_Discovery_v0.1.md`。*

@@ -58,6 +58,10 @@
 > **分层判据**：Macro Theme / Theme Cycle / Campaign / Sub-theme 的边界、以及
 > 「某 Sub-theme 是否应升级为独立 Campaign」的判定框架（Campaign Independence Gate），
 > 见 `theme_campaign_separation_v1.md`。该文件为**判据层**，不新增实体、不改本节语义。
+>
+> **v1.1 方法论补丁**（同上文件，判据层，无新实体）：Theme Cycle 的**形态分类**
+> （Sequential / Parallel / Hybrid）、**Campaign Peak/End 测量口径**、以及 Gate **Q1 反例**。
+> 本文件 v1.0 冻结（§18）**保持有效**。
 
 ---
 

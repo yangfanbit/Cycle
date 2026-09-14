@@ -7,6 +7,69 @@
 
 ---
 
+## 2026-09-14 · Research Model v1.1 Methodology Patch（Theme Cycle Pattern + Lifecycle Measurement）
+
+### 目标
+
+基于 Automotive Audit 与 Medical Health Theme Cycle Discovery 的实证对比，
+为 ThreeC Research Model 增加**三个通用方法论补丁**，使其从「能描述汽车和医药」
+升级为「能描述**不同类型 Theme Cycle** 的通用历史机会发现框架」。
+
+**本轮只做方法论 / docs / changelog。不修改 DB / schema / exports / contracts / Timeline UI；
+不创建 `theme_cycles` 表；不创建医药 Campaign 数据；不录入医药研究数据。**
+
+### 实证背景
+
+| | 汽车（Automotive） | 医药健康（Medical Health） |
+|---|---|---|
+| 形态 | **Sequential Cycle** | **Parallel Cycle** |
+| 特征 | 叙事沿时间演进；后续 Campaign 继承/替代前者；存在 Theme Drift | 同一 Cycle 内多叙事并存；横向展开；不互相替代；**Peak 时间可不同** |
+| 实例 | `auto_intelligence_2023`：Smart Driving → Huawei Auto | `medical_structural_upgrade_2019_2022`：创新药/CXO ‖ 疫情医疗 ‖ 中药 |
+
+> 关键洞察：汽车是「纵向时间分期」，医药是「横向叙事并存」；
+> **同一套五层分层同时装得下两种形态** —— 这正是分层的价值。
+
+### 三个补丁
+
+| # | 补丁 | 内容 |
+|---|---|---|
+| **P1** | **Theme Cycle Pattern** | 新增形态分类 **A. Sequential / B. Parallel / C. Hybrid**，用于描述 Theme Cycle 内部 Campaign 的组织方式（描述层，无新实体） |
+| **P2** | **Campaign Lifecycle Measurement Rule** | **Peak** 以 `Core Narrative + Representative Assets + Market Attention` 综合判断；**口径须用该 Campaign 自身代表标的/子指数，不得用上位板块指数代替**。**End** 须判断「注意力消失 / Narrative 失效 / 资金中心迁移 / 新 Campaign 替代」，**Macro Theme 的顶 ≠ 某 Campaign 的 End** |
+| **P3** | **Gate Q1 Anti-example** | **不同名称 ≠ 不同 Campaign**：若资金来源 / 核心代表资产 / 交易逻辑高度重叠 → 优先判为「同一 Campaign + 不同 Sub-theme」，不新建 Campaign |
+
+补充：新增 **Campaign vs Sub-theme 边界示例**（§3.1 决策速查表）。
+
+### 修改文件
+
+| 文件 | 变化 |
+|---|---|
+| `research/research/methodology/theme_campaign_separation_v1.md` | **v1.0 → v1.1**：新增 §2 Q1 Anti-example、§3.1 边界示例、§5 Theme Cycle Pattern、§6 Lifecycle Measurement Rule；更新 §7 对应表 / §8 应用示例；新增「修订记录」。v1.0 全部内容**逐字保留** |
+| `research/research/methodology/research_model_v1_0.md` | §3 指针补一句 v1.1 补丁说明（**不改语义、不扩展模型概念**，§18 冻结保持有效） |
+| `docs/THEME_CAMPAIGN_MODEL_AUDIT.md` | 新增 **§11 v1.1 Methodology Patch**（11.1 形态对比 / 11.2 Pattern / 11.3 Lifecycle Measurement / 11.4 Q1 Anti-example / 11.5 兼容性确认）；§2、§3 各加一条指针 |
+| `docs/CHANGELOG.md` | 本条目 |
+
+### 兼容性确认（全部不变）
+
+Data · `schema.sql` · Export · Contracts · Product / Timeline UI ·
+汽车既有研究结论 · 医药研究数据（**不录入**） · `research_model_v1_0.md` §18 v1.0 冻结（**保持有效**）。
+
+> 本补丁为**判据层**（描述 + 测量口径 + 反例），**不新增持久化实体 / 不新增表 / 不新增必填字段**。
+
+### 验证
+
+- `npm test` **191 项通过**；`tsc -b` 通过；`build` 通过（58 modules）。
+- Research 校验全部 PASS：`validate_db.py` / `validate_timeline_export.py` /
+  `validate_batch_research.py` / `validate_promotion_manifest.py` /
+  `check_doc_schema_consistency.py` / `validate_monorepo_integrity.py`。
+- 本轮改动**仅 3 个 markdown 文件**，零代码 / 零数据变更。
+
+### 下一步（仅记录，不自动执行）
+
+是否进入 **Medical Health Campaign Data Entry**（医药行情数据录入 + Campaign 生产）——
+须先人工确认医药 Theme Cycle 边界与 P1/P2/P3 三个模型问题。
+
+---
+
 ## 2026-09-14 · Theme / Campaign 分层模型统一审计（方法论 + 审计报告，只读为主）
 
 ### 目标
