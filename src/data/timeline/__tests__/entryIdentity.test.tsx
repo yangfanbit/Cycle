@@ -261,19 +261,21 @@ describe('5. identity 规则与数据集无关（合成跨年 Campaign）', () =
   });
 
   /**
-   * 已知限制（Audit Finding F-MED-5，**与 entryId 无关**，属既有源差异）：
-   * `verifiedTimelineSource().years()` 只收集各 Campaign 的 **起止年份**（无区间填充），
-   * 而 `previewTimelineSource().years()` 做 min..max **全量填充**。
-   * → 生产模式下，跨年 Campaign 的**中间年份行会缺失**（本 fixture 只剩 2019 / 2022）。
-   * 当前 `data/verified/campaigns.ts` 为空（0 条），故尚未显现。
-   * 本用例固定当前行为；若决定统一 years() 口径，应改为 4 个年份。
+   * F-MED-5（已修复，V1.9.1 Timeline Year Coverage Rule）：
+   * `verifiedTimelineSource().years()` 原先只收集各 Campaign 的**起止年份**（无区间填充），
+   * 导致跨年 Campaign 的**中间年份行缺失**。现与 preview 源统一为同一 helper
+   * `timelineYears()`（`src/data/timeline/yearCoverage.ts`）：start 年 → end 年连续。
+   * 详见 `yearCoverage.test.ts`（年份覆盖规则专项套件）。
    */
-  it('已知限制 F-MED-5：verified 源 years() 只含起止年份（跨年中间年缺失）', () => {
+  it('F-MED-5 回归：verified 源跨年 Campaign 连续覆盖 2019–2022（含中间年份）', () => {
     const src = verifiedTimelineSource([multi]);
-    expect(src.years()).toEqual([2019, 2022]);
+    expect(src.years()).toEqual([2019, 2020, 2021, 2022]);
+    // 中间年份行也含该行情 → themeRows 得到 4 条明细（entryId 各不相同）
     const entries = themeRowsOf(src, SEPT).rows.flatMap((r) => r.campaigns);
     expect(entries.map((e) => e.entryId)).toEqual([
       'cmp_synth_multiyear@2019',
+      'cmp_synth_multiyear@2020',
+      'cmp_synth_multiyear@2021',
       'cmp_synth_multiyear@2022',
     ]);
   });

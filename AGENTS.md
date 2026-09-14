@@ -197,7 +197,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 220 项
+npm test          # Vitest，当前 244 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```

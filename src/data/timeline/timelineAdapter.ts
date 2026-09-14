@@ -25,6 +25,7 @@ import type {
   TimelineYearData,
 } from './timelineTypes';
 import { timelineExportData } from './timelinePreview';
+import { timelineYears, yearOf } from './yearCoverage';
 
 /**
  * Timeline Data Adapter：把两类来源映射成统一的 TimelineDataSource。
@@ -148,12 +149,9 @@ export function verifiedTimelineSource(
   return {
     kind: 'verified',
     years() {
-      const set = new Set<number>();
-      for (const c of timeline) {
-        set.add(Number(c.start.slice(0, 4)));
-        set.add(Number(c.end.slice(0, 4)));
-      }
-      return [...set].sort((a, b) => a - b);
+      // 统一规则（V1.9.1 Year Coverage）：Campaign 覆盖年份 = start 年 → end 年**连续**
+      // （含中间年份）。旧实现只收集起止年份 → 跨年 Campaign 中间年份行缺失（F-MED-5）。
+      return timelineYears(timeline.map((c) => ({ start: c.start, end: c.end })));
     },
     yearData(year: number): TimelineYearData {
       const yStart = `${year}-01-01`;
@@ -774,18 +772,13 @@ export function fromTimelineExportV1(data: TimelineExportV1): TimelineDataSource
   return {
     kind: 'preview',
     years() {
-      // 年份自动推导：campaigns + research_candidates + events（含 2018 反例年份），
-      // 取连续区间——UI 不硬编码年份
-      const set = new Set<number>();
-      for (const c of data.campaigns) set.add(c.year);
-      for (const rc of data.research_candidates) set.add(rc.year);
-      for (const ev of data.events) set.add(Number(ev.date.slice(0, 4)));
-      if (set.size === 0) return [];
-      const min = Math.min(...set);
-      const max = Math.max(...set);
-      const years: number[] = [];
-      for (let y = min; y <= max; y += 1) years.push(y);
-      return years;
+      // 统一规则（V1.9.1 Year Coverage）：Campaign / Research Candidate 覆盖年份
+      // = start 年 → end 年**连续**（含中间年份）——与 verified 源同一规则、同一 helper。
+      // 另并入研究事件年份：保留「2018 反例年份」（无 Campaign 但有历史事件）。UI 不硬编码年份。
+      return timelineYears(
+        all.map((c) => ({ start: c.start, end: c.end })),
+        data.events.map((ev) => yearOf(ev.date)),
+      );
     },
     yearData(year: number): TimelineYearData {
       const yStart = `${year}-01-01`;

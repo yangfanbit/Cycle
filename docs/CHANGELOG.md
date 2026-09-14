@@ -7,6 +7,71 @@
 
 ---
 
+## 2026-09-14 · V1.9.1 Timeline Year Coverage Rule v1（统一 years() 口径 · 修复 F-MED-5）
+
+**统一 `verified`（生产）与 `preview`（研究预览）两个 TimelineDataSource 的年份生成规则。**
+
+**问题（F-MED-5）**：两源实现不同 ——
+- `previewTimelineSource().years()`：`{campaign.year} ∪ {candidate.year} ∪ {event.year}` 后 **min..max 连续填充**
+- `verifiedTimelineSource().years()`：只收集各 Campaign 的 **起止年份**（`start` / `end`），**无区间填充**
+
+→ 生产模式下跨年 Campaign 的**中间年份行缺失**（`C-2019-PHARMA-INNOV` 2019-01-02 ~ 2022-10-31
+只会出 2019 与 2022，2020 / 2021 两年无行）。`data/verified/campaigns.ts` 为空故尚未显现。
+
+**规则（Campaign Year Coverage）**
+```
+一个 Campaign / Research Candidate 覆盖的展示年份
+  = 从 start_date 的年份 连续生成 到 end_date 的年份（含两端）
+  例：2019-01-02 ~ 2022-10-31 → [2019, 2020, 2021, 2022]
+```
+
+**新增**
+
+| 文件 | 内容 |
+|---|---|
+| `src/data/timeline/yearCoverage.ts` | `yearOf(date)`（严格 4 位年份解析，空串 → `null`，不用 `Number()`）/ `yearSpan(start,end)` / `yearCoverageOf(ranges)` / `timelineYears(ranges, extraYears)` |
+| `src/data/timeline/__tests__/yearCoverage.test.ts` | **年份覆盖专项测试套件 24 例**（6 组） |
+
+**修改**
+
+| 文件 | 变化 |
+|---|---|
+| `src/data/timeline/timelineAdapter.ts` | `verifiedTimelineSource().years()` 与 `previewTimelineSource().years()` **均改调同一 `timelineYears()`**（两处手写逻辑删除）；preview 的研究事件年份经 `yearOf()` 严格解析后作为 `extraYears` |
+| `src/data/timeline/__tests__/entryIdentity.test.tsx` | F-MED-5「已知限制」用例 → **改为回归断言**（verified 源连续覆盖 2019–2022 → 4 条明细） |
+
+**行为对比**
+
+| 源 / 场景 | 修复前 | 修复后 |
+|---|---|---|
+| verified + 跨年 2019-2022 | `[2019, 2022]` ✗ | **`[2019, 2020, 2021, 2022]`** ✓ |
+| verified + 跨年相邻 2026-11-01~2027-01-15 | `[2026, 2027]` | `[2026, 2027]`（不变） |
+| verified + 空数据 | `[]` | `[]`（不变） |
+| verified + 单年度 2019..2025 | `[2019..2025]` | `[2019..2025]`（不变） |
+| preview（真实导出） | `[2018..2025]` | `[2018..2025]`（不变，含 2018 反例年份） |
+
+**汽车单年度 Campaign 保持不变**：`yearSpan(start, end)` 对单年度区间长度为 1，
+集合与旧实现（起止年份）完全一致 → 年份覆盖不变化。
+
+**附带修复（防御性）**：原 `Number(date.slice(0, 4))` 对空串返回 `0`（`Number('') === 0`），
+可能把「年份 0」混入年份轴。新 `yearOf()` 严格要求 4 位数字开头，非法值返回 `null` 并被忽略。
+
+**测试**
+
+| | |
+|---|---|
+| 新增套件 | `yearCoverage.test.ts` **24 例**：`yearOf` 严格性 · `yearSpan` 连续/单年/跨相邻两年/倒置/非法 · `yearCoverageOf` 并集 · `timelineYears` 补齐与 `extraYears` · verified 跨年覆盖（含 `yearData` 与主题行 4 条明细）· 跨年相邻 fixture · 空数据 · 汽车单年度不变化 · 真实导出 preview 保持 2018–2025 · 两源同 helper 源码守护 · 覆盖性不变式 |
+| 结果 | `npm test` **244 / 244**（220 → 244，+24） |
+
+**验证**
+- `npm test` **244 / 244**；`tsc -b` exit 0；`build` ok（60 modules，新增 1 模块）。
+- Research 校验全绿：`validate_db` / `validate_timeline_export` / `validate_batch_research` /
+  `validate_promotion_manifest` / `check_doc_schema_consistency` 全部 EXIT=0；
+  `validate_monorepo_integrity` PASS（25 项 0 警告）。
+- `exports/timeline_export_v1.json` 逐字节未变；零触及 schema.sql / DB / contracts /
+  Campaign 数据 / Research Model。
+
+---
+
 ## 2026-09-14 · V1.9.0 Timeline Entry Identity v1（entryId = campaign_id@display_year）
 
 **建立 Timeline View 层的唯一明细身份**，解决「一个 Campaign 跨多个年份」带来的 UI 身份冲突。

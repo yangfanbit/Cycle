@@ -116,7 +116,10 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - **生产模式**：消费 `data/verified/`（当前为空 → 显示「当前研究数据未覆盖」空态 + 预览入口）。
 - **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
 - `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
-- 测试：`npm test` **220 项通过**（F-MED-1 修复后 198 → 220，+22，含 Timeline Entry Identity 套件）；`tsc -b` 通过；`build` 通过。
+- 测试：`npm test` **244 项通过**（Year Coverage 后 220 → 244，+24）；`tsc -b` 通过；`build` 通过。
+- **Timeline Year Coverage Rule（V1.9.1）**：Campaign / 候选覆盖年份 = `start` 年 **连续到** `end` 年
+  （`src/data/timeline/yearCoverage.ts` 的 `timelineYears()`）。`verified` 与 `preview` 两源**同一规则、同一 helper**
+  —— 修复生产模式下跨年 Campaign 中间年份行缺失（F-MED-5）。单年度 Campaign 覆盖年份不变。
 - **Timeline Entry Identity（V1.9.0）**：明细唯一身份 `entryId = `${campaign_id}@${展示年份}``
   （`src/data/timeline/entryIdentity.ts`，**纯 UI / ViewModel**）。跨年 Campaign 在多年度各成一条明细，
   React key / `focusEntryId` / 年份页签一律用 `entryId`；**打开 Campaign Detail 仍以 `campaign_id` 为准**。
