@@ -7,6 +7,71 @@
 
 ---
 
+## 2026-09-14 · V1.9.0 Timeline Entry Identity v1（entryId = campaign_id@display_year）
+
+**建立 Timeline View 层的唯一明细身份**，解决「一个 Campaign 跨多个年份」带来的 UI 身份冲突。
+背景：`C-2019-PHARMA-INNOV`（2019-01-02 ~ 2022-10-31）会在 2019/2020/2021/2022 各年份行各生成一条明细，
+而 UI 层仍以 `campaign_id` 作明细身份 → React duplicate key、`focusEntryId` 无法区分年份、
+年份页签可能同时高亮、`find(campaign_id)` 恒返回第一条。
+
+**规则（UI / ViewModel 概念，非 Research Model / DB / Export Contract）**
+```
+entryId = `${campaign_id}@${display_year}`      例如 C-2019-PHARMA-INNOV@2021
+```
+
+**新增**
+
+| 文件 | 变化 |
+|---|---|
+| `src/data/timeline/entryIdentity.ts` | **新增模块**：`timelineEntryId(campaignId, displayYear)` + `TimelineEntryId` 类型别名；含严格边界声明（仅供 UI / ViewModel；不是持久化标识；不改变 selection 语义） |
+| `src/data/timeline/__tests__/entryIdentity.test.tsx` | **新增测试套件 22 例**（8 组） |
+
+**修改**
+
+| 文件 | 变化 |
+|---|---|
+| `src/data/timeline/themeRows.ts` | `ThemeCampaignEntry` 新增 `entryId`（= `timelineEntryId(campaign_id, row.year)`） |
+| `src/data/timeline/currentTimeLens.ts` | `LensHistoricalEntry` 新增 `entryId`（同上口径） |
+| `src/components/SamePeriodView/SamePeriodView.tsx` | 年份页签 **tab identity = entryId**：`key` / `active` / `onFocus` / `find(...)` 全部改用 `entryId`；`focusEntryId` 语义由 campaign_id 改为 entryId |
+| `src/components/CurrentTimeLens/CurrentTimeLens.tsx` | 条目 `key={e.entryId}`；drivers 行 `key={timelineEntryId(d.campaign_id, d.year)}` |
+| `src/components/Timeline/Timeline.tsx` | 行情行 `key={timelineEntryId(campaign.campaign_id, year)}` |
+
+**未改动（selection 语义保持）**
+打开 Campaign Detail 仍以 `campaign_id` 为准（`selection = {kind:'campaign', id}`）——
+`entryId` 只解决明细级 UI 身份；「完整历史案例」本身是 Campaign 级、不分年份。
+故 `SamePeriodView` 的「查看完整历史案例」与 `Timeline` 的选中态仍用 `campaign_id`，未变。
+
+**汽车行为保持（视觉不变）**
+单年度 Campaign `campaign_year === display_year` → `entryId` 与 `campaign_id` **一一对应**（恒等），
+identity 数量不变。实测跨 1–12 月扫描：单年度明细 identity 恒为 1:1，数量与引入前一致。
+另断言 **entryId 绝不进入渲染输出**（纯内部身份）→ SSR 输出与 V1.9 之前一致。
+
+**测试**
+
+| | |
+|---|---|
+| 新增 identity 套件 | `entryIdentity.test.tsx` 22 例 / 8 组：helper 规则 · 跨年 4 identity 不同（themeRows + Lens）· identity 全局唯一 · 汽车 1:1 且跨 12 月不变 · 合成数据集无关性 · 源码守护（页签/条目/行情行均用 entryId）· 组件渲染 4 条明细 · 不泄漏渲染输出 |
+| 结果 | `npm test` **220 / 220**（198 → 220，+22） |
+
+**已知遗留（本轮仅记录，未修）**
+- **F-MED-5**（源头差异，与 entryId 无关）：`verifiedTimelineSource().years()` 只收集各 Campaign
+  **起止年份**（无区间填充），而 `previewTimelineSource().years()` 做 min..max **全量填充**
+  → 生产模式下跨年 Campaign 的**中间年份行会缺失**。当前 `data/verified/campaigns.ts` 为空，尚未显现。
+  已在测试中以「已知限制」用例固定当前行为。是否统一 `years()` 口径需单独决策。
+- **CurrentTimeLens 选中态**：`active` 仍按 `campaign_id` 比较（selection 只携带 campaign_id）
+  → 同一跨年 Campaign 在多年度行会同时高亮。修复需让 `Selection` 携带 entryId（app 级改动），
+  超出本轮范围。
+
+**验证**
+- `npm test` **220 / 220**；`tsc -b` exit 0；`build` ok（59 modules，新增 1 模块）。
+- Research 校验全绿：`validate_db` / `validate_timeline_export` / `validate_batch_research` /
+  `validate_promotion_manifest` / `check_doc_schema_consistency` 全部 EXIT=0；
+  `validate_monorepo_integrity` PASS（25 项 0 警告）。
+- `exports/timeline_export_v1.json` 逐字节未变；零触及 schema.sql / DB / contracts / data/verified /
+  data/candidate / Research Model。
+
+---
+
 ## 2026-09-14 · V1.8.4 F-MED-1 Cross-year Campaign Timeline Year Semantics Fix
 
 **修复跨年 Campaign 的 Timeline 年份语义缺陷（F-MED-1）。**

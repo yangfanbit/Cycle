@@ -24,6 +24,7 @@ import type {
   TimelineDataSource,
 } from './timelineTypes';
 import { campaignDrivers, samePeriodCampaigns, samePeriodWindow } from './timelineAdapter';
+import { timelineEntryId, type TimelineEntryId } from './entryIdentity';
 import { diffDays } from '../../utils';
 
 /* ---------------- 输出模型 ---------------- */
@@ -50,6 +51,11 @@ export interface LensTimePosition {
  */
 export interface LensHistoricalEntry {
   campaign_id: string;
+  /**
+   * 【条目唯一身份】= `${campaign_id}@${展示年份}`（跨年 Campaign 同 id 不同年份 → 不同 entryId）。
+   * UI 必须用 entryId 作 React key；**不得用 campaign_id**（会重复）。见 `entryIdentity.ts`。
+   */
+  entryId: TimelineEntryId;
   /** 正式 Campaign 或 Research Candidate */
   kind: 'campaign' | 'candidate';
   title: string;
@@ -263,6 +269,8 @@ export function currentTimeLens(source: TimelineDataSource, today: string): Curr
       const also = hits.filter((h) => h !== primary).map((h) => h.label);
       return {
         campaign_id: c.campaign_id,
+        // 条目身份 = campaign_id@展示年份（跨年 Campaign 同 id 不同年份 → 不同 entryId）
+        entryId: timelineEntryId(c.campaign_id, row.year),
         kind: c.kind,
         title: c.title,
         // 与同一 map 内 possibleDrivers 的 year 口径保持一致：

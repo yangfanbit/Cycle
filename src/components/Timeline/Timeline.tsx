@@ -13,6 +13,7 @@ import {
   peakWindowOf,
 } from '../../data/timeline/timelineAdapter';
 import { preObservationChainOf } from '../../data/timeline/preObservation';
+import { timelineEntryId } from '../../data/timeline/entryIdentity';
 import type { TimelineCampaign, TimelineResearchEvent } from '../../data/timeline/timelineTypes';
 import type { TimeWindow } from '../../models';
 import {
@@ -441,7 +442,9 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
               });
             };
             return (
-              <div className="tl-row cmp-row" key={campaign.campaign_id}>
+              // key = 明细身份（campaign_id@年份）：跨年 Campaign 会在多个年份各成一行，
+              // 同一 Campaign 不同年份属不同明细 → 不得只用 campaign_id 作 key。
+              <div className="tl-row cmp-row" key={timelineEntryId(campaign.campaign_id, year)}>
                 <div className="tl-row-label">
                   {campaign.kind === 'candidate' && (
                     <span className="rc-badge" title="Research Candidate：研究候选，非正式 Historical Campaign">

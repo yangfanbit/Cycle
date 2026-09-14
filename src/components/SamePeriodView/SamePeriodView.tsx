@@ -42,6 +42,8 @@ export function SamePeriodView({ dataSource, today, selection, onSelect }: SameP
   // 展开的主题行（Level 1 Inline Summary）
   const [openThemeKey, setOpenThemeKey] = useState<string | null>(null);
   // Level 1 内选中的明细（用于 Inline Summary 的「可能相关因素」聚焦）
+  // 保存的是 **entryId**（`campaign_id@展示年份`），不是 campaign_id ——
+  // 跨年 Campaign 同 id 会在多年度各成一条明细，必须用明细级身份区分（见 entryIdentity.ts）。
   const [focusEntryId, setFocusEntryId] = useState<string | null>(null);
 
   const result = useMemo(() => themeRowsOf(dataSource, month), [dataSource, month]);
@@ -107,7 +109,8 @@ export function SamePeriodView({ dataSource, today, selection, onSelect }: SameP
               onToggle={() => {
                 const next = openThemeKey === row.themeKey ? null : row.themeKey;
                 setOpenThemeKey(next);
-                setFocusEntryId(next ? row.campaigns[row.campaigns.length - 1].campaign_id : null);
+                // 默认聚焦【最后一条明细】：用 entryId（不是 campaign_id，跨年会重复）
+                setFocusEntryId(next ? row.campaigns[row.campaigns.length - 1].entryId : null);
               }}
             />
             {/* Level 1：Inline Summary —— 就地展开，不打开侧栏、不遮挡 Timeline */}
@@ -185,12 +188,16 @@ function InlineThemeSummary({
   onOpenFull,
 }: {
   row: TimelineThemeRow;
+  /** 明细唯一身份（`campaign_id@展示年份`）；null → 默认取最后一条 */
   focusEntryId: string | null;
-  onFocus: (id: string) => void;
+  /** 回传明细唯一身份（entryId），不是 campaign_id */
+  onFocus: (entryId: string) => void;
   selection?: Selection;
   onOpenFull: (id: string) => void;
 }) {
-  const focus = row.campaigns.find((e) => e.campaign_id === focusEntryId) ?? row.campaigns[row.campaigns.length - 1];
+  // 用 entryId 匹配：跨年 Campaign 同 campaign_id 多条明细时才能区分到具体年份
+  const focus =
+    row.campaigns.find((e) => e.entryId === focusEntryId) ?? row.campaigns[row.campaigns.length - 1];
 
   return (
     <div className="sp-inline" id={`theme-${row.themeKey}`}>
@@ -202,14 +209,16 @@ function InlineThemeSummary({
         <span className="sp-inline-phase">代表阶段：{row.primaryPhase ?? '阶段未标注'}</span>
       </div>
 
-      {/* 年份切换（同主题多条独立行情，仍逐条保留） */}
+      {/* 年份切换（同主题多条独立行情，仍逐条保留）
+          tab identity = entryId（campaign_id@展示年份）：
+          跨年 Campaign 同 id 会在多年度各成一条 → 必须按明细区分 key / active / focus。 */}
       {row.campaigns.length > 1 && (
         <div className="sp-inline-years-tabs">
           {row.campaigns.map((e) => (
             <button
-              key={e.campaign_id}
-              className={`sp-year-tab${e.campaign_id === focus.campaign_id ? ' active' : ''}`}
-              onClick={() => onFocus(e.campaign_id)}
+              key={e.entryId}
+              className={`sp-year-tab${e.entryId === focus.entryId ? ' active' : ''}`}
+              onClick={() => onFocus(e.entryId)}
             >
               {e.year}
               {e.kind === 'candidate' && <em className="rc-badge">RC</em>}

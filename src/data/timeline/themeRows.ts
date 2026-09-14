@@ -20,6 +20,7 @@ import type { TimelineCampaign, TimelineDataSource } from './timelineTypes';
 import { samePeriodCampaigns, samePeriodWindow } from './timelineAdapter';
 import { historicalPhasesInWindow } from './currentTimeLens';
 import { preObservationChainOf, type PreObservationChain } from './preObservation';
+import { timelineEntryId, type TimelineEntryId } from './entryIdentity';
 import { diffDays } from '../../utils';
 
 /* ---------------- 视图模型（非 DB 实体） ---------------- */
@@ -27,6 +28,12 @@ import { diffDays } from '../../utils';
 /** 单条独立行情（主题行内的明细；一条 = 一个 Campaign 或 Research Candidate，不合并） */
 export interface ThemeCampaignEntry {
   campaign_id: string;
+  /**
+   * 【明细唯一身份】= `${campaign_id}@${展示年份}`（如 `C-2019-PHARMA-INNOV@2021`）。
+   * 跨年 Campaign 会在多年度各成一条明细 → 必须用 entryId 作 React key / focus 标识，
+   * **不得用 campaign_id**（会重复）。见 `entryIdentity.ts`。仅供 UI / ViewModel。
+   */
+  entryId: TimelineEntryId;
   /** 正式 Campaign 或 Research Candidate（RC 保留 badge，不升级状态） */
   kind: 'campaign' | 'candidate';
   title: string;
@@ -187,6 +194,8 @@ export function themeRowsOf(source: TimelineDataSource, month: number): ThemeRow
       const ph = primaryPhaseOf(c, win);
       g.entries.push({
         campaign_id: c.campaign_id,
+        // 明细身份 = campaign_id@展示年份（跨年 Campaign 同 id 不同年份 → 不同 entryId）
+        entryId: timelineEntryId(c.campaign_id, row.year),
         kind: c.kind,
         title: c.title,
         // 展示年份必须取【当前行年份】而非 Campaign 自身年份：

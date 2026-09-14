@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { currentTimeLens, type LensHistoricalEntry } from '../../data/timeline/currentTimeLens';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
+import { timelineEntryId } from '../../data/timeline/entryIdentity';
 import type { Selection } from '../Timeline/Timeline';
 import { DATA_STATUS_CLASS, DATA_STATUS_LABEL } from '../labels';
 import { isInPreObservation, PRE_OBSERVATION_LABEL } from '../../data/timeline/preObservation';
@@ -102,7 +103,7 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
                 <div className="ctl-entries">
                   {row.entries.map((e) => (
                     <LensEntry
-                      key={e.campaign_id}
+                      key={e.entryId}
                       entry={e}
                       active={selection?.kind === 'campaign' && selection.id === e.campaign_id}
                       onClick={() => onSelect({ kind: 'campaign', id: e.campaign_id })}
@@ -130,7 +131,7 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
             </p>
             <ul className="ctl-driver-list">
               {lens.possibleDrivers.map((d) => (
-                <li className="ctl-driver-row" key={`${d.year}-${d.campaign_id}`}>
+                <li className="ctl-driver-row" key={timelineEntryId(d.campaign_id, d.year)}>
                   <span className="ctl-driver-year">{d.year}</span>
                   <button
                     className="ctl-driver-title"
