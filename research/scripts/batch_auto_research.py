@@ -31,7 +31,11 @@ MANIFEST = os.path.join(BATCH_DIR, "auto_2018_2025_batch_manifest.json")
 CONFLICTS = os.path.join(BATCH_DIR, "conflicts.json")
 EXPORT = db.TIMELINE_EXPORT_PATH  # canonical: <repo>/exports/timeline_export_v1.json
 
-RULE = "rule_auto_summer"
+AUTO_RULE = "rule_auto_summer"
+PHARMA_RULE = "rule_pharma_upgrade"   # 医药健康（Medical Health Minimum Dataset v0.1）
+# 批量研究覆盖的 Rule（按顺序生成；新增 Macro Theme 在此登记）
+RULES = [AUTO_RULE, PHARMA_RULE]
+RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----
 THEME_CYCLE = {
@@ -43,6 +47,9 @@ THEME_CYCLE = {
     "C-2024-V2X": "auto_v2x_2024",
     "C-2024-ROBOTAXI": "robotaxi_2024",
     "C-2025-ROBOTAXI": "robotaxi_2025",
+    # ---- 医药健康（Medical Health Minimum Dataset v0.1，Pattern = Parallel）----
+    # 同一 Theme Cycle 内含多个 Campaign，各自独立生命周期、Peak 时间可不同（v1.1 §5）。
+    "C-2019-PHARMA-INNOV": "medical_structural_upgrade_2019_2022",
 }
 
 # 研究信号（research-level，来自 theme_lifecycle_v0_2 三案例建模；其余年份按 annual 研究记录）
@@ -64,6 +71,13 @@ SIGNALS = {
     "C-2025-ROBOTAXI": [
         {"type": "EARLY_SIGNAL", "date": "2025-06-22", "confidence": "medium"},
     ],
+    # ---- 医药健康 ----
+    # EARLY_SIGNAL 2019-01-02 = 本地行情数据窗口起点（4+7 集采 2018-12-17 冲击后的首个交易日），
+    # confidence=medium：窗口前的 Setup 不在本地数据范围内（见 campaigns.research_notes）。
+    "C-2019-PHARMA-INNOV": [
+        {"type": "EARLY_SIGNAL", "date": "2019-01-02", "confidence": "medium"},
+        {"type": "THEME_FORMING", "date": "2019-07-22", "confidence": "high"},
+    ],
 }
 
 # Campaign Phase → 时间字段（research-only，便于 timeline 表达）
@@ -73,6 +87,8 @@ PHASE_TIME_FIELDS = {
     "C-2024-ROBOTAXI": {"broad_confirmation_date": "2024-07-10", "first_decline_date": "2024-08-06"},
     "C-2024-V2X": {"broad_confirmation_date": "2024-06-18"},
     "C-2025-ROBOTAXI": {"broad_confirmation_date": "2025-06-24"},
+    # ---- 医药健康 ----
+    "C-2019-PHARMA-INNOV": {"broad_confirmation_date": "2019-11-28"},
 }
 
 # ---- 日期精度（V1.7：日期精度不再是核心瓶颈）----
@@ -165,6 +181,75 @@ RESEARCH_CANDIDATES = [
         "conflicts": [],
         "notes": "Weak Secondary Campaign Candidate：主 Campaign C-2024-ROBOTAXI（07-08~08-23）结束后 09-05~06 次级活跃，强度不足；不作为正式 Campaign。2024-10-10 特斯拉 Robotaxi 发布会仅一日脉冲后回落，亦不作为候选",
     },
+    # ==== 医药健康（Medical Health Minimum Dataset v0.1）====
+    # 均为 Case B（Campaign Candidate）：Gate Q1–Q5 多数成立，但生命周期边界尚缺完整行情验证 → 不升 Case C。
+    {
+        "campaign_id": "RC-2020-PANDEMIC",
+        "rule_id": PHARMA_RULE,
+        "year": 2020,
+        "title": "2020 疫情医疗（防护耗材 / 体外诊断 / 疫苗）",
+        "start_date": "2020-01-23",      # 武汉疫情防控措施；英科医疗 2020-01-23 已明显跳升
+        "peak_date": "2021-01-25",       # 英科医疗自身历史高点（Campaign 自身口径，非医药指数）
+        "end_date": "2021-12-31",        # 主跌段结束（2021 全年英科 -46.1%（adj））
+        "themes": [{"name": "疫情医疗", "theme_type": "concept", "role": "main"}],
+        "securities": [
+            {"security_id": "INTCO", "name": "英科医疗", "ticker": "300677", "exchange": "SZ", "role": "leader"},
+            {"security_id": "ZHIFEI", "name": "智飞生物", "ticker": "300122", "exchange": "SZ", "role": "second_leader"},
+        ],
+        "events": [
+            {"event_id": "EV-RC-MED-PANDEMIC-01", "name": "新冠疫情：武汉实施离汉通道管控（疫情医疗需求起点）",
+             "date": "2020-01-23", "event_type": "macro", "role": "trigger"},
+        ],
+        "signals": [{"type": "EARLY_SIGNAL", "date": "2020-01-23", "confidence": "medium"}],
+        "early_signal": "2020-01-23",
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "PROVISIONAL",
+        "theme_cycle_id": "medical_structural_upgrade_2019_2022",
+        "conflicts": [],
+        "notes": ("Campaign Candidate（Case B）。Gate：Q1 独立注意力中心=是；Q2 独立代表资产=是"
+                  "（英科/智飞 与 恒瑞/药明/泰格 几乎零交集）；Q3 独立持续性=是（2020-01~2021，节奏与主线相反）；"
+                  "Q4 独立生命周期=是（英科医疗 2021-01-25 见顶 296.99 元，2021 全年 -46.1%（adj），"
+                  "同期主线仍在上涨至 2021-07）；Q5 Residual Test=是（去掉后 Theme Cycle 仍成立）。"
+                  "未升 Case C：需排除疫情「全国 β 事件」污染 + 精确边界待更完整行情验证（见 Unknown Register）。"
+                  "Pattern=Parallel（顶比主线早约半年）。"),
+    },
+    {
+        "campaign_id": "RC-2021-TCM",
+        "rule_id": PHARMA_RULE,
+        "year": 2021,
+        "title": "2021–2022 中医药（品牌中药 / 中药创新 / 抗疫中药）",
+        "start_date": "2021-11-01",      # 政策预期升温起点（公开报道：2021-11-01 以来中药板块 79 只中 73 只上涨）
+        "peak_date": "2022-12-08",       # 以岭药业自身区间高点（Campaign 自身口径）
+        "end_date": "2022-12-30",        # 数据窗口末端（未确认结束）
+        "themes": [{"name": "中医药", "theme_type": "concept", "role": "main"}],
+        "securities": [
+            {"security_id": "PIANZAIHUANG", "name": "片仔癀", "ticker": "600436", "exchange": "SH", "role": "leader"},
+            {"security_id": "YILING", "name": "以岭药业", "ticker": "002603", "exchange": "SZ", "role": "second_leader"},
+        ],
+        "events": [
+            {"event_id": "EV-RC-MED-TCM-01",
+             "name": "国家医保局、国家中医药管理局《关于医保支持中医药传承创新发展的指导意见》",
+             "date": "2021-12-31", "event_type": "policy", "role": "trigger"},
+        ],
+        "signals": [
+            {"type": "EARLY_SIGNAL", "date": "2021-11-01", "confidence": "medium"},
+            {"type": "THEME_FORMING", "date": "2021-12-31", "confidence": "high"},
+        ],
+        "early_signal": "2021-11-01",
+        "theme_formation": "2021-12-31",
+        "broad_confirmation": None,
+        "research_status": "PROVISIONAL",
+        "theme_cycle_id": "medical_structural_upgrade_2019_2022",
+        "conflicts": [],
+        "notes": ("Campaign Candidate（Case B）。Gate：Q1 独立注意力中心=是（中医药有专属政策体系）；"
+                  "Q2 独立代表资产=是（片仔癀/以岭 与 创新药核心资产基本不重合）；Q3 独立持续性=是（2021Q4→2022Q4 多波）；"
+                  "Q4 独立生命周期=是；Q5 Residual Test=是。**不依赖涨幅的独立证据三支柱**："
+                  "① 独立政策体系；② 多数中药品种未进集采、可自主定价；③ 独立估值体系（20–30x vs 创新药/CXO 上百倍）。"
+                  "未升 Case C：⚠ 归属未决（医药健康下 Sub-theme vs 独立 Macro Theme「中医药」）→ Unknown Register U-C1；"
+                  "且市场存在分歧（「拐点已现」vs「更多是反弹」）→ 记 CONFLICT 语义但不写入 conflicts（无日期口径冲突）。"
+                  "结构为两段（片仔癀 2021 品牌中药 + 以岭 2022Q4 抗疫中药），Peak 取以岭自身高点。"),
+    },
 ]
 
 # ---- Lifecycle（Phase Windows）与 Drivers（V1.7 核心产出）----
@@ -238,6 +323,16 @@ CAMPAIGN_LIFECYCLE = {
         {"stage": "PEAK", "start": "2025-06-24", "end": "2025-06-24", "precision": "EXACT_DATE"},
         {"stage": "MAIN_END", "start": "2025-08-31", "end": "2025-08-31", "precision": "EXACT_DATE"},
     ],
+    # ---- 医药健康（Peak 口径按 v1.1 §6：使用 Campaign 自身代表标的，非上位医药指数）----
+    "C-2019-PHARMA-INNOV": [
+        {"stage": "EARLY_SIGNAL", "start": "2019-01-02", "end": "2019-01-02", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2019-07-22", "end": "2019-07-22", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2019-11-28", "end": "2019-11-28", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2020-01-01", "end": "2020-12-24", "precision": "DATE_WINDOW"},
+        {"stage": "PEAK", "start": "2020-12-25", "end": "2021-07-01", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2021-07-02", "end": "2022-10-31", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2022-10-31", "end": "2022-10-31", "precision": "EXACT_DATE"},
+    ],
 }
 
 CANDIDATE_LIFECYCLE = {
@@ -250,6 +345,20 @@ CANDIDATE_LIFECYCLE = {
     "RC-2024-SECONDARY": [
         {"stage": "EARLY_SIGNAL", "start": "2024-09-05", "end": "2024-09-05", "precision": "EXACT_DATE"},
         {"stage": "MAIN_END", "start": "2024-09-06", "end": "2024-09-06", "precision": "EXACT_DATE"},
+    ],
+    # ---- 医药健康（Candidate）----
+    "RC-2020-PANDEMIC": [
+        {"stage": "EARLY_SIGNAL", "start": "2020-01-23", "end": "2020-01-23", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2020-02-03", "end": "2020-12-31", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2021-01-25", "end": "2021-01-25", "precision": "EXACT_DATE"},
+        {"stage": "DECLINING", "start": "2021-02-01", "end": "2021-12-31", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2021-12-31", "end": "2021-12-31", "precision": "EXACT_DATE"},
+    ],
+    "RC-2021-TCM": [
+        {"stage": "EARLY_SIGNAL", "start": "2021-11-01", "end": "2021-11-01", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2021-12-31", "end": "2021-12-31", "precision": "EXACT_DATE"},
+        {"stage": "PEAK", "start": "2022-11-30", "end": "2022-12-08", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2022-12-09", "end": "2022-12-30", "precision": "EXACT_DATE"},
     ],
 }
 
@@ -319,6 +428,22 @@ CAMPAIGN_DRIVERS = {
         "turning": ["大盘β contamination（8月沪指+8%、创业板+24%）（S-2025-07）", "FSD 2025未落地（S-2025-06 retrospective）"],
         "ending": ["8/31 暂定边界（9/12月另有催化波次）", "beta 驱动为主、主题独立性弱"],
     },
+    # ---- 医药健康 ----
+    "C-2019-PHARMA-INNOV": {
+        "start": ["4+7 城市药品集中采购中选结果（25 品种平均降幅 52%）（EV-MED-01, 2018-12-17）"
+                  "→ 摧毁仿制药「带金销售」旧叙事，市场转向「创新 vs 仿制」分化（E-MED-05）",
+                  "科创板开板、未盈利生物科技可上市（EV-MED-02, 2019-07-22）"],
+        "accelerator": ["2019 年国家医保谈判：150 谈成 97、新增平均降幅 60.7%、PD-1 首次纳入医保、"
+                        "12 个国产重大创新药谈成 8 个（EV-MED-03, 2019-11-28）→ 官方明确鼓励创新导向（E-MED-02）",
+                        "CXO 景气与订单高增；公募/外资持续增配医药核心资产（2020Q2 医药持仓占比一度 17.2%）"],
+        "turning": ["CDE《以临床价值为导向的抗肿瘤药物临床研发指导原则（征求意见稿）》（EV-MED-04, 2021-07-02）"
+                    "→ 引发对 CXO 景气度的质疑（E-MED-04）",
+                    "2021 年下半年集采扩围至器械/耗材/IVD，超市场预期",
+                    "资金风格切向新能源（电新/有色/钢铁），赚钱效应虹吸"],
+        "ending": ["代表标的分批见顶：恒瑞医药 2020-12-25、药明康德/泰格医药 2021-07-01（Peak Window）",
+                   "2022 年创新药估值出清：CXO 估值自 2021 年中 103x 降至约 30x（估值杀，非业绩杀）",
+                   "2022-09/10 各自代表标的见低点；2022Q4 出现修复迹象，Theme Cycle End 未确认"],
+    },
 }
 
 CANDIDATE_DRIVERS = {
@@ -334,6 +459,26 @@ CANDIDATE_DRIVERS = {
         "turning": ["unknown"],
         "ending": ["09-06 后回落，弱候选不成势"],
     },
+    # ---- 医药健康（Candidate）----
+    "RC-2020-PANDEMIC": {
+        "start": ["新冠疫情 + 防疫物资刚性需求（EV-RC-MED-PANDEMIC-01, 2020-01-23）",
+                  "英科医疗（一次性手套）2020 年内涨幅约 26.5 倍（adj）；智飞生物 +208%（adj）"],
+        "accelerator": ["全球疫情反复、防疫物资出口需求；疫苗/检测产业链放量",
+                        "2020 年 A 股涨幅榜首为一次性防护手套企业（英科医疗）"],
+        "turning": ["英科医疗 2021-01-25 见顶（自身口径）后进入全年下跌；疫苗指数 2020-07/08 已先见顶",
+                    "疫情缓解预期 + 产能过剩担忧（防护用品需求回落）"],
+        "ending": ["2021 全年英科医疗 -46.1%（adj）、2022 再 -56.5%；主题注意力显著减弱",
+                   "与主线（创新药/CXO）节奏相反：同期主线仍在上涨至 2021-07 → Pattern=Parallel"],
+    },
+    "RC-2021-TCM": {
+        "start": ["中医药鼓励政策预期持续加码（2021-11 起板块活跃）",
+                  "中成药集采温和落地；多家公司宣布提价（行业报道）"],
+        "accelerator": ["医保局、中医药局《关于医保支持中医药传承创新发展的指导意见》（EV-RC-MED-TCM-01, 2021-12-31）",
+                        "低估值修复（中药长期 20–30x vs 创新药/CXO 上百倍）"],
+        "turning": ["2022 上半年深幅调整（疫情反复 + 中报不及预期）"],
+        "ending": ["2022Q4 抗疫中药再度活跃：以岭药业 2022-11-30→12-08 快速上行至区间高点",
+                   "2022-12-30 收于 28.36（自高点回落）；窗口末端，未确认结束"],
+    },
 }
 
 # 每个 Campaign 用于行情快照的代理序列（行业代理不可得时用真实龙头个股，标注代理性质）
@@ -346,6 +491,8 @@ PROXY_SERIES = {
     "C-2024-V2X": "AUTO_ETF_516110",
     "C-2024-ROBOTAXI": "AUTO_ETF_516110",
     "C-2025-ROBOTAXI": "AUTO_ETF_516110",
+    # ---- 医药健康：按 v1.1 §6 使用 Campaign 自身代表标的（医药ETF 仅作参照，不作 Peak 口径）----
+    "C-2019-PHARMA-INNOV": "WUXIAPPTEC",
 }
 
 PROXY_NOTE = {
@@ -357,6 +504,9 @@ PROXY_NOTE = {
     "C-2024-V2X": "汽车ETF(中证800汽车) 行业代理（非车路云专用指数，仅供参照）",
     "C-2024-ROBOTAXI": "汽车ETF(中证800汽车) 行业代理（非Robotaxi专用指数，仅供参照）",
     "C-2025-ROBOTAXI": "汽车ETF(中证800汽车) 行业代理（成立于2021-11之后，2025年可用）",
+    "C-2019-PHARMA-INNOV": ("Campaign 自身代表标的 药明康德（CXO 龙头）raw/adj close；"
+                            "同 Campaign 另含 恒瑞医药（2020-12-25 见顶）与 泰格医药 → Peak 分批。"
+                            "医药ETF(512010) 仅作行业参照，不参与 Peak 判定（v1.1 §6）"),
 }
 
 
@@ -471,10 +621,10 @@ def build_campaign(c):
         "research_campaign_id": cid,
         "db_campaign_id": cid,
         "year": c["campaign_year"],
-        "rule_id": RULE,
+        "rule_id": c["rule_id"],
         "status": status,
         "annual_status": q1("SELECT status FROM annual_reviews WHERE rule_id=? AND year=?",
-                            RULE, c["campaign_year"])["status"],
+                            c["rule_id"], c["campaign_year"])["status"],
         "start_date_candidate": c["start_date"],
         "peak_date_candidate": c["peak_date"],
         "end_date_candidate": c["end_date"],
@@ -520,8 +670,11 @@ def build_2018():
         "theme": "(无 Campaign，反例年份)",
         "themes": [], "theme_cycle_id": None,
         "classification": None, "result": "failed", "strength": None,
+        # 2018 为汽车 Rule 的反例年份：只吸收**未显式绑定任何 Campaign** 的 2018 年证据。
+        # （否则其他 Rule 的 2018 年证据会被误并入汽车反例年份 → evidence-cross-campaign）
         "evidence_ids": [e["evidence_id"] for e in q(
-            "SELECT evidence_id FROM evidences WHERE date LIKE '2018%'")],
+            "SELECT evidence_id FROM evidences WHERE date LIKE '2018%' "
+            "AND evidence_id NOT IN (SELECT evidence_id FROM campaign_evidences)")],
         "source_ids": [s["source_id"] for s in q("SELECT source_id FROM sources WHERE source_id LIKE 'S-2018-%'")],
         "independent_groups": [],
         "independent_group_count": 0,
@@ -538,7 +691,8 @@ def build_2018():
 
 def main():
     os.makedirs(BATCH_DIR, exist_ok=True)
-    camps = q("SELECT * FROM campaigns WHERE rule_id=? ORDER BY campaign_year", RULE)
+    camps = q("SELECT * FROM campaigns WHERE rule_id IN (%s) ORDER BY rule_id, campaign_year"
+              % ", ".join("?" * len(RULES)), *RULES)
     entries = [build_2018()] + [build_campaign(c) for c in camps]
 
     # ---------- manifest ----------
@@ -546,8 +700,9 @@ def main():
         "manifest_version": "1.0",
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "source_commit": get_git_head(),
-        "rule_id": RULE,
-        "scope": "2018-2025, rule_auto_summer (汽车, 历史观察窗口 6-8月)",
+        "rule_id": RULES if len(RULES) > 1 else RULES[0],
+        "scope": ("rule_auto_summer（汽车 2018–2025，观察窗口 6-8月）"
+                  " + rule_pharma_upgrade（医药健康 2019–2022，结构性升级）"),
         "status_vocabulary": {
             "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
             "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -594,21 +749,37 @@ def main():
     # Canonical Contract v1.0（Research → Cycle Timeline 唯一接口）：
     #   contract / timeline_export_version / generated_at / source_commit / project /
     #   rules / signals / campaigns / research_candidates / events / securities
-    rule_row = q1("SELECT * FROM research_rules WHERE rule_id=?", RULE)
+    rule_row = q1("SELECT * FROM research_rules WHERE rule_id=?", AUTO_RULE)
 
     def production_status(research_status):
         """生产兼容状态（Cycle 消费）：verified / provisional / conflict / preview。"""
         return {"PROVISIONAL": "provisional", "CONFLICT": "conflict",
                 "INSUFFICIENT": "preview"}.get(research_status, "preview")
 
-    # 1) rules
-    rules_out = [{
-        "rule_id": rule_row["rule_id"] if rule_row else RULE,
-        "name": rule_row["name"] if rule_row else "A股汽车夏季历史观察窗口",
-        "base_pattern": rule_row["base_pattern"] if rule_row else "汽车",
-        "definition": "Historical Observation Window（历史观察窗口），非固定买入窗口",
-        "observation_window": "Q2-Q3（4-9月），6-8月为名义窗口；允许漂移（2022 启动 04-27、2019 启动 08-15）",
-    }]
+    # 1) rules（每个 Rule 一条；definition / observation_window 为研究层描述）
+    RULE_META = {
+        AUTO_RULE: {
+            "definition": "Historical Observation Window（历史观察窗口），非固定买入窗口",
+            "observation_window": "Q2-Q3（4-9月），6-8月为名义窗口；允许漂移（2022 启动 04-27、2019 启动 08-15）",
+        },
+        PHARMA_RULE: {
+            "definition": ("Historical Observation Window（历史观察窗口）：医药产业由仿制药/销售驱动"
+                           "转向创新驱动 + 产业链专业化；非固定买入窗口，不构成交易建议"),
+            "observation_window": ("结构性（非季节性）：2019–2022。Formation 2019-07-22（科创板）、"
+                                   "Broad Confirmation 2019-11-28（医保谈判）、Peak Window 2020-12-25~2021-07-01"),
+        },
+    }
+    rules_out = []
+    for rid in RULES:
+        rr = q1("SELECT * FROM research_rules WHERE rule_id=?", rid)
+        meta = RULE_META.get(rid, {})
+        rules_out.append({
+            "rule_id": rr["rule_id"] if rr else rid,
+            "name": rr["name"] if rr else rid,
+            "base_pattern": rr["base_pattern"] if rr else "行情",
+            "definition": meta.get("definition", "Historical Observation Window（历史观察窗口）"),
+            "observation_window": meta.get("observation_window", "—"),
+        })
 
     # 2) signals（扁平；归属 = campaign_id XOR research_candidate_id）
     signals_out = []
@@ -671,7 +842,7 @@ def main():
                                                   "label": cand["candidate_b"]["label"]}})
         campaigns_out.append({
             "campaign_id": cid,
-            "rule_id": RULE,
+            "rule_id": e["rule_id"],
             "year": e["year"],
             "start_date": e["start_date_candidate"],
             "peak_date": e["peak_date_candidate"],

@@ -1,8 +1,8 @@
 {
   "contract": "timeline_export",
   "timeline_export_version": "1.0",
-  "generated_at": "2026-09-13T13:46:20",
-  "source_commit": "2ff6fad0fb75e19310158796f9cfc297180d6190",
+  "generated_at": "2026-09-14T22:19:39",
+  "source_commit": "d41960d358b4586e34e250fcaf638bd13f69f511",
   "project": "Cycle-Research",
   "rules": [
     {
@@ -11,6 +11,13 @@
       "base_pattern": "汽车",
       "definition": "Historical Observation Window（历史观察窗口），非固定买入窗口",
       "observation_window": "Q2-Q3（4-9月），6-8月为名义窗口；允许漂移（2022 启动 04-27、2019 启动 08-15）"
+    },
+    {
+      "rule_id": "rule_pharma_upgrade",
+      "name": "医药健康结构性升级观察窗口",
+      "base_pattern": "医药健康",
+      "definition": "Historical Observation Window（历史观察窗口）：医药产业由仿制药/销售驱动转向创新驱动 + 产业链专业化；非固定买入窗口，不构成交易建议",
+      "observation_window": "结构性（非季节性）：2019–2022。Formation 2019-07-22（科创板）、Broad Confirmation 2019-11-28（医保谈判）、Peak Window 2020-12-25~2021-07-01"
     }
   ],
   "signals": [
@@ -58,6 +65,18 @@
     },
     {
       "type": "EARLY_SIGNAL",
+      "date": "2019-01-02",
+      "confidence": "medium",
+      "campaign_id": "C-2019-PHARMA-INNOV"
+    },
+    {
+      "type": "THEME_FORMING",
+      "date": "2019-07-22",
+      "confidence": "high",
+      "campaign_id": "C-2019-PHARMA-INNOV"
+    },
+    {
+      "type": "EARLY_SIGNAL",
       "date": "2023-08-29",
       "confidence": "low",
       "research_candidate_id": "RC-2023-HUAWEI"
@@ -67,6 +86,24 @@
       "date": "2023-09-04",
       "confidence": "medium",
       "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2020-01-23",
+      "confidence": "medium",
+      "research_candidate_id": "RC-2020-PANDEMIC"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2021-11-01",
+      "confidence": "medium",
+      "research_candidate_id": "RC-2021-TCM"
+    },
+    {
+      "type": "THEME_FORMING",
+      "date": "2021-12-31",
+      "confidence": "high",
+      "research_candidate_id": "RC-2021-TCM"
     }
   ],
   "campaigns": [
@@ -899,6 +936,119 @@
           "beta 驱动为主、主题独立性弱"
         ]
       }
+    },
+    {
+      "campaign_id": "C-2019-PHARMA-INNOV",
+      "rule_id": "rule_pharma_upgrade",
+      "year": 2019,
+      "start_date": "2019-01-02",
+      "peak_date": "2021-07-01",
+      "end_date": "2022-10-31",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "医药健康",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "CXO(研发外包)",
+          "theme_type": "concept",
+          "role": "related"
+        },
+        {
+          "name": "创新药",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-MED-01",
+        "EV-MED-02",
+        "EV-MED-03",
+        "EV-MED-04"
+      ],
+      "security_ids": [
+        "HENGRUI",
+        "WUXIAPPTEC",
+        "TIGERMED"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "medical_structural_upgrade_2019_2022",
+      "promotion_status": null,
+      "first_signal_date": "2019-01-02",
+      "broad_confirmation_date": "2019-11-28",
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2019-01-02",
+          "end": "2019-01-02",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2019-07-22",
+          "end": "2019-07-22",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "BROAD_CONFIRMATION",
+          "start": "2019-11-28",
+          "end": "2019-11-28",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-01-01",
+          "end": "2020-12-24",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2020-12-25",
+          "end": "2021-07-01",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-07-02",
+          "end": "2022-10-31",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_END",
+          "start": "2022-10-31",
+          "end": "2022-10-31",
+          "precision": "EXACT_DATE"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "4+7 城市药品集中采购中选结果（25 品种平均降幅 52%）（EV-MED-01, 2018-12-17）→ 摧毁仿制药「带金销售」旧叙事，市场转向「创新 vs 仿制」分化（E-MED-05）",
+          "科创板开板、未盈利生物科技可上市（EV-MED-02, 2019-07-22）"
+        ],
+        "accelerator": [
+          "2019 年国家医保谈判：150 谈成 97、新增平均降幅 60.7%、PD-1 首次纳入医保、12 个国产重大创新药谈成 8 个（EV-MED-03, 2019-11-28）→ 官方明确鼓励创新导向（E-MED-02）",
+          "CXO 景气与订单高增；公募/外资持续增配医药核心资产（2020Q2 医药持仓占比一度 17.2%）"
+        ],
+        "turning": [
+          "CDE《以临床价值为导向的抗肿瘤药物临床研发指导原则（征求意见稿）》（EV-MED-04, 2021-07-02）→ 引发对 CXO 景气度的质疑（E-MED-04）",
+          "2021 年下半年集采扩围至器械/耗材/IVD，超市场预期",
+          "资金风格切向新能源（电新/有色/钢铁），赚钱效应虹吸"
+        ],
+        "ending": [
+          "代表标的分批见顶：恒瑞医药 2020-12-25、药明康德/泰格医药 2021-07-01（Peak Window）",
+          "2022 年创新药估值出清：CXO 估值自 2021 年中 103x 降至约 30x（估值杀，非业绩杀）",
+          "2022-09/10 各自代表标的见低点；2022Q4 出现修复迹象，Theme Cycle End 未确认"
+        ]
+      }
     }
   ],
   "research_candidates": [
@@ -1029,9 +1179,176 @@
           "09-06 后回落，弱候选不成势"
         ]
       }
+    },
+    {
+      "campaign_id": "RC-2020-PANDEMIC",
+      "rule_id": "rule_pharma_upgrade",
+      "year": 2020,
+      "title": "2020 疫情医疗（防护耗材 / 体外诊断 / 疫苗）",
+      "start_date": "2020-01-23",
+      "peak_date": "2021-01-25",
+      "end_date": "2021-12-31",
+      "themes": [
+        {
+          "name": "疫情医疗",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-RC-MED-PANDEMIC-01"
+      ],
+      "security_ids": [
+        "INTCO",
+        "ZHIFEI"
+      ],
+      "early_signal": "2020-01-23",
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "medical_structural_upgrade_2019_2022",
+      "conflicts": [],
+      "notes": "Campaign Candidate（Case B）。Gate：Q1 独立注意力中心=是；Q2 独立代表资产=是（英科/智飞 与 恒瑞/药明/泰格 几乎零交集）；Q3 独立持续性=是（2020-01~2021，节奏与主线相反）；Q4 独立生命周期=是（英科医疗 2021-01-25 见顶 296.99 元，2021 全年 -46.1%（adj），同期主线仍在上涨至 2021-07）；Q5 Residual Test=是（去掉后 Theme Cycle 仍成立）。未升 Case C：需排除疫情「全国 β 事件」污染 + 精确边界待更完整行情验证（见 Unknown Register）。Pattern=Parallel（顶比主线早约半年）。",
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2020-01-23",
+          "end": "2020-01-23",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-02-03",
+          "end": "2020-12-31",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2021-01-25",
+          "end": "2021-01-25",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-02-01",
+          "end": "2021-12-31",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_END",
+          "start": "2021-12-31",
+          "end": "2021-12-31",
+          "precision": "EXACT_DATE"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "新冠疫情 + 防疫物资刚性需求（EV-RC-MED-PANDEMIC-01, 2020-01-23）",
+          "英科医疗（一次性手套）2020 年内涨幅约 26.5 倍（adj）；智飞生物 +208%（adj）"
+        ],
+        "accelerator": [
+          "全球疫情反复、防疫物资出口需求；疫苗/检测产业链放量",
+          "2020 年 A 股涨幅榜首为一次性防护手套企业（英科医疗）"
+        ],
+        "turning": [
+          "英科医疗 2021-01-25 见顶（自身口径）后进入全年下跌；疫苗指数 2020-07/08 已先见顶",
+          "疫情缓解预期 + 产能过剩担忧（防护用品需求回落）"
+        ],
+        "ending": [
+          "2021 全年英科医疗 -46.1%（adj）、2022 再 -56.5%；主题注意力显著减弱",
+          "与主线（创新药/CXO）节奏相反：同期主线仍在上涨至 2021-07 → Pattern=Parallel"
+        ]
+      }
+    },
+    {
+      "campaign_id": "RC-2021-TCM",
+      "rule_id": "rule_pharma_upgrade",
+      "year": 2021,
+      "title": "2021–2022 中医药（品牌中药 / 中药创新 / 抗疫中药）",
+      "start_date": "2021-11-01",
+      "peak_date": "2022-12-08",
+      "end_date": "2022-12-30",
+      "themes": [
+        {
+          "name": "中医药",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-RC-MED-TCM-01"
+      ],
+      "security_ids": [
+        "PIANZAIHUANG",
+        "YILING"
+      ],
+      "early_signal": "2021-11-01",
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "medical_structural_upgrade_2019_2022",
+      "conflicts": [],
+      "notes": "Campaign Candidate（Case B）。Gate：Q1 独立注意力中心=是（中医药有专属政策体系）；Q2 独立代表资产=是（片仔癀/以岭 与 创新药核心资产基本不重合）；Q3 独立持续性=是（2021Q4→2022Q4 多波）；Q4 独立生命周期=是；Q5 Residual Test=是。**不依赖涨幅的独立证据三支柱**：① 独立政策体系；② 多数中药品种未进集采、可自主定价；③ 独立估值体系（20–30x vs 创新药/CXO 上百倍）。未升 Case C：⚠ 归属未决（医药健康下 Sub-theme vs 独立 Macro Theme「中医药」）→ Unknown Register U-C1；且市场存在分歧（「拐点已现」vs「更多是反弹」）→ 记 CONFLICT 语义但不写入 conflicts（无日期口径冲突）。结构为两段（片仔癀 2021 品牌中药 + 以岭 2022Q4 抗疫中药），Peak 取以岭自身高点。",
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2021-11-01",
+          "end": "2021-11-01",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2021-12-31",
+          "end": "2021-12-31",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2022-11-30",
+          "end": "2022-12-08",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2022-12-09",
+          "end": "2022-12-30",
+          "precision": "EXACT_DATE"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "中医药鼓励政策预期持续加码（2021-11 起板块活跃）",
+          "中成药集采温和落地；多家公司宣布提价（行业报道）"
+        ],
+        "accelerator": [
+          "医保局、中医药局《关于医保支持中医药传承创新发展的指导意见》（EV-RC-MED-TCM-01, 2021-12-31）",
+          "低估值修复（中药长期 20–30x vs 创新药/CXO 上百倍）"
+        ],
+        "turning": [
+          "2022 上半年深幅调整（疫情反复 + 中报不及预期）"
+        ],
+        "ending": [
+          "2022Q4 抗疫中药再度活跃：以岭药业 2022-11-30→12-08 快速上行至区间高点",
+          "2022-12-30 收于 28.36（自高点回落）；窗口末端，未确认结束"
+        ]
+      }
     }
   ],
   "events": [
+    {
+      "event_id": "EV-MED-01",
+      "name": "4+7 城市药品集中采购中选结果公布（25 品种，平均降幅 52%）",
+      "date": "2018-12-17",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-MED-02",
+      "name": "科创板开板（允许未盈利生物科技企业上市）",
+      "date": "2019-07-22",
+      "event_type": "policy",
+      "role": "trigger",
+      "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
     {
       "event_id": "EV-2019-03",
       "name": "交通部研究自动驾驶法规与指导意见",
@@ -1039,6 +1356,15 @@
       "event_type": "policy",
       "role": "trigger",
       "campaign_id": "C-2019-AD",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-MED-03",
+      "name": "2019 年国家医保药品目录谈判结果公布（PD-1 首次纳入医保）",
+      "date": "2019-11-28",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2019-PHARMA-INNOV",
       "research_candidate_id": null
     },
     {
@@ -1084,6 +1410,15 @@
       "event_type": "company",
       "role": "catalyst",
       "campaign_id": "C-2021-NEV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-MED-04",
+      "name": "CDE《以临床价值为导向的抗肿瘤药物临床研发指导原则（征求意见稿）》",
+      "date": "2021-07-02",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2019-PHARMA-INNOV",
       "research_candidate_id": null
     },
     {
@@ -1231,6 +1566,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-MED-05",
+      "name": "医保局、中医药局《关于医保支持中医药传承创新发展的指导意见》",
+      "date": "2021-12-31",
+      "event_type": "policy",
+      "role": null,
+      "campaign_id": null,
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2023-04",
       "name": "马斯克股东会展示人形机器人Optimus进展",
       "date": "2023-05-17",
@@ -1265,6 +1609,24 @@
       "role": "trigger",
       "campaign_id": null,
       "research_candidate_id": "RC-2023-HUAWEI"
+    },
+    {
+      "event_id": "EV-RC-MED-PANDEMIC-01",
+      "name": "新冠疫情：武汉实施离汉通道管控（疫情医疗需求起点）",
+      "date": "2020-01-23",
+      "event_type": "macro",
+      "role": "trigger",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2020-PANDEMIC"
+    },
+    {
+      "event_id": "EV-RC-MED-TCM-01",
+      "name": "国家医保局、国家中医药管理局《关于医保支持中医药传承创新发展的指导意见》",
+      "date": "2021-12-31",
+      "event_type": "policy",
+      "role": "trigger",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2021-TCM"
     }
   ],
   "securities": [
@@ -1293,6 +1655,33 @@
       "exchange": "SZ",
       "role": "representative",
       "campaign_id": "C-2019-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "HENGRUI",
+      "name": "恒瑞医药",
+      "ticker": "600276",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "WUXIAPPTEC",
+      "name": "药明康德",
+      "ticker": "603259",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "TIGERMED",
+      "name": "泰格医药",
+      "ticker": "300347",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2019-PHARMA-INNOV",
       "research_candidate_id": null
     },
     {
@@ -1618,6 +2007,42 @@
       "role": "second_leader",
       "campaign_id": null,
       "research_candidate_id": "RC-2024-SECONDARY"
+    },
+    {
+      "security_id": "INTCO",
+      "name": "英科医疗",
+      "ticker": "300677",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2020-PANDEMIC"
+    },
+    {
+      "security_id": "ZHIFEI",
+      "name": "智飞生物",
+      "ticker": "300122",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2020-PANDEMIC"
+    },
+    {
+      "security_id": "PIANZAIHUANG",
+      "name": "片仔癀",
+      "ticker": "600436",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2021-TCM"
+    },
+    {
+      "security_id": "YILING",
+      "name": "以岭药业",
+      "ticker": "002603",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2021-TCM"
     }
   ]
 }

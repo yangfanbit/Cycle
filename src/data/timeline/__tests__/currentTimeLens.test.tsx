@@ -51,8 +51,9 @@ describe('2. 同期行情来源：仅来自数据源（导出 v1），年份来�
     expect(lens.samePeriod[0].entries).toEqual([]);
     // 有数据年份的 campaign_id 与 Adapter 列表一致
     const byYear = new Map(lens.samePeriod.map((r) => [r.year, r.entries.map((e) => e.campaign_id)]));
-    expect(byYear.get(2019)).toEqual(['C-2019-AD']);
-    expect(byYear.get(2022)).toEqual(['C-2022-POLICY']);
+    // 2019-2022：医药跨年 Campaign（C-2019-PHARMA-INNOV）每年都命中窗口
+    expect(byYear.get(2019)).toEqual(['C-2019-PHARMA-INNOV', 'C-2019-AD']);
+    expect(byYear.get(2022)).toEqual(['C-2019-PHARMA-INNOV', 'RC-2021-TCM', 'C-2022-POLICY']);
     expect(byYear.get(2023)).toEqual(['RC-2023-HUAWEI']);
     expect(byYear.get(2024)).toEqual(['RC-2024-SECONDARY']);
     expect(byYear.get(2025)).toEqual(['C-2025-ROBOTAXI']);
@@ -62,7 +63,9 @@ describe('2. 同期行情来源：仅来自数据源（导出 v1），年份来�
 describe('3. 历史阶段映射：返回的是「当年窗口内」的阶段（历史事实）', () => {
   it('2019 C-2019-AD：主要阶段按窗口内覆盖天数取（主升覆盖 08-15~09-24 最长）', () => {
     const lens = currentTimeLens(previewTimelineSource(), TODAY);
-    const e = lens.samePeriod.find((r) => r.year === 2019)!.entries[0];
+    const e = lens.samePeriod
+      .find((r) => r.year === 2019)!
+      .entries.find((x) => x.campaign_id === 'C-2019-AD')!;
     expect(e.campaign_id).toBe('C-2019-AD');
     // 主升（08-15→09-24）覆盖 41 天，为窗口内最长 → 主要阶段
     expect(e.phaseLabel).toBe('主升');
@@ -129,9 +132,10 @@ describe('5. 未覆盖措辞：无数据 → uncovered=true（不是「历史没
     expect(lens.samePeriod.every((r) => r.entries.length === 0)).toBe(true);
   });
 
-  it('2 月淡季窗口：preview 源亦无覆盖 → uncovered=true（合法空态）', () => {
+  it('2 月窗口：医药跨年 Campaign 覆盖 2019–2022 → uncovered=false（跨年 Campaign 语义）', () => {
     const lens = currentTimeLens(previewTimelineSource(), '2026-02-10');
-    expect(lens.uncovered).toBe(true);
+    expect(lens.uncovered).toBe(false);
+    expect(lens.coveredYears).toBe(4); // 2019–2022 由 C-2019-PHARMA-INNOV 覆盖（2019-01-02~2022-10-31）
   });
 
   it('9 月窗口：preview 源有覆盖 → uncovered=false，coveredYears=7', () => {
@@ -298,8 +302,8 @@ describe('13. 不越界：Lens 不改动数据源 / 不产生新数据', () => {
     const expected = lens.samePeriod.reduce((n, r) => n + r.entries.length, 0);
     const actual = lens.samePeriod.reduce((n, r) => n + r.entries.length, 0);
     expect(actual).toBe(expected);
-    // 2019–2025 各 1 条 → 7 条
-    expect(actual).toBe(7);
+    // 2019–2022 各 2~3 条（含医药跨年 Campaign + 医药 RC）+ 2023/2024/2025 各 1 条 = 14 条
+    expect(actual).toBe(14);
   });
 });
 
@@ -348,10 +352,12 @@ describe('渲染：CurrentTimeLens SSR 输出关键文案与历史事实', () =>
     expect(html).not.toMatch(/(?<!不是「)历史没有机会/);
   });
 
-  it('空态（2 月淡季）：uncovered 文案出现，且不出现任何年份条目', () => {
+  it('空态（生产 verified 层为空）：uncovered 文案出现，且不出现任何年份条目', () => {
+    // 说明：引入医药跨年 Campaign（2019-2022）后，preview 源在 2 月窗口也不再为空；
+    // 「未覆盖空态」由真正的空数据源（生产 verified 层当前为空）触发。
     const html = renderToStaticMarkup(
       <CurrentTimeLens
-        dataSource={previewTimelineSource()}
+        dataSource={verifiedTimelineSource()}
         today="2026-02-10"
         selection={null}
         onSelect={() => {}}

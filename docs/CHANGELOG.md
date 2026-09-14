@@ -7,6 +7,92 @@
 
 ---
 
+## 2026-09-14 · Medical Health Minimum Dataset v0.1（首次非汽车 Theme 接入数据链路）
+
+### 目标
+
+首次将非汽车 Macro Theme（**医药健康**）接入 ThreeC 数据链路，
+验证 `Research → DB → Export → Timeline` 完整流程。
+**最小验证数据集**，不是完整医药数据库。
+**未修改** schema.sql / contracts / export contract / Timeline UI / Research Model。
+
+### 新增数据（DB）
+
+| 表 | + | 内容 |
+|---|---|---|
+| `research_rules` | 1 | `rule_pharma_upgrade`（医药健康结构性升级观察窗口） |
+| `annual_reviews` | 4 | `AR-MED-2019..2022` |
+| `themes` | 5 | `TH-PHARMA 医药健康`(root) + 创新药 / CXO / 疫情医疗 / 中医药（concept，parent=TH-PHARMA） |
+| `campaigns` | 1 | **`C-2019-PHARMA-INNOV`** 创新药产业链升级（2019-01-02 ~ 2022-10-31，peak 2021-07-01） |
+| `campaign_themes` | 3 | 医药健康(related) · 创新药(main) · CXO(related) |
+| `campaign_phases` | 6 | startup / acceleration / main_rise / diffusion / retracement / decline |
+| `securities` | 7 | 恒瑞医药 · 药明康德 · 泰格医药 · 英科医疗 · 智飞生物 · 片仔癀 · 以岭药业 |
+| `sources` / `evidences` / `campaign_evidences` | 6 / 5 / 5 | 含 4 条 Tier 1 政策来源；5 个独立证据分组 |
+| `events` / `campaign_events` | 5 / 4 | 4+7 集采 / 科创板 / 医保谈判 / CDE 指导原则 / 中医药政策 |
+| `market_series` / `market_daily` | 8 / 15,550 | 2019-01-02 ~ 2022-12-30，raw + adjusted(qfq) |
+
+**Research Candidate（不进入 campaigns 表）**：`RC-2020-PANDEMIC`（疫情医疗）· `RC-2021-TCM`（中医药）。
+
+### 新增 / 修改脚本
+
+| 文件 | 说明 |
+|---|---|
+| `research/scripts/fetch_market_medical.py` | **新增**：医药最小行情集拉取（腾讯 GTIMG 按年分段，raw+qfq，幂等） |
+| `research/scripts/seed_medical_min.py` | **新增**：医药最小数据集入库（幂等） |
+| `research/scripts/batch_auto_research.py` | **修改**：单 Rule 硬编码 → **多 Rule 驱动**（`RULES`）；`build_campaign` 改用 `c["rule_id"]`；新增医药 lifecycle / drivers / signals / theme_cycle / proxy / 2 个 RC；**修复 2018 反例年证据越权吸收**（见下 P-1） |
+
+### 导出
+
+`exports/timeline_export_v1.json` **由既有生成器重新产出**（未手工编辑）：
+`rules 2` ｜ `campaigns 9` ｜ `research_candidates 4` ｜ `signals 14` ｜ `events 33` ｜ `securities 46`。
+
+### 关键决定
+
+**正式 Campaign 写入 `provisional`（而非 `verified`）**：
+① 导出校验器 `VALID_RESEARCH_STATUS` 仅含 `PROVISIONAL/CONFLICT/INSUFFICIENT`；
+② 本项目 `verified` 定义为「人工最终复核确认」，不得由 AI 声明（`data/verified/campaigns.ts` 仍为空）；
+③ 与既有 8 条汽车 Campaign 一致。「已进入正式 campaigns 表（非候选）」已达成，
+「人工核验的 verified」需人工 Review 后另行提升。
+
+**Peak 口径**：严格按 `theme_campaign_separation_v1.md` v1.1 §6 —— 使用 Campaign **自身代表标的**
+（恒瑞医药 2020-12-25 / 药明康德·泰格医药 2021-07-01 → Peak Window），**未**使用医药指数口径。
+
+### 过程中修复的缺陷
+
+- **P-1** `build_2018()` 无条件吸收所有 2018 年证据 → 医药 `E-MED-05` 被同时归入汽车反例年与医药 Campaign，
+  触发 `validate_batch_research` 的 `evidence-cross-campaign` FAIL。改为只吸收**未显式绑定任何 Campaign** 的 2018 年证据（通用修复）。
+- **P-2** `campaign_themes` 出现两条 `role='main'`（创新药 + CXO）→ 产品端 `primaryThemeName()` 顺序依赖，
+  主题行键不确定。改为**唯一 main**（创新药），CXO 置 `related`。
+
+### 测试同步（数据集形状快照）
+
+新增数据使 10 条断言失效，**全部更新、未删除任何测试**：
+`timelineAdapter.test.ts`（source_commit；8/2/9/26/39 → **9/4/14/33/46**；9 月/2 月同期逐年命中）、
+`currentTimeLens.test.tsx`（byYear、2019 阶段用例改为按 campaign_id 取条目、2 月 uncovered → coveredYears=4、
+条目总数 7 → **14**、SSR 空态改用真正空数据源）、`themeRows.test.tsx`（不变式调整 + 新增 1 条固定 F-MED-1）。
+
+### 仍存在缺陷（仅记录，未修）
+
+- **F-MED-1（中等）** `src/data/timeline/themeRows.ts:186` 的 `year: c.year` 应为 `year: row.year` ——
+  跨年 Campaign 的条目年份取错，导致行级 `primaryPhase` 为 null（汽车因 campaign_year == 展示年而未暴露）。
+  最小修复 1 行；本轮因「禁止修改 Timeline UI」未执行。
+- **F-MED-2（低）** 跨年结构性 Campaign 使「历史同期」失去淡季空态（2019–2022 每月都命中）——产品语义待确认。
+- **F-MED-3（低）** Research Candidate 无法经 `campaign_evidences` 绑定证据（FK 指向 campaigns）——schema 议题，未动。
+
+### 验证（全部通过）
+
+- `npm test` **192 / 192**（191 → 192）；`tsc -b` exit 0；`build` ok（58 modules）。
+- Research 校验全绿：`validate_db` / `validate_timeline_export` / `validate_batch_research` /
+  `validate_promotion_manifest` / `check_doc_schema_consistency` / `validate_monorepo_integrity`（25 项 0 警告）。
+- **汽车零回归**：逐字段比对生成前后 export —— 顶层白名单 / `rule_auto_summer` / 8 条 Campaign /
+  2 条 Candidate / 汽车 events·securities·signals **全部 SAME**；新增均为追加。
+
+### 交付
+
+- `research/research/reports/Medical_Health_Data_Entry_v0_1_Audit.md`（Created / Not Created / Data Coverage / Validation / Remaining Unknown）
+
+---
+
 ## 2026-09-14 · Research Model v1.1 Methodology Patch（Theme Cycle Pattern + Lifecycle Measurement）
 
 ### 目标
