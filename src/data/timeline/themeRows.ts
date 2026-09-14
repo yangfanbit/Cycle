@@ -30,6 +30,12 @@ export interface ThemeCampaignEntry {
   /** 正式 Campaign 或 Research Candidate（RC 保留 badge，不升级状态） */
   kind: 'campaign' | 'candidate';
   title: string;
+  /**
+   * 【该明细所属的展示年份】= 主题行年份（row.year），不是 Campaign 起始年份。
+   * 跨年 Campaign（如 C-2019-PHARMA-INNOV 2019-01-02~2022-10-31）会在多个年度各成一条明细，
+   * 每条携带其所属展示年份；底层 Campaign 自身年份见 `campaign.year`（不改写数据）。
+   * 语义来源：与 phaseLabel / phaseAlso 的「当年同期窗口」口径一致（同一 win）。
+   */
   year: number;
   status: TimelineCampaign['status'];
   start: string;
@@ -183,7 +189,9 @@ export function themeRowsOf(source: TimelineDataSource, month: number): ThemeRow
         campaign_id: c.campaign_id,
         kind: c.kind,
         title: c.title,
-        year: c.year,
+        // 展示年份必须取【当前行年份】而非 Campaign 自身年份：
+        // 否则跨年 Campaign 的行级阶段聚合会用错 samePeriodWindow（F-MED-1）。
+        year: row.year,
         status: c.status,
         start: c.start,
         end: c.end,

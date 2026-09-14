@@ -53,6 +53,10 @@ export interface LensHistoricalEntry {
   /** 正式 Campaign 或 Research Candidate */
   kind: 'campaign' | 'candidate';
   title: string;
+  /**
+   * 【该条目所属的展示年份】= 年份行年份（row.year），不是 Campaign 起始年份。
+   * 跨年 Campaign 会在多个年度各成一条；Campaign 自身年份见 `campaign.year`。
+   */
   year: number;
   /** verified / provisional / preview / conflict */
   status: TimelineCampaign['status'];
@@ -261,7 +265,9 @@ export function currentTimeLens(source: TimelineDataSource, today: string): Curr
         campaign_id: c.campaign_id,
         kind: c.kind,
         title: c.title,
-        year: c.year,
+        // 与同一 map 内 possibleDrivers 的 year 口径保持一致：
+        // 取【当前行年份】而非 Campaign 自身年份（跨年 Campaign 见 F-MED-1）。
+        year: row.year,
         status: c.status,
         start: c.start,
         end: c.end,

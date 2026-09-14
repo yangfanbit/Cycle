@@ -7,6 +7,50 @@
 
 ---
 
+## 2026-09-14 · V1.8.4 F-MED-1 Cross-year Campaign Timeline Year Semantics Fix
+
+**修复跨年 Campaign 的 Timeline 年份语义缺陷（F-MED-1）。**
+医药健康首次接入跨年度 Campaign（`C-2019-PHARMA-INNOV` 2019-01-02 ~ 2022-10-31）后暴露：
+主题行明细的 `year` 取的是 **Campaign 起始年份**（`c.year`），而非**明细所属的展示年份**（`row.year`）。
+
+**后果**：该 Campaign 在 2019/2020/2021/2022 各年份行的 4 条明细全部标 2019 →
+行级阶段聚合用错 `samePeriodWindow(2019, 9)` → `primaryPhase` 丢失（显示「阶段未标注」）。
+汽车各行 `campaign_year == 展示年`，故从未暴露。
+
+**改动（2 处源码 + 2 份测试）**
+
+| 文件 | 变化 |
+|---|---|
+| `src/data/timeline/themeRows.ts` | 明细构造 `year: c.year` → **`year: row.year`**；`ThemeCampaignEntry.year` 补语义 doc-comment |
+| `src/data/timeline/currentTimeLens.ts` | **同源缺陷**：条目构造 `year: c.year` → **`year: row.year`**（同一次 `map` 内 `possibleDrivers` 已用 `row.year`，属两套年份语义）；`LensHistoricalEntry.year` 补语义 doc-comment |
+| `src/data/timeline/__tests__/themeRows.test.tsx` | 原「已知限制（待修复）」用例 → **F-MED-1 回归组 4 例**：2021 行明细 `year === 2021`（非 2019）· 底层 Campaign 数据不被改写 · 行级 `primaryPhase` 恢复（退潮 · 4 个年份）· 汽车单年度各行零变化 |
+| `src/data/timeline/__tests__/currentTimeLens.test.tsx` | 新增 **7b 回归组 3 例**：跨年条目 year = 所属年份 · 与 `possibleDrivers` 口径一致 · 单年度条目恒等 |
+
+**修复后（9 月窗口）**
+- `创新药` 行：明细 year = `2019, 2020, 2021, 2022`；`primaryPhase` = `退潮`；`phaseSummary` = `退潮 · 4 个年份`
+- `phaseLabel`（本就按行年份计算）保持不变：`[null, 主升, 退潮, 退潮]`
+- 医药 Timeline 正确；汽车 Timeline 零变化
+
+**范围（未改动）**
+Campaign 数据 · Research DB · Export（`exports/timeline_export_v1.json` 逐字节未变）· Contracts ·
+Research Model / Theme Model · `schema.sql` · 历史研究结论。
+仅改 4 个文件：2 个 Timeline Adapter/视图模型源码 + 2 个测试文件。
+
+**已知遗留（本轮仅记录，未修）**
+- **F-MED-4**：同一行内同一 Campaign 的跨年多条明细共享 `campaign_id`，而 `SamePeriodView` 的年份页签
+  以 `key={e.campaign_id}` / `focusEntryId`（campaign_id）标识 → 重复 key、4 个页签同时高亮、
+  `find()` 恒解析到首条。**该缺陷先于本次修复存在**（明细条数不因年份取值而变），本次不扩大范围。
+  建议后续把行内明细标识改为 `(year, campaign_id)` 复合键。
+
+**验证**
+- `npm test` **198 / 198**（192 → 198，+6）；`tsc -b` exit 0；`build` ok（58 modules）。
+- Research 校验全绿：`validate_db` / `validate_timeline_export` / `validate_batch_research` /
+  `validate_promotion_manifest` / `check_doc_schema_consistency` 全部 EXIT=0；
+  `validate_monorepo_integrity` PASS（25 项 0 警告）。
+- **汽车零回归审计**：跨 1–12 月扫描全部汽车明细共 **43 条，0 违规**（单年度明细恒有 `entry.year === campaign.year`）。
+
+---
+
 ## 2026-09-14 · Medical Health Minimum Dataset v0.1（首次非汽车 Theme 接入数据链路）
 
 ### 目标

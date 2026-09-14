@@ -116,7 +116,10 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - **生产模式**：消费 `data/verified/`（当前为空 → 显示「当前研究数据未覆盖」空态 + 预览入口）。
 - **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
 - `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
-- 测试：`npm test` **191 项通过**（V1.8.2.1 后 182 → 191，+9）；`tsc -b` 通过；`build` 通过。
+- 测试：`npm test` **198 项通过**（V1.8.3 医药最小数据集后 192 → 198，+6，含 F-MED-1 跨年年份语义回归）；`tsc -b` 通过；`build` 通过。
+- **F-MED-1 已修复（V1.8.4）**：主题行明细 `year` 取**所属展示年份**（`row.year`），非 Campaign 起始年；
+  同步修复同源缺陷 `currentTimeLens.ts` 条目 `year`。跨年 Campaign（医药）行级 `primaryPhase` 恢复正确；
+  汽车各行零变化（单年度 `row.year === campaign.year`，恒等）。
 
 ---
 

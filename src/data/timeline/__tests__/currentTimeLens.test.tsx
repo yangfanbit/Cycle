@@ -16,6 +16,7 @@ import { fixtureCampaigns, fixtureCrossYearMedia } from '../../../../tests/fixtu
  *   - 数据逻辑 1–8：窗口复用 / 时间定位 / 历史阶段映射 / 未覆盖措辞 / 不编造
  *   - 联动 9–10：selection 可解析 + 与 SamePeriodView 同口径
  *   - 产品 11–13：不做概率 / 不预测 / 不越界
+ *   - 7b（F-MED-1 回归）：Lens 条目 year = 所属年份（不是 Campaign 起始年）
  */
 
 const TODAY = '2026-09-13'; // 9 月 → 窗口 08-15 ~ 10-15
@@ -200,6 +201,46 @@ describe('7. 事实字段不被改写：start / end / status / kind 与源一致
     const robotaxi = flat.find((e) => e.campaign_id === 'C-2024-ROBOTAXI');
     expect(robotaxi).toBeDefined();
     expect(robotaxi!.status).toBe('conflict');
+  });
+});
+
+describe('7b. F-MED-1 回归：Lens 条目 year = 所属年份（不是 Campaign 起始年）', () => {
+  /**
+   * 与 themeRows.ts 同源的缺陷：条目构造曾用 `year: c.year`（Campaign 起始年），
+   * 而同一次 map 内的 possibleDrivers 已用 `row.year` —— 同一 map 两套年份语义。
+   * 跨年 Campaign（C-2019-PHARMA-INNOV 2019-01-02 ~ 2022-10-31）在 2019–2022 各年
+   * 都命中窗口（见用例 2），故 4 条条目应分别标注各自年份。
+   */
+  it('跨年 C-2019-PHARMA-INNOV 在各年份行条目 year 与行年份一致', () => {
+    const lens = currentTimeLens(previewTimelineSource(), TODAY);
+    const yearsOf = (y: number) =>
+      lens.samePeriod
+        .find((r) => r.year === y)!
+        .entries.filter((e) => e.campaign_id === 'C-2019-PHARMA-INNOV')
+        .map((e) => e.year);
+    expect(yearsOf(2019)).toEqual([2019]);
+    expect(yearsOf(2020)).toEqual([2020]);
+    expect(yearsOf(2021)).toEqual([2021]);
+    expect(yearsOf(2022)).toEqual([2022]);
+  });
+
+  it('与 possibleDrivers 的 year 口径一致（同一 map 不得两套年份语义）', () => {
+    const lens = currentTimeLens(previewTimelineSource(), TODAY);
+    const driverYears = lens.possibleDrivers
+      .filter((d) => d.campaign_id === 'C-2019-PHARMA-INNOV')
+      .map((d) => d.year);
+    expect(driverYears).toEqual([2019, 2020, 2021, 2022]);
+  });
+
+  it('单年度条目 year 恒等于 Campaign 自身年份（对汽车为恒等变换）', () => {
+    const lens = currentTimeLens(previewTimelineSource(), TODAY);
+    for (const row of lens.samePeriod) {
+      for (const e of row.entries) {
+        if (e.campaign.start.slice(0, 4) === e.campaign.end.slice(0, 4)) {
+          expect(e.year).toBe(e.campaign.year);
+        }
+      }
+    }
   });
 });
 

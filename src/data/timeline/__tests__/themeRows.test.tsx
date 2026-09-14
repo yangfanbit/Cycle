@@ -24,6 +24,8 @@ import { fixtureCampaigns } from '../../../../tests/fixtures/campaignFixtures';
  *   - IA 9：Timeline 在前、Lens 在后（页面顺序）
  *   - 产品 10：无交易建议措辞
  *   - 产品 11：不由 Event 自动生成相关因素
+ *   - 5b（F-MED-1 回归）：跨年 Campaign 明细 year = 所属展示年份（不是起始年）；
+ *                          汽车单年度各行零变化
  */
 
 const SEPT = 9; // 9 月 → 窗口 08-15 ~ 10-15
@@ -140,21 +142,67 @@ describe('5. 阶段映射：当年窗口内主要阶段（历史事实）+ 其�
     }
   });
 
+});
+
+describe('5b. F-MED-1 跨年 Campaign 年份语义（回归）', () => {
   /**
-   * 已知限制（Audit Finding F-MED-1）：
-   * 跨年（多年度）Campaign 的行级代表阶段为 null —— `themeRows.ts` 构造入口时
-   * `year: c.year` 取的是 campaign 自身年份，而非**所属行的年份**，导致行级聚合
-   * 用错 `samePeriodWindow`（本轮医药 Campaign 为 2019-01-02~2022-10-31，暴露该缺陷）。
-   * 汽车案例 campaign_year == 展示年，故一直未暴露。
-   * 本用例固定当前行为；F-MED-1 修复后应同步改为「primaryPhase 非空」。
+   * 缺陷（F-MED-1，已修复）：`themeRows.ts` 构造明细时曾用 `year: c.year`
+   * —— 取的是 Campaign **起始年份**，而非明细**所属主题行年份**。
+   * 后果：跨年 Campaign（C-2019-PHARMA-INNOV 2019-01-02 ~ 2022-10-31）在各年份行生成的
+   * 4 条明细全部标 2019 → 行级阶段聚合用错 `samePeriodWindow(2019, 9)` → primaryPhase
+   * 丢失（显示「阶段未标注」）。汽车各行 campaign_year == 展示年，故一直未暴露。
+   * 正确语义：主题行明细属于**当前展示年份**（与 phaseLabel / phaseAlso 同一 win）。
    */
-  it('已知限制 F-MED-1：跨年 Campaign 行的 primaryPhase 为 null（待修复）', () => {
+  it('跨年 Campaign 生成 2021 行明细时 year === 2021（而不是 2019）', () => {
+    const result = themeRowsOf(previewTimelineSource(), SEPT);
+    const row = result.rows.find((r) => r.themeKey === '创新药');
+    expect(row).toBeDefined();
+    expect(row!.campaigns.map((e) => e.year)).toEqual([2019, 2020, 2021, 2022]);
+
+    const e2021 = row!.campaigns.find((e) => e.year === 2021);
+    expect(e2021).toBeDefined();
+    expect(e2021!.campaign_id).toBe('C-2019-PHARMA-INNOV');
+    // 2021 窗口（08-15 ~ 10-15）落在退潮段（2021-07-02 ~ 2022-10-31）
+    expect(e2021!.phaseLabel).toBe('退潮');
+  });
+
+  it('明细 year 取展示年份，但底层 Campaign 数据不被改写', () => {
     const result = themeRowsOf(previewTimelineSource(), SEPT);
     const row = result.rows.find((r) => r.themeKey === '创新药')!;
-    expect(row).toBeDefined();
+    for (const e of row.campaigns) {
+      expect(e.campaign.campaign_id).toBe('C-2019-PHARMA-INNOV');
+      expect(e.campaign.year).toBe(2019); // 历史事实不被改写
+      expect(e.start).toBe('2019-01-02');
+      expect(e.end).toBe('2022-10-31');
+    }
+  });
+
+  it('行级 primaryPhase 不再因跨年取错窗口而丢失', () => {
+    const result = themeRowsOf(previewTimelineSource(), SEPT);
+    const row = result.rows.find((r) => r.themeKey === '创新药')!;
+    // 对照：phaseLabel 本就按行年份计算，不受该缺陷影响
     expect(row.campaigns.map((e) => e.phaseLabel)).toEqual([null, '主升', '退潮', '退潮']);
-    expect(row.primaryPhase).toBeNull();
-    expect(row.phaseSummary).toBe('阶段未标注');
+    // 聚合：退潮 62 + 62 天 > 主升 62 天 → 退潮；行覆盖 4 个展示年份
+    expect(row.primaryPhase).toBe('退潮');
+    expect(row.phaseSummary).toBe('退潮 · 4 个年份');
+    expect(row.years).toEqual([2019, 2020, 2021, 2022]);
+  });
+
+  it('汽车（单年度）各行零变化：years / primaryPhase 保持修复前取值', () => {
+    const result = themeRowsOf(previewTimelineSource(), SEPT);
+    const pin = (key: string, years: number[], primary: string | null) => {
+      const row = result.rows.find((r) => r.themeKey === key);
+      expect(row, key).toBeDefined();
+      expect(row!.years).toEqual(years);
+      expect(row!.primaryPhase).toBe(primary);
+      // 单年度明细：展示年份恒等于 Campaign 自身年份（修复对汽车为恒等变换）
+      for (const e of row!.campaigns) expect(e.year).toBe(e.campaign.year);
+    };
+    pin('智能驾驶/无人驾驶', [2019], '主升');
+    pin('新能源汽车/电池', [2020, 2021], '退潮');
+    pin('汽车消费/购置税刺激', [2022], '退潮');
+    pin('华为汽车', [2023], '主升');
+    pin('Robotaxi/无人驾驶/智能网约车', [2024, 2025], '主段结束');
   });
 });
 
