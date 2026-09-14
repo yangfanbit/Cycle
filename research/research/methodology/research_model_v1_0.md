@@ -55,6 +55,10 @@
 ### 示例
 - `auto_intelligence_2023`：包含 Smart Driving + Huawei Auto 两个 Campaign
 
+> **分层判据**：Macro Theme / Theme Cycle / Campaign / Sub-theme 的边界、以及
+> 「某 Sub-theme 是否应升级为独立 Campaign」的判定框架（Campaign Independence Gate），
+> 见 `theme_campaign_separation_v1.md`。该文件为**判据层**，不新增实体、不改本节语义。
+
 ---
 
 ## 4. Campaign Candidate（战役候选）

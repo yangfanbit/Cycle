@@ -100,6 +100,7 @@ ThreeC/
 │   ├─ PRODUCT_PURPOSE.md
 │   ├─ ROADMAP.md
 │   ├─ CHANGELOG.md            ← 统一变更记录
+│   ├─ THEME_CAMPAIGN_MODEL_AUDIT.md ← Theme/Campaign 分层模型审计（Macro Theme→Theme Cycle→Campaign→Sub-theme）
 │   └─ (Cycle 原有) PRODUCT.md / DATA_MODEL.md / DATA_GOVERNANCE.md /
 │        HISTORICAL_VALIDATION.md / ARCHITECTURE.md / UI_SPEC.md
 │

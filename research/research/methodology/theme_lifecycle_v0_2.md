@@ -98,6 +98,10 @@ Theme Cycle                            例：auto_intelligence_2023
 - 一个 Theme Cycle 可含多个 Campaign；Campaign 可有多个 Phase/Signal。
 - **Campaign Overlap**：允许旧 Campaign 尚未正式 End，新 Campaign 已开始 Early Signal。
 
+> **分层判据见** `theme_campaign_separation_v1.md`（Theme / Campaign Separation Rules：
+> Macro Theme / Theme Cycle / Campaign / Sub-theme 边界 + Campaign Independence Gate + 六条禁令）。
+> 本节与之一致，语义未变。
+
 ---
 
 ## 4. Theme Drift（主题漂移）
@@ -223,7 +227,7 @@ Theme Cycle                            例：auto_intelligence_2023
 ## 9. 纪律
 
 - Opportunity State / Theme Cycle 均为研究描述，非交易信号。
-- 先敌view下，Early Signal/Formation/Confirmation 用 Point-in-Time 信息判断（不事后倒推）。
+- Point-in-Time 视角下，Early Signal/Formation/Confirmation 用当时已公开信息判断（不事后倒推）。
 - 不计算 seasonality_score / win_rate / probability / predictive_model。
 - 宁可 unknown / candidate / no_clear_campaign，也不伪装 verified。
 - 真实历史事实优先，不为支持 Rule 而修改研究结果。

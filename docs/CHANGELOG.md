@@ -7,6 +7,64 @@
 
 ---
 
+## 2026-09-14 · Theme / Campaign 分层模型统一审计（方法论 + 审计报告，只读为主）
+
+### 目标
+
+把汽车案例中已部分体现、但未成文的「一个 Macro Theme 可包含多个 Campaign；Sub-theme ≠ Campaign」
+方法统一为通用规则，并对 2019–2025 汽车 + 医药健康做交叉审计。
+**规范统一 > 结构清晰 > 数据修正**。**本轮不新增功能、不改历史研究结论。**
+
+### 新增文件
+
+| 文件 | 说明 |
+|---|---|
+| `docs/THEME_CAMPAIGN_MODEL_AUDIT.md` | 正式审计报告：Current Model / Proposed Unified Model / Campaign Independence Gate / Automotive Audit 逐年 / Medical Pilot Audit / Data·Schema Impact / Recommended Next Step / 8 Findings / DECISION(KEEP·CHANGE·DEFER) / 八问结论 |
+| `research/research/methodology/theme_campaign_separation_v1.md` | Theme / Campaign Separation Rules：五层定义（Macro Theme → Theme Cycle → Campaign → Sub-theme → Phase/Signal）+ Campaign Independence Gate（Q1–Q5 含 Residual Test）+ Case A/B/C + 六条禁止规则 |
+
+### 修改文件
+
+| 文件 | 变化 |
+|---|---|
+| `research/research/methodology/research_model_v1_0.md` | §3 ThemeCycle 增加指向 `theme_campaign_separation_v1.md` 的**指针**（不改语义、不扩展模型概念） |
+| `research/research/methodology/theme_lifecycle_v0_2.md` | §3 增加同款指针；**修正 §9 乱码**「先敌view下」→「Point-in-Time 视角下」 |
+
+### 关键发现（审计结论摘要）
+
+- **结构早已支持**：DB `themes.parent_theme_id` 已内建「Macro Theme → Sub-theme」层级
+  （`TH-AUTO 汽车` 为 root，下挂 TH-AD / TH-NEV / TH-ROBOTAXI / TH-V2X / TH-CAR-CONSUMPTION），
+  且 8 个 Campaign 全部以 `role='related'` 关联 `TH-AUTO`。
+- **Theme Cycle 已进导出**：8 campaigns + 2 research_candidates 全部带 `theme_cycle_id`；
+  `auto_intelligence_2023` = C-2023-AD + RC-2023-HUAWEI（1 Cycle → 2 实体），
+  `robotaxi_2024` = C-2024-ROBOTAXI + RC-2024-SECONDARY。
+- **产品数据层已有父子主题树**：`data/candidate/themes.ts`（`parent_theme_id` + `childrenOf()`），
+  已注册 8 个 sector 级主题（含 `th_pharma 医药`）；`data/candidate/rules.ts` 注释已写明
+  「底层行业与年度具体题材是两个层级，不可混为一谈」。
+- **缺口**：Macro Theme / Sub-theme 两个术语全仓 0 次命中；Campaign Independence Gate 未形式化
+  （仅 `2024_robotaxi_continuity_review.md` §8 隐式使用过）。
+- **汽车案例无需重标**：2022 单 Campaign（多催化不拆）、2023 一 Cycle 两 Campaign（Drift+Overlap）、
+  2024 V2X/Robotaxi 双独立、2024 次级保持 Candidate、2025 未过度拆分 —— 全部符合新规则。
+- **医药健康结构就绪、数据为空**：`th_pharma` 主题 + `rule_pharma_post_interim` / `rule_pharma_year`
+  候选规则已存在，但 0 条 Campaign / Evidence / 行情。
+- **Schema / Contract / Export 均无需改动**（无需新表 / 新必填字段）。
+
+### 明确不做（DEFER）
+
+Timeline 由「Sub-theme 一行」改为「Macro Theme 一行」；adapter 透传 `theme_type` / `theme_cycle_id`；
+医药历史数据录入；`theme_cycles` / `campaign_relations` 建表；统一 DB `phase_type` 与 export
+`lifecycle` 枚举（破坏性）。以及 §十六 全部禁区。
+
+### 验证
+
+- `npm test` **191 项通过**；`tsc -b` 通过；`build` 通过（58 modules）。
+- Research 校验全部 PASS：`validate_db.py` / `validate_timeline_export.py` /
+  `validate_batch_research.py` / `validate_promotion_manifest.py` /
+  `check_doc_schema_consistency.py` / `validate_monorepo_integrity.py`（25 项通过 0 警告）。
+- **未修改** schema.sql / DB 数据 / export 数据 / 历史研究结论 / Timeline 行为 / pre-observation 语义 /
+  Conflict·Candidate 语义。
+
+---
+
 ## 2026-09-13 · Phase 5.2.1 V1.8.2.1 Pre-observation Semantic Fix（Formation Anchor）
 
 ### 目标
