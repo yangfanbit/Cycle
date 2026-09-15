@@ -2,10 +2,471 @@
   "contract": "current_candidates",
   "current_candidates_version": "1.0",
   "snapshot_date": "2026-09-15",
-  "generated_at": "2026-09-15T00:00:00",
-  "generated_by": "manual",
+  "generated_at": "2026-09-15T23:25:00+08:00",
+  "generated_by": "ai-offline",
   "research_coverage_until": 2025,
-  "scope": "A股 Current Research Discovery v0.1 —— 当前研究对象候选（Research Candidate，不是正式 Theme / Campaign）",
-  "note": "本数据集为**空集**：当前项目尚未产出任何经过证据登记的 Current Candidate。产品端将显示诚实空态，不使用 2025 历史数据冒充 2026 当前状态，也不编造候选。数据生产协议见同目录 README.md 与 schema.json；示例（fixture，非真实研究数据）见 fixtures/example_candidates.json。",
-  "candidates": []
+  "scope": "A股 Current Research Discovery v0.1 —— 第一轮真实离线研究候选（snapshot=2026-09-15）",
+  "note": "本轮基于截至2026-09-15可获得的公开信息建立4个Current Candidate。Candidate是研究对象，不是正式Theme/Campaign，不构成买卖建议。所有判断仅使用不晚于snapshot的证据；后续信息不得回填本轮判断。",
+  "candidates": [
+    {
+      "candidate_id": "CC-2026-AI-EINFO",
+      "snapshot_date": "2026-09-15",
+      "display_name": "AI驱动电子信息制造升级与高速互联基础设施",
+      "macro_theme": "AI与电子信息制造",
+      "theme_type": "industry",
+      "core_narrative": "AI算力需求与“十五五”电子信息制造业升级正在同时推动先进计算、集成电路、基础电子、能源电子及高速光互联等基础设施环节扩容；近期政策规划、信息通信规划和产业展会信息在短期内密集汇聚，研究重点应从“AI总主题”进一步下钻到算力基础设施与高速互联等产业环节。",
+      "candidate_status": "RESEARCHING",
+      "attention_state": "EXPANSION",
+      "phase_window": {
+        "start": "2026-09-07",
+        "end": "2026-09-15"
+      },
+      "phase_evidence": {
+        "narrative": "STRONG",
+        "policy": "STRONG",
+        "industry": "STRONG",
+        "market": "STRONG",
+        "capital": "PRESENT",
+        "breadth": "PRESENT",
+        "company": "PRESENT",
+        "information_marginal": "STRONG"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-CC-AI-EINFO-01",
+          "source_type": "POLICY",
+          "source_title": "《电子信息制造业发展“十五五”规划》",
+          "source_url": "https://gxt.hunan.gov.cn/gxt/xxgk_71033/ghjh/202609/t20260915_34064746.html",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-10",
+          "claim": "工信部、国家发展改革委于2026年9月10日印发《电子信息制造业发展“十五五”规划》，提出到2030年规模以上企业营业收入突破30万亿元，并明确在集成电路、先进计算、消费电子、基础电子、能源电子等领域提升产业能力。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-AI-EINFO-02",
+          "source_type": "POLICY",
+          "source_title": "《信息通信行业发展“十五五”规划》解读",
+          "source_url": "https://www.miit.gov.cn/jgsj/txs/gzdt/art/2026/art_d96033a8e4df47bc9748af39be5e181d.html",
+          "source_date": "2026-09-07",
+          "claim": "工信部《信息通信行业发展“十五五”规划》将智能算力、智能体互联网络、网络智能化升级、算力基础设施等列为重点任务，并提出6G技术研发、信息通信产业固基强链等专栏。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-AI-EINFO-03",
+          "source_type": "INDUSTRY",
+          "source_title": "国内光互联产业全方位升级，通信ETF华夏震荡走强",
+          "source_url": "https://m.nbd.com.cn/articles/2026-09-15/4581728.html",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-09",
+          "claim": "2026年9月9日至11日深圳光博会上，行业信息显示800G、1.6T光模块规模化落地，NPO/XPO试点，国产光芯片量产突破，硅光渗透率提升，OCS全光交换获得产业布局。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-AI-EINFO-04",
+          "source_type": "MARKET",
+          "source_title": "收评：冲高回落！创业板指跌超1%，4300股收跌，PCB风电逆势突围",
+          "source_url": "https://www.nbd.com.cn/articles/2026-09-15/4582010.html",
+          "source_date": "2026-09-15",
+          "claim": "2026年9月15日A股整体走弱，但PCB、半导体等电子信息相关方向逆势活跃；报道统计PCB概念主力资金净流入约53.94亿元、存储芯片约49.75亿元、先进封装约33.17亿元。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        }
+      ],
+      "drivers": [
+        {
+          "category": "POLICY",
+          "note": "十五五规划与信息通信规划同时强化先进计算、算力基础设施和电子信息制造能力。"
+        },
+        {
+          "category": "INDUSTRY",
+          "note": "高速光互联、光芯片、存储、PCB等多个基础设施环节出现产业升级信息。"
+        },
+        {
+          "category": "CAPITAL",
+          "note": "9月15日市场结构中，PCB、存储芯片、先进封装出现较明显资金参与。"
+        }
+      ],
+      "narrative_types": [
+        "POLICY_DRIVEN",
+        "INDUSTRY_UPGRADE",
+        "TECH_BREAKTHROUGH",
+        "DEMAND_SURGE"
+      ],
+      "reference_cases": [],
+      "research_questions": [
+        "当前的核心变化是AI硬件旧主线继续扩张，还是已经形成新的高速互联/先进计算结构性分支？",
+        "800G/1.6T、NPO/XPO、硅光等技术升级能否转化为持续订单与收入，而非单次展会催化？",
+        "电子信息制造规划带来的产业升级，哪些环节具有更独立的产业逻辑？",
+        "当前PCB、存储、先进封装的市场响应能否在后续形成更广的产业链扩散？",
+        "历史上类似“政策+技术升级+订单预期”阶段，什么时候才出现广度确认？"
+      ],
+      "source_summary": "这是本轮证据最密集、市场响应最明显的候选之一，但它更像AI基础设施既有主线的结构扩张，而不是一个全新主题，因此研究重点应放在“结构迁移”而非简单定义为新AI主题。",
+      "uncertainty_notes": [
+        "当前市场证据主要来自行业/主题方向的短期交易表现，尚不能证明形成长期独立Campaign。",
+        "行业展会信息与规划文件之间存在时间压缩，需进一步观察订单、资本开支及公司层收入验证。",
+        "尚缺少一个统一的A股整体周期状态，因此本候选的EXPANSION仅表示候选自身证据结构，不代表大盘处于扩张期。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "CC-2026-AI-ENERGY",
+      "snapshot_date": "2026-09-15",
+      "display_name": "AI+能源与算电协同",
+      "macro_theme": "AI与能源融合",
+      "theme_type": "industry",
+      "core_narrative": "AI算力需求正在把电力供给、数据中心用能、绿电消纳和电力调度连接起来；2026年从国家政策到电网侧实测、地方项目和企业业务推进，算电协同开始从概念性讨论进入工程化与市场机制探索阶段，但A股市场层面的广度验证仍不足。",
+      "candidate_status": "CANDIDATE",
+      "attention_state": "THEME_FORMING",
+      "phase_window": {
+        "start": "2026-07-21",
+        "end": "2026-09-10"
+      },
+      "phase_evidence": {
+        "narrative": "PRESENT",
+        "policy": "STRONG",
+        "industry": "PRESENT",
+        "market": "EMERGING",
+        "capital": "UNKNOWN",
+        "breadth": "EMERGING",
+        "company": "PRESENT",
+        "information_marginal": "STRONG"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-CC-AI-ENERGY-01",
+          "source_type": "POLICY",
+          "source_title": "国家发展改革委 国家能源局关于推进“人工智能+”能源高质量发展的实施意见",
+          "source_url": "https://new.tzxm.gov.cn/zckd/cyzc/202509/t20250915_1400468.shtml",
+          "source_date": "2025-09-15",
+          "claim": "实施意见提出到2030年完善算力电力协同机制，推动人工智能与电网、虚拟电厂、分布式储能、车网互动、算电协同等方向融合。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-AI-ENERGY-02",
+          "source_type": "INDUSTRY",
+          "source_title": "南方能源监管局开展算电协同现场调研",
+          "source_url": "https://www.nea.gov.cn/20260721/e471950acf294038b59f3dfa6f254a76/c.html",
+          "source_date": "2026-07-21",
+          "claim": "南方能源监管局赴南方电网广州数据中心调研算电协同技术与应用，并围绕算力电力协同调度、市场机制建设进行交流，表示将持续跟进算力设施并组织完善相适应电力交易机制。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-AI-ENERGY-03",
+          "source_type": "INDUSTRY",
+          "source_title": "绿电赋能，算网共生——2026算力产业发展研讨会暨算电协同生态对接会",
+          "source_url": "https://www.cidc.org.cn/news/20260909/1282285915007352832.html",
+          "source_date": "2026-09-09",
+          "event_date": "2026-08-31",
+          "claim": "2026年8月31日算力产业发展研讨会聚焦算电协同生态建设，参与方覆盖地方政府、头部电力企业、算力运营商、基础设施服务商及科研院所。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-AI-ENERGY-04",
+          "source_type": "INDUSTRY",
+          "source_title": "南网能源2026年9月投资者关系活动记录表",
+          "source_url": "https://cfi.net.cn/p20260910001353.html",
+          "source_date": "2026-09-10",
+          "claim": "南网能源披露截至2026年6月底虚拟电厂聚合规模超过50万千瓦，并推进分布式光伏聚合、公共机构楼宇、电算协同、光储充用等应用场景，同时推进“AI+虚拟电厂”科技项目。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-AI-ENERGY-05",
+          "source_type": "MARKET",
+          "source_title": "“人工智能+能源”加速融合 助力新型电力系统提“智”增效",
+          "source_url": "https://finance.people.com.cn/n1/2026/0907/c1004-40794040.html",
+          "source_date": "2026-09-07",
+          "claim": "人民网报道，截至2026年7月底我国光伏发电装机容量首次超过煤电、占全国发电装机31.5%，并将AI赋能新型电力系统描述为行业探索方向；报道同时援引政策目标说明行业顶层设计持续推进。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        }
+      ],
+      "drivers": [
+        {
+          "category": "POLICY",
+          "note": "国家发改委、国家能源局已明确算电协同和AI+能源的长期政策方向。"
+        },
+        {
+          "category": "INDUSTRY",
+          "note": "电网调度、数据中心负荷响应、虚拟电厂和算力园区开始出现工程化实践。"
+        }
+      ],
+      "narrative_types": [
+        "POLICY_DRIVEN",
+        "INDUSTRY_UPGRADE",
+        "DEMAND_SURGE"
+      ],
+      "reference_cases": [],
+      "research_questions": [
+        "算电协同是AI算力增长带来的基础设施配套，还是能够形成独立的产业Theme？",
+        "目前实测项目能否从单点示范扩展到电力市场交易机制与规模化商业模式？",
+        "数据中心负荷响应、虚拟电厂、源网荷储中，哪一层最可能形成独立的Core Narrative？",
+        "电价机制与绿电消纳是否会成为驱动商业模式成熟的关键变量？",
+        "未来需要看到哪些A股公司层收入/订单证据，才能把Candidate从观察状态向Promotable推进？"
+      ],
+      "source_summary": "当前更像一个正在从政策命题向工程化产业命题过渡的Candidate，政策和产业证据明显强于市场广度证据，因此暂不升级为成熟Theme。",
+      "uncertainty_notes": [
+        "直接A股市场广度与多公司验证不足。",
+        "部分产业实践来自头部电网和综合能源企业，行业层商业模式尚未充分标准化。",
+        "政策发布时间早于本轮快照较久，当前价值主要来自2026年的工程化推进，而不是新政策本身。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "CC-2026-BCI-MEDICAL",
+      "snapshot_date": "2026-09-15",
+      "display_name": "脑机接口医疗器械产业化与标准化",
+      "macro_theme": "脑机接口医疗器械",
+      "theme_type": "industry",
+      "core_narrative": "脑机接口正在从技术概念向医疗器械工程化阶段推进，2026年出现参考架构、分类、信号采集、传输测试、非侵入式设备等多项标准密集推进，9月14日又出现面向AI算法脑电数据集质量要求的标准发布，显示产业开始围绕“产品—数据—算法—安全”形成标准化基础。",
+      "candidate_status": "CANDIDATE",
+      "attention_state": "THEME_FORMING",
+      "phase_window": {
+        "start": "2026-01-28",
+        "end": "2026-09-15"
+      },
+      "phase_evidence": {
+        "narrative": "PRESENT",
+        "policy": "STRONG",
+        "industry": "STRONG",
+        "market": "PRESENT",
+        "capital": "PRESENT",
+        "breadth": "EMERGING",
+        "company": "UNKNOWN",
+        "information_marginal": "STRONG"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-CC-BCI-01",
+          "source_type": "POLICY",
+          "source_title": "首个“人工智能+脑机接口”标准发布",
+          "source_url": "https://www.xinhuanet.com/sci-tech/20260915/146c41e5fbb24769a3449e1189ac2442/c.html",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-14",
+          "claim": "国家药监局于2026年9月14日批准发布YY/T 2029-2026《脑机接口医疗器械用于人工智能算法的脑电数据集质量要求与评价方法》，将于2027年9月1日起实施。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-BCI-02",
+          "source_type": "POLICY",
+          "source_title": "国家脑机接口产业标准体系建设指南（2026版）征求意见",
+          "source_url": "https://wap.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_cef887be98e34d5a9fec73ae313b95f9.html",
+          "source_date": "2026-08-24",
+          "claim": "工信部科技司于2026年8月24日公开征求《国家脑机接口产业标准体系建设指南（2026版）》，征求意见时间为8月25日至9月23日。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-BCI-03",
+          "source_type": "POLICY",
+          "source_title": "脑机接口医疗器械分类国家标准计划",
+          "source_url": "https://std.samr.gov.cn/gb/search/gbDetailed?id=4738836A96620803E06397BE0A0AA98A",
+          "source_date": "2026-09-15",
+          "event_date": "2026-08-28",
+          "claim": "国家标准计划20264367-T-464《脑机接口医疗器械 分类》于2026年8月28日下达，主管部门为国家药监局，计划从信号采集方式、检测原理、交互模式、应用场景和交互范式等维度建立产品分类原则。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-BCI-04",
+          "source_type": "INDUSTRY",
+          "source_title": "GB/T 47023-2026 信息技术 脑机接口 参考架构",
+          "source_url": "https://std.samr.gov.cn/gb/search/gbDetailed?id=49FD1852CB37C31FE06397BE0A0A1304",
+          "source_date": "2026-09-15",
+          "event_date": "2026-01-28",
+          "claim": "GB/T 47023-2026《信息技术 脑机接口 参考架构》于2026年1月28日发布、8月1日起实施，形成脑机接口信息技术侧的参考架构标准。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-BCI-05",
+          "source_type": "CAPITAL",
+          "source_title": "脑机接口医疗器械新标准落地，资本热度升高",
+          "source_url": "https://finance.eastmoney.com/a/202609153874521367.html",
+          "source_date": "2026-09-15",
+          "claim": "报道援引IT桔子数据称，截至2026年9月14日，年内脑机接口领域一级市场已发生99起投融资事件、金额合计94.74亿元。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-BCI-06",
+          "source_type": "MARKET",
+          "source_title": "脑机接口医疗器械新标准落地，机构年内扎堆调研",
+          "source_url": "https://stcn.com/article/detail/4185466.html",
+          "source_date": "2026-09-15",
+          "claim": "证券时报报道，随着新标准落地，脑机接口产业政策、技术应用与商业化路径受到市场关注。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        }
+      ],
+      "drivers": [
+        {
+          "category": "POLICY",
+          "note": "药监与工信系统在医疗器械标准、产业标准体系和产品分类等多个层面同步推进。"
+        },
+        {
+          "category": "INDUSTRY",
+          "note": "数据集、参考架构、信号采集、能量/信号传输、非侵入式设备等工程标准形成组合。"
+        },
+        {
+          "category": "CAPITAL",
+          "note": "公开报道显示2026年一级市场融资事件和融资金额均明显增加。"
+        }
+      ],
+      "narrative_types": [
+        "POLICY_DRIVEN",
+        "INDUSTRY_UPGRADE",
+        "TECH_BREAKTHROUGH"
+      ],
+      "reference_cases": [
+        {
+          "campaign_id": "C-2019-PHARMA-INNOV",
+          "note": "产品端Similarity v2可独立计算；此处仅保留研究侧对照假设：医疗技术产业升级+政策标准化的结构值得与2019–2021创新药产业链升级案例比较。"
+        }
+      ],
+      "research_questions": [
+        "标准密集发布是否意味着脑机接口开始从技术研发阶段进入医疗器械产业化阶段？",
+        "AI数据集标准、产品分类、信号采集和传输标准能否共同形成可复制的医疗器械产业链？",
+        "当前市场关注是否已经从少数概念扩散到上游器件、中游设备和下游医疗场景？",
+        "临床验证、注册证、商业化收入中，哪个证据最可能成为下一阶段的关键确认信号？",
+        "历史上医药技术标准从建立到Theme形成，通常经历哪些中间验证？"
+      ],
+      "source_summary": "这是本轮最接近Early-to-Forming的候选之一。与单纯“概念热度”相比，其特点是2026年标准、产品分类、数据规范和AI算法要求开始成体系推进。",
+      "uncertainty_notes": [
+        "目前仍缺少足够的公司层商业化收入验证。",
+        "市场层广度证据较弱，本轮市场证据主要证明关注度而非成熟板块结构。",
+        "引用的一级融资数据来自媒体对第三方数据库的转述，后续如进入正式研究需回到原始融资数据库核验。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "CC-2026-HUMANOID",
+      "snapshot_date": "2026-09-15",
+      "display_name": "人形机器人从量产扩张向规模化应用与标准化迁移",
+      "macro_theme": "人形机器人与具身智能",
+      "theme_type": "industry",
+      "core_narrative": "人形机器人在2026年已出现出货量、产业链收入和整机量产加速等扩张证据，同时标准体系从数据采集、整机通用要求向产业标准化推进；但9月出现头部机器人IPO剧烈波动及监管趋严信号，说明产业正在从“高预期扩张”进入“产业化验证与估值约束并存”的阶段。",
+      "candidate_status": "WATCH",
+      "attention_state": "EXPANSION",
+      "phase_window": {
+        "start": "2026-06-01",
+        "end": "2026-09-15"
+      },
+      "phase_evidence": {
+        "narrative": "STRONG",
+        "policy": "STRONG",
+        "industry": "STRONG",
+        "market": "PRESENT",
+        "capital": "PRESENT",
+        "breadth": "PRESENT",
+        "company": "PRESENT",
+        "information_marginal": "PRESENT"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-CC-HUMANOID-01",
+          "source_type": "POLICY",
+          "source_title": "国家人形机器人产业标准体系建设指南（2026版）征求意见",
+          "source_url": "https://wap.miit.gov.cn/gzcy/yjzj/art/2026/art_cb9cca921b2946c595d897b14bf520a6.html",
+          "source_date": "2026-08-25",
+          "claim": "工信部科技司于2026年8月25日公开征求《国家人形机器人产业标准体系建设指南（2026版）》意见，征求意见截止日期为2026年9月23日。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-HUMANOID-02",
+          "source_type": "INDUSTRY",
+          "source_title": "2026年第三批行业标准制修订计划",
+          "source_url": "https://wap.miit.gov.cn/cms_files/filemanager/1226211233/attach/20265/d304e2d0a4074659944f8804e200ce11.pdf",
+          "source_date": "2026-06-30",
+          "claim": "工信部2026年第三批行业标准制修订计划中，人形机器人方向包含数据采集技术要求、数据采集专用整机技术规范、整机通用技术要求以及灵巧手/夹持执行器接口规范等项目。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-HUMANOID-03",
+          "source_type": "INDUSTRY",
+          "source_title": "上半年中国人形机器人出货量全球占比达97%",
+          "source_url": "https://paper.people.com.cn/rmrb/pad/content/202608/25/content_30176983.html",
+          "source_date": "2026-08-25",
+          "claim": "人民日报报道援引《2026年人形机器人产业发展报告》称，2026年上半年中国人形机器人出货量超过4万台，全球占比达到97%，产业应用从小批量试用向常态化部署和规模化应用推进。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-HUMANOID-04",
+          "source_type": "MARKET",
+          "source_title": "2026年上半年人形机器人产业链景气度上行",
+          "source_url": "https://m.nbd.com.cn/articles/2026-09-15/4581893.html",
+          "source_date": "2026-09-15",
+          "claim": "截至2026年9月15日，中证机器人指数当天震荡下跌但成分股表现分化；报道援引东方证券中报总结称2026年上半年人形机器人产业链景气度上行，产业链收入同比增长18.3%，本体厂商和传感器厂商毛利率提升，整机量产与应用场景拓展加速。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CC-HUMANOID-05",
+          "source_type": "CAPITAL",
+          "source_title": "China curbs humanoid IPOs after Unitree's volatile debut",
+          "source_url": "https://www.reuters.com/world/asia-pacific/china-curbs-humanoid-ipos-after-unitrees-volatile-debut-information-reports-2026-09-09/",
+          "source_date": "2026-09-09",
+          "claim": "路透报道援引The Information称，中国监管部门近期对人形机器人企业IPO审核趋严，要求企业展示经常性收入、亏损改善或显著创新等更强商业基础；报道同时指出Unitree上市后出现大幅波动。",
+          "evidence_strength": "MEDIUM",
+          "direction": "NEGATIVE"
+        }
+      ],
+      "drivers": [
+        {
+          "category": "POLICY",
+          "note": "国家标准体系建设与行业标准项目进入密集推进期。"
+        },
+        {
+          "category": "INDUSTRY",
+          "note": "出货量、产业链收入、整机量产及应用场景均出现扩张信号。"
+        },
+        {
+          "category": "CAPITAL",
+          "note": "市场资金持续关注，但头部企业上市后的剧烈波动促使监管提高IPO门槛。"
+        },
+        {
+          "category": "SENTIMENT",
+          "note": "行业高预期与估值/商业化验证压力同时存在，形成明显分歧。"
+        }
+      ],
+      "narrative_types": [
+        "POLICY_DRIVEN",
+        "INDUSTRY_UPGRADE",
+        "TECH_BREAKTHROUGH",
+        "VALUATION_RESET"
+      ],
+      "reference_cases": [],
+      "research_questions": [
+        "当前人形机器人最重要的变化究竟是出货量增长，还是从试用向规模化部署的商业模式变化？",
+        "标准体系推进能否降低数据采集、整机接口和零部件协同的产业化摩擦？",
+        "整机厂、传感器、减速器等环节的景气是否开始出现明显分化？",
+        "IPO监管趋严是否意味着行业由主题扩张进入产业化验证阶段？",
+        "历史上类似“高景气+高预期+监管约束”阶段，哪些证据会推动主题继续扩散，哪些证据会使其转为退潮？"
+      ],
+      "source_summary": "该候选证据最充分，但恰恰因此不能简单归为Early Signal。当前更像扩张中的成熟主题，同时出现明显的估值与商业化验证压力，因此状态门降为WATCH。",
+      "uncertainty_notes": [
+        "“中国上半年出货量占全球97%”来源于行业报告转述，需在正式研究中进一步核查原始报告口径。",
+        "监管趋严信息来自路透对The Information的转述，且未见中国证监会公开确认，因此只能作为冲突证据，不应写成正式政策结论。",
+        "当前没有统一的A股机器人市场广度数据，无法进一步判断是否已经接近Peak。"
+      ],
+      "conflict_notes": [
+        "产业景气/量产扩张 与 IPO监管趋严/头部上市波动同时存在。",
+        "主题关注很高，但商业化收入验证仍滞后于市场预期。"
+      ],
+      "last_updated": "2026-09-15"
+    }
+  ]
 }
