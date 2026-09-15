@@ -14,6 +14,13 @@ import {
   type AttentionItem,
   type CurrentLensV2,
 } from '../../data/timeline/researchAttention';
+import { CurrentCandidateSection } from './CurrentCandidateSection';
+import { buildCurrentCandidateViews } from '../../data/timeline/currentCandidateAdapter';
+import {
+  defaultCurrentCandidateParse,
+  parseCurrentCandidateDataset,
+  type CurrentCandidateDataset,
+} from '../../data/timeline/currentCandidate';
 
 interface CurrentTimeLensProps {
   dataSource: TimelineDataSource;
@@ -23,6 +30,12 @@ interface CurrentTimeLensProps {
   selection: Selection;
   /** 现有选中回调（点击 Lens 条目 → 打开 Campaign Detail） */
   onSelect: (sel: Selection) => void;
+  /**
+   * Current Candidate 数据集（Phase 7）。
+   * 缺省 → 消费 canonical 数据集（`research/current/current_candidates.json`，当前为空集 → 诚实空态）。
+   * `?candidates=example` 时注入**示例 fixture**（UI 会显式标注「非真实研究数据」）。
+   */
+  currentCandidates?: CurrentCandidateDataset | null;
 }
 
 /**
@@ -37,10 +50,25 @@ interface CurrentTimeLensProps {
  * 一切数据来自 App 注入的 TimelineDataSource（= exports/timeline_export_v1.json）。
  * 不做网络请求、不新建数据结构、不写库。
  */
-export function CurrentTimeLens({ dataSource, today, selection, onSelect }: CurrentTimeLensProps) {
+export function CurrentTimeLens({
+  dataSource,
+  today,
+  selection,
+  onSelect,
+  currentCandidates,
+}: CurrentTimeLensProps) {
   const lens = useMemo(() => currentTimeLens(dataSource, today), [dataSource, today]);
   // v2 三层：A. A股整体环境 / B. 当前 Theme · Theme Cycle / C. Research Attention
   const v2 = useMemo(() => buildCurrentLensV2(dataSource, today), [dataSource, today]);
+
+  // Phase 7 · Current Research Discovery：当前研究候选（离线研究数据集，静态 import）
+  // 缺省 → canonical 数据集（当前为空集 → 诚实空态）；显式传入 → 使用该数据集（如示例 fixture）
+  const candidateList = useMemo(() => {
+    const parsed = currentCandidates
+      ? parseCurrentCandidateDataset(currentCandidates)
+      : defaultCurrentCandidateParse();
+    return buildCurrentCandidateViews(dataSource, parsed.dataset, today, parsed.issues);
+  }, [dataSource, today, currentCandidates]);
 
   // 无数据源年份（生产 verified 为空）→ 明确说明，不伪装成「历史没有机会」
   if (dataSource.years().length === 0) {
@@ -77,6 +105,9 @@ export function CurrentTimeLens({ dataSource, today, selection, onSelect }: Curr
 
       {/* ============ v2 三层（研究导航核心） ============ */}
       <LensV2 v2={v2} selection={selection} onSelect={onSelect} />
+
+      {/* ============ Phase 7 · 当前研究候选（Current Research Discovery） ============ */}
+      <CurrentCandidateSection list={candidateList} onSelect={onSelect} />
 
       {/* ============ 附：日历同期（Calendar Lens） ============ */}
       <h4 className="ctl2-sublayer">

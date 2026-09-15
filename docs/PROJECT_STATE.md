@@ -10,7 +10,7 @@
 **ThreeC = A股历史机会时间轴 / 历史机会地图。**
 
 让用户回答：今天在一年中的什么位置 → 历史上这个时间发生过什么 → 主题如何形成 / 发展 /
-转折 / 结束 → 有没有提前信号 → 为什么启动 / 加速 / 转折 / 结束 → 哪些方向值得继续研究。
+转折 / 结束 → 有没有提前信号 → 为什么启动 / 加速 / 转折 / 结束 → **现在应该去研究什么**。
 
 **核心价值 = 机会发现，不是交易决策。** 用户自己负责基本面 / 技术面 / 选股 / 入场时机。
 详见 `docs/PRODUCT_PURPOSE.md`。
@@ -19,31 +19,62 @@
 
 ## Current Phase
 
-**Phase 6：Product Core v2（IMPLEMENTED）。**
-把 Timeline + Historical Same Period + Current Time Lens 升级为**当前研究导航层**，
-并首次具备「生命周期相似」检索能力。
+**Phase 7：Current Research Discovery v0.1（IMPLEMENTED）。**
+补齐「2026 是当前时间、研究数据却截止到 2025」这一根本缺口：让产品能回答
+**「今天这个时间点，我应该去历史资料里研究什么？」**
 
-IA（视觉优先级 `Timeline > Current Lens > Similar Phase`）：
-1. **① Timeline**（第一视觉，未改动）
-2. **② 当前时间研究导航（Current Time Lens v2）** 三层：
-   - **A. A股整体环境** → `A股整体周期：Unknown`（ThreeC 没有整体市场周期模型，
-     **绝不**从行业 Campaign 反推大盘牛熊）
-   - **B. 当前 Theme / Theme Cycle** → 无当前年份数据时**诚实空态**
-     （「暂无 2026 当前 Theme Cycle 研究数据；历史研究覆盖至 2025」），
-     并列出研究覆盖内的 Theme Cycle（Parallel-aware，历史参考，不冒充当前状态）
-   - **C. Research Attention（研究关注）** → 状态分类（**不是评分 / 概率 / 信号**）：
-     `当前值得研究` / `保持观察` / `历史参考`
-3. **③ 历史相似阶段（Historical Similar Phase v1）** —— **Lifecycle Lens**：
-   按「阶段 → Theme Cycle Pattern → Drivers 重叠」检索历史结构相似案例，最多 Top 3，
-   用「高相似 / 中相似 / 参考」（**无百分比**），必须给出「为什么类似」；
-   找不到足够证据 → 空态，**不强行凑数**
-4. **④ 历史同期（Calendar Lens）** —— 既有 `SamePeriodView` 保留并重新定位（日历同期搜索，
-   与 ③ 生命周期相似**并存、不可互相替代**）
+### 架构（网络与 AI 只在**离线研究数据生成端**，不进入运行时）
 
-同时完成 **F-MED-6**：Selection 区分「展示实例」（`entryId`，用于条目高亮 / focus）与
-「完整历史案例」（`campaign_id`，用于 Campaign Detail）—— 跨年 Campaign 不再多行同时高亮。
+```
+Web / AI Research（离线：人工 / 脚本 / AI）
+        ↓
+research/current/current_candidates.json      ← 静态研究 Artifact（可验证、可回溯）
+        ↓
+src/data/timeline/currentCandidate*.ts        ← Product Adapter（纯 View 层）
+        ↓
+Current Time Lens · 当前研究候选
+        ↓
+Historical Similar Phase（Similarity v2：候选 × 历史）
+        ↓
+Research Questions（研究方向）
+```
 
-**不做**预测 / 荐股 / 交易信号 / 评分 / 概率 / 实时数据。
+### 交付
+
+1. **数据协议层** `research/current/`
+   `current_candidates.json`（canonical，**当前为诚实空集**）· `schema.json`（JSON Schema 子集）·
+   `README.md`（协议 + 如何新增候选）· `fixtures/example_candidates.json`（**示例，非真实数据**）·
+   `narrative_annotations.json`（历史案例的结构化叙事标注，逐条带 provenance）。
+2. **验证器** `research/scripts/validate_current_research.py`
+   6 组校验：Data / Temporal / Evidence / Phase / Similarity / Theme Boundary。退出码 0/1。
+3. **产品层（5 模块，纯 View）**
+   - `currentCandidate.ts` —— 协议 / 类型 / 标签 / 宽容解析
+   - `currentEvidence.ts` —— **Evidence Ledger + Temporal Firewall** + 相位证据矩阵 + 冲突检测 + 状态门
+   - `currentPhaseInference.ts` —— **透明规则引擎**（R0–R8，命中规则 id 可审计）
+   - `currentSimilarity.ts` —— **Similarity v2**（候选 × 历史）+ Research Questions
+   - `currentCandidateAdapter.ts` —— 聚合为 UI View 模型
+4. **UI** `CurrentTimeLens` 内新增克制的「当前研究候选」区（概览 + 就地展开详情），
+   **不改**页面顺序、**不压过** Timeline。
+5. `?candidates=example` 查询参数可查看示例 fixture（页面顶部有强提示「非真实研究数据」）。
+
+### 五个核心机制
+
+- **Temporal Firewall**：证据必须带 `source_date` / `event_date`；`> snapshot_date` 的必须标
+  `AFTER_SNAPSHOT`，且**不得参与**阶段推断 / 状态判定 / 相似度。相似度侧只允许
+  **`end <= snapshot_date`**（相对快照已完整结束）的历史案例作参照 —— 否则会引用未来信息。
+- **Phase Evidence Matrix**：8 个维度（叙事 / 政策 / 产业 / 市场 / 资金 / 广度 / 公司 / 新增信息边际）。
+  其中 3 个由研究声明，5 个由证据 `source_type × strength × direction` **确定性派生**；
+  逐维标注来源。**禁用** `涨幅 > X ⇒ EXPANSION` 这类单一指标逻辑。
+- **Research Attention Gate 只降不升**：无可用证据 → 不高于候选；有冲突 → 不高于保持观察；
+  阶段 UNKNOWN → 不高于保持观察。**Conflict 候选永远不可能显示为可升级状态**。
+- **Similarity v2 四层**：阶段（历史案例**曾经历**该阶段 30 / 曾经历相邻 15）
+  → Theme Cycle Pattern（12/5）→ Drivers 重叠（×5）→ **Narrative 结构**重叠（×4）。
+  Top 3 上限、**无百分比**、「高相似 / 中相似 / 参考案例」、必给「为什么类似」、
+  无证据 → 空态**不凑数**。UI 明示：相似的是**阶段与结构**，不是未来走势。
+- **Research Questions**：由模板 + 现有证据确定性生成（缺哪个维度就问哪个维度、
+  有相似案例就问「该阶段历史分歧」、有冲突就问「如何交叉验证」）。是**研究问题**，不是买卖问题。
+
+**不做**预测 / 荐股 / 交易信号 / 评分 / 概率 / 实时数据 / 后端 / 在线 API。
 
 ---
 
@@ -66,6 +97,7 @@ IA（视觉优先级 `Timeline > Current Lens > Similar Phase`）：
 | Phase 5.7 | **V1.9.0 Timeline Entry Identity**（`entryId = campaign_id@display_year`；展示实例 ≠ Campaign 选择） | ✅ IMPLEMENTED |
 | Phase 5.8 | **V1.9.1 Timeline Year Coverage Rule**（两源 `years()` 统一为 start→end 连续） | ✅ IMPLEMENTED |
 | Phase 6 | **V2.0 Product Core v2**（F-MED-6 Selection 身份分离 · Current Time Lens v2 三层 · Research Attention Gate v1 · Historical Similar Phase v1 · Macro Theme 聚合接口 · IA 重排） | ✅ IMPLEMENTED |
+| Phase 7 | **Current Research Discovery v0.1**（`research/current/` 数据协议 + 验证器 · Temporal Firewall · Phase Evidence Matrix 与透明规则引擎 · Similarity v2（候选 × 历史）· Research Questions · 「当前研究候选」UI + 诚实空态） | ✅ IMPLEMENTED |
 
 ---
 
@@ -81,6 +113,7 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 │   ├─ database/cycle_research.db   （提交 Git）
 │   ├─ schema/schema.sql            （冻结）
 │   ├─ scripts/                     （Python 流水线）
+│   ├─ current/          ★ Phase 7：Current Candidate 数据协议（canonical + fixtures）
 │   └─ research/                    （研究产物）
 ├─ docs/               项目级 + 产品级文档
 └─ tests/
@@ -89,78 +122,63 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - **History migration**：Cycle 为根（原 11 commits），Cycle-Research 经
   `git subtree add --prefix=research` 并入（原 28 commits）。共 40 commits，
   双方原始 author / date / message 保留。
-- **前端消费路径**：`src/data/timeline/timelinePreview.ts` → `@exports/timeline_export_v1.json`
-  （Vite alias + tsconfig `paths`）。**不再有** `src/data/timeline/data/timeline_export_v1.json` 副本。
+- **前端消费路径**：两个静态 Artifact，均为「Research 生成 → Product 只读消费」，无运行时网络请求：
+  - `@exports/timeline_export_v1.json` —— 历史研究数据（alias → `exports/`）
+  - `@current/current_candidates.json` —— **Phase 7** Current Candidate 数据集（alias → `research/current/`）
 
 ---
 
 ## Research Status
 
 - Research Model **v1.0 Frozen**；`schema.sql` 冻结（17 表 / 125 字段）。
-- 2018–2025 八年度研究完成：**8 个正式 Campaign + 1 个 2018 反例年份**。
-- 研究状态分布：`PROVISIONAL 8 / CONFLICT 1`。
-- Research Candidates：`RC-2023-HUAWEI`、`RC-2024-SECONDARY`（永不 verified）。
+- 2018–2025 八年度研究完成：**8 个正式 Campaign + 1 个 2018 反例年份**；医药健康 **+1 正式 Campaign**。
+- 研究状态分布：`PROVISIONAL 9 / CONFLICT 1`。
+- Research Candidates：`RC-2023-HUAWEI`、`RC-2024-SECONDARY`、`RC-2020-PANDEMIC`、`RC-2021-TCM`
+  （永不 verified）。
 - 结论：**"6–8 月汽车" = 历史观察窗口（Historical Observation Window），
   Partially Supported，非固定买入窗口**。
   （见 `research/research/summary/auto_2018_2025_final_review.md`）
+- **Current Candidate（Phase 7）是独立于上述三者的第四类对象**：研究对象候选，
+  不进入 `campaigns` 表、不进入 export、命名空间 `CC-`（fixture 用 `FX-`）。
 
 ---
 
 ## Product Status
 
-- **页面 IA（V1.8.1 起）**：① **Timeline（第一视觉）** → ② **历史同周期主题** → ③ **当前时间上下文**。
+- **页面 IA（V2.0）**：① **Timeline（第一视觉）** → ② **当前时间研究导航（Lens v2 + 当前研究候选）**
+  → ③ **历史相似阶段（Lifecycle Lens）** → ④ **历史同期（Calendar Lens）**。
 - **Timeline 永远保持第一视觉（V1.8.2 硬约束）**：点击主题 / Campaign **不遮挡** Timeline；
   无大型 modal 覆盖、无永久右侧大面板压缩。
 - **两级详情（V1.8.2）**：
-  - **Level 1 Inline Summary**：点击主题行 → **就地**展开摘要（主题 / 年份 / 阶段 / 关键阶段 /
-    提前观察区 / 可能相关因素 / 数据状态 / RC / Conflict），**不离开主页面**。
-  - **Level 2 Full CampaignDetail**：仅点「查看完整历史案例」才打开；保留 lifecycle / 精确日期 /
-    日期候选 / conflict / securities / events / evidence / source。桌面为右侧浮层；**移动端为 Bottom Sheet**。
-- **提前观察参考区（V1.8.2 / V1.8.2.1）**：`historicalPreObservationDays = 30`
-  （**UI / Research browsing buffer**）。
+  - **Level 1 Inline Summary**：点击主题行 → **就地**展开摘要，**不离开主页面**。
+  - **Level 2 Full CampaignDetail**：仅点「查看完整历史案例」才打开；桌面为右侧浮层；**移动端为 Bottom Sheet**。
+- **提前观察参考区（V1.8.2 / V1.8.2.1）**：`historicalPreObservationDays = 30`（**UI / Research browsing buffer**）。
   语义 = 「主题正式形成前可开始关注的时间缓冲区」；**不是**预测 / 买入建议 / 未来信号 / 历史统计事实。
-  层级：`Pre-observation Reference → Early Signal? → Theme Formation → Main Rise`。
-  - **Formation Anchor（V1.8.2.1 修正）**：`THEME_FORMING.start → BROAD_CONFIRMATION.start →
-    Campaign.start → null`；**禁止**取 lifecycle 最早 stage（会把 EARLY_SIGNAL 误认为形成）。
-    锚点来源由 `formationAnchorOf()` / `formationAnchor` 暴露。
-  - Early Signal 继续使用导出既有 `early_signal` 字段，**不重新推导**，与 Formation 相互独立
-    （`earlySignal.start !== formation`，`preObservation.end < formation`）。
-  - Timeline 中以**极淡**点划线 + 斜纹 + `opacity 0.4` + `z-index 0` 呈现，
-    视觉层级 `Campaign(0.95) > Early Signal(0.5/z-1) > 参考区(0.4/z-0)`，
-    不抢 Campaign 主体 / Peak / Early Signal。
-  - 文案统一「**提前观察参考区**」，说明「仅用于研究浏览参考，不代表历史平均领先期，也不是买入建议。」
-    （禁止「买入区 / 布局区 / 信号区」）。
-- **历史同周期主题**（`SamePeriodView`，主题级）：一行 = 一个主主题（`themeRows.ts` 的 `TimelineThemeRow`，
-  **纯 UI/Adapter 视图概念，非 DB 实体**）；同主题多条独立行情**不合并**，RC 保留 badge、状态不升级；
-  仅**重大冲突**（>10 天）显示 ⚠。
-- **当前时间上下文**（`CurrentTimeLens`，③补充摘要）：可提示「今天处于某历史主题的提前观察区」，
-  必须附「历史研究位置，不代表本年度预测」。相关因素统一称「**可能相关因素**」。
-- Timeline MVP 可用：365 天全年时间轴、Campaign 生命周期视觉、
-  Peak Window、Conflict 分级视觉、Drivers 四问。
-- **生产模式**：消费 `data/verified/`（当前为空 → 显示「当前研究数据未覆盖」空态 + 预览入口）。
-- **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
-- `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
-- 测试：`npm test` **282 项通过**（Product Core v2 后 244 → 282，+38）；`tsc -b` 通过；`build` 通过。
+  - **Formation Anchor**：`THEME_FORMING.start → BROAD_CONFIRMATION.start → Campaign.start → null`；
+    **禁止**取 lifecycle 最早 stage（会把 EARLY_SIGNAL 误认为形成）。
+  - 视觉层级 `Campaign(0.95) > Early Signal(0.5/z-1) > 参考区(0.4/z-0)`。
+  - 文案统一「**提前观察参考区**」（禁止「买入区 / 布局区 / 信号区」）。
+- **历史同周期主题**（`SamePeriodView` = **Calendar Lens**）：一行 = 一个主主题；同主题多条独立行情**不合并**，
+  RC 保留 badge、状态不升级；仅**重大冲突**（>10 天）显示 ⚠。
 - **Current Time Lens v2（V2.0）**：三层 A（A股整体环境 = `Unknown`）/ B（当前 Theme · Theme Cycle，
-  无当前年份数据 → 诚实空态）/ C（Research Attention 状态分类）。数据层 `researchAttention.ts`
-  （纯 View/Research Navigation，不写 DB/schema/export/contracts）。
-- **Historical Similar Phase v1（V2.0）**：`historicalSimilarPhase.ts` —— Phase + Theme Cycle Pattern +
-  Drivers 三维度，Top 3 上限、「高/中/参考」分级（无百分比）、必给「为什么类似」、无证据 → 空态。
-  与 ④ 历史同期（Calendar Lens）并存。
-- **Macro Theme 聚合接口（V2.0）**：`macroTheme.ts` —— 从既有 `theme_type` / `role=related` /
-  `parent_theme_id` 推导「Macro Theme → Theme Cycle → Campaigns」；**本轮不改 Timeline 视觉**。
-- **F4 已修复（V2.0）**：`theme_type` / `theme_cycle_id` 经 Adapter 透传进视图模型（契约 §11 既有字段，
-  未改 export / contract）。
-- **Timeline Year Coverage Rule（V1.9.1）**：Campaign / 候选覆盖年份 = `start` 年 **连续到** `end` 年
-  （`src/data/timeline/yearCoverage.ts` 的 `timelineYears()`）。`verified` 与 `preview` 两源**同一规则、同一 helper**
-  —— 修复生产模式下跨年 Campaign 中间年份行缺失（F-MED-5）。单年度 Campaign 覆盖年份不变。
-- **Timeline Entry Identity（V1.9.0）**：明细唯一身份 `entryId = `${campaign_id}@${展示年份}``
-  （`src/data/timeline/entryIdentity.ts`，**纯 UI / ViewModel**）。跨年 Campaign 在多年度各成一条明细，
-  React key / `focusEntryId` / 年份页签一律用 `entryId`；**打开 Campaign Detail 仍以 `campaign_id` 为准**。
-  汽车（单年度）`entryId` 与 `campaign_id` 一一对应 → 视觉与行为不变。
-- **F-MED-1 已修复（V1.8.4）**：主题行明细 `year` 取**所属展示年份**（`row.year`），非 Campaign 起始年；
-  同步修复同源缺陷 `currentTimeLens.ts` 条目 `year`。跨年 Campaign（医药）行级 `primaryPhase` 恢复正确；
-  汽车各行零变化（单年度 `row.year === campaign.year`，恒等）。
+  无当前年份数据 → 诚实空态）/ C（Research Attention 状态分类）。
+- **Historical Similar Phase v1（V2.0）**：历史 × 历史；与 ④ Calendar Lens 并存、不可互相替代。
+- **Macro Theme 聚合接口（V2.0）**：`macroTheme.ts`，**未改** Timeline 视觉。
+- **Phase 7 · 当前研究候选**（`CurrentCandidateSection`）：
+  - 概览：名称 · 阶段 · 有效状态 · 证据充分度 · 相似案例数 ·（若有）已隔离证据数 · 展开。
+  - 详情（就地展开）：Why now → Current Evidence（含**已隔离证据单列**）→ Possible Drivers →
+    Estimated Phase（矩阵逐维来源 + 命中规则）→ Historical Similar Cases（四问 + 为什么类似 +
+    可跳转历史案例）→ What to research next → Uncertainty / Conflicts →
+    **为什么它现在仍是 Candidate**（5 条升级条件核对表）。
+  - **空数据模式**：无候选时显示「当前暂无经过验证的 Current Candidate 数据 / 历史研究覆盖至 2025 /
+    当前市场实时数据：未接入」，**不编造内容**。
+  - **UI 不显示相似度分数 / 百分比**；不显示新闻流。
+- **Timeline Year Coverage Rule（V1.9.1）**：覆盖年份 = `start` 年 **连续到** `end` 年（两源同一 helper）。
+- **Timeline Entry Identity（V1.9.0）**：`entryId = `${campaign_id}@${展示年份}``；React key / focus /
+  年份页签用 `entryId`，**打开 Campaign Detail 仍以 `campaign_id`**。
+- **F-MED-1 / F4** 已修复。
+- 测试：`npm test` **335 项通过**（Phase 7 后 282 → 335，+53，新增 `currentResearch.test.tsx`）；
+  `tsc -b` 通过；`build` 通过（72 modules）。
 
 ---
 
@@ -168,12 +186,15 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 | 数据 | 位置 | 状态 |
 |---|---|---|
-| Canonical Export | `exports/timeline_export_v1.json` | **唯一**（SHA256 `BF36FF7B…D01E`） |
-| Research DB | `research/database/cycle_research.db` | 3.4 MB，提交 Git |
+| Canonical Export | `exports/timeline_export_v1.json` | **唯一**（本轮未改动） |
+| Research DB | `research/database/cycle_research.db` | 6.1 MB，提交 Git |
 | Schema | `research/schema/schema.sql` | 冻结（未改） |
 | 历史研究产物 | `research/research/**` | **zero semantic diff** |
 | 行情 CSV | `research/data/market/**` | 原样保留 |
 | Product verified | `data/verified/` | 空（历史核验尚未开始） |
+| **Current Candidate** | `research/current/current_candidates.json` | **空集（诚实空态）** |
+| **示例 fixture** | `research/current/fixtures/example_candidates.json` | 4 个候选，**非真实数据** |
+| **叙事标注** | `research/current/narrative_annotations.json` | 13 条，`PENDING_HUMAN_REVIEW` |
 
 ---
 
@@ -183,52 +204,59 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - 契约：`contracts/timeline_export_v1.md`
 - 顶层 11 字段白名单；未知字段拒绝。
 - Research **生成**，Cycle **消费**。
-- Schema 变更必须同时更新 `contracts/` + Research exporter + Cycle adapter。
+- **Current Candidate 不走 export**：它是独立 Artifact（`research/current/`），
+  设计上就不进入 canonical export —— 候选不是 Research 事实。
 
 ---
 
 ## Known Limitations
 
 - Product 生产层（`data/verified/`）为空：真实历史核验（L0/L1 → L2）尚未开始，
-  生产首页目前只能显示空态；实际内容需经 `?preview=1` 查看。
+  生产首页只能显示空态；实际内容需经 `?preview=1` 查看。
 - 所有历史日期为**研究候选日期**，未全部完成人工最终核验 → 标注 provisional / conflict。
 - `research/research/` 嵌套目录名为历史遗留，迁移时刻意保留。
 - Research 脚本依赖腾讯免费行情接口（仅 `fetch_market_*` 需要网络）。
+- **Current Candidate canonical 数据集为空**：Phase 7 交付的是**协议 + 验证器 + 消费端**，
+  尚未做任何真实的 2026 当前研究数据生产（见下「Next Single Goal」）。
+- `research/current/narrative_annotations.json` 为**产品侧结构标注（PENDING_HUMAN_REVIEW）**，
+  仅驱动相似度第 4 层；未标注的历史案例该层不参与（不推断）。
 - `npm audit` 报告 5 项漏洞（构建工具链传递依赖，本轮未处理）。
 
 ---
 
 ## Current Blockers
 
-**无硬性阻塞。** Phase 6 Product Core v2 已实现并通过全部门禁。
+**无硬性阻塞。** Phase 7 Current Research Discovery v0.1 已实现并通过全部门禁。
 
 **真实数据限制（不是缺陷，是项目定位的一部分）：**
-- A股整体环境（Layer A）为 `Unknown`：ThreeC 没有指数 / 成交量 / 资金 / 情绪数据源，
-  也不应由此推导大盘状态。
-- 当前年份（2026）无研究数据 → Layer B 为**诚实空态**（研究覆盖至 2025）。
-- Research Attention 的 `当前值得研究` 目前为空：现有正式 Campaign 均已记录到结束阶段
-  （这不是错误，已在 UI 中明确说明）。
-- Drivers 分类只用到 `policy/company/market/macro` → `Sentiment` 在研究数据中**没有来源**，
-  因此永不出现（不编造）。
+- A股整体环境（Layer A）为 `Unknown`：无指数 / 成交量 / 资金 / 情绪数据源，也不应由此推导大盘状态。
+- 当前年份（2026）无历史研究数据 → Layer B 为**诚实空态**（研究覆盖至 2025）。
+- Research Attention 的 `当前值得研究` 目前为空：现有正式 Campaign 均已记录到结束阶段。
+- **当前研究候选为空**：没有任何经过证据登记的 2026 Current Candidate —— 因此「当前研究候选」区
+  显示诚实空态。这不是缺陷，而是**拒绝编造**。
+- `Sentiment` driver 在研究数据中**没有来源** → 永不出现（不编造）。
 
 ---
 
 ## Next Single Goal
 
-> **用户视觉 / 交互 Review（Phase 6 V2.0）。**
+> **生产第一批真实的 Current Candidate 数据（离线研究轮，非本仓库代码任务）。**
 >
-> 请在真实使用中判断（Product Purpose Check）：
-> 1. **Timeline 是否仍是第一视觉？**（Lens 是研究导航层，但不能压过 Timeline）
-> 2. **Lens 三层是否读得懂？** A 层 `Unknown` 是否被理解为「诚实的不知道」而不是「系统没做完」？
-> 3. **B 层的 2026 空态是否清楚表达了「不用 2025 冒充 2026」？**
-> 4. **Research Attention 的三种状态是否不被误读为「推荐度 / 评分」？**
-> 5. **历史相似阶段的结果是否让你想去研究某个方向？**（研究入口是否有效）
-> 6. **「日历同期」与「生命周期相似」两个视角是否清楚可区分、且都需要保留？**
+> 唯一一件事：按 `research/current/README.md` 的协议，针对 2026 年做一次**离线研究**，
+> 产出 2–5 个带证据台账的 `CC-*` 候选（每条事实带 `source_date` / `source_type` /
+> `evidence_strength`），跑 `validate_current_research.py` 通过后提交。
+>
+> 完成后产品端**无需改代码**即可看到闭环。
+> **在此之前不新增功能、不新增行业、不改模型。**
 
-Review 后可能的方向（**仅供参考，须经授权**）：
-- Layer A 若要脱离 Unknown，需先有 A股整体市场周期数据源（**当前明确不做**）。
-- Macro Theme 聚合接口已就绪 → 未来可把 Timeline 主单位从 Sub-theme 切到 Macro Theme。
-- 更多 Macro Theme（消费 / 电力 / 资源…）的数据生产。
+用户视觉 / 交互 Review（Phase 7）可同时进行：
+
+1. 「当前研究候选」区是否克制（不抢 Timeline）？
+2. 空态是否读得懂「系统在诚实地说不知道」，而不是「系统没做完」？
+3. `?candidates=example` 的示例是否清楚表达了「这是协议示例、不是真实研究对象」？
+4. 详情里的「为什么它现在仍是 Candidate」核对表，是否让你更想去看证据而不是看结论？
+5. Temporal Firewall（已隔离证据）是否被理解为「不引用未来信息」的保证？
+6. Historical Similar Cases 的「四问」是否比「历史涨了多少」更有用？
 
 ---
 
@@ -236,13 +264,14 @@ Review 后可能的方向（**仅供参考，须经授权**）：
 
 本轮及默认状态下**明确不做**：
 
-- 新行业 / 新 Rule / 新统计 / 新 Radar / 新预测 / 新 UI
-- Timeline 新功能、UI redesign、Dashboard、Statistics、Notification、Backend
-- 修改 Research Model v1.0 / `schema.sql` / 已有历史研究结论
-- 新增数据库实体（含 `theme_cycles` / `theme_relations`；`TimelineThemeRow` **仅为视图概念**）
-- 新建主题 / 修改 Export Contract / 重新生产 Research 数据
-- 新增资金 / 筹码 / 情绪数据（仅保留未来扩展接口）
-- 自动升级 verified；把 Research Candidate 当 confirmed
+- 新行业 / 新 Rule / 新统计 / 新 Radar / 新预测 / 新 UI redesign / Dashboard / Notification / Backend
+- 修改 Research Model v1.0 / v1.1、`schema.sql`、`contracts/`、已有历史研究结论
+- 新增数据库实体（含 `theme_cycles` / `theme_relations`）
+- 把 Current Candidate 写入 DB / schema / export / contracts；把候选自动升级为 Campaign
+- **产品运行时联网**：不抓新闻、不调 LLM、不取实时行情 / 资金 / 情绪数据（保持静态 PWA）
+- 自动研究流水线（本阶段只交付协议 + 验证器 + 消费端）
+- 相似度分数 / 百分比 / 概率 / 胜率 / 评分榜 / 买卖信号 / 荐股 / 目标价
+- 用历史年份数据冒充当前年份状态（look-ahead）
 - 改动 `src/models/` 与 Research 侧语义
 - 把提前观察区做成「预测 / 买入建议 / 历史统计事实」
 - force push

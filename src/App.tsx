@@ -9,11 +9,26 @@ import { allCampaigns, campaignById, ruleById } from './data';
 import { previewTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
 import { timelineExportData } from './data/timeline/timelinePreview';
 import type { TimelineCampaign } from './data/timeline/timelineTypes';
+import { parseCurrentCandidateDataset } from './data/timeline/currentCandidate';
+import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
+import currentCandidateFixtureJson from '@current/fixtures/example_candidates.json';
 import { marketTodayISO } from './utils';
 
 /** ?preview=1 启用 Research 开发预览；默认生产数据（不做运行时网络访问，保持静态 PWA） */
 function previewEnabled(): boolean {
   return new URLSearchParams(window.location.search).get('preview') === '1';
+}
+
+/**
+ * ?candidates=example 展示**示例 fixture**（Phase 7）。
+ *
+ * 缺省时产品消费 canonical 数据集 `research/current/current_candidates.json`
+ * （当前为**空集** → Current Lens 显示诚实空态）。
+ * fixture 仅用于验证 Temporal Firewall / 阶段推断 / 相似度链路，UI 会显式标注
+ * 「示例 fixture（非真实研究数据）」。
+ */
+function exampleCandidatesEnabled(): boolean {
+  return new URLSearchParams(window.location.search).get('candidates') === 'example';
 }
 
 export default function App() {
@@ -28,6 +43,14 @@ export default function App() {
     [preview],
   );
   const availableYears = useMemo(() => dataSource.years(), [dataSource]);
+
+  // Current Candidate 数据集（Phase 7）：canonical（默认空集）或示例 fixture（显式开启）
+  const candidatesExample = useMemo(() => exampleCandidatesEnabled(), []);
+  const currentCandidates = useMemo<CurrentCandidateDataset | null>(
+    () =>
+      candidatesExample ? parseCurrentCandidateDataset(currentCandidateFixtureJson).dataset : null,
+    [candidatesExample],
+  );
 
   // 初始年份：当前年不在数据源年份内时回退到最近的可用年份
   // （如 preview 源 2018–2025、当前 2026 → 打开即显示 2025，而不是空白年）
@@ -104,6 +127,20 @@ export default function App() {
         </div>
       )}
 
+      {/* 示例候选 fixture 横幅：绝不冒充真实研究数据 */}
+      {candidatesExample && (
+        <div className="preview-banner fixture-banner" role="status">
+          <strong>示例 Current Candidate fixture</strong>
+          <span>
+            当前展示的是<strong>协议示例数据</strong>（<code>research/current/fixtures/example_candidates.json</code>），
+            用于验证 Temporal Firewall / 阶段推断 / 相似度链路；不是任何真实研究对象，不构成投资依据。
+          </span>
+          <a className="banner-link" href={window.location.pathname}>
+            返回真实数据集
+          </a>
+        </div>
+      )}
+
       <main className="app-main">
         {/* IA（V2.0）：① Timeline（第一视觉）→ ② 当前时间研究导航（Current Time Lens v2）
             → ③ 历史相似阶段（Lifecycle Lens）→ ④ 历史同期（Calendar Lens）。
@@ -124,6 +161,7 @@ export default function App() {
           today={today}
           selection={selection}
           onSelect={setSelection}
+          currentCandidates={currentCandidates}
         />
         {/* ③ 历史相似阶段（生命周期相似检索）：参照 = 当前选中对象 / 研究覆盖内最新案例。
             与 ④ 历史同期（日历同期）并存，两者不可互相替代。 */}

@@ -7,6 +7,123 @@
 
 ---
 
+## 2026-09-15 · Phase 7 Current Research Discovery v0.1（数据协议 + Temporal Firewall + Similarity v2 + 当前研究候选）
+
+补齐根本缺口：**2026 是当前时间、研究数据却截止到 2025**，因此 Lens 原本只能回答
+「现在是几月，这个月历史上发生过什么」，无法回答
+**「今天这个时间点，我应该去历史资料里研究什么？」**
+
+**架构原则**：网络与 AI 只出现在**离线研究数据生成端**，不进入运行时。
+`Web/AI Research → Current Candidate Dataset → Product Adapter → Current Lens → Similar Phase → Research Questions`
+
+**不做**：预测 / 荐股 / 买卖信号 / 评分 / 概率 / 实时数据 / 后端 / 在线 API / 自动研究流水线。
+
+### 一、数据协议层（新增 `research/current/`）
+
+| 文件 | 作用 |
+|---|---|
+| `current_candidates.json` | canonical 数据集 —— **当前为诚实空集**（0 候选 + 明确 `snapshot_date`） |
+| `schema.json` | JSON Schema 子集：字段 + 枚举 + 命名空间规则 |
+| `README.md` | 协议说明 + Temporal Firewall 规则 + 如何新增候选 |
+| `fixtures/example_candidates.json` | **示例 fixture（非真实研究数据）**，4 个候选覆盖 THEME_FORMING / EARLY_SIGNAL / CONFLICT / UNKNOWN |
+| `narrative_annotations.json` | 历史案例结构化叙事标注（13 条，逐条带 `provenance`，`PENDING_HUMAN_REVIEW`） |
+
+- **命名空间隔离**：候选 `CC-*`（fixture `FX-*`），**禁止** `C-*` / `RC-*`。
+- **事实 / 解释 / 推测分开**：事实只在 `evidence[].claim`，解释在 `core_narrative`，
+  未知在 `uncertainty_notes`。
+- **枚举只用有限集**：`candidate_status`（CANDIDATE / WATCH / RESEARCHING / **PROMOTABLE** / REJECTED，
+  `PROMOTABLE` ≠ 上涨确认）· `attention_state`（7 值，无 END）· `evidence_strength`（STRONG/MEDIUM/WEAK）·
+  `direction`（SUPPORTIVE/NEUTRAL/NEGATIVE/UNKNOWN）· 候选级证据充分度（HIGH/MEDIUM/LOW/UNKNOWN）。
+  **禁止** `confidence: "87%"` 这类伪精确字段。
+- 构建接入：新增 `@current` alias（`vite.config.ts` + `tsconfig.json` paths/include）。
+
+### 二、验证器（新增 `research/scripts/validate_current_research.py`）
+
+6 组校验：**Data Integrity**（id 唯一 / snapshot / 必填 / 枚举）· **Temporal Integrity**
+（`source_date > snapshot_date` 必须标 `AFTER_SNAPSHOT`，且标记与推导必须一致）·
+**Evidence Integrity**（每候选 ≥1 可用证据，或显式写明 `UNKNOWN`）· **Phase Integrity**（禁止非法 phase；
+候选不得为 END）· **Similarity Integrity**（`reference_cases` / 叙事标注必须引用真实存在且不晚于快照的案例）·
+**Theme Boundary**（候选不得用 C-/RC- 前缀、不得同名于 export 中的任何 id）。退出码 0/1。
+
+### 三、产品层（新增 5 个纯 View 模块）
+
+| 模块 | 职责 |
+|---|---|
+| `currentCandidate.ts` | 协议 / 类型 / 标签 / **宽容解析**（脏数据降级并记入 issues） |
+| `currentEvidence.ts` | **Evidence Ledger + Temporal Firewall** + 相位证据矩阵合并 + 冲突检测 + **状态门（只降不升）** |
+| `currentPhaseInference.ts` | **透明规则引擎 R0–R8**，命中规则 id 可审计 |
+| `currentSimilarity.ts` | **Similarity v2（候选 × 历史）** |
+| `currentCandidateAdapter.ts` | 聚合为 UI View 模型 + **Research Questions** 生成 + 升级条件核对表 |
+
+**Temporal Firewall**：`date = source_date ?? event_date`；`< snapshot` = BEFORE、
+`= snapshot` = AT、`> snapshot` = **AFTER_SNAPSHOT（隔离，不参与任何判断）**。
+相似度侧额外只允许 **`end <= snapshot_date`** 的历史案例作参照（否则其终态属于未来信息）。
+
+**Phase Evidence Matrix**（8 维）：叙事 / 政策 / 产业 / 市场 / 资金 / 广度 / 公司 / **新增信息边际**
+（最后一项用于区分 PEAK 与 EXPANSION）。其中 3 维由研究声明，5 维由证据
+`source_type × strength × direction` **确定性派生**；逐维标注来源（研究声明 / 由证据派生 / 未标注）；
+声明与派生不一致时**并列保留、不静默取舍**。**禁用** `涨幅 > X ⇒ EXPANSION`。
+
+**规则引擎**：`R0` 证据不足（叙事与市场都无信号，**或**可由证据派生的 5 维全为 UNKNOWN）→ UNKNOWN ·
+`R1` 叙事转弱 → DECLINE · `R2` 市场缺失/转弱且基本面/政策无明确证据 → DECLINE ·
+`R3` 叙事强 + 广度强 + 市场强 + 新增信息边际下降 → PEAK · `R4` 市场明确+ + 广度明确+ + 叙事明确+ → EXPANSION ·
+`R5` 产业或公司明确+ 且市场明确+ → BROAD_CONFIRMATION · `R6` 叙事明确+ 且政策/产业/公司初现+ 且市场初现/明确 → THEME_FORMING ·
+`R7` 叙事初现且市场无/初现/未标注 → EARLY_SIGNAL · `R8` 其余 → UNKNOWN（不强行归类）。
+
+**状态门（只降不升）**：无可用证据 → 不高于 CANDIDATE；有冲突 → 不高于 WATCH；
+阶段 UNKNOWN → 不高于 WATCH；声明 PROMOTABLE 但可用证据 <2 → 降为 RESEARCHING。
+→ **Conflict 候选永远不可能显示为 PROMOTABLE**。
+
+**Similarity v2 四层**（内部权重，**不显示分数**）：阶段（历史案例**曾经历**该阶段 30 /
+曾经历相邻 15；都没有 → 不进入结果）→ Theme Cycle Pattern（相同 12 / Hybrid 5）→ Drivers 重叠（×5）→
+**Narrative 结构**重叠（×4）。等级 = 强维度个数（4 → 高相似 / 3 → 中相似 / 其余 → 参考案例）；
+Top 3 上限、无百分比、必给「为什么类似」、无证据 → 空态不凑数。
+第 5 层（Phase Position）诚实说明：历史案例相对快照已完成（progress 恒为 1），与候选不可比，
+故 v0.1 **只用于候选侧展示、不进入分数**。
+
+**每个相似案例回答四问**：① 历史上什么时候开始值得关注（提前观察参考区）· ② 当时处于什么阶段
+（匹配到的 lifecycle 分段 + 区间）· ③ 当时为什么形成（Drivers + 导出既有归因文本）·
+④ 后来怎么结束（终态阶段 + 区间）。
+
+### 四、UI（`CurrentCandidateSection`，不改页面顺序、不压过 Timeline）
+
+- 概览（每条最多）：名称 · 阶段 · 有效状态 · 证据充分度 · 相似案例数 ·（若有）已隔离证据数 · 展开。
+- 详情（就地展开，不打开新面板）：Why now → Current Evidence（**已隔离证据单列**）→ Possible Drivers →
+  Estimated Phase（矩阵逐维来源 + 命中规则 id）→ Historical Similar Cases（四问 + 为什么类似 +
+  可跳转历史案例）→ What to research next → Uncertainty / Conflicts →
+  **为什么它现在仍是 Candidate**（5 条升级条件核对表 + 缺失维度）。
+- **空数据模式**：无候选时明确说明「当前暂无经过验证的 Current Candidate 数据 / 历史研究覆盖至 2025 /
+  当前市场实时数据：未接入」，**不编造内容**。
+- 新增 `?candidates=example` 查看示例 fixture（页面顶部横幅强提示「非真实研究数据」）。
+
+### 五、测试与验证
+
+- 新增 `src/data/timeline/__tests__/currentResearch.test.tsx`（**53 例 / 8 组**），
+  覆盖用户指定的 8 个必测点：
+  Test 1 ID 唯一（含重复反例）· Test 2 快照后证据不参与判断（**含「被隔离的强证据不影响维度水平」**）·
+  Test 3 未知 phase 不强行推断（含规则表可枚举）· Test 4 候选不自动变 Campaign ·
+  Test 5 候选正常进入 Similar Phase（四问齐备 + 医药高相似）· Test 6 Similarity 不引用未来历史记录
+  （用 `snapshot=2020-06-30` 的真实数据证明）· Test 7 Conflict 不得显示为可升级（数据层 + UI 层）·
+  Test 8 无候选数据时优雅降级（空态文案 + Current Lens 仍完整渲染）。
+  另含 Phase 矩阵来源、状态门只降不升、Narrative 层生效条件、Pattern 推导、
+  UI 无百分比 / 无预测语、边界守护（不写 DB/schema/export/contracts、不引网络依赖）等。
+- `npm test` **335/335**（282 → 335，+53）；`tsc -b` exit 0；`build` ok（**72** modules）。
+- Research 校验全绿：`validate_db` / `validate_timeline_export` / `validate_batch_research` /
+  `validate_promotion_manifest` / `check_doc_schema_consistency` / **`validate_current_research`** 全部 EXIT=0；
+  `validate_monorepo_integrity` PASS（25 项 0 警告）。
+- 验证器有效性已实证：对故意构造的 6 类违规（命名空间 / 非法 phase / AFTER_SNAPSHOT 未标记 /
+  非法强度 / 引用不存在案例 / 无证据且未声明 UNKNOWN）**全部被捕获**。
+
+### 六、未改动（边界）
+
+- **未改**：`schema.sql` · DB · `exports/timeline_export_v1.json` · `contracts/` ·
+  Research Model v1.0/v1.1 · 已有历史研究结论 · `data/verified/` · `data/candidate/` · `src/models/` ·
+  Timeline 主视觉与页面顺序 · Research Attention 既有语义 · Conflict / Candidate 既有语义。
+- **未创建**任何 Current Candidate 真实数据（canonical 为空集）—— 拒绝编造；
+  真实数据生产列入 Next Single Goal。
+
+---
+
 ## 2026-09-15 · V2.0 Product Core v2（Current Time Lens v2 + Historical Similar Phase v1 + Macro Theme 接口）
 
 把 Timeline + Historical Same Period + Current Time Lens 升级为**当前研究导航层**，

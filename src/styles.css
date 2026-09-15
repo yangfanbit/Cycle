@@ -1533,3 +1533,240 @@ html, body {
 }
 .hsp-open:hover { border-color: var(--accent); color: var(--accent); }
 .hsp-foot { margin: 10px 0 0; font-size: 11px; color: var(--ink-3); line-height: 1.7; }
+
+/* ================= Phase 7 · 当前研究候选（Current Research Discovery） ================= */
+.ccs-layer { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.ccs-fixture {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border: 1px solid #e6c9a8;
+  border-left: 3px solid #c98a3a;
+  border-radius: 6px;
+  background: #fff9f0;
+  color: #6b4c22;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.fixture-banner { border-left-color: #c98a3a; background: #fff9f0; }
+.fixture-banner code { font-family: var(--mono); font-size: 11px; }
+.ccs-meta { margin: 0 0 8px; font-size: 12px; color: var(--ink-2); line-height: 1.7; }
+.ccs-meta em { font-family: var(--mono); font-style: normal; font-weight: 600; }
+.ccs-stale { color: #8a6a2a; }
+.ccs-empty {
+  padding: 10px 12px;
+  border: 1px solid #ece2c8;
+  border-radius: 6px;
+  background: #fffdf5;
+  color: #6d6250;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.ccs-empty-line { margin: 0 0 6px; }
+.ccs-empty-line:last-child { margin-bottom: 0; }
+.ccs-empty-list { margin: 0 0 6px; padding-left: 18px; }
+
+.ccs-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ccs-item {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--panel);
+  padding: 8px 10px;
+}
+.ccs-item.open { border-left-color: var(--accent); }
+.ccs-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ccs-idx { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+.ccs-name { font-size: 13px; font-weight: 700; }
+.ccs-fx {
+  margin-right: 6px;
+  padding: 0 5px;
+  border: 1px solid #c98a3a;
+  border-radius: 3px;
+  background: #fff3e2;
+  color: #8a5a1a;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+}
+.ccs-phase {
+  padding: 0 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.ccs-status { font-size: 11px; color: var(--ink-2); }
+.ccs-ev { font-size: 11px; color: var(--ink-2); }
+.ccs-ev.ev-high { color: #3f7a4a; }
+.ccs-ev.ev-medium { color: #8a6a2a; }
+.ccs-ev.ev-low, .ccs-ev.ev-unknown { color: var(--ink-3); }
+.ccs-sim { font-size: 11px; color: var(--ink-3); }
+.ccs-caret { margin-left: auto; font-size: 11px; color: var(--accent); }
+.ccs-oneliner { margin: 6px 0 0; font-size: 12px; color: var(--ink-2); line-height: 1.7; }
+.ccs-demote {
+  margin: 6px 0 0;
+  padding: 6px 8px;
+  border: 1px solid #e6c9a8;
+  border-radius: 6px;
+  background: #fff9f0;
+  color: #6b4c22;
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+.ccs-detail { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); display: grid; gap: 12px; }
+.ccs-sec h5 { margin: 0 0 5px; font-size: 12px; font-weight: 700; }
+.ccs-sec p { margin: 0 0 5px; font-size: 12px; color: var(--ink-2); line-height: 1.75; }
+.ccs-dim { font-size: 11.5px; color: var(--ink-3); }
+.ccs-none { font-size: 11.5px; color: var(--ink-3); }
+.ccs-basis { margin: 0 0 5px; padding-left: 18px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+
+.ccs-ev-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.ccs-ev-list li {
+  display: grid;
+  grid-template-columns: 74px 92px 26px 40px 82px minmax(0, 1fr);
+  gap: 4px 8px;
+  align-items: baseline;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fbfbf9;
+  font-size: 11.5px;
+}
+.ccs-ev-id { font-family: var(--mono); color: var(--ink-3); }
+.ccs-ev-src, .ccs-ev-str, .ccs-ev-dir, .ccs-ev-date { color: var(--ink-2); }
+.ccs-ev-claim { color: var(--ink); overflow-wrap: anywhere; }
+.ccs-ev-title { grid-column: 1 / -1; color: var(--ink-3); font-size: 11px; overflow-wrap: anywhere; }
+
+.ccs-firewall {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border: 1px solid #dcc6c6;
+  border-left: 3px solid #a35a5a;
+  border-radius: 6px;
+  background: #fdf7f7;
+  color: #6b4444;
+  font-size: 11.5px;
+  line-height: 1.7;
+}
+.ccs-firewall ul { margin: 4px 0; padding-left: 18px; }
+
+.ccs-chips { list-style: none; margin: 0 0 4px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.ccs-chip {
+  padding: 1px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+.ccs-matrix { width: 100%; border-collapse: collapse; margin: 4px 0 6px; font-size: 11.5px; }
+.ccs-matrix th, .ccs-matrix td {
+  border: 1px solid var(--line);
+  padding: 4px 7px;
+  text-align: left;
+  vertical-align: top;
+}
+.ccs-matrix th { background: #f4f4f0; font-weight: 600; color: var(--ink-2); }
+.ccs-matrix-basis { color: var(--ink-3); overflow-wrap: anywhere; }
+.ccs-rules summary { font-size: 11.5px; color: var(--accent); cursor: pointer; }
+.ccs-rules ul { margin: 4px 0 0; padding-left: 18px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+
+.ccs-sim-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 8px; }
+.ccs-sim-item {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  border-radius: 6px;
+  background: #fbfbf9;
+}
+.ccs-sim-item.tier-high { border-left-color: #4a8f57; }
+.ccs-sim-item.tier-medium { border-left-color: #c9a227; }
+.ccs-sim-item.tier-reference { border-left-color: var(--line-strong); }
+.ccs-sim-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.ccs-sim-title { font-size: 12.5px; font-weight: 700; }
+.ccs-sim-year { font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); }
+.ccs-tier { margin-left: auto; font-size: 11px; color: var(--ink-2); }
+.ccs-stars { letter-spacing: 1px; }
+.ccs-sim-kv {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 2px 10px;
+  margin: 6px 0;
+  font-size: 11.5px;
+}
+.ccs-sim-kv dt { color: var(--ink-3); }
+.ccs-sim-kv dd { margin: 0; color: var(--ink-2); overflow-wrap: anywhere; }
+.ccs-sim-why { padding-top: 5px; border-top: 1px dashed var(--line); }
+.ccs-sim-why ul { margin: 3px 0 0; padding-left: 18px; font-size: 11.5px; color: var(--ink-2); line-height: 1.7; }
+.ccs-open {
+  margin-top: 6px;
+  padding: 3px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--panel);
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+.ccs-open:hover { border-color: var(--accent); color: var(--accent); }
+
+.ccs-questions { margin: 0; padding-left: 20px; font-size: 12px; color: var(--ink-2); line-height: 1.8; }
+.ccs-notes { margin: 0; padding-left: 18px; font-size: 11.5px; color: var(--ink-2); line-height: 1.75; }
+.ccs-conflicts { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.ccs-conflicts li {
+  padding: 5px 8px;
+  border: 1px solid #dcc6c6;
+  border-radius: 6px;
+  background: #fdf7f7;
+  color: #6b4444;
+  font-size: 11.5px;
+  line-height: 1.7;
+}
+.ccs-conflict-kind {
+  margin-right: 6px;
+  padding: 0 6px;
+  border: 1px solid #c9a0a0;
+  border-radius: 999px;
+  font-size: 10.5px;
+}
+
+.ccs-criteria { list-style: none; margin: 0 0 5px; padding: 0; display: grid; gap: 3px; }
+.ccs-criteria li {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 2px 8px;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fbfbf9;
+  font-size: 11.5px;
+}
+.ccs-criteria li.met { border-left: 3px solid #4a8f57; }
+.ccs-criteria li.unmet { border-left: 3px solid #c9a227; }
+.ccs-crit-mark { font-weight: 700; }
+.ccs-criteria li.met .ccs-crit-mark { color: #3f7a4a; }
+.ccs-criteria li.unmet .ccs-crit-mark { color: #8a6a2a; }
+.ccs-crit-label { color: var(--ink); }
+.ccs-crit-detail { grid-column: 2; color: var(--ink-3); font-size: 11px; }
+
+.ccs-issues { margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
+.ccs-issues summary { cursor: pointer; color: #8a6a2a; }
+.ccs-issues ul { margin: 4px 0 0; padding-left: 18px; line-height: 1.7; }
+
+/* .ccs-dim 需覆盖 .ccs-sec p 的字号与颜色（提升特异性） */
+.ccs-detail p.ccs-dim, .ccs-detail span.ccs-dim { font-size: 11.5px; color: var(--ink-3); }
+
+.ccs-fw-badge { padding: 0 6px; border: 1px solid #dcc6c6; border-radius: 999px; background: #fdf7f7; color: #6b4444; font-size: 10.5px; }

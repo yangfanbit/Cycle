@@ -1,0 +1,11 @@
+{
+  "contract": "current_candidates",
+  "current_candidates_version": "1.0",
+  "snapshot_date": "2026-09-15",
+  "generated_at": "2026-09-15T00:00:00",
+  "generated_by": "manual",
+  "research_coverage_until": 2025,
+  "scope": "A股 Current Research Discovery v0.1 —— 当前研究对象候选（Research Candidate，不是正式 Theme / Campaign）",
+  "note": "本数据集为**空集**：当前项目尚未产出任何经过证据登记的 Current Candidate。产品端将显示诚实空态，不使用 2025 历史数据冒充 2026 当前状态，也不编造候选。数据生产协议见同目录 README.md 与 schema.json；示例（fixture，非真实研究数据）见 fixtures/example_candidates.json。",
+  "candidates": []
+}

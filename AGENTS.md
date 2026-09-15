@@ -37,8 +37,29 @@
 
 ## 2. 当前阶段
 
-**Phase 6：Product Core v2（IMPLEMENTED）。**
+**Phase 7：Current Research Discovery v0.1（IMPLEMENTED）。**
 
+补齐「**2026 是当前时间、研究数据却截止到 2025**」这一根本缺口：让产品能回答
+**「今天这个时间点，我应该去历史资料里研究什么？」**
+架构原则：网络与 AI 只出现在**离线研究数据生成端**，不进入运行时。
+
+- **数据协议层** `research/current/`：canonical 数据集（当前为**诚实空集**）+ JSON Schema +
+  README + 示例 fixture（**非真实数据**）+ 历史案例叙事标注（带 provenance）。
+- **验证器** `research/scripts/validate_current_research.py`：Data / Temporal / Evidence /
+  Phase / Similarity / Theme Boundary 六组校验（退出码 0/1）。
+- **产品层 5 个纯 View 模块**：`currentCandidate`（协议 / 宽容解析）·
+  `currentEvidence`（Evidence Ledger + **Temporal Firewall** + 相位证据矩阵 + 冲突检测 + 状态门）·
+  `currentPhaseInference`（透明规则引擎 R0–R8，命中规则 id 可审计）·
+  `currentSimilarity`（**Similarity v2：候选 × 历史** + 四问答案）·
+  `currentCandidateAdapter`（聚合 + Research Questions + 升级条件核对表）。
+- **UI**：Current Lens 内新增克制的「当前研究候选」区（概览 + 就地展开详情 + 诚实空态）；
+  `?candidates=example` 可查看示例 fixture。**不改**页面顺序、**不压过** Timeline。
+- **四条红线**：① Temporal Firewall（快照后证据隔离；相似度只引用相对快照已结束的案例）·
+  ② 禁用单一指标推阶段（相位证据矩阵 8 维）· ③ 状态门**只降不升**（Conflict 永不显示为可升级）·
+  ④ 相似度**无百分比**、无证据**不凑数**。
+- 候选**不会**自动变成 Campaign；**不写入** DB / schema / export / contracts。
+
+**上一阶段 Phase 6：Product Core v2（IMPLEMENTED）。**
 把 Timeline + Historical Same Period + Current Time Lens 升级为**当前研究导航层**
 （Current Time Lens v2 + Historical Similar Phase v1 + Macro Theme 聚合接口）。
 
@@ -94,7 +115,7 @@ ThreeC/
 ├─ package.json / tsconfig.json / vite.config.ts
 │
 ├─ src/                        ← Product：前端源码
-│   ├─ components/             ← Timeline（第一视觉）/ SamePeriodView（主题级历史同周期 + 两级详情）/ CurrentTimeLens（③当前时间上下文）/ CampaignDetail（Level 2 完整历史案例）/ OpportunityRadar（未引用，待清理）…
+│   ├─ components/             ← Timeline（第一视觉）/ SamePeriodView（Calendar Lens）/ CurrentTimeLens（②研究导航 + 当前研究候选）/ HistoricalSimilarPhase（③Lifecycle Lens）/ CampaignDetail（Level 2 完整历史案例）/ OpportunityRadar（未引用，待清理）…
 │   ├─ data/
 │   │   └─ timeline/           ← Timeline Adapter（消费 exports/）+ preObservation.ts（提前观察区，纯 UI 层）
 │   ├─ models/                 ← 核心数据模型（禁擅改）
@@ -113,6 +134,7 @@ ThreeC/
 │
 ├─ exports/                    ← ★ Research → Product 唯一交换目录
 │   └─ timeline_export_v1.json ← ★ 唯一 canonical export
+├─ research/current/           ← ★ Phase 7：Current Candidate 数据集（经 @current alias 消费；canonical 为空集）
 ├─ contracts/
 │   └─ timeline_export_v1.md   ← 跨模块接口契约
 │
@@ -186,6 +208,9 @@ Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction
 - 修改 2018–2025 已有历史研究结论（Campaign / Theme / Evidence / Market Data / Lifecycle / Drivers）
 - 让 PROVISIONAL 自动进入 verified；把 Candidate 当 confirmed
 - 丢 Git 历史 / 丢 Research 数据
+- 把 **Current Candidate** 写入 DB / schema / export / contracts，或让它自动升级为 Campaign
+- 用快照之后（`source_date > snapshot_date`）的证据参与当前判断 / 相似度（look-ahead）
+- 产品运行时联网（抓新闻 / 调 LLM / 取实时行情资金情绪）—— 网络与 AI 只允许在离线研究数据生成端
 
 **产品**
 
@@ -204,7 +229,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 282 项
+npm test          # Vitest，当前 335 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -218,6 +243,7 @@ python scripts/validate_timeline_export.py
 python scripts/validate_batch_research.py
 python scripts/validate_promotion_manifest.py
 python scripts/check_doc_schema_consistency.py
+python scripts/validate_current_research.py      # Phase 7：Current Candidate 数据集（Data/Temporal/Evidence/Phase/Similarity/Theme Boundary）
 ```
 
 **Integrity**
@@ -260,14 +286,18 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**用户视觉 / 交互 Review（Phase 6 V2.0）。** 实现完成后**停止**：
-不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测。
+**生产第一批真实的 Current Candidate 数据（离线研究轮，非本仓库代码任务）。**
 
-请用户在真实使用中依次判断 6 个产品目的问题：
+唯一一件事：按 `research/current/README.md` 的协议，针对 2026 年做一次**离线研究**，
+产出 2–5 个带证据台账的 `CC-*` 候选（每条事实带 `source_date` / `source_type` /
+`evidence_strength`），跑 `python research/scripts/validate_current_research.py` 通过后提交。
+产品端**无需改代码**即可看到闭环。**在此之前不新增功能、不新增行业、不改模型。**
 
-1. Timeline 是否仍是第一视觉？（Lens 是研究导航层，但不能压过 Timeline）
-2. Lens A 层 `A股整体周期：Unknown` 是否被理解为「诚实的不知道」，而不是「系统没做完」？
-3. Lens B 层的 2026 空态是否清楚表达了「不用 2025 冒充 2026」？
-4. Research Attention 的三种状态（当前值得研究 / 保持观察 / 历史参考）是否不被误读为「推荐度 / 评分」？
-5. 历史相似阶段是否让你产生了「想去研究某个方向」的动机？（研究入口是否有效）
-6. 「日历同期」与「生命周期相似」两个视角是否清楚可区分、且都需要保留？
+用户视觉 / 交互 Review（Phase 7）可同时进行：
+
+1. 「当前研究候选」区是否克制（不抢 Timeline）？
+2. 空态是否读得懂「系统在诚实地说不知道」，而不是「系统没做完」？
+3. `?candidates=example` 的示例是否清楚表达了「这是协议示例、不是真实研究对象」？
+4. 详情里的「为什么它现在仍是 Candidate」核对表，是否让你更想去看证据而不是看结论？
+5. Temporal Firewall（已隔离证据）是否被理解为「不引用未来信息」的保证？
+6. Historical Similar Cases 的「四问」是否比「历史涨了多少」更有用？

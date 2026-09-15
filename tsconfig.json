@@ -19,8 +19,9 @@
     "types": ["vitest/globals", "node"],
     "baseUrl": ".",
     "paths": {
-      "@exports/*": ["exports/*"]
+      "@exports/*": ["exports/*"],
+      "@current/*": ["research/current/*"]
     }
   },
-  "include": ["src", "data", "exports", "tests", "vite.config.ts"]
+  "include": ["src", "data", "exports", "research/current", "tests", "vite.config.ts"]
 }

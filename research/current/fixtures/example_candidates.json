@@ -1,0 +1,236 @@
+{
+  "contract": "current_candidates",
+  "current_candidates_version": "1.0",
+  "fixture": true,
+  "snapshot_date": "2026-09-15",
+  "generated_at": "2026-09-15T00:00:00",
+  "generated_by": "manual",
+  "research_coverage_until": 2025,
+  "scope": "**示例 fixture（不是真实研究数据）** —— 仅用于验证协议、Temporal Firewall、Phase 推断与 Similarity v2 的端到端行为。所有 candidate_id 以 FX- 开头，名称含「示例」或为通用描述；不得作为任何投资判断依据，也不得计入研究统计。",
+  "note": "本文件是 fixtures，不是 canonical 数据集（canonical 为 ../current_candidates.json）。四个候选分别覆盖：THEME_FORMING（含 1 条 AFTER_SNAPSHOT 证据）、EARLY_SIGNAL（证据稀少）、CONFLICT（声明 PROMOTABLE 但证据方向冲突）、UNKNOWN（无任何可核验证据）。",
+  "candidates": [
+    {
+      "candidate_id": "FX-AI-MEDICAL",
+      "snapshot_date": "2026-09-15",
+      "display_name": "示例 · AI 医疗（AI 辅助诊疗与药物研发）",
+      "macro_theme": "医药健康",
+      "theme_type": "concept",
+      "core_narrative": "AI 辅助诊断与药物研发方向出现政策与产业双向信号，叙事从「概念」转向「装机 / 注册验证」；市场反应温和，尚未出现板块级扩散。",
+      "candidate_status": "RESEARCHING",
+      "attention_state": "THEME_FORMING",
+      "phase_window": { "start": "2026-06-18", "end": null },
+      "phase_evidence": {
+        "narrative": "PRESENT",
+        "breadth": "EMERGING",
+        "information_marginal": "EMERGING"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-FX-01",
+          "source_type": "POLICY",
+          "source_title": "示例来源：某部委 AI 医疗应用场景指引（征求意见稿）",
+          "source_url": null,
+          "source_date": "2026-06-18",
+          "event_date": "2026-06-18",
+          "claim": "某部委于 2026-06-18 发布 AI 医疗应用场景指引征求意见稿，列出辅助诊断与药物研发两类应用场景。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-FX-02",
+          "source_type": "INDUSTRY",
+          "source_title": "示例来源：两家医疗信息化企业季度经营情况",
+          "source_url": null,
+          "source_date": "2026-07-22",
+          "event_date": "2026-07-22",
+          "claim": "两家医疗信息化企业在 2026-07 的披露中给出医院端 AI 产品装机数量同比增长的表述。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-FX-03",
+          "source_type": "COMPANY",
+          "source_title": "示例来源：某影像 AI 企业产品注册进展",
+          "source_url": null,
+          "source_date": "2026-08-05",
+          "event_date": "2026-08-05",
+          "claim": "某影像 AI 企业于 2026-08-05 披露取得一项二类医疗器械注册证。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-FX-04",
+          "source_type": "MARKET",
+          "source_title": "示例来源：板块成交额观察",
+          "source_url": null,
+          "source_date": "2026-08-28",
+          "event_date": "2026-08-28",
+          "claim": "该方向相关标的 2026-08 成交额温和放大，但未见多子方向同步扩散。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-FX-05",
+          "source_type": "INDUSTRY",
+          "source_title": "示例来源：快照之后才出现的证据（用于验证 Temporal Firewall）",
+          "source_url": null,
+          "source_date": "2026-10-20",
+          "event_date": "2026-10-20",
+          "claim": "（快照后）某行业协会于 2026-10-20 发布 AI 医疗装机量大幅增长的统计。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE",
+          "temporal_relation": "AFTER_SNAPSHOT"
+        }
+      ],
+      "drivers": [
+        { "category": "POLICY", "note": "应用场景指引（征求意见稿）" },
+        { "category": "INDUSTRY", "note": "医院端装机与产品注册进展" }
+      ],
+      "narrative_types": ["INDUSTRY_UPGRADE", "POLICY_DRIVEN"],
+      "reference_cases": [
+        {
+          "campaign_id": "C-2019-PHARMA-INNOV",
+          "note": "同为「产业升级 + 政策驱动」的结构性升级叙事，且同属医药健康 Macro Theme。"
+        }
+      ],
+      "research_questions": [],
+      "source_summary": "示例数据：4 条快照前证据（政策 / 产业 / 公司 / 市场）+ 1 条快照后证据（应被排除）。",
+      "uncertainty_notes": [
+        "缺少公司层收入 / 订单层面的量化验证。",
+        "AI 医疗与通用 AI 叙事的边界尚未收敛，存在被上位叙事吸收的可能。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "FX-SOLID-BATTERY",
+      "snapshot_date": "2026-09-15",
+      "display_name": "示例 · 固态电池中试线",
+      "macro_theme": "电力设备",
+      "theme_type": "concept",
+      "core_narrative": "固态电池中试线设备招标出现零星产业信号，尚无政策与市场层面响应，证据量不足以形成清晰主线。",
+      "candidate_status": "CANDIDATE",
+      "attention_state": "EARLY_SIGNAL",
+      "phase_window": { "start": "2026-08-12", "end": null },
+      "phase_evidence": {
+        "narrative": "EMERGING",
+        "breadth": "ABSENT"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-FX-06",
+          "source_type": "INDUSTRY",
+          "source_title": "示例来源：某电池企业中试线设备招标",
+          "source_url": null,
+          "source_date": "2026-08-12",
+          "event_date": "2026-08-12",
+          "claim": "一家电池企业于 2026-08-12 披露固态电池中试线设备招标。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        }
+      ],
+      "drivers": [{ "category": "INDUSTRY", "note": "中试线设备投入（单点，未扩散）" }],
+      "narrative_types": ["TECH_BREAKTHROUGH"],
+      "reference_cases": [],
+      "research_questions": [],
+      "source_summary": "示例数据：单条产业层弱证据。",
+      "uncertainty_notes": [
+        "UNKNOWN：无政策层与市场层证据，阶段判断仅基于单条弱证据。",
+        "「中试线设备招标」是否代表量产路径尚不可知。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "FX-CONFLICT-CASE",
+      "snapshot_date": "2026-09-15",
+      "display_name": "示例 · 传统基建补短板（证据冲突）",
+      "macro_theme": "建筑装饰",
+      "theme_type": "concept",
+      "core_narrative": "政策与产业层证据支持，但市场层与叙事层同步走弱，证据方向不一致。",
+      "candidate_status": "PROMOTABLE",
+      "attention_state": "THEME_FORMING",
+      "phase_window": { "start": "2026-05-10", "end": null },
+      "phase_evidence": {
+        "policy": "STRONG",
+        "industry": "PRESENT",
+        "market": "WEAKENING",
+        "narrative": "WEAKENING",
+        "breadth": "ABSENT"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-FX-07",
+          "source_type": "POLICY",
+          "source_title": "示例来源：某领域补短板专项通知",
+          "source_url": null,
+          "source_date": "2026-05-10",
+          "event_date": "2026-05-10",
+          "claim": "某部门于 2026-05-10 发布专项通知，明确该领域的补短板方向与资金安排。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-FX-08",
+          "source_type": "INDUSTRY",
+          "source_title": "示例来源：上游订单数据",
+          "source_url": null,
+          "source_date": "2026-06-15",
+          "event_date": "2026-06-15",
+          "claim": "上游企业 2026-06 披露订单环比改善。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-FX-09",
+          "source_type": "MARKET",
+          "source_title": "示例来源：板块成交额与相对强度",
+          "source_url": null,
+          "source_date": "2026-08-20",
+          "event_date": "2026-08-20",
+          "claim": "该方向相关标的 2026-08 成交额与相对强度同步回落。",
+          "evidence_strength": "MEDIUM",
+          "direction": "NEGATIVE"
+        }
+      ],
+      "drivers": [
+        { "category": "POLICY", "note": "专项通知与资金安排" },
+        { "category": "INDUSTRY", "note": "上游订单环比改善" }
+      ],
+      "narrative_types": ["POLICY_DRIVEN"],
+      "reference_cases": [],
+      "research_questions": [],
+      "source_summary": "示例数据：政策层强支持 + 市场层反向证据（用于验证冲突处理）。",
+      "uncertainty_notes": [
+        "政策落地节奏与订单改善的持续性均未验证。",
+        "市场层走弱是否只是阶段波动，无法由现有证据判断。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "FX-INSUFFICIENT",
+      "snapshot_date": "2026-09-15",
+      "display_name": "示例 · 证据不足的候选",
+      "macro_theme": null,
+      "theme_type": null,
+      "core_narrative": "仅有零散传闻级信号，未登记任何可核验证据，因此不进行阶段推断。",
+      "candidate_status": "CANDIDATE",
+      "attention_state": "UNKNOWN",
+      "phase_window": { "start": null, "end": null },
+      "phase_evidence": {},
+      "evidence": [],
+      "drivers": [],
+      "narrative_types": [],
+      "reference_cases": [],
+      "research_questions": [],
+      "source_summary": null,
+      "uncertainty_notes": [
+        "UNKNOWN：当前不存在任何可核验证据，因此不做阶段推断、不进入相似度检索。",
+        "候选保留在数据集中的唯一目的是标记「已注意到但尚未开始研究」。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    }
+  ]
+}

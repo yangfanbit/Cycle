@@ -1,0 +1,232 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "threec/research/current/current_candidates.schema.json",
+  "title": "ThreeC Current Candidate Dataset v1.0",
+  "description": "Current Research Discovery 数据集：Research → Product 的过渡 Artifact。候选是**研究对象**，不是已验证 Theme，也不是正式 Campaign。产品端只消费，不写入；网络 / AI 只出现在**离线研究数据生成端**，不进入运行时。",
+  "type": "object",
+  "required": [
+    "contract",
+    "current_candidates_version",
+    "snapshot_date",
+    "candidates"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "contract": { "const": "current_candidates" },
+    "current_candidates_version": { "const": "1.0" },
+    "snapshot_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "研究快照日（PIT 基准）。所有判断只能使用 source_date / event_date <= snapshot_date 的证据。"
+    },
+    "generated_at": { "type": "string" },
+    "generated_by": {
+      "type": "string",
+      "enum": ["manual", "ai-offline", "script", "other"],
+      "description": "数据生成方式。AI 只允许出现在离线生成端。"
+    },
+    "research_coverage_until": {
+      "type": ["integer", "null"],
+      "description": "历史研究数据的覆盖末年（用于诚实空态文案）。"
+    },
+    "scope": { "type": "string" },
+    "note": { "type": "string" },
+    "candidates": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/candidate" }
+    }
+  },
+  "definitions": {
+    "candidate": {
+      "type": "object",
+      "required": [
+        "candidate_id",
+        "snapshot_date",
+        "display_name",
+        "core_narrative",
+        "candidate_status",
+        "attention_state",
+        "evidence",
+        "last_updated"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^(FX-|CC-)[A-Za-z0-9._-]+$",
+          "description": "候选 ID。禁止使用 C- / RC- 前缀（那是正式 Campaign / Research Candidate 的命名空间，候选不得混入）。"
+        },
+        "snapshot_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "该候选自己的快照日；必须 <= 数据集 snapshot_date。"
+        },
+        "display_name": { "type": "string", "minLength": 1 },
+        "macro_theme": { "type": ["string", "null"] },
+        "theme_type": { "type": ["string", "null"] },
+        "core_narrative": { "type": "string", "minLength": 1 },
+        "candidate_status": {
+          "type": "string",
+          "enum": ["CANDIDATE", "WATCH", "RESEARCHING", "PROMOTABLE", "REJECTED"],
+          "description": "候选研究生命周期状态。PROMOTABLE ≠ 上涨确认，仅表示「可考虑进入正式 Theme / Campaign 研究」。"
+        },
+        "attention_state": {
+          "type": "string",
+          "enum": [
+            "EARLY_SIGNAL",
+            "THEME_FORMING",
+            "BROAD_CONFIRMATION",
+            "EXPANSION",
+            "PEAK",
+            "DECLINE",
+            "UNKNOWN"
+          ],
+          "description": "研究声明的阶段（候选级，不含 END）。产品端会按 Phase Evidence Matrix **独立推导**并并列显示，二者不一致时不隐藏。"
+        },
+        "phase_window": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "start": { "type": ["string", "null"] },
+            "end": { "type": ["string", "null"] }
+          }
+        },
+        "phase_evidence": {
+          "type": "object",
+          "description": "Phase Evidence Matrix。研究可只声明无法由证据派生的维度（narrative / breadth / information_marginal）；policy / industry / market / capital / company 若留空则由证据 source_type × strength **确定性派生**。",
+          "additionalProperties": false,
+          "properties": {
+            "narrative": { "$ref": "#/definitions/signalLevel" },
+            "policy": { "$ref": "#/definitions/signalLevel" },
+            "industry": { "$ref": "#/definitions/signalLevel" },
+            "market": { "$ref": "#/definitions/signalLevel" },
+            "capital": { "$ref": "#/definitions/signalLevel" },
+            "breadth": { "$ref": "#/definitions/signalLevel" },
+            "company": { "$ref": "#/definitions/signalLevel" },
+            "information_marginal": { "$ref": "#/definitions/signalLevel" }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/evidence" }
+        },
+        "drivers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["category"],
+            "additionalProperties": true,
+            "properties": {
+              "category": {
+                "type": "string",
+                "enum": ["POLICY", "INDUSTRY", "CAPITAL", "SENTIMENT", "EXTERNAL"]
+              },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "narrative_types": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/narrativeType" },
+          "description": "结构化叙事类型（不是文本相似度）。用于 Similarity v2 的 Narrative 层。"
+        },
+        "reference_cases": {
+          "type": "array",
+          "description": "研究侧**声明**的可对照历史案例。必须是真实存在的历史 Campaign / Research Candidate，且 start_date <= snapshot_date（验证器强制）。产品端的相似度另行实时计算，二者不互相替代。",
+          "items": {
+            "type": "object",
+            "required": ["campaign_id"],
+            "additionalProperties": true,
+            "properties": {
+              "campaign_id": { "type": "string" },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "research_questions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "source_summary": { "type": ["string", "null"] },
+        "uncertainty_notes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "未知与限制。无证据的候选必须在此明确写出 UNKNOWN。"
+        },
+        "conflict_notes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "研究声明的证据冲突。存在冲突的候选不得显示为可升级状态。"
+        },
+        "last_updated": { "type": "string" }
+      }
+    },
+    "signalLevel": {
+      "type": "string",
+      "enum": ["ABSENT", "EMERGING", "PRESENT", "STRONG", "WEAKENING", "UNKNOWN"]
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["evidence_id", "source_type", "claim", "evidence_strength"],
+      "additionalProperties": true,
+      "properties": {
+        "evidence_id": { "type": "string" },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "POLICY",
+            "INDUSTRY",
+            "COMPANY",
+            "MARKET",
+            "MACRO",
+            "CAPITAL",
+            "SENTIMENT",
+            "OTHER"
+          ]
+        },
+        "source_title": { "type": ["string", "null"] },
+        "source_url": { "type": ["string", "null"] },
+        "source_date": {
+          "type": ["string", "null"],
+          "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$"
+        },
+        "event_date": {
+          "type": ["string", "null"],
+          "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$"
+        },
+        "claim": {
+          "type": "string",
+          "description": "**事实**陈述。解释与推测不得写入本字段（分别放 candidate 的 core_narrative 与 uncertainty_notes）。"
+        },
+        "evidence_strength": {
+          "type": "string",
+          "enum": ["STRONG", "MEDIUM", "WEAK"]
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["SUPPORTIVE", "NEUTRAL", "NEGATIVE", "UNKNOWN"],
+          "description": "证据方向（可选）。用于结构与证据冲突检测。缺省 UNKNOWN（不推断方向）。"
+        },
+        "temporal_relation": {
+          "type": "string",
+          "enum": ["BEFORE_SNAPSHOT", "AT_SNAPSHOT", "AFTER_SNAPSHOT", "UNKNOWN"],
+          "description": "由 snapshot_date 与 source_date/event_date 推导。AFTER_SNAPSHOT 的证据不得参与任何判断。"
+        }
+      }
+    },
+    "narrativeType": {
+      "type": "string",
+      "enum": [
+        "POLICY_DRIVEN",
+        "INDUSTRY_UPGRADE",
+        "TECH_BREAKTHROUGH",
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION",
+        "VALUATION_RESET",
+        "CYCLE_REVERSAL",
+        "EVENT_CATALYST",
+        "UNKNOWN"
+      ]
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "contract": "narrative_annotations",
+  "version": "1.0",
+  "annotated_at": "2026-09-15",
+  "status": "PENDING_HUMAN_REVIEW",
+  "scope": "历史 Campaign / Research Candidate 的**结构化叙事类型**标注，仅供 Similarity v2 的 Narrative 层使用。",
+  "note": "每条的 provenance 直接引用该对象**导出既有字段**（themes / drivers.start）作为标注依据，可逐条复核。未列入的对象 → 叙事类型视为 UNKNOWN，**不参与**相似度（不推断）。本文件不是 Research 事实、不进入 DB / schema / export / contracts。",
+  "allowed_types": [
+    "POLICY_DRIVEN",
+    "INDUSTRY_UPGRADE",
+    "TECH_BREAKTHROUGH",
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION",
+    "VALUATION_RESET",
+    "CYCLE_REVERSAL",
+    "EVENT_CATALYST"
+  ],
+  "annotations": [
+    {
+      "campaign_id": "C-2019-AD",
+      "narrative_types": ["TECH_BREAKTHROUGH", "POLICY_DRIVEN"],
+      "provenance": "themes=[智能驾驶/无人驾驶]；drivers.start=[交通部研究自动驾驶法规与指导意见]"
+    },
+    {
+      "campaign_id": "C-2020-NEV",
+      "narrative_types": ["INDUSTRY_UPGRADE", "DEMAND_SURGE"],
+      "provenance": "themes=[新能源汽车/电池, 特斯拉产业链]；drivers.start=[特斯拉国产化落地, 比亚迪汉上市（首搭刀片电池）]"
+    },
+    {
+      "campaign_id": "C-2021-NEV",
+      "narrative_types": ["DEMAND_SURGE", "INDUSTRY_UPGRADE"],
+      "provenance": "themes=[新能源汽车/电池]；drivers.start=[新能源车产销持续翻倍、渗透率升至12%+]"
+    },
+    {
+      "campaign_id": "C-2022-POLICY",
+      "narrative_types": ["POLICY_DRIVEN"],
+      "provenance": "themes=[汽车消费/购置税刺激]；drivers.start=[国常会阶段性减征乘用车购置税600亿元]"
+    },
+    {
+      "campaign_id": "C-2023-AD",
+      "narrative_types": ["TECH_BREAKTHROUGH", "POLICY_DRIVEN"],
+      "provenance": "themes=[智能驾驶/无人驾驶]；drivers.start=[工信部吹风会：支持L3商业化 + 启动准入和上路通行试点]"
+    },
+    {
+      "campaign_id": "C-2024-V2X",
+      "narrative_types": ["POLICY_DRIVEN", "EVENT_CATALYST"],
+      "provenance": "themes=[车路云一体化/车路协同]；drivers.start=[武汉车路云一体化示范项目备案170.84亿]"
+    },
+    {
+      "campaign_id": "C-2024-ROBOTAXI",
+      "narrative_types": ["TECH_BREAKTHROUGH", "EVENT_CATALYST"],
+      "provenance": "themes=[Robotaxi/无人驾驶/智能网约车]；drivers.start=[萝卜快跑武汉跑出圈]"
+    },
+    {
+      "campaign_id": "C-2025-ROBOTAXI",
+      "narrative_types": ["TECH_BREAKTHROUGH", "EVENT_CATALYST"],
+      "provenance": "themes=[Robotaxi/无人驾驶/智能网约车]；drivers.start=[特斯拉奥斯汀启动Robotaxi有偿试运营]"
+    },
+    {
+      "campaign_id": "C-2019-PHARMA-INNOV",
+      "narrative_types": ["INDUSTRY_UPGRADE", "POLICY_DRIVEN"],
+      "provenance": "themes=[创新药, CXO(研发外包)]；drivers.start=[4+7 集采中选结果摧毁仿制药旧叙事 → 转向「创新 vs 仿制」分化, 科创板开板/未盈利生物科技可上市]"
+    },
+    {
+      "campaign_id": "RC-2023-HUAWEI",
+      "narrative_types": ["TECH_BREAKTHROUGH", "EVENT_CATALYST"],
+      "provenance": "themes=[华为汽车]；drivers.start=[问界新M7上市发布会]"
+    },
+    {
+      "campaign_id": "RC-2024-SECONDARY",
+      "narrative_types": ["EVENT_CATALYST"],
+      "provenance": "themes=[Robotaxi/无人驾驶/智能网约车]；drivers.start=[主 Campaign 退潮后 09-05 次级活跃（weak）]"
+    },
+    {
+      "campaign_id": "RC-2020-PANDEMIC",
+      "narrative_types": ["DEMAND_SURGE", "EVENT_CATALYST"],
+      "provenance": "themes=[疫情医疗]；drivers.start=[新冠疫情 + 防疫物资刚性需求, 英科医疗一次性手套 2020 年内涨幅约 26.5 倍（adj）]"
+    },
+    {
+      "campaign_id": "RC-2021-TCM",
+      "narrative_types": ["POLICY_DRIVEN", "SUPPLY_CONTRACTION"],
+      "provenance": "themes=[中医药]；drivers.start=[中医药鼓励政策预期持续加码, 中成药集采温和落地 + 多家公司宣布提价]"
+    }
+  ]
+}
