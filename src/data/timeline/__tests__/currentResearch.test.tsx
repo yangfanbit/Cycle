@@ -101,12 +101,32 @@ const ev = (over: Partial<EvidenceItem> = {}): EvidenceItem => ({
 /* ================= 1. 数据协议与完整性 ================= */
 
 describe('1. 数据协议与完整性', () => {
-  it('canonical 数据集为**诚实空集**：0 个候选 + 明确 snapshot_date', () => {
+  /**
+   * Phase 7.1 起 canonical 不再是空集：它承载**第一轮真实离线研究数据**。
+   * 本用例锁定的是「数据集仍然诚实」这一不变量，而不是具体条数：
+   * 快照日明确、命名空间隔离、每条候选都有可核验证据、历史研究覆盖仍止于 2025。
+   */
+  it('canonical 数据集 = 第一轮真实候选（非空，且协议不变量成立）', () => {
     const ds = defaultCurrentCandidateDataset();
     expect(ds.contract).toBe('current_candidates');
     expect(ds.snapshot_date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-    expect(ds.candidates).toHaveLength(0);
+    expect(ds.candidates.length).toBeGreaterThan(0);
     expect(ds.research_coverage_until).toBe(2025);
+    for (const c of ds.candidates) {
+      expect(c.candidate_id).toMatch(/^CC-/);
+      expect(c.snapshot_date).toBe(ds.snapshot_date);
+      expect(c.core_narrative.length).toBeGreaterThan(0);
+      expect(c.evidence.length).toBeGreaterThanOrEqual(3); // 每个候选至少 3 条证据
+      expect(c.research_questions.length).toBeGreaterThanOrEqual(3);
+      // 每条证据必须有日期（本轮真实数据不留「日期未知」作为主要依据的隐式缺口）
+      const dated = c.evidence.filter((e) => e.source_date ?? e.event_date).length;
+      expect(dated).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('canonical 无「诚实空集」回退：空态仅由显式空数据集触发（不再由 canonical 承担）', () => {
+    expect(defaultCurrentCandidateDataset().candidates.length).not.toBe(0);
+    expect(EMPTY_CURRENT_CANDIDATE_DATASET.candidates).toHaveLength(0);
   });
 
   it('canonical JSON 与 narrative_annotations 契约字段正确', () => {
@@ -606,19 +626,31 @@ describe('7. UI', () => {
     expect(html).not.toContain('ccs-item');
   });
 
-  it('Test 8 · Current Lens 在无候选数据时仍完整渲染（不抛错、其余区块保留）', () => {
+  it('Test 8 · Current Lens 在无候选数据时仍完整渲染（显式空数据集 → 空态，其余区块保留）', () => {
     const html = renderToStaticMarkup(
       <CurrentTimeLens
         dataSource={SOURCE}
         today={TODAY}
         selection={null}
         onSelect={() => {}}
+        currentCandidates={EMPTY_CURRENT_CANDIDATE_DATASET}
       />,
     );
     expect(html).toContain('当前时间研究导航');
     expect(html).toContain('当前研究候选');
     expect(html).toContain('A股整体周期：Unknown');
     expect(html).toContain('当前暂无经过验证的 Current Candidate 数据');
+  });
+
+  it('Test 8b · 缺省数据源 = canonical 真实候选 → Lens 渲染真实候选（不再是空态）', () => {
+    const html = renderToStaticMarkup(
+      <CurrentTimeLens dataSource={SOURCE} today={TODAY} selection={null} onSelect={() => {}} />,
+    );
+    expect(html).toContain('当前研究候选');
+    expect(html).toContain('算电协同');
+    expect(html).toContain('脑机接口');
+    expect(html).toContain('ccs-item');
+    expect(html).not.toContain('当前暂无经过验证的 Current Candidate 数据');
   });
 
   it('fixture 模式显式标注「示例（非真实研究数据）」', () => {
@@ -756,6 +788,11 @@ describe('8. 边界守护（纯 View 层）', () => {
     );
     // export 的规模不因本轮新增候选而变化（候选走独立 Artifact）
     expect(exportIds.size).toBe(13);
-    expect(defaultCurrentCandidateDataset().candidates).toHaveLength(0);
+    // Phase 7.1 起 canonical 承载真实候选；关键不变量是「候选 ID 全部落在 export id 空间之外」
+    const canonical = defaultCurrentCandidateDataset();
+    expect(canonical.candidates.length).toBeGreaterThan(0);
+    for (const c of canonical.candidates) {
+      expect(exportIds.has(c.candidate_id)).toBe(false);
+    }
   });
 });

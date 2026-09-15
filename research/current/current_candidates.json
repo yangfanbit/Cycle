@@ -2,10 +2,692 @@
   "contract": "current_candidates",
   "current_candidates_version": "1.0",
   "snapshot_date": "2026-09-15",
-  "generated_at": "2026-09-15T00:00:00",
-  "generated_by": "manual",
+  "generated_at": "2026-09-15T23:00:00",
+  "generated_by": "ai-offline",
   "research_coverage_until": 2025,
-  "scope": "A股 Current Research Discovery v0.1 —— 当前研究对象候选（Research Candidate，不是正式 Theme / Campaign）",
-  "note": "本数据集为**空集**：当前项目尚未产出任何经过证据登记的 Current Candidate。产品端将显示诚实空态，不使用 2025 历史数据冒充 2026 当前状态，也不编造候选。数据生产协议见同目录 README.md 与 schema.json；示例（fixture，非真实研究数据）见 fixtures/example_candidates.json。",
-  "candidates": []
+  "research_round": "First Real Current Research Discovery（Phase 7.1）",
+  "scope": "A股 Current Research Discovery v0.1 —— 2026-09-15 快照下的当前研究对象候选（Research Candidate，不是正式 Theme / Campaign，不得写入 campaigns 表）",
+  "research_method": "Signal → Evidence → Candidate：先收集公开可核验信号（政策原文 / 部委发布 / 交易所与公司公告 / 指数与资金数据），再登记为带来源与日期的 evidence，多条独立来源交叉后形成候选假设。阶段由产品端 Phase Evidence Matrix 独立推导，不由研究声明决定。",
+  "source_policy": "Tier 1 优先（国务院 / 发改委 / 工信部 / 国家能源局 / 国家药监局 / 统计局等官方发布）；Tier 2 为公司公告与产业原始数据；Tier 3 为财经媒体报道，仅用于转述 Tier 1/2 事实，不单独承担结论。所有 evidence 的日期必须 ≤ snapshot_date。",
+  "known_limitations": [
+    "本轮证据全部来自公开渠道，未接入行情/资金实时源；市场层证据以周度资金流、板块成交额与关注度指标为主。",
+    "单日价格类证据（涨停潮 / 单日涨跌）按任务要求最多记为弱证据，不得单独用于证明『市场关注形成』。",
+    "2026-09-15 当日全市场普跌且成交额 16253 亿元持平年内最低单日记录，存在明显 β 干扰；跨主题比较市场层时须以周/月口径为主。",
+    "本轮 5 个候选的 macro_theme 中有 4 个（电力设备 / 信息通信 / 高端装备）在历史 Theme Cycle 中没有同名 cycle，Similarity v2 的 Pattern 层对其恒为 UNKNOWN（详见 README『本轮发现的架构问题』）。"
+  ],
+  "note": "这是**第一轮真实离线研究数据**（不是示例、不是实时产品数据）。每条 evidence 均带来源日期，快照之后才知道的事不得进入判断（Temporal Firewall）。候选是研究对象，不是已验证 Theme，也不是正式 Campaign；命名空间 CC-* 与历史 C-*/RC-* 严格隔离。",
+  "candidates": [
+    {
+      "candidate_id": "CC-2026-BCI-MEDTECH",
+      "snapshot_date": "2026-09-15",
+      "display_name": "脑机接口医疗器械（标准—分类—临床—商业化）",
+      "macro_theme": "医药健康",
+      "theme_type": "concept",
+      "core_narrative": "脑机接口医疗器械在 2026 年 6—9 月连续落地三级制度供给：产品分类界定与通用名称命名指导原则（6 月）→ 国家脑机接口产业标准体系建设指南征求意见稿（8 月）→ 第三项医疗器械产品标准（9 月，全球首个采用人工智能处理脑电数据的产品标准）。国家药监局表述为『标准—分类—命名』三位一体技术支撑体系初步形成。产业侧已有产品进入临床试验与示范应用，但尚无可核验的规模商业化结果；同时市场关注度指标显示板块热度已从 2026 年 1 月的高位明显回落，形成『制度推进 / 市场冷却』的方向分歧。",
+      "candidate_status": "RESEARCHING",
+      "attention_state": "THEME_FORMING",
+      "phase_window": { "start": "2026-06-30", "end": null },
+      "phase_evidence": {
+        "narrative": "PRESENT",
+        "breadth": "EMERGING",
+        "information_marginal": "EMERGING"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-BCI-01",
+          "source_type": "POLICY",
+          "source_title": "国家药监局：脑机接口医疗器械产品分类界定指导原则 / 通用名称命名指导原则",
+          "source_url": null,
+          "source_date": "2026-06-30",
+          "event_date": "2026-06-30",
+          "claim": "国家药监局发布《脑机接口医疗器械产品分类界定指导原则》与《脑机接口医疗器械通用名称命名指导原则》，两项指导原则自发布之日起施行；明确侵入式/植入式按第三类医疗器械管理，非侵入式中用于疾病治疗或功能代偿的按第三类管理、用于脑卒中患者肢体运动功能康复训练且未采用人工智能技术的按第二类管理。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-BCI-02",
+          "source_type": "POLICY",
+          "source_title": "工业和信息化部科技司：《国家脑机接口产业标准体系建设指南（2026版）》（征求意见稿）",
+          "source_url": null,
+          "source_date": "2026-08-24",
+          "event_date": "2026-08-24",
+          "claim": "工业和信息化部科技司发布《国家脑机接口产业标准体系建设指南（2026版）》征求意见稿，将脑机接口产品划分为医疗器械类、工业生产类、消费电子类、个人健康类、科学研究类、融合应用类六大类别，预计到 2030 年累计研制标准 80 项以上、脑机接口标准体系基本形成。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-BCI-03",
+          "source_type": "POLICY",
+          "source_title": "国家药监局批准发布第三项脑机接口医疗器械标准（央视网 2026-09-15 报道）",
+          "source_url": "https://news.cctv.com/2026/09/15/ARTI5cMkNDOuqwq77p22xkHR260915.shtml",
+          "source_date": "2026-09-14",
+          "event_date": "2026-09-14",
+          "claim": "国家药监局 2026-09-14 批准发布我国第三项脑机接口医疗器械标准，为全球首个采用人工智能技术处理脑电数据的脑机接口医疗器械产品标准，将于 2027-09-01 起实施；标准规范了脑电数据采集、处理、标注、存储和访问的全流程技术要求与测试方法。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-BCI-04",
+          "source_type": "INDUSTRY",
+          "source_title": "中国经济网：我国将全面建设脑机接口标准体系（含场景与临床进展）",
+          "source_url": "https://www.ce.cn/cysc/tech//gd2012/202609/t20260908_3200713.shtml",
+          "source_date": "2026-09-08",
+          "event_date": "2026-09-08",
+          "claim": "报道指出脑机接口已在安全生产监测、睡眠健康管理、神经调控与功能康复等场景开展示范应用，其中工业领域相关模组已在八类工业场景累计部署数千套终端；医疗领域浙江省人民医院眼科中心为参与临床试验的失明患者安装国产视觉脑机植入产品、术后可识别字母。上述进展均为单点或示范级，报道未给出规模化商业收入数据。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-BCI-05",
+          "source_type": "COMPANY",
+          "source_title": "证券时报：脑机接口『人声鼎沸』产业落地『步步为营』（公司公告口径整理）",
+          "source_url": "https://stcn.com/article/detail/3575101.html",
+          "source_date": "2026-01-06",
+          "event_date": "2026-01-06",
+          "claim": "上市公司公告层面，麦澜德披露预计 2026 年一季度取得首项脑机接口医疗器械注册证（脑机接口经颅磁刺激仪），翔宇医疗披露预计当年新增数十款产品。两条均为**预期性披露**，截至快照日未检索到已取得注册证或产品已上市的确认信息。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-BCI-06",
+          "source_type": "MARKET",
+          "source_title": "证券时报：A股 2026 年『开门红』成交超 2.5 万亿 / 脑机接口掀涨停潮",
+          "source_url": "https://www.stcn.com/article/detail/3572770.html",
+          "source_date": "2026-01-06",
+          "event_date": "2026-01-06",
+          "claim": "2026-01-06 万得脑机接口概念指数上涨 4.29%（2026-01-05 上涨 9.95%），当日板块成交额 376.32 亿元、创该指数单日成交额历史新高；2026-01-05 至 01-06 两日累计涨幅 14.67%。催化剂为海外企业公开表态将于 2026 年大规模生产脑机接口设备。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-BCI-07",
+          "source_type": "MARKET",
+          "source_title": "板块关注度与成交额（2026-09 中旬口径）",
+          "source_url": null,
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-15",
+          "claim": "截至 2026-09-14，脑科学（脑机接口）概念板块热度指数为 30.31，热度描述为『适中偏冷』、热度趋势为『下降』；2026-09-15 当日板块成交额 159.29 亿元，显著低于 2026 年 1 月 6 日峰值 376.32 亿元。注：2026-09-15 为全市场普跌日（沪指 -0.54%、超 4300 只个股下跌、成交额 16253 亿元持平年内最低单日记录），单日价格变动不作为方向证据，此处仅登记关注度与成交额水平。",
+          "evidence_strength": "MEDIUM",
+          "direction": "NEGATIVE"
+        }
+      ],
+      "drivers": [
+        { "category": "POLICY", "note": "分类界定与命名指导原则 → 产业标准体系建设指南 → 产品标准，三级制度连续落地" },
+        { "category": "INDUSTRY", "note": "临床试验与工业/医疗示范应用，尚未形成规模化商业收入" }
+      ],
+      "narrative_types": ["POLICY_DRIVEN", "TECH_BREAKTHROUGH"],
+      "reference_cases": [
+        {
+          "campaign_id": "C-2019-PHARMA-INNOV",
+          "note": "人工对照：同为医药健康 Macro Theme 下『制度与政策先行、产业验证滞后』的结构；仅作研究对照，不替代产品端的相似度实时计算。"
+        }
+      ],
+      "research_questions": [
+        "本轮标准与指导原则属于一次性的制度补全，还是意味着监管路径长期稳定、后续会有连续的注册与审批通道？",
+        "『标准—分类—命名』三位一体体系成型后，历史上同类器械的注册路径平均需要多久才能出现首批获证产品？",
+        "产业侧目前的临床与示范应用，是否会向可核验的装机量、手术量或收入口径迁移？若有，最早的公开口径是什么？",
+        "市场关注度从 2026 年 1 月高位回落的原因，是叙事被证伪、还是被其他主线阶段性分流？如何用当时的公开信息区分这两种情形？",
+        "本方向与『AI+医疗』上位叙事在标的与资金层面是否高度重叠？若高度重叠，它是否应被视为独立研究对象？",
+        "历史上同类『标准先行、商业化滞后』的医疗器械方向，从主题形成到广泛确认之间通常会出现哪些分歧？"
+      ],
+      "source_summary": "7 条证据：3 条 Tier 1 政策（药监局 2 条、工信部 1 条）+ 1 条产业示范应用 + 1 条公司预期性披露（弱）+ 2 条市场关注度（一正一反）。",
+      "uncertainty_notes": [
+        "UNKNOWN：截至快照日未检索到任何一家企业已实际取得脑机接口医疗器械注册证的确认信息；麦澜德披露的『预计 2026 年一季度获证』无法在快照内验证。",
+        "UNKNOWN：本方向尚无公开的装机量 / 手术量 / 收入口径数据，无法判断商业化程度。",
+        "UNKNOWN：国内侵入式与非侵入式两条路线的临床样本量与终点指标未公开，无法评估技术成熟度差异。",
+        "UNKNOWN：『脑机接口』与『AI 医疗』在 A 股标的与资金层面的重叠程度未量化。",
+        "市场关注度指标（热度指数 30.31、趋势下降）来自第三方数据口径，与万得概念指数不完全可比，仅作方向性参照。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "CC-2026-COMPUTE-POWER",
+      "snapshot_date": "2026-09-15",
+      "display_name": "算电协同（算力网与新型电力系统协同）",
+      "macro_theme": "电力设备",
+      "theme_type": "concept",
+      "core_narrative": "『算电协同』在 2026 年完成从部门任务到国家级新基建工程的定位跃升：写入 2026 年政府工作报告并提出『实施超大规模智算集群、算电协同等新基建工程』，纳入『十五五』规划纲要，四部门联合印发行动方案部署 29 项重点任务；2026-09-11 国务院常务会议专门研究算力网建设并明确推动算电协同、算网融合、绿电直连、源网荷储等项目落地。产业侧已出现投资、招标、出口与首个绿电直供项目投运的可核验反馈。属政策与基础设施投资共同驱动的结构性方向。",
+      "candidate_status": "RESEARCHING",
+      "attention_state": "BROAD_CONFIRMATION",
+      "phase_window": { "start": "2026-05-08", "end": null },
+      "phase_evidence": {
+        "narrative": "STRONG",
+        "breadth": "EMERGING",
+        "information_marginal": "PRESENT"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-CP-01",
+          "source_type": "POLICY",
+          "source_title": "国家能源局新闻发布会文字实录（算电协同定位说明）",
+          "source_url": "https://www.nea.gov.cn//20260427/09f3dbc015664a74b9cbe2444c4891bf/c.html",
+          "source_date": "2026-04-27",
+          "event_date": "2026-04-27",
+          "claim": "国家能源局在新闻发布会中说明：2026 年政府工作报告提出『打造智能经济新形态』『实施超大规模智算集群、算电协同等新基建工程』；算电协同已被列为新型电力系统建设第一批试点方向之一，并已发布第一批试点名单。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-02",
+          "source_type": "POLICY",
+          "source_title": "国家发展改革委 国家能源局 工业和信息化部 国家数据局《关于促进人工智能与能源双向赋能的行动方案》",
+          "source_url": "https://www.nea.gov.cn/20260508/4dae97ca01d348e4871bb8654be34b3a/c.html",
+          "source_date": "2026-05-08",
+          "event_date": "2026-05-08",
+          "claim": "国家发展改革委、国家能源局、工业和信息化部、国家数据局联合印发《关于促进人工智能与能源双向赋能的行动方案》（国能发科技〔2026〕34号），围绕能源支撑人工智能发展、人工智能赋能能源转型两条主线，部署 29 项重点任务，提出力争到 2030 年人工智能算力设施清洁能源供给保障能力与应用水平大幅提升。方案包含完善算力设施绿电直连政策、强化算电协同市场机制建设、加强算力与电力协同运行等条目。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-03",
+          "source_type": "POLICY",
+          "source_title": "国务院常务会议研究算力网建设有关工作（工信部 2026 年第 37 周要闻回顾 2026-09-13）",
+          "source_url": "https://news.qq.com/rain/a/20260913A07R7X00",
+          "source_date": "2026-09-11",
+          "event_date": "2026-09-11",
+          "claim": "国务院总理李强 2026-09-11 主持召开国务院常务会议，研究算力网建设有关工作。会议指出算力网是人工智能发展的基础支撑，要推动算电协同、算网融合，加强算力资源监测调度和骨干光纤网络建设，强化算电设施规划衔接，加快绿电直连、源网荷储等项目落地。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-04",
+          "source_type": "POLICY",
+          "source_title": "国家发展改革委 国家能源局《新型电力系统建设『十五五』规划》",
+          "source_url": null,
+          "source_date": "2026-08-03",
+          "event_date": "2026-08-03",
+          "claim": "国家发展改革委、国家能源局印发《新型电力系统建设『十五五』规划》，将算电协同列为促进电力与相关产业协同融合发展的重点任务，提出将算力设施纳入电力保供重点领域。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-05",
+          "source_type": "INDUSTRY",
+          "source_title": "国内首个大规模算电协同绿电直供项目投运（东方财富财富号转述行业信息）",
+          "source_url": "https://caifuhao.eastmoney.com/news/20260514110930230360130",
+          "source_date": "2026-05-02",
+          "event_date": "2026-05-02",
+          "claim": "2026-05-02 大唐中卫云基地 50 万千瓦光伏电站投运，为国内首个大规模算电协同绿电直供项目，实现『沙漠风光电—数字算力』直连直通；新疆首个绿电直连算电协同示范项目已纳入自治区清单，广东、内蒙古、宁夏等多地在推进布局。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-06",
+          "source_type": "INDUSTRY",
+          "source_title": "电网投资与特高压设备中标规模（行业统计与机构整理）",
+          "source_url": "https://caifuhao.eastmoney.com/news/20260422140031260134060",
+          "source_date": "2026-04-22",
+          "event_date": "2026-04-22",
+          "claim": "2026 年一季度国家电网完成固定资产投资超 1290 亿元、同比增长 37%；南方电网完成固定资产投资 385 亿元、同比增长 50%。2026 年 1—2 月电网工程固定资产投资累计完成 837.5 亿元、同比增长 79.8%。2026 年前三批特高压设备累计中标 292 亿元，而 2025 年全年为 222 亿元。国家电网宣布『十五五』期间固定资产投资预计达 4 万亿元、较『十四五』增长 40%。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-07",
+          "source_type": "INDUSTRY",
+          "source_title": "海关总署：变压器出口数据（机构整理）",
+          "source_url": "https://caifuhao.eastmoney.com/news/20260422140031260134060",
+          "source_date": "2026-04-22",
+          "event_date": "2026-04-22",
+          "claim": "海关总署数据显示 2025 年中国变压器出口额 90.36 亿美元、创历史新高；2026 年 1—3 月变压器累计出口金额 25.03 亿美元、同比增长 37.90%。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-08",
+          "source_type": "COMPANY",
+          "source_title": "某数据中心供电设备企业 2026 年半年报口径（报道未标注发布日期）",
+          "source_url": null,
+          "source_date": null,
+          "event_date": null,
+          "claim": "有报道称某数据中心供电设备企业 2026 年上半年数据中心业务收入 12.7 亿元、同比翻倍，新签订单 38.7 亿元、同比增长约 3.5 倍，净利润预增 50%—60%。该报道未标注发布日期，且未取得公司公告原文核对，因此**日期未知、按不可用处理**，仅登记以备后续回查（不参与阶段推断）。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-09",
+          "source_type": "CAPITAL",
+          "source_title": "证券时报：全周主力资金流向（2026-09-07 至 09-11）",
+          "source_url": "https://www.stcn.com/article/detail/4181913.html",
+          "source_date": "2026-09-11",
+          "event_date": "2026-09-11",
+          "claim": "2026 年 9 月 7—11 日一周内，电力板块获得超 400 亿元主力资金净流入；同期电子行业全周合计获逾 597 亿元、通信获逾 275 亿元、机械设备与国防军工均获超百亿元净流入。该周全市场成交额降至 9.46 万亿元、连续第 5 周缩量并创年内新低（完整周口径）。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-CP-10",
+          "source_type": "MARKET",
+          "source_title": "算电协同 / 电网设备 / 绿色电力 / 数据中心板块区间行情（2026 年内）",
+          "source_url": null,
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-15",
+          "claim": "算电协同概念板块（02GN2436）自 2026-04-22 起有行情数据，至 2026-09-15 区间涨跌幅 -15.78%，区间最高点出现在 2026-05-14；电网设备板块 2026-01-05 至 09-15 区间涨跌幅 -4.81%，绿色电力 +5.01%，数据中心 +0.78%，三者区间最高点亦为 2026-05-14。2026-09-15 当日算电协同板块成交额 26.40 亿元。上述为**指数区间口径**，与同期全市场波动（9 月上半月沪指 -3.06%、创业板指 -5.55%）无法分离，方向不作单向解读。",
+          "evidence_strength": "MEDIUM",
+          "direction": "NEUTRAL"
+        }
+      ],
+      "drivers": [
+        { "category": "POLICY", "note": "政府工作报告 / 十五五规划纲要 / 四部门行动方案 / 国务院常务会议，多层级连续加码" },
+        { "category": "INDUSTRY", "note": "电网投资与特高压招标放量、绿电直连示范项目投运、变压器出口高增" },
+        { "category": "CAPITAL", "note": "电力板块周度主力资金大幅净流入（2026-09-07 至 09-11）" }
+      ],
+      "narrative_types": ["POLICY_DRIVEN", "INDUSTRY_UPGRADE", "DEMAND_SURGE"],
+      "reference_cases": [
+        {
+          "campaign_id": "C-2022-POLICY",
+          "note": "人工对照：同为政策驱动 + 投资落地型机会窗口（2022 年为购置税等消费端政策，本轮为算力与电力基础设施投资端政策）。"
+        }
+      ],
+      "research_questions": [
+        "算电协同目前处于『规划 + 试点』还是已进入『项目批量落地』阶段？可用哪些可核验口径（并网容量、绿电直连项目数、算力设施用电量）来区分？",
+        "国务院常务会议要求『加快绿电直连、源网荷储等项目落地』之后，历史上的同类要求通常在多长时间内转化为可观测的项目与收入口径？",
+        "本轮受益环节中，哪些已有订单/收入验证（电网设备、变压器出口），哪些仍停留在规划层（绿电直连、算力调度）？两种环节的研究含义有何不同？",
+        "电网投资的高增长（国网一季度同比 +37%）在多大程度上来自算电协同，而非传统主网投资？两者能否从公开数据中分离？",
+        "算电协同与『AI 算力』主线在资金与标的是否高度重叠？重叠部分的行情属哪条叙事？",
+        "什么信号可以证伪本轮假设（例如投资计划延后、绿电直连项目经济性不成立、算力设施用电增速低于预期）？"
+      ],
+      "source_summary": "10 条证据：4 条 Tier 1 政策（含国务院常务会议）+ 3 条产业数据 + 1 条日期未知的公司口径（按不可用处理）+ 1 条资金流向 + 1 条板块指数区间（口径受限、方向中性）。",
+      "uncertainty_notes": [
+        "UNKNOWN：算电协同尚无独立的官方统计口径（如『算电协同项目数』『绿电直连并网容量』），无法直接量化落地进度。",
+        "UNKNOWN：电网投资增长中属于算电协同的比例未公开。",
+        "UNKNOWN：算力设施用电量与绿电消费比例的官方分省数据未在快照前取得。",
+        "UNKNOWN：2026-09-15 当日板块指数下行的驱动因素无法与全市场普跌分离，因此未作为反向证据使用。",
+        "证据 E-CP-08（公司半年报口径）因无法确认发布日期，按『日期未知』处理，不参与阶段推断。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "CC-2026-EMBODIED-AI",
+      "snapshot_date": "2026-09-15",
+      "display_name": "具身智能与人形机器人（标准—实训—供应链）",
+      "macro_theme": "高端装备",
+      "theme_type": "concept",
+      "core_narrative": "人形机器人与具身智能在 2026 年进入『标准体系 + 实景实训 + 资本市场』同时在位的阶段：全产业链标准体系发布，工业和信息化部与国务院国资委联合开展 2026 年度实景实训专项行动并提出到年底形成百个以上高价值场景、带动万台级落地能力，国资基金首次进入该赛道，A 股已形成覆盖结构件、传感器、减速器、电机的供应链。但已公开的订单结构仍以科研教育与商业消费为主，生产场景占比低，商业化闭环尚未获得验证。",
+      "candidate_status": "RESEARCHING",
+      "attention_state": "EXPANSION",
+      "phase_window": { "start": "2026-02-28", "end": null },
+      "phase_evidence": {
+        "narrative": "STRONG",
+        "breadth": "STRONG",
+        "information_marginal": "PRESENT"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-EA-01",
+          "source_type": "POLICY",
+          "source_title": "新华网：从『赛跑』到『赛产』——解码 2026 人形机器人半程马拉松背后的产业信号",
+          "source_url": "https://xinhua.org/20260423/0a69624054e54603915c7bf1ed519ac6/c.html",
+          "source_date": "2026-04-23",
+          "event_date": null,
+          "claim": "报道披露：2025 年 12 月工业和信息化部人形机器人与具身智能标准化技术委员会成立；2026 年 2 月我国首个覆盖人形机器人全产业链的《人形机器人与具身智能标准体系（2026 版）》正式发布；具身智能已连续两年写入政府工作报告。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-EA-02",
+          "source_type": "POLICY",
+          "source_title": "中国经济网转《证券日报》：人形机器人商业化应用提速（专项行动通知）",
+          "source_url": "https://i.ai.ce.cn/news/SecuritiesDaily/202606/t20260624_3048943.shtml",
+          "source_date": "2026-06-24",
+          "event_date": null,
+          "claim": "工业和信息化部、国务院国资委办公厅联合印发《关于联合开展 2026 年度人形机器人与具身智能实景实训专项行动的通知》，覆盖十省市与有关央企，明确到 2026 年底人形机器人等重点产品在一批代表性场景率先完成应用验证和常态部署、凝练形成百个以上高价值应用场景、带动形成万台级规模落地能力；同期工信部就人形机器人在变电站、家电制造等场景的行业标准公开征求意见。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-EA-03",
+          "source_type": "POLICY",
+          "source_title": "新华网（同篇）：地方扶持政策与国家级基金动向",
+          "source_url": "https://xinhua.org/20260423/0a69624054e54603915c7bf1ed519ac6/c.html",
+          "source_date": "2026-04-23",
+          "event_date": null,
+          "claim": "地方层面，上海提出力争到『十五五』末推动 10 万台人形机器人进工厂、规上工业企业智能体应用普及率超过 80%；北京经开区推出『具身智能十条』；杭州对示范应用场景给予奖励。国家级基金方面，国家人工智能产业投资基金首次在具身智能赛道出手，参与银河通用机器人 25 亿元融资。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-EA-04",
+          "source_type": "INDUSTRY",
+          "source_title": "新华网（同篇）：需求端订单与出口数据、赛事技术验证",
+          "source_url": "https://xinhua.org/20260423/0a69624054e54603915c7bf1ed519ac6/c.html",
+          "source_date": "2026-04-23",
+          "event_date": null,
+          "claim": "2026 年 4 月国家电网印发《2026 年具身智能发展规划》，全年总投资 68 亿元、采购 8500 台设备。2026 年一季度国内机器人出口额 113.2 亿元，工业机器人出口同比增长 42%。2026-04-19 北京亦庄人形机器人半程马拉松有超过 100 支队伍、300 余台机器人参赛（首届为 20 支队伍、完赛率不足 30%）。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-EA-05",
+          "source_type": "INDUSTRY",
+          "source_title": "新华网（同篇）：订单性质与技术瓶颈（反向证据）",
+          "source_url": "https://xinhua.org/20260423/0a69624054e54603915c7bf1ed519ac6/c.html",
+          "source_date": "2026-04-23",
+          "event_date": null,
+          "claim": "反向证据：宇树科技科创板 IPO 招股书显示，2025 年 1—9 月其科研教育、商业消费订单分别占人形机器人总营收 73.60% 和 17.39%，行业应用仅占 9.01%；报道称当前行业相当一部分出货需求停留在『为未来做准备』阶段，采购方多为高校及科研机构。同届半马中参赛机器人在长距离赛程中出现电机过热与能效管理问题导致姿态失控，散热、续航与动态决策鲁棒性仍为工程门槛。",
+          "evidence_strength": "MEDIUM",
+          "direction": "NEGATIVE"
+        },
+        {
+          "evidence_id": "E-EA-06",
+          "source_type": "COMPANY",
+          "source_title": "新华网（同篇）：A 股供应链卡位",
+          "source_url": "https://xinhua.org/20260423/0a69624054e54603915c7bf1ed519ac6/c.html",
+          "source_date": "2026-04-23",
+          "event_date": null,
+          "claim": "供应链层面，领益智造、蓝思科技、奥比中光、禾赛科技、瑞声科技等上市公司分别参与夺冠机器人从结构件到传感器、激光雷达到精密传动件的供应；宇树科技科创板 IPO 已获受理，智元机器人、云深处科技、银河通用等多家企业推进上市进程。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-EA-07",
+          "source_type": "MARKET",
+          "source_title": "新华网（同篇）：板块规模与创投热度",
+          "source_url": "https://xinhua.org/20260423/0a69624054e54603915c7bf1ed519ac6/c.html",
+          "source_date": "2026-04-23",
+          "event_date": null,
+          "claim": "万得数据显示，截至 2026 年 2 月 A 股市场已有 100 余只个股涉及人形机器人概念、合计总市值近 7 万亿元。创投层面，截至 2026-04-10，具身智能领域年内融资事件已突破 269 起、融资额约 345 亿元，单笔 10 亿元及以上融资至少 15 起（2025 年上半年同类事件约 3 起）。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-EA-08",
+          "source_type": "INDUSTRY",
+          "source_title": "中国经济时报：双轮驱动 具身智能万亿赛道加速落地（产业阶段与门槛）",
+          "source_url": "https://jjsb.cet.com.cn/show_543741.html",
+          "source_date": null,
+          "event_date": null,
+          "claim": "报道引述产业研究观点称：现阶段行业仍以场景概念验证为主，大规模商用尚需时间；目前主流整机产品与解决方案售价在 30 万—60 万元区间，售价低于 20 万元被视为规模商用的关键拐点。该报道未标注发布日期，**日期未知、按不可用处理**，仅登记以备后续回查。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        }
+      ],
+      "drivers": [
+        { "category": "POLICY", "note": "全产业链标准体系 + 实景实训专项行动 + 地方万台级目标 + 国家级基金进入" },
+        { "category": "INDUSTRY", "note": "整机与零部件供应链成形、出口高增、赛事技术验证推进；但订单以科研教育为主" },
+        { "category": "CAPITAL", "note": "创投融资事件与金额显著放量，一级市场向头部集中" }
+      ],
+      "narrative_types": ["POLICY_DRIVEN", "TECH_BREAKTHROUGH", "INDUSTRY_UPGRADE"],
+      "reference_cases": [
+        {
+          "campaign_id": "C-2023-AD",
+          "note": "人工对照：同为『技术突破 + 政策推动』型产业主题，且都经历了从叙事形成到广泛确认的过程。"
+        },
+        {
+          "campaign_id": "C-2024-ROBOTAXI",
+          "note": "人工对照：同属机器人 / 自动驾驶方向的产业落地叙事。"
+        }
+      ],
+      "research_questions": [
+        "实景实训专项行动要求到 2026 年底形成百个以上高价值场景，可核验的验收口径是什么（场景清单 / 部署台数 / 常态作业时长）？",
+        "行业应用占比能否从当前的 9.01% 向上迁移？最先出现变化的会是电力、制造还是物流场景？",
+        "核心零部件的国产化率与成本曲线现状如何？降价到 20 万元以下整机价位的关键环节在哪里？",
+        "历史上『技术突破 + 政策推动』型主题，从主题形成到广泛确认之间通常出现哪些分歧？哪些分歧后来被证明是有效的判断依据？",
+        "当前一级市场融资热度与二级市场关注度的方向是否一致？若出现背离，历史上通常意味着什么？",
+        "什么证据可以证伪本轮假设（例如实训台数不及目标、行业应用占比继续停滞、成本下降慢于预期）？"
+      ],
+      "source_summary": "8 条证据：3 条政策 + 3 条产业（含 1 条反向证据）+ 1 条公司 + 1 条市场；另有 1 条因无发布日期按不可用处理。",
+      "uncertainty_notes": [
+        "UNKNOWN：行业应用订单占比的最新口径未公开，现有数据仅覆盖 2025 年 1—9 月。",
+        "UNKNOWN：无公开的整机可靠运行时长（MTBF）或场景作业效率的横向可比口径。",
+        "UNKNOWN：核心零部件（减速器、灵巧手、传感器）的国产化率与成本曲线未取得可核验数据。",
+        "UNKNOWN：专项行动的验收标准尚未公开，无法判断目标完成度。",
+        "证据 E-EA-08（整机售价区间与 20 万元门槛）因无发布日期，按『日期未知』处理，不参与阶段推断。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "snapshot_date": "2026-09-15",
+      "display_name": "高速光互联（1.6T / NPO / CPO 结构迁移）",
+      "macro_theme": "信息通信",
+      "theme_type": "concept",
+      "core_narrative": "AI 集群互连正从 800G 可插拔光模块向 1.6T 与共封装光学（CPO/NPO）迁移：海外云厂商资本开支上修、订单能见度延伸至 2027 年，国内龙头营收与净利润大幅增长，2026 年 9 月展会集中展示 3.2T/6.4T 方案。这属于既有 AI 算力主线的**结构性迁移**（速率升级 + 封装形式变化），而非一条全新叙事；上游高速光芯片供给紧张构成交付约束。",
+      "candidate_status": "RESEARCHING",
+      "attention_state": "EXPANSION",
+      "phase_window": { "start": "2026-06-01", "end": null },
+      "phase_evidence": {
+        "narrative": "STRONG",
+        "breadth": "STRONG",
+        "information_marginal": "PRESENT"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-OL-01",
+          "source_type": "POLICY",
+          "source_title": "工业和信息化部、国家发展改革委《电子信息制造业发展『十五五』规划》",
+          "source_url": "https://finance.eastmoney.com/a/202609153874411640.html",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-15",
+          "claim": "工业和信息化部、国家发展改革委印发《电子信息制造业发展『十五五』规划》，提出到 2030 年规模以上企业营业收入突破 30 万亿元、产业研发投入强度达到 3.5%；明确推动集成电路全链条攻关、促进电子元器件向高频高速/高集成/高可靠方向发展、夯实光子产业发展根基。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-OL-02",
+          "source_type": "INDUSTRY",
+          "source_title": "第 27 届中国国际光电博览会（CIOE 2026）闭幕报道：1.6T 规模上量、NPO 产业化提速",
+          "source_url": "https://www.zhenzhuoglobal.com/article/109061.html",
+          "source_date": "2026-09-11",
+          "event_date": "2026-09-11",
+          "claim": "CIOE 2026（2026-09-09 在深圳开幕）信息通信展显示：1.6T 高速可插拔光模块已由样品展示走向规模上量，行业研判 2026 年 1.6T 出货规模迈入百万量级，全年需求预测由年初约 1000 万只上调至 2500 万只以上，800G 及以上高速产品出货占比当年将提升至六成以上；头部厂商展示重心移向 3.2T 及更高速率，NPO 被视为现阶段产业化主流路线。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-OL-03",
+          "source_type": "COMPANY",
+          "source_title": "华工科技披露：数通光模块需求显著增长、CPO 接力驱动产业链上游成长",
+          "source_url": "https://gu.qq.com/resources/shy/news/detail-v2/index.html?id=SN2026042712070694c0f49c",
+          "source_date": "2026-04-27",
+          "event_date": "2026-04-27",
+          "claim": "华工科技披露：今年国内数通光模块需求显著增长、总量预计 2000 万只至 3000 万只，公司在手订单同比显著增长；海外市场已在北美头部客户处取得 40 万只订单，预计全年至少 70 万至 80 万只；国内外 1.6T 产品订单合计 40 万只，3.2T NPO 产品已有订单在手并在交付中。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-OL-04",
+          "source_type": "COMPANY",
+          "source_title": "光模块龙头 2026 年半年报与订单能见度（CIOE 报道汇总）",
+          "source_url": "https://www.zhenzhuoglobal.com/article/109061.html",
+          "source_date": "2026-09-11",
+          "event_date": "2026-09-11",
+          "claim": "新易盛 2026 年上半年营业收入 209.1 亿元、同比增长 100.34%，归母净利润 75.29 亿元、同比增长 90.98%，1.6T 产品实现批量交付；中际旭创 1.6T 产品已量产出货、在手订单覆盖 2026 年全年，部分客户订单排至 2027 年并给出分季度出货指引。",
+          "evidence_strength": "STRONG",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-OL-05",
+          "source_type": "INDUSTRY",
+          "source_title": "海外云厂商资本开支与光模块市场规模预测（行业报道汇总）",
+          "source_url": "https://www.xinminweekly.com.cn/shenghuo/2026/07/15/47523.html",
+          "source_date": "2026-07-15",
+          "event_date": null,
+          "claim": "北美四大云厂商 CY26Q2 资本开支维持高速增长、同比增长约 79%，全年指引上修至 7200 亿—7450 亿美元；LightCounting 预计 2026 年 800G 与 1.6T 光模块合计市场规模约 146 亿美元、占整体光模块市场约 64%。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-OL-06",
+          "source_type": "CAPITAL",
+          "source_title": "证券时报：全周主力资金流向（2026-09-07 至 09-11，CPO / 光通信口径）",
+          "source_url": "https://www.stcn.com/article/detail/4181913.html",
+          "source_date": "2026-09-11",
+          "event_date": "2026-09-11",
+          "claim": "2026 年 9 月 7—11 日一周内，CPO 概念板块获得超 300 亿元主力资金净流入，光通信、AI 手机等板块获得超 200 亿元净流入，通信行业全周主力资金净流入逾 275 亿元。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-OL-08",
+          "source_type": "MARKET",
+          "source_title": "证券时报：逆市爆发 A股这一板块涨停潮（元器件 / PCB 板块关注度）",
+          "source_url": "https://www.stcn.com/article/detail/4181913.html",
+          "source_date": "2026-09-11",
+          "event_date": "2026-09-11",
+          "claim": "2026 年 9 月 7—11 日一周内，元器件板块指数连续 5 个交易日飘红，并在周五大盘深度调整中出现涨停潮（崇达技术、骏亚科技、铜峰电子、博敏电子等午后涨停）；2026-09-15 PCB 概念延续上涨、澳弘电子 3 连板。该证据为**多交易日、多标的**的板块级关注，但时间跨度仅约一周。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-OL-07",
+          "source_type": "INDUSTRY",
+          "source_title": "上游光芯片供给约束（行业情报汇总）",
+          "source_url": "https://ima.qq.com/wiki/?shareId=4db37a88fdd47abc05cfd1ffa9256d35b1f653f6ec0201679fbe2477ba948e40",
+          "source_date": null,
+          "event_date": null,
+          "claim": "产业调研显示高速光芯片（EML 激光器、磷化铟晶圆）供应紧张、全球产能布局缓慢，配套器件厂商受上游光芯片供给不足制约，行业判断 2027 年仍面临交付紧张。该材料未标注发布日期，**日期未知、按不可用处理**；登记目的为记录交付约束这一事实，不参与阶段推断。",
+          "evidence_strength": "WEAK",
+          "direction": "NEUTRAL"
+        }
+      ],
+      "drivers": [
+        { "category": "INDUSTRY", "note": "速率升级（800G→1.6T）+ 封装形式迁移（可插拔→NPO/CPO），订单能见度延伸至 2027 年" },
+        { "category": "CAPITAL", "note": "海外云厂商资本开支上修；A 股 CPO / 光通信周度资金大幅净流入" },
+        { "category": "POLICY", "note": "电子信息制造业『十五五』规划明确电子元器件向高频高速方向发展、夯实光子产业根基" }
+      ],
+      "narrative_types": ["DEMAND_SURGE", "TECH_BREAKTHROUGH", "INDUSTRY_UPGRADE"],
+      "reference_cases": [
+        {
+          "campaign_id": "C-2021-NEV",
+          "note": "人工对照：同为下游需求爆发驱动、产业链环节全面受益的扩张型机会窗口。"
+        }
+      ],
+      "research_questions": [
+        "1.6T 与 800G 的需求结构变化中，多少来自新增集群、多少来自存量替换？两者对产业链价值量的含义是否不同？",
+        "CPO/NPO 相对可插拔方案的替代节奏，关键取决于哪些可观测指标（交换机出货占比、光引擎订单、单位端口功耗实测）？",
+        "国内厂商在海外产能布局（泰国产线等）的进展，是否会改变交付能力与地缘风险的评估口径？",
+        "上游高速光芯片的供给约束会在什么条件下缓解？缓解前后产业链利润分配会如何变化？",
+        "本方向与『AI 算力』上位主线的边界在哪里？在什么情况下它应被视为独立研究对象，而不是既有主线的环节？",
+        "历史上需求爆发驱动的产业链扩张，从订单能见度延伸到收入确认之间，常见的时间差与预期差有多大？"
+      ],
+      "source_summary": "7 条证据：1 条政策 + 3 条产业（其中 1 条日期未知按不可用处理）+ 2 条公司 + 1 条资金流向。",
+      "uncertainty_notes": [
+        "UNKNOWN：CPO/NPO 相对可插拔光模块的实际渗透率无公开分季度口径。",
+        "UNKNOWN：上游光芯片供需缺口的具体量级与缓解时点未取得可核验数据。",
+        "UNKNOWN：本方向与『AI 算力』主线在资金与标的上的重叠程度未量化，独立性判断依据不足。",
+        "证据 E-OL-07（上游光芯片供给紧张）因无发布日期，按『日期未知』处理，不参与阶段推断。",
+        "2026 年 9 月 7—11 日一周的资金净流入为全周口径，未区分被动资金与主动资金。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    },
+    {
+      "candidate_id": "CC-2026-OFFSHORE-WIND",
+      "snapshot_date": "2026-09-15",
+      "display_name": "海上风电与整机价格修复（『十五五』规模化 + 出海）",
+      "macro_theme": "电力设备",
+      "theme_type": "concept",
+      "core_narrative": "风电整机行业在经历约两年价格战后出现价格企稳与招标回暖的拐点信号：企业公开表述行业告别非理性价格竞争，招标定标规模同比提升，同时海上风电在『十五五』规划下明确 1 亿千瓦新增开工目标、进入从近海示范向深远海规模化开发阶段。板块长期被市场忽视，2026-09-15 在普跌市中逆势放量。但基本面侧上半年盈利仍大幅下滑，拐点尚未在利润表中得到确认。",
+      "candidate_status": "CANDIDATE",
+      "attention_state": "THEME_FORMING",
+      "phase_window": { "start": "2026-09-10", "end": null },
+      "phase_evidence": {
+        "narrative": "PRESENT",
+        "breadth": "EMERGING",
+        "information_marginal": "PRESENT"
+      },
+      "evidence": [
+        {
+          "evidence_id": "E-WIND-01",
+          "source_type": "POLICY",
+          "source_title": "国家发展改革委、国家能源局《可再生能源发展『十五五』规划》（媒体报道口径）",
+          "source_url": "https://www.hkcd.com.hk/hkcdweb/content/2026/09/15/content_8775067.html",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-15",
+          "claim": "报道引述《可再生能源发展『十五五』规划》：明确『十五五』期间海上风电新增开工 1 亿千瓦、2030 年累计装机达到 1 亿千瓦以上，大力推进深远海海上风电基地建设，海上风电被列为新型能源体系五大重点板块之一；广东、福建、山东、江苏等沿海省份密集出台落地细则，国管海域项目加速核准。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-WIND-02",
+          "source_type": "MACRO",
+          "source_title": "德国联邦内阁批准《海上风电法》修正案草案",
+          "source_url": "https://finance.sina.com.cn/stock/relnews/cn/2026-09-15/doc-inirwscw8698797.shtml",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-15",
+          "claim": "德国联邦内阁批准《海上风电法》（WindSeeG）修正案草案，将提交联邦议会审议、计划 2027-01-01 生效：改革将差价合约机制引入德国海上风电框架，并计划将项目标准运营期限由 25 年延长至 35 年。另据挪威咨询机构 Rystad Energy 分析，自 2020 年以来海上风机整机售价（按 MW 计）已上涨 40%—45%，高于同期制造成本 20%—25% 的增幅。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-WIND-03",
+          "source_type": "INDUSTRY",
+          "source_title": "2026 年风电整机招标定标规模统计",
+          "source_url": "https://finance.sina.com.cn/stock/relnews/cn/2026-09-15/doc-inirwscw8698797.shtml",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-15",
+          "claim": "据风电项目数据库统计，2026 年 1—8 月共有 383 个央国企风电项目整机集采定标、累计容量约 105984.12MW（约 105.98GW）；2026 年 8 月陆上风电（含塔筒）均价 2120.32 元/kW、环比下降 61.2 元/kW，陆上风电（不含塔筒）均价 1595.84 元/kW、环比上升 6.04 元/kW。另据机构统计，2026 年 1—7 月央国企风机整机定标规模 95.84GW、同比提升 22.86%。",
+          "evidence_strength": "MEDIUM",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-WIND-04",
+          "source_type": "COMPANY",
+          "source_title": "明阳智能 2026 年半年度业绩说明会表态",
+          "source_url": "https://www.toutiao.com/article/7683818568927937065/",
+          "source_date": "2026-09-10",
+          "event_date": "2026-09-10",
+          "claim": "风电整机企业明阳智能在 2026 年半年度业绩说明会上表示：在政策引导与行业自律共同作用下风机招标价格企稳回升，产业链压力得到有效缓解，行业告别非理性价格战，深远海风电与海外市场成为产业增长的核心引擎，行业平均毛利率有望持续改善。该表述为企业公开表态，尚非经营结果。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        },
+        {
+          "evidence_id": "E-WIND-05",
+          "source_type": "INDUSTRY",
+          "source_title": "风电设备板块 2026 年半年度经营数据（反向证据）",
+          "source_url": "https://www.toutiao.com/article/7683818568927937065/",
+          "source_date": "2026-09-10",
+          "event_date": "2026-09-10",
+          "claim": "反向证据：2026 年上半年风电设备板块实现营业收入 1216 亿元、同比增长 12.1%，但归母净利润 35.3 亿元、同比下降 25.6%；其中二季度归母净利润 13.9 亿元、同比下降 57%，主要受成本波动、汇兑损失及整机环节电站转让规模下降影响。",
+          "evidence_strength": "MEDIUM",
+          "direction": "NEGATIVE"
+        },
+        {
+          "evidence_id": "E-WIND-06",
+          "source_type": "MARKET",
+          "source_title": "2026-09-15 风电设备板块逆势行情（单日口径）",
+          "source_url": "https://www.hkcd.com.hk/hkcdweb/content/2026/09/15/content_8775067.html",
+          "source_date": "2026-09-15",
+          "event_date": "2026-09-15",
+          "claim": "2026-09-15 A 股三大指数集体收跌（沪指 -0.54%、深证成指 -0.72%、创业板指 -1.15%），全市场超 4300 只个股下跌、成交额 16253 亿元持平年内最低单日记录；风电设备板块逆势出现涨停潮，大金重工、天顺风能、吉鑫科技、锡华科技等涨停，海力风电涨 12.84%，板块半日成交额突破百亿元、成分股换手率普遍在 5% 以上。**该证据为单日行情**，按本轮口径最多记为弱证据，不单独用于证明『市场关注形成』。",
+          "evidence_strength": "WEAK",
+          "direction": "SUPPORTIVE"
+        }
+      ],
+      "drivers": [
+        { "category": "POLICY", "note": "『十五五』可再生能源规划明确海风 1 亿千瓦目标；沿海省份细则落地" },
+        { "category": "INDUSTRY", "note": "整机招标定标规模同比提升、行业自律约束低价竞争" },
+        { "category": "EXTERNAL", "note": "欧洲海风供给约束与德国《海上风电法》修订，改善出海经济性预期" }
+      ],
+      "narrative_types": ["POLICY_DRIVEN", "SUPPLY_CONTRACTION"],
+      "reference_cases": [
+        {
+          "campaign_id": "C-2022-POLICY",
+          "note": "人工对照：同为政策驱动 + 行业格局（价格/供需）修复型机会窗口；仅作研究对照，不替代产品端相似度计算。"
+        }
+      ],
+      "research_questions": [
+        "招标价格企稳是可核验的趋势，还是自律约束下的短期现象？需要哪些连续数据（季度中标均价、交付均价）才能确认？",
+        "招标规模同比 +22.86% 与板块归母净利润 -25.6% 并存，说明价格改善尚未传导到利润。历史上这一传导通常需要几个季度？",
+        "『十五五』海风 1 亿千瓦目标的落地节奏如何跟踪（核准容量、开工容量、并网容量三项口径的差异与可得性）？",
+        "欧洲海风的供应约束与德国法规修订，对中国零部件厂商是可确认的订单，还是仍停留在框架协议阶段？如何区分？",
+        "板块长期被市场忽视后出现单日放量，历史上这类『冷门板块首次集中放量』之后的常见演化路径有哪些？",
+        "什么信号可以证伪本轮假设（例如中标均价重新下行、海风核准节奏放缓、出海订单停留在框架协议）？"
+      ],
+      "source_summary": "6 条证据：2 条政策（国内 1 条、海外 1 条）+ 2 条产业（含 1 条反向证据）+ 1 条公司表态（弱）+ 1 条单日市场行情（弱）。",
+      "uncertainty_notes": [
+        "UNKNOWN：风机中标价格的连续月度序列未取得完整数据，无法判断企稳是否具有持续性。",
+        "UNKNOWN：『十五五』海风 1 亿千瓦新增开工的年度分解目标未公开。",
+        "UNKNOWN：出海订单中正式合同与框架协议的比例未公开。",
+        "UNKNOWN：海上风电与陆上风电在本轮修复中的贡献差异未拆分。",
+        "市场层证据仅覆盖单日行情与个股涨跌，按本轮口径不足以证明市场关注已形成，因此市场维度水平为『初现』而非『明确』。"
+      ],
+      "conflict_notes": [],
+      "last_updated": "2026-09-15"
+    }
+  ]
 }

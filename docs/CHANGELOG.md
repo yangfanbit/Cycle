@@ -7,6 +7,75 @@
 
 ---
 
+## 2026-09-15 · Phase 7.1 First Real Current Research Discovery（第一轮真实研究数据落地）
+
+把 Phase 7 的协议**第一次接入真实 2026 研究数据**。**不扩展产品代码**，只产出研究数据与记录。
+
+```
+snapshot_date:            2026-09-15
+candidate_count:          5
+generated_by:             ai-offline（网络与 AI 只在离线段使用；运行时不联网）
+research_coverage_until:  2025
+```
+
+**研究问题**：截至 2026-09-15，我现在应该开始研究哪些 Theme？
+（不是「明天买什么」、不是「哪只股票会上涨」、不是「哪个板块收益最高」。）
+
+### 新增数据
+
+`research/current/current_candidates.json` —— 5 个 `CC-*` 候选（39 条证据 / 36 条快照内可用 /
+0 条快照后 / 3 条日期未知按不可用处理）：
+
+| candidate_id | display_name | macro_theme | 证据 |
+|---|---|---|---|
+| `CC-2026-OFFSHORE-WIND` | 海上风电与整机价格修复 | 电力设备 | 6 |
+| `CC-2026-COMPUTE-POWER` | 算电协同（算力网 × 新型电力系统） | 电力设备 | 10 |
+| `CC-2026-EMBODIED-AI` | 具身智能与人形机器人 | 高端装备 | 8 |
+| `CC-2026-OPTICAL-LINK` | 高速光互联（1.6T / NPO / CPO） | 信息通信 | 8 |
+| `CC-2026-BCI-MEDTECH` | 脑机接口医疗器械 | 医药健康 | 7 |
+
+**关键政策锚点（均为 Tier 1、且 ≤ 快照日）**：2026-09-11 国务院常务会议研究算力网建设
+（推动算电协同 / 算网融合 / 绿电直连 / 源网荷储）；2026-09-14 国家药监局批准发布第三项脑机接口
+医疗器械标准；2026-09-15 工信部与发改委印发《电子信息制造业发展「十五五」规划》；
+2026-05-08 四部门《关于促进人工智能与能源双向赋能的行动方案》；
+《可再生能源发展「十五五」规划》海风 1 亿千瓦目标。
+
+### 产品端规则引擎实测（**由产品代码计算，非研究声明**）
+
+| 候选 | 声明阶段 | 推导阶段 | 命中规则 | 一致 | 冲突 | 状态门 |
+|---|---|---|---|---|---|---|
+| OFFSHORE-WIND | 主题形成 | **主题形成** | `R6_THEME_FORMING` | ✅ | 证据冲突 ×1 | 候选 → 候选 |
+| COMPUTE-POWER | 广泛确认 | 广泛确认 | `R5_BROAD_CONFIRMATION` | ✅ | 无 | 研究中 → 研究中 |
+| EMBODIED-AI | 扩张 | 扩张 | `R4_EXPANSION_DIFFUSION` | ✅ | 证据冲突 ×1 | 研究中 → **保持观察** |
+| OPTICAL-LINK | 扩张 | 扩张 | `R4_EXPANSION_DIFFUSION` | ✅ | 无 | 研究中 → 研究中 |
+| BCI-MEDTECH | 主题形成 | **未知** | `R8_UNCLASSIFIED` | ❌ | **结构 + 证据冲突** | 研究中 → **保持观察** |
+
+- **最先出现「主题形成」判断的是海上风电**（冷门方向，市场关注层仅「初现」）。
+- **脑机接口是「诚实不下结论」的实例**：政策 / 标准连续三级落地，但市场关注度自 2026 年 1 月
+  高位回落 → 引擎判 `UNKNOWN`（R8）并标出结构冲突，与声明阶段并列显示、不静默取舍。
+- Similarity v2 全部结果为「中相似」（Top 3 / 无百分比）；脑机接口为**空态**
+  （推导阶段 `UNKNOWN` → 不进入相似度检索，不凑案例）。
+
+### 文档
+
+- `research/current/README.md` 新增 §7 第一轮研究记录（含 research_method / source_policy /
+  **方向标记规则** / 本轮实测 / known_limitations）、§8 **拒绝候选池 5 条**（低空经济 / 固态电池 /
+  商业航天 / 可控核聚变与量子科技 / 消费白酒，各写明「为什么考虑、为什么暂不进入、缺什么证据」）、
+  §9 **本轮发现的架构问题 4 条**、§10 下一轮应记录什么。
+- `docs/PROJECT_STATE.md`：Current Phase → Phase 7.1；Known Limitations 补入 4 条架构发现；
+  Next Single Goal 由「生产第一批数据」改为「用户视觉 / 研究 Review + 下一轮回填观测」。
+- `AGENTS.md`：数据协议层说明与目录说明同步。
+
+### 兼容性 / 边界
+
+- **未改动**：`schema.sql` / DB / `exports/timeline_export_v1.json` / `contracts/` /
+  Research Model / 历史研究结论 / Timeline 主视觉与页面顺序 / 产品代码（除测试断言）。
+- 候选仍严格使用 `CC-*` 命名空间，**未写入** `campaigns` / `data/verified/`。
+- 测试：`npm test` **337/337**（335 → 337）；`tsc -b` 通过；`build` 通过（72 modules）；
+  6 项 research 校验全部通过；`validate_monorepo_integrity` PASS（25 项 0 警告）。
+
+---
+
 ## 2026-09-15 · Phase 7 Current Research Discovery v0.1（数据协议 + Temporal Firewall + Similarity v2 + 当前研究候选）
 
 补齐根本缺口：**2026 是当前时间、研究数据却截止到 2025**，因此 Lens 原本只能回答

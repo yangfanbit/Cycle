@@ -43,8 +43,9 @@
 **「今天这个时间点，我应该去历史资料里研究什么？」**
 架构原则：网络与 AI 只出现在**离线研究数据生成端**，不进入运行时。
 
-- **数据协议层** `research/current/`：canonical 数据集（当前为**诚实空集**）+ JSON Schema +
-  README + 示例 fixture（**非真实数据**）+ 历史案例叙事标注（带 provenance）。
+- **数据协议层** `research/current/`：canonical 数据集（**Phase 7.1 起承载第一轮真实候选 5 条**，
+  `snapshot_date = 2026-09-15`）+ JSON Schema + README（含本轮研究记录与拒绝候选池）+
+  示例 fixture（**非真实数据**）+ 历史案例叙事标注（带 provenance）。
 - **验证器** `research/scripts/validate_current_research.py`：Data / Temporal / Evidence /
   Phase / Similarity / Theme Boundary 六组校验（退出码 0/1）。
 - **产品层 5 个纯 View 模块**：`currentCandidate`（协议 / 宽容解析）·
@@ -134,7 +135,7 @@ ThreeC/
 │
 ├─ exports/                    ← ★ Research → Product 唯一交换目录
 │   └─ timeline_export_v1.json ← ★ 唯一 canonical export
-├─ research/current/           ← ★ Phase 7：Current Candidate 数据集（经 @current alias 消费；canonical 为空集）
+├─ research/current/           ← ★ Phase 7/7.1：Current Candidate 数据集（经 @current alias 消费；5 条真实候选）
 ├─ contracts/
 │   └─ timeline_export_v1.md   ← 跨模块接口契约
 │
@@ -229,7 +230,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 335 项
+npm test          # Vitest，当前 337 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```

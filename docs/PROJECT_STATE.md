@@ -19,9 +19,10 @@
 
 ## Current Phase
 
-**Phase 7：Current Research Discovery v0.1（IMPLEMENTED）。**
-补齐「2026 是当前时间、研究数据却截止到 2025」这一根本缺口：让产品能回答
-**「今天这个时间点，我应该去历史资料里研究什么？」**
+**Phase 7.1：Current Research Discovery —— First Real Discovery Round（IMPLEMENTED + 第一轮真实数据已落地）。**
+Phase 7 v0.1 补齐了「2026 是当前时间、研究数据却截止到 2025」这一根本缺口；
+**Phase 7.1 把协议第一次接入真实研究数据**（`snapshot_date = 2026-09-15`，5 个 `CC-*` 候选），
+使产品能真正回答 **「今天这个时间点，我应该去历史资料里研究什么？」**
 
 ### 架构（网络与 AI 只在**离线研究数据生成端**，不进入运行时）
 
@@ -42,7 +43,7 @@ Research Questions（研究方向）
 ### 交付
 
 1. **数据协议层** `research/current/`
-   `current_candidates.json`（canonical，**当前为诚实空集**）· `schema.json`（JSON Schema 子集）·
+   `current_candidates.json`（canonical，**第一轮真实候选 5 条**：`snapshot_date = 2026-09-15`）· `schema.json`（JSON Schema 子集）·
    `README.md`（协议 + 如何新增候选）· `fixtures/example_candidates.json`（**示例，非真实数据**）·
    `narrative_annotations.json`（历史案例的结构化叙事标注，逐条带 provenance）。
 2. **验证器** `research/scripts/validate_current_research.py`
@@ -177,7 +178,7 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - **Timeline Entry Identity（V1.9.0）**：`entryId = `${campaign_id}@${展示年份}``；React key / focus /
   年份页签用 `entryId`，**打开 Campaign Detail 仍以 `campaign_id`**。
 - **F-MED-1 / F4** 已修复。
-- 测试：`npm test` **335 项通过**（Phase 7 后 282 → 335，+53，新增 `currentResearch.test.tsx`）；
+- 测试：`npm test` **337 项通过**（Phase 7 后 282 → 335，Phase 7.1 +2 → 337，含 `currentResearch.test.tsx`）；
   `tsc -b` 通过；`build` 通过（72 modules）。
 
 ---
@@ -192,7 +193,7 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 | 历史研究产物 | `research/research/**` | **zero semantic diff** |
 | 行情 CSV | `research/data/market/**` | 原样保留 |
 | Product verified | `data/verified/` | 空（历史核验尚未开始） |
-| **Current Candidate** | `research/current/current_candidates.json` | **空集（诚实空态）** |
+| **Current Candidate** | `research/current/current_candidates.json` | **第一轮真实候选 5 条**（`snapshot_date = 2026-09-15`，`generated_by = ai-offline`） |
 | **示例 fixture** | `research/current/fixtures/example_candidates.json` | 4 个候选，**非真实数据** |
 | **叙事标注** | `research/current/narrative_annotations.json` | 13 条，`PENDING_HUMAN_REVIEW` |
 
@@ -216,8 +217,18 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - 所有历史日期为**研究候选日期**，未全部完成人工最终核验 → 标注 provisional / conflict。
 - `research/research/` 嵌套目录名为历史遗留，迁移时刻意保留。
 - Research 脚本依赖腾讯免费行情接口（仅 `fetch_market_*` 需要网络）。
-- **Current Candidate canonical 数据集为空**：Phase 7 交付的是**协议 + 验证器 + 消费端**，
-  尚未做任何真实的 2026 当前研究数据生产（见下「Next Single Goal」）。
+- **Current Candidate canonical 数据集已非空（Phase 7.1）**：第一轮真实离线研究数据 5 条候选
+  （`snapshot_date = 2026-09-15`）。数据集本身仍是**静态 Artifact**，产品运行时不联网。
+- **Phase 7.1 发现的架构问题（已记录，未修改产品代码；详见 `research/current/README.md` §9）**：
+  1. Similarity v2 的 **Pattern 层依赖 `macro_theme` 名称与历史 Theme Cycle 精确匹配** →
+     本轮 5 个候选中 4 个的新 Macro Theme（电力设备 / 信息通信 / 高端装备）无同名 cycle，
+     Pattern 层恒 0 → **等级最高只能到「中相似」，无法出现「高相似」**。
+  2. **「关注度从高位回落」直接判 `WEAKENING`** → 触发结构冲突并把阶段退回 `UNKNOWN`；
+     引擎无法区分「回落但仍高于一般水平」与「关注度消失」。
+  3. **证据台账必须覆盖 `MARKET` 来源类型**，否则市场维度 `UNKNOWN`、阶段退回 `UNKNOWN`
+     （本轮 `CC-2026-OPTICAL-LINK` 初稿即如此）。
+  4. 「单日行情最多 `WEAK`」与「关注度下降 → `NEGATIVE`」两条规则**不对称**，
+     使刚起步方向更难被归入 `THEME_FORMING`。
 - `research/current/narrative_annotations.json` 为**产品侧结构标注（PENDING_HUMAN_REVIEW）**，
   仅驱动相似度第 4 层；未标注的历史案例该层不参与（不推断）。
 - `npm audit` 报告 5 项漏洞（构建工具链传递依赖，本轮未处理）。
@@ -232,24 +243,27 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - A股整体环境（Layer A）为 `Unknown`：无指数 / 成交量 / 资金 / 情绪数据源，也不应由此推导大盘状态。
 - 当前年份（2026）无历史研究数据 → Layer B 为**诚实空态**（研究覆盖至 2025）。
 - Research Attention 的 `当前值得研究` 目前为空：现有正式 Campaign 均已记录到结束阶段。
-- **当前研究候选为空**：没有任何经过证据登记的 2026 Current Candidate —— 因此「当前研究候选」区
-  显示诚实空态。这不是缺陷，而是**拒绝编造**。
+- **「当前研究候选」已非空**：Phase 7.1 落地第一轮真实离线研究数据（5 个 `CC-*` 候选，
+  `snapshot_date = 2026-09-15`）。其中 **1 个推导阶段为 `UNKNOWN`**（脑机接口：政策 / 标准连续落地
+  但市场关注度自 1 月高位回落 → 结构冲突 → 引擎**拒绝归类**，与研究声明并列显示），
+  这正是「诚实不下结论」的预期行为，不是缺陷。
+  **空态仍可用**（数据集显式 `candidates: []` 时），已有独立测试覆盖。
 - `Sentiment` driver 在研究数据中**没有来源** → 永不出现（不编造）。
 
 ---
 
 ## Next Single Goal
 
-> **生产第一批真实的 Current Candidate 数据（离线研究轮，非本仓库代码任务）。**
+> **Phase 7.1 已完成第一轮真实数据生产。下一步唯一一件事：用户视觉 / 研究 Review。**
 >
-> 唯一一件事：按 `research/current/README.md` 的协议，针对 2026 年做一次**离线研究**，
-> 产出 2–5 个带证据台账的 `CC-*` 候选（每条事实带 `source_date` / `source_type` /
-> `evidence_strength`），跑 `validate_current_research.py` 通过后提交。
+> 不再扩大数据或功能范围。请先在真实使用中判断：这 5 个候选（以及 1 个被引擎判为
+> `UNKNOWN` 的候选）是否真的帮你确定了「该去查什么资料」，而不是「该买什么」。
 >
-> 完成后产品端**无需改代码**即可看到闭环。
-> **在此之前不新增功能、不新增行业、不改模型。**
+> Review 通过后，下一轮的**唯一**研究动作是**回填观测**：按 `research/current/README.md` §10，
+> 记录这 5 个候选与 5 条拒绝方向的后续公开证据边际变化，形成第一份可对照的研究台账。
+> **在此之前不新增功能、不新增行业、不改模型、不改产品代码。**
 
-用户视觉 / 交互 Review（Phase 7）可同时进行：
+用户视觉 / 交互 Review（Phase 7.1）可同时进行：
 
 1. 「当前研究候选」区是否克制（不抢 Timeline）？
 2. 空态是否读得懂「系统在诚实地说不知道」，而不是「系统没做完」？
