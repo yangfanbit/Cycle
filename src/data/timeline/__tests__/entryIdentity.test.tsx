@@ -289,7 +289,8 @@ describe('6. UI 层 identity 使用（源码守护）', () => {
     expect(src).toContain('key={e.entryId}');
     expect(src).toContain('e.entryId === focus.entryId');
     expect(src).toContain('onFocus(e.entryId)');
-    expect(src).toContain('find((e) => e.entryId === focusEntryId)');
+    // 明细匹配按 entryId（跨年同 campaign_id 才可区分到年份）
+    expect(src).toContain('e.entryId === focusedEntryId');
     expect(src).toContain('.entryId : null');
     // 禁止回到 campaign_id 作明细身份
     expect(src).not.toContain('key={e.campaign_id}');

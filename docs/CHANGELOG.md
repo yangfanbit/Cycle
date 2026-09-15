@@ -7,6 +7,116 @@
 
 ---
 
+## 2026-09-15 · V2.0 Product Core v2（Current Time Lens v2 + Historical Similar Phase v1 + Macro Theme 接口）
+
+把 Timeline + Historical Same Period + Current Time Lens 升级为**当前研究导航层**，
+并首次具备「生命周期相似」检索能力。同时修复 **F-MED-6**。
+
+**不做**：预测 / 荐股 / 买卖信号 / 量化择时 / 新闻聚合 / 评分 / 概率 / 实时数据。
+
+### 一、F-MED-6：Selection 身份分离（展示实例 ≠ 完整历史案例）
+
+`Selection` 增加可选 `timelineEntryId`：
+
+| 用途 | 标识 |
+|---|---|
+| React key / 条目高亮 / focus / 年份页签 | **`entryId`** = `campaign_id@展示年份` |
+| 打开完整历史案例（Campaign Detail，Campaign 级、不分年份） | **`campaign_id`** |
+
+新增 `isEntrySelected(selection, entryId)`（Timeline.tsx 导出）。
+Timeline 行情行 / CurrentTimeLens 条目的高亮改为按 `entryId`；三处视图点击统一回传
+`{kind:'campaign', id, timelineEntryId}`；SamePeriodView 年份页签优先采用外部选中实例。
+「查看完整历史案例」仍只回传 `campaign_id`（**未变**）。
+
+**效果**：跨年 Campaign（`C-2019-PHARMA-INNOV`）在 2019/2020/2021/2022 不再同时高亮；
+选中 2021 只亮 2021、选中 2022 只亮 2022；汽车单年度行为不变。
+
+### 二、Current Time Lens v2（三层）
+
+| 层 | 内容 |
+|---|---|
+| **A · A股整体环境** | `A股整体周期：Unknown` —— ThreeC 无整体市场周期模型（指数 / 成交量 / 资金 / 情绪），**绝不**从行业 Campaign 反推大盘牛熊 |
+| **B · 当前 Theme / Theme Cycle** | 无当前年份数据 → **诚实空态**：「暂无 2026 当前 Theme Cycle 研究数据；历史研究覆盖至 2025」；并列出研究覆盖内的 Theme Cycle（**Parallel-aware**，历史参考，不冒充当前状态） |
+| **C · Research Attention** | 状态分类（**不是评分 / 概率 / 信号**）：`当前值得研究` / `保持观察` / `历史参考` |
+
+新增 `src/data/timeline/researchAttention.ts`：
+- 阶段归一（`lifecycle[].stage` → 7 值 canonical；`MAIN_END` 为**终结标记**）
+- Drivers 分类：由 Research 既有 `events[].event_type` **确定性 1:1 派生**
+  （policy→Policy · company→Industry · market→Capital · macro→External）；
+  `Sentiment` 在研究数据中无来源 → 永不产生（不编造）
+- Theme Cycle 归组与 **Pattern 派生**（逐对区间先后/并存 → SEQUENTIAL / PARALLEL / HYBRID）
+- `attentionOf()` = Research Attention Gate v1（ACTIVE 需：正式 Campaign + 阶段 ∈ 形成/确认/扩张 +
+  有证据 + 无重大 Conflict；Candidate / 证据不足 / 冲突 / 阶段不足 → WATCH；
+  PEAK / DECLINE / END → HISTORICAL_REFERENCE）
+
+**Pattern 派生与 methodology v1.1 结论一致**（独立验证）：医药 `medical_structural_upgrade_2019_2022`
+→ **PARALLEL**；全部 `auto_*` / `robotaxi_*` → **SEQUENTIAL**。
+
+### 三、Historical Similar Phase v1（Lifecycle Lens）
+
+新增 `src/data/timeline/historicalSimilarPhase.ts` + `src/components/HistoricalSimilarPhase/`。
+三维度：**Phase**（相同 3 / 相邻 2，低于 2 不进入结果）→ **Theme Cycle Pattern**（相同 2 / Hybrid 1）
+→ **Drivers 标签重叠**。分数 = `phase*10 + pattern*4 + overlap`。
+分级：强维度 ≥3 → **高相似**；=2 → **中相似**；否则 **参考**（`★★★ / ★★☆ / ★☆☆`）。
+
+- 最多 **Top 3**；**无百分比**；必须给出「为什么类似」（Phase / Pattern / Drivers 三条）
+- 找不到相同或相邻阶段 → **空态**，不强行凑数（真实数据可复现：`RC-2023-HUAWEI` 终态为扩张，
+  数据中无对应案例 → `insufficient`）
+- 参照对象 = 当前选中对象；未选中 → 研究覆盖内最新案例，UI **显式标注**
+  「研究数据覆盖内最新案例，非当前市场状态」
+- 与既有「历史同期（Calendar Lens）」**并存、不可互相替代**
+
+### 四、Macro Theme 聚合接口（仅 View / Adapter）
+
+新增 `src/data/timeline/macroTheme.ts`：`macroThemeOf` / `subThemesOf` /
+`macroThemeGroupsOf` / `macroThemeTreeOf`（Macro Theme → Theme Cycle → Campaigns）/
+`themeCatalogueRoots` / `themeCatalogueChildren`。
+Macro Theme 判定 = 题材中 `theme_type ∈ {industry, sector}` 且 `role = related`；找不到 → `null`（不推断）。
+**本轮不改 Timeline 视觉**（仍以 `role='main'` 的 Sub-theme 成行）。
+
+**同时修复 F4**：`theme_type` / `theme_cycle_id` 经 Adapter 透传进视图模型
+（均为契约 §11 已声明的导出既有字段，**未改 export / contract / schema / DB**）。
+
+### 五、IA 重排（视觉优先级 `Timeline > Current Lens > Similar Phase`）
+
+```
+① Timeline（第一视觉）
+② 当前时间研究导航（Current Time Lens v2：A / B / C）
+③ 历史相似阶段（Historical Similar Phase v1 · Lifecycle Lens）
+④ 历史同期（SamePeriodView · Calendar Lens）—— 保留并重新定位
+```
+
+### 文件
+
+**新增**
+- `src/data/timeline/researchAttention.ts` · `historicalSimilarPhase.ts` · `macroTheme.ts`
+- `src/components/HistoricalSimilarPhase/HistoricalSimilarPhase.tsx`
+- `src/data/timeline/__tests__/researchNavigation.test.tsx`（38 例 / 8 组）
+
+**修改**
+- `src/App.tsx`（IA 顺序）· `src/components/Timeline/Timeline.tsx`（Selection + `isEntrySelected` + 行高亮）
+- `src/components/CurrentTimeLens/CurrentTimeLens.tsx`（v2 三层 + entryId 高亮）
+- `src/components/SamePeriodView/SamePeriodView.tsx`（外部选中实例优先）
+- `src/data/timeline/timelineTypes.ts` · `timelineAdapter.ts`（F4 透传）
+- `src/styles.css`（`.ctl2-*` / `.hsp-*` / `.att-*`）· `AGENTS.md` · `docs/PROJECT_STATE.md`
+
+### 测试
+
+`npm test` **282 / 282**（245 → 282，+37）；`tsc -b` exit 0；`build` ok（63 modules）。
+
+新增覆盖：F-MED-6 高亮互斥（2021 / 2022 各自只亮一条 + 未指定 entryId 时零高亮）·
+Campaign Detail 仍按 campaign_id · 阶段归一 / MAIN_END 终结语义 · Drivers 确定性派生 ·
+Pattern 派生（含 HYBRID）· Attention Gate 五条分支 · Layer A Unknown · Layer B 无 2026 数据空态
+与「有当前数据」分支 · NO LOOK-AHEAD · Parallel Theme 多状态 · Similar Phase 排序 / Top3 / Drivers 加分 /
+三理由 / 空态 / 默认参照标注 · Macro Theme 分组与父子关系 · Timeline 视觉未变（源码守护）·
+禁止词（预测 / 概率 / 买卖 / 评分命名）。
+
+**未改动**：DB · `schema.sql` · `exports/timeline_export_v1.json`（逐字节未变）· `contracts/` ·
+Campaign 数据 · Research Model。
+Research 校验全绿（5 项 EXIT=0）· `validate_monorepo_integrity` PASS（25 项 0 警告）。
+
+---
+
 ## 2026-09-14 · V1.9.1 Timeline Year Coverage Rule v1（统一 years() 口径 · 修复 F-MED-5）
 
 **统一 `verified`（生产）与 `preview`（研究预览）两个 TimelineDataSource 的年份生成规则。**

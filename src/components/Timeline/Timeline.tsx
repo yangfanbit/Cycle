@@ -41,10 +41,29 @@ import {
   windowRangeLabel,
 } from '../labels';
 
+/**
+ * 选中态（App 级，三个视图共用）。
+ *
+ * 两种身份**不得混为一谈**（见 `src/data/timeline/entryIdentity.ts`）：
+ *   - `id`              = campaign_id            → **完整历史案例**（CampaignDetail，Campaign 级、不分年份）
+ *   - `timelineEntryId` = `${campaign_id}@年份`  → **展示实例**（条目高亮 / focus，跨年 Campaign 才需要）
+ *
+ * `timelineEntryId` 可选：缺失时（如「查看完整历史案例」按钮、RuleDetail 跳转）表示
+ * 「只选中该 Campaign，不指定展示实例」——此时不做条目高亮，也不误亮多个年份（F-MED-6）。
+ */
 export type Selection =
   | { kind: 'rule'; id: string }
-  | { kind: 'campaign'; id: string }
+  | { kind: 'campaign'; id: string; timelineEntryId?: string }
   | null;
+
+/**
+ * 条目是否处于选中态：**必须**按展示实例（entryId）比较。
+ * 跨年 Campaign 同一 campaign_id 会在多个年份行各成一条 —— 按 campaign_id 比较会同时高亮。
+ * 未指定 `timelineEntryId` 时返回 false（不猜年份）。
+ */
+export function isEntrySelected(selection: Selection, entryId: string): boolean {
+  return selection?.kind === 'campaign' && selection.timelineEntryId === entryId;
+}
 
 interface TooltipState {
   x: number;
@@ -331,7 +350,10 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
           {campaignRows.map((campaign) => {
             const rule = ruleById.get(campaign.rule_id);
             const color = sectorColor(rule?.base_sector ?? '');
-            const selected = selection?.kind === 'campaign' && selection.id === campaign.campaign_id;
+            // 展示实例身份（campaign_id@年份）：跨年 Campaign 在多个年份各成一行，
+            // 高亮必须按 entryId 比较，否则同一 Campaign 会在各年份同时高亮（F-MED-6）。
+            const entryId = timelineEntryId(campaign.campaign_id, year);
+            const selected = isEntrySelected(selection, entryId);
             // 生命周期分段裁剪到当前年份（跨年行情在两年各显示覆盖段）
             const phaseSegs = campaign.phases
               .map((p) => ({ phase: p.phase, seg: segmentForYear(p.start, p.end, year) }))
@@ -483,7 +505,13 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                         ])
                       }
                       onMouseLeave={hideTooltip}
-                      onClick={() => onSelect({ kind: 'campaign', id: campaign.campaign_id })}
+                      onClick={() =>
+                        onSelect({
+                          kind: 'campaign',
+                          id: campaign.campaign_id,
+                          timelineEntryId: entryId,
+                        })
+                      }
                     >
                       <span className="bar-label pre-obs-label">提前观察参考区</span>
                     </div>
@@ -505,7 +533,13 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                         ])
                       }
                       onMouseLeave={hideTooltip}
-                      onClick={() => onSelect({ kind: 'campaign', id: campaign.campaign_id })}
+                      onClick={() =>
+                        onSelect({
+                          kind: 'campaign',
+                          id: campaign.campaign_id,
+                          timelineEntryId: entryId,
+                        })
+                      }
                     >
                       <span className="bar-label es-label">早期信号</span>
                     </div>
@@ -526,7 +560,13 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                       }}
                       onMouseEnter={(e) => showTooltip(e, campaign.title, tooltipLines)}
                       onMouseLeave={hideTooltip}
-                      onClick={() => onSelect({ kind: 'campaign', id: campaign.campaign_id })}
+                      onClick={() =>
+                        onSelect({
+                          kind: 'campaign',
+                          id: campaign.campaign_id,
+                          timelineEntryId: entryId,
+                        })
+                      }
                     >
                       {ps.continuesFromPrevYear && phase === campaign.phases[0].phase && (
                         <span className="bar-arrow left">◂</span>

@@ -249,20 +249,24 @@ describe('8. 与 samePeriodCampaigns 完全同口径（不发明新日期逻辑�
 
 /* ---------------- IA 9 / 产品 10–11 ---------------- */
 
-describe('9. IA：Timeline 是第一视觉，Current Time Lens 降级其后', () => {
-  it('Isource 顺序证明：Timeline 在 Lens 之前（App 中顺序由 App.tsx 保证，此处校验组件语义）', () => {
+describe('9. IA（V2.0）：Timeline > Current Lens > Similar Phase > Calendar Lens', () => {
+  it('App.tsx 顺序：Timeline → CurrentTimeLens → HistoricalSimilarPhase → SamePeriodView', () => {
     // 直接检验 App.tsx 源码顺序，避免依赖 jsdom 渲染
-    // （在测试中读取源码文件，断言 Timeline 的 JSX 出现在 CurrentTimeLens 之前）
     const fs = require('node:fs') as typeof import('node:fs');
     const path = require('node:path') as typeof import('node:path');
     const appSrc = fs.readFileSync(
       path.resolve(__dirname, '../../../App.tsx'),
       'utf-8',
     );
+    // ① Timeline 仍是第一视觉（在任何研究导航模块之前）
     expect(indexOfFirst(appSrc, '<Timeline')).toBeLessThan(indexOfFirst(appSrc, '<CurrentTimeLens'));
-    // SamePeriodView 主题行视图也在 Lens 之前
-    expect(indexOfFirst(appSrc, '<SamePeriodView')).toBeLessThan(
-      indexOfFirst(appSrc, '<CurrentTimeLens'),
+    // ② 当前时间研究导航 在 ③ 历史相似阶段 之前
+    expect(indexOfFirst(appSrc, '<CurrentTimeLens')).toBeLessThan(
+      indexOfFirst(appSrc, '<HistoricalSimilarPhase'),
+    );
+    // ③ 历史相似阶段 在 ④ 历史同期（日历）之前
+    expect(indexOfFirst(appSrc, '<HistoricalSimilarPhase')).toBeLessThan(
+      indexOfFirst(appSrc, '<SamePeriodView'),
     );
   });
 
@@ -276,7 +280,7 @@ describe('9. IA：Timeline 是第一视觉，Current Time Lens 降级其后', ()
     expect(html).toContain('sp-theme-title');
   });
 
-  it('CurrentTimeLens 标题为「当前时间上下文」（降级，不再自称顶部入口）', () => {
+  it('CurrentTimeLens 标题为「当前时间研究导航」（不压过 Timeline），含 A/B/C 三层', () => {
     const html = renderToStaticMarkup(
       <CurrentTimeLens
         dataSource={previewTimelineSource()}
@@ -285,8 +289,12 @@ describe('9. IA：Timeline 是第一视觉，Current Time Lens 降级其后', ()
         onSelect={() => {}}
       />,
     );
-    expect(html).toContain('当前时间上下文');
+    expect(html).toContain('当前时间研究导航');
     expect(html).not.toContain('Current Time Lens');
+    // v2 三层结构必须存在
+    expect(html).toContain('A · A股整体环境');
+    expect(html).toContain('B · 当前 Theme / Theme Cycle');
+    expect(html).toContain('C · Research Attention');
   });
 });
 

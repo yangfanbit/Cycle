@@ -195,9 +195,16 @@ function InlineThemeSummary({
   selection?: Selection;
   onOpenFull: (id: string) => void;
 }) {
+  // 外部选中（展示实例）优先：Timeline / Lens 选中的条目若落在本行，则本行聚焦它
+  // —— 三处选择语义一致（entryId = 展示实例；campaign_id = 完整历史案例）。
+  const selectedEntryId = selection?.kind === 'campaign' ? selection.timelineEntryId : undefined;
+  const focusedEntryId = row.campaigns.some((e) => e.entryId === selectedEntryId)
+    ? selectedEntryId
+    : focusEntryId;
   // 用 entryId 匹配：跨年 Campaign 同 campaign_id 多条明细时才能区分到具体年份
   const focus =
-    row.campaigns.find((e) => e.entryId === focusEntryId) ?? row.campaigns[row.campaigns.length - 1];
+    row.campaigns.find((e) => e.entryId === focusedEntryId) ??
+    row.campaigns[row.campaigns.length - 1];
 
   return (
     <div className="sp-inline" id={`theme-${row.themeKey}`}>

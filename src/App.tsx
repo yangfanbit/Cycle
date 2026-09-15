@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
+import { HistoricalSimilarPhase } from './components/HistoricalSimilarPhase/HistoricalSimilarPhase';
 import { RuleDetail } from './components/RuleDetail/RuleDetail';
 import { SamePeriodView } from './components/SamePeriodView/SamePeriodView';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
@@ -104,8 +105,9 @@ export default function App() {
       )}
 
       <main className="app-main">
-        {/* IA（V1.8.1）：① Timeline 第一视觉 ② 历史同期主题 ③ 当前时间上下文。
-            Timeline 是主视图（历史规律 × 题材轮动 × 事件节奏），其余为补充查看。 */}
+        {/* IA（V2.0）：① Timeline（第一视觉）→ ② 当前时间研究导航（Current Time Lens v2）
+            → ③ 历史相似阶段（Lifecycle Lens）→ ④ 历史同期（Calendar Lens）。
+            视觉优先级：Timeline > Current Lens > Similar Phase；Lens 是研究导航层，但不压过 Timeline。 */}
         <Timeline
           year={year}
           today={today}
@@ -115,17 +117,23 @@ export default function App() {
           researchEvents={yearData.researchEvents}
           sourceKind={dataSource.kind}
         />
-        {/* ② 历史同周期主题（主题级）：一行 = 一个主主题；展开可见同主题下的独立行情。
-            与 Timeline 共用 selection，点击明细进入 Campaign Detail。 */}
-        <SamePeriodView
+        {/* ② 当前时间研究导航：A. A股整体环境 / B. 当前 Theme · Theme Cycle / C. Research Attention。
+            与 Timeline 共用 selection（entryId 定位展示实例，campaign_id 打开完整案例）。 */}
+        <CurrentTimeLens
           dataSource={dataSource}
           today={today}
           selection={selection}
           onSelect={setSelection}
         />
-        {/* ③ 当前时间上下文（降级为补充摘要）：今天位于一年的什么位置、附近历史上出现过哪些主题。
-            不再是页面第一视觉；数据源与 Timeline 一致，共用 selection。 */}
-        <CurrentTimeLens
+        {/* ③ 历史相似阶段（生命周期相似检索）：参照 = 当前选中对象 / 研究覆盖内最新案例。
+            与 ④ 历史同期（日历同期）并存，两者不可互相替代。 */}
+        <HistoricalSimilarPhase
+          dataSource={dataSource}
+          selection={selection}
+          onSelect={setSelection}
+        />
+        {/* ④ 历史同期（日历同期）：主题级；一行 = 一个主主题。保留既有能力，重新定位为 Calendar Lens。 */}
+        <SamePeriodView
           dataSource={dataSource}
           today={today}
           selection={selection}

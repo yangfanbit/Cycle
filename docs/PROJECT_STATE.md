@@ -19,14 +19,31 @@
 
 ## Current Phase
 
-**Phase 5.2.1：V1.8.2.1 Pre-observation Semantic Fix（Formation Anchor）—— IMPLEMENTED / READY FOR USER VISUAL REVIEW。**
+**Phase 6：Product Core v2（IMPLEMENTED）。**
+把 Timeline + Historical Same Period + Current Time Lens 升级为**当前研究导航层**，
+并首次具备「生命周期相似」检索能力。
 
-修正提前观察区的**语义锚点错误**：`themeFormationDate()` 原取 lifecycle 最早阶段，会把
-`EARLY_SIGNAL` 误当 `THEME_FORMING`。新规则按优先级 `THEME_FORMING → BROAD_CONFIRMATION →
-Campaign.start → null`，禁止取最早 stage；Early Signal 与 Formation 为**两个独立边界**。
-文案统一为「**提前观察参考区**」，说明为「仅用于研究浏览参考，不代表历史平均领先期」。
-30 天宽度不变（UI / Research browsing buffer）。视觉层级 `Campaign > Early Signal > 参考区`。
-**不做**预测 / 荐股 / 交易信号。
+IA（视觉优先级 `Timeline > Current Lens > Similar Phase`）：
+1. **① Timeline**（第一视觉，未改动）
+2. **② 当前时间研究导航（Current Time Lens v2）** 三层：
+   - **A. A股整体环境** → `A股整体周期：Unknown`（ThreeC 没有整体市场周期模型，
+     **绝不**从行业 Campaign 反推大盘牛熊）
+   - **B. 当前 Theme / Theme Cycle** → 无当前年份数据时**诚实空态**
+     （「暂无 2026 当前 Theme Cycle 研究数据；历史研究覆盖至 2025」），
+     并列出研究覆盖内的 Theme Cycle（Parallel-aware，历史参考，不冒充当前状态）
+   - **C. Research Attention（研究关注）** → 状态分类（**不是评分 / 概率 / 信号**）：
+     `当前值得研究` / `保持观察` / `历史参考`
+3. **③ 历史相似阶段（Historical Similar Phase v1）** —— **Lifecycle Lens**：
+   按「阶段 → Theme Cycle Pattern → Drivers 重叠」检索历史结构相似案例，最多 Top 3，
+   用「高相似 / 中相似 / 参考」（**无百分比**），必须给出「为什么类似」；
+   找不到足够证据 → 空态，**不强行凑数**
+4. **④ 历史同期（Calendar Lens）** —— 既有 `SamePeriodView` 保留并重新定位（日历同期搜索，
+   与 ③ 生命周期相似**并存、不可互相替代**）
+
+同时完成 **F-MED-6**：Selection 区分「展示实例」（`entryId`，用于条目高亮 / focus）与
+「完整历史案例」（`campaign_id`，用于 Campaign Detail）—— 跨年 Campaign 不再多行同时高亮。
+
+**不做**预测 / 荐股 / 交易信号 / 评分 / 概率 / 实时数据。
 
 ---
 
@@ -41,7 +58,14 @@ Campaign.start → null`，禁止取最早 stage；Early Signal 与 Formation �
 | Phase 5 | **Current Time Lens v0**（今天入口：时间定位 → 历史同期 → 历史阶段映射 → 可能驱动） | ✅ IMPLEMENTED |
 | Phase 5.1 | **V1.8.1 主题级历史机会视图**（IA 重排：Timeline 第一视觉 + 历史同周期主题行 + Lens 降级） | ✅ IMPLEMENTED |
 | Phase 5.2 | **V1.8.2 Timeline Detail UX + 提前观察区**（两级详情 / Inline Summary / Bottom Sheet / Pre-observation Window） | ✅ IMPLEMENTED |
-| Phase 5.2.1 | **V1.8.2.1 Pre-observation Semantic Fix**（Formation Anchor 优先级 / Early Signal 与 Formation 分离 / 文案改「提前观察参考区」/ 视觉层级降序） | ✅ IMPLEMENTED / READY FOR USER VISUAL REVIEW |
+| Phase 5.2.1 | **V1.8.2.1 Pre-observation Semantic Fix**（Formation Anchor 优先级 / Early Signal 与 Formation 分离 / 文案改「提前观察参考区」/ 视觉层级降序） | ✅ IMPLEMENTED |
+| Phase 5.3 | **Theme / Campaign 分层模型统一审计**（Macro Theme → Theme Cycle → Campaign → Sub-theme；Campaign Independence Gate Q1–Q5；`docs/THEME_CAMPAIGN_MODEL_AUDIT.md`） | ✅ IMPLEMENTED |
+| Phase 5.4 | **Research Model v1.1 方法论补丁**（Theme Cycle Pattern A/B/C · Campaign Lifecycle Measurement Rule · Gate Q1 Anti-example） | ✅ IMPLEMENTED |
+| Phase 5.5 | **医药健康 Pilot**（Theme Cycle Discovery v0.1 → Campaign Boundary Decision v0.1 → 最小数据集接入：1 正式 Campaign + 2 Research Candidate + 8 行情序列） | ✅ IMPLEMENTED |
+| Phase 5.6 | **V1.8.4 F-MED-1** 跨年 Campaign 年份语义修复（明细 `year` = 所属展示年份） | ✅ IMPLEMENTED |
+| Phase 5.7 | **V1.9.0 Timeline Entry Identity**（`entryId = campaign_id@display_year`；展示实例 ≠ Campaign 选择） | ✅ IMPLEMENTED |
+| Phase 5.8 | **V1.9.1 Timeline Year Coverage Rule**（两源 `years()` 统一为 start→end 连续） | ✅ IMPLEMENTED |
+| Phase 6 | **V2.0 Product Core v2**（F-MED-6 Selection 身份分离 · Current Time Lens v2 三层 · Research Attention Gate v1 · Historical Similar Phase v1 · Macro Theme 聚合接口 · IA 重排） | ✅ IMPLEMENTED |
 
 ---
 
@@ -116,7 +140,17 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - **生产模式**：消费 `data/verified/`（当前为空 → 显示「当前研究数据未覆盖」空态 + 预览入口）。
 - **预览模式**：`?preview=1` 消费 `exports/timeline_export_v1.json`（2018–2025）。
 - `OpportunityRadar` 已**不再被 App 引用**（保留文件，后续统一清理；本轮不删）。
-- 测试：`npm test` **244 项通过**（Year Coverage 后 220 → 244，+24）；`tsc -b` 通过；`build` 通过。
+- 测试：`npm test` **282 项通过**（Product Core v2 后 244 → 282，+38）；`tsc -b` 通过；`build` 通过。
+- **Current Time Lens v2（V2.0）**：三层 A（A股整体环境 = `Unknown`）/ B（当前 Theme · Theme Cycle，
+  无当前年份数据 → 诚实空态）/ C（Research Attention 状态分类）。数据层 `researchAttention.ts`
+  （纯 View/Research Navigation，不写 DB/schema/export/contracts）。
+- **Historical Similar Phase v1（V2.0）**：`historicalSimilarPhase.ts` —— Phase + Theme Cycle Pattern +
+  Drivers 三维度，Top 3 上限、「高/中/参考」分级（无百分比）、必给「为什么类似」、无证据 → 空态。
+  与 ④ 历史同期（Calendar Lens）并存。
+- **Macro Theme 聚合接口（V2.0）**：`macroTheme.ts` —— 从既有 `theme_type` / `role=related` /
+  `parent_theme_id` 推导「Macro Theme → Theme Cycle → Campaigns」；**本轮不改 Timeline 视觉**。
+- **F4 已修复（V2.0）**：`theme_type` / `theme_cycle_id` 经 Adapter 透传进视图模型（契约 §11 既有字段，
+  未改 export / contract）。
 - **Timeline Year Coverage Rule（V1.9.1）**：Campaign / 候选覆盖年份 = `start` 年 **连续到** `end` 年
   （`src/data/timeline/yearCoverage.ts` 的 `timelineYears()`）。`verified` 与 `preview` 两源**同一规则、同一 helper**
   —— 修复生产模式下跨年 Campaign 中间年份行缺失（F-MED-5）。单年度 Campaign 覆盖年份不变。
@@ -166,25 +200,35 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Current Blockers
 
-**无硬性阻塞。** Phase 5.2 V1.8.2 Timeline Detail UX + 提前观察区已实现，处于
-**等待真实用户体验 Review**状态。
+**无硬性阻塞。** Phase 6 Product Core v2 已实现并通过全部门禁。
+
+**真实数据限制（不是缺陷，是项目定位的一部分）：**
+- A股整体环境（Layer A）为 `Unknown`：ThreeC 没有指数 / 成交量 / 资金 / 情绪数据源，
+  也不应由此推导大盘状态。
+- 当前年份（2026）无研究数据 → Layer B 为**诚实空态**（研究覆盖至 2025）。
+- Research Attention 的 `当前值得研究` 目前为空：现有正式 Campaign 均已记录到结束阶段
+  （这不是错误，已在 UI 中明确说明）。
+- Drivers 分类只用到 `policy/company/market/macro` → `Sentiment` 在研究数据中**没有来源**，
+  因此永不出现（不编造）。
 
 ---
 
 ## Next Single Goal
 
-> **真实用户视觉 Review（V1.8.2.1）。**
+> **用户视觉 / 交互 Review（Phase 6 V2.0）。**
 >
-> 请在真实使用中回答（Product Purpose Check）：
-> 1. **Early Signal 与 Theme Formation 是否真正分开？**（参考区 → 早期信号 → 主题形成，不再同日）
-> 2. **提前观察参考区是否只是浏览参考，而不是历史事实？**（文案 + 极淡视觉是否已表达「参考」而非「客观阶段」）
-> 3. **Campaign 是否仍然最突出？**（视觉层级 Campaign > Early Signal > 参考区）
-> 4. **用户是否仍能理解「先观察 → 出现早期信号 → 主题形成」？**（三层链是否清晰、不误导）
+> 请在真实使用中判断（Product Purpose Check）：
+> 1. **Timeline 是否仍是第一视觉？**（Lens 是研究导航层，但不能压过 Timeline）
+> 2. **Lens 三层是否读得懂？** A 层 `Unknown` 是否被理解为「诚实的不知道」而不是「系统没做完」？
+> 3. **B 层的 2026 空态是否清楚表达了「不用 2025 冒充 2026」？**
+> 4. **Research Attention 的三种状态是否不被误读为「推荐度 / 评分」？**
+> 5. **历史相似阶段的结果是否让你想去研究某个方向？**（研究入口是否有效）
+> 6. **「日历同期」与「生命周期相似」两个视角是否清楚可区分、且都需要保留？**
 
 Review 后可能的方向（**仅供参考，须经授权**）：
-Phase 5.3 资金 / 筹码 / 情绪 / 广度维度（**仅记录，未实现**）
-→ Phase 6 Multi-theme → Phase 7 Current Market Mapping
-→ Phase 8 Opportunity Discovery / Radar（**Radar 不是交易信号**）。
+- Layer A 若要脱离 Unknown，需先有 A股整体市场周期数据源（**当前明确不做**）。
+- Macro Theme 聚合接口已就绪 → 未来可把 Timeline 主单位从 Sub-theme 切到 Macro Theme。
+- 更多 Macro Theme（消费 / 电力 / 资源…）的数据生产。
 
 ---
 

@@ -231,7 +231,18 @@ export interface TimelineCampaign {
   early_signal?: TimelineEarlySignal | null;
   /** 生命周期分段（start → end 内部，按序覆盖不留空隙） */
   phases: TimelinePhaseSegment[];
-  themes: { name: string; role?: string }[];
+  /**
+   * 关联题材。`theme_type`（industry / sector / concept）为导出既有字段的**透传**
+   * （契约 §11 已声明，research metadata），用于「Macro Theme → Campaign」层级推导；
+   * 缺失时保持 undefined，不推断。
+   */
+  themes: { name: string; role?: string; theme_type?: string }[];
+  /**
+   * Theme Cycle（研究层归组，**research metadata 透传**）：同一 Theme Cycle 可含多个
+   * Campaign / Candidate（见 methodology `theme_campaign_separation_v1.md`）。
+   * 缺失时保持 undefined —— 不推断、不编造。
+   */
+  theme_cycle_id?: string | null;
   securities: { name: string; ticker?: string; role?: string }[];
   /** 关联事件（经 event_id → 顶层 events lookup 解析） */
   events: { name: string; date: string; event_type: string; role?: string | null }[];

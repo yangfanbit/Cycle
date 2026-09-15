@@ -37,27 +37,34 @@
 
 ## 2. 当前阶段
 
-**Phase 5.2.1：V1.8.2.1 Pre-observation Semantic Fix（Formation Anchor）（IMPLEMENTED / READY FOR USER VISUAL REVIEW）。**
+**Phase 6：Product Core v2（IMPLEMENTED）。**
 
-- Phase 4 Monorepo Integration 已完成：Cycle（产品 / PWA / Timeline 前端）与
-  Cycle-Research（研究 / 数据生产）已合并为**单一仓库 `ThreeC`**，单一 Git，保留双方完整历史。
-- Phase 5 Current Time Lens v0 已实现（后降级为③补充摘要）。
-- Phase 5.1 V1.8.1 已完成：页面 IA 重排为
-  **① Timeline（第一视觉）→ ② 历史同周期主题（主题级）→ ③ 当前时间上下文**；
-  「历史同期」由「一行一个 Campaign」升级为「**一行一个主主题**」。
-- Phase 5.2 V1.8.2 已完成：**两级详情**（Level 1 就地 Inline Summary，点击主题行触发
-  `onToggle`，不离开主页面；Level 2 仅「查看完整历史案例」触发 `onSelect` 打开既有
-  `CampaignDetail`）；Timeline 恒为第一视觉，不新增大型 modal / 永久右侧大面板；
-  移动端详情退化为 Bottom Sheet。新增 **「提前观察参考区」**（`historicalPreObservationDays = 30`，
-  UI / Research browsing buffer，代码注释注明「不代表历史平均领先期」）。
-- Phase 5.2.1 V1.8.2.1 已完成：修正 Formation Anchor——
-  `themeFormationDate()` 按 `THEME_FORMING → BROAD_CONFIRMATION → Campaign.start → null` 取锚点，
-  **禁止**取 lifecycle 最早 stage（原实现会把 EARLY_SIGNAL 误认为形成）；
-  Early Signal 与 Formation 为**两个独立边界**（Early Signal 沿用导出既有字段，不重新推导）；
-  文案「历史提前观察区」→「**提前观察参考区**」；
-  视觉层级 `Campaign > Early Signal > 参考区`（opacity / z-index 双降序）。
-  **不做**预测 / 荐股 / 交易信号。
-- 当前处于 **等待真实用户视觉 Review** 状态。**不继续加功能。**
+把 Timeline + Historical Same Period + Current Time Lens 升级为**当前研究导航层**
+（Current Time Lens v2 + Historical Similar Phase v1 + Macro Theme 聚合接口）。
+
+- Phase 4 Monorepo Integration 已完成：单一仓库 `ThreeC`，单一 Git，保留双方完整历史。
+- Phase 5.x 已完成：Current Time Lens v0 → V1.8.1 主题级历史机会视图（IA 重排）→
+  V1.8.2 两级详情 + 提前观察参考区 → V1.8.2.1 Formation Anchor 语义修正。
+- Phase 5.3–5.5 已完成：**Theme / Campaign 分层模型统一审计**（Macro Theme → Theme Cycle →
+  Campaign → Sub-theme + Campaign Independence Gate Q1–Q5）· **Research Model v1.1 方法论补丁**
+  （Theme Cycle Pattern A/B/C · Lifecycle Measurement Rule · Gate Q1 Anti-example）·
+  **医药健康 Pilot**（首个非汽车 Macro Theme，1 正式 Campaign + 2 Research Candidate）。
+- Phase 5.6–5.8 已完成：F-MED-1 跨年年份语义 · **Timeline Entry Identity**
+  （`entryId = campaign_id@display_year`）· **Year Coverage Rule**（两源 `years()` 统一）。
+- **Phase 6 V2.0 已完成**：
+  - **F-MED-6**：Selection 区分展示实例（`entryId`，条目高亮 / focus）与完整历史案例
+    （`campaign_id`，Campaign Detail）—— 跨年 Campaign 不再多行同时高亮。
+  - **Current Time Lens v2 三层**：A. A股整体环境 = `Unknown`（无整体市场周期模型，
+    **绝不**从行业 Campaign 反推大盘）· B. 当前 Theme / Theme Cycle（无当前年份数据 →
+    **诚实空态**，不把历史数据伪装成当前状态）· C. **Research Attention** 状态分类
+    （`当前值得研究` / `保持观察` / `历史参考`，**不是评分 / 概率 / 信号**）。
+  - **Historical Similar Phase v1（Lifecycle Lens）**：按「阶段 → Theme Cycle Pattern →
+    Drivers 重叠」检索，Top 3 上限、「高/中/参考」分级（无百分比）、必给「为什么类似」、
+    无证据 → 空态不凑数。与「历史同期（Calendar Lens）」并存、不可互相替代。
+  - **Macro Theme 聚合接口**（仅 View/Adapter；本轮**不改** Timeline 视觉）。
+  - IA（视觉优先级 `Timeline > Current Lens > Similar Phase`）：
+    **① Timeline → ② 当前时间研究导航 → ③ 历史相似阶段 → ④ 历史同期（日历）**。
+  **不做**预测 / 荐股 / 交易信号 / 评分 / 概率 / 实时数据。
 
 阶段全景见 `docs/ROADMAP.md`。下一个唯一目标见 `docs/PROJECT_STATE.md`「Next Single Goal」。
 
@@ -197,7 +204,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 244 项
+npm test          # Vitest，当前 282 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -253,12 +260,14 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**真实用户视觉 Review。** Phase 5.2.1 V1.8.2.1 实现完成后已**停止**：
-不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测、不新增 UI。
+**用户视觉 / 交互 Review（Phase 6 V2.0）。** 实现完成后**停止**：
+不新增行业、不新增 Rule、不新增统计、不新增 Radar、不新增预测。
 
-请用户在真实使用中依次判断 4 个产品目的问题：
+请用户在真实使用中依次判断 6 个产品目的问题：
 
-1. Early Signal 与 Theme Formation 是否真正分开？（参考区 → 早期信号 → 主题形成，不再同日）
-2. 提前观察参考区是否只是浏览参考，而不是历史事实？
-3. Campaign 是否仍然最突出？（视觉层级 Campaign > Early Signal > 参考区）
-4. 用户是否仍能理解「先观察 → 出现早期信号 → 主题形成」？
+1. Timeline 是否仍是第一视觉？（Lens 是研究导航层，但不能压过 Timeline）
+2. Lens A 层 `A股整体周期：Unknown` 是否被理解为「诚实的不知道」，而不是「系统没做完」？
+3. Lens B 层的 2026 空态是否清楚表达了「不用 2025 冒充 2026」？
+4. Research Attention 的三种状态（当前值得研究 / 保持观察 / 历史参考）是否不被误读为「推荐度 / 评分」？
+5. 历史相似阶段是否让你产生了「想去研究某个方向」的动机？（研究入口是否有效）
+6. 「日历同期」与「生命周期相似」两个视角是否清楚可区分、且都需要保留？

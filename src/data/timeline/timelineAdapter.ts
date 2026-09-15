@@ -687,7 +687,14 @@ function formalCampaignToTimeline(c: ExportCampaignV1, ctx: ExportContext): Time
       peak: c.peak_date,
       retracement_start: c.first_decline_date ?? null,
     }),
-    themes: c.themes.map((t) => ({ name: t.name, role: t.role ?? undefined })),
+    // 题材透传：theme_type 为导出既有字段（契约 §11 声明），用于 Macro Theme 层级推导
+    themes: c.themes.map((t) => ({
+      name: t.name,
+      role: t.role ?? undefined,
+      theme_type: t.theme_type ?? undefined,
+    })),
+    // Theme Cycle（research metadata 透传；不推断）
+    theme_cycle_id: c.theme_cycle_id ?? null,
     securities,
     events,
     signals,
@@ -740,7 +747,14 @@ function candidateToTimeline(rc: ExportCandidateV1, ctx: ExportContext): Timelin
       ? { start: earlyDate, end: rc.start_date, label: 'Research Early Signal' }
       : null,
     phases: derivePhases({ start: rc.start_date, end, peak: rc.peak_date, retracement_start: null }),
-    themes: rc.themes.map((t) => ({ name: t.name, role: t.role ?? undefined })),
+    // 题材透传：theme_type 为导出既有字段（契约 §11 声明），用于 Macro Theme 层级推导
+    themes: rc.themes.map((t) => ({
+      name: t.name,
+      role: t.role ?? undefined,
+      theme_type: t.theme_type ?? undefined,
+    })),
+    // Theme Cycle（research metadata 透传；不推断）
+    theme_cycle_id: rc.theme_cycle_id ?? null,
     securities,
     events,
     signals,
