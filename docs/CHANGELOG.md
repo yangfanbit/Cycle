@@ -7,6 +7,41 @@
 
 ---
 
+## 2026-09-16 · 并行轮次合并（Phase 7.1 双轮分歧裁决）
+
+同一 `snapshot_date = 2026-09-15` 出现两个**独立完成**的研究轮次：本地轮次
+（`38675c0`，5 个候选）与另一并行会话的轮次（`origin/main` 上的 `6dac246`，4 个候选）。
+`git fetch` 后状态为 `ahead 1 / behind 1` → 直接推送不是 fast-forward，因此**先合并再推送**，
+全程**未使用 force push**。
+
+### 裁决
+
+按交付优先级「规范统一 > 结构清晰 > 数据修正」，**canonical 采用本地轮次**；
+并行轮次完整内容保留在 Git 历史（`6dac246`，可随时检出），并在
+`research/current/README.md` §11 登记为跨会话交叉研究记录。
+
+合并方式 `git merge -X ours origin/main` → 合并提交 `a7444e0`。试合并确认**唯一冲突文件**为
+`research/current/current_candidates.json`；`AGENTS.md` / `docs/CHANGELOG.md` /
+`docs/PROJECT_STATE.md` / `research/current/README.md` /
+`src/data/timeline/__tests__/currentResearch.test.tsx` 均自动合并并保留本地改动。
+合并后代码树与 `38675c0` 完全一致（`git diff 38675c0 HEAD --stat` 为空）。
+
+### 未采纳并行轮次的理由（方法论层面，非数据错误）
+
+1. 并行轮次把相位证据矩阵 **8 维全部手工声明**；协议要求其中 5 维必须由证据台账派生。
+2. 并行轮次新建 4 个历史数据中不存在的 `macro_theme`，其中两个粒度接近 Sub-theme。
+3. 并行轮次把「AI 总主题」下多个产业环节合并为单一候选（`CC-2026-AI-EINFO`），粒度过粗。
+4. 并行轮次缺少 `research_round` / `research_method` / `source_policy` / `known_limitations`。
+
+两轮均通过 `validate_current_research.py` 六组校验、`AFTER_SNAPSHOT` 均为 0 →
+**分歧属粒度与矩阵写入协议问题，不是合规问题**。对照明细见 README §11。
+
+### 文档
+
+- `research/current/README.md`：新增 §11（并行轮次候选对照 / 重叠与差异 / 未采纳理由）。
+
+---
+
 ## 2026-09-15 · Phase 7.1 First Real Current Research Discovery（第一轮真实研究数据落地）
 
 把 Phase 7 的协议**第一次接入真实 2026 研究数据**。**不扩展产品代码**，只产出研究数据与记录。

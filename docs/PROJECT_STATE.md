@@ -219,6 +219,13 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - Research 脚本依赖腾讯免费行情接口（仅 `fetch_market_*` 需要网络）。
 - **Current Candidate canonical 数据集已非空（Phase 7.1）**：第一轮真实离线研究数据 5 条候选
   （`snapshot_date = 2026-09-15`）。数据集本身仍是**静态 Artifact**，产品运行时不联网。
+- **同一快照存在并行研究轮次（2026-09-16 合并记录）**：另一并行会话对同一
+  `snapshot_date = 2026-09-15` 独立产出了 4 条候选（`6dac246`）。经方法论比对
+  （相位矩阵 8 维全部手工声明、新建 4 个 `macro_theme`、候选粒度过粗、缺可复现性字段），
+  canonical **采用本地 5 条轮次**；并行轮次保留在 Git 历史并在
+  `research/current/README.md` §11 登记为交叉参考。两轮均通过验证器 →
+  **分歧属粒度与矩阵写入协议问题，不是数据合规问题**。
+  → 这意味着**同一快照可能有多个有效轮次**，下一轮必须显式声明 `research_round`。
 - **Phase 7.1 发现的架构问题（已记录，未修改产品代码；详见 `research/current/README.md` §9）**：
   1. Similarity v2 的 **Pattern 层依赖 `macro_theme` 名称与历史 Theme Cycle 精确匹配** →
      本轮 5 个候选中 4 个的新 Macro Theme（电力设备 / 信息通信 / 高端装备）无同名 cycle，
