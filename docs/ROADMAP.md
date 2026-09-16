@@ -161,35 +161,96 @@
 
 ---
 
-## Phase 6 · Multi-theme（待 Review 后启动）
+## Phase 5.4–5.8 · 分层模型统一与多主题接入（已完成 · IMPLEMENTED）
 
-**目标**：从单条 Rule（`rule_auto_summer`）扩展到多主题。
-
-- 新增行业 / 主题的 Research Campaign 生产
-- 多 Rule 并行的时间轴呈现
-- Export Contract 保持 v1.0 兼容（新增可选字段，不破坏）
-
----
-
-## Phase 7 · Current Market Mapping（待 Review 后启动）
-
-**目标**：把"今天"映射到历史时间轴。
-
-- 当前日期 → 历史同周期对照（已有 SamePeriodView 的深化）
-- 当年实际走势与历史窗口的偏离度对比
-- 「今年是否重演」的**情景分析框架**（前瞻性分析，不是确定性预测）
+- **Theme / Campaign / Sub-theme 分层统一审计** + Campaign Independence Gate Q1–Q5
+  （`docs/THEME_CAMPAIGN_MODEL_AUDIT.md`）
+- **Research Model v1.1 方法论补丁**：Theme Cycle Pattern（Sequential / Parallel / Hybrid）·
+  Campaign Lifecycle Measurement Rule · Gate Q1 Anti-example
+- **医药健康 Pilot**：首个非汽车 Macro Theme（1 正式 Campaign + 2 Research Candidate，真实行情）
+- F-MED-1 跨年年份语义（V1.8.4）· Timeline Entry Identity（V1.9.0）· Year Coverage Rule（V1.9.1）
 
 ---
 
-## Phase 8 · Opportunity Discovery / Radar（待 Review 后启动）
+## Phase 6 · Product Core v2（已完成 · IMPLEMENTED）
 
-**目标**：机会发现能力的系统化。
+把 Timeline + Historical Same Period + Current Time Lens 升级为**当前研究导航层**。
 
-- 历史相似阶段检索、当前状态与历史条件的分布对比
-- 观察窗口的规则化呈现
+- **F-MED-6**：Selection 区分展示实例（`entryId`）与完整历史案例（`campaign_id`）
+- **Current Time Lens v2 三层**：A. A股整体环境 = `Unknown`（**绝不**由行业反推大盘）·
+  B. 当前 Theme / Theme Cycle（无当前年份数据 → 诚实空态）· C. Research Attention 状态分类
+- **Historical Similar Phase v1（Lifecycle Lens）**：阶段 → Pattern → Drivers；Top 3、无百分比、无证据 → 空态
+- **Macro Theme 聚合接口**（仅 View / Adapter；不改 Timeline 视觉）
+- IA：`① Timeline → ② 当前时间研究导航 → ③ 历史相似阶段 → ④ 历史同期（日历）`
 
-> ⚠️ **Radar 不是交易信号。**
-> 输出的是"值得研究的方向"，不是"买入 / 卖出"。
+---
+
+## Phase 7 · Current Research Discovery v0.1（已完成 · IMPLEMENTED）
+
+让产品能回答**「今天这个时间点，我应该去历史资料里研究什么？」**
+架构原则：网络与 AI 只出现在**离线研究数据生成端**，不进入运行时。
+
+- **数据协议层** `research/current/`：canonical 数据集 + JSON Schema + README + 示例 fixture + 叙事标注
+- **验证器** `research/scripts/validate_current_research.py`（Data / Temporal / Evidence / Phase /
+  Similarity / Theme Boundary 六组校验）
+- **产品层 5 个纯 View 模块**：`currentCandidate` · `currentEvidence`（Evidence Ledger +
+  Temporal Firewall + 相位证据矩阵 + 冲突 + 状态门）· `currentPhaseInference`（R0–R8 规则引擎）·
+  `currentSimilarity`（Similarity v2）· `currentCandidateAdapter`
+- **UI**：Current Lens 内「当前研究候选」区（概览 + 就地展开 + 诚实空态）
+- 四条红线：Temporal Firewall · 禁用单一指标推阶段 · 状态门**只降不升** · 相似度**无百分比**
+
+---
+
+## Phase 7.1 · First Real Current Research（已完成 · IMPLEMENTED）
+
+- `snapshot_date = 2026-09-15`：5 个 `CC-*` 真实候选 / 39 条证据 / **0 条 AFTER_SNAPSHOT**
+- 拒绝候选池 5 条 + 本轮架构问题 4 条（`research/current/README.md` §8 / §9）
+- 跨会话并行轮次的裁决与交叉记录（`research/current/README.md` §11）
+
+---
+
+## Phase 7.2 · Time-based Observation Layer（已完成 · IMPLEMENTED）
+
+把「**什么时候值得看**」做成产品能力 —— 回答：
+
+> 「历史上，一年中的这个时间位置附近，**反复出现过**值得研究的主题启动 / 观察现象吗？」
+
+- **Research**：`research/research/reports/time_observation_patterns_v0_1.json`
+  （4 条模式：1 条进入 Timeline / 2 条留在研究层 / 1 条拒绝）+ 整合报告
+  `Time_Observation_Pattern_Integration_v0_1.md` + canonical 生成器
+  `research/scripts/build_time_observation_patterns.py`（可复现，`--check` 逐字节校验）
+- **Product**：`src/data/timeline/timeObservationPatterns.ts`（宽容解析 + **跨年环形窗口** +
+  邻近关系 + View Model 排序）+ `src/components/TimeObservation/TimeObservationLayer.tsx`
+  （Timeline 内**极轻一层**：窗口带 + 该年观察起点标记 + Level 2 摘要）
+- **三层信息结构**：Timeline 窗口带 → 就地 Pattern 摘要 → **既有** Campaign Detail（不新建第四套详情）
+- **语义纪律**：只讲「历史观察窗口 / 历史复现」；不出现概率 / 胜率 / 买卖信号；无窗口时**不渲染本层**
+- **未改**：DB / `schema.sql` / canonical export / `contracts/` / Campaign 定义 / Research Model /
+  Timeline 主视觉
+
+**验收**：打开 Timeline 即看到「时间型观察层」；今天落在窗口内时提示「当前位于历史观察窗口」；
+点击某一年 → 进入既有 Campaign Detail。
+
+---
+
+## Phase 7.3 · Structural Historical Analogy（推迟 · 未实现）
+
+> ⚠️ **本轮（Phase 7.2）明确未实现。** 记录在此，避免提前实现。
+
+- `Current State → Structural Signature → Historical Phase`
+- 与 Time Observation Pattern 的分层关系：
+  Time Pattern 回答「**什么时候值得看**」，Structural Analogy 回答「**这个方向像哪段历史**」。
+- 前置条件：Time Observation Layer 的样本量与日期核验先改善（见 Phase 7.2 报告的 P0 / P1）。
+
+---
+
+## Phase 8 · Opportunity Discovery / Radar（推迟 · 未实现）
+
+> ⚠️ 由 Phase 7.2 重新排序 —— 「Radar」不再紧接 Phase 5，而是排在 Structural Historical Analogy 之后。
+
+- 历史相似阶段检索、当前状态与历史条件的分布对比、观察窗口的规则化呈现
+
+> **Radar 不是交易信号。**
+> 输出的是「值得研究的方向」，不是「买入 / 卖出」。
 > 用户自己负责入场判断（见 `docs/PRODUCT_PURPOSE.md`）。
 
 ---

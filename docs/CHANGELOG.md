@@ -7,6 +7,85 @@
 
 ---
 
+## 2026-09-16 · Phase 7.2 Time-based Observation Layer（时间型观察层落地）
+
+把「**什么时候值得看**」做成产品能力 —— 回答：
+**「历史上，一年中的这个时间位置附近，反复出现过值得研究的主题启动 / 观察现象吗？」**
+（不是预测、不是买入信号、不是概率。）
+
+### Research（新增 3 个文件）
+
+- `research/scripts/build_time_observation_patterns.py` —— **canonical 生成器**。
+  只读 `exports/timeline_export_v1.json` + `research/database/cycle_research.db`，
+  按统一锚点优先级（`EARLY_SIGNAL → THEME_FORMING → BROAD_CONFIRMATION → Campaign.start`）
+  逐对象提取锚点 → 主题族逐年聚合（**同一年只取最早锚点**，防止人为放大 N）→
+  描述统计（中位 / MAD / P25–P75 / 跨度 / 集中度比率）→ 稳定性（前后半段）→ 留一法 →
+  纳入判定。**写盘前自检**（字段卫生 / 语义红线 / 判定一致性），不过不写。
+  支持 `--check`（校验磁盘产物与重算结果**逐字节一致**）与 `--print`。
+- `research/research/reports/time_observation_patterns_v0_1.json` —— **产品只读消费的 canonical Artifact**。
+  4 条模式，**1 条进入 Timeline**：
+
+  | pattern | 来源 | N | 中心 | 窗口 | 历史复现 | 强度 | 判定 |
+  |---|---|---|---|---|---|---|---|
+  | `TOP-01` 汽车主题上半年末启动观察窗口 | SOP-03 | 7 | 06-11 | 05-27 ~ 06-26 | **5 / 7** | A | **TIMELINE_ELIGIBLE** |
+  | `TOP-02` 汽车智能化启动观察窗口 | SOP-01 | 4 | 06-17 | 06-09 ~ 06-25 | 3 / 4 | B | RESEARCH_ONLY |
+  | `TOP-03` 汽车电动化启动观察窗口 | SOP-02 | 2 | 06-01 | 不生成 | 不计算 | C | RESEARCH_ONLY |
+  | `TOP-04` 医药健康结构性升级启动窗口 | SOP-04 | 3 | 01-23 | 不生成 | 不计算 | D | REJECTED |
+
+  Artifact 同时承载：锚点口径、纳入规则、枚举词表、**背景基准**（事件台账 6 月占比 33% / 指数最优
+  30 日窗口 18.75% / 均匀 8.3%）、禁用字段清单、覆盖年份与年度评审状态、**产品文案词表**
+  （措辞由 Research 拥有，Product 只渲染）。
+- `research/research/reports/Time_Observation_Pattern_Integration_v0_1.md` —— 整合报告
+  （含与上游探索研究的**三处口径差异**、复现对照、脚本处置、产品接入决策、架构问题、限制清单、P0–P3 建议）。
+- `research/research/reports/_seasonal_analysis/README.md` —— 明确标注该目录为**探索性脚本、已被
+  canonical 生成器取代、不是产品依赖**。
+
+### Product（新增 3 个文件 + 2 处配置）
+
+- `src/data/timeline/timeObservationPatterns.ts` —— 宽容解析 + MM-DD 窗口（**含跨年环形窗口**，
+  窗口内/外距离按环形计算）+ 邻近关系 `IN_WINDOW / NEAR_WINDOW / OUTSIDE`（`nearWindowDays = 14`，
+  **UI 浏览缓冲、非统计量**）+ View Model 排序（先按与今天的关系，再按数据质量 → 稳定性 → 样本量；
+  **不产生也不展示任何推荐分**）。日期逻辑**复用** `utils/date/dateUtils`，不另造日历。
+- `src/components/TimeObservation/TimeObservationLayer.tsx` —— Timeline 内**极轻一层**：
+  历史观察窗口带（淡底纹 + 点划线，跨年窗口分两段）+ **该年研究观察起点标记**（可点击 → 历史案例）
+  + Level 2 就地摘要（窗口/口径 · **历史复现 X / Y 个观测年份** · 年份案例 · 为什么值得看 ·
+  **限制说明** · 免责声明）。**无可用窗口时整层不渲染**（不显示空壳）。
+- `src/components/Timeline/trackPrimitives.tsx` —— 从 `Timeline.tsx` 抽出的月份网格 / 今天线 /
+  百分比原语，供两层共用（**避免第二套轨道实现**；抽出时行为不变）。
+- `vite.config.ts` / `tsconfig.json` —— 新增 `@observation` alias → `research/research/reports/`。
+- `src/styles.css` —— 新增 `.tob-*` 样式（沿用既有「提前观察参考区」的视觉语言：
+  淡底纹 + 点划线 + 小标签；**不用涨跌红绿、不用买点箭头**）。
+
+### 与既有模块的边界
+
+- **Pattern ≠ Campaign**：一条 Pattern 对应多年、多个 Campaign；**未修改** Campaign 定义。
+- **与 Current Candidate 独立**：Time Pattern = 「什么时候值得看」，Current Candidate = 「当前出现了什么」，本轮不组合。
+- **与「提前观察参考区」并存**：前者是跨年份时点分布，后者是单个 Campaign 内部的浏览缓冲，不可互相替代。
+- **未改**：DB / `schema.sql` / `canonical export` / `contracts/` / Research Model / Timeline 主视觉与页面顺序。
+
+### 测试
+
+新增 `src/data/timeline/__tests__/timeObservationPatterns.test.tsx`（**35 项**）：解析（正常 / 空 /
+缺字段 / 非法日期 / 非法 `pattern_type` / 命名空间 / 判定不一致）· 窗口（普通 / 月初 / 月末 /
+**跨年** / 伪合法日期拒绝）· 当前日期关系（IN / NEAR 边界 / OUTSIDE）· 映射与 UI（窗口内 / 接近 /
+窗口外 / 空态 / 研究层不渲染 / 限制说明存在 / **不出现预测与买卖语义**）· 产物卫生
+（禁用字段 / 复现计数自洽 / 锚点不晚于快照）。
+
+**门禁**：`npm test` **372 / 372 通过**（10 个文件）· `tsc -b` 通过 · `vite build` 通过 ·
+6 项 research 校验 + `validate_monorepo_integrity` 通过 ·
+`build_time_observation_patterns.py --check` 逐字节一致。
+
+### 文档
+
+- `docs/ROADMAP.md`：阶段编号统一为 **Phase 5.4–5.8 → 6 → 7 → 7.1 → 7.2**；
+  新增 **Phase 7.3 Structural Historical Analogy** 与 **Phase 8 Opportunity Discovery / Radar**（均**推迟、未实现**）。
+- `docs/PROJECT_STATE.md`：Current Phase → 7.2（含交付 / 产品行为 / 限制 / 架构图与 alias）；
+  测试计数 337 → 372；Known Limitations 增补观察层 6 条限制；Next Single Goal 改为
+  「**人工核验 TOP-01 的 7 个锚点日期**」。
+- `AGENTS.md`：当前阶段、目录说明、测试计数同步。
+
+---
+
 ## 2026-09-16 · 并行轮次合并（Phase 7.1 双轮分歧裁决）
 
 同一 `snapshot_date = 2026-09-15` 出现两个**独立完成**的研究轮次：本地轮次

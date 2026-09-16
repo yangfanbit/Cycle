@@ -23,7 +23,7 @@ function previewEnabled(): boolean {
  * ?candidates=example 展示**示例 fixture**（Phase 7）。
  *
  * 缺省时产品消费 canonical 数据集 `research/current/current_candidates.json`
- * （当前为**空集** → Current Lens 显示诚实空态）。
+ * （Phase 7.1 起承载第一轮真实候选 5 条；数据集为空时 Current Lens 显示诚实空态）。
  * fixture 仅用于验证 Temporal Firewall / 阶段推断 / 相似度链路，UI 会显式标注
  * 「示例 fixture（非真实研究数据）」。
  */

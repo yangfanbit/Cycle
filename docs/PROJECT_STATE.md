@@ -19,7 +19,25 @@
 
 ## Current Phase
 
-**Phase 7.1：Current Research Discovery —— First Real Discovery Round（IMPLEMENTED + 第一轮真实数据已落地）。**
+**Phase 7.2：Time-based Observation Layer（IMPLEMENTED）。**
+在「今天该研究什么」（Phase 7 / 7.1）之外，进一步回答
+**「历史上，一年中的这个时间位置附近，反复出现过什么」** —— 即「**什么时候值得看**」。
+
+完整交付：
+
+- **Research**：`research/research/reports/time_observation_patterns_v0_1.json`
+  （4 条模式：**1 条 `TIMELINE_ELIGIBLE`** / 2 条 `RESEARCH_ONLY` / 1 条 `REJECTED`）·
+  整合报告 `Time_Observation_Pattern_Integration_v0_1.md` ·
+  canonical 生成器 `research/scripts/build_time_observation_patterns.py`（可复现，`--check` 逐字节校验）
+- **Product**：`src/data/timeline/timeObservationPatterns.ts`（宽容解析 + **跨年环形窗口** +
+  邻近关系 + View Model）· `src/components/TimeObservation/TimeObservationLayer.tsx`（Timeline 内极轻一层）·
+  `src/components/Timeline/trackPrimitives.tsx`（轨道原语，避免第二套月份网格实现）
+- **语义纪律**：只讲「历史观察窗口 / 历史复现」；**不出现**概率 / 胜率 / 买卖信号；
+  无可用窗口时**不渲染本层**
+- **未改**：DB / `schema.sql` / canonical export / `contracts/` / Campaign 定义 / Research Model /
+  Timeline 主视觉
+
+**上一阶段 Phase 7 / 7.1：Current Research Discovery（IMPLEMENTED + 第一轮真实数据已落地）。**
 Phase 7 v0.1 补齐了「2026 是当前时间、研究数据却截止到 2025」这一根本缺口；
 **Phase 7.1 把协议第一次接入真实研究数据**（`snapshot_date = 2026-09-15`，5 个 `CC-*` 候选），
 使产品能真正回答 **「今天这个时间点，我应该去历史资料里研究什么？」**
@@ -99,6 +117,8 @@ Research Questions（研究方向）
 | Phase 5.8 | **V1.9.1 Timeline Year Coverage Rule**（两源 `years()` 统一为 start→end 连续） | ✅ IMPLEMENTED |
 | Phase 6 | **V2.0 Product Core v2**（F-MED-6 Selection 身份分离 · Current Time Lens v2 三层 · Research Attention Gate v1 · Historical Similar Phase v1 · Macro Theme 聚合接口 · IA 重排） | ✅ IMPLEMENTED |
 | Phase 7 | **Current Research Discovery v0.1**（`research/current/` 数据协议 + 验证器 · Temporal Firewall · Phase Evidence Matrix 与透明规则引擎 · Similarity v2（候选 × 历史）· Research Questions · 「当前研究候选」UI + 诚实空态） | ✅ IMPLEMENTED |
+| Phase 7.1 | **First Real Current Research**（`snapshot 2026-09-15`：5 个真实候选 / 39 条证据 / 0 条快照后证据 · 拒绝候选池 5 条 · 跨会话并行轮次裁决） | ✅ IMPLEMENTED |
+| Phase 7.2 | **Time-based Observation Layer**（`time_observation_patterns_v0_1.json`：4 条模式 → **1 条进入 Timeline** · canonical 生成器（可复现）· Adapter 跨年环形窗口 · Timeline 内极轻观察层 + Level 2 摘要） | ✅ IMPLEMENTED |
 
 ---
 
@@ -123,9 +143,11 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - **History migration**：Cycle 为根（原 11 commits），Cycle-Research 经
   `git subtree add --prefix=research` 并入（原 28 commits）。共 40 commits，
   双方原始 author / date / message 保留。
-- **前端消费路径**：两个静态 Artifact，均为「Research 生成 → Product 只读消费」，无运行时网络请求：
+- **前端消费路径**：三个静态 Artifact，均为「Research 生成 → Product 只读消费」，无运行时网络请求：
   - `@exports/timeline_export_v1.json` —— 历史研究数据（alias → `exports/`）
   - `@current/current_candidates.json` —— **Phase 7** Current Candidate 数据集（alias → `research/current/`）
+  - `@observation/time_observation_patterns_v0_1.json` —— **Phase 7.2** Time Observation Pattern
+    （alias → `research/research/reports/`；该目录下的探索性脚本**不是**产品依赖）
 
 ---
 
@@ -174,12 +196,20 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
   - **空数据模式**：无候选时显示「当前暂无经过验证的 Current Candidate 数据 / 历史研究覆盖至 2025 /
     当前市场实时数据：未接入」，**不编造内容**。
   - **UI 不显示相似度分数 / 百分比**；不显示新闻流。
+- **Phase 7.2 · 时间型观察层**（`TimeObservationLayer`，Timeline 内新建的**极轻**一层）：
+  - **Level 1**：历史观察窗口带（淡底纹 + 点划线边界 + 窗口标签；跨年窗口分两段渲染）+
+    该年的**研究观察起点**标记（Early Signal 落点，可点击进入历史案例）。
+  - **Level 2**（点击就地展开，不离开页面）：窗口 / 口径 · **历史复现 X / Y 个观测年份** ·
+    年份案例（点击 → 既有 Campaign Detail）· 为什么值得看 · **限制说明** · 免责声明。
+  - **今天的关系**：`当前位于历史观察窗口` / `接近历史观察窗口`（14 天浏览缓冲）/ 诚实空态
+    「当前没有发现处于历史时间观察窗口的模式」。**多条命中不合并**，默认展开最相关的一条。
+  - **硬约束**：不出现概率 / 胜率 / 买卖信号 / 分数；无可用窗口时**整层不渲染**（不显示空壳）。
 - **Timeline Year Coverage Rule（V1.9.1）**：覆盖年份 = `start` 年 **连续到** `end` 年（两源同一 helper）。
 - **Timeline Entry Identity（V1.9.0）**：`entryId = `${campaign_id}@${展示年份}``；React key / focus /
   年份页签用 `entryId`，**打开 Campaign Detail 仍以 `campaign_id`**。
 - **F-MED-1 / F4** 已修复。
-- 测试：`npm test` **337 项通过**（Phase 7 后 282 → 335，Phase 7.1 +2 → 337，含 `currentResearch.test.tsx`）；
-  `tsc -b` 通过；`build` 通过（72 modules）。
+- 测试：`npm test` **372 项通过**（9 → 10 个测试文件；Phase 7.1 后 337，Phase 7.2 +35 → 372，
+  新增 `timeObservationPatterns.test.tsx`）；`tsc -b` 通过；`build` 通过。
 
 ---
 
@@ -238,6 +268,18 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
      使刚起步方向更难被归入 `THEME_FORMING`。
 - `research/current/narrative_annotations.json` 为**产品侧结构标注（PENDING_HUMAN_REVIEW）**，
   仅驱动相似度第 4 层；未标注的历史案例该层不参与（不推断）。
+- **Phase 7.2 观察层的限制（不是缺陷，是数据的真实状态；详见
+  `research/research/reports/Time_Observation_Pattern_Integration_v0_1.md` §11 / §12）**：
+  1. **只有 1 条 Pattern 达到 Timeline 门槛**（汽车主题上半年末启动观察窗口，N=7）→
+     观察层的覆盖度长期受制于历史样本量（补录 2018 之前 / 非汽车主题族才能扩展）。
+  2. **全部锚点为研究候选日期（未经行情人工核验）** → 数据质量上限 MEDIUM，
+     产品必须永远带「探索性」标记。
+  3. **幸存者偏差无法消除**：ThreeC 只记录「形成了 Campaign 的主题」，无法观测「同样在 6 月出现但未成势」的主题。
+  4. **研究样本自身 6 月占比 33%**（均匀基准 8.3%）→ 时间聚集含研究选择偏差成分，已写入 Artifact `background_baseline`。
+  5. Pattern 与 Theme Cycle **没有稳定映射键**（本轮用 `rule_id` 作主题族定义）；
+     扩展到更多主题前需要一个显式的「主题族 ↔ rule / theme」定义表（模型层决策）。
+  6. `timeline_eligible`（布尔）与 `timeline_eligibility`（三值）并存，解析器对不一致发告警；
+     未来若出现第三种纳入状态应统一为枚举。
 - `npm audit` 报告 5 项漏洞（构建工具链传递依赖，本轮未处理）。
 
 ---
@@ -261,14 +303,21 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 
 ## Next Single Goal
 
-> **Phase 7.1 已完成第一轮真实数据生产。下一步唯一一件事：用户视觉 / 研究 Review。**
+> **Phase 7.2 已完成「什么时候值得看」这一层。下一步唯一一件事：人工核验该 Pattern 的 7 个锚点日期。**
 >
-> 不再扩大数据或功能范围。请先在真实使用中判断：这 5 个候选（以及 1 个被引擎判为
-> `UNKNOWN` 的候选）是否真的帮你确定了「该去查什么资料」，而不是「该买什么」。
+> 具体动作（只做这一件）：核验 TOP-01（汽车主题上半年末启动观察窗口）的 7 个研究观察起点日期 ——
+> 2019-08-15（弱事件锚点）、2020-06-01、2021-06-01、2022-04-27（政策锚点）、2023-06-12、
+> 2024-06-11、2025-06-22，把 `campaign_date_observations.verification_method` 从 `unknown`
+> 推进到行情核验，并在 `research/current/` 或 `research/research/reports/` 记录核验结果。
 >
-> Review 通过后，下一轮的**唯一**研究动作是**回填观测**：按 `research/current/README.md` §10，
-> 记录这 5 个候选与 5 条拒绝方向的后续公开证据边际变化，形成第一份可对照的研究台账。
+> **理由**：这是当前提升观察层可信度**性价比最高**的一步 —— 数据质量直接决定
+> 「探索性」标记能否去掉，也决定下一阶段（Structural Historical Analogy）是否有可靠底座。
+>
+> Review 通过后，再按 `research/current/README.md` §10 回填 5 个 `CC-*` 候选的后续观测。
 > **在此之前不新增功能、不新增行业、不改模型、不改产品代码。**
+>
+> 并行的用户 Review：请在实际使用中判断「时间型观察层」是否真的帮你确定了
+> 「历史上这个时段值得看什么」，而不是「该买什么」。
 
 用户视觉 / 交互 Review（Phase 7.1）可同时进行：
 

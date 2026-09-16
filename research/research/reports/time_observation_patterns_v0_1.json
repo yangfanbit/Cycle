@@ -1,0 +1,777 @@
+{
+  "artifact": "time_observation_patterns",
+  "artifact_version": "0.1",
+  "contract_note": "Research Artifact —— 不是产品 schema，不进入 DB / schema.sql / timeline_export_v1.json / contracts。产品端只读消费。",
+  "generated_at": "2026-09-16",
+  "generated_by": "research/scripts/build_time_observation_patterns.py",
+  "snapshot_date": "2026-09-16",
+  "research_round": "time-observation-pattern-v0.1",
+  "supersedes": {
+    "exploratory_artifact": "research/research/reports/seasonal_observation_patterns_v0_1.json",
+    "exploratory_report": "research/research/reports/Seasonal_Observation_Pattern_Discovery_v0_1.md",
+    "note": "上游探索研究确立了锚点口径与拒绝规则；本 Artifact 是可复现生成器重新计算后的**产品可消费版本**，模式编号改为 TOP-*（与 SOP-* 一一对应并由 source_pattern_id 保留）。"
+  },
+  "question": "历史上，一年中的这个时间位置附近，反复出现过值得研究的主题启动 / 观察现象吗？",
+  "not_a": [
+    "这不是预测器，也不做任何形式的未来推断",
+    "这不给出买入或卖出时间",
+    "这不指示最佳埋伏点",
+    "这不做涨幅预测",
+    "这不计算胜率",
+    "这不输出未来概率",
+    "这不做收益预测"
+  ],
+  "method": "三阶段：① Historical Campaign / Research Candidate → Anchor Extraction（统一优先级）；② 主题族逐年聚合（同一年只取最早锚点，防止人为放大 N）；③ 描述统计 + 稳定性 + 留一法 → 纳入判定。全程不修改 Campaign 定义，不使用行情涨幅定义「启动」。",
+  "anchor_priority": [
+    "EARLY_SIGNAL（lifecycle.EARLY_SIGNAL.start / export.early_signal / signals[].EARLY_SIGNAL 最早）",
+    "THEME_FORMING（lifecycle.THEME_FORMING.start）",
+    "BROAD_CONFIRMATION（lifecycle.BROAD_CONFIRMATION.start）",
+    "CAMPAIGN_START（start_date；末选，仅在前三者皆无时使用）"
+  ],
+  "pattern_type_vocabulary": [
+    "SEASONAL",
+    "CALENDAR_DRIVEN",
+    "INDUSTRY_CYCLE",
+    "REPORTING_CYCLE",
+    "POLICY_CALENDAR",
+    "MIXED",
+    "UNKNOWN"
+  ],
+  "status_vocabulary": [
+    "STRONG_CANDIDATE",
+    "MODERATE_CANDIDATE",
+    "EXPLORATORY",
+    "REJECTED"
+  ],
+  "timeline_eligibility_vocabulary": [
+    "TIMELINE_ELIGIBLE",
+    "RESEARCH_ONLY",
+    "REJECTED"
+  ],
+  "inclusion_rules": {
+    "timeline_eligible": "N ≥ 5 且 窗口可构建 且 集中度比率 ≤ 0.45 且 STABLE 且 无单年主导",
+    "rejected": "窗口不可构建（IQR > 90 天）或 留一法显示单年主导",
+    "research_only": "其余（样本不足，或稳定性 / 集中度未达门槛）",
+    "window_definition": "典型窗口 = Median ± 1×MAD×1.4826（抗离群；A/B/C 三种口径并列保留）",
+    "note": "宁可少，也不把明显不可靠的规律放进 Timeline。"
+  },
+  "forbidden_fields": [
+    "future_probability",
+    "confidence_percent",
+    "expected_return",
+    "win_rate",
+    "buy_signal",
+    "sell_signal",
+    "target_price",
+    "seasonality_score",
+    "rating",
+    "score"
+  ],
+  "label_vocabulary": {
+    "window": "历史观察窗口",
+    "recurrence": "历史复现",
+    "in_window": "当前位于历史观察窗口",
+    "near_window": "接近历史观察窗口",
+    "none": "当前没有发现处于历史时间观察窗口的模式",
+    "disclaimer": "这是历史时间聚集现象，不代表今年必然重演，也不是买入或卖出信号。"
+  },
+  "background_baseline": {
+    "note": "时间聚集不能只靠「某月事件多」证明：ThreeC 自建事件台账本身 6 月占比 33%（10/30），远高于均匀基准 8.3%；即使只看指数「最优 30 日窗口」，6 月占比也达 18.75%。因此本 Artifact 中任何 6 月偏好都**部分来自研究样本选择偏差**，不可解读为主题独有季节性。",
+    "event_calendar_june_share": 0.3333,
+    "index_best_30d_window_june_share": 0.1875,
+    "uniform_june_share": 0.0833
+  },
+  "coverage": {
+    "years_observed": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "excluded_years": [
+      {
+        "year": 2018,
+        "reason": "no_clear_campaign",
+        "rule_id": "rule_auto_summer"
+      }
+    ],
+    "total_objects": 13,
+    "campaigns": 9,
+    "research_candidates": 4,
+    "anchor_type_counts": {
+      "EARLY_SIGNAL": 13
+    },
+    "annual_review_status": {
+      "rule_auto_summer#2018": "no_clear_campaign",
+      "rule_auto_summer#2019": "weak",
+      "rule_auto_summer#2020": "strong",
+      "rule_auto_summer#2021": "strong",
+      "rule_auto_summer#2022": "strong",
+      "rule_auto_summer#2023": "medium",
+      "rule_auto_summer#2024": "medium",
+      "rule_auto_summer#2025": "medium",
+      "rule_pharma_upgrade#2019": "medium",
+      "rule_pharma_upgrade#2020": "strong",
+      "rule_pharma_upgrade#2021": "strong",
+      "rule_pharma_upgrade#2022": "weak"
+    }
+  },
+  "summary": {
+    "patterns_total": 4,
+    "timeline_eligible": [
+      "TOP-01"
+    ],
+    "research_only": [
+      "TOP-02",
+      "TOP-03"
+    ],
+    "rejected": [
+      "TOP-04"
+    ],
+    "note": "本轮只有一条 Pattern 达到 Timeline 门槛，且它仍是**探索性**的（样本 7 年、全部研究候选日期）——产品必须以此口径呈现。"
+  },
+  "patterns": [
+    {
+      "pattern_id": "TOP-01",
+      "source_pattern_id": "SOP-03",
+      "pattern_type": "MIXED",
+      "title": "汽车主题上半年末启动观察窗口",
+      "description": "在 ThreeC 2018–2025 的研究样本中，汽车主题（rule_auto_summer 范围内全部 Campaign / Research Candidate）的「研究观察起点（Early Signal）」多次落在 5 月下旬—6 月下旬这一带。这是**历史样本中的时间聚集现象**，不是行业需求季节性，也不是未来概率。",
+      "theme_scope": "汽车",
+      "theme_key": "汽车（Macro Theme 全主题，rule_auto_summer 范围内全部对象）",
+      "family_definition": {
+        "rule_ids": [
+          "rule_auto_summer"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "observation_count": 7,
+      "observations": [
+        {
+          "year": 2019,
+          "date": "2019-08-15",
+          "md": "08-15",
+          "campaign_id": "C-2019-AD",
+          "title": "C-2019-AD",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": false
+        },
+        {
+          "year": 2020,
+          "date": "2020-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2020-NEV",
+          "title": "C-2020-NEV",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        },
+        {
+          "year": 2021,
+          "date": "2021-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2021-NEV",
+          "title": "C-2021-NEV",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        },
+        {
+          "year": 2022,
+          "date": "2022-04-27",
+          "md": "04-27",
+          "campaign_id": "C-2022-POLICY",
+          "title": "C-2022-POLICY",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": false
+        },
+        {
+          "year": 2023,
+          "date": "2023-06-12",
+          "md": "06-12",
+          "campaign_id": "C-2023-AD",
+          "title": "C-2023-AD",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        },
+        {
+          "year": 2024,
+          "date": "2024-06-11",
+          "md": "06-11",
+          "campaign_id": "C-2024-V2X",
+          "title": "C-2024-V2X",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        },
+        {
+          "year": 2025,
+          "date": "2025-06-22",
+          "md": "06-22",
+          "campaign_id": "C-2025-ROBOTAXI",
+          "title": "C-2025-ROBOTAXI",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        }
+      ],
+      "typical_window": {
+        "start": "05-27",
+        "end": "06-26",
+        "width_days": 31,
+        "method": "Median ± 1×MAD（MAD 乘以 1.4826 一致化）",
+        "center_date": "06-11",
+        "alternative_quantile_window": {
+          "start": "06-01",
+          "end": "06-17",
+          "method": "P25–P75"
+        },
+        "degraded_month_window": "06 ~ 06（放弃日级精度时的粗略口径）"
+      },
+      "center_date": "06-11",
+      "dispersion": {
+        "iqr_days": 16.0,
+        "mad_days": 10,
+        "span_days": 110,
+        "earliest_md": "04-27",
+        "latest_md": "08-15"
+      },
+      "recurrence": {
+        "matched_years": [
+          2020,
+          2021,
+          2023,
+          2024,
+          2025
+        ],
+        "missed_years": [
+          2019,
+          2022
+        ],
+        "eligible_years": 7,
+        "matched_count": 5,
+        "historical_ratio": 0.7143,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2019,
+          2020,
+          2021
+        ],
+        "second_years": [
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "first_center_md": "06-01",
+        "second_center_md": "06-11",
+        "median_shift_days": 10.5,
+        "drift_flag": "STABLE",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 5,
+        "max_center_shift_days": 5.0,
+        "max_hit_drop": 1,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 7,
+        "verification_methods": {
+          "unknown": 6,
+          "market_data": 1
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 7
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "research_strength": {
+        "grade": "A",
+        "rationale": "N=7；集中度比率 0.4018；漂移 STABLE；单年主导 False。"
+      },
+      "status": "MODERATE_CANDIDATE",
+      "timeline_eligibility": "TIMELINE_ELIGIBLE",
+      "timeline_eligible": true,
+      "timeline_eligibility_reason": "N=7 ≥ 5；集中度比率 0.4018 ≤ 0.45；前后半段 STABLE；留一法无单年主导 → 满足 Timeline 最低门槛（必须以「宽窗口 + 明确机制类别 + 非预测文案」呈现）。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "多机制叠加：年中稳增长政策节奏（如 2022-05-23 国常会阶段性减征乘用车购置税）+ 国际产业事件节奏 + A 股中报预告披露日历（6 月中下旬）+ 月度产销与渗透率数据发布日历。属于 CALENDAR_DRIVEN 为主的时间型规律，**不是** SEASONAL_DEMAND（无终端需求季节性证据）。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "年中稳增长政策窗口（国常会 / 财政部细则集中于 5–6 月）",
+            "evidence_strength": "SUPPORTED_BY_PUBLIC_RECORD"
+          },
+          {
+            "note": "A 股中报业绩预告披露窗口（6 月中下旬进入密集期）—— 制度性日历",
+            "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+          },
+          {
+            "note": "新能源车月度产销 / 渗透率数据在次月中旬公布 —— 制度性日历",
+            "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+          },
+          {
+            "note": "国际产业事件与展会节奏偏北半球夏季",
+            "evidence_strength": "MULTI_YEAR_OBSERVATION"
+          }
+        ]
+      },
+      "limitations": [
+        "样本仅 2018–2025（有效观测 7 年，2018 为反例年）。",
+        "全部锚点日期均为**研究候选日期**，未经行情人工最终核验（verification_method 多为 unknown）。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**：无法观测「同样在 6 月出现但未成势」的主题。",
+        "研究样本自身的事件台账 6 月占比 33%（均匀基准 8.3%）→ 时间聚集含研究选择偏差成分。",
+        "2019 锚点为弱事件驱动（event_driven / weak），2022 锚点落在窗口之外。",
+        "本例为**探索性历史规律**：样本有限，仅表示历史复现情况，不代表未来重演。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-16"
+      }
+    },
+    {
+      "pattern_id": "TOP-02",
+      "source_pattern_id": "SOP-01",
+      "pattern_type": "MIXED",
+      "title": "汽车智能化启动观察窗口",
+      "description": "汽车智能化（自动驾驶 / 车路云 / Robotaxi）方向的研究观察起点集中在 6 月中旬前后，但样本只有 4 年且前后半段存在轻度漂移，**未达 Timeline 门槛**，仅作为研究层记录。",
+      "theme_scope": "汽车",
+      "theme_key": "汽车 / 智能驾驶大主题（自动驾驶 · 车路云 · Robotaxi）",
+      "family_definition": {
+        "rule_ids": [
+          "rule_auto_summer"
+        ],
+        "main_theme_names": [
+          "智能驾驶/无人驾驶",
+          "车路云一体化/车路协同",
+          "Robotaxi/无人驾驶/智能网约车"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2019,
+        2023,
+        2024,
+        2025
+      ],
+      "observation_count": 4,
+      "observations": [
+        {
+          "year": 2019,
+          "date": "2019-08-15",
+          "md": "08-15",
+          "campaign_id": "C-2019-AD",
+          "title": "C-2019-AD",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": false
+        },
+        {
+          "year": 2023,
+          "date": "2023-06-12",
+          "md": "06-12",
+          "campaign_id": "C-2023-AD",
+          "title": "C-2023-AD",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        },
+        {
+          "year": 2024,
+          "date": "2024-06-11",
+          "md": "06-11",
+          "campaign_id": "C-2024-V2X",
+          "title": "C-2024-V2X",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        },
+        {
+          "year": 2025,
+          "date": "2025-06-22",
+          "md": "06-22",
+          "campaign_id": "C-2025-ROBOTAXI",
+          "title": "C-2025-ROBOTAXI",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true
+        }
+      ],
+      "typical_window": {
+        "start": "06-09",
+        "end": "06-25",
+        "width_days": 17,
+        "method": "Median ± 1×MAD（MAD 乘以 1.4826 一致化）",
+        "center_date": "06-17",
+        "alternative_quantile_window": {
+          "start": "06-12",
+          "end": "07-05",
+          "method": "P25–P75"
+        },
+        "degraded_month_window": "06 ~ 07（放弃日级精度时的粗略口径）"
+      },
+      "center_date": "06-17",
+      "dispersion": {
+        "iqr_days": 23.75,
+        "mad_days": 6,
+        "span_days": 65,
+        "earliest_md": "06-11",
+        "latest_md": "08-15"
+      },
+      "recurrence": {
+        "matched_years": [
+          2023,
+          2024,
+          2025
+        ],
+        "missed_years": [
+          2019
+        ],
+        "eligible_years": 4,
+        "matched_count": 3,
+        "historical_ratio": 0.75,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2019,
+          2023
+        ],
+        "second_years": [
+          2024,
+          2025
+        ],
+        "first_center_md": "07-14",
+        "second_center_md": "06-17",
+        "median_shift_days": -27.5,
+        "drift_flag": "MILD_DRIFT",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 3,
+        "max_center_shift_days": 5.0,
+        "max_hit_drop": 1,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 4,
+        "verification_methods": {
+          "unknown": 4
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 4
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "research_strength": {
+        "grade": "B",
+        "rationale": "N=4；集中度比率 0.2968；漂移 MILD_DRIFT；单年主导 False。"
+      },
+      "status": "MODERATE_CANDIDATE",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=4 < 最低纳入标准（5），样本不足，先留在研究层；另有轻度漂移（MILD_DRIFT）。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "政策**预期**窗口 + 国际产业事件 + 中报预告日历；注意政策落地时点本身并不在 6 月（如智能网联准入试点成文于 2023-11-17、车路云试点名单公布于 2024-07-01）。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "政策落地时点不在 6 月，机制更接近「预期窗口」而非政策发布日本身",
+            "evidence_strength": "SUPPORTED_BY_PUBLIC_RECORD"
+          }
+        ]
+      },
+      "limitations": [
+        "N=4 < 最低纳入标准（5），且 2019 锚点为弱事件驱动，与其他年份不是同一强度样本。",
+        "前后半段存在 MILD_DRIFT（中位位移约 −27.5 天）→ 不稳定。",
+        "全部锚点为研究候选日期，未经行情人工最终核验。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-16"
+      }
+    },
+    {
+      "pattern_id": "TOP-03",
+      "source_pattern_id": "SOP-02",
+      "pattern_type": "INDUSTRY_CYCLE",
+      "title": "汽车电动化启动观察窗口",
+      "description": "汽车电动化方向两年（2020 / 2021）的研究观察起点完全相同（06-01），但 N=2 的「完全重合」是**样本量幻觉**，不构成可固化规律；保留在 Artifact 供扩样后复查。",
+      "theme_scope": "汽车",
+      "theme_key": "汽车 / 新能源（新能源车 · 动力电池 · 特斯拉产业链）",
+      "family_definition": {
+        "rule_ids": [
+          "rule_auto_summer"
+        ],
+        "main_theme_names": [
+          "新能源汽车/电池",
+          "特斯拉产业链"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2020,
+        2021
+      ],
+      "observation_count": 2,
+      "observations": [
+        {
+          "year": 2020,
+          "date": "2020-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2020-NEV",
+          "title": "C-2020-NEV",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null
+        },
+        {
+          "year": 2021,
+          "date": "2021-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2021-NEV",
+          "title": "C-2021-NEV",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null
+        }
+      ],
+      "typical_window": null,
+      "center_date": "06-01",
+      "dispersion": {
+        "iqr_days": 0,
+        "mad_days": 0,
+        "span_days": 0,
+        "earliest_md": "06-01",
+        "latest_md": "06-01"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 2,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "INSUFFICIENT_N",
+        "note": "N<4，不做前后半段检验（位移对单点过于敏感）。"
+      },
+      "leave_one_out": {
+        "base_hits": 2,
+        "max_center_shift_days": 0.0,
+        "max_hit_drop": 0,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 2,
+        "verification_methods": {
+          "unknown": 2
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 2
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "research_strength": {
+        "grade": "C",
+        "rationale": "N=2；集中度比率 0.0；漂移 INSUFFICIENT_N；单年主导 False。"
+      },
+      "status": "EXPLORATORY",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=2 < 最低纳入标准（5），样本不足，先留在研究层；且 N=2 的「完全重合」属样本量幻觉，不得当作证据。",
+      "mechanism": {
+        "type": "INDUSTRY_CYCLE",
+        "primary_mechanism": "INDUSTRY_CYCLE",
+        "note": "产销数据与产能节奏（INDUSTRY_CYCLE）：新能源车月度产销与渗透率数据在年中发布后强化叙事。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "新能源车月度产销 / 渗透率数据的发布节奏",
+            "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+          }
+        ]
+      },
+      "limitations": [
+        "N=2 < 最低纳入标准；两点完全重合会让集中度指标与经验检验出现**假显著**，不得当作证据。",
+        "两年锚点均为研究候选日期，未经行情人工核验。",
+        "本条目是「样本量幻觉」的教学案例：**最「漂亮」的集中度反而最不可用**。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-16"
+      }
+    },
+    {
+      "pattern_id": "TOP-04",
+      "source_pattern_id": "SOP-04",
+      "pattern_type": "CALENDAR_DRIVEN",
+      "title": "医药健康结构性升级启动窗口",
+      "description": "医药健康方向**未**发现时间聚集：三个锚点分散在三个不同月份（11-01 / 01-02 / 01-23），且留一法显示结果完全由单一年份（2020 疫情）决定 → 已拒绝。",
+      "theme_scope": "医药健康",
+      "theme_key": "医药健康（创新药 · 疫情医疗 · 中医药）",
+      "family_definition": {
+        "rule_ids": [
+          "rule_pharma_upgrade"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2019,
+        2020,
+        2021
+      ],
+      "observation_count": 3,
+      "observations": [
+        {
+          "year": 2019,
+          "date": "2019-01-02",
+          "md": "01-02",
+          "campaign_id": "C-2019-PHARMA-INNOV",
+          "title": "C-2019-PHARMA-INNOV",
+          "kind": "campaign",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null
+        },
+        {
+          "year": 2020,
+          "date": "2020-01-23",
+          "md": "01-23",
+          "campaign_id": "RC-2020-PANDEMIC",
+          "title": "2020 疫情医疗（防护耗材 / 体外诊断 / 疫苗）",
+          "kind": "research_candidate",
+          "anchor_source": "export.early_signal",
+          "in_typical_window": null
+        },
+        {
+          "year": 2021,
+          "date": "2021-11-01",
+          "md": "11-01",
+          "campaign_id": "RC-2021-TCM",
+          "title": "2021–2022 中医药（品牌中药 / 中药创新 / 抗疫中药）",
+          "kind": "research_candidate",
+          "anchor_source": "export.early_signal",
+          "in_typical_window": null
+        }
+      ],
+      "typical_window": null,
+      "center_date": "01-23",
+      "dispersion": {
+        "iqr_days": 303,
+        "mad_days": 21,
+        "span_days": 303,
+        "earliest_md": "01-02",
+        "latest_md": "11-01"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 3,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "INSUFFICIENT_N",
+        "note": "N<4，不做前后半段检验（位移对单点过于敏感）。"
+      },
+      "leave_one_out": {
+        "base_hits": 2,
+        "max_center_shift_days": 141.0,
+        "max_hit_drop": 0,
+        "single_year_dominated": true,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 3,
+        "verification_methods": {
+          "unknown": 3
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 3
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "research_strength": {
+        "grade": "D",
+        "rationale": "N=3；集中度比率 1.6603；漂移 INSUFFICIENT_N；单年主导 True。"
+      },
+      "status": "REJECTED",
+      "timeline_eligibility": "REJECTED",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "留一法显示结果由单一年份主导（最大中位位移 141.0 天）→ 不构成时间规律。",
+      "mechanism": {
+        "type": "CALENDAR_DRIVEN",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "政策日期本身分散（集采 2018-12-17、科创板 2019-07-22、医保谈判 2019-11-28），不支持「1 月集中」；且含一个不可重复的外生冲击（2020 疫情）。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "医药是数据集中**唯一**跨年重复的 Theme Cycle，却恰恰不构成时间规律",
+            "evidence_strength": "NEGATIVE_FINDING"
+          }
+        ]
+      },
+      "limitations": [
+        "N=3；锚点分属 3 个月，无法构建任何日级 / 月级窗口。",
+        "留一法中位位移约 141 天 → 完全由单一年份主导。",
+        "2019 锚点（01-02）实为本地数据窗口起点，不是真实主题起点。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-16"
+      }
+    }
+  ]
+}

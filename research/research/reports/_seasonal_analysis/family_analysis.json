@@ -1,0 +1,308 @@
+{
+  "families": {
+    "AUTO_SMART_DRIVING": {
+      "label": "AUTO_SMART_DRIVING",
+      "n_years": 4,
+      "years": [
+        2019,
+        2023,
+        2024,
+        2025
+      ],
+      "campaigns": [
+        "C-2019-AD",
+        "C-2023-AD",
+        "C-2024-V2X",
+        "C-2025-ROBOTAXI"
+      ],
+      "md_list": [
+        "08-15",
+        "06-12",
+        "06-11",
+        "06-22"
+      ],
+      "doy_norm": [
+        227,
+        163,
+        162,
+        173
+      ],
+      "median": 168.0,
+      "median_md": "06-17",
+      "p25": 162.75,
+      "p25_md": "06-12",
+      "p75": 186.5,
+      "p75_md": "07-05",
+      "iqr_days": 23.75,
+      "mad_days": 5.5,
+      "span_days": 65,
+      "earliest_md": "06-11",
+      "latest_md": "08-15",
+      "month_distribution": {
+        "06": 3,
+        "08": 1
+      },
+      "decade_distribution": {
+        "06-下旬": 1,
+        "06-中旬": 2,
+        "08-中旬": 1
+      },
+      "spread_ratio": 0.2968036529680365,
+      "span_p": 0.02366
+    },
+    "AUTO_NEV_ELECTRIFICATION": {
+      "label": "AUTO_NEV_ELECTRIFICATION",
+      "n_years": 2,
+      "years": [
+        2020,
+        2021
+      ],
+      "campaigns": [
+        "C-2020-NEV",
+        "C-2021-NEV"
+      ],
+      "md_list": [
+        "06-01",
+        "06-01"
+      ],
+      "doy_norm": [
+        152,
+        152
+      ],
+      "median": 152.0,
+      "median_md": "06-01",
+      "p25": 152.0,
+      "p25_md": "06-01",
+      "p75": 152.0,
+      "p75_md": "06-01",
+      "iqr_days": 0.0,
+      "mad_days": 0.0,
+      "span_days": 0,
+      "earliest_md": "06-01",
+      "latest_md": "06-01",
+      "month_distribution": {
+        "06": 2
+      },
+      "decade_distribution": {
+        "06-上旬": 2
+      },
+      "spread_ratio": 0.0,
+      "span_p": 0.0027
+    },
+    "AUTO_ALL": {
+      "label": "AUTO_ALL",
+      "n_years": 7,
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "campaigns": [
+        "C-2019-AD",
+        "C-2020-NEV",
+        "C-2021-NEV",
+        "C-2022-POLICY",
+        "C-2023-AD",
+        "C-2024-V2X",
+        "C-2025-ROBOTAXI"
+      ],
+      "md_list": [
+        "08-15",
+        "06-01",
+        "06-01",
+        "04-27",
+        "06-12",
+        "06-11",
+        "06-22"
+      ],
+      "doy_norm": [
+        227,
+        152,
+        152,
+        117,
+        163,
+        162,
+        173
+      ],
+      "median": 162.0,
+      "median_md": "06-11",
+      "p25": 152.0,
+      "p25_md": "06-01",
+      "p75": 168.0,
+      "p75_md": "06-17",
+      "iqr_days": 16.0,
+      "mad_days": 10.0,
+      "span_days": 110,
+      "earliest_md": "04-27",
+      "latest_md": "08-15",
+      "month_distribution": {
+        "04": 1,
+        "06": 5,
+        "08": 1
+      },
+      "decade_distribution": {
+        "04-下旬": 1,
+        "06-上旬": 2,
+        "06-下旬": 1,
+        "06-中旬": 2,
+        "08-中旬": 1
+      },
+      "spread_ratio": 0.4018264840182648,
+      "span_p": 0.00508
+    },
+    "PHARMA_ALL": {
+      "label": "PHARMA_ALL",
+      "n_years": 3,
+      "years": [
+        2019,
+        2020,
+        2021
+      ],
+      "campaigns": [
+        "C-2019-PHARMA-INNOV",
+        "RC-2020-PANDEMIC",
+        "RC-2021-TCM"
+      ],
+      "md_list": [
+        "01-02",
+        "01-23",
+        "11-01"
+      ],
+      "doy_norm": [
+        2,
+        23,
+        305
+      ],
+      "median": 23.0,
+      "median_md": "01-23",
+      "p25": 12.5,
+      "p25_md": "01-12",
+      "p75": 164.0,
+      "p75_md": "06-13",
+      "iqr_days": 151.5,
+      "mad_days": 21.0,
+      "span_days": 83,
+      "earliest_md": "11-01",
+      "latest_md": "01-23",
+      "month_distribution": {
+        "01": 2,
+        "11": 1
+      },
+      "decade_distribution": {
+        "01-上旬": 1,
+        "01-下旬": 1,
+        "11-上旬": 1
+      },
+      "spread_ratio": 0.4547945205479452,
+      "span_p": 0.15866
+    }
+  },
+  "lunar_proximity": {
+    "AUTO_SMART_DRIVING": [
+      {
+        "year": 2019,
+        "anchor_md": "08-15",
+        "days_after_spring_festival": 191
+      },
+      {
+        "year": 2023,
+        "anchor_md": "06-12",
+        "days_after_spring_festival": 141
+      },
+      {
+        "year": 2024,
+        "anchor_md": "06-11",
+        "days_after_spring_festival": 121
+      },
+      {
+        "year": 2025,
+        "anchor_md": "06-22",
+        "days_after_spring_festival": 144
+      }
+    ],
+    "AUTO_NEV_ELECTRIFICATION": [
+      {
+        "year": 2020,
+        "anchor_md": "06-01",
+        "days_after_spring_festival": 127
+      },
+      {
+        "year": 2021,
+        "anchor_md": "06-01",
+        "days_after_spring_festival": 109
+      }
+    ],
+    "AUTO_ALL": [
+      {
+        "year": 2019,
+        "anchor_md": "08-15",
+        "days_after_spring_festival": 191
+      },
+      {
+        "year": 2020,
+        "anchor_md": "06-01",
+        "days_after_spring_festival": 127
+      },
+      {
+        "year": 2021,
+        "anchor_md": "06-01",
+        "days_after_spring_festival": 109
+      },
+      {
+        "year": 2022,
+        "anchor_md": "04-27",
+        "days_after_spring_festival": 85
+      },
+      {
+        "year": 2023,
+        "anchor_md": "06-12",
+        "days_after_spring_festival": 141
+      },
+      {
+        "year": 2024,
+        "anchor_md": "06-11",
+        "days_after_spring_festival": 121
+      },
+      {
+        "year": 2025,
+        "anchor_md": "06-22",
+        "days_after_spring_festival": 144
+      }
+    ],
+    "PHARMA_ALL": [
+      {
+        "year": 2019,
+        "anchor_md": "01-02",
+        "days_after_spring_festival": -34
+      },
+      {
+        "year": 2020,
+        "anchor_md": "01-23",
+        "days_after_spring_festival": -2
+      },
+      {
+        "year": 2021,
+        "anchor_md": "11-01",
+        "days_after_spring_festival": 262
+      }
+    ]
+  },
+  "fixed_anchor_doy": {
+    "元旦": 1,
+    "春节(近似上限)": 51,
+    "两会(3月上)": 64,
+    "清明": 95,
+    "五一": 121,
+    "618": 169,
+    "中报预告窗口(7/15前)": 196,
+    "中报披露(7-8月)": 243,
+    "国庆": 274,
+    "双十一": 315,
+    "中央经济工作会议(12月中)": 349,
+    "年报预告(1月底前)": 31
+  }
+}

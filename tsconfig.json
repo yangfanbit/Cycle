@@ -20,7 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@exports/*": ["exports/*"],
-      "@current/*": ["research/current/*"]
+      "@current/*": ["research/current/*"],
+      "@observation/*": ["research/research/reports/*"]
     }
   },
   "include": ["src", "data", "exports", "research/current", "tests", "vite.config.ts"]

@@ -14,6 +14,8 @@ import {
 } from '../../data/timeline/timelineAdapter';
 import { preObservationChainOf } from '../../data/timeline/preObservation';
 import { timelineEntryId } from '../../data/timeline/entryIdentity';
+import { TimeObservationLayer } from '../TimeObservation/TimeObservationLayer';
+import { MonthGrid, TodayLine, MONTHS, monthFractions, pct } from './trackPrimitives';
 import type { TimelineCampaign, TimelineResearchEvent } from '../../data/timeline/timelineTypes';
 import type { TimeWindow } from '../../models';
 import {
@@ -85,29 +87,7 @@ interface TimelineProps {
   sourceKind: 'verified' | 'preview';
 }
 
-const MONTHS = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-const MONTH_START_FRACTIONS = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-
-function monthFractions(year: number): number[] {
-  const diy = daysInYear(year);
-  const leap = diy === 366 ? 1 : 0;
-  return MONTH_START_FRACTIONS.map((d, i) => (d + (i > 1 ? leap : 0)) / diy);
-}
-
-function pct(f: number): string {
-  return `${(f * 100).toFixed(3)}%`;
-}
-
-/** 网格线（12个月） */
-function MonthGrid({ year }: { year: number }) {
-  return (
-    <div className="tl-grid">
-      {monthFractions(year).map((f, i) => (
-        <div key={i} className="gl" style={{ left: pct(f) }} />
-      ))}
-    </div>
-  );
-}
+/* 月份网格 / 今天线 / 百分比 等轨道原语已抽到 ./trackPrimitives（避免第二套实现） */
 
 export function Timeline({ year, today, selection, onSelect, campaigns, researchEvents, sourceKind }: TimelineProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
@@ -334,6 +314,17 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
             );
           })}
         </section>
+
+        {/* 时间型观察层（Phase 7.2）：极轻的一层，回答「历史上这个时间位置附近反复出现过什么」。
+            数据来自 Time Observation Pattern Artifact（离线研究产物，只读消费）。
+            语义为**历史观察窗口**，不是预测、不是信号；无可用窗口时本层不渲染。 */}
+        <TimeObservationLayer
+          year={year}
+          today={today}
+          onSelect={onSelect}
+          showTooltip={showTooltip}
+          hideTooltip={hideTooltip}
+        />
 
         {/* 第三层：历史行情（Campaign 为视觉主体；verified 或 Research 预览） */}
         <section className="tl-layer layer-campaigns">
@@ -743,14 +734,6 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
           ))}
         </div>
       )}
-    </div>
-  );
-}
-
-function TodayLine({ frac }: { frac: number }) {
-  return (
-    <div className="today-line" style={{ left: pct(frac) }}>
-      <span className="today-flag">TODAY</span>
     </div>
   );
 }

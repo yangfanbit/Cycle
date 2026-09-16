@@ -1,0 +1,59 @@
+{
+  "n_campaigns_export": 9,
+  "n_campaigns_db": 9,
+  "n_research_candidates_export": 4,
+  "n_total_export_objects": 13,
+  "n_themes": 12,
+  "n_macro_themes": 2,
+  "n_sub_themes": 10,
+  "n_annual_reviews": 12,
+  "n_rules": 2,
+  "n_signals": 14,
+  "n_events": 33,
+  "n_securities": 46,
+  "anchor_type_counts": {
+    "ANCHOR_A_EARLY_SIGNAL": 13,
+    "ANCHOR_B_FORMATION": 0,
+    "ANCHOR_C_CAMPAIGN_START": 0,
+    "ANCHOR_NONE": 0
+  },
+  "has_early_signal": 13,
+  "has_theme_forming": 6,
+  "has_broad_confirmation": 6,
+  "only_campaign_start": 0,
+  "has_conflict": 1,
+  "status_counts": {
+    "provisional": 8,
+    "conflict": 1,
+    "null": 4
+  },
+  "research_status_counts": {
+    "PROVISIONAL": 12,
+    "CONFLICT": 1
+  },
+  "years_seen": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "units_total": 11,
+  "units_by_family": {
+    "auto_intelligence_2023": 1,
+    "medical_structural_upgrade_2019_2022": 2,
+    "robotaxi_2024": 1,
+    "医药健康": 1,
+    "智能驾驶/无人驾驶": 1,
+    "汽车": 5
+  },
+  "verification_method_counts": {
+    "unknown": 18,
+    "market_data": 6
+  },
+  "date_confidence_counts": {
+    "medium": 9
+  }
+}

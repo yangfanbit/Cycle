@@ -470,7 +470,7 @@ export function parseCurrentCandidateDataset(raw: unknown): ParseResult {
 
 /* ================= 4. 数据入口 ================= */
 
-/** canonical 数据集（`research/current/current_candidates.json`；当前为**空集** → 诚实空态） */
+/** canonical 数据集（`research/current/current_candidates.json`；Phase 7.1 起承载第一轮真实候选 5 条） */
 export function defaultCurrentCandidateDataset(): CurrentCandidateDataset {
   return parseCurrentCandidateDataset(currentCandidatesJson).dataset;
 }

@@ -1,0 +1,973 @@
+{
+  "SOP-01": {
+    "pattern_id": "SOP-01",
+    "name": "汽车智能化启动窗口（智能驾驶/车路云/Robotaxi）",
+    "theme_key": "汽车/智能驾驶大主题",
+    "pattern_type": "MIXED",
+    "mechanism_hypotheses": [
+      "政策/标准日历（工信部吹风、L3 准入、车路云试点城市名单）",
+      "国际产业事件（特斯拉 Robotaxi 试点 / FSD 进展）",
+      "北京/武汉等地车路云大额招标备案"
+    ],
+    "cycles": [
+      "auto_ad_2019",
+      "auto_intelligence_2023",
+      "auto_v2x_2024",
+      "robotaxi_2024",
+      "robotaxi_2025"
+    ],
+    "n_years": 4,
+    "years": [
+      2019,
+      2023,
+      2024,
+      2025
+    ],
+    "campaigns": [
+      "C-2019-AD",
+      "C-2023-AD",
+      "C-2024-V2X",
+      "C-2025-ROBOTAXI"
+    ],
+    "anchor_types": [
+      "ANCHOR_A_EARLY_SIGNAL"
+    ],
+    "anchor_dates": [
+      "2019-08-15",
+      "2023-06-12",
+      "2024-06-11",
+      "2025-06-22"
+    ],
+    "anchor_md": [
+      "08-15",
+      "06-12",
+      "06-11",
+      "06-22"
+    ],
+    "anchor_doy_norm": [
+      227,
+      163,
+      162,
+      173
+    ],
+    "median_doy": 168.0,
+    "median_md": "06-17",
+    "mean_doy": 181.25,
+    "mean_md": "06-30",
+    "p25": 162.75,
+    "p25_md": "06-12",
+    "p75": 186.5,
+    "p75_md": "07-05",
+    "iqr_days": 23.75,
+    "mad_days": 5.5,
+    "earliest_md": "06-11",
+    "latest_md": "08-15",
+    "span_days": 65,
+    "months_distinct": 2,
+    "month_distribution": {
+      "06": 3,
+      "08": 1
+    },
+    "month_decade_distribution": {
+      "06-中旬": 2,
+      "06-下旬": 1,
+      "08-中旬": 1
+    },
+    "windows": {
+      "A_quantile_P25_P75": {
+        "start_md": "06-12",
+        "end_md": "07-05",
+        "start_doy": 162.75,
+        "end_doy": 186.5,
+        "method": "P25–P75 分位数窗口"
+      },
+      "B_mad_k1.0": {
+        "start_md": "06-09",
+        "end_md": "06-25",
+        "start_doy": 159.8457,
+        "end_doy": 176.1543,
+        "method": "Median±1.0·MAD（σ 一致化）"
+      },
+      "B_mad_k1.5": {
+        "start_md": "06-05",
+        "end_md": "06-29",
+        "start_doy": 155.76855,
+        "end_doy": 180.23145,
+        "method": "Median±1.5·MAD（σ 一致化）"
+      },
+      "B_mad_k2.0": {
+        "start_md": "06-01",
+        "end_md": "07-03",
+        "start_doy": 151.6914,
+        "end_doy": 184.3086,
+        "method": "Median±2.0·MAD（σ 一致化）"
+      },
+      "C_month": {
+        "start_md": "01-06",
+        "end_md": "01-08",
+        "start_doy": 6,
+        "end_doy": 8,
+        "method": "月份窗口（退化）"
+      },
+      "C2_month_decade": {
+        "start_md": "06-中旬",
+        "end_md": "08-中旬",
+        "start_doy": null,
+        "end_doy": null,
+        "method": "月-旬窗口（退化）"
+      }
+    },
+    "historical_recurrence": {
+      "A_quantile_P25_P75": {
+        "hits": 2,
+        "n_years": 4,
+        "ratio": 0.5,
+        "hits_years": [
+          2023,
+          2025
+        ],
+        "miss_years": [
+          2019,
+          2024
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.0": {
+        "hits": 3,
+        "n_years": 4,
+        "ratio": 0.75,
+        "hits_years": [
+          2023,
+          2024,
+          2025
+        ],
+        "miss_years": [
+          2019
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.5": {
+        "hits": 3,
+        "n_years": 4,
+        "ratio": 0.75,
+        "hits_years": [
+          2023,
+          2024,
+          2025
+        ],
+        "miss_years": [
+          2019
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k2.0": {
+        "hits": 3,
+        "n_years": 4,
+        "ratio": 0.75,
+        "hits_years": [
+          2023,
+          2024,
+          2025
+        ],
+        "miss_years": [
+          2019
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "C_month": {
+        "hits": 0,
+        "n_years": 4,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2019,
+          2023,
+          2024,
+          2025
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      }
+    },
+    "spread_ratio_vs_uniform": 0.2968036529680365,
+    "empirical_span_p_one_sided": 0.02395,
+    "stability": {
+      "status": "SPLIT",
+      "first_years": [
+        2019,
+        2023
+      ],
+      "second_years": [
+        2024,
+        2025
+      ],
+      "first_median_md": "07-14",
+      "second_median_md": "06-17",
+      "median_shift_days": -27.5,
+      "iqr_overlap_days": 0.0,
+      "drift_flag": "MILD_DRIFT",
+      "note": "|位移|≥45d→DRIFTING；21–44d→MILD_DRIFT；<21d→STABLE"
+    },
+    "leave_one_out": {
+      "status": "OK",
+      "base_hits": 2,
+      "base_median_md": "06-17",
+      "max_median_shift_on_removal_days": 5.0,
+      "max_hit_drop_on_removal": 1,
+      "single_year_dominated": false,
+      "per_removal": [
+        {
+          "removed_year": 2019,
+          "median_after": "06-12",
+          "median_shift_days": 5.0,
+          "hits_after": 2,
+          "n_after": 3
+        },
+        {
+          "removed_year": 2023,
+          "median_after": "06-22",
+          "median_shift_days": 5.0,
+          "hits_after": 1,
+          "n_after": 3
+        },
+        {
+          "removed_year": 2024,
+          "median_after": "06-22",
+          "median_shift_days": 5.0,
+          "hits_after": 2,
+          "n_after": 3
+        },
+        {
+          "removed_year": 2025,
+          "median_after": "06-12",
+          "median_shift_days": 5.0,
+          "hits_after": 1,
+          "n_after": 3
+        }
+      ]
+    },
+    "data_quality": {
+      "all_provisional": true,
+      "has_conflict": false,
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "date_precision": "EXACT_DATE（日级；但 verification_method 多为 unknown → 未经行情人工核验）",
+      "provisional_count": 4
+    }
+  },
+  "SOP-02": {
+    "pattern_id": "SOP-02",
+    "name": "汽车电动化启动窗口（新能源/电池/特斯拉产业链）",
+    "theme_key": "汽车/新能源",
+    "pattern_type": "INDUSTRY_CYCLE",
+    "mechanism_hypotheses": [
+      "新能源渗透率跃升 + 电池龙头产能/市值里程碑",
+      "特斯拉国产化放量"
+    ],
+    "cycles": [
+      "auto_nev_2020",
+      "auto_nev_2021"
+    ],
+    "n_years": 2,
+    "years": [
+      2020,
+      2021
+    ],
+    "campaigns": [
+      "C-2020-NEV",
+      "C-2021-NEV"
+    ],
+    "anchor_types": [
+      "ANCHOR_A_EARLY_SIGNAL"
+    ],
+    "anchor_dates": [
+      "2020-06-01",
+      "2021-06-01"
+    ],
+    "anchor_md": [
+      "06-01",
+      "06-01"
+    ],
+    "anchor_doy_norm": [
+      152,
+      152
+    ],
+    "median_doy": 152.0,
+    "median_md": "06-01",
+    "mean_doy": 152.0,
+    "mean_md": "06-01",
+    "p25": 152.0,
+    "p25_md": "06-01",
+    "p75": 152.0,
+    "p75_md": "06-01",
+    "iqr_days": 0.0,
+    "mad_days": 0.0,
+    "earliest_md": "06-01",
+    "latest_md": "06-01",
+    "span_days": 0,
+    "months_distinct": 1,
+    "month_distribution": {
+      "06": 2
+    },
+    "month_decade_distribution": {
+      "06-上旬": 2
+    },
+    "windows": {
+      "A_quantile_P25_P75": {
+        "start_md": "06-01",
+        "end_md": "06-01",
+        "start_doy": 152.0,
+        "end_doy": 152.0,
+        "method": "P25–P75 分位数窗口"
+      },
+      "B_mad_k1.0": {
+        "start_md": "06-01",
+        "end_md": "06-01",
+        "start_doy": 152.0,
+        "end_doy": 152.0,
+        "method": "Median±1.0·MAD（MAD=0 → 退化为极差）"
+      },
+      "B_mad_k1.5": {
+        "start_md": "06-01",
+        "end_md": "06-01",
+        "start_doy": 152.0,
+        "end_doy": 152.0,
+        "method": "Median±1.5·MAD（MAD=0 → 退化为极差）"
+      },
+      "B_mad_k2.0": {
+        "start_md": "06-01",
+        "end_md": "06-01",
+        "start_doy": 152.0,
+        "end_doy": 152.0,
+        "method": "Median±2.0·MAD（MAD=0 → 退化为极差）"
+      },
+      "C_month": {
+        "start_md": "01-06",
+        "end_md": "01-06",
+        "start_doy": 6,
+        "end_doy": 6,
+        "method": "月份窗口（退化）"
+      },
+      "C2_month_decade": {
+        "start_md": "06-上旬",
+        "end_md": "06-上旬",
+        "start_doy": null,
+        "end_doy": null,
+        "method": "月-旬窗口（退化）"
+      }
+    },
+    "historical_recurrence": {
+      "A_quantile_P25_P75": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2020,
+          2021
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.0": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2020,
+          2021
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.5": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2020,
+          2021
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k2.0": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2020,
+          2021
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "C_month": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      }
+    },
+    "spread_ratio_vs_uniform": 0.0,
+    "empirical_span_p_one_sided": 0.00295,
+    "stability": {
+      "status": "INSUFFICIENT_N",
+      "note": "N=2<4，不做前后半段检验（避免把 2 点说成稳定）"
+    },
+    "leave_one_out": {
+      "status": "N<3",
+      "note": "样本太小，不做留一法"
+    },
+    "data_quality": {
+      "all_provisional": true,
+      "has_conflict": false,
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "date_precision": "EXACT_DATE（日级；但 verification_method 多为 unknown → 未经行情人工核验）",
+      "provisional_count": 2
+    }
+  },
+  "SOP-03": {
+    "pattern_id": "SOP-03",
+    "name": "汽车全主题夏季启动（跨机制并集）",
+    "theme_key": "汽车（Macro Theme）",
+    "pattern_type": "MIXED",
+    "mechanism_hypotheses": [
+      "多机制叠加：政策刺激 + 电动化 + 智能化 + 事件驱动"
+    ],
+    "cycles": [
+      "auto_ad_2019",
+      "auto_intelligence_2023",
+      "auto_v2x_2024",
+      "robotaxi_2024",
+      "robotaxi_2025",
+      "auto_nev_2020",
+      "auto_nev_2021",
+      "auto_policy_2022"
+    ],
+    "n_years": 7,
+    "years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "campaigns": [
+      "C-2019-AD",
+      "C-2020-NEV",
+      "C-2021-NEV",
+      "C-2022-POLICY",
+      "C-2023-AD",
+      "C-2024-V2X",
+      "C-2025-ROBOTAXI"
+    ],
+    "anchor_types": [
+      "ANCHOR_A_EARLY_SIGNAL"
+    ],
+    "anchor_dates": [
+      "2019-08-15",
+      "2020-06-01",
+      "2021-06-01",
+      "2022-04-27",
+      "2023-06-12",
+      "2024-06-11",
+      "2025-06-22"
+    ],
+    "anchor_md": [
+      "08-15",
+      "06-01",
+      "06-01",
+      "04-27",
+      "06-12",
+      "06-11",
+      "06-22"
+    ],
+    "anchor_doy_norm": [
+      227,
+      152,
+      152,
+      117,
+      163,
+      162,
+      173
+    ],
+    "median_doy": 162.0,
+    "median_md": "06-11",
+    "mean_doy": 163.71428571428572,
+    "mean_md": "06-13",
+    "p25": 152.0,
+    "p25_md": "06-01",
+    "p75": 168.0,
+    "p75_md": "06-17",
+    "iqr_days": 16.0,
+    "mad_days": 10.0,
+    "earliest_md": "04-27",
+    "latest_md": "08-15",
+    "span_days": 110,
+    "months_distinct": 3,
+    "month_distribution": {
+      "04": 1,
+      "06": 5,
+      "08": 1
+    },
+    "month_decade_distribution": {
+      "04-下旬": 1,
+      "06-上旬": 2,
+      "06-中旬": 2,
+      "06-下旬": 1,
+      "08-中旬": 1
+    },
+    "windows": {
+      "A_quantile_P25_P75": {
+        "start_md": "06-01",
+        "end_md": "06-17",
+        "start_doy": 152.0,
+        "end_doy": 168.0,
+        "method": "P25–P75 分位数窗口"
+      },
+      "B_mad_k1.0": {
+        "start_md": "05-27",
+        "end_md": "06-26",
+        "start_doy": 147.174,
+        "end_doy": 176.826,
+        "method": "Median±1.0·MAD（σ 一致化）"
+      },
+      "B_mad_k1.5": {
+        "start_md": "05-20",
+        "end_md": "07-03",
+        "start_doy": 139.761,
+        "end_doy": 184.239,
+        "method": "Median±1.5·MAD（σ 一致化）"
+      },
+      "B_mad_k2.0": {
+        "start_md": "05-12",
+        "end_md": "07-11",
+        "start_doy": 132.348,
+        "end_doy": 191.652,
+        "method": "Median±2.0·MAD（σ 一致化）"
+      },
+      "C_month": {
+        "start_md": "01-04",
+        "end_md": "01-08",
+        "start_doy": 4,
+        "end_doy": 8,
+        "method": "月份窗口（退化）"
+      },
+      "C2_month_decade": {
+        "start_md": "04-下旬",
+        "end_md": "08-中旬",
+        "start_doy": null,
+        "end_doy": null,
+        "method": "月-旬窗口（退化）"
+      }
+    },
+    "historical_recurrence": {
+      "A_quantile_P25_P75": {
+        "hits": 4,
+        "n_years": 7,
+        "ratio": 0.5714285714285714,
+        "hits_years": [
+          2020,
+          2021,
+          2023,
+          2024
+        ],
+        "miss_years": [
+          2019,
+          2022,
+          2025
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.0": {
+        "hits": 5,
+        "n_years": 7,
+        "ratio": 0.7142857142857143,
+        "hits_years": [
+          2020,
+          2021,
+          2023,
+          2024,
+          2025
+        ],
+        "miss_years": [
+          2019,
+          2022
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.5": {
+        "hits": 5,
+        "n_years": 7,
+        "ratio": 0.7142857142857143,
+        "hits_years": [
+          2020,
+          2021,
+          2023,
+          2024,
+          2025
+        ],
+        "miss_years": [
+          2019,
+          2022
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k2.0": {
+        "hits": 5,
+        "n_years": 7,
+        "ratio": 0.7142857142857143,
+        "hits_years": [
+          2020,
+          2021,
+          2023,
+          2024,
+          2025
+        ],
+        "miss_years": [
+          2019,
+          2022
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "C_month": {
+        "hits": 0,
+        "n_years": 7,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      }
+    },
+    "spread_ratio_vs_uniform": 0.4018264840182648,
+    "empirical_span_p_one_sided": 0.00545,
+    "stability": {
+      "status": "SPLIT",
+      "first_years": [
+        2019,
+        2020,
+        2021
+      ],
+      "second_years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "first_median_md": "06-01",
+      "second_median_md": "06-11",
+      "median_shift_days": 10.5,
+      "iqr_overlap_days": 13.5,
+      "drift_flag": "STABLE",
+      "note": "|位移|≥45d→DRIFTING；21–44d→MILD_DRIFT；<21d→STABLE"
+    },
+    "leave_one_out": {
+      "status": "OK",
+      "base_hits": 4,
+      "base_median_md": "06-11",
+      "max_median_shift_on_removal_days": 5.0,
+      "max_hit_drop_on_removal": 1,
+      "single_year_dominated": false,
+      "per_removal": [
+        {
+          "removed_year": 2019,
+          "median_after": "06-06",
+          "median_shift_days": 5.0,
+          "hits_after": 4,
+          "n_after": 6
+        },
+        {
+          "removed_year": 2020,
+          "median_after": "06-11",
+          "median_shift_days": 0.5,
+          "hits_after": 3,
+          "n_after": 6
+        },
+        {
+          "removed_year": 2021,
+          "median_after": "06-11",
+          "median_shift_days": 0.5,
+          "hits_after": 3,
+          "n_after": 6
+        },
+        {
+          "removed_year": 2022,
+          "median_after": "06-11",
+          "median_shift_days": 0.5,
+          "hits_after": 4,
+          "n_after": 6
+        },
+        {
+          "removed_year": 2023,
+          "median_after": "06-06",
+          "median_shift_days": 5.0,
+          "hits_after": 3,
+          "n_after": 6
+        },
+        {
+          "removed_year": 2024,
+          "median_after": "06-07",
+          "median_shift_days": 4.5,
+          "hits_after": 3,
+          "n_after": 6
+        },
+        {
+          "removed_year": 2025,
+          "median_after": "06-06",
+          "median_shift_days": 5.0,
+          "hits_after": 4,
+          "n_after": 6
+        }
+      ]
+    },
+    "data_quality": {
+      "all_provisional": true,
+      "has_conflict": false,
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "date_precision": "EXACT_DATE（日级；但 verification_method 多为 unknown → 未经行情人工核验）",
+      "provisional_count": 7
+    }
+  },
+  "SOP-04": {
+    "pattern_id": "SOP-04",
+    "name": "医药健康结构性升级启动窗口",
+    "theme_key": "医药健康",
+    "pattern_type": "CALENDAR_DRIVEN",
+    "mechanism_hypotheses": [
+      "政策/制度日历（集采、科创板、医保谈判）",
+      "疫情外生冲击"
+    ],
+    "cycles": [
+      "medical_structural_upgrade_2019_2022"
+    ],
+    "n_years": 3,
+    "years": [
+      2019,
+      2020,
+      2021
+    ],
+    "campaigns": [
+      "C-2019-PHARMA-INNOV",
+      "RC-2020-PANDEMIC",
+      "RC-2021-TCM"
+    ],
+    "anchor_types": [
+      "ANCHOR_A_EARLY_SIGNAL"
+    ],
+    "anchor_dates": [
+      "2019-01-02",
+      "2020-01-23",
+      "2021-11-01"
+    ],
+    "anchor_md": [
+      "01-02",
+      "01-23",
+      "11-01"
+    ],
+    "anchor_doy_norm": [
+      2,
+      23,
+      305
+    ],
+    "median_doy": 23.0,
+    "median_md": "01-23",
+    "mean_doy": 110.0,
+    "mean_md": "04-20",
+    "p25": 12.5,
+    "p25_md": "01-12",
+    "p75": 164.0,
+    "p75_md": "06-13",
+    "iqr_days": 151.5,
+    "mad_days": 21.0,
+    "earliest_md": "11-01",
+    "latest_md": "01-23",
+    "span_days": 83,
+    "months_distinct": 2,
+    "month_distribution": {
+      "01": 2,
+      "11": 1
+    },
+    "month_decade_distribution": {
+      "01-上旬": 1,
+      "01-下旬": 1,
+      "11-上旬": 1
+    },
+    "windows": {
+      "A_quantile_P25_P75": {
+        "start_md": "01-12",
+        "end_md": "06-13",
+        "start_doy": 12.5,
+        "end_doy": 164.0,
+        "method": "P25–P75 分位数窗口"
+      },
+      "B_mad_k1.0": {
+        "start_md": "12-23",
+        "end_md": "02-23",
+        "start_doy": -8.134599999999999,
+        "end_doy": 54.1346,
+        "method": "Median±1.0·MAD（σ 一致化）"
+      },
+      "B_mad_k1.5": {
+        "start_md": "12-07",
+        "end_md": "03-11",
+        "start_doy": -23.701899999999995,
+        "end_doy": 69.7019,
+        "method": "Median±1.5·MAD（σ 一致化）"
+      },
+      "B_mad_k2.0": {
+        "start_md": "11-22",
+        "end_md": "03-26",
+        "start_doy": -39.2692,
+        "end_doy": 85.2692,
+        "method": "Median±2.0·MAD（σ 一致化）"
+      },
+      "C_month": {
+        "start_md": "01-01",
+        "end_md": "01-11",
+        "start_doy": 1,
+        "end_doy": 11,
+        "method": "月份窗口（退化）"
+      },
+      "C2_month_decade": {
+        "start_md": "01-上旬",
+        "end_md": "11-上旬",
+        "start_doy": null,
+        "end_doy": null,
+        "method": "月-旬窗口（退化）"
+      }
+    },
+    "historical_recurrence": {
+      "A_quantile_P25_P75": {
+        "hits": 1,
+        "n_years": 3,
+        "ratio": 0.3333333333333333,
+        "hits_years": [
+          2020
+        ],
+        "miss_years": [
+          2019,
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.0": {
+        "hits": 2,
+        "n_years": 3,
+        "ratio": 0.6666666666666666,
+        "hits_years": [
+          2019,
+          2020
+        ],
+        "miss_years": [
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k1.5": {
+        "hits": 2,
+        "n_years": 3,
+        "ratio": 0.6666666666666666,
+        "hits_years": [
+          2019,
+          2020
+        ],
+        "miss_years": [
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "B_mad_k2.0": {
+        "hits": 2,
+        "n_years": 3,
+        "ratio": 0.6666666666666666,
+        "hits_years": [
+          2019,
+          2020
+        ],
+        "miss_years": [
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "C_month": {
+        "hits": 1,
+        "n_years": 3,
+        "ratio": 0.3333333333333333,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": [
+          2020,
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      }
+    },
+    "spread_ratio_vs_uniform": 0.4547945205479452,
+    "empirical_span_p_one_sided": 0.1557,
+    "stability": {
+      "status": "INSUFFICIENT_N",
+      "note": "N=3<4，不做前后半段检验（避免把 2 点说成稳定）"
+    },
+    "leave_one_out": {
+      "status": "OK",
+      "base_hits": 1,
+      "base_median_md": "01-23",
+      "max_median_shift_on_removal_days": 141.0,
+      "max_hit_drop_on_removal": 1,
+      "single_year_dominated": true,
+      "per_removal": [
+        {
+          "removed_year": 2019,
+          "median_after": "06-13",
+          "median_shift_days": 141.0,
+          "hits_after": 1,
+          "n_after": 2
+        },
+        {
+          "removed_year": 2020,
+          "median_after": "06-03",
+          "median_shift_days": 130.5,
+          "hits_after": 0,
+          "n_after": 2
+        },
+        {
+          "removed_year": 2021,
+          "median_after": "01-12",
+          "median_shift_days": 10.5,
+          "hits_after": 1,
+          "n_after": 2
+        }
+      ]
+    },
+    "data_quality": {
+      "all_provisional": true,
+      "has_conflict": false,
+      "anchor_source": [
+        "export.early_signal(str)",
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "date_precision": "EXACT_DATE（日级；但 verification_method 多为 unknown → 未经行情人工核验）",
+      "provisional_count": 3
+    }
+  }
+}

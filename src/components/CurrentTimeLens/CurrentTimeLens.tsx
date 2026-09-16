@@ -32,8 +32,8 @@ interface CurrentTimeLensProps {
   onSelect: (sel: Selection) => void;
   /**
    * Current Candidate 数据集（Phase 7）。
-   * 缺省 → 消费 canonical 数据集（`research/current/current_candidates.json`，当前为空集 → 诚实空态）。
-   * `?candidates=example` 时注入**示例 fixture**（UI 会显式标注「非真实研究数据」）。
+   * 缺省 → 消费 canonical 数据集（`research/current/current_candidates.json`，Phase 7.1 起为 5 条真实候选）；
+   * 数据集为空时显示诚实空态。`?candidates=example` 时注入**示例 fixture**（UI 会显式标注「非真实研究数据」）。
    */
   currentCandidates?: CurrentCandidateDataset | null;
 }

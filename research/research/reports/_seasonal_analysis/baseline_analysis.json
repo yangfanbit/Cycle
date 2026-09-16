@@ -1,0 +1,271 @@
+{
+  "T1_event_baseline": {
+    "n_events": 30,
+    "month_distribution": {
+      "01": 0,
+      "02": 0,
+      "03": 0,
+      "04": 0,
+      "05": 4,
+      "06": 10,
+      "07": 8,
+      "08": 2,
+      "09": 0,
+      "10": 2,
+      "11": 2,
+      "12": 2
+    },
+    "june_share": 0.3333333333333333,
+    "uniform_june_share": 0.08333333333333333,
+    "chi2_uniform_month": {
+      "chi2": 48.4,
+      "df": 11,
+      "p_approx_one_sided": 1.7813913987252405e-06,
+      "note": "近似 p，探索性"
+    },
+    "by_type_month": {
+      "company": {
+        "5": 1,
+        "6": 3,
+        "7": 4,
+        "8": 1,
+        "10": 2
+      },
+      "policy": {
+        "5": 2,
+        "6": 5,
+        "7": 3,
+        "8": 1,
+        "11": 2,
+        "12": 2
+      },
+      "market": {
+        "5": 1,
+        "6": 2,
+        "7": 1
+      }
+    },
+    "note": "事件日历基准：ThreeC 记录的 33 个事件本身是否集中在某月"
+  },
+  "T2_index_best_30d_window_baseline": {
+    "AUTO_ETF_516110": {
+      "series_name": "AUTO_ETF_516110",
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "best_window_start_md": [
+        "04-26",
+        "06-09",
+        "09-06",
+        "01-10"
+      ],
+      "best_window_start_doy": [
+        116,
+        160,
+        249,
+        10
+      ],
+      "returns": [
+        0.2355,
+        0.1389,
+        0.2861,
+        0.1219
+      ],
+      "month_distribution": {
+        "01": 1,
+        "02": 0,
+        "03": 0,
+        "04": 1,
+        "05": 0,
+        "06": 1,
+        "07": 0,
+        "08": 0,
+        "09": 1,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "june_count": 1,
+      "n_years": 4,
+      "span_days": 239,
+      "earliest_md": "01-10",
+      "latest_md": "09-06"
+    },
+    "PHARMA_ETF_512010": {
+      "series_name": "PHARMA_ETF_512010",
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "best_window_start_md": [
+        "01-31",
+        "07-02",
+        "01-19",
+        "06-14"
+      ],
+      "best_window_start_doy": [
+        31,
+        183,
+        19,
+        165
+      ],
+      "returns": [
+        0.1777,
+        0.1836,
+        0.1623,
+        0.188
+      ],
+      "month_distribution": {
+        "01": 2,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 1,
+        "07": 1,
+        "08": 0,
+        "09": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "june_count": 1,
+      "n_years": 4,
+      "span_days": 164,
+      "earliest_md": "01-19",
+      "latest_md": "07-02"
+    },
+    "SH000300": {
+      "series_name": "SH000300",
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "best_window_start_md": [
+        "01-02",
+        "01-28",
+        "06-15",
+        "01-04",
+        "12-30",
+        "01-04",
+        "09-06",
+        "08-04"
+      ],
+      "best_window_start_doy": [
+        2,
+        28,
+        166,
+        4,
+        364,
+        4,
+        249,
+        216
+      ],
+      "returns": [
+        0.0722,
+        0.1714,
+        0.2071,
+        0.068,
+        0.0852,
+        0.0778,
+        0.3171,
+        0.0979
+      ],
+      "month_distribution": {
+        "01": 4,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 1,
+        "07": 0,
+        "08": 1,
+        "09": 1,
+        "10": 0,
+        "11": 0,
+        "12": 1
+      },
+      "june_count": 1,
+      "n_years": 8,
+      "span_days": 227,
+      "earliest_md": "06-15",
+      "latest_md": "01-28"
+    }
+  },
+  "T2_aggregate": {
+    "n_series": 3,
+    "n_observations": 16,
+    "month_distribution": {
+      "01": 7,
+      "02": 0,
+      "03": 0,
+      "04": 1,
+      "05": 0,
+      "06": 3,
+      "07": 1,
+      "08": 1,
+      "09": 2,
+      "10": 0,
+      "11": 0,
+      "12": 1
+    },
+    "june_share": 0.1875,
+    "uniform_june_share": 0.08333333333333333,
+    "chi2": {
+      "chi2": 33.5,
+      "df": 11,
+      "p_approx_one_sided": 0.0004755147628864864,
+      "note": "近似 p，探索性"
+    },
+    "note": "中性基准：不限主题，直接看 A 股主要指数「年内最强 30 个交易日」的起点落在哪个月。若该基准本身 6 月占比高 → 说明「6 月集中」可能是市场层面现象，而非汽车主题独有。"
+  },
+  "T3_family_vs_baseline": {
+    "AUTO_SMART_DRIVING": {
+      "n_years": 4,
+      "june_count": 3,
+      "june_share": 0.75,
+      "baseline_june_share_T1": 0.3333333333333333,
+      "baseline_june_share_T2": 0.1875,
+      "lift_vs_T1": 2.25,
+      "lift_vs_T2": 4.0
+    },
+    "AUTO_NEV_ELECTRIFICATION": {
+      "n_years": 2,
+      "june_count": 2,
+      "june_share": 1.0,
+      "baseline_june_share_T1": 0.3333333333333333,
+      "baseline_june_share_T2": 0.1875,
+      "lift_vs_T1": 3.0,
+      "lift_vs_T2": 5.333333333333333
+    },
+    "AUTO_ALL": {
+      "n_years": 7,
+      "june_count": 5,
+      "june_share": 0.7142857142857143,
+      "baseline_june_share_T1": 0.3333333333333333,
+      "baseline_june_share_T2": 0.1875,
+      "lift_vs_T1": 2.1428571428571432,
+      "lift_vs_T2": 3.8095238095238098
+    },
+    "PHARMA_ALL": {
+      "n_years": 3,
+      "june_count": 0,
+      "june_share": 0.0,
+      "baseline_june_share_T1": 0.3333333333333333,
+      "baseline_june_share_T2": 0.1875,
+      "lift_vs_T1": 0.0,
+      "lift_vs_T2": 0.0
+    }
+  }
+}

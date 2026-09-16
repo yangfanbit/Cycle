@@ -1770,3 +1770,154 @@ html, body {
 .ccs-detail p.ccs-dim, .ccs-detail span.ccs-dim { font-size: 11.5px; color: var(--ink-3); }
 
 .ccs-fw-badge { padding: 0 6px; border: 1px solid #dcc6c6; border-radius: 999px; background: #fdf7f7; color: #6b4444; font-size: 10.5px; }
+
+/* ================= 时间型观察层（Time-based Observation Layer，Phase 7.2） =================
+   视觉纪律：Timeline 仍是第一视觉，本层只是**很薄的一层** ——
+   淡底纹 + 点划线边界 + 小标签；与既有的「提前观察参考区」同一套视觉语言。
+   不使用涨跌红绿、不使用买点箭头、不出现「推荐 / 预测」。 */
+
+.tob-current {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  border: 1px dotted #a9bccb;
+  border-left: 3px solid #55707f;
+  border-radius: 6px;
+  background: #f4f8fb;
+}
+.tob-current.tob-in_window { border-left-color: #3f6b7d; background: #eef5fa; }
+.tob-current.tob-near_window { border-left-color: #b79a4a; background: #fdf8ea; }
+.tob-current.tob-none { border-left-color: #c9c6bf; background: #fbfbfa; }
+.tob-current-date { font-size: 11px; font-family: var(--mono); color: var(--ink-3); }
+.tob-current-text { font-size: 12.5px; color: var(--ink-2); line-height: 1.6; }
+.tob-current-warn { font-size: 11px; color: #8a6d1f; }
+
+.tob-row .tl-row-label { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.tob-name {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.tob-name:hover { text-decoration: underline dotted; }
+.tob-track { height: 26px; }
+
+/* 历史观察窗口带：极淡底纹 + 点划线边界（不抢 Campaign 主体） */
+.tob-band {
+  position: absolute;
+  top: 8px;
+  height: 12px;
+  box-sizing: border-box;
+  border: 1px dotted rgba(90, 122, 154, 0.55);
+  border-radius: 3px;
+  background-color: rgba(120, 150, 178, 0.06);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(120, 150, 178, 0.13) 0 3px,
+    transparent 3px 8px
+  );
+  cursor: pointer;
+  z-index: 0;
+}
+.tob-band.on { border-style: solid; background-color: rgba(120, 150, 178, 0.1); }
+.tob-band.cont-prev::before,
+.tob-band.cont-next::after {
+  position: absolute;
+  top: -1px;
+  font-size: 9px;
+  color: #7b94a8;
+}
+.tob-band.cont-prev::before { content: '◂'; left: -9px; }
+.tob-band.cont-next::after { content: '▸'; right: -9px; }
+.tob-band-label {
+  position: absolute;
+  left: 6px;
+  top: -1px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #5a7a9a;
+  white-space: nowrap;
+}
+
+/* 该年的研究观察起点（Early Signal）在时间轴上的落点 */
+.tob-obs-dot {
+  position: absolute;
+  top: -3px;
+  transform: translateX(-50%);
+  padding: 0 4px;
+  border: 1px solid #c7d7e4;
+  border-radius: 999px;
+  background: #eef5fa;
+  color: #33556f;
+  font-size: 9px;
+  font-family: var(--mono);
+  cursor: pointer;
+  z-index: 2;
+}
+.tob-obs-dot.outside { border-color: #e0d3a8; background: #fdf8ea; color: #8a6d1f; }
+
+.tob-chip {
+  padding: 1px 7px;
+  border: 1px solid #c7d7e4;
+  border-radius: 999px;
+  background: #eef5fa;
+  color: #33556f;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.tob-chip-in_window { border-color: #a9c3d6; background: #e4eff7; }
+.tob-chip-near_window { border-color: #e0d3a8; background: #fdf8ea; color: #8a6d1f; }
+.tob-chip-explor { border-color: #dcd6c6; background: #faf8f2; color: #6f6752; }
+
+/* Level 2：Pattern Summary（就地展开，不遮挡 Timeline、不新建第二套详情） */
+.tob-detail {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-left: 3px solid #55707f;
+  border-radius: 6px;
+  background: #fcfcfb;
+}
+.tob-detail-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 7px; }
+.tob-detail-head strong { font-size: 13px; }
+.tob-detail-type,
+.tob-detail-status { font-size: 11px; color: var(--ink-3); }
+.tob-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 16px;
+  margin: 0 0 8px;
+}
+.tob-detail-grid dt { font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.06em; }
+.tob-detail-grid dd { margin: 3px 0 0; font-size: 12.5px; color: var(--ink); line-height: 1.6; }
+.tob-dim { margin-left: 4px; font-size: 11px; color: var(--ink-3); }
+.tob-years { display: flex; flex-wrap: wrap; gap: 4px; }
+.tob-year {
+  padding: 1px 7px;
+  border: 1px solid #c7d7e4;
+  border-radius: 999px;
+  background: #f4f8fb;
+  color: #33556f;
+  font-size: 11px;
+  font-family: var(--mono);
+  cursor: pointer;
+}
+.tob-year:hover { background: #e4eff7; }
+.tob-year.outside { border-color: #e0d3a8; background: #fdf8ea; color: #8a6d1f; }
+.tob-detail-why,
+.tob-detail-limit { margin: 7px 0; font-size: 12px; color: var(--ink-2); line-height: 1.65; }
+.tob-limit-item { display: block; position: relative; padding-left: 14px; font-size: 11.5px; color: var(--ink-3); }
+.tob-limit-item::before { content: '·'; position: absolute; left: 4px; }
+.tob-detail-disc { margin: 7px 0 0; font-size: 11px; color: #8a6d1f; }
+.tob-foot { margin: 6px 0 0; font-size: 11px; color: var(--ink-3); }
+
+@media (max-width: 900px) {
+  .tob-detail-grid { grid-template-columns: 1fr; }
+}

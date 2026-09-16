@@ -1,0 +1,831 @@
+{
+ "artifact": "seasonal_observation_patterns",
+ "artifact_version": "0.1",
+ "status": "RESEARCH_ARTIFACT — 不是产品 schema，不进入 DB / export / contracts",
+ "generated_at": "2026-09-16",
+ "generated_by": "offline research script（临时脚本；非产品代码）",
+ "research_round": "seasonal-observation-pattern-v0.1",
+ "snapshot_date": "2026-09-16",
+ "data_source": {
+  "canonical_export": "exports/timeline_export_v1.json",
+  "research_db": "research/database/cycle_research.db",
+  "export_version": "1.0",
+  "coverage_years": "2018–2025（研究覆盖至 2025-08）"
+ },
+ "anchor_priority_used": [
+  "ANCHOR_A_EARLY_SIGNAL",
+  "ANCHOR_B_FORMATION（THEME_FORMING → BROAD_CONFIRMATION）",
+  "ANCHOR_C_CAMPAIGN_START"
+ ],
+ "forbidden_fields_policy": [
+  "future_probability",
+  "confidence_percent",
+  "expected_return",
+  "win_rate",
+  "buy_signal",
+  "target_price",
+  "seasonality_score",
+  "评级：买入/卖出"
+ ],
+ "research_strength_grading": {
+  "A": "数据支持较强的历史时间聚集现象",
+  "B": "存在一定历史聚集，但样本 / 稳定性有限",
+  "C": "探索性迹象，不能固化",
+  "D": "没有发现足够证据"
+ },
+ "status_vocabulary": [
+  "STRONG_CANDIDATE",
+  "MODERATE_CANDIDATE",
+  "EXPLORATORY",
+  "REJECTED"
+ ],
+ "baselines": {
+  "event_calendar_june_share": 0.3333333333333333,
+  "index_best_30d_window_june_share": 0.1875,
+  "uniform_june_share": 0.08333333333333333,
+  "note": "两个基准均显示 6 月占比高于均匀 → 「6 月集中」存在研究样本选择偏差成分，不可直接归因于主题季节性"
+ },
+ "patterns": [
+  {
+   "pattern_id": "SOP-01",
+   "pattern_type": "MIXED",
+   "theme_key": "汽车 / 智能驾驶大主题（自动驾驶 · 车路云 · Robotaxi）",
+   "title": "汽车智能化启动观察窗口",
+   "anchor_type": "EARLY_SIGNAL",
+   "anchor_definition": "Anchor A —— lifecycle.EARLY_SIGNAL.start（四年全部可用，无需退化到 Formation / Campaign.start）",
+   "level": "LEVEL_3 同机制不同 Campaign 主题族（跨 Theme Cycle 归一）",
+   "eligible_years": [
+    2019,
+    2023,
+    2024,
+    2025
+   ],
+   "observed_years": [
+    2019,
+    2023,
+    2024,
+    2025
+   ],
+   "observations": [
+    {
+     "year": 2019,
+     "campaign": "C-2019-AD",
+     "anchor_date": "2019-08-15"
+    },
+    {
+     "year": 2023,
+     "campaign": "C-2023-AD",
+     "anchor_date": "2023-06-12"
+    },
+    {
+     "year": 2024,
+     "campaign": "C-2024-V2X",
+     "anchor_date": "2024-06-11"
+    },
+    {
+     "year": 2025,
+     "campaign": "C-2025-ROBOTAXI",
+     "anchor_date": "2025-06-22"
+    }
+   ],
+   "typical_window": {
+    "start": "06-09",
+    "end": "06-25",
+    "method": "Median ± 1×MAD（1.4826 σ 一致化）",
+    "alternative_quantile_window": {
+     "start": "06-12",
+     "end": "07-05",
+     "method": "P25–P75"
+    },
+    "alternative_wider_window": {
+     "start": "06-05",
+     "end": "06-29",
+     "method": "Median ± 1.5×MAD"
+    },
+    "degraded_month_window": "06 月中旬 ~ 07 月上旬（若放弃日级精度）"
+   },
+   "center_date": "06-17",
+   "dispersion": {
+    "iqr_days": 23.75,
+    "mad_days": 5.5,
+    "span_days": 65,
+    "earliest": "06-11",
+    "latest": "08-15"
+   },
+   "time_concentration": {
+    "spread_ratio_vs_uniform": 0.2968036529680365,
+    "empirical_span_p_one_sided": 0.02395,
+    "month_distribution": {
+     "06": 3,
+     "08": 1
+    },
+    "uniform_expected_span_days": 219.0,
+    "note": "探索性描述统计。样本仅 4 年，p 值不作为显著性断言。"
+   },
+   "historical_recurrence": {
+    "hits": 3,
+    "n_years": 4,
+    "ratio": 0.75,
+    "hits_years": [
+     2023,
+     2024,
+     2025
+    ],
+    "miss_years": [
+     2019
+    ],
+    "label": "历史样本中的窗口复现情况（不是未来概率）"
+   },
+   "outside_window_contrast": {
+    "window_width_days": 17,
+    "window_share_of_year": 0.04657534246575343,
+    "hit_share": 0.75,
+    "density_ratio": 16.102941176470587,
+    "june_share": 0.75,
+    "baseline_june_share_event_calendar": 0.3333333333333333,
+    "baseline_june_share_index_best30d": 0.1875,
+    "lift_vs_event_baseline": 2.25,
+    "lift_vs_index_baseline": 4.0
+   },
+   "stability": {
+    "status": "SPLIT",
+    "first_years": [
+     2019,
+     2023
+    ],
+    "second_years": [
+     2024,
+     2025
+    ],
+    "first_median_md": "07-14",
+    "second_median_md": "06-17",
+    "median_shift_days": -27.5,
+    "iqr_overlap_days": 0.0,
+    "drift_flag": "MILD_DRIFT",
+    "note": "|位移|≥45d→DRIFTING；21–44d→MILD_DRIFT；<21d→STABLE"
+   },
+   "drift": "MILD_DRIFT",
+   "leave_one_out": {
+    "status": "OK",
+    "base_hits": 2,
+    "base_median_md": "06-17",
+    "max_median_shift_on_removal_days": 5.0,
+    "max_hit_drop_on_removal": 1,
+    "single_year_dominated": false
+   },
+   "sample_size_sensitivity": {
+    "n2_n3_n4_available": "N=4；若剔除 2019（唯一的 8 月锚点）→ N=3，跨度降至 12 天、集中度上升（更集中而非更分散）",
+    "note": "结论对剔单年不敏感（max median shift 5d、max hit drop 1）。"
+   },
+   "evidence_basis": [
+    "exports/timeline_export_v1.json campaigns[]: C-2019-AD / C-2023-AD / C-2024-V2X / C-2025-ROBOTAXI",
+    "research/database/cycle_research.db campaign_phases + campaign_events",
+    "research/research/annual/2019.md, 2023.md, 2024.md, 2025.md"
+   ],
+   "mechanism_hypotheses": [
+    {
+     "hypothesis": "工信部/部委智能网联政策与技术标准的发布节奏偏上半年末",
+     "evidence_strength": "SUPPORTED_BY_PUBLIC_RECORD",
+     "detail": "四部委《智能网联汽车准入和上路通行试点》成文 2023-11-17；五部门车路云 20 城试点名单公布 2024-07-01 — 即**政策落地时点并不在 6 月**。故机制更接近「政策**预期**窗口 + 国际产业事件」而非「政策发布日期本身」。",
+     "temporal_note": "以上均为事后可查的公开记录，仅用于机制解释，不用于定义当时已知信息。"
+    },
+    {
+     "hypothesis": "北京/武汉等地车路云大额招标与项目备案集中在上半年末（2024-06-14 武汉 170.84 亿）",
+     "evidence_strength": "SINGLE_YEAR_OBSERVATION"
+    },
+    {
+     "hypothesis": "特斯拉 Robotaxi / FSD 相关国际产业事件落在北半球夏季（2025-06-22 奥斯汀试点）",
+     "evidence_strength": "SINGLE_YEAR_OBSERVATION"
+    },
+    {
+     "hypothesis": "A 股半年报业绩预告密集披露窗口（6 月中旬起）提升成长主题的关注度",
+     "evidence_strength": "PUBLIC_SCHEDULE_FACT",
+     "detail": "A 股中报预告披露窗口期历来在 6 月中下旬进入密集期 — 属制度性日历，非行业季节性。"
+    }
+   ],
+   "mechanism_class": "MIXED（政策/标准日历 + 国际产业事件 + 招标节奏 + 财报日历，多个机制叠加）",
+   "calendar_vs_seasonal": "CALENDAR_DRIVEN 成分较高；不建议归类为 SEASONAL_DEMAND（无需求季节性证据）",
+   "lunar_holiday_check": {
+    "spring_festival_offset_days": [
+     {
+      "year": 2019,
+      "anchor": "08-15",
+      "days_after_spring_festival": 191
+     },
+     {
+      "year": 2023,
+      "anchor": "06-12",
+      "days_after_spring_festival": 141
+     },
+     {
+      "year": 2024,
+      "anchor": "06-11",
+      "days_after_spring_festival": 121
+     },
+     {
+      "year": 2025,
+      "anchor": "06-22",
+      "days_after_spring_festival": 144
+     }
+    ],
+    "finding": "距春节 121–191 天，跨度 70 天；农历相对位置**不集中**。→ 该规律是公历型（或事件型），不是农历型。",
+    "nearest_fixed_anchors": [
+     "618（4–7 天）",
+     "中报预告窗口（6 月中）"
+    ]
+   },
+   "data_quality": {
+    "anchor_precision": "EXACT_DATE（日级）",
+    "verification": "campaign_date_observations.verification_method 多为 `unknown`（未经行情人工核验）",
+    "research_status": "全部 PROVISIONAL（无 CONFLICT，无 VERIFIED）",
+    "provisional_ratio": 1.0,
+    "grade": "MEDIUM（日期有依据、主题可识别，但未经人工最终核验）"
+   },
+   "research_strength": {
+    "grade": "B",
+    "rationale": "跨度约均匀基准的 0.30；经验 p=0.0239；窗口复现 75%；无单一年份主导；有机制假设（1）"
+   },
+   "status": "MODERATE_CANDIDATE",
+   "timeline_eligible": false,
+   "timeline_ineligible_reason": "N=4 且 2019 锚点为弱事件驱动（event_driven / strength=weak），并非同一强度样本；建议先扩样至 N≥5 或完成日期人工核验。",
+   "provenance": {
+    "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+    "generated_by": "offline research script（临时脚本，非产品代码）",
+    "snapshot_date": "2026-09-16",
+    "research_round": "seasonal-observation-pattern-v0.1"
+   }
+  },
+  {
+   "pattern_id": "SOP-02",
+   "pattern_type": "INDUSTRY_CYCLE",
+   "theme_key": "汽车 / 新能源（新能源车 · 动力电池 · 特斯拉产业链）",
+   "title": "汽车电动化启动观察窗口",
+   "anchor_type": "EARLY_SIGNAL",
+   "anchor_definition": "Anchor A —— lifecycle.EARLY_SIGNAL.start",
+   "level": "LEVEL_2 同一 Macro Theme 下跨年重复出现的机制族",
+   "eligible_years": [
+    2020,
+    2021
+   ],
+   "observed_years": [
+    2020,
+    2021
+   ],
+   "observations": [
+    {
+     "year": 2020,
+     "campaign": "C-2020-NEV",
+     "anchor_date": "2020-06-01"
+    },
+    {
+     "year": 2021,
+     "campaign": "C-2021-NEV",
+     "anchor_date": "2021-06-01"
+    }
+   ],
+   "typical_window": {
+    "start": "06-01",
+    "end": "06-01",
+    "method": "N=2 且两点完全重合 → **不生成日级窗口**（样本量幻觉风险）",
+    "degraded_month_window": "6 月上旬（唯一可接受的口径）"
+   },
+   "center_date": "06-01",
+   "dispersion": {
+    "iqr_days": 0.0,
+    "mad_days": 0.0,
+    "span_days": 0,
+    "earliest": "06-01",
+    "latest": "06-01"
+   },
+   "time_concentration": {
+    "spread_ratio_vs_uniform": 0.0,
+    "empirical_span_p_one_sided": 0.00295,
+    "month_distribution": {
+     "06": 2
+    },
+    "note": "两点完全重合会产生 ratio=0、p≈0.003 的**假象级显著性**。这正是 N=2 的样本量幻觉，**不得**当作证据。"
+   },
+   "historical_recurrence": {
+    "hits": 2,
+    "n_years": 2,
+    "ratio": 1.0,
+    "hits_years": [
+     2020,
+     2021
+    ],
+    "miss_years": [],
+    "label": "历史样本中的窗口复现情况（不是未来概率）"
+   },
+   "outside_window_contrast": {
+    "note": "N=2 无法做有效窗口外对照（全年只有一个可用子集）。",
+    "baseline_june_share_event_calendar": 0.3333333333333333
+   },
+   "stability": {
+    "status": "INSUFFICIENT_N",
+    "note": "N=2<4，不做前后半段检验"
+   },
+   "drift": "UNKNOWN",
+   "sample_size_sensitivity": {
+    "note": "N=2 → 按拒绝规则默认 Exploratory，不纳入正式 Pattern"
+   },
+   "evidence_basis": [
+    "exports/timeline_export_v1.json campaigns[]: C-2020-NEV / C-2021-NEV",
+    "research/research/annual/2020.md, 2021.md"
+   ],
+   "mechanism_hypotheses": [
+    {
+     "hypothesis": "新能源车月度产销数据在年中公布后强化「渗透率跃升」叙事",
+     "evidence_strength": "PUBLIC_RECORD（2021 年 6 月新能源渗透率升至 12%+，见 AR-2021）"
+    },
+    {
+     "hypothesis": "特斯拉/电池龙头的市值里程碑事件（2020-06 特斯拉破千美元；2021-05-31 宁德破万亿）集中于上半年末",
+     "evidence_strength": "SINGLE_YEAR_EACH"
+    }
+   ],
+   "mechanism_class": "INDUSTRY_CYCLE",
+   "calendar_vs_seasonal": "INDUSTRY_CYCLE（产销数据与产能节奏），非自然季节性",
+   "lunar_holiday_check": {
+    "spring_festival_offset_days": [
+     {
+      "year": 2020,
+      "anchor": "06-01",
+      "days_after_spring_festival": 127
+     },
+     {
+      "year": 2021,
+      "anchor": "06-01",
+      "days_after_spring_festival": 109
+     }
+    ],
+    "finding": "2020 与 2021 春节相差 18 天，但锚点同为 06-01 → 说明该锚点是**公历/公司数据驱动**，与春节无关。"
+   },
+   "data_quality": {
+    "anchor_precision": "EXACT_DATE",
+    "verification": "verification_method=unknown",
+    "research_status": "PROVISIONAL",
+    "grade": "MEDIUM"
+   },
+   "research_strength": {
+    "grade": "C",
+    "rationale": "N=2；两点完全重合但不足以构成稳定规律；且 2020/2021 的锚点日期均为研究候选日期（未人工核验）"
+   },
+   "status": "EXPLORATORY",
+   "timeline_eligible": false,
+   "timeline_ineligible_reason": "N=2 < 最低纳入标准；触发「样本量幻觉」拒绝规则情况 1。",
+   "provenance": {
+    "source": "ThreeC 2018–2025 历史研究数据",
+    "generated_by": "offline research script",
+    "snapshot_date": "2026-09-16",
+    "research_round": "seasonal-observation-pattern-v0.1"
+   }
+  },
+  {
+   "pattern_id": "SOP-03",
+   "pattern_type": "MIXED",
+   "theme_key": "汽车（Macro Theme 全主题）",
+   "title": "汽车主题夏季 / 上半年末启动观察窗口",
+   "anchor_type": "EARLY_SIGNAL",
+   "anchor_definition": "Anchor A（7 年全部可用 EARLY_SIGNAL）",
+   "level": "LEVEL_3 Macro Theme 级（合并多条不同机制的 Theme Cycle）",
+   "eligible_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "observed_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "observations": [
+    {
+     "year": 2019,
+     "campaign": "C-2019-AD",
+     "anchor_date": "2019-08-15"
+    },
+    {
+     "year": 2020,
+     "campaign": "C-2020-NEV",
+     "anchor_date": "2020-06-01"
+    },
+    {
+     "year": 2021,
+     "campaign": "C-2021-NEV",
+     "anchor_date": "2021-06-01"
+    },
+    {
+     "year": 2022,
+     "campaign": "C-2022-POLICY",
+     "anchor_date": "2022-04-27"
+    },
+    {
+     "year": 2023,
+     "campaign": "C-2023-AD",
+     "anchor_date": "2023-06-12"
+    },
+    {
+     "year": 2024,
+     "campaign": "C-2024-V2X",
+     "anchor_date": "2024-06-11"
+    },
+    {
+     "year": 2025,
+     "campaign": "C-2025-ROBOTAXI",
+     "anchor_date": "2025-06-22"
+    }
+   ],
+   "typical_window": {
+    "start": "05-27",
+    "end": "06-26",
+    "method": "Median ± 1×MAD",
+    "alternative_quantile_window": {
+     "start": "06-01",
+     "end": "06-17"
+    },
+    "alternative_wider_window": {
+     "start": "05-20",
+     "end": "07-03",
+     "method": "Median ± 1.5×MAD"
+    },
+    "widest_window": {
+     "start": "05-12",
+     "end": "07-11",
+     "method": "Median ± 2×MAD"
+    },
+    "degraded_month_window": "5 月下旬 ~ 7 月上旬（含 4 月末离群年则为 4 月下旬 ~ 8 月中旬）"
+   },
+   "center_date": "06-11",
+   "dispersion": {
+    "iqr_days": 16.0,
+    "mad_days": 10.0,
+    "span_days": 110,
+    "earliest": "04-27",
+    "latest": "08-15"
+   },
+   "time_concentration": {
+    "spread_ratio_vs_uniform": 0.4018264840182648,
+    "empirical_span_p_one_sided": 0.00545,
+    "month_distribution": {
+     "04": 1,
+     "06": 5,
+     "08": 1
+    },
+    "uniform_expected_span_days": 273.75,
+    "note": "N=7 是本轮唯一达到「可做探索性统计」规模的族；仍为描述统计。"
+   },
+   "historical_recurrence": {
+    "hits": 5,
+    "n_years": 7,
+    "ratio": 0.7142857142857143,
+    "hits_years": [
+     2020,
+     2021,
+     2023,
+     2024,
+     2025
+    ],
+    "miss_years": [
+     2019,
+     2022
+    ],
+    "quantile_window_variant": {
+     "hits": 4,
+     "ratio": 0.5714285714285714,
+     "hits_years": [
+      2020,
+      2021,
+      2023,
+      2024
+     ],
+     "miss_years": [
+      2019,
+      2022,
+      2025
+     ]
+    },
+    "label": "历史样本中的窗口复现情况（不是未来概率）"
+   },
+   "outside_window_contrast": {
+    "window_width_days": 31,
+    "window_share_of_year": 0.08493150684931507,
+    "hit_share": 0.7142857142857143,
+    "density_ratio": 8.410138248847927,
+    "june_share": 0.7142857142857143,
+    "baseline_june_share_event_calendar": 0.3333333333333333,
+    "baseline_june_share_index_best30d": 0.1875,
+    "lift_vs_event_baseline": 2.1428571428571432,
+    "lift_vs_index_baseline": 3.8095238095238098,
+    "warning": "ThreeC 事件台账本身 6 月占比 33%（10/30），远高于均匀 8.3% → 存在**研究事件选择偏差**，lift 值不可解读为主题独有季节性。"
+   },
+   "stability": {
+    "status": "SPLIT",
+    "first_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "second_years": [
+     2022,
+     2023,
+     2024,
+     2025
+    ],
+    "first_median_md": "06-01",
+    "second_median_md": "06-11",
+    "median_shift_days": 10.5,
+    "iqr_overlap_days": 13.5,
+    "drift_flag": "STABLE",
+    "note": "|位移|≥45d→DRIFTING；21–44d→MILD_DRIFT；<21d→STABLE"
+   },
+   "drift": "STABLE",
+   "leave_one_out": {
+    "status": "OK",
+    "base_hits": 4,
+    "base_median_md": "06-11",
+    "max_median_shift_on_removal_days": 5.0,
+    "max_hit_drop_on_removal": 1,
+    "single_year_dominated": false
+   },
+   "sample_size_sensitivity": {
+    "N2": "不足（单机制族多为 N=1–2）",
+    "N3": "2019/2023/2024 智能化子族 → 跨度 21 天、ratio 0.115",
+    "N4": "智能化子族 N=4 → 跨度 65 天、ratio 0.297、p≈0.024",
+    "N5plus": "汽车全主题 N=7 → 跨度 110 天、ratio 0.402、p≈0.005（但被 2019-08-15 与 2022-04-27 两个离群年拉宽）",
+    "note": "样本量从 3→7 时「集中度」指标先急剧下降再因离群年抬升；说明该指标对单点极敏感。"
+   },
+   "evidence_basis": [
+    "exports/timeline_export_v1.json campaigns[]（9 个正式 Campaign 中 8 个属汽车）",
+    "research/database/cycle_research.db campaigns / campaign_phases",
+    "research/research/summary/auto_2018_2025_final_review.md",
+    "research/research/batch/auto_2018_2025_batch_manifest.json"
+   ],
+   "mechanism_hypotheses": [
+    {
+     "hypothesis": "政策/制度日历：年中稳增长政策窗口（国常会 5–6 月部署汽车消费）",
+     "evidence_strength": "SUPPORTED_BY_PUBLIC_RECORD",
+     "detail": "2022-05-23 国常会阶段性减征乘用车购置税 600 亿；2022-05-31 财政部细则 — 属年中稳增长节奏。"
+    },
+    {
+     "hypothesis": "国际产业事件与行业展会/发布会节奏偏北半球夏季",
+     "evidence_strength": "MULTI_YEAR_OBSERVATION"
+    },
+    {
+     "hypothesis": "A 股中报预告窗口（6 月中下旬密集）与汽车产业链景气验证叠加",
+     "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+    },
+    {
+     "hypothesis": "新能源车月度产销与渗透率数据发布节奏（月度数据在次月中旬公布）",
+     "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+    }
+   ],
+   "mechanism_class": "MIXED（CALENDAR_DRIVEN 政策日历 + INDUSTRY_CYCLE 产销节奏 + 事件驱动）",
+   "calendar_vs_seasonal": "以 CALENDAR_DRIVEN / INDUSTRY_CYCLE 为主；**不**支持 SEASONAL_DEMAND（无证据表明汽车终端需求在 6 月出现季节性峰值）",
+   "lunar_holiday_check": {
+    "spring_festival_offset_days": [
+     {
+      "year": 2019,
+      "anchor": "08-15",
+      "days_after_spring_festival": 191
+     },
+     {
+      "year": 2020,
+      "anchor": "06-01",
+      "days_after_spring_festival": 127
+     },
+     {
+      "year": 2021,
+      "anchor": "06-01",
+      "days_after_spring_festival": 109
+     },
+     {
+      "year": 2022,
+      "anchor": "04-27",
+      "days_after_spring_festival": 85
+     },
+     {
+      "year": 2023,
+      "anchor": "06-12",
+      "days_after_spring_festival": 141
+     },
+     {
+      "year": 2024,
+      "anchor": "06-11",
+      "days_after_spring_festival": 121
+     },
+     {
+      "year": 2025,
+      "anchor": "06-22",
+      "days_after_spring_festival": 144
+     }
+    ],
+    "finding": "春节相对位置跨度 85–191 天（106 天跨度）→ **不是农历型规律**。公历 6 月的集中度显著高于春节相对位置的集中度。",
+    "nearest_fixed_anchors": [
+     "618（约 4–17 天）",
+     "五一（2022 年 4 天）",
+     "中报预告窗口"
+    ]
+   },
+   "data_quality": {
+    "anchor_precision": "EXACT_DATE",
+    "verification": "verbatim: 2019/2020/2021/2023/2024/2025 verification_method=unknown；2022/2024-ROBOTAXI=market_data",
+    "research_status": "全部 PROVISIONAL（C-2024-ROBOTAXI 为 CONFLICT）",
+    "provisional_ratio": 1.0,
+    "grade": "MEDIUM",
+    "inconsistency": "2019 锚点为 event_driven/weak，与其他年份的 theme_campaign 不同强度；2018 为 no_clear_campaign 反例年"
+   },
+   "research_strength": {
+    "grade": "A",
+    "rationale": "经验 p=0.0054；窗口复现 71%；前后半段无漂移；无单一年份主导；有机制假设（1）"
+   },
+   "status": "MODERATE_CANDIDATE",
+   "timeline_eligible": true,
+   "timeline_eligible_notes": "满足 Timeline 最低门槛（N=7、集中度比率 0.40、p≈0.005、无单年主导、有无漂移的前后半段）；但必须以「宽窗口 + 明确机制类别 + 非预测文案」方式呈现，且需先完成日期人工核验。",
+   "provenance": {
+    "source": "ThreeC 2018–2025 历史研究数据",
+    "generated_by": "offline research script",
+    "snapshot_date": "2026-09-16",
+    "research_round": "seasonal-observation-pattern-v0.1"
+   }
+  },
+  {
+   "pattern_id": "SOP-04",
+   "pattern_type": "CALENDAR_DRIVEN",
+   "theme_key": "医药健康（创新药 · 疫情医疗 · 中医药）",
+   "title": "医药健康结构性升级启动窗口",
+   "anchor_type": "EARLY_SIGNAL",
+   "anchor_definition": "Anchor A（其中 RC-2020-PANDEMIC / RC-2021-TCM 来自 export.early_signal 字符串字段）",
+   "level": "LEVEL_2 同一 Theme Cycle（medical_structural_upgrade_2019_2022）内多叙事并行",
+   "eligible_years": [
+    2019,
+    2020,
+    2021
+   ],
+   "observed_years": [
+    2019,
+    2020,
+    2021
+   ],
+   "observations": [
+    {
+     "year": 2019,
+     "campaign": "C-2019-PHARMA-INNOV",
+     "anchor_date": "2019-01-02"
+    },
+    {
+     "year": 2020,
+     "campaign": "RC-2020-PANDEMIC",
+     "anchor_date": "2020-01-23"
+    },
+    {
+     "year": 2021,
+     "campaign": "RC-2021-TCM",
+     "anchor_date": "2021-11-01"
+    }
+   ],
+   "typical_window": {
+    "start": null,
+    "end": null,
+    "method": "**不生成窗口** —— 跨度 83 天（11-01 ~ 01-23），IQR 151.5 天，三个锚点分属 3 个不同月份",
+    "minimal_statement": "仅能说「分布在年末—年初区段」，且其中 2 个观测为 1 月、1 个为 11 月，**不足以形成任何日级或月级窗口**"
+   },
+   "center_date": "01-23",
+   "dispersion": {
+    "iqr_days": 151.5,
+    "mad_days": 21.0,
+    "span_days": 83,
+    "earliest": "11-01",
+    "latest": "01-23"
+   },
+   "time_concentration": {
+    "spread_ratio_vs_uniform": 0.4547945205479452,
+    "empirical_span_p_one_sided": 0.1557,
+    "month_distribution": {
+     "01": 2,
+     "11": 1
+    },
+    "note": "ratio 0.455、p≈0.156 → 与全年均匀分布**无显著差异**。"
+   },
+   "historical_recurrence": {
+    "note": "窗口无法构建 → 不计算复现率（避免人为造一个窗口再去数命中）"
+   },
+   "outside_window_contrast": {
+    "note": "无窗口可对照。三个锚点分散在 3 个月 → 分类为「年内分散」，不构成时间聚集。"
+   },
+   "stability": {
+    "status": "INSUFFICIENT_N",
+    "note": "N=3<4；且留一法显示 max median shift 141 天 → 完全由单点决定"
+   },
+   "drift": "UNDEFINED",
+   "leave_one_out": {
+    "status": "OK",
+    "base_hits": 1,
+    "base_median_md": "01-23",
+    "max_median_shift_on_removal_days": 141.0,
+    "max_hit_drop_on_removal": 1,
+    "single_year_dominated": true
+   },
+   "sample_size_sensitivity": {
+    "note": "N=3；三点的中位数在剔除任一点后位移最大 141 天 → 统计量无意义"
+   },
+   "evidence_basis": [
+    "exports/timeline_export_v1.json campaigns[]: C-2019-PHARMA-INNOV / research_candidates[]: RC-2020-PANDEMIC, RC-2021-TCM",
+    "research/research/reportts/Medical_Health_*",
+    "research/research/annual/2019.md, 2020.md, 2021.md"
+   ],
+   "mechanism_hypotheses": [
+    {
+     "hypothesis": "政策/制度日历驱动（集采 4+7 结果 2018-12-17、科创板 2019-07-22、医保谈判 2019-11-28）",
+     "evidence_strength": "SUPPORTED_BY_PUBLIC_RECORD",
+     "detail": "但政策日期本身分散在 12 月 / 7 月 / 11 月，**并不支持「1 月集中」**。"
+    },
+    {
+     "hypothesis": "疫情为外生冲击，不可重复（2020-01-23 武汉封城）",
+     "evidence_strength": "SINGLE_EVENT"
+    },
+    {
+     "hypothesis": "中医药政策在年末发布（2021-12-31 医保局/中医药局指导意见）→ 板块 11 月提前反应",
+     "evidence_strength": "SINGLE_YEAR"
+    }
+   ],
+   "mechanism_class": "CALENDAR_DRIVEN（政策/制度日历）为主，含 1 个外生冲击（疫情）",
+   "calendar_vs_seasonal": "CALENDAR_DRIVEN；**无 SEASONAL_DEMAND 证据**",
+   "lunar_holiday_check": {
+    "spring_festival_offset_days": [
+     {
+      "year": 2019,
+      "anchor": "01-02",
+      "days_after_spring_festival": -34
+     },
+     {
+      "year": 2020,
+      "anchor": "01-23",
+      "days_after_spring_festival": -2
+     },
+     {
+      "year": 2021,
+      "anchor": "11-01",
+      "days_after_spring_festival": 262
+     }
+    ],
+    "finding": "偏离春节 -34 / -2 / +262 天 → 同样不集中。与公历亦不集中（分散 3 个月）。"
+   },
+   "data_quality": {
+    "anchor_precision": "EXACT_DATE；2019 锚点为本地数据窗口起点（2019-01-02）而非真实主题起点",
+    "verification": "verification_method=unknown",
+    "research_status": "PROVISIONAL",
+    "grade": "LOW-MEDIUM"
+   },
+   "research_strength": {
+    "grade": "D",
+    "rationale": "N=3、跨度 83 天、与均匀分布无差异、留一法显示完全由单点决定 → 未发现时间聚集证据"
+   },
+   "status": "REJECTED",
+   "reject_reason": "拒绝规则情况 2（窗口内外差异极小 / 无集中）+ 情况 4（实际含单一致命外生事件：2020 疫情）+ 情况 6（规律由单一年份主导，LOO 位移 141 天）",
+   "timeline_eligible": false,
+   "provenance": {
+    "source": "ThreeC 2018–2025 历史研究数据",
+    "generated_by": "offline research script",
+    "snapshot_date": "2026-09-16",
+    "research_round": "seasonal-observation-pattern-v0.1"
+   }
+  }
+ ],
+ "dataset_level_findings": {
+  "total_objects": 13,
+  "total_campaigns": 9,
+  "total_research_candidates": 4,
+  "level2_cross_year_repeat_themes": 1,
+  "level2_detail": "仅 medical_structural_upgrade_2019_2022 一个 Theme Cycle 跨年重复；其余 8 个 Cycle 均为单年",
+  "level3_explored_families": [
+   "AUTO_SMART_DRIVING",
+   "AUTO_NEV_ELECTRIFICATION",
+   "AUTO_ALL",
+   "PHARMA_ALL"
+  ],
+  "final_answer": "C —— 存在 1 个可用候选（SOP-03），但样本不足（N=7，全 PROVISIONAL，未人工核验），需先补数据；其余 3 个候选全部不达标",
+  "final_answer_option": "C",
+  "final_answer_detail": [
+   "SOP-03 汽车主题上半年末启动观察窗口：唯一达到 Timeline 最低门槛的候选，但必须先完成 (a) 锚点日期人工核验 (b) 补样本 (c) 选择偏差 UI 标注",
+   "SOP-01 汽车智能化：N=4 且 2019 锚点为弱事件 + MILD_DRIFT → 不达标",
+   "SOP-02 汽车电动化：N=2 且两点完全重合造成 p=0.003 假显著 → 样本量幻觉，不达标",
+   "SOP-04 医药健康：N=3、与均匀无差异、LOO 位移 141 天（单年主导）→ REJECTED",
+   "关键反面发现：医药是唯一跨年重复的 Theme Cycle，却恰恰不构成时间规律 → 主题重复不等于时间规律"
+  ]
+ },
+ "known_limitations": [
+  "2018–2025 仅 8 个年度观测，且 2018 为反例年（no_clear_campaign）→ 有效年度 7 个。",
+  "所有锚点日期均为研究候选日期，verification_method 多为 unknown（未经行情人工核验）。",
+  "ThreeC 只记录「形成 Campaign 的主题」→ 存在 survivorship bias；无法观测「当年同样在 6 月启动但未成势」的主题。",
+  "研究规则在 2019–2022 与 2023–2024 之间存在口径差异（见方法学一致性审计）。",
+  "农历换算为近似（基于春节日期表），非精确农历算法。",
+  "permutation 经验 p 仅作探索性描述，N<5 时不作为显著性断言。"
+ ]
+}

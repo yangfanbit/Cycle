@@ -1,0 +1,5467 @@
+{
+  "period_days": 365,
+  "n_raw_objects": 13,
+  "analyses": {},
+  "level2_theme_cycle": {
+    "auto_ad_2019": {
+      "n_objects": 1,
+      "n_distinct_years": 1,
+      "years": [
+        2019
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2019-AD"
+      ]
+    },
+    "auto_intelligence_2023": {
+      "n_objects": 2,
+      "n_distinct_years": 1,
+      "years": [
+        2023
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2023-AD",
+        "RC-2023-HUAWEI"
+      ]
+    },
+    "auto_nev_2020": {
+      "n_objects": 1,
+      "n_distinct_years": 1,
+      "years": [
+        2020
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2020-NEV"
+      ]
+    },
+    "auto_nev_2021": {
+      "n_objects": 1,
+      "n_distinct_years": 1,
+      "years": [
+        2021
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2021-NEV"
+      ]
+    },
+    "auto_policy_2022": {
+      "n_objects": 1,
+      "n_distinct_years": 1,
+      "years": [
+        2022
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2022-POLICY"
+      ]
+    },
+    "auto_v2x_2024": {
+      "n_objects": 1,
+      "n_distinct_years": 1,
+      "years": [
+        2024
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2024-V2X"
+      ]
+    },
+    "medical_structural_upgrade_2019_2022": {
+      "n_objects": 3,
+      "n_distinct_years": 3,
+      "years": [
+        2019,
+        2020,
+        2021
+      ],
+      "repeat_across_years": true,
+      "campaigns": [
+        "C-2019-PHARMA-INNOV",
+        "RC-2020-PANDEMIC",
+        "RC-2021-TCM"
+      ]
+    },
+    "robotaxi_2024": {
+      "n_objects": 2,
+      "n_distinct_years": 1,
+      "years": [
+        2024
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2024-ROBOTAXI",
+        "RC-2024-SECONDARY"
+      ]
+    },
+    "robotaxi_2025": {
+      "n_objects": 1,
+      "n_distinct_years": 1,
+      "years": [
+        2025
+      ],
+      "repeat_across_years": false,
+      "campaigns": [
+        "C-2025-ROBOTAXI"
+      ]
+    }
+  },
+  "families_macro": {
+    "rule_auto_summer": {
+      "family": "rule_auto_summer",
+      "n_years": 3,
+      "years": [
+        2019,
+        2023,
+        2024
+      ],
+      "anchor_doy_norm": [
+        227,
+        241,
+        248
+      ],
+      "anchor_md": [
+        "08-15",
+        "08-29",
+        "09-05"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-AD",
+        "RC-2023-HUAWEI",
+        "RC-2024-SECONDARY"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)",
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 238.66666666666666,
+      "median": 241.0,
+      "p25": 234.0,
+      "p75": 244.5,
+      "iqr": 10.5,
+      "mad": 7.0,
+      "circular_earliest": 227,
+      "circular_latest": 248,
+      "circular_span_days": 21,
+      "circular_center": 238.67932204625995,
+      "circular_center_md": "08-27",
+      "md_list": [
+        "08-15",
+        "08-29",
+        "09-05"
+      ],
+      "earliest_md": "08-15",
+      "latest_md": "09-05",
+      "month_distribution": {
+        "08": 2,
+        "09": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "08-下旬": 1,
+        "08-中旬": 1,
+        "09-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 234.0,
+        "end": 244.5,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 230.6218,
+        "end": 251.3782,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 225.4327,
+        "end": 256.5673,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 220.24360000000001,
+        "end": 261.7564,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 8,
+        "end": 9,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          8,
+          1
+        ],
+        "end": [
+          9,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 21,
+        "expected_span_uniform": 182.5,
+        "span_ratio": 0.11506849315068493,
+        "span_p_value_one_sided": 0.00995,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 3,
+          "hits_in_window": 1,
+          "window_width_days": 12,
+          "window_share_of_year": 0.03287671232876712,
+          "hit_share": 0.3333333333333333,
+          "density_ratio": 10.13888888888889,
+          "uniform_expected_hits": 0.09863013698630137,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 234.0,
+            "end": 244.5
+          },
+          "window_md": {
+            "start": "08-22",
+            "end": "09-01"
+          }
+        },
+        "B_mad_k1": {
+          "n": 3,
+          "hits_in_window": 2,
+          "window_width_days": 22,
+          "window_share_of_year": 0.06027397260273973,
+          "hit_share": 0.6666666666666666,
+          "density_ratio": 11.060606060606059,
+          "uniform_expected_hits": 0.18082191780821918,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 230.6218,
+            "end": 251.3782
+          },
+          "window_md": {
+            "start": "08-19",
+            "end": "09-08"
+          }
+        },
+        "B_mad_k15": {
+          "n": 3,
+          "hits_in_window": 3,
+          "window_width_days": 32,
+          "window_share_of_year": 0.08767123287671233,
+          "hit_share": 1.0,
+          "density_ratio": 11.40625,
+          "uniform_expected_hits": 0.26301369863013696,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 225.4327,
+            "end": 256.5673
+          },
+          "window_md": {
+            "start": "08-13",
+            "end": "09-14"
+          }
+        },
+        "B_mad_k2": {
+          "n": 3,
+          "hits_in_window": 3,
+          "window_width_days": 43,
+          "window_share_of_year": 0.1178082191780822,
+          "hit_share": 1.0,
+          "density_ratio": 8.488372093023255,
+          "uniform_expected_hits": 0.35342465753424657,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 220.24360000000001,
+            "end": 261.7564
+          },
+          "window_md": {
+            "start": "08-08",
+            "end": "09-19"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 3,
+        "ratio": 0.3333333333333333,
+        "hits_years": [
+          2023
+        ],
+        "miss_years": [
+          2019,
+          2024
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 3,
+        "ratio": 0.6666666666666666,
+        "hits_years": [
+          2023,
+          2024
+        ],
+        "miss_years": [
+          2019
+        ]
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=3<4，不做前后半段比较"
+      },
+      "leave_one_out": {
+        "base_median": 241.0,
+        "base_hits": 1,
+        "max_median_shift_on_removal": 7.0,
+        "max_hit_drop_on_removal": 1,
+        "single_year_dominated": false,
+        "per_removal": [
+          {
+            "removed_year": 2019,
+            "median_after_removal": 244.5,
+            "hits_after_removal": 1,
+            "n_after": 2
+          },
+          {
+            "removed_year": 2023,
+            "median_after_removal": 237.5,
+            "hits_after_removal": 0,
+            "n_after": 2
+          },
+          {
+            "removed_year": 2024,
+            "median_after_removal": 234.0,
+            "hits_after_removal": 1,
+            "n_after": 2
+          }
+        ]
+      }
+    },
+    "rule_pharma_upgrade": {
+      "family": "rule_pharma_upgrade",
+      "n_years": 2,
+      "years": [
+        2020,
+        2021
+      ],
+      "anchor_doy_norm": [
+        23,
+        305
+      ],
+      "anchor_md": [
+        "01-23",
+        "11-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "RC-2020-PANDEMIC",
+        "RC-2021-TCM"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)"
+      ],
+      "mean": 164.0,
+      "median": 164.0,
+      "p25": 93.5,
+      "p75": 234.5,
+      "iqr": 141.0,
+      "mad": 141.0,
+      "circular_earliest": 305,
+      "circular_latest": 23,
+      "circular_span_days": 83,
+      "circular_center": 346.50000000000006,
+      "circular_center_md": "12-13",
+      "md_list": [
+        "01-23",
+        "11-01"
+      ],
+      "earliest_md": "11-01",
+      "latest_md": "01-23",
+      "month_distribution": {
+        "01": 1,
+        "11": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "01-下旬": 1,
+        "11-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 93.5,
+        "end": 234.5,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": -45.046599999999984,
+        "end": 373.0466,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": -149.56989999999996,
+        "end": 477.56989999999996,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": -254.09319999999997,
+        "end": 582.0932,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 11,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          2
+        ],
+        "end": [
+          11,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 83,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.6821917808219178,
+        "span_p_value_one_sided": 0.4582,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 142,
+          "window_share_of_year": 0.38904109589041097,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.7780821917808219,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 93.5,
+            "end": 234.5
+          },
+          "window_md": {
+            "start": "04-04",
+            "end": "08-22"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 54,
+          "window_share_of_year": 0.14794520547945206,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.2958904109589041,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -45.046599999999984,
+            "end": 373.0466
+          },
+          "window_md": {
+            "start": "11-16",
+            "end": "01-08"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 263,
+          "window_share_of_year": 0.7205479452054795,
+          "hit_share": 1.0,
+          "density_ratio": 1.3878326996197718,
+          "uniform_expected_hits": 1.441095890410959,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -149.56989999999996,
+            "end": 477.56989999999996
+          },
+          "window_md": {
+            "start": "08-03",
+            "end": "04-23"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 107,
+          "window_share_of_year": 0.29315068493150687,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.5863013698630137,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -254.09319999999997,
+            "end": 582.0932
+          },
+          "window_md": {
+            "start": "04-21",
+            "end": "08-05"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ]
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "医药健康": {
+      "family": "医药健康",
+      "n_years": 1,
+      "years": [
+        2019
+      ],
+      "anchor_doy_norm": [
+        2
+      ],
+      "anchor_md": [
+        "01-02"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-PHARMA-INNOV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 2.0,
+      "median": 2.0,
+      "p25": 2.0,
+      "p75": 2.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 2,
+      "circular_latest": 2,
+      "circular_span_days": 0,
+      "circular_center": 2.0,
+      "circular_center_md": "01-02",
+      "md_list": [
+        "01-02"
+      ],
+      "earliest_md": "01-02",
+      "latest_md": "01-02",
+      "month_distribution": {
+        "01": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "01-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 1,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          0
+        ],
+        "end": [
+          1,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "汽车": {
+      "family": "汽车",
+      "n_years": 6,
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "anchor_doy_norm": [
+        152,
+        152,
+        117,
+        163,
+        162,
+        173
+      ],
+      "anchor_md": [
+        "06-01",
+        "06-01",
+        "04-27",
+        "06-12",
+        "06-11",
+        "06-22"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2020-NEV",
+        "C-2021-NEV",
+        "C-2022-POLICY",
+        "C-2023-AD",
+        "C-2024-V2X",
+        "C-2025-ROBOTAXI"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 153.16666666666666,
+      "median": 157.0,
+      "p25": 152.0,
+      "p75": 162.75,
+      "iqr": 10.75,
+      "mad": 5.5,
+      "circular_earliest": 117,
+      "circular_latest": 173,
+      "circular_span_days": 56,
+      "circular_center": 153.48572745532462,
+      "circular_center_md": "06-02",
+      "md_list": [
+        "06-01",
+        "06-01",
+        "04-27",
+        "06-12",
+        "06-11",
+        "06-22"
+      ],
+      "earliest_md": "04-27",
+      "latest_md": "06-22",
+      "month_distribution": {
+        "04": 1,
+        "06": 5
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "04-下旬": 1,
+        "06-上旬": 2,
+        "06-下旬": 1,
+        "06-中旬": 2
+      },
+      "window_A_quantile": {
+        "start": 152.0,
+        "end": 162.75,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 148.8457,
+        "end": 165.1543,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 144.76855,
+        "end": 169.23145,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 140.6914,
+        "end": 173.3086,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 4,
+        "end": 6,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          4,
+          2
+        ],
+        "end": [
+          6,
+          2
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 56,
+        "expected_span_uniform": 260.7142857142857,
+        "span_ratio": 0.2147945205479452,
+        "span_p_value_one_sided": 0.00055,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 6,
+          "hits_in_window": 3,
+          "window_width_days": 12,
+          "window_share_of_year": 0.03287671232876712,
+          "hit_share": 0.5,
+          "density_ratio": 15.208333333333336,
+          "uniform_expected_hits": 0.19726027397260273,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 162.75
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-12"
+          }
+        },
+        "B_mad_k1": {
+          "n": 6,
+          "hits_in_window": 4,
+          "window_width_days": 17,
+          "window_share_of_year": 0.04657534246575343,
+          "hit_share": 0.6666666666666666,
+          "density_ratio": 14.313725490196077,
+          "uniform_expected_hits": 0.27945205479452057,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 148.8457,
+            "end": 165.1543
+          },
+          "window_md": {
+            "start": "05-29",
+            "end": "06-14"
+          }
+        },
+        "B_mad_k15": {
+          "n": 6,
+          "hits_in_window": 4,
+          "window_width_days": 25,
+          "window_share_of_year": 0.0684931506849315,
+          "hit_share": 0.6666666666666666,
+          "density_ratio": 9.733333333333333,
+          "uniform_expected_hits": 0.410958904109589,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 144.76855,
+            "end": 169.23145
+          },
+          "window_md": {
+            "start": "05-25",
+            "end": "06-18"
+          }
+        },
+        "B_mad_k2": {
+          "n": 6,
+          "hits_in_window": 5,
+          "window_width_days": 34,
+          "window_share_of_year": 0.09315068493150686,
+          "hit_share": 0.8333333333333334,
+          "density_ratio": 8.946078431372548,
+          "uniform_expected_hits": 0.5589041095890411,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 140.6914,
+            "end": 173.3086
+          },
+          "window_md": {
+            "start": "05-21",
+            "end": "06-22"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 3,
+        "n_years": 6,
+        "ratio": 0.5,
+        "hits_years": [
+          2020,
+          2021,
+          2024
+        ],
+        "miss_years": [
+          2022,
+          2023,
+          2025
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 4,
+        "n_years": 6,
+        "ratio": 0.6666666666666666,
+        "hits_years": [
+          2020,
+          2021,
+          2023,
+          2024
+        ],
+        "miss_years": [
+          2022,
+          2025
+        ]
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_half_years": [
+          2020,
+          2021,
+          2022
+        ],
+        "second_half_years": [
+          2023,
+          2024,
+          2025
+        ],
+        "first_median": 152.0,
+        "second_median": 163.0,
+        "median_shift_days": 11.0,
+        "first_iqr": [
+          134.5,
+          152.0
+        ],
+        "second_iqr": [
+          162.5,
+          168.0
+        ],
+        "iqr_overlap_days": 0.0,
+        "drift_flag": "STABLE",
+        "note": "|中位数位移|>=45 天 → DRIFTING；21–44 天 → MILD_DRIFT；<21 天 → STABLE"
+      },
+      "leave_one_out": {
+        "base_median": 157.0,
+        "base_hits": 3,
+        "max_median_shift_on_removal": 5.0,
+        "max_hit_drop_on_removal": 1,
+        "single_year_dominated": false,
+        "per_removal": [
+          {
+            "removed_year": 2020,
+            "median_after_removal": 162.0,
+            "hits_after_removal": 2,
+            "n_after": 5
+          },
+          {
+            "removed_year": 2021,
+            "median_after_removal": 162.0,
+            "hits_after_removal": 2,
+            "n_after": 5
+          },
+          {
+            "removed_year": 2022,
+            "median_after_removal": 162.0,
+            "hits_after_removal": 3,
+            "n_after": 5
+          },
+          {
+            "removed_year": 2023,
+            "median_after_removal": 152.0,
+            "hits_after_removal": 3,
+            "n_after": 5
+          },
+          {
+            "removed_year": 2024,
+            "median_after_removal": 152.0,
+            "hits_after_removal": 2,
+            "n_after": 5
+          },
+          {
+            "removed_year": 2025,
+            "median_after_removal": 152.0,
+            "hits_after_removal": 3,
+            "n_after": 5
+          }
+        ]
+      }
+    }
+  },
+  "families_macro_RAW_no_dedup": {
+    "rule_auto_summer": {
+      "family": "rule_auto_summer",
+      "n_years": 3,
+      "years": [
+        2019,
+        2023,
+        2024
+      ],
+      "anchor_doy_norm": [
+        227,
+        241,
+        248
+      ],
+      "anchor_md": [
+        "08-15",
+        "08-29",
+        "09-05"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-AD",
+        "RC-2023-HUAWEI",
+        "RC-2024-SECONDARY"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)",
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 238.66666666666666,
+      "median": 241.0,
+      "p25": 234.0,
+      "p75": 244.5,
+      "iqr": 10.5,
+      "mad": 7.0,
+      "circular_earliest": 227,
+      "circular_latest": 248,
+      "circular_span_days": 21,
+      "circular_center": 238.67932204625995,
+      "circular_center_md": "08-27",
+      "md_list": [
+        "08-15",
+        "08-29",
+        "09-05"
+      ],
+      "earliest_md": "08-15",
+      "latest_md": "09-05",
+      "month_distribution": {
+        "08": 2,
+        "09": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "08-下旬": 1,
+        "08-中旬": 1,
+        "09-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 234.0,
+        "end": 244.5,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 230.6218,
+        "end": 251.3782,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 225.4327,
+        "end": 256.5673,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 220.24360000000001,
+        "end": 261.7564,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 8,
+        "end": 9,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          8,
+          1
+        ],
+        "end": [
+          9,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 21,
+        "expected_span_uniform": 182.5,
+        "span_ratio": 0.11506849315068493,
+        "span_p_value_one_sided": 0.01095,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 3,
+          "hits_in_window": 1,
+          "window_width_days": 12,
+          "window_share_of_year": 0.03287671232876712,
+          "hit_share": 0.3333333333333333,
+          "density_ratio": 10.13888888888889,
+          "uniform_expected_hits": 0.09863013698630137,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 234.0,
+            "end": 244.5
+          },
+          "window_md": {
+            "start": "08-22",
+            "end": "09-01"
+          }
+        },
+        "B_mad_k1": {
+          "n": 3,
+          "hits_in_window": 2,
+          "window_width_days": 22,
+          "window_share_of_year": 0.06027397260273973,
+          "hit_share": 0.6666666666666666,
+          "density_ratio": 11.060606060606059,
+          "uniform_expected_hits": 0.18082191780821918,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 230.6218,
+            "end": 251.3782
+          },
+          "window_md": {
+            "start": "08-19",
+            "end": "09-08"
+          }
+        },
+        "B_mad_k15": {
+          "n": 3,
+          "hits_in_window": 3,
+          "window_width_days": 32,
+          "window_share_of_year": 0.08767123287671233,
+          "hit_share": 1.0,
+          "density_ratio": 11.40625,
+          "uniform_expected_hits": 0.26301369863013696,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 225.4327,
+            "end": 256.5673
+          },
+          "window_md": {
+            "start": "08-13",
+            "end": "09-14"
+          }
+        },
+        "B_mad_k2": {
+          "n": 3,
+          "hits_in_window": 3,
+          "window_width_days": 43,
+          "window_share_of_year": 0.1178082191780822,
+          "hit_share": 1.0,
+          "density_ratio": 8.488372093023255,
+          "uniform_expected_hits": 0.35342465753424657,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 220.24360000000001,
+            "end": 261.7564
+          },
+          "window_md": {
+            "start": "08-08",
+            "end": "09-19"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 3,
+        "ratio": 0.3333333333333333,
+        "hits_years": [
+          2023
+        ],
+        "miss_years": [
+          2019,
+          2024
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 3,
+        "ratio": 0.6666666666666666,
+        "hits_years": [
+          2023,
+          2024
+        ],
+        "miss_years": [
+          2019
+        ]
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=3<4，不做前后半段比较"
+      },
+      "leave_one_out": {
+        "base_median": 241.0,
+        "base_hits": 1,
+        "max_median_shift_on_removal": 7.0,
+        "max_hit_drop_on_removal": 1,
+        "single_year_dominated": false,
+        "per_removal": [
+          {
+            "removed_year": 2019,
+            "median_after_removal": 244.5,
+            "hits_after_removal": 1,
+            "n_after": 2
+          },
+          {
+            "removed_year": 2023,
+            "median_after_removal": 237.5,
+            "hits_after_removal": 0,
+            "n_after": 2
+          },
+          {
+            "removed_year": 2024,
+            "median_after_removal": 234.0,
+            "hits_after_removal": 1,
+            "n_after": 2
+          }
+        ]
+      }
+    },
+    "rule_pharma_upgrade": {
+      "family": "rule_pharma_upgrade",
+      "n_years": 2,
+      "years": [
+        2020,
+        2021
+      ],
+      "anchor_doy_norm": [
+        23,
+        305
+      ],
+      "anchor_md": [
+        "01-23",
+        "11-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "RC-2020-PANDEMIC",
+        "RC-2021-TCM"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)"
+      ],
+      "mean": 164.0,
+      "median": 164.0,
+      "p25": 93.5,
+      "p75": 234.5,
+      "iqr": 141.0,
+      "mad": 141.0,
+      "circular_earliest": 305,
+      "circular_latest": 23,
+      "circular_span_days": 83,
+      "circular_center": 346.50000000000006,
+      "circular_center_md": "12-13",
+      "md_list": [
+        "01-23",
+        "11-01"
+      ],
+      "earliest_md": "11-01",
+      "latest_md": "01-23",
+      "month_distribution": {
+        "01": 1,
+        "11": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "01-下旬": 1,
+        "11-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 93.5,
+        "end": 234.5,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": -45.046599999999984,
+        "end": 373.0466,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": -149.56989999999996,
+        "end": 477.56989999999996,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": -254.09319999999997,
+        "end": 582.0932,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 11,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          2
+        ],
+        "end": [
+          11,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 83,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.6821917808219178,
+        "span_p_value_one_sided": 0.45755,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 142,
+          "window_share_of_year": 0.38904109589041097,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.7780821917808219,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 93.5,
+            "end": 234.5
+          },
+          "window_md": {
+            "start": "04-04",
+            "end": "08-22"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 54,
+          "window_share_of_year": 0.14794520547945206,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.2958904109589041,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -45.046599999999984,
+            "end": 373.0466
+          },
+          "window_md": {
+            "start": "11-16",
+            "end": "01-08"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 263,
+          "window_share_of_year": 0.7205479452054795,
+          "hit_share": 1.0,
+          "density_ratio": 1.3878326996197718,
+          "uniform_expected_hits": 1.441095890410959,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -149.56989999999996,
+            "end": 477.56989999999996
+          },
+          "window_md": {
+            "start": "08-03",
+            "end": "04-23"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 107,
+          "window_share_of_year": 0.29315068493150687,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.5863013698630137,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -254.09319999999997,
+            "end": 582.0932
+          },
+          "window_md": {
+            "start": "04-21",
+            "end": "08-05"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ]
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "医药健康": {
+      "family": "医药健康",
+      "n_years": 1,
+      "years": [
+        2019
+      ],
+      "anchor_doy_norm": [
+        2
+      ],
+      "anchor_md": [
+        "01-02"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-PHARMA-INNOV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 2.0,
+      "median": 2.0,
+      "p25": 2.0,
+      "p75": 2.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 2,
+      "circular_latest": 2,
+      "circular_span_days": 0,
+      "circular_center": 2.0,
+      "circular_center_md": "01-02",
+      "md_list": [
+        "01-02"
+      ],
+      "earliest_md": "01-02",
+      "latest_md": "01-02",
+      "month_distribution": {
+        "01": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "01-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 1,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          0
+        ],
+        "end": [
+          1,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "汽车": {
+      "family": "汽车",
+      "n_years": 7,
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2024,
+        2025
+      ],
+      "anchor_doy_norm": [
+        152,
+        152,
+        117,
+        163,
+        162,
+        189,
+        173
+      ],
+      "anchor_md": [
+        "06-01",
+        "06-01",
+        "04-27",
+        "06-12",
+        "06-11",
+        "07-08",
+        "06-22"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2020-NEV",
+        "C-2021-NEV",
+        "C-2022-POLICY",
+        "C-2023-AD",
+        "C-2024-V2X",
+        "C-2024-ROBOTAXI",
+        "C-2025-ROBOTAXI"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 158.28571428571428,
+      "median": 162.0,
+      "p25": 152.0,
+      "p75": 168.0,
+      "iqr": 16.0,
+      "mad": 10.0,
+      "circular_earliest": 117,
+      "circular_latest": 189,
+      "circular_span_days": 72,
+      "circular_center": 158.56531167295103,
+      "circular_center_md": "06-08",
+      "md_list": [
+        "06-01",
+        "06-01",
+        "04-27",
+        "06-12",
+        "06-11",
+        "07-08",
+        "06-22"
+      ],
+      "earliest_md": "04-27",
+      "latest_md": "07-08",
+      "month_distribution": {
+        "04": 1,
+        "06": 5,
+        "07": 1
+      },
+      "months_distinct": 3,
+      "month_decade_distribution": {
+        "04-下旬": 1,
+        "06-上旬": 2,
+        "06-下旬": 1,
+        "06-中旬": 2,
+        "07-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 152.0,
+        "end": 168.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 147.174,
+        "end": 176.826,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 139.761,
+        "end": 184.239,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 132.348,
+        "end": 191.652,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 4,
+        "end": 7,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          4,
+          2
+        ],
+        "end": [
+          7,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 72,
+        "expected_span_uniform": 273.75,
+        "span_ratio": 0.26301369863013696,
+        "span_p_value_one_sided": 0.00025,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 7,
+          "hits_in_window": 4,
+          "window_width_days": 17,
+          "window_share_of_year": 0.04657534246575343,
+          "hit_share": 0.5714285714285714,
+          "density_ratio": 12.26890756302521,
+          "uniform_expected_hits": 0.32602739726027397,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 168.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-17"
+          }
+        },
+        "B_mad_k1": {
+          "n": 7,
+          "hits_in_window": 5,
+          "window_width_days": 31,
+          "window_share_of_year": 0.08493150684931507,
+          "hit_share": 0.7142857142857143,
+          "density_ratio": 8.410138248847927,
+          "uniform_expected_hits": 0.5945205479452055,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 147.174,
+            "end": 176.826
+          },
+          "window_md": {
+            "start": "05-27",
+            "end": "06-26"
+          }
+        },
+        "B_mad_k15": {
+          "n": 7,
+          "hits_in_window": 5,
+          "window_width_days": 45,
+          "window_share_of_year": 0.1232876712328767,
+          "hit_share": 0.7142857142857143,
+          "density_ratio": 5.793650793650794,
+          "uniform_expected_hits": 0.863013698630137,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 139.761,
+            "end": 184.239
+          },
+          "window_md": {
+            "start": "05-20",
+            "end": "07-03"
+          }
+        },
+        "B_mad_k2": {
+          "n": 7,
+          "hits_in_window": 6,
+          "window_width_days": 60,
+          "window_share_of_year": 0.1643835616438356,
+          "hit_share": 0.8571428571428571,
+          "density_ratio": 5.214285714285714,
+          "uniform_expected_hits": 1.1506849315068493,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 132.348,
+            "end": 191.652
+          },
+          "window_md": {
+            "start": "05-12",
+            "end": "07-11"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 4,
+        "n_years": 7,
+        "ratio": 0.5714285714285714,
+        "hits_years": [
+          2020,
+          2021,
+          2023,
+          2024
+        ],
+        "miss_years": [
+          2022,
+          2024,
+          2025
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 5,
+        "n_years": 7,
+        "ratio": 0.7142857142857143,
+        "hits_years": [
+          2020,
+          2021,
+          2023,
+          2024,
+          2025
+        ],
+        "miss_years": [
+          2022,
+          2024
+        ]
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_half_years": [
+          2020,
+          2021,
+          2022
+        ],
+        "second_half_years": [
+          2023,
+          2024,
+          2024,
+          2025
+        ],
+        "first_median": 152.0,
+        "second_median": 168.0,
+        "median_shift_days": 16.0,
+        "first_iqr": [
+          134.5,
+          152.0
+        ],
+        "second_iqr": [
+          162.75,
+          177.0
+        ],
+        "iqr_overlap_days": 0.0,
+        "drift_flag": "STABLE",
+        "note": "|中位数位移|>=45 天 → DRIFTING；21–44 天 → MILD_DRIFT；<21 天 → STABLE"
+      },
+      "leave_one_out": {
+        "base_median": 162.0,
+        "base_hits": 4,
+        "max_median_shift_on_removal": 5.0,
+        "max_hit_drop_on_removal": 1,
+        "single_year_dominated": false,
+        "per_removal": [
+          {
+            "removed_year": 2020,
+            "median_after_removal": 162.5,
+            "hits_after_removal": 3,
+            "n_after": 6
+          },
+          {
+            "removed_year": 2021,
+            "median_after_removal": 162.5,
+            "hits_after_removal": 3,
+            "n_after": 6
+          },
+          {
+            "removed_year": 2022,
+            "median_after_removal": 162.5,
+            "hits_after_removal": 4,
+            "n_after": 6
+          },
+          {
+            "removed_year": 2023,
+            "median_after_removal": 157.0,
+            "hits_after_removal": 3,
+            "n_after": 6
+          },
+          {
+            "removed_year": 2024,
+            "median_after_removal": 157.5,
+            "hits_after_removal": 3,
+            "n_after": 6
+          },
+          {
+            "removed_year": 2024,
+            "median_after_removal": 157.0,
+            "hits_after_removal": 4,
+            "n_after": 6
+          },
+          {
+            "removed_year": 2025,
+            "median_after_removal": 157.0,
+            "hits_after_removal": 4,
+            "n_after": 6
+          }
+        ]
+      }
+    }
+  },
+  "families_subtheme": {
+    "Robotaxi/无人驾驶/智能网约车": {
+      "family": "Robotaxi/无人驾驶/智能网约车",
+      "n_years": 2,
+      "years": [
+        2024,
+        2025
+      ],
+      "anchor_doy_norm": [
+        189,
+        173
+      ],
+      "anchor_md": [
+        "07-08",
+        "06-22"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2024-ROBOTAXI",
+        "C-2025-ROBOTAXI"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 181.0,
+      "median": 181.0,
+      "p25": 177.0,
+      "p75": 185.0,
+      "iqr": 8.0,
+      "mad": 8.0,
+      "circular_earliest": 173,
+      "circular_latest": 189,
+      "circular_span_days": 16,
+      "circular_center": 181.0,
+      "circular_center_md": "06-30",
+      "md_list": [
+        "07-08",
+        "06-22"
+      ],
+      "earliest_md": "06-22",
+      "latest_md": "07-08",
+      "month_distribution": {
+        "06": 1,
+        "07": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "06-下旬": 1,
+        "07-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 177.0,
+        "end": 185.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 169.1392,
+        "end": 192.8608,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 163.2088,
+        "end": 198.7912,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 157.2784,
+        "end": 204.7216,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 7,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          2
+        ],
+        "end": [
+          7,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 16,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.13150684931506848,
+        "span_p_value_one_sided": 0.0913,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 9,
+          "window_share_of_year": 0.024657534246575342,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.049315068493150684,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 177.0,
+            "end": 185.0
+          },
+          "window_md": {
+            "start": "06-26",
+            "end": "07-04"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 25,
+          "window_share_of_year": 0.0684931506849315,
+          "hit_share": 1.0,
+          "density_ratio": 14.600000000000001,
+          "uniform_expected_hits": 0.136986301369863,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 169.1392,
+            "end": 192.8608
+          },
+          "window_md": {
+            "start": "06-18",
+            "end": "07-12"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 37,
+          "window_share_of_year": 0.10136986301369863,
+          "hit_share": 1.0,
+          "density_ratio": 9.864864864864865,
+          "uniform_expected_hits": 0.20273972602739726,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 163.2088,
+            "end": 198.7912
+          },
+          "window_md": {
+            "start": "06-12",
+            "end": "07-18"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 48,
+          "window_share_of_year": 0.13150684931506848,
+          "hit_share": 1.0,
+          "density_ratio": 7.604166666666668,
+          "uniform_expected_hits": 0.26301369863013696,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 157.2784,
+            "end": 204.7216
+          },
+          "window_md": {
+            "start": "06-06",
+            "end": "07-24"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2024,
+          2025
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2024,
+          2025
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "rule_auto_summer": {
+      "family": "rule_auto_summer",
+      "n_years": 2,
+      "years": [
+        2023,
+        2024
+      ],
+      "anchor_doy_norm": [
+        241,
+        248
+      ],
+      "anchor_md": [
+        "08-29",
+        "09-05"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "RC-2023-HUAWEI",
+        "RC-2024-SECONDARY"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)",
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 244.5,
+      "median": 244.5,
+      "p25": 242.75,
+      "p75": 246.25,
+      "iqr": 3.5,
+      "mad": 3.5,
+      "circular_earliest": 241,
+      "circular_latest": 248,
+      "circular_span_days": 7,
+      "circular_center": 244.49999999999997,
+      "circular_center_md": "09-01",
+      "md_list": [
+        "08-29",
+        "09-05"
+      ],
+      "earliest_md": "08-29",
+      "latest_md": "09-05",
+      "month_distribution": {
+        "08": 1,
+        "09": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "08-下旬": 1,
+        "09-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 242.75,
+        "end": 246.25,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 239.3109,
+        "end": 249.6891,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 236.71635,
+        "end": 252.28365,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 234.1218,
+        "end": 254.8782,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 8,
+        "end": 9,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          8,
+          2
+        ],
+        "end": [
+          9,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 7,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.057534246575342465,
+        "span_p_value_one_sided": 0.0411,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 4,
+          "window_share_of_year": 0.010958904109589041,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.021917808219178082,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 242.75,
+            "end": 246.25
+          },
+          "window_md": {
+            "start": "08-31",
+            "end": "09-03"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 11,
+          "window_share_of_year": 0.030136986301369864,
+          "hit_share": 1.0,
+          "density_ratio": 33.18181818181818,
+          "uniform_expected_hits": 0.06027397260273973,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 239.3109,
+            "end": 249.6891
+          },
+          "window_md": {
+            "start": "08-27",
+            "end": "09-07"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 17,
+          "window_share_of_year": 0.04657534246575343,
+          "hit_share": 1.0,
+          "density_ratio": 21.470588235294116,
+          "uniform_expected_hits": 0.09315068493150686,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 236.71635,
+            "end": 252.28365
+          },
+          "window_md": {
+            "start": "08-25",
+            "end": "09-09"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 22,
+          "window_share_of_year": 0.06027397260273973,
+          "hit_share": 1.0,
+          "density_ratio": 16.59090909090909,
+          "uniform_expected_hits": 0.12054794520547946,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 234.1218,
+            "end": 254.8782
+          },
+          "window_md": {
+            "start": "08-22",
+            "end": "09-12"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2023,
+          2024
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2023,
+          2024
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "rule_pharma_upgrade": {
+      "family": "rule_pharma_upgrade",
+      "n_years": 2,
+      "years": [
+        2020,
+        2021
+      ],
+      "anchor_doy_norm": [
+        23,
+        305
+      ],
+      "anchor_md": [
+        "01-23",
+        "11-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "RC-2020-PANDEMIC",
+        "RC-2021-TCM"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)"
+      ],
+      "mean": 164.0,
+      "median": 164.0,
+      "p25": 93.5,
+      "p75": 234.5,
+      "iqr": 141.0,
+      "mad": 141.0,
+      "circular_earliest": 305,
+      "circular_latest": 23,
+      "circular_span_days": 83,
+      "circular_center": 346.50000000000006,
+      "circular_center_md": "12-13",
+      "md_list": [
+        "01-23",
+        "11-01"
+      ],
+      "earliest_md": "11-01",
+      "latest_md": "01-23",
+      "month_distribution": {
+        "01": 1,
+        "11": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "01-下旬": 1,
+        "11-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 93.5,
+        "end": 234.5,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": -45.046599999999984,
+        "end": 373.0466,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": -149.56989999999996,
+        "end": 477.56989999999996,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": -254.09319999999997,
+        "end": 582.0932,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 11,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          2
+        ],
+        "end": [
+          11,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 83,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.6821917808219178,
+        "span_p_value_one_sided": 0.4576,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 142,
+          "window_share_of_year": 0.38904109589041097,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.7780821917808219,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 93.5,
+            "end": 234.5
+          },
+          "window_md": {
+            "start": "04-04",
+            "end": "08-22"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 54,
+          "window_share_of_year": 0.14794520547945206,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.2958904109589041,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -45.046599999999984,
+            "end": 373.0466
+          },
+          "window_md": {
+            "start": "11-16",
+            "end": "01-08"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 263,
+          "window_share_of_year": 0.7205479452054795,
+          "hit_share": 1.0,
+          "density_ratio": 1.3878326996197718,
+          "uniform_expected_hits": 1.441095890410959,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -149.56989999999996,
+            "end": 477.56989999999996
+          },
+          "window_md": {
+            "start": "08-03",
+            "end": "04-23"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 107,
+          "window_share_of_year": 0.29315068493150687,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.5863013698630137,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -254.09319999999997,
+            "end": 582.0932
+          },
+          "window_md": {
+            "start": "04-21",
+            "end": "08-05"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ]
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "创新药": {
+      "family": "创新药",
+      "n_years": 1,
+      "years": [
+        2019
+      ],
+      "anchor_doy_norm": [
+        2
+      ],
+      "anchor_md": [
+        "01-02"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-PHARMA-INNOV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 2.0,
+      "median": 2.0,
+      "p25": 2.0,
+      "p75": 2.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 2,
+      "circular_latest": 2,
+      "circular_span_days": 0,
+      "circular_center": 2.0,
+      "circular_center_md": "01-02",
+      "md_list": [
+        "01-02"
+      ],
+      "earliest_md": "01-02",
+      "latest_md": "01-02",
+      "month_distribution": {
+        "01": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "01-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 1,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          0
+        ],
+        "end": [
+          1,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "新能源汽车/电池": {
+      "family": "新能源汽车/电池",
+      "n_years": 1,
+      "years": [
+        2021
+      ],
+      "anchor_doy_norm": [
+        152
+      ],
+      "anchor_md": [
+        "06-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2021-NEV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 152.0,
+      "median": 152.0,
+      "p25": 152.0,
+      "p75": 152.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 152,
+      "circular_latest": 152,
+      "circular_span_days": 0,
+      "circular_center": 152.0,
+      "circular_center_md": "06-01",
+      "md_list": [
+        "06-01"
+      ],
+      "earliest_md": "06-01",
+      "latest_md": "06-01",
+      "month_distribution": {
+        "06": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "06-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 6,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          0
+        ],
+        "end": [
+          6,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2021
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2021
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "智能驾驶/无人驾驶": {
+      "family": "智能驾驶/无人驾驶",
+      "n_years": 2,
+      "years": [
+        2019,
+        2023
+      ],
+      "anchor_doy_norm": [
+        227,
+        163
+      ],
+      "anchor_md": [
+        "08-15",
+        "06-12"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-AD",
+        "C-2023-AD"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 195.0,
+      "median": 195.0,
+      "p25": 179.0,
+      "p75": 211.0,
+      "iqr": 32.0,
+      "mad": 32.0,
+      "circular_earliest": 163,
+      "circular_latest": 227,
+      "circular_span_days": 64,
+      "circular_center": 195.0,
+      "circular_center_md": "07-14",
+      "md_list": [
+        "08-15",
+        "06-12"
+      ],
+      "earliest_md": "06-12",
+      "latest_md": "08-15",
+      "month_distribution": {
+        "06": 1,
+        "08": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "06-中旬": 1,
+        "08-中旬": 1
+      },
+      "window_A_quantile": {
+        "start": 179.0,
+        "end": 211.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 147.5568,
+        "end": 242.4432,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 123.8352,
+        "end": 266.1648,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 100.1136,
+        "end": 289.8864,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 8,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          1
+        ],
+        "end": [
+          8,
+          1
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 64,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.5260273972602739,
+        "span_p_value_one_sided": 0.35285,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 33,
+          "window_share_of_year": 0.09041095890410959,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.18082191780821918,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 179.0,
+            "end": 211.0
+          },
+          "window_md": {
+            "start": "06-28",
+            "end": "07-30"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 96,
+          "window_share_of_year": 0.26301369863013696,
+          "hit_share": 1.0,
+          "density_ratio": 3.802083333333334,
+          "uniform_expected_hits": 0.5260273972602739,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 147.5568,
+            "end": 242.4432
+          },
+          "window_md": {
+            "start": "05-28",
+            "end": "08-30"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 143,
+          "window_share_of_year": 0.3917808219178082,
+          "hit_share": 1.0,
+          "density_ratio": 2.5524475524475525,
+          "uniform_expected_hits": 0.7835616438356164,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 123.8352,
+            "end": 266.1648
+          },
+          "window_md": {
+            "start": "05-04",
+            "end": "09-23"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 191,
+          "window_share_of_year": 0.5232876712328767,
+          "hit_share": 1.0,
+          "density_ratio": 1.910994764397906,
+          "uniform_expected_hits": 1.0465753424657533,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 100.1136,
+            "end": 289.8864
+          },
+          "window_md": {
+            "start": "04-10",
+            "end": "10-17"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2019,
+          2023
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2019,
+          2023
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "汽车消费/购置税刺激": {
+      "family": "汽车消费/购置税刺激",
+      "n_years": 1,
+      "years": [
+        2022
+      ],
+      "anchor_doy_norm": [
+        117
+      ],
+      "anchor_md": [
+        "04-27"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2022-POLICY"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 117.0,
+      "median": 117.0,
+      "p25": 117.0,
+      "p75": 117.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 117,
+      "circular_latest": 117,
+      "circular_span_days": 0,
+      "circular_center": 117.0,
+      "circular_center_md": "04-27",
+      "md_list": [
+        "04-27"
+      ],
+      "earliest_md": "04-27",
+      "latest_md": "04-27",
+      "month_distribution": {
+        "04": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "04-下旬": 1
+      },
+      "window_A_quantile": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 4,
+        "end": 4,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          4,
+          2
+        ],
+        "end": [
+          4,
+          2
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2022
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2022
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "特斯拉产业链": {
+      "family": "特斯拉产业链",
+      "n_years": 1,
+      "years": [
+        2020
+      ],
+      "anchor_doy_norm": [
+        152
+      ],
+      "anchor_md": [
+        "06-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2020-NEV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 152.0,
+      "median": 152.0,
+      "p25": 152.0,
+      "p75": 152.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 152,
+      "circular_latest": 152,
+      "circular_span_days": 0,
+      "circular_center": 152.0,
+      "circular_center_md": "06-01",
+      "md_list": [
+        "06-01"
+      ],
+      "earliest_md": "06-01",
+      "latest_md": "06-01",
+      "month_distribution": {
+        "06": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "06-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 6,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          0
+        ],
+        "end": [
+          6,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2020
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2020
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "车路云一体化/车路协同": {
+      "family": "车路云一体化/车路协同",
+      "n_years": 1,
+      "years": [
+        2024
+      ],
+      "anchor_doy_norm": [
+        162
+      ],
+      "anchor_md": [
+        "06-11"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2024-V2X"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 162.0,
+      "median": 162.0,
+      "p25": 162.0,
+      "p75": 162.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 162,
+      "circular_latest": 162,
+      "circular_span_days": 0,
+      "circular_center": 162.0,
+      "circular_center_md": "06-11",
+      "md_list": [
+        "06-11"
+      ],
+      "earliest_md": "06-11",
+      "latest_md": "06-11",
+      "month_distribution": {
+        "06": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "06-中旬": 1
+      },
+      "window_A_quantile": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 6,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          1
+        ],
+        "end": [
+          6,
+          1
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2024
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2024
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    }
+  },
+  "families_subtheme_RAW_no_dedup": {
+    "Robotaxi/无人驾驶/智能网约车": {
+      "family": "Robotaxi/无人驾驶/智能网约车",
+      "n_years": 2,
+      "years": [
+        2024,
+        2025
+      ],
+      "anchor_doy_norm": [
+        189,
+        173
+      ],
+      "anchor_md": [
+        "07-08",
+        "06-22"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2024-ROBOTAXI",
+        "C-2025-ROBOTAXI"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 181.0,
+      "median": 181.0,
+      "p25": 177.0,
+      "p75": 185.0,
+      "iqr": 8.0,
+      "mad": 8.0,
+      "circular_earliest": 173,
+      "circular_latest": 189,
+      "circular_span_days": 16,
+      "circular_center": 181.0,
+      "circular_center_md": "06-30",
+      "md_list": [
+        "07-08",
+        "06-22"
+      ],
+      "earliest_md": "06-22",
+      "latest_md": "07-08",
+      "month_distribution": {
+        "06": 1,
+        "07": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "06-下旬": 1,
+        "07-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 177.0,
+        "end": 185.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 169.1392,
+        "end": 192.8608,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 163.2088,
+        "end": 198.7912,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 157.2784,
+        "end": 204.7216,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 7,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          2
+        ],
+        "end": [
+          7,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 16,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.13150684931506848,
+        "span_p_value_one_sided": 0.0919,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 9,
+          "window_share_of_year": 0.024657534246575342,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.049315068493150684,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 177.0,
+            "end": 185.0
+          },
+          "window_md": {
+            "start": "06-26",
+            "end": "07-04"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 25,
+          "window_share_of_year": 0.0684931506849315,
+          "hit_share": 1.0,
+          "density_ratio": 14.600000000000001,
+          "uniform_expected_hits": 0.136986301369863,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 169.1392,
+            "end": 192.8608
+          },
+          "window_md": {
+            "start": "06-18",
+            "end": "07-12"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 37,
+          "window_share_of_year": 0.10136986301369863,
+          "hit_share": 1.0,
+          "density_ratio": 9.864864864864865,
+          "uniform_expected_hits": 0.20273972602739726,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 163.2088,
+            "end": 198.7912
+          },
+          "window_md": {
+            "start": "06-12",
+            "end": "07-18"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 48,
+          "window_share_of_year": 0.13150684931506848,
+          "hit_share": 1.0,
+          "density_ratio": 7.604166666666668,
+          "uniform_expected_hits": 0.26301369863013696,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 157.2784,
+            "end": 204.7216
+          },
+          "window_md": {
+            "start": "06-06",
+            "end": "07-24"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2024,
+          2025
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2024,
+          2025
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "rule_auto_summer": {
+      "family": "rule_auto_summer",
+      "n_years": 2,
+      "years": [
+        2023,
+        2024
+      ],
+      "anchor_doy_norm": [
+        241,
+        248
+      ],
+      "anchor_md": [
+        "08-29",
+        "09-05"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "RC-2023-HUAWEI",
+        "RC-2024-SECONDARY"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)",
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 244.5,
+      "median": 244.5,
+      "p25": 242.75,
+      "p75": 246.25,
+      "iqr": 3.5,
+      "mad": 3.5,
+      "circular_earliest": 241,
+      "circular_latest": 248,
+      "circular_span_days": 7,
+      "circular_center": 244.49999999999997,
+      "circular_center_md": "09-01",
+      "md_list": [
+        "08-29",
+        "09-05"
+      ],
+      "earliest_md": "08-29",
+      "latest_md": "09-05",
+      "month_distribution": {
+        "08": 1,
+        "09": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "08-下旬": 1,
+        "09-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 242.75,
+        "end": 246.25,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 239.3109,
+        "end": 249.6891,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 236.71635,
+        "end": 252.28365,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 234.1218,
+        "end": 254.8782,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 8,
+        "end": 9,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          8,
+          2
+        ],
+        "end": [
+          9,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 7,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.057534246575342465,
+        "span_p_value_one_sided": 0.04275,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 4,
+          "window_share_of_year": 0.010958904109589041,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.021917808219178082,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 242.75,
+            "end": 246.25
+          },
+          "window_md": {
+            "start": "08-31",
+            "end": "09-03"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 11,
+          "window_share_of_year": 0.030136986301369864,
+          "hit_share": 1.0,
+          "density_ratio": 33.18181818181818,
+          "uniform_expected_hits": 0.06027397260273973,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 239.3109,
+            "end": 249.6891
+          },
+          "window_md": {
+            "start": "08-27",
+            "end": "09-07"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 17,
+          "window_share_of_year": 0.04657534246575343,
+          "hit_share": 1.0,
+          "density_ratio": 21.470588235294116,
+          "uniform_expected_hits": 0.09315068493150686,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 236.71635,
+            "end": 252.28365
+          },
+          "window_md": {
+            "start": "08-25",
+            "end": "09-09"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 22,
+          "window_share_of_year": 0.06027397260273973,
+          "hit_share": 1.0,
+          "density_ratio": 16.59090909090909,
+          "uniform_expected_hits": 0.12054794520547946,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 234.1218,
+            "end": 254.8782
+          },
+          "window_md": {
+            "start": "08-22",
+            "end": "09-12"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2023,
+          2024
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2023,
+          2024
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "rule_pharma_upgrade": {
+      "family": "rule_pharma_upgrade",
+      "n_years": 2,
+      "years": [
+        2020,
+        2021
+      ],
+      "anchor_doy_norm": [
+        23,
+        305
+      ],
+      "anchor_md": [
+        "01-23",
+        "11-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "RC-2020-PANDEMIC",
+        "RC-2021-TCM"
+      ],
+      "anchor_source": [
+        "export.early_signal(str)"
+      ],
+      "mean": 164.0,
+      "median": 164.0,
+      "p25": 93.5,
+      "p75": 234.5,
+      "iqr": 141.0,
+      "mad": 141.0,
+      "circular_earliest": 305,
+      "circular_latest": 23,
+      "circular_span_days": 83,
+      "circular_center": 346.50000000000006,
+      "circular_center_md": "12-13",
+      "md_list": [
+        "01-23",
+        "11-01"
+      ],
+      "earliest_md": "11-01",
+      "latest_md": "01-23",
+      "month_distribution": {
+        "01": 1,
+        "11": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "01-下旬": 1,
+        "11-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 93.5,
+        "end": 234.5,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": -45.046599999999984,
+        "end": 373.0466,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": -149.56989999999996,
+        "end": 477.56989999999996,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": -254.09319999999997,
+        "end": 582.0932,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 11,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          2
+        ],
+        "end": [
+          11,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 83,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.6821917808219178,
+        "span_p_value_one_sided": 0.45535,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 142,
+          "window_share_of_year": 0.38904109589041097,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.7780821917808219,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 93.5,
+            "end": 234.5
+          },
+          "window_md": {
+            "start": "04-04",
+            "end": "08-22"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 54,
+          "window_share_of_year": 0.14794520547945206,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.2958904109589041,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -45.046599999999984,
+            "end": 373.0466
+          },
+          "window_md": {
+            "start": "11-16",
+            "end": "01-08"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 263,
+          "window_share_of_year": 0.7205479452054795,
+          "hit_share": 1.0,
+          "density_ratio": 1.3878326996197718,
+          "uniform_expected_hits": 1.441095890410959,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -149.56989999999996,
+            "end": 477.56989999999996
+          },
+          "window_md": {
+            "start": "08-03",
+            "end": "04-23"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 107,
+          "window_share_of_year": 0.29315068493150687,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.5863013698630137,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": -254.09319999999997,
+            "end": 582.0932
+          },
+          "window_md": {
+            "start": "04-21",
+            "end": "08-05"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2020,
+          2021
+        ]
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "创新药": {
+      "family": "创新药",
+      "n_years": 1,
+      "years": [
+        2019
+      ],
+      "anchor_doy_norm": [
+        2
+      ],
+      "anchor_md": [
+        "01-02"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-PHARMA-INNOV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 2.0,
+      "median": 2.0,
+      "p25": 2.0,
+      "p75": 2.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 2,
+      "circular_latest": 2,
+      "circular_span_days": 0,
+      "circular_center": 2.0,
+      "circular_center_md": "01-02",
+      "md_list": [
+        "01-02"
+      ],
+      "earliest_md": "01-02",
+      "latest_md": "01-02",
+      "month_distribution": {
+        "01": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "01-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 2.0,
+        "end": 2.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 1,
+        "end": 1,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          1,
+          0
+        ],
+        "end": [
+          1,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 2.0,
+            "end": 2.0
+          },
+          "window_md": {
+            "start": "01-02",
+            "end": "01-02"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2019
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "新能源汽车/电池": {
+      "family": "新能源汽车/电池",
+      "n_years": 1,
+      "years": [
+        2021
+      ],
+      "anchor_doy_norm": [
+        152
+      ],
+      "anchor_md": [
+        "06-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2021-NEV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 152.0,
+      "median": 152.0,
+      "p25": 152.0,
+      "p75": 152.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 152,
+      "circular_latest": 152,
+      "circular_span_days": 0,
+      "circular_center": 152.0,
+      "circular_center_md": "06-01",
+      "md_list": [
+        "06-01"
+      ],
+      "earliest_md": "06-01",
+      "latest_md": "06-01",
+      "month_distribution": {
+        "06": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "06-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 6,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          0
+        ],
+        "end": [
+          6,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2021
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2021
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "智能驾驶/无人驾驶": {
+      "family": "智能驾驶/无人驾驶",
+      "n_years": 2,
+      "years": [
+        2019,
+        2023
+      ],
+      "anchor_doy_norm": [
+        227,
+        163
+      ],
+      "anchor_md": [
+        "08-15",
+        "06-12"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2019-AD",
+        "C-2023-AD"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 195.0,
+      "median": 195.0,
+      "p25": 179.0,
+      "p75": 211.0,
+      "iqr": 32.0,
+      "mad": 32.0,
+      "circular_earliest": 163,
+      "circular_latest": 227,
+      "circular_span_days": 64,
+      "circular_center": 195.0,
+      "circular_center_md": "07-14",
+      "md_list": [
+        "08-15",
+        "06-12"
+      ],
+      "earliest_md": "06-12",
+      "latest_md": "08-15",
+      "month_distribution": {
+        "06": 1,
+        "08": 1
+      },
+      "months_distinct": 2,
+      "month_decade_distribution": {
+        "06-中旬": 1,
+        "08-中旬": 1
+      },
+      "window_A_quantile": {
+        "start": 179.0,
+        "end": 211.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 147.5568,
+        "end": 242.4432,
+        "method": "MEDIAN_PLUS_1.0MAD"
+      },
+      "window_B_mad_k15": {
+        "start": 123.8352,
+        "end": 266.1648,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 100.1136,
+        "end": 289.8864,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 8,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          1
+        ],
+        "end": [
+          8,
+          1
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span_days": 64,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.5260273972602739,
+        "span_p_value_one_sided": 0.3524,
+        "n_bootstrap": 20000,
+        "note": "单尾经验 p（越小越集中）；探索性，不作为显著性断言；N 小时仅作描述"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 2,
+          "hits_in_window": 0,
+          "window_width_days": 33,
+          "window_share_of_year": 0.09041095890410959,
+          "hit_share": 0.0,
+          "density_ratio": 0.0,
+          "uniform_expected_hits": 0.18082191780821918,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 179.0,
+            "end": 211.0
+          },
+          "window_md": {
+            "start": "06-28",
+            "end": "07-30"
+          }
+        },
+        "B_mad_k1": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 96,
+          "window_share_of_year": 0.26301369863013696,
+          "hit_share": 1.0,
+          "density_ratio": 3.802083333333334,
+          "uniform_expected_hits": 0.5260273972602739,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 147.5568,
+            "end": 242.4432
+          },
+          "window_md": {
+            "start": "05-28",
+            "end": "08-30"
+          }
+        },
+        "B_mad_k15": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 143,
+          "window_share_of_year": 0.3917808219178082,
+          "hit_share": 1.0,
+          "density_ratio": 2.5524475524475525,
+          "uniform_expected_hits": 0.7835616438356164,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 123.8352,
+            "end": 266.1648
+          },
+          "window_md": {
+            "start": "05-04",
+            "end": "09-23"
+          }
+        },
+        "B_mad_k2": {
+          "n": 2,
+          "hits_in_window": 2,
+          "window_width_days": 191,
+          "window_share_of_year": 0.5232876712328767,
+          "hit_share": 1.0,
+          "density_ratio": 1.910994764397906,
+          "uniform_expected_hits": 1.0465753424657533,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 100.1136,
+            "end": 289.8864
+          },
+          "window_md": {
+            "start": "04-10",
+            "end": "10-17"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 0,
+        "n_years": 2,
+        "ratio": 0.0,
+        "hits_years": [],
+        "miss_years": [
+          2019,
+          2023
+        ],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 2,
+        "n_years": 2,
+        "ratio": 1.0,
+        "hits_years": [
+          2019,
+          2023
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=2<4，不做前后半段比较"
+      }
+    },
+    "汽车消费/购置税刺激": {
+      "family": "汽车消费/购置税刺激",
+      "n_years": 1,
+      "years": [
+        2022
+      ],
+      "anchor_doy_norm": [
+        117
+      ],
+      "anchor_md": [
+        "04-27"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2022-POLICY"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 117.0,
+      "median": 117.0,
+      "p25": 117.0,
+      "p75": 117.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 117,
+      "circular_latest": 117,
+      "circular_span_days": 0,
+      "circular_center": 117.0,
+      "circular_center_md": "04-27",
+      "md_list": [
+        "04-27"
+      ],
+      "earliest_md": "04-27",
+      "latest_md": "04-27",
+      "month_distribution": {
+        "04": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "04-下旬": 1
+      },
+      "window_A_quantile": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 117.0,
+        "end": 117.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 4,
+        "end": 4,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          4,
+          2
+        ],
+        "end": [
+          4,
+          2
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 117.0,
+            "end": 117.0
+          },
+          "window_md": {
+            "start": "04-27",
+            "end": "04-27"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2022
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2022
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "特斯拉产业链": {
+      "family": "特斯拉产业链",
+      "n_years": 1,
+      "years": [
+        2020
+      ],
+      "anchor_doy_norm": [
+        152
+      ],
+      "anchor_md": [
+        "06-01"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2020-NEV"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 152.0,
+      "median": 152.0,
+      "p25": 152.0,
+      "p75": 152.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 152,
+      "circular_latest": 152,
+      "circular_span_days": 0,
+      "circular_center": 152.0,
+      "circular_center_md": "06-01",
+      "md_list": [
+        "06-01"
+      ],
+      "earliest_md": "06-01",
+      "latest_md": "06-01",
+      "month_distribution": {
+        "06": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "06-上旬": 1
+      },
+      "window_A_quantile": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 152.0,
+        "end": 152.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 6,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          0
+        ],
+        "end": [
+          6,
+          0
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 152.0,
+            "end": 152.0
+          },
+          "window_md": {
+            "start": "06-01",
+            "end": "06-01"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2020
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2020
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    },
+    "车路云一体化/车路协同": {
+      "family": "车路云一体化/车路协同",
+      "n_years": 1,
+      "years": [
+        2024
+      ],
+      "anchor_doy_norm": [
+        162
+      ],
+      "anchor_md": [
+        "06-11"
+      ],
+      "anchor_types": [
+        "ANCHOR_A_EARLY_SIGNAL"
+      ],
+      "campaigns": [
+        "C-2024-V2X"
+      ],
+      "anchor_source": [
+        "lifecycle.EARLY_SIGNAL.start"
+      ],
+      "mean": 162.0,
+      "median": 162.0,
+      "p25": 162.0,
+      "p75": 162.0,
+      "iqr": 0.0,
+      "mad": 0.0,
+      "circular_earliest": 162,
+      "circular_latest": 162,
+      "circular_span_days": 0,
+      "circular_center": 162.0,
+      "circular_center_md": "06-11",
+      "md_list": [
+        "06-11"
+      ],
+      "earliest_md": "06-11",
+      "latest_md": "06-11",
+      "month_distribution": {
+        "06": 1
+      },
+      "months_distinct": 1,
+      "month_decade_distribution": {
+        "06-中旬": 1
+      },
+      "window_A_quantile": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "P25-P75_QUANTILE"
+      },
+      "window_B_mad_k1": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "MEDIAN_PLUS_1.0MAD(ZERO_MAD_FALLBACK_RANGE)"
+      },
+      "window_B_mad_k15": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "MEDIAN_PLUS_1.5MAD"
+      },
+      "window_B_mad_k2": {
+        "start": 162.0,
+        "end": 162.0,
+        "method": "MEDIAN_PLUS_2MAD"
+      },
+      "window_C_month": {
+        "start": 6,
+        "end": 6,
+        "method": "MONTH_WINDOW"
+      },
+      "window_C2_month_decade": {
+        "start": [
+          6,
+          1
+        ],
+        "end": [
+          6,
+          1
+        ],
+        "method": "MONTH_DECADE_WINDOW"
+      },
+      "uniformity": {
+        "min_span": null,
+        "expected_span_uniform": null,
+        "span_p_value": null,
+        "note": "N<2，无法评估集中度"
+      },
+      "window_contrast": {
+        "A_quantile": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        },
+        "B_mad_k1": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        },
+        "B_mad_k15": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        },
+        "B_mad_k2": {
+          "n": 1,
+          "hits_in_window": 1,
+          "window_width_days": 1,
+          "window_share_of_year": 0.0027397260273972603,
+          "hit_share": 1.0,
+          "density_ratio": 365.0,
+          "uniform_expected_hits": 0.0027397260273972603,
+          "note": "density_ratio>1 表示窗口内比全年均匀分布更密；这是历史样本描述，不是未来概率",
+          "window": {
+            "start": 162.0,
+            "end": 162.0
+          },
+          "window_md": {
+            "start": "06-11",
+            "end": "06-11"
+          }
+        }
+      },
+      "historical_recurrence_quantile": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2024
+        ],
+        "miss_years": [],
+        "label": "历史样本中的窗口复现情况（非未来概率）"
+      },
+      "historical_recurrence_mad1": {
+        "hits": 1,
+        "n_years": 1,
+        "ratio": 1.0,
+        "hits_years": [
+          2024
+        ],
+        "miss_years": []
+      },
+      "stability": {
+        "status": "INSUFFICIENT_SPLIT",
+        "note": "N=1<4，不做前后半段比较"
+      }
+    }
+  },
+  "sample_size_sensitivity": {
+    "N=3": [
+      {
+        "family": "rule_auto_summer",
+        "n": 3,
+        "years": [
+          "2019",
+          "2023",
+          "2024"
+        ],
+        "span_days": 21,
+        "expected_span_uniform": 182.5,
+        "span_ratio": 0.11506849315068493,
+        "span_p_value": 0.0102,
+        "iqr": 10.5,
+        "mad": 7.0,
+        "month_span": "8-9"
+      }
+    ],
+    "N=2": [
+      {
+        "family": "rule_pharma_upgrade",
+        "n": 2,
+        "years": [
+          "2020",
+          "2021"
+        ],
+        "span_days": 83,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.6821917808219178,
+        "span_p_value": 0.469,
+        "iqr": 141.0,
+        "mad": 141.0,
+        "month_span": "1-11"
+      }
+    ],
+    "N>=5": [
+      {
+        "family": "汽车",
+        "n": 6,
+        "years": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ],
+        "span_days": 56,
+        "expected_span_uniform": 260.7142857142857,
+        "span_ratio": 0.2147945205479452,
+        "span_p_value": 0.0012,
+        "iqr": 10.75,
+        "mad": 5.5,
+        "month_span": "4-6"
+      }
+    ],
+    "N=3 (no-dedup)": [
+      {
+        "family": "rule_auto_summer",
+        "n": 3,
+        "years": [
+          "2019",
+          "2023",
+          "2024"
+        ],
+        "span_days": 21,
+        "expected_span_uniform": 182.5,
+        "span_ratio": 0.11506849315068493,
+        "span_p_value": 0.0098,
+        "iqr": 10.5,
+        "mad": 7.0,
+        "month_span": "8-9"
+      }
+    ],
+    "N=2 (no-dedup)": [
+      {
+        "family": "rule_pharma_upgrade",
+        "n": 2,
+        "years": [
+          "2020",
+          "2021"
+        ],
+        "span_days": 83,
+        "expected_span_uniform": 121.66666666666667,
+        "span_ratio": 0.6821917808219178,
+        "span_p_value": 0.4692,
+        "iqr": 141.0,
+        "mad": 141.0,
+        "month_span": "1-11"
+      }
+    ],
+    "N>=5 (no-dedup)": [
+      {
+        "family": "汽车",
+        "n": 7,
+        "years": [
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2024",
+          "2025"
+        ],
+        "span_days": 72,
+        "expected_span_uniform": 273.75,
+        "span_ratio": 0.26301369863013696,
+        "span_p_value": 0.0,
+        "iqr": 16.0,
+        "mad": 10.0,
+        "month_span": "4-7"
+      }
+    ]
+  }
+}

@@ -37,7 +37,26 @@
 
 ## 2. 当前阶段
 
-**Phase 7：Current Research Discovery v0.1（IMPLEMENTED）。**
+**Phase 7.2：Time-based Observation Layer（IMPLEMENTED）。**
+
+回答「**历史上，一年中的这个时间位置附近，反复出现过值得研究的主题启动 / 观察现象吗？**」
+即「**什么时候值得看**」。
+
+- **Research**：`research/research/reports/time_observation_patterns_v0_1.json`（4 条模式 →
+  **仅 1 条 `TIMELINE_ELIGIBLE`**）+ 整合报告 + canonical 生成器
+  `research/scripts/build_time_observation_patterns.py`（**产物必须由脚本生成，禁止手工编辑 JSON**；
+  `--check` 校验逐字节一致）。
+- **Product**：`src/data/timeline/timeObservationPatterns.ts`（跨年环形窗口 + 邻近关系 + View Model）·
+  `src/components/TimeObservation/TimeObservationLayer.tsx`（Timeline 内极轻一层）·
+  `src/components/Timeline/trackPrimitives.tsx`（轨道原语）。
+- **语义红线（本层新增）**：只说「历史观察窗口 / 历史复现 X / Y 个观测年份」；
+  **不得**把 `historical_ratio` 解释成「今年有 X% 概率」；不得出现概率 / 胜率 / 买卖信号 / 推荐分；
+  无可用窗口时**整层不渲染**。
+- **边界**：Pattern ≠ Campaign（不修改 Campaign 定义）；与 Current Candidate 独立
+  （一个答「什么时候值得看」，一个答「当前出现了什么」）；与「提前观察参考区」并存不可互替。
+- **未改**：DB / `schema.sql` / canonical export / `contracts/` / Research Model / Timeline 主视觉。
+
+**上一阶段 Phase 7 / 7.1：Current Research Discovery v0.1（IMPLEMENTED）。**
 
 补齐「**2026 是当前时间、研究数据却截止到 2025**」这一根本缺口：让产品能回答
 **「今天这个时间点，我应该去历史资料里研究什么？」**
@@ -136,6 +155,8 @@ ThreeC/
 ├─ exports/                    ← ★ Research → Product 唯一交换目录
 │   └─ timeline_export_v1.json ← ★ 唯一 canonical export
 ├─ research/current/           ← ★ Phase 7/7.1：Current Candidate 数据集（经 @current alias 消费；5 条真实候选）
+├─ research/research/reports/  ← ★ Phase 7.2：Time Observation Pattern canonical Artifact
+│                                 （经 @observation alias 消费；_seasonal_analysis/ 为探索性脚本，非产品依赖）
 ├─ contracts/
 │   └─ timeline_export_v1.md   ← 跨模块接口契约
 │
@@ -211,6 +232,10 @@ Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction
 - 丢 Git 历史 / 丢 Research 数据
 - 把 **Current Candidate** 写入 DB / schema / export / contracts，或让它自动升级为 Campaign
 - 用快照之后（`source_date > snapshot_date`）的证据参与当前判断 / 相似度（look-ahead）
+- 手工编辑 **Time Observation Pattern** 产物（必须由 `build_time_observation_patterns.py` 生成）
+- 把 **Time Observation Pattern** 写成 DB / schema / export / contracts，或当成 Campaign / Theme
+- 用价格类指标（涨停 / 涨幅 / 成交额）定义「启动观察锚点」—— 锚点只能是 Early Signal / Formation / Campaign.start
+- 把「历史复现率」表述为未来概率（**只能**写「历史样本中 X / Y 个观测年份」）
 - 产品运行时联网（抓新闻 / 调 LLM / 取实时行情资金情绪）—— 网络与 AI 只允许在离线研究数据生成端
 
 **产品**
@@ -230,7 +255,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 337 项
+npm test          # Vitest，当前 372 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -245,6 +270,7 @@ python scripts/validate_batch_research.py
 python scripts/validate_promotion_manifest.py
 python scripts/check_doc_schema_consistency.py
 python scripts/validate_current_research.py      # Phase 7：Current Candidate 数据集（Data/Temporal/Evidence/Phase/Similarity/Theme Boundary）
+python scripts/build_time_observation_patterns.py --check   # Phase 7.2：Time Observation Pattern 产物可复现性（逐字节一致）
 ```
 
 **Integrity**
@@ -287,14 +313,32 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**生产第一批真实的 Current Candidate 数据（离线研究轮，非本仓库代码任务）。**
+**人工核验 TOP-01（汽车主题上半年末启动观察窗口）的 7 个研究观察起点日期（离线研究轮，非本仓库代码任务）。**
 
-唯一一件事：按 `research/current/README.md` 的协议，针对 2026 年做一次**离线研究**，
-产出 2–5 个带证据台账的 `CC-*` 候选（每条事实带 `source_date` / `source_type` /
-`evidence_strength`），跑 `python research/scripts/validate_current_research.py` 通过后提交。
-产品端**无需改代码**即可看到闭环。**在此之前不新增功能、不新增行业、不改模型。**
+唯一一件事：核验 2019-08-15 / 2020-06-01 / 2021-06-01 / 2022-04-27 / 2023-06-12 / 2024-06-11 /
+2025-06-22 这 7 个锚点，把 `campaign_date_observations.verification_method` 从 `unknown`
+推进到行情核验，并记录核验结果。**理由**：数据质量是观察层可信度的天花板 —— 核验直接决定
+「探索性」标记能否去掉，也决定下一阶段（Structural Historical Analogy）有没有可靠底座。
 
-用户视觉 / 交互 Review（Phase 7）可同时进行：
+核验后如锚点日期变化，必须重新运行：
+
+```bash
+python research/scripts/build_time_observation_patterns.py            # 重新生成 Artifact
+python research/scripts/build_time_observation_patterns.py --check    # 确认可复现
+```
+
+**在此之前不新增功能、不新增行业、不改模型、不改产品代码。**
+
+用户视觉 / 交互 Review（Phase 7.2）可同时进行：
+
+1. 「时间型观察层」是否足够克制（一条薄带、不抢 Campaign 主体）？
+2. 今天落在窗口内时，「当前位于历史观察窗口」是否被理解成**日历位置**而不是市场状态判断？
+3. 「历史复现：5 / 7 个观测年份」是否不会被误读成「今年 71% 概率」？
+4. 点击年份进入 Campaign Detail 的闭环是否自然（是否还需要别的东西）？
+5. 「探索性」标记与限制说明是否足够显眼，让人不会把它当成熟统计结论？
+6. 不在窗口时的空态（「当前没有发现处于历史时间观察窗口的模式」）是否读得懂？
+
+上一轮（Phase 7 / 7.1）已完成的 Review 项：
 
 1. 「当前研究候选」区是否克制（不抢 Timeline）？
 2. 空态是否读得懂「系统在诚实地说不知道」，而不是「系统没做完」？
