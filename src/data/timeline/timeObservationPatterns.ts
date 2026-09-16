@@ -68,6 +68,36 @@ export const PROXIMITY_LABEL: Record<WindowProximity, string> = {
  */
 export const nearWindowDays = 14;
 
+/* ---------- Phase 7.3：锚点核验 / 主题族 / 统一提升状态 ---------- */
+
+/** 锚点核验状态（只描述「该日期在仓库内是否有可追溯证据」，不代表规律有效性） */
+export type AnchorVerificationStatus = 'VERIFIED' | 'UNKNOWN' | 'CONFLICT';
+
+export const VERIFICATION_STATUS_LABEL: Record<AnchorVerificationStatus, string> = {
+  VERIFIED: '已核验',
+  UNKNOWN: '未核验',
+  CONFLICT: '存在冲突',
+};
+
+export type AnchorVerificationMethod = 'MARKET_DATA' | 'PUBLIC_SOURCE' | 'MULTI_SOURCE' | 'UNKNOWN';
+
+export const VERIFICATION_METHOD_LABEL: Record<AnchorVerificationMethod, string> = {
+  MARKET_DATA: '行情数据核验',
+  PUBLIC_SOURCE: '公开来源核验',
+  MULTI_SOURCE: '多来源交叉核验',
+  UNKNOWN: '未核验',
+};
+
+/** 统一的提升状态（Phase 7.3，authoritative）；旧的 timelineEligibility / status 仅作兼容输入 */
+export type PromotionStatus = 'TIMELINE' | 'EXPLORATORY' | 'RESEARCH_ONLY' | 'REJECTED';
+
+export const PROMOTION_STATUS_LABEL: Record<PromotionStatus, string> = {
+  TIMELINE: '已进入 Timeline',
+  EXPLORATORY: '探索性（研究层）',
+  RESEARCH_ONLY: '仅研究层',
+  REJECTED: '已拒绝',
+};
+
 /** 默认文案（研究 Artifact 未提供 label_vocabulary 时的兜底；正常情况下由 Research 提供） */
 const DEFAULT_LABELS = {
   window: '历史观察窗口',
@@ -76,6 +106,14 @@ const DEFAULT_LABELS = {
   near_window: PROXIMITY_LABEL.NEAR_WINDOW,
   none: '当前没有发现处于历史时间观察窗口的模式',
   disclaimer: '这是历史时间聚集现象，不代表今年必然重演，也不是买入或卖出信号。',
+  exploratory: '探索性观察',
+  exploratory_note: '样本有限，部分锚点尚未完成独立行情核验',
+  verified_label: '历史观察规律',
+  all_verified_note: '全部锚点已完成仓库内证据核验（核验通过不等于规律有效）',
+  verification_prefix: '核验状态',
+  historical_recall: '历史观察回溯',
+  current_match: '当前匹配',
+  no_current_match: '当前日期不在任何历史观察窗口内（仍可回看历史窗口与年份案例）',
 };
 
 /* ================= 2. 数据结构 ================= */
@@ -97,6 +135,18 @@ export interface PatternWindow {
   alternativeQuantile?: { start: string; end: string } | null;
 }
 
+/** 单条锚点的核验元数据（Phase 7.3）。`sources` 为空时不得展示为已核验。 */
+export interface AnchorVerification {
+  status: AnchorVerificationStatus;
+  method: AnchorVerificationMethod;
+  /** 可追溯来源（DB 观测行 / evidence_id / source_id / 事件台账） */
+  sources: string[];
+  /** 命中的核验规则（R1 / R2 / R2B / R3 / R4 / R5 / MANUAL_OVERRIDE），便于审计 */
+  rule: string;
+  note: string;
+  verifiedAt?: string | null;
+}
+
 export interface PatternObservation {
   year: number;
   /** ISO 日期（该年的研究观察起点 = Early Signal） */
@@ -108,6 +158,10 @@ export interface PatternObservation {
   kind: 'campaign' | 'research_candidate';
   /** 该年锚点是否落在典型窗口内（研究层口径；窗口不存在时为 null） */
   inWindow: boolean | null;
+  /** 锚点类型（EARLY_SIGNAL / THEME_FORMING / BROAD_CONFIRMATION / CAMPAIGN_START） */
+  anchorType: string;
+  /** 锚点核验元数据 */
+  verification: AnchorVerification;
   /** 展示实例身份（campaign_id@年份）——供 Timeline 条目高亮 */
   timelineEntryId: TimelineEntryId;
 }
@@ -130,6 +184,9 @@ export interface TimeObservationPattern {
   description: string;
   themeScope: string;
   themeKey: string;
+  /** 主题族（Phase 7.3）：引用既有 Macro Theme taxonomy；缺失时为 null（向后兼容） */
+  themeFamilyId: string | null;
+  themeFamilyName: string | null;
   anchorType: string;
   centerDate: string;
   window: PatternWindow | null;
@@ -138,10 +195,22 @@ export interface TimeObservationPattern {
   stability: { status: string; driftFlag: string | null; medianShiftDays: number | null; note?: string };
   dataQuality: { grade: string; note: string };
   researchStrength: string;
+  /** 统一提升状态（authoritative，Phase 7.3） */
+  promotionStatus: PromotionStatus;
   status: string;
   timelineEligibility: TimelineEligibility;
   timelineEligible: boolean;
   eligibilityReason: string;
+  /** 锚点核验汇总（Phase 7.3） */
+  verificationSummary: {
+    verified: number;
+    unknown: number;
+    conflict: number;
+    total: number;
+    allVerified: boolean;
+    label: string;
+    note: string;
+  };
   mechanism: { type: string; primary: string; note: string; isLunarDriven: boolean; lunarNote: string };
   limitations: string[];
 }
@@ -296,6 +365,63 @@ function asEligibility(v: unknown): TimelineEligibility {
   return ok.includes(v as TimelineEligibility) ? (v as TimelineEligibility) : 'REJECTED';
 }
 
+function asVerificationStatus(v: unknown): AnchorVerificationStatus {
+  const ok: AnchorVerificationStatus[] = ['VERIFIED', 'UNKNOWN', 'CONFLICT'];
+  return ok.includes(v as AnchorVerificationStatus) ? (v as AnchorVerificationStatus) : 'UNKNOWN';
+}
+
+function asVerificationMethod(v: unknown): AnchorVerificationMethod {
+  const ok: AnchorVerificationMethod[] = ['MARKET_DATA', 'PUBLIC_SOURCE', 'MULTI_SOURCE', 'UNKNOWN'];
+  return ok.includes(v as AnchorVerificationMethod) ? (v as AnchorVerificationMethod) : 'UNKNOWN';
+}
+
+/**
+ * 解析单条锚点核验（Phase 7.3）。**安全降级**：
+ * - 缺字段 / 结构异常 → UNKNOWN / UNKNOWN，不抛错、不臆造；
+ * - 状态为 VERIFIED 但**没有任何来源** → 降级为 UNKNOWN 并记录问题（禁止无来源的「已核验」）。
+ */
+function asVerification(raw: any, issues: string[], tag: string): AnchorVerification {
+  const obj = raw ?? {};
+  const status = asVerificationStatus(obj.status);
+  const method = asVerificationMethod(obj.method);
+  const sources = Array.isArray(obj.sources)
+    ? obj.sources.filter((s: unknown): s is string => typeof s === 'string' && s.length > 0)
+    : [];
+  if (status === 'VERIFIED' && sources.length === 0) {
+    issues.push(`${tag}：声明 VERIFIED 但没有来源 → 降级为 UNKNOWN（禁止无来源核验）`);
+    return {
+      status: 'UNKNOWN',
+      method: 'UNKNOWN',
+      sources: [],
+      rule: 'DOWNGRADED_NO_SOURCE',
+      note: '数据声明为已核验但缺少来源，已降级为未核验。',
+    };
+  }
+  return {
+    status,
+    method,
+    sources,
+    rule: str(obj.rule) ?? '—',
+    note: str(obj.note) ?? '',
+    verifiedAt: str(obj.verified_at),
+  };
+}
+
+/**
+ * 统一提升状态：**优先**使用 Artifact 的 `promotion_status`（Phase 7.3 authoritative）；
+ * 旧数据（无该字段）按 `timeline_eligibility` → `research_strength` 降级推导，保证向后兼容。
+ */
+function asPromotionStatus(raw: any): PromotionStatus {
+  const v = raw?.promotion_status;
+  const ok: PromotionStatus[] = ['TIMELINE', 'EXPLORATORY', 'RESEARCH_ONLY', 'REJECTED'];
+  if (ok.includes(v as PromotionStatus)) return v as PromotionStatus;
+  const elig = asEligibility(raw?.timeline_eligibility);
+  if (elig === 'TIMELINE_ELIGIBLE') return 'TIMELINE';
+  if (elig === 'REJECTED') return 'REJECTED';
+  if (str(raw?.research_strength?.grade) === 'C') return 'EXPLORATORY';
+  return 'RESEARCH_ONLY';
+}
+
 function parseWindow(raw: any, issues: string[], pid: string): PatternWindow | null {
   const start = str(raw?.start);
   const end = str(raw?.end);
@@ -355,6 +481,8 @@ function parsePattern(raw: any, dsSnapshot: string, issues: string[]): TimeObser
               window === null
                 ? null
                 : (o?.in_typical_window ?? isMdInWindow(md, window.start, window.end)),
+            anchorType: str(o?.anchor_type) ?? 'UNKNOWN',
+            verification: asVerification(o?.verification, issues, `${pid}/${date}`),
             timelineEntryId: timelineEntryId(campaignId, year),
           };
         })
@@ -387,6 +515,30 @@ function parsePattern(raw: any, dsSnapshot: string, issues: string[]): TimeObser
     eligibility === 'TIMELINE_ELIGIBLE' && window === null ? 'RESEARCH_ONLY' : eligibility;
 
   const mech = raw?.mechanism ?? {};
+  const famRef = raw?.theme_family ?? {};
+
+  // 统一提升状态（Phase 7.3）：Artifact 声明优先；若解析时把 eligibility 降级（如声明可进 Timeline
+  // 却没有窗口），提升状态同步降级，避免「状态说 TIMELINE、实际不可展示」的不一致。
+  let promotionStatus = asPromotionStatus(raw);
+  if (effectiveEligibility !== eligibility && promotionStatus === 'TIMELINE') {
+    issues.push(`${pid}：eligibility 已降级 → promotion_status 同步降为 RESEARCH_ONLY`);
+    promotionStatus = 'RESEARCH_ONLY';
+  }
+
+  // 锚点核验汇总：**以逐条核验为准**（单一事实来源）；与 Artifact 汇总之差会记入 issues。
+  const avRaw = raw?.anchor_verification ?? {};
+  const derivedVerified = observations.filter((o) => o.verification.status === 'VERIFIED').length;
+  const derivedUnknown = observations.filter((o) => o.verification.status === 'UNKNOWN').length;
+  const derivedConflict = observations.filter((o) => o.verification.status === 'CONFLICT').length;
+  const declaredVerified = num(avRaw.verified);
+  if (declaredVerified !== null && declaredVerified !== derivedVerified) {
+    issues.push(
+      `${pid}：anchor_verification.verified(${declaredVerified}) 与逐条核验(${derivedVerified}) 不一致 → 以逐条为准`,
+    );
+  }
+  const total = observations.length;
+  const allVerified = total > 0 && derivedVerified === total;
+
   return {
     patternId: pid,
     sourcePatternId: str(raw?.source_pattern_id) ?? '—',
@@ -395,6 +547,8 @@ function parsePattern(raw: any, dsSnapshot: string, issues: string[]): TimeObser
     description: str(raw?.description) ?? '',
     themeScope: str(raw?.theme_scope) ?? '未标注',
     themeKey: str(raw?.theme_key) ?? '',
+    themeFamilyId: str(famRef.theme_family_id),
+    themeFamilyName: str(famRef.display_name),
     anchorType: str(raw?.anchor_type) ?? 'UNKNOWN',
     centerDate: str(raw?.center_date) ?? window?.start ?? '',
     window,
@@ -411,10 +565,24 @@ function parsePattern(raw: any, dsSnapshot: string, issues: string[]): TimeObser
       note: str(raw?.data_quality?.note) ?? '',
     },
     researchStrength: str(raw?.research_strength?.grade) ?? 'UNKNOWN',
+    promotionStatus,
     status: str(raw?.status) ?? 'REJECTED',
     timelineEligibility: effectiveEligibility,
     timelineEligible: effectiveEligibility === 'TIMELINE_ELIGIBLE',
     eligibilityReason: str(raw?.timeline_eligibility_reason) ?? '',
+    verificationSummary: {
+      verified: derivedVerified,
+      unknown: derivedUnknown,
+      conflict: derivedConflict,
+      total,
+      allVerified,
+      label: allVerified
+        ? '全部锚点已完成仓库内证据核验'
+        : `${derivedVerified} / ${total} 个锚点已完成仓库内证据核验`,
+      note:
+        str(avRaw.note) ??
+        '核验只表示该日期在仓库内有可追溯的证据支持；核验通过 ≠ 规律有效，也不代表未来会重复。',
+    },
     mechanism: {
       type: str(mech.type) ?? 'UNKNOWN',
       primary: str(mech.primary_mechanism) ?? 'UNKNOWN',
@@ -464,6 +632,14 @@ export function parseTimeObservationPatterns(raw: unknown): TimeObservationDatas
       near_window: str(lv.near_window) ?? DEFAULT_LABELS.near_window,
       none: str(lv.none) ?? DEFAULT_LABELS.none,
       disclaimer: str(lv.disclaimer) ?? DEFAULT_LABELS.disclaimer,
+      exploratory: str(lv.exploratory) ?? DEFAULT_LABELS.exploratory,
+      exploratory_note: str(lv.exploratory_note) ?? DEFAULT_LABELS.exploratory_note,
+      verified_label: str(lv.verified_label) ?? DEFAULT_LABELS.verified_label,
+      all_verified_note: str(lv.all_verified_note) ?? DEFAULT_LABELS.all_verified_note,
+      verification_prefix: str(lv.verification_prefix) ?? DEFAULT_LABELS.verification_prefix,
+      historical_recall: str(lv.historical_recall) ?? DEFAULT_LABELS.historical_recall,
+      current_match: str(lv.current_match) ?? DEFAULT_LABELS.current_match,
+      no_current_match: str(lv.no_current_match) ?? DEFAULT_LABELS.no_current_match,
     },
     patterns: list,
     issues,
@@ -478,6 +654,8 @@ export interface TimeObservationView {
   title: string;
   patternTypeLabel: string;
   themeScope: string;
+  /** 主题族显示名（Phase 7.3）；缺失时为 null → UI 回退到 themeScope */
+  themeFamilyName: string | null;
   windowLabel: string;
   window: PatternWindow;
   centerDate: string;
@@ -493,30 +671,58 @@ export interface TimeObservationView {
   eligibleYears: number;
 
   observations: PatternObservation[];
-  /** 当年轨道上可见的观测（用于在时间轴上点出「这一年的起点落在哪」） */
   explanation: string;
   limitations: string[];
   disclaimer: string;
 
-  /** 探索性标记（样本有限 / 未经人工核验）→ UI 必须显示 */
+  /** 探索性标记（样本有限 / 锚点未全部核验）→ UI 必须显示 */
   exploratory: boolean;
   status: string;
+  /** 统一提升状态（Phase 7.3） */
+  promotionStatus: PromotionStatus;
+  promotionLabel: string;
   researchStrength: string;
   dataQualityGrade: string;
   driftFlag: string | null;
   /** 研究层给出的纳入理由（可审计） */
   eligibilityReason: string;
+
+  /** 锚点核验（Phase 7.3）：只描述证据支持，**不代表规律有效** */
+  verification: {
+    verified: number;
+    unknown: number;
+    conflict: number;
+    total: number;
+    allVerified: boolean;
+    label: string;
+    note: string;
+    methods: string[];
+  };
 }
 
-export interface TimeObservationCurrentSummary {
-  /** 今天所处的模式（可能多个；§26：不人为只保留一个） */
+/** A. 当前时间匹配（今天是否处于历史观察窗口附近）—— **不是** 信号 / 机会 / 买点 */
+export interface CurrentMatchSummary {
+  today: string;
+  md: string;
+  /** 今日与「最近窗口」的日历关系；无可用窗口时为 OUTSIDE */
+  state: WindowProximity;
+  /** 今天落在窗口内的模式（多条同时命中不合并） */
   inWindow: TimeObservationView[];
+  /** 今天接近窗口的模式 */
   near: TimeObservationView[];
-  /** 今天与任何窗口都无关时的空态文案（§27：允许「什么都没有」） */
+  hasMatch: boolean;
+  /** 面向用户的措辞（纯日历口径） */
+  text: string;
+  /** 无匹配时的说明（含「仍可回看历史窗口与年份案例」） */
   emptyNote: string | null;
-  /** 已进入 Timeline 的窗口总数（用于说明「另有 N 条留在研究层」） */
-  total: number;
-  researchOnlyCount: number;
+}
+
+/** B. 历史观察回溯：**即使 Current Match = OUTSIDE 也始终可用**（§十一 B） */
+export interface HistoricalRecallSummary {
+  views: TimeObservationView[];
+  /** 历史观测年份合计（年度去重后） */
+  totalYears: number;
+  text: string;
 }
 
 const STRENGTH_RANK: Record<string, number> = { A: 0, B: 1, C: 2, D: 3, UNKNOWN: 4 };
@@ -532,13 +738,28 @@ function viewOf(p: TimeObservationPattern, today: string, ds: TimeObservationDat
   const md = today.length >= 10 ? today.slice(5) : '';
   const proximity = proximityOf(md, p.window.start, p.window.end);
   const distanceDays = daysFromWindow(md, p.window.start, p.window.end);
-  const exploratory = p.researchStrength !== 'A' || p.dataQuality.grade !== 'HIGH' || p.status !== 'STRONG_CANDIDATE';
+  // 探索性 = 未达「稳定规律」级别（强度非 A，或数据质量非 HIGH，或状态非 STRONG_CANDIDATE），
+  // **或**锚点尚未全部完成核验（Phase 7.3）
+  const exploratory =
+    p.researchStrength !== 'A' ||
+    p.dataQuality.grade !== 'HIGH' ||
+    p.status !== 'STRONG_CANDIDATE' ||
+    !p.verificationSummary.allVerified;
+  const methods = Array.from(
+    new Set(
+      p.observations
+        .map((o) => o.verification.method)
+        .filter((m) => m !== 'UNKNOWN')
+        .map((m) => VERIFICATION_METHOD_LABEL[m]),
+    ),
+  );
   return {
     patternId: p.patternId,
     sourcePatternId: p.sourcePatternId,
     title: p.title,
     patternTypeLabel: PATTERN_TYPE_LABEL[p.patternType],
     themeScope: p.themeScope,
+    themeFamilyName: p.themeFamilyName,
     windowLabel: p.window.label,
     window: p.window,
     centerDate: p.centerDate,
@@ -554,10 +775,22 @@ function viewOf(p: TimeObservationPattern, today: string, ds: TimeObservationDat
     disclaimer: ds.labels.disclaimer,
     exploratory,
     status: p.status,
+    promotionStatus: p.promotionStatus,
+    promotionLabel: PROMOTION_STATUS_LABEL[p.promotionStatus],
     researchStrength: p.researchStrength,
     dataQualityGrade: p.dataQuality.grade,
     driftFlag: p.stability.driftFlag,
     eligibilityReason: p.eligibilityReason,
+    verification: {
+      verified: p.verificationSummary.verified,
+      unknown: p.verificationSummary.unknown,
+      conflict: p.verificationSummary.conflict,
+      total: p.verificationSummary.total,
+      allVerified: p.verificationSummary.allVerified,
+      label: p.verificationSummary.label,
+      note: p.verificationSummary.note,
+      methods,
+    },
   };
 }
 
@@ -590,10 +823,12 @@ export function sortTimeObservationViews(
 }
 
 export interface TimeObservationLayerModel {
-  /** 可进入 Timeline 展示的窗口（TIMELINE_ELIGIBLE 且窗口有效） */
+  /** 可进入 Timeline 展示的窗口（promotion_status = TIMELINE 且窗口有效） */
   views: TimeObservationView[];
-  /** 今天的关系摘要（可同时命中多条，§26） */
-  current: TimeObservationCurrentSummary;
+  /** A. 当前时间匹配 */
+  currentMatch: CurrentMatchSummary;
+  /** B. 历史观察回溯（与 A 独立，始终可用） */
+  historicalRecall: HistoricalRecallSummary;
   /** 留在研究层 / 已拒绝的条数（UI 可轻量说明，不显示细节） */
   researchOnlyCount: number;
   rejectedCount: number;
@@ -601,6 +836,14 @@ export interface TimeObservationLayerModel {
   disclaimer: string;
   windowLabel: string;
   recurrenceLabel: string;
+  /** 核验口径文案（由 Research 提供） */
+  verificationPrefix: string;
+  exploratoryLabel: string;
+  exploratoryNote: string;
+  verifiedLabel: string;
+  allVerifiedNote: string;
+  currentMatchLabel: string;
+  historicalRecallLabel: string;
   issues: string[];
 }
 
@@ -614,7 +857,10 @@ export function buildTimeObservationLayer(
   dataset: TimeObservationDataset = defaultTimeObservationDataset(),
   today: string,
 ): TimeObservationLayerModel {
-  const eligiblePatterns = dataset.patterns.filter((p) => p.timelineEligible && p.window !== null);
+  // 展示门槛用**统一提升状态**（Phase 7.3 authoritative）：promotion_status = TIMELINE 且窗口有效
+  const eligiblePatterns = dataset.patterns.filter(
+    (p) => p.promotionStatus === 'TIMELINE' && p.window !== null,
+  );
   const views = sortTimeObservationViews(
     eligiblePatterns
       .map((p) => viewOf(p, today, dataset))
@@ -622,26 +868,69 @@ export function buildTimeObservationLayer(
     dataset.patterns,
   );
 
-  const current: TimeObservationCurrentSummary = {
-    inWindow: views.filter((v) => v.proximity === 'IN_WINDOW'),
-    near: views.filter((v) => v.proximity === 'NEAR_WINDOW'),
-    emptyNote:
-      views.length === 0 || !views.some((v) => v.proximity !== 'OUTSIDE')
-        ? dataset.labels.none
-        : null,
-    total: views.length,
-    researchOnlyCount: dataset.patterns.filter((p) => p.timelineEligibility === 'RESEARCH_ONLY').length,
+  const md = today.length >= 10 ? today.slice(5) : '';
+  const inWindow = views.filter((v) => v.proximity === 'IN_WINDOW');
+  const near = views.filter((v) => v.proximity === 'NEAR_WINDOW');
+  const nearest = inWindow[0] ?? near[0] ?? null;
+  const hasMatch = inWindow.length > 0 || near.length > 0;
+
+  const currentText = (() => {
+    if (inWindow.length > 0) {
+      return `${md} 位于 ${inWindow
+        .map((v) => `「${v.title}」的历史观察窗口（${v.windowLabel}）`)
+        .join('、')} 内。`;
+    }
+    if (near.length > 0) {
+      return `接近 ${near
+        .map((v) => `「${v.title}」的历史观察窗口（${v.windowLabel}，距边界 ${v.distanceDays} 天）`)
+        .join('、')}。`;
+    }
+    return dataset.labels.no_current_match;
+  })();
+
+  const currentMatch: CurrentMatchSummary = {
+    today,
+    md,
+    state: nearest ? nearest.proximity : 'OUTSIDE',
+    inWindow,
+    near,
+    hasMatch,
+    text: currentText,
+    // §27：允许「什么都没有」——且要区分两种空态：
+    //   ① 没有任何可展示窗口 → labels.none（不能说「仍可回看历史」）
+    //   ② 有窗口但今天不在附近 → labels.no_current_match（明确「仍可回看历史」）
+    emptyNote: hasMatch ? null : views.length === 0 ? dataset.labels.none : dataset.labels.no_current_match,
+  };
+
+  // B. 历史观察回溯：与当前匹配无关，始终可用（§十一 B）
+  const historicalRecall: HistoricalRecallSummary = {
+    views,
+    totalYears: views.reduce((acc, v) => acc + v.eligibleYears, 0),
+    text:
+      views.length === 0
+        ? '当前没有可回看的历史观察窗口。'
+        : `可回看 ${views.length} 条历史观察窗口：${views
+            .map((v) => `${v.title}（中心 ${v.centerDate}，窗口 ${v.windowLabel}）`)
+            .join('；')}。`,
   };
 
   return {
     views,
-    current,
-    researchOnlyCount: current.researchOnlyCount,
-    rejectedCount: dataset.patterns.filter((p) => p.timelineEligibility === 'REJECTED').length,
+    currentMatch,
+    historicalRecall,
+    researchOnlyCount: dataset.patterns.filter((p) => p.promotionStatus === 'RESEARCH_ONLY').length,
+    rejectedCount: dataset.patterns.filter((p) => p.promotionStatus === 'REJECTED').length,
     snapshotDate: dataset.snapshotDate,
     disclaimer: dataset.labels.disclaimer,
     windowLabel: dataset.labels.window,
     recurrenceLabel: dataset.labels.recurrence,
+    verificationPrefix: dataset.labels.verification_prefix,
+    exploratoryLabel: dataset.labels.exploratory,
+    exploratoryNote: dataset.labels.exploratory_note,
+    verifiedLabel: dataset.labels.verified_label,
+    allVerifiedNote: dataset.labels.all_verified_note,
+    currentMatchLabel: dataset.labels.current_match,
+    historicalRecallLabel: dataset.labels.historical_recall,
     issues: dataset.issues,
   };
 }

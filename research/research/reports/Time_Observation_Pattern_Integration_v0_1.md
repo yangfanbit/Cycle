@@ -254,4 +254,77 @@ RESEARCH_ONLY     : 其余（样本不足 / 稳定性或集中度未达门槛）
 
 ---
 
-*报告结束 · Time Observation Pattern Integration v0.1 · 2026-09-16*
+## §14 Phase 7.3 更新（Observation Credibility & Coverage）
+
+Phase 7.3 在**不改研究结论、不放松纳入标准**的前提下，补齐了观察层的三个短板：
+
+### 14.1 Anchor Verification（新增）
+
+- 策略与人工覆盖位：`time_observation_anchor_verification_v0_1.json`（artifact_version 0.1）。
+- 生成器从 research DB **机械推导**每条锚点核验状态（deterministic，随生成器一起可复现）：
+
+| 规则 | 条件 | 结果 |
+|---|---|---|
+| `R1_MARKET_DATA` | DB `campaign_date_observations.verification_method = market_data` | VERIFIED / MARKET_DATA |
+| `R2_PUBLIC_SOURCE` | 同日 linked evidence 且 `sources.tier ≤ 2` | VERIFIED / PUBLIC_SOURCE |
+| `R2B_EVENT_SOURCE` | 同日事件台账且 `sources.tier ≤ 2` | VERIFIED / PUBLIC_SOURCE（**不**等于确认行情起点） |
+| `R3_MULTI_SOURCE` | ≥2 个独立 `independence_group` 的同日 evidence | VERIFIED / MULTI_SOURCE |
+| `R4_TEXT_MENTION_ONLY` | 仅 Tier ≤2 证据/事件在描述中以**词边界**提到该日期 | **保持 UNKNOWN**（记录候选证据） |
+| `R5_NO_EVIDENCE` | 其余（含仅 Tier 3/4 线索） | UNKNOWN |
+
+- **实测**：TOP-01 = 2 / 7（2022-04-27 行情观测；2025-06-22 同日事件 Tier 2）；
+  TOP-02 = 1 / 4；TOP-03 = 0 / 2；TOP-04 = 0 / 3。合计 VERIFIED 3 / UNKNOWN 13 / CONFLICT 0。
+  5 个 UNKNOWN 中，2023-06-12 与 2024-06-11 有 Tier ≤2 候选证据（已在 note 中标注），优先人工复核。
+- **实现修正（重要）**：日期文本匹配必须做**词边界检查**。首版用朴素子串匹配，
+  把 `6/18`、`6/10`、`6/11` 全部误判为「提到了 6/1」，导致 5 条假 R4 命中 ——
+  修正后 UNKNOWN 的分布才与证据实际强度一致。该约束已写入策略文件的 `implementation_note`。
+- **反伪造**：`VERIFIED` 必须携带 `sources`；生成器自检失败即拒绝写盘，产品解析侧对
+  「无来源的 VERIFIED」降级为 UNKNOWN。
+
+### 14.2 Theme Family（新增）
+
+- Pattern 通过 `theme_family_id` 引用**既有** Macro Theme：`TH-AUTO`（汽车）/ `TH-PHARMA`（医药健康），
+  来源 = `themes` 表 `parent_theme_id IS NULL`；生成器启动即校验存在性（不存在直接失败）。
+- `rule_id` 降级为「研究规则范围」，**不再**充当主题身份；mapping 缺失时产品回退到 `theme_scope`。
+- 仍未解决：主题族目前只覆盖 2 个 Macro Theme（见 §11.2），扩展到更多主题前需要显式的
+  「主题族 ↔ rule / theme」定义表 —— 现在这个表的**位置**已确定（生成器的 `THEME_FAMILY_BY_SCOPE`），
+  但内容仍需逐个主题补齐。
+
+### 14.3 Promotion Status（新增）
+
+- 统一字段 `promotion_status ∈ {TIMELINE, EXPLORATORY, RESEARCH_ONLY, REJECTED}`（authoritative）：
+  `TIMELINE_ELIGIBLE → TIMELINE`；`REJECTED → REJECTED`；强度 `C → EXPLORATORY`；其余 `RESEARCH_ONLY`。
+- 旧字段（`status` / `timeline_eligible` / `timeline_eligibility`）保留为兼容输入；
+  生成器自检与产品解析双重校验一致性 → **无破坏性迁移**。
+- canonical 结果：`TOP-01 TIMELINE` / `TOP-02 RESEARCH_ONLY` / `TOP-03 EXPLORATORY` / `TOP-04 REJECTED`。
+
+### 14.4 Current Match 与 Historical Recall 分离
+
+- `currentMatch`（今天与窗口的日历关系，三态）与 `historicalRecall`（**始终可用**的回看：
+  中心 / 窗口 / 观测年份案例）拆成两个独立语义块。
+- 空态分两种：① 无任何可展示窗口 → 「当前没有发现处于历史时间观察窗口的模式」；
+  ② 有窗口但今天不在附近 → 「当前日期不在任何历史观察窗口内（**仍可回看**历史窗口与年份案例）」。
+- **核验不改变结论**：TOP-01 的核心数字（N=7 / 06-11 / 05-27~06-26 / 5-7 /
+  MODERATE_CANDIDATE / CALENDAR_DRIVEN）与窗口、复现、稳定性、LOO 全部不变
+  —— 有专门测试断言「加核验前后统计量一致」。
+
+### 14.5 兼容性
+
+| 项 | 是否修改 |
+|---|---|
+| `research/schema/schema.sql` | 未修改 |
+| `exports/timeline_export_v1.json`（contract v1.0） | 未修改 |
+| 2018–2025 已有 Campaign 结论 | 未修改 |
+| Research Model v1.0 | 未修改 |
+| `contracts/` | 未修改 |
+| Breaking change | 无（新增字段 + 兼容输入） |
+
+### 14.6 下一步（唯一一件）
+
+人工复核 TOP-01 剩余的 5 个 UNKNOWN 锚点，写入核验文件的 `overrides` 后重跑生成器。
+优先 **2023-06-12** 与 **2024-06-11**（已有 Tier ≤2 候选证据）。
+
+---
+
+*Phase 7.3 更新结束 · 2026-09-16*
+

@@ -232,25 +232,56 @@
 
 ---
 
-## Phase 7.3 · Structural Historical Analogy（推迟 · 未实现）
+## Phase 7.3 · Observation Credibility & Coverage（**当前阶段** · IMPLEMENTED）
 
-> ⚠️ **本轮（Phase 7.2）明确未实现。** 记录在此，避免提前实现。
+**目标**：把 Phase 7.2 的观察层从「可运行的研究型原型」推进为**可信、可复现、产品语义清晰**的观察层。
+**不扩大研究范围**（不进入 Structural Historical Analogy），**不为凑数量放松纳入标准**。
+
+- **Anchor Verification（P0）**：新增
+  `research/research/reports/time_observation_anchor_verification_v0_1.json`
+  （核验策略 R1–R5 + 人工覆盖位）→ 生成器从 research DB 机械推导每条锚点的核验状态；
+  产物中每条观测带 `verification{status, method, sources, rule, note}`，每个 Pattern 带
+  `anchor_verification` 汇总。**自检禁止「VERIFIED 无来源」**。
+- **Theme Family Mapping（P1）**：Pattern 通过 `theme_family_id` 引用既有 Macro Theme
+  （`TH-AUTO` / `TH-PHARMA`）；`rule_id` 不再充当主题身份；mapping 缺失时产品安全降级。
+- **Promotion Status（P1）**：统一 `promotion_status`（TIMELINE / EXPLORATORY / RESEARCH_ONLY / REJECTED）
+  为展示门槛；旧字段保留为兼容输入。
+- **Current Match / Historical Recall 分离（P2）**：`currentMatch`（今天是否在窗口附近，三态）
+  与 `historicalRecall`（始终可回看中心 / 窗口 / 年份案例）拆成两个独立语义块；
+  「当前无匹配」不再让用户以为「没有历史参考」。
+- **测试**：新增 23 项（核验解析 / 提升状态映射 / 主题族兼容 / 当前匹配 vs 历史回溯 /
+  空态三态 / 多模式稳定顺序 / 导航 entryId 稳定）。
+- **未改**：DB / `schema.sql` / canonical export / `contracts/` / Research Model / Campaign 数据 /
+  Timeline 主视觉。
+
+**验收**：TOP-01 核心数字不变（N=7 / 06-11 / 05-27~06-26 / 5-7 / MODERATE_CANDIDATE / CALENDAR_DRIVEN）；
+2026-09-16 显示「当前不在任何历史观察窗口内」但**仍可回看** TOP-01 的 7 个年份案例。
+
+---
+
+## Phase 8 · Structural Historical Analogy（推迟 · 未实现）
+
+> ⚠️ **Phase 7.3 明确未实现。** 记录在此，避免提前实现。
 
 - `Current State → Structural Signature → Historical Phase`
 - 与 Time Observation Pattern 的分层关系：
   Time Pattern 回答「**什么时候值得看**」，Structural Analogy 回答「**这个方向像哪段历史**」。
-- 前置条件：Time Observation Layer 的样本量与日期核验先改善（见 Phase 7.2 报告的 P0 / P1）。
+- 前置条件：Time Observation Layer 的样本量与**锚点核验**继续改善（见 Phase 7.3 报告：核验 2/7、
+  Theme Family 覆盖仅 2 个 Macro Theme）。
 
 ---
 
-## Phase 8 · Opportunity Discovery / Radar（推迟 · 未实现）
+## Phase 9+ · Current Market Structural Mapping / Research Discovery（归档方向 · 未实现）
 
-> ⚠️ 由 Phase 7.2 重新排序 —— 「Radar」不再紧接 Phase 5，而是排在 Structural Historical Analogy 之后。
+> ⚠️ **归档说明（Phase 7.3 重排）**：旧路线里的
+> 「旧 Phase 7 · Current Market Mapping」与「旧 Phase 8 · Opportunity Discovery / Radar」
+> **不再作为已确定路线**，统一归档到本节的未来方向；当前确定路线是
+> `7.2 观察层 → 7.3 可信度与覆盖 → Phase 8 Structural Historical Analogy`。
 
+- 把「今天」映射到历史时间轴：当前状态的结构特征 → 历史结构对应
 - 历史相似阶段检索、当前状态与历史条件的分布对比、观察窗口的规则化呈现
 
-> **Radar 不是交易信号。**
-> 输出的是「值得研究的方向」，不是「买入 / 卖出」。
+> **不是交易信号**：输出的是「值得研究的方向」，不是「买入 / 卖出」。
 > 用户自己负责入场判断（见 `docs/PRODUCT_PURPOSE.md`）。
 
 ---

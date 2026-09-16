@@ -19,7 +19,30 @@
 
 ## Current Phase
 
-**Phase 7.2：Time-based Observation Layer（IMPLEMENTED）。**
+**Phase 7.3：Observation Credibility & Coverage（IMPLEMENTED）。**
+把 Phase 7.2 的 Time-based Observation Layer 从「可运行的研究型原型」推进为
+**可信、可复现、产品语义清晰**的观察层。**不扩大研究范围**（不进入 Structural Analogy）。
+
+### 已完成（承自 7.2）
+
+- Time-based Observation Layer 落地：`TOP-01` 进入 Timeline（N=7 / 中心 06-11 / 窗口 05-27 ~ 06-26）
+- Current Match（当前时间匹配）与 Historical Recall（历史观察回溯）**分离**
+- canonical generator（deterministic，`--check` 逐字节一致）
+
+### 本阶段目标（7.3）
+
+| 项 | 内容 |
+|---|---|
+| **Anchor Verification** | 可复用的锚点核验结构：`research/research/reports/time_observation_anchor_verification_v0_1.json` 声明核验策略（R1–R5）+ 人工覆盖位；生成器从 research DB（`campaign_date_observations` / `evidences` + `sources.tier` / `events`）**机械推导**每条锚点的核验状态。**核验不改变锚点定义**。 |
+| **Theme Family mapping** | Pattern 通过稳定的 `theme_family_id`（复用既有 Macro Theme：`TH-AUTO` / `TH-PHARMA`）引用主题族；`rule_id` **不再**充当主题身份。缺失时产品回退到 `theme_scope`。 |
+| **Promotion status normalisation** | 新增统一字段 `promotion_status` ∈ `TIMELINE / EXPLORATORY / RESEARCH_ONLY / REJECTED`（authoritative）；旧的 `status` / `timeline_eligible` / `timeline_eligibility` 保留为**兼容输入**，生成器自检保证一致。 |
+
+**当前核验结果（诚实）**：TOP-01 **2 / 7** 个锚点完成仓库内证据核验
+（2022-04-27 = 行情观测；2025-06-22 = 同日事件台账 Tier 2）；其余 5 个保持 `UNKNOWN`
+（其中 2023-06-12 / 2024-06-11 有 Tier ≤2 证据在描述中以词边界提到该日期，但未作为独立日期证据登记）。
+→ 产品继续按「**探索性观察**」呈现，**不得**升级为「高度可信」。
+
+**上一阶段 Phase 7.2：Time-based Observation Layer（IMPLEMENTED）。**
 在「今天该研究什么」（Phase 7 / 7.1）之外，进一步回答
 **「历史上，一年中的这个时间位置附近，反复出现过什么」** —— 即「**什么时候值得看**」。
 

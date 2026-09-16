@@ -101,7 +101,7 @@ function expectNoPredictiveLanguage(markup: string) {
   for (const hard of ['推荐', '目标价', '胜率', '大概率', '买入区', '布局窗口']) {
     expect(markup, `不应出现「${hard}」`).not.toContain(hard);
   }
-  for (const phrase of ['买入', '卖出', '预测', '概率']) {
+  for (const phrase of ['买入', '卖出', '预测', '概率', '信号']) {
     let i = markup.indexOf(phrase);
     while (i >= 0) {
       const before = markup.slice(Math.max(0, i - 12), i);
@@ -158,8 +158,12 @@ describe('Time Observation Pattern · 解析', () => {
     }
     const model = buildTimeObservationLayer(ds, '2026-09-16');
     expect(model.views.every((v) => v.patternId === 'TOP-01')).toBe(true);
-    expect(model.researchOnlyCount).toBeGreaterThanOrEqual(2);
-    expect(model.rejectedCount).toBeGreaterThanOrEqual(1);
+    // Phase 7.3：提升状态统一后，RESEARCH_ONLY = TOP-02；TOP-03 是 EXPLORATORY
+    expect(model.researchOnlyCount).toBe(1);
+    expect(model.rejectedCount).toBe(1);
+    expect(ds.patterns.filter((p) => p.promotionStatus === 'EXPLORATORY').map((p) => p.patternId)).toEqual([
+      'TOP-03',
+    ]);
   });
 
   it('空数组 → 合法空数据集（不崩溃、不编造）', () => {
@@ -167,7 +171,7 @@ describe('Time Observation Pattern · 解析', () => {
     expect(ds.patterns).toEqual([]);
     const model = buildTimeObservationLayer(ds, '2026-09-16');
     expect(model.views).toEqual([]);
-    expect(model.current.emptyNote).toBe(ds.labels.none);
+    expect(model.currentMatch.emptyNote).toBe(ds.labels.none);
   });
 
   it('缺 pattern_id / 缺观测字段 → 丢弃该条并记录 issue', () => {
@@ -318,17 +322,17 @@ describe('Time Observation Pattern · 当前日期关系', () => {
     expect(proximityOf('07-11', win.start, win.end)).toBe('OUTSIDE');
   });
 
-  it('今天落在窗口内 → current.inWindow 命中；窗口外 → emptyNote 给出诚实空态', () => {
+  it('今天落在窗口内 → currentMatch.inWindow 命中；窗口外 → emptyNote 给出诚实空态', () => {
     const ds = defaultTimeObservationDataset();
     const inside = buildTimeObservationLayer(ds, '2026-06-12');
-    expect(inside.current.inWindow.map((v) => v.patternId)).toEqual(['TOP-01']);
-    expect(inside.current.near).toEqual([]);
-    expect(inside.current.emptyNote).toBeNull();
+    expect(inside.currentMatch.inWindow.map((v) => v.patternId)).toEqual(['TOP-01']);
+    expect(inside.currentMatch.near).toEqual([]);
+    expect(inside.currentMatch.emptyNote).toBeNull();
 
     const outside = buildTimeObservationLayer(ds, '2026-09-16');
-    expect(outside.current.inWindow).toEqual([]);
-    expect(outside.current.near).toEqual([]);
-    expect(outside.current.emptyNote).toBe(ds.labels.none);
+    expect(outside.currentMatch.inWindow).toEqual([]);
+    expect(outside.currentMatch.near).toEqual([]);
+    expect(outside.currentMatch.emptyNote).toBe(ds.labels.no_current_match);
   });
 
   it('多条模式同时命中时不人为只保留一条（§26）', () => {
@@ -343,7 +347,7 @@ describe('Time Observation Pattern · 当前日期关系', () => {
       ]),
     );
     const model = buildTimeObservationLayer(ds, '2026-06-12');
-    expect(model.current.inWindow.map((v) => v.patternId).sort()).toEqual(['TOP-81', 'TOP-82']);
+    expect(model.currentMatch.inWindow.map((v) => v.patternId).sort()).toEqual(['TOP-81', 'TOP-82']);
     expect(model.views).toHaveLength(2);
   });
 
@@ -404,7 +408,7 @@ describe('Time Observation Pattern · 映射与 UI', () => {
     const html = renderToStaticMarkup(
       <TimeObservationLayer year={2025} today="2026-09-16" onSelect={() => {}} dataset={ds} />,
     );
-    expect(html).toContain('当前没有发现处于历史时间观察窗口的模式');
+    expect(html).toContain('当前日期不在任何历史观察窗口内');
     expect(html).not.toContain('当前位于历史观察窗口');
     expectNoPredictiveLanguage(html);
   });
@@ -463,7 +467,7 @@ describe('Time Observation Pattern · 映射与 UI', () => {
       <TimeObservationLayer year={2025} today="2026-06-12" onSelect={() => {}} dataset={ds} />,
     );
     expect(html).toContain('探索性');
-    expect(html).toContain('未经行情人工最终核验');
+    expect(html).toContain('部分锚点尚未完成独立行情核验');
   });
 });
 
@@ -528,5 +532,408 @@ describe('Time Observation Pattern · 产物卫生', () => {
         expect(o.year).toBe(Number(o.date.slice(0, 4)));
       }
     }
+  });
+});
+
+/* ================= ⑥ Phase 7.3：锚点核验 ================= */
+
+/** 构造一条带核验元数据的观测（用于核验解析测试） */
+function obsFixture(verification: Record<string, unknown> | undefined, over: Record<string, unknown> = {}) {
+  return {
+    year: 2024,
+    date: '2024-06-11',
+    md: '06-11',
+    campaign_id: 'C-2024-V2X',
+    title: '测试历史行情',
+    kind: 'campaign',
+    anchor_type: 'EARLY_SIGNAL',
+    in_typical_window: true,
+    ...(verification === undefined ? {} : { verification }),
+    ...over,
+  };
+}
+
+describe('Time Observation Pattern · 锚点核验（Phase 7.3）', () => {
+  it('canonical：汇总以逐条核验为准，已核验锚点必须带来源，未核验锚点必须带说明', () => {
+    const top01 = defaultTimeObservationDataset().patterns.find((p) => p.patternId === 'TOP-01')!;
+    const v = top01.verificationSummary;
+    expect(v.total).toBe(7);
+    expect(v.verified + v.unknown + v.conflict).toBe(7);
+    expect(v.conflict).toBe(0);
+    expect(v.allVerified).toBe(false);
+
+    for (const o of top01.observations) {
+      if (o.verification.status === 'VERIFIED') {
+        // 反伪造：已核验必须能指向来源，且方法不是 UNKNOWN
+        expect(o.verification.sources.length).toBeGreaterThan(0);
+        expect(o.verification.method).not.toBe('UNKNOWN');
+        expect(o.verification.rule).not.toBe('—');
+      } else {
+        expect(o.verification.note.length).toBeGreaterThan(0);
+        expect(o.verification.sources).toEqual([]);
+      }
+    }
+  });
+
+  it('VERIFIED / UNKNOWN / CONFLICT 三种状态正常解析', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([
+        rawPattern({
+          observations: [
+            obsFixture({
+              status: 'VERIFIED',
+              method: 'MARKET_DATA',
+              sources: ['cycle_research.db:campaign_date_observations(OBS-1)'],
+              rule: 'R1_MARKET_DATA',
+              note: '行情观测得出',
+            }),
+            obsFixture(
+              { status: 'CONFLICT', method: 'UNKNOWN', sources: [], rule: 'R?', note: '与另一来源互斥' },
+              { year: 2023, date: '2023-06-12', campaign_id: 'C-2023-AD' },
+            ),
+            obsFixture(
+              { status: 'UNKNOWN', method: 'UNKNOWN', sources: [], rule: 'R5_NO_EVIDENCE', note: '无证据' },
+              { year: 2022, date: '2022-04-27', campaign_id: 'C-2022-POLICY' },
+            ),
+          ],
+        }),
+      ]),
+    );
+    const p = ds.patterns[0];
+    expect(p.observations.map((o) => o.verification.status)).toEqual(['VERIFIED', 'CONFLICT', 'UNKNOWN']);
+    expect(p.verificationSummary).toMatchObject({ verified: 1, unknown: 1, conflict: 1, total: 3 });
+  });
+
+  it('缺 verification 字段 → 安全降级为 UNKNOWN（不抛错、不臆造）', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([rawPattern({ observations: [obsFixture(undefined)] })]),
+    );
+    const o = ds.patterns[0].observations[0];
+    expect(o.verification.status).toBe('UNKNOWN');
+    expect(o.verification.method).toBe('UNKNOWN');
+    expect(o.verification.sources).toEqual([]);
+    expect(ds.issues).toEqual([]);
+  });
+
+  it('声明 VERIFIED 但没有来源 → 降级为 UNKNOWN 并记录 issue（禁止无来源核验）', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([
+        rawPattern({
+          observations: [obsFixture({ status: 'VERIFIED', method: 'PUBLIC_SOURCE', sources: [] })],
+          anchor_verification: { verified: 1, unknown: 0, conflict: 0, total: 1 },
+        }),
+      ]),
+    );
+    const o = ds.patterns[0].observations[0];
+    expect(o.verification.status).toBe('UNKNOWN');
+    expect(o.verification.rule).toBe('DOWNGRADED_NO_SOURCE');
+    expect(ds.issues.some((i) => i.includes('降级为 UNKNOWN'))).toBe(true);
+  });
+
+  it('核验元数据不参与规律计算：同一锚点在核验前后统计量完全一致', () => {
+    const noVerify = parseTimeObservationPatterns(rawArtifact([rawPattern()])).patterns[0];
+    const withVerify = parseTimeObservationPatterns(
+      rawArtifact([
+        rawPattern({
+          observations: [
+            obsFixture({
+              status: 'VERIFIED',
+              method: 'MARKET_DATA',
+              sources: ['db:obs'],
+              rule: 'R1',
+              note: 'n',
+            }),
+          ],
+        }),
+      ]),
+    ).patterns[0];
+    expect(withVerify.centerDate).toBe(noVerify.centerDate);
+    expect(withVerify.window?.label).toBe(noVerify.window?.label);
+    expect(withVerify.recurrence).toEqual(noVerify.recurrence);
+    expect(withVerify.observations.map((o) => o.date)).toEqual(
+      noVerify.observations.map((o) => o.date),
+    );
+  });
+
+  it('锚点类型随观测透传（用于展示「研究观察起点」口径）', () => {
+    const top01 = defaultTimeObservationDataset().patterns.find((p) => p.patternId === 'TOP-01')!;
+    expect(top01.observations.every((o) => o.anchorType === 'EARLY_SIGNAL')).toBe(true);
+  });
+});
+
+/* ================= ⑦ Phase 7.3：统一提升状态 ================= */
+
+describe('Time Observation Pattern · 提升状态（Phase 7.3）', () => {
+  function promotionOf(over: Record<string, unknown>) {
+    return parseTimeObservationPatterns(rawArtifact([rawPattern(over)])).patterns[0].promotionStatus;
+  }
+
+  it('四种状态的映射正确（向后兼容旧字段）', () => {
+    expect(promotionOf({ timeline_eligibility: 'TIMELINE_ELIGIBLE', timeline_eligible: true })).toBe(
+      'TIMELINE',
+    );
+    expect(promotionOf({ timeline_eligibility: 'RESEARCH_ONLY', timeline_eligible: false })).toBe(
+      'RESEARCH_ONLY',
+    );
+    expect(
+      promotionOf({
+        timeline_eligibility: 'RESEARCH_ONLY',
+        timeline_eligible: false,
+        research_strength: { grade: 'C' },
+      }),
+    ).toBe('EXPLORATORY');
+    expect(promotionOf({ timeline_eligibility: 'REJECTED', timeline_eligible: false })).toBe('REJECTED');
+  });
+
+  it('Artifact 显式声明 promotion_status 时优先采用', () => {
+    expect(
+      promotionOf({
+        promotion_status: 'EXPLORATORY',
+        timeline_eligibility: 'RESEARCH_ONLY',
+        timeline_eligible: false,
+        research_strength: { grade: 'B' },
+      }),
+    ).toBe('EXPLORATORY');
+  });
+
+  it('canonical：四条模式的提升状态与已知结论一致', () => {
+    const ds = defaultTimeObservationDataset();
+    expect(ds.patterns.map((p) => [p.patternId, p.promotionStatus])).toEqual([
+      ['TOP-01', 'TIMELINE'],
+      ['TOP-02', 'RESEARCH_ONLY'],
+      ['TOP-03', 'EXPLORATORY'],
+      ['TOP-04', 'REJECTED'],
+    ]);
+  });
+
+  it('展示门槛使用 promotion_status；RESEARCH_ONLY / EXPLORATORY / REJECTED 均不渲染窗口', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([
+        rawPattern({ pattern_id: 'TOP-91', promotion_status: 'TIMELINE' }),
+        rawPattern({ pattern_id: 'TOP-92', promotion_status: 'RESEARCH_ONLY' }),
+        rawPattern({ pattern_id: 'TOP-93', promotion_status: 'EXPLORATORY' }),
+        rawPattern({ pattern_id: 'TOP-94', promotion_status: 'REJECTED' }),
+      ]),
+    );
+    const model = buildTimeObservationLayer(ds, '2026-06-12');
+    expect(model.views.map((v) => v.patternId)).toEqual(['TOP-91']);
+    expect(model.researchOnlyCount).toBe(1);
+    expect(model.rejectedCount).toBe(1);
+  });
+
+  it('缺少 promotion_status 时回退到 eligibility 推导（旧 Artifact 兼容）', () => {
+    const legacy = parseTimeObservationPatterns(
+      rawArtifact([
+        {
+          pattern_id: 'TOP-88',
+          pattern_type: 'MIXED',
+          title: '旧格式',
+          description: '旧 Artifact 无 promotion_status',
+          theme_scope: '汽车',
+          typical_window: { start: '05-27', end: '06-26', width_days: 31, method: 'M', center_date: '06-11' },
+          observations: [obsFixture(undefined)],
+          recurrence: { matched_count: 1, eligible_years: 1, matched_years: [2024], missed_years: [] },
+          timeline_eligibility: 'TIMELINE_ELIGIBLE',
+          timeline_eligible: true,
+        },
+      ]),
+    );
+    expect(legacy.patterns[0].promotionStatus).toBe('TIMELINE');
+    expect(buildTimeObservationLayer(legacy, '2026-06-12').views).toHaveLength(1);
+  });
+});
+
+/* ================= ⑧ Phase 7.3：主题族映射 ================= */
+
+describe('Time Observation Pattern · 主题族映射（Phase 7.3）', () => {
+  it('canonical：Pattern 通过稳定 theme_family_id 引用既有 Macro Theme，不再依赖 rule_id', () => {
+    const ds = defaultTimeObservationDataset();
+    const top01 = ds.patterns.find((p) => p.patternId === 'TOP-01')!;
+    expect(top01.themeFamilyId).toBe('TH-AUTO');
+    expect(top01.themeFamilyName).toBe('汽车');
+    const top04 = ds.patterns.find((p) => p.patternId === 'TOP-04')!;
+    expect(top04.themeFamilyId).toBe('TH-PHARMA');
+  });
+
+  it('主题族缺失时安全降级为 null，View 回退到 themeScope（UI 不崩溃）', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([rawPattern({ theme_scope: '测试主题', theme_family: undefined })]),
+    );
+    const p = ds.patterns[0];
+    expect(p.themeFamilyId).toBeNull();
+    const model = buildTimeObservationLayer(ds, '2026-06-12');
+    expect(model.views[0].themeFamilyName).toBeNull();
+    const html = renderToStaticMarkup(
+      <TimeObservationLayer year={2025} today="2026-06-12" onSelect={() => {}} dataset={ds} />,
+    );
+    expect(html).toContain('测试主题'); // 回退到 themeScope
+  });
+
+  it('主题族与 Pattern 是两个概念：同一主题族可承载多条 Pattern', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([
+        rawPattern({
+          pattern_id: 'TOP-95',
+          theme_family: { theme_family_id: 'TH-AUTO', display_name: '汽车' },
+        }),
+        rawPattern({
+          pattern_id: 'TOP-96',
+          title: '另一条汽车窗口',
+          theme_family: { theme_family_id: 'TH-AUTO', display_name: '汽车' },
+          typical_window: { start: '08-01', end: '08-31', width_days: 31, method: 'M', center_date: '08-15' },
+        }),
+      ]),
+    );
+    expect(new Set(ds.patterns.map((p) => p.themeFamilyId))).toEqual(new Set(['TH-AUTO']));
+    expect(ds.patterns.map((p) => p.patternId)).toEqual(['TOP-95', 'TOP-96']);
+  });
+});
+
+/* ================= ⑨ Phase 7.3：当前匹配 vs 历史观察回溯 ================= */
+
+describe('Time Observation Pattern · 当前匹配 vs 历史回溯（Phase 7.3）', () => {
+  it('2026-09-16（今天）：Current Match = OUTSIDE，但历史回溯仍可用', () => {
+    const ds = defaultTimeObservationDataset();
+    const model = buildTimeObservationLayer(ds, '2026-09-16');
+
+    // A. 当前匹配
+    expect(model.currentMatch.state).toBe('OUTSIDE');
+    expect(model.currentMatch.hasMatch).toBe(false);
+    expect(model.currentMatch.inWindow).toEqual([]);
+    expect(model.currentMatch.near).toEqual([]);
+    expect(model.currentMatch.emptyNote).toBe(ds.labels.no_current_match);
+
+    // B. 历史回溯：不因「当前无匹配」而消失
+    expect(model.historicalRecall.views.map((v) => v.patternId)).toEqual(['TOP-01']);
+    expect(model.historicalRecall.totalYears).toBe(7);
+    expect(model.historicalRecall.text).toContain('可回看');
+  });
+
+  it('2026-06-12：Current Match = IN_WINDOW，且不再输出空态', () => {
+    const model = buildTimeObservationLayer(defaultTimeObservationDataset(), '2026-06-12');
+    expect(model.currentMatch.state).toBe('IN_WINDOW');
+    expect(model.currentMatch.hasMatch).toBe(true);
+    expect(model.currentMatch.emptyNote).toBeNull();
+    expect(model.currentMatch.text).toContain('06-12');
+  });
+
+  it('UI：当前匹配与历史回溯分成两块，且措辞不含信号 / 机会 / 买点语义', () => {
+    const html = renderToStaticMarkup(
+      <TimeObservationLayer
+        year={2025}
+        today="2026-09-16"
+        onSelect={() => {}}
+        dataset={defaultTimeObservationDataset()}
+      />,
+    );
+    expect(html).toContain('当前匹配');
+    expect(html).toContain('历史观察回溯');
+    expect(html).toContain('当前日期不在任何历史观察窗口内');
+    // 历史年份按钮在未展开时也可用（回看闭环不依赖当前匹配）
+    expect(html).toContain('tob-recall-years');
+    for (const banned of ['机会', '买点', '布局']) {
+      expect(html).not.toContain(banned);
+    }
+    expectNoPredictiveLanguage(html);
+  });
+
+  it('UI：今天是窗口内时显示「当前位于历史观察窗口」', () => {
+    const html = renderToStaticMarkup(
+      <TimeObservationLayer
+        year={2025}
+        today="2026-06-12"
+        onSelect={() => {}}
+        dataset={defaultTimeObservationDataset()}
+      />,
+    );
+    expect(html).toContain('当前位于历史观察窗口');
+    expect(html).not.toContain('当前日期不在任何历史观察窗口内');
+  });
+});
+
+/* ================= ⑩ Phase 7.3：空态 / 多模式 / 导航 ================= */
+
+describe('Time Observation Pattern · 空态与多模式（Phase 7.3）', () => {
+  it('无 Pattern → 不渲染本层，且模型为空态', () => {
+    const model = buildTimeObservationLayer(EMPTY_TIME_OBSERVATION_DATASET, '2026-09-16');
+    expect(model.views).toEqual([]);
+    expect(model.currentMatch.hasMatch).toBe(false);
+    expect(model.historicalRecall.views).toEqual([]);
+    const html = renderToStaticMarkup(
+      <TimeObservationLayer
+        year={2025}
+        today="2026-09-16"
+        onSelect={() => {}}
+        dataset={EMPTY_TIME_OBSERVATION_DATASET}
+      />,
+    );
+    expect(html).toBe('');
+  });
+
+  it('全部为 RESEARCH_ONLY → 不渲染窗口，但研究层计数保留', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([
+        rawPattern({ pattern_id: 'TOP-61', timeline_eligibility: 'RESEARCH_ONLY', timeline_eligible: false }),
+      ]),
+    );
+    expect(buildTimeObservationLayer(ds, '2026-09-16').researchOnlyCount).toBe(1);
+    const html = renderToStaticMarkup(
+      <TimeObservationLayer year={2025} today="2026-09-16" onSelect={() => {}} dataset={ds} />,
+    );
+    expect(html).toBe('');
+  });
+
+  it('多模式同时命中：全部展示、顺序稳定、不重复', () => {
+    const ds = parseTimeObservationPatterns(
+      rawArtifact([
+        rawPattern({ pattern_id: 'TOP-81', title: '窗口 A' }),
+        rawPattern({
+          pattern_id: 'TOP-82',
+          title: '窗口 B',
+          typical_window: { start: '06-01', end: '06-20', width_days: 20, method: 'M', center_date: '06-10' },
+        }),
+      ]),
+    );
+    const a = buildTimeObservationLayer(ds, '2026-06-12');
+    const b = buildTimeObservationLayer(ds, '2026-06-12');
+    expect(a.views.map((v) => v.patternId)).toEqual(b.views.map((v) => v.patternId));
+    expect(new Set(a.views.map((v) => v.patternId)).size).toBe(a.views.length);
+    expect(a.currentMatch.inWindow).toHaveLength(2);
+    const html = renderToStaticMarkup(
+      <TimeObservationLayer year={2025} today="2026-06-12" onSelect={() => {}} dataset={ds} />,
+    );
+    expect(html).toContain('窗口 A');
+    expect(html).toContain('窗口 B');
+  });
+});
+
+describe('Time Observation Pattern · 导航（Phase 7.3）', () => {
+  it('Pattern → 年份 → Campaign Detail 的 entryId 保持稳定（campaign_id@年份）', () => {
+    const top01 = defaultTimeObservationDataset().patterns.find((p) => p.patternId === 'TOP-01')!;
+    const view = buildTimeObservationLayer(defaultTimeObservationDataset(), '2026-06-12').views[0];
+    for (const o of view.observations) {
+      expect(o.timelineEntryId).toBe(timelineEntryId(o.campaignId, o.year));
+      expect(o.timelineEntryId).toBe(`${o.campaignId}@${o.year}`);
+    }
+    expect(top01.observations.map((o) => o.timelineEntryId)).toEqual(
+      view.observations.map((o) => o.timelineEntryId),
+    );
+  });
+
+  it('展开后的摘要包含「主题族 / 历史复现 / 核验状态 / 历史年份」，措辞保持研究口径', () => {
+    const html = renderToStaticMarkup(
+      <TimeObservationLayer
+        year={2025}
+        today="2026-06-12"
+        onSelect={() => {}}
+        dataset={defaultTimeObservationDataset()}
+      />,
+    );
+    expect(html).toContain('汽车');
+    expect(html).toContain('历史复现');
+    expect(html).toContain('核验状态');
+    expect(html).toContain('历史年份');
+    expect(html).toContain('2024 · 06-11');
+    expectNoPredictiveLanguage(html);
   });
 });

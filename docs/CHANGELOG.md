@@ -7,6 +7,84 @@
 
 ---
 
+## 2026-09-16 · Phase 7.3 Observation Credibility & Coverage（观察层可信度与覆盖）
+
+把 Phase 7.2 的观察层从「可运行的研究型原型」推进为**可信、可复现、产品语义清晰**的观察层。
+**不扩大研究范围**（不进入 Structural Analogy），**不为凑数量放松纳入标准**。
+
+### P0 · Anchor Verification（锚点核验层）
+
+- 新增 `research/research/reports/time_observation_anchor_verification_v0_1.json`：
+  声明核验策略 + 人工覆盖位（`overrides`，当前为空）。策略：
+  `R1 MARKET_DATA`（DB 观测行本身由行情得出）· `R2 PUBLIC_SOURCE`（同日 evidence 且 tier ≤ 2）·
+  `R2B EVENT_SOURCE`（同日事件台账且 tier ≤ 2）· `R3 MULTI_SOURCE`（≥2 独立来源组）·
+  `R4 TEXT_MENTION_ONLY`（仅文本提及 → **保持 UNKNOWN**，只记录候选证据）· `R5 NO_EVIDENCE`。
+- 生成器新增 `db_campaign_evidences` / `db_campaign_events` / `db_macro_themes` /
+  `verify_anchor()`：从 research DB **机械推导**每条锚点的核验状态（deterministic），
+  写入 `observations[].verification{status, method, sources, rule, note}` 与
+  `patterns[].anchor_verification{verified, unknown, conflict, total, methods, all_verified, label, note}`。
+- **核验不改变锚点定义**：锚点优先级（`EARLY_SIGNAL → THEME_FORMING → BROAD_CONFIRMATION →
+  Campaign.start`）与所有统计量完全不变（有专门测试断言「加核验前后统计量一致」）。
+- **反伪造自检**：`VERIFIED` 必须携带 `sources`，否则**自检失败、拒绝写盘**；
+  产品解析侧同样会把「无来源的 VERIFIED」降级为 `UNKNOWN` 并记 issue。
+- **实现修正**：日期文本匹配必须做**词边界检查** —— 朴素子串匹配会把 `6/18`、`6/10`、`6/11`
+  误判为「提到了 6/1」（首版即命中该 bug，已修正并写入策略文件实现说明）。
+- **实测（诚实）**：TOP-01 = **2 / 7 已核验**（2022-04-27 = `MARKET_DATA`；
+  2025-06-22 = 同日事件台账 Tier 2）；TOP-02 = 1 / 4；TOP-03 = 0 / 2；TOP-04 = 0 / 3；
+  合计 VERIFIED 3 / UNKNOWN 13 / CONFLICT 0。其余保持 `UNKNOWN`，并在 note 中列出
+  可优先人工复核的候选证据 —— **不伪造外部核验**。
+
+### P1 · Theme Family Mapping（主题族与 Pattern 分离）
+
+- Pattern 新增 `theme_family{theme_family_id, display_name, taxonomy_source}`，
+  **复用既有 Macro Theme taxonomy**（`themes` 表 `parent_theme_id IS NULL`）：`TH-AUTO` / `TH-PHARMA`。
+  `rule_id` 只表示研究规则范围，**不再**充当主题身份。
+- 生成器启动时校验主题族确实存在且名称一致（不存在 → 直接失败，避免凭空造 taxonomy）。
+- 产品侧 `themeFamilyId/themeFamilyName` 缺失时**安全降级**回退到 `themeScope`（有测试覆盖）。
+
+### P1 · Promotion Status（统一提升状态）
+
+- 新增 authoritative 字段 `promotion_status ∈ {TIMELINE, EXPLORATORY, RESEARCH_ONLY, REJECTED}`；
+  映射：`TIMELINE_ELIGIBLE → TIMELINE`；`REJECTED → REJECTED`；强度 `C → EXPLORATORY`；其余 `RESEARCH_ONLY`。
+- 旧的 `status` / `timeline_eligible` / `timeline_eligibility` **保留为兼容输入**，
+  生成器自检与产品解析都校验一致性（不一致记 issue 并给出优先级）。
+- 产品展示门槛改为读 `promotion_status === 'TIMELINE'`；旧 Artifact（无该字段）自动按
+  `timeline_eligibility → research_strength` 推导，**向后兼容**。
+- canonical 实测：`TOP-01 TIMELINE` / `TOP-02 RESEARCH_ONLY` / `TOP-03 EXPLORATORY` / `TOP-04 REJECTED`。
+
+### P2 · Current Match 与 Historical Recall 分离
+
+- Adapter 输出拆为两个独立语义块：
+  - **A. `currentMatch`**：今天与历史观察窗口的日历关系（`IN_WINDOW` / `NEAR_WINDOW` / `OUTSIDE`）+ 措辞；
+  - **B. `historicalRecall`**：**即使 `OUTSIDE` 也始终可用** —— 中心 / 窗口 / 观测年份案例。
+- 空态区分两种：① 无任何可展示窗口 → 「当前没有发现处于历史时间观察窗口的模式」；
+  ② 有窗口但今天不在附近 → 「当前日期不在任何历史观察窗口内（**仍可回看**历史窗口与年份案例）」。
+  → 「当前无匹配」不再让用户误以为「没有历史参考」。
+- UI 新增「**历史观察回溯**」条（始终可见，年份按钮直接进入既有 Campaign Detail），
+  展开摘要补充「主题族 / 核验状态 / 历史年份 / 观察机制」。
+- 措辞纪律继续收紧：**不出现**信号 / 机会 / 买点 / 布局 / 概率 / 胜率（测试断言）。
+
+### 测试
+
+`timeObservationPatterns.test.tsx`：**35 → 58 项**。新增覆盖：
+核验三态解析 / 缺字段安全降级 / 无来源 VERIFIED 降级 / 核验不影响统计 /
+提升状态四态映射与旧字段兼容 / 展示门槛使用 `promotion_status` / 主题族映射与缺失降级 /
+2026-09-16 当前匹配 OUTSIDE 但历史回溯可用 / 窗口内提示 / UI 双块结构与措辞红线 /
+空态三态（无 Pattern、无当前匹配、全 RESEARCH_ONLY）/ 多模式稳定顺序 / 导航 entryId 稳定。
+
+### 兼容性与边界（明确回答）
+
+| 项 | 是否修改 |
+|---|---|
+| `research/schema/schema.sql` | **未修改** |
+| `exports/timeline_export_v1.json`（contract v1.0） | **未修改** |
+| 现有 Campaign 数据（2018–2025 结论） | **未修改** |
+| Research Model v1.0 | **未修改** |
+| `contracts/` | **未修改** |
+| Breaking change | **无**（新增字段 + 兼容输入；旧 Artifact 仍可解析） |
+
+---
+
 ## 2026-09-16 · Phase 7.2 Time-based Observation Layer（时间型观察层落地）
 
 把「**什么时候值得看**」做成产品能力 —— 回答：

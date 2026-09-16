@@ -37,7 +37,26 @@
 
 ## 2. 当前阶段
 
-**Phase 7.2：Time-based Observation Layer（IMPLEMENTED）。**
+**Phase 7.3：Observation Credibility & Coverage（IMPLEMENTED）。**
+
+把 Phase 7.2 的观察层从「可运行的研究型原型」推进为**可信、可复现、产品语义清晰**的观察层。
+**不扩大研究范围**（不进入 Structural Analogy），**不为凑数量放松纳入标准**。
+
+- **Anchor Verification（P0）**：策略 + 人工覆盖位在
+  `research/research/reports/time_observation_anchor_verification_v0_1.json`；
+  生成器从 research DB **机械推导**每条锚点的核验状态，写入
+  `observations[].verification{status, method, sources, rule, note}` 与 `patterns[].anchor_verification`。
+  **核验不改变锚点定义与统计量**；`VERIFIED` 必须带 `sources`（自检 + 解析侧双重把关）。
+- **Theme Family**：Pattern 通过 `theme_family_id` 引用既有 Macro Theme（`TH-AUTO` / `TH-PHARMA`）；
+  `rule_id` **不再**充当主题身份；缺失时产品回退到 `theme_scope`。
+- **Promotion Status**：统一 `promotion_status`（TIMELINE / EXPLORATORY / RESEARCH_ONLY / REJECTED）
+  作为展示门槛；`status` / `timeline_eligible` / `timeline_eligibility` 为**兼容输入**。
+- **Current Match vs Historical Recall**：`currentMatch`（今天是否在窗口附近）与
+  `historicalRecall`（**始终**可回看中心 / 窗口 / 年份案例）分离；
+  「当前无匹配」≠「没有历史参考」。
+- **未改**：DB / `schema.sql` / canonical export / `contracts/` / Research Model / Campaign 数据 / Timeline 主视觉。
+
+**上一阶段 Phase 7.2：Time-based Observation Layer（IMPLEMENTED）。**
 
 回答「**历史上，一年中的这个时间位置附近，反复出现过值得研究的主题启动 / 观察现象吗？**」
 即「**什么时候值得看**」。
@@ -236,6 +255,11 @@ Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction
 - 把 **Time Observation Pattern** 写成 DB / schema / export / contracts，或当成 Campaign / Theme
 - 用价格类指标（涨停 / 涨幅 / 成交额）定义「启动观察锚点」—— 锚点只能是 Early Signal / Formation / Campaign.start
 - 把「历史复现率」表述为未来概率（**只能**写「历史样本中 X / Y 个观测年份」）
+- **伪造锚点核验**：状态标 `VERIFIED` 却给不出来源（必须能指向 DB 观测行 / evidence_id / source_id / 事件台账）
+- 把「核验通过」表述成「规律有效 / 高可信预测」；核验只描述**证据支持**，不证明规律
+- 改动锚点核验元数据后**不重跑生成器**（核验结果必须由 `build_time_observation_patterns.py` 产出）
+- 手工编辑 Time Observation Pattern 产物 / 核验产物（两者都必须由脚本生成）
+- 为凑 Pattern 数量而降低纳入标准（N < 5、放宽窗口、合并年份、给 RESEARCH_ONLY 强行 TIMELINE）
 - 产品运行时联网（抓新闻 / 调 LLM / 取实时行情资金情绪）—— 网络与 AI 只允许在离线研究数据生成端
 
 **产品**
@@ -255,7 +279,7 @@ UI 文案中「买入 / 卖出 / 建仓 / 清仓 / 推荐」只允许出现在**
 **Product（Node）**
 
 ```bash
-npm test          # Vitest，当前 372 项
+npm test          # Vitest，当前 395 项
 npx tsc -b        # 类型检查
 npm run build     # 生产构建
 ```
@@ -313,12 +337,18 @@ python scripts/validate_monorepo_integrity.py   # 仓库结构 / canonical 唯�
 
 > 见 `docs/PROJECT_STATE.md`。
 
-**人工核验 TOP-01（汽车主题上半年末启动观察窗口）的 7 个研究观察起点日期（离线研究轮，非本仓库代码任务）。**
+**人工复核 TOP-01 剩余的 5 个 UNKNOWN 锚点（离线研究轮，非本仓库代码任务）。**
 
-唯一一件事：核验 2019-08-15 / 2020-06-01 / 2021-06-01 / 2022-04-27 / 2023-06-12 / 2024-06-11 /
-2025-06-22 这 7 个锚点，把 `campaign_date_observations.verification_method` 从 `unknown`
-推进到行情核验，并记录核验结果。**理由**：数据质量是观察层可信度的天花板 —— 核验直接决定
-「探索性」标记能否去掉，也决定下一阶段（Structural Historical Analogy）有没有可靠底座。
+Phase 7.3 已完成「可由仓库资料自动确认」的部分：TOP-01 **2 / 7 已核验**
+（2022-04-27 = 行情观测；2025-06-22 = 同日事件台账 Tier 2）。剩余 5 个保持 `UNKNOWN`，
+其中 **2023-06-12 / 2024-06-11 有 Tier ≤2 证据在描述中以词边界提到该日期**（生成器已在
+`verification.note` 中标出候选证据）—— 这两个优先人工复核；2019-08-15 / 2020-06-01 /
+2021-06-01 仓库内仅有 Tier 3/4 线索或间接证据。
+
+人工核验结果写入 `research/research/reports/time_observation_anchor_verification_v0_1.json`
+的 `overrides`（写 `VERIFIED` 时必须提供 `source`，否则生成器自检失败），然后重跑生成器。
+**理由**：核验是观察层可信度的天花板 —— 它决定「探索性」标记能否去掉，也决定下一阶段
+（Phase 8 Structural Historical Analogy）有没有可靠底座。
 
 核验后如锚点日期变化，必须重新运行：
 

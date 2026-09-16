@@ -76,7 +76,7 @@ OUT_PATH = os.path.join(
 )
 
 SNAPSHOT_DATE = "2026-09-16"
-ARTIFACT_VERSION = "0.1"
+ARTIFACT_VERSION = "0.2"
 
 # ---------------------------------------------------------------- 枚举（有限集，不用伪精确数值）
 
@@ -108,6 +108,56 @@ FORBIDDEN_FIELDS = [
 
 # 面向用户的文本里禁止出现的语义（否定语境除外）
 BANNED_PHRASES = ["买入", "卖出", "布局窗口", "最佳买点", "预测", "概率", "胜率", "涨幅预测"]
+
+# ------------------------------------------------ Phase 7.3：核验层 / 主题族 / 提升状态
+
+# 锚点核验元数据（**可选**输入）：存在则读取其 policy + overrides；
+# 不存在时按内置规则机械推导（同样 deterministic）。
+VERIFICATION_PATH = os.path.join(
+    ROOT, "research", "research", "reports", "time_observation_anchor_verification_v0_1.json"
+)
+
+# 主题族 = 既有口径的「Macro Theme」（`themes` 表中 `parent_theme_id IS NULL` 的题材）。
+# **复用既有 taxonomy**（TH-AUTO / TH-PHARMA），不新建 taxonomy；生成器会校验其存在与名称一致。
+THEME_FAMILY_BY_SCOPE = {
+    "汽车": {"theme_family_id": "TH-AUTO", "display_name": "汽车"},
+    "医药健康": {"theme_family_id": "TH-PHARMA", "display_name": "医药健康"},
+}
+
+# 统一的提升状态（authoritative）；旧的 status / timeline_eligible / timeline_eligibility 作为兼容字段保留。
+PROMOTION_STATUSES = ["TIMELINE", "EXPLORATORY", "RESEARCH_ONLY", "REJECTED"]
+
+# 锚点核验状态 / 方法枚举
+VERIFY_STATUSES = ["VERIFIED", "UNKNOWN", "CONFLICT"]
+VERIFY_METHODS = ["MARKET_DATA", "PUBLIC_SOURCE", "MULTI_SOURCE", "UNKNOWN"]
+
+# 文本形态匹配用的日期写法（供 R4_TEXT_MENTION_ONLY 使用）
+def _text_date_variants(md: str):
+    m, d = int(md[0:2]), int(md[3:5])
+    return (f"{md}", f"{m}/{d}", f"{m}月{d}日", f"{m:02d}/{d:02d}")
+
+
+def _mentions_date(text: str, md: str) -> bool:
+    """
+    文本是否**在词边界上**提到该 MM-DD。
+
+    ⚠️ 必须做边界检查：`'6/1' in '6/18'` 为真 —— 朴素子串匹配会把 6/18、6/10、6/11
+    全部误判为「提到了 6/1」。因此要求匹配片段前后都不是数字。
+    """
+    if not text:
+        return False
+    for v in _text_date_variants(md):
+        start = 0
+        while True:
+            i = text.find(v, start)
+            if i < 0:
+                break
+            before = text[i - 1] if i > 0 else ""
+            after = text[i + len(v)] if i + len(v) < len(text) else ""
+            if not (before.isdigit() or after.isdigit()):
+                return True
+            start = i + 1
+    return False
 
 # ---------------------------------------------------------------- 锚点口径
 
@@ -345,19 +395,271 @@ def load_export():
 
 
 def db_anchor_quality(conn):
-    """(campaign_id, date_role) → verification_method / confidence（数据质量口径，只读）。"""
+    """(campaign_id, date_role) → DB 观测行（核验 / 数据质量口径，只读）。"""
     cur = conn.cursor()
     cur.execute(
-        "SELECT campaign_id, date_role, verification_method, confidence, verified_date "
-        "FROM campaign_date_observations"
+        "SELECT observation_id, campaign_id, date_role, verification_method, confidence, "
+        "verified_date, notes FROM campaign_date_observations"
     )
-    return {(r[0], r[1]): {"method": r[2], "confidence": r[3], "verified": r[4]} for r in cur.fetchall()}
+    return {
+        (r[1], r[2]): {
+            "observation_id": r[0],
+            "method": r[3],
+            "confidence": r[4],
+            "verified": r[5],
+            "notes": r[6],
+        }
+        for r in cur.fetchall()
+    }
 
 
 def db_annual_reviews(conn):
     cur = conn.cursor()
     cur.execute("SELECT rule_id, year, status FROM annual_reviews")
     return {(r[0], r[1]): r[2] for r in cur.fetchall()}
+
+
+# ------------------------------------------------ Phase 7.3：核验层 / 主题族
+
+
+def db_campaign_evidences(conn):
+    """campaign_id → linked 证据行（含来源 tier / independence_group），供锚点核验使用。"""
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT ce.campaign_id, ev.evidence_id, ev.date, ev.evidence_type, ev.confidence,
+                  ev.independence_group, ev.description,
+                  s.source_id, s.tier, s.title, s.url, s.publisher
+           FROM campaign_evidences ce
+           JOIN evidences ev ON ev.evidence_id = ce.evidence_id
+           LEFT JOIN sources s ON s.source_id = ev.source_id"""
+    )
+    out = {}
+    for r in cur.fetchall():
+        out.setdefault(r[0], []).append(
+            {
+                "evidence_id": r[1],
+                "date": r[2],
+                "evidence_type": r[3],
+                "confidence": r[4],
+                "independence_group": r[5],
+                "description": r[6] or "",
+                "source_id": r[7],
+                "tier": r[8],
+                "source_title": r[9],
+                "source_url": r[10],
+                "publisher": r[11],
+            }
+        )
+    return out
+
+
+def db_macro_themes(conn):
+    """Macro Theme（`parent_theme_id IS NULL`）→ {theme_id: name}，用于主题族校验。"""
+    cur = conn.cursor()
+    cur.execute("SELECT theme_id, name FROM themes WHERE parent_theme_id IS NULL")
+    return {r[0]: r[1] for r in cur.fetchall()}
+
+
+def db_campaign_events(conn):
+    """campaign_id → 事件台账行（含来源 tier），供锚点核验（R2b / R4）使用。"""
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT ce.campaign_id, e.event_id, e.date, e.name, e.event_type, e.description,
+                  s.source_id, s.tier, s.title
+           FROM campaign_events ce
+           JOIN events e ON e.event_id = ce.event_id
+           LEFT JOIN sources s ON s.source_id = e.source_id"""
+    )
+    out = {}
+    for r in cur.fetchall():
+        out.setdefault(r[0], []).append(
+            {
+                "event_id": r[1],
+                "date": r[2],
+                "name": r[3],
+                "event_type": r[4],
+                "description": r[5] or "",
+                "source_id": r[6],
+                "tier": r[7],
+                "source_title": r[8],
+            }
+        )
+    return out
+
+
+def load_verification_policy():
+    """读取锚点核验策略 / 人工覆盖（**可选**输入文件）。缺失 → 内置规则 + 无覆盖。"""
+    if not os.path.exists(VERIFICATION_PATH):
+        return {"path": None, "artifact_version": None, "overrides": []}
+    try:
+        with io.open(VERIFICATION_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as exc:
+        raise SystemExit("FAIL —— 核验元数据文件无法解析：%s" % exc)
+    return {
+        "path": os.path.relpath(VERIFICATION_PATH, ROOT),
+        "artifact_version": data.get("artifact_version"),
+        "overrides": data.get("overrides") or [],
+    }
+
+
+def verify_anchor(anchor_date, campaign_id, obs_row, evidences, events, override):
+    """
+    机械推导锚点核验状态（deterministic）。规则见核验元数据文件 `policy.rules`：
+
+      R1 MARKET_DATA   —— DB 观测行本身以 market_data 得出
+      R2 PUBLIC_SOURCE —— 同日 linked evidence 且来源 tier ≤ 2
+      R3 MULTI_SOURCE  —— ≥ 2 个不同 independence_group 的同日 evidence
+      R4 TEXT_MENTION  —— 仅 Tier ≤ 2 证据在**描述文本**提到该日期 → **保持 UNKNOWN**（列出候选证据）
+      R5 NO_EVIDENCE   —— 其余（含仅 Tier 3/4 线索）→ UNKNOWN
+
+    核验只描述「该日期是否有仓库内可追溯的证据」，**不改变**锚点定义。
+    """
+    if override:
+        return {
+            "status": override.get("status", "UNKNOWN"),
+            "method": override.get("method", "UNKNOWN"),
+            "sources": [str(s) for s in (override.get("source") or [])],
+            "rule": "MANUAL_OVERRIDE",
+            "note": override.get("note", ""),
+            "verified_at": override.get("verified_at"),
+            "derived_at": SNAPSHOT_DATE,
+            "derived_from": os.path.relpath(VERIFICATION_PATH, ROOT),
+        }
+
+    base = {
+        "status": "UNKNOWN",
+        "method": "UNKNOWN",
+        "sources": [],
+        "rule": "R5_NO_EVIDENCE",
+        "note": "",
+        "derived_at": SNAPSHOT_DATE,
+        "derived_from": "cycle_research.db",
+    }
+
+    # R1：该起始日期本身由行情观测得出
+    if obs_row and obs_row.get("method") == "market_data":
+        base.update(
+            {
+                "status": "VERIFIED",
+                "method": "MARKET_DATA",
+                "sources": [
+                    "cycle_research.db:campaign_date_observations(%s)" % obs_row.get("observation_id")
+                ],
+                "rule": "R1_MARKET_DATA",
+                "note": obs_row.get("notes")
+                or "该起始日期由行情数据观测得出（未经人工最终确认）。",
+                "derived_from": "cycle_research.db:campaign_date_observations",
+            }
+        )
+        return base
+
+    same_day = [e for e in evidences if e.get("date") == anchor_date]
+
+    # R2：同日 + tier ≤ 2
+    strong = [e for e in same_day if isinstance(e.get("tier"), int) and e["tier"] <= 2]
+    if strong:
+        e = strong[0]
+        base.update(
+            {
+                "status": "VERIFIED",
+                "method": "PUBLIC_SOURCE",
+                "sources": [
+                    "cycle_research.db:evidences(%s)" % e["evidence_id"],
+                    "cycle_research.db:sources(%s)" % e.get("source_id"),
+                ],
+                "rule": "R2_PUBLIC_SOURCE",
+                "note": "存在同日 Tier %s 来源：%s" % (e["tier"], (e.get("source_title") or "")[:80]),
+                "derived_from": "cycle_research.db:evidences + sources",
+            }
+        )
+        return base
+
+    # R2b：同日**事件台账**（events + tier ≤ 2 来源）
+    # 事件台账是仓库既有的事实层（产品也消费它），可作为「日期有来源支持」的依据；
+    # 但它**不构成**「该日期即行情起点」的独立确认（那需要人工行情核验）。
+    same_day_events = [
+        e
+        for e in events
+        if e.get("date") == anchor_date and isinstance(e.get("tier"), int) and e["tier"] <= 2
+    ]
+    if same_day_events:
+        e = same_day_events[0]
+        base.update(
+            {
+                "status": "VERIFIED",
+                "method": "PUBLIC_SOURCE",
+                "sources": [
+                    "cycle_research.db:events(%s)" % e["event_id"],
+                    "cycle_research.db:sources(%s)" % e.get("source_id"),
+                ],
+                "rule": "R2B_EVENT_SOURCE",
+                "note": (
+                    "存在同日事件（Tier %s 来源）：%s。事件台账支持该日期，但**不构成**"
+                    "对「该日期即行情起点」的独立确认。" % (e["tier"], (e.get("name") or "")[:60])
+                ),
+                "derived_from": "cycle_research.db:events + sources",
+            }
+        )
+        return base
+
+    # R3：≥2 个独立来源组（同日）
+    groups = sorted({e.get("independence_group") for e in same_day if e.get("independence_group")})
+    if len(groups) >= 2:
+        base.update(
+            {
+                "status": "VERIFIED",
+                "method": "MULTI_SOURCE",
+                "sources": ["cycle_research.db:evidences(%s)" % e["evidence_id"] for e in same_day],
+                "rule": "R3_MULTI_SOURCE",
+                "note": "同日存在 %d 个独立来源组：%s" % (len(groups), groups),
+                "derived_from": "cycle_research.db:evidences.independence_group",
+            }
+        )
+        return base
+
+    # R4：仅文本提及（tier ≤ 2），**不升级为 VERIFIED**
+    md_of_anchor = anchor_date[5:]
+    mentioned = [
+        e
+        for e in evidences
+        if isinstance(e.get("tier"), int)
+        and e["tier"] <= 2
+        and _mentions_date(e.get("description") or "", md_of_anchor)
+    ]
+    if not mentioned:
+        mentioned = [
+            e
+            for e in events
+            if isinstance(e.get("tier"), int)
+            and e["tier"] <= 2
+            and _mentions_date(e.get("description") or "", md_of_anchor)
+        ]
+    if mentioned:
+        e = mentioned[0]
+        base.update(
+            {
+                "rule": "R4_TEXT_MENTION_ONLY",
+                "note": (
+                    "仓库内有 Tier %s 证据在描述中提到该日期（%s），但该日期未作为独立日期证据登记 "
+                    "→ 保持 UNKNOWN，供人工核验时优先处理。" % (e["tier"], e["evidence_id"])
+                ),
+                "derived_from": "cycle_research.db:evidences.description",
+            }
+        )
+        return base
+
+    # R5
+    if same_day:
+        tiers = sorted({e.get("tier") for e in same_day})
+        base["note"] = (
+            "同日仅有 Tier %s 证据（未达核验门槛：Tier 4 = 线索级、Tier 3 = 转载/二手）→ 保持 UNKNOWN。"
+            % tiers
+        )
+        base["derived_from"] = "cycle_research.db:evidences + sources"
+    else:
+        base["note"] = "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。"
+    return base
 
 
 # ---------------------------------------------------------------- 锚点提取（统一优先级）
@@ -672,10 +974,23 @@ def judge(stats, stability, loo):
             f"未达集中度 / 稳定性门槛（集中度比率 {ratio}、漂移 {drift}）→ 暂不进入 Timeline。"
         )
 
+    # 统一提升状态（Phase 7.3，authoritative）：
+    #   TIMELINE（可进入产品）/ REJECTED（已拒绝）/ EXPLORATORY（探索性，强度 C）/ RESEARCH_ONLY（其余）
+    # 旧的 status / timeline_eligible / timeline_eligibility 保留为兼容字段，自检保证三者一致。
+    if eligibility == "TIMELINE_ELIGIBLE":
+        promotion = "TIMELINE"
+    elif eligibility == "REJECTED":
+        promotion = "REJECTED"
+    elif strength == "C":
+        promotion = "EXPLORATORY"
+    else:
+        promotion = "RESEARCH_ONLY"
+
     return {
         "window_buildable": window_buildable,
         "research_strength": strength,
         "status": status,
+        "promotion_status": promotion,
         "timeline_eligibility": eligibility,
         "timeline_eligible": eligibility == "TIMELINE_ELIGIBLE",
         "reason": reason,
@@ -724,8 +1039,32 @@ def build_artifact():
     try:
         quality = db_anchor_quality(conn)
         annual = db_annual_reviews(conn)
+        evidences = db_campaign_evidences(conn)
+        events_by_campaign = db_campaign_events(conn)
+        macro_themes = db_macro_themes(conn)
     finally:
         conn.close()
+
+    vpolicy = load_verification_policy()
+    override_by = {}
+    for ov in vpolicy["overrides"]:
+        key = (ov.get("campaign_id"), ov.get("anchor_date"))
+        if not key[0] or not key[1]:
+            raise SystemExit("FAIL —— 核验 override 必须同时提供 campaign_id 与 anchor_date")
+        if key in override_by:
+            raise SystemExit("FAIL —— 存在重复的核验 override：%s %s" % key)
+        override_by[key] = ov
+
+    # 主题族校验：必须是既有 Macro Theme（themes.parent_theme_id IS NULL），且名称一致
+    for fam in FAMILIES:
+        mapping = THEME_FAMILY_BY_SCOPE.get(fam["theme_scope"])
+        if mapping is None:
+            raise SystemExit("FAIL —— 主题族 %s 未在 THEME_FAMILY_BY_SCOPE 中登记" % fam["theme_scope"])
+        if macro_themes.get(mapping["theme_family_id"]) != mapping["display_name"]:
+            raise SystemExit(
+                "FAIL —— 主题族 %s（%s）在 themes 表中不存在或名称不一致（现有 Macro Theme：%s）"
+                % (mapping["theme_family_id"], mapping["display_name"], macro_themes)
+            )
 
     units = collect_units(export, quality)
     anchor_counts = {}
@@ -747,35 +1086,40 @@ def build_artifact():
             else None
         )
 
-        observations = [
-            {
-                "year": u["year"],
-                "date": u["anchor_date"],
-                "md": "%s-%s" % (u["anchor_date"][5:7], u["anchor_date"][8:10]),
-                "campaign_id": u["campaign_id"],
-                "title": u["title"],
-                "kind": u["kind"],
-                "anchor_source": u["anchor_source"],
-                "in_typical_window": (
-                    win["start"] <= "%s-%s" % (u["anchor_date"][5:7], u["anchor_date"][8:10]) <= win["end"]
-                    if win
-                    else None
-                ),
-            }
-            for u in agg
-        ] if win else [
-            {
-                "year": u["year"],
-                "date": u["anchor_date"],
-                "md": "%s-%s" % (u["anchor_date"][5:7], u["anchor_date"][8:10]),
-                "campaign_id": u["campaign_id"],
-                "title": u["title"],
-                "kind": u["kind"],
-                "anchor_source": u["anchor_source"],
-                "in_typical_window": None,
-            }
-            for u in agg
-        ]
+        observations = []
+        for u in agg:
+            md = u["anchor_date"][5:10]
+            obs_row = quality.get((u["campaign_id"], "start"))
+            observations.append(
+                {
+                    "year": u["year"],
+                    "date": u["anchor_date"],
+                    "md": md,
+                    "campaign_id": u["campaign_id"],
+                    "title": u["title"],
+                    "kind": u["kind"],
+                    "anchor_type": u["anchor_type"],
+                    "anchor_source": u["anchor_source"],
+                    "in_typical_window": (win["start"] <= md <= win["end"]) if win else None,
+                    # Phase 7.3：核验元数据（只描述证据支持，不改变锚点定义）
+                    "verification": verify_anchor(
+                        u["anchor_date"],
+                        u["campaign_id"],
+                        obs_row,
+                        evidences.get(u["campaign_id"], []),
+                        events_by_campaign.get(u["campaign_id"], []),
+                        override_by.get((u["campaign_id"], u["anchor_date"])),
+                    ),
+                }
+            )
+
+        v_counts = {"VERIFIED": 0, "UNKNOWN": 0, "CONFLICT": 0}
+        v_methods = {}
+        for o in observations:
+            st = o["verification"]["status"]
+            v_counts[st] = v_counts.get(st, 0) + 1
+            mth = o["verification"]["method"]
+            v_methods[mth] = v_methods.get(mth, 0) + 1
 
         ratio = stats["concentration_ratio"]
         typical_window = None
@@ -806,6 +1150,12 @@ def build_artifact():
                 "description": fam["description"],
                 "theme_scope": fam["theme_scope"],
                 "theme_key": fam["theme_key"],
+                # Phase 7.3：稳定的主题族引用（复用既有 Macro Theme taxonomy；不再以 rule_id 充当主题身份）
+                "theme_family": {
+                    "theme_family_id": THEME_FAMILY_BY_SCOPE[fam["theme_scope"]]["theme_family_id"],
+                    "display_name": THEME_FAMILY_BY_SCOPE[fam["theme_scope"]]["display_name"],
+                    "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）",
+                },
                 "family_definition": fam["definition"],
                 "anchor_type": ANCHOR_EARLY if all(
                     u["anchor_type"] == ANCHOR_EARLY for u in agg
@@ -841,6 +1191,25 @@ def build_artifact():
                 "stability": stability,
                 "leave_one_out": loo,
                 "data_quality": data_quality_of(agg, quality),
+                # Phase 7.3：锚点核验汇总（只统计证据支持情况，不改变规律计算）
+                "anchor_verification": {
+                    "verified": v_counts["VERIFIED"],
+                    "unknown": v_counts["UNKNOWN"],
+                    "conflict": v_counts["CONFLICT"],
+                    "total": len(observations),
+                    "methods": v_methods,
+                    "all_verified": v_counts["VERIFIED"] == len(observations) and len(observations) > 0,
+                    "label": (
+                        "全部锚点已完成仓库内证据核验"
+                        if v_counts["VERIFIED"] == len(observations) and len(observations) > 0
+                        else "%d / %d 个锚点已完成仓库内证据核验"
+                        % (v_counts["VERIFIED"], len(observations))
+                    ),
+                    "note": (
+                        "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，"
+                        "也不代表未来会重复。"
+                    ),
+                },
                 "research_strength": {
                     "grade": verdict["research_strength"],
                     "rationale": (
@@ -853,6 +1222,8 @@ def build_artifact():
                         )
                     ),
                 },
+                # Phase 7.3：统一的提升状态（authoritative）；以下三个为兼容字段（自检保证一致）
+                "promotion_status": verdict["promotion_status"],
                 "status": verdict["status"],
                 "timeline_eligibility": verdict["timeline_eligibility"],
                 "timeline_eligible": verdict["timeline_eligible"],
@@ -890,6 +1261,44 @@ def build_artifact():
         "generated_by": "research/scripts/build_time_observation_patterns.py",
         "snapshot_date": SNAPSHOT_DATE,
         "research_round": "time-observation-pattern-v0.1",
+        "revision": "Phase 7.3（Observation Credibility & Coverage）",
+        "filename_note": (
+            "文件名保持 time_observation_patterns_v0_1.json 不变（产品 alias 与导入路径稳定），"
+            "内部 artifact_version 已升至 0.2。"
+        ),
+        "theme_family_taxonomy": {
+            "definition": "Theme Family = 既有 Macro Theme（`themes` 表中 `parent_theme_id IS NULL` 的题材）",
+            "note": (
+                "Phase 7.3 起 Pattern 通过稳定的 `theme_family_id` 引用主题族；"
+                "`rule_id` 只表示研究规则范围，**不再**充当主题身份。"
+            ),
+            "mapping": [
+                {
+                    "theme_family_id": v["theme_family_id"],
+                    "display_name": v["display_name"],
+                    "theme_type": "industry",
+                    "source": "cycle_research.db:themes(parent_theme_id IS NULL)",
+                }
+                for v in THEME_FAMILY_BY_SCOPE.values()
+            ],
+        },
+        "anchor_verification_policy": {
+            "policy_source": vpolicy["path"],
+            "policy_version": vpolicy["artifact_version"],
+            "manual_overrides": len(vpolicy["overrides"]),
+            "rules": [
+                "R1_MARKET_DATA：该日期本身由行情观测得出 → VERIFIED / MARKET_DATA",
+                "R2_PUBLIC_SOURCE：同日 linked evidence 且来源 tier ≤ 2 → VERIFIED / PUBLIC_SOURCE",
+                "R2B_EVENT_SOURCE：同日**事件台账**且来源 tier ≤ 2 → VERIFIED / PUBLIC_SOURCE（支持日期，但不等于确认行情起点）",
+                "R3_MULTI_SOURCE：≥2 个独立来源组的同日 evidence → VERIFIED / MULTI_SOURCE",
+                "R4_TEXT_MENTION_ONLY：仅 tier ≤ 2 证据/事件在描述中以**词边界**提到该日期 → **保持 UNKNOWN**（记录候选证据）",
+                "R5_NO_EVIDENCE：其余（含仅 Tier 3/4 线索）→ UNKNOWN",
+            ],
+            "note": (
+                "核验只描述「该日期是否有仓库内可追溯的证据」，不改变锚点优先级与取值；"
+                "核验通过 ≠ 规律被证明有效。"
+            ),
+        },
         "supersedes": {
             "exploratory_artifact": "research/research/reports/seasonal_observation_patterns_v0_1.json",
             "exploratory_report": "research/research/reports/Seasonal_Observation_Pattern_Discovery_v0_1.md",
@@ -932,6 +1341,15 @@ def build_artifact():
             "near_window": "接近历史观察窗口",
             "none": "当前没有发现处于历史时间观察窗口的模式",
             "disclaimer": "这是历史时间聚集现象，不代表今年必然重演，也不是买入或卖出信号。",
+            # Phase 7.3：核验口径文案（措辞由 Research 拥有，Product 只渲染）
+            "exploratory": "探索性观察",
+            "exploratory_note": "样本有限，部分锚点尚未完成独立行情核验",
+            "verified_label": "历史观察规律",
+            "all_verified_note": "全部锚点已完成仓库内证据核验（核验通过不等于规律有效）",
+            "verification_prefix": "核验状态",
+            "historical_recall": "历史观察回溯",
+            "current_match": "当前匹配",
+            "no_current_match": "当前日期不在任何历史观察窗口内（仍可回看历史窗口与年份案例）",
         },
         "background_baseline": {
             "note": (
@@ -967,9 +1385,18 @@ def build_artifact():
             "rejected": [
                 p["pattern_id"] for p in patterns if p["timeline_eligibility"] == "REJECTED"
             ],
+            # Phase 7.3：统一提升状态统计（authoritative 字段）
+            "promotion_status": {
+                s: [p["pattern_id"] for p in patterns if p["promotion_status"] == s]
+                for s in PROMOTION_STATUSES
+            },
+            "anchor_verification": {
+                s: sum(p["anchor_verification"][s.lower()] for p in patterns)
+                for s in ("VERIFIED", "UNKNOWN", "CONFLICT")
+            },
             "note": (
                 "本轮只有一条 Pattern 达到 Timeline 门槛，且它仍是**探索性**的"
-                "（样本 7 年、全部研究候选日期）——产品必须以此口径呈现。"
+                "（样本 7 年、多数锚点尚未完成独立行情核验）——产品必须以此口径呈现。"
             ),
         },
         "patterns": patterns,
@@ -1010,6 +1437,54 @@ def validate_artifact(art):
             issues.append(f"{pid}: timeline_eligibility 不在枚举内")
         if p["timeline_eligible"] != (p["timeline_eligibility"] == "TIMELINE_ELIGIBLE"):
             issues.append(f"{pid}: timeline_eligible 与 timeline_eligibility 不一致")
+
+        # Phase 7.3：统一提升状态（authoritative）与兼容字段必须一致
+        if p["promotion_status"] not in PROMOTION_STATUSES:
+            issues.append(f"{pid}: promotion_status {p['promotion_status']} 不在枚举内")
+        expect_promo = (
+            "TIMELINE"
+            if p["timeline_eligibility"] == "TIMELINE_ELIGIBLE"
+            else "REJECTED"
+            if p["timeline_eligibility"] == "REJECTED"
+            else "EXPLORATORY"
+            if p["research_strength"]["grade"] == "C"
+            else "RESEARCH_ONLY"
+        )
+        if p["promotion_status"] != expect_promo:
+            issues.append(
+                f"{pid}: promotion_status({p['promotion_status']}) 与 eligibility/strength 推导值({expect_promo}) 不一致"
+            )
+
+        # Phase 7.3：主题族必须引用既有 Macro Theme
+        fam_ref = p.get("theme_family") or {}
+        if not fam_ref.get("theme_family_id"):
+            issues.append(f"{pid}: 缺少 theme_family_id（主题族必须引用既有 Macro Theme）")
+
+        # Phase 7.3：逐条锚点核验
+        vcount = {"VERIFIED": 0, "UNKNOWN": 0, "CONFLICT": 0}
+        for o in p["observations"]:
+            if not o.get("anchor_type"):
+                issues.append(f"{pid}/{o.get('date')}: 缺少 anchor_type")
+            v = o.get("verification") or {}
+            st, mth = v.get("status"), v.get("method")
+            if st not in VERIFY_STATUSES:
+                issues.append(f"{pid}/{o.get('date')}: 核验状态 {st} 不在枚举内")
+            if mth not in VERIFY_METHODS:
+                issues.append(f"{pid}/{o.get('date')}: 核验方法 {mth} 不在枚举内")
+            if st == "VERIFIED" and not v.get("sources"):
+                # 反伪造：VERIFIED 必须能指向来源
+                issues.append(f"{pid}/{o.get('date')}: VERIFIED 必须携带来源（禁止伪造核验）")
+            if st in vcount:
+                vcount[st] += 1
+        av = p["anchor_verification"]
+        if av["total"] != len(p["observations"]):
+            issues.append(f"{pid}: anchor_verification.total 与观测数不一致")
+        if (av["verified"], av["unknown"], av["conflict"]) != (
+            vcount["VERIFIED"],
+            vcount["UNKNOWN"],
+            vcount["CONFLICT"],
+        ):
+            issues.append(f"{pid}: anchor_verification 汇总与逐条核验结果不一致")
         if p["observation_count"] != len(p["observations"]):
             issues.append(f"{pid}: observation_count 与 observations 数量不一致")
         if p["observation_count"] == 0:
@@ -1102,6 +1577,9 @@ def main(argv):
         print(f"      N={p['observation_count']}  中心 {p['center_date']}  窗口 {win}  "
               f"复现 {rec['matched_count']}/{rec['eligible_years']}  "
               f"强度 {p['research_strength']['grade']}  状态 {p['status']}")
+        av = p["anchor_verification"]
+        print(f"      提升状态 {p['promotion_status']}  主题族 {p['theme_family']['theme_family_id']}"
+              f"  核验 {av['verified']}/{av['total']}（UNKNOWN {av['unknown']} / CONFLICT {av['conflict']}）")
         print(f"      → {p['timeline_eligibility']}：{p['timeline_eligibility_reason']}")
     print("-" * 72)
     print("进入产品 Timeline：", ", ".join(art["summary"]["timeline_eligible"]) or "（无）")
