@@ -1635,6 +1635,22 @@ def build_artifact():
         c["pattern_id"] for c in candidates
         if c["effective_promotion_status"] == "TIMELINE_CANDIDATE"
     ]
+    # 有效候选的「结构数」按样本重叠连通分量计（同一结构的多个 scope 切面算 1 个）
+    eff_set = set(robust_timeline)
+    parent = {i: i for i in robust_timeline}
+
+    def _find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for p in overlap["pairs"]:
+        if p["a"] in eff_set and p["b"] in eff_set:
+            ra, rb = _find(p["a"]), _find(p["b"])
+            if ra != rb:
+                parent[rb] = ra
+    eff_structures = len({_find(i) for i in robust_timeline})
 
     by_status = {}
     for c in candidates:
@@ -1801,9 +1817,7 @@ def build_artifact():
             "effective_by_promotion_status": dict(sorted(eff_counts.items())),
             "effective_timeline_candidate_ids": sorted(robust_timeline),
             "effective_timeline_candidate_count": len(robust_timeline),
-            "effective_timeline_candidate_distinct_structures": len(
-                {c["member_signature"] for c in candidates if c["effective_promotion_status"] == "TIMELINE_CANDIDATE"}
-            ),
+            "effective_timeline_candidate_distinct_structures": eff_structures,
             "pattern_type_x_status": _cross(candidates, "pattern_type", "promotion_status"),
             "scope_type_x_status": _cross(candidates, "scope_type", "promotion_status"),
             "member_signature_groups": {
@@ -2170,6 +2184,18 @@ def validate_artifact(art):
         if c["promotion_status"] in ("RESEARCH_ONLY", "REJECTED", "INSUFFICIENT_DATA"):
             if c.get("promotion_status") == "TIMELINE_CANDIDATE":
                 issues.append("%s: 状态冲突" % pid)
+        if c["effective_promotion_status"] not in PROMOTION_STATUSES:
+            issues.append("%s: effective_promotion_status 不在枚举内" % pid)
+        if (
+            c["effective_promotion_status"] == "TIMELINE_CANDIDATE"
+            and c["robustness_verdict"] != "ROBUST"
+        ):
+            issues.append("%s: effective TIMELINE_CANDIDATE 但稳健性判定非 ROBUST" % pid)
+        if (
+            c["effective_promotion_status"] != c["promotion_status"]
+            and not c.get("effective_status_reason")
+        ):
+            issues.append("%s: effective 状态与原始状态不一致但未记录原因" % pid)
         if c["pattern_kind"] == "EVENT_TYPE" and c["promotion_status"] == "TIMELINE_CANDIDATE":
             issues.append("%s: 事件类型候选不得成为 TIMELINE_CANDIDATE" % pid)
         for r in c["source_records"]:
@@ -2244,6 +2270,8 @@ def write_csv(art):
                 "mechanism_confidence": c["mechanism_confidence"],
                 "feature_winner": (c["absolute_vs_relative"] or {}).get("feature_winner") or "",
                 "promotion_status": c["promotion_status"],
+                "robustness_verdict": c.get("robustness_verdict") or "",
+                "effective_promotion_status": c["effective_promotion_status"],
                 "promotion_reason": c["promotion_reason"],
             }
         )
@@ -2310,24 +2338,28 @@ def _print_summary(art):
     print("  Events       :", ss["event_records"])
     print("  Years        :", ss["years_observed"])
     print("-" * 78)
-    print("Discovery")
+    print("Discovery（effective = 经口径稳健性检验后的最终结论）")
     print("  Raw candidates      :", sm["total_candidates"])
+    print("  distinct samples    :", sm["distinct_samples"])
     for k in PROMOTION_STATUSES:
-        print("  %-19s : %s" % (k, sm["by_promotion_status"].get(k, 0)))
+        print("  %-19s : %s（effective %s）" % (k, sm["by_promotion_status"].get(k, 0),
+                                                sm["effective_by_promotion_status"].get(k, 0)))
     print("-" * 78)
     print("Pattern Type × Count")
     for k, v in sorted(sm["by_pattern_type"].items(), key=lambda x: -x[1]):
         print("  %-24s %d" % (k, v))
     print("-" * 78)
-    print("Top candidates (TIMELINE_CANDIDATE)")
+    print("Top candidates（effective TIMELINE_CANDIDATE）")
     for c in art["candidates"]:
-        if c["promotion_status"] != "TIMELINE_CANDIDATE":
+        if c["effective_promotion_status"] != "TIMELINE_CANDIDATE":
             continue
         w = c["window"] or {}
-        print("  %s  %s  N=%d  中心 %s  窗口 %s~%s  复现 %s/%s  族=%d Cycle=%d"
+        print("  %s  %s  N=%d  中心 %s  窗口 %s~%s  复现 %s/%s  族=%d Cycle=%d  %s"
               % (c["pattern_id"], c["name"], c["sample_size"], c["center_date_label"],
                  w.get("start"), w.get("end"), c["recurrence_count"], c["sample_size"],
-                 c["theme_family_count"], c["theme_cycle_count"]))
+                 c["theme_family_count"], c["theme_cycle_count"], c["robustness_verdict"]))
+    print("  → 有效候选 %d 条，归并为 %d 个独立结构（按样本重叠）"
+          % (sm["effective_timeline_candidate_count"], sm["effective_timeline_candidate_distinct_structures"]))
     print("-" * 78)
     reg = art["top01_regression"]
     print("TOP-01 Regression :", reg["status"], reg.get("actual"))

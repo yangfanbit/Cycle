@@ -2399,6 +2399,19 @@
       "TOPC-005",
       "TOPC-078"
     ],
+    "effective_by_promotion_status": {
+      "EXPLORATORY": 46,
+      "INSUFFICIENT_DATA": 121,
+      "REJECTED": 10,
+      "RESEARCH_ONLY": 12,
+      "TIMELINE_CANDIDATE": 2
+    },
+    "effective_timeline_candidate_ids": [
+      "TOPC-001",
+      "TOPC-018"
+    ],
+    "effective_timeline_candidate_count": 2,
+    "effective_timeline_candidate_distinct_structures": 1,
     "pattern_type_x_status": {
       "CALENDAR_DRIVEN": {
         "EXPLORATORY": 15,
@@ -2960,7 +2973,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": "FRAGILE_SCOPE_DEPENDENT",
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": "通过数值门槛，但同一主题族的两种 scope 定义给出不同判定 → 结论依赖 2019 年是否入样（该入样由 taxonomy 缺口决定，非有原则的筛选）→ 降级为 EXPLORATORY，不得进入 Timeline。"
     },
     {
       "pattern_id": "TOPC-018",
@@ -3261,7 +3277,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": "ROBUST",
+      "effective_promotion_status": "TIMELINE_CANDIDATE",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-001",
@@ -3535,7 +3554,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": "ROBUST",
+      "effective_promotion_status": "TIMELINE_CANDIDATE",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-005",
@@ -3811,7 +3833,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": "FRAGILE_SCOPE_DEPENDENT",
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": "通过数值门槛，但同一主题族的两种 scope 定义给出不同判定 → 结论依赖 2019 年是否入样（该入样由 taxonomy 缺口决定，非有原则的筛选）→ 降级为 EXPLORATORY，不得进入 Timeline。"
     },
     {
       "pattern_id": "TOPC-078",
@@ -4088,7 +4113,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": "FRAGILE_SCOPE_DEPENDENT",
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": "通过数值门槛，但同一主题族的两种 scope 定义给出不同判定 → 结论依赖 2019 年是否入样（该入样由 taxonomy 缺口决定，非有原则的筛选）→ 降级为 EXPLORATORY，不得进入 Timeline。"
     },
     {
       "pattern_id": "TOPC-191",
@@ -4379,7 +4407,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-027",
@@ -4682,7 +4713,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-022",
@@ -4985,7 +5019,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-094",
@@ -5289,7 +5326,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-004",
@@ -5566,7 +5606,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-010",
@@ -5844,7 +5887,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-187",
@@ -6091,7 +6137,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-008",
@@ -6317,7 +6366,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-116",
@@ -6542,7 +6594,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-003",
@@ -6768,7 +6823,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-189",
@@ -6969,7 +7027,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-077",
@@ -7196,7 +7257,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-117",
@@ -7425,7 +7489,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-112",
@@ -7653,7 +7720,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-007",
@@ -7881,7 +7951,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-164",
@@ -8080,7 +8153,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-002",
@@ -8280,7 +8356,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-075",
@@ -8482,7 +8561,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-051",
@@ -8682,7 +8764,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-053",
@@ -8883,7 +8968,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-045",
@@ -9085,7 +9173,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-044",
@@ -9388,7 +9479,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-027",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-095",
@@ -9692,7 +9786,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-027",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-111",
@@ -9996,7 +10093,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-027",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-113",
@@ -10273,7 +10373,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-004",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-130",
@@ -10550,7 +10653,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-004",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-079",
@@ -10829,7 +10935,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-010",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-025",
@@ -11055,7 +11164,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-008",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-119",
@@ -11281,7 +11393,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-116",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-133",
@@ -11506,7 +11621,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-116",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-136",
@@ -11732,7 +11850,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-116",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-020",
@@ -11958,7 +12079,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-003",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-073",
@@ -12185,7 +12309,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-003",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-089",
@@ -12412,7 +12539,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-003",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-093",
@@ -12639,7 +12769,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-077",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-134",
@@ -12868,7 +13001,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-117",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-129",
@@ -13096,7 +13232,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-112",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-024",
@@ -13324,7 +13463,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-007",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-041",
@@ -13552,7 +13694,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-007",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-019",
@@ -13752,7 +13897,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-002",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-072",
@@ -13953,7 +14101,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-002",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-088",
@@ -14154,7 +14305,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-002",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-091",
@@ -14356,7 +14510,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-075",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "EXPLORATORY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-038",
@@ -14664,7 +14821,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-039",
@@ -14968,7 +15128,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-110",
@@ -15272,7 +15435,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-148",
@@ -15554,7 +15720,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-190",
@@ -15802,7 +15971,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-037",
@@ -16058,7 +16230,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-146",
@@ -16315,7 +16490,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-109",
@@ -16572,7 +16750,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-042",
@@ -16800,7 +16981,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-153",
@@ -17033,7 +17217,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-107",
@@ -17266,7 +17453,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-105",
@@ -17523,7 +17713,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-037",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "RESEARCH_ONLY",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-035",
@@ -17821,7 +18014,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-036",
@@ -18077,7 +18273,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-152",
@@ -18308,7 +18507,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-032",
@@ -18500,7 +18702,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-028",
@@ -18691,7 +18896,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-047",
@@ -18887,7 +19095,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-106",
@@ -19088,7 +19299,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-108",
@@ -19287,7 +19501,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-104",
@@ -19544,7 +19761,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-036",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-155",
@@ -19776,7 +19996,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-152",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "REJECTED",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-076",
@@ -19938,7 +20161,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-157",
@@ -20101,7 +20327,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-150",
@@ -20265,7 +20494,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-006",
@@ -20426,7 +20658,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-065",
@@ -20589,7 +20824,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-181",
@@ -20752,7 +20990,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-099",
@@ -20910,7 +21151,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-102",
@@ -21070,7 +21314,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-074",
@@ -21234,7 +21481,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-066",
@@ -21397,7 +21647,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-163",
@@ -21559,7 +21812,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-167",
@@ -21721,7 +21977,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-033",
@@ -21872,7 +22131,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-115",
@@ -22035,7 +22297,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-034",
@@ -22193,7 +22458,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-029",
@@ -22352,7 +22620,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-009",
@@ -22488,7 +22759,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-011",
@@ -22621,7 +22895,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-012",
@@ -22754,7 +23031,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-013",
@@ -22887,7 +23167,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-014",
@@ -23020,7 +23303,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-015",
@@ -23153,7 +23439,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-016",
@@ -23286,7 +23575,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-017",
@@ -23419,7 +23711,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-046",
@@ -23555,7 +23850,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-048",
@@ -23691,7 +23989,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-049",
@@ -23827,7 +24128,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-050",
@@ -23963,7 +24267,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-060",
@@ -24087,7 +24394,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-061",
@@ -24211,7 +24521,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-062",
@@ -24335,7 +24648,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-063",
@@ -24459,7 +24775,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-064",
@@ -24583,7 +24902,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-067",
@@ -24719,7 +25041,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-068",
@@ -24855,7 +25180,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-069",
@@ -24991,7 +25319,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-070",
@@ -25127,7 +25458,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-071",
@@ -25263,7 +25597,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-114",
@@ -25399,7 +25736,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-125",
@@ -25532,7 +25872,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-156",
@@ -25668,7 +26011,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-158",
@@ -25804,7 +26150,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-161",
@@ -25940,7 +26289,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-162",
@@ -26076,7 +26428,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-180",
@@ -26212,7 +26567,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-182",
@@ -26348,7 +26706,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-184",
@@ -26484,7 +26845,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-186",
@@ -26620,7 +26984,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-188",
@@ -26739,7 +27106,10 @@
         }
       ],
       "exact_duplicate_of": null,
-      "is_duplicate_scope": false
+      "is_duplicate_scope": false,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-092",
@@ -26901,7 +27271,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-076",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-154",
@@ -27066,7 +27439,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-150",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-023",
@@ -27227,7 +27603,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-006",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-040",
@@ -27388,7 +27767,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-006",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-090",
@@ -27552,7 +27934,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-074",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-132",
@@ -27715,7 +28100,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-115",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-151",
@@ -27878,7 +28266,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-115",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-166",
@@ -28041,7 +28432,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-115",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-103",
@@ -28199,7 +28593,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-034",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-096",
@@ -28358,7 +28755,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-029",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-026",
@@ -28494,7 +28894,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-009",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-030",
@@ -28627,7 +29030,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-013",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-031",
@@ -28760,7 +29166,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-043",
@@ -28896,7 +29305,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-009",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-052",
@@ -29032,7 +29444,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-049",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-054",
@@ -29165,7 +29580,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-011",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-055",
@@ -29298,7 +29716,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-056",
@@ -29431,7 +29852,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-057",
@@ -29564,7 +29988,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-011",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-058",
@@ -29697,7 +30124,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-059",
@@ -29830,7 +30260,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-080",
@@ -29963,7 +30396,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-081",
@@ -30096,7 +30532,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-013",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-082",
@@ -30229,7 +30668,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-013",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-083",
@@ -30362,7 +30804,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-084",
@@ -30495,7 +30940,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-085",
@@ -30628,7 +31076,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-086",
@@ -30761,7 +31212,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-087",
@@ -30894,7 +31348,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-017",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-097",
@@ -31027,7 +31484,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-013",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-098",
@@ -31160,7 +31620,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-013",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-100",
@@ -31293,7 +31756,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-101",
@@ -31426,7 +31892,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-118",
@@ -31563,7 +32032,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-114",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-120",
@@ -31696,7 +32168,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-011",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-121",
@@ -31829,7 +32304,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-122",
@@ -31962,7 +32440,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-123",
@@ -32095,7 +32576,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-124",
@@ -32228,7 +32712,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-016",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-126",
@@ -32361,7 +32848,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-127",
@@ -32494,7 +32984,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-016",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-128",
@@ -32627,7 +33120,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-125",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-131",
@@ -32763,7 +33259,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-114",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-135",
@@ -32900,7 +33399,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-114",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-137",
@@ -33033,7 +33535,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-011",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-138",
@@ -33166,7 +33671,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-139",
@@ -33299,7 +33807,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-140",
@@ -33432,7 +33943,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-141",
@@ -33565,7 +34079,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-016",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-142",
@@ -33698,7 +34215,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-125",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-143",
@@ -33831,7 +34351,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-144",
@@ -33964,7 +34487,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-016",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-145",
@@ -34097,7 +34623,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-125",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-147",
@@ -34230,7 +34759,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-149",
@@ -34363,7 +34895,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-159",
@@ -34499,7 +35034,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-048",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-160",
@@ -34635,7 +35173,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-049",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-165",
@@ -34771,7 +35312,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-114",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-168",
@@ -34904,7 +35448,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-011",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-169",
@@ -35037,7 +35584,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-170",
@@ -35170,7 +35720,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-171",
@@ -35303,7 +35856,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-172",
@@ -35436,7 +35992,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-016",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-173",
@@ -35569,7 +36128,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-125",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-174",
@@ -35702,7 +36264,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-011",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-175",
@@ -35835,7 +36400,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-012",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-176",
@@ -35968,7 +36536,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-014",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-177",
@@ -36101,7 +36672,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-015",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-178",
@@ -36234,7 +36808,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-016",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-179",
@@ -36367,7 +36944,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-125",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-183",
@@ -36503,7 +37083,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-067",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     },
     {
       "pattern_id": "TOPC-185",
@@ -36639,7 +37222,10 @@
         }
       ],
       "exact_duplicate_of": "TOPC-114",
-      "is_duplicate_scope": true
+      "is_duplicate_scope": true,
+      "robustness_verdict": null,
+      "effective_promotion_status": "INSUFFICIENT_DATA",
+      "effective_status_reason": null
     }
   ]
 }
