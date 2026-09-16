@@ -1,0 +1,2902 @@
+{
+  "artifact": "historical_coverage_matrix",
+  "artifact_version": "0.1",
+  "ruleset_version": "historical-coverage-audit-0.1",
+  "generated_at": "2026-09-16",
+  "snapshot_date": "2026-09-16",
+  "generated_by": "research/scripts/audit_historical_coverage.py",
+  "research_round": "historical-coverage-audit-v0.1",
+  "contract_note": "Research Layer Deliverable —— 不是产品 schema，不进入 src/ / DB / schema.sql / timeline_export_v1.json / contracts / Timeline。",
+  "question": "ThreeC 当前历史数据覆盖到了什么程度？还缺什么？哪些缺口最影响未来 Time Observation 与 Structural Historical Analogy？",
+  "not_a": [
+    "这不是投资价值排名 —— 只做数据建设优先级",
+    "这不推荐研究哪只股票或哪个行业",
+    "这不补齐任何缺失数据 —— 只做评级与缺口识别",
+    "这不把「数据库里没有」推断成「现实中不存在」"
+  ],
+  "input_snapshot": {
+    "canonical_export": "exports/timeline_export_v1.json",
+    "export_version": "1.0",
+    "export_generated_at": "2026-09-14T22:19:39",
+    "export_source_commit": "d41960d358b4586e34e250fcaf638bd13f69f511",
+    "research_db": "research/database/cycle_research.db",
+    "current_candidates": "research/current/current_candidates.json",
+    "current_snapshot_date": "2026-09-15"
+  },
+  "audit_stage_mapping": {
+    "note": "任务书 §八 列出的 EXPANSION / WEAKENING / DECLINE 在仓库中**不存在**；本审计按**显式别名映射**对齐到仓库真实阶段，**不发明新阶段**。",
+    "audit_stages": [
+      "EARLY_SIGNAL",
+      "THEME_FORMING",
+      "BROAD_CONFIRMATION",
+      "EXPANSION",
+      "PEAK",
+      "WEAKENING",
+      "DECLINE"
+    ],
+    "repo_stages": [
+      "EARLY_SIGNAL",
+      "THEME_FORMING",
+      "BROAD_CONFIRMATION",
+      "MAIN_RISE",
+      "PEAK",
+      "RETRACEMENT",
+      "SECONDARY",
+      "DECLINING",
+      "FIRST_DECLINE",
+      "MAIN_END"
+    ],
+    "alias_map": {
+      "EXPANSION": [
+        "MAIN_RISE"
+      ],
+      "WEAKENING": [
+        "DECLINING",
+        "RETRACEMENT",
+        "SECONDARY"
+      ],
+      "DECLINE": [
+        "MAIN_END",
+        "FIRST_DECLINE"
+      ]
+    }
+  },
+  "dataset_inventory": {
+    "db_row_counts": {
+      "campaigns": 9,
+      "themes": 12,
+      "campaign_themes": 21,
+      "research_rules": 2,
+      "annual_reviews": 12,
+      "campaign_phases": 23,
+      "events": 30,
+      "campaign_events": 23,
+      "evidences": 51,
+      "campaign_evidences": 44,
+      "sources": 55,
+      "securities": 34,
+      "campaign_securities": 34,
+      "market_series": 40,
+      "market_daily": 31816,
+      "trading_calendar": 371,
+      "campaign_date_observations": 24
+    },
+    "export_counts": {
+      "rules": 2,
+      "signals": 14,
+      "campaigns": 9,
+      "research_candidates": 4,
+      "events": 33,
+      "securities": 46
+    },
+    "campaign_years": [
+      {
+        "year": 2019,
+        "campaigns": 2
+      },
+      {
+        "year": 2020,
+        "campaigns": 1
+      },
+      {
+        "year": 2021,
+        "campaigns": 1
+      },
+      {
+        "year": 2022,
+        "campaigns": 1
+      },
+      {
+        "year": 2023,
+        "campaigns": 1
+      },
+      {
+        "year": 2024,
+        "campaigns": 2
+      },
+      {
+        "year": 2025,
+        "campaigns": 1
+      }
+    ],
+    "annual_review_status": [
+      {
+        "status": "medium",
+        "n": 4
+      },
+      {
+        "status": "no_clear_campaign",
+        "n": 1
+      },
+      {
+        "status": "strong",
+        "n": 5
+      },
+      {
+        "status": "weak",
+        "n": 2
+      }
+    ],
+    "annual_reviews_by_rule": [
+      {
+        "rule_id": "rule_auto_summer",
+        "years_reviewed": 8,
+        "years": "2018,2019,2020,2021,2022,2023,2024,2025"
+      },
+      {
+        "rule_id": "rule_pharma_upgrade",
+        "years_reviewed": 4,
+        "years": "2019,2020,2021,2022"
+      }
+    ],
+    "classification_distribution": [
+      {
+        "classification": "event_driven",
+        "n": 1
+      },
+      {
+        "classification": "theme_campaign",
+        "n": 8
+      }
+    ],
+    "strength_distribution": [
+      {
+        "strength": "medium",
+        "n": 3
+      },
+      {
+        "strength": "strong",
+        "n": 5
+      },
+      {
+        "strength": "weak",
+        "n": 1
+      }
+    ],
+    "result_distribution": [
+      {
+        "result": "positive",
+        "n": 8
+      },
+      {
+        "result": "weak",
+        "n": 1
+      }
+    ],
+    "theme_type_distribution": [
+      {
+        "theme_type": "concept",
+        "n": 9
+      },
+      {
+        "theme_type": "industry",
+        "n": 3
+      }
+    ],
+    "campaign_themes_role": [
+      {
+        "role": "main",
+        "n": 10
+      },
+      {
+        "role": "related",
+        "n": 10
+      },
+      {
+        "role": "secondary",
+        "n": 1
+      }
+    ]
+  },
+  "macro_theme_matrix": [
+    {
+      "macro_theme_id": "TH-AUTO",
+      "macro_theme_name": "汽车",
+      "theme_cycles": 8,
+      "theme_cycle_ids": [
+        "auto_ad_2019",
+        "auto_intelligence_2023",
+        "auto_nev_2020",
+        "auto_nev_2021",
+        "auto_policy_2022",
+        "auto_v2x_2024",
+        "robotaxi_2024",
+        "robotaxi_2025"
+      ],
+      "campaigns": 8,
+      "research_candidates": 1,
+      "years_covered": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "years_span": 7,
+      "lifecycle_coverage": {
+        "EARLY_SIGNAL": 9,
+        "THEME_FORMING": 3,
+        "BROAD_CONFIRMATION": 4,
+        "MAIN_RISE": 7,
+        "PEAK": 8,
+        "RETRACEMENT": 2,
+        "SECONDARY": 4,
+        "DECLINING": 4,
+        "FIRST_DECLINE": 1,
+        "MAIN_END": 9
+      },
+      "lifecycle_stages_present": 10,
+      "lifecycle_stages_total": 10,
+      "lifecycle_rating": {
+        "complete": 2,
+        "partial": 6,
+        "sparse": 1,
+        "unknown": 0
+      },
+      "evidence_coverage": {
+        "total": 39,
+        "objects_with_evidence": 8,
+        "objects_total": 8,
+        "avg_per_campaign": 4.88
+      },
+      "event_coverage": {
+        "total": 19,
+        "objects_with_events": 8,
+        "objects_total": 8
+      },
+      "securities": 23,
+      "objects_total": 9,
+      "status": "COVERED"
+    },
+    {
+      "macro_theme_id": "TH-PHARMA",
+      "macro_theme_name": "医药健康",
+      "theme_cycles": 1,
+      "theme_cycle_ids": [
+        "medical_structural_upgrade_2019_2022"
+      ],
+      "campaigns": 1,
+      "research_candidates": 2,
+      "years_covered": [
+        2019,
+        2020,
+        2021
+      ],
+      "years_span": 3,
+      "lifecycle_coverage": {
+        "EARLY_SIGNAL": 3,
+        "THEME_FORMING": 2,
+        "BROAD_CONFIRMATION": 1,
+        "MAIN_RISE": 2,
+        "PEAK": 3,
+        "RETRACEMENT": 0,
+        "SECONDARY": 0,
+        "DECLINING": 3,
+        "FIRST_DECLINE": 0,
+        "MAIN_END": 2
+      },
+      "lifecycle_stages_present": 7,
+      "lifecycle_stages_total": 10,
+      "lifecycle_rating": {
+        "complete": 1,
+        "partial": 2,
+        "sparse": 0,
+        "unknown": 0
+      },
+      "evidence_coverage": {
+        "total": 5,
+        "objects_with_evidence": 1,
+        "objects_total": 1,
+        "avg_per_campaign": 5.0
+      },
+      "event_coverage": {
+        "total": 4,
+        "objects_with_events": 1,
+        "objects_total": 1
+      },
+      "securities": 3,
+      "objects_total": 3,
+      "status": "COVERED"
+    }
+  ],
+  "macro_theme_resolution_discrepancy": {
+    "note": "★ 本审计发现：**同一对象的 Macro Theme 有两种解析口径** —— (a) `resolved`：沿 `themes.parent_theme_id` 链上溯；(b) `direct`：themes 列表中**直接出现** Macro Theme 名。v0.2 Time Observation Discovery 用的是 (b)，因此把下列对象**排除在主题族之外**，造成「同一主题族两种成员集合」→ 这正是 v0.2 中 3 条候选口径脆弱的根源。",
+    "count": 4,
+    "items": [
+      {
+        "object_id": "C-2019-AD",
+        "kind": "campaign",
+        "themes": [
+          "智能驾驶/无人驾驶"
+        ],
+        "resolved_macro": [
+          "TH-AUTO"
+        ],
+        "direct_macro": [],
+        "note": "两种解析口径结果不同 → 该对象在「按名称匹配」的扫描中会被漏掉。"
+      },
+      {
+        "object_id": "RC-2024-SECONDARY",
+        "kind": "research_candidate",
+        "themes": [
+          "Robotaxi/无人驾驶/智能网约车"
+        ],
+        "resolved_macro": [
+          "TH-AUTO"
+        ],
+        "direct_macro": [],
+        "note": "两种解析口径结果不同 → 该对象在「按名称匹配」的扫描中会被漏掉。"
+      },
+      {
+        "object_id": "RC-2020-PANDEMIC",
+        "kind": "research_candidate",
+        "themes": [
+          "疫情医疗"
+        ],
+        "resolved_macro": [
+          "TH-PHARMA"
+        ],
+        "direct_macro": [],
+        "note": "两种解析口径结果不同 → 该对象在「按名称匹配」的扫描中会被漏掉。"
+      },
+      {
+        "object_id": "RC-2021-TCM",
+        "kind": "research_candidate",
+        "themes": [
+          "中医药"
+        ],
+        "resolved_macro": [
+          "TH-PHARMA"
+        ],
+        "direct_macro": [],
+        "note": "两种解析口径结果不同 → 该对象在「按名称匹配」的扫描中会被漏掉。"
+      }
+    ]
+  },
+  "taxonomy_integrity": {
+    "macro_themes_in_history": [
+      {
+        "theme_id": "TH-AUTO",
+        "name": "汽车"
+      },
+      {
+        "theme_id": "TH-PHARMA",
+        "name": "医药健康"
+      }
+    ],
+    "macro_theme_count_history": 2,
+    "macro_themes_declared_by_current_candidates": [
+      "信息通信",
+      "医药健康",
+      "电力设备",
+      "高端装备"
+    ],
+    "macro_theme_count_declared": 4,
+    "declared_but_no_history": [
+      "信息通信",
+      "电力设备",
+      "高端装备"
+    ],
+    "declared_detail": [
+      {
+        "candidate_id": "CC-2026-BCI-MEDTECH",
+        "macro_theme": "医药健康"
+      },
+      {
+        "candidate_id": "CC-2026-COMPUTE-POWER",
+        "macro_theme": "电力设备"
+      },
+      {
+        "candidate_id": "CC-2026-EMBODIED-AI",
+        "macro_theme": "高端装备"
+      },
+      {
+        "candidate_id": "CC-2026-OPTICAL-LINK",
+        "macro_theme": "信息通信"
+      },
+      {
+        "candidate_id": "CC-2026-OFFSHORE-WIND",
+        "macro_theme": "电力设备"
+      }
+    ],
+    "orphan_themes": [
+      {
+        "theme_id": "TH-PHARMA-PANDEMIC",
+        "name": "疫情医疗",
+        "theme_type": "concept",
+        "parent": "TH-PHARMA"
+      },
+      {
+        "theme_id": "TH-PHARMA-TCM",
+        "name": "中医药",
+        "theme_type": "concept",
+        "parent": "TH-PHARMA"
+      }
+    ],
+    "orphan_theme_count": 2,
+    "export_only_themes": [
+      "华为汽车"
+    ],
+    "campaigns_without_macro_theme_link": [
+      {
+        "campaign_id": "C-2019-AD",
+        "year": 2019,
+        "themes": "智能驾驶/无人驾驶"
+      }
+    ],
+    "key_finding": "**历史侧只有 2 个 Macro Theme，而 Current Candidate 侧已声明 4 个** → 信息通信 / 电力设备 / 高端装备 在历史数据中**没有任何 Theme Cycle**。这直接导致 Similarity 的 Pattern 层恒为 0（PROJECT_STATE 已记录），是 Structural Analogy 当前最大的单点瓶颈。"
+  },
+  "lifecycle_completeness": [
+    {
+      "object_id": "C-2019-AD",
+      "kind": "campaign",
+      "year": 2019,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "MAIN_RISE",
+        "PEAK",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "RETRACEMENT",
+        "SECONDARY",
+        "DECLINING",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 4,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "EXPANSION",
+        "PEAK",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "WEAKENING"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "C-2019-PHARMA-INNOV",
+      "kind": "campaign",
+      "year": 2019,
+      "macro_themes": [
+        "TH-PHARMA"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "PEAK",
+        "DECLINING",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "RETRACEMENT",
+        "SECONDARY",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 7,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [],
+      "rating": "COMPLETE"
+    },
+    {
+      "object_id": "C-2020-NEV",
+      "kind": "campaign",
+      "year": 2020,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "MAIN_RISE",
+        "PEAK",
+        "RETRACEMENT",
+        "SECONDARY",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "DECLINING",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 6,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "RC-2020-PANDEMIC",
+      "kind": "research_candidate",
+      "year": 2020,
+      "macro_themes": [
+        "TH-PHARMA"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "MAIN_RISE",
+        "PEAK",
+        "DECLINING",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "RETRACEMENT",
+        "SECONDARY",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 5,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "C-2021-NEV",
+      "kind": "campaign",
+      "year": 2021,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "MAIN_RISE",
+        "PEAK",
+        "DECLINING",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "RETRACEMENT",
+        "SECONDARY",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 5,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "RC-2021-TCM",
+      "kind": "research_candidate",
+      "year": 2021,
+      "macro_themes": [
+        "TH-PHARMA"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "PEAK",
+        "DECLINING"
+      ],
+      "stages_missing": [
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "RETRACEMENT",
+        "SECONDARY",
+        "FIRST_DECLINE",
+        "MAIN_END"
+      ],
+      "stage_count": 4,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "PEAK",
+        "WEAKENING"
+      ],
+      "audit_stages_missing": [
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "DECLINE"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "C-2022-POLICY",
+      "kind": "campaign",
+      "year": 2022,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "PEAK",
+        "RETRACEMENT",
+        "SECONDARY",
+        "DECLINING",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 9,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [],
+      "rating": "COMPLETE"
+    },
+    {
+      "object_id": "C-2023-AD",
+      "kind": "campaign",
+      "year": 2023,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "PEAK",
+        "SECONDARY",
+        "DECLINING",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "RETRACEMENT",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 8,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [],
+      "rating": "COMPLETE"
+    },
+    {
+      "object_id": "RC-2023-HUAWEI",
+      "kind": "research_candidate",
+      "year": 2023,
+      "macro_themes": [],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE"
+      ],
+      "stages_missing": [
+        "PEAK",
+        "RETRACEMENT",
+        "SECONDARY",
+        "DECLINING",
+        "FIRST_DECLINE",
+        "MAIN_END"
+      ],
+      "stage_count": 4,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "EXPANSION"
+      ],
+      "audit_stages_missing": [
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "C-2024-ROBOTAXI",
+      "kind": "campaign",
+      "year": 2024,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "PEAK",
+        "SECONDARY",
+        "DECLINING",
+        "FIRST_DECLINE",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "THEME_FORMING",
+        "RETRACEMENT"
+      ],
+      "stage_count": 8,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "THEME_FORMING"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "C-2024-V2X",
+      "kind": "campaign",
+      "year": 2024,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "PEAK",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "RETRACEMENT",
+        "SECONDARY",
+        "DECLINING",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 4,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "THEME_FORMING",
+        "PEAK",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "WEAKENING"
+      ],
+      "rating": "PARTIAL"
+    },
+    {
+      "object_id": "RC-2024-SECONDARY",
+      "kind": "research_candidate",
+      "year": 2024,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "PEAK",
+        "RETRACEMENT",
+        "SECONDARY",
+        "DECLINING",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 2,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "THEME_FORMING",
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "PEAK",
+        "WEAKENING"
+      ],
+      "rating": "SPARSE"
+    },
+    {
+      "object_id": "C-2025-ROBOTAXI",
+      "kind": "campaign",
+      "year": 2025,
+      "macro_themes": [
+        "TH-AUTO"
+      ],
+      "stages_present": [
+        "EARLY_SIGNAL",
+        "BROAD_CONFIRMATION",
+        "MAIN_RISE",
+        "PEAK",
+        "MAIN_END"
+      ],
+      "stages_missing": [
+        "THEME_FORMING",
+        "RETRACEMENT",
+        "SECONDARY",
+        "DECLINING",
+        "FIRST_DECLINE"
+      ],
+      "stage_count": 5,
+      "audit_stages_present": [
+        "EARLY_SIGNAL",
+        "BROAD_CONFIRMATION",
+        "EXPANSION",
+        "PEAK",
+        "DECLINE"
+      ],
+      "audit_stages_missing": [
+        "THEME_FORMING",
+        "WEAKENING"
+      ],
+      "rating": "PARTIAL"
+    }
+  ],
+  "evidence_coverage": {
+    "total_evidences": 51,
+    "raw_evidence_type_distribution": [
+      {
+        "evidence_type": "行情数据",
+        "n": 30
+      },
+      {
+        "evidence_type": "行业数据",
+        "n": 6
+      },
+      {
+        "evidence_type": "政策文件",
+        "n": 5
+      },
+      {
+        "evidence_type": "行业月度产销数据",
+        "n": 5
+      },
+      {
+        "evidence_type": "official_document",
+        "n": 3
+      },
+      {
+        "evidence_type": "market_data",
+        "n": 1
+      },
+      {
+        "evidence_type": "media",
+        "n": 1
+      }
+    ],
+    "canonical_distribution": {
+      "policy": 8,
+      "industry": 11,
+      "company": 0,
+      "market": 31,
+      "capital": 0,
+      "information": 1,
+      "UNCLASSIFIED": 0
+    },
+    "canonical_present": [
+      "policy",
+      "industry",
+      "market",
+      "information"
+    ],
+    "canonical_missing": [
+      "company",
+      "capital"
+    ],
+    "normalization_map": {
+      "行情数据": "market",
+      "market_data": "market",
+      "行业数据": "industry",
+      "行业月度产销数据": "industry",
+      "政策文件": "policy",
+      "official_document": "policy",
+      "media": "information"
+    },
+    "unmapped_raw_types": [],
+    "by_role": [
+      {
+        "evidence_role": "context",
+        "n": 9
+      },
+      {
+        "evidence_role": "contradicting",
+        "n": 13
+      },
+      {
+        "evidence_role": "supporting",
+        "n": 29
+      }
+    ],
+    "by_confidence": [
+      {
+        "confidence": "high",
+        "n": 38
+      },
+      {
+        "confidence": "low",
+        "n": 2
+      },
+      {
+        "confidence": "medium",
+        "n": 11
+      }
+    ],
+    "by_temporal_relation": [
+      {
+        "temporal_relation": "contemporaneous",
+        "n": 35
+      },
+      {
+        "temporal_relation": "prior",
+        "n": 2
+      },
+      {
+        "temporal_relation": "retrospective",
+        "n": 3
+      },
+      {
+        "temporal_relation": "subsequent",
+        "n": 4
+      },
+      {
+        "temporal_relation": "unknown",
+        "n": 7
+      }
+    ],
+    "source_type_distribution": [
+      {
+        "source_type": "media_tier2",
+        "n": 37
+      },
+      {
+        "source_type": "media_tier3",
+        "n": 7
+      },
+      {
+        "source_type": "regulator",
+        "n": 7
+      },
+      {
+        "source_type": "media_tier4",
+        "n": 2
+      },
+      {
+        "source_type": "exchange",
+        "n": 1
+      },
+      {
+        "source_type": "website",
+        "n": 1
+      }
+    ],
+    "source_tier_distribution": [
+      {
+        "tier": 1,
+        "n": 8
+      },
+      {
+        "tier": 2,
+        "n": 37
+      },
+      {
+        "tier": 3,
+        "n": 8
+      },
+      {
+        "tier": 4,
+        "n": 2
+      }
+    ],
+    "data_quality_note": "⚠️ `evidences.evidence_type` 在 schema 中是**自由文本（无 CHECK 约束）**，DB 内中英文混用（`行情数据` 与 `market_data`、`政策文件` 与 `official_document` 并存）→ 统计前必须先归一化。这是可修复的数据质量问题，建议在下一轮补录时统一口径。"
+  },
+  "event_coverage": {
+    "total_events_db": 30,
+    "total_events_export": 33,
+    "db_event_type_distribution": {
+      "company": 11,
+      "market": 4,
+      "policy": 15
+    },
+    "export_event_type_distribution": {
+      "company": 12,
+      "macro": 1,
+      "market": 4,
+      "policy": 16
+    },
+    "present_types": [
+      "company",
+      "macro",
+      "market",
+      "policy"
+    ],
+    "missing_schema_types": [
+      "industry",
+      "news",
+      "holiday",
+      "other"
+    ],
+    "capability_coverage": [
+      {
+        "capability_key": "policy",
+        "label": "政策事件",
+        "status": "AVAILABLE",
+        "event_count": 15,
+        "schema_allows": true
+      },
+      {
+        "capability_key": "industry",
+        "label": "产业事件",
+        "status": "NOT_AVAILABLE",
+        "event_count": 0,
+        "schema_allows": true
+      },
+      {
+        "capability_key": "data_release",
+        "label": "数据发布",
+        "status": "NOT_AVAILABLE",
+        "event_count": 0,
+        "schema_allows": false
+      },
+      {
+        "capability_key": "reporting",
+        "label": "财报披露日",
+        "status": "NOT_AVAILABLE",
+        "event_count": 0,
+        "schema_allows": false
+      },
+      {
+        "capability_key": "meeting",
+        "label": "重大会议",
+        "status": "NOT_AVAILABLE",
+        "event_count": 0,
+        "schema_allows": false
+      },
+      {
+        "capability_key": "trade_fair",
+        "label": "展会",
+        "status": "NOT_AVAILABLE",
+        "event_count": 0,
+        "schema_allows": false
+      },
+      {
+        "capability_key": "product",
+        "label": "产品发布",
+        "status": "NOT_AVAILABLE",
+        "event_count": 0,
+        "schema_allows": false
+      },
+      {
+        "capability_key": "holiday",
+        "label": "节假日 / 日历",
+        "status": "NOT_AVAILABLE",
+        "event_count": 0,
+        "schema_allows": true
+      },
+      {
+        "capability_key": "company",
+        "label": "公司事件",
+        "status": "AVAILABLE",
+        "event_count": 11,
+        "schema_allows": true
+      },
+      {
+        "capability_key": "market",
+        "label": "市场事件",
+        "status": "AVAILABLE",
+        "event_count": 4,
+        "schema_allows": true
+      },
+      {
+        "capability_key": "macro",
+        "label": "宏观事件",
+        "status": "DECLARED_UNUSED",
+        "event_count": 0,
+        "schema_allows": true
+      }
+    ],
+    "by_year": [
+      {
+        "year": "2018",
+        "n": 2
+      },
+      {
+        "year": "2019",
+        "n": 5
+      },
+      {
+        "year": "2020",
+        "n": 3
+      },
+      {
+        "year": "2021",
+        "n": 5
+      },
+      {
+        "year": "2022",
+        "n": 4
+      },
+      {
+        "year": "2023",
+        "n": 4
+      },
+      {
+        "year": "2024",
+        "n": 4
+      },
+      {
+        "year": "2025",
+        "n": 3
+      }
+    ],
+    "not_available_count": 7,
+    "epistemic_note": "**absence of evidence ≠ evidence of absence**：以下类别在数据库中**不存在记录**，只说明 ThreeC **尚未登记**该类事件，**不能**推断该机制在 A 股历史中不存在。"
+  },
+  "market_data_coverage": {
+    "series_by_type": [
+      {
+        "series_type": "benchmark",
+        "n": 1
+      },
+      {
+        "series_type": "concept_index",
+        "n": 4
+      },
+      {
+        "series_type": "industry_index",
+        "n": 4
+      },
+      {
+        "series_type": "stock",
+        "n": 31
+      }
+    ],
+    "total_series": 40,
+    "empty_placeholder_series": [
+      "AD_AUTO",
+      "NEV",
+      "ROBOTAXI",
+      "V2X",
+      "AUTO_PARTS",
+      "AUTO_SW"
+    ],
+    "empty_placeholder_count": 6,
+    "continuous_series": [
+      "SH000300"
+    ],
+    "continuous_count": 1,
+    "window_sampled_series": [
+      "BIDI",
+      "CHANGAN",
+      "DAZHONGTONG",
+      "DEMEISHI",
+      "DESAYSV",
+      "GREATWALL",
+      "GUANGQI",
+      "HUAYANG",
+      "JINJIANG",
+      "JINLONG",
+      "LUCHANG",
+      "MINGKEJINGJI",
+      "NINGDE",
+      "SAILISI",
+      "TIANMAI",
+      "XIAOKANG",
+      "XINGYUYUDA",
+      "XUSHENG",
+      "YATAI",
+      "ZHEJIANGSHISHI",
+      "ZHONGTONG",
+      "ZTELEVISION"
+    ],
+    "window_sampled_count": 22,
+    "benchmark_series": [
+      "SH000300"
+    ],
+    "benchmark_count": 1,
+    "by_year": [
+      {
+        "year": "2018",
+        "active_series": 1,
+        "rows": 486
+      },
+      {
+        "year": "2019",
+        "active_series": 12,
+        "rows": 5382
+      },
+      {
+        "year": "2020",
+        "active_series": 13,
+        "rows": 6318
+      },
+      {
+        "year": "2021",
+        "active_series": 14,
+        "rows": 6802
+      },
+      {
+        "year": "2022",
+        "active_series": 15,
+        "rows": 6350
+      },
+      {
+        "year": "2023",
+        "active_series": 11,
+        "rows": 2536
+      },
+      {
+        "year": "2024",
+        "active_series": 7,
+        "rows": 1998
+      },
+      {
+        "year": "2025",
+        "active_series": 4,
+        "rows": 1944
+      }
+    ],
+    "series_detail": [
+      {
+        "series_id": "SH000300",
+        "name": "沪深300(基准)",
+        "series_type": "benchmark",
+        "first_date": "2018-01-02",
+        "last_date": "2025-12-31",
+        "rows": 3884,
+        "span_days": 2920,
+        "span_years": 8.0,
+        "years_covered": [
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ],
+        "year_count": 8,
+        "sampling_class": "CONTINUOUS"
+      },
+      {
+        "series_id": "AD_AUTO",
+        "name": "智能驾驶/无人驾驶概念",
+        "series_type": "concept_index",
+        "first_date": null,
+        "last_date": null,
+        "rows": 0,
+        "span_days": null,
+        "span_years": 0,
+        "years_covered": [],
+        "year_count": 0,
+        "sampling_class": "EMPTY_PLACEHOLDER"
+      },
+      {
+        "series_id": "NEV",
+        "name": "新能源汽车概念指数",
+        "series_type": "concept_index",
+        "first_date": null,
+        "last_date": null,
+        "rows": 0,
+        "span_days": null,
+        "span_years": 0,
+        "years_covered": [],
+        "year_count": 0,
+        "sampling_class": "EMPTY_PLACEHOLDER"
+      },
+      {
+        "series_id": "ROBOTAXI",
+        "name": "Robotaxi/无人驾驶运营概念",
+        "series_type": "concept_index",
+        "first_date": null,
+        "last_date": null,
+        "rows": 0,
+        "span_days": null,
+        "span_years": 0,
+        "years_covered": [],
+        "year_count": 0,
+        "sampling_class": "EMPTY_PLACEHOLDER"
+      },
+      {
+        "series_id": "V2X",
+        "name": "车路云一体化/车路协同概念",
+        "series_type": "concept_index",
+        "first_date": null,
+        "last_date": null,
+        "rows": 0,
+        "span_days": null,
+        "span_years": 0,
+        "years_covered": [],
+        "year_count": 0,
+        "sampling_class": "EMPTY_PLACEHOLDER"
+      },
+      {
+        "series_id": "AUTO_ETF_516110",
+        "name": "汽车ETF(中证800汽车, 行业代理)",
+        "series_type": "industry_index",
+        "first_date": "2022-01-04",
+        "last_date": "2025-12-31",
+        "rows": 1938,
+        "span_days": 1457,
+        "span_years": 3.99,
+        "years_covered": [
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "AUTO_PARTS",
+        "name": "申万汽车零部件指数",
+        "series_type": "industry_index",
+        "first_date": null,
+        "last_date": null,
+        "rows": 0,
+        "span_days": null,
+        "span_years": 0,
+        "years_covered": [],
+        "year_count": 0,
+        "sampling_class": "EMPTY_PLACEHOLDER"
+      },
+      {
+        "series_id": "AUTO_SW",
+        "name": "申万汽车行业指数",
+        "series_type": "industry_index",
+        "first_date": null,
+        "last_date": null,
+        "rows": 0,
+        "span_days": null,
+        "span_years": 0,
+        "years_covered": [],
+        "year_count": 0,
+        "sampling_class": "EMPTY_PLACEHOLDER"
+      },
+      {
+        "series_id": "PHARMA_ETF_512010",
+        "name": "医药ETF(沪深300医药, 行业代理)",
+        "series_type": "industry_index",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1942,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "BIDI",
+        "name": "比亚迪",
+        "series_type": "stock",
+        "first_date": "2020-01-02",
+        "last_date": "2022-09-30",
+        "rows": 1266,
+        "span_days": 1002,
+        "span_years": 2.75,
+        "years_covered": [
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 3,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "CHANGAN",
+        "name": "长安汽车",
+        "series_type": "stock",
+        "first_date": "2021-01-04",
+        "last_date": "2022-09-30",
+        "rows": 780,
+        "span_days": 634,
+        "span_years": 1.74,
+        "years_covered": [
+          "2021",
+          "2022"
+        ],
+        "year_count": 2,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "DAZHONGTONG",
+        "name": "大众交通",
+        "series_type": "stock",
+        "first_date": "2024-05-06",
+        "last_date": "2024-09-30",
+        "rows": 206,
+        "span_days": 147,
+        "span_years": 0.4,
+        "years_covered": [
+          "2024"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "DEMEISHI",
+        "name": "德迈仕",
+        "series_type": "stock",
+        "first_date": "2023-08-01",
+        "last_date": "2023-10-31",
+        "rows": 120,
+        "span_days": 91,
+        "span_years": 0.25,
+        "years_covered": [
+          "2023"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "DESAYSV",
+        "name": "德赛西威",
+        "series_type": "stock",
+        "first_date": "2023-05-04",
+        "last_date": "2025-12-31",
+        "rows": 728,
+        "span_days": 972,
+        "span_years": 2.66,
+        "years_covered": [
+          "2023",
+          "2025"
+        ],
+        "year_count": 2,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "GREATWALL",
+        "name": "长城汽车",
+        "series_type": "stock",
+        "first_date": "2021-01-04",
+        "last_date": "2022-09-30",
+        "rows": 850,
+        "span_days": 634,
+        "span_years": 1.74,
+        "years_covered": [
+          "2021",
+          "2022"
+        ],
+        "year_count": 2,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "GUANGQI",
+        "name": "广汽集团",
+        "series_type": "stock",
+        "first_date": "2022-03-01",
+        "last_date": "2022-09-30",
+        "rows": 294,
+        "span_days": 213,
+        "span_years": 0.58,
+        "years_covered": [
+          "2022"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "HENGRUI",
+        "name": "恒瑞医药",
+        "series_type": "stock",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1944,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "HUAYANG",
+        "name": "华阳集团",
+        "series_type": "stock",
+        "first_date": "2023-08-01",
+        "last_date": "2023-10-31",
+        "rows": 120,
+        "span_days": 91,
+        "span_years": 0.25,
+        "years_covered": [
+          "2023"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "INTCO",
+        "name": "英科医疗",
+        "series_type": "stock",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1944,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "JAC",
+        "name": "江淮汽车",
+        "series_type": "stock",
+        "first_date": "2020-01-02",
+        "last_date": "2023-10-31",
+        "rows": 606,
+        "span_days": 1398,
+        "span_years": 3.83,
+        "years_covered": [
+          "2020",
+          "2023"
+        ],
+        "year_count": 2,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "JINJIANG",
+        "name": "锦江在线",
+        "series_type": "stock",
+        "first_date": "2024-05-06",
+        "last_date": "2024-09-30",
+        "rows": 206,
+        "span_days": 147,
+        "span_years": 0.4,
+        "years_covered": [
+          "2024"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "JINLONG",
+        "name": "金龙汽车",
+        "series_type": "stock",
+        "first_date": "2024-05-06",
+        "last_date": "2024-09-30",
+        "rows": 206,
+        "span_days": 147,
+        "span_years": 0.4,
+        "years_covered": [
+          "2024"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "LUCHANG",
+        "name": "路畅科技",
+        "series_type": "stock",
+        "first_date": "2019-05-06",
+        "last_date": "2019-12-31",
+        "rows": 330,
+        "span_days": 239,
+        "span_years": 0.65,
+        "years_covered": [
+          "2019"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "MINGKEJINGJI",
+        "name": "铭科精技",
+        "series_type": "stock",
+        "first_date": "2023-08-01",
+        "last_date": "2023-10-31",
+        "rows": 120,
+        "span_days": 91,
+        "span_years": 0.25,
+        "years_covered": [
+          "2023"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "NINGDE",
+        "name": "宁德时代",
+        "series_type": "stock",
+        "first_date": "2020-01-02",
+        "last_date": "2021-12-31",
+        "rows": 972,
+        "span_days": 729,
+        "span_years": 2.0,
+        "years_covered": [
+          "2020",
+          "2021"
+        ],
+        "year_count": 2,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "PIANZAIHUANG",
+        "name": "片仔癀",
+        "series_type": "stock",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1944,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "SAILISI",
+        "name": "赛力斯",
+        "series_type": "stock",
+        "first_date": "2023-08-01",
+        "last_date": "2023-10-31",
+        "rows": 120,
+        "span_days": 91,
+        "span_years": 0.25,
+        "years_covered": [
+          "2023"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "TIANMAI",
+        "name": "天迈科技",
+        "series_type": "stock",
+        "first_date": "2024-05-06",
+        "last_date": "2024-09-30",
+        "rows": 206,
+        "span_days": 147,
+        "span_years": 0.4,
+        "years_covered": [
+          "2024"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "TIGERMED",
+        "name": "泰格医药",
+        "series_type": "stock",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1944,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "WANAN",
+        "name": "万安科技",
+        "series_type": "stock",
+        "first_date": "2019-05-06",
+        "last_date": "2023-10-31",
+        "rows": 572,
+        "span_days": 1639,
+        "span_years": 4.49,
+        "years_covered": [
+          "2019",
+          "2023"
+        ],
+        "year_count": 2,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "WUXIAPPTEC",
+        "name": "药明康德",
+        "series_type": "stock",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1944,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "XIAOKANG",
+        "name": "小康股份(现赛力斯)",
+        "series_type": "stock",
+        "first_date": "2021-01-04",
+        "last_date": "2021-12-31",
+        "rows": 486,
+        "span_days": 361,
+        "span_years": 0.99,
+        "years_covered": [
+          "2021"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "XINGYUYUDA",
+        "name": "星网宇达",
+        "series_type": "stock",
+        "first_date": "2024-05-06",
+        "last_date": "2024-09-30",
+        "rows": 206,
+        "span_days": 147,
+        "span_years": 0.4,
+        "years_covered": [
+          "2024"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "XUSHENG",
+        "name": "旭升股份",
+        "series_type": "stock",
+        "first_date": "2020-01-02",
+        "last_date": "2020-12-31",
+        "rows": 486,
+        "span_days": 364,
+        "span_years": 1.0,
+        "years_covered": [
+          "2020"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "YATAI",
+        "name": "亚太股份",
+        "series_type": "stock",
+        "first_date": "2019-05-06",
+        "last_date": "2019-12-31",
+        "rows": 330,
+        "span_days": 239,
+        "span_years": 0.65,
+        "years_covered": [
+          "2019"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "YILING",
+        "name": "以岭药业",
+        "series_type": "stock",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1944,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "ZHEJIANGSHISHI",
+        "name": "浙江世宝",
+        "series_type": "stock",
+        "first_date": "2023-05-04",
+        "last_date": "2025-12-31",
+        "rows": 728,
+        "span_days": 972,
+        "span_years": 2.66,
+        "years_covered": [
+          "2023",
+          "2025"
+        ],
+        "year_count": 2,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "ZHIFEI",
+        "name": "智飞生物",
+        "series_type": "stock",
+        "first_date": "2019-01-02",
+        "last_date": "2022-12-30",
+        "rows": 1944,
+        "span_days": 1458,
+        "span_years": 3.99,
+        "years_covered": [
+          "2019",
+          "2020",
+          "2021",
+          "2022"
+        ],
+        "year_count": 4,
+        "sampling_class": "PARTIAL_SPAN"
+      },
+      {
+        "series_id": "ZHONGTONG",
+        "name": "中通客车",
+        "series_type": "stock",
+        "first_date": "2022-03-01",
+        "last_date": "2022-09-30",
+        "rows": 264,
+        "span_days": 213,
+        "span_years": 0.58,
+        "years_covered": [
+          "2022"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      },
+      {
+        "series_id": "ZTELEVISION",
+        "name": "众泰汽车",
+        "series_type": "stock",
+        "first_date": "2023-05-04",
+        "last_date": "2023-10-31",
+        "rows": 242,
+        "span_days": 180,
+        "span_years": 0.49,
+        "years_covered": [
+          "2023"
+        ],
+        "year_count": 1,
+        "sampling_class": "WINDOW_SAMPLED"
+      }
+    ],
+    "trading_calendar": {
+      "first": "2022-03-01",
+      "last": "2024-09-30",
+      "rows": 371
+    },
+    "key_finding": "**行情数据是「按 Campaign 窗口采样」的，不是连续时间序列。** 40 条 series 中：连续（覆盖 ≥ 6 个年度）1 条、窗口采样（跨度 < 3 年）22 条、空占位（仅 1 行）6 条；benchmark 仅 1 条（SH000300，唯一覆盖完整 2018–2025）。年度活跃 series 数从 2022 的 15 条降到 2025 的 4 条。",
+    "consequences": [
+      "无法为所有年份构造「中性市场基准」→ Time Observation 的背景基准只能部分可用",
+      "无法做跨主题的相位对比 → Structural Analogy 缺少共同的可比时间轴",
+      "6 条概念指数为空占位（仅 1 行）→ AD_AUTO / NEV / ROBOTAXI / V2X / AUTO_PARTS / AUTO_SW 实际无数据",
+      "2025 年仅 4 条 series 活跃 → 最新年度的行情核验能力最弱"
+    ]
+  },
+  "verification_coverage": {
+    "total_date_observations": 24,
+    "verified_count": 0,
+    "verified_ratio": 0.0,
+    "by_method": {
+      "market_data": 6,
+      "unknown": 18
+    },
+    "by_confidence": {
+      "low": 24
+    },
+    "rows": [
+      {
+        "campaign_id": "C-2019-AD",
+        "date_role": "end",
+        "candidate_date": "2019-09-30",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2019-AD",
+        "date_role": "peak",
+        "candidate_date": "2019-09-24",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2019-AD",
+        "date_role": "start",
+        "candidate_date": "2019-08-15",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2020-NEV",
+        "date_role": "end",
+        "candidate_date": "2020-09-30",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2020-NEV",
+        "date_role": "peak",
+        "candidate_date": "2020-07-13",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2020-NEV",
+        "date_role": "start",
+        "candidate_date": "2020-06-01",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2021-NEV",
+        "date_role": "end",
+        "candidate_date": "2021-09-30",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2021-NEV",
+        "date_role": "peak",
+        "candidate_date": "2021-08-06",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2021-NEV",
+        "date_role": "start",
+        "candidate_date": "2021-06-01",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2022-POLICY",
+        "date_role": "end",
+        "candidate_date": "2022-08-31",
+        "verified_date": null,
+        "verification_method": "market_data",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2022-POLICY",
+        "date_role": "peak",
+        "candidate_date": "2022-06-10",
+        "verified_date": null,
+        "verification_method": "market_data",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2022-POLICY",
+        "date_role": "start",
+        "candidate_date": "2022-04-27",
+        "verified_date": null,
+        "verification_method": "market_data",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2023-AD",
+        "date_role": "end",
+        "candidate_date": "2023-07-19",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2023-AD",
+        "date_role": "peak",
+        "candidate_date": "2023-07-11",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2023-AD",
+        "date_role": "start",
+        "candidate_date": "2023-06-12",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2024-ROBOTAXI",
+        "date_role": "end",
+        "candidate_date": "2024-07-31",
+        "verified_date": null,
+        "verification_method": "market_data",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2024-ROBOTAXI",
+        "date_role": "peak",
+        "candidate_date": "2024-07-29",
+        "verified_date": null,
+        "verification_method": "market_data",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2024-ROBOTAXI",
+        "date_role": "start",
+        "candidate_date": "2024-07-08",
+        "verified_date": null,
+        "verification_method": "market_data",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2024-V2X",
+        "date_role": "end",
+        "candidate_date": "2024-06-25",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2024-V2X",
+        "date_role": "peak",
+        "candidate_date": "2024-06-18",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2024-V2X",
+        "date_role": "start",
+        "candidate_date": "2024-06-11",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2025-ROBOTAXI",
+        "date_role": "end",
+        "candidate_date": "2025-08-31",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2025-ROBOTAXI",
+        "date_role": "peak",
+        "candidate_date": "2025-06-24",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      },
+      {
+        "campaign_id": "C-2025-ROBOTAXI",
+        "date_role": "start",
+        "candidate_date": "2025-06-22",
+        "verified_date": null,
+        "verification_method": "unknown",
+        "confidence": "low"
+      }
+    ],
+    "key_finding": "**全部 24 条日期观测的 `verified_date` 均为 NULL** —— 即使 `verification_method` 标为 `market_data` 的 6 条也未写回核验日期。且**全部 `confidence = low`**。→ 当前**没有任何日期完成最终核验**，这是数据可信度的硬天花板。"
+  },
+  "domain_coverage": [
+    {
+      "domain": "汽车",
+      "theme_ids": [
+        "TH-AUTO"
+      ],
+      "theme_name_matches": [
+        "新能源汽车/电池",
+        "汽车",
+        "汽车消费/购置税刺激"
+      ],
+      "campaigns": [
+        "C-2019-AD",
+        "C-2020-NEV",
+        "C-2021-NEV",
+        "C-2022-POLICY",
+        "C-2023-AD",
+        "C-2024-ROBOTAXI",
+        "C-2024-V2X",
+        "C-2025-ROBOTAXI"
+      ],
+      "campaign_count": 8,
+      "theme_cycles": 8,
+      "theme_cycle_ids": [
+        "auto_ad_2019",
+        "auto_intelligence_2023",
+        "auto_nev_2020",
+        "auto_nev_2021",
+        "auto_policy_2022",
+        "auto_v2x_2024",
+        "robotaxi_2024",
+        "robotaxi_2025"
+      ],
+      "years_covered": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "status": "COVERED_WITH_CYCLES"
+    },
+    {
+      "domain": "医药",
+      "theme_ids": [
+        "TH-PHARMA"
+      ],
+      "theme_name_matches": [
+        "医药健康"
+      ],
+      "campaigns": [
+        "C-2019-PHARMA-INNOV"
+      ],
+      "campaign_count": 1,
+      "theme_cycles": 1,
+      "theme_cycle_ids": [
+        "medical_structural_upgrade_2019_2022"
+      ],
+      "years_covered": [
+        2019
+      ],
+      "status": "COVERED_SINGLE_CYCLE"
+    },
+    {
+      "domain": "新能源（车用电池）",
+      "theme_ids": [
+        "TH-NEV"
+      ],
+      "theme_name_matches": [
+        "新能源汽车/电池"
+      ],
+      "campaigns": [
+        "C-2020-NEV",
+        "C-2021-NEV",
+        "C-2022-POLICY"
+      ],
+      "campaign_count": 3,
+      "theme_cycles": 3,
+      "theme_cycle_ids": [
+        "auto_nev_2020",
+        "auto_nev_2021",
+        "auto_policy_2022"
+      ],
+      "years_covered": [
+        2020,
+        2021,
+        2022
+      ],
+      "status": "COVERED_WITH_CYCLES"
+    },
+    {
+      "domain": "电力设备",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "信息通信",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "高端装备",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "半导体",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "电子",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "通信",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "计算机",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "AI / 算力",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "机器人",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "军工",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "消费",
+      "theme_ids": [],
+      "theme_name_matches": [
+        "汽车消费/购置税刺激"
+      ],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "SCATTERED_ONLY"
+    },
+    {
+      "domain": "有色 / 资源",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "化工",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "金融",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "地产",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    },
+    {
+      "domain": "TMT",
+      "theme_ids": [],
+      "theme_name_matches": [],
+      "campaigns": [],
+      "campaign_count": 0,
+      "theme_cycles": 0,
+      "theme_cycle_ids": [],
+      "years_covered": [],
+      "status": "ABSENT"
+    }
+  ],
+  "discovery_cross_reference": {
+    "scan_space_size": 191,
+    "distinct_samples": 94,
+    "timeline_candidate": 5,
+    "effective_timeline_candidate": 2,
+    "effective_distinct_structures": 1,
+    "pattern_type_distribution": {
+      "CALENDAR_DRIVEN": 64,
+      "HOLIDAY_RELATIVE": 2,
+      "PHASE_TRANSITION": 115,
+      "SEASONAL": 1,
+      "UNKNOWN": 9
+    },
+    "multiple_testing": {
+      "scan_space_size": 191,
+      "candidates_N_ge_3": 70,
+      "candidates_N_ge_5": 30,
+      "candidates_concentration_le_0_45": 65,
+      "candidates_p_le_0_05": 49,
+      "expected_false_positives_at_0_05": 1.5,
+      "bonferroni_threshold": 0.000262,
+      "candidates_passing_bonferroni": [
+        "TOPC-004",
+        "TOPC-113",
+        "TOPC-130"
+      ],
+      "note": "本轮为**发现性研究（discovery）**，不是验证性统计检验（confirmatory）。扫描空间 191 个候选，因此「某个 p 值很漂亮」本身不构成证据；必须同时通过样本量、集中度、稳定性、留一法、主题族独立性、负对照与机制七项检查。"
+    }
+  },
+  "research_capability_matrix": [
+    {
+      "capability": "Time Observation",
+      "status": "PARTIAL",
+      "evidence": "191 候选扫描 → 最终 1 个稳健独立结构（汽车族 EARLY_SIGNAL）",
+      "blocker": "theme_family_count 上限 = 2；有效观测仅 7 年（N ≤ 7，达不到 N ≥ 8）",
+      "unlock_by": "补录 ≥ 2 个独立主题族（使 theme_family_count ≥ 4）+ 扩样至 N ≥ 8"
+    },
+    {
+      "capability": "Seasonal",
+      "status": "BLOCKED",
+      "evidence": "全量扫描中 SEASONAL 类候选 1 条（N=2，INSUFFICIENT_DATA）；无 SEASONAL_DEMAND 机制",
+      "blocker": "无终端需求季节性数据（销量 / 库存 / 价格）；无连续行情序列做中性基准",
+      "unlock_by": "补录需求侧数据（产销 / 库存 / 价格）+ 连续行业指数行情"
+    },
+    {
+      "capability": "Calendar-driven",
+      "status": "PARTIAL",
+      "evidence": "汽车族机制画像为 CALENDAR_DRIVEN + POLICY_CADENCE + REPORTING_CADENCE（MEDIUM）",
+      "blocker": "无制度性日历的结构化数据（财报窗口 / 会议 / 规划节奏）；机制解释多为 post-hoc（LOW）",
+      "unlock_by": "建立「制度性日历」结构化表（财报窗口 / 国常会 / 五年规划 / 预算节奏）"
+    },
+    {
+      "capability": "Event-driven",
+      "status": "BLOCKED",
+      "evidence": "INDUSTRY_EVENT_DRIVEN = 0 条候选；事件表无 industry / holiday 类型",
+      "blocker": "无行业事件日历（车展 / CES / MWC / 发布会季）；event_type 未使用 industry",
+      "unlock_by": "补录行业事件日历（展会 / 发布会 / 行业大会）+ 启用 industry / holiday 事件类型"
+    },
+    {
+      "capability": "Phase Transition",
+      "status": "LIMITED",
+      "evidence": "115 条 PHASE_TRANSITION 候选，但 7/7 阶段全部为「派生」（残差 ≤ 11 天）",
+      "blocker": "阶段迁移的时间节奏 = EARLY_SIGNAL 聚集 + 典型 Campaign 时长 → 无独立信息",
+      "unlock_by": "补录更多「有完整 lifecycle」的历史对象（当前仅 1/13 达 COMPLETE）"
+    },
+    {
+      "capability": "Structural Analogy",
+      "status": "BLOCKED",
+      "evidence": "PROJECT_STATE 已记录：5 个 Current Candidate 中 4 个的 Macro Theme 无同名历史 cycle → Pattern 层恒 0",
+      "blocker": "历史侧仅 2 个 Macro Theme，当前侧已声明 4 个 → 3 个主题（电力设备 / 信息通信 / 高端装备）无历史可类比",
+      "unlock_by": "补录当前侧已声明的 3 个 Macro Theme 的历史 Cycle（**最高优先级**）"
+    }
+  ],
+  "coverage_ceiling": {
+    "theme_family_count_history": 2,
+    "theme_family_count_ceiling": 2,
+    "statement": "**theme_family_count 上限 = 2。** 因此：(1) 单主题规律**不能**证明跨主题规律；(2) Structural Analogy 的 Pattern 层只能在 2 个族之间匹配；(3) Time Observation 的「跨族稳健性」检查在当前数据下**不可能通过**。",
+    "consequences": [
+      "Time Observation：v0.2 全量扫描中唯一稳健结构为**单族**（汽车），无法证明跨族普适性",
+      "Structural Analogy：当前侧已声明 4 个 Macro Theme，历史侧仅 2 个 → 至少 2 个主题无历史可类比",
+      "统计功效：有效观测仅 7 年（2019–2025）→ 所有 N ≤ 7，永远达不到 N ≥ 8 的「稳定规律」档位"
+    ],
+    "minimum_to_unlock": {
+      "cross_family_robustness": "theme_family_count ≥ 4（即再补 ≥ 2 个独立 Macro Theme）",
+      "stable_pattern_grade": "有效观测 ≥ 8 年（补 2018 之前或 2026+）",
+      "structural_analogy": "补录当前侧已声明但无历史的 信息通信 / 电力设备 / 高端装备"
+    }
+  },
+  "priority_dimensions": [
+    {
+      "key": "a_share_historical_significance",
+      "label": "A股历史重要性",
+      "basis": "JUDGMENT"
+    },
+    {
+      "key": "cycle_recurrence_potential",
+      "label": "历史周期重复潜力",
+      "basis": "JUDGMENT"
+    },
+    {
+      "key": "cross_year_coverage_ability",
+      "label": "跨年份覆盖能力",
+      "basis": "DATA_DERIVED"
+    },
+    {
+      "key": "independent_theme_cycle_ability",
+      "label": "可形成独立 Theme Cycle 的能力",
+      "basis": "JUDGMENT"
+    },
+    {
+      "key": "structural_difference_vs_auto_pharma",
+      "label": "与现有 AUTO / PHARMA 的结构差异",
+      "basis": "JUDGMENT"
+    },
+    {
+      "key": "increment_for_structural_analogy",
+      "label": "对 Structural Analogy 的增量价值",
+      "basis": "JUDGMENT"
+    },
+    {
+      "key": "increment_for_time_observation",
+      "label": "对 Time Observation 的增量价值",
+      "basis": "JUDGMENT"
+    },
+    {
+      "key": "current_data_gap_size",
+      "label": "当前 ThreeC 数据缺口大小",
+      "basis": "DATA_DERIVED"
+    }
+  ],
+  "priority_framework": [
+    {
+      "domain": "电力设备",
+      "already_declared_by_current_candidates": [
+        "CC-2026-COMPUTE-POWER",
+        "CC-2026-OFFSHORE-WIND"
+      ],
+      "has_current_candidate_demand": true,
+      "scores": {
+        "a_share_historical_significance": 3,
+        "cycle_recurrence_potential": 3,
+        "cross_year_coverage_ability": 3,
+        "independent_theme_cycle_ability": 3,
+        "structural_difference_vs_auto_pharma": 3,
+        "increment_for_structural_analogy": 3,
+        "increment_for_time_observation": 3,
+        "current_data_gap_size": 3
+      },
+      "total_score": 24,
+      "max_score": 24,
+      "wave": "WAVE_1",
+      "why": "历史侧零覆盖，但 Current Candidate 侧已声明 2 个候选（算力电力 / 海风）→ Similarity 的 Pattern 层当前恒为 0（PROJECT_STATE 已记录）。补录可同时解锁历史能力与当前侧匹配能力，是**边际收益最高**的一项。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    },
+    {
+      "domain": "信息通信",
+      "already_declared_by_current_candidates": [
+        "CC-2026-OPTICAL-LINK"
+      ],
+      "has_current_candidate_demand": true,
+      "scores": {
+        "a_share_historical_significance": 3,
+        "cycle_recurrence_potential": 3,
+        "cross_year_coverage_ability": 3,
+        "independent_theme_cycle_ability": 3,
+        "structural_difference_vs_auto_pharma": 2,
+        "increment_for_structural_analogy": 3,
+        "increment_for_time_observation": 3,
+        "current_data_gap_size": 3
+      },
+      "total_score": 23,
+      "max_score": 24,
+      "wave": "WAVE_1",
+      "why": "已有当前侧候选但无历史；光模块 / 光通信有多轮历史周期，补录可验证「跨族时间规律」。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    },
+    {
+      "domain": "高端装备 / 机器人",
+      "already_declared_by_current_candidates": [
+        "CC-2026-EMBODIED-AI"
+      ],
+      "has_current_candidate_demand": true,
+      "scores": {
+        "a_share_historical_significance": 2,
+        "cycle_recurrence_potential": 2,
+        "cross_year_coverage_ability": 2,
+        "independent_theme_cycle_ability": 3,
+        "structural_difference_vs_auto_pharma": 3,
+        "increment_for_structural_analogy": 3,
+        "increment_for_time_observation": 2,
+        "current_data_gap_size": 3
+      },
+      "total_score": 20,
+      "max_score": 24,
+      "wave": "WAVE_1",
+      "why": "历史周期较短（2023 起），跨年样本可能不足；但结构差异大，对类比价值高。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    },
+    {
+      "domain": "半导体 / 电子",
+      "already_declared_by_current_candidates": [],
+      "has_current_candidate_demand": false,
+      "scores": {
+        "a_share_historical_significance": 3,
+        "cycle_recurrence_potential": 3,
+        "cross_year_coverage_ability": 3,
+        "independent_theme_cycle_ability": 3,
+        "structural_difference_vs_auto_pharma": 3,
+        "increment_for_structural_analogy": 3,
+        "increment_for_time_observation": 3,
+        "current_data_gap_size": 3
+      },
+      "total_score": 24,
+      "max_score": 24,
+      "wave": "WAVE_2",
+      "why": "2019–2025 有多轮清晰周期（国产替代 / 周期下行 / AI 驱动）；无当前侧候选，属纯历史补录。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    },
+    {
+      "domain": "金融 / 地产",
+      "already_declared_by_current_candidates": [],
+      "has_current_candidate_demand": false,
+      "scores": {
+        "a_share_historical_significance": 3,
+        "cycle_recurrence_potential": 2,
+        "cross_year_coverage_ability": 3,
+        "independent_theme_cycle_ability": 2,
+        "structural_difference_vs_auto_pharma": 3,
+        "increment_for_structural_analogy": 2,
+        "increment_for_time_observation": 3,
+        "current_data_gap_size": 3
+      },
+      "total_score": 21,
+      "max_score": 24,
+      "wave": "WAVE_2",
+      "why": "政策周期极强（货币政策 / 地产调控），是 Calendar-driven 的天然样本；但更接近宏观而非主题。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    },
+    {
+      "domain": "有色 / 资源 / 化工",
+      "already_declared_by_current_candidates": [],
+      "has_current_candidate_demand": false,
+      "scores": {
+        "a_share_historical_significance": 2,
+        "cycle_recurrence_potential": 3,
+        "cross_year_coverage_ability": 3,
+        "independent_theme_cycle_ability": 2,
+        "structural_difference_vs_auto_pharma": 3,
+        "increment_for_structural_analogy": 2,
+        "increment_for_time_observation": 2,
+        "current_data_gap_size": 3
+      },
+      "total_score": 20,
+      "max_score": 24,
+      "wave": "WAVE_2",
+      "why": "价格周期驱动，机制与汽车 / 医药完全不同（供给端 + 商品价格），结构差异最大。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    },
+    {
+      "domain": "消费",
+      "already_declared_by_current_candidates": [],
+      "has_current_candidate_demand": false,
+      "scores": {
+        "a_share_historical_significance": 3,
+        "cycle_recurrence_potential": 2,
+        "cross_year_coverage_ability": 3,
+        "independent_theme_cycle_ability": 2,
+        "structural_difference_vs_auto_pharma": 2,
+        "increment_for_structural_analogy": 2,
+        "increment_for_time_observation": 3,
+        "current_data_gap_size": 3
+      },
+      "total_score": 20,
+      "max_score": 24,
+      "wave": "WAVE_2",
+      "why": "消费有强日历属性（春节 / 双十一 / 中报），对 Calendar-driven 与 Holiday-relative 能力增量大。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    },
+    {
+      "domain": "军工",
+      "already_declared_by_current_candidates": [],
+      "has_current_candidate_demand": false,
+      "scores": {
+        "a_share_historical_significance": 2,
+        "cycle_recurrence_potential": 3,
+        "cross_year_coverage_ability": 2,
+        "independent_theme_cycle_ability": 2,
+        "structural_difference_vs_auto_pharma": 3,
+        "increment_for_structural_analogy": 2,
+        "increment_for_time_observation": 2,
+        "current_data_gap_size": 3
+      },
+      "total_score": 19,
+      "max_score": 24,
+      "wave": "WAVE_2",
+      "why": "订单 / 五年规划节奏强，Calendar-driven 潜力高；但公开数据披露弱，证据建设成本高。",
+      "basis_note": "各维度 basis 见 priority_dimensions；JUDGMENT 项为研究判断，非数据计算结果。"
+    }
+  ],
+  "waves": {
+    "principle": "**以最少的数据建设成本，显著提升 ThreeC 的研究能力。** 不要求一次把整个 A 股历史全部录完。",
+    "wave_1": {
+      "goal": "最少补录，最大能力提升 —— **修复「当前侧有候选、历史侧无 Cycle」的断裂**",
+      "items": [
+        {
+          "priority": "P0",
+          "action": "补录「电力设备」Macro Theme 的历史 Cycle（至少 2 个 Campaign，覆盖 ≥ 3 年）",
+          "unlocks": "Structural Analogy Pattern 层（当前恒 0）；同时服务 2 个已存在的当前候选",
+          "why_first": "当前侧已有 CC-2026-COMPUTE-POWER / CC-2026-OFFSHORE-WIND，历史侧完全空白 —— 边际收益最高"
+        },
+        {
+          "priority": "P0",
+          "action": "补录「信息通信」Macro Theme 的历史 Cycle（至少 1–2 个 Campaign）",
+          "unlocks": "Structural Analogy；并给 Time Observation 提供**第 3 个独立主题族**",
+          "why_first": "当前侧已有 CC-2026-OPTICAL-LINK；光通信有多轮清晰历史周期"
+        },
+        {
+          "priority": "P1",
+          "action": "修复 taxonomy 缺口：为 C-2019-AD 挂接 Macro Theme「汽车」",
+          "unlocks": "消除 v0.2 中 3 条候选「口径脆弱」的根源（判定不再依赖 2019 是否入样）",
+          "why_first": "**改动量极小（1 行关联），但直接提升已有 Pattern 的稳健性**"
+        },
+        {
+          "priority": "P1",
+          "action": "统一 `evidences.evidence_type` 口径（中英文混用 → 单一枚举）",
+          "unlocks": "Evidence Coverage 可统计；Phase Evidence Matrix 的 5 个派生维度可靠",
+          "why_first": "纯数据清理，无新研究成本"
+        },
+        {
+          "priority": "P1",
+          "action": "补录 2018–2025 完整交易日历（当前仅 2022-03 ~ 2024-09）",
+          "unlocks": "所有时间统计可切换到交易日口径（与行情对齐）",
+          "why_first": "一次性、可自动获取、无研究判断成本"
+        }
+      ],
+      "expected_capability_delta": {
+        "Structural Analogy": "BLOCKED → PARTIAL（Pattern 层可匹配）",
+        "Time Observation": "PARTIAL → PARTIAL+（theme_family_count 2 → 4，跨族稳健性检查首次可用）"
+      }
+    },
+    "wave_2": {
+      "goal": "扩展跨行业覆盖 —— 让「跨主题族规律」第一次成为可检验命题",
+      "items": [
+        {
+          "priority": "P2",
+          "action": "补录「高端装备 / 机器人」Macro Theme 历史 Cycle",
+          "unlocks": "当前侧 CC-2026-EMBODIED-AI 可类比；但历史周期短（2023 起），跨年样本有限"
+        },
+        {
+          "priority": "P2",
+          "action": "补录「半导体 / 电子」Macro Theme 历史 Cycle（2019–2025 多轮周期）",
+          "unlocks": "纯历史补录（无当前侧候选）；提供第 5 个独立族，显著提升 Time Observation 统计功效"
+        },
+        {
+          "priority": "P2",
+          "action": "补录「消费」Macro Theme 历史 Cycle",
+          "unlocks": "**Calendar-driven / Holiday-relative 能力的天然样本**（春节 / 双十一 / 中报）"
+        },
+        {
+          "priority": "P3",
+          "action": "补录「有色 / 资源 / 化工」Macro Theme 历史 Cycle",
+          "unlocks": "供给端 + 商品价格机制 —— 与汽车 / 医药结构差异最大，类比价值高"
+        },
+        {
+          "priority": "P3",
+          "action": "补录「军工」「金融 / 地产」历史 Cycle",
+          "unlocks": "政策周期样本；但更接近宏观，需先明确 Theme / Macro 边界"
+        }
+      ],
+      "expected_capability_delta": {
+        "Time Observation": "PARTIAL+ → USABLE（theme_family_count ≥ 5，跨族稳健性有统计意义）",
+        "Seasonal": "BLOCKED → LIMITED（消费族带来需求季节性样本）"
+      }
+    },
+    "wave_3": {
+      "goal": "事件 / 日历类深度补录 —— 解锁 Event-driven 与真正的 Calendar-driven",
+      "items": [
+        {
+          "priority": "P2",
+          "action": "建立结构化「行业事件日历」表（车展 / CES / MWC / 开发者大会 / 发布会季）",
+          "unlocks": "`INDUSTRY_EVENT_DRIVEN` 从 0 条 → 可研究（当前完全没有该类数据）"
+        },
+        {
+          "priority": "P2",
+          "action": "建立结构化「数据发布日历」表（产销 / 库存 / 价格 / 出口 / PMI）",
+          "unlocks": "`DATA_RELEASE_DRIVEN` 从 0 条 → 可研究；把当前 LOW 置信度的 post-hoc 机制变为 data-supported"
+        },
+        {
+          "priority": "P3",
+          "action": "建立结构化「制度性日历」表（财报窗口 / 国常会节奏 / 五年规划 / 预算节奏）",
+          "unlocks": "Calendar-driven 从 PARTIAL → USABLE；机制解释从 post-hoc 升级为 data-supported"
+        },
+        {
+          "priority": "P3",
+          "action": "为每个 Macro Theme 补齐连续行业指数行情（当前仅 2 条 ETF 代理 + 6 条空占位）",
+          "unlocks": "中性市场基准可全年份构造；相位对比有共同时间轴"
+        },
+        {
+          "priority": "P3",
+          "action": "补录「未成势主题」负样本（观察到但未形成 Campaign）",
+          "unlocks": "**唯一能真正量化幸存者偏差的路径**（当前 negative-control coverage = WEAK）"
+        }
+      ],
+      "expected_capability_delta": {
+        "Event-driven": "BLOCKED → PARTIAL",
+        "Calendar-driven": "PARTIAL → USABLE",
+        "Seasonal": "LIMITED → PARTIAL"
+      }
+    }
+  },
+  "data_risks": [
+    {
+      "risk": "样本量不足（有效观测仅 7 年）",
+      "severity": "HIGH",
+      "detail": "2019–2025；2018 为 no_clear_campaign 反例年 → 所有 N ≤ 7，达不到「稳定规律」档位（N ≥ 8）",
+      "mitigation": "补 2018 之前或 2026+ 数据"
+    },
+    {
+      "risk": "主题族上限 = 2（coverage ceiling）",
+      "severity": "HIGH",
+      "detail": "跨族稳健性检查在当前数据下不可能通过；单族规律无法证明普适性",
+      "mitigation": "Wave 1/2 补录 ≥ 2 个独立 Macro Theme"
+    },
+    {
+      "risk": "日期核验为 0（全部 verified_date = NULL，全部 confidence = low）",
+      "severity": "HIGH",
+      "detail": "即使 method=market_data 的 6 条也未写回核验日期 → 数据可信度硬天花板",
+      "mitigation": "人工核验 TOP-01 的 7 个锚点（PROJECT_STATE 已列为 Next Single Goal）"
+    },
+    {
+      "risk": "幸存者偏差无法消除",
+      "severity": "HIGH",
+      "detail": "只记录「形成 Campaign 的主题」；无「主题级未成势」负样本 → negative-control coverage = WEAK",
+      "mitigation": "Wave 3：补录未成势主题"
+    },
+    {
+      "risk": "行情数据为「窗口采样」而非连续序列",
+      "severity": "MEDIUM",
+      "detail": "仅 1 条 benchmark 连续；6 条 series 为空占位；年度活跃 series 从 15（2022）降到 4（2025）",
+      "mitigation": "Wave 3：补连续行业指数"
+    },
+    {
+      "risk": "Event Calendar 缺 3 类能力关键事件",
+      "severity": "MEDIUM",
+      "detail": "industry / data_release / holiday 等 7 类在 DB 中 NOT_AVAILABLE → 两类 Pattern 无法研究",
+      "mitigation": "Wave 3：建立事件日历表"
+    },
+    {
+      "risk": "Evidence 口径不统一（中英文混用，schema 无 CHECK）",
+      "severity": "MEDIUM",
+      "detail": "`行情数据` 与 `market_data`、`政策文件` 与 `official_document` 并存 → 统计前须归一化",
+      "mitigation": "Wave 1：统一 evidence_type 枚举"
+    },
+    {
+      "risk": "taxonomy 缺口造成判定脆弱",
+      "severity": "MEDIUM",
+      "detail": "1 个 Campaign 未挂接 Macro Theme；2 个 theme 为孤立；export 独有 theme：['华为汽车']",
+      "mitigation": "Wave 1：修复 C-2019-AD 挂接 + 建立「主题族 ↔ theme」定义表"
+    },
+    {
+      "risk": "当前侧声明 4 个 Macro Theme，历史侧仅 2 个",
+      "severity": "HIGH",
+      "detail": "结构性不对称：信息通信 / 电力设备 / 高端装备 无历史 Cycle → Similarity Pattern 层恒 0",
+      "mitigation": "Wave 1（P0）：优先补录这 3 个主题"
+    },
+    {
+      "risk": "生命周期普遍不完整",
+      "severity": "MEDIUM",
+      "detail": "13 个对象中仅 1 个达到 COMPLETE；THEME_FORMING / BROAD_CONFIRMATION 各仅 6/13",
+      "mitigation": "补录时强制要求完整 lifecycle"
+    }
+  ]
+}
