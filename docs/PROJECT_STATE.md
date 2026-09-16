@@ -190,6 +190,20 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
     即 DEFER 项 `F7`）/ `NO_THEME` 0。
   - 收益：v0.2 的 5 对「口径脆弱」**全部归零**；两种 scope 口径下的 TOP-01 变体**收敛为同一样本集合**。
   - 边界：`theme_taxonomy.py` **只读** `themes` 表；**不发明 taxonomy 行**，未解析名称一律显式上报。
+- **★ 派生结构门（Derivation Gate，v0.4，2026-09-16）**：`lifecycle_rhythm` 的
+  `derived_from_early_signal` 判定**已进入 Promotion Gate**（此前只存在于研究报告里）。
+  - 判据（阈值 21 天沿用既有设定，**未调整**）：阶段中心 ≈ EARLY_SIGNAL 中心 + 中位滞后（残差 ≤ 21 天）
+    → 该阶段时间位置**不含超出 EARLY_SIGNAL 的额外信息** → 不得作为独立规律。
+  - **三值判定，只降不升**：`True` → 降级 `EXPLORATORY`；`False` → 不动作；
+    `None`（存在无节奏判定的阶段）→ **不下结论、不动作**。本轮 `False` = 0 条
+    （本门**从不主动断言「非派生」**）。
+  - 口径固化为 `ROUND_PROFILES`：`--round X` 一并恢复该轮口径 → v0.2 / v0.3 / v0.4 三轮产物**逐字节可复现**；
+    未知轮次**显式 FAIL**。
+  - **实测**：`effective TIMELINE_CANDIDATE` **4 → 2**；有效独立结构 **2 → 1**；
+    实质性变化仅 2 条候选（`TOPC-004` / `TOPC-021`，均 MAIN_RISE）。
+  - **★ 派生范围**：两个有节奏分析的 scope 各 **7 个阶段全部派生**（`THEME_FORMING` … `MAIN_END`）
+    → **EARLY_SIGNAL 是本数据集里唯一的时间信息来源**，其余阶段皆为下游回声。
+  - 边界：**规则变更，非数据变更**；未改 DB / export / contracts / Product Artifact。
 - 结论：**"6–8 月汽车" = 历史观察窗口（Historical Observation Window），
   Partially Supported，非固定买入窗口**。
   （见 `research/research/summary/auto_2018_2025_final_review.md`）
@@ -337,42 +351,52 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - 当前侧声明 4 个 Macro Theme，历史侧仅 2 个 → **3 个主题（电力设备 / 信息通信 / 高端装备）无历史可类比**。
 - 生命周期仅 **3 / 13** 对象 COMPLETE；`THEME_FORMING` / `BROAD_CONFIRMATION` 覆盖仅 **46%**。
 - 事件 `NOT_AVAILABLE` **7 类**；证据 `company` / `capital` **各 0 条**；核验日期 **0 / 24**。
-- **Time Observation v0.3 结论**：独立稳健时间结构**仍只有 1 个**（汽车族 EARLY_SIGNAL 上半年末窗口）。
-  第 2 个「独立结构」（`MAIN_RISE`）经 `lifecycle_rhythm` 判定为**派生结果**（残差 1 天）。
+- **Time Observation v0.4 结论**：独立稳健时间结构 = **1 个**（汽车族 EARLY_SIGNAL 上半年末窗口）。
+  v0.3 曾显示「2 个」，其中第 2 个（`MAIN_RISE`，残差 1 天）经 `lifecycle_rhythm` 判定为**派生结果**；
+  v0.4 已把该判定**落进 Promotion Gate** → 有效 `TIMELINE_CANDIDATE` 4 → 2、独立结构 2 → 1。
+  **数字回到 1，但依据比 v0.2 时更硬。**
+- **派生门覆盖边界（诚实限制）**：本门只对有节奏分析的 **2 个 scope** 生效（`rule_auto_summer` / `TH-AUTO`）。
+  其余 18 个 scope **无节奏分析** → `is_derived = None` → 本门**无法**对它们下结论。
+  这**不是**「已证非派生」，而是「无证据」。**不得**把 `None` 读作「独立」。
+  完整账目：191 = 139（无节奏分析）+ 22（含非 export 阶段）+ 30（全部阶段派生）。
 
 ---
 
 ## Next Single Goal
 
-> **Canonical Macro Theme Resolution 已完成、口径已稳定（v0.3 回归 PASS，口径脆弱配对 5 → 0）。**
-> **下一步唯一一件事：对齐 Promotion Gate 的「派生结构」判定。**
+> **派生结构门已完成（v0.4）：`effective TIMELINE_CANDIDATE` 4 → 2，有效独立结构 2 → 1。**
+> **规则链已稳定 —— 当前真正的瓶颈是「数据」，不是「方法」。**
+> **下一步唯一一件事：Wave 1 数据扩容（P0 电力设备 / P0 信息通信历史 Cycle）。**
 
-**背景（本轮新发现）**：v0.3 的 `effective TIMELINE_CANDIDATE` 为 4 条 / **2 个样本独立结构**，
-但本脚本 `lifecycle_rhythm` 明确把第 2 个结构（`MAIN_RISE`，中心 06-22）标为
-`derived_from_early_signal = true` —— 其中心可由「EARLY_SIGNAL 中心（06-11）+ 中位滞后（10 d）」
-几乎精确解释（**残差 1 天**）。
+**为什么是数据，不是方法**
 
-而 **`derived_from_early_signal` 目前只出现在 `lifecycle_rhythm` 报告里，未被 Promotion Gate 使用** ——
-v0.2 中 `TOPC-021` 被降级的原因是「脆弱」而非「派生」；脆弱消除后它自动升为 `TIMELINE_CANDIDATE`。
+v0.4 之后，时间观察层的规则链（数值门槛 → 口径稳健 → 派生门）**三次收敛到同一个结论：独立结构 = 1 个**。
+继续在 1 个结构上做方法学微调，**边际收益低于扩大样本**。三个硬限制全部是**数据问题**：
 
-**要做的（只做这一件）**：决定并实现「`derived_from_early_signal = true` 是否作为 Promotion Gate 的降级理由」，
-使 `lifecycle_rhythm` 的研究立场与 Promotion Gate **口径一致**，并重跑 v0.3 → 记录 diff。
+| 限制 | 现状 | 只能靠什么解决 |
+|---|---|---|
+| 跨族稳健性无法检验 | `theme_family_count` 上限 = 2，有效候选全为汽车族 | 引入**非汽车族**的历史 Theme Cycle |
+| 交易日历覆盖不足 | 仅 2.6 / 8 年 → 时间统计退化为自然日口径 | **补全 2018–2025 交易日历** |
+| 核验比例为 0 | 0 / 24 核验，全部 `confidence = low` | 补证据来源（`company` / `capital` 各 0 条） |
 
-> **注意：这是规则变更，不是数据变更。** v0.2 报告 §8.1 已陈述立场
-> 「这三者全部是 EARLY_SIGNAL 的派生结果 …… 即使口径稳健，也不构成独立规律」——
-> 本轮动作是**把已陈述的研究立场落进 Gate**，**不是**发明新标准，也**不是**为压数量而收紧。
-> 必须显式记录「改前 / 改后」两个结论，**不得静默覆盖**。
+**要做的（只做这一件）**：按 `Historical_Coverage_Audit_v0_1.md` §12 执行 **Wave 1**：
 
-**预期结论**：独立稳健时间结构 = **1 个**（与 v0.2 的实质结论一致，符合「宁少不多」）。
+1. **P0 · 电力设备历史 Cycle**、**P0 · 信息通信历史 Cycle**
+   —— 修复「当前侧有候选、历史侧无 Cycle」这一**已存在的断裂**（3 个主题无历史可类比）。
+2. **P1 · 统一 `evidences.evidence_type` 口径**。
+3. **P1 · 补全 2018–2025 交易日历**。
+
+**执行方式（协议要求，不可跳步）**：
+Coverage Audit → Wave 1 入库 → 逐项验证 → **重跑 Time Observation（新轮次）** → Coverage Audit v0.2 → 再决定 Wave 2。
+
+> **红线**：**不为了增加 Pattern 数量而放松纳入标准**（不降 N、不拓宽窗口、不弱化 LOO、不制造 Pattern）。
+> 若扩容后独立结构**仍为 1 个**，那就是诚实结论，**照实报告**。
 
 **之后（同一序列，不同轮次）**：
-1. **Wave 1 数据扩容**（`Historical_Coverage_Audit_v0_1.md` §12）：
-   P0 电力设备 / P0 信息通信历史 Cycle（修复「当前侧有候选、历史侧无 Cycle」的已存在断裂）；
-   P1 统一 `evidences.evidence_type` 口径；P1 补全 2018–2025 交易日历。
-2. `Historical Coverage Audit` 升级为 v0.2（消费 v0.3 候选池）。
-3. `F7`（`华为汽车` taxonomy 缺口）—— 随扩容一并处理，属**数据决策**。
+1. `Historical Coverage Audit` 升级为 **v0.2**（消费 v0.4 候选池）。
+2. `F7`（`华为汽车` taxonomy 缺口）—— 随扩容一并处理，属**数据决策**。
 
-**在此之前不新增功能、不新增行业、不改产品代码、不改 DB 数据。**
+**在此之前不新增功能、不改产品代码、不改 DB 数据（除 Wave 1 明确列入的条目）。**
 
 用户视觉 / 交互 Review（Phase 7.1）可同时进行：
 

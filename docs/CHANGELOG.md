@@ -7,6 +7,117 @@
 
 ---
 
+## 2026-09-16 · Research · Time Observation v0.4 —— 派生结构门（Derivation Gate）
+
+**回答 v0.3 遗留的唯一待决问题（D1），并把 `lifecycle_rhythm` 早已陈述的研究立场落进 Promotion Gate。**
+**方向是收紧，不是放宽。未改数据、未碰 Product。**
+
+### 0 · 本轮唯一变化
+
+- **问题**（v0.3 §6.3）：`derived_from_early_signal` **只出现在 `lifecycle_rhythm` 报告里，未被 Gate 使用**，
+  导致 2 个派生结构（`TOPC-004` / `TOPC-021`）以 `TIMELINE_CANDIDATE` 身份出现。
+  v0.3 明确**不擅自改规则**，记入决策点 D1。
+- **决定**：**采纳**。不是新标准 —— `lifecycle_rhythm` 已独立判定这些结构为「派生：非独立证据」，
+  Gate 不采纳它即等于 Gate 与自家研究报告互相矛盾。且只降级、不升级。
+
+### 1 · ★ 派生结构门（Derivation Gate）
+
+- 判据（沿用 `lifecycle_rhythm` 既有设定，**阈值 21 天未调整**）：
+
+     预测中心 = EARLY_SIGNAL 中心 + 该阶段相对 EARLY_SIGNAL 起点的中位滞后
+     残差 ≤ 21 天 → derived_from_early_signal = true → 该阶段时间位置不含额外信息
+
+- **三值判定（关键设计：只降不升）**：
+  `True`（全部阶段派生）→ **降级** `EXPLORATORY`；
+  `False`（至少一阶段明确非派生）→ 不动作；
+  `None`（存在无节奏判定的阶段）→ **不下结论、不动作**。
+  **本轮 `False` 为 0 条** —— 本门**从不主动断言「非派生」**，避免把「证据不足」误当「已证清白」。
+- 新增字段 `candidates[].derivation_verdict = {is_derived, stage_verdicts, reason}`，判定可回溯。
+- **口径固化为轮次档案** `ROUND_PROFILES`：`--round X` 一并恢复该轮口径 → 历史轮次产物可逐字节复现。
+  未知轮次**显式 FAIL**，不静默降级。
+
+### 2 · ★ 零行为变化证明（三个 `--check` 全 PASS）
+
+```bash
+discover_time_observation_patterns.py --check                                            # v0.4 逐字节自洽
+discover_time_observation_patterns.py --round 0.3 --legacy-no-derivation-gate --check    # 复现 v0.3
+discover_time_observation_patterns.py --round 0.2 --legacy-direct-resolution   --check    # 复现 v0.2
+discover_time_observation_patterns.py --round 9.9 --check                                # 未知轮次 → FAIL(exit 1)
+```
+
+> v0.4 与 v0.3 的**全部**差异都只可能来自派生门本身，无任何未声明副作用。
+
+### 3 · 结果 diff（归因工具：`compare_time_observation_rounds.py`，本轮新增）
+
+- 新增只读对比工具 `research/scripts/compare_time_observation_rounds.py`，
+  **严格区分「字段新增（结构性，by design）」与「字段值变化（实质性）」**，
+  避免把「新增字段」误报成「结论变化」。
+- **`effective TIMELINE_CANDIDATE` 4 → 2**；**有效独立结构 2 → 1**；`EXPLORATORY` 44 → 46。
+- **实质性变化恰好 2 条候选**（其余 191 个候选字段值无任何变化）：
+  `TOPC-004` / `TOPC-021`（均 MAIN_RISE）`effective` TIMELINE_CANDIDATE → **EXPLORATORY**。
+- 结构性变化（by design）：新增 `derivation_verdict` 字段、`promotion_gate` 文本增补、`ruleset_version` 0.3 → 0.4。
+- **TOP-01 回归 PASS**：N=7 / 中心 06-11 / 窗口 05-27~06-26 / 复现 5/7
+  （走 `RULE` scope 且为 EARLY_SIGNAL 基线本身 → 天然不受本门影响）。
+
+### 4 · ★ 派生范围远超「只有 MAIN_RISE」
+
+有节奏分析的两个 scope（`rule_auto_summer` / `TH-AUTO`）**各 7 个阶段全部派生**：
+`THEME_FORMING` / `BROAD_CONFIRMATION` / `MAIN_RISE` / `PEAK` / `SECONDARY` / `DECLINING` / `MAIN_END`。
+
+> **结构性认识**：汽车夏季主题的**整条生命周期**的时间位置都可由 EARLY_SIGNAL 锚点 + 各阶段中位滞后推出
+> → **EARLY_SIGNAL 是本数据集里唯一的时间信息来源**，其余阶段皆为下游回声。
+> **门的「影响面」小（2 条被降级）但「覆盖面」广（30 条判定为派生）** ——
+> 其余派生结构此前已因其他理由落在 `EXPLORATORY` 之下，Gate 已无可再降。**本门是补齐最后一道口子，不是制造新淘汰。**
+
+### 5 · 派生判定完整账目（191 = 139 + 22 + 30）
+
+| 桶 | 候选数 | `is_derived` | 说明 |
+|---|---:|---|---|
+| scope **无**节奏分析 | **139** | `None` | 无 rhythm 判定 → 不下结论 → 不动作 |
+| 有节奏分析但含**非 export 阶段** | **22** | `None` | 含 `PHASE_*` / `DB_*` / `RETRACEMENT` / `FIRST_DECLINE`；含 2 条 EARLY_SIGNAL-only（锚点自身） |
+| 有节奏分析且**全部阶段派生** | **30** | `True` | 判定派生；原为 `TIMELINE_CANDIDATE` 者降级 |
+
+### 6 · 门禁
+
+`discover_time_observation_patterns.py --check`（v0.4 / v0.3 / v0.2 三轮逐字节 + 未知轮次守卫）·
+`test_consistency.py` 9/9 PASS · 6 项 research `validate_*.py` PASS ·
+`build_time_observation_patterns.py --check` · `npm test` **395/395** · `tsc -b` · `vite build`。
+
+### 边界
+
+```text
+schema changed        : NO
+export changed        : NO
+historical data changed: NO
+breaking change       : NO
+```
+
+未修改 `src/` / Timeline / `exports/` / `contracts/` / `schema.sql` / DB 数据行 / Product Artifact。
+`v0_2.*` / `v0_3.*` 产物保留未删，作为口径演进的可比基线。
+新报告：`research/research/reports/Time_Observation_Discovery_v0_4.md`。
+
+---
+
+## 2026-09-16 · Research · 修复 test_consistency 过期证据金标准（46/39 → 51/44）
+
+**测试卫生修复。** 发现并修复一个**自 `ca43833` 起静默红灯**的一致性测试。
+
+- **问题**：`research/scripts/test_consistency.py` 自初始导入（`7766a27`）后从未更新，
+  其 `test_unbound_evidence_legal` 硬编码 46/39/7 为金标准。
+  `ca43833`（Medical Health Minimum Dataset v0.1）新增 5 条 `E-MED-*` 证据后，
+  DB 实际为 **51/44/7** → 该测试**静默 exit=1 至今**。
+- **根因**：新增 5 条医药证据（total 46→51、bound 39→44），**unbound 保持 7 不变** ——
+  即核心不变量（`bound + unbound == total`、`unbound > 0`）**始终成立**；
+  红灯纯属**测试金标准未同步**，不是数据问题。
+  变更本身已被 `Medical_Health_Data_Entry_v0_1_Audit.md`（evidences 46 → 51）记录，只是测试被遗忘。
+- **修复**：① 金标准更新为 51 / 44 / 7，docstring 注明分解来源（46 原始 + 5 医药）与变更依据文档；
+  ② 判定顺序调整 —— **先断言不变量**（语义守卫），再断言金标准数字（漂移探测器），
+  避免下次「合法增长」被误判为回归。
+- **边界**：仅测试卫生修复，不触碰 DB / schema / export / contracts / 研究结论。
+  其余文档中的 46 均为**时点性历史报告**（冻结于其写作时），不改。
+
+---
+
 ## 2026-09-16 · Research · Canonical Macro Theme Resolution + Time Observation v0.3 回归
 
 **接管基线审计 + Git 收口 + 口径统一 + 回归验证。** 本轮**只做一件事**：

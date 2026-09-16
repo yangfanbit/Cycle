@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""discover_time_observation_patterns.py —— Time Observation Discovery v0.3（全量历史扫描）。
+"""discover_time_observation_patterns.py —— Time Observation Discovery v0.4（全量历史扫描）。
 
 ## 这个脚本是什么
 
@@ -9,11 +9,35 @@
 
      exports/timeline_export_v1.json  +  research/database/cycle_research.db   （只读输入）
                           ↓  本脚本（discover 模式，只读）
-     research/research/reports/time_observation_candidate_pool_v0_3.json       （候选池）
-     research/research/reports/time_observation_candidate_pool_v0_3.csv        （人工浏览）
+     research/research/reports/time_observation_candidate_pool_v0_4.json       （候选池）
+     research/research/reports/time_observation_candidate_pool_v0_4.csv        （人工浏览）
 
 **这不是产品集成**：结果不进入 `src/`、不进入 Timeline、不进入 DB / schema.sql / canonical export / contracts。
 `RESEARCH_ONLY` 与 `REJECTED` 一律不得进入 Timeline。
+
+## v0.4 相对 v0.3 的唯一变化：派生结构门（DERIVATION GATE）
+
+v0.3 的 `effective TIMELINE_CANDIDATE` 有 4 条 / 2 个样本独立结构，但其中第 2 个结构
+（`MAIN_RISE`，中心 06-22）已被本脚本自己的 `lifecycle_rhythm` 标为
+`derived_from_early_signal = true`（残差 **1 天**）—— 即其时间位置可由
+「EARLY_SIGNAL 中心（06-11）+ 中位滞后（10 d）」几乎精确解释。
+
+v0.2 报告 §8.1 早已陈述立场：「这三者全部是 EARLY_SIGNAL 的派生结果 …… 即使口径稳健，
+也不构成独立规律」，但该立场**从未落进 Promotion Gate**（v0.2 中它们被降级的原因是「脆弱」而非「派生」；
+口径修复后脆弱消失，它们便自动升为 `TIMELINE_CANDIDATE`）。
+
+v0.4 把该立场落进 Gate：
+
+    TIMELINE_CANDIDATE 额外要求：口径稳健（非 FRAGILE_SCOPE_DEPENDENT）
+                              且 **非派生**（derivation_verdict.is_derived != True）
+    否则降级为 EXPLORATORY，并写入 effective_status_reason。
+
+- **这是规则变更，不是数据变更。** 方向为**收紧**（宁少不多），**不制造 Pattern**。
+- **未改**：锚点定义、窗口算法、集中度、复现率、稳定性、留一法、机制归类、`theme_cycle_count` 门槛。
+- **历史轮次可复现**：`--round 0.3 --legacy-no-derivation-gate` 可逐字节复现 v0.3。
+- **已知范围限制**：`derivation_verdict` 只对 export lifecycle 的 10 个阶段给出判定；
+  `PHASE_*`（DB `campaign_phases` 口径）与 `DB_*` 过渡取不到判定 → `is_derived = None` → **不降级**
+  （以「无证据不结论」处理，不默认派生）。
 
 ## v0.3 相对 v0.2 的唯一变化：canonical Macro Theme Resolution
 
@@ -87,7 +111,8 @@ v0.3 改用 canonical `resolved` 口径（`themes[]` 名称 → DB `themes` 表�
     python research/scripts/discover_time_observation_patterns.py            # 生成
     python research/scripts/discover_time_observation_patterns.py --check     # 校验逐字节一致
     python research/scripts/discover_time_observation_patterns.py --print     # 生成并打印摘要
-    python research/scripts/discover_time_observation_patterns.py --round 0.2 # 复现历史轮次（回归比对）
+    python research/scripts/discover_time_observation_patterns.py --round 0.2 --legacy-direct-resolution --check      # 复现 v0.2
+    python research/scripts/discover_time_observation_patterns.py --round 0.3 --legacy-no-derivation-gate --check    # 复现 v0.3
 
 退出码: 0 = 通过；1 = 自检 / TOP-01 回归失败（**不写文件**）。
 """
@@ -107,7 +132,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 EXPORT_PATH = os.path.join(ROOT, "exports", "timeline_export_v1.json")
 DB_PATH = os.path.join(ROOT, "research", "database", "cycle_research.db")
 REPORTS_DIR = os.path.join(ROOT, "research", "research", "reports")
-DEFAULT_ROUND = "0.3"
+DEFAULT_ROUND = "0.4"
 
 
 def _artifact_paths(round_):
@@ -125,22 +150,61 @@ ARTIFACT_VERSION = DEFAULT_ROUND
 RULESET_VERSION = "time-observation-discovery-" + DEFAULT_ROUND
 
 
-def set_round(round_):
-    """切换产物轮次（`--round 0.2` 可复现历史轮次，用于回归比对）。"""
-    global ARTIFACT_VERSION, RULESET_VERSION, OUT_JSON, OUT_CSV
-    ARTIFACT_VERSION = round_
-    RULESET_VERSION = "time-observation-discovery-" + round_
-    OUT_JSON, OUT_CSV = _artifact_paths(round_)
+# ---------------------------------------------------------------- 轮次档案
+#
+# **每轮的口径设置在此固化** —— `--round X` 会一并恢复该轮的口径，
+# 使历史轮次产物可**逐字节复现**（回归比对的前提）。
+# 新增轮次时必须在此登记，以记录「口径演进」这一事实本身。
+
+ROUND_PROFILES = {
+    # v0.2：Macro Theme 用 direct（字面名称匹配）；无派生门
+    "0.2": {"direct_resolution": True, "derivation_gate": False},
+    # v0.3：改用 canonical CMTR v1；仍无派生门
+    "0.3": {"direct_resolution": False, "derivation_gate": False},
+    # v0.4：canonical CMTR v1 + 派生结构门
+    "0.4": {"direct_resolution": False, "derivation_gate": True},
+}
 
 
-# v0.2 的 `direct` 口径开关：**仅供历史轮次逐字节回归比对**，不得用于新研究。
-LEGACY_DIRECT_RESOLUTION = False
+# 以下两个开关由 `set_round` 按档案设置；也可用 CLI 单独覆盖（仅用于实验）。
+# v0.2 的 `direct` 口径：**仅供历史轮次逐字节回归比对**，不得用于新研究。
+LEGACY_DIRECT_RESOLUTION = ROUND_PROFILES[DEFAULT_ROUND]["direct_resolution"]
+
+# 派生结构门：被标为 EARLY_SIGNAL 派生的结构不得成为 TIMELINE_CANDIDATE。
+DERIVATION_GATE = ROUND_PROFILES[DEFAULT_ROUND]["derivation_gate"]
 
 
 def set_legacy_direct_resolution(flag):
     global LEGACY_DIRECT_RESOLUTION
     LEGACY_DIRECT_RESOLUTION = bool(flag)
 
+
+def set_derivation_gate(flag):
+    global DERIVATION_GATE
+    DERIVATION_GATE = bool(flag)
+
+
+def set_round(round_):
+    """切换产物轮次，并**一并恢复该轮的口径档案**。
+
+    例：
+        --round 0.2  ≡  direct 口径 + 无派生门   → 复现 v0.2
+        --round 0.3  ≡  canonical 口径 + 无派生门 → 复现 v0.3
+        --round 0.4  ≡  canonical 口径 + 派生门   → 当前轮（默认）
+    """
+    global ARTIFACT_VERSION, RULESET_VERSION, OUT_JSON, OUT_CSV
+    prof = ROUND_PROFILES.get(round_)
+    if prof is None:
+        raise SystemExit(
+            "FAIL —— 未知轮次 %s。已知轮次：%s\n"
+            "       新增轮次时必须在 ROUND_PROFILES 中登记其口径设置。"
+            % (round_, ", ".join(sorted(ROUND_PROFILES)))
+        )
+    ARTIFACT_VERSION = round_
+    RULESET_VERSION = "time-observation-discovery-" + round_
+    OUT_JSON, OUT_CSV = _artifact_paths(round_)
+    set_legacy_direct_resolution(prof["direct_resolution"])
+    set_derivation_gate(prof["derivation_gate"])
 
 # canonical Macro Theme 解析（单一事实来源；见 research/scripts/theme_taxonomy.py）
 _SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -1715,8 +1779,17 @@ def build_artifact():
     reg = top01_regression(candidates)
     overlap = overlap_groups(candidates)
     sr = scope_robustness(candidates)
+    # 节奏分析需在派生门之前完成 —— 它同时是 `derivation_verdict` 的判据来源
+    rhythm = {
+        "rule_auto_summer": lifecycle_rhythm_analysis(
+            anchors, _scope_by_id(scopes, "rule_auto_summer"), LC_STAGES
+        ),
+        "TH-AUTO": lifecycle_rhythm_analysis(
+            anchors, _scope_by_id(scopes, "TH-AUTO"), LC_STAGES
+        ),
+    }
     tcr = timeline_candidate_robustness(candidates, sr)
-    candidates = annotate_effective_status(candidates, tcr)
+    candidates = annotate_effective_status(candidates, tcr, rhythm)
 
     eff_counts = {}
     for c in candidates:
@@ -1872,12 +1945,32 @@ def build_artifact():
             "RESEARCH_ONLY": "N ≥ 5 但集中度 > 0.60（时间分散）；或 3–4 且集中度不足。",
             "EXPLORATORY": "窗口可构建且集中度尚可，但样本 / 稳定性 / 独立性 / 机制未全部达门槛。",
             "TIMELINE_CANDIDATE": (
-                "N ≥ 5 且 窗口可构建 且 集中度 ≤ 0.45 且 STABLE 且 无单年主导 "
-                "且 theme_cycle_count ≥ 3 且 机制置信度 ≥ MEDIUM。"
+                (
+                    "N ≥ 5 且 窗口可构建 且 集中度 ≤ 0.45 且 STABLE 且 无单年主导 "
+                    "且 theme_cycle_count ≥ 3 且 机制置信度 ≥ MEDIUM。"
+                )
+                if not DERIVATION_GATE
+                else (
+                    "N ≥ 5 且 窗口可构建 且 集中度 ≤ 0.45 且 STABLE 且 无单年主导 "
+                    "且 theme_cycle_count ≥ 3 且 机制置信度 ≥ MEDIUM；"
+                    "**且通过两项事后检验**：口径稳健（非 FRAGILE_SCOPE_DEPENDENT）"
+                    "与 **非派生**（非 EARLY_SIGNAL 派生结构）。"
+                )
             ),
             "note": (
-                "**N ≥ 5 ≠ 自动进入 Timeline。** 门槛保持与 v0.1 连续，不为了增加 TIMELINE_CANDIDATE 数量而放宽。"
-                "事件类型候选一律不得成为 TIMELINE_CANDIDATE。"
+                (
+                    "**N ≥ 5 ≠ 自动进入 Timeline。** 门槛保持与 v0.1 连续，不为了增加 TIMELINE_CANDIDATE 数量而放宽。"
+                    "事件类型候选一律不得成为 TIMELINE_CANDIDATE。"
+                )
+                if not DERIVATION_GATE
+                else (
+                    "**N ≥ 5 ≠ 自动进入 Timeline。** 门槛保持与 v0.1 连续，不为了增加 TIMELINE_CANDIDATE 数量而放宽。"
+                    "事件类型候选一律不得成为 TIMELINE_CANDIDATE。"
+                    "v0.4 起新增**派生结构门**：时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释"
+                    "（残差 ≤ 21 天）的结构属派生结果，不含额外时间信息 → 降级为 EXPLORATORY。"
+                    "该门只是把 `lifecycle_rhythm` 早已陈述的研究立场落进 Gate，**不是**新标准；"
+                    "方向为**收紧**（宁少不多），不制造 Pattern。"
+                )
             ),
         },
         "forbidden_fields": FORBIDDEN_FIELDS,
@@ -1894,10 +1987,7 @@ def build_artifact():
         "negative_control": neg,
         "multiple_testing": mt,
         "top01_regression": reg,
-        "lifecycle_rhythm": {
-            "rule_auto_summer": lifecycle_rhythm_analysis(anchors, _scope_by_id(scopes, "rule_auto_summer"), LC_STAGES),
-            "TH-AUTO": lifecycle_rhythm_analysis(anchors, _scope_by_id(scopes, "TH-AUTO"), LC_STAGES),
-        },
+        "lifecycle_rhythm": rhythm,
         "candidate_overlap": overlap,
         "scope_robustness": sr,
         "timeline_candidate_robustness": tcr,
@@ -2219,22 +2309,100 @@ def timeline_candidate_robustness(candidates, sr):
     }
 
 
-def annotate_effective_status(candidates, tcr):
-    """把口径稳健性结果回写到候选：脆弱者降级为 EXPLORATORY。
+def derivation_verdict(candidate, rhythm):
+    """判定候选是否为「EARLY_SIGNAL 派生结构」。
+
+    判据来源：`lifecycle_rhythm_analysis` 对**同一 scope** 的节奏分析 ——
+    某阶段的中心若可由「EARLY_SIGNAL 中心 + 中位滞后」解释（残差 ≤ 21 天），
+    则该阶段的时间聚集是 EARLY_SIGNAL 聚集的**派生结果**，不含额外时间信息。
+
+    规则（三值，避免过度断言）：
+
+        is_derived = True   候选 stage 标签中**所有非 EARLY_SIGNAL 阶段**都判定为派生
+        is_derived = False  至少一个阶段**明确**判定为非派生（残差 > 21 天）
+        is_derived = None   **无判定** → 不下结论、不降级
+
+    为何「所有阶段都派生」才算派生：过渡 `A->B` 的时间信息由两端共同决定；
+    只要有一端不是派生的，该过渡仍可能携带独立时间信息 → 不应降级。
+
+    ⚠️ **已知范围限制**：节奏分析只覆盖 export lifecycle 的 10 个阶段。
+    `PHASE_*`（DB `campaign_phases` 口径）与 `DB_*` 过渡**取不到判定** → 返回 None。
+    以「无证据不结论」处理，**不默认派生**。
+    """
+    if not rhythm:
+        return {"is_derived": None, "stage_verdicts": {}, "reason": "scope 无节奏分析"}
+    entry = rhythm.get(candidate.get("scope_id"))
+    if not entry or entry.get("status") != "OK":
+        return {
+            "is_derived": None,
+            "stage_verdicts": {},
+            "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        }
+    by_stage = {s["stage"]: s for s in (entry.get("stages") or [])}
+    stages = [
+        p.strip()
+        for p in str(candidate.get("lifecycle_stage") or "").split("->")
+        if p.strip()
+    ]
+    if not stages:
+        return {"is_derived": None, "stage_verdicts": {}, "reason": "候选无 lifecycle_stage"}
+
+    verdicts = {}
+    for st in stages:
+        if st == "EARLY_SIGNAL":
+            continue  # 基线本身不判派生
+        s = by_stage.get(st)
+        verdicts[st] = None if s is None else bool(s.get("derived_from_early_signal"))
+
+    if not verdicts:
+        return {"is_derived": None, "stage_verdicts": {}, "reason": "候选仅含 EARLY_SIGNAL 阶段"}
+    if any(v is None for v in verdicts.values()):
+        return {
+            "is_derived": None,
+            "stage_verdicts": verdicts,
+            "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        }
+    return {
+        "is_derived": all(verdicts.values()),
+        "stage_verdicts": verdicts,
+        "reason": None,
+    }
+
+
+def annotate_effective_status(candidates, tcr, rhythm):
+    """把口径稳健性 + 派生结构两项检验结果回写到候选。
 
     保留原始 `promotion_status`（可审计「数值门槛结论」），另加
-    `effective_promotion_status`（经稳健性检验后的**最终**结论）。
+    `effective_promotion_status`（经两项检验后的**最终**结论）。
     两者不一致时必须记录原因，不得静默覆盖。
+
+    降级理由（优先级从高到低）：
+      1. `FRAGILE_SCOPE_DEPENDENT` —— 同一主题族两种 scope 定义给出不同判定
+      2. `DERIVED_FROM_EARLY_SIGNAL` —— 时间位置可由 EARLY_SIGNAL 中心 + 中位滞后解释
     """
     verdict = {d["pattern_id"]: d for d in tcr["detail"]}
     for c in candidates:
         v = verdict.get(c["pattern_id"])
         c["robustness_verdict"] = v["robustness_verdict"] if v else None
-        if c["promotion_status"] == "TIMELINE_CANDIDATE" and v and v["robustness_verdict"] == "FRAGILE_SCOPE_DEPENDENT":
+        if DERIVATION_GATE:
+            # 该字段仅在启用派生门时写入 —— 关闭后产物与 v0.3 逐字节一致
+            c["derivation_verdict"] = derivation_verdict(c, rhythm)
+        if c["promotion_status"] != "TIMELINE_CANDIDATE":
+            c["effective_promotion_status"] = c["promotion_status"]
+            c["effective_status_reason"] = None
+            continue
+        if v and v["robustness_verdict"] == "FRAGILE_SCOPE_DEPENDENT":
             c["effective_promotion_status"] = "EXPLORATORY"
             c["effective_status_reason"] = (
                 "通过数值门槛，但同一主题族的两种 scope 定义给出不同判定 → 结论依赖 2019 年是否入样"
                 "（该入样由 taxonomy 缺口决定，非有原则的筛选）→ 降级为 EXPLORATORY，不得进入 Timeline。"
+            )
+        elif DERIVATION_GATE and c["derivation_verdict"]["is_derived"] is True:
+            c["effective_promotion_status"] = "EXPLORATORY"
+            c["effective_status_reason"] = (
+                "通过数值门槛且口径稳健，但时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释"
+                "（残差 ≤ 21 天）→ 属 EARLY_SIGNAL 聚集的**派生结果**，不含额外时间信息 → "
+                "降级为 EXPLORATORY，不得作为独立规律。"
             )
         else:
             c["effective_promotion_status"] = c["promotion_status"]
@@ -2307,6 +2475,15 @@ def validate_artifact(art):
             and c["robustness_verdict"] != "ROBUST"
         ):
             issues.append("%s: effective TIMELINE_CANDIDATE 但稳健性判定非 ROBUST" % pid)
+        if DERIVATION_GATE:
+            dv = c.get("derivation_verdict")
+            if dv is None:
+                issues.append("%s: 启用派生门但缺少 derivation_verdict" % pid)
+            elif (
+                c["effective_promotion_status"] == "TIMELINE_CANDIDATE"
+                and dv.get("is_derived") is True
+            ):
+                issues.append("%s: effective TIMELINE_CANDIDATE 但派生判定为 True" % pid)
         if (
             c["effective_promotion_status"] != c["promotion_status"]
             and not c.get("effective_status_reason")
@@ -2433,15 +2610,19 @@ def main(argv):
     check_only = "--check" in argv
     do_print = "--print" in argv
 
-    if "--legacy-direct-resolution" in argv:
-        set_legacy_direct_resolution(True)
-
     if "--round" in argv:
         i = argv.index("--round")
         if i + 1 >= len(argv):
-            print("FAIL —— --round 需要参数，例如：--round 0.2")
+            print("FAIL —— --round 需要参数，例如：--round 0.3")
             return 1
-        set_round(argv[i + 1])
+        set_round(argv[i + 1])  # 会一并恢复该轮的口径档案
+
+    # 单项覆盖：在轮次档案之后应用，故优先级高于档案（仅用于实验，不用于正式轮次）
+    if "--legacy-direct-resolution" in argv:
+        set_legacy_direct_resolution(True)
+
+    if "--legacy-no-derivation-gate" in argv:
+        set_derivation_gate(False)
 
     art = build_artifact()
     issues = validate_artifact(art)
