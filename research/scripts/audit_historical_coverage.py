@@ -65,6 +65,12 @@ EXPORT_PATH = os.path.join(ROOT, "exports", "timeline_export_v1.json")
 DB_PATH = os.path.join(ROOT, "research", "database", "cycle_research.db")
 CURRENT_CANDIDATES = os.path.join(ROOT, "research", "current", "current_candidates.json")
 REPORTS_DIR = os.path.join(ROOT, "research", "research", "reports")
+
+# canonical Macro Theme 解析（单一事实来源；与 discover_time_observation_patterns.py 共用）
+_SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPTS_DIR)
+import theme_taxonomy  # noqa: E402
 OUT_JSON = os.path.join(REPORTS_DIR, "historical_coverage_matrix_v0_1.json")
 OUT_CSV = os.path.join(REPORTS_DIR, "historical_coverage_matrix_v0_1.csv")
 
@@ -427,22 +433,14 @@ def dataset_inventory(cur, export):
 
 
 def build_theme_index(cur):
-    """构建 theme_id → macro_theme_id 映射（沿 parent 链上溯）。"""
-    rows = q(cur, "SELECT theme_id, name, theme_type, parent_theme_id FROM themes")
-    parent = {r[0]: r[3] for r in rows}
-    name = {r[0]: r[1] for r in rows}
-    macro = {r[0]: r[0] for r in rows if r[3] is None}
+    """构建 theme_id → macro_theme_id 映射（canonical CMTR v1：沿 parent 链上溯）。
 
-    def root(tid):
-        seen = set()
-        while tid is not None and tid not in seen:
-            seen.add(tid)
-            if parent.get(tid) is None:
-                return tid
-            tid = parent.get(tid)
-        return None
-
-    return {r[0]: root(r[0]) for r in rows}, name, parent
+    **与 `discover_time_observation_patterns.py` 共用同一实现**（`theme_taxonomy.py`），
+    避免「resolved vs direct」两套口径再次分叉。本函数保持原返回契约
+    （`(root_map, name_map, parent_map)`），因此审计输出与重构前逐字节一致。
+    """
+    tax = theme_taxonomy.load_from_cursor(cur)
+    return tax.root_map(), tax.name_map(), tax.parent_map()
 
 
 def macro_theme_matrix(cur, export):

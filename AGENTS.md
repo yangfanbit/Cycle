@@ -126,6 +126,29 @@
     **① Timeline → ② 当前时间研究导航 → ③ 历史相似阶段 → ④ 历史同期（日历）**。
   **不做**预测 / 荐股 / 交易信号 / 评分 / 概率 / 实时数据。
 
+### Research 侧口径约定：Canonical Macro Theme Resolution v1（CMTR v1）
+
+> **任何 Research 脚本判定「对象属于哪个 Macro Theme」时，必须使用唯一实现
+> `research/scripts/theme_taxonomy.py`。禁止再写第二份口径。**
+
+```
+对象 Macro Theme = themes[] 名称 → DB `themes` 表归一化为 theme_id
+                 → 沿 parent_theme_id 上溯至根 → 根节点集合
+```
+
+- **已废止 `direct`（Macro Theme 名称字面出现在 `themes[]` 中）口径** ——
+  它会把「只登记子主题」的对象误判为无 Macro Theme（实测影响 4 个对象）。
+- `status ∈ {RESOLVED, CONFLICT, UNRESOLVED_NAME, NO_THEME}`；
+  **未解析名称不静默丢弃**，一律进 `unmatched_theme_names`；`CONFLICT` **不可归属、不得任选其一**。
+- **只读**：本解析**不修改**任何数据，**不发明 taxonomy 行**，**不改变**锚点定义与统计量。
+- **回归证明方式**（改口径后必须做）：
+  `discover_time_observation_patterns.py --round 0.2 --legacy-direct-resolution --check`
+  → 与历史轮次产物**逐字节比对**，证明除口径外零行为变化。
+
+**Research 产物换行符约定**：`.gitattributes` 对 `research/**` · `exports/**` · `contracts/**`
+声明 `-text`（禁用 EOL 转换）。原因：仓库 `core.autocrlf=true`，否则全新克隆会把 LF 改写为 CRLF，
+使所有研究脚本的 `--check` **逐字节校验必然失败**。
+
 阶段全景见 `docs/ROADMAP.md`。下一个唯一目标见 `docs/PROJECT_STATE.md`「Next Single Goal」。
 
 ---

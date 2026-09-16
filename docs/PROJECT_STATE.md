@@ -181,6 +181,15 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
 - 研究状态分布：`PROVISIONAL 9 / CONFLICT 1`。
 - Research Candidates：`RC-2023-HUAWEI`、`RC-2024-SECONDARY`、`RC-2020-PANDEMIC`、`RC-2021-TCM`
   （永不 verified）。
+- **★ Canonical Macro Theme Resolution v1（CMTR v1，2026-09-16）**：
+  对象 Macro Theme = `themes[]` 名称 → DB `themes` 表归一化 → 沿 `parent_theme_id` 上溯至根。
+  **唯一实现** = `research/scripts/theme_taxonomy.py`（`discover_time_observation_patterns.py`
+  与 `audit_historical_coverage.py` 共用）。**已废止 `direct`（字面名称匹配）口径**。
+  - 实测：`TH-AUTO` 7 → **9** 成员；`TH-PHARMA` 1 → **3** 成员。
+  - 解析状态：`RESOLVED` 12 / `CONFLICT` 0 / `UNRESOLVED_NAME` 1（`RC-2023-HUAWEI` 的「华为汽车」，
+    即 DEFER 项 `F7`）/ `NO_THEME` 0。
+  - 收益：v0.2 的 5 对「口径脆弱」**全部归零**；两种 scope 口径下的 TOP-01 变体**收敛为同一样本集合**。
+  - 边界：`theme_taxonomy.py` **只读** `themes` 表；**不发明 taxonomy 行**，未解析名称一律显式上报。
 - 结论：**"6–8 月汽车" = 历史观察窗口（Historical Observation Window），
   Partially Supported，非固定买入窗口**。
   （见 `research/research/summary/auto_2018_2025_final_review.md`）
@@ -322,25 +331,48 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
   **空态仍可用**（数据集显式 `candidates: []` 时），已有独立测试覆盖。
 - `Sentiment` driver 在研究数据中**没有来源** → 永不出现（不编造）。
 
+### Research 侧数据瓶颈（`Historical Coverage Audit v0.1` 实测）
+
+- `theme_family_count` **上限 = 2** → **跨族稳健性检查当前不可能通过**（数据问题，非算法问题）。
+- 当前侧声明 4 个 Macro Theme，历史侧仅 2 个 → **3 个主题（电力设备 / 信息通信 / 高端装备）无历史可类比**。
+- 生命周期仅 **3 / 13** 对象 COMPLETE；`THEME_FORMING` / `BROAD_CONFIRMATION` 覆盖仅 **46%**。
+- 事件 `NOT_AVAILABLE` **7 类**；证据 `company` / `capital` **各 0 条**；核验日期 **0 / 24**。
+- **Time Observation v0.3 结论**：独立稳健时间结构**仍只有 1 个**（汽车族 EARLY_SIGNAL 上半年末窗口）。
+  第 2 个「独立结构」（`MAIN_RISE`）经 `lifecycle_rhythm` 判定为**派生结果**（残差 1 天）。
+
 ---
 
 ## Next Single Goal
 
-> **Phase 7.2 已完成「什么时候值得看」这一层。下一步唯一一件事：人工核验该 Pattern 的 7 个锚点日期。**
->
-> 具体动作（只做这一件）：核验 TOP-01（汽车主题上半年末启动观察窗口）的 7 个研究观察起点日期 ——
-> 2019-08-15（弱事件锚点）、2020-06-01、2021-06-01、2022-04-27（政策锚点）、2023-06-12、
-> 2024-06-11、2025-06-22，把 `campaign_date_observations.verification_method` 从 `unknown`
-> 推进到行情核验，并在 `research/current/` 或 `research/research/reports/` 记录核验结果。
->
-> **理由**：这是当前提升观察层可信度**性价比最高**的一步 —— 数据质量直接决定
-> 「探索性」标记能否去掉，也决定下一阶段（Structural Historical Analogy）是否有可靠底座。
->
-> Review 通过后，再按 `research/current/README.md` §10 回填 5 个 `CC-*` 候选的后续观测。
-> **在此之前不新增功能、不新增行业、不改模型、不改产品代码。**
->
-> 并行的用户 Review：请在实际使用中判断「时间型观察层」是否真的帮你确定了
-> 「历史上这个时段值得看什么」，而不是「该买什么」。
+> **Canonical Macro Theme Resolution 已完成、口径已稳定（v0.3 回归 PASS，口径脆弱配对 5 → 0）。**
+> **下一步唯一一件事：对齐 Promotion Gate 的「派生结构」判定。**
+
+**背景（本轮新发现）**：v0.3 的 `effective TIMELINE_CANDIDATE` 为 4 条 / **2 个样本独立结构**，
+但本脚本 `lifecycle_rhythm` 明确把第 2 个结构（`MAIN_RISE`，中心 06-22）标为
+`derived_from_early_signal = true` —— 其中心可由「EARLY_SIGNAL 中心（06-11）+ 中位滞后（10 d）」
+几乎精确解释（**残差 1 天**）。
+
+而 **`derived_from_early_signal` 目前只出现在 `lifecycle_rhythm` 报告里，未被 Promotion Gate 使用** ——
+v0.2 中 `TOPC-021` 被降级的原因是「脆弱」而非「派生」；脆弱消除后它自动升为 `TIMELINE_CANDIDATE`。
+
+**要做的（只做这一件）**：决定并实现「`derived_from_early_signal = true` 是否作为 Promotion Gate 的降级理由」，
+使 `lifecycle_rhythm` 的研究立场与 Promotion Gate **口径一致**，并重跑 v0.3 → 记录 diff。
+
+> **注意：这是规则变更，不是数据变更。** v0.2 报告 §8.1 已陈述立场
+> 「这三者全部是 EARLY_SIGNAL 的派生结果 …… 即使口径稳健，也不构成独立规律」——
+> 本轮动作是**把已陈述的研究立场落进 Gate**，**不是**发明新标准，也**不是**为压数量而收紧。
+> 必须显式记录「改前 / 改后」两个结论，**不得静默覆盖**。
+
+**预期结论**：独立稳健时间结构 = **1 个**（与 v0.2 的实质结论一致，符合「宁少不多」）。
+
+**之后（同一序列，不同轮次）**：
+1. **Wave 1 数据扩容**（`Historical_Coverage_Audit_v0_1.md` §12）：
+   P0 电力设备 / P0 信息通信历史 Cycle（修复「当前侧有候选、历史侧无 Cycle」的已存在断裂）；
+   P1 统一 `evidences.evidence_type` 口径；P1 补全 2018–2025 交易日历。
+2. `Historical Coverage Audit` 升级为 v0.2（消费 v0.3 候选池）。
+3. `F7`（`华为汽车` taxonomy 缺口）—— 随扩容一并处理，属**数据决策**。
+
+**在此之前不新增功能、不新增行业、不改产品代码、不改 DB 数据。**
 
 用户视觉 / 交互 Review（Phase 7.1）可同时进行：
 

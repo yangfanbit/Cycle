@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""discover_time_observation_patterns.py —— Time Observation Discovery v0.2（全量历史扫描）。
+"""discover_time_observation_patterns.py —— Time Observation Discovery v0.3（全量历史扫描）。
 
 ## 这个脚本是什么
 
@@ -9,11 +9,26 @@
 
      exports/timeline_export_v1.json  +  research/database/cycle_research.db   （只读输入）
                           ↓  本脚本（discover 模式，只读）
-     research/research/reports/time_observation_candidate_pool_v0_2.json       （候选池）
-     research/research/reports/time_observation_candidate_pool_v0_2.csv        （人工浏览）
+     research/research/reports/time_observation_candidate_pool_v0_3.json       （候选池）
+     research/research/reports/time_observation_candidate_pool_v0_3.csv        （人工浏览）
 
 **这不是产品集成**：结果不进入 `src/`、不进入 Timeline、不进入 DB / schema.sql / canonical export / contracts。
 `RESEARCH_ONLY` 与 `REJECTED` 一律不得进入 Timeline。
+
+## v0.3 相对 v0.2 的唯一变化：canonical Macro Theme Resolution
+
+v0.2 用 `direct` 口径（Macro Theme 名称是否**字面出现**在 `themes[]` 中）判定对象所属主题族；
+v0.3 改用 canonical `resolved` 口径（`themes[]` 名称 → DB `themes` 表归一化 →
+沿 `parent_theme_id` 上溯至根），实现见 `research/scripts/theme_taxonomy.py`。
+
+- **动机**：`Historical_Coverage_Audit_v0_1.md` §2.2(d) 确认两种口径不等价，
+  影响 4 个对象（`C-2019-AD` / `RC-2024-SECONDARY` / `RC-2020-PANDEMIC` / `RC-2021-TCM`），
+  并指出这正是 v0.2 中 3 条候选被判「口径脆弱」的根本原因。
+- **影响面**：仅 `theme_family_id` / `theme_family_count` / `theme_cycle_count` 等**归属与独立性指标**。
+  锚点定义、窗口、集中度、复现率等**统计量一律不变**；TOP-01 走 `RULE` scope，不受影响。
+- **未解析名称**不静默丢弃：`theme_resolution.unmatched_theme_names` 显式上报
+  （当前唯一缺口 = `华为汽车`，即 `MEMORY.md` 已登记的 DEFER 项 `F7`）。
+- **历史轮次可复现**：`--round 0.2` 可重新生成 v0.2 产物用于逐字节回归比对。
 
 ## 与 v0.1 / Phase 7.2 的关系
 
@@ -72,6 +87,7 @@
     python research/scripts/discover_time_observation_patterns.py            # 生成
     python research/scripts/discover_time_observation_patterns.py --check     # 校验逐字节一致
     python research/scripts/discover_time_observation_patterns.py --print     # 生成并打印摘要
+    python research/scripts/discover_time_observation_patterns.py --round 0.2 # 复现历史轮次（回归比对）
 
 退出码: 0 = 通过；1 = 自检 / TOP-01 回归失败（**不写文件**）。
 """
@@ -91,12 +107,46 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 EXPORT_PATH = os.path.join(ROOT, "exports", "timeline_export_v1.json")
 DB_PATH = os.path.join(ROOT, "research", "database", "cycle_research.db")
 REPORTS_DIR = os.path.join(ROOT, "research", "research", "reports")
-OUT_JSON = os.path.join(REPORTS_DIR, "time_observation_candidate_pool_v0_2.json")
-OUT_CSV = os.path.join(REPORTS_DIR, "time_observation_candidate_pool_v0_2.csv")
+DEFAULT_ROUND = "0.3"
+
+
+def _artifact_paths(round_):
+    tag = "v" + round_.replace(".", "_")
+    return (
+        os.path.join(REPORTS_DIR, "time_observation_candidate_pool_%s.json" % tag),
+        os.path.join(REPORTS_DIR, "time_observation_candidate_pool_%s.csv" % tag),
+    )
+
+
+OUT_JSON, OUT_CSV = _artifact_paths(DEFAULT_ROUND)
 
 SNAPSHOT_DATE = "2026-09-16"
-RULESET_VERSION = "time-observation-discovery-0.2"
-ARTIFACT_VERSION = "0.2"
+ARTIFACT_VERSION = DEFAULT_ROUND
+RULESET_VERSION = "time-observation-discovery-" + DEFAULT_ROUND
+
+
+def set_round(round_):
+    """切换产物轮次（`--round 0.2` 可复现历史轮次，用于回归比对）。"""
+    global ARTIFACT_VERSION, RULESET_VERSION, OUT_JSON, OUT_CSV
+    ARTIFACT_VERSION = round_
+    RULESET_VERSION = "time-observation-discovery-" + round_
+    OUT_JSON, OUT_CSV = _artifact_paths(round_)
+
+
+# v0.2 的 `direct` 口径开关：**仅供历史轮次逐字节回归比对**，不得用于新研究。
+LEGACY_DIRECT_RESOLUTION = False
+
+
+def set_legacy_direct_resolution(flag):
+    global LEGACY_DIRECT_RESOLUTION
+    LEGACY_DIRECT_RESOLUTION = bool(flag)
+
+
+# canonical Macro Theme 解析（单一事实来源；见 research/scripts/theme_taxonomy.py）
+_SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPTS_DIR)
+import theme_taxonomy  # noqa: E402
 
 # ---------------------------------------------------------------- 枚举（有限集）
 
@@ -657,8 +707,29 @@ def db_all_themes(conn):
     ]
 
 
-def macro_theme_of(obj):
-    """对象所属 Macro Theme（`themes` 表中 parent_theme_id IS NULL 的题材）。"""
+def macro_theme_of(obj, tax):
+    """对象所属 Macro Theme —— **canonical 解析**（CMTR v1，见 `theme_taxonomy.py`）。
+
+    口径：`themes[]` 名称 → DB `themes` 表归一化为 theme_id → 沿 `parent_theme_id` 上溯至根。
+
+    **不再**使用 `direct`（Macro Theme 名称字面出现在 `themes[]` 中）口径 ——
+    该口径会把「只登记子主题」的对象误判为「无 Macro Theme」。
+    实测受影响对象 4 个：`C-2019-AD` / `RC-2024-SECONDARY` / `RC-2020-PANDEMIC` / `RC-2021-TCM`
+    （见 `Historical_Coverage_Audit_v0_1.md` §2.2(d)）。
+
+    `CONFLICT`（跨 Macro Theme）返回 None —— 不可归属，不得任选其一。
+    """
+    if LEGACY_DIRECT_RESOLUTION:
+        return _legacy_direct_macro_theme_of(obj)
+    return tax.macro_theme_id_of(obj)
+
+
+def _legacy_direct_macro_theme_of(obj):
+    """v0.2 的 `direct` 口径（**已废弃**，仅保留用于历史轮次回归比对）。
+
+    判定方式：Macro Theme 名称是否**字面出现**在对象的 `themes[]` 中。
+    该口径会把只登记子主题的对象误判为「无 Macro Theme」。
+    """
     names = {t.get("name") for t in (obj.get("themes") or [])}
     for disp, meta in THEME_FAMILY_BY_SCOPE.items():
         if meta["display_name"] in names:
@@ -673,7 +744,7 @@ def sub_theme_names(obj):
 # ================================================================ 数据集构建
 
 
-def build_objects(export):
+def build_objects(export, tax):
     """全量对象（Campaign + Research Candidate）。"""
     objs = []
     for kind, key in (("campaign", "campaigns"), ("research_candidate", "research_candidates")):
@@ -681,6 +752,14 @@ def build_objects(export):
             cid = o.get("campaign_id")
             if not cid:
                 continue
+            res = tax.resolve_object(o)
+            if LEGACY_DIRECT_RESOLUTION:
+                _m = _legacy_direct_macro_theme_of(o)
+                fam_ids = [_m] if _m else []
+                fam_status = "LEGACY_DIRECT"
+            else:
+                fam_ids = res["macro_theme_ids"]
+                fam_status = res["status"]
             objs.append(
                 {
                     "kind": kind,
@@ -689,7 +768,9 @@ def build_objects(export):
                     "year": o.get("year"),
                     "rule_id": o.get("rule_id"),
                     "theme_cycle_id": o.get("theme_cycle_id"),
-                    "theme_family_id": macro_theme_of(o),
+                    "theme_family_id": fam_ids[0] if len(fam_ids) == 1 else None,
+                    "theme_family_ids": fam_ids,
+                    "theme_resolution": fam_status,
                     "theme_names": sub_theme_names(o),
                     "research_status": o.get("research_status"),
                     "lifecycle": o.get("lifecycle") or [],
@@ -1588,6 +1669,7 @@ def build_artifact():
         annual = db_annual(conn)
         macro_themes = db_macro_themes(conn)
         themes = db_all_themes(conn)
+        tax = theme_taxonomy.load(conn)
     finally:
         conn.close()
 
@@ -1599,7 +1681,15 @@ def build_artifact():
                 % (meta["theme_family_id"], meta["display_name"], macro_themes)
             )
 
-    objs = build_objects(export)
+    # canonical Macro Theme 解析报告（CMTR v1）
+    _objs_for_res = []
+    for kind, key in (("campaign", "campaigns"), ("research_candidate", "research_candidates")):
+        for o in export.get(key) or []:
+            if o.get("campaign_id"):
+                _objs_for_res.append(dict(o, kind=kind))
+    theme_resolution = theme_taxonomy.resolution_report(tax, _objs_for_res)
+
+    objs = build_objects(export, tax)
     anchors = build_anchor_records(objs)
     transitions = build_transition_records(objs)
     db_starts, db_trans = build_db_phase_records(objs, phases)
@@ -1676,7 +1766,7 @@ def build_artifact():
         "generated_at": SNAPSHOT_DATE,
         "snapshot_date": SNAPSHOT_DATE,
         "generated_by": "research/scripts/discover_time_observation_patterns.py",
-        "research_round": "time-observation-discovery-v0.2",
+        "research_round": "time-observation-discovery-v%s" % ARTIFACT_VERSION,
         "contract_note": (
             "Research Candidate Pool —— **不是** Timeline Database，**不是**产品 schema。"
             "不进入 src/ / DB / schema.sql / timeline_export_v1.json / contracts。"
@@ -1711,6 +1801,7 @@ def build_artifact():
             "export_source_commit": export.get("source_commit"),
             "research_db": "research/database/cycle_research.db",
         },
+        "theme_resolution": theme_resolution,
         "scan_scope": {
             "years": "2018-01-01 ~ 2025-12-31",
             "years_observed": sorted({o["year"] for o in objs if o["year"]}),
@@ -1759,6 +1850,13 @@ def build_artifact():
             "theme_family_independence": (
                 "同时记录 theme_family_count（Macro Theme 数）、theme_cycle_count（独立 Theme Cycle 数）"
                 "与 campaign_count（独立 Campaign 数）。"
+            ),
+            "macro_theme_resolution": (
+                "canonical CMTR v1（research/scripts/theme_taxonomy.py）：对象 Macro Theme = "
+                "themes[] 名称 → DB themes 表归一化 → 沿 parent_theme_id 上溯至根。"
+                "**不使用** direct（Macro Theme 名称字面匹配）口径 —— 该口径会把只登记子主题的对象"
+                "（C-2019-AD / RC-2024-SECONDARY / RC-2020-PANDEMIC / RC-2021-TCM）误判为无 Macro Theme。"
+                "未解析名称一律显式上报（见 theme_resolution.unmatched_theme_names），不静默丢弃。"
             ),
             "absolute_vs_relative": (
                 "同时计算绝对日序与相对春节 / 国庆 / 五一的偏移，判定 ABSOLUTE_CALENDAR vs EVENT_RELATIVE 谁更有解释力。"
@@ -1826,6 +1924,10 @@ def build_artifact():
         },
         "candidates": candidates,
     }
+    if LEGACY_DIRECT_RESOLUTION:
+        # v0.2 产物不含这两处；删除以保证历史轮次逐字节可复现
+        artifact.pop("theme_resolution", None)
+        artifact["method"].pop("macro_theme_resolution", None)
     return artifact
 
 
@@ -1965,7 +2067,7 @@ def overlap_groups(candidates, threshold=0.5):
 
 
 # scope 变体对：**同一主题族**在两种 scope 定义下的呈现。
-# 这两对的唯一差别是 C-2019-AD 未挂接 Macro Theme（taxonomy 缺口）→ rule 含 2019、Macro Theme 不含。
+# v0.3 起 Macro Theme 归属改用 canonical CMTR v1（theme_taxonomy.py）→ 两侧成员集合应当一致。
 SCOPE_VARIANT_PAIRS = [
     ("rule_auto_summer", "TH-AUTO"),
     ("rule_pharma_upgrade", "TH-PHARMA"),
@@ -1978,10 +2080,13 @@ def scope_robustness(candidates):
     只比较 `SCOPE_VARIANT_PAIRS`（rule ↔ 对应 Macro Theme），不比较跨族或 ALL ——
     跨族样本本来就不同，比较它们会把「天然不同」误判为「不一致」。
 
-    数据集中 `rule_auto_summer` 与 Macro Theme「汽车」的唯一差别是：
-    C-2019-AD 未挂接 Macro Theme（taxonomy 缺口），因此被 TH-AUTO 排除。
-    若两者结论不一致，说明该候选的判定**依赖单一年份是否入样**，
-    而入样与否由 taxonomy 缺口决定、而非有原则的规则 → 判定脆弱，必须降级。
+    v0.2 历史背景：当时 Macro Theme 归属用 `direct`（字面名称匹配）口径，
+    `C-2019-AD` 因未挂接 Macro Theme 被 TH-AUTO 排除 → 两侧成员不同（rule 含 2019、TH-AUTO 不含），
+    导致 5 对判定不一致。v0.3 改用 canonical `resolved` 口径后该缺口消失。
+
+    因此本检验在 v0.3 的语义变为**回归检验**：
+    - `fragile_pairs == 0` → 两种 scope 定义对同一主题族给出一致结论（期望结果）
+    - 若再次出现不一致 → 说明又引入了新的口径分歧，**必须**记录并降级，不得静默通过
     """
     sets = {
         c["pattern_id"]: {(r.get("campaign_id") or r.get("event_id"), r["anchor_date"]) for r in c["source_records"]}
@@ -2033,8 +2138,10 @@ def scope_robustness(candidates):
         "detail": out,
         "note": (
             "只比较 `SCOPE_VARIANT_PAIRS`（rule ↔ 对应 Macro Theme）。"
-            "`rule_auto_summer` 与 Macro Theme「汽车」的唯一差别是 C-2019-AD 的 taxonomy 挂接缺口；"
-            "两者结论不一致 = 判定由「2019 年是否入样」决定，而这不是有原则的筛选规则。"
+            "v0.3 起 Macro Theme 归属改用 canonical CMTR v1（theme_taxonomy.py）→ 两侧成员集合一致，"
+            "本检验语义为**回归检验**：`fragile_pairs == 0` 为期望结果；"
+            "若再次出现不一致，说明引入了新的口径分歧，必须记录并降级。"
+            "（v0.2 曾因 C-2019-AD 的 taxonomy 挂接缺口产生 5 对脆弱，v0.3 已消除。）"
         ),
     }
 
@@ -2202,6 +2309,38 @@ def validate_artifact(art):
             if r.get("anchor_date") and parse_iso(r["anchor_date"]) is None:
                 issues.append("%s: 来源记录日期非法 %s" % (pid, r["anchor_date"]))
 
+    # canonical Macro Theme 解析自检（CMTR v1）；legacy 口径下不适用
+    tr = art.get("theme_resolution")
+    if LEGACY_DIRECT_RESOLUTION and tr is not None:
+        issues.append("legacy 口径下不应输出 theme_resolution")
+    elif not LEGACY_DIRECT_RESOLUTION and not tr:
+        issues.append("缺少 theme_resolution（canonical Macro Theme 解析报告）")
+    elif tr:
+        if tr.get("ruleset") != theme_taxonomy.RULESET:
+            issues.append("theme_resolution.ruleset 与 theme_taxonomy 不一致")
+        if sum(tr["counts_by_status"].values()) != len(tr["objects_resolved"]):
+            issues.append("theme_resolution.counts_by_status 与 objects_resolved 数量不一致")
+        declared = {m["theme_id"] for m in tr["macro_themes"]}
+        for r in tr["objects_resolved"]:
+            cid = r["campaign_id"]
+            if r["status"] not in theme_taxonomy.STATUSES:
+                issues.append("%s: theme_resolution.status 不在枚举内" % cid)
+            if r["status"] == "RESOLVED" and len(r["macro_theme_ids"]) != 1:
+                issues.append("%s: RESOLVED 但 Macro Theme 数 != 1" % cid)
+            if r["status"] == "CONFLICT" and len(r["macro_theme_ids"]) < 2:
+                issues.append("%s: CONFLICT 但 Macro Theme 数 < 2" % cid)
+            if r["status"] == "UNRESOLVED_NAME" and r["macro_theme_ids"]:
+                issues.append("%s: UNRESOLVED_NAME 但已解析出 Macro Theme" % cid)
+            for m in r["macro_theme_ids"]:
+                if m not in declared:
+                    issues.append("%s: 解析出未声明的 Macro Theme %s" % (cid, m))
+        # 未解析名称不得静默丢弃：报告索引必须覆盖所有对象级 unmatched_names
+        idx = tr["unmatched_theme_names"]
+        for r in tr["objects_resolved"]:
+            for nm in r["unmatched_names"]:
+                if r["campaign_id"] not in idx.get(nm, []):
+                    issues.append("%s: 未解析名称 %s 未进入 unmatched_theme_names 索引" % (r["campaign_id"], nm))
+
     if art["top01_regression"]["status"] != "PASS":
         issues.append("TOP-01 回归检查未通过：%s" % art["top01_regression"])
 
@@ -2285,6 +2424,16 @@ def main(argv):
     check_only = "--check" in argv
     do_print = "--print" in argv
 
+    if "--legacy-direct-resolution" in argv:
+        set_legacy_direct_resolution(True)
+
+    if "--round" in argv:
+        i = argv.index("--round")
+        if i + 1 >= len(argv):
+            print("FAIL —— --round 需要参数，例如：--round 0.2")
+            return 1
+        set_round(argv[i + 1])
+
     art = build_artifact()
     issues = validate_artifact(art)
     if issues:
@@ -2328,7 +2477,7 @@ def _print_summary(art):
     ss = art["scan_scope"]
     sm = art["scan_map"]
     print("=" * 78)
-    print("Time Observation Discovery v0.2 —— 全量历史扫描完成")
+    print("Time Observation Discovery v%s —— 全量历史扫描完成" % ARTIFACT_VERSION)
     print("=" * 78)
     print("Dataset")
     print("  Theme Cycles :", len(ss["theme_cycles_scanned"]))

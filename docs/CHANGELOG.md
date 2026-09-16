@@ -7,6 +7,90 @@
 
 ---
 
+## 2026-09-16 · Research · Canonical Macro Theme Resolution + Time Observation v0.3 回归
+
+**接管基线审计 + Git 收口 + 口径统一 + 回归验证。** 本轮**只做一件事**：
+消除 `direct` 与 `resolved` 两种 Macro Theme 解析口径，并验证其对时间结构扫描的影响。
+**不扩大研究范围、不改数据、不碰 Product。**
+
+### 0 · Repository Baseline Audit（先审计，不直接开发）
+
+- `HEAD = origin/main = 183c0d4`，**已跟踪工作树干净**（无 staged / unstaged 改动）。
+- **未提交**：4 个 `Historical Coverage Audit v0.1` 产物 → 本轮收口。
+- **无丢失工作**：悬挂 commit `053d8ee` 与 `630d311` 逐字节相同；`38675c0` 已通过 merge `a7444e0` 进入 HEAD 历史。
+- `tsconfig.json` / `vite.config.ts` 完整且已跟踪；v0.2 的 4 个必需 Research 文件均在 `183c0d4` 已提交。
+
+### 1 · Git 收口（2 个提交，均未用 `git add -A`）
+
+- `262cf7b` `research: Historical Coverage Audit v0.1` —— 4 个文件，显式路径 add。
+- `9580593` `chore(git): 加 .gitattributes` —— **修复一个真实复现性隐患**：
+  仓库 `core.autocrlf=true` 且无 `.gitattributes` → 全新克隆会把 LF 改写为 CRLF，
+  使所有研究脚本的 `--check` **必然失败**（破坏「逐字节一致」红线），
+  并可能损坏 `research/database/cycle_research.db`。
+  对 `research/**` · `exports/**` · `contracts/**` 声明 `-text`；`git check-attr` 验证生效，`src/` 不受影响，**零 churn**。
+
+### 2 · ★ Canonical Macro Theme Resolution v1（CMTR v1）
+
+- 新增 **`research/scripts/theme_taxonomy.py`** —— canonical 解析的**单一事实来源**：
+
+     对象 Macro Theme = themes[] 名称 → DB themes 表归一化 → 沿 parent_theme_id 上溯至根
+
+- **废止 `direct`（字面名称匹配）口径**。该口径会把「只登记子主题」的对象误判为无 Macro Theme，
+  实测影响 4 个对象（`C-2019-AD` / `RC-2024-SECONDARY` / `RC-2020-PANDEMIC` / `RC-2021-TCM`）。
+- `status ∈ {RESOLVED, CONFLICT, UNRESOLVED_NAME, NO_THEME}`；**未解析名称不静默丢弃**，
+  一律进入 `unmatched_theme_names` 索引。`CONFLICT` **不可归属、不得任选其一**。
+- `discover_time_observation_patterns.py` 与 `audit_historical_coverage.py` **共用同一实现**（消除第二份口径）。
+- **解析结果**：`RESOLVED` 12 / `CONFLICT` 0 / `UNRESOLVED_NAME` 1 / `NO_THEME` 0。
+  `TH-AUTO` 7 → **9** 成员；`TH-PHARMA` 1 → **3** 成员。
+
+### 3 · ★ 零行为变化证明
+
+保留 legacy `direct` 开关，并验证：
+
+```bash
+python research/scripts/discover_time_observation_patterns.py \
+       --round 0.2 --legacy-direct-resolution --check   # → PASS 逐字节一致
+```
+
+> **证明：重构是行为中性的。** v0.2 → v0.3 的**全部**差异都只可能来自 Macro Theme 归属口径。
+
+### 4 · Time Observation Discovery v0.3（回归结果）
+
+- 新产物 `time_observation_candidate_pool_v0_3.json` / `.csv` + 报告 `Time_Observation_Discovery_v0_3.md`。
+  **v0.2 产物保留未删**，作为口径修复前的可比基线。
+- **★ 口径稳健性：5 对脆弱 → 0**（50 / 50 全部一致）。v0.2 §6.2 指出的「判定依赖 2019 年是否入样」
+  被证实**完全由数据挂接缺口造成**，不是真实结构差异。
+- **★ 口径变体收敛**：`TOPC-001`（TH-AUTO）与 `TOPC-018`（rule）`member_signature` **完全相同**
+  （`dd26a9ac86f1`）→ v0.2 §7.2 的警告「不得用剔掉 2019 后集中度更高作为 TOP-01 更强的证据」
+  **被结构性消除**（该「更优变体」已不存在）。
+- **TOP-01 回归 PASS**：N=7 / 中心 06-11 / 窗口 05-27~06-26 / 复现 5/7（走 `RULE` scope，天然不受口径影响）。
+- `effective TIMELINE_CANDIDATE` 2 → 4；样本独立结构 1 → 2。**但**第 2 个结构（`MAIN_RISE`）
+  经 `lifecycle_rhythm` 判定为 **EARLY_SIGNAL 的派生结果（残差 1 天）** →
+  **实质性独立稳健时间结构仍为 1 个**，**不得**表述为「发现 2 个规律」。
+- 25 / 191 个候选有变化，**全部可归因**到 4 组（TH-AUTO +1 成员 / TH-PHARMA +2 成员 /
+  `theme_family_count` 由 0 变正 / 口径脆弱消除）。
+- 副结果：`TH-PHARMA` 由 N=1（不可统计）升至 N=3，但全部仍 `REJECTED` —— **无新候选**。
+- **未决**（本轮不擅自改规则）：`derived_from_early_signal` 是否应进入 Promotion Gate 降级理由。
+
+### 5 · 门禁
+
+`npm test` **395/395**（10 文件）· `tsc -b` · `vite build` · 6 项 research `validate_*.py` ·
+`build_time_observation_patterns.py --check` · `discover_time_observation_patterns.py --check` ·
+`audit_historical_coverage.py --check` · `validate_monorepo_integrity` PASS(25)。
+
+### 边界
+
+```text
+schema changed        : NO
+export changed        : NO
+historical data changed: NO
+breaking change       : NO
+```
+
+未修改 `src/` / Timeline / `exports/` / `contracts/` / `schema.sql` / DB 数据行 / Product Artifact。
+
+---
+
 ## 2026-09-16 · Phase 7.3 Observation Credibility & Coverage（观察层可信度与覆盖）
 
 把 Phase 7.2 的观察层从「可运行的研究型原型」推进为**可信、可复现、产品语义清晰**的观察层。
