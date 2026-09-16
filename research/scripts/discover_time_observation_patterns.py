@@ -2136,12 +2136,21 @@ def scope_robustness(candidates):
         "robust_pairs": n_robust,
         "fragile_pairs": len(out) - n_robust,
         "detail": out,
+        # legacy 口径下必须输出 v0.2 的原文，否则历史轮次无法逐字节复现
         "note": (
-            "只比较 `SCOPE_VARIANT_PAIRS`（rule ↔ 对应 Macro Theme）。"
-            "v0.3 起 Macro Theme 归属改用 canonical CMTR v1（theme_taxonomy.py）→ 两侧成员集合一致，"
-            "本检验语义为**回归检验**：`fragile_pairs == 0` 为期望结果；"
-            "若再次出现不一致，说明引入了新的口径分歧，必须记录并降级。"
-            "（v0.2 曾因 C-2019-AD 的 taxonomy 挂接缺口产生 5 对脆弱，v0.3 已消除。）"
+            (
+                "只比较 `SCOPE_VARIANT_PAIRS`（rule ↔ 对应 Macro Theme）。"
+                "`rule_auto_summer` 与 Macro Theme「汽车」的唯一差别是 C-2019-AD 的 taxonomy 挂接缺口；"
+                "两者结论不一致 = 判定由「2019 年是否入样」决定，而这不是有原则的筛选规则。"
+            )
+            if LEGACY_DIRECT_RESOLUTION
+            else (
+                "只比较 `SCOPE_VARIANT_PAIRS`（rule ↔ 对应 Macro Theme）。"
+                "v0.3 起 Macro Theme 归属改用 canonical CMTR v1（theme_taxonomy.py）→ 两侧成员集合一致，"
+                "本检验语义为**回归检验**：`fragile_pairs == 0` 为期望结果；"
+                "若再次出现不一致，说明引入了新的口径分歧，必须记录并降级。"
+                "（v0.2 曾因 C-2019-AD 的 taxonomy 挂接缺口产生 5 对脆弱，v0.3 已消除。）"
+            )
         ),
     }
 
