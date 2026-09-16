@@ -1,0 +1,19 @@
+# ThreeC — 换行符与二进制保护
+#
+# 背景：本仓库 core.autocrlf=true。若不对研究产物显式禁用 EOL 转换，
+# 全新克隆（或任何 git 重新 checkout）会把 LF 改写成 CRLF，
+# 使所有研究脚本的 `--check` 逐字节校验**必然失败**，
+# 直接破坏「same input → same output 逐字节一致」的可复现性红线。
+#
+# 因此：Research 数据/脚本/产物 + 跨模块交换目录 + 研究数据库
+# 一律声明为不转换（-text = 不做 EOL 转换，也不做 text 归一化）。
+# 这同时保护 research/database/cycle_research.db 不被当作文本损坏。
+
+# ── Research 层：脚本 / 数据 / canonical 产物 / 研究数据库 ──
+research/**            -text
+
+# ── Research → Product 唯一交换目录（canonical export） ──
+exports/**             -text
+
+# ── 跨模块接口契约 ──
+contracts/**           -text
