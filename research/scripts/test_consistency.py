@@ -44,18 +44,41 @@ def test_formal_campaign_count():
     print("PASS: formal_campaign_count 与 report 一致")
 
 def test_unbound_evidence_legal():
-    """测试 unbound Evidence 合法"""
+    """测试 unbound Evidence 合法。
+
+    ── 金标准数字（golden counts）────────────────────────────────────
+    这些数字会随**合法的新研究**增长，不是永恒常量。增长时必须在此同步更新，
+    并在下方注释里记明「为什么涨」。
+
+        51 = 46 条 E-2023-* / E-2024-* 等原始证据（seed.py）
+           +  5 条 E-MED-* 医药健康 Minimum Dataset v0.1（ca43833）
+        44 = 39 + 5（上述 5 条医药证据亦已显式绑定）
+         7 = 不变量：unbound 未随医药 Pilot 变化
+
+    变更依据：`research/research/reports/Medical_Health_Data_Entry_v0_1_Audit.md`
+    （evidences 46 → 51）。该审计已记录变更，但本测试当时漏更新 —— 已补齐。
+
+    ── 判定顺序 ─────────────────────────────────────────────────────
+    先断言**不变量**（bound + unbound == total），再断言金标准数字。
+    不变量是「研究模型语义」的守卫；金标准数字是**漂移探测器**
+    （可捕捉证据被误删/误增）。
+    """
     conn = db.connect()
-    
+
     total = conn.execute("SELECT COUNT(*) FROM evidences").fetchone()[0]
     bound = conn.execute("SELECT COUNT(DISTINCT evidence_id) FROM campaign_evidences").fetchone()[0]
     unbound = total - bound
-    
-    assert total == 46, f"Total Evidence 应为 46，实际 {total}"
-    assert bound == 39, f"Campaign-bound Evidence 应为 39，实际 {bound}"
-    assert unbound == 7, f"Unbound Evidence 应为 7，实际 {unbound}"
+
+    # 1) 不变量：绑定 + 未绑定 = 总数；且未绑定必须存在（合法状态）
+    assert bound + unbound == total, \
+        f"不变量被破坏：bound({bound}) + unbound({unbound}) != total({total})"
     assert unbound > 0, "Unbound Evidence 应存在且合法"
-    
+
+    # 2) 金标准数字（漂移探测器）
+    assert total == 51, f"Total Evidence 应为 51，实际 {total}（新增证据时请同步更新本测试与注释）"
+    assert bound == 44, f"Campaign-bound Evidence 应为 44，实际 {bound}（新增证据时请同步更新本测试与注释）"
+    assert unbound == 7, f"Unbound Evidence 应为 7，实际 {unbound}"
+
     conn.close()
     print(f"PASS: unbound Evidence 合法 (total={total}, bound={bound}, unbound={unbound})")
 
