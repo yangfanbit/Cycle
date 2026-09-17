@@ -7,6 +7,106 @@
 
 ---
 
+## 2026-09-17 · Repo · Repository Recovery + Research Integration（仓库恢复与真相源统一）
+
+**性质：仓库工程变更，零业务功能、零研究结论、零数据变更。**
+**唯一目标：让「一个 Git / 一个根 / 一套 canonical Research / 一套 Product」重新成立。**
+
+### 0 · 触发与前置
+
+上一轮会话发生模型异常后，**独立 Research 项目被整体复制进本工作区**，造成：
+嵌套 `.git`、`research/` 下再套一份完整仓库、同名脚本 / 报告多版本、两套 memory。
+**恢复完成前禁止任何新业务功能开发。** 全部判断以「当前工作区 + 当前 Git + `origin/main` + 实际文件内容」
+为唯一事实来源，**不采信任何历史报告的自述**。
+
+### 1 · 取证结论（只读阶段）
+
+- `HEAD = origin/main = c968097`，ahead/behind `0/0`，`fsck` 无 error（5 dangling blob + 1 dangling commit，**未修未删**）。
+- **Phase 7.3 / 7.3.2 / Time Observation v0.2·v0.3·v0.4 / Historical Coverage Audit 全部在提交链中真实存在**，未被夸大。
+- **嵌套 Git**：`research/.git` = 同源旧克隆（reflog 仅 `clone: from .../Cycle.git`，HEAD `668a86a`，同一 remote）；
+  `rev-list --all`（62）是主仓库（72）的**真子集，独有提交 = 0** → 无历史丢失风险。
+
+### 2 · 重复文件清单（用 Git blob 指纹机械分类，**不靠文件名**）
+
+`research/` 下 475 文件 = 211 已跟踪 + **264 未跟踪**；成因是**整个仓库根目录被递归复制进 `research/`**
+（因此出现 `research/src|tests|docs|data|exports|contracts|.git`、`research/research/`、
+`research/research/research/`，以及 `X (2).ext` 重名指纹）。
+
+| 判定 | 数量 |
+|---|---:|
+| 与 canonical 逐字节相同 | 162 |
+| 与 canonical 仅换行不同（归一化后相同） | 248 |
+| **DUPLICATE_OUTDATED**（= 该路径某历史提交版本） | **11** |
+| **CONFLICTING**（内容在仓库任何对象中都不存在） | **0** |
+| 特殊项（3 个 `(2)` 冲突名 + 旧 memory + `.pyc`） | 5 |
+
+- 11 个 OUTDATED 均为 **HEAD 之前的旧版**：`docs/{CHANGELOG,PROJECT_STATE,ROADMAP}.md` · `tsconfig.json` ·
+  `vite.config.ts` · `src/{App.tsx,styles.css}` · `src/components/CurrentTimeLens/CurrentTimeLens.tsx` ·
+  `src/components/Timeline/Timeline.tsx` · `src/data/timeline/currentCandidate.ts` · `research/scripts/test_consistency.py`。
+- **Research 成果零丢失**：v0.1（Seasonal）· v0.2（legacy baseline，**保留不删**）· v0.3 · v0.4 ·
+  Historical Coverage Audit v0.1 —— **全部已在 Git 中**，无只存在于副本中的独有内容。
+- **Macro Theme / Promotion Gate 各只有一处 canonical 实现**（`theme_taxonomy.py` / `discover_time_observation_patterns.py`），
+  未发现第二份口径或第二份 Gate。
+
+### 3 · 清理（只删未跟踪内容；**零已跟踪文件被改动**）
+
+1. 备份 264 个待删文件 → 仓库外临时归档（264/264 成功）。
+2. 按 `git ls-tree -r HEAD` 反选删除 `research/` 下**全部未跟踪文件**（脚本带 assert 硬保证不碰已跟踪路径）。
+3. 删除嵌套克隆 `research/.git`；剪除 50 个空目录。
+4. 结果：**`research/` 恰好 = HEAD 的 211 个文件**，零缺失、零多余、逐字节一致（归一化后）。
+
+### 4 · Memory
+
+- canonical 位置 `.workbuddy/memory/` **保留、未移动**。
+- 被复制进来的 `.workbuddy-ai/memory/2026-09-16.md` 逐项核对后删除 —— 其独有内容
+  （选择偏差扣减 / 样本量幻觉 / 伪重复 / 农历检验失败 / 20% 优势门槛 / `md_of_doy` 差一错误 / 解析式 p）
+  **全部已在已跟踪研究产物中**（`Seasonal_Observation_Pattern_Discovery_v0_1.md` §12/§13/§23 等）。
+
+### 5 · Git 修复与提交
+
+- **index 无需修复**（恢复前后 `status --porcelain=v2` 均为空）；**未用 `git add -A`**（显式路径 add）；
+  **history rewritten: NO**；**force push: NO**；**未 amend**。
+- 两处防护（防止同类污染复发）：`.gitignore` 忽略 `.workbuddy-ai/`（平台默认目录名，本仓库不使用）
+  与 `vite.config.ts.timestamp-*.mjs`（Vite 配置临时 bundle，进程被强杀时残留）。
+- 提交：`e85fb42 chore(repo): reconcile research workspace and restore canonical state` ·
+  `ff8b6eb docs(repo): record Repository Recovery Report 2026-09-17`。
+
+### 6 · 验证（清理前 → 清理后）
+
+| 项目 | 前 | 后 |
+|---|---|---|
+| `validate_monorepo_integrity` | **FAIL(2)**：`.git 唯一性` + `canonical export 唯一性` | **PASS（25 项，0 警告）** |
+| `npm test` | **732 / 19 files**（被 `research/src/**` 重复收集） | **395 / 395，10 files** |
+| `tsc -b` · `vite build` | 0 | 0 |
+| 3 轮生成器 `--check` · legacy `--round 0.2/0.3` · 未知轮次守卫 | PASS / exit 1 | PASS / exit 1 |
+| `validate_*.py` ×6 · `test_*.py` ×3 | PASS | PASS |
+
+- **★ 全新克隆复现性**：`git clone` → 三项 `--check` **全部逐字节 PASS**，TOP-01 回归 PASS。
+- **回归**：TOP-01 = N=7 / 06-11 / 05-27~06-26 / 5-7 ✅ · 派生结构 → `EXPLORATORY` ✅ ·
+  `effective TIMELINE_CANDIDATE` 4→2 ✅ · **独立稳健时间结构 = 1** ✅（**未因整合而变化**）。
+
+### 7 · 文档
+
+- 新增 `docs/REPOSITORY_RECOVERY_REPORT_2026-09-17.md`（永久留档，含遗留问题与下一步）。
+- **重写 `docs/PROJECT_STATE.md`**（不照抄旧版）：新增「Repository Identity & Hygiene」，
+  以 DB / export / 覆盖度审计的**实测数字**重建 Research State 与 Data Coverage，
+  更新 Completed 至 7.3.2 + Recovery，重写 Known Limitations 与 Next Single Goal。
+
+### 8 · 已知遗留（诚实记录）
+
+- ⚠️ `research/**` 下 **169 个已跟踪文件存在「假干净」**：工作区 CRLF / blob LF，索引 stat 缓存使
+  `git status` 判 clean 而不重新哈希。**不影响 `--check`**（已用全新克隆实测确认）；
+  **不要用 `git add --renormalize`**。
+- 清理 dry-run 报 264、apply 报 223，其间另有 41 个未跟踪文件从磁盘消失（备份已读全 264）；
+  最终态经逐文件核对恰好等于 HEAD 的 211 个，**无数据丢失，现象未完全解释**。
+
+### 9 · 未做的事
+
+未新增功能 · 未改 UI · 未改算法 · 未做新历史研究 · 未补录主题 · 未进入 Structural Analogy ·
+未改 Campaign 事实 · 未改 export schema · **未启动 Wave 1**。
+
+---
+
 ## 2026-09-16 · Research · Time Observation v0.4 —— 派生结构门（Derivation Gate）
 
 **回答 v0.3 遗留的唯一待决问题（D1），并把 `lifecycle_rhythm` 早已陈述的研究立场落进 Promotion Gate。**

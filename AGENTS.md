@@ -37,7 +37,15 @@
 
 ## 2. 当前阶段
 
-**Phase 7.3：Observation Credibility & Coverage（IMPLEMENTED）。**
+**Phase 7.3.2：Promotion Gate — Derived Structure Exclusion（IMPLEMENTED，已推送）。**
+上一阶段 **Phase 7.3：Observation Credibility & Coverage（IMPLEMENTED）** 的内容紧随其后。
+
+**下一阶段尚未启动**：Wave 1 数据扩容与 Structural Analogy 仍处于**禁止**状态
+（见 `docs/PROJECT_STATE.md`「Next Single Goal」）。
+
+**仓库身份**：单一 Git / 单一根 / 一套 canonical Research / 一套 Product。
+`research/` 必须**恰好等于 HEAD 的已跟踪文件集合**；**禁止**在 `research/` 下放置第二套副本或第二个 `.git`。
+2026-09-17 已完成 Repository Recovery（`docs/REPOSITORY_RECOVERY_REPORT_2026-09-17.md`）。
 
 把 Phase 7.2 的观察层从「可运行的研究型原型」推进为**可信、可复现、产品语义清晰**的观察层。
 **不扩大研究范围**（不进入 Structural Analogy），**不为凑数量放松纳入标准**。

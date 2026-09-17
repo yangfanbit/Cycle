@@ -232,7 +232,7 @@
 
 ---
 
-## Phase 7.3 · Observation Credibility & Coverage（**当前阶段** · IMPLEMENTED）
+## Phase 7.3 · Observation Credibility & Coverage（已完成 · IMPLEMENTED）
 
 **目标**：把 Phase 7.2 的观察层从「可运行的研究型原型」推进为**可信、可复现、产品语义清晰**的观察层。
 **不扩大研究范围**（不进入 Structural Historical Analogy），**不为凑数量放松纳入标准**。
@@ -259,9 +259,49 @@
 
 ---
 
+## Phase 7.3.2 · Promotion Gate — Derived Structure Exclusion（**当前阶段** · IMPLEMENTED）
+
+**目标**：把「`derived_from_early_signal = true` 的结构不得作为独立规律」从研究报告里的观察，
+**正式落进 Promotion Gate**。方向是**收紧**，不是放宽。
+
+- **判据**：阶段中心 ≈ EARLY_SIGNAL 中心 + 中位滞后（残差 ≤ 21 天，沿用既有阈值，**未调整**）
+  → 该阶段时间位置不含超出 EARLY_SIGNAL 的额外信息。
+- **三值判定，只降不升**：`True` → 降级 `EXPLORATORY`；`False` → 不动作；
+  `None`（无节奏判定 / 缺字段）→ **不下结论、不动作**。**`None` ≠ 独立，只是「无证据」。**
+  本门**从不主动断言「非派生」**（实测 `False` = 0 条）。
+- **降级落点为何是 `EXPLORATORY`**：派生候选数值门槛**已通过**，缺的是**独立性** —— 逐字命中其定义；
+  `RESEARCH_ONLY` 描述的是数值弱。先例一致（`FRAGILE_SCOPE_DEPENDENT` 同样落此）。
+- **口径固化** `ROUND_PROFILES`：`--round X` 一并恢复该轮口径 → v0.2 / v0.3 / v0.4 **三轮逐字节可复现**；
+  未知轮次**显式 FAIL**（不静默降级）。
+- **可追溯**：`derivation_verdict` 含 `derived_from_pattern_id` / `derived_from_stage` /
+  `stage_verdicts` / `reason` / `note`。**派生候选一律保留，不得删除。**
+- **新增工具**：`research/scripts/compare_time_observation_rounds.py`（区分「字段新增」与「字段值变化」）·
+  `research/scripts/test_derivation_gate.py`（6 组回归测试，含合成输入覆盖真实数据中不存在的路径）。
+- **未改**：DB / `schema.sql` / canonical export / `contracts/` / Product Artifact / Campaign 数据。
+
+**验收（已通过）**：`effective TIMELINE_CANDIDATE` **4 → 2** · 有效独立结构 **2 → 1** ·
+TOP-01 回归 PASS（N=7 / 06-11 / 05-27~06-26 / 5-7）· 三个 `--check` 逐字节 PASS · 未知轮次 exit 1。
+
+---
+
+## Repo · Repository Recovery + Research Integration（已完成 · 2026-09-17）
+
+**目标**：把「一个 Git / 一个根 / 一套 canonical Research / 一套 Product」重新变成事实。
+
+- 清除被复制进来的同源旧克隆 `research/.git`（零独有提交）与 **264 个未跟踪重复文件**
+  （用 Git blob 指纹分类：identical 162 / 仅换行不同 248 / outdated 11 / **conflicting 0**）。
+- `research/` 恢复为**恰好 = HEAD 的 211 个文件**；已跟踪文件**零改动**。
+- 补两处防护：`.gitignore` 忽略 `.workbuddy-ai/` 与 `vite.config.ts.timestamp-*.mjs`。
+- 验证：`validate_monorepo_integrity` FAIL(2) → **PASS(25)** · `npm test` 732/19 → **395/10** ·
+  **全新克隆三项 `--check` 逐字节 PASS**。
+- 报告：`docs/REPOSITORY_RECOVERY_REPORT_2026-09-17.md`。
+- **未启动 Wave 1**；未进入 Structural Analogy。
+
+---
+
 ## Phase 8 · Structural Historical Analogy（推迟 · 未实现）
 
-> ⚠️ **Phase 7.3 明确未实现。** 记录在此，避免提前实现。
+> ⚠️ **尚未实现。** 记录在此，避免提前实现。
 
 - `Current State → Structural Signature → Historical Phase`
 - 与 Time Observation Pattern 的分层关系：
@@ -276,7 +316,8 @@
 > ⚠️ **归档说明（Phase 7.3 重排）**：旧路线里的
 > 「旧 Phase 7 · Current Market Mapping」与「旧 Phase 8 · Opportunity Discovery / Radar」
 > **不再作为已确定路线**，统一归档到本节的未来方向；当前确定路线是
-> `7.2 观察层 → 7.3 可信度与覆盖 → Phase 8 Structural Historical Analogy`。
+> `7.2 观察层 → 7.3 可信度与覆盖 → 7.3.2 派生结构门 → Wave 1 数据扩容 → Coverage Audit v0.2
+> → Time Observation 重跑 → Phase 8 Structural Historical Analogy`。
 
 - 把「今天」映射到历史时间轴：当前状态的结构特征 → 历史结构对应
 - 历史相似阶段检索、当前状态与历史条件的分布对比、观察窗口的规则化呈现
