@@ -22,6 +22,8 @@ venv/
 build/
 .cache/
 .vite/
+# Vite 解析 vite.config.ts 时写出的临时 bundle（进程被强杀时会残留）
+vite.config.ts.timestamp-*.mjs
 
 # ---- 本地环境 / 密钥 ----
 .env
@@ -40,7 +42,11 @@ Thumbs.db
 desktop.ini
 
 # ---- 工具/项目元数据（本地，不提交） ----
+# 项目 memory 的 canonical 位置是 `.workbuddy/memory/`（仓库约定，见 AGENTS.md）。
+# `.workbuddy-ai/` 是 AI 平台默认目录名，本仓库**不使用**；一并忽略以防误提交 /
+# 防止「另一套 memory」再次混入工作区（2026-09-17 Repository Recovery 的成因之一）。
 .workbuddy/
+.workbuddy-ai/
 _temp_*.txt
 _*.ps1
 
