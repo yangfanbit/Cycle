@@ -51,9 +51,10 @@
   `rule_id` **不再**充当主题身份；缺失时产品回退到 `theme_scope`。
 - **Promotion Status**：统一 `promotion_status`（TIMELINE / EXPLORATORY / RESEARCH_ONLY / REJECTED）
   作为展示门槛；`status` / `timeline_eligible` / `timeline_eligibility` 为**兼容输入**。
-  - **派生结构门（v0.4）**：`lifecycle_rhythm` 的 `derived_from_early_signal` 判定**已进入 Gate** ——
+  - **派生结构门（Phase 7.3.2 / v0.4）**：`lifecycle_rhythm` 的 `derived_from_early_signal` 判定**已进入 Gate** ——
     阶段中心可由「EARLY_SIGNAL 中心 + 中位滞后」解释（残差 ≤ 21 天）者属**派生结果**，降级为 `EXPLORATORY`。
-    **只降不升**；`is_derived = None`（无节奏判定）**不等于**独立，只是**无证据**。
+    **只降不升**；`is_derived = None`（无节奏判定 / 缺字段）**不等于**独立，只是**无证据**。
+    **派生候选一律保留、不得删除**，来源写入 `derivation_verdict.derived_from_pattern_id`（见 §2 末尾）。
     **口径必须固化在 `ROUND_PROFILES`**（见 §2 末尾「Research 侧口径约定」）。
   - **当前研究结论：独立稳健时间结构 = 1 个**（汽车族 EARLY_SIGNAL 上半年末窗口，TOP-01）。
     `effective TIMELINE_CANDIDATE` 4 → 2（v0.4）。
@@ -189,19 +190,30 @@ ROUND_PROFILES = {
   它**严格区分「字段新增（结构性，by design）」与「字段值变化（实质性）」**，
   避免把新增字段误报成「结论变化」。
 
-**派生结构门（v0.4）**：`lifecycle_rhythm` 的 `derived_from_early_signal` 判定**已进入 Promotion Gate**。
+**派生结构门（Phase 7.3.2 / v0.4）**：`lifecycle_rhythm` 的 `derived_from_early_signal` 判定**已进入 Promotion Gate**。
 
 ```
-预测中心 = EARLY_SIGNAL 中心 + 该阶段相对 EARLY_SIGNAL 起点的中位滞后
+拟合中心 = EARLY_SIGNAL 中心 + 该阶段相对 EARLY_SIGNAL 起点的中位滞后
 残差 ≤ 21 天 → derived_from_early_signal = true → 该阶段时间位置不含额外信息
 ```
 
 - **三值判定，只降不升**：`True` → 降级 `EXPLORATORY`；`False` → 不动作；
-  `None`（存在无节奏判定的阶段）→ **不下结论、不动作**。
+  `None`（存在无节奏判定的阶段 / 缺字段）→ **不下结论、不动作**。
 - **本门从不主动断言「非派生」** → `False` 可以为 0 条。**`None` ≠ 独立**，只是「无证据」。
+- **缺字段 / `null` 一律视为 `None`（无判定）**，**不得**降级为 `False` ——
+  `False` 是肯定性断言；把「缺字段」当 `False` 等于把「无证据」伪装成「已证清白」。
+- **降级落点必须是 `EXPLORATORY`，不得用 `RESEARCH_ONLY`** ——
+  派生候选数值门槛**已通过**，缺的是「独立性」（`EXPLORATORY` 的定义）；
+  `RESEARCH_ONLY` 描述的是「集中度 > 0.60 / 样本不足」这类**数值弱**，语义不符。
+- **派生候选一律保留、不得删除**，来源必须写入 `derivation_verdict`：
+  `is_derived` / `derived_from_pattern_id`（派生自哪个候选）/ `derived_from_stage` /
+  `stage_verdicts` / `reason`（为何不下结论）/ `note`（为何判定为派生，含滞后与残差数字）。
+  自检强制来源引用必须指向**真实存在的候选**。
 - **只对有节奏分析的 scope 生效**（当前仅 `rule_auto_summer` / `TH-AUTO`）；
   其余 scope **本门无法下结论** —— 报告与产品文案**不得**把 `None` 读作「独立规律」。
 - **阈值 21 天为既有设定**（`lifecycle_rhythm` 早已使用）；**调整它属规则变更，必须单独留痕**。
+- **回归测试**：`research/scripts/test_derivation_gate.py`（6 组，含 4 种退化输入 + 反向对照）。
+  注意 `is_derived = False` 在真实数据中为 0 条 → **该分支只能用合成输入测**，否则等于没测。
 
 **研究结论口径（不变）**：独立稳健时间结构 = **1 个**（汽车族 EARLY_SIGNAL 上半年末窗口）。
 **不为了增加 Pattern 数量而放松纳入标准**（不降 N、不拓宽窗口、不弱化 LOO、不制造 Pattern）。

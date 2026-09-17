@@ -717,7 +717,7 @@
     "RESEARCH_ONLY": "N ≥ 5 但集中度 > 0.60（时间分散）；或 3–4 且集中度不足。",
     "EXPLORATORY": "窗口可构建且集中度尚可，但样本 / 稳定性 / 独立性 / 机制未全部达门槛。",
     "TIMELINE_CANDIDATE": "N ≥ 5 且 窗口可构建 且 集中度 ≤ 0.45 且 STABLE 且 无单年主导 且 theme_cycle_count ≥ 3 且 机制置信度 ≥ MEDIUM；**且通过两项事后检验**：口径稳健（非 FRAGILE_SCOPE_DEPENDENT）与 **非派生**（非 EARLY_SIGNAL 派生结构）。",
-    "note": "**N ≥ 5 ≠ 自动进入 Timeline。** 门槛保持与 v0.1 连续，不为了增加 TIMELINE_CANDIDATE 数量而放宽。事件类型候选一律不得成为 TIMELINE_CANDIDATE。v0.4 起新增**派生结构门**：时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释（残差 ≤ 21 天）的结构属派生结果，不含额外时间信息 → 降级为 EXPLORATORY。该门只是把 `lifecycle_rhythm` 早已陈述的研究立场落进 Gate，**不是**新标准；方向为**收紧**（宁少不多），不制造 Pattern。"
+    "note": "**N ≥ 5 ≠ 自动进入 Timeline。** 门槛保持与 v0.1 连续，不为了增加 TIMELINE_CANDIDATE 数量而放宽。事件类型候选一律不得成为 TIMELINE_CANDIDATE。v0.4 起新增**派生结构门**（Phase 7.3.2 Derived Structure Exclusion）：时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释（残差 ≤ 21 天）的结构属派生结果，不含额外时间信息 → 降级为 EXPLORATORY。该门只是把 `lifecycle_rhythm` 早已陈述的研究立场落进 Gate，**不是**新标准；方向为**收紧**（宁少不多），不制造 Pattern。**派生候选一律保留、不得删除**，并在 `derivation_verdict` 中记录`derived_from_pattern_id` / `derived_from_stage` / `stage_verdicts` / `note`，使报告可回答「为什么这个候选存在，但没有进入独立 Pattern？」降级落点为 EXPLORATORY（而非 RESEARCH_ONLY）—— 因其数值门槛**已通过**，缺的是「独立性」，正是 EXPLORATORY 的定义（RESEARCH_ONLY 描述的是数值弱）。"
   },
   "forbidden_fields": [
     "future_probability",
@@ -3283,10 +3283,13 @@
       "robustness_verdict": "ROBUST",
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "MAIN_RISE": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d（拟合中心 06-21，残差 1d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": "通过数值门槛且口径稳健，但时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释（残差 ≤ 21 天）→ 属 EARLY_SIGNAL 聚集的**派生结果**，不含额外时间信息 → 降级为 EXPLORATORY，不得作为独立规律。"
@@ -3594,8 +3597,11 @@
       "robustness_verdict": "ROBUST",
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "候选仅含 EARLY_SIGNAL 阶段"
+        "reason": "候选仅含 EARLY_SIGNAL 阶段",
+        "note": null
       },
       "effective_promotion_status": "TIMELINE_CANDIDATE",
       "effective_status_reason": null
@@ -3904,10 +3910,13 @@
       "robustness_verdict": "ROBUST",
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "MAIN_RISE": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d（拟合中心 06-21，残差 1d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": "通过数值门槛且口径稳健，但时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释（残差 ≤ 21 天）→ 属 EARLY_SIGNAL 聚集的**派生结果**，不含额外时间信息 → 降级为 EXPLORATORY，不得作为独立规律。"
@@ -4215,8 +4224,11 @@
       "robustness_verdict": "ROBUST",
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "候选仅含 EARLY_SIGNAL 阶段"
+        "reason": "候选仅含 EARLY_SIGNAL 阶段",
+        "note": null
       },
       "effective_promotion_status": "TIMELINE_CANDIDATE",
       "effective_status_reason": null
@@ -4514,8 +4526,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -4825,10 +4840,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "MAIN_END": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_END 中心 08-31 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 70d（拟合中心 08-20，残差 11d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -5138,10 +5156,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -5452,11 +5473,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "MAIN_RISE": true,
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d（拟合中心 06-21，残差 1d）；PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -5740,10 +5764,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_MAIN_RISE": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -5997,8 +6024,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -6231,10 +6261,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "DECLINING": true
         },
-        "reason": null
+        "reason": null,
+        "note": "DECLINING 中心 08-04 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 61.5d（拟合中心 08-12，残差 7.5d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -6466,10 +6499,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_DECLINE": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -6702,10 +6738,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -6913,8 +6952,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -7148,11 +7190,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true,
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d）；PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -7388,11 +7433,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "DB_startup": null,
           "main_rise": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -7627,10 +7675,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_STARTUP": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -7865,10 +7916,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "SECONDARY": true
         },
-        "reason": null
+        "reason": null,
+        "note": "SECONDARY 中心 08-12 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 68.5d（拟合中心 08-18，残差 6.5d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -8074,8 +8128,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -8282,10 +8339,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true
         },
-        "reason": null
+        "reason": null,
+        "note": "THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -8494,11 +8554,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true,
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d）；THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -8705,8 +8768,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -8914,8 +8980,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -9124,8 +9193,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -9435,10 +9507,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "MAIN_END": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_END 中心 08-31 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 70d（拟合中心 08-20，残差 11d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -9748,8 +9823,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -10060,11 +10138,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "PEAK": true,
           "MAIN_END": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_END 中心 08-31 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 70d（拟合中心 08-20，残差 11d）；PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -10375,11 +10456,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "PEAK": true,
           "MAIN_END": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_END 中心 08-31 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 70d（拟合中心 08-20，残差 11d）；PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -10690,8 +10774,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -11001,10 +11088,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -11315,11 +11405,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "MAIN_RISE": true,
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d（拟合中心 06-21，残差 1d）；PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -11603,10 +11696,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_MAIN_RISE": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -11839,10 +11935,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "DECLINING": true
         },
-        "reason": null
+        "reason": null,
+        "note": "DECLINING 中心 08-04 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 61.5d（拟合中心 08-12，残差 7.5d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -12075,11 +12174,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "DB_main_rise": null,
           "decline": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -12311,10 +12413,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_DECLINE": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -12547,11 +12652,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "DB_main_rise": null,
           "decline": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -12784,10 +12892,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -13021,10 +13132,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -13258,10 +13372,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -13495,11 +13612,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true,
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d）；PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -13735,11 +13855,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "DB_startup": null,
           "main_rise": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -13974,10 +14097,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_STARTUP": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -14212,10 +14338,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "SECONDARY": true
         },
-        "reason": null
+        "reason": null,
+        "note": "SECONDARY 中心 08-12 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 68.5d（拟合中心 08-18，残差 6.5d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -14450,8 +14579,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -14658,10 +14790,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true
         },
-        "reason": null
+        "reason": null,
+        "note": "THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -14869,10 +15004,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true
         },
-        "reason": null
+        "reason": null,
+        "note": "THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -15080,10 +15218,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true
         },
-        "reason": null
+        "reason": null,
+        "note": "THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -15292,11 +15433,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true,
           "PEAK": true
         },
-        "reason": null
+        "reason": null,
+        "note": "PEAK 中心 07-11 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 40d（拟合中心 07-21，残差 10d）；THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "EXPLORATORY",
       "effective_status_reason": null
@@ -15611,8 +15755,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -15926,8 +16073,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -16241,8 +16391,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -16531,8 +16684,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -16787,8 +16943,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -17051,8 +17210,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -17316,8 +17478,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -17581,8 +17746,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -17820,8 +17988,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -18061,8 +18232,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -18302,8 +18476,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -18567,8 +18744,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "RESEARCH_ONLY",
       "effective_status_reason": null
@@ -18873,8 +19053,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -19137,8 +19320,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -19376,8 +19562,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -19576,8 +19765,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -19775,8 +19967,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -19979,8 +20174,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -20188,8 +20386,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -20395,8 +20596,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -20660,8 +20864,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -20900,8 +21107,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -21100,8 +21310,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -21299,8 +21512,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "REJECTED",
       "effective_status_reason": null
@@ -21469,11 +21685,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true,
           "MAIN_RISE": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d）；MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d（拟合中心 06-21，残差 1d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -21643,8 +21862,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -21815,8 +22037,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -21984,10 +22209,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "RETRACEMENT": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -22157,8 +22385,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -22328,8 +22559,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -22494,8 +22728,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -22662,8 +22899,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -22834,11 +23074,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-001",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true,
           "BROAD_CONFIRMATION": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d）；THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -23008,8 +23251,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -23178,8 +23424,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -23348,8 +23597,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -23516,8 +23768,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -23687,10 +23942,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_SECONDARY_RALLY": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -23855,8 +24113,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -24022,8 +24283,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -24166,10 +24430,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "FIRST_DECLINE": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -24309,8 +24576,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -24450,8 +24720,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -24594,8 +24867,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -24738,8 +25014,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -24882,8 +25161,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -25026,8 +25308,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -25167,8 +25452,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -25308,8 +25596,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -25449,8 +25740,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -25590,8 +25884,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -25731,8 +26028,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -25872,8 +26172,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -26013,8 +26316,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -26154,8 +26460,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -26298,8 +26607,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -26442,8 +26754,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -26586,8 +26901,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -26730,8 +27048,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -26874,8 +27195,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -27018,10 +27342,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_RETRACEMENT": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -27161,8 +27488,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -27302,8 +27632,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -27446,8 +27779,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -27590,8 +27926,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -27734,8 +28073,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -27878,8 +28220,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -28022,8 +28367,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -28166,8 +28514,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -28310,8 +28661,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -28454,8 +28808,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -28581,8 +28938,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -28751,11 +29111,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "BROAD_CONFIRMATION": true,
           "MAIN_RISE": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d）；MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d（拟合中心 06-21，残差 1d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -28927,8 +29290,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -29096,10 +29462,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "RETRACEMENT": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -29267,8 +29636,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -29433,8 +29805,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -29601,8 +29976,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -29773,11 +30151,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": true,
+        "derived_from_pattern_id": "TOPC-018",
+        "derived_from_stage": "EARLY_SIGNAL",
         "stage_verdicts": {
           "THEME_FORMING": true,
           "BROAD_CONFIRMATION": true
         },
-        "reason": null
+        "reason": null,
+        "note": "BROAD_CONFIRMATION 中心 06-29 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 25d（拟合中心 07-06，残差 7d）；THEME_FORMING 中心 06-14 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 9d（拟合中心 06-20，残差 6d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）"
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -29944,8 +30325,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -30115,10 +30499,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_SECONDARY_RALLY": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -30288,8 +30675,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -30459,8 +30849,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -30625,8 +31018,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -30791,8 +31187,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -30957,8 +31356,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -31124,8 +31526,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -31291,8 +31696,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -31458,8 +31866,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -31602,10 +32013,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "FIRST_DECLINE": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -31745,8 +32159,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -31886,8 +32303,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -32030,8 +32450,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -32174,8 +32597,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -32315,8 +32741,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -32456,8 +32885,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -32597,8 +33029,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -32738,8 +33173,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -32879,8 +33317,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -33020,8 +33461,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -33161,8 +33605,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -33302,8 +33749,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -33443,8 +33893,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -33584,8 +34037,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -33725,8 +34181,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -33870,11 +34329,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "DB_main_rise": null,
           "retracement": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -34014,8 +34476,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -34155,8 +34620,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -34296,8 +34764,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -34437,8 +34908,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -34578,8 +35052,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -34719,8 +35196,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -34860,8 +35340,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -35004,10 +35487,13 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "PHASE_RETRACEMENT": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -35151,11 +35637,14 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {
           "DB_main_rise": null,
           "retracement": null
         },
-        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论"
+        "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -35295,8 +35784,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -35436,8 +35928,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -35577,8 +36072,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -35718,8 +36216,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -35859,8 +36360,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36000,8 +36504,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36141,8 +36648,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36282,8 +36792,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36423,8 +36936,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36564,8 +37080,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36705,8 +37224,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36849,8 +37371,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -36993,8 +37518,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -37137,8 +37665,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -37278,8 +37809,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -37419,8 +37953,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -37560,8 +38097,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -37701,8 +38241,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -37842,8 +38385,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -37983,8 +38529,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -38124,8 +38673,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -38265,8 +38817,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -38406,8 +38961,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -38547,8 +39105,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -38688,8 +39249,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -38829,8 +39393,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -38973,8 +39540,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null
@@ -39117,8 +39687,11 @@
       "robustness_verdict": null,
       "derivation_verdict": {
         "is_derived": null,
+        "derived_from_pattern_id": null,
+        "derived_from_stage": null,
         "stage_verdicts": {},
-        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）"
+        "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+        "note": null
       },
       "effective_promotion_status": "INSUFFICIENT_DATA",
       "effective_status_reason": null

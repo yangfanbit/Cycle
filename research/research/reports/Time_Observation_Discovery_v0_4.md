@@ -2,15 +2,19 @@
 
 > **ThreeC 全量历史时间结构扫描 · 派生结构门（Derivation Gate）轮**
 >
+> **阶段：Phase 7.3.2 — Promotion Gate: Derived Structure Exclusion**
+>
 > | 项目 | 值 |
 > |---|---|
 > | 文件性质 | **Research Layer Deliverable**（研究层交付物） |
+> | 阶段 | **Phase 7.3.2** Derived Structure Exclusion |
 > | 轮次 | `time-observation-discovery-v0.4` |
 > | 规则集 | `time-observation-discovery-0.4` |
 > | 口径规则集 | `canonical-macro-theme-resolution-1`（CMTR v1，**未变**） |
 > | 快照日期 | 2026-09-16 |
 > | 生成器 | `research/scripts/discover_time_observation_patterns.py`（deterministic，`--check` 逐字节一致） |
-> | 对比工具 | `research/scripts/compare_time_observation_rounds.py`（本轮新增，只读） |
+> | 对比工具 | `research/scripts/compare_time_observation_rounds.py`（只读） |
+> | 回归测试 | `research/scripts/test_derivation_gate.py`（6 组，含 4 种退化输入） |
 > | 上游 | `Time_Observation_Discovery_v0_3.md`（其 §6.3 / §9-D1 提出的待决问题，本轮回答） |
 > | 产物 | `time_observation_candidate_pool_v0_4.json` / `.csv` |
 >
@@ -319,4 +323,149 @@ breaking change       : NO
 
 ---
 
-*报告结束 · Time Observation Discovery v0.4 · 2026-09-16*
+## 12. Phase 7.3.2 — Derived Structure Exclusion（规则落实记录）
+
+> 本章记录「规则变更本身」，供后续研究者审计：**改前是什么、改后是什么、谁受影响、为什么。**
+
+### 12.1 规则 Before
+
+```text
+TIMELINE_CANDIDATE 判据（v0.3）：
+    N ≥ 5 且 窗口可构建 且 集中度 ≤ 0.45 且 STABLE
+    且 无单年主导 且 theme_cycle_count ≥ 3 且 机制置信度 ≥ MEDIUM
+    （+ 口径稳健性检验，由 timeline_candidate_robustness 施加）
+```
+
+**缺陷**：`lifecycle_rhythm` 已独立判定「某些阶段的时间中心可由 EARLY_SIGNAL 解释」，
+但该判定**只写在研究报告里，未进入 Gate** → 派生结构仍可作为独立 Pattern 晋级。
+
+### 12.2 规则 After
+
+```text
+TIMELINE_CANDIDATE 判据（v0.4 / Phase 7.3.2）：
+    [上述全部] 且 **非派生**（derivation_verdict.is_derived != True）
+
+派生判据（沿用 lifecycle_rhythm 既有设定，阈值 21 天**未调整**）：
+    阶段中心 ≈ EARLY_SIGNAL 中心 + 该阶段相对 EARLY_SIGNAL 起点的中位滞后
+    残差 ≤ 21 天  →  该阶段时间位置不含超出 EARLY_SIGNAL 的额外信息
+
+判定三值（**只降不升**）：
+    True  全部阶段派生        → 降级 EXPLORATORY
+    False 至少一阶段明确非派生 → 不动作（原规则继续生效）
+    None  存在无节奏判定的阶段 → **不下结论、不动作**
+```
+
+**这不是新的统计发现**，而是把 v0.2 报告 §8.1 / v0.3 §6.2 早已陈述的研究立场
+（「这三者全部是 EARLY_SIGNAL 的派生结果 …… 即使口径稳健，也不构成独立规律」）
+**产品化落实到 Promotion Gate**。方向为**收紧**（宁少不多），**不制造 Pattern**。
+
+**降级落点为何是 `EXPLORATORY` 而非 `RESEARCH_ONLY`**（生成器 `promotion_gate` 原文定义）：
+
+| 状态 | 定义 | 适用性 |
+|---|---|---|
+| `RESEARCH_ONLY` | 「N ≥ 5 但**集中度 > 0.60**（时间分散）；或 3–4 且集中度不足」 | ✗ —— 描述的是**数值证据弱**，而派生候选数值门槛**已通过** |
+| `EXPLORATORY` | 「窗口可构建且集中度尚可，但样本 / 稳定性 / **独立性** / 机制未全部达门槛」 | ✓ —— 缺的正是「**独立性**」，逐字命中 |
+
+且既有 `FRAGILE_SCOPE_DEPENDENT` 降级同样落在 `EXPLORATORY` —— **先例一致**。
+
+### 12.3 受影响候选（逐条）
+
+**实质性变化恰好 2 条**（其余 191 个候选字段值无任何变化）：
+
+| pattern_id | scope | 阶段 | N | 中心 | Before | After | 派生自 |
+|---|---|---|---:|---|---|---|---|
+| `TOPC-004` | THEME_FAMILY/`TH-AUTO` | MAIN_RISE | 7 | 06-22 | `TIMELINE_CANDIDATE` | **`EXPLORATORY`** | `TOPC-001` |
+| `TOPC-021` | RULE/`rule_auto_summer` | MAIN_RISE | 7 | 06-22 | `TIMELINE_CANDIDATE` | **`EXPLORATORY`** | `TOPC-018` |
+
+派生依据（写入产物 `derivation_verdict.note`，可逐字复核）：
+
+```text
+TOPC-004: MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d
+          （拟合中心 06-21，残差 1d） → 派生自 TOPC-001（TH-AUTO · EARLY_SIGNAL）
+TOPC-021: MAIN_RISE 中心 06-22 ≈ EARLY_SIGNAL 中心 06-11 + 中位滞后 10d
+          （拟合中心 06-21，残差 1d） → 派生自 TOPC-018（rule_auto_summer · EARLY_SIGNAL）
+```
+
+### 12.4 Before / After 计数
+
+| 指标 | Before（v0.3，无门） | After（v0.4，有门） |
+|---|---:|---:|
+| raw candidates | 191 | 191 |
+| `TIMELINE_CANDIDATE`（原始数值门槛结论） | 4 | 4 |
+| **`effective TIMELINE_CANDIDATE`** | **4** | **2** |
+| `EXPLORATORY`（effective） | 44 | **46** |
+| `RESEARCH_ONLY` / `REJECTED` / `INSUFFICIENT_DATA` | 12 / 12 / 119 | 12 / 12 / 119 |
+| **独立结构数** | **2** | **1** |
+
+> 原始 `promotion_status` **保留未覆盖**（仍为 4）—— 可审计「数值门槛的结论」与「经事后检验的最终结论」之差。
+
+### 12.5 派生候选仍可追溯（§6 要求）
+
+**禁止简单删除派生候选。** 产物保留以下字段，使报告可回答
+「为什么这个候选存在，但没有进入独立 Pattern？」：
+
+| 要求字段 | JSON 实现位置 | CSV 列 |
+|---|---|---|
+| `candidate_id` | `candidates[].pattern_id` | `pattern_id` |
+| `source lifecycle` | `candidates[].lifecycle_stage` | `lifecycle_stage` |
+| `derived_from_early_signal` | `candidates[].derivation_verdict.is_derived` | `is_derived` |
+| **`derived_from pattern_id`** | `candidates[].derivation_verdict.derived_from_pattern_id` | `derived_from_pattern_id` |
+| **`derivation_note`** | `candidates[].derivation_verdict.note`（含滞后与残差数字） | `derivation_note` |
+| `promotion_status` | `promotion_status`（原始）+ `effective_promotion_status`（最终） | 同名列 |
+
+另含 `derived_from_stage` / `stage_verdicts` / `reason`（不下结论的原因）。
+
+**CSV 同样补齐**（否则人工浏览视图只看到「降级为 EXPLORATORY」却看不到原因）：
+新增 `is_derived` / `derived_from_pattern_id` / `derived_from_stage` / `derivation_note` 四列，
+紧邻 `robustness_verdict`（两项事后检验相邻，便于对照）。
+`derivation_note` 单列承载完整理由：判定为派生时是 `note`（含滞后 / 残差），不下结论时是 `reason`
+—— 保证该列**永远能解释「为什么」**。
+
+> ⚠️ **该四列**仅在启用派生门时输出。若无条件输出，v0.2 / v0.3 的 CSV 会多出空列 →
+> **破坏历史轮次逐字节复现**。已验证三轮 `--check` 仍全部 PASS。
+
+**自检强制**（`validate_artifact`）：判定为派生则**必须**带 `derived_from_pattern_id`
+（且必须指向**真实存在的候选**）与 `note`；非派生 / 不下结论**不得**留下误导性来源字段。
+
+### 12.6 本轮修掉的一个真实缺陷（fail-safe）
+
+原实现：`verdicts[st] = None if s is None else bool(s.get("derived_from_early_signal"))`
+
+→ 若阶段条目**存在但缺 `derived_from_early_signal` 字段**，`bool(None)` 得 `False`。
+**`False` 是肯定性断言（「明确非派生」），而非「无结论」** ——
+这会把「无证据」伪装成「已证清白」，进而**放过真正的派生结构**。
+
+修正后：缺字段 / `null` 一律 → `None`（无判定 → 不降级），保持与「无节奏判定」一致的 fail-safe 语义。
+对真实数据**行为中性**（真实阶段记录均带该字段，`--check` 逐字节一致）。
+
+### 12.7 回归测试（`research/scripts/test_derivation_gate.py`）
+
+| # | 验证项 | 结果 |
+|---|---|---|
+| ① | `derived = true` → 不得晋级为独立 Timeline Pattern（降级 EXPLORATORY，且**不得**用 RESEARCH_ONLY） | PASS |
+| ② | `derived = false` → 原规则继续生效，**不得被误降级** | PASS |
+| ③ | 缺字段 / 无节奏判定 → `None`，不降级，`reason` 齐备（**4 种退化情形**） | PASS |
+| ④ | 派生候选保留 source trace（含多阶段过渡），原始状态不被覆盖 | PASS |
+| ⑤ | canonical CMTR v1 生效，**未回退 direct**（4 个只登记子主题的对象归属正确） | PASS |
+| ⑥ | 产物级一致性：30 条派生候选，来源引用全部有效 | PASS |
+
+> **为何 ②③ 必须用合成输入**：真实产物中 `is_derived = False` 的候选数为 **0**，
+> 且不存在「阶段缺字段」的情形 —— 只对真实产物断言，这两条路径**永远不会被执行**，等于没测。
+>
+> **反向对照（已验证测试非空）**：关掉派生门后测试 ① 立即失败
+> （`P-1 缺少 derivation_verdict —— 派生门未生效或未写入`）。
+
+### 12.8 Product Artifact 影响（§12）
+
+**结论：无需改动，也不做无意义重写。** 已**验证**（非断言）：
+
+- `time_observation_patterns_v0_1.json` **未被改动**（git 状态干净）。
+- 其生成器 `build_time_observation_patterns.py` **不引用候选池**
+  （只读 export + anchor verification）→ 派生门**不在其数据路径上**。
+- `build_time_observation_patterns.py --check` **PASS**（仍逐字节可复现）。
+- 独立 Pattern 集合**未变化**（仍为 4 条模式 / 1 条 `TIMELINE_ELIGIBLE`）。
+
+---
+
+*报告结束 · Time Observation Discovery v0.4 · Phase 7.3.2 · 2026-09-16*
+

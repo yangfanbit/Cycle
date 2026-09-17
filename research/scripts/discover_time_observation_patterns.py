@@ -35,6 +35,12 @@ v0.4 把该立场落进 Gate：
 - **这是规则变更，不是数据变更。** 方向为**收紧**（宁少不多），**不制造 Pattern**。
 - **未改**：锚点定义、窗口算法、集中度、复现率、稳定性、留一法、机制归类、`theme_cycle_count` 门槛。
 - **历史轮次可复现**：`--round 0.3 --legacy-no-derivation-gate` 可逐字节复现 v0.3。
+- **派生候选可追溯（不得简单删除）**：`derivation_verdict` 记录
+  `is_derived` / `derived_from_pattern_id`（派生自哪个候选）/ `derived_from_stage` /
+  `stage_verdicts` / `reason`（为何不下结论）/ `note`（为何判定为派生，含滞后与残差数字）。
+  报告据此可回答「为什么这个候选存在，但没有进入独立 Pattern？」。
+  自检强制：判定为派生则**必须**带 `derived_from_pattern_id`（且必须指向真实存在的候选）与 `note`；
+  非派生不得留下误导性来源字段。
 - **已知范围限制**：`derivation_verdict` 只对 export lifecycle 的 10 个阶段给出判定；
   `PHASE_*`（DB `campaign_phases` 口径）与 `DB_*` 过渡取不到判定 → `is_derived = None` → **不降级**
   （以「无证据不结论」处理，不默认派生）。
@@ -1966,10 +1972,16 @@ def build_artifact():
                 else (
                     "**N ≥ 5 ≠ 自动进入 Timeline。** 门槛保持与 v0.1 连续，不为了增加 TIMELINE_CANDIDATE 数量而放宽。"
                     "事件类型候选一律不得成为 TIMELINE_CANDIDATE。"
-                    "v0.4 起新增**派生结构门**：时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释"
+                    "v0.4 起新增**派生结构门**（Phase 7.3.2 Derived Structure Exclusion）："
+                    "时间位置可由「EARLY_SIGNAL 中心 + 中位滞后」解释"
                     "（残差 ≤ 21 天）的结构属派生结果，不含额外时间信息 → 降级为 EXPLORATORY。"
                     "该门只是把 `lifecycle_rhythm` 早已陈述的研究立场落进 Gate，**不是**新标准；"
                     "方向为**收紧**（宁少不多），不制造 Pattern。"
+                    "**派生候选一律保留、不得删除**，并在 `derivation_verdict` 中记录"
+                    "`derived_from_pattern_id` / `derived_from_stage` / `stage_verdicts` / `note`，"
+                    "使报告可回答「为什么这个候选存在，但没有进入独立 Pattern？」"
+                    "降级落点为 EXPLORATORY（而非 RESEARCH_ONLY）—— 因其数值门槛**已通过**，"
+                    "缺的是「独立性」，正是 EXPLORATORY 的定义（RESEARCH_ONLY 描述的是数值弱）。"
                 )
             ),
         },
@@ -2309,8 +2321,17 @@ def timeline_candidate_robustness(candidates, sr):
     }
 
 
-def derivation_verdict(candidate, rhythm):
-    """判定候选是否为「EARLY_SIGNAL 派生结构」。
+def _fmt_days(x):
+    """把滞后 / 残差天数格式化为紧凑文本（10.0 -> 10，6.5 -> 6.5）。"""
+    if x is None:
+        return "?"
+    if isinstance(x, float) and x.is_integer():
+        return str(int(x))
+    return str(x)
+
+
+def derivation_verdict(candidate, rhythm, baseline_by_scope=None):
+    """判定候选是否为「EARLY_SIGNAL 派生结构」，并给出**可追溯的来源**。
 
     判据来源：`lifecycle_rhythm_analysis` 对**同一 scope** 的节奏分析 ——
     某阶段的中心若可由「EARLY_SIGNAL 中心 + 中位滞后」解释（残差 ≤ 21 天），
@@ -2325,19 +2346,37 @@ def derivation_verdict(candidate, rhythm):
     为何「所有阶段都派生」才算派生：过渡 `A->B` 的时间信息由两端共同决定；
     只要有一端不是派生的，该过渡仍可能携带独立时间信息 → 不应降级。
 
+    返回字段（**派生候选必须可追溯，不得简单删除** —— 报告需能回答
+    「为什么这个候选存在，但没有进入独立 Pattern？」）：
+
+        is_derived               三值判定
+        derived_from_pattern_id  派生自哪个候选（同 scope 的 EARLY_SIGNAL 候选）；非派生时 None
+        derived_from_stage       派生基线阶段名（当前恒为 EARLY_SIGNAL）；非派生时 None
+        stage_verdicts           逐阶段判定 {stage: True/False/None}
+        reason                   为何**不下结论**（is_derived 为 None 时填写）
+        note                     为何**判定为派生**（含滞后 / 残差数字，is_derived 为 True 时填写）
+
     ⚠️ **已知范围限制**：节奏分析只覆盖 export lifecycle 的 10 个阶段。
     `PHASE_*`（DB `campaign_phases` 口径）与 `DB_*` 过渡**取不到判定** → 返回 None。
     以「无证据不结论」处理，**不默认派生**。
     """
+    baseline_by_scope = baseline_by_scope or {}
+    base_pid = baseline_by_scope.get(candidate.get("scope_id"))
+    empty = {
+        "is_derived": None,
+        "derived_from_pattern_id": None,
+        "derived_from_stage": None,
+        "stage_verdicts": {},
+    }
     if not rhythm:
-        return {"is_derived": None, "stage_verdicts": {}, "reason": "scope 无节奏分析"}
+        return dict(empty, reason="scope 无节奏分析", note=None)
     entry = rhythm.get(candidate.get("scope_id"))
     if not entry or entry.get("status") != "OK":
-        return {
-            "is_derived": None,
-            "stage_verdicts": {},
-            "reason": "scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
-        }
+        return dict(
+            empty,
+            reason="scope 无节奏分析（或 EARLY_SIGNAL 样本 < 3）",
+            note=None,
+        )
     by_stage = {s["stage"]: s for s in (entry.get("stages") or [])}
     stages = [
         p.strip()
@@ -2345,27 +2384,66 @@ def derivation_verdict(candidate, rhythm):
         if p.strip()
     ]
     if not stages:
-        return {"is_derived": None, "stage_verdicts": {}, "reason": "候选无 lifecycle_stage"}
+        return dict(empty, reason="候选无 lifecycle_stage", note=None)
 
     verdicts = {}
     for st in stages:
         if st == "EARLY_SIGNAL":
             continue  # 基线本身不判派生
         s = by_stage.get(st)
-        verdicts[st] = None if s is None else bool(s.get("derived_from_early_signal"))
+        if s is None:
+            verdicts[st] = None
+        else:
+            # ⚠️ 缺字段 / null 一律视为「无判定」= None，**不得**降级为 False。
+            # False 是**肯定性断言**（明确非派生）；把「缺字段」当成 False
+            # 会把「无证据」伪装成「已证清白」，进而放过真正的派生结构。
+            raw = s.get("derived_from_early_signal")
+            verdicts[st] = None if raw is None else bool(raw)
 
     if not verdicts:
-        return {"is_derived": None, "stage_verdicts": {}, "reason": "候选仅含 EARLY_SIGNAL 阶段"}
+        return dict(empty, reason="候选仅含 EARLY_SIGNAL 阶段", note=None)
     if any(v is None for v in verdicts.values()):
         return {
             "is_derived": None,
+            "derived_from_pattern_id": None,
+            "derived_from_stage": None,
             "stage_verdicts": verdicts,
             "reason": "存在无节奏判定的阶段（不在 export 10 阶段内，或该阶段样本 < 3）→ 不下结论",
+            "note": None,
         }
+
+    is_derived = all(verdicts.values())
+    note = None
+    if is_derived:
+        base_center = entry.get("baseline_center_md")
+        parts = []
+        for st in sorted(verdicts):
+            s = by_stage[st]
+            parts.append(
+                "%s 中心 %s ≈ EARLY_SIGNAL 中心 %s + 中位滞后 %sd（拟合中心 %s，残差 %sd）"
+                % (
+                    st,
+                    s.get("center_md"),
+                    base_center,
+                    _fmt_days(s.get("median_lag_from_early_signal_days")),
+                    s.get("predicted_center_md"),
+                    _fmt_days(s.get("center_residual_days")),
+                )
+            )
+        tail = (
+            " → 派生自 %s（%s · EARLY_SIGNAL）" % (base_pid, candidate.get("scope_id"))
+            if base_pid
+            else " → 派生自本 scope 的 EARLY_SIGNAL 阶段"
+        )
+        note = "；".join(parts) + tail
+
     return {
-        "is_derived": all(verdicts.values()),
+        "is_derived": is_derived,
+        "derived_from_pattern_id": base_pid if is_derived else None,
+        "derived_from_stage": ("EARLY_SIGNAL" if (is_derived and base_pid) else None),
         "stage_verdicts": verdicts,
         "reason": None,
+        "note": note,
     }
 
 
@@ -2381,12 +2459,22 @@ def annotate_effective_status(candidates, tcr, rhythm):
       2. `DERIVED_FROM_EARLY_SIGNAL` —— 时间位置可由 EARLY_SIGNAL 中心 + 中位滞后解释
     """
     verdict = {d["pattern_id"]: d for d in tcr["detail"]}
+    # 「派生基线」= 同一 scope 的 EARLY_SIGNAL 候选 —— 用于回答「派生自哪个候选」。
+    # 正常每个 scope 至多一个；若出现多个（未来数据），按 (样本量降序, pattern_id 升序)
+    # 取第一个，保证**确定性**（不得依赖 candidates 的偶然顺序）。
+    baseline_by_scope = {}
+    for c in sorted(
+        candidates,
+        key=lambda c: (-(c.get("sample_size") or 0), c["pattern_id"]),
+    ):
+        if c.get("lifecycle_stage") == "EARLY_SIGNAL":
+            baseline_by_scope.setdefault(c.get("scope_id"), c["pattern_id"])
     for c in candidates:
         v = verdict.get(c["pattern_id"])
         c["robustness_verdict"] = v["robustness_verdict"] if v else None
         if DERIVATION_GATE:
             # 该字段仅在启用派生门时写入 —— 关闭后产物与 v0.3 逐字节一致
-            c["derivation_verdict"] = derivation_verdict(c, rhythm)
+            c["derivation_verdict"] = derivation_verdict(c, rhythm, baseline_by_scope)
         if c["promotion_status"] != "TIMELINE_CANDIDATE":
             c["effective_promotion_status"] = c["promotion_status"]
             c["effective_status_reason"] = None
@@ -2479,11 +2567,32 @@ def validate_artifact(art):
             dv = c.get("derivation_verdict")
             if dv is None:
                 issues.append("%s: 启用派生门但缺少 derivation_verdict" % pid)
-            elif (
-                c["effective_promotion_status"] == "TIMELINE_CANDIDATE"
-                and dv.get("is_derived") is True
-            ):
-                issues.append("%s: effective TIMELINE_CANDIDATE 但派生判定为 True" % pid)
+            else:
+                if (
+                    c["effective_promotion_status"] == "TIMELINE_CANDIDATE"
+                    and dv.get("is_derived") is True
+                ):
+                    issues.append("%s: effective TIMELINE_CANDIDATE 但派生判定为 True" % pid)
+                # 派生候选**必须可追溯** —— 否则报告无法回答「派生自哪里」
+                if dv.get("is_derived") is True:
+                    src = dv.get("derived_from_pattern_id")
+                    if not src:
+                        issues.append(
+                            "%s: 判定为派生但缺少 derived_from_pattern_id（不可追溯）" % pid
+                        )
+                    elif src not in set(ids):
+                        issues.append(
+                            "%s: derived_from_pattern_id=%s 不是已存在的候选" % (pid, src)
+                        )
+                    if not dv.get("note"):
+                        issues.append("%s: 判定为派生但缺少 derivation note" % pid)
+                # 非派生 / 不下结论时不得留下误导性的来源字段
+                if dv.get("is_derived") is not True and dv.get("derived_from_pattern_id"):
+                    issues.append(
+                        "%s: 非派生却带 derived_from_pattern_id（误导性来源）" % pid
+                    )
+                if dv.get("is_derived") is None and not dv.get("reason"):
+                    issues.append("%s: 不下结论但未记录 reason" % pid)
         if (
             c["effective_promotion_status"] != c["promotion_status"]
             and not c.get("effective_status_reason")
@@ -2556,50 +2665,77 @@ CSV_COLUMNS = [
     "robustness_verdict", "effective_promotion_status", "promotion_reason",
 ]
 
+# 派生门附加列（**仅在启用派生门时输出**）——
+# 若无条件输出，历史轮次（v0.2 / v0.3）的 CSV 会多出空列而无法逐字节复现。
+# 目的：CSV 是人工浏览视图；若只给 `effective_promotion_status` 而不给原因，
+# 审阅者无法回答「为什么这个候选没有进入独立 Pattern？」（Phase 7.3.2 §6）。
+CSV_DERIVATION_COLUMNS = [
+    "is_derived", "derived_from_pattern_id", "derived_from_stage", "derivation_note",
+]
+
+
+def _csv_columns():
+    cols = list(CSV_COLUMNS)
+    if DERIVATION_GATE:
+        # 紧邻 `robustness_verdict`（两项事后检验相邻，便于人工对照）
+        cols[cols.index("robustness_verdict") + 1: cols.index("robustness_verdict") + 1] = (
+            CSV_DERIVATION_COLUMNS
+        )
+    return cols
+
 
 def write_csv(art):
     buf = io.StringIO()
-    w = csv.DictWriter(buf, fieldnames=CSV_COLUMNS, lineterminator="\n")
+    w = csv.DictWriter(buf, fieldnames=_csv_columns(), lineterminator="\n")
     w.writeheader()
     for c in art["candidates"]:
         win = c["window"] or {}
-        w.writerow(
-            {
-                "pattern_id": c["pattern_id"],
-                "pattern_type": c["pattern_type"],
-                "pattern_kind": c["pattern_kind"],
-                "scope_type": c["scope_type"],
-                "scope_id": c["scope_id"],
-                "scope_name": c["scope_name"],
-                "lifecycle_stage": c["lifecycle_stage"] or "",
-                "name": c["name"],
-                "sample_size": c["sample_size"],
-                "years": "|".join(str(y) for y in c["years"]),
-                "center_date_label": c["center_date_label"],
-                "window_start": win.get("start", ""),
-                "window_end": win.get("end", ""),
-                "window_radius_days": win.get("radius_days", ""),
-                "concentration_ratio": c["concentration_ratio"] if c["concentration_ratio"] is not None else "",
-                "concentration_p_analytic": c["concentration_p_analytic"] if c["concentration_p_analytic"] is not None else "",
-                "recurrence_count": c["recurrence_count"] if c["recurrence_count"] is not None else "",
-                "recurrence_ratio": c["recurrence_ratio"] if c["recurrence_ratio"] is not None else "",
-                "front_back": c["stability"].get("front_back") or c["stability"].get("status") or "",
-                "loo_max_shift_days": c["stability"].get("loo_max_shift_days")
-                if c["stability"].get("loo_max_shift_days") is not None else "",
-                "single_year_dominance": c["stability"].get("single_year_dominance")
-                if c["stability"].get("single_year_dominance") is not None else "",
-                "theme_family_count": c["theme_family_count"],
-                "theme_cycle_count": c["theme_cycle_count"],
-                "campaign_count": c["campaign_count"],
-                "mechanisms": "|".join(c["mechanisms"]),
-                "mechanism_confidence": c["mechanism_confidence"],
-                "feature_winner": (c["absolute_vs_relative"] or {}).get("feature_winner") or "",
-                "promotion_status": c["promotion_status"],
-                "robustness_verdict": c.get("robustness_verdict") or "",
-                "effective_promotion_status": c["effective_promotion_status"],
-                "promotion_reason": c["promotion_reason"],
-            }
-        )
+        row = {
+            "pattern_id": c["pattern_id"],
+            "pattern_type": c["pattern_type"],
+            "pattern_kind": c["pattern_kind"],
+            "scope_type": c["scope_type"],
+            "scope_id": c["scope_id"],
+            "scope_name": c["scope_name"],
+            "lifecycle_stage": c["lifecycle_stage"] or "",
+            "name": c["name"],
+            "sample_size": c["sample_size"],
+            "years": "|".join(str(y) for y in c["years"]),
+            "center_date_label": c["center_date_label"],
+            "window_start": win.get("start", ""),
+            "window_end": win.get("end", ""),
+            "window_radius_days": win.get("radius_days", ""),
+            "concentration_ratio": c["concentration_ratio"] if c["concentration_ratio"] is not None else "",
+            "concentration_p_analytic": c["concentration_p_analytic"] if c["concentration_p_analytic"] is not None else "",
+            "recurrence_count": c["recurrence_count"] if c["recurrence_count"] is not None else "",
+            "recurrence_ratio": c["recurrence_ratio"] if c["recurrence_ratio"] is not None else "",
+            "front_back": c["stability"].get("front_back") or c["stability"].get("status") or "",
+            "loo_max_shift_days": c["stability"].get("loo_max_shift_days")
+            if c["stability"].get("loo_max_shift_days") is not None else "",
+            "single_year_dominance": c["stability"].get("single_year_dominance")
+            if c["stability"].get("single_year_dominance") is not None else "",
+            "theme_family_count": c["theme_family_count"],
+            "theme_cycle_count": c["theme_cycle_count"],
+            "campaign_count": c["campaign_count"],
+            "mechanisms": "|".join(c["mechanisms"]),
+            "mechanism_confidence": c["mechanism_confidence"],
+            "feature_winner": (c["absolute_vs_relative"] or {}).get("feature_winner") or "",
+            "promotion_status": c["promotion_status"],
+            "robustness_verdict": c.get("robustness_verdict") or "",
+            "effective_promotion_status": c["effective_promotion_status"],
+            "promotion_reason": c["promotion_reason"],
+        }
+        if DERIVATION_GATE:
+            dv = c.get("derivation_verdict") or {}
+            row["is_derived"] = (
+                "" if dv.get("is_derived") is None else str(dv["is_derived"]).lower()
+            )
+            row["derived_from_pattern_id"] = dv.get("derived_from_pattern_id") or ""
+            row["derived_from_stage"] = dv.get("derived_from_stage") or ""
+            # 单列承载「派生理由」：判定为派生时是 note（含滞后/残差），
+            # 不下结论时是 reason —— 保证该列永远能解释「为什么」。
+            row["derivation_note"] = dv.get("note") or dv.get("reason") or ""
+        w.writerow(row)
     return "\ufeff" + buf.getvalue()
 
 

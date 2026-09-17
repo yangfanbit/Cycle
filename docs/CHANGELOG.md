@@ -83,6 +83,27 @@ discover_time_observation_patterns.py --round 9.9 --check                       
 `test_consistency.py` 9/9 PASS · 6 项 research `validate_*.py` PASS ·
 `build_time_observation_patterns.py --check` · `npm test` **395/395** · `tsc -b` · `vite build`。
 
+### 6 · ★ Phase 7.3.2 增补：派生结构可追溯 + 回归测试
+
+- **补齐可追溯字段**（原实现只有 `is_derived` / `stage_verdicts` / `reason`）：
+  `derivation_verdict` 现含 `derived_from_pattern_id`（**派生自哪个候选**）、
+  `derived_from_stage`、`note`（含滞后与残差数字）。
+  产物据此可回答「**为什么这个候选存在，但没有进入独立 Pattern？**」——
+  派生候选**一律保留、不得删除**。
+  自检强制：判定为派生则**必须**带 `derived_from_pattern_id`（且必须指向**真实存在的候选**）与 `note`；
+  非派生 / 不下结论**不得**留下误导性来源字段。
+- **修掉一个 fail-safe 缺陷**：原 `bool(s.get("derived_from_early_signal"))` 会把
+  「阶段缺该字段」判为 `False` —— 而 `False` 是**肯定性断言（明确非派生）**，
+  等于把「无证据」伪装成「已证清白」，会**放过真正的派生结构**。
+  已改为缺字段 / `null` 一律 → `None`（无判定 → 不降级）。对真实数据**行为中性**（`--check` 逐字节一致）。
+- **新增回归测试** `research/scripts/test_derivation_gate.py`（6 组）：
+  ① `derived=true` 不得晋级（且不得用 `RESEARCH_ONLY`）· ② `derived=false` 原规则继续生效 ·
+  ③ 缺字段 / 无节奏判定 → `None` 不降级（**4 种退化情形**）· ④ source trace 保留 ·
+  ⑤ canonical CMTR v1 未回退 direct · ⑥ 产物级来源引用完整性。
+  **②③ 必须用合成输入** —— 真实产物中 `is_derived=False` 候选数为 **0**，
+  只对产物断言则这两条路径永远不会被执行（等于没测）。
+  已做**反向对照**：关掉派生门后测试 ① 立即失败 → 证明测试非空。
+
 ### 边界
 
 ```text
@@ -94,7 +115,7 @@ breaking change       : NO
 
 未修改 `src/` / Timeline / `exports/` / `contracts/` / `schema.sql` / DB 数据行 / Product Artifact。
 `v0_2.*` / `v0_3.*` 产物保留未删，作为口径演进的可比基线。
-新报告：`research/research/reports/Time_Observation_Discovery_v0_4.md`。
+新报告：`research/research/reports/Time_Observation_Discovery_v0_4.md`（含 §12 Phase 7.3.2 规则落实记录）。
 
 ---
 

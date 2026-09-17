@@ -203,6 +203,13 @@ ThreeC/  (单一 Git, origin = yangfanbit/Cycle)
     实质性变化仅 2 条候选（`TOPC-004` / `TOPC-021`，均 MAIN_RISE）。
   - **★ 派生范围**：两个有节奏分析的 scope 各 **7 个阶段全部派生**（`THEME_FORMING` … `MAIN_END`）
     → **EARLY_SIGNAL 是本数据集里唯一的时间信息来源**，其余阶段皆为下游回声。
+  - **派生候选可追溯（Phase 7.3.2，不得删除）**：`derivation_verdict` 含
+    `derived_from_pattern_id`（派生自哪个候选）/ `derived_from_stage` / `stage_verdicts` /
+    `reason`（为何不下结论）/ `note`（为何判定为派生，含滞后与残差数字）。
+    自检强制来源引用必须指向**真实存在的候选**。
+  - **降级落点为 `EXPLORATORY`（非 `RESEARCH_ONLY`）**：派生候选数值门槛**已通过**，
+    缺的是「独立性」—— 逐字命中 `EXPLORATORY` 的定义；`RESEARCH_ONLY` 描述的是数值弱。
+  - **回归测试** `research/scripts/test_derivation_gate.py`（6 组，含 4 种退化输入 + 反向对照）。
   - 边界：**规则变更，非数据变更**；未改 DB / export / contracts / Product Artifact。
 - 结论：**"6–8 月汽车" = 历史观察窗口（Historical Observation Window），
   Partially Supported，非固定买入窗口**。
