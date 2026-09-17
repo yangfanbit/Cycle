@@ -7,6 +7,130 @@
 
 ---
 
+## 2026-09-17 · Research · Historical Data Expansion Wave 1A — 电力设备历史 Cycle
+
+**性质：Research 数据扩容 + 一次明确的 taxonomy 扩展。**
+**唯一目标：把「电力设备」接入 ThreeC 数据链路，修复「当前侧有候选、历史侧无 Cycle」的结构性断裂。**
+**报告：`docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md`（A–J 十节）。**
+
+### 1 · 为什么做
+
+`Historical_Coverage_Audit_v0_1`（2026-09-16）§12 把「补录电力设备 Macro Theme 的历史 Cycle」
+列为 **Wave 1 P0**：Current Candidate 侧已声明 4 个 Macro Theme，历史侧只有 2 个
+→ 电力设备 / 信息通信 / 高端装备 3 个主题**无历史 Cycle 可类比**，
+`CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` 的 Similarity Pattern 层**恒为 UNKNOWN**。
+
+### 2 · Taxonomy 扩展（经用户明确授权）
+
+**新建 Macro Theme root `TH-POWER`「电力设备」**（`theme_type=industry`，`parent_theme_id=NULL`），
+并建立**被实际引用所必需的最小 Sub-theme 集**（不做完整子主题树）：
+`TH-POWER-PV`（光伏/新能源发电设备）· `TH-POWER-WIND`（风电设备）· `TH-POWER-GRID`（电网/输变电设备）。
+
+- **为什么此前没有该 root**：历史侧只做过汽车 / 医药健康两个族；
+  唯一语义相近的 `TH-NEV`「新能源汽车/电池」是 `TH-AUTO` 的**子节点（车用电池）**，归入它属类别错误。
+- **命名由契约钉死**：`candidatePatternOf()` 用 `macro_theme` **精确字符串匹配**，
+  Current 侧声明的是「电力设备」→ root `name` 必须是「电力设备」。
+- **未改动** `TH-AUTO` / `TH-PHARMA` 及其子主题的任何归属。
+- 这是 **Research taxonomy 数据建设**，**不是** Product schema / export schema 变更。
+
+### 3 · 新增 Historical Theme Cycle（2 个，数量由证据决定）
+
+| Theme Cycle ID | 名称 | 跨度 | start | end | Peak |
+|---|---|---|---|---|---|
+| `power_ne_equipment_2020_2022` | 双碳驱动的清洁能源发电设备重估 | 2020–2022 | 2020-09-22 | 2022-12-30 | 2021-10-27 ~ 2021-11-04 |
+| `power_grid_uhv_2022_2025` | 电网投资与特高压第四轮建设 | 2022–2025 | 2022-01-10 | 2025-12-31 | 2024-07-09 ~ 2024-10-14 |
+
+- 政策链（全部一手来源）：双碳目标（2020-09-22）→ 气候雄心峰会 12 亿千瓦（2020-12-12）→
+  整县推进 676 县（2021-09-08）；特高压核准提速（2022-01-10）→ 国网 5012 亿元投资计划（2022-01-16）→
+  再开工 8 项特高压（2022-08-03）→ 电网投资 5275 亿（2023）/ 6083 亿（2024，+15.3%）。
+- Peak 全部来自**本地真实行情复核**（腾讯 GTIMG 前复权），非新闻推断。
+- **未为了凑数制造 Cycle**；`FIRST_DECLINE` 等无证据阶段一律写 UNKNOWN。
+
+### 4 · Primary / Related Macro Theme 规则（本轮确立）
+
+写入 `research/research/methodology/macro_theme_primary_related_v0_1.md`：
+每个 Theme Cycle **有且只有一个 Primary Macro Theme**（用于 `theme_family_count` / `N` /
+跨族独立性）；Related 可存在但**不增加独立样本数**。
+
+**实现约束（实测）**：CMTR v1 对对象 `themes[]` **全量**解析根节点，
+且 `theme_family_id = fam_ids[0] if len(fam_ids)==1 else None`
+→ 一个 Campaign 若挂接 ≥2 个 Macro root 会被判 `CONFLICT` 并**被排除出所有族**。
+因此 **Related Macro Theme 不写入 `campaign_themes`**，改记录在研究层文档。**未改 schema。**
+
+**2020–2021「新能源」重叠裁决**：`C-2020-NEV`/`C-2021-NEV` 的 Primary = `TH-AUTO`
+（核心=整车/动力电池；Peak 2020-07-13 / 2021-08-06）；
+`C-2020-POWER-NE` 的 Primary = `TH-POWER`（核心=光伏/风电发电设备；Peak 2021-10-27~11-04）。
+Peak 相差 3~4 个月、驱动分属两条政策链 → **生命周期独立，允许并存**。
+同 Cycle 内的环节错位（硅料 2022-07-05、出海 2025 见顶）**不另立 Cycle**。
+
+### 5 · Coverage Delta
+
+| 指标 | 前 | 后 |
+|---|---:|---:|
+| **Macro Themes** | **2** | **3** |
+| Campaigns | 9 | 11 |
+| Theme Cycles | 9 | 11 |
+| Evidence | 51 | 67（+16：policy 5 / industry 7 / market 2 / information 2） |
+| Events（DB） | 30 | 39（`industry` 类型 **0 → 1**，首次使用） |
+| Lifecycle 记录（export） | 72 | 88 |
+| Market series | 40 | 48 |
+| market_daily | 31,816 | 48,772 |
+
+**仍为 0 / 未解锁**：`company` 与 `capital` 证据（0）· 日期核验（0/24）·
+`theme_family_count` ≥ 4 · 交易日历补全 · `evidence_type` 口径统一。
+
+### 6 · 数据质量发现：腾讯前复权序列缺陷
+
+**通威股份 `sh600438` 的腾讯 qfq 序列在 2018 年返回非正价格**（2018-10-18 close = -0.218，raw = 5.04）。
+已直接请求腾讯接口确认是**上游返回本身的问题**，非本地解析错误 → **该序列未登记**（不写入已知损坏数据）。
+建议未来 `fetch_market_*.py` 统一加入「前复权序列非正值检测」。
+
+### 7 · 未修改
+
+`schema/schema.sql` · `contracts/` · Research Model v1.0 · `research/current/`（Current Research）·
+Product 逻辑 / Timeline UI / Current Time Lens UI / Historical Similar Phase UI ·
+**Product Artifact `src/data/timeline/timeObservationPatterns.ts`（零改动）** ·
+`time_observation_*_v0_2/v0_3/v0_4` 产物（provenance 保留）· `historical_coverage_matrix_v0_1.*`（保持 v0.1 快照）。
+
+### 8 · 测试快照同步（仅数据期望值）
+
+`npm test` 初测 11 failed → 更新 4 个**数据快照回归**测试的期望值后 **395/395 PASS**。
+这些测试**自身文档化**了协议（*「这不是永久业务常量——Research 导出更新后需同步更新此快照值」*）。
+**仅改测试内的数据期望值**，零 Product 逻辑 / UI / 语义改动；并新增两个「仍无历史 → UNKNOWN」断言以保留原测试意图。
+详见报告 §H.3。
+
+### 9 · 验证
+
+```
+validate_db.py                  PASS (0 FAIL / 0 WARN)
+validate_timeline_export.py     PASS (11/4/42/54)
+validate_batch_research.py      PASS (12 条目)
+validate_promotion_manifest.py  PASS (5/5)
+check_doc_schema_consistency.py PASS (0 FAIL)
+validate_current_research.py    PASS (载入 15 个历史案例 id，此前 13)
+validate_monorepo_integrity.py  PASS (25/25)
+npm test                        395 passed / 395 (10 files)
+npx tsc -b                      exit 0
+npm run build                   PASS
+```
+
+**预期 FAIL（未修复，属快照预期行为）**：`build_time_observation_patterns.py --check` ·
+`discover_time_observation_patterns.py --check` · `audit_historical_coverage.py --check`
+—— 三者产物均为**旧数据集快照**；本轮刻意不重跑（不覆盖 v0.2/v0.3/v0.4 provenance）。
+
+### 10 · 未做的事
+
+未启动 Wave 1B（信息通信）/ Wave 1C（高端装备）· 未重跑 Time Observation Discovery ·
+未重跑 Coverage Audit（只做 delta 统计）· 未做日期人工核验 · 未进入 Structural Analogy / Phase 8 ·
+未修改任何 Current Candidate 或 Similarity 规则。
+
+### 11 · 下一步（建议只做一件）
+
+**先做 `Coverage Audit v0.2`（产物另存，不覆盖 v0.1）**，
+校验本轮 delta 并显式登记「生成器产物滞后」清单；确认无结构性异常后再进入 **Wave 1B（信息通信）**。
+
+---
+
 ## 2026-09-17 · Repo · Repository Recovery + Research Integration（仓库恢复与真相源统一）
 
 **性质：仓库工程变更，零业务功能、零研究结论、零数据变更。**

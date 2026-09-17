@@ -33,8 +33,9 @@ EXPORT = db.TIMELINE_EXPORT_PATH  # canonical: <repo>/exports/timeline_export_v1
 
 AUTO_RULE = "rule_auto_summer"
 PHARMA_RULE = "rule_pharma_upgrade"   # 医药健康（Medical Health Minimum Dataset v0.1）
+POWER_RULE = "rule_power_equipment"   # 电力设备（Wave 1A — 电力设备历史 Cycle）
 # 批量研究覆盖的 Rule（按顺序生成；新增 Macro Theme 在此登记）
-RULES = [AUTO_RULE, PHARMA_RULE]
+RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE]
 RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----
@@ -50,6 +51,10 @@ THEME_CYCLE = {
     # ---- 医药健康（Medical Health Minimum Dataset v0.1，Pattern = Parallel）----
     # 同一 Theme Cycle 内含多个 Campaign，各自独立生命周期、Peak 时间可不同（v1.1 §5）。
     "C-2019-PHARMA-INNOV": "medical_structural_upgrade_2019_2022",
+    # ---- 电力设备（Wave 1A，Primary Macro Theme = TH-POWER）----
+    # 两个 Cycle 的 Primary 均为 TH-POWER；互为独立 Cycle（形成锚点 / 核心驱动 / Peak 均不同）。
+    "C-2020-POWER-NE": "power_ne_equipment_2020_2022",
+    "C-2022-POWER-GRID": "power_grid_uhv_2022_2025",
 }
 
 # 研究信号（research-level，来自 theme_lifecycle_v0_2 三案例建模；其余年份按 annual 研究记录）
@@ -78,6 +83,20 @@ SIGNALS = {
         {"type": "EARLY_SIGNAL", "date": "2019-01-02", "confidence": "medium"},
         {"type": "THEME_FORMING", "date": "2019-07-22", "confidence": "high"},
     ],
+    # ---- 电力设备（Wave 1A）----
+    # Cycle 1：EARLY_SIGNAL = 双碳目标宣布（2020-09-22，官方讲话）；
+    #          THEME_FORMING = 气候雄心峰会明确 12 亿千瓦装机目标（2020-12-12，首次可量化）。
+    "C-2020-POWER-NE": [
+        {"type": "EARLY_SIGNAL", "date": "2020-09-22", "confidence": "high"},
+        {"type": "THEME_FORMING", "date": "2020-12-12", "confidence": "high"},
+    ],
+    # Cycle 2：EARLY_SIGNAL = 特高压核准提速（2022-01-10，行业媒体）；
+    #          THEME_FORMING = 国网年度工作会议 5012 亿元电网投资计划（2022-01-16，官方口径）。
+    # 注：市场在 2022-01-18/19 即「利好兑现」见顶回落，该回撤记入 lifecycle RETRACEMENT，未隐藏。
+    "C-2022-POWER-GRID": [
+        {"type": "EARLY_SIGNAL", "date": "2022-01-10", "confidence": "medium"},
+        {"type": "THEME_FORMING", "date": "2022-01-16", "confidence": "high"},
+    ],
 }
 
 # Campaign Phase → 时间字段（research-only，便于 timeline 表达）
@@ -89,6 +108,11 @@ PHASE_TIME_FIELDS = {
     "C-2025-ROBOTAXI": {"broad_confirmation_date": "2025-06-24"},
     # ---- 医药健康 ----
     "C-2019-PHARMA-INNOV": {"broad_confirmation_date": "2019-11-28"},
+    # ---- 电力设备（Wave 1A）----
+    # Cycle 1：BROAD_CONFIRMATION = 整县屋顶分布式光伏试点名单公布 676 县（2021-09-08）。
+    "C-2020-POWER-NE": {"broad_confirmation_date": "2021-09-08"},
+    # Cycle 2：BROAD_CONFIRMATION = 国网披露再开工 8 项特高压、在建项目投资破万亿（2022-08-03）。
+    "C-2022-POWER-GRID": {"broad_confirmation_date": "2022-08-03"},
 }
 
 # ---- 日期精度（V1.7：日期精度不再是核心瓶颈）----
@@ -333,6 +357,33 @@ CAMPAIGN_LIFECYCLE = {
         {"stage": "DECLINING", "start": "2021-07-02", "end": "2022-10-31", "precision": "PHASE_WINDOW"},
         {"stage": "MAIN_END", "start": "2022-10-31", "end": "2022-10-31", "precision": "EXACT_DATE"},
     ],
+    # ---- 电力设备（Wave 1A；Peak 口径同 v1.1 §6，使用 Campaign 自身代表标的）----
+    # Peak Window 由三个代表标的自身高点界定：
+    #   阳光电源 2021-10-27 / 隆基绿能 2021-11-01 / 金风科技 2021-11-04。
+    "C-2020-POWER-NE": [
+        {"stage": "EARLY_SIGNAL", "start": "2020-09-22", "end": "2020-09-22", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2020-12-12", "end": "2020-12-12", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2021-09-08", "end": "2021-09-08", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2020-12-12", "end": "2021-10-26", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2021-10-27", "end": "2021-11-04", "precision": "DATE_WINDOW"},
+        {"stage": "RETRACEMENT", "start": "2021-11-05", "end": "2022-04-26", "precision": "PHASE_WINDOW"},
+        {"stage": "SECONDARY", "start": "2022-04-27", "end": "2022-08-23", "precision": "PHASE_WINDOW"},
+        {"stage": "DECLINING", "start": "2022-08-24", "end": "2022-12-30", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2022-12-30", "end": "2022-12-30", "precision": "EXACT_DATE"},
+    ],
+    # Peak Window 由三个代表标的自身高点界定：
+    #   许继电气 2024-07-09 / 国电南瑞 2024-10-08 / 平高电气 2024-10-14。
+    # RETRACEMENT = 2022-01 政策信号披露后的「利好兑现」回撤（三标的 2022-01-18/19 同步见顶）。
+    "C-2022-POWER-GRID": [
+        {"stage": "EARLY_SIGNAL", "start": "2022-01-10", "end": "2022-01-10", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2022-01-16", "end": "2022-01-16", "precision": "EXACT_DATE"},
+        {"stage": "RETRACEMENT", "start": "2022-01-20", "end": "2022-04-26", "precision": "PHASE_WINDOW"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2022-08-03", "end": "2022-08-03", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2023-01-01", "end": "2024-07-08", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2024-07-09", "end": "2024-10-14", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2024-10-15", "end": "2025-12-31", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2025-12-31", "end": "2025-12-31", "precision": "EXACT_DATE"},
+    ],
 }
 
 CANDIDATE_LIFECYCLE = {
@@ -444,6 +495,41 @@ CAMPAIGN_DRIVERS = {
                    "2022 年创新药估值出清：CXO 估值自 2021 年中 103x 降至约 30x（估值杀，非业绩杀）",
                    "2022-09/10 各自代表标的见低点；2022Q4 出现修复迹象，Theme Cycle End 未确认"],
     },
+    # ---- 电力设备（Wave 1A）----
+    "C-2020-POWER-NE": {
+        "start": ["双碳目标宣布：力争 2030 年前碳达峰、2060 年前碳中和（EV-PWR-03, 2020-09-22）",
+                  "平价上网 Setup：2018 年 531 新政出清后，2019-01-07 平价上网通知（发改能源〔2019〕19 号）"
+                  "确立无补贴发展路径（EV-PWR-02，prior）"],
+        "accelerator": ["气候雄心峰会：2030 年风电、太阳能发电总装机 12 亿千瓦以上（EV-PWR-04, 2020-12-12）"
+                        "→ 首个可量化装机目标",
+                        "整县屋顶分布式光伏试点名单 676 县公布（EV-PWR-05, 2021-09-08）",
+                        "2021 年新增光伏并网装机约 5300 万千瓦、分布式占比首次过半（E-PWR-04）"],
+        "turning": ["硅料价格暴涨挤压中下游利润（2021 年硅料价格年内涨超 2 倍）",
+                    "高估值抱团瓦解 + 产能过剩预期",
+                    "代表标的分批见顶：阳光电源 2021-10-27 / 隆基绿能 2021-11-01 / 金风科技 2021-11-04"],
+        "ending": ["2021-11 见顶后主跌至 2022-04-26（隆基 39.68 / 阳光 37.65 / 金风 9.45 同步低点，含大盘 β）",
+                   "2022-04-27~2022-08-23 阳光电源次级反弹（2022-08-23 100.12），隆基未同步",
+                   "上游硅料环节延后至 2022-07-05 见顶（特变电工-新特能源），属同 Cycle 内环节错位",
+                   "2022-12-30 为本地行情窗口末端，Theme Cycle End 未确认"],
+    },
+    "C-2022-POWER-GRID": {
+        "start": ["特高压核准提速：2022 年规划项目有望全部核准（EV 相关，2022-01-10 报道）",
+                  "国家电网 2022 年度工作会议：电网投资计划 5012 亿元（EV-PWR-06, 2022-01-16）"
+                  "→ 电网投资由 2019 年 4473 亿 / 2021 年 4882 亿转为上行"],
+        "accelerator": ["国网披露年内再开工「四交四直」8 项特高压、在建项目投资破万亿、"
+                        "全年电网投资约 5300 亿元创历史最高（EV-PWR-07, 2022-08-03）",
+                        "首个「沙戈荒」外送特高压（宁夏—湖南 ±800 千伏）开工（EV-PWR-08, 2023-06-11）",
+                        "电网工程投资连续高增：2023 年 5275 亿元（+5.4%）、2024 年 6083 亿元（+15.3%）",
+                        "国网 2024 年投资首超 6000 亿元，累计建成「22 交 16 直」38 项特高压（EV-PWR-09, 2025-02-12）"],
+        "turning": ["2022-01 政策信号披露后即「利好兑现」：三标的同步见顶（国电南瑞/许继电气 01-19、"
+                    "平高电气 01-18）→ 至 2022-04-25/26 同步见底",
+                    "2024-07~10 批量见顶：许继电气 07-09 / 国电南瑞 10-08 / 平高电气 10-14"],
+        "ending": ["2024-10 后特高压国内标的回落（2025 年：国电南瑞 -5.0%、平高电气 -2.8%、许继电气 +1.7%）",
+                   "★ 环节错位：出海暴露较高的思源电气（2025-12-26 160.30，+115.0%）与"
+                   "特变电工（2025-11-07 26.14，+86.0%）延后至 2025 年见顶，未另立 Cycle",
+                   "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
+                   "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"],
+    },
 }
 
 CANDIDATE_DRIVERS = {
@@ -493,6 +579,10 @@ PROXY_SERIES = {
     "C-2025-ROBOTAXI": "AUTO_ETF_516110",
     # ---- 医药健康：按 v1.1 §6 使用 Campaign 自身代表标的（医药ETF 仅作参照，不作 Peak 口径）----
     "C-2019-PHARMA-INNOV": "WUXIAPPTEC",
+    # ---- 电力设备（Wave 1A）：行业代理指数不可得（电力设备 ETF 均晚于 2022 成立），
+    #      按 v1.1 §6 使用 Campaign 自身代表标的 ----
+    "C-2020-POWER-NE": "LONGI",
+    "C-2022-POWER-GRID": "NARI",
 }
 
 PROXY_NOTE = {
@@ -507,6 +597,13 @@ PROXY_NOTE = {
     "C-2019-PHARMA-INNOV": ("Campaign 自身代表标的 药明康德（CXO 龙头）raw/adj close；"
                             "同 Campaign 另含 恒瑞医药（2020-12-25 见顶）与 泰格医药 → Peak 分批。"
                             "医药ETF(512010) 仅作行业参照，不参与 Peak 判定（v1.1 §6）"),
+    "C-2020-POWER-NE": ("Campaign 自身代表标的 隆基绿能（单晶硅片/组件龙头）raw/adj close；"
+                        "同 Campaign 另含 阳光电源（2021-10-27 见顶）与 金风科技（2021-11-04 见顶）→ Peak 分批。"
+                        "电力设备行业指数代理不可得（相关 ETF 均晚于本轮窗口成立），不参与 Peak 判定（v1.1 §6）"),
+    "C-2022-POWER-GRID": ("Campaign 自身代表标的 国电南瑞（电网自动化龙头）raw/adj close；"
+                          "同 Campaign 另含 许继电气（2024-07-09 见顶）与 平高电气（2024-10-14 见顶）→ Peak 分批。"
+                          "★ 思源电气（2025-12-26 见顶）与 特变电工（2025-11-07 见顶）延后，属出海环节错位；"
+                          "特变电工另有 多晶硅（新特能源）混淆，均不参与 Peak 判定（v1.1 §6）"),
 }
 
 
@@ -702,7 +799,8 @@ def main():
         "source_commit": get_git_head(),
         "rule_id": RULES if len(RULES) > 1 else RULES[0],
         "scope": ("rule_auto_summer（汽车 2018–2025，观察窗口 6-8月）"
-                  " + rule_pharma_upgrade（医药健康 2019–2022，结构性升级）"),
+                  " + rule_pharma_upgrade（医药健康 2019–2022，结构性升级）"
+                  " + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电）"),
         "status_vocabulary": {
             "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
             "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -767,6 +865,14 @@ def main():
                            "转向创新驱动 + 产业链专业化；非固定买入窗口，不构成交易建议"),
             "observation_window": ("结构性（非季节性）：2019–2022。Formation 2019-07-22（科创板）、"
                                    "Broad Confirmation 2019-11-28（医保谈判）、Peak Window 2020-12-25~2021-07-01"),
+        },
+        POWER_RULE: {
+            "definition": ("Historical Observation Window（历史观察窗口）：电力设备（新能源发电设备 / "
+                           "电网输配电设备）在政策与电网投资周期驱动下形成的结构性行情；"
+                           "非固定买入窗口，不构成交易建议"),
+            "observation_window": ("结构性（非季节性）：2018–2025。两个独立 Theme Cycle："
+                                   "① 清洁能源发电设备 2020-09-22~2022-12-30（Peak 2021-10-27~2021-11-04）；"
+                                   "② 电网投资与特高压 2022-01-10~2025-12-31（Peak 2024-07-09~2024-10-14）"),
         },
     }
     rules_out = []

@@ -255,7 +255,9 @@ describe('3. Research Attention Gate v1（状态分类，不是评分）', () =>
     expect(v2.layerC.watch.map((i) => i.campaign_id).sort()).toEqual(
       ['C-2024-ROBOTAXI', 'RC-2020-PANDEMIC', 'RC-2021-TCM', 'RC-2023-HUAWEI', 'RC-2024-SECONDARY'].sort(),
     );
-    expect(v2.layerC.referenceTotal).toBe(8);
+    // 15 个研究主体（11 Campaign + 4 Research Candidate）− 5 个 WATCH = 10 个 HISTORICAL_REFERENCE
+    // （Wave 1A 新增的 C-2020-POWER-NE / C-2022-POWER-GRID 均已结束 → 计入历史参考）
+    expect(v2.layerC.referenceTotal).toBe(10);
     // 「当前值得研究」为空时必须给出解释，而不是假装有结论
     const html = renderToStaticMarkup(
       <CurrentTimeLens dataSource={previewTimelineSource()} today={TODAY} selection={null} onSelect={() => {}} />,

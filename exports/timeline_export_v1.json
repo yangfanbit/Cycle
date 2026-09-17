@@ -1,8 +1,8 @@
 {
   "contract": "timeline_export",
   "timeline_export_version": "1.0",
-  "generated_at": "2026-09-14T22:19:39",
-  "source_commit": "d41960d358b4586e34e250fcaf638bd13f69f511",
+  "generated_at": "2026-09-18T00:39:22",
+  "source_commit": "f446cb8a02128f63835f3fd29c432f1e96a82fd0",
   "project": "Cycle-Research",
   "rules": [
     {
@@ -18,6 +18,13 @@
       "base_pattern": "医药健康",
       "definition": "Historical Observation Window（历史观察窗口）：医药产业由仿制药/销售驱动转向创新驱动 + 产业链专业化；非固定买入窗口，不构成交易建议",
       "observation_window": "结构性（非季节性）：2019–2022。Formation 2019-07-22（科创板）、Broad Confirmation 2019-11-28（医保谈判）、Peak Window 2020-12-25~2021-07-01"
+    },
+    {
+      "rule_id": "rule_power_equipment",
+      "name": "电力设备历史周期观察",
+      "base_pattern": "电力设备",
+      "definition": "Historical Observation Window（历史观察窗口）：电力设备（新能源发电设备 / 电网输配电设备）在政策与电网投资周期驱动下形成的结构性行情；非固定买入窗口，不构成交易建议",
+      "observation_window": "结构性（非季节性）：2018–2025。两个独立 Theme Cycle：① 清洁能源发电设备 2020-09-22~2022-12-30（Peak 2021-10-27~2021-11-04）；② 电网投资与特高压 2022-01-10~2025-12-31（Peak 2024-07-09~2024-10-14）"
     }
   ],
   "signals": [
@@ -74,6 +81,30 @@
       "date": "2019-07-22",
       "confidence": "high",
       "campaign_id": "C-2019-PHARMA-INNOV"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2020-09-22",
+      "confidence": "high",
+      "campaign_id": "C-2020-POWER-NE"
+    },
+    {
+      "type": "THEME_FORMING",
+      "date": "2020-12-12",
+      "confidence": "high",
+      "campaign_id": "C-2020-POWER-NE"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2022-01-10",
+      "confidence": "medium",
+      "campaign_id": "C-2022-POWER-GRID"
+    },
+    {
+      "type": "THEME_FORMING",
+      "date": "2022-01-16",
+      "confidence": "high",
+      "campaign_id": "C-2022-POWER-GRID"
     },
     {
       "type": "EARLY_SIGNAL",
@@ -1049,6 +1080,252 @@
           "2022-09/10 各自代表标的见低点；2022Q4 出现修复迹象，Theme Cycle End 未确认"
         ]
       }
+    },
+    {
+      "campaign_id": "C-2020-POWER-NE",
+      "rule_id": "rule_power_equipment",
+      "year": 2020,
+      "start_date": "2020-09-22",
+      "peak_date": "2021-11-01",
+      "end_date": "2022-12-30",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电力设备",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "光伏/新能源发电设备",
+          "theme_type": "concept",
+          "role": "main"
+        },
+        {
+          "name": "风电设备",
+          "theme_type": "concept",
+          "role": "related"
+        }
+      ],
+      "event_ids": [
+        "EV-PWR-01",
+        "EV-PWR-02",
+        "EV-PWR-03",
+        "EV-PWR-04",
+        "EV-PWR-05"
+      ],
+      "security_ids": [
+        "LONGI",
+        "SUNGROW",
+        "GOLDWIND"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "power_ne_equipment_2020_2022",
+      "promotion_status": null,
+      "first_signal_date": "2020-09-22",
+      "broad_confirmation_date": "2021-09-08",
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2020-09-22",
+          "end": "2020-09-22",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2020-12-12",
+          "end": "2020-12-12",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "BROAD_CONFIRMATION",
+          "start": "2021-09-08",
+          "end": "2021-09-08",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-12-12",
+          "end": "2021-10-26",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2021-10-27",
+          "end": "2021-11-04",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2021-11-05",
+          "end": "2022-04-26",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "SECONDARY",
+          "start": "2022-04-27",
+          "end": "2022-08-23",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2022-08-24",
+          "end": "2022-12-30",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_END",
+          "start": "2022-12-30",
+          "end": "2022-12-30",
+          "precision": "EXACT_DATE"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "双碳目标宣布：力争 2030 年前碳达峰、2060 年前碳中和（EV-PWR-03, 2020-09-22）",
+          "平价上网 Setup：2018 年 531 新政出清后，2019-01-07 平价上网通知（发改能源〔2019〕19 号）确立无补贴发展路径（EV-PWR-02，prior）"
+        ],
+        "accelerator": [
+          "气候雄心峰会：2030 年风电、太阳能发电总装机 12 亿千瓦以上（EV-PWR-04, 2020-12-12）→ 首个可量化装机目标",
+          "整县屋顶分布式光伏试点名单 676 县公布（EV-PWR-05, 2021-09-08）",
+          "2021 年新增光伏并网装机约 5300 万千瓦、分布式占比首次过半（E-PWR-04）"
+        ],
+        "turning": [
+          "硅料价格暴涨挤压中下游利润（2021 年硅料价格年内涨超 2 倍）",
+          "高估值抱团瓦解 + 产能过剩预期",
+          "代表标的分批见顶：阳光电源 2021-10-27 / 隆基绿能 2021-11-01 / 金风科技 2021-11-04"
+        ],
+        "ending": [
+          "2021-11 见顶后主跌至 2022-04-26（隆基 39.68 / 阳光 37.65 / 金风 9.45 同步低点，含大盘 β）",
+          "2022-04-27~2022-08-23 阳光电源次级反弹（2022-08-23 100.12），隆基未同步",
+          "上游硅料环节延后至 2022-07-05 见顶（特变电工-新特能源），属同 Cycle 内环节错位",
+          "2022-12-30 为本地行情窗口末端，Theme Cycle End 未确认"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2022-POWER-GRID",
+      "rule_id": "rule_power_equipment",
+      "year": 2022,
+      "start_date": "2022-01-10",
+      "peak_date": "2024-10-08",
+      "end_date": "2025-12-31",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电力设备",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "电网/输变电设备",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-PWR-06",
+        "EV-PWR-07",
+        "EV-PWR-08",
+        "EV-PWR-09"
+      ],
+      "security_ids": [
+        "NARI",
+        "XUJI",
+        "SIEYUAN",
+        "TBEA",
+        "PINGGAO"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "power_grid_uhv_2022_2025",
+      "promotion_status": null,
+      "first_signal_date": "2022-01-10",
+      "broad_confirmation_date": "2022-08-03",
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2022-01-10",
+          "end": "2022-01-10",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2022-01-16",
+          "end": "2022-01-16",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2022-01-20",
+          "end": "2022-04-26",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "BROAD_CONFIRMATION",
+          "start": "2022-08-03",
+          "end": "2022-08-03",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-01-01",
+          "end": "2024-07-08",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2024-07-09",
+          "end": "2024-10-14",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2024-10-15",
+          "end": "2025-12-31",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_END",
+          "start": "2025-12-31",
+          "end": "2025-12-31",
+          "precision": "EXACT_DATE"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "特高压核准提速：2022 年规划项目有望全部核准（EV 相关，2022-01-10 报道）",
+          "国家电网 2022 年度工作会议：电网投资计划 5012 亿元（EV-PWR-06, 2022-01-16）→ 电网投资由 2019 年 4473 亿 / 2021 年 4882 亿转为上行"
+        ],
+        "accelerator": [
+          "国网披露年内再开工「四交四直」8 项特高压、在建项目投资破万亿、全年电网投资约 5300 亿元创历史最高（EV-PWR-07, 2022-08-03）",
+          "首个「沙戈荒」外送特高压（宁夏—湖南 ±800 千伏）开工（EV-PWR-08, 2023-06-11）",
+          "电网工程投资连续高增：2023 年 5275 亿元（+5.4%）、2024 年 6083 亿元（+15.3%）",
+          "国网 2024 年投资首超 6000 亿元，累计建成「22 交 16 直」38 项特高压（EV-PWR-09, 2025-02-12）"
+        ],
+        "turning": [
+          "2022-01 政策信号披露后即「利好兑现」：三标的同步见顶（国电南瑞/许继电气 01-19、平高电气 01-18）→ 至 2022-04-25/26 同步见底",
+          "2024-07~10 批量见顶：许继电气 07-09 / 国电南瑞 10-08 / 平高电气 10-14"
+        ],
+        "ending": [
+          "2024-10 后特高压国内标的回落（2025 年：国电南瑞 -5.0%、平高电气 -2.8%、许继电气 +1.7%）",
+          "★ 环节错位：出海暴露较高的思源电气（2025-12-26 160.30，+115.0%）与特变电工（2025-11-07 26.14，+86.0%）延后至 2025 年见顶，未另立 Cycle",
+          "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
+          "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"
+        ]
+      }
     }
   ],
   "research_candidates": [
@@ -1332,12 +1609,30 @@
   ],
   "events": [
     {
+      "event_id": "EV-PWR-01",
+      "name": "光伏「531 新政」：关于 2018 年光伏发电有关事项的通知（发改能源〔2018〕823 号）",
+      "date": "2018-05-31",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-MED-01",
       "name": "4+7 城市药品集中采购中选结果公布（25 品种，平均降幅 52%）",
       "date": "2018-12-17",
       "event_type": "policy",
       "role": "context",
       "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-PWR-02",
+      "name": "风电、光伏发电无补贴平价上网试点通知（发改能源〔2019〕19 号）",
+      "date": "2019-01-07",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2020-POWER-NE",
       "research_candidate_id": null
     },
     {
@@ -1395,6 +1690,24 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-PWR-03",
+      "name": "第 75 届联大：宣布 2030 碳达峰 / 2060 碳中和（双碳目标）",
+      "date": "2020-09-22",
+      "event_type": "policy",
+      "role": "trigger",
+      "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-PWR-04",
+      "name": "气候雄心峰会：2030 年风电、太阳能发电总装机容量 12 亿千瓦以上",
+      "date": "2020-12-12",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2021-01",
       "name": "宁德时代市值突破万亿",
       "date": "2021-05-31",
@@ -1431,6 +1744,24 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-PWR-05",
+      "name": "整县（市、区）屋顶分布式光伏开发试点名单公布（676 个县）",
+      "date": "2021-09-08",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-PWR-06",
+      "name": "国家电网 2022 年度工作会议：电网投资计划 5012 亿元",
+      "date": "2022-01-16",
+      "event_type": "policy",
+      "role": "trigger",
+      "campaign_id": "C-2022-POWER-GRID",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2022-01",
       "name": "国常会：阶段性减征乘用车购置税600亿元",
       "date": "2022-05-23",
@@ -1464,6 +1795,24 @@
       "event_type": "policy",
       "role": "follow_up",
       "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-PWR-07",
+      "name": "国家电网披露年内再开工 8 项特高压工程、在建项目投资突破万亿",
+      "date": "2022-08-03",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2022-POWER-GRID",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-PWR-08",
+      "name": "首个「沙戈荒」风光电基地外送特高压工程开工（宁夏—湖南 ±800 千伏）",
+      "date": "2023-06-11",
+      "event_type": "industry",
+      "role": "follow_up",
+      "campaign_id": "C-2022-POWER-GRID",
       "research_candidate_id": null
     },
     {
@@ -1518,6 +1867,15 @@
       "event_type": "market",
       "role": "trigger",
       "campaign_id": "C-2024-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-PWR-09",
+      "name": "国家电网 2024 年投资首超 6000 亿元，累计建成「22 交 16 直」38 项特高压",
+      "date": "2025-02-12",
+      "event_type": "company",
+      "role": "follow_up",
+      "campaign_id": "C-2022-POWER-GRID",
       "research_candidate_id": null
     },
     {
@@ -1721,6 +2079,33 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "LONGI",
+      "name": "隆基绿能",
+      "ticker": "601012",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SUNGROW",
+      "name": "阳光电源",
+      "ticker": "300274",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "GOLDWIND",
+      "name": "金风科技",
+      "ticker": "002202",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "BIDI",
       "name": "比亚迪",
       "ticker": "002594",
@@ -1808,6 +2193,51 @@
       "exchange": "SH",
       "role": "second_leader",
       "campaign_id": "C-2022-POLICY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "NARI",
+      "name": "国电南瑞",
+      "ticker": "600406",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": "C-2022-POWER-GRID",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "XUJI",
+      "name": "许继电气",
+      "ticker": "000400",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2022-POWER-GRID",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SIEYUAN",
+      "name": "思源电气",
+      "ticker": "002028",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2022-POWER-GRID",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "TBEA",
+      "name": "特变电工",
+      "ticker": "600089",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2022-POWER-GRID",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "PINGGAO",
+      "name": "平高电气",
+      "ticker": "600312",
+      "exchange": "SH",
+      "role": "second_leader",
+      "campaign_id": "C-2022-POWER-GRID",
       "research_candidate_id": null
     },
     {

@@ -53,11 +53,20 @@ describe('2. 同期行情来源：仅来自数据源（导出 v1），年份来�
     // 有数据年份的 campaign_id 与 Adapter 列表一致
     const byYear = new Map(lens.samePeriod.map((r) => [r.year, r.entries.map((e) => e.campaign_id)]));
     // 2019-2022：医药跨年 Campaign（C-2019-PHARMA-INNOV）每年都命中窗口
+    // 2020-2025：电力设备两个跨年 Cycle（C-2020-POWER-NE / C-2022-POWER-GRID）亦命中
     expect(byYear.get(2019)).toEqual(['C-2019-PHARMA-INNOV', 'C-2019-AD']);
-    expect(byYear.get(2022)).toEqual(['C-2019-PHARMA-INNOV', 'RC-2021-TCM', 'C-2022-POLICY']);
-    expect(byYear.get(2023)).toEqual(['RC-2023-HUAWEI']);
-    expect(byYear.get(2024)).toEqual(['RC-2024-SECONDARY']);
-    expect(byYear.get(2025)).toEqual(['C-2025-ROBOTAXI']);
+    expect(byYear.get(2020)).toEqual([
+      'C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC', 'C-2020-NEV', 'C-2020-POWER-NE',
+    ]);
+    expect(byYear.get(2021)).toEqual([
+      'C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC', 'C-2020-POWER-NE', 'C-2021-NEV',
+    ]);
+    expect(byYear.get(2022)).toEqual([
+      'C-2019-PHARMA-INNOV', 'C-2020-POWER-NE', 'RC-2021-TCM', 'C-2022-POWER-GRID', 'C-2022-POLICY',
+    ]);
+    expect(byYear.get(2023)).toEqual(['C-2022-POWER-GRID', 'RC-2023-HUAWEI']);
+    expect(byYear.get(2024)).toEqual(['C-2022-POWER-GRID', 'RC-2024-SECONDARY']);
+    expect(byYear.get(2025)).toEqual(['C-2022-POWER-GRID', 'C-2025-ROBOTAXI']);
   });
 });
 
@@ -78,7 +87,10 @@ describe('3. 历史阶段映射：返回的是「当年窗口内」的阶段（�
 
   it('2024 RC-2024-SECONDARY：窗口内命中 早期信号 与 主段结束（均被保留）', () => {
     const lens = currentTimeLens(previewTimelineSource(), TODAY);
-    const e = lens.samePeriod.find((r) => r.year === 2024)!.entries[0];
+    // 2024 窗口内另有跨年 Campaign C-2022-POWER-GRID → 显式选取 RC 条目（不依赖排序位置）
+    const e = lens.samePeriod
+      .find((r) => r.year === 2024)!
+      .entries.find((x) => x.campaign_id === 'RC-2024-SECONDARY')!;
     expect(e.campaign_id).toBe('RC-2024-SECONDARY');
     expect(e.kind).toBe('candidate');
     // 两阶段各 1 天，同长取 lifecycle 靠前（EARLY_SIGNAL）→ 早期信号
@@ -133,10 +145,12 @@ describe('5. 未覆盖措辞：无数据 → uncovered=true（不是「历史没
     expect(lens.samePeriod.every((r) => r.entries.length === 0)).toBe(true);
   });
 
-  it('2 月窗口：医药跨年 Campaign 覆盖 2019–2022 → uncovered=false（跨年 Campaign 语义）', () => {
+  it('2 月窗口：医药 / 电力设备跨年 Campaign 覆盖 2019–2025 → uncovered=false（跨年 Campaign 语义）', () => {
     const lens = currentTimeLens(previewTimelineSource(), '2026-02-10');
     expect(lens.uncovered).toBe(false);
-    expect(lens.coveredYears).toBe(4); // 2019–2022 由 C-2019-PHARMA-INNOV 覆盖（2019-01-02~2022-10-31）
+    // 2019–2022 由 C-2019-PHARMA-INNOV（2019-01-02~2022-10-31）覆盖；
+    // 2020–2025 由电力设备两个跨年 Cycle（C-2020-POWER-NE / C-2022-POWER-GRID）覆盖 → 7 年
+    expect(lens.coveredYears).toBe(7);
   });
 
   it('9 月窗口：preview 源有覆盖 → uncovered=false，coveredYears=7', () => {
@@ -343,8 +357,8 @@ describe('13. 不越界：Lens 不改动数据源 / 不产生新数据', () => {
     const expected = lens.samePeriod.reduce((n, r) => n + r.entries.length, 0);
     const actual = lens.samePeriod.reduce((n, r) => n + r.entries.length, 0);
     expect(actual).toBe(expected);
-    // 2019–2022 各 2~3 条（含医药跨年 Campaign + 医药 RC）+ 2023/2024/2025 各 1 条 = 14 条
-    expect(actual).toBe(14);
+    // 9 月窗口各年命中数：2018=0 / 2019=2 / 2020=4 / 2021=4 / 2022=5 / 2023=2 / 2024=2 / 2025=2 = 21 条
+    expect(actual).toBe(21);
   });
 });
 

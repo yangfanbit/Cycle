@@ -259,7 +259,7 @@
 
 ---
 
-## Phase 7.3.2 · Promotion Gate — Derived Structure Exclusion（**当前阶段** · IMPLEMENTED）
+## Phase 7.3.2 · Promotion Gate — Derived Structure Exclusion（IMPLEMENTED）
 
 **目标**：把「`derived_from_early_signal = true` 的结构不得作为独立规律」从研究报告里的观察，
 **正式落进 Promotion Gate**。方向是**收紧**，不是放宽。
@@ -295,7 +295,31 @@ TOP-01 回归 PASS（N=7 / 06-11 / 05-27~06-26 / 5-7）· 三个 `--check` 逐�
 - 验证：`validate_monorepo_integrity` FAIL(2) → **PASS(25)** · `npm test` 732/19 → **395/10** ·
   **全新克隆三项 `--check` 逐字节 PASS**。
 - 报告：`docs/REPOSITORY_RECOVERY_REPORT_2026-09-17.md`。
-- **未启动 Wave 1**；未进入 Structural Analogy。
+
+---
+
+## Wave 1A · Historical Data Expansion — 电力设备历史 Cycle（**当前阶段** · IMPLEMENTED）
+
+> 依据 `Historical_Coverage_Audit_v0_1.md` §12 **Wave 1 P0**。目标：修复
+> 「当前侧有候选、历史侧无 Cycle」的**已存在断裂**，而非增加「看起来很丰富」的主题数量。
+
+- **Taxonomy 扩展（经授权）**：新建 Macro Theme root **`TH-POWER`「电力设备」**
+  + 3 个被实际引用的最小 Sub-theme（`TH-POWER-PV` / `TH-POWER-WIND` / `TH-POWER-GRID`）。
+  `name` 必须是「电力设备」—— 受 `candidatePatternOf()` 的**精确字符串匹配**约束。
+- **新增 2 个 Historical Theme Cycle**：
+  `power_ne_equipment_2020_2022`（双碳驱动的清洁能源发电设备重估，Peak 2021-10-27~11-04）·
+  `power_grid_uhv_2022_2025`（电网投资与特高压第四轮，Peak 2024-07-09~10-14）。
+- **Primary / Related Macro Theme 规则**（本轮确立）：
+  `research/research/methodology/macro_theme_primary_related_v0_1.md`。
+  每 Cycle 只有一个 Primary；Related 不增加独立样本数且**不写入 `campaign_themes`**。
+- **Coverage Delta**：Macro Themes **2 → 3** · Campaigns 9 → 11 · Theme Cycles 9 → 11 ·
+  Evidence 51 → 67 · Events（DB）30 → 39（`industry` 类型首次使用）· market_series 40 → 48。
+- **修复**：`CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` 首次具备历史可比对象。
+- **仍受限**：`theme_family_count` = 3 **< 4** · 日期核验 **0/24** · `company` / `capital` 证据仍 **0**。
+- **未做**：Wave 1B / 1C · Time Observation 重跑 · Coverage Audit v0.2 · Structural Analogy。
+- 报告：`docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md`。
+- **下一阶段尚未启动**：建议先做 `Coverage Audit v0.2`（产物另存，不覆盖 v0.1），
+  确认无结构性异常后再进入 **Wave 1B（信息通信）**。
 
 ---
 
@@ -316,8 +340,8 @@ TOP-01 回归 PASS（N=7 / 06-11 / 05-27~06-26 / 5-7）· 三个 `--check` 逐�
 > ⚠️ **归档说明（Phase 7.3 重排）**：旧路线里的
 > 「旧 Phase 7 · Current Market Mapping」与「旧 Phase 8 · Opportunity Discovery / Radar」
 > **不再作为已确定路线**，统一归档到本节的未来方向；当前确定路线是
-> `7.2 观察层 → 7.3 可信度与覆盖 → 7.3.2 派生结构门 → Wave 1 数据扩容 → Coverage Audit v0.2
-> → Time Observation 重跑 → Phase 8 Structural Historical Analogy`。
+> `7.2 观察层 → 7.3 可信度与覆盖 → 7.3.2 派生结构门 → **Wave 1A 电力设备（已完成）** →
+> Wave 1B 信息通信 → Coverage Audit v0.2 → Time Observation 重跑 → Phase 8 Structural Historical Analogy`。
 
 - 把「今天」映射到历史时间轴：当前状态的结构特征 → 历史结构对应
 - 历史相似阶段检索、当前状态与历史条件的分布对比、观察窗口的规则化呈现

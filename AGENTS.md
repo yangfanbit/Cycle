@@ -37,15 +37,26 @@
 
 ## 2. 当前阶段
 
-**Phase 7.3.2：Promotion Gate — Derived Structure Exclusion（IMPLEMENTED，已推送）。**
-上一阶段 **Phase 7.3：Observation Credibility & Coverage（IMPLEMENTED）** 的内容紧随其后。
+**Wave 1A：Historical Data Expansion — 电力设备历史 Cycle（IMPLEMENTED，2026-09-17）。**
+**上一阶段 Phase 7.3.2：Promotion Gate — Derived Structure Exclusion（IMPLEMENTED）** 的内容紧随其后。
 
-**下一阶段尚未启动**：Wave 1 数据扩容与 Structural Analogy 仍处于**禁止**状态
-（见 `docs/PROJECT_STATE.md`「Next Single Goal」）。
+- **历史侧 Macro Theme 2 → 3**：新建 root **`TH-POWER`「电力设备」**（+ 3 个最小 Sub-theme）。
+- **新增 2 个 Historical Theme Cycle**：`power_ne_equipment_2020_2022` · `power_grid_uhv_2022_2025`。
+- **修复的断裂**：`CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` 首次具备历史可比对象。
+- **Primary / Related 规则**（本轮确立）：`research/research/methodology/macro_theme_primary_related_v0_1.md`。
+  **每个 Theme Cycle 有且只有一个 Primary Macro Theme**；Related 不增加独立样本数，
+  且**不写入 `campaign_themes`**（否则 CMTR 判 CONFLICT 并使 `theme_family_id = None`）。
+- **报告**：`docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md`。
+- **仍受限**：`theme_family_count` = 3 **< 4**；日期核验 **0/24**；`company`/`capital` 证据仍 0。
+
+**下一阶段尚未启动**：Wave 1B（信息通信）/ Wave 1C（高端装备）与 Structural Analogy 仍处于**禁止**状态
+（见 `docs/PROJECT_STATE.md`「Next Single Goal」→ 建议先做 `Coverage Audit v0.2`）。
 
 **仓库身份**：单一 Git / 单一根 / 一套 canonical Research / 一套 Product。
 `research/` 必须**恰好等于 HEAD 的已跟踪文件集合**；**禁止**在 `research/` 下放置第二套副本或第二个 `.git`。
 2026-09-17 已完成 Repository Recovery（`docs/REPOSITORY_RECOVERY_REPORT_2026-09-17.md`）。
+
+### Phase 7.3.2（已完成）
 
 把 Phase 7.2 的观察层从「可运行的研究型原型」推进为**可信、可复现、产品语义清晰**的观察层。
 **不扩大研究范围**（不进入 Structural Analogy），**不为凑数量放松纳入标准**。

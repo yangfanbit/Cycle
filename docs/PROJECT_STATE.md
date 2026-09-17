@@ -5,7 +5,9 @@
 > 所有数字均可由仓库内命令复算；发现不一致时**以仓库为准**。
 
 - **重建日期**：2026-09-17（Repository Recovery 之后重写，未照抄旧版）
-- **HEAD**：`ff8b6eb` · **origin/main**：`ff8b6eb` · **ahead / behind**：`0 / 0` · **工作树**：clean
+- **最近更新**：2026-09-17 · **Wave 1A — 电力设备历史 Cycle**（历史侧 Macro Theme 2 → 3）
+- **HEAD**：见 `git log -1`（`research: add historical power equipment cycles`）· 本文件随该提交入库
+- **Wave 1A 前的基线**：`HEAD = origin/main = f446cb8` · ahead / behind `0 / 0` · 工作树 clean
 
 ---
 
@@ -123,21 +125,25 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 
 | 表 | 行数 | 表 | 行数 |
 |---|---:|---|---:|
-| campaigns | 9 | themes | 12 |
-| campaign_themes | 21 | campaign_phases | 23 |
-| campaign_date_observations | 24 | campaign_evidences | 44 |
-| campaign_events | 23 | campaign_securities | 34 |
-| evidences | 51 | events | 30 |
-| market_series | 40 | market_daily | 31,816 |
-| trading_calendar | 371 | sources | 55 |
-| securities | 34 | annual_reviews | 12 |
-| research_rules | 2 | | |
+| campaigns | 11 | themes | 16 |
+| campaign_themes | 26 | campaign_phases | 36 |
+| campaign_date_observations | 24 | campaign_evidences | 60 |
+| campaign_events | 32 | campaign_securities | 42 |
+| evidences | 67 | events | 39 |
+| market_series | 48 | market_daily | 48,772 |
+| trading_calendar | 371 | sources | 70 |
+| securities | 42 | annual_reviews | 20 |
+| research_rules | 3 | | |
+
+> Wave 1A（2026-09-17）后实测值。核验相关：`campaign_date_observations` 仍 **24 行、
+> `verified_date` 全为 NULL（核验 0/24）** —— 本轮**未**新增日期核验。
 
 ### Canonical Export（`exports/timeline_export_v1.json`，`timeline_export_version = "1.0"`）
 
-- **9 个 Campaign**：8 `PROVISIONAL` + 1 `CONFLICT`（`C-2024-ROBOTAXI`）；**9 个 Theme Cycle**。
-  年份跨度 2019–2025（`C-2019-PHARMA-INNOV` 跨 2019–2022）。
-- 4 个 Research Candidate（永不 verified）· 33 个 events · 46 个 securities · 14 个 signals · 2 个 rules。
+- **11 个 Campaign**：10 `PROVISIONAL` + 1 `CONFLICT`（`C-2024-ROBOTAXI`）；**11 个 Theme Cycle**。
+  年份跨度 2019–2025（`C-2019-PHARMA-INNOV` 跨 2019–2022；`C-2020-POWER-NE` 跨 2020–2022；
+  `C-2022-POWER-GRID` 跨 2022–2025）。
+- 4 个 Research Candidate（永不 verified）· 42 个 events · 54 个 securities · 18 个 signals · 3 个 rules。
 - 顶层 11 字段白名单，未知字段拒绝；契约 `contracts/timeline_export_v1.md`。**Research 生成，Product 只读消费。**
 
 ### Canonical Macro Theme Resolution v1（CMTR v1）
@@ -146,8 +152,11 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
   `audit_historical_coverage.py` 共用）。**禁止再写第二份口径。**
 - 方向：`themes[]` 名称 → DB `themes` 表归一化 → 沿 `parent_theme_id` 上溯至根。
   **已废止 `direct`（字面名称匹配）**，`rule_id` / `theme_scope` **不再**充当主题身份。
-- 实测：`TH-AUTO` 7 → **9** 成员 · `TH-PHARMA` 1 → **3** 成员；
-  `RESOLVED` 12 / `CONFLICT` 0 / `UNRESOLVED_NAME` 1（`华为汽车` = DEFER `F7`）/ `NO_THEME` 0。
+- 实测（Wave 1A 后）：`TH-AUTO` 9 成员 · `TH-PHARMA` 3 成员 · **`TH-POWER` 2 成员**；
+  `RESOLVED` 14 / `CONFLICT` 0 / `UNRESOLVED_NAME` 1（`华为汽车` = DEFER `F7`）/ `NO_THEME` 0。
+- **Macro Theme root 实测 3 个**：`TH-AUTO`（汽车）· `TH-PHARMA`（医药健康）· **`TH-POWER`（电力设备）**。
+  `TH-POWER` 由 Wave 1A（2026-09-17）新建，含 3 个 Sub-theme：`TH-POWER-PV` / `TH-POWER-WIND` / `TH-POWER-GRID`。
+  命名受 `candidatePatternOf()` 的**精确字符串匹配**约束 → `name` 必须是「电力设备」（与 Current 侧一致）。
 - 只读：不修改数据、不发明 taxonomy 行、不改变锚点定义与统计量。
 - 收益：v0.2 的 5 对「口径脆弱」**全部归零**；两种 scope 口径下的 TOP-01 变体收敛为同一样本集合。
 
@@ -155,6 +164,15 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 
 **Canonical Product Artifact**：`research/research/reports/time_observation_patterns_v0_1.json`
 （生成器 `research/scripts/build_time_observation_patterns.py`，`--check` 逐字节可复现）。
+
+> ⚠️ **以下全部结论基于 Wave 1A 之前的输入数据集**（2 个 Macro Theme / 9 Campaign）。
+> Wave 1A（2026-09-17）新增 `TH-POWER` + 2 个 Cycle 后，**本轮刻意未重跑 Time Observation Discovery**
+> （不得覆盖 v0.2 / v0.3 / v0.4 provenance）。因此：
+> - `build_time_observation_patterns.py --check` 与 `discover_time_observation_patterns.py --check`
+>   现为 **FAIL**（产物为旧数据集快照）—— 这是**预期状态，不是回归**；
+> - 下列 TOP-01 ~ TOP-04 与「独立稳健结构 = 1」**仍是对旧数据集的有效结论**，
+>   但**尚未在含电力设备的新数据集上复核**；
+> - 重跑**必须注册新 `ROUND_PROFILE`（v0.5）**，并保留 v0.2/v0.3/v0.4 产物。
 
 | Pattern | 主题范围 | 观测年数 | 中心 | 典型窗口 | 复现 | 强度 | `promotion_status` |
 |---|---|---:|---|---|---|---|---|
@@ -211,23 +229,33 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 ## Current Data Coverage
 
 > 来源：`Historical Coverage Audit v0.1`（`research/research/reports/historical_coverage_matrix_v0_1.{json,csv}`，
-> 生成器 `research/scripts/audit_historical_coverage.py`，`--check` 逐字节可复现）+ 本轮 DB 实测复核。
+> 生成器 `research/scripts/audit_historical_coverage.py`）+ 本轮 DB 实测复核。
+>
+> ⚠️ **v0.1 快照为 Wave 1A 之前的数据集**（`--check` 现与重算结果不一致，属预期；见
+> `docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md` §G.5）。
+> 下表「Wave 1A 后」列为 **2026-09-17 实测**。
 
-| 维度 | 实测 | 缺口 |
-|---|---|---|
-| Campaigns / Theme Cycles / Macro Themes | **9 / 9 / 2** | 历史侧只有 `TH-AUTO` / `TH-PHARMA` |
-| 有效年份 | **2019–2025（7 年）** | 2018 为 `no_clear_campaign`（刻意排除，非缺失） |
-| Lifecycle 完整度 | **COMPLETE 3 / PARTIAL 9 / SPARSE 1**（共 13 对象） | 最弱是 `THEME_FORMING` 46% 与 `BROAD_CONFIRMATION` 46% —— **恰是 Formation Anchor 依赖的两个阶段** |
-| Evidences | **51** | `company` / `capital` 各 **0 条** → 相位证据矩阵的公司 / 资金维度**永远无法派生**；`evidence_type` 中英文混用（`行情数据` 30 · `行业数据` 6 · `行业月度产销数据` 5 · `政策文件` 5 · `official_document` 3 · `media` 1 · `market_data` 1） |
-| Events | **30（DB）/ 33（export）**；present：`policy` 15 · `company` 11 · `market` 4 | **7 类 `NOT_AVAILABLE`**（industry / holiday / data_release / reporting / meeting / trade_fair / product）→ 直接解释了 `INDUSTRY_EVENT_DRIVEN` 与 `DATA_RELEASE_DRIVEN` 各 0 条候选 |
-| Market Series | **40**：CONTINUOUS **1**（SH000300）· WINDOW_SAMPLED **22** · EMPTY_PLACEHOLDER **6**（AD_AUTO / NEV / ROBOTAXI / V2X / AUTO_PARTS / AUTO_SW）· benchmark 1 | **行情是「按 Campaign 窗口采样」，不是连续时间序列** |
-| Trading Calendar | **371 天，仅覆盖 2022–2024** | 2018–2021 / 2025 缺失 → 时间统计退化为自然日口径 |
-| 日期核验 | **0 / 24**（`campaign_date_observations.verified_date` 全为 NULL，全部 `confidence = low`） | **可信度硬天花板** |
-| 主题族数 | `theme_family_count` **上限 = 2** | **跨族稳健性检验当前不可能通过**（数据问题，非算法问题） |
-| 当前侧 vs 历史侧 | 当前侧声明 4 个 Macro Theme，历史侧仅 2 个 | **信息通信 / 电力设备 / 高端装备 无历史 Cycle 可类比** → Similarity Pattern 层恒 0。**这是"已存在的断裂"，不是"以后的扩展"** |
+| 维度 | Wave 1A 后（实测） | Wave 1A 前（Audit v0.1） | 缺口 |
+|---|---|---|---|
+| Campaigns / Theme Cycles / Macro Themes | **11 / 11 / 3** | 9 / 9 / 2 | `theme_family_count` **仍 < 4** → 跨族稳健性仍不能通过 |
+| 有效年份 | **2019–2025（7 年）** | 同 | 2018 为 `no_clear_campaign`（刻意排除，非缺失）；未达 `N ≥ 8` |
+| Lifecycle 完整度 | 15 对象：`THEME_FORMING` **53.3%** · `BROAD_CONFIRMATION` **53.3%** | 13 对象：各 **46%** | 最弱仍是这两个阶段（Formation Anchor 依赖） |
+| Evidences | **67**（policy 13 · industry 18 · market 33 · information 3） | 51 | `company` / `capital` 各 **0 条** → 公司 / 资金维度**仍无法派生**；`evidence_type` 中英文混用**未统一** |
+| Events | **39（DB）/ 42（export）**；`industry` **首次使用（1 条）** | 30 / 33 | 仍 **6 类 `NOT_AVAILABLE`**（holiday / data_release / reporting / meeting / trade_fair / product） |
+| Market Series | **48**（新增 8 条电力设备代表标的） | 40 | 仍是「按 Campaign 窗口采样」；**电力设备行业指数代理不可得** |
+| Trading Calendar | **371 天，仅覆盖 2022–2024** | 同 | **未补全** |
+| 日期核验 | **0 / 24**（全为 NULL，全部 `confidence = low`） | 同 | **可信度硬天花板** —— 本轮**未**新增核验 |
+| 主题族数 | `theme_family_count` **= 3** | 上限 = 2 | 仍 **< 4** |
+| 当前侧 vs 历史侧 | 历史侧 3 个（AUTO / PHARMA / **POWER**）；当前侧 4 个 | 历史侧 2 个 | **电力设备已修复断裂**；**信息通信 / 高端装备 仍无历史 Cycle** → Similarity Pattern 层仍为 `UNKNOWN` |
 
 **Wave 1 优先级（`Historical_Coverage_Audit_v0_1.md` §12）**：
-P0 电力设备历史 Cycle · P0 信息通信历史 Cycle · P1 统一 `evidences.evidence_type` 口径 · P1 补全 2018–2025 交易日历。
+
+| 优先级 | 动作 | 状态 |
+|---|---|---|
+| P0 | 补录「电力设备」历史 Cycle | ✅ **已完成（Wave 1A，2026-09-17，2 个 Cycle）** |
+| P0 | 补录「信息通信」历史 Cycle | ⏳ 未开始（Wave 1B，等授权） |
+| P1 | 统一 `evidences.evidence_type` 口径 | ⏳ 未做 |
+| P1 | 补全 2018–2025 交易日历 | ⏳ 未做 |
 
 ---
 
@@ -340,39 +368,42 @@ authoritative `promotion_status`（旧字段降为兼容输入，生成器自检
 
 ## Next Single Goal
 
-> **Repository Recovery 已完成；Promotion Gate 7.3.2 回归已顺带验证 PASS（见上方干净基线）。**
-> **规则链已稳定 —— 当前真正的瓶颈是「数据」，不是「方法」。**
-> **下一步唯一一件事：Wave 1 数据扩容（P0 电力设备 / P0 信息通信历史 Cycle）。**
+> **Wave 1A（电力设备历史 Cycle）已完成（2026-09-17）** —— 历史侧 Macro Theme **2 → 3**。
+> 见 `docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md`。
+> **当前真正的瓶颈仍是「数据」，不是「方法」。**
 
-**为什么是数据，不是方法**
+**Wave 1A 已完成什么**
 
-时间观察层的规则链（数值门槛 → 口径稳健 → 派生门）**三次收敛到同一个结论：独立结构 = 1 个**。
-继续在 1 个结构上做方法学微调，**边际收益低于扩大样本**。三个硬限制全部是数据问题：
+| 项 | 结果 |
+|---|---|
+| 新建 Macro Theme root | **`TH-POWER`「电力设备」** + 3 个最小 Sub-theme |
+| 新增 Historical Theme Cycle | **2 个**（`power_ne_equipment_2020_2022` · `power_grid_uhv_2022_2025`） |
+| 新增 Evidence / Event / Source | +16 / +9 / +15 |
+| 修复的断裂 | `CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` **首次有历史可比对象** |
+| **未解决** | `theme_family_count` 仍 = **3 < 4**；核验仍 **0/24**；`company`/`capital` 仍 0 |
 
-| 限制 | 现状 | 只能靠什么解决 |
-|---|---|---|
-| 跨族稳健性无法检验 | `theme_family_count` 上限 = 2，有效候选全为汽车族 | 引入**非汽车族**的历史 Theme Cycle |
-| 交易日历覆盖不足 | 仅 371 天 / 2022–2024 | **补全 2018–2025 交易日历** |
-| 核验比例为 0 | 0 / 24，全部 `confidence = low` | 补证据来源（`company` / `capital` 各 0 条） |
+**下一步（只做一件）**
 
-**要做的（只做这一件）**：按 `Historical_Coverage_Audit_v0_1.md` §12 执行 **Wave 1**：
+> **先做 `Coverage Audit v0.2`（产物另存 v0.2，不覆盖 v0.1）**，
+> 校验 Wave 1A 的 delta 并显式登记「生成器产物滞后」清单（见 Wave 1A 报告 §G.5）。
+> **确认无结构性异常后，再进入 Wave 1B（信息通信）。**
 
-1. **P0 · 电力设备历史 Cycle**、**P0 · 信息通信历史 Cycle** —— 修复「当前侧有候选、历史侧无 Cycle」这一**已存在的断裂**。
-2. **P1 · 统一 `evidences.evidence_type` 口径**（中英文混用）。
-3. **P1 · 补全 2018–2025 交易日历**。
+**为什么先审计而不是直接做 Wave 1B**
 
-**执行方式（协议要求，不可跳步）**：
-Coverage Audit → Wave 1 入库 → 逐项验证 → **重跑 Time Observation（新轮次，登记进 `ROUND_PROFILES`）** →
-Coverage Audit v0.2 → 再决定 Wave 2。
+1. `theme_family_count` 从 2 → 3 仍 **< 4** → 跨族稳健性**仍不能通过**；补第 3 个主题只是把 3 推到 4，仍在临界。
+2. **核验仍为 0/24** —— 这是 audit 认定的「可信度硬天花板」，而本轮新增 2 个 Cycle / 36 条 DB phases
+   却**没有增加核验**，缺口被放大。
+3. 三个快照型产物（Product Artifact / Discovery 候选池 / Coverage Matrix）已**滞后于数据集**，
+   在继续扩张前应先决定重跑口径（**必须新 `ROUND_PROFILE` v0.5，不得覆盖 v0.3 / v0.4**）。
 
-> **红线**：**不为了增加 Pattern 数量而放松纳入标准**（不降 N、不拓宽窗口、不弱化 LOO、不制造 Pattern）。
+**之后（同一序列，不同轮次）**：`Wave 1B 信息通信` → `Wave 1C 高端装备` →
+`Time Observation 重跑（新轮次）` → `Coverage Audit v0.3` → `F7`（`华为汽车` taxonomy 缺口）→
+`Structural Analogy Feasibility Check` → Phase 8。
+
+> **红线（不变）**：**不为了增加 Pattern 数量而放松纳入标准**。
 > 若扩容后独立结构**仍为 1 个**，那就是诚实结论，**照实报告**。
 
-**之后（同一序列，不同轮次）**：`Coverage Audit v0.2`（消费 v0.4 候选池）→ `F7`（`华为汽车` taxonomy 缺口，
-属数据决策，随扩容一并处理）→ `Structural Analogy Feasibility Check` → Phase 8。
-
-**在此之前不新增功能、不改产品代码、不改 DB 数据（除 Wave 1 明确列入的条目）。**
-**高端装备**排在电力设备 / 信息通信之后。
+**在获得授权前不新增功能、不改产品代码、不改 DB 数据（除已明确列入的条目）。**
 
 ---
 

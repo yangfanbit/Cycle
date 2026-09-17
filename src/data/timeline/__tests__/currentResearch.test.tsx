@@ -537,8 +537,14 @@ describe('5. Similarity v2（当前候选 × 历史）', () => {
   });
 
   it('候选 Pattern 由该 Macro Theme 的历史 cycle 形态推导（无历史 → UNKNOWN，不推断）', () => {
+    // 医药健康：历史 cycle 存在 → 可推导
     expect(candidatePatternOf(SOURCE, viewOf('FX-AI-MEDICAL').candidate)).toBe('PARALLEL');
-    expect(candidatePatternOf(SOURCE, viewOf('FX-SOLID-BATTERY').candidate)).toBe('UNKNOWN');
+    // 电力设备：Wave 1A 补录 2 个历史 cycle（C-2020-POWER-NE / C-2022-POWER-GRID）后，
+    // 由 UNKNOWN → 可推导（两个 cycle 各为单组件 → SEQUENTIAL）
+    expect(candidatePatternOf(SOURCE, viewOf('FX-SOLID-BATTERY').candidate)).toBe('SEQUENTIAL');
+    // 仍无历史 cycle 的 Macro Theme → 依旧 UNKNOWN（不推断）
+    expect(candidatePatternOf(SOURCE, makeCandidate({ macro_theme: '无历史主题（测试用）' }))).toBe('UNKNOWN');
+    expect(candidatePatternOf(SOURCE, makeCandidate({ macro_theme: null }))).toBe('UNKNOWN');
   });
 
   it('未标注叙事类型的历史案例 → Narrative 层不参与（不推断）', () => {
@@ -786,8 +792,9 @@ describe('8. 边界守护（纯 View 层）', () => {
         (c) => c.campaign_id,
       ),
     );
-    // export 的规模不因本轮新增候选而变化（候选走独立 Artifact）
-    expect(exportIds.size).toBe(13);
+    // export 的规模由 Research 侧决定（当前 11 Campaign + 4 Research Candidate = 15）；
+    // 候选走独立 Artifact，不进入 export id 空间
+    expect(exportIds.size).toBe(15);
     // Phase 7.1 起 canonical 承载真实候选；关键不变量是「候选 ID 全部落在 export id 空间之外」
     const canonical = defaultCurrentCandidateDataset();
     expect(canonical.candidates.length).toBeGreaterThan(0);
