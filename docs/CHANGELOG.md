@@ -7,6 +7,80 @@
 
 ---
 
+## 2026-09-17 · Research · Historical Coverage Audit v0.2（Wave 1A 之后）
+
+**性质：覆盖度审计（Research Layer Deliverable），只读，零产品变更。**
+**唯一目标：为 Wave 1A 之后的数据集建立一个新的、可复现的覆盖度快照，并显式登记「产物滞后」清单。**
+
+### 1 · 为什么需要新轮次
+
+`Historical Coverage Audit` 的产物是「**某个数据快照**」的确定性函数。
+Wave 1A 新增 `TH-POWER` + 2 个 Cycle 后，v0.1 的 `--check` **必然 FAIL** ——
+这是**快照的预期行为，不是回归**。因此在继续扩张前，先把新快照固化下来。
+
+### 2 · 多轮机制（本轮引入，与 `discover_time_observation_patterns.py` 的 `ROUND_PROFILES` 约定一致）
+
+- `audit_historical_coverage.py` 新增 **`--round X`**：一并恢复该轮的**产物路径 / 快照日期 / 版本号**。
+- `ROUND_PROFILES` 登记 **`0.1`（Wave 1A 之前的基线）** 与 **`0.2`（Wave 1A 之后）**。
+- **未知轮次显式 `SystemExit`，不得静默降级为默认口径。**
+- 默认 `--round 0.1`，保持既有行为不变。
+- **v0.1 产物原样保留、未被覆盖**（`historical_coverage_matrix_v0_1.*` 零改动）。
+
+### 3 · v0.2 覆盖度快照
+
+| 指标 | v0.2 | v0.1 |
+|---|---:|---:|
+| Campaigns / Theme Cycles / Macro Themes | **11 / 11 / 3** | 9 / 9 / 2 |
+| Evidence | **67** | 51 |
+| Events（DB / export） | 39 / 42 | 30 / 33 |
+| Lifecycle 评级 | COMPLETE **5** / PARTIAL 9 / SPARSE 1 | COMPLETE 3 / PARTIAL 9 / SPARSE 1 |
+| Market series / market_daily | 48 / 48,772 | 40 / 31,816 |
+| **日期核验** | **0 / 24** | 0 / 24 |
+
+- **`TH-POWER` 电力设备**：2 Cycle / 2 Campaign / years 2020·2022 / lifecycle 9-10 / evidence 16 → **`COVERED`**。
+- **领域覆盖**：电力设备 `ABSENT` → ✅ **`COVERED_WITH_CYCLES`**（信息通信 / 高端装备仍 `ABSENT`）。
+- **Event**：`industry` 类型**首次使用**（1 条）→ `NOT_AVAILABLE` 由 **7 类降为 6 类**。
+- **`theme_family_count` = 3**（仍 < 4）；`Structural Analogy` **仍为 `BLOCKED`**（4 个候选中仍有 2 个无历史）。
+- **`company` / `capital` 证据仍为 0**；`evidence_type` 中英文混用**仍未统一**。
+- 产物：`research/research/reports/historical_coverage_matrix_v0_2.{json,csv}` +
+  报告 `Historical_Coverage_Audit_v0_2.md`。
+
+### 4 · 生成器两处修正（**只改叙述与探针，不改任何统计量**）
+
+**（a）叙述文本写死**：`CAPABILITY_MATRIX` / `data_risks` / `coverage_ceiling.statement` 中若干数字
+是 v0.1 的实测值（如「theme_family_count 上限 = 2」「历史侧仅 2 个」「仅 1/13 达 COMPLETE」），
+会让 v0.2 产物**与自身数据自相矛盾**。新增 `_patch_derived_notes(art)` 在写盘前改为派生值；
+并把 `CAPABILITY_MATRIX` 的**副本**放进产物（避免污染模块级常量）。
+
+**（b）`DOMAIN_PROBES` 写死 `theme_id`**：其中「电力设备」的 `theme_ids` 为空列表（v0.1 时该主题不存在），
+导致 v0.2 一度把电力设备报成 `SCATTERED_ONLY`（0 Campaign）。改为按**主题名称精确匹配**动态补入。
+**精确匹配是刻意的** —— 否则「消费」会误命中「汽车消费/购置税刺激」。实测影响面**仅限电力设备**。
+
+### 5 · 验证
+
+```
+audit --round 0.2 --check   PASS（逐字节一致，deterministic）
+audit --round 0.1 --check   FAIL（预期：数据已前进，v0.1 为历史快照）
+audit --round 9.9           SystemExit（未知轮次守卫）
+validate_db / validate_timeline_export / validate_batch_research /
+validate_promotion_manifest / check_doc_schema_consistency /
+validate_current_research / validate_monorepo_integrity   → 全 PASS
+npm test 395/395
+```
+
+### 6 · 未修改
+
+`exports/` 契约 · `contracts/` · `schema.sql` · `src/`（含 Product Artifact）· `research/current/` ·
+**v0.1 产物（原样保留）** · `time_observation_*_v0_2/v0_3/v0_4` 产物。
+
+### 7 · 下一步
+
+**Wave 1B（信息通信）** 可把 `theme_family_count` 推到 4（跨族稳健性门槛）；
+但**日期核验仍为 0/24**，且 Wave 1A 把 Cycle 数 9 → 11、DB phases 23 → 36 却**未增加核验**，
+可信度缺口在被放大。两者不冲突，**顺序由用户决定**。
+
+---
+
 ## 2026-09-17 · Research · Historical Data Expansion Wave 1A — 电力设备历史 Cycle
 
 **性质：Research 数据扩容 + 一次明确的 taxonomy 扩展。**

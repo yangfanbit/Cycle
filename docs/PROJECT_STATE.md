@@ -228,12 +228,15 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 
 ## Current Data Coverage
 
-> 来源：`Historical Coverage Audit v0.1`（`research/research/reports/historical_coverage_matrix_v0_1.{json,csv}`，
-> 生成器 `research/scripts/audit_historical_coverage.py`）+ 本轮 DB 实测复核。
+> 来源：**`Historical Coverage Audit v0.2`**（`research/research/reports/historical_coverage_matrix_v0_2.{json,csv}`，
+> 生成器 `research/scripts/audit_historical_coverage.py --round 0.2`）+ 本轮 DB 实测复核。
 >
-> ⚠️ **v0.1 快照为 Wave 1A 之前的数据集**（`--check` 现与重算结果不一致，属预期；见
-> `docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md` §G.5）。
-> 下表「Wave 1A 后」列为 **2026-09-17 实测**。
+> **多轮约定**：审计产物是「某个数据快照」的确定性函数。`--round X` 一并恢复该轮的
+> 产物路径 / 快照日期 / 版本号；**未知轮次显式失败**，不静默降级。已登记 `0.1`（Wave 1A 之前）
+> 与 `0.2`（Wave 1A 之后）。
+>
+> ⚠️ **v0.1 快照对应 Wave 1A 之前的数据集**（其 `--check` 现与重算结果不一致，属**预期**，
+> 不是回归）；v0.1 产物**原样保留**、未被覆盖。下表为 **v0.2 / 2026-09-17 实测**。
 
 | 维度 | Wave 1A 后（实测） | Wave 1A 前（Audit v0.1） | 缺口 |
 |---|---|---|---|

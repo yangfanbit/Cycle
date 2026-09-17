@@ -335,6 +335,11 @@ CC-2026-OPTICAL-LINK     macro_theme=信息通信   历史同名 cycle 存在=Fa
 **本轮刻意不重跑**（用户明确要求：暂不重跑 Time Observation Discovery；不得覆盖 v0.2/v0.3/v0.4 provenance）。
 **这是快照的预期行为，不是数据错误** —— 但必须显式登记，避免被误读为回归。
 
+> **后续进展（2026-09-17 同日）**：`audit_historical_coverage.py` 已引入 `--round` 多轮机制，
+> 并生成 **Coverage Audit v0.2**（`historical_coverage_matrix_v0_2.*` + `Historical_Coverage_Audit_v0_2.md`，
+> v0.1 原样保留）。因此上表第三项已不再是"未处理"状态。
+> **前两项（Time Observation 的两个产物）仍未重跑** —— 重跑必须新 `ROUND_PROFILE`（v0.5）。
+
 ---
 
 ## H. Validation
@@ -469,6 +474,13 @@ working tree = clean
 - 验证 Primary/Related 规则在真实数据下确实成立（无 CONFLICT）
 - 把「产物滞后」变成**已登记的状态**而不是隐性债务
 - 为 Wave 1B 提供可对照的基线
+
+> **已执行（2026-09-17 同日）**：**Coverage Audit v0.2 已完成** ——
+> `research/research/reports/historical_coverage_matrix_v0_2.{json,csv}` +
+> `Historical_Coverage_Audit_v0_2.md`（v0.1 原样保留）。
+> 结论：电力设备 `ABSENT` → ✅ `COVERED_WITH_CYCLES`；
+> `theme_family_count` = **3**（仍 < 4）；日期核验仍 **0/24**。
+> 过程中修正了生成器两处「按 v0.1 快照写死」的内容（叙述文本 + `DOMAIN_PROBES`），**未改任何统计量**。
 
 ### J.4 本轮**未**启动（等待授权）
 

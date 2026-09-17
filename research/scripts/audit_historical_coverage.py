@@ -43,9 +43,15 @@
 无随机数、无时间戳漂移（`generated_at` 固定为 SNAPSHOT_DATE）、全序排序。
 
 用法:
-    python research/scripts/audit_historical_coverage.py           # 生成
-    python research/scripts/audit_historical_coverage.py --check    # 校验逐字节一致
-    python research/scripts/audit_historical_coverage.py --print    # 生成并打印摘要
+    python research/scripts/audit_historical_coverage.py                     # 生成（默认 round 0.1）
+    python research/scripts/audit_historical_coverage.py --round 0.2         # 生成该轮（产物另存 v0_2）
+    python research/scripts/audit_historical_coverage.py --check             # 校验逐字节一致
+    python research/scripts/audit_historical_coverage.py --round 0.2 --check # 校验该轮
+    python research/scripts/audit_historical_coverage.py --print             # 生成并打印摘要
+
+**多轮说明**：产物是「某个数据快照」的确定性函数。数据集一变（如 Wave 1A 新增电力设备），
+旧轮次产物即成为历史快照，其 `--check` 必然 FAIL —— 这是**预期行为**，不是回归。
+新增轮次必须在 `ROUND_PROFILES` 中登记；未知轮次显式失败，不静默降级。
 
 退出码: 0 = 通过；1 = 自检失败（**不写文件**）。
 """
@@ -77,6 +83,58 @@ OUT_CSV = os.path.join(REPORTS_DIR, "historical_coverage_matrix_v0_1.csv")
 SNAPSHOT_DATE = "2026-09-16"
 RULESET_VERSION = "historical-coverage-audit-0.1"
 ARTIFACT_VERSION = "0.1"
+
+# ---------------------------------------------------------------- 轮次档案
+# 每一轮的**产物路径 / 快照日期 / 版本号**必须固化在此 ——
+# 否则该轮产物不可复现、不可与其它轮比对。
+# `--round X` 一并恢复该轮口径；**未知轮次必须显式失败**，不得静默降级为默认口径。
+#
+# 为什么需要多轮：本审计的产物是**某个数据快照**的确定性函数。
+# 数据集一变（例如 Wave 1A 新增电力设备），旧轮次产物即成为历史快照，
+# `--check` 对旧轮次必然 FAIL —— 这是**预期行为**，不是回归。
+ROUND_PROFILES = {
+    "0.1": {
+        "json": "historical_coverage_matrix_v0_1.json",
+        "csv": "historical_coverage_matrix_v0_1.csv",
+        "snapshot_date": "2026-09-16",
+        "ruleset_version": "historical-coverage-audit-0.1",
+        "artifact_version": "0.1",
+        "research_round": "historical-coverage-audit-v0.1",
+        "label": "Wave 1A 之前的基线（2 个 Macro Theme / 9 Campaign）",
+    },
+    "0.2": {
+        "json": "historical_coverage_matrix_v0_2.json",
+        "csv": "historical_coverage_matrix_v0_2.csv",
+        "snapshot_date": "2026-09-17",
+        "ruleset_version": "historical-coverage-audit-0.2",
+        "artifact_version": "0.2",
+        "research_round": "historical-coverage-audit-v0.2",
+        "label": "Wave 1A 之后（3 个 Macro Theme / 11 Campaign，新增 TH-POWER）",
+    },
+}
+DEFAULT_ROUND = "0.1"
+RESEARCH_ROUND = "historical-coverage-audit-v0.1"
+
+
+def apply_round(round_id):
+    """按轮次档案恢复输出路径与口径（就地更新模块级常量）。
+
+    未知轮次 -> SystemExit（与 discover_time_observation_patterns.py 的 ROUND_PROFILES 约定一致）。
+    """
+    global OUT_JSON, OUT_CSV, SNAPSHOT_DATE, RULESET_VERSION, ARTIFACT_VERSION, RESEARCH_ROUND
+    prof = ROUND_PROFILES.get(round_id)
+    if prof is None:
+        raise SystemExit(
+            "未知轮次 %r —— 必须在 ROUND_PROFILES 中登记后才可使用（不得静默降级为默认口径）。"
+            "可用轮次: %s" % (round_id, ", ".join(sorted(ROUND_PROFILES)))
+        )
+    OUT_JSON = os.path.join(REPORTS_DIR, prof["json"])
+    OUT_CSV = os.path.join(REPORTS_DIR, prof["csv"])
+    SNAPSHOT_DATE = prof["snapshot_date"]
+    RULESET_VERSION = prof["ruleset_version"]
+    ARTIFACT_VERSION = prof["artifact_version"]
+    RESEARCH_ROUND = prof["research_round"]
+    return prof
 
 # ---------------------------------------------------------------- 枚举
 
@@ -1035,7 +1093,11 @@ def domain_coverage(cur, export):
 
     out = []
     for label, theme_ids, name_probes in DOMAIN_PROBES:
-        matched_tids = [t for t in theme_ids if t in theme_name]
+        # `DOMAIN_PROBES.theme_ids` 是 v0.1 的数据快照（当时「电力设备」尚不存在）。
+        # 为避免探针表成为陈旧常量，此处按**主题名称精确匹配**动态补入 theme_id
+        # （精确匹配 —— 不用子串，否则「消费」会误命中「汽车消费/购置税刺激」）。
+        extra = {name2tid[nm] for nm in name_probes if nm in name2tid}
+        matched_tids = sorted({t for t in theme_ids if t in theme_name} | extra)
         probe_hits = sorted(n for n in db_names if any(p in n for p in name_probes))
         cids = set()
         for cid, tids in camp_themes.items():
@@ -1297,6 +1359,90 @@ def data_risks(inv, ev, evt, mkt, verif, tax, cap):
     ]
 
 
+# ---------------------------------------------------------------- 叙述文本修正
+
+
+def _patch_derived_notes(art):
+    """把叙述文本中**随数据变化的数字/结论**替换为派生值（就地修改，只改叙述）。
+
+    为什么需要：`CAPABILITY_MATRIX` / `data_risks` / `coverage_ceiling.statement` 的文本
+    最初按 v0.1 的数据快照撰写，其中若干数字是**当时的实测值**。数据集变化后
+    （如 Wave 1A 新增 `TH-POWER`），这些文本会与产物自身的数据**自相矛盾**。
+
+    本函数在写盘前修正它们，使**同一份产物内叙事与数据一致**。
+
+    **只改叙述文本，不改任何统计量**（统计量本身早已全部为派生值）。
+    也**不新增字段** —— 只覆写既有字符串，保证 `validate()` 与 CSV 写出不受影响。
+    """
+    tax = art["taxonomy_integrity"]
+    n_family = tax["macro_theme_count_history"]
+    n_declared = tax["macro_theme_count_declared"]
+    no_hist = list(tax["declared_but_no_history"])
+    n_no_hist = len(no_hist)
+    no_hist_txt = " / ".join(no_hist) if no_hist else "（无）"
+
+    evt_dist = art["event_coverage"]["db_event_type_distribution"]
+    n_industry_evt = evt_dist.get("industry", 0)
+    n_holiday_evt = evt_dist.get("holiday", 0)
+
+    lc = art["lifecycle_completeness"]
+    n_obj = len(lc)
+    n_complete = sum(1 for x in lc if x["rating"] == "COMPLETE")
+
+    # 1) coverage_ceiling.statement
+    art["coverage_ceiling"]["statement"] = (
+        "**theme_family_count = %d（跨族稳健性检验门槛为 ≥ 4）。** 因此："
+        "(1) 单主题规律**不能**证明跨主题规律；"
+        "(2) Structural Analogy 的 Pattern 层只能在 %d 个族之间匹配；"
+        "(3) Time Observation 的「跨族稳健性」检查在当前数据下**仍不可能通过**。"
+        % (n_family, n_family)
+    )
+
+    # 2) research_capability_matrix
+    for c in art["research_capability_matrix"]:
+        name = c["capability"]
+        if name == "Time Observation":
+            c["blocker"] = ("theme_family_count = %d（门槛 ≥ 4）；有效观测仅 7 年（N ≤ 7，达不到 N ≥ 8）"
+                            % n_family)
+            c["unlock_by"] = ("补录独立 Macro Theme 至 ≥ 4（当前 %d，还需 %d 个）+ 扩样至 N ≥ 8"
+                              % (n_family, max(0, 4 - n_family)))
+        elif name == "Event-driven":
+            c["evidence"] = ("INDUSTRY_EVENT_DRIVEN = 0 条候选；事件表 industry 类型已启用（%d 条）、"
+                             "holiday 仍为 %d 条" % (n_industry_evt, n_holiday_evt))
+            c["blocker"] = ("仍无结构化行业事件日历（车展 / CES / MWC / 发布会季）→ 事件样本不足以支撑 Pattern"
+                            if n_industry_evt else
+                            "无行业事件日历（车展 / CES / MWC / 发布会季）；event_type 未使用 industry")
+        elif name == "Phase Transition":
+            c["unlock_by"] = ("补录更多「有完整 lifecycle」的历史对象（当前 %d/%d 达 COMPLETE）"
+                              % (n_complete, n_obj))
+        elif name == "Structural Analogy":
+            c["evidence"] = ("当前侧声明 %d 个 Macro Theme，其中 %d 个仍无同名历史 cycle → Pattern 层恒 UNKNOWN"
+                             % (n_declared, n_no_hist))
+            c["blocker"] = "历史侧 %d 个 Macro Theme；仍无历史者：%s" % (n_family, no_hist_txt)
+            c["unlock_by"] = ("补录仍无历史的 %d 个 Macro Theme 的历史 Cycle（%s）" % (n_no_hist, no_hist_txt)
+                              if no_hist else "已无缺口（当前侧声明的 Macro Theme 均有历史 Cycle）")
+
+    # 3) data_risks
+    for r in art["data_risks"]:
+        if r["risk"].startswith("主题族上限"):
+            r["risk"] = "主题族数量 = %d（未达 ≥ 4 的跨族稳健性门槛）" % n_family
+            r["detail"] = ("跨族稳健性检查在当前数据下仍不可能通过；单族规律无法证明普适性"
+                           "（Wave 1A 已由 2 提升至 %d）" % n_family)
+            r["mitigation"] = "继续补录独立 Macro Theme 至 ≥ 4"
+        elif r["risk"].startswith("当前侧声明"):
+            r["risk"] = "当前侧声明 %d 个 Macro Theme，历史侧 %d 个" % (n_declared, n_family)
+            r["detail"] = ("结构性不对称：%s 仍无历史 Cycle → Similarity Pattern 层恒 UNKNOWN" % no_hist_txt
+                           if no_hist else
+                           "结构性不对称已消除：当前侧声明的 Macro Theme 均有历史 Cycle")
+            r["mitigation"] = ("Wave 1（P0）：优先补录这 %d 个主题" % n_no_hist) if no_hist else "无需再补"
+        elif r["risk"].startswith("Event Calendar 缺"):
+            r["risk"] = ("Event Calendar 缺 %d 类能力关键事件"
+                         % art["event_coverage"]["not_available_count"])
+        elif r["risk"].startswith("生命周期普遍不完整"):
+            r["detail"] = ("%d 个对象中仅 %d 个达到 COMPLETE；THEME_FORMING / BROAD_CONFIRMATION 仍为最弱两项"
+                           % (n_obj, n_complete))
+
+
 # ---------------------------------------------------------------- 组装
 
 
@@ -1366,7 +1512,7 @@ def build_artifact():
         "generated_at": SNAPSHOT_DATE,
         "snapshot_date": SNAPSHOT_DATE,
         "generated_by": "research/scripts/audit_historical_coverage.py",
-        "research_round": "historical-coverage-audit-v0.1",
+        "research_round": RESEARCH_ROUND,
         "contract_note": (
             "Research Layer Deliverable —— 不是产品 schema，不进入 src/ / DB / schema.sql / "
             "timeline_export_v1.json / contracts / Timeline。"
@@ -1419,7 +1565,7 @@ def build_artifact():
         "verification_coverage": verif,
         "domain_coverage": domains,
         "discovery_cross_reference": disc,
-        "research_capability_matrix": CAPABILITY_MATRIX,
+        "research_capability_matrix": [dict(c) for c in CAPABILITY_MATRIX],  # 副本：叙述修正不得污染常量
         "coverage_ceiling": ceiling,
         "priority_dimensions": [
             {"key": k, "label": l, "basis": b} for k, l, b in PRIORITY_DIMENSIONS
@@ -1428,6 +1574,8 @@ def build_artifact():
         "waves": waves,
         "data_risks": risks,
     }
+    # 写盘前修正「按旧快照撰写」的叙述数字，使同一份产物内叙事与数据一致
+    _patch_derived_notes(art)
     return art
 
 
@@ -1614,6 +1762,15 @@ def main(argv):
     check_only = "--check" in argv
     do_print = "--print" in argv
 
+    # `--round X` 恢复该轮的产物路径与口径（默认 0.1，保持既有行为）
+    round_id = DEFAULT_ROUND
+    if "--round" in argv:
+        i = argv.index("--round")
+        if i + 1 >= len(argv):
+            raise SystemExit("--round 需要一个参数，例如 --round 0.2")
+        round_id = argv[i + 1]
+    prof = apply_round(round_id)
+
     art = build_artifact()
     issues = validate(art)
     if issues:
@@ -1637,7 +1794,7 @@ def main(argv):
                     print("FAIL —— 与重算结果不一致：", os.path.relpath(path, ROOT))
                     ok = False
         if ok:
-            print("PASS —— 磁盘产物与重算结果逐字节一致（deterministic）。")
+            print("PASS —— 磁盘产物与重算结果逐字节一致（deterministic，round=%s）。" % round_id)
             return 0
         return 1
 
@@ -1645,6 +1802,10 @@ def main(argv):
         f.write(text)
     with io.open(OUT_CSV, "w", encoding="utf-8", newline="") as f:
         f.write(csv_text)
+
+    print("written (round=%s): %s" % (round_id, prof["label"]))
+    print("  ", os.path.relpath(OUT_JSON, ROOT))
+    print("  ", os.path.relpath(OUT_CSV, ROOT))
 
     if do_print:
         _print_summary(art)
@@ -1654,7 +1815,7 @@ def main(argv):
 def _print_summary(art):
     inv = art["dataset_inventory"]
     print("=" * 78)
-    print("Historical Coverage Audit v0.1")
+    print("Historical Coverage Audit v%s（round %s）" % (ARTIFACT_VERSION, art.get("research_round", "")))
     print("=" * 78)
     print("Dataset")
     print("  Campaigns          :", inv["db_row_counts"]["campaigns"], "(DB) /", inv["export_counts"]["campaigns"], "(export)")
