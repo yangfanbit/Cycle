@@ -7,6 +7,111 @@
 
 ---
 
+## 2026-09-18 · Research · Phase 7.4A — Anchor Verification + Data Quality 收敛
+
+**性质：核验元数据层变更 + 一次产物滞后修正。零研究数据变更、零 Product 逻辑变更。**
+**唯一目标：只处理现有 Time Observation 的可信度（不进入 Wave 1C，不进入 Structural Analogy）。**
+**报告：`docs/PHASE_7_4A_ANCHOR_VERIFICATION_REPORT_2026-09-18.md`（1–11 节）。**
+
+### 1 · 基线（自行核对，未采信历史描述）
+
+`git status --short` 无输出（clean）· `HEAD = origin/main = 707224b` · ahead/behind `0/0`。
+改动前 TOP-01 核验状态：**verified 2 / unknown 5 / conflict 0**（共 7）。
+
+### 2 · 核验范围收敛
+
+只核验 **TOP-01 的 7 个锚点**；**未**把全库 24 个 `campaign_date_observations` 全部纳入人工核验
+（符合「用最少的核验工作提高当前产品级 Pattern 的证据质量」）。
+
+### 3 · 结论：TOP-01 verified = **2 / 7（未变化）**
+
+| 锚点 | 结果 | 依据 |
+|---|---|---|
+| 2022-04-27 | ✅ VERIFIED | `R1_MARKET_DATA`（DB 观测行） |
+| 2025-06-22 | ✅ VERIFIED | `R2B_EVENT_SOURCE`（同日事件 + Tier 2 来源） |
+| 2019-08-15 | UNKNOWN | 同日 evidence 仅 **Tier 3** → 未达门槛 |
+| 2020-06-01 | UNKNOWN | 同日 evidence 仅 **Tier 4**（不可作核验依据）；证据自身即写「窗口漂移需核验」 |
+| 2021-06-01 | UNKNOWN | 同日 evidence / event = 0；行情无一致起点 |
+| **2023-06-12** | UNKNOWN | **优先候选已完整核验**：源文全文**未出现 6月12日**（源文写的是 6月8日见底）；同日证据 = 0 |
+| **2024-06-11** | UNKNOWN | **优先候选已完整核验**：源文全文**未出现 6月11日**；同日证据 = 0；V2X 概念指数无行情数据 |
+
+**本轮未能提高核验数量 —— 这是穷尽仓库内证据后的诚实结论，不是执行失败。**
+
+### 4 · 写入的 verification metadata（2 条 UNKNOWN override）
+
+`time_observation_anchor_verification_v0_1.json` → `overrides` **0 → 2**：
+`C-2023-AD@2023-06-12` · `C-2024-V2X@2024-06-11`，`status = UNKNOWN`、`source = []`、
+`rule = MANUAL_OVERRIDE`，note 中固化完整核验过程（含源文全文核对结果与行情复核），**避免重复劳动**。
+
+产物侧：`anchor_verification_policy.manual_overrides` **0 → 2**。
+
+### 5 · ★ 统计量硬约束：完全保持
+
+`N=7` · `center=06-11` · `window=05-27~06-26` · `recurrence=5/7` · `stability=SPLIT(位移 10.5)` ·
+`LOO base_hits=5 / max_shift=5.0 / 单年主导=false` · `dispersion(IQR16/MAD10/span110)` ·
+`promotion_status=TIMELINE` · TOP-01 的 7 条 observations **逐条一致** · TOP-02/03/04 全部一致 ·
+`verified/unknown/conflict/total` 与 `methods` 与 `label` **全部一致**。
+
+**未改**：N 阈值 · concentration 阈值 · LOO · stability · derived structure gate · `anchor_priority`。
+
+### 6 · Product Artifact（canonical flow 重新生成）
+
+- 自检 `PASS`；`--check` **PASS**（逐字节可复现）。
+- **附带修正**：该 Artifact 的 **coverage 元数据此前滞后于数据集**（因 Wave 1A/1B 按指令未重跑本生成器）：
+  `total_objects 13 → 17` · `campaigns 9 → 13` · `anchor_type_counts.EARLY_SIGNAL 13 → 17` ·
+  `annual_review_status` 由 3 个 rule 补为 **4 个 rule**。
+  **未产生任何新 pattern**（TOP-01~04 完全不变）；`coverage` 是元数据，不参与任何判定。
+- 注意：`src/data/timeline/timeObservationPatterns.ts` 经 `@observation` 别名导入该 JSON，
+  故前端 bundle 380.87 kB → **382.27 kB**（+1.4 kB，全部为 verification note 文本）。
+
+### 7 · company / capital finding（只提建议，不实施）
+
+**根因：taxonomy / normalization 缺口，不是 schema 缺口。**
+
+1. `evidences.evidence_type`（证据类别）与 `sources.source_type`（来源类别）是**两个独立词表**，
+   无映射关系 —— `company_announcement` 来源可以承载任意 `evidence_type`。
+2. `audit_historical_coverage.py:191` 的 `EVIDENCE_TYPE_MAP` 只映射 **已观测到的 7 个值**，
+   **缺 `company` / `capital` 键**；而同一文件的 `CANONICAL_EVIDENCE_TYPES` 却声明了 6 类。**两者不一致。**
+3. Wave 1B 为避免引入未映射取值（会落入 `UNCLASSIFIED`），公司财报类证据用了 `行业数据`（→industry）。
+
+**最小修复建议（本轮不实施）**：① 扩展归一化表补 `company` / `capital` 键；
+② 把 3 条公司财报类证据（E-COMM-12/13/14）的 `evidence_type` 改为 `company_announcement`。
+**不实施原因**：①会改变审计产物 → 必须注册新审计轮次（v0.3）；②属 DB 数据变更，超出本轮范围。
+
+### 8 · ★ 新发现 HIGH 级数据质量问题
+
+`E-2023-04` 称「6/12预热」、`E-2024-03` 称「6/11-6/21涨超9%」，
+但**两条源文全文均未出现该日期**（已逐字取回核对）。
+→ 证据描述中存在**无来源支撑的日期断言**，直接影响 TOP-01 两个锚点的可信度判定。
+
+### 9 · 验证
+
+```
+build_time_observation_patterns.py --check   PASS（逐字节可复现）
+7 个 research 校验器                          全 PASS
+npm test                                      395 passed / 395（未修改任何测试）
+npx tsc -b                                    exit 0
+npm run build                                 PASS
+```
+
+**预期 FAIL（未修复）**：`audit_historical_coverage.py --check` ·
+`discover_time_observation_patterns.py --check`（含 `--round 0.4 --check`）
+—— 均为旧数据集快照；重跑须新 `ROUND_PROFILE`，本轮按指令未重跑。
+
+### 10 · 未修改
+
+`schema.sql` · `contracts/` · **DB（`.db` 零变更）** · `exports/` · `src/**`（含 Product TS Artifact）·
+`research/current/` · 任何测试文件 · Promotion Gate 全部规则。
+
+### 11 · 下一步（建议只做一件）
+
+**先处理新发现的数据质量问题**（§8）：对 `E-2023-04` / `E-2024-03` 二选一 ——
+**A**：补登独立的同日日期证据（若能找到 Tier ≤2 来源 → 锚点可升为 VERIFIED）；
+**B**：确认无来源后，在证据描述中显式标注该日期断言无来源支撑。
+**替代方案**（若覆盖度优先）：Wave 1C（高端装备）。
+
+---
+
 ## 2026-09-18 · Research · Historical Data Expansion Wave 1B — 信息通信历史 Cycle
 
 **性质：Research 数据扩容 + 一次明确的 taxonomy 扩展。**

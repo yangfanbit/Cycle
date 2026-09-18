@@ -61,7 +61,26 @@
     "conflict_condition": "当仓库内 evidence 明确指向**另一个**起始日期、且与该锚点互斥时记 CONFLICT（需人工裁决；本轮无命中）。",
     "tier_reference": "sources.tier：1 = 官方 / 2 = 主流财经媒体 / 3 = 转载或二手 / 4 = 经验帖线索（Tier 4 不可作为核验依据）"
   },
-  "overrides": [],
+  "overrides": [
+    {
+      "campaign_id": "C-2023-AD",
+      "anchor_date": "2023-06-12",
+      "status": "UNKNOWN",
+      "method": "UNKNOWN",
+      "source": [],
+      "verified_at": "2026-09-18",
+      "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2023-04（源 S-2023-05，界面新闻/证券时报，tier 2，2023-07-13）。该证据**仅在其描述文本**提到「6/12预热」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 7/12、6/8、7/11、7/7、6/17、7/6、5月上旬，**未出现 6月12日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。代表标的行情（前复权 raw）在锚点 ±10 交易日内的最低点为 **2023-06-08**（浙江世宝 7.47 / 万安科技 8.60 / 众泰汽车 2.37），并非 2023-06-12。→ 无同日可追溯证据，且行情亦不支持该日为起点；**维持 UNKNOWN**。"
+    },
+    {
+      "campaign_id": "C-2024-V2X",
+      "anchor_date": "2024-06-11",
+      "status": "UNKNOWN",
+      "method": "UNKNOWN",
+      "source": [],
+      "verified_at": "2026-09-18",
+      "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2024-03（源 S-2024-02，财联社，tier 2，2024-06-18）。该证据**仅在其描述文本**提到「车联网概念指数 6/11-6/21 涨超 9%」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 6/18、6/17、6/16，**未出现 6月11日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。该 Campaign 的 4 个代表标的（华铭智能 / 金溢科技 / 索菱股份 / 万集科技）在 `market_series` 中**均无行情数据**（V2X 概念指数为空占位）→ 无法以行情佐证。→ 无同日可追溯证据，**维持 UNKNOWN**。"
+    }
+  ],
   "overrides_format": {
     "note": "人工核验结果写在这里；生成器会用 overrides 覆盖机械推导结果。写 VERIFIED 时必须提供 source（非空数组），否则生成器自检失败并拒绝写盘。",
     "example": {
@@ -69,7 +88,10 @@
       "anchor_date": "2022-04-27",
       "status": "VERIFIED",
       "method": "MARKET_DATA",
-      "source": ["sources:S-2022-03", "market_series:AUTO_SW"],
+      "source": [
+        "sources:S-2022-03",
+        "market_series:AUTO_SW"
+      ],
       "verified_at": "2026-09-17",
       "note": "人工核验说明"
     }

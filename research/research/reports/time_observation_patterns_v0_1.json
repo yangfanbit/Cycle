@@ -29,7 +29,7 @@
   "anchor_verification_policy": {
     "policy_source": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json",
     "policy_version": "0.1",
-    "manual_overrides": 0,
+    "manual_overrides": 2,
     "rules": [
       "R1_MARKET_DATA：该日期本身由行情观测得出 → VERIFIED / MARKET_DATA",
       "R2_PUBLIC_SOURCE：同日 linked evidence 且来源 tier ≤ 2 → VERIFIED / PUBLIC_SOURCE",
@@ -140,11 +140,11 @@
         "rule_id": "rule_auto_summer"
       }
     ],
-    "total_objects": 13,
-    "campaigns": 9,
+    "total_objects": 17,
+    "campaigns": 13,
     "research_candidates": 4,
     "anchor_type_counts": {
-      "EARLY_SIGNAL": 13
+      "EARLY_SIGNAL": 17
     },
     "annual_review_status": {
       "rule_auto_summer#2018": "no_clear_campaign",
@@ -155,10 +155,26 @@
       "rule_auto_summer#2023": "medium",
       "rule_auto_summer#2024": "medium",
       "rule_auto_summer#2025": "medium",
+      "rule_infocomm#2018": "weak",
+      "rule_infocomm#2019": "strong",
+      "rule_infocomm#2020": "strong",
+      "rule_infocomm#2021": "weak",
+      "rule_infocomm#2022": "weak",
+      "rule_infocomm#2023": "strong",
+      "rule_infocomm#2024": "strong",
+      "rule_infocomm#2025": "strong",
       "rule_pharma_upgrade#2019": "medium",
       "rule_pharma_upgrade#2020": "strong",
       "rule_pharma_upgrade#2021": "strong",
-      "rule_pharma_upgrade#2022": "weak"
+      "rule_pharma_upgrade#2022": "weak",
+      "rule_power_equipment#2018": "weak",
+      "rule_power_equipment#2019": "medium",
+      "rule_power_equipment#2020": "strong",
+      "rule_power_equipment#2021": "strong",
+      "rule_power_equipment#2022": "weak",
+      "rule_power_equipment#2023": "medium",
+      "rule_power_equipment#2024": "strong",
+      "rule_power_equipment#2025": "medium"
     }
   },
   "summary": {
@@ -322,10 +338,11 @@
             "status": "UNKNOWN",
             "method": "UNKNOWN",
             "sources": [],
-            "rule": "R4_TEXT_MENTION_ONLY",
-            "note": "仓库内有 Tier 2 证据在描述中提到该日期（E-2023-04），但该日期未作为独立日期证据登记 → 保持 UNKNOWN，供人工核验时优先处理。",
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2023-04（源 S-2023-05，界面新闻/证券时报，tier 2，2023-07-13）。该证据**仅在其描述文本**提到「6/12预热」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 7/12、6/8、7/11、7/7、6/17、7/6、5月上旬，**未出现 6月12日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。代表标的行情（前复权 raw）在锚点 ±10 交易日内的最低点为 **2023-06-08**（浙江世宝 7.47 / 万安科技 8.60 / 众泰汽车 2.37），并非 2023-06-12。→ 无同日可追溯证据，且行情亦不支持该日为起点；**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
             "derived_at": "2026-09-16",
-            "derived_from": "cycle_research.db:evidences.description"
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
           }
         },
         {
@@ -342,10 +359,11 @@
             "status": "UNKNOWN",
             "method": "UNKNOWN",
             "sources": [],
-            "rule": "R4_TEXT_MENTION_ONLY",
-            "note": "仓库内有 Tier 2 证据在描述中提到该日期（E-2024-03），但该日期未作为独立日期证据登记 → 保持 UNKNOWN，供人工核验时优先处理。",
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2024-03（源 S-2024-02，财联社，tier 2，2024-06-18）。该证据**仅在其描述文本**提到「车联网概念指数 6/11-6/21 涨超 9%」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 6/18、6/17、6/16，**未出现 6月11日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。该 Campaign 的 4 个代表标的（华铭智能 / 金溢科技 / 索菱股份 / 万集科技）在 `market_series` 中**均无行情数据**（V2X 概念指数为空占位）→ 无法以行情佐证。→ 无同日可追溯证据，**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
             "derived_at": "2026-09-16",
-            "derived_from": "cycle_research.db:evidences.description"
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
           }
         },
         {
@@ -579,10 +597,11 @@
             "status": "UNKNOWN",
             "method": "UNKNOWN",
             "sources": [],
-            "rule": "R4_TEXT_MENTION_ONLY",
-            "note": "仓库内有 Tier 2 证据在描述中提到该日期（E-2023-04），但该日期未作为独立日期证据登记 → 保持 UNKNOWN，供人工核验时优先处理。",
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2023-04（源 S-2023-05，界面新闻/证券时报，tier 2，2023-07-13）。该证据**仅在其描述文本**提到「6/12预热」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 7/12、6/8、7/11、7/7、6/17、7/6、5月上旬，**未出现 6月12日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。代表标的行情（前复权 raw）在锚点 ±10 交易日内的最低点为 **2023-06-08**（浙江世宝 7.47 / 万安科技 8.60 / 众泰汽车 2.37），并非 2023-06-12。→ 无同日可追溯证据，且行情亦不支持该日为起点；**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
             "derived_at": "2026-09-16",
-            "derived_from": "cycle_research.db:evidences.description"
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
           }
         },
         {
@@ -599,10 +618,11 @@
             "status": "UNKNOWN",
             "method": "UNKNOWN",
             "sources": [],
-            "rule": "R4_TEXT_MENTION_ONLY",
-            "note": "仓库内有 Tier 2 证据在描述中提到该日期（E-2024-03），但该日期未作为独立日期证据登记 → 保持 UNKNOWN，供人工核验时优先处理。",
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2024-03（源 S-2024-02，财联社，tier 2，2024-06-18）。该证据**仅在其描述文本**提到「车联网概念指数 6/11-6/21 涨超 9%」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 6/18、6/17、6/16，**未出现 6月11日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。该 Campaign 的 4 个代表标的（华铭智能 / 金溢科技 / 索菱股份 / 万集科技）在 `market_series` 中**均无行情数据**（V2X 概念指数为空占位）→ 无法以行情佐证。→ 无同日可追溯证据，**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
             "derived_at": "2026-09-16",
-            "derived_from": "cycle_research.db:evidences.description"
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
           }
         },
         {

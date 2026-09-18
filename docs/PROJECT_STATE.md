@@ -5,9 +5,9 @@
 > 所有数字均可由仓库内命令复算；发现不一致时**以仓库为准**。
 
 - **重建日期**：2026-09-17（Repository Recovery 之后重写，未照抄旧版）
-- **最近更新**：2026-09-18 · **Wave 1B — 信息通信历史 Cycle**（历史侧 Macro Theme 3 → 4）
-- **HEAD**：见 `git log -1`（`research: add historical information communication cycles`）· 本文件随该提交入库
-- **Wave 1B 前的基线**：`HEAD = origin/main = 052b79b` · ahead / behind `0 / 0` · 工作树 clean
+- **最近更新**：2026-09-18 · **Phase 7.4A — Anchor Verification + Data Quality 收敛**（TOP-01 仍 2/7）
+- **HEAD**：见 `git log -1`（`research: verify time observation anchors`）· 本文件随该提交入库
+- **Phase 7.4A 前的基线**：`HEAD = origin/main = 707224b` · ahead / behind `0 / 0` · 工作树 clean
 
 ---
 
@@ -185,10 +185,17 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 | TOP-04 | 医药健康 | 3 | 01-23 | 不可构建 | — | D | REJECTED |
 
 - **`promotion_status` 为 authoritative**；`status` / `timeline_eligible` / `timeline_eligibility` 为**兼容输入**。
-- **锚点核验（Phase 7.3）**：策略 + 人工覆盖位在 `time_observation_anchor_verification_v0_1.json`；
-  生成器从 research DB **机械推导**。合计 **VERIFIED 3 / UNKNOWN 13 / CONFLICT 0**；
-  TOP-01 **2 / 7**（2022-04-27 `MARKET_DATA`；2025-06-22 `PUBLIC_SOURCE` Tier2）。
+- **锚点核验（Phase 7.3 建立 · Phase 7.4A 收敛）**：策略 + 人工覆盖位在
+  `time_observation_anchor_verification_v0_1.json`；生成器从 research DB **机械推导**。
+  合计 **VERIFIED 3 / UNKNOWN 13 / CONFLICT 0**；
+  **TOP-01 = 2 / 7**（2022-04-27 `MARKET_DATA`；2025-06-22 `PUBLIC_SOURCE` Tier2）。
   **核验通过 ≠ 规律有效**，也不代表未来会重复。
+- **Phase 7.4A（2026-09-18）**：对 TOP-01 的 5 个 UNKNOWN 锚点逐一完成核验（**含取回源文全文**），
+  **verified 仍为 2 / 7** —— 5 个锚点均无 Tier ≤2 同日证据。
+  两个优先候选（`2023-06-12` / `2024-06-11`）已固化为 **UNKNOWN override**（`manual_overrides` 0 → 2），
+  记录核验过程以避免重复劳动。**统计量（N / center / window / recurrence / LOO / stability /
+  promotion_status）完全保持。**
+  报告：`docs/PHASE_7_4A_ANCHOR_VERIFICATION_REPORT_2026-09-18.md`。
 - **Discovery 轮次**（研究侧候选池，非产品 Artifact）：
 
   | 轮次 | 口径 | 产物 |
@@ -250,7 +257,7 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 | Events | **49（DB）/ 52（export）**；`industry` 1 → **2** | 39 / 42 | 仍 6 类 `NOT_AVAILABLE`；本轮新增 5 项 `DATA_GAP` 登记（见 Wave 1B 报告 §F.1） |
 | Market Series | **56**（新增 8 条信息通信代表标的） | 48 | 仍是「按 Campaign 窗口采样」 |
 | Trading Calendar | **371 天，仅覆盖 2022–2024** | 同 | **未补全** |
-| 日期核验 | **0 / 24**（全为 NULL，全部 `confidence = low`） | 同 | **可信度硬天花板** —— Wave 1A / 1B **两轮均未新增核验** |
+| 日期核验 | **0 / 24**（DB `verified_date` 全为 NULL） | 同 | **可信度硬天花板**。⚠️ **核验元数据层**（`time_observation_anchor_verification_v0_1.json`）另有 **VERIFIED 3 / UNKNOWN 13**；TOP-01 = **2/7**（Phase 7.4A 后未变）。两层不是同一件事 |
 | 主题族数 | `theme_family_count` **= 4** | 3 | **已达 audit 的 ≥ 4 门槛** |
 | 当前侧 vs 历史侧 | 历史侧 4 个；当前侧 4 个 | 历史侧 3 个 | **电力设备 / 信息通信均已修复断裂**；**仅剩 高端装备** → Similarity Pattern 层仍为 `UNKNOWN` |
 
@@ -375,9 +382,9 @@ authoritative `promotion_status`（旧字段降为兼容输入，生成器自检
 
 ## Next Single Goal
 
-> **Wave 1B（信息通信历史 Cycle）已完成（2026-09-18）** —— 历史侧 Macro Theme **3 → 4**。
-> 见 `docs/HISTORICAL_DATA_WAVE_1B_INFOCOMM_REPORT_2026-09-18.md`。
-> **当前真正的瓶颈仍是「数据」，不是「方法」。**
+> **Phase 7.4A（Anchor Verification）已完成（2026-09-18）** —— TOP-01 核验**仍为 2 / 7**。
+> 见 `docs/PHASE_7_4A_ANCHOR_VERIFICATION_REPORT_2026-09-18.md`。
+> **当前真正的瓶颈仍是「数据」，不是「方法」；且已从「覆盖度」转向「数据质量」。**
 
 **Wave 1A / 1B 已完成什么**
 
@@ -391,17 +398,31 @@ authoritative `promotion_status`（旧字段降为兼容输入，生成器自检
 
 **下一步（只做一件）**
 
-> **先做日期人工核验**（TOP-01 的 7 个锚点 + Wave 1A/1B 新增锚点），
-> 使 `campaign_date_observations.verified_date` 从 **0/24** 变为非零。
+> **先处理 Phase 7.4A 新发现的 HIGH 级数据质量问题**：
+> `E-2023-04`（称「6/12预热」）与 `E-2024-03`（称「6/11-6/21」）的**源文全文均未出现该日期**。
+> 二选一：**A** 补登独立的同日日期证据（若能找到 Tier ≤2 来源 → 锚点可升为 VERIFIED）；
+> **B** 确认无来源后，在证据描述中显式标注该日期断言无来源支撑。
 >
 > 若用户更倾向覆盖度优先，替代方案为 **Wave 1C（高端装备）**（完成后 `theme_family_count` = 5）。
 
-**为什么先核验而不是直接做 Wave 1C**
+**为什么先修数据质量**
 
-1. `theme_family_count` 已从 2 → 4，**首次达到 audit 的「≥ 4」门槛** → Wave 1B 的主要目的已达成；
-   继续补第 5 个主题的**边际收益低于**先坐实已有 4 个族的可信度。
-2. **核验仍为 0/24，且缺口在持续放大**：Wave 1A 把 Cycle 9→11、DB phases 23→36；
-   Wave 1B 再到 13 / 48 —— **两轮都没有增加任何核验**。这是 audit 反复认定的「可信度硬天花板」。
+1. Phase 7.4A 已对 TOP-01 的 5 个 UNKNOWN 锚点**穷尽仓库内证据**（含取回源文全文核对），
+   结论是 **verified 仍 2/7** —— 卡点不在「没查」，而在**证据本身不支撑这些日期**。
+   继续查同一批证据不会有新结果。
+2. 这是唯一新发现的 **HIGH** 级问题，且**直接决定 TOP-01 的锚点可信度**；
+   不处理则描述中的错误断言会持续存在，下一轮会重复同样的工作。
+3. **成本极低**：A 方案 = 新增 2 条 evidence 行；B 方案 = 标注 2 条描述。
+4. `theme_family_count` 已达 4、Wave 1B 已修复信息通信断裂 →
+   **继续扩覆盖度的边际收益低于先修数据质量**。
+5. 它**不触碰** Promotion Gate 规则，也不进入 Structural Analogy。
+
+**仍需长期解决（不在下一步内）**
+
+- **DB 层日期核验仍为 0/24**（`campaign_date_observations.verified_date` 全为 NULL）——
+  注意：Phase 7.4A 改的是**核验元数据层**（`overrides`），**不是** DB 的 `verified_date` 字段。
+- `company` / `capital` 的 `evidence_type` 仍为 0（根因已定位：归一化词表缺键，见 7.4A 报告 §5）。
+- 交易日历仍不完整。
 3. 三类快照型产物（Product Artifact / Discovery 候选池 / Coverage Matrix）持续**滞后于数据集**，
    继续扩张前应先决定重跑口径（**Time Observation 必须新 `ROUND_PROFILE` v0.5，不得覆盖 v0.3 / v0.4**）。
 
