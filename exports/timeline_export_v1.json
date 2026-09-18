@@ -1,8 +1,8 @@
 {
   "contract": "timeline_export",
   "timeline_export_version": "1.0",
-  "generated_at": "2026-09-18T00:39:22",
-  "source_commit": "f446cb8a02128f63835f3fd29c432f1e96a82fd0",
+  "generated_at": "2026-09-18T22:01:34",
+  "source_commit": "052b79b9cc824d69f01a74322ce8e937e99c9854",
   "project": "Cycle-Research",
   "rules": [
     {
@@ -25,6 +25,13 @@
       "base_pattern": "电力设备",
       "definition": "Historical Observation Window（历史观察窗口）：电力设备（新能源发电设备 / 电网输配电设备）在政策与电网投资周期驱动下形成的结构性行情；非固定买入窗口，不构成交易建议",
       "observation_window": "结构性（非季节性）：2018–2025。两个独立 Theme Cycle：① 清洁能源发电设备 2020-09-22~2022-12-30（Peak 2021-10-27~2021-11-04）；② 电网投资与特高压 2022-01-10~2025-12-31（Peak 2024-07-09~2024-10-14）"
+    },
+    {
+      "rule_id": "rule_infocomm",
+      "name": "信息通信历史周期观察",
+      "base_pattern": "信息通信",
+      "definition": "Historical Observation Window（历史观察窗口）：信息通信（通信设备 / 光模块光器件 / 光纤光缆 / 数据中心与算力基础设施）在政策、运营商资本开支与云/AI 资本开支驱动下形成的结构性行情；非固定买入窗口，不构成交易建议",
+      "observation_window": "结构性（非季节性）：2018–2025。两个独立 Theme Cycle：① 5G 网络建设与光通信基础设施 2019-06-06~2022-10-11（Peak 2020-02-24~2020-03-12）；② AI 算力驱动的光模块 2023-03-21~2025-12-31（Peak 未确认，2025-12-22~12-25 为区间高点）"
     }
   ],
   "signals": [
@@ -105,6 +112,30 @@
       "date": "2022-01-16",
       "confidence": "high",
       "campaign_id": "C-2022-POWER-GRID"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2019-06-06",
+      "confidence": "high",
+      "campaign_id": "C-2019-COMM-5G"
+    },
+    {
+      "type": "THEME_FORMING",
+      "date": "2019-10-31",
+      "confidence": "high",
+      "campaign_id": "C-2019-COMM-5G"
+    },
+    {
+      "type": "EARLY_SIGNAL",
+      "date": "2023-03-21",
+      "confidence": "high",
+      "campaign_id": "C-2023-COMM-OPTICAL"
+    },
+    {
+      "type": "THEME_FORMING",
+      "date": "2023-05-24",
+      "confidence": "high",
+      "campaign_id": "C-2023-COMM-OPTICAL"
     },
     {
       "type": "EARLY_SIGNAL",
@@ -969,6 +1000,247 @@
       }
     },
     {
+      "campaign_id": "C-2019-COMM-5G",
+      "rule_id": "rule_infocomm",
+      "year": 2019,
+      "start_date": "2019-06-06",
+      "peak_date": "2020-02-25",
+      "end_date": "2022-10-11",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "信息通信",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "5G网络建设/通信设备",
+          "theme_type": "concept",
+          "role": "main"
+        },
+        {
+          "name": "光模块/高速光互联",
+          "theme_type": "concept",
+          "role": "related"
+        }
+      ],
+      "event_ids": [
+        "EV-COMM-01",
+        "EV-COMM-02",
+        "EV-COMM-03",
+        "EV-COMM-04",
+        "EV-COMM-05"
+      ],
+      "security_ids": [
+        "FIBERHOME",
+        "ZTE",
+        "TFC",
+        "EOPTOLINK",
+        "INNOLIGHT"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "comm_5g_infrastructure_2019_2022",
+      "promotion_status": null,
+      "first_signal_date": "2019-06-06",
+      "broad_confirmation_date": "2020-03-04",
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2019-06-06",
+          "end": "2019-06-06",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2019-10-31",
+          "end": "2019-10-31",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "BROAD_CONFIRMATION",
+          "start": "2020-03-04",
+          "end": "2020-03-04",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2019-10-31",
+          "end": "2020-02-23",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2020-02-24",
+          "end": "2020-08-04",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2020-08-05",
+          "end": "2021-03-18",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "SECONDARY",
+          "start": "2021-03-19",
+          "end": "2021-12-31",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2022-01-01",
+          "end": "2022-10-11",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_END",
+          "start": "2022-10-11",
+          "end": "2022-10-11",
+          "precision": "EXACT_DATE"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "5G 商用牌照发放（EV-COMM-02, 2019-06-06）→ 中国进入 5G 商用元年",
+          "5G 商用启动仪式、三大运营商发布 5G 套餐（EV-COMM-03, 2019-10-31）",
+          "Setup：2018-04-16 美国商务部对中兴通讯激活拒绝令（EV-COMM-01，prior）→ 2018 年板块深跌形成低基数（中兴 -49.0%）"
+        ],
+        "accelerator": [
+          "中央政治局会议（2020-02-21）提出推动 5G 网络等加快发展；工信部加快推进 5G 发展会议（2020-02-22）（EV-COMM-04）",
+          "中国联通宣布力争三季度完成全国 25 万基站建设、较原计划提前一个季度（2020-02-23）",
+          "中央政治局常务委员会：加快 5G 网络、数据中心等新型基础设施建设进度（EV-COMM-05, 2020-03-04）",
+          "2020 年固定资产投资 4072 亿元（+11%），新建 5G 基站超 60 万个（E-COMM-07）"
+        ],
+        "turning": [
+          "代表标的分批见顶：中际旭创 2020-02-24 / 中兴通讯 2020-02-25 / 烽火通信 2020-03-12（Peak Window）",
+          "2021 年上半年三大运营商 5G 资本开支均下滑（中国联通 -45%）（E-COMM-09）",
+          "2021 年电信固定资产投资 4058 亿元，与上年基本持平 → 资本开支见顶（E-COMM-08）"
+        ],
+        "ending": [
+          "2021-2022 板块持续走弱：中兴 -23.4%（2022）、烽火 -28.2%、中际旭创 -38.2%",
+          "代表标的 2022-10-10/11 同步见底（中兴 18.41 / 烽火 11.65 / 中际旭创 15.88 / 新易盛 6.33）→ 本轮 Cycle 出清完成",
+          "★ 环节错位：新易盛（数通光模块）延后至 2020-07-14 见顶，主因海外云厂商资本开支与 400G 放量节奏滞后于国内 5G 建设，未另立 Cycle"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "rule_id": "rule_infocomm",
+      "year": 2023,
+      "start_date": "2023-03-21",
+      "peak_date": "2025-12-25",
+      "end_date": "2025-12-31",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "信息通信",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "光模块/高速光互联",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-COMM-06",
+        "EV-COMM-07",
+        "EV-COMM-08",
+        "EV-COMM-09",
+        "EV-COMM-10"
+      ],
+      "security_ids": [
+        "EOPTOLINK",
+        "INNOLIGHT",
+        "ACCELINK",
+        "TFC"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "comm_ai_optical_2023_2025",
+      "promotion_status": null,
+      "first_signal_date": "2023-03-21",
+      "broad_confirmation_date": "2023-08-28",
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2023-03-21",
+          "end": "2023-03-21",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2023-05-24",
+          "end": "2023-05-24",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "BROAD_CONFIRMATION",
+          "start": "2023-08-28",
+          "end": "2023-08-28",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-08-28",
+          "end": "2024-10-07",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2024-10-08",
+          "end": "2025-04-08",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2025-04-09",
+          "end": "2025-12-18",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2025-12-22",
+          "end": "2025-12-25",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "NVIDIA GTC 2023 主题演讲（EV-COMM-07, 2023-03-21）→ AI 算力叙事启动；A 股光模块次日爆发（中际旭创 2023-03-22 +21.97%）",
+          "context：「东数西算」全面启动（EV-COMM-06, 2022-02-17，prior）"
+        ],
+        "accelerator": [
+          "NVIDIA FY2024 Q1 财报：数据中心营收创纪录 42.8 亿美元，Q2 指引 110 亿美元（较分析师预期高 53.2%）（EV-COMM-08, 2023-05-24）→ 全球 AI 算力资本开支财务确认",
+          "中际旭创 2023 半年报：下半年 800G 光模块出货量明显增长（EV-COMM-09, 2023-08-28）",
+          "中际旭创 2023 年报：营收 107.18 亿元（+11.16%），2024Q1 净利润超 10 亿元（EV-COMM-10, 2024-04-21）→ 800G 放量在报表端确认",
+          "2025 年 1.6T 与 NPO/CPO 结构迁移预期（速率代际升级延续）"
+        ],
+        "turning": [
+          "2024-10-08 代表标的同步出现阶段高点后回撤（中际旭创 183.93 → 2025-04-08 70.09，约 -62%）",
+          "★ 该回撤后板块于 2025-04-09 起重启上行并创新高 → 属同一 Cycle 内的回撤，非 Cycle 结束"
+        ],
+        "ending": [
+          "unknown（至本地行情窗口末端仍在上行：中际旭创 2025-12-25 达 638.80、新易盛 2025-12-22 达 329.99）",
+          "★ 通信设备（中兴通讯 / 烽火通信）2023-2025 亦受益于算力网络建设（中兴 2024 +64.8%、烽火 2025 +79.9%），但主驱动仍含运营商侧因素，本轮不作为本 Cycle 代表标的"
+        ]
+      }
+    },
+    {
       "campaign_id": "C-2019-PHARMA-INNOV",
       "rule_id": "rule_pharma_upgrade",
       "year": 2019,
@@ -1609,6 +1881,15 @@
   ],
   "events": [
     {
+      "event_id": "EV-COMM-01",
+      "name": "美国商务部对中兴通讯激活拒绝令（7 年出口禁运）",
+      "date": "2018-04-16",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-PWR-01",
       "name": "光伏「531 新政」：关于 2018 年光伏发电有关事项的通知（发改能源〔2018〕823 号）",
       "date": "2018-05-31",
@@ -1636,6 +1917,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-COMM-02",
+      "name": "工信部发放 5G 商用牌照（中国电信 / 中国移动 / 中国联通 / 中国广电）",
+      "date": "2019-06-06",
+      "event_type": "policy",
+      "role": "trigger",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-MED-02",
       "name": "科创板开板（允许未盈利生物科技企业上市）",
       "date": "2019-07-22",
@@ -1654,12 +1944,39 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-COMM-03",
+      "name": "5G 商用启动仪式：三大运营商发布 5G 套餐",
+      "date": "2019-10-31",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-MED-03",
       "name": "2019 年国家医保药品目录谈判结果公布（PD-1 首次纳入医保）",
       "date": "2019-11-28",
       "event_type": "policy",
       "role": "catalyst",
       "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-COMM-04",
+      "name": "工信部加快推进 5G 发展、做好信息通信业复工复产工作会议",
+      "date": "2020-02-22",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-COMM-05",
+      "name": "中央政治局常务委员会会议：加快 5G 网络、数据中心等新型基础设施建设进度",
+      "date": "2020-03-04",
+      "event_type": "policy",
+      "role": "catalyst",
+      "campaign_id": "C-2019-COMM-5G",
       "research_candidate_id": null
     },
     {
@@ -1762,6 +2079,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-COMM-06",
+      "name": "「东数西算」工程正式全面启动（8 地国家算力枢纽节点）",
+      "date": "2022-02-17",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2022-01",
       "name": "国常会：阶段性减征乘用车购置税600亿元",
       "date": "2022-05-23",
@@ -1807,6 +2133,24 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-COMM-07",
+      "name": "NVIDIA GTC 2023 主题演讲（AI 推理芯片 / 「人工智能的 iPhone 时刻」）",
+      "date": "2023-03-21",
+      "event_type": "industry",
+      "role": "trigger",
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-COMM-08",
+      "name": "NVIDIA FY2024 Q1 财报：数据中心营收创纪录 42.8 亿美元，Q2 指引 110 亿美元",
+      "date": "2023-05-24",
+      "event_type": "company",
+      "role": "catalyst",
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-PWR-08",
       "name": "首个「沙戈荒」风光电基地外送特高压工程开工（宁夏—湖南 ±800 千伏）",
       "date": "2023-06-11",
@@ -1834,12 +2178,30 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-COMM-09",
+      "name": "中际旭创 2023 年半年报：下半年 800G 光模块出货量明显增长",
+      "date": "2023-08-28",
+      "event_type": "company",
+      "role": "catalyst",
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2023-03",
       "name": "四部委《智能网联汽车准入和上路通行试点》通知",
       "date": "2023-11-17",
       "event_type": "policy",
       "role": "context",
       "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-COMM-10",
+      "name": "中际旭创 2023 年年报：营收 107.18 亿元（+11.16%），2024Q1 净利润超 10 亿元",
+      "date": "2024-04-21",
+      "event_type": "company",
+      "role": "follow_up",
+      "campaign_id": "C-2023-COMM-OPTICAL",
       "research_candidate_id": null
     },
     {
@@ -2013,6 +2375,51 @@
       "exchange": "SZ",
       "role": "representative",
       "campaign_id": "C-2019-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "FIBERHOME",
+      "name": "烽火通信",
+      "ticker": "600498",
+      "exchange": "SH",
+      "role": "leader",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "ZTE",
+      "name": "中兴通讯",
+      "ticker": "000063",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "TFC",
+      "name": "天孚通信",
+      "ticker": "300394",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "EOPTOLINK",
+      "name": "新易盛",
+      "ticker": "300502",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2019-COMM-5G",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "INNOLIGHT",
+      "name": "中际旭创",
+      "ticker": "300308",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2019-COMM-5G",
       "research_candidate_id": null
     },
     {
@@ -2274,6 +2681,42 @@
       "exchange": "SZ",
       "role": "second_leader",
       "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "EOPTOLINK",
+      "name": "新易盛",
+      "ticker": "300502",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "INNOLIGHT",
+      "name": "中际旭创",
+      "ticker": "300308",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "ACCELINK",
+      "name": "光迅科技",
+      "ticker": "002281",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "TFC",
+      "name": "天孚通信",
+      "ticker": "300394",
+      "exchange": "SZ",
+      "role": "second_leader",
+      "campaign_id": "C-2023-COMM-OPTICAL",
       "research_candidate_id": null
     },
     {

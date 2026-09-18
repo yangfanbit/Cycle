@@ -34,8 +34,9 @@ EXPORT = db.TIMELINE_EXPORT_PATH  # canonical: <repo>/exports/timeline_export_v1
 AUTO_RULE = "rule_auto_summer"
 PHARMA_RULE = "rule_pharma_upgrade"   # 医药健康（Medical Health Minimum Dataset v0.1）
 POWER_RULE = "rule_power_equipment"   # 电力设备（Wave 1A — 电力设备历史 Cycle）
+COMM_RULE = "rule_infocomm"           # 信息通信（Wave 1B — 信息通信历史 Cycle）
 # 批量研究覆盖的 Rule（按顺序生成；新增 Macro Theme 在此登记）
-RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE]
+RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE]
 RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----
@@ -55,6 +56,10 @@ THEME_CYCLE = {
     # 两个 Cycle 的 Primary 均为 TH-POWER；互为独立 Cycle（形成锚点 / 核心驱动 / Peak 均不同）。
     "C-2020-POWER-NE": "power_ne_equipment_2020_2022",
     "C-2022-POWER-GRID": "power_grid_uhv_2022_2025",
+    # ---- 信息通信（Wave 1B，Primary Macro Theme = TH-COMM）----
+    # 两个 Cycle 的 Primary 均为 TH-COMM；独立性见 seed_comm_cycles.py 的 research_notes。
+    "C-2019-COMM-5G": "comm_5g_infrastructure_2019_2022",
+    "C-2023-COMM-OPTICAL": "comm_ai_optical_2023_2025",
 }
 
 # 研究信号（research-level，来自 theme_lifecycle_v0_2 三案例建模；其余年份按 annual 研究记录）
@@ -97,6 +102,19 @@ SIGNALS = {
         {"type": "EARLY_SIGNAL", "date": "2022-01-10", "confidence": "medium"},
         {"type": "THEME_FORMING", "date": "2022-01-16", "confidence": "high"},
     ],
+    # ---- 信息通信（Wave 1B）----
+    # Cycle 1：EARLY_SIGNAL = 工信部发放 5G 商用牌照（2019-06-06）；
+    #          THEME_FORMING = 5G 商用启动仪式（2019-10-31，三大运营商发布 5G 套餐）。
+    "C-2019-COMM-5G": [
+        {"type": "EARLY_SIGNAL", "date": "2019-06-06", "confidence": "high"},
+        {"type": "THEME_FORMING", "date": "2019-10-31", "confidence": "high"},
+    ],
+    # Cycle 2：EARLY_SIGNAL = NVIDIA GTC 2023 主题演讲（2023-03-21，AI 算力叙事）；
+    #          THEME_FORMING = NVIDIA Q1 FY2024 财报 Q2 指引 110 亿美元（2023-05-24，需求财务确认）。
+    "C-2023-COMM-OPTICAL": [
+        {"type": "EARLY_SIGNAL", "date": "2023-03-21", "confidence": "high"},
+        {"type": "THEME_FORMING", "date": "2023-05-24", "confidence": "high"},
+    ],
 }
 
 # Campaign Phase → 时间字段（research-only，便于 timeline 表达）
@@ -113,6 +131,11 @@ PHASE_TIME_FIELDS = {
     "C-2020-POWER-NE": {"broad_confirmation_date": "2021-09-08"},
     # Cycle 2：BROAD_CONFIRMATION = 国网披露再开工 8 项特高压、在建项目投资破万亿（2022-08-03）。
     "C-2022-POWER-GRID": {"broad_confirmation_date": "2022-08-03"},
+    # ---- 信息通信（Wave 1B）----
+    # Cycle 1：BROAD_CONFIRMATION = 中央政治局常委会「加快 5G 网络、数据中心等新型基础设施建设进度」（2020-03-04）。
+    "C-2019-COMM-5G": {"broad_confirmation_date": "2020-03-04"},
+    # Cycle 2：BROAD_CONFIRMATION = 中际旭创 2023 半年报「下半年 800G 出货量明显增长」（2023-08-28）。
+    "C-2023-COMM-OPTICAL": {"broad_confirmation_date": "2023-08-28"},
 }
 
 # ---- 日期精度（V1.7：日期精度不再是核心瓶颈）----
@@ -384,6 +407,34 @@ CAMPAIGN_LIFECYCLE = {
         {"stage": "DECLINING", "start": "2024-10-15", "end": "2025-12-31", "precision": "PHASE_WINDOW"},
         {"stage": "MAIN_END", "start": "2025-12-31", "end": "2025-12-31", "precision": "EXACT_DATE"},
     ],
+    # ---- 信息通信（Wave 1B；Peak 口径同 v1.1 §6，使用 Campaign 自身代表标的）----
+    # Peak Window 由代表标的自身高点界定（分批见顶）：
+    #   中际旭创 2020-02-24 / 中兴通讯 2020-02-25 / 烽火通信 2020-03-12 /
+    #   新易盛 2020-07-14 / 天孚通信 2020-08-04。
+    # 环节错位记入 research_notes，不另立 Cycle。
+    "C-2019-COMM-5G": [
+        {"stage": "EARLY_SIGNAL", "start": "2019-06-06", "end": "2019-06-06", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2019-10-31", "end": "2019-10-31", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2020-03-04", "end": "2020-03-04", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2019-10-31", "end": "2020-02-23", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2020-02-24", "end": "2020-08-04", "precision": "DATE_WINDOW"},
+        {"stage": "RETRACEMENT", "start": "2020-08-05", "end": "2021-03-18", "precision": "PHASE_WINDOW"},
+        {"stage": "SECONDARY", "start": "2021-03-19", "end": "2021-12-31", "precision": "PHASE_WINDOW"},
+        {"stage": "DECLINING", "start": "2022-01-01", "end": "2022-10-11", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_END", "start": "2022-10-11", "end": "2022-10-11", "precision": "EXACT_DATE"},
+    ],
+    # Peak 未确认（至行情窗口末端仍在上行）：PEAK 取代表标的 2025-12-22~12-25 的区间高点。
+    # 2024-10-08 → 2025-04-08 为一次显著回撤（中际旭创 -62%），故 MAIN_RISE 出现两段
+    # （已验证：所有消费端均用 .find()/取最早一段，重复阶段不破坏语义）。
+    "C-2023-COMM-OPTICAL": [
+        {"stage": "EARLY_SIGNAL", "start": "2023-03-21", "end": "2023-03-21", "precision": "EXACT_DATE"},
+        {"stage": "THEME_FORMING", "start": "2023-05-24", "end": "2023-05-24", "precision": "EXACT_DATE"},
+        {"stage": "BROAD_CONFIRMATION", "start": "2023-08-28", "end": "2023-08-28", "precision": "EXACT_DATE"},
+        {"stage": "MAIN_RISE", "start": "2023-08-28", "end": "2024-10-07", "precision": "PHASE_WINDOW"},
+        {"stage": "RETRACEMENT", "start": "2024-10-08", "end": "2025-04-08", "precision": "PHASE_WINDOW"},
+        {"stage": "MAIN_RISE", "start": "2025-04-09", "end": "2025-12-18", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2025-12-22", "end": "2025-12-25", "precision": "DATE_WINDOW"},
+    ],
 }
 
 CANDIDATE_LIFECYCLE = {
@@ -530,6 +581,44 @@ CAMPAIGN_DRIVERS = {
                    "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
                    "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"],
     },
+    # ---- 信息通信（Wave 1B）----
+    "C-2019-COMM-5G": {
+        "start": ["5G 商用牌照发放（EV-COMM-02, 2019-06-06）→ 中国进入 5G 商用元年",
+                  "5G 商用启动仪式、三大运营商发布 5G 套餐（EV-COMM-03, 2019-10-31）",
+                  "Setup：2018-04-16 美国商务部对中兴通讯激活拒绝令（EV-COMM-01，prior）"
+                  "→ 2018 年板块深跌形成低基数（中兴 -49.0%）"],
+        "accelerator": ["中央政治局会议（2020-02-21）提出推动 5G 网络等加快发展；"
+                        "工信部加快推进 5G 发展会议（2020-02-22）（EV-COMM-04）",
+                        "中国联通宣布力争三季度完成全国 25 万基站建设、较原计划提前一个季度（2020-02-23）",
+                        "中央政治局常务委员会：加快 5G 网络、数据中心等新型基础设施建设进度（EV-COMM-05, 2020-03-04）",
+                        "2020 年固定资产投资 4072 亿元（+11%），新建 5G 基站超 60 万个（E-COMM-07）"],
+        "turning": ["代表标的分批见顶：中际旭创 2020-02-24 / 中兴通讯 2020-02-25 / 烽火通信 2020-03-12（Peak Window）",
+                    "2021 年上半年三大运营商 5G 资本开支均下滑（中国联通 -45%）（E-COMM-09）",
+                    "2021 年电信固定资产投资 4058 亿元，与上年基本持平 → 资本开支见顶（E-COMM-08）"],
+        "ending": ["2021-2022 板块持续走弱：中兴 -23.4%（2022）、烽火 -28.2%、中际旭创 -38.2%",
+                   "代表标的 2022-10-10/11 同步见底（中兴 18.41 / 烽火 11.65 / 中际旭创 15.88 / 新易盛 6.33）"
+                   "→ 本轮 Cycle 出清完成",
+                   "★ 环节错位：新易盛（数通光模块）延后至 2020-07-14 见顶，"
+                   "主因海外云厂商资本开支与 400G 放量节奏滞后于国内 5G 建设，未另立 Cycle"],
+    },
+    "C-2023-COMM-OPTICAL": {
+        "start": ["NVIDIA GTC 2023 主题演讲（EV-COMM-07, 2023-03-21）→ AI 算力叙事启动；"
+                  "A 股光模块次日爆发（中际旭创 2023-03-22 +21.97%）",
+                  "context：「东数西算」全面启动（EV-COMM-06, 2022-02-17，prior）"],
+        "accelerator": ["NVIDIA FY2024 Q1 财报：数据中心营收创纪录 42.8 亿美元，Q2 指引 110 亿美元"
+                        "（较分析师预期高 53.2%）（EV-COMM-08, 2023-05-24）→ 全球 AI 算力资本开支财务确认",
+                        "中际旭创 2023 半年报：下半年 800G 光模块出货量明显增长（EV-COMM-09, 2023-08-28）",
+                        "中际旭创 2023 年报：营收 107.18 亿元（+11.16%），2024Q1 净利润超 10 亿元"
+                        "（EV-COMM-10, 2024-04-21）→ 800G 放量在报表端确认",
+                        "2025 年 1.6T 与 NPO/CPO 结构迁移预期（速率代际升级延续）"],
+        "turning": ["2024-10-08 代表标的同步出现阶段高点后回撤（中际旭创 183.93 → 2025-04-08 70.09，约 -62%）",
+                    "★ 该回撤后板块于 2025-04-09 起重启上行并创新高 → 属同一 Cycle 内的回撤，非 Cycle 结束"],
+        "ending": ["unknown（至本地行情窗口末端仍在上行：中际旭创 2025-12-25 达 638.80、"
+                   "新易盛 2025-12-22 达 329.99）",
+                   "★ 通信设备（中兴通讯 / 烽火通信）2023-2025 亦受益于算力网络建设"
+                   "（中兴 2024 +64.8%、烽火 2025 +79.9%），但主驱动仍含运营商侧因素，"
+                   "本轮不作为本 Cycle 代表标的"],
+    },
 }
 
 CANDIDATE_DRIVERS = {
@@ -583,6 +672,9 @@ PROXY_SERIES = {
     #      按 v1.1 §6 使用 Campaign 自身代表标的 ----
     "C-2020-POWER-NE": "LONGI",
     "C-2022-POWER-GRID": "NARI",
+    # ---- 信息通信（Wave 1B）：行业指数代理不可得，按 v1.1 §6 使用 Campaign 自身代表标的 ----
+    "C-2019-COMM-5G": "ZTE",
+    "C-2023-COMM-OPTICAL": "INNOLIGHT",
 }
 
 PROXY_NOTE = {
@@ -604,6 +696,14 @@ PROXY_NOTE = {
                           "同 Campaign 另含 许继电气（2024-07-09 见顶）与 平高电气（2024-10-14 见顶）→ Peak 分批。"
                           "★ 思源电气（2025-12-26 见顶）与 特变电工（2025-11-07 见顶）延后，属出海环节错位；"
                           "特变电工另有 多晶硅（新特能源）混淆，均不参与 Peak 判定（v1.1 §6）"),
+    "C-2019-COMM-5G": ("Campaign 自身代表标的 中兴通讯（通信主设备）raw/adj close；"
+                       "同 Campaign 另含 烽火通信（2020-03-12 见顶）、中际旭创（2020-02-24 见顶）与 "
+                       "新易盛（延后至 2020-07-14 见顶，环节错位）→ Peak 分批。"
+                       "信息通信行业指数代理不可得，不参与 Peak 判定（v1.1 §6）"),
+    "C-2023-COMM-OPTICAL": ("Campaign 自身代表标的 中际旭创（光模块龙头）raw/adj close；"
+                            "同 Campaign 另含 新易盛（2025-12-22 达区间高点）、天孚通信与光迅科技。"
+                            "★ 至本地行情窗口末端（2025-12-31）代表标的仍在上行，"
+                            "Peak 未确认，peak_date 取中际旭创自身区间高点（v1.1 §6）"),
 }
 
 
@@ -800,7 +900,8 @@ def main():
         "rule_id": RULES if len(RULES) > 1 else RULES[0],
         "scope": ("rule_auto_summer（汽车 2018–2025，观察窗口 6-8月）"
                   " + rule_pharma_upgrade（医药健康 2019–2022，结构性升级）"
-                  " + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电）"),
+                  " + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电）"
+                  " + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块）"),
         "status_vocabulary": {
             "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
             "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -873,6 +974,16 @@ def main():
             "observation_window": ("结构性（非季节性）：2018–2025。两个独立 Theme Cycle："
                                    "① 清洁能源发电设备 2020-09-22~2022-12-30（Peak 2021-10-27~2021-11-04）；"
                                    "② 电网投资与特高压 2022-01-10~2025-12-31（Peak 2024-07-09~2024-10-14）"),
+        },
+        COMM_RULE: {
+            "definition": ("Historical Observation Window（历史观察窗口）：信息通信（通信设备 / "
+                           "光模块光器件 / 光纤光缆 / 数据中心与算力基础设施）在政策、运营商资本开支"
+                           "与云/AI 资本开支驱动下形成的结构性行情；非固定买入窗口，不构成交易建议"),
+            "observation_window": ("结构性（非季节性）：2018–2025。两个独立 Theme Cycle："
+                                   "① 5G 网络建设与光通信基础设施 2019-06-06~2022-10-11"
+                                   "（Peak 2020-02-24~2020-03-12）；"
+                                   "② AI 算力驱动的光模块 2023-03-21~2025-12-31"
+                                   "（Peak 未确认，2025-12-22~12-25 为区间高点）"),
         },
     }
     rules_out = []

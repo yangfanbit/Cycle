@@ -298,7 +298,28 @@ TOP-01 回归 PASS（N=7 / 06-11 / 05-27~06-26 / 5-7）· 三个 `--check` 逐�
 
 ---
 
-## Wave 1A · Historical Data Expansion — 电力设备历史 Cycle（**当前阶段** · IMPLEMENTED）
+## Wave 1B · Historical Data Expansion — 信息通信历史 Cycle（**当前阶段** · IMPLEMENTED）
+
+> 依据 `Historical_Coverage_Audit_v0_2.md` §12 **Wave 1 P0**。
+
+- **Taxonomy 扩展（经授权）**：新建 Macro Theme root **`TH-COMM`「信息通信」**
+  + 2 个被实际引用的最小 Sub-theme（`TH-COMM-5G` / `TH-COMM-OPTICAL`）。
+  `name` 必须是「信息通信」—— 受 `candidatePatternOf()` 的**精确字符串匹配**约束。
+- **新增 2 个 Historical Theme Cycle**：
+  `comm_5g_infrastructure_2019_2022`（5G 网络建设与光通信基础设施，Peak 2020-02-24~08-04 分批）·
+  `comm_ai_optical_2023_2025`（AI 算力驱动的光模块，Peak 2025-12-22~25 **未确认**）。
+- **Coverage Delta**：Macro Themes **3 → 4**（**首次达到 audit 的 ≥ 4 门槛**）· Campaigns 11 → 13 ·
+  Theme Cycles 11 → 13 · Evidence 67 → 83 · Events（DB）39 → 49 · market_series 48 → 56。
+- **修复**：`CC-2026-OPTICAL-LINK` 首次具备历史可比对象。
+- **仍受限**：日期核验 **0/24**（Wave 1A/1B 两轮均未增加）· `company`/`capital` 的 evidence_type 仍 0。
+- **未做**：Wave 1C · Coverage Audit v0.3 · Time Observation 重跑 · Structural Analogy。
+- 报告：`docs/HISTORICAL_DATA_WAVE_1B_INFOCOMM_REPORT_2026-09-18.md`。
+- **下一阶段尚未启动**：建议先做**日期人工核验**（0/24 → 非零）；
+  若覆盖度优先则做 **Wave 1C（高端装备）**。
+
+---
+
+## Wave 1A · Historical Data Expansion — 电力设备历史 Cycle（IMPLEMENTED）
 
 > 依据 `Historical_Coverage_Audit_v0_1.md` §12 **Wave 1 P0**。目标：修复
 > 「当前侧有候选、历史侧无 Cycle」的**已存在断裂**，而非增加「看起来很丰富」的主题数量。
@@ -341,7 +362,8 @@ TOP-01 回归 PASS（N=7 / 06-11 / 05-27~06-26 / 5-7）· 三个 `--check` 逐�
 > 「旧 Phase 7 · Current Market Mapping」与「旧 Phase 8 · Opportunity Discovery / Radar」
 > **不再作为已确定路线**，统一归档到本节的未来方向；当前确定路线是
 > `7.2 观察层 → 7.3 可信度与覆盖 → 7.3.2 派生结构门 → **Wave 1A 电力设备（已完成）** →
-> Wave 1B 信息通信 → Coverage Audit v0.2 → Time Observation 重跑 → Phase 8 Structural Historical Analogy`。
+> **Wave 1B 信息通信（已完成）** → 日期人工核验 → Wave 1C 高端装备 → Coverage Audit v0.3 →
+> Time Observation 重跑 → Phase 8 Structural Historical Analogy`。
 
 - 把「今天」映射到历史时间轴：当前状态的结构特征 → 历史结构对应
 - 历史相似阶段检索、当前状态与历史条件的分布对比、观察窗口的规则化呈现

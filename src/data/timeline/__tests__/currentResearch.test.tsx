@@ -792,9 +792,9 @@ describe('8. 边界守护（纯 View 层）', () => {
         (c) => c.campaign_id,
       ),
     );
-    // export 的规模由 Research 侧决定（当前 11 Campaign + 4 Research Candidate = 15）；
+    // export 的规模由 Research 侧决定（当前 13 Campaign + 4 Research Candidate = 17）；
     // 候选走独立 Artifact，不进入 export id 空间
-    expect(exportIds.size).toBe(15);
+    expect(exportIds.size).toBe(17);
     // Phase 7.1 起 canonical 承载真实候选；关键不变量是「候选 ID 全部落在 export id 空间之外」
     const canonical = defaultCurrentCandidateDataset();
     expect(canonical.candidates.length).toBeGreaterThan(0);

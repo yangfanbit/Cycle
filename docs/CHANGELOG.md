@@ -7,6 +7,136 @@
 
 ---
 
+## 2026-09-18 · Research · Historical Data Expansion Wave 1B — 信息通信历史 Cycle
+
+**性质：Research 数据扩容 + 一次明确的 taxonomy 扩展。**
+**唯一目标：把「信息通信」接入 ThreeC 数据链路，修复 `CC-2026-OPTICAL-LINK` 无历史可类比的断裂。**
+**报告：`docs/HISTORICAL_DATA_WAVE_1B_INFOCOMM_REPORT_2026-09-18.md`（A–L 十二节）。**
+
+### 1 · 为什么做
+
+`Historical_Coverage_Audit_v0_2` 把「补录信息通信 Macro Theme 的历史 Cycle」列为 **Wave 1 P0**：
+Current 侧 `CC-2026-OPTICAL-LINK`（高速光互联 1.6T / NPO / CPO）声明 `macro_theme = "信息通信"`，
+但历史侧无同名 Macro Theme / Theme Cycle → Similarity 的 Pattern 层恒 `UNKNOWN`。
+
+### 2 · Taxonomy 扩展（经用户明确授权）
+
+**新建 Macro Theme root `TH-COMM`「信息通信」**（`theme_type=industry`，`parent_theme_id=NULL`）
++ 2 个被实际引用所必需的最小 Sub-theme：`TH-COMM-5G`（5G网络建设/通信设备）· `TH-COMM-OPTICAL`（光模块/高速光互联）。
+
+- **检查在先**：`theme_taxonomy.py` / `schema.sql` / 既有 `themes` 均无「信息通信」同语义 root；
+  仓库内无任何 `TH-COMM` / `TH-ICT` / `TH-TELECOM` 既有引用 → ID 按 `TH-<ABBR>` 规范确定。
+- **命名由契约钉死**：`candidatePatternOf()` 用 `macro_theme` **精确字符串匹配** → `name` 必须是「信息通信」。
+- **未改动** `TH-AUTO` / `TH-PHARMA` / `TH-POWER` 及其子主题的任何归属。
+- 这是 **Research taxonomy 数据建设**，**不是** Product schema / export schema 变更。
+
+### 3 · 新增 Historical Theme Cycle（2 个，数量由证据决定）
+
+| Theme Cycle ID | 名称 | 跨度 | start | end | Peak |
+|---|---|---|---|---|---|
+| `comm_5g_infrastructure_2019_2022` | 5G 网络建设与光通信基础设施 | 2019–2022 | 2019-06-06 | 2022-10-11 | 2020-02-24 ~ 2020-08-04（分批） |
+| `comm_ai_optical_2023_2025` | AI 算力驱动的光模块（800G/1.6T） | 2023–2025 | 2023-03-21 | 2025-12-31 | 2025-12-22 ~ 12-25（**未确认**） |
+
+- 政策链（全部一手来源）：5G 商用牌照（2019-06-06）→ 5G 商用启动（2019-10-31）→
+  政治局会议 / 工信部会议（2020-02-21/22）→ 政治局常委会 新基建（2020-03-04）；
+  NVIDIA GTC 2023（2023-03-21）→ NVIDIA Q1 FY2024 财报 Q2 指引 110 亿美元（2023-05-24）→
+  中际旭创半年报 800G 放量（2023-08-28）。
+- Peak 全部来自**本地真实行情复核**（腾讯 GTIMG 前复权），非新闻推断。
+- **未把股价高点直接当作 PEAK**；Cycle 2 的 PEAK 明确标注「未确认」。
+- **未为匹配 Current Candidate 而制造「CPO Cycle」**。
+
+### 4 · Primary / Related 与边界裁决（继承 Wave 1A 规则）
+
+两个 Cycle 的 Primary 均为 `TH-COMM`，Related 为**无**。
+独立性证明：核心研究对象（运营商 5G 网络 vs AI 数据中心互连）、驱动变量（运营商 capex vs 云/AI capex）、
+生命周期（2020 见顶后出清 vs 2025 仍在上行）三者均不同。
+
+**重叠检查**：通信 × 半导体（无重叠）· AI × 光模块（AI 为驱动变量，未另立 Cycle）·
+光模块 × 通信设备（**同一 Cycle 内环节错位，未拆成 2 个 Cycle**）·
+算力 × 电力设备（**同一历史事实未同时贡献 POWER + COMM 两个独立样本**）。
+
+**环节错位（已记录，不另立 Cycle）**：Cycle 1 内通信主设备与中际旭创 2020-02/03 见顶，
+数通光器件（新易盛/天孚/光迅）延后至 2020-07/08 见顶（海外云 capex 与 400G 节奏滞后）。
+
+### 5 · Coverage Delta
+
+| 指标 | 前 | 后 |
+|---|---:|---:|
+| **Macro Themes** | **3** | **4**（首次达到 audit 的「≥ 4」门槛） |
+| Campaigns | 11 | 13 |
+| Theme Cycles | 11 | 13 |
+| Evidence | 67 | 83（+16：policy 3 / industry 6 / market 2 / information 5） |
+| Events（DB） | 39 | 49（`industry` 1 → 2） |
+| Lifecycle 记录（export） | 88 | 104 |
+| Market series | 48 | 56 |
+| market_daily | 48,772 | 79,466 |
+
+**仍为 0 / 未解锁**：`company` 与 `capital` 的 **evidence_type**（0）· 日期核验（**0/24**）·
+交易日历补全 · `evidence_type` 中英文统一。
+
+### 6 · ★ 来源侧进展：`company_announcement` 首次使用（0 → 3）
+
+NVIDIA FY2024 Q1 官方新闻稿 · 中际旭创 2023 半年报 / 年报 登记为
+`source_type='company_announcement'`（schema 允许、此前**完全未使用**）。
+**但 `company` 的 evidence_type 仍为 0** —— 仓库 `EVIDENCE_TYPE_MAP` 无 `company` 键，
+写入会落入 `UNCLASSIFIED`；本轮**不新增未映射取值**，未伪造。
+建议下一轮扩展词表（属词表扩展，非 schema 变更，但会改变审计产物 → 需新轮次）。
+
+### 7 · `DATA_GAP` 登记（用户要求）
+
+本轮实际遇到 5 类 schema 无法精确表示的事件：`trade_fair`（GTC 展会）· `data_release`（统计公报）·
+`reporting`（财报披露日）· `meeting`（政治局/工信部会议）· `product`（AI 芯片发布）。
+**均用既有 `event_type` 近似表达，未修改 schema**，并在报告 §F.1 显式登记。
+
+### 8 · ★ 一处语义变更（非破坏性，须披露）
+
+Wave 1B 后 **`Historical Similar Phase` 的空态分支在真实数据下不再可达** ——
+实测 **17 个研究主体全部可检索到 1~3 条相似案例**（此前 `RC-2023-HUAWEI` 为空态）。
+这是数据覆盖度提升的直接结果，**Product 逻辑 / UI / 契约均未变**；
+已按新数据改写 2 个测试（另一个改用空数据源触发空态，保持该渲染路径被覆盖）。
+
+### 9 · 未修改
+
+`schema/schema.sql` · `contracts/` · Research Model v1.0 · `research/current/` ·
+Product 逻辑 / Timeline UI / Current Time Lens UI / Historical Similar Phase UI ·
+**Product Artifact `src/data/timeline/timeObservationPatterns.ts`（零改动）** ·
+`time_observation_*_v0_2/v0_3/v0_4` 产物 · `historical_coverage_matrix_v0_1.*` 与 `_v0_2.*`（快照保留）·
+**9 个既有 Campaign（含 AUTO / POWER）的全部数据零改动**。
+
+### 10 · 测试快照同步（仅数据期望值 + 2 处语义改写）
+
+`npm test` 初测 10 failed → 更新 4 个**数据快照回归**测试后 **395/395 PASS**。
+这些测试**自身文档化**了协议（*「Research 导出更新后需同步更新此快照值」*）。
+**仅改测试内的数据期望值**，零 Product 逻辑 / UI / 语义改动。详见报告 §J.3。
+
+### 11 · 验证
+
+```
+validate_db / validate_timeline_export / validate_batch_research /
+validate_promotion_manifest / check_doc_schema_consistency /
+validate_current_research / validate_monorepo_integrity   → 全 PASS
+npm test                      395 passed / 395 (10 files)
+npx tsc -b                    exit 0
+npm run build                 PASS
+```
+
+**预期 FAIL（未修复，属快照预期行为）**：`audit_historical_coverage.py --round 0.2 --check`
+（v0.2 为 Wave 1A 数据集快照）· Time Observation 两个产物。
+
+### 12 · 未做的事
+
+未启动 Wave 1C（高端装备）· 未重跑 Coverage Audit（v0.2 快照保留）· 未重跑 Time Observation ·
+未做日期人工核验 · 未进入 Structural Analogy · 未修改任何 Current Candidate 或 Similarity 规则。
+
+### 13 · 下一步（建议只做一件）
+
+**建议先做日期人工核验**（TOP-01 的 7 个锚点 + 新增锚点），使核验从 **0/24** 变为非零。
+理由：`theme_family_count` 已达 4（门槛满足），继续补主题的边际收益低于坐实已有 4 个族的可信度；
+且两轮 Wave 均**未增加任何核验**，缺口在持续放大。
+若用户更倾向覆盖度优先，替代方案为 **Wave 1C（高端装备）**。
+
+---
+
 ## 2026-09-17 · Research · Historical Coverage Audit v0.2（Wave 1A 之后）
 
 **性质：覆盖度审计（Research Layer Deliverable），只读，零产品变更。**

@@ -52,21 +52,29 @@ describe('2. 同期行情来源：仅来自数据源（导出 v1），年份来�
     expect(lens.samePeriod[0].entries).toEqual([]);
     // 有数据年份的 campaign_id 与 Adapter 列表一致
     const byYear = new Map(lens.samePeriod.map((r) => [r.year, r.entries.map((e) => e.campaign_id)]));
-    // 2019-2022：医药跨年 Campaign（C-2019-PHARMA-INNOV）每年都命中窗口
-    // 2020-2025：电力设备两个跨年 Cycle（C-2020-POWER-NE / C-2022-POWER-GRID）亦命中
-    expect(byYear.get(2019)).toEqual(['C-2019-PHARMA-INNOV', 'C-2019-AD']);
+    // 2019-2022：医药跨年 Campaign（C-2019-PHARMA-INNOV）与信息通信 5G Cycle
+    //           （C-2019-COMM-5G, 2019-06-06~2022-10-11）每年都命中窗口
+    // 2020-2025：电力设备两个跨年 Cycle 与 AI 光模块 Cycle 亦命中
+    expect(byYear.get(2019)).toEqual(['C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'C-2019-AD']);
     expect(byYear.get(2020)).toEqual([
-      'C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC', 'C-2020-NEV', 'C-2020-POWER-NE',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'RC-2020-PANDEMIC', 'C-2020-NEV', 'C-2020-POWER-NE',
     ]);
     expect(byYear.get(2021)).toEqual([
-      'C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC', 'C-2020-POWER-NE', 'C-2021-NEV',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'RC-2020-PANDEMIC', 'C-2020-POWER-NE', 'C-2021-NEV',
     ]);
     expect(byYear.get(2022)).toEqual([
-      'C-2019-PHARMA-INNOV', 'C-2020-POWER-NE', 'RC-2021-TCM', 'C-2022-POWER-GRID', 'C-2022-POLICY',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'C-2020-POWER-NE', 'RC-2021-TCM',
+      'C-2022-POWER-GRID', 'C-2022-POLICY',
     ]);
-    expect(byYear.get(2023)).toEqual(['C-2022-POWER-GRID', 'RC-2023-HUAWEI']);
-    expect(byYear.get(2024)).toEqual(['C-2022-POWER-GRID', 'RC-2024-SECONDARY']);
-    expect(byYear.get(2025)).toEqual(['C-2022-POWER-GRID', 'C-2025-ROBOTAXI']);
+    expect(byYear.get(2023)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL', 'RC-2023-HUAWEI',
+    ]);
+    expect(byYear.get(2024)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL', 'RC-2024-SECONDARY',
+    ]);
+    expect(byYear.get(2025)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL', 'C-2025-ROBOTAXI',
+    ]);
   });
 });
 
@@ -357,8 +365,8 @@ describe('13. 不越界：Lens 不改动数据源 / 不产生新数据', () => {
     const expected = lens.samePeriod.reduce((n, r) => n + r.entries.length, 0);
     const actual = lens.samePeriod.reduce((n, r) => n + r.entries.length, 0);
     expect(actual).toBe(expected);
-    // 9 月窗口各年命中数：2018=0 / 2019=2 / 2020=4 / 2021=4 / 2022=5 / 2023=2 / 2024=2 / 2025=2 = 21 条
-    expect(actual).toBe(21);
+    // 9 月窗口各年命中数：2018=0 / 2019=3 / 2020=5 / 2021=5 / 2022=6 / 2023=3 / 2024=3 / 2025=3 = 28 条
+    expect(actual).toBe(28);
   });
 });
 

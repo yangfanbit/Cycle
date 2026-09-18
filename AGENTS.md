@@ -37,20 +37,33 @@
 
 ## 2. 当前阶段
 
-**Wave 1A：Historical Data Expansion — 电力设备历史 Cycle（IMPLEMENTED，2026-09-17）。**
-**上一阶段 Phase 7.3.2：Promotion Gate — Derived Structure Exclusion（IMPLEMENTED）** 的内容紧随其后。
+**Wave 1B：Historical Data Expansion — 信息通信历史 Cycle（IMPLEMENTED，2026-09-18）。**
+**上一阶段 Wave 1A：电力设备历史 Cycle（IMPLEMENTED，2026-09-17）** 的内容紧随其后。
 
-- **历史侧 Macro Theme 2 → 3**：新建 root **`TH-POWER`「电力设备」**（+ 3 个最小 Sub-theme）。
-- **新增 2 个 Historical Theme Cycle**：`power_ne_equipment_2020_2022` · `power_grid_uhv_2022_2025`。
-- **修复的断裂**：`CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` 首次具备历史可比对象。
-- **Primary / Related 规则**（本轮确立）：`research/research/methodology/macro_theme_primary_related_v0_1.md`。
-  **每个 Theme Cycle 有且只有一个 Primary Macro Theme**；Related 不增加独立样本数，
-  且**不写入 `campaign_themes`**（否则 CMTR 判 CONFLICT 并使 `theme_family_id = None`）。
-- **报告**：`docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md`。
-- **仍受限**：`theme_family_count` = 3 **< 4**；日期核验 **0/24**；`company`/`capital` 证据仍 0。
+- **历史侧 Macro Theme 3 → 4**：新建 root **`TH-COMM`「信息通信」**（+ 2 个最小 Sub-theme）。
+- **新增 2 个 Historical Theme Cycle**：`comm_5g_infrastructure_2019_2022` · `comm_ai_optical_2023_2025`。
+- **修复的断裂**：`CC-2026-OPTICAL-LINK`（高速光互联）首次具备历史可比对象。
+- **`theme_family_count` = 4** —— **首次达到 audit 的「≥ 4」门槛**
+  （但跨族稳健性检验需重跑 Time Observation 才能判定，**不等于已通过**）。
+- **报告**：`docs/HISTORICAL_DATA_WAVE_1B_INFOCOMM_REPORT_2026-09-18.md`。
+- **仍受限**：日期核验 **0/24**（Wave 1A/1B 两轮均未增加核验）· `company` / `capital` 的
+  **evidence_type** 仍为 0（来源侧 `company_announcement` 已 0 → 3）。
 
-**下一阶段尚未启动**：Wave 1B（信息通信）/ Wave 1C（高端装备）与 Structural Analogy 仍处于**禁止**状态
-（见 `docs/PROJECT_STATE.md`「Next Single Goal」→ 建议先做 `Coverage Audit v0.2`）。
+**下一阶段尚未启动**：Wave 1C（高端装备）与 Structural Analogy 仍处于**禁止**状态
+（见 `docs/PROJECT_STATE.md`「Next Single Goal」→ 建议先做**日期人工核验**）。
+
+### Wave 1A（已完成）
+
+**历史侧 Macro Theme 2 → 3**：新建 root **`TH-POWER`「电力设备」**（+ 3 个最小 Sub-theme）；
+新增 `power_ne_equipment_2020_2022` · `power_grid_uhv_2022_2025`；
+修复 `CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` 的断裂。
+**报告**：`docs/HISTORICAL_DATA_WAVE_1A_POWER_EQUIPMENT_REPORT_2026-09-17.md`。
+
+### Primary / Related Macro Theme 规则（Wave 1A 确立，Wave 1B 继承）
+
+`research/research/methodology/macro_theme_primary_related_v0_1.md`：
+**每个 Theme Cycle 有且只有一个 Primary Macro Theme**；Related 不增加独立样本数，
+且**不写入 `campaign_themes`**（否则 CMTR 判 CONFLICT 并使 `theme_family_id = None`）。
 
 **仓库身份**：单一 Git / 单一根 / 一套 canonical Research / 一套 Product。
 `research/` 必须**恰好等于 HEAD 的已跟踪文件集合**；**禁止**在 `research/` 下放置第二套副本或第二个 `.git`。

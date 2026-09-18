@@ -255,9 +255,9 @@ describe('3. Research Attention Gate v1（状态分类，不是评分）', () =>
     expect(v2.layerC.watch.map((i) => i.campaign_id).sort()).toEqual(
       ['C-2024-ROBOTAXI', 'RC-2020-PANDEMIC', 'RC-2021-TCM', 'RC-2023-HUAWEI', 'RC-2024-SECONDARY'].sort(),
     );
-    // 15 个研究主体（11 Campaign + 4 Research Candidate）− 5 个 WATCH = 10 个 HISTORICAL_REFERENCE
-    // （Wave 1A 新增的 C-2020-POWER-NE / C-2022-POWER-GRID 均已结束 → 计入历史参考）
-    expect(v2.layerC.referenceTotal).toBe(10);
+    // 17 个研究主体（13 Campaign + 4 Research Candidate）− 5 个 WATCH = 12 个 HISTORICAL_REFERENCE
+    // （Wave 1A/1B 新增的 4 个 Cycle 均已结束或为已确认历史窗口 → 计入历史参考）
+    expect(v2.layerC.referenceTotal).toBe(12);
     // 「当前值得研究」为空时必须给出解释，而不是假装有结论
     const html = renderToStaticMarkup(
       <CurrentTimeLens dataSource={previewTimelineSource()} today={TODAY} selection={null} onSelect={() => {}} />,
@@ -419,13 +419,14 @@ describe('6. Historical Similar Phase v1（生命周期相似）', () => {
     }
   });
 
-  it('无足够相似证据 → 空态，不强行凑数', () => {
-    // RC-2023-HUAWEI 终态 = 扩张（EXPANSION）；数据中无相同/相邻终态的其它案例
+  it('Wave 1B 后：全部研究对象均可检索到相似案例（RC-2023-HUAWEI 亦不再为空态）', () => {
+    // Wave 1B 新增 C-2023-COMM-OPTICAL（终态 PEAK）→ 与 RC-2023-HUAWEI 的 EXPANSION 相邻 → 有结果。
+    // 本轮实测：13 Campaign + 4 Research Candidate 全部可检索到 1~3 条相似案例（不再存在空态对象）。
     const view = similarPhaseOf(previewTimelineSource(), 'RC-2023-HUAWEI');
     expect(view.target!.phase).toBe('EXPANSION');
-    expect(view.results).toEqual([]);
-    expect(view.insufficient).toBe(true);
-    expect(view.note).toContain('不强行给出相似结果');
+    expect(view.results.length).toBeGreaterThan(0);
+    expect(view.insufficient).toBe(false);
+    expect(view.results[0].campaign_id).toBe('C-2023-COMM-OPTICAL');
   });
 
   it('空数据源 → target 为 null 且空态（不编造参照对象）', () => {
@@ -454,15 +455,19 @@ describe('6. Historical Similar Phase v1（生命周期相似）', () => {
     }
   });
 
-  it('组件在无相似结果时渲染空态文案', () => {
+  it('组件在无参照对象时渲染空态文案（不编造参照）', () => {
+    // Wave 1B 后：真实数据中已不存在「有参照但无相似结果」的对象
+    // （13 Campaign + 4 RC 全部可检索到 1~3 条相似案例）。
+    // 因此空态只能由「无数据源」触发 —— 组件必须如实说明「研究数据不足」，不得编造参照对象。
     const html = renderToStaticMarkup(
       <HistoricalSimilarPhase
-        dataSource={previewTimelineSource()}
-        selection={{ kind: 'campaign', id: 'RC-2023-HUAWEI' }}
+        dataSource={verifiedTimelineSource([])}
+        selection={null}
         onSelect={() => {}}
       />,
     );
-    expect(html).toContain('不强行给出相似结果');
+    expect(html).toContain('当前研究数据不足');
+    expect(html).toContain('未形成可靠的历史参照');
   });
 });
 

@@ -1,13 +1,14 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-09-18T00:39:20",
-  "source_commit": "f446cb8a02128f63835f3fd29c432f1e96a82fd0",
+  "generated_at": "2026-09-18T22:01:31",
+  "source_commit": "052b79b9cc824d69f01a74322ce8e937e99c9854",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
-    "rule_power_equipment"
+    "rule_power_equipment",
+    "rule_infocomm"
   ],
-  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电）",
+  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块）",
   "status_vocabulary": {
     "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
     "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -1541,6 +1542,499 @@
         "ending": [
           "8/31 暂定边界（9/12月另有催化波次）",
           "beta 驱动为主、主题独立性弱"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2019-COMM-5G",
+      "db_campaign_id": "C-2019-COMM-5G",
+      "year": 2019,
+      "rule_id": "rule_infocomm",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2019-06-06",
+      "peak_date_candidate": "2020-02-25",
+      "end_date_candidate": "2022-10-11",
+      "date_confidence": "medium",
+      "theme": "5G网络建设/通信设备",
+      "themes": [
+        {
+          "name": "信息通信",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "5G网络建设/通信设备",
+          "theme_type": "concept",
+          "role": "main"
+        },
+        {
+          "name": "光模块/高速光互联",
+          "theme_type": "concept",
+          "role": "related"
+        }
+      ],
+      "theme_cycle_id": "comm_5g_infrastructure_2019_2022",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-COMM-01",
+        "E-COMM-02",
+        "E-COMM-03",
+        "E-COMM-05",
+        "E-COMM-10",
+        "E-COMM-04",
+        "E-COMM-06",
+        "E-COMM-07",
+        "E-COMM-09",
+        "E-COMM-08"
+      ],
+      "source_ids": [
+        "S-COMM-01",
+        "S-COMM-02",
+        "S-COMM-03",
+        "S-COMM-04",
+        "S-COMM-05",
+        "S-COMM-06",
+        "S-COMM-07",
+        "S-COMM-08",
+        "S-COMM-09",
+        "S-COMM-15"
+      ],
+      "independent_groups": [
+        "comm_geopolitics_zte_ban",
+        "comm_industry_capex_2019",
+        "comm_industry_capex_2020",
+        "comm_industry_capex_2021",
+        "comm_industry_capex_cut",
+        "comm_market_cycle1",
+        "comm_policy_5g_commercial",
+        "comm_policy_5g_license",
+        "comm_policy_5g_speedup",
+        "comm_policy_new_infra"
+      ],
+      "independent_group_count": 10,
+      "events": [
+        {
+          "event_id": "EV-COMM-01",
+          "name": "美国商务部对中兴通讯激活拒绝令（7 年出口禁运）",
+          "date": "2018-04-16",
+          "event_type": "policy",
+          "role": "context"
+        },
+        {
+          "event_id": "EV-COMM-02",
+          "name": "工信部发放 5G 商用牌照（中国电信 / 中国移动 / 中国联通 / 中国广电）",
+          "date": "2019-06-06",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-COMM-03",
+          "name": "5G 商用启动仪式：三大运营商发布 5G 套餐",
+          "date": "2019-10-31",
+          "event_type": "policy",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-COMM-04",
+          "name": "工信部加快推进 5G 发展、做好信息通信业复工复产工作会议",
+          "date": "2020-02-22",
+          "event_type": "policy",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-COMM-05",
+          "name": "中央政治局常务委员会会议：加快 5G 网络、数据中心等新型基础设施建设进度",
+          "date": "2020-03-04",
+          "event_type": "policy",
+          "role": "catalyst"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "EOPTOLINK",
+          "name": "新易盛",
+          "ticker": "300502",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "FIBERHOME",
+          "name": "烽火通信",
+          "ticker": "600498",
+          "exchange": "SH",
+          "role": "leader"
+        },
+        {
+          "security_id": "INNOLIGHT",
+          "name": "中际旭创",
+          "ticker": "300308",
+          "exchange": "SZ",
+          "role": "second_leader"
+        },
+        {
+          "security_id": "TFC",
+          "name": "天孚通信",
+          "ticker": "300394",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "ZTE",
+          "name": "中兴通讯",
+          "ticker": "000063",
+          "exchange": "SZ",
+          "role": "leader"
+        }
+      ],
+      "market_data": {
+        "series_id": "ZTE",
+        "raw_close": {
+          "2019-06-06": 29.78,
+          "2020-02-25": 55.11,
+          "2022-10-11": 20.52,
+          "2019-10-30": 33.23,
+          "2019-10-31": 33.4,
+          "2020-02-20": 44.59,
+          "2020-02-21": 45.55,
+          "2020-02-23": 45.55,
+          "2020-02-24": 50.11,
+          "2020-08-04": 38.88,
+          "2020-08-05": 39.14,
+          "2021-03-18": 30.45,
+          "2021-03-19": 29.53,
+          "2021-12-31": 33.5,
+          "2022-01-01": 33.5
+        },
+        "status": "available",
+        "adjusted_returns": {
+          "start_to_peak": 0.9391,
+          "start_to_end": -0.3174,
+          "peak_to_end": -0.648,
+          "price_type": "adjusted(qfq)",
+          "note": "调整后收益，仅用于收益率口径；日期判断用 raw close"
+        }
+      },
+      "signals": [
+        {
+          "type": "EARLY_SIGNAL",
+          "date": "2019-06-06",
+          "confidence": "high"
+        },
+        {
+          "type": "THEME_FORMING",
+          "date": "2019-10-31",
+          "confidence": "high"
+        }
+      ],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "跨年 Campaign（2019-06-06 ~ 2022-10-11，约 3.4 年）。Peak 口径按 Theme/Campaign Separation v1.1 §6 使用 Campaign 自身代表标的：中际旭创 2020-02-24（49.41）、中兴通讯 2020-02-25（52.30）、烽火通信 2020-03-12（40.34）、新易盛 2020-07-14（20.01）、天孚通信 2020-08-04（12.42）→ Peak Window 2020-02-24~2020-08-04（DATE_WINDOW，**分批见顶**，与医药 Campaign 的 Peak Window 口径一致）。★ 环节错位（不另立 Cycle）：通信主设备与中际旭创于 2020-02/03 见顶（国内 5G 建设加速预期驱动），而数通光器件（新易盛 / 天孚通信）延后至 2020-07/08 见顶（海外云厂商资本开支与 400G 放量节奏滞后）；两者核心研究对象与叙事中心同属信息通信，**不拆分为两个 Cycle**。★ 出清：代表标的于 2022-10-10/11 同步见底（中兴 18.41 / 烽火 11.65 / 中际旭创 15.88 / 新易盛 6.33）→ 本轮 Cycle 出清完成。★ Setup：2018-04-16 美国商务部对中兴通讯激活拒绝令（7 年禁运）→ 2018 年板块深跌（中兴 -49.0%），构成低基数起点，本身不是正向驱动。★ Related Macro Theme：无（核心为信息通信本体）。",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2019-06-06",
+          "end": "2019-06-06",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2019-10-31",
+          "end": "2019-10-31",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "BROAD_CONFIRMATION",
+          "start": "2020-03-04",
+          "end": "2020-03-04",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2019-10-31",
+          "end": "2020-02-23",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2020-02-24",
+          "end": "2020-08-04",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2020-08-05",
+          "end": "2021-03-18",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "SECONDARY",
+          "start": "2021-03-19",
+          "end": "2021-12-31",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2022-01-01",
+          "end": "2022-10-11",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_END",
+          "start": "2022-10-11",
+          "end": "2022-10-11",
+          "precision": "EXACT_DATE"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "5G 商用牌照发放（EV-COMM-02, 2019-06-06）→ 中国进入 5G 商用元年",
+          "5G 商用启动仪式、三大运营商发布 5G 套餐（EV-COMM-03, 2019-10-31）",
+          "Setup：2018-04-16 美国商务部对中兴通讯激活拒绝令（EV-COMM-01，prior）→ 2018 年板块深跌形成低基数（中兴 -49.0%）"
+        ],
+        "accelerator": [
+          "中央政治局会议（2020-02-21）提出推动 5G 网络等加快发展；工信部加快推进 5G 发展会议（2020-02-22）（EV-COMM-04）",
+          "中国联通宣布力争三季度完成全国 25 万基站建设、较原计划提前一个季度（2020-02-23）",
+          "中央政治局常务委员会：加快 5G 网络、数据中心等新型基础设施建设进度（EV-COMM-05, 2020-03-04）",
+          "2020 年固定资产投资 4072 亿元（+11%），新建 5G 基站超 60 万个（E-COMM-07）"
+        ],
+        "turning": [
+          "代表标的分批见顶：中际旭创 2020-02-24 / 中兴通讯 2020-02-25 / 烽火通信 2020-03-12（Peak Window）",
+          "2021 年上半年三大运营商 5G 资本开支均下滑（中国联通 -45%）（E-COMM-09）",
+          "2021 年电信固定资产投资 4058 亿元，与上年基本持平 → 资本开支见顶（E-COMM-08）"
+        ],
+        "ending": [
+          "2021-2022 板块持续走弱：中兴 -23.4%（2022）、烽火 -28.2%、中际旭创 -38.2%",
+          "代表标的 2022-10-10/11 同步见底（中兴 18.41 / 烽火 11.65 / 中际旭创 15.88 / 新易盛 6.33）→ 本轮 Cycle 出清完成",
+          "★ 环节错位：新易盛（数通光模块）延后至 2020-07-14 见顶，主因海外云厂商资本开支与 400G 放量节奏滞后于国内 5G 建设，未另立 Cycle"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2023-COMM-OPTICAL",
+      "db_campaign_id": "C-2023-COMM-OPTICAL",
+      "year": 2023,
+      "rule_id": "rule_infocomm",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2023-03-21",
+      "peak_date_candidate": "2025-12-25",
+      "end_date_candidate": "2025-12-31",
+      "date_confidence": "medium",
+      "theme": "光模块/高速光互联",
+      "themes": [
+        {
+          "name": "信息通信",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "光模块/高速光互联",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "comm_ai_optical_2023_2025",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-COMM-11",
+        "E-COMM-12",
+        "E-COMM-13",
+        "E-COMM-14",
+        "E-COMM-15",
+        "E-COMM-16"
+      ],
+      "source_ids": [
+        "S-COMM-10",
+        "S-COMM-11",
+        "S-COMM-12",
+        "S-COMM-13",
+        "S-COMM-14",
+        "S-COMM-15"
+      ],
+      "independent_groups": [
+        "comm_ai_gtc2023",
+        "comm_ai_nvidia_guide",
+        "comm_company_innolight_2023fy",
+        "comm_company_innolight_h1",
+        "comm_market_cycle2",
+        "comm_policy_east_data_west"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-COMM-06",
+          "name": "「东数西算」工程正式全面启动（8 地国家算力枢纽节点）",
+          "date": "2022-02-17",
+          "event_type": "policy",
+          "role": "context"
+        },
+        {
+          "event_id": "EV-COMM-07",
+          "name": "NVIDIA GTC 2023 主题演讲（AI 推理芯片 / 「人工智能的 iPhone 时刻」）",
+          "date": "2023-03-21",
+          "event_type": "industry",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-COMM-08",
+          "name": "NVIDIA FY2024 Q1 财报：数据中心营收创纪录 42.8 亿美元，Q2 指引 110 亿美元",
+          "date": "2023-05-24",
+          "event_type": "company",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-COMM-09",
+          "name": "中际旭创 2023 年半年报：下半年 800G 光模块出货量明显增长",
+          "date": "2023-08-28",
+          "event_type": "company",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-COMM-10",
+          "name": "中际旭创 2023 年年报：营收 107.18 亿元（+11.16%），2024Q1 净利润超 10 亿元",
+          "date": "2024-04-21",
+          "event_type": "company",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "ACCELINK",
+          "name": "光迅科技",
+          "ticker": "002281",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "EOPTOLINK",
+          "name": "新易盛",
+          "ticker": "300502",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "INNOLIGHT",
+          "name": "中际旭创",
+          "ticker": "300308",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "TFC",
+          "name": "天孚通信",
+          "ticker": "300394",
+          "exchange": "SZ",
+          "role": "second_leader"
+        }
+      ],
+      "market_data": {
+        "series_id": "INNOLIGHT",
+        "raw_close": {
+          "2023-03-21": 36.83,
+          "2025-12-25": 639.8,
+          "2025-12-31": 610.0,
+          "2023-05-23": 87.2,
+          "2023-05-24": 87.67,
+          "2023-08-27": 106.95,
+          "2023-08-28": 111.5,
+          "2024-10-07": 154.86,
+          "2024-10-08": 185.83,
+          "2025-04-08": 72.28,
+          "2025-04-09": 71.99
+        },
+        "status": "available",
+        "adjusted_returns": {
+          "start_to_peak": 25.5018,
+          "start_to_end": 24.2655,
+          "peak_to_end": -0.0466,
+          "price_type": "adjusted(qfq)",
+          "note": "调整后收益，仅用于收益率口径；日期判断用 raw close"
+        }
+      },
+      "signals": [
+        {
+          "type": "EARLY_SIGNAL",
+          "date": "2023-03-21",
+          "confidence": "high"
+        },
+        {
+          "type": "THEME_FORMING",
+          "date": "2023-05-24",
+          "confidence": "high"
+        }
+      ],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "跨年 Campaign（2023-03-21 ~ 2025-12-31，约 2.8 年，**尚未结束**）。★ 与 Cycle 1 的独立性：核心研究对象（AI 数据中心互连 vs 运营商 5G 网络）、驱动变量（海外云与 AI 资本开支 vs 运营商资本开支）、生命周期（2023-2025 上行 vs 2019-2020 见顶后出清）三者均不同 → 独立 Cycle。★ Peak 口径：中际旭创 2025-12-25（638.80）、新易盛 2025-12-22（329.99）→ 至本地行情窗口末端**仍在上行**，Theme Cycle End 未确认。★ 通信设备（中兴通讯 / 烽火通信）在 2023-2025 亦受益于算力网络建设（中兴 2024 +64.8%、烽火 2025 +79.9%），但其主驱动仍含运营商侧因素，本轮不作为本 Cycle 代表标的。★ Related Macro Theme：无（核心为信息通信本体；与「电力设备」的算电协同属产业关联，非本 Cycle 的 Primary 归属）。",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "EARLY_SIGNAL",
+          "start": "2023-03-21",
+          "end": "2023-03-21",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "THEME_FORMING",
+          "start": "2023-05-24",
+          "end": "2023-05-24",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "BROAD_CONFIRMATION",
+          "start": "2023-08-28",
+          "end": "2023-08-28",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-08-28",
+          "end": "2024-10-07",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2024-10-08",
+          "end": "2025-04-08",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "MAIN_RISE",
+          "start": "2025-04-09",
+          "end": "2025-12-18",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2025-12-22",
+          "end": "2025-12-25",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "NVIDIA GTC 2023 主题演讲（EV-COMM-07, 2023-03-21）→ AI 算力叙事启动；A 股光模块次日爆发（中际旭创 2023-03-22 +21.97%）",
+          "context：「东数西算」全面启动（EV-COMM-06, 2022-02-17，prior）"
+        ],
+        "accelerator": [
+          "NVIDIA FY2024 Q1 财报：数据中心营收创纪录 42.8 亿美元，Q2 指引 110 亿美元（较分析师预期高 53.2%）（EV-COMM-08, 2023-05-24）→ 全球 AI 算力资本开支财务确认",
+          "中际旭创 2023 半年报：下半年 800G 光模块出货量明显增长（EV-COMM-09, 2023-08-28）",
+          "中际旭创 2023 年报：营收 107.18 亿元（+11.16%），2024Q1 净利润超 10 亿元（EV-COMM-10, 2024-04-21）→ 800G 放量在报表端确认",
+          "2025 年 1.6T 与 NPO/CPO 结构迁移预期（速率代际升级延续）"
+        ],
+        "turning": [
+          "2024-10-08 代表标的同步出现阶段高点后回撤（中际旭创 183.93 → 2025-04-08 70.09，约 -62%）",
+          "★ 该回撤后板块于 2025-04-09 起重启上行并创新高 → 属同一 Cycle 内的回撤，非 Cycle 结束"
+        ],
+        "ending": [
+          "unknown（至本地行情窗口末端仍在上行：中际旭创 2025-12-25 达 638.80、新易盛 2025-12-22 达 329.99）",
+          "★ 通信设备（中兴通讯 / 烽火通信）2023-2025 亦受益于算力网络建设（中兴 2024 +64.8%、烽火 2025 +79.9%），但主驱动仍含运营商侧因素，本轮不作为本 Cycle 代表标的"
         ]
       }
     },

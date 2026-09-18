@@ -34,15 +34,15 @@ function cloneExport(): TimelineExportV1 {
  */
 describe('数据快照回归：timeline_export_v1 版本', () => {
   it('source_commit 为当前同步的 Research 导出（生成时父 commit）', () => {
-    expect(timelineExportData.source_commit).toBe('f446cb8a02128f63835f3fd29c432f1e96a82fd0');
+    expect(timelineExportData.source_commit).toBe('052b79b9cc824d69f01a74322ce8e937e99c9854');
   });
 
-  it('数据量快照：11 Campaign / 4 Candidate / 18 Signal / 42 Event / 54 Security', () => {
-    expect(timelineExportData.campaigns).toHaveLength(11);
+  it('数据量快照：13 Campaign / 4 Candidate / 22 Signal / 52 Event / 63 Security', () => {
+    expect(timelineExportData.campaigns).toHaveLength(13);
     expect(timelineExportData.research_candidates).toHaveLength(4);
-    expect(timelineExportData.signals).toHaveLength(18);
-    expect(timelineExportData.events).toHaveLength(42);
-    expect(timelineExportData.securities).toHaveLength(54);
+    expect(timelineExportData.signals).toHaveLength(22);
+    expect(timelineExportData.events).toHaveLength(52);
+    expect(timelineExportData.securities).toHaveLength(63);
   });
 });
 
@@ -388,43 +388,61 @@ describe('V1.7：历史同周期查看（列表，非统计模型）', () => {
     const rows = samePeriodCampaigns(previewTimelineSource(), 9);
     expect(rows.map((r) => r.year)).toEqual([2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
     expect(rows[0].campaigns).toEqual([]); // 2018 反例年
-    // 2019-2022：医药跨年 Campaign（C-2019-PHARMA-INNOV, 2019-01-02~2022-10-31）每年都命中窗口
-    expect(rows[1].campaigns.map((c) => c.campaign_id)).toEqual(['C-2019-PHARMA-INNOV', 'C-2019-AD']);
+    // 2019-2022：医药跨年 Campaign（C-2019-PHARMA-INNOV, 2019-01-02~2022-10-31）与
+    // 信息通信 5G Cycle（C-2019-COMM-5G, 2019-06-06~2022-10-11）每年都命中窗口
+    expect(rows[1].campaigns.map((c) => c.campaign_id)).toEqual([
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'C-2019-AD',
+    ]);
     expect(rows[2].campaigns.map((c) => c.campaign_id)).toEqual([
-      'C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC', 'C-2020-NEV', 'C-2020-POWER-NE',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'RC-2020-PANDEMIC', 'C-2020-NEV', 'C-2020-POWER-NE',
     ]);
     expect(rows[3].campaigns.map((c) => c.campaign_id)).toEqual([
-      'C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC', 'C-2020-POWER-NE', 'C-2021-NEV',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'RC-2020-PANDEMIC', 'C-2020-POWER-NE', 'C-2021-NEV',
     ]);
-    // 2022：电力设备发电 Cycle（C-2020-POWER-NE）+ 电网 Cycle（C-2022-POWER-GRID）同时命中
+    // 2022：医药 + 信息通信 5G + 电力设备发电 + 电力设备电网 同时命中
     expect(rows[4].campaigns.map((c) => c.campaign_id)).toEqual([
-      'C-2019-PHARMA-INNOV', 'C-2020-POWER-NE', 'RC-2021-TCM', 'C-2022-POWER-GRID', 'C-2022-POLICY',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'C-2020-POWER-NE', 'RC-2021-TCM',
+      'C-2022-POWER-GRID', 'C-2022-POLICY',
     ]);
-    // 2023-2025：电网 Cycle（C-2022-POWER-GRID, 2022-01-10~2025-12-31）为跨年命中
-    expect(rows[5].campaigns.map((c) => c.campaign_id)).toEqual(['C-2022-POWER-GRID', 'RC-2023-HUAWEI']);
+    // 2023-2025：电网 Cycle（C-2022-POWER-GRID）与 AI 光模块 Cycle（C-2023-COMM-OPTICAL）均为跨年命中
+    expect(rows[5].campaigns.map((c) => c.campaign_id)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL', 'RC-2023-HUAWEI',
+    ]);
     // 2024：另有 RC-2024-SECONDARY（Robotaxi end 07-31 < 08-15 不相交，故 C-2024-ROBOTAXI 不入）
-    expect(rows[6].campaigns.map((c) => c.campaign_id)).toEqual(['C-2022-POWER-GRID', 'RC-2024-SECONDARY']);
-    expect(rows[7].campaigns.map((c) => c.campaign_id)).toEqual(['C-2022-POWER-GRID', 'C-2025-ROBOTAXI']);
+    expect(rows[6].campaigns.map((c) => c.campaign_id)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL', 'RC-2024-SECONDARY',
+    ]);
+    expect(rows[7].campaigns.map((c) => c.campaign_id)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL', 'C-2025-ROBOTAXI',
+    ]);
   });
 
-  it('2 月同期：2019-2022 由医药跨年 Campaign 覆盖，2023-2025 由电网跨年 Campaign 覆盖', () => {
+  it('2 月同期：医药 / 信息通信 / 电力设备 三个跨年 Campaign 覆盖 2019–2025', () => {
     const rows = samePeriodCampaigns(previewTimelineSource(), 2);
     // 医药跨年 Campaign（2019-01-02~2022-10-31）使 2 月窗口不再为空态；
     // 这是「跨年结构性 Campaign」相对「季节性 Campaign」的语义差异（见审计报告 F-MED-2）。
-    // 电力设备两个 Cycle 同为跨年结构：发电 2020-09-22~2022-12-30、电网 2022-01-10~2025-12-31。
+    // 电力设备两个 Cycle（发电 2020-09-22~2022-12-30、电网 2022-01-10~2025-12-31）与
+    // 信息通信 5G Cycle（2019-06-06~2022-10-11）、AI 光模块 Cycle（2023-03-21~2025-12-31）
+    // 同为跨年结构。
     expect(rows.map((r) => r.year)).toEqual([2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
     expect(rows[0].campaigns).toEqual([]); // 2018
     expect(rows[1].campaigns.map((c) => c.campaign_id)).toEqual(['C-2019-PHARMA-INNOV']);
-    expect(rows[2].campaigns.map((c) => c.campaign_id)).toEqual(['C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC']);
+    expect(rows[2].campaigns.map((c) => c.campaign_id)).toEqual([
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'RC-2020-PANDEMIC',
+    ]);
     expect(rows[3].campaigns.map((c) => c.campaign_id)).toEqual([
-      'C-2019-PHARMA-INNOV', 'RC-2020-PANDEMIC', 'C-2020-POWER-NE',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'RC-2020-PANDEMIC', 'C-2020-POWER-NE',
     ]);
     expect(rows[4].campaigns.map((c) => c.campaign_id)).toEqual([
-      'C-2019-PHARMA-INNOV', 'C-2020-POWER-NE', 'RC-2021-TCM', 'C-2022-POWER-GRID',
+      'C-2019-PHARMA-INNOV', 'C-2019-COMM-5G', 'C-2020-POWER-NE', 'RC-2021-TCM', 'C-2022-POWER-GRID',
     ]);
     expect(rows[5].campaigns.map((c) => c.campaign_id)).toEqual(['C-2022-POWER-GRID']); // 2023
-    expect(rows[6].campaigns.map((c) => c.campaign_id)).toEqual(['C-2022-POWER-GRID']); // 2024
-    expect(rows[7].campaigns.map((c) => c.campaign_id)).toEqual(['C-2022-POWER-GRID']); // 2025
+    expect(rows[6].campaigns.map((c) => c.campaign_id)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL',
+    ]); // 2024
+    expect(rows[7].campaigns.map((c) => c.campaign_id)).toEqual([
+      'C-2022-POWER-GRID', 'C-2023-COMM-OPTICAL',
+    ]); // 2025
   });
 
   it('preview / production 隔离：生产 verified 空 → 同周期无结果，不消费 preview 数据', () => {
