@@ -1,0 +1,347 @@
+{
+ "lifecycle_terminal": "MISMATCH",
+ "lifecycle_stage_presence": "MATCH",
+ "drivers": "PARTIAL",
+ "evidence_sequence": "NOT_AVAILABLE",
+ "event_structure": "NOT_AVAILABLE",
+ "temporal_structure": "NOT_AVAILABLE",
+ "market_structure": "NOT_AVAILABLE",
+ "name_vs_structural_experiment": {
+  "method_a": "Name / Theme matching（同 Macro Theme + 人工 reference_cases）",
+  "method_b": "Structural matching（TIER_1_MULTI_DIMENSION：stage MATCH + drivers 强匹配 + evidence_sequence 可比较）",
+  "per_candidate": [
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "macro_theme": "医药健康",
+    "method_a_name_theme": [
+     "C-2019-PHARMA-INNOV"
+    ],
+    "method_b_structural": [
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "both": [],
+    "only_a_name_only": [
+     "C-2019-PHARMA-INNOV"
+    ],
+    "only_b_structure_only": [
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "macro_theme": "电力设备",
+    "method_a_name_theme": [
+     "C-2020-POWER-NE",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID"
+    ],
+    "method_b_structural": [
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ],
+    "both": [
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID"
+    ],
+    "only_a_name_only": [
+     "C-2020-POWER-NE"
+    ],
+    "only_b_structure_only": [
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "macro_theme": "高端装备",
+    "method_a_name_theme": [
+     "C-2023-AD",
+     "C-2024-ROBOTAXI"
+    ],
+    "method_b_structural": [
+     "C-2021-NEV",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ],
+    "both": [
+     "C-2023-AD"
+    ],
+    "only_a_name_only": [
+     "C-2024-ROBOTAXI"
+    ],
+    "only_b_structure_only": [
+     "C-2021-NEV",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "macro_theme": "信息通信",
+    "method_a_name_theme": [
+     "C-2019-COMM-5G",
+     "C-2021-NEV",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "method_b_structural": [
+     "C-2021-NEV",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ],
+    "both": [
+     "C-2021-NEV",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "only_a_name_only": [
+     "C-2019-COMM-5G"
+    ],
+    "only_b_structure_only": [
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2025-ROBOTAXI"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "macro_theme": "电力设备",
+    "method_a_name_theme": [
+     "C-2020-POWER-NE",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID"
+    ],
+    "method_b_structural": [
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "both": [
+     "C-2022-POWER-GRID"
+    ],
+    "only_a_name_only": [
+     "C-2020-POWER-NE",
+     "C-2022-POLICY"
+    ],
+    "only_b_structure_only": [
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ]
+   }
+  ],
+  "union_a": [
+   "C-2019-COMM-5G",
+   "C-2019-PHARMA-INNOV",
+   "C-2020-POWER-NE",
+   "C-2021-NEV",
+   "C-2022-POLICY",
+   "C-2022-POWER-GRID",
+   "C-2023-AD",
+   "C-2023-COMM-OPTICAL",
+   "C-2024-ROBOTAXI"
+  ],
+  "union_b": [
+   "C-2021-NEV",
+   "C-2022-POLICY",
+   "C-2022-POWER-GRID",
+   "C-2023-AD",
+   "C-2023-COMM-OPTICAL",
+   "C-2025-ROBOTAXI"
+  ],
+  "intersection": [
+   "C-2021-NEV",
+   "C-2022-POLICY",
+   "C-2022-POWER-GRID",
+   "C-2023-AD",
+   "C-2023-COMM-OPTICAL"
+  ],
+  "only_a_name_only": [
+   "C-2019-COMM-5G",
+   "C-2019-PHARMA-INNOV",
+   "C-2020-POWER-NE",
+   "C-2024-ROBOTAXI"
+  ],
+  "only_b_structure_only": [
+   "C-2025-ROBOTAXI"
+  ],
+  "method_b_by_family": {
+   "信息通信": [
+    "C-2023-COMM-OPTICAL"
+   ],
+   "汽车": [
+    "C-2021-NEV",
+    "C-2022-POLICY",
+    "C-2023-AD",
+    "C-2025-ROBOTAXI"
+   ],
+   "电力设备": [
+    "C-2022-POWER-GRID"
+   ]
+  },
+  "conclusion": "Method B 的结果**不等于** Method A：仅 B（名称不同但结构达 TIER_1）= 1；仅 A（名称相似但结构未达 TIER_1）= 4。Method B 的命中以**跨族**为主（6 个对象中 4 个属「汽车」族，而候选分属医药健康/电力设备/高端装备/信息通信）。→ ThreeC 的核心产品理念在数据层面**部分可被实现**，但受制于下文的维度缺口。"
+ },
+ "feasibility_decision_table": [
+  {
+   "dimension": "Historical cycle coverage",
+   "status": "PARTIAL",
+   "evidence": "13 Campaign / 13 Theme Cycle / 4 Macro Theme；但每族仅 1–7 个，电力设备与信息通信各 2 个",
+   "main_gap": "每族样本量不足以支撑族内稳健结构（Time Observation v0.5 已证：TH-POWER / TH-COMM 产出 0 个 family 级候选）"
+  },
+  {
+   "dimension": "Lifecycle",
+   "status": "PARTIAL",
+   "evidence": "STAGE_TO_PHASE 映射使 candidate.attention_state 与历史 lifecycle 阶段**同枚举可比**；stage-aligned 口径下 5/5 候选均有可用历史对象",
+   "main_gap": "① terminal_phase 12/17 = END → 当前 Product 的「候选当前阶段 vs 历史终态」语义几乎必然 MISMATCH；② FIRST_DECLINE 覆盖仅 1/17 = 5.9%"
+  },
+  {
+   "dimension": "Drivers",
+   "status": "PARTIAL",
+   "evidence": "candidate.drivers[].category 与 EVENT_TYPE_TO_DRIVER(历史 events) **同枚举**（POLICY/INDUSTRY/CAPITAL/SENTIMENT/EXTERNAL）；16/17 历史对象有 ≥1 driver",
+   "main_gap": "① 历史 driver 只能由 event_type 反推（粒度粗）；② industry event_type 未映射 → 丢失；③ SENTIMENT 历史侧恒不可派生；④ 历史 drivers 字段本身是自由文本，未结构化"
+  },
+  {
+   "dimension": "Evidence sequence",
+   "status": "PARTIAL",
+   "evidence": "历史 11/17 对象有 ≥2 事件、9/17 有 ≥3 事件 → A→B→C 顺序可比",
+   "main_gap": "① 候选侧只有 evidence（无事件台账），两侧实体类型不同；② 两侧词表不同（candidate source_type vs historical event_type）需人工映射；③ 5/17 历史对象仅 0–1 事件"
+  },
+  {
+   "dimension": "Event structure",
+   "status": "NOT_AVAILABLE",
+   "evidence": "历史侧有 events 台账（52 条，5 类）；候选侧**无**事件实体",
+   "main_gap": "候选与历史的事件结构不可直接对齐；且 INDUSTRY_EVENT_DRIVEN / DATA_RELEASE_DRIVEN 在 v0.5 已判 NOT_AVAILABLE"
+  },
+  {
+   "dimension": "Temporal structure",
+   "status": "PARTIAL",
+   "evidence": "历史 lifecycle 各阶段有精确日期（EXACT_DATE / PHASE_WINDOW / DATE_WINDOW）→ 阶段间距可算；候选有 phase_window 与 evidence 日期",
+   "main_gap": "候选侧只有 1 个 phase_window 起点（end 全为 null）→ 无法算候选侧阶段间距，只能与历史侧单向比较"
+  },
+  {
+   "dimension": "Market structure",
+   "status": "NOT_AVAILABLE",
+   "evidence": "market_series 56 条（benchmark 1 / concept_index 4 / industry_index 4 / stock 47），6 条为空占位；历史侧有按窗口采样的行情",
+   "main_gap": "① 候选侧**无任何**可映射行情序列（2026 无证券数据）；② 概念指数 4 条全为空占位；③ 历史行情是「按 Campaign 窗口采样」而非连续序列 → 无法做 breadth / 相对走势比较"
+  },
+  {
+   "dimension": "Cross-family analogy",
+   "status": "PARTIAL",
+   "evidence": "TIER_1 命中 6 个历史对象，其中 4 个属「汽车」族（对非汽车候选）→ **跨族结构相似性证据存在**",
+   "main_gap": "样本量小（TIER_1 共 23 条组合）；且跨族命中的 driver 匹配多为 PARTIAL（1 个重叠）"
+  }
+ ],
+ "sensitivity_analysis": {
+  "note": "不同严格度下的结构可用性差异极大 —— 必须同时披露，不得只报最宽口径。",
+  "STRICT_A_stage_and_drivers_and_seq_MATCH": {
+   "rows": 0,
+   "candidates": 0
+  },
+  "STRICT_B_stage_and_drivers_MATCH": {
+   "rows": 3,
+   "candidates": 1,
+   "per_candidate": {
+    "CC-2026-BCI-MEDTECH": [
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2022-POWER-GRID"
+    ],
+    "CC-2026-COMPUTE-POWER": [],
+    "CC-2026-EMBODIED-AI": [],
+    "CC-2026-OPTICAL-LINK": [],
+    "CC-2026-OFFSHORE-WIND": []
+   }
+  },
+  "TIER_1_multi_dimension": {
+   "rows": 23,
+   "candidates": 5
+  },
+  "why_TIER_1_is_permissive": "drivers=PARTIAL 占比很高（只要两边共享 1 个 driver 即为 PARTIAL）→ TIER_1 的宽口径结果主要由弱 driver 匹配贡献，不能据此宣称结构类比已可用。",
+  "dimension_status_distribution": {
+   "lifecycle_terminal": {
+    "MISMATCH": 80,
+    "PARTIAL": 3,
+    "MATCH": 2
+   },
+   "lifecycle_stage_presence": {
+    "MISMATCH": 27,
+    "MATCH": 58
+   },
+   "drivers": {
+    "PARTIAL": 71,
+    "MATCH": 3,
+    "MISMATCH": 6,
+    "NOT_AVAILABLE": 5
+   },
+   "evidence_sequence": {
+    "NOT_AVAILABLE": 30,
+    "MATCH": 6,
+    "PARTIAL": 27,
+    "MISMATCH": 22
+   },
+   "event_structure": {
+    "NOT_AVAILABLE": 85
+   },
+   "temporal_structure": {
+    "NOT_AVAILABLE": 40,
+    "PARTIAL": 45
+   },
+   "market_structure": {
+    "NOT_AVAILABLE": 85
+   }
+  },
+  "tier1_same_vs_cross_family": {
+   "same": 3,
+   "cross": 20
+  }
+ },
+ "three_key_numbers": {
+  "definition": "usable structural analogue = STRICT_B（lifecycle stage MATCH + drivers MATCH）",
+  "candidates_with_structurally_usable_analogue": {
+   "count": 1,
+   "ids": [
+    "CC-2026-BCI-MEDTECH"
+   ]
+  },
+  "candidates_with_only_theme_name_level_analogue": {
+   "count": 4,
+   "ids": [
+    "CC-2026-COMPUTE-POWER",
+    "CC-2026-EMBODIED-AI",
+    "CC-2026-OPTICAL-LINK",
+    "CC-2026-OFFSHORE-WIND"
+   ]
+  },
+  "candidates_with_no_usable_analogue": {
+   "count": 0,
+   "ids": []
+  },
+  "loose_alternative": "放宽到 TIER_1 → 5/5 候选均有；见 sensitivity_analysis 的告警。",
+  "note": "usable structural analogue != same-theme match"
+ },
+ "overall_status": "PARTIALLY_FEASIBLE",
+ "minimum_viable_scope": {
+  "option": "C（Research-only exploration），上限为 B",
+  "statement": "Lifecycle(stage-aligned) + Driver + Evidence Sequence 三维机制上可算，且结果确实不同于名称匹配；但严格口径下三维同时 MATCH=0、二维=1/5，且 Market / Event structure 双侧 NOT_AVAILABLE、Temporal 只能单向 → 不足以支撑 Product 端相似度呈现。",
+  "not_yet_available": [
+   "market structure",
+   "event structure（候选侧）",
+   "双向 temporal",
+   "任何 similarity score / ranking"
+  ]
+ }
+}
