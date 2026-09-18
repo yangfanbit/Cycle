@@ -111,6 +111,16 @@ ROUND_PROFILES = {
         "research_round": "historical-coverage-audit-v0.2",
         "label": "Wave 1A 之后（3 个 Macro Theme / 11 Campaign，新增 TH-POWER）",
     },
+    "0.3": {
+        "json": "historical_coverage_matrix_v0_3.json",
+        "csv": "historical_coverage_matrix_v0_3.csv",
+        "snapshot_date": "2026-09-18",
+        "ruleset_version": "historical-coverage-audit-0.3",
+        "artifact_version": "0.3",
+        "research_round": "historical-coverage-audit-v0.3",
+        "label": ("Phase 7.4B 之后（4 个 Macro Theme / 13 Campaign；"
+                  "补 company 归一化键 + 清理无来源日期断言）"),
+    },
 }
 DEFAULT_ROUND = "0.1"
 RESEARCH_ROUND = "historical-coverage-audit-v0.1"
@@ -196,10 +206,34 @@ EVIDENCE_TYPE_MAP = {
     "政策文件": "policy",
     "official_document": "policy",
     "media": "information",
+    # ---- Phase 7.4B 补键：CANONICAL_EVIDENCE_TYPES 已声明但本表缺键的两类 ----
+    # 缺口后果：公司自身披露的证据只能借用 `行业数据`，且 `company` / `capital` 恒为 0。
+    # 补键后 `company` / `capital` 可被正确归一化（**未改 schema**，仅补归一化词表）。
+    "company": "company",
+    "company_announcement": "company",
+    "公司公告": "company",
+    "capital": "capital",
+    "capital_flow": "capital",
+    "资金流向": "capital",
 }
 
 # 任务书 §九 要求的规范证据类别
 CANONICAL_EVIDENCE_TYPES = ["policy", "industry", "company", "market", "capital", "information"]
+
+# ---------------------------------------------------------------- 来源类型 → 默认 canonical evidence_type
+# ⚠️ **这不是「来源类型决定证据类型」** —— 实测交叉表证明两个词表**彼此独立**：
+#     media_tier2 承载 5 种 evidence_type（行情数据/media/行业数据/行业月度产销数据/政策文件），
+#     regulator  承载 4 种（政策文件/行业数据/official_document/行业月度产销数据）。
+# 因此本表**只对语义唯一对应的来源类型**给出默认值；媒体类必须按**内容**判定。
+# 用途：新增证据时的默认取值参考 + 人工复核清单。**不参与机械归一化**（归一化只走 EVIDENCE_TYPE_MAP）。
+SOURCE_TYPE_DEFAULT_EVIDENCE_TYPE = {
+    "regulator": "policy",              # 监管 / 官方发布
+    "exchange": "policy",               # 交易所规则文件
+    "company_announcement": "company",  # 公司自身披露（一手）
+    "website": "market",                # 行情数据站
+    # media_tier1/2/3/4：**不固定** —— 可承载 market / industry / information / policy，
+    #   必须按证据内容判定，不得按来源类型推断。
+}
 
 # 任务书 §六 要求检查的领域清单 → 仓库中的对应物
 DOMAIN_PROBES = [

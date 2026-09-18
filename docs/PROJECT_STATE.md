@@ -5,9 +5,9 @@
 > 所有数字均可由仓库内命令复算；发现不一致时**以仓库为准**。
 
 - **重建日期**：2026-09-17（Repository Recovery 之后重写，未照抄旧版）
-- **最近更新**：2026-09-18 · **Phase 7.4A — Anchor Verification + Data Quality 收敛**（TOP-01 仍 2/7）
-- **HEAD**：见 `git log -1`（`research: verify time observation anchors`）· 本文件随该提交入库
-- **Phase 7.4A 前的基线**：`HEAD = origin/main = 707224b` · ahead / behind `0 / 0` · 工作树 clean
+- **最近更新**：2026-09-18 · **Phase 7.4B — Date Claim Cleanup + Evidence Normalization**（`company` 0→3）
+- **HEAD**：见 `git log -1`（`fix(research): clean unsupported historical date claims`）· 本文件随该提交入库
+- **Phase 7.4B 前的基线**：`HEAD = origin/main = 2c16058` · ahead / behind `0 / 0` · 工作树 clean
 
 ---
 
@@ -196,6 +196,12 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
   记录核验过程以避免重复劳动。**统计量（N / center / window / recurrence / LOO / stability /
   promotion_status）完全保持。**
   报告：`docs/PHASE_7_4A_ANCHOR_VERIFICATION_REPORT_2026-09-18.md`。
+- **Phase 7.4B（2026-09-18）**：清理 2 条**无来源日期断言**（`E-2023-04` 的「6/12预热」、
+  `E-2024-03` 的「6/11-6/21」）→ 标注 **UNSUPPORTED**（保留证据本身，只改断言）；
+  并把 3 条公司自身披露证据的 `evidence_type` 规范化为 **`company`**（**0 → 3**）；
+  **`capital` 保持 0**（全库无此类证据，未虚构）。
+  **TOP-01 与 anchor 完全未变**；`UNCLASSIFIED` 仍为 0。
+  报告：`docs/PHASE_7_4B_DATE_CLAIM_CLEANUP_REPORT_2026-09-18.md`。
 - **Discovery 轮次**（研究侧候选池，非产品 Artifact）：
 
   | 轮次 | 口径 | 产物 |
@@ -238,8 +244,8 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 
 ## Current Data Coverage
 
-> 来源：**`Historical Coverage Audit v0.2`**（`research/research/reports/historical_coverage_matrix_v0_2.{json,csv}`，
-> 生成器 `research/scripts/audit_historical_coverage.py --round 0.2`）+ 本轮 DB 实测复核。
+> 来源：**`Historical Coverage Audit v0.3`**（`research/research/reports/historical_coverage_matrix_v0_3.{json,csv}`，
+> 生成器 `research/scripts/audit_historical_coverage.py --round 0.3`）+ 本轮 DB 实测复核。
 >
 > **多轮约定**：审计产物是「某个数据快照」的确定性函数。`--round X` 一并恢复该轮的
 > 产物路径 / 快照日期 / 版本号；**未知轮次显式失败**，不静默降级。已登记 `0.1`（Wave 1A 之前）
@@ -253,7 +259,7 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
 | Campaigns / Theme Cycles / Macro Themes | **13 / 13 / 4** | 11 / 11 / 3 | `theme_family_count` **首次达到 ≥ 4 门槛**（但跨族稳健性检验需重跑 Time Observation 才能判定） |
 | 有效年份 | **2019–2025（7 年）** | 同 | 2018 为 `no_clear_campaign`（刻意排除，非缺失）；未达 `N ≥ 8` |
 | Lifecycle 完整度 | 17 对象：`THEME_FORMING` **58.8%** · `BROAD_CONFIRMATION` **58.8%** | 15 对象：各 53.3% | 最弱仍是这两个阶段（Formation Anchor 依赖） |
-| Evidences | **83**（policy 16 · industry 24 · market 35 · information 8） | 67 | `company` / `capital` 的 **evidence_type 仍为 0**；来源侧 `company_announcement` **0 → 3** |
+| Evidences | **83**（policy 16 · industry 21 · **company 3** · market 35 · information 8 · **capital 0**） | 67 | **Phase 7.4B 后 `company` 0 → 3**（公司自身披露类证据规范化）；`capital` **真实为 0**（全库无可归类证据，未虚构）；`UNCLASSIFIED` = 0 |
 | Events | **49（DB）/ 52（export）**；`industry` 1 → **2** | 39 / 42 | 仍 6 类 `NOT_AVAILABLE`；本轮新增 5 项 `DATA_GAP` 登记（见 Wave 1B 报告 §F.1） |
 | Market Series | **56**（新增 8 条信息通信代表标的） | 48 | 仍是「按 Campaign 窗口采样」 |
 | Trading Calendar | **371 天，仅覆盖 2022–2024** | 同 | **未补全** |
@@ -382,9 +388,11 @@ authoritative `promotion_status`（旧字段降为兼容输入，生成器自检
 
 ## Next Single Goal
 
-> **Phase 7.4A（Anchor Verification）已完成（2026-09-18）** —— TOP-01 核验**仍为 2 / 7**。
-> 见 `docs/PHASE_7_4A_ANCHOR_VERIFICATION_REPORT_2026-09-18.md`。
-> **当前真正的瓶颈仍是「数据」，不是「方法」；且已从「覆盖度」转向「数据质量」。**
+> **Phase 7.4B（Date Claim Cleanup + Evidence Normalization）已完成（2026-09-18）** ——
+> `company` 0 → 3 · `capital` 保持 0 · `UNCLASSIFIED` 0 · Coverage Audit **v0.3** 已建立 ·
+> **TOP-01 与 anchor 完全未变**。
+> 见 `docs/PHASE_7_4B_DATE_CLAIM_CLEANUP_REPORT_2026-09-18.md`。
+> **当前瓶颈仍是「数据」，不是「方法」——已从「覆盖度」转向「可信度与一致性」。**
 
 **Wave 1A / 1B 已完成什么**
 
@@ -394,34 +402,40 @@ authoritative `promotion_status`（旧字段降为兼容输入，生成器自检
 | 新增 Theme Cycle | 2 个 | 2 个 |
 | 新增 Evidence / Event / Source | +16 / +9 / +15 | +16 / +10 / +15 |
 | 修复的断裂 | `CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` | **`CC-2026-OPTICAL-LINK`** |
-| 未解决 | 核验 0/24 · `company`/`capital` 仍 0 | 同（**两轮均未增加核验**） |
+| 未解决 | 核验 0/24 · `company`/`capital` 仍 0 | 同（**两轮均未增加核验**）→ **Phase 7.4B 已修 `company`（0→3）** |
 
-**下一步（只做一件）**
+**下一步（默认路径）**
 
-> **先处理 Phase 7.4A 新发现的 HIGH 级数据质量问题**：
-> `E-2023-04`（称「6/12预热」）与 `E-2024-03`（称「6/11-6/21」）的**源文全文均未出现该日期**。
-> 二选一：**A** 补登独立的同日日期证据（若能找到 Tier ≤2 来源 → 锚点可升为 VERIFIED）；
-> **B** 确认无来源后，在证据描述中显式标注该日期断言无来源支撑。
+> **Time Observation Discovery 新轮次** —— 三项前置条件已全部完成：
+> Date Claim Cleanup ✅ + Evidence Normalization ✅ + **Coverage Audit v0.3 ✅（已确认正常）**。
 >
-> 若用户更倾向覆盖度优先，替代方案为 **Wave 1C（高端装备）**（完成后 `theme_family_count` = 5）。
+> ⚠️ **重跑必须新 `ROUND_PROFILE`（v0.5），不得覆盖 v0.2 / v0.3 / v0.4。**
 
-**为什么先修数据质量**
+**为什么现在可以进 Discovery**
 
-1. Phase 7.4A 已对 TOP-01 的 5 个 UNKNOWN 锚点**穷尽仓库内证据**（含取回源文全文核对），
-   结论是 **verified 仍 2/7** —— 卡点不在「没查」，而在**证据本身不支撑这些日期**。
-   继续查同一批证据不会有新结果。
-2. 这是唯一新发现的 **HIGH** 级问题，且**直接决定 TOP-01 的锚点可信度**；
-   不处理则描述中的错误断言会持续存在，下一轮会重复同样的工作。
-3. **成本极低**：A 方案 = 新增 2 条 evidence 行；B 方案 = 标注 2 条描述。
-4. `theme_family_count` 已达 4、Wave 1B 已修复信息通信断裂 →
-   **继续扩覆盖度的边际收益低于先修数据质量**。
-5. 它**不触碰** Promotion Gate 规则，也不进入 Structural Analogy。
+1. Phase 7.4B 已完成用户设定的三项前置条件，且 Coverage Audit v0.3 的 `--check` **PASS**（可复现）。
+2. v0.3 已把 `theme_family_count` 确认为 **4**、`company` 纳入统计、
+   `declared_but_no_history` 收窄至 **`[高端装备]`** —— 覆盖度与词表口径均已稳定，
+   可安全作为 Discovery 的新输入基线。
+3. 继续做「数据质量」的边际收益已下降：7.4A 已穷尽 TOP-01 的仓库内证据，
+   7.4B 已清理已定位的断言问题。
+
+**替代方案（若优先补可信度）**
+
+- 为 `2023-06-12` / `2024-06-11` 寻找**独立 Tier ≤2 来源**
+  （若能找到 → 两锚点可升 VERIFIED，TOP-01 → **3/7 或 4/7**）；
+- 或做**全库 evidence 描述 vs 源文一致性抽检**（7.4B §11.1 的系统性观察：
+  E-2024-03 的情况提示同类问题可能不止 2 条）。
 
 **仍需长期解决（不在下一步内）**
 
 - **DB 层日期核验仍为 0/24**（`campaign_date_observations.verified_date` 全为 NULL）——
-  注意：Phase 7.4A 改的是**核验元数据层**（`overrides`），**不是** DB 的 `verified_date` 字段。
-- `company` / `capital` 的 `evidence_type` 仍为 0（根因已定位：归一化词表缺键，见 7.4A 报告 §5）。
+  ⚠️ 注意区分三层：DB 的 `verified_date`（0/24）≠ 核验**元数据层**的
+  `time_observation_anchor_verification_v0_1.json`（VERIFIED 3 / UNKNOWN 13；TOP-01 2/7）
+  ≠ **日期断言的来源支撑**（7.4B 处理的对象）。
+- `capital` 的 `evidence_type` 为 0 —— 这是**真实为 0**（全库无可归类证据），
+  词表键已在 7.4B 补齐；**不得为凑齐 6 类而虚构**。
+- `evidence_type` 中英文混用未统一 · 交易日历不完整 · V2X 概念指数无行情数据。
 - 交易日历仍不完整。
 3. 三类快照型产物（Product Artifact / Discovery 候选池 / Coverage Matrix）持续**滞后于数据集**，
    继续扩张前应先决定重跑口径（**Time Observation 必须新 `ROUND_PROFILE` v0.5，不得覆盖 v0.3 / v0.4**）。

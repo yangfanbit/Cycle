@@ -7,6 +7,137 @@
 
 ---
 
+## 2026-09-18 · Research · Phase 7.4B — Historical Date Claim Cleanup + Evidence Normalization
+
+**性质：数据质量修复（清理无来源日期断言 + evidence_type 规范化 + Coverage Audit v0.3）。**
+**未进入**：Wave 1C · Structural Analogy · Time Observation 新研究轮次 · 新 UI。
+**报告**：`docs/PHASE_7_4B_DATE_CLAIM_CLEANUP_REPORT_2026-09-18.md`（1–12 节）。
+
+### 1 · 基线（自行核对）
+
+`git status` clean · `HEAD = origin/main = 2c16058` · ahead/behind `0/0`。
+实测：campaigns 13 · evidences 83 · events 49 · themes 19 ·
+Macro roots `TH-AUTO / TH-COMM / TH-PHARMA / TH-POWER` · TOP-01 `N=7 / 06-11 / 05-27~06-26 / 0.7143`。
+
+### 2 · P0：清理两个无来源日期断言
+
+**原则**：**不删除整个 evidence** —— 其他事实有来源支持则保留，只修正 unsupported date claim；
+找不到独立 Tier ≤2 来源 → **不猜日期**，标记 **UNSUPPORTED**（复用现有 `description` 字段，**未扩 schema**）。
+
+| evidence | before | after |
+|---|---|---|
+| `E-2023-04` | 含「启动早于6/1(**6/12预热**)」 | 保留源文明文支持的四条区间涨幅；移除日期断言并标注 UNSUPPORTED；`confidence` 保持 `high`（保留事实全部有源文支撑） |
+| `E-2024-03` | 含「概念指数**6/11**-6/21涨超9%」「229家概念股近八成上涨」 | 改为源文真正支持的内容（6/18 全线爆发、华铭/金溢/索菱 2 连板）；标注 UNSUPPORTED |
+
+**传播链一并标注**（§一 要求）：
+`campaigns.start_date_basis`（C-2023-AD / C-2024-V2X）· `annual_reviews.summary`（AR-2023）
+—— **只改文本、不改日期**；且这两个字段**不在 export 中**（实测 grep 命中 0）。
+
+**★ 关于 E-2024-03 的额外发现**：其原描述的**主要统计断言在源文中均不存在**，
+且源文发布于 2024-06-18 **早于**证据声称的区间终点 06-21 —— 存在**时间上不可能**的问题。
+
+### 3 · Anchor 未变（§四/§五 硬约束）
+
+- `C-2023-AD.start_date = 2023-06-12` ✅ 未变；`C-2024-V2X.start_date = 2024-06-11` ✅ 未变
+- 两者的 `campaign_date_observations.evidence_id` 均为 **NULL** → **anchor 不依赖任何 evidence**
+- **TOP-01**：`N=7` · `center=06-11` · `window=05-27~06-26` · `recurrence=0.7143` ·
+  `stability=SPLIT` · `promotion_status=TIMELINE` · 7 条 observations **逐条一致** · `anchor_verification` 2/5/0 未变
+- **未为保留 TOP-01 修改任何阈值**
+- 词边界复扫：`2023-06-12` 4 处命中**全在 UNSUPPORTED 说明内**；
+  `2024-06-11` 4 处中 2 处为 **2020 年**的 `6/11`（有 Tier 2 来源，非本次问题）
+
+### 4 · P1：evidence_type 规范化
+
+**根因**：`evidences.evidence_type` 与 `sources.source_type` 是**两个独立词表**
+（实测 `media_tier2` 承载 5 种 evidence_type、`regulator` 承载 4 种）→ 不能互相反推。
+`EVIDENCE_TYPE_MAP` 缺 `company` / `capital` 键，而 `CANONICAL_EVIDENCE_TYPES` 已声明 6 类。
+
+**规范化（§八）**：目标集合按 `source_type='company_announcement'` **机械选取**：
+
+| evidence_id | source | evidence_type |
+|---|---|---|
+| `E-COMM-13` | `S-COMM-12` NVIDIA 官方新闻稿 | `行业数据` → **`company`** |
+| `E-COMM-14` | `S-COMM-13` 中际旭创半年报 | `行业数据` → **`company`** |
+| `E-COMM-15` | `S-COMM-14` 中际旭创年报 | `行业数据` → **`company`** |
+
+- **`source_id` / `source_type` 全部不变**。
+- ⚠️ 用户 §八 列出的 `E-COMM-12` 实为**媒体来源**（36氪，`media_tier2`）→ `evidence_type=media` 正确，**未改**。
+
+**canonical mapping 建立（§七）**：
+- `EVIDENCE_TYPE_MAP` 条目 **7 → 13**（补 `company` / `company_announcement` / `公司公告` /
+  `capital` / `capital_flow` / `资金流向`）；`UNCLASSIFIED` 仍为 **0**。
+- 新增 `SOURCE_TYPE_DEFAULT_EVIDENCE_TYPE`（`regulator→policy` · `exchange→policy` ·
+  `company_announcement→company` · `website→market`；**media_tierN 不固定**，必须按内容判定）
+  —— **仅作默认取值参考，不参与机械归一化**。
+
+**§九 capital 不虚构**：实测全库无可归类为 `capital` 的证据（扫描「资金/北向/主力净流入/融资余额」命中 **0**）
+→ **`capital` 保持 0**。
+
+**§十 未改 schema。**
+
+### 5 · Coverage Audit v0.3（新轮次）
+
+`ROUND_PROFILES` 新增 `0.3`（`snapshot_date=2026-09-18`）；
+`--round 0.3` 生成成功、`--round 0.3 --check` **PASS**；
+**v0.1 / v0.2 产物逐字节未改**（快照保留）。
+
+**delta vs v0.2**（v0.2 是 Wave 1A 快照，故 delta 同时含 Wave 1B 扩容与 7.4B 修复）：
+
+| 指标 | v0.2 | v0.3 | 来源 |
+|---|---:|---:|---|
+| Campaigns / Themes / Evidences | 11 / 16 / 67 | **13 / 19 / 83** | Wave 1B |
+| `theme_family_count` | 3 | **4** | Wave 1B |
+| `declared_but_no_history` | `[信息通信, 高端装备]` | **`[高端装备]`** | Wave 1B |
+| **`company`** | **0** | **3** | **Phase 7.4B** |
+| `industry` | 18 | 21 | Wave 1B +6 / **7.4B −3** |
+| `capital` | 0 | **0** | 无证据 |
+| `normalization_map` 条目 | 7 | **13** | **Phase 7.4B** |
+| `UNCLASSIFIED` | 0 | **0** | 无回归 ✅ |
+
+### 6 · Product Impact：零可见影响
+
+`exports/timeline_export_v1.json` **未修改** · `src/**` **未修改** · `research/current/` **未修改** ·
+Time Observation 产物 **未修改**（`--check` PASS）· bundle **382.27 kB 未变** ·
+`npm test` **395/395**（未改任何测试）。
+→ 被修改的字段全部处于 **export 边界之内**（research-only）。
+
+### 7 · 验证
+
+```
+build_time_observation_patterns.py --check          PASS（逐字节可复现）
+audit_historical_coverage.py --round 0.3 --check    PASS（逐字节可复现）
+7 个 research 校验器                                 全 PASS
+npm test                                            395 passed / 395
+npx tsc -b                                          exit 0
+npm run build                                       PASS
+```
+
+### 8 · 未修改
+
+`schema/schema.sql` · `contracts/` · `exports/` · `src/**` · `research/current/` ·
+任何测试文件 · `time_observation_*` 全部产物 · v0.1/v0.2 审计产物 · Promotion Gate 全部规则 ·
+**13 个 Campaign / 13 个 Theme Cycle 的日期与 lifecycle**。
+
+### 9 · 明确回答
+
+**schema changed: NO** · **export changed: NO** · **historical cycle changed: NO** ·
+**current research changed: NO** · **breaking change: NO**
+
+### 10 · 剩余缺口
+
+DB 层日期核验仍 **0/24** · 两个锚点的**事件描述**已标注 UNSUPPORTED 但仍需独立 Tier ≤2 来源 ·
+`capital` 真实为 0 · `evidence_type` 中英文混用 · V2X 概念指数无行情 · 交易日历不完整 ·
+`discover_..._patterns.py --check` 仍 FAIL（旧快照，按 §十二 **未重跑**）。
+**系统性观察**：E-2024-03 的情况提示**同类问题可能不止 2 条**，建议后续做全库 evidence 描述 vs 源文一致性抽检（**不在本轮范围**）。
+
+### 11 · 下一步
+
+**默认路径：Time Observation Discovery 新轮次**（三项前置条件已全部完成，v0.3 正常）。
+**重跑必须新 `ROUND_PROFILE`（v0.5），不得覆盖 v0.2/v0.3/v0.4。**
+替代方案：为两个锚点寻找独立 Tier ≤2 来源（成功则可升 VERIFIED，TOP-01 → 3/7 或 4/7）。
+
+---
+
 ## 2026-09-18 · Research · Phase 7.4A — Anchor Verification + Data Quality 收敛
 
 **性质：核验元数据层变更 + 一次产物滞后修正。零研究数据变更、零 Product 逻辑变更。**
