@@ -1,0 +1,4831 @@
+{
+  "artifact": "time_observation_candidate_diff",
+  "from_round": "0.4",
+  "to_round": "0.5",
+  "key_definition": "（scope_type, scope_id, lifecycle_stage, pattern_type）—— 描述「哪个对象 / 哪个阶段 / 哪类模式」，跨轮次可比；pattern_id（TOPC-xxx）为扫描序，跨轮次不可比，仅作展示",
+  "counts": {
+    "v0_4_candidates": 191,
+    "v0_5_candidates": 315,
+    "shared_keys": 191,
+    "only_v0_4": 0,
+    "only_v0_5": 124
+  },
+  "status_transition_matrix": [
+    {
+      "from": "INSUFFICIENT_DATA",
+      "to": "INSUFFICIENT_DATA",
+      "count": 114
+    },
+    {
+      "from": "EXPLORATORY",
+      "to": "EXPLORATORY",
+      "count": 43
+    },
+    {
+      "from": "REJECTED",
+      "to": "REJECTED",
+      "count": 12
+    },
+    {
+      "from": "RESEARCH_ONLY",
+      "to": "REJECTED",
+      "count": 10
+    },
+    {
+      "from": "INSUFFICIENT_DATA",
+      "to": "REJECTED",
+      "count": 5
+    },
+    {
+      "from": "TIMELINE_CANDIDATE",
+      "to": "TIMELINE_CANDIDATE",
+      "count": 4
+    },
+    {
+      "from": "RESEARCH_ONLY",
+      "to": "RESEARCH_ONLY",
+      "count": 2
+    },
+    {
+      "from": "EXPLORATORY",
+      "to": "REJECTED",
+      "count": 1
+    }
+  ],
+  "changed_candidates": [
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "BROAD_CONFIRMATION",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-037",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "BROAD_CONFIRMATION",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 5,
+        "center": "07-03",
+        "window": [
+          "06-20",
+          "07-16"
+        ],
+        "recurrence": "3/5",
+        "concentration_ratio": 0.7397,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 4.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-055",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "BROAD_CONFIRMATION",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "07-03",
+        "window": [
+          "05-17",
+          "08-19"
+        ],
+        "recurrence": "4/7",
+        "concentration_ratio": 0.9826,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 105.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 105.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "BROAD_CONFIRMATION->MAIN_RISE",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "theme_family_count"
+      ],
+      "before": {
+        "pattern_id": "TOPC-108",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "BROAD_CONFIRMATION->MAIN_RISE",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 3,
+        "center": "07-03",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/3",
+        "concentration_ratio": 1.0466,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": 92.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "after": {
+        "pattern_id": "TOPC-163",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "BROAD_CONFIRMATION->MAIN_RISE",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 3,
+        "center": "01-01",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/3",
+        "concentration_ratio": 1.0466,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": 95.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 95.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "BROAD_CONFIRMATION->PEAK",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-109",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "BROAD_CONFIRMATION->PEAK",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 5,
+        "center": "07-11",
+        "window": [
+          "06-14",
+          "08-07"
+        ],
+        "recurrence": "3/5",
+        "concentration_ratio": 0.8137,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 9.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-164",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "BROAD_CONFIRMATION->PEAK",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 6,
+        "center": "07-10",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/6",
+        "concentration_ratio": 0.7595,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 1.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "IQR=94.25 天 → 锚点跨三个以上季节，无法构建有意义的观察窗口（不得人为造窗口）。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "DB_main_rise->decline",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "concentration_ratio",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-155",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "DB_main_rise->decline",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 4,
+        "center": "10-07",
+        "window": [
+          "09-17",
+          "10-27"
+        ],
+        "recurrence": "0/4",
+        "concentration_ratio": 0.8037,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 69.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "after": {
+        "pattern_id": "TOPC-230",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "DB_main_rise->decline",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 4,
+        "center": "10-06",
+        "window": [
+          "09-16",
+          "10-26"
+        ],
+        "recurrence": "0/4",
+        "concentration_ratio": 0.7945,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 68.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 68.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "DB_startup->main_rise",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-153",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "DB_startup->main_rise",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 4,
+        "center": "06-13",
+        "window": [
+          "05-08",
+          "07-19"
+        ],
+        "recurrence": "3/4",
+        "concentration_ratio": 0.8721,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 21.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-228",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "DB_startup->main_rise",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 5,
+        "center": "05-23",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/5",
+        "concentration_ratio": 0.7849,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 71.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 71.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "DECLINING",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-042",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "DECLINING",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 4,
+        "center": "07-25",
+        "window": [
+          "07-11",
+          "08-08"
+        ],
+        "recurrence": "3/4",
+        "concentration_ratio": 0.8493,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 7.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-060",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "DECLINING",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 4,
+        "center": "04-26",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/4",
+        "concentration_ratio": 0.9909,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 192.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 192.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "EARLY_SIGNAL",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "theme_family_count"
+      ],
+      "before": {
+        "pattern_id": "TOPC-035",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "EARLY_SIGNAL",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "06-01",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/7",
+        "concentration_ratio": 0.6247,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 18.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "after": {
+        "pattern_id": "TOPC-053",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "EARLY_SIGNAL",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "03-21",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/7",
+        "concentration_ratio": 0.6247,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 36.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "IQR=140.5 天 → 锚点跨三个以上季节，无法构建有意义的观察窗口（不得人为造窗口）。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "EARLY_SIGNAL->BROAD_CONFIRMATION",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-105",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "EARLY_SIGNAL->BROAD_CONFIRMATION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 5,
+        "center": "07-03",
+        "window": [
+          "06-20",
+          "07-16"
+        ],
+        "recurrence": "3/5",
+        "concentration_ratio": 0.7397,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 4.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-160",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "EARLY_SIGNAL->BROAD_CONFIRMATION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 7,
+        "center": "07-03",
+        "window": [
+          "05-17",
+          "08-19"
+        ],
+        "recurrence": "4/7",
+        "concentration_ratio": 0.9826,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 105.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 105.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "EARLY_SIGNAL->THEME_FORMING",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-104",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "EARLY_SIGNAL->THEME_FORMING",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 5,
+        "center": "06-21",
+        "window": [
+          "05-09",
+          "08-03"
+        ],
+        "recurrence": "4/5",
+        "concentration_ratio": 0.9123,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 86.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "after": {
+        "pattern_id": "TOPC-159",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "EARLY_SIGNAL->THEME_FORMING",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 6,
+        "center": "04-02",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/6",
+        "concentration_ratio": 0.8515,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 181.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 181.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "MAIN_RISE",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-038",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "MAIN_RISE",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "06-22",
+        "window": [
+          "05-22",
+          "07-23"
+        ],
+        "recurrence": "5/7",
+        "concentration_ratio": 0.8256,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 11.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-056",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "MAIN_RISE",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "05-23",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/7",
+        "concentration_ratio": 0.8256,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 22.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "IQR=122.0 天 → 锚点跨三个以上季节，无法构建有意义的观察窗口（不得人为造窗口）。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "MAIN_RISE->PEAK",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-110",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "MAIN_RISE->PEAK",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 7,
+        "center": "07-11",
+        "window": [
+          "06-14",
+          "08-07"
+        ],
+        "recurrence": "4/7",
+        "concentration_ratio": 0.884,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 8.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-165",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "MAIN_RISE->PEAK",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 7,
+        "center": "06-24",
+        "window": [
+          "05-30",
+          "07-19"
+        ],
+        "recurrence": "4/7",
+        "concentration_ratio": 0.884,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 7.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "reason": "N=7 ≥ 5 但集中度比率 0.884 不足（> 0.60）→ 时间分散，仅留研究层。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PEAK",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-039",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PEAK",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "06-24",
+        "window": [
+          "05-30",
+          "07-19"
+        ],
+        "recurrence": "5/7",
+        "concentration_ratio": 0.884,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 9.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-057",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PEAK",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "06-18",
+        "window": [
+          "05-15",
+          "07-22"
+        ],
+        "recurrence": "4/7",
+        "concentration_ratio": 0.884,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 4.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "reason": "N=7 ≥ 5 但集中度比率 0.884 不足（> 0.60）→ 时间分散，仅留研究层。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PHASE_ACCELERATION",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "stability"
+      ],
+      "before": {
+        "pattern_id": "TOPC-147",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_ACCELERATION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 1,
+        "center": "07-22",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/1",
+        "concentration_ratio": null,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": null,
+        "theme_family_count": 1,
+        "theme_family_names": [
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "INSUFFICIENT_DATA",
+        "effective_promotion_status": "INSUFFICIENT_DATA"
+      },
+      "after": {
+        "pattern_id": "TOPC-222",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_ACCELERATION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 4,
+        "center": "06-23",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/4",
+        "concentration_ratio": 1.0457,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 112.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 112.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PHASE_DECLINE",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "concentration_ratio",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-152",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_DECLINE",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 4,
+        "center": "10-07",
+        "window": [
+          "09-17",
+          "10-27"
+        ],
+        "recurrence": "0/4",
+        "concentration_ratio": 0.8037,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 69.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "after": {
+        "pattern_id": "TOPC-227",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_DECLINE",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 4,
+        "center": "10-06",
+        "window": [
+          "09-16",
+          "10-26"
+        ],
+        "recurrence": "0/4",
+        "concentration_ratio": 0.7945,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 68.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 68.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PHASE_DIFFUSION",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count"
+      ],
+      "before": {
+        "pattern_id": "TOPC-149",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_DIFFUSION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 1,
+        "center": "12-25",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/1",
+        "concentration_ratio": null,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": null,
+        "theme_family_count": 1,
+        "theme_family_names": [
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "INSUFFICIENT_DATA",
+        "effective_promotion_status": "INSUFFICIENT_DATA"
+      },
+      "after": {
+        "pattern_id": "TOPC-224",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_DIFFUSION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 3,
+        "center": "07-09",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/3",
+        "concentration_ratio": 1.3425,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": 170.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-COMM",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 170.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PHASE_MAIN_RISE",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-148",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_MAIN_RISE",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 6,
+        "center": "06-11",
+        "window": [
+          "05-12",
+          "07-11"
+        ],
+        "recurrence": "5/6",
+        "concentration_ratio": 0.7326,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 11.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-223",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_MAIN_RISE",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 6,
+        "center": "05-01",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/6",
+        "concentration_ratio": 0.7326,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 22.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "IQR=124.25 天 → 锚点跨三个以上季节，无法构建有意义的观察窗口（不得人为造窗口）。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PHASE_RETRACEMENT",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count"
+      ],
+      "before": {
+        "pattern_id": "TOPC-150",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_RETRACEMENT",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 2,
+        "center": "07-08",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/2",
+        "concentration_ratio": 0.0986,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": null,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "INSUFFICIENT_DATA",
+        "effective_promotion_status": "INSUFFICIENT_DATA"
+      },
+      "after": {
+        "pattern_id": "TOPC-225",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_RETRACEMENT",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 3,
+        "center": "07-02",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/3",
+        "concentration_ratio": 0.9589,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": 81.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 81.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PHASE_SECONDARY_RALLY",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count"
+      ],
+      "before": {
+        "pattern_id": "TOPC-151",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 2,
+        "center": "07-22",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/2",
+        "concentration_ratio": 0.4932,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": null,
+        "theme_family_count": 1,
+        "theme_family_names": [
+          "TH-AUTO"
+        ],
+        "is_derived": null,
+        "promotion_status": "INSUFFICIENT_DATA",
+        "effective_promotion_status": "INSUFFICIENT_DATA"
+      },
+      "after": {
+        "pattern_id": "TOPC-226",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 3,
+        "center": "04-27",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/3",
+        "concentration_ratio": 0.8493,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": 58.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 58.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "PHASE_STARTUP",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-146",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_STARTUP",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 5,
+        "center": "06-01",
+        "window": [
+          "04-10",
+          "07-23"
+        ],
+        "recurrence": "4/5",
+        "concentration_ratio": 0.7685,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 18.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-221",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "PHASE_STARTUP",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 5,
+        "center": "03-21",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/5",
+        "concentration_ratio": 0.7685,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 36.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "IQR=142.0 天 → 锚点跨三个以上季节，无法构建有意义的观察窗口（不得人为造窗口）。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "RETRACEMENT",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "stability"
+      ],
+      "before": {
+        "pattern_id": "TOPC-040",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "RETRACEMENT",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 2,
+        "center": "07-07",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/2",
+        "concentration_ratio": 0.1068,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": null,
+        "theme_family_count": 1,
+        "theme_family_names": [
+          "TH-AUTO"
+        ],
+        "is_derived": null,
+        "promotion_status": "INSUFFICIENT_DATA",
+        "effective_promotion_status": "INSUFFICIENT_DATA"
+      },
+      "after": {
+        "pattern_id": "TOPC-058",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "RETRACEMENT",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 4,
+        "center": "10-17",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/4",
+        "concentration_ratio": 0.8676,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 43.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "IQR=136.75 天 → 锚点跨三个以上季节，无法构建有意义的观察窗口（不得人为造窗口）。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "SECONDARY",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-041",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "SECONDARY",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 4,
+        "center": "08-12",
+        "window": [
+          "07-19",
+          "09-05"
+        ],
+        "recurrence": "3/4",
+        "concentration_ratio": 0.3425,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 9.0,
+        "theme_family_count": 1,
+        "theme_family_names": [
+          "TH-AUTO"
+        ],
+        "is_derived": null,
+        "promotion_status": "EXPLORATORY",
+        "effective_promotion_status": "EXPLORATORY"
+      },
+      "after": {
+        "pattern_id": "TOPC-059",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "SECONDARY",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 5,
+        "center": "08-04",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/5",
+        "concentration_ratio": 0.6986,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 50.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 50.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "THEME_FORMING",
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-036",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "THEME_FORMING",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 5,
+        "center": "06-21",
+        "window": [
+          "05-09",
+          "08-03"
+        ],
+        "recurrence": "4/5",
+        "concentration_ratio": 0.9123,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 86.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "after": {
+        "pattern_id": "TOPC-054",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "THEME_FORMING",
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 6,
+        "center": "04-02",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/6",
+        "concentration_ratio": 0.8515,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 181.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 181.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "THEME_FORMING->BROAD_CONFIRMATION",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "concentration_ratio",
+        "theme_family_count",
+        "stability"
+      ],
+      "before": {
+        "pattern_id": "TOPC-106",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "THEME_FORMING->BROAD_CONFIRMATION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 3,
+        "center": "07-03",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/3",
+        "concentration_ratio": 0.9863,
+        "stability": "INSUFFICIENT_N",
+        "loo_max_shift_days": 74.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "after": {
+        "pattern_id": "TOPC-161",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "THEME_FORMING->BROAD_CONFIRMATION",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 5,
+        "center": "07-03",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/5",
+        "concentration_ratio": 1.1055,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 108.0,
+        "theme_family_count": 4,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-PHARMA",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 108.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "ALL",
+        "ALL",
+        "THEME_FORMING->PEAK",
+        "PHASE_TRANSITION"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "theme_family_count",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-107",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "THEME_FORMING->PEAK",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 4,
+        "center": "06-29",
+        "window": [
+          "06-06",
+          "07-22"
+        ],
+        "recurrence": "3/4",
+        "concentration_ratio": 0.9041,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 12.0,
+        "theme_family_count": 2,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-PHARMA"
+        ],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-162",
+        "scope_type": "ALL",
+        "scope_id": "ALL",
+        "lifecycle_stage": "THEME_FORMING->PEAK",
+        "pattern_type": "PHASE_TRANSITION",
+        "sample_size": 6,
+        "center": "03-05",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/6",
+        "concentration_ratio": 0.9858,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 230.0,
+        "theme_family_count": 3,
+        "theme_family_names": [
+          "TH-AUTO",
+          "TH-COMM",
+          "TH-POWER"
+        ],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "留一法显示结果由单一年份主导（最大中心位移 230.0 天）→ 不构成时间规律。"
+    },
+    {
+      "key": [
+        "EVENT_TYPE",
+        "EVT-ALL",
+        null,
+        "UNKNOWN"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "concentration_ratio",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-191",
+        "scope_type": "EVENT_TYPE",
+        "scope_id": "EVT-ALL",
+        "lifecycle_stage": null,
+        "pattern_type": "UNKNOWN",
+        "sample_size": 8,
+        "center": "06-03",
+        "window": [
+          "05-13",
+          "06-24"
+        ],
+        "recurrence": "6/8",
+        "concentration_ratio": 0.5918,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 3.0,
+        "theme_family_count": 0,
+        "theme_family_names": [],
+        "is_derived": null,
+        "promotion_status": "EXPLORATORY",
+        "effective_promotion_status": "EXPLORATORY"
+      },
+      "after": {
+        "pattern_id": "TOPC-315",
+        "scope_type": "EVENT_TYPE",
+        "scope_id": "EVT-ALL",
+        "lifecycle_stage": null,
+        "pattern_type": "UNKNOWN",
+        "sample_size": 8,
+        "center": "03-03",
+        "window": [
+          "12-26",
+          "05-09"
+        ],
+        "recurrence": "7/8",
+        "concentration_ratio": 0.5072,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 19.0,
+        "theme_family_count": 0,
+        "theme_family_names": [],
+        "is_derived": null,
+        "promotion_status": "EXPLORATORY",
+        "effective_promotion_status": "EXPLORATORY"
+      },
+      "reason": "N=8 ≥ 5 且窗口可构建，但未全部满足门槛（集中度 0.5072 / 漂移 STABLE / 独立 Cycle 0 / 机制 LOW）→ 探索性，暂不进 Timeline。"
+    },
+    {
+      "key": [
+        "EVENT_TYPE",
+        "EVT-COMPANY",
+        null,
+        "UNKNOWN"
+      ],
+      "changed_fields": [
+        "center_date_label",
+        "concentration_ratio",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-187",
+        "scope_type": "EVENT_TYPE",
+        "scope_id": "EVT-COMPANY",
+        "lifecycle_stage": null,
+        "pattern_type": "UNKNOWN",
+        "sample_size": 6,
+        "center": "06-19",
+        "window": [
+          "05-28",
+          "07-11"
+        ],
+        "recurrence": "4/6",
+        "concentration_ratio": 0.56,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 3.0,
+        "theme_family_count": 0,
+        "theme_family_names": [],
+        "is_derived": null,
+        "promotion_status": "EXPLORATORY",
+        "effective_promotion_status": "EXPLORATORY"
+      },
+      "after": {
+        "pattern_id": "TOPC-310",
+        "scope_type": "EVENT_TYPE",
+        "scope_id": "EVT-COMPANY",
+        "lifecycle_stage": null,
+        "pattern_type": "UNKNOWN",
+        "sample_size": 6,
+        "center": "05-29",
+        "window": [
+          "04-17",
+          "07-10"
+        ],
+        "recurrence": "5/6",
+        "concentration_ratio": 0.5677,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 12.0,
+        "theme_family_count": 0,
+        "theme_family_names": [],
+        "is_derived": null,
+        "promotion_status": "EXPLORATORY",
+        "effective_promotion_status": "EXPLORATORY"
+      },
+      "reason": "N=6 ≥ 5 且窗口可构建，但未全部满足门槛（集中度 0.5677 / 漂移 STRONG_DRIFT / 独立 Cycle 0 / 机制 LOW）→ 探索性，暂不进 Timeline。"
+    },
+    {
+      "key": [
+        "EVENT_TYPE",
+        "EVT-POLICY",
+        null,
+        "CALENDAR_DRIVEN"
+      ],
+      "changed_fields": [
+        "sample_size",
+        "center_date_label",
+        "concentration_ratio",
+        "promotion_status",
+        "effective_promotion_status",
+        "window"
+      ],
+      "before": {
+        "pattern_id": "TOPC-190",
+        "scope_type": "EVENT_TYPE",
+        "scope_id": "EVT-POLICY",
+        "lifecycle_stage": null,
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 6,
+        "center": "06-17",
+        "window": [
+          "05-29",
+          "07-06"
+        ],
+        "recurrence": "4/6",
+        "concentration_ratio": 0.7978,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 4.0,
+        "theme_family_count": 0,
+        "theme_family_names": [],
+        "is_derived": null,
+        "promotion_status": "RESEARCH_ONLY",
+        "effective_promotion_status": "RESEARCH_ONLY"
+      },
+      "after": {
+        "pattern_id": "TOPC-314",
+        "scope_type": "EVENT_TYPE",
+        "scope_id": "EVT-POLICY",
+        "lifecycle_stage": null,
+        "pattern_type": "CALENDAR_DRIVEN",
+        "sample_size": 7,
+        "center": "04-16",
+        "window": [
+          null,
+          null
+        ],
+        "recurrence": "None/7",
+        "concentration_ratio": 0.6429,
+        "stability": "SPLIT",
+        "loo_max_shift_days": 30.0,
+        "theme_family_count": 0,
+        "theme_family_names": [],
+        "is_derived": null,
+        "promotion_status": "REJECTED",
+        "effective_promotion_status": "REJECTED"
+      },
+      "reason": "IQR=134.0 天 → 锚点跨三个以上季节，无法构建有意义的观察窗口（不得人为造窗口）。"
+    }
+  ],
+  "disappeared_candidates": [],
+  "new_candidates": [
+    {
+      "pattern_id": "TOPC-311",
+      "scope_type": "EVENT_TYPE",
+      "scope_id": "EVT-INDUSTRY",
+      "lifecycle_stage": null,
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "03-21",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 0,
+      "theme_family_names": [],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-046",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "BROAD_CONFIRMATION",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "06-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.4548,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-155",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "BROAD_CONFIRMATION->MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-156",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "BROAD_CONFIRMATION->PEAK",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "12-22",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-220",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "DB_main_rise->decline",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-219",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "DB_main_rise->retracement",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-218",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "DB_startup->main_rise",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "05-26",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.5452,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-051",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "DECLINING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-044",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "04-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6329,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-152",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "EARLY_SIGNAL->BROAD_CONFIRMATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "06-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.4548,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-151",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "EARLY_SIGNAL->THEME_FORMING",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "08-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3151,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-052",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "MAIN_END",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "10-11",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-047",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "MAIN_RISE",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 3,
+      "center": "08-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/3",
+      "concentration_ratio": 1.1233,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": 221.0,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "REJECTED",
+      "effective_promotion_status": "REJECTED"
+    },
+    {
+      "pattern_id": "TOPC-157",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "MAIN_RISE->PEAK",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "01-23",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.526,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-048",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "01-23",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.526,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-158",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PEAK->MAIN_END",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "10-11",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-212",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "08-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3151,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-217",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-214",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "12-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.1425,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-213",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 3,
+      "center": "04-09",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/3",
+      "concentration_ratio": 1.0301,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": 71.0,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "REJECTED",
+      "effective_promotion_status": "REJECTED"
+    },
+    {
+      "pattern_id": "TOPC-215",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-216",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "03-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-211",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "04-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6329,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-049",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "RETRACEMENT",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "09-06",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.526,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-050",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "SECONDARY",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "03-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-045",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "08-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3151,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-153",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "THEME_FORMING->BROAD_CONFIRMATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "06-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.4548,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-154",
+      "scope_type": "RULE",
+      "scope_id": "rule_infocomm",
+      "lifecycle_stage": "THEME_FORMING->PEAK",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "01-23",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.526,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-037",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "BROAD_CONFIRMATION",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "08-21",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.2959,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-147",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "BROAD_CONFIRMATION->MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-148",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "BROAD_CONFIRMATION->PEAK",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-02",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-210",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "DB_main_rise->decline",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.4274,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-209",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "DB_main_rise->retracement",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "11-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-208",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "DB_startup->main_rise",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "03-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3973,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-042",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "DECLINING",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "09-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.4274,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-035",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "11-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-144",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "EARLY_SIGNAL->BROAD_CONFIRMATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "08-21",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.2959,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-143",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "EARLY_SIGNAL->THEME_FORMING",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "12-30",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.2877,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-043",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "MAIN_END",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "12-30",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.0082,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-038",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "MAIN_RISE",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "12-22",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.1644,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-149",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "MAIN_RISE->PEAK",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-02",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-039",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "09-02",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-150",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PEAK->MAIN_END",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "12-30",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.0082,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-202",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "02-18",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.1178,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-207",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.4274,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-204",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-02",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-203",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "03-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3973,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-205",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "12-13",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6247,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-206",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "04-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-201",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "11-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-040",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "RETRACEMENT",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "12-13",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6247,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-041",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "SECONDARY",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "04-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-036",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "12-30",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.2877,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-145",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "THEME_FORMING->BROAD_CONFIRMATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "08-21",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.2959,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-146",
+      "scope_type": "RULE",
+      "scope_id": "rule_power_equipment",
+      "lifecycle_stage": "THEME_FORMING->PEAK",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-02",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-069",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "04-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6329,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-071",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "01-23",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.526,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-239",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "08-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3151,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-244",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-241",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "12-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.1425,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-240",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 3,
+      "center": "04-09",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/3",
+      "concentration_ratio": 1.0301,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": 71.0,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "REJECTED",
+      "effective_promotion_status": "REJECTED"
+    },
+    {
+      "pattern_id": "TOPC-242",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-243",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "03-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-238",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "04-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6329,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-070",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "08-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3151,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-072",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "06-06",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-074",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "02-24",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-246",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "10-31",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-251",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-248",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "02-24",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-247",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "02-21",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-249",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-250",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "03-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-245",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "06-06",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-073",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-5G",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "10-31",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-075",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "04-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6329,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-077",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "01-23",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.526,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-253",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "08-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3151,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-258",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-255",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "12-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.1425,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-254",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 3,
+      "center": "04-09",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/3",
+      "concentration_ratio": 1.0301,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": 71.0,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "REJECTED",
+      "effective_promotion_status": "REJECTED"
+    },
+    {
+      "pattern_id": "TOPC-256",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-257",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "03-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-252",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "04-28",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6329,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-076",
+      "scope_type": "THEME",
+      "scope_id": "TH-COMM-OPTICAL",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "08-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3151,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-COMM"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-092",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "11-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-094",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 2,
+      "center": "09-02",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-277",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "02-18",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.1178,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-282",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-19",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.4274,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-279",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "09-02",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-278",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "03-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 1.3973,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-280",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "12-13",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.6247,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-281",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "04-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-276",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 2,
+      "center": "11-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.9041,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-093",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "SEASONAL",
+      "sample_size": 2,
+      "center": "12-30",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/2",
+      "concentration_ratio": 0.2877,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-095",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "01-10",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-097",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "07-09",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-284",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "04-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-288",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "10-15",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-286",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "07-09",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-285",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-01",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-287",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-20",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-283",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "01-10",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-096",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-GRID",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "01-16",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-098",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "09-22",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-100",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "10-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-290",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "12-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-295",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-24",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-292",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "10-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-291",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "06-20",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-293",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "11-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-294",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "04-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-289",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "09-22",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-099",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-PV",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "12-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-101",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "EARLY_SIGNAL",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "09-22",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-103",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PEAK",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "10-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-297",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PHASE_ACCELERATION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "12-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-302",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PHASE_DECLINE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "08-24",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-299",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PHASE_DIFFUSION",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "10-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-298",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PHASE_MAIN_RISE",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "06-20",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-300",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PHASE_RETRACEMENT",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "11-05",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-301",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PHASE_SECONDARY_RALLY",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "04-27",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-296",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "PHASE_STARTUP",
+      "pattern_type": "PHASE_TRANSITION",
+      "sample_size": 1,
+      "center": "09-22",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    },
+    {
+      "pattern_id": "TOPC-102",
+      "scope_type": "THEME",
+      "scope_id": "TH-POWER-WIND",
+      "lifecycle_stage": "THEME_FORMING",
+      "pattern_type": "UNKNOWN",
+      "sample_size": 1,
+      "center": "12-12",
+      "window": [
+        null,
+        null
+      ],
+      "recurrence": "None/1",
+      "concentration_ratio": null,
+      "stability": "INSUFFICIENT_N",
+      "loo_max_shift_days": null,
+      "theme_family_count": 1,
+      "theme_family_names": [
+        "TH-POWER"
+      ],
+      "is_derived": null,
+      "promotion_status": "INSUFFICIENT_DATA",
+      "effective_promotion_status": "INSUFFICIENT_DATA"
+    }
+  ],
+  "structural_conclusion": {
+    "effective_timeline_candidate_distinct_structures_v0_4": 1,
+    "effective_timeline_candidate_distinct_structures_v0_5": 1,
+    "upgrades": 0,
+    "downgrades_to_rejected": 16,
+    "note": "本轮全部 16 处状态变化均为**降级**（→REJECTED），且全部发生在 scope_type ∈ {ALL, EVENT_TYPE} 的跨库聚合候选上；无任何候选升级。"
+  }
+}

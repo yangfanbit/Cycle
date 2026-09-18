@@ -5,9 +5,9 @@
 > 所有数字均可由仓库内命令复算；发现不一致时**以仓库为准**。
 
 - **重建日期**：2026-09-17（Repository Recovery 之后重写，未照抄旧版）
-- **最近更新**：2026-09-18 · **Phase 7.4B — Date Claim Cleanup + Evidence Normalization**（`company` 0→3）
-- **HEAD**：见 `git log -1`（`fix(research): clean unsupported historical date claims`）· 本文件随该提交入库
-- **Phase 7.4B 前的基线**：`HEAD = origin/main = 2c16058` · ahead / behind `0 / 0` · 工作树 clean
+- **最近更新**：2026-09-18 · **Time Observation Discovery v0.5**（四族齐备后首次完整重跑；**独立结构仍 = 1**）
+- **HEAD**：见 `git log -1`（`research: run time observation discovery v0.5`）· 本文件随该提交入库
+- **v0.5 前的基线**：`HEAD = origin/main = d3fa89f` · ahead / behind `0 / 0` · 工作树 clean
 
 ---
 
@@ -202,6 +202,15 @@ memory canonical 位置    .workbuddy/memory/      ← 不是 .workbuddy-ai/
   **`capital` 保持 0**（全库无此类证据，未虚构）。
   **TOP-01 与 anchor 完全未变**；`UNCLASSIFIED` 仍为 0。
   报告：`docs/PHASE_7_4B_DATE_CLAIM_CLEANUP_REPORT_2026-09-18.md`。
+- **Time Observation Discovery v0.5（2026-09-18，四族齐备后首次完整重跑）**：
+  `ROUND_PROFILE 0.5` 独立登记（`direct_resolution=False` + `derivation_gate=True`，**与 v0.4 口径一致**）。
+  候选 191 → **315**；**独立稳健结构仍 = 1**（`effective_timeline_candidate_distinct_structures`）。
+  TOP-01 **全项完全一致**（N=7 / 06-11 / 05-27~06-26 / 5-7）。
+  **跨族稳健结构 = 0**：`TH-POWER` / `TH-COMM` 各只有 2 个 Cycle，低于 N ≥ 3 → **0 个 family 级候选**。
+  16 处状态变化**全部为降级**（跨库 `ALL`/`EVENT_TYPE` 候选被异季锚点稀释 → REJECTED）。
+  产物：`time_observation_candidate_pool_v0_5.{json,csv}` ·
+  `time_observation_candidate_diff_v0_4_to_v0_5.json` · `Time_Observation_Discovery_v0_5.md`。
+  **v0.2/v0.3/v0.4 产物逐字节保留。**
 - **Discovery 轮次**（研究侧候选池，非产品 Artifact）：
 
   | 轮次 | 口径 | 产物 |
@@ -404,38 +413,34 @@ authoritative `promotion_status`（旧字段降为兼容输入，生成器自检
 | 修复的断裂 | `CC-2026-OFFSHORE-WIND` / `CC-2026-COMPUTE-POWER` | **`CC-2026-OPTICAL-LINK`** |
 | 未解决 | 核验 0/24 · `company`/`capital` 仍 0 | 同（**两轮均未增加核验**）→ **Phase 7.4B 已修 `company`（0→3）** |
 
-**下一步（默认路径）**
+**下一步（场景 B：仍只有 1 个独立结构）**
 
-> **Time Observation Discovery 新轮次** —— 三项前置条件已全部完成：
-> Date Claim Cleanup ✅ + Evidence Normalization ✅ + **Coverage Audit v0.3 ✅（已确认正常）**。
+> **建议：Time Observation 暂时冻结，重点转向 `Structural Analogy Feasibility Check`。**
 >
-> ⚠️ **重跑必须新 `ROUND_PROFILE`（v0.5），不得覆盖 v0.2 / v0.3 / v0.4。**
+> **不建议现在做 Wave 1C。**
 
-**为什么现在可以进 Discovery**
+**为什么（基于 v0.5 实测，不是推测）**
 
-1. Phase 7.4B 已完成用户设定的三项前置条件，且 Coverage Audit v0.3 的 `--check` **PASS**（可复现）。
-2. v0.3 已把 `theme_family_count` 确认为 **4**、`company` 纳入统计、
-   `declared_but_no_history` 收窄至 **`[高端装备]`** —— 覆盖度与词表口径均已稳定，
-   可安全作为 Discovery 的新输入基线。
-3. 继续做「数据质量」的边际收益已下降：7.4A 已穷尽 TOP-01 的仓库内证据，
-   7.4B 已清理已定位的断言问题。
+1. **已穷尽当前数据下的时间结构空间**：315 个候选 × 7 类模式 × 4 个 scope 层级，
+   唯一稳健结构仍是 `TH-AUTO` EARLY_SIGNAL。继续为了 Pattern 数量补数据，边际收益已极低。
+2. **POWER / COMM 的瓶颈是样本量（各 2 个 Cycle）**，不是方法；
+   即便补到 N ≥ 3，仍需先证明其时间结构**独立于 AUTO** —— 而本轮跨族候选 **0 晋级**。
+3. **本轮证明「家族数增加 ≠ 跨族证据增加」**：Macro Themes 3 → 4，
+   但 `independent_theme_family_count` **仍为 1**。
+4. Structural Analogy 回答的是另一个问题（「当前候选在历史上像谁」），
+   **不依赖新增时间结构**，且 `theme_family_count = 4` 已满足其最低门槛。
 
-**替代方案（若优先补可信度）**
+**替代方案（若用户要求继续补覆盖度）**：Wave 1C（高端装备）——
+但须预期其同样因样本量不足而不产出 family 级候选。
 
-- 为 `2023-06-12` / `2024-06-11` 寻找**独立 Tier ≤2 来源**
-  （若能找到 → 两锚点可升 VERIFIED，TOP-01 → **3/7 或 4/7**）；
-- 或做**全库 evidence 描述 vs 源文一致性抽检**（7.4B §11.1 的系统性观察：
-  E-2024-03 的情况提示同类问题可能不止 2 条）。
+**仍需长期解决**
 
-**仍需长期解决（不在下一步内）**
-
-- **DB 层日期核验仍为 0/24**（`campaign_date_observations.verified_date` 全为 NULL）——
-  ⚠️ 注意区分三层：DB 的 `verified_date`（0/24）≠ 核验**元数据层**的
-  `time_observation_anchor_verification_v0_1.json`（VERIFIED 3 / UNKNOWN 13；TOP-01 2/7）
-  ≠ **日期断言的来源支撑**（7.4B 处理的对象）。
-- `capital` 的 `evidence_type` 为 0 —— 这是**真实为 0**（全库无可归类证据），
-  词表键已在 7.4B 补齐；**不得为凑齐 6 类而虚构**。
-- `evidence_type` 中英文混用未统一 · 交易日历不完整 · V2X 概念指数无行情数据。
+- **DB 层日期核验仍为 0/24**（`campaign_date_observations.verified_date` 全为 NULL）。
+  ⚠️ 区分三层：DB `verified_date`（0/24）≠ 核验**元数据层**（VERIFIED 3 / UNKNOWN 13；TOP-01 2/7）
+  ≠ **日期断言的来源支撑**（Phase 7.4B 处理的对象）。
+- `capital` 的 `evidence_type` 为 **0（真实为 0**，全库无可归类证据；词表键已补齐，**不得虚构**）。
+- `evidence_type` 中英文混用未统一 · 交易日历不完整 · V2X 概念指数无行情数据 ·
+  `INDUSTRY_EVENT_DRIVEN` / `DATA_RELEASE_DRIVEN` 两类模式 **`NOT_AVAILABLE`**（缺行业事件 / 数据发布日历）。
 - 交易日历仍不完整。
 3. 三类快照型产物（Product Artifact / Discovery 候选池 / Coverage Matrix）持续**滞后于数据集**，
    继续扩张前应先决定重跑口径（**Time Observation 必须新 `ROUND_PROFILE` v0.5，不得覆盖 v0.3 / v0.4**）。

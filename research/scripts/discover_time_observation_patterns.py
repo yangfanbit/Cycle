@@ -164,11 +164,24 @@ RULESET_VERSION = "time-observation-discovery-" + DEFAULT_ROUND
 
 ROUND_PROFILES = {
     # v0.2：Macro Theme 用 direct（字面名称匹配）；无派生门
-    "0.2": {"direct_resolution": True, "derivation_gate": False},
+    "0.2": {"direct_resolution": True, "derivation_gate": False,
+            "label": "Phase 7.2 基线（2 个 Macro Theme：AUTO / PHARMA）"},
     # v0.3：改用 canonical CMTR v1；仍无派生门
-    "0.3": {"direct_resolution": False, "derivation_gate": False},
+    "0.3": {"direct_resolution": False, "derivation_gate": False,
+            "label": "Macro Theme Canonical Resolution 之后"},
     # v0.4：canonical CMTR v1 + 派生结构门
-    "0.4": {"direct_resolution": False, "derivation_gate": True},
+    "0.4": {"direct_resolution": False, "derivation_gate": True,
+            "label": "Phase 7.3.2 派生结构门（3 个 Macro Theme：AUTO / PHARMA / POWER）"},
+    # v0.5：canonical CMTR v1 + 派生结构门（**口径不变，数据集与词表已前进**）
+    #   —— 这是四族（AUTO / PHARMA / POWER / COMM）齐备后的**首次完整重跑**。
+    #   **口径不变量**：direct_resolution / derivation_gate 与 v0.4 完全一致
+    #   —— 本轮**不调整**任何阈值、集中度、LOO、稳定性或 Promotion Gate 规则。
+    #   数据集差异（相对 v0.4）：新增 TH-COMM（Wave 1B）与 TH-POWER 的 2 个 Cycle（Wave 1A）；
+    #     evidence normalization 补 `company` 键（Phase 7.4B）；日期断言清理（Phase 7.4B）。
+    #   本档案**不复用 v0.4 条目** —— 新轮次必须独立登记，使「口径演进」这一事实可追溯。
+    "0.5": {"direct_resolution": False, "derivation_gate": True,
+            "label": ("四族齐备后的首次完整重跑（4 个 Macro Theme："
+                      "AUTO / PHARMA / POWER / COMM；canonical CMTR v1 + 派生结构门）")},
 }
 
 

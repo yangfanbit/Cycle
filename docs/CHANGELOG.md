@@ -7,6 +7,123 @@
 
 ---
 
+## 2026-09-18 · Research · Time Observation Discovery v0.5（四族齐备后首次完整重跑）
+
+**性质：Research-only 新研究轮次。零 Product 变更、零阈值变更、零 schema 变更。**
+**核心问题**：四族齐备后，ThreeC 的时间型历史结构是否**仍然只有 1 个**独立稳健结构？
+**答案（由运行结果决定）**：**是。仍为 1。**
+**报告**：`research/research/reports/Time_Observation_Discovery_v0_5.md`。
+
+### 1 · ROUND_PROFILE 0.5（独立登记，未复用 v0.4）
+
+`direct_resolution=False` · `derivation_gate=True` —— **与 v0.4 完全一致（口径不变量）**。
+**未调整** N 阈值 / concentration / LOO / stability / Promotion Gate 任何规则。
+v0.2 / v0.3 / v0.4 产物**逐字节保留**。
+
+### 2 · Dataset
+
+Macro Themes **3 → 4**（+`TH-COMM`）· Theme Cycles 11 → **13** · Campaigns 11 → **13** ·
+Evidence 67 → **83** · Events（DB/export）39/42 → **49/52** · 观测年 2019–2025（2018 = `no_clear_campaign`，**保留既有语义**）。
+
+### 3 · Discovery 结果
+
+| 指标 | v0.4 | v0.5 |
+|---|---:|---:|
+| Raw candidates | 191 | **315**（+124） |
+| distinct samples | 89 | **139** |
+| N ≥ 3 / N ≥ 5 | 72 / 30 | **81 / 34** |
+| p ≤ 0.05 | 49 | 50 |
+| **Bonferroni 通过** | `TOPC-113, TOPC-130` | **`[]`（无）** |
+| TIMELINE_CANDIDATE（原始 / effective） | 4 / 2 | 4 / 2 |
+| **★ independent structures** | **1** | **1** |
+
+**★ 多重比较的关键观察**：扫描空间 191 → 315（+65%）→ Bonferroni 阈值收紧
+0.000262 → **0.000159** → **原先「最漂亮」的两条候选不再通过**。
+这正是「不因某个 p 值很小就晋级」应有的行为。
+
+**pattern_type 覆盖**：`PHASE_TRANSITION` / `CALENDAR_DRIVEN` / `SEASONAL` / `HOLIDAY_RELATIVE` 均有候选；
+`INDUSTRY_EVENT_DRIVEN` / `DATA_RELEASE_DRIVEN` 记为 **`NOT_AVAILABLE`**（≠ `NO_PATTERN`）。
+
+### 4 · v0.4 → v0.5 Diff
+
+匹配键 `(scope_type, scope_id, lifecycle_stage, pattern_type)`：
+共有 **191** · 消失 **0** · 新增 **124** · 数值一致 164 · 数值变化 27 · **状态变化 16**。
+
+**★ 16 处状态变化全部为「降级 → REJECTED」，无任何升级**，
+且**全部发生在 `scope_type ∈ {ALL, EVENT_TYPE}` 的跨库聚合候选上**。
+降级原因（正当统计理由）：`IQR 122.0~136.8 天`（锚点跨三个以上季节）·
+`留一法显示由单一年份主导（最大中心位移 50.0 天）`。
+**归因**：新增 POWER / COMM 的异季锚点稀释了跨库候选 → 离散度暴增 → 触发既有 REJECTED 规则。
+**这是数据扩容带来的正当筛选，不是规则变更。**
+
+变化归因：数据扩容 **43 处** · taxonomy canonicalization 0 · evidence normalization 0 · new gate 0。
+
+### 5 · TOP-01 Regression：**全项完全一致**
+
+`N=7` · `center=06-11` · `window=05-27~06-26` · `recurrence=5/7` · `concentration=0.4018` ·
+`stability=SPLIT/STABLE` · `loo_max_shift=5.0` · `single_year_dominance=False` · `IQR=16.0` ·
+`promotion_status=TIMELINE_CANDIDATE` · `effective=TIMELINE_CANDIDATE` · `years` 与 `recurrence_years` 均未变。
+内置 `top01_regression` 报 **PASS**。
+
+### 6 · Cross-family：**跨族稳健结构 = 0**
+
+- 跨族候选（`theme_family_count ≥ 2`）共 **25 条（7.9%）**，
+  **全部**是 `ALL:ALL` 跨库聚合 → **REJECTED 21 / RESEARCH_ONLY 4 / TIMELINE_CANDIDATE 0**。
+- `scope_type = THEME_FAMILY` 产出：`TH-AUTO` 26 条（最大 N=7）· `TH-PHARMA` 24 条（最大 N=3）·
+  **`TH-POWER` 0 条 · `TH-COMM` 0 条** —— 二者各只有 2 个 Cycle，**低于 N ≥ 3 门槛**。
+- 非 AUTO 的 THEME/THEME_FAMILY 候选 151 条，**`RESEARCH_ONLY` / `TIMELINE_CANDIDATE` = 0**。
+- 两个 TIMELINE_CANDIDATE **全部只由 `TH-AUTO` 单族驱动**（`theme_family_count = 1`）。
+
+**★ `N` vs `independent_theme_family_count`**：`N` 未变（7）· **`independent_theme_family_count` 未变（1）**。
+「四族齐备」提升的是**数据覆盖**，**不是跨族证据**。
+
+### 7 · Derived Structures / 结构计数
+
+`is_derived = True` 30 条（与 v0.4 相同），**全部来自 `TH-AUTO`**，
+派生自 `TOPC-001` / `TOPC-018`（EARLY_SIGNAL 结构）；26 条 → `EXPLORATORY`，4 条 → `INSUFFICIENT_DATA`。
+`None` 语义保持「**无证据 ≠ 独立**」。**未恢复 v0.3 的错误**。
+
+结构计数链：4 条 TIMELINE_CANDIDATE → Jaccard 去重 **2 个结构** → 派生门排除 MAIN_RISE
+→ **effective distinct structures = 1**（`TOPC-001` 与 `TOPC-018` 同结构，Jaccard = 1.0）。
+
+### 8 · 最终指标
+
+> **v0.4 independent structures = 1**
+> **v0.5 independent structures = 1**
+> 新结构 0 · 消失结构 0 · 合并结构 0 · 降级结构 0（16 条降级均不属任何独立结构）
+
+**场景 = 情况 B**（仍只有 1 个独立结构）。
+
+### 9 · 验证
+
+```
+discover_time_observation_patterns.py --round 0.5 --check   PASS（逐字节）+ TOP-01 回归 PASS
+build_time_observation_patterns.py --check                  PASS
+audit_historical_coverage.py --round 0.3 --check            PASS
+7 个 research 校验器                                         全 PASS
+npm test 395/395 · tsc -b exit 0 · build PASS
+```
+
+### 10 · 未修改
+
+`schema/schema.sql` · `contracts/` · `exports/` · `src/**`（含 Product Artifact 与 UI）·
+`research/current/` · 现有 Campaign 事实 · **v0.2/v0.3/v0.4 全部产物** ·
+Promotion Gate 全部规则 · 任何测试文件。
+
+**明确回答**：schema changed **NO** · export contract changed **NO** ·
+现有 Campaign 事实 changed **NO** · Product changed **NO** · 阈值 changed **NO** · breaking change **NO**。
+
+### 11 · 下一步（场景 B）
+
+**建议：Time Observation 暂时冻结，重点转向 `Structural Analogy Feasibility Check`。**
+
+理由：本轮已穷尽当前数据下的时间结构空间（315 候选 / 7 类模式 / 4 个 scope 层级），
+唯一稳健结构仍是 AUTO EARLY_SIGNAL；POWER / COMM 的瓶颈是**样本量（各 2 个 Cycle）**而非方法；
+且本轮证明**「家族数增加 ≠ 跨族证据增加」**。
+**不建议现在做 Wave 1C** —— 先做 Feasibility Check 更有效率。
+
+---
+
 ## 2026-09-18 · Research · Phase 7.4B — Historical Date Claim Cleanup + Evidence Normalization
 
 **性质：数据质量修复（清理无来源日期断言 + evidence_type 规范化 + Coverage Audit v0.3）。**
