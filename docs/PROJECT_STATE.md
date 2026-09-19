@@ -4,11 +4,11 @@
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
 - 更新日期：2026-09-19
-- HEAD：`60ae69f`
+- HEAD：`634b396`
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- 最近完成：Structural Analogy Explanation Artifact v0.1
+- 最近完成：Product Similarity Architecture Gate v0.1 — PASS
 
 ## 1. 项目当前定位
 
@@ -33,7 +33,8 @@
 当前已完成：
 - Structural Analogy Rule Set v0.2 冻结
 - Structural Analogy Research v0.2 baseline
-- Structural Analogy Explanation Artifact v0.1
+- Structural Analogy Explanation Artifact v0.2
+- Product Similarity Architecture Gate v0.1 — PASS
 - Time Observation v0.5
 - CMTR v1
 - Historical Driver Canonicalization
@@ -154,9 +155,9 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# Product Similarity Architecture Gate v0.1
+# Product Adapter v0.1
 
-这一步先于 Product Adapter。
+Architecture Gate v0.1 已 PASS；现在进入 Research → Product 的第一段代码实现。
 
 目标：
 - 用实际 Product 代码核对 Calendar / Lifecycle / CurrentSimilarity / Structural Analogy 的职责边界
@@ -170,17 +171,17 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ### Gate 边界
 
-- 不实现 Adapter
-- 不改 UI
+- 只实现 Artifact → Product View Model
+- 不进入 UI
 - 不改 schema
 - 不改 export contract v1.0
 - 不改 Structural Analogy Rule Set v0.2
 - 不重新运行新一轮 Structural Analogy Research
 - 不进入 Wave 1C
 
-Gate 通过后再进入：
+完成后再进入：
 
-`Structural Analogy Artifact → Product Adapter → UI Integration`
+`Product Adapter → UI Integration → UX Review`
 
 ## 8. 当前质量债务
 
@@ -190,7 +191,7 @@ Gate 通过后再进入：
 - market / temporal = SUPPLEMENTARY_ONLY
 - historical coverage imbalance
 
-这些问题暂不阻塞 Product Architecture Gate。
+这些问题暂不阻塞 Product Adapter。
 
 ## 9. 验证基线
 
