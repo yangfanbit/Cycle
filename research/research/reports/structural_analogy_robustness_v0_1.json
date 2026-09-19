@@ -1,0 +1,1679 @@
+{
+ "artifact": "structural_analogy_robustness",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/build_structural_analogy_robustness_v0_1.py",
+ "position": "Research-only robustness audit —— 不修改 v0.1 引擎与任何旧产物。",
+ "not_a": [
+  "similarity score",
+  "confidence %",
+  "probability",
+  "top N",
+  "best analogue",
+  "ranking",
+  "product readiness"
+ ],
+ "baseline_freeze": {
+  "candidate_count": 5,
+  "historical_cycle_count": 17,
+  "comparison_pairs": 85,
+  "lifecycle": {
+   "PARTIAL": 24,
+   "MATCH": 58,
+   "MISMATCH": 3
+  },
+  "driver": {
+   "PARTIAL": 50,
+   "MISMATCH": 29,
+   "MATCH": 1,
+   "NOT_AVAILABLE": 5
+  },
+  "evidence_sequence": {
+   "NOT_AVAILABLE": 30,
+   "MISMATCH": 14,
+   "PARTIAL": 29,
+   "MATCH": 12
+  },
+  "event_structure": {
+   "PARTIAL": 74,
+   "NOT_AVAILABLE": 5,
+   "MISMATCH": 6
+  },
+  "final_status": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 46,
+   "THEME_ONLY": 3,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 27
+  },
+  "self_check_reproduced": true
+ },
+ "A_dimension_ablation": {
+  "A1_lifecycle_removed": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 4,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 3,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "changed_pairs": 0,
+   "supported_retained": 4,
+   "supported_delta": 0,
+   "changed_detail": []
+  },
+  "A2_driver_removed": {
+   "counts": {
+    "strict": 33,
+    "STRUCTURAL_SUPPORTED": 33,
+    "STRUCTURAL_PARTIAL": 45,
+    "THEME_ONLY": 2,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 0
+   },
+   "changed_pairs": 51,
+   "supported_retained": 33,
+   "supported_delta": 29,
+   "changed_detail": [
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2020-NEV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2021-NEV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2022-POLICY",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2024-ROBOTAXI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2025-ROBOTAXI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2019-COMM-5G",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2023-COMM-OPTICAL",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2019-PHARMA-INNOV",
+     "from": "THEME_ONLY",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2020-POWER-NE",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2022-POWER-GRID",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "RC-2020-PANDEMIC",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2021-NEV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2022-POLICY",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2023-AD",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2024-ROBOTAXI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2019-COMM-5G",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2023-COMM-OPTICAL",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2019-PHARMA-INNOV",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2020-POWER-NE",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2022-POWER-GRID",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "RC-2023-HUAWEI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2021-NEV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2022-POLICY",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2024-ROBOTAXI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2025-ROBOTAXI",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2019-COMM-5G",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2023-COMM-OPTICAL",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2019-PHARMA-INNOV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2020-POWER-NE",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2022-POWER-GRID",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "RC-2020-PANDEMIC",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2019-AD",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2020-NEV",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2021-NEV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2022-POLICY",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2023-AD",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2024-V2X",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2024-ROBOTAXI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2020-POWER-NE",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2022-POWER-GRID",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "RC-2021-TCM",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2020-NEV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2022-POLICY",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2023-AD",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2024-ROBOTAXI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2025-ROBOTAXI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2023-COMM-OPTICAL",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2019-PHARMA-INNOV",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2022-POWER-GRID",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "RC-2023-HUAWEI",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "RC-2020-PANDEMIC",
+     "from": "NO_VALID_CORRESPONDENCE",
+     "to": "STRUCTURAL_PARTIAL"
+    }
+   ]
+  },
+  "A3_evidence_sequence_removed": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 5,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 2,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "changed_pairs": 2,
+   "supported_retained": 5,
+   "supported_delta": 1,
+   "changed_detail": [
+    {
+     "candidate_id": "CC-2026-COMPUTE-POWER",
+     "historical_cycle": "C-2025-ROBOTAXI",
+     "from": "STRUCTURAL_PARTIAL",
+     "to": "STRUCTURAL_SUPPORTED"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2020-POWER-NE",
+     "from": "THEME_ONLY",
+     "to": "STRUCTURAL_PARTIAL"
+    }
+   ]
+  },
+  "A4_event_structure_removed": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 4,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 3,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "changed_pairs": 0,
+   "supported_retained": 4,
+   "supported_delta": 0,
+   "changed_detail": []
+  },
+  "necessity_ablation": {
+   "N1_lifecycle_forced_worst": {
+    "dimension": "lifecycle",
+    "counts": {
+     "strict": 0,
+     "STRUCTURAL_SUPPORTED": 0,
+     "STRUCTURAL_PARTIAL": 50,
+     "THEME_ONLY": 3,
+     "INSUFFICIENT_EVIDENCE": 5,
+     "NO_VALID_CORRESPONDENCE": 27
+    },
+    "supported_retained": 0,
+    "supported_lost": 4,
+    "lost_detail": [
+     {
+      "candidate_id": "CC-2026-BCI-MEDTECH",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-EMBODIED-AI",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2025-ROBOTAXI",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2023-COMM-OPTICAL",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     }
+    ],
+    "is_load_bearing": true
+   },
+   "N2_driver_forced_worst": {
+    "dimension": "driver",
+    "counts": {
+     "strict": 0,
+     "STRUCTURAL_SUPPORTED": 0,
+     "STRUCTURAL_PARTIAL": 0,
+     "THEME_ONLY": 7,
+     "INSUFFICIENT_EVIDENCE": 5,
+     "NO_VALID_CORRESPONDENCE": 73
+    },
+    "supported_retained": 0,
+    "supported_lost": 4,
+    "lost_detail": [
+     {
+      "candidate_id": "CC-2026-BCI-MEDTECH",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "NO_VALID_CORRESPONDENCE"
+     },
+     {
+      "candidate_id": "CC-2026-EMBODIED-AI",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "NO_VALID_CORRESPONDENCE"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2025-ROBOTAXI",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "NO_VALID_CORRESPONDENCE"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2023-COMM-OPTICAL",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "THEME_ONLY"
+     }
+    ],
+    "is_load_bearing": true
+   },
+   "N3_sequence_forced_worst": {
+    "dimension": "sequence",
+    "counts": {
+     "strict": 0,
+     "STRUCTURAL_SUPPORTED": 0,
+     "STRUCTURAL_PARTIAL": 46,
+     "THEME_ONLY": 7,
+     "INSUFFICIENT_EVIDENCE": 5,
+     "NO_VALID_CORRESPONDENCE": 27
+    },
+    "supported_retained": 0,
+    "supported_lost": 4,
+    "lost_detail": [
+     {
+      "candidate_id": "CC-2026-BCI-MEDTECH",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-EMBODIED-AI",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2025-ROBOTAXI",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2023-COMM-OPTICAL",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "THEME_ONLY"
+     }
+    ],
+    "is_load_bearing": true
+   },
+   "N4_event_forced_worst": {
+    "dimension": "event",
+    "counts": {
+     "strict": 0,
+     "STRUCTURAL_SUPPORTED": 0,
+     "STRUCTURAL_PARTIAL": 50,
+     "THEME_ONLY": 3,
+     "INSUFFICIENT_EVIDENCE": 5,
+     "NO_VALID_CORRESPONDENCE": 27
+    },
+    "supported_retained": 0,
+    "supported_lost": 4,
+    "lost_detail": [
+     {
+      "candidate_id": "CC-2026-BCI-MEDTECH",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-EMBODIED-AI",
+      "historical_cycle": "C-2023-AD",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2025-ROBOTAXI",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     },
+     {
+      "candidate_id": "CC-2026-OPTICAL-LINK",
+      "historical_cycle": "C-2023-COMM-OPTICAL",
+      "from": "STRUCTURAL_SUPPORTED",
+      "to": "STRUCTURAL_PARTIAL"
+     }
+    ],
+    "is_load_bearing": true
+   }
+  },
+  "interpretation": {
+   "requirement_ablation": "A1–A4 把维度置为**中性通过** → 测该维度是否为「必要条件」。SUPPORTED 数上升越多，说明该维度**越有约束力**。",
+   "necessity_ablation": "N1–N4 把维度置为**最差** → 测该维度是否「承重」。SUPPORTED 下降越多，说明该维度**越承重**。",
+   "load_bearing_dimensions": [
+    "N1_lifecycle_forced_worst",
+    "N2_driver_forced_worst",
+    "N3_sequence_forced_worst",
+    "N4_event_forced_worst"
+   ],
+   "binding_dimensions": [
+    "A2_driver_removed",
+    "A3_evidence_sequence_removed"
+   ]
+  }
+ },
+ "B_evidence_ablation": [
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2023-AD",
+   "direct_driver_evidence_count": 3,
+   "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+   "verdict": "ROBUST"
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2023-AD",
+   "direct_driver_evidence_count": 3,
+   "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+   "verdict": "ROBUST"
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2025-ROBOTAXI",
+   "direct_driver_evidence_count": 2,
+   "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+   "verdict": "ROBUST"
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2023-COMM-OPTICAL",
+   "direct_driver_evidence_count": 2,
+   "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+   "verdict": "ROBUST"
+  }
+ ],
+ "C_driver_ablation": {
+  "C1_driver_match_only": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 1,
+    "STRUCTURAL_PARTIAL": 0,
+    "THEME_ONLY": 7,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 72
+   },
+   "supported_retained": 1,
+   "supported_delta": -3
+  },
+  "C2_driver_ignored": {
+   "counts": {
+    "strict": 33,
+    "STRUCTURAL_SUPPORTED": 33,
+    "STRUCTURAL_PARTIAL": 45,
+    "THEME_ONLY": 2,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 0
+   },
+   "supported_retained": 33,
+   "supported_delta": 29
+  },
+  "C3_driver_match_or_partial": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 4,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 3,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "note": "= v0.1 baseline（当前规则即 MATCH|PARTIAL）"
+  }
+ },
+ "D_event_ablation": {
+  "D1_event_ignored": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 4,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 3,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "supported_retained": 4,
+   "supported_delta": 0
+  }
+ },
+ "E_sequence_ablation": {
+  "E2_set_only": {
+   "counts": {
+    "strict": 0,
+    "STRUCTURAL_SUPPORTED": 0,
+    "STRUCTURAL_PARTIAL": 51,
+    "THEME_ONLY": 2,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "supported_retained": 0
+  },
+  "E3_sequence_ignored": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 5,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 2,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "supported_retained": 5,
+   "supported_delta": 1
+  },
+  "E1_full_sequence": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 4,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 3,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "note": "= v0.1 baseline"
+  }
+ },
+ "F_name_blind": {
+  "retained": 85,
+  "changed": 0,
+  "changed_detail": [],
+  "name_fields_used_by_engine": [],
+  "note": "v0.1 引擎的四个正式维度**不读取任何名称字段**（candidate 名称 / cycle 名称 / 公司名 / 行业名）；名称仅用于展示。因此名称盲化结果**完全一致**。"
+ },
+ "G_theme_blind": {
+  "retained": 82,
+  "changed": 3,
+  "changed_detail": [
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "from": "THEME_ONLY",
+    "to": "NO_VALID_CORRESPONDENCE"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-COMM-5G",
+    "from": "THEME_ONLY",
+    "to": "NO_VALID_CORRESPONDENCE"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-POWER-NE",
+    "from": "THEME_ONLY",
+    "to": "STRUCTURAL_PARTIAL"
+   }
+  ],
+  "note": "Macro Theme 仅参与 **THEME_ONLY 判定**（表层联系），**不参与** SUPPORTED/PARTIAL 判定；因此主题盲化只影响 THEME_ONLY 一类。"
+ },
+ "H_negative_control": {
+  "theme_only_count": 3,
+  "stable_not_structural": 3,
+  "detail": [
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "same_macro_theme": true,
+    "lifecycle": "MATCH",
+    "driver": "MISMATCH",
+    "evidence_sequence": "PARTIAL",
+    "reason_not_structural": "driver MISMATCH"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-COMM-5G",
+    "same_macro_theme": true,
+    "lifecycle": "MATCH",
+    "driver": "MISMATCH",
+    "evidence_sequence": "MISMATCH",
+    "reason_not_structural": "driver MISMATCH"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-POWER-NE",
+    "same_macro_theme": true,
+    "lifecycle": "MATCH",
+    "driver": "PARTIAL",
+    "evidence_sequence": "MISMATCH",
+    "reason_not_structural": "evidence_sequence MISMATCH"
+   }
+  ],
+  "note": "THEME_ONLY 全部因**机制或顺序 MISMATCH** 被排除；同族未使其升级。"
+ },
+ "I_comparison_pool": {
+  "pool": {
+   "pairs": 85,
+   "candidates": 5,
+   "historical_objects": 17,
+   "expected_if_cartesian": 85,
+   "same_family_pairs": 7,
+   "cross_family_pairs": 78,
+   "pool_is_exhaustive": true,
+   "note": "v0.1 的 comparison pool **已经是无过滤的全笛卡尔积**（5 × 17 = 85），**未使用 same-theme filtering**。因此「扩池」的增量为 **0** —— 不存在被主题分区过早限制的关系。"
+  },
+  "expansion_delta": 0,
+  "new_relationships": [],
+  "conclusion": "NO_THEME_FILTERING_APPLIED"
+ },
+ "J_candidate_order": {
+  "orders_tested": [
+   "alphabetical",
+   "reverse_alphabetical",
+   "macro_theme_order",
+   "dataset_order"
+  ],
+  "byte_identical": true,
+  "signatures_unique": 1,
+  "note": "输出按 (candidate_id, historical_cycle) 归一化后比较 —— 顺序不影响任何状态。"
+ },
+ "robustness_cards": [
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2023-AD",
+   "historical_macro_theme": "汽车",
+   "same_macro_theme": false,
+   "baseline_status": "STRUCTURAL_SUPPORTED",
+   "baseline_strict": true,
+   "lifecycle": {
+    "baseline": "MATCH",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "driver": {
+    "baseline": "MATCH",
+    "overlap": [
+     "POLICY_DRIVEN",
+     "TECH_BREAKTHROUGH"
+    ],
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "evidence_sequence": {
+    "baseline": "PARTIAL",
+    "subtype": "SEQUENCE_PARTIAL",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "event_structure": {
+    "baseline": "PARTIAL",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "name_blind_status": "STRUCTURAL_SUPPORTED",
+   "theme_blind_status": "STRUCTURAL_SUPPORTED",
+   "evidence_ablation": {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2023-AD",
+    "direct_driver_evidence_count": 3,
+    "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+    "verdict": "ROBUST"
+   },
+   "overall_robustness": "ROBUST",
+   "dims_whose_removal_breaks_it": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "load_bearing_dimensions": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "survives_requirement_ablation": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "why_it_holds": "D1=MATCH；D2=MATCH（交集 ['POLICY_DRIVEN', 'TECH_BREAKTHROUGH']）；D3=PARTIAL/SEQUENCE_PARTIAL；D4=PARTIAL；历史侧 DIRECT driver 证据 3 条",
+   "why_not_strong_prediction": "① 机制交集仅 2 项；② 历史 event_type 集合从未完全相等（D4 MATCH = 0/85）；③ 样本量 85 组合，不具统计意义；④ 无 market / temporal 上下文；⑤ 本审计为规则内部一致性检验，**不是**外部验证"
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2023-AD",
+   "historical_macro_theme": "汽车",
+   "same_macro_theme": false,
+   "baseline_status": "STRUCTURAL_SUPPORTED",
+   "baseline_strict": false,
+   "lifecycle": {
+    "baseline": "MATCH",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "driver": {
+    "baseline": "PARTIAL",
+    "overlap": [
+     "POLICY_DRIVEN",
+     "TECH_BREAKTHROUGH"
+    ],
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "evidence_sequence": {
+    "baseline": "MATCH",
+    "subtype": "SEQUENCE_MATCH",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "event_structure": {
+    "baseline": "PARTIAL",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "name_blind_status": "STRUCTURAL_SUPPORTED",
+   "theme_blind_status": "STRUCTURAL_SUPPORTED",
+   "evidence_ablation": {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2023-AD",
+    "direct_driver_evidence_count": 3,
+    "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+    "verdict": "ROBUST"
+   },
+   "overall_robustness": "ROBUST",
+   "dims_whose_removal_breaks_it": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "load_bearing_dimensions": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "survives_requirement_ablation": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "why_it_holds": "D1=MATCH；D2=PARTIAL（交集 ['POLICY_DRIVEN', 'TECH_BREAKTHROUGH']）；D3=MATCH/SEQUENCE_MATCH；D4=PARTIAL；历史侧 DIRECT driver 证据 3 条",
+   "why_not_strong_prediction": "① 机制交集仅 2 项；② 历史 event_type 集合从未完全相等（D4 MATCH = 0/85）；③ 样本量 85 组合，不具统计意义；④ 无 market / temporal 上下文；⑤ 本审计为规则内部一致性检验，**不是**外部验证"
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2025-ROBOTAXI",
+   "historical_macro_theme": "汽车",
+   "same_macro_theme": false,
+   "baseline_status": "STRUCTURAL_SUPPORTED",
+   "baseline_strict": false,
+   "lifecycle": {
+    "baseline": "MATCH",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "driver": {
+    "baseline": "PARTIAL",
+    "overlap": [
+     "DEMAND_SURGE",
+     "INDUSTRY_UPGRADE"
+    ],
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "evidence_sequence": {
+    "baseline": "MATCH",
+    "subtype": "SEQUENCE_MATCH",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "event_structure": {
+    "baseline": "PARTIAL",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "name_blind_status": "STRUCTURAL_SUPPORTED",
+   "theme_blind_status": "STRUCTURAL_SUPPORTED",
+   "evidence_ablation": {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "direct_driver_evidence_count": 2,
+    "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+    "verdict": "ROBUST"
+   },
+   "overall_robustness": "ROBUST",
+   "dims_whose_removal_breaks_it": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "load_bearing_dimensions": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "survives_requirement_ablation": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "why_it_holds": "D1=MATCH；D2=PARTIAL（交集 ['DEMAND_SURGE', 'INDUSTRY_UPGRADE']）；D3=MATCH/SEQUENCE_MATCH；D4=PARTIAL；历史侧 DIRECT driver 证据 2 条",
+   "why_not_strong_prediction": "① 机制交集仅 2 项；② 历史 event_type 集合从未完全相等（D4 MATCH = 0/85）；③ 样本量 85 组合，不具统计意义；④ 无 market / temporal 上下文；⑤ 本审计为规则内部一致性检验，**不是**外部验证"
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2023-COMM-OPTICAL",
+   "historical_macro_theme": "信息通信",
+   "same_macro_theme": true,
+   "baseline_status": "STRUCTURAL_SUPPORTED",
+   "baseline_strict": false,
+   "lifecycle": {
+    "baseline": "MATCH",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "driver": {
+    "baseline": "PARTIAL",
+    "overlap": [
+     "DEMAND_SURGE",
+     "TECH_BREAKTHROUGH"
+    ],
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "evidence_sequence": {
+    "baseline": "PARTIAL",
+    "subtype": "SEQUENCE_PARTIAL",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "event_structure": {
+    "baseline": "PARTIAL",
+    "ablation_status": "STRUCTURAL_SUPPORTED",
+    "robustness": "PASS"
+   },
+   "name_blind_status": "STRUCTURAL_SUPPORTED",
+   "theme_blind_status": "STRUCTURAL_SUPPORTED",
+   "evidence_ablation": {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2023-COMM-OPTICAL",
+    "direct_driver_evidence_count": 2,
+    "status_after_dropping_one_direct_driver": "STRUCTURAL_SUPPORTED",
+    "verdict": "ROBUST"
+   },
+   "overall_robustness": "ROBUST",
+   "dims_whose_removal_breaks_it": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "load_bearing_dimensions": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "survives_requirement_ablation": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "why_it_holds": "D1=MATCH；D2=PARTIAL（交集 ['DEMAND_SURGE', 'TECH_BREAKTHROUGH']）；D3=PARTIAL/SEQUENCE_PARTIAL；D4=PARTIAL；历史侧 DIRECT driver 证据 2 条",
+   "why_not_strong_prediction": "① 机制交集仅 2 项；② 历史 event_type 集合从未完全相等（D4 MATCH = 0/85）；③ 样本量 85 组合，不具统计意义；④ 无 market / temporal 上下文；⑤ 本审计为规则内部一致性检验，**不是**外部验证"
+  }
+ ],
+ "strict_audit": [
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2023-AD",
+   "dims": {
+    "lifecycle": "MATCH",
+    "driver": "MATCH",
+    "evidence_sequence": "PARTIAL",
+    "event_structure": "PARTIAL"
+   },
+   "driver_overlap": [
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_provenance": {
+    "POLICY_DRIVEN": [
+     "DIRECT"
+    ],
+    "TECH_BREAKTHROUGH": [
+     "DIRECT"
+    ]
+   },
+   "ablation": [
+    "lifecycle",
+    "driver",
+    "sequence",
+    "event"
+   ],
+   "overall_robustness": "ROBUST",
+   "strict_robustness": "PASS",
+   "note": "唯一 STRICT 案例；移除 Driver 维度后仍为 SUPPORTED（见 A2/C），说明其成立同时依赖机制**与**顺序/事件。"
+  }
+ ],
+ "false_positive_audit": [
+  {
+   "type": "A_theme_only_should_not_upgrade",
+   "pairs": 3,
+   "result": "PASS —— 3/3 保持 THEME_ONLY，未升级",
+   "detail": [
+    {
+     "candidate_id": "CC-2026-BCI-MEDTECH",
+     "historical_cycle": "C-2019-PHARMA-INNOV",
+     "same_macro_theme": true,
+     "lifecycle": "MATCH",
+     "driver": "MISMATCH",
+     "evidence_sequence": "PARTIAL",
+     "reason_not_structural": "driver MISMATCH"
+    },
+    {
+     "candidate_id": "CC-2026-OPTICAL-LINK",
+     "historical_cycle": "C-2019-COMM-5G",
+     "same_macro_theme": true,
+     "lifecycle": "MATCH",
+     "driver": "MISMATCH",
+     "evidence_sequence": "MISMATCH",
+     "reason_not_structural": "driver MISMATCH"
+    },
+    {
+     "candidate_id": "CC-2026-OFFSHORE-WIND",
+     "historical_cycle": "C-2020-POWER-NE",
+     "same_macro_theme": true,
+     "lifecycle": "MATCH",
+     "driver": "PARTIAL",
+     "evidence_sequence": "MISMATCH",
+     "reason_not_structural": "evidence_sequence MISMATCH"
+    }
+   ]
+  },
+  {
+   "type": "B_high_name_similarity_but_no_valid",
+   "pairs": [
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2024-ROBOTAXI",
+     "status": "NO_VALID_CORRESPONDENCE",
+     "name_blind_status": "NO_VALID_CORRESPONDENCE",
+     "theme_blind_status": "NO_VALID_CORRESPONDENCE"
+    }
+   ],
+   "result": "PASS —— 名称可见/不可见、主题可见/不可见四种情况下均为 NO_VALID_CORRESPONDENCE"
+  },
+  {
+   "type": "C_driver_partial_plus_lifecycle_should_not_auto_upgrade",
+   "pairs": 36,
+   "result": "PASS —— driver PARTIAL + lifecycle MATCH 中 36 条为 PARTIAL 而非 SUPPORTED（需 sequence 顺序 + event 同时达标）"
+  },
+  {
+   "type": "D_event_partial_plus_weak_sequence_should_not_auto_upgrade",
+   "pairs": 3,
+   "result": "PASS —— SET_ONLY 不参与 SUPPORTED 判定（规则要求 subtype ∈ {SEQUENCE_MATCH, SEQUENCE_PARTIAL}）"
+  },
+  {
+   "type": "E_same_family_is_not_structural",
+   "pairs": 3,
+   "result": "PASS —— 3 例同族均被降为 THEME_ONLY（机制或顺序 MISMATCH）"
+  },
+  {
+   "type": "F_cross_family_is_not_automatically_structural",
+   "pairs": 78,
+   "result": "PASS —— 68 条跨族组合中仅 3 条为 SUPPORTED，其余为 PARTIAL/NO_VALID/INSUFFICIENT"
+  }
+ ],
+ "minimal_rule_comparison": {
+  "R1_lifecycle_driver": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 5,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 2,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "supported_cross_family": 4,
+   "theme_only_excluded": 2,
+   "strict_retained": 1,
+   "supported_pairs": [
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2023-COMM-OPTICAL"
+    ]
+   ]
+  },
+  "R2_lifecycle_driver_evidence": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 4,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 3,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "supported_cross_family": 3,
+   "theme_only_excluded": 3,
+   "strict_retained": 1,
+   "supported_pairs": [
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2023-COMM-OPTICAL"
+    ]
+   ]
+  },
+  "R3_lifecycle_driver_evidence_event": {
+   "counts": {
+    "strict": 1,
+    "STRUCTURAL_SUPPORTED": 4,
+    "STRUCTURAL_PARTIAL": 46,
+    "THEME_ONLY": 3,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 27
+   },
+   "supported_cross_family": 3,
+   "theme_only_excluded": 3,
+   "strict_retained": 1,
+   "supported_pairs": [
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2023-COMM-OPTICAL"
+    ]
+   ]
+  },
+  "R0_lifecycle_only": {
+   "counts": {
+    "strict": 56,
+    "STRUCTURAL_SUPPORTED": 56,
+    "STRUCTURAL_PARTIAL": 29,
+    "THEME_ONLY": 0,
+    "INSUFFICIENT_EVIDENCE": 0,
+    "NO_VALID_CORRESPONDENCE": 0
+   },
+   "supported_cross_family": 49,
+   "theme_only_excluded": 0,
+   "strict_retained": 56,
+   "supported_pairs": [
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "RC-2023-HUAWEI"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "RC-2021-TCM"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2024-ROBOTAXI"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "RC-2023-HUAWEI"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2019-AD"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2020-NEV"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2021-NEV"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2024-ROBOTAXI"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "RC-2023-HUAWEI"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "RC-2020-PANDEMIC"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2019-AD"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2020-NEV"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2021-NEV"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2024-ROBOTAXI"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "RC-2023-HUAWEI"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "RC-2020-PANDEMIC"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "RC-2023-HUAWEI"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "RC-2021-TCM"
+    ]
+   ]
+  },
+  "R4_evidence_event_only": {
+   "counts": {
+    "strict": 35,
+    "STRUCTURAL_SUPPORTED": 35,
+    "STRUCTURAL_PARTIAL": 43,
+    "THEME_ONLY": 2,
+    "INSUFFICIENT_EVIDENCE": 5,
+    "NO_VALID_CORRESPONDENCE": 0
+   },
+   "supported_cross_family": 30,
+   "theme_only_excluded": 2,
+   "strict_retained": 35,
+   "supported_pairs": [
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-BCI-MEDTECH",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-COMPUTE-POWER",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2019-COMM-5G"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2019-PHARMA-INNOV"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2020-POWER-NE"
+    ],
+    [
+     "CC-2026-EMBODIED-AI",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2020-NEV"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2021-NEV"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-OPTICAL-LINK",
+     "C-2022-POWER-GRID"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2022-POLICY"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2023-AD"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2025-ROBOTAXI"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2023-COMM-OPTICAL"
+    ],
+    [
+     "CC-2026-OFFSHORE-WIND",
+     "C-2022-POWER-GRID"
+    ]
+   ]
+  }
+ },
+ "decision_gates": {
+  "Gate1_strict_survives_main_ablations": true,
+  "Gate2_cross_family_survives_name_theme_blind": true,
+  "Gate3_theme_only_still_excluded": true,
+  "Gate4_no_supported_depends_on_single_dimension": true,
+  "passed": 4,
+  "total": 4,
+  "verdict": "ROBUST ENOUGH FOR RESEARCH v0.2"
+ },
+ "robustness_summary": {
+  "ROBUST": 4,
+  "SENSITIVE": 0,
+  "EVIDENCE_FRAGILE": 0,
+  "UNSTABLE": 0,
+  "total_supported": 4
+ }
+}
