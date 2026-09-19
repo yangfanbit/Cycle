@@ -1,54 +1,43 @@
 # ARCHITECTURE.md — ThreeC 当前实际架构
 
-> 本文只描述当前真实架构与已知架构债务。未来路线见 `docs/ROADMAP.md`。
+> 描述当前真实结构与已知架构债务；未来路线见 `docs/ROADMAP.md`。
 
-## 1. 系统边界
+## 1. System Boundary
 
 ```
 ThreeC
 ├─ Product（src/）
-│   ├─ Timeline
-│   ├─ Current Time Lens
-│   ├─ Calendar Lens
-│   ├─ Lifecycle Lens
-│   └─ Current Candidate View
+│  ├─ Timeline
+│  ├─ Current Time Lens
+│  │  └─ Current Candidate
+│  ├─ Lifecycle Lens
+│  └─ Calendar Lens
 │
 ├─ Research（research/）
-│   ├─ SQLite / Evidence / Lifecycle / Drivers
-│   ├─ Current Candidate dataset
-│   ├─ Time Observation artifacts
-│   └─ Structural Analogy research artifacts
+│  ├─ Historical DB
+│  ├─ Current Candidate Dataset
+│  ├─ Time Observation artifacts
+│  ├─ Structural Analogy Research
+│  └─ Structural Analogy Explanation Artifact
 │
 ├─ exports/
-│   └─ timeline_export_v1.json   ← canonical v1.0
+│  └─ timeline_export_v1.json
 │
 └─ contracts/
-    └─ timeline_export_v1.md
+   └─ timeline_export_v1.md
 ```
 
-Research 和 Product 是**两个逻辑层、一个项目**。
+## 2. Data Flow
 
-Product runtime：
-- 无后端
-- 无运行时网络
-- 无 LLM
-- 静态数据消费
-
----
-
-## 2. Product 数据流
-
-### Historical
+### Historical Product
 
 ```
 Research DB
-   ↓
+  ↓
 timeline_export_v1.json
-   ↓
+  ↓
 timelineAdapter
-   ↓
-TimelineDataSource
-   ↓
+  ↓
 Timeline / Calendar / Lifecycle
 ```
 
@@ -56,182 +45,184 @@ Timeline / Calendar / Lifecycle
 
 ```
 research/current/current_candidates.json
-   ↓
-currentCandidate parser
-   ↓
+  ↓
+currentCandidate
+  ↓
 currentEvidence
-   ↓
+  ↓
 currentPhaseInference
-   ↓
+  ↓
 currentSimilarity
-   ↓
+  ↓
 CurrentCandidateView
-   ↓
+  ↓
 Current Time Lens
 ```
 
 ### Structural Analogy
 
-当前已经存在：
-
 ```
-Current Candidate
-   +
-Historical Cycle
-   ↓
+current_candidates
+  +
+historical research
+  ↓
 Structural Analogy Research v0.2
+  ↓
+Explanation Artifact v0.1
+  ↓
+[下一步：Architecture Gate]
+  ↓
+Product Adapter
+  ↓
+Current Candidate / Current Time Lens
 ```
 
-但目前仍属于 **Research-only**：
+## 3. Product Comparison Taxonomy
 
-> **尚无 Product Artifact / Product Adapter。**
+| 视角 | 核心问题 | 性质 |
+|---|---|---|
+| Calendar Lens | 这个时间附近历史上发生过什么？ | 时间邻近浏览 |
+| Lifecycle Lens | 历史上谁处于类似生命周期阶段？ | 历史阶段浏览 |
+| Structural Analogy | 当前结构与历史结构在哪些维度对应？ | 正式结构对应 |
 
-这是下一阶段要解决的核心架构缺口。
+这三个视角可以共存，但不应都叫“相似度”。
 
----
+## 4. Existing Comparison Implementations
 
-## 3. 当前 Product 比较视角
+### A. currentSimilarity.ts
 
-### Timeline
-历史主体。第一视觉。
+当前是：
 
-### Calendar Lens
-回答：
+**Current Candidate × Historical**
 
-> 这个时间附近，历史上发生过什么？
-
-数据入口主要来自 `timeline_export_v1.json`。
-
-### Lifecycle Lens
-回答：
-
-> 历史上处于类似生命周期位置的案例有哪些？
-
-对应：
-`historicalSimilarPhase.ts`
-
-### Current Candidate Similarity
-对应：
-`currentSimilarity.ts`
-
-当前回答：
-
-> 当前候选可以参考哪些历史案例？
-
-它使用内部 score / tier，但数字不直接展示。
-
-### Structural Analogy
-Research 正式回答：
-
-> 当前结构与历史结构在哪些维度上存在对应？哪里没有？
-
-规则：
+使用：
 - Lifecycle
-- Driver / Mechanism
-- Evidence Sequence
-- Event Structure
+- Theme Cycle Pattern
+- Evidence Category / Driver Profile
+- Narrative Structure
+- 内部 score / tier
+- 最多 3 个结果
 
-这一层是未来产品中**唯一正式的 Current → Historical Structural Correspondence**能力。
+问题：
 
----
+> 它与 Structural Analogy 的输入关系和目标问题高度重叠，但判定体系不同。
 
-## 4. 当前已知架构债务
+当前政策：
 
-### Debt 1 · 三套相似体系
+**停止继续扩展，等待 Architecture Gate 决定长期去留。**
 
-`currentSimilarity.ts`、`historicalSimilarPhase.ts`、Structural Analogy Research v0.2
+### B. historicalSimilarPhase.ts
 
-三者不能长期并列为三个“相似度”。
+当前是：
 
-目标是：
+**Historical × Historical**
 
-- Calendar = 时间邻近
-- Lifecycle = 生命周期浏览
-- Structural Analogy = 正式结构对应
+使用 Lifecycle / Pattern / Driver 分类。
 
-`currentSimilarity.ts` 最终需要决定保留为兼容层、重构或废弃。
+长期建议：
 
-### Debt 2 · Driver 双层语义
+**保留为 Lifecycle Lens**，但 Gate 需要正式确认其 API / UI 边界。
+
+### C. Structural Analogy
+
+当前是：
+
+**Current Candidate × Historical Cycle**
+
+Research 正式规则：
+- D1 Lifecycle
+- D2 Mechanism Driver
+- D3 Evidence Sequence
+- D4 Event Structure
+- Theme Relation = metadata
+
+它是未来 Product 唯一正式的：
+
+**Current → Historical Structural Correspondence**
+
+Product 不重新实现其规则。
+
+## 5. Step 2 Artifact 的接口风险
+
+当前 `structural_analogy_explanations_v0_1.json` 可复现，但在 Adapter 前需要 QA：
+
+### 5.1 WHY NOT
+
+`CROSS_MACRO_THEME` 被写入 `why_not_similar` 的当前实现容易造成错误语义。
+
+正确原则：
+
+> 跨主题不是“不相似”的依据；它只能作为背景 metadata。
+
+### 5.2 Ordering
+
+当前 explanations 按 structural status → cycle id 排列。
+
+虽然实现声明“不是 ranking”，但 Product 很容易把数组顺序理解成“从强到弱”。
+
+Adapter 前建议改为：
+
+> **不按 structural status 排序；只保留稳定 identity 顺序。**
+
+### 5.3 Identity
+
+当前同时存在：
+- `historical_cycle_id`
+- `historical_campaign_id`
+- `historical_kind`
+
+而 17 个历史对象中包含 Research Candidate。
+
+因此 Adapter 前应正式区分：
+- historical cycle identity
+- campaign identity（可为空）
+- research candidate identity（如适用）
+
+不得让 `historical_campaign_id` 成为“所有历史对象”的总身份。
+
+### 5.4 Provenance
+
+当前 provenance 有三类来源：
+
+- candidate evidence
+- historical driver evidence
+- historical events
+
+Adapter 前应明确：
+
+> 哪些 provenance 是某个维度的直接依据；哪些只是背景来源。
+
+不要让 Product 对同一组 provenance 做因果推断。
+
+## 6. Driver 层级
+
+必须长期区分：
+
+**证据类别 / Evidence Category**
+
+与
+
+**驱动机制 / Mechanism Driver**
+
+不要在 Product 文案中都叫 Driver。
+
+## 7. Product Layer 约束
 
 Product：
+- 不重新计算 Structural Analogy
+- 不产生新的研究结论
+- 不把 UNKNOWN 当成 NO
+- 不把 PARTIAL 当成 MATCH
+- 不把 Theme Relation 变成等级因素
+- 不生成 score / ranking / probability
+- 不联网
 
-`POLICY / INDUSTRY / CAPITAL / SENTIMENT / EXTERNAL`
+## 8. OpportunityRadar
 
-Research：
-
-`POLICY_DRIVEN / INDUSTRY_UPGRADE / TECH_BREAKTHROUGH / DEMAND_SURGE / ...`
-
-必须命名区分：
-
-> **Evidence Category ≠ Mechanism Driver**
-
-### Debt 3 · OpportunityRadar
-
-`src/components/OpportunityRadar/` 仍存在，但当前 `App.tsx` 不接入。
-
-它的原始逻辑是经验规则日历提醒，不属于当前 Research Core。
+当前未接入 App 主流程。
 
 状态：
 
-**LEGACY / DEFER REMOVAL**
+**LEGACY / DEFER**
 
-等待 Product Similarity Architecture Review 后统一决定删除或彻底转型。
-
-### Debt 4 · 文档与代码漂移风险
-
-动态状态不再写在 AGENTS。
-
-固定规则 → AGENTS  
-当前状态 → PROJECT_STATE  
-未来计划 → ROADMAP  
-历史记录 → CHANGELOG
-
-这是新的文档职责划分。
-
----
-
-## 5. Structural Analogy 的未来 Product 边界
-
-推荐数据流：
-
-```
-Structural Analogy Research
-        ↓
-Product-facing Research Artifact
-        ↓
-Product Adapter
-        ↓
-Current Candidate / Current Time Lens
-        ↓
-Historical Campaign Detail
-```
-
-Product 不重新实现：
-- level_v2()
-- Theme Relation 判定
-- Driver matching
-- Evidence Sequence matching
-- Event Structure matching
-
-Product 只消费 Research 的结果，并负责：
-- 表达
-- 导航
-- uncertainty
-- provenance
-- interaction
-
----
-
-## 6. 当前原则
-
-不要为了“统一代码结构”做大重构。
-
-优先顺序：
-
-1. 先统一语义
-2. 再统一 Artifact
-3. 再统一 Adapter
-4. 最后处理旧模块与 UI
-
-这样可以避免一次大规模 Product Rewrite。
-
+Architecture Gate 后决定删除或保留为历史代码；本轮不删除。
