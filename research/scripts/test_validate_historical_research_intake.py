@@ -3,13 +3,15 @@
 """validate_historical_research_intake 测试（Intake Validator Tests）。
 
 验证 `validate_historical_research_intake.py` 的正确性：
-  1. 合法 package 全项通过（C01–C24，0 FAIL）
+  1. 合法 package 全项通过（C01–C25，0 FAIL）
   2. 每个检查项都有对应的**失败路径**（人为构造违规必须 FAIL）
   3. 目录模式装配 + checksums 校验
   4. 单文件模式 + CRLF 拒绝
   5. 确定性（重复运行结果一致）
-  6. 基础设施自检（--check）通过
+  6. 基础设施自检（--check）
   7. 真实 schema / manifest 自洽
+  8. **C25 严格 JSON Schema（Draft-07）校验**：额外属性 / enum / type / pattern /
+     temporal_relation 五类人为注入缺陷必须全部检出，且必须导致整体 FAIL
 
 关键原则：
 - 测试必须调用 validator 的真实函数（`validate_package` / `run_validation` / `_check_infrastructure_once`），
@@ -32,6 +34,7 @@ import sys
 import tempfile
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT_DIR)))
 sys.path.insert(0, SCRIPT_DIR)
 
 import validate_historical_research_intake as V  # noqa: E402
@@ -330,11 +333,11 @@ def test_valid_package_passes():
 
 
 @case
-def test_check_count_is_24():
-    """检查项数量固定为 24，且 C01–C24 齐备。"""
+def test_check_count_is_25():
+    """检查项数量固定为 25，且 C01–C25 齐备（C25 = 严格 JSON Schema）。"""
     ids = [c[0] for c in V.CHECKS]
-    assert len(ids) == 24, "检查项数量应为 24，实际 %d" % len(ids)
-    assert ids == ["C%02d" % i for i in range(1, 25)], ids
+    assert len(ids) == 25, "检查项数量应为 25，实际 %d" % len(ids)
+    assert ids == ["C%02d" % i for i in range(1, 26)], ids
 
 
 @case
@@ -736,10 +739,25 @@ def test_directory_mode_with_checksums():
 
 
 @case
-def test_infrastructure_check_passes():
-    """`--check` 基础设施自检必须 0 FAIL。"""
+def test_infrastructure_check_detects_known_r01_01_violation():
+    """`--check` 必须检出**已记录的** R01-01 Schema 违规，且 R01-02 必须干净。
+
+    背景：R01-01 的 `R01-HIEQ-CF005` 含额外键 `_position_note`，违反
+    `additionalProperties: false`。该违规在 C25 之前**被放过并已入库** ——
+    本测试是这条历史缺陷的回归守卫。
+    """
     rep = V._check_infrastructure_once()
-    assert rep.ok(), [(i["check"], i["message"]) for i in rep.fails()]
+    fails = [(i["check"], i["message"]) for i in rep.fails()]
+    c25 = [m for c, m in fails if c == "C25"]
+    # R01-01：必须检出
+    r01_01 = [m for m in c25 if "R01-01" in m]
+    assert r01_01, "C25 未检出 R01-01 的已知 Schema 违规: %s" % fails
+    assert any("_position_note" in m for m in r01_01), r01_01
+    # R01-02：必须干净
+    assert not [m for m in c25 if "R01-02" in m], c25
+    # 除上述已知违规外不得有其它 FAIL
+    others = [(c, m) for c, m in fails if c != "C25"]
+    assert not others, "存在非预期的 FAIL: %s" % others
 
 
 @case
@@ -844,10 +862,192 @@ def test_cli_exit_codes():
 
         assert rc_ok == 0, "合法 package 应退出 0"
         assert rc_bad == 1, "非法 package 应退出 1"
-        assert rc_check == 0, "--check 应退出 0"
+        # ★ 前提变更：C25 上线后 `--check` 扫描 packages/ 下所有正式 Package。
+        #   R01-01 存在**已记录的** Schema 违规（`R01-HIEQ-CF005._position_note`），
+        #   故 `--check` 退出码 = 1 —— 这是**正确**信号，不是回归。
+        #   修复该违规属独立 remediation 任务，不在本轮范围。
+        assert rc_check == 1, "--check 应退出 1（R01-01 已知 Schema 违规）"
         assert rc_list == 0, "--list-checks 应退出 0"
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+# ================================================================== C25 严格 JSON Schema
+
+
+def _c25_fails(pkg):
+    """返回 C25 的 FAIL 列表（调用真实 validate_package）。"""
+    rep = V.Report("c25")
+    V.validate_package(copy.deepcopy(pkg), rep)
+    return [i for i in rep.fails() if i["check"] == "C25"]
+
+
+def _mutate_and_assert_c25(name, mutate, expect_substr=None):
+    pkg = copy.deepcopy(valid_package())
+    mutate(pkg)
+    fails = _c25_fails(pkg)
+    assert fails, "C25 未检出「%s」—— Schema 约束未真正执行" % name
+    if expect_substr:
+        joined = " | ".join(i["message"] for i in fails)
+        assert expect_substr in joined, "C25 检出但内容不符（%s）: %s" % (name, joined)
+
+
+@case
+def test_c25_valid_package_passes():
+    """合法 package 必须通过 C25（0 违规）。"""
+    assert _c25_fails(valid_package()) == []
+
+
+@case
+def test_c25_detects_extra_property():
+    """additionalProperties: false 必须真正执行。"""
+    _mutate_and_assert_c25(
+        "额外属性",
+        lambda p: p["campaign_candidates"][0].update({"_extra_note": "injected"}),
+        expect_substr="Additional properties are not allowed",
+    )
+    def _add_conflict_then_extra(p):
+        p["conflicts"].append({
+            "conflict_id": "R01-FIXTURE-CF001",
+            "subject": "合成夹具冲突",
+            "positions": [
+                {"position": "A", "source_ids": ["R01-FIXTURE-S001"]},
+                {"position": "B", "source_ids": ["R01-FIXTURE-S002"]},
+            ],
+            "resolution": "KEEP_BOTH",
+            "note": None,
+        })
+        p["conflicts"][0]["_position_note"] = "injected"
+
+    _mutate_and_assert_c25(
+        "conflict 额外属性（R01-01 的历史违规形态）",
+        _add_conflict_then_extra,
+        expect_substr="_position_note",
+    )
+
+
+@case
+def test_c25_detects_wrong_enum_confidence():
+    """enum（confidence）必须真正执行。"""
+    _mutate_and_assert_c25(
+        "confidence 非法枚举",
+        lambda p: p["campaign_candidates"][0].update({"confidence": "very-high"}),
+        expect_substr="is not one of",
+    )
+
+
+@case
+def test_c25_detects_wrong_type():
+    """type 必须真正执行（C01–C24 曾漏检 year 为字符串）。"""
+    _mutate_and_assert_c25(
+        "year 类型错误",
+        lambda p: p["campaign_candidates"][0].update({"year": "2020"}),
+        expect_substr="is not of type",
+    )
+    _mutate_and_assert_c25(
+        "candidates 类型错误",
+        lambda p: p.update({"campaign_candidates": {}}),
+        expect_substr="is not of type",
+    )
+
+
+@case
+def test_c25_detects_wrong_pattern():
+    """pattern（intake id）必须真正执行。"""
+    _mutate_and_assert_c25(
+        "candidate_id 违反 pattern（canonical id 形态）",
+        lambda p: p["campaign_candidates"][0].update({"candidate_id": "C-2020-SEMI"}),
+        expect_substr="does not match",
+    )
+
+
+@case
+def test_c25_detects_wrong_enum_temporal_relation():
+    """enum（temporal_relation）必须真正执行。"""
+    _mutate_and_assert_c25(
+        "temporal_relation 非法枚举",
+        lambda p: p["evidence"][0].update({"temporal_relation": "whenever"}),
+        expect_substr="is not one of",
+    )
+
+
+@case
+def test_c25_detects_missing_required():
+    """required 必须真正执行。"""
+    _mutate_and_assert_c25(
+        "缺少 why_not",
+        lambda p: p["campaign_candidates"][0].pop("why_not"),
+        expect_substr="is a required property",
+    )
+    _mutate_and_assert_c25(
+        "缺少顶层 quality_summary",
+        lambda p: p.pop("quality_summary"),
+        expect_substr="is a required property",
+    )
+
+
+@case
+def test_c25_strict_failure_makes_package_fail():
+    """严格 Schema 校验失败 → 整个 Package 必须 FAIL（不得放行）。"""
+    pkg = copy.deepcopy(valid_package())
+    pkg["campaign_candidates"][0]["_extra_note"] = "injected"
+    rep = V.Report("x")
+    V.validate_package(pkg, rep)
+    assert not rep.ok(), "严格 Schema 违规却未导致 FAIL"
+    assert [i for i in rep.fails() if i["check"] == "C25"]
+
+
+@case
+def test_c25_strict_failure_exit_code_1():
+    """CLI：严格 Schema 违规必须退出码 1。"""
+    import contextlib
+
+    tmp = tempfile.mkdtemp(prefix="threec_c25_")
+    try:
+        pkg = copy.deepcopy(valid_package())
+        pkg["campaign_candidates"][0]["_extra_note"] = "injected"
+        path = os.path.join(tmp, "package.json")
+        with io.open(path, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump(pkg, fh, ensure_ascii=False)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = V.main(["prog", path])
+        assert rc == 1, "期望退出码 1，实际 %d" % rc
+        out = buf.getvalue()
+        assert "C25" in out and "Additional properties are not allowed" in out, out
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+@case
+def test_c25_rescan_r01_02_clean():
+    """回扫：R01-02 正式 Package 必须 0 违规。"""
+    pkg_dir = os.path.join(REPO, "research", "intake", "packages", "R01-02")
+    if not os.path.isdir(pkg_dir):
+        return  # 包不存在时跳过（不改变测试结果语义）
+    rep, _det = V.run_validation(pkg_dir)
+    c25 = [i for i in rep.fails() if i["check"] == "C25"]
+    assert c25 == [], "R01-02 存在 Schema 违规: %s" % c25
+    assert rep.ok(), [(i["check"], i["message"]) for i in rep.fails()]
+
+
+@case
+def test_c25_rescan_r01_01_known_violation():
+    """回扫：R01-01 正式 Package 的**已知** `_position_note` 违规必须被检出。
+
+    该违规在 C25 之前被放过并已导入 canonical DB —— 本测试锁定这一事实，
+    防止将来被静默“修掉”而失去可追溯性。
+    """
+    pkg_dir = os.path.join(REPO, "research", "intake", "packages", "R01-01")
+    if not os.path.isdir(pkg_dir):
+        return
+    rep, _det = V.run_validation(pkg_dir)
+    c25 = [i for i in rep.fails() if i["check"] == "C25"]
+    assert c25, "R01-01 的已知 Schema 违规未被检出"
+    joined = " | ".join(i["message"] for i in c25)
+    assert "_position_note" in joined, c25
+    # 且不得引入其它 Schema 违规
+    assert len(c25) == 1, "R01-01 出现额外的 Schema 违规: %s" % c25
 
 
 # ------------------------------------------------------------------ main

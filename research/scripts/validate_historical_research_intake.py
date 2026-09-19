@@ -13,7 +13,7 @@
 
 退出码: 0 = 全部通过（无 FAIL）；1 = 存在 FAIL。
 
-检查项（24 项；C01–C20 对应协议 §18 的 20 条，C21–C24 为一致性补强）:
+检查项（25 项；C01–C20 对应协议 §18 的 20 条，C21–C24 为一致性补强，C25 为严格 JSON Schema 校验）:
   C01  schema version            —— intake_protocol_version 必须等于协议版本
   C02  required fields           —— 顶层 16 个必需字段齐备且类型正确
   C03  candidate_id uniqueness   —— campaign_candidates[].candidate_id 本包内唯一
@@ -38,6 +38,23 @@
   C22  no quantity KPI           —— no_quantity_kpi_acknowledged 必须为 true
   C23  year in scope             —— candidate.year 必须落在 task_scope.years 内
   C24  task id consistency       —— task_id 与 task_scope.task_id 一致、round 前缀一致
+  C25  strict JSON Schema        —— **真正执行 Draft-07 Schema 校验**（见下方「C25 说明」）
+
+### C25 说明（Strict JSON Schema 校验）
+
+Protocol 规定 `historical_research_intake.schema.json` 是**唯一事实来源**。
+C01–C24 是**业务检查**，此前只用 Schema 读取 enum / required 做局部校验，**并未真正执行 Schema**，
+导致 `additionalProperties: false`、`type`、`pattern` 等约束形同虚设（R01-01 的
+`R01-HIEQ-CF005._position_note` 即因此被放过并入库）。
+
+C25 用 `jsonschema.Draft7Validator` 对装配后的完整 Package 对象**真正执行** Draft-07 校验：
+`type` / `enum` / `pattern` / `required` / `additionalProperties` / `minItems` / `oneOf` /
+`allOf:if:then` 等全部生效。
+
+- **C25 不替代 C01–C24**，两者互补：C25 管「结构是否符合 Schema」，C01–C24 管「业务语义」。
+- 任何 Schema 违规一律 **FAIL**（退出码 1），不得放行。
+- **依赖**：`jsonschema`（`python -m pip install jsonschema`）。
+  若未安装，C25 直接 **FAIL** 并给出安装提示 —— **不得静默跳过**。
 
 本脚本**只读**：不修改任何数据。
 """
@@ -49,6 +66,16 @@ import json
 import os
 import re
 import sys
+
+try:  # C25 依赖：严格 Draft-07 校验引擎
+    from jsonschema import Draft7Validator as _Draft7Validator
+    from jsonschema import FormatChecker as _FormatChecker
+
+    _JSONSCHEMA_IMPORT_ERROR = None
+except Exception as _exc:  # pragma: no cover - 依赖缺失时走 C25 的 FAIL 分支
+    _Draft7Validator = None
+    _FormatChecker = None
+    _JSONSCHEMA_IMPORT_ERROR = str(_exc)
 
 # ------------------------------------------------------------------ 路径
 
@@ -416,7 +443,52 @@ def validate_package(pkg: dict, rep: Report) -> None:
     c22_no_quantity_kpi(pkg, rep)
     c23_year_in_scope(pkg, rep)
     c24_task_id_consistency(pkg, rep)
+    c25_json_schema_draft07(pkg, rep)
     # C20 的「确定性」部分由 run_validation() 的两次比较完成
+
+
+def c25_json_schema_draft07(pkg: dict, rep: Report) -> None:
+    """C25 —— 真正执行 Draft-07 Schema 校验（Schema 是唯一事实来源）。
+
+    与 C01–C24 **互补而非替代**：
+      - C25 管「结构是否符合 Schema」（type / enum / pattern / required /
+        additionalProperties / minItems / oneOf / allOf:if:then …）
+      - C01–C24 管「业务语义」（ID 唯一性、引用可达、PIT 纪律、禁评分字段、provenance …）
+
+    任何 Schema 违规一律 FAIL。jsonschema 缺失同样 FAIL（不得静默跳过）。
+    """
+    if _Draft7Validator is None:
+        rep.fail(
+            "C25",
+            "无法执行 Strict JSON Schema 校验：jsonschema 未安装（%s）。"
+            "请执行 `python -m pip install jsonschema` 后重跑 —— "
+            "未通过严格 Schema 校验的 Package 不得接收"
+            % _JSONSCHEMA_IMPORT_ERROR,
+        )
+        return
+
+    if not isinstance(pkg, dict):
+        rep.fail("C25", "package 必须是 object 才能做 Schema 校验")
+        return
+
+    try:
+        schema = load_schema()
+    except Exception as exc:  # pragma: no cover
+        rep.fail("C25", "Schema 读取失败: %s" % exc)
+        return
+
+    try:
+        validator = _Draft7Validator(schema, format_checker=_FormatChecker())
+    except Exception as exc:  # pragma: no cover
+        rep.fail("C25", "Schema 本身不是合法 Draft-07: %s" % exc)
+        return
+
+    errors = sorted(validator.iter_errors(pkg), key=lambda e: list(e.absolute_path))
+    for err in errors:
+        path = "/".join(str(x) for x in err.absolute_path) or "<root>"
+        rep.fail("C25", "Schema 违规 %s: %s" % (path, err.message))
+    if not errors:
+        rep.info("C25", "Strict JSON Schema (Draft-07) 校验通过（0 违规）")
 
 
 def c01_schema_version(pkg: dict, rep: Report) -> None:
@@ -854,6 +926,7 @@ CHECKS = [
     ("C22", "no quantity KPI"),
     ("C23", "year in scope"),
     ("C24", "task id consistency"),
+    ("C25", "strict JSON Schema (Draft-07)"),
 ]
 
 
@@ -956,6 +1029,19 @@ def _check_infrastructure_once() -> Report:
             for d in ("confidence", "source_type", "evidence_role", "temporal_relation", "support_kind", "research_status", "date_precision", "classification_proposal"):
                 if d not in sch.get("definitions", {}):
                     rep.fail("C01", "schema 缺少 definitions.%s" % d)
+            # ★ C25 依赖：Schema 本身必须是合法的 Draft-07
+            if _Draft7Validator is None:
+                rep.fail(
+                    "C25",
+                    "jsonschema 未安装（%s），无法执行严格 Schema 校验；"
+                    "请执行 `python -m pip install jsonschema`" % _JSONSCHEMA_IMPORT_ERROR,
+                )
+            else:
+                try:
+                    _Draft7Validator.check_schema(sch)
+                    rep.info("C25", "schema 本身是合法 Draft-07")
+                except Exception as exc:
+                    rep.fail("C25", "schema 本身不是合法 Draft-07: %s" % exc)
         except Exception as exc:
             rep.fail("C01", "schema JSON 解析失败: %s" % exc)
 
