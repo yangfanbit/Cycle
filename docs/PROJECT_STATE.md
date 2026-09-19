@@ -1,322 +1,204 @@
 # PROJECT_STATE.md — ThreeC 当前真实状态
 
-> **动态接班文档。** 本文件只回答“现在是什么状态、哪里有问题、下一步做什么”。
-> 历史细节进入 CHANGELOG；长期规则进入 AGENTS。
+> 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
+> 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-- **更新日期**：2026-09-19
-- **HEAD**：`0e19cff`
-- **branch**：`main`
-- **ahead / behind**：`0 / 0`
-- **working tree**：clean
-- **最近完成**：Structural Analogy Research v0.2
+- 更新日期：2026-09-19
+- HEAD：`60ae69f`
+- branch：`main`
+- ahead / behind：`0 / 0`
+- working tree：clean
+- 最近完成：Structural Analogy Explanation Artifact v0.1
 
----
-
-## 1. 项目一句话
+## 1. 项目当前定位
 
 **ThreeC = A股历史机会时间轴 / 历史机会地图。**
 
-核心价值不是预测，而是：
+核心价值：
 
-> **从历史周期里找结构，而不是去历史数据里找同名主题。**
+> 从历史周期里找结构，而不是从历史数据里找同名主题。
 
----
+主链路：
+
+`今天 → 历史同期 → 历史周期阶段 → 当前研究对象 → 历史结构对应 → 为什么对应 / 哪里不同 → 继续研究`
+
+不是交易决策、预测、买卖信号、概率或推荐系统。
 
 ## 2. 当前总阶段
 
-### Research Core：已完成第一版闭环
+### Research Core：第一版闭环完成
 
 `Historical Model → Historical Data → Time Observation → Current Research → Structural Analogy`
 
-现在已经完成：
-
+当前已完成：
 - Structural Analogy Rule Set v0.2 冻结
 - Structural Analogy Research v0.2 baseline
-- Time Observation Discovery v0.5
-- Macro Theme Canonicalization
-- Driver Canonicalization
+- Structural Analogy Explanation Artifact v0.1
+- Time Observation v0.5
+- CMTR v1
+- Historical Driver Canonicalization
 - Robustness / Feasibility / Readiness
 
-### Product Core：已有骨架，但没有消费最新 Structural Analogy
+### Product Core：骨架已具备，Structural Analogy 尚未进入 runtime
 
-当前 Product 已有：
+当前 Product 主线：
 
 `Timeline → Current Time Lens → Lifecycle Lens → Calendar Lens`
 
-另有 Current Candidate UI。
+Current Candidate 已进入 Current Time Lens。
 
-**Structural Analogy 尚未进入 Product。**
+当前 Structural Analogy 仍为 Research-derived 数据，尚未建立 Product Adapter。
 
----
+## 3. Structural Analogy 当前基线
 
-## 3. Research 当前基线
+Research v0.2：
+- 5 Current Candidates
+- 17 Historical Cycles
+- 85 comparison pairs
+- STRICT_STRUCTURAL_SUPPORTED = 1
+- STRUCTURAL_SUPPORTED = 4
+- STRUCTURAL_PARTIAL = 36
+- THEME_ONLY = 3
+- INSUFFICIENT_EVIDENCE = 5
+- NO_VALID_CORRESPONDENCE = 37
 
-### Historical Data
-
-当前 DB 实测：
-
-| 表 | 行数 |
-|---|---:|
-| campaigns | 13 |
-| themes | 19 |
-| campaign_themes | 31 |
-| campaign_phases | 48 |
-| campaign_date_observations | 24 |
-| evidences | 83 |
-| events | 49 |
-| market_series | 56 |
-| market_daily | 79,466 |
-| trading_calendar | 371 |
-| sources | 85 |
-
-Macro Theme roots：
-
-- TH-AUTO · 汽车
-- TH-PHARMA · 医药健康
-- TH-POWER · 电力设备
-- TH-COMM · 信息通信
-
-历史主题族样本目前仍然不均衡：
-
-- AUTO = 9
-- PHARMA = 3
-- POWER = 2
-- COMM = 2
-
-日期核验：
-
-- `campaign_date_observations = 24`
-- `verified_date = 0 / 24`
-
-这属于可信度债务，不再作为当前 Structural Analogy 的阻塞条件。
-
----
-
-## 4. Time Observation v0.5
-
-四族数据首次完整重跑：
-
-- Raw candidates = **315**
-- distinct samples = **139**
-- `N ≥ 5` = **34**
-- independent robust structures = **1**
-- TOP-01：`N=7` · center=`06-11` · window=`05-27~06-26` · recurrence=`5/7`
-- cross-family robust structures = **0**
-
-结论：
-
-> **Time Observation 暂时冻结。**
-
-不再为了增加 Pattern 数量继续扩容或放宽标准。
-
----
-
-## 5. Structural Analogy v0.2
-
-Protocol：
+规则版本：
 
 `structural-analogy-ruleset-v0.2`
 
-规则已冻结，研究执行基线已建立。
+最大瓶颈仍是机制级 Driver 证据深度，不是规则或 vocabulary。
 
-### Core Result
+## 4. Step 2 已完成，但尚未视为最终 Product Contract
 
-| 状态 | 数量 |
-|---|---:|
-| STRICT_STRUCTURAL_SUPPORTED | 1 |
-| STRUCTURAL_SUPPORTED | 4 |
-| STRUCTURAL_PARTIAL | 36 |
-| THEME_ONLY | 3 |
-| INSUFFICIENT_EVIDENCE | 5 |
-| NO_VALID_CORRESPONDENCE | 37 |
+已新增：
+- `docs/STRUCTURAL_ANALOGY_EXPLANATION_ARTIFACT_v0_1.md`
+- `research/research/reports/structural_analogy_explanations_v0_1.json`
+- `research/scripts/build_structural_analogy_explanation_v0_1.py`
 
-比较规模：
+Artifact 覆盖 85 explanations，且：
+- 来源唯一 = Structural Analogy Research v0.2
+- 规则唯一 = Rule Set v0.2
+- Product READ_ONLY
+- 无 score / ranking / probability
+- `--check` 可逐字节复现
 
-- Current candidates = **5**
-- Historical cycles = **17**
-- Pairs = **85**
+**但 Step 2 尚存在 Product 接口化前的 QA 项：**
+1. `why_not_similar` 不应把 CROSS_MACRO_THEME 当成“为什么不相似”。
+2. explanations 当前按 structural status 再按 cycle id 排列；虽然不是研究 ranking，但 Product 很容易把数组顺序误读为排名，应去除这种暗示。
+3. `historical_campaign_id` 同时承载 historical campaign 与 Research Candidate，需要在 Adapter 前明确 cycle / campaign identity。
+4. provenance 需要明确哪些证据支撑哪个维度，避免 Product 误把候选全部证据理解为每个维度的直接依据。
 
-Cross-family：
+因此：
 
-- SUPPORTED = **3**
-- same-family SUPPORTED = **1**
+> **Explanation Artifact v0.1 = 可复现 Draft / Research-derived interface candidate；在 Architecture Gate 前不要视为最终 Product Contract。**
 
-Controls：
+## 5. 当前 Product Architecture Debt
 
-- Name-blind changed = **0**
-- Theme-blind structural status changed = **0**
-- name-similarity negative control = PASS
-- same-theme negative control = PASS
-
-最大研究瓶颈：
-
-> **机制级 Driver 证据深度**，不是 vocabulary。
-
-当前：
-- Driver MATCH = 1 / 85
-- MULTI_MECHANISM = 4
-- Evidence Sequence NOT_AVAILABLE = 30 / 85
-
-因此后续不应再优先“调算法”，而应把注意力转向**证据深度与产品解释**。
-
----
-
-## 6. 当前真正存在的 Product Architecture Debt
-
-### A. 有三套“相似”体系
+### 三套比较体系
 
 1. `currentSimilarity.ts`
    - Current Candidate × Historical
    - 内部 score / tier
-   - 当前 Product 用于候选历史参照
+   - 当前 UI 已使用
 
 2. `historicalSimilarPhase.ts`
    - Historical × Historical
    - Lifecycle Lens
-   - 按阶段 / Pattern / Driver 找历史相似阶段
+   - 内部 score / tier
 
-3. Structural Analogy Research v0.2
+3. Structural Analogy
    - Current Candidate × Historical Cycle
-   - Lifecycle / Driver / Evidence Sequence / Event Structure
-   - **研究正式规则**
-   - 不以 score / ranking 定义结果
+   - Lifecycle / Mechanism Driver / Evidence Sequence / Event Structure
+   - 正式 Research Correspondence
+   - 离散状态，不以 score 定义
 
-**不能直接把三套并列放进产品。**
-必须重新划清职责。
+长期目标：
 
-### B. Driver 语义有两层
+- Calendar = 时间邻近浏览
+- Lifecycle = 生命周期浏览
+- Structural Analogy = 正式结构对应
 
-Product 当前 Candidate Driver：
+不能长期维护三套“历史相似算法”。
 
-`POLICY / INDUSTRY / CAPITAL / SENTIMENT / EXTERNAL`
+### Driver 双层语义
 
-Structural Analogy Driver：
+Product Current Candidate：
+- 证据类别：POLICY / INDUSTRY / CAPITAL / SENTIMENT / EXTERNAL
 
-`POLICY_DRIVEN / INDUSTRY_UPGRADE / TECH_BREAKTHROUGH / DEMAND_SURGE / ...`
+Structural Analogy：
+- 驱动机制：POLICY_DRIVEN / INDUSTRY_UPGRADE / TECH_BREAKTHROUGH / …
 
-前者更接近“证据类别”，后者是“机制类别”。
+以后必须明确区分“证据类别”与“驱动机制”。
 
-以后不能继续都叫同一个 Driver 而不解释层级。
+### OpportunityRadar
 
-### C. OpportunityRadar 已不属于当前 App 主流程
+`src/components/OpportunityRadar/` 当前不在 `App.tsx` 主流程。
 
-`src/components/OpportunityRadar/` 仍存在，但当前 `App.tsx` 已不接入。
+状态：
 
-其逻辑仍主要是“经验规则日历提醒”，与当前 Research Core 不一致。
+**LEGACY / DEFER**
 
-**暂不删除，标记为 legacy，待 Product Architecture Review 后统一处理。**
+不在 Architecture Gate 前删除。
 
-### D. 文档曾明显滞后
+## 6. Time Observation
 
-本轮已同步：
+Time Observation v0.5 已完成并暂时冻结：
 
-- AGENTS
-- PROJECT_STATE
-- ROADMAP
-- ARCHITECTURE
-- README
+- raw candidates = 315
+- distinct samples = 139
+- independent robust structures = 1
+- TOP-01 = N7 / center 06-11 / window 05-27~06-26 / recurrence 5/7
+- cross-family robust = 0
 
-以后不再把动态状态重复塞进 AGENTS。
+不再为了增加 Pattern 数量继续扩容或放宽标准。
 
----
+## 7. 当前唯一下一目标
 
-## 7. 当前产品真实架构
+# Product Similarity Architecture Gate v0.1
 
-```
-Research
-  │
-  ├─ Historical DB / Evidence / Lifecycle / Drivers
-  ├─ Current Candidate Dataset
-  ├─ Time Observation Artifacts
-  └─ Structural Analogy Research
-          │
-          └──（目前尚未进入 Product Artifact）
+这一步先于 Product Adapter。
 
-Canonical Export v1
-          │
-          ▼
-Product Adapter
-          │
-          ├─ Timeline
-          ├─ Current Time Lens
-          ├─ Calendar Lens
-          └─ Lifecycle Lens
-```
+目标：
+- 用实际 Product 代码核对 Calendar / Lifecycle / CurrentSimilarity / Structural Analogy 的职责边界
+- 正式决定 `currentSimilarity.ts` 的最终方向
+- 正式决定 `historicalSimilarPhase.ts` 的长期定位
+- 把 Explanation Artifact 做接口化 QA
+- 固化 Driver 两层语义
+- 固化 UNKNOWN / NOT_AVAILABLE / MISMATCH / PARTIAL 的产品表达
+- 正式决定 OpportunityRadar 的 legacy 处置
+- 确定 Structural Analogy Product Artifact 的最终最小结构
 
-### Product 侧原则
+### Gate 边界
 
-- Timeline 是第一视觉。
-- Calendar / Lifecycle / Structural 三种“比较视角”必须正交。
-- Research 结论应通过 Artifact + Adapter 进入 Product，而不是在 React 里重新实现研究规则。
-- Product runtime 不联网。
+- 不实现 Adapter
+- 不改 UI
+- 不改 schema
+- 不改 export contract v1.0
+- 不改 Structural Analogy Rule Set v0.2
+- 不重新运行新一轮 Structural Analogy Research
+- 不进入 Wave 1C
 
----
+Gate 通过后再进入：
 
-## 8. 当前唯一下一目标
+`Structural Analogy Artifact → Product Adapter → UI Integration`
 
-# Product Similarity Architecture Review v0.1
+## 8. 当前质量债务
 
-目标不是写 UI，而是回答：
+非主线 blocker：
+- campaign_date_observations verified = 0/24
+- Driver DIRECT evidence depth
+- market / temporal = SUPPLEMENTARY_ONLY
+- historical coverage imbalance
 
-1. `currentSimilarity.ts` 是否保留、降级还是最终废弃？
-2. `historicalSimilarPhase.ts` 是否作为独立 Lifecycle Lens 长期保留？
-3. Structural Analogy 如何成为**唯一正式的 Current → Historical Structural Correspondence**能力？
-4. Product 应消费什么 Research Artifact？
-5. Driver “证据类别”与“机制类别”如何命名和分层？
-6. 如何展示 MATCH / PARTIAL / MISMATCH / UNKNOWN / NOT_AVAILABLE，而不变成分数榜？
-7. 如何把“为什么类似”和“哪里不类似”放入产品？
-8. OpportunityRadar 是否正式 deprecated / 删除？
-9. Product Performance / interaction / uncertainty 怎么处理？
+这些问题暂不阻塞 Product Architecture Gate。
 
-### 本目标的边界
+## 9. 验证基线
 
-- **先设计，不实现 UI。**
-- 不改 schema。
-- 不改 export contract v1.0。
-- 不把 Structural Analogy 直接写入现有 TimelineCampaign。
-- 不新增 score / probability / ranking。
-- 不做 Wave 1C。
-- 不继续调 Structural Analogy v0.2 规则。
-
----
-
-## 9. 之后的路线
-
-```
-[现在]
-Structural Analogy v0.2 baseline
-        ↓
-[Next]
-Product Similarity Architecture Review
-        ↓
-Structural Analogy Explanation Contract / Artifact
-        ↓
-Product Adapter
-        ↓
-Product UI Integration
-        ↓
-真实用户体验 Review
-        ↓
-再决定是否补 Driver Evidence / Date Verification
-```
-
-Wave 1C 暂停；Time Observation 暂停。
-
----
-
-## 10. 当前验证基线
-
-已知最近一次全绿：
-
-- Structural Analogy v0.2 `--check` PASS
-- Calibration v0.2 PASS
-- Robustness PASS
-- Feasibility / Readiness PASS
-- Time Observation v0.5 PASS
+最近已报告全绿：
+- Structural Analogy Explanation `--check` PASS
 - Research validators 全 PASS
-- `npm test` = **395 / 395**
-- `tsc -b` = PASS
-- `vite build` = PASS
+- npm test 395/395
+- tsc -b PASS
+- vite build PASS
 
-任何下一轮实现都必须先核对实际 HEAD，再执行验证。
-
+下一轮任何实现先核对真实 HEAD，再执行验证。
