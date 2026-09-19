@@ -30,7 +30,7 @@
 
 ### Step 1 · Product Similarity Architecture Gate v0.1
 
-**当前进行中。**
+**已完成：PASS。**
 
 不是 UI 开发，而是 Product 语义和模块职责定稿。
 
@@ -46,23 +46,20 @@
 8. Explanation Artifact 的最终接口
 9. OpportunityRadar 的最终 legacy 处置
 
-**输出：**
-- Architecture Review / Decision document
-- Explanation Artifact QA 结论
-- 最小 Product-facing Artifact 契约
+**已输出：**
+- Architecture Gate / Decision document
+- Explanation Artifact v0.2
+- Product-facing Artifact 最小契约
 
-**不实现：**
-- Product Adapter
-- UI
-- schema
-- export
-- 新研究轮次
+本阶段结束，不再重复执行。
 
-### Step 2 · Product Adapter
+### Step 2 · Product Adapter v0.1
 
-`Research Structural Analogy Artifact → Product View Model`
+**当前进行中。**
 
-前置条件：Step 1 Gate PASS。
+`structural_analogy_explanations_v0_2.json → Product View Model`
+
+前置条件：Step 1 Gate = PASS。
 
 要求：
 - Product 只消费 Research 结果
