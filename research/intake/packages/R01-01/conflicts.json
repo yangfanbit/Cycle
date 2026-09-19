@@ -1,0 +1,170 @@
+[
+  {
+    "conflict_id": "R01-HIEQ-CF001",
+    "subject": "《人形机器人创新发展指导意见》的印发日期口径不一致（2023-10 vs 2023-11-02）",
+    "positions": [
+      {
+        "position": "2023 年 10 月国家工信部印发《人形机器人创新发展指导意见》。",
+        "source_ids": [
+          "R01-HIEQ-S032"
+        ]
+      },
+      {
+        "position": "2023-11-02 工信部印发《人形机器人创新发展指导意见》。",
+        "source_ids": [
+          "R01-HIEQ-S017",
+          "R01-HIEQ-S033"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两种口径相差约 1 个月，本包未取得该文件的一手原文（MIIT 官网原始通知页）以裁决。按协议：「冲突不得被自动取舍，KEEP_BOTH 是合法状态。」本包的处理方式：在 evidence R01-HIEQ-E021 中采用 2023-11-02 作为 event_date（两个来源中的一个，且第二个来源为赛迪网年度盘点），并在 point_in_time_note 中明确标注该口径差异；同时将本条 conflict 保留为未解决状态，供 ThreeC Agent 决定是否以一手原文复核。本包不据此调整 R01-HIEQ-005 的 peak 窗口（2023-11-01 至 2023-12-31），因该窗口对 1 个月的偏移不敏感。"
+  },
+  {
+    "conflict_id": "R01-HIEQ-CF002",
+    "subject": "2023-08-29 机器人板块涨停潮的可归因性（主题驱动 vs 市场 Beta）",
+    "positions": [
+      {
+        "position": "2023-08-29 机器人概念股掀涨停潮，拓斯达、步科股份、昊志机电、百胜智能等 20cm 涨停，机器人执行器概念 +6.23%、人形机器人概念 +6.14%、机器人概念 +3.52%；盘前可确证的催化包括世界机器人大会（8/16-22）国产人形机器人集中亮相、北京市设立 100 亿机器人产业基金、比亚迪入股智元机器人、工信部表态将推动出台人形机器人指导意见。故该日行情可归因为人形机器人主题催化。",
+        "source_ids": [
+          "R01-HIEQ-S014",
+          "R01-HIEQ-S015"
+        ]
+      },
+      {
+        "position": "2023-08-29 A 股三大指数低开高走，沪指涨 1.20%、深成指涨 2.17%、创业板指涨 2.82%，两市超 4700 只个股上涨、成交额连续两个交易日突破一万亿元。故该日机器人板块的表现无法完全排除市场 Beta 贡献，不可全部归因于主题催化。",
+        "source_ids": [
+          "R01-HIEQ-S014"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "按 historical_campaign_validation_v1.md §4.3 的 Beta Contamination 处理要求：当无法排除 Beta 贡献时，必须保持限定。本包的处理方式：①同时保留两个 position，不裁决孰是孰非；②在 evidence R01-HIEQ-E024（支持性）之外单列 R01-HIEQ-E026（contradicting，independence_group: IG-MARKET-BETA-20230829），使反证可被独立检索；③将 R01-HIEQ-005 的整体 confidence 标为 medium（未标 high），并在 why_not 中明确写出 Beta Contamination 风险；④将 R01-HIEQ-005 的 MAIN_RISE 起点锚定于 2023-08-29，但该锚点本身受本条限制。若 ThreeC Agent 认为 Beta 贡献不可排除的程度足以否定该起点，本包接受将该起点后移或该候选降级。"
+  },
+  {
+    "conflict_id": "R01-HIEQ-CF003",
+    "subject": "2023-05 的产业事件（黄仁勋「具身智能」表述、Optimus Gen1 视频）能否作为 R01-HIEQ-005 的同期催化",
+    "positions": [
+      {
+        "position": "2023-05 黄仁勋公开表示人工智能下一个浪潮将是「具身智能」，同期特斯拉年度股东大会发布 Optimus Gen1 最新视频。该事件可视为人形机器人产业叙事的起点，构成 R01-HIEQ-005 的启动催化。",
+        "source_ids": [
+          "R01-HIEQ-S018"
+        ]
+      },
+      {
+        "position": "该结论的唯一来源（S018，财信证券研报）发布于 2025-09-16，为事件发生两年后的产业进程复盘（retrospective）。该来源可证明「2023 年 5 月确实发生该事件」，但不能证明 2023 年 5 月当时投资者已将其采信为人形机器人行情的催化。本包未取得任何 2023 年 5 月的同期行情或媒体反应证据。",
+        "source_ids": []
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包的处理方式：①将 2023-05 事件保留在 R01-HIEQ-005 的 date_candidates.start 的 alternative_dates 中，而非作为唯一锚点；②在 R01-HIEQ-005 的 start 采用 DATE_WINDOW（2023-05-01 至 2023-08-29）以反映不确定性，置信度标为 medium；③在 evidence E020 的 temporal_relation 中标为 retrospective、在 point_in_time_note 中明确「不得据此证明当时投资者已将其采信为催化」；④R01-HIEQ-005 的 LIFEcycle 中，2023-05 至 2023-08-28 段标为 UNKNOWN 而非 EARLY_SIGNAL，理由即为本项冲突未解决——本包不能证明市场当时已识别该信号。该段是否构成 Early Signal 需由 ThreeC Agent 判定。"
+  },
+  {
+    "conflict_id": "R01-HIEQ-CF004",
+    "subject": "工程机械周期的峰值应以产业销量高点还是代表资产股价高点为准",
+    "positions": [
+      {
+        "position": "产业侧：2021 年 3 月挖掘机销量 7.9 万台、同比 +60%，为历史峰值；4 月同比增速骤降至 +2.52%。峰值应在 2021-03 至 2021-04。",
+        "source_ids": [
+          "R01-HIEQ-S008",
+          "R01-HIEQ-S035"
+        ]
+      },
+      {
+        "position": "市场侧：三一重工、中联重科、恒立液压股价在 2021 年年初创出新高；三一重工与恒立液压股价在 2021 年 1 月下旬即已露疲态。峰值应在 2021-01 下旬至 2021Q1。",
+        "source_ids": [
+          "R01-HIEQ-S009"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两者非事实矛盾，而是「产业指标」与「资产价格」两个口径的峰值不同步（相差约 1-2 个月）。本包的处理方式：①在 R01-HIEQ-001 的 date_candidates.peak 中并列两个窗口（2021-01-25 至 2021-04-30），并在 alternative_dates 中分别给出两个单一口径的锚点；②在 lifecycle 中同时记录 MAIN_RISE（至 2021-03-31）与 PEAK（2021-03-01 至 2021-04-30），并在 notes 中标注代表资产股价峰值更早；③不自行裁决应采哪个口径，因 Campaign Lifecycle Measurement Rule 要求「峰值以各 Campaign 代表资产为准」，而其具体适用方式属 ThreeC Agent 的判定范围。该不同步本身是本候选的结构特征之一（股价领先基本面），已在 why_campaign 与 drivers.turning 中记录。"
+  },
+  {
+    "conflict_id": "R01-HIEQ-CF005",
+    "subject": "2023-08-29 涨停潮报道中「双飞股份」与「双环传动」的标的归属",
+    "positions": [
+      {
+        "position": "报道记载 2023-08-29 涨停潮中「绿的谐波、双飞股份等涨超 10%」。",
+        "source_ids": [
+          "R01-HIEQ-S014"
+        ]
+      },
+      {
+        "position": "本包在减速器环节产业链映射中记录的代表标的为「双环传动」；「双飞股份」与「双环传动」字面相近，本包无法确认二者是否为同一标的、是否为报道笔误、或是否确为两家不同公司。",
+        "source_ids": [
+          "R01-HIEQ-S020"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包未取得裁决所需的一手行情数据（交易所口径的当日个股涨跌幅明细）。按「不猜测、不推断」原则，本包的处理方式：①在 securities R01-HIEQ-SEC013（双环传动）的 point_in_time_note 中显式记录该归属不确定，并声明不将其用于 2023-08-29 的行情证据；②不建立「双飞股份」的独立 security 条目，以避免可能的重复或不实标的；③将本冲突保留为 UNRESOLVED，供 ThreeC Agent 或后续轮次以交易所行情数据复核。该瑕疵不影响 R01-HIEQ-005 的板块级证据（拓斯达、步科股份的涨停归属明确）。",
+    "_position_note": "本条的第二 position 来自本包内部核对（非外部来源），故 source_ids 仅列产业链映射来源 S020。"
+  },
+  {
+    "conflict_id": "R01-HIEQ-CF006",
+    "subject": "2022 年工业机器人产量数据的口径分歧（统计局产量 44.3 万套 vs MIR 市场销量 28.2 万台）",
+    "positions": [
+      {
+        "position": "据国家统计局口径，2022 年国内工业机器人产量 44.3 万套、同比下降 4.8%；2023 年 1-2 月产量 6.2 万套、同比下降 19.2%。",
+        "source_ids": [
+          "R01-HIEQ-S007"
+        ]
+      },
+      {
+        "position": "据 MIR 睿工业统计，2022 年工业机器人市场销量 28.2 万台、同比增长约 10%。",
+        "source_ids": [
+          "R01-HIEQ-S007"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两者口径不同且方向相反（产量 -4.8% vs 销量 +10%），属实质性的统计口径分歧（产量统计 vs 市场销量统计，且统计主体不同）。本包的处理方式：①在 evidence R01-HIEQ-E016 中同时记录两个口径，并将其 evidence_role 标为 context（而非 supporting），避免被用作单向支持；②该 evidence 的 confidence 标为 medium、retelling 标为 true、same_origin 标为 true（与 E015 同源，均出自埃斯顿 2022 年年报）；③本包不据任一口径调整 R01-HIEQ-003 的 DECLINING 段描述（该段描述以 2022 年上半年 -11% 以上与 2023 年 1-2 月 -19.2% 为主，二者方向一致）；④该分歧提示「下行段」的量化刻画在年度口径上存在不确定性，已记入 research_questions。"
+  },
+  {
+    "conflict_id": "R01-HIEQ-CF007",
+    "subject": "「机器人」与「工业自动化」是否属同一底层主题（Q1 Anti-example 风险）",
+    "positions": [
+      {
+        "position": "二者在 2018-2022 段共享同一批上市公司（埃斯顿、汇川技术、拓斯达、机器人），且共享同一套「制造业资本开支 + 机器换人渗透率」的交易逻辑；代表资产高度重叠，可能构成同一底层主题的不同命名。",
+        "source_ids": [
+          "R01-HIEQ-S020",
+          "R01-HIEQ-S021",
+          "R01-HIEQ-S022"
+        ]
+      },
+      {
+        "position": "二者的驱动变量不同：工业自动化的驱动变量是制造业固定资产投资与信贷周期；工业机器人（尤其 2023 起的人形机器人）的驱动变量是本体渗透率、AI 大模型技术突破、产业政策与量产订单。2023 年起人形机器人段的注意力中心与代表资产发生明显迁移（减速器、丝杠、无框力矩电机、灵巧手等环节取代通用自动化标的）。",
+        "source_ids": [
+          "R01-HIEQ-S018",
+          "R01-HIEQ-S016",
+          "R01-HIEQ-S026"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本条属任务 known_ambiguity，必须由 ThreeC Agent 走 CMTR v1 裁决，本包无权也不自行裁决。本包的处理方式：①以两个并列的 SUB_THEME 提案提交（R01-HIEQ-MT002「机器人」、R01-HIEQ-MT003「工业自动化」），不合并也不拆分；②在两个提案的 rationale 中均显式写出该风险；③在 manifest 的 cross_task_notes R01-HIEQ-CT006 中记录 R01-HIEQ-002 与 R01-HIEQ-003 可能构成同一 ThemeCycle 的两个阶段；④在 R01-HIEQ-005 的 why_not 中记录「人形机器人是否应与工业机器人共享同一 Theme」的同等不确定性。本冲突保留为 UNRESOLVED。"
+  },
+  {
+    "conflict_id": "R01-HIEQ-CF008",
+    "subject": "「人形机器人」2023-2025 多轮行情应记录为一个还是多个 Campaign",
+    "positions": [
+      {
+        "position": "应记录为多个：2023 段以技术展示与叙事形成为主（具身智能表述、Optimus Gen1/Gen2、工信部指导意见、优必选上市），2024-09 起段以量产规划、国产产业链组织化与订单落地为主（华为 16 家签约、Optimus 量产指引、1.24 亿元中国移动订单）。事件类型与驱动机制存在可观察的迁移。",
+        "source_ids": [
+          "R01-HIEQ-S018",
+          "R01-HIEQ-S019",
+          "R01-HIEQ-S016"
+        ]
+      },
+      {
+        "position": "应记录为一个：两段共享同一注意力中心（人形机器人）、同一批代表资产（减速器/丝杠/电机/传感器环节标的）、同一套核心叙事（量产预期）。2023 段与 2024-09 起段之间不存在注意力的中断或切换，仅存在催化类型的递进。按「不同时间 ≠ 不同 Campaign」与「同一时间 ≠ 同一个 Campaign」的双向禁令，不可仅因时间推移而拆分。",
+        "source_ids": [
+          "R01-HIEQ-S018"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本条是任务 known_ambiguity 第 2 项，也是本包最核心的未决结构问题。本包的处理方式：①按可观察到的机制变化（叙事形成 → 量产预期与订单）分别记录为 R01-HIEQ-005 与 R01-HIEQ-007 两个候选；②分别给出各自的 date_candidates、lifecycle、drivers 四问与证据；③在 R01-HIEQ-005 与 R01-HIEQ-007 的 possible_duplicate_of 中双向标记；④在 manifest 的 cross_task_notes R01-HIEQ-CT005（kind: HANDOFF）中说明最终判定必须由 ThreeC Agent 走 Research Model v1.0 §5 + Campaign Independence Gate Q1-Q5；⑤明确不主张两者一定同属或一定分属。本冲突保留为 UNRESOLVED。本包承认：若采用「注意力的形成-强化-迁移」标准，二者可能应合并为一个 Campaign 的两个 Phase；若采用「驱动机制与催化类型是否改变」标准，则二者可能应分列。该标准选择权不在本包。"
+  }
+]

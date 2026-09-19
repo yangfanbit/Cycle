@@ -1,0 +1,28 @@
+{
+  "counts": {
+    "campaign_candidates": 7,
+    "evidence": 41,
+    "sources": 35,
+    "securities": 17,
+    "exclusions": 10,
+    "conflicts": 8
+  },
+  "confidence_distribution": {
+    "high": 3,
+    "medium": 2,
+    "low": 2
+  },
+  "coverage_notes": "本包覆盖高端装备/机器人方向在 2015-2025 的候选宇宙构建与逐项验证，共提交 7 个候选、41 条证据、35 个来源、17 个证券记录、10 项排除、8 项冲突、12 项研究问题。按机制轴组织而非按股票记忆组织：M1 工程机械更新+基建+环保周期（R01-HIEQ-001）；M2 制造业资本开支收缩下的工业机器人下行（R01-HIEQ-002）；M3 疫情后资本开支回补+自动化渗透率（R01-HIEQ-003）；M4 产业政策驱动（R01-HIEQ-004 机器人+政策 / R01-HIEQ-006 设备更新政策）；M5 技术突破与产业叙事形成（R01-HIEQ-005 人形机器人叙事）；M6 量产预期与订单落地（R01-HIEQ-007）；M7 单一买方采购周期（轨交，未形成结构，见 exclusion R01-HIEQ-X004）。证据层级：Tier 1（政策原文、上市公司法定披露）与 Tier 2（行业协会、券商研报、主流财经媒体）占主体，Tier 4 来源（S033）显式标注为线索性来源、不得单独作为独立证据。时间一致性处理：所有 subsequent / retrospective 证据均在 point_in_time_note 中声明不得作为同期催化；工程机械与工业自动化两段均出现「股价峰值领先产业峰值」的现象，已分别在 date_candidates.peak 中并列两个窗口。反证控制：单列 contradicting 证据 E026（2023-08-29 全市场普涨，用于 Beta Contamination 限定）；同一来源衍生出的多条证据均标记 same_origin=true（E005/E006、E015/E016、E022/E023、E024/E025、E033/E034、E007/E040/E041、E002/E038），不重复计入独立性。抽样审查：本包未使用任何 canonical ID，未修改 SQLite / canonical DB / schema / 既有 Campaign / canonical Theme / exports / Structural Analogy Rule Set，未创建排名/评分/概率/预测/胜率/目标价/买卖建议，未声明任何结果为 VERIFIED。",
+  "known_gaps": [
+    "市场侧行情序列严重不足：本包几乎所有候选都缺少连续的板块指数或代表资产的日线/周线序列。R01-HIEQ-006 与 R01-HIEQ-007 的市场侧证据为零；R01-HIEQ-005 仅有 2023-08-29 单日数据；R01-HIEQ-004 的 peak 依据仅为一份双周报的观测窗口末点。这直接限制了 Campaign Independence Gate Q1（独立注意力中心）的可验证性。",
+    "Priority B（2015-2017）覆盖不完整：仅采集到工程机械 2016-08 起热销段与 2017 年销量数据，缺乏 2015-2016 的逐月序列、缺乏该期间的市场反应同期证据，2015 年装备方向完全未覆盖。已在 exclusion R01-HIEQ-X008 中记为 INSUFFICIENT。",
+    "机制链条的中间变量缺失：①制造业固定资产投资的逐月序列（用于 R01-HIEQ-002 与 R01-HIEQ-003 的传导验证）；②设备更新政策下的实际设备投资落地数据（用于 R01-HIEQ-006）；③人形机器人厂商的实际交付与收入确认数据（用于 R01-HIEQ-007，现有证据为厂商计划口径）。",
+    "一手政策原文获取不全：《人形机器人创新发展指导意见》未取得 MIIT 官网原始通知页，导致印发日期存在 2023-10 与 2023-11-02 两个口径（CONFLICTS R01-HIEQ-CF001，KEEP_BOTH）。",
+    "2023 年 2-4 月的板块行情序列缺失，导致 R01-HIEQ-004 的 end 只能标为 UNKNOWN（low confidence），以及与 R01-HIEQ-005 的边界无法切分。",
+    "2022 年及以后工程机械的完整走势未系统采集，R01-HIEQ-001 的 2022-01 之后阶段明确标为 UNKNOWN。",
+    "轨交装备存在可能的覆盖缺口：本包未采集 2019-2020 年及 2024-2025 年（设备更新政策下铁路装备被列为受益方向）的轨交装备行情，故 INSUFFICIENT_EVIDENCE 的结论带有采集不足的不确定性（见 research_questions R01-HIEQ-Q012）。",
+    "工程机械 2016-2018 段的 Tier 1/2 一手销量序列未取得，start 只能给到 DATE_WINDOW（2016-08 至 2017-01）。",
+    "工程机械的设备更新年限推算（大量工业设备高峰投建于 2003-2014 年、按 8-15 年使用年限推算 2024-2027 年为集中更新窗口）属机制线索，本包未取得支撑该推演的量化一手来源。"
+  ],
+  "no_quantity_kpi_acknowledged": true
+}

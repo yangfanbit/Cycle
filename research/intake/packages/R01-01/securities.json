@@ -1,0 +1,239 @@
+[
+  {
+    "security_id": "R01-HIEQ-SEC001",
+    "ticker": "600031",
+    "name": "三一重工",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "工程机械周期的核心代表资产。挖掘机市占率由 2009 年 6.5% 提升至 2017 年 22.4%（超越卡特、小松、日立、神钢、斗山等外资品牌），2021 年挖掘机销量突破 10 万台、国内市占率首次超过 30%；2021Q1 业绩翻倍增长，股价在 2021 年年初创出新高、2021 年 1 月下旬即已露疲态；2021Q2/Q3 归母净利润分别同比 -28.56%、-35.31%；股价至 2021-11-19 较年内高点下跌近 60%。",
+    "source_ids": [
+      "R01-HIEQ-S008",
+      "R01-HIEQ-S009",
+      "R01-HIEQ-S012"
+    ],
+    "point_in_time_note": "本标的在本包中同时具备两种身份，必须区分：①Historical Leader Set（retrospective）——由 2021 年销量、市占率与业绩数据事后确认的周期领导者，属回顾性认定；②Point-in-Time Basket——在 2017 年 1-11 月，其挖机累计销售 2.80 万台、同比 +121.76%、市占率 22.14%，该数值在当时已公开，可作为当时的可观察指标。凡本包将其用于描述周期代表资产时，均为 retrospective 认定；凡引用市占率与销量数值时，需注意其发布时点。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC002",
+    "ticker": "000157",
+    "name": "中联重科",
+    "exchange": "深圳证券交易所",
+    "role": "second_leader",
+    "basis": "工程机械周期的重要代表资产。2021Q1 营业额同比增幅 110.11%；2021Q1 业绩翻倍增长、股价在 2021 年年初创出新高；起重机械销售额由 2018 年 125 亿元增至 2020 年 349 亿元，是产品线维度上 2019-2020 年景气反超挖掘机械的代表。",
+    "source_ids": [
+      "R01-HIEQ-S009",
+      "R01-HIEQ-S035"
+    ],
+    "point_in_time_note": "本标的为 Historical Leader Set（retrospective）成员：其「2021Q1 业绩翻倍、股价年初创新高」的认定来自 2022-01-08 的复盘报道。其产品线结构（起重机械 2019-2020 年景气反超挖机）亦为事后汇总口径，不得作为当时的同期信号使用。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC003",
+    "ticker": "000425",
+    "name": "徐工机械",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "工程机械三大主机厂之一，为工程机械周期的代表资产。本包未取得其单独的销量、市占率或业绩数据，其纳入依据为行业结构（工程机械主机厂集中于三一、中联、徐工三家）与设备更新政策卖方映射（工程机械被列为受益方向）。",
+    "source_ids": [
+      "R01-HIEQ-S029"
+    ],
+    "point_in_time_note": "本标的的纳入强度显著弱于 SEC001/SEC002/SEC004：本包仅有行业结构性的间接依据与政策受益映射，无公司层面的销量/业绩/股价同期或事后数据支撑。因此本标的仅作为补全行业结构的 representative 记录，不得据其判断 Campaign 的峰值或强度。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC004",
+    "ticker": "601100",
+    "name": "恒立液压",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "工程机械核心零部件（液压件）代表资产。2021Q1 业绩翻倍增长、股价在 2021 年年初创出新高；与三一重工同步在 2021 年 1 月下旬股价即已露疲态。其纳入意义在于提供「零部件端与主机端同步见顶」的交叉验证。",
+    "source_ids": [
+      "R01-HIEQ-S009"
+    ],
+    "point_in_time_note": "本标的为 Historical Leader Set（retrospective）成员，认定依据为 2022-01-08 的复盘报道。其价值在于与 SEC001（主机端）构成产业链上下游的双重锚点：二者股价见顶时点一致（2021 年 1 月下旬），可用于交叉验证股价峰值窗口，但不构成独立的同期证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC005",
+    "ticker": "002747",
+    "name": "埃斯顿",
+    "exchange": "深圳证券交易所",
+    "role": "leader",
+    "basis": "工业自动化与工业机器人周期的核心代表资产，同时参与 2020-2021 复苏段与 2023 年政策段。2020 年营收 25.10 亿元、同比 +61.84%，归母净利润 1.28 亿元、同比 +133.49%，工业机器人及智能制造系统收入 16.79 亿元、同比 +95.27%；2020 年 7 月股价月涨幅 35.0%、年初至今 43.4%；其 2022 年年报对行业周期的一手自述构成本包界定 2020Q2→2021Q3 上行段与 2021-07 下行起点的关键依据；2019 年（下行段）业绩不乐观。",
+    "source_ids": [
+      "R01-HIEQ-S004",
+      "R01-HIEQ-S007",
+      "R01-HIEQ-S021",
+      "R01-HIEQ-S022"
+    ],
+    "point_in_time_note": "区分两种身份：①Historical Leader Set（retrospective）——其 2020 年营收/利润与 2020 年 7 月行情数据均由 2021 年发布，属事后确认；②Point-in-Time Basket——2020 年 7 月的月涨幅 35.0% 系当月券商月报所载，属当时的可观察信息。另需注意：本标的横跨 R01-HIEQ-002（2019 下行）、R01-HIEQ-003（2020-2021 复苏）、R01-HIEQ-004（2023 政策）三个候选，是 Q1 Anti-example 风险（「工业自动化」与「机器人」可能属同一底层主题）的主要证据来源。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC006",
+    "ticker": "300124",
+    "name": "汇川技术",
+    "exchange": "深圳证券交易所",
+    "role": "leader",
+    "basis": "工业自动化链条的核心代表资产，伺服电机环节龙头。股价于 2020 年 7 月 16 日创历史新高，是复苏段（R01-HIEQ-003）市场确认的直接证据；被产业链映射列为伺服电机环节主要标的。",
+    "source_ids": [
+      "R01-HIEQ-S021",
+      "R01-HIEQ-S020"
+    ],
+    "point_in_time_note": "本标的存在跨族群归属问题：其行业分类同时被归入电气设备/工控，故与既有 family「电力设备」存在企业重叠（见 cross_task_notes R01-HIEQ-CT004）。本包将其作为工业自动化链条的代表资产记录，不主张其行情归属落在哪一 family。其 2020-07-16 创历史新高属当时的可观察信息（Point-in-Time Basket）；但本包未取得其 2021 年的顶部数据，故无法用于定义复苏段的峰值。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC007",
+    "ticker": "300024",
+    "name": "机器人",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "工业机器人本体与系统集成环节代表资产（原新松机器人）。2022 年上半年出现亏损；2019 年下行段其业绩不乐观。其纳入依据为产业链环节归属（本体与集成）与公司层面的亏损数据。",
+    "source_ids": [
+      "R01-HIEQ-S006",
+      "R01-HIEQ-S004"
+    ],
+    "point_in_time_note": "本标的仅被用于记录 R01-HIEQ-002（2019 下行段）与 exclusion R01-HIEQ-X001（2022 下行段）的业绩传导，属 Historical Leader Set（retrospective）。本包未取得其在任何上行段中的行情或业绩数据，故不得将其作为上行段的代表资产使用。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC008",
+    "ticker": "300607",
+    "name": "拓斯达",
+    "exchange": "深圳证券交易所",
+    "role": "second_leader",
+    "basis": "工业机器人本体与系统集成环节标的，同时参与 2020-2021 复苏段与 2023 年行情。产业链映射列为「本体与系统集成」环节；2023-08-29 机器人概念涨停潮中实现 20cm 涨停；2024-11-15 与华为具身智能创新中心签署合作备忘录的 16 家企业之一。",
+    "source_ids": [
+      "R01-HIEQ-S020",
+      "R01-HIEQ-S014",
+      "R01-HIEQ-S019"
+    ],
+    "point_in_time_note": "2023-08-29 的 20cm 涨停为当日可观察事实（Point-in-Time Basket），但该日全市场普涨（沪指 +1.20%、超 4700 只个股上涨），其涨停不能全部归因于主题，存在 Beta Contamination 风险（见 evidence R01-HIEQ-E026）。2024-11-15 的签约事件来源为 2025-09-16 的回顾性梳理，属 retrospective，不得作为当时的同期催化。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC009",
+    "ticker": "688017",
+    "name": "绿的谐波",
+    "exchange": "上海证券交易所科创板",
+    "role": "representative",
+    "basis": "谐波减速器环节代表资产。2023-08-29 机器人概念涨停潮中涨超 10%；减速器被列为人形机器人产业链核心环节之一。",
+    "source_ids": [
+      "R01-HIEQ-S014",
+      "R01-HIEQ-S018",
+      "R01-HIEQ-S033"
+    ],
+    "point_in_time_note": "区分两种身份：①Point-in-Time Basket——2023-08-29 涨超 10% 为当日可观察事实；②Historical Leader Set（retrospective）——「减速器属人形机器人核心环节」的产业链定位由 2024-2025 年的产业梳理确认，属事后认定。另需注意：(a) 2023-08-29 存在 Beta Contamination 风险；(b) 其产业链定位依据之一（S033 前元投资）为 Tier 4 线索性来源，按协议不得单独作为独立证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC010",
+    "ticker": "688160",
+    "name": "步科股份",
+    "exchange": "上海证券交易所科创板",
+    "role": "representative",
+    "basis": "2023-08-29 机器人概念涨停潮中实现 20cm 涨停（收盘 59.62 元），是当日板块级行情的直接可观察样本。",
+    "source_ids": [
+      "R01-HIEQ-S014",
+      "R01-HIEQ-S015"
+    ],
+    "point_in_time_note": "本标的为 Point-in-Time Basket 成员：2023-08-29 的 20cm 涨停为当日可观察事实。但该日全市场普涨（沪指 +1.20%、超 4700 只个股上涨），其涨停不能全部归因于主题，存在 Beta Contamination 风险（见 evidence R01-HIEQ-E026）。本包未取得其在其它任何时段的行情或业绩数据，故其证据价值限于该单日。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC011",
+    "ticker": "300753",
+    "name": "信邦智能",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "2023-01-19 「机器人+」政策发布次日 20% 涨停，是政策驱动段（R01-HIEQ-004）当日板块反应的最强个体样本。",
+    "source_ids": [
+      "R01-HIEQ-S025"
+    ],
+    "point_in_time_note": "本标的为 Point-in-Time Basket 成员，依据为 2023-01-19 当日行情报道（同日发布），属 contemporaneous。但本包未取得其基本面数据或后续行情，故其证据价值限于该单日的政策反应，不得据此推断政策影响的中期强度。其当日涨停的板块归属（机器人概念）来自媒体报道口径，未经本包独立验证。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC012",
+    "ticker": "002209",
+    "name": "达意隆",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "2023-01-19 「机器人+」政策发布次日一字涨停；2023-01-14 至 2023-02-03 报告期内涨幅 +56.6%，是政策驱动段（R01-HIEQ-004）持续性证据中的个体样本。",
+    "source_ids": [
+      "R01-HIEQ-S025",
+      "R01-HIEQ-S026"
+    ],
+    "point_in_time_note": "本标的为 Point-in-Time Basket 成员，两项依据（2023-01-19 当日涨停、+56.6% 双周涨幅）均属 contemporaneous。但本包未取得其基本面数据，无法判断该涨幅是否由基本面驱动；且其被归入「机器人概念」的口径来自媒体与券商报告，未经本包独立验证。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC013",
+    "ticker": "002472",
+    "name": "双环传动",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "减速器环节主要标的（RV 减速器），被产业链映射列为减速器环节代表；2023-08-29 机器人概念涨停潮中涨超 10%（媒体记载为「双飞股份」，本包对该个体归属存在不确定，见 note）。",
+    "source_ids": [
+      "R01-HIEQ-S020"
+    ],
+    "point_in_time_note": "本标的的纳入存在证据瑕疵：①其减速器环节定位来自产业链映射（contemporaneous，2020-08-31 来源）；②但本包在 2023-08-29 涨停潮的报道中读到的是「双飞股份」而非「双环传动」，二者字面相近且本包无法确认是否为同一标的或报道笔误。按「不猜测、不推断」原则，本包仅保留其减速器环节的定位记录，不将其用于 2023-08-29 的行情证据。该个体归属问题已记入 conflicts 待核。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC014",
+    "ticker": "002979",
+    "name": "雷赛智能",
+    "exchange": "深圳证券交易所",
+    "role": "follow",
+    "basis": "运动控制与伺服驱动环节标的，属人形机器人产业链中「电机/运动控制」环节的候选代表。本包未取得其在任何候选窗口内的行情或业绩数据，其纳入依据仅为产业链环节结构。",
+    "source_ids": [
+      "R01-HIEQ-S018"
+    ],
+    "point_in_time_note": "本标的是本包中证据强度最低的一类记录：无行情数据、无业绩数据、无事件参与记录，仅有产业链环节归属的间接依据。其纳入的目的是补全人形机器人产业链的环节覆盖面，明确不得用于任何 Campaign 的强度、峰值或代表资产主张。若 ThreeC Agent 认为无证据支撑的标的应被剔除，本包接受。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC015",
+    "ticker": null,
+    "name": "兆威机电",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "微型传动系统（灵巧手/执行器相关）环节标的。2024-11-15 与华为具身智能创新中心签署合作备忘录的 16 家企业之一。",
+    "source_ids": [
+      "R01-HIEQ-S019",
+      "R01-HIEQ-S018"
+    ],
+    "point_in_time_note": "本标的的依据为 2024-11-15 的签约事件，但该来源发布于 2025-09-16，属 retrospective，不能证明签约当日已被市场采信为催化。本包未取得其行情或业绩数据。其纳入用于记录「国产产业链组织化」这一机制环节，不作强度主张。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC016",
+    "ticker": null,
+    "name": "埃夫特",
+    "exchange": "上海证券交易所科创板",
+    "role": "representative",
+    "basis": "工业机器人本体环节标的。2022 年上半年出现亏损（下行段业绩传导证据）；2024-11-15 与华为具身智能创新中心签署合作备忘录的 16 家企业之一。",
+    "source_ids": [
+      "R01-HIEQ-S006",
+      "R01-HIEQ-S019"
+    ],
+    "point_in_time_note": "本标的仅在负向语境中被使用：①2022 年上半年亏损（contemporaneous，2022-08-31 来源）用于 exclusion R01-HIEQ-X001；②2024-11-15 签约（retrospective，2025-09-16 来源）用于记录国产产业链组织化。本包未取得其在任何上行段中的正向数据，故不得将其作为上行段代表资产。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-HIEQ-SEC017",
+    "ticker": null,
+    "name": "拓斯达（国产产业链签约方，见 SEC008）",
+    "exchange": null,
+    "role": "follow",
+    "basis": "本条目为占位性记录，用于说明 2024-11-15 华为具身智能创新中心签约的 16 家企业中，拓斯达已在 SEC008 中单独记录，此处不重复建立标的。",
+    "source_ids": [
+      "R01-HIEQ-S019"
+    ],
+    "point_in_time_note": "本条目无独立证据价值，仅为避免「重复建立同一标的」而设的说明性记录。若 ThreeC Agent 认为该条目属冗余，可直接删除，本包无异议。",
+    "survivorship_aware": true
+  }
+]

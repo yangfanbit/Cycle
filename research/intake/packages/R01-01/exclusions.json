@@ -1,0 +1,126 @@
+[
+  {
+    "exclusion_id": "R01-HIEQ-X001",
+    "subject": "2022 年工业自动化与工业机器人下行段是否构成独立 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2022 年工业机器人产量同比 -4.8%（上半年 -11% 以上）、多家上市公司（新松机器人、哈工智能、新时达、埃夫特）上半年亏损。该段在时间上紧接 R01-HIEQ-003（工业自动化复苏 2020-2021）的下行起点（2021-07），机制同为制造业资本开支与需求波动，仅方向相反。按「不同时间 ≠ 不同 Campaign」与「同一机制的反向段不自动构成新 Campaign」的处理原则，本包不将其单列为独立候选，而是作为 R01-HIEQ-003 的 DECLINING 阶段记录。是否应视为独立对象由 ThreeC Agent 判定，本包不自行裁决。",
+    "source_ids": [
+      "R01-HIEQ-S006",
+      "R01-HIEQ-S007"
+    ],
+    "evidence_ids": [
+      "R01-HIEQ-E014",
+      "R01-HIEQ-E015",
+      "R01-HIEQ-E016"
+    ]
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X002",
+    "subject": "2023 年 1-2 月工业机器人产量同比 -19.2%（政策发布时的行业低位）",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "2023 年 1-2 月国内工业机器人产量 6.2 万套、同比下降 19.2%，为「机器人+」政策发布（2023-01-18/19）后仍持续的数据。本包未取得该负增长段的完整季度序列、也未取得对应的市场反应证据，不足以支撑独立的生命周期描述。故仅作为 R01-HIEQ-004 的政策低位背景观察记录，不单列候选。",
+    "source_ids": [
+      "R01-HIEQ-S007",
+      "R01-HIEQ-S004"
+    ],
+    "evidence_ids": [
+      "R01-HIEQ-E016",
+      "R01-HIEQ-E041"
+    ]
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X003",
+    "subject": "半导体设备与半导体材料（前道/后道设备）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "半导体设备虽属装备制造，但按任务边界明确归入 R01-02（半导体/电子）。本包未将任何半导体设备标的纳入 securities，亦未建立以半导体设备为驱动机制的候选。本任务仅在核心零部件层面（伺服、减速器、控制器）涉及装备制造，不延伸至半导体专用设备。见 cross_task_notes R01-HIEQ-CT001。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X004",
+    "subject": "轨道交通装备（2018-2025）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "轨交装备在本任务区间主要表现为单一买方（国铁集团）采购节奏波动与需求疲弱，而非可比较的历史机会结构。证据：2021 年中国中车新签订单约 2210 亿元、同比 -8.72%；国铁集团 2021 年装备购置总投资计划 720 亿元、实际完成仅 566 亿元；2021 年铁路客流较 2019 年下降 29.31%、仅恢复至 70.69%；国铁集团长期占据中国中车客户榜首位（2021 年占其销售额 35.82%）；2018/2019 年时速 350 公里复兴号招标分别为 327 列、122 列（波动幅度大），2019 年时速 250 公里复兴号未实现采购；2020 年铁路装备采购约 1000 亿元、与 2019 年基本一致；2021 年上半年机车车辆采购不及预期。本包未找到该方向在 2018-2025 形成具备独立生命周期与清晰驱动机制的机会结构。仅保留名称候选（R01-HIEQ-MT005）与证据，不主张 Campaign。",
+    "source_ids": [
+      "R01-HIEQ-S013",
+      "R01-HIEQ-S030",
+      "R01-HIEQ-S031"
+    ],
+    "evidence_ids": [
+      "R01-HIEQ-E035",
+      "R01-HIEQ-E036"
+    ]
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X005",
+    "subject": "「人形机器人」作为独立 Macro Theme 的主张",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "本包不主张「人形机器人」构成独立 Macro Theme。理由：①它与「机器人」「工业自动化」共享代表资产（埃斯顿、拓斯达、绿的谐波等）与产业链环节（减速器、伺服、传感器），存在 Q1 Anti-example 风险；②其行情在 2018-2025 内未形成与「机器人」整体完全独立的注意力中心；③它更可能属「机器人」下的 Theme/子主题。本包以 SUB_THEME 形式提交名称候选（R01-HIEQ-MT002 的 theme_name_candidates 含「人形机器人」「具身智能」），最终的层级与归属必须由 ThreeC Agent 走 CMTR v1 判定。本包不自行认定其为独立根节点。",
+    "source_ids": [
+      "R01-HIEQ-S018"
+    ],
+    "evidence_ids": [
+      "R01-HIEQ-E020",
+      "R01-HIEQ-E021"
+    ]
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X006",
+    "subject": "纯军工订单驱动的装备制造（如军品为主业的精密传动、机床、液压件企业）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "军民两用装备存在重叠：部分装备制造企业（液压件、精密传动、机床）同时具备军民两用属性。凡驱动机制为纯军工订单或军方采购节奏者，按任务边界属 R01-06（军工），本包未纳入。本包所有候选的驱动机制均为制造业资本开支、设备更新、产业政策、产业叙事或技术突破，不含纯军工订单驱动。见 cross_task_notes R01-HIEQ-CT002。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X007",
+    "subject": "汽车整车、汽车零部件与智驾/Robotaxi 叙事",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "已有 family「汽车」覆盖，含 C-2024-ROBOTAXI / C-2025-ROBOTAXI。本包未建立任何以智驾或 Robotaxi 为驱动的候选，也未将汽车整车或零部件企业作为候选代表资产。仅在机制归因层面引用汽车行业数据（2019 年汽车产量/销量同比 -7.5%/-8.2%）作为工业机器人下游需求收缩的解释变量，不构成范围扩张。见 cross_task_notes R01-HIEQ-CT003。",
+    "source_ids": [
+      "R01-HIEQ-S004"
+    ],
+    "evidence_ids": [
+      "R01-HIEQ-E040"
+    ]
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X008",
+    "subject": "2015-2017 年装备方向的完整 Campaign 建立（Priority B）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Priority B（2015-2017）本包仅完成部分覆盖：工程机械的 2016-08 起热销段有机制表述与 2017 年销量数据（1-11 月 12.63 万台、同比 +99.18%），但缺乏 Tier 1/2 一手来源的 2015-2016 逐月序列、缺乏该期间的市场反应同期证据，也无 2015 年装备方向的任何证据。因此本包不建立以 2015-2017 为主体的独立候选，仅将 2016-08 起的工程机械段作为 R01-HIEQ-001 的起点前置条件记录。Priority B 整体覆盖率低，明确记为 INSUFFICIENT。",
+    "source_ids": [
+      "R01-HIEQ-S011",
+      "R01-HIEQ-S012"
+    ],
+    "evidence_ids": [
+      "R01-HIEQ-E001",
+      "R01-HIEQ-E002",
+      "R01-HIEQ-E038"
+    ]
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X009",
+    "subject": "单日/单股级别的行情异动（非候选结构）",
+    "reason_code": "SINGLE_STOCK_EVENT",
+    "rationale": "本包采集到若干单日板块涨停潮与个股异动数据（2023-01-19 政策次日多股涨停；2023-08-29 板块涨停潮）。这些数据本身不构成 Campaign，本包仅将其作为对应候选（R01-HIEQ-004 / R01-HIEQ-005）的市场反应证据使用。特别地，2023-08-29 因全市场普涨（沪指 +1.20%、超 4700 只个股上涨）存在 Beta Contamination 风险，其单日表现不作为独立 Campaign 主张的依据。",
+    "source_ids": [
+      "R01-HIEQ-S014",
+      "R01-HIEQ-S015",
+      "R01-HIEQ-S025"
+    ],
+    "evidence_ids": [
+      "R01-HIEQ-E018",
+      "R01-HIEQ-E024",
+      "R01-HIEQ-E026"
+    ]
+  },
+  {
+    "exclusion_id": "R01-HIEQ-X010",
+    "subject": "3C 消费电子与家电制造设备（属 R01-04 范围）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "3C 消费电子与家电虽为自动化设备的重要下游，但其产品与需求周期归 R01-04。本包未建立以消费电子或家电为驱动的候选。工业机器人的下游需求收缩归因中提及「电子制造业」，仅作为需求侧机制解释变量，不作为独立范围延伸。",
+    "source_ids": [],
+    "evidence_ids": []
+  }
+]

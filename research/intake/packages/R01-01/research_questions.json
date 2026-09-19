@@ -1,0 +1,107 @@
+[
+  {
+    "question_id": "R01-HIEQ-Q001",
+    "question": "「机器人」与「工业自动化」是否属同一底层主题？若属同一主题，则 2018-2019 下行段（R01-HIEQ-002）与 2020-2021 复苏段（R01-HIEQ-003）是否应被视为同一 ThemeCycle 的两个阶段而非两个独立 Campaign？",
+    "why_it_matters": "该问题的答案直接决定 2018-2021 这四年装备自动化方向应被记录为一个还是两个对象。若为同一 ThemeCycle 的两个阶段，则其生命周期应合并描述（连续的下行-上行-下行）；若为两个独立 Campaign，则须分别记录各自的启动/峰值/结束锚点。本包已按两个候选分别记录并双向标记 possible_duplicate_of，但缺乏裁决所需的标准与权限。判定需由 ThreeC Agent 走 CMTR v1 与 Campaign Independence Gate Q1-Q5（特别是 Q1 独立注意力中心与 Q4 独立生命周期）。",
+    "related_candidate_ids": [
+      "R01-HIEQ-002",
+      "R01-HIEQ-003"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q002",
+    "question": "「人形机器人」2023-2025 的多轮行情，应记录为一个 Campaign（含多个 Phase）还是两个独立 Campaign（R01-HIEQ-005 与 R01-HIEQ-007）？判断标准应以「注意力中心是否中断/迁移」为主，还是以「驱动机制与催化类型是否改变」为主？",
+    "why_it_matters": "这是本包最核心的未决结构问题，也是任务 brief 明确指出的 need-to-record 场景。两种处理方式对 2023-2025 装备方向的记录结构影响显著：合并则产生一个跨度约 2.5 年的长 Campaign；分列则产生两个各有独立生命周期与驱动机制的短 Campaign。本包按机制变化分列并双向标记，但明确不主张答案。",
+    "related_candidate_ids": [
+      "R01-HIEQ-004",
+      "R01-HIEQ-005",
+      "R01-HIEQ-007"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q003",
+    "question": "Campaign 的峰值与结束锚点，应以产业指标（如销量峰值、产量同比转负）为准，还是以代表资产的股价峰值为准？当二者不同步（如工程机械产业峰值 2021-03 vs 股价峰值 2021-01 下旬）时应如何处理？",
+    "why_it_matters": "本包至少在 R01-HIEQ-001（工程机械）、R01-HIEQ-003（工业自动化）两个候选上遇到该问题，且两次的方向一致——股价领先基本面见顶。Campaign Lifecycle Measurement Rule 规定「峰值以各 Campaign 代表资产为准」，但其与「产业周期峰值」的关系以及不同步时的处理方式，本包无法自行确定。该规则的确切适用方式将影响多个候选的 PEAK 阶段归属。",
+    "related_candidate_ids": [
+      "R01-HIEQ-001",
+      "R01-HIEQ-003"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q004",
+    "question": "在缺乏市场侧行情序列的情况下，一个仅有产业数据与政策文件支撑的驱动段（如 R01-HIEQ-006 大规模设备更新），能否通过 Campaign 独立性的最低验证？",
+    "why_it_matters": "R01-HIEQ-006 拥有三份一手政策文件（国发〔2024〕7号、发改环资〔2024〕1104号、国资委发布会）与明确的量化目标（2027 年设备投资较 2023 年增长 25% 以上、3000 亿元国债、央企 3 万亿元），但本包未取得任何板块行情数据。若「无市场侧证据即不可成立」成立，则该类政策驱动对象应一律标为 INSUFFICIENT；若「政策强度 + 量化目标」可作为充分条件，则应纳入。本包已标为 INSUFFICIENT 并保持证据，供 ThreeC Agent 确定判定标准。",
+    "related_candidate_ids": [
+      "R01-HIEQ-006"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q005",
+    "question": "「高端装备」是否应作为独立 Macro Theme 建立根节点？还是应将其分解为「机器人」「工业自动化」「工程机械」等若干个既有或新的根节点？",
+    "why_it_matters": "基线快照 §D 第 5 项已确认「高端装备/机器人」在 DB themes 表中不存在根节点，属 gap 方向。但该名称本身是一个笼统的产业集合名词，其内部至少包含三条驱动机制不同的周期（工程机械的更新+基建+环保；工业自动化的资本开支+渗透率；人形机器人的技术突破+政策+订单），彼此生命周期不同步（工程机械 2021Q1 见顶时工业自动化仍处景气）。是否应将这一集合视为一个 Macro Theme，还是分列为多个根节点，必须由 CMTR v1 裁决。本包提交了 NEW_MACRO_CANDIDATE 与多个 SUB_THEME 提案供比较，不自行认定。",
+    "related_candidate_ids": [
+      "R01-HIEQ-001",
+      "R01-HIEQ-002",
+      "R01-HIEQ-003",
+      "R01-HIEQ-005",
+      "R01-HIEQ-007"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q006",
+    "question": "工业机器人产量数据存在口径分歧（2022 年国家统计局产量 44.3 万套、同比 -4.8% vs MIR 睿工业市场销量 28.2 万台、同比约 +10%），应以哪一口径作为 Campaign 生命周期与强度的基准？",
+    "why_it_matters": "该分歧不仅影响单个年度的方向判断（-4.8% vs +10% 方向相反），还影响 2022-2023 下行段的量化刻画。本包在 CONFLICTS R01-HIEQ-CF006 中保留了双方，并将该 evidence 标为 context 而非 supporting。若后续轮次需对下行段做强度的量化比较，必须先确定统一口径。建议以国家统计局月度产量序列为统一基准（因其提供了连续的高频序列），但该选择需由 ThreeC Agent 或后续轮次确认。",
+    "related_candidate_ids": [
+      "R01-HIEQ-003",
+      "R01-HIEQ-004"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q007",
+    "question": "2023-01「机器人+」政策驱动段与 2023-05 起的人形机器人叙事段之间的边界应如何切分？若无法切分，是否应合并为一个 Campaign？",
+    "why_it_matters": "本包在 R01-HIEQ-004 与 R01-HIEQ-005 之间存在无法切分的边界：R01-HIEQ-004 的 end 标为 UNKNOWN（low confidence），R01-HIEQ-005 的 start 为 DATE_WINDOW。两者在 2023 年 3-4 月后的事件流上重叠（政策余波与人形机器人叙事交织）。本包未取得 2023 年 2-4 月的连续板块行情序列，无法用市场数据切分。该边界问题与 Q002 相关但独立：Q002 问的是 2023 段与 2024-09 段是否同一 Campaign，本问题问的是 2023 年内部的政策段与叙事段是否同一 Campaign。",
+    "related_candidate_ids": [
+      "R01-HIEQ-004",
+      "R01-HIEQ-005"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q008",
+    "question": "2023-08-29 的 Beta Contamination（全市场普涨日）对 R01-HIEQ-005 的启动锚点的影响应如何量化处理？是否存在更可靠的替代锚点？",
+    "why_it_matters": "R01-HIEQ-005 的 MAIN_RISE 起点目前锚定于 2023-08-29，但该日沪指 +1.20%、超 4700 只个股上涨，无法排除市场 Beta 贡献。本包已按 validation reference §4.3 要求保持限定（confidence 为 medium、单列 contradicting evidence E026）。但本包未找到该段的替代锚点（既无 2023 年 9-10 月的板块行情数据，也无更早的可确证市场反应日）。若能找到替代锚点（如中证机器人指数 H30590 在 2023 年下半年的日线序列），可显著提升该候选的起点可信度。",
+    "related_candidate_ids": [
+      "R01-HIEQ-005"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q009",
+    "question": "R01-HIEQ-007（2024-09 起量产预期与订单段）在缺少任何市场侧行情证据的情况下，其研究状态是否应维持 INSUFFICIENT，还是应降级为 OBSERVATION_ONLY？",
+    "why_it_matters": "R01-HIEQ-007 拥有本包中唯一明确的「订单驱动」同期证据（2025-07 智元、宇树中标中国移动 1.24 亿元项目，国内首笔上亿大单），且该证据类型对应基线快照 §C 中列出的 DB 缺失机制轴之一（订单/事件驱动）。但其市场侧证据为零，因此无法验证是否形成了可观察的注意力中心。本包将其标为 INSUFFICIENT 并以 low confidence 保留。是否应改为 OBSERVATION_ONLY（即「有价值但不足以成立对象」）由 ThreeC Agent 按八种 review outcome 的语义确定。",
+    "related_candidate_ids": [
+      "R01-HIEQ-007"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q010",
+    "question": "「工程机械」与既有 family「电力设备」以及 R01-03（资源/化工）在设备更新政策下的下游重叠（钢铁、有色、石化、化工、建材、电力被列为重点行业），应如何在家族层面切分？",
+    "why_it_matters": "国发〔2024〕7号明确列出 11 个重点行业，其中含钢铁、有色、石化、化工、建材、电力——这些行业的下游投资直接对应 R01-03 与既有 family「电力设备」的范围。同时，工程机械的原材料成本受钢材价格影响（R01-03）。本包在 manifest 的 cross_task_notes 中记录了与 R01-03、R01-05、电力设备的边界，但未裁决。若政策驱动型对象需按下游行业切分归属，则 R01-HIEQ-006 的归属存在实质争议。",
+    "related_candidate_ids": [
+      "R01-HIEQ-001",
+      "R01-HIEQ-006"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q011",
+    "question": "Priority B（2015-2017）的工程机械景气段，是否应作为独立 Campaign 建立，还是仅作为 R01-HIEQ-001 的起点前置条件？",
+    "why_it_matters": "本包已确认 2016 年 8 月起挖掘机持续热销（2017 年 1-11 月累计 12.63 万台、同比 +99.18%），机制为更新周期+基建+环保淘汰。但本包缺乏 2015-2016 年的逐月序列与同期市场反应证据，因此将其处理为 R01-HIEQ-001 的起点前置条件而非独立候选。若 ThreeC Agent 认为 2016-2017 段本身构成独立 Campaign（例如若其催化与 2018-2021 段不同），则需补充该段的证据后再建立。本包未完成 Priority B 的完整覆盖，明确记为 INSUFFICIENT（见 exclusion R01-HIEQ-X008）。",
+    "related_candidate_ids": [
+      "R01-HIEQ-001"
+    ]
+  },
+  {
+    "question_id": "R01-HIEQ-Q012",
+    "question": "轨道交通装备在 2018-2025 是否确实不存在可建立的机会结构？还是因本包采集不足而遗漏？",
+    "why_it_matters": "本包在 R01-HIEQ-X004 中将轨交装备标为 INSUFFICIENT_EVIDENCE，依据是单一买方采购波动与需求疲弱（2021 年中国中车新签订单 -8.72%、国铁装备购置实际完成 566 亿元 vs 计划 720 亿元、客流仅恢复至 70.69%）。但本包未系统采集：①2019 年及 2020 年下半年的轨交装备行情；②2024-2025 年设备更新政策下铁路装备被列为受益方向后的表现。若 ThreeC Agent 认为该方向有遗漏价值，建议由后续轮次（或 R01-02 等相邻任务）补充 2024-2025 段的证据。本包明确承认这是一个可能的覆盖缺口，而非已证实的「不存在」。",
+    "related_candidate_ids": []
+  }
+]
