@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`c246b94`（`fix(research): normalize R01-01 intake conflict schema`；本文件随 R01-02 Canonical Import 提交入库）
-- 最近完成：**R01-02 Canonical Decision & Import v0.1**（PASS；**8 个 PROMOTE 入 Canonical DB，4 个 RESEARCH_ONLY 保留**）
+- HEAD：`9e694f6`（`feat(research): import R01-02 semiconductor/electronics canonical research`；本文件随 R01-02 数据质量收口提交入库）
+- 最近完成：**R01-02 数据质量收口 v0.1**（PASS；**零数据性变更** —— E056 归属与 3 条 temporal 口径差异均判为 caveat，以 canonical 注记收口）
 
 ## 1. 项目当前定位
 
@@ -218,8 +218,8 @@ Time Observation v0.5 已完成并暂时冻结：
 |---|---|
 | OPEN | `CF006`（2024-09-24 后市场 Beta）**保留 UNRESOLVED**；`C-2024-SEMI-MEMORY` 以 medium 置信度进入并保留限定 |
 | OPEN | `CF008`（2017 显卡/矿机归属）保留未裁决 |
-| OPEN | R01-02 的 3 条 `evidence-temporal-mislabel` 警告（Package 自身 `temporal_relation` 与 lifecycle 端点不一致） |
-| OPEN | `E056`（2024-05-24）被包内绑定至 `C-2020-SEMI-EQUIPMENT`（2020–2021），日期不符 |
+| OPEN | ✅ **已收口（caveat）**：R01-02 的 3 条 `evidence-temporal-mislabel` —— 判为「年份级 vs 窗口级」**口径差异**（非数据错误）；3 条 WARNING 保留 + canonical 注记。见 `docs/R01_02_DATA_QUALITY_CLOSURE_v0_1.md` |
+| OPEN | ✅ **已收口（caveat）**：`E056`（2024-05-24 大基金三期）绑定 `C-2020-SEMI-EQUIPMENT` —— 判为**唯一在 canonical 层成立的归属**（008 为 RESEARCH_ONLY 不可承载；007 起点晚于该日期）；保留绑定 + 注记 |
 | OPEN | **5 个 root 仍无 Campaign**：资源 · 消费 · 金融 · 房地产 · 国防军工 |
 | OPEN | R01-01 / R01-02 的别名 taxonomy 缺口（芯片 / 集成电路 / 面板 / 存储 / HBM / GPU / 消费电子 等） |
 | POLISH | `themeCycleId` 可读性 · `event_type` ↔ 证据类别标签对应 |

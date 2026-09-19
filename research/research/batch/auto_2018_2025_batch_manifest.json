@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-09-19T23:19:20",
-  "source_commit": "c246b944fac06b56106c8033a7b1de6eca2a4b64",
+  "generated_at": "2026-09-19T23:47:20",
+  "source_commit": "9e694f6d152cb53fa7cfe97bceebb7dbf3653d79",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -3773,7 +3773,7 @@
       "signals": [],
       "confidence": "medium",
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
-      "research_notes": "★ CF001/CF010 裁决：**判为一个长周期内的第一个独立 Campaign**（非整个 2019–2021 周期）。依据：Q1 注意力中心为「华为实体清单 → 国产替代认知建立（设计/制造/封测全线）」，与 002 的「中芯国际回A + 晶圆厂扩产 → 设备材料」不同；Q2 代表标的不同（本 Campaign 覆盖设计与封测，002 集中于设备材料）；Q4 生命周期独立（主升 2019-05→2020-07，回撤 2020-07→2020-09）。★ peak = 2020-07-14（申万半导体 5869.83，E011 同期行情数据）。**不采用** 2020-02 底（研报口径）与 2021-07-30（7642.58，属 002）——两者已作为 alternative_dates 保留，不得预设其中任何一个为本 Campaign 的 canonical peak。★ 与 002 允许时间重叠（theme_campaign_separation 规则 5）。｜theme_cycle_id=semi_localization_2019_2021｜provenance: R01-02 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_02_INTAKE_REVIEW_v0_1.md",
+      "research_notes": "★ CF001/CF010 裁决：**判为一个长周期内的第一个独立 Campaign**（非整个 2019–2021 周期）。依据：Q1 注意力中心为「华为实体清单 → 国产替代认知建立（设计/制造/封测全线）」，与 002 的「中芯国际回A + 晶圆厂扩产 → 设备材料」不同；Q2 代表标的不同（本 Campaign 覆盖设计与封测，002 集中于设备材料）；Q4 生命周期独立（主升 2019-05→2020-07，回撤 2020-07→2020-09）。★ peak = 2020-07-14（申万半导体 5869.83，E011 同期行情数据）。**不采用** 2020-02 底（研报口径）与 2021-07-30（7642.58，属 002）——两者已作为 alternative_dates 保留，不得预设其中任何一个为本 Campaign 的 canonical peak。★ 与 002 允许时间重叠（theme_campaign_separation 规则 5）。｜theme_cycle_id=semi_localization_2019_2021｜provenance: R01-02 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_02_INTAKE_REVIEW_v0_1.md 【R01-02 数据质量收口 v0.1】E029（intake R01-SEMICONDUCTOR-E029）temporal_relation 口径说明 —— 该证据 event_date = 2020-12-28（第一财经年终盘点《半导体的2020：13只个股翻番，全年先扬后抑》），晚于本 Campaign 的 end_date（2020-09-30），故 validate_db 报 `evidence-temporal-mislabel` WARNING。**判定：口径差异，非数据错误。** 本 Package 的 lifecycle 端点（RETRACEMENT 至 2020-09-30）与 end_date 一致；分歧在于 evidence 的 temporal_relation 采用「**年份级**同期」口径（2020 年），而 validator 采用「**窗口级**」口径。该证据 evidence_role = **context**（用于说明板块内部分化），**未**被用作同期催化，风险低。**保留现状**：修改 temporal_relation 会 (a) 变更研究结论，(b) 使 canonical DB 与 intake Package 分歧。★ 保留为 unresolved，供后续复核轮次统一口径。",
       "conflict": null,
       "lifecycle": [
         {
@@ -4066,7 +4066,7 @@
       "signals": [],
       "confidence": "medium",
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
-      "research_notes": "★ CF001/CF010 裁决：**与 001 为同一 Theme Cycle 下的 Sequential Campaign**（非 Sub-theme）。依据：Q1 注意力中心为「中芯国际回A + 晶圆厂扩产 → 设备材料『卡脖子』上游」；Q2 代表标的集中于中微 / 拓荆 / 沪硅（与 001 的设计封测群不同）；Q4 生命周期独立（主升 2021-04→2021-07-30 = 7642.58，随后 2021-08 起下行至 2022-10 = 3605.80）；Q5 Residual Test：剔除设备材料后 001 仍自洽，剔除 001 后本 Campaign 亦自洽。★ 包内 Q5 存疑点已记录：两者资金池与叙事高度重叠，亦支持 Sub-theme 读法 —— 本轮按 Gate 多数成立判为独立 Campaign，若后续轮次推翻需另起决策，不得静默改动。★ 证据 E056（2024-05-24 大基金三期）由本包绑定至本 Campaign，日期与本 Campaign 区间不符 —— 按「不改研究内容」原则原样导入并在此标注，供后续轮次复核。｜theme_cycle_id=semi_localization_2019_2021｜provenance: R01-02 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_02_INTAKE_REVIEW_v0_1.md",
+      "research_notes": "★ CF001/CF010 裁决：**与 001 为同一 Theme Cycle 下的 Sequential Campaign**（非 Sub-theme）。依据：Q1 注意力中心为「中芯国际回A + 晶圆厂扩产 → 设备材料『卡脖子』上游」；Q2 代表标的集中于中微 / 拓荆 / 沪硅（与 001 的设计封测群不同）；Q4 生命周期独立（主升 2021-04→2021-07-30 = 7642.58，随后 2021-08 起下行至 2022-10 = 3605.80）；Q5 Residual Test：剔除设备材料后 001 仍自洽，剔除 001 后本 Campaign 亦自洽。★ 包内 Q5 存疑点已记录：两者资金池与叙事高度重叠，亦支持 Sub-theme 读法 —— 本轮按 Gate 多数成立判为独立 Campaign，若后续轮次推翻需另起决策，不得静默改动。★ 证据 E056（2024-05-24 大基金三期）由本包绑定至本 Campaign，日期与本 Campaign 区间不符 —— 按「不改研究内容」原则原样导入并在此标注，供后续轮次复核。｜theme_cycle_id=semi_localization_2019_2021｜provenance: R01-02 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_02_INTAKE_REVIEW_v0_1.md 【R01-02 数据质量收口 v0.1】E056（intake R01-SEMICONDUCTOR-E056）归属说明 —— 该证据的 claim 覆盖大基金一期(2014)/二期(2019)/三期(2024-05-24) 三阶段，其 event_date 取三期成立日 2024-05-24，落在本 Campaign 窗口（2020-07-16~2021-09-30）之外。**保留绑定本 Campaign** 的依据：① 本 Campaign 的驱动即「大基金二期(2019-10-22 成立、投向设备与材料上游薄弱环节)」（见本 Campaign 的 start alternative_dates）；E056 是该事实的第三个独立来源；② 三期所属的 008 为 RESEARCH_ONLY，**不入 campaigns 表**，无法承载；③ 007 起点 2024-09-24 晚于 2024-05-24，非其机制。temporal_relation = subsequent（证据发布日 2026-02-10，确为事后）—— 符合 historical_campaign_validation_v1 §4.3，**不违反任何既有校验规则**（check_retrospective_not_contemporaneous 仅约束 contemporaneous）。**未修改** event_date / temporal_relation / evidence_role（那属研究结论）。★ 已知 caveat：E056 的 event_date 与本 Campaign 窗口不符 —— 保留为 unresolved，供后续复核轮次处理。",
       "conflict": null,
       "lifecycle": [
         {
@@ -4318,7 +4318,7 @@
       "signals": [],
       "confidence": "medium",
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
-      "research_notes": "★ CF009 裁决：**进入 canonical campaigns 表**，与 R01-01 的 `C-2018-HIEQ-ROBOT-DOWN` 同一处理口径。理由：2022 下行具明确起止（2022-01-04 高点 6511.51 → 2022-10-12 低点 3605.80，全年 -37.11%）与可解释机制（库存 + 需求收缩），且「库存周期 / 需求收缩型下行」是当前 Historical Universe 缺失的机制轴。★ 这是**下行结构而非机会型结构** —— `result = weak`（与 R01-01 口径一致），不得解读为正向机会。｜theme_cycle_id=semi_inventory_downturn_2022｜provenance: R01-02 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_02_INTAKE_REVIEW_v0_1.md",
+      "research_notes": "★ CF009 裁决：**进入 canonical campaigns 表**，与 R01-01 的 `C-2018-HIEQ-ROBOT-DOWN` 同一处理口径。理由：2022 下行具明确起止（2022-01-04 高点 6511.51 → 2022-10-12 低点 3605.80，全年 -37.11%）与可解释机制（库存 + 需求收缩），且「库存周期 / 需求收缩型下行」是当前 Historical Universe 缺失的机制轴。★ 这是**下行结构而非机会型结构** —— `result = weak`（与 R01-01 口径一致），不得解读为正向机会。｜theme_cycle_id=semi_inventory_downturn_2022｜provenance: R01-02 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_02_INTAKE_REVIEW_v0_1.md 【R01-02 数据质量收口 v0.1】E047 / E048（intake R01-SEMICONDUCTOR-E047 / E048）temporal_relation 口径说明 —— E047 event_date = 2022-12-29（证券时报网《半导体行业主动去库存或将开启》，年终行业复盘），E048 event_date = 2022-10-31（2022-10 美国再次收紧对华半导体限制），二者均晚于本 Campaign 的 end_date（2022-10-12），故 validate_db 报 `evidence-temporal-mislabel` WARNING（2 条）。**判定：口径差异，非数据错误。** 本 Package 的 lifecycle（DECLINING 至 2022-10-12）与 end_date 一致；E048 的 event（2022-10-31 出口管制）距 end_date 仅 19 天，属本轮下行的尾部政策因素，package 将其列为 evidence_role = **context**（政策侧下行因素，与需求侧分列）；E047 为 supporting，但 claim 属**行业机制识别**（库存周期 + 需求收缩），非启动/主升催化。**保留现状**：修改 temporal_relation 会 (a) 变更研究结论，(b) 使 canonical DB 与 intake Package 分歧。★ 保留为 unresolved，供后续复核轮次统一口径。",
       "conflict": null,
       "lifecycle": [
         {

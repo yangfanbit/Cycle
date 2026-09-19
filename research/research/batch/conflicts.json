@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "generated_at": "2026-09-19T23:19:21",
-  "source_commit": "c246b944fac06b56106c8033a7b1de6eca2a4b64",
+  "generated_at": "2026-09-19T23:47:21",
+  "source_commit": "9e694f6d152cb53fa7cfe97bceebb7dbf3653d79",
   "rule": "conflicts 记录研究日期口径冲突；candidate_a=DB 冻结值，candidate_b=研究复核候选",
   "conflicts": [
     {
