@@ -1,0 +1,2803 @@
+{
+ "artifact": "structural_analogy_rule_calibration",
+ "artifact_version": "0.2",
+ "generated_by": "research/scripts/build_structural_analogy_rule_calibration_v0_2.py",
+ "position": "Research-layer rule calibration —— **不修改** v0.1 / Robustness / Feasibility / Driver Canonicalization。",
+ "not_a": [
+  "score",
+  "ranking",
+  "probability",
+  "similarity percentage",
+  "product readiness"
+ ],
+ "baseline_freeze_v0_1": {
+  "counts": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 46,
+   "THEME_ONLY": 3,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 27
+  },
+  "pairs": 85
+ },
+ "problems_found_in_v0_1": {
+  "A_theme_precedence_bug": {
+   "symptom": "OFFSHORE-WIND × C-2020-POWER-NE 带主题判 THEME_ONLY、去主题判 STRUCTURAL_PARTIAL",
+   "cause": "v0.1 规则中 `elif same_theme: THEME_ONLY` 先于 `elif driver ∈ GOOD: STRUCTURAL_PARTIAL`",
+   "fix": "结构性判定置于主题判定之前；Theme 仅用于 THEME_ONLY 的**事后**派生"
+  },
+  "B_event_low_selectivity": {
+   "symptom": "event_structure PARTIAL = 74/85；Robustness 中 R2 ≡ R3",
+   "fix": "overlap == 1 不再算 PARTIAL（→ MISMATCH）；PARTIAL 需 ≥2 类型真实对应"
+  },
+  "C_driver_partial_too_broad": {
+   "symptom": "Driver PARTIAL = 50/85",
+   "fix": "引入 primary_mechanism；overlap == 1 且非历史 primary → PERIPHERAL_OVERLAP（不计为支持）"
+  }
+ },
+ "calibration": {
+  "1_theme_structural_decoupling": {
+   "rule": "Structural Status 只由四维决定；Theme Relation 为独立 metadata；THEME_ONLY 事后派生",
+   "theme_relation_vocabulary": [
+    "SAME_MACRO_THEME",
+    "CROSS_MACRO_THEME"
+   ],
+   "forbidden": [
+    "same_theme → THEME_ONLY",
+    "cross_theme → structural"
+   ]
+  },
+  "2_event_rule": {
+   "MATCH": "类型集合相等 且 双方 ≥2 事件 且 首项相同（TYPE_AND_CHRONOLOGY）",
+   "PARTIAL": "类型交集 ≥2 且 双方 ≥2 事件（MULTI_TYPE_WITH_CHRONOLOGY）；或交集 ≥2 但 chronology 不完整",
+   "MISMATCH": "交集 ≤1（**SINGLE_TYPE_ONLY 不再算 PARTIAL**）",
+   "NOT_AVAILABLE": "任一侧无事件",
+   "anti_pattern": "不得因「都有 policy event」就 MATCH；Event 不能证明 Driver"
+  },
+  "3_driver_rule": {
+   "primary_mechanism": "历史侧：DIRECT 计数最高（确定性 tie-break：canonical 名称升序）；无 DIRECT → UNKNOWN（不猜）",
+   "MATCH": "集合相等 且 ≥2 项 且 历史侧对共有机制有 DIRECT provenance",
+   "PARTIAL": "交集 ≥2（MULTI_MECHANISM）；或 交集 ==1 且该机制为历史 primary（PRIMARY_MECHANISM_OVERLAP）",
+   "PERIPHERAL_OVERLAP": "交集 ==1 且非历史 primary → **不计为结构支持**",
+   "MISMATCH": "交集 == 0"
+  },
+  "4_structural_supported": {
+   "conditions": [
+    "Lifecycle = MATCH",
+    "Driver ∈ {MATCH, PARTIAL}",
+    "Evidence Sequence ∈ {MATCH, PARTIAL} 且 subtype ∈ {SEQUENCE_MATCH, SEQUENCE_PARTIAL}",
+    "Event Structure ∈ {MATCH, PARTIAL}",
+    "≥2 个非 Lifecycle 维度有 evidence-backed support",
+    "无核心 MISMATCH（lifecycle/driver/event）",
+    "不依赖 Theme relation"
+   ]
+  },
+  "5_structural_partial": "≥2 维度真实对应 且 Driver ∈ GOOD 且 Evidence Sequence ∈ GOOD",
+  "6_theme_only": "**结构评估之后**派生：结构支持不足 且 Theme Relation = SAME_MACRO_THEME"
+ },
+ "primary_mechanism_derivation": {
+  "per_cycle": {
+   "C-2019-AD": {
+    "primary": "POLICY_DRIVEN",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "C-2019-COMM-5G": {
+    "primary": "POLICY_DRIVEN",
+    "basis": "DIRECT 计数最高（2 条）"
+   },
+   "C-2019-PHARMA-INNOV": {
+    "primary": "EVENT_CATALYST",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "C-2020-NEV": {
+    "primary": "VALUATION_RESET",
+    "basis": "DIRECT 计数最高（2 条）"
+   },
+   "C-2020-POWER-NE": {
+    "primary": "POLICY_DRIVEN",
+    "basis": "DIRECT 计数最高（2 条）"
+   },
+   "C-2021-NEV": {
+    "primary": "VALUATION_RESET",
+    "basis": "DIRECT 计数最高（2 条）"
+   },
+   "C-2022-POLICY": {
+    "primary": "POLICY_DRIVEN",
+    "basis": "DIRECT 计数最高（4 条）"
+   },
+   "C-2022-POWER-GRID": {
+    "primary": "EVENT_CATALYST",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "C-2023-AD": {
+    "primary": "POLICY_DRIVEN",
+    "basis": "DIRECT 计数最高（2 条）"
+   },
+   "C-2023-COMM-OPTICAL": {
+    "primary": "DEMAND_SURGE",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "C-2024-ROBOTAXI": {
+    "primary": "EVENT_CATALYST",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "C-2024-V2X": {
+    "primary": "UNKNOWN",
+    "basis": "无 DIRECT driver 证据 → UNKNOWN"
+   },
+   "C-2025-ROBOTAXI": {
+    "primary": "DEMAND_SURGE",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "RC-2020-PANDEMIC": {
+    "primary": "DEMAND_SURGE",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "RC-2021-TCM": {
+    "primary": "POLICY_DRIVEN",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "RC-2023-HUAWEI": {
+    "primary": "EVENT_CATALYST",
+    "basis": "DIRECT 计数最高（1 条）"
+   },
+   "RC-2024-SECONDARY": {
+    "primary": "UNKNOWN",
+    "basis": "无 DIRECT driver 证据 → UNKNOWN"
+   }
+  },
+  "unknown_cycles": [
+   "C-2024-V2X",
+   "RC-2024-SECONDARY"
+  ],
+  "note": "**未新增 driver vocabulary**；仅对现有 canonical drivers 做关系判定。"
+ },
+ "rule_sensitivity_matrix": {
+  "v0_1_baseline": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 46,
+   "THEME_ONLY": 3,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 27
+  },
+  "theme_decoupled_only": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 1,
+   "STRUCTURAL_PARTIAL": 76,
+   "THEME_ONLY": 0,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 3
+  },
+  "event_calibrated_only": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 1,
+   "STRUCTURAL_PARTIAL": 60,
+   "THEME_ONLY": 1,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 18
+  },
+  "driver_calibrated_only": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 52,
+   "THEME_ONLY": 2,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 22
+  },
+  "full_v0_2": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 36,
+   "THEME_ONLY": 3,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 37
+  }
+ },
+ "calibrated_counts": {
+  "strict": 1,
+  "STRUCTURAL_SUPPORTED": 4,
+  "STRUCTURAL_PARTIAL": 36,
+  "THEME_ONLY": 3,
+  "INSUFFICIENT_EVIDENCE": 5,
+  "NO_VALID_CORRESPONDENCE": 37
+ },
+ "pair_diff_v0_1_to_v0_2": {
+  "changed": 32,
+  "detail": [
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2021-NEV",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2024-V2X",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "MATCH",
+      "MATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2023-COMM-OPTICAL",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "same_macro_theme": true,
+    "from_status": "THEME_ONLY",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "RC-2023-HUAWEI",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "NOT_AVAILABLE",
+      "NOT_AVAILABLE"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2020-NEV",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "event_structure": [
+      "MISMATCH",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2024-V2X",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "same_macro_theme": true,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "THEME_ONLY",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-NEV",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2021-NEV",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2024-V2X",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MATCH",
+      "MATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2023-COMM-OPTICAL",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MATCH",
+      "MATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "MATCH",
+      "MATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MATCH",
+      "MATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "RC-2023-HUAWEI",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "NOT_AVAILABLE",
+      "NOT_AVAILABLE"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-NEV",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MATCH",
+      "MATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2021-NEV",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2022-POLICY",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2023-AD",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "RC-2023-HUAWEI",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "NOT_AVAILABLE",
+      "NOT_AVAILABLE"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2021-NEV",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2024-V2X",
+    "same_macro_theme": false,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "NO_VALID_CORRESPONDENCE",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration",
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "MATCH",
+      "MATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2023-COMM-OPTICAL",
+    "same_macro_theme": false,
+    "from_status": "NO_VALID_CORRESPONDENCE",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Theme precedence fix / Structural rule change"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-POWER-NE",
+    "same_macro_theme": true,
+    "from_status": "THEME_ONLY",
+    "to_status": "STRUCTURAL_PARTIAL",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "evidence_sequence": [
+      "MISMATCH",
+      "MISMATCH"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "MISMATCH"
+     ]
+    },
+    "attribution": [
+     "Event rule calibration"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "same_macro_theme": true,
+    "from_status": "STRUCTURAL_PARTIAL",
+    "to_status": "THEME_ONLY",
+    "from_strict": false,
+    "to_strict": false,
+    "dimension_changes": {
+     "lifecycle": [
+      "MATCH",
+      "MATCH"
+     ],
+     "driver": [
+      "PARTIAL",
+      "PERIPHERAL_OVERLAP"
+     ],
+     "evidence_sequence": [
+      "PARTIAL",
+      "PARTIAL"
+     ],
+     "event_structure": [
+      "PARTIAL",
+      "PARTIAL"
+     ]
+    },
+    "attribution": [
+     "Driver rule calibration"
+    ]
+   }
+  ],
+  "attribution_summary": {
+   "Theme precedence fix / Structural rule change": 8,
+   "Driver rule calibration|Event rule calibration": 11,
+   "Driver rule calibration": 10,
+   "Event rule calibration": 3
+  }
+ },
+ "name_blind_retest": {
+  "retained": 85,
+  "changed": 0,
+  "changed_detail": []
+ },
+ "theme_blind_retest": {
+  "retained": 82,
+  "changed": 3,
+  "changed_detail": [
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "from": "THEME_ONLY",
+    "to": "NO_VALID_CORRESPONDENCE"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-COMM-5G",
+    "from": "THEME_ONLY",
+    "to": "NO_VALID_CORRESPONDENCE"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "from": "THEME_ONLY",
+    "to": "NO_VALID_CORRESPONDENCE"
+   }
+  ],
+  "structural_status_changed": 0,
+  "note": "正确预期：Theme-Blind **不应**改变 Structural Status，只应影响 theme_relation。若 Structural Status 被改变 → 仍有主题泄漏。"
+ },
+ "counterexample_fix_check": [
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2020-POWER-NE",
+   "same_macro_theme": true,
+   "v0_1_status": "THEME_ONLY",
+   "v0_2_status": "STRUCTURAL_PARTIAL",
+   "theme_blind_status": "STRUCTURAL_PARTIAL",
+   "driver_v0_1": "PARTIAL",
+   "driver_v0_2": "PARTIAL",
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "theme_decoupled": true
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2019-PHARMA-INNOV",
+   "same_macro_theme": true,
+   "v0_1_status": "THEME_ONLY",
+   "v0_2_status": "STRUCTURAL_PARTIAL",
+   "theme_blind_status": "STRUCTURAL_PARTIAL",
+   "driver_v0_1": "MISMATCH",
+   "driver_v0_2": "MISMATCH",
+   "driver_quality": "NONE",
+   "theme_decoupled": true
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2019-COMM-5G",
+   "same_macro_theme": true,
+   "v0_1_status": "THEME_ONLY",
+   "v0_2_status": "THEME_ONLY",
+   "theme_blind_status": "NO_VALID_CORRESPONDENCE",
+   "driver_v0_1": "MISMATCH",
+   "driver_v0_2": "MISMATCH",
+   "driver_quality": "NONE",
+   "theme_decoupled": false
+  }
+ ],
+ "negative_control": [
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2024-ROBOTAXI",
+   "v0_1_status": "NO_VALID_CORRESPONDENCE",
+   "v0_2_status": "NO_VALID_CORRESPONDENCE",
+   "name_blind_status": "NO_VALID_CORRESPONDENCE",
+   "driver": "MISMATCH",
+   "event_structure": "MISMATCH",
+   "not_upgraded": true
+  }
+ ],
+ "event_discriminative_power": {
+  "R2": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 36,
+   "THEME_ONLY": 3,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 37
+  },
+  "R3": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 52,
+   "THEME_ONLY": 2,
+   "INSUFFICIENT_EVIDENCE": 5,
+   "NO_VALID_CORRESPONDENCE": 22
+  },
+  "discriminative": true,
+  "verdict": "EVENT_IS_DISCRIMINATIVE"
+ },
+ "false_positive_audit": {
+  "policy_shared_but_different_transmission": {
+   "check": "双方都有 POLICY_DRIVEN 但传导路径不同（capacity expansion vs technology certification）",
+   "result": "PASS —— MATCH 要求集合相等且 ≥2 项且 DIRECT provenance；单一 POLICY_DRIVEN 重叠降为 PERIPHERAL_OVERLAP / PARTIAL"
+  },
+  "industry_upgrade_shared_but_different": {
+   "check": "双方都有 INDUSTRY_UPGRADE 但一侧技术升级、另一侧产业政策支持",
+   "result": "PASS —— 单一重叠不再构成 MATCH"
+  },
+  "demand_vs_policy": {
+   "check": "一侧 DEMAND_SURGE、另一侧 POLICY_DRIVEN",
+   "result": "PASS —— 无交集 → MISMATCH（除非有共同机制）"
+  },
+  "name_similarity": {
+   "check": "EMBODIED-AI × C-2024-ROBOTAXI",
+   "result": [
+    {
+     "candidate_id": "CC-2026-EMBODIED-AI",
+     "historical_cycle": "C-2024-ROBOTAXI",
+     "v0_1_status": "NO_VALID_CORRESPONDENCE",
+     "v0_2_status": "NO_VALID_CORRESPONDENCE",
+     "name_blind_status": "NO_VALID_CORRESPONDENCE",
+     "driver": "MISMATCH",
+     "event_structure": "MISMATCH",
+     "not_upgraded": true
+    }
+   ]
+  }
+ },
+ "rule_generalization_limits": {
+  "sample": "17 historical cycles × 5 candidates = 85 pairs",
+  "statement": "**Research-layer rule calibration on current sample** —— 不得声称 algorithm generalized / statistically validated / high precision / production-grade"
+ },
+ "decision_gates": {
+  "G1_structural_status_independent_of_theme": true,
+  "G2_name_blind_does_not_change_status": true,
+  "G3_theme_blind_does_not_change_STRUCTURAL_status": true,
+  "G4_negative_control_not_upgraded": true,
+  "G5_driver_partial_no_longer_category_overlap": true,
+  "G6_event_rule_has_explicit_criteria": true,
+  "G7_at_least_one_strict_case_retained": true,
+  "passed": 7,
+  "total": 7,
+  "verdict": "Structural Analogy Research v0.2 READY"
+ },
+ "calibrated_pairs": [
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2019-AD",
+   "lifecycle": "PARTIAL",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2020-NEV",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2021-NEV",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SET_ONLY",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2022-POLICY",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2023-AD",
+   "lifecycle": "MATCH",
+   "driver": "MATCH",
+   "driver_overlap": [
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "CORE_EQUIVALENT",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_SUPPORTED",
+   "strict": true,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2024-V2X",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2024-ROBOTAXI",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2025-ROBOTAXI",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2019-COMM-5G",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2023-COMM-OPTICAL",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2019-PHARMA-INNOV",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "SAME_MACRO_THEME",
+   "same_macro_theme": true
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2020-POWER-NE",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "C-2022-POWER-GRID",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "RC-2023-HUAWEI",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "RC-2024-SECONDARY",
+   "lifecycle": "PARTIAL",
+   "driver": "NOT_AVAILABLE",
+   "driver_overlap": [],
+   "driver_quality": "NOT_AVAILABLE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "event_quality": "NOT_AVAILABLE",
+   "status": "INSUFFICIENT_EVIDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "RC-2020-PANDEMIC",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "NO_CORRESPONDENCE",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_cycle": "RC-2021-TCM",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2019-AD",
+   "lifecycle": "PARTIAL",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2020-NEV",
+   "lifecycle": "PARTIAL",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "NO_CORRESPONDENCE",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2021-NEV",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2022-POLICY",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2023-AD",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2024-V2X",
+   "lifecycle": "PARTIAL",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2024-ROBOTAXI",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2025-ROBOTAXI",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE"
+   ],
+   "driver_quality": "MULTI_MECHANISM",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2019-COMM-5G",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2023-COMM-OPTICAL",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "DEMAND_SURGE"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2019-PHARMA-INNOV",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "DEMAND_SURGE"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2020-POWER-NE",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "SAME_MACRO_THEME",
+   "same_macro_theme": true
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "C-2022-POWER-GRID",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "THEME_ONLY",
+   "strict": false,
+   "theme_relation": "SAME_MACRO_THEME",
+   "same_macro_theme": true
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "RC-2023-HUAWEI",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "NO_CORRESPONDENCE",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "RC-2024-SECONDARY",
+   "lifecycle": "MISMATCH",
+   "driver": "NOT_AVAILABLE",
+   "driver_overlap": [],
+   "driver_quality": "NOT_AVAILABLE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "event_quality": "NOT_AVAILABLE",
+   "status": "INSUFFICIENT_EVIDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "RC-2020-PANDEMIC",
+   "lifecycle": "PARTIAL",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "DEMAND_SURGE"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "NO_CORRESPONDENCE",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_cycle": "RC-2021-TCM",
+   "lifecycle": "PARTIAL",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2019-AD",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2020-NEV",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2021-NEV",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SET_ONLY",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2022-POLICY",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2023-AD",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "MULTI_MECHANISM",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_SUPPORTED",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2024-V2X",
+   "lifecycle": "PARTIAL",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2024-ROBOTAXI",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2025-ROBOTAXI",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2019-COMM-5G",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2023-COMM-OPTICAL",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2019-PHARMA-INNOV",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2020-POWER-NE",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "C-2022-POWER-GRID",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "RC-2023-HUAWEI",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "RC-2024-SECONDARY",
+   "lifecycle": "MISMATCH",
+   "driver": "NOT_AVAILABLE",
+   "driver_overlap": [],
+   "driver_quality": "NOT_AVAILABLE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "event_quality": "NOT_AVAILABLE",
+   "status": "INSUFFICIENT_EVIDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "RC-2020-PANDEMIC",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "NO_CORRESPONDENCE",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_cycle": "RC-2021-TCM",
+   "lifecycle": "PARTIAL",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2019-AD",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2020-NEV",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2021-NEV",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2022-POLICY",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2023-AD",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2024-V2X",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2024-ROBOTAXI",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2025-ROBOTAXI",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE"
+   ],
+   "driver_quality": "MULTI_MECHANISM",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_SUPPORTED",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2019-COMM-5G",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "THEME_ONLY",
+   "strict": false,
+   "theme_relation": "SAME_MACRO_THEME",
+   "same_macro_theme": true
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2023-COMM-OPTICAL",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "DEMAND_SURGE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "MULTI_MECHANISM",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_SUPPORTED",
+   "strict": false,
+   "theme_relation": "SAME_MACRO_THEME",
+   "same_macro_theme": true
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2019-PHARMA-INNOV",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "DEMAND_SURGE"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2020-POWER-NE",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "C-2022-POWER-GRID",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "RC-2023-HUAWEI",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "RC-2024-SECONDARY",
+   "lifecycle": "MISMATCH",
+   "driver": "NOT_AVAILABLE",
+   "driver_overlap": [],
+   "driver_quality": "NOT_AVAILABLE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "event_quality": "NOT_AVAILABLE",
+   "status": "INSUFFICIENT_EVIDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "RC-2020-PANDEMIC",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "DEMAND_SURGE"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "NO_CORRESPONDENCE",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_cycle": "RC-2021-TCM",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2019-AD",
+   "lifecycle": "PARTIAL",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2020-NEV",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2021-NEV",
+   "lifecycle": "PARTIAL",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SET_ONLY",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2022-POLICY",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2023-AD",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2024-V2X",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2024-ROBOTAXI",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2025-ROBOTAXI",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MATCH",
+   "sequence_subtype": "SEQUENCE_MATCH",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2019-COMM-5G",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2023-COMM-OPTICAL",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2019-PHARMA-INNOV",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2020-POWER-NE",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "MISMATCH",
+   "sequence_subtype": "SEQUENCE_MISMATCH",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "SAME_MACRO_THEME",
+   "same_macro_theme": true
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "C-2022-POWER-GRID",
+   "lifecycle": "MATCH",
+   "driver": "PERIPHERAL_OVERLAP",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PERIPHERAL_ONLY",
+   "evidence_sequence": "PARTIAL",
+   "sequence_subtype": "SEQUENCE_PARTIAL",
+   "event_structure": "PARTIAL",
+   "event_quality": "MULTI_TYPE_WITH_CHRONOLOGY",
+   "status": "THEME_ONLY",
+   "strict": false,
+   "theme_relation": "SAME_MACRO_THEME",
+   "same_macro_theme": true
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "RC-2023-HUAWEI",
+   "lifecycle": "MATCH",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "RC-2024-SECONDARY",
+   "lifecycle": "PARTIAL",
+   "driver": "NOT_AVAILABLE",
+   "driver_overlap": [],
+   "driver_quality": "NOT_AVAILABLE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "event_quality": "NOT_AVAILABLE",
+   "status": "INSUFFICIENT_EVIDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "RC-2020-PANDEMIC",
+   "lifecycle": "PARTIAL",
+   "driver": "MISMATCH",
+   "driver_overlap": [],
+   "driver_quality": "NONE",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "NO_VALID_CORRESPONDENCE",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_cycle": "RC-2021-TCM",
+   "lifecycle": "MATCH",
+   "driver": "PARTIAL",
+   "driver_overlap": [
+    "POLICY_DRIVEN"
+   ],
+   "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+   "evidence_sequence": "NOT_AVAILABLE",
+   "sequence_subtype": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "event_quality": "SINGLE_TYPE_ONLY",
+   "status": "STRUCTURAL_PARTIAL",
+   "strict": false,
+   "theme_relation": "CROSS_MACRO_THEME",
+   "same_macro_theme": false
+  }
+ ]
+}
