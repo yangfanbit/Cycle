@@ -2159,3 +2159,97 @@ html, body {
   .hcx-seq li { gap: 4px; }
   .ccs-sa-hint { font-size: 10px; }
 }
+
+/* ============================================================
+   Historical Cycle Map v0.1 —— 周级时间窗口浏览
+   Calendar Window + Lifecycle Position（并列，不合并成 score）
+   ============================================================ */
+
+.hcm-sec { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.hcm-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; margin: 0 0 5px; font-size: 14px; font-weight: 700; }
+.hcm-tag {
+  padding: 1px 6px; border: 1px solid var(--line-strong); border-radius: 999px;
+  font-size: 10px; font-weight: 500; color: var(--ink-3);
+}
+.hcm-intro { margin: 0 0 8px; font-size: 12px; color: var(--ink-2); line-height: 1.75; overflow-wrap: anywhere; }
+
+/* ---- 现在这一周在哪里 ---- */
+.hcm-now { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fbfbf9; }
+.hcm-now-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.hcm-now-label { font-size: 11.5px; color: var(--ink-3); }
+.hcm-now-week { font-family: var(--mono); font-size: 12.5px; font-weight: 700; }
+.hcm-now-range { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+.hcm-weeks { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.hcm-week {
+  display: grid; gap: 1px; padding: 5px 6px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel);
+  text-align: center;
+}
+.hcm-week.is-now { border-color: var(--accent); border-width: 2px; background: #f2f7fb; }
+.hcm-week-off { font-size: 10.5px; color: var(--ink-3); }
+.hcm-week.is-now .hcm-week-off { color: var(--accent); font-weight: 700; }
+.hcm-week-label { font-family: var(--mono); font-size: 10px; color: var(--ink-2); }
+.hcm-week-count { font-size: 10px; color: var(--ink-3); }
+.hcm-note { margin: 7px 0 0; font-size: 11px; color: var(--ink-3); line-height: 1.65; }
+
+/* ---- 筛选（不是排序） ---- */
+.hcm-filters { display: grid; gap: 4px; margin: 9px 0 4px; }
+.hcm-filter-row { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.hcm-filter-label { min-width: 84px; font-size: 10.5px; color: var(--ink-3); }
+.hcm-chip {
+  padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 999px;
+  background: var(--panel); font: inherit; font-size: 11px; color: var(--ink-2); cursor: pointer;
+}
+.hcm-chip:hover { border-color: var(--accent); color: var(--accent); }
+.hcm-chip.is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.hcm-more { margin-top: 8px; }
+
+/* ---- 历史时间窗口 ---- */
+.hcm-order-note { margin: 6px 0 4px; font-size: 11px; color: var(--ink-3); line-height: 1.65; }
+.hcm-years { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.hcm-year { padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: #fbfbf9; }
+.hcm-year-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.hcm-year-num { font-family: var(--mono); font-size: 13px; font-weight: 700; }
+.hcm-year-win { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); }
+.hcm-year-count { margin-left: auto; font-size: 10.5px; color: var(--ink-3); }
+.hcm-entries { list-style: none; margin: 5px 0 0; padding: 0; display: grid; gap: 5px; }
+
+.hcm-entry { padding: 5px 7px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.hcm-entry-btn {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; width: 100%;
+  padding: 0; border: 0; background: none; font: inherit; cursor: pointer; text-align: left;
+}
+.hcm-entry-title { font-size: 12px; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+.hcm-entry-btn:hover .hcm-entry-title { color: var(--accent); }
+.hcm-chip-sm {
+  padding: 0 5px; border: 1px solid var(--line); border-radius: 999px;
+  font-size: 10px; color: var(--ink-2); white-space: nowrap;
+}
+.hcm-chip-cycle { font-family: var(--mono); }
+.hcm-stage {
+  padding: 1px 6px; border: 1px solid var(--line-strong); border-radius: 999px;
+  font-size: 10.5px; color: var(--ink-2); white-space: nowrap;
+}
+/* UNKNOWN 用虚线 + 灰（与已知阶段不同视觉） */
+.hcm-stage.is-unknown { border-style: dashed; color: var(--ink-3); }
+.hcm-stage.is-known { border-color: #b9d3bf; color: #3d7a49; }
+.hcm-entered { color: var(--accent); }
+.hcm-open-hint { margin-left: auto; font-size: 10.5px; color: var(--ink-3); white-space: nowrap; }
+
+/* 横向 span（该案例在窗口中的位置；不是分数） */
+.hcm-span { position: relative; height: 5px; margin: 5px 0 2px; background: #f0efeb; border-radius: 999px; }
+.hcm-span-bar { position: absolute; top: 0; height: 5px; background: var(--accent); opacity: .55; border-radius: 999px; }
+.hcm-entry-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.hcm-dim { font-size: 10.5px; color: var(--ink-3); line-height: 1.6; overflow-wrap: anywhere; }
+
+.hcm-empty { margin: 6px 0 0; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; overflow-wrap: anywhere; }
+
+@media (max-width: 720px) {
+  .hcm-weeks { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; }
+  .hcm-week { padding: 4px 2px; }
+  .hcm-week-label { font-size: 9px; }
+  .hcm-week-count { font-size: 9px; }
+  .hcm-filter-label { min-width: 100%; }
+  .hcm-year-count, .hcm-open-hint { margin-left: 0; }
+  .hcm-entry-btn { gap: 4px; }
+}

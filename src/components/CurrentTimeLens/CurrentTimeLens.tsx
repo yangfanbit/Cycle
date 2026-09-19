@@ -15,6 +15,7 @@ import {
   type CurrentLensV2,
 } from '../../data/timeline/researchAttention';
 import { CurrentCandidateSection } from './CurrentCandidateSection';
+import { HistoricalCycleMapSection } from './HistoricalCycleMapSection';
 import type { HistoricalCaseAnalogyContext } from '../../data/timeline/historicalCase';
 import { buildCurrentCandidateViews } from '../../data/timeline/currentCandidateAdapter';
 import {
@@ -117,6 +118,11 @@ export function CurrentTimeLens({
         dataSource={dataSource}
         onOpenHistoricalCase={onOpenHistoricalCase}
       />
+
+      {/* ============ Historical Cycle Map（周级时间窗口浏览 · v0.1） ============
+          回答「现在这一周，历史上有没有出现过类似的周期窗口？当时走到哪一步？」。
+          与 Structural Analogy（结构对应）**并列不可替代**；只做时间窗口浏览，不排序、不评分。 */}
+      <HistoricalCycleMapSection dataSource={dataSource} today={today} onSelect={onSelect} />
 
       {/* ============ 附：日历同期（Calendar Lens） ============ */}
       <h4 className="ctl2-sublayer">
