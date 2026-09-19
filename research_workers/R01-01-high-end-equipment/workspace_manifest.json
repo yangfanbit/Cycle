@@ -1,0 +1,13 @@
+{
+  "workspace_version": "0.1",
+  "workspace_kind": "threec_historical_research_worker",
+  "research_round_id": "R01",
+  "task_id": "R01-01",
+  "task_status": "PREPARED_NOT_STARTED",
+  "source_threec_commit": "2153f6d83b7481300696ab73d792e9e53aa31a07",
+  "intake_protocol_version": "0.1",
+  "standalone": true,
+  "canonical_db_access": false,
+  "product_access": false,
+  "canonicalization_authority": false
+}

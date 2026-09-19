@@ -1,0 +1,41 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R01",
+  "task_id": "R01-01",
+  "task_scope": {
+    "task_id": "R01-01",
+    "family_directions": [
+      "SYNTHETIC FIXTURE"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "合成夹具（非研究数据）",
+    "excluded_scope": "合成夹具（非研究数据）"
+  },
+  "generated_at": "2026-09-19T00:00:00Z",
+  "source_commit": "2153f6d83b7481300696ab73d792e9e53aa31a07",
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R01-FIXTURE-MT001",
+      "proposed_name": "SYNTHETIC FIXTURE",
+      "theme_name_candidates": [
+        "SYNTHETIC FIXTURE"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "合成夹具，仅用于验证 validator；不是研究数据。",
+      "known_overlap": [],
+      "notes": "SYNTHETIC FIXTURE — NOT RESEARCH DATA"
+    }
+  ],
+  "cross_task_notes": []
+}

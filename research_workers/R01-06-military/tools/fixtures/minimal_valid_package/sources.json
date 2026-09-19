@@ -1,0 +1,30 @@
+[
+  {
+    "source_id": "R01-FIXTURE-S001",
+    "title": "合成夹具来源 A（非研究数据）",
+    "url": "https://example.invalid/fixture/1",
+    "no_url_reason": null,
+    "publisher": "SYNTHETIC FIXTURE",
+    "author": null,
+    "published_at": "2020-05-16",
+    "captured_at": null,
+    "source_type": "regulator",
+    "tier": 1,
+    "independence_group": "IG-A",
+    "description": null
+  },
+  {
+    "source_id": "R01-FIXTURE-S002",
+    "title": "合成夹具来源 B（非研究数据）",
+    "url": "https://example.invalid/fixture/2",
+    "no_url_reason": null,
+    "publisher": "SYNTHETIC FIXTURE",
+    "author": null,
+    "published_at": "2024-01-10",
+    "captured_at": null,
+    "source_type": "media_tier3",
+    "tier": 3,
+    "independence_group": "IG-B",
+    "description": null
+  }
+]

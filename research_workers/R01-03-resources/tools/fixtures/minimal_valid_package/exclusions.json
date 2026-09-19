@@ -1,0 +1,10 @@
+[
+  {
+    "exclusion_id": "R01-FIXTURE-X001",
+    "subject": "合成夹具被排除事件（非研究数据）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "合成夹具",
+    "source_ids": [],
+    "evidence_ids": []
+  }
+]
