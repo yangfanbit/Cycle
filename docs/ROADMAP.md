@@ -132,6 +132,18 @@
 
 仅在新研究问题证明必须扩容时重新开启。
 
+> **同步（2026-09-19）**：第二次真实使用已确认瓶颈是 **Historical Universe 太窄**
+> （4 个 Macro Theme · 85 条比较中仅 1 条 STRICT 结构对应）→ **触发条件成立**。
+> Coverage Expansion 以 **R01 独立研究轮次**形式重新开启；
+> **R00（Historical Universe Expansion / Research Intake Protocol v0.1）已完成基础设施**：
+> - `research/intake/HISTORICAL_UNIVERSE_INTAKE_PROTOCOL_v0_1.md`（协议）
+> - `research/intake/HISTORICAL_UNIVERSE_COVERAGE_PLAN_v0_1.md`（覆盖方向）
+> - `research/intake/historical_research_intake.schema.json`（交付结构）
+> - `research/intake/HISTORICAL_UNIVERSE_R01_TASK_MANIFEST_v0_1.json`（R01-01 ~ R01-06）
+> - `research/scripts/validate_historical_research_intake.py`（机器校验器）
+>
+> **R01-01 ~ R01-06 均未启动**，启动需单独授权。
+
 ## 4. 当前明确不做
 
 - 不继续扩 Time Observation Pattern

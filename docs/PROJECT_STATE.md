@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`e4ec504`（`docs(research): second real observation cycle v0.1`；本文件随 Snapshot Freshness Polish 提交入库）
-- 最近完成：**Snapshot Freshness Polish v0.1**（PASS；`stale` 阈值 `> 0` → `> 14`）
+- HEAD：`2ba94bd`（`fix(product): raise snapshot staleness threshold to 14 days`；本文件随 R00 提交入库）
+- 最近完成：**Historical Universe Expansion / Research Intake Protocol v0.1（R00）**（PASS；**只建基础设施，未新增任何历史研究结论**）
 
 ## 1. 项目当前定位
 
@@ -172,49 +172,73 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# 由真实研究产生的新 Research Question 决定（无已确认 P1）
+# R01：Historical Universe Expansion（**已建基础设施，未启动**）
 
 **已完成（全部 PASS）**：Product Similarity Architecture Gate v0.1 · Product Adapter v0.1 ·
 Product UI Integration v0.1 · **UX Review + Performance Gate v0.1** ·
 **Historical Case Experience v0.1** · **Historical Cycle Map v0.1** ·
 **Current Research Refresh Loop v0.1** · **First Real Observation Cycle v0.1** ·
 **Historical Case Evidence View Rework v0.1** · **Second Real Observation Cycle v0.1** ·
-**Snapshot Freshness Polish v0.1**（`stale` 阈值 `> 0` → `> 14`）。
+**Snapshot Freshness Polish v0.1** · **Historical Universe Intake Protocol v0.1（R00）**。
 
-**当前无已确认 P1。** 下一步由**真实研究产生的新 Research Question**决定，不由 Agent 预设。
+**当前无已确认 P1（Product 侧）。**
+
+### 瓶颈已正式确认
+
+> **Historical Universe 太窄，导致历史结构比较空间有限。**
+
+实测基线：Macro Theme 根节点仅 **4**（汽车 · 医药健康 · 信息通信 · 电力设备）·
+Campaign 13 · Structural Analogy 历史对象 17 · 85 条比较中 **STRICT 仅 1 条**。
+
+**根因不是规则太严，是候选池太窄** —— 4 个族只有 `C(4,2)=6` 个族对组合。
+
+### R00 已交付（本轮）
+
+| 交付物 | 路径 |
+|---|---|
+| Intake Protocol | `research/intake/HISTORICAL_UNIVERSE_INTAKE_PROTOCOL_v0_1.md` |
+| Coverage Plan | `research/intake/HISTORICAL_UNIVERSE_COVERAGE_PLAN_v0_1.md` |
+| Intake Schema | `research/intake/historical_research_intake.schema.json` |
+| R01 Task Manifest | `research/intake/HISTORICAL_UNIVERSE_R01_TASK_MANIFEST_v0_1.json` |
+| Machine Validator | `research/scripts/validate_historical_research_intake.py`（24 项检查） |
+| Validator Tests | `research/scripts/test_validate_historical_research_intake.py`（33 tests） |
+
+### R01 任务（**均未启动，启动需单独授权**）
+
+| task_id | scope | priority |
+|---|---|---|
+| `R01-01` | 高端装备 / 机器人 | A |
+| `R01-02` | 半导体 / 电子 | A |
+| `R01-03` | 资源 / 有色 / 化工 | A |
+| `R01-04` | 消费 | A |
+| `R01-05` | 金融 / 地产 | A |
+| `R01-06` | 军工 | A |
+
+**第一轮真正的目标不是族名数量，而是补齐当前 4 族完全缺失的四条机制轴**：
+供给收缩 · 纯需求端 · 流动性/政策周期 · 订单/事件驱动。
 
 ### 待 Research 验证的研究问题（**只记录，不排期，不做 Product 功能**）
 
 > **历史案例从「政策触发」到「产业 / 公司催化」的时间间隔，是否存在可重复的结构？**
 
-第二次真实研究观察到的样本（**4 个样本，尚不足以称为规律**）：
-
-| 历史案例 | 政策/产业触发 | 公司/产业催化 | 间隔 |
-|---|---|---|---:|
-| `C-2023-AD`（汽车 · 智能驾驶） | 2023-06-21 `policy.trigger` | 2023-07-03 `company.catalyst` | **12 天** |
-| `C-2023-COMM-OPTICAL`（信息通信 · 光模块） | 2023-03-21 `industry.trigger` | 2023-05-24 `company.catalyst` | **64 天** |
-| `C-2019-PHARMA-INNOV`（医药健康 · 创新药） | 2019-07-22 `policy.trigger` | 2019-11-28 `policy.catalyst` | **129 天** |
-| `C-2019-COMM-5G`（信息通信 · 5G） | 2019-06-06 `policy.trigger` | 2019-10-31 `policy.catalyst` | **147 天** |
-
-**必须由 Research 单独验证**（本轮不展开）：是否存在更多同类案例 · 是否跨 Macro Theme ·
-是否处于不同生命周期阶段 · 是否存在明显机制差异 · 间隔是否稳定到足以成为**可观察结构**。
-
-> ⚠️ **不得**把上述 4 个样本解释为已形成规律。
+样本（**4 个样本，尚不足以称为规律**）：`C-2023-AD` 12 天 · `C-2023-COMM-OPTICAL` 64 天 ·
+`C-2019-PHARMA-INNOV` 129 天 · `C-2019-COMM-5G` 147 天。
 
 ### 已记录的候选后续项（**未排期**）
 
 | 类型 | 项 |
 |---|---|
-| POLISH | `themeCycleId` 内部 id 可读性（如 `auto_intelligence_2023`）· 归因自由文本内嵌 Research id（`EV-*` / `S-*` / `E-*`） |
+| POLISH | `themeCycleId` 内部 id 可读性 · 归因自由文本内嵌 Research id（`EV-*` / `S-*` / `E-*`） |
 | POLISH | `event_type`（`company`）与证据类别标签（「产业（INDUSTRY）」）的行内对应关系未呈现 |
 | DEFER | SA 默认折叠使唯一 STRICT 对应位于第 9 位（**修复需引入排序 = 禁止**） |
-| DEFER | `event_structure` 区分度低 · Driver `MATCH = 1/85`（Research Quality Backlog） |
+| DEFER | `event_structure` 区分度低 · Driver `MATCH = 1/85` |
 | DEFER | `campaign_date_observations verified = 0/24`（Future Data Precision Debt） |
+| DEFER | taxonomy gap `F7`（`华为汽车` 不在 DB `themes` 表）—— 补录属独立轮次 |
 
 ### 已确认无风险
 
-- `stale` 阈值 = **14 天**（`SNAPSHOT_STALE_THRESHOLD_DAYS`）；0–14 天属正常研究节奏，不提示滞后
-- `historicalEvidenceTimelineOf()` 的 `date|name` 稳定键：**32 campaigns / 106 events / 0 冲突** → 无需升级为 `event_id`
+- `stale` 阈值 = **14 天**（`SNAPSHOT_STALE_THRESHOLD_DAYS`）
+- `historicalEvidenceTimelineOf()` 的 `date|name` 稳定键：**32 campaigns / 106 events / 0 冲突**
 
 ### 边界
 
