@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`92299e7`（`feat(research): resolve historical universe taxonomy gap (T01)`；本文件随 R01-01 Canonical Import 提交入库）
-- 最近完成：**R01-01 Canonical Import v0.1**（PASS；**5 个 PROMOTE 入 Canonical DB，2 个 RESEARCH_ONLY 保留**）
+- HEAD：`c246b94`（`fix(research): normalize R01-01 intake conflict schema`；本文件随 R01-02 Canonical Import 提交入库）
+- 最近完成：**R01-02 Canonical Decision & Import v0.1**（PASS；**8 个 PROMOTE 入 Canonical DB，4 个 RESEARCH_ONLY 保留**）
 
 ## 1. 项目当前定位
 
@@ -172,69 +172,58 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# R01-02：半导体 / 电子（**未启动**）
+# R01-03：资源 / 有色 / 化工（**未启动**）
 
-**已完成（全部 PASS）**：Product Similarity Architecture Gate v0.1 · Product Adapter v0.1 ·
-Product UI Integration v0.1 · **UX Review + Performance Gate v0.1** ·
-**Historical Case Experience v0.1** · **Historical Cycle Map v0.1** ·
-**Current Research Refresh Loop v0.1** · **First Real Observation Cycle v0.1** ·
-**Historical Case Evidence View Rework v0.1** · **Second Real Observation Cycle v0.1** ·
-**Snapshot Freshness Polish v0.1** · **Historical Universe Intake Protocol v0.1（R00）** ·
-**Historical Universe Taxonomy Gap Resolution（T01）** · **R01-01 Canonical Import v0.1**。
+**已完成（全部 PASS）**：… Product 侧全部轮次 · **R00**（Intake Protocol）· **T01**（taxonomy gap）·
+**R01-01 Canonical Import** · **Intake Validator C25**（严格 Draft-07）· **R01-02 Canonical Import**。
 
 **当前无已确认 P1（Product 侧）。**
 
-### R01-01 已落地（本轮）
-
-| 项 | 结果 |
-|---|---|
-| Canonical Campaign | **+5**（13 → 18）· 全部 `rule_high_end_equipment` |
-| Research Candidate | **+2**（导出层 `RC-2024-HIEQ-*`，**不入 `campaigns` 表**） |
-| Evidence / Source / Security / Event | +33 / +30 / +16 / +15 |
-| Theme（root） | 有 Campaign 的 root **4 → 5**（新增「高端装备」） |
-| 跨族 Campaign 对 | `C(4,2)=6` → `C(5,2)=10` |
-| Export | 18 campaigns · 6 research_candidates · 5 rules（**Contract v1.0 未改**） |
-| Validators | **9/9 PASS · 0 警告** |
-
-新增 5 个 Canonical：`C-2016-HIEQ-CONSTR` · `C-2018-HIEQ-ROBOT-DOWN` ·
-`C-2020-HIEQ-AUTOMATION` · `C-2023-HIEQ-ROBOT-PLUS` · `C-2023-HIEQ-HUMANOID`。
-详见 `docs/R01_01_CANONICAL_IMPORT_v0_1.md`。
-
-### R01 任务（**R01-02 ~ R01-06 均未启动，启动需单独授权**）
+### R01 进度
 
 | task_id | scope | status |
 |---|---|---|
-| `R01-01` | 高端装备 / 机器人 | ✅ **已导入 Canonical** |
-| `R01-02` | 半导体 / 电子 | `PLANNED_NOT_STARTED` |
+| `R01-01` | 高端装备 / 机器人 | ✅ **已导入 Canonical**（+5 campaigns） |
+| `R01-02` | 半导体 / 电子 | ✅ **已导入 Canonical**（+8 campaigns / +4 RESEARCH_ONLY） |
 | `R01-03` | 资源 / 有色 / 化工 | `PLANNED_NOT_STARTED` |
 | `R01-04` | 消费 | `PLANNED_NOT_STARTED` |
 | `R01-05` | 金融 / 地产 | `PLANNED_NOT_STARTED` |
 | `R01-06` | 军工 | `PLANNED_NOT_STARTED` |
 
-★ taxonomy 已由 T01 补齐（11 个 root），R01-02~06 可直接解析名称 —— **无需再开 taxonomy 轮次**。
+### Historical Universe 当前实测
+
+| 项 | 值 |
+|---|---:|
+| Macro Theme 根节点 | **11** |
+| **有 Campaign 的根节点** | **6**（汽车 · 医药健康 · 信息通信 · 电力设备 · 高端装备 · **电子**） |
+| Historical Campaign | **26** |
+| Research Candidate（导出层） | 10 |
+| 跨族 Campaign 对 | `C(6,2)` = **15** |
+
+**R01-02 新增 8 个 Canonical**：`C-2019-SEMI-LOCALIZATION` · `C-2020-SEMI-EQUIPMENT` ·
+`C-2020-PANEL-CYCLE` · `C-2019-CONSUMER-TWS` · `C-2023-AI-COMPUTE-SEMI` ·
+`C-2024-SEMI-MEMORY` · `C-2022-SEMI-DOWNTURN` · `C-2016-PANEL-CYCLE`。
+详见 `docs/R01_02_CANONICAL_DECISION_v0_1.md`。
+
+**新增机制轴覆盖**：供给收缩 / 价格周期 · 纯需求端驱动 · 库存周期型下行。
 
 ### Structural Analogy
 
-**未刷新**（`structural_analogy_explanations_v0_2.json` 字节不变）。
-Rule Set v0.2 与 Research v0.2 均为 FROZEN，且 AGENTS.md §4 禁止覆盖旧轮次产物。
-**建议**：R01 全部完成后以**新 artifact 版本**统一刷新，不覆盖 v0.2。
+**未刷新**（`structural_analogy_explanations_v0_2.json` 字节不变）。Rule Set v0.2 与 Research v0.2
+均 FROZEN，AGENTS.md §4 禁止覆盖旧轮次产物。**建议 R01 全部完成后以新 artifact 版本统一刷新。**
 
-### 待 Research 验证的研究问题（**只记录，不排期**）
-
-> **历史案例从「政策触发」到「产业 / 公司催化」的时间间隔，是否存在可重复的结构？**
-> 样本：`C-2023-AD` 12 天 · `C-2023-COMM-OPTICAL` 64 天 · `C-2019-PHARMA-INNOV` 129 天 ·
-> `C-2019-COMM-5G` 147 天。**4 个样本尚不足以称为规律。**
-
-### 已记录的候选后续项（**未排期**）
+### 未决与待办（**未排期**）
 
 | 类型 | 项 |
 |---|---|
-| OPEN | `CF005`（双飞股份 vs 双环传动）· `CF007`（机器人 vs 工业自动化）· `CF008`（人形机器人 1 or 2 Campaign）—— **UNRESOLVED，未裁决** |
-| OPEN | `C-2023-HIEQ-ROBOT-PLUS` 的 `end_date = NULL`，待 `CF008` 裁决后回填 |
-| OPEN | **6 个 root 仍无 Campaign**：电子 · 资源 · 消费 · 金融 · 房地产 · 国防军工 |
-| OPEN | R01-01 市场侧行情序列缺口（限制 Gate Q1 可验证性） |
-| POLISH | `themeCycleId` 内部 id 可读性 · `event_type` ↔ 证据类别标签对应 |
-| DEFER | `event_structure` 区分度 · Driver `MATCH = 1/85` · `campaign_date_observations verified = 0/24` |
+| OPEN | `CF006`（2024-09-24 后市场 Beta）**保留 UNRESOLVED**；`C-2024-SEMI-MEMORY` 以 medium 置信度进入并保留限定 |
+| OPEN | `CF008`（2017 显卡/矿机归属）保留未裁决 |
+| OPEN | R01-02 的 3 条 `evidence-temporal-mislabel` 警告（Package 自身 `temporal_relation` 与 lifecycle 端点不一致） |
+| OPEN | `E056`（2024-05-24）被包内绑定至 `C-2020-SEMI-EQUIPMENT`（2020–2021），日期不符 |
+| OPEN | **5 个 root 仍无 Campaign**：资源 · 消费 · 金融 · 房地产 · 国防军工 |
+| OPEN | R01-01 / R01-02 的别名 taxonomy 缺口（芯片 / 集成电路 / 面板 / 存储 / HBM / GPU / 消费电子 等） |
+| POLISH | `themeCycleId` 可读性 · `event_type` ↔ 证据类别标签对应 |
+| DEFER | `event_structure` 区分度 · `campaign_date_observations verified = 0/N` |
 
 ### 边界
 

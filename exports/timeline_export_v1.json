@@ -1,8 +1,8 @@
 {
   "contract": "timeline_export",
   "timeline_export_version": "1.0",
-  "generated_at": "2026-09-19T21:17:26",
-  "source_commit": "92299e75d2ca6a8442b5a25a56bbbcb1a2a79c6c",
+  "generated_at": "2026-09-19T23:19:21",
+  "source_commit": "c246b944fac06b56106c8033a7b1de6eca2a4b64",
   "project": "Cycle-Research",
   "rules": [
     {
@@ -39,6 +39,13 @@
       "base_pattern": "高端装备",
       "definition": "Historical Observation Window（历史观察窗口）：高端装备 / 机器人（工程机械 / 工业自动化 / 机器人本体与核心零部件 / 轨道交通装备）在设备更新、制造业资本开支、产业政策与产业叙事驱动下形成的结构性行情；非固定买入窗口，不构成交易建议",
       "observation_window": "结构性（非季节性）：2016–2022。两个 Sequential Theme Cycle：① 工程机械更新+基建+环保 2016-08-01~2021-12-31（Peak 2021-01-25 资产价格 / 2021-03-31 产业销量）；② 工业机器人与自动化 2018-09-30~2022-12-31（含 2018-2019 下行段与 2020-2021 复苏段）。另：2023 机器人政策段与人形机器人叙事段（hieq_robot_2023）"
+    },
+    {
+      "rule_id": "rule_semiconductor",
+      "name": "半导体 / 电子历史周期观察",
+      "base_pattern": "电子",
+      "definition": "Historical Observation Window（历史观察窗口）：半导体 / 电子产业链（设计 / 制造 / 封测 / 设备 / 材料 / 被动元件 / 面板）在国产替代、资本开支、供给约束与下游需求周期驱动下形成的结构性行情；非固定买入窗口，不构成交易建议",
+      "observation_window": "结构性（非季节性）：2016–2025。四条机制主线：① 国产替代 / 自主可控：2019-05-16~2020-09-30（Peak 2020-07-14 = 5869.83）与 2020-07-16~2021-09-30（Peak 2021-07-30 = 7642.58）② 面板价格周期：2016-02-01~2017-06-30 与 2020-06-01~2021-08-31③ 需求与库存：2019 TWS 与 2022 下行去库存（Peak 2022-08-31）④ AI 算力（2023）与存储超级周期（2024-09-24 起，Peak 2025-10-31 = 7964.33，指数新高）"
     }
   ],
   "signals": [
@@ -2024,6 +2031,608 @@
           "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"
         ]
       }
+    },
+    {
+      "campaign_id": "C-2016-PANEL-CYCLE",
+      "rule_id": "rule_semiconductor",
+      "year": 2016,
+      "start_date": "2016-02-01",
+      "peak_date": "2017-06-30",
+      "end_date": "2017-06-30",
+      "status": "provisional",
+      "confidence": "low",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "面板/显示",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "BOE"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "panel_price_cycle_2016_2022",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2016-02-01",
+          "end": "2017-01-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "三星显示关闭部分 G7 产线转产 OLED",
+          "鸿海收购夏普后减少对三星电视面板出货",
+          "2016 年新增产能较少"
+        ],
+        "accelerator": [
+          "电视面板平均尺寸由 16Q4 的 44.6 寸提升至 17Q4 的 46 寸，大尺寸化消耗产能",
+          "2016Q3 起面板厂利润明显改善（京东方单季营业利润 6.78 亿元）"
+        ],
+        "turning": [
+          "2017 年新增产能集中在下半年释放",
+          "涨价压缩整机厂盈利空间，影响旺季促销"
+        ],
+        "ending": [
+          "2017H2 起价格进入长期下行周期",
+          "2019Q4 行业指标触底"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "rule_id": "rule_semiconductor",
+      "year": 2019,
+      "start_date": "2019-05-16",
+      "peak_date": "2020-07-14",
+      "end_date": "2020-09-30",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-SEMI-01",
+        "EV-SEMI-02",
+        "EV-SEMI-03",
+        "EV-SEMI-04"
+      ],
+      "security_ids": [
+        "BOE",
+        "GIGADEVICE",
+        "JCET",
+        "MAXSCEND",
+        "NAURA",
+        "SGMC",
+        "SMIC",
+        "WILLSEMI"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "semi_localization_2019_2021",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2019-05-16",
+          "end": "2020-07-14",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2020-07-15",
+          "end": "2020-09-30",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "美国对中兴通讯的出口禁令（2018-04-16）触发「卡脖子」认知",
+          "华为及关联公司被列入实体清单（2019-05-16）",
+          "国家集成电路产业投资基金（大基金）持续注资"
+        ],
+        "accelerator": [
+          "科创板 2019-07-22 开市，为未盈利半导体企业提供上市与再融资通道",
+          "韦尔股份并购豪威、闻泰科技并购安世等资产注入带来业绩与估值共振",
+          "5G 商用带来的终端芯片需求预期"
+        ],
+        "turning": [
+          "大基金一期 2019-12-20 公告减持兆易创新、汇顶科技、国科微",
+          "板块估值升至历史高位（部分个股 PE 达数千倍）",
+          "2020 年 3 月全球疫情冲击"
+        ],
+        "ending": [
+          "2020-07 后指数转入高位震荡与回撤",
+          "资金风格切换至新能源/光伏等顺周期方向"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2019-CONSUMER-TWS",
+      "rule_id": "rule_semiconductor",
+      "year": 2019,
+      "start_date": "2019-01-04",
+      "peak_date": "2020-10-13",
+      "end_date": "2021-03-31",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-SEMI-11",
+        "EV-SEMI-12"
+      ],
+      "security_ids": [
+        "GOERTEK",
+        "LUXSHARE",
+        "SGMC"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "electronics_tws_2019_2020",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2019-01-04",
+          "end": "2020-07-14",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "SECONDARY",
+          "start": "2020-07-15",
+          "end": "2020-11-09",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2020-11-10",
+          "end": "2021-03-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "AirPods 带动 TWS 渗透率快速提升（2017—2019 出货增速 118%/130%/183%）",
+          "安卓阵营跟进，华为/三星/OPPO/vivo/小米入局",
+          "2019-01 起市场整体估值修复"
+        ],
+        "accelerator": [
+          "AirPods Pro 需求增加，订单向大厂集中",
+          "TWS 相关标的 2019 年涨幅达 4—5 倍，形成赚钱效应",
+          "上游模拟芯片与存储配套需求同步放大"
+        ],
+        "turning": [
+          "2020-11 两大龙头披露存货大幅上升",
+          "TWS 普通款产能利用率降至约 80%",
+          "2020-10-30 苹果 iPhone 收入同比 -20.7%"
+        ],
+        "ending": [
+          "2020-11 后连续回调，估值中枢下移",
+          "市场注意力转向新能源与半导体自主可控"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
+      "rule_id": "rule_semiconductor",
+      "year": 2020,
+      "start_date": "2020-07-16",
+      "peak_date": "2021-07-30",
+      "end_date": "2021-09-30",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "industry",
+          "role": "secondary"
+        },
+        {
+          "name": "半导体设备",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-SEMI-07",
+        "EV-SEMI-05",
+        "EV-SEMI-06"
+      ],
+      "security_ids": [
+        "AMEC",
+        "NSIG",
+        "PIOTECH",
+        "SMIC"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "semi_localization_2019_2021",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2021-04-01",
+          "end": "2021-07-30",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-08-02",
+          "end": "2021-09-30",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "中芯国际回 A 并把募资投向 12 英寸产线",
+          "大基金二期聚焦设备/材料（刻蚀、薄膜、测试、清洗、大硅片、光刻胶、掩模版、电子特气）",
+          "国内晶圆厂进入扩产周期"
+        ],
+        "accelerator": [
+          "设备国产化率从个位数向两位数突破",
+          "全球缺芯推动晶圆厂加快资本开支",
+          "出口管制预期强化替代紧迫性"
+        ],
+        "turning": [
+          "2021Q3 起终端需求转弱、渠道库存累积",
+          "板块估值透支 2022 年业绩"
+        ],
+        "ending": [
+          "2022 年全球半导体增速降至 4.4%，除日本外亚太地区增速转负",
+          "A 股半导体进入去库存下行周期"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2020-PANEL-CYCLE",
+      "rule_id": "rule_semiconductor",
+      "year": 2020,
+      "start_date": "2020-06-01",
+      "peak_date": "2021-07-31",
+      "end_date": "2021-08-31",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "面板/显示",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-SEMI-08",
+        "EV-SEMI-09",
+        "EV-SEMI-10"
+      ],
+      "security_ids": [
+        "BOE",
+        "TCLTECH"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "panel_price_cycle_2016_2022",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-06-01",
+          "end": "2021-07-31",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-08-01",
+          "end": "2021-08-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "三星、LG Display 宣布逐步退出 LCD，韩厂产能关停",
+          "2018-2019 年过度扩产后的产能出清，行业集中度提升",
+          "疫情催生「宅经济」，电视/笔记本/平板需求激增"
+        ],
+        "accelerator": [
+          "显示驱动 IC、偏光片、玻璃等上游元器件缺货",
+          "整机厂备货意愿强烈，渠道库存低位",
+          "产能向京东方、TCL 华星集中后具备调控产能能力"
+        ],
+        "turning": [
+          "2021 年 1—6 月价格持续上涨至 236 美元后动能衰减",
+          "终端需求透支，整机厂采购转弱"
+        ],
+        "ending": [
+          "2021-08 起价格进入下行通道",
+          "2022 年上半年地缘政治、通胀与需求透支叠加，价格跌回 2020 年上半年水平"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2022-SEMI-DOWNTURN",
+      "rule_id": "rule_semiconductor",
+      "year": 2022,
+      "start_date": "2022-01-04",
+      "peak_date": "2022-08-31",
+      "end_date": "2022-10-12",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "weak",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-SEMI-15"
+      ],
+      "security_ids": [
+        "HYGON",
+        "MAXSCEND",
+        "SGMC"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "semi_inventory_downturn_2022",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "DECLINING",
+          "start": "2022-01-04",
+          "end": "2022-10-12",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "SECONDARY",
+          "start": "2022-06-01",
+          "end": "2022-08-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "2021 年供需错配与重复下单造成的渠道库存需要消化",
+          "消费电子终端需求萎缩",
+          "美国 2022-10 进一步收紧对华半导体限制"
+        ],
+        "accelerator": [
+          "全球半导体市场增速由 2021 年的 26% 降至 2022 年的 4.4%",
+          "除日本外亚太地区市场增速转负（-2%）"
+        ],
+        "turning": [
+          "2022Q3 起部分细分领域库存降幅明显",
+          "2023-10 DRAM 与 NAND Flash 均价全面上涨"
+        ],
+        "ending": [
+          "2023Q4 智能手机与 PC 市场分别结束连续 7、8 个季度的同比下滑"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+      "rule_id": "rule_semiconductor",
+      "year": 2023,
+      "start_date": "2023-01-30",
+      "peak_date": "2023-04-10",
+      "end_date": "2023-08-25",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-SEMI-13"
+      ],
+      "security_ids": [
+        "CAMBRICON",
+        "GIGADEVICE",
+        "NAURA"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "ai_compute_semi_2023",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-01-30",
+          "end": "2023-04-10",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2023-06-21",
+          "end": "2023-08-25",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "ChatGPT 月活快速破亿引发大模型关注（2023 年 1 月末—2 月初）",
+          "微软 2023-03-16 发布植入 GPT-4 的 Copilot",
+          "英伟达 2023-03-21 GTC 大会"
+        ],
+        "accelerator": [
+          "海外算力资本开支预期上修",
+          "国产算力芯片与存储的国产替代叙事叠加",
+          "光模块加单信息带动整条 AI 产业链情绪"
+        ],
+        "turning": [
+          "2023-04 中下旬财报与估值偏离压制情绪",
+          "加单信息对市场反应的边际效力下降"
+        ],
+        "ending": [
+          "2023-06-21 起 AI 板块整体回调",
+          "资金向算力租赁、华为产业链等分支迁移"
+        ]
+      }
+    },
+    {
+      "campaign_id": "C-2024-SEMI-MEMORY",
+      "rule_id": "rule_semiconductor",
+      "year": 2024,
+      "start_date": "2024-09-24",
+      "peak_date": "2025-10-31",
+      "end_date": null,
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [
+        "EV-SEMI-14"
+      ],
+      "security_ids": [
+        "BIWIN",
+        "CAMBRICON",
+        "GIGADEVICE",
+        "LONGYS"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": "memory_supercycle_2024_2025",
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2025-07-01",
+          "end": "2025-10-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "2023 年存储价格深度下跌 60%—70% 后的低基数",
+          "2024Q2 起库存改善、价格反弹",
+          "2024-09-24 一揽子金融政策改善流动性与风险偏好"
+        ],
+        "accelerator": [
+          "AI 服务器对 DRAM 需求为普通服务器的 8 倍，OpenAI 等企业对 DRAM 晶圆需求规模巨大",
+          "三星、SK 海力士、铠侠、美光削减 NAND 供应并把产能转向 QLC/HBM",
+          "云服务商追加大容量 QLC SSD 订单"
+        ],
+        "turning": [
+          "2025Q4 DRAM 合约价季增 45%—50% 创历史最大季度涨幅后，价格涨幅成为后续需求的最大变量",
+          "下游（PC/手机）成本压力显性化"
+        ],
+        "ending": [
+          "尚未出现明确结束信号（截至 2025-12-31）"
+        ]
+      }
     }
   ],
   "research_candidates": [
@@ -2305,6 +2914,155 @@
       }
     },
     {
+      "campaign_id": "RC-2022-SEMI-CHIPSHORTAGE",
+      "rule_id": "rule_semiconductor",
+      "year": 2022,
+      "title": "2020–2022 全球「缺芯」与半导体全产业链涨价（供给约束 + 重复下单）",
+      "start_date": null,
+      "peak_date": null,
+      "end_date": "2022-12-31",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "MAXSCEND",
+        "JCET",
+        "TFME"
+      ],
+      "early_signal": null,
+      "research_status": "INSUFFICIENT",
+      "theme_cycle_id": "supply_constraint_2020_2022",
+      "conflicts": [],
+      "notes": "A 股侧的市场映射与 001/002 的行情高度重合，难以独立切分出属于「缺芯」本身的行情区间；机制属行业景气而非主题叙事，故 proposal 为 industry_trend。",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
+      }
+    },
+    {
+      "campaign_id": "RC-2024-SEMI-FUND3",
+      "rule_id": "rule_semiconductor",
+      "year": 2024,
+      "title": "2024 半导体自主可控「破局」：大基金三期 + 出口管制升级（设备/材料/先进制程）",
+      "start_date": "2024-05-24",
+      "peak_date": "2024-12-31",
+      "end_date": null,
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "SMIC",
+        "AMEC",
+        "PIOTECH",
+        "HYGON"
+      ],
+      "early_signal": null,
+      "research_status": "INSUFFICIENT",
+      "theme_cycle_id": "semi_localization_2019_2021",
+      "conflicts": [],
+      "notes": "无法排除 Beta Contamination：2024-09-24 起为全市场普涨，半导体只是其中之一；本候选的市场区间与 007 高度重叠，独立性存疑。按 historical_campaign_validation_v1.md §4.3，无法排除时保持低置信度。",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
+      }
+    },
+    {
+      "campaign_id": "RC-2015-SEMI-LEVERAGE",
+      "rule_id": "rule_semiconductor",
+      "year": 2015,
+      "title": "2015 半导体杠杆牛：大基金一期 + 全面牛市流动性",
+      "start_date": "2015-01-05",
+      "peak_date": "2015-06-03",
+      "end_date": "2015-12-31",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [],
+      "early_signal": null,
+      "research_status": "INSUFFICIENT",
+      "theme_cycle_id": "liquidity_cycle_2015",
+      "conflicts": [],
+      "notes": "无法排除 Beta Contamination——2015 年为全面杠杆牛市，半导体板块的上涨难以与市场整体 Beta 分离；且缺少半导体行业自身的基本面证据（产能、出货、价格）。",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
+      }
+    },
+    {
+      "campaign_id": "RC-2017-GPU-MINING",
+      "rule_id": "rule_semiconductor",
+      "year": 2017,
+      "title": "2017 显卡与矿机芯片需求：比特币价格周期外溢至半导体",
+      "start_date": "2017-06-01",
+      "peak_date": "2017-11-14",
+      "end_date": "2018-06-30",
+      "themes": [
+        {
+          "name": "电子",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "半导体",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [],
+      "early_signal": null,
+      "research_status": "INSUFFICIENT",
+      "theme_cycle_id": "crypto_spillover_2017",
+      "conflicts": [],
+      "notes": "主题边界不清：2017 年 A 股的主要映射是「区块链/数字货币」概念，而区块链概念不属本任务 scope；本包只保留与半导体（GPU、显存、芯片设计）直接相关的部分，但证据不足以支撑其作为独立半导体 Campaign。",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
+      }
+    },
+    {
       "campaign_id": "RC-2024-HIEQ-EQUIP-UPDATE",
       "rule_id": "rule_high_end_equipment",
       "year": 2024,
@@ -2434,6 +3192,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-SEMI-01",
+      "name": "中兴通讯被美国商务部激活拒绝令（半导体自主可控叙事起点）",
+      "date": "2018-04-16",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-PWR-01",
       "name": "光伏「531 新政」：关于 2018 年光伏发电有关事项的通知（发改能源〔2018〕823 号）",
       "date": "2018-05-31",
@@ -2470,6 +3237,24 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-SEMI-11",
+      "name": "立讯精密、歌尔股份自 2019 年初进入单边上行（TWS 周期启动）",
+      "date": "2019-01-29",
+      "event_type": "market",
+      "role": "trigger",
+      "campaign_id": "C-2019-CONSUMER-TWS",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-02",
+      "name": "美国商务部 BIS 将华为列入实体清单（一手 Federal Register 文件）",
+      "date": "2019-05-16",
+      "event_type": "policy",
+      "role": "trigger",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-COMM-02",
       "name": "工信部发放 5G 商用牌照（中国电信 / 中国移动 / 中国联通 / 中国广电）",
       "date": "2019-06-06",
@@ -2485,6 +3270,15 @@
       "event_type": "policy",
       "role": "trigger",
       "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-03",
+      "name": "科创板开市，半导体设计公司集中上市",
+      "date": "2019-07-22",
+      "event_type": "market",
+      "role": "catalyst",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
       "research_candidate_id": null
     },
     {
@@ -2512,6 +3306,15 @@
       "event_type": "industry",
       "role": "follow_up",
       "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-07",
+      "name": "国家大基金二期成立（注册资本 2041.5 亿元）",
+      "date": "2019-10-22",
+      "event_type": "policy",
+      "role": "context",
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
       "research_candidate_id": null
     },
     {
@@ -2551,6 +3354,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-SEMI-08",
+      "name": "LCD 面板价格起涨（韩厂退出 + 供给收紧）",
+      "date": "2020-06-01",
+      "event_type": "industry",
+      "role": "trigger",
+      "campaign_id": "C-2020-PANEL-CYCLE",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2020-01",
       "name": "特斯拉股价破千美元、市值超丰田居全球车企第一",
       "date": "2020-06-10",
@@ -2587,6 +3399,24 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-SEMI-04",
+      "name": "申万半导体板块指数创 2020 年内最高 5869.83",
+      "date": "2020-07-14",
+      "event_type": "market",
+      "role": "follow_up",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-05",
+      "name": "中芯国际登陆科创板（A 股半导体制造龙头回归）",
+      "date": "2020-07-16",
+      "event_type": "company",
+      "role": "trigger",
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-HIEQ-08",
       "name": "2020 年 7 月工业机器人产量 21170 套、同比 +19.4%；机器人板块月涨 18.2%",
       "date": "2020-07-31",
@@ -2602,6 +3432,15 @@
       "event_type": "policy",
       "role": "trigger",
       "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-12",
+      "name": "立讯精密月内最高 62.73 元、歌尔股份 2020-11 月内最高 49.05 元",
+      "date": "2020-10-13",
+      "event_type": "market",
+      "role": "follow_up",
+      "campaign_id": "C-2019-CONSUMER-TWS",
       "research_candidate_id": null
     },
     {
@@ -2632,6 +3471,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-SEMI-09",
+      "name": "65 吋面板价格见 294 美元/片峰值",
+      "date": "2021-06-01",
+      "event_type": "industry",
+      "role": "follow_up",
+      "campaign_id": "C-2020-PANEL-CYCLE",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2021-03",
       "name": "宁德时代四川宜宾产能一期投运",
       "date": "2021-06-17",
@@ -2659,6 +3507,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-SEMI-06",
+      "name": "申万半导体板块指数月内最高 7642.58（2019–2021 全周期最高）",
+      "date": "2021-07-30",
+      "event_type": "market",
+      "role": "follow_up",
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-2021-02",
       "name": "比亚迪7月产销快报：新能源销量5.05万辆创新高",
       "date": "2021-08-05",
@@ -2674,6 +3531,15 @@
       "event_type": "policy",
       "role": "catalyst",
       "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-10",
+      "name": "面板价格自 2021-08 起快速下跌，至 2022-09 跌至 106 美元",
+      "date": "2021-09-30",
+      "event_type": "industry",
+      "role": "follow_up",
+      "campaign_id": "C-2020-PANEL-CYCLE",
       "research_candidate_id": null
     },
     {
@@ -2749,6 +3615,15 @@
       "research_candidate_id": null
     },
     {
+      "event_id": "EV-SEMI-15",
+      "name": "申万半导体板块指数月内最低 3605.80（去库存下行低点）",
+      "date": "2022-10-12",
+      "event_type": "market",
+      "role": "follow_up",
+      "campaign_id": "C-2022-SEMI-DOWNTURN",
+      "research_candidate_id": null
+    },
+    {
       "event_id": "EV-HIEQ-10",
       "name": "工信部等十七部门印发《「机器人+」应用行动实施方案》（工信部联通装〔2022〕187号）",
       "date": "2023-01-18",
@@ -2773,6 +3648,15 @@
       "event_type": "industry",
       "role": "trigger",
       "campaign_id": "C-2023-COMM-OPTICAL",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-13",
+      "name": "申万半导体板块指数 2023 年内最高 5154.69（AI 算力行情见顶）",
+      "date": "2023-04-10",
+      "event_type": "market",
+      "role": "follow_up",
+      "campaign_id": "C-2023-AI-COMPUTE-SEMI",
       "research_candidate_id": null
     },
     {
@@ -2926,6 +3810,15 @@
       "event_type": "market",
       "role": "catalyst",
       "campaign_id": "C-2025-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "event_id": "EV-SEMI-14",
+      "name": "申万半导体板块指数 7964.33，超过 2021-07 的 7642.58 创指数新高",
+      "date": "2025-10-31",
+      "event_type": "market",
+      "role": "follow_up",
+      "campaign_id": "C-2024-SEMI-MEMORY",
       "research_candidate_id": null
     },
     {
@@ -3093,6 +3986,15 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "BOE",
+      "name": "京东方A",
+      "ticker": "000725",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2016-PANEL-CYCLE",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "ESTUN",
       "name": "埃斯顿",
       "ticker": "002747",
@@ -3192,6 +4094,33 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "GOERTEK",
+      "name": "歌尔股份",
+      "ticker": "002241",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-CONSUMER-TWS",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "LUXSHARE",
+      "name": "立讯精密",
+      "ticker": "002475",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-CONSUMER-TWS",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SGMC",
+      "name": "圣邦股份",
+      "ticker": "300661",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-CONSUMER-TWS",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "HENGRUI",
       "name": "恒瑞医药",
       "ticker": "600276",
@@ -3216,6 +4145,78 @@
       "exchange": "SZ",
       "role": "second_leader",
       "campaign_id": "C-2019-PHARMA-INNOV",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "BOE",
+      "name": "京东方A",
+      "ticker": "000725",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "GIGADEVICE",
+      "name": "兆易创新",
+      "ticker": "603986",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JCET",
+      "name": "长电科技",
+      "ticker": "600584",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "MAXSCEND",
+      "name": "卓胜微",
+      "ticker": "300782",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "NAURA",
+      "name": "北方华创",
+      "ticker": "002371",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SGMC",
+      "name": "圣邦股份",
+      "ticker": "300661",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SMIC",
+      "name": "中芯国际",
+      "ticker": "688981",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "WILLSEMI",
+      "name": "韦尔股份",
+      "ticker": "603501",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
       "research_candidate_id": null
     },
     {
@@ -3300,6 +4301,24 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "BOE",
+      "name": "京东方A",
+      "ticker": "000725",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2020-PANEL-CYCLE",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "TCLTECH",
+      "name": "TCL科技",
+      "ticker": "000100",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2020-PANEL-CYCLE",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "LONGI",
       "name": "隆基绿能",
       "ticker": "601012",
@@ -3324,6 +4343,42 @@
       "exchange": "SZ",
       "role": "second_leader",
       "campaign_id": "C-2020-POWER-NE",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "AMEC",
+      "name": "中微公司",
+      "ticker": "688012",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "NSIG",
+      "name": "沪硅产业",
+      "ticker": "688126",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "PIOTECH",
+      "name": "拓荆科技",
+      "ticker": "688072",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SMIC",
+      "name": "中芯国际",
+      "ticker": "688981",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
       "research_candidate_id": null
     },
     {
@@ -3462,6 +4517,33 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "HYGON",
+      "name": "海光信息",
+      "ticker": "688041",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2022-SEMI-DOWNTURN",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "MAXSCEND",
+      "name": "卓胜微",
+      "ticker": "300782",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2022-SEMI-DOWNTURN",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SGMC",
+      "name": "圣邦股份",
+      "ticker": "300661",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2022-SEMI-DOWNTURN",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "ZHEJIANGSHISHI",
       "name": "浙江世宝",
       "ticker": "002703",
@@ -3495,6 +4577,33 @@
       "exchange": "SZ",
       "role": "second_leader",
       "campaign_id": "C-2023-AD",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "CAMBRICON",
+      "name": "寒武纪",
+      "ticker": "688256",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "GIGADEVICE",
+      "name": "兆易创新",
+      "ticker": "603986",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "NAURA",
+      "name": "北方华创",
+      "ticker": "002371",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2023-AI-COMPUTE-SEMI",
       "research_candidate_id": null
     },
     {
@@ -3648,6 +4757,42 @@
       "exchange": "SH",
       "role": "second_leader",
       "campaign_id": "C-2024-ROBOTAXI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "BIWIN",
+      "name": "佰维存储",
+      "ticker": "688525",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2024-SEMI-MEMORY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "CAMBRICON",
+      "name": "寒武纪",
+      "ticker": "688256",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2024-SEMI-MEMORY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "GIGADEVICE",
+      "name": "兆易创新",
+      "ticker": "603986",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": "C-2024-SEMI-MEMORY",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "LONGYS",
+      "name": "江波龙",
+      "ticker": "301308",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": "C-2024-SEMI-MEMORY",
       "research_candidate_id": null
     },
     {
@@ -3811,6 +4956,69 @@
       "role": "second_leader",
       "campaign_id": null,
       "research_candidate_id": "RC-2021-TCM"
+    },
+    {
+      "security_id": "MAXSCEND",
+      "name": "卓胜微",
+      "ticker": "300782",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE"
+    },
+    {
+      "security_id": "JCET",
+      "name": "长电科技",
+      "ticker": "600584",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE"
+    },
+    {
+      "security_id": "TFME",
+      "name": "通富微电",
+      "ticker": "002156",
+      "exchange": "SZ",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE"
+    },
+    {
+      "security_id": "SMIC",
+      "name": "中芯国际",
+      "ticker": "688981",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2024-SEMI-FUND3"
+    },
+    {
+      "security_id": "AMEC",
+      "name": "中微公司",
+      "ticker": "688012",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2024-SEMI-FUND3"
+    },
+    {
+      "security_id": "PIOTECH",
+      "name": "拓荆科技",
+      "ticker": "688072",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2024-SEMI-FUND3"
+    },
+    {
+      "security_id": "HYGON",
+      "name": "海光信息",
+      "ticker": "688041",
+      "exchange": "SH",
+      "role": "representative",
+      "campaign_id": null,
+      "research_candidate_id": "RC-2024-SEMI-FUND3"
     },
     {
       "security_id": "SANY",
