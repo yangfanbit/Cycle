@@ -15,6 +15,7 @@ import {
   type CurrentLensV2,
 } from '../../data/timeline/researchAttention';
 import { CurrentCandidateSection } from './CurrentCandidateSection';
+import type { HistoricalCaseAnalogyContext } from '../../data/timeline/historicalCase';
 import { buildCurrentCandidateViews } from '../../data/timeline/currentCandidateAdapter';
 import {
   defaultCurrentCandidateParse,
@@ -30,6 +31,8 @@ interface CurrentTimeLensProps {
   selection: Selection;
   /** 现有选中回调（点击 Lens 条目 → 打开 Campaign Detail） */
   onSelect: (sel: Selection) => void;
+  /** 从 Structural Analogy 打开 Historical Case 时携带 SA 上下文（透传到 CampaignDetail）。 */
+  onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
   /**
    * Current Candidate 数据集（Phase 7）。
    * 缺省 → 消费 canonical 数据集（`research/current/current_candidates.json`，Phase 7.1 起为 5 条真实候选）；
@@ -55,6 +58,7 @@ export function CurrentTimeLens({
   today,
   selection,
   onSelect,
+  onOpenHistoricalCase,
   currentCandidates,
 }: CurrentTimeLensProps) {
   const lens = useMemo(() => currentTimeLens(dataSource, today), [dataSource, today]);
@@ -107,7 +111,12 @@ export function CurrentTimeLens({
       <LensV2 v2={v2} selection={selection} onSelect={onSelect} />
 
       {/* ============ Phase 7 · 当前研究候选（Current Research Discovery） ============ */}
-      <CurrentCandidateSection list={candidateList} onSelect={onSelect} dataSource={dataSource} />
+      <CurrentCandidateSection
+        list={candidateList}
+        onSelect={onSelect}
+        dataSource={dataSource}
+        onOpenHistoricalCase={onOpenHistoricalCase}
+      />
 
       {/* ============ 附：日历同期（Calendar Lens） ============ */}
       <h4 className="ctl2-sublayer">

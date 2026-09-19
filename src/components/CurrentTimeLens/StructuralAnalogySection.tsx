@@ -32,6 +32,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import type { Selection } from '../Timeline/Timeline';
+import type { HistoricalCaseAnalogyContext } from '../../data/timeline/historicalCase';
 import {
   DIMENSION_LABEL,
   DIMENSION_STATUS_LABEL,
@@ -134,12 +135,15 @@ export function filterExplanations(
 export function StructuralAnalogySection({
   candidateId,
   onSelect,
+  onOpenHistoricalCase,
   dataset: injectedDataset,
   historicalLabelOf,
   initialOpenCycleId = null,
 }: {
   candidateId: string;
   onSelect: (sel: Selection) => void;
+  /** 打开 Historical Case 时携带 SA 上下文（缺省回退到 `onSelect`，不带上下文）。 */
+  onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
   /** 显式注入数据集（测试 / 已加载场景）；**缺省时按需动态加载**。 */
   dataset?: StructuralAnalogyDataset;
   /** 可选：历史对象显示名（由调用方从 timeline 数据源解析）；缺省回退到稳定 identity。 */
@@ -325,6 +329,9 @@ export function StructuralAnalogySection({
                 setOpenId((cur) => (cur === e.identity.historicalCycleId ? null : e.identity.historicalCycleId))
               }
               onSelect={onSelect}
+              onOpenHistoricalCase={onOpenHistoricalCase}
+              candidateId={candidate.candidateId}
+              candidateName={candidate.displayName}
               historicalLabelOf={historicalLabelOf}
             />
           ))}
@@ -366,12 +373,18 @@ function ExplanationItem({
   open,
   onToggle,
   onSelect,
+  onOpenHistoricalCase,
+  candidateId,
+  candidateName,
   historicalLabelOf,
 }: {
   e: StructuralAnalogyExplanationView;
   open: boolean;
   onToggle: () => void;
   onSelect: (sel: Selection) => void;
+  onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
+  candidateId: string;
+  candidateName: string | null;
   historicalLabelOf?: (cycleId: string) => string | null;
 }) {
   const cycleId = e.identity.historicalCycleId;
@@ -497,7 +510,39 @@ function ExplanationItem({
             <button
               type="button"
               className="ccs-open"
-              onClick={() => onSelect({ kind: 'campaign', id: e.navigationTarget.id })}
+              onClick={() => {
+                const sel: Selection = { kind: 'campaign', id: e.navigationTarget.id };
+                if (onOpenHistoricalCase) {
+                  onOpenHistoricalCase(sel, {
+                    candidateId,
+                    candidateName,
+                    structuralStatus: STRUCTURAL_STATUS_LABEL[e.structuralStatus],
+                    strictStructuralSupported: e.strictStructuralSupported,
+                    themeRelation: {
+                      value: e.themeRelation.value,
+                      label: THEME_RELATION_LABEL[e.themeRelation.value],
+                    },
+                    dimensions: DIMENSION_ORDER.map((k) => {
+                      const st = dimensionStatusOf(e, k);
+                      return {
+                        key: k,
+                        label: DIMENSION_LABEL[k],
+                        status: st,
+                        statusLabel: DIMENSION_STATUS_LABEL[st],
+                      };
+                    }),
+                    whySimilar: e.whySimilar,
+                    whyNotSimilar: e.whyNotSimilar,
+                    unknownDimensionLabels: DIMENSION_ORDER.filter((k) =>
+                      isIndeterminate(dimensionStatusOf(e, k)),
+                    ).map((k) => DIMENSION_LABEL[k]),
+                    snapshotDate: e.snapshotDate,
+                    ruleSetVersion: e.ruleSetVersion,
+                  });
+                } else {
+                  onSelect(sel);
+                }
+              }}
             >
               查看完整历史案例 →
             </button>

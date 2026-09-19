@@ -1,6 +1,19 @@
+import { useEffect, useMemo, useState } from 'react';
 import { allCampaignSecurities, ruleById, themeById, themesOfCampaign } from '../../data';
 import type { HistoricalCampaign } from '../../models';
 import { campaignDrivers } from '../../data/timeline/timelineAdapter';
+import {
+  EVIDENCE_CATEGORY_LABEL,
+  LIFECYCLE_STAGE_LABEL,
+  MAPPING_STATUS_LABEL,
+  evidenceCategoriesOf,
+  historicalCaseOf,
+  loadMechanismDrivers,
+  withMechanismDrivers,
+  type HistoricalCaseAnalogyContext,
+  type HistoricalCaseView,
+  type MechanismDriverView,
+} from '../../data/timeline/historicalCase';
 import type { ExportConflictV1, ExportDriversV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
 import { diffDays } from '../../utils';
 import {
@@ -21,6 +34,10 @@ interface CampaignDetailProps {
   campaign: HistoricalCampaign | TimelineCampaign;
   onOpenRule: (ruleId: string) => void;
   onClose: () => void;
+  /** 从 Structural Analogy 进入时携带的轻量上下文（**原样消费，不重算**）。 */
+  analogyContext?: HistoricalCaseAnalogyContext | null;
+  /** 返回 Structural Analogy（保持 Current Candidate 上下文）。 */
+  onBackToAnalogy?: () => void;
 }
 
 interface CampaignDetailModel {
@@ -34,6 +51,10 @@ interface CampaignDetailModel {
   kind: 'campaign' | 'candidate';
   openEnded: boolean;
   themes: { name: string; role?: string }[];
+  /** Theme Cycle（research metadata 透传；缺失 null —— 不推断） */
+  themeCycleId: string | null;
+  /** Macro Theme（由 theme_type ∈ {industry, sector} 的题材透传；缺失 null） */
+  macroTheme: string | null;
   securities: { name: string; ticker?: string; role?: string }[];
   events: { name: string; date: string; event_type: string; role?: string | null }[];
   signals: { type: string; date: string; confidence?: string }[];
@@ -76,6 +97,8 @@ function normalize(c: HistoricalCampaign | TimelineCampaign): CampaignDetailMode
       kind: 'campaign',
       openEnded: false,
       themes,
+      themeCycleId: null,
+      macroTheme: null,
       securities,
       events: [],
       signals: [],
@@ -103,6 +126,9 @@ function normalize(c: HistoricalCampaign | TimelineCampaign): CampaignDetailMode
     kind: c.kind,
     openEnded: c.openEnded ?? false,
     themes: c.themes,
+    themeCycleId: c.theme_cycle_id ?? null,
+    macroTheme:
+      c.themes.find((t) => t.theme_type === 'industry' || t.theme_type === 'sector')?.name ?? null,
     securities: c.securities,
     events: c.events,
     signals: c.signals,
@@ -120,9 +146,40 @@ function normalize(c: HistoricalCampaign | TimelineCampaign): CampaignDetailMode
   };
 }
 
-export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetailProps) {
+export function CampaignDetail({
+  campaign,
+  onOpenRule,
+  onClose,
+  analogyContext = null,
+  onBackToAnalogy,
+}: CampaignDetailProps) {
   const m = normalize(campaign);
   const rule = ruleById.get(m.ruleId);
+
+  // Historical Case 基础视图（**同步纯映射**，SSR 与首帧即可用）
+  const caseBase = useMemo<HistoricalCaseView | null>(
+    () => (m.production || !('phases' in campaign) ? null : historicalCaseOf(campaign as TimelineCampaign)),
+    [campaign, m.production],
+  );
+
+  // 驱动机制：**按需加载**（独立 chunk）；加载中为 null → 显示「正在加载…」
+  const [mechanismDrivers, setMechanismDrivers] = useState<MechanismDriverView[] | null>(null);
+  useEffect(() => {
+    if (!caseBase) return;
+    let alive = true;
+    loadMechanismDrivers()
+      .then((table) => {
+        if (alive) setMechanismDrivers(withMechanismDrivers(caseBase, table).mechanismDrivers ?? []);
+      })
+      .catch(() => {
+        if (alive) setMechanismDrivers([]);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [caseBase]);
+
+  const evidenceCategories = caseBase?.evidenceCategories ?? evidenceCategoriesOf(m.events);
   const duration = diffDays(m.start, m.end) + 1;
   // 驱动因素四问（Research V1.7 人工归因优先；缺失时基于研究事件时间归组；
   // 无数据组 → "暂无可靠归因"，不编造）
@@ -181,7 +238,80 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
         </div>
       )}
 
+      {/* ---------- Structural Analogy 上下文（从 SA 进入时；**不重算**） ---------- */}
+      {analogyContext && (
+        <div className="hcx-sa" role="note">
+          <div className="hcx-sa-head">
+            <strong>为什么当前对象与这个历史案例对应</strong>
+            <span className="hcx-sa-status">{analogyContext.structuralStatus}</span>
+            {analogyContext.strictStructuralSupported && (
+              <span className="hcx-sa-strict">严格口径</span>
+            )}
+          </div>
+          <p className="hcx-sa-from">
+            当前对象：{analogyContext.candidateName ?? analogyContext.candidateId}
+            <span className="phase-text">
+              （{analogyContext.themeRelation.label} · 背景信息，不参与结构判定）
+            </span>
+          </p>
+          <ul className="hcx-sa-dims">
+            {analogyContext.dimensions.map((d) => (
+              <li key={d.key}>
+                <span className="hcx-sa-dim-label">{d.label}</span>
+                <span className="hcx-sa-dim-status">{d.statusLabel}</span>
+              </li>
+            ))}
+          </ul>
+          {analogyContext.whySimilar.length > 0 && (
+            <div className="hcx-sa-block">
+              <span className="phase-text">为什么对应</span>
+              <ul>
+                {analogyContext.whySimilar.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {analogyContext.whyNotSimilar.length > 0 && (
+            <div className="hcx-sa-block">
+              <span className="phase-text">哪里不同</span>
+              <ul>
+                {analogyContext.whyNotSimilar.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {analogyContext.unknownDimensionLabels.length > 0 && (
+            <p className="phase-text">
+              未知维度：{analogyContext.unknownDimensionLabels.join('、')}
+              —— 资料不足，**不等于**「不存在」或「不对应」。
+            </p>
+          )}
+          <p className="phase-text">
+            快照 {analogyContext.snapshotDate} · 规则版本 {analogyContext.ruleSetVersion}
+            （本区块原样消费 Research 结果，产品不重新计算）
+          </p>
+          {onBackToAnalogy && (
+            <button className="hcx-back" type="button" onClick={onBackToAnalogy}>
+              ← 返回 Structural Analogy（保持当前候选上下文）
+            </button>
+          )}
+        </div>
+      )}
+
       <dl className="kv">
+        <dt>历史对象类型</dt>
+        <dd>
+          {m.kind === 'candidate' ? 'Research Candidate（研究候选，非 Campaign）' : 'Historical Campaign'}
+        </dd>
+
+        <dt>Macro Theme</dt>
+        <dd>{m.macroTheme ?? <span className="empty-note">未标注（不推断）</span>}</dd>
+
+        <dt>Theme Cycle</dt>
+        <dd>{m.themeCycleId ?? <span className="empty-note">未标注（不推断）</span>}</dd>
+
         <dt>行情</dt>
         <dd>{m.title}</dd>
 
@@ -286,6 +416,77 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
           </>
         )}
 
+        {caseBase && (
+          <>
+            <dt>驱动机制（Mechanism Driver）</dt>
+            <dd>
+              {mechanismDrivers === null ? (
+                <span className="empty-note">正在加载…</span>
+              ) : mechanismDrivers.length === 0 ? (
+                <span className="empty-note">
+                  未标注可用驱动机制（NOT_AVAILABLE）—— 不代表「没有驱动」，只代表当前研究资料不足以编码。
+                </span>
+              ) : (
+                mechanismDrivers.map((d) => (
+                  <span className="tag" key={d.driver} title={MAPPING_STATUS_LABEL[d.mappingStatus]}>
+                    {d.driver}
+                    <span className="phase-text">（{MAPPING_STATUS_LABEL[d.mappingStatus]}）</span>
+                  </span>
+                ))
+              )}
+              <div className="phase-text">
+                机制判断（如「政策驱动」），来自 Historical Driver Canonicalization（Research 层），产品不重新推导。
+              </div>
+            </dd>
+
+            <dt>证据类别（Evidence Category）</dt>
+            <dd>
+              {evidenceCategories.length === 0 ? (
+                <span className="empty-note">无可用事件 → 无法映射证据类别（NOT_AVAILABLE）</span>
+              ) : (
+                evidenceCategories.map((c) => (
+                  <span className="tag" key={c}>
+                    {EVIDENCE_CATEGORY_LABEL[c]}
+                    <span className="phase-text">（{c}）</span>
+                  </span>
+                ))
+              )}
+              <div className="phase-text">
+                证据**来源**类别（由事件的 event_type 确定性映射）。
+                「证据类别」与「驱动机制」**不是同一维**，不可混用。
+              </div>
+            </dd>
+
+            <dt>证据序列（按时间）</dt>
+            <dd>
+              {caseBase.hasNoEvents ? (
+                <span className="empty-note">
+                  无关联事件记录（NOT_AVAILABLE）—— 不代表「当时没有事件」，只代表当前资料未记录。
+                </span>
+              ) : (
+                <ol className="hcx-seq">
+                  {caseBase.evidenceSequence.map((e) => (
+                    <li key={`${e.date}-${e.name}`}>
+                      <span className="hcx-seq-date">{e.date}</span>
+                      <span className="hcx-seq-stage">
+                        {e.lifecycleStageLabel ?? '阶段未知'}
+                      </span>
+                      <span className="hcx-seq-name">{e.name}</span>
+                      <span className="phase-text">
+                        （{e.eventType}
+                        {e.role ? ` · ${e.role}` : ''}）
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+              <div className="phase-text">
+                「阶段未知」= 该事件日期不落在任何已记录生命周期区间内（UNKNOWN，**不是**不对应）。
+              </div>
+            </dd>
+          </>
+        )}
+
         {m.events.length > 0 && (
           <>
             <dt>关联事件</dt>
@@ -321,7 +522,7 @@ export function CampaignDetail({ campaign, onOpenRule, onClose }: CampaignDetail
           </>
         )}
 
-        <dt>驱动因素（为什么）</dt>
+        <dt>研究归因（四问 · 自由文本）</dt>
         <dd className="drivers">
           {driverRows.map(({ q, tags }) => (
             <div key={q} className="driver-row">

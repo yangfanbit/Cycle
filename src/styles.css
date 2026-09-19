@@ -2093,3 +2093,69 @@ html, body {
 .sa-more .ccs-dim { line-height: 1.6; }
 .sa-why li, .sa-why-not li { overflow-wrap: anywhere; }
 .sa-nonav, .sa-intro, .sa-coverage { overflow-wrap: anywhere; }
+
+/* ============================================================
+   Historical Case Experience v0.1
+   Current → Historical Case 闭环：SA 上下文 / 机制-证据分层 / 证据序列
+   ============================================================ */
+
+/* 收起态「结构对应」提示（不显示数量、不排名） */
+.ccs-sa-hint {
+  padding: 1px 6px; border: 1px dashed var(--line-strong); border-radius: 999px;
+  font-size: 10.5px; color: var(--ink-2); white-space: nowrap;
+}
+
+/* ---- SA 上下文（Case 顶部，轻量） ---- */
+.hcx-sa {
+  margin: 8px 0 10px; padding: 8px 10px;
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 6px; background: #f7f9fb;
+}
+.hcx-sa-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; font-size: 12.5px; }
+.hcx-sa-status {
+  padding: 1px 7px; border: 1px solid var(--line-strong); border-radius: 999px;
+  font-size: 11px; color: var(--ink-2);
+}
+.hcx-sa-strict {
+  padding: 1px 6px; border-radius: 999px; background: #eef5ef;
+  border: 1px solid #b9d3bf; font-size: 10px; color: #3d7a49;
+}
+.hcx-sa-from { margin: 4px 0 6px; font-size: 12px; color: var(--ink-2); overflow-wrap: anywhere; }
+.hcx-sa-dims { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.hcx-sa-dims li {
+  display: flex; align-items: baseline; gap: 4px;
+  padding: 2px 7px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--panel); font-size: 10.5px;
+}
+.hcx-sa-dim-label { color: var(--ink-3); }
+.hcx-sa-dim-status { font-weight: 600; color: var(--ink-2); }
+.hcx-sa-block { margin-top: 5px; }
+.hcx-sa-block ul { margin: 2px 0 0; padding-left: 18px; font-size: 11.5px; color: var(--ink-2); line-height: 1.7; }
+.hcx-sa-block li { overflow-wrap: anywhere; }
+.hcx-sa .phase-text { overflow-wrap: anywhere; }
+.hcx-back {
+  margin-top: 7px; padding: 3px 9px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius);
+  background: var(--panel); font: inherit; font-size: 11.5px; cursor: pointer;
+}
+.hcx-back:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---- 证据序列（按时间） ---- */
+.hcx-seq { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; }
+.hcx-seq li {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px;
+  padding: 4px 7px; border-left: 2px solid var(--line-strong);
+  background: #fbfbf9; font-size: 11.5px;
+}
+.hcx-seq-date { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+.hcx-seq-stage {
+  padding: 1px 6px; border: 1px solid var(--line); border-radius: 999px;
+  font-size: 10px; color: var(--ink-2); white-space: nowrap;
+}
+.hcx-seq-name { color: var(--ink-2); overflow-wrap: anywhere; }
+
+@media (max-width: 720px) {
+  .hcx-sa-dims li { padding: 2px 5px; font-size: 10px; }
+  .hcx-seq li { gap: 4px; }
+  .ccs-sa-hint { font-size: 10px; }
+}

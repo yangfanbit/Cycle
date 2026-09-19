@@ -9,6 +9,7 @@ import { allCampaigns, campaignById, ruleById } from './data';
 import { previewTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
 import { timelineExportData } from './data/timeline/timelinePreview';
 import type { TimelineCampaign } from './data/timeline/timelineTypes';
+import type { HistoricalCaseAnalogyContext } from './data/timeline/historicalCase';
 import { parseCurrentCandidateDataset } from './data/timeline/currentCandidate';
 import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
 import currentCandidateFixtureJson from '@current/fixtures/example_candidates.json';
@@ -61,6 +62,8 @@ export default function App() {
     return earlier.length > 0 ? Math.max(...earlier) : Math.min(...availableYears);
   });
   const [selection, setSelection] = useState<Selection>(null);
+  // 从 Structural Analogy 进入 Historical Case 时携带的轻量上下文（原样消费，不重算）
+  const [analogyContext, setAnalogyContext] = useState<HistoricalCaseAnalogyContext | null>(null);
 
   const yearData = useMemo(() => dataSource.yearData(year), [dataSource, year]);
 
@@ -161,6 +164,10 @@ export default function App() {
           today={today}
           selection={selection}
           onSelect={setSelection}
+          onOpenHistoricalCase={(sel, ctx) => {
+            setAnalogyContext(ctx);
+            setSelection(sel);
+          }}
           currentCandidates={currentCandidates}
         />
         {/* ③ 历史相似阶段（生命周期相似检索）：参照 = 当前选中对象 / 研究覆盖内最新案例。
@@ -200,7 +207,17 @@ export default function App() {
         <CampaignDetail
           campaign={selectedCampaign}
           onOpenRule={(id) => setSelection({ kind: 'rule', id })}
-          onClose={() => setSelection(null)}
+          onClose={() => {
+            // 关闭 Case 后回到原上下文（Current Candidate / Structural Analogy 状态由组件自身保持）
+            setAnalogyContext(null);
+            setSelection(null);
+          }}
+          analogyContext={analogyContext}
+          onBackToAnalogy={() => {
+            // 返回 Structural Analogy：关闭 Case，保留 Current Candidate 展开态
+            setAnalogyContext(null);
+            setSelection(null);
+          }}
         />
       )}
     </>

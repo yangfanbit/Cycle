@@ -29,6 +29,7 @@ import {
   PRE_OBSERVATION_LABEL,
 } from '../../data/timeline/preObservation';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
+import type { HistoricalCaseAnalogyContext } from '../../data/timeline/historicalCase';
 import { StructuralAnalogySection } from './StructuralAnalogySection';
 
 /**
@@ -52,9 +53,12 @@ export function CurrentCandidateSection({
   onSelect,
   initialOpenId = null,
   dataSource = null,
+  onOpenHistoricalCase,
 }: {
   list: CurrentCandidateListView;
   onSelect: (sel: Selection) => void;
+  /** 打开 Historical Case 时携带 SA 上下文（透传）。 */
+  onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
   /** 初始展开的候选（深链 / 测试用）；默认全部收起 */
   initialOpenId?: string | null;
   /**
@@ -134,6 +138,7 @@ export function CurrentCandidateSection({
                 setOpenId(openId === v.candidate.candidate_id ? null : v.candidate.candidate_id)
               }
               onSelect={onSelect}
+              onOpenHistoricalCase={onOpenHistoricalCase}
               historicalLabelOf={historicalLabelOf}
             />
           ))}
@@ -161,6 +166,7 @@ function CandidateRow({
   open,
   onToggle,
   onSelect,
+  onOpenHistoricalCase,
   historicalLabelOf,
 }: {
   view: CurrentCandidateView;
@@ -168,6 +174,7 @@ function CandidateRow({
   open: boolean;
   onToggle: () => void;
   onSelect: (sel: Selection) => void;
+  onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
   historicalLabelOf?: (cycleId: string) => string | null;
 }) {
   const c = view.candidate;
@@ -183,6 +190,9 @@ function CandidateRow({
           {c.display_name}
         </span>
         <span className={`ccs-phase ph-${view.phase.toLowerCase()}`}>{view.phaseLabel}</span>
+        <span className="ccs-sa-hint" title="展开后可见「当前结构 ↔ 历史结构」的逐维对应（研究结果，非相似度）">
+          结构对应
+        </span>
         <span className="ccs-status">{view.gate.effectiveLabel}</span>
         <span className={`ccs-ev ev-${view.summary.level.toLowerCase()}`}>
           证据：{AGGREGATE_LEVEL_LABEL[view.summary.level]}
@@ -209,7 +219,14 @@ function CandidateRow({
         </p>
       )}
 
-      {open && <CandidateDetail view={view} onSelect={onSelect} historicalLabelOf={historicalLabelOf} />}
+      {open && (
+        <CandidateDetail
+          view={view}
+          onSelect={onSelect}
+          onOpenHistoricalCase={onOpenHistoricalCase}
+          historicalLabelOf={historicalLabelOf}
+        />
+      )}
     </li>
   );
 }
@@ -217,10 +234,12 @@ function CandidateRow({
 function CandidateDetail({
   view,
   onSelect,
+  onOpenHistoricalCase,
   historicalLabelOf,
 }: {
   view: CurrentCandidateView;
   onSelect: (sel: Selection) => void;
+  onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
   historicalLabelOf?: (cycleId: string) => string | null;
 }) {
   const c = view.candidate;
@@ -371,6 +390,7 @@ function CandidateDetail({
       <StructuralAnalogySection
         candidateId={c.candidate_id}
         onSelect={onSelect}
+        onOpenHistoricalCase={onOpenHistoricalCase}
         historicalLabelOf={historicalLabelOf}
       />
 
