@@ -107,7 +107,7 @@ export function CurrentTimeLens({
       <LensV2 v2={v2} selection={selection} onSelect={onSelect} />
 
       {/* ============ Phase 7 · 当前研究候选（Current Research Discovery） ============ */}
-      <CurrentCandidateSection list={candidateList} onSelect={onSelect} />
+      <CurrentCandidateSection list={candidateList} onSelect={onSelect} dataSource={dataSource} />
 
       {/* ============ 附：日历同期（Calendar Lens） ============ */}
       <h4 className="ctl2-sublayer">

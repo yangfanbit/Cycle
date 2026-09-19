@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Selection } from '../Timeline/Timeline';
 import {
   type CurrentCandidateListView,
@@ -28,6 +28,8 @@ import {
   PRE_OBSERVATION_HINT,
   PRE_OBSERVATION_LABEL,
 } from '../../data/timeline/preObservation';
+import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
+import { StructuralAnalogySection } from './StructuralAnalogySection';
 
 /**
  * 当前研究候选（Phase 7 — Current Research Discovery v1）。
@@ -49,13 +51,29 @@ export function CurrentCandidateSection({
   list,
   onSelect,
   initialOpenId = null,
+  dataSource = null,
 }: {
   list: CurrentCandidateListView;
   onSelect: (sel: Selection) => void;
   /** 初始展开的候选（深链 / 测试用）；默认全部收起 */
   initialOpenId?: string | null;
+  /**
+   * 可选：Timeline 数据源。**仅用于解析历史对象的显示名**（纯查找，不参与任何判定）。
+   * 缺省时 Structural Analogy 回退到稳定 identity（`historical_cycle_id`）。
+   */
+  dataSource?: TimelineDataSource | null;
 }) {
   const [openId, setOpenId] = useState<string | null>(initialOpenId);
+
+  // 历史对象显示名：campaign_id → title（**纯查找，不做判定**）
+  const historicalLabelOf = useMemo(() => {
+    if (!dataSource) return undefined;
+    const map = new Map<string, string>();
+    for (const y of dataSource.years()) {
+      for (const c of dataSource.yearData(y).campaigns) map.set(c.campaign_id, c.title);
+    }
+    return (id: string) => map.get(id) ?? null;
+  }, [dataSource]);
 
   return (
     <div className="ctl2-layer ccs-layer" aria-label="当前研究候选">
@@ -116,6 +134,7 @@ export function CurrentCandidateSection({
                 setOpenId(openId === v.candidate.candidate_id ? null : v.candidate.candidate_id)
               }
               onSelect={onSelect}
+              historicalLabelOf={historicalLabelOf}
             />
           ))}
         </ol>
@@ -142,12 +161,14 @@ function CandidateRow({
   open,
   onToggle,
   onSelect,
+  historicalLabelOf,
 }: {
   view: CurrentCandidateView;
   index: number;
   open: boolean;
   onToggle: () => void;
   onSelect: (sel: Selection) => void;
+  historicalLabelOf?: (cycleId: string) => string | null;
 }) {
   const c = view.candidate;
   const highCount = view.similarity.results.filter((r) => r.tier === 'HIGH').length;
@@ -188,7 +209,7 @@ function CandidateRow({
         </p>
       )}
 
-      {open && <CandidateDetail view={view} onSelect={onSelect} />}
+      {open && <CandidateDetail view={view} onSelect={onSelect} historicalLabelOf={historicalLabelOf} />}
     </li>
   );
 }
@@ -196,9 +217,11 @@ function CandidateRow({
 function CandidateDetail({
   view,
   onSelect,
+  historicalLabelOf,
 }: {
   view: CurrentCandidateView;
   onSelect: (sel: Selection) => void;
+  historicalLabelOf?: (cycleId: string) => string | null;
 }) {
   const c = view.candidate;
   const inferred = view.inference.phase;
@@ -344,87 +367,102 @@ function CandidateDetail({
         </details>
       </section>
 
-      {/* ---------- Historical Similar Cases ---------- */}
-      <section className="ccs-sec">
-        <h5>Historical Similar Cases（历史相似阶段 · Lifecycle Lens）</h5>
-        <p className="ccs-dim">{CURRENT_SIMILARITY_DISCLAIMER}</p>
-        {view.similarity.insufficient ? (
-          <p className="ccs-none">{view.similarity.note}</p>
-        ) : (
-          <ul className="ccs-sim-list">
-            {view.similarity.results.map((r) => (
-              <li key={r.campaign_id} className={`ccs-sim-item tier-${r.tier.toLowerCase()}`}>
-                <div className="ccs-sim-head">
-                  <span className="ccs-sim-title">{r.title}</span>
-                  <span className="ccs-sim-year">{r.year}</span>
-                  <span className="ccs-tier">
-                    {TIER_LABEL[r.tier]} <span className="ccs-stars">{r.stars}</span>
-                  </span>
-                </div>
-                <dl className="ccs-sim-kv">
-                  <dt>当时阶段</dt>
-                  <dd>
-                    {r.phaseLabel}（{r.phaseMatchLabel}
-                    {r.matchedStage ? ` ${r.matchedStage.start}~${r.matchedStage.end}` : ''}）
-                  </dd>
-                  <dt>Pattern</dt>
-                  <dd>{r.pattern}</dd>
-                  <dt>Drivers</dt>
-                  <dd>{r.drivers.length > 0 ? r.drivers.join(' / ') : '未标注'}</dd>
-                  <dt>叙事类型</dt>
-                  <dd>
-                    {r.narrativeTypes.length > 0
-                      ? r.narrativeTypes.map((n) => NARRATIVE_TYPE_LABEL[n]).join('、')
-                      : '未标注（该层不参与）'}
-                  </dd>
-                  {r.driverNotes.length > 0 && (
-                    <>
-                      <dt>当时归因</dt>
-                      <dd>{r.driverNotes.join('；')}</dd>
-                    </>
-                  )}
-                  <dt>后来结束</dt>
-                  <dd>
-                    {r.terminalPhaseLabel}（区间 {r.start} ~ {r.end}）
-                  </dd>
-                  <dt>{PRE_OBSERVATION_LABEL}</dt>
-                  <dd>
-                    {r.preObservation ? (
+      {/* ---------- Structural Analogy（正式 Current → Historical 结构对应入口） ---------- */}
+      <StructuralAnalogySection
+        candidateId={c.candidate_id}
+        onSelect={onSelect}
+        historicalLabelOf={historicalLabelOf}
+      />
+
+      {/* ---------- 旧视图（兼容保留 · 非正式入口，默认收起） ---------- */}
+      <details className="ccs-sec ccs-legacy">
+        <summary className="ccs-legacy-summary">
+          历史相似阶段（旧视图 · 兼容保留）
+          <span className="ccs-legacy-hint">
+            —— 该视图使用旧的阶段/分档口径，**不是**结构对应；正式入口见上方 Structural Analogy。
+          </span>
+        </summary>
+        <section className="ccs-sec">
+          <h5>Historical Similar Cases（历史相似阶段 · Lifecycle Lens）</h5>
+          <p className="ccs-dim">{CURRENT_SIMILARITY_DISCLAIMER}</p>
+          {view.similarity.insufficient ? (
+            <p className="ccs-none">{view.similarity.note}</p>
+          ) : (
+            <ul className="ccs-sim-list">
+              {view.similarity.results.map((r) => (
+                <li key={r.campaign_id} className={`ccs-sim-item tier-${r.tier.toLowerCase()}`}>
+                  <div className="ccs-sim-head">
+                    <span className="ccs-sim-title">{r.title}</span>
+                    <span className="ccs-sim-year">{r.year}</span>
+                    <span className="ccs-tier">
+                      {TIER_LABEL[r.tier]} <span className="ccs-stars">{r.stars}</span>
+                    </span>
+                  </div>
+                  <dl className="ccs-sim-kv">
+                    <dt>当时阶段</dt>
+                    <dd>
+                      {r.phaseLabel}（{r.phaseMatchLabel}
+                      {r.matchedStage ? ` ${r.matchedStage.start}~${r.matchedStage.end}` : ''}）
+                    </dd>
+                    <dt>Pattern</dt>
+                    <dd>{r.pattern}</dd>
+                    <dt>Drivers</dt>
+                    <dd>{r.drivers.length > 0 ? r.drivers.join(' / ') : '未标注'}</dd>
+                    <dt>叙事类型</dt>
+                    <dd>
+                      {r.narrativeTypes.length > 0
+                        ? r.narrativeTypes.map((n) => NARRATIVE_TYPE_LABEL[n]).join('、')
+                        : '未标注（该层不参与）'}
+                    </dd>
+                    {r.driverNotes.length > 0 && (
                       <>
-                        {r.preObservation.start} ~ {r.preObservation.end}
-                        （形成日 {r.preObservation.formation} · 锚点 {r.preObservation.formationAnchor}）
-                        <span className="ccs-dim"> {PRE_OBSERVATION_HINT}</span>
+                        <dt>当时归因</dt>
+                        <dd>{r.driverNotes.join('；')}</dd>
                       </>
-                    ) : (
-                      '无法推导（不编造）'
                     )}
-                  </dd>
-                </dl>
-                <div className="ccs-sim-why">
-                  <span className="ccs-dim">为什么类似：</span>
-                  <ul>
-                    {r.reasons.map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
-                </div>
-                <button
-                  className="ccs-open"
-                  onClick={() => onSelect({ kind: 'campaign', id: r.campaign_id })}
-                >
-                  查看完整历史案例 →
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-        {view.similarity.excludedByFirewall > 0 && (
-          <p className="ccs-dim">
-            另有 {view.similarity.excludedByFirewall} 条历史对象在本次快照时点尚未结束，
-            已按 Temporal Firewall 排除（否则会引用未来信息）。
-          </p>
-        )}
-      </section>
+                    <dt>后来结束</dt>
+                    <dd>
+                      {r.terminalPhaseLabel}（区间 {r.start} ~ {r.end}）
+                    </dd>
+                    <dt>{PRE_OBSERVATION_LABEL}</dt>
+                    <dd>
+                      {r.preObservation ? (
+                        <>
+                          {r.preObservation.start} ~ {r.preObservation.end}
+                          （形成日 {r.preObservation.formation} · 锚点 {r.preObservation.formationAnchor}）
+                          <span className="ccs-dim"> {PRE_OBSERVATION_HINT}</span>
+                        </>
+                      ) : (
+                        '无法推导（不编造）'
+                      )}
+                    </dd>
+                  </dl>
+                  <div className="ccs-sim-why">
+                    <span className="ccs-dim">为什么类似：</span>
+                    <ul>
+                      {r.reasons.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button
+                    className="ccs-open"
+                    onClick={() => onSelect({ kind: 'campaign', id: r.campaign_id })}
+                  >
+                    查看完整历史案例 →
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {view.similarity.excludedByFirewall > 0 && (
+            <p className="ccs-dim">
+              另有 {view.similarity.excludedByFirewall} 条历史对象在本次快照时点尚未结束，
+              已按 Temporal Firewall 排除（否则会引用未来信息）。
+            </p>
+          )}
+        </section>
+      </details>
 
       {/* ---------- What to research next? ---------- */}
       <section className="ccs-sec">
