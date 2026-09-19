@@ -18,7 +18,8 @@
  * - **不推断**：不用事件推断 Driver；不用缺失证据推断「不存在」。
  * - **不混淆状态**：`UNKNOWN` / `NOT_AVAILABLE` 必须**保持可区分**，且**不得**转成 `MISMATCH` / `NO`；
  *   `STRUCTURAL_PARTIAL` **不得**转成 `MATCH`。
- * - **不联网**：静态 import（`@observation` alias），无运行时请求，无 LLM。
+ * - **不联网**：数据经 Vite 动态 import 从**同源静态 chunk** 加载（无外网请求、无 LLM）。
+ * - **按需加载**：488 KB 的 Explanation Artifact **不进首屏 bundle**，仅在用户展开候选时才加载。
  * - **规则来源唯一**：Structural Analogy Rule Set v0.2（Research 侧）。
  *
  * ## 与其它视角的关系
@@ -27,7 +28,6 @@
  * 本模块**不**复用 `currentSimilarity.ts` 的任何判定逻辑（该模块为 `LEGACY / FREEZE`）。
  */
 
-import rawArtifact from '@observation/structural_analogy_explanations_v0_2.json';
 
 /* ================= 1. 枚举 ================= */
 
@@ -485,9 +485,26 @@ export function parseStructuralAnalogyDataset(raw: unknown): StructuralAnalogyDa
   };
 }
 
-/** 默认数据集（静态 import；**无网络请求**）。 */
-export const defaultStructuralAnalogyDataset: StructuralAnalogyDataset =
-  parseStructuralAnalogyDataset(rawArtifact);
+/**
+ * 按需加载 Explanation Artifact（**动态 import → 独立 chunk**）。
+ *
+ * - 同源静态资源：**无外网请求、无 LLM**，仍是静态部署。
+ * - **结果缓存**：重复调用不重复加载。
+ * - **失败不伪造**：加载失败由调用方显示诚实提示，**不得**退化成「没有结构对应」。
+ */
+let _cache: StructuralAnalogyDataset | null = null;
+
+export async function loadStructuralAnalogyDataset(): Promise<StructuralAnalogyDataset> {
+  if (_cache) return _cache;
+  const mod = await import('@observation/structural_analogy_explanations_v0_2.json');
+  _cache = parseStructuralAnalogyDataset((mod as { default: unknown }).default);
+  return _cache;
+}
+
+/** 仅供测试：注入已解析数据集（避免测试依赖异步加载）。 */
+export function __setStructuralAnalogyDatasetForTest(ds: StructuralAnalogyDataset | null): void {
+  _cache = ds;
+}
 
 /* ================= 6. 稳定查找（identity-based，无排序） ================= */
 

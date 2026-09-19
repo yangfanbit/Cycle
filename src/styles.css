@@ -2087,3 +2087,9 @@ html, body {
   .sa-dim { padding: 2px 5px; font-size: 10px; }
   .sa-filters { gap: 4px; }
 }
+
+/* 渐进披露（不是排名）+ 移动端长文本换行 */
+.sa-more { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.sa-more .ccs-dim { line-height: 1.6; }
+.sa-why li, .sa-why-not li { overflow-wrap: anywhere; }
+.sa-nonav, .sa-intro, .sa-coverage { overflow-wrap: anywhere; }

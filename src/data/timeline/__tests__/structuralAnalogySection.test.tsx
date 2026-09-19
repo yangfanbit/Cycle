@@ -7,7 +7,8 @@ import { CurrentCandidateSection } from '../../../components/CurrentTimeLens/Cur
 import {
   EMPTY_STRUCTURAL_ANALOGY_DATASET,
   STRUCTURAL_STATUS_LABEL,
-  defaultStructuralAnalogyDataset,
+  parseStructuralAnalogyDataset,
+  loadStructuralAnalogyDataset,
   structuralAnalogyForCandidate,
   type StructuralAnalogyDataset,
   type StructuralStatus,
@@ -23,12 +24,13 @@ import { verifiedTimelineSource } from '../timelineAdapter';
  *       Campaign 可导航 · 默认顺序非排名 · 空态 · 筛选不是排序 · 旧功能不回归。
  */
 
-const dataset = defaultStructuralAnalogyDataset;
+const dataset = parseStructuralAnalogyDataset(canonicalJson);
 const noop = () => {};
 
 function render(candidateId: string, extra: Record<string, unknown> = {}): string {
+  // 测试显式注入已解析数据集（避免依赖异步加载；SSR 下 useEffect 不执行）
   return renderToStaticMarkup(
-    <StructuralAnalogySection candidateId={candidateId} onSelect={noop} {...extra} />,
+    <StructuralAnalogySection candidateId={candidateId} onSelect={noop} dataset={dataset} {...extra} />,
   );
 }
 
@@ -54,11 +56,13 @@ describe('Structural Analogy UI · 数据可达性', () => {
     }
   });
 
-  it('每个候选页面都渲染 17 个历史对象（默认全部，无筛选）', () => {
+  it('默认渲染前 6 个（渐进披露），并提供「显示全部 17 个」入口', () => {
     for (const id of ALL_CANDIDATE_IDS) {
       const html = render(id);
       const items = html.match(/class="sa-item /g) ?? [];
-      expect(items.length, id).toBe(17);
+      expect(items.length, id).toBe(6);
+      expect(html, id).toContain('显示全部 17 个历史对象');
+      expect(html, id).toContain('不是');
     }
   });
 
@@ -73,17 +77,18 @@ describe('Structural Analogy UI · 数据可达性', () => {
 /* ---------------- 2. 五级状态展示 ---------------- */
 
 describe('Structural Analogy UI · 五级状态', () => {
-  const cases: [StructuralStatus, string][] = [
-    ['STRUCTURAL_SUPPORTED', 'CC-2026-BCI-MEDTECH'],
-    ['STRUCTURAL_PARTIAL', 'CC-2026-BCI-MEDTECH'],
-    ['THEME_ONLY', 'CC-2026-OPTICAL-LINK'],
-    ['INSUFFICIENT_EVIDENCE', 'CC-2026-BCI-MEDTECH'],
-    ['NO_VALID_CORRESPONDENCE', 'CC-2026-EMBODIED-AI'],
+  const cases: [StructuralStatus, string, string][] = [
+    ['STRUCTURAL_SUPPORTED', 'CC-2026-BCI-MEDTECH', 'C-2023-AD'],
+    ['STRUCTURAL_PARTIAL', 'CC-2026-BCI-MEDTECH', 'C-2019-AD'],
+    ['THEME_ONLY', 'CC-2026-OPTICAL-LINK', 'C-2019-COMM-5G'],
+    ['INSUFFICIENT_EVIDENCE', 'CC-2026-BCI-MEDTECH', 'RC-2024-SECONDARY'],
+    ['NO_VALID_CORRESPONDENCE', 'CC-2026-EMBODIED-AI', 'C-2024-ROBOTAXI'],
   ];
 
-  for (const [status, candidateId] of cases) {
+  for (const [status, candidateId, cycleId] of cases) {
     it(`${status} 在 UI 中以「${STRUCTURAL_STATUS_LABEL[status]}」展示`, () => {
-      const html = render(candidateId);
+      // 通过深链展开目标项（超出前 6 条时会自动展开全部）
+      const html = render(candidateId, { initialOpenCycleId: cycleId });
       expect(html).toContain(STRUCTURAL_STATUS_LABEL[status]);
       expect(html).toContain(`sa-status s-${status.toLowerCase().replace(/_/g, '-')}`);
     });
@@ -96,7 +101,7 @@ describe('Structural Analogy UI · 五级状态', () => {
   });
 
   it('严格口径标记只出现在唯一 STRICT 案例上', () => {
-    const html = render('CC-2026-BCI-MEDTECH');
+    const html = render('CC-2026-BCI-MEDTECH', { initialOpenCycleId: 'C-2023-AD' });
     const n = (html.match(/sa-strict/g) ?? []).length;
     expect(n).toBe(1);
   });
@@ -186,13 +191,14 @@ describe('Structural Analogy UI · identity 与导航', () => {
   });
 
   it('显示稳定 identity（historical_cycle_id）', () => {
-    const html = render('CC-2026-BCI-MEDTECH');
+    const html = render('CC-2026-BCI-MEDTECH', { initialOpenCycleId: 'RC-2023-HUAWEI' });
     expect(html).toContain('C-2023-AD');
     expect(html).toContain('RC-2023-HUAWEI');
   });
 
   it('historicalLabelOf 提供显示名时优先使用（缺省回退 identity）', () => {
     const withLabel = render('CC-2026-BCI-MEDTECH', {
+      initialOpenCycleId: 'C-2023-AD',
       historicalLabelOf: (id: string) => (id === 'C-2023-AD' ? '汽车 · 智能驾驶' : null),
     });
     expect(withLabel).toContain('汽车 · 智能驾驶');
@@ -223,6 +229,17 @@ describe('Structural Analogy UI · 顺序', () => {
   it('UI 明示列表不是从强到弱', () => {
     const html = render('CC-2026-BCI-MEDTECH');
     expect(html).toContain('不是从强到弱');
+  });
+
+  it('渐进披露截断不改变顺序（被隐藏的是「后面的」，不是「较弱的」）', () => {
+    const c = structuralAnalogyForCandidate(dataset, 'CC-2026-BCI-MEDTECH')!;
+    const html = render('CC-2026-BCI-MEDTECH');
+    const shown = (html.match(/class="sa-item /g) ?? []).length;
+    expect(shown).toBe(6);
+    // 前 6 个与 artifact 前 6 个一致
+    for (const e of c.explanations.slice(0, 6)) expect(html).toContain(e.identity.historicalCycleId);
+    expect(html).toContain('不是');
+    expect(html).toContain(`最强的 6 个`);
   });
 
   it('filterExplanations 是筛选而非排序（保持传入顺序）', () => {
@@ -304,11 +321,21 @@ describe('Structural Analogy UI · 空态', () => {
 describe('Structural Analogy UI · 无分数与排名', () => {
   it('渲染结果不含 score / 排名 / 概率 / Top-N 措辞', () => {
     const html = ALL_CANDIDATE_IDS.map((id) => render(id)).join('\n');
-    for (const bad of ['最相似', '最强', 'Top ', '相似度分', '推荐']) {
-      expect(html).not.toContain(bad);
+    // 只允许出现在**否定语境**的措辞：先剔除否定句，再断言其余部分不含这些词
+    const affirmative = html
+      .replace(/<[^>]*>/g, '')          // 先剥标签，避免 </strong> 把否定句切断
+      .replace(/不是「最强的 \d+ 个」/g, '')
+      .replace(/不是从强到弱/g, '')
+      .replace(/不评分、不排名/g, '')
+      .replace(/非预测/g, '')
+      .replace(/不是预测失败/g, '');
+    for (const bad of ['最相似', '最强', 'Top ', '相似度分', '推荐', '评分']) {
+      expect(affirmative).not.toContain(bad);
     }
-    // 否定语境是**必须存在**的合规声明（不是违规）
+    // 否定语境是**必须存在**的合规声明
     expect(html).toContain('不评分、不排名');
+    expect(html).toContain('不是从强到弱');
+    expect(html).toContain('最强的 6 个');
   });
 
   it('渲染结果不含「预测」「买卖」等越界语义', () => {
@@ -338,17 +365,22 @@ describe('Structural Analogy UI · 无分数与排名', () => {
 /* ---------------- 9. 与 canonical JSON 一致性 ---------------- */
 
 describe('Structural Analogy UI · 与 artifact 一致', () => {
-  it('UI 渲染的历史对象集合与 artifact 完全一致（无丢弃 / 无新增）', () => {
+  it('UI 展示的历史对象是 artifact 的**前 6 个**（顺序一致，无新增）', () => {
     const raw = canonicalJson as {
       candidates: { candidate_id: string; explanations: { identity: { historical_cycle_id: string } }[] }[];
     };
     for (const rawC of raw.candidates) {
       const html = render(rawC.candidate_id);
-      for (const e of rawC.explanations) {
+      const shown = rawC.explanations.slice(0, 6);
+      for (const e of shown) {
         expect(html, `${rawC.candidate_id}/${e.identity.historical_cycle_id}`).toContain(
           e.identity.historical_cycle_id,
         );
       }
+      // 第 7 个默认不展示（渐进披露）
+      expect(html).not.toContain(rawC.explanations[6].identity.historical_cycle_id);
+      // 但明确告知总数为 17（不隐藏总量）
+      expect(html).toContain('显示全部 17 个历史对象');
     }
   });
 });
@@ -382,5 +414,38 @@ describe('Current Candidate · 旧功能不回归', () => {
       expect(html).toContain('旧视图 · 兼容保留');
       expect(html).toContain('ccs-legacy');
     }
+  });
+});
+
+
+/* ---------------- 11. 按需加载（Performance Gate v0.1） ---------------- */
+
+describe('Structural Analogy UI · 按需加载', () => {
+  it('未注入 dataset 时显示「正在加载」，**不是**空态（避免误判）', () => {
+    const html = renderToStaticMarkup(
+      <StructuralAnalogySection candidateId="CC-2026-BCI-MEDTECH" onSelect={noop} />,
+    );
+    expect(html).toContain('正在加载结构对应数据');
+    expect(html).not.toContain('暂无 Structural Analogy 研究数据');
+    expect(html).toContain('role="status"');
+  });
+
+  it('loadStructuralAnalogyDataset 能加载并解析完整数据集（85 条 / 5 候选）', async () => {
+    const ds = await loadStructuralAnalogyDataset();
+    expect(ds.candidates).toHaveLength(5);
+    expect(ds.artifactVersion).toBe('0.2');
+    expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(85);
+  });
+
+  it('加载结果被缓存（重复调用返回同一实例，不重复加载）', async () => {
+    const a = await loadStructuralAnalogyDataset();
+    const b = await loadStructuralAnalogyDataset();
+    expect(a).toBe(b);
+  });
+
+  it('注入 dataset 时不进入加载态（同步渲染完整内容）', () => {
+    const html = render('CC-2026-BCI-MEDTECH');
+    expect(html).not.toContain('正在加载结构对应数据');
+    expect(html).toContain('sa-list');
   });
 });

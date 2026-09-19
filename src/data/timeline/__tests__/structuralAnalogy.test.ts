@@ -7,21 +7,20 @@ import {
   EMPTY_STRUCTURAL_ANALOGY_DATASET,
   STRUCTURAL_STATUS_LABEL,
   THEME_RELATION_LABEL,
-  defaultStructuralAnalogyDataset,
+  parseStructuralAnalogyDataset,
   explanationByHistoricalCycleId,
   explanationCount,
   explanationsByStatus,
   isIndeterminate,
   isStructuralStatus,
   navigationTargetOf,
-  parseStructuralAnalogyDataset,
   structuralAnalogyForCandidate,
   type DriverStatus,
   type StructuralAnalogyIdentity,
   type StructuralStatus,
 } from '../structuralAnalogy';
 
-const dataset = defaultStructuralAnalogyDataset;
+const dataset = parseStructuralAnalogyDataset(canonicalJson);
 
 describe('structuralAnalogy · 解析与覆盖度', () => {
   it('从静态 Artifact 解析出完整数据集（无网络请求）', () => {

@@ -19,13 +19,17 @@
  * - `THEME_ONLY` **≠** `STRUCTURAL_SUPPORTED`
  * - `CROSS_MACRO_THEME` **≠** 「不相似」（Theme Relation 仅 metadata）
  *
+ * ## 加载策略（Performance Gate v0.1）
+ * Explanation Artifact（488 KB）**不进首屏 bundle** —— 组件挂载时才动态加载独立 chunk。
+ * 加载中显示「正在加载」，**不显示空态**（避免把「尚未加载」误判成「没有结构对应」）。
+ *
  * ## 导航
  * - 真实历史 **Campaign** → 提供 Campaign Detail 入口。
  * - **Research Candidate** → **不提供** Campaign Detail 入口（它不在 `campaigns` 集合内），
  *   并明确标注其历史对象类型。
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import type { Selection } from '../Timeline/Timeline';
 import {
@@ -34,8 +38,8 @@ import {
   EMPTY_STRUCTURAL_ANALOGY_DATASET,
   STRUCTURAL_STATUS_LABEL,
   THEME_RELATION_LABEL,
-  defaultStructuralAnalogyDataset,
   explanationCount,
+  loadStructuralAnalogyDataset,
   isIndeterminate,
   structuralAnalogyForCandidate,
   type DimensionKey,
@@ -60,6 +64,12 @@ const FILTERS: { key: StructuralStatus | 'ALL'; label: string }[] = [
   { key: 'INSUFFICIENT_EVIDENCE', label: STRUCTURAL_STATUS_LABEL.INSUFFICIENT_EVIDENCE },
   { key: 'NO_VALID_CORRESPONDENCE', label: STRUCTURAL_STATUS_LABEL.NO_VALID_CORRESPONDENCE },
 ];
+
+/**
+ * 默认一次展示的历史对象条数（**渐进披露**，不是排名）。
+ * 17 条全部展开会产生约 83 KB 标记与过长的信息流 → 默认只展示前 N 条（保持稳定顺序）。
+ */
+const DEFAULT_VISIBLE = 6;
 
 const DIMENSION_ORDER: DimensionKey[] = [
   'lifecycle',
@@ -124,24 +134,92 @@ export function filterExplanations(
 export function StructuralAnalogySection({
   candidateId,
   onSelect,
-  dataset = defaultStructuralAnalogyDataset,
+  dataset: injectedDataset,
   historicalLabelOf,
   initialOpenCycleId = null,
 }: {
   candidateId: string;
   onSelect: (sel: Selection) => void;
+  /** 显式注入数据集（测试 / 已加载场景）；**缺省时按需动态加载**。 */
   dataset?: StructuralAnalogyDataset;
   /** 可选：历史对象显示名（由调用方从 timeline 数据源解析）；缺省回退到稳定 identity。 */
   historicalLabelOf?: (cycleId: string) => string | null;
   /** 初始展开的历史对象（测试 / 深链用）；默认全部收起 */
   initialOpenCycleId?: string | null;
 }) {
+  const [loaded, setLoaded] = useState<StructuralAnalogyDataset | null>(injectedDataset ?? null);
+  const [loadState, setLoadState] = useState<'idle' | 'loading' | 'ready' | 'failed'>(
+    injectedDataset ? 'ready' : 'idle',
+  );
+
+  // 按需加载（仅在未注入 dataset 时触发一次）
+  useEffect(() => {
+    if (injectedDataset) {
+      setLoaded(injectedDataset);
+      setLoadState('ready');
+      return;
+    }
+    let alive = true;
+    setLoadState('loading');
+    loadStructuralAnalogyDataset()
+      .then((ds) => {
+        if (!alive) return;
+        setLoaded(ds);
+        setLoadState('ready');
+      })
+      .catch(() => {
+        if (!alive) return;
+        setLoadState('failed');
+      });
+    return () => {
+      alive = false;
+    };
+  }, [injectedDataset]);
+
+  const dataset = loaded ?? EMPTY_STRUCTURAL_ANALOGY_DATASET;
+
   const candidate = useMemo(
-    () => structuralAnalogyForCandidate(dataset, candidateId),
-    [dataset, candidateId],
+    () => (loadState === 'ready' ? structuralAnalogyForCandidate(dataset, candidateId) : null),
+    [dataset, candidateId, loadState],
   );
   const [filter, setFilter] = useState<StructuralStatus | 'ALL'>('ALL');
   const [openId, setOpenId] = useState<string | null>(initialOpenCycleId);
+  // 深链 / 测试指定了初始展开项时，若其不在前 N 条内则自动展开全部（否则会「打开了看不见」）
+  const [showAll, setShowAll] = useState(() => {
+    if (!initialOpenCycleId) return false;
+    const idx = (injectedDataset ?? EMPTY_STRUCTURAL_ANALOGY_DATASET).candidates
+      .find((c) => c.candidateId === candidateId)
+      ?.explanations.findIndex((e) => e.identity.historicalCycleId === initialOpenCycleId);
+    return idx !== undefined && idx >= DEFAULT_VISIBLE;
+  });
+
+  // ---------- 加载中（**不是空态**，避免误判） ----------
+  if (loadState === 'idle' || loadState === 'loading') {
+    return (
+      <section className="ccs-sec sa-sec" aria-label="Structural Analogy">
+        <h5>
+          Structural Analogy（结构对应 · 当前 → 历史）
+          <span className="sa-tag">研究 · 非预测</span>
+        </h5>
+        <p className="ccs-none" role="status">正在加载结构对应数据…</p>
+      </section>
+    );
+  }
+
+  // ---------- 加载失败：诚实提示，**不得**退化成「没有结构对应」 ----------
+  if (loadState === 'failed') {
+    return (
+      <section className="ccs-sec sa-sec" aria-label="Structural Analogy">
+        <h5>
+          Structural Analogy（结构对应 · 当前 → 历史）
+          <span className="sa-tag">研究 · 非预测</span>
+        </h5>
+        <p className="ccs-none" role="alert">
+          结构对应数据加载失败 —— 这不代表「没有历史对应」，请刷新重试。
+        </p>
+      </section>
+    );
+  }
 
   // ---------- 诚实空态 ----------
   if (candidate === null || candidate.explanations.length === 0) {
@@ -161,7 +239,9 @@ export function StructuralAnalogySection({
   }
 
   // ★ 默认顺序 = Adapter 提供的 stable identity order（**不按 status 排序**）
-  const visible = filterExplanations(candidate.explanations, filter);
+  const filtered = filterExplanations(candidate.explanations, filter);
+  // ★ 渐进披露：截断**不改变顺序**，被隐藏的是「后面的」，不是「较弱的」
+  const visible = showAll ? filtered : filtered.slice(0, DEFAULT_VISIBLE);
 
   const total = explanationCount(dataset);
 
@@ -249,6 +329,26 @@ export function StructuralAnalogySection({
             />
           ))}
         </ul>
+      )}
+
+      {filtered.length > DEFAULT_VISIBLE && (
+        <div className="sa-more">
+          <button
+            type="button"
+            className="sa-filter"
+            onClick={() => setShowAll((v) => !v)}
+            aria-expanded={showAll}
+          >
+            {showAll
+              ? `收起（仅显示前 ${DEFAULT_VISIBLE} 个）`
+              : `显示全部 ${filtered.length} 个历史对象`}
+          </button>
+          {!showAll && (
+            <span className="ccs-dim">
+              按历史对象稳定顺序展示前 {DEFAULT_VISIBLE} 个；<strong>不是</strong>「最强的 {DEFAULT_VISIBLE} 个」。
+            </span>
+          )}
+        </div>
       )}
 
       <p className="ccs-dim sa-coverage">
