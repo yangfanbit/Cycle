@@ -1,0 +1,724 @@
+{
+ "artifact": "historical_driver_canonicalization",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/canonicalize_historical_drivers_v0_1.py",
+ "position": "Research-only 派生层 —— **不进入** DB / schema.sql / timeline_export_v1.json / contracts / src。**不修改**历史原始 driver 文本、**不修改** candidate driver。",
+ "not_a": [
+  "similarity score",
+  "ranking",
+  "weighted score",
+  "best driver match",
+  "event_type→driver 硬映射",
+  "价格结果反推 driver"
+ ],
+ "semantic_rules": {
+  "event_type_is_not_driver": "Event Type = 发生了什么类型的事件；Driver = 该周期由什么机制推动。两者**独立**，不得一对一映射。",
+  "forbidden_inferences": [
+   "event_type==industry → DEMAND_IMPROVEMENT",
+   "event_type==company → EARNINGS_CONFIRMATION",
+   "event_type==capital → CAPEX_EXPANSION",
+   "market_series rising → SENTIMENT_POSITIVE",
+   "价格涨跌 / 结果变量 → 任何 driver"
+  ],
+  "sentiment": "`SENTIMENT` 在历史侧**无可可靠结构化来源** → 保持 **NOT_AVAILABLE**。**缺失 sentiment ≠ 没有 sentiment**，而是当前资料不足以可靠编码。",
+  "driver_vs_category": "candidate 侧 `drivers[].category`（POLICY/INDUSTRY/CAPITAL/…）是**来源/类别轴**，不是机制轴；机制轴是 `narrative_types`（= 本 artifact 的 canonical vocabulary）。"
+ },
+ "canonical_vocabulary": {
+  "source": "research/current/schema.json:definitions.narrativeType（**复用，未新造**）",
+  "values": [
+   "POLICY_DRIVEN",
+   "INDUSTRY_UPGRADE",
+   "TECH_BREAKTHROUGH",
+   "DEMAND_SURGE",
+   "SUPPLY_CONTRACTION",
+   "VALUATION_RESET",
+   "CYCLE_REVERSAL",
+   "EVENT_CATALYST",
+   "UNKNOWN"
+  ],
+  "candidate_side_usage": {
+   "CC-2026-BCI-MEDTECH": [
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "CC-2026-COMPUTE-POWER": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE",
+    "POLICY_DRIVEN"
+   ],
+   "CC-2026-EMBODIED-AI": [
+    "INDUSTRY_UPGRADE",
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "CC-2026-OPTICAL-LINK": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "CC-2026-OFFSHORE-WIND": [
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ]
+  },
+  "candidate_side_frequency": {
+   "POLICY_DRIVEN": 4,
+   "TECH_BREAKTHROUGH": 3,
+   "DEMAND_SURGE": 2,
+   "INDUSTRY_UPGRADE": 3,
+   "SUPPLY_CONTRACTION": 1
+  },
+  "historical_not_available": [
+   "UNKNOWN"
+  ]
+ },
+ "rules": {
+  "POLICY_DRIVEN": [
+   "政策",
+   "规划",
+   "通知",
+   "指导意见",
+   "国常会",
+   "政治局",
+   "工信部",
+   "部委",
+   "发改委",
+   "能源局",
+   "医保局",
+   "中医药局",
+   "交通部",
+   "财政部",
+   "税务总局",
+   "五部门",
+   "四部委",
+   "国务院",
+   "国资委",
+   "补贴",
+   "试点",
+   "牌照",
+   "法规",
+   "集采",
+   "医保",
+   "标准体系",
+   "标准化",
+   "双碳",
+   "碳达峰",
+   "碳中和",
+   "核准",
+   "备案",
+   "平价上网",
+   "新政",
+   "专项行动",
+   "实景实训",
+   "吹风"
+  ],
+  "TECH_BREAKTHROUGH": [
+   "技术",
+   "突破",
+   "首发",
+   "首次",
+   "亮相",
+   "GTC",
+   "量产",
+   "ADS",
+   "天神之眼",
+   "智驾",
+   "算法",
+   "刀片电池",
+   "超级电驱",
+   "DE-i",
+   "CPO",
+   "NPO",
+   "1.6T",
+   "800G",
+   "400G",
+   "结构迁移",
+   "光引擎",
+   "算电协同",
+   "具身智能",
+   "人形机器人",
+   "脑机接口",
+   "标准体系（2026 版）"
+  ],
+  "INDUSTRY_UPGRADE": [
+   "结构迁移",
+   "升级",
+   "渗透率",
+   "国产化",
+   "规模化",
+   "代际",
+   "产业链",
+   "环节",
+   "全链条",
+   "生态",
+   "一体化",
+   "扩围",
+   "迁移",
+   "供应链",
+   "国产替代"
+  ],
+  "DEMAND_SURGE": [
+   "需求",
+   "订单",
+   "销量",
+   "出货",
+   "装机",
+   "景气",
+   "放量",
+   "增长",
+   "翻倍",
+   "出口",
+   "刚需",
+   "刚",
+   "营收",
+   "净利润",
+   "业绩",
+   "并网",
+   "招标",
+   "采购",
+   "付费",
+   "试运营",
+   "客座率"
+  ],
+  "SUPPLY_CONTRACTION": [
+   "产能",
+   "供给",
+   "过剩",
+   "涨价",
+   "价格",
+   "库存",
+   "缺芯",
+   "出清",
+   "挤压",
+   "利润",
+   "售价",
+   "降价",
+   "成本",
+   "硅料",
+   "多晶硅",
+   "限产"
+  ],
+  "VALUATION_RESET": [
+   "估值",
+   "低估值",
+   "修复",
+   "估值杀",
+   "泡沫",
+   "破万亿",
+   "市值",
+   "倍",
+   "x ",
+   "抱团",
+   "高估值",
+   "虹吸",
+   "风格"
+  ],
+  "CYCLE_REVERSAL": [
+   "见顶",
+   "见底",
+   "退潮",
+   "衰减",
+   "回调",
+   "反转",
+   "结束",
+   "出清完成",
+   "分化",
+   "回落",
+   "回撤",
+   "震荡",
+   "亏钱效应",
+   "断板",
+   "跌停",
+   "低点",
+   "高点"
+  ],
+  "EVENT_CATALYST": [
+   "发布会",
+   "上市",
+   "展会",
+   "催化",
+   "开工",
+   "启动仪式",
+   "峰会",
+   "论坛",
+   "大会",
+   "嘉年华",
+   "跑出圈",
+   "中标",
+   "获批"
+  ]
+ },
+ "non_mechanism_markers": [
+  "unknown",
+  "暂无",
+  "未知",
+  "无（",
+  "获利盘",
+  "暂定",
+  "（暂定）"
+ ],
+ "price_action_markers": [
+  "涨停",
+  "跌停",
+  "连板",
+  "20cm",
+  "天地板",
+  "断板",
+  "涨",
+  "跌",
+  "走强",
+  "活跃",
+  "爆发",
+  "大涨",
+  "回调",
+  "调整",
+  "见顶",
+  "见底",
+  "回撤",
+  "新高",
+  "低点",
+  "高点",
+  "板块",
+  "指数",
+  "市值",
+  "涨幅",
+  "倍",
+  "板"
+ ],
+ "bucket_semantics": {
+  "driving": [
+   "start",
+   "accelerator"
+  ],
+  "terminal": [
+   "turning",
+   "ending"
+  ],
+  "rule": "**driver 比较只用 driving（start + accelerator）** —— 即「什么推动了该周期」；turning + ending 记录为 `terminal_mechanisms`（「什么终结了该周期」），**不与 driver 混用**。",
+  "why": "v0.1 首次运行时 `CYCLE_REVERSAL` 命中 26 条中 25 条来自 turning/ending —— 那是**周期终结**描述，不是驱动机制。已按相位拆分。"
+ },
+ "summary": {
+  "historical_raw_driver_count": 154,
+  "historical_canonical_driver_count": 8,
+  "driving_raw_count": 80,
+  "driving_canonical_driver_count": 7,
+  "by_mapping_status": {
+   "DIRECT": 36,
+   "DERIVED": 46,
+   "AMBIGUOUS": 1,
+   "UNKNOWN": 22,
+   "NOT_AVAILABLE": 49
+  },
+  "by_canonical_driver": {
+   "POLICY_DRIVEN": 17,
+   "DEMAND_SURGE": 6,
+   "CYCLE_REVERSAL": 9,
+   "INDUSTRY_UPGRADE": 2,
+   "VALUATION_RESET": 9,
+   "SUPPLY_CONTRACTION": 1,
+   "TECH_BREAKTHROUGH": 4,
+   "EVENT_CATALYST": 5
+  },
+  "driving_by_canonical_driver": {
+   "POLICY_DRIVEN": 16,
+   "INDUSTRY_UPGRADE": 2,
+   "VALUATION_RESET": 8,
+   "SUPPLY_CONTRACTION": 1,
+   "TECH_BREAKTHROUGH": 4,
+   "EVENT_CATALYST": 5,
+   "DEMAND_SURGE": 4
+  },
+  "objects": 17
+ },
+ "per_cycle": [
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "DEMAND_SURGE"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 2,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 1,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.25
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "raw_driver_count": 9,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "INDUSTRY_UPGRADE",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 4,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 3,
+   "driving_direct_count": 3,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.5556,
+   "driving_mapping_completeness": 0.8
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "raw_driver_count": 9,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "SUPPLY_CONTRACTION",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 3,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 3,
+   "driving_direct_count": 3,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 0.8
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "raw_driver_count": 12,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "POLICY_DRIVEN"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 5,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 4,
+   "driving_direct_count": 5,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "raw_driver_count": 10,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 3,
+   "derived_count": 0,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 5,
+   "driving_direct_count": 3,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.3,
+   "driving_mapping_completeness": 0.6
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "raw_driver_count": 8,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 1,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.625,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "raw_driver_count": 10,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "EVENT_CATALYST"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 2,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 6,
+   "driving_direct_count": 1,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.3,
+   "driving_mapping_completeness": 0.2
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "raw_driver_count": 8,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 2,
+   "derived_count": 0,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 4,
+   "driving_direct_count": 2,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.25,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "raw_driver_count": 13,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 4,
+   "derived_count": 2,
+   "ambiguous_count": 1,
+   "unknown_count": 3,
+   "not_available_count": 3,
+   "driving_direct_count": 3,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.4615,
+   "driving_mapping_completeness": 0.5714
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "raw_driver_count": 10,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 2,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 3,
+   "driving_direct_count": 2,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.8333
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "raw_driver_count": 10,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "EVENT_CATALYST"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 2,
+   "derived_count": 7,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 1,
+   "driving_direct_count": 1,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.9,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "raw_driver_count": 12,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 2,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 2,
+   "driving_direct_count": 2,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "raw_driver_count": 12,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 1,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 4,
+   "not_available_count": 1,
+   "driving_direct_count": 1,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.5833,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 1,
+   "derived_count": 2,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 1,
+   "driving_direct_count": 1,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "RC-2024-SECONDARY",
+   "macro_theme": null,
+   "raw_driver_count": 4,
+   "driving_raw_count": 2,
+   "canonical_drivers": [],
+   "canonical_driver_count": 0,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 3,
+   "driving_direct_count": 0,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.25,
+   "driving_mapping_completeness": 0.0
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "raw_driver_count": 8,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 1,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 3,
+   "driving_direct_count": 1,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 1,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 3,
+   "driving_direct_count": 1,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.5714,
+   "driving_mapping_completeness": 1.0
+  }
+ ]
+}

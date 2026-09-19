@@ -1,0 +1,2830 @@
+{
+ "artifact": "historical_driver_evidence_ledger",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/canonicalize_historical_drivers_v0_1.py",
+ "position": "Research-only —— 每条 mapping 一行，可追溯 raw_driver → canonical_driver → references。",
+ "field_spec": [
+  "cycle_id",
+  "macro_theme",
+  "bucket",
+  "raw_driver",
+  "canonical_driver",
+  "mapping_status",
+  "matched_rules",
+  "references",
+  "source_type",
+  "reason"
+ ],
+ "entries": [
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "交通部研究自动驾驶法规与指导意见（EV-2019-03 trigger, 2019-08-27）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-2019-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2019-03",
+     "date": "2019-08-27",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-2019-03"
+  },
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "6月国五/六切换促销式回暖后市场寻找新方向（S-2019-01）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "S-2019-01"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "智能汽车概念午后走强（E-2019-04, 2019-09）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "E-2019-04"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "无人驾驶板块活跃（E-2019-05）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "E-2019-05"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "新能源汽车7月起负增长、行业基本面弱（S-2019-02 contradicting）",
+   "canonical_driver": "DEMAND_SURGE",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "DEMAND_SURGE"
+   ],
+   "references": [
+    "S-2019-02"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 DEMAND_SURGE，且文本可追溯至 S-2019-02"
+  },
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "事件驱动脉冲退潮、无持续主线（result=weak）",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "特斯拉国产化落地 + 股价破千美元预期（S-2020-01）",
+   "canonical_driver": "INDUSTRY_UPGRADE",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "references": [
+    "S-2020-01"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 INDUSTRY_UPGRADE，且文本可追溯至 S-2020-01"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "比亚迪汉上市（首搭刀片电池）（EV-2020-02）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH",
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-2020-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2020-02",
+     "date": "2020-07-12",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（TECH_BREAKTHROUGH, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "特斯拉市值超丰田居全球车企第一（EV-2020-01, 06-10）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [
+    "EV-2020-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2020-01",
+     "date": "2020-06-10",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 VALUATION_RESET，且文本可追溯至 EV-2020-01"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "宁德时代与本田战略合作 + 为特斯拉供货（EV-2020-03）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "EV-2020-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2020-03",
+     "date": "2020-07-10",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "比亚迪涨停、宁德市值逼近五千亿（S-2020-02）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [
+    "S-2020-02"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 VALUATION_RESET，且文本可追溯至 S-2020-02"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "7/14 特斯拉过山车带动A股调整（phase retracement 07-14~08-20）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "获利盘回吐",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "主升 7/13 见顶后回调；8/21 二次启动为弱（S-2020-03 Tier4 线索）",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [
+    "S-2020-03"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，且文本可追溯至 S-2020-03"
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "9月末宽窗口结束（暂定）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "新能源车产销持续翻倍、渗透率升至12%+（S-2021-01/02）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE",
+    "DEMAND_SURGE",
+    "VALUATION_RESET"
+   ],
+   "references": [
+    "S-2021-01"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中 3 条规则（INDUSTRY_UPGRADE, DEMAND_SURGE, VALUATION_RESET）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "宁德时代市值破万亿（EV-2021-01）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [
+    "EV-2021-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2021-01",
+     "date": "2021-05-31",
+     "event_type": "market"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 VALUATION_RESET，且文本可追溯至 EV-2021-01"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "宁德宜宾产能一期投运（EV-2021-03）",
+   "canonical_driver": "SUPPLY_CONTRACTION",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "references": [
+    "EV-2021-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2021-03",
+     "date": "2021-06-17",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 SUPPLY_CONTRACTION，且文本可追溯至 EV-2021-03"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "比亚迪创新高、市值一度超9000亿（S-2021-05）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [
+    "S-2021-05"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 VALUATION_RESET，且文本可追溯至 S-2021-05"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 4,
+   "raw_driver": "板块爆发多股涨停（S-2021-03）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2021-03"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "整体车市缺芯负增长（S-2021-06 contradicting）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "references": [
+    "S-2021-06"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（DEMAND_SURGE, SUPPLY_CONTRACTION）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "8/6 比亚迪新高后高位震荡分化",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "8/6 峰值后分化、9月主线衰减（phase decline 08-07~09-30）",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "9月末宽窗口结束（暂定）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "行业修复/Setup + 复工复产预期（EARLY_SIGNAL 04-27）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 VALUATION_RESET，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "国常会阶段性减征乘用车购置税600亿元（EV-2022-01, 05-23 THEME_FORMING）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-2022-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2022-01",
+     "date": "2022-05-23",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-2022-01"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 3,
+   "raw_driver": "地方补贴加码（S-2022-02）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "S-2022-02"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 S-2022-02"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "5/31 财政部/税务总局购置税减半细则 + 新能源下乡（EV-2022-02）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-2022-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2022-02",
+     "date": "2022-05-31",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-2022-02"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "6/1 细则落地次日整车集体涨停（Broad Confirmation）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "6/22 国常会再促消费（取消二手车限迁）（EV-2022-03）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-2022-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2022-03",
+     "date": "2022-06-22",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-2022-03"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 4,
+   "raw_driver": "比亚迪A股市值破万亿（EV-2022-04, 06-10）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [
+    "EV-2022-04"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2022-04",
+     "date": "2022-06-10",
+     "event_type": "market"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 VALUATION_RESET，且文本可追溯至 EV-2022-04"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "7月后政策边际减弱",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 POLICY_DRIVEN，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "获利盘/估值高位（6/10 比亚迪破万亿后）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 3,
+   "raw_driver": "板块分化回调",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "8月 declining（08-01 二高点后持续衰减）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "政策催化缺失、板块失去同步",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "EVENT_CATALYST"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "工信部吹风会：支持L3商业化 + 启动准入和上路通行试点（EV-2023-01, 06-21 THEME_FORMING）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-2023-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2023-01",
+     "date": "2023-06-21",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-2023-01"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "L3政策预期（E-2023-01/07）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "E-2023-01"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 E-2023-01"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "比亚迪首发'天神之眼'高阶智驾（腾势N7）（EV-2023-02, 07-03）",
+   "canonical_driver": "TECH_BREAKTHROUGH",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "references": [
+    "EV-2023-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2023-02",
+     "date": "2023-07-03",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 TECH_BREAKTHROUGH，且文本可追溯至 EV-2023-02"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "7/3-4 25股涨停全面爆发（S-2023-02）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2023-02"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "浙江世宝8天6板（S-2023-05）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2023-05"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "7/11 峰值后板块让位地产/顺周期、快速轮动（phase decline）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "获利盘兑现",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "7/19 主升结束、8-9月主题衰减（至09-12 德赛/浙江见顶转跌）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "正式L3文件11/17成文为后续（EV-2023-03 subsequent），夏季系预期驱动",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "EV-2023-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2023-03",
+     "date": "2023-11-17",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 3,
+   "raw_driver": "FSD 2023未在华落地（反例约束）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "武汉车路云一体化示范项目备案170.84亿（EV-2024-01, 06-14 THEME_FORMING）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "INDUSTRY_UPGRADE"
+   ],
+   "references": [
+    "EV-2024-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2024-01",
+     "date": "2024-06-14",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, INDUSTRY_UPGRADE）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "政策试点预期",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 POLICY_DRIVEN，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "车路云概念全线爆发、华铭智能等10余股涨停（S-2024-02）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2024-02"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "公司多公告'未参与'（题材证伪）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "6/18 高峰后分化",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "索菱断板跌停、金溢逼近跌停（S-2024-03）",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [
+    "S-2024-03"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，且文本可追溯至 S-2024-03"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "快涨快退（约2周）题材退潮",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 3,
+   "raw_driver": "5部门20城试点（EV-2024-02, 07-03）为后续事件，不充当窗口内催化",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-2024-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2024-02",
+     "date": "2024-07-03",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "萝卜快跑武汉跑出圈（EV-2024-03, 07-10 Broad Confirmation）",
+   "canonical_driver": "EVENT_CATALYST",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-2024-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2024-03",
+     "date": "2024-07-10",
+     "event_type": "market"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 EVENT_CATALYST，且文本可追溯至 EV-2024-03"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "无人驾驶板块大涨4%（S-2024-04）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2024-04"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "大众交通16日涨233%（S-2024-05）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2024-05"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "锦江15天9板、金龙12天7板",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "板块指数大涨超4%、天迈/经纬恒润20cm涨停（S-2024-04）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2024-04"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "7/31 大众交通9连板终结、大众公用'天地板'（S-2024-06）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2024-06"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "8/6 首次明显回撤",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（TECH_BREAKTHROUGH, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 3,
+   "raw_driver": "高位题材亏钱效应放大（S-2024-07）",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [
+    "S-2024-07"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，且文本可追溯至 S-2024-07"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "08-23 Main Campaign End（Major Breakpoint）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "板块同步性消失、龙头退潮",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "特斯拉奥斯汀启动Robotaxi有偿试运营（EV-2025-01, 06-22）",
+   "canonical_driver": "DEMAND_SURGE",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "DEMAND_SURGE"
+   ],
+   "references": [
+    "EV-2025-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2025-01",
+     "date": "2025-06-22",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 DEMAND_SURGE，且文本可追溯至 EV-2025-01"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "萝卜快跑/小马智行Robotaxi规模化（S-2025-01）",
+   "canonical_driver": "INDUSTRY_UPGRADE",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "references": [
+    "S-2025-01"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 INDUSTRY_UPGRADE，且文本可追溯至 S-2025-01"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "A股无人驾驶板块全线爆发涨停潮（EV-2025-02, 06-24）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "EV-2025-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-2025-02",
+     "date": "2025-06-24",
+     "event_type": "market"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "汽零8月板块行情（S-2025-03）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2025-03"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "大盘β contamination（8月沪指+8%、创业板+24%）（S-2025-07）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "S-2025-07"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "FSD 2025未落地（S-2025-06 retrospective）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "S-2025-06"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "8/31 暂定边界（9/12月另有催化波次）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "EVENT_CATALYST"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "beta 驱动为主、主题独立性弱",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "5G 商用牌照发放（EV-COMM-02, 2019-06-06）→ 中国进入 5G 商用元年",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-COMM-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-02",
+     "date": "2019-06-06",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-COMM-02"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "5G 商用启动仪式、三大运营商发布 5G 套餐（EV-COMM-03, 2019-10-31）",
+   "canonical_driver": "EVENT_CATALYST",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-COMM-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-03",
+     "date": "2019-10-31",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 EVENT_CATALYST，且文本可追溯至 EV-COMM-03"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "start",
+   "seq": 3,
+   "raw_driver": "Setup：2018-04-16 美国商务部对中兴通讯激活拒绝令（EV-COMM-01，prior）→ 2018 年板块深跌形成低基数（中兴 -49.0%）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [
+    "EV-COMM-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-01",
+     "date": "2018-04-16",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "中央政治局会议（2020-02-21）提出推动 5G 网络等加快发展；工信部加快推进 5G 发展会议（2020-02-22）（EV-COMM-04）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-COMM-04"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-04",
+     "date": "2020-02-22",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "中国联通宣布力争三季度完成全国 25 万基站建设、较原计划提前一个季度（2020-02-23）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "中央政治局常务委员会：加快 5G 网络、数据中心等新型基础设施建设进度（EV-COMM-05, 2020-03-04）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-COMM-05"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-05",
+     "date": "2020-03-04",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-COMM-05"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 4,
+   "raw_driver": "2020 年固定资产投资 4072 亿元（+11%），新建 5G 基站超 60 万个（E-COMM-07）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "E-COMM-07"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "代表标的分批见顶：中际旭创 2020-02-24 / 中兴通讯 2020-02-25 / 烽火通信 2020-03-12（Peak Window）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "2021 年上半年三大运营商 5G 资本开支均下滑（中国联通 -45%）（E-COMM-09）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "E-COMM-09"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "turning",
+   "seq": 3,
+   "raw_driver": "2021 年电信固定资产投资 4058 亿元，与上年基本持平 → 资本开支见顶（E-COMM-08）",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [
+    "E-COMM-08"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，且文本可追溯至 E-COMM-08"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "2021-2022 板块持续走弱：中兴 -23.4%（2022）、烽火 -28.2%、中际旭创 -38.2%",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "代表标的 2022-10-10/11 同步见底（中兴 18.41 / 烽火 11.65 / 中际旭创 15.88 / 新易盛 6.33）→ 本轮 Cycle 出清完成",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "SUPPLY_CONTRACTION",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（SUPPLY_CONTRACTION, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "bucket": "ending",
+   "seq": 3,
+   "raw_driver": "★ 环节错位：新易盛（数通光模块）延后至 2020-07-14 见顶，主因海外云厂商资本开支与 400G 放量节奏滞后于国内 5G 建设，未另立 Cycle",
+   "canonical_driver": null,
+   "mapping_status": "AMBIGUOUS",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE",
+    "TECH_BREAKTHROUGH",
+    "DEMAND_SURGE",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 4 条规则（INDUSTRY_UPGRADE, TECH_BREAKTHROUGH, DEMAND_SURGE, CYCLE_REVERSAL）→ 无法收敛，保留 AMBIGUOUS，不硬拆"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "NVIDIA GTC 2023 主题演讲（EV-COMM-07, 2023-03-21）→ AI 算力叙事启动；A 股光模块次日爆发（中际旭创 2023-03-22 +21.97%）",
+   "canonical_driver": "TECH_BREAKTHROUGH",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "references": [
+    "EV-COMM-07"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-07",
+     "date": "2023-03-21",
+     "event_type": "industry"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 TECH_BREAKTHROUGH，且文本可追溯至 EV-COMM-07"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "context：「东数西算」全面启动（EV-COMM-06, 2022-02-17，prior）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "EV-COMM-06"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-06",
+     "date": "2022-02-17",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "NVIDIA FY2024 Q1 财报：数据中心营收创纪录 42.8 亿美元，Q2 指引 110 亿美元（较分析师预期高 53.2%）（EV-COMM-08, 2023-05-24）→ 全球 AI 算力资本开支财务确认",
+   "canonical_driver": "DEMAND_SURGE",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "DEMAND_SURGE"
+   ],
+   "references": [
+    "EV-COMM-08"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-08",
+     "date": "2023-05-24",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 DEMAND_SURGE，且文本可追溯至 EV-COMM-08"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "中际旭创 2023 半年报：下半年 800G 光模块出货量明显增长（EV-COMM-09, 2023-08-28）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH",
+    "DEMAND_SURGE"
+   ],
+   "references": [
+    "EV-COMM-09"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-09",
+     "date": "2023-08-28",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（TECH_BREAKTHROUGH, DEMAND_SURGE）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "中际旭创 2023 年报：营收 107.18 亿元（+11.16%），2024Q1 净利润超 10 亿元（EV-COMM-10, 2024-04-21）→ 800G 放量在报表端确认",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH",
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "references": [
+    "EV-COMM-10"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-COMM-10",
+     "date": "2024-04-21",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 3 条规则（TECH_BREAKTHROUGH, DEMAND_SURGE, SUPPLY_CONTRACTION）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "accelerator",
+   "seq": 4,
+   "raw_driver": "2025 年 1.6T 与 NPO/CPO 结构迁移预期（速率代际升级延续）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（INDUSTRY_UPGRADE, TECH_BREAKTHROUGH）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "2024-10-08 代表标的同步出现阶段高点后回撤（中际旭创 183.93 → 2025-04-08 70.09，约 -62%）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "★ 该回撤后板块于 2025-04-09 起重启上行并创新高 → 属同一 Cycle 内的回撤，非 Cycle 结束",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "unknown（至本地行情窗口末端仍在上行：中际旭创 2025-12-25 达 638.80、新易盛 2025-12-22 达 329.99）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "★ 通信设备（中兴通讯 / 烽火通信）2023-2025 亦受益于算力网络建设（中兴 2024 +64.8%、烽火 2025 +79.9%），但主驱动仍含运营商侧因素，本轮不作为本 Cycle 代表标的",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "4+7 城市药品集中采购中选结果（25 品种平均降幅 52%）（EV-MED-01, 2018-12-17）→ 摧毁仿制药「带金销售」旧叙事，市场转向「创新 vs 仿制」分化（E-MED-05）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "DEMAND_SURGE",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [
+    "E-MED-05",
+    "EV-MED-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-MED-01",
+     "date": "2018-12-17",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（DEMAND_SURGE, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "科创板开板、未盈利生物科技可上市（EV-MED-02, 2019-07-22）",
+   "canonical_driver": "EVENT_CATALYST",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-MED-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-MED-02",
+     "date": "2019-07-22",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 EVENT_CATALYST，且文本可追溯至 EV-MED-02"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "2019 年国家医保谈判：150 谈成 97、新增平均降幅 60.7%、PD-1 首次纳入医保、12 个国产重大创新药谈成 8 个（EV-MED-03, 2019-11-28）→ 官方明确鼓励创新导向（E-MED-02）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "references": [
+    "E-MED-02",
+    "EV-MED-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-MED-03",
+     "date": "2019-11-28",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, TECH_BREAKTHROUGH）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "CXO 景气与订单高增；公募/外资持续增配医药核心资产（2020Q2 医药持仓占比一度 17.2%）",
+   "canonical_driver": "DEMAND_SURGE",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "DEMAND_SURGE"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 DEMAND_SURGE，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "CDE《以临床价值为导向的抗肿瘤药物临床研发指导原则（征求意见稿）》（EV-MED-04, 2021-07-02）→ 引发对 CXO 景气度的质疑（E-MED-04）",
+   "canonical_driver": "DEMAND_SURGE",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "DEMAND_SURGE"
+   ],
+   "references": [
+    "E-MED-04",
+    "EV-MED-04"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-MED-04",
+     "date": "2021-07-02",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 DEMAND_SURGE，且文本可追溯至 E-MED-04, EV-MED-04"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "2021 年下半年集采扩围至器械/耗材/IVD，超市场预期",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "INDUSTRY_UPGRADE"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, INDUSTRY_UPGRADE）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "turning",
+   "seq": 3,
+   "raw_driver": "资金风格切向新能源（电新/有色/钢铁），赚钱效应虹吸",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 VALUATION_RESET，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "代表标的分批见顶：恒瑞医药 2020-12-25、药明康德/泰格医药 2021-07-01（Peak Window）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "2022 年创新药估值出清：CXO 估值自 2021 年中 103x 降至约 30x（估值杀，非业绩杀）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION",
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 3 条规则（DEMAND_SURGE, SUPPLY_CONTRACTION, VALUATION_RESET）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "bucket": "ending",
+   "seq": 3,
+   "raw_driver": "2022-09/10 各自代表标的见低点；2022Q4 出现修复迹象，Theme Cycle End 未确认",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "VALUATION_RESET",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（VALUATION_RESET, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "双碳目标宣布：力争 2030 年前碳达峰、2060 年前碳中和（EV-PWR-03, 2020-09-22）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-PWR-03"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-03",
+     "date": "2020-09-22",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-PWR-03"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "平价上网 Setup：2018 年 531 新政出清后，2019-01-07 平价上网通知（发改能源〔2019〕19 号）确立无补贴发展路径（EV-PWR-02，prior）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "references": [
+    "EV-PWR-02"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-02",
+     "date": "2019-01-07",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, SUPPLY_CONTRACTION）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "气候雄心峰会：2030 年风电、太阳能发电总装机 12 亿千瓦以上（EV-PWR-04, 2020-12-12）→ 首个可量化装机目标",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "DEMAND_SURGE",
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-PWR-04"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-04",
+     "date": "2020-12-12",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（DEMAND_SURGE, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "整县屋顶分布式光伏试点名单 676 县公布（EV-PWR-05, 2021-09-08）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-PWR-05"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-05",
+     "date": "2021-09-08",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-PWR-05"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "2021 年新增光伏并网装机约 5300 万千瓦、分布式占比首次过半（E-PWR-04）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH",
+    "DEMAND_SURGE"
+   ],
+   "references": [
+    "E-PWR-04"
+   ],
+   "event_refs": [],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（TECH_BREAKTHROUGH, DEMAND_SURGE）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "硅料价格暴涨挤压中下游利润（2021 年硅料价格年内涨超 2 倍）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "SUPPLY_CONTRACTION",
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（SUPPLY_CONTRACTION, VALUATION_RESET）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "高估值抱团瓦解 + 产能过剩预期",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "SUPPLY_CONTRACTION",
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（SUPPLY_CONTRACTION, VALUATION_RESET）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "turning",
+   "seq": 3,
+   "raw_driver": "代表标的分批见顶：阳光电源 2021-10-27 / 隆基绿能 2021-11-01 / 金风科技 2021-11-04",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "2021-11 见顶后主跌至 2022-04-26（隆基 39.68 / 阳光 37.65 / 金风 9.45 同步低点，含大盘 β）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "2022-04-27~2022-08-23 阳光电源次级反弹（2022-08-23 100.12），隆基未同步",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 3,
+   "raw_driver": "上游硅料环节延后至 2022-07-05 见顶（特变电工-新特能源），属同 Cycle 内环节错位",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE",
+    "SUPPLY_CONTRACTION",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 3 条规则（INDUSTRY_UPGRADE, SUPPLY_CONTRACTION, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 4,
+   "raw_driver": "2022-12-30 为本地行情窗口末端，Theme Cycle End 未确认",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "特高压核准提速：2022 年规划项目有望全部核准（EV 相关，2022-01-10 报道）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 POLICY_DRIVEN，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "国家电网 2022 年度工作会议：电网投资计划 5012 亿元（EV-PWR-06, 2022-01-16）→ 电网投资由 2019 年 4473 亿 / 2021 年 4882 亿转为上行",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "EV-PWR-06"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-06",
+     "date": "2022-01-16",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "国网披露年内再开工「四交四直」8 项特高压、在建项目投资破万亿、全年电网投资约 5300 亿元创历史最高（EV-PWR-07, 2022-08-03）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "VALUATION_RESET",
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-PWR-07"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-07",
+     "date": "2022-08-03",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中 2 条规则（VALUATION_RESET, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "首个「沙戈荒」外送特高压（宁夏—湖南 ±800 千伏）开工（EV-PWR-08, 2023-06-11）",
+   "canonical_driver": "EVENT_CATALYST",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-PWR-08"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-08",
+     "date": "2023-06-11",
+     "event_type": "industry"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 EVENT_CATALYST，且文本可追溯至 EV-PWR-08"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "accelerator",
+   "seq": 3,
+   "raw_driver": "电网工程投资连续高增：2023 年 5275 亿元（+5.4%）、2024 年 6083 亿元（+15.3%）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "accelerator",
+   "seq": 4,
+   "raw_driver": "国网 2024 年投资首超 6000 亿元，累计建成「22 交 16 直」38 项特高压（EV-PWR-09, 2025-02-12）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [
+    "EV-PWR-09"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-PWR-09",
+     "date": "2025-02-12",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "2022-01 政策信号披露后即「利好兑现」：三标的同步见顶（国电南瑞/许继电气 01-19、平高电气 01-18）→ 至 2022-04-25/26 同步见底",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（POLICY_DRIVEN, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "2024-07~10 批量见顶：许继电气 07-09 / 国电南瑞 10-08 / 平高电气 10-14",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "2024-10 后特高压国内标的回落（2025 年：国电南瑞 -5.0%、平高电气 -2.8%、许继电气 +1.7%）",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "★ 环节错位：出海暴露较高的思源电气（2025-12-26 160.30，+115.0%）与特变电工（2025-11-07 26.14，+86.0%）延后至 2025 年见顶，未另立 Cycle",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（INDUSTRY_UPGRADE, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 3,
+   "raw_driver": "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "SUPPLY_CONTRACTION",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（SUPPLY_CONTRACTION, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "bucket": "ending",
+   "seq": 4,
+   "raw_driver": "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "问界新M7上市发布会（EV-RC-2023-HUAWEI-01, 09-12）",
+   "canonical_driver": "EVENT_CATALYST",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "EVENT_CATALYST"
+   ],
+   "references": [
+    "EV-RC-2023-HUAWEI-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-RC-2023-HUAWEI-01",
+     "date": "2023-09-12",
+     "event_type": "company"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 EVENT_CATALYST，且文本可追溯至 EV-RC-2023-HUAWEI-01"
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "赛力斯首次明显突破（THEME_FORMING 09-04）",
+   "canonical_driver": "TECH_BREAKTHROUGH",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 TECH_BREAKTHROUGH，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "华为汽车核心扩散 + 多股同步（Broad Confirmation 09-18）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "HUAWEI ADS 2.0 随车亮相",
+   "canonical_driver": "TECH_BREAKTHROUGH",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 TECH_BREAKTHROUGH，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "08-29 Early Signal 存在市场 Beta contamination（low confidence）",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "unknown（至2023-10-31仍升，未确认结束）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "RC-2024-SECONDARY",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "主 Campaign 退潮后 09-05 次级活跃（weak）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "RC-2024-SECONDARY",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "unknown（强度不足）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "RC-2024-SECONDARY",
+   "macro_theme": null,
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "unknown",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "文本为空或纯非机制表述（不含可编码的驱动机制）"
+  },
+  {
+   "cycle_id": "RC-2024-SECONDARY",
+   "macro_theme": null,
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "09-06 后回落，弱候选不成势",
+   "canonical_driver": "CYCLE_REVERSAL",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 CYCLE_REVERSAL，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "新冠疫情 + 防疫物资刚性需求（EV-RC-MED-PANDEMIC-01, 2020-01-23）",
+   "canonical_driver": "DEMAND_SURGE",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "DEMAND_SURGE"
+   ],
+   "references": [
+    "EV-RC-MED-PANDEMIC-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-RC-MED-PANDEMIC-01",
+     "date": "2020-01-23",
+     "event_type": "macro"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 DEMAND_SURGE，且文本可追溯至 EV-RC-MED-PANDEMIC-01"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "英科医疗（一次性手套）2020 年内涨幅约 26.5 倍（adj）；智飞生物 +208%（adj）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 VALUATION_RESET，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "全球疫情反复、防疫物资出口需求；疫苗/检测产业链放量",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "INDUSTRY_UPGRADE",
+    "DEMAND_SURGE"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 2 条规则（INDUSTRY_UPGRADE, DEMAND_SURGE）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "2020 年 A 股涨幅榜首为一次性防护手套企业（英科医疗）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "英科医疗 2021-01-25 见顶（自身口径）后进入全年下跌；疫苗指数 2020-07/08 已先见顶",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "turning",
+   "seq": 2,
+   "raw_driver": "疫情缓解预期 + 产能过剩担忧（防护用品需求回落）",
+   "canonical_driver": null,
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION",
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中 3 条规则（DEMAND_SURGE, SUPPLY_CONTRACTION, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "2021 全年英科医疗 -46.1%（adj）、2022 再 -56.5%；主题注意力显著减弱",
+   "canonical_driver": null,
+   "mapping_status": "UNKNOWN",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "有文本但未命中任何显式规则 → 不强行归类"
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "与主线（创新药/CXO）节奏相反：同期主线仍在上涨至 2021-07 → Pattern=Parallel",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "中医药鼓励政策预期持续加码（2021-11 起板块活跃）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 POLICY_DRIVEN，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "中成药集采温和落地；多家公司宣布提价（行业报道）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 POLICY_DRIVEN，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "医保局、中医药局《关于医保支持中医药传承创新发展的指导意见》（EV-RC-MED-TCM-01, 2021-12-31）",
+   "canonical_driver": "POLICY_DRIVEN",
+   "mapping_status": "DIRECT",
+   "matched_rules": [
+    "POLICY_DRIVEN"
+   ],
+   "references": [
+    "EV-RC-MED-TCM-01"
+   ],
+   "event_refs": [
+    {
+     "event_id": "EV-RC-MED-TCM-01",
+     "date": "2021-12-31",
+     "event_type": "policy"
+    }
+   ],
+   "source_type": "event_reference",
+   "reason": "命中唯一规则 POLICY_DRIVEN，且文本可追溯至 EV-RC-MED-TCM-01"
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "低估值修复（中药长期 20–30x vs 创新药/CXO 上百倍）",
+   "canonical_driver": "VALUATION_RESET",
+   "mapping_status": "DERIVED",
+   "matched_rules": [
+    "VALUATION_RESET"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "命中唯一规则 VALUATION_RESET，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "2022 上半年深幅调整（疫情反复 + 中报不及预期）",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "bucket": "ending",
+   "seq": 1,
+   "raw_driver": "2022Q4 抗疫中药再度活跃：以岭药业 2022-11-30→12-08 快速上行至区间高点",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "2022-12-30 收于 28.36（自高点回落）；窗口末端，未确认结束",
+   "canonical_driver": null,
+   "mapping_status": "NOT_AVAILABLE",
+   "matched_rules": [
+    "CYCLE_REVERSAL"
+   ],
+   "references": [],
+   "event_refs": [],
+   "source_type": "narrative_text",
+   "reason": "价格/行情**结果**描述（非机制）→ 按 §十五 不得作为 driver，标记 NOT_AVAILABLE 而非 UNKNOWN"
+  }
+ ]
+}
