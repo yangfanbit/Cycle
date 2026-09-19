@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`72f2751`（`refactor(product): unify historical case evidence view v0.1`；本文件随 Second Real Observation Cycle 提交入库）
-- 最近完成：**Second Real Observation Cycle v0.1**（PASS；**0 code change**）
+- HEAD：`e4ec504`（`docs(research): second real observation cycle v0.1`；本文件随 Snapshot Freshness Polish 提交入库）
+- 最近完成：**Snapshot Freshness Polish v0.1**（PASS；`stale` 阈值 `> 0` → `> 14`）
 
 ## 1. 项目当前定位
 
@@ -172,40 +172,49 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# 由真实使用反馈决定（核心产品形态已验证）
+# 由真实研究产生的新 Research Question 决定（无已确认 P1）
 
 **已完成（全部 PASS）**：Product Similarity Architecture Gate v0.1 · Product Adapter v0.1 ·
 Product UI Integration v0.1 · **UX Review + Performance Gate v0.1** ·
 **Historical Case Experience v0.1** · **Historical Cycle Map v0.1** ·
 **Current Research Refresh Loop v0.1** · **First Real Observation Cycle v0.1** ·
-**Historical Case Evidence View Rework v0.1** · **Second Real Observation Cycle v0.1**。
+**Historical Case Evidence View Rework v0.1** · **Second Real Observation Cycle v0.1** ·
+**Snapshot Freshness Polish v0.1**（`stale` 阈值 `> 0` → `> 14`）。
 
-**当前无未完成的 P1**。第二次真实使用（`docs/SECOND_REAL_OBSERVATION_CYCLE_V0_1.md`）
-已验证核心路径在真实使用中**自然发生**：
+**当前无已确认 P1。** 下一步由**真实研究产生的新 Research Question**决定，不由 Agent 预设。
 
-```text
-Current Candidate → Historical Cycle Map → Lifecycle Position
-→ Cross-family Structural Analogy → Historical Evidence Timeline
-→ New Research Question
-```
+### 待 Research 验证的研究问题（**只记录，不排期，不做 Product 功能**）
 
-下一步应由**用户决定**，不由 Agent 预设。
+> **历史案例从「政策触发」到「产业 / 公司催化」的时间间隔，是否存在可重复的结构？**
 
-### 最高优先候选（**未排期**，待用户决策）
+第二次真实研究观察到的样本（**4 个样本，尚不足以称为规律**）：
 
-| 优先 | 类型 | 项 |
-|---|---|---|
-| **1** | POLISH | **`stale` 阈值**：当前 `stale = stalenessDays > 0` → 距快照 **4 天**即触发「当前研究快照已滞后」。对**周级 · 离线**研究产品，建议改为**显式阈值**（如 `> 14`）或在文案中区分「研究节奏内」与「确实滞后」。**属产品决策**（见观察报告 §10 F5 / §13） |
-| 2 | POLISH | `themeCycleId` 内部 id 可读性（如 `auto_intelligence_2023`）· 归因自由文本内嵌 Research id（`EV-*` / `S-*` / `E-*`） |
-| 3 | POLISH | `event_type`（`company`）与证据类别标签（「产业（INDUSTRY）」）的行内对应关系未呈现 |
-| — | DEFER | SA 默认折叠使唯一 STRICT 对应位于第 9 位（**修复需引入排序 = 禁止**） |
-| — | DEFER | `event_structure` 区分度低 · Driver `MATCH = 1/85`（Research Quality Backlog） |
-| — | DEFER | `campaign_date_observations verified = 0/24`（Future Data Precision Debt） |
+| 历史案例 | 政策/产业触发 | 公司/产业催化 | 间隔 |
+|---|---|---|---:|
+| `C-2023-AD`（汽车 · 智能驾驶） | 2023-06-21 `policy.trigger` | 2023-07-03 `company.catalyst` | **12 天** |
+| `C-2023-COMM-OPTICAL`（信息通信 · 光模块） | 2023-03-21 `industry.trigger` | 2023-05-24 `company.catalyst` | **64 天** |
+| `C-2019-PHARMA-INNOV`（医药健康 · 创新药） | 2019-07-22 `policy.trigger` | 2019-11-28 `policy.catalyst` | **129 天** |
+| `C-2019-COMM-5G`（信息通信 · 5G） | 2019-06-06 `policy.trigger` | 2019-10-31 `policy.catalyst` | **147 天** |
 
-### 已确认无风险（本轮观察）
+**必须由 Research 单独验证**（本轮不展开）：是否存在更多同类案例 · 是否跨 Macro Theme ·
+是否处于不同生命周期阶段 · 是否存在明显机制差异 · 间隔是否稳定到足以成为**可观察结构**。
 
-`historicalEvidenceTimelineOf()` 的 `date|name` 稳定键：**32 campaigns / 106 events / 0 冲突 /
-0 跨案例共享** → **无需升级为 `event_id`**。
+> ⚠️ **不得**把上述 4 个样本解释为已形成规律。
+
+### 已记录的候选后续项（**未排期**）
+
+| 类型 | 项 |
+|---|---|
+| POLISH | `themeCycleId` 内部 id 可读性（如 `auto_intelligence_2023`）· 归因自由文本内嵌 Research id（`EV-*` / `S-*` / `E-*`） |
+| POLISH | `event_type`（`company`）与证据类别标签（「产业（INDUSTRY）」）的行内对应关系未呈现 |
+| DEFER | SA 默认折叠使唯一 STRICT 对应位于第 9 位（**修复需引入排序 = 禁止**） |
+| DEFER | `event_structure` 区分度低 · Driver `MATCH = 1/85`（Research Quality Backlog） |
+| DEFER | `campaign_date_observations verified = 0/24`（Future Data Precision Debt） |
+
+### 已确认无风险
+
+- `stale` 阈值 = **14 天**（`SNAPSHOT_STALE_THRESHOLD_DAYS`）；0–14 天属正常研究节奏，不提示滞后
+- `historicalEvidenceTimelineOf()` 的 `date|name` 稳定键：**32 campaigns / 106 events / 0 冲突** → 无需升级为 `event_id`
 
 ### 边界
 

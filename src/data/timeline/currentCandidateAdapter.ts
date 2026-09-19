@@ -63,6 +63,22 @@ import { PHASE_LABEL } from './researchAttention';
 import { PRE_OBSERVATION_LABEL, PRE_OBSERVATION_HINT } from './preObservation';
 import { diffDays } from '../../utils';
 
+/* ================= 0. 快照新鲜度阈值 ================= */
+
+/**
+ * 快照「滞后」阈值（自然日）。
+ *
+ * ThreeC **不是实时系统**：Current Research 由**离线**生成，观察尺度为**周级**，
+ * Refresh Loop 是可重复的更新流程，而不是实时行情服务。
+ *
+ * 因此「距今天 > 0 天」不等于「研究已过期」—— 若按 0 天判定，**365 天中 364 天**
+ * 都会显示「当前研究快照已滞后」，把「**不是实时数据**」错误地表达成「**研究已经过期**」。
+ *
+ * 14 天足以覆盖正常的研究更新周期，作为简单的产品提醒阈值。
+ * **不引入动态阈值 / freshness score / 新状态**（仍只有 `stalenessDays` + `stale`）。
+ */
+export const SNAPSHOT_STALE_THRESHOLD_DAYS = 14;
+
 /* ================= 1. Driver Profile（候选侧） ================= */
 
 /**
@@ -258,7 +274,7 @@ export interface CurrentCandidateListView {
   issues: string[];
   /** 快照滞后于今天的自然日数（null = 快照日缺失） */
   stalenessDays: number | null;
-  /** 快照是否落后于今天（UI 需提示「不是实时」） */
+  /** 快照是否**超过滞后阈值**（`SNAPSHOT_STALE_THRESHOLD_DAYS`）；UI 据此提示「不是实时研究结果」 */
   stale: boolean;
 }
 
@@ -379,7 +395,10 @@ export function buildCurrentCandidateViews(
     views,
     issues: [],
     stalenessDays,
-    stale: stalenessDays !== null && stalenessDays > 0,
+    // ★ 仅在**超过阈值**（`SNAPSHOT_STALE_THRESHOLD_DAYS` = 14 天）时才提示滞后。
+    //   0–14 天属正常研究节奏 → 只展示「研究快照 / 距今天 / 覆盖年份 / 离线生成」元信息，
+    //   不显示 stale warning。
+    stale: stalenessDays !== null && stalenessDays > SNAPSHOT_STALE_THRESHOLD_DAYS,
   };
 }
 
