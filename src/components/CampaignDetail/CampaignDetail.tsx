@@ -3,15 +3,20 @@ import { allCampaignSecurities, ruleById, themeById, themesOfCampaign } from '..
 import type { HistoricalCampaign } from '../../models';
 import { campaignDrivers } from '../../data/timeline/timelineAdapter';
 import {
+  ATTRIBUTION_PHASE_LABEL,
+  ATTRIBUTION_QUESTION_LABEL,
   EVIDENCE_CATEGORY_LABEL,
   LIFECYCLE_STAGE_LABEL,
   MAPPING_STATUS_LABEL,
+  PHASE_SIGNAL_CLARIFICATION,
   evidenceCategoriesOf,
   historicalCaseOf,
+  historicalEvidenceTimelineOf,
   loadMechanismDrivers,
   withMechanismDrivers,
   type HistoricalCaseAnalogyContext,
   type HistoricalCaseView,
+  type HistoricalEvidenceTimeline,
   type MechanismDriverView,
 } from '../../data/timeline/historicalCase';
 import type { ExportConflictV1, ExportDriversV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
@@ -180,6 +185,12 @@ export function CampaignDetail({
   }, [caseBase]);
 
   const evidenceCategories = caseBase?.evidenceCategories ?? evidenceCategoriesOf(m.events);
+
+  // ★ Rework v0.1：统一的「历史演化证据」时间线（**每个事件只出现一次**）
+  const evidenceTimeline: HistoricalEvidenceTimeline | null = useMemo(
+    () => (m.production || !('phases' in campaign) ? null : historicalEvidenceTimelineOf(campaign as TimelineCampaign)),
+    [campaign, m.production],
+  );
   const duration = diffDays(m.start, m.end) + 1;
   // 驱动因素四问（Research V1.7 人工归因优先；缺失时基于研究事件时间归组；
   // 无数据组 → "暂无可靠归因"，不编造）
@@ -457,49 +468,88 @@ export function CampaignDetail({
               </div>
             </dd>
 
-            <dt>证据序列（按时间）</dt>
-            <dd>
-              {caseBase.hasNoEvents ? (
-                <span className="empty-note">
-                  无关联事件记录（NOT_AVAILABLE）—— 不代表「当时没有事件」，只代表当前资料未记录。
-                </span>
-              ) : (
-                <ol className="hcx-seq">
-                  {caseBase.evidenceSequence.map((e) => (
-                    <li key={`${e.date}-${e.name}`}>
-                      <span className="hcx-seq-date">{e.date}</span>
-                      <span className="hcx-seq-stage">
-                        {e.lifecycleStageLabel ?? '阶段未知'}
-                      </span>
-                      <span className="hcx-seq-name">{e.name}</span>
-                      <span className="phase-text">
-                        （{e.eventType}
-                        {e.role ? ` · ${e.role}` : ''}）
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              )}
-              <div className="phase-text">
-                「阶段未知」= 该事件日期不落在任何已记录生命周期区间内（UNKNOWN，**不是**不对应）。
-              </div>
-            </dd>
           </>
         )}
 
-        {m.events.length > 0 && (
+        {/* ---------- ★ 历史演化证据（统一证据视图 · Rework v0.1） ---------- */}
+        {evidenceTimeline && (
           <>
-            <dt>关联事件</dt>
+            <dt>历史演化证据</dt>
             <dd>
-              {m.events.map((ev) => (
-                <div key={`${ev.date}-${ev.name}`} className="event-line">
-                  <span className="phase-text">{ev.date}</span> {ev.name}
-                  <span className="phase-text">
-                    （{EVENT_TYPE_LABEL[ev.event_type] ?? ev.event_type}
-                    {ev.role ? ` · ${ROLE_LABEL[ev.role] ?? ev.role}` : ''}）
-                  </span>
-                </div>
-              ))}
+              {!evidenceTimeline.hasEvents ? (
+                <span className="empty-note">
+                  无关联事件记录（NOT_AVAILABLE）—— 这不代表「当时没有事件」，只代表当前资料未记录。
+                </span>
+              ) : (
+                <>
+                  <p className="phase-text hcx-ev-intro">
+                    按时间排序，<strong>每个事件只展示一次</strong>；
+                    同一行承载 日期 · 生命周期阶段 · 事件类型 · 角色 · 事件名 · 归组阶段。
+                    归组阶段表示该事件在案例时间轴上的<strong>位置</strong>，<strong>不代表</strong>因果证明。
+                  </p>
+                  <ol className="hcx-ev">
+                    {evidenceTimeline.rows.map((r) => (
+                      <li key={r.key} className="hcx-ev-row">
+                        <div className="hcx-ev-line1">
+                          <span className="hcx-ev-date">{r.date}</span>
+                          <span className={`hcx-ev-stage${r.lifecycleStage === null ? ' is-unknown' : ''}`}>
+                            {r.lifecycleStageLabel}
+                          </span>
+                          <span className="hcx-ev-type">
+                            {r.eventType}
+                            {r.role ? ` · ${r.role}` : ''}
+                          </span>
+                          <span className="hcx-ev-attr" title="时间归组位置，非因果证明">
+                            {ATTRIBUTION_PHASE_LABEL[r.attributionPhase]}
+                          </span>
+                        </div>
+                        <div className="hcx-ev-name">{r.name}</div>
+                      </li>
+                    ))}
+                  </ol>
+                  {evidenceTimeline.hasUnknownStage && (
+                    <p className="phase-text hcx-ev-note">
+                      「阶段未知」= 该事件日期不落在任何已记录生命周期区间内（UNKNOWN）——
+                      <strong>不代表</strong>事件不存在或不重要。
+                    </p>
+                  )}
+                </>
+              )}
+            </dd>
+
+            {/* ---------- 阶段级研究归因（**不是**重复事件列表） ---------- */}
+            <dt>阶段级研究归因</dt>
+            <dd>
+              <p className="phase-text hcx-ev-intro">
+                {evidenceTimeline.attributionSource === 'RESEARCH'
+                  ? '来自 Research V1.7 研究归因（原样展示，按阶段归组）。'
+                  : 'Research 未提供归因 → 以下为按事件时间窗口的**归组线索**。'}
+                <strong>归因是研究归组 / 研究判断，不是单条事件的因果证明。</strong>
+              </p>
+              <div className="hcx-attr">
+                {evidenceTimeline.attribution.map((g) => (
+                  <div key={g.phase} className="hcx-attr-row">
+                    <span className="hcx-attr-q">{g.question}</span>
+                    <span className="hcx-attr-phase">{g.phaseLabel}</span>
+                    {g.items.length > 0 ? (
+                      <ul className="hcx-attr-items">
+                        {g.items.map((t) => (
+                          <li key={t} title={t}>
+                            {t}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="phase-text">暂无可靠归因</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <p className="phase-text">
+                {evidenceTimeline.attributionSource === 'RESEARCH'
+                  ? '（来自 Cycle-Research V1.7 研究归因，原样展示；非因果结论，不构成买卖建议。）'
+                  : '（基于研究事件的时间归组线索，非因果结论。）'}
+              </p>
             </dd>
           </>
         )}
@@ -517,33 +567,11 @@ export function CampaignDetail({
                   </span>
                 </div>
               ))}
-              <div className="phase-text">（研究层"值得观察"信息，不是交易信号）</div>
+              <div className="phase-text">（研究层「值得观察」信息，不是交易信号）</div>
+              <div className="phase-text hcx-phase-signal">{PHASE_SIGNAL_CLARIFICATION}</div>
             </dd>
           </>
         )}
-
-        <dt>研究归因（四问 · 自由文本）</dt>
-        <dd className="drivers">
-          {driverRows.map(({ q, tags }) => (
-            <div key={q} className="driver-row">
-              <span className="driver-q">{q}</span>
-              {tags.length > 0 ? (
-                tags.map((t) => (
-                  <span className="tag" key={t} title={t}>
-                    {t}
-                  </span>
-                ))
-              ) : (
-                <span className="phase-text">暂无可靠归因</span>
-              )}
-            </div>
-          ))}
-          <div className="phase-text">
-            {m.drivers
-              ? '（来自 Cycle-Research V1.7 研究归因，原样展示；非因果结论，不构成买卖建议。）'
-              : `（基于研究事件的时间归组线索，非因果结论；${m.production ? '生产数据暂无关联事件。' : ''}）`}
-          </div>
-        </dd>
 
         <dt>备注</dt>
         <dd>{m.description ?? '—'}</dd>

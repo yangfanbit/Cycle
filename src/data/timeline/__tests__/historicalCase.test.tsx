@@ -7,8 +7,10 @@ import {
   EVIDENCE_CATEGORY_LABEL,
   LIFECYCLE_STAGE_LABEL,
   MAPPING_STATUS_LABEL,
+  ATTRIBUTION_PHASE_LABEL,
   __setMechanismDriversForTest,
   evidenceCategoriesOf,
+  historicalEvidenceTimelineOf,
   historicalCaseOf,
   loadMechanismDrivers,
   withMechanismDrivers,
@@ -253,17 +255,20 @@ describe('Historical Case · 信息层级与 Driver 分层', () => {
     expect(html).toContain('不是同一维');
   });
 
-  it('旧的「驱动因素（为什么）」已改名为「研究归因（四问）」，不再与机制撞名', () => {
+  it('旧「驱动因素（为什么）」已被统一视图取代（不再与机制撞名）', () => {
     const html = renderCase();
-    expect(html).toContain('研究归因（四问');
     expect(html).not.toContain('驱动因素（为什么）');
+    // Rework v0.1：归因改为「阶段级研究归因」，且不再有独立的「研究归因（四问）」区块
+    expect(html).toContain('阶段级研究归因');
+    expect(html).not.toContain('研究归因（四问');
   });
 
-  it('证据序列按时间展示，并说明「阶段未知」= UNKNOWN 而非不对应', () => {
+  it('证据统一为「历史演化证据」时间线，并说明「阶段未知」= UNKNOWN 而非不对应', () => {
     const html = renderCase();
-    expect(html).toContain('证据序列（按时间）');
-    expect(html).toContain('hcx-seq');
-    expect(html).toContain('不是');
+    expect(html).toContain('历史演化证据');
+    expect(html).toContain('hcx-ev');
+    expect(html).toContain('阶段未知');
+    expect(html).toContain('不代表');
   });
 
   it('生命周期使用既有 phases（不重新推导）', () => {
@@ -295,5 +300,142 @@ describe('Historical Case · 边界', () => {
     for (const bad of ['最相似', '最强', '评分', '概率', '预测', '推荐']) {
       expect(affirmative).not.toContain(bad);
     }
+  });
+});
+
+
+/* ---------------- 7. Historical Evidence Timeline（Rework v0.1） ---------------- */
+
+const realCase = all.find((c) => c.campaign_id === 'C-2023-COMM-OPTICAL')!;
+
+describe('Evidence Rework · 去重与信息守恒', () => {
+  const tl = historicalEvidenceTimelineOf(realCase);
+
+  it('每个事件只出现一次（date|name 唯一）', () => {
+    const keys = tl.rows.map((r) => r.key);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it('信息守恒：原 events 全部保留（数量一致）', () => {
+    expect(tl.rows).toHaveLength(realCase.events.length);
+    expect(tl.rows).toHaveLength(5); // 真实基线：C-2023-COMM-OPTICAL 5 条
+  });
+
+  it('信息守恒：date / eventType / role / name 逐条不变', () => {
+    const byKey = new Map(tl.rows.map((r) => [r.key, r]));
+    for (const e of realCase.events) {
+      const r = byKey.get(`${e.date}|${e.name}`);
+      expect(r, e.name).toBeDefined();
+      expect(r!.date).toBe(e.date);
+      expect(r!.eventType).toBe(e.event_type);
+      expect(r!.role).toBe(e.role ?? null);
+      expect(r!.name).toBe(e.name);
+    }
+  });
+
+  it('按日期升序', () => {
+    const dates = tl.rows.map((r) => r.date);
+    expect([...dates].sort()).toEqual(dates);
+  });
+
+  it('Lifecycle 映射与 historicalCaseOf 一致', () => {
+    const base = historicalCaseOf(realCase);
+    const byKey = new Map(base.evidenceSequence.map((e) => [`${e.date}|${e.name}`, e]));
+    for (const r of tl.rows) {
+      const b = byKey.get(r.key)!;
+      expect(r.lifecycleStage).toBe(b.lifecycleStage);
+      expect(r.lifecycleStageLabel).toBe(b.lifecycleStageLabel ?? '阶段未知');
+    }
+  });
+
+  it('每个事件恰好一个 attributionPhase（OTHER 表示不强行归因）', () => {
+    const valid = ['START', 'ACCELERATE', 'TURN', 'END', 'OTHER'];
+    for (const r of tl.rows) expect(valid).toContain(r.attributionPhase);
+    expect(tl.rows.filter((r) => r.attributionPhase === 'OTHER').length).toBeGreaterThan(0);
+  });
+
+  it('Attribution 四问内容不丢（start/accelerate/turn/end）', () => {
+    const byPhase = new Map(tl.attribution.map((g) => [g.phase, g]));
+    expect(byPhase.get('START')!.items.length).toBeGreaterThan(0);
+    expect(byPhase.get('ACCELERATE')!.items.length).toBeGreaterThan(0);
+    expect(byPhase.get('TURN')!.items.length).toBeGreaterThan(0);
+    expect(byPhase.get('END')!.items.length).toBeGreaterThan(0);
+    expect(tl.attributionSource).toBe('RESEARCH');
+  });
+
+  it('Attribution 是阶段级（四问 + 阶段标签），不是事件列表', () => {
+    for (const g of tl.attribution) {
+      expect(g.question).toMatch(/为什么/);
+      expect(ATTRIBUTION_PHASE_LABEL[g.phase]).toBeTruthy();
+    }
+  });
+});
+
+describe('Evidence Rework · UNKNOWN 与空态', () => {
+  it('阶段未知保持为 null 且标签为「阶段未知」（不转成其他阶段）', () => {
+    const tl = historicalEvidenceTimelineOf(realCase);
+    const unknown = tl.rows.filter((r) => r.lifecycleStage === null);
+    expect(unknown.length).toBeGreaterThan(0);
+    for (const r of unknown) expect(r.lifecycleStageLabel).toBe('阶段未知');
+    expect(tl.hasUnknownStage).toBe(true);
+  });
+
+  it('无事件 → hasEvents false（NOT_AVAILABLE，不是「没有」）', () => {
+    const empty: TimelineCampaign = { ...realCase, events: [], drivers: undefined };
+    const tl = historicalEvidenceTimelineOf(empty);
+    expect(tl.hasEvents).toBe(false);
+    expect(tl.rows).toEqual([]);
+    const html = renderToStaticMarkup(
+      <CampaignDetail campaign={empty} onOpenRule={noop} onClose={noop} />,
+    );
+    expect(html).toContain('无关联事件记录（NOT_AVAILABLE）');
+    expect(html).toContain('不代表「当时没有事件」');
+  });
+});
+
+describe('Evidence Rework · UI 只有一个统一视图', () => {
+  const html = renderCase();
+
+  it('存在「历史演化证据」且不再有旧三块', () => {
+    expect(html).toContain('历史演化证据');
+    expect(html).not.toContain('证据序列（按时间）');
+    expect(html).not.toContain('关联事件');
+    expect(html).not.toContain('研究归因（四问');
+  });
+
+  it('「历史演化证据」在整页只出现一次', () => {
+    expect((html.match(/历史演化证据/g) ?? []).length).toBe(1);
+  });
+
+  it('事件行数与 events 数一致（无第二份事件列表）', () => {
+    // renderCase() 渲染的是 campaign（C-2023-AD，3 条事件）
+    expect((html.match(/class="hcx-ev-row"/g) ?? []).length).toBe(campaign.events.length);
+  });
+
+  it('阶段级研究归因四问齐备', () => {
+    for (const q of ['为什么启动？', '为什么加速？', '为什么转折？', '为什么结束？']) {
+      expect(html).toContain(q);
+    }
+  });
+
+  it('明示归组阶段不是因果证明', () => {
+    expect(html).toContain('不代表');
+    expect(html).toContain('因果证明');
+  });
+
+  it('Phase / Signal 关系说明已加入', () => {
+    expect(html).toContain('两者不是同一套阶段体系');
+  });
+
+  it('另一历史案例同样适用（无硬编码）', () => {
+    const other = all.find((c) => c.campaign_id === 'C-2019-COMM-5G')!;
+    const h2 = renderToStaticMarkup(
+      <CampaignDetail campaign={other} onOpenRule={noop} onClose={noop} />,
+    );
+    expect(h2).toContain('历史演化证据');
+    expect(h2).not.toContain('证据序列（按时间）');
+    expect((h2.match(/class="hcx-ev-row"/g) ?? []).length).toBe(
+      historicalEvidenceTimelineOf(other).rows.length,
+    );
   });
 });

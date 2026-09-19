@@ -2274,3 +2274,52 @@ html, body {
   padding: 5px 8px; border: 1px solid #e0c9a6; border-left-width: 3px;
   border-radius: var(--radius); background: #fdf8ef; color: #8a6a3c;
 }
+
+/* ============================================================
+   Historical Case Evidence View Rework v0.1
+   统一「历史演化证据」时间线（每个事件只出现一次）
+   ============================================================ */
+
+.hcx-ev-intro { line-height: 1.7; overflow-wrap: anywhere; }
+.hcx-ev { list-style: none; margin: 5px 0 0; padding: 0; display: grid; gap: 4px; }
+.hcx-ev-row {
+  padding: 4px 8px; border-left: 2px solid var(--line-strong);
+  background: #fbfbf9; border-radius: 0 var(--radius) var(--radius) 0;
+}
+.hcx-ev-line1 { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+.hcx-ev-date { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+.hcx-ev-stage {
+  padding: 1px 6px; border: 1px solid #b9d3bf; border-radius: 999px;
+  font-size: 10px; color: #3d7a49; white-space: nowrap;
+}
+/* 阶段未知：虚线 + 灰（与已知阶段不同视觉，且不与「不对应」混淆） */
+.hcx-ev-stage.is-unknown { border-style: dashed; border-color: var(--line-strong); color: var(--ink-3); }
+.hcx-ev-type { font-size: 10.5px; color: var(--ink-3); }
+.hcx-ev-attr {
+  padding: 1px 6px; border: 1px dashed var(--line); border-radius: 999px;
+  font-size: 10px; color: var(--ink-3); white-space: nowrap;
+}
+.hcx-ev-name { font-size: 11.5px; color: var(--ink-2); line-height: 1.65; overflow-wrap: anywhere; }
+.hcx-ev-note { line-height: 1.7; overflow-wrap: anywhere; }
+
+.hcx-attr { display: grid; gap: 5px; margin-top: 4px; }
+.hcx-attr-row {
+  display: grid; grid-template-columns: 92px 72px minmax(0, 1fr);
+  gap: 4px 8px; align-items: baseline;
+  padding: 4px 7px; border: 1px solid var(--line); border-radius: var(--radius); background: #fbfbf9;
+}
+.hcx-attr-q { font-size: 11.5px; font-weight: 700; color: var(--ink-2); }
+.hcx-attr-phase { font-size: 10px; color: var(--ink-3); }
+.hcx-attr-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.hcx-attr-items li {
+  font-size: 11px; color: var(--ink-2); line-height: 1.6;
+  overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.hcx-phase-signal { line-height: 1.7; overflow-wrap: anywhere; }
+
+@media (max-width: 720px) {
+  .hcx-attr-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .hcx-ev-line1 { gap: 4px; }
+  .hcx-ev-stage, .hcx-ev-attr { font-size: 9.5px; }
+}

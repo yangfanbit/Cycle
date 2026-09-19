@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`e90e80d`（`feat(research): add current research refresh loop v0.1`）
-- 最近完成：**First Real Observation Cycle v0.1**（PASS；代码变更仅 3 项语义修复）
+- HEAD：`8ccc487`（`docs(research): first real observation cycle v0.1`）
+- 最近完成：**Historical Case Evidence View Rework v0.1**（PASS；Case 事件渲染行 10 → 5）
 
 ## 1. 项目当前定位
 
@@ -172,27 +172,31 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# REWORK：消除 Historical Case 中的三处重复信息
+# 由真实使用反馈决定（当前无 P1 未完成项）
 
-**前置已完成（全部 PASS）**：Product Similarity Architecture Gate v0.1 ·
-Product Adapter v0.1 · Product UI Integration v0.1 · **UX Review + Performance Gate v0.1** ·
+**已完成（全部 PASS）**：Product Similarity Architecture Gate v0.1 · Product Adapter v0.1 ·
+Product UI Integration v0.1 · **UX Review + Performance Gate v0.1** ·
 **Historical Case Experience v0.1** · **Historical Cycle Map v0.1** ·
-**Current Research Refresh Loop v0.1** · **First Real Observation Cycle v0.1**。
+**Current Research Refresh Loop v0.1** · **First Real Observation Cycle v0.1** ·
+**Historical Case Evidence View Rework v0.1**（消除 Case 中三处重复信息）。
 
-**目标**：把 Historical Case 中的「证据序列」「关联事件」「研究归因（四问）」合并为**一个**证据视图
-（保留时间序 + 生命周期阶段 + 事件类型 + 角色 + 研究归因），使 Case 长度减少约 **2/3**，
-**不丢失任何信息**。
+**当前无未完成的 P1**。下一步应由**下一轮真实使用**（`docs/FIRST_REAL_OBSERVATION_CYCLE_V0_1.md` §12）
+产生的反馈决定，而不是预先设计功能。
 
-**来源**：`docs/FIRST_REAL_OBSERVATION_CYCLE_V0_1.md` —— 真实使用中发现同一批事件重复展示三次，
-是本轮唯一同时满足「真实使用发现」「影响研究效率」「不涉及 Research 规则变更」的问题。
+### 已记录的候选后续项（**未排期**）
+
+| 类型 | 项 |
+|---|---|
+| POLISH | `themeCycleId` 内部 id 可读性（如 `auto_intelligence_2023`） |
+| DEFER | `event_structure` 对候选区分度低（既有结论，**不放宽 Rule Set**） |
+| DEFER | Driver `MATCH = 1/85`（Research Quality Backlog） |
+| DEFER | `campaign_date_observations verified = 0/24`（Future Data Precision Debt） |
 
 ### 边界
 
 - 不新增 Product 功能 / 不新增 Dashboard
 - 不改 Research 规则（Rule Set v0.2）· 不改 Artifact · 不改 schema / export / 历史数据
 - 不引入实时网络 / LLM
-- 后续 POLISH 项：`themeCycleId` 可读性 · `phases` 与 `signals` 关系说明
-- 后续 DEFER 项：`event_structure` 区分度 · Driver `MATCH 1/85` · `campaign_date_observations` 验证
 
 ## 8. 当前质量债务
 

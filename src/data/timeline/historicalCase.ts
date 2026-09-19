@@ -20,6 +20,7 @@
  */
 
 import type { TimelineCampaign } from './timelineTypes';
+import { campaignDrivers, driverGroupBounds } from './timelineAdapter';
 
 /* ================= 1. 证据类别轴（Evidence Category） ================= */
 
@@ -293,3 +294,130 @@ export interface HistoricalCaseAnalogyContext {
   snapshotDate: string;
   ruleSetVersion: string;
 }
+
+/* ================= 7. Historical Evidence Timeline（统一证据视图 · Rework v0.1） ================= */
+
+/**
+ * 归组阶段（**时间位置**，不是因果证明）。
+ * `OTHER` = 不落在任何已记录归组窗口内 —— **不强行归因**。
+ */
+export type AttributionPhase = 'START' | 'ACCELERATE' | 'TURN' | 'END' | 'OTHER';
+
+export const ATTRIBUTION_PHASE_LABEL: Record<AttributionPhase, string> = {
+  START: '启动附近',
+  ACCELERATE: '加速段',
+  TURN: '转折附近',
+  END: '结束附近',
+  OTHER: '其他时间位置',
+};
+
+export const ATTRIBUTION_QUESTION_LABEL: Record<AttributionPhase, string> = {
+  START: '为什么启动？',
+  ACCELERATE: '为什么加速？',
+  TURN: '为什么转折？',
+  END: '为什么结束？',
+  OTHER: '其他',
+};
+
+/** 归因来源：Research 声明（V1.7 drivers）或按时间归组线索。 */
+export type AttributionSource = 'RESEARCH' | 'TIME_GROUPING';
+
+export interface HistoricalEvidenceRow {
+  /** 稳定去重键：`date|name`（`TimelineCampaign.events` 无 event_id）。 */
+  key: string;
+  date: string;
+  /** 生命周期阶段（原样来自 Research `phases`）；null = 阶段未知。 */
+  lifecycleStage: string | null;
+  lifecycleStageLabel: string;
+  eventType: string;
+  role: string | null;
+  name: string;
+  attributionPhase: AttributionPhase;
+}
+
+export interface AttributionGroupView {
+  phase: AttributionPhase;
+  question: string;
+  phaseLabel: string;
+  items: string[];
+}
+
+export interface HistoricalEvidenceTimeline {
+  /** 按日期升序；**每个事件只出现一次**。 */
+  rows: HistoricalEvidenceRow[];
+  hasEvents: boolean;
+  /** 四问归因（原样来自 `campaignDrivers()`）。 */
+  attribution: AttributionGroupView[];
+  /** 归因来源（语义不同，UI 必须区分展示）。 */
+  attributionSource: AttributionSource;
+  /** 是否存在**无阶段**的行（用于「阶段未知」说明）。 */
+  hasUnknownStage: boolean;
+}
+
+/** 单个事件 → 唯一的归组阶段（复用 `campaignDrivers()` 的**同一套**窗口）。 */
+function attributionPhaseOf(
+  date: string,
+  bounds: ReturnType<typeof driverGroupBounds>,
+): AttributionPhase {
+  const inRange = (r: readonly [string, string]) => r[0] <= date && date <= r[1];
+  if (inRange(bounds.start)) return 'START';
+  if (inRange(bounds.accelerate)) return 'ACCELERATE';
+  if (inRange(bounds.turn)) return 'TURN';
+  if (bounds.end && inRange(bounds.end)) return 'END';
+  return 'OTHER'; // 不强行归因
+}
+
+/**
+ * 构建统一的「历史演化证据」时间线（**Product View Model，不写 DB / schema**）。
+ *
+ * 去重原则：**每个事件只出现一次**，一行承载
+ * 日期 + Lifecycle 阶段 + Event Type + Role + Event Name + 归组阶段。
+ */
+export function historicalEvidenceTimelineOf(c: TimelineCampaign): HistoricalEvidenceTimeline {
+  const bounds = driverGroupBounds(c);
+  const seen = new Set<string>();
+  const rows: HistoricalEvidenceRow[] = [];
+
+  for (const e of [...c.events].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))) {
+    const key = `${e.date}|${e.name}`;
+    if (seen.has(key)) continue; // ★ 去重：同一事件只保留一次
+    seen.add(key);
+    const at = lifecycleStageAt(e.date, c.phases);
+    rows.push({
+      key,
+      date: e.date,
+      lifecycleStage: at?.stage ?? null,
+      lifecycleStageLabel: at?.label ?? '阶段未知',
+      eventType: e.event_type,
+      role: e.role ?? null,
+      name: e.name,
+      attributionPhase: attributionPhaseOf(e.date, bounds),
+    });
+  }
+
+  const d = campaignDrivers({
+    start: c.start, peak: c.peak ?? null, end: c.end,
+    openEnded: c.openEnded === true, events: c.events, drivers: c.drivers,
+  });
+  const attribution: AttributionGroupView[] = (['START', 'ACCELERATE', 'TURN', 'END'] as const).map(
+    (phase) => ({
+      phase,
+      question: ATTRIBUTION_QUESTION_LABEL[phase],
+      phaseLabel: ATTRIBUTION_PHASE_LABEL[phase],
+      items: phase === 'START' ? d.start : phase === 'ACCELERATE' ? d.accelerate
+        : phase === 'TURN' ? d.turn : d.end,
+    }),
+  );
+
+  return {
+    rows,
+    hasEvents: rows.length > 0,
+    attribution,
+    attributionSource: c.drivers ? 'RESEARCH' : 'TIME_GROUPING',
+    hasUnknownStage: rows.some((r) => r.lifecycleStage === null),
+  };
+}
+
+/** Phase（历史行情阶段）与 Signal（Research 前置观察标记）关系说明（**消除语义误解**）。 */
+export const PHASE_SIGNAL_CLARIFICATION =
+  '生命周期 = 历史行情阶段（来自 Research `lifecycle`）；研究信号 = Research 层的前置观察标记（来自 `signals`）。两者不是同一套阶段体系。';

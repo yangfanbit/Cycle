@@ -512,6 +512,35 @@ const DRIVER_ROLE_WEIGHT: Record<string, number> = {
  * - 结束：[end-25, end+7]（openEnded 候选无结束 → 不归组）。
  * 无事件落入的组返回空数组（UI 显示"暂无可靠归因"，不编造）。
  */
+export interface DriverGroupBounds {
+  start: readonly [string, string];
+  accelerate: readonly [string, string];
+  turn: readonly [string, string];
+  /** openEnded 候选无结束 → null（不归组） */
+  end: readonly [string, string] | null;
+  /** 无 peak 时用于近似转折位置的中点（**仅归组用途**，不对外展示为精确日期） */
+  turnPivot: string;
+}
+
+/**
+ * `campaignDrivers()` 使用的时间归组窗口（**语义与既有实现完全一致，仅抽出以便复用**）。
+ *
+ * 供 Product 层在同一套窗口下把「单个事件」映射到唯一的归组阶段
+ * （`Historical Evidence Timeline`）；**不改变任何归组规则**。
+ */
+export function driverGroupBounds(
+  c: Pick<TimelineCampaign, 'start' | 'peak' | 'end' | 'openEnded'>,
+): DriverGroupBounds {
+  const turnPivot = c.peak ?? addDaysISO(c.start, Math.floor(diffDays(c.start, c.end) / 2));
+  return {
+    start: [addDaysISO(c.start, -30), addDaysISO(c.start, 15)],
+    accelerate: [addDaysISO(c.start, 15), addDaysISO(turnPivot, -7)],
+    turn: [addDaysISO(turnPivot, -10), addDaysISO(turnPivot, 10)],
+    end: c.openEnded ? null : [addDaysISO(c.end, -25), addDaysISO(c.end, 7)],
+    turnPivot,
+  };
+}
+
 export function campaignDrivers(
   c: Pick<TimelineCampaign, 'start' | 'peak' | 'end' | 'openEnded' | 'events' | 'drivers'>,
 ): CampaignDrivers {
@@ -531,14 +560,7 @@ export function campaignDrivers(
     turn: [],
     end: [],
   };
-  // 无 peak 时以 start→end 中点近似转折位置（仅归组用途，不对外展示为精确日期）
-  const turnPivot = c.peak ?? addDaysISO(c.start, Math.floor(diffDays(c.start, c.end) / 2));
-  const bounds = {
-    start: [addDaysISO(c.start, -30), addDaysISO(c.start, 15)] as const,
-    accelerate: [addDaysISO(c.start, 15), addDaysISO(turnPivot, -7)] as const,
-    turn: [addDaysISO(turnPivot, -10), addDaysISO(turnPivot, 10)] as const,
-    end: (c.openEnded ? null : [addDaysISO(c.end, -25), addDaysISO(c.end, 7)]) as readonly [string, string] | null,
-  };
+  const bounds = driverGroupBounds(c);
   const inRange = (d: string, r: readonly [string, string]) => r[0] <= d && d <= r[1];
   for (const ev of c.events) {
     if (inRange(ev.date, bounds.start)) groups.start.push(ev);
