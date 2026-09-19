@@ -1,0 +1,3394 @@
+{
+ "artifact": "structural_analogy_feasibility",
+ "artifact_version": "0.2",
+ "generated_by": "research/scripts/build_structural_analogy_readiness_v0_2.py",
+ "supersedes_note": "v0.1 产物**保留不覆盖**（structural_analogy_feasibility_v0_1.*）",
+ "snapshot": {
+  "current_candidates_snapshot": "2026-09-15",
+  "current_candidates_version": "1.0",
+  "export_version": "1.0",
+  "export_source_commit": "052b79b9cc824d69f01a74322ce8e937e99c9854"
+ },
+ "status_vocabulary": [
+  "MATCH",
+  "PARTIAL",
+  "UNKNOWN",
+  "NOT_AVAILABLE",
+  "MISMATCH"
+ ],
+ "not_a": [
+  "similarity score",
+  "ranking",
+  "winner",
+  "best analogue",
+  "prediction",
+  "future outcome inference"
+ ],
+ "repairs_applied": {
+  "P0_A_lifecycle_semantic": {
+   "problem": "v0.1 用 candidate 当前 phase 与历史 **terminal** phase 比较 → 80/85 MISMATCH",
+   "fix": "新增 `historical_stage_at_comparable_point`：取历史 lifecycle 中与 candidate 当前阶段**对应**的阶段（MATCH）/ 相邻阶段（PARTIAL），而非终态",
+   "legacy_field_kept": "`lifecycle_terminal_legacy`（保留旧口径作对照，**未删除**）"
+  },
+  "P0_B_candidate_event_entity": {
+   "problem": "v0.1 candidate 侧无事件实体 → event_structure 85/85 NOT_AVAILABLE",
+   "fix": "从 candidate evidence 派生最小事件实体（仅取有 event_date 者），复用历史 event_type 枚举",
+   "artifact": "structural_analogy_candidate_events_v0_1.json"
+  },
+  "P0_C_candidate_market_mapping": {
+   "problem": "v0.1 candidate 侧无可映射行情序列 → market_structure 85/85 NOT_AVAILABLE",
+   "fix": "建立 candidate → **同产品段**行情序列代理（显式声明覆盖限制）",
+   "artifact": "structural_analogy_candidate_market_map_v0_1.json"
+  },
+  "P1_phase_window_end": {
+   "decision": "仓库证据**不足以**推导 end（无阶段结束证据）→ 保持 `null`；语义记为 `unknown`，**不猜日期**"
+  }
+ },
+ "dimension_definitions": {
+  "lifecycle": "candidate.attention_state ↔ `historical_stage_at_comparable_point`（历史 lifecycle 中与候选当前阶段对应的阶段）",
+  "lifecycle_terminal_legacy": "v0.1 口径（candidate.attention_state vs 历史最晚阶段），保留作对照",
+  "drivers": "candidate.drivers[].category vs EVENT_TYPE_TO_DRIVER(历史 events[].event_type)",
+  "evidence_sequence": "两侧统一到历史 event_type 词表后比较首项与交集（双方 ≥2 条才可比较）",
+  "event_structure": "candidate 派生事件类型集合 vs 历史 events[].event_type 集合",
+  "temporal_structure": "candidate phase_window.start + 已历时 vs 历史对应阶段锚点（单向可比）",
+  "market_structure": "candidate 同段行情代理 vs 历史对象（PARTIAL=有代理；NOT_AVAILABLE=无代理）"
+ },
+ "candidate_profiles": [
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "macro_theme": "医药健康",
+   "phase": "THEME_FORMING",
+   "phase_stage": "THEME_FORMING",
+   "drivers": [
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "n_evidence": 7,
+   "first_evidence": "2026-01-06",
+   "last_evidence": "2026-09-15",
+   "phase_window_start": "2026-06-30",
+   "phase_window_end": null,
+   "phase_window_end_semantics": "unknown",
+   "phase_elapsed_days_at_snapshot": 77,
+   "derived_event_count": 7,
+   "derived_event_types": [
+    "company",
+    "industry",
+    "market",
+    "policy"
+   ],
+   "market_proxy_status": "PARTIAL",
+   "market_proxy_segment": "医药（药 / 生物 / 中药），**非医疗器械**",
+   "market_proxy_series": [
+    "HENGRUI",
+    "TIGERMED",
+    "WUXIAPPTEC",
+    "ZHIFEI",
+    "YILING",
+    "INTCO",
+    "PIANZAIHUANG",
+    "PHARMA_ETF_512010"
+   ],
+   "market_proxy_note": "同大行业但**非同产品段**（脑机接口属医疗器械，仓库无医疗器械序列）；个股覆盖 2019-01-02~2022-12-30，ETF 2019~2022 → 均无法覆盖 2026",
+   "reference_cases": [
+    "C-2019-PHARMA-INNOV"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "macro_theme": "电力设备",
+   "phase": "BROAD_CONFIRMATION",
+   "phase_stage": "BROAD_CONFIRMATION",
+   "drivers": [
+    "CAPITAL",
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "n_evidence": 10,
+   "first_evidence": "2026-04-22",
+   "last_evidence": "2026-09-15",
+   "phase_window_start": "2026-05-08",
+   "phase_window_end": null,
+   "phase_window_end_semantics": "unknown",
+   "phase_elapsed_days_at_snapshot": 130,
+   "derived_event_count": 9,
+   "derived_event_types": [
+    "industry",
+    "market",
+    "policy"
+   ],
+   "market_proxy_status": "PARTIAL",
+   "market_proxy_segment": "电网设备（自动化 / 开关 / 输配电）",
+   "market_proxy_series": [
+    "NARI",
+    "PINGGAO",
+    "SIEYUAN",
+    "TBEA",
+    "XUJI"
+   ],
+   "market_proxy_note": "相关段（电网设备）；「算电协同」本身无对应序列 → 段代理，非主题代理",
+   "reference_cases": [
+    "C-2022-POLICY"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "macro_theme": "高端装备",
+   "phase": "EXPANSION",
+   "phase_stage": "MAIN_RISE",
+   "drivers": [
+    "CAPITAL",
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "n_evidence": 8,
+   "first_evidence": "2026-04-23",
+   "last_evidence": "2026-06-24",
+   "phase_window_start": "2026-02-28",
+   "phase_window_end": null,
+   "phase_window_end_semantics": "unknown",
+   "phase_elapsed_days_at_snapshot": 199,
+   "derived_event_count": 7,
+   "derived_event_types": [
+    "company",
+    "industry",
+    "market",
+    "policy"
+   ],
+   "market_proxy_status": "NOT_AVAILABLE",
+   "market_proxy_segment": "具身智能 / 人形机器人",
+   "market_proxy_series": [],
+   "market_proxy_note": "仓库内**无**机器人/具身智能序列；ROBOTAXI 概念指数为 EMPTY_PLACEHOLDER（0 行）；DEMEISHI/HUAYANG/MINGKEJINGJI/SAILISI 仅 2023-08~10 且属汽车零部件段",
+   "reference_cases": [
+    "C-2023-AD",
+    "C-2024-ROBOTAXI"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "macro_theme": "信息通信",
+   "phase": "EXPANSION",
+   "phase_stage": "MAIN_RISE",
+   "drivers": [
+    "CAPITAL",
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "n_evidence": 8,
+   "first_evidence": "2026-04-27",
+   "last_evidence": "2026-09-15",
+   "phase_window_start": "2026-06-01",
+   "phase_window_end": null,
+   "phase_window_end_semantics": "unknown",
+   "phase_elapsed_days_at_snapshot": 106,
+   "derived_event_count": 7,
+   "derived_event_types": [
+    "company",
+    "industry",
+    "market",
+    "policy"
+   ],
+   "market_proxy_status": "PARTIAL",
+   "market_proxy_segment": "光模块 / 光器件（高速光互联）",
+   "market_proxy_series": [
+    "INNOLIGHT",
+    "EOPTOLINK",
+    "TFC",
+    "ACCELINK"
+   ],
+   "market_proxy_note": "同产品段（光模块/光器件），非候选自身证券；序列覆盖 2018-01-02~2025-12-31（连续日线）",
+   "reference_cases": [
+    "C-2021-NEV"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "macro_theme": "电力设备",
+   "phase": "THEME_FORMING",
+   "phase_stage": "THEME_FORMING",
+   "drivers": [
+    "EXTERNAL",
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "n_evidence": 6,
+   "first_evidence": "2026-09-10",
+   "last_evidence": "2026-09-15",
+   "phase_window_start": "2026-09-10",
+   "phase_window_end": null,
+   "phase_window_end_semantics": "unknown",
+   "phase_elapsed_days_at_snapshot": 5,
+   "derived_event_count": 6,
+   "derived_event_types": [
+    "company",
+    "industry",
+    "macro",
+    "market",
+    "policy"
+   ],
+   "market_proxy_status": "PARTIAL",
+   "market_proxy_segment": "风电整机",
+   "market_proxy_series": [
+    "GOLDWIND"
+   ],
+   "market_proxy_note": "同产品段（风电整机）；**覆盖止于 2022-12-30** → 无法覆盖 2023–2025",
+   "reference_cases": [
+    "C-2022-POLICY"
+   ]
+  }
+ ],
+ "historical_pool": [
+  {
+   "object_id": "C-2019-AD",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "MAIN_RISE",
+    "PEAK",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2019-08-15",
+    "MAIN_RISE": "2019-08-15",
+    "PEAK": "2019-09-24",
+    "MAIN_END": "2019-09-30"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "POLICY"
+   ],
+   "seq": [
+    "policy"
+   ],
+   "n_events": 1,
+   "family": null,
+   "security_ids": [
+    "WANAN",
+    "ROUTE",
+    "YATAI"
+   ]
+  },
+  {
+   "object_id": "C-2020-NEV",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "MAIN_RISE",
+    "PEAK",
+    "RETRACEMENT",
+    "SECONDARY",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2020-06-01",
+    "MAIN_RISE": "2020-06-11",
+    "PEAK": "2020-07-13",
+    "RETRACEMENT": "2020-07-14",
+    "SECONDARY": "2020-08-21",
+    "MAIN_END": "2020-09-30"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "INDUSTRY"
+   ],
+   "seq": [
+    "company",
+    "company",
+    "company"
+   ],
+   "n_events": 3,
+   "family": "汽车",
+   "security_ids": [
+    "BIDI",
+    "CATL",
+    "XUSHENG",
+    "JAC"
+   ]
+  },
+  {
+   "object_id": "C-2021-NEV",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "MAIN_RISE",
+    "PEAK",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2021-06-01",
+    "MAIN_RISE": "2021-06-01",
+    "PEAK": "2021-08-06",
+    "DECLINING": "2021-08-07",
+    "MAIN_END": "2021-09-30"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "CAPITAL",
+    "INDUSTRY"
+   ],
+   "seq": [
+    "market",
+    "company",
+    "company"
+   ],
+   "n_events": 3,
+   "family": "汽车",
+   "security_ids": [
+    "BIDI",
+    "CATL",
+    "XIAOKANG",
+    "CHANGAN",
+    "GWM"
+   ]
+  },
+  {
+   "object_id": "C-2022-POLICY",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "RETRACEMENT",
+    "SECONDARY",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2022-04-27",
+    "THEME_FORMING": "2022-05-23",
+    "BROAD_CONFIRMATION": "2022-06-01",
+    "MAIN_RISE": "2022-05-23",
+    "PEAK": "2022-06-10",
+    "SECONDARY": "2022-06-22",
+    "RETRACEMENT": "2022-07-01",
+    "DECLINING": "2022-08-01",
+    "MAIN_END": "2022-08-31"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "CAPITAL",
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "policy",
+    "market",
+    "policy"
+   ],
+   "n_events": 4,
+   "family": "汽车",
+   "security_ids": [
+    "BIDI",
+    "GWM",
+    "ANKA",
+    "CHANGAN",
+    "GAC"
+   ]
+  },
+  {
+   "object_id": "C-2023-AD",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "SECONDARY",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2023-06-12",
+    "THEME_FORMING": "2023-06-21",
+    "BROAD_CONFIRMATION": "2023-07-03",
+    "MAIN_RISE": "2023-07-03",
+    "PEAK": "2023-07-11",
+    "SECONDARY": "2023-08-04",
+    "DECLINING": "2023-07-19",
+    "MAIN_END": "2023-07-19"
+   },
+   "terminal_stage": "SECONDARY",
+   "terminal_phase": "DECLINE",
+   "drivers": [
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "company",
+    "policy"
+   ],
+   "n_events": 3,
+   "family": "汽车",
+   "security_ids": [
+    "ZHEJIANGSHISHI",
+    "ZTELEVISION",
+    "DESAYSV",
+    "WANAN"
+   ]
+  },
+  {
+   "object_id": "C-2024-V2X",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "PEAK",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2024-06-11",
+    "THEME_FORMING": "2024-06-14",
+    "PEAK": "2024-06-18",
+    "MAIN_END": "2024-06-25"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "policy"
+   ],
+   "n_events": 2,
+   "family": "汽车",
+   "security_ids": [
+    "SUOLING",
+    "HUAMING",
+    "JINYI",
+    "VANJI"
+   ]
+  },
+  {
+   "object_id": "C-2024-ROBOTAXI",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "SECONDARY",
+    "DECLINING",
+    "FIRST_DECLINE",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2024-07-08",
+    "BROAD_CONFIRMATION": "2024-07-10",
+    "MAIN_RISE": "2024-07-11",
+    "PEAK": "2024-07-29",
+    "FIRST_DECLINE": "2024-08-06",
+    "DECLINING": "2024-08-06",
+    "MAIN_END": "2024-07-31",
+    "SECONDARY": "2024-09-05"
+   },
+   "terminal_stage": "SECONDARY",
+   "terminal_phase": "DECLINE",
+   "drivers": [
+    "CAPITAL"
+   ],
+   "seq": [
+    "market"
+   ],
+   "n_events": 1,
+   "family": "汽车",
+   "security_ids": [
+    "DADONGTRAFFIC",
+    "JIANGLING",
+    "JINJIANGONLINE",
+    "JINLONG"
+   ]
+  },
+  {
+   "object_id": "C-2025-ROBOTAXI",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2025-06-22",
+    "BROAD_CONFIRMATION": "2025-06-24",
+    "MAIN_RISE": "2025-06-22",
+    "PEAK": "2025-06-24",
+    "MAIN_END": "2025-08-31"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "CAPITAL",
+    "INDUSTRY"
+   ],
+   "seq": [
+    "company",
+    "market"
+   ],
+   "n_events": 2,
+   "family": "汽车",
+   "security_ids": [
+    "ZHEJIANGSHISHI",
+    "DESAYSV"
+   ]
+  },
+  {
+   "object_id": "C-2019-COMM-5G",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "RETRACEMENT",
+    "SECONDARY",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2019-06-06",
+    "THEME_FORMING": "2019-10-31",
+    "BROAD_CONFIRMATION": "2020-03-04",
+    "MAIN_RISE": "2019-10-31",
+    "PEAK": "2020-02-24",
+    "RETRACEMENT": "2020-08-05",
+    "SECONDARY": "2021-03-19",
+    "DECLINING": "2022-01-01",
+    "MAIN_END": "2022-10-11"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "policy",
+    "policy",
+    "policy",
+    "policy"
+   ],
+   "n_events": 5,
+   "family": "信息通信",
+   "security_ids": [
+    "FIBERHOME",
+    "ZTE",
+    "TFC",
+    "EOPTOLINK",
+    "INNOLIGHT"
+   ]
+  },
+  {
+   "object_id": "C-2023-COMM-OPTICAL",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "RETRACEMENT"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2023-03-21",
+    "THEME_FORMING": "2023-05-24",
+    "BROAD_CONFIRMATION": "2023-08-28",
+    "MAIN_RISE": "2025-04-09",
+    "RETRACEMENT": "2024-10-08",
+    "PEAK": "2025-12-22"
+   },
+   "terminal_stage": "PEAK",
+   "terminal_phase": "PEAK",
+   "drivers": [
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "industry",
+    "company",
+    "company",
+    "company"
+   ],
+   "n_events": 5,
+   "family": "信息通信",
+   "security_ids": [
+    "EOPTOLINK",
+    "INNOLIGHT",
+    "ACCELINK",
+    "TFC"
+   ]
+  },
+  {
+   "object_id": "C-2019-PHARMA-INNOV",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2019-01-02",
+    "THEME_FORMING": "2019-07-22",
+    "BROAD_CONFIRMATION": "2019-11-28",
+    "MAIN_RISE": "2020-01-01",
+    "PEAK": "2020-12-25",
+    "DECLINING": "2021-07-02",
+    "MAIN_END": "2022-10-31"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "policy",
+    "policy",
+    "policy"
+   ],
+   "n_events": 4,
+   "family": "医药健康",
+   "security_ids": [
+    "HENGRUI",
+    "WUXIAPPTEC",
+    "TIGERMED"
+   ]
+  },
+  {
+   "object_id": "C-2020-POWER-NE",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "RETRACEMENT",
+    "SECONDARY",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2020-09-22",
+    "THEME_FORMING": "2020-12-12",
+    "BROAD_CONFIRMATION": "2021-09-08",
+    "MAIN_RISE": "2020-12-12",
+    "PEAK": "2021-10-27",
+    "RETRACEMENT": "2021-11-05",
+    "SECONDARY": "2022-04-27",
+    "DECLINING": "2022-08-24",
+    "MAIN_END": "2022-12-30"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "policy",
+    "policy",
+    "policy",
+    "policy"
+   ],
+   "n_events": 5,
+   "family": "电力设备",
+   "security_ids": [
+    "LONGI",
+    "SUNGROW",
+    "GOLDWIND"
+   ]
+  },
+  {
+   "object_id": "C-2022-POWER-GRID",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE",
+    "PEAK",
+    "RETRACEMENT",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2022-01-10",
+    "THEME_FORMING": "2022-01-16",
+    "RETRACEMENT": "2022-01-20",
+    "BROAD_CONFIRMATION": "2022-08-03",
+    "MAIN_RISE": "2023-01-01",
+    "PEAK": "2024-07-09",
+    "DECLINING": "2024-10-15",
+    "MAIN_END": "2025-12-31"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "INDUSTRY",
+    "POLICY"
+   ],
+   "seq": [
+    "policy",
+    "policy",
+    "industry",
+    "company"
+   ],
+   "n_events": 4,
+   "family": "电力设备",
+   "security_ids": [
+    "NARI",
+    "XUJI",
+    "SIEYUAN",
+    "TBEA",
+    "PINGGAO"
+   ]
+  },
+  {
+   "object_id": "RC-2023-HUAWEI",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "BROAD_CONFIRMATION",
+    "MAIN_RISE"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2023-08-29",
+    "THEME_FORMING": "2023-09-04",
+    "BROAD_CONFIRMATION": "2023-09-18",
+    "MAIN_RISE": "2023-09-20"
+   },
+   "terminal_stage": "MAIN_RISE",
+   "terminal_phase": "EXPANSION",
+   "drivers": [
+    "INDUSTRY"
+   ],
+   "seq": [
+    "company"
+   ],
+   "n_events": 1,
+   "family": null,
+   "security_ids": [
+    "XIAOKANG",
+    "JAC",
+    "DEMEISHI",
+    "MINGKEJINGJI",
+    "HUAYANG"
+   ]
+  },
+  {
+   "object_id": "RC-2024-SECONDARY",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2024-09-05",
+    "MAIN_END": "2024-09-06"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [],
+   "seq": [],
+   "n_events": 0,
+   "family": null,
+   "security_ids": [
+    "DADONGTRAFFIC",
+    "JINJIANGONLINE",
+    "JINLONG"
+   ]
+  },
+  {
+   "object_id": "RC-2020-PANDEMIC",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "MAIN_RISE",
+    "PEAK",
+    "DECLINING",
+    "MAIN_END"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2020-01-23",
+    "MAIN_RISE": "2020-02-03",
+    "PEAK": "2021-01-25",
+    "DECLINING": "2021-02-01",
+    "MAIN_END": "2021-12-31"
+   },
+   "terminal_stage": "MAIN_END",
+   "terminal_phase": "END",
+   "drivers": [
+    "EXTERNAL"
+   ],
+   "seq": [
+    "macro"
+   ],
+   "n_events": 1,
+   "family": null,
+   "security_ids": [
+    "INTCO",
+    "ZHIFEI"
+   ]
+  },
+  {
+   "object_id": "RC-2021-TCM",
+   "kind": "campaign",
+   "lifecycle_stages": [
+    "EARLY_SIGNAL",
+    "THEME_FORMING",
+    "PEAK",
+    "DECLINING"
+   ],
+   "stage_starts": {
+    "EARLY_SIGNAL": "2021-11-01",
+    "THEME_FORMING": "2021-12-31",
+    "PEAK": "2022-11-30",
+    "DECLINING": "2022-12-09"
+   },
+   "terminal_stage": "DECLINING",
+   "terminal_phase": "DECLINE",
+   "drivers": [
+    "POLICY"
+   ],
+   "seq": [
+    "policy"
+   ],
+   "n_events": 1,
+   "family": null,
+   "security_ids": [
+    "PIANZAIHUANG",
+    "YILING"
+   ]
+  }
+ ],
+ "matrix": [
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2019-AD",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2020-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2021-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2022-POLICY",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-05-23）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2023-AD",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-06-21）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MATCH",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2024-V2X",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2024-06-14）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2024-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MISMATCH",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2025-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2019-COMM-5G",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-10-31）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2023-COMM-OPTICAL",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-05-24）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MATCH",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2019-PHARMA-INNOV",
+   "historical_kind": "campaign",
+   "historical_family": "医药健康",
+   "same_macro_theme": true,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-07-22）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2020-POWER-NE",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-12-12）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "C-2022-POWER-GRID",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-01-16）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MATCH",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "RC-2023-HUAWEI",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-09-04）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "RC-2024-SECONDARY",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "NOT_AVAILABLE",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "RC-2020-PANDEMIC",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MISMATCH",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "historical_object": "RC-2021-TCM",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2021-12-31）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2019-AD",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史不含 BROAD_CONFIRMATION，含相邻阶段 MAIN_RISE",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2020-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史不含 BROAD_CONFIRMATION，含相邻阶段 MAIN_RISE",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "MISMATCH",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2021-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史不含 BROAD_CONFIRMATION，含相邻阶段 MAIN_RISE",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2022-POLICY",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-06-01）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2023-AD",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-07-03）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2024-V2X",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史不含 BROAD_CONFIRMATION，含相邻阶段 THEME_FORMING",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2024-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2024-07-10）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2025-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2025-06-24）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2019-COMM-5G",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-03-04）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2023-COMM-OPTICAL",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-08-28）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2019-PHARMA-INNOV",
+   "historical_kind": "campaign",
+   "historical_family": "医药健康",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-11-28）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2020-POWER-NE",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": true,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2021-09-08）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "C-2022-POWER-GRID",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": true,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-08-03）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "RC-2023-HUAWEI",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "BROAD_CONFIRMATION",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-09-18）",
+   "lifecycle_terminal_legacy": "PARTIAL",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_3_STAGE_DRIVER",
+   "matched_dimensions": [
+    "drivers",
+    "lifecycle",
+    "lifecycle_terminal_legacy",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "RC-2024-SECONDARY",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MISMATCH",
+   "historical_stage_at_comparable_point": "MAIN_END",
+   "lifecycle_basis": "历史不含该阶段及其相邻阶段",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "NOT_AVAILABLE",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "RC-2020-PANDEMIC",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史不含 BROAD_CONFIRMATION，含相邻阶段 MAIN_RISE",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MISMATCH",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "historical_object": "RC-2021-TCM",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史不含 BROAD_CONFIRMATION，含相邻阶段 THEME_FORMING",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2019-AD",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-08-15）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2020-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-06-11）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2021-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2021-06-01）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2022-POLICY",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-05-23）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2023-AD",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-07-03）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2024-V2X",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "PEAK",
+   "lifecycle_basis": "历史不含 MAIN_RISE，含相邻阶段 PEAK",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2024-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2024-07-11）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2025-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2025-06-22）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2019-COMM-5G",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-10-31）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2023-COMM-OPTICAL",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2025-04-09）",
+   "lifecycle_terminal_legacy": "PARTIAL",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "lifecycle_terminal_legacy",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2019-PHARMA-INNOV",
+   "historical_kind": "campaign",
+   "historical_family": "医药健康",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-01-01）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2020-POWER-NE",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-12-12）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "C-2022-POWER-GRID",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-01-01）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "RC-2023-HUAWEI",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-09-20）",
+   "lifecycle_terminal_legacy": "MATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "lifecycle_terminal_legacy",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "RC-2024-SECONDARY",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MISMATCH",
+   "historical_stage_at_comparable_point": "MAIN_END",
+   "lifecycle_basis": "历史不含该阶段及其相邻阶段",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "NOT_AVAILABLE",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "RC-2020-PANDEMIC",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-02-03）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MISMATCH",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "historical_object": "RC-2021-TCM",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "PEAK",
+   "lifecycle_basis": "历史不含 MAIN_RISE，含相邻阶段 PEAK",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "NOT_AVAILABLE",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2019-AD",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-08-15）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2020-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-06-11）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2021-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2021-06-01）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2022-POLICY",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-05-23）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2023-AD",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-07-03）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2024-V2X",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "PEAK",
+   "lifecycle_basis": "历史不含 MAIN_RISE，含相邻阶段 PEAK",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2024-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2024-07-11）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2025-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2025-06-22）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2019-COMM-5G",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": true,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-10-31）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2023-COMM-OPTICAL",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": true,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2025-04-09）",
+   "lifecycle_terminal_legacy": "PARTIAL",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "lifecycle_terminal_legacy",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2019-PHARMA-INNOV",
+   "historical_kind": "campaign",
+   "historical_family": "医药健康",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-01-01）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2020-POWER-NE",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-12-12）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "C-2022-POWER-GRID",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-01-01）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "RC-2023-HUAWEI",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-09-20）",
+   "lifecycle_terminal_legacy": "MATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "lifecycle_terminal_legacy",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "RC-2024-SECONDARY",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MISMATCH",
+   "historical_stage_at_comparable_point": "MAIN_END",
+   "lifecycle_basis": "历史不含该阶段及其相邻阶段",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "NOT_AVAILABLE",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "RC-2020-PANDEMIC",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "MAIN_RISE",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-02-03）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MISMATCH",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "MISMATCH",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "historical_object": "RC-2021-TCM",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "PEAK",
+   "lifecycle_basis": "历史不含 MAIN_RISE，含相邻阶段 PEAK",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2019-AD",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2020-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2021-NEV",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2022-POLICY",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-05-23）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2023-AD",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-06-21）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2024-V2X",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2024-06-14）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2024-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "MISMATCH",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2025-ROBOTAXI",
+   "historical_kind": "campaign",
+   "historical_family": "汽车",
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2019-COMM-5G",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-10-31）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2023-COMM-OPTICAL",
+   "historical_kind": "campaign",
+   "historical_family": "信息通信",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-05-24）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2019-PHARMA-INNOV",
+   "historical_kind": "campaign",
+   "historical_family": "医药健康",
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2019-07-22）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2020-POWER-NE",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": true,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2020-12-12）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "MISMATCH",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "C-2022-POWER-GRID",
+   "historical_kind": "campaign",
+   "historical_family": "电力设备",
+   "same_macro_theme": true,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2022-01-16）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 2,
+   "evidence_sequence": "PARTIAL",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_1_MULTI_DIMENSION",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "evidence_sequence",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "RC-2023-HUAWEI",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2023-09-04）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "RC-2024-SECONDARY",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "NOT_AVAILABLE",
+   "driver_overlap_count": 0,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "NOT_AVAILABLE",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "RC-2020-PANDEMIC",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "PARTIAL",
+   "historical_stage_at_comparable_point": "EARLY_SIGNAL",
+   "lifecycle_basis": "历史不含 THEME_FORMING，含相邻阶段 EARLY_SIGNAL",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_4_INSUFFICIENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "historical_object": "RC-2021-TCM",
+   "historical_kind": "campaign",
+   "historical_family": null,
+   "same_macro_theme": false,
+   "lifecycle": "MATCH",
+   "historical_stage_at_comparable_point": "THEME_FORMING",
+   "lifecycle_basis": "历史 lifecycle 含该阶段（锚点 2021-12-31）",
+   "lifecycle_terminal_legacy": "MISMATCH",
+   "drivers": "PARTIAL",
+   "driver_overlap_count": 1,
+   "evidence_sequence": "NOT_AVAILABLE",
+   "event_structure": "PARTIAL",
+   "temporal_structure": "PARTIAL",
+   "market_structure": "PARTIAL",
+   "tier": "TIER_2_STAGE_DRIVER_EVENT",
+   "matched_dimensions": [
+    "drivers",
+    "event_structure",
+    "lifecycle",
+    "market_structure",
+    "temporal_structure"
+   ]
+  }
+ ],
+ "name_vs_structural_experiment": {
+  "method_a": "Name / Theme matching（同 Macro Theme + 人工 reference_cases）",
+  "method_b": "Structural matching（TIER_1_MULTI_DIMENSION）",
+  "per_candidate": [
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "macro_theme": "医药健康",
+    "method_a_name_theme": [
+     "C-2019-PHARMA-INNOV"
+    ],
+    "method_b_structural": [
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "both": [],
+    "only_a_name_only": [
+     "C-2019-PHARMA-INNOV"
+    ],
+    "only_b_structure_only": [
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "macro_theme": "电力设备",
+    "method_a_name_theme": [
+     "C-2020-POWER-NE",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID"
+    ],
+    "method_b_structural": [
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "both": [
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID"
+    ],
+    "only_a_name_only": [
+     "C-2020-POWER-NE"
+    ],
+    "only_b_structure_only": [
+     "C-2023-COMM-OPTICAL"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "macro_theme": "高端装备",
+    "method_a_name_theme": [
+     "C-2023-AD",
+     "C-2024-ROBOTAXI"
+    ],
+    "method_b_structural": [
+     "C-2021-NEV",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ],
+    "both": [
+     "C-2023-AD"
+    ],
+    "only_a_name_only": [
+     "C-2024-ROBOTAXI"
+    ],
+    "only_b_structure_only": [
+     "C-2021-NEV",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "macro_theme": "信息通信",
+    "method_a_name_theme": [
+     "C-2019-COMM-5G",
+     "C-2021-NEV",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "method_b_structural": [
+     "C-2021-NEV",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2025-ROBOTAXI"
+    ],
+    "both": [
+     "C-2021-NEV",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "only_a_name_only": [
+     "C-2019-COMM-5G"
+    ],
+    "only_b_structure_only": [
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2025-ROBOTAXI"
+    ]
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "macro_theme": "电力设备",
+    "method_a_name_theme": [
+     "C-2020-POWER-NE",
+     "C-2022-POLICY",
+     "C-2022-POWER-GRID"
+    ],
+    "method_b_structural": [
+     "C-2022-POWER-GRID",
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ],
+    "both": [
+     "C-2022-POWER-GRID"
+    ],
+    "only_a_name_only": [
+     "C-2020-POWER-NE",
+     "C-2022-POLICY"
+    ],
+    "only_b_structure_only": [
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL"
+    ]
+   }
+  ],
+  "union_a": [
+   "C-2019-COMM-5G",
+   "C-2019-PHARMA-INNOV",
+   "C-2020-POWER-NE",
+   "C-2021-NEV",
+   "C-2022-POLICY",
+   "C-2022-POWER-GRID",
+   "C-2023-AD",
+   "C-2023-COMM-OPTICAL",
+   "C-2024-ROBOTAXI"
+  ],
+  "union_b": [
+   "C-2021-NEV",
+   "C-2022-POLICY",
+   "C-2022-POWER-GRID",
+   "C-2023-AD",
+   "C-2023-COMM-OPTICAL",
+   "C-2025-ROBOTAXI"
+  ],
+  "intersection": [
+   "C-2021-NEV",
+   "C-2022-POLICY",
+   "C-2022-POWER-GRID",
+   "C-2023-AD",
+   "C-2023-COMM-OPTICAL"
+  ],
+  "only_a_name_only": [
+   "C-2019-COMM-5G",
+   "C-2019-PHARMA-INNOV",
+   "C-2020-POWER-NE",
+   "C-2024-ROBOTAXI"
+  ],
+  "only_b_structure_only": [
+   "C-2025-ROBOTAXI"
+  ],
+  "method_b_by_family": {
+   "信息通信": [
+    "C-2023-COMM-OPTICAL"
+   ],
+   "汽车": [
+    "C-2021-NEV",
+    "C-2022-POLICY",
+    "C-2023-AD",
+    "C-2025-ROBOTAXI"
+   ],
+   "电力设备": [
+    "C-2022-POWER-GRID"
+   ]
+  },
+  "note": "本阶段**不是**验证 Structural Matching 更准确；只验证修复后 「结构匹配候选集合」与「名称匹配候选集合」的差异是否**仍然存在**。"
+ },
+ "candidate_events_summary": {
+  "evidence_total": 39,
+  "evidence_with_derivable_date": 36,
+  "evidence_without_any_date": 3,
+  "by_date_basis": {
+   "event_date": 28,
+   "source_date": 8
+  },
+  "by_candidate": {
+   "CC-2026-BCI-MEDTECH": 7,
+   "CC-2026-COMPUTE-POWER": 9,
+   "CC-2026-EMBODIED-AI": 7,
+   "CC-2026-OPTICAL-LINK": 7,
+   "CC-2026-OFFSHORE-WIND": 6
+  },
+  "by_event_type": {
+   "company": 5,
+   "market": 8,
+   "policy": 12,
+   "industry": 10,
+   "macro": 1
+  }
+ },
+ "candidate_market_map": {
+  "CC-2026-OPTICAL-LINK": {
+   "status": "PARTIAL",
+   "segment": "光模块 / 光器件（高速光互联）",
+   "series": [
+    "INNOLIGHT",
+    "EOPTOLINK",
+    "TFC",
+    "ACCELINK"
+   ],
+   "note": "同产品段（光模块/光器件），非候选自身证券；序列覆盖 2018-01-02~2025-12-31（连续日线）"
+  },
+  "CC-2026-OFFSHORE-WIND": {
+   "status": "PARTIAL",
+   "segment": "风电整机",
+   "series": [
+    "GOLDWIND"
+   ],
+   "note": "同产品段（风电整机）；**覆盖止于 2022-12-30** → 无法覆盖 2023–2025"
+  },
+  "CC-2026-COMPUTE-POWER": {
+   "status": "PARTIAL",
+   "segment": "电网设备（自动化 / 开关 / 输配电）",
+   "series": [
+    "NARI",
+    "PINGGAO",
+    "SIEYUAN",
+    "TBEA",
+    "XUJI"
+   ],
+   "note": "相关段（电网设备）；「算电协同」本身无对应序列 → 段代理，非主题代理"
+  },
+  "CC-2026-BCI-MEDTECH": {
+   "status": "PARTIAL",
+   "segment": "医药（药 / 生物 / 中药），**非医疗器械**",
+   "series": [
+    "HENGRUI",
+    "TIGERMED",
+    "WUXIAPPTEC",
+    "ZHIFEI",
+    "YILING",
+    "INTCO",
+    "PIANZAIHUANG",
+    "PHARMA_ETF_512010"
+   ],
+   "note": "同大行业但**非同产品段**（脑机接口属医疗器械，仓库无医疗器械序列）；个股覆盖 2019-01-02~2022-12-30，ETF 2019~2022 → 均无法覆盖 2026"
+  },
+  "CC-2026-EMBODIED-AI": {
+   "status": "NOT_AVAILABLE",
+   "segment": "具身智能 / 人形机器人",
+   "series": [],
+   "note": "仓库内**无**机器人/具身智能序列；ROBOTAXI 概念指数为 EMPTY_PLACEHOLDER（0 行）；DEMEISHI/HUAYANG/MINGKEJINGJI/SAILISI 仅 2023-08~10 且属汽车零部件段"
+  }
+ },
+ "sensitivity_analysis": {
+  "note": "不同严格度下的结构可用性差异极大 —— 必须同时披露，不得只报最宽口径。",
+  "STRICT_A_lifecycle_drivers_seq_event_all_MATCH": {
+   "rows": 0,
+   "candidates": 0
+  },
+  "STRICT_B_lifecycle_and_drivers_MATCH": {
+   "rows": 3,
+   "candidates": 1,
+   "per_candidate": {
+    "CC-2026-BCI-MEDTECH": [
+     "C-2023-AD",
+     "C-2023-COMM-OPTICAL",
+     "C-2022-POWER-GRID"
+    ],
+    "CC-2026-COMPUTE-POWER": [],
+    "CC-2026-EMBODIED-AI": [],
+    "CC-2026-OPTICAL-LINK": [],
+    "CC-2026-OFFSHORE-WIND": []
+   }
+  },
+  "TIER_1_multi_dimension": {
+   "rows": 21,
+   "candidates": 5
+  },
+  "dimension_status_distribution": {
+   "lifecycle": {
+    "PARTIAL": 24,
+    "MATCH": 58,
+    "MISMATCH": 3
+   },
+   "lifecycle_terminal_legacy": {
+    "MISMATCH": 80,
+    "PARTIAL": 3,
+    "MATCH": 2
+   },
+   "drivers": {
+    "PARTIAL": 71,
+    "MATCH": 3,
+    "MISMATCH": 6,
+    "NOT_AVAILABLE": 5
+   },
+   "evidence_sequence": {
+    "NOT_AVAILABLE": 30,
+    "MATCH": 8,
+    "PARTIAL": 23,
+    "MISMATCH": 24
+   },
+   "event_structure": {
+    "PARTIAL": 74,
+    "NOT_AVAILABLE": 5,
+    "MISMATCH": 6
+   },
+   "temporal_structure": {
+    "PARTIAL": 85
+   },
+   "market_structure": {
+    "PARTIAL": 68,
+    "NOT_AVAILABLE": 17
+   }
+  },
+  "tier1_same_vs_cross_family": {
+   "same": 3,
+   "cross": 18
+  }
+ },
+ "three_key_numbers": {
+  "definition": "usable structural analogue = STRICT_B（lifecycle MATCH + drivers MATCH）",
+  "candidates_with_structurally_usable_analogue": {
+   "count": 1,
+   "ids": [
+    "CC-2026-BCI-MEDTECH"
+   ]
+  },
+  "candidates_with_only_theme_name_level_analogue": {
+   "count": 4,
+   "ids": [
+    "CC-2026-COMPUTE-POWER",
+    "CC-2026-EMBODIED-AI",
+    "CC-2026-OPTICAL-LINK",
+    "CC-2026-OFFSHORE-WIND"
+   ]
+  },
+  "candidates_with_no_usable_analogue": {
+   "count": 0,
+   "ids": []
+  },
+  "note": "usable structural analogue != same-theme match"
+ },
+ "blocker_resolution_matrix": [
+  {
+   "blocker": "lifecycle semantic break",
+   "v0_1": "BLOCKER",
+   "v0_2": "RESOLVED（比较口径修复）",
+   "resolution": "新增 `historical_stage_at_comparable_point`（可比观测点口径）",
+   "remaining_impact": "历史对象若不含候选当前阶段，仍只能 PARTIAL/MISMATCH（属真实数据差异）"
+  },
+  {
+   "blocker": "candidate event entity",
+   "v0_1": "BLOCKER",
+   "v0_2": "RESOLVED",
+   "resolution": "从 evidence 派生最小事件实体（仅取有 event_date 者）",
+   "remaining_impact": "11/39 条 evidence 无 event_date → 未派生（不编造）"
+  },
+  {
+   "blocker": "candidate market mapping",
+   "v0_1": "BLOCKER",
+   "v0_2": "PARTIALLY_RESOLVED（段代理，非候选自身证券）",
+   "resolution": "建立同产品段行情序列代理",
+   "remaining_impact": "候选自身 2026 行情**不可得**（无证券数据 / 不联网）→ 市场比较仍为**单向**（历史侧有，候选侧无）"
+  },
+  {
+   "blocker": "phase_window.end",
+   "v0_1": "HIGH",
+   "v0_2": "UNRESOLVED（保持 null）",
+   "resolution": "证据不足 → 语义记为 `unknown`，**不猜日期**",
+   "remaining_impact": "temporal 仍只能单向比较"
+  }
+ ],
+ "overall_status": "PARTIALLY_FEASIBLE",
+ "minimum_viable_scope": {
+  "option": "C（Research-only exploration），上限为 B",
+  "statement": "Lifecycle(可比观测点) + Driver + Evidence Sequence + Event Structure 四维机制上可算；Market 为**单向段代理**（候选侧 2026 行情不可得）；Temporal 单向。严格口径四维全 MATCH = 0 条、二维 = 1 候选 → 仍不足以支撑 Product 端相似度呈现。",
+  "not_yet_available": [
+   "candidate-side 2026 market state",
+   "双向 temporal",
+   "任何 similarity score / ranking"
+  ]
+ }
+}
