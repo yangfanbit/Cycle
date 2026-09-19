@@ -4,11 +4,11 @@
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
 - 更新日期：2026-09-19
-- HEAD：`0f21678`
+- HEAD：`2dad8c7`
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- 最近完成：Product Adapter v0.1
+- 最近完成：Product UI Integration v0.1
 
 ## 1. 项目当前定位
 
@@ -41,7 +41,7 @@
 - Historical Driver Canonicalization
 - Robustness / Feasibility / Readiness
 
-### Product Core：Structural Analogy 已进入 Product Adapter，尚未进入 UI
+### Product Core：Structural Analogy 已进入 Current Time Lens UI
 
 当前 Product 主线：
 
@@ -49,7 +49,7 @@
 
 Current Candidate 已进入 Current Time Lens。
 
-Structural Analogy 已有静态 Product Adapter；尚未接入 Current Time Lens / UI。
+Structural Analogy 已通过 Adapter 接入 Current Candidate / Current Time Lens。UI Integration v0.1 已完成。
 
 ## 3. Structural Analogy 当前基线
 
@@ -80,6 +80,8 @@ Research v0.2：
 - `research/scripts/build_structural_analogy_explanation_v0_2.py`
 - `src/data/timeline/structuralAnalogy.ts`
 - `src/data/timeline/__tests__/structuralAnalogy.test.ts`
+- `src/components/CurrentTimeLens/StructuralAnalogySection.tsx`
+- `src/components/CurrentTimeLens/__tests__/structuralAnalogySection.test.tsx`
 
 Artifact 覆盖 85 explanations，且：
 - 来源唯一 = Structural Analogy Research v0.2
@@ -160,26 +162,26 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# Product UI Integration v0.1
+# UX Review + Performance Gate v0.1
 
-Product Adapter v0.1 已完成并通过验收；现在进入 Structural Analogy 首次 UI 接入。
+Product UI Integration v0.1 已完成；现在不继续加功能，先验证真实使用体验与首屏性能。
 
-目标：在不重新实现 Research 规则的前提下，把 Structural Analogy Adapter 接入 Current Candidate / Current Time Lens。
+UI Integration 已完成：Structural Analogy 位于 Current Candidate / Current Time Lens，不新增独立 Dashboard。
 
-### UI Integration 边界
+### Review 边界
 
-- 接入 `structuralAnalogy.ts` Adapter
-- 优先 Current Candidate / Current Time Lens
-- 不新增独立 Dashboard
-- 不重新实现 Structural Analogy
-- 不新增 score / ranking / probability
-- 不修改 schema / export / historical data
-- 不调整 Rule Set v0.2
-- 不扩 Wave 1C
+- 不继续新增 Product 功能
+- 检查移动端可读性、信息密度、理解成本
+- 检查 688.19 kB bundle 是否需要拆分/懒加载
+- 检查旧 currentSimilarity 是否仍应保留为隐藏兼容层
+- 不改变 Structural Analogy Research / Rule Set
+- 不改 schema / export / historical data
+- 不引入实时网络 / LLM
+- 不因为 UX Review 顺手扩展功能
 
 完成后进入：
 
-`UX Review → 再决定 currentSimilarity / OpportunityRadar 最终清理`
+`Performance fix（如 Gate 要求）→ currentSimilarity cleanup decision → Product polish`
 
 ## 8. 当前质量债务
 
@@ -189,14 +191,14 @@ Product Adapter v0.1 已完成并通过验收；现在进入 Structural Analogy 
 - market / temporal = SUPPLEMENTARY_ONLY
 - historical coverage imbalance
 
-这些问题暂不阻塞 Product UI Integration。
+这些问题暂不阻塞本阶段 Review，但性能问题必须在 Product polish 前闭环。
 
 ## 9. 验证基线
 
 最近已报告全绿：
 - Structural Analogy Explanation `--check` PASS
 - Research validators 全 PASS
-- npm test 438/438
+- npm test 476/476
 - tsc -b PASS
 - vite build PASS
 
