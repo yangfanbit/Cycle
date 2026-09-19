@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { HistoricalCycleMapSection } from '../../../components/CurrentTimeLens/HistoricalCycleMapSection';
 import { CurrentTimeLens } from '../../../components/CurrentTimeLens/CurrentTimeLens';
+import { LIFECYCLE_STAGE_LABEL } from '../historicalCase';
 import {
   calendarWindowInYear,
   cycleMapFacets,
@@ -382,5 +383,42 @@ describe('Cycle Map · 集成与返回', () => {
     );
     expect(html).toContain('hcm-entry-btn');
     expect(calls).toEqual([]); // SSR 不触发点击
+  });
+});
+
+
+/* ---------------- 12. First Real Observation Cycle v0.1 语义修复 ---------------- */
+
+describe('Cycle Map · 语义修复（真实使用发现）', () => {
+  const map = historicalCycleMap(source, TODAY);
+
+  it('Fix1 当前年份 5 周全空时给出明确说明（≠ 历史上没有周期）', () => {
+    expect(map.weeks.every((w) => w.entries.length === 0)).toBe(true);
+    const html = renderMap();
+    expect(html).toContain('该年份尚未纳入历史研究');
+    expect(html).toContain('不代表历史上这一周附近没有周期');
+    expect(html).toContain('历史时间窗口');
+  });
+
+  it('Fix2 Research Candidate 在 Cycle Map 中明确标识（不伪装成 Campaign）', () => {
+    const rc = map.allEntries.filter((e) => e.objectKind === 'research_candidate');
+    expect(rc.length).toBeGreaterThan(0);
+    const html = renderMap();
+    expect(html).toContain('hcm-rc');
+    expect(html).toContain('Research Candidate');
+  });
+
+  it('Fix3 Lifecycle 标签不再中英混用（product 小写枚举全部有中文标签）', () => {
+    // product TimelinePhaseSegment.phase 的小写枚举
+    for (const k of ['early_signal', 'main_rise', 'peak', 'retracement', 'declining', 'ended']) {
+      expect(LIFECYCLE_STAGE_LABEL[k], k).toBeTruthy();
+      expect(LIFECYCLE_STAGE_LABEL[k]).not.toBe(k);
+    }
+    // 地图中出现的阶段标签必须是中文（不得回落为原始英文枚举）
+    for (const e of map.allEntries) {
+      if (e.stage === null) continue;
+      expect(e.stageLabel).toBe(LIFECYCLE_STAGE_LABEL[e.stage] ?? e.stage);
+      expect(/^[a-z_]+$/.test(e.stageLabel)).toBe(false);
+    }
   });
 });

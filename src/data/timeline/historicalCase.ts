@@ -174,21 +174,21 @@ export interface HistoricalCaseView {
 /* ================= 4. 文案 ================= */
 
 export const LIFECYCLE_STAGE_LABEL: Record<string, string> = {
-  EARLY_SIGNAL: '早期信号',
-  THEME_FORMING: '主题形成',
-  BROAD_CONFIRMATION: '扩散确认',
-  MAIN_RISE: '主升',
-  PEAK: '峰值',
-  RETRACEMENT: '回撤',
-  SECONDARY: '次级行情',
-  DECLINING: '衰减',
-  FIRST_DECLINE: '首次回落',
-  MAIN_END: '主段结束',
+  // ★ product `TimelinePhaseSegment.phase` 使用**小写** LifecyclePhase —— 必须全部覆盖，
+  //   否则 UI 会出现中英混用（实测：declining / early_signal 曾回落为原始英文）。
+  early_signal: '早期信号',
+  main_rise: '主升',
+  peak: '峰值',
+  retracement: '回撤',
+  declining: '衰减',
+  ended: '已结束',
+  // Research `lifecycle[].stage` 使用**大写**枚举
+  EARLY_SIGNAL: '早期信号', THEME_FORMING: '主题形成', BROAD_CONFIRMATION: '扩散确认',
+  MAIN_RISE: '主升', PEAK: '峰值', RETRACEMENT: '回撤', SECONDARY: '次级行情',
+  DECLINING: '衰减', FIRST_DECLINE: '首次回落', MAIN_END: '主段结束',
   startup: '启动',
   acceleration: '加速',
-  main_rise: '主升',
   diffusion: '扩散',
-  retracement: '回撤',
   secondary_rally: '次级反弹',
   decline: '衰减',
 };

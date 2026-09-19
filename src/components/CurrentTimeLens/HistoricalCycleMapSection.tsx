@@ -101,6 +101,15 @@ export function HistoricalCycleMapSection({
           窗口 = 当前周 ± {WINDOW_HALF_SPAN} 周（周级分辨率）。日期只用于排序与窗口相交，
           <strong>不要求日级精度</strong>。
         </p>
+        {/* ★ 语义澄清：本年度尚未纳入历史研究 → 周条为空 ≠ 历史上没有周期 */}
+        {map.weeks.every((w) => w.entries.length === 0) && (
+          <p className="hcm-note hcm-note-warn" role="note">
+            以上 5 周属于<strong>当前年份</strong>（{map.currentWeek.start.slice(0, 4)}），
+            该年份尚未纳入历史研究（历史研究覆盖至 {map.years[map.years.length - 1]?.year ?? '—'}），
+            因此计数为 0。**这不代表历史上这一周附近没有周期** ——
+            请见下方「历史时间窗口」。
+          </p>
+        )}
       </div>
 
       {/* ---------- 筛选（筛选 ≠ 排序） ---------- */}
@@ -204,6 +213,12 @@ function CycleRow({
         onClick={() => onSelect({ kind: 'campaign', id: e.navigation.id })}
       >
         <span className="hcm-entry-title">{e.title}</span>
+        {/* ★ identity：Research Candidate **不得**伪装成 Campaign */}
+        {e.objectKind === 'research_candidate' && (
+          <span className="hcm-rc" title="Research Candidate：研究候选，非正式 Historical Campaign">
+            Research Candidate
+          </span>
+        )}
         {e.macroTheme && <span className="hcm-chip-sm">{e.macroTheme}</span>}
         {e.themeCycleId && <span className="hcm-chip-sm hcm-chip-cycle">{e.themeCycleId}</span>}
         <span className={`hcm-stage ${stageClass}`}>

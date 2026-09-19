@@ -4,11 +4,11 @@
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
 - 更新日期：2026-09-19
-- HEAD：见 `git log -1`（`feat(research): add current research refresh loop v0.1`）· 本文件随该提交入库
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- 最近完成：**Current Research Refresh Loop v0.1**（HEAD 前的基线为 `726390c`）
+- HEAD：`e90e80d`（`feat(research): add current research refresh loop v0.1`）
+- 最近完成：**First Real Observation Cycle v0.1**（PASS；代码变更仅 3 项语义修复）
 
 ## 1. 项目当前定位
 
@@ -172,26 +172,27 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# UX Review + Performance Gate v0.1
+# REWORK：消除 Historical Case 中的三处重复信息
 
-Product UI Integration v0.1 已完成；现在不继续加功能，先验证真实使用体验与首屏性能。
+**前置已完成（全部 PASS）**：Product Similarity Architecture Gate v0.1 ·
+Product Adapter v0.1 · Product UI Integration v0.1 · **UX Review + Performance Gate v0.1** ·
+**Historical Case Experience v0.1** · **Historical Cycle Map v0.1** ·
+**Current Research Refresh Loop v0.1** · **First Real Observation Cycle v0.1**。
 
-UI Integration 已完成：Structural Analogy 位于 Current Candidate / Current Time Lens，不新增独立 Dashboard。
+**目标**：把 Historical Case 中的「证据序列」「关联事件」「研究归因（四问）」合并为**一个**证据视图
+（保留时间序 + 生命周期阶段 + 事件类型 + 角色 + 研究归因），使 Case 长度减少约 **2/3**，
+**不丢失任何信息**。
 
-### Review 边界
+**来源**：`docs/FIRST_REAL_OBSERVATION_CYCLE_V0_1.md` —— 真实使用中发现同一批事件重复展示三次，
+是本轮唯一同时满足「真实使用发现」「影响研究效率」「不涉及 Research 规则变更」的问题。
 
-- 不继续新增 Product 功能
-- 检查移动端可读性、信息密度、理解成本
-- 检查 688.19 kB bundle 是否需要拆分/懒加载
-- 检查旧 currentSimilarity 是否仍应保留为隐藏兼容层
-- 不改变 Structural Analogy Research / Rule Set
-- 不改 schema / export / historical data
+### 边界
+
+- 不新增 Product 功能 / 不新增 Dashboard
+- 不改 Research 规则（Rule Set v0.2）· 不改 Artifact · 不改 schema / export / 历史数据
 - 不引入实时网络 / LLM
-- 不因为 UX Review 顺手扩展功能
-
-完成后进入：
-
-`Performance fix（如 Gate 要求）→ currentSimilarity cleanup decision → Product polish`
+- 后续 POLISH 项：`themeCycleId` 可读性 · `phases` 与 `signals` 关系说明
+- 后续 DEFER 项：`event_structure` 区分度 · Driver `MATCH 1/85` · `campaign_date_observations` 验证
 
 ## 8. 当前质量债务
 

@@ -2264,3 +2264,13 @@ html, body {
 @media (max-width: 720px) {
   .ccs-stale-note { font-size: 11px; }
 }
+
+/* First Real Observation Cycle v0.1 —— 语义修复 */
+.hcm-rc {
+  padding: 0 5px; border: 1px solid #d8c48a; border-radius: 999px;
+  background: #fdf8ef; font-size: 10px; color: #8a6d1f; white-space: nowrap;
+}
+.hcm-note-warn {
+  padding: 5px 8px; border: 1px solid #e0c9a6; border-left-width: 3px;
+  border-radius: var(--radius); background: #fdf8ef; color: #8a6a3c;
+}
