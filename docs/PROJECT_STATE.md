@@ -4,11 +4,11 @@
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
 - 更新日期：2026-09-19
-- HEAD：`2dad8c7`
+- HEAD：见 `git log -1`（`feat(research): add current research refresh loop v0.1`）· 本文件随该提交入库
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- 最近完成：Product UI Integration v0.1
+- 最近完成：**Current Research Refresh Loop v0.1**（HEAD 前的基线为 `726390c`）
 
 ## 1. 项目当前定位
 
@@ -41,7 +41,17 @@
 - Historical Driver Canonicalization
 - Robustness / Feasibility / Readiness
 
-### Product Core：Structural Analogy 已进入 Current Time Lens UI
+### Product Core：闭环已成立，并已具备可重复的研究更新循环
+
+```
+Current Time → Current Candidate → Structural Analogy → Historical Case
+             → Historical Cycle Map → Current Research Refresh Loop
+```
+
+**已完成**：Product Similarity Architecture Gate v0.1（PASS）· Product Adapter v0.1 ·
+Product UI Integration v0.1 · UX Review + Performance Gate v0.1（PASS）·
+Historical Case Experience v0.1（PASS）· Historical Cycle Map v0.1（PASS）·
+**Current Research Refresh Loop v0.1（PASS）**。
 
 当前 Product 主线：
 

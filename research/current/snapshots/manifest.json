@@ -1,0 +1,24 @@
+{
+ "artifact": "current_research_snapshot_manifest",
+ "artifact_version": "0.1",
+ "note": "只记录 snapshot 元信息（date / version / ids / hash / generated_at）；**不复制大型冗余文件**。",
+ "snapshots": [
+  {
+   "snapshot_date": "2026-09-15",
+   "version": "1.0",
+   "generated_at": "2026-09-15T23:00:00",
+   "candidate_ids": [
+    "CC-2026-BCI-MEDTECH",
+    "CC-2026-COMPUTE-POWER",
+    "CC-2026-EMBODIED-AI",
+    "CC-2026-OFFSHORE-WIND",
+    "CC-2026-OPTICAL-LINK"
+   ],
+   "candidate_count": 5,
+   "content_sha256": "79aee319a461f7879a4c95ffdd8011e34e47b062b66a1b3464543b132e8eeaa7",
+   "source": "research/current/current_candidates.json",
+   "changed_since_last_record": false
+  }
+ ],
+ "snapshot_count": 1
+}

@@ -28,6 +28,11 @@
 
 ## 2. 当前主线：Research → Product
 
+> **同步说明（2026-09-19）**：Step 1–4 已全部完成（Gate PASS · Adapter · UI Integration · UX Review PASS）。
+> 其后追加完成：**Historical Case Experience v0.1（PASS）** ·
+> **Historical Cycle Map v0.1（PASS）** · **Current Research Refresh Loop v0.1（PASS）**。
+> 下一步由产品使用反馈决定，**不在本轮 roadmap 内预设**。
+
 ### Step 1 · Product Similarity Architecture Gate v0.1
 
 **已完成：PASS。**

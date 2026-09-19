@@ -732,12 +732,17 @@ describe('7. UI', () => {
     ]);
   });
 
-  it('快照滞后时提示「不是当前市场状态」', () => {
+  it('快照滞后时提示「不是实时研究结果」（Refresh Loop v0.1 文案）', () => {
     const list = buildCurrentCandidateViews(SOURCE, FIXTURE, '2026-10-15');
     expect(list.stale).toBe(true);
     expect(list.stalenessDays).toBe(30);
     const html = renderToStaticMarkup(<CurrentCandidateSection list={list} onSelect={() => {}} />);
-    expect(html).toContain('不是当前市场状态');
+    expect(html).toContain('当前研究快照已滞后');
+    expect(html).toContain('不是实时研究结果');
+    // 字段语义不混淆：snapshot_date / 距今天数 / 历史覆盖年份 分别展示
+    expect(html).toContain('研究快照');
+    expect(html).toContain('距今天');
+    expect(html).toContain('历史研究覆盖至');
   });
 });
 

@@ -99,14 +99,24 @@ export function CurrentCandidateSection({
 
       {/* 快照日与滞后提示：明确「这不是实时」 */}
       {list.snapshotDate ? (
-        <p className="ccs-meta">
-          研究快照日：<em>{list.snapshotDate}</em>
-          {list.researchCoverageUntil != null && <> · 历史研究覆盖至 {list.researchCoverageUntil}</>}
-          {' · '}数据来源：离线研究生成（非实时行情 / 非实时新闻）
+        <>
+          <p className="ccs-meta">
+            研究快照：<em>{list.snapshotDate}</em>
+            {list.stalenessDays !== null && (
+              <> · 距今天：<em>{list.stalenessDays}</em> 天</>
+            )}
+            {list.researchCoverageUntil != null && <> · 历史研究覆盖至 {list.researchCoverageUntil}</>}
+            {' · '}数据来源：离线研究生成（非实时行情 / 非实时新闻）
+          </p>
+          {/* 过期提示：明确「不是实时研究结果」 */}
           {list.stale && list.stalenessDays !== null && (
-            <span className="ccs-stale">（快照距今 {list.stalenessDays} 天，不是当前市场状态）</span>
+            <p className="ccs-stale-note" role="note">
+              <strong>当前研究快照已滞后</strong>
+              （距今 {list.stalenessDays} 天）—— 以下内容<strong>不是实时研究结果</strong>，
+              请在离线研究侧完成新一轮 Refresh 后再作参考。
+            </p>
           )}
-        </p>
+        </>
       ) : (
         <p className="ctl2-note ctl2-note-empty">
           数据集缺少 snapshot_date —— Temporal Firewall 无法工作，因此本区域不展示任何候选。
