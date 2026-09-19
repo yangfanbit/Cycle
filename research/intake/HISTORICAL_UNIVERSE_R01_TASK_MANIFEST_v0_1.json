@@ -7,7 +7,8 @@
   "intake_schema": "research/intake/historical_research_intake.schema.json",
   "coverage_plan_doc": "research/intake/HISTORICAL_UNIVERSE_COVERAGE_PLAN_v0_1.md",
   "generated_at": "2026-09-19T00:00:00Z",
-  "source_commit": "2ba94bd83f5724c0bab146a744c54fa562a7c45e",
+  "source_commit": "7dd63ea05d898df7fe7daefd7f15a5ff05e54330",
+  "source_commit_note": "R01 Task Manifest 所依据的 ThreeC baseline / protocol commit（= R00 完成版本，feat(research): add historical universe intake protocol v0.1 (R00)）。",
   "status": "PLANNED_NOT_STARTED",
   "status_note": "R00 只建立基础设施。本 manifest 中任何任务均未被授权启动；启动需单独授权。",
 

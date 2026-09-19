@@ -7,7 +7,7 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`2ba94bd`（`fix(product): raise snapshot staleness threshold to 14 days`；本文件随 R00 提交入库）
+- HEAD：`7dd63ea05d898df7fe7daefd7f15a5ff05e54330`（`feat(research): add historical universe intake protocol v0.1 (R00)` —— R00 完成版本；本文件的 HEAD 同步随其后的小修提交入库）
 - 最近完成：**Historical Universe Expansion / Research Intake Protocol v0.1（R00）**（PASS；**只建基础设施，未新增任何历史研究结论**）
 
 ## 1. 项目当前定位
@@ -205,14 +205,17 @@ Campaign 13 · Structural Analogy 历史对象 17 · 85 条比较中 **STRICT �
 
 ### R01 任务（**均未启动，启动需单独授权**）
 
-| task_id | scope | priority |
-|---|---|---|
-| `R01-01` | 高端装备 / 机器人 | A |
-| `R01-02` | 半导体 / 电子 | A |
-| `R01-03` | 资源 / 有色 / 化工 | A |
-| `R01-04` | 消费 | A |
-| `R01-05` | 金融 / 地产 | A |
-| `R01-06` | 军工 | A |
+**status = `PLANNED_NOT_STARTED`**（与 `HISTORICAL_UNIVERSE_R01_TASK_MANIFEST_v0_1.json` 的 `status` 一致）。
+**任何行业研究均未启动**；下表只是任务划分，不代表已开始、已产出或已排期。
+
+| task_id | scope | priority | status |
+|---|---|---|---|
+| `R01-01` | 高端装备 / 机器人 | A | `PLANNED_NOT_STARTED` |
+| `R01-02` | 半导体 / 电子 | A | `PLANNED_NOT_STARTED` |
+| `R01-03` | 资源 / 有色 / 化工 | A | `PLANNED_NOT_STARTED` |
+| `R01-04` | 消费 | A | `PLANNED_NOT_STARTED` |
+| `R01-05` | 金融 / 地产 | A | `PLANNED_NOT_STARTED` |
+| `R01-06` | 军工 | A | `PLANNED_NOT_STARTED` |
 
 **第一轮真正的目标不是族名数量，而是补齐当前 4 族完全缺失的四条机制轴**：
 供给收缩 · 纯需求端 · 流动性/政策周期 · 订单/事件驱动。
