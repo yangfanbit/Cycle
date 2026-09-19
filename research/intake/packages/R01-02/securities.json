@@ -1,0 +1,211 @@
+[
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC001",
+    "ticker": "688981.SH",
+    "name": "中芯国际",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "中国大陆规模最大、技术最先进的晶圆代工企业；2020-07-16 登陆科创板，募资 532.3 亿元创科创板纪录，是国产替代与设备材料需求的核心承载主体。",
+    "source_ids": ["R01-SEMICONDUCTOR-S025", "R01-SEMICONDUCTOR-S024"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。2020-07-16 上市当日按发行价计算的市值即约 1959.66 亿元，当时可识别为标志性标的。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC002",
+    "ticker": "603501.SH",
+    "name": "韦尔股份",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "2019 年上涨 389.56%，为当年半导体板块代表标的之一；2019 年完成对豪威（CIS 龙头）的收购，市值突破千亿。",
+    "source_ids": ["R01-SEMICONDUCTOR-S027", "R01-SEMICONDUCTOR-S026"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。其并购豪威属 2019 年当时已公告事件，可作为同期可观察信息。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC003",
+    "ticker": "300661.SZ",
+    "name": "圣邦股份",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "模拟芯片设计代表标的；2019 年上涨 380.00%，2020 年 TWS 链条上游芯片配套受益标的。",
+    "source_ids": ["R01-SEMICONDUCTOR-S027", "R01-SEMICONDUCTOR-S034"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC004",
+    "ticker": "603986.SH",
+    "name": "兆易创新",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "存储与 MCU 设计龙头；2024-09-24 与 2025 年存储涨价周期中均为板块权重股；月 K 线在 2024-12-31 至 2025-12-31 区间上涨 89.39%。",
+    "source_ids": ["R01-SEMICONDUCTOR-S022", "R01-SEMICONDUCTOR-S040"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。2019-12-20 曾被大基金一期列入减持计划，属当时公开信息。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC005",
+    "ticker": "002371.SZ",
+    "name": "北方华创",
+    "exchange": "SZ",
+    "role": "leader",
+    "basis": "半导体设备龙头；自 2019 年被国家大基金入股以来期间最高涨幅逾 7 倍，是设备材料国产替代线的核心标的。",
+    "source_ids": ["R01-SEMICONDUCTOR-S006", "R01-SEMICONDUCTOR-S022"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。「涨幅逾 7 倍」为 2024 年统计口径，不是 2019 年当时的已知信息。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC006",
+    "ticker": "300782.SZ",
+    "name": "卓胜微",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "2019-06-18 上市，全年上涨 892.43%，受国产替代与 5G 商用预期驱动，为 2019 年半导体板块的标志性个股。",
+    "source_ids": ["R01-SEMICONDUCTOR-S027", "R01-SEMICONDUCTOR-S026"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。其涨幅含显著次新股因素，不得据此反推整个主题成立。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC007",
+    "ticker": "000725.SZ",
+    "name": "京东方A",
+    "exchange": "SZ",
+    "role": "leader",
+    "basis": "全球最大电视液晶面板厂商；2020 年净利润 48—51 亿元、同比 +150%~166%；2021Q1 净利润 51.82 亿元、同比 +814.46%；2016 年面板周期中 2016Q3 单季营业利润 6.78 亿元。",
+    "source_ids": ["R01-SEMICONDUCTOR-S009", "R01-SEMICONDUCTOR-S031"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。月 K 线显示其股价高点（2021-04，7.1469 元）早于面板价格高点（2021-07），两者不得混用。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC008",
+    "ticker": "600584.SH",
+    "name": "长电科技",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "封测环节代表标的；2024-09-24 为半导体 ETF 权重股之一，当日涨超 4%。",
+    "source_ids": ["R01-SEMICONDUCTOR-S022"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC009",
+    "ticker": "688012.SH",
+    "name": "中微公司",
+    "exchange": "SH",
+    "role": "second_leader",
+    "basis": "刻蚀设备代表企业；截至 2020-07-15 市值 1433 亿元，为科创板半导体设备方向龙头之一。",
+    "source_ids": ["R01-SEMICONDUCTOR-S025", "R01-SEMICONDUCTOR-S024"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC010",
+    "ticker": "688072.SH",
+    "name": "拓荆科技",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "薄膜沉积设备企业，大基金二期被点名覆盖的设备方向之一（薄膜设备）的 A 股代表。",
+    "source_ids": ["R01-SEMICONDUCTOR-S007", "R01-SEMICONDUCTOR-S021"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。2022 年 4 月上市，晚于 2020—2021 段的部分观测点，使用时须注意上市时间。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC011",
+    "ticker": "688126.SH",
+    "name": "沪硅产业",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "国产 300mm 大硅片核心供应商，被大基金一期深度投资；截至 2020-07-21 进入科创板千亿市值阵营。",
+    "source_ids": ["R01-SEMICONDUCTOR-S006", "R01-SEMICONDUCTOR-S024"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC012",
+    "ticker": "000100.SZ",
+    "name": "TCL科技",
+    "exchange": "SZ",
+    "role": "second_leader",
+    "basis": "旗下 TCL 华星为全球大尺寸面板主要供应商；2020 年净利润预告 42—44.6 亿元、同比 +60%~70%；2021Q1 营业收入 321.44 亿元、同比 +133.91%。",
+    "source_ids": ["R01-SEMICONDUCTOR-S009"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC013",
+    "ticker": "002156.SZ",
+    "name": "通富微电",
+    "exchange": "SZ",
+    "role": "follow",
+    "basis": "封测环节标的，被列为 2017 年显卡/矿机涨价链条与 2025 年芯片涨停潮的相关标的之一。",
+    "source_ids": ["R01-SEMICONDUCTOR-S036", "R01-SEMICONDUCTOR-S023"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。其被列入 2017 年链条属媒体推荐口径，不作为主题成立的独立依据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC014",
+    "ticker": "002475.SZ",
+    "name": "立讯精密",
+    "exchange": "SZ",
+    "role": "leader",
+    "basis": "AirPods 主力组装厂；2019 年初至 2020 年末区间上涨 686.41%，月内最高价 62.73 元出现在 2020-10。",
+    "source_ids": ["R01-SEMICONDUCTOR-S033", "R01-SEMICONDUCTOR-S040"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。属消费电子零部件，不涉及品牌整机（后者属 R01-04）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC015",
+    "ticker": "002241.SZ",
+    "name": "歌尔股份",
+    "exchange": "SZ",
+    "role": "second_leader",
+    "basis": "TWS 与声学整机代工企业；2019 年初至 2020 年末区间上涨 560.69%，月内最高价 49.05 元出现在 2020-11；2020-11-12 调研纪要显示 TWS 普通款产能利用率约 80%。",
+    "source_ids": ["R01-SEMICONDUCTOR-S035", "R01-SEMICONDUCTOR-S040"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC016",
+    "ticker": "688256.SH",
+    "name": "寒武纪",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "AI 算力芯片代表标的；截至 2020-07-21 已进入科创板千亿市值阵营；2024-09-24 为半导体 ETF 权重股；2025 年 A 股半导体行情中的高关注标的。",
+    "source_ids": ["R01-SEMICONDUCTOR-S024", "R01-SEMICONDUCTOR-S022"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。个股涨幅不用于反推主题成立。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC017",
+    "ticker": "301308.SZ",
+    "name": "江波龙",
+    "exchange": "SZ",
+    "role": "leader",
+    "basis": "存储模组龙头；2025-11-13 盘中触及 330.51 元创历史新高，年初至今涨幅 260.47%，市值突破千亿；2025Q3 营业收入 65.39 亿元、同比 +54.6%，归母净利润 6.98 亿元、同比 +1994.42%。",
+    "source_ids": ["R01-SEMICONDUCTOR-S017", "R01-SEMICONDUCTOR-S040"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。区间涨跌幅取自 2024-12-31 至 2025-12-31 的 169.78%。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC018",
+    "ticker": "688525.SH",
+    "name": "佰维存储",
+    "exchange": "SH",
+    "role": "second_leader",
+    "basis": "国产化 SSD 解决方案企业，2025-10 以来股价创历史新高，2025-11-13 涨超 10%。",
+    "source_ids": ["R01-SEMICONDUCTOR-S017", "R01-SEMICONDUCTOR-S019"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-SEMICONDUCTOR-SEC019",
+    "ticker": "688041.SH",
+    "name": "海光信息",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "国产服务器 CPU/DCU 代表企业；2023-04-03 单一交易日即同时归属「AI 算力芯片」「东数西算/算力」「半导体」多个概念板块；2024-09-24 为半导体 ETF 权重股。",
+    "source_ids": ["R01-SEMICONDUCTOR-S022", "R01-SEMICONDUCTOR-S040"],
+    "point_in_time_note": "属 Historical Leader Set（事后确认）。注意该证券同时归属多个主题，属跨主题归属问题（见 conflicts）。",
+    "survivorship_aware": true
+  }
+]

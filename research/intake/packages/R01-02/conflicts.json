@@ -1,0 +1,170 @@
+[
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF001",
+    "subject": "2019–2021 年半导体行情应视为「一个跨越 28 个月的大周期」，还是拆为多个独立 Campaign（2019-01—2020-02 / 2020-04—2020-08 / 2021-04—2021-07 三段）？",
+    "positions": [
+      {
+        "position": "单一长周期：申万半导体指数自 2019-01-04 的 1316.17 连续上行至 2021-07 月内最高 7642.58，区间最大涨幅超 280%，同一资金池与同一「国产替代 + 景气上行」叙事贯穿全程，三段之间的回调未破坏主升结构。",
+        "source_ids": ["R01-SEMICONDUCTOR-S040", "R01-SEMICONDUCTOR-S039"]
+      },
+      {
+        "position": "多段 Campaign：三段各有独立催化与注意力中心——2019-05 实体清单（设计/制造）、2020-04—2020-08 中芯国际回 A（制造/设备）、2021-04—2021-07 供需错配与涨价（MCU/IGBT/设备材料），按 Independence Gate 的 Q2（独立代表公司）与 Q4（独立生命周期）应考虑拆分。",
+        "source_ids": ["R01-SEMICONDUCTOR-S025", "R01-SEMICONDUCTOR-S013"]
+      },
+      {
+        "position": "研报口径把 2019.1—2020.2 视为第一段（见顶于 2020 年 2 月底），与板块指数最高点口径（2020-07-14）不一致，说明连「第一段的峰值」都尚未取得一致。",
+        "source_ids": ["R01-SEMICONDUCTOR-S039", "R01-SEMICONDUCTOR-S013"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包采用的折中做法：建立 R01-SEMICONDUCTOR-001（2019 设计/制造）与 R01-SEMICONDUCTOR-002（2020—2021 设备材料）两个候选，并在两者间标注 possible_duplicate_of；同时把 2020-02 / 2020-07 / 2021-07 三个峰值口径全部写入 001 的 peak.alternative_dates。最终判定权在 ThreeC Agent（须走 Independence Gate Q1–Q5）。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF002",
+    "subject": "2019–2020 的「国产替代」与 2024–2025 的「自主可控」是否为同一 Campaign（Q3 Independent Persistence 风险）？",
+    "positions": [
+      {
+        "position": "同一 Campaign 的延续：两者共享同一叙事（半导体自主可控）、同一核心资产群（中芯国际、北方华创、中微公司等设备/制造标的）与同一批机构资金；中间 2022—2023 年的下跌只是周期回撤，不是叙事终结。",
+        "source_ids": ["R01-SEMICONDUCTOR-S006", "R01-SEMICONDUCTOR-S021"]
+      },
+      {
+        "position": "两个独立 Campaign：2019—2020 的驱动是「首次被封锁 → 替代认知建立」，2024—2025 的驱动是「大基金三期 3440 亿元 + 先进制程出口管制升级 → 攻坚与产能落地」，催化的性质、资金的组织方式与目标环节（设计/制造 → 设备/材料/先进制程）均发生迁移，中间存在 2022-01—2024-01 近两年的独立下行期。",
+        "source_ids": ["R01-SEMICONDUCTOR-S038", "R01-SEMICONDUCTOR-S029"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包不裁决：保留 R01-SEMICONDUCTOR-001、002、008 三个候选，并在 008 中明确标注 confidence = low 与 Beta Contamination 风险。任务书 §7 明确要求「一个大周期还是多个阶段」不得自行消解。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF003",
+    "subject": "「半导体」与「电子」是否应合并为一个 Macro Theme？",
+    "positions": [
+      {
+        "position": "应合并为一个族：半导体在设计、制造、封测、设备、材料、被动元件、面板各环节共用同一产业周期与同一需求侧驱动（消费电子、汽车电子、AI 算力），A 股长期以「电子」作为一级行业口径，二者不可分割。",
+        "source_ids": ["R01-SEMICONDUCTOR-S029", "R01-SEMICONDUCTOR-S040"]
+      },
+      {
+        "position": "应拆为两个族：半导体（设计/制造/封测/设备/材料）的机制是「技术门槛 + 国产替代 + 资本开支」，面板/显示与被动元件的机制是「产能周期 + 价格周期」，同一板块内代表标的、资金池与生命周期并不同步（如 2020—2022 年面板周期与半导体设计周期在峰值时点上相差一个季度以上）。",
+        "source_ids": ["R01-SEMICONDUCTOR-S016", "R01-SEMICONDUCTOR-S032"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "Macro Theme canonicalization 只能由 ThreeC Agent 走 CMTR v1 完成。本包同时提交「半导体」「电子」「面板/显示」等多个 proposal，交由 CMTR 解析；Worker 不发明第二套 resolution。任务书 known_ambiguity 明确要求此争议交 CMTR v1。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF004",
+    "subject": "「面板/显示」是否应从「半导体」中拆分（面板价格周期与半导体设计公司机制不同）？",
+    "positions": [
+      {
+        "position": "应拆分：面板的核心机制是产能周期 + 库存周期驱动的价格周期，代表标的（京东方 A、TCL 科技）与半导体设计/设备公司的驱动因子、盈利弹性来源均不同；面板价格下行时半导体设计可能仍在上行。",
+        "source_ids": ["R01-SEMICONDUCTOR-S008", "R01-SEMICONDUCTOR-S032"]
+      },
+      {
+        "position": "不应拆分：面板同样属「电子」一级行业，且在 A 股行情中与半导体共享资金池与「国产替代/产能转移」叙事（韩厂退出 LCD、产能向大陆集中本质上是同一替代逻辑）。",
+        "source_ids": ["R01-SEMICONDUCTOR-S010", "R01-SEMICONDUCTOR-S009"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包的处理：为面板单独建立 R01-SEMICONDUCTOR-003（2020—2022）与 R01-SEMICONDUCTOR-011（2016—2017）两个候选，其 macro_theme_proposal 填「面板/显示」，theme_name_candidates 同时保留「面板」「面板/显示」「半导体」，由 CMTR 决定归属。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF005",
+    "subject": "2020—2022 面板价格上行周期与 2020—2022 全球「缺芯」涨价，是否应视为同一「供给约束」Campaign 的两个分支？",
+    "positions": [
+      {
+        "position": "同一结构的两个分支：两者在时间上高度重合（均起于 2020 年年中至年底、终于 2022 年），机制同源（疫情打乱供给 + 需求上行 + 上游材料/元器件缺货），且存在产业链传导关系（显示驱动 IC 缺货同时是面板涨价与缺芯的原因之一）。",
+        "source_ids": ["R01-SEMICONDUCTOR-S008", "R01-SEMICONDUCTOR-S011"]
+      },
+      {
+        "position": "两个独立结构：面板的价格周期由面板产能（高世代线）与电视需求决定，与晶圆代工产能（8 英寸/12 英寸）不是同一供给曲线；代表标的、库存口径与复价周期均不同，独立解释后剩余部分仍然自洽（Q5 Residual Test = 成立）。",
+        "source_ids": ["R01-SEMICONDUCTOR-S016", "R01-SEMICONDUCTOR-S012"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包保留 R01-SEMICONDUCTOR-003（面板）与 R01-SEMICONDUCTOR-004（缺芯）两个候选，并把「显示驱动 IC 缺货」这一共同上游同时写入两者的 drivers，供 ThreeC Agent 判定是否 merge。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF006",
+    "subject": "2024-09-24 起的半导体上涨，是独立主题行情还是市场 Beta 的组成部分？",
+    "positions": [
+      {
+        "position": "独立主题行情：半导体设备/材料在 2024-10—12 期间最大涨幅达 83.10%，显著跑赢市场；同期大基金三期成立与出口管制升级构成独立于流动性的产业催化。",
+        "source_ids": ["R01-SEMICONDUCTOR-S016", "R01-SEMICONDUCTOR-S038"]
+      },
+      {
+        "position": "Beta Contamination 无法排除：2024-09-24 至 2025-09-23 期间北证 50、科创 50、创业板指涨幅均超 100%，申万 31 个一级行业全线上涨；半导体作为高 Beta 成长板块的上涨可能主要是流动性宽松的结果。",
+        "source_ids": ["R01-SEMICONDUCTOR-S021", "R01-SEMICONDUCTOR-S020"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "按 historical_campaign_validation_v1.md §4.3，无法排除 Beta Contamination 时保持低置信度。本包据此把 R01-SEMICONDUCTOR-008 的 confidence 设为 low，把 R01-SEMICONDUCTOR-007（存储）设为 medium 并单列基本面驱动（价格数据）。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF007",
+    "subject": "2016—2017 面板周期与 2020—2022 面板周期：是同一 Campaign 的两轮，还是两个独立 Campaign？",
+    "positions": [
+      {
+        "position": "同一结构的重复：两轮周期的机制完全相同（韩厂退出/转产 OLED → 供给偏紧 → 涨价 → 大陆产能释放 → 价格下行），属同一「面板价格周期」结构在不同年份的重演，应视为同一 Campaign 的两个实例或同一 Cycle 下的两段。",
+        "source_ids": ["R01-SEMICONDUCTOR-S032", "R01-SEMICONDUCTOR-S031"]
+      },
+      {
+        "position": "两个独立 Campaign：两轮的驱动结构不同——2016—2017 由「韩厂转产 OLED + 大尺寸化」驱动，2020—2022 由「疫情宅经济需求爆发 + 上游材料短缺 + 韩厂彻底关停」驱动；中间 2017H2—2019H2 存在长达两年的独立下行周期；按 Independence Gate Q3（Independent Persistence）应拆为两个。",
+        "source_ids": ["R01-SEMICONDUCTOR-S010", "R01-SEMICONDUCTOR-S016"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包建立 R01-SEMICONDUCTOR-011（2016—2017，Priority B）与 R01-SEMICONDUCTOR-003（2020—2022，Priority A）两个候选，并互相标注 possible_duplicate_of。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF008",
+    "subject": "2017 年显卡 / 矿机芯片需求的主题归属：属「半导体」还是属「数字货币 / 区块链」？",
+    "positions": [
+      {
+        "position": "属半导体：显卡需求外溢直接作用于显存、GPU 与封装环节，是真实的半导体需求冲击，A 股有景嘉微、国科微等直接标的。",
+        "source_ids": ["R01-SEMICONDUCTOR-S036"]
+      },
+      {
+        "position": "属数字货币 / 区块链主题：2017 年 A 股的主要市场映射是「区块链」概念板块（2017-08-14 区块链概念领涨 5.51%，远光软件、用友网络、飞天诚信等涨停），与半导体产业链无直接绑定，不应计入本任务。",
+        "source_ids": ["R01-SEMICONDUCTOR-S036", "R01-SEMICONDUCTOR-S040"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包的处理：保留 R01-SEMICONDUCTOR-012 为候选但把 research_status 设为 INSUFFICIENT、confidence 设为 low，并在 why_not 中明确写出归属争议。三个来源中，仅一份媒体提到 A 股半导体标的，缺少行业数据支撑。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF009",
+    "subject": "2022 年半导体下行周期是否属于「Historical Campaign」？",
+    "positions": [
+      {
+        "position": "应纳入：任务书 §2 明确把「半导体产业周期」「库存周期」列入重点关注机制；2022 年下行具有明确的起止（2022-01-04 至 2022-10-12）、幅度（-37.11%）与可解释机制（库存 + 需求收缩），具备结构比较价值——当前 ThreeC 4 个 Macro Theme 完全没有该类机制。",
+        "source_ids": ["R01-SEMICONDUCTOR-S029", "R01-SEMICONDUCTOR-S040"]
+      },
+      {
+        "position": "不应纳入 Campaign：Campaign 定义要求「市场关注 / 可交易的历史机会」，而单边下行属行业周期状态（industry_trend），不是机会型结构；把它计入会稀释 canonical campaigns 表的口径。",
+        "source_ids": ["R01-SEMICONDUCTOR-S029"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包保留 R01-SEMICONDUCTOR-009 并把 classification_proposal 设为 industry_trend（而非 theme_campaign），在 why_not 中写明它不是机会型结构，最终归类由 ThreeC Agent 决定。"
+  },
+  {
+    "conflict_id": "R01-SEMICONDUCTOR-CF010",
+    "subject": "2019—2021 半导体行情的峰值日期存在三个互不一致的口径",
+    "positions": [
+      {
+        "position": "2020-02 底：研报把 2019.1—2020.2 视为第一段并认为该段见顶于 2020 年 2 月底。",
+        "source_ids": ["R01-SEMICONDUCTOR-S039"]
+      },
+      {
+        "position": "2020-07-14：申万半导体板块指数当日创 5869.83 的年内最高。",
+        "source_ids": ["R01-SEMICONDUCTOR-S040", "R01-SEMICONDUCTOR-S013"]
+      },
+      {
+        "position": "2021-07-30：申万半导体板块指数月内最高 7642.58、月末收 7451.01，为 2019—2021 全周期最高。",
+        "source_ids": ["R01-SEMICONDUCTOR-S040"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "按 Date Policy，日期存在分歧时保留双方/多方，不自动取舍。三个口径已全部写入 R01-SEMICONDUCTOR-001 的 date_candidates.peak.alternative_dates，并在 conflict_note 中标注其对应「多段 Campaign」与「单一长周期」两种解释。"
+  }
+]

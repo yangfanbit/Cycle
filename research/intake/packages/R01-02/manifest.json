@@ -1,0 +1,131 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R01",
+  "task_id": "R01-02",
+  "task_scope": {
+    "task_id": "R01-02",
+    "family_directions": [
+      "半导体",
+      "电子",
+      "半导体设备",
+      "半导体材料",
+      "面板/显示"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "半导体与电子产业链的 A 股历史结构：集成电路设计、制造（晶圆代工）、封装测试、半导体设备、半导体材料、被动元件、面板/显示器件，以及与之绑定的电子零部件环节（如消费电子声学/组装、PCB 上游）。",
+    "excluded_scope": "光模块/高速光互联（属「信息通信」，已有 C-2023-COMM-OPTICAL）；通信设备与电信运营商（已有 family）；消费电子品牌整机（属 R01-04）；半导体材料中的纯化工品价格周期（属 R01-03）；军工电子（属 R01-06）；服务器整机、IDC 与算力租赁（跨越「信息通信」与「计算机」）。"
+  },
+  "generated_at": "2026-09-19T21:33:54+08:00",
+  "source_commit": "2153f6d83b7481300696ab73d792e9e53aa31a07",
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R01-SEMICONDUCTOR-MT001",
+      "proposed_name": "半导体",
+      "theme_name_candidates": ["半导体", "半导体产业", "集成电路", "芯片"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "当前 DB themes 表中不存在「半导体」根节点，而 2018—2025 年 A 股存在多轮以半导体为对象、机制各异的独立结构（国产替代、设备材料扩产、缺芯涨价、AI 算力、存储超级周期、库存下行）。本包提交 9 个 Priority A 候选请求 CMTR v1 解析其归属。",
+      "known_overlap": ["信息通信（C-2023-COMM-OPTICAL 光模块在产业链上相邻）", "高端装备（半导体设备属装备制造）", "资源/化工（半导体材料兼具化工属性）"],
+      "notes": "本 proposal 仅为提案。最终 Macro Theme 必须由 ThreeC Agent 走 CMTR v1（规则集 canonical-macro-theme-resolution-1，唯一来源 DB themes 表）决定，Worker 不得自行裁决。"
+    },
+    {
+      "proposal_id": "R01-SEMICONDUCTOR-MT002",
+      "proposed_name": "电子",
+      "theme_name_candidates": ["电子", "电子元器件", "被动元件", "消费电子零部件"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "消费电子零部件与被动元件在 A 股以「电子」一级行业口径存在（如 2019 年 TWS 周期中的立讯精密、歌尔股份、漫步者），其机制为下游产品创新 + 大客户订单周期，与半导体的国产替代/资本开支机制不同。是否与「半导体」合并为一个族，属 taxonomy 决策。",
+      "known_overlap": ["R01-04（消费）", "半导体（若合并为一个族）"],
+      "notes": "本包同时提交「半导体」与「电子」两个提案，正是为了让 CMTR v1 面对「是否合并」这一决策；Worker 不做裁决。"
+    },
+    {
+      "proposal_id": "R01-SEMICONDUCTOR-MT003",
+      "proposed_name": "面板/显示",
+      "theme_name_candidates": ["面板", "面板/显示", "显示器件", "液晶面板", "LCD"],
+      "proposal_kind": "CROSS_FAMILY",
+      "rationale": "面板在 2016—2017 与 2020—2022 出现两轮机制清晰的价格周期（价格分别上涨约 44% 与超 80%），其驱动为产能周期 + 库存周期 + 韩厂退出，代表标的与生命周期均与半导体设计/设备不同步（2021 年面板价格峰值 2021-07 而京东方股价峰值在 2021-04）。是否独立成族存在争议，故按跨族提案提交。",
+      "known_overlap": ["半导体（若并入）", "电子（若并入）"],
+      "notes": "面板价格周期是本任务中「供给收缩 / 价格周期」机制的主要载体；若被并入半导体，该机制在 taxonomy 中将不可见。"
+    },
+    {
+      "proposal_id": "R01-SEMICONDUCTOR-MT004",
+      "proposed_name": "半导体设备材料",
+      "theme_name_candidates": ["半导体设备", "半导体材料", "设备与材料"],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "设备与材料在大基金二期（2019-10）与三期（2024-05）的投向中被明确单列，且在 2021-04—2021-07 与 2024-10—2024-12 两段行情中独立领涨。但其代表标的与资金池与半导体主线高度重叠，按 Sub-theme 提案而非独立 Macro Theme。",
+      "known_overlap": ["R01-01（高端装备）", "R01-03（资源/化工）", "半导体"],
+      "notes": "本包据此建立 002 与 008 两个候选，并互相标注 possible_duplicate_of，供 Independence Gate 判定。"
+    },
+    {
+      "proposal_id": "R01-SEMICONDUCTOR-MT005",
+      "proposed_name": "算力",
+      "theme_name_candidates": ["算力", "AI算力", "AI算力芯片"],
+      "proposal_kind": "MECHANISM",
+      "rationale": "按任务书 known_ambiguity，「算力」不是 Macro Theme，而是需求侧机制。同一波行情可同时落在半导体、光模块、服务器、IDC 上（2023-04-03 单日即有标的同时归属「AI 算力芯片」「东数西算/算力」「半导体」三个概念板块）。本包只把它作为 Mechanism 与 theme_name_candidates 使用，不升格。",
+      "known_overlap": ["信息通信", "计算机", "半导体"],
+      "notes": "显式声明不得升格为 Macro Theme。"
+    },
+    {
+      "proposal_id": "R01-SEMICONDUCTOR-MT006",
+      "proposed_name": "国产替代",
+      "theme_name_candidates": ["国产替代", "自主可控", "供应链安全"],
+      "proposal_kind": "MECHANISM",
+      "rationale": "「国产替代」是贯穿 2018—2025 年半导体行情的驱动机制，但本身不是主题分类：它与「政策驱动」「技术升级」「资本开支周期」正交组合，且在面板（韩厂退出）、设备材料、存储、功率器件等不同环节反复出现。按 Mechanism 提案。",
+      "known_overlap": ["R01-01", "R01-03", "R01-06"],
+      "notes": "本包把「国产替代/自主可控」作为 mechanism 写入相关候选的 drivers 与 theme_summary，未提交为 Macro Theme。"
+    }
+  ],
+  "cross_task_notes": [
+    {
+      "note_id": "R01-SEMICONDUCTOR-CT001",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-01",
+      "related_candidate_ids": ["R01-SEMICONDUCTOR-002", "R01-SEMICONDUCTOR-008"],
+      "note": "半导体设备（北方华创、中微公司、拓荆科技）在产业链归属上属装备制造，与 R01-01（高端装备/机器人，含工业自动化）存在边界重叠。本任务从「半导体扩产周期与国产化率」角度纳入，R01-01 若从「装备制造升级」角度亦纳入，需由 ThreeC Agent 做 cross-task dedupe。按纪律本包未因重复而删除候选。"
+    },
+    {
+      "note_id": "R01-SEMICONDUCTOR-CT002",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-03",
+      "related_candidate_ids": ["R01-SEMICONDUCTOR-002", "R01-SEMICONDUCTOR-008"],
+      "note": "半导体材料（大硅片、光刻胶、电子特气、掩模版、湿电子化学品）同时具备化工品属性；其纯化工品价格周期属 R01-03（资源/化工）。本任务只从「设备材料国产替代」的产业机制纳入（见 exclusions X004），未建立以化工品价格为主机制的候选。双方若就同一标的建立候选，应由 ThreeC Agent 判定归属。"
+    },
+    {
+      "note_id": "R01-SEMICONDUCTOR-CT003",
+      "kind": "BOUNDARY",
+      "target_task_id": null,
+      "related_candidate_ids": ["R01-SEMICONDUCTOR-006"],
+      "note": "★ 光模块/高速光互联已有 canonical Campaign C-2023-COMM-OPTICAL，属「信息通信」。但 2023 年 AI 行情中光模块与半导体（算力芯片、存储、先进封装）由同一事件驱动、共享同一资金池、同期见顶，是本包观察到的最重要的跨任务边界问题。本任务只取半导体侧（候选 006），未纳入光模块；若 ThreeC Agent 认为应合并为同一 Campaign，需处理 cross-task merge 与 provenance 保留。"
+    },
+    {
+      "note_id": "R01-SEMICONDUCTOR-CT004",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-06",
+      "related_candidate_ids": ["R01-SEMICONDUCTOR-001", "R01-SEMICONDUCTOR-002"],
+      "note": "军工电子与半导体元器件在企业与产品上重叠（如紫光国微等）。本任务未单独建立军工电子候选（见 excluded_scope），相关标的若被 R01-06 纳入，需注意同一证券跨主题归属问题。"
+    },
+    {
+      "note_id": "R01-SEMICONDUCTOR-CT005",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-04",
+      "related_candidate_ids": ["R01-SEMICONDUCTOR-005"],
+      "note": "2019—2020 TWS/可穿戴周期（候选 005）包含立讯精密、歌尔股份等消费电子零部件标的，与 R01-04（消费，含家电、纺服、商贸）在「消费电子」边界上可能重叠。本任务按「电子零部件与上游芯片」纳入，明确排除品牌整机。"
+    },
+    {
+      "note_id": "R01-SEMICONDUCTOR-CT006",
+      "kind": "HANDOFF",
+      "target_task_id": "R01-05",
+      "related_candidate_ids": ["R01-SEMICONDUCTOR-007", "R01-SEMICONDUCTOR-008"],
+      "note": "2024-09-24 一揽子金融政策驱动的行情，本质属「流动性与政策周期」机制（R01-05 的核心机制）。本任务在半导体侧把它记录为驱动因素并保持低置信度，同时把「如何用等权/相对收益口径分离市场 Beta」这一问题移交为研究问题 Q005，供 R01-05 与 ThreeC Agent 统一口径。"
+    }
+  ]
+}

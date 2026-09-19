@@ -1,0 +1,1021 @@
+[
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-001",
+    "title": "2019 半导体自主可控与国产替代行情（实体清单 → 设计/制造/封测全线）",
+    "year": 2019,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体", "国产替代", "自主可控", "芯片"],
+    "theme_summary": "2018-04 中兴禁令与 2019-05-16 华为列入美国实体清单，把「芯片自给」从产业议题变成国家议题。A 股半导体板块自 2019-01-04 低点起动，2019-05 后主题形成并扩散，叠加 2019-07-22 科创板开市提供的融资通道，形成设计（韦尔股份、圣邦股份、北京君正、卓胜微）、制造（中芯国际回 A 预期）、封测（长电科技、通富微电）全环节普涨。板块指数 2019 年翻倍，2020-07 见阶段高点后因大基金一期减持与估值压力转入回撤。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2018-04-16",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：美国商务部当日宣布禁止美国公司向中兴通讯销售零部件/商品/软件/技术 7 年（至 2025-03-13），被广泛视为本轮国产替代叙事的最早可观察启动信号；该日早盘 A 股芯片概念已出现集体冲高。",
+          "source_ids": ["R01-SEMICONDUCTOR-S003", "R01-SEMICONDUCTOR-S004"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E001"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2019-01-04", "basis": "市场口径起点：申万半导体板块指数当日创阶段低点 1316.17，此后展开主升。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": "产业催化口径（2018-04）与市场行情口径（2019-01）并存，本包不自动取舍。"
+        },
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2019-05-16",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event：美国商务部 BIS 将华为及其 68 家非美国关联公司列入实体清单，生效日 2019-05-16（联邦公报 2019-05-21 公布）。国产替代由「产业趋势」升级为「国家战略级主题」。",
+          "source_ids": ["R01-SEMICONDUCTOR-S001", "R01-SEMICONDUCTOR-S002"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E002", "R01-SEMICONDUCTOR-E003"],
+          "confidence": "high",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-07-14",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：申万半导体板块指数（01801081）2020-07-14 创 5869.83 的年内最高。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E011"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2020-02-25", "basis": "研报口径把 2019-01—2020-02 划为第一段并认为见顶于 2020-02 底，与指数最高点口径不一致。", "source_ids": ["R01-SEMICONDUCTOR-S039"]},
+            {"date": "2021-07-30", "basis": "若把 2019-2021 视为同一大周期，则周期峰值在 2021-07（申万半导体月内最高 7642.58），而非 2020-07。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": "三个峰值口径（2020-02 / 2020-07 / 2021-07）对应「多段 Campaign」与「单一长周期」两种解释，保留双方。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-07-15",
+          "window_end": "2020-09-30",
+          "phase_note": null,
+          "basis": "inferred：指数高点后进入高位震荡并出现约 30% 级别回调；2019-12-20 大基金一期减持公告是估值端的转折信号。",
+          "source_ids": ["R01-SEMICONDUCTOR-S028", "R01-SEMICONDUCTOR-S039"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E008"],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "若采用单一大周期解释，本段属 RETRACEMENT 而非 ENDED。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2019-05-16", "end": "2020-07-14", "basis": "主题形成（实体清单）后至指数阶段高点。", "notes": "区间内可再分 2019-05—2020-02 与 2020-04—2020-07 两段。"},
+      {"stage_proposal": "RETRACEMENT", "start": "2020-07-15", "end": "2020-09-30", "basis": "高点后回调约 30%，主题未失效。", "notes": "属回撤而非主题结束。"}
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": ["美国对中兴通讯的出口禁令（2018-04-16）触发「卡脖子」认知", "华为及关联公司被列入实体清单（2019-05-16）", "国家集成电路产业投资基金（大基金）持续注资"],
+      "accelerator": ["科创板 2019-07-22 开市，为未盈利半导体企业提供上市与再融资通道", "韦尔股份并购豪威、闻泰科技并购安世等资产注入带来业绩与估值共振", "5G 商用带来的终端芯片需求预期"],
+      "turning": ["大基金一期 2019-12-20 公告减持兆易创新、汇顶科技、国科微", "板块估值升至历史高位（部分个股 PE 达数千倍）", "2020 年 3 月全球疫情冲击"],
+      "ending": ["2020-07 后指数转入高位震荡与回撤", "资金风格切换至新能源/光伏等顺周期方向"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E001", "R01-SEMICONDUCTOR-E002", "R01-SEMICONDUCTOR-E003",
+      "R01-SEMICONDUCTOR-E004", "R01-SEMICONDUCTOR-E005", "R01-SEMICONDUCTOR-E006",
+      "R01-SEMICONDUCTOR-E007", "R01-SEMICONDUCTOR-E008", "R01-SEMICONDUCTOR-E011",
+      "R01-SEMICONDUCTOR-E029"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC001", "R01-SEMICONDUCTOR-SEC002", "R01-SEMICONDUCTOR-SEC003",
+      "R01-SEMICONDUCTOR-SEC004", "R01-SEMICONDUCTOR-SEC005", "R01-SEMICONDUCTOR-SEC006",
+      "R01-SEMICONDUCTOR-SEC007", "R01-SEMICONDUCTOR-SEC008"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "启动锚点使用当时已公开信息：2018-04-16 中兴禁令与 2019-05-16 实体清单均为当时可得的官方/权威报道。History Leader Set（韦尔股份、圣邦股份、卓胜微、中芯国际等）属事后复盘确认，不等同于 2019 年当时可识别的 Point-in-Time Basket。",
+    "why_campaign": "满足 Campaign 五要素：主题明确（半导体自主可控）；持续性跨越 2019-05 至 2020-07 共 14 个月；有明显市场关注（板块年度涨幅进入全市场前十）；start/end 可解释（政策催化与估值转折）；证据来自多个独立性来源。",
+    "why_not": "不能简单归为单一政策事件：行情涵盖设计、制造、封测多个环节且跨越 14 个月，超过 event_driven 的范畴；也不能等同于 2015 年全面牛市，因 2019 年上证综指涨幅仅 22.30%，板块超额收益显著。",
+    "possible_duplicate_of": ["R01-SEMICONDUCTOR-002", "R01-SEMICONDUCTOR-004"],
+    "notes": "本候选与 002、004、008 共用「国产替代/自主可控」叙事，但启动催化与时间窗不同；边界争议记录于 R01-SEMICONDUCTOR-CF001 与 CF002。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-002",
+    "title": "2020–2021 半导体设备与材料国产替代（晶圆厂扩产 → 「卡脖子」上游）",
+    "year": 2020,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体设备", "半导体材料", "国产替代", "半导体"],
+    "theme_summary": "中芯国际 2020-07-16 回 A 募资 532.3 亿元并把资本开支导向国产供应链；大基金二期（2019-10 注册，2041.5 亿元）明确聚焦设备与材料薄弱环节。A 股映射为设备（北方华创、中微公司、拓荆科技）与材料（沪硅产业、江丰电子、雅克科技）在 2021-04—2021-07 领涨，成为本轮半导体行情中确定性最高的分支。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-07-16",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：中芯国际科创板上市，发行价 27.46 元，超额配售后募资 532.3 亿元，约 40% 投向 12 英寸 SN1 项目；上市首日午间涨幅 220.39%。",
+          "source_ids": ["R01-SEMICONDUCTOR-S025", "R01-SEMICONDUCTOR-S024"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E009", "R01-SEMICONDUCTOR-E010"],
+          "confidence": "high",
+          "alternative_dates": [
+            {"date": "2019-10-22", "basis": "大基金二期注册成立（注册资本 2041.5 亿元），投资方向更聚焦设备与材料等上游薄弱环节。", "source_ids": ["R01-SEMICONDUCTOR-S005"]}
+          ],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-07-30",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：申万半导体板块指数 2021-07 月内最高 7642.58、月末收 7451.01，为 2019-2021 全周期最高点；券商复盘亦将 2021-04—2021-07 归为「供需错配 + 需求驱动」段，MCU/IGBT/设备材料领涨。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040", "R01-SEMICONDUCTOR-S039"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E012"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "该峰值同时是 001 的备选峰值，构成「一个大周期还是两段 Campaign」的争议（CF001）。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-08-02",
+          "window_end": "2021-09-30",
+          "phase_note": null,
+          "basis": "inferred：2021-08 申万半导体板块指数月内最高 7522.05、月末收 6308.40，主题注意力在 Q3 明显迁移。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E012"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2021-04-01", "end": "2021-07-30", "basis": "设备材料在扩产周期与国产化率提升预期下领涨。", "notes": "同期 MCU、IGBT 等涨价链一同上行。"},
+      {"stage_proposal": "DECLINING", "start": "2021-08-02", "end": "2022-10-12", "basis": "需求转弱叠加去库存，指数单边下行至 2022-10-12 的 3605.80。", "notes": "与 009（2022 下行周期）重叠。"}
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": ["中芯国际回 A 并把募资投向 12 英寸产线", "大基金二期聚焦设备/材料（刻蚀、薄膜、测试、清洗、大硅片、光刻胶、掩模版、电子特气）", "国内晶圆厂进入扩产周期"],
+      "accelerator": ["设备国产化率从个位数向两位数突破", "全球缺芯推动晶圆厂加快资本开支", "出口管制预期强化替代紧迫性"],
+      "turning": ["2021Q3 起终端需求转弱、渠道库存累积", "板块估值透支 2022 年业绩"],
+      "ending": ["2022 年全球半导体增速降至 4.4%，除日本外亚太地区增速转负", "A 股半导体进入去库存下行周期"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E009", "R01-SEMICONDUCTOR-E010", "R01-SEMICONDUCTOR-E012",
+      "R01-SEMICONDUCTOR-E013", "R01-SEMICONDUCTOR-E014", "R01-SEMICONDUCTOR-E030",
+      "R01-SEMICONDUCTOR-E056"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC001", "R01-SEMICONDUCTOR-SEC009", "R01-SEMICONDUCTOR-SEC010",
+      "R01-SEMICONDUCTOR-SEC011"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "2020-07-16 中芯国际上市与 2019-10 大基金二期注册均为当时公开信息，可作同期证据。设备/材料龙头的 Historical Leader Set 结论属事后确认。",
+    "why_campaign": "主题（设备/材料国产替代）明确、跨越约 12 个月、有明确市场关注与代表标的群、start/end 可解释、证据来自多个独立来源。",
+    "why_not": "与 001 共用「国产替代」主线，Q5 Residual Test 存疑：若把设备材料从 2019 半导体行情中剔除，剩余的设计/封测行情仍可自洽解释——这支持独立 Campaign；但两者资金池与叙事高度重叠，也支持 Sub-theme。本包不裁决。",
+    "possible_duplicate_of": ["R01-SEMICONDUCTOR-001"],
+    "notes": "与 R01-01（高端装备）存在边界争议：半导体设备属装备制造。已记录于 cross_task_notes。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-003",
+    "title": "2020–2022 面板（LCD）价格上行周期：韩国产能退出 + 宅经济需求",
+    "year": 2020,
+    "macro_theme_proposal": "面板/显示",
+    "theme_name_candidates": ["面板", "面板/显示", "显示器件", "半导体"],
+    "theme_summary": "在 2018—2019 年连续 6 个季度价格下跌后，三星、LG Display 陆续宣布退出 LCD，产能向京东方与 TCL 华星集中。2020-06 起面板价格连涨 13 个月，65 英寸 LCD 由 2020-01 的 162 美元涨至 2021-07 的 294 美元（涨幅超 80%），32 英寸自 2020-05 低位上涨逾 119%。2021-07 见顶后，终端需求透支叠加高稼动率，价格自 2021-08 进入下跌通道，至 2022-09 跌至 106 美元（较高点 -64%）。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-06-01",
+          "window_end": "2020-06-30",
+          "phase_note": null,
+          "basis": "observed：多家咨询机构报价显示面板价格自 2020 年 6 月起连续上涨；至 2021-01 上旬已达「连续 8 个月」，至 2021-03 达「连续 10 个月」，可反推起点为 2020-06。",
+          "source_ids": ["R01-SEMICONDUCTOR-S008", "R01-SEMICONDUCTOR-S009", "R01-SEMICONDUCTOR-S010"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E015", "R01-SEMICONDUCTOR-E016"],
+          "confidence": "high",
+          "alternative_dates": [
+            {"date": "2020-01-31", "basis": "部分研报以 55 英寸液晶面板价格自 2020-01 开始上涨作为底部反转起点。", "source_ids": ["R01-SEMICONDUCTOR-S032"]}
+          ],
+          "conflict_note": "2020-01（55 英寸口径）与 2020-06（主流尺寸口径）并存。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-06-01",
+          "window_end": "2021-07-31",
+          "phase_note": null,
+          "basis": "observed：65 英寸 LCD 面板价格 2021-07 达 294 美元/片为周期最高；面板涨价周期自 2020 年年中持续 13 个月后于 2021 年年中结束。",
+          "source_ids": ["R01-SEMICONDUCTOR-S010", "R01-SEMICONDUCTOR-S016"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E017"],
+          "confidence": "high",
+          "alternative_dates": [
+            {"date": "2021-04-30", "basis": "A 股龙头京东方 A 股价月内最高 7.1469 元出现在 2021-04，早于面板价格高点约 3 个月。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": "行业价格峰值（2021-07）与代表标的股价峰值（2021-04）分列记录，按 Campaign Lifecycle Measurement Rule 不强行取同日。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-08-01",
+          "window_end": "2021-08-31",
+          "phase_note": null,
+          "basis": "observed：面板价格在 2021 年 8 月开始进入下跌通道。",
+          "source_ids": ["R01-SEMICONDUCTOR-S016"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E017"],
+          "confidence": "high",
+          "alternative_dates": [
+            {"date": "2022-09-30", "basis": "若以价格触底为结束，则 2022-09 的 106 美元/片为周期底部。", "source_ids": ["R01-SEMICONDUCTOR-S016"]}
+          ],
+          "conflict_note": "「主题失效」与「价格触底」是两种结束口径。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2020-06-01", "end": "2021-07-31", "basis": "供给收缩 + 需求爆发 + 上游材料紧缺共同推动价格连涨 13 个月。", "notes": "为行业公认「史上最长涨价周期」。"},
+      {"stage_proposal": "DECLINING", "start": "2021-08-01", "end": "2022-09-30", "basis": "需求透支与高稼动率导致供过于求，价格较高点下跌 64%。", "notes": null}
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": ["三星、LG Display 宣布逐步退出 LCD，韩厂产能关停", "2018-2019 年过度扩产后的产能出清，行业集中度提升", "疫情催生「宅经济」，电视/笔记本/平板需求激增"],
+      "accelerator": ["显示驱动 IC、偏光片、玻璃等上游元器件缺货", "整机厂备货意愿强烈，渠道库存低位", "产能向京东方、TCL 华星集中后具备调控产能能力"],
+      "turning": ["2021 年 1—6 月价格持续上涨至 236 美元后动能衰减", "终端需求透支，整机厂采购转弱"],
+      "ending": ["2021-08 起价格进入下行通道", "2022 年上半年地缘政治、通胀与需求透支叠加，价格跌回 2020 年上半年水平"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E015", "R01-SEMICONDUCTOR-E016", "R01-SEMICONDUCTOR-E017",
+      "R01-SEMICONDUCTOR-E018", "R01-SEMICONDUCTOR-E019"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC007", "R01-SEMICONDUCTOR-SEC012"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "2020-06 起涨、2021-01 「连续 8 个月」、2021-03 「连续 10 个月」均出自当时报道，可作为同期证据。价格绝对值（294 美元/片）引自事后研报，属 historical_fact_support。",
+    "why_campaign": "主题（面板价格周期）明确；持续性超过 13 个月；市场关注显著（京东方 2020 年净利同比 +150%~166%，2021Q1 净利同比 +814.46%）；start/end 均可由价格与产能事件解释；证据横跨咨询机构数据、行业协会与权威媒体。",
+    "why_not": "classification 存在歧义：价格周期更接近 industry_trend（行业景气趋势）而非以叙事驱动的 theme_campaign。本包按 industry_trend 提案，最终由 ThreeC Agent 判定。",
+    "possible_duplicate_of": ["R01-SEMICONDUCTOR-011"],
+    "notes": "与 011（2016—2017 面板周期）属同一机制的两轮周期，是否合并记录于 R01-SEMICONDUCTOR-CF006。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-004",
+    "title": "2020–2022 全球「缺芯」与半导体全产业链涨价（供给约束 + 重复下单）",
+    "year": 2020,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体", "缺芯", "半导体涨价", "汽车芯片"],
+    "theme_summary": "疫情打乱晶圆代工与封测排产（美国德州寒潮、日本地震、瑞萨火灾、马来西亚封测停摆），叠加智能汽车与 5G 终端需求上行，2020 年底起 8 英寸产能全面紧张。2021 年原厂、代工厂、硅晶圆厂逐级涨价，汽车芯片交期拉长至 6—9 个月以上，出现 3—40 倍的囤积炒作。A 股映射为 MCU、功率器件（IGBT）、封测与硅片环节。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2020 年底：芯片短缺问题已经浮现并受到业内广泛关注，8 英寸代工急单报价开始上调。",
+          "basis": "inferred：多篇产业报道均以「2020 年年底」为短缺起点，缺少单一日历锚点。",
+          "source_ids": ["R01-SEMICONDUCTOR-S011", "R01-SEMICONDUCTOR-S012"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E020"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2020-06-30", "basis": "部分产业报道以 2020 年年中作为短缺暴露起点。", "source_ids": ["R01-SEMICONDUCTOR-S011"]}
+          ],
+          "conflict_note": "「2020 年年中」与「2020 年年底」两个起点口径并存。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2021 年年中：汽车芯片供应危机达到高潮，全球数十家车企被迫停产。",
+          "basis": "inferred",
+          "source_ids": ["R01-SEMICONDUCTOR-S012"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E021"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2021-09-30", "basis": "2021 年 9 月原厂、代工厂、硅晶圆厂集中发布全线涨价通知，产业链涨价范围最广。", "source_ids": ["R01-SEMICONDUCTOR-S011"]}
+          ],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-01-01",
+          "window_end": "2022-12-31",
+          "phase_note": null,
+          "basis": "inferred：工信部 2022 年初表示新建产能将于 2022 年下半年陆续释放，汽车芯片供应短缺预计逐渐缓解；2022 年 A 股半导体进入去库存下行。",
+          "source_ids": ["R01-SEMICONDUCTOR-S012", "R01-SEMICONDUCTOR-S029"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E022"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2020-12-01", "end": "2021-12-31", "basis": "供给受限与需求上行共振，全产业链逐级涨价。", "notes": null},
+      {"stage_proposal": "DECLINING", "start": "2022-01-01", "end": "2022-12-30", "basis": "新增产能释放、终端需求转弱，价格与景气同步回落。", "notes": null}
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": ["疫情导致晶圆代工与封测排产中断", "智能汽车与 5G 终端芯片用量激增", "8 英寸成熟产能长期缺乏新增投资"],
+      "accelerator": ["美国德州寒潮、日本地震、瑞萨火灾、马来西亚封测停产等供给冲击", "重复下单（同一订单下给多家工厂）放大需求信号", "囤货与炒货行为推高现货价格"],
+      "turning": ["市场监管总局 2021-08 处罚三家哄抬汽车芯片价格的经销商", "2021-09 起原厂与代工厂集中涨价后需求开始被抑制"],
+      "ending": ["新建产能 2022 年下半年陆续释放", "终端需求转弱、渠道库存累积"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E020", "R01-SEMICONDUCTOR-E021", "R01-SEMICONDUCTOR-E022",
+      "R01-SEMICONDUCTOR-E023"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC006", "R01-SEMICONDUCTOR-SEC008", "R01-SEMICONDUCTOR-SEC013"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "产业报道（2021 年）为当时公开信息，可作同期证据。价格倍数（3—40 倍）引自 2021-09 市场监管总局答记者问转述，属同期官方口径。",
+    "why_campaign": "微观机制明确（供给约束 + 订单周期）；持续超过 12 个月；对 A 股 MCU、功率器件、封测、硅片环节形成可观察映射。",
+    "why_not": "A 股侧的市场映射与 001/002 的行情高度重合，难以独立切分出属于「缺芯」本身的行情区间；机制属行业景气而非主题叙事，故 proposal 为 industry_trend。",
+    "possible_duplicate_of": ["R01-SEMICONDUCTOR-002"],
+    "notes": "本候选与 003 均属「供给约束」机制，边界争议记录于 R01-SEMICONDUCTOR-CF005。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-005",
+    "title": "2019–2020 消费电子 TWS / 可穿戴周期（终端产品创新 + 单一大客户订单）",
+    "year": 2019,
+    "macro_theme_proposal": "电子",
+    "theme_name_candidates": ["消费电子", "电子", "TWS耳机", "苹果产业链"],
+    "theme_summary": "AirPods 自 2017 年带动 TWS 市场，2017/2018/2019 全球出货增速分别为 118%/130%/183%，2019 年市场规模突破 1.2 亿台。A 股映射为组装（立讯精密、歌尔股份）与上游芯片/元件（韦尔股份、圣邦股份、兆易创新、漫步者）。立讯精密与歌尔股份在 2019 年涨幅均超过 6 倍，峰值出现在 2020-10 与 2020-11。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2019-01-01",
+          "window_end": "2019-03-31",
+          "phase_note": null,
+          "basis": "observed：立讯精密与歌尔股份的 2019 年低点分别出现在 2019-01-04（6.31）与 2019-01-29（5.18），此后进入单边上行。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E024"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-10-13",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：立讯精密月内最高价 62.73 元出现在 2020-10（月线高点），歌尔股份月内最高价 49.05 元出现在 2020-11。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E025"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2020-07-14", "basis": "苹果概念板块指数 2020-07-14 达区间最高 3666.62，早于个股峰值。", "source_ids": ["R01-SEMICONDUCTOR-S040"]},
+            {"date": "2020-11-09", "basis": "歌尔股份月内最高价 49.05 元出现在 2020-11-09。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": "板块指数峰值（2020-07）与两只龙头个股峰值（2020-10 / 2020-11）分列，按 Campaign Lifecycle Measurement Rule 允许 peak cluster。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-11-01",
+          "window_end": "2021-03-31",
+          "phase_note": null,
+          "basis": "observed：2020-11 两大果链龙头连续回调，歌尔股份相对高点调整超过 20%；2021-01 立讯精密见 62.11 后进入下行。",
+          "source_ids": ["R01-SEMICONDUCTOR-S035", "R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E026"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2019-01-04", "end": "2020-07-14", "basis": "TWS 出货高速增长与大客户份额提升带来业绩与估值双击。", "notes": null},
+      {"stage_proposal": "SECONDARY", "start": "2020-07-15", "end": "2020-11-09", "basis": "苹果概念指数回调后个股再创新高（立讯 2020-10、歌尔 2020-11）。", "notes": null},
+      {"stage_proposal": "DECLINING", "start": "2020-11-10", "end": "2021-03-31", "basis": "存货大幅上升、产能利用率下降与苹果业绩不及预期引发杀估值。", "notes": null}
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": ["AirPods 带动 TWS 渗透率快速提升（2017—2019 出货增速 118%/130%/183%）", "安卓阵营跟进，华为/三星/OPPO/vivo/小米入局", "2019-01 起市场整体估值修复"],
+      "accelerator": ["AirPods Pro 需求增加，订单向大厂集中", "TWS 相关标的 2019 年涨幅达 4—5 倍，形成赚钱效应", "上游模拟芯片与存储配套需求同步放大"],
+      "turning": ["2020-11 两大龙头披露存货大幅上升", "TWS 普通款产能利用率降至约 80%", "2020-10-30 苹果 iPhone 收入同比 -20.7%"],
+      "ending": ["2020-11 后连续回调，估值中枢下移", "市场注意力转向新能源与半导体自主可控"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E024", "R01-SEMICONDUCTOR-E025", "R01-SEMICONDUCTOR-E026",
+      "R01-SEMICONDUCTOR-E027", "R01-SEMICONDUCTOR-E028"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC014", "R01-SEMICONDUCTOR-SEC015", "R01-SEMICONDUCTOR-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "TWS 出货与增速数据出自 2020 年初可得的 Counterpoint 调研转述，可作同期证据。两只龙头的 Historical Leader Set 属事后确认。",
+    "why_campaign": "主题（TWS/可穿戴）明确；跨越 2019-01 至 2020-11 约 22 个月；市场关注度高（2019 年漫步者涨幅 363.64% 进入全市场前十）；start/end 可由出货数据与存货变化解释；证据覆盖出货数据、公司财务与市场行情。",
+    "why_not": "存在跨任务边界：消费电子品牌整机属 R01-04。本候选只取零部件与上游芯片环节，未纳入整机品牌。",
+    "possible_duplicate_of": [],
+    "notes": "机制为「下游产品创新 + 单一大客户订单周期」，与半导体自主可控（001/002）机制不同，是本任务中少见的纯需求端驱动结构。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-006",
+    "title": "2023 AI 算力驱动的半导体行情（ChatGPT → 英伟达 GTC → 算力芯片/存储）",
+    "year": 2023,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体", "AI算力", "算力芯片", "存储"],
+    "theme_summary": "ChatGPT 在 2023 年 1 月末引发 A 股大模型与算力行情；2023-03-16 微软发布 Copilot、2023-03-21 英伟达 GTC 大会进一步催化。半导体板块指数于 2023-04-10 达 5154.69 的阶段高点，AI 算力芯片板块 2023-04-21 见 991.68 后大幅回落。光模块环节属已有族「信息通信」（C-2023-COMM-OPTICAL），本候选只取半导体侧（算力芯片、存储、先进封装）。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-01-30",
+          "window_end": "2023-02-10",
+          "phase_note": null,
+          "basis": "observed：A 股 AI 行情自 2023 年春节后启动，2023-01-30—02-03 大模型领涨，2023-02-06 起算力开始上涨。",
+          "source_ids": ["R01-SEMICONDUCTOR-S014", "R01-SEMICONDUCTOR-S015"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E031"],
+          "confidence": "high",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2023-04-10",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：申万半导体板块指数 2023-04-10 达 5154.69，为 2023 年内最高（2023-04 月末收 4227.99，单月 -6.03%）。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E032"],
+          "confidence": "high",
+          "alternative_dates": [
+            {"date": "2023-04-21", "basis": "AI 算力芯片板块 2023-04-21 见 991.68 后回落，至 2023-04-28 收 864.52（区间 -12.82%）。", "source_ids": ["R01-SEMICONDUCTOR-S040"]},
+            {"date": "2023-06-20", "basis": "ChatGPT 概念板块 2023-06-20 见 1885.04；2023-06-21 起 AI 板块整体回调。", "source_ids": ["R01-SEMICONDUCTOR-S040", "R01-SEMICONDUCTOR-S014"]}
+          ],
+          "conflict_note": "半导体口径峰值（2023-04-10）早于 AI 叙事口径峰值（2023-06-20），两口径并存。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-06-21",
+          "window_end": "2023-08-25",
+          "phase_note": null,
+          "basis": "observed：2023-06-21 AI 板块开始回调并进入两个多月阴跌；申万半导体板块指数 2023-08-25 见年内低点 3533.73。",
+          "source_ids": ["R01-SEMICONDUCTOR-S014", "R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E033"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2023-01-30", "end": "2023-04-10", "basis": "海外模型与大厂发布会催化，算力芯片与存储先行。", "notes": null},
+      {"stage_proposal": "DECLINING", "start": "2023-06-21", "end": "2023-08-25", "basis": "加单信息边际减弱、财报与估值偏离压制情绪。", "notes": "光模块与算力租赁在回调期仍相对占优，属跨族结构（见 cross_task_notes）。"}
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": ["ChatGPT 月活快速破亿引发大模型关注（2023 年 1 月末—2 月初）", "微软 2023-03-16 发布植入 GPT-4 的 Copilot", "英伟达 2023-03-21 GTC 大会"],
+      "accelerator": ["海外算力资本开支预期上修", "国产算力芯片与存储的国产替代叙事叠加", "光模块加单信息带动整条 AI 产业链情绪"],
+      "turning": ["2023-04 中下旬财报与估值偏离压制情绪", "加单信息对市场反应的边际效力下降"],
+      "ending": ["2023-06-21 起 AI 板块整体回调", "资金向算力租赁、华为产业链等分支迁移"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E031", "R01-SEMICONDUCTOR-E032", "R01-SEMICONDUCTOR-E033",
+      "R01-SEMICONDUCTOR-E034"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC016", "R01-SEMICONDUCTOR-SEC005", "R01-SEMICONDUCTOR-SEC004"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "2023 年当时可得的券商主题复盘与媒体直播回顾（2023-11-22）用于确认行情节奏，属同期或近邻资料。本候选的分支边界（光模块归信息通信）为事后归类。",
+    "why_campaign": "主题明确（AI 算力）；有明确启动催化与可解释的回落；半导体板块指数有可测的年内高点与低点；证据来自券商复盘与权威媒体。",
+    "why_not": "「AI 算力」横跨半导体、光模块、服务器、IDC 多个族；本包只在半导体侧建立候选，不覆盖光模块与整机，避免与 C-2023-COMM-OPTICAL 重复计数。",
+    "possible_duplicate_of": [],
+    "notes": "「算力」不是 Macro Theme，本包仅作为 Mechanism 与 theme_name_candidates 处理，未升格。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-007",
+    "title": "2024–2025 存储「超级周期」：AI 需求 + 原厂产能收缩与结构转移",
+    "year": 2024,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["存储芯片", "半导体", "DRAM", "HBM"],
+    "theme_summary": "存储价格在 2023 年下跌 60%—70%（跌幅远超以往周期）后触底。2024Q2 起库存改善、价格反弹；2025 年下半年三星、SK 海力士、铠侠、美光同步削减 NAND 供应并把产能转向 QLC/HBM，叠加 AI 服务器对 DRAM 的用量为普通服务器的 8 倍，DRAM 与 NAND 出现全面涨价。申万半导体板块指数由 2025-01 的 4685.15 升至 2025-10 的 7964.33（月内最高），创 2021-07 以来新高；存储器指数 2025 年上涨 59.68%。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2024-09-24",
+          "window_end": "2024-12-31",
+          "phase_note": null,
+          "basis": "observed：2024-09-24 央行、证监会、金融监管总局联合推出一揽子金融政策，半导体板块当日大幅上涨，此后国产替代与存储涨价叙事共同推动指数上行。",
+          "source_ids": ["R01-SEMICONDUCTOR-S020", "R01-SEMICONDUCTOR-S022"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E035", "R01-SEMICONDUCTOR-E036"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2025-07-03", "basis": "另有复盘口径认为本轮存储/半导体主升浪始于 2025-07，2025-07-03 为放量突破震荡区间之日。", "source_ids": ["R01-SEMICONDUCTOR-S021"]},
+            {"date": "2024-02-29", "basis": "半导体板块指数 2024-01 创历史最大单月跌幅 24.63% 后于 2024-02 见底反弹。", "source_ids": ["R01-SEMICONDUCTOR-S016"]}
+          ],
+          "conflict_note": "政策起点（2024-09-24）与基本面起点（2025-07）并存，构成「Beta 驱动还是基本面驱动」的争议（CF006）。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2025-10-31",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：申万半导体板块指数 2025-10 月内最高 7964.33（月内振幅 7964.33—6656.35），为 2025 年最高点，也是 2021-07（7642.58）以来的新高。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E037"],
+          "confidence": "high",
+          "alternative_dates": [
+            {"date": "2025-11-11", "basis": "存储器板块指数 2025-11-11 见 2211.83 为区间最高；江波龙 2025-11-13 盘中触及 330.51 元创历史新高。", "source_ids": ["R01-SEMICONDUCTOR-S040", "R01-SEMICONDUCTOR-S017"]}
+          ],
+          "conflict_note": "半导体口径（2025-10）与存储器口径（2025-11）峰值分列记录。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "截至 2025-12-31 尚未出现明确结束信号：半导体板块指数月末收 6950.35，较 2025-10 高点回落约 12.7%；机构普遍预计涨价延续至 2026 年。",
+          "basis": "inferred：仅有高位震荡与涨幅收敛，缺少「市场注意力消失 / 叙事失效」的确证。",
+          "source_ids": ["R01-SEMICONDUCTOR-S017", "R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E038"],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "结束点不可确认，按纪律保留为 PHASE_WINDOW，不强行指定日期。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2025-07-01", "end": "2025-10-31", "basis": "存储涨价与原厂产能收缩形成共振，2025-08 单月指数 +27.2%。", "notes": null},
+      {"stage_proposal": "PEAK", "start": "2025-10-01", "end": "2025-11-30", "basis": "半导体指数 2025-10 见 7964.33；存储器指数 2025-11 见 2211.83。", "notes": "峰值 cluster。"},
+      {"stage_proposal": "UNKNOWN", "start": "2025-12-01", "end": null, "basis": "2025-12 指数回落约 12.7%，但涨价预期仍被机构维持，结束与否无法判定。", "notes": null}
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": ["2023 年存储价格深度下跌 60%—70% 后的低基数", "2024Q2 起库存改善、价格反弹", "2024-09-24 一揽子金融政策改善流动性与风险偏好"],
+      "accelerator": ["AI 服务器对 DRAM 需求为普通服务器的 8 倍，OpenAI 等企业对 DRAM 晶圆需求规模巨大", "三星、SK 海力士、铠侠、美光削减 NAND 供应并把产能转向 QLC/HBM", "云服务商追加大容量 QLC SSD 订单"],
+      "turning": ["2025Q4 DRAM 合约价季增 45%—50% 创历史最大季度涨幅后，价格涨幅成为后续需求的最大变量", "下游（PC/手机）成本压力显性化"],
+      "ending": ["尚未出现明确结束信号（截至 2025-12-31）"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E035", "R01-SEMICONDUCTOR-E036", "R01-SEMICONDUCTOR-E037",
+      "R01-SEMICONDUCTOR-E038", "R01-SEMICONDUCTOR-E039", "R01-SEMICONDUCTOR-E040"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC016", "R01-SEMICONDUCTOR-SEC004", "R01-SEMICONDUCTOR-SEC017",
+      "R01-SEMICONDUCTOR-SEC018"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "2025 年内的产业报道（2025-11-13 / 2025-11-18）为同期资料，可用于证明当时已知。存储原厂削减供应的具体沟通属行业传闻口径（「据悉」「正在谋划」），已降低对应证据的 confidence。",
+    "why_campaign": "主题（存储涨价）明确；有可测的价格与指数数据；市场关注显著（江波龙 2025-11 市值突破千亿，年初至今涨幅 260.47%）；start 可解释（库存低位 + 政策与流动性）；证据横跨行业协会、权威媒体与行情数据。",
+    "why_not": "2024-09-24 的启动带有明显市场 Beta 特征（普涨），能否把「存储超级周期」与「924 政策行情」切分开是本候选最大的不确定项。",
+    "possible_duplicate_of": ["R01-SEMICONDUCTOR-008"],
+    "notes": "本候选的结束点明确标注为 UNKNOWN，未强行赋予状态；2024–2025 的连续市场证据以价格与行情为主，缺少官方统计（如工信部/海关口径）的独立佐证。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-008",
+    "title": "2024 半导体自主可控「破局」：大基金三期 + 出口管制升级（设备/材料/先进制程）",
+    "year": 2024,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体", "国产替代", "自主可控", "半导体设备"],
+    "theme_summary": "2024-05-24 国家大基金三期成立，注册资本 3440 亿元，超过一、二期之和，明确指向设备、材料、先进制造、AI 芯片等「卡脖子」环节。叠加美国持续收紧先进制程设备与 AI 芯片出口限制，2024 年成为国产替代的「破局之年」。 A 股表现为设备材料领涨，2024-10—12 在政策与流动性推动下最大涨幅达 83.10%。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2024-05-24",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event：国家集成电路产业投资基金三期股份有限公司于 2024-05-24 成立，注册资本 3440 亿元，19 位股东含财政部与六大国有银行。",
+          "source_ids": ["R01-SEMICONDUCTOR-S038", "R01-SEMICONDUCTOR-S005"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E041"],
+          "confidence": "high",
+          "alternative_dates": [
+            {"date": "2024-05-27", "basis": "多家上市银行当日晚间公告出资，市场当日开始广泛关注。", "source_ids": ["R01-SEMICONDUCTOR-S005"]}
+          ],
+          "conflict_note": "成立日（2024-05-24）与市场知悉日（2024-05-27）并存。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2024-11-01",
+          "window_end": "2024-12-31",
+          "phase_note": null,
+          "basis": "observed：申万半导体板块指数 2024-11 月内最高 5397.61；研报口径 2024-10—12 期间最大涨幅 83.10%。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040", "R01-SEMICONDUCTOR-S016"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E042"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2024-12-31", "basis": "板块指数 2024-12 月末收 4760.90，较 11 月高点回落。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2025 年起叙事并未失效，而是并入存储与 AI 算力主线；本候选无独立结束点。",
+          "basis": "inferred",
+          "source_ids": ["R01-SEMICONDUCTOR-S021"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E043"],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "与 007 的结束点无法分离，构成 CF002 的一部分。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2024-09-24", "end": "2024-11-29", "basis": "政策与流动性推动下的普涨，设备材料领涨。", "notes": "本段与市场整体 Beta 高度重合。"},
+      {"stage_proposal": "RETRACEMENT", "start": "2024-12-01", "end": "2025-04-30", "basis": "2024-12 至 2025-04 指数在 4255—5400 区间震荡消化估值。", "notes": null}
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": ["大基金三期 3440 亿元注册资本落地，投向先进制造、高端设备、AI 芯片", "美国持续收紧先进制程设备与 AI 芯片出口限制", "晶圆厂加大国产设备采购，测试与涂胶显影等环节国产化率由个位数向两位数突破"],
+      "accelerator": ["2024-09-24 央行、证监会、金融监管总局一揽子金融政策", "并购重组政策松绑推动半导体资产整合", "AI 算力需求外溢至半导体设备与材料"],
+      "turning": ["估值快速抬升后交易拥挤", "2024-12 起指数进入区间震荡"],
+      "ending": ["叙事并入 2025 存储 / AI 算力主线，未独立结束"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E035", "R01-SEMICONDUCTOR-E041", "R01-SEMICONDUCTOR-E042",
+      "R01-SEMICONDUCTOR-E043", "R01-SEMICONDUCTOR-E044", "R01-SEMICONDUCTOR-E056"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC001", "R01-SEMICONDUCTOR-SEC009", "R01-SEMICONDUCTOR-SEC010",
+      "R01-SEMICONDUCTOR-SEC019"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "大基金三期成立（2024-05-24）与 924 政策均为当时公开信息。但「自主可控行情」与市场 Beta 的分离需要更精细的行业指数与等权口径核验，当前证据不足以支撑高置信度。",
+    "why_campaign": "有明确政策锚点与可测的市场区间；叙事（自主可控）在 2024 年持续存在；代表标的群清晰（设备/材料）。",
+    "why_not": "无法排除 Beta Contamination：2024-09-24 起为全市场普涨，半导体只是其中之一；本候选的市场区间与 007 高度重叠，独立性存疑。按 historical_campaign_validation_v1.md §4.3，无法排除时保持低置信度。",
+    "possible_duplicate_of": ["R01-SEMICONDUCTOR-001", "R01-SEMICONDUCTOR-002", "R01-SEMICONDUCTOR-007"],
+    "notes": "本候选是「2019–2021 国产替代」与「2024–2025 自主可控」是否同一 Campaign 争议（CF002）的核心对象。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-009",
+    "title": "2022 半导体下行周期：需求收缩 + 主动去库存",
+    "year": 2022,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体", "半导体库存周期", "半导体产业周期"],
+    "theme_summary": "2021 年的供需错配与「缺芯」涨价在 2022 年反转为需求萎缩与库存高企。申万半导体指数全年下跌 37.11%，在申万一级行业中跌幅最大；申万电子指数下跌 36.54%。数字与模拟芯片设计跌幅最深（-42.75% / -37.94%），面板 -33.50%。指数自 2022-01-04 的 6511.51 单边下行至 2022-10-12 的 3605.80。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2022-01-04",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：申万半导体板块指数 2022-01 月内最高 6511.51（2022-01-04 前后），为本年度最高点，此后进入单边下行。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E045"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2021-12-13", "basis": "部分复盘将下行起点定在 2021 年 12 月。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-08-01",
+          "window_end": "2022-08-31",
+          "phase_note": null,
+          "basis": "observed：指数在 2022-08 出现年内唯一反弹高点 5380.53（月内最高），随后继续下行。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E046"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "下行周期内的反弹高点不等于前一轮周期的峰值（2021-07），两者不得混用。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2022-10-12",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：申万半导体板块指数 2022-10 月内最低 3605.80（2022-10-12 前后），为年内低点。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E045"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2023-08-25", "basis": "若把去库存延续至 2023 年，板块低点延伸到 2023-08-25 的 3533.73。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": "2022-10 与 2023-08 两个低点口径并存。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "DECLINING", "start": "2022-01-04", "end": "2022-10-12", "basis": "需求转弱叠加渠道库存高企，指数全年下跌 37.11%。", "notes": null},
+      {"stage_proposal": "SECONDARY", "start": "2022-06-01", "end": "2022-08-31", "basis": "2022-08 出现年内唯一反弹高点 5380.53。", "notes": null}
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": ["2021 年供需错配与重复下单造成的渠道库存需要消化", "消费电子终端需求萎缩", "美国 2022-10 进一步收紧对华半导体限制"],
+      "accelerator": ["全球半导体市场增速由 2021 年的 26% 降至 2022 年的 4.4%", "除日本外亚太地区市场增速转负（-2%）"],
+      "turning": ["2022Q3 起部分细分领域库存降幅明显", "2023-10 DRAM 与 NAND Flash 均价全面上涨"],
+      "ending": ["2023Q4 智能手机与 PC 市场分别结束连续 7、8 个季度的同比下滑"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E045", "R01-SEMICONDUCTOR-E046", "R01-SEMICONDUCTOR-E047",
+      "R01-SEMICONDUCTOR-E048"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC003", "R01-SEMICONDUCTOR-SEC006", "R01-SEMICONDUCTOR-SEC019"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "2022 年当时的行业报道（如 2022-12-29 去库存与展望）可用于证明当时已知。全年涨跌幅数据出自年报/研报统计（2022-12-30 数据日），属 historical_fact_support。",
+    "why_campaign": "主题（半导体周期下行）明确；持续约 10 个月且幅度显著（-37.11%）；有可解释的起止（库存与需求）；证据来自申万行业统计与券商复盘。",
+    "why_not": "这是下行结构而非「历史机会」结构。协议 §8 允许保留真实状态，但需明确标注它不是机会型 Campaign；是否应进入 canonical campaigns 表由 ThreeC Agent 判定。",
+    "possible_duplicate_of": [],
+    "notes": "本候选的价值在于机制对照：当前 ThreeC 4 个 Macro Theme 完全没有「库存周期 / 需求收缩型下行」结构。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-010",
+    "title": "2015 半导体杠杆牛：大基金一期 + 全面牛市流动性",
+    "year": 2015,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体", "集成电路", "电子"],
+    "theme_summary": "大基金一期于 2014-09 成立（注册资本 987.2 亿元，募集 1387.2 亿元）。在货币政策由定向宽松转向全面宽松的背景下，集成电路概念板块 2015-01-05 起自 703.67 点上行，2015-06-03 见 1854.93 的阶段高点（区间最大涨幅超过 130%），随后随全面牛市结束而回落，2015-12-31 收 1256.82，全年 +78.61%。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2014-09-01",
+          "window_end": "2014-09-30",
+          "phase_note": null,
+          "basis": "observed：国家集成电路产业投资基金（大基金一期）2014 年 9 月成立，当月半导体精选指数涨超 12%，此后持续上涨。",
+          "source_ids": ["R01-SEMICONDUCTOR-S030"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E049"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2015-01-05", "basis": "集成电路概念板块在 2015 年首个交易日起自 703.67 点启动。", "source_ids": ["R01-SEMICONDUCTOR-S040"]}
+          ],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2015-06-03",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：集成电路概念板块 2015-06-03 见 1854.93，为年内最高。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E050"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2015-06-30", "basis": "半导体精选指数在 2015-06 曾触及 10922.39。", "source_ids": ["R01-SEMICONDUCTOR-S030"]},
+            {"date": "2015-06-12", "basis": "上证综指见 5178 点的全面牛市顶点，多数板块同步见顶。", "source_ids": []}
+          ],
+          "conflict_note": "不同板块/指数口径的峰值日期集中在 2015-06，具体日存在分歧。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2015-06 中旬起随全面牛市去杠杆快速下跌，至 2015-12-31 板块收 1256.82，较 6 月高点回落约 32%。",
+          "basis": "inferred",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E050"],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2015-01-05", "end": "2015-06-03", "basis": "流动性宽松 + 大基金一期政策预期。", "notes": "与全市场 Beta 高度重合。"},
+      {"stage_proposal": "DECLINING", "start": "2015-06-15", "end": "2015-12-31", "basis": "去杠杆导致板块指数回落约 32%。", "notes": null}
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": ["大基金一期成立并开始投资", "央行货币政策由定向宽松转向全面宽松"],
+      "accelerator": ["杠杆资金入市推升全市场估值", "集成电路被列入国家战略性产业"],
+      "turning": ["2015-06 中旬去杠杆启动"],
+      "ending": ["全面牛市结束，板块随大盘回落"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E049", "R01-SEMICONDUCTOR-E050"
+    ],
+    "security_ids": [],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "缺少 2015 年当时的公司公告、协会数据与政策原文来源；现有依据以事后板块指数与研报统计为主。按协议 §2.1，Priority B（2015–2017）允许大面积 INSUFFICIENT。",
+    "why_campaign": "存在可测的板块区间与政策锚点（大基金一期）。",
+    "why_not": "无法排除 Beta Contamination——2015 年为全面杠杆牛市，半导体板块的上涨难以与市场整体 Beta 分离；且缺少半导体行业自身的基本面证据（产能、出货、价格）。",
+    "possible_duplicate_of": [],
+    "notes": "状态保持 INSUFFICIENT，不代表「不成立」。补齐 2015 年当时的公司公告与行业数据后可再评估。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-011",
+    "title": "2016–2017 面板价格上行周期：韩厂转产 OLED + 电视大尺寸化",
+    "year": 2016,
+    "macro_theme_proposal": "面板/显示",
+    "theme_name_candidates": ["面板", "面板/显示", "显示器件"],
+    "theme_summary": "2016 年三星显示关闭部分 G7 产线转产 OLED，鸿海收购夏普后减少对三星电视面板出货，叠加当年新增产能较少，供给端偏紧。32 英寸面板由最低 52 美元/片涨至 74 美元/片，40 英寸全年涨幅达 69%；2016-02 至 2017-01 面板价格上涨约 44%。京东方 2016Q3 扭亏，此后连续四个季度营收增速保持 40% 以上。2017H2 大陆产能释放后价格转入长期下行。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2016-02-01",
+          "window_end": "2016-06-30",
+          "phase_note": null,
+          "basis": "observed：2016 年面板价格自年中开始持续上涨（2016H1 起为涨价阶段）；另有口径指出 2016-02 至 2017-01 面板价格上涨约 44%。",
+          "source_ids": ["R01-SEMICONDUCTOR-S031", "R01-SEMICONDUCTOR-S032"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E051"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "「自年中开始」（2016H1/H2 交界）与「2016-02 起」两个口径并存。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2017-01-01",
+          "window_end": "2017-06-30",
+          "phase_note": null,
+          "basis": "inferred：2016H1—2017H1 为涨价阶段；研报指出「面板价格仍维持高位」，17 年上半年供过于求指数降至近 2 年最低。",
+          "source_ids": ["R01-SEMICONDUCTOR-S032", "R01-SEMICONDUCTOR-S031"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E052"],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "缺少单月价格最高点的直接数据，峰值只能定位到半年窗口。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2017H2 起大陆新增产能不断释放，BOE、TCL 华星持续投资高世代产线，行业供过于求，价格进入长期下行周期（2017H2—2019H2）。",
+          "basis": "inferred",
+          "source_ids": ["R01-SEMICONDUCTOR-S032"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E053"],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2016-02-01", "end": "2017-01-31", "basis": "供给偏紧推动价格上涨约 44%。", "notes": null},
+      {"stage_proposal": "DECLINING", "start": "2017-07-01", "end": "2019-12-31", "basis": "大陆高世代产能释放导致供过于求，价格长期下行至 2019Q4 触底。", "notes": "下行段跨越 Priority B 与 Priority A 边界。"}
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": ["三星显示关闭部分 G7 产线转产 OLED", "鸿海收购夏普后减少对三星电视面板出货", "2016 年新增产能较少"],
+      "accelerator": ["电视面板平均尺寸由 16Q4 的 44.6 寸提升至 17Q4 的 46 寸，大尺寸化消耗产能", "2016Q3 起面板厂利润明显改善（京东方单季营业利润 6.78 亿元）"],
+      "turning": ["2017 年新增产能集中在下半年释放", "涨价压缩整机厂盈利空间，影响旺季促销"],
+      "ending": ["2017H2 起价格进入长期下行周期", "2019Q4 行业指标触底"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E051", "R01-SEMICONDUCTOR-E052", "R01-SEMICONDUCTOR-E053"
+    ],
+    "security_ids": [
+      "R01-SEMICONDUCTOR-SEC007"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "2017-03 的券商行业研究（面板价格周期）为当时资料，可作同期证据；面板价格的月度绝对值来自 2020 年研报回顾，属 historical_fact_support。",
+    "why_campaign": "主题（面板价格周期）明确；区间跨 2016H1—2017H1；有供给端与需求端的可解释机制；京东方业绩弹性可验证。",
+    "why_not": "周期属性接近行业景气趋势（industry_trend）而非主题叙事；峰值日期只能定位到半年窗口，日期精度不足。",
+    "possible_duplicate_of": ["R01-SEMICONDUCTOR-003"],
+    "notes": "与 003（2020–2022 面板周期）构成同一机制的两轮周期，是否应合并为同一 Campaign 记录于 CF006。"
+  },
+  {
+    "candidate_id": "R01-SEMICONDUCTOR-012",
+    "title": "2017 显卡与矿机芯片需求：比特币价格周期外溢至半导体",
+    "year": 2017,
+    "macro_theme_proposal": "半导体",
+    "theme_name_candidates": ["半导体", "GPU", "芯片"],
+    "theme_summary": "比特币价格由 2017 年初约 1000 美元涨至 2017-12 的约 21000 美元（年内约 21 倍）。挖矿需求快速消耗显卡库存，显存等核心配件供货紧俏，显卡价格在 2017 年下半年至 2018 年初持续上涨。A 股芯片概念板块 2017 年上涨 18.93%，2017-11-14 见 3390.36 的年内高点。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2017 年下半年：挖矿需求导致显卡库存被快速消耗，市场供不应求。",
+          "basis": "inferred",
+          "source_ids": ["R01-SEMICONDUCTOR-S036"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E054"],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "缺少 A 股半导体环节的月度映射数据，起点只能给到半年内的阶段描述。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2017-11-14",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：芯片概念板块 2017-11-14 见 3390.36 的年内最高。",
+          "source_ids": ["R01-SEMICONDUCTOR-S040"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E055"],
+          "confidence": "medium",
+          "alternative_dates": [
+            {"date": "2017-12-18", "basis": "比特币期货上线、比特币首破 20000 美元（2017-12-17 美东时间），A 股区块链概念股大幅上扬。", "source_ids": ["R01-SEMICONDUCTOR-S036"]}
+          ],
+          "conflict_note": "板块指数峰值（2017-11）与比特币价格峰值（2017-12）不同步。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2018 年比特币价格回落，显卡需求与价格同步转弱。",
+          "basis": "inferred",
+          "source_ids": ["R01-SEMICONDUCTOR-S036"],
+          "evidence_ids": ["R01-SEMICONDUCTOR-E054"],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {"stage_proposal": "MAIN_RISE", "start": "2017-06-01", "end": "2017-11-14", "basis": "挖矿需求外溢至显卡与芯片环节。", "notes": null},
+      {"stage_proposal": "DECLINING", "start": "2018-01-01", "end": "2018-06-30", "basis": "比特币价格回落，显卡需求转弱。", "notes": null}
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": ["比特币价格年内上涨约 21 倍", "挖矿对显卡的突发性需求快速消耗市场库存"],
+      "accelerator": ["显存等核心配件产能无法快速扩张", "渠道囤货推高显卡价格"],
+      "turning": ["2018 年比特币价格回落"],
+      "ending": ["显卡需求与价格同步转弱"]
+    },
+    "evidence_ids": [
+      "R01-SEMICONDUCTOR-E054", "R01-SEMICONDUCTOR-E055"
+    ],
+    "security_ids": [],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "仅有媒体转述的产业逻辑与板块指数数据；缺少 A 股半导体公司的订单/收入证据，也缺少半导体行业协会数据。按 §2.1，Priority B 允许 INSUFFICIENT。",
+    "why_campaign": "存在真实的产业需求外溢（显卡/显存缺货）与可测的板块区间。",
+    "why_not": "主题边界不清：2017 年 A 股的主要映射是「区块链/数字货币」概念，而区块链概念不属本任务 scope；本包只保留与半导体（GPU、显存、芯片设计）直接相关的部分，但证据不足以支撑其作为独立半导体 Campaign。",
+    "possible_duplicate_of": [],
+    "notes": "已同时记录为边界争议（CF008）。若后续能取得 2017 年半导体公司的收入/订单数据，可重新评估。"
+  }
+]

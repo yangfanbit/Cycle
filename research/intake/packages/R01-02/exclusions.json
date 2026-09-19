@@ -1,0 +1,114 @@
+[
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X001",
+    "subject": "光模块 / 高速光互联（中际旭创、新易盛等）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "光模块属已有 family「信息通信」，并已有 canonical Campaign `C-2023-COMM-OPTICAL`。虽与半导体在产业链上相邻且同受 AI 算力驱动，但本任务 scope 明确排除「光模块 / 高速光互联」。本包仅在 R01-SEMICONDUCTOR-006 中把光模块作为「AI 算力」机制的外部邻接项记录，未纳入候选。",
+    "source_ids": ["R01-SEMICONDUCTOR-S014"],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X002",
+    "subject": "通信设备与电信运营商行情",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "通信设备与运营商已有 family，且已有 `C-2019-COMM-5G`。本任务 scope 明确排除。2019 年的 5G 建设行情虽与半导体需求相关，但其市场映射主体不属本任务。",
+    "source_ids": ["R01-SEMICONDUCTOR-S039"],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X003",
+    "subject": "消费电子品牌整机（手机 / PC / 家电品牌）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "消费电子品牌整机属 R01-04（消费）。本任务仅纳入电子零部件与上游芯片环节（见 R01-SEMICONDUCTOR-005：立讯精密、歌尔股份、韦尔股份、圣邦股份），不纳入整机品牌。",
+    "source_ids": ["R01-SEMICONDUCTOR-S033", "R01-SEMICONDUCTOR-S034"],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X004",
+    "subject": "电子特气 / 光刻胶 / 湿电子化学品等纯化工品价格周期",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "半导体材料中的纯化工品价格周期属 R01-03（资源/化工）。本任务只在「半导体材料国产替代」的产业含义下使用相关标的（如沪硅产业），不建立以化工品价格为主机制的独立候选。",
+    "source_ids": ["R01-SEMICONDUCTOR-S007"],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X005",
+    "subject": "2019 年「华为手机产业链」在消费电子侧的行情（光学、结构件、模组等）",
+    "reason_code": "SINGLE_STOCK_EVENT",
+    "rationale": "该方向在 2019 年的市场表现以少数个股的连续涨停与订单传闻为主，缺少可验证的行业级基本面证据（出货量、价格、产能），且与「半导体自主可控」共享资金池但机制不同（订单/大客户 vs 政策/替代）。按纪律不升级为 Campaign。",
+    "source_ids": ["R01-SEMICONDUCTOR-S026", "R01-SEMICONDUCTOR-S027"],
+    "evidence_ids": ["R01-SEMICONDUCTOR-E005", "R01-SEMICONDUCTOR-E006"]
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X006",
+    "subject": "2020-07-16 中芯国际上市首日单日暴涨（午间 +220.39%）",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "单一交易日的价格表演，不构成独立 Campaign。其意义在于提供了制造环节的资本开支锚点，因此被记录为 R01-SEMICONDUCTOR-002 的启动证据（E009），而非独立候选。",
+    "source_ids": ["R01-SEMICONDUCTOR-S025"],
+    "evidence_ids": ["R01-SEMICONDUCTOR-E009"]
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X007",
+    "subject": "第三代半导体（SiC / GaN）2021—2022 独立行情",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "第三代半导体在 A 股长期作为「半导体」下的概念分支出现（如 2023-04-03 同一标的被同时归入第三代半导体与半导体板块）。本轮未取得足够独立的行业数据（衬底产能、器件上车量、价格）与独立的生命周期证据，无法在现有证据下确立其作为独立 Campaign 的边界。保留为后续轮次输入。",
+    "source_ids": ["R01-SEMICONDUCTOR-S040"],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X008",
+    "subject": "2025 年算力芯片单一标的的暴涨（如寒武纪等）",
+    "reason_code": "SINGLE_STOCK_EVENT",
+    "rationale": "不能因为个别股票上涨就反推整个主题成立。本包在 R01-SEMICONDUCTOR-007 中只使用板块级（半导体指数、存储器指数）与多标的口径（江波龙、兆易创新、佰维存储等）作为证据，未以单一个股的涨幅作为主题成立的依据。",
+    "source_ids": ["R01-SEMICONDUCTOR-S017", "R01-SEMICONDUCTOR-S023"],
+    "evidence_ids": ["R01-SEMICONDUCTOR-E038"]
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X009",
+    "subject": "将「算力」升格为独立 Macro Theme",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "「算力」不是行业分类，而是需求侧机制。同一波行情可同时落在半导体、光模块、服务器、IDC 上。按任务书 known_ambiguity，本包只把「算力」作为 Mechanism 与 theme_name_candidates 处理，未提交为 Macro Theme proposal。",
+    "source_ids": ["R01-SEMICONDUCTOR-S014", "R01-SEMICONDUCTOR-S015"],
+    "evidence_ids": ["R01-SEMICONDUCTOR-E031"]
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X010",
+    "subject": "在 Worker 侧裁决「半导体」与「电子」是否应合并为同一个 Macro Theme",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "Macro Theme canonicalization 只能由 ThreeC Agent 走 CMTR v1（`canonical-macro-theme-resolution-1`）完成，唯一事实来源是 DB `themes` 表。本包同时在 macro_theme_proposals 中提交「半导体」「电子」「面板/显示」等 proposal 与 theme_name_candidates，交由 CMTR 解析，不做裁决。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X011",
+    "subject": "2023 年华为 Mate60 Pro / 昇腾算力产业链行情",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "该行情的主体（华为产业链、昇腾服务器整机、算力租赁）在归属上跨越「信息通信」「计算机」与本任务，且 2023 年其市场映射集中在通信与计算机侧。本包只在 R01-SEMICONDUCTOR-006 的 drivers 中作为催化剂记录（2023-09-04 Mate60 Pro），未建立独立候选。边界问题已记录于 cross_task_notes（BOUNDARY）。",
+    "source_ids": ["R01-SEMICONDUCTOR-S015"],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X012",
+    "subject": "2025 年「国产 HBM / 先进封装突破」主题",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "截至 2025-12-31，该方向主要体现为机构预测与投资方向预期（如大基金三期可能将 HBM 列为重点），缺少连续、可验证的行业落地证据（量产数据、客户导入、收入确认）。按任务书 §5 的要求，不因政策、叙事或预期而提升状态。",
+    "source_ids": ["R01-SEMICONDUCTOR-S007", "R01-SEMICONDUCTOR-S019"],
+    "evidence_ids": ["R01-SEMICONDUCTOR-E039"]
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X013",
+    "subject": "把大基金一期（2014-09）、二期（2019-10）、三期（2024-05-24）三次成立拆分为三个独立 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "三次设立属同一政策序列的不同步骤（同一事件簇），按 Campaign Separation Rules 规则 1「Catalyst ≠ Campaign」，不得据多个催化剂拆分为多个 Campaign。本包把一期/二期作为 001/002 的启动条件、三期作为 008 的政策锚点，未单独建立「大基金 Campaign」。",
+    "source_ids": ["R01-SEMICONDUCTOR-S005", "R01-SEMICONDUCTOR-S030", "R01-SEMICONDUCTOR-S038"],
+    "evidence_ids": ["R01-SEMICONDUCTOR-E013", "R01-SEMICONDUCTOR-E041", "R01-SEMICONDUCTOR-E049"]
+  },
+  {
+    "exclusion_id": "R01-SEMICONDUCTOR-X014",
+    "subject": "半导体设备国产化率数据（如「设备综合国产化率不足 10%」）作为独立 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "国产化率是行业状态指标（industry state），本身不是可交易/可观察的历史行情结构。本包把它作为 R01-SEMICONDUCTOR-002 的机制说明，而非候选。",
+    "source_ids": ["R01-SEMICONDUCTOR-S021"],
+    "evidence_ids": ["R01-SEMICONDUCTOR-E044"]
+  }
+]

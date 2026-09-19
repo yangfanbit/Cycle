@@ -1,0 +1,50 @@
+[
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q001",
+    "question": "把 Campaign Independence Gate Q1–Q5 应用于 2019.1—2020.2、2020.4—2020.8、2021.4—2021.7 三段，应当判定为「一个长周期 + 内部阶段」，还是三个独立 Campaign？",
+    "why_it_matters": "这决定了 2019—2021 年半导体行情在 canonical campaigns 表与 Timeline 中占 1 行还是 3 行；同时影响后续 Structural Analogy 的比较对数与「无对应」结论的信息量。任务书 §7 明确要求此争议不得由 Worker 自行消解。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-001", "R01-SEMICONDUCTOR-002"]
+  },
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q002",
+    "question": "2019—2020 年的「国产替代」与 2024—2025 年的「自主可控」是否满足 Q3 Independent Persistence——即中间 2022-01 至 2024-01 的下行期是否足以证明两者是不同 Campaign？",
+    "why_it_matters": "两个候选共享同一叙事与同一批核心资产，若判定为同一 Campaign，则本任务对「半导体」族的实际扩容只有 1 个而非 3 个结构；若判定为不同 Campaign，则需说明叙事迁移与资金组织方式发生了何种实质变化。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-001", "R01-SEMICONDUCTOR-008"]
+  },
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q003",
+    "question": "「面板/显示」应作为「半导体」下的 Sub-theme、独立 Theme，还是独立 Macro Theme？其机制（产能周期 + 价格周期）与半导体设计/设备的机制差异是否达到 Macro Theme 级别？",
+    "why_it_matters": "面板是当前 4 个 Macro Theme 中完全不存在的一类机制（供给收缩 / 价格周期）。若被并入「半导体」，则该机制在 taxonomy 中不可见；若独立成族，则需确证其代表资产与生命周期确实不共享主线。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-003", "R01-SEMICONDUCTOR-011"]
+  },
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q004",
+    "question": "「面板价格周期」（003 / 011）与「全球缺芯」（004）应归类为 theme_campaign 还是 industry_trend？以行业价格与产能数据驱动、缺少市场叙事主导的结构，是否满足 Campaign 的「明确 Theme + 市场关注」要求？",
+    "why_it_matters": "当前 ThreeC 的 13 个 canonical Campaign 全部为 theme_campaign / event_driven / industry_trend（仅 C-2022-POWER-GRID 为 industry_trend）。若价格周期类结构不能进入 campaigns 表，则本任务对「供给收缩型机制」的扩容贡献将大幅下降。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-003", "R01-SEMICONDUCTOR-004", "R01-SEMICONDUCTOR-011"]
+  },
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q005",
+    "question": "如何用可操作的口径把 2024-09-24 之后的半导体行情与市场 Beta 分离（等权口径？相对申万 31 个一级行业的超额收益？行业指数减宽基指数）？在无法分离时，应保持 confidence = low，还是应改用相对收益口径重估？",
+    "why_it_matters": "这是 R01-05（金融/地产）与 R01-02 共同面临的最高风险项。若无统一口径，各任务的「政策驱动型」候选将无法横向比较，且可能系统性高估 Campaign 数量。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-007", "R01-SEMICONDUCTOR-008"]
+  },
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q006",
+    "question": "2020—2022 的面板涨价（003）与全球缺芯（004）在「上游显示驱动 IC 缺货」这一共同节点上，是否构成同一供给侧结构的两个分支？Q5 Residual Test 的结果是否支持拆分？",
+    "why_it_matters": "若合并，则「供给约束」机制在本任务中只出现 1 次；若拆分，则同一机制出现 2 次，会影响机制分布的统计与后续跨族结构比较的独立性假设。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-003", "R01-SEMICONDUCTOR-004"]
+  },
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q007",
+    "question": "纯下行周期（如 2022 年半导体 -37.11%）是否应进入 canonical campaigns 表？还是应仅作为 research observation / industry_trend 保留？",
+    "why_it_matters": "Historical Universe 的定义是「功能性历史机会宇宙」。若下行周期不计入，则「库存周期 / 需求收缩」这一机制轴将始终缺失；若计入，则需重新界定 Campaign 是否允许负向结构。这是方法论层面的问题，超出 Worker 权限。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-009"]
+  },
+  {
+    "question_id": "R01-SEMICONDUCTOR-Q008",
+    "question": "2017 年的显卡 / 矿机芯片需求（012）与 2016—2017 年 DRAM/NAND 涨价（本轮未单独立候选）是否属于本任务 scope，还是应分别归属「数字货币/区块链」与「资源/化工」？",
+    "why_it_matters": "这决定了半导体族能否覆盖「外部商品价格周期驱动」与「算力需求驱动」两类机制的早期形态；也直接影响 R01-03（资源/化工）与 R01-05 的边界划分。",
+    "related_candidate_ids": ["R01-SEMICONDUCTOR-012"]
+  }
+]
