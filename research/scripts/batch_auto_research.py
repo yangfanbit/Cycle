@@ -35,8 +35,9 @@ AUTO_RULE = "rule_auto_summer"
 PHARMA_RULE = "rule_pharma_upgrade"   # 医药健康（Medical Health Minimum Dataset v0.1）
 POWER_RULE = "rule_power_equipment"   # 电力设备（Wave 1A — 电力设备历史 Cycle）
 COMM_RULE = "rule_infocomm"           # 信息通信（Wave 1B — 信息通信历史 Cycle）
+HIEQ_RULE = "rule_high_end_equipment"  # 高端装备 / 机器人（Wave R01-01 — Historical Universe Expansion）
 # 批量研究覆盖的 Rule（按顺序生成；新增 Macro Theme 在此登记）
-RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE]
+RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE]
 RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----
@@ -60,6 +61,13 @@ THEME_CYCLE = {
     # 两个 Cycle 的 Primary 均为 TH-COMM；独立性见 seed_comm_cycles.py 的 research_notes。
     "C-2019-COMM-5G": "comm_5g_infrastructure_2019_2022",
     "C-2023-COMM-OPTICAL": "comm_ai_optical_2023_2025",
+    # ---- 高端装备（Wave R01-01，Primary Macro Theme = TH-HIEQ）----
+    # 002 与 003 同属 hieq_robot_2018_2022（Sequential）；004 与 005 同属 hieq_robot_2023（Sequential）。
+    "C-2016-HIEQ-CONSTR": "hieq_constr_2016_2021",
+    "C-2018-HIEQ-ROBOT-DOWN": "hieq_robot_2018_2019",
+    "C-2020-HIEQ-AUTOMATION": "hieq_automation_2020_2022",
+    "C-2023-HIEQ-ROBOT-PLUS": "hieq_robot_2023",
+    "C-2023-HIEQ-HUMANOID": "hieq_robot_2023",
 }
 
 # 研究信号（research-level，来自 theme_lifecycle_v0_2 三案例建模；其余年份按 annual 研究记录）
@@ -297,6 +305,166 @@ RESEARCH_CANDIDATES = [
                   "且市场存在分歧（「拐点已现」vs「更多是反弹」）→ 记 CONFLICT 语义但不写入 conflicts（无日期口径冲突）。"
                   "结构为两段（片仔癀 2021 品牌中药 + 以岭 2022Q4 抗疫中药），Peak 取以岭自身高点。"),
     },
+    # ==== 高端装备（Wave R01-01）：RESEARCH_ONLY，**不进入 campaigns 表** ====
+    {
+        "campaign_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "rule_id": "rule_high_end_equipment",
+        "year": 2024,
+        "title": "大规模设备更新政策驱动的装备需求（2024-03 行动方案至 2024-07 资金加码）",
+        "start_date": "2024-03-07",
+        "peak_date": "2024-07-24",
+        "end_date": None,
+        "themes": [
+            {
+                "name": "高端装备",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "SANY",
+                "name": "三一重工",
+                "ticker": "600031",
+                "exchange": "上海证券交易所",
+                "role": "leader"
+            },
+            {
+                "security_id": "ZOOMLION",
+                "name": "中联重科",
+                "ticker": "000157",
+                "exchange": "深圳证券交易所",
+                "role": "second_leader"
+            },
+            {
+                "security_id": "XCMG",
+                "name": "徐工机械",
+                "ticker": "000425",
+                "exchange": "深圳证券交易所",
+                "role": "representative"
+            },
+            {
+                "security_id": "HENGLI",
+                "name": "恒立液压",
+                "ticker": "601100",
+                "exchange": "上海证券交易所",
+                "role": "representative"
+            }
+        ],
+        "events": [
+            {
+                "event_id": "EV-RC-2024-HIEQ-EQUIP-01",
+                "name": "国务院印发《推动大规模设备更新和消费品以旧换新行动方案》（国发〔2024〕7号）",
+                "date": "2024-03-07",
+                "event_type": "policy",
+                "role": "trigger"
+            },
+            {
+                "event_id": "EV-RC-2024-HIEQ-EQUIP-02",
+                "name": "发改委、财政部印发《关于加力支持大规模设备更新和消费品以旧换新的若干措施》",
+                "date": "2024-07-24",
+                "event_type": "policy",
+                "role": "catalyst"
+            }
+        ],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "hieq_equip_update_2024",
+        "conflicts": [],
+        "notes": "RESEARCH_ONLY（INSUFFICIENT）：市场侧证据 0 条 → Campaign Independence Gate Q1 无法验证；行业口径过宽（11 个重点行业）与 R01-03 / 电力设备重叠；政策与需求间缺少可验证传导证据；标的与 C-2016-HIEQ-CONSTR 完全重合。**不进入 campaigns**。｜R01-01 intake"
+    },
+    {
+        "campaign_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "rule_id": "rule_high_end_equipment",
+        "year": 2024,
+        "title": "人形机器人量产预期与国产产业链加速段（2024-09 至 2025）",
+        "start_date": "2024-09-01",
+        "peak_date": "2025-07-01",
+        "end_date": None,
+        "themes": [
+            {
+                "name": "高端装备",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "人形机器人",
+                "theme_type": "concept",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "LEADERDRIVE",
+                "name": "绿的谐波",
+                "ticker": "688017",
+                "exchange": "上海证券交易所科创板",
+                "role": "representative"
+            },
+            {
+                "security_id": "KINCO",
+                "name": "步科股份",
+                "ticker": "688160",
+                "exchange": "上海证券交易所科创板",
+                "role": "representative"
+            },
+            {
+                "security_id": "LEADSHINE",
+                "name": "雷赛智能",
+                "ticker": "002979",
+                "exchange": "深圳证券交易所",
+                "role": "follow"
+            },
+            {
+                "security_id": "ZHAOWEI",
+                "name": "兆威机电",
+                "ticker": None,
+                "exchange": "深圳证券交易所",
+                "role": "representative"
+            },
+            {
+                "security_id": "EFORT",
+                "name": "埃夫特",
+                "ticker": None,
+                "exchange": "上海证券交易所科创板",
+                "role": "representative"
+            },
+            {
+                "security_id": "TOPSTAR",
+                "name": "拓斯达",
+                "ticker": "300607",
+                "exchange": "深圳证券交易所",
+                "role": "follow"
+            }
+        ],
+        "events": [
+            {
+                "event_id": "EV-RC-2024-HIEQ-HUMANOID-01",
+                "name": "华为具身智能创新中心运营，与 16 家企业签约",
+                "date": "2024-11-15",
+                "event_type": "company",
+                "role": "catalyst"
+            },
+            {
+                "event_id": "EV-RC-2024-HIEQ-HUMANOID-02",
+                "name": "智元、宇树中标中国移动人形双足机器人代工服务采购项目（合计 1.24 亿元）",
+                "date": "2025-07-31",
+                "event_type": "company",
+                "role": "trigger"
+            }
+        ],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "hieq_humanoid_mass_2024_2025",
+        "conflicts": [],
+        "notes": "RESEARCH_ONLY（INSUFFICIENT）：市场侧证据 0 条 → Q1 无法验证；E033 与 E034 实为同源（仅 1 个有效 independence_group）；start/end 均依赖回顾性来源；与 C-2023-HIEQ-HUMANOID 边界未切分（CONFLICT CF008 UNRESOLVED）。**不进入 campaigns**。｜R01-01 intake"
+    },
 ]
 
 # ---- Lifecycle（Phase Windows）与 Drivers（V1.7 核心产出）----
@@ -435,6 +603,29 @@ CAMPAIGN_LIFECYCLE = {
         {"stage": "MAIN_RISE", "start": "2025-04-09", "end": "2025-12-18", "precision": "PHASE_WINDOW"},
         {"stage": "PEAK", "start": "2025-12-22", "end": "2025-12-25", "precision": "DATE_WINDOW"},
     ],
+    # ---- 高端装备（Wave R01-01）----
+    # UNKNOWN 阶段不入 export lifecycle（无起止边界）；PEAK 由 campaigns.peak_date 承载。
+    "C-2016-HIEQ-CONSTR": [
+        {"stage": "MAIN_RISE", "start": "2016-08-01", "end": "2021-03-31", "precision": "DATE_WINDOW"},
+        {"stage": "PEAK", "start": "2021-03-01", "end": "2021-04-30", "precision": "DATE_WINDOW"},
+        {"stage": "RETRACEMENT", "start": "2021-05-01", "end": "2021-12-31", "precision": "PHASE_WINDOW"},
+    ],
+    "C-2018-HIEQ-ROBOT-DOWN": [
+        {"stage": "DECLINING", "start": "2018-09-30", "end": "2019-09-30", "precision": "PHASE_WINDOW"},
+        {"stage": "SECONDARY", "start": "2019-10-01", "end": "2019-12-31", "precision": "PHASE_WINDOW"},
+    ],
+    "C-2020-HIEQ-AUTOMATION": [
+        {"stage": "MAIN_RISE", "start": "2020-04-01", "end": "2021-06-30", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2021-07-01", "end": "2021-09-30", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2021-10-01", "end": "2022-12-31", "precision": "PHASE_WINDOW"},
+    ],
+    "C-2023-HIEQ-ROBOT-PLUS": [
+        {"stage": "MAIN_RISE", "start": "2023-01-19", "end": "2023-02-03", "precision": "DATE_WINDOW"},
+    ],
+    "C-2023-HIEQ-HUMANOID": [
+        {"stage": "MAIN_RISE", "start": "2023-08-29", "end": "2023-10-31", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2023-11-01", "end": "2023-12-31", "precision": "DATE_WINDOW"},
+    ],
 }
 
 CANDIDATE_LIFECYCLE = {
@@ -461,6 +652,15 @@ CANDIDATE_LIFECYCLE = {
         {"stage": "THEME_FORMING", "start": "2021-12-31", "end": "2021-12-31", "precision": "EXACT_DATE"},
         {"stage": "PEAK", "start": "2022-11-30", "end": "2022-12-08", "precision": "DATE_WINDOW"},
         {"stage": "DECLINING", "start": "2022-12-09", "end": "2022-12-30", "precision": "EXACT_DATE"},
+    ],
+    # ---- 高端装备（Wave R01-01，Research Candidate）----
+    "RC-2024-HIEQ-EQUIP-UPDATE": [
+        {"stage": "MAIN_RISE", "start": "2024-03-07", "end": "2024-07-23", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2024-07-24", "end": "2024-07-26", "precision": "PHASE_WINDOW"},
+    ],
+    "RC-2024-HIEQ-HUMANOID-MASS": [
+        {"stage": "MAIN_RISE", "start": "2025-01-01", "end": "2025-06-30", "precision": "PHASE_WINDOW"},
+        {"stage": "PEAK", "start": "2025-07-01", "end": "2025-09-05", "precision": "PHASE_WINDOW"},
     ],
 }
 
@@ -618,6 +818,124 @@ CAMPAIGN_DRIVERS = {
                    "★ 通信设备（中兴通讯 / 烽火通信）2023-2025 亦受益于算力网络建设"
                    "（中兴 2024 +64.8%、烽火 2025 +79.9%），但主驱动仍含运营商侧因素，"
                    "本轮不作为本 Cycle 代表标的"],
+    },
+    # ---- 高端装备（Wave R01-01）：drivers 原样来自 R01-01 intake（四问），未改写 ----
+    "C-2016-HIEQ-CONSTR": {
+        "start": [
+            "设备更新周期：2009-2012 年间销售的工程机械进入更新替换窗口（一手机制表述见券商研报）",
+            "「十三五」基建项目开工带来的新增需求",
+            "北方环保核查推进，排放不达标的「国二」挖掘机面临施工限制与强制淘汰",
+            "房地产与基建投资增长、海外需求复苏",
+        ],
+        "accelerator": [
+            "国产替代加速：三一挖机市占率由 2009 年 6.5% 提升至 2017 年 22.4%，超越卡特、小松、日立、神钢、斗山等外资品牌",
+            "2021Q1 代表公司业绩翻倍（三一、中联、恒立净利润同比增长），形成业绩与股价的正反馈",
+            "出口放量：2021 年出口 6.84 万台、同比 +97%，对冲内需下滑并延缓总量数据的拐点显现",
+        ],
+        "turning": [
+            "内需端先行见顶：2021 年国内销量 27.44 万台、同比 -6.32%（总量 +4.63% 由出口贡献），说明转折点先出现在内需而非总量",
+            "需求端前置透支：基建与地产投资增速前高后低、专项债发行不及预期",
+            "成本端两头承压：原材料与运费上涨压缩盈利",
+            "代表资产股价领先基本面见顶：三一与恒立股价 2021 年 1 月下旬已露疲态，早于 3 月的产业销量峰值",
+        ],
+        "ending": [
+            "销量增速连续三季负增长（Q2 -4.8% → Q3 -16% → Q4 -30.4%），2021 年 12 月创下年内国内销量「九连降」",
+            "业绩兑现转负：三一重工 2021Q2/Q3 归母净利润分别同比 -28.56%、-35.31%",
+            "股价大幅回撤：三一至 2021-11-19 较年内高点下跌近 60%",
+            "本包未能确认该周期的 ENDED 时点，出口对冲使总量数据迟迟未出现断崖，故 ending 一栏仅记录「上行段终止的确认信号」，不主张周期已结束",
+        ],
+    },
+    "C-2018-HIEQ-ROBOT-DOWN": {
+        "start": [
+            "下游需求端收缩：汽车行业增速放缓是中国机器人行业增速放缓的主要原因（业内公开表述，2019 年世界机器人大会）；2019 年中国汽车产量与销量同比分别 -7.5%、-8.2%，降幅较 2018 年分别扩大 4.2 和 5.4 个百分点",
+            "制造业固定资产投资增速由 2018 年 9.5% 下滑至 2019 年 1-4 月的 2.5%",
+            "工业机器人市场本身的高基数：2018 年销量 154032 台、占全球 36.5%，但同比已 -1.4%，为 2010 年以来首次负增长",
+        ],
+        "accelerator": [
+            "负增长持续时长本身强化了悲观预期：连续 13 个月负增长使「周期性调整」的叙事在 2019 年持续",
+            "业绩传导：新松机器人、埃斯顿、华中数控等上市公司业绩不乐观，产业下行进入财务验证阶段",
+            "进口同步收缩：2019 年中国机器人进口数量 60701 台、比上年减少 39401 台",
+            "日本工业机器人出口（按金额）2019 年占比 69.2%，可交叉印证全球需求（含中国）走弱",
+        ],
+        "turning": [
+            "2019 年 10 月单月产量同比转正（+1.7%）、11 月 +4.3%，连续 13 个月的负增长序列被打破",
+            "制造业固定资产投资在 2019 年下半年边际企稳（本包未取得该指标 2019 年下半年的逐月序列，此项为待验证的机制线索）",
+        ],
+        "ending": [
+            "2019 全年累计产量同比 -6.1%、完成 199050 台，作为该下行周期的完整年度记录收尾",
+            "2020 年产量转为 237068 台、同比 +19.1%（近三年最高增速），确认下行段已结束",
+            "2020 年 2 月疫情低点（累计同比 -19.4%）→ 3 月单月转正 → 4 月累计转正 → 全年 +19.1%，形成 V 型结构",
+        ],
+    },
+    "C-2020-HIEQ-AUTOMATION": {
+        "start": [
+            "疫情后制造业资本开支回补：2020 年 2 月产量累计同比 -19.4% 为疫情低点，3 月单月转正 +12.9%、4 月累计转正 +4%，形成 V 型反弹",
+            "自动化渗透率提升（机器换人）：2015-2019 年六轴机器人国产销量由不到 8000 台提升至近 2.4 万台、CAGR 33.8%，国产市占率由 16.4% 升至 24.1%",
+            "制造业固定资产投资回升（券商月报明确以此为自动化设备复苏的前置条件）",
+            "出口需求在 2020 年下半年走强，带动制造业整体开工与设备投资",
+        ],
+        "accelerator": [
+            "单月产量增速连续突破：5 月 +16.9% → 6 月 +29.2% → 7 月 +19.4%，增速中枢抬升形成正反馈",
+            "市场关注度快速聚集：2020 年 7 月机械设备指数上涨 12.56%，机器人板块月涨幅 18.2%、年初至今 48.1%，位居行业前三",
+            "代表资产创新高：汇川技术股价 2020-07-16 创历史新高；埃斯顿月涨幅 35.0%、年初至今 43.4%",
+            "国产替代叙事：国产六轴机器人销量与市占率双升，形成「进口替代 + 渗透率提升」的双重成长逻辑",
+        ],
+        "turning": [
+            "上游通胀与出口新增订单下滑（一手公司披露的转折归因）",
+            "制造业需求疲软导致通用自动化景气持续下行，2021 年 7 月为下行起点",
+            "2022 年 3-4 月经济下行加速行业下滑并进入筑底阶段",
+            "盈利质量隐忧在行业内已现：2020 年规上工业机器人制造企业营业收入 +6.0% 而利润总额同比 -26.9%，呈量增价跌",
+        ],
+        "ending": [
+            "2022 年上半年国内产量 20.2 万台、同比 -11% 以上；全年 44.3 万套、同比 -4.8%",
+            "公司业绩转亏：新松机器人、哈工智能、新时达、埃夫特等 2022 年上半亏损（疫情封控与原材料涨价为主要原因）",
+            "2023 年 1-2 月产量 6.2 万套、同比 -19.2%，负增长延续至政策介入前夜",
+            "本包不主张该 Campaign 已 ENDED，故 ending 一栏记录「上行段终止的确认信号」而非周期终结点",
+        ],
+    },
+    "C-2023-HIEQ-ROBOT-PLUS": {
+        "start": [
+            "产业政策（一手）：工信部等十七部门《「机器人+」应用行动实施方案》于 2023-01-18 成文、2023-01-19 发布，属十七部门联合发文的系统性产业推进文件",
+            "政策量化目标提供了可交易的锚：到 2025 年制造业机器人密度较 2020 年翻番（10 大应用领域、100 种以上创新应用技术、200 个以上典型应用场景）",
+            "政策介入时点处于行业低位：政策发布时行业产量同比为负（2022 年 -4.8%、2023 年 1-2 月 -19.2%），构成「政策底 vs 基本面底」的错位结构",
+        ],
+        "accelerator": [
+            "二级市场快速定价：发布次日板块放量跳空、多股一字涨停（信邦智能 20%、达意隆、科远智慧等），形成强关注度",
+            "卖方系统性解读：多家券商发布事件点评，预期未来 3-5 年机器人产业迎来新一轮景气周期、本轮工业机器人需求拐点或在 2023 年上半年显现",
+            "相对强弱可观测：2023-01-14 至 2023-02-03 机器人三级子行业上涨 13.48%，显著跑赢机械设备行业（+6.47%）与沪深 300（+1.65pct 之差）",
+            "估值快速抬升：至 2023-02-03 机器人板块估值达 75.45 倍，反映市场对政策目标的前置定价",
+        ],
+        "turning": [
+            "基本面与政策目标之间存在时滞：政策发布时行业产量仍处同比负增长区间（2023 年 1-2 月 -19.2%），若基本面未在政策预期的时间窗内兑现，则存在预期修正风险",
+            "2023 年 5 月起叙事重心向「具身智能/人形机器人」迁移，本政策驱动段的注意力中心被稀释（迁移本身的时间边界本包无法切分）",
+        ],
+        "ending": [
+            "本包未能确定该政策驱动段的具体结束机制与时点，故 ending 一栏仅记录风险因素而非结束事件",
+            "明确的不确定性：该候选与 R01-HIEQ-005（2023-05 起的人形机器人叙事形成）之间的边界未被切分，二者是否应视为同一 Campaign 的不同阶段，须由 ThreeC Agent 判定",
+        ],
+    },
+    "C-2023-HIEQ-HUMANOID": {
+        "start": [
+            "AI 大模型技术突破的外溢：2022-11 ChatGPT 发布后 AI 大模型能力跃升，2023-05 黄仁勋公开表述「人工智能下一个浪潮将是具身智能」，将 AI 能力与物理载体相连",
+            "产品技术催化：2023-05 特斯拉股东大会发布 Optimus Gen1 最新视频，展示运动控制、环境感知与动作捕捉进展",
+            "产业活动聚集：2023-08-16 至 08-22 世界机器人大会在北京举行，达闼、宇树、优必选、追觅等人形机器人集中亮相",
+            "地方产业基金与资本入场：北京市设立 100 亿机器人产业基金；比亚迪入股智元机器人",
+            "政策预期前置：工信部副部长在 2023 世界机器人大会分论坛表示将推动出台人形机器人创新发展指导意见",
+        ],
+        "accelerator": [
+            "国家级顶层设计落地：2023-11-02 工信部印发《人形机器人创新发展指导意见》，为该领域首个国家级文件，设定 2025 年批量生产、2027 年形成安全可靠产业链供应链体系的目标",
+            "产品代际跃升：2023-12-13 特斯拉 Optimus Gen2 亮相，采用自研执行器与传感器、2 自由度驱动颈部、11 自由度灵巧手、足部力/扭矩传感器，性能提升明显，为「量产可行性」提供了叙事支撑",
+            "资本化里程碑：2023-12 优必选登陆港交所成为人形机器人领域首家上市企业；傅利叶智能 GR-1 开启预售并实现小批量交付",
+            "叙事可交易化：市场形成以减速器、丝杠、无框力矩电机、传感器、视觉为核心的产业链映射，使主题可被板块化交易",
+        ],
+        "turning": [
+            "本包未在该候选段内识别到明确的转折催化，即 2023-12 之后叙事重心直接迁移至「量产预期 + 国产加速」（R01-HIEQ-007），而非转折下行",
+            "潜在风险（未在本包证据中证实）：Optimus Gen2 属展示品而非量产产品，产品发布与商业化之间存在时间差",
+        ],
+        "ending": [
+            "本包不主张该叙事段已结束；其后续形态被记录为 R01-HIEQ-007，二者边界未切分",
+            "ending 一栏在此仅记录「叙事重心迁移」这一可观察现象，不主张生命周期终止",
+        ],
     },
 }
 
@@ -901,7 +1219,8 @@ def main():
         "scope": ("rule_auto_summer（汽车 2018–2025，观察窗口 6-8月）"
                   " + rule_pharma_upgrade（医药健康 2019–2022，结构性升级）"
                   " + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电）"
-                  " + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块）"),
+                  " + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块）"
+                  " + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人）"),
         "status_vocabulary": {
             "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
             "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -910,7 +1229,7 @@ def main():
         "note": "本 manifest 为研究批次输出，不是新的正式 Schema；PROVISIONAL 不等于 VERIFIED，不得进入 Cycle verified",
         "campaigns": entries,
     }
-    with open(MANIFEST, "w", encoding="utf-8") as f:
+    with open(MANIFEST, "w", encoding="utf-8", newline="\n") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2, default=str)
     print(f"manifest: {MANIFEST} ({len(entries)} entries)")
 
@@ -940,7 +1259,7 @@ def main():
         "rule": "conflicts 记录研究日期口径冲突；candidate_a=DB 冻结值，candidate_b=研究复核候选",
         "conflicts": conflicts,
     }
-    with open(CONFLICTS, "w", encoding="utf-8") as f:
+    with open(CONFLICTS, "w", encoding="utf-8", newline="\n") as f:
         json.dump(conflicts_doc, f, ensure_ascii=False, indent=2, default=str)
     print(f"conflicts: {CONFLICTS} ({len(conflicts)} conflicts)")
 
@@ -984,6 +1303,17 @@ def main():
                                    "（Peak 2020-02-24~2020-03-12）；"
                                    "② AI 算力驱动的光模块 2023-03-21~2025-12-31"
                                    "（Peak 未确认，2025-12-22~12-25 为区间高点）"),
+        },
+        HIEQ_RULE: {
+            "definition": ("Historical Observation Window（历史观察窗口）：高端装备 / 机器人（工程机械 / "
+                           "工业自动化 / 机器人本体与核心零部件 / 轨道交通装备）在设备更新、制造业资本开支、"
+                           "产业政策与产业叙事驱动下形成的结构性行情；非固定买入窗口，不构成交易建议"),
+            "observation_window": ("结构性（非季节性）：2016–2022。两个 Sequential Theme Cycle："
+                                   "① 工程机械更新+基建+环保 2016-08-01~2021-12-31"
+                                   "（Peak 2021-01-25 资产价格 / 2021-03-31 产业销量）；"
+                                   "② 工业机器人与自动化 2018-09-30~2022-12-31"
+                                   "（含 2018-2019 下行段与 2020-2021 复苏段）。"
+                                   "另：2023 机器人政策段与人形机器人叙事段（hieq_robot_2023）"),
         },
     }
     rules_out = []
@@ -1046,8 +1376,12 @@ def main():
     # 5) campaigns（formal）
     campaigns_out = []
     for e in entries:
-        if e["year"] == 2018:
-            continue  # 无 Campaign，不出现在 campaign 列表（反例由 rule 级注释承载）
+        # ★ 「2018 = 反例年份（no_clear_campaign）」是 **rule_auto_summer（汽车）专属**的年度约定，
+        #   不是全局规则。原实现按 year==2018 全局跳过，会把其它 Rule 的 2018 年真实 Campaign
+        #   （如 C-2018-HIEQ-ROBOT-DOWN）误删。此处按 rule 限定，对既有数据行为完全一致
+        #   （既有各 Rule 均无 2018 年 Campaign）。
+        if e["year"] == 2018 and e["rule_id"] == AUTO_RULE:
+            continue  # 汽车反例年份，不出现在 campaign 列表（反例由 rule 级注释承载）
         cid = e["research_campaign_id"]
         ph = PHASE_TIME_FIELDS.get(cid, {})
         conflicts_out = []
@@ -1125,7 +1459,7 @@ def main():
         "securities": securities_out,
     }
     os.makedirs(os.path.dirname(EXPORT), exist_ok=True)
-    with open(EXPORT, "w", encoding="utf-8") as f:
+    with open(EXPORT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(export, f, ensure_ascii=False, indent=2, default=str)
     print(f"timeline_export: {EXPORT} (v1.0, {len(campaigns_out)} campaigns, "
           f"{len(research_candidates_out)} research_candidates, "
