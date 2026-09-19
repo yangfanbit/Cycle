@@ -739,25 +739,23 @@ def test_directory_mode_with_checksums():
 
 
 @case
-def test_infrastructure_check_detects_known_r01_01_violation():
-    """`--check` 必须检出**已记录的** R01-01 Schema 违规，且 R01-02 必须干净。
+def test_infrastructure_check_passes():
+    """`--check` 基础设施自检必须 0 FAIL，且 C25 必须**真正执行**。
 
-    背景：R01-01 的 `R01-HIEQ-CF005` 含额外键 `_position_note`，违反
-    `additionalProperties: false`。该违规在 C25 之前**被放过并已入库** ——
-    本测试是这条历史缺陷的回归守卫。
+    历史：R01-01 的 `R01-HIEQ-CF005` 曾含额外键 `_position_note`，违反
+    `additionalProperties: false`；该违规在 C25 之前被放过并已入库。
+    现已按 Review 首选方案修复（内容并入 `note`、删除该键）。
+    本测试同时守卫两件事：
+      1. 已修复的两个正式 Package 均为 Schema-clean（回归守卫）
+      2. C25 确实在运行（若被旁路，R01-01 的违规会重新静默通过）
     """
     rep = V._check_infrastructure_once()
-    fails = [(i["check"], i["message"]) for i in rep.fails()]
-    c25 = [m for c, m in fails if c == "C25"]
-    # R01-01：必须检出
-    r01_01 = [m for m in c25 if "R01-01" in m]
-    assert r01_01, "C25 未检出 R01-01 的已知 Schema 违规: %s" % fails
-    assert any("_position_note" in m for m in r01_01), r01_01
-    # R01-02：必须干净
-    assert not [m for m in c25 if "R01-02" in m], c25
-    # 除上述已知违规外不得有其它 FAIL
-    others = [(c, m) for c, m in fails if c != "C25"]
-    assert not others, "存在非预期的 FAIL: %s" % others
+    assert rep.ok(), [(i["check"], i["message"]) for i in rep.fails()]
+    infos = [i["message"] for i in rep.issues if i["check"] == "C25"]
+    # C25 必须在两个 Package 上都跑过并输出「0 违规」
+    assert sum(1 for m in infos if "校验通过" in m) >= 2, \
+        "C25 未在两个 Package 上真正执行: %s" % infos
+    assert any("schema 本身是合法 Draft-07" in m for m in infos), infos
 
 
 @case
@@ -862,11 +860,9 @@ def test_cli_exit_codes():
 
         assert rc_ok == 0, "合法 package 应退出 0"
         assert rc_bad == 1, "非法 package 应退出 1"
-        # ★ 前提变更：C25 上线后 `--check` 扫描 packages/ 下所有正式 Package。
-        #   R01-01 存在**已记录的** Schema 违规（`R01-HIEQ-CF005._position_note`），
-        #   故 `--check` 退出码 = 1 —— 这是**正确**信号，不是回归。
-        #   修复该违规属独立 remediation 任务，不在本轮范围。
-        assert rc_check == 1, "--check 应退出 1（R01-01 已知 Schema 违规）"
+        # R01-01 的历史 Schema 违规（`R01-HIEQ-CF005._position_note`）已修复，
+        # 故 `--check` 恢复为 0。
+        assert rc_check == 0, "--check 应退出 0"
         assert rc_list == 0, "--list-checks 应退出 0"
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
@@ -1032,22 +1028,20 @@ def test_c25_rescan_r01_02_clean():
 
 
 @case
-def test_c25_rescan_r01_01_known_violation():
-    """回扫：R01-01 正式 Package 的**已知** `_position_note` 违规必须被检出。
+def test_c25_rescan_r01_01_clean():
+    """回扫：R01-01 正式 Package 修复后必须 0 违规（回归守卫）。
 
-    该违规在 C25 之前被放过并已导入 canonical DB —— 本测试锁定这一事实，
-    防止将来被静默“修掉”而失去可追溯性。
+    历史违规 `R01-HIEQ-CF005._position_note`（违反 additionalProperties）已按
+    Review 首选方案修复：内容并入既有 `note`，删除该键。
+    本测试防止该违规被重新引入。
     """
     pkg_dir = os.path.join(REPO, "research", "intake", "packages", "R01-01")
     if not os.path.isdir(pkg_dir):
         return
     rep, _det = V.run_validation(pkg_dir)
     c25 = [i for i in rep.fails() if i["check"] == "C25"]
-    assert c25, "R01-01 的已知 Schema 违规未被检出"
-    joined = " | ".join(i["message"] for i in c25)
-    assert "_position_note" in joined, c25
-    # 且不得引入其它 Schema 违规
-    assert len(c25) == 1, "R01-01 出现额外的 Schema 违规: %s" % c25
+    assert c25 == [], "R01-01 存在 Schema 违规: %s" % c25
+    assert rep.ok(), [(i["check"], i["message"]) for i in rep.fails()]
 
 
 # ------------------------------------------------------------------ main
