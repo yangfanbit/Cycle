@@ -4,11 +4,11 @@
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
 - 更新日期：2026-09-19
-- HEAD：`634b396`
+- HEAD：`0f21678`
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- 最近完成：Product Similarity Architecture Gate v0.1 — PASS
+- 最近完成：Product Adapter v0.1
 
 ## 1. 项目当前定位
 
@@ -35,12 +35,13 @@
 - Structural Analogy Research v0.2 baseline
 - Structural Analogy Explanation Artifact v0.2
 - Product Similarity Architecture Gate v0.1 — PASS
+- Product Adapter v0.1（Structural Analogy Artifact → Product View Model）
 - Time Observation v0.5
 - CMTR v1
 - Historical Driver Canonicalization
 - Robustness / Feasibility / Readiness
 
-### Product Core：骨架已具备，Structural Analogy 尚未进入 runtime
+### Product Core：Structural Analogy 已进入 Product Adapter，尚未进入 UI
 
 当前 Product 主线：
 
@@ -48,7 +49,7 @@
 
 Current Candidate 已进入 Current Time Lens。
 
-当前 Structural Analogy 仍为 Research-derived 数据，尚未建立 Product Adapter。
+Structural Analogy 已有静态 Product Adapter；尚未接入 Current Time Lens / UI。
 
 ## 3. Structural Analogy 当前基线
 
@@ -69,12 +70,16 @@ Research v0.2：
 
 最大瓶颈仍是机制级 Driver 证据深度，不是规则或 vocabulary。
 
-## 4. Step 2 已完成，但尚未视为最终 Product Contract
+## 4. Product-facing Artifact 与 Adapter
 
 已新增：
 - `docs/STRUCTURAL_ANALOGY_EXPLANATION_ARTIFACT_v0_1.md`
 - `research/research/reports/structural_analogy_explanations_v0_1.json`
 - `research/scripts/build_structural_analogy_explanation_v0_1.py`
+- `research/research/reports/structural_analogy_explanations_v0_2.json`
+- `research/scripts/build_structural_analogy_explanation_v0_2.py`
+- `src/data/timeline/structuralAnalogy.ts`
+- `src/data/timeline/__tests__/structuralAnalogy.test.ts`
 
 Artifact 覆盖 85 explanations，且：
 - 来源唯一 = Structural Analogy Research v0.2
@@ -83,7 +88,7 @@ Artifact 覆盖 85 explanations，且：
 - 无 score / ranking / probability
 - `--check` 可逐字节复现
 
-**但 Step 2 尚存在 Product 接口化前的 QA 项：**
+**v0.2 已通过 Architecture Gate；Adapter v0.1 已消费该契约。**
 1. `why_not_similar` 不应把 CROSS_MACRO_THEME 当成“为什么不相似”。
 2. explanations 当前按 structural status 再按 cycle id 排列；虽然不是研究 ranking，但 Product 很容易把数组顺序误读为排名，应去除这种暗示。
 3. `historical_campaign_id` 同时承载 historical campaign 与 Research Candidate，需要在 Adapter 前明确 cycle / campaign identity。
@@ -91,7 +96,7 @@ Artifact 覆盖 85 explanations，且：
 
 因此：
 
-> **Explanation Artifact v0.1 = 可复现 Draft / Research-derived interface candidate；在 Architecture Gate 前不要视为最终 Product Contract。**
+> **Explanation Artifact v0.2 是当前 Product Adapter 的 Research-facing 输入；v0.1 只作为历史保留。**
 
 ## 5. 当前 Product Architecture Debt
 
@@ -155,33 +160,26 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# Product Adapter v0.1
+# Product UI Integration v0.1
 
-Architecture Gate v0.1 已 PASS；现在进入 Research → Product 的第一段代码实现。
+Product Adapter v0.1 已完成并通过验收；现在进入 Structural Analogy 首次 UI 接入。
 
-目标：
-- 用实际 Product 代码核对 Calendar / Lifecycle / CurrentSimilarity / Structural Analogy 的职责边界
-- 正式决定 `currentSimilarity.ts` 的最终方向
-- 正式决定 `historicalSimilarPhase.ts` 的长期定位
-- 把 Explanation Artifact 做接口化 QA
-- 固化 Driver 两层语义
-- 固化 UNKNOWN / NOT_AVAILABLE / MISMATCH / PARTIAL 的产品表达
-- 正式决定 OpportunityRadar 的 legacy 处置
-- 确定 Structural Analogy Product Artifact 的最终最小结构
+目标：在不重新实现 Research 规则的前提下，把 Structural Analogy Adapter 接入 Current Candidate / Current Time Lens。
 
-### Gate 边界
+### UI Integration 边界
 
-- 只实现 Artifact → Product View Model
-- 不进入 UI
-- 不改 schema
-- 不改 export contract v1.0
-- 不改 Structural Analogy Rule Set v0.2
-- 不重新运行新一轮 Structural Analogy Research
-- 不进入 Wave 1C
+- 接入 `structuralAnalogy.ts` Adapter
+- 优先 Current Candidate / Current Time Lens
+- 不新增独立 Dashboard
+- 不重新实现 Structural Analogy
+- 不新增 score / ranking / probability
+- 不修改 schema / export / historical data
+- 不调整 Rule Set v0.2
+- 不扩 Wave 1C
 
-完成后再进入：
+完成后进入：
 
-`Product Adapter → UI Integration → UX Review`
+`UX Review → 再决定 currentSimilarity / OpportunityRadar 最终清理`
 
 ## 8. 当前质量债务
 
@@ -191,14 +189,14 @@ Architecture Gate v0.1 已 PASS；现在进入 Research → Product 的第一段
 - market / temporal = SUPPLEMENTARY_ONLY
 - historical coverage imbalance
 
-这些问题暂不阻塞 Product Adapter。
+这些问题暂不阻塞 Product UI Integration。
 
 ## 9. 验证基线
 
 最近已报告全绿：
 - Structural Analogy Explanation `--check` PASS
 - Research validators 全 PASS
-- npm test 395/395
+- npm test 438/438
 - tsc -b PASS
 - vite build PASS
 
