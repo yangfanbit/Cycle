@@ -30,8 +30,13 @@
 
 > **同步说明（2026-09-19）**：Step 1–4 已全部完成（Gate PASS · Adapter · UI Integration · UX Review PASS）。
 > 其后追加完成：**Historical Case Experience v0.1（PASS）** ·
-> **Historical Cycle Map v0.1（PASS）** · **Current Research Refresh Loop v0.1（PASS）**。
-> 下一步由产品使用反馈决定，**不在本轮 roadmap 内预设**。
+> **Historical Cycle Map v0.1（PASS）** · **Current Research Refresh Loop v0.1（PASS）** ·
+> **First Real Observation Cycle v0.1（PASS）** ·
+> **Historical Case Evidence View Rework v0.1（PASS）** ·
+> **Second Real Observation Cycle v0.1（PASS · 0 code change）**。
+> 核心路径 `Current Candidate → Cycle Map → Lifecycle Position → Cross-family SA →
+> Evidence Timeline → New Research Question` 已在真实使用中自然发生。
+> 下一步由**用户**决定，**不在 roadmap 内预设**。
 
 ### Step 1 · Product Similarity Architecture Gate v0.1
 

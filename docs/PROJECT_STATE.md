@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`8ccc487`（`docs(research): first real observation cycle v0.1`）
-- 最近完成：**Historical Case Evidence View Rework v0.1**（PASS；Case 事件渲染行 10 → 5）
+- HEAD：`72f2751`（`refactor(product): unify historical case evidence view v0.1`；本文件随 Second Real Observation Cycle 提交入库）
+- 最近完成：**Second Real Observation Cycle v0.1**（PASS；**0 code change**）
 
 ## 1. 项目当前定位
 
@@ -172,31 +172,46 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# 由真实使用反馈决定（当前无 P1 未完成项）
+# 由真实使用反馈决定（核心产品形态已验证）
 
 **已完成（全部 PASS）**：Product Similarity Architecture Gate v0.1 · Product Adapter v0.1 ·
 Product UI Integration v0.1 · **UX Review + Performance Gate v0.1** ·
 **Historical Case Experience v0.1** · **Historical Cycle Map v0.1** ·
 **Current Research Refresh Loop v0.1** · **First Real Observation Cycle v0.1** ·
-**Historical Case Evidence View Rework v0.1**（消除 Case 中三处重复信息）。
+**Historical Case Evidence View Rework v0.1** · **Second Real Observation Cycle v0.1**。
 
-**当前无未完成的 P1**。下一步应由**下一轮真实使用**（`docs/FIRST_REAL_OBSERVATION_CYCLE_V0_1.md` §12）
-产生的反馈决定，而不是预先设计功能。
+**当前无未完成的 P1**。第二次真实使用（`docs/SECOND_REAL_OBSERVATION_CYCLE_V0_1.md`）
+已验证核心路径在真实使用中**自然发生**：
 
-### 已记录的候选后续项（**未排期**）
+```text
+Current Candidate → Historical Cycle Map → Lifecycle Position
+→ Cross-family Structural Analogy → Historical Evidence Timeline
+→ New Research Question
+```
 
-| 类型 | 项 |
-|---|---|
-| POLISH | `themeCycleId` 内部 id 可读性（如 `auto_intelligence_2023`） |
-| DEFER | `event_structure` 对候选区分度低（既有结论，**不放宽 Rule Set**） |
-| DEFER | Driver `MATCH = 1/85`（Research Quality Backlog） |
-| DEFER | `campaign_date_observations verified = 0/24`（Future Data Precision Debt） |
+下一步应由**用户决定**，不由 Agent 预设。
+
+### 最高优先候选（**未排期**，待用户决策）
+
+| 优先 | 类型 | 项 |
+|---|---|---|
+| **1** | POLISH | **`stale` 阈值**：当前 `stale = stalenessDays > 0` → 距快照 **4 天**即触发「当前研究快照已滞后」。对**周级 · 离线**研究产品，建议改为**显式阈值**（如 `> 14`）或在文案中区分「研究节奏内」与「确实滞后」。**属产品决策**（见观察报告 §10 F5 / §13） |
+| 2 | POLISH | `themeCycleId` 内部 id 可读性（如 `auto_intelligence_2023`）· 归因自由文本内嵌 Research id（`EV-*` / `S-*` / `E-*`） |
+| 3 | POLISH | `event_type`（`company`）与证据类别标签（「产业（INDUSTRY）」）的行内对应关系未呈现 |
+| — | DEFER | SA 默认折叠使唯一 STRICT 对应位于第 9 位（**修复需引入排序 = 禁止**） |
+| — | DEFER | `event_structure` 区分度低 · Driver `MATCH = 1/85`（Research Quality Backlog） |
+| — | DEFER | `campaign_date_observations verified = 0/24`（Future Data Precision Debt） |
+
+### 已确认无风险（本轮观察）
+
+`historicalEvidenceTimelineOf()` 的 `date|name` 稳定键：**32 campaigns / 106 events / 0 冲突 /
+0 跨案例共享** → **无需升级为 `event_id`**。
 
 ### 边界
 
 - 不新增 Product 功能 / 不新增 Dashboard
 - 不改 Research 规则（Rule Set v0.2）· 不改 Artifact · 不改 schema / export / 历史数据
-- 不引入实时网络 / LLM
+- 不引入实时网络 / LLM · 不建立 ranking / score / probability / prediction
 
 ## 8. 当前质量债务
 
