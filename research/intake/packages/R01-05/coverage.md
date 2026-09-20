@@ -1,7 +1,7 @@
 # coverage.md — R01-05（金融 / 房地产）Research Intake Package
 
 > **task_id**: `R01-05` · **research_round_id**: `R01` · **intake_protocol_version**: `0.1`
-> **generated_at**: 2026-09-20T20:26:41+08:00 · **source_commit**: `2153f6d83b7481300696ab73d792e9e53aa31a07`
+> **generated_at**: 2026-09-20T21:10:46+08:00 · **source_commit**: `2153f6d83b7481300696ab73d792e9e53aa31a07`
 > 本文件是**人类可读的覆盖说明**，不是交付字段。字段定义以 `01_PROTOCOL/historical_research_intake.schema.json` 为唯一事实来源。
 >
 > **v2 修订（2026-09-20）**：富途 MCP 行情接口恢复可用，本包补齐一级行情证据 E130—E141 与来源 S057—S061。
