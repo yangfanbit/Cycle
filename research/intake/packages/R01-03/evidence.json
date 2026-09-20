@@ -917,7 +917,7 @@
       "historical_fact_support"
     ],
     "point_in_time_note": null,
-    "description": "给出 A 股化肥板块 2021 年的板块级响应，用于与商品价格口径对照。"
+    "description": "给出 A 股化肥板块 2021 年的板块级响应，用于与商品价格口径对照。该响应客观存在（+24.24%），但其区间与峰值（2021-09-28）早于本候选观测到的商品 peak 窗口（2022-03—2022-04），两者是否属同一结构无法由本证据判定。"
   },
   {
     "evidence_id": "R01-RESOURCES-E081",
