@@ -1,0 +1,218 @@
+[
+  {
+    "conflict_id": "R01-CONSUMER-CF001",
+    "subject": "「白酒」行情的 classification：industry_trend 还是 theme_campaign",
+    "positions": [
+      {
+        "position": "应判为 industry_trend：2019–2021 段持续近两年，有真实的行业景气与公司业绩兑现（贵州茅台 2021 年营收 1094.64 亿元、归母净利 524.60 亿元），符合行业趋势的持续性特征。",
+        "source_ids": ["R01-CONSUMER-S010"]
+      },
+      {
+        "position": "应判为 theme_campaign：2021 年社零 +12.5%、白酒行业需求并未恶化，但板块自 2021-02-18 起大幅回落，说明主导力量是资金抱团与确定性溢价（估值扩张），而非行业基本面周期。",
+        "source_ids": ["R01-CONSUMER-S012", "R01-CONSUMER-S011", "R01-CONSUMER-S065"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "任务书 known_ambiguity 已列明该项歧义。本包在两个白酒候选上均填写 industry_trend，但明确记录反方证据，最终 classification 由 ThreeC Agent 裁决。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF002",
+    "subject": "2016–2018 段与 2019–2021 段白酒行情：两个独立 Campaign，还是同一 Theme Cycle 的两段",
+    "positions": [
+      {
+        "position": "应拆为两个 Campaign：2018 年出现 -27% 级别的年度回撤与 2018-10-29 茅台一字跌停，市场注意力与资金逻辑明显重置；2019 年重启的驱动是 MSCI 扩容与外资增量资金，与 2016–2017 的价格与龙头集中逻辑不同；Q5 Residual Test 双向成立。",
+        "source_ids": ["R01-CONSUMER-S007", "R01-CONSUMER-S004", "R01-CONSUMER-S065"]
+      },
+      {
+        "position": "应视为同一 Theme Cycle 的两段：两段的核心代表标的完全重叠（贵州茅台、五粮液、泸州老窖），核心叙事同为\"消费升级/高端化\"，中间回撤只是估值消化而非叙事更替；按 Q1 Anti-example（同一资金池 + 同一叙事）应保留为 sub-theme。",
+        "source_ids": ["R01-CONSUMER-S002", "R01-CONSUMER-S009"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包倾向拆分（已建为 R01-CONSUMER-001 与 R01-CONSUMER-002），但因代表标的高度重叠，ThreeC Agent 若判为同一 Campaign 亦属合理。注意禁止规则 3（不同时间 ≠ 不同 Campaign）——拆分的依据是驱动机制与资金逻辑变化，不只是时间先后。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF003",
+    "subject": "2021 年规模以上白酒行业收入与利润增速的口径冲突",
+    "positions": [
+      {
+        "position": "国家统计局口径：2021 年规上白酒销售收入 6033.48 亿元、同比 +3.38%；利润总额 1701.94 亿元、同比 +7.35%。",
+        "source_ids": ["R01-CONSUMER-S067"]
+      },
+      {
+        "position": "贵州茅台 2021 年年报引述口径：行业收入同比 +18.6%、利润同比 +32.95%。",
+        "source_ids": ["R01-CONSUMER-S010"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两个口径的统计范围（是否含 non-规上、是否含其它酒种）不明，且统计局口径本包仅取得媒体转载（置信度低）。保留双方，不作取舍；在补齐国家统计局原文前，不得用任一口径支撑行业景气强度的结论。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF004",
+    "subject": "宏观消费数据改善与具体消费行业行情是否同向（2023 年\"弱复苏\"）",
+    "positions": [
+      {
+        "position": "宏观数据在改善：2023 年 4 月社零 +18.4%、5 月 +12.7%（低基数下同比高增），上半年累计 +8.2%。",
+        "source_ids": ["R01-CONSUMER-S022", "R01-CONSUMER-S023"]
+      },
+      {
+        "position": "消费板块同期在回落：2023-04-28 至 05-31 中国中免由 160.98 元跌至 123.10 元、锦江酒店由 53.49 元跌至 46.89 元、首旅酒店由 21.66 元跌至 19.81 元、宋城演艺由 14.59 元跌至 12.70 元。",
+        "source_ids": ["R01-CONSUMER-S066"]
+      },
+      {
+        "position": "权威媒体同期确认复苏不及预期：2023 年 5 月社零 +12.7% 低于市场一致预期；6 月进一步降至 +3.1%。",
+        "source_ids": ["R01-CONSUMER-S024", "R01-CONSUMER-S023"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "★ 这是本任务最核心的方法论冲突：宏观消费数据改善 ≠ 具体消费行业启动。本包不对二者做取舍，而是将\"宏观数据\"全部标为 context 角色，仅用行业数据与标的组同步性支撑候选。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF005",
+    "subject": "2020–2021 白电行情的驱动：地产竣工后周期 vs 出口替代",
+    "positions": [
+      {
+        "position": "地产后周期驱动（传统解释）：家电属地产后周期消费品，竣工改善带动需求。",
+        "source_ids": ["R01-CONSUMER-S040"]
+      },
+      {
+        "position": "出口替代驱动（数据更支持）：2020 年家电出口 4582 亿元、+24.2%，出口自 2020 年 6 月起强劲反弹；同期内销 7297 亿元、-9.2%。",
+        "source_ids": ["R01-CONSUMER-S036", "R01-CONSUMER-S037"]
+      },
+      {
+        "position": "反证地产传导的时间关系：2020 年房屋竣工面积 -4.9% 而板块上行；2021 年竣工 +11.2% 而板块已下行（2021 年 12 月家电零售额 -10.4%）。",
+        "source_ids": ["R01-CONSUMER-S039", "R01-CONSUMER-S040", "R01-CONSUMER-S038"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "因该冲突无法消解，R01-CONSUMER-008 的 research_status 标记为 CONFLICT 而非 PROVISIONAL。命名\"地产后周期\"本身可能被 ThreeC Agent 要求修改。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF006",
+    "subject": "猪周期是\"自然周期\"还是\"历史机会 Campaign\"（含两轮是否应合并）",
+    "positions": [
+      {
+        "position": "属自然周期，不应作为 Campaign：农业农村部《生猪产能调控实施方案（暂行）》明确猪价大幅上涨的起因均为前期能繁母猪存栏量下降到正常水平 95% 以下，需求端总体稳定——即供给端生物周期驱动，缺少\"主题/机会\"所需的叙事与政策产业驱动属性。",
+        "source_ids": ["R01-CONSUMER-S027"]
+      },
+      {
+        "position": "具备可操作的历史机会属性：存在可观测的先行指标（能繁母猪存栏，传导约 10 个月）、官方逆周期调控框架（4100 万头正常保有量、收储/投放）、A 股提前定价（股价领先现货约 3 个月），符合\"可追踪、可解释、有市场参与\"的结构特征。",
+        "source_ids": ["R01-CONSUMER-S033", "R01-CONSUMER-S029", "R01-CONSUMER-S065"]
+      },
+      {
+        "position": "两轮猪周期（2018–2021 与 2021–2022）应视为同一 Theme Cycle 的两段：机制同源（供给端周期），代表标的部分重叠（牧原股份）。",
+        "source_ids": ["R01-CONSUMER-S027", "R01-CONSUMER-S065"]
+      },
+      {
+        "position": "两轮应拆为两个 Campaign：各有独立的产能拐点（2019-10 能繁母猪首次回升 vs 2021-07 结束 21 个月增长）、独立的政策框架事件（2021-09 产能调控方案、2022-02 收储）、部分独立的代表标的（巨星农牧、傲农生物）。",
+        "source_ids": ["R01-CONSUMER-S033", "R01-CONSUMER-S034", "R01-CONSUMER-S065"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "任务书 known_ambiguity 明确要求\"猪周期等农业周期是否属历史机会 Campaign 还是自然周期——需明确判据\"。本包提交两个候选（R01-CONSUMER-005、R01-CONSUMER-006）并保留双方判据，判据本身记为研究问题 Q001 交 ThreeC Agent。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF007",
+    "subject": "医美（消费医疗）归属：Macro Theme 应为「消费」还是「医药健康」",
+    "positions": [
+      {
+        "position": "属「消费」：医美需求为自费、可选、受收入与消费意愿驱动，且本轮行情与白酒/美妆同属\"悦己消费\"叙事，与医药健康的政策/医保逻辑无关。",
+        "source_ids": ["R01-CONSUMER-S047"]
+      },
+      {
+        "position": "属「医药健康」（已有 family）：医美耗材按医疗器械监管（国家药监局）、服务机构受卫健委监管，产业链与医疗器械、生物材料高度重叠；任务书 known_overlap 已列明该边界模糊。",
+        "source_ids": ["R01-CONSUMER-S047", "R01-CONSUMER-S048"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "跨族边界，本包不自行裁决。已在 manifest.cross_task_notes 记录 BOUNDARY，并在 macro_theme_proposals 中同时提交\"消费医疗\"与\"美容护理\"两组名称供 CMTR v1 解析。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF008",
+    "subject": "小家电/清洁电器与白电/地产后周期：两个 Campaign 还是同一「家电」Campaign 的两个 sub-theme",
+    "positions": [
+      {
+        "position": "应拆为两个 Campaign：代表标的完全不重叠（科沃斯/石头科技/小熊电器 vs 美的/格力/海尔），见顶时间错位约 5 个月至 1 年（2020-07 / 2021-06–07 vs 2021-01–02），驱动机制不同（居家场景 + 渗透率 + 出口 vs 出口替代 + 地产链 + 成本）。",
+        "source_ids": ["R01-CONSUMER-S066", "R01-CONSUMER-S037", "R01-CONSUMER-S038"]
+      },
+      {
+        "position": "应视为同一家电 Campaign 的两个 sub-theme：两者同属申万家用电器一级分类，共享家电板块资金池，且 2021 年下半年共同受原材料涨价与地产下行压制，降温原因相同。",
+        "source_ids": ["R01-CONSUMER-S038", "R01-CONSUMER-S075"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "Q1 Anti-example 风险显著。本包按代表标的组与生命周期错位拆分（R01-CONSUMER-007、R01-CONSUMER-008），但若 ThreeC Agent 判定共享资金池证据更强，合并为一个 Campaign 亦可接受。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF009",
+    "subject": "医美与国货美妆是否应合并为同一「颜值经济」Campaign；以及医美监管的双重性质",
+    "positions": [
+      {
+        "position": "应合并：两者消费人群与\"悦己\"叙事重叠，见顶时间接近（2021 年 6–7 月），可能共享同一批成长风格资金。",
+        "source_ids": ["R01-CONSUMER-S065"]
+      },
+      {
+        "position": "应拆分：产业环节不同（医疗耗材/服务 vs 化妆品零售），监管主体不同（卫健委 + 市场监管总局 vs 药监局），需求验证数据不同（医美无统一官方口径 vs 化妆品有国家统计局零售额），代表标的不重叠。",
+        "source_ids": ["R01-CONSUMER-S047", "R01-CONSUMER-S048", "R01-CONSUMER-S050", "R01-CONSUMER-S077"]
+      },
+      {
+        "position": "医美监管具有双重性质：八部门打击非法医美专项整治既清退非法供给（利好合规龙头、属加速因素），又压制行业扩张预期与营销口径（属降温因素），不应单向归类。",
+        "source_ids": ["R01-CONSUMER-S047", "R01-CONSUMER-S048"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包拆分为 R01-CONSUMER-009（医美）与 R01-CONSUMER-010（国货美妆），并把监管的双重性质在候选 drivers 中分别归入 accelerator 与 turning，避免单向归因。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF010",
+    "subject": "2024 年以旧换新：政策补贴驱动的需求前置，还是真实需求复苏；两者是否应拆分",
+    "positions": [
+      {
+        "position": "政策补贴驱动的需求前置：2024 年 9–12 月家电零售额同比 +20.5%/+39.2%/+22.2%/+39.3% 出现在补贴细则落地后，且 2025 年推总口径零售额 -4.3%（Q3 起明显回落），符合\"需求被补贴提前释放\"的特征。",
+        "source_ids": ["R01-CONSUMER-S043", "R01-CONSUMER-S044", "R01-CONSUMER-S076"]
+      },
+      {
+        "position": "存在真实需求成分：2024 年全年限额以上家电零售额 10307 亿元、+12.3% 创历史新高，且商务部口径 8 大类家电销量超 6000 万台、带动销售额超 2600 亿元、1 级能效产品占比高，说明有结构性更新换代需求。",
+        "source_ids": ["R01-CONSUMER-S044", "R01-CONSUMER-S045"]
+      },
+      {
+        "position": "口径冲突：2025 年家电零售增速，国家统计局口径为 +11%，奥维云网推总口径为 -4.3%，方向相反。",
+        "source_ids": ["R01-CONSUMER-S076"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包按\"一个 Campaign、驱动为财政补贴 + 真实更新需求叠加\"提交（R01-CONSUMER-011），不拆分为\"补贴行情\"与\"复苏行情\"两个候选，因为二者在时间上完全重叠、代表标的相同，拆分将违反 Independence Gate Q5。但是否需要在 drivers 层面区分两部分权重，交 ThreeC Agent 判断。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF011",
+    "subject": "免税（2019–2021）与疫后服务消费修复（2022–2023）：是否属同一「服务消费」结构",
+    "positions": [
+      {
+        "position": "应视为两个独立结构：免税的机制是政策额度放开 + 出境消费回流替代，需求验证为离岛免税销售额；疫后修复的机制是防控优化后的补偿性需求释放，需求验证为旅游人次与社零。启动锚点、政策主体、验证数据均不同。",
+        "source_ids": ["R01-CONSUMER-S013", "R01-CONSUMER-S015", "R01-CONSUMER-S021", "R01-CONSUMER-S019"]
+      },
+      {
+        "position": "可视为同一服务消费 Campaign 的两段：代表标的部分重叠（中国中免同时出现在两段），且免税需求本身也受疫情与出行政策影响，两段在\"出行恢复\"维度上连续。",
+        "source_ids": ["R01-CONSUMER-S066"]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包拆分为 R01-CONSUMER-003 与 R01-CONSUMER-004，理由是驱动机制与验证数据来源不同；中国中免同时属于两个候选，属\"同一证券属于多个主题\"的合法情形（见研究问题 Q009）。"
+  },
+  {
+    "conflict_id": "R01-CONSUMER-CF012",
+    "subject": "2025 年消费政策密集出台 vs 消费板块全年下跌",
+    "positions": [
+      {
+        "position": "政策侧：2025 年出台《提振消费专项行动方案》（2025-03-16）、育儿补贴制度（2025-07-28）、扩大服务消费若干措施（2025-09-16）、数码产品购新补贴（2025-01-13）等重磅消费政策。",
+        "source_ids": ["R01-CONSUMER-S062", "R01-CONSUMER-S080", "R01-CONSUMER-S081"]
+      },
+      {
+        "position": "市场与需求侧：2025 年社零 +3.7%、餐饮 +3.2%、烟酒类 +2.7%；中证白酒指数全年约 -16.2%、中证食品饮料指数全年约 -12.0%，且年内高点正落在《方案》公开前后。",
+        "source_ids": ["R01-CONSUMER-S046", "R01-CONSUMER-S065"]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两组事实同时成立，不互相否定。结论是：2025 年存在强政策文本但不存在可识别的消费 Campaign（见 exclusion X001）。这与 2024 年以旧换新（政策 + 销量验证 + 板块响应）形成对照，是本任务\"政策发布 ≠ 主题形成\"纪律的核心证据。"
+  }
+]

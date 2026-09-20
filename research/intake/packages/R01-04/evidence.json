@@ -1,0 +1,1920 @@
+[
+  {
+    "evidence_id": "R01-CONSUMER-E001",
+    "claim": "2016 年全国规模以上白酒产量 1358.36 万千升，为历史峰值水平。",
+    "evidence_role": "context",
+    "evidence_type": "行业数据（产量）",
+    "event_date": "2016-12-31",
+    "evidence_date": "2017-02-09",
+    "source_id": "R01-CONSUMER-S002",
+    "confidence": "medium",
+    "independence_group": "assoc-wine",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "该数据于 2017-02 发布，晚于统计年度，不得用于证明 2016 年当年市场已知该峰值判断。",
+    "description": "行业媒体引国家统计局口径。用于说明 2016 年白酒行业处于量增与结构升级并存的阶段。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E002",
+    "claim": "2016 年 12 月飞天茅台终端零售价逼近 1200 元/瓶。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据（价格）",
+    "event_date": "2016-12-27",
+    "evidence_date": "2016-12-27",
+    "source_id": "R01-CONSUMER-S001",
+    "confidence": "medium",
+    "independence_group": "media-cctv",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "同期媒体报道，可用于支撑 2016 年末高端白酒价格上行这一事实及当时可观察性。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E003",
+    "claim": "2017 年 6 月 21 日 MSCI 宣布自 2018 年 6 月起将中国 A 股纳入 MSCI 新兴市场指数。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策/指数事件",
+    "event_date": "2017-06-21",
+    "evidence_date": "2017-06-21",
+    "source_id": "R01-CONSUMER-S003",
+    "confidence": "high",
+    "independence_group": "media-cctv",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "外资入场制度性事件的同期报道，用作 2017 年消费白马估值重估机制的解释性锚点。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E004",
+    "claim": "贵州茅台 2017 年营业收入 582.18 亿元，归属于上市公司股东的净利润 270.79 亿元。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司公告/财报",
+    "event_date": "2017-12-31",
+    "evidence_date": "2018-03-27",
+    "source_id": "R01-CONSUMER-S009",
+    "confidence": "high",
+    "independence_group": "company-moutai",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "年报于 2018-03 披露，早于披露日不得作为当时已知信息使用。",
+    "description": "公司层面业绩事实，用于支撑 2017 年高端白酒基本面的真实性（非市场表现）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E005",
+    "claim": "2018 年 10 月 29 日贵州茅台出现上市以来首个\"一\"字跌停，白酒股集体下跌。",
+    "evidence_role": "supporting",
+    "evidence_type": "市场表现",
+    "event_date": "2018-10-29",
+    "evidence_date": "2018-10-29",
+    "source_id": "R01-CONSUMER-S005",
+    "confidence": "high",
+    "independence_group": "media-sina",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "2016–2018 白酒段降温的同期可观察信号。与 E006 报道同一市场事件，两家媒体各自采访报道，不构成对事件之外事实的独立印证。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E006",
+    "claim": "2018 年 10 月 29 日贵州茅台一字跌停后，媒体报道其第三季度收入同比 +3.8%、利润同比 +2.7%，低于市场预期。",
+    "evidence_role": "supporting",
+    "evidence_type": "市场表现 + 公司事实",
+    "event_date": "2018-10-30",
+    "evidence_date": "2018-10-30",
+    "source_id": "R01-CONSUMER-S004",
+    "confidence": "medium",
+    "independence_group": "media-cctv",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "同期报道转述卖方对茅台 Q3 业绩的估计；业绩数字为转述，非公司原始披露。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E007",
+    "claim": "中证白酒指数（399997）2017 年全年涨幅约 +77%，2018 年全年跌幅约 -27%（不复权口径计算值）。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2018-12-28",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "年度涨跌幅为本次研究由年末收盘价计算所得，属复盘口径，不得作为当时市场参与者可实时获得的\"主题确认\"信号。",
+    "description": "用于支撑 2017 年加速、2018 年降温的持续性判断（非单日脉冲）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E008",
+    "claim": "2018 年全国社会消费品零售总额 380987 亿元，同比增长 9.0%。",
+    "evidence_role": "context",
+    "evidence_type": "宏观数据",
+    "event_date": "2018-12-31",
+    "evidence_date": "2019-01-21",
+    "source_id": "R01-CONSUMER-S006",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2019-01 发布，晚于统计年度，不得用于证明 2018 年内市场已知全年增速。",
+    "description": "宏观消费背景数据。仅作 context 使用：宏观消费增速本身不足以证明具体消费行业主题成立。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E009",
+    "claim": "2019 年 3 月 1 日 MSCI 宣布将中国 A 股在 MSCI 指数中的纳入因子由 5% 提高至 20%，分 5 月、8 月、11 月三步实施。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数事件",
+    "event_date": "2019-03-01",
+    "evidence_date": "2019-03-01",
+    "source_id": "R01-CONSUMER-S007",
+    "confidence": "high",
+    "independence_group": "msci",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "MSCI 官方公告，用作 2019 年外资增量资金机制的一手锚点。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E010",
+    "claim": "2019 年全年北向资金净流入 3517.43 亿元，创历史新高。",
+    "evidence_role": "supporting",
+    "evidence_type": "资金数据",
+    "event_date": "2019-12-31",
+    "evidence_date": "2020-01-01",
+    "source_id": "R01-CONSUMER-S008",
+    "confidence": "medium",
+    "independence_group": "media-21jingji",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "年度统计于 2020-01-01 发布，不得用于证明 2019 年内市场已知全年净流入规模。",
+    "description": "用于支撑 2019 年外资定价权提升这一机制，属资金面证据而非行业基本面证据。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E011",
+    "claim": "贵州茅台 2021 年营业收入 1094.64 亿元，归母净利润 524.60 亿元。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司公告/财报",
+    "event_date": "2021-12-31",
+    "evidence_date": "2022-03-31",
+    "source_id": "R01-CONSUMER-S010",
+    "confidence": "high",
+    "independence_group": "company-moutai",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "年报于 2022-03 披露，不得用于证明 2021 年 2 月峰值时点市场已知全年业绩。",
+    "description": "龙头公司业绩事实，用于支撑高端白酒在 2019–2021 年具备真实基本面支撑（非纯估值扩张）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E012",
+    "claim": "2021 年 2 月 18 日中证白酒指数（399997）盘中最高 21663.85 点，贵州茅台盘中最高 2627.88 元（不复权），五粮液盘中最高 357.19 元，泸州老窖盘中最高 327.66 元。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2021-02-18",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "峰值日期与价格由本次研究回看确认，属 Historical Leader Set 口径，不得作为当时可识别的\"见顶\"信号。",
+    "description": "2019–2021 消费核心资产段的峰值候选（peak cluster 主值）。复权口径下价格数值不同，存在口径冲突（见 CF003 系列）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E013",
+    "claim": "2021 年 3 月 29 日经济参考报报道：自 2 月 18 日以来核心资产均出现大幅下跌。",
+    "evidence_role": "supporting",
+    "evidence_type": "媒体/市场表现",
+    "event_date": "2021-03-29",
+    "evidence_date": "2021-03-29",
+    "source_id": "R01-CONSUMER-S011",
+    "confidence": "medium",
+    "independence_group": "media-jjckb",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "同期权威媒体对\"抱团股瓦解\"的表述，用于支撑 2021-02-18 之后市场注意力转向。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E014",
+    "claim": "2020 年全国社会消费品零售总额 391981 亿元、同比下降 3.9%；2021 年 440823 亿元、同比增长 12.5%。",
+    "evidence_role": "context",
+    "evidence_type": "宏观数据",
+    "event_date": "2021-12-31",
+    "evidence_date": "2022-01-17",
+    "source_id": "R01-CONSUMER-S012",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "官方数据于 2022-01 发布，不得用于证明 2020/2021 年内市场已知全年增速。",
+    "description": "宏观消费背景。仅作 context：宏观数据改善本身不能证明具体消费行业主题成立。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E015",
+    "claim": "按国家统计局口径，2021 年规模以上白酒企业销售收入 6033.48 亿元（同比 +3.38%）、利润总额 1701.94 亿元（同比 +7.35%）。",
+    "evidence_role": "contradicting",
+    "evidence_type": "行业数据",
+    "event_date": "2021-12-31",
+    "evidence_date": "2022-07-14",
+    "source_id": "R01-CONSUMER-S067",
+    "confidence": "low",
+    "independence_group": "media-sohu",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "媒体转载口径，未取得国家统计局原文直链，仅用于记录口径分歧，不得用于支撑任何峰值或启动判断。",
+    "description": "与贵州茅台 2021 年年报引述的行业增速（+18.6%/+32.95%）存在冲突，两者口径不一致，保留为 Conflict CF003。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E016",
+    "claim": "2020 年 6 月 29 日财政部、海关总署、税务总局发布公告 2020 年第 33 号，将海南离岛旅客免税购物额度由每年每人 3 万元提高至 10 万元、不限次数，商品类别由 38 类增至 45 类，并取消单件 8000 元免税限额，自 2020 年 7 月 1 日起施行。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2020-06-29",
+    "evidence_date": "2020-06-29",
+    "source_id": "R01-CONSUMER-S013",
+    "confidence": "high",
+    "independence_group": "gov-mof",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "免税行情的核心政策锚点，一手官方文件。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E017",
+    "claim": "2020 年 6 月 1 日中共中央、国务院印发《海南自由贸易港建设总体方案》，提出放宽离岛免税购物额度至每年每人 10 万元。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2020-06-01",
+    "evidence_date": "2020-06-01",
+    "source_id": "R01-CONSUMER-S068",
+    "confidence": "high",
+    "independence_group": "media-xinhua",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "政策预期形成的同期报道（额度方向先于 33 号公告落地）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E018",
+    "claim": "2020 年 7 月 1 日至 10 月 31 日，海口海关监管海南离岛免税销售金额 120.1 亿元，同比增长 214.1%；购物 178.3 万人次，同比增长 58.8%。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方销售数据",
+    "event_date": "2020-10-31",
+    "evidence_date": "2020-11-12",
+    "source_id": "R01-CONSUMER-S015",
+    "confidence": "high",
+    "independence_group": "gov-customs",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2020-11-12 公布，晚于统计区间，不得用于证明 7–10 月期间市场实时已知该金额。",
+    "description": "★ 关键的需求侧验证：政策放开后出现可观测的销售额放量，而非仅有政策文本。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E019",
+    "claim": "2021 年海南 10 家离岛免税店总销售额 601.73 亿元，同比增长 84%，其中免税销售额 504.9 亿元、同比增长 83%。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方销售数据",
+    "event_date": "2021-12-31",
+    "evidence_date": "2022-01-01",
+    "source_id": "R01-CONSUMER-S017",
+    "confidence": "high",
+    "independence_group": "gov-hainancommerce",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2022-01-01 发布，不得用于证明 2021 年内市场已知全年销售额。",
+    "description": "免税需求在 2021 年继续放量的官方证据。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E020",
+    "claim": "2021 年 2 月 18 日中国中免（601888）盘中最高 403.78 元（不复权），为历史最高价。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2021-02-18",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S066",
+    "confidence": "medium",
+    "independence_group": "market-ifzq",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的峰值，不得作为当时可识别的见顶信号。",
+    "description": "免税候选的峰值主值；与白酒峰值同日（2021-02-18），构成 peak cluster，但属不同机制。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E021",
+    "claim": "2020 年 6 月 19 日中国旅游集团中免股份有限公司董事会审议变更证券简称，证券简称由\"中国国旅\"变更为\"中国中免\"。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司公告",
+    "event_date": "2020-06-19",
+    "evidence_date": "2020-06-19",
+    "source_id": "R01-CONSUMER-S069",
+    "confidence": "high",
+    "independence_group": "company-ctgdf",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "公司层面\"聚焦免税\"的战略确认时点，用作主题形成的公司事实锚点。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E022",
+    "claim": "媒体报道称 2022 年海南离岛免税店总销售额约 487.1 亿元，同比下降约 19%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据（转述）",
+    "event_date": "2022-12-31",
+    "evidence_date": "2023-03-31",
+    "source_id": "R01-CONSUMER-S070",
+    "confidence": "low",
+    "independence_group": "media-bjnews",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "媒体转述，未取得官方原文直链；仅用于记录降温方向，不得单独支撑结束判断。",
+    "description": "免税段降温的弱证据，置信度低。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E023",
+    "claim": "2020 年全国国内旅游出游 28.79 亿人次、同比下降 52.1%；国内旅游收入 2.23 万亿元、同比下降 61.1%。",
+    "evidence_role": "context",
+    "evidence_type": "官方行业数据",
+    "event_date": "2020-12-31",
+    "evidence_date": "2021-02-18",
+    "source_id": "R01-CONSUMER-S018",
+    "confidence": "high",
+    "independence_group": "gov-mct",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2021-02 发布，不得用于证明 2020 年内市场已知全年降幅。",
+    "description": "疫情对服务消费冲击的量级证据，用作 2022–2023 修复段的基数背景。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E024",
+    "claim": "2020 年一季度全国餐饮收入 6026 亿元，同比下降 44.3%。",
+    "evidence_role": "context",
+    "evidence_type": "行业协会数据（引国家统计局）",
+    "event_date": "2020-03-31",
+    "evidence_date": "2020-04-17",
+    "source_id": "R01-CONSUMER-S025",
+    "confidence": "high",
+    "independence_group": "assoc-cuisine",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "协会于 2020-04-17 发布，不得用于证明 2020Q1 期间市场已知该降幅。",
+    "description": "餐饮需求冲击的服务消费侧证据。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E025",
+    "claim": "2020 年全年全国餐饮收入 39527 亿元，同比下降 16.6%。",
+    "evidence_role": "context",
+    "evidence_type": "行业协会数据（引国家统计局）",
+    "event_date": "2020-12-31",
+    "evidence_date": "2021-01-20",
+    "source_id": "R01-CONSUMER-S071",
+    "confidence": "high",
+    "independence_group": "assoc-hotel",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2021-01-20 发布，不得用于证明 2020 年内市场已知全年降幅。",
+    "description": "与服务消费旅游数据互为交叉，但来自不同行业协会（不同 independence group）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E026",
+    "claim": "2022 年 12 月 7 日国务院联防联控机制综合组印发《关于进一步优化落实新冠肺炎疫情防控措施的通知》（新十条）。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2022-12-07",
+    "evidence_date": "2022-12-07",
+    "source_id": "R01-CONSUMER-S021",
+    "confidence": "high",
+    "independence_group": "gov-govcn",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "疫后服务消费修复段的启动锚点（政策事件），一手官方文件。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E027",
+    "claim": "2023 年春节假期全国国内旅游出游 3.08 亿人次，同比增长 23.1%，恢复至 2019 年同期的 88.6%；旅游收入 3758.43 亿元，恢复至 2019 年同期的 73.1%。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方行业数据",
+    "event_date": "2023-01-27",
+    "evidence_date": "2023-01-27",
+    "source_id": "R01-CONSUMER-S019",
+    "confidence": "high",
+    "independence_group": "gov-mct",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "修复段的需求侧验证：人次恢复明显快于收入恢复（消费力未同步修复）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E028",
+    "claim": "2023 年五一假期全国国内旅游出游 2.74 亿人次，同比增长 70.83%，按可比口径恢复至 2019 年同期的 119.09%；旅游收入 1480.56 亿元，恢复至 2019 年同期的 100.66%。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方行业数据",
+    "event_date": "2023-05-03",
+    "evidence_date": "2023-05-03",
+    "source_id": "R01-CONSUMER-S020",
+    "confidence": "high",
+    "independence_group": "gov-mct",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "修复段延续的官方证据（人次已超 2019 年，收入仅持平）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E029",
+    "claim": "2023 年 6 月全国社会消费品零售总额同比增长 3.1%，上半年累计增长 8.2%。",
+    "evidence_role": "contradicting",
+    "evidence_type": "宏观数据",
+    "event_date": "2023-06-30",
+    "evidence_date": "2023-07-17",
+    "source_id": "R01-CONSUMER-S023",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2023-07-17 发布，不得用于证明 6 月期间市场已知增速。",
+    "description": "对\"消费强复苏\"叙事的反证：单月增速自 4 月 +18.4%、5 月 +12.7% 快速回落至 6 月 +3.1%。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E030",
+    "claim": "2023 年 5 月社会消费品零售总额同比增长 12.7%，低于市场一致预期。",
+    "evidence_role": "contradicting",
+    "evidence_type": "媒体/宏观数据",
+    "event_date": "2023-06-15",
+    "evidence_date": "2023-06-15",
+    "source_id": "R01-CONSUMER-S024",
+    "confidence": "medium",
+    "independence_group": "media-caixin",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "同期权威财经媒体对\"弱复苏\"的确认，用作修复段转向的同期证据。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E031",
+    "claim": "2023 年 4 月 28 日至 5 月 31 日，中国中免股价由收盘 160.98 元回落至 123.10 元，锦江酒店由 53.49 元回落至 46.89 元，首旅酒店由 21.66 元回落至 19.81 元，宋城演艺由 14.59 元回落至 12.70 元。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2023-05-31",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S066",
+    "confidence": "medium",
+    "independence_group": "market-ifzq",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的回落区间，不得作为当时可识别的结束信号。",
+    "description": "修复段降温的市场侧证据，与 E029/E030 的宏观反证方向一致。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E032",
+    "claim": "2023 年 1 月中国中免月内最高价 239.99 元，为该疫后修复脉冲期间的股价高点。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2023-01-31",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S066",
+    "confidence": "medium",
+    "independence_group": "market-ifzq",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的阶段性高点，不得作为当时可识别的见顶信号。",
+    "description": "修复脉冲的峰值候选（板块口径）；个别标的峰值延后至 2023-03/04，构成 peak cluster。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E033",
+    "claim": "2018 年 8 月 3 日农业农村部确认辽宁省沈阳市沈北新区发生我国首例非洲猪瘟疫情。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策/疫情事件",
+    "event_date": "2018-08-03",
+    "evidence_date": "2018-08-03",
+    "source_id": "R01-CONSUMER-S026",
+    "confidence": "high",
+    "independence_group": "media-people",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "非洲猪瘟周期的启动锚点（供给端外生冲击）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E034",
+    "claim": "2019 年第 40 周（9 月 30 日至 10 月 6 日）全国规模以上生猪定点屠宰企业生猪平均收购价 29.96 元/公斤。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方价格监测",
+    "event_date": "2019-10-10",
+    "evidence_date": "2019-10-10",
+    "source_id": "R01-CONSUMER-S028",
+    "confidence": "high",
+    "independence_group": "gov-moa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "猪价上行的官方监测证据，口径为\"规模以上屠宰企业生猪平均收购价\"。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E035",
+    "claim": "2019 年全国 CPI 同比上涨 2.9%，其中猪肉价格上涨 42.5%，食品项拉动 CPI 约 1.81 个百分点，占总涨幅约 62.4%。",
+    "evidence_role": "supporting",
+    "evidence_type": "宏观数据",
+    "event_date": "2019-12-31",
+    "evidence_date": "2020-01-19",
+    "source_id": "R01-CONSUMER-S031",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2020-01 发布，不得用于证明 2019 年内市场已知全年 CPI 结构。",
+    "description": "猪价上涨传导至宏观物价的官方证据，说明该轮供给冲击具有宏观显著性。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E036",
+    "claim": "媒体报道称 2019 年 10 月全国能繁母猪存栏环比增长 0.6%，为 2018 年 4 月以来首次回升。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据（转述）",
+    "event_date": "2019-11-22",
+    "evidence_date": "2019-11-22",
+    "source_id": "R01-CONSUMER-S072",
+    "confidence": "low",
+    "independence_group": "media-bjnews",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "产能拐点的媒体转述；未取得农业农村部原文直链，置信度低，仅作辅助。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E037",
+    "claim": "2021 年 10 月第 3 周（采集日 10 月 20 日）全国集贸市场活猪价格 13.40 元/公斤、猪肉价格 22.58 元/公斤，同比分别下降 57.7% 和 55.3%。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方价格监测",
+    "event_date": "2021-10-20",
+    "evidence_date": "2021-10-26",
+    "source_id": "R01-CONSUMER-S030",
+    "confidence": "high",
+    "independence_group": "gov-moa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "监测数据于 2021-10-26 发布，晚于采集日，不得用于证明采集日当日市场已知该读数。",
+    "description": "非洲猪瘟周期结束段的价格证据：猪价自高点大幅回落。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E038",
+    "claim": "牧原股份（002714）于 2020 年 3 月 9 日盘中触及历史最高价 139.92 元（不复权）；温氏股份（300498）于 2019 年 3 月 13 日盘中触及 45.55 元。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2020-03-09",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的峰值（Historical Leader Set 口径），不得作为当时可识别的见顶信号。",
+    "description": "养殖板块在非洲猪瘟周期中的峰值候选；龙头之间存在明显的时间分散（peak cluster）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E039",
+    "claim": "2021 年 8 月 17 日农业农村部公布 7 月全国能繁母猪存栏环比下降 0.5%，结束连续 21 个月增长。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方产能数据",
+    "event_date": "2021-08-17",
+    "evidence_date": "2021-08-17",
+    "source_id": "R01-CONSUMER-S033",
+    "confidence": "medium",
+    "independence_group": "media-cctv",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "新一轮猪周期产能去化的起点信号（官方数据经权威媒体转述）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E040",
+    "claim": "2021 年 9 月 19 日农业农村部印发《生猪产能调控实施方案（暂行）》，明确全国能繁母猪正常保有量约 4100 万头、最低保有量 3700 万头，并指出猪价大幅上涨的起因均为前期能繁母猪存栏量下降到正常水平的 95% 以下。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2021-09-19",
+    "evidence_date": "2021-09-24",
+    "source_id": "R01-CONSUMER-S027",
+    "confidence": "high",
+    "independence_group": "gov-moa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "★ 关键判据证据：官方文件明确了猪周期的供给端归因（需求端稳定），用于回答\"自然周期 vs 历史机会\"。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E041",
+    "claim": "2022 年 2 月 28 日国家发展改革委启动中央冻猪肉储备收储工作，首批收储 4 万吨。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2022-02-28",
+    "evidence_date": "2022-02-28",
+    "source_id": "R01-CONSUMER-S034",
+    "confidence": "high",
+    "independence_group": "gov-scio",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "逆周期调控介入时点，用作 2022 年猪价见底的辅助锚点。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E042",
+    "claim": "2022 年第 27 周（7 月 4 日至 7 月 10 日）全国规模以上屠宰企业生猪平均收购价 22.26 元/公斤，环比上涨 13.5%、同比上涨 30.6%。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方价格监测",
+    "event_date": "2022-07-10",
+    "evidence_date": "2022-07-13",
+    "source_id": "R01-CONSUMER-S029",
+    "confidence": "high",
+    "independence_group": "gov-moa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "2022 年猪价上行段的官方验证，口径与 E034 一致，可跨周期比较。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E043",
+    "claim": "2022 年 9 月 8 日国家发展改革委开始投放中央猪肉储备。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2022-09-08",
+    "evidence_date": "2022-09-06",
+    "source_id": "R01-CONSUMER-S035",
+    "confidence": "high",
+    "independence_group": "media-xinhua",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "调控方向由收储转为投放，是 2022 年周期由加速转向降温的政策侧信号。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E044",
+    "claim": "2022 年 10 月中旬猪价创年内新高，媒体转述外三元生猪价格约 28 元/公斤区间。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业价格（转述）",
+    "event_date": "2022-10-15",
+    "evidence_date": "2022-10-20",
+    "source_id": "R01-CONSUMER-S073",
+    "confidence": "low",
+    "independence_group": "media-jwview",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "非官方口径的猪价高点转述，置信度低；官方口径高点以农业农村部周度监测为准（待补齐）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E045",
+    "claim": "行业信息站复盘称 2022 年 12 月 21 日生猪价格回落至约 15.63 元/公斤，较 10 月高点下降约 44.9%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业价格（非官方口径）",
+    "event_date": "2022-12-21",
+    "evidence_date": "2022-12-31",
+    "source_id": "R01-CONSUMER-S074",
+    "confidence": "low",
+    "independence_group": "media-zhue",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "非官方口径复盘数据，仅用于指示降温方向，不得单独支撑结束日期判定。",
+    "description": "2022 年周期降温的弱证据。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E046",
+    "claim": "巨星农牧（603477）2022 年 7 月 11 日涨停收 35.65 元；傲农生物（603363）2022 年 7 月 7 日涨停收 23.55 元。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2022-07-11",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的行情高点区，不得作为当时可识别的见顶信号。",
+    "description": "2022 年猪周期反转段的市场侧证据；与官方价格上行（E042）在时间上接近。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E047",
+    "claim": "2020 年中国家电出口 4582 亿元、同比增长 24.2%（海关总署口径，不含彩电）；协会口径出口 837 亿美元、同比增长 18%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据",
+    "event_date": "2020-12-31",
+    "evidence_date": "2021-02-09",
+    "source_id": "R01-CONSUMER-S036",
+    "confidence": "medium",
+    "independence_group": "assoc-cheaa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2021-02 发布，不得用于证明 2020 年内市场已知全年出口增速。",
+    "description": "两个口径（海关总署 vs 行业协会）不可混用，已在描述中并列标注。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E048",
+    "claim": "2020 年中国家电内销 7297 亿元、同比下降 9.2%；家电出口自 2020 年 6 月起强劲反弹。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据",
+    "event_date": "2020-06-30",
+    "evidence_date": "2021-02-26",
+    "source_id": "R01-CONSUMER-S037",
+    "confidence": "medium",
+    "independence_group": "assoc-chinaiol",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2021-02 发布，不得用于证明 2020 年内市场已知该结构分化。",
+    "description": "内需下滑与出口反弹并存，说明 2020 年家电景气的驱动主要来自外需与居家需求，而非地产传导。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E049",
+    "claim": "2021 年中国家电零售额 7603 亿元、同比增长 3.6%；家电行业主营业务收入 1.73 万亿元、同比增长 15.5%，利润总额 1218 亿元、同比增长 4.5%；2021 年 12 月家电零售额同比下降 10.4%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据",
+    "event_date": "2021-12-31",
+    "evidence_date": "2022-04-13",
+    "source_id": "R01-CONSUMER-S038",
+    "confidence": "medium",
+    "independence_group": "assoc-cheaa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2022-04 发布，不得用于证明 2021 年内市场已知全年与年末增速。",
+    "description": "收入增速显著高于利润增速，反映原材料涨价对盈利的挤压。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E050",
+    "claim": "小熊电器（002959）2020 年 7 月 23 日盘中最高 165.90 元；石头科技（688169）2021 年 6 月 21 日盘中最高 1494.99 元；科沃斯（603486）2021 年 7 月 15 日盘中最高 252.71 元（不复权）。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2021-07-15",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S066",
+    "confidence": "medium",
+    "independence_group": "market-ifzq",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的峰值，不得作为当时可识别的见顶信号。",
+    "description": "小家电/清洁电器段的峰值 cluster：小家电见顶早于清洁电器约一年。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E051",
+    "claim": "2020 年全国房屋竣工面积 91218 万平方米，同比下降 4.9%。",
+    "evidence_role": "contradicting",
+    "evidence_type": "宏观数据",
+    "event_date": "2020-12-31",
+    "evidence_date": "2021-01-18",
+    "source_id": "R01-CONSUMER-S039",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2021-01 发布，不得用于证明 2020 年内市场已知全年竣工降幅。",
+    "description": "对\"地产竣工后周期驱动 2020 年家电行情\"这一机制的反证：2020 年竣工实际为负增长。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E052",
+    "claim": "2021 年全国房屋竣工面积 101412 万平方米，同比增长 11.2%。",
+    "evidence_role": "contradicting",
+    "evidence_type": "宏观数据",
+    "event_date": "2021-12-31",
+    "evidence_date": "2022-01-17",
+    "source_id": "R01-CONSUMER-S040",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2022-01 发布，不得用于证明 2021 年内市场已知全年竣工增速。",
+    "description": "竣工高峰滞后至 2021 年，但家电板块当已下行——地产传导与行情时间错位，保留为 Conflict CF005。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E053",
+    "claim": "2021 年 7 月全国商品房销售面积、销售额单月同比分别下降 8.5% 和 7.1%，为该年首次单月同比下降。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据（媒体转述统计局）",
+    "event_date": "2021-07-31",
+    "evidence_date": "2021-08-17",
+    "source_id": "R01-CONSUMER-S075",
+    "confidence": "low",
+    "independence_group": "media-sina",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "媒体转述，未取得国家统计局原文直链；仅作降温方向的辅助证据。",
+    "description": "地产链需求转弱的时点信号。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E054",
+    "claim": "美的集团（000333）2021 年 2 月 10 日盘中最高 108.00 元；海尔智家（600690）2021 年 2 月 18 日盘中最高 35.95 元；格力电器（000651）2021 年 1 月 6 日盘中最高 66.78 元（不复权）。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2021-02-18",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S066",
+    "confidence": "medium",
+    "independence_group": "market-ifzq",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的峰值，不得作为当时可识别的见顶信号。",
+    "description": "白电/地产后周期段的峰值 cluster 主值（2021-02）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E055",
+    "claim": "2024 年 3 月 7 日国务院印发《推动大规模设备更新和消费品以旧换新行动方案》（国发〔2024〕7 号），2024 年 3 月 13 日公开发布。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2024-03-13",
+    "evidence_date": "2024-03-13",
+    "source_id": "R01-CONSUMER-S041",
+    "confidence": "high",
+    "independence_group": "gov-govcn",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "以旧换新段的政策启动锚点（定调）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E056",
+    "claim": "2024 年 7 月 24 日国家发展改革委、财政部印发《关于加力支持大规模设备更新和消费品以旧换新的若干措施》（发改环资〔2024〕1104 号），安排约 1500 亿元超长期特别国债资金支持消费品以旧换新。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2024-07-25",
+    "evidence_date": "2024-07-25",
+    "source_id": "R01-CONSUMER-S042",
+    "confidence": "high",
+    "independence_group": "gov-ndrc",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "资金落地锚点：政策由定调进入可执行阶段。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E057",
+    "claim": "2024 年 8 月 24 日商务部等 4 部门发布《关于进一步做好家电以旧换新工作的通知》，明确 8 类家电补贴标准：2 级能效产品补贴 15%、1 级能效产品补贴 20%。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策",
+    "event_date": "2024-08-24",
+    "evidence_date": "2024-08-24",
+    "source_id": "R01-CONSUMER-S043",
+    "confidence": "high",
+    "independence_group": "gov-mofcom",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "补贴细则落地锚点，可解释需求为何自 2024 年 9 月起集中释放。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E058",
+    "claim": "2024 年 9 月至 12 月，全国限额以上单位家用电器和音像器材类零售额同比分别增长 20.5%、39.2%、22.2% 和 39.3%，连续 4 个月保持两位数增长。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方零售数据",
+    "event_date": "2024-12-31",
+    "evidence_date": "2025-02-18",
+    "source_id": "R01-CONSUMER-S044",
+    "confidence": "high",
+    "independence_group": "media-people",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "该组月度数据经权威媒体转述国家统计局口径；不得用于证明 2024 年 9–12 月期间市场实时已知各月读数（各月数据原为逐月发布）。",
+    "description": "★ 本任务最关键的\"政策 → 真实需求\"验证链：补贴细则落地后出现连续 4 个月的零售额放量。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E059",
+    "claim": "2024 年全国限额以上单位家用电器和音像器材类零售额 10307 亿元，同比增长 12.3%，创历史新高；以旧换新 8 类家电销量超过 6200 万台。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方零售数据",
+    "event_date": "2024-12-31",
+    "evidence_date": "2025-02-18",
+    "source_id": "R01-CONSUMER-S044",
+    "confidence": "medium",
+    "independence_group": "media-people",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "年度数据于 2025-02 转述发布，不得用于证明 2024 年内市场已知全年读数。",
+    "description": "全年层面的需求验证；\"超 6200 万台\"与商务部后续口径（超 6000 万台/超 2600 亿元）为不同统计时点，不视为矛盾。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E060",
+    "claim": "2025 年 1 月 16 日商务部披露：2024 年 3600 多万名消费者购买 8 大类家电产品超 6000 万台，带动销售额超 2600 亿元。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方数据",
+    "event_date": "2025-01-16",
+    "evidence_date": "2025-01-16",
+    "source_id": "R01-CONSUMER-S045",
+    "confidence": "high",
+    "independence_group": "gov-mofcom",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2025-01-16 披露，晚于统计年度，不得用于证明 2024 年内市场已知该口径。",
+    "description": "商务部口径的需求侧验证，与行业协会/媒体转述口径互为独立来源。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E061",
+    "claim": "2024 年 8 月 7 日至 9 月 12 日间美的集团、格力电器、海尔智家、海信家电、华帝股份、老板电器先后出现区间最低价；2024 年 10 月 8 日上述标的同时出现区间最高价。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2024-10-08",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S066",
+    "confidence": "medium",
+    "independence_group": "market-ifzq",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的区间高低点，不得作为当时可识别的启动/见顶信号。",
+    "description": "市场侧响应：低点出现在补贴细则落地前后，高点出现在 9·24 行情与补贴放量共振期。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E062",
+    "claim": "按奥维云网推总口径，2025 年中国家电零售额 8931 亿元、同比下降 4.3%，上半年增长 9.2%、自第三季度起明显回落。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据",
+    "event_date": "2025-12-31",
+    "evidence_date": "2026-04-16",
+    "source_id": "R01-CONSUMER-S076",
+    "confidence": "medium",
+    "independence_group": "assoc-cheaa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2026-04 发布，不得用于证明 2025 年内市场已知全年读数。",
+    "description": "以旧换新段降温证据：高基数与补贴力度减弱下需求回落；与统计局口径（+11%）不一致，保留为口径差异说明。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E063",
+    "claim": "2019 年 11 月 6 日华熙生物（688363）在上海证券交易所科创板上市。",
+    "evidence_role": "supporting",
+    "evidence_type": "交易所公告",
+    "event_date": "2019-11-06",
+    "evidence_date": "2019-11-05",
+    "source_id": "R01-CONSUMER-S051",
+    "confidence": "high",
+    "independence_group": "exchange-sse",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "医美/玻尿酸产业链在 A 股形成可交易标的的起点（供给端事件）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E064",
+    "claim": "2021 年 5 月 28 日国家卫生健康委等八部门印发《打击非法医疗美容服务专项整治工作方案》（国卫办监督函〔2021〕273 号），2021 年 6 月 11 日公开，整治期为 2021 年 6 月至 12 月。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策/监管",
+    "event_date": "2021-06-11",
+    "evidence_date": "2021-06-11",
+    "source_id": "R01-CONSUMER-S047",
+    "confidence": "high",
+    "independence_group": "gov-nhc",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "★ 双重性质证据：既清退非法供给（利好合规龙头），又压制行业扩张预期（降温催化）——该双重性保留为 Conflict CF009。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E065",
+    "claim": "2021 年 11 月 1 日国家市场监督管理总局发布《医疗美容广告执法指南》。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策/监管",
+    "event_date": "2021-11-01",
+    "evidence_date": "2021-11-01",
+    "source_id": "R01-CONSUMER-S048",
+    "confidence": "high",
+    "independence_group": "gov-samr",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "监管收紧的延续，用于支撑医美段降温的政策侧解释。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E066",
+    "claim": "爱美客（300896）2021 年 2 月 18 日盘中最高 1331.02 元（不复权历史最高）；华熙生物（688363）2021 年 7 月 5 日盘中最高 314.99 元；朗姿股份（002612）2021 年 6 月 1 日盘中最高 71.60 元。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2021-07-05",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的峰值，不得作为当时可识别的见顶信号。",
+    "description": "医美段峰值 cluster：爱美客见顶早于华熙生物约 5 个月，标的间存在明显时间分散。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E067",
+    "claim": "券商研究（经媒体转述）称 2019 年中国医美渗透率约 3.6%，显著低于美国、日本、韩国。",
+    "evidence_role": "context",
+    "evidence_type": "行业数据（二手转述）",
+    "event_date": "2021-06-10",
+    "evidence_date": "2021-06-10",
+    "source_id": "R01-CONSUMER-S053",
+    "confidence": "low",
+    "independence_group": "media-jiemian",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "渗透率证据属二手转述，且不同机构对中国医美市场规模口径不一致（中金 vs 艾瑞），不得混用；仅作 context。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E068",
+    "claim": "2020 年 6 月 29 日国务院公布《化妆品监督管理条例》（国务院令第 727 号），自 2021 年 1 月 1 日起施行。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策/监管",
+    "event_date": "2020-06-29",
+    "evidence_date": "2020-06-29",
+    "source_id": "R01-CONSUMER-S049",
+    "confidence": "high",
+    "independence_group": "gov-govcn",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "国货美妆段的制度锚点：新条例确立功效宣称与新原料制度，抬高合规门槛。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E069",
+    "claim": "2021 年 4 月 8 日国家药品监督管理局发布《化妆品功效宣称评价规范》（2021 年第 50 号），自 2021 年 5 月 1 日起施行。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策/监管",
+    "event_date": "2021-04-08",
+    "evidence_date": "2021-04-08",
+    "source_id": "R01-CONSUMER-S050",
+    "confidence": "high",
+    "independence_group": "gov-nmpa",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "功效宣称规范化，对具备研发与备案能力的国货龙头形成结构性利好。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E070",
+    "claim": "2021 年全国限额以上单位化妆品类零售额 4026 亿元、同比增长 14.0%；2022 年 3936 亿元、同比下降 4.5%，为十年来首次负增长。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方零售数据",
+    "event_date": "2022-12-31",
+    "evidence_date": "2023-01-17",
+    "source_id": "R01-CONSUMER-S077",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "2022 年数据于 2023-01 发布，不得用于证明 2022 年内市场已知全年负增长。",
+    "description": "行业需求由高增长转为负增长的官方证据，用作国货美妆段降温的基本面依据。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E071",
+    "claim": "2021 年 3 月 25 日贝泰妮（300957）在深圳证券交易所创业板上市。",
+    "evidence_role": "supporting",
+    "evidence_type": "交易所公告",
+    "event_date": "2021-03-25",
+    "evidence_date": "2021-03-25",
+    "source_id": "R01-CONSUMER-S052",
+    "confidence": "high",
+    "independence_group": "exchange-szse",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "功效护肤龙头登陆 A 股，构成该段可交易标的扩容事件。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E072",
+    "claim": "珀莱雅（603605）2021 年 10 月 29 日盘中最高 224.43 元（历史最高）；贝泰妮（300957）2021 年 7 月 8 日盘中最高 289.35 元（不复权）。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2021-10-29",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的峰值，不得作为当时可识别的见顶信号。",
+    "description": "龙头珀莱雅滞后于板块约 3 个月见顶，构成 peak cluster 而非单一点位。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E073",
+    "claim": "媒体转述称抖音平台美妆 TOP1 品牌年 GMV 由 2021 年的 10 亿元级提升至 2022 年的 20 亿元级。",
+    "evidence_role": "context",
+    "evidence_type": "渠道数据（转述）",
+    "event_date": "2024-01-24",
+    "evidence_date": "2024-01-24",
+    "source_id": "R01-CONSUMER-S078",
+    "confidence": "low",
+    "independence_group": "media-jiemian",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "事后复盘性质的渠道数据转述，不得用作 2021 年行情的同期催化证据。",
+    "description": "用于支撑\"线上渠道红利\"机制的存在性，属弱证据（二手转述）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E074",
+    "claim": "第三方测算（经媒体转载）称 2023 年末全国量贩零食门店约 22470 家。",
+    "evidence_role": "context",
+    "evidence_type": "行业数据（第三方测算）",
+    "event_date": "2023-12-31",
+    "evidence_date": "2024-05-14",
+    "source_id": "R01-CONSUMER-S079",
+    "confidence": "low",
+    "independence_group": "media-sohu",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "第三方测算转载，非官方统计；不得用于证明 2023 年内市场已知门店数。",
+    "description": "量贩零食渠道扩张规模的弱证据，仅作 context。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E075",
+    "claim": "2024 年 6 月 12 日零食很忙集团（含赵一鸣）全国门店总数突破 10000 家。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司/行业事实",
+    "event_date": "2024-06-12",
+    "evidence_date": "2024-06-12",
+    "source_id": "R01-CONSUMER-S060",
+    "confidence": "medium",
+    "independence_group": "media-36kr",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "渠道扩张的同期证据，用于支撑\"渠道变革\"而非\"需求爆发\"机制。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E076",
+    "claim": "万辰集团并表门店数量由 2023 年末 4726 家增至 2024 年末 14196 家。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司数据（券商研报）",
+    "event_date": "2024-12-31",
+    "evidence_date": "2025-04-21",
+    "source_id": "R01-CONSUMER-S059",
+    "confidence": "medium",
+    "independence_group": "research-broker-wanchen",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "研报于 2025-04 发布，不得用于证明 2024 年内市场已知门店数。",
+    "description": "渠道扩张速度的量化证据（研报转述公司年报）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E077",
+    "claim": "万辰集团 2024 年营业收入 323.29 亿元，同比增长 247.86%；归母净利润约 2.94 亿元。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司业绩（转述）",
+    "event_date": "2024-12-31",
+    "evidence_date": "2025-04-19",
+    "source_id": "R01-CONSUMER-S082",
+    "confidence": "medium",
+    "independence_group": "media-eastmoney",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "业绩于 2025-04 披露/转述，不得用于证明 2024 年内市场已知全年业绩。",
+    "description": "渠道型公司业绩放量的证据，支撑\"渠道变革驱动收入\"而非单纯题材炒作。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E078",
+    "claim": "盐津铺子 2024 年营业收入 53.04 亿元、同比增长 28.89%；归属于上市公司股东的净利润 6.40 亿元、同比增长 26.53%。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司公告/财报",
+    "event_date": "2024-12-31",
+    "evidence_date": "2025-04-23",
+    "source_id": "R01-CONSUMER-S058",
+    "confidence": "high",
+    "independence_group": "company-yanjin",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "年报于 2025-04 披露，不得用于证明 2024 年内市场已知全年业绩。",
+    "description": "上游品牌方受益于量贩渠道放量的公司层面证据（与渠道商 E076/E077 属不同 independence group）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E079",
+    "claim": "万辰集团股价 2024 年 12 月 11 日收于 80.21 元，2025 年 8 月 29 日收于 210.81 元（区间最高）；同期三只松鼠于 2025 年初见顶后全年收跌。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2025-08-29",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的区间高点，不得作为当时可识别的见顶信号。",
+    "description": "渠道龙头与品牌商标的峰值并不同步，说明该段存在广度峰值与龙头峰值的分离（peak cluster）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E080",
+    "claim": "2022 年城镇（犬猫）消费市场规模 2706 亿元、同比增长 8.7%；2024 年 3002 亿元、同比增长 7.5%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据（媒体转述）",
+    "event_date": "2024-12-31",
+    "evidence_date": "2023-08-30",
+    "source_id": "R01-CONSUMER-S063",
+    "confidence": "low",
+    "independence_group": "media-cctv",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据为媒体转述的第三方行业统计（2023 年报道），2024 年数值来自同系列后续报道；不属官方统计，置信度低。",
+    "description": "宠物消费市场规模的弱证据，仅用于说明需求存在稳定增长背景。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E081",
+    "claim": "媒体转述海关数据称 2024 年中国宠物食品出口 105.29 亿元、同比增长 22.07%，出口量 33.52 万吨、同比增长 26.01%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业数据（转述）",
+    "event_date": "2024-12-31",
+    "evidence_date": "2025-02-21",
+    "source_id": "R01-CONSUMER-S064",
+    "confidence": "low",
+    "independence_group": "media-industrysourcing",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "海关数据经媒体转述，未取得海关总署原文直链；不得单独支撑启动判断。",
+    "description": "宠物食品外需增长的证据（弱）。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E082",
+    "claim": "乖宝宠物（301498）2025 年 5 月 30 日月内最高价 125.88 元；中宠股份（002891）2025 年 6 月 30 日月内最高价 74.00 元。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情数据",
+    "event_date": "2025-06-30",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的峰值，不得作为当时可识别的见顶信号。",
+    "description": "宠物食品段峰值 cluster 主值；A 股可交易标的数量有限，板块广度不足。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E083",
+    "claim": "2025 年全国社会消费品零售总额 501202 亿元、同比增长 3.7%；餐饮收入 57982 亿元、同比增长 3.2%；限额以上单位烟酒类零售额同比增长 2.7%。",
+    "evidence_role": "contradicting",
+    "evidence_type": "宏观数据",
+    "event_date": "2025-12-31",
+    "evidence_date": "2026-02-28",
+    "source_id": "R01-CONSUMER-S046",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "统计公报于 2026-02-28 发布，不得用于证明 2025 年内市场已知全年读数。",
+    "description": "用于反证\"2025 年消费政策密集出台即形成消费主题行情\"：宏观需求侧并未同步走强。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E084",
+    "claim": "中证白酒指数（399997）2025 年全年由 10450.69 点跌至 8763.03 点（约 -16.2%），年内最高收盘出现在 2025 年 3 月 17 日；中证食品饮料指数（000807）全年约 -12.0%，年内最高收盘出现在 2025 年 3 月 14 日。",
+    "evidence_role": "contradicting",
+    "evidence_type": "行情数据",
+    "event_date": "2025-12-31",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的年度表现，不得作为当时可识别的见顶信号。",
+    "description": "2025 年消费板块整体走弱的证据；指数年内高点恰落在《提振消费专项行动方案》公开前后，构成\"政策冲高—随后回落\"形态。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E085",
+    "claim": "2025 年 3 月 16 日新华社报道中共中央办公厅、国务院办公厅印发《提振消费专项行动方案》。",
+    "evidence_role": "context",
+    "evidence_type": "政策",
+    "event_date": "2025-03-16",
+    "evidence_date": "2025-03-16",
+    "source_id": "R01-CONSUMER-S062",
+    "confidence": "high",
+    "independence_group": "media-xinhua",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "2025 年最强消费政策文本；官方表述为\"近日印发\"，具体印发日期未公开。本条仅证明政策发布，不证明需求响应。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E086",
+    "claim": "2022 年 1 月 11 日至 1 月 12 日预制菜板块出现涨停潮，味知香、国联水产、千味央厨、得利斯等十余只个股涨停。",
+    "evidence_role": "context",
+    "evidence_type": "市场表现",
+    "event_date": "2022-01-12",
+    "evidence_date": "2022-01-12",
+    "source_id": "R01-CONSUMER-S056",
+    "confidence": "medium",
+    "independence_group": "media-cls",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "预制菜脉冲的同期证据；用于说明该段属事件驱动的短期集中上涨。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E087",
+    "claim": "味知香（605089）股价由 2022 年 1 月 4 日收盘 69.24 元回落至 2022 年 10 月 28 日收盘 32.19 元，跌幅约 53%。",
+    "evidence_role": "contradicting",
+    "evidence_type": "行情数据",
+    "event_date": "2022-10-28",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的回落幅度，不得作为当时可识别的见顶信号。",
+    "description": "用于反证\"预制菜构成持续性 Campaign\"：C 端概念标的脉冲后单边下行，缺乏业绩兑现。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E088",
+    "claim": "广东省人民政府办公厅于 2022 年 3 月 24 日印发《加快推进广东预制菜产业高质量发展十条措施》（粤府办〔2022〕10 号）。",
+    "evidence_role": "context",
+    "evidence_type": "政策",
+    "event_date": "2022-03-24",
+    "evidence_date": "2022-03-24",
+    "source_id": "R01-CONSUMER-S054",
+    "confidence": "high",
+    "independence_group": "gov-gdagri",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "地方产业政策晚于 2022 年 1 月的板块脉冲约两个月，说明脉冲不是由政策落地驱动。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E089",
+    "claim": "2023 年 9 月 22 日教育部就\"预制菜进校园\"表示应持十分审慎态度。",
+    "evidence_role": "context",
+    "evidence_type": "政策/监管",
+    "event_date": "2023-09-22",
+    "evidence_date": "2023-09-22",
+    "source_id": "R01-CONSUMER-S061",
+    "confidence": "high",
+    "independence_group": "gov-moe",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "预制菜叙事在 2023 年遭遇的负面监管/舆论事件。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E090",
+    "claim": "2024 年 11 月至 12 月，实丰文化（002862）月内最高价由 11 月的 10 元区间升至 12 月 31 日的 44.00 元；广博股份（002103）由 10 月的 6.58 元升至 12 月 31 日的 18.78 元；奥飞娱乐（002292）由 11 月的 10.45 元升至 12 月 31 日的 12.97 元。",
+    "evidence_role": "context",
+    "evidence_type": "行情数据",
+    "event_date": "2024-12-31",
+    "evidence_date": "2026-09-20",
+    "source_id": "R01-CONSUMER-S065",
+    "confidence": "medium",
+    "independence_group": "market-eastmoney",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "retrospective",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "回看确认的涨幅，不得作为当时可识别的见顶信号。",
+    "description": "谷子经济/潮玩概念在 A 股的脉冲式表现；未见对应业绩兑现，保留为 exclusion X003。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E091",
+    "claim": "2020 年全年海口海关监管海南离岛免税购物金额 274.8 亿元、同比增长 103.7%，购物旅客 448.4 万人次。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方销售数据",
+    "event_date": "2020-12-31",
+    "evidence_date": "2021-01-29",
+    "source_id": "R01-CONSUMER-S016",
+    "confidence": "high",
+    "independence_group": "gov-haikoucustoms",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2021-01-29 发布，不得用于证明 2020 年内市场已知全年读数。",
+    "description": "免税需求放量的全年官方验证，与海关总署 7–10 月数据（E018）属不同发布主体。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E092",
+    "claim": "2023 年 4 月全国社会消费品零售总额 34910 亿元，同比增长 18.4%（低基数）。",
+    "evidence_role": "context",
+    "evidence_type": "宏观数据",
+    "event_date": "2023-04-30",
+    "evidence_date": "2023-05-16",
+    "source_id": "R01-CONSUMER-S022",
+    "confidence": "high",
+    "independence_group": "gov-stats",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "数据于 2023-05-16 发布，不得用于证明 4 月期间市场已知该读数。",
+    "description": "与 5 月 +12.7%、6 月 +3.1% 共同构成增速快速回落序列；仅作 context，不用于证明服务消费行业启动。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E093",
+    "claim": "国家发展改革委价格成本调查中心回顾：22 省市猪肉均价由 2018 年中约 16 元/千克升至 2019 年末约 56 元/千克，涨幅约 250%。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方价格回顾",
+    "event_date": "2019-12-31",
+    "evidence_date": "2021-07-16",
+    "source_id": "R01-CONSUMER-S032",
+    "confidence": "high",
+    "independence_group": "gov-ndrc",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "官方回顾性研究，发布于 2021-07，不得用于证明 2019 年内市场已知该涨幅。",
+    "description": "猪价上涨幅度的官方口径证据，口径为\"22 省市猪肉均价\"，与农业农村部周度监测口径不同，不可混用。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E094",
+    "claim": "2020 年 6 月 29 日中国政府网发布官方政策解读，确认离岛免税额度提高至 10 万元、不限次数等调整方向与施行安排。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策解读",
+    "event_date": "2020-06-29",
+    "evidence_date": "2020-06-29",
+    "source_id": "R01-CONSUMER-S014",
+    "confidence": "high",
+    "independence_group": "gov-govcn",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "description": "与财政部公告（E016）互为独立官方来源，确认政策内容与施行时点。"
+  },
+  {
+    "evidence_id": "R01-CONSUMER-E095",
+    "claim": "艾媒咨询测算 2023 年中国预制菜市场规模 5165 亿元、同比增长 23.1%；渗透率无权威统一口径。",
+    "evidence_role": "context",
+    "evidence_type": "行业数据（第三方测算）",
+    "event_date": "2023-12-31",
+    "evidence_date": "2024-03-20",
+    "source_id": "R01-CONSUMER-S057",
+    "confidence": "low",
+    "independence_group": "research-iimedia",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "第三方测算，非官方统计；不得用于证明 2023 年内市场已知该规模，也不得作为 A 股标的业绩兑现的证据。",
+    "description": "说明行业规模确实在增长，但 A 股 C 端概念标的并未同步兑现——用于支撑 exclusion X002 的判断。"
+  }
+]

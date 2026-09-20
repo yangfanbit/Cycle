@@ -1,0 +1,115 @@
+[
+  {
+    "exclusion_id": "R01-CONSUMER-X001",
+    "subject": "2025 年《提振消费专项行动方案》及 2025 年消费政策组合（育儿补贴、扩大服务消费、数码购新补贴）",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "2025 年确有多项重磅消费政策（2025-01-13 手机等数码产品购新补贴实施方案、2025-03-16《提振消费专项行动方案》、2025-07-28 育儿补贴制度、2025-09-16 扩大服务消费若干政策措施），但需求侧与板块侧均未响应：2025 年社零 +3.7%、餐饮收入 +3.2%、烟酒类 +2.7%（国家统计局 2025 年统计公报）；中证白酒指数全年约 -16.2%、中证食品饮料指数全年约 -12.0%，且两者年内最高收盘均出现在 2025-03-14 至 03-17（即《方案》公开前后），此后单边下行。形态为\"政策发布 → 短暂冲高 → 回落\"，不满足 Campaign 的持续性与市场扩散要求。本条是本任务中\"政策发布 ≠ 消费主题已形成\"的直接例证（对比 R01-CONSUMER-011 以旧换新段，后者有连续 4 个月的官方零售额放量验证）。",
+    "source_ids": [
+      "R01-CONSUMER-S062",
+      "R01-CONSUMER-S080",
+      "R01-CONSUMER-S081",
+      "R01-CONSUMER-S046",
+      "R01-CONSUMER-S065"
+    ],
+    "evidence_ids": [
+      "R01-CONSUMER-E083",
+      "R01-CONSUMER-E084",
+      "R01-CONSUMER-E085"
+    ]
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X002",
+    "subject": "2022 年预制菜概念（味知香、得利斯、国联水产等 C 端概念标的）",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "涨幅集中于 2022-01-11 至 01-20 的约 7–10 个交易日（国联水产 10 日约 +80%、得利斯 7 日翻倍），1 月下旬起回吐，3 月末多数已吐回大半；味知香自 2022-01-04 收盘 69.24 元单边下行至 2022-10-28 的 32.19 元（-53%）。地方产业政策（广东\"预制菜十条\"）实际印发于 2022-03-24，晚于脉冲约两个月，说明脉冲并非政策落地驱动；脉冲期内亦无同期业绩支撑。按 Independence Gate Q3（独立持续性）不成立，判为 OBSERVATION_ONLY。注：具备 B 端供应链逻辑的千味央厨全年收涨并于年末创新高，属另一层结构，本包未单独建候选，已记为研究问题 Q007。",
+    "source_ids": [
+      "R01-CONSUMER-S055",
+      "R01-CONSUMER-S056",
+      "R01-CONSUMER-S054",
+      "R01-CONSUMER-S065"
+    ],
+    "evidence_ids": [
+      "R01-CONSUMER-E086",
+      "R01-CONSUMER-E087",
+      "R01-CONSUMER-E088",
+      "R01-CONSUMER-E089",
+      "R01-CONSUMER-E095"
+    ]
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X003",
+    "subject": "2024-11 至 2025 年 A 股\"谷子经济/潮玩\"概念股（实丰文化、广博股份、奥飞娱乐等）",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "2024 年 11–12 月相关标的在一个月内出现翻倍级上涨（实丰文化由 11 月约 10 元区间升至 12-31 的 44.00 元；广博股份由 10 月的 6.58 元升至 12-31 的 18.78 元），见顶集中于 2024-12，随后 3–6 个月内回落至起点附近（实丰 2025-07 最高仅 19.55 元；广博 2025-03 最高 11.22 元；奥飞 2025-10 最高 9.18 元），未见对应业绩兑现。该阶段真正的基本面强势主体（泡泡玛特、老铺黄金、蜜雪冰城）均为港股，不在本任务 A 股范围。判为脉冲式炒作，Q2、Q3、Q5 均不成立。",
+    "source_ids": [
+      "R01-CONSUMER-S065"
+    ],
+    "evidence_ids": [
+      "R01-CONSUMER-E090"
+    ]
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X004",
+    "subject": "2019–2021 啤酒高端化（重庆啤酒、青岛啤酒等）",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "啤酒高端化与 2019–2021 白酒/食品饮料核心资产行情（R01-CONSUMER-002）在资金来源、交易逻辑与生命周期上高度重合：共享外资与机构核心资产资金池，共享\"高端化 + 提价 + 确定性溢价\"这一套买卖理由，见顶时间集中于 2021 年年中至年末。按 Independence Gate Q1 Anti-example（不同名称 ≠ 不同 Campaign）与 Q5 Residual Test（去掉啤酒后白酒主线仍完整自洽），本包将其作为 R01-CONSUMER-002 的 sub-theme 处理，不单独建立 Campaign。本轮未取得啤酒高端化的一手来源，故本条不附 source_ids；若后续轮次取得独立证据证明其存在独立的代表标的组与独立生命周期，可重新评估。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X005",
+    "subject": "2020 年新冠疫情对消费需求的冲击（餐饮 -16.6%、国内旅游 -52.1%）",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "2020 年疫情冲击是需求端的负向事件，不是\"历史机会 Campaign\"：它不构成可投资的主题机会结构，且无对应的正向行情扩散。其数据（2020Q1 餐饮收入 6026 亿元、-44.3%；全年餐饮收入 39527 亿元、-16.6%；国内旅游 28.79 亿人次、-52.1%）在本包中仅作为 R01-CONSUMER-004 疫后修复段的基数背景（context）使用。把\"冲击\"与\"修复\"合并为同一结构会混淆机制方向，故不建立候选。",
+    "source_ids": [
+      "R01-CONSUMER-S018",
+      "R01-CONSUMER-S025",
+      "R01-CONSUMER-S071"
+    ],
+    "evidence_ids": [
+      "R01-CONSUMER-E023",
+      "R01-CONSUMER-E024",
+      "R01-CONSUMER-E025"
+    ]
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X006",
+    "subject": "直播电商 / 新零售（2016 年三江购物—阿里入股、2020–2021 年直播带货概念）",
+    "reason_code": "SINGLE_STOCK_EVENT",
+    "rationale": "A 股对直播电商与新零售的映射分散于单股概念脉冲与跨界并购事件（如 2016 年三江购物因阿里入股连续涨停），未形成行业级的独立代表标的组与独立生命周期，且多数标的后续未兑现业绩。按 Independence Gate Q2（独立代表标的）与 Q3（独立持续性）不成立处理，不建立 Campaign。本轮未对此方向建立一手证据，故不附 source_ids，仅记录范围边界与排除理由。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X007",
+    "subject": "\"消费（整个消费板块）\"作为一个 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "把整个消费板块当作一个 Campaign 会掩盖机制差异：本任务内已识别的消费结构在驱动上完全不同（白酒=外资/确定性溢价；免税=政策额度+替代需求；猪周期=供给端自然周期；小家电=场景+渗透率；以旧换新=财政补贴；量贩零食=渠道效率+性价比）。按 Independence Gate Q1（无单一独立注意力中心）与 Q2（无统一的独立代表标的组）不成立，\"消费\"只可作为 Macro Theme / family 方向提交 CMTR v1 解析（见 manifest.macro_theme_proposals），不得作为一个 Campaign。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X008",
+    "subject": "消费电子品牌整机需求变化（智能手机 / TWS / 可穿戴）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "R01-02（半导体/电子）的 excluded_scope 明确\"消费电子品牌整机（属 R01-04）\"，故该方向落在本任务边界内；但本轮未取得足够的 A 股品牌整机端独立行情证据——2019–2021 年 TWS/可穿戴行情的核心标的（立讯精密、歌尔股份等）属电子元器件与整机代工产业链，与 R01-02 高度重叠，且品牌终端销量数据（智能手机出货量）缺乏 A 股直接映射。为避免与 R01-02 重复制造弱候选，本轮不建立候选，保留为后续轮次输入，并记录为研究问题 Q008 与 cross_task_note BOUNDARY。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X009",
+    "subject": "2015–2017 年（Priority B 回填区）除白酒/消费升级外的其它消费方向",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Priority B（2015–2017）中，仅\"2016–2018 白酒/消费升级与白马蓝筹\"（R01-CONSUMER-001）建立了候选，且其 2016–2017 部分证据强度明显低于 2018 年之后。2015 年牛市中的零售/跨境电商/O2O 行情、2016 年\"新零售\"概念脉冲等，本轮均未取得足以支撑 Campaign 标准的独立证据（缺官方数据、缺独立代表标的组、多为单股事件）。按协议 Priority B 允许大面积 INSUFFICIENT，本条显式记录该空缺，不因\"填满年份\"而制造弱候选。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-CONSUMER-X010",
+    "subject": "消费医疗中的医疗服务与医疗器械（非医美部分）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "本任务 excluded_scope 明确创新药 / 医疗器械 / CXO 属已有 family\"医药健康\"。医美因兼具消费属性已作为候选 R01-CONSUMER-009 提交并标注跨族边界（Conflict CF007）；但医疗服务（医院、连锁医疗）与医疗器械不在本任务范围，不建立候选，其归属由 ThreeC Agent 裁决。",
+    "source_ids": [],
+    "evidence_ids": []
+  }
+]

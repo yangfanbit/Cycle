@@ -1,0 +1,68 @@
+[
+  {
+    "question_id": "R01-CONSUMER-Q001",
+    "question": "供给端自然周期（猪周期一类）是否应纳入 ThreeC Historical Campaign 宇宙？若纳入，需要满足什么判据才能与\"产业政策/技术突破\"驱动的 Campaign 区分？",
+    "why_it_matters": "任务书 known_ambiguity 明确要求给出判据。本任务中有两个候选（R01-CONSUMER-005、R01-CONSUMER-006）属于此类，若判定为\"自然周期不纳入\"，则这两个候选应转为 OBSERVATION_ONLY；若纳入，则需在机制轴上新增\"供给收缩/生物周期\"一轴。",
+    "related_candidate_ids": ["R01-CONSUMER-005", "R01-CONSUMER-006"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q002",
+    "question": "「消费升级」应被定义为一个可建立 Campaign 的主题对象，还是一条跨行业的机制轴（Mechanism）？同理，「消费降级/性价比」是否应单独成轴？",
+    "why_it_matters": "本任务中 2016–2018 与 2019–2021 白酒、2023–2025 量贩零食都可被描述为\"消费升级\"或\"消费降级\"，但它们的机制（收入/财富效应 vs 渠道效率）完全不同。若把\"消费升级\"当作 Campaign 主题，会导致机制不同的结构被机械合并——这正是任务书明令禁止的。",
+    "related_candidate_ids": ["R01-CONSUMER-001", "R01-CONSUMER-002", "R01-CONSUMER-012"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q003",
+    "question": "白酒 2016–2018 段与 2019–2021 段应记为两个 Campaign，还是一个 Theme Cycle 的两段（Sequential Pattern）？",
+    "why_it_matters": "直接决定本任务候选数量与结构多样性。按 Theme Cycle Pattern（Separation Rules §5）若判为 Sequential，则两者应合并；若机制与资金逻辑确有重置，则应拆分。本包倾向拆分，但代表标的高度重叠使该判断存在实质不确定性。",
+    "related_candidate_ids": ["R01-CONSUMER-001", "R01-CONSUMER-002"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q004",
+    "question": "消费医疗（医美、医疗服务）应归属 Macro Theme「消费」还是「医药健康」？",
+    "why_it_matters": "任务书 known_ambiguity 列为跨族必交事项。归属不同会改变跨族 Structural Analogy 的候选池结构：归「消费」可补上纯需求端机制轴，归「医药健康」则加强了已有族。",
+    "related_candidate_ids": ["R01-CONSUMER-009"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q005",
+    "question": "从\"宏观消费数据（社零/CPI/居民收入）改善\"到\"某个具体消费行业 Campaign 成立\"，中间需要哪些证据才算完成论证？本包采用的\"宏观数据仅作 context\"处理方式是否足够？",
+    "why_it_matters": "2023 年出现宏观社零 +18.4%（4 月）而消费板块同期回落的背离。若不建立中间证据标准，任何宏观数据改善都可能被误读为消费 Campaign 成立——这是消费研究最容易犯的错误。",
+    "related_candidate_ids": ["R01-CONSUMER-004"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q006",
+    "question": "政策补贴驱动的需求释放（2024 以旧换新）与内生需求复苏，应在 Campaign 层面拆分为两个结构，还是作为同一结构的两个驱动分量？",
+    "why_it_matters": "若拆分，则 2024 年家电应产生两个候选；但二者时间完全重叠、代表标的相同，拆分会违反 Independence Gate Q5。若不拆分，则\"政策刺激\"与\"基本面复苏\"两种机制轴在结构中无法区分，影响后续 Structural Analogy 的机制匹配。",
+    "related_candidate_ids": ["R01-CONSUMER-011"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q007",
+    "question": "预制菜主题存在\"C 端概念脉冲（2022-01）\"与\"B 端供应链持续行情（千味央厨全年收涨并年末创新高）\"两层结构，是否应为 B 端层单独建立候选？需要哪些证据？",
+    "why_it_matters": "本包将 C 端层判为 OBSERVATION_ONLY（X002），但 B 端层的数据（餐饮供应链收入、大客户订单）可能是另一个机制（B 端标准化/餐饮工业化）的证据。若补齐，可能形成一个机制独立的候选。",
+    "related_candidate_ids": []
+  },
+  {
+    "question_id": "R01-CONSUMER-Q008",
+    "question": "消费电子品牌整机在本任务（R01-04）与 R01-02（半导体/电子）之间的边界如何划分？智能手机/TWS/可穿戴的需求周期应由哪个任务负责？",
+    "why_it_matters": "R01-02 的 excluded_scope 明确\"消费电子品牌整机（属 R01-04）\"，但该类行情的核心 A 股标的属电子元器件与代工产业链。若两个任务都回避，会形成覆盖空洞；若都纳入，会产生跨任务重复。",
+    "related_candidate_ids": []
+  },
+  {
+    "question_id": "R01-CONSUMER-Q009",
+    "question": "同一证券在不同时间属于不同主题（如中国中免同时出现在免税候选与疫后修复候选、美的集团同时出现在白电候选与以旧换新候选），在 canonicalization 时应如何处理证券与 Campaign 的多对多关系？",
+    "why_it_matters": "本任务中多只证券跨候选出现。这不是错误，而是需要桥表层面正确表达的关系；若处理不当会造成\"证券归属互斥\"的假象。",
+    "related_candidate_ids": ["R01-CONSUMER-003", "R01-CONSUMER-004", "R01-CONSUMER-008", "R01-CONSUMER-011"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q010",
+    "question": "Priority B（2015–2017）是否存在本轮遗漏的独立消费结构？在资料可得性明显弱于 2018 年之后的情况下，回填应采取什么资料策略？",
+    "why_it_matters": "本任务 Priority B 仅产出 1 个候选（且其 2016–2017 部分证据较弱）。若该时期确实存在独立结构（如 2015 年零售/O2O、2016 年新零售），当前 package 的年代覆盖将出现结构性空洞。",
+    "related_candidate_ids": ["R01-CONSUMER-001"]
+  },
+  {
+    "question_id": "R01-CONSUMER-Q011",
+    "question": "量贩零食/折扣零售行情（R01-CONSUMER-012）是否已结束？判定其结束需要哪些证据（门店增速、单店收入、价格战、龙头业绩增速拐点）？",
+    "why_it_matters": "本包将其 lifecycle 末段标记为 UNKNOWN。若不补齐结束判据，该候选无法参与\"完整生命周期\"类的结构比较，其作为 Structural Analogy 对象的价值会下降。",
+    "related_candidate_ids": ["R01-CONSUMER-012"]
+  }
+]

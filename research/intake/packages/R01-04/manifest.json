@@ -1,0 +1,187 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R01",
+  "task_id": "R01-04",
+  "task_scope": {
+    "task_id": "R01-04",
+    "family_directions": [
+      "消费",
+      "食品饮料",
+      "家用电器",
+      "农林牧渔",
+      "社会服务",
+      "商贸零售",
+      "美容护理"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "A 股消费方向历史结构研究：食品饮料（含白酒、调味品、乳制品、休闲食品）、家用电器（白电、厨电、小家电、清洁电器）、农林牧渔（生猪养殖周期、宠物食品）、社会服务（免税、旅游、餐饮、酒店、景区）、商贸零售（量贩零食、折扣零售）、美容护理（医美耗材与服务、国货美妆与功效护肤）。研究目标是寻找具有明确启动窗口、发展过程与形成机制、可作为历史结构比较对象的候选，而非寻找同名主题。",
+    "excluded_scope": "创新药 / 医疗器械 / CXO（已有 family「医药健康」）；家电中的新能源相关部件（属「电力设备」或 R01-01）；医疗服务与医疗器械的非医美部分（属「医药健康」，见 exclusion X010）；消费电子产业链元器件与整机代工（与 R01-02 边界未定，本轮未建候选，见 exclusion X008）。"
+  },
+  "generated_at": "2026-09-20T19:37:38+08:00",
+  "source_commit": "2153f6d83b7481300696ab73d792e9e53aa31a07",
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R01-CONSUMER-MT001",
+      "proposed_name": "消费",
+      "theme_name_candidates": ["消费", "大消费", "消费升级", "内需消费"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "本任务 13 个候选中有 12 个无法归入当前 canonical 的 4 个根节点（汽车/医药健康/信息通信/电力设备）。当前 4 族完全缺失「纯需求端驱动」机制轴，而本任务已产出需求驱动、政策补贴驱动、供给周期驱动、渠道变革驱动等多条不同机制的候选。提交为 CMTR v1 的输入名称，最终是否新增 Macro Theme、新增几个，由 ThreeC Agent 依 DB themes 表解析。",
+      "known_overlap": [
+        "R01-05（金融/地产）：地产后周期与家电/家居需求耦合",
+        "R01-03（资源/化工）：农业与农化",
+        "已有 family「医药健康」：消费医疗（医美）归属模糊"
+      ],
+      "notes": "「消费」本身不作为单一 Campaign 提出（见 exclusion X007）；本提案仅涉 Macro Theme 层。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT002",
+      "proposed_name": "食品饮料",
+      "theme_name_candidates": ["食品饮料", "白酒", "酿酒行业", "调味发酵品", "饮料乳品"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "R01-CONSUMER-001、002 的核心标的集中于白酒与大众食品。若 CMTR v1 判定「消费」过宽，食品饮料可作为更贴近 SW 一级分类的候选根节点。",
+      "known_overlap": ["与「消费」为父子关系还是并列关系，由 CMTR v1 依 DB themes 表判定"],
+      "notes": "任务书 macro_theme_candidates 已列「食品饮料」。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT003",
+      "proposed_name": "家用电器",
+      "theme_name_candidates": ["家用电器", "白色家电", "小家电", "厨卫电器", "清洁电器"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "R01-CONSUMER-007、008、011 均属家电。三段机制各不相同（居家场景+渗透率 / 出口+地产链 / 财政补贴），说明家电族内部具备机制多样性，适合作为独立族或「消费」下的 Theme。",
+      "known_overlap": ["R01-05（金融/地产）：地产后周期", "R01-01（高端装备）：家电中的新能源部件与工控"],
+      "notes": "任务书 macro_theme_candidates 已列「家用电器」。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT004",
+      "proposed_name": "农林牧渔",
+      "theme_name_candidates": ["农林牧渔", "生猪养殖", "宠物食品", "动物保健"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "R01-CONSUMER-005、006（猪周期）与 013（宠物食品）属此方向。猪周期提供当前 4 族完全缺失的「供给收缩/自然周期」机制轴，是本次扩容中机制价值最高的一类。",
+      "known_overlap": ["R01-03（资源/化工）：农业与农化"],
+      "notes": "任务书 macro_theme_candidates 已列「农林牧渔」。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT005",
+      "proposed_name": "社会服务",
+      "theme_name_candidates": ["社会服务", "旅游及景区", "免税", "酒店餐饮", "教育"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "R01-CONSUMER-003（免税）与 004（疫后服务消费修复）属此方向。两者均有官方需求验证数据（离岛免税销售额、旅游人次、社零），是服务消费机制的唯一样本。",
+      "known_overlap": ["与「消费」的父子关系由 CMTR v1 判定"],
+      "notes": "任务书 macro_theme_candidates 已列「社会服务」。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT006",
+      "proposed_name": "美容护理 / 消费医疗",
+      "theme_name_candidates": ["美容护理", "医美", "化妆品", "消费医疗"],
+      "proposal_kind": "CROSS_FAMILY",
+      "rationale": "R01-CONSUMER-009（医美）与 010（国货美妆）属此方向。医美跨「消费」与「医药健康」两族（任务书 known_ambiguity 明确要求交 ThreeC Agent），故以 CROSS_FAMILY 提出，不自行归族。",
+      "known_overlap": ["已有 family「医药健康」：消费医疗（医疗服务、医美）边界模糊"],
+      "notes": "对应 Conflict CF007。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT007",
+      "proposed_name": "商贸零售",
+      "theme_name_candidates": ["商贸零售", "一般零售", "互联网电商", "休闲食品"],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "R01-CONSUMER-012（量贩零食/折扣零售）属此方向，其机制为渠道效率变革 + 性价比消费，与所有其他候选均不同。",
+      "known_overlap": ["纯电商平台的科技属性行情边界待定（任务书 excluded_scope 提及）"],
+      "notes": "任务书 macro_theme_candidates 未列「商贸零售」，但 task scope 含商贸零售。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT008",
+      "proposed_name": "消费升级 / 消费降级（机制轴）",
+      "theme_name_candidates": ["消费升级", "消费降级", "性价比消费"],
+      "proposal_kind": "MECHANISM",
+      "rationale": "★ 明确作为机制轴提出，不是 Macro Theme。任务书 known_ambiguity 指出「消费升级 vs 消费降级」在不同年份方向相反，不得合并为一个 Campaign。本包中 2016–2021 白酒属消费升级方向、2023–2025 量贩零食属性价比/降级方向，二者机制完全不同，仅共享这一机制轴的名称。",
+      "known_overlap": [],
+      "notes": "对应 Conflict CF002 与 research question Q002。按 Separation Rules §1，Mechanism 属旁挂机制，不得升格为 Macro Theme。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT009",
+      "proposed_name": "供给收缩 / 自然周期（机制轴）",
+      "theme_name_candidates": ["供给收缩", "周期反转", "产能去化"],
+      "proposal_kind": "MECHANISM",
+      "rationale": "★ 明确作为机制轴提出，不是 Macro Theme。基线快照显示「供给收缩 SUPPLY_CONTRACTION」为当前缺失机制轴。猪周期两轮（R01-CONSUMER-005、006）由农业农村部官方文件确认为供给端驱动、需求端稳定，是本轴的主要来源。",
+      "known_overlap": ["R01-03（资源/化工）：供给收缩/涨价机制同源，需在机制轴层面统一口径"],
+      "notes": "对应 Conflict CF006 与 research question Q001。"
+    },
+    {
+      "proposal_id": "R01-CONSUMER-MT010",
+      "proposed_name": "财政补贴驱动需求（机制轴）",
+      "theme_name_candidates": ["以旧换新", "消费补贴", "财政刺激"],
+      "proposal_kind": "MECHANISM",
+      "rationale": "★ 明确作为机制轴提出，不是 Macro Theme。R01-CONSUMER-011（2024 以旧换新）是本轴样本，其特点是政策 → 官方零售额数据 → 板块响应的链条完整可验证；对比 2025 年《提振消费专项行动方案》（exclusion X001）政策发布而无需求响应，可作为该机制轴的判据分界。",
+      "known_overlap": ["与已有 canonical「汽车消费/购置税刺激」（C-2022-POLICY）在机制上同源，仅行业与年份不同"],
+      "notes": "对应 Conflict CF010、CF012。"
+    }
+  ],
+  "cross_task_notes": [
+    {
+      "note_id": "R01-CONSUMER-N001",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-05",
+      "related_candidate_ids": ["R01-CONSUMER-008"],
+      "note": "R01-CONSUMER-008（2020–2021 白电）在命名上涉及\"地产后周期\"，与 R01-05（金融/地产）存在已知 overlap。但本包内部证据显示地产竣工数据与行情时间错位（2020 竣工 -4.9% 而板块上行；2021 竣工 +11.2% 而板块已下行），故本候选的实际驱动更接近出口替代与成本推动。归属与命名请 ThreeC Agent 裁决，本包不自行删除或改名。"
+    },
+    {
+      "note_id": "R01-CONSUMER-N002",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-03",
+      "related_candidate_ids": ["R01-CONSUMER-005", "R01-CONSUMER-006"],
+      "note": "猪周期与 R01-03（资源/化工）在\"农业与农化\"方向存在 overlap：饲料（豆粕、玉米）与农化投入品同属农业投入链。本包的猪周期候选聚焦养殖端与生猪价格，未涉及农化投入品；若 R01-03 也从农化角度覆盖农业投入，需在机制轴层面统一\"供给收缩\"的口径。"
+    },
+    {
+      "note_id": "R01-CONSUMER-N003",
+      "kind": "BOUNDARY",
+      "target_task_id": null,
+      "related_candidate_ids": ["R01-CONSUMER-009"],
+      "note": "医美（消费医疗）跨「消费」与已有 family「医药健康」。本包以 CROSS_FAMILY 形式提交 macro_theme_proposal（R01-CONSUMER-MT006）并保留 Conflict CF007，不自行裁决。若 ThreeC Agent 判归「医药健康」，则本候选应与该族既有结论做 dedupe 检查。"
+    },
+    {
+      "note_id": "R01-CONSUMER-N004",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-02",
+      "related_candidate_ids": [],
+      "note": "消费电子品牌整机的任务归属：R01-02 的 excluded_scope 明确\"消费电子品牌整机（属 R01-04）\"，但该类行情的 A 股核心标的（立讯精密、歌尔股份等）属电子元器件与整机代工产业链，更贴近 R01-02。本轮未建候选（exclusion X008），请两个任务交叉确认，避免出现覆盖空洞或重复。"
+    },
+    {
+      "note_id": "R01-CONSUMER-N005",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-01",
+      "related_candidate_ids": ["R01-CONSUMER-007", "R01-CONSUMER-011"],
+      "note": "家电中的新能源相关部件与工控自动化部件按任务书 excluded_scope 属「电力设备」或 R01-01，本包未纳入。清洁电器（扫地机器人）兼具家电消费属性与机器人/智能装备属性，若 R01-01 从\"服务机器人/人形机器人\"角度覆盖扫地机产业链，需在机制层面区分（消费渗透率 vs 装备制造升级）。"
+    },
+    {
+      "note_id": "R01-CONSUMER-N006",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": null,
+      "related_candidate_ids": ["R01-CONSUMER-011"],
+      "note": "R01-CONSUMER-011（2024 以旧换新）与已有 canonical Campaign「C-2022-POLICY」（汽车消费/购置税刺激）在机制上同源（财政/税收补贴刺激耐用品需求），但行业（家电 vs 汽车）与年份（2024 vs 2022）不同。本包按 Independence Gate 判为独立候选（代表标的完全不重叠、生命周期独立、Residual Test 成立），若 ThreeC Agent 认为应视为同一机制轴的两次表现，请据此处理。"
+    },
+    {
+      "note_id": "R01-CONSUMER-N007",
+      "kind": "HANDOFF",
+      "target_task_id": "R01-05",
+      "related_candidate_ids": [],
+      "note": "2025 年消费政策密集出台但消费板块全年下跌（exclusion X001、Conflict CF012）。本包从\"消费\"视角判为\"政策发布未形成消费 Campaign\"；若 R01-05 从\"流动性与政策周期\"视角对 2025 年有不同结论，请交叉核对——两任务的结论不应互相矛盾，但可互补（政策周期存在而需求端未响应）。"
+    },
+    {
+      "note_id": "R01-CONSUMER-N008",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-05",
+      "related_candidate_ids": ["R01-CONSUMER-011"],
+      "note": "2024 年以旧换新与地产链/建材需求可能存在叠加（旧房翻新是家电更新的场景之一）。本包未取得家电更新中旧房翻新占比的官方数据，故未将该传导写入 drivers；若 R01-05 有相关数据，可回补本候选的驱动解释。"
+    }
+  ]
+}
