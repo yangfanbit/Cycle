@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`0429fe0`（`docs(research): add R01-04 consumer intake review`；本文件随 R01-04 Canonical Import 提交入库）
-- 最近完成：**R01-04 Canonical Decision & Import v0.1**（PASS；**11 个 PROMOTE 入 Canonical DB，2 个 RESEARCH_ONLY 保留**）
+- HEAD：`446880d`（`docs(research): add R01-05 intake review addendum (K1/K2 fix)`；本文件随 R01-05 Canonical Import 提交入库）
+- 最近完成：**R01-05 Canonical Decision & Import v0.1**（PASS；**7 个 PROMOTE 入 Canonical DB，5 个 RESEARCH_ONLY 保留**；`CF013` 口径差转为结论约束）
 
 ## 1. 项目当前定位
 
@@ -172,10 +172,10 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# R01-05：金融 / 地产（**未启动**）
+# R01-06：国防军工（**未启动**）
 
 **已完成（全部 PASS）**：… Product 侧全部轮次 · **R00**（Intake Protocol）· **T01**（taxonomy gap）·
-**R01-01 / R01-02 / R01-03 / R01-04 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
+**R01-01 / R01-02 / R01-03 / R01-04 / R01-05 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
 
 ### R01 进度
 
@@ -184,8 +184,8 @@ Time Observation v0.5 已完成并暂时冻结：
 | `R01-01` | 高端装备 / 机器人 | ✅ 已导入（+5 campaigns / 2 RC） |
 | `R01-02` | 半导体 / 电子 | ✅ 已导入（+8 campaigns / 4 RC） |
 | `R01-03` | 资源 / 有色 / 化工 | ✅ 已导入（+6 campaigns / 5 RC） |
-| `R01-04` | 消费 | ✅ 已导入（**+11 campaigns / 2 RC**） |
-| `R01-05` | 金融 / 地产 | `PLANNED_NOT_STARTED` |
+| `R01-04` | 消费 | ✅ 已导入（+11 campaigns / 2 RC） |
+| `R01-05` | 金融 / 地产 | ✅ 已导入（**+7 campaigns / 5 RC**） |
 | `R01-06` | 军工 | `PLANNED_NOT_STARTED` |
 
 ### Historical Universe 当前实测
@@ -193,23 +193,23 @@ Time Observation v0.5 已完成并暂时冻结：
 | 项 | 值 |
 |---|---:|
 | Macro Theme 根节点 | **11** |
-| **有 Campaign 的根节点** | **8**（汽车 · 医药健康 · 信息通信 · 电力设备 · 高端装备 · 电子 · 资源 · **消费**） |
-| Historical Campaign | **43** |
-| Research Candidate（导出层） | 17 |
-| 跨族 Campaign 对 | `C(8,2)` = **28** |
+| **有 Campaign 的根节点** | **10**（汽车 · 医药健康 · 信息通信 · 电力设备 · 高端装备 · 电子 · 资源 · 消费 · **金融** · **房地产**） |
+| Historical Campaign | **50** |
+| Research Candidate（导出层） | 22 |
+| 跨族 Campaign 对 | `C(10,2)` = **45** |
 
-**R01-04 新增 11 个 Canonical**：`C-2016-CONS-BAIJIU-UPGRADE` · `C-2019-CONS-BAIJIU-CORE` ·
-`C-2020-CONS-DUTYFREE` · `C-2022-CONS-SERVICE-REBOUND` · `C-2018-CONS-HOG-AFRICAN` ·
-`C-2021-CONS-HOG-REVERSAL` · `C-2020-CONS-WHITE-GOODS` · `C-2019-CONS-AESTHETICS` ·
-`C-2020-CONS-BEAUTY-CN` · `C-2024-CONS-TRADE-IN` · `C-2023-CONS-VALUE-RETAIL`。
-详见 `docs/R01_04_CANONICAL_DECISION_v0_1.md`。
+**R01-05 新增 7 个 Canonical**：`C-2022-RE-POLICY-THREE` · `C-2020-RE-DEBT-RISK`（`result = weak`）·
+`C-2024-FIN-BROKER-POLICY` · `C-2023-FIN-SOE-VALUATION` · `C-2024-FIN-BANK-DIVIDEND`（peak/end = NULL）·
+`C-2020-FIN-BANK-CREDIT` · `C-2025-FIN-INSURANCE`（peak/end = NULL）。
+**5 个 RESEARCH_ONLY**：`RC-2024-RE-POLICY-517` · `RC-2019-RE-EASING` · `RC-2020-FIN-BROKER-VOLUME` ·
+`RC-2016-RE-SHANTY` · `RC-2015-FIN-LEVERAGE`。
+详见 `docs/R01_05_CANONICAL_DECISION_v0_1.md`。
 
-**新增机制轴覆盖**：消费升级/核心资产 · 政策放开+需求替代 · 事件驱动补偿需求 · **供给端自然周期** ·
-出口替代+成本推动 · 渗透率+产品创新 · 国货替代+渠道红利 · **财政补贴→官方销量** · **渠道效率/性价比消费**。
+**新增机制轴覆盖**：地产政策周期（融资收紧→风险暴露→政策修复）· **信用周期驱动**（银行顺周期）·
+**估值重估/资金配置**（中特估 · 高股息）· **市场风险偏好/流动性**（券商 · 保险资产端）。
 
-**新增 Theme Cycle（7）**：`baijiu_premium_2016_2021`(Sequential) · `service_consumption_2020_2023`(Sequential) ·
-`hog_cycle_2018_2022`(Sequential) · `beauty_aesthetics_2019_2022`(Parallel) · `appliance_export_2020_2021` ·
-`trade_in_2024_2025` · `value_retail_2023_2025`。
+**新增 Theme Cycle（5）**：`realestate_policy_cycle_2020_2023`(Sequential) · `bank_valuation_2023_2025`(Parallel) ·
+`broker_risk_appetite_2024` · `bank_credit_cycle_2020_2021` · `insurance_asset_liability_2025`。
 
 ### Structural Analogy
 
@@ -220,6 +220,10 @@ Time Observation v0.5 已完成并暂时冻结：
 
 | 类型 | 项 |
 |---|---|
+| OPEN | **`CF013` 股息口径差**（个股前复权含股息 vs 沪深300 价格指数不含股息）—— **UNRESOLVED**；已转为**结论约束**（**不得解释为行业 Alpha**、未伪造调整后收益）；需以**中证红利全收益 / 银行行业全收益指数**重算 |
+| OPEN | R01-05 保留未决：`CF001`(Q2 标的重叠) · `CF003`(券商全市场 Beta) · `CF004`(红利风格因子) · `CF005`(中特估银行/保险边界) · `CF006`(房地产 vs 金融 Cycle 归属) · `CF008`(2020-07 券商驱动) · `CF009`(KEEP_BOTH) · `CF011`(两龙头方向相反，不允许取平均) · `CF012`(保险代表标的 vs 板块叙事) |
+| OPEN | R01-05 生命周期未闭合：`C-2024-FIN-BANK-DIVIDEND` / `C-2025-FIN-INSURANCE` **peak/end = NULL** · `C-2023-FIN-SOE-VALUATION` peak/end 为推断值；`C-2020-FIN-BANK-CREDIT` 仅 4 ev / 4 IG + 单一标的 → **建议后续补证** |
+| OPEN | **本地无金融/地产行情序列** → R01-05 的 Export `market_data = unavailable`（相对表现仅引自 intake 一级行情证据） |
 | OPEN | **`CF007`**（医美归属：消费 vs 医药健康）保留未裁决 · **`CF005`**（白电驱动归因）保留 · **`CF010`**（补贴 vs 真实需求；**`+11%` vs `-4.3%` 口径冲突完整保留**）· **`CF001`**（白酒 classification）保留 |
 | OPEN | **`RC-2020-CONS-SMALL-APPLIANCE`（007）仍需补证**（渗透率一手数据 + 同期证据）· **`RC-2024-CONS-PET-FOOD`（013）保持 Research Only** |
 | OPEN | `C-2020-CONS-DUTYFREE` **A 股广度不足**（sec=1）· `C-2023-CONS-VALUE-RETAIL` **start 年度级 + end NULL** · `C-2024-CONS-TRADE-IN` **Beta 未排除** |
@@ -227,8 +231,9 @@ Time Observation v0.5 已完成并暂时冻结：
 | OPEN | **`美容护理` / `商贸零售` taxonomy 缺口**（`MT006`/`MT007` 提案级未解析）—— 不扩展 |
 | OPEN | R01-03 的 `CF003`（锂跨族）· `CF009`（黄金背离）保留未决 |
 | OPEN | R01-02 的 3 条 `evidence-temporal-mislabel` 警告（已收口为 caveat） |
-| OPEN | **3 个 root 仍无 Campaign**：金融 · 房地产 · 国防军工 |
+| OPEN | **仅剩 1 个 root 无 Campaign：国防军工**（`R01-06`） |
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突 |
+| OPEN | R01-05 孤儿证据 `E-FINRE-49/50/51/63`（intake 中未被任何候选引用）按既有惯例导入；`E-FINRE-63` = 全局基准 E141 |
 | POLISH | `themeCycleId` 可读性 · `event_type` ↔ 证据类别标签对应 |
 
 ### 边界
@@ -241,7 +246,7 @@ Time Observation v0.5 已完成并暂时冻结：
 ## 8. 当前质量债务
 
 非主线 blocker：
-- campaign_date_observations verified = 0/24
+- campaign_date_observations verified = 0/126
 - Driver DIRECT evidence depth
 - market / temporal = SUPPLEMENTARY_ONLY
 - historical coverage imbalance
@@ -252,7 +257,11 @@ Time Observation v0.5 已完成并暂时冻结：
 
 最近已报告全绿：
 - Structural Analogy Explanation `--check` PASS
-- Research validators 全 PASS
+- Research validators 全 PASS（`validate_db` / `validate_timeline_export` / `validate_batch_research` /
+  `validate_promotion_manifest` / `check_doc_schema_consistency` / `validate_current_research` /
+  `validate_monorepo_integrity` / `refresh --check`）
+- **Intake Validator `--check` PASS（25 checks，FAIL 0，WARN 0；含 C25 严格 Draft-07）**
+- **Intake Package R01-01 ~ R01-05 各 PASS（C01–C25）** · **Validator 单元测试 44/44 PASS**
 - npm test 476/476
 - tsc -b PASS
 - vite build PASS

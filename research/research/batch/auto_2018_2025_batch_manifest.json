@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-09-20T20:46:14",
-  "source_commit": "0429fe0bb607fcbf79a9f37c639cc1ec69273987",
+  "generated_at": "2026-09-20T21:50:19",
+  "source_commit": "446880d590708f579b5d4f7f5c94751dfe710b35",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -10,9 +10,10 @@
     "rule_high_end_equipment",
     "rule_semiconductor",
     "rule_resources",
-    "rule_consumer"
+    "rule_consumer",
+    "rule_fin_realestate"
   ],
-  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块） + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人） + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期） + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性） + rule_consumer（消费 2016–2025，消费升级 / 政策替代 / 自然周期 / 财政补贴 / 渠道变革）",
+  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块） + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人） + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期） + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性） + rule_consumer（消费 2016–2025，消费升级 / 政策替代 / 自然周期 / 财政补贴 / 渠道变革） + rule_fin_realestate（金融 / 房地产 2015–2025，地产政策周期 / 信用周期 / 估值重估 / 风险偏好；含 CF013 口径差约束）",
   "status_vocabulary": {
     "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
     "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -3011,6 +3012,907 @@
         ],
         "ending": [
           "2025 年推总口径家电零售 8931 亿元、-4.3%，Q3 起明显回落（S076）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-RE-DEBT-RISK",
+      "db_campaign_id": "C-2020-RE-DEBT-RISK",
+      "year": 2020,
+      "rule_id": "rule_fin_realestate",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2020-08-20",
+      "peak_date_candidate": "2021-12-03",
+      "end_date_candidate": "2022-07-31",
+      "date_confidence": "medium",
+      "theme": "房地产开发",
+      "themes": [
+        {
+          "name": "房地产",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "房地产开发",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "realestate_policy_cycle_2020_2023",
+      "classification": "industry_trend",
+      "result": "weak",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FINRE-20",
+        "E-FINRE-21",
+        "E-FINRE-22",
+        "E-FINRE-24",
+        "E-FINRE-23",
+        "E-FINRE-25"
+      ],
+      "source_ids": [
+        "S-FINRE-23",
+        "S-FINRE-25",
+        "S-FINRE-26",
+        "S-FINRE-27",
+        "S-FINRE-28",
+        "S-FINRE-48"
+      ],
+      "independent_groups": [
+        "IG-JW-2021",
+        "IG-MOHURD-0820",
+        "IG-PBOC-LOANCONC",
+        "IG-SD-EVERGRANDE",
+        "IG-SINA-2021DEBT",
+        "IG-SINA-2022RE"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-FINRE-03",
+          "name": "住建部、人民银行联合召开重点房地产企业座谈会，实施房地产金融审慎管理制度（三道红线）",
+          "date": "2020-08-20",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-FINRE-04",
+          "name": "中国恒大公告无法履行 2.6 亿美元担保义务（标志性债务违约）",
+          "date": "2021-12-03",
+          "event_type": "company",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CMSK",
+          "name": "招商蛇口",
+          "ticker": "001979",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "GEMDALE",
+          "name": "金地集团",
+          "ticker": "600383",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "POLY",
+          "name": "保利发展",
+          "ticker": "600048",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "VANKE",
+          "name": "万科A",
+          "ticker": "000002",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "本地 market_series 无地产板块指数 / 代表标的前复权序列 → 行情快照 unavailable。下行段方向证据引自 intake（2021 年板块 -7.57% 跑输大盘；恒大 -88% / 新力 -87% / 佳兆业 -76%）",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF007 裁决：**允许进入 Canonical Campaign** —— 沿用既有先例：R01-01 的 `C-2018-HIEQ-ROBOT-DOWN`（下行周期）与 R01-03 的 `C-2022-SEMI-DOWNTURN`（下行周期）均已进入 canonical。现有 Independence Gate 是**结构独立性**判据，**不排除负向产业结构**。★ **`result = weak` 语义（沿用既有口径）**：表示**市场 / 行业方向为负**，**不表示证据质量弱** —— 本 Campaign 的证据为 8 ev / 8 IG，质量与其它 Campaign 同级。★ 命名中性化：使用 `C-2020-RE-DEBT-RISK`（地产债务风险暴露），**不使用带方向判断的措辞**。★ 启动锚点 = 2020-08-20 住建部、人民银行联合召开重点房地产企业座谈会（房地产金融审慎管理制度，「三道红线」，一手事件）；peak = 2021-12-03（恒大违约，标志性风险高点）；end = 2022-07-31（2022-07 停工停贷事件后转入「保交楼」政策阶段，阶段边界）。★ CF006（房地产与金融是否属同一 Theme Cycle）**保留 UNRESOLVED**；地产 → 银行风险传导（Q005）仅作**机制联系**保留，**未合并任何 Campaign**。★ **CF013 口径差（UNRESOLVED）—— 结论约束，非数据修正**：本 Campaign 引用的相对收益为「**个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）**」口径。按银行股息率约 5%/年估算，3 年窗口的口径差约 **+15pct**，银行类候选的超额被**系统性高估**。**因此不得把该相对收益直接解释为行业 Alpha**；**未做 Beta 调整、未剥离风格因子**，**Beta 中性验证未完成**。原始 Evidence（E130–E141）与原始区间收益**保持不变**，**未伪造任何调整后收益**；如需分离股息贡献，须以中证红利全收益指数 / 银行行业指数（全收益）重算（Q013）。｜theme_cycle_id=realestate_policy_cycle_2020_2023｜provenance: R01-05 Intake Package（v2，source_commit 2153f6d）｜Canonical Decision docs/R01_05_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "DECLINING",
+          "start": "2020-08-20",
+          "end": "2021-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "住建部、人民银行联合召开重点房地产企业座谈会，实施房地产金融审慎管理制度（「三道红线」，E-FINRE-20, 2020-08-20，T2）"
+        ],
+        "accelerator": [
+          "房地产贷款集中度管理制度分档设定房贷占比上限（E-FINRE-21, 2020-12-31，T1）",
+          "信用债市场地产开发商违约 52 起、逾期余额约 630.28 亿元（E-FINRE-22, 2021-12-03，T3）",
+          "中国恒大未能偿付 2.6 亿美元担保义务，构成违约（E-FINRE-24, 2021-12-03）"
+        ],
+        "turning": [
+          "2021 年 A 股房地产板块全年 -7.57%，跑输沪深300（E-FINRE-23，T3）",
+          "上市房企股价普遍大幅下跌：恒大 -88%、新力控股 -87%、佳兆业 -76%（E-FINRE-25）"
+        ],
+        "ending": [
+          "2022-07 停工停贷事件后转入「保交楼」政策阶段（**阶段边界** 2022-07-31，confidence low）",
+          "★ 本条为**下行结构**（result=weak = 市场/行业方向为负，**非证据质量弱**），主升阶段不存在"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-FIN-BANK-CREDIT",
+      "db_campaign_id": "C-2020-FIN-BANK-CREDIT",
+      "year": 2020,
+      "rule_id": "rule_fin_realestate",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2020-10-30",
+      "peak_date_candidate": "2021-03-03",
+      "end_date_candidate": "2021-03-31",
+      "date_confidence": "low",
+      "theme": "银行",
+      "themes": [
+        {
+          "name": "金融",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "银行",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "bank_credit_cycle_2020_2021",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FINRE-39",
+        "E-FINRE-54",
+        "E-FINRE-40"
+      ],
+      "source_ids": [
+        "S-FINRE-36",
+        "S-FINRE-55",
+        "S-FINRE-58"
+      ],
+      "independent_groups": [
+        "IG-21J-2021BANK",
+        "IG-MKT-BANK",
+        "IG-SINA-20210303"
+      ],
+      "independent_group_count": 3,
+      "events": [
+        {
+          "event_id": "EV-FINRE-09",
+          "name": "银行股全线大涨（本包唯一同期市场证据日）",
+          "date": "2021-03-03",
+          "event_type": "market",
+          "role": "follow_up"
+        },
+        {
+          "event_id": "EV-FINRE-10",
+          "name": "2020 年商业银行净利润同比 +12.6%（公布于 2022-02，属后续确认）",
+          "date": "2021-03-31",
+          "event_type": "industry",
+          "role": "catalyst"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CMB",
+          "name": "招商银行",
+          "ticker": "600036",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "ICBC",
+          "name": "工商银行",
+          "ticker": "601398",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "本地 market_series 无银行指数 / 代表标的前复权序列 → 行情快照 unavailable。区间相对表现引自 intake E-FINRE-54（工商银行相对 +12.3pct）；★ 仅 4 ev / 4 IG、单一代表标的，缺行业指数广度与多标的验证",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ §10 裁决（根据正式 Gate，**不基于相对强度**）：**判为独立 Campaign**。Gate：Q1 独立注意力中心 =「**经济复苏 + 信用成本改善**」（**信用周期驱动**），与 007 的「低利率 + 资产荒 + 高股息」（**资金配置驱动**）**机制相反** ✓；Q2 代表标的（招商银行/工商银行）与 007 部分重叠 —— 由「同一子行业的不同机制周期」解释；Q3 持续性成立（2020-10-30 → 2021-03-31，约 5 个月）；Q4 独立生命周期成立；Q5 双向成立。★ **降级项（本包如实记录）**：① 仅 **4 ev / 4 IG**（门槛下限）；② **仅 1 条同期市场证据**（E070，2021-03-03 单日大涨报道）；③ **无可靠启动 / 结束锚点**（start/end 均为 PHASE_WINDOW，confidence low）；④ **单一代表标的**（工商银行）—— 缺行业指数广度与多标的验证。→ `strength = medium`、`date_confidence = low`；**建议后续补证**（多标的 / 行业指数广度 + 启动与结束证据）。★ 净利润 +12.6% 部分源于 2020 年低基数，机制解释存在争议。★ **CF013 口径差（UNRESOLVED）—— 结论约束，非数据修正**：本 Campaign 引用的相对收益为「**个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）**」口径。按银行股息率约 5%/年估算，3 年窗口的口径差约 **+15pct**，银行类候选的超额被**系统性高估**。**因此不得把该相对收益直接解释为行业 Alpha**；**未做 Beta 调整、未剥离风格因子**，**Beta 中性验证未完成**。原始 Evidence（E130–E141）与原始区间收益**保持不变**，**未伪造任何调整后收益**；如需分离股息贡献，须以中证红利全收益指数 / 银行行业指数（全收益）重算（Q013）。｜theme_cycle_id=bank_credit_cycle_2020_2021｜provenance: R01-05 Intake Package（v2，source_commit 2153f6d）｜Canonical Decision docs/R01_05_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-10-30",
+          "end": "2021-03-31",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "经济复苏 + 信用成本改善预期（**无精确启动锚点**，start 为 PHASE_WINDOW，confidence low）"
+        ],
+        "accelerator": [
+          "2020-10-30→2021-03-31 工商银行 +19.8%，同期沪深300 +7.5%，银行相对 +12.3pct（E-FINRE-54，T2）"
+        ],
+        "turning": [
+          "2021-03-03 A 股银行股全线大涨（**本包唯一同期市场证据日**，E-FINRE-39）"
+        ],
+        "ending": [
+          "2021-03-31 窗口末（**无可靠结束锚点**）；净利润 +12.6% 部分源于 2020 年低基数，机制解释存在争议（E-FINRE-40）",
+          "★ 已知弱点：仅 4 ev / 4 IG、单一代表标的（工商银行），缺行业指数广度与多标的验证"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2022-RE-POLICY-THREE",
+      "db_campaign_id": "C-2022-RE-POLICY-THREE",
+      "year": 2022,
+      "rule_id": "rule_fin_realestate",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2022-11-08",
+      "peak_date_candidate": "2022-11-29",
+      "end_date_candidate": "2023-02-28",
+      "date_confidence": "medium",
+      "theme": "房地产开发",
+      "themes": [
+        {
+          "name": "房地产",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "房地产开发",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "realestate_policy_cycle_2020_2023",
+      "classification": "event_driven",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FINRE-08",
+        "E-FINRE-01",
+        "E-FINRE-09",
+        "E-FINRE-02",
+        "E-FINRE-04",
+        "E-FINRE-05",
+        "E-FINRE-03",
+        "E-FINRE-06",
+        "E-FINRE-07",
+        "E-FINRE-55"
+      ],
+      "source_ids": [
+        "S-FINRE-01",
+        "S-FINRE-02",
+        "S-FINRE-03",
+        "S-FINRE-04",
+        "S-FINRE-06",
+        "S-FINRE-07",
+        "S-FINRE-08",
+        "S-FINRE-09",
+        "S-FINRE-30",
+        "S-FINRE-57"
+      ],
+      "independent_groups": [
+        "IG-CNR-1126",
+        "IG-CS-20221111",
+        "IG-CS-20221129",
+        "IG-CSRC-3RD",
+        "IG-MKT-RE",
+        "IG-NAFMII-2ND",
+        "IG-NBS-2022",
+        "IG-PBOC-254",
+        "IG-RPT-BAOJIAO"
+      ],
+      "independent_group_count": 9,
+      "events": [
+        {
+          "event_id": "EV-FINRE-01",
+          "name": "交易商协会公告「第二支箭」延期并扩容（民营企业债券融资支持工具）",
+          "date": "2022-11-08",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-FINRE-02",
+          "name": "证监会「第三支箭」恢复涉房上市公司并购重组及配套融资；次日地产股近 40 只涨停",
+          "date": "2022-11-29",
+          "event_type": "policy",
+          "role": "catalyst"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CMSK",
+          "name": "招商蛇口",
+          "ticker": "001979",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "GEMDALE",
+          "name": "金地集团",
+          "ticker": "600383",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "POLY",
+          "name": "保利发展",
+          "ticker": "600048",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "VANKE",
+          "name": "万科A",
+          "ticker": "000002",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "本地 market_series 无地产板块指数 / 代表标的前复权序列 → 行情快照 unavailable。区间相对表现引自 intake 一级行情证据 E-FINRE-55（保利发展 -3.3pct / 万科A +18.7pct，**两个龙头方向相反**）→ CF011 保留，不取平均",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF001 裁决：**判为独立 Campaign**（非「地产下行大周期中的一次政策反弹」）。Gate：Q1 独立注意力中心 =「房企融资供给端政策转向（信贷/债券/股权三支箭）+ 保交楼风险出清预期」，与 004 的「融资收紧 → 信用风险暴露」**方向相反**；Q3 持续性成立（2022-11 至 2023-02）；**Q4 独立生命周期成立**（政策脉冲：MAIN_RISE 2022-11-08→11-29 → PEAK → 2023Q1 降温，与 004 的 2020-08→2022-07 下行段**不重叠**）；Q5 Residual Test 双向成立；**独立启动锚点**（2022-11-08 交易商协会「第二支箭」公告，一手）与 004 的 2020-08-20 座谈会不同。★ **Q2 代表标的不成立**（与 004 完全重叠：保利/万科/招商蛇口/金地）—— 由「**同一批资产在两轮方向相反的政策周期中重演**」解释，二者同属 Theme Cycle `realestate_policy_cycle_2020_2023`（Pattern = **Sequential**：004 下行 → 001 政策修复）。★ **CF011 保留 UNRESOLVED**：三支箭窗口内两个地产龙头相对沪深300 **方向相反**（保利发展 -3.3pct vs 万科A +18.7pct，E133）→ **「地产板块」是否上涨无法判定**；本包明确**不允许取平均充当板块表现** → **strength 定为 medium（不升 strong）**。★ **CF009 保留 KEEP_BOTH**：2018–2019 地方调控放松是否代表中央政策转向（影响启动锚点认定）。★ peak = 2022-11-29（「第三支箭」次日近 40 股涨停，E008）；end 为**推断值**（confidence low）。★ **CF013 口径差（UNRESOLVED）—— 结论约束，非数据修正**：本 Campaign 引用的相对收益为「**个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）**」口径。按银行股息率约 5%/年估算，3 年窗口的口径差约 **+15pct**，银行类候选的超额被**系统性高估**。**因此不得把该相对收益直接解释为行业 Alpha**；**未做 Beta 调整、未剥离风格因子**，**Beta 中性验证未完成**。原始 Evidence（E130–E141）与原始区间收益**保持不变**，**未伪造任何调整后收益**；如需分离股息贡献，须以中证红利全收益指数 / 银行行业指数（全收益）重算（Q013）。｜theme_cycle_id=realestate_policy_cycle_2020_2023｜provenance: R01-05 Intake Package（v2，source_commit 2153f6d）｜Canonical Decision docs/R01_05_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2022-11-08",
+          "end": "2022-11-29",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2023-01-01",
+          "end": "2023-02-28",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "交易商协会「第二支箭」（民营企业债券融资支持工具）延期扩容（E-FINRE-01, 2022-11-08，T1 一手）",
+          "央行、银保监《关于做好当前金融支持房地产市场平稳健康发展工作的通知》金融十六条（E-FINRE-02, 2022-11-11，T1 一手）"
+        ],
+        "accelerator": [
+          "证监会「第三支箭」恢复涉房上市公司并购重组及配套融资（E-FINRE-03, 2022-11-28，T1）",
+          "2022-11-29 板块暴涨，万科A 等近 40 只个股涨停（E-FINRE-06）",
+          "2022-11-01→11-25 房地产行业指数 +20.9%，居申万一级行业涨幅前列（E-FINRE-05）"
+        ],
+        "turning": [
+          "★ 2022 全年商品房销售面积 -24.3%、开发投资 -10.0%（E-FINRE-07，contradicting，T1）→ 政策脉冲与基本面背离",
+          "★ 三支箭窗口内两个地产龙头相对沪深300 方向相反（保利发展 -3.3pct vs 万科A +18.7pct，E-FINRE-55）→ CF011 保留 UNRESOLVED，不取平均"
+        ],
+        "ending": [
+          "2023-02-28 降温窗口（**推断值**，confidence low，无同期结束证据）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2023-FIN-SOE-VALUATION",
+      "db_campaign_id": "C-2023-FIN-SOE-VALUATION",
+      "year": 2023,
+      "rule_id": "rule_fin_realestate",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2023-04-01",
+      "peak_date_candidate": "2023-05-11",
+      "end_date_candidate": "2023-06-30",
+      "date_confidence": "low",
+      "theme": "银行",
+      "themes": [
+        {
+          "name": "金融",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "银行",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "bank_valuation_2023_2025",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FINRE-31",
+        "E-FINRE-32",
+        "E-FINRE-33",
+        "E-FINRE-62"
+      ],
+      "source_ids": [
+        "S-FINRE-31",
+        "S-FINRE-50",
+        "S-FINRE-58"
+      ],
+      "independent_groups": [
+        "IG-MKT-BANK",
+        "IG-RPT-2023INS",
+        "IG-RPT-ZTE2023"
+      ],
+      "independent_group_count": 3,
+      "events": [
+        {
+          "event_id": "EV-FINRE-07",
+          "name": "「中国特色估值体系」叙事重新领涨（券商策略复盘口径，月内区间起点）",
+          "date": "2023-04-01",
+          "event_type": "market",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-FINRE-08",
+          "name": "同期研报仍描述保险板块「明显…」（中特估窗口右沿）",
+          "date": "2023-05-11",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CHINALIFE",
+          "name": "中国人寿",
+          "ticker": "601628",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "CNCB",
+          "name": "中信银行",
+          "ticker": "601998",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "ICBC",
+          "name": "工商银行",
+          "ticker": "601398",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "PINGAN",
+          "name": "中国平安",
+          "ticker": "601318",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "本地 market_series 无银行 / 保险指数与代表标的前复权序列 → 行情快照 unavailable。区间相对表现引自 intake E-FINRE-62（工商银行相对 +42.2pct）；★ CF004 红利风格因子是否可分**未做验证**",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF005 裁决（「中特估」银行与保险是否应拆分）：**判为一个 Campaign，保留 Conflict**。Gate：Q1 注意力中心 =「**中国特色估值体系**」叙事（**横跨银行/保险/低估值央国企的统一叙事**）✓；Q4 生命周期 = 银行与保险**同一窗口**（2023-04 → 2023-06）**同步** ✓；Q2 代表标的跨两个子行业（工商银行/中信银行/中国平安/中国人寿）—— 由「**同一叙事**」解释。**未机械合并**：本 Campaign 与 007（银行高股息，资金配置驱动）机制不同，**分属不同 Theme Cycle**。★ **CF004 保留 UNRESOLVED**（银行上涨：行业重估 vs 红利风格因子抱团）。★ **已知弱点**：① 生命周期未闭合（peak/end 均为推断，confidence low）；② 仅 1 条同期证据（E052）；③ `start` 为 DATE_WINDOW（2023-04 月内区间，不给精确到日）。★ peak = 2023-05-11（同期研报仍描述保险「明显…」的最后一日，E051/E052 窗口右沿）。★ **CF013 口径差（UNRESOLVED）—— 结论约束，非数据修正**：本 Campaign 引用的相对收益为「**个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）**」口径。按银行股息率约 5%/年估算，3 年窗口的口径差约 **+15pct**，银行类候选的超额被**系统性高估**。**因此不得把该相对收益直接解释为行业 Alpha**；**未做 Beta 调整、未剥离风格因子**，**Beta 中性验证未完成**。原始 Evidence（E130–E141）与原始区间收益**保持不变**，**未伪造任何调整后收益**；如需分离股息贡献，须以中证红利全收益指数 / 银行行业指数（全收益）重算（Q013）。｜theme_cycle_id=bank_valuation_2023_2025｜provenance: R01-05 Intake Package（v2，source_commit 2153f6d）｜Canonical Decision docs/R01_05_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-04-01",
+          "end": "2023-05-11",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "证监会主席提出「中国特色估值体系」（E-FINRE-31, 2022-11-21，context，叙事起点）",
+          "2023 年 4 月随一季报窗口、风险偏好回落，「中特估」重新领涨（E-FINRE-32, 2023-04-30）"
+        ],
+        "accelerator": [
+          "非银中期策略：保险明显领涨，一季报 NBV 及净利润同比超预期，「中特估」成为重要定价因素（E-FINRE-33, 2023-05-11）",
+          "2023-01-31→12-29 工商银行 +24.7%，同期沪深300 -17.5%，银行相对 +42.2pct（E-FINRE-62，T2）"
+        ],
+        "turning": [
+          "★ CF004 保留 UNRESOLVED：银行上涨属行业重估 vs 红利风格因子抱团，**未做验证**"
+        ],
+        "ending": [
+          "无明确结束证据（peak/end 均为**推断**，confidence low；生命周期未闭合）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2024-FIN-BROKER-POLICY",
+      "db_campaign_id": "C-2024-FIN-BROKER-POLICY",
+      "year": 2024,
+      "rule_id": "rule_fin_realestate",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2024-09-24",
+      "peak_date_candidate": "2024-10-08",
+      "end_date_candidate": "2024-10-31",
+      "date_confidence": "low",
+      "theme": "非银金融",
+      "themes": [
+        {
+          "name": "金融",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "非银金融",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "broker_risk_appetite_2024",
+      "classification": "mixed",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FINRE-26",
+        "E-FINRE-27",
+        "E-FINRE-28",
+        "E-FINRE-29",
+        "E-FINRE-30",
+        "E-FINRE-57",
+        "E-FINRE-61"
+      ],
+      "source_ids": [
+        "S-FINRE-18",
+        "S-FINRE-20",
+        "S-FINRE-21",
+        "S-FINRE-22",
+        "S-FINRE-49",
+        "S-FINRE-59"
+      ],
+      "independent_groups": [
+        "IG-MKT-BRK",
+        "IG-PBOC-924",
+        "IG-RPT-2024SEC",
+        "IG-RPT-SEC0924",
+        "IG-SINA-2024RE",
+        "IG-SINA-924"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-FINRE-05",
+          "name": "央行行长宣布降准 0.5 个百分点、降低政策利率 20 个基点；三大金融管理部门同场发布政策组合",
+          "date": "2024-09-24",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-FINRE-06",
+          "name": "A 股复市大幅高开后回落，同日成交额 3.5 万亿元创历史新高",
+          "date": "2024-10-08",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CITICS",
+          "name": "中信证券",
+          "ticker": "600030",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "EASTMONEY",
+          "name": "东方财富",
+          "ticker": "300059",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "EBSEC",
+          "name": "光大证券",
+          "ticker": "601788",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "本地 market_series 无券商指数 / 代表标的前复权序列 → 行情快照 unavailable。区间相对表现引自 intake E-FINRE-57（东方财富相对 +102.1pct、中信证券相对 +27.4pct）；★ 该数量级为「成交量 Beta 代理」信号，**非行业 Alpha**",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF003 裁决：**保留 UNRESOLVED —— 未因代表股跑赢就排除 Beta**。两侧证据：P1 政策组合拳（2024-09-24 央行宣布降准 0.5pct、降政策利率 20bp，**一手**；同日三大金融管理部门同场发布货币/资本市场/地产政策）；P2 **全市场 Beta 不可分离**（2024-10-08 成交额 **3.5 万亿元创历史新高**，属全市场级别流动性/风险偏好行情；券商为 Beta 的高弹性代理）。★ **东方财富在 2024-09-13→10-08 的相对幅度达 +102.1pct（E135）—— 该数量级本身即「成交量 Beta 代理」的信号，不是行业 Alpha 的信号**（Worker 原话）。★ 判为独立 Campaign 的依据（**不基于相对强度**）：① 有**独立启动锚点**（2024-09-24 央行政策，一手）；② 有可测的 A 股响应（中信证券 +59.3%、相对 +34.7pct，E139）；③ `classification = mixed`（政策+流动性）。★ **降级项**：生命周期仅 **11 个交易日**（2024-09-24→10-08）→ `date_confidence = low`；`strength = medium`（**未升 strong**）；`end = 2024-10-31` 为**推断值**（无同期结束证据）。★ **CF013 / Beta caveat**：★ **CF013 口径差（UNRESOLVED）—— 结论约束，非数据修正**：本 Campaign 引用的相对收益为「**个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）**」口径。按银行股息率约 5%/年估算，3 年窗口的口径差约 **+15pct**，银行类候选的超额被**系统性高估**。**因此不得把该相对收益直接解释为行业 Alpha**；**未做 Beta 调整、未剥离风格因子**，**Beta 中性验证未完成**。原始 Evidence（E130–E141）与原始区间收益**保持不变**，**未伪造任何调整后收益**；如需分离股息贡献，须以中证红利全收益指数 / 银行行业指数（全收益）重算（Q013）。｜theme_cycle_id=broker_risk_appetite_2024｜provenance: R01-05 Intake Package（v2，source_commit 2153f6d）｜Canonical Decision docs/R01_05_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2024-09-24",
+          "end": "2024-10-08",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "央行行长宣布降准 0.5 个百分点、降低政策利率 20 个基点（E-FINRE-26, 2024-09-24，T1 一手）",
+          "央行、金融监管总局、证监会三大金融管理部门同场出席发布会（E-FINRE-27, 2024-09-24，T3）"
+        ],
+        "accelerator": [
+          "2024 年 9 月券商指数（证券Ⅱ）创 2015 年以来最大月度涨幅（E-FINRE-28）",
+          "2024-09-13→10-08 东方财富 +136.8%（相对 +102.1pct）、中信证券 +62.1%（相对 +27.4pct）（E-FINRE-57）"
+        ],
+        "turning": [
+          "2024-10-08 国庆后复市大幅高开但回落明显（E-FINRE-29）",
+          "★ 同日成交额 3.5 万亿元创历史新高 → **全市场 Beta 不可分离**（E-FINRE-30，contradicting）→ CF003 保留 UNRESOLVED"
+        ],
+        "ending": [
+          "2024-10-31 降温（**推断值**，无同期结束证据）；生命周期仅 11 个交易日 → date_confidence = low"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+      "db_campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+      "year": 2024,
+      "rule_id": "rule_fin_realestate",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2024-01-01",
+      "peak_date_candidate": null,
+      "end_date_candidate": null,
+      "date_confidence": "low",
+      "theme": "银行",
+      "themes": [
+        {
+          "name": "金融",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "银行",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "bank_valuation_2023_2025",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FINRE-34",
+        "E-FINRE-35",
+        "E-FINRE-37",
+        "E-FINRE-38",
+        "E-FINRE-36",
+        "E-FINRE-58",
+        "E-FINRE-60"
+      ],
+      "source_ids": [
+        "S-FINRE-32",
+        "S-FINRE-33",
+        "S-FINRE-34",
+        "S-FINRE-51",
+        "S-FINRE-52",
+        "S-FINRE-58"
+      ],
+      "independent_groups": [
+        "IG-21J-2024BANK",
+        "IG-CLS-2024BANK",
+        "IG-MKT-BANK",
+        "IG-QQ-2025INS",
+        "IG-SOHU-2025BANK",
+        "IG-SOHU-2025DIV"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-FINRE-12",
+          "name": "2023-01-31 至 2023-12-29 工商银行 +24.7%，同期沪深300 -17.5%，相对 +42.2pct",
+          "date": "2023-12-29",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "ABC",
+          "name": "农业银行",
+          "ticker": "601288",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "CMB",
+          "name": "招商银行",
+          "ticker": "600036",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "CNCB",
+          "name": "中信银行",
+          "ticker": "601998",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "ICBC",
+          "name": "工商银行",
+          "ticker": "601398",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "本地 market_series 无银行指数与代表标的前复权序列 → 行情快照 unavailable。★ peak_date / end_date 为 NULL（结构可能仍在延续）；★ CF013 口径差使相对超额被系统性高估（约 +15pct/3 年），**不得解释为行业 Alpha**",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF004 裁决：**保留 UNRESOLVED —— 未把「银行上涨」本身当作独立机制**。两侧证据：P1 行业重估（低利率 + 资产荒 + 高股息 + 长期资金配置）；P2 **红利风格因子抱团**（与跨行业「红利/低估值/防御」风格因子高度耦合，银行 Alpha 与红利因子是否可分**未做验证**）。★ **与 008 的机制区分（本包明确未合并）**：本 Campaign = **资金配置驱动**（非信用扩张）；008 = **信用周期驱动**（经济复苏 + 信用成本改善）—— 两者同属银行但**机制相反**；行情支持该区分（2020-11~2021-03 银行跑赢时券商跑输 -24.9pct）。二者同属 Theme Cycle `bank_valuation_2023_2025` / `bank_credit_cycle_2020_2021`（**分属不同 Cycle**）。★ **`peak_date = NULL` / `end_date = NULL`** —— **结构可能仍在延续**；Worker 明确「**不得把观察窗口结束当作 Peak/End**」→ **不制造完整日线生命周期**、**不把端点数据当作精确 peak**。`start = 2024-01-01`（lifecycle MAIN_RISE 起点，原包 start 为 PHASE_WINDOW「2023 年内逐步形成」，无单一启动事件）。★ `date_confidence = low`（**无启动锚点**）；`strength = medium`（**因子不可分离**）。★ **CF013 口径差（UNRESOLVED）—— 结论约束，非数据修正**：本 Campaign 引用的相对收益为「**个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）**」口径。按银行股息率约 5%/年估算，3 年窗口的口径差约 **+15pct**，银行类候选的超额被**系统性高估**。**因此不得把该相对收益直接解释为行业 Alpha**；**未做 Beta 调整、未剥离风格因子**，**Beta 中性验证未完成**。原始 Evidence（E130–E141）与原始区间收益**保持不变**，**未伪造任何调整后收益**；如需分离股息贡献，须以中证红利全收益指数 / 银行行业指数（全收益）重算（Q013）。｜theme_cycle_id=bank_valuation_2023_2025｜provenance: R01-05 Intake Package（v2，source_commit 2153f6d）｜Canonical Decision docs/R01_05_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2024-01-01",
+          "end": "2024-12-31",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "SECONDARY",
+          "start": "2025-01-01",
+          "end": "2025-09-19",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "2023 年内低利率 + 资产荒环境下高股息配置逐步形成（**无单一启动事件**，start 为 PHASE_WINDOW）"
+        ],
+        "accelerator": [
+          "2024 年 A 股银行板块全年涨幅超 37%，所有行业中排名第一（E-FINRE-34）",
+          "42 只银行股中 40 只涨超 10%、11 只涨超 50%，四大行股价屡创新高（E-FINRE-35）",
+          "2025 上半年七家上市险企合计增配高息股约 3200 亿元（E-FINRE-37）"
+        ],
+        "turning": [
+          "2025 年以来银行板块累计涨幅收敛至约 14%（E-FINRE-36）",
+          "2024-12-31→2025-09-19 工商银行相对沪深300 转弱（相对 -5.1pct）（E-FINRE-58 / E-FINRE-59）",
+          "★ CF004 保留：红利风格因子抱团与银行 Alpha 是否可分**未做验证**；CF013 口径差使超额被高估"
+        ],
+        "ending": [
+          "**不判定 End** —— peak_date / end_date 为 NULL，结构可能仍在延续（不得把观察窗口结束当作 End）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2025-FIN-INSURANCE",
+      "db_campaign_id": "C-2025-FIN-INSURANCE",
+      "year": 2025,
+      "rule_id": "rule_fin_realestate",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2025-01-01",
+      "peak_date_candidate": null,
+      "end_date_candidate": null,
+      "date_confidence": "low",
+      "theme": "非银金融",
+      "themes": [
+        {
+          "name": "金融",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "非银金融",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "insurance_asset_liability_2025",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FINRE-44",
+        "E-FINRE-59",
+        "E-FINRE-43"
+      ],
+      "source_ids": [
+        "S-FINRE-35",
+        "S-FINRE-51",
+        "S-FINRE-60"
+      ],
+      "independent_groups": [
+        "IG-MKT-INS",
+        "IG-QQ-2025INS",
+        "IG-SINA-2025INS"
+      ],
+      "independent_group_count": 3,
+      "events": [
+        {
+          "event_id": "EV-FINRE-11",
+          "name": "2024-12-31 至 2025-09-19 相对表现锚点：工商银行相对 -5.1pct、中国平安相对 -5.8pct",
+          "date": "2025-09-19",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CHINALIFE",
+          "name": "中国人寿",
+          "ticker": "601628",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "NCI",
+          "name": "新华保险",
+          "ticker": "601336",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "PINGAN",
+          "name": "中国平安",
+          "ticker": "601318",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "本地 market_series 无保险指数与代表标的前复权序列 → 行情快照 unavailable。★ peak_date / end_date 为 NULL；CF012 代表标的（中国平安相对 -5.8pct）与板块叙事（指数 +30%）方向冲突，**未消解**",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF012 裁决：**保留 UNRESOLVED —— 未消解**。P1 板块年度叙事（2025 年保险指数涨超 30%）；P2 **登记代表标的（中国平安）相对沪深300 跑输约 -5.8pct**（E137）→ **代表标的与板块叙事方向冲突**，本包**无法在本轮内判定板块内部是否显著分化**（Q012）。★ **与 005 的区分**：本 Campaign 有 lifecycle（MAIN_RISE 2025-01-01→2025-12-31）；机制为**保险资产端（权益/高股息）+ 负债端（长期资金入市）共振**，与券商（成交量/风险偏好）不同 ✓。★ **`peak_date = NULL` / `end_date = NULL`** —— 2025 年内未确认峰值，年度盘点口径下不判定 End ✓。★ 已知弱点：① 仅 4 ev / 4 IG；② **无启动锚点**（start 为年度趋势型）→ `date_confidence = low`；③ 保险资产端与权益市场高度耦合，存在「**市场 Beta 经资产端传导**」的特殊污染路径，**无法分离**。★ **CF013 口径差（UNRESOLVED）—— 结论约束，非数据修正**：本 Campaign 引用的相对收益为「**个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）**」口径。按银行股息率约 5%/年估算，3 年窗口的口径差约 **+15pct**，银行类候选的超额被**系统性高估**。**因此不得把该相对收益直接解释为行业 Alpha**；**未做 Beta 调整、未剥离风格因子**，**Beta 中性验证未完成**。原始 Evidence（E130–E141）与原始区间收益**保持不变**，**未伪造任何调整后收益**；如需分离股息贡献，须以中证红利全收益指数 / 银行行业指数（全收益）重算（Q013）。｜theme_cycle_id=insurance_asset_liability_2025｜provenance: R01-05 Intake Package（v2，source_commit 2153f6d）｜Canonical Decision docs/R01_05_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2025-01-01",
+          "end": "2025-12-31",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "保险资产端（权益 / 高股息）+ 负债端（长期资金入市）共振（**无启动锚点**，start 为年度趋势型）"
+        ],
+        "accelerator": [
+          "2025 年 A 股保险股指数涨幅超 30%，新华保险表现居首（E-FINRE-43）",
+          "险资举牌上市公司次数增加，高股息资产配置力度更强（E-FINRE-44）"
+        ],
+        "turning": [
+          "★ 2024-12-31→2025-09-19 中国平安相对沪深300 **-5.8pct**、工商银行 -5.1pct（E-FINRE-59，contradicting）→ CF012 代表标的与板块叙事方向冲突，**未消解**",
+          "★ 保险资产端与权益市场高度耦合，存在「市场 Beta 经资产端传导」的特殊污染路径，**无法分离**"
+        ],
+        "ending": [
+          "2025 年内**未确认峰值**（peak_date / end_date 为 NULL）；年度盘点口径下**不判定 End**"
         ]
       }
     },
