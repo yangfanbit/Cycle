@@ -1,0 +1,1702 @@
+{
+  "ruleset": "governance-gates-v0.1",
+  "rule_doc": "docs/R01_GOVERNANCE_GATES_v0_1.md",
+  "generated_from": {
+    "db": "research/database/cycle_research.db（只读）",
+    "intake_packages": "research/intake/packages/R01-01..R01-06（只读）"
+  },
+  "scope_note": [
+    "本清单为**治理 / 审计层**产物，不是 canonical Campaign 数据",
+    "未修改 campaigns / evidences / sources / themes 的任何一行",
+    "未因本规则上线而回填新的 peak / end；ALTERNATIVE 仅记录，不改变 canonical 取值",
+    "Beta Level 2 / 3 在 R01-01~06 中**实测为 0**，未虚构"
+  ],
+  "counts": {
+    "campaigns": 52,
+    "market_evidence_state": {
+      "A_SHARE_MARKET": 48,
+      "INDUSTRY_COMPANY_ONLY": 4
+    },
+    "beta_level": {
+      "0": 43,
+      "1": 9
+    },
+    "peak_state": {
+      "EXACT": 22,
+      "WINDOW": 26,
+      "NULL": 4
+    },
+    "end_state": {
+      "EXACT": 16,
+      "WINDOW": 30,
+      "NULL": 6
+    },
+    "with_peak_alternative": 13,
+    "with_end_alternative": 3,
+    "result_weak": 4,
+    "strength_weak_violations": 1,
+    "needs_historical_fix": 1
+  },
+  "campaigns": [
+    {
+      "campaign_id": "C-2019-AD",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2019,
+      "theme_cycle_id": "summer_2019",
+      "classification": "event_driven",
+      "strength": "weak",
+      "result": "weak",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2019-09-24",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2019-09-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": true,
+        "strength_is_weak": true,
+        "conforms_to_gate": false,
+        "note": "legacy 残留：`strength='weak'`。按 governance-gates-v0.1，`weak` 只能出现在 `result`；建议后续独立修复为 `strength='medium'`（保留 `result='weak'`）。**本轮不修改。**"
+      },
+      "needs_historical_fix": true
+    },
+    {
+      "campaign_id": "C-2020-NEV",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2020,
+      "theme_cycle_id": "summer_2020",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2020-07-13",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2020-09-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2021-NEV",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2021,
+      "theme_cycle_id": "summer_2021",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-08-06",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2021-09-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2022-POLICY",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2022,
+      "theme_cycle_id": "season_2022",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2022-06-10",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2022-08-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2023-AD",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2023,
+      "theme_cycle_id": "summer_2023",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2023-07-11",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2023-07-19",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2024-V2X",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2024,
+      "theme_cycle_id": "summer_2024",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2024-06-18",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2024-06-25",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2024-ROBOTAXI",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2024,
+      "theme_cycle_id": "summer_2024",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2024-07-29",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2024-07-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2025-ROBOTAXI",
+      "rule_id": "rule_auto_summer",
+      "campaign_year": 2025,
+      "theme_cycle_id": "summer_2025",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "EXACT",
+        "date": "2025-06-24",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2025-08-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2016,
+      "theme_cycle_id": "baijiu_premium_2016_2021",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2018-01-31",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2018-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2018-CONS-HOG-AFRICAN",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2018,
+      "theme_cycle_id": "hog_cycle_2018_2022",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2020-03-09",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-CONS-BAIJIU-CORE",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2019,
+      "theme_cycle_id": "baijiu_premium_2016_2021",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-02-18",
+        "alternative": {
+          "date": "2021-07-22",
+          "basis": "山西汾酒（除权后口径）盘中最高 380.77 元，次高端标的峰值明显滞后于高端龙头"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-CONS-AESTHETICS",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2019,
+      "theme_cycle_id": "beauty_aesthetics_2019_2022",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-07-05",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-CONS-DUTYFREE",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2020,
+      "theme_cycle_id": "service_consumption_2020_2023",
+      "classification": "mixed",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-02-18",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-CONS-WHITE-GOODS",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2020,
+      "theme_cycle_id": "appliance_export_2020_2021",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-02-18",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-CONS-BEAUTY-CN",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2020,
+      "theme_cycle_id": "beauty_aesthetics_2019_2022",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-10-29",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2021-CONS-HOG-REVERSAL",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2021,
+      "theme_cycle_id": "hog_cycle_2018_2022",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2022-10-15",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2022,
+      "theme_cycle_id": "service_consumption_2020_2023",
+      "classification": "event_driven",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2023-01-31",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2023-06-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2023-CONS-VALUE-RETAIL",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2023,
+      "theme_cycle_id": "value_retail_2023_2025",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2025-08-29",
+        "alternative": null
+      },
+      "end": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2024-CONS-TRADE-IN",
+      "rule_id": "rule_consumer",
+      "campaign_year": 2024,
+      "theme_cycle_id": "trade_in_2024_2025",
+      "classification": "mixed",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2024-10-08",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2025-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+      "rule_id": "rule_defense_military",
+      "campaign_year": 2019,
+      "theme_cycle_id": "military_group_restructure_2019",
+      "classification": "event_driven",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "INDUSTRY_COMPANY_ONLY",
+      "market_evidence_basis": "3/3 evidence 均为集团重组事件（筹划公告 / 国务院批准 / 集团揭牌），无 A 股行情证据（`R01-06 Intake` 已记录「市场反应侧行情数据缺失」）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2019-11-26",
+        "alternative": {
+          "date": "2019-10-25",
+          "basis": "经国务院批准联合重组（国资委消息）——以“确定性落地”为口径的结束点"
+        }
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-MIL-EQUIP-ORDER",
+      "rule_id": "rule_defense_military",
+      "campaign_year": 2020,
+      "theme_cycle_id": "military_equipment_order_cycle_2020_2022",
+      "classification": "mixed",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-12-01",
+        "alternative": {
+          "date": "2021-08-24",
+          "basis": "中证军工指数5/11–8/24上涨43%的区间高点（另一口径）"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-RE-DEBT-RISK",
+      "rule_id": "rule_fin_realestate",
+      "campaign_year": 2020,
+      "theme_cycle_id": "realestate_policy_cycle_2020_2023",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "weak",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-12-03",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-07-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": true,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-FIN-BANK-CREDIT",
+      "rule_id": "rule_fin_realestate",
+      "campaign_year": 2020,
+      "theme_cycle_id": "bank_credit_cycle_2020_2021",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-03-03",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-03-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2022-RE-POLICY-THREE",
+      "rule_id": "rule_fin_realestate",
+      "campaign_year": 2022,
+      "theme_cycle_id": "realestate_policy_cycle_2020_2023",
+      "classification": "event_driven",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2022-11-29",
+        "alternative": {
+          "date": "2023-01-16",
+          "basis": "若以板块指数最高点而非情绪高点计（需一级行情序列验证，本次未取得）"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2023-02-28",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2023-FIN-SOE-VALUATION",
+      "rule_id": "rule_fin_realestate",
+      "campaign_year": 2023,
+      "theme_cycle_id": "bank_valuation_2023_2025",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2023-05-11",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2023-06-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2024-FIN-BROKER-POLICY",
+      "rule_id": "rule_fin_realestate",
+      "campaign_year": 2024,
+      "theme_cycle_id": "broker_risk_appetite_2024",
+      "classification": "mixed",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "EXACT",
+        "date": "2024-10-08",
+        "alternative": {
+          "date": "2024-09-30",
+          "basis": "若以节前最后一个交易日为峰值口径"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2024-10-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+      "rule_id": "rule_fin_realestate",
+      "campaign_year": 2024,
+      "theme_cycle_id": "bank_valuation_2023_2025",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "end": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2025-FIN-INSURANCE",
+      "rule_id": "rule_fin_realestate",
+      "campaign_year": 2025,
+      "theme_cycle_id": "insurance_asset_liability_2025",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "end": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2016-HIEQ-CONSTR",
+      "rule_id": "rule_high_end_equipment",
+      "campaign_year": 2016,
+      "theme_cycle_id": "hieq_constr_2016_2021",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-01-25",
+        "alternative": {
+          "date": "2021-03-31",
+          "basis": "以产业销量峰值（3 月 7.9 万台、同比 +60%）作为单一峰值锚点。"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+      "rule_id": "rule_high_end_equipment",
+      "campaign_year": 2018,
+      "theme_cycle_id": "hieq_robot_2018_2019",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "weak",
+      "date_confidence": "medium",
+      "market_evidence_state": "INDUSTRY_COMPANY_ONLY",
+      "market_evidence_basis": "5/5 evidence 均为行业产量 / 销量 / 上市公司业绩，无 A 股行情证据（`R01-03 Intake Review` 已记录该先例：无 A 股行情证据下被 PROMOTE）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2019-09-30",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2019-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": true,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-HIEQ-AUTOMATION",
+      "rule_id": "rule_high_end_equipment",
+      "campaign_year": 2020,
+      "theme_cycle_id": "hieq_automation_2020_2022",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-07-01",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+      "rule_id": "rule_high_end_equipment",
+      "campaign_year": 2023,
+      "theme_cycle_id": "hieq_robot_2023",
+      "classification": "event_driven",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 1,
+      "beta_level_basis": "存在相对宽基基准（沪深300 / 上证）的超额收益，但**未做 Beta 调整、未剥离风格因子**",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2023-02-03",
+        "alternative": null
+      },
+      "end": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2023-HIEQ-HUMANOID",
+      "rule_id": "rule_high_end_equipment",
+      "campaign_year": 2023,
+      "theme_cycle_id": "hieq_robot_2023",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2023-11-02",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2023-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-COMM-5G",
+      "rule_id": "rule_infocomm",
+      "campaign_year": 2019,
+      "theme_cycle_id": "comm_5g_2019_2022",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2020-02-25",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2022-10-11",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2023-COMM-OPTICAL",
+      "rule_id": "rule_infocomm",
+      "campaign_year": 2023,
+      "theme_cycle_id": "comm_ai_optical_2023_2025",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2025-12-25",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2025-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-PHARMA-INNOV",
+      "rule_id": "rule_pharma_upgrade",
+      "campaign_year": 2019,
+      "theme_cycle_id": "pharma_2019_2021",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-07-01",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2022-10-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-POWER-NE",
+      "rule_id": "rule_power_equipment",
+      "campaign_year": 2020,
+      "theme_cycle_id": "power_ne_2020_2022",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-11-01",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2022-12-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2022-POWER-GRID",
+      "rule_id": "rule_power_equipment",
+      "campaign_year": 2022,
+      "theme_cycle_id": "power_grid_2022_2025",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2024-10-08",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2025-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-RES-DYE-SHOCK",
+      "rule_id": "rule_resources",
+      "campaign_year": 2019,
+      "theme_cycle_id": "dye_shock_2019",
+      "classification": "event_driven",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2019-04-04",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2019-07-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-RES-NONFERROUS",
+      "rule_id": "rule_resources",
+      "campaign_year": 2020,
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-09-13",
+        "alternative": {
+          "date": "2021-09-13",
+          "basis": "A 股板块口径高点（中证有色金属指数 000819 区间最高点）"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-RES-LITHIUM",
+      "rule_id": "rule_resources",
+      "campaign_year": 2020,
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-09-13",
+        "alternative": {
+          "date": "2021-09-01",
+          "basis": "A 股股价/板块口径高点（赣锋锂业 2021-09-01 最高 157.97 元等）"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2022-11-11",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-RES-RAREEARTH",
+      "rule_id": "rule_resources",
+      "campaign_year": 2020,
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "INDUSTRY_COMPANY_ONLY",
+      "market_evidence_basis": "7/7 evidence 均为稀土价格 / 开采配额 / 公司营收，无 A 股行情证据",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-11-09",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+      "rule_id": "rule_resources",
+      "campaign_year": 2021,
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-10-31",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-12-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2024-RES-GOLD-CB",
+      "rule_id": "rule_resources",
+      "campaign_year": 2024,
+      "theme_cycle_id": "gold_cb_demand_2024_2025",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "NULL",
+        "date": null,
+        "alternative": {
+          "date": "2025-12-23",
+          "basis": "国际金价突破 4500 美元/盎司"
+        }
+      },
+      "end": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2016-PANEL-CYCLE",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2016,
+      "theme_cycle_id": "panel_price_cycle_2016_2022",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "low",
+      "market_evidence_state": "INDUSTRY_COMPANY_ONLY",
+      "market_evidence_basis": "3/3 evidence 均为面板价格与供给（40 英寸面板涨幅、三星转产、大陆新增产能），属**商品价格**，非 A 股市场侧证据",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2017-06-30",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2017-06-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-SEMI-LOCALIZATION",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2019,
+      "theme_cycle_id": "semi_localization_2019_2021",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2020-07-14",
+        "alternative": {
+          "date": "2020-02-25",
+          "basis": "研报口径把 2019-01—2020-02 划为第一段并认为见顶于 2020-02 底，与指数最高点口径不一致。"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2020-09-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2019-CONSUMER-TWS",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2019,
+      "theme_cycle_id": "electronics_tws_2019_2020",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2020-10-13",
+        "alternative": {
+          "date": "2020-07-14",
+          "basis": "苹果概念板块指数 2020-07-14 达区间最高 3666.62，早于个股峰值。"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-03-31",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-SEMI-EQUIPMENT",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2020,
+      "theme_cycle_id": "semi_localization_2019_2021",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2021-07-30",
+        "alternative": null
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-09-30",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2020-PANEL-CYCLE",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2020,
+      "theme_cycle_id": "panel_price_cycle_2016_2022",
+      "classification": "industry_trend",
+      "strength": "strong",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2021-07-31",
+        "alternative": {
+          "date": "2021-04-30",
+          "basis": "A 股龙头京东方 A 股价月内最高 7.1469 元出现在 2021-04，早于面板价格高点约 3 个月。"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2021-08-31",
+        "alternative": {
+          "date": "2022-09-30",
+          "basis": "若以价格触底为结束，则 2022-09 的 106 美元/片为周期底部。"
+        }
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2022-SEMI-DOWNTURN",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2022,
+      "theme_cycle_id": "semi_inventory_downturn_2022",
+      "classification": "industry_trend",
+      "strength": "medium",
+      "result": "weak",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "WINDOW",
+        "date": "2022-08-31",
+        "alternative": null
+      },
+      "end": {
+        "state": "EXACT",
+        "date": "2022-10-12",
+        "alternative": {
+          "date": "2023-08-25",
+          "basis": "若把去库存延续至 2023 年，板块低点延伸到 2023-08-25 的 3533.73。"
+        }
+      },
+      "result_weak_semantics": {
+        "result_is_weak": true,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2023,
+      "theme_cycle_id": "ai_compute_semi_2023",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2023-04-10",
+        "alternative": {
+          "date": "2023-04-21",
+          "basis": "AI 算力芯片板块 2023-04-21 见 991.68 后回落，至 2023-04-28 收 864.52（区间 -12.82%）。"
+        }
+      },
+      "end": {
+        "state": "WINDOW",
+        "date": "2023-08-25",
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    },
+    {
+      "campaign_id": "C-2024-SEMI-MEMORY",
+      "rule_id": "rule_semiconductor",
+      "campaign_year": 2024,
+      "theme_cycle_id": "memory_supercycle_2024_2025",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "date_confidence": "medium",
+      "market_evidence_state": "A_SHARE_MARKET",
+      "market_evidence_basis": "存在 A 股市场侧证据（个股行情 / A 股板块或行业指数涨跌 / 持仓 / 成交额 / 市值 / 宽基对比）",
+      "beta_level": 0,
+      "beta_level_basis": "仅有绝对涨跌 / 价格或产业侧证据，无相对宽基基准超额收益",
+      "peak": {
+        "state": "EXACT",
+        "date": "2025-10-31",
+        "alternative": {
+          "date": "2025-11-11",
+          "basis": "存储器板块指数 2025-11-11 见 2211.83 为区间最高；江波龙 2025-11-13 盘中触及 330.51 元创历史新高。"
+        }
+      },
+      "end": {
+        "state": "NULL",
+        "date": null,
+        "alternative": null
+      },
+      "result_weak_semantics": {
+        "result_is_weak": false,
+        "strength_is_weak": false,
+        "conforms_to_gate": true,
+        "note": null
+      },
+      "needs_historical_fix": false
+    }
+  ]
+}

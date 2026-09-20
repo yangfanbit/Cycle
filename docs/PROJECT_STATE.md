@@ -7,9 +7,11 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`5c288c0`（`feat(research): import R01-06 defense/military canonical research`；本文件随 R01 Governance Review 提交入库）
-- 最近完成：**R01 Governance / Consistency Review v0.1**（**审计完成，未改任何业务数据**；
-  **G0 = 0 · G1 = 5 · G2 = 6 · G3 = 4**；4 项为 SA/TO 刷新前置阻塞项；详见 `docs/R01_GOVERNANCE_CONSISTENCY_REVIEW_v0_1.md`）
+- HEAD：`325b557`（`docs(research): add R01 governance consistency review`；本文件随 R01 治理第一批修复提交入库）
+- 最近完成：**R01 Governance 第一批修复**（SA/TO 前置 4 项：G1-1 市场侧证据软门槛 · G1-3 Beta Level 0–3 ·
+  G1-5 `result=weak` 语义 · G2-1 Peak/End 四态）→ 新建规则集 **`governance-gates-v0.1`**；
+  **未改任何 Campaign / Schema / Contract / taxonomy**；产出规则文档 + 机器可读清单 + 校验器；
+  详见 `docs/R01_GOVERNANCE_GATES_v0_1.md`
 
 ## 1. 项目当前定位
 
@@ -173,7 +175,7 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# R01 收口 → **治理修复决策**（Governance Review 已完成，待决定是否修复）
+# R01 收口 → **SA / TO 刷新**（第一批治理修复已完成，待决定是否刷新）
 
 **已完成（全部 PASS）**：… Product 侧全部轮次 · **R00**（Intake Protocol）· **T01**（taxonomy gap）·
 **R01-01 / R01-02 / R01-03 / R01-04 / R01-05 / R01-06 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
@@ -189,8 +191,33 @@ Time Observation v0.5 已完成并暂时冻结：
 | `R01-05` | 金融 / 地产 | ✅ 已导入（+7 campaigns / 5 RC） |
 | `R01-06` | 军工 | ✅ 已导入（**+2 campaigns / 5 RC**） |
 
+### ★ `governance-gates-v0.1` 已落地（第一批：SA / TO 前置 4 项）
+
+| Gate | 结论 |
+|---|---|
+| **G1-1 市场侧证据** | **软门槛**（影响 `strength` / `date_confidence`），**非** Campaign 存废硬门槛；**不回溯**。三态：`A_SHARE_MARKET` **48** / `INDUSTRY_COMPANY_ONLY` **4** / `NONE` **0**。4 个仅行业公司证据：`C-2019-MIL-GROUP-RESTRUCTURE` · `C-2018-HIEQ-ROBOT-DOWN` · `C-2016-PANEL-CYCLE`（面板价格属商品）· `C-2020-RES-RAREEARTH`。★ **商品价格 ≠ A 股市场侧证据** |
+| **G1-3 Beta Level 0–3** | **L0 = 43 · L1 = 9 · L2 = 0 · L3 = 0**（**未虚构 L2/L3**）。L1 共 9 个：R01-05 的 7 个 + `C-2023-HIEQ-ROBOT-PLUS` + `C-2025-ROBOTAXI`。★ **修正 Review 预估**：`C-2020-MIL-EQUIP-ORDER` 实为 **L0**（只有中证军工指数绝对涨跌，无宽基对比）；已排除伪 L1：`C-2024-SEMI-MEMORY`（绝对指数涨跌）· `C-2020-SEMI-EQUIPMENT`（「超额配售」为发行术语）· `C-2020-RES-LITHIUM`（「同期」对比对象是商品锂价） |
+| **G1-5 `result=weak`** | 正式定义 = **行业 / 市场方向为负**（≠ 证据弱 / confidence 低 / 不成立）。`strength` **不得**为 `weak`。全库 `result=weak` **4** 个；**`strength=weak` 违例 1 个 = `C-2019-AD`**（legacy 残留）→ **本轮不修**，由校验器 **V8 持续 WARN**，提出独立修复（→ `strength: medium`，保留 `result: weak`） |
+| **G2-1 Peak / End 四态** | EXACT / WINDOW / ALTERNATIVE（非空 `alternative` 表示）/ NULL。实测 peak：EXACT 22 / WINDOW 26 / NULL 4；end：EXACT 16 / WINDOW 30 / NULL 6；带 alternative 13 / 3。**未回填任何新日期**。★ 保留「商品 peak ≠ A 股 peak」（`C-2020-RES-LITHIUM` A股 2021-09-13 vs 商品 2022-11-11） |
+
+**交付**：`docs/R01_GOVERNANCE_GATES_v0_1.md`（规则集，不覆盖冻结基座）·
+`research/research/reports/governance_classification_v0_1.json`（机器可读，研究级）·
+`research/scripts/build_governance_classification_v0_1.py` · `research/scripts/validate_governance_gates.py`
+
+**★ 重要约束（实测）**：本轮**曾尝试**把 `governance` 加入 `exports/timeline_export_v1.json`，
+触发 `validate_timeline_export` 的 **`CAMPAIGN_FIELDS` 严格白名单 FAIL（52 处）** →
+在 Export 加字段 **= 事实上的 Contract 变更** → 依「不修改 Export Contract v1.0」**已回退**。
+治理分类改由 **SA / TO 直接读取研究级 JSON**（与 `time_observation_patterns_v0_1.json` 同类）。
+若确需进 Export，须**独立轮次**加入白名单并升 Contract v1.1。
+
+**未改动（已核验 diff 为空）**：`batch_auto_research.py` · `validate_timeline_export.py` · DB Schema ·
+DB 业务数据（campaigns 52 / themes 52 不变）· Intake Packages · Research Model v1.0 · Protocol · CMTR v1 · taxonomy。
+**DB warning 仍为 3 条**（未新增）。
+
 > **★ R01 六个任务已全部完成 Canonicalization**（Intake → Canonical Decision → DB Import → Export）。
-> **★ R01 Governance / Consistency Review v0.1 已完成**（审计 + 分级 + 影响范围 + SA/TO 前置条件），**未修改任何业务数据**。
+> **★ Governance Review + 第一批治理修复已完成**。
+> **下一步（待决策）**：① 是否执行第二批治理修复（G1-2 / G1-4 / G2-2 / G2-3 / G2-5 / G2-6）
+> ② 是否刷新 SA / TO ③ `C-2019-AD` 的 `strength=weak` 独立修复。
 > **下一步（待决策）**：是否按 G1 / G2 清单执行治理修复；修复完成后再刷新 SA / TO。
 > **★ 建议顺序**：① G1-1 / G1-3 / G1-5 落地「约定」（改数据）→ 解 SA 阻塞 ② G2-1 Peak/End 四态规范 → 解 TO 阻塞
 > ③ 刷新 SA ④ 刷新 TO ⑤ G1-2 / G1-4 / G2-3 / G2-4 / G2-6 按独立轮次处理。
@@ -257,11 +284,17 @@ taxonomy 未被任何 R01 修改（52 行 / 11 root，**11/11 均有 Campaign**�
 
 | 类别 | 项 |
 |---|---|
-| **必须在刷新前处理（阻塞）** | ① **G1-1** 市场侧证据门槛统一（SA 按 `strength` 跨族比较前须确定「无市场侧证据」的 strength 上限） ② **G1-3** Beta / 相对收益 Level 0–3 标注（防止把相对超额当 Alpha） ③ **G1-5** `result=weak` 语义统一（残留 `C-2019-AD` 的 `strength=weak`） ④ **G2-1** Peak / End 四态规范（**TO 直接依赖日期窗口与 peak**） |
+| **必须在刷新前处理（阻塞）** | ① **G1-1** 市场侧证据门槛 ② **G1-3** Beta Level 0–3 标注 ③ **G1-5** `result=weak` 语义 ④ **G2-1** Peak / End 四态 | **✅ 4 项已由 `governance-gates-v0.1` 落地（2026-09-20）。SA / TO 阻塞已解除**；是否刷新仍需决策 |
 | **可带 caveat 进入刷新** | ① G1-2 `research_report` Tier（23 条历史 tier=2 为兼容，不影响结论） ② G1-4 孤儿未机器校验（已人工复核） ③ G2-2 Theme Cycle Pattern 4 个存疑（overlap 已记录） ④ G2-3 5 个 pre-R01 无 date_observation ⑤ G2-5 3 条 temporal warning ⑥ G2-6 taxonomy aliases（164 个中 ~95 alias / ~45 机制名） ⑦ G3-1 promote 率差异 |
 
-**建议刷新顺序**：① G1-1/1-3/1-5 约定落地 → ② G2-1 Peak/End 规范 → ③ 刷新 SA（新 artifact 版本）→ ④ 刷新 TO（新 artifact 版本）
-→ ⑤ G1-2 / G1-4 / G2-3 / G2-4 / G2-6 按独立轮次处理。
+**建议刷新顺序（更新）**：① ~~G1-1/1-3/1-5 约定落地~~（**已完成**）② ~~G2-1 Peak/End 规范~~（**已完成**）
+③ 刷新 SA（新 artifact 版本）④ 刷新 TO（新 artifact 版本）
+⑤ G1-2 / G1-4 / G2-3 / G2-4 / G2-6 按独立轮次处理 ⑥ `C-2019-AD` 的 `strength=weak` 独立修复。
+
+**★ SA / TO 输入字段来源（因 Export Contract v1.0 未改）**：治理字段**不在**
+`exports/timeline_export_v1.json` 中（加入会触发 `CAMPAIGN_FIELDS` 白名单 FAIL），
+SA / TO 须**直接读取** `research/research/reports/governance_classification_v0_1.json`
+（按 `campaign_id` 关联），与 `time_observation_patterns_v0_1.json` 读取方式一致。
 
 ### 未决与待办（**未排期**）
 
@@ -284,7 +317,9 @@ taxonomy 未被任何 R01 修改（52 行 / 11 root，**11/11 均有 Campaign**�
 | OPEN | **R01-06 的 `001` Beta 污染未分离**（2020-07 启动段）· **`002` 市场侧行情证据完全缺失**（`peak = NULL`）· `003/004/005/007` 生命周期未闭合 · `005` 需补证（2017 分月行情 + 混改落地公告） |
 | OPEN | **本地无军工行情序列** → R01-06 的 Export `market_data = unavailable`（市场数据仅引自 intake 二手整理，全 T3） |
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突（**R01-03 `H1` / R01-05 `K` / R01-06 第三次复现** → **Cross-task governance issue，待 R01 Governance Review 统一处理**） |
-| OPEN | **治理修复待决策（Governance Review v0.1 已分级，尚未执行）**：**G1-1** 市场侧证据软门槛 · **G1-2** `research_report` Tier 对齐（C08 `(2,)` → `(2,3)` + 23 行 migration） · **G1-3** Beta Level 0–3 强制标注 · **G1-4** Validator 新增 C26 orphan report（WARN 级） · **G1-5** `result=weak` 语义 + `C-2019-AD` 的 `strength=weak` 残留 · **G2-1** Peak/End 四态规范 · **G2-2** Theme Cycle Pattern（4 个存疑） · **G2-3** 5 个 pre-R01 缺 `campaign_date_observations` · **G2-4** 孤儿处置规范 · **G2-5** 3 条 temporal warning 定性 · **G2-6** taxonomy alias 表 + Mechanism 登记表（**不扩展 taxonomy**） |
+| OPEN | **✅ 第一批治理修复已完成**（`governance-gates-v0.1`）：G1-1 市场侧证据软门槛 · G1-3 Beta Level 0–3 · G1-5 `result=weak` 语义 · G2-1 Peak/End 四态。**规则 + 机器可读清单 + 校验器已交付，未改任何 Campaign / Schema / Contract / taxonomy** |
+| OPEN | **第二批治理修复待决策（本轮未做，仅 issue register）**：G1-2 `research_report` Tier（**须逐条确认是否真属 Research Model §15 的券商研报，不得把 23 条 tier=2 一律改成 tier=3**）· G1-4 Validator 加 C26 orphan report · G2-2 Theme Cycle Pattern · G2-3 5 个 pre-R01 缺 date_observations · G2-5 3 条 temporal warning · G2-6 taxonomy alias 表 + Mechanism 登记表（**不扩展 taxonomy**） |
+| OPEN | **历史数据修复需求（唯一 1 项，待独立评审）**：`C-2019-AD` 的 `strength='weak'` → 建议改 `medium`（保留 `result='weak'`）。属 legacy 语义残留，非本轮规则引入；由 `validate_governance_gates.py` **V8 持续 WARN**。影响：DB 1 行 / Export 1 条 / SA 轻微 |
 | OPEN | **Worker ↔ ThreeC 规则统一待办**：Worker 报 `24 checks` vs ThreeC `C01–C25` · Worker 无 Strict Draft-07 · Worker `--check` 目录假设差异 · **Worker 无 orphan 检查** · **须向 Worker 提供 T01 后的 taxonomy 快照（11 root / 52 行）**（R01-06 manifest 曾误称 root 仅 4 个） · 建议后续为 Worker 增加 C26 并统一 `--check` 行为（**本轮不重建 Worker**） |
 | OPEN | R01-05 孤儿证据 `E-FINRE-49/50/51/63`（intake 中未被任何候选引用）按既有惯例导入；`E-FINRE-63` = 全局基准 E141 · R01-06 孤儿证据 `E-MIL-40/41/42`（`E-MIL-42` = E042 反向证据，research-level 不绑定） |
 | POLISH | `themeCycleId` 可读性 · `event_type` ↔ 证据类别标签对应 |
