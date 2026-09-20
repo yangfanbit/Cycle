@@ -7,8 +7,9 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`4b45e73`（`docs(research): add R01-06 defense/military intake review`；本文件随 R01-06 Canonical Import 提交入库）
-- 最近完成：**R01-06 Canonical Decision & Import v0.1**（PASS；**2 个 PROMOTE 入 Canonical DB，5 个 RESEARCH_ONLY 保留**；`CF008` 军费传导时滞 / `CF001` 不拆分 / `CF004` 族属未定 / `CF006` Beta 不可分离 均已裁决；`E042` 入 DB 但**不绑定任何 Campaign**）
+- HEAD：`5c288c0`（`feat(research): import R01-06 defense/military canonical research`；本文件随 R01 Governance Review 提交入库）
+- 最近完成：**R01 Governance / Consistency Review v0.1**（**审计完成，未改任何业务数据**；
+  **G0 = 0 · G1 = 5 · G2 = 6 · G3 = 4**；4 项为 SA/TO 刷新前置阻塞项；详见 `docs/R01_GOVERNANCE_CONSISTENCY_REVIEW_v0_1.md`）
 
 ## 1. 项目当前定位
 
@@ -172,7 +173,7 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# R01 收口 → **R01 Governance / Consistency Review**（**未启动**）
+# R01 收口 → **治理修复决策**（Governance Review 已完成，待决定是否修复）
 
 **已完成（全部 PASS）**：… Product 侧全部轮次 · **R00**（Intake Protocol）· **T01**（taxonomy gap）·
 **R01-01 / R01-02 / R01-03 / R01-04 / R01-05 / R01-06 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
@@ -189,7 +190,27 @@ Time Observation v0.5 已完成并暂时冻结：
 | `R01-06` | 军工 | ✅ 已导入（**+2 campaigns / 5 RC**） |
 
 > **★ R01 六个任务已全部完成 Canonicalization**（Intake → Canonical Decision → DB Import → Export）。
-> **下一步 = R01 Governance / Consistency Review**（跨任务口径统一 + SA / TO 统一刷新），**尚未启动**。
+> **★ R01 Governance / Consistency Review v0.1 已完成**（审计 + 分级 + 影响范围 + SA/TO 前置条件），**未修改任何业务数据**。
+> **下一步（待决策）**：是否按 G1 / G2 清单执行治理修复；修复完成后再刷新 SA / TO。
+> **★ 建议顺序**：① G1-1 / G1-3 / G1-5 落地「约定」（改数据）→ 解 SA 阻塞 ② G2-1 Peak/End 四态规范 → 解 TO 阻塞
+> ③ 刷新 SA ④ 刷新 TO ⑤ G1-2 / G1-4 / G2-3 / G2-4 / G2-6 按独立轮次处理。
+
+### Governance Issue 分级（R01 Governance Review v0.1）
+
+| 级别 | 数量 | 项 |
+|---|---:|---|
+| **G0 必须修复** | **0** | 无机械性错误 / 数据损坏 / 契约违规 |
+| **G1 应统一** | **5** | G1-1 市场侧证据门槛（软门槛，非硬门槛）· G1-2 `research_report` Tier 向 Research Model §15 对齐 · G1-3 Beta / 相对收益 Level 0–3 分级 · G1-4 Validator 缺 orphan 检查 · G1-5 `result=weak` 语义（残留 `C-2019-AD` 的 `strength=weak`） |
+| **G2 建议统一** | **6** | G2-1 Peak/End 四态规范 · G2-2 Theme Cycle Pattern 标注（4 个存疑）· G2-3 `campaign_date_observations` 缺失（5 个 pre-R01）· G2-4 孤儿 source / evidence 处置规范 · G2-5 3 条 temporal warning 定性 · G2-6 taxonomy aliases / Mechanism 登记 |
+| **G3 可保持差异** | **4** | promote 率差异（29%~85%）· `campaign_themes.role` 未用 `catalyst` · 8 个未使用 theme · `classification` 分布差异 |
+
+**实测关键数据**：DB↔Export **0 字段不一致** · 共享 evidence **0**（1:1 全库零违规）· rule↔campaign_year↔annual_review **零缺失** ·
+taxonomy 未被任何 R01 修改（52 行 / 11 root，**11/11 均有 Campaign**）·
+**Beta caveat 覆盖率 pre-R01 0/13 → R01-01 1/5 → R01-02 1/8 → R01-03 1/6 → R01-04 1/11 → R01-05 7/7 → R01-06 2/2**（标准随时间演进，非随机差异）·
+`research_report` DB 内 **23 条全 tier=2**（R01-01 7 / R01-02 2 / R01-03 2 / R01-04 2 / R01-05 10 / **R01-06 0**；R01-06 改用 `media_tier3`+T3）·
+孤儿 evidence **25**（R01-04 9 / R01-05 4 / R01-06 3 / R01-01 2 / legacy 7）· 孤儿 source **84**（R01-05 22 / R01-03 18 / R01-06 16 / R01-02 11 / R01-01 5 / R01-04 5 / legacy 7）·
+**无任何 Campaign 达到 Beta Level 2 / 3**（L1 仅 R01-05 的 7 个 + R01-06 的 `C-2020-MIL-EQUIP-ORDER`）·
+**3 条 DB warning 全部来自 R01-02**，属「期末/年度总结类证据」的内容期 vs 发布期口径差，**非数据错误**。
 
 ### Historical Universe 当前实测
 
@@ -228,10 +249,19 @@ Time Observation v0.5 已完成并暂时冻结：
 `broker_risk_appetite_2024` · `bank_credit_cycle_2020_2021` · `insurance_asset_liability_2025` ·
 `military_equipment_order_cycle_2020_2022` · `military_group_restructure_2019`。
 
-### Structural Analogy
+### Structural Analogy / Time Observation
 
 **未刷新**（`structural_analogy_explanations_v0_2.json` 字节不变）。Rule Set v0.2 与 Research v0.2 均 FROZEN。
-**建议 R01 全部完成后以新 artifact 版本统一刷新。**
+
+**★ SA / TO 前置条件（Governance Review v0.1 结论）**：
+
+| 类别 | 项 |
+|---|---|
+| **必须在刷新前处理（阻塞）** | ① **G1-1** 市场侧证据门槛统一（SA 按 `strength` 跨族比较前须确定「无市场侧证据」的 strength 上限） ② **G1-3** Beta / 相对收益 Level 0–3 标注（防止把相对超额当 Alpha） ③ **G1-5** `result=weak` 语义统一（残留 `C-2019-AD` 的 `strength=weak`） ④ **G2-1** Peak / End 四态规范（**TO 直接依赖日期窗口与 peak**） |
+| **可带 caveat 进入刷新** | ① G1-2 `research_report` Tier（23 条历史 tier=2 为兼容，不影响结论） ② G1-4 孤儿未机器校验（已人工复核） ③ G2-2 Theme Cycle Pattern 4 个存疑（overlap 已记录） ④ G2-3 5 个 pre-R01 无 date_observation ⑤ G2-5 3 条 temporal warning ⑥ G2-6 taxonomy aliases（164 个中 ~95 alias / ~45 机制名） ⑦ G3-1 promote 率差异 |
+
+**建议刷新顺序**：① G1-1/1-3/1-5 约定落地 → ② G2-1 Peak/End 规范 → ③ 刷新 SA（新 artifact 版本）→ ④ 刷新 TO（新 artifact 版本）
+→ ⑤ G1-2 / G1-4 / G2-3 / G2-4 / G2-6 按独立轮次处理。
 
 ### 未决与待办（**未排期**）
 
@@ -254,7 +284,8 @@ Time Observation v0.5 已完成并暂时冻结：
 | OPEN | **R01-06 的 `001` Beta 污染未分离**（2020-07 启动段）· **`002` 市场侧行情证据完全缺失**（`peak = NULL`）· `003/004/005/007` 生命周期未闭合 · `005` 需补证（2017 分月行情 + 混改落地公告） |
 | OPEN | **本地无军工行情序列** → R01-06 的 Export `market_data = unavailable`（市场数据仅引自 intake 二手整理，全 T3） |
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突（**R01-03 `H1` / R01-05 `K` / R01-06 第三次复现** → **Cross-task governance issue，待 R01 Governance Review 统一处理**） |
-| OPEN | **R01 全局治理待办（统一记录，本轮未修改）**：Source Tier 口径三方不一致（Research Model §15 / Protocol §7.3 / validation §1.2 / Validator C08）· 市场关注口径 · Beta / relative-return 判据 · 自然下行 Campaign 判据 · 商品/行业 peak vs A 股 peak · taxonomy aliases / proposals · Worker 与 ThreeC validator 版本差异 · **Worker 侧 taxonomy 快照陈旧**（R01-06 manifest 误称 root 仅 4 个） |
+| OPEN | **治理修复待决策（Governance Review v0.1 已分级，尚未执行）**：**G1-1** 市场侧证据软门槛 · **G1-2** `research_report` Tier 对齐（C08 `(2,)` → `(2,3)` + 23 行 migration） · **G1-3** Beta Level 0–3 强制标注 · **G1-4** Validator 新增 C26 orphan report（WARN 级） · **G1-5** `result=weak` 语义 + `C-2019-AD` 的 `strength=weak` 残留 · **G2-1** Peak/End 四态规范 · **G2-2** Theme Cycle Pattern（4 个存疑） · **G2-3** 5 个 pre-R01 缺 `campaign_date_observations` · **G2-4** 孤儿处置规范 · **G2-5** 3 条 temporal warning 定性 · **G2-6** taxonomy alias 表 + Mechanism 登记表（**不扩展 taxonomy**） |
+| OPEN | **Worker ↔ ThreeC 规则统一待办**：Worker 报 `24 checks` vs ThreeC `C01–C25` · Worker 无 Strict Draft-07 · Worker `--check` 目录假设差异 · **Worker 无 orphan 检查** · **须向 Worker 提供 T01 后的 taxonomy 快照（11 root / 52 行）**（R01-06 manifest 曾误称 root 仅 4 个） · 建议后续为 Worker 增加 C26 并统一 `--check` 行为（**本轮不重建 Worker**） |
 | OPEN | R01-05 孤儿证据 `E-FINRE-49/50/51/63`（intake 中未被任何候选引用）按既有惯例导入；`E-FINRE-63` = 全局基准 E141 · R01-06 孤儿证据 `E-MIL-40/41/42`（`E-MIL-42` = E042 反向证据，research-level 不绑定） |
 | POLISH | `themeCycleId` 可读性 · `event_type` ↔ 证据类别标签对应 |
 
@@ -286,6 +317,9 @@ Time Observation v0.5 已完成并暂时冻结：
 - **Intake Package R01-01 ~ R01-06 各 PASS（C01–C25）** · **Validator 单元测试 44/44 PASS**
 - **R01-06 Canonical Import**：`validate_db` PASS（**3 条 WARNING 与导入前完全相同，无新增 temporal warning**）·
   既有 50 Campaign 逐条深比对 0 修改 · taxonomy `themes` 52→52 未变 · `import --verify` 幂等 · LF 不变式全 CRLF=0
+- **R01 Governance Review（审计，未改数据）**：DB↔Export **0 字段不一致**（52↔52）· 共享 evidence **0**（1:1 全库零违规）·
+  孤儿 evidence 25 / 孤儿 source 84 已人工复核 · 6 个新 rule 的 `campaign_year` ⊇ `annual_review` **零缺失** ·
+  **3 条 DB warning 全部来自 R01-02**（总结类证据内容期 vs 发布期口径差，非数据错误）· **G0 = 0**
 - npm test 476/476
 - tsc -b PASS
 - vite build PASS
