@@ -1,0 +1,196 @@
+[
+  {
+    "conflict_id": "R01-MIL-CF001",
+    "subject": "2020年下半年与2021年是否为同一个军工Campaign",
+    "positions": [
+      {
+        "position": "一个Campaign：同属“十四五”装备放量叙事，2021年1–5月的回撤只是内部RETRACEMENT，且2021年5–8月上涨43%是对同一叙事的再次确认",
+        "source_ids": [
+          "R01-MIL-S008",
+          "R01-MIL-S011"
+        ]
+      },
+      {
+        "position": "两个Campaign：2020H2是政策预期+Beta驱动，2021年是订单与业绩兑现驱动，机制与资金结构不同；且2021年1–5月回撤32%幅度过大，更像是两个结构之间的转换",
+        "source_ids": [
+          "R01-MIL-S010",
+          "R01-MIL-S011"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "本包按一个结构提交（R01-MIL-001），并在date_candidates.start中同时给出两个启动锚点。★不自动取舍：若ThreeC Agent采信第二种立场，则R01-MIL-001应拆分为两个候选，各自持续性需重新论证。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF002",
+    "subject": "2019年南北船重组（R01-MIL-002）与2019年国庆阅兵行情（R01-MIL-003）是否同属一个2019年军工Campaign",
+    "positions": [
+      {
+        "position": "两个Campaign：机制不同（集团资产重组 vs 重大纪念事件注意力），催化与叙事均独立",
+        "source_ids": [
+          "R01-MIL-S012",
+          "R01-MIL-S036"
+        ]
+      },
+      {
+        "position": "一个Campaign：两者同属2019年军工板块，时间相邻（7月与8–9月），可能共享同一资金池，符合Q1 Anti-example“同一资金池的不同分支”形态",
+        "source_ids": [
+          "R01-MIL-S036",
+          "R01-MIL-S022"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包按两个候选提交并互相标记possible_duplicate_of。★关键阻塞项是缺少2019年7–9月的连续行情数据。若ThreeC Agent采信第二种立场，应将二者合并并保留双方provenance（MERGE而非DUPLICATE）。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF003",
+    "subject": "军工电子在2020–2021年是Sub-theme还是独立Campaign",
+    "positions": [
+      {
+        "position": "Sub-theme：与航空装备、新材料共享资金池，生命周期高度一致（2022年同步大幅回调）",
+        "source_ids": [
+          "R01-MIL-S010",
+          "R01-MIL-S031"
+        ]
+      },
+      {
+        "position": "可独立：军工电子有独立的国产替代/元器件需求逻辑，与主机厂订单机制不完全相同",
+        "source_ids": [
+          "R01-MIL-S010"
+        ]
+      }
+    ],
+    "resolution": "RESOLVED_PREFERRED",
+    "note": "本包倾向第一种（已记为exclusion R01-MIL-X004），但第二种立场的机制差异属实。★若R01-02（半导体/电子）提交了军工电子候选，应做cross-task dedupe而非直接合并。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF004",
+    "subject": "商业航天 / 卫星互联网（R01-MIL-007）的族属：国防军工 vs 信息通信 vs 高端装备",
+    "positions": [
+      {
+        "position": "属国防军工：航天装备在本任务scope内；星座建设具有战略安全与空间资源属性",
+        "source_ids": [
+          "R01-MIL-S024"
+        ]
+      },
+      {
+        "position": "属信息通信：2025年8月工信部《关于优化业务准入促进卫星通信产业发展的指导意见》与11月卫星物联网商用试验，主管部门与主题都是通信",
+        "source_ids": [
+          "R01-MIL-S026"
+        ]
+      },
+      {
+        "position": "跨族：同一批标的（卫星制造/火箭/地面设备）同时承载军事需求与商业需求",
+        "source_ids": [
+          "R01-MIL-S025",
+          "R01-MIL-S037"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "按协议§7D，本包不预设全部归入国防军工。已提交cross_task_note R01-MIL-N004（POSSIBLE_DUPLICATE，R01-02）与R01-MIL-N002（BOUNDARY，R01-02）。★TwoC Agent应走CMTR v1解析。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF005",
+    "subject": "船舶制造的机制归属：民船周期 vs 军品订单",
+    "positions": [
+      {
+        "position": "属军工：中国船舶集团是军工央企，军用舰船与民船同一上市平台",
+        "source_ids": [
+          "R01-MIL-S014"
+        ]
+      },
+      {
+        "position": "属周期/资源族：2021年后核心驱动是民船订单与船价周期（供给收缩/涨价机制），与军费、军品采购无关",
+        "source_ids": []
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包未就2021–2024民船周期建立候选（见exclusion R01-MIL-X005），仅提交本冲突与cross_task_note R01-MIL-N005。★若R01-03或R01-01提交了造船周期候选，本包不与其重复。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF006",
+    "subject": "2015年军工是独立Campaign还是2015年A股杠杆牛市的Beta投射",
+    "positions": [
+      {
+        "position": "独立Campaign：有改革预期、资产证券化与军民融合国家战略等军工自身叙事，且军工涨幅居前",
+        "source_ids": [
+          "R01-MIL-S019",
+          "R01-MIL-S032"
+        ]
+      },
+      {
+        "position": "Beta投射：2015年A股全面杠杆牛市，军工涨幅与市场整体涨幅高度重叠，无法分离军工自身贡献",
+        "source_ids": [
+          "R01-MIL-S019"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "★按historical_campaign_validation_v1.md §4.3，无法排除Beta Contamination时必须保持低置信度 —— 本包已将R01-MIL-006的confidence设为low，并在why_not中写明若ThreeC Agent采信第二种立场应降级为OBSERVATION_ONLY。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF007",
+    "subject": "2025年阅兵行情是theme_campaign还是event_driven（持续性是否足够）",
+    "positions": [
+      {
+        "position": "theme_campaign：阅兵、军贸、景气反转、“十五五”四条主线构成复合主题，窗口约2.5个月",
+        "source_ids": [
+          "R01-MIL-S023"
+        ]
+      },
+      {
+        "position": "event_driven/OBSERVATION_ONLY：核心催化是单一事件（阅兵），事件驱动型是否满足持续性要求需严格论证",
+        "source_ids": [
+          "R01-MIL-S022"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包暂按event_driven提交（R01-MIL-004）并设confidence=low。★缺失项是阅兵后的行情走向（截至本轮研究无可复核材料）。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF008",
+    "subject": "军费/国防预算增长与装备订单兑现之间是否存在可验证的传导与时滞",
+    "positions": [
+      {
+        "position": "存在传导：2021年国防预算增长6.8%，同年主机厂披露大额关联交易与预付款",
+        "source_ids": [
+          "R01-MIL-S001",
+          "R01-MIL-S003"
+        ]
+      },
+      {
+        "position": "不存在稳定传导：2022年国防预算增长7.1%（2019年以来首次破7），但2022年军工板块全年下跌约23.6%",
+        "source_ids": [
+          "R01-MIL-S002",
+          "R01-MIL-S010"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "★这是本任务最重要的机制边界之一：它直接否定“军费增长→军工行情”的简单推断。本包用R01-MIL-E042作为反向/对照证据，防止把预算增速直接当作Campaign依据。"
+  },
+  {
+    "conflict_id": "R01-MIL-CF009",
+    "subject": "2017年“军民融合”与“军工混改”是否为同一机制 / 同一结构",
+    "positions": [
+      {
+        "position": "同一结构：2017年1月的混改文件（1-04）与军民融合委设立（1-22）在时间上连续，共同构成“改革政策”主线",
+        "source_ids": [
+          "R01-MIL-S017",
+          "R01-MIL-S016"
+        ]
+      },
+      {
+        "position": "两个机制：混改是所有制与资产证券化改革，军民融合是军民两套体系之间的资源与准入打通，政策主体与对象不同",
+        "source_ids": [
+          "R01-MIL-S018"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包在R01-MIL-005中将二者合并为一个政策驱动结构提交，但显式记录分歧。★无论采信哪种立场，都不应把它与2020–2021的订单驱动合并。"
+  }
+]

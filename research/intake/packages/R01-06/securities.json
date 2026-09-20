@@ -1,0 +1,181 @@
+[
+  {
+    "security_id": "R01-MIL-SEC001",
+    "ticker": "399967.SZ",
+    "name": "中证军工指数",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "行情代理指数。本包用它承载2021年区间涨跌与2021-12-01高点(14748点)。属Historical代理口径，非Point-in-Time Basket：指数成分股历年调整，不得以今天的成分股回填过去。",
+    "source_ids": [
+      "R01-MIL-S008",
+      "R01-MIL-S009"
+    ],
+    "point_in_time_note": "Historical Leader Set / 行情代理（retrospective）。本包只用它在事后描述指数区间涨跌，不构造 Point-in-Time Basket。指数成分股历年调整，禁止用今天的成分股回填过去区间。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC002",
+    "ticker": "801740.SI",
+    "name": "申万国防军工指数",
+    "exchange": "申万宏源（指数编制）",
+    "role": "representative",
+    "basis": "行情代理指数。用于2021年(+8.6%)、2022年(-23.63%)与2023年的行业比较口径。retrospective代理，非PIT Basket。",
+    "source_ids": [
+      "R01-MIL-S009",
+      "R01-MIL-S010",
+      "R01-MIL-S031"
+    ],
+    "point_in_time_note": "Historical Leader Set / 行情代理（retrospective）。用于行业间比较（2021年+8.6%、2022年-23.63%），不是当时可识别的个股篮子。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC003",
+    "ticker": null,
+    "name": "国证军工指数（深圳证券信息有限公司编制，50只成分股）",
+    "exchange": "深圳证券信息有限公司",
+    "role": "representative",
+    "basis": "2015年行情幅度代理（年初至2015-06-04累计+117.36%）。未取得指数代码，ticker留空。retrospective代理。",
+    "source_ids": [
+      "R01-MIL-S019"
+    ],
+    "point_in_time_note": "Historical Leader Set / 行情代理（retrospective）。仅用于2015年幅度口径（+117.36%），未取得指数代码与成分股历史快照。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC004",
+    "ticker": "600760.SH",
+    "name": "中航沈飞",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "2020–2021主机厂龙头：2021-03-30关联交易预计公告 + 2021H1合同负债377.37亿元。★幸存者/更名提示：该证券2017年曾用名“中航黑豹”，彼时对应沈飞资产注入事件，不可把2021年的“中航沈飞”标签直接回填到2017年。",
+    "source_ids": [
+      "R01-MIL-S003",
+      "R01-MIL-S004"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective，survivorship-aware）。2020–2021年的龙头地位来自2021年公告与半年报，属事后确认。★2017年该证券尚为“中航黑豹”，不得把2021年的龙头标签回填到2017年。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC005",
+    "ticker": "600893.SH",
+    "name": "航发动力",
+    "exchange": "上海证券交易所",
+    "role": "second_leader",
+    "basis": "五大主机厂之一，2021年4月初已披露2021年关联交易预计及甲方大额预付安排。retrospective。",
+    "source_ids": [
+      "R01-MIL-S035"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。其在主机厂大额预付披露中的位置由2021年券商统计给出。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC006",
+    "ticker": "000768.SZ",
+    "name": "中航西飞",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "五大主机厂之一；2022年7–8月中航西飞大额订单首次落地（券商复盘口径）。retrospective。",
+    "source_ids": [
+      "R01-MIL-S035",
+      "R01-MIL-S010"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。2022年大额订单落地为事后复盘口径，非当时可识别。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC007",
+    "ticker": "600316.SH",
+    "name": "洪都航空",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "五大主机厂之一，2021年5–8月被复盘列为主机厂大额订单落地标的。retrospective。",
+    "source_ids": [
+      "R01-MIL-S035",
+      "R01-MIL-S010"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。2021年订单落地为事后复盘口径，非当时可识别。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC008",
+    "ticker": "600150.SH",
+    "name": "中国船舶",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "原中船工业集团（南船）核心上市平台，2019-07-01发布筹划战略性重组公告的9家上市公司之一（来源未逐一点名，此处按集团上市平台推断）。retrospective。",
+    "source_ids": [
+      "R01-MIL-S012",
+      "R01-MIL-S013",
+      "R01-MIL-S014"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。2019-07-01公告名单中的身份为按集团上市平台推断，来源未逐一点名，不得作为 point-in-time 篮子使用。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC009",
+    "ticker": "601989.SH",
+    "name": "中国重工",
+    "exchange": "上海证券交易所",
+    "role": "second_leader",
+    "basis": "原中船重工集团（北船）核心上市平台，2019-07-01公告的9家上市公司之一（推断，同上）。retrospective。",
+    "source_ids": [
+      "R01-MIL-S012",
+      "R01-MIL-S014"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。身份为按集团上市平台推断，同上。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC010",
+    "ticker": "600685.SH",
+    "name": "中船防务",
+    "exchange": "上海证券交易所",
+    "role": "follow",
+    "basis": "南船旗下上市平台，2019-07-01公告的9家上市公司之一（推断）；2020-07-14亦被报道涨停。★注意：该证券在2019年（重组）与2020年（装备放量）两轮结构中都有出现，不能据以认定两轮属同一Campaign。",
+    "source_ids": [
+      "R01-MIL-S012",
+      "R01-MIL-S034"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。★该证券同时出现在2019年（重组）与2020年（装备放量）两个结构中，不得据以认定两轮属同一Campaign。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC011",
+    "ticker": "600118.SH",
+    "name": "中国卫星",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "商业航天/卫星制造代表标的，2025-10-24一字涨停。retrospective。族属边界未定（军工航天 vs 信息通信）。",
+    "source_ids": [
+      "R01-MIL-S024"
+    ],
+    "point_in_time_note": "Point-in-Time 可识别性较高：2025-10-24媒体当日点名涨停。但族属边界未定（军工航天 vs 信息通信）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC012",
+    "ticker": "003009.SZ",
+    "name": "中天火箭",
+    "exchange": "深圳证券交易所",
+    "role": "follow",
+    "basis": "商业航天/火箭制造标的，2025-10-24一字涨停。retrospective。",
+    "source_ids": [
+      "R01-MIL-S024"
+    ],
+    "point_in_time_note": "Point-in-Time 可识别性较高：2025-10-24媒体当日点名涨停。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-MIL-SEC013",
+    "ticker": "300726.SZ",
+    "name": "宏达电子",
+    "exchange": "深圳证券交易所",
+    "role": "follow",
+    "basis": "被媒体列为2025-10-24商业航天概念涨停标的；同时具有军工电子属性，★属军工电子与半导体的跨族边界标的。retrospective。",
+    "source_ids": [
+      "R01-MIL-S024"
+    ],
+    "point_in_time_note": "Point-in-Time 可识别性较高：2025-10-24媒体当日点名涨停。★同时属军工电子与半导体跨族边界标的。",
+    "survivorship_aware": true
+  }
+]

@@ -1,0 +1,84 @@
+[
+  {
+    "question_id": "R01-MIL-Q001",
+    "question": "2021年主机厂“合同负债 / 关联交易预计”能否作为军方预付款与订单规模的公开代理指标？不同公司、不同年度的披露口径是否可比？",
+    "why_it_matters": "军品订单信息大量不可公开。若该代理指标不成立，则几乎所有军工“订单驱动”候选都只能停留在叙事层面。",
+    "related_candidate_ids": [
+      "R01-MIL-001"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q002",
+    "question": "2020年7月军工启动中，市场Beta的贡献占比是多少？应如何把“十四五装备放量”叙事与2020年7月A股整体放量上涨分离？",
+    "why_it_matters": "若不分离，2020–2021候选的启动口径存在系统性偏差，并可能把市场Beta误判为军工Campaign。",
+    "related_candidate_ids": [
+      "R01-MIL-001"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q003",
+    "question": "“十四五”规划中期调整（2023）对订单节奏的影响，能否作为2020–2021结构结束的产业侧解释？其起止时间如何确定？",
+    "why_it_matters": "本包目前用券商复盘口径判断，缺少官方或公司层面的可复核证据。",
+    "related_candidate_ids": [
+      "R01-MIL-001"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q004",
+    "question": "军工集团改革 / 资产重组类行情应归类为 theme_campaign 还是 event_driven？判据是什么？",
+    "why_it_matters": "本任务known_ambiguity明确列出该歧义，直接影响R01-MIL-002的classification。",
+    "related_candidate_ids": [
+      "R01-MIL-002"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q005",
+    "question": "军费预算增速与装备采购订单落地之间是否存在稳定的传导时滞？若不存在（2022年是反例），军费应处于证据链的哪一层？",
+    "why_it_matters": "决定“政策→军费→订单→基本面→市场”五层链条中，军费层能否作为独立证据使用。",
+    "related_candidate_ids": [
+      "R01-MIL-001",
+      "R01-MIL-006"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q006",
+    "question": "军工电子与半导体的企业 / 产品边界应如何划分？同一家公司（如宏达电子）同时属于两族时应如何处理？",
+    "why_it_matters": "涉及与R01-02的dedupe，需在canonicalization阶段有统一判据。",
+    "related_candidate_ids": [
+      "R01-MIL-007"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q007",
+    "question": "商业航天中军事需求与民用 / 商业需求的边界如何判定？何种证据可以证明某一标的的驱动来自国防需求？",
+    "why_it_matters": "决定R01-MIL-007是否留在军工族，或移交信息通信族。",
+    "related_candidate_ids": [
+      "R01-MIL-007"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q008",
+    "question": "2015–2017年军工的概念板块口径与指数历史成分数据如何回填？当前公开可得性是否支持该区间的生命周期重建？",
+    "why_it_matters": "Priority B回填区的主要瓶颈。若不可得，应显式保持空缺而非制造弱候选。",
+    "related_candidate_ids": [
+      "R01-MIL-005",
+      "R01-MIL-006"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q009",
+    "question": "军品定价 / 审价改革与军品增值税改革（2022年落地）对企业盈利的影响是否可量化？是否构成独立于订单的机制轴？",
+    "why_it_matters": "本轮未找到可复核的量化证据，但该机制在产业研究中被反复提及，值得作为下一轮方向。",
+    "related_candidate_ids": [
+      "R01-MIL-001"
+    ]
+  },
+  {
+    "question_id": "R01-MIL-Q010",
+    "question": "军贸出口是否构成独立于内需装备采购的机制轴？若是，应如何在Campaign层面与内需订单结构分离？",
+    "why_it_matters": "2025年券商把“军贸”列为独立主线之一，但本包未取得军贸订单的可复核数据。",
+    "related_candidate_ids": [
+      "R01-MIL-004"
+    ]
+  }
+]

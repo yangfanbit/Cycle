@@ -1,0 +1,125 @@
+[
+  {
+    "exclusion_id": "R01-MIL-X001",
+    "subject": "2022-08-02/03 佩洛西访台引发的军工板块脉冲",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "2022-08-03上午军工板块大涨超5%并居一级行业首位，但本包仅取得单日/单周的脉冲证据，无持续性与扩散证据；2022年全年军工板块下跌约23.6%且细分板块普遍下跌。地缘事件驱动的短脉冲不满足Campaign的持续性要求。按协议§8.1，只能作为观察记录，不得升级为Campaign。★本条也用于回应“事件驱动机制与地缘事件类宏观叙事交叉”的known_ambiguity。",
+    "source_ids": [
+      "R01-MIL-S028",
+      "R01-MIL-S031"
+    ],
+    "evidence_ids": [
+      "R01-MIL-E041",
+      "R01-MIL-E016"
+    ]
+  },
+  {
+    "exclusion_id": "R01-MIL-X002",
+    "subject": "2018 年军工（基本面反转叙事）",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "2018年券商将“基本面反转”定性为全年投资主线，但2018年军工指数下跌27.1%、跑输大盘1.78pct。存在产业叙事但无正收益、无持续市场关注，不满足Campaign标准。保留为研究观察。",
+    "source_ids": [
+      "R01-MIL-S027"
+    ],
+    "evidence_ids": [
+      "R01-MIL-E040"
+    ]
+  },
+  {
+    "exclusion_id": "R01-MIL-X003",
+    "subject": "2020 年北斗三号全球卫星导航系统正式开通（卫星导航行情）",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2020-08-03媒体报道“北斗时代”到来、军工板块掀涨停潮（航天航空板块涨超5%）。该事件落在R01-MIL-001的主升窗口内（2020-06-25至2020-08-10），且与本轮共享同一资金池与同一“装备放量/自主可控”叙事，按Independence Gate Q1 Anti-example应作为R01-MIL-001内部的Sub-theme，不单独建立Campaign。",
+    "source_ids": [
+      "R01-MIL-S006"
+    ],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-MIL-X004",
+    "subject": "军工电子（2020–2021）单独建 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2020–2021年军工电子与航空装备、新材料同被列为高增长细分方向，且与主线共享资金池、生命周期高度一致（2022年同步大幅回调）。按Q1 Anti-example与Q5 Residual Test，属R01-MIL-001内部的Sub-theme。★另：本包未取得军工电子个股层面的可靠代表证据，因此也未在securities中列示个股（如中航光电、火炬电子），避免制造无证据的标的。",
+    "source_ids": [
+      "R01-MIL-S010",
+      "R01-MIL-S031"
+    ],
+    "evidence_ids": [
+      "R01-MIL-E016"
+    ]
+  },
+  {
+    "exclusion_id": "R01-MIL-X005",
+    "subject": "船舶制造：民船订单 / 船价周期（2021–2024）",
+    "reason_code": "OTHER",
+    "rationale": "本任务scope含“船舶制造”，但2021年之后中国船舶等标的的核心驱动被描述为民船订单与船价周期（供给收缩/周期复苏），而非军费、军品采购或军工集团改革。按协议§6“机制明显不同的结构不要机械合并”，该结构不应并入R01-MIL-001或R01-MIL-002。其机制（周期/供给收缩）更接近R01-03或R01-01。★本包不自行裁决族属，已提交R01-MIL-CF005与cross_task_note移交ThreeC Agent。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-MIL-X006",
+    "subject": "2023 年军工（“十四五”中期调整期）单独建 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "2023年受“十四五”规划中期调整影响，部分装备采购与订单下达放缓，板块走弱、机构关注度下降。2023年出现的是订单真空与降温，不是新一轮行情；本包将其作为R01-MIL-001的DECLINING/End解释与产业侧机制（E013/E014）使用，不单独建立Campaign。2023-12“新订单有望签署”属事后预期，不构成已发生行情。",
+    "source_ids": [
+      "R01-MIL-S029",
+      "R01-MIL-S030"
+    ],
+    "evidence_ids": [
+      "R01-MIL-E013",
+      "R01-MIL-E014"
+    ]
+  },
+  {
+    "exclusion_id": "R01-MIL-X007",
+    "subject": "军工新材料（碳纤维、高温合金等）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "按本任务excluded_scope，军工新材料中的纯化工品属R01-03（资源/化工）。本包未把军工新材料作为独立方向研究，也未将其机制计入任何候选的drivers。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-MIL-X008",
+    "subject": "卫星互联网的通信属性部分",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "按本任务excluded_scope，卫星互联网的通信属性部分可能与信息通信族重叠，需说明而不纳入。本包在R01-MIL-007中保留航天装备/商业航天部分，并用R01-MIL-E038显式记录工信部卫星通信政策的通信属性，交由ThreeC Agent做跨族裁决（见R01-MIL-CF004、cross_task_note R01-MIL-N004）。",
+    "source_ids": [
+      "R01-MIL-S026"
+    ],
+    "evidence_ids": [
+      "R01-MIL-E038"
+    ]
+  },
+  {
+    "exclusion_id": "R01-MIL-X009",
+    "subject": "2016 年军工（历史回填区）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "本轮检索未取得2016年军工板块的可复核行情、政策或订单证据。按协议§2.1，Priority B允许大面积INSUFFICIENT，本包不制造弱候选填补年份。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-MIL-X010",
+    "subject": "2024 年军工“延迟订单回补”单独建 Campaign",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "券商2024年度策略预期“人事调整逐步推进、延迟订单有望回补”，但本包未取得2024年军工板块形成独立行情的可复核市场证据（涨幅、持续性、代表标的）。属预期而非已发生结构，不建Campaign。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-MIL-X011",
+    "subject": "把航空装备 / 航天装备 / 船舶 / 兵器 / 军工电子各自升格为独立 Macro Theme",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "本包主张“国防军工”作为一个Macro Theme候选提交（DB themes当前仅有4个根节点：汽车/医药健康/信息通信/电力设备）。航空装备、航天装备、船舶制造、军工电子等更适合作为该族下的Sub-theme/Theme，而非各自独立的Macro Theme —— 它们在军工集团、军费预算、装备采购与军民融合政策上高度同源。★最终裁决权在ThreeC Agent的CMTR v1，本包只提交proposal与theme_name_candidates。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-MIL-X012",
+    "subject": "把“军民融合”作为独立 Macro Theme",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "军民融合是跨军工/高端装备/电子/新材料的政策与机制方向，不是独立行业。按KNOWN_TAXONOMY_AND_OVERLAP_NOTES §2的允许表达层级，它应作为Mechanism或CROSS_FAMILY proposal提交（见R01-MIL-MT007），不应升格为Macro Theme。",
+    "source_ids": [],
+    "evidence_ids": []
+  }
+]

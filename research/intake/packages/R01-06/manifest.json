@@ -1,0 +1,218 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R01",
+  "task_id": "R01-06",
+  "task_scope": {
+    "task_id": "R01-06",
+    "family_directions": [
+      "国防军工",
+      "航空装备",
+      "航天装备",
+      "船舶制造",
+      "兵器装备",
+      "军工电子",
+      "卫星导航"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "军工（含航空装备、航天装备、船舶、兵器、军工电子、卫星导航）2015–2025 历史结构研究。研究目标是寻找具有明确启动窗口、发展过程、产业/政策/订单机制，并能够作为 ThreeC 历史结构比较对象的国防军工历史候选；不是寻找历史上的同名军工主题，也不以候选数量为目标。",
+    "excluded_scope": "民用航空运输；军工新材料中的纯化工品（属R01-03）；卫星互联网的通信属性部分（可能与信息通信重叠）。另：民船订单/船价周期结构本包未建候选（机制为周期而非军费/军品采购），已作为跨族边界移交。"
+  },
+  "generated_at": "2026-09-20T21:00:00+08:00",
+  "source_commit": "2153f6d83b7481300696ab73d792e9e53aa31a07",
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R01-MIL-MT001",
+      "proposed_name": "国防军工",
+      "theme_name_candidates": [
+        "国防军工",
+        "军工",
+        "国防军工行业",
+        "军工行业"
+      ],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "当前canonical DB themes的根节点仅4个（汽车 / 医药健康 / 信息通信 / 电力设备），不含军工。本任务全部7个候选均落在这一方向，且机制轴（订单/事件驱动）为现有4族完全缺失。★是否新增根节点由ThreeC Agent走CMTR v1裁决，本包只提交名称候选。",
+      "known_overlap": [
+        "R01-01（军民两用装备制造）",
+        "R01-02（军工电子与半导体元器件）",
+        "R01-03（军工新材料）"
+      ],
+      "notes": "本包不主张把航空/航天/船舶/兵器/军工电子各自升格为独立Macro Theme（见exclusion R01-MIL-X011）。"
+    },
+    {
+      "proposal_id": "R01-MIL-MT002",
+      "proposed_name": "航空装备",
+      "theme_name_candidates": [
+        "航空装备",
+        "航空发动机",
+        "大飞机",
+        "主机厂"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "2020–2021候选的核心承载方向（五大主机厂：中航沈飞、航发动力、中直股份、洪都航空、中航西飞）。",
+      "known_overlap": [
+        "R01-01（高端装备）"
+      ],
+      "notes": null
+    },
+    {
+      "proposal_id": "R01-MIL-MT003",
+      "proposed_name": "航天装备",
+      "theme_name_candidates": [
+        "航天装备",
+        "商业航天",
+        "卫星互联网",
+        "卫星导航",
+        "火箭制造"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "覆盖R01-MIL-007（商业航天/卫星互联网）。★该名称同时具有信息通信属性，族属边界未定（见R01-MIL-CF004）。",
+      "known_overlap": [
+        "R01-02（半导体/电子）",
+        "信息通信（卫星互联网通信属性）"
+      ],
+      "notes": "提交本proposal不代表主张商业航天归入军工族。"
+    },
+    {
+      "proposal_id": "R01-MIL-MT004",
+      "proposed_name": "船舶制造",
+      "theme_name_candidates": [
+        "船舶制造",
+        "船舶",
+        "航海装备"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "覆盖R01-MIL-002（南北船重组）。★民船订单/船价周期部分机制不同，见R01-MIL-CF005与X005。",
+      "known_overlap": [
+        "R01-01（高端装备）",
+        "R01-03（资源/化工，周期机制）"
+      ],
+      "notes": null
+    },
+    {
+      "proposal_id": "R01-MIL-MT005",
+      "proposed_name": "军工电子",
+      "theme_name_candidates": [
+        "军工电子",
+        "军工元器件",
+        "军用电子"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "本包将其作为R01-MIL-001内部的Sub-theme提交，未单独建Campaign（见X004）。",
+      "known_overlap": [
+        "R01-02（半导体/电子）"
+      ],
+      "notes": "企业/产品层面的边界争议较大。"
+    },
+    {
+      "proposal_id": "R01-MIL-MT006",
+      "proposed_name": "装备采购与订单驱动机制",
+      "theme_name_candidates": [
+        "装备采购",
+        "军品订单",
+        "订单驱动",
+        "武器装备列装"
+      ],
+      "proposal_kind": "MECHANISM",
+      "rationale": "★这是机制轴，不是Macro Theme。现有canonical 4族完全缺失“订单/事件驱动”机制轴，本proposal提交给ThreeC Agent，用于决定该机制在研究体系中应如何表达（不得升格为Macro Theme）。",
+      "known_overlap": [],
+      "notes": "按KNOWN_TAXONOMY_AND_OVERLAP_NOTES §2，机制轴应作为Mechanism表达。"
+    },
+    {
+      "proposal_id": "R01-MIL-MT007",
+      "proposed_name": "军民融合",
+      "theme_name_candidates": [
+        "军民融合",
+        "民参军",
+        "军转民"
+      ],
+      "proposal_kind": "CROSS_FAMILY",
+      "rationale": "军民融合横跨军工、高端装备、电子与新材料，是政策与机制方向而非独立行业（见X012）。",
+      "known_overlap": [
+        "R01-01",
+        "R01-02",
+        "R01-03"
+      ],
+      "notes": "建议作为CROSS_FAMILY proposal或Mechanism，不升格为Macro Theme。"
+    }
+  ],
+  "cross_task_notes": [
+    {
+      "note_id": "R01-MIL-N001",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-01",
+      "related_candidate_ids": [
+        "R01-MIL-001",
+        "R01-MIL-002"
+      ],
+      "note": "军民两用装备制造企业的边界：本包的航空/航天/船舶主机厂与高端装备族在企业层面重叠。本包按“驱动来自军费与军品采购”作为军工归属判据；若R01-01以“制造升级/产业政策”为判据收录了同一批企业，应由ThreeC Agent按机制而非按企业名称裁决。"
+    },
+    {
+      "note_id": "R01-MIL-N002",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-02",
+      "related_candidate_ids": [
+        "R01-MIL-007",
+        "R01-MIL-001"
+      ],
+      "note": "军工电子与半导体元器件边界：本包把军工电子作为R01-MIL-001内部的Sub-theme（X004），未建独立候选。宏达电子等标的在两族均可能出现。请与R01-02做dedupe而非直接合并。"
+    },
+    {
+      "note_id": "R01-MIL-N003",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-03",
+      "related_candidate_ids": [
+        "R01-MIL-001"
+      ],
+      "note": "军工新材料（碳纤维、高温合金）属R01-03（见X007）。本包未研究该方向，也未将其计入任何drivers。"
+    },
+    {
+      "note_id": "R01-MIL-N004",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": "R01-02",
+      "related_candidate_ids": [
+        "R01-MIL-007"
+      ],
+      "note": "卫星互联网 / 商业航天可能同时被本任务（航天装备）与信息通信族（卫星通信）收录。本包已用E038显式标注工信部卫星通信政策的通信属性。若R01-02或信息通信方向提交了同类候选，请按POSSIBLE_DUPLICATE处理并保留双方provenance。"
+    },
+    {
+      "note_id": "R01-MIL-N005",
+      "kind": "HANDOFF",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-MIL-002"
+      ],
+      "note": "船舶制造的机制切分：本包只提交了“集团重组”机制（R01-MIL-002），未提交2021年后的民船订单/船价周期结构。该结构机制为供给收缩/周期，建议移交R01-03或R01-01评估（见X005、R01-MIL-CF005）。"
+    },
+    {
+      "note_id": "R01-MIL-N006",
+      "kind": "BOUNDARY",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-MIL-001",
+        "R01-MIL-004"
+      ],
+      "note": "“事件驱动”机制与地缘事件类宏观叙事的交叉：本包把2022年佩洛西事件作为OBSERVATION_ONLY排除（X001），把2019/2025阅兵作为事件驱动候选提交但均保持低置信度。★边界判据建议：地缘事件本身不构成Campaign，只有当事件转化为可观察的采购/订单/产能变化时，才考虑纳入军工机制链条。"
+    },
+    {
+      "note_id": "R01-MIL-N007",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-05",
+      "related_candidate_ids": [
+        "R01-MIL-001",
+        "R01-MIL-006"
+      ],
+      "note": "市场Beta：R01-05（金融/地产）的known_ambiguity指出“流动性/政策周期”极易被误判为主题Campaign。本包的R01-MIL-001（2020年7月）与R01-MIL-006（2015年）同样存在Beta Contamination风险。两个任务的Beta判据应保持一致，否则跨族结构比较将不可比。"
+    }
+  ]
+}

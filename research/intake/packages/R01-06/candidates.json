@@ -1,0 +1,1011 @@
+[
+  {
+    "candidate_id": "R01-MIL-001",
+    "title": "2020–2021 军工装备放量 / 主机厂大额订单与预付款驱动的军工景气结构",
+    "year": 2020,
+    "macro_theme_proposal": "国防军工",
+    "theme_name_candidates": [
+      "国防军工",
+      "航空装备",
+      "军工电子",
+      "航天装备",
+      "武器装备采购"
+    ],
+    "theme_summary": "以“十四五”武器装备放量建设为产业背景、以主机厂大额订单与甲方预付款（合同负债）的公开披露为验证锚点、以2020年下半年至2021年的板块持续行情为市场表现的军工结构。机制是“装备采购/订单释放”，与2015年（改革+估值驱动）、2017年（混改+军民融合政策）、2019年（集团重组/阅兵事件）均不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-06-25",
+          "window_end": "2020-07-05",
+          "phase_note": null,
+          "basis": "inferred：2020-07-27媒体报道国防军工板块“一个月大涨近30%”，倒推启动窗口落在2020年6月下旬至7月初",
+          "source_ids": [
+            "R01-MIL-S007",
+            "R01-MIL-S005"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E007",
+            "R01-MIL-E005"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2020-07-01",
+              "basis": "部分复盘以2020年7月1日A股放量上涨为军工启动锚点（本包未取得该口径的一手来源）",
+              "source_ids": []
+            }
+          ],
+          "conflict_note": "★ Beta Contamination：2020年7月A股整体放量上涨，军工自身启动点与市场Beta难以分离。本包不宣称已分离。"
+        },
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-03-29",
+          "window_end": "2021-03-31",
+          "phase_note": null,
+          "basis": "observed：2021-03-30中航沈飞披露2021年度日常关联交易预计公告，是“订单/预付款”叙事可验证的一手锚点；若ThreeC Agent认定2020H2与2021为两个Campaign，则此日期为后者的启动锚点",
+          "source_ids": [
+            "R01-MIL-S003",
+            "R01-MIL-S035"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E001",
+            "R01-MIL-E002"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "本包按一个结构提交；2020H2/2021是否应拆分为两个Campaign见 R01-MIL-CF001。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-12-01",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：中证军工指数(399967.SZ)2021-12-01收于14748点，为2021年区间高点",
+          "source_ids": [
+            "R01-MIL-S009"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E009"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2021-08-24",
+              "basis": "中证军工指数5/11–8/24上涨43%的区间高点（另一口径）",
+              "source_ids": [
+                "R01-MIL-S008"
+              ]
+            }
+          ],
+          "conflict_note": "允许peak cluster：2021-08-24与2021-12-01两个区间高点并存；另有2020年8月上旬为2020年内高点。按Campaign Peak规则，不应强行取单一日期。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-12-01",
+          "window_end": "2022-01-31",
+          "phase_note": null,
+          "basis": "inferred：2021-12-01见顶后，2022年1–2月年报/一季报预告不及预期使板块进入下行通道",
+          "source_ids": [
+            "R01-MIL-S010"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E011"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "以“最后一次有效催化/同步”为口径则结束更早；以“主题失去持续性”为口径则更晚，见下条。"
+        },
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2022年内（主题持续性与资金关注显著下降）",
+          "basis": "若以“主题失去持续主导”为End口径，可延至2022年底：2022年申万国防军工-23.63%位居31个一级行业第28，2023年初较2021-12-01高点仍下跌21.53%",
+          "source_ids": [
+            "R01-MIL-S010",
+            "R01-MIL-S009",
+            "R01-MIL-S031"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E011",
+            "R01-MIL-E009",
+            "R01-MIL-E016"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "End口径分歧不自动取舍，保留双方。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2020-06-25",
+        "end": "2020-08-10",
+        "basis": "媒体同期报道：7月中下旬板块一个月涨近30%；8月3日航天航空板块涨超5%",
+        "notes": "★该段与2020年7月A股整体Beta重叠，无法排除Beta Contamination。"
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2021-01-08",
+        "end": "2021-05-10",
+        "basis": "中证军工指数区间下跌32%（2021年1月8日–5月10日）",
+        "notes": "2020年8月中旬至2020年12月的走势本包未取得可靠区间数据，未强行填充。"
+      },
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2021-05-11",
+        "end": "2021-08-24",
+        "basis": "中证军工指数区间上涨43%；主机厂大额订单落地、中上游中报超预期",
+        "notes": "本段是“订单→业绩”链条最完整的一段。"
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2021-08-25",
+        "end": "2021-10-13",
+        "basis": "中证军工指数区间下跌13.8%；中航工业集团集中减持压制",
+        "notes": null
+      },
+      {
+        "stage_proposal": "SECONDARY",
+        "start": "2021-10-14",
+        "end": "2021-11-30",
+        "basis": "中证军工指数区间上涨22.5%",
+        "notes": "是否属次级活跃（SECONDARY）而非主升延续，由ThreeC Agent判定。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2021-11-30",
+        "end": "2021-12-01",
+        "basis": "中证军工指数14748点",
+        "notes": "peak cluster之一，见date_candidates.peak。"
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2021-12-02",
+        "end": "2022-12-31",
+        "basis": "2022年1–2月业绩预告不及预期进入下行通道；2022全年申万国防军工-23.63%",
+        "notes": "产业侧解释：2023年“十四五”中期调整使部分装备采购与订单下达放缓（见E013/E014）。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "装备采购与更新换代加速、训练强度提高导致装备损耗加快的需求侧叙事（2020年7月同期媒体口径）",
+        "“十四五”武器装备放量建设的产业预期（2020年券商口径，属预期而非已落地政策）",
+        "★同时存在2020年7月A股整体市场风险偏好抬升（Beta），未分离"
+      ],
+      "accelerator": [
+        "2021年3月底–4月初五大主机厂集中披露2021年度关联交易预计及甲方大额预付（一手公告+券商统计）",
+        "2021年中报合同负债大幅增长（中航沈飞2021H1末377.37亿元），中上游中报超预期",
+        "2021年国防预算13795.44亿元、增长6.8%（国防部，2021-03-08）",
+        "公募基金军工持仓比例升至2.10%、主动配置创2014年以来最高（2021Q3）"
+      ],
+      "turning": [
+        "2021年9–10月中航工业集团集中减持压制股价",
+        "2021年12月后业绩真空期 + 市场风格切换",
+        "2022年1–2月年报/一季报预告不及预期"
+      ],
+      "ending": [
+        "2022年全年板块下跌约23.6%，居31个申万一级行业第28",
+        "2023年“十四五”规划中期调整导致部分装备采购与订单下达放缓（产业侧机制）",
+        "★对照：2022年国防预算增速7.1%创阶段新高但板块下跌 —— 说明军费增长本身不是行情充分条件"
+      ]
+    },
+    "evidence_ids": [
+      "R01-MIL-E001",
+      "R01-MIL-E002",
+      "R01-MIL-E003",
+      "R01-MIL-E004",
+      "R01-MIL-E005",
+      "R01-MIL-E006",
+      "R01-MIL-E007",
+      "R01-MIL-E008",
+      "R01-MIL-E009",
+      "R01-MIL-E010",
+      "R01-MIL-E011",
+      "R01-MIL-E012",
+      "R01-MIL-E013",
+      "R01-MIL-E014",
+      "R01-MIL-E015",
+      "R01-MIL-E016",
+      "R01-MIL-E017"
+    ],
+    "security_ids": [
+      "R01-MIL-SEC001",
+      "R01-MIL-SEC002",
+      "R01-MIL-SEC004",
+      "R01-MIL-SEC005",
+      "R01-MIL-SEC006",
+      "R01-MIL-SEC007"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "订单/预付款链条的锚点（2021-03-30公告、2021H1合同负债、2021-03-08国防预算）均为contemporaneous，可用作point_in_time证据。2022–2023年的阶段划分与降温解释（E011/E013/E014/E016）属subsequent/retrospective，已逐条填写point_in_time_note，不得充当启动或主升的同期催化。2020年7月的启动段存在市场Beta污染，本包未宣称已将军工自身机制与Beta分离。",
+    "why_campaign": "满足Campaign五项标准：①主题明确（军工装备放量/订单）；②持续性充分（2020年7月至2021年12月，含多个可辨区间）；③市场关注可验证（2021Q3公募军工持仓2.10%、主动配置创2014年以来最高）；④start/end可解释（启动由装备采购加速叙事+2021年订单披露驱动，结束由2022年业绩不及预期与2023年中期调整导致的订单放缓驱动）；⑤独立证据远超门槛（17条Evidence、≥8个independence_group），且含Tier 1一手公告与官方发布。更重要的是它建立了完整的五层链条：军费预算（政策层）→主机厂关联交易与预付款（订单层）→合同负债与中报业绩（基本面层）→指数与持仓（市场层）。",
+    "why_not": "①2020年7月启动段与A股整体Beta高度重叠，若严格要求排除Beta Contamination，则启动口径需下调；②2020年下半年与2021年是否为同一Campaign存在分歧（见R01-MIL-CF001），若拆分则各自持续性减弱；③2020年8月中旬–12月区间数据缺失，lifecycle未强行填充；④军工订单金额多为非公开信息，本包只使用已公开披露的关联交易预计与合同负债，未用媒体猜测填补；⑤“十四五”放量建设属券商叙事/规划预期，本包未把它等同于已落地的采购计划。",
+    "possible_duplicate_of": [],
+    "notes": "本任务是“订单/事件驱动”机制轴的主要来源候选，当前canonical 4族完全缺失该机制轴。本候选的核心价值在于：它是本任务中唯一能把“军费→订单→基本面→市场”四层同时落到可公开复核证据上的结构。"
+  },
+  {
+    "candidate_id": "R01-MIL-002",
+    "title": "2019 年“南北船”合并 / 军工集团战略性重组结构",
+    "year": 2019,
+    "macro_theme_proposal": "国防军工",
+    "theme_name_candidates": [
+      "国防军工",
+      "船舶制造",
+      "军工集团改革",
+      "央企重组",
+      "资产证券化"
+    ],
+    "theme_summary": "以央企军工集团层面的战略性重组（资产证券化/集团改革）为机制的军工结构：2019-07-01两船集团旗下上市公司同步公告筹划重组 → 2019-10-25国务院批准联合重组 → 2019-11-26中国船舶集团揭牌。机制是“军工集团改革/资产重组”，与订单驱动（R01-MIL-001）明显不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2019-07-01",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2019年7月1日晚间，两船集团旗下合计9家上市公司同步发布筹划战略性重组公告",
+          "source_ids": [
+            "R01-MIL-S012"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E018"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "公告日期（7月1日晚）与市场反应日期（7月2日起）不同，本条取公告日期。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2019年7月上旬至中旬（重组公告后的市场反应窗口，具体峰值日期不可考）",
+          "basis": "本包未取得2019年7–8月中船系个股/板块峰值的可靠日期证据，不作强制取值",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "缺失项：板块/个股峰值日期。属INSUFFICIENT级别的数据缺口，已列入research_questions与known_gaps。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2019-11-26",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2019年11月26日中国船舶集团有限公司揭牌成立，重组落地",
+          "source_ids": [
+            "R01-MIL-S014"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E020"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2019-10-25",
+              "basis": "经国务院批准联合重组（国资委消息）——以“确定性落地”为口径的结束点",
+              "source_ids": [
+                "R01-MIL-S013"
+              ]
+            }
+          ],
+          "conflict_note": "两个口径并存：11-26为执行完成，10-25为确定批准。不自动取舍。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2019-07-02",
+        "end": null,
+        "basis": "重组公告后的市场反应窗口",
+        "notes": "结束日期不可考，留空，不强行取值。"
+      },
+      {
+        "stage_proposal": "SECONDARY",
+        "start": "2019-10-25",
+        "end": "2019-10-28",
+        "basis": "国资委10月25日消息：经国务院批准实施联合重组",
+        "notes": "是否构成独立的次级活跃段，取决于行情数据，本包未取得。"
+      },
+      {
+        "stage_proposal": "ENDED",
+        "start": "2019-11-26",
+        "end": "2019-11-26",
+        "basis": "中国船舶集团揭牌成立，重组事项执行完成",
+        "notes": "以“资产重组事项完成”而非“股价回落”作为End口径。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "2019-07-01两船集团旗下9家上市公司同步公告筹划战略性重组（集团层面改革）"
+      ],
+      "accelerator": [
+        "2019-10-25国务院批准联合重组（国资委消息）"
+      ],
+      "turning": [
+        "重组从“筹划”进入“批准”阶段，事件不确定性下降，题材属性随之减弱"
+      ],
+      "ending": [
+        "2019-11-26中国船舶集团揭牌成立，重组执行完成"
+      ]
+    },
+    "evidence_ids": [
+      "R01-MIL-E018",
+      "R01-MIL-E019",
+      "R01-MIL-E020"
+    ],
+    "security_ids": [
+      "R01-MIL-SEC008",
+      "R01-MIL-SEC009",
+      "R01-MIL-SEC010"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "三条证据均为contemporaneous的一手/权威转述，可作为point_in_time证据使用。但市场反应（涨幅、峰值、持续性）本包未取得可靠的同期行情证据，故lifecycle的MAIN_RISE结束与peak留空。",
+    "why_campaign": "①主题明确（军工集团战略性重组）；②事件链完整且有层级跃迁（筹划公告→国务院批准→集团揭牌），不是单点脉冲；③涉及9家上市公司，不是单股事件；④start/end可解释（以集团重组事项的启动与执行完成为边界）；⑤三条Evidence分属三个independence_group（国际船舶网/人民网转国资委/中国船舶集团官网），含Tier 1来源（央企官网一手）。机制上与R01-MIL-001（装备订单）完全不同：本结构不由军费、订单或业绩驱动，而由集团层面的组织与资产重组驱动。",
+    "why_not": "①市场反应侧的行情数据（涨幅、峰值日期、持续时间）缺失，若ThreeC Agent要求“持续性”必须有行情证据，则本候选可能降级；②classification存在歧义：属theme_campaign（军工改革主题）还是event_driven（重组事件）——见R01-MIL-CF004；③与2019年国庆阅兵行情（R01-MIL-003）时间相邻，是否同属一个2019年军工Campaign存在分歧——见R01-MIL-CF002；④个股名单来自“9家上市公司”的推断，来源未逐一点名，已在securities.basis中标注。",
+    "possible_duplicate_of": [
+      "R01-MIL-003（2019年国庆阅兵行情：同属2019年军工，时间相邻但机制不同）"
+    ],
+    "notes": "本候选是本任务中“军工改革/资产证券化”机制的代表结构，与2020–2021订单景气不得合并。"
+  },
+  {
+    "candidate_id": "R01-MIL-003",
+    "title": "2019 年国庆 70 周年阅兵行情（事件驱动候选，资料不足）",
+    "year": 2019,
+    "macro_theme_proposal": "国防军工",
+    "theme_name_candidates": [
+      "国防军工",
+      "阅兵主题",
+      "航空装备",
+      "地面兵装"
+    ],
+    "theme_summary": "以2019年10月1日国庆70周年阅兵为催化、以阅兵前1–2个月的板块超额行情为表现的事件驱动结构。机制是“重大纪念/展示事件的注意力驱动”，既不是装备订单，也不是军工改革。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2019-08-07",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "研报图表复盘：2019年8月7日起军工板块受阅兵催化开启独立于大盘的行情",
+          "source_ids": [
+            "R01-MIL-S036"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E021"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "仅有的来源是2025年的事后复盘材料，无同期一手证据。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2019-09-03",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "研报图表复盘：2019年9月3日达到区间最高点",
+          "source_ids": [
+            "R01-MIL-S036"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E021"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "事后复盘口径，未经同期行情数据核验。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2019年9月下旬至10月上旬（阅兵前后）",
+          "basis": "结束日期不可考；复盘材料显示行情在阅兵（2019-10-01）前后结束",
+          "source_ids": [
+            "R01-MIL-S036"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E021"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "未取得可靠结束日期。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2019-08-07",
+        "end": "2019-09-03",
+        "basis": "研报图表复盘",
+        "notes": "仅依赖2025年事后复盘材料，无同期证据。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2019-09-03",
+        "end": "2019-09-03",
+        "basis": "研报图表复盘",
+        "notes": null
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2019-09-04",
+        "end": null,
+        "basis": "结束不可考，仅知在阅兵前后",
+        "notes": "结束日期留空。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "国庆70周年阅兵预期（重大纪念事件的注意力驱动）"
+      ],
+      "accelerator": [
+        "阅兵准备期的官方信息与装备展示预期"
+      ],
+      "turning": [
+        "阅兵事件兑现（2019-10-01），事件驱动型叙事的注意力衰减"
+      ],
+      "ending": [
+        "阅兵结束后注意力迁移（复盘口径，日期不可考）"
+      ]
+    },
+    "evidence_ids": [
+      "R01-MIL-E021",
+      "R01-MIL-E022",
+      "R01-MIL-E023"
+    ],
+    "security_ids": [
+      "R01-MIL-SEC002"
+    ],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "★全部证据均为2025年发布的retrospective复盘材料，已逐条填写point_in_time_note。本包没有任何证据可以证明“2019年8月投资者当时已知阅兵将带来板块超额行情”，因此不得使用这些材料支持启动或主升的同期催化。",
+    "why_campaign": "存在可识别的主题（阅兵）、可识别的市场对象（申万国防军工指数）与复盘口径下的约4周超额行情，且机制（事件注意力驱动）与订单驱动、改革驱动均不同，值得作为观察对象提交。",
+    "why_not": "★核心问题是证据性质：所有证据都是事后复盘（retrospective），无同期一手证据，也无Tier 1/2来源支撑行情数据；★持续性仅约4周（2019-08-07至2019-09-03），事件驱动型是否满足Campaign的“持续性”要求存疑；★与R01-MIL-002（南北船）时间相邻、同属2019年军工，Q1 Anti-example风险（同一资金池）无法排除。按协议，资料不足应用INSUFFICIENT而不是REJECT —— 本候选保留在intake层，供后续轮次补齐同期行情证据后再评估。",
+    "possible_duplicate_of": [
+      "R01-MIL-002（2019年南北船重组：同属2019年军工，时间相邻但机制不同）"
+    ],
+    "notes": "本候选主要用于暴露“事件驱动型军工行情”的方法学难点，不应作为已成立的历史Campaign使用。"
+  },
+  {
+    "candidate_id": "R01-MIL-004",
+    "title": "2025 年抗战胜利 80 周年阅兵 / 军贸与新质战斗力主题",
+    "year": 2025,
+    "macro_theme_proposal": "国防军工",
+    "theme_name_candidates": [
+      "国防军工",
+      "阅兵主题",
+      "军贸",
+      "地面兵装",
+      "新质战斗力"
+    ],
+    "theme_summary": "以2025-06-24国新办官宣9月3日纪念大会（含阅兵）为启动锚点，以阅兵、军贸、景气反转、“十五五”四条复合叙事为内容的2025年军工结构。机制是“重大事件注意力 + 军贸外需 + 十五五订单预期”的复合驱动，不是单纯的装备订单兑现。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2025-06-24",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event：2025-06-24国新办发布会宣布9月3日举行纪念大会（含阅兵）",
+          "source_ids": [
+            "R01-MIL-S020"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E024"
+          ],
+          "confidence": "high",
+          "alternative_dates": [],
+          "conflict_note": "这是“官方宣布日期”，不是阅兵举办日期（2025-09-03）。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2025年8月至9月3日阅兵前后（峰值日期不可考）",
+          "basis": "未取得可靠的峰值日期证据；券商专题指出地面兵装自2025年6月以来走势尤为显著（截至2025-08-05）",
+          "source_ids": [
+            "R01-MIL-S022",
+            "R01-MIL-S023"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E026",
+            "R01-MIL-E027"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "缺失项：板块/个股峰值日期与阅兵后的行情走向。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2025年9月3日前后（推断，无同期证据）",
+          "basis": "结束不可考。按“阅兵前1–2个月出现超额行情”的复盘规律推断，注意力窗口应在2025-09-03前后收敛，但本包无证据",
+          "source_ids": [
+            "R01-MIL-S022"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E022"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "★不得以“阅兵结束”直接推断Campaign结束（Campaign End ≠ 事件结束）。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2025-06-24",
+        "end": null,
+        "basis": "国新办官宣（2025-06-24）；券商称地面兵装自6月以来走势尤为显著",
+        "notes": "结束日期不可考。本段缺乏Tier 1/2行情数据支撑，市场响应证据仅来自Tier 3研报。"
+      },
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2025-09-03",
+        "end": null,
+        "basis": "阅兵举办日（2025-09-03）之后的行情走向本包无证据",
+        "notes": "★属于明确的数据缺口，已列入known_gaps与research_questions。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "2025-06-24国新办官宣9月3日纪念大会与阅兵（Tier 1官方发布）"
+      ],
+      "accelerator": [
+        "2025-08-20国新办阅兵准备发布会（Tier 1）",
+        "券商归纳的复合叙事：阅兵 + 军贸 + 景气反转 + “十五五”",
+        "“参阅装备突出智能化”等新型作战力量叙事"
+      ],
+      "turning": [
+        "未知：本包未取得阅兵后的行情转折证据"
+      ],
+      "ending": [
+        "未知；不得把阅兵事件结束直接等同于Campaign结束"
+      ]
+    },
+    "evidence_ids": [
+      "R01-MIL-E024",
+      "R01-MIL-E025",
+      "R01-MIL-E026",
+      "R01-MIL-E027"
+    ],
+    "security_ids": [
+      "R01-MIL-SEC001",
+      "R01-MIL-SEC002"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "启动/加速锚点（2025-06-24、2025-08-20）为Tier 1官方发布，属contemporaneous，可作point_in_time证据。但市场响应证据（E026/E027）仅来自Tier 3券商研报，且为板块相对强弱描述，未取得绝对涨幅或指数点位。2025年距本轮研究时间较近，需警惕用2026年的结果信息回填2025年的“当时已知”判断。",
+    "why_campaign": "①主题明确且有多重官方锚点；②窗口约2.5个月（2025-06-24至2025-09-03），具备最低限度的持续性；③有可识别的市场对象与子板块相对强弱证据；④启动可解释（官方官宣）。若后续能补齐同期行情数据，本候选具备升级为Case B/C的基础。",
+    "why_not": "★市场响应证据薄弱：仅Tier 3研报的相对强弱描述，无绝对涨幅、无峰值日期、无结束后行情；★机制复合且难以分离：阅兵（事件）、军贸（外需）、十五五（政策预期）三条线索混在一起，若严格按“机制必须明确”的要求，可能应拆分为不同结构或降级为OBSERVATION_ONLY；★2025年的完整生命周期（尤其阅兵后的走向）在本轮研究时尚无充分可复核材料。",
+    "possible_duplicate_of": [],
+    "notes": "与R01-MIL-003（2019阅兵）构成“阅兵型事件驱动”的两次样本，但两次的产业背景（订单景气 vs 军贸+十五五）不同。"
+  },
+  {
+    "candidate_id": "R01-MIL-005",
+    "title": "2017 年军民融合 / 军工混改结构（Priority B 回填）",
+    "year": 2017,
+    "macro_theme_proposal": "国防军工",
+    "theme_name_candidates": [
+      "国防军工",
+      "军民融合",
+      "军工混改",
+      "兵器装备"
+    ],
+    "theme_summary": "以军工央企混合所有制改革与军民融合上升为中央层面统一领导体制为机制的2017年军工结构：2017-01-04兵器工业集团混改指导意见 → 2017-01-09板块集体启动 → 2017-01-22中央军民融合发展委员会设立。机制是“政策/改革文本驱动”，属Priority B历史回填区。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2017-01-04",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2017年1月4日中国兵器工业集团印发混改指导意见（26条、4家试点）",
+          "source_ids": [
+            "R01-MIL-S017"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E028"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2017-01-09",
+              "basis": "媒体口径：1月9日起军工板块集体启动，南北兵器集团概念股涨停潮",
+              "source_ids": [
+                "R01-MIL-S017"
+              ]
+            }
+          ],
+          "conflict_note": "政策文件日（1-04）与市场反应日（1-09）两个口径并存，保留双方。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2017年一季度内（不可考）",
+          "basis": "未取得2017年军工板块峰值日期证据",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "缺失项：峰值日期。2017年全年军工指数表现的可靠数据本包未取得。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown：本包未取得2017年军工板块结束/降温的可靠证据",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "★2017年军工全年涨跌数据缺失，无法判断该结构在年内是否结束。已列入known_gaps。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2017-01-09",
+        "end": null,
+        "basis": "媒体：1月9日起板块集体启动，至1月20日申万国防军工指数年内+3.37%居28个一级行业第二",
+        "notes": "结束日期不可考。"
+      },
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": null,
+        "end": null,
+        "basis": "2017年2月之后的走势本包无可靠证据",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "2017-01-04中国兵器工业集团《关于发展混合所有制经济的指导意见（试行）》（26条、4家试点）",
+        "军工被列为2017年中央经济工作会议确定的七大重点改革行业之一",
+        "2017-01-20/21中船重工年度工作会议提出混合所有制改革随资产证券化在股票市场实现"
+      ],
+      "accelerator": [
+        "2017-01-22中共中央政治局决定设立中央军民融合发展委员会（最高层面统一领导）"
+      ],
+      "turning": [
+        "未知"
+      ],
+      "ending": [
+        "未知；2017-06-22国防科工局军民融合专项行动计划与2017-12国办意见属后续政策，晚于主窗口"
+      ]
+    },
+    "evidence_ids": [
+      "R01-MIL-E028",
+      "R01-MIL-E029",
+      "R01-MIL-E030",
+      "R01-MIL-E031"
+    ],
+    "security_ids": [
+      "R01-MIL-SEC002"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "E028/E029/E030均为2017年1月的contemporaneous证据，可作point_in_time使用。E031（2017年下半年至年末政策）为subsequent，已填写point_in_time_note，不得作为1月行情的同期催化。",
+    "why_campaign": "①主题明确（混改+军民融合）；②有连续的政策锚点（1-04集团文件→1-22中央机构设立）；③有同期市场响应证据（1月9日板块集体启动、近10只涨停、1月20日行业排名第2）；④三条Evidence分属三个independence_group。机制上属于“政策文本驱动”，与订单驱动（R01-MIL-001）和集团重组（R01-MIL-002）均不同。",
+    "why_not": "★最大缺口是生命周期：2017年2月之后的走势、峰值与结束完全不可考，lifecycle无法闭合；★“年内+3.37%居行业第二”只是1月的累计数据，不能推断全年；★军民融合与混改是否为同一机制存在歧义（见R01-MIL-CF009）；★政策发布不等于执行，本包没有任何证据显示2017年混改已转化为订单或业绩。属Priority B回填区，按协议允许大面积INSUFFICIENT，本包保留为PROVISIONAL并显式标注缺口。",
+    "possible_duplicate_of": [
+      "R01-MIL-006（2015年军工改革：同属“改革/资产证券化”政策驱动，但年份与具体机制不同，不得合并）"
+    ],
+    "notes": "提交本候选的目的是覆盖“政策文本驱动”这一机制轴，而非主张它已达到Confirmed门槛。"
+  },
+  {
+    "candidate_id": "R01-MIL-006",
+    "title": "2015 年军工改革 / 资产证券化行情（改革牛，Priority B 回填）",
+    "year": 2015,
+    "macro_theme_proposal": "国防军工",
+    "theme_name_candidates": [
+      "国防军工",
+      "军工改革",
+      "资产证券化",
+      "军民融合"
+    ],
+    "theme_summary": "以军工改革与资产证券化预期、以及军民融合上升为国家战略（2015年3月）为叙事，叠加2015年A股杠杆牛市的2015年军工结构。机制是“改革预期+估值驱动”，与2020–2021的订单驱动完全不同（本任务known_ambiguity明确要求二者不得合并）。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2015年初（具体启动日期不可考；结构上应视为2013年以来军工行情的延续）",
+          "basis": "本包未取得2015年军工行情的可靠启动日期；券商复盘指出2013–2014年以来军工板块已大幅跑赢沪深300",
+          "source_ids": [
+            "R01-MIL-S032"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E033"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "★启动点问题本身是开放的：2015年军工是独立结构还是2013–2014行情的延续，本包不裁决。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2015-06-04",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed（区间口径）：年初至2015年6月4日国证军工指数累计上涨117.36%",
+          "source_ids": [
+            "R01-MIL-S019"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E032"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "这是报道口径的区间终点，不是严格意义的行情峰值日。★同期A股处于杠杆牛市顶部区域，峰值含大量Beta。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2015年6月中旬之后（与A股系统性调整同步，军工自身结束点不可考）",
+          "basis": "本包未取得2015年军工行情结束的可靠证据；已知2015年6月中旬起A股发生系统性调整",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "★无法把军工的结束与全市场Beta的结束分离。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": null,
+        "end": "2015-06-04",
+        "basis": "国证军工指数年初至2015-06-04累计+117.36%（中新网）",
+        "notes": "起始日期不可考。"
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2015-06-05",
+        "end": null,
+        "basis": "2015年6月中旬起A股系统性调整（本包未取得军工自身的结束证据）",
+        "notes": "★该段的驱动主要是市场Beta，不能归因于军工自身机制。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "军工改革与资产证券化预期（券商事后复盘：改革预期+低估值标的涨幅居前）",
+        "2015年3月军民融合发展上升为国家战略",
+        "★2013–2014年以来军工板块已持续跑赢沪深300（行情延续而非2015年新起）"
+      ],
+      "accelerator": [
+        "★2015年A股杠杆资金推动的全面牛市（市场Beta，无法分离）"
+      ],
+      "turning": [
+        "2015年6月中旬起A股系统性去杠杆"
+      ],
+      "ending": [
+        "★与A股系统性调整同步，军工自身机制层面的结束点不可考"
+      ]
+    },
+    "evidence_ids": [
+      "R01-MIL-E032",
+      "R01-MIL-E033",
+      "R01-MIL-E034",
+      "R01-MIL-E042"
+    ],
+    "security_ids": [
+      "R01-MIL-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "E032/E034为2015年同期媒体报道，可作point_in_time证据；E033为2020年retrospective复盘，已填写point_in_time_note。★本候选最大的方法学风险是Beta Contamination：2015年A股处于杠杆牛市，军工涨幅与市场整体涨幅高度重叠，本包没有任何证据可以把军工自身机制贡献分离出来（见R01-MIL-CF006）。",
+    "why_campaign": "①主题明确（军工改革/资产证券化）；②幅度巨大且有同期数据（国证军工指数年初至6月4日+117.36%）；③市场关注度无疑。作为2015–2017回填区最显著的军工结构，不提交将造成该区完全空缺。",
+    "why_not": "★★Beta Contamination 无法排除：2015年军工涨幅与A股杠杆牛市高度重叠，严格意义上无法证明这是“军工Campaign”而不是“市场Beta在军工板块的投射”；★没有订单/业绩证据：本轮没有可验证的装备采购、订单或业绩兑现证据，机制停留在改革预期与估值层面；★启动与结束日期均不可考；★券商复盘属retrospective归因，不得作为当时已知催化。提交本候选是出于“Policy B回填区不应完全空白”的考虑，并非主张它满足Campaign门槛 —— 若ThreeC Agent判定Beta无法排除，应降级为OBSERVATION_ONLY。",
+    "possible_duplicate_of": [],
+    "notes": "本任务known_ambiguity明确：2015军工（改革牛）与2020–2021军工（订单周期）机制差异极大，不得合并。本候选与R01-MIL-001不得合并。"
+  },
+  {
+    "candidate_id": "R01-MIL-007",
+    "title": "2024–2025 商业航天 / 卫星互联网（跨族边界候选）",
+    "year": 2024,
+    "macro_theme_proposal": "国防军工",
+    "theme_name_candidates": [
+      "航天装备",
+      "商业航天",
+      "卫星互联网",
+      "卫星导航",
+      "军民融合"
+    ],
+    "theme_summary": "以低轨卫星互联网星座批量组网（千帆星座2024-08-06首批18星）与航天强国/商业航天政策体系化（2025年国家航天局行动计划、商业航天司设立）为机制的航天结构。★族属边界未定：航天装备（军工）与卫星通信（信息通信）属性并存，本包不自行裁决。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2024-08-06",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2024-08-06千帆星座首批18颗商业组网卫星成功入轨，标志进入正式组网阶段",
+          "source_ids": [
+            "R01-MIL-S015"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E035"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "产业里程碑与资本市场主题启动不一定同步；此处取产业锚点。"
+        },
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2025-10-24",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2025-10-24受二十届四中全会与“十五五”建议（航天强国）催化，商业航天概念股大涨",
+          "source_ids": [
+            "R01-MIL-S024"
+          ],
+          "evidence_ids": [
+            "R01-MIL-E036"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2025-11-30",
+              "basis": "国家航天局行动计划印发、商业航天司设立（制度性里程碑口径）",
+              "source_ids": [
+                "R01-MIL-S025"
+              ]
+            }
+          ],
+          "conflict_note": "两个口径：市场响应锚点（2025-10-24）与制度里程碑（2025年11月）。保留双方。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2025年四季度至2026年（峰值不可考，且可能落在研究范围之外）",
+          "basis": "未取得峰值日期证据；★该结构的行情主升可能延续至2026年（超出本轮2015–2025研究范围）",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "★重要缺口：本结构在2025年内可能尚未见顶，生命周期无法闭合。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown：本结构在2025年12月仍处活跃状态，无结束证据",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "不能因为研究窗口结束就把它当作Campaign结束（Campaign End ≠ 观察窗口结束）。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2024-08-06",
+        "end": null,
+        "basis": "千帆星座进入批量组网；2025年内多次政策与市场催化（2025-10-24、2025-11、2025-12）",
+        "notes": "结束不可考；该段跨越2024–2025，中间节奏本包无连续行情数据。"
+      },
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2025-12-31",
+        "end": null,
+        "basis": "2025年末之后走向超出本轮研究范围",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "2024-08-06千帆星座首批18星入轨（低轨星座进入批量组网阶段）",
+        "2024、2025年国务院政府工作报告两次提出推动商业航天产业加快发展"
+      ],
+      "accelerator": [
+        "2025-10-24二十届四中全会与“十五五”建议提出加快建设航天强国、发展航空航天战略性新兴产业集群",
+        "2025-11国家航天局《推进商业航天高质量安全发展行动计划（2025—2027年）》+ 商业航天司设立",
+        "2025-12朱雀三号首飞入轨（可重复使用火箭技术验证）"
+      ],
+      "turning": [
+        "未知"
+      ],
+      "ending": [
+        "无结束证据（2025年末仍活跃）"
+      ]
+    },
+    "evidence_ids": [
+      "R01-MIL-E035",
+      "R01-MIL-E036",
+      "R01-MIL-E037",
+      "R01-MIL-E038",
+      "R01-MIL-E039"
+    ],
+    "security_ids": [
+      "R01-MIL-SEC011",
+      "R01-MIL-SEC012",
+      "R01-MIL-SEC013"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "E035–E039均为contemporaneous的同期证据，可作point_in_time使用。★但需注意：本包所记录的政策催化主管部门为工信部/国家航天局，主题是“卫星通信/商业航天产业发展”，不是国防采购订单。不得把这些产业政策直接当作军工订单证据。",
+    "why_campaign": "①有明确的产业里程碑（千帆星座批量组网）与制度里程碑（商业航天司设立）；②2025年内有多次可识别的市场响应（2025-10-24、2025-12-04），不是单日脉冲；③有可识别的市场对象（中国卫星、中天火箭、宏达电子等）；④五条Evidence分属五个independence_group，含Tier 2来源。★提交本候选的主要目的是把“商业航天边界”这一争议显式化，交由ThreeC Agent裁决。",
+    "why_not": "★族属边界未定：卫星互联网的通信属性按本任务excluded_scope应排除、军工航天属性应保留，二者在同一批标的上重叠（见R01-MIL-CF004）；★机制不是国防采购：驱动来自产业规划与商业需求，不是军费或军品订单；★生命周期未闭合：2025年末仍活跃，峰值与结束均不可考；★2025年12月的多项催化集中在年末，需警惕“观察窗口结束”被误当作“行情结束”。",
+    "possible_duplicate_of": [
+      "可能与R01-02（半导体/电子）的卫星载荷电子、以及信息通信族的卫星互联网方向重复"
+    ],
+    "notes": "按协议§7D要求，本包显式记录军事需求 / 民用需求 / 军民融合 / 资本市场主题四者之间的边界，不预设全部归入国防军工。"
+  }
+]

@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`446880d`（`docs(research): add R01-05 intake review addendum (K1/K2 fix)`；本文件随 R01-05 Canonical Import 提交入库）
-- 最近完成：**R01-05 Canonical Decision & Import v0.1**（PASS；**7 个 PROMOTE 入 Canonical DB，5 个 RESEARCH_ONLY 保留**；`CF013` 口径差转为结论约束）
+- HEAD：`e305fe3`（`feat(research): import R01-05 finance/real-estate canonical research`；本文件随 R01-06 Intake Review 提交入库）
+- 最近完成：**R01-06 Intake Review v0.1**（**PASS**；C01–C25 = 0 FAIL / 0 WARN，C25 Strict Draft-07 = 0 违规；**4 可进入 / 1 需补证 / 2 Research Only**；**未进入 Canonicalization**）
 
 ## 1. 项目当前定位
 
@@ -172,10 +172,11 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# R01-06：国防军工（**未启动**）
+# R01-06：国防军工 → **Intake Review 通过，待 Canonicalization**
 
 **已完成（全部 PASS）**：… Product 侧全部轮次 · **R00**（Intake Protocol）· **T01**（taxonomy gap）·
-**R01-01 / R01-02 / R01-03 / R01-04 / R01-05 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
+**R01-01 / R01-02 / R01-03 / R01-04 / R01-05 Canonical Import** · **Intake Validator C25**（严格 Draft-07）·
+**R01-06 Intake Review**。
 
 ### R01 进度
 
@@ -185,18 +186,25 @@ Time Observation v0.5 已完成并暂时冻结：
 | `R01-02` | 半导体 / 电子 | ✅ 已导入（+8 campaigns / 4 RC） |
 | `R01-03` | 资源 / 有色 / 化工 | ✅ 已导入（+6 campaigns / 5 RC） |
 | `R01-04` | 消费 | ✅ 已导入（+11 campaigns / 2 RC） |
-| `R01-05` | 金融 / 地产 | ✅ 已导入（**+7 campaigns / 5 RC**） |
-| `R01-06` | 军工 | `PLANNED_NOT_STARTED` |
+| `R01-05` | 金融 / 地产 | ✅ 已导入（+7 campaigns / 5 RC） |
+| `R01-06` | 军工 | **Intake Review ✅ PASS** → 待 Canonicalization（**4 可进入 / 1 需补证 / 2 Research Only**） |
 
 ### Historical Universe 当前实测
 
 | 项 | 值 |
 |---|---:|
 | Macro Theme 根节点 | **11** |
-| **有 Campaign 的根节点** | **10**（汽车 · 医药健康 · 信息通信 · 电力设备 · 高端装备 · 电子 · 资源 · 消费 · **金融** · **房地产**） |
+| **有 Campaign 的根节点** | **10**（汽车 · 医药健康 · 信息通信 · 电力设备 · 高端装备 · 电子 · 资源 · 消费 · 金融 · 房地产） |
 | Historical Campaign | **50** |
 | Research Candidate（导出层） | 22 |
 | 跨族 Campaign 对 | `C(10,2)` = **45** |
+
+**R01-06 新增 Canonical**：**暂无**（Intake Review 通过，**未进入 Canonicalization**）。
+详见 `docs/R01_06_INTAKE_REVIEW_v0_1.md`。
+
+**R01-06 候选处置（Intake 层）**：**D 可进入 = 4**（`001` 2020–2021 装备放量/订单（17 ev / 14 IG，唯一具备「军费→订单→基本面→市场」四层可复核链条）·
+`002` 2019 南北船重组 · `004` 2025 阅兵/军贸/十五五 · `007` 2024–2025 商业航天（须先裁族属））·
+**E1 需补证 = 1**（`005` 2017 军民融合/混改，生命周期未闭合）· **E2 Research Only = 2**（`003` 2019 阅兵全 retrospective · `006` 2015 改革牛 Beta 不可分离）。
 
 **R01-05 新增 7 个 Canonical**：`C-2022-RE-POLICY-THREE` · `C-2020-RE-DEBT-RISK`（`result = weak`）·
 `C-2024-FIN-BROKER-POLICY` · `C-2023-FIN-SOE-VALUATION` · `C-2024-FIN-BANK-DIVIDEND`（peak/end = NULL）·
@@ -227,12 +235,16 @@ Time Observation v0.5 已完成并暂时冻结：
 | OPEN | **`CF007`**（医美归属：消费 vs 医药健康）保留未裁决 · **`CF005`**（白电驱动归因）保留 · **`CF010`**（补贴 vs 真实需求；**`+11%` vs `-4.3%` 口径冲突完整保留**）· **`CF001`**（白酒 classification）保留 |
 | OPEN | **`RC-2020-CONS-SMALL-APPLIANCE`（007）仍需补证**（渗透率一手数据 + 同期证据）· **`RC-2024-CONS-PET-FOOD`（013）保持 Research Only** |
 | OPEN | `C-2020-CONS-DUTYFREE` **A 股广度不足**（sec=1）· `C-2023-CONS-VALUE-RETAIL` **start 年度级 + end NULL** · `C-2024-CONS-TRADE-IN` **Beta 未排除** |
-| OPEN | **跨任务「市场关注」口径差异未统一**（R01-03 起更严 vs R01-01/02）—— **本轮未固化新 Protocol、未回改历史** |
+| OPEN | **跨任务「市场关注」口径差异未统一**（R01-03 起更严 vs R01-01/02）—— **本轮未固化新 Protocol、未回改历史**；**R01-06 `N007` 另提出「R01-05 与 R01-06 的 Beta 判据应保持一致，否则跨族结构比较不可比」** |
 | OPEN | **`美容护理` / `商贸零售` taxonomy 缺口**（`MT006`/`MT007` 提案级未解析）—— 不扩展 |
 | OPEN | R01-03 的 `CF003`（锂跨族）· `CF009`（黄金背离）保留未决 |
 | OPEN | R01-02 的 3 条 `evidence-temporal-mislabel` 警告（已收口为 caveat） |
-| OPEN | **仅剩 1 个 root 无 Campaign：国防军工**（`R01-06`） |
-| OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突 |
+| OPEN | **仅剩 1 个 root 无 Campaign：国防军工**（`R01-06` 待 Canonicalization） |
+| OPEN | **R01-06 P0 Conflict（待 Canonical Decision 裁决）**：`CF008`（军费→订单传导时滞）· `CF001`（2020H2 与 2021 是否同一 Campaign）· `CF004`（商业航天族属：军工 vs 信息通信 vs 跨族）· `CF006`（2015 Beta 是否可分离） |
+| OPEN | **R01-06 待处理项**：`E042` 的 `role = context`（全包 `contradicting = 0`）与绑定对象（006/2015）→ 存在 DB 层 `evidence-temporal-mislabel` 风险；4 条 evidence 缺 `event_date`（E008/E017/E037/E038）；`SEC003` `ticker = null`；`CF004.note` 笔误「TwoC Agent」 |
+| OPEN | **R01-06 发现的 taxonomy 陈旧**：Package manifest / `X011` 称「root 仅 4 个」，实际 T01 后为 **11 个且已含 `国防军工`**（`TH-DEFENSE` + 4 子主题）→ `MT001~MT005` **视为已满足，无需新增** |
+| OPEN | **T01 与 R01-06 的归属张力**：T01 将「`船舶制造`（含民用造船周期）」归 `国防军工`；R01-06 `X005` 把民船周期机制 HANDOFF 给周期族 → 主题归属 vs 机制切分需在 Canonicalization 对齐 |
+| OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突（**R01-03 `H1` / R01-05 `K` / R01-06 第三次复现** → **Cross-task governance issue，待 R01 全部完成后统一处理**） |
 | OPEN | R01-05 孤儿证据 `E-FINRE-49/50/51/63`（intake 中未被任何候选引用）按既有惯例导入；`E-FINRE-63` = 全局基准 E141 |
 | POLISH | `themeCycleId` 可读性 · `event_type` ↔ 证据类别标签对应 |
 
@@ -260,8 +272,9 @@ Time Observation v0.5 已完成并暂时冻结：
 - Research validators 全 PASS（`validate_db` / `validate_timeline_export` / `validate_batch_research` /
   `validate_promotion_manifest` / `check_doc_schema_consistency` / `validate_current_research` /
   `validate_monorepo_integrity` / `refresh --check`）
-- **Intake Validator `--check` PASS（25 checks，FAIL 0，WARN 0；含 C25 严格 Draft-07）**
-- **Intake Package R01-01 ~ R01-05 各 PASS（C01–C25）** · **Validator 单元测试 44/44 PASS**
+- **Intake Validator `--check` PASS（25 checks，FAIL 0，WARN 0；含 C25 严格 Draft-07；packages found 6）**
+- **Intake Package R01-01 ~ R01-06 各 PASS（C01–C25）** · **Validator 单元测试 44/44 PASS**
+- **R01-06 Package**：checksums 10/10 OK · 0 悬空引用 · 0 孤儿（evidence/source/security）· 0 跨候选共享 evidence · 0 canonical ID 泄漏 · Protocol §7.4 三条 PIT 规则 0 违规
 - npm test 476/476
 - tsc -b PASS
 - vite build PASS
