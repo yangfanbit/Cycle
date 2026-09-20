@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`a3508de`（`docs(research): add R01-03 intake review addendum (008 correction)`；本文件随 R01-03 Canonical Import 提交入库）
-- 最近完成：**R01-03 Canonical Decision & Import v0.1**（PASS；**6 个 PROMOTE 入 Canonical DB，5 个 RESEARCH_ONLY 保留**）
+- HEAD：`0429fe0`（`docs(research): add R01-04 consumer intake review`；本文件随 R01-04 Canonical Import 提交入库）
+- 最近完成：**R01-04 Canonical Decision & Import v0.1**（PASS；**11 个 PROMOTE 入 Canonical DB，2 个 RESEARCH_ONLY 保留**）
 
 ## 1. 项目当前定位
 
@@ -172,19 +172,19 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# R01-04：消费（**未启动**）
+# R01-05：金融 / 地产（**未启动**）
 
 **已完成（全部 PASS）**：… Product 侧全部轮次 · **R00**（Intake Protocol）· **T01**（taxonomy gap）·
-**R01-01 / R01-02 / R01-03 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
+**R01-01 / R01-02 / R01-03 / R01-04 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
 
 ### R01 进度
 
 | task_id | scope | status |
 |---|---|---|
-| `R01-01` | 高端装备 / 机器人 | ✅ **已导入 Canonical**（+5 campaigns / 2 RC） |
-| `R01-02` | 半导体 / 电子 | ✅ **已导入 Canonical**（+8 campaigns / 4 RC） |
-| `R01-03` | 资源 / 有色 / 化工 | ✅ **已导入 Canonical**（+6 campaigns / 5 RC） |
-| `R01-04` | 消费 | Worker 独立研究进行中（**ThreeC Intake 未启动**） |
+| `R01-01` | 高端装备 / 机器人 | ✅ 已导入（+5 campaigns / 2 RC） |
+| `R01-02` | 半导体 / 电子 | ✅ 已导入（+8 campaigns / 4 RC） |
+| `R01-03` | 资源 / 有色 / 化工 | ✅ 已导入（+6 campaigns / 5 RC） |
+| `R01-04` | 消费 | ✅ 已导入（**+11 campaigns / 2 RC**） |
 | `R01-05` | 金融 / 地产 | `PLANNED_NOT_STARTED` |
 | `R01-06` | 军工 | `PLANNED_NOT_STARTED` |
 
@@ -193,17 +193,23 @@ Time Observation v0.5 已完成并暂时冻结：
 | 项 | 值 |
 |---|---:|
 | Macro Theme 根节点 | **11** |
-| **有 Campaign 的根节点** | **7**（汽车 · 医药健康 · 信息通信 · 电力设备 · 高端装备 · 电子 · **资源**） |
-| Historical Campaign | **32** |
-| Research Candidate（导出层） | 15 |
-| 跨族 Campaign 对 | `C(7,2)` = **21** |
+| **有 Campaign 的根节点** | **8**（汽车 · 医药健康 · 信息通信 · 电力设备 · 高端装备 · 电子 · 资源 · **消费**） |
+| Historical Campaign | **43** |
+| Research Candidate（导出层） | 17 |
+| 跨族 Campaign 对 | `C(8,2)` = **28** |
 
-**R01-03 新增 6 个 Canonical**：`C-2020-RES-NONFERROUS` · `C-2020-RES-LITHIUM` ·
-`C-2020-RES-RAREEARTH` · `C-2021-RES-CHEM-DUALCTRL` · `C-2019-RES-DYE-SHOCK` · `C-2024-RES-GOLD-CB`。
-详见 `docs/R01_03_CANONICAL_DECISION_v0_1.md`。
+**R01-04 新增 11 个 Canonical**：`C-2016-CONS-BAIJIU-UPGRADE` · `C-2019-CONS-BAIJIU-CORE` ·
+`C-2020-CONS-DUTYFREE` · `C-2022-CONS-SERVICE-REBOUND` · `C-2018-CONS-HOG-AFRICAN` ·
+`C-2021-CONS-HOG-REVERSAL` · `C-2020-CONS-WHITE-GOODS` · `C-2019-CONS-AESTHETICS` ·
+`C-2020-CONS-BEAUTY-CN` · `C-2024-CONS-TRADE-IN` · `C-2023-CONS-VALUE-RETAIL`。
+详见 `docs/R01_04_CANONICAL_DECISION_v0_1.md`。
 
-**新增机制轴覆盖**：供给收缩五子类型（行政去产能 / 能耗双控 / 环保约束 / 配额控制 / **安全事故冲击**）·
-全球流动性+需求复苏 · 新能源需求拉动 · 黄金资产属性。
+**新增机制轴覆盖**：消费升级/核心资产 · 政策放开+需求替代 · 事件驱动补偿需求 · **供给端自然周期** ·
+出口替代+成本推动 · 渗透率+产品创新 · 国货替代+渠道红利 · **财政补贴→官方销量** · **渠道效率/性价比消费**。
+
+**新增 Theme Cycle（7）**：`baijiu_premium_2016_2021`(Sequential) · `service_consumption_2020_2023`(Sequential) ·
+`hog_cycle_2018_2022`(Sequential) · `beauty_aesthetics_2019_2022`(Parallel) · `appliance_export_2020_2021` ·
+`trade_in_2024_2025` · `value_retail_2023_2025`。
 
 ### Structural Analogy
 
@@ -214,13 +220,14 @@ Time Observation v0.5 已完成并暂时冻结：
 
 | 类型 | 项 |
 |---|---|
-| OPEN | `CF003`（锂跨族归属）· `CF009`（2025-12 黄金商品与 A 股背离）**保留未决**；`C-2024-RES-GOLD-CB` 的 `peak_date`/`end_date` 均为 NULL |
-| OPEN | `C-2020-RES-RAREEARTH` **缺 A 股板块指数证据**（已降 strength 至 medium）—— 建议补齐稀土永磁板块序列 |
-| OPEN | **与 R01-01 的规则不一致**：R01-01 的 `C-2018-HIEQ-ROBOT-DOWN` 在无 A 股行情证据下被 PROMOTE；R01-03 起规则更严。**未回改 R01-01**，待统一 |
-| OPEN | 5 个 RESEARCH_ONLY 待补证（**`RC-2017-RES-ALUMINUM` PIT 覆盖最优，优先**） |
+| OPEN | **`CF007`**（医美归属：消费 vs 医药健康）保留未裁决 · **`CF005`**（白电驱动归因）保留 · **`CF010`**（补贴 vs 真实需求；**`+11%` vs `-4.3%` 口径冲突完整保留**）· **`CF001`**（白酒 classification）保留 |
+| OPEN | **`RC-2020-CONS-SMALL-APPLIANCE`（007）仍需补证**（渗透率一手数据 + 同期证据）· **`RC-2024-CONS-PET-FOOD`（013）保持 Research Only** |
+| OPEN | `C-2020-CONS-DUTYFREE` **A 股广度不足**（sec=1）· `C-2023-CONS-VALUE-RETAIL` **start 年度级 + end NULL** · `C-2024-CONS-TRADE-IN` **Beta 未排除** |
+| OPEN | **跨任务「市场关注」口径差异未统一**（R01-03 起更严 vs R01-01/02）—— **本轮未固化新 Protocol、未回改历史** |
+| OPEN | **`美容护理` / `商贸零售` taxonomy 缺口**（`MT006`/`MT007` 提案级未解析）—— 不扩展 |
+| OPEN | R01-03 的 `CF003`（锂跨族）· `CF009`（黄金背离）保留未决 |
 | OPEN | R01-02 的 3 条 `evidence-temporal-mislabel` 警告（已收口为 caveat） |
-| OPEN | **4 个 root 仍无 Campaign**：消费 · 金融 · 房地产 · 国防军工 |
-| OPEN | 别名 taxonomy 缺口（工业金属/铜/电解铝/锂/稀土/化工/黄金 等） |
+| OPEN | **3 个 root 仍无 Campaign**：金融 · 房地产 · 国防军工 |
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突 |
 | POLISH | `themeCycleId` 可读性 · `event_type` ↔ 证据类别标签对应 |
 

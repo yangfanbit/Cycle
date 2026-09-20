@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-09-20T20:15:46",
-  "source_commit": "a3508de3b71f490043e096fbbfe64083f9bbb55b",
+  "generated_at": "2026-09-20T20:46:14",
+  "source_commit": "0429fe0bb607fcbf79a9f37c639cc1ec69273987",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -9,9 +9,10 @@
     "rule_infocomm",
     "rule_high_end_equipment",
     "rule_semiconductor",
-    "rule_resources"
+    "rule_resources",
+    "rule_consumer"
   ],
-  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块） + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人） + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期） + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性）",
+  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块） + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人） + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期） + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性） + rule_consumer（消费 2016–2025，消费升级 / 政策替代 / 自然周期 / 财政补贴 / 渠道变革）",
   "status_vocabulary": {
     "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
     "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -1545,6 +1546,1471 @@
         "ending": [
           "8/31 暂定边界（9/12月另有催化波次）",
           "beta 驱动为主、主题独立性弱"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+      "db_campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+      "year": 2016,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2016-06-01",
+      "peak_date_candidate": "2018-01-31",
+      "end_date_candidate": "2018-12-31",
+      "date_confidence": "medium",
+      "theme": "食品饮料",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "食品饮料",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "baijiu_premium_2016_2021",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-02",
+        "E-CONS-01",
+        "E-CONS-03",
+        "E-CONS-04",
+        "E-CONS-05",
+        "E-CONS-06",
+        "E-CONS-07",
+        "E-CONS-08"
+      ],
+      "source_ids": [
+        "S-CONS-01",
+        "S-CONS-02",
+        "S-CONS-03",
+        "S-CONS-04",
+        "S-CONS-05",
+        "S-CONS-06",
+        "S-CONS-09",
+        "S-CONS-65"
+      ],
+      "independent_groups": [
+        "assoc-wine",
+        "company-moutai",
+        "gov-stats",
+        "market-eastmoney",
+        "media-cctv",
+        "media-sina"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-CONS-01",
+          "name": "MSCI 宣布自 2018 年 6 月起将中国 A 股纳入 MSCI 新兴市场指数",
+          "date": "2017-06-21",
+          "event_type": "policy",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-CONS-02",
+          "name": "贵州茅台出现上市以来首个「一」字跌停（Q3 收入 +3.8%、利润 +2.7% 低于预期）",
+          "date": "2018-10-29",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "LUZHOULAOJIAO",
+          "name": "泸州老窖",
+          "ticker": "000568",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "MOUTAI",
+          "name": "贵州茅台",
+          "ticker": "600519",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "WULIANGYE",
+          "name": "五粮液",
+          "ticker": "000858",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF002 裁决：**判为独立 Campaign**（非「同一白酒长周期」的一段）。Gate：Q1 注意力中心 =「漂亮50 / 白马蓝筹 + 消费升级 + 龙头集中」（国内资金主导），与 002 的「核心资产 + 外资增量定价（MSCI 扩容）」不同；Q3 持续性成立（约 2.5 年）；**Q4 独立生命周期成立** —— 中间存在 **2018 年全年 -27% 级别回撤**（中证白酒指数，E007）与 **2018-10-29 贵州茅台上市以来首个「一」字跌停**（E005/E006），资金逻辑明确重置；Q5 Residual Test 双向成立。★ **Q2 代表标的不成立**（与 002 完全重叠：茅台/五粮液/泸州老窖）—— 这是唯一反对拆分的 Gate 项；其重叠由「**同一 Theme Cycle 内的 Sequential Campaign**」解释：同一批核心资产在两轮独立周期中重演。★ 与 002 同属 Theme Cycle `baijiu_premium_2016_2021`（Pattern = **Sequential**）。★ CF001（classification 歧义）**保留**：本段按 industry_trend 提案，但 2021 年社零 +12.5%、基本面未恶化而价格大幅回落（E015 统计局口径 vs E013 媒体口径）说明 002 段资金面权重高 —— 最终 classification 由后续复核裁定。★ **Priority B 段**：月度批价/动销一手数据缺失，`date_confidence = medium`。｜theme_cycle_id=baijiu_premium_2016_2021｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2016-06-01",
+          "end": "2017-12-31",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2018-09-01",
+          "end": "2018-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "高端白酒价格上行：飞天茅台一批价与零售价 2016 年持续走高（S001）",
+          "行业量价齐升：2016 年全国规上白酒产量 1358.36 万千升为历史峰值（S002）"
+        ],
+        "accelerator": [
+          "外资定价权提升：2017-06-21 MSCI 宣布自 2018 年 6 月起纳入 A 股（S003）",
+          "龙头集中与业绩兑现：贵州茅台 2017 年营收 582.18 亿元、归母净利 270.79 亿元（S009）"
+        ],
+        "turning": [
+          "2018-10-29 贵州茅台首个一字跌停，白酒股集体下跌，市场同步注意到业绩增速不及预期（S004、S005）"
+        ],
+        "ending": [
+          "板块估值与景气同步回落（S065 计算值：2018 年全年约 -26.9%）",
+          "2018 年社零增速降至 9.0%，宏观消费环境转弱（S006，仅作背景）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2018-CONS-HOG-AFRICAN",
+      "db_campaign_id": "C-2018-CONS-HOG-AFRICAN",
+      "year": 2018,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2018-08-03",
+      "peak_date_candidate": "2020-03-09",
+      "end_date_candidate": "2021-12-31",
+      "date_confidence": "medium",
+      "theme": "农林牧渔",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "农林牧渔",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "hog_cycle_2018_2022",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-CONS-33",
+        "E-CONS-34",
+        "E-CONS-36",
+        "E-CONS-35",
+        "E-CONS-93",
+        "E-CONS-38",
+        "E-CONS-37"
+      ],
+      "source_ids": [
+        "S-CONS-26",
+        "S-CONS-28",
+        "S-CONS-30",
+        "S-CONS-31",
+        "S-CONS-32",
+        "S-CONS-65",
+        "S-CONS-72"
+      ],
+      "independent_groups": [
+        "gov-moa",
+        "gov-ndrc",
+        "gov-stats",
+        "market-eastmoney",
+        "media-bjnews",
+        "media-people"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-CONS-09",
+          "name": "农业农村部确认辽宁省沈阳市沈北新区发生我国首例非洲猪瘟疫情",
+          "date": "2018-08-03",
+          "event_type": "industry",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-CONS-10",
+          "name": "牧原股份盘中触及历史最高价 139.92 元（不复权）",
+          "date": "2020-03-09",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "MUYUAN",
+          "name": "牧原股份",
+          "ticker": "002714",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "NEWHOPE",
+          "name": "新希望",
+          "ticker": "000876",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "WENS",
+          "name": "温氏股份",
+          "ticker": "300498",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF006 裁决（含 Q001「自然周期是否允许进入 Campaign Universe」）：**判为独立 Campaign，并允许进入**。判据**不基于「猪周期」这一名称**，而基于现有 Independence Gate 五要素与 Q1–Q5：① 主题明确（非洲猪瘟外生供给冲击）；② 持续性成立（2018-08 至 2021-12）；③ **市场关注有 A 股侧证据**（E038 牧原股份 2020-03-09 盘中历史最高 139.92 元；温氏股份 2019-03-13 盘中 45.55 元）；④ start/end 可解释；⑤ ≥2 独立证据（7 ev / 6 IG）。★ **关于 Q001 的判据立场**：现有 Independence Gate 是**结构独立性**判据，**不排除自然周期**；且 R01-01 的 `C-2018-HIEQ-ROBOT-DOWN`（下行周期）与 R01-03 的 `C-2022-SEMI-DOWNTURN`（下行周期）已确立「非主题叙事型结构亦可进入 canonical」的先例。本 Campaign 具备「**可观测先行指标（能繁母猪存栏，传导约 10 个月）+ 官方逆周期调控框架 + A 股提前定价**」三要素。**但须明确**：其机制性质为「**供给端自然周期**」，与「政策/技术/叙事驱动」型 Campaign 不同 —— 已在 `classification = industry_trend` 与本注记中显式区分。★ 链条：E033（2018-08-03 首例非洲猪瘟）→ E093（22 省市猪肉均价 16→56 元/千克、+250%）→ E034（2019 年第 40 周官方周度收购价 29.96 元/公斤）→ E035（猪肉 +42.5%，拉动 CPI 约 62.4%）→ E036（2019-10 能繁母猪环比 +0.6%，2018-04 以来首次回升）→ E037（2021-10 官方周度 13.40 元/公斤、-57.7%）。★ 与 006 同属 Theme Cycle `hog_cycle_2018_2022`（Pattern = **Sequential**）。｜theme_cycle_id=hog_cycle_2018_2022｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2019-01-01",
+          "end": "2019-12-31",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-01-01",
+          "end": "2021-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "外生供给冲击：2018-08-03 我国首例非洲猪瘟疫情确认（S026）"
+        ],
+        "accelerator": [
+          "产能去化：生猪与能繁母猪存栏大幅下降（官方数据经媒体转述，E036，置信度低）",
+          "价格与宏观传导：2019 年猪肉价格 +42.5%，拉动 CPI 约 1.81 个百分点（S031）"
+        ],
+        "turning": [
+          "产能见底回升：2019 年 10 月能繁母猪存栏环比 +0.6%，为 2018 年 4 月以来首次回升（E036，弱证据）"
+        ],
+        "ending": [
+          "2021 年猪价大幅回落，10 月集贸市场活猪 13.40 元/公斤、同比 -57.7%（S030）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2019-CONS-BAIJIU-CORE",
+      "db_campaign_id": "C-2019-CONS-BAIJIU-CORE",
+      "year": 2019,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2019-03-01",
+      "peak_date_candidate": "2021-02-18",
+      "end_date_candidate": "2021-12-31",
+      "date_confidence": "medium",
+      "theme": "食品饮料",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "食品饮料",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "baijiu_premium_2016_2021",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-CONS-09",
+        "E-CONS-10",
+        "E-CONS-12",
+        "E-CONS-13",
+        "E-CONS-11",
+        "E-CONS-14",
+        "E-CONS-15"
+      ],
+      "source_ids": [
+        "S-CONS-07",
+        "S-CONS-08",
+        "S-CONS-10",
+        "S-CONS-11",
+        "S-CONS-12",
+        "S-CONS-65",
+        "S-CONS-67"
+      ],
+      "independent_groups": [
+        "company-moutai",
+        "gov-stats",
+        "market-eastmoney",
+        "media-21jingji",
+        "media-jjckb",
+        "media-sohu",
+        "msci"
+      ],
+      "independent_group_count": 7,
+      "events": [
+        {
+          "event_id": "EV-CONS-03",
+          "name": "MSCI 宣布将中国 A 股纳入因子由 5% 提高至 20%（5/8/11 月三步实施）",
+          "date": "2019-03-01",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-CONS-04",
+          "name": "中证白酒指数（399997）盘中最高 21663.85 点；贵州茅台盘中最高 2627.88 元",
+          "date": "2021-02-18",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "FENJIU",
+          "name": "山西汾酒",
+          "ticker": "600809",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "HAITIAN",
+          "name": "海天味业",
+          "ticker": "603288",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "LUZHOULAOJIAO",
+          "name": "泸州老窖",
+          "ticker": "000568",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "MOUTAI",
+          "name": "贵州茅台",
+          "ticker": "600519",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "WULIANGYE",
+          "name": "五粮液",
+          "ticker": "000858",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "YILI",
+          "name": "伊利股份",
+          "ticker": "600887",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF002 裁决：**与 001 为同一 Theme Cycle 下的 Sequential Campaign**（非合并、非拆分）。启动锚点为 **2019-03-01 MSCI 宣布纳入因子由 5% 提高至 20%**（E009，contemporaneous 一手事件）；2019 年北向资金净流入 3517.43 亿元创历史新高（E010）。★ **peak = 2021-02-18**（中证白酒指数 399997 盘中最高 21663.85 点；贵州茅台 2627.88 元、五粮液 357.19 元、泸州老窖 327.66 元，均不复权，E012）—— **采用 A 股板块指数口径**。★ CF001（classification）**保留**：P2 指出「2021 年社零 +12.5%、行业需求未恶化，而板块自 2021-02-18 起大幅回落」（E013 经济参考报 2021-03-29 报道）→ 主导力量为资金抱团与确定性溢价；本段仍按 industry_trend 提案，**最终 classification 保留待裁**。★ CF003（2021 年规上白酒收入/利润增速口径）**保留 KEEP_BOTH**：国家统计局口径 6033.48 亿元 / +3.38%（E015）vs 贵州茅台年报引述 +18.6% —— **两者均未用于支撑行业景气强度结论**。｜theme_cycle_id=baijiu_premium_2016_2021｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2019-03-01",
+          "end": "2020-12-31",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-02-18",
+          "end": "2021-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "外资增量资金制度性启动：2019-03-01 MSCI 提高 A 股纳入因子至 20%（S007）",
+          "2019 年北向资金净流入 3517.43 亿元创历史新高（S008）"
+        ],
+        "accelerator": [
+          "2020 年疫情下\"确定性溢价\"叙事强化（本包未为该项单独建立一手证据，属解释性判断）",
+          "龙头业绩持续兑现：贵州茅台 2021 年营收 1094.64 亿元、归母净利 524.60 亿元（S010）"
+        ],
+        "turning": [
+          "2021-02-18 后核心资产集体下跌，抱团结构瓦解（S011）"
+        ],
+        "ending": [
+          "2021 年 7 月指数单月约 -21%，全年约 -3.4%（S065 计算值）",
+          "宏观消费 2021 年社零 +12.5%（S012），基本面并未同步恶化——说明结束主要由估值与资金结构驱动，而非需求端反转"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2019-CONS-AESTHETICS",
+      "db_campaign_id": "C-2019-CONS-AESTHETICS",
+      "year": 2019,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2019-11-06",
+      "peak_date_candidate": "2021-07-05",
+      "end_date_candidate": "2022-12-31",
+      "date_confidence": "medium",
+      "theme": "消费",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "beauty_aesthetics_2019_2022",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-63",
+        "E-CONS-67",
+        "E-CONS-64",
+        "E-CONS-66",
+        "E-CONS-65"
+      ],
+      "source_ids": [
+        "S-CONS-47",
+        "S-CONS-48",
+        "S-CONS-51",
+        "S-CONS-53",
+        "S-CONS-65"
+      ],
+      "independent_groups": [
+        "exchange-sse",
+        "gov-nhc",
+        "gov-samr",
+        "market-eastmoney",
+        "media-jiemian"
+      ],
+      "independent_group_count": 5,
+      "events": [
+        {
+          "event_id": "EV-CONS-14",
+          "name": "爱美客/华熙生物盘中历史最高价（爱美客 2021-02-18 1331.02 元；华熙生物 314.99 元）",
+          "date": "2021-07-05",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "BETTENI",
+          "name": "贝泰妮",
+          "ticker": "300957",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "PROYA",
+          "name": "珀莱雅",
+          "ticker": "603605",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "WANCHEN",
+          "name": "万辰集团",
+          "ticker": "300972",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF007 裁决（Macro Theme 归属）：**按 CMTR v1 解析结果归 `消费` 根**（`R01-CONSUMER-MT006` 以 `kind = CROSS_FAMILY` 提交，CMTR 返回 `UNRESOLVED_NAME` —— **这是协议期望的正确结果**，跨族问题不由 CMTR 裁决）。★ **边界 Conflict 保留**：「医美属消费 vs 医药健康」未裁决 —— P1 属消费（自费/可选/受收入与消费意愿驱动，与白酒/美妆同属「悦己消费」叙事）；P2 属医药健康（医美耗材按**医疗器械**监管、服务机构受**卫健委**监管，产业链与医疗器械重叠）。**未自行新增 Macro Theme、未扩展 taxonomy**（符合协议）。★ CF009 裁决（医美 vs 国货美妆）：**判为两个独立 Campaign，同属 Theme Cycle `beauty_aesthetics_2019_2022`（Pattern = Parallel）**。Gate：Q1 产业环节不同（医疗耗材/服务 vs 化妆品零售）；**Q2 代表标的不重叠**（爱美客/华熙生物/朗姿股份 vs 珀莱雅/贝泰妮）；Q4 生命周期独立（peak 2021-07-05 vs 010 的 2021-10-29）。★ **P3 医美监管的双重性质已分别归入 drivers**：八部门打击非法医美（E064）既清退非法供给（accelerator）又压制扩张预期（turning）—— **未单向归类**。★ 渗透率机制**无权威统一口径**（E067 为「券商研究经媒体转述」3.6%）→ **未把估算值当作官方统计**；`strength = medium`。｜theme_cycle_id=beauty_aesthetics_2019_2022｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-01-01",
+          "end": "2021-06-30",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-07-26",
+          "end": "2022-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "标的可得性：华熙生物 2019-11-06 科创板上市（S051）"
+        ],
+        "accelerator": [
+          "渗透率提升与国产品牌替代（E067，二手转述，置信度低）",
+          "合规化清退非法供给，份额向合规龙头集中（S047，双重性质）"
+        ],
+        "turning": [
+          "2021-05-28 八部门印发打击非法医美专项整治工作方案，2021-06-11 公开，整治期 2021 年 6–12 月（S047）"
+        ],
+        "ending": [
+          "2021-11-01 市场监管总局发布《医疗美容广告执法指南》（S048）",
+          "2022 年市场监管总局等 11 部门开展医美行业突出问题专项治理（本包未建立一手证据链接，仅叙述性提及）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-CONS-DUTYFREE",
+      "db_campaign_id": "C-2020-CONS-DUTYFREE",
+      "year": 2020,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2020-06-01",
+      "peak_date_candidate": "2021-02-18",
+      "end_date_candidate": "2022-12-31",
+      "date_confidence": "medium",
+      "theme": "社会服务",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "社会服务",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "service_consumption_2020_2023",
+      "classification": "mixed",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-CONS-17",
+        "E-CONS-21",
+        "E-CONS-16",
+        "E-CONS-94",
+        "E-CONS-18",
+        "E-CONS-91",
+        "E-CONS-20",
+        "E-CONS-19",
+        "E-CONS-22"
+      ],
+      "source_ids": [
+        "S-CONS-13",
+        "S-CONS-14",
+        "S-CONS-15",
+        "S-CONS-16",
+        "S-CONS-17",
+        "S-CONS-66",
+        "S-CONS-68",
+        "S-CONS-69",
+        "S-CONS-70"
+      ],
+      "independent_groups": [
+        "company-ctgdf",
+        "gov-customs",
+        "gov-govcn",
+        "gov-haikoucustoms",
+        "gov-hainancommerce",
+        "gov-mof",
+        "market-ifzq",
+        "media-bjnews",
+        "media-xinhua"
+      ],
+      "independent_group_count": 9,
+      "events": [
+        {
+          "event_id": "EV-CONS-05",
+          "name": "财政部等三部门公告 2020 年第 33 号：离岛免税额度由 3 万元提高至 10 万元/年、不限次数",
+          "date": "2020-06-29",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-CONS-06",
+          "name": "2021 年海南 10 家离岛免税店总销售额 601.73 亿元、同比增长 84%",
+          "date": "2021-12-31",
+          "event_type": "industry",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CTGDF",
+          "name": "中国中免",
+          "ticker": "601888",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF011 裁决：**判为独立 Campaign**（与 004 疫后修复分列）。Gate：Q1 启动锚点/政策主体/验证数据**三者均不同**（本 Campaign = 财政部公告 33 号 + 海南自贸港方案，验证 = 海口海关离岛免税销售额；004 = 新十条 + 补偿性需求，验证 = 旅游人次与社零）；Q4 独立生命周期成立；Q5 双向成立。★ Q2 代表标的部分重叠（中国中免）→ 由「**同一 Theme Cycle 内的 Sequential Campaign**」解释。★ 链条完整：E017（2020-06-01 海南自贸港总体方案）→ E016/E094（2020-06-29 财政部公告 33 号，额度 3 万→10 万元/年、不限次数、品类 38→45 类）→ E018（海口海关 2020-07-01~10-31 销售 120.1 亿元、+214.1%）→ E091（2020 全年 274.8 亿元、+103.7%）→ E019（2021 全年 601.73 亿元、+84%）→ E020（2021-02-18 中国中免盘中最高 403.78 元，历史最高）→ E022（2022 约 487.1 亿元、-19%）。★ **已知结构弱点**：`security_ids` 仅 **1 个**（中国中免），**A 股可交易标的广度严重不足** —— 若按 Gate Q2「独立代表资产组」严格衡量，其独立性弱于白酒候选；**不得声称已完成板块广度验证**。★ 2022 年降温数据仅取得媒体转述（`known_gaps[5]`），`date_confidence = medium`。★ 与 004 同属 Theme Cycle `service_consumption_2020_2023`（Pattern = **Sequential**）。｜theme_cycle_id=service_consumption_2020_2023｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-06-01",
+          "end": "2021-02-18",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-07-01",
+          "end": "2022-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "公司战略重塑：聚焦免税、变更证券简称（S069）",
+          "政策方向确立：2020-06-01 海南自贸港总体方案提出放宽离岛免税额度至 10 万元（S068）"
+        ],
+        "accelerator": [
+          "2020-06-29 财政部、海关总署、税务总局 33 号公告：额度 3 万→10 万元、不限次数、品类增至 45 类、取消单件 8000 元限额，2020-07-01 施行（S013、S014）",
+          "需求验证：2020-07-01 至 10-31 离岛免税销售 120.1 亿元、同比 +214.1%（S015）；2020 年全年 274.8 亿元、+103.7%（S016）"
+        ],
+        "turning": [
+          "2021 年后疫情反复导致客流波动，离岛免税经营主体增加、竞争加剧（本项为解释性判断，本包未取得一手竞争数据）"
+        ],
+        "ending": [
+          "2022 年海南离岛免税店销售额约 487.1 亿元、同比约 -19%（S070，媒体转述，置信度低）",
+          "2023 年 5 月股价回落至 123.10 元（S066）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-CONS-WHITE-GOODS",
+      "db_campaign_id": "C-2020-CONS-WHITE-GOODS",
+      "year": 2020,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2020-06-01",
+      "peak_date_candidate": "2021-02-18",
+      "end_date_candidate": "2021-12-31",
+      "date_confidence": "medium",
+      "theme": "家用电器",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "家用电器",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "appliance_export_2020_2021",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-48",
+        "E-CONS-47",
+        "E-CONS-51",
+        "E-CONS-54",
+        "E-CONS-53",
+        "E-CONS-49",
+        "E-CONS-52"
+      ],
+      "source_ids": [
+        "S-CONS-36",
+        "S-CONS-37",
+        "S-CONS-38",
+        "S-CONS-39",
+        "S-CONS-40",
+        "S-CONS-66",
+        "S-CONS-75"
+      ],
+      "independent_groups": [
+        "assoc-cheaa",
+        "assoc-chinaiol",
+        "gov-stats",
+        "market-ifzq",
+        "media-sina"
+      ],
+      "independent_group_count": 5,
+      "events": [
+        {
+          "event_id": "EV-CONS-13",
+          "name": "白电龙头区间高点：海尔智家盘中最高 35.95 元、美的集团 2021-02-10 盘中 108.00 元",
+          "date": "2021-02-18",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "AIMEIKE",
+          "name": "爱美客",
+          "ticker": "300896",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "BLOOMAGE",
+          "name": "华熙生物",
+          "ticker": "688363",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "LANCY",
+          "name": "朗姿股份",
+          "ticker": "002612",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "ROBAM",
+          "name": "老板电器",
+          "ticker": "002508",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF005 裁决（驱动归因）：**保留 UNRESOLVED —— 不强行选一个**。P1 地产后周期（传统解释）；P2 **出口替代**（数据更支持：2020 年家电出口 4582 亿元、+24.2%，而内销 7297 亿元、-9.2%，E047/E048）；P3 **反证地产传导的时间关系**（2020 年房屋竣工 -4.9% 而板块上行；2021 年竣工 +11.2% 而板块已下行 —— E051/E052 `contradicting`）。★ **命名确定性已下调**：本 Campaign **不使用「地产后周期」这一命名**，改用中性 ID `C-2020-CONS-WHITE-GOODS`（白电），并在本注记中完整保留两侧证据与 P3 反证。**未强行选定单一驱动。**★ **peak = 2021-02-18**（海尔智家盘中最高 35.95 元；美的集团 2021-02-10 盘中 108.00 元；格力电器 2021-01-06，E054）—— 采用 A 股个股高点口径。★ **CF008 裁决（小家电 vs 白电）**：本 Campaign 与 `RC-2020-CONS-SMALL-APPLIANCE`（007）**代表标的完全不重叠**（科沃斯/石头科技/小熊电器 vs 美的/格力/海尔/老板电器）、**见顶时间错位 5 个月至 1 年**（2020-07 / 2021-06–07 vs 2021-01–02）→ **支持独立结构**；但 007 因证据薄（4 ev / 3 IG）与 **PIT = 0** 本轮**未进入 canonical**，保持待补证。★ **共享 evidence 处理**：`E047`/`E048`/`E049`（家电行业整体口径）原为 007 与 008 共享；因 007 未进入 canonical，按 **1 evidence : 1 campaign** 规则**全部归属本 Campaign** ✓ （**未为了处理共享证据而强行合并两个候选**）。★ **PIT = 0**：本 Campaign 全部证据为 subsequent / retrospective 口径（无同期证据）→ `strength = medium`；**不得声称已完成同期市场响应验证**。｜theme_cycle_id=appliance_export_2020_2021｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-06-01",
+          "end": "2021-02-28",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2021-07-01",
+          "end": "2021-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "出口替代：2020 年家电出口 4582 亿元、+24.2%，出口自 6 月起强劲反弹（S036、S037）"
+        ],
+        "accelerator": [
+          "原材料涨价推动产品均价上升（S037）",
+          "2021 年行业主营收入 1.73 万亿元、+15.5%（S038）"
+        ],
+        "turning": [
+          "2021 年 7 月商品房销售面积与销售额单月同比首次下降（S075，媒体转述）"
+        ],
+        "ending": [
+          "2021 年 12 月家电零售额同比 -10.4%；利润增速 +4.5% 远低于收入增速 +15.5%（S038）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-CONS-BEAUTY-CN",
+      "db_campaign_id": "C-2020-CONS-BEAUTY-CN",
+      "year": 2020,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2020-06-29",
+      "peak_date_candidate": "2021-10-29",
+      "end_date_candidate": "2022-12-31",
+      "date_confidence": "medium",
+      "theme": "消费",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "beauty_aesthetics_2019_2022",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-68",
+        "E-CONS-71",
+        "E-CONS-69",
+        "E-CONS-72",
+        "E-CONS-70",
+        "E-CONS-73"
+      ],
+      "source_ids": [
+        "S-CONS-49",
+        "S-CONS-50",
+        "S-CONS-52",
+        "S-CONS-65",
+        "S-CONS-77",
+        "S-CONS-78"
+      ],
+      "independent_groups": [
+        "exchange-szse",
+        "gov-govcn",
+        "gov-nmpa",
+        "gov-stats",
+        "market-eastmoney",
+        "media-jiemian"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-CONS-15",
+          "name": "国家药品监督管理局发布《化妆品功效宣称评价规范》（2021 年第 50 号）",
+          "date": "2021-04-08",
+          "event_type": "policy",
+          "role": "trigger"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "GAMBO",
+          "name": "乖宝宠物",
+          "ticker": "301498",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "YANJIN",
+          "name": "盐津铺子",
+          "ticker": "002847",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF009 裁决：**与 009 为同一 Theme Cycle 下的 Parallel Campaign**（非合并）。机制 =「**国货替代 + 线上渠道红利 + 监管规范化**」，与 009 的「渗透率 + 产品创新 + 合规化」不同；验证数据亦不同（本 Campaign 有**国家统计局化妆品零售额**：2021 年 4026 亿元、+14.0%；2022 年 3936 亿元、-4.5% 为十年首次负增长，E070）。★ 监管链条：E068（2020-06-29《化妆品监督管理条例》）→ E069（2021-04-08《化妆品功效宣称评价规范》）→ E071（2021-03-25 贝泰妮创业板上市）→ E072（2021-10-29 珀莱雅盘中最高 224.43 元，历史最高；贝泰妮 2021-07-08 盘中最高 289.35 元）→ E070（2022 零售额转负）。★ **peak = 2021-10-29**（珀莱雅历史最高，A 股个股口径）。★ **已知弱点**：① 渠道红利这一核心机制仅有事后转述证据；② A 股可交易标的仅 2 个（珀莱雅/贝泰妮），**板块广度有限**，且珀莱雅滞后见顶使「板块峰值」难以定义；③ 2019 年化妆品零售额未取得官方直链 → `strength = medium`、`date_confidence = medium`。★ **Macro Theme 归属**：`美容护理` 未被 T01 的 `消费` 根覆盖（`MT006` 未解析）→ 本 Campaign 以 **root `TH-CONSUMER` 为 main 主题**（无子主题），与 R01-02 的 `C-2019-CONSUMER-TWS` 同口径。｜theme_cycle_id=beauty_aesthetics_2019_2022｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-06-29",
+          "end": "2021-06-30",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2022-01-01",
+          "end": "2022-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "制度框架：《化妆品监督管理条例》2020-06-29 公布、2021-01-01 施行（S049）"
+        ],
+        "accelerator": [
+          "功效宣称规范化：《化妆品功效宣称评价规范》2021-04-08 发布、2021-05-01 施行（S050）",
+          "标的扩容与需求验证：贝泰妮 2021-03-25 创业板上市（S052）；2021 年限额以上化妆品类零售额 4026 亿元、+14.0%（S012）",
+          "线上渠道红利：抖音美妆头部品牌 GMV 由 2021 年 10 亿级升至 2022 年 20 亿级（E073，二手转述）"
+        ],
+        "turning": [
+          "2022 年化妆品类零售额转为 -4.5%，行业需求自高增长切至负增长（S077）"
+        ],
+        "ending": [
+          "行业需求负增长与板块估值回落（S077）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2021-CONS-HOG-REVERSAL",
+      "db_campaign_id": "C-2021-CONS-HOG-REVERSAL",
+      "year": 2021,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2021-08-17",
+      "peak_date_candidate": "2022-10-15",
+      "end_date_candidate": "2022-12-31",
+      "date_confidence": "medium",
+      "theme": "农林牧渔",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "农林牧渔",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "hog_cycle_2018_2022",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-39",
+        "E-CONS-40",
+        "E-CONS-41",
+        "E-CONS-42",
+        "E-CONS-46",
+        "E-CONS-43",
+        "E-CONS-44",
+        "E-CONS-45"
+      ],
+      "source_ids": [
+        "S-CONS-27",
+        "S-CONS-29",
+        "S-CONS-33",
+        "S-CONS-34",
+        "S-CONS-35",
+        "S-CONS-65",
+        "S-CONS-73",
+        "S-CONS-74"
+      ],
+      "independent_groups": [
+        "gov-moa",
+        "gov-scio",
+        "market-eastmoney",
+        "media-cctv",
+        "media-jwview",
+        "media-xinhua",
+        "media-zhue"
+      ],
+      "independent_group_count": 7,
+      "events": [
+        {
+          "event_id": "EV-CONS-11",
+          "name": "农业农村部公布 7 月全国能繁母猪存栏环比下降 0.5%，结束连续 21 个月增长",
+          "date": "2021-08-17",
+          "event_type": "industry",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-CONS-12",
+          "name": "国家发展改革委启动中央冻猪肉储备收储工作，首批收储 4 万吨",
+          "date": "2022-02-28",
+          "event_type": "policy",
+          "role": "catalyst"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "AONONG",
+          "name": "傲农生物",
+          "ticker": "603363",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "JUXING",
+          "name": "巨星农牧",
+          "ticker": "603477",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "MUYUAN",
+          "name": "牧原股份",
+          "ticker": "002714",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF006 裁决：**与 005 为同一 Theme Cycle 下的 Sequential Campaign**（两轮拆为两个独立 Campaign）。Gate：Q1 注意力中心 =「能繁母猪去化 + 官方逆周期调控」（与 005 的疫病外生冲击不同）；**Q4 独立生命周期成立** —— 存在**独立产能拐点**（E039：2021-07 能繁母猪环比 -0.5%，**结束连续 21 个月增长**）与**独立政策框架事件**（E040：2021-09-19《生猪产能调控实施方案（暂行）》，明确正常保有量约 4100 万头；E041：2022-02-28 中央冻猪肉收储 4 万吨；E043：2022-09-08 开始投放储备）；Q5 双向成立。★ Q2 代表标的部分重叠（牧原股份）→ 由 Sequential 解释；006 另有 005 未出现的弹性标的（巨星农牧、傲农生物，E046）。★ **PIT 证据 = 6（本包最高）** —— 官方周度价格与政策文件均为同期口径。★ 价格高点（E044，2022-10 中旬约 28 元/公斤，**媒体转述**）与结束段（E045，「**行业信息站复盘称**」，来源 `S074` 猪易网 tier 3）**均为非官方口径，已明确标记**；官方周度监测对应期数未逐期补齐（`known_gaps[6]`）→ `date_confidence = medium`。｜theme_cycle_id=hog_cycle_2018_2022｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2022-04-01",
+          "end": "2022-07-31",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2022-09-08",
+          "end": "2022-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "产能去化信号：2021-08-17 公布 7 月能繁母猪存栏环比 -0.5%，结束 21 个月增长（S033）"
+        ],
+        "accelerator": [
+          "制度框架确立：2021-09-19《生猪产能调控实施方案（暂行）》明确 4100 万头正常保有量（S027）",
+          "逆周期收储：2022-02-28 启动中央冻猪肉储备收储，首批 4 万吨（S034）",
+          "价格验证：2022-07-04 至 07-10 生猪平均收购价 22.26 元/公斤、同比 +30.6%（S029）"
+        ],
+        "turning": [
+          "2022-09-08 起投放中央猪肉储备，调控方向反转（S035）"
+        ],
+        "ending": [
+          "2022 年末猪价快速回落（S074，非官方口径，置信度低）",
+          "2023 年养殖行业普遍亏损（媒体转述，本包未建立一手证据）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+      "db_campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+      "year": 2022,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2022-12-07",
+      "peak_date_candidate": "2023-01-31",
+      "end_date_candidate": "2023-06-30",
+      "date_confidence": "medium",
+      "theme": "社会服务",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "社会服务",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "service_consumption_2020_2023",
+      "classification": "event_driven",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-24",
+        "E-CONS-23",
+        "E-CONS-25",
+        "E-CONS-26",
+        "E-CONS-27",
+        "E-CONS-32",
+        "E-CONS-92",
+        "E-CONS-28",
+        "E-CONS-31",
+        "E-CONS-30",
+        "E-CONS-29"
+      ],
+      "source_ids": [
+        "S-CONS-18",
+        "S-CONS-19",
+        "S-CONS-20",
+        "S-CONS-21",
+        "S-CONS-22",
+        "S-CONS-23",
+        "S-CONS-24",
+        "S-CONS-25",
+        "S-CONS-66",
+        "S-CONS-71"
+      ],
+      "independent_groups": [
+        "assoc-cuisine",
+        "assoc-hotel",
+        "gov-govcn",
+        "gov-mct",
+        "gov-stats",
+        "market-ifzq",
+        "media-caixin"
+      ],
+      "independent_group_count": 7,
+      "events": [
+        {
+          "event_id": "EV-CONS-07",
+          "name": "国务院联防联控机制综合组印发《关于进一步优化落实新冠肺炎疫情防控措施的通知》（新十条）",
+          "date": "2022-12-07",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-CONS-08",
+          "name": "2023 年春节假期全国国内旅游出游 3.08 亿人次、同比增长 23.1%（恢复至 2019 年同期 88.6%）",
+          "date": "2023-01-27",
+          "event_type": "industry",
+          "role": "catalyst"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "BTG",
+          "name": "首旅酒店",
+          "ticker": "600258",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "CTGDF",
+          "name": "中国中免",
+          "ticker": "601888",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "JINJIANG",
+          "name": "锦江酒店",
+          "ticker": "600754",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "SONGCHENG",
+          "name": "宋城演艺",
+          "ticker": "300144",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF011 裁决：**与 003 为同一 Theme Cycle 下的 Sequential Campaign**。机制 = **事件驱动的补偿性需求释放**（与 003 的政策额度放开 + 出境回流替代不同）。★ 链条：E026（2022-12-07「新十条」）→ E027（2023 春节 3.08 亿人次、+23.1%，恢复至 2019 年 88.6%）→ E028（2023 五一 2.74 亿人次、+70.83%，恢复至 2019 年 119.09%）→ E032（2023-01-31 中国中免月内最高 239.99 元）→ E031（2023-04-28~05-31 中免 160.98→123.10 元等回落）。★ **峰值取 A 股口径 2023-01-31**（中国中免月内最高价，E032）。★ **持续性为本 Campaign 最脆弱环节**：主升段仅约 **1–2 个月** → `strength` 定为 **medium**（而非 strong）；保留依据为「需求端有连续两个假期的官方数据验证 + 降温有明确的宏观数据证伪事件 + 代表标的组回落同步」。**不得据此宣称已满足长周期持续性标准。**★ CF004（**宏观消费数据改善 ≠ 具体消费行业启动**）**保留 KEEP_BOTH**：P1 2023-04 社零 +18.4%、5 月 +12.7%；P2 同期服务消费标的**已在回落**；P3 权威媒体确认复苏不及预期（E029/E030 `contradicting`）→ 本包**所有宏观数据（社零/CPI/旅游人次）证据角色均为 `context`**，不作启动或加速证据。｜theme_cycle_id=service_consumption_2020_2023｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2022-12-07",
+          "end": "2023-01-31",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2023-05-01",
+          "end": "2023-06-30",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "2022-12-07 疫情防控措施优化（新十条）（S021）",
+          "低基数背景：2020 年国内旅游 28.79 亿人次、-52.1%，餐饮收入 -16.6%（S018、S071，context）"
+        ],
+        "accelerator": [
+          "2023 年春节旅游出游 3.08 亿人次，恢复至 2019 年同期 88.6%（S019）",
+          "2023 年五一旅游出游 2.74 亿人次，可比口径恢复至 2019 年同期 119.09%（S020）"
+        ],
+        "turning": [
+          "2023 年 5 月社零 +12.7% 低于市场预期（S024）；6 月降至 +3.1%（S023）——人次恢复但消费力未同步修复"
+        ],
+        "ending": [
+          "2023 年 4–5 月服务消费标的普遍回落（S066）",
+          "叙事失效：\"强复苏\"预期被数据证伪，资金转向其他方向"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2023-CONS-VALUE-RETAIL",
+      "db_campaign_id": "C-2023-CONS-VALUE-RETAIL",
+      "year": 2023,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2023-01-01",
+      "peak_date_candidate": "2025-08-29",
+      "end_date_candidate": null,
+      "date_confidence": "low",
+      "theme": "消费",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "value_retail_2023_2025",
+      "classification": "industry_trend",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-74",
+        "E-CONS-75",
+        "E-CONS-76",
+        "E-CONS-77",
+        "E-CONS-78",
+        "E-CONS-79"
+      ],
+      "source_ids": [
+        "S-CONS-58",
+        "S-CONS-59",
+        "S-CONS-60",
+        "S-CONS-65",
+        "S-CONS-79",
+        "S-CONS-82"
+      ],
+      "independent_groups": [
+        "company-yanjin",
+        "market-eastmoney",
+        "media-36kr",
+        "media-eastmoney",
+        "media-sohu",
+        "research-broker-wanchen"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-CONS-18",
+          "name": "万辰集团收于 210.81 元（区间最高）；同期三只松鼠 2025 年初见顶后全年收跌",
+          "date": "2025-08-29",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CHINAPET",
+          "name": "中宠股份",
+          "ticker": "002891",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "ECOVACS",
+          "name": "科沃斯",
+          "ticker": "603486",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ 启动精度裁决：**start 采用包内 DATE_WINDOW 左沿 2023-01-01，`date_confidence = low`** —— **不虚构更精确的日期**。已知缺口：门店总数**缺乏官方统计口径**，启动窗口只能定为**年度级**（`known_gaps[8]`）；首个有确切日期的证据为 E075（2024-06-12 零食很忙集团门店总数突破 10000 家）。★ **`end_date = NULL`** —— **结束尚未确立**：渠道龙头万辰集团 2025-08-29 收 210.81 元（区间最高），lifecycle 末段为 `UNKNOWN`（`Q011`）。★ 机制 =「**渠道效率变革 + 性价比消费**」，与收入驱动的消费升级**方向相反**，为当前 Historical Universe **完全缺失**的机制样本。★ 链条：E075（2024-06-12 门店破万）→ E076（万辰并表门店 4726→14196 家）→ E077（万辰 2024 营收 323.29 亿元、+247.86%）→ E078（盐津铺子营收 +28.89%）→ E079（万辰 2024-12-11 收 80.21 元 → 2025-08-29 收 210.81 元，区间最高）。★ **已知弱点**：① A 股可交易标的仅 2 个（万辰集团/盐津铺子），**板块广度有限**；② 三只松鼠、良品铺子等品牌商走势与渠道龙头分化 → 「量贩零食」作为单一叙事的完整性存疑；③ 港股/一级市场同类业态不在本任务范围 → `strength = medium`。★ **Macro Theme 归属**：`商贸零售` 未被 T01 的 `消费` 根覆盖（`MT007` 以 `NEW_MACRO_CANDIDATE` 提交但 CMTR 返回 `UNRESOLVED_NAME`）→ 本 Campaign 以 **root `TH-CONSUMER` 为 main 主题**（无子主题）。**未扩展 taxonomy**；该提案级 gap 已记录，待后续 taxonomy 轮次处理。｜theme_cycle_id=value_retail_2023_2025｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-01-01",
+          "end": "2024-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "渠道业态扩张：量贩零食门店快速铺开（E074/E075，第三方测算与公司数据，置信度不一）"
+        ],
+        "accelerator": [
+          "渠道商规模化：万辰集团并表门店由 2023 年末 4726 家增至 2024 年末 14196 家（S059）；2024 年营收 323.29 亿元、+247.86%（S082）",
+          "上游品牌业绩兑现：盐津铺子 2024 年营收 53.04 亿元、+28.89%，归母净利 6.40 亿元、+26.53%（S058）",
+          "头部整合：2024-06 零食很忙集团（含赵一鸣）门店总数突破 10000 家（S060）"
+        ],
+        "turning": [
+          "2025 年品牌商标（三只松鼠、良品铺子）见顶后全年收跌，板块内部出现分化"
+        ],
+        "ending": [
+          "尚无明确结束证据（见 lifecycle 的 UNKNOWN 段）"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2024-CONS-TRADE-IN",
+      "db_campaign_id": "C-2024-CONS-TRADE-IN",
+      "year": 2024,
+      "rule_id": "rule_consumer",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2024-03-13",
+      "peak_date_candidate": "2024-10-08",
+      "end_date_candidate": "2025-12-31",
+      "date_confidence": "medium",
+      "theme": "家用电器",
+      "themes": [
+        {
+          "name": "消费",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "家用电器",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "trade_in_2024_2025",
+      "classification": "mixed",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-CONS-55",
+        "E-CONS-56",
+        "E-CONS-57",
+        "E-CONS-61",
+        "E-CONS-58",
+        "E-CONS-59",
+        "E-CONS-60",
+        "E-CONS-62"
+      ],
+      "source_ids": [
+        "S-CONS-41",
+        "S-CONS-42",
+        "S-CONS-43",
+        "S-CONS-44",
+        "S-CONS-45",
+        "S-CONS-66",
+        "S-CONS-76"
+      ],
+      "independent_groups": [
+        "assoc-cheaa",
+        "gov-govcn",
+        "gov-mofcom",
+        "gov-ndrc",
+        "market-ifzq",
+        "media-people"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-CONS-16",
+          "name": "商务部等 4 部门发布《关于进一步做好家电以旧换新工作的通知》（8 类家电补 15%/20%）",
+          "date": "2024-08-24",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-CONS-17",
+          "name": "美的/格力/海尔/海信家电/华帝/老板电器同时出现区间最高价",
+          "date": "2024-10-08",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "AIMEIKE",
+          "name": "爱美客",
+          "ticker": "300896",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "BLOOMAGE",
+          "name": "华熙生物",
+          "ticker": "688363",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "LANCY",
+          "name": "朗姿股份",
+          "ticker": "002612",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "ROBAM",
+          "name": "老板电器",
+          "ticker": "002508",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ 独立生命周期裁决：**构成独立 Campaign** —— 政策定调**不**被当作完整启动。完整链条（**五级验证**）：① 政策定调 E055（2024-03-13 国发〔2024〕7 号公开）→ ② 资金落地 E056（2024-07-25 发改环资〔2024〕1104 号，约 1500 亿元超长期特别国债）→ ③ 补贴细则 E057（2024-08-24 商务部等 4 部门，8 类家电补 15%/20%）→ ④ **官方销量/零售验证** E058（2024-09~12 零售额同比 +20.5%/+39.2%/+22.2%/+39.3%，连续 4 个月双位数）+ E059（全年 10307 亿元、+12.3% 创历史新高）+ E060（商务部口径 3600 万消费者、超 6000 万台、超 2600 亿元）→ ⑤ **A 股响应** E061（2024-10-08 美的/格力/海尔/海信家电/华帝/老板电器**同时**出现区间最高价）→ 降温 E062（2025 年奥维云网推总口径 8931 亿元、-4.3%，Q3 起明显回落）。**start 取 2024-03-13（政策定调），peak 取 2024-10-08（A 股区间高点）** —— **未把政策出台日期当成完整 Campaign 启动**。★ CF010（补贴驱动 vs 真实需求）**保留 UNRESOLVED**：P1 需求前置（2025 推总口径 -4.3%）；P2 存在真实成分（全年零售额创历史新高、1 级能效占比高）；**P3 口径冲突完整保留** —— **2025 年家电零售增速：国家统计局口径 +11% vs 奥维云网推总口径 -4.3%，方向相反**（`CF010.positions[2]`，来源 `S076`）—— **本注记不选任何一个作为唯一事实**。Worker 按「一个 Campaign、双驱动叠加」提交，理由：两者**时间完全重叠、代表标的相同**，拆分将违反 Q5。★ **Beta 风险**：峰值日 2024-10-08 与全市场「9·24 行情」重合 → **存在 Beta Contamination，无法排除** → `strength = medium`（而非 strong），峰值置信度仅 medium；**不得把涨幅单独归因于补贴逻辑，不得声称完成 Beta 中性验证**。★ **反面对照**：2025 年消费政策密集但**无 Campaign**（`exclusion X001` / `CF012`）：社零 +3.7%、中证白酒 -16.2%、中证食品饮料 -12.0%，年内高点恰在政策公开前后 —— **政策发布 ≠ 主题形成**。｜theme_cycle_id=trade_in_2024_2025｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2024-08-24",
+          "end": "2024-10-08",
+          "precision": "DATE_WINDOW"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2025-07-01",
+          "end": "2025-12-31",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "政策定调：国发〔2024〕7 号《推动大规模设备更新和消费品以旧换新行动方案》（S041）"
+        ],
+        "accelerator": [
+          "资金落地：发改环资〔2024〕1104 号安排约 1500 亿元超长期特别国债支持消费品以旧换新（S042）",
+          "补贴细则：2024-08-24 明确 8 类家电按能效补 15%/20%（S043）",
+          "需求验证：2024 年 9–12 月限额以上家电和音像器材类零售额同比 +20.5%/+39.2%/+22.2%/+39.3%（S044）；全年 10307 亿元、+12.3%（S044）"
+        ],
+        "turning": [
+          "2025 年高基数效应显现，补贴力度边际减弱（S076）"
+        ],
+        "ending": [
+          "2025 年推总口径家电零售 8931 亿元、-4.3%，Q3 起明显回落（S076）"
         ]
       }
     },

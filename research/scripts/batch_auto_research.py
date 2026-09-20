@@ -38,8 +38,9 @@ COMM_RULE = "rule_infocomm"           # 信息通信（Wave 1B — 信息通信�
 HIEQ_RULE = "rule_high_end_equipment"  # 高端装备 / 机器人（Wave R01-01 — Historical Universe Expansion）
 SEMI_RULE = "rule_semiconductor"        # 半导体 / 电子（Wave R01-02 — Historical Universe Expansion）
 RES_RULE = "rule_resources"             # 资源 / 有色 / 化工（Wave R01-03 — Historical Universe Expansion）
+CONS_RULE = "rule_consumer"              # 消费（Wave R01-04 — Historical Universe Expansion）
 # 批量研究覆盖的 Rule（按顺序生成；新增 Macro Theme 在此登记）
-RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE, SEMI_RULE, RES_RULE]
+RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE, SEMI_RULE, RES_RULE, CONS_RULE]
 RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----
@@ -90,6 +91,21 @@ THEME_CYCLE = {
     "C-2021-RES-CHEM-DUALCTRL": "resource_reflation_2020_2022",
     "C-2019-RES-DYE-SHOCK": "dye_shock_2019",
     "C-2024-RES-GOLD-CB": "gold_cb_demand_2024_2025",
+
+    # ---- 消费（Wave R01-04，Primary Macro Theme = TH-CONSUMER）----
+    # 001+002（白酒 Sequential）· 003+004（服务消费 Sequential）· 005+006（猪周期 Sequential）
+    # 009+010（颜值经济 Parallel）· 008 / 011 / 012 各自独立
+    "C-2016-CONS-BAIJIU-UPGRADE": "baijiu_premium_2016_2021",
+    "C-2019-CONS-BAIJIU-CORE": "baijiu_premium_2016_2021",
+    "C-2020-CONS-DUTYFREE": "service_consumption_2020_2023",
+    "C-2022-CONS-SERVICE-REBOUND": "service_consumption_2020_2023",
+    "C-2018-CONS-HOG-AFRICAN": "hog_cycle_2018_2022",
+    "C-2021-CONS-HOG-REVERSAL": "hog_cycle_2018_2022",
+    "C-2020-CONS-WHITE-GOODS": "appliance_export_2020_2021",
+    "C-2019-CONS-AESTHETICS": "beauty_aesthetics_2019_2022",
+    "C-2020-CONS-BEAUTY-CN": "beauty_aesthetics_2019_2022",
+    "C-2024-CONS-TRADE-IN": "trade_in_2024_2025",
+    "C-2023-CONS-VALUE-RETAIL": "value_retail_2023_2025",
 }
 
 # 研究信号（research-level，来自 theme_lifecycle_v0_2 三案例建模；其余年份按 annual 研究记录）
@@ -326,6 +342,106 @@ RESEARCH_CANDIDATES = [
                   "未升 Case C：⚠ 归属未决（医药健康下 Sub-theme vs 独立 Macro Theme「中医药」）→ Unknown Register U-C1；"
                   "且市场存在分歧（「拐点已现」vs「更多是反弹」）→ 记 CONFLICT 语义但不写入 conflicts（无日期口径冲突）。"
                   "结构为两段（片仔癀 2021 品牌中药 + 以岭 2022Q4 抗疫中药），Peak 取以岭自身高点。"),
+    },
+    # ==== 消费（Wave R01-04）：RESEARCH_ONLY，**不进入 campaigns 表** ====
+    {
+        "campaign_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "rule_id": "rule_consumer",
+        "year": 2020,
+        "title": "2020–2021 小家电与清洁电器（疫情居家需求 + 产品创新 + 渗透率提升 + 出口）",
+        "start_date": "2020-02-01",
+        "peak_date": "2021-07-15",
+        "end_date": "2021-12-31",
+        "themes": [
+            {
+                "name": "消费",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "家用电器",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "MIDEA",
+                "name": "美的集团",
+                "ticker": "000333",
+                "exchange": "SZ",
+                "role": "representative"
+            },
+            {
+                "security_id": "GREE",
+                "name": "格力电器",
+                "ticker": "000651",
+                "exchange": "SZ",
+                "role": "representative"
+            },
+            {
+                "security_id": "HAIER",
+                "name": "海尔智家",
+                "ticker": "600690",
+                "exchange": "SH",
+                "role": "representative"
+            }
+        ],
+        "events": [],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "small_appliance_2020_2021",
+        "conflicts": [],
+        "notes": "与白电候选（R01-CONSUMER-008）同属家电大类，存在\"同一资金池的不同分支\"风险（Q1 Anti-example）。本包按代表标的组与生命周期错位拆分为两个候选，但是否应判为同一 Campaign 下的两个 sub-theme 保留为 Conflict CF008。此外，渗透率提升这一核心机制缺少一手量化数据，证据强度弱于其他候选。"
+    },
+    {
+        "campaign_id": "RC-2024-CONS-PET-FOOD",
+        "rule_id": "rule_consumer",
+        "year": 2024,
+        "title": "2024–2025 宠物食品（情感消费 + 出口增长）",
+        "start_date": "2024-10-01",
+        "peak_date": "2025-06-30",
+        "end_date": None,
+        "themes": [
+            {
+                "name": "消费",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "农林牧渔",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "ROBOROCK",
+                "name": "石头科技",
+                "ticker": "688169",
+                "exchange": "SH",
+                "role": "representative"
+            },
+            {
+                "security_id": "BEAR",
+                "name": "小熊电器",
+                "ticker": "002959",
+                "exchange": "SZ",
+                "role": "representative"
+            }
+        ],
+        "events": [],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "pet_food_2024_2025",
+        "conflicts": [],
+        "notes": "★ 证据明显不足：① 无一手官方数据（行业规模、出口数据均为媒体转述）；② 无明确的启动事件锚点，启动阶段只能以 PHASE_WINDOW 表达；③ A 股可交易标的仅 2–3 只，板块广度严重不足，难以满足\"市场关注/扩散\"标准；④ 持续时间仅约 2–3 个季度，接近 OBSERVATION_ONLY 边界。故研究状态为 INSUFFICIENT，置信度 low，建议后续轮次补齐海关总署出口原文与行业协会官方数据后再评估。"
     },
     # ==== 资源 / 有色 / 化工（Wave R01-03）：RESEARCH_ONLY，**不进入 campaigns 表** ====
     {
@@ -1121,6 +1237,51 @@ CAMPAIGN_LIFECYCLE = {
     "C-2024-RES-GOLD-CB": [
         {"stage": "MAIN_RISE", "start": "2024-02-01", "end": "2025-12-26", "precision": "DATE_WINDOW"},
     ],
+
+    # ---- 消费（Wave R01-04）：lifecycle 与 canonical `campaign_phases` 一致 ----
+    "C-2016-CONS-BAIJIU-UPGRADE": [
+        {"stage": "MAIN_RISE", "start": "2016-06-01", "end": "2017-12-31", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2018-09-01", "end": "2018-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2019-CONS-BAIJIU-CORE": [
+        {"stage": "MAIN_RISE", "start": "2019-03-01", "end": "2020-12-31", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2021-02-18", "end": "2021-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2020-CONS-DUTYFREE": [
+        {"stage": "MAIN_RISE", "start": "2020-06-01", "end": "2021-02-18", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2021-07-01", "end": "2022-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2022-CONS-SERVICE-REBOUND": [
+        {"stage": "MAIN_RISE", "start": "2022-12-07", "end": "2023-01-31", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2023-05-01", "end": "2023-06-30", "precision": "DATE_WINDOW"},
+    ],
+    "C-2018-CONS-HOG-AFRICAN": [
+        {"stage": "MAIN_RISE", "start": "2019-01-01", "end": "2019-12-31", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2021-01-01", "end": "2021-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2021-CONS-HOG-REVERSAL": [
+        {"stage": "MAIN_RISE", "start": "2022-04-01", "end": "2022-07-31", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2022-09-08", "end": "2022-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2020-CONS-WHITE-GOODS": [
+        {"stage": "MAIN_RISE", "start": "2020-06-01", "end": "2021-02-28", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2021-07-01", "end": "2021-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2019-CONS-AESTHETICS": [
+        {"stage": "MAIN_RISE", "start": "2020-01-01", "end": "2021-06-30", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2021-07-26", "end": "2022-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2020-CONS-BEAUTY-CN": [
+        {"stage": "MAIN_RISE", "start": "2020-06-29", "end": "2021-06-30", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2022-01-01", "end": "2022-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2024-CONS-TRADE-IN": [
+        {"stage": "MAIN_RISE", "start": "2024-08-24", "end": "2024-10-08", "precision": "DATE_WINDOW"},
+        {"stage": "DECLINING", "start": "2025-07-01", "end": "2025-12-31", "precision": "DATE_WINDOW"},
+    ],
+    "C-2023-CONS-VALUE-RETAIL": [
+        {"stage": "MAIN_RISE", "start": "2023-01-01", "end": "2024-12-31", "precision": "DATE_WINDOW"},
+    ],
 }
 
 CANDIDATE_LIFECYCLE = {
@@ -1727,6 +1888,187 @@ CAMPAIGN_DRIVERS = {
             "窗口结束时结构未结束（unknown）",
         ],
     },
+
+    # ---- 消费（Wave R01-04）：drivers 原样来自 R01-04 intake（四问），未改写
+    "C-2016-CONS-BAIJIU-UPGRADE": {
+        "start": [
+            "高端白酒价格上行：飞天茅台一批价与零售价 2016 年持续走高（S001）",
+            "行业量价齐升：2016 年全国规上白酒产量 1358.36 万千升为历史峰值（S002）",
+        ],
+        "accelerator": [
+            "外资定价权提升：2017-06-21 MSCI 宣布自 2018 年 6 月起纳入 A 股（S003）",
+            "龙头集中与业绩兑现：贵州茅台 2017 年营收 582.18 亿元、归母净利 270.79 亿元（S009）",
+        ],
+        "turning": [
+            "2018-10-29 贵州茅台首个一字跌停，白酒股集体下跌，市场同步注意到业绩增速不及预期（S004、S005）",
+        ],
+        "ending": [
+            "板块估值与景气同步回落（S065 计算值：2018 年全年约 -26.9%）",
+            "2018 年社零增速降至 9.0%，宏观消费环境转弱（S006，仅作背景）",
+        ],
+    },
+    "C-2019-CONS-BAIJIU-CORE": {
+        "start": [
+            "外资增量资金制度性启动：2019-03-01 MSCI 提高 A 股纳入因子至 20%（S007）",
+            "2019 年北向资金净流入 3517.43 亿元创历史新高（S008）",
+        ],
+        "accelerator": [
+            "2020 年疫情下\"确定性溢价\"叙事强化（本包未为该项单独建立一手证据，属解释性判断）",
+            "龙头业绩持续兑现：贵州茅台 2021 年营收 1094.64 亿元、归母净利 524.60 亿元（S010）",
+        ],
+        "turning": [
+            "2021-02-18 后核心资产集体下跌，抱团结构瓦解（S011）",
+        ],
+        "ending": [
+            "2021 年 7 月指数单月约 -21%，全年约 -3.4%（S065 计算值）",
+            "宏观消费 2021 年社零 +12.5%（S012），基本面并未同步恶化——说明结束主要由估值与资金结构驱动，而非需求端反转",
+        ],
+    },
+    "C-2020-CONS-DUTYFREE": {
+        "start": [
+            "公司战略重塑：聚焦免税、变更证券简称（S069）",
+            "政策方向确立：2020-06-01 海南自贸港总体方案提出放宽离岛免税额度至 10 万元（S068）",
+        ],
+        "accelerator": [
+            "2020-06-29 财政部、海关总署、税务总局 33 号公告：额度 3 万→10 万元、不限次数、品类增至 45 类、取消单件 8000 元限额，2020-07-01 施行（S013、S014）",
+            "需求验证：2020-07-01 至 10-31 离岛免税销售 120.1 亿元、同比 +214.1%（S015）；2020 年全年 274.8 亿元、+103.7%（S016）",
+        ],
+        "turning": [
+            "2021 年后疫情反复导致客流波动，离岛免税经营主体增加、竞争加剧（本项为解释性判断，本包未取得一手竞争数据）",
+        ],
+        "ending": [
+            "2022 年海南离岛免税店销售额约 487.1 亿元、同比约 -19%（S070，媒体转述，置信度低）",
+            "2023 年 5 月股价回落至 123.10 元（S066）",
+        ],
+    },
+    "C-2022-CONS-SERVICE-REBOUND": {
+        "start": [
+            "2022-12-07 疫情防控措施优化（新十条）（S021）",
+            "低基数背景：2020 年国内旅游 28.79 亿人次、-52.1%，餐饮收入 -16.6%（S018、S071，context）",
+        ],
+        "accelerator": [
+            "2023 年春节旅游出游 3.08 亿人次，恢复至 2019 年同期 88.6%（S019）",
+            "2023 年五一旅游出游 2.74 亿人次，可比口径恢复至 2019 年同期 119.09%（S020）",
+        ],
+        "turning": [
+            "2023 年 5 月社零 +12.7% 低于市场预期（S024）；6 月降至 +3.1%（S023）——人次恢复但消费力未同步修复",
+        ],
+        "ending": [
+            "2023 年 4–5 月服务消费标的普遍回落（S066）",
+            "叙事失效：\"强复苏\"预期被数据证伪，资金转向其他方向",
+        ],
+    },
+    "C-2018-CONS-HOG-AFRICAN": {
+        "start": [
+            "外生供给冲击：2018-08-03 我国首例非洲猪瘟疫情确认（S026）",
+        ],
+        "accelerator": [
+            "产能去化：生猪与能繁母猪存栏大幅下降（官方数据经媒体转述，E036，置信度低）",
+            "价格与宏观传导：2019 年猪肉价格 +42.5%，拉动 CPI 约 1.81 个百分点（S031）",
+        ],
+        "turning": [
+            "产能见底回升：2019 年 10 月能繁母猪存栏环比 +0.6%，为 2018 年 4 月以来首次回升（E036，弱证据）",
+        ],
+        "ending": [
+            "2021 年猪价大幅回落，10 月集贸市场活猪 13.40 元/公斤、同比 -57.7%（S030）",
+        ],
+    },
+    "C-2021-CONS-HOG-REVERSAL": {
+        "start": [
+            "产能去化信号：2021-08-17 公布 7 月能繁母猪存栏环比 -0.5%，结束 21 个月增长（S033）",
+        ],
+        "accelerator": [
+            "制度框架确立：2021-09-19《生猪产能调控实施方案（暂行）》明确 4100 万头正常保有量（S027）",
+            "逆周期收储：2022-02-28 启动中央冻猪肉储备收储，首批 4 万吨（S034）",
+            "价格验证：2022-07-04 至 07-10 生猪平均收购价 22.26 元/公斤、同比 +30.6%（S029）",
+        ],
+        "turning": [
+            "2022-09-08 起投放中央猪肉储备，调控方向反转（S035）",
+        ],
+        "ending": [
+            "2022 年末猪价快速回落（S074，非官方口径，置信度低）",
+            "2023 年养殖行业普遍亏损（媒体转述，本包未建立一手证据）",
+        ],
+    },
+    "C-2020-CONS-WHITE-GOODS": {
+        "start": [
+            "出口替代：2020 年家电出口 4582 亿元、+24.2%，出口自 6 月起强劲反弹（S036、S037）",
+        ],
+        "accelerator": [
+            "原材料涨价推动产品均价上升（S037）",
+            "2021 年行业主营收入 1.73 万亿元、+15.5%（S038）",
+        ],
+        "turning": [
+            "2021 年 7 月商品房销售面积与销售额单月同比首次下降（S075，媒体转述）",
+        ],
+        "ending": [
+            "2021 年 12 月家电零售额同比 -10.4%；利润增速 +4.5% 远低于收入增速 +15.5%（S038）",
+        ],
+    },
+    "C-2019-CONS-AESTHETICS": {
+        "start": [
+            "标的可得性：华熙生物 2019-11-06 科创板上市（S051）",
+        ],
+        "accelerator": [
+            "渗透率提升与国产品牌替代（E067，二手转述，置信度低）",
+            "合规化清退非法供给，份额向合规龙头集中（S047，双重性质）",
+        ],
+        "turning": [
+            "2021-05-28 八部门印发打击非法医美专项整治工作方案，2021-06-11 公开，整治期 2021 年 6–12 月（S047）",
+        ],
+        "ending": [
+            "2021-11-01 市场监管总局发布《医疗美容广告执法指南》（S048）",
+            "2022 年市场监管总局等 11 部门开展医美行业突出问题专项治理（本包未建立一手证据链接，仅叙述性提及）",
+        ],
+    },
+    "C-2020-CONS-BEAUTY-CN": {
+        "start": [
+            "制度框架：《化妆品监督管理条例》2020-06-29 公布、2021-01-01 施行（S049）",
+        ],
+        "accelerator": [
+            "功效宣称规范化：《化妆品功效宣称评价规范》2021-04-08 发布、2021-05-01 施行（S050）",
+            "标的扩容与需求验证：贝泰妮 2021-03-25 创业板上市（S052）；2021 年限额以上化妆品类零售额 4026 亿元、+14.0%（S012）",
+            "线上渠道红利：抖音美妆头部品牌 GMV 由 2021 年 10 亿级升至 2022 年 20 亿级（E073，二手转述）",
+        ],
+        "turning": [
+            "2022 年化妆品类零售额转为 -4.5%，行业需求自高增长切至负增长（S077）",
+        ],
+        "ending": [
+            "行业需求负增长与板块估值回落（S077）",
+        ],
+    },
+    "C-2024-CONS-TRADE-IN": {
+        "start": [
+            "政策定调：国发〔2024〕7 号《推动大规模设备更新和消费品以旧换新行动方案》（S041）",
+        ],
+        "accelerator": [
+            "资金落地：发改环资〔2024〕1104 号安排约 1500 亿元超长期特别国债支持消费品以旧换新（S042）",
+            "补贴细则：2024-08-24 明确 8 类家电按能效补 15%/20%（S043）",
+            "需求验证：2024 年 9–12 月限额以上家电和音像器材类零售额同比 +20.5%/+39.2%/+22.2%/+39.3%（S044）；全年 10307 亿元、+12.3%（S044）",
+        ],
+        "turning": [
+            "2025 年高基数效应显现，补贴力度边际减弱（S076）",
+        ],
+        "ending": [
+            "2025 年推总口径家电零售 8931 亿元、-4.3%，Q3 起明显回落（S076）",
+        ],
+    },
+    "C-2023-CONS-VALUE-RETAIL": {
+        "start": [
+            "渠道业态扩张：量贩零食门店快速铺开（E074/E075，第三方测算与公司数据，置信度不一）",
+        ],
+        "accelerator": [
+            "渠道商规模化：万辰集团并表门店由 2023 年末 4726 家增至 2024 年末 14196 家（S059）；2024 年营收 323.29 亿元、+247.86%（S082）",
+            "上游品牌业绩兑现：盐津铺子 2024 年营收 53.04 亿元、+28.89%，归母净利 6.40 亿元、+26.53%（S058）",
+            "头部整合：2024-06 零食很忙集团（含赵一鸣）门店总数突破 10000 家（S060）",
+        ],
+        "turning": [
+            "2025 年品牌商标（三只松鼠、良品铺子）见顶后全年收跌，板块内部出现分化",
+        ],
+        "ending": [
+            "尚无明确结束证据（见 lifecycle 的 UNKNOWN 段）",
+        ],
+    },
 }
 
 CANDIDATE_DRIVERS = {
@@ -2012,7 +2354,8 @@ def main():
                   " + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块）"
                   " + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人）"
                   " + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期）"
-                  " + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性）"),
+                  " + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性）"
+                  " + rule_consumer（消费 2016–2025，消费升级 / 政策替代 / 自然周期 / 财政补贴 / 渠道变革）"),
         "status_vocabulary": {
             "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
             "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -2095,6 +2438,18 @@ def main():
                                    "（Peak 2020-02-24~2020-03-12）；"
                                    "② AI 算力驱动的光模块 2023-03-21~2025-12-31"
                                    "（Peak 未确认，2025-12-22~12-25 为区间高点）"),
+        },
+        CONS_RULE: {
+            "definition": ("Historical Observation Window（历史观察窗口）：消费（食品饮料 / 家用电器 / 农林牧渔 / 社会服务 / "
+                           "商贸零售 / 美容护理）在消费升级、核心资产定价、政策放开与需求替代、事件驱动补偿需求、"
+                           "供给端自然周期、出口替代、渗透率提升、财政补贴与渠道效率变革驱动下形成的结构性行情；"
+                           "非固定买入窗口，不构成交易建议"),
+            "observation_window": ("结构性（非季节性）：2016–2025。五条机制主线："
+                                   "① 消费升级 / 核心资产（白酒 2016-06-01~2018-12-31 与 2019-03-01~2021-12-31，Sequential）；"
+                                   "② 政策放开 + 需求替代（离岛免税 2020-06-01~2022-12-31）；"
+                                   "③ 事件驱动补偿需求（疫后修复 2022-12-07~2023-06-30）；"
+                                   "④ 供给端自然周期（猪周期 2018-08-03~2021-12-31 与 2021-08-17~2022-12-31，Sequential）；"
+                                   "⑤ 财政补贴 → 官方销量 → A 股响应（以旧换新 2024-03-13~2025-12-31）"),
         },
         RES_RULE: {
             "definition": ("Historical Observation Window（历史观察窗口）：资源 / 有色 / 化工（工业金属 / 贵金属 / 稀有金属·稀土 / "
