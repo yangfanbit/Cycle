@@ -1,0 +1,410 @@
+[
+  {
+    "security_id": "R01-RESOURCES-SEC001",
+    "ticker": "600362",
+    "name": "江西铜业",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "中国最大铜生产基地之一。2021 年前三季度，江西铜业、铜陵有色、云南铜业、紫金矿业、白银有色 5 家铜综合性主业上市公司合计销售收入 7500 亿元（同比 +38%）、利润 187.8 亿元（同比 +154%）。",
+    "source_ids": [
+      "R01-RESOURCES-S008",
+      "R01-RESOURCES-S007"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective，基于 2021 年三季度后确认的业绩与规模）；不得等同于 2020-2021 年当时可识别的 Point-in-Time Basket。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC002",
+    "ticker": "000878",
+    "name": "云南铜业",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "中国重要铜、金、银和硫化工生产基地，阴极铜产能 130 万吨（2021 年报道口径）。",
+    "source_ids": [
+      "R01-RESOURCES-S007",
+      "R01-RESOURCES-S008"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；2021 年 5 月的媒体报道已提及该公司，可作为 PIT 观察的线索之一，但当时的龙头地位判断不得使用事后数据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC003",
+    "ticker": "601899",
+    "name": "紫金矿业",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "同时覆盖铜与黄金主业，出现在 2021 年铜价行情与 2024–2025 年黄金、铜价行情中；2025 年 A 股黄金板块涨幅居前。",
+    "source_ids": [
+      "R01-RESOURCES-S008",
+      "R01-RESOURCES-S027"
+    ],
+    "point_in_time_note": "跨多个候选的 Historical Leader Set（retrospective）；属于多个主题这一点本身即为冲突来源（见 conflicts）。不得把 2025 年的地位回填为 2021 年当时的判断。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC004",
+    "ticker": "000630",
+    "name": "铜陵有色",
+    "exchange": "SZ",
+    "role": "follow",
+    "basis": "铜综合性主业上市公司之一，2021 年前三季度与江西铜业等 5 家铜企合计利润同比 +154%。",
+    "source_ids": [
+      "R01-RESOURCES-S008"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective），作为板块代表性标的记录；不构成 PIT Basket 的独立判定。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC005",
+    "ticker": "601600",
+    "name": "中国铝业",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "2021 年前三季度营业收入约 1949.29 亿元（同比 +46.39%），净利润约 53 亿元（同比 +1036%）；同时是 2017 年电解铝清理违规产能的重要行业主体。",
+    "source_ids": [
+      "R01-RESOURCES-S008",
+      "R01-RESOURCES-S030"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；2017 年与 2021 年两次行情的代表性角色不同，不得混用。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC006",
+    "ticker": "000807",
+    "name": "云铝股份",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "2021 年公告称因云南电力供应紧张受限电影响，减少电解铝产能约 77 万吨；其鲁甸二期 38 万吨产能未能按原计划投产。",
+    "source_ids": [
+      "R01-RESOURCES-S020"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；2021 年公司公告为同期可观察事实，可作为 PIT 线索，但「代表性」判断仍为复盘结论。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC007",
+    "ticker": "000933",
+    "name": "神火股份",
+    "exchange": "SZ",
+    "role": "follow",
+    "basis": "2021 年公告称自 5 月 10 日以来控股子公司云南神火铝业用电总负荷大幅降低，被迫陆续停运 20 万吨，在产产能降至 55 万吨。",
+    "source_ids": [
+      "R01-RESOURCES-S020"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective），公司公告为同期事实。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC008",
+    "ticker": "002466",
+    "name": "天齐锂业",
+    "exchange": "SZ",
+    "role": "leader",
+    "basis": "2020-07-01 至 2021-12-31 区间涨跌幅 451.88%；2020-10-30 至 2021-08-31 区间股价涨幅 588%（研报复盘口径）。",
+    "source_ids": [
+      "R01-RESOURCES-S047",
+      "R01-RESOURCES-S040"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective，基于完整区间涨幅确认）；2021-01 的媒体报道已提及天齐锂业创历史新高，可部分作为 PIT 线索，但区间涨幅口径不得用于当时判断。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC009",
+    "ticker": "002460",
+    "name": "赣锋锂业",
+    "exchange": "SZ",
+    "role": "leader",
+    "basis": "2020-07-01 至 2021-12-31 区间涨跌幅 180.74%；2020-10-30 至 2021-08-31 区间股价涨幅 262%（研报复盘口径）。",
+    "source_ids": [
+      "R01-RESOURCES-S047",
+      "R01-RESOURCES-S040",
+      "R01-RESOURCES-S039"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；2021-01-12 报道已记录其股价创历史新高与 2020-11 以来涨幅，可作为 PIT 线索。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC010",
+    "ticker": "002738",
+    "name": "中矿资源",
+    "exchange": "SZ",
+    "role": "second_leader",
+    "basis": "2020-10-30 至 2021-08-31 区间股价涨幅 251%（研报复盘口径），被列为代表性锂矿股之一。",
+    "source_ids": [
+      "R01-RESOURCES-S040"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；复盘研报给出，无对应同期 PIT 证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC011",
+    "ticker": "002756",
+    "name": "永兴材料",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "2020-10-30 至 2021-08-31 区间股价涨幅 509%（研报复盘口径），被列为代表性锂矿股之一。",
+    "source_ids": [
+      "R01-RESOURCES-S040"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；复盘研报给出，无对应同期 PIT 证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC012",
+    "ticker": "000792",
+    "name": "盐湖股份",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "盐湖提锂技术路线代表企业，被列为锂资源自主可控的龙头之一。",
+    "source_ids": [
+      "R01-RESOURCES-S012",
+      "R01-RESOURCES-S039"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；2021–2022 年报道已提及，可部分作为 PIT 线索。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC013",
+    "ticker": "600111",
+    "name": "北方稀土",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "2021 年营业收入 304.08 亿元（同比 +38.83%）、归母净利润 51.30 亿元（同比 +462.32%）；获稀土配额 10.04 万吨 REO（同比 +36.44%）；多次专场竞价与挂牌价调整成为行业价格风向标。",
+    "source_ids": [
+      "R01-RESOURCES-S014",
+      "R01-RESOURCES-S016",
+      "R01-RESOURCES-S015"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective，基于 2021 年年报确认）；2021-11-09 挂牌价上调公告为同期可观察事实，可作为 PIT 线索。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC014",
+    "ticker": "600392",
+    "name": "盛和资源",
+    "exchange": "SH",
+    "role": "second_leader",
+    "basis": "A 股稀土分离加工上市企业之一（与五矿稀土、北方稀土、广晟有色并列）。",
+    "source_ids": [
+      "R01-RESOURCES-S048"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；2021-11 媒体报道已列举，可作为同期线索。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC015",
+    "ticker": "000831",
+    "name": "中国稀土（2021 年时证券简称为五矿稀土）",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "A 股稀土分离加工上市企业之一；2021 年 9 月下旬公告称接到实际控制人通知，中国铝业集团、中国五矿集团、赣州市人民政府等正筹划稀土资产战略性重组。",
+    "source_ids": [
+      "R01-RESOURCES-S015",
+      "R01-RESOURCES-S048"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；证券简称在 2022 年后变更为「中国稀土」，本记录按当期名称标注，避免后见之明。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC016",
+    "ticker": "600259",
+    "name": "广晟有色",
+    "exchange": "SH",
+    "role": "follow",
+    "basis": "A 股稀土分离加工上市企业之一。",
+    "source_ids": [
+      "R01-RESOURCES-S048"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；作为板块构成记录，不主张其当时即为主要注意力中心。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC017",
+    "ticker": "000422",
+    "name": "湖北宜化",
+    "exchange": "SZ",
+    "role": "leader",
+    "basis": "剔除 2021 年新股后，湖北宜化为 2021 年市场表现最强的个股，当年累计上涨 535.94%；属基础化工行业。",
+    "source_ids": [
+      "R01-RESOURCES-S021"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective，基于 2021 年全年涨幅确认）；年度涨幅口径不得用于当时判断。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC018",
+    "ticker": "600096",
+    "name": "云天化",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "磷化工与化肥龙头，同时属于 2021 年基础化工（能耗双控）与 2021–2022 年化肥成本冲击两条候选的代表标的。",
+    "source_ids": [
+      "R01-RESOURCES-S020",
+      "R01-RESOURCES-S035"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；同一证券同时属于两个候选这一点本身即为冲突来源。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC019",
+    "ticker": "600141",
+    "name": "兴发集团",
+    "exchange": "SH",
+    "role": "second_leader",
+    "basis": "磷化工企业，受 2021 年云南/湖北等地能耗双控与黄磷限产直接影响。",
+    "source_ids": [
+      "R01-RESOURCES-S019"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；限产政策为同期事实，但「代表性」为复盘判断。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC020",
+    "ticker": "603260",
+    "name": "合盛硅业",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "工业硅与有机硅龙头，2021 年云南对工业硅限产（月均产量不得超过 8 月 10%）与有机硅 DMC 价格急涨直接相关。",
+    "source_ids": [
+      "R01-RESOURCES-S019",
+      "R01-RESOURCES-S020"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；限产与价格数据为同期事实。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC021",
+    "ticker": "600352",
+    "name": "浙江龙盛",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "分散染料龙头（2016 年分散染料 CR3 约 70% 之一）；2019-03-22 因响水事故后染料涨价预期一字板涨停，封单超过 28 万手；其分散黑 ETC 300% 报价被市场视为风向标。",
+    "source_ids": [
+      "R01-RESOURCES-S002",
+      "R01-RESOURCES-S004",
+      "R01-RESOURCES-S005"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；但 2019-03-22 当日涨停为同期可观察事实，是该候选少见的强 PIT 证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC022",
+    "ticker": "002440",
+    "name": "闰土股份",
+    "exchange": "SZ",
+    "role": "second_leader",
+    "basis": "分散染料与活性染料主要企业（2016 年分散染料 CR3 之一）；2019-03-22 随板块大涨超 6%。",
+    "source_ids": [
+      "R01-RESOURCES-S002",
+      "R01-RESOURCES-S004"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；2019-03-22 当日涨幅为同期事实。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC023",
+    "ticker": "600547",
+    "name": "山东黄金",
+    "exchange": "SH",
+    "role": "leader",
+    "basis": "国内主要黄金矿业公司，2025 年 A 股黄金板块涨幅居前（接近一倍）；2025 年 10 月初较年初涨幅曾达 62%，但 2025 年 12 月金价创新高时股价未同步创新高。",
+    "source_ids": [
+      "R01-RESOURCES-S027",
+      "R01-RESOURCES-S028"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；商品与股价背离为同期可观察现象（2025-12），不得据此反推 2024 年初的龙头判断。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC024",
+    "ticker": "600489",
+    "name": "中金黄金",
+    "exchange": "SH",
+    "role": "second_leader",
+    "basis": "国内主要黄金矿业公司，2025 年 A 股黄金板块涨幅接近一倍。",
+    "source_ids": [
+      "R01-RESOURCES-S027"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective，基于 2025 年全年涨幅）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC025",
+    "ticker": "600988",
+    "name": "赤峰黄金",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "2025 年 3 月在港交所挂牌，净募资约 28.2 亿港元，金价高位下矿企融资扩张的代表。",
+    "source_ids": [
+      "R01-RESOURCES-S028"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；上市与融资事件为同期事实。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC026",
+    "ticker": "002155",
+    "name": "湖南黄金",
+    "exchange": "SZ",
+    "role": "follow",
+    "basis": "黄金矿业代表性上市公司之一（板块构成记录）。",
+    "source_ids": [
+      "R01-RESOURCES-S026"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；作为板块构成记录，不主张其当时即为注意力中心。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC027",
+    "ticker": "000893",
+    "name": "亚钾国际",
+    "exchange": "SZ",
+    "role": "representative",
+    "basis": "钾肥资源企业，处于 2021–2022 年钾肥供给扰动与价格上行的直接受益环节。",
+    "source_ids": [
+      "R01-RESOURCES-S035",
+      "R01-RESOURCES-S037"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；钾肥供给扰动为同期事实，代表性为复盘判断。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC028",
+    "ticker": "000902",
+    "name": "新洋丰",
+    "exchange": "SZ",
+    "role": "follow",
+    "basis": "磷复肥企业，处于化肥成本冲击与出口限制的直接环节。",
+    "source_ids": [
+      "R01-RESOURCES-S035"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；作为板块构成记录。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC029",
+    "ticker": "600309",
+    "name": "万华化学",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "化工龙头，2016 年年报曾指出化学工业出现重大变化：大量不具备竞争力的低水平重复建设产能逐步退出、大量中小型高污染化工企业因环保不达标无法维持生产，是「机制驱动 + 龙头受益」叙述的代表标的。",
+    "source_ids": [
+      "R01-RESOURCES-S041"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；公司年报表述为同期可观察事实。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-RESOURCES-SEC030",
+    "ticker": "603993",
+    "name": "洛阳钼业",
+    "exchange": "SH",
+    "role": "representative",
+    "basis": "铜钴矿业企业；2025 年 12 月宣布拟以 10 亿美元并购巴西四个金矿项目，是 2024–2025 年铜/贵金属扩张周期的代表主体。",
+    "source_ids": [
+      "R01-RESOURCES-S028"
+    ],
+    "point_in_time_note": "属 Historical Leader Set（retrospective）；并购公告为同期事实。",
+    "survivorship_aware": true
+  }
+]

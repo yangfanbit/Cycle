@@ -1,0 +1,134 @@
+[
+  {
+    "exclusion_id": "R01-RESOURCES-X001",
+    "subject": "2016–2017 煤炭开采与钢铁冶炼的供给侧改革行情",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "2016 年国务院《关于煤炭行业化解过剩产能实现脱困发展指导意见》《关于钢铁行业化解过剩产能实现脱困发展的意见》及「276 天工作制」确为「行政去产能」机制的典型样本，但煤炭开采与钢铁冶炼不在本任务 scope 的列举范围（工业金属、贵金属、稀有金属、能源金属、基础化工、农化）。本任务只保留了同一机制下属于 scope 内的 2017 电解铝清理违规产能（C10）。若「供给侧改革」机制需要完整表达，应在独立轮次或 R01-05 处理。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X002",
+    "subject": "2023–2024 碳酸锂价格暴跌（锂周期下行段）",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2022-11-11 之后碳酸锂价格自 59 万元/吨 大幅下行至 2023-04-23 的 17.9 万元/吨、2023-11 跌破 12 万元/吨，属同一商品周期的下行段，已作为 R01-RESOURCES-002 的 end 与退潮解释记录，不再单独建立候选。若 ThreeC Agent 认为下行段的机制（需求走弱 + 供给惯性 + 价格战）与上行段差异足够大，可在 Independence Gate 中重新评估拆分。",
+    "source_ids": [
+      "R01-RESOURCES-S010"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E012"
+    ]
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X003",
+    "subject": "2021 年电解铝（能耗双控/云南限电）单独建立为独立 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2021 年电解铝同时受「工业金属再通胀」（R01-RESOURCES-001）与「能耗双控行政限产」（R01-RESOURCES-004）两条机制影响，且与两条候选在时间上重叠、资金逻辑重叠（同一周期风格与供给收缩逻辑）。为避免把同一底层结构切碎，本任务未单独立项，而是在两条候选中分别记录并以 conflicts 保留归属争议。",
+    "source_ids": [
+      "R01-RESOURCES-S020",
+      "R01-RESOURCES-S008"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E002",
+      "R01-RESOURCES-E034"
+    ]
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X004",
+    "subject": "2021 年全市场「通胀交易 / 周期风格」行情本身",
+    "reason_code": "OTHER",
+    "rationale": "2021 年电力设备（+47.86%）、有色金属（+40.47%）、煤炭（+39.60%）、基础化工（+37.19%）、钢铁（+34.06%）同时高涨幅，其中相当部分可能来自全市场风格切换与流动性 β，而非可独立归因的主题结构。本任务把它作为 R01-RESOURCES-001 / 004 的 β 污染风险记录（见 conflicts），不把它本身建立为一个 Campaign。",
+    "source_ids": [
+      "R01-RESOURCES-S021",
+      "R01-RESOURCES-S022"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E005",
+      "R01-RESOURCES-E006"
+    ]
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X005",
+    "subject": "2015 年大宗商品与有色金属下行行情（Priority B 早期）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "2015 年处于商品价格与 A 股（含 6–8 月大幅波动）的双重下行期，缺乏本任务可引用的、以机制为单位的证据链（无商品价格序列、无行业政策锚点、无板块结构证据）。按协议 §4.2「资料不足不等于不成立」，保留为未覆盖区，不建立候选。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X006",
+    "subject": "石油天然气开采与炼化一体化（原油成本冲击的直接标的）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "manifest 明确「石油天然气开采（未列入第一轮 family 方向）」为 excluded_scope。本任务只在 C8（农化）中把原油/天然气作为成本冲击的机制变量引用，不把油服/炼化一体化企业作为候选标的。",
+    "source_ids": [
+      "R01-RESOURCES-S036"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E071"
+    ]
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X007",
+    "subject": "半导体材料（硅片、光刻胶、电子特气）的价格与国产替代行情",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "电子材料与电子特气虽在产业链上属化工品，但其驱动机制为国产替代与技术突破，属 R01-02（半导体/电子）的 scope。本任务不建立候选，只在 cross_task_notes 中标记边界（R01-RESOURCES-N001）。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X008",
+    "subject": "黄金珠宝零售（周大福、周大生、潮宏基、老铺黄金等）",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "金价上行带动饰品金价格上涨（2025-02-17 多个品牌饰品金价格冲上每克 875 元）属消费端价格传导，其驱动机制为消费需求与品牌溢价，与资源/有色的供给-价格-库存机制不同；该方向更接近 R01-04（消费）。本任务只把金价与矿企作为对象。",
+    "source_ids": [
+      "R01-RESOURCES-S026"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E061"
+    ]
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X009",
+    "subject": "商品期货合约与商品指数本身的行情（LME/SHFE 铜、碳酸锂期货等）",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "商品期货与商品指数是价格事实层（Layer 1），不是 A 股历史机会 Campaign。本任务严格把「商品价格 / 行业基本面 / 政策事件 / 市场表现 / 公司与证券事实」分离记录，商品价格只作为机制变量与证据，不建立独立候选。",
+    "source_ids": [
+      "R01-RESOURCES-S010"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E012"
+    ]
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X010",
+    "subject": "2024–2025 白银、铂金同步创历史新高",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "2025-12-23 铂金现货涨幅超 6% 突破每盎司 2300 美元并创历史新高，白银同步刷新历史纪录，与金价同属贵金属结构性上行。但本任务未收集到 A 股白银/铂金标的的独立市场响应证据，也未能证明其形成独立的注意力中心与生命周期，故保留为观察记录，不建立候选。",
+    "source_ids": [
+      "R01-RESOURCES-S028"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E063"
+    ]
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X011",
+    "subject": "2020 年疫情初期化工原料（聚丙烯/熔喷布等）脉冲行情",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "2020 年上半年聚丙烯、熔喷布等因防疫物资需求出现短时价格脉冲，但驱动为一次性事件与短期需求错配，持续性不足，且与既有 family「医药健康」的 RC-2020-PANDEMIC（疫情医疗）底层结构重叠。本任务不建立候选。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-RESOURCES-X012",
+    "subject": "纯宏观流动性研究（社融/M2/美元指数与商品价格的对应关系）",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "本任务只使用流动性与美元实际利率作为 R01-RESOURCES-001、C6、C9 的机制解释变量，不把「流动性周期」本身建立为行业 Campaign；流动性/政策周期机制属 R01-05 的 scope。",
+    "source_ids": [
+      "R01-RESOURCES-S023"
+    ],
+    "evidence_ids": [
+      "R01-RESOURCES-E052"
+    ]
+  }
+]

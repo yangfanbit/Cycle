@@ -1,0 +1,258 @@
+[
+  {
+    "conflict_id": "R01-RESOURCES-CF001",
+    "subject": "2021 年资源/化工类结构应视为多个独立 Campaign，还是一个「2021 大宗商品超级周期」",
+    "positions": [
+      {
+        "position": "多个独立 Campaign：C1（工业金属·全球再通胀）、C3（稀土·配额+需求）、C4（基础化工·能耗双控）驱动机制、政策工具与代表标的均不同，按协议「同一时间 ≠ 同一个 Campaign」（规则 4）应分列。",
+        "source_ids": [
+          "R01-RESOURCES-S006",
+          "R01-RESOURCES-S017",
+          "R01-RESOURCES-S016"
+        ]
+      },
+      {
+        "position": "一个长周期：2020H2–2021 年资源品上行同受「全球流动性宽松 + 供给约束 + 再通胀交易」驱动，A 股端表现为同一批资金池、同一「供给收缩/涨价」交易逻辑，按 Q1 Anti-example 可能属同一 Campaign 的不同 Sub-theme。",
+        "source_ids": [
+          "R01-RESOURCES-S021",
+          "R01-RESOURCES-S022"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本任务保留双方，不自行消解。判定必须由 ThreeC Agent 走 Campaign Independence Gate Q1–Q5。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF002",
+    "subject": "2021 年电解铝行情的机制归属：工业金属全球再通胀，还是能耗双控行政供给收缩",
+    "positions": [
+      {
+        "position": "归属工业金属再通胀（C1）：2021 年国内铝价创 24765 元/吨 历史新高，与铜、锌同属「经济复苏 + 供求不平衡 + 资金流动性」驱动，中国有色金属工业协会将铝与铜并列归因。",
+        "source_ids": [
+          "R01-RESOURCES-S008"
+        ]
+      },
+      {
+        "position": "归属能耗双控供给收缩（C4）：2021 年 5 月起云南工业有序用电导致云铝股份减少电解铝产能约 77 万吨、神火股份停运 20 万吨，陕西榆林要求限产 50%，供给端直接受行政限电约束。",
+        "source_ids": [
+          "R01-RESOURCES-S020",
+          "R01-RESOURCES-S019"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两个机制在 2021 年电解铝上真实并存，不机械归并。KEEP_BOTH 是合法状态。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF003",
+    "subject": "能源金属（锂）行情的跨族归属：「资源/有色」还是「电力设备」/「汽车」",
+    "positions": [
+      {
+        "position": "属资源/有色：锂的资源属性与价格周期（供给出清、锂精矿价格、碳酸锂价格）是行情的核心变量，价格弹性来自矿端供给刚性，与工业金属同属商品价格周期。",
+        "source_ids": [
+          "R01-RESOURCES-S040",
+          "R01-RESOURCES-S039"
+        ]
+      },
+      {
+        "position": "属电力设备/汽车：行情叙事为新能源车与储能需求，代表标的（宁德时代等）与资金逻辑属新能源产业链；既有 family 已有 C-2020-POWER-NE（光伏/新能源发电）与 C-2021-NEV（新能源汽车/电池），且 manifest 已知它们与能源金属价格周期耦合。",
+        "source_ids": [
+          "R01-RESOURCES-S038",
+          "R01-RESOURCES-S011"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "跨族边界，Worker 无裁决权，必须交 ThreeC Agent；已在 cross_task_notes 记录 POSSIBLE_DUPLICATE。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF004",
+    "subject": "稀土的机制归类：资源属性（供给刚性/进口依赖），还是政策属性（配额/出口管制/央企整合）",
+    "positions": [
+      {
+        "position": "资源属性为主：稀土价格上行源于供需基本面改善与供给缺口（缅甸矿进口下降 23%、分离企业减停产、现货稀少、持货锁货惜售），属供给收缩型商品周期。",
+        "source_ids": [
+          "R01-RESOURCES-S013",
+          "R01-RESOURCES-S015"
+        ]
+      },
+      {
+        "position": "政策属性为主：稀土量价受开采与冶炼分离总量控制指标直接约束（2021 年指标 16.8 万吨/16.2 万吨、中重稀土硬约束），且伴随央企整合（2021-12-23 中国稀土集团成立）与出口管制工具，更接近 POLICY_DRIVEN。",
+        "source_ids": [
+          "R01-RESOURCES-S013",
+          "R01-RESOURCES-S016"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "manifest 已声明「稀土同时具备资源属性与政策属性 —— 机制归类存在歧义」。两种机制真实并存，保留双方。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF005",
+    "subject": "2021 年有色金属行业涨幅的口径冲突：申万一级 40.47% 与中证有色金属指数 31.31%",
+    "positions": [
+      {
+        "position": "申万一级行业指数(2021 年版)口径：有色金属 2021 年上涨 40.47%（Wind 数据，央视网与中国经济网两条报道一致）。",
+        "source_ids": [
+          "R01-RESOURCES-S021",
+          "R01-RESOURCES-S022"
+        ]
+      },
+      {
+        "position": "中证有色金属指数(000819.SH) 口径：2021-01-04 至 2021-12-31 区间涨跌幅 31.31%，区间高点 8603.88 点（2021-09-13）。",
+        "source_ids": [
+          "R01-RESOURCES-S047"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两个口径对应不同指数编制（申万行业指数 vs 中证有色金属指数），不构成数据错误，但不得混用。引用 2021 年行业涨幅时必须同时说明口径。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF006",
+    "subject": "能源金属（锂）候选的 peak 口径冲突：商品价格峰值与 A 股股价/板块峰值相差约 14 个月",
+    "positions": [
+      {
+        "position": "商品口径峰值：上海钢联数据显示电池级碳酸锂价格 2022-11-11 达 59 万元/吨 历史高点（2022-11-10 现货均价 58.75 万元/吨）。",
+        "source_ids": [
+          "R01-RESOURCES-S010",
+          "R01-RESOURCES-S011"
+        ]
+      },
+      {
+        "position": "A 股口径峰值：能源金属指数(399366.SZ) 区间最高点 2021-09-13；赣锋锂业区间最高价出现在 2021-09-01；锂矿概念板块自 2021-09-16 起转入下跌。",
+        "source_ids": [
+          "R01-RESOURCES-S047"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "符合 methodology「Campaign Peak ≠ 行业指数最高点 ≠ 单一股票最高点」的口径要求：商品与股票口径分列记录，不自动取舍。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF007",
+    "subject": "2020 年黄金峰值口径冲突：伦敦现货盘中、COMEX 期货盘中与期货结算价三个数值",
+    "positions": [
+      {
+        "position": "伦敦现货黄金 2020-08-07 盘中 2075.14 美元/盎司 为历史新高。",
+        "source_ids": [
+          "R01-RESOURCES-S024",
+          "R01-RESOURCES-S023"
+        ]
+      },
+      {
+        "position": "COMEX 黄金期货 2020-08-06 结算价 2069.40 美元/盎司 为历史最高结算价；2020-08-07 盘中高点 2089.20 美元/盎司。",
+        "source_ids": [
+          "R01-RESOURCES-S025"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "三个数值分别对应现货盘中、期货盘中与期货结算三种口径；按协议不得为了「漂亮日期」而强制选择单一口径。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF008",
+    "subject": "2019 年响水「3·21」事故伤亡人数的通报口径冲突（44 人 / 78 人）",
+    "positions": [
+      {
+        "position": "截至 2019-03-22 上午 7 时，事故已造成死亡 44 人、危重 32 人、重伤 58 人。",
+        "source_ids": [
+          "R01-RESOURCES-S002"
+        ]
+      },
+      {
+        "position": "据官方通报，截至 2019-03-25，事故已造成 78 人遇难；另有行业协会文件表述为「造成约 70 人死亡、数百人受伤」。",
+        "source_ids": [
+          "R01-RESOURCES-S005",
+          "R01-RESOURCES-S004"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "伤亡人数为随时间更新的滚动通报，两组数字反映不同统计时点；保留双方，且不得把后一数字当作事发当日已知信息。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF009",
+    "subject": "2025 年 12 月贵金属「现货热、股价冷」背离：金价创历史新高但 A 股金矿龙头未同步创新高",
+    "positions": [
+      {
+        "position": "金价与基本面同向：2025-12-23 国际金价突破 4500 美元/盎司、12-26 刷新至 4526 美元/盎司；2025 年前三季度全球央行净购金 634 吨，央行结构性需求构成长期定价支撑。",
+        "source_ids": [
+          "R01-RESOURCES-S028"
+        ]
+      },
+      {
+        "position": "A 股股价未同步：山东黄金、招金矿业、灵宝黄金等当日虽上涨，但股价水平仍普遍低于 10 月初高点；黄金股 ETF 落后于黄金现货；头部矿企 2025 年采金综合成本同比上升 12%–18%。",
+        "source_ids": [
+          "R01-RESOURCES-S028"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "同一来源内部即保留了两种解释（成本与盈利可持续性担忧 vs 前期涨幅透支与资金分流）。属「商品价格上行 ≠ A 股主题同步」的实时样本，保留为未解冲突。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF010",
+    "subject": "2016 年化工：商品价格大幅上行与 A 股板块下行的方向冲突",
+    "positions": [
+      {
+        "position": "商品端上行：2016 年化工指数由年初 618 点升至年末 833 点，化工大宗商品价格均涨跌幅 29.84%，维生素 B5 +445.45%、丁二烯 +218.42%、维生素 A +188.95%。",
+        "source_ids": [
+          "R01-RESOURCES-S042"
+        ]
+      },
+      {
+        "position": "A 股端未同步：申万基础化工板块 2016-01-04 至 2016-12-30 区间涨跌幅为 -7.13%。",
+        "source_ids": [
+          "R01-RESOURCES-S047"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "这是本任务最重要的反例之一：商品价格上涨不构成 A 股主题启动的充分条件。正是该冲突使 R01-RESOURCES-011 停留在 INSUFFICIENT，而不是被强行升级为 Campaign。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF011",
+    "subject": "《完善能源消费强度和总量双控制度方案》印发日期冲突（2021-09-11 / 2021-09-16）",
+    "positions": [
+      {
+        "position": "2021-09-11 国家发改委印发《完善能源消费强度和总量双控制度方案》的通知（发改环资〔2021〕1310 号）。",
+        "source_ids": [
+          "R01-RESOURCES-S017"
+        ]
+      },
+      {
+        "position": "2021-09-16 国家发改委印发该方案（部分政策汇编口径）。",
+        "source_ids": [
+          "R01-RESOURCES-S019"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两组日期并存，保留双方；若需精确，应由 ThreeC Agent 以发改委原始文件为准复核。"
+  },
+  {
+    "conflict_id": "R01-RESOURCES-CF012",
+    "subject": "同一证券同时属于多个候选（跨候选归属冲突）",
+    "positions": [
+      {
+        "position": "紫金矿业（601899）同时出现在 C1（2021 工业金属）、C7（2024–2025 黄金）与 C9（2024–2025 铜）中；洛阳钼业（603993）同时出现在铜与金矿扩张叙事中。",
+        "source_ids": [
+          "R01-RESOURCES-S008",
+          "R01-RESOURCES-S027",
+          "R01-RESOURCES-S028"
+        ]
+      },
+      {
+        "position": "云天化（600096）同时出现在 C4（2021 基础化工·能耗双控）与 C8（2021–2022 农化）中；中国铝业（601600）、云铝股份（000807）同时出现在 C1 与 C4、C10 中。",
+        "source_ids": [
+          "R01-RESOURCES-S020",
+          "R01-RESOURCES-S035",
+          "R01-RESOURCES-S030"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "同一证券属于多个主题是合法的历史事实（多主业、多机制叠加），但意味着不能仅凭个股归属反推主题边界。该冲突同时提示 C1/C4/C7/C8/C9/C10 之间的边界可能需重新划分。"
+  }
+]

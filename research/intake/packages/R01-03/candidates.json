@@ -1,0 +1,1623 @@
+[
+  {
+    "candidate_id": "R01-RESOURCES-001",
+    "title": "2020H2–2021 工业金属（铜/铝）全球再通胀行情",
+    "year": 2021,
+    "macro_theme_proposal": "有色金属",
+    "theme_name_candidates": [
+      "有色金属",
+      "工业金属"
+    ],
+    "theme_summary": "疫情后全球需求复苏 + 主要央行（美联储）极度宽松 → 美元实际利率下行 + 铜矿等矿产供给恢复缓慢、库存下滑 → LME 铜于 2021-05-10 创出 10747.50 美元/吨 历史新高、国内铝价创 24765 元/吨 历史新高；A 股有色金属成为 2021 年涨幅居前的行业之一。机制是「全球流动性 + 需求复苏 + 供给约束」的组合，而非行政去产能。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-03-23",
+          "window_end": "2020-06-30",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S006"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E001"
+          ],
+          "confidence": "low",
+          "alternative_dates": [
+            {
+              "date": "2020-11-02",
+              "basis": "商品价格进入加速上行段（推断：2020 年 11 月后铜价突破前高）",
+              "source_ids": [
+                "R01-RESOURCES-S006"
+              ]
+            }
+          ],
+          "conflict_note": "疫情后流动性宽松与需求复苏的起点无法定位到单一日期；两个窗口口径并存，不自动取舍。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-05-10",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event",
+          "source_ids": [
+            "R01-RESOURCES-S006",
+            "R01-RESOURCES-S008",
+            "R01-RESOURCES-S009"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E001",
+            "R01-RESOURCES-E002",
+            "R01-RESOURCES-E004"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2021-09-13",
+              "basis": "A 股板块口径高点（中证有色金属指数 000819 区间最高点）",
+              "source_ids": [
+                "R01-RESOURCES-S047"
+              ]
+            }
+          ],
+          "conflict_note": "商品价格峰值（2021-05-10）与 A 股板块指数峰值（2021-09-13）不同步，两者分列记录，不合并为同一日期。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2021 年 Q4 高位震荡后转弱；2022 年美联储加息周期启动、美元走强后商品价格系统性回落",
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S006"
+          ],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2020-04-01",
+        "end": "2021-05-10",
+        "basis": "商品价格自疫情低点持续上行至 2021-05-10 历史新高（窗口为推断）",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2021-05-10",
+        "end": "2021-09-13",
+        "basis": "商品峰值 2021-05-10；A 股板块口径峰值 2021-09-13",
+        "notes": "商品与板块峰值分列"
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2021-09-14",
+        "end": null,
+        "basis": "2021 Q4 高位震荡，2022 年加息后回落（阶段结束点未知）",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "新冠疫情后全球需求复苏",
+        "美联储零利率 + 无限量宽松，美元实际利率下行、美元走弱",
+        "疫情冲击下铜矿等矿产产量恢复缓慢，供给跟不上需求"
+      ],
+      "accelerator": [
+        "LME 与国内铜库存持续下滑",
+        "2021 年前三季度中国新能源汽车产销量同比均增长 185%，带动铜等有色金属需求",
+        "海外铜需求较上年提高约 7%，叠加跨市套利窗口，2021 年中国铜出口量同比 +25% 创历史新高"
+      ],
+      "turning": [
+        "铜价快速上涨抑制下游消费，采购意愿下降",
+        "2021 年 5 月后进入宽幅震荡，商品价格不再创新高",
+        "2022 年美联储进入加息周期、美元走强"
+      ],
+      "ending": [
+        "全球流动性转向收紧",
+        "高价抑制需求叠加供给恢复",
+        "板块资金转向新能源等结构性方向"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E001",
+      "R01-RESOURCES-E002",
+      "R01-RESOURCES-E003",
+      "R01-RESOURCES-E004",
+      "R01-RESOURCES-E005",
+      "R01-RESOURCES-E006",
+      "R01-RESOURCES-E007"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC001",
+      "R01-RESOURCES-SEC002",
+      "R01-RESOURCES-SEC003",
+      "R01-RESOURCES-SEC004",
+      "R01-RESOURCES-SEC005",
+      "R01-RESOURCES-SEC006"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "商品价格与行业利润为同期可观察事实；A 股行业涨幅（2021 年全年口径）与板块峰值日期属事后统计，标记为 subsequent，不得作为启动的同期催化。Historical Leader Set（江西铜业、紫金矿业等）为 retrospective 复盘结果，与 Point-in-Time Basket 不得混用。",
+    "why_campaign": "满足 Campaign 最低标准：明确主题（工业金属/铜铝）、持续性强（约 14 个月）、市场关注充分（申万有色金属 2021 年涨幅居全行业第二）、start/end 可解释（疫情低点为启、加息周期为退）、≥2 独立 Evidence 且 ≥2 independence_group。",
+    "why_not": "尚未解决的问题：① 2021 年有色金属、基础化工、煤炭、钢铁同时高涨幅，可能部分是「通胀交易/周期风格」β 而非独立主题；② 需求侧驱动与 R01-05（地产/基建）重叠，Campaign 边界可能需重划；③ 商品峰值与板块峰值不同步，peak 口径需 ThreeC Agent 裁定。",
+    "possible_duplicate_of": [],
+    "notes": "存在风格/β 污染风险：无法完全排除 2021 年全市场周期风格对板块涨幅的贡献；保持记录，不因此降级为 OBSERVATION_ONLY。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-002",
+    "title": "2020Q4–2022 能源金属（锂）新能源需求拉动行情",
+    "year": 2021,
+    "macro_theme_proposal": "有色金属",
+    "theme_name_candidates": [
+      "能源金属",
+      "锂",
+      "锂矿",
+      "有色金属"
+    ],
+    "theme_summary": "锂精矿供给出清（2020-10-27 Altura 进入破产管理）+ 新能源车需求爆发 → 碳酸锂价格自 2020-10 约 4.1 万元/吨 上涨至 2021-08 的 11.31 万元/吨（+176%），并延续至 2022-11-11 的 59 万元/吨 历史高点；同期 A 股锂矿股大幅上行。机制为「新能源需求拉动 + 上游供给刚性」，与工业金属的流动性驱动不同，也与 C1 的板块口径不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-10-27",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event",
+          "source_ids": [
+            "R01-RESOURCES-S040"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E011"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2020-10-30",
+              "basis": "碳酸锂价格自底部启动上涨的价格口径起点",
+              "source_ids": [
+                "R01-RESOURCES-S040"
+              ]
+            }
+          ],
+          "conflict_note": "事件锚点（Altura 破产管理）与价格锚点（锂价启动）相差 3 天，两者分列保留。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2022-11-11",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S010"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E012"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2021-09-01",
+              "basis": "A 股股价/板块口径高点（赣锋锂业 2021-09-01 最高 157.97 元等）",
+              "source_ids": [
+                "R01-RESOURCES-S047"
+              ]
+            },
+            {
+              "date": "2021-09-13",
+              "basis": "能源金属指数（399366.SZ）区间最高点",
+              "source_ids": [
+                "R01-RESOURCES-S047"
+              ]
+            }
+          ],
+          "conflict_note": "商品（碳酸锂）价格峰值在 2022-11-11，而 A 股股价/板块峰值在 2021-09 前后，领先商品约 14 个月。两者不得合并为同一 peak。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2023 年碳酸锂价格快速下行，2023-04-23 一度探底 17.9 万元/吨，2023-11 跌破 12 万元/吨关口",
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S010"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E012"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2020-10-30",
+        "end": "2021-09-13",
+        "basis": "锂价自底部上行 + A 股锂矿股同步主升（板块口径峰值 2021-09-13）",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2021-09-13",
+        "end": "2022-11-11",
+        "basis": "A 股板块 2021-09 见顶后回落，商品价格继续上行至 2022-11-11 才见顶",
+        "notes": "股价与商品见顶时间分离，属本候选的关键结构特征"
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2022-11-12",
+        "end": null,
+        "basis": "需求走弱 + 供给惯性，锂价进入长期下行（结束点未知）",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "锂精矿供给出清：2020-10-27 澳洲 Altura 进入破产管理，延续 2019 年下半年的出清",
+        "《新能源汽车产业发展规划(2021-2035 年)》等政策利好 + 新能源车热销带动需求预期",
+        "上游锂价处于历史周期底部（2020 年 8 月碳酸锂约 4 万元/吨）"
+      ],
+      "accelerator": [
+        "2020-11 至 2021 年 1 月，磷酸铁锂需求推动国内锂价上涨 40% 至 18 个月高点",
+        "2021 年夏季起锂价加速，2021-10 至 2022-06 锂矿供应受限、供需缺口扩大",
+        "锂资源自主可控叙事驱动上市公司大额布局海内外锂矿"
+      ],
+      "turning": [
+        "2022-11-11 碳酸锂价格达 59 万元/吨 历史高点后转为下跌",
+        "2022-06 至 2022-11 需求快速拉升后转为需求快速缩减",
+        "下游电池厂在价格下行期转为长单交易、去库存"
+      ],
+      "ending": [
+        "供给放量（南美盐湖、非洲矿）使供需由偏紧转为过剩",
+        "2022-11 至 2023-04 价格大幅下行，板块资金流失",
+        "宁德时代锂矿返利等事件加速价格下滑与叙事失效"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E011",
+      "R01-RESOURCES-E012",
+      "R01-RESOURCES-E013",
+      "R01-RESOURCES-E014",
+      "R01-RESOURCES-E015",
+      "R01-RESOURCES-E016"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC008",
+      "R01-RESOURCES-SEC009",
+      "R01-RESOURCES-SEC010",
+      "R01-RESOURCES-SEC011",
+      "R01-RESOURCES-SEC012"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "锂价与 Altura 破产管理公告为同期可观察事实；「股价领先商品约一年」「2021-09 见顶」等结论依赖事后完整价格序列，属 retrospective，不得作为 2020-10 的同期催化。Historical Leader Set（天齐锂业、赣锋锂业）为复盘确认，与 Point-in-Time Basket 不得混用。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（能源金属/锂）、持续性强（2020-10 至 2022-11，商品口径逾 24 个月）、市场关注充分（锂矿股为 2021 年最活跃板块之一）、start/end 可解释、≥2 独立 Evidence 且 ≥2 independence_group。",
+    "why_not": "跨族边界未解决：能源金属行情同时被「电力设备」（C-2020-POWER-NE）与「汽车」（C-2021-NEV）覆盖，本任务不具备裁决权；且股价与商品峰值分离使得「一个 Campaign 还是两个（股价阶段 + 商品阶段）」需要 Independence Gate 判定。",
+    "possible_duplicate_of": [
+      "既有 family「电力设备」C-2020-POWER-NE（光伏/新能源发电，与能源金属价格周期耦合）",
+      "既有 family「汽车」C-2021-NEV（新能源汽车/电池，与能源金属价格周期耦合）"
+    ],
+    "notes": "标记 possible_duplicate_of，但按 Worker 规则不自行删除。下游 merge/dedupe 由 ThreeC Agent 决定。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-003",
+    "title": "2020-05 起 稀土（总量控制指标 + 新能源需求）景气上行",
+    "year": 2021,
+    "macro_theme_proposal": "稀有金属/稀土",
+    "theme_name_candidates": [
+      "稀有金属/稀土",
+      "稀土",
+      "稀土永磁"
+    ],
+    "theme_summary": "稀土价格自 2020-05 起持续上涨约 18 个月；2021 年镨钕氧化物全年均价 59.7 万元/吨（+90.7%），氧化镝、氧化铽同步创近十年新高。驱动来自供给端（开采与冶炼分离总量控制指标 / 中重稀土严控、缅甸矿进口大幅下降）与需求端（新能源车、风电、工业电机与电机能效提升计划）双向收紧；2021-12-23 中国稀土集团成立标志行业整合。机制为「政策配额型供给约束 + 新能源需求」，与工业金属的流动性驱动不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-05-01",
+          "window_end": "2020-06-30",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S013"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E023"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-11-01",
+          "window_end": "2021-12-31",
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S015",
+            "R01-RESOURCES-S016",
+            "R01-RESOURCES-S048"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E024",
+            "R01-RESOURCES-E025",
+            "R01-RESOURCES-E026"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2022 年稀土价格自高位回落，行业进入高位震荡与政策定价并行阶段",
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S013"
+          ],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2020-05-01",
+        "end": "2021-10-01",
+        "basis": "稀土价格自 2020-05 起持续上涨约 18 个月",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2021-10-01",
+        "end": "2021-12-31",
+        "basis": "2021-10-28 氧化镨钕 73.5 万元/吨；2021-11-09 升至 76.26 万元/吨，处 2011-11 以来最高",
+        "notes": null
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2022-01-01",
+        "end": null,
+        "basis": "2022 年价格高位回落（结束点未知）",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "供给端：稀土矿产品与冶炼分离总量控制指标机制，中重稀土继续严控",
+        "2020-05 起供需基本面改善，价格进入景气上升周期",
+        "持货端锁货惜售、现货稀少"
+      ],
+      "accelerator": [
+        "缅甸政局与疫情导致中缅口岸关闭近 6 个月，2021 年前 11 个月缅甸矿进口量约 2.5 万吨（-23%）",
+        "2021-10-29 工信部与市场监管总局印发《电机能效提升计划(2021-2023 年)》，加大稀土永磁电机应用",
+        "2021 年开采指标 16.8 万吨、冶炼分离指标 16.2 万吨，同比均增 20%，但增量全部为轻稀土指标，中重稀土指标连续四年不变",
+        "北方稀土多次专场竞价推高金属镨钕成交价"
+      ],
+      "turning": [
+        "2021-10 至 11 月价格急涨后出现冲高回调",
+        "下游（中低端钕铁硼）因高价缩减用量",
+        "磁材企业采购周期结束后需求边际转弱"
+      ],
+      "ending": [
+        "配额有序释放、供给偏紧程度缓解",
+        "行业整合（2021-12-23 中国稀土集团成立）改变供给主体结构",
+        "价格回落至高位震荡"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E021",
+      "R01-RESOURCES-E022",
+      "R01-RESOURCES-E023",
+      "R01-RESOURCES-E024",
+      "R01-RESOURCES-E025",
+      "R01-RESOURCES-E026",
+      "R01-RESOURCES-E027"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC013",
+      "R01-RESOURCES-SEC014",
+      "R01-RESOURCES-SEC015",
+      "R01-RESOURCES-SEC016"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "配额指标文件、电机能效计划、缅甸矿进口数据与现货报价均为同期可观察事实；「2021 年全年均价」「近十年新高」为年度统计口径，属 subsequent，不得作为启动的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（稀土）、持续性强（约 18 个月）、市场关注充分（稀土永磁板块 2021 年前三季度普遍业绩上涨）、start/end 可解释、≥2 独立 Evidence 且 ≥2 independence_group（中稀院、SMM、财联社、证券日报、券商研报）。",
+    "why_not": "机制归类存在歧义：稀土的驱动同时来自「资源属性（供给刚性/进口依赖）」与「政策属性（配额、出口管制、央企整合）」，是否应视为政策驱动型（POLICY_DRIVEN）而非供给收缩型，需要 ThreeC Agent 裁定；本任务保留 Conflict，不自行消解。",
+    "possible_duplicate_of": [],
+    "notes": "与 C2（能源金属）在「新能源需求 + 供给刚性」机制上高度相似，但商品、政策工具与代表标的完全不同，故未合并；如需合并请走 Independence Gate。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-004",
+    "title": "2021 基础化工 能耗双控行政限产行情",
+    "year": 2021,
+    "macro_theme_proposal": "基础化工",
+    "theme_name_candidates": [
+      "基础化工",
+      "化工",
+      "化学原料及化学制品制造业"
+    ],
+    "theme_summary": "2021-08-12 国家发改委发布各地区能耗双控目标完成情况晴雨表（9 省区一级预警），2021-09-11 印发《完善能源消费强度和总量双控制度方案》，云南、江苏、内蒙古、陕西、浙江、广东等地相继对高耗能化工与冶金企业限产限电（云南对黄磷、工业硅要求月均产量不超过 8 月 10%，相当于削减 90%）→ 纯碱、黄磷、环氧丙烷、有机硅、氯碱等化工品价格一度飙升并出现有价无市；A 股基础化工 2021 年涨幅 37.19% 居全行业第四。机制为「行政性供给收缩（能耗双控/限电）」，与 C1 的流动性驱动、C3 的配额驱动均不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-08-12",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event",
+          "source_ids": [
+            "R01-RESOURCES-S017"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E031"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2021-09-11",
+              "basis": "国家发改委印发《完善能源消费强度和总量双控制度方案》日期（部分报道作 2021-09-16）",
+              "source_ids": [
+                "R01-RESOURCES-S017",
+                "R01-RESOURCES-S019"
+              ]
+            },
+            {
+              "date": "2021-03-10",
+              "basis": "内蒙古先行对电石、PVC、合成氨、纯碱、黄磷等停止审批新增产能",
+              "source_ids": [
+                "R01-RESOURCES-S018"
+              ]
+            }
+          ],
+          "conflict_note": "《完善能源消费强度和总量双控制度方案》印发日期在不同来源间存在 2021-09-11 与 2021-09-16 两个口径，两者分列保留。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-09-01",
+          "window_end": "2021-10-31",
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S017",
+            "R01-RESOURCES-S019"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E032",
+            "R01-RESOURCES-E036"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2021 年 Q4 后随保供稳价、限电缓解与下游需求走弱，化工品价格回落",
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S017"
+          ],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2021-08-12",
+        "end": "2021-09-30",
+        "basis": "双控政策加码 → 多省限产 → 化工品价格急涨",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2021-10-01",
+        "end": "2021-10-31",
+        "basis": "黄磷、纯碱、有机硅等价格在 9–10 月达到阶段高点（有价无市）",
+        "notes": "窗口为推断"
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2021-11-01",
+        "end": null,
+        "basis": "限电缓解与保供稳价后价格回落（结束点未知）",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "2021-08-12 发改委发布能耗双控目标完成情况晴雨表，9 省(区)能耗强度不降反升被一级预警",
+        "2021-09-11 发改委印发《完善能源消费强度和总量双控制度方案》，明确指标分解落实机制",
+        "2020-09 中国提出碳达峰碳中和目标，双碳政策预期自 2021 年起密集落地"
+      ],
+      "accelerator": [
+        "云南要求工业硅、黄磷月均产量不超过 8 月 10%（削减约 90%）",
+        "江苏对年综合能耗 5 万吨标煤以上企业开展专项节能监察，部分纯碱企业开工率降幅约 20%",
+        "内蒙古自 2021 年起不再审批焦炭、电石、PVC、合成氨(尿素)、甲醇、乙二醇、烧碱、纯碱、磷铵、黄磷等新增产能",
+        "陕西榆林要求已投产「两高」项目限产 60%、9 月减产 50%"
+      ],
+      "turning": [
+        "化工品价格急涨后出现有价无市，厂家暂停报价",
+        "下游（印染、化纤、纺织）成本压力剧增并公开抵制原料涨价",
+        "政策转向保供稳价，限电措施边际放松"
+      ],
+      "ending": [
+        "能耗双控阶段性目标完成后限产放松",
+        "下游需求走弱、库存回补完成",
+        "价格向成本线回归"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E031",
+      "R01-RESOURCES-E032",
+      "R01-RESOURCES-E033",
+      "R01-RESOURCES-E034",
+      "R01-RESOURCES-E035",
+      "R01-RESOURCES-E036"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC017",
+      "R01-RESOURCES-SEC018",
+      "R01-RESOURCES-SEC019",
+      "R01-RESOURCES-SEC020",
+      "R01-RESOURCES-SEC029"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "发改委文件、省级限产通知与化工品报价均属同期可观察事实；2021 年全年行业涨幅（37.19%）为年度统计口径，属 subsequent，不得作为 2021-08 的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（基础化工/能耗双控限产）、持续性约 3 个月以上并有明确扩散过程、市场关注充分、start/end 可解释（政策文件为启）、≥2 独立 Evidence 且 ≥2 independence_group（中国化工信息周刊、中化新网、OFweek、南方+、中国经济网）。",
+    "why_not": "① 与 C1（工业金属）在 2021-09 前后时间重叠且同受「限电」影响，电解铝等品种的归属需要判定；② 化工内部子行业（纯碱/黄磷/有机硅/氯碱/印染）机制一致但标的分散，是否应视为一个 Campaign 还是多个 Sub-theme 需 Independence Gate 判定。",
+    "possible_duplicate_of": [],
+    "notes": "本候选的机制为行政性供给收缩（能耗双控），是当前 4 族完全缺失的机制轴的主要来源之一。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-005",
+    "title": "2019 响水爆炸后化工供给冲击（染料/中间体）",
+    "year": 2019,
+    "macro_theme_proposal": "基础化工",
+    "theme_name_candidates": [
+      "基础化工",
+      "化工",
+      "染料"
+    ],
+    "theme_summary": "2019-03-21 江苏盐城响水陈家港天嘉宜化工发生特别重大爆炸事故；天嘉宜是染料中间体间苯二胺三大核心生产工厂之一。2019-04-04 盐城市委决定彻底关闭响水化工园区，江苏省下发《化工行业整治提升方案(征求意见稿)》。供给冲击导致分散染料中间体短缺、染料价格与印染加工费上涨，A 股分散染料板块 2019-03-22 集体大涨。机制为「安全事故型供给冲击 → 园区关停 → 中间体短缺」，与行政去产能、能耗双控均不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2019-03-21",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event",
+          "source_ids": [
+            "R01-RESOURCES-S001"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E041"
+          ],
+          "confidence": "high",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2019-03-22",
+          "window_end": "2019-04-30",
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S002",
+            "R01-RESOURCES-S005"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E043",
+            "R01-RESOURCES-E044"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2019 年下半年随园区整治落地与替代产能恢复，染料价格回落（缺少可引用价格序列）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2019-03-21",
+        "end": "2019-04-03",
+        "basis": "事故 → 中间体短缺预期 → 染料板块与染料价格快速上行",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2019-04-04",
+        "end": "2019-04-30",
+        "basis": "2019-04-04 盐城决定关闭响水化工园区，政策冲击达到最强（窗口为推断）",
+        "notes": null
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2019-05-01",
+        "end": null,
+        "basis": "缺乏可引用的染料价格与板块序列，退潮过程证据不足",
+        "notes": "end 与退潮段 confidence 低"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "2019-03-21 天嘉宜化工特别重大爆炸事故（同期通报死亡 44 人，后更新为 78 人遇难）",
+        "天嘉宜是染料中间体间苯二胺的三大核心生产工厂之一",
+        "苏北地区染料中间体产量约占全国三分之一"
+      ],
+      "accelerator": [
+        "2019-04-04 盐城市委决定彻底关闭响水化工园区",
+        "江苏省下发《化工行业整治提升方案(征求意见稿)》，拟大幅压减化工生产企业数量",
+        "2018 年苏北化工园区整治已使部分企业停产，事故进一步延迟复工"
+      ],
+      "turning": [
+        "染料价格与印染加工费急涨，下游印染行业公开抵制",
+        "绍兴市柯桥区印染工业协会倡议抵制染化料价格不正常上涨",
+        "园区关停后替代产能与库存逐步补充"
+      ],
+      "ending": [
+        "江苏省化工整治方案落地，供给侧长期收缩但价格冲击消退",
+        "染料价格回落",
+        "市场注意力转向新主题"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E041",
+      "R01-RESOURCES-E042",
+      "R01-RESOURCES-E043",
+      "R01-RESOURCES-E044",
+      "R01-RESOURCES-E045",
+      "R01-RESOURCES-E046"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC021",
+      "R01-RESOURCES-SEC022"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "事故通报、园区关闭决定与板块当日反应均为同期可观察事实；园区涉及产能、CR3 集中度等为事后统计（行业协会 2019-07 报告），属 subsequent，不得作为 2019-03-21 的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（染料/中间体供给冲击）、持续性覆盖事故至园区关闭决定全过程、市场关注充分（分散染料板块集体大涨、浙江龙盛一字涨停）、start/end 可解释、≥2 独立 Evidence 且 ≥2 independence_group（央视网、中国证券报、每日经济新闻、中国纺织报、中国纺织工业联合会）。",
+    "why_not": "退潮段证据不足：缺少可引用的染料价格序列与板块指数序列，end 只能给 PHASE_WINDOW 且 confidence 低；若 ThreeC Agent 认为持续性不足，可考虑 OBSERVATION_ONLY。",
+    "possible_duplicate_of": [],
+    "notes": "本候选是少数「事故型供给冲击」机制样本，与行政去产能（C10）、能耗双控（C4）机制不同，不宜合并。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-006",
+    "title": "2019–2020 黄金：实际利率下行与避险驱动行情",
+    "year": 2020,
+    "macro_theme_proposal": "贵金属",
+    "theme_name_candidates": [
+      "贵金属",
+      "黄金"
+    ],
+    "theme_summary": "2019 年金价全年上涨约 21.2%（年末约 1611 美元/盎司），2020 年再度上涨 25%，2020-08-07 伦敦现货黄金盘中创 2075.14 美元/盎司 历史新高。驱动为美联储零利率 + 无限量宽松使美元实际利率转负、美元贬值与避险需求。机制为「实际利率 / 货币属性」，与工业金属的供需-库存机制根本不同，不应与一般工业金属合并。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2019-05-01",
+          "window_end": "2019-08-31",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S025"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E054"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2020-03-20",
+              "basis": "2020 年内最低点（1451.08 美元/盎司），此后重新上行",
+              "source_ids": [
+                "R01-RESOURCES-S024"
+              ]
+            }
+          ],
+          "conflict_note": "2019 年上行段与 2020 年疫情后上行段之间存在 2020-03 的流动性冲击低点，起点口径分列保留。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-08-07",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S024",
+            "R01-RESOURCES-S025"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E051",
+            "R01-RESOURCES-E053"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2020-08-06",
+              "basis": "COMEX 黄金期货结算价 2069.40 美元/盎司，为历史最高结算价口径",
+              "source_ids": [
+                "R01-RESOURCES-S025"
+              ]
+            }
+          ],
+          "conflict_note": "伦敦现货盘中 2075.14、COMEX 期货盘中 2089.20、期货结算 2069.40 三个口径并存，不自动取舍。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-09-01",
+          "window_end": "2020-12-31",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S024"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E051"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2019-05-01",
+        "end": "2020-08-07",
+        "basis": "2019 年涨 21.2%、2020 年涨 25%，至 2020-08-07 创历史新高",
+        "notes": "含 2020-03 流动性冲击低点，中间有一次回撤"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2020-08-07",
+        "end": "2020-08-07",
+        "basis": "2020-08-07 盘中 2075.14 美元/盎司 为历史新高",
+        "notes": null
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2020-08-08",
+        "end": "2020-12-31",
+        "basis": "实际利率回升 + 风险偏好修复，金价回落并在 1700–2100 区间震荡约三年",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "2019 年美联储转向降息、美元走弱",
+        "中美贸易摩擦与全球增长担忧带动避险需求",
+        "2019 年末金价接近 2011 年历史高点，形成突破预期"
+      ],
+      "accelerator": [
+        "2020 年 3 月美联储推出零利率 + 无限量宽松，资产负债表由约 4.3 万亿美元升至 5 月底 7.1 万亿美元",
+        "美国二季度 GDP 环比大幅下滑，美元实际利率深度转负",
+        "2020 年上半年投资性黄金需求创纪录（ETF 与实物同步流入）"
+      ],
+      "turning": [
+        "2020-08-07 创历史新高后转为震荡",
+        "2020 年下半年美国经济与市场情绪改善，实际利率抬升",
+        "避险情绪减弱、资金转向风险资产"
+      ],
+      "ending": [
+        "金价在 1700–2100 美元/盎司区间横盘约三年",
+        "2021–2023 年缺乏新的定价驱动",
+        "直至 2024 年才出现新一轮突破（见 C7）"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E051",
+      "R01-RESOURCES-E052",
+      "R01-RESOURCES-E053",
+      "R01-RESOURCES-E054"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC023",
+      "R01-RESOURCES-SEC024",
+      "R01-RESOURCES-SEC026"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "high",
+    "point_in_time_notes": "美联储政策、金价报价与 ETF 流入均为同期可观察事实；「2020 年全年涨 25%」「2019 年涨 21.2%」为年度统计口径，属 subsequent，不得作为启动的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（黄金）、持续性强（2019-05 至 2020-08，逾 12 个月）、市场关注充分、start/end 可解释、≥2 独立 Evidence 且 ≥2 independence_group（中国黄金协会/中国黄金网、中国经济网、MarketWatch）。",
+    "why_not": "① A 股黄金板块（山东黄金、中金黄金等）在该窗口的市场响应证据弱于商品端，本任务未收集到足够的板块口径行情证据；② 2019 年与 2020 年两段上行是否属同一 Campaign，需 Independence Gate 判定（存在 2020-03 流动性冲击隔断）。",
+    "possible_duplicate_of": [],
+    "notes": "明确纪律：黄金属资产属性较强的品种，不得与一般工业金属（C1）混为同一机制。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-007",
+    "title": "2024–2025 黄金：官方部门结构性购金驱动的新一轮上行",
+    "year": 2025,
+    "macro_theme_proposal": "贵金属",
+    "theme_name_candidates": [
+      "贵金属",
+      "黄金"
+    ],
+    "theme_summary": "金价自 2024 年突破 2020 年高点后连续创历史新高：2025-02-11 现货黄金盘中 2942.71 美元/盎司、COMEX 期货 2968.5 美元/盎司；2025-12-23 突破 4500 美元/盎司，12-26 刷新至 4526 美元/盎司。驱动从「实际利率」转向「官方部门结构性购金与储备多元化」——2024 年全球央行购金 1045 吨（占全球黄金总需求 21%），2025 年前三季度净购金 634 吨。A 股黄金股 2025 年整体上涨超一倍。机制与 C6（实际利率/避险）不同，属官方部门结构性需求。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2024-02-01",
+          "window_end": "2024-04-30",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S029"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E062"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2024-03-01",
+              "basis": "金价站上 2100 美元/盎司并突破 2020 年以来区间上沿（推断）",
+              "source_ids": [
+                "R01-RESOURCES-S029"
+              ]
+            }
+          ],
+          "conflict_note": "突破 2020 年区间上沿的具体日期在不同来源间不一致，保留窗口口径。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2025-12-26",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S028"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E063"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2025-12-23",
+              "basis": "国际金价突破 4500 美元/盎司",
+              "source_ids": [
+                "R01-RESOURCES-S028"
+              ]
+            }
+          ],
+          "conflict_note": "本候选的 peak 为观测窗口内最高点；该上行周期在 2025 年末仍在延续，peak 属暂定口径（不确定性高）。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "研究窗口（2015–2025）结束时该结构仍在延续，无法给出 end。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2024-02-01",
+        "end": "2025-12-26",
+        "basis": "金价连续突破 2020 年高点、3000、4000、4500 美元/盎司（3000/4000 为公开报道口径，本任务未收集到对应来源，故不写入 evidence）",
+        "notes": "阶段跨度覆盖 2024 全年与 2025 全年"
+      },
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2025-12-27",
+        "end": null,
+        "basis": "窗口结束时结构仍在延续，退潮段未知",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "2022 年美国冻结俄罗斯外汇储备后，新兴市场央行调整外汇资产结构，减持美债、增持黄金",
+        "2024 年全球央行购金 1045 吨，占全球黄金总需求（4974 吨）21%",
+        "实际利率之外新增「去美元化 / 国际货币体系重构」定价维度"
+      ],
+      "accelerator": [
+        "2024 年伦敦现货黄金全年均价同比上涨 22.97% 至 2386.2 美元/盎司",
+        "黄金 ETF 持仓快速扩张（2024 年底中国国内黄金 ETF 持有量同比增超八成）",
+        "2025 年美联储降息预期与地缘紧张共同推动，2025 年全球央行购金延续（前三季度 634 吨）",
+        "中国黄金储备 2025 年连续第 11 个月上升，至 9 月底 2303 吨"
+      ],
+      "turning": [
+        "2025 年 12 月金价加速上行后，A 股金矿龙头股价未同步创新高，出现「现货热、股价冷」背离",
+        "头部矿企采金综合成本同比上升 12%–18%，利润增速不及金价涨幅",
+        "部分矿企股价在 2025 年 Q3 已提前大幅上涨，资金阶段性获利了结"
+      ],
+      "ending": [
+        "窗口结束时结构未结束（unknown）"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E061",
+      "R01-RESOURCES-E062",
+      "R01-RESOURCES-E063",
+      "R01-RESOURCES-E064"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC003",
+      "R01-RESOURCES-SEC023",
+      "R01-RESOURCES-SEC024",
+      "R01-RESOURCES-SEC025"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "金价报价、央行购金统计与黄金储备数据均为同期可观察事实；「2025 年黄金股指数上涨超一倍」为区间统计口径，属 subsequent，不得作为 2024 年初的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（黄金/贵金属）、持续性强（覆盖 2024–2025 两个完整年度）、市场关注充分（A 股黄金板块为 2025 年最强方向之一）、start 可解释（突破前高 + 央行购金叙事）、≥2 独立 Evidence 且 ≥2 independence_group（中国经济网、中国工业报、正观新闻、新浪看点/财经）。",
+    "why_not": "① end 未知，结构在研究窗口结束时仍在延续，无法闭合生命周期；② 商品与 A 股股价出现明确背离，说明「商品上行 → A 股主题」的传导在本轮并不稳固；③ 与 C6 是否属同一「黄金长周期」还是两个独立 Campaign，需 Independence Gate 判定。",
+    "possible_duplicate_of": [],
+    "notes": "本候选刻意与 C6 分立：C6 机制为实际利率/避险（货币宽松），C7 机制为官方部门结构性需求（储备多元化），两者机制不同，不机械合并。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-008",
+    "title": "2021–2022 农化（化肥）成本冲击与出口限制驱动行情",
+    "year": 2022,
+    "macro_theme_proposal": "农化",
+    "theme_name_candidates": [
+      "农化",
+      "化肥"
+    ],
+    "theme_summary": "能源（天然气）价格高企推升氮肥生产成本，叠加 2021-11 俄罗斯实施氮肥出口配额、2021 年中国禁止磷肥出口（至 2022-06）、2022-02 俄乌冲突冲击黑海出口与俄罗斯化肥外运，国际化肥价格大幅上涨——FAO 数据显示尿素价格 2022-04 见顶、约为 2020-12 的 4 倍。国内化肥企业普遍上调出厂价 60–100 元/吨；2022 年 7–11 月价格冲高回落。机制为「成本冲击 + 出口限制 + 地缘事件」，与化工的行政限产机制不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-01-01",
+          "window_end": "2021-06-30",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S037"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E072"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2022-02-24",
+              "basis": "俄乌冲突爆发，黑海农产品与化肥出口受阻（事件锚点）",
+              "source_ids": [
+                "R01-RESOURCES-S036"
+              ]
+            }
+          ],
+          "conflict_note": "成本冲击起点（2021 年能源价格上行）与地缘事件锚点（2022-02-24）相差约一年，两者分列保留。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-03-01",
+          "window_end": "2022-04-30",
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S036"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E071"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-07-01",
+          "window_end": "2022-11-30",
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S035"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E074"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2021-01-01",
+        "end": "2022-03-01",
+        "basis": "氮肥价格 2021 年近乎翻倍，2022 年初继续上行",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2022-03-01",
+        "end": "2022-04-30",
+        "basis": "FAO：尿素国际价格 2022-04 见顶，约为 2020-12 的 4 倍",
+        "notes": null
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2022-05-01",
+        "end": "2022-11-30",
+        "basis": "2022 年 7–11 月国内化肥价格冲高回落，尿素较上半年高点下跌 28.31%",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "能源（天然气）价格上涨推升氮肥生产成本",
+        "2021 年作物价格上行提高化肥可承受价格，拉动需求",
+        "疫情相关供应链与高运费推高化肥到岸成本"
+      ],
+      "accelerator": [
+        "2021-11 俄罗斯对氮肥及含氮复合肥实施 6 个月出口配额",
+        "中国禁止磷肥出口（至少至 2022-06），保护国内粮食安全",
+        "2022-02 俄乌冲突冲击黑海农产品与化肥出口，俄罗斯化肥外运受阻",
+        "加拿大钾肥供应扰动、氨价飙升"
+      ],
+      "turning": [
+        "2022-07 起化肥市场价格持续下跌，秋季肥采购不积极",
+        "国际原油与天然气价格大幅下跌、美联储加息，成本支撑减弱",
+        "硫磺价格较上半年高点下跌 74.45%，液氨下跌约 32%"
+      ],
+      "ending": [
+        "俄乌粮食与化肥出口制裁放松，国际化肥供需矛盾改善",
+        "化肥企业前期满负荷生产形成库存压力",
+        "价格跌回 2022 年 3 月水平"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E071",
+      "R01-RESOURCES-E072",
+      "R01-RESOURCES-E073",
+      "R01-RESOURCES-E074",
+      "R01-RESOURCES-E075"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC018",
+      "R01-RESOURCES-SEC027",
+      "R01-RESOURCES-SEC028"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "出口配额、出口禁令、俄乌冲突与尿素报价均为同期可观察事实；FAO 与商务部报告的全年/阶段统计（如「2020-12 的 4 倍」「7–11 月回落」）为事后口径，属 subsequent，不得作为启动的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（农化/化肥）、持续性强（2021 年初至 2022 年末）、市场关注充分、start/end 可解释、≥2 独立 Evidence 且 ≥2 independence_group（FAO、USDA FAS、商务部商务预报）。",
+    "why_not": "① A 股「化肥」板块 2022-03-15 至 2022-12-30 区间涨跌幅为 -12.05%，即商品价格上行期板块并未同向走强，商品与 A 股主题的传导证据不足；② 是否属「农业/粮食安全」主题（R01-04）而非本任务的资源/化工机制，需要边界裁定。",
+    "possible_duplicate_of": [],
+    "notes": "A 股板块在 2021 年为 +24.24%（概念口径），但 2022 年为 -12.05%，板块响应与商品价格明显脱节，是「商品涨 ≠ A 股主题启动」的重要反例。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-009",
+    "title": "2024–2025 铜：矿端结构性供给缺口与电网/新能源需求",
+    "year": 2025,
+    "macro_theme_proposal": "有色金属",
+    "theme_name_candidates": [
+      "有色金属",
+      "工业金属",
+      "铜"
+    ],
+    "theme_summary": "2024-05-20 LME 铜创 11104.5 美元/吨 历史新高（沪铜 88940 元/吨），随后因高价抑制消费与关税担忧回落逾 15%；2025 年供给端扰动集中爆发（2025-09 印尼 Grasberg 泥石流不可抗力、El Teniente 安全事故、Kamoa-Kakula 矿震），铜矿产量增速预期由 2.3% 下调至 1.4%，铜精矿加工费跌至负值，2025-10-09 LME 铜再度突破 11000 美元/吨，年末最高约 11944 美元/吨。机制为「矿端结构性供给缺口 + 电网/新能源/AI 需求」，与 C1 的全球流动性驱动不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2024-03-01",
+          "window_end": "2024-05-31",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S044"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E081"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2025-09-01",
+              "basis": "Grasberg 泥石流不可抗力，供给缺口由「预期」变为「现实」（叙事强化锚点）",
+              "source_ids": [
+                "R01-RESOURCES-S044"
+              ]
+            }
+          ],
+          "conflict_note": "上行起点（2024 年上半年）与供给叙事强化锚点（2025-09）相差约 16 个月，两者分列保留。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2025-10-01",
+          "window_end": "2025-12-31",
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S045"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E084"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2024-05-20",
+              "basis": "LME 铜 11104.5 美元/吨 历史新高（前一轮高点口径）",
+              "source_ids": [
+                "R01-RESOURCES-S044"
+              ]
+            }
+          ],
+          "conflict_note": "2024-05 与 2025 年末存在两个高点口径，且 2025 年末高点属窗口内暂定口径。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "短期缺口预期延续至 2026 年（ICSG 预测 2026 年精炼铜短缺约 15 万吨），窗口结束时结构未结束",
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S046"
+          ],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2024-03-01",
+        "end": "2024-05-20",
+        "basis": "美联储降息预期前移 + 铜矿供应中断担忧 → LME 铜创历史新高",
+        "notes": null
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2024-05-21",
+        "end": "2024-09-30",
+        "basis": "高价抑制消费 + 美国关税政策担忧 + 美元走强，铜价回落超 15%",
+        "notes": null
+      },
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2025-09-01",
+        "end": "2025-12-31",
+        "basis": "矿端不可抗力集中爆发 + 加工费转负 + 电网/新能源需求，铜价重心上移并创出新高",
+        "notes": "同一商品出现两段主升，中间夹一次回撤；是否应拆分为两个 Campaign 需 Independence Gate 判定"
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "美联储降息预期前移，美元走弱",
+        "2024 年上半年铜矿停产与供应担忧",
+        "国内多家冶炼厂检修造成供给扰动"
+      ],
+      "accelerator": [
+        "2025-09 印尼 Grasberg 铜矿泥石流宣布不可抗力，全面复工推迟",
+        "智利 El Teniente 安全事故、刚果(金) Kamoa-Kakula 矿震，嘉能可等下调产量指引",
+        "2025 年全球铜矿产量增速预期由 2.3% 下调至 1.4%；前 20 家铜企前三季度产量平均增速约 -1.2%",
+        "铜精矿长单加工费由 2023 年约 88 美元/吨降至 2025 年 21.3 美元/吨，进口散单加工费转负",
+        "中国电网投资保持双位数增长（截至 2024-10 完成额 4502 亿元）；新能源汽车单车用铜量约 83 公斤"
+      ],
+      "turning": [
+        "2024 年高价抑制消费，下游普遍去库存",
+        "美国关税政策预期引发经济与需求担忧，美元走强压制铜价",
+        "2024-06 至 2024-09 铜价自高点回落超 15%"
+      ],
+      "ending": [
+        "窗口结束时结构未结束（unknown）；2026 年缺口预期仍存"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E081",
+      "R01-RESOURCES-E082",
+      "R01-RESOURCES-E083",
+      "R01-RESOURCES-E084",
+      "R01-RESOURCES-E085"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC001",
+      "R01-RESOURCES-SEC003",
+      "R01-RESOURCES-SEC030"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "矿端事故公告、加工费与铜价为同期可观察事实；「2025 年全年上涨近 30%」等区间统计属 subsequent，不得作为 2024 年上半年的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（铜/矿端供给缺口）、持续性强（覆盖 2024–2025）、市场关注充分、start 可解释（矿端扰动 + 降息预期）、≥2 独立 Evidence 且 ≥2 independence_group（Mysteel/我的钢铁网、FT Mercati、三个皮匠报告）。",
+    "why_not": "① 与 C1 同属铜价周期，存在「一个铜长周期 vs 两个独立阶段」的边界争议；② 商品与 A 股铜板块的传导证据不足（本任务未收集到足够的板块行情证据）；③ classification 在 theme_campaign 与 industry_trend 之间存在歧义。",
+    "possible_duplicate_of": [
+      "R01-RESOURCES-001（2020H2–2021 工业金属全球再通胀行情，同属铜价周期）"
+    ],
+    "notes": "按「同一商品的不同阶段不要仅按年份切割」的纪律，本候选与 C1 的关系（独立 Campaign vs 同一长周期的两个阶段）必须由 ThreeC Agent 判定；本任务保留双方。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-010",
+    "title": "2017 电解铝清理违规产能（有色·行政去产能）",
+    "year": 2017,
+    "macro_theme_proposal": "有色金属",
+    "theme_name_candidates": [
+      "有色金属",
+      "工业金属",
+      "电解铝"
+    ],
+    "theme_summary": "2017-04-12 国家发改委、工信部、国土资源部、环保部联合发布《清理整顿电解铝行业违法违规项目专项行动工作方案的通知》，要求 6 个月内完成清理整顿；2017-07-24 山东省责令魏桥创业集团与信发集团关停违规电解铝产能 321 万吨（魏桥 268 万吨、信发 53 万吨）。2017-08-09 沪铝大涨近 5% 创 2012 年 1 月以来最高；2017 年 7、8 月中国铝产量同比下降 0.3% 和 7.3%（前 6 个月为 +8.8%），全年关停违规产能约 460 万吨。机制为「行政性去产能（供给侧改革）」，属 Priority B。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2017-04-12",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event",
+          "source_ids": [
+            "R01-RESOURCES-S030"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E091"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2017-04-16",
+              "basis": "新疆昌吉州率先停止境内 3 家违规在建电解铝项目",
+              "source_ids": [
+                "R01-RESOURCES-S030"
+              ]
+            }
+          ],
+          "conflict_note": "四部委通知（2017-04-12）与首个地方执行事件（2017-04-16）分列保留。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2017-08-09",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed",
+          "source_ids": [
+            "R01-RESOURCES-S032"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E093"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2017-09-20",
+              "basis": "铝价一度逼近 17000 元/吨（媒体报道口径）",
+              "source_ids": [
+                "R01-RESOURCES-S030",
+                "R01-RESOURCES-S034"
+              ]
+            }
+          ],
+          "conflict_note": "8 月急涨与 9 月冲高两个口径并存；报道亦指出「遇事实而跌」，峰值判定需以板块口径复核。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2017-11-01",
+          "window_end": "2017-12-31",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S030"
+          ],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "供暖季限产落地后市场转为「遇事实而跌」，退潮时点证据较弱。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2017-04-12",
+        "end": "2017-08-09",
+        "basis": "四部委通知 → 各地关停违规产能 → 沪铝 2017-08-09 大涨近 5% 创 2012-01 以来最高",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2017-08-09",
+        "end": "2017-09-20",
+        "basis": "铝价上破 15000 元冲高至接近 17000 元",
+        "notes": null
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2017-09-21",
+        "end": "2017-12-31",
+        "basis": "供暖季限产政策落地后价格转弱（「遇事实而跌」）",
+        "notes": "退潮段 confidence 低"
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "2017-04-12 四部委联合发布《清理整顿电解铝行业违法违规项目专项行动工作方案的通知》",
+        "2013 年起国家已不再审批电解铝新增产能，政策延续性强",
+        "2017-02《京津冀及周边地区 2017 年大气污染防治工作方案》确立去产能基调"
+      ],
+      "accelerator": [
+        "2017-07-24 山东责令魏桥、信发关停违规产能 321 万吨（约占全国运行产能 1/11）",
+        "2017-04-16 新疆昌吉州停止 3 家违规在建项目，此后各地陆续公布关停清单",
+        "2017-07-25 发改委与能源局要求全面清理自备电厂欠缴政府性基金及附加，抬高成本",
+        "2017 年 7、8 月中国铝产量同比下降 0.3% 和 7.3%，前 6 个月为 +8.8%"
+      ],
+      "turning": [
+        "库存高企（报道称库存达 160 万吨）与产量数据背离",
+        "市场预期已充分定价去产能影响",
+        "供暖季限产的实际影响低于预期（测算最大影响产量 88 万吨以内）"
+      ],
+      "ending": [
+        "「遇事实而跌」，去产能政策效果已被价格消化",
+        "供暖季结束后关停企业存在复产预期",
+        "板块资金转向其他方向"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E091",
+      "R01-RESOURCES-E092",
+      "R01-RESOURCES-E093",
+      "R01-RESOURCES-E094",
+      "R01-RESOURCES-E095",
+      "R01-RESOURCES-E096"
+    ],
+    "security_ids": [
+      "R01-RESOURCES-SEC005",
+      "R01-RESOURCES-SEC006",
+      "R01-RESOURCES-SEC007"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "四部委通知、地方关停决定与沪铝当日涨幅均为同期可观察事实；「全年关停约 460 万吨」为事后估计（业内评论），属 subsequent，不得作为 2017-04-12 的同期催化。",
+    "why_campaign": "满足 Campaign 最低标准：主题明确（电解铝去产能）、持续性强（2017-04 至 2017-12）、市场关注充分（沪铝大涨、板块联动）、start/end 可解释（四部委通知为启）、≥2 独立 Evidence 且 ≥2 independence_group（中国经济网、中证网、人民网）。",
+    "why_not": "Priority B 资料密度低于 Priority A：缺少可引用的电解铝板块指数与个股行情序列，A 股市场扩散证据弱于商品端；且与 2016 年煤炭/钢铁供给侧改革行情存在机制同源性但 scope 不同（煤炭/钢铁不在本任务 scope）。",
+    "possible_duplicate_of": [],
+    "notes": "本候选是本任务在 Priority B（2015–2017）中证据最完整的一个；其余 Priority B 方向大面积保留为 INSUFFICIENT 或 exclusions。"
+  },
+  {
+    "candidate_id": "R01-RESOURCES-011",
+    "title": "2016 化工：环保约束下的商品涨价与 A 股板块背离（待定）",
+    "year": 2016,
+    "macro_theme_proposal": "基础化工",
+    "theme_name_candidates": [
+      "基础化工",
+      "化工"
+    ],
+    "theme_summary": "2016 年化工商品价格结束连续 5 年下跌并大幅反弹（化工指数由年初 618 点升至年末 833 点，均涨跌幅 29.84%，维生素 B5 +445.45%、丁二烯 +218.42%、维生素 A +188.95%），驱动为供给侧改革与环保督查下的落后/高污染产能退出（2016-01-04 中央环保督查组河北试点；山东截至 2016-09 关闭 935 家安全环保隐患企业）。但同期申万基础化工板块区间涨跌幅为 -7.13%，商品价格上行并未同步形成 A 股板块行情。本候选保留为 INSUFFICIENT：商品端证据充分，A 股主题成立证据不足。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2016-01-04",
+          "window_end": "2016-03-31",
+          "phase_note": null,
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S041"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E103"
+          ],
+          "confidence": "low",
+          "alternative_dates": [
+            {
+              "date": "2016-11-20",
+              "basis": "石家庄《大气污染防治调度令》要求全市制药企业停产（事件锚点）",
+              "source_ids": [
+                "R01-RESOURCES-S043"
+              ]
+            }
+          ],
+          "conflict_note": "政策/督查起点（2016 年初）与最强事件冲击（2016-11）相差约 11 个月，分列保留。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2016 年下半年至 2017 年初化工商品价格处于阶段高位（缺少可引用的月度价格序列）",
+          "basis": "inferred",
+          "source_ids": [
+            "R01-RESOURCES-S042"
+          ],
+          "evidence_ids": [
+            "R01-RESOURCES-E101"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "缺少可引用的价格与板块序列，无法判定退潮时点。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2016-01-01",
+        "end": "2016-12-31",
+        "basis": "化工商品价格结束连续 5 年下跌，化工指数由 618 点升至 833 点",
+        "notes": "商品口径；A 股板块口径未同步"
+      },
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2017-01-01",
+        "end": null,
+        "basis": "缺少持续期证据，阶段无法标注",
+        "notes": null
+      }
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": [
+        "2015-07 中央深改小组审议通过《环境保护督查方案(试行)》，环保督查机制建立",
+        "2016-01-04 中央环保督查组对河北省开展督查试点，由督企转向督政",
+        "2016 年初中央提出「三去一降一补」，供给侧改革全面展开"
+      ],
+      "accelerator": [
+        "环保督查三批次覆盖 23 个省市区，2017-08 第四批实现 31 省全覆盖",
+        "化工成为整治重点：产品分散、小企业多、污染严重",
+        "2016-11-20 华北制药公告石家庄调度令，要求全市制药企业全部停产",
+        "山东截至 2016-09 已关闭 935 家安全环保隐患企业、1319 家停产"
+      ],
+      "turning": [
+        "缺少证据：无法确定化工商品价格与板块的转折点时点"
+      ],
+      "ending": [
+        "缺少证据：无法确定退潮机制"
+      ]
+    },
+    "evidence_ids": [
+      "R01-RESOURCES-E101",
+      "R01-RESOURCES-E102",
+      "R01-RESOURCES-E103",
+      "R01-RESOURCES-E104",
+      "R01-RESOURCES-E105"
+    ],
+    "security_ids": [],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "环保督查启动、调度令与化工商品价格均为同期可观察事实；「2016 年申万基础化工板块 -7.13%」为年度统计口径，属 subsequent。",
+    "why_campaign": "商品端具备可解释的机制（环保约束下的落后产能退出）与可追溯的价格证据（化工指数 618→833，均涨跌幅 29.84%），且时间范围明确（2016 全年）。",
+    "why_not": "A 股主题成立的证据不足：同期申万基础化工板块区间涨跌幅为 -7.13%，商品价格上行未伴随 A 股板块行情；缺少板块内部结构（哪些子行业/标的上涨）的证据，也缺少可识别的启动锚点与扩散过程。按协议 §4.2，「资料不足」不等于「不成立」，故用 INSUFFICIENT 而非 REJECT。",
+    "possible_duplicate_of": [],
+    "notes": "本候选是「商品价格上涨 ≠ A 股主题启动」的直接样本；若后续补齐板块行情与结构证据，可重新评估。"
+  }
+]

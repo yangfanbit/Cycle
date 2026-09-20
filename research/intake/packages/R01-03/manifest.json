@@ -1,0 +1,212 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R01",
+  "task_id": "R01-03",
+  "task_scope": {
+    "task_id": "R01-03",
+    "family_directions": [
+      "资源 / 有色 / 化工（含工业金属、贵金属、稀有金属、能源金属、基础化工、农化）"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "工业金属（铜/铝）、贵金属（黄金）、稀有金属/稀土、能源金属（锂）、基础化工（染料/中间体、纯碱/氯碱/黄磷/有机硅等周期品）、农化（化肥）等方向的 2015–2025 历史结构候选。只产出 Research Intake Package；不做 canonicalization、不判定 Campaign 归属、不判定 Macro Theme。",
+    "excluded_scope": "新能源发电设备制造与锂电池/整车制造（已有 family「电力设备」「汽车」）、半导体材料与电子特气（R01-02）、石油天然气开采与炼化一体化（未列入第一轮 family 方向）、煤炭开采与钢铁冶炼（不在本任务 scope 列举内）、建材（水泥/玻璃）与地产链（R01-05）"
+  },
+  "generated_at": "2026-09-20T00:00:00+08:00",
+  "source_commit": "2153f6d83b7481300696ab73d792e9e53aa31a07",
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R01-RESOURCES-MT001",
+      "proposed_name": "有色金属",
+      "theme_name_candidates": [
+        "有色金属",
+        "工业金属",
+        "有色金属冶炼与压延加工"
+      ],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "当前 DB 4 个 Macro Theme 根节点（汽车/医药健康/信息通信/电力设备）均无资源类根节点。有色金属在 2015–2025 存在多次机制不同的独立结构（2017 电解铝行政去产能、2020H2–2021 全球再通胀、2024–2025 矿端供给缺口），且驱动轴为「供给收缩/涨价」，与既有四族机制正交。仅提交提案，最终解析由 ThreeC Agent 走 CMTR v1。",
+      "known_overlap": [
+        "已有 family「电力设备」C-2020-POWER-NE 与能源金属价格周期耦合",
+        "已有 family「汽车」C-2021-NEV 与能源金属价格周期耦合",
+        "R01-05（金融/地产）：大宗商品与地产/基建需求周期"
+      ],
+      "notes": "「有色金属」与「工业金属」「贵金属」「稀有金属/稀土」「能源金属」的层级关系（根节点 vs 子主题）必须由 CMTR v1 判定，Worker 不自行裁决。"
+    },
+    {
+      "proposal_id": "R01-RESOURCES-MT002",
+      "proposed_name": "基础化工",
+      "theme_name_candidates": [
+        "基础化工",
+        "化工",
+        "化学原料及化学制品制造业"
+      ],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "化工在 2015–2025 存在机制高度不同的多条结构：2016 环保约束下的商品涨价、2019 响水事故型供给冲击、2021 能耗双控行政限产、2021–2022 农化成本冲击。子行业机制差异极大，是否应按机制拆分（周期品 vs 农化 vs 新材料）需 CMTR v1 判定。",
+      "known_overlap": [
+        "R01-02（半导体/电子）：电子材料与电子特气",
+        "R01-05（金融/地产）：建材与化工、基建需求",
+        "R01-04（消费）：农业与农化"
+      ],
+      "notes": "本提案不主张把「化工」内部按机制拆成多个 Macro Theme；拆分与否交 CMTR v1。"
+    },
+    {
+      "proposal_id": "R01-RESOURCES-MT003",
+      "proposed_name": "贵金属",
+      "theme_name_candidates": [
+        "贵金属",
+        "黄金"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "黄金具备强资产/货币属性，驱动机制为实际利率与官方部门结构性购金，与一般工业金属的供需-库存机制不同。若升格为独立 Macro Theme 属 taxonomy 变更；本任务只提出 proposal 与名称候选。2020 与 2024–2025 两轮机制不同（实际利率 vs 央行购金），但同属贵金属驱动轴。",
+      "known_overlap": [
+        "「有色金属」若成立根节点，贵金属为其子主题存在层级歧义"
+      ],
+      "notes": "机制上应避免与工业金属合并；层级上是否独立成族交 CMTR v1。"
+    },
+    {
+      "proposal_id": "R01-RESOURCES-MT004",
+      "proposed_name": "稀有金属/稀土",
+      "theme_name_candidates": [
+        "稀有金属/稀土",
+        "稀土",
+        "稀土永磁"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "稀土同时具备资源属性（供给刚性/进口依赖）与政策属性（开采与冶炼分离总量控制指标、出口管制、央企整合），机制归类存在歧义。2020-05 起近 18 个月的价格上行与 2021-12-23 中国稀土集团成立是两条可追溯锚点。",
+      "known_overlap": [
+        "能源金属（锂）同为「新能源需求拉动 + 供给刚性」机制，存在机制重叠",
+        "R01-06（军工）：稀土永磁的军工应用边界"
+      ],
+      "notes": "机制归类（资源属性 vs 政策属性）保留为 Conflict，不自行取舍。"
+    },
+    {
+      "proposal_id": "R01-RESOURCES-MT005",
+      "proposed_name": "农化",
+      "theme_name_candidates": [
+        "农化",
+        "化肥",
+        "农药"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "农化的核心机制为成本冲击（天然气/硫磺/合成氨）叠加出口限制与地缘事件，与基础化工的行政限产机制不同。同时与 R01-04（消费/农业）的种植链存在边界。",
+      "known_overlap": [
+        "R01-04（消费）：农业、种植与粮食安全",
+        "「基础化工」若成立根节点，农化为其子主题存在层级歧义"
+      ],
+      "notes": "是否独立成族交 CMTR v1。"
+    },
+    {
+      "proposal_id": "R01-RESOURCES-MT006",
+      "proposed_name": "能源金属",
+      "theme_name_candidates": [
+        "能源金属",
+        "锂",
+        "锂矿"
+      ],
+      "proposal_kind": "CROSS_FAMILY",
+      "rationale": "能源金属（锂钴镍）同时被「资源/有色」（资源属性与价格周期）、「电力设备」（C-2020-POWER-NE）与「汽车」（C-2021-NEV）三个方向覆盖。跨族边界必须交 ThreeC Agent 判定，Worker 不自行裁决。",
+      "known_overlap": [
+        "已有 family「电力设备」：C-2020-POWER-NE",
+        "已有 family「汽车」：C-2021-NEV / C-2020-NEV"
+      ],
+      "notes": "本任务提交候选并标记 possible_duplicate_of，不因可能重复而删除。"
+    },
+    {
+      "proposal_id": "R01-RESOURCES-MT007",
+      "proposed_name": "供给收缩",
+      "theme_name_candidates": [
+        "供给侧改革",
+        "供给收缩",
+        "能耗双控"
+      ],
+      "proposal_kind": "MECHANISM",
+      "rationale": "「供给收缩 / 涨价」是当前 4 族完全缺失的机制轴，本任务是该机制的主要来源。按基线快照 §C，机制轴（SUPPLY_CONTRACTION）不是行业，是机制；此处仅作为 mechanism proposal 提交，不作为 Macro Theme 名称。",
+      "known_overlap": [],
+      "notes": "明确声明：这是机制（Mechanism），不是 Macro Theme。"
+    }
+  ],
+  "cross_task_notes": [
+    {
+      "note_id": "R01-RESOURCES-N001",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-02",
+      "related_candidate_ids": [
+        "R01-RESOURCES-004"
+      ],
+      "note": "半导体材料（硅片、光刻胶、电子特气）与化工品在产业链上重叠。本任务只收录作为「化工品价格周期」的候选，凡属半导体材料国产替代叙事的部分交 R01-02，不在此建立候选。"
+    },
+    {
+      "note_id": "R01-RESOURCES-N002",
+      "kind": "BOUNDARY",
+      "target_task_id": "R01-05",
+      "related_candidate_ids": [
+        "R01-RESOURCES-001",
+        "R01-RESOURCES-009"
+      ],
+      "note": "铜/铝的需求侧与地产/基建/电网周期高度耦合。本任务只从「商品供给与价格机制」侧记录；需求侧的地产/基建驱动（含建材）交 R01-05，避免同一底层结构被两个任务各自建立为独立 Campaign。"
+    },
+    {
+      "note_id": "R01-RESOURCES-N003",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-05",
+      "related_candidate_ids": [
+        "R01-RESOURCES-004"
+      ],
+      "note": "「建材（水泥/玻璃）」与化工、基建需求存在交叉。本任务未将建材纳入 scope；如需建立，应在 R01-05 或独立轮次处理。"
+    },
+    {
+      "note_id": "R01-RESOURCES-N004",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-RESOURCES-002"
+      ],
+      "note": "C2（2020Q4–2022 能源金属·锂）与既有 family「电力设备」C-2020-POWER-NE 及「汽车」C-2021-NEV 在时间与资金逻辑上高度重叠。按 Worker 规则不自行删除，标记 possible_duplicate_of，merge 由 ThreeC Agent 决定。"
+    },
+    {
+      "note_id": "R01-RESOURCES-N005",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-RESOURCES-001",
+        "R01-RESOURCES-004"
+      ],
+      "note": "2021 年有色金属（+40.47%）、基础化工（+37.19%）、煤炭（+39.60%）、钢铁（+34.06%）同时高涨幅。本任务的 C1/C4 与 R01-05（煤炭/钢铁若被涉及）可能指向同一「通胀交易 + 周期风格」结构，需 cross-task dedupe。"
+    },
+    {
+      "note_id": "R01-RESOURCES-N006",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-04",
+      "related_candidate_ids": [
+        "R01-RESOURCES-008"
+      ],
+      "note": "农化（化肥）与农业/种植（粮食安全）在叙事上相邻。本任务从「成本冲击 + 出口限制」机制侧记录，种植链本身属 R01-04。"
+    },
+    {
+      "note_id": "R01-RESOURCES-N007",
+      "kind": "HANDOFF",
+      "target_task_id": "R01-06",
+      "related_candidate_ids": [
+        "R01-RESOURCES-003"
+      ],
+      "note": "稀土永磁的军工应用、以及军工新材料（碳纤维、高温合金）中的纯化工品部分，边界交 R01-06；本任务只在「资源/政策配额」机制侧记录稀土。"
+    },
+    {
+      "note_id": "R01-RESOURCES-N008",
+      "kind": "BOUNDARY",
+      "target_task_id": null,
+      "related_candidate_ids": [],
+      "note": "本任务未覆盖煤炭开采与钢铁冶炼、石油天然气开采。若未来认为「供给侧改革」机制需要完整表达，应在独立轮次或 R01-05 处理，而不是在本任务内扩张 scope。"
+    }
+  ]
+}

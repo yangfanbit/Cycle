@@ -1,0 +1,79 @@
+[
+  {
+    "question_id": "R01-RESOURCES-Q001",
+    "question": "2021 年有色金属、基础化工、煤炭、钢铁同时取得 30%+ 的行业涨幅，是否应视为一个「通胀交易 / 周期风格」Theme Cycle，而不是若干个独立 Campaign？如何在方法上把机制差异与风格 β 分离？",
+    "why_it_matters": "如果无法分离，C1/C4 可能只是同一风格 β 的两个投影，独立 Campaign 判定会被系统性高估；反之若强行分离，会丢失「供给收缩」这一机制轴的真实结构。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-001",
+      "R01-RESOURCES-003",
+      "R01-RESOURCES-004"
+    ]
+  },
+  {
+    "question_id": "R01-RESOURCES-Q002",
+    "question": "能源金属（锂钴镍）行情在结构上应归属「资源/有色」，还是已有的「电力设备」（C-2020-POWER-NE）或「汽车」（C-2021-NEV）？归属不同是否会产生不同的 Campaign 边界？",
+    "why_it_matters": "这是 manifest 明确标注的跨族边界。归属决定该结构与既有 Campaign 是 MERGE 还是并列，直接影响跨族 Structural Analogy 的候选池构成。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-002"
+    ]
+  },
+  {
+    "question_id": "R01-RESOURCES-Q003",
+    "question": "「稀有金属/稀土」应成为独立 Macro Theme，还是「有色金属」下的 Sub-theme？其机制（配额型供给约束 + 政策工具）与「供应收缩」机制轴如何对应？",
+    "why_it_matters": "稀土同时具备资源与政策属性，若归为政策驱动，则本任务对「供给收缩」机制轴的贡献会被削弱；若独立成族，则属 taxonomy 变更，需独立轮次。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-003"
+    ]
+  },
+  {
+    "question_id": "R01-RESOURCES-Q004",
+    "question": "「化工」内部（周期品 / 农化 / 染料中间体 / 新材料）机制差异极大，是否应按机制拆分为多个 Macro Theme 或 Theme？拆分的判据是什么？",
+    "why_it_matters": "本任务已观察到 C4（能耗双控）、C5（安全事故）、C8（成本冲击）、C11（环保约束）四种不同机制共处「化工」之下；不拆分会使机制轴被平均化，过度拆分则会制造弱候选。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-004",
+      "R01-RESOURCES-005",
+      "R01-RESOURCES-008",
+      "R01-RESOURCES-011"
+    ]
+  },
+  {
+    "question_id": "R01-RESOURCES-Q005",
+    "question": "商品价格与 A 股板块行情之间的领先/滞后关系是否可建立通用观测口径？锂行业存在「股价领先商品约一年、回调亦领先约 7 个月」的现象，这一现象在铜、铝、稀土、化肥上是否同样成立？",
+    "why_it_matters": "若领先关系稳定，则 peak 判定应以板块口径为主、商品口径为参照；若不稳定（如化肥 2022 年板块与商品反向），则必须逐案例分别记录，不能建立统一规则。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-002",
+      "R01-RESOURCES-008",
+      "R01-RESOURCES-009"
+    ]
+  },
+  {
+    "question_id": "R01-RESOURCES-Q006",
+    "question": "贵金属（黄金）是否应作为独立 Macro Theme，而不是「有色金属」的子主题？2020（实际利率/避险）与 2024–2025（央行结构性购金）两轮是否属同一长周期？",
+    "why_it_matters": "黄金的定价机制（实际利率、官方部门需求）与工业金属的供需-库存机制根本不同。归并会污染「资源/有色」的机制纯度，独立成族则属 taxonomy 变更。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-006",
+      "R01-RESOURCES-007"
+    ]
+  },
+  {
+    "question_id": "R01-RESOURCES-Q007",
+    "question": "2015–2017 年（Priority B）资源/化工方向是否确实缺少可成立的 A 股 Campaign，还是仅仅存在资料缺口？本任务只产出了 1 个 Priority B 候选（2017 电解铝）与 1 个 INSUFFICIENT 候选（2016 化工）。",
+    "why_it_matters": "区分「确实空缺」与「资料不足」决定后续是否需要追加回填轮次；也决定历史宇宙在 2015–2017 的时间覆盖是否可接受。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-010",
+      "R01-RESOURCES-011"
+    ]
+  },
+  {
+    "question_id": "R01-RESOURCES-Q008",
+    "question": "本任务产出的「供给收缩」机制轴（行政去产能 / 能耗双控 / 环保约束 / 配额控制 / 安全事故冲击）是否应被视为同一机制轴的多个子类型？它们在与既有四族（政策驱动、技术突破、产业升级、需求爆发）做结构对应时的等价性如何？",
+    "why_it_matters": "本任务的核心目标是补齐当前 4 族完全缺失的「供给收缩 / 涨价」机制轴。若把 5 个子类型视为同一机制的等价样本，会高估结构对应；若完全视为不同机制，则机制轴数量会膨胀而失去可比性。",
+    "related_candidate_ids": [
+      "R01-RESOURCES-003",
+      "R01-RESOURCES-004",
+      "R01-RESOURCES-005",
+      "R01-RESOURCES-010",
+      "R01-RESOURCES-011"
+    ]
+  }
+]
