@@ -1,0 +1,200 @@
+[
+  {
+    "security_id": "R01-FINRE-SEC001",
+    "ticker": "600048.SH",
+    "name": "保利发展（原保利地产）",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "A 股房地产开发龙头之一，多次出现在 2022-11、2024-05 地产政策行情的同期媒体报道中（如 2022-11-29 地产板块暴涨报道）。",
+    "source_ids": [
+      "R01-FINRE-S008"
+    ],
+    "point_in_time_note": "列为 Historical Leader Set（事后确认的行业代表标的），未重建 Point-in-Time Basket。不得用于“当时可识别”的提前观察研究。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC002",
+    "ticker": "000002.SZ",
+    "name": "万科A",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "2022-11-29“第三支箭”次日 A 股地产板块暴涨报道中明确点名的涨停个股。",
+    "source_ids": [
+      "R01-FINRE-S008"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。见 SEC001 的同款限制。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC003",
+    "ticker": "001979.SZ",
+    "name": "招商蛇口",
+    "exchange": "深圳证券交易所",
+    "role": "follow",
+    "basis": "大型央企地产开发商，作为 2022—2024 地产政策行情的行业组成代表列入（本包未取得其独立行情证据）。",
+    "source_ids": [
+      "R01-FINRE-S007"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。列入依据为行业归属，不是已核实的领涨证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC004",
+    "ticker": "600383.SH",
+    "name": "金地集团",
+    "exchange": "上海证券交易所",
+    "role": "follow",
+    "basis": "全国性房企，作为 2021—2022 地产风险暴露与 2022-11 政策行情的行业组成代表列入（本包未取得其独立行情证据）。",
+    "source_ids": [
+      "R01-FINRE-S027"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。列入依据为行业归属与违约风险讨论背景，不是已核实的领涨证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC005",
+    "ticker": "601398.SH",
+    "name": "工商银行",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "国有大型银行代表；2024 年银行板块行情报道中“四大行股价屡创新高”的组成标的。",
+    "source_ids": [
+      "R01-FINRE-S032"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。未取得个股区间涨幅的一级数据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC006",
+    "ticker": "601288.SH",
+    "name": "农业银行",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "2024—2025 年银行高股息行情中的涨幅居前国有大行（本包仅取得回顾性媒体表述，未取得一级行情数据）。",
+    "source_ids": [
+      "R01-FINRE-S032"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective），且领涨身份来自事后年度盘点，存在明显的幸存者偏差风险，不得用于提前观察研究。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC007",
+    "ticker": "600036.SH",
+    "name": "招商银行",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "股份制银行代表，广泛用于银行板块基本面与估值讨论（2020-11~2021-03 银行顺周期行情的常用代表）。",
+    "source_ids": [
+      "R01-FINRE-S056"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。本包未取得其 2020—2021 区间行情证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC008",
+    "ticker": "601998.SH",
+    "name": "中信银行",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "股份制银行代表，2023 年“中特估”金融重估讨论中的常见标的（本包未取得其独立行情证据）。",
+    "source_ids": [
+      "R01-FINRE-S031"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。列入依据为“中特估”复盘中金融股的代表性，不是已核实的领涨证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC009",
+    "ticker": "600030.SH",
+    "name": "中信证券",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "券商龙头代表，用于标识 2020-07 与 2024-09 两次券商行情的行业对象。",
+    "source_ids": [
+      "R01-FINRE-S037",
+      "R01-FINRE-S021"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。本包未取得其区间涨幅的一级数据；其“龙头”身份来自事后确认。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC010",
+    "ticker": "300059.SZ",
+    "name": "东方财富",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "互联网券商/金融信息服务代表，常被作为券商行情的高弹性标的（用于标识 2024-09 行情的行业对象）。",
+    "source_ids": [
+      "R01-FINRE-S021"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。本包未取得其区间涨幅证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC011",
+    "ticker": "601318.SH",
+    "name": "中国平安",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "综合金融/保险龙头代表，用于标识 2023“中特估”金融与 2025 保险板块行情的行业对象。",
+    "source_ids": [
+      "R01-FINRE-S051",
+      "R01-FINRE-S035"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC012",
+    "ticker": "601628.SH",
+    "name": "中国人寿",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "寿险龙头代表；2023 年中期非银策略将保险一季报 NBV 与净利润超预期作为领涨的定价因素之一。",
+    "source_ids": [
+      "R01-FINRE-S051"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）。2023 年领涨判断来自 2023-05-11 的同期研报，属同期解释层，不是事后确认的价格数据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC013",
+    "ticker": "601336.SH",
+    "name": "新华保险",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "2025 年 A 股保险股年度盘点中表现居首的标的（年度盘点口径）。",
+    "source_ids": [
+      "R01-FINRE-S035"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective），且“居首”来自 2025-12-31 年度盘点，属典型事后确认的幸存者，不得用于提前观察研究。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC014",
+    "ticker": "601788.SH",
+    "name": "光大证券",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "2020-07-02 券商涨停潮报道中明确点名的领涨个股（“光大证券累计大涨超七成”）。",
+    "source_ids": [
+      "R01-FINRE-S038"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）；但本条依据来自 2020-07-02 的同期媒体报道，属 point-in-time 可识别标的，可用于当时的板块广度论证。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R01-FINRE-SEC015",
+    "ticker": "601878.SH",
+    "name": "浙商证券",
+    "exchange": "上海证券交易所",
+    "role": "second_leader",
+    "basis": "2020-07-02 券商涨停潮报道中明确点名的涨停个股（中泰证券、浙商证券、中信建投等之一）。",
+    "source_ids": [
+      "R01-FINRE-S037",
+      "R01-FINRE-S038"
+    ],
+    "point_in_time_note": "Historical Leader Set（retrospective）；本条依据来自 2020-07-02 同期报道，属 point-in-time 可识别标的。",
+    "survivorship_aware": true
+  }
+]

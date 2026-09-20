@@ -1,0 +1,282 @@
+[
+  {
+    "conflict_id": "R01-FINRE-CF001",
+    "subject": "2022-11 地产行情：是一个“三支箭政策驱动 Campaign”，还是地产下行大周期中的一次政策反弹",
+    "positions": [
+      {
+        "position": "应作为独立 Campaign：政策窗口明确（11-08/11-11/11-28）、行业指数 20 天 +20.9%、近 40 股涨停，start/end 可解释，机制为房企融资条件转向",
+        "source_ids": [
+          "R01-FINRE-S002",
+          "R01-FINRE-S001",
+          "R01-FINRE-S004",
+          "R01-FINRE-S007",
+          "R01-FINRE-S008"
+        ]
+      },
+      {
+        "position": "应作为 2021—2022 地产下行结构中的一次政策反弹：2022 年全年销售 -24.3%、投资 -10.0%，政策未改变基本面方向，且 2024 年再度出现同类政策脉冲（5·17），可能属同一大周期内的重复反弹而非独立结构",
+        "source_ids": [
+          "R01-FINRE-S009",
+          "R01-FINRE-S010"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "不自动取舍。若 ThreeC Agent 采信第二立场，R01-FINRE-001 与 R01-FINRE-002 应合并为一个 Theme Cycle 内的两次反弹；若采信第一立场，两者机制不同（融资供给端 vs 需求端信贷 + 央行结构性工具），应各自保留。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF002",
+    "subject": "2024-05-17 地产新政：是否构成地产周期反转的起点",
+    "positions": [
+      {
+        "position": "构成反转起点：首付下限降至 15%/25%、取消全国层面房贷利率政策下限、3000 亿元保障性住房再贷款，被同期卖方描述为“力度空前”的四部委政策组合",
+        "source_ids": [
+          "R01-FINRE-S011",
+          "R01-FINRE-S014",
+          "R01-FINRE-S015"
+        ]
+      },
+      {
+        "position": "不构成反转：2024 年全年新建商品房销售面积 -12.9%、开发投资 -10.6%，政策落地后行业基本面未改善",
+        "source_ids": [
+          "R01-FINRE-S010"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两立场各有 Tier 1 证据支撑，且分属不同层面（政策层 vs 数据层），按协议不得自动取舍。本包将第二立场作为 R01-FINRE-002 的 contradicting evidence 保留，并据此压低其 confidence 至 low。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF003",
+    "subject": "2024-09/10 券商/非银行情：资本市场政策驱动的行业结构，还是全市场 Beta 的放大",
+    "positions": [
+      {
+        "position": "行业结构：2024 年 9 月券商指数创 2015 年以来最大月度涨幅；央行创设支持资本市场的结构性工具，属资本市场政策直接驱动的行业对象",
+        "source_ids": [
+          "R01-FINRE-S021",
+          "R01-FINRE-S018"
+        ]
+      },
+      {
+        "position": "市场 Beta：2024-10-08 A 股日成交额 3.5 万亿元、两融净新增破千亿创历史新高，且同期政策为货币 + 资本市场 + 地产同场发布，属全市场级别流动性/风险偏好行情；券商是高弹性 Beta 代理",
+        "source_ids": [
+          "R01-FINRE-S050",
+          "R01-FINRE-S022"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包未做 Beta 中性验证（无一级行情数据）。因此 R01-FINRE-005 的 research_status = CONFLICT、confidence = low。不得声称已完成 Beta 分离。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF004",
+    "subject": "2023—2025 银行上涨：行业重估（高股息/资产荒），还是“红利风格因子”抱团",
+    "positions": [
+      {
+        "position": "行业重估：2024 年银行板块 +37% 居所有行业第一、42 只银行中 40 只上涨，广度极高；机制为低利率 + 资产荒 + 险资等长期资金配置 + 分红提升",
+        "source_ids": [
+          "R01-FINRE-S033",
+          "R01-FINRE-S032",
+          "R01-FINRE-S052"
+        ]
+      },
+      {
+        "position": "风格因子抱团：同期保险板块亦上涨约 13%（2025 年），且市场观点明确指出“分红能提振估值但无法替代基本面”，上涨可能主要来自跨行业的防御/红利风格因子而非银行行业 Alpha",
+        "source_ids": [
+          "R01-FINRE-S034",
+          "R01-FINRE-S053"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "★ 与 R01-FINRE-010（2025 保险）共享资金侧机制，若 ThreeC Agent 判定为同一“红利风格因子”驱动，两者应合并或降级；若判定为各自行业机制，则分别保留。本包不自行裁决。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF005",
+    "subject": "2023 年“中特估”金融：是银行/保险一个 Campaign，还是应拆分为银行与保险两个 Campaign",
+    "positions": [
+      {
+        "position": "一个 Campaign：同属“中国特色估值体系”叙事、同一启动窗口（2023-04）、同一批低估值国有金融股",
+        "source_ids": [
+          "R01-FINRE-S031"
+        ]
+      },
+      {
+        "position": "应拆分：同期研报分别描述保险的驱动为一季报 NBV 与净利润超预期（负债端验证），与银行的估值修复逻辑不完全相同，且两者峰值可能不同",
+        "source_ids": [
+          "R01-FINRE-S051"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "需走 Independence Gate Q1–Q5。本包因缺少银行与保险各自的板块指数序列，无法完成 Residual Test（Q5），故暂按一个 Campaign 提交（R01-FINRE-006）。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF006",
+    "subject": "房地产与金融是否属于同一个 Theme Cycle",
+    "positions": [
+      {
+        "position": "应分开：地产机制为政策/信贷/融资条件，金融机制为利率/资金配置/资本市场政策；本包中两者的启动锚点、驱动与标的均不相同",
+        "source_ids": [
+          "R01-FINRE-S011",
+          "R01-FINRE-S018"
+        ]
+      },
+      {
+        "position": "存在真实联结：房地产贷款集中度管理制度（2020-12-31）把银行地产敞口制度化约束，地产风险通过银行资产质量与风险偏好传导至金融，两者在风险维度上是同一结构",
+        "source_ids": [
+          "R01-FINRE-S025",
+          "R01-FINRE-S049"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "★ 这是本任务最核心的边界问题。本包的处理：默认分开识别（分别建立地产与金融候选），但显式记录“地产风险 → 金融风险传导”这一可能的第三类结构，交 ThreeC Agent 决定是否单列机制轴。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF007",
+    "subject": "2021—2022 地产下行结构是否应作为 Campaign 进入 canonical",
+    "positions": [
+      {
+        "position": "应进入：主题明确、持续性两年、行业广度充分（52 起违约）、有明确监管制度启动锚点，是理解后续所有地产政策的必要前置结构",
+        "source_ids": [
+          "R01-FINRE-S023",
+          "R01-FINRE-S025",
+          "R01-FINRE-S027"
+        ]
+      },
+      {
+        "position": "不应进入：ThreeC 的 Historical Universe 定位为“功能性历史机会宇宙”，下行/风险暴露结构不是“机会”，且与 Campaign 生命周期模型（MAIN_RISE/PEAK）不兼容",
+        "source_ids": [
+          "R01-FINRE-S026",
+          "R01-FINRE-S009"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包保留候选 R01-FINRE-004（PROVISIONAL/medium）并同时在 why_not 中标注该争议，不自行删除，也不自行升级。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF008",
+    "subject": "2020-07 券商行情：资本市场改革驱动，还是成交量驱动的 Beta 放大",
+    "positions": [
+      {
+        "position": "存在行业机制：券商板块单日涨幅 7.01% 显著高于上证 2.13%，成交量放大直接改善经纪与两融收入预期；注册制推进构成资本市场改革催化",
+        "source_ids": [
+          "R01-FINRE-S037"
+        ]
+      },
+      {
+        "position": "主要是 Beta：同期报道明确记录“银行、保险、互联网金融等大金融全线走高”，属全市场金融板块同步上涨形态，券商只是弹性最大的代理",
+        "source_ids": [
+          "R01-FINRE-S038"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "与 CF003 同类。建议 ThreeC Agent 将 R01-FINRE-005 与 R01-FINRE-009 合并评估：若“券商行情”整体无法分离 Beta，应整体降级为 Observation 或单列“市场 Beta 代理”类别。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF009",
+    "subject": "2018—2019 地产：地方调控放松是否代表中央政策转向（影响启动锚点认定）",
+    "positions": [
+      {
+        "position": "代表边际放松：2018-12-18 菏泽成为全国首个取消限售的城市，具有明确的调控松绑信号意义；2019Q1 社融与住户中长期贷款大幅超预期",
+        "source_ids": [
+          "R01-FINRE-S039",
+          "R01-FINRE-S040",
+          "R01-FINRE-S047"
+        ]
+      },
+      {
+        "position": "不代表中央转向：同期券商研报明确指出，2018 年 10 月以来部分城市调控放松“不代表中央整体对房地产态度的转向”",
+        "source_ids": [
+          "R01-FINRE-S048"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两立场均为同期证据，属事实判断分歧而非日期冲突，故 KEEP_BOTH。该冲突是 R01-FINRE-003 被判为 INSUFFICIENT 的主要理由之一。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF010",
+    "subject": "2015—2016 去库存周期：政策驱动的基本面周期，还是杠杆牛市 Beta 的一部分",
+    "positions": [
+      {
+        "position": "政策驱动的基本面周期：2015-12 中央经济工作会议将去库存列为国家任务，2016 年棚改货币化消化约 2.5 亿平方米库存，销售与投资确实回暖",
+        "source_ids": [
+          "R01-FINRE-S041",
+          "R01-FINRE-S042"
+        ]
+      },
+      {
+        "position": "同期 A 股被杠杆资金主导（2015 年牛市核心逻辑为“政策宽松+杠杆资金+新兴产业概念”），地产板块的任何市场响应都无法与全市场 Beta 分离",
+        "source_ids": [
+          "R01-FINRE-S043",
+          "R01-FINRE-S054"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包采信“两者均成立”：基本面周期存在（第一层、第二层证据成立），但市场响应层不可分离（第三层缺失）。故 R01-FINRE-011 为 INSUFFICIENT + low。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF011",
+    "subject": "2022-11“三支箭”窗口内两个地产龙头相对沪深300 的方向不一致（保利发展 -3.3pct vs 万科A +18.7pct）",
+    "positions": [
+      {
+        "position": "保利发展（600048）2022-10-31~2023-01-31 +15.1%，同期沪深300 +18.5%，相对 -3.3pct：龙头国企开发商未跑赢大盘，不支持“板块级独立行情”。",
+        "source_ids": [
+          "R01-FINRE-S058"
+        ]
+      },
+      {
+        "position": "万科A（000002）同期 +37.1%，相对 +18.7pct：混合所有制龙头显著跑赢，支持“板块级独立行情”。",
+        "source_ids": [
+          "R01-FINRE-S058"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "两个代表标的同属一个 independence_group（同一行情源），方向上相互矛盾。不得选取其中之一充当“地产板块表现”，也不得对两者取平均充当板块表现。需补充地产行业指数与多标的广度数据后才可判定（见 known_gaps）。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF012",
+    "subject": "2025 年保险：板块年度叙事（保险指数涨超 30%）与登记代表标的（中国平安）相对沪深300 跑输之间的方向冲突",
+    "positions": [
+      {
+        "position": "2025 年 A 股保险指数涨幅超过 30%，新华保险表现居首（年度盘点口径）。",
+        "source_ids": [
+          "R01-FINRE-S035"
+        ]
+      },
+      {
+        "position": "2024-12-31~2025-09-19 中国平安（601318）+8.6%，同期沪深300 +14.4%，相对 -5.8pct；2025-03-31~2025-09-19 相对 -4.9pct。登记代表标的在 2025 年跑输基准。",
+        "source_ids": [
+          "R01-FINRE-S061"
+        ]
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "单标的相对表现不足以否定板块结论，故 R01-FINRE-010 的 confidence 不因本条下调；但方向冲突必须保留，不得用“平安不代表板块”一句话消解。需保险行业指数与 ≥3 个标的的广度数据（Q012）。"
+  },
+  {
+    "conflict_id": "R01-FINRE-CF013",
+    "subject": "银行超额收益的口径差：个股前复权（含股息再投）vs 沪深300 价格指数（不含股息）",
+    "positions": [
+      {
+        "position": "以工商银行前复权收盘价与沪深300 价格指数直接相减，2023-12-29~2025-09-19 相对收益 +47.5pct，2022-10-31~2025-09-19 相对收益 +107.5pct。",
+        "source_ids": [
+          "R01-FINRE-S059",
+          "R01-FINRE-S057"
+        ]
+      },
+      {
+        "position": "该口径包含股息再投收益而基准不含股息；按银行股息率约 5%/年估算，1.75 年窗口口径差约 +9pct、3 年窗口约 +15pct。扣除后超额分别约 +38pct / +92pct，且仍需全收益或行业指数口径复核。",
+        "source_ids": []
+      }
+    ],
+    "resolution": "UNRESOLVED",
+    "note": "本包**不**把上述相对收益直接表述为行业 Alpha，也**不**声称已完成 Beta 中性验证。在口径差消除前，银行候选（R01-FINRE-006/007/008）的超额只能作为“相对表现证据”。需中证全收益指数或银行行业指数（全收益）复核（Q013）。"
+  }
+]

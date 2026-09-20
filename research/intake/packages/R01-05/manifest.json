@@ -1,0 +1,205 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R01",
+  "task_id": "R01-05",
+  "task_scope": {
+    "task_id": "R01-05",
+    "family_directions": [
+      "金融",
+      "房地产",
+      "银行",
+      "非银金融",
+      "建筑材料"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "金融 / 地产方向（含银行、券商、保险、多元金融、房地产开发、建材、建筑装饰），研究时间范围 2015—2025。重点识别「流动性 / 政策周期」驱动的行业结构，并按要求把房地产与金融分开识别：房地产侧追踪信贷宽松、利率下降、首付与限购政策、棚改与城镇化、土地供给、销售与投资周期、房企融资环境与风险出清；金融侧追踪降息降准、信贷扩张、流动性宽松、资本市场制度改革、风险偏好、金融资产质量、净息差与信贷需求、地产风险传导。",
+    "excluded_scope": "纯宏观流动性研究（不是 Campaign）；商品期货行情；金融科技（倾向「信息通信」或独立判定，本任务不强行纳入）。本包额外声明：工作区内富途行情接口不可用，未取得任何一级行情数据，未做 Beta 中性验证，全部市场幅度证据来自二级来源，Tier 4 来源不作为独立证据。"
+  },
+  "generated_at": "2026-09-20T20:26:41+08:00",
+  "source_commit": "2153f6d83b7481300696ab73d792e9e53aa31a07",
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R01-FINRE-MT001",
+      "proposed_name": "房地产",
+      "theme_name_candidates": [
+        "房地产",
+        "房地产开发",
+        "地产链"
+      ],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "当前 DB themes 表根节点只有汽车、医药健康、信息通信、电力设备 4 个，不存在房地产。本轮地产候选具备与 4 族完全不同的机制轴（信贷/融资条件 + 政策周期），且已产出 5 条候选，具备成为独立 Macro Theme 的根节点条件。最终由 CMTR v1 解析。",
+      "known_overlap": [
+        "R01-03（资源/化工）：建材与化工、基建需求",
+        "R01-04（消费）：地产后周期与家电家居",
+        "金融：地产融资与银行地产敞口（见 CF006）"
+      ],
+      "notes": "本包不自行裁决「房地产」是否成为根节点；仅提交名称供 CMTR v1 解析。"
+    },
+    {
+      "proposal_id": "R01-FINRE-MT002",
+      "proposed_name": "金融",
+      "theme_name_candidates": [
+        "金融",
+        "金融地产",
+        "大金融"
+      ],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "当前 DB themes 表无金融类根节点。本轮金融候选（银行、券商、保险）共 7 条，机制轴（流动性/政策周期、资本市场改革、资金配置）为当前 4 族完全缺失的第四条机制轴。注意：名称为「金融」还是拆为「银行」「非银金融」两个根，应由 CMTR v1 判定。",
+      "known_overlap": [
+        "房地产：地产风险向银行资产质量传导",
+        "所有任务：流动性/政策周期与市场 Beta 混淆"
+      ],
+      "notes": "★ 本包刻意同时提交 MT002（金融）、MT003（银行）、MT004（非银金融）三个层级提案，让 CMTR v1 决定层级关系，不由 Worker 预设。"
+    },
+    {
+      "proposal_id": "R01-FINRE-MT003",
+      "proposed_name": "银行",
+      "theme_name_candidates": [
+        "银行",
+        "商业银行",
+        "国有大型银行"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "银行在本轮出现两条机制完全不同的候选：2020-11~2021-03（经济复苏/信用成本改善驱动）与 2023—2025（低利率/资产荒/高股息驱动）。若「金融」成为根节点，银行应作为其下子主题；若 CMTR 判定银行需独立成根，亦可。",
+      "known_overlap": [
+        "房地产：房地产贷款集中度管理制度把银行地产敞口制度化",
+        "非银金融：同受险资高股息配置资金驱动（2024—2025）"
+      ],
+      "notes": "层级归属交 CMTR v1。本包已按机制差异把两条银行候选分开，未合并。"
+    },
+    {
+      "proposal_id": "R01-FINRE-MT004",
+      "proposed_name": "非银金融",
+      "theme_name_candidates": [
+        "非银金融",
+        "证券",
+        "券商",
+        "保险",
+        "多元金融"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "券商与保险在本轮的驱动机制不同：券商高度依赖市场成交量与资本市场政策（Beta 代理风险最高），保险由资产端（权益市场/长端利率）与负债端（预定利率/长期资金入市）共同驱动。若作为单一子主题会掩盖机制差异。",
+      "known_overlap": [
+        "银行：2024—2025 同受险资高股息配置驱动",
+        "信息通信：金融科技的归属边界（本任务已排除）"
+      ],
+      "notes": "券商与保险是否应进一步拆分为两个独立子主题，本包未决（见 CF005 的类比问题与 Q008）。"
+    },
+    {
+      "proposal_id": "R01-FINRE-MT005",
+      "proposed_name": "建筑材料",
+      "theme_name_candidates": [
+        "建筑材料",
+        "建筑装饰",
+        "水泥",
+        "玻璃"
+      ],
+      "proposal_kind": "SUB_THEME",
+      "rationale": "建材与建筑装饰在机制上属地产链的派生需求（竣工/施工端），与 R01-03（资源/化工）在水泥、玻璃等品类存在边界争议。本包未找到可独立于地产机制复核其 start/end 的证据，故不新建独立 Macro Theme，仅作为子主题候选提交。",
+      "known_overlap": [
+        "R01-03（资源/化工）：水泥、玻璃等品类的化工属性",
+        "房地产：作为地产链派生需求"
+      ],
+      "notes": "见 exclusions R01-FINRE-X005 与 cross_task_notes R01-FINRE-N001。本轮未建立建材 Campaign。"
+    },
+    {
+      "proposal_id": "R01-FINRE-MT006",
+      "proposed_name": "流动性 / 政策周期（货币信用周期）",
+      "theme_name_candidates": [
+        "流动性周期",
+        "货币信用周期",
+        "降准降息",
+        "信贷周期"
+      ],
+      "proposal_kind": "MECHANISM",
+      "rationale": "★ 这是机制轴，不是 Macro Theme。基线快照指出当前 4 族完全缺失「流动性 / 政策周期」机制轴，本任务是其唯一来源。按 TASK_BRIEF known_ambiguity，必须与「政策驱动 POLICY_DRIVEN」区分：前者是货币/信用周期，后者是产业政策。提交为 MECHANISM 提案，防止被误升格为 Macro Theme。",
+      "known_overlap": [
+        "所有任务：与市场 Beta 高度混淆"
+      ],
+      "notes": "不得作为 Macro Theme 名称进入 themes 表。"
+    },
+    {
+      "proposal_id": "R01-FINRE-MT007",
+      "proposed_name": "地产融资 / 信贷周期",
+      "theme_name_candidates": [
+        "地产融资",
+        "房企融资",
+        "房地产信贷",
+        "三道红线",
+        "保交楼"
+      ],
+      "proposal_kind": "MECHANISM",
+      "rationale": "★ 同为机制轴，不是 Macro Theme。地产侧的机制在本轮可细分为：融资供给端政策（三支箭）、需求端信贷政策（首付/利率）、需求侧机制（棚改货币化）、风险出清（保交楼）。四者在时间上分离、机制不同，不应合并为一个 Campaign。",
+      "known_overlap": [
+        "金融：房地产贷款集中度管理制度与银行地产敞口",
+        "流动性/政策周期：地产信贷是货币政策向地产传导的渠道"
+      ],
+      "notes": "提交为 MECHANISM，供 ThreeC Agent 在 Campaign Decision 时作为机制判据使用。"
+    }
+  ],
+  "cross_task_notes": [
+    {
+      "note_id": "R01-FINRE-N001",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-03",
+      "related_candidate_ids": [],
+      "note": "建筑材料（尤其水泥、玻璃）同时具备地产链派生需求属性与化工/资源属性。本包未建立建材 Campaign、未新建独立 Macro Theme（见 X005 与 MT005）。若 R01-03 提交了水泥/玻璃相关候选，请 ThreeC Agent 在 dedupe 阶段判断归属。"
+    },
+    {
+      "note_id": "R01-FINRE-N002",
+      "kind": "OVERLAP",
+      "target_task_id": "R01-04",
+      "related_candidate_ids": [],
+      "note": "地产后周期（家电、家居）与地产销售/竣工周期耦合。本包所有地产候选的对象均为房地产开发与地产融资，不含家电家居。若 R01-04 提交了地产后周期候选，可能与本包的地产周期在机制上同源，需判断是否为同一底层结构。"
+    },
+    {
+      "note_id": "R01-FINRE-N003",
+      "kind": "BOUNDARY",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-FINRE-005",
+        "R01-FINRE-009",
+        "R01-FINRE-003"
+      ],
+      "note": "★ 面向所有任务的边界提示：「流动性 / 政策周期」是本任务的核心机制，但它会与所有其他任务的「市场 Beta」混淆。本包中 2024-09（R01-FINRE-005）、2020-07（R01-FINRE-009）、2018—2019（R01-FINRE-003）三条候选均因无法分离 Beta 而被压到 low / CONFLICT / INSUFFICIENT。若其他任务在同一时间窗口提交了候选（例如 2024-09 全市场政策行情下的任何行业），请注意它们可能共享同一段市场 Beta，而不是各自独立的行业结构。"
+    },
+    {
+      "note_id": "R01-FINRE-N004",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-FINRE-006"
+      ],
+      "note": "2023 年「中特估」行情是本包 R01-FINRE-006 的驱动，但「中特估」覆盖央国企重估的多个行业（能源、通信、建筑等）。若其他任务提交了 2023 年中特估相关候选，本包的银行/保险版本可能是同一底层叙事的行业分支，需在 dedupe 阶段判断是否合并（Catalyst ≠ Campaign 与 Q1 Anti-example 均适用）。"
+    },
+    {
+      "note_id": "R01-FINRE-N005",
+      "kind": "HANDOFF",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-FINRE-005"
+      ],
+      "note": "2024-09-24 至 2024-10-08 的行情是全市场级别事件（成交额 3.5 万亿元创历史新高）。本包把它作为「券商/非银」候选提交，但它同时可能是任何行业在 2024-09~10 上涨的共同背景。建议 ThreeC Agent 在跨任务 dedupe 时把 2024-09-24 当作一个全局时间标记，而非某个行业的专属催化。"
+    },
+    {
+      "note_id": "R01-FINRE-N006",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R01-FINRE-012"
+      ],
+      "note": "2015 年杠杆牛市中的金融股启动段（R01-FINRE-012）是本轮所有任务共享的市场背景。本包已明确建议判为 OBSERVATION_ONLY（X001）。若其他任务也因 2015 年普涨而提交了候选，请注意不要在 canonical 层重复记账同一段市场 Beta。"
+    }
+  ]
+}

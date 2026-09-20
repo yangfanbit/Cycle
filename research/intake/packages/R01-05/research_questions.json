@@ -1,0 +1,119 @@
+[
+  {
+    "question_id": "R01-FINRE-Q001",
+    "question": "在缺少一级行情数据（交易所/指数公司日线序列）的条件下，金融/地产候选的“行业 Alpha vs 市场 Beta”应采用什么最小可行判据？是否需要把“无行情数据”本身作为 confidence 的上限约束写入后续轮次？",
+    "why_it_matters": "本包 12 个候选中有 7 个的置信度被压低，主因是 Beta 不可分离。若没有统一判据，后续所有金融/地产轮次都会重复这个缺口。本包明确声明：未做任何 Beta 中性验证。",
+    "related_candidate_ids": [
+      "R01-FINRE-005",
+      "R01-FINRE-009",
+      "R01-FINRE-003",
+      "R01-FINRE-011",
+      "R01-FINRE-012"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q002",
+    "question": "地产政策发布日到销售/投资数据改善之间是否存在可观测的稳定时滞？若不存在（如 2022-11、2024-05、2025-03 三次均未出现数据反转），是否应把“地产政策驱动”整体降级为一类预期驱动子类型？",
+    "why_it_matters": "本包已出现两个反例（2022-11 与 2024-05）：政策力度空前但全年销售与投资仍双位数负增长。这直接关系到“政策 → 行业数据 → 市场响应”三层链条第二层是否成立。",
+    "related_candidate_ids": [
+      "R01-FINRE-001",
+      "R01-FINRE-002",
+      "R01-FINRE-011"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q003",
+    "question": "2022-11 三支箭行情的 End 应取 2023-01、2023-02 还是更晚？判定所需的最小证据是什么（最后一次板块同步 / 有效新高 / 有效催化）？",
+    "why_it_matters": "该候选是地产条线证据最完整的一条，但 End 目前只有 low confidence 的推断窗口，直接影响它能否作为结构比较对象。",
+    "related_candidate_ids": [
+      "R01-FINRE-001"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q004",
+    "question": "银行 2023—2025 的上涨应归为 industry_trend 还是 theme_campaign？判据是否应取决于“是否存在启动事件”（本条无启动锚点）？",
+    "why_it_matters": "classification 影响 Structural Analogy 的 Event Structure 维度比较（单一类型主导 vs 多类型带时序）。本条缺启动锚点，是本包唯一一个“无启动锚点却仍提交”的中等置信度候选。",
+    "related_candidate_ids": [
+      "R01-FINRE-007",
+      "R01-FINRE-008"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q005",
+    "question": "地产风险向银行传导（资产质量、拨备、风险偏好）是否构成一条独立机制轴，还是应作为地产 Campaign 的内部子结构？",
+    "why_it_matters": "这是“金融与房地产是否同一 Theme Cycle”（CF006）的操作化版本。当前 4 族缺失“流动性/政策周期”机制轴，地产风险传导可能是第五条机制轴的候选。",
+    "related_candidate_ids": [
+      "R01-FINRE-004",
+      "R01-FINRE-007"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q006",
+    "question": "“券商行情”是否在任何年份可独立于市场成交量形成“资本市场制度改革驱动”的独立机制？还是应当整体归类为市场 Beta 的高弹性代理？",
+    "why_it_matters": "TASK_BRIEF 已标注“券商行情常常是市场 Beta 的代理”。本包 2020-07 与 2024-09 两条均无法分离，需要在方法论层面给出结论，否则每轮都会重复提交同类弱候选。",
+    "related_candidate_ids": [
+      "R01-FINRE-009",
+      "R01-FINRE-005"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q007",
+    "question": "建筑材料应归“房地产”族、“资源/化工”族，还是独立行业？判据是需求派生关系（竣工/施工）还是品类属性（水泥/玻璃属建材化工）？",
+    "why_it_matters": "直接决定 R01-05 与 R01-03 的边界。本包已按“不新建独立 Macro Theme”处理并记录为 exclusion X005，但归属未决。",
+    "related_candidate_ids": []
+  },
+  {
+    "question_id": "R01-FINRE-Q008",
+    "question": "保险行情的资产端（权益市场表现 / 长端利率）与负债端（预定利率 / 长期资金入市政策 / 新会计准则）应如何拆分为不同机制？资产端与权益市场耦合是否构成一种特殊形态的 Beta 污染？",
+    "why_it_matters": "2025 年保险候选（R01-FINRE-010）的资产端收益直接来自权益市场表现，这意味着“市场上涨 → 保险公司利润改善 → 保险股上涨”的链条中天然嵌入了市场 Beta，与常规 Beta 污染形态不同。",
+    "related_candidate_ids": [
+      "R01-FINRE-010",
+      "R01-FINRE-006"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q009",
+    "question": "2015—2017 时段是否具备可复核的行业级行情数据，足以支撑地产/金融候选从 INSUFFICIENT 升级？若不可得，是否应在 Protocol 层面明确 Priority B 的“允许留空”上限？",
+    "why_it_matters": "本包 Priority B 三条（011/012 及 2016—2017 未建候选）全部受困于同一数据缺口。需要明确这是数据问题还是方法论问题。",
+    "related_candidate_ids": [
+      "R01-FINRE-011",
+      "R01-FINRE-012"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q010",
+    "question": "“保交楼”政策阶段（2022-07 停工停贷事件 → 7 月底中央政治局会议“保交楼、稳民生” → 后续专项借款/再贷款）是否构成与 2022-11“三支箭”不同的独立 Campaign？",
+    "why_it_matters": "两者时间相邻但对象不同：保交楼针对项目交付与购房者，三支箭针对房企融资。若未拆分，可能把一个独立的政策—市场结构并入 R01-FINRE-001。本包因缺 2022-07~10 的市场证据而未建候选，仅在 E008 中记录为 context。",
+    "related_candidate_ids": [
+      "R01-FINRE-004",
+      "R01-FINRE-001"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q011",
+    "question": "当同一新闻被多家媒体转载时，independence_group 的划分是否应以“原始发布机构”为准（本包采用），还是以“报道机构”为准？本包据此把 4 组同源报道合并为同一 group，导致部分候选的独立证据数降到门槛下限。",
+    "why_it_matters": "影响 Confirmed 门槛（≥2 Evidence 且 ≥2 independence_group）的实际严格程度。金融/地产领域的政策新闻几乎全部源自少数官方通稿，这一口径差异会系统性改变候选的可确认性。",
+    "related_candidate_ids": [
+      "R01-FINRE-001",
+      "R01-FINRE-010"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q012",
+    "question": "2025 年保险板块内部是否存在显著分化，以致单一代表标的（中国平安，相对沪深300 -5.8pct）无法代表板块（保险指数涨超 30%）？",
+    "why_it_matters": "若分化属实，则 R01-FINRE-010 的“板块级结构”表述不成立，需降级为个股级观察；若为指数口径与个股口径差异（如新华保险权重与涨幅远高于平安），则需改用行业指数重估。本包只有 1 个保险标的的行情数据，无法判定。",
+    "related_candidate_ids": [
+      "R01-FINRE-010"
+    ]
+  },
+  {
+    "question_id": "R01-FINRE-Q013",
+    "question": "银行超额收益是否应用中证红利全收益指数 / 银行行业指数（全收益）重算，以分离股息贡献与价格 Alpha？",
+    "why_it_matters": "现有相对收益为“个股前复权 vs 沪深300 价格指数”，三年窗口口径差约 15pct。在改用同口径基准前，任何关于银行 Alpha 规模的结论都不可靠，也不能用于 ThreeC 的结构类比。",
+    "related_candidate_ids": [
+      "R01-FINRE-006",
+      "R01-FINRE-007",
+      "R01-FINRE-008"
+    ]
+  }
+]

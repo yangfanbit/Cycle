@@ -1,0 +1,147 @@
+[
+  {
+    "exclusion_id": "R01-FINRE-X001",
+    "subject": "2015 年杠杆牛市中的券商/银行金融股行情不作为独立金融 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "该时段金融股上涨的驱动被复盘材料直接归因为“政策宽松 + 杠杆资金 + 新兴产业概念”，金融股只是轮动起点（“金融股启动 → 互联网+成长股主升”），属市场 Beta 而非金融行业自身机制。且本包对该时段未取得任何同期证据（仅 2025 年的复盘材料）与任何行情数据，无法建立行业 Alpha。已按候选 R01-FINRE-012 记录为 INSUFFICIENT + low，同时在此明确建议 ThreeC Agent 判为 OBSERVATION_ONLY / 不进入 canonical campaigns。",
+    "source_ids": [
+      "R01-FINRE-S043",
+      "R01-FINRE-S054"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E110",
+      "R01-FINRE-E111"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X002",
+    "subject": "2024-09/10 行情中的“全市场 Beta 部分”不单独建立 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2024-09-24 三大金融管理部门同场发布后，全市场普涨、成交额与两融创历史新高，其中“全市场流动性/风险偏好驱动的部分”与券商板块涨幅同属一事件簇、同一资金驱动，不单列为第二个 Campaign，而作为 R01-FINRE-005 的内部结构与 Beta 冲突记录（CF003）。",
+    "source_ids": [
+      "R01-FINRE-S050",
+      "R01-FINRE-S022"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E044",
+      "R01-FINRE-E043"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X003",
+    "subject": "“三道红线”（2020-08-20）与“两道红线”（2020-12-31）本身不作为独立 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "两者是监管政策事件，不是行情阶段。它们作为下行结构 R01-FINRE-004 的启动驱动（drivers.start）被记录，而非各自成为 Campaign。多个政策步骤不构成多个 Campaign（Catalyst ≠ Campaign）。",
+    "source_ids": [
+      "R01-FINRE-S023",
+      "R01-FINRE-S025"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E030",
+      "R01-FINRE-E031"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X004",
+    "subject": "“三支箭”（第二支箭 / 金融16条 / 第三支箭）不拆分为三个 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2022-11-08、11-11、11-28 三次政策落地属同一政策事件簇的连续步骤，时间上仅相隔 20 天，且作用于同一对象（房企融资）与同一批标的。按规则 1（Catalyst ≠ Campaign）与规则 3（不同时间 ≠ 不同 Campaign），合并为 R01-FINRE-001 的内部结构，启动日两口径（11-08 / 11-11）以 alternative_dates 保留。",
+    "source_ids": [
+      "R01-FINRE-S002",
+      "R01-FINRE-S001",
+      "R01-FINRE-S004"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E001",
+      "R01-FINRE-E002",
+      "R01-FINRE-E003"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X005",
+    "subject": "建筑材料 / 建筑装饰未单独建立 Campaign，也不作为独立 Macro Theme",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "建材与建筑装饰在机制上属“地产链”的派生需求（竣工/施工端），本包未找到可独立于地产政策/融资机制、且可单独复核其 start/end 的建材行情证据。同时它与 R01-03（资源/化工）在水泥、玻璃等品类上存在边界争议。故不新建 Campaign、不新建 Macro Theme，仅作为“房地产”下的子主题候选交 CMTR v1 判定（见 macro_theme_proposals R01-FINRE-MT005 与 cross_task_notes R01-FINRE-N001）。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-FINRE-X006",
+    "subject": "多元金融（信托 / 期货 / 金融控股）未建立 Candidate",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "本轮未取得足以支持 start/end 与机制识别的多元金融行业级证据（无行业指数口径、无政策启动锚点、无广度数据）。按“没有可靠证据的领域允许保持空缺”，显式留空，不为了填满行业而升级边缘事件。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-FINRE-X007",
+    "subject": "金融科技（Fintech）未纳入本任务",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "按 TASK_BRIEF §7 excluded_scope，金融科技倾向于“信息通信”或独立判定，本任务不强行纳入。仅在此记录边界，避免与 R01-02（半导体/电子）或既有“信息通信”族产生隐性重叠。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R01-FINRE-X008",
+    "subject": "2018 年金融去杠杆 / 资管新规（2018-04-27）不作为金融 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "资管新规是监管制度事件，其后果是表外融资收缩与信用环境收紧，属宏观金融条件变化（背景层），不是可识别的行情阶段。本包将其记为 context 证据（E122），用于解释 2018—2019 时段金融与地产的环境，而不是建立 Campaign。",
+    "source_ids": [
+      "R01-FINRE-S055"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E122"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X009",
+    "subject": "2025 年地产（“稳住楼市”首次写入《政府工作报告》）未建立 Campaign",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "2025-03-05“稳住楼市”写入政府工作报告构成政策定调（E120），但行业协会年度总结显示 2025 年房地产市场整体延续调整、二季度以来新房销售边际转弱（E121），且本包未取得 2025 年地产板块行情证据。三层链条的第三层（市场响应）缺位，故不建 Campaign，仅以证据与 research_question 记录。这本身也是“政策发布 ≠ 周期反转”的第二个实例。",
+    "source_ids": [
+      "R01-FINRE-S044",
+      "R01-FINRE-S045"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E120",
+      "R01-FINRE-E121"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X010",
+    "subject": "2016—2017 年棚改驱动的三四线地产行情未单独建立 Campaign",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "棚改货币化的机制证据存在（2016 年消化约 2.5 亿平方米库存，E101），但 A 股地产板块在 2016—2017 年的市场响应数据完全缺失：未取得行业指数、个股广度或相对大盘表现。三层链条缺第三层。已在 R01-FINRE-011 中合并记录为 INSUFFICIENT，不另拆一条。",
+    "source_ids": [
+      "R01-FINRE-S042"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E101"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X011",
+    "subject": "“纯宏观流动性研究”（降准/降息本身）不作为 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "按 TASK_BRIEF §7 excluded_scope，纯宏观流动性研究不是 Campaign。降准、降息、LPR 调整在本包中一律作为“金融条件变化”（机制层/背景层）记录，只有当出现可识别的行业基本面变化 + 行业市场响应时，才构成 Candidate（如 2024-09 的 R01-FINRE-005 仍因 Beta 未分离而保持 low）。",
+    "source_ids": [
+      "R01-FINRE-S018"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E040"
+    ]
+  },
+  {
+    "exclusion_id": "R01-FINRE-X012",
+    "subject": "2018年10月—2019年4月“地产调控边际放松 + 信用扩张”作为独立房地产 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "2026-09-20 补齐一级行情后证伪：2018-11-30~2019-04-19 保利发展 +11.7%（相对沪深300 -18.2pct）、万科A +29.5%（相对 -0.4pct），两个地产龙头均未取得相对基准的正超额；同期中信证券 +52.3%（相对 +22.4pct）。地产板块在该窗口内没有独立于大盘的市场响应，不满足 Candidate 最低标准中的“可识别的行业/市场对象”与“至少一个可解释的启动锚点所对应的市场反应”。按协议不得自行删除候选，故 R01-FINRE-003 仍保留为 INSUFFICIENT 候选，同时以本 exclusion 明确记录其不作为独立 Campaign。",
+    "source_ids": [
+      "R01-FINRE-S058",
+      "R01-FINRE-S060"
+    ],
+    "evidence_ids": [
+      "R01-FINRE-E130"
+    ]
+  }
+]

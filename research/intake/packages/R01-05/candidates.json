@@ -1,0 +1,1445 @@
+[
+  {
+    "candidate_id": "R01-FINRE-001",
+    "title": "2022年11月地产融资“三支箭”+保交楼政策驱动的A股地产修复行情",
+    "year": 2022,
+    "macro_theme_proposal": "房地产",
+    "theme_name_candidates": [
+      "房地产",
+      "房地产开发",
+      "地产融资政策"
+    ],
+    "theme_summary": "在 2022 年地产销售与投资深度下行的背景下，交易商协会“第二支箭”（2022-11-08）、央行银保监“金融16条”（2022-11-11）、证监会股权融资 5 项措施（2022-11-28）在 20 天内连续落地，叠加“保交楼”政策基调，A 股房地产板块出现一次行业内广度极高的集中修复行情。机制为房企融资环境转向 + 风险出清预期，不是地产基本面反转。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2022-11-08",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event：交易商协会 2022-11-08 公告“第二支箭”延期并扩容",
+          "source_ids": [
+            "R01-FINRE-S002"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E001"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2022-11-11",
+              "basis": "若以央行银保监“金融16条”（银发〔2022〕254号）发布日为启动口径",
+              "source_ids": [
+                "R01-FINRE-S001"
+              ]
+            }
+          ],
+          "conflict_note": "“三支箭”为同一政策事件簇内的连续步骤；按 Catalyst ≠ Campaign，不拆成三个 Campaign，但启动日存在 11-08 / 11-11 两口径，两口径并存不自动取舍。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-11-25",
+          "window_end": "2022-12-09",
+          "phase_note": null,
+          "basis": "inferred：11-01~11-25 行业指数累计 +20.9%（S007），11-29 第三支箭次日近 40 股涨停（S008），推断情绪高点在 11 月末至 12 月上旬",
+          "source_ids": [
+            "R01-FINRE-S007",
+            "R01-FINRE-S008"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E005",
+            "R01-FINRE-E006"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2023-01-16",
+              "basis": "若以板块指数最高点而非情绪高点计（需一级行情序列验证，本次未取得）",
+              "source_ids": []
+            }
+          ],
+          "conflict_note": "政策脉冲高点与板块指数最高点可能不同；本次未取得一级行情数据，无法闭合。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-01-01",
+          "window_end": "2023-02-28",
+          "phase_note": null,
+          "basis": "inferred：政策脉冲型行情在 2023 年一季度降温；结束日为推断，无同期结束证据",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "End 判定缺同期证据（无“最后一次板块同步/有效新高”记录），仅给出窗口。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2022-11-08",
+        "end": "2022-11-29",
+        "basis": "三支箭连续落地 + 行业指数 +20.9% + 近 40 股涨停",
+        "notes": "启动至政策脉冲高点约 15 个交易日，属事件驱动的快速主升。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2022-11-29",
+        "end": "2022-12-09",
+        "basis": "第三支箭次日板块暴涨，随后进入高位震荡",
+        "notes": "允许 peak cluster；本次未取得一级行情数据，未做日线校准。"
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2023-01-01",
+        "end": "2023-02-28",
+        "basis": "inferred",
+        "notes": "降温窗口为推断值，置信度低。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "房企融资政策转向：第二支箭（债券）、金融16条（信贷）、第三支箭（股权）在 20 天内连续落地",
+        "“保交楼、稳民生”政策基调（2022 年 7 月底中央政治局会议）作为风险出清的政策前提"
+      ],
+      "accelerator": [
+        "2022-11-29 证监会股权融资措施落地，板块近 40 股涨停",
+        "2022-11 房地产行业指数 +20.9%，显著跑赢同期上证指数 +7.20%"
+      ],
+      "turning": [
+        "政策脉冲充分定价后缺乏基本面接续：2022 年全年销售面积 -24.3%、投资 -10.0%（2023-01-17 公布）"
+      ],
+      "ending": [
+        "融资政策落地未能带来销售与投资拐点，行业叙事从“政策反转”退回“风险出清”"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E001",
+      "R01-FINRE-E002",
+      "R01-FINRE-E003",
+      "R01-FINRE-E004",
+      "R01-FINRE-E005",
+      "R01-FINRE-E006",
+      "R01-FINRE-E007",
+      "R01-FINRE-E008",
+      "R01-FINRE-E009",
+      "R01-FINRE-E133",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC001",
+      "R01-FINRE-SEC002",
+      "R01-FINRE-SEC003",
+      "R01-FINRE-SEC004"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "启动证据（E001/E002/E003）与大部分市场反应证据（E004/E005/E006）为 contemporaneous，可用于 point-in-time 论证。E007（2022 年全年统计）为 subsequent，仅作反证，不作为同期催化。E008 来源晚于事件，仅作背景。",
+    "why_campaign": "① 主题明确（地产融资政策转向 + 保交楼）；② 持续性：11-08 至 12 月约一个月，非单日脉冲；③ 市场关注充分：行业指数 +20.9%、近 40 股涨停，广度极高；④ start/end 可解释：以政策落地为启动，以基本面未接续为结束；⑤ 证据 ≥2 条且分布在 ≥4 个 independence_group（IG-NAFMII-2ND / IG-PBOC-254 / IG-CSRC-3RD / IG-CS-20221111 / IG-CNR-1126 / IG-CS-20221129 / IG-NBS-2022）。",
+    "why_not": "① 未取得一级行情数据，板块涨幅、峰值与结束日均依赖二级来源，未做日线校准；② End 为推断值（confidence low）；③ Beta 分离未完成：同期上证指数亦上涨 7.20%，仅做了区间相对表现比较，未做 Beta 中性验证；④ “三支箭”可能被定性为同一地产下行大周期中的一次政策反弹，而非独立 Campaign（见 CF001）。 ⑤【行情补齐后新增】三支箭窗口内两个地产龙头相对表现方向不一致（保利发展 -3.3pct / 万科A +18.7pct），板块级一致超额未获实证；同期工商银行 -12.7pct，可排除“金融地产整体行情”。据此不上调 confidence，维持 medium。",
+    "possible_duplicate_of": [],
+    "notes": "本候选是房地产条线证据最完整的一条。核心机制为“融资条件 → 风险出清预期 → 板块估值修复”，不属于“销售/投资改善驱动”。 【行情补充】2022-10-31~2023-01-31 保利发展 +15.1%（相对 -3.3pct）、万科A +37.1%（相对 +18.7pct）、工商银行 +5.8%（相对 -12.7pct），同期沪深300 +18.5%。"
+  },
+  {
+    "candidate_id": "R01-FINRE-002",
+    "title": "2024年“5·17”地产新政驱动的A股地产脉冲行情（政策发布 ≠ 周期反转）",
+    "year": 2024,
+    "macro_theme_proposal": "房地产",
+    "theme_name_candidates": [
+      "房地产",
+      "房地产开发",
+      "房地产信贷政策"
+    ],
+    "theme_summary": "2024-04-30 中央政治局会议定调“统筹研究消化存量房产和优化增量住房”，2024-05-17 央行与金融监管总局下调首付比例下限、取消全国层面房贷利率政策下限、设立 3000 亿元保障性住房再贷款。政策力度被称为“空前”，但 2024 年全年销售面积 -12.9%、投资 -10.6%，行业基本面未反转。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2024-05-17",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event：央行、金融监管总局 2024-05-17 发布首付与利率政策；同日宣布 3000 亿元保障性住房再贷款",
+          "source_ids": [
+            "R01-FINRE-S011",
+            "R01-FINRE-S014"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E011",
+            "R01-FINRE-E012"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2024-04-30",
+              "basis": "若以中央政治局会议“消化存量房产”定调为预期起点（叙事起点口径）",
+              "source_ids": [
+                "R01-FINRE-S017"
+              ]
+            }
+          ],
+          "conflict_note": "04-30 为政策定调/预期起点，05-17 为政策落地起点；两者相差约半月，不自动取舍。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2024-05-17 政策发布当日及随后数个交易日内（保利发展当日 +10.66%、万科A 当日 +10.02%，均为单日大幅上涨）",
+          "basis": "observed：2024-05-17 保利发展单日 +10.66% 收 10.59 元、万科A 单日 +10.02% 收 9.00 元（一级行情）；峰值精确日期未做日线校准",
+          "source_ids": [
+            "R01-FINRE-S058"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E134"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "该“峰值”是政策脉冲的单日顶点而非趋势高点：其后至 2024-09-13 保利发展 -31.3%、万科A -29.8%，脉冲全部回吐。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2024-05-17 之后至 2024-09-13，政策脉冲全部回吐并继续下行",
+          "basis": "observed：保利发展 -31.3%、万科A -29.8%，同期沪深300 -14.1%（一级行情端点口径）",
+          "source_ids": [
+            "R01-FINRE-S058"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E134"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "以“脉冲回吐并转为跑输”作为该政策驱动市场反应的 End 口径；不等于地产周期结束。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2024-05-17",
+        "end": "2024-05-17",
+        "basis": "observed：政策发布当日保利发展 +10.66%、万科A +10.02%（一级行情）",
+        "notes": "主升极短，仅能确认政策发布日的单日反应；是否延续至随后数日未做日线校准。"
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2024-05-20",
+        "end": "2024-09-13",
+        "basis": "observed：保利发展 -31.3%、万科A -29.8%，同期沪深300 -14.1%",
+        "notes": "以区间端点计算，未做日线校准；起点 2024-05-20 为政策日后的推断起点。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "中央层面定调：2024-04-30 政治局会议“消化存量房产、优化增量住房”+ 保交房",
+        "货币政策与地产金融政策：首付下限降至 15%/25%、取消全国层面房贷利率政策下限、公积金利率下调 0.25pct"
+      ],
+      "accelerator": [
+        "3000 亿元保障性住房再贷款（央行结构性工具直接投放）",
+        "四部委联合发布被市场解读为“力度空前”"
+      ],
+      "turning": [
+        "政策落地后销售与投资数据未改善，行业叙事回落"
+      ],
+      "ending": [
+        "2024 年全年新建商品房销售面积 -12.9%、开发投资 -10.6%（国家统计局 2025-01-17）"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E010",
+      "R01-FINRE-E011",
+      "R01-FINRE-E012",
+      "R01-FINRE-E013",
+      "R01-FINRE-E014",
+      "R01-FINRE-E015",
+      "R01-FINRE-E134",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC001",
+      "R01-FINRE-SEC002"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "E010/E011/E012/E013/E015 为 contemporaneous（政策与同期解读）；E014 为 subsequent（2024 年全年数据于 2025-01-17 公布），仅作反证。04-30 政治局会议表述未取得官方原文，仅来自媒体同期快评（二级来源）。",
+    "why_campaign": "① 政策启动窗口明确且日期可考（04-30 定调 / 05-17 落地）；② 主题明确（地产需求端与融资端组合政策）；③ 有可解释的结束：全年基本面数据证伪反转；④ 证据 ≥2 条且分布在 ≥5 个 independence_group（IG-BJNEWS-0430 / IG-PBOC-517 / IG-CE-517 / IG-RPT-517 / IG-NBS-2024 / IG-CNR-0522）。保留其价值在于：它是“政策发布 ≠ 周期反转”的教科书级三层证据链样本。",
+    "why_not": "市场层已补齐，结果为**强反向**：2024-05-17 至 2024-09-13 保利发展 -31.3%、万科A -29.8%，同期沪深300 -14.1%，地产相对基准 -17.2pct / -15.7pct；同期工商银行 +8.7%（相对 +22.8pct）。“5·17”政策的市场反应是一个单日脉冲，4 个月内全部回吐。本候选因此**维持 low**：它的价值从“缺市场层证据的低置信度候选”变为“市场层证伪的教科书样本”，生命周期（峰值=政策日单日脉冲、End=脉冲回吐）已闭合，但作为 Campaign 不成立。",
+    "possible_duplicate_of": [],
+    "notes": "本候选刻意以低置信度提交：它的机制与 R01-FINRE-001 不同（需求端信贷政策 + 央行结构性工具 vs 房企融资供给端政策），但市场层证据不足，不得为“整齐”而升级。"
+  },
+  {
+    "candidate_id": "R01-FINRE-003",
+    "title": "2018年10月—2019年4月地产调控边际放松与信用扩张预期驱动的地产修复行情（Beta 不可分离）",
+    "year": 2019,
+    "macro_theme_proposal": "房地产",
+    "theme_name_candidates": [
+      "房地产",
+      "房地产开发",
+      "因城施策"
+    ],
+    "theme_summary": "2018 年四季度起，部分城市出现调控放松迹象（2018-12-18 菏泽成为首个取消限售的城市），2019 年一季度社融与住户中长期贷款大幅超预期（社融新增 8.18 万亿元、同比多增 2.34 万亿元）。同期 A 股为全市场级别上涨行情，地产板块受政策放松预期与信用扩张共同推动，但行业涨幅无法与市场 Beta 分离。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2018-12-18",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：菏泽市住建局 2018-12-18 发文取消新购住房限制转让措施，为全国首个取消限售城市",
+          "source_ids": [
+            "R01-FINRE-S039"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E020"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2019-04-12",
+              "basis": "若以 2019 年一季度社融数据公布（信用扩张确认）为启动口径",
+              "source_ids": [
+                "R01-FINRE-S047"
+              ]
+            }
+          ],
+          "conflict_note": "地方政策信号（2018-12）与信用扩张数据确认（2019-04）相差一个季度；另有券商同期判断认为地方放松不代表中央转向，启动口径存在实质分歧。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2019 年一季度全市场上涨期间；地产板块不存在可识别的独立峰值",
+          "basis": "observed：2018-11-30~2019-04-19 保利发展 +11.7%（相对 -18.2pct）、万科A +29.5%（相对 -0.4pct），地产代表标的未取得相对基准的正超额；同期中信证券 +52.3%（相对 +22.4pct）",
+          "source_ids": [
+            "R01-FINRE-S058",
+            "R01-FINRE-S060"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E130"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "地产龙头在窗口内未跑赢基准，而同期券商大幅跑赢——地产板块不存在独立于大盘的峰值。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2019 年二季度前后（推断）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无结束证据。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2018-12-18",
+        "end": null,
+        "basis": "政策起点可考，行情阶段不可识别",
+        "notes": "生命周期未闭合。"
+      }
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": [
+        "地方调控边际放松（菏泽取消限售）释放政策松动信号",
+        "2018 年货币宽松与降准背景下的流动性改善"
+      ],
+      "accelerator": [
+        "2019 年一季度社融 8.18 万亿元、同比多增 2.34 万亿元，住户中长期贷款增加 1.38 万亿元"
+      ],
+      "turning": [
+        "券商同期判断：地方放松不代表中央整体态度转向，政策预期受阻"
+      ],
+      "ending": [
+        "未取得结束证据"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E020",
+      "R01-FINRE-E021",
+      "R01-FINRE-E022",
+      "R01-FINRE-E023",
+      "R01-FINRE-E130",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC001",
+      "R01-FINRE-SEC002"
+    ],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "E020/E021/E022/E023 均为 contemporaneous。E022 为央行数据报道，需注意数据所属期间（2019Q1）与公布日（2019-04-12）的区别。",
+    "why_campaign": "保留理由：政策/信用启动锚点明确（菏泽取消限售 + 2019Q1 社融超预期），具备“信用 → 地产”机制链，是 2018—2019 时段 Priority A 窗口内唯一可考的地产政策转向线索。证据 ≥2 条且分布在 4 个 independence_group。",
+    "why_not": "① ★ 市场响应层完全缺失：未取得 2019Q1 地产板块相对全市场的独立表现，无法判断是否形成行业级结构；② 同期 A 股为全市场级别上涨，Beta 与行业结构不可分离；③ 同期卖方明确认为地方放松不代表中央转向，存在直接反证。三条叠加，故为 INSUFFICIENT + low，不得升级。 ④【行情补齐后】市场层证据为**反向**：保利发展相对沪深300 -18.2pct、万科A -0.4pct，两个地产龙头均未跑赢基准；同期中信证券相对 +22.4pct。即 2018Q4—2019Q1 不存在地产板块的独立行情，“地产修复行情”的表述不成立。按协议不自行删除候选，仍保留为 INSUFFICIENT，同时在 exclusions 中以 X012 明确记录其不作为独立 Campaign。",
+    "possible_duplicate_of": [],
+    "notes": "本候选的主要价值是暴露“地产政策放松 → 板块行情”链条在 2018—2019 时段的数据缺口，而非提供一个可复核的 Campaign。"
+  },
+  {
+    "candidate_id": "R01-FINRE-004",
+    "title": "2021—2022年房企债务风险暴露与地产链下行结构（下行结构，非机会型 Campaign）",
+    "year": 2021,
+    "macro_theme_proposal": "房地产",
+    "theme_name_candidates": [
+      "房地产",
+      "房地产开发",
+      "地产风险暴露"
+    ],
+    "theme_summary": "2020-08-20 住建部与央行重点房企座谈会（三道红线）与 2020-12-31 房地产贷款集中度管理制度（两道红线）先后落地，房企融资与银行地产敞口同时收紧；2021 年房企信用债违约集中爆发（截至 2021-12-03 共 52 起违约、逾期余额约 630.28 亿元），2021-12-03 恒大美元债违约成为标志性事件，A 股房地产板块 2021 年跌 7.57% 跑输大盘。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-08-20",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event：住建部、人民银行联合召开重点房地产企业座谈会，实施房地产金融审慎管理制度",
+          "source_ids": [
+            "R01-FINRE-S023"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E030"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2020-12-31",
+              "basis": "若以房地产贷款集中度管理制度发布为起点（银行端约束口径）",
+              "source_ids": [
+                "R01-FINRE-S025"
+              ]
+            }
+          ],
+          "conflict_note": "房企端（三道红线，2020-08-20）与银行端（两道红线，2020-12-31）两个收紧口径并存，两者属同一政策方向的两个步骤，不拆分为两个 Campaign。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-09-01",
+          "window_end": "2021-12-31",
+          "phase_note": null,
+          "basis": "inferred：2021 年下半年房企流动性风险集中爆发，12-03 恒大违约为标志性高点",
+          "source_ids": [
+            "R01-FINRE-S027",
+            "R01-FINRE-S049"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E032",
+            "R01-FINRE-E034"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "“下行结构的高点”即为风险暴露最密集期，与上行 Campaign 的 peak 语义不同，需由 ThreeC Agent 判定是否可比。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2022 年 7 月停工停贷事件后转入“保交楼”政策阶段，下行结构的市场主导阶段告一段落",
+          "basis": "inferred：以政策阶段转换（风险暴露 → 政策托底）作为阶段边界",
+          "source_ids": [
+            "R01-FINRE-S030"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E008"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "2022-07 之后地产仍持续下行至 2022 年全年（销售 -24.3%），“结束”仅指政策阶段转换，不等于下行结束。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2020-08-20",
+        "end": "2021-12-31",
+        "basis": "融资收紧 → 违约潮 → 板块跑输",
+        "notes": "本条为下行结构，主升阶段不存在。"
+      },
+      {
+        "stage_proposal": "ENDED",
+        "start": "2022-01-01",
+        "end": "2022-07-31",
+        "basis": "inferred：2022-07 停工停贷事件与“保交楼”政策基准转换",
+        "notes": "阶段边界为政策阶段转换，置信度低。"
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "房地产金融审慎管理制度（三道红线，2020-08-20）",
+        "房地产贷款集中度管理制度（两道红线，2020-12-31）"
+      ],
+      "accelerator": [
+        "2021 年房企信用债违约集中爆发（52 起、逾期余额约 630.28 亿元）",
+        "2021-12-03 恒大美元债违约"
+      ],
+      "turning": [
+        "2022 年 7 月停工停贷事件，风险从金融市场扩散至民生与交付端"
+      ],
+      "ending": [
+        "2022 年 7 月底中央政治局会议提出“保交楼、稳民生”，政策阶段由收紧转为托底"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E030",
+      "R01-FINRE-E031",
+      "R01-FINRE-E032",
+      "R01-FINRE-E033",
+      "R01-FINRE-E034",
+      "R01-FINRE-E035",
+      "R01-FINRE-E132",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC001",
+      "R01-FINRE-SEC002",
+      "R01-FINRE-SEC003",
+      "R01-FINRE-SEC004"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "E030/E031/E032 为 contemporaneous；E033/E035 为 subsequent（年度复盘）；E034 为 retrospective。区分宏观数据公布日与数据所属期间：E033 所属期间为 2021 年、公布于 2022-01-01。",
+    "why_campaign": "① 主题明确（地产融资收紧 → 信用风险暴露）；② 持续性强（2020-08 至 2022-07，约两年）；③ 行业广度充分（52 起违约、多家龙头房企）；④ start 可解释（两项监管制度落地）；⑤ 证据 ≥2 条且分布在 ≥5 个 independence_group。它是理解 2022-11 三支箭（R01-FINRE-001）与 2024 地产政策的必要前置结构。",
+    "why_not": "★ 它是下行结构，不是“历史机会”结构。ThreeC 的 Historical Universe 定位为“功能性历史机会宇宙”，下行结构是否进入 canonical 应由 ThreeC Agent 判定（见 CF007）。本包不自行裁决，也不因它不是机会型而删除。",
+    "possible_duplicate_of": [],
+    "notes": "本条与 R01-FINRE-001 存在明确时序关系（下行 → 政策托底反弹），但两者机制相反（融资收紧 vs 融资放松），不应合并为一个 Campaign。 【行情补充】2020-10-30~2021-03-31 保利发展 -8.7%，同期沪深300 +7.5%，相对 -16.2pct，与“地产板块跑输大盘”的既有证据方向一致（E132，端点口径）。"
+  },
+  {
+    "candidate_id": "R01-FINRE-005",
+    "title": "2024年9—10月政策组合拳驱动的券商/非银金融行情（市场 Beta 与行业结构不可分离）",
+    "year": 2024,
+    "macro_theme_proposal": "非银金融",
+    "theme_name_candidates": [
+      "非银金融",
+      "证券",
+      "券商"
+    ],
+    "theme_summary": "2024-09-24 央行、国家金融监管总局、证监会三大金融管理部门主要负责人同场发布：降准 0.5 个百分点、政策利率下调 20BP、存量房贷利率下调、创设支持资本市场的结构性工具。随后券商板块 2024 年 9 月创 2015 年以来最大月度涨幅，但 2024-10-08 A 股日成交额达 3.5 万亿元、两融净新增破千亿，多项指标创历史新高，且 10-08 复市高开回落。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2024-09-24",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event：央行行长潘功胜 2024-09-24 宣布降准 0.5 个百分点、降低政策利率 20 个基点",
+          "source_ids": [
+            "R01-FINRE-S018"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E040"
+          ],
+          "confidence": "high",
+          "alternative_dates": [],
+          "conflict_note": "注意区分政策宣布日（09-24）与实际落地日（降准在随后执行），不得把宣布日直接当作流动性生效日。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2024-10-08",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2024-10-08 A 股复市大幅高开后回落明显，同日成交额 3.5 万亿元创历史新高，构成情绪与成交的转折点",
+          "source_ids": [
+            "R01-FINRE-S022",
+            "R01-FINRE-S050"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E043",
+            "R01-FINRE-E044"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2024-09-30",
+              "basis": "若以节前最后一个交易日为峰值口径",
+              "source_ids": []
+            }
+          ],
+          "conflict_note": "节前高点与节后高开回落两个口径并存；本次未取得一级行情序列，不自动取舍。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2024 年 10 月中旬至月底逐步降温（推断）",
+          "basis": "unknown：无同期结束证据",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "End 未闭合。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2024-09-24",
+        "end": "2024-10-08",
+        "basis": "政策发布至成交额/情绪高点",
+        "notes": "约 6 个交易日的极速主升，本身即为 Beta 特征信号。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2024-10-08",
+        "end": "2024-10-08",
+        "basis": "高开回落 + 成交额创历史新高",
+        "notes": "允许 peak cluster，但本次仅识别单一转折日。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "货币政策：降准 0.5 个百分点 + 政策利率下调 20BP",
+        "资本市场政策：创设支持资本市场流动性/回购增持的结构性工具（三大金融管理部门同场发布）"
+      ],
+      "accelerator": [
+        "2024 年 9 月券商指数创 2015 年以来最大月度涨幅",
+        "成交额与两融快速放大"
+      ],
+      "turning": [
+        "2024-10-08 成交额 3.5 万亿元、两融净新增破千亿后，市场高开回落"
+      ],
+      "ending": [
+        "无同期结束证据；推断为 10 月中下旬降温"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E040",
+      "R01-FINRE-E041",
+      "R01-FINRE-E042",
+      "R01-FINRE-E043",
+      "R01-FINRE-E044",
+      "R01-FINRE-E135",
+      "R01-FINRE-E139",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC009",
+      "R01-FINRE-SEC010",
+      "R01-FINRE-SEC014"
+    ],
+    "research_status": "CONFLICT",
+    "confidence": "medium",
+    "point_in_time_notes": "E040/E041 为 contemporaneous（政策发布当天），可用于 point-in-time 论证。E042 为 subsequent（2024-10-30 月报），E043 为 retrospective（2025-01-04 复盘），E044 为 subsequent，均不得充当 2024-09-24 的同期催化。",
+    "why_campaign": "① 启动日明确且为官方事件；② 券商板块相对强度有独立证据（2024 年 9 月创 2015 年以来最大月度涨幅）；③ 主题明确（资本市场政策 + 流动性）；④ 证据 ≥2 条且分布在 ≥4 个 independence_group。",
+    "why_not": "★ 核心问题：Beta 与行业结构不可分离。同日三大金融管理部门同场发布，货币政策、资本市场政策、地产政策同时出现；10-08 成交额 3.5 万亿元创历史新高，说明这是全市场级别的流动性/风险偏好行情。券商上涨高度可能完全是市场 Beta 的放大（券商是 Beta 的高弹性代理）。本包未做 Beta 中性验证，故 research_status = CONFLICT、confidence = low。 ⑤【行情补齐后】新增关键事实：同期工商银行 +11.3%（相对沪深300 **-23.4pct**）——银行大幅跑输，可排除“金融板块整体 Beta”这一解释；领涨的是券商（中信证券 +62.1% / 东方财富 +136.8%）与前期超跌地产（万科A +64.2%）。2024-09-13~2024-12-31 完整窗口内中信证券相对 +34.7pct，而保险 +4.6pct、银行 +3.0pct、地产 -5.6pct，领涨结构集中于券商。据此 confidence 由 low 上调至 medium（相对强度为实证），但驱动机制仍与“成交量/风险偏好/超跌”不可分离，CONFLICT 状态保留，且**不**声称已完成 Beta 分离。",
+    "possible_duplicate_of": [],
+    "notes": "本条是“券商行情 = 市场 Beta 代理”这一已知歧义在 2024 年的具体实例。建议 ThreeC Agent 与 2020-07 券商候选（R01-FINRE-009）合并评估是否可构成独立机制轴。"
+  },
+  {
+    "candidate_id": "R01-FINRE-006",
+    "title": "2023年4—5月“中国特色估值体系”驱动的银行/保险重估行情",
+    "year": 2023,
+    "macro_theme_proposal": "金融",
+    "theme_name_candidates": [
+      "金融",
+      "银行",
+      "非银金融",
+      "中特估"
+    ],
+    "theme_summary": "2022-11-21 证监会主席易会满提出“中国特色估值体系”；2023 年 4 月，随着市场进入一季报窗口、风险偏好回落、数字经济分化调整，“中特估”重新领涨，保险板块明显领涨，一季报 NBV 及净利润同比超预期与“中特估”共同成为定价因素。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-04-01",
+          "window_end": "2023-04-30",
+          "phase_note": null,
+          "basis": "inferred：券商策略复盘指出 2023 年 4 月“中特估”重新领涨；以月内区间为启动窗口，不给精确到日的 start",
+          "source_ids": [
+            "R01-FINRE-S031"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E051"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2022-11-21",
+              "basis": "若以“中国特色估值体系”提出日为叙事起点——但叙事提出 ≠ 主题形成，本包不采用该口径作为 Campaign start",
+              "source_ids": [
+                "R01-FINRE-S031"
+              ]
+            }
+          ],
+          "conflict_note": "叙事起点（2022-11-21）与行情形成（2023-04）相隔约 5 个月。按 Campaign start ≠ Setup 的原则，不以叙事提出日作为 start。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2023 年 5 月前后（推断；同期研报 2023-05-11 仍描述保险“明显领涨”，说明 5 月上旬仍处强势）",
+          "basis": "inferred",
+          "source_ids": [
+            "R01-FINRE-S051"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E052"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "未取得板块指数峰值数据。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2023 年 5 月中下旬至 6 月（推断）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无同期结束证据。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2023-04-01",
+        "end": "2023-05-11",
+        "basis": "4 月“中特估”重新领涨，至 2023-05-11 同期研报仍描述保险明显领涨",
+        "notes": "主升区间为推断，未做日线校准。"
+      },
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": null,
+        "end": null,
+        "basis": "峰值与结束阶段缺数据",
+        "notes": "未闭合，保留 UNKNOWN。"
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "政策叙事：“中国特色估值体系”（2022-11-21 提出，2023-04 成为定价因素）",
+        "风险偏好回落、数字经济分化后的资金再配置（避险 + 低估值）"
+      ],
+      "accelerator": [
+        "2023 年一季报：保险 NBV 与净利润同比超预期，负债端数据验证",
+        "低估值国有金融股的估值修复空间"
+      ],
+      "turning": [
+        "未取得转折证据"
+      ],
+      "ending": [
+        "未取得结束证据"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E050",
+      "R01-FINRE-E051",
+      "R01-FINRE-E052",
+      "R01-FINRE-E140",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC005",
+      "R01-FINRE-SEC008",
+      "R01-FINRE-SEC011",
+      "R01-FINRE-SEC012"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "★ E052 是本候选唯一的同期证据（2023-05-11 发布，行情进行中），可用于 point-in-time 论证。E050/E051 来自 2024-01-31 的策略复盘，属 retrospective，仅用于确认历史事件与阶段，不得充当 2023 年当时的已知信息。",
+    "why_campaign": "① 主题明确且有专属命名（“中特估”）；② 有可识别的启动窗口（2023-04，市场风格切换后“中特估”重新领涨）；③ 存在同期证据（E052）证明保险领涨与一季报验证；④ 机制与流动性宽松不同，是“估值体系叙事 + 低估值修复 + 一季报验证”的组合；⑤ 2023 年 A 股整体并非普涨行情，该结构相对更容易与市场 Beta 分离（Beta 污染低于 2024-09 与 2020-07 两条）。",
+    "why_not": "① 峰值与结束缺同期证据，生命周期未闭合；② 只有 1 条同期证据（E052），其余为复盘材料；③ 银行与保险是否应拆分为两个 Campaign 未决（见 CF005）；④ 未取得板块相对沪深 300 的超额口径。 ⑤【行情补齐后】已取得相对沪深300 的超额口径：2023-01-31~2023-12-29 工商银行+24.7%，同期沪深300 -17.5%，相对 **+42.2pct**；2022-10-31~2023-12-29 中信证券 +24.3%，同期沪深300 -2.2%，相对 +26.5pct。银行在 2023 年具备显著相对强度，支持“中特估/低估值重估”机制。仍维持 medium：仅有端点口径（无连续日线），峰值与结束未闭合，且仅有 1 条同期证据（E052）。股息口径差约 4—5pct。",
+    "possible_duplicate_of": [],
+    "notes": "本条是本包中 Beta 污染相对最低的金融候选：2023 年“中特估”为结构性行情而非全市场普涨。"
+  },
+  {
+    "candidate_id": "R01-FINRE-007",
+    "title": "2023—2025年低利率与资产荒环境下高股息驱动的银行股重估（红利资产结构）",
+    "year": 2024,
+    "macro_theme_proposal": "银行",
+    "theme_name_candidates": [
+      "银行",
+      "金融",
+      "高股息/红利资产"
+    ],
+    "theme_summary": "在无风险利率下行与资产荒背景下，银行股作为高股息资产被保险资金等长期资金持续配置：2024 年 A 股银行板块全年涨幅超过 37%、位居所有行业第一，42 只银行股中 40 只涨幅超 10%、11 只涨超 50%；2025 年至 8 月 20 日银行板块继续上涨约 14%。机制为“低利率 + 资产荒 + 高股息 + 长期资金配置”，与信用扩张驱动的银行行情机制不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2023 年内逐步形成（无单一启动事件；本结构为趋势型而非事件驱动，不给精确到日的 start）",
+          "basis": "unknown：本条为 industry_trend 型结构，未识别到单一政策或事件启动锚点",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "★ 本条缺少“至少一个可解释的启动锚点”这一 Candidate 标准项：它以利率与资金配置的渐进变化为背景，没有可确认的启动日。已如实降低 start 置信度，并在 why_not 中说明。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "截至本包生成时（2026-09）未确认结构已见顶；2024 年为涨幅最集中的年份",
+          "basis": "unknown：结构可能仍在延续，不得把观察窗口结束当作 Peak/End",
+          "source_ids": [
+            "R01-FINRE-S033"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E060"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "结构尚未确认结束，Peak 不可判定。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown：结构可能仍在延续",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "不把观察窗口结束当作 End。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "basis": "2024 年银行板块 +37%、行业第一、40/42 只上涨",
+        "notes": "涨幅最集中、证据最完整的一年。"
+      },
+      {
+        "stage_proposal": "SECONDARY",
+        "start": "2025-01-01",
+        "end": "2025-09-19",
+        "basis": "observed：2024-12-31~2025-09-19 工商银行 +9.3%，同期沪深300 +14.4%，相对 -5.1pct（一级行情端点口径）",
+        "notes": "相对转弱，构成降温信号；不判定 End，也不把观察窗口结束当作 End。"
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "无风险利率下行与资产荒，高股息资产的相对吸引力上升",
+        "保险资金等长期资金对高股息资产的配置需求（2025H1 七家上市险企增配高息股约 3200 亿元）"
+      ],
+      "accelerator": [
+        "2024 年银行板块全年涨幅超 37%、居所有行业第一，形成明显的赚钱效应与资金正反馈",
+        "银行分红规模扩大，分红成为估值支撑叙事"
+      ],
+      "turning": [
+        "市场观点同时指出“分红能提振估值但无法替代基本面”，行业内部分化加剧"
+      ],
+      "ending": [
+        "结构尚未确认结束"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E060",
+      "R01-FINRE-E061",
+      "R01-FINRE-E062",
+      "R01-FINRE-E063",
+      "R01-FINRE-E064",
+      "R01-FINRE-E136",
+      "R01-FINRE-E137",
+      "R01-FINRE-E138",
+      "R01-FINRE-E140",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC005",
+      "R01-FINRE-SEC006",
+      "R01-FINRE-SEC007",
+      "R01-FINRE-SEC008"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "E060/E061 为 subsequent（年度盘点，晚于所属期间），E062/E064 为 contemporaneous，E063 为 subsequent。均不得跨期充当同期催化；年度数据注意区分所属期间与公布日。",
+    "why_campaign": "① 主题明确（高股息/红利资产）；② 持续性强（2023—2025 跨年度）；③ 行业广度极高（42 只银行中 40 只上涨）；④ 相对表现证据明确（2024 年行业第一，明显跑赢），Beta/风格可分性优于本包其它金融候选；⑤ 机制清晰且区别于信用扩张：是利率与资金配置驱动，不是信贷需求驱动；⑥ 证据 ≥2 条且分布在 ≥4 个 independence_group。",
+    "why_not": "① ★ 缺可确认的启动锚点（无单一政策/事件启动日），start 为 PHASE_WINDOW 且 confidence low；② 结构可能仍在延续，End/Peak 不可判定；③ 与“市场防御风格/红利因子”这一跨行业风格因子高度耦合，银行 Alpha 与红利风格因子是否可分，未做验证（见 CF004）；④ 未取得相对沪深 300 的超额收益口径与波动率口径。 ⑤【行情补齐后】已取得相对沪深300 的超额口径：2023-12-29~2025-09-19 工商银行+78.7%（相对 +47.5pct），2022-10-31~2025-09-19 +135.8%（相对 +107.5pct）。★ 口径警告（CF013）：个股为前复权（含股息再投）、沪深300 为价格指数（不含股息），按银行股息率约 5%/年估算口径差约 +9pct / +15pct，扣除后超额约 +38pct / +92pct，不得直接表述为纯 Alpha。⑥ 降温信号：2024-12-31~2025-09-19 工商银行 +9.3%（相对 **-5.1pct**），为该结构 2025 年的相对转弱，但不足以判定 End。因口径差与“红利风格因子 vs 银行 Alpha”仍未分离，confidence 维持 medium，不上调至 high。",
+    "possible_duplicate_of": [],
+    "notes": "本条与 R01-FINRE-008（2020-11~2021-03 银行顺周期）机制完全不同：前者是利率/资金配置驱动，后者是经济复苏/信用成本驱动。不得合并（见 §机制差异汇报）。"
+  },
+  {
+    "candidate_id": "R01-FINRE-008",
+    "title": "2020年11月—2021年3月经济复苏与信用成本改善驱动的银行顺周期行情（证据不足）",
+    "year": 2021,
+    "macro_theme_proposal": "银行",
+    "theme_name_candidates": [
+      "银行",
+      "金融"
+    ],
+    "theme_summary": "2020 年下半年中国经济率先从疫情中恢复，银行让利压力缓解、净息差企稳、资产质量改善；2021-03-03 A 股银行股全线大涨，宁波银行、南京银行等涨幅居前。事后数据印证：2021 年商业银行累计净利润 2.2 万亿元、同比增长 12.6%。但本条缺行业指数口径与持续性证据，仅保留为低置信度候选。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2020 年 11 月前后（推断；无明确启动事件）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "未识别到启动锚点事件；2020-11 为常用复盘口径，本包不作确认。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-03-03",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2021-03-03 银行股全线大涨的同期报道（唯一同期市场证据日）",
+          "source_ids": [
+            "R01-FINRE-S036"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E070"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "该日为“大涨日”，不等于板块峰值；无板块指数序列验证。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2021 年二季度前后（推断）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无结束证据。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2020-10-30",
+        "end": "2021-03-31",
+        "basis": "observed：工商银行 +19.8%，同期沪深300 +7.5%，相对 +12.3pct；同期中信证券 -17.4%、保利发展 -8.7%（一级行情端点口径）",
+        "notes": "以区间端点计算，未做日线校准；仅覆盖单一银行代表标的。"
+      }
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": [
+        "2020 年下半年经济复苏，信贷需求回升",
+        "金融系统让利压力边际缓解"
+      ],
+      "accelerator": [
+        "2021-03-03 银行股全线大涨，宁波银行、南京银行等领涨"
+      ],
+      "turning": [
+        "未取得转折证据"
+      ],
+      "ending": [
+        "未取得结束证据"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E070",
+      "R01-FINRE-E071",
+      "R01-FINRE-E132",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC007",
+      "R01-FINRE-SEC005"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "E070 为 contemporaneous（2021-03-03 当日）；E071 为 subsequent（银保监会 2021 年数据于 2022-02 公布），仅作事后机制验证，不得充当 2020-11~2021-03 的同期催化。",
+    "why_campaign": "保留理由：机制明确且可与其它银行候选区分（经济复苏 + 信用成本改善，而非利率/资金配置驱动），并有事后基本面数据印证（2021 年商业银行净利润 +12.6%）。提交以便 ThreeC Agent 判断是否值得补充数据后重估。",
+    "why_not": "① 仅 1 条同期市场证据（E070，2021-03-03 单日大涨报道），行情持续性依赖本次补充的端点口径（E132），非连续日线；② 相对表现虽为正向（工商银行 +12.3pct），但仅覆盖单一银行代表标的，缺行业指数广度与多标的验证；③ 无启动锚点、无结束证据；④ 净利润 +12.6% 部分源于 2020 年低基数，机制解释存在争议。【行情补齐后的调整】同期券商相对 -24.9pct、地产相对 -16.2pct，方向相反，可排除“全金融板块同步上涨”的解释，故 research_status 由 INSUFFICIENT 上调为 PROVISIONAL、confidence 由 low 上调至 medium；因广度与起止锚点缺口仍在，不上调至 high。",
+    "possible_duplicate_of": [],
+    "notes": "★ 本条与 R01-FINRE-007 同属银行，但机制轴不同（信用周期 vs 利率/资金配置）。按“机制明显不同的阶段不要简单合并”，两者不合并。"
+  },
+  {
+    "candidate_id": "R01-FINRE-009",
+    "title": "2020年6—7月成交量放大与资本市场改革预期驱动的券商行情（Beta 代理风险）",
+    "year": 2020,
+    "macro_theme_proposal": "非银金融",
+    "theme_name_candidates": [
+      "非银金融",
+      "证券",
+      "券商"
+    ],
+    "theme_summary": "2020 年 7 月初，A 股成交额快速放大，券商板块连续大涨：2020-07-02 上证综指涨 2.13%，券商板块（申万二级）涨 7.01% 领涨，中泰证券、浙商证券、中信建投等涨停；同日券商板块涨超 8%，光大证券、浙商证券、太平洋等 10 股涨停，银行、保险、互联网金融等大金融全线走高。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-07-02",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "observed：2020-07-02 券商板块领涨、多股涨停的同期记录（本包仅能确认该日，不确认为真正起点）",
+          "source_ids": [
+            "R01-FINRE-S037"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E080"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "2020-07-02 是证据可确认日，不一定是行情起点；真正的启动窗口（6 月下旬）未取得可靠证据。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2020 年 7 月上中旬（推断）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无峰值证据。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2020 年 7 月中下旬（推断）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无结束证据。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": null,
+        "end": null,
+        "basis": "缺连续行情数据",
+        "notes": "生命周期未闭合。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "A 股成交额快速放大，券商业绩预期（经纪 + 两融）改善",
+        "资本市场制度改革预期（注册制推进）与混业经营传闻"
+      ],
+      "accelerator": [
+        "券商板块单日涨幅显著领先大盘（7.01% vs 上证 2.13%），涨停股集中"
+      ],
+      "turning": [
+        "未取得转折证据"
+      ],
+      "ending": [
+        "未取得结束证据"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E080",
+      "R01-FINRE-E081",
+      "R01-FINRE-E131",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC009",
+      "R01-FINRE-SEC014",
+      "R01-FINRE-SEC015"
+    ],
+    "research_status": "CONFLICT",
+    "confidence": "medium",
+    "point_in_time_notes": "E080/E081 均为 contemporaneous（2020-07-02 当日），可用于 point-in-time 论证；但两者仅覆盖同一交易日，不构成持续性证据。",
+    "why_campaign": "① 券商板块相对大盘有明显超额（7.01% vs 2.13%）；② 涨停集中、主题明确；③ 机制可表述为“成交量放大 → 券商业绩预期”；④ 证据 2 条、2 个 independence_group（IG-RPT-20200702 / IG-CLS-20200702），刚好达到门槛下限。",
+    "why_not": "★ 核心反证就在证据本身：同期报道明确写出“银行、保险、互联网金融等大金融全线走高”——这是典型的市场 Beta 形态，券商只是高弹性代理。① 缺持续性与结束证据；② 资本市场改革与成交量两种机制无法分离（见 CF008）；③ Beta 中性验证未完成。故 research_status = CONFLICT、confidence = low。 ④【行情补齐后】2020-06-30~2020-07-15：中信证券 +35.6%（相对沪深300 +21.6pct）、东方财富 +39.9%（+26.0pct）；同期工商银行 +3.1%（**-10.8pct**）、保利发展 +13.5%（-0.5pct）。银行与地产未同步，否证了 E080/E081 中“大金融全线走高”所暗示的全域 Beta 形态。据此 confidence 由 low 上调至 medium；但驱动机制（成交量放大）本身即市场风险偏好的代理变量，CONFLICT 状态保留，Beta 分离仍未完成。",
+    "possible_duplicate_of": [],
+    "notes": "本条与 R01-FINRE-005（2024-09）共同构成“券商 = 市场 Beta 代理”的证据组。建议 ThreeC Agent 判断是否将“券商行情”整体降级为 Observation 或单列机制轴。"
+  },
+  {
+    "candidate_id": "R01-FINRE-010",
+    "title": "2025年保险板块资产端与负债端共振行情",
+    "year": 2025,
+    "macro_theme_proposal": "非银金融",
+    "theme_name_candidates": [
+      "非银金融",
+      "保险",
+      "金融"
+    ],
+    "theme_summary": "2025 年 A 股保险指数涨幅超过 30%，新华保险表现居首；驱动来自资产端（权益市场表现与高股息资产配置）与负债端（预定利率调整、长期资金入市政策）共振，险资年内举牌上市公司次数增加、七家上市险企 2025 年上半年增配高息股约 3200 亿元。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2025 年内逐步形成（无单一启动事件；为年度趋势型结构）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无启动锚点；以年度为口径记录，不给精确到日的 start。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2025 年内未确认峰值",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "缺板块指数序列。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown：年度盘点口径下不判定 End",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "不把年度结束当作 Campaign End。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "basis": "2025 年保险指数涨超 30%（年度口径）",
+        "notes": "以年度口径记录，非日线校准结果。"
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "资产端：权益市场表现与高股息资产配置改善投资收益",
+        "负债端：长期资金入市相关监管导向与负债成本调整"
+      ],
+      "accelerator": [
+        "险资举牌上市公司次数增加、对高股息资产配置力度加强",
+        "七家上市险企 2025H1 增配高息股约 3200 亿元"
+      ],
+      "turning": [
+        "未取得转折证据"
+      ],
+      "ending": [
+        "未取得结束证据；结构可能延续"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E090",
+      "R01-FINRE-E091",
+      "R01-FINRE-E137",
+      "R01-FINRE-E141"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC011",
+      "R01-FINRE-SEC012",
+      "R01-FINRE-SEC013"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "E090 为 subsequent（2025-12-31 年度盘点）；E091 为 contemporaneous（2025-09-05 报道）。E090 不得充当 2025 年内的同期催化。",
+    "why_campaign": "① 主题明确（保险资产端/负债端共振）；② 有量化表现证据（指数涨超 30%）；③ 有明确的资金面机制（险资举牌与高股息配置）；④ 与银行高股息结构（R01-FINRE-007）共享资金侧机制但标的不同，可作为保险条线的结构样本；⑤ 证据 2 条、2 个 independence_group（IG-SINA-2025INS / IG-QQ-2025INS）。",
+    "why_not": "① 只有 2 条证据、2 个 independence_group，刚好达到门槛下限，证据结构偏薄；② 缺相对沪深 300 的超额口径，无法排除 2025 年市场整体上涨的贡献；③ 保险资产端与权益市场表现高度耦合，存在“市场 Beta 通过资产端传导”的特殊污染路径，本包无法分离（见 CF004/CF008 类问题）；④ 无启动锚点与峰值数据。 ⑤【行情补齐后】登记代表标的中国平安：2024-12-31~2025-09-19 +8.6%，同期沪深300 +14.4%，相对 **-5.8pct**；2025-03-31~2025-09-19 相对 -4.9pct。即本包唯一保险代表标的在 2025 年**跑输**基准，与“2025 年保险指数涨超 30%”的板块叙事方向不一致（CF012）。单标的相对表现不足以否定板块结论，故**不**据此下调 confidence，但必须以冲突形式保留，并留待 Q012 复核。",
+    "possible_duplicate_of": [],
+    "notes": "本条与 R01-FINRE-007（银行高股息）存在资金侧重叠（险资配置高股息资产）。是否属于同一 Theme Cycle 下的两个 Campaign，抑或应合并，交 ThreeC Agent 判定（见 CF004）。 【行情补充】中国平安 2025 年跑输基准已记入 CF012 与 Q012。"
+  },
+  {
+    "candidate_id": "R01-FINRE-011",
+    "title": "2015—2017年去库存与棚改货币化驱动的房地产基本面周期（Priority B 回填，A股响应受杠杆牛污染）",
+    "year": 2016,
+    "macro_theme_proposal": "房地产",
+    "theme_name_candidates": [
+      "房地产",
+      "房地产开发",
+      "棚改货币化"
+    ],
+    "theme_summary": "2015-03“330 新政”降低首付与营业税免征年限后，2015 年 12 月中央经济工作会议将“化解房地产库存”列为重点任务并提出取消过时的限制性措施；2016 年棚改货币化帮助地方消化约 2.5 亿平方米库存，三四线城市销售与投资回暖。但同期 A 股经历 2015 年杠杆牛与股灾，地产板块的市场响应与全市场 Beta 无法分离。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2015-12-21",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "official_event（媒体引述）：2015 年中央经济工作会议强调努力化解房地产库存、取消过时的限制性措施",
+          "source_ids": [
+            "R01-FINRE-S041"
+          ],
+          "evidence_ids": [
+            "R01-FINRE-E100"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2015-03-30",
+              "basis": "若以“330 新政”（降首付、营业税免征年限调整）为政策起点",
+              "source_ids": []
+            }
+          ],
+          "conflict_note": "“330 新政”（2015-03）与中央经济工作会议定调（2015-12）两个政策起点并存，本包不自动取舍。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown：未取得 2016—2017 年 A 股地产板块行情数据",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "基本面周期高点（销售/投资）与市场行情高点可能不同，两者均未确认。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无结束证据。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": null,
+        "end": null,
+        "basis": "仅确认政策与基本面事实，市场阶段不可识别",
+        "notes": "Priority B 回填：允许大面积 INSUFFICIENT。"
+      }
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": [
+        "政策：2015-03“330 新政”降首付与税费调整",
+        "政策：2015-12 中央经济工作会议将去库存列为国家任务"
+      ],
+      "accelerator": [
+        "棚改货币化安置形成的需求侧机制（2016 年帮助消化约 2.5 亿平方米库存）",
+        "三四线城市销售与投资回暖"
+      ],
+      "turning": [
+        "未取得转折证据"
+      ],
+      "ending": [
+        "未取得结束证据"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E100",
+      "R01-FINRE-E101"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC001"
+    ],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "E100 为 contemporaneous（2015-12-22 报道）；E101 为 retrospective（2024 年回顾性报道），仅用于确认棚改货币化的历史量级，不得充当 2016 年当时的已知催化。",
+    "why_campaign": "保留理由：政策启动锚点明确、机制清晰（去库存政策 + 棚改货币化需求侧机制），是 2015—2017 时段唯一可考的地产结构性驱动，满足 Priority B 的回填披露要求。",
+    "why_not": "① ★ 市场响应层完全缺失：未取得 2016—2017 年 A 股地产板块行情数据，无法建立“政策 → 行业数据 → 市场响应”三层链条的第三层；② 同期 A 股处于 2015 年杠杆牛与股灾的极端 Beta 环境（见 R01-FINRE-012），地产板块响应与全市场不可分离；③ 仅 2 条证据、2 个 independence_group，且其中 1 条为回顾性来源。→ INSUFFICIENT + low。",
+    "possible_duplicate_of": [],
+    "notes": "Priority B 允许大面积 INSUFFICIENT。本条的作用是如实记录“机制存在、市场层不可复核”，而不是制造一个地产 Campaign。"
+  },
+  {
+    "candidate_id": "R01-FINRE-012",
+    "title": "2015年杠杆牛市中的金融股（券商/银行）启动段（Beta 主导，建议 Observation）",
+    "year": 2015,
+    "macro_theme_proposal": "金融",
+    "theme_name_candidates": [
+      "金融",
+      "银行",
+      "非银金融",
+      "券商"
+    ],
+    "theme_summary": "2015 年 A 股牛市的核心逻辑为“政策宽松 + 杠杆资金 + 新兴产业概念”，板块轮动路径为“金融股启动 → 互联网+成长股主升”；融资融券、保证金交易等杠杆资金大量涌入，成交额大幅放大。金融股处于轮动起点，但其上涨由市场杠杆驱动，而非金融行业自身机制。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "PHASE_WINDOW",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "2015 年上半年（具体起点未取得可靠证据）",
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "2015 年金融股启动段的具体起止未取得可靠来源，仅作 phase 记录。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无峰值数据。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "unknown",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "无结束数据。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": null,
+        "end": null,
+        "basis": "无可靠行情数据",
+        "notes": "Priority B 回填；生命周期完全未闭合。"
+      }
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": [
+        "政策宽松（货币与流动性）",
+        "杠杆资金：融资融券、保证金交易、金融产品杠杆"
+      ],
+      "accelerator": [
+        "成交额大幅放大，券商作为高弹性品种放大市场涨幅"
+      ],
+      "turning": [
+        "未取得转折证据"
+      ],
+      "ending": [
+        "未取得结束证据（2015 年 6 月后市场剧烈调整，但本包未取得可靠日期证据）"
+      ]
+    },
+    "evidence_ids": [
+      "R01-FINRE-E110",
+      "R01-FINRE-E111"
+    ],
+    "security_ids": [
+      "R01-FINRE-SEC009",
+      "R01-FINRE-SEC005"
+    ],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "E110/E111 均为 retrospective（2025 年的复盘材料），属 hindsight。按 PIT 纪律，二者只能证明历史事件确实发生，不得充当 2015 年当时的已知催化。本候选因此不可能满足 point-in-time 论证。",
+    "why_campaign": "仅作为 Priority B 的时间段占位与机制说明提交：2015 年金融股上涨是理解后续所有“券商 = Beta 代理”问题的起点，保留其研究价值。证据 2 条、2 个 independence_group（IG-RPT-2015 / IG-SINA-2015NIU）。",
+    "why_not": "★ 三条硬伤：① 全部证据为 retrospective 复盘，无一条同期证据；② 无任何行情数据（起止、峰值、板块口径全缺）；③ 机制本身就是“杠杆资金驱动的市场 Beta”，按 historical_campaign_validation_v1.md §4.3，无法排除 Beta 污染时必须保持低置信度。本包同时以 exclusions R01-FINRE-X001 明确建议：不作为独立金融 Campaign。",
+    "possible_duplicate_of": [],
+    "notes": "本条存在的意义是承接 exclusions 的诚实性要求：它是一个被记录但被明确否定的候选，不是被删除的候选。"
+  }
+]
