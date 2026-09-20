@@ -1,16 +1,17 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-09-19T23:47:20",
-  "source_commit": "9e694f6d152cb53fa7cfe97bceebb7dbf3653d79",
+  "generated_at": "2026-09-20T20:15:46",
+  "source_commit": "a3508de3b71f490043e096fbbfe64083f9bbb55b",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
     "rule_power_equipment",
     "rule_infocomm",
     "rule_high_end_equipment",
-    "rule_semiconductor"
+    "rule_semiconductor",
+    "rule_resources"
   ],
-  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块） + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人） + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期）",
+  "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块） + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人） + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期） + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性）",
   "status_vocabulary": {
     "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
     "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -3524,6 +3525,867 @@
           "★ 环节错位：出海暴露较高的思源电气（2025-12-26 160.30，+115.0%）与特变电工（2025-11-07 26.14，+86.0%）延后至 2025 年见顶，未另立 Cycle",
           "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
           "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2019-RES-DYE-SHOCK",
+      "db_campaign_id": "C-2019-RES-DYE-SHOCK",
+      "year": 2019,
+      "rule_id": "rule_resources",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2019-03-21",
+      "peak_date_candidate": "2019-04-04",
+      "end_date_candidate": "2019-07-30",
+      "date_confidence": "medium",
+      "theme": "基础化工",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "基础化工",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "dye_shock_2019",
+      "classification": "event_driven",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-RES-32",
+        "E-RES-27",
+        "E-RES-28",
+        "E-RES-30",
+        "E-RES-29",
+        "E-RES-31"
+      ],
+      "source_ids": [
+        "S-RES-01",
+        "S-RES-02",
+        "S-RES-03",
+        "S-RES-04",
+        "S-RES-05"
+      ],
+      "independent_groups": [
+        "IG-CCTV-SHUANGXIANG",
+        "IG-CNTAC-DYE",
+        "IG-CS-DYE",
+        "IG-CTN-DYE",
+        "IG-NBD-DYE"
+      ],
+      "independent_group_count": 5,
+      "events": [
+        {
+          "event_id": "EV-RES-08",
+          "name": "江苏响水天嘉宜化工有限公司发生特别重大爆炸事故（间苯二胺核心产能受损）",
+          "date": "2019-03-21",
+          "event_type": "industry",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-RES-09",
+          "name": "分散染料板块集体高开大涨，浙江龙盛一字板涨停（封单超 28 万手）",
+          "date": "2019-03-22",
+          "event_type": "market",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-RES-10",
+          "name": "江苏盐城市委常委会决定彻底关闭响水化工园区",
+          "date": "2019-04-04",
+          "event_type": "policy",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "LONGSHENG",
+          "name": "浙江龙盛",
+          "ticker": "600352",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "RUNTE",
+          "name": "闰土股份",
+          "ticker": "002440",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "机制 = **安全事故型供给冲击**（区别于 004 的行政限产、011 的环保约束、010 的行政去产能、003 的配额约束）——本包「供给收缩」五子类型之一。★ 链条：E041（2019-03-21 响水爆炸）→ E042（间苯二胺三大核心工厂之一 → 供应短缺）→ E044（2019-03-22 分散染料板块集体高开、浙江龙盛一字板）→ E043（2019-04-04 关闭响水化工园区）。★ peak = 2019-04-04（园区彻底关闭决定，政策冲击高点）。★ **已知缺口**：缺退潮段证据（无可引用的染料价格序列与板块指数序列），`end = 2019-07-30`（E045，最后有证据的日期），**不主张该 Campaign 已在某确定日期结束**。★ CF008（响水事故伤亡人数通报口径 44 / 78 人）**保留 KEEP_BOTH** —— 滚动通报，不同统计时点，**不得把后一数字当作事发当日已知信息**。｜theme_cycle_id=dye_shock_2019｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2019-03-21",
+          "end": "2019-04-03",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "2019-03-21 天嘉宜化工特别重大爆炸事故（同期通报死亡 44 人，后更新为 78 人遇难）",
+          "天嘉宜是染料中间体间苯二胺的三大核心生产工厂之一",
+          "苏北地区染料中间体产量约占全国三分之一"
+        ],
+        "accelerator": [
+          "2019-04-04 盐城市委决定彻底关闭响水化工园区",
+          "江苏省下发《化工行业整治提升方案(征求意见稿)》，拟大幅压减化工生产企业数量",
+          "2018 年苏北化工园区整治已使部分企业停产，事故进一步延迟复工"
+        ],
+        "turning": [
+          "染料价格与印染加工费急涨，下游印染行业公开抵制",
+          "绍兴市柯桥区印染工业协会倡议抵制染化料价格不正常上涨",
+          "园区关停后替代产能与库存逐步补充"
+        ],
+        "ending": [
+          "江苏省化工整治方案落地，供给侧长期收缩但价格冲击消退",
+          "染料价格回落",
+          "市场注意力转向新主题"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-RES-NONFERROUS",
+      "db_campaign_id": "C-2020-RES-NONFERROUS",
+      "year": 2020,
+      "rule_id": "rule_resources",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2020-03-23",
+      "peak_date_candidate": "2021-09-13",
+      "end_date_candidate": "2021-12-31",
+      "date_confidence": "medium",
+      "theme": "有色金属",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "有色金属",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-RES-03",
+        "E-RES-01",
+        "E-RES-07",
+        "E-RES-02",
+        "E-RES-05",
+        "E-RES-06",
+        "E-RES-04"
+      ],
+      "source_ids": [
+        "S-RES-06",
+        "S-RES-07",
+        "S-RES-08",
+        "S-RES-09",
+        "S-RES-21",
+        "S-RES-22",
+        "S-RES-47"
+      ],
+      "independent_groups": [
+        "IG-CCTV-2021A",
+        "IG-CECN-2021A",
+        "IG-CECN-NONFERROUS",
+        "IG-CNFIN-COPPER",
+        "IG-MARKETDATA-LOCAL",
+        "IG-MOFCOM-COPPER",
+        "IG-STCN-COPPER"
+      ],
+      "independent_group_count": 7,
+      "events": [
+        {
+          "event_id": "EV-RES-01",
+          "name": "LME 铜期货 10747.5 美元/吨创历史新高（较 2020 年低点涨幅超一倍）",
+          "date": "2021-05-10",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CHALCO",
+          "name": "中国铝业",
+          "ticker": "601600",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "JXCOPPER",
+          "name": "江西铜业",
+          "ticker": "600362",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "TONGLING",
+          "name": "铜陵有色",
+          "ticker": "000630",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "YNCOPPER",
+          "name": "云南铜业",
+          "ticker": "000878",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "YUNAL",
+          "name": "云铝股份",
+          "ticker": "000807",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "ZIJIN",
+          "name": "紫金矿业",
+          "ticker": "601899",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF001 裁决：**判为独立 Campaign**（非「2021 大宗商品超级周期」的组成部分）。Gate：Q1 注意力中心 = 全球流动性宽松 + 需求复苏 + 矿产供给约束（与 003 的配额型、004 的行政限产不同）；Q2 代表标的（江西铜业/云南铜业/紫金矿业/中国铝业/云铝股份）与 003/004 **不重叠**；Q4 生命周期独立（peak 2021-09-13，与 003 的 2021-11 及 004 的 2021-10 不同步）。四个 2021 并行结构由**上位 Theme Cycle** `resource_reflation_2020_2022`（Pattern = Parallel）承载 —— 即 CF001 的 P1（多 Campaign）在 Campaign 层成立，P2（同一大周期）在 Theme Cycle 层成立。★ **peak = 2021-09-13**（中证有色金属指数 000819.SH 区间最高 8603.88 点，E007）—— **采用 A 股板块指数口径**，与既有 canonical 惯例一致；**商品口径峰值 2021-05-10**（LME 铜 10747.5 美元/吨，E001）**作为 alternative 保留**，**不强行同步**（CF006 同源问题）。★ CF005（2021 年涨幅口径）**保留**：申万一级 40.47%（E005/E006）vs 中证有色金属 31.31%（E007），引用时必须说明口径。★ CF012：中国铝业/云铝股份 同时属本 Campaign 与 004/010 —— 多主业为合法历史事实，**不构成合并理由**。｜theme_cycle_id=resource_reflation_2020_2022｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-04-01",
+          "end": "2021-05-10",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "新冠疫情后全球需求复苏",
+          "美联储零利率 + 无限量宽松，美元实际利率下行、美元走弱",
+          "疫情冲击下铜矿等矿产产量恢复缓慢，供给跟不上需求"
+        ],
+        "accelerator": [
+          "LME 与国内铜库存持续下滑",
+          "2021 年前三季度中国新能源汽车产销量同比均增长 185%，带动铜等有色金属需求",
+          "海外铜需求较上年提高约 7%，叠加跨市套利窗口，2021 年中国铜出口量同比 +25% 创历史新高"
+        ],
+        "turning": [
+          "铜价快速上涨抑制下游消费，采购意愿下降",
+          "2021 年 5 月后进入宽幅震荡，商品价格不再创新高",
+          "2022 年美联储进入加息周期、美元走强"
+        ],
+        "ending": [
+          "全球流动性转向收紧",
+          "高价抑制需求叠加供给恢复",
+          "板块资金转向新能源等结构性方向"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-RES-LITHIUM",
+      "db_campaign_id": "C-2020-RES-LITHIUM",
+      "year": 2020,
+      "rule_id": "rule_resources",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2020-10-27",
+      "peak_date_candidate": "2021-09-13",
+      "end_date_candidate": "2022-11-11",
+      "date_confidence": "medium",
+      "theme": "有色金属",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "有色金属",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-RES-08",
+        "E-RES-13",
+        "E-RES-11",
+        "E-RES-12",
+        "E-RES-10",
+        "E-RES-09"
+      ],
+      "source_ids": [
+        "S-RES-10",
+        "S-RES-11",
+        "S-RES-38",
+        "S-RES-39",
+        "S-RES-40",
+        "S-RES-47"
+      ],
+      "independent_groups": [
+        "IG-CECN-LI",
+        "IG-EVERBRIGHT-LI",
+        "IG-MARKETDATA-LOCAL",
+        "IG-SINA-LI",
+        "IG-SSE-LI",
+        "IG-THEPAPER-LI"
+      ],
+      "independent_group_count": 6,
+      "events": [
+        {
+          "event_id": "EV-RES-02",
+          "name": "澳洲锂精矿企业 Altura 进入破产管理（锂精矿供给出清延续）",
+          "date": "2020-10-27",
+          "event_type": "industry",
+          "role": "context"
+        },
+        {
+          "event_id": "EV-RES-03",
+          "name": "电池级碳酸锂价格达 59 万元/吨 历史高点",
+          "date": "2022-11-11",
+          "event_type": "industry",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "GANFENG",
+          "name": "赣锋锂业",
+          "ticker": "002460",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "SALTLIAKE",
+          "name": "盐湖股份",
+          "ticker": "000792",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "SINOMINE",
+          "name": "中矿资源",
+          "ticker": "002738",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "TIANQI",
+          "name": "天齐锂业",
+          "ticker": "002466",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "YONGXING",
+          "name": "永兴材料",
+          "ticker": "002756",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF006 裁决（**商品 peak ≠ A 股 peak**）：**canonical peak = 2021-09-13**（能源金属指数 399366.SZ 区间最高点；天齐锂业 +451.88%、赣锋锂业 +180.74%，E015）—— 采用 **A 股口径**；**商品口径峰值 2022-11-11**（电池级碳酸锂 59 万元/吨，E012/E013）**作为 alternative 保留**，**不强行同步**（两者相差约 14 个月）。★ CF003（跨族归属）**保留为未决**：本 Campaign 的 Macro Theme 归属按 **CMTR v1 解析结果**置于 `资源` 根下 `有色金属` 子主题；「是否应归 电力设备 / 汽车」属跨族问题，CMTR v1 **不回答**，**保留 Conflict**，**不新增 canonical theme**。★ end = 2022-11-11（商品周期见顶日，为本结构最后一个有证据的上行锚点）；**A 股自 2021-09-16 起即转跌**（CF006 P2），领先商品约 14 个月。｜theme_cycle_id=resource_reflation_2020_2022｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-10-30",
+          "end": "2021-09-13",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "锂精矿供给出清：2020-10-27 澳洲 Altura 进入破产管理，延续 2019 年下半年的出清",
+          "《新能源汽车产业发展规划(2021-2035 年)》等政策利好 + 新能源车热销带动需求预期",
+          "上游锂价处于历史周期底部（2020 年 8 月碳酸锂约 4 万元/吨）"
+        ],
+        "accelerator": [
+          "2020-11 至 2021 年 1 月，磷酸铁锂需求推动国内锂价上涨 40% 至 18 个月高点",
+          "2021 年夏季起锂价加速，2021-10 至 2022-06 锂矿供应受限、供需缺口扩大",
+          "锂资源自主可控叙事驱动上市公司大额布局海内外锂矿"
+        ],
+        "turning": [
+          "2022-11-11 碳酸锂价格达 59 万元/吨 历史高点后转为下跌",
+          "2022-06 至 2022-11 需求快速拉升后转为需求快速缩减",
+          "下游电池厂在价格下行期转为长单交易、去库存"
+        ],
+        "ending": [
+          "供给放量（南美盐湖、非洲矿）使供需由偏紧转为过剩",
+          "2022-11 至 2023-04 价格大幅下行，板块资金流失",
+          "宁德时代锂矿返利等事件加速价格下滑与叙事失效"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2020-RES-RAREEARTH",
+      "db_campaign_id": "C-2020-RES-RAREEARTH",
+      "year": 2020,
+      "rule_id": "rule_resources",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2020-05-01",
+      "peak_date_candidate": "2021-11-09",
+      "end_date_candidate": "2021-12-31",
+      "date_confidence": "medium",
+      "theme": "稀有金属/稀土",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "稀有金属/稀土",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-RES-17",
+        "E-RES-18",
+        "E-RES-19",
+        "E-RES-16",
+        "E-RES-14",
+        "E-RES-15",
+        "E-RES-20"
+      ],
+      "source_ids": [
+        "S-RES-13",
+        "S-RES-14",
+        "S-RES-15",
+        "S-RES-16",
+        "S-RES-48"
+      ],
+      "independent_groups": [
+        "IG-CCPIT-RE",
+        "IG-CLS-RE",
+        "IG-CREOL-RE",
+        "IG-SINA-RAREEARTH-RPT",
+        "IG-SMM-RE"
+      ],
+      "independent_group_count": 5,
+      "events": [
+        {
+          "event_id": "EV-RES-12",
+          "name": "氧化镨钕价格自 10 月初 59.8 万元/吨涨至 73.5 万元/吨",
+          "date": "2021-10-28",
+          "event_type": "industry",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-RES-13",
+          "name": "北方稀土更新挂牌价，氧化镨钕升至 76.26 万元/吨",
+          "date": "2021-11-09",
+          "event_type": "industry",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CNRAREEARTH",
+          "name": "中国稀土",
+          "ticker": "000831",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "GUANGSHENG",
+          "name": "广晟有色",
+          "ticker": "600259",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "NPRARE",
+          "name": "北方稀土",
+          "ticker": "600111",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "SHENGHE",
+          "name": "盛和资源",
+          "ticker": "600392",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF004（机制归类：资源属性 vs 政策属性）**保留 KEEP_BOTH**：两侧均有证据 —— P1 资源属性（缅甸矿进口下降、分离企业减停产、现货稀少，E023）；P2 政策属性（开采/冶炼分离总量控制指标 16.8/16.2 万吨、央企整合、出口管制，E022/E026）。两者真实并存，**不机械归并**。★ **已知证据缺口（本轮降级 strength 至 medium 的原因）**：本候选 7 条 evidence **全部为商品价格 / 行业指标 / 公司业绩口径**（E021–E027），**没有任何 A 股板块指数或个股行情证据** —— 即「商品/行业机制 → A 股市场响应」这一环**未被证据直接支持**。因此：① `strength` 由 strong 降为 **medium**；② **不得声称已完成 A 股市场响应验证**；③ 建议后续轮次补齐稀土永磁板块指数序列。（公司级证据 E027「北方稀土 2021 年归母净利润 +462.32%」仅能证明行业景气，**不等同于**市场关注。）★ peak = 2021-11-09（北方稀土挂牌价氧化镨钕 76.26 万元/吨，E026）。｜theme_cycle_id=resource_reflation_2020_2022｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2020-05-01",
+          "end": "2021-10-01",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "供给端：稀土矿产品与冶炼分离总量控制指标机制，中重稀土继续严控",
+          "2020-05 起供需基本面改善，价格进入景气上升周期",
+          "持货端锁货惜售、现货稀少"
+        ],
+        "accelerator": [
+          "缅甸政局与疫情导致中缅口岸关闭近 6 个月，2021 年前 11 个月缅甸矿进口量约 2.5 万吨（-23%）",
+          "2021-10-29 工信部与市场监管总局印发《电机能效提升计划(2021-2023 年)》，加大稀土永磁电机应用",
+          "2021 年开采指标 16.8 万吨、冶炼分离指标 16.2 万吨，同比均增 20%，但增量全部为轻稀土指标，中重稀土指标连续四年不变",
+          "北方稀土多次专场竞价推高金属镨钕成交价"
+        ],
+        "turning": [
+          "2021-10 至 11 月价格急涨后出现冲高回调",
+          "下游（中低端钕铁硼）因高价缩减用量",
+          "磁材企业采购周期结束后需求边际转弱"
+        ],
+        "ending": [
+          "配额有序释放、供给偏紧程度缓解",
+          "行业整合（2021-12-23 中国稀土集团成立）改变供给主体结构",
+          "价格回落至高位震荡"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+      "db_campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+      "year": 2021,
+      "rule_id": "rule_resources",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2021-08-12",
+      "peak_date_candidate": "2021-10-31",
+      "end_date_candidate": "2021-12-31",
+      "date_confidence": "medium",
+      "theme": "基础化工",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "基础化工",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "resource_reflation_2020_2022",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-RES-23",
+        "E-RES-21",
+        "E-RES-22",
+        "E-RES-24",
+        "E-RES-26",
+        "E-RES-25"
+      ],
+      "source_ids": [
+        "S-RES-17",
+        "S-RES-18",
+        "S-RES-19",
+        "S-RES-20",
+        "S-RES-22"
+      ],
+      "independent_groups": [
+        "IG-CCIN-NM",
+        "IG-CECN-2021A",
+        "IG-CHEMNEWS-DUALCTRL",
+        "IG-NF-DUALCTRL",
+        "IG-OFWEEK-DUALCTRL"
+      ],
+      "independent_group_count": 5,
+      "events": [
+        {
+          "event_id": "EV-RES-04",
+          "name": "内蒙古印发《关于确保完成「十四五」能耗双控目标若干保障措施》",
+          "date": "2021-03-10",
+          "event_type": "policy",
+          "role": "context"
+        },
+        {
+          "event_id": "EV-RES-05",
+          "name": "国家发改委印发《2021 年上半年各地区能耗双控目标完成情况晴雨表》(发改办环资〔2021〕629 号)",
+          "date": "2021-08-12",
+          "event_type": "policy",
+          "role": "trigger"
+        },
+        {
+          "event_id": "EV-RES-06",
+          "name": "云南省发布《关于坚决做好能耗双控有关工作的通知》（工业硅月均产量不得超过 8 月产量 10%）",
+          "date": "2021-09-11",
+          "event_type": "policy",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-RES-07",
+          "name": "江苏/云南/陕西等多地化工企业停车减产，纯碱、黄磷等原料价格飙升",
+          "date": "2021-10-31",
+          "event_type": "industry",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "HOSHINE",
+          "name": "合盛硅业",
+          "ticker": "603260",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "HUBEIYIHUA",
+          "name": "湖北宜化",
+          "ticker": "000422",
+          "exchange": "SZ",
+          "role": "representative"
+        },
+        {
+          "security_id": "WANHUA",
+          "name": "万华化学",
+          "ticker": "600309",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "XINGFA",
+          "name": "兴发集团",
+          "ticker": "600141",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "YUNTIANHUA",
+          "name": "云天化",
+          "ticker": "600096",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF002（2021 电解铝机制归属）**保留 KEEP_BOTH**：电解铝同时受「工业金属再通胀」（001）与「能耗双控行政限产」（本 Campaign）两套机制影响（E092/E095 云南限电致云铝减少 77 万吨产能；E002 有色协会将铝与铜并列归因）。两机制真实并存，**不机械归并**。★ 行政限产链条：E033（2021-03-10 内蒙古）→ E031（2021-08-12 发改委晴雨表）→ E032（2021-09-11 云南）→ E034（2021-09 江浙）。★ peak = 2021-10-31（多地化工企业停车减产、纯碱/黄磷等价格飙升，E036）。★ CF011（双控方案印发日期 2021-09-11 / 2021-09-16）**保留 KEEP_BOTH**，本 Campaign 的 start 采用 **2021-08-12**（E031，一手文件），不依赖该争议日期。｜theme_cycle_id=resource_reflation_2020_2022｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2021-08-12",
+          "end": "2021-09-30",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "2021-08-12 发改委发布能耗双控目标完成情况晴雨表，9 省(区)能耗强度不降反升被一级预警",
+          "2021-09-11 发改委印发《完善能源消费强度和总量双控制度方案》，明确指标分解落实机制",
+          "2020-09 中国提出碳达峰碳中和目标，双碳政策预期自 2021 年起密集落地"
+        ],
+        "accelerator": [
+          "云南要求工业硅、黄磷月均产量不超过 8 月 10%（削减约 90%）",
+          "江苏对年综合能耗 5 万吨标煤以上企业开展专项节能监察，部分纯碱企业开工率降幅约 20%",
+          "内蒙古自 2021 年起不再审批焦炭、电石、PVC、合成氨(尿素)、甲醇、乙二醇、烧碱、纯碱、磷铵、黄磷等新增产能",
+          "陕西榆林要求已投产「两高」项目限产 60%、9 月减产 50%"
+        ],
+        "turning": [
+          "化工品价格急涨后出现有价无市，厂家暂停报价",
+          "下游（印染、化纤、纺织）成本压力剧增并公开抵制原料涨价",
+          "政策转向保供稳价，限电措施边际放松"
+        ],
+        "ending": [
+          "能耗双控阶段性目标完成后限产放松",
+          "下游需求走弱、库存回补完成",
+          "价格向成本线回归"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2024-RES-GOLD-CB",
+      "db_campaign_id": "C-2024-RES-GOLD-CB",
+      "year": 2024,
+      "rule_id": "rule_resources",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2024-02-01",
+      "peak_date_candidate": null,
+      "end_date_candidate": null,
+      "date_confidence": "low",
+      "theme": "贵金属",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "贵金属",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": "gold_cb_demand_2024_2025",
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-RES-38",
+        "E-RES-37",
+        "E-RES-40",
+        "E-RES-39"
+      ],
+      "source_ids": [
+        "S-RES-26",
+        "S-RES-27",
+        "S-RES-28",
+        "S-RES-29"
+      ],
+      "independent_groups": [
+        "IG-CECN-GOLD2025",
+        "IG-CGY-GOLD",
+        "IG-JC-GOLD",
+        "IG-ZGX-GOLD"
+      ],
+      "independent_group_count": 4,
+      "events": [
+        {
+          "event_id": "EV-RES-14",
+          "name": "国际现货黄金一度涨至 2942.7 美元/盎司，创历史新高",
+          "date": "2025-02-11",
+          "event_type": "market",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-RES-15",
+          "name": "2025 年以来 A 股黄金股指数整体上涨超一倍（紫金矿业、山东黄金等）",
+          "date": "2025-09-30",
+          "event_type": "market",
+          "role": "follow_up"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "CFGOLD",
+          "name": "赤峰黄金",
+          "ticker": "600988",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "SDGOLD",
+          "name": "山东黄金",
+          "ticker": "600547",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "ZIJIN",
+          "name": "紫金矿业",
+          "ticker": "601899",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "ZJGOLD",
+          "name": "中金黄金",
+          "ticker": "600489",
+          "exchange": "SH",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "★ CF009（2025-12「现货热、股价冷」背离）**保留 UNRESOLVED** —— **不消解**。P1 金价与基本面同向（E063：2024 年全球央行购金 1045 吨、占比 21%；2025 前三季度净购金 634 吨；E061：2025-02-11 现货金一度 2942.7 美元/盎司创历史新高）；P2 A 股股价未同步（2025-12 金价创 4526 美元/盎司新高时，山东黄金/招金矿业等仍低于 10 月初高点）。★ **`peak_date = NULL`** —— **A 股口径峰值未被证据支持**。E064（2025-09-30）仅能证明「2025 年以来 A 股黄金股指数整体上涨超一倍」，**未给出峰值日期**；商品口径峰值 2025-12-26（4526 美元/盎司）**不得直接用作 A 股 Campaign 的 peak**（CF006 同类问题：商品 peak ≠ A 股 peak）→ **不人为强行同步**，保留 NULL 并在本注记记录。★ **`end_date = NULL`** —— 结构在研究窗口结束时仍在延续，生命周期未闭合。★ `date_confidence = low`（start 为包内 DATE_WINDOW 左沿 2024-02-01，缺该时点的直接证据）。★ **未声称完成 Beta 中性验证**：本 Campaign 的 A 股响应证据（E064）为**绝对涨幅**口径，**不能排除整体市场 Beta**，故 `strength = medium` 而非 strong。｜theme_cycle_id=gold_cb_demand_2024_2025｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2024-02-01",
+          "end": "2025-12-26",
+          "precision": "DATE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "2022 年美国冻结俄罗斯外汇储备后，新兴市场央行调整外汇资产结构，减持美债、增持黄金",
+          "2024 年全球央行购金 1045 吨，占全球黄金总需求（4974 吨）21%",
+          "实际利率之外新增「去美元化 / 国际货币体系重构」定价维度"
+        ],
+        "accelerator": [
+          "2024 年伦敦现货黄金全年均价同比上涨 22.97% 至 2386.2 美元/盎司",
+          "黄金 ETF 持仓快速扩张（2024 年底中国国内黄金 ETF 持有量同比增超八成）",
+          "2025 年美联储降息预期与地缘紧张共同推动，2025 年全球央行购金延续（前三季度 634 吨）",
+          "中国黄金储备 2025 年连续第 11 个月上升，至 9 月底 2303 吨"
+        ],
+        "turning": [
+          "2025 年 12 月金价加速上行后，A 股金矿龙头股价未同步创新高，出现「现货热、股价冷」背离",
+          "头部矿企采金综合成本同比上升 12%–18%，利润增速不及金价涨幅",
+          "部分矿企股价在 2025 年 Q3 已提前大幅上涨，资金阶段性获利了结"
+        ],
+        "ending": [
+          "窗口结束时结构未结束（unknown）"
         ]
       }
     },

@@ -37,8 +37,9 @@ POWER_RULE = "rule_power_equipment"   # 电力设备（Wave 1A — 电力设备�
 COMM_RULE = "rule_infocomm"           # 信息通信（Wave 1B — 信息通信历史 Cycle）
 HIEQ_RULE = "rule_high_end_equipment"  # 高端装备 / 机器人（Wave R01-01 — Historical Universe Expansion）
 SEMI_RULE = "rule_semiconductor"        # 半导体 / 电子（Wave R01-02 — Historical Universe Expansion）
+RES_RULE = "rule_resources"             # 资源 / 有色 / 化工（Wave R01-03 — Historical Universe Expansion）
 # 批量研究覆盖的 Rule（按顺序生成；新增 Macro Theme 在此登记）
-RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE, SEMI_RULE]
+RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE, SEMI_RULE, RES_RULE]
 RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----
@@ -80,6 +81,15 @@ THEME_CYCLE = {
     "C-2024-SEMI-MEMORY": "memory_supercycle_2024_2025",
     "C-2022-SEMI-DOWNTURN": "semi_inventory_downturn_2022",
     "C-2016-PANEL-CYCLE": "panel_price_cycle_2016_2022",
+
+    # ---- 资源 / 有色 / 化工（Wave R01-03，Primary Macro Theme = TH-RES）----
+    # 001/002/003/004 同属 resource_reflation_2020_2022（Pattern = Parallel，四个机制各异的独立 Campaign）
+    "C-2020-RES-NONFERROUS": "resource_reflation_2020_2022",
+    "C-2020-RES-LITHIUM": "resource_reflation_2020_2022",
+    "C-2020-RES-RAREEARTH": "resource_reflation_2020_2022",
+    "C-2021-RES-CHEM-DUALCTRL": "resource_reflation_2020_2022",
+    "C-2019-RES-DYE-SHOCK": "dye_shock_2019",
+    "C-2024-RES-GOLD-CB": "gold_cb_demand_2024_2025",
 }
 
 # 研究信号（research-level，来自 theme_lifecycle_v0_2 三案例建模；其余年份按 annual 研究记录）
@@ -316,6 +326,250 @@ RESEARCH_CANDIDATES = [
                   "未升 Case C：⚠ 归属未决（医药健康下 Sub-theme vs 独立 Macro Theme「中医药」）→ Unknown Register U-C1；"
                   "且市场存在分歧（「拐点已现」vs「更多是反弹」）→ 记 CONFLICT 语义但不写入 conflicts（无日期口径冲突）。"
                   "结构为两段（片仔癀 2021 品牌中药 + 以岭 2022Q4 抗疫中药），Peak 取以岭自身高点。"),
+    },
+    # ==== 资源 / 有色 / 化工（Wave R01-03）：RESEARCH_ONLY，**不进入 campaigns 表** ====
+    {
+        "campaign_id": "RC-2020-RES-GOLD-RATES",
+        "rule_id": "rule_resources",
+        "year": 2020,
+        "title": "2019–2020 黄金：实际利率下行与避险驱动行情",
+        "start_date": "2019-05-01",
+        "peak_date": "2020-08-07",
+        "end_date": "2020-12-31",
+        "themes": [
+            {
+                "name": "资源",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "贵金属",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "SDGOLD",
+                "name": "山东黄金",
+                "ticker": "600547",
+                "exchange": "SH",
+                "role": "representative"
+            },
+            {
+                "security_id": "ZJGOLD",
+                "name": "中金黄金",
+                "ticker": "600489",
+                "exchange": "SH",
+                "role": "representative"
+            },
+            {
+                "security_id": "HNGOLD",
+                "name": "湖南黄金",
+                "ticker": "002155",
+                "exchange": "SZ",
+                "role": "representative"
+            }
+        ],
+        "events": [],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "gold_rates_2019_2020",
+        "conflicts": [],
+        "notes": "① A 股黄金板块（山东黄金、中金黄金等）在该窗口的市场响应证据弱于商品端，本任务未收集到足够的板块口径行情证据；② 2019 年与 2020 年两段上行是否属同一 Campaign，需 Independence Gate 判定（存在 2020-03 流动性冲击隔断）。"
+    },
+    {
+        "campaign_id": "RC-2022-RES-FERTILIZER",
+        "rule_id": "rule_resources",
+        "year": 2022,
+        "title": "2021–2022 农化（化肥）成本冲击与出口限制驱动行情",
+        "start_date": "2021-01-01",
+        "peak_date": "2022-03-31",
+        "end_date": "2022-11-30",
+        "themes": [
+            {
+                "name": "资源",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "农化",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "YUNTIANHUA",
+                "name": "云天化",
+                "ticker": "600096",
+                "exchange": "SH",
+                "role": "representative"
+            },
+            {
+                "security_id": "ASIAPOTASH",
+                "name": "亚钾国际",
+                "ticker": "000893",
+                "exchange": "SZ",
+                "role": "representative"
+            },
+            {
+                "security_id": "XINYANGFENG",
+                "name": "新洋丰",
+                "ticker": "000902",
+                "exchange": "SZ",
+                "role": "representative"
+            }
+        ],
+        "events": [],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "fertilizer_cost_2021_2022",
+        "conflicts": [],
+        "notes": "① 无法确立商品与 A 股主题的完整因果证据链（结论降级为「证据不足 / 无法确认」）：E075 显示 A 股「化肥」概念板块 2021-01-04 至 2021-12-31 区间涨跌幅 +24.24%（区间最高 1048.07 点，2021-09-28），板块级响应确实存在，故不能据此断定「商品上行期板块未同步走强」；但 E075 的 +24.24% 与其峰值（2021-09-28）仅覆盖 2021 年，与本候选观测到的商品 peak 窗口（2022-03—2022-04，E071）存在约半年的领先滞后错位，包内现有证据无法判定二者是否属同一结构或存在领先滞后关系。② 本候选现有全部 evidence 均为 subsequent 口径（E071 FAO 2022-12-05、E072 USDA 2022-04-06、E073/E074 商务部 2023-01-13），无一条同期可观察证据可直接锁定 A 股主题启动；S047 的市场响应数据为 2026-09-19 采集、published_at 为空，作为「同期催化」的效力亦有限。③ 因此本候选的核心缺口不是「存在反例」，而是「无法确认传导」，需 Intake Review 或后续轮次补齐 2022 年逐月板块序列与同期政策/价格锚点后方可判定。④ 是否属「农业/粮食安全」主题（R01-04）而非本任务的资源/化工机制，仍需边界裁定。"
+    },
+    {
+        "campaign_id": "RC-2025-RES-COPPER",
+        "rule_id": "rule_resources",
+        "year": 2025,
+        "title": "2024–2025 铜：矿端结构性供给缺口与电网/新能源需求",
+        "start_date": "2024-03-01",
+        "peak_date": "2025-12-31",
+        "end_date": None,
+        "themes": [
+            {
+                "name": "资源",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "有色金属",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "JXCOPPER",
+                "name": "江西铜业",
+                "ticker": "600362",
+                "exchange": "SH",
+                "role": "representative"
+            },
+            {
+                "security_id": "ZIJIN",
+                "name": "紫金矿业",
+                "ticker": "601899",
+                "exchange": "SH",
+                "role": "representative"
+            },
+            {
+                "security_id": "CMOC",
+                "name": "洛阳钼业",
+                "ticker": "603993",
+                "exchange": "SH",
+                "role": "representative"
+            }
+        ],
+        "events": [],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "copper_mine_gap_2024_2025",
+        "conflicts": [],
+        "notes": "① 与 C1 同属铜价周期，存在「一个铜长周期 vs 两个独立阶段」的边界争议；② 商品与 A 股铜板块的传导证据不足（本任务未收集到足够的板块行情证据）；③ classification 在 theme_campaign 与 industry_trend 之间存在歧义。"
+    },
+    {
+        "campaign_id": "RC-2017-RES-ALUMINUM",
+        "rule_id": "rule_resources",
+        "year": 2017,
+        "title": "2017 电解铝清理违规产能（有色·行政去产能）",
+        "start_date": "2017-04-12",
+        "peak_date": "2017-08-09",
+        "end_date": "2017-12-31",
+        "themes": [
+            {
+                "name": "资源",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "有色金属",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [
+            {
+                "security_id": "CHALCO",
+                "name": "中国铝业",
+                "ticker": "601600",
+                "exchange": "SH",
+                "role": "representative"
+            },
+            {
+                "security_id": "YUNAL",
+                "name": "云铝股份",
+                "ticker": "000807",
+                "exchange": "SZ",
+                "role": "representative"
+            },
+            {
+                "security_id": "SHENHUO",
+                "name": "神火股份",
+                "ticker": "000933",
+                "exchange": "SZ",
+                "role": "representative"
+            }
+        ],
+        "events": [],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "aluminum_capacity_cut_2017",
+        "conflicts": [],
+        "notes": "Priority B 资料密度低于 Priority A：缺少可引用的电解铝板块指数与个股行情序列，A 股市场扩散证据弱于商品端；且与 2016 年煤炭/钢铁供给侧改革行情存在机制同源性但 scope 不同（煤炭/钢铁不在本任务 scope）。"
+    },
+    {
+        "campaign_id": "RC-2016-RES-CHEM-ENV",
+        "rule_id": "rule_resources",
+        "year": 2016,
+        "title": "2016 化工：环保约束下的商品涨价与 A 股板块背离（待定）",
+        "start_date": "2016-01-04",
+        "peak_date": None,
+        "end_date": None,
+        "themes": [
+            {
+                "name": "资源",
+                "theme_type": "industry",
+                "role": "related"
+            },
+            {
+                "name": "基础化工",
+                "theme_type": "industry",
+                "role": "main"
+            }
+        ],
+        "securities": [],
+        "events": [],
+        "signals": [],
+        "early_signal": None,
+        "theme_formation": None,
+        "broad_confirmation": None,
+        "research_status": "INSUFFICIENT",
+        "theme_cycle_id": "chem_env_constraint_2016",
+        "conflicts": [],
+        "notes": "A 股主题成立的证据不足：同期申万基础化工板块区间涨跌幅为 -7.13%，商品价格上行未伴随 A 股板块行情；缺少板块内部结构（哪些子行业/标的上涨）的证据，也缺少可识别的启动锚点与扩散过程。按协议 §4.2，「资料不足」不等于「不成立」，故用 INSUFFICIENT 而非 REJECT。"
     },
     # ==== 半导体 / 电子（Wave R01-02）：RESEARCH_ONLY，**不进入 campaigns 表** ====
     {
@@ -847,6 +1101,26 @@ CAMPAIGN_LIFECYCLE = {
     "C-2016-PANEL-CYCLE": [
         {"stage": "MAIN_RISE", "start": "2016-02-01", "end": "2017-01-31", "precision": "DATE_WINDOW"},
     ],
+
+    # ---- 资源 / 有色 / 化工（Wave R01-03）：lifecycle 与 canonical `campaign_phases` 一致 ----
+    "C-2020-RES-NONFERROUS": [
+        {"stage": "MAIN_RISE", "start": "2020-04-01", "end": "2021-05-10", "precision": "DATE_WINDOW"},
+    ],
+    "C-2020-RES-LITHIUM": [
+        {"stage": "MAIN_RISE", "start": "2020-10-30", "end": "2021-09-13", "precision": "DATE_WINDOW"},
+    ],
+    "C-2020-RES-RAREEARTH": [
+        {"stage": "MAIN_RISE", "start": "2020-05-01", "end": "2021-10-01", "precision": "DATE_WINDOW"},
+    ],
+    "C-2021-RES-CHEM-DUALCTRL": [
+        {"stage": "MAIN_RISE", "start": "2021-08-12", "end": "2021-09-30", "precision": "DATE_WINDOW"},
+    ],
+    "C-2019-RES-DYE-SHOCK": [
+        {"stage": "MAIN_RISE", "start": "2019-03-21", "end": "2019-04-03", "precision": "DATE_WINDOW"},
+    ],
+    "C-2024-RES-GOLD-CB": [
+        {"stage": "MAIN_RISE", "start": "2024-02-01", "end": "2025-12-26", "precision": "DATE_WINDOW"},
+    ],
 }
 
 CANDIDATE_LIFECYCLE = {
@@ -1318,6 +1592,141 @@ CAMPAIGN_DRIVERS = {
             "2019Q4 行业指标触底",
         ],
     },
+
+    # ---- 资源 / 有色 / 化工（Wave R01-03）：drivers 原样来自 R01-03 intake（四问），未改写
+    "C-2020-RES-NONFERROUS": {
+        "start": [
+            "新冠疫情后全球需求复苏",
+            "美联储零利率 + 无限量宽松，美元实际利率下行、美元走弱",
+            "疫情冲击下铜矿等矿产产量恢复缓慢，供给跟不上需求",
+        ],
+        "accelerator": [
+            "LME 与国内铜库存持续下滑",
+            "2021 年前三季度中国新能源汽车产销量同比均增长 185%，带动铜等有色金属需求",
+            "海外铜需求较上年提高约 7%，叠加跨市套利窗口，2021 年中国铜出口量同比 +25% 创历史新高",
+        ],
+        "turning": [
+            "铜价快速上涨抑制下游消费，采购意愿下降",
+            "2021 年 5 月后进入宽幅震荡，商品价格不再创新高",
+            "2022 年美联储进入加息周期、美元走强",
+        ],
+        "ending": [
+            "全球流动性转向收紧",
+            "高价抑制需求叠加供给恢复",
+            "板块资金转向新能源等结构性方向",
+        ],
+    },
+    "C-2020-RES-LITHIUM": {
+        "start": [
+            "锂精矿供给出清：2020-10-27 澳洲 Altura 进入破产管理，延续 2019 年下半年的出清",
+            "《新能源汽车产业发展规划(2021-2035 年)》等政策利好 + 新能源车热销带动需求预期",
+            "上游锂价处于历史周期底部（2020 年 8 月碳酸锂约 4 万元/吨）",
+        ],
+        "accelerator": [
+            "2020-11 至 2021 年 1 月，磷酸铁锂需求推动国内锂价上涨 40% 至 18 个月高点",
+            "2021 年夏季起锂价加速，2021-10 至 2022-06 锂矿供应受限、供需缺口扩大",
+            "锂资源自主可控叙事驱动上市公司大额布局海内外锂矿",
+        ],
+        "turning": [
+            "2022-11-11 碳酸锂价格达 59 万元/吨 历史高点后转为下跌",
+            "2022-06 至 2022-11 需求快速拉升后转为需求快速缩减",
+            "下游电池厂在价格下行期转为长单交易、去库存",
+        ],
+        "ending": [
+            "供给放量（南美盐湖、非洲矿）使供需由偏紧转为过剩",
+            "2022-11 至 2023-04 价格大幅下行，板块资金流失",
+            "宁德时代锂矿返利等事件加速价格下滑与叙事失效",
+        ],
+    },
+    "C-2020-RES-RAREEARTH": {
+        "start": [
+            "供给端：稀土矿产品与冶炼分离总量控制指标机制，中重稀土继续严控",
+            "2020-05 起供需基本面改善，价格进入景气上升周期",
+            "持货端锁货惜售、现货稀少",
+        ],
+        "accelerator": [
+            "缅甸政局与疫情导致中缅口岸关闭近 6 个月，2021 年前 11 个月缅甸矿进口量约 2.5 万吨（-23%）",
+            "2021-10-29 工信部与市场监管总局印发《电机能效提升计划(2021-2023 年)》，加大稀土永磁电机应用",
+            "2021 年开采指标 16.8 万吨、冶炼分离指标 16.2 万吨，同比均增 20%，但增量全部为轻稀土指标，中重稀土指标连续四年不变",
+            "北方稀土多次专场竞价推高金属镨钕成交价",
+        ],
+        "turning": [
+            "2021-10 至 11 月价格急涨后出现冲高回调",
+            "下游（中低端钕铁硼）因高价缩减用量",
+            "磁材企业采购周期结束后需求边际转弱",
+        ],
+        "ending": [
+            "配额有序释放、供给偏紧程度缓解",
+            "行业整合（2021-12-23 中国稀土集团成立）改变供给主体结构",
+            "价格回落至高位震荡",
+        ],
+    },
+    "C-2021-RES-CHEM-DUALCTRL": {
+        "start": [
+            "2021-08-12 发改委发布能耗双控目标完成情况晴雨表，9 省(区)能耗强度不降反升被一级预警",
+            "2021-09-11 发改委印发《完善能源消费强度和总量双控制度方案》，明确指标分解落实机制",
+            "2020-09 中国提出碳达峰碳中和目标，双碳政策预期自 2021 年起密集落地",
+        ],
+        "accelerator": [
+            "云南要求工业硅、黄磷月均产量不超过 8 月 10%（削减约 90%）",
+            "江苏对年综合能耗 5 万吨标煤以上企业开展专项节能监察，部分纯碱企业开工率降幅约 20%",
+            "内蒙古自 2021 年起不再审批焦炭、电石、PVC、合成氨(尿素)、甲醇、乙二醇、烧碱、纯碱、磷铵、黄磷等新增产能",
+            "陕西榆林要求已投产「两高」项目限产 60%、9 月减产 50%",
+        ],
+        "turning": [
+            "化工品价格急涨后出现有价无市，厂家暂停报价",
+            "下游（印染、化纤、纺织）成本压力剧增并公开抵制原料涨价",
+            "政策转向保供稳价，限电措施边际放松",
+        ],
+        "ending": [
+            "能耗双控阶段性目标完成后限产放松",
+            "下游需求走弱、库存回补完成",
+            "价格向成本线回归",
+        ],
+    },
+    "C-2019-RES-DYE-SHOCK": {
+        "start": [
+            "2019-03-21 天嘉宜化工特别重大爆炸事故（同期通报死亡 44 人，后更新为 78 人遇难）",
+            "天嘉宜是染料中间体间苯二胺的三大核心生产工厂之一",
+            "苏北地区染料中间体产量约占全国三分之一",
+        ],
+        "accelerator": [
+            "2019-04-04 盐城市委决定彻底关闭响水化工园区",
+            "江苏省下发《化工行业整治提升方案(征求意见稿)》，拟大幅压减化工生产企业数量",
+            "2018 年苏北化工园区整治已使部分企业停产，事故进一步延迟复工",
+        ],
+        "turning": [
+            "染料价格与印染加工费急涨，下游印染行业公开抵制",
+            "绍兴市柯桥区印染工业协会倡议抵制染化料价格不正常上涨",
+            "园区关停后替代产能与库存逐步补充",
+        ],
+        "ending": [
+            "江苏省化工整治方案落地，供给侧长期收缩但价格冲击消退",
+            "染料价格回落",
+            "市场注意力转向新主题",
+        ],
+    },
+    "C-2024-RES-GOLD-CB": {
+        "start": [
+            "2022 年美国冻结俄罗斯外汇储备后，新兴市场央行调整外汇资产结构，减持美债、增持黄金",
+            "2024 年全球央行购金 1045 吨，占全球黄金总需求（4974 吨）21%",
+            "实际利率之外新增「去美元化 / 国际货币体系重构」定价维度",
+        ],
+        "accelerator": [
+            "2024 年伦敦现货黄金全年均价同比上涨 22.97% 至 2386.2 美元/盎司",
+            "黄金 ETF 持仓快速扩张（2024 年底中国国内黄金 ETF 持有量同比增超八成）",
+            "2025 年美联储降息预期与地缘紧张共同推动，2025 年全球央行购金延续（前三季度 634 吨）",
+            "中国黄金储备 2025 年连续第 11 个月上升，至 9 月底 2303 吨",
+        ],
+        "turning": [
+            "2025 年 12 月金价加速上行后，A 股金矿龙头股价未同步创新高，出现「现货热、股价冷」背离",
+            "头部矿企采金综合成本同比上升 12%–18%，利润增速不及金价涨幅",
+            "部分矿企股价在 2025 年 Q3 已提前大幅上涨，资金阶段性获利了结",
+        ],
+        "ending": [
+            "窗口结束时结构未结束（unknown）",
+        ],
+    },
 }
 
 CANDIDATE_DRIVERS = {
@@ -1602,7 +2011,8 @@ def main():
                   " + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电）"
                   " + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块）"
                   " + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人）"
-                  " + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期）"),
+                  " + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期）"
+                  " + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性）"),
         "status_vocabulary": {
             "PROVISIONAL": "研究预览可用：主题可识别+行情/媒体证据+≥1可靠来源+主要日期有依据+无跨时间因果错误；未人工复核，非 VERIFIED",
             "CONFLICT": "存在研究日期口径冲突（candidate_a vs candidate_b），保留双方证据，不强行解决",
@@ -1685,6 +2095,16 @@ def main():
                                    "（Peak 2020-02-24~2020-03-12）；"
                                    "② AI 算力驱动的光模块 2023-03-21~2025-12-31"
                                    "（Peak 未确认，2025-12-22~12-25 为区间高点）"),
+        },
+        RES_RULE: {
+            "definition": ("Historical Observation Window（历史观察窗口）：资源 / 有色 / 化工（工业金属 / 贵金属 / 稀有金属·稀土 / "
+                           "能源金属 / 基础化工 / 农化）在供给收缩、行政限产、环保约束、安全事故冲击、成本与地缘冲击、"
+                           "新能源需求、以及黄金资产属性驱动下形成的结构性行情；非固定买入窗口，不构成交易建议"),
+            "observation_window": ("结构性（非季节性）：2016–2025。四条机制主线："
+                                   "① 再通胀 / 需求复苏（工业金属 2020-03-23~2021-12-31，Peak 2021-09-13 = 8603.88）；"
+                                   "② 新能源需求拉动（锂 2020-10-27~2022-11-11，A 股 Peak 2021-09-13 / 商品 Peak 2022-11-11）；"
+                                   "③ 供给收缩五子类型（行政去产能 / 能耗双控 / 环保约束 / 配额控制 / 安全事故冲击）；"
+                                   "④ 黄金资产属性（2024-02-01 起，Peak 未确认 —— CF009 商品与 A 股背离未决）"),
         },
         SEMI_RULE: {
             "definition": ("Historical Observation Window（历史观察窗口）：半导体 / 电子产业链（设计 / 制造 / 封测 / 设备 / 材料 / 被动元件 / 面板）在国产替代、资本开支、供给约束与下游需求周期驱动下形成的结构性行情；非固定买入窗口，不构成交易建议"),
