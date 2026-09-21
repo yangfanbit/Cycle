@@ -7,11 +7,11 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`325b557`（`docs(research): add R01 governance consistency review`；本文件随 R01 治理第一批修复提交入库）
-- 最近完成：**R01 Governance 第一批修复**（SA/TO 前置 4 项：G1-1 市场侧证据软门槛 · G1-3 Beta Level 0–3 ·
-  G1-5 `result=weak` 语义 · G2-1 Peak/End 四态）→ 新建规则集 **`governance-gates-v0.1`**；
-  **未改任何 Campaign / Schema / Contract / taxonomy**；产出规则文档 + 机器可读清单 + 校验器；
-  详见 `docs/R01_GOVERNANCE_GATES_v0_1.md`
+- HEAD：`8ceab73`（`feat(research): establish r01 governance gates for market beta and lifecycle`；本文件随 SA v0.3 刷新提交入库）
+- 最近完成：**Structural Analogy v0.3 刷新**（Historical Universe **17 → 79 cycle**，组合 **85 → 395**；
+  **规则集仍为冻结的 `structural-analogy-ruleset-v0.2`，未修改**；v0.1/v0.2 逐字节保留；
+  **发现 Rule Set v0.2 一处真实缺陷（只记录、未修改）**；**Time Observation 未刷新**；
+  详见 `docs/STRUCTURAL_ANALOGY_V0_3_REFRESH_REPORT.md`）
 
 ## 1. 项目当前定位
 
@@ -278,23 +278,43 @@ taxonomy 未被任何 R01 修改（52 行 / 11 root，**11/11 均有 Campaign**�
 
 ### Structural Analogy / Time Observation
 
-**未刷新**（`structural_analogy_explanations_v0_2.json` 字节不变）。Rule Set v0.2 与 Research v0.2 均 FROZEN。
+**★ Structural Analogy 已刷新至 v0.3**（2026-09-22）。**Time Observation 仍未刷新**（按要求未动）。
 
-**★ SA / TO 前置条件（Governance Review v0.1 结论）**：
+| 项 | v0.2 | **v0.3** |
+|---|---:|---:|
+| Historical cycles | 17 | **79**（52 campaigns + 27 RC） |
+| Pairs | 85 | **395** |
+| STRUCTURAL_SUPPORTED / STRICT | 4 / 1 | **4 / 1** |
+| STRUCTURAL_PARTIAL | 36 | **89** |
+| THEME_ONLY / INSUFFICIENT / NO_VALID | 3 / 5 / 37 | **6 / 145 / 151** |
+| 跨 Macro Theme 结构对应 | 3 | **88** |
+| 旧关系变化 | — | **0（85/85 逐条一致）** |
 
-| 类别 | 项 |
-|---|---|
-| **必须在刷新前处理（阻塞）** | ① **G1-1** 市场侧证据门槛 ② **G1-3** Beta Level 0–3 标注 ③ **G1-5** `result=weak` 语义 ④ **G2-1** Peak / End 四态 | **✅ 4 项已由 `governance-gates-v0.1` 落地（2026-09-20）。SA / TO 阻塞已解除**；是否刷新仍需决策 |
-| **可带 caveat 进入刷新** | ① G1-2 `research_report` Tier（23 条历史 tier=2 为兼容，不影响结论） ② G1-4 孤儿未机器校验（已人工复核） ③ G2-2 Theme Cycle Pattern 4 个存疑（overlap 已记录） ④ G2-3 5 个 pre-R01 无 date_observation ⑤ G2-5 3 条 temporal warning ⑥ G2-6 taxonomy aliases（164 个中 ~95 alias / ~45 机制名） ⑦ G3-1 promote 率差异 |
+**规则集未变**：仍为冻结的 `structural-analogy-ruleset-v0.2`（Rule Set 文本 · Calibration v0.2 实现 · Research/Explanations v0.1/v0.2 · Driver Canonicalization v0.1 均**逐字节保留**）。
 
-**建议刷新顺序（更新）**：① ~~G1-1/1-3/1-5 约定落地~~（**已完成**）② ~~G2-1 Peak/End 规范~~（**已完成**）
-③ 刷新 SA（新 artifact 版本）④ 刷新 TO（新 artifact 版本）
-⑤ G1-2 / G1-4 / G2-3 / G2-4 / G2-6 按独立轮次处理 ⑥ `C-2019-AD` 的 `strength=weak` 独立修复。
+**新增产物**：`structural_analogy_research_v0_3.json` · `structural_analogy_explanations_v0_3.json` ·
+`structural_analogy_research_candidates_v0_3.csv` · `historical_driver_canonicalization_v0_2.json` ·
+`historical_driver_evidence_ledger_v0_2.json` · 3 个生成器 + `validate_structural_analogy_v0_3.py`（A1–A16）。
+
+**★ 发现的 Rule Set v0.2 缺陷（只记录，未修改）**：
+| # | 缺陷 | 量化 | 建议 |
+|---|---|---|---|
+| **E.1** | **§8 文本要求 `Driver ∈ {MATCH, PARTIAL}`，但 §7 指定实现末段 `if n_support>=2: return STRUCTURAL_PARTIAL` 不检查 driver** → `driver=MISMATCH` 仍可判 `PARTIAL` | v0.2 **10/36（27.8%）** → **v0.3 50/89（56.2%）**（扩容后放大 2 倍） | 新建 **Rule Set v0.3**（二选一：以文本为准补前置条件 / 以实现为准修文本）+ 重新 Calibration。**不得就地改 v0.2** |
+| **E.2** | **Driver Canonicalization v0.1 词表未覆盖 R01 词汇** → **24/79 cycle（30.4%）无 canonical driver** → 120 组合被迫 `INSUFFICIENT_EVIDENCE`（子因 A：18 cycle 的 driving drivers 为空；子因 B：6 cycle 关键词未覆盖，如「三道红线」「贷款集中度」「爆炸事故」「疫情防控优化」） | 30.4% universe | 新建 **Canonicalization v0.3**（扩展关键词、词表不变）+ 重做 Calibration；并评估 18 cycle 的 drivers 空缺是否属 export 数据补全 |
+
+**★ 未发现缺陷（已验证通过）**：§1 Theme 解耦 · §3.3 PERIPHERAL 不计支持 · §5 SET_ONLY · §6 SINGLE_TYPE_ONLY ·
+§7 SUPPORTED 全条件 · §10 负控制 · §12 Market/Temporal 边界 · §15 禁止事项。
+
+**★ Governance 元数据接入**：`governance-gates-v0.1` 的 `market_evidence_state` / `beta_level` / `peak|end` / `result`
+仅进入 `supplementary` / `governance_context`，**不参与 Structural Status**（Rule Set v0.2 §12）。
 
 **★ SA / TO 输入字段来源（因 Export Contract v1.0 未改）**：治理字段**不在**
 `exports/timeline_export_v1.json` 中（加入会触发 `CAMPAIGN_FIELDS` 白名单 FAIL），
 SA / TO 须**直接读取** `research/research/reports/governance_classification_v0_1.json`
 （按 `campaign_id` 关联），与 `time_observation_patterns_v0_1.json` 读取方式一致。
+
+**下一步（待决策）**：① Rule Set v0.3 决策（§E.1）② Canonicalization v0.3（§E.2）③ SA v0.4 重跑
+④ **Time Observation 刷新**（建议在 SA v0.4 之后）⑤ 第二批治理修复 ⑥ `C-2019-AD` 的 `strength=weak` 修复。
 
 ### 未决与待办（**未排期**）
 
@@ -318,6 +338,8 @@ SA / TO 须**直接读取** `research/research/reports/governance_classification
 | OPEN | **本地无军工行情序列** → R01-06 的 Export `market_data = unavailable`（市场数据仅引自 intake 二手整理，全 T3） |
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突（**R01-03 `H1` / R01-05 `K` / R01-06 第三次复现** → **Cross-task governance issue，待 R01 Governance Review 统一处理**） |
 | OPEN | **✅ 第一批治理修复已完成**（`governance-gates-v0.1`）：G1-1 市场侧证据软门槛 · G1-3 Beta Level 0–3 · G1-5 `result=weak` 语义 · G2-1 Peak/End 四态。**规则 + 机器可读清单 + 校验器已交付，未改任何 Campaign / Schema / Contract / taxonomy** |
+| OPEN | **Structural Analogy v0.3 发现的 Rule Set v0.2 缺陷（只记录，未修改）**：**§E.1** §8 文本（`Driver ∈ {MATCH,PARTIAL}`）与 §7 指定实现（末段不检查 driver）不一致 → `driver=MISMATCH` 仍可判 `STRUCTURAL_PARTIAL`，占比 **27.8%（v0.2）→ 56.2%（v0.3）**；**§E.2** Driver Canonicalization v0.1 词表未覆盖 R01 词汇 → **24/79 cycle（30.4%）无 canonical driver** → 120 组合被迫 `INSUFFICIENT_EVIDENCE`。→ 建议新建 Rule Set v0.3 / Canonicalization v0.3 + 重做 Calibration |
+| OPEN | **Time Observation 仍未刷新**（SA 已至 v0.3；建议在 SA v0.4 之后统一刷新） |
 | OPEN | **第二批治理修复待决策（本轮未做，仅 issue register）**：G1-2 `research_report` Tier（**须逐条确认是否真属 Research Model §15 的券商研报，不得把 23 条 tier=2 一律改成 tier=3**）· G1-4 Validator 加 C26 orphan report · G2-2 Theme Cycle Pattern · G2-3 5 个 pre-R01 缺 date_observations · G2-5 3 条 temporal warning · G2-6 taxonomy alias 表 + Mechanism 登记表（**不扩展 taxonomy**） |
 | OPEN | **历史数据修复需求（唯一 1 项，待独立评审）**：`C-2019-AD` 的 `strength='weak'` → 建议改 `medium`（保留 `result='weak'`）。属 legacy 语义残留，非本轮规则引入；由 `validate_governance_gates.py` **V8 持续 WARN**。影响：DB 1 行 / Export 1 条 / SA 轻微 |
 | OPEN | **Worker ↔ ThreeC 规则统一待办**：Worker 报 `24 checks` vs ThreeC `C01–C25` · Worker 无 Strict Draft-07 · Worker `--check` 目录假设差异 · **Worker 无 orphan 检查** · **须向 Worker 提供 T01 后的 taxonomy 快照（11 root / 52 行）**（R01-06 manifest 曾误称 root 仅 4 个） · 建议后续为 Worker 增加 C26 并统一 `--check` 行为（**本轮不重建 Worker**） |
