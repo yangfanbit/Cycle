@@ -7,11 +7,13 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`8ceab73`（`feat(research): establish r01 governance gates for market beta and lifecycle`；本文件随 SA v0.3 刷新提交入库）
-- 最近完成：**Structural Analogy v0.3 刷新**（Historical Universe **17 → 79 cycle**，组合 **85 → 395**；
-  **规则集仍为冻结的 `structural-analogy-ruleset-v0.2`，未修改**；v0.1/v0.2 逐字节保留；
-  **发现 Rule Set v0.2 一处真实缺陷（只记录、未修改）**；**Time Observation 未刷新**；
-  详见 `docs/STRUCTURAL_ANALOGY_V0_3_REFRESH_REPORT.md`）
+- 更新日期：2026-09-22
+- HEAD：`2afd89a`（`feat(research): refresh structural analogy to v0.3 over r01 universe`；本文件随 Rule Set v0.3 决策提交入库）
+- 最近完成：**Structural Analogy Rule Set v0.3 决策 + Calibration**（E.1 修复：`Driver=MISMATCH` **不得**进入
+  `STRUCTURAL_PARTIAL` → 已**彻底消除 50 → 0**；E.2：Driver Canonicalization v0.3 词表扩展 → 有 driver 的 cycle **55 → 59**；
+  新增**语义一致性校验器**（独立重算 + S1–S14，1580/1580 一致）；
+  **未生成 SA v0.4 · 未覆盖 SA v0.3 · 未刷新 Time Observation**；
+  详见 `docs/STRUCTURAL_ANALOGY_RULE_SET_V0_3_DECISION.md`）
 
 ## 1. 项目当前定位
 
@@ -278,43 +280,53 @@ taxonomy 未被任何 R01 修改（52 行 / 11 root，**11/11 均有 Campaign**�
 
 ### Structural Analogy / Time Observation
 
-**★ Structural Analogy 已刷新至 v0.3**（2026-09-22）。**Time Observation 仍未刷新**（按要求未动）。
+**★ Rule Set 已升级至 v0.3**（2026-09-22）。**SA 产物仍为 v0.3（未重新生成）**。**Time Observation 仍未刷新**。
 
-| 项 | v0.2 | **v0.3** |
-|---|---:|---:|
-| Historical cycles | 17 | **79**（52 campaigns + 27 RC） |
-| Pairs | 85 | **395** |
-| STRUCTURAL_SUPPORTED / STRICT | 4 / 1 | **4 / 1** |
-| STRUCTURAL_PARTIAL | 36 | **89** |
-| THEME_ONLY / INSUFFICIENT / NO_VALID | 3 / 5 / 37 | **6 / 145 / 151** |
-| 跨 Macro Theme 结构对应 | 3 | **88** |
-| 旧关系变化 | — | **0（85/85 逐条一致）** |
+**规则集状态**：**`Structural Analogy Rule Set v0.3`（`structural-analogy-ruleset-v0.3`）当前生效**；
+v0.2 已被取代（其文本与 Calibration **逐字节保留**）。
 
-**规则集未变**：仍为冻结的 `structural-analogy-ruleset-v0.2`（Rule Set 文本 · Calibration v0.2 实现 · Research/Explanations v0.1/v0.2 · Driver Canonicalization v0.1 均**逐字节保留**）。
+**★ E.1 修复效果（`Driver = MISMATCH` 不得进入 `STRUCTURAL_PARTIAL`）**
 
-**新增产物**：`structural_analogy_research_v0_3.json` · `structural_analogy_explanations_v0_3.json` ·
-`structural_analogy_research_candidates_v0_3.csv` · `historical_driver_canonicalization_v0_2.json` ·
-`historical_driver_evidence_ledger_v0_2.json` · 3 个生成器 + `validate_structural_analogy_v0_3.py`（A1–A16）。
+| 组 | 规则 | driver 数据 | `STRUCTURAL_PARTIAL` | **其中 driver=MISMATCH** |
+|---|---|---|---:|---:|
+| A | v0.2 | v0.2 | 89 | **50**（= 已发布 SA v0.3 基线） |
+| C | **v0.3** | v0.2 | 24 | **0** ✅ |
+| D | **v0.3** | v0.3 | **39** | **0** ✅ |
 
-**★ 发现的 Rule Set v0.2 缺陷（只记录，未修改）**：
-| # | 缺陷 | 量化 | 建议 |
-|---|---|---|---|
-| **E.1** | **§8 文本要求 `Driver ∈ {MATCH, PARTIAL}`，但 §7 指定实现末段 `if n_support>=2: return STRUCTURAL_PARTIAL` 不检查 driver** → `driver=MISMATCH` 仍可判 `PARTIAL` | v0.2 **10/36（27.8%）** → **v0.3 50/89（56.2%）**（扩容后放大 2 倍） | 新建 **Rule Set v0.3**（二选一：以文本为准补前置条件 / 以实现为准修文本）+ 重新 Calibration。**不得就地改 v0.2** |
-| **E.2** | **Driver Canonicalization v0.1 词表未覆盖 R01 词汇** → **24/79 cycle（30.4%）无 canonical driver** → 120 组合被迫 `INSUFFICIENT_EVIDENCE`（子因 A：18 cycle 的 driving drivers 为空；子因 B：6 cycle 关键词未覆盖，如「三道红线」「贷款集中度」「爆炸事故」「疫情防控优化」） | 30.4% universe | 新建 **Canonicalization v0.3**（扩展关键词、词表不变）+ 重做 Calibration；并评估 18 cycle 的 drivers 空缺是否属 export 数据补全 |
+→ **已彻底消除（50 → 0）**，且 **`STRUCTURAL_SUPPORTED` / `STRICT` 完全未变（4 / 1）** —— 未误伤强结构对应。
 
-**★ 未发现缺陷（已验证通过）**：§1 Theme 解耦 · §3.3 PERIPHERAL 不计支持 · §5 SET_ONLY · §6 SINGLE_TYPE_ONLY ·
-§7 SUPPORTED 全条件 · §10 负控制 · §12 Market/Temporal 边界 · §15 禁止事项。
+**★ E.2 词表扩展效果**：有 canonical driver 的 cycle **55 → 59** · driving `UNKNOWN` **85 → 23** ·
+新增覆盖 `C-2019-RES-DYE-SHOCK` / `C-2020-CONS-BEAUTY-CN` / `C-2020-RE-DEBT-RISK` / `C-2022-CONS-SERVICE-REBOUND` / `RC-2019-MIL-PARADE-70`；
+**4 个被点名的 Canonical Campaign 的缺口确认为「纯词表缺口」→ 无需 export 数据补全** ✅
+
+**★ v0.2 → v0.3 汇总（99 条变化）**：`PARTIAL 89→39` · `THEME_ONLY 6→9` · `INSUFFICIENT 145→125` · `NO_VALID 151→218` · `SUPPORTED 4→4` · `STRICT 1→1`
+
+**★ 新增语义一致性校验器** `validate_structural_analogy_semantics.py`：**独立重算**（不 import builder 实现）
+A/B/C/D **四组 1580 行逐行复核** + 语义不变量 **S1–S14**（含 **S14：`driver=MISMATCH` 的 `PARTIAL` 必须为 0**）。
+**结果 PASS（FAIL 0 / WARN 0；1580/1580 一致）**。补齐了 A1–A16 未重算规则语义的缺口。
+
+**★ 新增产物（8 个）**：`structural_analogy_rule_set_v0_3.md` · `structural_analogy_rule_calibration_v0_3.json` ·
+`..._calibration_pairs_v0_3.csv`（**long format：395 × 4 = 1580 行**）· `historical_driver_canonicalization_v0_3.json` ·
+`historical_driver_evidence_ledger_v0_3.json` · 3 个脚本（含 2 个生成器 + 语义校验器）
+
+**★ 仍未解决（SA v0.4 前处理）**：
+| # | 问题 | 级别 |
+|---|---|---|
+| 1 | **18 个 Research Candidate 的 export `drivers` 全为空** → 属 **export 数据缺口**，应由 Canonical / Export 层补全（**不得由词表猜测**） | **数据补全** |
+| 2 | 2 个 RC 有 driving 文本但仍无 driver（多命中 `DERIVED` / `AMBIGUOUS`）→ 多命中消歧属**映射逻辑**变更，需 v0.4 评估 | 映射逻辑 |
+| 3 | **E.3**：SA **research** artifact 的 `historical_profiles[].kind` / `matrix[].historical_kind` **把全部 cycle 标为 `campaign`**（含 RC-*）→ **无规则影响**（explanations 侧已正确），建议 v0.4 修正 | 元数据 |
+| 4 | **E.4**：关键词扩展副作用 —— 8 条 `DIRECT→DERIVED`；`C-2025-FIN-INSURANCE` 失去唯一 DIRECT（**不改变任何 SUPPORTED 结论**） | 轻微 |
 
 **★ Governance 元数据接入**：`governance-gates-v0.1` 的 `market_evidence_state` / `beta_level` / `peak|end` / `result`
-仅进入 `supplementary` / `governance_context`，**不参与 Structural Status**（Rule Set v0.2 §12）。
+仅进入 `supplementary` / `governance_context`，**不参与 Structural Status**（Rule Set §9）。
 
 **★ SA / TO 输入字段来源（因 Export Contract v1.0 未改）**：治理字段**不在**
 `exports/timeline_export_v1.json` 中（加入会触发 `CAMPAIGN_FIELDS` 白名单 FAIL），
-SA / TO 须**直接读取** `research/research/reports/governance_classification_v0_1.json`
-（按 `campaign_id` 关联），与 `time_observation_patterns_v0_1.json` 读取方式一致。
+SA / TO 须**直接读取** `research/research/reports/governance_classification_v0_1.json`。
 
-**下一步（待决策）**：① Rule Set v0.3 决策（§E.1）② Canonicalization v0.3（§E.2）③ SA v0.4 重跑
-④ **Time Observation 刷新**（建议在 SA v0.4 之后）⑤ 第二批治理修复 ⑥ `C-2019-AD` 的 `strength=weak` 修复。
+**下一步（待决策）**：① export 数据补全（18 RC 的 drivers）② 多命中消歧评估 ③ 修正 E.3（kind metadata）
+④ **生成 SA v0.4**（用 Rule Set v0.3 + Canonicalization v0.3）⑤ **Time Observation 刷新**（建议在 SA v0.4 之后）
+⑥ 第二批治理修复 ⑦ `C-2019-AD` 的 `strength=weak` 修复。
 
 ### 未决与待办（**未排期**）
 
@@ -338,7 +350,8 @@ SA / TO 须**直接读取** `research/research/reports/governance_classification
 | OPEN | **本地无军工行情序列** → R01-06 的 Export `market_data = unavailable`（市场数据仅引自 intake 二手整理，全 T3） |
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突（**R01-03 `H1` / R01-05 `K` / R01-06 第三次复现** → **Cross-task governance issue，待 R01 Governance Review 统一处理**） |
 | OPEN | **✅ 第一批治理修复已完成**（`governance-gates-v0.1`）：G1-1 市场侧证据软门槛 · G1-3 Beta Level 0–3 · G1-5 `result=weak` 语义 · G2-1 Peak/End 四态。**规则 + 机器可读清单 + 校验器已交付，未改任何 Campaign / Schema / Contract / taxonomy** |
-| OPEN | **Structural Analogy v0.3 发现的 Rule Set v0.2 缺陷（只记录，未修改）**：**§E.1** §8 文本（`Driver ∈ {MATCH,PARTIAL}`）与 §7 指定实现（末段不检查 driver）不一致 → `driver=MISMATCH` 仍可判 `STRUCTURAL_PARTIAL`，占比 **27.8%（v0.2）→ 56.2%（v0.3）**；**§E.2** Driver Canonicalization v0.1 词表未覆盖 R01 词汇 → **24/79 cycle（30.4%）无 canonical driver** → 120 组合被迫 `INSUFFICIENT_EVIDENCE`。→ 建议新建 Rule Set v0.3 / Canonicalization v0.3 + 重做 Calibration |
+| OPEN | **✅ Rule Set v0.2 的 E.1 / E.2 已修复（2026-09-22）**：新建 **Rule Set v0.3**（`Driver=MISMATCH` 不得进入 `STRUCTURAL_PARTIAL`，**50 → 0 彻底消除**）+ **Driver Canonicalization v0.3**（词表扩展，有 driver 的 cycle **55 → 59**）+ **Rule Calibration v0.3** + **语义一致性校验器**（S1–S14，1580/1580 一致）。**未生成 SA v0.4 · 未覆盖 SA v0.3 · 未刷新 TO** |
+| OPEN | **SA v0.4 前置待办**：① **18 个 Research Candidate 的 export `drivers` 全为空**（属 export 数据缺口，应由 Canonical/Export 层补全，**不得由词表猜测**）② 2 个 RC 多命中消歧（映射逻辑，需 v0.4 评估）③ **E.3** SA research artifact 的 `historical_kind` 把全部 cycle 标为 `campaign`（**无规则影响**，建议 v0.4 修正）④ **E.4** 关键词扩展副作用（8 条 `DIRECT→DERIVED`；`C-2025-FIN-INSURANCE` 失去唯一 DIRECT，**不改变任何 SUPPORTED 结论**） |
 | OPEN | **Time Observation 仍未刷新**（SA 已至 v0.3；建议在 SA v0.4 之后统一刷新） |
 | OPEN | **第二批治理修复待决策（本轮未做，仅 issue register）**：G1-2 `research_report` Tier（**须逐条确认是否真属 Research Model §15 的券商研报，不得把 23 条 tier=2 一律改成 tier=3**）· G1-4 Validator 加 C26 orphan report · G2-2 Theme Cycle Pattern · G2-3 5 个 pre-R01 缺 date_observations · G2-5 3 条 temporal warning · G2-6 taxonomy alias 表 + Mechanism 登记表（**不扩展 taxonomy**） |
 | OPEN | **历史数据修复需求（唯一 1 项，待独立评审）**：`C-2019-AD` 的 `strength='weak'` → 建议改 `medium`（保留 `result='weak'`）。属 legacy 语义残留，非本轮规则引入；由 `validate_governance_gates.py` **V8 持续 WARN**。影响：DB 1 行 / Export 1 条 / SA 轻微 |
