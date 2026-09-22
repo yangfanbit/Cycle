@@ -3,16 +3,20 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-- 更新日期：2026-09-20
+- 更新日期：2026-09-23
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- 更新日期：2026-09-23
-- HEAD：`ecec1fa`（`feat(research): add structural analogy rule set v0.3 and calibration`；本文件随 Driver Canonicalization v0.3 收口审计提交入库）
-- 最近完成：**Driver Canonicalization v0.3 收口审计**（① 「**阅兵**」/「纪念大会」由 `POLICY_DRIVEN` **移至 `EVENT_CATALYST`**
-  —— 语义错误已纠正；② 新增词 collision audit（133 词，跨 canonical 重复 **0**，子串冲突 **6**）；
-  ③ 修复一处**确定性缺陷**（`sorted(set, key=len)` 非全序 → `--check` 捕获）；
-  **未生成 SA v0.4 · 未刷新 Time Observation**；详见 `docs/DRIVER_KEYWORD_COLLISION_AUDIT_v0_3.md`）
+- HEAD：`0e1d2f4`（`fix(research): close out driver canonicalization v0.3 semantic audit`；本文件随 RC Export driver 缺口修复提交入库）
+- 最近完成：**18 个 RC Export driver 缺口审计与修复**（**18/18 全部为 Export 映射链路丢失**，非原始证据不足；
+  `batch_auto_research.py::CANDIDATE_DRIVERS` 由 9 → **27** 条覆盖全部 RC；RC 空 `drivers` **18 → 0**；
+  有 canonical driver 的 cycle **60 → 77 / 79**；**未生成 SA v0.4 · 未刷新 Time Observation**；
+  详见 `docs/RC_EXPORT_DRIVER_GAP_AUDIT_v0_3.md`）
+- **SA v0.4 尚未生成** · **Time Observation 尚未刷新**
+- **当前阻塞**：**Driver mapping collision audit**（`扩产 / 扩产周期` 语义矛盾 + 6 项跨 canonical 子串冲突）
+  · **SA v0.3 产物相对修复后的 driver 链已过期**（须由 SA v0.4 消费）· 2 个 cycle 因**映射逻辑**仍无 canonical driver
+  （`RC-2015-FIN-LEVERAGE` 多命中、`RC-2024-SECONDARY` 仅终结相位有机制 —— 均非数据缺口）
+- **已解除**：18 个 RC 的 Export driver 数据缺口（本轮修复）
 
 ## 1. 项目当前定位
 
@@ -294,7 +298,7 @@ v0.2 已被取代（其文本与 Calibration **逐字节保留**）。
 
 → **已彻底消除（50 → 0）**，且 **`STRUCTURAL_SUPPORTED` / `STRICT` 完全未变（4 / 1）** —— 未误伤强结构对应。
 
-**★ E.2 词表扩展效果**：有 canonical driver 的 cycle **55 → 60** · driving `UNKNOWN` **85 → 23** ·
+**★ E.2 词表扩展效果**：有 canonical driver 的 cycle **55 → 60**（**再经 RC driver 缺口修复 → 77 / 79**）· driving `UNKNOWN` **85 → 23**（修复后 86）·
 新增覆盖 `C-2019-RES-DYE-SHOCK` / `C-2020-CONS-BEAUTY-CN` / `C-2020-RE-DEBT-RISK` / `C-2022-CONS-SERVICE-REBOUND` / `RC-2019-MIL-PARADE-70` / `RC-2025-MIL-PARADE-80`；
 **4 个被点名的 Canonical Campaign 的缺口确认为「纯词表缺口」→ 无需 export 数据补全** ✅
 
@@ -325,15 +329,17 @@ A/B/C/D **四组 1580 行逐行复核** + 语义不变量 **S1–S14**（含 **S
 **★ 仍未解决（SA v0.4 前处理）**：
 | # | 问题 | 级别 |
 |---|---|---|
-| 1 | **18 个 Research Candidate 的 export `drivers` 全为空** → 属 **export 数据缺口**，应由 Canonical / Export 层补全（**不得由词表猜测**） | **阻塞（数据层）** |
-| 2 | **`扩产` vs `扩产周期` 语义自相矛盾**（★ 收口审计新发现，**本轮新增词自身引入**）：`扩产`→`DEMAND_SURGE` 而 `扩产周期`→`SUPPLY_CONTRACTION`，同一概念分到方向相反的机制。**本轮按「只做审计」未改** | **建议修复（词表级）** |
+| ~~1~~ | ~~18 个 Research Candidate 的 export `drivers` 全为空~~ → **✅ 本轮已修复**（18/18 为 `CANDIDATE_DRIVERS` 映射遗漏；9 → 27 条；RC 空 drivers **18 → 0**；有 driver 的 cycle **60 → 77 / 79**）。详见 `docs/RC_EXPORT_DRIVER_GAP_AUDIT_v0_3.md` | **已解除** |
+| 2 | **`扩产` vs `扩产周期` 语义自相矛盾**（`扩产`→`DEMAND_SURGE` 而 `扩产周期`→`SUPPLY_CONTRACTION`，同一概念分到方向相反的机制） | **建议修复（词表级）** |
 | 3 | **6 项跨 canonical 子串冲突**（`增长/负增长` · `整治/整治提升` · `出口/出口管制` · `采购/装备采购` · `储备/黄金储备` · `扩产/扩产周期`）→ 使相关文本**永远无法成为 `DIRECT`**（实测 8 条 `DIRECT→DERIVED`）。属**映射逻辑**（多命中消歧）→ 需独立版本 + 重新校准 | 建议处理（映射逻辑） |
-| 4 | **E.3**：SA **research** artifact 的 `historical_profiles[].kind` / `matrix[].historical_kind` **把全部 cycle 标为 `campaign`**（含 RC-*）→ **无规则影响**（explanations 侧已正确），建议 v0.4 修正 | 元数据 |
-| 5 | **E.4**：关键词扩展副作用 —— 8 条 `DIRECT→DERIVED`；`C-2025-FIN-INSURANCE` 失去唯一 DIRECT（**不改变任何 SUPPORTED 结论**） | 轻微 |
+| 4 | **⚠️ SA v0.3 产物相对修复后的 driver 链已过期** —— `structural_analogy_research_v0_3.json` / `..._explanations_v0_3.json` **本轮未重新生成**（§一 限定范围 + 不生成 SA v0.4），其 `driver` 字段与当前 canonicalization v0.3 **不一致**；**现有校验器不会捕获**（SA 校验器自引用） | **须由 SA v0.4 消费** |
+| 5 | **E.3**：SA **research** artifact 的 `historical_profiles[].kind` / `matrix[].historical_kind` **把全部 cycle 标为 `campaign`**（含 RC-*）→ **无规则影响**（explanations 侧已正确），建议 v0.4 修正 | 元数据 |
+| 6 | **E.4**：关键词扩展副作用 —— 8 条 `DIRECT→DERIVED`；`C-2025-FIN-INSURANCE` 失去唯一 DIRECT（**不改变任何 SUPPORTED 结论**） | 轻微 |
+| 7 | （观测）2 个 cycle 因**映射逻辑**仍无 canonical driver（`RC-2015-FIN-LEVERAGE` 多命中无消歧 · `RC-2024-SECONDARY` 研究自述强度不足）—— **非数据缺口** | 观测 |
 
-> **★ SA v0.4 结论：尚未满足刷新条件** —— 结构规则层（Rule Set v0.3）已就绪且语义校验全绿，
-> 但 **数据层（问题 1）与词表/映射两处问题（问题 2、3）尚未闭环**。
-> **建议顺序**：① export 数据补全 → ② `扩产周期` 归属 → ③ 多命中消歧 → ④ kind metadata → ⑤ 生成 SA v0.4 → ⑥ 才考虑 TO 刷新。
+> **★ SA v0.4 结论：结构规则层已就绪；数据层阻塞已解除**，但 **词表/映射两处问题（2、3）与 SA v0.3 过期（4）尚未闭环**。
+> **建议顺序**：① `扩产周期` 归属 → ② 多命中消歧（独立版本 + 重新校准）→ ③ kind metadata → ④ **生成 SA v0.4** → ⑤ 才考虑 TO 刷新。
+> ★ 数据层（原问题 1）**已不再是阻塞** —— 下一轮可进入 `扩产 / 扩产周期` 处理。
 
 **★ Governance 元数据接入**：`governance-gates-v0.1` 的 `market_evidence_state` / `beta_level` / `peak|end` / `result`
 仅进入 `supplementary` / `governance_context`，**不参与 Structural Status**（Rule Set §9）。
@@ -369,7 +375,7 @@ SA / TO 须**直接读取** `research/research/reports/governance_classification
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突（**R01-03 `H1` / R01-05 `K` / R01-06 第三次复现** → **Cross-task governance issue，待 R01 Governance Review 统一处理**） |
 | OPEN | **✅ 第一批治理修复已完成**（`governance-gates-v0.1`）：G1-1 市场侧证据软门槛 · G1-3 Beta Level 0–3 · G1-5 `result=weak` 语义 · G2-1 Peak/End 四态。**规则 + 机器可读清单 + 校验器已交付，未改任何 Campaign / Schema / Contract / taxonomy** |
 | OPEN | **✅ Rule Set v0.2 的 E.1 / E.2 已修复（2026-09-22）**：新建 **Rule Set v0.3**（`Driver=MISMATCH` 不得进入 `STRUCTURAL_PARTIAL`，**50 → 0 彻底消除**）+ **Driver Canonicalization v0.3**（词表扩展，有 driver 的 cycle **55 → 59**）+ **Rule Calibration v0.3** + **语义一致性校验器**（S1–S14，1580/1580 一致）。**未生成 SA v0.4 · 未覆盖 SA v0.3 · 未刷新 TO** |
-| OPEN | **SA v0.4 前置待办（收口审计后更新，**尚未满足刷新条件**）**：① **18 个 Research Candidate 的 export `drivers` 全为空**（export 数据缺口，**不得由词表猜测**）② **`扩产` vs `扩产周期` 语义自相矛盾**（★ 新发现，本轮新增词自身引入）③ **6 项跨 canonical 子串冲突**（`增长/负增长` · `整治/整治提升` · `出口/出口管制` · `采购/装备采购` · `储备/黄金储备` · `扩产/扩产周期`）→ 属映射逻辑，需独立版本 + 重新校准 ④ **E.3** `historical_kind` 把全部 cycle 标为 `campaign`（无规则影响）⑤ **E.4** 8 条 `DIRECT→DERIVED`（`C-2025-FIN-INSURANCE` 失去唯一 DIRECT，**不改变任何 SUPPORTED 结论**） |
+| OPEN | **SA v0.4 前置待办（RC driver 修复后更新）**：~~① 18 个 RC 的 export `drivers` 全为空~~ **✅ 已修复（18/18 为映射遗漏；RC 空 drivers 18→0；有 driver 的 cycle 60→77/79）** · ② **`扩产` vs `扩产周期` 语义自相矛盾**（词表级）· ③ **6 项跨 canonical 子串冲突**（映射逻辑，需独立版本 + 重新校准）· ④ **⚠️ SA v0.3 产物相对修复后 driver 链已过期**（须由 SA v0.4 消费；现有校验器自引用不会捕获）· ⑤ **E.3** `historical_kind` 把全部 cycle 标为 `campaign`（无规则影响）· ⑥ **E.4** 8 条 `DIRECT→DERIVED`（**不改变任何 SUPPORTED 结论**）· ⑦ 2 个 cycle 因**映射逻辑**仍无 driver（**非数据缺口**） |
 | OPEN | **Time Observation 仍未刷新**（SA 已至 v0.3；建议在 SA v0.4 之后统一刷新） |
 | OPEN | **第二批治理修复待决策（本轮未做，仅 issue register）**：G1-2 `research_report` Tier（**须逐条确认是否真属 Research Model §15 的券商研报，不得把 23 条 tier=2 一律改成 tier=3**）· G1-4 Validator 加 C26 orphan report · G2-2 Theme Cycle Pattern · G2-3 5 个 pre-R01 缺 date_observations · G2-5 3 条 temporal warning · G2-6 taxonomy alias 表 + Mechanism 登记表（**不扩展 taxonomy**） |
 | OPEN | **历史数据修复需求（唯一 1 项，待独立评审）**：`C-2019-AD` 的 `strength='weak'` → 建议改 `medium`（保留 `result='weak'`）。属 legacy 语义残留，非本轮规则引入；由 `validate_governance_gates.py` **V8 持续 WARN**。影响：DB 1 行 / Export 1 条 / SA 轻微 |

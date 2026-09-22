@@ -32,27 +32,27 @@
   "before_v2_rule": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 105,
-   "THEME_ONLY": 6,
-   "INSUFFICIENT_EVIDENCE": 125,
-   "NO_VALID_CORRESPONDENCE": 155
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
   },
   "after_v3_rule": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 39,
-   "THEME_ONLY": 9,
-   "INSUFFICIENT_EVIDENCE": 125,
-   "NO_VALID_CORRESPONDENCE": 218
+   "STRUCTURAL_PARTIAL": 40,
+   "THEME_ONLY": 10,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 226
   },
   "partial_before": {
-   "STRUCTURAL_PARTIAL": 105,
+   "STRUCTURAL_PARTIAL": 106,
    "driver_MISMATCH_partial": 48,
    "driver_MISMATCH_partial_cross_theme": 47,
-   "ratio": 0.4571
+   "ratio": 0.4528
   },
   "partial_after": {
-   "STRUCTURAL_PARTIAL": 39,
+   "STRUCTURAL_PARTIAL": 40,
    "driver_MISMATCH_partial": 0,
    "driver_MISMATCH_partial_cross_theme": 0,
    "ratio": 0.0
@@ -786,10 +786,10 @@
   "after_v0_3_drivers": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 105,
-   "THEME_ONLY": 6,
-   "INSUFFICIENT_EVIDENCE": 125,
-   "NO_VALID_CORRESPONDENCE": 155
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
   },
   "coverage_before": {
    "cycles_total": 79,
@@ -813,30 +813,31 @@
   },
   "coverage_after": {
    "cycles_total": 79,
-   "cycles_with_canonical_driver": 60,
-   "cycles_without_canonical_driver": 19,
+   "cycles_with_canonical_driver": 77,
+   "cycles_without_canonical_driver": 2,
    "by_mapping_status_all_buckets": {
     "DIRECT": 55,
-    "DERIVED": 337,
-    "AMBIGUOUS": 1,
-    "UNKNOWN": 59,
-    "NOT_AVAILABLE": 89
+    "DERIVED": 454,
+    "AMBIGUOUS": 2,
+    "UNKNOWN": 86,
+    "NOT_AVAILABLE": 98
    },
    "by_mapping_status_driving": {
     "DIRECT": 45,
-    "DERIVED": 201,
-    "AMBIGUOUS": 0,
-    "UNKNOWN": 23,
-    "NOT_AVAILABLE": 29
+    "DERIVED": 277,
+    "AMBIGUOUS": 1,
+    "UNKNOWN": 38,
+    "NOT_AVAILABLE": 31
    },
-   "driving_raw_count": 298
+   "driving_raw_count": 392
   },
-  "changed_pairs": 51,
+  "changed_pairs": 61,
   "by_transition": {
-   "INSUFFICIENT_EVIDENCE→NO_VALID_CORRESPONDENCE": 11,
+   "INSUFFICIENT_EVIDENCE→NO_VALID_CORRESPONDENCE": 19,
    "NO_VALID_CORRESPONDENCE→STRUCTURAL_PARTIAL": 19,
-   "INSUFFICIENT_EVIDENCE→STRUCTURAL_PARTIAL": 9,
-   "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 12
+   "INSUFFICIENT_EVIDENCE→STRUCTURAL_PARTIAL": 10,
+   "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 12,
+   "INSUFFICIENT_EVIDENCE→THEME_ONLY": 1
   }
  },
  "combined_v0_2_baseline": {
@@ -852,19 +853,20 @@
   "new_v0_3": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 39,
-   "THEME_ONLY": 9,
-   "INSUFFICIENT_EVIDENCE": 125,
-   "NO_VALID_CORRESPONDENCE": 218
+   "STRUCTURAL_PARTIAL": 40,
+   "THEME_ONLY": 10,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 226
   },
-  "changed_pairs": 99,
+  "changed_pairs": 109,
   "by_transition": {
    "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 64,
-   "INSUFFICIENT_EVIDENCE→NO_VALID_CORRESPONDENCE": 16,
+   "INSUFFICIENT_EVIDENCE→NO_VALID_CORRESPONDENCE": 24,
    "NO_VALID_CORRESPONDENCE→STRUCTURAL_PARTIAL": 12,
-   "INSUFFICIENT_EVIDENCE→STRUCTURAL_PARTIAL": 4,
+   "INSUFFICIENT_EVIDENCE→STRUCTURAL_PARTIAL": 5,
    "STRUCTURAL_PARTIAL→THEME_ONLY": 2,
-   "NO_VALID_CORRESPONDENCE→THEME_ONLY": 1
+   "NO_VALID_CORRESPONDENCE→THEME_ONLY": 1,
+   "INSUFFICIENT_EVIDENCE→THEME_ONLY": 1
   },
   "detail": [
    {
@@ -1078,6 +1080,26 @@
     "theme_relation": "CROSS_MACRO_THEME"
    },
    {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "RC-2024-HIEQ-EQUIP-UPDATE",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PERIPHERAL_OVERLAP",
+    "driver_quality": "PERIPHERAL_ONLY",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "RC-2024-HIEQ-HUMANOID-MASS",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PERIPHERAL_OVERLAP",
+    "driver_quality": "PERIPHERAL_ONLY",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
     "candidate_id": "CC-2026-COMPUTE-POWER",
     "historical_cycle": "C-2019-AD",
     "from": "STRUCTURAL_PARTIAL",
@@ -1265,6 +1287,26 @@
     "driver": "PARTIAL",
     "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
     "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "RC-2024-HIEQ-EQUIP-UPDATE",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "STRUCTURAL_PARTIAL",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "RC-2024-HIEQ-HUMANOID-MASS",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MISMATCH",
     "theme_relation": "CROSS_MACRO_THEME"
    },
    {
@@ -1478,6 +1520,26 @@
     "theme_relation": "CROSS_MACRO_THEME"
    },
    {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "RC-2024-HIEQ-EQUIP-UPDATE",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PERIPHERAL_OVERLAP",
+    "driver_quality": "PERIPHERAL_ONLY",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "RC-2024-HIEQ-HUMANOID-MASS",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "THEME_ONLY",
+    "driver": "PERIPHERAL_OVERLAP",
+    "driver_quality": "PERIPHERAL_ONLY",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "SAME_MACRO_THEME"
+   },
+   {
     "candidate_id": "CC-2026-OPTICAL-LINK",
     "historical_cycle": "C-2021-NEV",
     "from": "STRUCTURAL_PARTIAL",
@@ -1688,6 +1750,26 @@
     "theme_relation": "CROSS_MACRO_THEME"
    },
    {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "RC-2024-HIEQ-EQUIP-UPDATE",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PERIPHERAL_OVERLAP",
+    "driver_quality": "PERIPHERAL_ONLY",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "RC-2024-HIEQ-HUMANOID-MASS",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PERIPHERAL_OVERLAP",
+    "driver_quality": "PERIPHERAL_ONLY",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
     "candidate_id": "CC-2026-OFFSHORE-WIND",
     "historical_cycle": "C-2019-AD",
     "from": "STRUCTURAL_PARTIAL",
@@ -1856,13 +1938,33 @@
     "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
     "evidence_sequence": "NOT_AVAILABLE",
     "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "RC-2024-HIEQ-EQUIP-UPDATE",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PERIPHERAL_OVERLAP",
+    "driver_quality": "PERIPHERAL_ONLY",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "RC-2024-HIEQ-HUMANOID-MASS",
+    "from": "INSUFFICIENT_EVIDENCE",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
    }
   ]
  },
  "controls": {
   "theme_blind": {
-   "retained": 386,
-   "changed": 9,
+   "retained": 385,
+   "changed": 10,
    "structural_status_changed": 0,
    "theme_relation_changed": 13,
    "note": "正确预期：Theme-Blind **不改变 Structural Status**，只影响 theme_relation。"
@@ -1903,11 +2005,11 @@
    "COMPARISON_POINT_UNKNOWN": 80
   },
   "driver": {
-   "PARTIAL": 66,
-   "MISMATCH": 113,
+   "PARTIAL": 70,
+   "MISMATCH": 143,
    "MATCH": 1,
-   "PERIPHERAL_OVERLAP": 120,
-   "NOT_AVAILABLE": 95
+   "PERIPHERAL_OVERLAP": 171,
+   "NOT_AVAILABLE": 10
   },
   "evidence_sequence": {
    "NOT_AVAILABLE": 190,
@@ -1935,69 +2037,31 @@
   "rule_v0_3": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 39,
-   "THEME_ONLY": 9,
-   "INSUFFICIENT_EVIDENCE": 125,
-   "NO_VALID_CORRESPONDENCE": 218
+   "STRUCTURAL_PARTIAL": 40,
+   "THEME_ONLY": 10,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 226
   },
   "delta": {
    "STRUCTURAL_SUPPORTED": 0,
-   "STRUCTURAL_PARTIAL": -50,
-   "THEME_ONLY": 3,
-   "INSUFFICIENT_EVIDENCE": -20,
-   "NO_VALID_CORRESPONDENCE": 67
+   "STRUCTURAL_PARTIAL": -49,
+   "THEME_ONLY": 4,
+   "INSUFFICIENT_EVIDENCE": -30,
+   "NO_VALID_CORRESPONDENCE": 75
   },
   "note": "本表为**规则变更的直接效应**（同 driver 数据时见 E1_rule_effect）；不得解释为性能变化，仅用于定位变化来源方向。"
  },
  "driver_coverage_gap": {
-  "cycles_without_driving_text": [
-   "RC-2015-FIN-LEVERAGE",
-   "RC-2015-SEMI-LEVERAGE",
-   "RC-2016-RE-SHANTY",
-   "RC-2016-RES-CHEM-ENV",
-   "RC-2017-GPU-MINING",
-   "RC-2017-RES-ALUMINUM",
-   "RC-2019-RE-EASING",
-   "RC-2020-CONS-SMALL-APPLIANCE",
-   "RC-2020-FIN-BROKER-VOLUME",
-   "RC-2020-RES-GOLD-RATES",
-   "RC-2022-RES-FERTILIZER",
-   "RC-2022-SEMI-CHIPSHORTAGE",
-   "RC-2024-CONS-PET-FOOD",
-   "RC-2024-HIEQ-EQUIP-UPDATE",
-   "RC-2024-HIEQ-HUMANOID-MASS",
-   "RC-2024-RE-POLICY-517",
-   "RC-2024-SEMI-FUND3",
-   "RC-2025-RES-COPPER"
-  ],
-  "count": 18,
-  "by_kind": {
-   "research_candidate": 18
-  },
+  "cycles_without_driving_text": [],
+  "count": 0,
+  "by_kind": {},
   "still_without_canonical_driver": [
    "RC-2015-FIN-LEVERAGE",
-   "RC-2015-SEMI-LEVERAGE",
-   "RC-2016-RE-SHANTY",
-   "RC-2016-RES-CHEM-ENV",
-   "RC-2017-GPU-MINING",
-   "RC-2017-RES-ALUMINUM",
-   "RC-2019-RE-EASING",
-   "RC-2020-CONS-SMALL-APPLIANCE",
-   "RC-2020-FIN-BROKER-VOLUME",
-   "RC-2020-RES-GOLD-RATES",
-   "RC-2022-RES-FERTILIZER",
-   "RC-2022-SEMI-CHIPSHORTAGE",
-   "RC-2024-CONS-PET-FOOD",
-   "RC-2024-HIEQ-EQUIP-UPDATE",
-   "RC-2024-HIEQ-HUMANOID-MASS",
-   "RC-2024-RE-POLICY-517",
-   "RC-2024-SECONDARY",
-   "RC-2024-SEMI-FUND3",
-   "RC-2025-RES-COPPER"
+   "RC-2024-SECONDARY"
   ],
-  "still_count": 19,
+  "still_count": 2,
   "still_by_kind": {
-   "research_candidate": 19
+   "research_candidate": 2
   },
   "kind_source": "**从 export 的来源数组重新派生** —— SA research artifact 的 `historical_profiles[].kind` / `matrix[].historical_kind` 存在既有缺陷（E.3），本校准不依赖该字段。",
   "note": "`cycles_without_driving_text` = export 中 `drivers.start` + `drivers.accelerator` 为空的 cycle→ **属 export 数据缺口**（非词表问题），应由 Canonical / Export 层补全，**不得由词表猜测**。`still_without_canonical_driver` = 词表扩展后仍无 canonical driver 的 cycle。"

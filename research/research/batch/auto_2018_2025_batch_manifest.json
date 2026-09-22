@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-09-20T23:50:51",
-  "source_commit": "325b557f3f22a88bd7ca9b4473a152814cfc30a1",
+  "generated_at": "2026-09-23T00:33:09",
+  "source_commit": "0e1d2f4846380f6da76d263ebc67e3d15cc74900",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
