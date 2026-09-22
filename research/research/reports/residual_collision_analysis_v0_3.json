@@ -1,0 +1,938 @@
+{
+ "artifact": "residual_collision_analysis",
+ "artifact_version": "0.3",
+ "generated_by": "research/scripts/analyze_residual_collisions_v0_3.py",
+ "position": "Research-only 分析件 —— 只读；不修改任何产物。",
+ "pairs": [
+  {
+   "shorter": "增长",
+   "longer": "负增长",
+   "shorter_canonical": [
+    "DEMAND_SURGE"
+   ],
+   "longer_canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "shorter_hits": 21,
+   "longer_hits": 10,
+   "longer_is_subset_of_shorter": true,
+   "delete_effect": {
+    "增长": {
+     "changed_entries": 10,
+     "canonical_driver_changes": {
+      "RC-2025-RES-COPPER": [
+       [
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION"
+       ],
+       [
+        "SUPPLY_CONTRACTION"
+       ]
+      ]
+     },
+     "primary_changes": {},
+     "negative": 2,
+     "detail": [
+      {
+       "cycle_id": "C-2019-AD",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "新能源汽车7月起负增长、行业基本面弱（S-2019-02 contradicting）",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DIRECT",
+       "old_canon": null,
+       "new_canon": "CYCLE_REVERSAL"
+      },
+      {
+       "cycle_id": "C-2021-NEV",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "整体车市缺芯负增长（S-2021-06 contradicting）",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "SUPPLY_CONTRACTION",
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2021-CONS-HOG-REVERSAL",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "产能去化信号：2021-08-17 公布 7 月能繁母猪存栏环比 -0.5%，结束 21 个月增长（S033）",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "SUPPLY_CONTRACTION",
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+       "bucket": "ending",
+       "seq": 3,
+       "raw_driver": "★ 对照：2022 年国防预算 +7.1% 创阶段新高但板块下跌 → **军费增长不是行情充分条件**（E042，research-level，不绑定 Campaign）",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "POLICY_DRIVEN"
+      },
+      {
+       "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+       "bucket": "accelerator",
+       "seq": 1,
+       "raw_driver": "负增长持续时长本身强化了悲观预期：连续 13 个月负增长使「周期性调整」的叙事在 2019 年持续",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "NOT_AVAILABLE",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "2019 年 10 月单月产量同比转正（+1.7%）、11 月 +4.3%，连续 13 个月的负增长序列被打破",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "CYCLE_REVERSAL"
+      },
+      {
+       "cycle_id": "C-2020-HIEQ-AUTOMATION",
+       "bucket": "ending",
+       "seq": 3,
+       "raw_driver": "2023 年 1-2 月产量 6.2 万套、同比 -19.2%，负增长延续至政策介入前夜",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN",
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "基本面与政策目标之间存在时滞：政策发布时行业产量仍处同比负增长区间（2023 年 1-2 月 -19.2%），若基本面未在政策预期的时间窗内兑现，则存在预期修正风险",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN",
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2025-RES-COPPER",
+       "bucket": "accelerator",
+       "seq": 5,
+       "raw_driver": "中国电网投资保持双位数增长（截至 2024-10 完成额 4502 亿元）；新能源汽车单车用铜量约 83 公斤",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "产业政策（一手）：国发〔2024〕7号明确到 2027 年工业、农业、建筑、交通、教育、文旅、医疗等领域设备投资规模较 2023 年增长 25% 以上，并将「机械」列为重点行业之一",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "POLICY_DRIVEN"
+      }
+     ]
+    },
+    "负增长": {
+     "changed_entries": 9,
+     "canonical_driver_changes": {},
+     "primary_changes": {},
+     "negative": 0,
+     "detail": [
+      {
+       "cycle_id": "C-2019-AD",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "新能源汽车7月起负增长、行业基本面弱（S-2019-02 contradicting）",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DIRECT",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      },
+      {
+       "cycle_id": "C-2021-NEV",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "整体车市缺芯负增长（S-2021-06 contradicting）",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2020-CONS-BEAUTY-CN",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "2022 年化妆品类零售额转为 -4.5%，行业需求自高增长切至负增长（S077）",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      },
+      {
+       "cycle_id": "C-2016-HIEQ-CONSTR",
+       "bucket": "ending",
+       "seq": 1,
+       "raw_driver": "销量增速连续三季负增长（Q2 -4.8% → Q3 -16% → Q4 -30.4%），2021 年 12 月创下年内国内销量「九连降」",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      },
+      {
+       "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+       "bucket": "start",
+       "seq": 3,
+       "raw_driver": "工业机器人市场本身的高基数：2018 年销量 154032 台、占全球 36.5%，但同比已 -1.4%，为 2010 年以来首次负增长",
+       "old_hits": [
+        "TECH_BREAKTHROUGH",
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "TECH_BREAKTHROUGH",
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+       "bucket": "accelerator",
+       "seq": 1,
+       "raw_driver": "负增长持续时长本身强化了悲观预期：连续 13 个月负增长使「周期性调整」的叙事在 2019 年持续",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      },
+      {
+       "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "2019 年 10 月单月产量同比转正（+1.7%）、11 月 +4.3%，连续 13 个月的负增长序列被打破",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      },
+      {
+       "cycle_id": "C-2020-HIEQ-AUTOMATION",
+       "bucket": "ending",
+       "seq": 3,
+       "raw_driver": "2023 年 1-2 月产量 6.2 万套、同比 -19.2%，负增长延续至政策介入前夜",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "基本面与政策目标之间存在时滞：政策发布时行业产量仍处同比负增长区间（2023 年 1-2 月 -19.2%），若基本面未在政策预期的时间窗内兑现，则存在预期修正风险",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      }
+     ]
+    }
+   }
+  },
+  {
+   "shorter": "整治",
+   "longer": "整治提升",
+   "shorter_canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "longer_canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "shorter_hits": 5,
+   "longer_hits": 1,
+   "longer_is_subset_of_shorter": true,
+   "delete_effect": {
+    "整治": {
+     "changed_entries": 2,
+     "canonical_driver_changes": {},
+     "primary_changes": {},
+     "negative": 1,
+     "detail": [
+      {
+       "cycle_id": "C-2019-RES-DYE-SHOCK",
+       "bucket": "accelerator",
+       "seq": 3,
+       "raw_driver": "2018 年苏北化工园区整治已使部分企业停产，事故进一步延迟复工",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "SUPPLY_CONTRACTION",
+        "EVENT_CATALYST"
+       ],
+       "new_hits": [
+        "SUPPLY_CONTRACTION",
+        "EVENT_CATALYST"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2016-RES-CHEM-ENV",
+       "bucket": "accelerator",
+       "seq": 2,
+       "raw_driver": "化工成为整治重点：产品分散、小企业多、污染严重",
+       "old_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "POLICY_DRIVEN",
+       "new_canon": null
+      }
+     ]
+    },
+    "整治提升": {
+     "changed_entries": 0,
+     "canonical_driver_changes": {},
+     "primary_changes": {},
+     "negative": 0,
+     "detail": []
+    }
+   }
+  },
+  {
+   "shorter": "出口",
+   "longer": "出口管制",
+   "shorter_canonical": [
+    "DEMAND_SURGE"
+   ],
+   "longer_canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "shorter_hits": 18,
+   "longer_hits": 1,
+   "longer_is_subset_of_shorter": true,
+   "delete_effect": {
+    "出口": {
+     "changed_entries": 10,
+     "canonical_driver_changes": {
+      "RC-2022-RES-FERTILIZER": [
+       [
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION"
+       ],
+       [
+        "POLICY_DRIVEN",
+        "SUPPLY_CONTRACTION"
+       ]
+      ]
+     },
+     "primary_changes": {},
+     "negative": 6,
+     "detail": [
+      {
+       "cycle_id": "C-2020-CONS-WHITE-GOODS",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "出口替代：2020 年家电出口 4582 亿元、+24.2%，出口自 6 月起强劲反弹（S036、S037）",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2016-HIEQ-CONSTR",
+       "bucket": "ending",
+       "seq": 4,
+       "raw_driver": "本包未能确认该周期的 ENDED 时点，出口对冲使总量数据迟迟未出现断崖，故 ending 一栏仅记录「上行段终止的确认信号」，不主张周期已结束",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "CYCLE_REVERSAL"
+      },
+      {
+       "cycle_id": "C-2019-SEMI-LOCALIZATION",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "美国对中兴通讯的出口禁令（2018-04-16）触发「卡脖子」认知",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2020-SEMI-EQUIPMENT",
+       "bucket": "accelerator",
+       "seq": 3,
+       "raw_driver": "出口管制预期强化替代紧迫性",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "POLICY_DRIVEN"
+      },
+      {
+       "cycle_id": "RC-2020-CONS-SMALL-APPLIANCE",
+       "bucket": "start",
+       "seq": 2,
+       "raw_driver": "2020 年家电出口 4582 亿元、+24.2%（海关总署口径，不含彩电）；协会口径 837 亿美元、+18%（S036、S037）",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2022-RES-FERTILIZER",
+       "bucket": "accelerator",
+       "seq": 1,
+       "raw_driver": "2021-11 俄罗斯对氮肥及含氮复合肥实施 6 个月出口配额",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "POLICY_DRIVEN"
+      },
+      {
+       "cycle_id": "RC-2022-RES-FERTILIZER",
+       "bucket": "accelerator",
+       "seq": 2,
+       "raw_driver": "中国禁止磷肥出口（至少至 2022-06），保护国内粮食安全",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2022-RES-FERTILIZER",
+       "bucket": "accelerator",
+       "seq": 3,
+       "raw_driver": "2022-02 俄乌冲突冲击黑海农产品与化肥出口，俄罗斯化肥外运受阻",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2022-RES-FERTILIZER",
+       "bucket": "ending",
+       "seq": 1,
+       "raw_driver": "俄乌粮食与化肥出口制裁放松，国际化肥供需矛盾改善",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "UNKNOWN",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2024-SEMI-FUND3",
+       "bucket": "start",
+       "seq": 2,
+       "raw_driver": "美国持续收紧先进制程设备与 AI 芯片出口限制",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "POLICY_DRIVEN"
+      }
+     ]
+    },
+    "出口管制": {
+     "changed_entries": 1,
+     "canonical_driver_changes": {},
+     "primary_changes": {},
+     "negative": 0,
+     "detail": [
+      {
+       "cycle_id": "C-2020-SEMI-EQUIPMENT",
+       "bucket": "accelerator",
+       "seq": 3,
+       "raw_driver": "出口管制预期强化替代紧迫性",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "shorter": "采购",
+   "longer": "装备采购",
+   "shorter_canonical": [
+    "DEMAND_SURGE"
+   ],
+   "longer_canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "shorter_hits": 11,
+   "longer_hits": 2,
+   "longer_is_subset_of_shorter": true,
+   "delete_effect": {
+    "采购": {
+     "changed_entries": 5,
+     "canonical_driver_changes": {
+      "C-2019-PHARMA-INNOV": [
+       [
+        "EVENT_CATALYST"
+       ],
+       [
+        "CYCLE_REVERSAL",
+        "EVENT_CATALYST"
+       ]
+      ],
+      "C-2020-MIL-EQUIP-ORDER": [
+       [
+        "DEMAND_SURGE"
+       ],
+       [
+        "DEMAND_SURGE",
+        "POLICY_DRIVEN"
+       ]
+      ]
+     },
+     "primary_changes": {
+      "C-2019-PHARMA-INNOV": [
+       "EVENT_CATALYST",
+       "CYCLE_REVERSAL"
+      ]
+     },
+     "negative": 1,
+     "detail": [
+      {
+       "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "2020-07-10 同期媒体：装备采购与更新换代加速、训练强度提高导致装备损耗加快（E-MIL-05）",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DIRECT",
+       "old_canon": null,
+       "new_canon": "POLICY_DRIVEN"
+      },
+      {
+       "cycle_id": "C-2019-PHARMA-INNOV",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "4+7 城市药品集中采购中选结果（25 品种平均降幅 52%）（EV-MED-01, 2018-12-17）→ 摧毁仿制药「带金销售」旧叙事，市场转向「创新 vs 仿制」分化（E-MED-05）",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DIRECT",
+       "old_canon": null,
+       "new_canon": "CYCLE_REVERSAL"
+      },
+      {
+       "cycle_id": "C-2020-RES-NONFERROUS",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "铜价快速上涨抑制下游消费，采购意愿下降",
+       "old_hits": [
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "NOT_AVAILABLE",
+       "old_canon": "DEMAND_SURGE",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "RC-2022-RES-FERTILIZER",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "2022-07 起化肥市场价格持续下跌，秋季肥采购不积极",
+       "old_hits": [
+        "DEMAND_SURGE",
+        "SUPPLY_CONTRACTION"
+       ],
+       "new_hits": [
+        "SUPPLY_CONTRACTION"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "SUPPLY_CONTRACTION"
+      },
+      {
+       "cycle_id": "RC-2024-SEMI-FUND3",
+       "bucket": "start",
+       "seq": 3,
+       "raw_driver": "晶圆厂加大国产设备采购，测试与涂胶显影等环节国产化率由个位数向两位数突破",
+       "old_hits": [
+        "INDUSTRY_UPGRADE",
+        "TECH_BREAKTHROUGH",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "INDUSTRY_UPGRADE",
+        "TECH_BREAKTHROUGH"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": null
+      }
+     ]
+    },
+    "装备采购": {
+     "changed_entries": 2,
+     "canonical_driver_changes": {},
+     "primary_changes": {},
+     "negative": 0,
+     "detail": [
+      {
+       "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "2020-07-10 同期媒体：装备采购与更新换代加速、训练强度提高导致装备损耗加快（E-MIL-05）",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DIRECT",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      },
+      {
+       "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+       "bucket": "ending",
+       "seq": 2,
+       "raw_driver": "2023 年「十四五」中期调整致部分装备采购与订单下达放缓（E-MIL-13，subsequent，产业侧机制）",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "DEMAND_SURGE"
+       ],
+       "new_hits": [
+        "DEMAND_SURGE"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DIRECT",
+       "old_canon": null,
+       "new_canon": "DEMAND_SURGE"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "shorter": "储备",
+   "longer": "黄金储备",
+   "shorter_canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "longer_canonical": [
+    "VALUATION_RESET"
+   ],
+   "shorter_hits": 4,
+   "longer_hits": 1,
+   "longer_is_subset_of_shorter": true,
+   "delete_effect": {
+    "储备": {
+     "changed_entries": 3,
+     "canonical_driver_changes": {
+      "C-2024-RES-GOLD-CB": [
+       [
+        "POLICY_DRIVEN",
+        "VALUATION_RESET"
+       ],
+       [
+        "VALUATION_RESET"
+       ]
+      ]
+     },
+     "primary_changes": {},
+     "negative": 1,
+     "detail": [
+      {
+       "cycle_id": "C-2021-CONS-HOG-REVERSAL",
+       "bucket": "turning",
+       "seq": 1,
+       "raw_driver": "2022-09-08 起投放中央猪肉储备，调控方向反转（S035）",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "CYCLE_REVERSAL"
+       ],
+       "new_hits": [
+        "CYCLE_REVERSAL"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "CYCLE_REVERSAL"
+      },
+      {
+       "cycle_id": "C-2024-RES-GOLD-CB",
+       "bucket": "start",
+       "seq": 1,
+       "raw_driver": "2022 年美国冻结俄罗斯外汇储备后，新兴市场央行调整外汇资产结构，减持美债、增持黄金",
+       "old_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "new_hits": [],
+       "old_status": "DERIVED",
+       "new_status": "NOT_AVAILABLE",
+       "old_canon": "POLICY_DRIVEN",
+       "new_canon": null
+      },
+      {
+       "cycle_id": "C-2024-RES-GOLD-CB",
+       "bucket": "accelerator",
+       "seq": 4,
+       "raw_driver": "中国黄金储备 2025 年连续第 11 个月上升，至 9 月底 2303 吨",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "VALUATION_RESET"
+       ],
+       "new_hits": [
+        "VALUATION_RESET"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "VALUATION_RESET"
+      }
+     ]
+    },
+    "黄金储备": {
+     "changed_entries": 1,
+     "canonical_driver_changes": {},
+     "primary_changes": {},
+     "negative": 0,
+     "detail": [
+      {
+       "cycle_id": "C-2024-RES-GOLD-CB",
+       "bucket": "accelerator",
+       "seq": 4,
+       "raw_driver": "中国黄金储备 2025 年连续第 11 个月上升，至 9 月底 2303 吨",
+       "old_hits": [
+        "POLICY_DRIVEN",
+        "VALUATION_RESET"
+       ],
+       "new_hits": [
+        "POLICY_DRIVEN"
+       ],
+       "old_status": "DERIVED",
+       "new_status": "DERIVED",
+       "old_canon": null,
+       "new_canon": "POLICY_DRIVEN"
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

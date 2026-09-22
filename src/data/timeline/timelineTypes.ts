@@ -117,7 +117,9 @@ export interface ExportCampaignV1 {
   year: number;
   start_date: string;
   peak_date: string | null;
-  end_date: string;
+  // ★ Research Release 修正：`end_date` 可为 null —— R01 的 Peak/End 四态允许 end 无法确定
+  //   （与 `ExportResearchCandidateV1.end_date: string | null` 口径一致）
+  end_date: string | null;
   status: ExportProductionStatus;
   confidence?: string | null;
   classification?: string | null;
@@ -149,7 +151,8 @@ export interface ExportCandidateV1 {
   rule_id: string;
   year: number;
   title: string;
-  start_date: string;
+  // ★ Research Release 修正：`start_date` 也可为 null（起始未确定）
+  start_date: string | null;
   peak_date: string | null;
   end_date: string | null;
   themes: ExportThemeV1[];

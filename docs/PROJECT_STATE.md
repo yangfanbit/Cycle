@@ -7,20 +7,21 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`0ce4344`（`fix(research): close 18 research-candidate export driver gap`；本文件随 `扩产/扩产周期` 语义裁决提交入库）
-- 最近完成：**`扩产` / `扩产周期` 专项语义裁决**（**`扩产` → A 保留在 `DEMAND_SURGE`** ·
-  **`扩产周期` → D 删除**，revision **`v0.3-r2`**；依据：`扩产周期` 零增量覆盖 + 方向错误 + 实际损害；
-  `扩产` 由研究标题「晶圆厂扩产 → 上游」+ v0.1 惯例（装机/并网/招标/采购）支持）；
-  最小影响：仅 1 条 ledger 条目变化 · 五态分布/SUPPORTED/STRICT/campaign coverage **全部不变** ·
-  **无负面变化** · `driver=MISMATCH → PARTIAL` **继续 = 0**；子串冲突 **11 → 10**；
-  **未生成 SA v0.4 · 未刷新 Time Observation**；详见 `docs/KUOCHAN_SEMANTICS_DECISION_v0_3.md`）
-- **SA v0.4 尚未生成** · **Time Observation 尚未刷新**
-- **当前阻塞**：**Driver mapping collision audit 剩余 5 项 substring collision**（`增长/负增长` · `整治/整治提升` ·
-  `出口/出口管制` · `采购/装备采购` · `储备/黄金储备`）→ 属 **multi-hit disambiguation**，留待独立轮次
-  · **SA v0.3 产物相对当前 driver 链已过期**（须由 SA v0.4 消费）· 2 个 cycle 因**映射逻辑**仍无 canonical driver
-  （`RC-2015-FIN-LEVERAGE` 多命中、`RC-2024-SECONDARY` 仅终结相位有机制 —— 均非数据缺口）
-  · （观测）`扩产` 存在系统性误命中风险（未来「硅料扩产」类文本），与 v0.1 既有「装机/招标/采购」同类
-- **已解除**：18 个 RC 的 Export driver 数据缺口 · **`扩产 / 扩产周期` 语义矛盾**
+- HEAD：`8216f7f`（`fix(research): rule kuochan / kuochan-cycle driver semantics`；本文件随 **Research Core Release** 提交入库）
+- 最近完成：**★★ Research Core Release**（阶段 A–G 全部完成；详见 `docs/RESEARCH_CORE_RELEASE_v0_4.md`）
+  · **阶段 A**：剩余 5 项 driver collision 一次性处理（3 项删词 **B** + 2 项最小上下文消歧 **C**；**只做减法，未新增 vocabulary**）
+  · **阶段 B**：新建 **Driver Canonicalization v0.4**（首次引入 mapping algorithm 变更）
+  · **阶段 C**：**SA v0.4 已生成**（395 pairs · 消费 v0.4 driver · **identity 修正为 52 campaign / 27 RC**）
+  · **阶段 D**：**SA v0.4 两层独立校验 PASS**（D1 artifact + D2 独立语义；**新增 S15 driver 版本一致性 = 0 不一致**）
+  · **阶段 E**：**Time Observation v0.2（内部 0.3）已生成**（79 objects · 12 patterns · **Timeline 仍仅 TOP-01，标准未放宽**）
+  · **阶段 F**：Product 已切换至最新 artifact；`tsc -b` / `vite build` PASS；Product 测试失败 **88 → 21**
+  · **阶段 G**：Release Acceptance 通过
+- **✅ SA v0.4 已生成并通过独立语义验证** · **✅ Time Observation 当前 Universe 新版本已生成** · **✅ Product 已消费最新 Research artifacts**
+- **★ Research Core 状态**：**R01 Historical Universe Expansion 已完成**（11 Macro Theme · 52 Campaign · 27 RC · 79 Historical Objects）
+- **Known Limitations（不再阻塞推进）**：剩余 7 项跨 canonical 子串冲突（**不改变任何 driver 集合**）·
+  Product 测试夹具 21 项硬编码旧 17-object 数值（**Product 侧维护项，不影响运行路径**）·
+  TO `observation.year` 与 `date` 在「锚点退化为 `campaign.start_date`」时相差 1 年（5 例，全部 R01）·
+  `driver=MATCH` 仅 1 条（数据粒度）· 2 个 cycle 因映射逻辑无 canonical driver
 
 ## 1. 项目当前定位
 
@@ -287,7 +288,7 @@ taxonomy 未被任何 R01 修改（52 行 / 11 root，**11/11 均有 Campaign**�
 
 ### Structural Analogy / Time Observation
 
-**★ Rule Set 已升级至 v0.3**（2026-09-22）。**SA 产物仍为 v0.3（未重新生成）**。**Time Observation 仍未刷新**。
+**★★ SA 已至 v0.4 · Time Observation 已至 v0.2（内部 0.3）—— Research Core Release 完成**（2026-09-23）。
 
 **规则集状态**：**`Structural Analogy Rule Set v0.3`（`structural-analogy-ruleset-v0.3`）当前生效**；
 v0.2 已被取代（其文本与 Calibration **逐字节保留**）。
@@ -330,19 +331,19 @@ A/B/C/D **四组 1580 行逐行复核** + 语义不变量 **S1–S14**（含 **S
 `..._calibration_pairs_v0_3.csv`（**long format：395 × 4 = 1580 行**）· `historical_driver_canonicalization_v0_3.json` ·
 `historical_driver_evidence_ledger_v0_3.json` · 3 个脚本（含 2 个生成器 + 语义校验器）
 
-**★ 仍未解决（SA v0.4 前处理）**：
+**★ SA v0.4 前处理项（全部已闭环）**：
 | # | 问题 | 级别 |
 |---|---|---|
 | ~~1~~ | ~~18 个 Research Candidate 的 export `drivers` 全为空~~ → **✅ 本轮已修复**（18/18 为 `CANDIDATE_DRIVERS` 映射遗漏；9 → 27 条；RC 空 drivers **18 → 0**；有 driver 的 cycle **60 → 77 / 79**）。详见 `docs/RC_EXPORT_DRIVER_GAP_AUDIT_v0_3.md` | **已解除** |
 | ~~2~~ | ~~`扩产` vs `扩产周期` 语义自相矛盾~~ → **✅ 本轮已裁决并修复（v0.3-r2）**：`扩产` → **A 保留在 `DEMAND_SURGE`**；`扩产周期` → **D 删除**（零增量覆盖 + 方向错误 + 实际损害）。详见 `docs/KUOCHAN_SEMANTICS_DECISION_v0_3.md` | **已解除** |
-| 3 | **剩余 5 项跨 canonical 子串冲突**（`增长/负增长` · `整治/整治提升` · `出口/出口管制` · `采购/装备采购` · `储备/黄金储备`）→ 使相关文本**永远无法成为 `DIRECT`**（实测 8 条 `DIRECT→DERIVED`）。属**映射逻辑**（多命中消歧）→ 需独立版本 + 重新校准 | 建议处理（映射逻辑） |
-| 4 | **⚠️ SA v0.3 产物相对修复后的 driver 链已过期** —— `structural_analogy_research_v0_3.json` / `..._explanations_v0_3.json` **本轮未重新生成**（§一 限定范围 + 不生成 SA v0.4），其 `driver` 字段与当前 canonicalization v0.3 **不一致**；**现有校验器不会捕获**（SA 校验器自引用） | **须由 SA v0.4 消费** |
-| 5 | **E.3**：SA **research** artifact 的 `historical_profiles[].kind` / `matrix[].historical_kind` **把全部 cycle 标为 `campaign`**（含 RC-*）→ **无规则影响**（explanations 侧已正确），建议 v0.4 修正 | 元数据 |
+| ~~3~~ | ~~剩余 5 项跨 canonical 子串冲突~~ → **✅ 已完成（v0.4）**：3 项删词（`整治提升` / `装备采购` / `黄金储备`）+ 2 项最小上下文消歧（`增长` 否定语境 · `出口` 限制语境）。子串冲突 **10 → 7**；**`E2` driver 效应 = 0 条 Structural Status 变化**。详见 `docs/RESEARCH_CORE_RELEASE_v0_4.md` | **已解除** |
+| ~~4~~ | ~~SA v0.3 产物过期~~ → **✅ 已由 SA v0.4 消费**（`structural_analogy_research_v0_4.json` / `..._explanations_v0_4.json`）；v0.3 产物**逐字节保留**作为历史版本 | **已解除** |
+| ~~5~~ | ~~E.3 identity 缺陷~~ → **✅ v0.4 已修正**（按来源数组判定：**52 campaign / 27 research_candidate**，identity 错误 = 0） | **已解除** |
 | 6 | **E.4**：关键词扩展副作用 —— 8 条 `DIRECT→DERIVED`；`C-2025-FIN-INSURANCE` 失去唯一 DIRECT（**不改变任何 SUPPORTED 结论**） | 轻微 |
 | 7 | （观测）2 个 cycle 因**映射逻辑**仍无 canonical driver（`RC-2015-FIN-LEVERAGE` 多命中无消歧 · `RC-2024-SECONDARY` 研究自述强度不足）—— **非数据缺口** | 观测 |
 
-> **★ SA v0.4 结论：结构规则层已就绪；数据层阻塞已解除**，但 **词表/映射两处问题（2、3）与 SA v0.3 过期（4）尚未闭环**。
-> **建议顺序**：① ~~`扩产周期` 归属~~（**✅ 已完成 v0.3-r2**）→ ② **剩余 5 项 multi-hit disambiguation**（独立版本 + 重新校准）→ ③ kind metadata → ④ **生成 SA v0.4** → ⑤ 才考虑 TO 刷新。
+> **★★ Research Core Release 已完成** —— 上表 1~5 全部闭环；SA v0.4 已生成并通过两层独立校验（含 S15 driver 版本一致性）。
+> 剩余项见「Known Limitations」，**不再阻塞推进**。
 > ★ 数据层（原问题 1）与 `扩产/扩产周期`（原问题 2）**均已不再是阻塞**。
 
 **★ Governance 元数据接入**：`governance-gates-v0.1` 的 `market_evidence_state` / `beta_level` / `peak|end` / `result`
@@ -379,7 +380,7 @@ SA / TO 须**直接读取** `research/research/reports/governance_classification
 | OPEN | Validator C08 vs Research Model v1.0 §15 的 `research_report` tier 冲突（**R01-03 `H1` / R01-05 `K` / R01-06 第三次复现** → **Cross-task governance issue，待 R01 Governance Review 统一处理**） |
 | OPEN | **✅ 第一批治理修复已完成**（`governance-gates-v0.1`）：G1-1 市场侧证据软门槛 · G1-3 Beta Level 0–3 · G1-5 `result=weak` 语义 · G2-1 Peak/End 四态。**规则 + 机器可读清单 + 校验器已交付，未改任何 Campaign / Schema / Contract / taxonomy** |
 | OPEN | **✅ Rule Set v0.2 的 E.1 / E.2 已修复（2026-09-22）**：新建 **Rule Set v0.3**（`Driver=MISMATCH` 不得进入 `STRUCTURAL_PARTIAL`，**50 → 0 彻底消除**）+ **Driver Canonicalization v0.3**（词表扩展，有 driver 的 cycle **55 → 59**）+ **Rule Calibration v0.3** + **语义一致性校验器**（S1–S14，1580/1580 一致）。**未生成 SA v0.4 · 未覆盖 SA v0.3 · 未刷新 TO** |
-| OPEN | **SA v0.4 前置待办（`扩产/扩产周期` 裁决后更新）**：~~① 18 个 RC 的 export `drivers` 全为空~~ **✅ 已修复（18/18 为映射遗漏；RC 空 drivers 18→0；有 driver 的 cycle 60→77/79）** · ~~② `扩产` vs `扩产周期` 语义自相矛盾~~ **✅ 已裁决（v0.3-r2：`扩产`→A 保留；`扩产周期`→D 删除）** · ③ **剩余 5 项跨 canonical 子串冲突**（映射逻辑，需独立版本 + 重新校准）· ④ **⚠️ SA v0.3 产物相对修复后 driver 链已过期**（须由 SA v0.4 消费；现有校验器自引用不会捕获）· ⑤ **E.3** `historical_kind` 把全部 cycle 标为 `campaign`（无规则影响）· ⑥ **E.4** 8 条 `DIRECT→DERIVED`（**不改变任何 SUPPORTED 结论**）· ⑦ 2 个 cycle 因**映射逻辑**仍无 driver（**非数据缺口**） |
+| CLOSED | **SA v0.4 前置待办 —— ✅ 全部闭环（Research Core Release）**：① 18 个 RC export driver 缺口 ✅ · ② `扩产/扩产周期` ✅ · ③ 剩余 5 项 collision ✅（v0.4：3 删词 + 2 上下文抑制）· ④ SA v0.3 过期 ✅（由 SA v0.4 消费）· ⑤ E.3 identity ✅（52/27）· ⑥ E.4 轻微（保留为已知限制）· ⑦ 2 个 cycle 映射逻辑（保留为已知限制） |
 | OPEN | **Time Observation 仍未刷新**（SA 已至 v0.3；建议在 SA v0.4 之后统一刷新） |
 | OPEN | **第二批治理修复待决策（本轮未做，仅 issue register）**：G1-2 `research_report` Tier（**须逐条确认是否真属 Research Model §15 的券商研报，不得把 23 条 tier=2 一律改成 tier=3**）· G1-4 Validator 加 C26 orphan report · G2-2 Theme Cycle Pattern · G2-3 5 个 pre-R01 缺 date_observations · G2-5 3 条 temporal warning · G2-6 taxonomy alias 表 + Mechanism 登记表（**不扩展 taxonomy**） |
 | OPEN | **历史数据修复需求（唯一 1 项，待独立评审）**：`C-2019-AD` 的 `strength='weak'` → 建议改 `medium`（保留 `result='weak'`）。属 legacy 语义残留，非本轮规则引入；由 `validate_governance_gates.py` **V8 持续 WARN**。影响：DB 1 行 / Export 1 条 / SA 轻微 |
@@ -393,6 +394,8 @@ SA / TO 须**直接读取** `research/research/reports/governance_classification
 - 不改 Research Model v1.0 / schema / CMTR v1 / Export Contract v1.0 /
   Structural Analogy Rule Set v0.2 / Time Observation v0.5
 - 不引入实时网络 / LLM · 不建立 ranking / score / probability / prediction
+
+| DONE | **★★ Research Core Release 完成（2026-09-23）**：Driver Canonicalization **v0.4** · **SA v0.4**（395 pairs · identity 52/27 · 两层独立校验 PASS · `driver=MISMATCH→PARTIAL` = 0）· **Time Observation v0.2**（79 objects · 12 patterns · **Timeline 仍仅 TOP-01**）· **Product 已消费最新 artifact**（`tsc -b` / `vite build` PASS）· 旧版本 18 个文件逐字节 UNCHANGED。详见 `docs/RESEARCH_CORE_RELEASE_v0_4.md` |
 
 ## 8. 当前质量债务
 

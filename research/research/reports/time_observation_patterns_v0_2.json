@@ -1,0 +1,3200 @@
+{
+  "artifact": "time_observation_patterns",
+  "artifact_version": "0.3",
+  "contract_note": "Research Artifact —— 不是产品 schema，不进入 DB / schema.sql / timeline_export_v1.json / contracts。产品端只读消费。",
+  "generated_at": "2026-09-23",
+  "generated_by": "research/scripts/build_time_observation_patterns.py",
+  "snapshot_date": "2026-09-23",
+  "research_round": "time-observation-pattern-v0.1",
+  "revision": "Phase 7.3（Observation Credibility & Coverage）",
+  "filename_note": "文件名保持 time_observation_patterns_v0_1.json 不变（产品 alias 与导入路径稳定），内部 artifact_version 已升至 0.2。",
+  "theme_family_taxonomy": {
+    "definition": "Theme Family = 既有 Macro Theme（`themes` 表中 `parent_theme_id IS NULL` 的题材）",
+    "note": "Phase 7.3 起 Pattern 通过稳定的 `theme_family_id` 引用主题族；`rule_id` 只表示研究规则范围，**不再**充当主题身份。",
+    "mapping": [
+      {
+        "theme_family_id": "TH-AUTO",
+        "display_name": "汽车",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-PHARMA",
+        "display_name": "医药健康",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-HIEQ",
+        "display_name": "高端装备",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-ELEC",
+        "display_name": "电子",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-RES",
+        "display_name": "资源",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-CONSUMER",
+        "display_name": "消费",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-FIN",
+        "display_name": "金融",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-REALESTATE",
+        "display_name": "房地产",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-DEFENSE",
+        "display_name": "国防军工",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-COMM",
+        "display_name": "信息通信",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      },
+      {
+        "theme_family_id": "TH-POWER",
+        "display_name": "电力设备",
+        "theme_type": "industry",
+        "source": "cycle_research.db:themes(parent_theme_id IS NULL)"
+      }
+    ]
+  },
+  "anchor_verification_policy": {
+    "policy_source": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json",
+    "policy_version": "0.1",
+    "manual_overrides": 2,
+    "rules": [
+      "R1_MARKET_DATA：该日期本身由行情观测得出 → VERIFIED / MARKET_DATA",
+      "R2_PUBLIC_SOURCE：同日 linked evidence 且来源 tier ≤ 2 → VERIFIED / PUBLIC_SOURCE",
+      "R2B_EVENT_SOURCE：同日**事件台账**且来源 tier ≤ 2 → VERIFIED / PUBLIC_SOURCE（支持日期，但不等于确认行情起点）",
+      "R3_MULTI_SOURCE：≥2 个独立来源组的同日 evidence → VERIFIED / MULTI_SOURCE",
+      "R4_TEXT_MENTION_ONLY：仅 tier ≤ 2 证据/事件在描述中以**词边界**提到该日期 → **保持 UNKNOWN**（记录候选证据）",
+      "R5_NO_EVIDENCE：其余（含仅 Tier 3/4 线索）→ UNKNOWN"
+    ],
+    "note": "核验只描述「该日期是否有仓库内可追溯的证据」，不改变锚点优先级与取值；核验通过 ≠ 规律被证明有效。"
+  },
+  "supersedes": {
+    "exploratory_artifact": "research/research/reports/seasonal_observation_patterns_v0_1.json",
+    "exploratory_report": "research/research/reports/Seasonal_Observation_Pattern_Discovery_v0_1.md",
+    "note": "上游探索研究确立了锚点口径与拒绝规则；本 Artifact 是可复现生成器重新计算后的**产品可消费版本**，模式编号改为 TOP-*（与 SOP-* 一一对应并由 source_pattern_id 保留）。"
+  },
+  "question": "历史上，一年中的这个时间位置附近，反复出现过值得研究的主题启动 / 观察现象吗？",
+  "not_a": [
+    "这不是预测器，也不做任何形式的未来推断",
+    "这不给出买入或卖出时间",
+    "这不指示最佳埋伏点",
+    "这不做涨幅预测",
+    "这不计算胜率",
+    "这不输出未来概率",
+    "这不做收益预测"
+  ],
+  "method": "三阶段：① Historical Campaign / Research Candidate → Anchor Extraction（统一优先级）；② 主题族逐年聚合（同一年只取最早锚点，防止人为放大 N）；③ 描述统计 + 稳定性 + 留一法 → 纳入判定。全程不修改 Campaign 定义，不使用行情涨幅定义「启动」。",
+  "anchor_priority": [
+    "EARLY_SIGNAL（lifecycle.EARLY_SIGNAL.start / export.early_signal / signals[].EARLY_SIGNAL 最早）",
+    "THEME_FORMING（lifecycle.THEME_FORMING.start）",
+    "BROAD_CONFIRMATION（lifecycle.BROAD_CONFIRMATION.start）",
+    "CAMPAIGN_START（start_date；末选，仅在前三者皆无时使用）"
+  ],
+  "pattern_type_vocabulary": [
+    "SEASONAL",
+    "CALENDAR_DRIVEN",
+    "INDUSTRY_CYCLE",
+    "REPORTING_CYCLE",
+    "POLICY_CALENDAR",
+    "MIXED",
+    "UNKNOWN"
+  ],
+  "status_vocabulary": [
+    "STRONG_CANDIDATE",
+    "MODERATE_CANDIDATE",
+    "EXPLORATORY",
+    "REJECTED"
+  ],
+  "timeline_eligibility_vocabulary": [
+    "TIMELINE_ELIGIBLE",
+    "RESEARCH_ONLY",
+    "REJECTED"
+  ],
+  "inclusion_rules": {
+    "timeline_eligible": "N ≥ 5 且 窗口可构建 且 集中度比率 ≤ 0.45 且 STABLE 且 无单年主导",
+    "rejected": "窗口不可构建（IQR > 90 天）或 留一法显示单年主导",
+    "research_only": "其余（样本不足，或稳定性 / 集中度未达门槛）",
+    "window_definition": "典型窗口 = Median ± 1×MAD×1.4826（抗离群；A/B/C 三种口径并列保留）",
+    "note": "宁可少，也不把明显不可靠的规律放进 Timeline。"
+  },
+  "forbidden_fields": [
+    "future_probability",
+    "confidence_percent",
+    "expected_return",
+    "win_rate",
+    "buy_signal",
+    "sell_signal",
+    "target_price",
+    "seasonality_score",
+    "rating",
+    "score"
+  ],
+  "label_vocabulary": {
+    "window": "历史观察窗口",
+    "recurrence": "历史复现",
+    "in_window": "当前位于历史观察窗口",
+    "near_window": "接近历史观察窗口",
+    "none": "当前没有发现处于历史时间观察窗口的模式",
+    "disclaimer": "这是历史时间聚集现象，不代表今年必然重演，也不是买入或卖出信号。",
+    "exploratory": "探索性观察",
+    "exploratory_note": "样本有限，部分锚点尚未完成独立行情核验",
+    "verified_label": "历史观察规律",
+    "all_verified_note": "全部锚点已完成仓库内证据核验（核验通过不等于规律有效）",
+    "verification_prefix": "核验状态",
+    "historical_recall": "历史观察回溯",
+    "current_match": "当前匹配",
+    "no_current_match": "当前日期不在任何历史观察窗口内（仍可回看历史窗口与年份案例）"
+  },
+  "background_baseline": {
+    "note": "时间聚集不能只靠「某月事件多」证明：ThreeC 自建事件台账本身 6 月占比 33%（10/30），远高于均匀基准 8.3%；即使只看指数「最优 30 日窗口」，6 月占比也达 18.75%。因此本 Artifact 中任何 6 月偏好都**部分来自研究样本选择偏差**，不可解读为主题独有季节性。",
+    "event_calendar_june_share": 0.3333,
+    "index_best_30d_window_june_share": 0.1875,
+    "uniform_june_share": 0.0833
+  },
+  "coverage": {
+    "years_observed": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "excluded_years": [
+      {
+        "year": 2018,
+        "reason": "no_clear_campaign",
+        "rule_id": "rule_auto_summer"
+      }
+    ],
+    "total_objects": 79,
+    "campaigns": 52,
+    "research_candidates": 27,
+    "anchor_type_counts": {
+      "EARLY_SIGNAL": 17,
+      "CAMPAIGN_START": 59,
+      "NONE": 3
+    },
+    "annual_review_status": {
+      "rule_auto_summer#2018": "no_clear_campaign",
+      "rule_auto_summer#2019": "weak",
+      "rule_auto_summer#2020": "strong",
+      "rule_auto_summer#2021": "strong",
+      "rule_auto_summer#2022": "strong",
+      "rule_auto_summer#2023": "medium",
+      "rule_auto_summer#2024": "medium",
+      "rule_auto_summer#2025": "medium",
+      "rule_consumer#2016": "medium",
+      "rule_consumer#2018": "medium",
+      "rule_consumer#2019": "strong",
+      "rule_consumer#2020": "strong",
+      "rule_consumer#2021": "medium",
+      "rule_consumer#2022": "medium",
+      "rule_consumer#2023": "medium",
+      "rule_consumer#2024": "medium",
+      "rule_defense_military#2019": "medium",
+      "rule_defense_military#2020": "medium",
+      "rule_fin_realestate#2020": "medium",
+      "rule_fin_realestate#2022": "medium",
+      "rule_fin_realestate#2023": "medium",
+      "rule_fin_realestate#2024": "medium",
+      "rule_fin_realestate#2025": "medium",
+      "rule_high_end_equipment#2016": "medium",
+      "rule_high_end_equipment#2018": "weak",
+      "rule_high_end_equipment#2020": "strong",
+      "rule_high_end_equipment#2023": "medium",
+      "rule_high_end_equipment#2024": "weak",
+      "rule_infocomm#2018": "weak",
+      "rule_infocomm#2019": "strong",
+      "rule_infocomm#2020": "strong",
+      "rule_infocomm#2021": "weak",
+      "rule_infocomm#2022": "weak",
+      "rule_infocomm#2023": "strong",
+      "rule_infocomm#2024": "strong",
+      "rule_infocomm#2025": "strong",
+      "rule_pharma_upgrade#2019": "medium",
+      "rule_pharma_upgrade#2020": "strong",
+      "rule_pharma_upgrade#2021": "strong",
+      "rule_pharma_upgrade#2022": "weak",
+      "rule_power_equipment#2018": "weak",
+      "rule_power_equipment#2019": "medium",
+      "rule_power_equipment#2020": "strong",
+      "rule_power_equipment#2021": "strong",
+      "rule_power_equipment#2022": "weak",
+      "rule_power_equipment#2023": "medium",
+      "rule_power_equipment#2024": "strong",
+      "rule_power_equipment#2025": "medium",
+      "rule_resources#2019": "medium",
+      "rule_resources#2020": "strong",
+      "rule_resources#2021": "strong",
+      "rule_resources#2024": "medium",
+      "rule_semiconductor#2016": "medium",
+      "rule_semiconductor#2019": "strong",
+      "rule_semiconductor#2020": "strong",
+      "rule_semiconductor#2022": "weak",
+      "rule_semiconductor#2023": "medium",
+      "rule_semiconductor#2024": "medium"
+    }
+  },
+  "summary": {
+    "patterns_total": 12,
+    "timeline_eligible": [
+      "TOP-01"
+    ],
+    "research_only": [
+      "TOP-02",
+      "TOP-03",
+      "TOP-07",
+      "TOP-10",
+      "TOP-11",
+      "TOP-12"
+    ],
+    "rejected": [
+      "TOP-04",
+      "TOP-05",
+      "TOP-06",
+      "TOP-08",
+      "TOP-09"
+    ],
+    "promotion_status": {
+      "TIMELINE": [
+        "TOP-01"
+      ],
+      "EXPLORATORY": [
+        "TOP-03",
+        "TOP-07",
+        "TOP-10",
+        "TOP-11",
+        "TOP-12"
+      ],
+      "RESEARCH_ONLY": [
+        "TOP-02"
+      ],
+      "REJECTED": [
+        "TOP-04",
+        "TOP-05",
+        "TOP-06",
+        "TOP-08",
+        "TOP-09"
+      ]
+    },
+    "anchor_verification": {
+      "VERIFIED": 20,
+      "UNKNOWN": 41,
+      "CONFLICT": 0
+    },
+    "note": "本轮只有一条 Pattern 达到 Timeline 门槛，且它仍是**探索性**的（样本 7 年、多数锚点尚未完成独立行情核验）——产品必须以此口径呈现。"
+  },
+  "patterns": [
+    {
+      "pattern_id": "TOP-01",
+      "source_pattern_id": "SOP-03",
+      "pattern_type": "MIXED",
+      "title": "汽车主题上半年末启动观察窗口",
+      "description": "在 ThreeC 2018–2025 的研究样本中，汽车主题（rule_auto_summer 范围内全部 Campaign / Research Candidate）的「研究观察起点（Early Signal）」多次落在 5 月下旬—6 月下旬这一带。这是**历史样本中的时间聚集现象**，不是行业需求季节性，也不是未来概率。",
+      "theme_scope": "汽车",
+      "theme_key": "汽车（Macro Theme 全主题，rule_auto_summer 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-AUTO",
+        "display_name": "汽车",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_auto_summer"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "observation_count": 7,
+      "observations": [
+        {
+          "year": 2019,
+          "date": "2019-08-15",
+          "md": "08-15",
+          "campaign_id": "C-2019-AD",
+          "title": "C-2019-AD",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": false,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "同日仅有 Tier [3] 证据（未达核验门槛：Tier 4 = 线索级、Tier 3 = 转载/二手）→ 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2020-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2020-NEV",
+          "title": "C-2020-NEV",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "同日仅有 Tier [4] 证据（未达核验门槛：Tier 4 = 线索级、Tier 3 = 转载/二手）→ 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2021,
+          "date": "2021-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2021-NEV",
+          "title": "C-2021-NEV",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2022,
+          "date": "2022-04-27",
+          "md": "04-27",
+          "campaign_id": "C-2022-POLICY",
+          "title": "C-2022-POLICY",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": false,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "MARKET_DATA",
+            "sources": [
+              "cycle_research.db:campaign_date_observations(OBS-C-2022-POLICY-start)"
+            ],
+            "rule": "R1_MARKET_DATA",
+            "note": "Started 04-27 (AUTO 行业代理 04-26 trough 0.828→04-27 0.85 转上, market-data observation, 未人工确认)",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:campaign_date_observations"
+          }
+        },
+        {
+          "year": 2023,
+          "date": "2023-06-12",
+          "md": "06-12",
+          "campaign_id": "C-2023-AD",
+          "title": "C-2023-AD",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2023-04（源 S-2023-05，界面新闻/证券时报，tier 2，2023-07-13）。该证据**仅在其描述文本**提到「6/12预热」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 7/12、6/8、7/11、7/7、6/17、7/6、5月上旬，**未出现 6月12日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。代表标的行情（前复权 raw）在锚点 ±10 交易日内的最低点为 **2023-06-08**（浙江世宝 7.47 / 万安科技 8.60 / 众泰汽车 2.37），并非 2023-06-12。→ 无同日可追溯证据，且行情亦不支持该日为起点；**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
+            "derived_at": "2026-09-23",
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-06-11",
+          "md": "06-11",
+          "campaign_id": "C-2024-V2X",
+          "title": "C-2024-V2X",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2024-03（源 S-2024-02，财联社，tier 2，2024-06-18）。该证据**仅在其描述文本**提到「车联网概念指数 6/11-6/21 涨超 9%」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 6/18、6/17、6/16，**未出现 6月11日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。该 Campaign 的 4 个代表标的（华铭智能 / 金溢科技 / 索菱股份 / 万集科技）在 `market_series` 中**均无行情数据**（V2X 概念指数为空占位）→ 无法以行情佐证。→ 无同日可追溯证据，**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
+            "derived_at": "2026-09-23",
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
+          }
+        },
+        {
+          "year": 2025,
+          "date": "2025-06-22",
+          "md": "06-22",
+          "campaign_id": "C-2025-ROBOTAXI",
+          "title": "C-2025-ROBOTAXI",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:events(EV-2025-01)",
+              "cycle_research.db:sources(S-2025-02)"
+            ],
+            "rule": "R2B_EVENT_SOURCE",
+            "note": "存在同日事件（Tier 2 来源）：特斯拉奥斯汀启动Robotaxi有偿试运营。事件台账支持该日期，但**不构成**对「该日期即行情起点」的独立确认。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:events + sources"
+          }
+        }
+      ],
+      "typical_window": {
+        "start": "05-27",
+        "end": "06-26",
+        "width_days": 31,
+        "method": "Median ± 1×MAD（MAD 乘以 1.4826 一致化）",
+        "center_date": "06-11",
+        "alternative_quantile_window": {
+          "start": "06-01",
+          "end": "06-17",
+          "method": "P25–P75"
+        },
+        "degraded_month_window": "06 ~ 06（放弃日级精度时的粗略口径）"
+      },
+      "center_date": "06-11",
+      "dispersion": {
+        "iqr_days": 16.0,
+        "mad_days": 10,
+        "span_days": 110,
+        "earliest_md": "04-27",
+        "latest_md": "08-15"
+      },
+      "recurrence": {
+        "matched_years": [
+          2020,
+          2021,
+          2023,
+          2024,
+          2025
+        ],
+        "missed_years": [
+          2019,
+          2022
+        ],
+        "eligible_years": 7,
+        "matched_count": 5,
+        "historical_ratio": 0.7143,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2019,
+          2020,
+          2021
+        ],
+        "second_years": [
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "first_center_md": "06-01",
+        "second_center_md": "06-11",
+        "median_shift_days": 10.5,
+        "drift_flag": "STABLE",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 5,
+        "max_center_shift_days": 5.0,
+        "max_hit_drop": 1,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 7,
+        "verification_methods": {
+          "unknown": 6,
+          "market_data": 1
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 7
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 2,
+        "unknown": 5,
+        "conflict": 0,
+        "total": 7,
+        "methods": {
+          "UNKNOWN": 5,
+          "MARKET_DATA": 1,
+          "PUBLIC_SOURCE": 1
+        },
+        "all_verified": false,
+        "label": "2 / 7 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "A",
+        "rationale": "N=7；集中度比率 0.4018；漂移 STABLE；单年主导 False。"
+      },
+      "promotion_status": "TIMELINE",
+      "status": "MODERATE_CANDIDATE",
+      "timeline_eligibility": "TIMELINE_ELIGIBLE",
+      "timeline_eligible": true,
+      "timeline_eligibility_reason": "N=7 ≥ 5；集中度比率 0.4018 ≤ 0.45；前后半段 STABLE；留一法无单年主导 → 满足 Timeline 最低门槛（必须以「宽窗口 + 明确机制类别 + 非预测文案」呈现）。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "多机制叠加：年中稳增长政策节奏（如 2022-05-23 国常会阶段性减征乘用车购置税）+ 国际产业事件节奏 + A 股中报预告披露日历（6 月中下旬）+ 月度产销与渗透率数据发布日历。属于 CALENDAR_DRIVEN 为主的时间型规律，**不是** SEASONAL_DEMAND（无终端需求季节性证据）。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "年中稳增长政策窗口（国常会 / 财政部细则集中于 5–6 月）",
+            "evidence_strength": "SUPPORTED_BY_PUBLIC_RECORD"
+          },
+          {
+            "note": "A 股中报业绩预告披露窗口（6 月中下旬进入密集期）—— 制度性日历",
+            "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+          },
+          {
+            "note": "新能源车月度产销 / 渗透率数据在次月中旬公布 —— 制度性日历",
+            "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+          },
+          {
+            "note": "国际产业事件与展会节奏偏北半球夏季",
+            "evidence_strength": "MULTI_YEAR_OBSERVATION"
+          }
+        ]
+      },
+      "limitations": [
+        "样本仅 2018–2025（有效观测 7 年，2018 为反例年）。",
+        "全部锚点日期均为**研究候选日期**，未经行情人工最终核验（verification_method 多为 unknown）。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**：无法观测「同样在 6 月出现但未成势」的主题。",
+        "研究样本自身的事件台账 6 月占比 33%（均匀基准 8.3%）→ 时间聚集含研究选择偏差成分。",
+        "2019 锚点为弱事件驱动（event_driven / weak），2022 锚点落在窗口之外。",
+        "本例为**探索性历史规律**：样本有限，仅表示历史复现情况，不代表未来重演。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-02",
+      "source_pattern_id": "SOP-01",
+      "pattern_type": "MIXED",
+      "title": "汽车智能化启动观察窗口",
+      "description": "汽车智能化（自动驾驶 / 车路云 / Robotaxi）方向的研究观察起点集中在 6 月中旬前后，但样本只有 4 年且前后半段存在轻度漂移，**未达 Timeline 门槛**，仅作为研究层记录。",
+      "theme_scope": "汽车",
+      "theme_key": "汽车 / 智能驾驶大主题（自动驾驶 · 车路云 · Robotaxi）",
+      "theme_family": {
+        "theme_family_id": "TH-AUTO",
+        "display_name": "汽车",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_auto_summer"
+        ],
+        "main_theme_names": [
+          "智能驾驶/无人驾驶",
+          "车路云一体化/车路协同",
+          "Robotaxi/无人驾驶/智能网约车"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2019,
+        2023,
+        2024,
+        2025
+      ],
+      "observation_count": 4,
+      "observations": [
+        {
+          "year": 2019,
+          "date": "2019-08-15",
+          "md": "08-15",
+          "campaign_id": "C-2019-AD",
+          "title": "C-2019-AD",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": false,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "同日仅有 Tier [3] 证据（未达核验门槛：Tier 4 = 线索级、Tier 3 = 转载/二手）→ 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2023,
+          "date": "2023-06-12",
+          "md": "06-12",
+          "campaign_id": "C-2023-AD",
+          "title": "C-2023-AD",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2023-04（源 S-2023-05，界面新闻/证券时报，tier 2，2023-07-13）。该证据**仅在其描述文本**提到「6/12预热」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 7/12、6/8、7/11、7/7、6/17、7/6、5月上旬，**未出现 6月12日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。代表标的行情（前复权 raw）在锚点 ±10 交易日内的最低点为 **2023-06-08**（浙江世宝 7.47 / 万安科技 8.60 / 众泰汽车 2.37），并非 2023-06-12。→ 无同日可追溯证据，且行情亦不支持该日为起点；**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
+            "derived_at": "2026-09-23",
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-06-11",
+          "md": "06-11",
+          "campaign_id": "C-2024-V2X",
+          "title": "C-2024-V2X",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "MANUAL_OVERRIDE",
+            "note": "Phase 7.4A 人工核验（R4 优先候选）。R4 候选 = E-2024-03（源 S-2024-02，财联社，tier 2，2024-06-18）。该证据**仅在其描述文本**提到「车联网概念指数 6/11-6/21 涨超 9%」，日期未作为独立日期证据登记。已取回源文全文核对：源文提到的日期为 6/18、6/17、6/16，**未出现 6月11日**。同日 linked evidence = 0、同日 linked event = 0（无 tier ≤2）。该 Campaign 的 4 个代表标的（华铭智能 / 金溢科技 / 索菱股份 / 万集科技）在 `market_series` 中**均无行情数据**（V2X 概念指数为空占位）→ 无法以行情佐证。→ 无同日可追溯证据，**维持 UNKNOWN**。",
+            "verified_at": "2026-09-18",
+            "derived_at": "2026-09-23",
+            "derived_from": "research\\research\\reports\\time_observation_anchor_verification_v0_1.json"
+          }
+        },
+        {
+          "year": 2025,
+          "date": "2025-06-22",
+          "md": "06-22",
+          "campaign_id": "C-2025-ROBOTAXI",
+          "title": "C-2025-ROBOTAXI",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": true,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:events(EV-2025-01)",
+              "cycle_research.db:sources(S-2025-02)"
+            ],
+            "rule": "R2B_EVENT_SOURCE",
+            "note": "存在同日事件（Tier 2 来源）：特斯拉奥斯汀启动Robotaxi有偿试运营。事件台账支持该日期，但**不构成**对「该日期即行情起点」的独立确认。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:events + sources"
+          }
+        }
+      ],
+      "typical_window": {
+        "start": "06-09",
+        "end": "06-25",
+        "width_days": 17,
+        "method": "Median ± 1×MAD（MAD 乘以 1.4826 一致化）",
+        "center_date": "06-17",
+        "alternative_quantile_window": {
+          "start": "06-12",
+          "end": "07-05",
+          "method": "P25–P75"
+        },
+        "degraded_month_window": "06 ~ 07（放弃日级精度时的粗略口径）"
+      },
+      "center_date": "06-17",
+      "dispersion": {
+        "iqr_days": 23.75,
+        "mad_days": 6,
+        "span_days": 65,
+        "earliest_md": "06-11",
+        "latest_md": "08-15"
+      },
+      "recurrence": {
+        "matched_years": [
+          2023,
+          2024,
+          2025
+        ],
+        "missed_years": [
+          2019
+        ],
+        "eligible_years": 4,
+        "matched_count": 3,
+        "historical_ratio": 0.75,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2019,
+          2023
+        ],
+        "second_years": [
+          2024,
+          2025
+        ],
+        "first_center_md": "07-14",
+        "second_center_md": "06-17",
+        "median_shift_days": -27.5,
+        "drift_flag": "MILD_DRIFT",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 3,
+        "max_center_shift_days": 5.0,
+        "max_hit_drop": 1,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 4,
+        "verification_methods": {
+          "unknown": 4
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 4
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 1,
+        "unknown": 3,
+        "conflict": 0,
+        "total": 4,
+        "methods": {
+          "UNKNOWN": 3,
+          "PUBLIC_SOURCE": 1
+        },
+        "all_verified": false,
+        "label": "1 / 4 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "B",
+        "rationale": "N=4；集中度比率 0.2968；漂移 MILD_DRIFT；单年主导 False。"
+      },
+      "promotion_status": "RESEARCH_ONLY",
+      "status": "MODERATE_CANDIDATE",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=4 < 最低纳入标准（5），样本不足，先留在研究层；另有轻度漂移（MILD_DRIFT）。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "政策**预期**窗口 + 国际产业事件 + 中报预告日历；注意政策落地时点本身并不在 6 月（如智能网联准入试点成文于 2023-11-17、车路云试点名单公布于 2024-07-01）。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "政策落地时点不在 6 月，机制更接近「预期窗口」而非政策发布日本身",
+            "evidence_strength": "SUPPORTED_BY_PUBLIC_RECORD"
+          }
+        ]
+      },
+      "limitations": [
+        "N=4 < 最低纳入标准（5），且 2019 锚点为弱事件驱动，与其他年份不是同一强度样本。",
+        "前后半段存在 MILD_DRIFT（中位位移约 −27.5 天）→ 不稳定。",
+        "全部锚点为研究候选日期，未经行情人工最终核验。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-03",
+      "source_pattern_id": "SOP-02",
+      "pattern_type": "INDUSTRY_CYCLE",
+      "title": "汽车电动化启动观察窗口",
+      "description": "汽车电动化方向两年（2020 / 2021）的研究观察起点完全相同（06-01），但 N=2 的「完全重合」是**样本量幻觉**，不构成可固化规律；保留在 Artifact 供扩样后复查。",
+      "theme_scope": "汽车",
+      "theme_key": "汽车 / 新能源（新能源车 · 动力电池 · 特斯拉产业链）",
+      "theme_family": {
+        "theme_family_id": "TH-AUTO",
+        "display_name": "汽车",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_auto_summer"
+        ],
+        "main_theme_names": [
+          "新能源汽车/电池",
+          "特斯拉产业链"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2020,
+        2021
+      ],
+      "observation_count": 2,
+      "observations": [
+        {
+          "year": 2020,
+          "date": "2020-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2020-NEV",
+          "title": "C-2020-NEV",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "同日仅有 Tier [4] 证据（未达核验门槛：Tier 4 = 线索级、Tier 3 = 转载/二手）→ 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2021,
+          "date": "2021-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2021-NEV",
+          "title": "C-2021-NEV",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "06-01",
+      "dispersion": {
+        "iqr_days": 0,
+        "mad_days": 0,
+        "span_days": 0,
+        "earliest_md": "06-01",
+        "latest_md": "06-01"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 2,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "INSUFFICIENT_N",
+        "note": "N<4，不做前后半段检验（位移对单点过于敏感）。"
+      },
+      "leave_one_out": {
+        "base_hits": 2,
+        "max_center_shift_days": 0.0,
+        "max_hit_drop": 0,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 2,
+        "verification_methods": {
+          "unknown": 2
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 2
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 0,
+        "unknown": 2,
+        "conflict": 0,
+        "total": 2,
+        "methods": {
+          "UNKNOWN": 2
+        },
+        "all_verified": false,
+        "label": "0 / 2 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "C",
+        "rationale": "N=2；集中度比率 0.0；漂移 INSUFFICIENT_N；单年主导 False。"
+      },
+      "promotion_status": "EXPLORATORY",
+      "status": "EXPLORATORY",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=2 < 最低纳入标准（5），样本不足，先留在研究层；且 N=2 的「完全重合」属样本量幻觉，不得当作证据。",
+      "mechanism": {
+        "type": "INDUSTRY_CYCLE",
+        "primary_mechanism": "INDUSTRY_CYCLE",
+        "note": "产销数据与产能节奏（INDUSTRY_CYCLE）：新能源车月度产销与渗透率数据在年中发布后强化叙事。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "新能源车月度产销 / 渗透率数据的发布节奏",
+            "evidence_strength": "PUBLIC_SCHEDULE_FACT"
+          }
+        ]
+      },
+      "limitations": [
+        "N=2 < 最低纳入标准；两点完全重合会让集中度指标与经验检验出现**假显著**，不得当作证据。",
+        "两年锚点均为研究候选日期，未经行情人工核验。",
+        "本条目是「样本量幻觉」的教学案例：**最「漂亮」的集中度反而最不可用**。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-04",
+      "source_pattern_id": "SOP-04",
+      "pattern_type": "CALENDAR_DRIVEN",
+      "title": "医药健康结构性升级启动窗口",
+      "description": "医药健康方向**未**发现时间聚集：三个锚点分散在三个不同月份（11-01 / 01-02 / 01-23），且留一法显示结果完全由单一年份（2020 疫情）决定 → 已拒绝。",
+      "theme_scope": "医药健康",
+      "theme_key": "医药健康（创新药 · 疫情医疗 · 中医药）",
+      "theme_family": {
+        "theme_family_id": "TH-PHARMA",
+        "display_name": "医药健康",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_pharma_upgrade"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2019,
+        2020,
+        2021
+      ],
+      "observation_count": 3,
+      "observations": [
+        {
+          "year": 2019,
+          "date": "2019-01-02",
+          "md": "01-02",
+          "campaign_id": "C-2019-PHARMA-INNOV",
+          "title": "C-2019-PHARMA-INNOV",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2020-01-23",
+          "md": "01-23",
+          "campaign_id": "RC-2020-PANDEMIC",
+          "title": "2020 疫情医疗（防护耗材 / 体外诊断 / 疫苗）",
+          "kind": "research_candidate",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "export.early_signal",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2021,
+          "date": "2021-11-01",
+          "md": "11-01",
+          "campaign_id": "RC-2021-TCM",
+          "title": "2021–2022 中医药（品牌中药 / 中药创新 / 抗疫中药）",
+          "kind": "research_candidate",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "export.early_signal",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "01-23",
+      "dispersion": {
+        "iqr_days": 303,
+        "mad_days": 21,
+        "span_days": 303,
+        "earliest_md": "01-02",
+        "latest_md": "11-01"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 3,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "INSUFFICIENT_N",
+        "note": "N<4，不做前后半段检验（位移对单点过于敏感）。"
+      },
+      "leave_one_out": {
+        "base_hits": 2,
+        "max_center_shift_days": 141.0,
+        "max_hit_drop": 0,
+        "single_year_dominated": true,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 3,
+        "verification_methods": {
+          "unknown": 3
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 3
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 0,
+        "unknown": 3,
+        "conflict": 0,
+        "total": 3,
+        "methods": {
+          "UNKNOWN": 3
+        },
+        "all_verified": false,
+        "label": "0 / 3 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "D",
+        "rationale": "N=3；集中度比率 1.6603；漂移 INSUFFICIENT_N；单年主导 True。"
+      },
+      "promotion_status": "REJECTED",
+      "status": "REJECTED",
+      "timeline_eligibility": "REJECTED",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "留一法显示结果由单一年份主导（最大中位位移 141.0 天）→ 不构成时间规律。",
+      "mechanism": {
+        "type": "CALENDAR_DRIVEN",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "政策日期本身分散（集采 2018-12-17、科创板 2019-07-22、医保谈判 2019-11-28），不支持「1 月集中」；且含一个不可重复的外生冲击（2020 疫情）。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": [
+          {
+            "note": "医药是数据集中**唯一**跨年重复的 Theme Cycle，却恰恰不构成时间规律",
+            "evidence_strength": "NEGATIVE_FINDING"
+          }
+        ]
+      },
+      "limitations": [
+        "N=3；锚点分属 3 个月，无法构建任何日级 / 月级窗口。",
+        "留一法中位位移约 141 天 → 完全由单一年份主导。",
+        "2019 锚点（01-02）实为本地数据窗口起点，不是真实主题起点。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-05",
+      "source_pattern_id": "RULE_SEMICONDUCTOR",
+      "pattern_type": "MIXED",
+      "title": "电子 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，电子 方向（电子（Macro Theme 全主题，rule_semiconductor 范围内全部对象））按统一锚点规则取得 8 个有效观测（01-04 ~ 06-01）；集中度比率 0.5213，漂移 DRIFTING，单年主导 False → 提升状态 **REJECTED**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "电子",
+      "theme_key": "电子（Macro Theme 全主题，rule_semiconductor 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-ELEC",
+        "display_name": "电子",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_semiconductor"
+        ]
+      },
+      "anchor_type": "MIXED_ANCHOR",
+      "anchor_note": "各年锚点类型不一致（已在 observations[].anchor_source 逐条标注）。",
+      "eligible_years": [
+        2015,
+        2016,
+        2017,
+        2019,
+        2020,
+        2022,
+        2023,
+        2024
+      ],
+      "observation_count": 8,
+      "observations": [
+        {
+          "year": 2015,
+          "date": "2015-01-05",
+          "md": "01-05",
+          "campaign_id": "RC-2015-SEMI-LEVERAGE",
+          "title": "2015 半导体杠杆牛：大基金一期 + 全面牛市流动性",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2016,
+          "date": "2016-02-01",
+          "md": "02-01",
+          "campaign_id": "C-2016-PANEL-CYCLE",
+          "title": "C-2016-PANEL-CYCLE",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2017,
+          "date": "2017-06-01",
+          "md": "06-01",
+          "campaign_id": "RC-2017-GPU-MINING",
+          "title": "2017 显卡与矿机芯片需求：比特币价格周期外溢至半导体",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2019,
+          "date": "2019-01-04",
+          "md": "01-04",
+          "campaign_id": "C-2019-CONSUMER-TWS",
+          "title": "C-2019-CONSUMER-TWS",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R4_TEXT_MENTION_ONLY",
+            "note": "仓库内有 Tier 2 证据在描述中提到该日期（E-SEMI-24），但该日期未作为独立日期证据登记 → 保持 UNKNOWN，供人工核验时优先处理。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences.description"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2020-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2020-PANEL-CYCLE",
+          "title": "C-2020-PANEL-CYCLE",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:events(EV-SEMI-08)",
+              "cycle_research.db:sources(S-SEMI-08)"
+            ],
+            "rule": "R2B_EVENT_SOURCE",
+            "note": "存在同日事件（Tier 2 来源）：LCD 面板价格起涨（韩厂退出 + 供给收紧）。事件台账支持该日期，但**不构成**对「该日期即行情起点」的独立确认。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:events + sources"
+          }
+        },
+        {
+          "year": 2022,
+          "date": "2022-01-04",
+          "md": "01-04",
+          "campaign_id": "C-2022-SEMI-DOWNTURN",
+          "title": "C-2022-SEMI-DOWNTURN",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2023,
+          "date": "2023-01-30",
+          "md": "01-30",
+          "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+          "title": "C-2023-AI-COMPUTE-SEMI",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R4_TEXT_MENTION_ONLY",
+            "note": "仓库内有 Tier 2 证据在描述中提到该日期（E-SEMI-31），但该日期未作为独立日期证据登记 → 保持 UNKNOWN，供人工核验时优先处理。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences.description"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-05-24",
+          "md": "05-24",
+          "campaign_id": "RC-2024-SEMI-FUND3",
+          "title": "2024 半导体自主可控「破局」：大基金三期 + 出口管制升级（设备/材料/先进制程）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "01-31",
+      "dispersion": {
+        "iqr_days": 141.25,
+        "mad_days": 27,
+        "span_days": 148,
+        "earliest_md": "01-04",
+        "latest_md": "06-01"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 8,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2015,
+          2016,
+          2017,
+          2019
+        ],
+        "second_years": [
+          2020,
+          2022,
+          2023,
+          2024
+        ],
+        "first_center_md": "01-18",
+        "second_center_md": "03-28",
+        "median_shift_days": 68.5,
+        "drift_flag": "DRIFTING",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 5,
+        "max_center_shift_days": 1.0,
+        "max_hit_drop": 1,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 8,
+        "verification_methods": {
+          "unknown": 8
+        },
+        "research_status_counts": {
+          "INSUFFICIENT": 3,
+          "PROVISIONAL": 5
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 1,
+        "unknown": 7,
+        "conflict": 0,
+        "total": 8,
+        "methods": {
+          "UNKNOWN": 7,
+          "PUBLIC_SOURCE": 1
+        },
+        "all_verified": false,
+        "label": "1 / 8 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "D",
+        "rationale": "N=8；集中度比率 0.5213；漂移 DRIFTING；单年主导 False。"
+      },
+      "promotion_status": "REJECTED",
+      "status": "REJECTED",
+      "timeline_eligibility": "REJECTED",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=8、IQR=141.25 天 → 锚点跨三个以上季节（或样本不足以定窗口），无法构建有意义的观察窗口。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-06",
+      "source_pattern_id": "RULE_HIEQ",
+      "pattern_type": "MIXED",
+      "title": "高端装备 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，高端装备 方向（高端装备（Macro Theme 全主题，rule_high_end_equipment 范围内全部对象））按统一锚点规则取得 5 个有效观测（01-19 ~ 09-30）；集中度比率 1.0438，漂移 DRIFTING，单年主导 True → 提升状态 **REJECTED**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "高端装备",
+      "theme_key": "高端装备（Macro Theme 全主题，rule_high_end_equipment 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-HIEQ",
+        "display_name": "高端装备",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_high_end_equipment"
+        ]
+      },
+      "anchor_type": "MIXED_ANCHOR",
+      "anchor_note": "各年锚点类型不一致（已在 observations[].anchor_source 逐条标注）。",
+      "eligible_years": [
+        2016,
+        2018,
+        2020,
+        2023,
+        2024
+      ],
+      "observation_count": 5,
+      "observations": [
+        {
+          "year": 2016,
+          "date": "2016-08-01",
+          "md": "08-01",
+          "campaign_id": "C-2016-HIEQ-CONSTR",
+          "title": "C-2016-HIEQ-CONSTR",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:events(EV-HIEQ-01)",
+              "cycle_research.db:sources(S-HIEQ-12)"
+            ],
+            "rule": "R2B_EVENT_SOURCE",
+            "note": "存在同日事件（Tier 2 来源）：工程机械 2016-08 起持续热销（「十三五」基建开工 + 2009-2012 设备更新周期 + 环保淘汰）。事件台账支持该日期，但**不构成**对「该日期即行情起点」的独立确认。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:events + sources"
+          }
+        },
+        {
+          "year": 2018,
+          "date": "2018-09-30",
+          "md": "09-30",
+          "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+          "title": "C-2018-HIEQ-ROBOT-DOWN",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:events(EV-HIEQ-04)",
+              "cycle_research.db:sources(S-HIEQ-04)"
+            ],
+            "rule": "R2B_EVENT_SOURCE",
+            "note": "存在同日事件（Tier 2 来源）：2018 年 9 月中国工业机器人单月产量首次负增长（此后连续 13 个月负增长）。事件台账支持该日期，但**不构成**对「该日期即行情起点」的独立确认。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:events + sources"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2020-04-01",
+          "md": "04-01",
+          "campaign_id": "C-2020-HIEQ-AUTOMATION",
+          "title": "C-2020-HIEQ-AUTOMATION",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2023,
+          "date": "2023-01-19",
+          "md": "01-19",
+          "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+          "title": "C-2023-HIEQ-ROBOT-PLUS",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-HIEQ-18)",
+              "cycle_research.db:sources(S-HIEQ-25)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：工信部等十七部门《「机器人+」应用行动实施方案》出台：机器人概念股冲高，多股一字涨停",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-03-07",
+          "md": "03-07",
+          "campaign_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+          "title": "大规模设备更新政策驱动的装备需求（2024-03 行动方案至 2024-07 资金加码）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "04-01",
+      "dispersion": {
+        "iqr_days": 147.0,
+        "mad_days": 72,
+        "span_days": 254,
+        "earliest_md": "01-19",
+        "latest_md": "09-30"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 5,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2016,
+          2018
+        ],
+        "second_years": [
+          2020,
+          2023,
+          2024
+        ],
+        "first_center_md": "08-31",
+        "second_center_md": "03-07",
+        "median_shift_days": -177.0,
+        "drift_flag": "DRIFTING",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 3,
+        "max_center_shift_days": 61.0,
+        "max_hit_drop": 1,
+        "single_year_dominated": true,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 5,
+        "verification_methods": {
+          "unknown": 5
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 4,
+          "INSUFFICIENT": 1
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 3,
+        "unknown": 2,
+        "conflict": 0,
+        "total": 5,
+        "methods": {
+          "PUBLIC_SOURCE": 3,
+          "UNKNOWN": 2
+        },
+        "all_verified": false,
+        "label": "3 / 5 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "D",
+        "rationale": "N=5；集中度比率 1.0438；漂移 DRIFTING；单年主导 True。"
+      },
+      "promotion_status": "REJECTED",
+      "status": "REJECTED",
+      "timeline_eligibility": "REJECTED",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "留一法显示结果由单一年份主导（最大中位位移 61.0 天）→ 不构成时间规律。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-07",
+      "source_pattern_id": "RULE_RESOURCES",
+      "pattern_type": "MIXED",
+      "title": "资源 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，资源 方向（资源（Macro Theme 全主题，rule_resources 范围内全部对象））按统一锚点规则取得 8 个有效观测（01-01 ~ 08-12）；集中度比率 0.7855，漂移 DRIFTING，单年主导 False → 提升状态 **EXPLORATORY**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "资源",
+      "theme_key": "资源（Macro Theme 全主题，rule_resources 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-RES",
+        "display_name": "资源",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_resources"
+        ]
+      },
+      "anchor_type": "MIXED_ANCHOR",
+      "anchor_note": "各年锚点类型不一致（已在 observations[].anchor_source 逐条标注）。",
+      "eligible_years": [
+        2016,
+        2017,
+        2019,
+        2020,
+        2021,
+        2022,
+        2024,
+        2025
+      ],
+      "observation_count": 8,
+      "observations": [
+        {
+          "year": 2016,
+          "date": "2016-01-04",
+          "md": "01-04",
+          "campaign_id": "RC-2016-RES-CHEM-ENV",
+          "title": "2016 化工：环保约束下的商品涨价与 A 股板块背离（待定）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2017,
+          "date": "2017-04-12",
+          "md": "04-12",
+          "campaign_id": "RC-2017-RES-ALUMINUM",
+          "title": "2017 电解铝清理违规产能（有色·行政去产能）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2019,
+          "date": "2019-03-21",
+          "md": "03-21",
+          "campaign_id": "C-2019-RES-DYE-SHOCK",
+          "title": "C-2019-RES-DYE-SHOCK",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-RES-27)",
+              "cycle_research.db:sources(S-RES-01)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：[央视财经评论]关注江苏响水天嘉宜公司「3·21」爆炸事故",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2019-05-01",
+          "md": "05-01",
+          "campaign_id": "RC-2020-RES-GOLD-RATES",
+          "title": "2019–2020 黄金：实际利率下行与避险驱动行情",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2021,
+          "date": "2021-08-12",
+          "md": "08-12",
+          "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+          "title": "C-2021-RES-CHEM-DUALCTRL",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": false,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-RES-21)",
+              "cycle_research.db:sources(S-RES-17)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：「双碳」政策趋势及企业应对策略分析",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2022,
+          "date": "2021-01-01",
+          "md": "01-01",
+          "campaign_id": "RC-2022-RES-FERTILIZER",
+          "title": "2021–2022 农化（化肥）成本冲击与出口限制驱动行情",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": false,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-02-01",
+          "md": "02-01",
+          "campaign_id": "C-2024-RES-GOLD-CB",
+          "title": "C-2024-RES-GOLD-CB",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2025,
+          "date": "2024-03-01",
+          "md": "03-01",
+          "campaign_id": "RC-2025-RES-COPPER",
+          "title": "2024–2025 铜：矿端结构性供给缺口与电网/新能源需求",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        }
+      ],
+      "typical_window": {
+        "start": "01-04",
+        "end": "05-16",
+        "width_days": 133,
+        "method": "Median ± 1×MAD（MAD 乘以 1.4826 一致化）",
+        "center_date": "03-11",
+        "alternative_quantile_window": {
+          "start": "01-25",
+          "end": "04-17",
+          "method": "P25–P75"
+        },
+        "degraded_month_window": "01 ~ 04（放弃日级精度时的粗略口径）"
+      },
+      "center_date": "03-11",
+      "dispersion": {
+        "iqr_days": 81.75,
+        "mad_days": 44,
+        "span_days": 223,
+        "earliest_md": "01-01",
+        "latest_md": "08-12"
+      },
+      "recurrence": {
+        "matched_years": [
+          2016,
+          2017,
+          2019,
+          2020,
+          2024,
+          2025
+        ],
+        "missed_years": [
+          2021,
+          2022
+        ],
+        "eligible_years": 8,
+        "matched_count": 6,
+        "historical_ratio": 0.75,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2016,
+          2017,
+          2019,
+          2020
+        ],
+        "second_years": [
+          2021,
+          2022,
+          2024,
+          2025
+        ],
+        "first_center_md": "04-01",
+        "second_center_md": "02-15",
+        "median_shift_days": -45.0,
+        "drift_flag": "DRIFTING",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 6,
+        "max_center_shift_days": 10.0,
+        "max_hit_drop": 2,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 8,
+        "verification_methods": {
+          "unknown": 8
+        },
+        "research_status_counts": {
+          "INSUFFICIENT": 5,
+          "PROVISIONAL": 3
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 2,
+        "unknown": 6,
+        "conflict": 0,
+        "total": 8,
+        "methods": {
+          "UNKNOWN": 6,
+          "PUBLIC_SOURCE": 2
+        },
+        "all_verified": false,
+        "label": "2 / 8 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "C",
+        "rationale": "N=8；集中度比率 0.7855；漂移 DRIFTING；单年主导 False。"
+      },
+      "promotion_status": "EXPLORATORY",
+      "status": "EXPLORATORY",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "未达集中度 / 稳定性门槛（集中度比率 0.7855、漂移 DRIFTING）→ 暂不进入 Timeline。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-08",
+      "source_pattern_id": "RULE_CONSUMER",
+      "pattern_type": "MIXED",
+      "title": "消费 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，消费 方向（消费（Macro Theme 全主题，rule_consumer 范围内全部对象））按统一锚点规则取得 8 个有效观测（01-01 ~ 12-07）；集中度比率 1.1977，漂移 MILD_DRIFT，单年主导 False → 提升状态 **REJECTED**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "消费",
+      "theme_key": "消费（Macro Theme 全主题，rule_consumer 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-CONSUMER",
+        "display_name": "消费",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_consumer"
+        ]
+      },
+      "anchor_type": "MIXED_ANCHOR",
+      "anchor_note": "各年锚点类型不一致（已在 observations[].anchor_source 逐条标注）。",
+      "eligible_years": [
+        2016,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "observation_count": 8,
+      "observations": [
+        {
+          "year": 2016,
+          "date": "2016-06-01",
+          "md": "06-01",
+          "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+          "title": "C-2016-CONS-BAIJIU-UPGRADE",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2018,
+          "date": "2018-08-03",
+          "md": "08-03",
+          "campaign_id": "C-2018-CONS-HOG-AFRICAN",
+          "title": "C-2018-CONS-HOG-AFRICAN",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-CONS-33)",
+              "cycle_research.db:sources(S-CONS-26)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：我国首次发生非洲猪瘟疫情 农业农村部：不是人畜共患病",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2019,
+          "date": "2019-03-01",
+          "md": "03-01",
+          "campaign_id": "C-2019-CONS-BAIJIU-CORE",
+          "title": "C-2019-CONS-BAIJIU-CORE",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-CONS-09)",
+              "cycle_research.db:sources(S-CONS-07)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：MSCI increases the weight of China A shares in the MSCI indexes",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2020-02-01",
+          "md": "02-01",
+          "campaign_id": "RC-2020-CONS-SMALL-APPLIANCE",
+          "title": "2020–2021 小家电与清洁电器（疫情居家需求 + 产品创新 + 渗透率提升 + 出口）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2021,
+          "date": "2021-08-17",
+          "md": "08-17",
+          "campaign_id": "C-2021-CONS-HOG-REVERSAL",
+          "title": "C-2021-CONS-HOG-REVERSAL",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-CONS-39)",
+              "cycle_research.db:sources(S-CONS-33)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：农业农村部：全国能繁母猪存栏量结束21个月增长",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2022,
+          "date": "2022-12-07",
+          "md": "12-07",
+          "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+          "title": "C-2022-CONS-SERVICE-REBOUND",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-CONS-26)",
+              "cycle_research.db:sources(S-CONS-21)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 1 来源：关于进一步优化落实新冠肺炎疫情防控措施的通知（\"新十条\"）",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2023,
+          "date": "2023-01-01",
+          "md": "01-01",
+          "campaign_id": "C-2023-CONS-VALUE-RETAIL",
+          "title": "C-2023-CONS-VALUE-RETAIL",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-03-13",
+          "md": "03-13",
+          "campaign_id": "C-2024-CONS-TRADE-IN",
+          "title": "C-2024-CONS-TRADE-IN",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-CONS-55)",
+              "cycle_research.db:sources(S-CONS-41)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 1 来源：国务院关于印发《推动大规模设备更新和消费品以旧换新行动方案》的通知（国发〔2024〕7号）",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "04-22",
+      "dispersion": {
+        "iqr_days": 165.5,
+        "mad_days": 92,
+        "span_days": 340,
+        "earliest_md": "01-01",
+        "latest_md": "12-07"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 8,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2016,
+          2018,
+          2019,
+          2020
+        ],
+        "second_years": [
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "first_center_md": "04-16",
+        "second_center_md": "05-30",
+        "median_shift_days": 44.5,
+        "drift_flag": "MILD_DRIFT",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 7,
+        "max_center_shift_days": 40.0,
+        "max_hit_drop": 3,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 8,
+        "verification_methods": {
+          "unknown": 8
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 7,
+          "INSUFFICIENT": 1
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 5,
+        "unknown": 3,
+        "conflict": 0,
+        "total": 8,
+        "methods": {
+          "UNKNOWN": 3,
+          "PUBLIC_SOURCE": 5
+        },
+        "all_verified": false,
+        "label": "5 / 8 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "D",
+        "rationale": "N=8；集中度比率 1.1977；漂移 MILD_DRIFT；单年主导 False。"
+      },
+      "promotion_status": "REJECTED",
+      "status": "REJECTED",
+      "timeline_eligibility": "REJECTED",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=8、IQR=165.5 天 → 锚点跨三个以上季节（或样本不足以定窗口），无法构建有意义的观察窗口。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-09",
+      "source_pattern_id": "RULE_FIN_REALESTATE",
+      "pattern_type": "MIXED",
+      "title": "金融 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，金融 方向（金融 / 房地产（Macro Theme 全主题，rule_fin_realestate 范围内全部对象））按统一锚点规则取得 7 个有效观测（01-01 ~ 12-21）；集中度比率 1.2932，漂移 DRIFTING，单年主导 True → 提升状态 **REJECTED**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "金融",
+      "theme_key": "金融 / 房地产（Macro Theme 全主题，rule_fin_realestate 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-FIN",
+        "display_name": "金融",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_fin_realestate"
+        ]
+      },
+      "anchor_type": "MIXED_ANCHOR",
+      "anchor_note": "各年锚点类型不一致（已在 observations[].anchor_source 逐条标注）。",
+      "eligible_years": [
+        2016,
+        2019,
+        2020,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "observation_count": 7,
+      "observations": [
+        {
+          "year": 2016,
+          "date": "2015-12-21",
+          "md": "12-21",
+          "campaign_id": "RC-2016-RE-SHANTY",
+          "title": "2015—2017 去库存与棚改货币化驱动的房地产基本面周期（Priority B 回填，A 股响应受杠杆牛污染）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2019,
+          "date": "2018-12-18",
+          "md": "12-18",
+          "campaign_id": "RC-2019-RE-EASING",
+          "title": "2018-10—2019-04 地产调控边际放松与信用扩张预期驱动的地产修复行情（Beta 不可分离）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2020-07-02",
+          "md": "07-02",
+          "campaign_id": "RC-2020-FIN-BROKER-VOLUME",
+          "title": "2020-06—07 成交量放大与资本市场改革预期驱动的券商行情（Beta 代理风险）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2022,
+          "date": "2022-11-08",
+          "md": "11-08",
+          "campaign_id": "C-2022-RE-POLICY-THREE",
+          "title": "C-2022-RE-POLICY-THREE",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-FINRE-01)",
+              "cycle_research.db:sources(S-FINRE-02)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 1 来源：“第二支箭”延期并扩容 支持民营企业债券融资再加力",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2023,
+          "date": "2023-04-01",
+          "md": "04-01",
+          "campaign_id": "C-2023-FIN-SOE-VALUATION",
+          "title": "C-2023-FIN-SOE-VALUATION",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:events(EV-FINRE-07)",
+              "cycle_research.db:sources(S-FINRE-31)"
+            ],
+            "rule": "R2B_EVENT_SOURCE",
+            "note": "存在同日事件（Tier 2 来源）：「中国特色估值体系」叙事重新领涨（券商策略复盘口径，月内区间起点）。事件台账支持该日期，但**不构成**对「该日期即行情起点」的独立确认。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:events + sources"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-01-01",
+          "md": "01-01",
+          "campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+          "title": "C-2024-FIN-BANK-DIVIDEND",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2025,
+          "date": "2025-01-01",
+          "md": "01-01",
+          "campaign_id": "C-2025-FIN-INSURANCE",
+          "title": "C-2025-FIN-INSURANCE",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": null,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "07-02",
+      "dispersion": {
+        "iqr_days": 286.0,
+        "mad_days": 169,
+        "span_days": 354,
+        "earliest_md": "01-01",
+        "latest_md": "12-21"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 7,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2016,
+          2019,
+          2020
+        ],
+        "second_years": [
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "first_center_md": "12-18",
+        "second_center_md": "02-15",
+        "median_shift_days": -306.0,
+        "drift_flag": "DRIFTING",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 7,
+        "max_center_shift_days": 65.0,
+        "max_hit_drop": 3,
+        "single_year_dominated": true,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 7,
+        "verification_methods": {
+          "unknown": 7
+        },
+        "research_status_counts": {
+          "INSUFFICIENT": 2,
+          "CONFLICT": 1,
+          "PROVISIONAL": 4
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 2,
+        "unknown": 5,
+        "conflict": 0,
+        "total": 7,
+        "methods": {
+          "UNKNOWN": 5,
+          "PUBLIC_SOURCE": 2
+        },
+        "all_verified": false,
+        "label": "2 / 7 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "D",
+        "rationale": "N=7；集中度比率 1.2932；漂移 DRIFTING；单年主导 True。"
+      },
+      "promotion_status": "REJECTED",
+      "status": "REJECTED",
+      "timeline_eligibility": "REJECTED",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "留一法显示结果由单一年份主导（最大中位位移 65.0 天）→ 不构成时间规律。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-10",
+      "source_pattern_id": "RULE_DEFENSE_MILITARY",
+      "pattern_type": "MIXED",
+      "title": "国防军工 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，国防军工 方向（国防军工（Macro Theme 全主题，rule_defense_military 范围内全部对象））按统一锚点规则取得 5 个有效观测（01-04 ~ 08-06）；集中度比率 0.8795，漂移 DRIFTING，单年主导 False → 提升状态 **EXPLORATORY**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "国防军工",
+      "theme_key": "国防军工（Macro Theme 全主题，rule_defense_military 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-DEFENSE",
+        "display_name": "国防军工",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_defense_military"
+        ]
+      },
+      "anchor_type": "MIXED_ANCHOR",
+      "anchor_note": "各年锚点类型不一致（已在 observations[].anchor_source 逐条标注）。",
+      "eligible_years": [
+        2017,
+        2019,
+        2020,
+        2024,
+        2025
+      ],
+      "observation_count": 5,
+      "observations": [
+        {
+          "year": 2017,
+          "date": "2017-01-04",
+          "md": "01-04",
+          "campaign_id": "RC-2017-MIL-MIXED-REFORM",
+          "title": "2017 年军民融合 / 军工混改结构（Priority B 回填，生命周期未闭合）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": false,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2019,
+          "date": "2019-07-01",
+          "md": "07-01",
+          "campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+          "title": "C-2019-MIL-GROUP-RESTRUCTURE",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "同日仅有 Tier [3] 证据（未达核验门槛：Tier 4 = 线索级、Tier 3 = 转载/二手）→ 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2020,
+          "date": "2020-06-25",
+          "md": "06-25",
+          "campaign_id": "C-2020-MIL-EQUIP-ORDER",
+          "title": "C-2020-MIL-EQUIP-ORDER",
+          "kind": "campaign",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2024,
+          "date": "2024-08-06",
+          "md": "08-06",
+          "campaign_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+          "title": "2024–2025 商业航天 / 卫星互联网（跨族边界候选，族属未定）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": false,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        },
+        {
+          "year": 2025,
+          "date": "2025-06-24",
+          "md": "06-24",
+          "campaign_id": "RC-2025-MIL-PARADE-80",
+          "title": "2025 年抗战胜利 80 周年阅兵 / 军贸与新质战斗力主题（复合机制候选）",
+          "kind": "research_candidate",
+          "anchor_type": "CAMPAIGN_START",
+          "anchor_source": "campaign.start_date",
+          "in_typical_window": true,
+          "verification": {
+            "status": "UNKNOWN",
+            "method": "UNKNOWN",
+            "sources": [],
+            "rule": "R5_NO_EVIDENCE",
+            "note": "仓库内没有与该锚点日期直接相关的证据 → 保持 UNKNOWN。",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db"
+          }
+        }
+      ],
+      "typical_window": {
+        "start": "06-16",
+        "end": "07-04",
+        "width_days": 19,
+        "method": "Median ± 1×MAD（MAD 乘以 1.4826 一致化）",
+        "center_date": "06-25",
+        "alternative_quantile_window": {
+          "start": "06-24",
+          "end": "07-01",
+          "method": "P25–P75"
+        },
+        "degraded_month_window": "06 ~ 07（放弃日级精度时的粗略口径）"
+      },
+      "center_date": "06-25",
+      "dispersion": {
+        "iqr_days": 7.0,
+        "mad_days": 6,
+        "span_days": 214,
+        "earliest_md": "01-04",
+        "latest_md": "08-06"
+      },
+      "recurrence": {
+        "matched_years": [
+          2019,
+          2020,
+          2025
+        ],
+        "missed_years": [
+          2017,
+          2024
+        ],
+        "eligible_years": 5,
+        "matched_count": 3,
+        "historical_ratio": 0.6,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "SPLIT",
+        "first_years": [
+          2017,
+          2019
+        ],
+        "second_years": [
+          2020,
+          2024,
+          2025
+        ],
+        "first_center_md": "04-03",
+        "second_center_md": "06-25",
+        "median_shift_days": 83.0,
+        "drift_flag": "DRIFTING",
+        "note": "|位移| ≥ 45d → DRIFTING；21–44d → MILD_DRIFT；< 21d → STABLE。"
+      },
+      "leave_one_out": {
+        "base_hits": 3,
+        "max_center_shift_days": 3.0,
+        "max_hit_drop": 1,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 5,
+        "verification_methods": {
+          "unknown": 5
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 5
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 0,
+        "unknown": 5,
+        "conflict": 0,
+        "total": 5,
+        "methods": {
+          "UNKNOWN": 5
+        },
+        "all_verified": false,
+        "label": "0 / 5 个锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "C",
+        "rationale": "N=5；集中度比率 0.8795；漂移 DRIFTING；单年主导 False。"
+      },
+      "promotion_status": "EXPLORATORY",
+      "status": "EXPLORATORY",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "未达集中度 / 稳定性门槛（集中度比率 0.8795、漂移 DRIFTING）→ 暂不进入 Timeline。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-11",
+      "source_pattern_id": "RULE_INFOCOMM",
+      "pattern_type": "MIXED",
+      "title": "信息通信 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，信息通信 方向（信息通信（Macro Theme 全主题，rule_infocomm 范围内全部对象））按统一锚点规则取得 2 个有效观测（03-21 ~ 06-06）；集中度比率 0.6329，漂移 INSUFFICIENT_N，单年主导 False → 提升状态 **EXPLORATORY**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "信息通信",
+      "theme_key": "信息通信（Macro Theme 全主题，rule_infocomm 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-COMM",
+        "display_name": "信息通信",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_infocomm"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2019,
+        2023
+      ],
+      "observation_count": 2,
+      "observations": [
+        {
+          "year": 2019,
+          "date": "2019-06-06",
+          "md": "06-06",
+          "campaign_id": "C-2019-COMM-5G",
+          "title": "C-2019-COMM-5G",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-COMM-02)",
+              "cycle_research.db:sources(S-COMM-02)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 1 来源：我国正式发放 5G 商用牌照（工信部向中国电信、中国移动、中国联通、中国广电发放）",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2023,
+          "date": "2023-03-21",
+          "md": "03-21",
+          "campaign_id": "C-2023-COMM-OPTICAL",
+          "title": "C-2023-COMM-OPTICAL",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-COMM-12)",
+              "cycle_research.db:sources(S-COMM-11)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：NVIDIA GTC 2023 主题演讲（黄仁勋发布 AI 推理芯片，称「人工智能的 iPhone 时刻」）",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "04-28",
+      "dispersion": {
+        "iqr_days": 77,
+        "mad_days": 38,
+        "span_days": 77,
+        "earliest_md": "03-21",
+        "latest_md": "06-06"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 2,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "INSUFFICIENT_N",
+        "note": "N<4，不做前后半段检验（位移对单点过于敏感）。"
+      },
+      "leave_one_out": {
+        "base_hits": 2,
+        "max_center_shift_days": 0.0,
+        "max_hit_drop": 0,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 2,
+        "verification_methods": {
+          "unknown": 2
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 2
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 2,
+        "unknown": 0,
+        "conflict": 0,
+        "total": 2,
+        "methods": {
+          "PUBLIC_SOURCE": 2
+        },
+        "all_verified": true,
+        "label": "全部锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "C",
+        "rationale": "N=2；集中度比率 0.6329；漂移 INSUFFICIENT_N；单年主导 False。"
+      },
+      "promotion_status": "EXPLORATORY",
+      "status": "EXPLORATORY",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=2 < 最低纳入标准（5），样本不足，先留在研究层；且 N=2 的「完全重合」属样本量幻觉，不得当作证据。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    },
+    {
+      "pattern_id": "TOP-12",
+      "source_pattern_id": "RULE_POWER",
+      "pattern_type": "MIXED",
+      "title": "电力设备 启动观察窗口（统一口径）",
+      "description": "在 ThreeC 2018–2025 的研究样本中，电力设备 方向（电力设备（Macro Theme 全主题，rule_power_equipment 范围内全部对象））按统一锚点规则取得 2 个有效观测（01-10 ~ 09-22）；集中度比率 2.0959，漂移 INSUFFICIENT_N，单年主导 False → 提升状态 **EXPLORATORY**。这是**历史样本中的时间分布描述**，不是未来概率，也不是行业季节性。",
+      "theme_scope": "电力设备",
+      "theme_key": "电力设备（Macro Theme 全主题，rule_power_equipment 范围内全部对象）",
+      "theme_family": {
+        "theme_family_id": "TH-POWER",
+        "display_name": "电力设备",
+        "taxonomy_source": "themes 表 parent_theme_id IS NULL（Macro Theme）"
+      },
+      "family_definition": {
+        "rule_ids": [
+          "rule_power_equipment"
+        ]
+      },
+      "anchor_type": "EARLY_SIGNAL",
+      "anchor_note": "全部年份均取到 EARLY_SIGNAL（未退化到 Formation / Campaign.start），口径统一，不存在「部分年份用 A、部分年份用 B」的污染。",
+      "eligible_years": [
+        2020,
+        2022
+      ],
+      "observation_count": 2,
+      "observations": [
+        {
+          "year": 2020,
+          "date": "2020-09-22",
+          "md": "09-22",
+          "campaign_id": "C-2020-POWER-NE",
+          "title": "C-2020-POWER-NE",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-PWR-01)",
+              "cycle_research.db:sources(S-PWR-01)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 1 来源：国家主席习近平在第七十五届联合国大会一般性辩论上的讲话（宣布 2030 碳达峰 / 2060 碳中和）",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        },
+        {
+          "year": 2022,
+          "date": "2022-01-10",
+          "md": "01-10",
+          "campaign_id": "C-2022-POWER-GRID",
+          "title": "C-2022-POWER-GRID",
+          "kind": "campaign",
+          "anchor_type": "EARLY_SIGNAL",
+          "anchor_source": "lifecycle.EARLY_SIGNAL.start",
+          "in_typical_window": null,
+          "verification": {
+            "status": "VERIFIED",
+            "method": "PUBLIC_SOURCE",
+            "sources": [
+              "cycle_research.db:evidences(E-PWR-08)",
+              "cycle_research.db:sources(S-PWR-08)"
+            ],
+            "rule": "R2_PUBLIC_SOURCE",
+            "note": "存在同日 Tier 2 来源：特高压建设迎来新一轮提速期（2022 年特高压项目核准提速）",
+            "derived_at": "2026-09-23",
+            "derived_from": "cycle_research.db:evidences + sources"
+          }
+        }
+      ],
+      "typical_window": null,
+      "center_date": "05-18",
+      "dispersion": {
+        "iqr_days": 255,
+        "mad_days": 128,
+        "span_days": 255,
+        "earliest_md": "01-10",
+        "latest_md": "09-22"
+      },
+      "recurrence": {
+        "matched_years": [],
+        "missed_years": [],
+        "eligible_years": 2,
+        "matched_count": 0,
+        "historical_ratio": null,
+        "label": "历史样本中的窗口复现情况（不是未来概率）"
+      },
+      "stability": {
+        "status": "INSUFFICIENT_N",
+        "note": "N<4，不做前后半段检验（位移对单点过于敏感）。"
+      },
+      "leave_one_out": {
+        "base_hits": 2,
+        "max_center_shift_days": 0.0,
+        "max_hit_drop": 0,
+        "single_year_dominated": false,
+        "note": "判据：剔除任一年后中位位移 ≥ 45 天 → 结果由单一年份主导（不构成时间规律）。命中数变化（max_hit_drop）仅作参考，不参与判定。"
+      },
+      "data_quality": {
+        "grade": "MEDIUM",
+        "anchor_precision": "EXACT_DATE（日级）",
+        "verified_anchors": 0,
+        "unverified_anchors": 2,
+        "verification_methods": {
+          "unknown": 2
+        },
+        "research_status_counts": {
+          "PROVISIONAL": 2
+        },
+        "note": "全部锚点为研究候选日期，未经行情人工最终核验 → 数据质量上限为 MEDIUM；这份数据不足以支撑「稳定规律」级别（N≥8 且多机制复核）的结论。"
+      },
+      "anchor_verification": {
+        "verified": 2,
+        "unknown": 0,
+        "conflict": 0,
+        "total": 2,
+        "methods": {
+          "PUBLIC_SOURCE": 2
+        },
+        "all_verified": true,
+        "label": "全部锚点已完成仓库内证据核验",
+        "note": "核验只表示该日期在仓库内有可追溯的证据支持；**核验通过 ≠ 规律有效**，也不代表未来会重复。"
+      },
+      "research_strength": {
+        "grade": "C",
+        "rationale": "N=2；集中度比率 2.0959；漂移 INSUFFICIENT_N；单年主导 False。"
+      },
+      "promotion_status": "EXPLORATORY",
+      "status": "EXPLORATORY",
+      "timeline_eligibility": "RESEARCH_ONLY",
+      "timeline_eligible": false,
+      "timeline_eligibility_reason": "N=2 < 最低纳入标准（5），样本不足，先留在研究层；且 N=2 的「完全重合」属样本量幻觉，不得当作证据。",
+      "mechanism": {
+        "type": "MIXED",
+        "primary_mechanism": "CALENDAR_DRIVEN",
+        "note": "本族为 **R01-01~R01-06 扩容后按统一口径新增**：定义仅为 `rule_ids` 过滤（**未挑选 main_theme_names**），锚点按统一 ANCHOR_PRIORITY 提取，集中度 / 稳定性 / 留一法 / 最小 N / 单年主导 全部沿用既有规则，**未做任何人工设定或事后调整**。",
+        "is_lunar_driven": false,
+        "lunar_note": "以春节为基准的偏移跨度 85–191 天（约 106 天）→ 该规律**不是**农历型，任何「春节后第 N 天」的表达都是错的。",
+        "evidence": []
+      },
+      "limitations": [
+        "本族为扩容后新增，其结论**完全由统一规则产生**，未引入机制假设。",
+        "「没有发现 Pattern」同样是有效结果 —— 若未达门槛则如实标为 RESEARCH_ONLY / EXPLORATORY / REJECTED。",
+        "ThreeC 只记录「形成了 Campaign 的主题」，存在**幸存者偏差**。",
+        "锚点日期为**研究候选日期**，核验状态见 anchor_verification。"
+      ],
+      "provenance": {
+        "source": "ThreeC 2018–2025 历史研究数据（canonical export + research DB）",
+        "generated_by": "research/scripts/build_time_observation_patterns.py",
+        "snapshot_date": "2026-09-23"
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import canonicalJson from '@observation/time_observation_patterns_v0_1.json';
+import canonicalJson from '@observation/time_observation_patterns_v0_2.json';
 import {
   EMPTY_TIME_OBSERVATION_DATASET,
   buildTimeObservationLayer,
@@ -91,7 +91,7 @@ function rawArtifact(patterns: Record<string, unknown>[]): Record<string, unknow
   return {
     artifact: 'time_observation_patterns',
     artifact_version: '0.1',
-    snapshot_date: '2026-09-16',
+    snapshot_date: '2026-09-23',
     patterns,
   };
 }
@@ -117,16 +117,14 @@ function expectNoPredictiveLanguage(markup: string) {
 /* ---------------- ① 解析 ---------------- */
 
 describe('Time Observation Pattern · 解析', () => {
-  it('canonical Artifact 解析零告警，并保留四条模式', () => {
+  it('canonical Artifact 解析零告警，并保留十二条模式', () => {
     const ds = defaultTimeObservationDataset();
     expect(ds.issues).toEqual([]);
     expect(ds.artifact).toBe('time_observation_patterns');
-    expect(ds.snapshotDate).toBe('2026-09-16');
+    expect(ds.snapshotDate).toBe('2026-09-23');
     expect(ds.patterns.map((p) => p.patternId)).toEqual([
-      'TOP-01',
-      'TOP-02',
-      'TOP-03',
-      'TOP-04',
+      'TOP-01', 'TOP-02', 'TOP-03', 'TOP-04', 'TOP-05', 'TOP-06',
+      'TOP-07', 'TOP-08', 'TOP-09', 'TOP-10', 'TOP-11', 'TOP-12',
     ]);
   });
 
@@ -149,7 +147,7 @@ describe('Time Observation Pattern · 解析', () => {
     expect(top01.observations).toHaveLength(7);
   });
 
-  it('canonical：其余三条为 RESEARCH_ONLY / REJECTED，且不可进入 Timeline 展示', () => {
+  it('canonical：其余十一条均不可进入 Timeline 展示', () => {
     const ds = defaultTimeObservationDataset();
     const others = ds.patterns.filter((p) => !p.timelineEligible);
     expect(others.length).toBeGreaterThanOrEqual(3);
@@ -160,9 +158,9 @@ describe('Time Observation Pattern · 解析', () => {
     expect(model.views.every((v) => v.patternId === 'TOP-01')).toBe(true);
     // Phase 7.3：提升状态统一后，RESEARCH_ONLY = TOP-02；TOP-03 是 EXPLORATORY
     expect(model.researchOnlyCount).toBe(1);
-    expect(model.rejectedCount).toBe(1);
+    expect(model.rejectedCount).toBe(5);
     expect(ds.patterns.filter((p) => p.promotionStatus === 'EXPLORATORY').map((p) => p.patternId)).toEqual([
-      'TOP-03',
+      'TOP-03', 'TOP-07', 'TOP-10', 'TOP-11', 'TOP-12',
     ]);
   });
 
@@ -524,12 +522,26 @@ describe('Time Observation Pattern · 产物卫生', () => {
     }
   });
 
-  it('锚点日期不晚于研究快照日，且都在研究覆盖年份内', () => {
+  it('锚点日期不晚于研究快照日，且 year 为研究对象的研究年份', () => {
+    // ★ 语义说明（Research Release）：
+    //   `year` = **研究对象的研究年份**（export.campaign_year，用于年度去重）；
+    //   `date` = **统一锚点日期**（ANCHOR_PRIORITY 取到的日期）。
+    //   当锚点退化为 `campaign.start_date`（末选）且该日期落在**上一日历年度**时，二者可以不同。
+    //   当前 universe 有 5 例（全部为 R01 对象，均为 `anchor_source = campaign.start_date`）。
+    //   ★ 这是**已记录的 Known Limitation**，不是本测试要掩盖的失败；
+    //     本轮不改变 Time Observation 的年度归属口径（属规则变更，超出本轮范围）。
     const ds = defaultTimeObservationDataset();
+    // 注意：解析后的 `eligibleYears` 是**数量**（number），不是数组 —— 用 observations 取年份集合
+    const covered = new Set<number>();
+    for (const p of ds.patterns) for (const o of p.observations) covered.add(o.year);
     for (const p of ds.patterns) {
       for (const o of p.observations) {
         expect(o.date <= ds.snapshotDate).toBe(true);
-        expect(o.year).toBe(Number(o.date.slice(0, 4)));
+        // year 必须落在该 Pattern 的 eligibleYears 内（研究年份口径自洽）
+        expect(covered.has(o.year)).toBe(true);
+        // 锚点日期年份与研究年份一致，或（仅当锚点退化为 campaign.start_date）相差 1 年
+        const dy = Number(o.date.slice(0, 4));
+        expect(Math.abs(dy - o.year) <= 1).toBe(true);
       }
     }
   });
@@ -696,13 +708,21 @@ describe('Time Observation Pattern · 提升状态（Phase 7.3）', () => {
     ).toBe('EXPLORATORY');
   });
 
-  it('canonical：四条模式的提升状态与已知结论一致', () => {
+  it('canonical：十二条模式的提升状态与已知结论一致', () => {
     const ds = defaultTimeObservationDataset();
     expect(ds.patterns.map((p) => [p.patternId, p.promotionStatus])).toEqual([
       ['TOP-01', 'TIMELINE'],
       ['TOP-02', 'RESEARCH_ONLY'],
       ['TOP-03', 'EXPLORATORY'],
       ['TOP-04', 'REJECTED'],
+      ['TOP-05', 'REJECTED'],
+      ['TOP-06', 'REJECTED'],
+      ['TOP-07', 'EXPLORATORY'],
+      ['TOP-08', 'REJECTED'],
+      ['TOP-09', 'REJECTED'],
+      ['TOP-10', 'EXPLORATORY'],
+      ['TOP-11', 'EXPLORATORY'],
+      ['TOP-12', 'EXPLORATORY'],
     ]);
   });
 

@@ -1,0 +1,2985 @@
+{
+ "artifact": "historical_driver_canonicalization",
+ "artifact_version": "0.4",
+ "generated_by": "research/scripts/canonicalize_historical_drivers_v0_4.py",
+ "position": "Research-only 派生层 —— **不进入** DB / schema.sql / timeline_export_v1.json / contracts / src。**不是**投资建议、预测或信号。",
+ "supersedes_note": "v0.1 / v0.2 产物**逐字节保留**；本版**只扩展关键词覆盖**，canonical vocabulary / mapping_status 语义 / 映射逻辑**完全不变**。",
+ "canonical_vocabulary": {
+  "source": "research/current/schema.json → narrativeType（复用，**未新增**）",
+  "values": [
+   "POLICY_DRIVEN",
+   "INDUSTRY_UPGRADE",
+   "TECH_BREAKTHROUGH",
+   "DEMAND_SURGE",
+   "SUPPLY_CONTRACTION",
+   "VALUATION_RESET",
+   "CYCLE_REVERSAL",
+   "EVENT_CATALYST",
+   "UNKNOWN"
+  ]
+ },
+ "rules": {
+  "v0_1_base_keyword_count": 158,
+  "added_keyword_count": 130,
+  "total_keyword_count": 285,
+  "added_rules": {
+   "POLICY_DRIVEN": [
+    {
+     "keyword": "条例",
+     "coverage_note": "C-2020-CONS-BEAUTY-CN：《化妆品监督管理条例》"
+    },
+    {
+     "keyword": "规范",
+     "coverage_note": "C-2020-CONS-BEAUTY-CN：《化妆品功效宣称评价规范》"
+    },
+    {
+     "keyword": "纲要",
+     "coverage_note": "C-2022-CONS-SERVICE-REBOUND / 交通强国建设纲要类文本"
+    },
+    {
+     "keyword": "行动计划",
+     "coverage_note": "RC-2024-MIL-COMMERCIAL-SPACE：国家航天局行动计划"
+    },
+    {
+     "keyword": "方案",
+     "coverage_note": "C-2019-RES-DYE-SHOCK：化工行业整治提升方案"
+    },
+    {
+     "keyword": "整治",
+     "coverage_note": "C-2019-RES-DYE-SHOCK：园区整治 / 环保整治"
+    },
+    {
+     "keyword": "核查",
+     "coverage_note": "C-2016-HIEQ-CONSTR：北方环保核查"
+    },
+    {
+     "keyword": "环保",
+     "coverage_note": "C-2016-HIEQ-CONSTR：排放不达标强制淘汰"
+    },
+    {
+     "keyword": "指标",
+     "coverage_note": "C-2020-RES-RAREEARTH：开采指标 / 冶炼分离指标"
+    },
+    {
+     "keyword": "配额",
+     "coverage_note": "供给端行政配额（行政手段）"
+    },
+    {
+     "keyword": "三道红线",
+     "coverage_note": "C-2020-RE-DEBT-RISK：房地产金融审慎管理制度"
+    },
+    {
+     "keyword": "审慎管理",
+     "coverage_note": "C-2020-RE-DEBT-RISK：房地产金融审慎管理"
+    },
+    {
+     "keyword": "集中度",
+     "coverage_note": "C-2020-RE-DEBT-RISK：房地产贷款集中度管理制度"
+    },
+    {
+     "keyword": "保交楼",
+     "coverage_note": "R01-05：保交楼政策阶段"
+    },
+    {
+     "keyword": "因城施策",
+     "coverage_note": "R01-05：地方调控"
+    },
+    {
+     "keyword": "三支箭",
+     "coverage_note": "C-2022-RE-POLICY-THREE：信贷/债券/股权三支箭"
+    },
+    {
+     "keyword": "第二支箭",
+     "coverage_note": "C-2022-RE-POLICY-THREE：交易商协会债券融资支持工具"
+    },
+    {
+     "keyword": "交易商协会",
+     "coverage_note": "C-2022-RE-POLICY-THREE：第二支箭发行主体"
+    },
+    {
+     "keyword": "疫情防控",
+     "coverage_note": "C-2022-CONS-SERVICE-REBOUND：疫情防控措施优化"
+    },
+    {
+     "keyword": "新十条",
+     "coverage_note": "C-2022-CONS-SERVICE-REBOUND：新十条"
+    },
+    {
+     "keyword": "措施优化",
+     "coverage_note": "C-2022-CONS-SERVICE-REBOUND：措施优化"
+    },
+    {
+     "keyword": "收储",
+     "coverage_note": "C-2021-CONS-HOG-REVERSAL：中央冻猪肉储备收储"
+    },
+    {
+     "keyword": "储备",
+     "coverage_note": "C-2021-CONS-HOG-REVERSAL：储备调控"
+    },
+    {
+     "keyword": "特别国债",
+     "coverage_note": "C-2024-CONS-TRADE-IN：超长期特别国债支持以旧换新"
+    },
+    {
+     "keyword": "财政",
+     "coverage_note": "财政资金安排（制度性资金）"
+    },
+    {
+     "keyword": "军民融合",
+     "coverage_note": "RC-2015-MIL-REFORM-BULL：军民融合上升为国家战略"
+    },
+    {
+     "keyword": "国家战略",
+     "coverage_note": "RC-2015-MIL-REFORM-BULL：上升为国家战略"
+    },
+    {
+     "keyword": "混改",
+     "coverage_note": "R01-06：军工混改"
+    },
+    {
+     "keyword": "国企改革",
+     "coverage_note": "R01-05：中特估 / 国企改革"
+    },
+    {
+     "keyword": "战略性重组",
+     "coverage_note": "C-2019-MIL-GROUP-RESTRUCTURE：南北船战略性重组"
+    },
+    {
+     "keyword": "集团重组",
+     "coverage_note": "C-2019-MIL-GROUP-RESTRUCTURE：集团重组"
+    },
+    {
+     "keyword": "资产注入",
+     "coverage_note": "军工资产证券化"
+    },
+    {
+     "keyword": "资产证券化",
+     "coverage_note": "军工资产证券化"
+    },
+    {
+     "keyword": "军品",
+     "coverage_note": "C-2020-MIL-EQUIP-ORDER：军品采购"
+    },
+    {
+     "keyword": "军费",
+     "coverage_note": "军费 / 国防预算（政策—军费层）"
+    },
+    {
+     "keyword": "国防预算",
+     "coverage_note": "军费 / 国防预算（政策—军费层）"
+    },
+    {
+     "keyword": "实体清单",
+     "coverage_note": "C-2019-SEMI-LOCALIZATION：实体清单"
+    },
+    {
+     "keyword": "出口管制",
+     "coverage_note": "C-2022-SEMI-DOWNTURN：对华半导体限制"
+    },
+    {
+     "keyword": "限制",
+     "coverage_note": "C-2022-SEMI-DOWNTURN：出口限制"
+    },
+    {
+     "keyword": "大基金",
+     "coverage_note": "C-2019-SEMI-LOCALIZATION / C-2020-SEMI-EQUIPMENT：国家集成电路产业投资基金"
+    },
+    {
+     "keyword": "产业投资基金",
+     "coverage_note": "产业基金 / 地方产业基金"
+    },
+    {
+     "keyword": "产业基金",
+     "coverage_note": "C-2023-HIEQ-HUMANOID：北京市机器人产业基金"
+    },
+    {
+     "keyword": "投资计划",
+     "coverage_note": "C-2022-POWER-GRID：国家电网年度投资计划"
+    },
+    {
+     "keyword": "能源局",
+     "coverage_note": "（已有）"
+    },
+    {
+     "keyword": "行动计划",
+     "coverage_note": "（重复键合并，见上）"
+    }
+   ],
+   "SUPPLY_CONTRACTION": [
+    {
+     "keyword": "停产",
+     "coverage_note": "C-2019-RES-DYE-SHOCK：园区停产 / 延迟复工"
+    },
+    {
+     "keyword": "停工",
+     "coverage_note": "供给端停工"
+    },
+    {
+     "keyword": "关闭",
+     "coverage_note": "C-2019-RES-DYE-SHOCK：彻底关闭响水化工园区"
+    },
+    {
+     "keyword": "关停",
+     "coverage_note": "供给端关停"
+    },
+    {
+     "keyword": "压减",
+     "coverage_note": "C-2019-RES-DYE-SHOCK：压减化工生产企业数量"
+    },
+    {
+     "keyword": "削减",
+     "coverage_note": "C-2021-RES-CHEM-DUALCTRL：产量削减约 90%"
+    },
+    {
+     "keyword": "惜售",
+     "coverage_note": "C-2020-RES-RAREEARTH：持货端锁货惜售"
+    },
+    {
+     "keyword": "锁货",
+     "coverage_note": "C-2020-RES-RAREEARTH：锁货惜售"
+    },
+    {
+     "keyword": "现货稀少",
+     "coverage_note": "C-2020-RES-RAREEARTH：现货稀少"
+    },
+    {
+     "keyword": "供应受限",
+     "coverage_note": "C-2020-RES-LITHIUM：锂矿供应受限"
+    },
+    {
+     "keyword": "供需缺口",
+     "coverage_note": "C-2020-RES-LITHIUM：供需缺口扩大"
+    },
+    {
+     "keyword": "口岸关闭",
+     "coverage_note": "C-2020-RES-RAREEARTH：中缅口岸关闭"
+    },
+    {
+     "keyword": "进口量",
+     "coverage_note": "C-2020-RES-RAREEARTH：缅甸矿进口量下降"
+    },
+    {
+     "keyword": "能耗双控",
+     "coverage_note": "C-2021-RES-CHEM-DUALCTRL：能耗双控"
+    },
+    {
+     "keyword": "双控",
+     "coverage_note": "C-2021-RES-CHEM-DUALCTRL：能耗双控"
+    },
+    {
+     "keyword": "限电",
+     "coverage_note": "C-2021-RES-CHEM-DUALCTRL：限电"
+    },
+    {
+     "keyword": "去化",
+     "coverage_note": "产能去化"
+    }
+   ],
+   "DEMAND_SURGE": [
+    {
+     "keyword": "关联交易",
+     "coverage_note": "C-2020-MIL-EQUIP-ORDER：日常关联交易预计公告（订单层代理）"
+    },
+    {
+     "keyword": "预付款",
+     "coverage_note": "C-2020-MIL-EQUIP-ORDER：甲方大额预付"
+    },
+    {
+     "keyword": "预付",
+     "coverage_note": "C-2020-MIL-EQUIP-ORDER：大额预付"
+    },
+    {
+     "keyword": "合同负债",
+     "coverage_note": "C-2020-MIL-EQUIP-ORDER：合同负债（会计口径代理变量）"
+    },
+    {
+     "keyword": "出游",
+     "coverage_note": "C-2022-CONS-SERVICE-REBOUND：旅游出游人次"
+    },
+    {
+     "keyword": "人次",
+     "coverage_note": "C-2022-CONS-SERVICE-REBOUND：出游人次"
+    },
+    {
+     "keyword": "客流",
+     "coverage_note": "服务消费客流"
+    },
+    {
+     "keyword": "门店",
+     "coverage_note": "C-2023-CONS-VALUE-RETAIL：量贩零食门店扩张"
+    },
+    {
+     "keyword": "铺开",
+     "coverage_note": "C-2023-CONS-VALUE-RETAIL：门店快速铺开"
+    },
+    {
+     "keyword": "渠道",
+     "coverage_note": "C-2020-CONS-BEAUTY-CN：线上渠道红利"
+    },
+    {
+     "keyword": "GMV",
+     "coverage_note": "C-2020-CONS-BEAUTY-CN：抖音美妆 GMV"
+    },
+    {
+     "keyword": "月活",
+     "coverage_note": "C-2023-AI-COMPUTE-SEMI：ChatGPT 月活破亿"
+    },
+    {
+     "keyword": "用户",
+     "coverage_note": "需求侧用户规模"
+    },
+    {
+     "keyword": "资本开支",
+     "coverage_note": "C-2023-AI-COMPUTE-SEMI：海外算力资本开支上修"
+    },
+    {
+     "keyword": "扩产",
+     "coverage_note": "C-2020-SEMI-EQUIPMENT：晶圆厂扩产（客户侧产能投资 → 上游需求）"
+    },
+    {
+     "keyword": "固定资产投资",
+     "coverage_note": "C-2018-HIEQ-ROBOT-DOWN / C-2020-HIEQ-AUTOMATION：制造业固定资产投资"
+    },
+    {
+     "keyword": "基站",
+     "coverage_note": "C-2019-COMM-5G：5G 基站建设量"
+    },
+    {
+     "keyword": "持仓",
+     "coverage_note": "C-2020-MIL-EQUIP-ORDER：公募基金军工持仓（资金需求侧）"
+    }
+   ],
+   "INDUSTRY_UPGRADE": [
+    {
+     "keyword": "自主可控",
+     "coverage_note": "C-2019-SEMI-LOCALIZATION：自主可控"
+    },
+    {
+     "keyword": "国产替代",
+     "coverage_note": "（已有）"
+    },
+    {
+     "keyword": "业态",
+     "coverage_note": "C-2023-CONS-VALUE-RETAIL：渠道业态扩张"
+    },
+    {
+     "keyword": "定价权",
+     "coverage_note": "C-2016-CONS-BAIJIU-UPGRADE：外资定价权提升"
+    },
+    {
+     "keyword": "纳入因子",
+     "coverage_note": "C-2019-CONS-BAIJIU-CORE：MSCI 提高 A 股纳入因子（制度性资金/结构变化）"
+    },
+    {
+     "keyword": "MSCI",
+     "coverage_note": "C-2016-CONS-BAIJIU-UPGRADE / C-2019-CONS-BAIJIU-CORE：MSCI 纳入"
+    },
+    {
+     "keyword": "确定性溢价",
+     "coverage_note": "C-2019-CONS-BAIJIU-CORE：确定性溢价叙事"
+    }
+   ],
+   "TECH_BREAKTHROUGH": [
+    {
+     "keyword": "组网",
+     "coverage_note": "RC-2024-MIL-COMMERCIAL-SPACE：低轨星座批量组网"
+    },
+    {
+     "keyword": "入轨",
+     "coverage_note": "RC-2024-MIL-COMMERCIAL-SPACE：卫星入轨"
+    },
+    {
+     "keyword": "首飞",
+     "coverage_note": "RC-2024-MIL-COMMERCIAL-SPACE：朱雀三号首飞"
+    },
+    {
+     "keyword": "可重复使用",
+     "coverage_note": "RC-2024-MIL-COMMERCIAL-SPACE：可重复使用火箭"
+    },
+    {
+     "keyword": "大模型",
+     "coverage_note": "C-2023-AI-COMPUTE-SEMI：大模型"
+    },
+    {
+     "keyword": "ChatGPT",
+     "coverage_note": "C-2023-AI-COMPUTE-SEMI：ChatGPT"
+    },
+    {
+     "keyword": "GPT",
+     "coverage_note": "C-2023-AI-COMPUTE-SEMI：GPT-4 / Copilot"
+    },
+    {
+     "keyword": "Copilot",
+     "coverage_note": "C-2023-AI-COMPUTE-SEMI：Copilot"
+    }
+   ],
+   "VALUATION_RESET": [
+    {
+     "keyword": "高股息",
+     "coverage_note": "C-2024-FIN-BANK-DIVIDEND：高股息配置"
+    },
+    {
+     "keyword": "红利",
+     "coverage_note": "C-2024-FIN-BANK-DIVIDEND：红利资产"
+    },
+    {
+     "keyword": "资产荒",
+     "coverage_note": "C-2024-FIN-BANK-DIVIDEND：资产荒"
+    },
+    {
+     "keyword": "低利率",
+     "coverage_note": "C-2024-FIN-BANK-DIVIDEND：低利率环境"
+    },
+    {
+     "keyword": "配置",
+     "coverage_note": "C-2024-FIN-BANK-DIVIDEND / C-2025-FIN-INSURANCE：资金配置"
+    },
+    {
+     "keyword": "增量资金",
+     "coverage_note": "C-2019-CONS-BAIJIU-CORE：外资增量资金"
+    },
+    {
+     "keyword": "外资",
+     "coverage_note": "C-2016-CONS-BAIJIU-UPGRADE：外资定价"
+    },
+    {
+     "keyword": "去美元化",
+     "coverage_note": "C-2024-RES-GOLD-CB：去美元化 / 货币体系重构"
+    },
+    {
+     "keyword": "央行购金",
+     "coverage_note": "C-2024-RES-GOLD-CB：全球央行购金"
+    },
+    {
+     "keyword": "ETF",
+     "coverage_note": "C-2024-RES-GOLD-CB：黄金 ETF 持仓扩张"
+    },
+    {
+     "keyword": "实际利率",
+     "coverage_note": "C-2020-RES-NONFERROUS / C-2024-RES-GOLD-CB：实际利率"
+    },
+    {
+     "keyword": "零利率",
+     "coverage_note": "C-2020-RES-NONFERROUS：美联储零利率"
+    },
+    {
+     "keyword": "宽松",
+     "coverage_note": "C-2020-RES-NONFERROUS：无限量宽松"
+    },
+    {
+     "keyword": "资产端",
+     "coverage_note": "C-2025-FIN-INSURANCE：保险资产端"
+    },
+    {
+     "keyword": "负债端",
+     "coverage_note": "C-2025-FIN-INSURANCE：保险负债端"
+    }
+   ],
+   "CYCLE_REVERSAL": [
+    {
+     "keyword": "更新周期",
+     "coverage_note": "C-2016-HIEQ-CONSTR：设备更新周期"
+    },
+    {
+     "keyword": "替换窗口",
+     "coverage_note": "C-2016-HIEQ-CONSTR：更新替换窗口"
+    },
+    {
+     "keyword": "更新替换",
+     "coverage_note": "C-2016-HIEQ-CONSTR：更新替换"
+    },
+    {
+     "keyword": "逆周期",
+     "coverage_note": "C-2021-CONS-HOG-REVERSAL：逆周期收储"
+    },
+    {
+     "keyword": "周期底部",
+     "coverage_note": "C-2020-RES-LITHIUM：锂价历史周期底部"
+    },
+    {
+     "keyword": "下行周期",
+     "coverage_note": "C-2022-SEMI-DOWNTURN：半导体下行周期"
+    },
+    {
+     "keyword": "增速放缓",
+     "coverage_note": "C-2018-HIEQ-ROBOT-DOWN：行业增速放缓"
+    },
+    {
+     "keyword": "增速转负",
+     "coverage_note": "C-2022-SEMI-DOWNTURN：增速转负"
+    },
+    {
+     "keyword": "负增长",
+     "coverage_note": "C-2018-HIEQ-ROBOT-DOWN：产量负增长"
+    },
+    {
+     "keyword": "进口同步收缩",
+     "coverage_note": "C-2018-HIEQ-ROBOT-DOWN：进口收缩"
+    },
+    {
+     "keyword": "收缩",
+     "coverage_note": "需求/进口收缩"
+    },
+    {
+     "keyword": "退坡",
+     "coverage_note": "补贴退坡"
+    }
+   ],
+   "EVENT_CATALYST": [
+    {
+     "keyword": "事故",
+     "coverage_note": "C-2019-RES-DYE-SHOCK：天嘉宜化工特别重大爆炸事故（离散事件）"
+    },
+    {
+     "keyword": "爆炸",
+     "coverage_note": "C-2019-RES-DYE-SHOCK：爆炸事故"
+    },
+    {
+     "keyword": "四中全会",
+     "coverage_note": "RC-2024-MIL-COMMERCIAL-SPACE：二十届四中全会"
+    },
+    {
+     "keyword": "十五五",
+     "coverage_note": "RC-2024-MIL-COMMERCIAL-SPACE：十五五建议"
+    },
+    {
+     "keyword": "成立",
+     "coverage_note": "集团/机构揭牌成立"
+    },
+    {
+     "keyword": "揭牌",
+     "coverage_note": "C-2019-MIL-GROUP-RESTRUCTURE：中国船舶集团揭牌"
+    },
+    {
+     "keyword": "阅兵",
+     "coverage_note": "RC-2019-MIL-PARADE-70 / RC-2025-MIL-PARADE-80：阅兵（一次性重大纪念活动，intake 原文即标注「重大纪念事件的注意力驱动」/「事件驱动型叙事」）"
+    },
+    {
+     "keyword": "纪念大会",
+     "coverage_note": "RC-2025-MIL-PARADE-80：抗战胜利 80 周年纪念大会（v0.1「大会」已覆盖，显式列入以便审计）"
+    }
+   ]
+  },
+  "added_index": {
+   "POLICY_DRIVEN": [
+    "条例",
+    "规范",
+    "纲要",
+    "行动计划",
+    "方案",
+    "整治",
+    "核查",
+    "环保",
+    "指标",
+    "配额",
+    "三道红线",
+    "审慎管理",
+    "集中度",
+    "保交楼",
+    "因城施策",
+    "三支箭",
+    "第二支箭",
+    "交易商协会",
+    "疫情防控",
+    "新十条",
+    "措施优化",
+    "收储",
+    "储备",
+    "特别国债",
+    "财政",
+    "军民融合",
+    "国家战略",
+    "混改",
+    "国企改革",
+    "战略性重组",
+    "集团重组",
+    "资产注入",
+    "资产证券化",
+    "军品",
+    "军费",
+    "国防预算",
+    "实体清单",
+    "出口管制",
+    "限制",
+    "大基金",
+    "产业投资基金",
+    "产业基金",
+    "投资计划",
+    "能源局",
+    "行动计划"
+   ],
+   "SUPPLY_CONTRACTION": [
+    "停产",
+    "停工",
+    "关闭",
+    "关停",
+    "压减",
+    "削减",
+    "惜售",
+    "锁货",
+    "现货稀少",
+    "供应受限",
+    "供需缺口",
+    "口岸关闭",
+    "进口量",
+    "能耗双控",
+    "双控",
+    "限电",
+    "去化"
+   ],
+   "DEMAND_SURGE": [
+    "关联交易",
+    "预付款",
+    "预付",
+    "合同负债",
+    "出游",
+    "人次",
+    "客流",
+    "门店",
+    "铺开",
+    "渠道",
+    "GMV",
+    "月活",
+    "用户",
+    "资本开支",
+    "扩产",
+    "固定资产投资",
+    "基站",
+    "持仓"
+   ],
+   "INDUSTRY_UPGRADE": [
+    "自主可控",
+    "国产替代",
+    "业态",
+    "定价权",
+    "纳入因子",
+    "MSCI",
+    "确定性溢价"
+   ],
+   "TECH_BREAKTHROUGH": [
+    "组网",
+    "入轨",
+    "首飞",
+    "可重复使用",
+    "大模型",
+    "ChatGPT",
+    "GPT",
+    "Copilot"
+   ],
+   "VALUATION_RESET": [
+    "高股息",
+    "红利",
+    "资产荒",
+    "低利率",
+    "配置",
+    "增量资金",
+    "外资",
+    "去美元化",
+    "央行购金",
+    "ETF",
+    "实际利率",
+    "零利率",
+    "宽松",
+    "资产端",
+    "负债端"
+   ],
+   "CYCLE_REVERSAL": [
+    "更新周期",
+    "替换窗口",
+    "更新替换",
+    "逆周期",
+    "周期底部",
+    "下行周期",
+    "增速放缓",
+    "增速转负",
+    "负增长",
+    "进口同步收缩",
+    "收缩",
+    "退坡"
+   ],
+   "EVENT_CATALYST": [
+    "事故",
+    "爆炸",
+    "四中全会",
+    "十五五",
+    "成立",
+    "揭牌",
+    "阅兵",
+    "纪念大会"
+   ]
+  },
+  "discipline": [
+   "❌ 未新增 driver vocabulary",
+   "❌ 未使用 event_type 反推 driver",
+   "❌ 未使用价格 / 涨跌 / 相对收益结果反推 driver（PRICE_ACTION 排除逻辑保持有效）",
+   "❌ 未删除 v0.1 任何原有关键词",
+   "❌ 未修改 v0.1 / v0.2 产物"
+  ]
+ },
+ "revisions": [
+  {
+   "revision": "v0.3-r1",
+   "date": "2026-09-23",
+   "change": "「阅兵」「纪念大会」由 `POLICY_DRIVEN` **移至** `EVENT_CATALYST`",
+   "decision": "「阅兵」= 一次性重大纪念活动（**事件**），**不是**产业政策文本",
+   "rationale": [
+    "① 形式：阅兵有明确日期、一次性，属重大纪念活动，非规则/制度性文件",
+    "② 机制：它不改变任何产业规则（无补贴 / 无准入 / 无配额 / 无采购规则变更）；intake 原文即标注「重大纪念事件的注意力驱动」「事件驱动型叙事」",
+    "③ 词表内部一致性：v0.1 `EVENT_CATALYST` 已含「大会」「峰会」「论坛」「启动仪式」等同类型大型活动；将阅兵归 POLICY 与「大会」的既有归类自相矛盾",
+    "④ 实际损害：跨 canonical 重复命中会使 `RC-2025-MIL-PARADE-80` 落入 `DERIVED`（无 canonical driver）→ **反而丢失机制**（该 cycle 修正前无任何 canonical driver）",
+    "⑤ 禁止反向推理：不得为「让候选拿到 driver」而保留双重归属"
+   ],
+   "allowed_dual_semantics": false,
+   "dual_semantics_rejected_because": [
+    "canonical vocabulary 的 9 项是**互斥机制轴**（`POLICY_DRIVEN` = 规则/制度驱动 vs `EVENT_CATALYST` = 离散事件驱动）",
+    "允许同一关键词跨 canonical 会**系统性制造 `DERIVED` / `AMBIGUOUS`**（v0.3 实测：8 条 `DIRECT→DERIVED`、1 条 `DERIVED→AMBIGUOUS` 均源于跨 canonical 重复）",
+    "Rule Set §3.3「不得仅凭 driver 名称相同判定 MATCH」→ 同理不得让同一关键词同时充当两种机制"
+   ],
+   "unchanged": [
+    "canonical vocabulary（9 项）",
+    "v0.1 / v0.2 产物",
+    "mapping_status 语义",
+    "映射逻辑"
+   ]
+  },
+  {
+   "revision": "v0.3-r2",
+   "date": "2026-09-23",
+   "change": "删除「扩产周期」；保留「扩产」在 `DEMAND_SURGE`",
+   "scope": "仅此 2 词；**未处理**其余 5 项 substring collision（增长/负增长 · 整治/整治提升 · 出口/出口管制 · 采购/装备采购 · 储备/黄金储备）",
+   "decision": {
+    "扩产": "A —— 可作为 `DEMAND_SURGE` 的有效机制词（客户侧产能投资 → 上游需求）",
+    "扩产周期": "D —— 从 canonical keyword mapping 中**删除**"
+   },
+   "evidence": {
+    "hit_texts": 2,
+    "扩产_hits": [
+     "C-2020-SEMI-EQUIPMENT start#3「国内晶圆厂进入扩产周期」",
+     "C-2020-PANEL-CYCLE start#2「2018-2019 年过度扩产后的产能出清，行业集中度提升」"
+    ],
+    "扩产周期_hits": [
+     "C-2020-SEMI-EQUIPMENT start#3「国内晶圆厂进入扩产周期」—— **与「扩产」完全同一文本**"
+    ]
+   },
+   "rationale": {
+    "delete_扩产周期": [
+     "① **零增量覆盖**：其唯一命中文本已被「扩产」完全覆盖 → 贡献 0 条独有覆盖",
+     "② **方向错误**：被归入 `SUPPLY_CONTRACTION`，而「产能扩张」与「供给收缩」机制方向相反",
+     "③ **实际损害**：它使该文本额外命中 `SUPPLY_CONTRACTION` → 把本应得到 `DEMAND_SURGE` 的文本推入 2-命中 `DERIVED`（canon=None）",
+     "④ **无替代必要性**：`扩产` 已覆盖该语境；「周期」不携带机制"
+    ],
+    "keep_扩产_in_DEMAND_SURGE": [
+     "① **研究自身表述**：intake `R01-SEMICONDUCTOR-002` 标题即「半导体设备与材料国产替代（**晶圆厂扩产 → 「卡脖子」上游**）」→ 扩产 = 上游需求",
+     "② **v0.1 既有惯例**：`DEMAND_SURGE` 已含「装机 / 并网 / 招标 / 采购」等同为**观察者相对的客户侧动作**（他人动作 → 本行业需求）",
+     "③ **决定性证据**：删除「扩产周期」后，本词使 `C-2020-SEMI-EQUIPMENT` 获得 `DEMAND_SURGE`（与研究标题一致），且**无任何数据损失**",
+     "④ **误命中如实记录**：`C-2020-PANEL-CYCLE`「过度扩产后的产能出清」中「扩产」为**时序前提**而非机制 → 但该文本同时命中 POLICY+SUPPLY（2 命中）→ 无论保留与否结果均为 `DERIVED/None` → **零数据影响**"
+    ],
+    "not_chosen": {
+     "扩产→B（其他 canonical）": "无任何 canonical 与「产能扩张」机制方向一致（`SUPPLY_CONTRACTION` 为反方向）",
+     "扩产→C/D（删除）": "会使 `C-2020-SEMI-EQUIPMENT` 的 `DEMAND_SURGE` 永久不可见（与其研究标题矛盾），且该文本退化为 `UNKNOWN`（负面变化）"
+    }
+   },
+   "min_impact": {
+    "changed_entries": 1,
+    "detail": "C-2020-SEMI-EQUIPMENT start#3：hits [DEMAND_SURGE, SUPPLY_CONTRACTION] → [DEMAND_SURGE]；status DERIVED → DERIVED（**未变**）；canonical None → DEMAND_SURGE（**改善**）",
+    "canonical_driver_changes": "C-2020-SEMI-EQUIPMENT: ['POLICY_DRIVEN'] → ['DEMAND_SURGE','POLICY_DRIVEN']",
+    "primary_mechanism_changes": 0,
+    "five_state_distribution_changes": "**无**（DIRECT 55 / DERIVED 454 / AMBIGUOUS 2 / UNKNOWN 86 / NOT_AVAILABLE 98 全部不变）",
+    "cycles_with_driver": "77 / 79（不变）· campaign 52 / 52（不变）",
+    "negative_changes": "**无**"
+   },
+   "unchanged": [
+    "canonical vocabulary（9 项）",
+    "v0.1 / v0.2 产物",
+    "mapping_status 语义",
+    "映射逻辑",
+    "Rule Set v0.3"
+   ]
+  },
+  {
+   "revision": "v0.4-r1",
+   "date": "2026-09-23",
+   "change": "剩余 5 项 substring collision 的**一次性处理**：3 项删词（B）+ 2 项最小上下文消歧（C）",
+   "scope": "仅这 5 项；未新增任何 canonical vocabulary；未改动映射状态语义",
+   "decisions": [
+    {
+     "pair": "增长 / 负增长",
+     "treatment": "C 最小上下文消歧",
+     "rule": "`增长` 在**否定语境**（前置 1 字 ∈ {负,零,不,未,无}）下不计 `DEMAND_SURGE`",
+     "why_not_B": "删 `负增长` → 「新能源汽车7月起负增长」会得到 `DIRECT/DEMAND_SURGE`（**语义错误**）；删 `增长` → 11 条真实正增长文本丢失需求信号 + 2 条负面变化",
+     "evidence": "`负增长` 的 10 条命中是 `增长` 21 条命中的**严格子集**；10 条中 9 条因「负增长」内含「增长」而**必然双命中**"
+    },
+    {
+     "pair": "整治 / 整治提升",
+     "treatment": "B 删词（删 `整治提升`）",
+     "why": "零增量覆盖（唯一命中已被「整治」+「压减」覆盖）· 删除影响 = **0 条条目变化**（完全惰性）",
+     "evidence": "`整治提升` 1 条命中 ⊂ `整治` 5 条命中"
+    },
+    {
+     "pair": "出口 / 出口管制",
+     "treatment": "C 最小上下文消歧",
+     "rule": "`出口` 在**限制/管制语境**（前置 ≤8 字含 管制/限制/禁令/配额/禁止/制裁/收紧）下不计 `DEMAND_SURGE`",
+     "why_not_B": "删 `出口管制` → 「出口管制预期强化替代紧迫性」会得到 `DEMAND_SURGE`（**语义错误**，应为 POLICY）；删 `出口` → 10 条变化、**6 条负面**、丢失 12 条真实出口需求命中",
+     "evidence": "`出口管制` 1 条命中 ⊂ `出口` 18 条命中；18 条中 5 条为**限制语境**（出口禁令 / 出口配额 / 禁止出口 / 出口限制 / 出口管制）"
+    },
+    {
+     "pair": "采购 / 装备采购",
+     "treatment": "B 删词（删 `装备采购`）",
+     "why": "零增量覆盖 · 删除后 2 条 `C-2020-MIL-EQUIP-ORDER` 文本由 `DERIVED/None` 变为 `DIRECT/DEMAND_SURGE`，与**研究已确立的 driver**（该 Campaign 的 canonical driver = DEMAND_SURGE）一致",
+     "evidence": "`装备采购` 2 条命中 ⊂ `采购` 11 条命中；删除影响 = 0 个 driver 集合变化、0 负面"
+    },
+    {
+     "pair": "储备 / 黄金储备",
+     "treatment": "B 删词（删 `黄金储备`）",
+     "why": "零增量覆盖 · 删除后「中国黄金储备连续第 11 个月上升」归 `POLICY_DRIVEN`（央行储备管理 = 政策行动），语义更准确",
+     "evidence": "`黄金储备` 1 条命中 ⊂ `储备` 4 条命中；删除影响 = 0 个 driver 集合变化、0 负面"
+    }
+   ],
+   "mapping_algorithm_change": {
+    "introduced": true,
+    "what": "新增 `CONTEXT_SUPPRESSION` + `keyword_hits()` —— **上下文抑制（只做减法）**",
+    "discipline": [
+     "**不新增任何 canonical 映射**（只抑制，不新增）→ 不引入新 vocabulary",
+     "仅对 2 个关键词生效（`增长` / `出口`），规则为确定性字符串窗口判定",
+     "precedence：先做上下文抑制 → 再按命中数判定 mapping_status（与 v0.3 顺序一致）"
+    ]
+   },
+   "min_impact": {
+    "changed_entries": 11,
+    "canonical_driver_changes": 0,
+    "primary_mechanism_changes": 0,
+    "five_state": "DIRECT 55→58 · DERIVED 454→449 · AMBIGUOUS 2→2 · UNKNOWN 86→87 · NOT_AVAILABLE 98→99",
+    "negative_changes": [
+     "C-2018-HIEQ-ROBOT-DOWN accelerator#1：DERIVED → NOT_AVAILABLE（抑制后仅剩 CYCLE_REVERSAL，触发 v0.1 既有 `PRICE_ACTION` 排除（「调整」）→ 标签层面变化，**无 driver 损失**）",
+     "RC-2022-RES-FERTILIZER accelerator#2：「中国禁止磷肥出口」原为 DERIVED/DEMAND_SURGE → UNKNOWN（**语义修正**：出口禁令 ≠ 需求放量；该 cycle driver 集合不变）"
+    ]
+   },
+   "unchanged": [
+    "canonical vocabulary（9 项）",
+    "v0.1 / v0.2 / v0.3 产物",
+    "mapping_status 语义",
+    "Rule Set v0.3"
+   ]
+  }
+ ],
+ "keyword_collision_audit": {
+  "cross_canonical_duplicate_keywords_all": {
+   "结构迁移": [
+    "TECH_BREAKTHROUGH",
+    "INDUSTRY_UPGRADE"
+   ]
+  },
+  "cross_canonical_duplicate_keywords_added_in_v0_3": {},
+  "substring_conflicts_across_canonical": [
+   {
+    "shorter": "倍",
+    "longer": "翻倍",
+    "shorter_owner": [
+     "VALUATION_RESET"
+    ],
+    "longer_owner": [
+     "DEMAND_SURGE"
+    ]
+   },
+   {
+    "shorter": "出口",
+    "longer": "出口管制",
+    "shorter_owner": [
+     "DEMAND_SURGE"
+    ],
+    "longer_owner": [
+     "POLICY_DRIVEN"
+    ]
+   },
+   {
+    "shorter": "出清",
+    "longer": "出清完成",
+    "shorter_owner": [
+     "SUPPLY_CONTRACTION"
+    ],
+    "longer_owner": [
+     "CYCLE_REVERSAL"
+    ]
+   },
+   {
+    "shorter": "利润",
+    "longer": "净利润",
+    "shorter_owner": [
+     "SUPPLY_CONTRACTION"
+    ],
+    "longer_owner": [
+     "DEMAND_SURGE"
+    ]
+   },
+   {
+    "shorter": "增长",
+    "longer": "负增长",
+    "shorter_owner": [
+     "DEMAND_SURGE"
+    ],
+    "longer_owner": [
+     "CYCLE_REVERSAL"
+    ]
+   },
+   {
+    "shorter": "迁移",
+    "longer": "结构迁移",
+    "shorter_owner": [
+     "INDUSTRY_UPGRADE"
+    ],
+    "longer_owner": [
+     "INDUSTRY_UPGRADE",
+     "TECH_BREAKTHROUGH"
+    ]
+   },
+   {
+    "shorter": "标准体系",
+    "longer": "标准体系（2026 版）",
+    "shorter_owner": [
+     "POLICY_DRIVEN"
+    ],
+    "longer_owner": [
+     "TECH_BREAKTHROUGH"
+    ]
+   }
+  ],
+  "note": "同一关键词归属 ≥2 个 canonical driver → 该文本**永远无法成为 DIRECT**，且会系统性制造 `DERIVED` / `AMBIGUOUS`。`cross_canonical_duplicate_keywords_added_in_v0_3` 为本轮新增词中的跨 canonical 重复（**应为空**）。"
+ },
+ "summary": {
+  "objects": 79,
+  "historical_raw_driver_count": 695,
+  "historical_canonical_driver_count": 8,
+  "driving_raw_count": 392,
+  "driving_canonical_driver_count": 8,
+  "by_mapping_status": {
+   "DIRECT": 58,
+   "DERIVED": 449,
+   "AMBIGUOUS": 2,
+   "UNKNOWN": 87,
+   "NOT_AVAILABLE": 99
+  },
+  "by_canonical_driver": {
+   "POLICY_DRIVEN": 76,
+   "CYCLE_REVERSAL": 42,
+   "INDUSTRY_UPGRADE": 10,
+   "VALUATION_RESET": 30,
+   "SUPPLY_CONTRACTION": 69,
+   "TECH_BREAKTHROUGH": 16,
+   "EVENT_CATALYST": 18,
+   "DEMAND_SURGE": 64
+  },
+  "driving_by_canonical_driver": {
+   "POLICY_DRIVEN": 67,
+   "INDUSTRY_UPGRADE": 7,
+   "VALUATION_RESET": 20,
+   "SUPPLY_CONTRACTION": 38,
+   "TECH_BREAKTHROUGH": 11,
+   "EVENT_CATALYST": 16,
+   "DEMAND_SURGE": 52,
+   "CYCLE_REVERSAL": 6
+  },
+  "cycles_with_canonical_driver": 77,
+  "cycles_without_canonical_driver": 2,
+  "cycles_newly_covered_vs_v0_3": 0
+ },
+ "v0_3_to_v0_4_diff": {
+  "changed_entries": 7,
+  "by_transition": {
+   "DERIVED→DIRECT": 3,
+   "DERIVED→NOT_AVAILABLE": 1,
+   "DERIVED→DERIVED": 2,
+   "DERIVED→UNKNOWN": 1
+  },
+  "newly_covered_cycles": [],
+  "still_without_canonical_driver": [
+   "RC-2015-FIN-LEVERAGE",
+   "RC-2024-SECONDARY"
+  ],
+  "detail": [
+   {
+    "cycle_id": "C-2019-AD",
+    "bucket": "turning",
+    "seq": 1,
+    "raw_driver": "新能源汽车7月起负增长、行业基本面弱（S-2019-02 contradicting）",
+    "from": {
+     "status": "DERIVED",
+     "canonical_driver": null
+    },
+    "to": {
+     "status": "DIRECT",
+     "canonical_driver": "CYCLE_REVERSAL"
+    },
+    "matched_rules": [
+     "CYCLE_REVERSAL"
+    ]
+   },
+   {
+    "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+    "bucket": "start",
+    "seq": 1,
+    "raw_driver": "2020-07-10 同期媒体：装备采购与更新换代加速、训练强度提高导致装备损耗加快（E-MIL-05）",
+    "from": {
+     "status": "DERIVED",
+     "canonical_driver": null
+    },
+    "to": {
+     "status": "DIRECT",
+     "canonical_driver": "DEMAND_SURGE"
+    },
+    "matched_rules": [
+     "DEMAND_SURGE"
+    ]
+   },
+   {
+    "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+    "bucket": "ending",
+    "seq": 2,
+    "raw_driver": "2023 年「十四五」中期调整致部分装备采购与订单下达放缓（E-MIL-13，subsequent，产业侧机制）",
+    "from": {
+     "status": "DERIVED",
+     "canonical_driver": null
+    },
+    "to": {
+     "status": "DIRECT",
+     "canonical_driver": "DEMAND_SURGE"
+    },
+    "matched_rules": [
+     "DEMAND_SURGE"
+    ]
+   },
+   {
+    "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+    "bucket": "accelerator",
+    "seq": 1,
+    "raw_driver": "负增长持续时长本身强化了悲观预期：连续 13 个月负增长使「周期性调整」的叙事在 2019 年持续",
+    "from": {
+     "status": "DERIVED",
+     "canonical_driver": null
+    },
+    "to": {
+     "status": "NOT_AVAILABLE",
+     "canonical_driver": null
+    },
+    "matched_rules": [
+     "CYCLE_REVERSAL"
+    ]
+   },
+   {
+    "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+    "bucket": "turning",
+    "seq": 1,
+    "raw_driver": "2019 年 10 月单月产量同比转正（+1.7%）、11 月 +4.3%，连续 13 个月的负增长序列被打破",
+    "from": {
+     "status": "DERIVED",
+     "canonical_driver": null
+    },
+    "to": {
+     "status": "DERIVED",
+     "canonical_driver": "CYCLE_REVERSAL"
+    },
+    "matched_rules": [
+     "CYCLE_REVERSAL"
+    ]
+   },
+   {
+    "cycle_id": "C-2024-RES-GOLD-CB",
+    "bucket": "accelerator",
+    "seq": 4,
+    "raw_driver": "中国黄金储备 2025 年连续第 11 个月上升，至 9 月底 2303 吨",
+    "from": {
+     "status": "DERIVED",
+     "canonical_driver": null
+    },
+    "to": {
+     "status": "DERIVED",
+     "canonical_driver": "POLICY_DRIVEN"
+    },
+    "matched_rules": [
+     "POLICY_DRIVEN"
+    ]
+   },
+   {
+    "cycle_id": "RC-2022-RES-FERTILIZER",
+    "bucket": "accelerator",
+    "seq": 2,
+    "raw_driver": "中国禁止磷肥出口（至少至 2022-06），保护国内粮食安全",
+    "from": {
+     "status": "DERIVED",
+     "canonical_driver": "DEMAND_SURGE"
+    },
+    "to": {
+     "status": "UNKNOWN",
+     "canonical_driver": null
+    },
+    "matched_rules": []
+   }
+  ]
+ },
+ "per_cycle": [
+  {
+   "cycle_id": "C-2019-AD",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 2,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 1,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.25
+  },
+  {
+   "cycle_id": "C-2020-NEV",
+   "macro_theme": "汽车",
+   "raw_driver_count": 9,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "INDUSTRY_UPGRADE",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 4,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 3,
+   "driving_direct_count": 3,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.5556,
+   "driving_mapping_completeness": 0.8
+  },
+  {
+   "cycle_id": "C-2021-NEV",
+   "macro_theme": "汽车",
+   "raw_driver_count": 9,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "SUPPLY_CONTRACTION",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 3,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 3,
+   "driving_direct_count": 3,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 0.8
+  },
+  {
+   "cycle_id": "C-2022-POLICY",
+   "macro_theme": "汽车",
+   "raw_driver_count": 12,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "POLICY_DRIVEN"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 5,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 4,
+   "driving_direct_count": 5,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "C-2023-AD",
+   "macro_theme": "汽车",
+   "raw_driver_count": 10,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 3,
+   "derived_count": 0,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 5,
+   "driving_direct_count": 3,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.3,
+   "driving_mapping_completeness": 0.6
+  },
+  {
+   "cycle_id": "C-2024-V2X",
+   "macro_theme": "汽车",
+   "raw_driver_count": 8,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 1,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.625,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "C-2024-ROBOTAXI",
+   "macro_theme": "汽车",
+   "raw_driver_count": 10,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "EVENT_CATALYST"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 2,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 6,
+   "driving_direct_count": 1,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.3,
+   "driving_mapping_completeness": 0.2
+  },
+  {
+   "cycle_id": "C-2025-ROBOTAXI",
+   "macro_theme": "汽车",
+   "raw_driver_count": 8,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 2,
+   "derived_count": 0,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 4,
+   "driving_direct_count": 2,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.25,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "macro_theme": "消费",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.7143,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "C-2018-CONS-HOG-AFRICAN",
+   "macro_theme": "消费",
+   "raw_driver_count": 5,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2019-CONS-BAIJIU-CORE",
+   "macro_theme": "消费",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.7143,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "C-2019-CONS-AESTHETICS",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "INDUSTRY_UPGRADE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "POLICY_DRIVEN"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2020-CONS-DUTYFREE",
+   "macro_theme": "消费",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "DEMAND_SURGE"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.7143,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "C-2020-CONS-WHITE-GOODS",
+   "macro_theme": "消费",
+   "raw_driver_count": 5,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION",
+    "TECH_BREAKTHROUGH"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2020-CONS-BEAUTY-CN",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2021-CONS-HOG-REVERSAL",
+   "macro_theme": "消费",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.8571,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2022-CONS-SERVICE-REBOUND",
+   "macro_theme": "消费",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.8571,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2023-CONS-VALUE-RETAIL",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.8333,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2024-CONS-TRADE-IN",
+   "macro_theme": "消费",
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "POLICY_DRIVEN"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+   "macro_theme": "国防军工",
+   "raw_driver_count": 5,
+   "driving_raw_count": 2,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "EVENT_CATALYST"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 2,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 1,
+   "driving_direct_count": 1,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.6,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+   "macro_theme": "国防军工",
+   "raw_driver_count": 14,
+   "driving_raw_count": 8,
+   "canonical_drivers": [
+    "DEMAND_SURGE"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 5,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 2,
+   "driving_direct_count": 4,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.7143,
+   "driving_mapping_completeness": 0.875
+  },
+  {
+   "cycle_id": "C-2020-RE-DEBT-RISK",
+   "macro_theme": "房地产",
+   "raw_driver_count": 8,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "EVENT_CATALYST"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 3,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 3,
+   "not_available_count": 1,
+   "driving_direct_count": 2,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "C-2020-FIN-BANK-CREDIT",
+   "macro_theme": "金融",
+   "raw_driver_count": 5,
+   "driving_raw_count": 2,
+   "canonical_drivers": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 2,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.4,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "C-2022-RE-POLICY-THREE",
+   "macro_theme": "房地产",
+   "raw_driver_count": 8,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "POLICY_DRIVEN"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 4,
+   "derived_count": 2,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 2,
+   "driving_direct_count": 2,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.75,
+   "driving_mapping_completeness": 0.6
+  },
+  {
+   "cycle_id": "C-2023-FIN-SOE-VALUATION",
+   "macro_theme": "金融",
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "CYCLE_REVERSAL",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 2,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 2,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.8333,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "C-2024-FIN-BROKER-POLICY",
+   "macro_theme": "金融",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 3,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 2,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.5714,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "C-2024-FIN-BANK-DIVIDEND",
+   "macro_theme": "金融",
+   "raw_driver_count": 8,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 1,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 3,
+   "driving_direct_count": 1,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "C-2025-FIN-INSURANCE",
+   "macro_theme": "金融",
+   "raw_driver_count": 6,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "C-2016-HIEQ-CONSTR",
+   "macro_theme": "高端装备",
+   "raw_driver_count": 15,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "CYCLE_REVERSAL",
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 14,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 7,
+   "mapping_completeness": 0.9333,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+   "macro_theme": "高端装备",
+   "raw_driver_count": 12,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "CYCLE_REVERSAL",
+    "DEMAND_SURGE"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 10,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.8333,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "C-2020-HIEQ-AUTOMATION",
+   "macro_theme": "高端装备",
+   "raw_driver_count": 16,
+   "driving_raw_count": 8,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 12,
+   "ambiguous_count": 0,
+   "unknown_count": 3,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 7,
+   "mapping_completeness": 0.75,
+   "driving_mapping_completeness": 0.875
+  },
+  {
+   "cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+   "macro_theme": "高端装备",
+   "raw_driver_count": 11,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 10,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.9091,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "C-2023-HIEQ-HUMANOID",
+   "macro_theme": "高端装备",
+   "raw_driver_count": 13,
+   "driving_raw_count": 9,
+   "canonical_drivers": [
+    "INDUSTRY_UPGRADE",
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "INDUSTRY_UPGRADE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "terminal_mechanism_count": 3,
+   "direct_count": 0,
+   "derived_count": 13,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 9,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "macro_theme": "信息通信",
+   "raw_driver_count": 13,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 5,
+   "derived_count": 4,
+   "ambiguous_count": 1,
+   "unknown_count": 0,
+   "not_available_count": 3,
+   "driving_direct_count": 4,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.6923,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "C-2023-COMM-OPTICAL",
+   "macro_theme": "信息通信",
+   "raw_driver_count": 10,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 2,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 3,
+   "driving_direct_count": 2,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.8333
+  },
+  {
+   "cycle_id": "C-2019-PHARMA-INNOV",
+   "macro_theme": "医药健康",
+   "raw_driver_count": 10,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "EVENT_CATALYST"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 2,
+   "derived_count": 7,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 1,
+   "driving_direct_count": 1,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.9,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2020-POWER-NE",
+   "macro_theme": "电力设备",
+   "raw_driver_count": 12,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 2,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 2,
+   "driving_direct_count": 2,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2022-POWER-GRID",
+   "macro_theme": "电力设备",
+   "raw_driver_count": 12,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 2,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 3,
+   "not_available_count": 1,
+   "driving_direct_count": 2,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "C-2019-RES-DYE-SHOCK",
+   "macro_theme": "资源",
+   "raw_driver_count": 12,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 3,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.75,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "C-2020-RES-NONFERROUS",
+   "macro_theme": "资源",
+   "raw_driver_count": 12,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.75,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2020-RES-LITHIUM",
+   "macro_theme": "资源",
+   "raw_driver_count": 12,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "CYCLE_REVERSAL",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 12,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2020-RES-RAREEARTH",
+   "macro_theme": "资源",
+   "raw_driver_count": 13,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 11,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.8462,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "C-2021-RES-CHEM-DUALCTRL",
+   "macro_theme": "资源",
+   "raw_driver_count": 13,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 13,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 7,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2024-RES-GOLD-CB",
+   "macro_theme": "资源",
+   "raw_driver_count": 11,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 7,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 4,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.6364,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "C-2016-PANEL-CYCLE",
+   "macro_theme": "电子",
+   "raw_driver_count": 9,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 5,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2019-SEMI-LOCALIZATION",
+   "macro_theme": "电子",
+   "raw_driver_count": 11,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.8182,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2019-CONSUMER-TWS",
+   "macro_theme": null,
+   "raw_driver_count": 11,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "INDUSTRY_UPGRADE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 8,
+   "ambiguous_count": 0,
+   "unknown_count": 3,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 5,
+   "mapping_completeness": 0.7273,
+   "driving_mapping_completeness": 0.8333
+  },
+  {
+   "cycle_id": "C-2020-SEMI-EQUIPMENT",
+   "macro_theme": "电子",
+   "raw_driver_count": 10,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 5,
+   "mapping_completeness": 0.9,
+   "driving_mapping_completeness": 0.8333
+  },
+  {
+   "cycle_id": "C-2020-PANEL-CYCLE",
+   "macro_theme": "电子",
+   "raw_driver_count": 10,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 5,
+   "mapping_completeness": 0.9,
+   "driving_mapping_completeness": 0.8333
+  },
+  {
+   "cycle_id": "C-2022-SEMI-DOWNTURN",
+   "macro_theme": "电子",
+   "raw_driver_count": 8,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "CYCLE_REVERSAL",
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.75,
+   "driving_mapping_completeness": 0.8
+  },
+  {
+   "cycle_id": "C-2023-AI-COMPUTE-SEMI",
+   "macro_theme": "电子",
+   "raw_driver_count": 10,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "INDUSTRY_UPGRADE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "INDUSTRY_UPGRADE",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 8,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.8,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "C-2024-SEMI-MEMORY",
+   "macro_theme": "电子",
+   "raw_driver_count": 9,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2023-HUAWEI",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 1,
+   "derived_count": 2,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 1,
+   "driving_direct_count": 1,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "RC-2024-SECONDARY",
+   "macro_theme": null,
+   "raw_driver_count": 4,
+   "driving_raw_count": 2,
+   "canonical_drivers": [],
+   "canonical_driver_count": 0,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 3,
+   "driving_direct_count": 0,
+   "driving_derived_count": 0,
+   "mapping_completeness": 0.25,
+   "driving_mapping_completeness": 0.0
+  },
+  {
+   "cycle_id": "RC-2020-PANDEMIC",
+   "macro_theme": null,
+   "raw_driver_count": 8,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 1,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 3,
+   "driving_direct_count": 1,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "RC-2021-TCM",
+   "macro_theme": null,
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 1,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 3,
+   "driving_direct_count": 1,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.5714,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2020-CONS-SMALL-APPLIANCE",
+   "macro_theme": "消费",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "DEMAND_SURGE"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 5,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.7143,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2024-CONS-PET-FOOD",
+   "macro_theme": "消费",
+   "raw_driver_count": 4,
+   "driving_raw_count": 2,
+   "canonical_drivers": [
+    "DEMAND_SURGE"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.75,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2020-RES-GOLD-RATES",
+   "macro_theme": "资源",
+   "raw_driver_count": 12,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "TECH_BREAKTHROUGH",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 7,
+   "ambiguous_count": 0,
+   "unknown_count": 4,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 5,
+   "mapping_completeness": 0.5833,
+   "driving_mapping_completeness": 0.8333
+  },
+  {
+   "cycle_id": "RC-2022-RES-FERTILIZER",
+   "macro_theme": "资源",
+   "raw_driver_count": 13,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 11,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 5,
+   "mapping_completeness": 0.8462,
+   "driving_mapping_completeness": 0.7143
+  },
+  {
+   "cycle_id": "RC-2025-RES-COPPER",
+   "macro_theme": "资源",
+   "raw_driver_count": 12,
+   "driving_raw_count": 8,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 4,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "RC-2017-RES-ALUMINUM",
+   "macro_theme": "资源",
+   "raw_driver_count": 13,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 11,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.8462,
+   "driving_mapping_completeness": 0.8571
+  },
+  {
+   "cycle_id": "RC-2016-RES-CHEM-ENV",
+   "macro_theme": "资源",
+   "raw_driver_count": 9,
+   "driving_raw_count": 7,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 9,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 7,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2022-SEMI-CHIPSHORTAGE",
+   "macro_theme": "电子",
+   "raw_driver_count": 10,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 8,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.8,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "RC-2024-SEMI-FUND3",
+   "macro_theme": "电子",
+   "raw_driver_count": 9,
+   "driving_raw_count": 6,
+   "canonical_drivers": [
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "VALUATION_RESET"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 8,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 6,
+   "mapping_completeness": 0.8889,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2015-SEMI-LEVERAGE",
+   "macro_theme": "电子",
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2017-GPU-MINING",
+   "macro_theme": "电子",
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 4,
+   "mapping_completeness": 1.0,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+   "macro_theme": null,
+   "raw_driver_count": 13,
+   "driving_raw_count": 8,
+   "canonical_drivers": [
+    "CYCLE_REVERSAL",
+    "DEMAND_SURGE",
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "POLICY_DRIVEN"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 12,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 7,
+   "mapping_completeness": 0.9231,
+   "driving_mapping_completeness": 0.875
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+   "macro_theme": "高端装备",
+   "raw_driver_count": 13,
+   "driving_raw_count": 8,
+   "canonical_drivers": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "DEMAND_SURGE",
+    "TECH_BREAKTHROUGH"
+   ],
+   "terminal_mechanism_count": 3,
+   "direct_count": 0,
+   "derived_count": 11,
+   "ambiguous_count": 1,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 7,
+   "mapping_completeness": 0.8462,
+   "driving_mapping_completeness": 0.875
+  },
+  {
+   "cycle_id": "RC-2024-RE-POLICY-517",
+   "macro_theme": "房地产",
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "RC-2019-RE-EASING",
+   "macro_theme": "房地产",
+   "raw_driver_count": 5,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "POLICY_DRIVEN",
+    "VALUATION_RESET"
+   ],
+   "canonical_driver_count": 2,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL",
+    "POLICY_DRIVEN"
+   ],
+   "terminal_mechanism_count": 2,
+   "direct_count": 0,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.8,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+   "macro_theme": "金融",
+   "raw_driver_count": 5,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "DEMAND_SURGE"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 2,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 1,
+   "driving_direct_count": 0,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.4,
+   "driving_mapping_completeness": 0.3333
+  },
+  {
+   "cycle_id": "RC-2016-RE-SHANTY",
+   "macro_theme": "房地产",
+   "raw_driver_count": 6,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.6667,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "RC-2015-FIN-LEVERAGE",
+   "macro_theme": null,
+   "raw_driver_count": 5,
+   "driving_raw_count": 3,
+   "canonical_drivers": [],
+   "canonical_driver_count": 0,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 1,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 1,
+   "mapping_completeness": 0.2,
+   "driving_mapping_completeness": 0.3333
+  },
+  {
+   "cycle_id": "RC-2019-MIL-PARADE-70",
+   "macro_theme": "国防军工",
+   "raw_driver_count": 5,
+   "driving_raw_count": 2,
+   "canonical_drivers": [
+    "EVENT_CATALYST"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 4,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 0,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.8,
+   "driving_mapping_completeness": 1.0
+  },
+  {
+   "cycle_id": "RC-2025-MIL-PARADE-80",
+   "macro_theme": "国防军工",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "EVENT_CATALYST"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 3,
+   "driving_direct_count": 0,
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.4286,
+   "driving_mapping_completeness": 0.75
+  },
+  {
+   "cycle_id": "RC-2017-MIL-MIXED-REFORM",
+   "macro_theme": null,
+   "raw_driver_count": 6,
+   "driving_raw_count": 3,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 1,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.5,
+   "driving_mapping_completeness": 0.6667
+  },
+  {
+   "cycle_id": "RC-2015-MIL-REFORM-BULL",
+   "macro_theme": "国防军工",
+   "raw_driver_count": 7,
+   "driving_raw_count": 4,
+   "canonical_drivers": [
+    "POLICY_DRIVEN"
+   ],
+   "canonical_driver_count": 1,
+   "terminal_mechanisms": [
+    "CYCLE_REVERSAL"
+   ],
+   "terminal_mechanism_count": 1,
+   "direct_count": 0,
+   "derived_count": 3,
+   "ambiguous_count": 0,
+   "unknown_count": 2,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 2,
+   "mapping_completeness": 0.4286,
+   "driving_mapping_completeness": 0.5
+  },
+  {
+   "cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+   "macro_theme": "航天装备",
+   "raw_driver_count": 8,
+   "driving_raw_count": 5,
+   "canonical_drivers": [
+    "EVENT_CATALYST",
+    "POLICY_DRIVEN",
+    "TECH_BREAKTHROUGH"
+   ],
+   "canonical_driver_count": 3,
+   "terminal_mechanisms": [],
+   "terminal_mechanism_count": 0,
+   "direct_count": 0,
+   "derived_count": 6,
+   "ambiguous_count": 0,
+   "unknown_count": 0,
+   "not_available_count": 2,
+   "driving_direct_count": 0,
+   "driving_derived_count": 5,
+   "mapping_completeness": 0.75,
+   "driving_mapping_completeness": 1.0
+  }
+ ]
+}

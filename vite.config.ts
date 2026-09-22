@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
  * 网络 / AI 只出现在研究数据生成端，不进入产品运行端。
  *
  * `@observation` 指向 research/research/reports/ —— Time-based Observation Layer 的
- * **静态研究 Artifact**（Phase 7.2，`time_observation_patterns_v0_1.json`）。
+ * **静态研究 Artifact**（Phase 7.2，`time_observation_patterns_v0_2.json`）。
  * 同样只读消费；该目录下的探索性脚本与中间结果**不是**产品依赖。
  */
 export default defineConfig({

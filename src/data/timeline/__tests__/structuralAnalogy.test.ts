@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_2.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_4.json';
 import {
   DIMENSION_LABEL,
   DIMENSION_STATUS_LABEL,
@@ -24,16 +24,16 @@ const dataset = parseStructuralAnalogyDataset(canonicalJson);
 
 describe('structuralAnalogy · 解析与覆盖度', () => {
   it('从静态 Artifact 解析出完整数据集（无网络请求）', () => {
-    expect(dataset.artifactVersion).toBe('0.2');
-    expect(dataset.ruleSetVersion).toBe('structural-analogy-ruleset-v0.2');
+    expect(dataset.artifactVersion).toBe('0.4');
+    expect(dataset.ruleSetVersion).toBe('structural-analogy-ruleset-v0.3');
     expect(dataset.snapshotDate).toBe('2026-09-15');
     expect(dataset.candidates).toHaveLength(5);
   });
 
-  it('85 个 Research explanations 全部可被稳定解析', () => {
-    expect(explanationCount(dataset)).toBe(85);
+  it('395 个 Research explanations 全部可被稳定解析', () => {
+    expect(explanationCount(dataset)).toBe(395);
     for (const c of dataset.candidates) {
-      expect(c.explanations).toHaveLength(17);
+      expect(c.explanations).toHaveLength(79);
     }
   });
 
@@ -86,7 +86,7 @@ describe('structuralAnalogy · 保持 artifact 原始顺序（不重排）', () 
 describe('structuralAnalogy · 五级状态各自可解析', () => {
   const cases: [StructuralStatus, string, string][] = [
     ['STRUCTURAL_SUPPORTED', 'CC-2026-BCI-MEDTECH', 'C-2023-AD'],
-    ['STRUCTURAL_PARTIAL', 'CC-2026-BCI-MEDTECH', 'C-2022-POLICY'],
+    ['STRUCTURAL_PARTIAL', 'CC-2026-BCI-MEDTECH', 'C-2019-COMM-5G'],
     ['THEME_ONLY', 'CC-2026-OPTICAL-LINK', 'C-2019-COMM-5G'],
     ['NO_VALID_CORRESPONDENCE', 'CC-2026-EMBODIED-AI', 'C-2024-ROBOTAXI'],
   ];
@@ -192,7 +192,7 @@ describe('structuralAnalogy · identity（统一稳定引用）', () => {
     }
   });
 
-  it('kind 与两个 identity 字段一一对应（campaign 65 / research_candidate 20）', () => {
+  it('kind 与两个 identity 字段一一对应（campaign 260 / research_candidate 135）', () => {
     let campaign = 0;
     let rc = 0;
     for (const c of dataset.candidates) {
@@ -208,8 +208,8 @@ describe('structuralAnalogy · identity（统一稳定引用）', () => {
         }
       }
     }
-    expect(campaign).toBe(65);
-    expect(rc).toBe(20);
+    expect(campaign).toBe(260);
+    expect(rc).toBe(135);
   });
 
   it('navigationTargetOf：campaign 可导航；research_candidate 不可导航到 Campaign', () => {

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_2.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_4.json';
 import { StructuralAnalogySection, dimensionStatusOf, filterExplanations, macroThemeOf } from '../../../components/CurrentTimeLens/StructuralAnalogySection';
 import { CurrentCandidateSection } from '../../../components/CurrentTimeLens/CurrentCandidateSection';
 import {
@@ -49,19 +49,19 @@ describe('Structural Analogy UI · 数据可达性', () => {
     for (const id of ALL_CANDIDATE_IDS) {
       const c = structuralAnalogyForCandidate(dataset, id);
       expect(c, id).not.toBeNull();
-      expect(c!.explanations).toHaveLength(17);
+      expect(c!.explanations).toHaveLength(79);
       const html = render(id);
       expect(html).toContain('Structural Analogy');
       expect(html).toContain('当前研究对象');
     }
   });
 
-  it('默认渲染前 6 个（渐进披露），并提供「显示全部 17 个」入口', () => {
+  it('默认渲染前 6 个（渐进披露），并提供「显示全部 79 个」入口', () => {
     for (const id of ALL_CANDIDATE_IDS) {
       const html = render(id);
       const items = html.match(/class="sa-item /g) ?? [];
       expect(items.length, id).toBe(6);
-      expect(html, id).toContain('显示全部 17 个历史对象');
+      expect(html, id).toContain('显示全部 79 个历史对象');
       expect(html, id).toContain('不是');
     }
   });
@@ -79,7 +79,7 @@ describe('Structural Analogy UI · 数据可达性', () => {
 describe('Structural Analogy UI · 五级状态', () => {
   const cases: [StructuralStatus, string, string][] = [
     ['STRUCTURAL_SUPPORTED', 'CC-2026-BCI-MEDTECH', 'C-2023-AD'],
-    ['STRUCTURAL_PARTIAL', 'CC-2026-BCI-MEDTECH', 'C-2019-AD'],
+    ['STRUCTURAL_PARTIAL', 'CC-2026-BCI-MEDTECH', 'C-2019-COMM-5G'],
     ['THEME_ONLY', 'CC-2026-OPTICAL-LINK', 'C-2019-COMM-5G'],
     ['INSUFFICIENT_EVIDENCE', 'CC-2026-BCI-MEDTECH', 'RC-2024-SECONDARY'],
     ['NO_VALID_CORRESPONDENCE', 'CC-2026-EMBODIED-AI', 'C-2024-ROBOTAXI'],
@@ -214,16 +214,16 @@ describe('Structural Analogy UI · 顺序', () => {
     const c = structuralAnalogyForCandidate(dataset, 'CC-2026-BCI-MEDTECH')!;
     const ids = c.explanations.map((e) => e.identity.historicalCycleId);
     expect([...ids].sort()).toEqual(ids); // cycle_id 升序
-    // 第一条不是 STRUCTURAL_SUPPORTED（C-2019-AD 为 PARTIAL），证明不是「最强在前」
-    expect(c.explanations[0].identity.historicalCycleId).toBe('C-2019-AD');
+    // 第一条不是 STRUCTURAL_SUPPORTED（首条为 NO_VALID_CORRESPONDENCE），证明不是「最强在前」
+    expect(c.explanations[0].identity.historicalCycleId).toBe('C-2016-CONS-BAIJIU-UPGRADE');
     expect(c.explanations[0].structuralStatus).not.toBe('STRUCTURAL_SUPPORTED');
   });
 
-  it('HTML 中第一个 sa-item 对应 C-2019-AD（identity 顺序）', () => {
+  it('HTML 中第一个 sa-item 对应 C-2016-CONS-BAIJIU-UPGRADE（identity 顺序）', () => {
     const html = render('CC-2026-BCI-MEDTECH');
     const first = html.indexOf('class="sa-item ');
     const head = html.slice(first, first + 600);
-    expect(head).toContain('C-2019-AD');
+    expect(head).toContain('C-2016-CONS-BAIJIU-UPGRADE');
   });
 
   it('UI 明示列表不是从强到弱', () => {
@@ -379,8 +379,8 @@ describe('Structural Analogy UI · 与 artifact 一致', () => {
       }
       // 第 7 个默认不展示（渐进披露）
       expect(html).not.toContain(rawC.explanations[6].identity.historical_cycle_id);
-      // 但明确告知总数为 17（不隐藏总量）
-      expect(html).toContain('显示全部 17 个历史对象');
+      // 但明确告知总数为 79（不隐藏总量）
+      expect(html).toContain('显示全部 79 个历史对象');
     }
   });
 });
@@ -430,11 +430,11 @@ describe('Structural Analogy UI · 按需加载', () => {
     expect(html).toContain('role="status"');
   });
 
-  it('loadStructuralAnalogyDataset 能加载并解析完整数据集（85 条 / 5 候选）', async () => {
+  it('loadStructuralAnalogyDataset 能加载并解析完整数据集（395 条 / 5 候选）', async () => {
     const ds = await loadStructuralAnalogyDataset();
     expect(ds.candidates).toHaveLength(5);
-    expect(ds.artifactVersion).toBe('0.2');
-    expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(85);
+    expect(ds.artifactVersion).toBe('0.4');
+    expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(395);
   });
 
   it('加载结果被缓存（重复调用返回同一实例，不重复加载）', async () => {

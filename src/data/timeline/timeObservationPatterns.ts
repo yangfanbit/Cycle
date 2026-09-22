@@ -2,7 +2,7 @@
  * Time-based Observation Layer —— 时间型观察层数据层（Phase 7.2）。
  *
  * ## 定位
- * `research/research/reports/time_observation_patterns_v0_1.json`（**离线研究 Artifact**）
+ * `research/research/reports/time_observation_patterns_v0_2.json`（**离线研究 Artifact**）
  * → 产品端只读消费。回答：
  *
  *   「历史上，一年中的这个时间位置附近，**反复出现过**值得研究的主题启动 / 观察现象吗？」
@@ -23,7 +23,7 @@
  *   `compareMD` / `dayOfYearISO` / `yearFraction`），不在本模块另造日历。
  */
 
-import rawArtifact from '@observation/time_observation_patterns_v0_1.json';
+import rawArtifact from '@observation/time_observation_patterns_v0_2.json';
 import { mdToISO, isCrossYearMD, dayOfYearISO, yearFraction, addDaysISO } from '../../utils';
 import { timelineEntryId, type TimelineEntryId } from './entryIdentity';
 
@@ -937,7 +937,7 @@ export function buildTimeObservationLayer(
 
 /* ================= 6. 数据入口 ================= */
 
-/** canonical Artifact（`research/research/reports/time_observation_patterns_v0_1.json`） */
+/** canonical Artifact（`research/research/reports/time_observation_patterns_v0_2.json`） */
 export function defaultTimeObservationDataset(): TimeObservationDataset {
   return parseTimeObservationPatterns(rawArtifact);
 }

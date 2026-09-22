@@ -1,0 +1,1636 @@
+{
+ "artifact": "structural_analogy_rule_calibration",
+ "artifact_version": "0.4",
+ "generated_by": "research/scripts/build_structural_analogy_rule_calibration_v0_4.py",
+ "position": "Research-only 规则校准件 —— **不进入** DB / schema / export / contracts / src。**不是**投资建议、预测或信号。",
+ "protocol": {
+  "rule_set": "Structural Analogy Rule Set v0.3",
+  "protocol_version": "structural-analogy-ruleset-v0.3",
+  "protocol_document": "research/research/methodology/structural_analogy_rule_set_v0_3.md",
+  "effective_date": "2026-09-22",
+  "authoritative_implementation": "build_structural_analogy_rule_calibration_v0_3.py::level_v3()",
+  "supersedes": "structural-analogy-ruleset-v0.2（文档与 Calibration v0.2 逐字节保留）",
+  "frozen": true
+ },
+ "universe": {
+  "historical_cycles": 79,
+  "current_candidates": 5,
+  "pairs": 395,
+  "driver_data": {
+   "v0_3": "historical_driver_evidence_ledger_v0_3.json（v0.3-r2 词表）",
+   "v0_4": "historical_driver_evidence_ledger_v0_4.json（v0.4：3 删词 + 2 上下文抑制）"
+  }
+ },
+ "rule_change": {
+  "id": "E.1",
+  "issue": "Rule Set v0.2 §8 文本要求 `Driver ∈ {MATCH, PARTIAL}`，但 §7 指定实现的末段 fallback `if n_support >= 2: return \"STRUCTURAL_PARTIAL\"` **不检查 driver**",
+  "decision": "以 §8 文字语义为准：`Driver = MISMATCH` 不得进入 `STRUCTURAL_PARTIAL`",
+  "implementation": "level_v3() R3 以 `d_dr in {MATCH, PARTIAL}` 为硬前提；**移除 fallback**"
+ },
+ "E1_rule_effect": {
+  "description": "同 driver 数据（Canonicalization **v0.4**），只换规则：v0.2 实现 → v0.3 实现（B 与 D 的对照）",
+  "before_v2_rule": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
+  },
+  "after_v3_rule": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 41,
+   "THEME_ONLY": 10,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 225
+  },
+  "partial_before": {
+   "STRUCTURAL_PARTIAL": 106,
+   "driver_MISMATCH_partial": 47,
+   "driver_MISMATCH_partial_cross_theme": 46,
+   "ratio": 0.4434
+  },
+  "partial_after": {
+   "STRUCTURAL_PARTIAL": 41,
+   "driver_MISMATCH_partial": 0,
+   "driver_MISMATCH_partial_cross_theme": 0,
+   "ratio": 0.0
+  },
+  "changed_pairs": 66,
+  "by_transition": {
+   "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 63,
+   "STRUCTURAL_PARTIAL→THEME_ONLY": 2,
+   "NO_VALID_CORRESPONDENCE→THEME_ONLY": 1
+  },
+  "detail": [
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2021-NEV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2016-CONS-BAIJIU-UPGRADE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-CONS-BAIJIU-CORE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2020-MIL-EQUIP-ORDER",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "THEME_ONLY",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "SAME_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-MIL-GROUP-RESTRUCTURE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2023-FIN-SOE-VALUATION",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2020-RES-LITHIUM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2023-AI-COMPUTE-SEMI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2024-SEMI-MEMORY",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "RC-2020-PANDEMIC",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2021-NEV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2016-CONS-BAIJIU-UPGRADE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-MIL-EQUIP-ORDER",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2018-HIEQ-ROBOT-DOWN",
+    "from": "NO_VALID_CORRESPONDENCE",
+    "to": "THEME_ONLY",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "SAME_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-RES-LITHIUM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-PANEL-CYCLE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2023-AI-COMPUTE-SEMI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2021-NEV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2022-POLICY",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-MIL-GROUP-RESTRUCTURE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-RE-DEBT-RISK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2023-FIN-SOE-VALUATION",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2024-FIN-BROKER-POLICY",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-RES-LITHIUM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-RES-RAREEARTH",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2021-RES-CHEM-DUALCTRL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2024-RES-GOLD-CB",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2023-AI-COMPUTE-SEMI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "SET_EQUAL_NO_PROVENANCE",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "RC-2020-PANDEMIC",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2019-CONS-BAIJIU-CORE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-MIL-EQUIP-ORDER",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-HIEQ-AUTOMATION",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2019-COMM-5G",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2023-COMM-OPTICAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-POWER-NE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "THEME_ONLY",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "SAME_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   }
+  ]
+ },
+ "E1b_published_baseline_rule_effect": {
+  "description": "同 driver 数据（Canonicalization **v0.3**），只换规则：v0.2 实现 → v0.3 实现（A 与 C 的对照）—— 用于说明 **E.1 缺陷（driver=MISMATCH → PARTIAL）由规则产生**",
+  "before_v2_rule": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
+  },
+  "after_v3_rule": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 41,
+   "THEME_ONLY": 10,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 225
+  },
+  "partial_before": {
+   "STRUCTURAL_PARTIAL": 106,
+   "driver_MISMATCH_partial": 47,
+   "driver_MISMATCH_partial_cross_theme": 46,
+   "ratio": 0.4434
+  },
+  "partial_after": {
+   "STRUCTURAL_PARTIAL": 41,
+   "driver_MISMATCH_partial": 0,
+   "driver_MISMATCH_partial_cross_theme": 0,
+   "ratio": 0.0
+  },
+  "changed_pairs": 66,
+  "by_transition": {
+   "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 63,
+   "STRUCTURAL_PARTIAL→THEME_ONLY": 2,
+   "NO_VALID_CORRESPONDENCE→THEME_ONLY": 1
+  }
+ },
+ "E2_canonicalization_effect": {
+  "description": "同规则（v0.2 实现），只换 driver 数据：Canonicalization **v0.3 → v0.4**（即剩余 5 项 collision 处理的效应）",
+  "before_v0_2_drivers": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
+  },
+  "after_v0_3_drivers": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
+  },
+  "coverage_v0_3_drivers": {
+   "cycles_total": 79,
+   "cycles_with_canonical_driver": 77,
+   "cycles_without_canonical_driver": 2,
+   "by_mapping_status_all_buckets": {
+    "DIRECT": 55,
+    "DERIVED": 454,
+    "AMBIGUOUS": 2,
+    "UNKNOWN": 86,
+    "NOT_AVAILABLE": 98
+   },
+   "by_mapping_status_driving": {
+    "DIRECT": 45,
+    "DERIVED": 277,
+    "AMBIGUOUS": 1,
+    "UNKNOWN": 38,
+    "NOT_AVAILABLE": 31
+   },
+   "driving_raw_count": 392
+  },
+  "coverage_v0_4_drivers": {
+   "cycles_total": 79,
+   "cycles_with_canonical_driver": 77,
+   "cycles_without_canonical_driver": 2,
+   "by_mapping_status_all_buckets": {
+    "DIRECT": 58,
+    "DERIVED": 449,
+    "AMBIGUOUS": 2,
+    "UNKNOWN": 87,
+    "NOT_AVAILABLE": 99
+   },
+   "by_mapping_status_driving": {
+    "DIRECT": 46,
+    "DERIVED": 274,
+    "AMBIGUOUS": 1,
+    "UNKNOWN": 39,
+    "NOT_AVAILABLE": 32
+   },
+   "driving_raw_count": 392
+  },
+  "changed_pairs": 0,
+  "by_transition": {}
+ },
+ "combined_v0_2_baseline": {
+  "description": "（v0.2 规则 + v0.3 driver）→（v0.3 规则 + v0.4 driver）",
+  "pre_v0_4_baseline": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
+  },
+  "v0_4": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 41,
+   "THEME_ONLY": 10,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 225
+  },
+  "changed_pairs": 66,
+  "by_transition": {
+   "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 63,
+   "STRUCTURAL_PARTIAL→THEME_ONLY": 2,
+   "NO_VALID_CORRESPONDENCE→THEME_ONLY": 1
+  },
+  "detail": [
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2021-NEV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2016-CONS-BAIJIU-UPGRADE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-CONS-BAIJIU-CORE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2020-MIL-EQUIP-ORDER",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "THEME_ONLY",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "SAME_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-MIL-GROUP-RESTRUCTURE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2023-FIN-SOE-VALUATION",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2020-RES-LITHIUM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2023-AI-COMPUTE-SEMI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2024-SEMI-MEMORY",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "RC-2020-PANDEMIC",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2021-NEV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2016-CONS-BAIJIU-UPGRADE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-MIL-EQUIP-ORDER",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2018-HIEQ-ROBOT-DOWN",
+    "from": "NO_VALID_CORRESPONDENCE",
+    "to": "THEME_ONLY",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "SAME_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2019-PHARMA-INNOV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-RES-LITHIUM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2020-PANEL-CYCLE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2023-AI-COMPUTE-SEMI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2021-NEV",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2022-POLICY",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2018-CONS-HOG-AFRICAN",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2021-CONS-HOG-REVERSAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-MIL-GROUP-RESTRUCTURE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-RE-DEBT-RISK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-FIN-BANK-CREDIT",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2023-FIN-SOE-VALUATION",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2024-FIN-BROKER-POLICY",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2022-POWER-GRID",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-RES-DYE-SHOCK",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-RES-LITHIUM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2020-RES-RAREEARTH",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2021-RES-CHEM-DUALCTRL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2024-RES-GOLD-CB",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2023-AI-COMPUTE-SEMI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "SET_EQUAL_NO_PROVENANCE",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "RC-2020-PANDEMIC",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2019-AD",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2025-ROBOTAXI",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "MATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2019-CONS-BAIJIU-CORE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-MIL-EQUIP-ORDER",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-HIEQ-AUTOMATION",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2019-COMM-5G",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2023-COMM-OPTICAL",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "driver_quality": "NONE",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "C-2020-POWER-NE",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "THEME_ONLY",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "MISMATCH",
+    "theme_relation": "SAME_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "historical_cycle": "RC-2021-TCM",
+    "from": "STRUCTURAL_PARTIAL",
+    "to": "NO_VALID_CORRESPONDENCE",
+    "driver": "PARTIAL",
+    "driver_quality": "PRIMARY_MECHANISM_OVERLAP",
+    "evidence_sequence": "NOT_AVAILABLE",
+    "theme_relation": "CROSS_MACRO_THEME"
+   }
+  ]
+ },
+ "controls": {
+  "theme_blind": {
+   "retained": 385,
+   "changed": 10,
+   "structural_status_changed": 0,
+   "theme_relation_changed": 13,
+   "note": "正确预期：Theme-Blind **不改变 Structural Status**，只影响 theme_relation。"
+  },
+  "negative_controls": [
+   {
+    "case": "name-similarity negative control",
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "historical_cycle": "C-2024-ROBOTAXI",
+    "theme_relation": "CROSS_MACRO_THEME",
+    "sa_v0_3_published": "NO_VALID_CORRESPONDENCE",
+    "rule_v0_3": "NO_VALID_CORRESPONDENCE",
+    "driver": "MISMATCH",
+    "not_upgraded": true
+   },
+   {
+    "case": "same-theme negative control",
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "historical_cycle": "C-2019-COMM-5G",
+    "theme_relation": "SAME_MACRO_THEME",
+    "sa_v0_3_published": "THEME_ONLY",
+    "rule_v0_3": "THEME_ONLY",
+    "driver": "PERIPHERAL_OVERLAP",
+    "not_upgraded": true
+   }
+  ],
+  "name_blind": {
+   "retained": 395,
+   "changed": 0,
+   "note": "四个正式维度**不读取任何名称字段**。"
+  }
+ },
+ "dimension_distributions": {
+  "lifecycle": {
+   "PARTIAL": 66,
+   "MATCH": 142,
+   "MISMATCH": 107,
+   "COMPARISON_POINT_UNKNOWN": 80
+  },
+  "driver": {
+   "PARTIAL": 71,
+   "MISMATCH": 142,
+   "MATCH": 1,
+   "PERIPHERAL_OVERLAP": 171,
+   "NOT_AVAILABLE": 10
+  },
+  "evidence_sequence": {
+   "NOT_AVAILABLE": 190,
+   "SEQUENCE_MISMATCH": 34,
+   "SET_ONLY": 19,
+   "SEQUENCE_PARTIAL": 112,
+   "SEQUENCE_MATCH": 40
+  },
+  "event_structure": {
+   "MISMATCH": 156,
+   "PARTIAL": 123,
+   "NOT_AVAILABLE": 115,
+   "MATCH": 1
+  }
+ },
+ "rule_sensitivity": {
+  "baseline_v2_rule": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 106,
+   "THEME_ONLY": 7,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 163
+  },
+  "rule_v0_3": {
+   "strict": 1,
+   "STRUCTURAL_SUPPORTED": 4,
+   "STRUCTURAL_PARTIAL": 41,
+   "THEME_ONLY": 10,
+   "INSUFFICIENT_EVIDENCE": 115,
+   "NO_VALID_CORRESPONDENCE": 225
+  },
+  "delta": {
+   "STRUCTURAL_SUPPORTED": 0,
+   "STRUCTURAL_PARTIAL": -65,
+   "THEME_ONLY": 3,
+   "INSUFFICIENT_EVIDENCE": 0,
+   "NO_VALID_CORRESPONDENCE": 62
+  },
+  "note": "本表为**规则变更的直接效应**；不得解释为性能变化，仅用于定位变化来源方向。★ 关键结论：`E2_canonicalization_effect.changed_pairs = 0` —— **剩余 5 项 collision 处理（v0.3 → v0.4）不改变任何 Structural Status**。"
+ },
+ "driver_coverage_gap": {
+  "cycles_without_driving_text": [],
+  "count": 0,
+  "by_kind": {},
+  "still_without_canonical_driver": [
+   "RC-2015-FIN-LEVERAGE",
+   "RC-2024-SECONDARY"
+  ],
+  "still_count": 2,
+  "still_by_kind": {
+   "research_candidate": 2
+  },
+  "kind_source": "**从 export 的来源数组重新派生** —— SA research artifact 的 `historical_profiles[].kind` / `matrix[].historical_kind` 存在既有缺陷（E.3），本校准不依赖该字段。",
+  "note": "`cycles_without_driving_text` = export 中 `drivers.start` + `drivers.accelerator` 为空的 cycle→ **属 export 数据缺口**（非词表问题），应由 Canonical / Export 层补全，**不得由词表猜测**。`still_without_canonical_driver` = 词表扩展后仍无 canonical driver 的 cycle。"
+ },
+ "known_defects_recorded": [
+  {
+   "id": "E.3",
+   "issue": "SA **research** artifact 的 `historical_profiles[].kind` 与 `matrix[].historical_kind` 把全部 cycle 标为 `\"campaign\"`（含 `RC-*` research candidate）。根因：export 的 `research_candidates[]` **复用 `campaign_id` 字段名**，builder 用 `o.get(\"campaign_id\")` 判 kind → 恒真。",
+   "scope": "v0.1：4 个 RC 被标 campaign（16/85 组合）；v0.3：27 个 RC（135/395 组合）。`structural_analogy_explanations_v0_1/v0_2/v0_3` 的 `identity` **按来源数组判定，正确**（v0.3：campaign 260 / research_candidate 135）。",
+   "impact": "**无规则影响** —— `kind` 不参与任何 Structural 维度判定；仅为 metadata / 展示字段。",
+   "action": "**本轮只记录，不修改任何产物**（v0.1 / v0.3 逐字节保留）。建议在 SA v0.4 一并修正。"
+  },
+  {
+   "id": "E.4",
+   "issue": "Driver Canonicalization 关键词扩展的**已知副作用**：8 条文本由 `DIRECT`（单规则命中）变为 `DERIVED`（多规则命中）→ 不再产生 canonical driver。其中 `C-2025-FIN-INSURANCE` 因此**失去其唯一 DIRECT**（`direct_count` 1 → 0）。",
+   "scope": "8 条（详见 `historical_driver_canonicalization_v0_3.json::v0_2_to_v0_3_diff`）",
+   "impact": "`has_direct` 由 True 变 False 的 cycle = 1（`C-2025-FIN-INSURANCE`）；该 cycle 在 v0.2/v0.3 规则下**均未**达到 STRUCTURAL_SUPPORTED，故**不改变任何 SUPPORTED 结论**；`primary_mechanism` 变为 UNKNOWN。",
+   "action": "**本轮只记录**；多命中消歧属**映射逻辑**变更（非关键词变更），应留待 v0.4 评估。"
+  }
+ ],
+ "level_v2_reference": "`level_v2()` 为本脚本内**逐行复制**的 Rule Calibration v0.2 实现，仅用于 before/after 对照；**未修改** Calibration v0.2 产物。"
+}

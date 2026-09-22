@@ -694,18 +694,26 @@ function formalCampaignToTimeline(c: ExportCampaignV1, ctx: ExportContext): Time
     year: c.year,
     title: main ? `${base} · ${main}` : `${base} · ${c.campaign_id}`,
     start: c.start_date,
-    end: c.end_date,
+    // ★ Research Release 修正：campaign 的 `end_date` 也可为 null（end 未确定，G2-1 四态允许）
+    //   沿用 Research Candidate 侧既有约定：渲染用占位 + `openEnded` 显式标注「结束未确定」
+    end: c.end_date ?? `${c.year}-12-31`,
     peak: c.peak_date,
-    cross_year: c.start_date.slice(0, 4) !== c.end_date.slice(0, 4),
+    openEnded: c.end_date == null,
+    // ★ Research Release 修正：`end_date` 可能为 null（end 未确定）→ 此时不主张跨年
+    cross_year:
+      c.end_date != null && c.start_date.slice(0, 4) !== c.end_date.slice(0, 4),
     status,
     conflicts: c.conflicts.length > 0 ? c.conflicts : undefined,
     early_signal: early
       ? { start: early.date, end: c.start_date, label: `Research Early Signal（${early.confidence}）` }
       : null,
     // first_decline_date 作回撤起点；缺省以 peak→end 中点近似（仅渲染）
+    // ★ Research Release 修正：`end_date` 可能为 null（end 未确定，G2-1 四态允许）→
+    //   沿用 Research Candidate 侧的既有约定：以当年年末作为**渲染用**占位，
+    //   同时用 `open_ended` 显式标注「结束未确定」，**不主张该日期是真实结束**。
     phases: derivePhases({
       start: c.start_date,
-      end: c.end_date,
+      end: c.end_date ?? `${c.year}-12-31`,
       peak: c.peak_date,
       retracement_start: c.first_decline_date ?? null,
     }),
@@ -733,6 +741,10 @@ function candidateToTimeline(rc: ExportCandidateV1, ctx: ExportContext): Timelin
   const status = candidateStatus(rc.research_status);
   const openEnded = rc.end_date == null;
   const end = rc.end_date ?? `${rc.year}-12-31`;
+  // ★ Research Release 修正：`start_date` 也可能为 null（起始未确定）→ 以当年年初作**渲染用**占位，
+  //   与 `end` 的既有约定对称；**不主张该日期是真实起始**（openEnded 语义不覆盖 start，
+  //   故仅在渲染层使用，不进入任何研究结论）。
+  const start = rc.start_date ?? `${rc.year}-01-01`;
   const securities = (ctx.securitiesByOwner.get(rc.campaign_id) ?? []).map((s) => ({
     name: s.name,
     ticker: s.ticker,
@@ -758,17 +770,19 @@ function candidateToTimeline(rc: ExportCandidateV1, ctx: ExportContext): Timelin
     season_id: String(rc.year),
     year: rc.year,
     title: rc.title,
-    start: rc.start_date,
+    start,
     end,
     openEnded,
     peak: rc.peak_date,
-    cross_year: rc.start_date.slice(0, 4) !== end.slice(0, 4),
+    // ★ Research Release 修正：`start_date` 也可能为 null（起始未确定）→ 不主张跨年
+    cross_year:
+      start.slice(0, 4) !== end.slice(0, 4),
     status,
     conflicts: rc.conflicts.length > 0 ? rc.conflicts : undefined,
-    early_signal: earlyDate && earlyDate < rc.start_date
-      ? { start: earlyDate, end: rc.start_date, label: 'Research Early Signal' }
+    early_signal: earlyDate && earlyDate < start
+      ? { start: earlyDate, end: start, label: 'Research Early Signal' }
       : null,
-    phases: derivePhases({ start: rc.start_date, end, peak: rc.peak_date, retracement_start: null }),
+    phases: derivePhases({ start, end, peak: rc.peak_date, retracement_start: null }),
     // 题材透传：theme_type 为导出既有字段（契约 §11 声明），用于 Macro Theme 层级推导
     themes: rc.themes.map((t) => ({
       name: t.name,
