@@ -1,0 +1,72 @@
+{
+ "artifact": "kuochan_semantics_decision",
+ "artifact_version": "0.3",
+ "generated_by": "research/scripts/decide_kuochan_semantics.py",
+ "position": "Research-only 裁决分析件 —— **只读模拟**；不修改任何产物。",
+ "scenarios": {
+  "S0": "修改前：扩产→DEMAND_SURGE，扩产周期→SUPPLY_CONTRACTION",
+  "S1": "**已实施**：删除「扩产周期」（保留「扩产」在 DEMAND_SURGE）",
+  "S2": "对照：删除「扩产」与「扩产周期」"
+ },
+ "decision": {
+  "扩产": "A —— 可作为 DEMAND_SURGE 的有效机制词（客户侧产能投资 → 上游需求）",
+  "扩产周期": "D —— 从 canonical keyword mapping 中删除",
+  "implemented": "S1",
+  "implemented_in": "canonicalize_historical_drivers_v0_3.py（revision v0.3-r2）"
+ },
+ "diff_S0_S1": [
+  {
+   "cycle_id": "C-2020-SEMI-EQUIPMENT",
+   "bucket": "start",
+   "seq": 3,
+   "raw_driver": "国内晶圆厂进入扩产周期",
+   "old_matched_rules": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "new_matched_rules": [
+    "DEMAND_SURGE"
+   ],
+   "old_mapping_status": "DERIVED",
+   "new_mapping_status": "DERIVED",
+   "old_canonical_driver": null,
+   "new_canonical_driver": "DEMAND_SURGE"
+  }
+ ],
+ "diff_S0_S2": [
+  {
+   "cycle_id": "C-2020-SEMI-EQUIPMENT",
+   "bucket": "start",
+   "seq": 3,
+   "raw_driver": "国内晶圆厂进入扩产周期",
+   "old_matched_rules": [
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "new_matched_rules": [],
+   "old_mapping_status": "DERIVED",
+   "new_mapping_status": "UNKNOWN",
+   "old_canonical_driver": null,
+   "new_canonical_driver": null
+  },
+  {
+   "cycle_id": "C-2020-PANEL-CYCLE",
+   "bucket": "start",
+   "seq": 2,
+   "raw_driver": "2018-2019 年过度扩产后的产能出清，行业集中度提升",
+   "old_matched_rules": [
+    "POLICY_DRIVEN",
+    "DEMAND_SURGE",
+    "SUPPLY_CONTRACTION"
+   ],
+   "new_matched_rules": [
+    "POLICY_DRIVEN",
+    "SUPPLY_CONTRACTION"
+   ],
+   "old_mapping_status": "DERIVED",
+   "new_mapping_status": "DERIVED",
+   "old_canonical_driver": null,
+   "new_canonical_driver": null
+  }
+ ]
+}

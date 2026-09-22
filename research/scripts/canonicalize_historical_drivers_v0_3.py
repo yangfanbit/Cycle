@@ -158,7 +158,11 @@ ADDED_RULES = {
         ("双控", "C-2021-RES-CHEM-DUALCTRL：能耗双控"),
         ("限电", "C-2021-RES-CHEM-DUALCTRL：限电"),
         ("去化", "产能去化"),
-        ("扩产周期", "C-2020-SEMI-EQUIPMENT：晶圆厂扩产（供给端产能扩张，方向相反，单列以利审计）"),
+        # ★ v0.3-r2 修正：删除「扩产周期」—— 见文件头 REVISIONS。
+        #   理由：① 零增量覆盖（其唯一命中文本「国内晶圆厂进入扩产周期」已被「扩产」完全覆盖）；
+        #   ② 方向错误（「产能扩张」在机制上与「供给收缩」相反）；
+        #   ③ 它使该文本额外命中 SUPPLY_CONTRACTION → 把本应得到 DEMAND_SURGE 的文本推入 2-命中 DERIVED/None。
+        #   「扩产」保留在 DEMAND_SURGE（见 DEMAND_SURGE 段）。
     ],
     # 需求放量 —— 订单 / 预付 / 出货 / 客流 / 门店 / 资本开支（**需求侧指标**）
     "DEMAND_SURGE": [
@@ -176,7 +180,17 @@ ADDED_RULES = {
         ("月活", "C-2023-AI-COMPUTE-SEMI：ChatGPT 月活破亿"),
         ("用户", "需求侧用户规模"),
         ("资本开支", "C-2023-AI-COMPUTE-SEMI：海外算力资本开支上修"),
-        ("扩产", "C-2020-SEMI-EQUIPMENT：晶圆厂扩产"),
+        # ★ v0.3-r2 裁决：保留「扩产」在 DEMAND_SURGE（方案 A）。依据：
+        #   ① 研究自身表述：intake `R01-SEMICONDUCTOR-002` 标题即
+        #      「半导体设备与材料国产替代（**晶圆厂扩产 → 「卡脖子」上游**）」→ 扩产 = 上游需求；
+        #   ② v0.1 既有惯例：DEMAND_SURGE 已含「装机 / 并网 / 招标 / 采购」等同为
+        #      **观察者相对的客户侧动作**（他人动作 → 本行业需求）；
+        #   ③ 决定性证据：删除「扩产周期」后，本词使 `C-2020-SEMI-EQUIPMENT` 获得
+        #      `DEMAND_SURGE`（与研究标题一致），且**无任何数据损失**；
+        #   ④ 已知误命中：`C-2020-PANEL-CYCLE`「2018-2019 年过度扩产后的产能出清」中
+        #      「扩产」为**时序前提**而非机制 → 该文本同时命中 POLICY+SUPPLY（2 命中）
+        #      → 无论是否保留本词结果均为 `DERIVED/None`，**误命中零数据影响**（已如实记录）。
+        ("扩产", "C-2020-SEMI-EQUIPMENT：晶圆厂扩产（客户侧产能投资 → 上游需求）"),
         ("固定资产投资", "C-2018-HIEQ-ROBOT-DOWN / C-2020-HIEQ-AUTOMATION：制造业固定资产投资"),
         ("基站", "C-2019-COMM-5G：5G 基站建设量"),
         ("持仓", "C-2020-MIL-EQUIP-ORDER：公募基金军工持仓（资金需求侧）"),
@@ -290,6 +304,64 @@ REVISIONS = [
             "Rule Set §3.3「不得仅凭 driver 名称相同判定 MATCH」→ 同理不得让同一关键词同时充当两种机制",
         ],
         "unchanged": ["canonical vocabulary（9 项）", "v0.1 / v0.2 产物", "mapping_status 语义", "映射逻辑"],
+    },
+    {
+        "revision": "v0.3-r2",
+        "date": "2026-09-23",
+        "change": "删除「扩产周期」；保留「扩产」在 `DEMAND_SURGE`",
+        "scope": "仅此 2 词；**未处理**其余 5 项 substring collision（增长/负增长 · 整治/整治提升 · "
+                 "出口/出口管制 · 采购/装备采购 · 储备/黄金储备）",
+        "decision": {
+            "扩产": "A —— 可作为 `DEMAND_SURGE` 的有效机制词（客户侧产能投资 → 上游需求）",
+            "扩产周期": "D —— 从 canonical keyword mapping 中**删除**",
+        },
+        "evidence": {
+            "hit_texts": 2,
+            "扩产_hits": [
+                "C-2020-SEMI-EQUIPMENT start#3「国内晶圆厂进入扩产周期」",
+                "C-2020-PANEL-CYCLE start#2「2018-2019 年过度扩产后的产能出清，行业集中度提升」",
+            ],
+            "扩产周期_hits": [
+                "C-2020-SEMI-EQUIPMENT start#3「国内晶圆厂进入扩产周期」—— **与「扩产」完全同一文本**",
+            ],
+        },
+        "rationale": {
+            "delete_扩产周期": [
+                "① **零增量覆盖**：其唯一命中文本已被「扩产」完全覆盖 → 贡献 0 条独有覆盖",
+                "② **方向错误**：被归入 `SUPPLY_CONTRACTION`，而「产能扩张」与「供给收缩」机制方向相反",
+                "③ **实际损害**：它使该文本额外命中 `SUPPLY_CONTRACTION` → 把本应得到 "
+                "`DEMAND_SURGE` 的文本推入 2-命中 `DERIVED`（canon=None）",
+                "④ **无替代必要性**：`扩产` 已覆盖该语境；「周期」不携带机制",
+            ],
+            "keep_扩产_in_DEMAND_SURGE": [
+                "① **研究自身表述**：intake `R01-SEMICONDUCTOR-002` 标题即"
+                "「半导体设备与材料国产替代（**晶圆厂扩产 → 「卡脖子」上游**）」→ 扩产 = 上游需求",
+                "② **v0.1 既有惯例**：`DEMAND_SURGE` 已含「装机 / 并网 / 招标 / 采购」等同为"
+                "**观察者相对的客户侧动作**（他人动作 → 本行业需求）",
+                "③ **决定性证据**：删除「扩产周期」后，本词使 `C-2020-SEMI-EQUIPMENT` 获得 "
+                "`DEMAND_SURGE`（与研究标题一致），且**无任何数据损失**",
+                "④ **误命中如实记录**：`C-2020-PANEL-CYCLE`「过度扩产后的产能出清」中「扩产」为"
+                "**时序前提**而非机制 → 但该文本同时命中 POLICY+SUPPLY（2 命中）→ 无论保留与否结果均为 "
+                "`DERIVED/None` → **零数据影响**",
+            ],
+            "not_chosen": {
+                "扩产→B（其他 canonical）": "无任何 canonical 与「产能扩张」机制方向一致（`SUPPLY_CONTRACTION` 为反方向）",
+                "扩产→C/D（删除）": "会使 `C-2020-SEMI-EQUIPMENT` 的 `DEMAND_SURGE` 永久不可见"
+                                    "（与其研究标题矛盾），且该文本退化为 `UNKNOWN`（负面变化）",
+            },
+        },
+        "min_impact": {
+            "changed_entries": 1,
+            "detail": "C-2020-SEMI-EQUIPMENT start#3：hits [DEMAND_SURGE, SUPPLY_CONTRACTION] → [DEMAND_SURGE]；"
+                      "status DERIVED → DERIVED（**未变**）；canonical None → DEMAND_SURGE（**改善**）",
+            "canonical_driver_changes": "C-2020-SEMI-EQUIPMENT: ['POLICY_DRIVEN'] → ['DEMAND_SURGE','POLICY_DRIVEN']",
+            "primary_mechanism_changes": 0,
+            "five_state_distribution_changes": "**无**（DIRECT 55 / DERIVED 454 / AMBIGUOUS 2 / UNKNOWN 86 / NOT_AVAILABLE 98 全部不变）",
+            "cycles_with_driver": "77 / 79（不变）· campaign 52 / 52（不变）",
+            "negative_changes": "**无**",
+        },
+        "unchanged": ["canonical vocabulary（9 项）", "v0.1 / v0.2 产物", "mapping_status 语义", "映射逻辑",
+                      "Rule Set v0.3"],
     },
 ]
 

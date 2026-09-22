@@ -7475,16 +7475,15 @@
    "bucket": "start",
    "seq": 3,
    "raw_driver": "国内晶圆厂进入扩产周期",
-   "canonical_driver": null,
+   "canonical_driver": "DEMAND_SURGE",
    "mapping_status": "DERIVED",
    "matched_rules": [
-    "DEMAND_SURGE",
-    "SUPPLY_CONTRACTION"
+    "DEMAND_SURGE"
    ],
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中 2 条规则（DEMAND_SURGE, SUPPLY_CONTRACTION）→ 需综合判断，标记 DERIVED"
+   "reason": "命中唯一规则 DEMAND_SURGE，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
   },
   {
    "cycle_id": "C-2020-SEMI-EQUIPMENT",

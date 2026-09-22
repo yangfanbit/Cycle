@@ -40,26 +40,26 @@
   "after_v3_rule": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 40,
+   "STRUCTURAL_PARTIAL": 41,
    "THEME_ONLY": 10,
    "INSUFFICIENT_EVIDENCE": 115,
-   "NO_VALID_CORRESPONDENCE": 226
+   "NO_VALID_CORRESPONDENCE": 225
   },
   "partial_before": {
    "STRUCTURAL_PARTIAL": 106,
-   "driver_MISMATCH_partial": 48,
-   "driver_MISMATCH_partial_cross_theme": 47,
-   "ratio": 0.4528
+   "driver_MISMATCH_partial": 47,
+   "driver_MISMATCH_partial_cross_theme": 46,
+   "ratio": 0.4434
   },
   "partial_after": {
-   "STRUCTURAL_PARTIAL": 40,
+   "STRUCTURAL_PARTIAL": 41,
    "driver_MISMATCH_partial": 0,
    "driver_MISMATCH_partial_cross_theme": 0,
    "ratio": 0.0
   },
-  "changed_pairs": 67,
+  "changed_pairs": 66,
   "by_transition": {
-   "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 64,
+   "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 63,
    "STRUCTURAL_PARTIAL→THEME_ONLY": 2,
    "NO_VALID_CORRESPONDENCE→THEME_ONLY": 1
   },
@@ -616,16 +616,6 @@
    },
    {
     "candidate_id": "CC-2026-OPTICAL-LINK",
-    "historical_cycle": "C-2020-SEMI-EQUIPMENT",
-    "from": "STRUCTURAL_PARTIAL",
-    "to": "NO_VALID_CORRESPONDENCE",
-    "driver": "MISMATCH",
-    "driver_quality": "NONE",
-    "evidence_sequence": "PARTIAL",
-    "theme_relation": "CROSS_MACRO_THEME"
-   },
-   {
-    "candidate_id": "CC-2026-OPTICAL-LINK",
     "historical_cycle": "C-2023-AI-COMPUTE-SEMI",
     "from": "STRUCTURAL_PARTIAL",
     "to": "NO_VALID_CORRESPONDENCE",
@@ -853,16 +843,16 @@
   "new_v0_3": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 40,
+   "STRUCTURAL_PARTIAL": 41,
    "THEME_ONLY": 10,
    "INSUFFICIENT_EVIDENCE": 115,
-   "NO_VALID_CORRESPONDENCE": 226
+   "NO_VALID_CORRESPONDENCE": 225
   },
-  "changed_pairs": 109,
+  "changed_pairs": 110,
   "by_transition": {
    "STRUCTURAL_PARTIAL→NO_VALID_CORRESPONDENCE": 64,
    "INSUFFICIENT_EVIDENCE→NO_VALID_CORRESPONDENCE": 24,
-   "NO_VALID_CORRESPONDENCE→STRUCTURAL_PARTIAL": 12,
+   "NO_VALID_CORRESPONDENCE→STRUCTURAL_PARTIAL": 13,
    "INSUFFICIENT_EVIDENCE→STRUCTURAL_PARTIAL": 5,
    "STRUCTURAL_PARTIAL→THEME_ONLY": 2,
    "NO_VALID_CORRESPONDENCE→THEME_ONLY": 1,
@@ -1252,6 +1242,16 @@
    {
     "candidate_id": "CC-2026-COMPUTE-POWER",
     "historical_cycle": "C-2019-SEMI-LOCALIZATION",
+    "from": "NO_VALID_CORRESPONDENCE",
+    "to": "STRUCTURAL_PARTIAL",
+    "driver": "PARTIAL",
+    "driver_quality": "MULTI_MECHANISM",
+    "evidence_sequence": "PARTIAL",
+    "theme_relation": "CROSS_MACRO_THEME"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "historical_cycle": "C-2020-SEMI-EQUIPMENT",
     "from": "NO_VALID_CORRESPONDENCE",
     "to": "STRUCTURAL_PARTIAL",
     "driver": "PARTIAL",
@@ -2005,8 +2005,8 @@
    "COMPARISON_POINT_UNKNOWN": 80
   },
   "driver": {
-   "PARTIAL": 70,
-   "MISMATCH": 143,
+   "PARTIAL": 71,
+   "MISMATCH": 142,
    "MATCH": 1,
    "PERIPHERAL_OVERLAP": 171,
    "NOT_AVAILABLE": 10
@@ -2037,17 +2037,17 @@
   "rule_v0_3": {
    "strict": 1,
    "STRUCTURAL_SUPPORTED": 4,
-   "STRUCTURAL_PARTIAL": 40,
+   "STRUCTURAL_PARTIAL": 41,
    "THEME_ONLY": 10,
    "INSUFFICIENT_EVIDENCE": 115,
-   "NO_VALID_CORRESPONDENCE": 226
+   "NO_VALID_CORRESPONDENCE": 225
   },
   "delta": {
    "STRUCTURAL_SUPPORTED": 0,
-   "STRUCTURAL_PARTIAL": -49,
+   "STRUCTURAL_PARTIAL": -48,
    "THEME_ONLY": 4,
    "INSUFFICIENT_EVIDENCE": -30,
-   "NO_VALID_CORRESPONDENCE": 75
+   "NO_VALID_CORRESPONDENCE": 74
   },
   "note": "本表为**规则变更的直接效应**（同 driver 数据时见 E1_rule_effect）；不得解释为性能变化，仅用于定位变化来源方向。"
  },
