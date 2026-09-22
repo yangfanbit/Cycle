@@ -92,19 +92,25 @@
 | v0.1 原有关键词 | **一个未删** |
 | **新增** | **关键词表扩展**（逐条注明覆盖来源） |
 
-**关键词扩展规模**：v0.1 基础 **128** 词 → 新增 **142** 词 → 合计 **270** 词（8 个 canonical driver 维度）。
+**关键词扩展规模（精确）**：v0.1 基础 **158** 条 → v0.3 声明新增 **134** 条 → **去重后 133 词**
+（其中「国产替代」「能源局」2 词已在 v0.1 同 canonical 内 → **净新增 131 词**）→ 合并后 **289** 条
+（8 个 canonical driver 维度）。
+
+> ★ **v0.3-r1 修订（2026-09-23）**：「**阅兵**」「**纪念大会**」由 `POLICY_DRIVEN` **移至 `EVENT_CATALYST`** ——
+> 原归属为语义错误（详见 `docs/DRIVER_KEYWORD_COLLISION_AUDIT_v0_3.md`）。
+> 下表已反映修订后归属。
 
 ### 3.2 重点覆盖的 R01 词汇（用户点名 + 实测缺口）
 
 | 机制 | 新增关键词（部分） | 覆盖的实测缺口 |
 |---|---|---|
-| `POLICY_DRIVEN` | **三道红线** · 审慎管理 · **集中度** · 保交楼 · 因城施策 · 三支箭 · 第二支箭 · 交易商协会 · **疫情防控** · 新十条 · 措施优化 · 收储 · 储备 · 特别国债 · 条例 · 规范 · 纲要 · 行动计划 · 方案 · 整治 · 核查 · 环保 · 指标 · 配额 · 军民融合 · 混改 · 战略性重组 · 资产证券化 · 军品 · 装备采购 · 国防预算 · **阅兵** · 纪念大会 · 实体清单 · 出口管制 · 大基金 · 投资计划 | `C-2020-RE-DEBT-RISK` · `C-2020-CONS-BEAUTY-CN` · `C-2022-CONS-SERVICE-REBOUND` · `RC-2019-MIL-PARADE-70` · `C-2022-POWER-GRID` · `C-2019-SEMI-LOCALIZATION` 等 |
+| `POLICY_DRIVEN` | **三道红线** · 审慎管理 · **集中度** · 保交楼 · 因城施策 · 三支箭 · 第二支箭 · 交易商协会 · **疫情防控** · 新十条 · 措施优化 · 收储 · 储备 · 特别国债 · 条例 · 规范 · 纲要 · 行动计划 · 方案 · 整治 · 核查 · 环保 · 指标 · 配额 · 军民融合 · 混改 · 战略性重组 · 资产证券化 · 军品 · 装备采购 · 国防预算 · 实体清单 · 出口管制 · 大基金 · 投资计划 | `C-2020-RE-DEBT-RISK` · `C-2020-CONS-BEAUTY-CN` · `C-2022-CONS-SERVICE-REBOUND` · `C-2022-POWER-GRID` · `C-2019-SEMI-LOCALIZATION` 等 |
 | `SUPPLY_CONTRACTION` | **停产** · 停工 · **关闭** · 关停 · **压减** · 削减 · 整治提升 · 惜售 · 锁货 · 现货稀少 · 供应受限 · 供需缺口 · 口岸关闭 · 进口量 · 能耗双控 · 双控 · 限电 · 去化 | `C-2019-RES-DYE-SHOCK` · `C-2020-RES-RAREEARTH` · `C-2020-RES-LITHIUM` · `C-2021-RES-CHEM-DUALCTRL` |
 | `DEMAND_SURGE` | **关联交易** · 预付款 · 预付 · **合同负债** · 出游 · 人次 · 客流 · 门店 · 铺开 · 渠道 · GMV · 月活 · 用户 · 资本开支 · 扩产 · 固定资产投资 · 基站 · 持仓 | `C-2020-MIL-EQUIP-ORDER` · `C-2022-CONS-SERVICE-REBOUND` · `C-2023-CONS-VALUE-RETAIL` · `C-2019-COMM-5G` |
 | `VALUATION_RESET` | **高股息** · 红利 · 资产荒 · 低利率 · 配置 · 增量资金 · 外资 · 去美元化 · 央行购金 · 黄金储备 · ETF · 实际利率 · 零利率 · 宽松 · 资产端 · 负债端 | `C-2024-FIN-BANK-DIVIDEND` · `C-2025-FIN-INSURANCE` · `C-2024-RES-GOLD-CB` |
 | `TECH_BREAKTHROUGH` | 组网 · 入轨 · 首飞 · 可重复使用 · 大模型 · ChatGPT · GPT · Copilot | `RC-2024-MIL-COMMERCIAL-SPACE` · `C-2023-AI-COMPUTE-SEMI` |
 | `CYCLE_REVERSAL` | 更新周期 · 替换窗口 · 更新替换 · 逆周期 · 周期底部 · 下行周期 · 增速放缓 · 增速转负 · 负增长 · 收缩 · 退坡 | `C-2016-HIEQ-CONSTR` · `C-2018-HIEQ-ROBOT-DOWN` · `C-2022-SEMI-DOWNTURN` |
-| `EVENT_CATALYST` | **事故** · 爆炸 · 四中全会 · 十五五 · 成立 · 揭牌 | `C-2019-RES-DYE-SHOCK` · `C-2024-MIL-GROUP-RESTRUCTURE` · `RC-2024-MIL-COMMERCIAL-SPACE` |
+| `EVENT_CATALYST` | **事故** · 爆炸 · 四中全会 · 十五五 · 成立 · 揭牌 · **阅兵** ★v0.3-r1 · **纪念大会** ★v0.3-r1 | `C-2019-RES-DYE-SHOCK` · `C-2019-MIL-GROUP-RESTRUCTURE` · `RC-2024-MIL-COMMERCIAL-SPACE` · `RC-2019-MIL-PARADE-70` · `RC-2025-MIL-PARADE-80` |
 | `INDUSTRY_UPGRADE` | 自主可控 · 业态 · 定价权 · 纳入因子 · MSCI · 确定性溢价 | `C-2016-CONS-BAIJIU-UPGRADE` · `C-2019-CONS-BAIJIU-CORE` · `C-2023-CONS-VALUE-RETAIL` |
 
 ### 3.3 ★ 关于 4 个 Canonical Campaign 的专项评估（用户要求）

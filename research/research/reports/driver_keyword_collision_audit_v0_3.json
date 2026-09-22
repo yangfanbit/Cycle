@@ -1,0 +1,2360 @@
+{
+ "artifact": "driver_keyword_collision_audit",
+ "artifact_version": "0.3",
+ "generated_by": "research/scripts/audit_driver_keyword_collisions_v0_3.py",
+ "position": "Research-only 审计件 —— **只读**；不修改任何词表 / 产物 / DB / export。",
+ "scope": {
+  "added_keywords": 133,
+  "ledger_entries": 541
+ },
+ "per_keyword": [
+  {
+   "keyword": "负增长",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 10,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 10,
+    "SUPPLY_CONTRACTION": 1,
+    "VALUATION_RESET": 1,
+    "TECH_BREAKTHROUGH": 1,
+    "POLICY_DRIVEN": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "阅兵",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 9,
+   "n_texts_where_decisive": 5,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 4,
+    "INDUSTRY_UPGRADE": 1,
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "方案",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 8,
+   "n_texts_where_decisive": 4,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 4,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "资本开支",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 7,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 3,
+    "INDUSTRY_UPGRADE": 1,
+    "TECH_BREAKTHROUGH": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "渠道",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 6,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1,
+    "INDUSTRY_UPGRADE": 2,
+    "SUPPLY_CONTRACTION": 3
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "固定资产投资",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 5,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "指标",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 5,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "SUPPLY_CONTRACTION": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "人次",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "储备",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 2,
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "外资",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "INDUSTRY_UPGRADE": 3,
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "整治",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 3,
+    "EVENT_CATALYST": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "GPT",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "下行周期",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "关闭",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "双控",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "国产替代",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1,
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "大基金",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "持仓",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 3
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "收缩",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "EVENT_CATALYST": 1,
+    "POLICY_DRIVEN": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "红利",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "财政",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "配置",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "门店",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "INDUSTRY_UPGRADE": 2,
+    "TECH_BREAKTHROUGH": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "高股息",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "ChatGPT",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "MSCI",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "三支箭",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "事故",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "入轨",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "关停",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "关联交易",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "军民融合",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "军费",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "出游",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "削减",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "十五五",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "去化",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "基站",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "增速转负",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "大模型",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "央行购金",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "实际利率",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "成立",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "扩产",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 2,
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "能耗双控",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "自主可控",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "装备采购",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "资产端",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "限制",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "集中度",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "Copilot",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "ETF",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "GMV",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "三道红线",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "业态",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "交易商协会",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "产业基金",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "产业投资基金",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "低利率",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "供应受限",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "供需缺口",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "保交楼",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "停产",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1,
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "停工",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "出口管制",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "压减",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "去美元化",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "口岸关闭",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "可重复使用",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "合同负债",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "周期底部",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "四中全会",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "国家战略",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "国防预算",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "增速放缓",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "增量资金",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "INDUSTRY_UPGRADE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "定价权",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "实体清单",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "审慎管理",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "客流",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "宽松",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "惜售",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "战略性重组",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "扩产周期",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "投资计划",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "措施优化",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "揭牌",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "收储",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "整治提升",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "新十条",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "更新周期",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "更新替换",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "替换窗口",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "月活",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "TECH_BREAKTHROUGH": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "条例",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "核查",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "混改",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "爆炸",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "特别国债",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "环保",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "现货稀少",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "疫情防控",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "确定性溢价",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "第二支箭",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "纪念大会",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "纳入因子",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "组网",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "行动计划",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "规范",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "负债端",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "资产注入",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "资产荒",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "资产证券化",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "进口同步收缩",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "进口量",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "逆周期",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "配额",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "铺开",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "INDUSTRY_UPGRADE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "锁货",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "限电",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "零利率",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "预付",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "首飞",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "黄金储备",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "军品",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "因城施策",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "国企改革",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "用户",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "纲要",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "能源局",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "退坡",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "集团重组",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "预付款",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  }
+ ],
+ "cross_canonical_duplicate_added": [],
+ "wide_keyword_risk": [
+  {
+   "keyword": "负增长",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 10,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 10,
+    "SUPPLY_CONTRACTION": 1,
+    "VALUATION_RESET": 1,
+    "TECH_BREAKTHROUGH": 1,
+    "POLICY_DRIVEN": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "渠道",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 6,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1,
+    "INDUSTRY_UPGRADE": 2,
+    "SUPPLY_CONTRACTION": 3
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "阅兵",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 9,
+   "n_texts_where_decisive": 5,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 4,
+    "INDUSTRY_UPGRADE": 1,
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "方案",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 8,
+   "n_texts_where_decisive": 4,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 4,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "资本开支",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 7,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 3,
+    "INDUSTRY_UPGRADE": 1,
+    "TECH_BREAKTHROUGH": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "外资",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "INDUSTRY_UPGRADE": 3,
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "指标",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 5,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "SUPPLY_CONTRACTION": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "储备",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 2,
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "整治",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 3,
+    "EVENT_CATALYST": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "持仓",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 3
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "门店",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "INDUSTRY_UPGRADE": 2,
+    "TECH_BREAKTHROUGH": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "固定资产投资",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 5,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "下行周期",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "双控",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "国产替代",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1,
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "收缩",
+   "canonical": [
+    "CYCLE_REVERSAL"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "EVENT_CATALYST": 1,
+    "POLICY_DRIVEN": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "配置",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "MSCI",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "军费",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "扩产",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 2,
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "装备采购",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "人次",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 3,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "GPT",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "红利",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "财政",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "高股息",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "ChatGPT",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "三支箭",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "事故",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "十五五",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "去化",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "大模型",
+   "canonical": [
+    "TECH_BREAKTHROUGH"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "央行购金",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "成立",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "能耗双控",
+   "canonical": [
+    "SUPPLY_CONTRACTION"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "自主可控",
+   "canonical": [
+    "INDUSTRY_UPGRADE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "集中度",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "SUPPLY_CONTRACTION": 1
+   },
+   "cross_canonical_duplicate": false
+  }
+ ],
+ "substring_conflicts_involving_added": [
+  {
+   "shorter": "增长",
+   "longer": "负增长",
+   "shorter_owner": [
+    "DEMAND_SURGE"
+   ],
+   "longer_owner": [
+    "CYCLE_REVERSAL"
+   ]
+  },
+  {
+   "shorter": "整治",
+   "longer": "整治提升",
+   "shorter_owner": [
+    "POLICY_DRIVEN"
+   ],
+   "longer_owner": [
+    "SUPPLY_CONTRACTION"
+   ]
+  },
+  {
+   "shorter": "出口",
+   "longer": "出口管制",
+   "shorter_owner": [
+    "DEMAND_SURGE"
+   ],
+   "longer_owner": [
+    "POLICY_DRIVEN"
+   ]
+  },
+  {
+   "shorter": "采购",
+   "longer": "装备采购",
+   "shorter_owner": [
+    "DEMAND_SURGE"
+   ],
+   "longer_owner": [
+    "POLICY_DRIVEN"
+   ]
+  },
+  {
+   "shorter": "储备",
+   "longer": "黄金储备",
+   "shorter_owner": [
+    "POLICY_DRIVEN"
+   ],
+   "longer_owner": [
+    "VALUATION_RESET"
+   ]
+  },
+  {
+   "shorter": "扩产",
+   "longer": "扩产周期",
+   "shorter_owner": [
+    "DEMAND_SURGE"
+   ],
+   "longer_owner": [
+    "SUPPLY_CONTRACTION"
+   ]
+  }
+ ],
+ "pre_existing_cross_canonical_duplicate": {
+  "结构迁移": [
+   "TECH_BREAKTHROUGH",
+   "INDUSTRY_UPGRADE"
+  ]
+ },
+ "focus_words": [
+  {
+   "keyword": "政策",
+   "canonical": [],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false,
+   "note": "未在 v0.3 新增词中（可能属 v0.1 原有词）"
+  },
+  {
+   "keyword": "方案",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 8,
+   "n_texts_where_decisive": 4,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 4,
+    "CYCLE_REVERSAL": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "财政",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "限制",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "配置",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 1,
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "持仓",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 3
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "渠道",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 6,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "VALUATION_RESET": 1,
+    "INDUSTRY_UPGRADE": 2,
+    "SUPPLY_CONTRACTION": 3
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "用户",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 0,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "储备",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 4,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 2,
+    "VALUATION_RESET": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "扩产",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "SUPPLY_CONTRACTION": 2,
+    "POLICY_DRIVEN": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "军费",
+   "canonical": [
+    "POLICY_DRIVEN"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 0,
+   "co_hit_canonicals": {
+    "DEMAND_SURGE": 2
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "阅兵",
+   "canonical": [
+    "EVENT_CATALYST"
+   ],
+   "n_texts_matched": 9,
+   "n_texts_where_decisive": 5,
+   "co_hit_canonicals": {
+    "CYCLE_REVERSAL": 4,
+    "INDUSTRY_UPGRADE": 1,
+    "DEMAND_SURGE": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "高股息",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 3,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {
+    "EVENT_CATALYST": 1
+   },
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "资产荒",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "关联交易",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "合同负债",
+   "canonical": [
+    "DEMAND_SURGE"
+   ],
+   "n_texts_matched": 1,
+   "n_texts_where_decisive": 1,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  },
+  {
+   "keyword": "实际利率",
+   "canonical": [
+    "VALUATION_RESET"
+   ],
+   "n_texts_matched": 2,
+   "n_texts_where_decisive": 2,
+   "co_hit_canonicals": {},
+   "cross_canonical_duplicate": false
+  }
+ ],
+ "primary_mechanism_changes_canonical_campaigns": [
+  {
+   "cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+   "primary_v0_2": "EVENT_CATALYST",
+   "primary_v0_3": "POLICY_DRIVEN",
+   "is_canonical_campaign": true
+  },
+  {
+   "cycle_id": "C-2020-RE-DEBT-RISK",
+   "primary_v0_2": "UNKNOWN",
+   "primary_v0_3": "POLICY_DRIVEN",
+   "is_canonical_campaign": true
+  },
+  {
+   "cycle_id": "C-2022-RE-POLICY-THREE",
+   "primary_v0_2": "EVENT_CATALYST",
+   "primary_v0_3": "POLICY_DRIVEN",
+   "is_canonical_campaign": true
+  },
+  {
+   "cycle_id": "C-2025-FIN-INSURANCE",
+   "primary_v0_2": "EVENT_CATALYST",
+   "primary_v0_3": "UNKNOWN",
+   "is_canonical_campaign": true
+  }
+ ],
+ "new_ambiguous": [],
+ "direct_to_derived": [
+  {
+   "cycle_id": "C-2019-AD",
+   "bucket": "turning",
+   "seq": 1,
+   "raw_driver": "新能源汽车7月起负增长、行业基本面弱（S-2019-02 contradicting）",
+   "was_canonical": "DEMAND_SURGE",
+   "now_hits": [
+    "DEMAND_SURGE",
+    "CYCLE_REVERSAL"
+   ]
+  },
+  {
+   "cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "2019-07-01 中船工业集团与中船重工集团旗下合计 **9 家上市公司同步发布筹划战略性重组公告**（E-MIL-18）",
+   "was_canonical": "EVENT_CATALYST",
+   "now_hits": [
+    "POLICY_DRIVEN",
+    "EVENT_CATALYST"
+   ]
+  },
+  {
+   "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+   "bucket": "start",
+   "seq": 1,
+   "raw_driver": "2020-07-10 同期媒体：装备采购与更新换代加速、训练强度提高导致装备损耗加快（E-MIL-05）",
+   "was_canonical": "DEMAND_SURGE",
+   "now_hits": [
+    "POLICY_DRIVEN",
+    "DEMAND_SURGE"
+   ]
+  },
+  {
+   "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "2021-03-08 国防部：2021 年全国财政国防支出预算 13795.44 亿元、+6.8%（E-MIL-04，T1；**军费层 context，非订单**）",
+   "was_canonical": "DEMAND_SURGE",
+   "now_hits": [
+    "POLICY_DRIVEN",
+    "DEMAND_SURGE"
+   ]
+  },
+  {
+   "cycle_id": "C-2020-MIL-EQUIP-ORDER",
+   "bucket": "ending",
+   "seq": 2,
+   "raw_driver": "2023 年「十四五」中期调整致部分装备采购与订单下达放缓（E-MIL-13，subsequent，产业侧机制）",
+   "was_canonical": "DEMAND_SURGE",
+   "now_hits": [
+    "POLICY_DRIVEN",
+    "DEMAND_SURGE"
+   ]
+  },
+  {
+   "cycle_id": "C-2022-RE-POLICY-THREE",
+   "bucket": "accelerator",
+   "seq": 1,
+   "raw_driver": "证监会「第三支箭」恢复涉房上市公司并购重组及配套融资（E-FINRE-03, 2022-11-28，T1）",
+   "was_canonical": "EVENT_CATALYST",
+   "now_hits": [
+    "POLICY_DRIVEN",
+    "EVENT_CATALYST"
+   ]
+  },
+  {
+   "cycle_id": "C-2025-FIN-INSURANCE",
+   "bucket": "accelerator",
+   "seq": 2,
+   "raw_driver": "险资举牌上市公司次数增加，高股息资产配置力度更强（E-FINRE-44）",
+   "was_canonical": "EVENT_CATALYST",
+   "now_hits": [
+    "VALUATION_RESET",
+    "EVENT_CATALYST"
+   ]
+  },
+  {
+   "cycle_id": "C-2019-COMM-5G",
+   "bucket": "turning",
+   "seq": 3,
+   "raw_driver": "2021 年电信固定资产投资 4058 亿元，与上年基本持平 → 资本开支见顶（E-COMM-08）",
+   "was_canonical": "CYCLE_REVERSAL",
+   "now_hits": [
+    "DEMAND_SURGE",
+    "CYCLE_REVERSAL"
+   ]
+  }
+ ]
+}

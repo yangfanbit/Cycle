@@ -173,14 +173,6 @@
      "coverage_note": "军费 / 国防预算（政策—军费层）"
     },
     {
-     "keyword": "阅兵",
-     "coverage_note": "RC-2019-MIL-PARADE-70 / RC-2025-MIL-PARADE-80：阅兵"
-    },
-    {
-     "keyword": "纪念大会",
-     "coverage_note": "RC-2025-MIL-PARADE-80：抗战胜利 80 周年纪念大会"
-    },
-    {
      "keyword": "实体清单",
      "coverage_note": "C-2019-SEMI-LOCALIZATION：实体清单"
     },
@@ -573,6 +565,14 @@
     {
      "keyword": "揭牌",
      "coverage_note": "C-2019-MIL-GROUP-RESTRUCTURE：中国船舶集团揭牌"
+    },
+    {
+     "keyword": "阅兵",
+     "coverage_note": "RC-2019-MIL-PARADE-70 / RC-2025-MIL-PARADE-80：阅兵（一次性重大纪念活动，intake 原文即标注「重大纪念事件的注意力驱动」/「事件驱动型叙事」）"
+    },
+    {
+     "keyword": "纪念大会",
+     "coverage_note": "RC-2025-MIL-PARADE-80：抗战胜利 80 周年纪念大会（v0.1「大会」已覆盖，显式列入以便审计）"
     }
    ]
   },
@@ -615,8 +615,6 @@
     "装备采购",
     "军费",
     "国防预算",
-    "阅兵",
-    "纪念大会",
     "实体清单",
     "出口管制",
     "限制",
@@ -725,7 +723,9 @@
     "四中全会",
     "十五五",
     "成立",
-    "揭牌"
+    "揭牌",
+    "阅兵",
+    "纪念大会"
    ]
   },
   "discipline": [
@@ -736,6 +736,156 @@
    "❌ 未修改 v0.1 / v0.2 产物"
   ]
  },
+ "revisions": [
+  {
+   "revision": "v0.3-r1",
+   "date": "2026-09-23",
+   "change": "「阅兵」「纪念大会」由 `POLICY_DRIVEN` **移至** `EVENT_CATALYST`",
+   "decision": "「阅兵」= 一次性重大纪念活动（**事件**），**不是**产业政策文本",
+   "rationale": [
+    "① 形式：阅兵有明确日期、一次性，属重大纪念活动，非规则/制度性文件",
+    "② 机制：它不改变任何产业规则（无补贴 / 无准入 / 无配额 / 无采购规则变更）；intake 原文即标注「重大纪念事件的注意力驱动」「事件驱动型叙事」",
+    "③ 词表内部一致性：v0.1 `EVENT_CATALYST` 已含「大会」「峰会」「论坛」「启动仪式」等同类型大型活动；将阅兵归 POLICY 与「大会」的既有归类自相矛盾",
+    "④ 实际损害：跨 canonical 重复命中会使 `RC-2025-MIL-PARADE-80` 落入 `DERIVED`（无 canonical driver）→ **反而丢失机制**（该 cycle 修正前无任何 canonical driver）",
+    "⑤ 禁止反向推理：不得为「让候选拿到 driver」而保留双重归属"
+   ],
+   "allowed_dual_semantics": false,
+   "dual_semantics_rejected_because": [
+    "canonical vocabulary 的 9 项是**互斥机制轴**（`POLICY_DRIVEN` = 规则/制度驱动 vs `EVENT_CATALYST` = 离散事件驱动）",
+    "允许同一关键词跨 canonical 会**系统性制造 `DERIVED` / `AMBIGUOUS`**（v0.3 实测：8 条 `DIRECT→DERIVED`、1 条 `DERIVED→AMBIGUOUS` 均源于跨 canonical 重复）",
+    "Rule Set §3.3「不得仅凭 driver 名称相同判定 MATCH」→ 同理不得让同一关键词同时充当两种机制"
+   ],
+   "unchanged": [
+    "canonical vocabulary（9 项）",
+    "v0.1 / v0.2 产物",
+    "mapping_status 语义",
+    "映射逻辑"
+   ]
+  }
+ ],
+ "keyword_collision_audit": {
+  "cross_canonical_duplicate_keywords_all": {
+   "结构迁移": [
+    "TECH_BREAKTHROUGH",
+    "INDUSTRY_UPGRADE"
+   ]
+  },
+  "cross_canonical_duplicate_keywords_added_in_v0_3": {},
+  "substring_conflicts_across_canonical": [
+   {
+    "shorter": "倍",
+    "longer": "翻倍",
+    "shorter_owner": [
+     "VALUATION_RESET"
+    ],
+    "longer_owner": [
+     "DEMAND_SURGE"
+    ]
+   },
+   {
+    "shorter": "储备",
+    "longer": "黄金储备",
+    "shorter_owner": [
+     "POLICY_DRIVEN"
+    ],
+    "longer_owner": [
+     "VALUATION_RESET"
+    ]
+   },
+   {
+    "shorter": "出口",
+    "longer": "出口管制",
+    "shorter_owner": [
+     "DEMAND_SURGE"
+    ],
+    "longer_owner": [
+     "POLICY_DRIVEN"
+    ]
+   },
+   {
+    "shorter": "出清",
+    "longer": "出清完成",
+    "shorter_owner": [
+     "SUPPLY_CONTRACTION"
+    ],
+    "longer_owner": [
+     "CYCLE_REVERSAL"
+    ]
+   },
+   {
+    "shorter": "利润",
+    "longer": "净利润",
+    "shorter_owner": [
+     "SUPPLY_CONTRACTION"
+    ],
+    "longer_owner": [
+     "DEMAND_SURGE"
+    ]
+   },
+   {
+    "shorter": "增长",
+    "longer": "负增长",
+    "shorter_owner": [
+     "DEMAND_SURGE"
+    ],
+    "longer_owner": [
+     "CYCLE_REVERSAL"
+    ]
+   },
+   {
+    "shorter": "扩产",
+    "longer": "扩产周期",
+    "shorter_owner": [
+     "DEMAND_SURGE"
+    ],
+    "longer_owner": [
+     "SUPPLY_CONTRACTION"
+    ]
+   },
+   {
+    "shorter": "整治",
+    "longer": "整治提升",
+    "shorter_owner": [
+     "POLICY_DRIVEN"
+    ],
+    "longer_owner": [
+     "SUPPLY_CONTRACTION"
+    ]
+   },
+   {
+    "shorter": "迁移",
+    "longer": "结构迁移",
+    "shorter_owner": [
+     "INDUSTRY_UPGRADE"
+    ],
+    "longer_owner": [
+     "INDUSTRY_UPGRADE",
+     "TECH_BREAKTHROUGH"
+    ]
+   },
+   {
+    "shorter": "采购",
+    "longer": "装备采购",
+    "shorter_owner": [
+     "DEMAND_SURGE"
+    ],
+    "longer_owner": [
+     "POLICY_DRIVEN"
+    ]
+   },
+   {
+    "shorter": "标准体系",
+    "longer": "标准体系（2026 版）",
+    "shorter_owner": [
+     "POLICY_DRIVEN"
+    ],
+    "longer_owner": [
+     "TECH_BREAKTHROUGH"
+    ]
+   }
+  ],
+  "note": "同一关键词归属 ≥2 个 canonical driver → 该文本**永远无法成为 DIRECT**，且会系统性制造 `DERIVED` / `AMBIGUOUS`。`cross_canonical_duplicate_keywords_added_in_v0_3` 为本轮新增词中的跨 canonical 重复（**应为空**）。"
+ },
  "summary": {
   "objects": 79,
   "historical_raw_driver_count": 541,
@@ -744,44 +894,43 @@
   "driving_canonical_driver_count": 8,
   "by_mapping_status": {
    "DIRECT": 55,
-   "DERIVED": 336,
-   "AMBIGUOUS": 2,
+   "DERIVED": 337,
+   "AMBIGUOUS": 1,
    "UNKNOWN": 59,
    "NOT_AVAILABLE": 89
   },
   "by_canonical_driver": {
-   "POLICY_DRIVEN": 58,
+   "POLICY_DRIVEN": 56,
    "CYCLE_REVERSAL": 31,
    "INDUSTRY_UPGRADE": 10,
    "VALUATION_RESET": 24,
    "SUPPLY_CONTRACTION": 47,
    "TECH_BREAKTHROUGH": 13,
-   "EVENT_CATALYST": 14,
+   "EVENT_CATALYST": 18,
    "DEMAND_SURGE": 47
   },
   "driving_by_canonical_driver": {
-   "POLICY_DRIVEN": 51,
+   "POLICY_DRIVEN": 49,
    "INDUSTRY_UPGRADE": 7,
    "VALUATION_RESET": 16,
    "SUPPLY_CONTRACTION": 27,
    "TECH_BREAKTHROUGH": 10,
-   "EVENT_CATALYST": 12,
+   "EVENT_CATALYST": 16,
    "DEMAND_SURGE": 38,
    "CYCLE_REVERSAL": 5
   },
-  "cycles_with_canonical_driver": 59,
-  "cycles_without_canonical_driver": 20,
+  "cycles_with_canonical_driver": 60,
+  "cycles_without_canonical_driver": 19,
   "cycles_newly_covered_vs_v0_2": 5
  },
  "v0_2_to_v0_3_diff": {
-  "changed_entries": 118,
+  "changed_entries": 115,
   "by_transition": {
    "DIRECT→DERIVED": 8,
    "UNKNOWN→DERIVED": 63,
-   "DERIVED→DERIVED": 33,
+   "DERIVED→DERIVED": 31,
    "UNKNOWN→DIRECT": 11,
-   "NOT_AVAILABLE→DERIVED": 2,
-   "DERIVED→AMBIGUOUS": 1
+   "NOT_AVAILABLE→DERIVED": 2
   },
   "newly_covered_cycles": [
    "C-2019-RES-DYE-SHOCK",
@@ -809,7 +958,6 @@
    "RC-2024-RE-POLICY-517",
    "RC-2024-SECONDARY",
    "RC-2024-SEMI-FUND3",
-   "RC-2025-MIL-PARADE-80",
    "RC-2025-RES-COPPER"
   ],
   "detail": [
@@ -2679,10 +2827,10 @@
     },
     "to": {
      "status": "DERIVED",
-     "canonical_driver": "POLICY_DRIVEN"
+     "canonical_driver": "EVENT_CATALYST"
     },
     "matched_rules": [
-     "POLICY_DRIVEN"
+     "EVENT_CATALYST"
     ]
    },
    {
@@ -2696,10 +2844,10 @@
     },
     "to": {
      "status": "DERIVED",
-     "canonical_driver": "POLICY_DRIVEN"
+     "canonical_driver": "EVENT_CATALYST"
     },
     "matched_rules": [
-     "POLICY_DRIVEN"
+     "EVENT_CATALYST"
     ]
    },
    {
@@ -2716,62 +2864,6 @@
      "canonical_driver": null
     },
     "matched_rules": [
-     "POLICY_DRIVEN",
-     "CYCLE_REVERSAL"
-    ]
-   },
-   {
-    "cycle_id": "RC-2025-MIL-PARADE-80",
-    "bucket": "start",
-    "seq": 1,
-    "raw_driver": "2025-06-24 国新办官宣 9 月 3 日纪念大会（含阅兵）（Tier 1 官方发布）",
-    "from": {
-     "status": "DERIVED",
-     "canonical_driver": "EVENT_CATALYST"
-    },
-    "to": {
-     "status": "DERIVED",
-     "canonical_driver": null
-    },
-    "matched_rules": [
-     "POLICY_DRIVEN",
-     "EVENT_CATALYST"
-    ]
-   },
-   {
-    "cycle_id": "RC-2025-MIL-PARADE-80",
-    "bucket": "accelerator",
-    "seq": 1,
-    "raw_driver": "2025-08-20 国新办阅兵准备发布会（Tier 1）",
-    "from": {
-     "status": "DERIVED",
-     "canonical_driver": "EVENT_CATALYST"
-    },
-    "to": {
-     "status": "DERIVED",
-     "canonical_driver": null
-    },
-    "matched_rules": [
-     "POLICY_DRIVEN",
-     "EVENT_CATALYST"
-    ]
-   },
-   {
-    "cycle_id": "RC-2025-MIL-PARADE-80",
-    "bucket": "accelerator",
-    "seq": 2,
-    "raw_driver": "券商归纳的复合叙事：阅兵 + 军贸 + 景气反转 +「十五五」",
-    "from": {
-     "status": "DERIVED",
-     "canonical_driver": null
-    },
-    "to": {
-     "status": "AMBIGUOUS",
-     "canonical_driver": null
-    },
-    "matched_rules": [
-     "POLICY_DRIVEN",
-     "DEMAND_SURGE",
      "CYCLE_REVERSAL",
      "EVENT_CATALYST"
     ]
@@ -4561,7 +4653,7 @@
    "raw_driver_count": 5,
    "driving_raw_count": 2,
    "canonical_drivers": [
-    "POLICY_DRIVEN"
+    "EVENT_CATALYST"
    ],
    "canonical_driver_count": 1,
    "terminal_mechanisms": [],
@@ -4581,19 +4673,21 @@
    "macro_theme": "国防军工",
    "raw_driver_count": 7,
    "driving_raw_count": 4,
-   "canonical_drivers": [],
-   "canonical_driver_count": 0,
+   "canonical_drivers": [
+    "EVENT_CATALYST"
+   ],
+   "canonical_driver_count": 1,
    "terminal_mechanisms": [],
    "terminal_mechanism_count": 0,
    "direct_count": 0,
-   "derived_count": 2,
-   "ambiguous_count": 1,
+   "derived_count": 3,
+   "ambiguous_count": 0,
    "unknown_count": 1,
    "not_available_count": 3,
    "driving_direct_count": 0,
-   "driving_derived_count": 2,
-   "mapping_completeness": 0.2857,
-   "driving_mapping_completeness": 0.5
+   "driving_derived_count": 3,
+   "mapping_completeness": 0.4286,
+   "driving_mapping_completeness": 0.75
   },
   {
    "cycle_id": "RC-2017-MIL-MIXED-REFORM",

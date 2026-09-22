@@ -124,8 +124,10 @@ ADDED_RULES = {
         ("装备采购", "C-2020-MIL-EQUIP-ORDER：装备采购节奏"),
         ("军费", "军费 / 国防预算（政策—军费层）"),
         ("国防预算", "军费 / 国防预算（政策—军费层）"),
-        ("阅兵", "RC-2019-MIL-PARADE-70 / RC-2025-MIL-PARADE-80：阅兵"),
-        ("纪念大会", "RC-2025-MIL-PARADE-80：抗战胜利 80 周年纪念大会"),
+        # ★ v0.3-r1 修正：「阅兵」「纪念大会」**不属于 POLICY_DRIVEN** —— 见文件头 REVISIONS。
+        #   理由：阅兵是一次性重大纪念活动（事件），不改变任何产业规则（无补贴/准入/配额/采购规则变更）；
+        #   且 v0.1 `EVENT_CATALYST` 已含「大会」「峰会」「论坛」「启动仪式」等同类型活动。
+        #   → 已移至 EVENT_CATALYST（跨 canonical 重复会制造 DERIVED/AMBIGUOUS 并丢失机制）。
         ("实体清单", "C-2019-SEMI-LOCALIZATION：实体清单"),
         ("出口管制", "C-2022-SEMI-DOWNTURN：对华半导体限制"),
         ("限制", "C-2022-SEMI-DOWNTURN：出口限制"),
@@ -242,6 +244,11 @@ ADDED_RULES = {
         ("十五五", "RC-2024-MIL-COMMERCIAL-SPACE：十五五建议"),
         ("成立", "集团/机构揭牌成立"),
         ("揭牌", "C-2019-MIL-GROUP-RESTRUCTURE：中国船舶集团揭牌"),
+        # ★ v0.3-r1 修正：由 POLICY_DRIVEN 移入（原归属为语义错误）
+        ("阅兵", "RC-2019-MIL-PARADE-70 / RC-2025-MIL-PARADE-80：阅兵（一次性重大纪念活动，"
+                 "intake 原文即标注「重大纪念事件的注意力驱动」/「事件驱动型叙事」）"),
+        ("纪念大会", "RC-2025-MIL-PARADE-80：抗战胜利 80 周年纪念大会（v0.1「大会」已覆盖，"
+                     "显式列入以便审计）"),
     ],
 }
 
@@ -256,6 +263,58 @@ for _k, _pairs in ADDED_RULES.items():
 
 ADDED_INDEX = {k: [kw for kw, _n in v] for k, v in ADDED_RULES.items()}
 ADDED_NOTES = {k: {kw: n for kw, n in v} for k, v in ADDED_RULES.items()}
+
+# ---------------------------------------------------------------- v0.3 修订记录（可审计）
+REVISIONS = [
+    {
+        "revision": "v0.3-r1",
+        "date": "2026-09-23",
+        "change": ("「阅兵」「纪念大会」由 `POLICY_DRIVEN` **移至** `EVENT_CATALYST`"),
+        "decision": "「阅兵」= 一次性重大纪念活动（**事件**），**不是**产业政策文本",
+        "rationale": [
+            "① 形式：阅兵有明确日期、一次性，属重大纪念活动，非规则/制度性文件",
+            "② 机制：它不改变任何产业规则（无补贴 / 无准入 / 无配额 / 无采购规则变更）；"
+            "intake 原文即标注「重大纪念事件的注意力驱动」「事件驱动型叙事」",
+            "③ 词表内部一致性：v0.1 `EVENT_CATALYST` 已含「大会」「峰会」「论坛」「启动仪式」等"
+            "同类型大型活动；将阅兵归 POLICY 与「大会」的既有归类自相矛盾",
+            "④ 实际损害：跨 canonical 重复命中会使 `RC-2025-MIL-PARADE-80` 落入 `DERIVED`（无 canonical driver）"
+            "→ **反而丢失机制**（该 cycle 修正前无任何 canonical driver）",
+            "⑤ 禁止反向推理：不得为「让候选拿到 driver」而保留双重归属",
+        ],
+        "allowed_dual_semantics": False,
+        "dual_semantics_rejected_because": [
+            "canonical vocabulary 的 9 项是**互斥机制轴**"
+            "（`POLICY_DRIVEN` = 规则/制度驱动 vs `EVENT_CATALYST` = 离散事件驱动）",
+            "允许同一关键词跨 canonical 会**系统性制造 `DERIVED` / `AMBIGUOUS`**"
+            "（v0.3 实测：8 条 `DIRECT→DERIVED`、1 条 `DERIVED→AMBIGUOUS` 均源于跨 canonical 重复）",
+            "Rule Set §3.3「不得仅凭 driver 名称相同判定 MATCH」→ 同理不得让同一关键词同时充当两种机制",
+        ],
+        "unchanged": ["canonical vocabulary（9 项）", "v0.1 / v0.2 产物", "mapping_status 语义", "映射逻辑"],
+    },
+]
+
+# ---------------------------------------------------------------- 跨 canonical 重复检测（**强制自检**）
+# 同一关键词出现在 ≥2 个 canonical driver 中 → 会导致该文本永远无法成为 DIRECT，
+# 并系统性制造 DERIVED / AMBIGUOUS。本检查**只报告**，不阻断（既有 v0.1 词表可能本就有重复）。
+_KW_OWNER = collections.defaultdict(list)
+for _c, _kws in RULES.items():
+    for _kw in _kws:
+        _KW_OWNER[_kw].append(_c)
+CROSS_DUP = {kw: owners for kw, owners in sorted(_KW_OWNER.items()) if len(owners) > 1}
+CROSS_DUP_V03 = {kw: owners for kw, owners in CROSS_DUP.items()
+                 if kw in {k for v in ADDED_RULES.values() for k, _ in v}}
+# 子串包含检测（宽关键词风险）：关键词 A 是关键词 B 的子串且属不同 canonical
+# ★ 必须用**全序**排序（长度 + 字典序）—— 仅用 `key=len` 时等长元素顺序受 set 迭代顺序影响，
+#   在 PYTHONHASHSEED 随机化下会产出不同顺序 → 破坏逐字节可复现性。
+SUBSTR_CONFLICTS = []
+_all_kw = sorted({kw for kws in RULES.values() for kw in kws}, key=lambda s: (len(s), s))
+for _i, _a in enumerate(_all_kw):
+    for _b in _all_kw[_i + 1:]:
+        if _a != _b and _a in _b:
+            _oa, _ob = set(_KW_OWNER[_a]), set(_KW_OWNER[_b])
+            if _oa != _ob:
+                SUBSTR_CONFLICTS.append({"shorter": _a, "longer": _b,
+                                         "shorter_owner": sorted(_oa), "longer_owner": sorted(_ob)})
 
 # 纯非机制表述（→ NOT_AVAILABLE）—— 与 v0.1 一致
 NON_MECHANISM = ["unknown", "暂无", "未知", "无（", "获利盘", "暂定", "（暂定）"]
@@ -435,6 +494,15 @@ canon_doc = {
             "❌ 未删除 v0.1 任何原有关键词",
             "❌ 未修改 v0.1 / v0.2 产物",
         ],
+    },
+    "revisions": REVISIONS,
+    "keyword_collision_audit": {
+        "cross_canonical_duplicate_keywords_all": CROSS_DUP,
+        "cross_canonical_duplicate_keywords_added_in_v0_3": CROSS_DUP_V03,
+        "substring_conflicts_across_canonical": SUBSTR_CONFLICTS,
+        "note": ("同一关键词归属 ≥2 个 canonical driver → 该文本**永远无法成为 DIRECT**，"
+                 "且会系统性制造 `DERIVED` / `AMBIGUOUS`。"
+                 "`cross_canonical_duplicate_keywords_added_in_v0_3` 为本轮新增词中的跨 canonical 重复（**应为空**）。"),
     },
     "summary": {
         "objects": len(ALL_OBJ),

@@ -8615,15 +8615,15 @@
    "bucket": "start",
    "seq": 1,
    "raw_driver": "国庆 70 周年阅兵预期（重大纪念事件的注意力驱动）",
-   "canonical_driver": "POLICY_DRIVEN",
+   "canonical_driver": "EVENT_CATALYST",
    "mapping_status": "DERIVED",
    "matched_rules": [
-    "POLICY_DRIVEN"
+    "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中唯一规则 POLICY_DRIVEN，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+   "reason": "命中唯一规则 EVENT_CATALYST，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
   },
   {
    "cycle_id": "RC-2019-MIL-PARADE-70",
@@ -8631,15 +8631,15 @@
    "bucket": "accelerator",
    "seq": 1,
    "raw_driver": "阅兵准备期的官方信息与装备展示预期",
-   "canonical_driver": "POLICY_DRIVEN",
+   "canonical_driver": "EVENT_CATALYST",
    "mapping_status": "DERIVED",
    "matched_rules": [
-    "POLICY_DRIVEN"
+    "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中唯一规则 POLICY_DRIVEN，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
+   "reason": "命中唯一规则 EVENT_CATALYST，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
   },
   {
    "cycle_id": "RC-2019-MIL-PARADE-70",
@@ -8650,13 +8650,13 @@
    "canonical_driver": null,
    "mapping_status": "DERIVED",
    "matched_rules": [
-    "POLICY_DRIVEN",
-    "CYCLE_REVERSAL"
+    "CYCLE_REVERSAL",
+    "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中 2 条规则（POLICY_DRIVEN, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+   "reason": "命中 2 条规则（CYCLE_REVERSAL, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
   },
   {
    "cycle_id": "RC-2019-MIL-PARADE-70",
@@ -8667,14 +8667,14 @@
    "canonical_driver": null,
    "mapping_status": "DERIVED",
    "matched_rules": [
-    "POLICY_DRIVEN",
     "INDUSTRY_UPGRADE",
-    "CYCLE_REVERSAL"
+    "CYCLE_REVERSAL",
+    "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中 3 条规则（POLICY_DRIVEN, INDUSTRY_UPGRADE, CYCLE_REVERSAL）→ 需综合判断，标记 DERIVED"
+   "reason": "命中 3 条规则（INDUSTRY_UPGRADE, CYCLE_REVERSAL, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
   },
   {
    "cycle_id": "RC-2019-MIL-PARADE-70",
@@ -8696,16 +8696,15 @@
    "bucket": "start",
    "seq": 1,
    "raw_driver": "2025-06-24 国新办官宣 9 月 3 日纪念大会（含阅兵）（Tier 1 官方发布）",
-   "canonical_driver": null,
+   "canonical_driver": "EVENT_CATALYST",
    "mapping_status": "DERIVED",
    "matched_rules": [
-    "POLICY_DRIVEN",
     "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中 2 条规则（POLICY_DRIVEN, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+   "reason": "命中唯一规则 EVENT_CATALYST，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
   },
   {
    "cycle_id": "RC-2025-MIL-PARADE-80",
@@ -8713,16 +8712,15 @@
    "bucket": "accelerator",
    "seq": 1,
    "raw_driver": "2025-08-20 国新办阅兵准备发布会（Tier 1）",
-   "canonical_driver": null,
+   "canonical_driver": "EVENT_CATALYST",
    "mapping_status": "DERIVED",
    "matched_rules": [
-    "POLICY_DRIVEN",
     "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中 2 条规则（POLICY_DRIVEN, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
+   "reason": "命中唯一规则 EVENT_CATALYST，但文本未给出 evidence/event/source 引用 → 降为 DERIVED"
   },
   {
    "cycle_id": "RC-2025-MIL-PARADE-80",
@@ -8731,9 +8729,8 @@
    "seq": 2,
    "raw_driver": "券商归纳的复合叙事：阅兵 + 军贸 + 景气反转 +「十五五」",
    "canonical_driver": null,
-   "mapping_status": "AMBIGUOUS",
+   "mapping_status": "DERIVED",
    "matched_rules": [
-    "POLICY_DRIVEN",
     "DEMAND_SURGE",
     "CYCLE_REVERSAL",
     "EVENT_CATALYST"
@@ -8741,7 +8738,7 @@
    "references": [],
    "event_refs": [],
    "source_type": "narrative_text",
-   "reason": "命中 4 条规则（POLICY_DRIVEN, DEMAND_SURGE, CYCLE_REVERSAL, EVENT_CATALYST）→ 无法收敛，保留 AMBIGUOUS，不硬拆"
+   "reason": "命中 3 条规则（DEMAND_SURGE, CYCLE_REVERSAL, EVENT_CATALYST）→ 需综合判断，标记 DERIVED"
   },
   {
    "cycle_id": "RC-2025-MIL-PARADE-80",
@@ -8766,7 +8763,7 @@
    "canonical_driver": null,
    "mapping_status": "NOT_AVAILABLE",
    "matched_rules": [
-    "POLICY_DRIVEN"
+    "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],
@@ -8782,8 +8779,8 @@
    "canonical_driver": null,
    "mapping_status": "NOT_AVAILABLE",
    "matched_rules": [
-    "POLICY_DRIVEN",
-    "CYCLE_REVERSAL"
+    "CYCLE_REVERSAL",
+    "EVENT_CATALYST"
    ],
    "references": [],
    "event_refs": [],

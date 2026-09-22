@@ -813,19 +813,19 @@
   },
   "coverage_after": {
    "cycles_total": 79,
-   "cycles_with_canonical_driver": 59,
-   "cycles_without_canonical_driver": 20,
+   "cycles_with_canonical_driver": 60,
+   "cycles_without_canonical_driver": 19,
    "by_mapping_status_all_buckets": {
     "DIRECT": 55,
-    "DERIVED": 336,
-    "AMBIGUOUS": 2,
+    "DERIVED": 337,
+    "AMBIGUOUS": 1,
     "UNKNOWN": 59,
     "NOT_AVAILABLE": 89
    },
    "by_mapping_status_driving": {
     "DIRECT": 45,
-    "DERIVED": 200,
-    "AMBIGUOUS": 1,
+    "DERIVED": 201,
+    "AMBIGUOUS": 0,
     "UNKNOWN": 23,
     "NOT_AVAILABLE": 29
    },
@@ -1904,10 +1904,10 @@
   },
   "driver": {
    "PARTIAL": 66,
-   "MISMATCH": 104,
+   "MISMATCH": 113,
    "MATCH": 1,
-   "PERIPHERAL_OVERLAP": 124,
-   "NOT_AVAILABLE": 100
+   "PERIPHERAL_OVERLAP": 120,
+   "NOT_AVAILABLE": 95
   },
   "evidence_sequence": {
    "NOT_AVAILABLE": 190,
@@ -1993,12 +1993,11 @@
    "RC-2024-RE-POLICY-517",
    "RC-2024-SECONDARY",
    "RC-2024-SEMI-FUND3",
-   "RC-2025-MIL-PARADE-80",
    "RC-2025-RES-COPPER"
   ],
-  "still_count": 20,
+  "still_count": 19,
   "still_by_kind": {
-   "research_candidate": 20
+   "research_candidate": 19
   },
   "kind_source": "**从 export 的来源数组重新派生** —— SA research artifact 的 `historical_profiles[].kind` / `matrix[].historical_kind` 存在既有缺陷（E.3），本校准不依赖该字段。",
   "note": "`cycles_without_driving_text` = export 中 `drivers.start` + `drivers.accelerator` 为空的 cycle→ **属 export 数据缺口**（非词表问题），应由 Canonical / Export 层补全，**不得由词表猜测**。`still_without_canonical_driver` = 词表扩展后仍无 canonical driver 的 cycle。"
