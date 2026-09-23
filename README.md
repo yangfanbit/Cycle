@@ -16,19 +16,27 @@
 
 ## 当前状态
 
-截至 **2026-09-19**：
+截至 **2026-09-24**：
 
-- Structural Analogy Rule Set v0.2 已冻结
-- Structural Analogy Research v0.2 baseline 已建立
-- Time Observation v0.5 已完成并暂时冻结
-- 当前 Historical Macro Themes = 4
-- 当前 Current Candidates = 5
-- Product 尚未接入 Structural Analogy
+| 项 | 当前基线 |
+|---|---|
+| Historical Universe | **79** Historical Objects（52 Campaign + 27 Research Candidate） |
+| Macro Theme roots | **11** |
+| Driver Canonicalization | **v0.4** |
+| Structural Analogy | **v0.5**（395 pairs） |
+| Time Observation | **v0.2**（内部 `artifact_version` 0.3） |
+| Current Candidates | **5** |
+| Product | **已消费最新 SA / TO artifact**（5 / 5 Current Candidate 可走通完整研究闭环） |
+
+**Research Core 状态**：**Release 完成并冻结** —— 后续只允许由「真实 Product Usage 暴露的问题」触发新研究轮次。
+
+**当前阶段**：**Product / Real Usage Iteration**（详见 `docs/ROADMAP.md`）。
 
 最新状态详见：
 
-- `docs/PROJECT_STATE.md`
-- `docs/ROADMAP.md`
+- `docs/PROJECT_STATE.md`（动态状态，以它为准）
+- `docs/ROADMAP.md`（路线）
+- `docs/THREEC_1_0_RELEASE_DEFINITION.md`（1.0 发布定义与 Gate）
 
 ---
 

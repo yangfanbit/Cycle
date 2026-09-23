@@ -20,7 +20,7 @@
   · **阶段 H**：`ROADMAP.md` 主线切换为 **Product / Real Usage Iteration**；Research 标记 **COMPLETE / FROZEN**；
     Coverage Expansion 回到 **FROZEN / DEFERRED**；Backlog 全部降级为 **KNOWN LIMITATION**
 - **★ Research Core 基线（FROZEN）**：79 Historical Objects（52 Campaign + 27 RC）· Driver Canonicalization **v0.4** ·
-  SA **v0.4**（395 pairs）· TO **v0.2**（内部 0.3）· Product **已消费最新 SA / TO artifact**
+  SA **v0.5**（395 pairs）· TO **v0.2**（内部 0.3）· Driver **v0.4** · Product **已消费最新 SA / TO artifact**
 - **Known Limitations（不阻塞推进，详见 ROADMAP §3）**：
   **L5（★ Next Single Goal）** Research export `lifecycle` 映射缺口（**16 / 27 RC 的 export `lifecycle` 为空**，
   而 **intake 全部有**；R01 importers 过滤 `PEAK` 阶段）· L1 剩余 7 项子串冲突（不改变 driver 集合）·
@@ -38,7 +38,18 @@
     **structural_status 变化 0**；SUPPORTED 4 / STRICT 1 不变；`driver=MISMATCH → PARTIAL` 仍为 0）
   · **Driver v0.4 保持不变**（输入未变，`--check` PASS）· **TO v0.2 保持不变**（输出未变，`--check` PASS）
   · 新增 **lifecycle 覆盖恒等校验器** `validate_lifecycle_coverage_v0_1.py`（L1–L8，**防回归**）
-- **Next Single Goal**：**重新由真实使用判断**（本轮已闭环上一目标；不再自动开始下一项开发）
+- 最近完成（续）：**ThreeC 1.0 Release Definition + Release Gap Audit**（详见 `docs/THREEC_1_0_RELEASE_DEFINITION.md`）
+  · 正式建立 **1.0 定义**（8 个硬 Gate：R / P / T / Q / U / M / D / G）与 **Blocker 分级（P0/P1/P2）**
+  · **Gap**：Research / Product / Quality / Documentation **PASS**；Mobile **PASS（静态）**；
+    Real Usage **PASS（含 1 项已知缺口）**；**Trust ★ FAIL（P0-1）**；**Deployment ★ P1-1**
+  · **P0-1**：无 research lifecycle 的对象在 Product 中被推导出 `main_rise`（`historicalCase.ts:243` 读 adapter 派生的
+    `c.phases`；`derivePhases` 在 `peak == null` 时**无条件**返回 `main_rise`）→ 违反 Gate T8 `UNKNOWN ≠ 自动推导具体阶段`
+  · **P1-1**：**无任何部署配置 / 无 git tag / 无访问入口 / 无回滚定义**（`package.json` 仍为 `0.1.0`）；
+    最小静态部署方案已设计（见定义文档 §2），**未引入后端**
+  · **4 个仅 UNKNOWN lifecycle 的 RC 判定为 `KNOWN DATA LIMITATION`，不是 1.0 Blocker**（来源明确 · 无伪造 ·
+    Product 可显示信息不足 · validator L4 防静默丢失）
+- **Next Single Goal**：**修 P0-1** —— 让「无 research lifecycle」的对象显示「阶段未判定」而不是推导出的具体阶段
+  （**不自动开始下一项开发**）
 
 ## 1. 项目当前定位
 

@@ -78,8 +78,24 @@ Today
 - SA **v0.4 → v0.5**（60 条变化**全部仅 lifecycle 维度**；structural_status 变化 **0**）
 - **Driver v0.4 不变**（输入未变）· **TO v0.2 不变**（输出未变）· 新增 `validate_lifecycle_coverage_v0_1.py` 防回归
 
+### ★ 1.0 目标（正式定义见 `docs/THREEC_1_0_RELEASE_DEFINITION.md`）
+
+> **1.0 的判据是 8 个硬 Gate（R / P / T / Q / U / M / D / G），不是「整体感觉差不多」。**
+
+**当前 Gap（审计基线 `ad5e804`）**：
+
+| Gate | 状态 |
+|---|---|
+| Research · Product · Quality · Documentation | **PASS** |
+| Real Usage | PASS（含 1 项已知缺口，由 P0-1 覆盖） |
+| Mobile | PASS（静态；真机复核为 P2） |
+| **Trust** | **★ FAIL —— P0-1**：无 research lifecycle 的对象在 Product 中被推导出 `main_rise`（虚构阶段） |
+| **Deployment** | **★ P1-1**：无部署配置 / 无访问入口 / 无回滚定义 |
+
+**下一步唯一目标**：**修 P0-1** —— 让「无 research lifecycle」的对象显示「阶段未判定」，而不是推导出的具体阶段。
+
 ### 下一步
-**唯一目标**：**重新由真实使用判断**（本轮已闭环上一目标；不自动开始下一项开发）。
+**唯一目标**：见上「1.0 目标」段的 **P0-1**（**不自动开始下一项开发**）。
 
 ---
 
