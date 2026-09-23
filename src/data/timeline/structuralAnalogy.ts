@@ -2,7 +2,7 @@
  * Structural Analogy —— Product Adapter v0.1（ROADMAP Step 2）。
  *
  * ## 定位
- * `research/research/reports/structural_analogy_explanations_v0_4.json`
+ * `research/research/reports/structural_analogy_explanations_v0_5.json`
  * （**Research-derived / Product-facing Artifact**，契约见
  * `docs/PRODUCT_SIMILARITY_ARCHITECTURE_GATE_v0_1.md` §D–§G）
  * → **Product View Model**（只读消费）。
@@ -496,7 +496,7 @@ let _cache: StructuralAnalogyDataset | null = null;
 
 export async function loadStructuralAnalogyDataset(): Promise<StructuralAnalogyDataset> {
   if (_cache) return _cache;
-  const mod = await import('@observation/structural_analogy_explanations_v0_4.json');
+  const mod = await import('@observation/structural_analogy_explanations_v0_5.json');
   _cache = parseStructuralAnalogyDataset((mod as { default: unknown }).default);
   return _cache;
 }

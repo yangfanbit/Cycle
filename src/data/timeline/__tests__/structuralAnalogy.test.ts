@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_4.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_5.json';
 import {
   DIMENSION_LABEL,
   DIMENSION_STATUS_LABEL,
@@ -24,7 +24,7 @@ const dataset = parseStructuralAnalogyDataset(canonicalJson);
 
 describe('structuralAnalogy · 解析与覆盖度', () => {
   it('从静态 Artifact 解析出完整数据集（无网络请求）', () => {
-    expect(dataset.artifactVersion).toBe('0.4');
+    expect(dataset.artifactVersion).toBe('0.5');
     expect(dataset.ruleSetVersion).toBe('structural-analogy-ruleset-v0.3');
     expect(dataset.snapshotDate).toBe('2026-09-15');
     expect(dataset.candidates).toHaveLength(5);

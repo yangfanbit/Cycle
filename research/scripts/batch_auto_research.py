@@ -1304,6 +1304,27 @@ RESEARCH_CANDIDATES = [
 # 时间精度：EXACT_DATE / DATE_WINDOW / PHASE_WINDOW；无可靠依据的阶段不写或标 unknown，不编造。
 # drivers 内嵌来源引用（EV-/E-/S- 编号）；无可靠来源写 "unknown"。
 
+# ---------------------------------------------------------------- ★ intake 派生的 lifecycle（单一真源，优先）
+# 根因：export 的 lifecycle 原来自**手写静态字典**，与 intake 解耦 → 16/27 RC 整条缺失、
+#       已登记条目丢掉 UNKNOWN 段与 open-ended 段。
+# 修复：由 `research/scripts/build_lifecycle_from_intake_v0_1.py` 从 **R01 intake 包**派生，
+#       本层**优先于**下面的手写字典（后者仅用于**无 intake 来源**的旧对象）。
+# ★ 只恢复 intake 中已存在的真实数据：不虚构阶段、不新增 enum、不改 Contract。
+_LIFECYCLE_FROM_INTAKE = {}
+_LFI_PATH = os.path.join(ROOT, "research", "reports", "lifecycle_from_intake_v0_1.json")
+# 注：本脚本的 ROOT = <repo>/research（见顶部 `ROOT = db.ROOT`），故 reports 位于 <repo>/research/research/reports
+if os.path.exists(_LFI_PATH):
+    with open(_LFI_PATH, "r", encoding="utf-8") as _f:   # 本脚本未 import io
+        _LIFECYCLE_FROM_INTAKE = {k: v["lifecycle"] for k, v in json.load(_f)["by_cycle"].items()}
+
+
+def lifecycle_of(cid, fallback_dict):
+    """intake 派生的 lifecycle **优先**；无 intake 来源时回退到静态字典（旧对象）。"""
+    if cid in _LIFECYCLE_FROM_INTAKE:
+        return _LIFECYCLE_FROM_INTAKE[cid]
+    return fallback_dict.get(cid, [])
+
+
 CAMPAIGN_LIFECYCLE = {
     "C-2019-AD": [
         {"stage": "EARLY_SIGNAL", "start": "2019-08-15", "end": "2019-08-15", "precision": "EXACT_DATE"},
@@ -3205,7 +3226,7 @@ def build_campaign(c):
         "notes": "; ".join(status_notes) or c.get("research_notes") or "",
         "research_notes": c.get("research_notes"),
         "conflict": conflict,
-        "lifecycle": CAMPAIGN_LIFECYCLE.get(cid, []),
+        "lifecycle": lifecycle_of(cid, CAMPAIGN_LIFECYCLE),   # ★ intake 优先
         "drivers": CAMPAIGN_DRIVERS.get(cid, {"start": [], "accelerator": [], "turning": [], "ending": []}),
     }
     return entry
@@ -3549,7 +3570,7 @@ def main():
             "conflicts": rc["conflicts"],
             "notes": rc["notes"],
             # ---- V1.7 新增（backward-compatible optional）----
-            "lifecycle": CANDIDATE_LIFECYCLE.get(rcid, []),
+            "lifecycle": lifecycle_of(rcid, CANDIDATE_LIFECYCLE),   # ★ intake 优先
             "drivers": CANDIDATE_DRIVERS.get(rcid, {"start": [], "accelerator": [], "turning": [], "ending": []}),
         })
 

@@ -1,0 +1,1515 @@
+{
+ "artifact": "lifecycle_from_intake",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/build_lifecycle_from_intake_v0_1.py",
+ "position": "Research-only —— 从 R01 intake 包派生 export 用的 lifecycle（**单一真源**）。**不修改** schema.sql / Export Contract / CMTR / taxonomy / Campaign Decision。",
+ "contract_stages": [
+  "EARLY_SIGNAL",
+  "THEME_FORMING",
+  "BROAD_CONFIRMATION",
+  "MAIN_RISE",
+  "PEAK",
+  "RETRACEMENT",
+  "DECLINING",
+  "SECONDARY",
+  "FIRST_DECLINE",
+  "MAIN_END",
+  "ENDED"
+ ],
+ "rules": {
+  "stage": "仅接受 Contract 的 11 个 stage；`UNKNOWN` **丢弃该段**（不虚构、不新增 enum）",
+  "precision": "机械派生：start == end 且均非空 → EXACT_DATE；否则 PHASE_WINDOW",
+  "dates": "start / end **原样保留（可为 null）** —— 不制造精确日期",
+  "priority": "本产物**优先于** batch_auto_research.py 的手写静态字典（后者仅用于无 intake 的旧对象）"
+ },
+ "coverage": {
+  "objects": 79,
+  "with_intake": 62,
+  "segments_kept": 139,
+  "segments_dropped_unknown": 19,
+  "segments_unknown_stage": 0,
+  "rc_total": 27,
+  "rc_nonempty": 19,
+  "rc_only_unknown": [
+   "RC-2019-RE-EASING",
+   "RC-2020-FIN-BROKER-VOLUME",
+   "RC-2016-RE-SHANTY",
+   "RC-2015-FIN-LEVERAGE"
+  ],
+  "camp_total": 52,
+  "camp_nonempty": 39
+ },
+ "dropped_segments": [
+  {
+   "cycle_id": "C-2023-CONS-VALUE-RETAIL",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "尚无足够证据判定本段是否已进入 DECLINING 或 ENDED",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2023-FIN-SOE-VALUATION",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "峰值与结束阶段缺数据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2016-HIEQ-CONSTR",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2022-01-01",
+   "end": null,
+   "basis": "2022 年及以后工程机械的完整走势未在本任务内系统采集（Priority A 虽覆盖至 2025，但本包聚焦于机制明确的上行-转折结构）。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2023-02-04",
+   "end": null,
+   "basis": "此后行情与「人形机器人」叙事交织，本包未取得切分所需的连续行情证据，不作阶段主张。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2023-HIEQ-HUMANOID",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2023-05-01",
+   "end": "2023-08-28",
+   "basis": "产业事件已发生（2023-05 具身智能表述、Optimus Gen1 视频、2023 年 6 月地方政策），但本包无同期市场证据证明该窗口已形成可观察的注意力中心。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2024-RES-GOLD-CB",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-12-27",
+   "end": null,
+   "basis": "窗口结束时结构仍在延续，退潮段未知",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2024-SEMI-MEMORY",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-12-01",
+   "end": null,
+   "basis": "2025-12 指数回落约 12.7%，但涨价预期仍被机构维持，结束与否无法判定。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-CONS-PET-FOOD",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "结束证据不足",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2016-RES-CHEM-ENV",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2017-01-01",
+   "end": null,
+   "basis": "缺少持续期证据，阶段无法标注",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2024-07-27",
+   "end": null,
+   "basis": "此后阶段归属无法确定（无行情序列、无设备投资落地数据）。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2024-09-01",
+   "end": "2024-12-31",
+   "basis": "产业事件已发生（2024-11-15 华为具身智能创新中心运营与 16 家企业签约），但本包无同期市场证据，无法确认注意力中心是否已形成。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-09-06",
+   "end": null,
+   "basis": "超出本包证据采集边界。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2019-RE-EASING",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2018-12-18",
+   "end": null,
+   "basis": "政策起点可考，行情阶段不可识别",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "缺连续行情数据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2016-RE-SHANTY",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "仅确认政策与基本面事实，市场阶段不可识别",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2015-FIN-LEVERAGE",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "无可靠行情数据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2025-MIL-PARADE-80",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-09-03",
+   "end": null,
+   "basis": "阅兵举办日（2025-09-03）之后的行情走向本包无证据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2017-MIL-MIXED-REFORM",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "2017年2月之后的走势本包无可靠证据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-12-31",
+   "end": null,
+   "basis": "2025年末之后走向超出本轮研究范围",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  }
+ ],
+ "by_cycle": {
+  "C-2016-CONS-BAIJIU-UPGRADE": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-06-01",
+     "end": "2017-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2018-01-01",
+     "end": "2018-02-28",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2018-09-01",
+     "end": "2018-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-001"
+  },
+  "C-2018-CONS-HOG-AFRICAN": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-01-01",
+     "end": "2019-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2019-10-01",
+     "end": "2020-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-01-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-005"
+  },
+  "C-2019-CONS-BAIJIU-CORE": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-03-01",
+     "end": "2020-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-01-01",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-02-18",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-002"
+  },
+  "C-2019-CONS-AESTHETICS": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "009",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-01-01",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-02-18",
+     "end": "2021-07-05",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-26",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-009"
+  },
+  "C-2020-CONS-DUTYFREE": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-01",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-01-01",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-01",
+     "end": "2023-05-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-003"
+  },
+  "C-2020-CONS-WHITE-GOODS": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-01",
+     "end": "2021-02-28",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-01-06",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-008"
+  },
+  "C-2020-CONS-BEAUTY-CN": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-29",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-06-01",
+     "end": "2021-10-29",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-01",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-010"
+  },
+  "C-2021-CONS-HOG-REVERSAL": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2022-04-01",
+     "end": "2022-07-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2022-07-01",
+     "end": "2022-10-20",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-09-08",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-006"
+  },
+  "C-2022-CONS-SERVICE-REBOUND": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2022-12-07",
+     "end": "2023-01-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2023-01-01",
+     "end": "2023-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2023-05-01",
+     "end": "2023-06-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-004"
+  },
+  "C-2023-CONS-VALUE-RETAIL": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "012",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-01-01",
+     "end": "2024-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-01-01",
+     "end": "2025-08-29",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-012"
+  },
+  "C-2024-CONS-TRADE-IN": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "011",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-08-24",
+     "end": "2024-10-08",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2024-10-08",
+     "end": "2024-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2025-07-01",
+     "end": "2025-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-011"
+  },
+  "C-2019-MIL-GROUP-RESTRUCTURE": {
+   "kind": "campaign",
+   "intake_package": "R01-06",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-07-02",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2019-10-25",
+     "end": "2019-10-28",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "ENDED",
+     "start": "2019-11-26",
+     "end": "2019-11-26",
+     "precision": "EXACT_DATE"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-002"
+  },
+  "C-2020-MIL-EQUIP-ORDER": {
+   "kind": "campaign",
+   "intake_package": "R01-06",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-25",
+     "end": "2020-08-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2021-01-08",
+     "end": "2021-05-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-05-11",
+     "end": "2021-08-24",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2021-08-25",
+     "end": "2021-10-13",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2021-10-14",
+     "end": "2021-11-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-11-30",
+     "end": "2021-12-01",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-12-02",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-001"
+  },
+  "C-2020-RE-DEBT-RISK": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "DECLINING",
+     "start": "2020-08-20",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "ENDED",
+     "start": "2022-01-01",
+     "end": "2022-07-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-004"
+  },
+  "C-2020-FIN-BANK-CREDIT": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-10-30",
+     "end": "2021-03-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-008"
+  },
+  "C-2022-RE-POLICY-THREE": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2022-11-08",
+     "end": "2022-11-29",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2022-11-29",
+     "end": "2022-12-09",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2023-01-01",
+     "end": "2023-02-28",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-001"
+  },
+  "C-2023-FIN-SOE-VALUATION": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-04-01",
+     "end": "2023-05-11",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-006"
+  },
+  "C-2024-FIN-BROKER-POLICY": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-09-24",
+     "end": "2024-10-08",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2024-10-08",
+     "end": "2024-10-08",
+     "precision": "EXACT_DATE"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-005"
+  },
+  "C-2024-FIN-BANK-DIVIDEND": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-01-01",
+     "end": "2024-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2025-01-01",
+     "end": "2025-09-19",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-007"
+  },
+  "C-2025-FIN-INSURANCE": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-01-01",
+     "end": "2025-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-010"
+  },
+  "C-2016-HIEQ-CONSTR": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-08-01",
+     "end": "2021-03-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-03-01",
+     "end": "2021-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2021-05-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-001"
+  },
+  "C-2018-HIEQ-ROBOT-DOWN": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": null,
+     "end": "2018-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2018-09-30",
+     "end": "2019-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2019-10-01",
+     "end": "2019-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-002"
+  },
+  "C-2020-HIEQ-AUTOMATION": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-04-01",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-07-01",
+     "end": "2021-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-10-01",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-003"
+  },
+  "C-2023-HIEQ-ROBOT-PLUS": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-01-19",
+     "end": "2023-02-03",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-004"
+  },
+  "C-2023-HIEQ-HUMANOID": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-08-29",
+     "end": "2023-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2023-11-01",
+     "end": "2023-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-005"
+  },
+  "C-2019-RES-DYE-SHOCK": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-03-21",
+     "end": "2019-04-03",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2019-04-04",
+     "end": "2019-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2019-05-01",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-005"
+  },
+  "C-2020-RES-NONFERROUS": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-04-01",
+     "end": "2021-05-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-05-10",
+     "end": "2021-09-13",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-09-14",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-001"
+  },
+  "C-2020-RES-LITHIUM": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-10-30",
+     "end": "2021-09-13",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-09-13",
+     "end": "2022-11-11",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-11-12",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-002"
+  },
+  "C-2020-RES-RAREEARTH": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-05-01",
+     "end": "2021-10-01",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-10-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-01",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-003"
+  },
+  "C-2021-RES-CHEM-DUALCTRL": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-08-12",
+     "end": "2021-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-10-01",
+     "end": "2021-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-11-01",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-004"
+  },
+  "C-2024-RES-GOLD-CB": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-02-01",
+     "end": "2025-12-26",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-007"
+  },
+  "C-2016-PANEL-CYCLE": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "011",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-02-01",
+     "end": "2017-01-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2017-07-01",
+     "end": "2019-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-011"
+  },
+  "C-2019-SEMI-LOCALIZATION": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-05-16",
+     "end": "2020-07-14",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2020-07-15",
+     "end": "2020-09-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-001"
+  },
+  "C-2019-CONSUMER-TWS": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-01-04",
+     "end": "2020-07-14",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2020-07-15",
+     "end": "2020-11-09",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2020-11-10",
+     "end": "2021-03-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-005"
+  },
+  "C-2020-SEMI-EQUIPMENT": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-04-01",
+     "end": "2021-07-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-08-02",
+     "end": "2022-10-12",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-002"
+  },
+  "C-2020-PANEL-CYCLE": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-01",
+     "end": "2021-07-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-08-01",
+     "end": "2022-09-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-003"
+  },
+  "C-2022-SEMI-DOWNTURN": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "009",
+   "lifecycle": [
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-04",
+     "end": "2022-10-12",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2022-06-01",
+     "end": "2022-08-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-009"
+  },
+  "C-2023-AI-COMPUTE-SEMI": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-01-30",
+     "end": "2023-04-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2023-06-21",
+     "end": "2023-08-25",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-006"
+  },
+  "C-2024-SEMI-MEMORY": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-07-01",
+     "end": "2025-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-10-01",
+     "end": "2025-11-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-007"
+  },
+  "RC-2020-CONS-SMALL-APPLIANCE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-04",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-02-01",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2020-07-23",
+     "end": "2021-07-15",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-007"
+  },
+  "RC-2024-CONS-PET-FOOD": {
+   "kind": "research_candidate",
+   "intake_package": "R01-04",
+   "intake_candidate": "013",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-10-01",
+     "end": "2025-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-05-30",
+     "end": "2025-06-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-013"
+  },
+  "RC-2020-RES-GOLD-RATES": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-05-01",
+     "end": "2020-08-07",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2020-08-07",
+     "end": "2020-08-07",
+     "precision": "EXACT_DATE"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2020-08-08",
+     "end": "2020-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-006"
+  },
+  "RC-2022-RES-FERTILIZER": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-01-01",
+     "end": "2022-03-01",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2022-03-01",
+     "end": "2022-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-05-01",
+     "end": "2022-11-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-008"
+  },
+  "RC-2025-RES-COPPER": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "009",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-03-01",
+     "end": "2024-05-20",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2024-05-21",
+     "end": "2024-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-09-01",
+     "end": "2025-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-009"
+  },
+  "RC-2017-RES-ALUMINUM": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2017-04-12",
+     "end": "2017-08-09",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2017-08-09",
+     "end": "2017-09-20",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2017-09-21",
+     "end": "2017-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-010"
+  },
+  "RC-2016-RES-CHEM-ENV": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "011",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-01-01",
+     "end": "2016-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-011"
+  },
+  "RC-2022-SEMI-CHIPSHORTAGE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-12-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-01",
+     "end": "2022-12-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-004"
+  },
+  "RC-2024-SEMI-FUND3": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-09-24",
+     "end": "2024-11-29",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2024-12-01",
+     "end": "2025-04-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-008"
+  },
+  "RC-2015-SEMI-LEVERAGE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2015-01-05",
+     "end": "2015-06-03",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2015-06-15",
+     "end": "2015-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-010"
+  },
+  "RC-2017-GPU-MINING": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "012",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2017-06-01",
+     "end": "2017-11-14",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2018-01-01",
+     "end": "2018-06-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-012"
+  },
+  "RC-2024-HIEQ-EQUIP-UPDATE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-01",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-03-07",
+     "end": "2024-07-23",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2024-07-24",
+     "end": "2024-07-26",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-006"
+  },
+  "RC-2024-HIEQ-HUMANOID-MASS": {
+   "kind": "research_candidate",
+   "intake_package": "R01-01",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-01-01",
+     "end": "2025-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-07-01",
+     "end": "2025-09-05",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-007"
+  },
+  "RC-2024-RE-POLICY-517": {
+   "kind": "research_candidate",
+   "intake_package": "R01-05",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-05-17",
+     "end": "2024-05-17",
+     "precision": "EXACT_DATE"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2024-05-20",
+     "end": "2024-09-13",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-002"
+  },
+  "RC-2019-MIL-PARADE-70": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-08-07",
+     "end": "2019-09-03",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2019-09-03",
+     "end": "2019-09-03",
+     "precision": "EXACT_DATE"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2019-09-04",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-003"
+  },
+  "RC-2025-MIL-PARADE-80": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-06-24",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-004"
+  },
+  "RC-2017-MIL-MIXED-REFORM": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2017-01-09",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-005"
+  },
+  "RC-2015-MIL-REFORM-BULL": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": null,
+     "end": "2015-06-04",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2015-06-05",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-006"
+  },
+  "RC-2024-MIL-COMMERCIAL-SPACE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-08-06",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-007"
+  }
+ }
+}

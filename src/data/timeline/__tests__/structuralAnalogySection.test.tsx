@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_4.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_5.json';
 import { StructuralAnalogySection, dimensionStatusOf, filterExplanations, macroThemeOf } from '../../../components/CurrentTimeLens/StructuralAnalogySection';
 import { CurrentCandidateSection } from '../../../components/CurrentTimeLens/CurrentCandidateSection';
 import {
@@ -433,7 +433,7 @@ describe('Structural Analogy UI · 按需加载', () => {
   it('loadStructuralAnalogyDataset 能加载并解析完整数据集（395 条 / 5 候选）', async () => {
     const ds = await loadStructuralAnalogyDataset();
     expect(ds.candidates).toHaveLength(5);
-    expect(ds.artifactVersion).toBe('0.4');
+    expect(ds.artifactVersion).toBe('0.5');
     expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(395);
   });
 

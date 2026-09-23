@@ -34,7 +34,7 @@ function cloneExport(): TimelineExportV1 {
  */
 describe('数据快照回归：timeline_export_v1 版本', () => {
   it('source_commit 为当前同步的 Research 导出（生成时父 commit）', () => {
-    expect(timelineExportData.source_commit).toBe('0e1d2f4846380f6da76d263ebc67e3d15cc74900');
+    expect(timelineExportData.source_commit).toBe('c56e70fc428cc711bff7af27203f70953131425b');
   });
 
   it('数据量快照：52 Campaign / 27 Candidate / 22 Signal / 138 Event / 258 Security', () => {
@@ -62,7 +62,7 @@ describe('V1.7.1：lifecycle / drivers 新字段（Research V1.7 同步）', () 
     const rcWithLifecycle = timelineExportData.research_candidates.filter(
       (rc) => (rc.lifecycle ?? []).length > 0,
     );
-    expect(rcWithLifecycle).toHaveLength(11);
+    expect(rcWithLifecycle).toHaveLength(23);
     expect(timelineExportData.research_candidates).toHaveLength(27);
   });
 

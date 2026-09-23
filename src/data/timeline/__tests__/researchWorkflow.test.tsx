@@ -37,7 +37,7 @@ import {
 import { defaultTimeObservationDataset, buildTimeObservationLayer } from '../timeObservationPatterns';
 import { previewTimelineSource } from '../timelineAdapter';
 import { timelineExportData } from '../timelinePreview';
-import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_4.json';
+import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_5.json';
 
 const TODAY = '2026-09-24';
 const SA = parseStructuralAnalogyDataset(structuralAnalogyJson);
@@ -309,7 +309,7 @@ describe('研究闭环验收 · 8. 语义红线：无 score / ranking / probabil
     };
     const banned = /similarity_score|weighted_score|confidence_score|probability|ranking|prediction|win_rate|expected_return/i;
     for (const [name, obj] of [
-      ['explanations_v0_4', structuralAnalogyJson],
+      ['explanations_v0_5', structuralAnalogyJson],
       ['time_observation_v0_2', defaultTimeObservationDataset()],
     ] as const) {
       const hits = walk(obj).filter((k) => banned.test(k));

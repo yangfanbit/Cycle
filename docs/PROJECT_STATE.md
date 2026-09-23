@@ -7,7 +7,7 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`bdafeb5`（`feat(research): complete threec research core release`；本文件随 **Product / Real Usage v0.1** 提交入库）
+- HEAD：`c56e70f`（`feat(product): complete product real usage validation v0.1`；本文件随 **Research Lifecycle Mapping Repair v0.1** 提交入库）
 - **★ 当前阶段：Product / Real Usage Iteration v0.1**（Research Core 已 Release 并冻结；详见 `docs/ROADMAP.md` §2）
 - 最近完成：**Product Stabilization + Real Usage Validation v0.1**（详见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`）
   · **阶段 A–C**：**21 项 Product Test Failures → 0**（逐项验证分类：A 旧 universe fixture 18 · C 契约更新 1 · **B 真实缺陷 2**）；
@@ -25,8 +25,20 @@
   **L5（★ Next Single Goal）** Research export `lifecycle` 映射缺口（**16 / 27 RC 的 export `lifecycle` 为空**，
   而 **intake 全部有**；R01 importers 过滤 `PEAK` 阶段）· L1 剩余 7 项子串冲突（不改变 driver 集合）·
   L2 `driver=MATCH` 仅 1 条 · L3 2 个 cycle 因映射逻辑无 driver · L4 TO `year`/`date` 相差 1 年（5 例）
-- **Next Single Goal**：**把 Research 侧 `lifecycle` 映射补齐并如实入库** —— 让 27 个 RC 的 intake 阶段（含 `PEAK`）
-  完整进入 export，使「生命周期位置」在全部 79 个 Historical Object 上可用
+- 最近完成（续）：**Research Lifecycle Mapping Repair v0.1**（**已闭环上一轮 Next Single Goal**）
+  · **根因**：export 的 lifecycle 原来自 `batch_auto_research.py` 中**手写的静态字典**
+    `CAMPAIGN_LIFECYCLE` / `CANDIDATE_LIFECYCLE`，**与 intake 解耦** → `CANDIDATE_LIFECYCLE` 只登记 **11/27**；
+    已登记条目**丢掉 `UNKNOWN` 段与 open-ended 段**。（DB `campaign_phases` 过滤 `PEAK` 属 **schema 合法约束**，
+    但 **DB 不是 export 的来源** → 真正的缺口在 **export 装配层**）
+  · **修复**：新增 `research/scripts/build_lifecycle_from_intake_v0_1.py`，**从 R01 intake 包派生** export lifecycle
+    （**单一真源**），并在 `batch_auto_research.py` 中 **intake 优先**（静态字典仅作 pre-R01 回退）
+  · **数据前后**：RC lifecycle **11/27 → 23/27**；lifecycle 段 **187 → 243**；**PEAK 22 → 46**；
+    **UNKNOWN 未被伪装**（4 个仅含 UNKNOWN 的 RC 保持空，语义由 `research_status = INSUFFICIENT` 承载）
+  · **SA**：**v0.4 → v0.5**（60 条变化，**全部仅 lifecycle 维度**：`COMPARISON_POINT_UNKNOWN → MATCH/PARTIAL/MISMATCH`；
+    **structural_status 变化 0**；SUPPORTED 4 / STRICT 1 不变；`driver=MISMATCH → PARTIAL` 仍为 0）
+  · **Driver v0.4 保持不变**（输入未变，`--check` PASS）· **TO v0.2 保持不变**（输出未变，`--check` PASS）
+  · 新增 **lifecycle 覆盖恒等校验器** `validate_lifecycle_coverage_v0_1.py`（L1–L8，**防回归**）
+- **Next Single Goal**：**重新由真实使用判断**（本轮已闭环上一目标；不再自动开始下一项开发）
 
 ## 1. 项目当前定位
 

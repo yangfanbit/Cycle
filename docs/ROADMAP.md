@@ -26,7 +26,7 @@
 | Historical Objects | **79**（52 Campaign + 27 Research Candidate） |
 | Macro Theme roots | 11 |
 | Driver Canonicalization | **v0.4** |
-| Structural Analogy | **v0.4**（395 pairs） |
+| Structural Analogy | **v0.5**（395 pairs · lifecycle 输入修复后） |
 | Time Observation | **v0.2**（内部 0.3） |
 | Product 消费 | **已消费最新 SA / TO artifact** |
 
@@ -71,8 +71,15 @@ Today
 - 阶段 G：移动端静态审计 + TO 详情网格 3 列 → 2 列（P1）
 - 详见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`
 
+### 本轮（Lifecycle Repair v0.1）已完成 —— **已闭环上一轮 Next Single Goal**
+- 根因：export lifecycle 来自**手写静态字典**（与 intake 解耦）→ `CANDIDATE_LIFECYCLE` 仅 11/27，且丢 `UNKNOWN` / open-ended 段
+- 修复：**从 intake 派生**（单一真源）`build_lifecycle_from_intake_v0_1.py` + `batch_auto_research.py` **intake 优先**
+- 结果：RC lifecycle **11/27 → 23/27** · 段 **187 → 243** · **PEAK 22 → 46** · UNKNOWN **未被伪装**
+- SA **v0.4 → v0.5**（60 条变化**全部仅 lifecycle 维度**；structural_status 变化 **0**）
+- **Driver v0.4 不变**（输入未变）· **TO v0.2 不变**（输出未变）· 新增 `validate_lifecycle_coverage_v0_1.py` 防回归
+
 ### 下一步
-**唯一目标**：见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md` 的 **Next Single Goal**。
+**唯一目标**：**重新由真实使用判断**（本轮已闭环上一目标；不自动开始下一项开发）。
 
 ---
 
@@ -166,7 +173,7 @@ Today
 | **L2** | `driver = MATCH` 仅 **1** 条 / `event MATCH` 仅 **1** 条 | 数据粒度限制（**不得**通过放宽规则解决） | `KNOWN LIMITATION` |
 | **L3** | **2** 个 cycle 因**映射逻辑**无 canonical driver（`RC-2015-FIN-LEVERAGE` 多命中 · `RC-2024-SECONDARY` 研究自述强度不足） | 非数据缺口 | `KNOWN LIMITATION` |
 | **L4** | TO `observation.year`（研究对象研究年份）与 `date`（锚点日期）在「锚点退化为 `campaign.start_date` 且落在上一日历年度」时相差 1 年（5 例，全部 R01） | 年度归属口径问题；改则属规则变更，需独立轮次 | `KNOWN LIMITATION` |
-| **L5** | **Research export `lifecycle` 映射缺口**：16 / 27 Research Candidate 的 export `lifecycle` 为空（**intake 全部有**）；R01 importers 过滤 `PEAK` / `UNKNOWN` 阶段 → 已结束 Campaign 终段缺失 | 用户在 RC 上遇到「生命周期位置」信息断层 | **`NEXT SINGLE GOAL`**（见 §2 与 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md` §6.3） |
+| ~~L5~~ | ~~Research export `lifecycle` 映射缺口~~ → **✅ 已修复（Lifecycle Repair v0.1）**：改为**从 intake 派生**（单一真源）；RC lifecycle **11/27 → 23/27**、PEAK **22 → 46**；剩 4 个仅含 intake `UNKNOWN` 的 RC **保持空**（**不虚构**，语义由 `research_status = INSUFFICIENT` 承载） | **已解除** |
 
 ### Driver Evidence Depth
 
