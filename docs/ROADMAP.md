@@ -13,9 +13,25 @@
 - Time Observation v0.5
 - Driver Canonicalization
 - Structural Analogy Feasibility / Robustness / Calibration
-- **Structural Analogy Rule Set v0.2**
-- **Structural Analogy Research v0.2**
-- **Structural Analogy Explanation Artifact v0.1**
+- **Structural Analogy Rule Set v0.3**（Frozen）
+- **Structural Analogy Research v0.4**
+- **Structural Analogy Explanation Artifact v0.4**
+- **Driver Canonicalization v0.4**
+- **Time Observation v0.2**（内部 `artifact_version` 0.3）
+
+### ★★ Research Core Release v0.4 —— **COMPLETE / FROZEN**（2026-09-23）
+
+| 项 | 正式基线 |
+|---|---|
+| Historical Objects | **79**（52 Campaign + 27 Research Candidate） |
+| Macro Theme roots | 11 |
+| Driver Canonicalization | **v0.4** |
+| Structural Analogy | **v0.4**（395 pairs） |
+| Time Observation | **v0.2**（内部 0.3） |
+| Product 消费 | **已消费最新 SA / TO artifact** |
+
+> **Research Core 后续只允许由「真实 Product Usage 暴露的问题」触发新研究轮次。**
+> 不再主动：扩展 Historical Universe · 新增 Driver vocabulary · 微调 SA rule · 为增加 Pattern 挖数据。
 
 ### Product
 - Timeline
@@ -26,7 +42,41 @@
 - Preview / Production isolation
 - Static PWA runtime
 
-## 2. 当前主线：Research → Product
+## 2. ★ 当前主线：**Product / Real Usage Iteration**（2026-09-23 起）
+
+> Research Core 已 Release（见 §1）。主线由「Research → Product」切换为
+> **Product Stabilization + Real Usage Validation**。
+>
+> **最高原则**：目标从 `Research correctness` 切换为 `Real Research Usability` ——
+> 一个用户能否从「今天」出发，顺畅完成一次完整历史研究，并得到**可理解、可追溯、不误导**的结果。
+
+### 主流程（Product 必须逐段可用）
+
+```
+Today
+ ↓  Current Candidate
+ ↓  Time / Calendar（Current Time Lens · Time Observation）
+ ↓  Lifecycle（生命周期位置）
+ ↓  Structural Analogy（结构对应与不对应）
+ ↓  Historical Case（历史对象详情）
+ ↓  Evidence（证据 / 时间轴）
+ ↓  New Research Question（「这里为什么不一样？」「还缺什么证据？」）
+```
+
+**★ Product 不重新实现 Research Logic** —— 只消费 Research artifact，保留 provenance 与不确定性。
+
+### 本轮（v0.1）已完成
+- 阶段 A–C：Product 测试 **21 failed → 0 failed**（622 passed）· `tsc -b` PASS · `vite build` PASS
+- 阶段 D–F：SA v0.4 / TO v0.2 消费验收 · **P0 修复**（见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`）
+- 阶段 G：移动端静态审计 + TO 详情网格 3 列 → 2 列（P1）
+- 详见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`
+
+### 下一步
+**唯一目标**：见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md` 的 **Next Single Goal**。
+
+---
+
+## 2b. 历史主线：Research → Product（已归档）
 
 > **同步说明（2026-09-19）**：Step 1–4 已全部完成（Gate PASS · Adapter · UI Integration · UX Review PASS）。
 > 其后追加完成：**Historical Case Experience v0.1（PASS）** ·
@@ -65,7 +115,7 @@
 
 ### Step 2 · Product Adapter v0.1
 
-**当前进行中。**
+**已完成：PASS。**（后续由 Research Core Release 升级为 v0.4 artifact 输入）
 
 `structural_analogy_explanations_v0_2.json → Product View Model`
 
@@ -104,10 +154,24 @@
 
 ## 3. 非主线 Quality Backlog
 
+> **★ 状态说明（2026-09-23）**：以下全部为 **KNOWN LIMITATION**，
+> **不再标记为 BLOCKING**，也不再阻塞任何 Product / Real Usage 推进。
+> 只有当真实使用暴露「影响核心判断的错误」时才升级处理。
+
+### ★ Known Limitations 清单（2026-09-24 更新）
+
+| # | 限制 | 影响 | 状态 |
+|---|---|---|---|
+| **L1** | 剩余 **7 项**跨 canonical 子串冲突（含 v0.1 既有遗留如 `结构迁移`、`倍/翻倍`、`利润/净利润`、`出清/出清完成`、`标准体系/标准体系（2026 版）`） | 相关文本无法成为 `DIRECT`；**不改变任何 driver 集合** | `KNOWN LIMITATION` |
+| **L2** | `driver = MATCH` 仅 **1** 条 / `event MATCH` 仅 **1** 条 | 数据粒度限制（**不得**通过放宽规则解决） | `KNOWN LIMITATION` |
+| **L3** | **2** 个 cycle 因**映射逻辑**无 canonical driver（`RC-2015-FIN-LEVERAGE` 多命中 · `RC-2024-SECONDARY` 研究自述强度不足） | 非数据缺口 | `KNOWN LIMITATION` |
+| **L4** | TO `observation.year`（研究对象研究年份）与 `date`（锚点日期）在「锚点退化为 `campaign.start_date` 且落在上一日历年度」时相差 1 年（5 例，全部 R01） | 年度归属口径问题；改则属规则变更，需独立轮次 | `KNOWN LIMITATION` |
+| **L5** | **Research export `lifecycle` 映射缺口**：16 / 27 Research Candidate 的 export `lifecycle` 为空（**intake 全部有**）；R01 importers 过滤 `PEAK` / `UNKNOWN` 阶段 → 已结束 Campaign 终段缺失 | 用户在 RC 上遇到「生命周期位置」信息断层 | **`NEXT SINGLE GOAL`**（见 §2 与 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md` §6.3） |
+
 ### Driver Evidence Depth
 
 当前最大 Research 质量债：
-- Driver MATCH = 1/85
+- Driver MATCH = 1/79（Historical Objects 扩容后）
 - MULTI_MECHANISM = 4
 
 后续如补证据，必须围绕真实缺口，不得以提高 SUPPORTED 数量为目标。
@@ -142,7 +206,10 @@
 > - `research/intake/HISTORICAL_UNIVERSE_R01_TASK_MANIFEST_v0_1.json`（R01-01 ~ R01-06）
 > - `research/scripts/validate_historical_research_intake.py`（机器校验器）
 >
-> **R01-01 ~ R01-06 均未启动**，启动需单独授权。
+> **同步（2026-09-23）**：**R01-01 ~ R01-06 已全部完成并入库**（52 Campaign + 27 Research Candidate），
+> Historical Universe 由 17 → **79** objects。**Coverage Expansion 现已回到 `FROZEN / DEFERRED`。**
+>
+> 重新开启的**唯一条件**：新的 Research Question 证明「Historical Universe 不足」。
 
 ## 4. 当前明确不做
 

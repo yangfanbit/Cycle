@@ -2322,4 +2322,12 @@ html, body {
   .hcx-attr-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .hcx-ev-line1 { gap: 4px; }
   .hcx-ev-stage, .hcx-ev-attr { font-size: 9.5px; }
+
+  /* ★ Product / Real Usage v0.1（P1 · 移动端可读性）：
+     Time Observation 的详情定义列表原为 `repeat(3, minmax(0, 1fr))`，
+     在 375px 宽度下每列仅约 110px，dt/dd 被压到难以阅读。
+     → 收窄为 2 列（仍用 minmax(0,1fr) 保证不横向溢出、不裁切信息）。 */
+  .tob-detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tob-detail-head { gap: 2px 8px; }
+  .tob-band-label, .tob-current-text { font-size: 11.5px; }
 }

@@ -797,9 +797,12 @@ describe('8. 边界守护（纯 View 层）', () => {
         (c) => c.campaign_id,
       ),
     );
-    // export 的规模由 Research 侧决定（当前 13 Campaign + 4 Research Candidate = 17）；
-    // 候选走独立 Artifact，不进入 export id 空间
-    expect(exportIds.size).toBe(17);
+    // ★ 数据驱动：export 的规模由 Research 侧决定，不写死 17（旧 universe 耦合）。
+    //   断言恒等式 + 本测试的真实不变量（候选走独立 Artifact，不进入 export id 空间）。
+    expect(exportIds.size).toBe(
+      timelineExportData.campaigns.length + timelineExportData.research_candidates.length,
+    );
+    expect(exportIds.size).toBeGreaterThan(0);
     // Phase 7.1 起 canonical 承载真实候选；关键不变量是「候选 ID 全部落在 export id 空间之外」
     const canonical = defaultCurrentCandidateDataset();
     expect(canonical.candidates.length).toBeGreaterThan(0);

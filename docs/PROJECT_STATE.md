@@ -3,25 +3,30 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-- 更新日期：2026-09-23
+- 更新日期：2026-09-24
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`8216f7f`（`fix(research): rule kuochan / kuochan-cycle driver semantics`；本文件随 **Research Core Release** 提交入库）
-- 最近完成：**★★ Research Core Release**（阶段 A–G 全部完成；详见 `docs/RESEARCH_CORE_RELEASE_v0_4.md`）
-  · **阶段 A**：剩余 5 项 driver collision 一次性处理（3 项删词 **B** + 2 项最小上下文消歧 **C**；**只做减法，未新增 vocabulary**）
-  · **阶段 B**：新建 **Driver Canonicalization v0.4**（首次引入 mapping algorithm 变更）
-  · **阶段 C**：**SA v0.4 已生成**（395 pairs · 消费 v0.4 driver · **identity 修正为 52 campaign / 27 RC**）
-  · **阶段 D**：**SA v0.4 两层独立校验 PASS**（D1 artifact + D2 独立语义；**新增 S15 driver 版本一致性 = 0 不一致**）
-  · **阶段 E**：**Time Observation v0.2（内部 0.3）已生成**（79 objects · 12 patterns · **Timeline 仍仅 TOP-01，标准未放宽**）
-  · **阶段 F**：Product 已切换至最新 artifact；`tsc -b` / `vite build` PASS；Product 测试失败 **88 → 21**
-  · **阶段 G**：Release Acceptance 通过
-- **✅ SA v0.4 已生成并通过独立语义验证** · **✅ Time Observation 当前 Universe 新版本已生成** · **✅ Product 已消费最新 Research artifacts**
-- **★ Research Core 状态**：**R01 Historical Universe Expansion 已完成**（11 Macro Theme · 52 Campaign · 27 RC · 79 Historical Objects）
-- **Known Limitations（不再阻塞推进）**：剩余 7 项跨 canonical 子串冲突（**不改变任何 driver 集合**）·
-  Product 测试夹具 21 项硬编码旧 17-object 数值（**Product 侧维护项，不影响运行路径**）·
-  TO `observation.year` 与 `date` 在「锚点退化为 `campaign.start_date`」时相差 1 年（5 例，全部 R01）·
-  `driver=MATCH` 仅 1 条（数据粒度）· 2 个 cycle 因映射逻辑无 canonical driver
+- HEAD：`bdafeb5`（`feat(research): complete threec research core release`；本文件随 **Product / Real Usage v0.1** 提交入库）
+- **★ 当前阶段：Product / Real Usage Iteration v0.1**（Research Core 已 Release 并冻结；详见 `docs/ROADMAP.md` §2）
+- 最近完成：**Product Stabilization + Real Usage Validation v0.1**（详见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`）
+  · **阶段 A–C**：**21 项 Product Test Failures → 0**（逐项验证分类：A 旧 universe fixture 18 · C 契约更新 1 · **B 真实缺陷 2**）；
+    `npm test` **0 failed / 622 passed（16 files）** · `tsc -b` **PASS** · `vite build` **PASS**
+  · **阶段 D/F · P0 修复**：① **Attention Gate 把已结束历史 Campaign 标为「当前值得研究」**（14 个，含 `C-2016-PANEL-CYCLE`）
+    → 已修（已记录 `end` ⇒ `HISTORICAL_REFERENCE`），14 → **5**；② **null `start`/`end` 导致 93 处运行时崩溃** → 已修（类型 + null 安全 + `openEnded`）
+  · **阶段 G · P1 修复**：Time Observation 移动端详情网格 **3 列 → 2 列**（375px 可读性）
+  · **阶段 E**：新增**可重复研究闭环验收夹具** `researchWorkflow.test.tsx`（43 用例）——
+    **5 个 Current Candidate 全部走通完整闭环**（今天 → 候选 → 时间/日历 → 生命周期 → 结构对应 → 历史案例 → 证据 → 新研究问题）
+  · **阶段 H**：`ROADMAP.md` 主线切换为 **Product / Real Usage Iteration**；Research 标记 **COMPLETE / FROZEN**；
+    Coverage Expansion 回到 **FROZEN / DEFERRED**；Backlog 全部降级为 **KNOWN LIMITATION**
+- **★ Research Core 基线（FROZEN）**：79 Historical Objects（52 Campaign + 27 RC）· Driver Canonicalization **v0.4** ·
+  SA **v0.4**（395 pairs）· TO **v0.2**（内部 0.3）· Product **已消费最新 SA / TO artifact**
+- **Known Limitations（不阻塞推进，详见 ROADMAP §3）**：
+  **L5（★ Next Single Goal）** Research export `lifecycle` 映射缺口（**16 / 27 RC 的 export `lifecycle` 为空**，
+  而 **intake 全部有**；R01 importers 过滤 `PEAK` 阶段）· L1 剩余 7 项子串冲突（不改变 driver 集合）·
+  L2 `driver=MATCH` 仅 1 条 · L3 2 个 cycle 因映射逻辑无 driver · L4 TO `year`/`date` 相差 1 年（5 例）
+- **Next Single Goal**：**把 Research 侧 `lifecycle` 映射补齐并如实入库** —— 让 27 个 RC 的 intake 阶段（含 `PEAK`）
+  完整进入 export，使「生命周期位置」在全部 79 个 Historical Object 上可用
 
 ## 1. 项目当前定位
 

@@ -275,6 +275,17 @@ export function attentionOf(campaign: TimelineCampaign): AttentionResult {
     reasons.push('研究证据不足（未记录事件 / 信号）');
     return { state: 'WATCH', reasons };
   }
+  // ★ P0 修正（Product / Real Usage v0.1）：
+  //   `terminalPhaseOf` 取的是 lifecycle 中**最后记录的阶段**。当研究已记录 `end`
+  //   （即该 Campaign **已结束**，`openEnded === false`）时，「最后阶段 = MAIN_RISE」
+  //   只说明 **lifecycle 未记录终段**（终段缺失），**不能**据此判定「当前仍在扩张 / 当前值得研究」。
+  //   反例（修正前）：`C-2016-PANEL-CYCLE`（end=2017-06-30，早已结束）与 `C-2019-RES-DYE-SHOCK`
+  //   均因终段缺失被标为「当前值得研究」→ 属**误导性显示**。
+  //   本判定**只用 export 自带字段**（`openEnded` / `end`），不引入 today，也不改动研究结论。
+  if (!campaign.openEnded && campaign.end != null) {
+    reasons.push('研究已记录结束日期 → 不主张「当前仍在扩张」');
+    return { state: 'HISTORICAL_REFERENCE', reasons };
+  }
   if (ACTIVE_PHASES.includes(phase)) {
     reasons.push('处于形成 / 确认 / 扩张阶段，且有研究证据');
     return { state: 'ACTIVE_RESEARCH', reasons };

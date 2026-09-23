@@ -23,6 +23,7 @@ import {
   themeCatalogueRoots,
 } from '../macroTheme';
 import { previewTimelineSource, verifiedTimelineSource } from '../timelineAdapter';
+import { timelineExportData } from '../timelinePreview';
 import type { TimelineCampaign } from '../timelineTypes';
 import type { HistoricalCampaign } from '../../../models';
 
@@ -249,20 +250,44 @@ describe('3. Research Attention Gate v1（状态分类，不是评分）', () =>
     }
   });
 
-  it('真实数据分布：无 ACTIVE（正式 Campaign 均已结束），WATCH = 候选 / 分歧', () => {
-    const v2 = buildCurrentLensV2(previewTimelineSource(), TODAY);
-    expect(v2.layerC.active).toHaveLength(0);
-    expect(v2.layerC.watch.map((i) => i.campaign_id).sort()).toEqual(
-      ['C-2024-ROBOTAXI', 'RC-2020-PANDEMIC', 'RC-2021-TCM', 'RC-2023-HUAWEI', 'RC-2024-SECONDARY'].sort(),
+  it('真实数据分布：ACTIVE 仅限「研究未记录结束」的正式 Campaign；候选 / 分歧一律 WATCH', () => {
+    const source = previewTimelineSource();
+    const v2 = buildCurrentLensV2(source, TODAY);
+
+    // ★ 结构性断言（不写死数量，避免与 universe 耦合）：
+    //   ① ACTIVE 只能是**正式 Campaign**，且**研究未记录结束**（openEnded === true）
+    //      —— 已记录 end 的历史 Campaign 一律不得标为「当前值得研究」（P0 修正）
+    const rawById = new Map(
+      [...timelineExportData.campaigns, ...timelineExportData.research_candidates].map((x) => [
+        x.campaign_id,
+        x,
+      ]),
     );
-    // 17 个研究主体（13 Campaign + 4 Research Candidate）− 5 个 WATCH = 12 个 HISTORICAL_REFERENCE
-    // （Wave 1A/1B 新增的 4 个 Cycle 均已结束或为已确认历史窗口 → 计入历史参考）
-    expect(v2.layerC.referenceTotal).toBe(12);
-    // 「当前值得研究」为空时必须给出解释，而不是假装有结论
+    for (const i of v2.layerC.active) {
+      expect(i.kind).toBe('campaign');
+      // ★ 关键：ACTIVE 的对象必须**研究未记录结束**（end_date === null）
+      expect(rawById.get(i.campaign_id)!.end_date).toBeNull();
+    }
+    //   ② Research Candidate 一律不得进入 ACTIVE（候选只进 WATCH）
+    expect(v2.layerC.active.some((i) => i.campaign_id.startsWith('RC-'))).toBe(false);
+    //   ③ WATCH 必须覆盖全部 Research Candidate（候选 = 保持观察）
+    const allRcIds = timelineExportData.research_candidates.map((r) => r.campaign_id);
+    const watchIds = new Set(v2.layerC.watch.map((i) => i.campaign_id));
+    for (const id of allRcIds) expect(watchIds.has(id)).toBe(true);
+    //   ④ 三类互斥且完备：active + watch + referenceTotal = 全部研究对象
+    const total = timelineExportData.campaigns.length + timelineExportData.research_candidates.length;
+    expect(v2.layerC.active.length + v2.layerC.watch.length + v2.layerC.referenceTotal).toBe(total);
+
+    // 「当前值得研究」**为空时**必须给出解释，而不是假装有结论；
+    // **非空时**不得反过来谎称「没有当前值得研究的方向」。
     const html = renderToStaticMarkup(
-      <CurrentTimeLens dataSource={previewTimelineSource()} today={TODAY} selection={null} onSelect={() => {}} />,
+      <CurrentTimeLens dataSource={source} today={TODAY} selection={null} onSelect={() => {}} />,
     );
-    expect(html).toContain('这不是错误');
+    if (v2.layerC.active.length === 0) {
+      expect(html).toContain('这不是错误');
+    } else {
+      expect(html).not.toContain('这不是错误');
+    }
   });
 });
 
@@ -289,7 +314,12 @@ describe('4. Current Time Lens v2：A / B / C 三层 + 诚实空态（NO LOOK-AH
     const v2 = buildCurrentLensV2(previewTimelineSource(), TODAY);
     expect(v2.currentYear).toBe(2026);
     expect(v2.layerB.hasCurrentData).toBe(false);
-    expect(v2.layerB.coverage).toEqual({ from: 2018, to: 2025 });
+    // ★ 数据驱动：研究覆盖区间 = 导出对象的 min/max year（不写死具体年份）
+    const allYears = [
+      ...timelineExportData.campaigns.map((c) => c.year),
+      ...timelineExportData.research_candidates.map((r) => r.year),
+    ];
+    expect(v2.layerB.coverage).toEqual({ from: Math.min(...allYears), to: Math.max(...allYears) });
     expect(v2.layerB.note).toContain('暂无 2026');
     expect(v2.layerB.note).toContain('研究覆盖至 2025');
     expect(v2.layerB.note).toContain('不将历史数据伪装成当前状态');
@@ -426,7 +456,11 @@ describe('6. Historical Similar Phase v1（生命周期相似）', () => {
     expect(view.target!.phase).toBe('EXPANSION');
     expect(view.results.length).toBeGreaterThan(0);
     expect(view.insufficient).toBe(false);
-    expect(view.results[0].campaign_id).toBe('C-2023-COMM-OPTICAL');
+    // ★ 不写死 `results[0]` —— 结果顺序是**实现细节**，断言它会制造「第一名」语义。
+    //   改为断言真实不变量：结果互不重复，且都不是 target 自身。
+    const ids = view.results.map((r) => r.campaign_id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids).not.toContain('RC-2023-HUAWEI');
   });
 
   it('空数据源 → target 为 null 且空态（不编造参照对象）', () => {
@@ -438,7 +472,13 @@ describe('6. Historical Similar Phase v1（生命周期相似）', () => {
 
   it('默认参照 = 研究覆盖内最新案例（不表述为当前市场状态）', () => {
     const view = similarPhaseOf(previewTimelineSource(), null);
-    expect(view.target!.campaign_id).toBe('C-2025-ROBOTAXI');
+    // ★ 数据驱动：默认参照 = 研究覆盖内**最新年份**的案例（不写死具体 ID）
+    const allYears = [
+      ...timelineExportData.campaigns.map((c) => c.year),
+      ...timelineExportData.research_candidates.map((r) => r.year),
+    ];
+    expect(view.target!.year).toBe(Math.max(...allYears));
+    expect(view.target).not.toBeNull();
     const html = renderToStaticMarkup(
       <HistoricalSimilarPhase
         dataSource={previewTimelineSource()}

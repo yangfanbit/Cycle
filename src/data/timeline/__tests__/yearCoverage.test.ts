@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { yearCoverageOf, yearOf, yearSpan, timelineYears } from '../yearCoverage';
 import { previewTimelineSource, verifiedTimelineSource } from '../timelineAdapter';
+import { timelineExportData } from '../timelinePreview';
 import { themeRowsOf } from '../themeRows';
 import { fixtureCrossYearMedia } from '../../../../tests/fixtures/campaignFixtures';
 import type { HistoricalCampaign } from '../../../models';
@@ -209,10 +210,17 @@ describe('4. 汽车（单年度）年份覆盖不变化', () => {
     }
   });
 
-  it('真实导出的汽车部分：preview 年份覆盖保持 2018–2025（2018 反例年不变）', () => {
-    expect(previewTimelineSource().years()).toEqual([
-      2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025,
-    ]);
+  it('真实导出：preview 年份覆盖 = 导出对象的 min/max year（升序连续，数据驱动）', () => {
+    // ★ 不再写死 2018–2025（旧 universe 耦合）—— 断言年份序列的**结构性质**
+    const years = previewTimelineSource().years();
+    expect(years).toEqual([...years].sort((a, b) => a - b));
+    for (let i = 1; i < years.length; i += 1) expect(years[i] - years[i - 1]).toBe(1);
+    const allYears = [
+      ...timelineExportData.campaigns.map((c) => c.year),
+      ...timelineExportData.research_candidates.map((r) => r.year),
+    ];
+    expect(years[0]).toBe(Math.min(...allYears));
+    expect(years[years.length - 1]).toBe(Math.max(...allYears));
   });
 });
 
