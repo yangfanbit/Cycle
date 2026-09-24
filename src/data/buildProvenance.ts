@@ -57,7 +57,7 @@ function asStringOrNull(v: unknown): string | null {
 }
 
 export interface BuildProvenance {
-  /** `package.json` `version`（本轮仍为 `0.1.0` —— 未提前升为 1.0.0）。 */
+  /** `package.json` `version`（构建期注入，不在 Product 内维护第二套版本号）。 */
   productVersion: string | null;
   /** 构建时的 Git commit（完整 SHA）；本地无 git 信息时为 null。 */
   gitCommit: string | null;
