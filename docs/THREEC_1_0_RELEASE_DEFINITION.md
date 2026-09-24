@@ -174,19 +174,20 @@ Today → Current Candidate → Time / Calendar → Lifecycle
 ### Gate D — Deployment / Release Engineering
 
 **本文件首次正式定义**（此前仓库**没有任何部署配置、没有 git tag**）。
+**当前状态**：D1–D3、D6–D8 **已落地并验证**；D4 / D5 **保留至 1.0 正式宣布**。
 
 1.0 必须具备：
 
-| # | 要求 |
-|---|---|
-| D1 | production build（`npm run build` → `dist/`） |
-| D2 | **正式部署方式**（见 §2 最小可行方案） |
-| D3 | **正式访问入口**（URL） |
-| D4 | `version = 1.0.0`（`package.json`） |
-| D5 | **release commit** + **Git tag**（`v1.0.0`） |
-| D6 | **可回滚**到上一个稳定版本（tag 回退 + 重新部署） |
-| D7 | **Research artifact ↔ Product build 的版本对应关系**（可追溯） |
-| D8 | **更新 Research artifact 后的重新构建流程**（见 §3） |
+| # | 要求 | 状态 |
+|---|---|---|
+| D1 | production build（`npm run build` → `dist/`） | ✅ |
+| D2 | **正式部署方式**（见 §2） | ✅ GitHub Pages |
+| D3 | **正式访问入口**（URL） | ✅ `https://yangfanbit.github.io/Cycle/` |
+| D4 | `version = 1.0.0`（`package.json`） | ⏳ 宣布时设置（现 `0.1.0`） |
+| D5 | **release commit** + **Git tag**（`v1.0.0`） | ⏳ 宣布时创建 |
+| D6 | **可回滚**到上一个稳定版本（基于 commit SHA + 重新部署） | ✅ 见 `DEPLOYMENT_RUNBOOK.md` §7 |
+| D7 | **Research artifact ↔ Product build 的版本对应关系**（可追溯） | ✅ `buildProvenance()` |
+| D8 | **更新 Research artifact 后的重新构建流程**（见 §3） | ✅ `DEPLOYMENT_RUNBOOK.md` §3 |
 
 ---
 
@@ -208,36 +209,42 @@ Today → Current Candidate → Time / Calendar → Lifecycle
 
 ---
 
-## 2. 最小可行部署方案（Gate D2 设计）
+## 2. 部署方案（Gate D2，**已落地**）
 
 **原则**：**纯静态站点**，**不引入后端**，**不引入 LLM runtime**。
 
-| 项 | 方案 |
+| 项 | 方案（**已实施**） |
 |---|---|
 | 构建产物 | `npm run build` → `dist/`（静态 HTML/JS/CSS，无服务端） |
-| 部署形态 | **静态托管**（对象存储 / 静态站点托管 / 任意 HTTP 静态服务） |
-| 访问入口 | 托管平台分配的 HTTPS 域名（或自定义域名） |
-| `base` | 若部署在**子路径**，需在 `vite.config.ts` 设 `base: '/<subpath>/'`；根路径部署保持默认 `/` |
-| 缓存策略 | `index.html` **no-cache**；带 hash 的 `assets/*` **immutable** |
-| 数据来源 | **构建时打包的 Research artifact**（`@observation` 别名 → `research/research/reports/*.json`）→ **运行时无网络请求** |
-| 回滚 | `git checkout <上一个 tag>` → 重新 build → 重新部署 |
-| 版本对应 | `package.json.version` ↔ Git tag ↔ 构建时 `exports/timeline_export_v1.json` 的 `source_commit` ↔ SA/TO artifact 版本 |
+| 部署形态 | **GitHub Pages**（唯一平台；不使用 Vercel / Netlify / Docker / 云服务器 / CDN 产品化） |
+| 访问入口 | **`https://yangfanbit.github.io/Cycle/`** |
+| `base` | `resolveBase()`：`THREEC_BASE` 显式覆盖 > `GITHUB_ACTIONS === 'true'` → `/Cycle/` > 默认 `/`（本地 `dev` / `preview` 不受影响） |
+| 自动构建 | `.github/workflows/deploy.yml`：push `main` → `npm ci` → `tsc -b` → `npm test` → `npm run build` → 上传 `dist/` → `deploy-pages` |
+| 缓存策略 | 由 GitHub Pages 承担；带 hash 的 `assets/*` 天然不可变 |
+| 数据来源 | **构建时打包的 Research artifact**（`@exports` / `@observation` 别名 → 仓库内 JSON）→ **运行时无网络请求** |
+| 回滚 | revert 到上一稳定 commit → 重新 `npm ci` / `npm test` / `npm run build` → 重新部署（**基于 commit SHA，不依赖 tag**） |
+| 版本对应 | `package.json.version` ↔ Git commit ↔ 构建时 `exports/timeline_export_v1.json` 的 `source_commit` ↔ SA/TO artifact 版本（**Product 内 `buildProvenance()` 展示**） |
+| 操作手册 | **`docs/DEPLOYMENT_RUNBOOK.md`**（正常发布 / Product-only / Research artifact 更新 / 回滚 / smoke test） |
 
-> **★ 部署尚未执行**：Gate D 的 D1–D3、D5–D8 **已设计**，但 **D4（version=1.0.0）与 D5（tag）不得在 1.0 正式宣布前设置**。
-> 在存在 P0 的情况下提前打 tag 会造成「版本号已发布但未达标」的不可逆问题。
+> **★ 部署已执行，1.0 未发布**：D1–D3、D6–D8 **已落地并验证**；
+> **D4（`version = 1.0.0`）与 D5（`v1.0.0` tag）依然不得设置**。
+> 部署产物 ≠ 1.0 发布；当前线上身份 = **commit SHA**（不伪造 `v1.0.0` 回滚目标）。
 
 ---
 
 ## 3. Research artifact 更新后的重新构建流程（Gate D8）
+
+> **完整可执行版本见 `docs/DEPLOYMENT_RUNBOOK.md` §3。** 摘要：
 
 ```text
 1. 修改 / 重新生成 Research artifact（新版本，旧版本逐字节保留）
 2. 运行 Research 验证链（validator 全 PASS；generator --check ×3 deterministic）
 3. 运行 lifecycle coverage 校验（Intake == Export 恒等）
 4. 若 artifact 影响 Product 输入 → 切换 Product 的 artifact 引用（最小改动，不重构）
-5. npm test（0 failed）· tsc -b · vite build
-6. 记录版本对应关系（见 §2 表格最后一行）
-7. 部署；必要时回滚到上一 tag
+5. npm ci · npm test（0 failed）· tsc -b · vite build
+6. 记录版本对应关系（见 §2 表格「版本对应」行）
+7. 提交并推送 main → GitHub Actions 自动构建 + 部署
+8. 线上 smoke test（`DEPLOYMENT_RUNBOOK.md` §6）；失败则回滚（§7）
 ```
 
 **★ 不允许**：为了让 Product「消化」数据而修改 Product 语义；**Research 是唯一真源**。
@@ -290,7 +297,7 @@ LLM runtime
 | **Quality** | **PASS** | `npm test` **654 passed / 0 failed（17 files）** · `tsc -b` PASS · `vite build` PASS · 无 runtime crash · null 安全 | **否** | — |
 | **Real Usage** | **PASS（无缺口）** | 场景 A–E **全部正常通过**；**D3 已由 `it.fails` 正式化为正常断言**；新增 **Scenario F（Gate T8 全局不变量，F1–F9）** | **否** | — |
 | **Mobile** | **PASS（静态）** | 断点 110/240/300/720/900；375/390/412px **全部落在 720px 断点内** · 无 ≥400px 固定宽度（除 timeline 1080px 由 `overflow-x:auto` 承载）· `overflow-wrap` 28 处 · 7 个区块均有移动端规则 | **否** | **P2：真机/浏览器实测复核**（本轮为静态审计） |
-| **Deployment** | **★ FAIL（P1）** | **无任何部署配置**（无 netlify/vercel/docker/.github/wrangler）· **无 git tag** · `package.json version = 0.1.0` · 无访问入口 · 无回滚定义 | **否（P1）** | 落地 §2 最小静态部署 + §3 重建流程；**1.0 宣布时**再设 `1.0.0` 与 tag |
+| **Deployment** | **PASS（P1-1 已闭环）** | `.github/workflows/deploy.yml`（GitHub Pages）· 入口 `https://yangfanbit.github.io/Cycle/` · `base = /Cycle/` · `buildProvenance()` 版本对应（D7）· `DEPLOYMENT_RUNBOOK.md`（D8 + 回滚 D6）· `npm test` / `tsc -b` / `vite build` 全 PASS | **否** | **D4（`1.0.0`）/ D5（`v1.0.0` tag）保留至正式宣布** |
 | **Documentation** | **PASS（本轮已修）** | 新建本文件；`PROJECT_STATE` HEAD→`ad5e804`、SA→v0.5；`ROADMAP` 反映 Product 主线 + Lifecycle Repair；**`README` 旧状态（2026-09-19 / v0.2 / 4 Macro Themes）已重写** | **否** | — |
 
 ### 6.1 P0 修复轮复核（本文件 §8 P0 清单已清零）
@@ -343,11 +350,11 @@ LLM runtime
 | **P0-1c** | `researchAttention.ts::STAGE_TO_PHASE` **漏 `ENDED`**（Contract `VALID_LIFECYCLE_STAGE` 成员）→ `phaseOfStage('ENDED')` 静默退化为 `UNKNOWN`；2 个已结束 Campaign（`C-2019-MIL-GROUP-RESTRUCTURE` / `C-2020-RE-DEBT-RISK`）被误显示为「阶段未标注」。语义：`UNKNOWN ≠ 未映射` | **✅ 已修** —— 补映射 + `CONTRACT_LIFECYCLE_STAGES` 常量 + F7/F8/F9 覆盖度不变量 |
 | **P0-1d** | `ExportLifecycleStageV1.start/end` 类型写成 `string`，但 Contract 允许 `null`（`is_iso_date(None) == True`）→ 5 处消费点存在 `null` 运行时风险 | **✅ 已修** —— 类型改为 `string \| null`，5 个消费点显式处理开放区间（不猜测端点） |
 
-### P1 — 1.0 前应该修（**1 项**）
+### P1 — 1.0 前应该修（**当前 0 项**）
 
-| # | 问题 | 说明 |
+| # | 问题 | 状态 |
 |---|---|---|
-| **P1-1** | **无正式部署方式 / 无访问入口 / 无回滚定义** | §2 方案已设计；需落地最小静态部署 + 重建流程文档化。**不引入后端** |
+| ~~**P1-1**~~ | ~~**无正式部署方式 / 无访问入口 / 无回滚定义**~~ | **✅ 已闭环（Deployment / Release Engineering 轮）** —— GitHub Pages + Actions 自动构建 + `base=/Cycle/` + `buildProvenance()` + `DEPLOYMENT_RUNBOOK.md`（含回滚）。**未引入后端**。 |
 
 ### P2 — 1.0 后处理（**不做**）
 
@@ -359,26 +366,32 @@ LLM runtime
 
 ---
 
-## 9. 下一 Single Goal
+## 9. 当前 Single Goal
 
-> # **修复 P0-1：让「无 research lifecycle」的对象在 Product 中显示「阶段未判定」，而不是推导出的具体阶段。**
+> # **ThreeC 1.0 Deployment / Release Engineering**（P1-1）—— **已完成**。
 
-**范围（严格）**：
-- 修改 Product 侧对「无 research lifecycle」对象的阶段推导路径（`historicalCaseOf` / `derivePhases` / `terminalPhaseOf` 回退）；
-- **不修改**任何 Research artifact / schema / contract / SA rule / TO 标准；
-- **不新增**字段或枚举（如需表达「未判定」，使用**既有** `UNKNOWN` / `NOT_AVAILABLE` 语义）；
-- **不改变** Campaign / RC 数量、identity、SA 四维定义；
-- 修完后**必须**同步把 `releaseGateScenarios.test.tsx` 的 `D3` 由 `it.fails` 改为正常断言。
+**实现范围（已执行）**：
+- 落地 **GitHub Pages** 静态部署（`.github/workflows/deploy.yml`）：`npm ci` → `tsc -b` → `npm test` → `npm run build` → 上传 `dist/` → `deploy-pages`；
+- 正式入口 **`https://yangfanbit.github.io/Cycle/`**，Vite `base = /Cycle/`（本地 `dev` / `preview` 不受影响）；
+- **D7 provenance**：`buildProvenance()` 在 Product 内展示 `package.json.version` / git commit / `timeline_export_v1.json` 的 `source_commit` / SA / TO artifact 版本；
+- **D8 重建流程** + **D6 回滚流程**：`docs/DEPLOYMENT_RUNBOOK.md`；
+- **未修改**任何 Research artifact / schema / contract / SA rule / TO 标准；**未新增**产品功能；**未引入**后端 / runtime 网络 / LLM；
+- **未设置** `package.json.version = 1.0.0`；**未创建** `v1.0.0` tag。
 
 **验收**：
 ```text
-[ ] 无 research lifecycle 的对象在 Historical Case 中不出现具体阶段
-[ ] 4 个 UNKNOWN-only RC 显示「阶段未判定 / 资料不足」
-[ ] 已结束 Campaign 不被误判为「扩张中」（P0-2 的兜底可回退为数据驱动）
-[ ] npm test 0 failed（D3 从 it.fails 转为正常通过）
-[ ] tsc -b / vite build PASS
-[ ] 5/5 workflow + 场景 A–E 全部通过
+[x] npm test 0 failed
+[x] tsc -b / vite build PASS
+[x] GitHub Actions build PASS + deploy PASS
+[x] 线上入口 `https://yangfanbit.github.io/Cycle/` 可访问
+[x] production smoke test 通过（DEPLOYMENT_RUNBOOK.md §6）
+[x] D7 provenance 可追溯（非仅文档）
+[x] D6 回滚流程可执行（基于 commit SHA，不伪造 tag）
+[x] 文档状态一致（本文件 / PROJECT_STATE / ROADMAP / README）
+[ ] ← 1.0 正式宣布（`1.0.0` + tag）**本轮不做**
 ```
+
+**★ 下一 Single Goal 不是部署**：部署主线已闭环。1.0 正式宣布所需的最后动作 = 处理 Gate M 真机复核 → `1.0.0` → release commit → tag → 部署 → 验证入口 → 文档收口。**在此之前不得宣称「ThreeC 1.0 Released」。**
 
 ---
 
@@ -393,18 +406,20 @@ LLM runtime
 [x] Gate Q  PASS
 [x] Gate U  PASS（场景 A–E 全部正常通过，无 it.fails）
 [ ] Gate M  PASS（含真机复核）
-[ ] Gate D  PASS（部署已落地 · 访问入口可用 · version=1.0.0 · tag v1.0.0 · 回滚已验证）
+[ ] Gate D  PASS（部署已落地 · 访问入口可用 · **version=1.0.0 待设** · **tag v1.0.0 待打** · 回滚流程已定义）
 [ ] Gate G  PASS（四份文档与仓库一致）
 [x] P0 清单为空
-[ ] P1 清单已处理或明确接受
+[x] P1 清单已处理或明确接受（P1-1 已闭环）
 ```
 
 **宣布动作**（顺序固定）：
-1. ~~P0 清零~~ ✅ → 2. P1 处理 → 3. `package.json` → `1.0.0` → 4. release commit →
-5. `git tag v1.0.0` → 6. 部署 → 7. 验证访问入口 → 8. 更新 `PROJECT_STATE` / `ROADMAP` / `README`。
+1. ~~P0 清零~~ ✅ → 2. ~~P1 处理~~ ✅（部署已落地）→ 3. Gate M 真机复核 →
+4. `package.json` → `1.0.0` → 5. release commit → 6. `git tag v1.0.0` → 7. 部署 →
+8. 验证访问入口 → 9. 更新 `PROJECT_STATE` / `ROADMAP` / `README`。
 
-> **下一步单一目标**：进入 **ThreeC 1.0 Deployment / Release Engineering**（处理 P1-1：最小静态部署 + 重建流程 + 回滚定义 + 访问入口）。**本次不设置 `1.0.0`、不打 tag、不部署。**
+> **★ 本轮边界**：**Deployment Engineering 完成 ≠ ThreeC 1.0 正式发布。**
+> 本轮**不设置 `1.0.0`**、**不创建 `v1.0.0`**。线上身份为 commit SHA。
 
 ---
 
-*THREEC_1_0_RELEASE_DEFINITION.md · 2026-09-24 · 审计基线 `ad5e804` · 永久锁定*
+*THREEC_1_0_RELEASE_DEFINITION.md · 2026-09-24 · 审计基线 `ad5e804` · 部署轮复核 `7c7d64f` · 永久锁定*

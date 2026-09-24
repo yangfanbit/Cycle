@@ -2331,3 +2331,59 @@ html, body {
   .tob-detail-head { gap: 2px 8px; }
   .tob-band-label, .tob-current-text { font-size: 11.5px; }
 }
+
+/* ================= Build Provenance（Gate D7） =================
+   页脚构建溯源：回答「这个 build 消费了哪一版 Research 结论」。
+   默认折叠（<details>），不抢占 Timeline 第一视觉；展开后为定义列表。
+   是溯源信息，不是质量 / 可信度指标 —— 措辞由 `buildProvenance.ts` 固定。 */
+.build-provenance {
+  margin: 24px 28px 32px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.build-provenance > details > summary {
+  cursor: pointer;
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  list-style: none;
+}
+.build-provenance > details > summary::-webkit-details-marker { display: none; }
+.build-provenance > details > summary::before { content: '▸ '; }
+.build-provenance > details[open] > summary::before { content: '▾ '; }
+.build-provenance dl {
+  margin: 10px 0 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 3px 14px;
+  align-items: baseline;
+}
+.build-provenance dt {
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.build-provenance dd {
+  margin: 0;
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  overflow-wrap: anywhere;
+}
+.build-provenance .phase-text {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.build-provenance-note {
+  margin: 10px 0 0;
+  color: var(--ink-3);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+@media (max-width: 720px) {
+  .build-provenance { margin: 18px 12px 26px; }
+  .build-provenance dl { grid-template-columns: minmax(0, 1fr); gap: 1px 0; }
+  .build-provenance dt { margin-top: 6px; }
+}

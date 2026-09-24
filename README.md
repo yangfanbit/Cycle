@@ -30,13 +30,36 @@
 
 **Research Core 状态**：**Release 完成并冻结** —— 后续只允许由「真实 Product Usage 暴露的问题」触发新研究轮次。
 
-**当前阶段**：**Product / Real Usage Iteration**（详见 `docs/ROADMAP.md`）。
+**当前阶段**：**ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/ROADMAP.md`）。
+
+> ⚠️ **尚未正式发布。** 本轮只做部署工程（静态部署 / 访问入口 / 可追溯 / 可回滚），
+> **`package.json` 仍为 `0.1.0`，没有 `v1.0.0` tag**。
+> 只有 8 个 Release Gate 全部 PASS 后，下一轮才执行版本号变更与正式发布。
 
 最新状态详见：
 
 - `docs/PROJECT_STATE.md`（动态状态，以它为准）
 - `docs/ROADMAP.md`（路线）
 - `docs/THREEC_1_0_RELEASE_DEFINITION.md`（1.0 发布定义与 Gate）
+- `docs/DEPLOYMENT_RUNBOOK.md`（部署 / 重建 / 回滚规程）
+
+---
+
+## 线上访问入口（Production）
+
+| 项 | 值 |
+|---|---|
+| **正式入口** | **https://yangfanbit.github.io/Cycle/** |
+| 宿主 | GitHub Pages（纯静态） |
+| 部署 | GitHub Actions（`.github/workflows/deploy.yml`）· push `main` 自动构建 + 部署 |
+| 研究预览 | https://yangfanbit.github.io/Cycle/?preview=1 |
+| 示例 fixture | https://yangfanbit.github.io/Cycle/?candidates=example |
+
+**构建溯源**：页面页脚「Build Provenance」可查本次线上 build 的
+`Product version` / `构建 commit` / **Research export `source_commit`** / SA 版本 / TO 版本 ——
+用于确认线上 build 与 Research artifact 的对应关系（Gate D7）。
+
+部署与回滚规程：`docs/DEPLOYMENT_RUNBOOK.md`。
 
 ---
 
@@ -44,7 +67,7 @@
 
 ### Product
 
-需要 Node.js ≥18。
+需要 Node.js ≥18（CI 使用 Node 22）。
 
 ```bash
 npm install
@@ -67,6 +90,16 @@ Current Candidate 示例 fixture：
 ```
 http://localhost:5173/?candidates=example
 ```
+
+**复现 GitHub Pages 子路径行为**（本地验证 `/Cycle/` 下的资源是否正确）：
+
+```bash
+GITHUB_ACTIONS=true npx vite build      # base 变为 /Cycle/
+grep -oE '(src|href)="[^"]*"' dist/index.html   # 期望 /Cycle/assets/...
+```
+
+本地 `dev` / `preview` / `build` 默认 `base = /`，**不受子路径影响**。
+规则与回滚方式见 `docs/DEPLOYMENT_RUNBOOK.md` §4。
 
 ### Research
 

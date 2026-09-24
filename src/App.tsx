@@ -13,6 +13,7 @@ import type { HistoricalCaseAnalogyContext } from './data/timeline/historicalCas
 import { parseCurrentCandidateDataset } from './data/timeline/currentCandidate';
 import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
 import currentCandidateFixtureJson from '@current/fixtures/example_candidates.json';
+import { buildProvenance, PROVENANCE_NOT_AVAILABLE } from './data/buildProvenance';
 import { marketTodayISO } from './utils';
 
 /** ?preview=1 启用 Research 开发预览；默认生产数据（不做运行时网络访问，保持静态 PWA） */
@@ -220,6 +221,71 @@ export default function App() {
           }}
         />
       )}
+
+      {/* Build Provenance（Gate D7）：线上 build ↔ Research artifact 版本对应关系。
+          溯源信息，**不是**质量 / 可信度指标；字段缺失显示「未标注」，不猜测。 */}
+      <BuildProvenanceFooter />
     </>
+  );
+}
+
+/** 页脚构建溯源：回答「这个 build 消费了哪一版 Research 结论」。 */
+function BuildProvenanceFooter() {
+  const p = useMemo(() => buildProvenance(), []);
+  const na = PROVENANCE_NOT_AVAILABLE;
+  const counts = p.exportObjectCounts;
+  return (
+    <footer className="build-provenance" role="contentinfo">
+      <details>
+        <summary>
+          Build Provenance · v{p.productVersion ?? na} · Research export{' '}
+          {p.exportVersion ?? na}
+        </summary>
+        <dl>
+          <dt>Product version</dt>
+          <dd>{p.productVersion ?? na}</dd>
+          <dt>构建 commit</dt>
+          <dd>
+            {p.gitCommitShort ?? na}
+            {p.gitCommit ? <span className="phase-text">（{p.gitCommit}）</span> : null}
+          </dd>
+          <dt>构建时间</dt>
+          <dd>{p.buildTime ?? na}</dd>
+          <dt>Research export 版本</dt>
+          <dd>{p.exportVersion ?? na}</dd>
+          <dt>Research export source commit</dt>
+          <dd>
+            {p.exportSourceCommitShort ?? na}
+            {p.exportSourceCommit ? (
+              <span className="phase-text">（{p.exportSourceCommit}）</span>
+            ) : null}
+          </dd>
+          <dt>Research export 生成时间</dt>
+          <dd>{p.exportGeneratedAt ?? na}</dd>
+          <dt>研究对象数</dt>
+          <dd>
+            {counts
+              ? `${counts.campaigns} Campaign + ${counts.researchCandidates} Research Candidate = ${
+                  counts.campaigns + counts.researchCandidates
+                }`
+              : na}
+          </dd>
+          <dt>Structural Analogy</dt>
+          <dd>
+            artifact {p.saArtifactVersion ?? na}
+            {p.saRuleSetVersion ? <span className="phase-text">（{p.saRuleSetVersion}）</span> : null}
+          </dd>
+          <dt>Time Observation</dt>
+          <dd>
+            artifact {p.toArtifactVersion ?? na}
+            <span className="phase-text">（文件名 v0_2 / 内部版本见左）</span>
+          </dd>
+        </dl>
+        <p className="build-provenance-note">
+          本区块是**溯源信息**，用于确认线上 build 与 Research artifact 的对应关系；
+          它不是可信度、完整度或质量评分，也不影响任何研究结论的语义。
+        </p>
+      </details>
+    </footer>
   );
 }

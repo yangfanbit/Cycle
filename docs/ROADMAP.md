@@ -42,13 +42,73 @@
 - Preview / Production isolation
 - Static PWA runtime
 
-## 2. ★ 当前主线：**Product / Real Usage Iteration**（2026-09-23 起）
+## 2. ★ 当前主线：**ThreeC 1.0 Deployment / Release Engineering**（2026-09-24 起）
 
-> Research Core 已 Release（见 §1）。主线由「Research → Product」切换为
-> **Product Stabilization + Real Usage Validation**。
+> Product / Real Usage Iteration 已完成并通过 **Gate T8（P0 清零）**。
+> 主线切换为：把已经通过 Research / Product / Trust / Quality / Real Usage 的 ThreeC，
+> 变成一个**可稳定访问、可重复构建、可追溯、可回滚**的静态产品。
 >
-> **最高原则**：目标从 `Research correctness` 切换为 `Real Research Usability` ——
-> 一个用户能否从「今天」出发，顺畅完成一次完整历史研究，并得到**可理解、可追溯、不误导**的结果。
+> **最高原则**：本轮**不增加产品功能**。目标从 `Real Research Usability`
+> 切换为 `Deployment Correctness & Reproducibility`。
+
+### 主流程
+
+```
+最小正式静态部署（GitHub Pages）
+ ↓  正式访问入口
+ ↓  GitHub Actions 自动构建 / 部署
+ ↓  Vite 子路径部署正确性（base = /Cycle/）
+ ↓  Research artifact ↔ Product build 版本可追溯（Gate D7）
+ ↓  Research artifact 更新后的标准重建流程
+ ↓  Rollback rehearsal
+ ↓  Production smoke test
+ ↓  1.0 Release Gates 复审
+```
+
+### 技术决策（已定）
+
+| 项 | 决定 | 理由 |
+|---|---|---|
+| 宿主 | **GitHub Pages** | 仓库已在此；纯静态；无第三方托管 / 后端依赖；tag 与部署历史同体系 |
+| 入口 | `https://yangfanbit.github.io/Cycle/` | |
+| base | `vite.config.ts` 双变量：`THREEC_BASE` > `GITHUB_ACTIONS` > `/` | 本地不被子路径污染；`vite preview` 能复现 production |
+| SPA fallback | **不需要** | 无 client-side router（仅 query 参数） |
+| `.nojekyll` | **不需要** | `dist/` 无 `_` 前缀产物 |
+| 构建溯源 | `src/data/buildProvenance.ts` 汇总已有 artifact 字段 | 最小改动；不新增 metadata 系统 / API |
+
+### 本轮完成
+
+- `.github/workflows/deploy.yml`：checkout → Node 22 → `npm ci` → `tsc -b` → **`npm test`** →
+  `npm run build`（`base=/Cycle/`）→ **base path 硬门禁** → provenance summary →
+  upload `dist/` → deploy Pages。**测试失败不产出部署物**；permissions 最小化。
+- `vite.config.ts`：`resolveBase()` + `provenanceDefines()`。**不使用** `command === 'serve'` 分支。
+- `src/data/buildProvenance.ts`：Product version / Git commit / **Research export `source_commit`** /
+  SA `artifact_version` / TO `artifact_version`，页脚折叠展示（缺失显示「未标注」，不猜测）。
+- `src/data/__tests__/deployment.test.ts`：**24 条机械校验**（provenance 与 artifact 一致 ·
+  base 规则 · workflow 契约 · `dist/` 不入库）。
+- `docs/DEPLOYMENT_RUNBOOK.md`：正常发布 / Product-only / Research artifact 更新 / 回滚 /
+  smoke test / CI 门禁总览。
+
+### 与本主线**无关**、不要重新打开
+
+R01 · Research expansion · SA 扩容 · TO 扩容 · Driver vocabulary ·
+Dashboard · Radar（`OpportunityRadar` dead code 属 P2）· backend · LLM runtime。
+
+### 下一步
+
+**唯一目标**：完成 **Deployment 验证（目标 URL smoke test）+ 1.0 Release Gates 复审**。
+当 Eight Gates 全部 PASS 后，**下一轮**才执行 `package.json → 1.0.0` → release commit →
+`git tag v1.0.0` → 正式 production deployment → 文档最终锁定。
+
+**本轮不设置 `1.0.0`、不创建 `v1.0.0`。**
+
+---
+
+## 2a. 上一主线（已闭环）：**Product / Real Usage Iteration**（2026-09-23 起）
+
+> Research Core 已 Release（见 §1）。主线曾由「Research → Product」切换为
+> **Product Stabilization + Real Usage Validation**。
+> **该主线已于 2026-09-24 闭环：P0 清零（Gate T8 PASS）。**
 
 ### 主流程（Product 必须逐段可用）
 
@@ -65,37 +125,42 @@ Today
 
 **★ Product 不重新实现 Research Logic** —— 只消费 Research artifact，保留 provenance 与不确定性。
 
-### 本轮（v0.1）已完成
-- 阶段 A–C：Product 测试 **21 failed → 0 failed**（622 passed）· `tsc -b` PASS · `vite build` PASS
-- 阶段 D–F：SA v0.4 / TO v0.2 消费验收 · **P0 修复**（见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`）
+### 已完成
+- 阶段 A–C：Product 测试 **21 failed → 0 failed** · `tsc -b` PASS · `vite build` PASS
+- 阶段 D–F：SA / TO 消费验收 · **P0 修复**（见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`）
 - 阶段 G：移动端静态审计 + TO 详情网格 3 列 → 2 列（P1）
-- 详见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`
 
-### 本轮（Lifecycle Repair v0.1）已完成 —— **已闭环上一轮 Next Single Goal**
+### 已完成（Lifecycle Repair v0.1）—— 已闭环上一轮 Next Single Goal
 - 根因：export lifecycle 来自**手写静态字典**（与 intake 解耦）→ `CANDIDATE_LIFECYCLE` 仅 11/27，且丢 `UNKNOWN` / open-ended 段
 - 修复：**从 intake 派生**（单一真源）`build_lifecycle_from_intake_v0_1.py` + `batch_auto_research.py` **intake 优先**
 - 结果：RC lifecycle **11/27 → 23/27** · 段 **187 → 243** · **PEAK 22 → 46** · UNKNOWN **未被伪装**
 - SA **v0.4 → v0.5**（60 条变化**全部仅 lifecycle 维度**；structural_status 变化 **0**）
 - **Driver v0.4 不变**（输入未变）· **TO v0.2 不变**（输出未变）· 新增 `validate_lifecycle_coverage_v0_1.py` 防回归
 
-### ★ 1.0 目标（正式定义见 `docs/THREEC_1_0_RELEASE_DEFINITION.md`）
+### 已完成（1.0 P0 修复轮）—— **Gate T8 由 FAIL → PASS，P0 = 0**
 
-> **1.0 的判据是 8 个硬 Gate（R / P / T / Q / U / M / D / G），不是「整体感觉差不多」。**
+> 完整定义见 `docs/THREEC_1_0_RELEASE_DEFINITION.md`。
 
-**当前 Gap（审计基线 `ad5e804`）**：
+- **P0-1**：`historicalCase.ts` 改读 Research `c.lifecycle`（空则 `[]`）；
+  `researchAttention.ts::terminalPhaseOf` 删除 `c.phases` 回退 → `UNKNOWN`。
+  **实证：4 个 UNKNOWN-only RC 的虚构阶段 4 → 0。**
+- **P0-1c（审计新发现）**：`STAGE_TO_PHASE` 漏 `ENDED`（Contract 成员）→ 静默退化为 `UNKNOWN`
+  → 已补；2 个已结束 Campaign 由 `UNKNOWN` 纠正为 `END`。
+- **P0-1d**：`ExportLifecycleStageV1.start/end` 类型改为 `string | null`（Contract 允许开放区间）；
+  5 个消费点显式处理，`tsc -b` **12 error → 0**。
+- **P0-1e**：`CampaignDetail` 第二处独立 `m.phases` 渲染路径同样虚构「主升」→ 已改读 Research `lifecycle`。
+- **D3 由 `it.fails` 正式化**；新增 **Scenario F1–F9** Gate T8 全局不变量（含反向非空断言）。
+- `derivePhases()` / `c.phases` **完整保留**（Timeline 视觉分段仍依赖）。
+
+### 1.0 八 Gate 现状
 
 | Gate | 状态 |
 |---|---|
-| Research · Product · Quality · Documentation | **PASS** |
-| Real Usage | PASS（含 1 项已知缺口，由 P0-1 覆盖） |
-| Mobile | PASS（静态；真机复核为 P2） |
-| **Trust** | **★ FAIL —— P0-1**：无 research lifecycle 的对象在 Product 中被推导出 `main_rise`（虚构阶段） |
-| **Deployment** | **★ P1-1**：无部署配置 / 无访问入口 / 无回滚定义 |
-
-**下一步唯一目标**：**修 P0-1** —— 让「无 research lifecycle」的对象显示「阶段未判定」，而不是推导出的具体阶段。
-
-### 下一步
-**唯一目标**：见上「1.0 目标」段的 **P0-1**（**不自动开始下一项开发**）。
+| Research · Product · Trust · Quality · Real Usage · Documentation | **PASS** |
+| Mobile | PASS（静态；真机复核为 **P2**） |
+| **Deployment** | **★ 本轮目标**（P1-1 处理中；访问入口验证待线上执行） |
+| P0 | **0** |
+| P1 | 见 `docs/THREEC_1_0_RELEASE_DEFINITION.md` §8 |
 
 ---
 

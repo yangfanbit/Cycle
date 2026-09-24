@@ -7,51 +7,52 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：见 `git log -1`（本文件随 **ThreeC 1.0 P0 修复轮** 提交入库）
-- **★ 当前阶段：Product / Real Usage Iteration v0.1 → 已通过 Gate T8，待进入 1.0 Deployment**（详见 `docs/ROADMAP.md` §2）
-- 最近完成：**Product Stabilization + Real Usage Validation v0.1**（详见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`）
-  · **阶段 A–C**：**21 项 Product Test Failures → 0**（逐项验证分类：A 旧 universe fixture 18 · C 契约更新 1 · **B 真实缺陷 2**）；
-    `npm test` **0 failed / 622 passed（16 files）** · `tsc -b` **PASS** · `vite build` **PASS**
-  · **阶段 D/F · P0 修复**：① **Attention Gate 把已结束历史 Campaign 标为「当前值得研究」**（14 个，含 `C-2016-PANEL-CYCLE`）
-    → 已修（已记录 `end` ⇒ `HISTORICAL_REFERENCE`），14 → **5**；② **null `start`/`end` 导致 93 处运行时崩溃** → 已修（类型 + null 安全 + `openEnded`）
-  · **阶段 G · P1 修复**：Time Observation 移动端详情网格 **3 列 → 2 列**（375px 可读性）
-  · **阶段 E**：新增**可重复研究闭环验收夹具** `researchWorkflow.test.tsx`（43 用例）——
-    **5 个 Current Candidate 全部走通完整闭环**（今天 → 候选 → 时间/日历 → 生命周期 → 结构对应 → 历史案例 → 证据 → 新研究问题）
-  · **阶段 H**：`ROADMAP.md` 主线切换为 **Product / Real Usage Iteration**；Research 标记 **COMPLETE / FROZEN**；
-    Coverage Expansion 回到 **FROZEN / DEFERRED**；Backlog 全部降级为 **KNOWN LIMITATION**
+- HEAD：**`7c7d64f`**（本轮起点；本文件随 **ThreeC 1.0 Deployment / Release Engineering** 提交入库，提交后以 `git log -1` 为准）
+- **★ 当前阶段：ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/ROADMAP.md` §2）
+- **★ Gate 状态**：**Gate T = PASS**（P0 修复轮已闭环，含 T8）· **P0 = 0** · P1 = 0（P1-1 已闭环）· 未禁用 Gate：**Gate M（真机复核）**
+- **★ 当前唯一目标**：**Deployment / Release Engineering** —— GitHub Pages 静态部署 + 自动构建 + provenance + 回滚
+  · **本轮仍未设置 `1.0.0`、仍未创建 `v1.0.0`**；线上身份 = commit SHA
+- 最近完成：**ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/DEPLOYMENT_RUNBOOK.md`）
+  · **部署形态**：**GitHub Pages**（唯一平台；未使用 Vercel / Netlify / Docker / 云服务器 / CDN 产品化）
+  · **访问入口**：**`https://yangfanbit.github.io/Cycle/`**
+  · **自动构建**：`.github/workflows/deploy.yml` —— push `main` → `npm ci` → `tsc -b` → `npm test` → `npm run build`
+    → 上传 `dist/` → `deploy-pages`（**不允许跳过 `npm test`**；**不允许上传未 build 的源码**；**不提交 `dist/`**）
+  · **Vite `base`**：`resolveBase()` = `THREEC_BASE` 显式覆盖 > `GITHUB_ACTIONS === 'true'` → `/Cycle/` > 默认 `/`
+    （**刻意不用 `command === 'serve'`**，使 `vite preview` 可复现生产行为；本地 `dev` / `preview` 不受影响）
+  · **D7 provenance（非仅文档）**：`src/data/buildProvenance.ts` 在 Product 内展示 `package.json.version` ·
+    git commit · `exports/timeline_export_v1.json` 的 `source_commit` · SA / TO artifact 版本（`vite define` 注入，**无 runtime 网络**）
+  · **D6 / D8**：`docs/DEPLOYMENT_RUNBOOK.md`（正常发布 / Product-only / Research artifact 更新 / 回滚 / smoke test）
+  · **未修改** `research/` · `exports/` · `contracts/` · `schema.sql` · SA rule · TO 标准；**未新增**产品功能；**未引入**后端 / runtime 网络 / LLM
+- 最近完成：**ThreeC 1.0 P0 修复轮 —— Gate T8 / P0-1（含 P0-1b/c/d/e）**
+  · **结果：Gate T 由 ★ FAIL → PASS；P0 清单清零**。纯 Product 语义修复，`research/` · `exports/` · `contracts/` · `schema.sql` 零改动
+  · `historicalCase.ts` 改读 Research `c.lifecycle`（空则 `[]`）；`researchAttention.ts::terminalPhaseOf` 删除 `c.phases` 回退 → `UNKNOWN`
+  · `STAGE_TO_PHASE` 补 `ENDED: 'END'`（P0-1c）· `ExportLifecycleStageV1.start/end` → `string | null`（P0-1d）·
+    `CampaignDetail` 第二处 `m.phases` 渲染路径改读 Research `lifecycle`（P0-1e）
+  · `derivePhases()` 与 `c.phases` **完整保留**（Timeline 视觉分段仍依赖）
+  · 验证：`npm test` **654 passed / 0 failed（17 files）** · `tsc -b` **0 error** · `vite build` **PASS**
+- 最近完成：**ThreeC 1.0 Release Definition + Release Gap Audit**（详见 `docs/THREEC_1_0_RELEASE_DEFINITION.md`）
+  · 8 个硬 Gate（R / P / T / Q / U / M / D / G）+ Blocker 分级（P0 / P1 / P2）
+  · **4 个仅 UNKNOWN lifecycle 的 RC 判定为 `KNOWN DATA LIMITATION`，不是 1.0 Blocker**
 - **★ Research Core 基线（FROZEN）**：79 Historical Objects（52 Campaign + 27 RC）· Driver Canonicalization **v0.4** ·
-  SA **v0.5**（395 pairs）· TO **v0.2**（内部 0.3）· Driver **v0.4** · Product **已消费最新 SA / TO artifact**
+  SA **v0.5**（395 pairs）· TO **v0.2**（内部 0.3）· Product **已消费最新 SA / TO artifact**
 - **Known Limitations（不阻塞推进，详见 ROADMAP §3）**：
-  **L5（★ Next Single Goal）** Research export `lifecycle` 映射缺口（**16 / 27 RC 的 export `lifecycle` 为空**，
-  而 **intake 全部有**；R01 importers 过滤 `PEAK` 阶段）· L1 剩余 7 项子串冲突（不改变 driver 集合）·
-  L2 `driver=MATCH` 仅 1 条 · L3 2 个 cycle 因映射逻辑无 driver · L4 TO `year`/`date` 相差 1 年（5 例）
-- 最近完成（续）：**Research Lifecycle Mapping Repair v0.1**（**已闭环上一轮 Next Single Goal**）
-  · **根因**：export 的 lifecycle 原来自 `batch_auto_research.py` 中**手写的静态字典**
-    `CAMPAIGN_LIFECYCLE` / `CANDIDATE_LIFECYCLE`，**与 intake 解耦** → `CANDIDATE_LIFECYCLE` 只登记 **11/27**；
-    已登记条目**丢掉 `UNKNOWN` 段与 open-ended 段**。（DB `campaign_phases` 过滤 `PEAK` 属 **schema 合法约束**，
-    但 **DB 不是 export 的来源** → 真正的缺口在 **export 装配层**）
-  · **修复**：新增 `research/scripts/build_lifecycle_from_intake_v0_1.py`，**从 R01 intake 包派生** export lifecycle
-    （**单一真源**），并在 `batch_auto_research.py` 中 **intake 优先**（静态字典仅作 pre-R01 回退）
-  · **数据前后**：RC lifecycle **11/27 → 23/27**；lifecycle 段 **187 → 243**；**PEAK 22 → 46**；
-    **UNKNOWN 未被伪装**（4 个仅含 UNKNOWN 的 RC 保持空，语义由 `research_status = INSUFFICIENT` 承载）
-  · **SA**：**v0.4 → v0.5**（60 条变化，**全部仅 lifecycle 维度**：`COMPARISON_POINT_UNKNOWN → MATCH/PARTIAL/MISMATCH`；
-    **structural_status 变化 0**；SUPPORTED 4 / STRICT 1 不变；`driver=MISMATCH → PARTIAL` 仍为 0）
-  · **Driver v0.4 保持不变**（输入未变，`--check` PASS）· **TO v0.2 保持不变**（输出未变，`--check` PASS）
-  · 新增 **lifecycle 覆盖恒等校验器** `validate_lifecycle_coverage_v0_1.py`（L1–L8，**防回归**）
-- 最近完成（续）：**ThreeC 1.0 Release Definition + Release Gap Audit**（详见 `docs/THREEC_1_0_RELEASE_DEFINITION.md`）
-  · 正式建立 **1.0 定义**（8 个硬 Gate：R / P / T / Q / U / M / D / G）与 **Blocker 分级（P0/P1/P2）**
-  · **Gap**：Research / Product / Quality / Documentation **PASS**；Mobile **PASS（静态）**；
-    Real Usage **PASS（含 1 项已知缺口）**；**Trust ★ FAIL（P0-1）**；**Deployment ★ P1-1**
-  · **P0-1**：无 research lifecycle 的对象在 Product 中被推导出 `main_rise`（`historicalCase.ts:243` 读 adapter 派生的
-    `c.phases`；`derivePhases` 在 `peak == null` 时**无条件**返回 `main_rise`）→ 违反 Gate T8 `UNKNOWN ≠ 自动推导具体阶段`
-  · **P1-1**：**无任何部署配置 / 无 git tag / 无访问入口 / 无回滚定义**（`package.json` 仍为 `0.1.0`）；
-    最小静态部署方案已设计（见定义文档 §2），**未引入后端**
-  · **4 个仅 UNKNOWN lifecycle 的 RC 判定为 `KNOWN DATA LIMITATION`，不是 1.0 Blocker**（来源明确 · 无伪造 ·
-    Product 可显示信息不足 · validator L4 防静默丢失）
-- **Next Single Goal**：**进入 ThreeC 1.0 Deployment / Release Engineering** —— 处理 **P1-1**
-  （最小静态部署 + 重建流程 + 回滚定义 + 访问入口）。**本轮不设 `1.0.0`、不打 tag、不部署。**
+  L1 剩余 5 项子串冲突（不改变 driver 集合）· L2 `driver=MATCH` 仅 1 条 · L3 2 个 cycle 因映射逻辑无 driver ·
+  L4 TO `year`/`date` 相差 1 年（5 例）· L5 4 个仅 UNKNOWN lifecycle 的 RC（`KNOWN DATA LIMITATION`，已不再是 Next Single Goal）
 
-### 最近完成：**ThreeC 1.0 P0 修复轮 —— Gate T8 / P0-1（含审计新发现 P0-1c / P0-1d）**
+### 最近完成：**ThreeC 1.0 Deployment / Release Engineering**
+
+> **结果：P1-1（无部署方式 / 无访问入口 / 无回滚定义）已闭环；Gate D 的 D1–D3、D6–D8 落地并验证；
+> 本轮为纯 deployment engineering，`research/` · `exports/` · `contracts/` · `schema.sql` 零改动。**
+
+- **新增文件**：`.github/workflows/deploy.yml` · `src/data/buildProvenance.ts` ·
+  `src/data/__tests__/deployment.test.ts`（24 用例）· `docs/DEPLOYMENT_RUNBOOK.md`
+- **修改文件**：`vite.config.ts`（`base` + `define`）· `src/App.tsx`（`<BuildProvenanceFooter />`）· `src/styles.css` ·
+  `README.md` · `docs/ROADMAP.md` · `docs/THREEC_1_0_RELEASE_DEFINITION.md` · `docs/PROJECT_STATE.md`（本文件）
+- **未做**：未设 `package.json.version = 1.0.0` · 未创建 `v1.0.0` tag · 未提交 `dist/` · 未引入后端 / SPA router / `.nojekyll`
+  （Product 无 client-side router，只有 query param，故无需 404 回退）
+- **★ 边界**：**「Deployment Engineering 完成」≠「ThreeC 1.0 正式发布」。**
+
+### 上一完成：**ThreeC 1.0 P0 修复轮 —— Gate T8 / P0-1（含审计新发现 P0-1c / P0-1d）**
 
 > **结果：Gate T 由 ★ FAIL → PASS；P0 清单清零（0 项）；**全 8 个 Gate 中 T/Q/U 已 PASS**。
 > 本轮为**纯 Product 语义修复**，`research/` · `exports/` · `contracts/` · `schema.sql` **零改动**。
@@ -247,7 +248,15 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# R01 收口 → **SA / TO 刷新**（第一批治理修复已完成，待决定是否刷新）
+# **ThreeC 1.0 Deployment / Release Engineering** —— ✅ 本轮已完成
+
+后续唯一主线 = **1.0 正式宣布流程**（Gate M 真机复核 → `package.json` → `1.0.0` → release commit → `git tag v1.0.0` → 部署 → 验证入口 → 文档收口）。
+**本轮不设 `1.0.0`、不创建 `v1.0.0`。**
+
+---
+
+<details>
+<summary>历史背景：R01 收口（已完成，保留存档）</summary>
 
 **已完成（全部 PASS）**：… Product 侧全部轮次 · **R00**（Intake Protocol）· **T01**（taxonomy gap）·
 **R01-01 / R01-02 / R01-03 / R01-04 / R01-05 / R01-06 Canonical Import** · **Intake Validator C25**（严格 Draft-07）。
@@ -458,6 +467,8 @@ SA / TO 须**直接读取** `research/research/reports/governance_classification
 - 不引入实时网络 / LLM · 不建立 ranking / score / probability / prediction
 
 | DONE | **★★ Research Core Release 完成（2026-09-23）**：Driver Canonicalization **v0.4** · **SA v0.4**（395 pairs · identity 52/27 · 两层独立校验 PASS · `driver=MISMATCH→PARTIAL` = 0）· **Time Observation v0.2**（79 objects · 12 patterns · **Timeline 仍仅 TOP-01**）· **Product 已消费最新 artifact**（`tsc -b` / `vite build` PASS）· 旧版本 18 个文件逐字节 UNCHANGED。详见 `docs/RESEARCH_CORE_RELEASE_v0_4.md` |
+
+</details>
 
 ## 8. 当前质量债务
 

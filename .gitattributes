@@ -17,3 +17,8 @@ exports/**             -text
 
 # ── 跨模块接口契约 ──
 contracts/**           -text
+
+# ── GitHub Actions workflow：必须保持 LF ──
+# Workflow 文件若被 CRLF 化，部分 runner 的 YAML 解析会出现
+# 「unexpected character」/ 键解析异常。显式锁定 LF。
+.github/workflows/**   text eol=lf

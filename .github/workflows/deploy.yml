@@ -1,0 +1,127 @@
+# ============================================================================
+# ThreeC 1.0 —— GitHub Pages deployment
+#
+# 唯一目标：把已通过 Research / Product / Trust / Quality / Real Usage 的 ThreeC
+# 变成一个**可稳定访问、可重复构建、可追溯、可回滚**的静态产品。
+#
+# 设计约束（不得违反）
+#   - production deployment **必须**建立在 `npm test` + `build` 成功之上
+#   - 不允许跳过 `npm test`；不允许直接上传未构建源码
+#   - **不提交** `dist/`（走 artifact 上传，见 .gitignore）
+#   - permissions 最小化：仅 `contents: read` + `pages: write` + `id-token: write`
+#   - 不引入任何第三方托管 / 后端 / 数据库 / runtime API
+#   - 同一 concurrency group，避免并发部署互相覆盖
+#
+# 溯源（Gate D7）：`npm run build` 经 `vite.config.ts` 注入 package version /
+# git commit / build time；Research artifact 版本（export source_commit、SA、TO）
+# 由 Product 在构建期静态 import 汇总，页面页脚「Build Provenance」可查。
+# 本 workflow 的 `Write build provenance summary` 步骤把它落到 Actions Summary，
+# 使**每次部署**都能对账「哪个 commit 部署了哪个 Research 版本」。
+# ============================================================================
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # 允许在 Actions 页手动重跑（回滚 rehearsal / 重新部署同一 commit 时使用）
+  workflow_dispatch:
+
+# 最小权限：GITHUB_TOKEN 只用于 Pages 部署
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只允许一个 Pages 部署；不取消进行中的部署，避免半成品上线
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # --------------------------------------------------------------------------
+  # Job 1 — 验证 + 构建
+  # --------------------------------------------------------------------------
+  build:
+    name: Verify & build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies (npm ci)
+        run: npm ci
+
+      - name: Type check (tsc -b)
+        run: npx tsc -b
+
+      # ★ 强制门禁：测试不通过则整个 workflow 失败，不会部署
+      - name: Unit & integration tests (npm test)
+        run: npm test
+
+      # GITHUB_ACTIONS 由 GitHub 内置，vite.config.ts 据此取 base = /Cycle/
+      - name: Build (base = /Cycle/)
+        run: npm run build
+
+      - name: Verify base path is /Cycle/
+        run: |
+          set -euo pipefail
+          echo "--- dist/index.html asset refs ---"
+          grep -oE '(src|href)="[^"]*"' dist/index.html
+          # 硬门禁：产物中不得出现以 /assets/ 开头的绝对引用（Pages 子路径下会 404）
+          if grep -qE '(src|href)="/assets/' dist/index.html; then
+            echo "::error::base path 未生效：dist/index.html 仍含 /assets/ 绝对引用"
+            exit 1
+          fi
+          if ! grep -qE '(src|href)="/Cycle/assets/' dist/index.html; then
+            echo "::error::base path 错误：未发现 /Cycle/assets/ 引用"
+            exit 1
+          fi
+          echo "OK: base path = /Cycle/"
+
+      - name: Write build provenance summary
+        run: |
+          set -euo pipefail
+          {
+            echo '## Deployment provenance'
+            echo ''
+            echo '| 字段 | 值 |'
+            echo '|---|---|'
+            echo "| Product version | \`$(node -p "require('./package.json').version")\` |"
+            echo "| Workflow commit | \`${GITHUB_SHA}\` |"
+            echo "| Ref | \`${GITHUB_REF}\` |"
+            echo "| Research export source_commit | \`$(node -p "require('./exports/timeline_export_v1.json').source_commit")\` |"
+            echo "| Research export version | \`$(node -p "require('./exports/timeline_export_v1.json').timeline_export_version")\` |"
+            echo "| Research export generated_at | \`$(node -p "require('./exports/timeline_export_v1.json').generated_at")\` |"
+            echo "| Historical objects | \`$(node -p "require('./exports/timeline_export_v1.json').campaigns.length")\` Campaign + \`$(node -p "require('./exports/timeline_export_v1.json').research_candidates.length")\` RC |"
+            echo "| SA artifact_version | \`$(node -p "require('./research/research/reports/structural_analogy_explanations_v0_5.json').artifact_version")\` |"
+            echo "| SA rule_set_version | \`$(node -p "require('./research/research/reports/structural_analogy_explanations_v0_5.json').rule_set_version")\` |"
+            echo "| TO artifact_version | \`$(node -p "require('./research/research/reports/time_observation_patterns_v0_2.json').artifact_version")\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 只上传构建产物；源码不会被部署
+          path: dist
+
+  # --------------------------------------------------------------------------
+  # Job 2 — 部署到 GitHub Pages（依赖 build 成功）
+  # --------------------------------------------------------------------------
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
