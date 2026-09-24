@@ -21,8 +21,45 @@
 | 部署方式 | GitHub Actions（`.github/workflows/deploy.yml`） |
 | 产物 | 纯静态 `dist/`（HTML / JS / CSS） |
 
+> ⚠️ **入口当前不可用（HTTP 404）** —— 由 **user-site 自定义域名级联 301** 造成，**不在本仓库控制范围**。
+> 详见 **§8.2**（含实测证据、根因链与两种修复方案）。**在 §8.2 阻塞解除前不得宣称入口可用。**
+
 **不引入**（除非 GitHub Pages 出现无法接受的技术限制，且须先记录阻塞原因）：
 Vercel · Netlify · Docker · 云服务器 · 后端 · 数据库 · CDN 产品化改造 · 任何运行时 API · LLM runtime。
+
+### 0.1 一次性前置：启用 GitHub Pages（**不可由 CI 自动完成**）
+
+`actions/deploy-pages` 要求仓库已存在 Pages site 且 `build_type = workflow`。
+**在 Pages 首次启用前，`deploy` job 必然失败**（`build` job 会全绿）。
+
+**人工操作（仅需一次，仓库所有者执行）**：
+
+```text
+GitHub → repo `yangfanbit/Cycle` → Settings → Pages
+  Source:            Deploy from a branch   ← 改为 ↓
+  Source:            GitHub Actions
+  （Build and deployment → Source = "GitHub Actions"）
+保存后无需选择 branch / folder。
+```
+
+> **★ 已完成（2026-09-24）**：本项目 Pages 已启用，`build_type = workflow`，`has_pages = true`。
+> 亦可由具备 `admin` 权限的 token 通过
+> `POST /repos/{owner}/{repo}/pages {"build_type":"workflow"}` 设置。
+
+**验证是否已启用**（`has_pages` 必须为 `true`）：
+
+```bash
+curl -s https://api.github.com/repos/yangfanbit/Cycle | grep has_pages
+```
+
+**启用后**：`Actions` → `Deploy to GitHub Pages` → `Re-run jobs`（或再次 push `main`）。
+此后每次 push `main` 自动构建 + 部署，无需任何人工步骤。
+
+> ⚠️ **这不是 workflow 缺陷**。GitHub 设计上要求 Pages 首次启用必须由仓库所有者在
+> Settings 中显式确认（涉及站点可见性与域名归属），CLI / Actions 均无权限代劳。
+> `gho_` OAuth token **不含** `pages: write`，因此脚本也无法代设。
+
+---
 
 ### 为什么不需要 SPA fallback
 
@@ -352,6 +389,69 @@ deploy-pages (environment: github-pages)
 （workflow 存在 / 必跑 test / 不跳过 / 只传 dist / 权限最小 / 无第三方托管 / concurrency 正确 /
 base 规则 / provenance 字段与 artifact 一致）。
 **改 workflow 或 vite config 若破坏这些契约，`npm test` 会失败。**
+
+### 8.1 已知首次部署阻塞：`has_pages = false`
+
+**症状**：`build` job 全绿（含 `tsc -b` / `npm test` / base-path gate / provenance summary），
+但 `deploy` job 在 `Deploy to GitHub Pages` 步骤 `failure`。
+
+**根因**：仓库从未启用 GitHub Pages（`GET /repos/{owner}/{repo}` → `has_pages: false`；
+`GET /repos/{owner}/{repo}/pages` → `404`）。`actions/deploy-pages` 要求 Pages site 已存在。
+
+**处置**：执行 §0.1 一次性启用，然后 `Re-run jobs`。
+**这不是代码或 workflow 缺陷**，也不应通过换平台绕过（见 §0 约束）。
+
+### 8.2 ★ 已知线上入口阻塞：user-site 自定义域名级联 301
+
+**状态：待用户决策（不在本仓库控制范围内）。**
+
+**症状**：`https://yangfanbit.github.io/Cycle/` 返回 **HTTP 404**，
+但 Actions 的 `deploy` job **成功**（deployment environment `github-pages`，sha = 部署 commit）。
+
+**实测证据**（直连真实 GitHub Pages IP `185.199.108.153`，绕过代理）：
+
+```http
+GET /Cycle/ HTTP/1.1
+Host: yangfanbit.github.io
+
+HTTP/1.1 301 Moved Permanently
+Server: GitHub.com
+Location: http://yfnwu.com/Cycle/
+```
+
+**根因链**：
+
+| 层 | 观测 | 说明 |
+|---|---|---|
+| `yangfanbit/yangfanbit.github.io`（**user site**） | `cname: "yfnwu.com"` · `build_type: legacy` | ★ **此处设置了账户级自定义域名** |
+| `yangfanbit/Cycle`（本项目 · **project site**） | `cname: null` · `build_type: workflow` | 本项目**没有**设置任何自定义域名 |
+| `yfnwu.com` DNS | `76.223.126.88`（**非** GitHub Pages 的 `185.199.108.153`） | 该域名由 **Vercel** 托管 |
+| `yfnwu.com/Cycle/` | `HTTP 308 → https://yfnwu.com/Cycle/` → **404**（`server: Vercel`） | Vercel 上**没有** `/Cycle/` 路由 |
+
+**机制**：GitHub Pages 会把 **user site 的自定义域名级联到该账户下所有 project site**。
+因此 `yangfanbit.github.io/Cycle/` 被 301 到 `yfnwu.com/Cycle/`，而 `yfnwu.com` 由 Vercel 托管且无该路由 → 404。
+
+**★ 本项目**无法**自行修复**：`Cycle` 的 `cname` 已经是 `null`；
+修复必须改动**另一个仓库**（`yangfanbit/yangfanbit.github.io`）的 Pages 自定义域名设置，
+或把 `yfnwu.com` 的 DNS/路由接到 GitHub Pages。**两者都超出本轮授权范围。**
+
+**可选修复（需用户明确授权，二选一）**：
+
+```text
+方案 A —— 释放 user-site 的自定义域名（推荐，最快）
+  GitHub → repo `yangfanbit/yangfanbit.github.io` → Settings → Pages
+  → Custom domain 清空 → Save
+  效果：`https://yangfanbit.github.io/Cycle/` 立即可用。
+  影响：`yfnwu.com` 不再由 GitHub Pages 服务（若该域名目前由 Vercel 服务，则无实际影响）。
+
+方案 B —— 保留自定义域名，改由 GitHub Pages 托管
+  把 `yfnwu.com` 的 DNS 指向 GitHub Pages（A 记录 185.199.108-111.153 或 CNAME）
+  + 在 user site 配好 `yfnwu.com/Cycle`（需把 `Cycle` 部署为 user site 的子路径，结构冲突）
+  代价高、影响面大，不推荐。
+```
+
+**★ 在阻塞解除前**：**不得宣称 `https://yangfanbit.github.io/Cycle/` 可用**。
+可用的证据目前只有 Actions `deploy` 成功 + artifact 已上传。
 
 ---
 
