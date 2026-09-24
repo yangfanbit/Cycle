@@ -7,21 +7,33 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：**`7c7d64f`**（本轮起点；本文件随 **ThreeC 1.0 Deployment / Release Engineering** 提交入库，提交后以 `git log -1` 为准）
-- **★ 当前阶段：ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/ROADMAP.md` §2）
-- **★ Gate 状态**：**Gate T = PASS**（P0 修复轮已闭环，含 T8）· **P0 = 0** · P1 = 0（P1-1 已闭环）· 未禁用 Gate：**Gate M（真机复核）**
-- **★ 当前唯一目标**：**Deployment / Release Engineering** —— GitHub Pages 静态部署 + 自动构建 + provenance + 回滚
+- HEAD：**`0812efc`**（本轮起点 `7c7d64f`；本轮两个提交 `f9cc007` + `0812efc`）
+- **★ 当前阶段：ThreeC 1.0 Deployment / Release Engineering —— 已完成**（详见 `docs/ROADMAP.md` §2）
+- **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
+- **★ Gate 状态**：**Gate T = PASS**（含 T8）· **P0 = 0** · **P1 = 0**（P1-1 已闭环）· 未闭环：**Gate M（真机复核）**
+- **★ 当前唯一目标**：**1.0 正式宣布准备** —— Gate M 真机复核 → `package.json → 1.0.0` → release commit → `git tag v1.0.0` → 部署 → 验证入口 → 收口文档
   · **本轮仍未设置 `1.0.0`、仍未创建 `v1.0.0`**；线上身份 = commit SHA
 - 最近完成：**ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/DEPLOYMENT_RUNBOOK.md`）
   · **部署形态**：**GitHub Pages**（唯一平台；未使用 Vercel / Netlify / Docker / 云服务器 / CDN 产品化）
-  · **访问入口**：**`https://yangfanbit.github.io/Cycle/`**
+  · **访问入口**：**`https://yangfanbit.github.io/Cycle/`** —— **实测 200 OK**，`<title>A股机会时间轴</title>`
   · **自动构建**：`.github/workflows/deploy.yml` —— push `main` → `npm ci` → `tsc -b` → `npm test` → `npm run build`
     → 上传 `dist/` → `deploy-pages`（**不允许跳过 `npm test`**；**不允许上传未 build 的源码**；**不提交 `dist/`**）
+    · CI **实测 PASS**：`build` PASS + `deploy` PASS（environment `github-pages`，sha `f9cc007`）
+    · workflow 内**硬 Gate**「Verify base path is /Cycle/」：产物含 `/assets/` 绝对引用即 FAIL，不上线
   · **Vite `base`**：`resolveBase()` = `THREEC_BASE` 显式覆盖 > `GITHUB_ACTIONS === 'true'` → `/Cycle/` > 默认 `/`
     （**刻意不用 `command === 'serve'`**，使 `vite preview` 可复现生产行为；本地 `dev` / `preview` 不受影响）
   · **D7 provenance（非仅文档）**：`src/data/buildProvenance.ts` 在 Product 内展示 `package.json.version` ·
-    git commit · `exports/timeline_export_v1.json` 的 `source_commit` · SA / TO artifact 版本（`vite define` 注入，**无 runtime 网络**）
+    git commit · `exports/timeline_export_v1.json` 的 `source_commit` · SA / TO artifact 版本
+    · **线上实测**（主 bundle 1.99 MB）：`0.1.0` · `source_commit = c56e70fc...` · `timeline_export` v1.0 ·
+      SA `rule_set_version` · SA/TO `artifact_version` · **无未替换 `__THREEC_`** · **无 `process.env`**
+  · **smoke test 实测**：`/Cycle/` · `/Cycle/?preview=1` · `/Cycle/?candidates=example` · JS / CSS asset **全部 200**
   · **D6 / D8**：`docs/DEPLOYMENT_RUNBOOK.md`（正常发布 / Product-only / Research artifact 更新 / 回滚 / smoke test）
+  · **★ 本轮排查并解决 2 个真实部署阻塞**：
+    (1) `has_pages = false` —— 仓库从未启用 Pages，`deploy` job 必然失败 → 已启用（`build_type = workflow`）
+    (2) **user-site 自定义域名级联 301** —— `yangfanbit.github.io`（user site）设了 `cname: yfnwu.com`，
+        GitHub Pages 将其级联到 `Cycle`，导致入口 301 → `yfnwu.com`（Vercel 托管、无该路由）→ 404；
+        **本项目 `cname` 本就是 `null`，无法自行修复** → 已获用户授权清空该 user-site 的 custom domain，
+        入口立即恢复 200。**未改动任何 DNS。** 详见 runbook §8.1 / §8.2
   · **未修改** `research/` · `exports/` · `contracts/` · `schema.sql` · SA rule · TO 标准；**未新增**产品功能；**未引入**后端 / runtime 网络 / LLM
 - 最近完成：**ThreeC 1.0 P0 修复轮 —— Gate T8 / P0-1（含 P0-1b/c/d/e）**
   · **结果：Gate T 由 ★ FAIL → PASS；P0 清单清零**。纯 Product 语义修复，`research/` · `exports/` · `contracts/` · `schema.sql` 零改动
@@ -41,13 +53,17 @@
 
 ### 最近完成：**ThreeC 1.0 Deployment / Release Engineering**
 
-> **结果：P1-1（无部署方式 / 无访问入口 / 无回滚定义）已闭环；Gate D 的 D1–D3、D6–D8 落地并验证；
-> 本轮为纯 deployment engineering，`research/` · `exports/` · `contracts/` · `schema.sql` 零改动。**
+> **结果：P1-1（无部署方式 / 无访问入口 / 无回滚定义）已闭环；线上入口实测可用；
+> Gate D 的 D1–D3、D6–D8 落地并验证；本轮为纯 deployment engineering，
+> `research/` · `exports/` · `contracts/` · `schema.sql` 零改动。**
 
 - **新增文件**：`.github/workflows/deploy.yml` · `src/data/buildProvenance.ts` ·
   `src/data/__tests__/deployment.test.ts`（24 用例）· `docs/DEPLOYMENT_RUNBOOK.md`
 - **修改文件**：`vite.config.ts`（`base` + `define`）· `src/App.tsx`（`<BuildProvenanceFooter />`）· `src/styles.css` ·
+  `.gitattributes`（workflow 强制 LF）· `.gitignore`（忽略 `.tmp/`）·
   `README.md` · `docs/ROADMAP.md` · `docs/THREEC_1_0_RELEASE_DEFINITION.md` · `docs/PROJECT_STATE.md`（本文件）
+- **验证**：`npm test` **678 passed / 0 failed（18 files）** · `tsc -b` **0 error** · `vite build` **PASS**
+  · Actions `build` PASS + `deploy` PASS · 线上入口 200 OK
 - **未做**：未设 `package.json.version = 1.0.0` · 未创建 `v1.0.0` tag · 未提交 `dist/` · 未引入后端 / SPA router / `.nojekyll`
   （Product 无 client-side router，只有 query param，故无需 404 回退）
 - **★ 边界**：**「Deployment Engineering 完成」≠「ThreeC 1.0 正式发布」。**
@@ -248,7 +264,9 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# **ThreeC 1.0 Deployment / Release Engineering** —— ✅ 本轮已完成
+# **ThreeC 1.0 正式宣布准备** —— ✅ Deployment 主线已闭环
+
+**Deployment / Release Engineering 已完成**（线上入口 `https://yangfanbit.github.io/Cycle/` 实测 200 OK）。
 
 后续唯一主线 = **1.0 正式宣布流程**（Gate M 真机复核 → `package.json` → `1.0.0` → release commit → `git tag v1.0.0` → 部署 → 验证入口 → 文档收口）。
 **本轮不设 `1.0.0`、不创建 `v1.0.0`。**

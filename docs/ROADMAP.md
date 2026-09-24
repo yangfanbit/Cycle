@@ -44,65 +44,50 @@
 
 ## 2. ★ 当前主线：**ThreeC 1.0 Deployment / Release Engineering**（2026-09-24 起）
 
-> Product / Real Usage Iteration 已完成并通过 **Gate T8（P0 清零）**。
-> 主线切换为：把已经通过 Research / Product / Trust / Quality / Real Usage 的 ThreeC，
-> 变成一个**可稳定访问、可重复构建、可追溯、可回滚**的静态产品。
->
-> **最高原则**：本轮**不增加产品功能**。目标从 `Real Research Usability`
-> 切换为 `Deployment Correctness & Reproducibility`。
+**目标**：把已通过 Research / Product / Trust / Quality / Real Usage 的 ThreeC，
+变成**可稳定访问、可重复构建、可追溯、可回滚**的静态产品。**不增加产品功能。**
 
-### 主流程
+**主流程（已落地）**：
 
-```
-最小正式静态部署（GitHub Pages）
- ↓  正式访问入口
- ↓  GitHub Actions 自动构建 / 部署
- ↓  Vite 子路径部署正确性（base = /Cycle/）
- ↓  Research artifact ↔ Product build 版本可追溯（Gate D7）
- ↓  Research artifact 更新后的标准重建流程
- ↓  Rollback rehearsal
- ↓  Production smoke test
- ↓  1.0 Release Gates 复审
+```text
+push main
+    ↓  GitHub Actions（.github/workflows/deploy.yml）
+npm ci → tsc -b → npm test → npm run build（base=/Cycle/）→ 上传 dist/ → deploy-pages
+    ↓
+https://yangfanbit.github.io/Cycle/
+    ↓  操作手册
+docs/DEPLOYMENT_RUNBOOK.md
 ```
 
-### 技术决策（已定）
+| 技术决策 | 结论 |
+|---|---|
+| 部署平台 | **GitHub Pages**（唯一）；不使用 Vercel / Netlify / Docker / 云服务器 / CDN 产品化 |
+| 访问入口 | `https://yangfanbit.github.io/Cycle/` |
+| Vite `base` | `THREEC_BASE` > `GITHUB_ACTIONS === 'true'` → `/Cycle/` > `/`（本地 dev / preview 不受影响） |
+| provenance（D7） | `src/data/buildProvenance.ts` 在 Product 内展示 version / commit / export `source_commit` / SA / TO |
+| 回滚（D6） | 基于 commit SHA + revert（**不伪造 `v1.0.0`**） |
+| 重建（D8） | `DEPLOYMENT_RUNBOOK.md` §1–§3 |
+| SPA fallback | **不需要**（无 client-side router，仅 query param） |
+| `.nojekyll` | **不需要**（产物无 `_` 前缀文件） |
 
-| 项 | 决定 | 理由 |
-|---|---|---|
-| 宿主 | **GitHub Pages** | 仓库已在此；纯静态；无第三方托管 / 后端依赖；tag 与部署历史同体系 |
-| 入口 | `https://yangfanbit.github.io/Cycle/` | |
-| base | `vite.config.ts` 双变量：`THREEC_BASE` > `GITHUB_ACTIONS` > `/` | 本地不被子路径污染；`vite preview` 能复现 production |
-| SPA fallback | **不需要** | 无 client-side router（仅 query 参数） |
-| `.nojekyll` | **不需要** | `dist/` 无 `_` 前缀产物 |
-| 构建溯源 | `src/data/buildProvenance.ts` 汇总已有 artifact 字段 | 最小改动；不新增 metadata 系统 / API |
+**本轮完成**：
 
-### 本轮完成
+- `.github/workflows/deploy.yml`（`npm test` 为硬门禁，绝不跳过；只上传 `dist/`；权限最小化）
+- `vite.config.ts` base 解析 + `vite define` 注入 provenance
+- `src/data/buildProvenance.ts` + `<BuildProvenanceFooter />`
+- `src/data/__tests__/deployment.test.ts`（24 用例，workflow 契约由测试锁死）
+- `docs/DEPLOYMENT_RUNBOOK.md`
+- **实测**：`npm test` 678 passed / 0 failed · `tsc -b` 0 error · `vite build` PASS ·
+  Actions `build` PASS + `deploy` PASS · 线上入口 **200 OK** · smoke test 全通过
 
-- `.github/workflows/deploy.yml`：checkout → Node 22 → `npm ci` → `tsc -b` → **`npm test`** →
-  `npm run build`（`base=/Cycle/`）→ **base path 硬门禁** → provenance summary →
-  upload `dist/` → deploy Pages。**测试失败不产出部署物**；permissions 最小化。
-- `vite.config.ts`：`resolveBase()` + `provenanceDefines()`。**不使用** `command === 'serve'` 分支。
-- `src/data/buildProvenance.ts`：Product version / Git commit / **Research export `source_commit`** /
-  SA `artifact_version` / TO `artifact_version`，页脚折叠展示（缺失显示「未标注」，不猜测）。
-- `src/data/__tests__/deployment.test.ts`：**24 条机械校验**（provenance 与 artifact 一致 ·
-  base 规则 · workflow 契约 · `dist/` 不入库）。
-- `docs/DEPLOYMENT_RUNBOOK.md`：正常发布 / Product-only / Research artifact 更新 / 回滚 /
-  smoke test / CI 门禁总览。
+**下一步（1.0 正式宣布准备）**：Gate M 真机复核 → `package.json → 1.0.0` → release commit →
+`git tag v1.0.0` → 部署 → 验证入口 → 收口四份文档。**★ 本轮仍不是 1.0 发布。**
 
-### 与本主线**无关**、不要重新打开
-
-R01 · Research expansion · SA 扩容 · TO 扩容 · Driver vocabulary ·
-Dashboard · Radar（`OpportunityRadar` dead code 属 P2）· backend · LLM runtime。
-
-### 下一步
-
-**唯一目标**：完成 **Deployment 验证（目标 URL smoke test）+ 1.0 Release Gates 复审**。
-当 Eight Gates 全部 PASS 后，**下一轮**才执行 `package.json → 1.0.0` → release commit →
-`git tag v1.0.0` → 正式 production deployment → 文档最终锁定。
-
-**本轮不设置 `1.0.0`、不创建 `v1.0.0`。**
+**★ 明确不重开**（除非真实使用产生新的 P0 证据）：
+R01 / Research 扩容 / SA 扩容 / TO 扩容 / Driver vocabulary / Dashboard / Radar / backend。
 
 ---
+
 
 ## 2a. 上一主线（已闭环）：**Product / Real Usage Iteration**（2026-09-23 起）
 
