@@ -845,7 +845,23 @@ export function fromTimelineExportV1(data: TimelineExportV1): TimelineDataSource
   };
 }
 
-/** 开发预览数据源：Cycle-Research 真实导出（src/data/timeline/data/timeline_export_v1.json） */
-export function previewTimelineSource(): TimelineDataSource {
+/**
+ * **首页默认数据源**：Cycle-Research canonical 导出（`exports/timeline_export_v1.json`）。
+ *
+ * Product 1.1 起，首页默认消费 Research canonical artifact ——
+ * 让已 Research 的 Historical Universe（52 Campaign + 27 Research Candidate）进入第一视觉，
+ * 而不是只显示空置的 `data/verified` 层。
+ *
+ * 语义边界（未变）：
+ * - Research Candidate 以 `kind === 'candidate'` 与正式 Campaign 区分，**不伪装成正式历史行情**；
+ * - 数据不写入 `data/verified`、不混入 `allCampaigns`（由测试断言保证）；
+ * - 静态 import，无运行时网络请求。
+ */
+export function researchTimelineSource(): TimelineDataSource {
   return fromTimelineExportV1(timelineExportData);
+}
+
+/** @deprecated 语义化更名：请使用 `researchTimelineSource()`（同一实现，保留旧名为兼容既有测试）。 */
+export function previewTimelineSource(): TimelineDataSource {
+  return researchTimelineSource();
 }

@@ -229,6 +229,128 @@ html, body {
   letter-spacing: 0.05em;
 }
 
+/* 月份表头里唯一的 Today 日期标记（不再逐行重复 TODAY） */
+.today-header-mark {
+  position: absolute;
+  top: -1px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--today);
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* 贯穿式 Today 细红线（Historical Panorama 专用；无标签） */
+.today-span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px solid var(--today);
+  opacity: 0.85;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---------- Historical Opportunity Panorama（首页第一视觉，Product 1.1） ---------- */
+.panorama-block { margin-bottom: 26px; }
+.panorama-head { margin-bottom: 10px; }
+.panorama-title { font-size: 18px; font-weight: 700; margin: 0 0 4px; letter-spacing: 0.01em; }
+.panorama-sub { margin: 0; font-size: 12px; color: var(--ink-2); }
+.panorama-legend { margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11px; color: var(--ink-3); }
+.panorama-legend .lg { display: inline-flex; align-items: center; gap: 5px; }
+.panorama-legend .lg::before { content: ''; width: 12px; height: 8px; border-radius: 2px; }
+.panorama-legend .lg.cmp::before { background: #5a7a9a; }
+.panorama-legend .lg.rc::before { background: transparent; border: 1px dashed #8a7f6a; }
+.panorama-legend .lg.now::before { background: var(--today); width: 2px; height: 12px; border-radius: 0; }
+.panorama-legend .lg.dim::before { display: none; }
+.panorama-legend .lg.dim { font-style: italic; }
+
+.panorama-scroll { overflow-x: auto; }
+.panorama { min-width: 1080px; position: relative; }
+
+.pan-month-row,
+.pan-row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  align-items: center;
+  min-width: 0;
+}
+.pan-month-row { position: sticky; top: 0; background: var(--bg); z-index: 5; }
+.pan-months { position: relative; height: 24px; border-bottom: 1px solid var(--line-strong); }
+.pan-months .month-label {
+  position: absolute;
+  top: 2px;
+  font-size: 11px;
+  color: var(--ink-2);
+  border-left: 1px solid var(--line);
+  padding-left: 3px;
+  height: 20px;
+}
+.pan-today-mark {
+  position: absolute;
+  top: 1px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--today);
+  padding: 0 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 6;
+}
+.pan-year-axis {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-2);
+  padding-right: 8px;
+  min-width: 0;
+}
+.pan-row { border-bottom: 1px dashed #f1efea; }
+.pan-row.on { background: #fbfaf6; }
+.pan-year { font-family: var(--mono); font-weight: 600; }
+.pan-count { font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+.pan-track { position: relative; min-width: 0; }
+.pan-track .tl-grid .gl { top: -3px; bottom: -3px; }
+
+.pan-obj {
+  position: absolute;
+  cursor: pointer;
+}
+.pan-bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 2px;
+  opacity: 0.9;
+}
+.pan-bar.ph-retracement { opacity: 0.5; }
+.pan-bar.ph-declining { opacity: 0.28; }
+.pan-bar.ph-early_signal { opacity: 0.3; height: 40%; top: 30%; }
+.pan-bar.ph-ended { opacity: 0.22; }
+.pan-obj.rc .pan-bar { opacity: 0.65; border: 1px dashed rgba(0,0,0,0.4); }
+.pan-obj:hover .pan-bar { opacity: 1; }
+.pan-obj.selected .pan-bar { outline: 2px solid var(--accent); outline-offset: 1px; opacity: 1; }
+.pan-peak {
+  position: absolute;
+  top: -3px;
+  width: 0; height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 5px solid var(--ink);
+  transform: translateX(-3px);
+  pointer-events: none;
+}
+.pan-today-span-layer { position: absolute; inset: 0; pointer-events: none; }
+
 /* ---------- 悬浮提示 ---------- */
 .tooltip {
   position: fixed;
@@ -2396,4 +2518,16 @@ html, body {
   .build-provenance { margin: 18px 12px 26px; }
   .build-provenance dl { grid-template-columns: minmax(0, 1fr); gap: 1px 0; }
   .build-provenance dt { margin-top: 6px; }
+}
+
+/* ---------- Historical Panorama：移动端（无横向溢出，沿用既有滚动容器模式） ---------- */
+@media (max-width: 720px) {
+  .panorama-head { padding: 0 2px; }
+  .panorama-title { font-size: 16px; }
+  .panorama-sub { font-size: 11px; }
+  /* 年份轴收窄，把横向空间让给轨道；轨道仍由 .panorama-scroll 承担横滚（min-width 1080 为有意设计） */
+  .pan-month-row,
+  .pan-row { grid-template-columns: 44px minmax(0, 1fr); }
+  .pan-year-axis { font-size: 11px; padding-right: 4px; flex-direction: column; gap: 0; align-items: flex-start; }
+  .pan-count { display: none; }
 }

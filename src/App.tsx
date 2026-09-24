@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
+import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import { HistoricalSimilarPhase } from './components/HistoricalSimilarPhase/HistoricalSimilarPhase';
 import { RuleDetail } from './components/RuleDetail/RuleDetail';
 import { SamePeriodView } from './components/SamePeriodView/SamePeriodView';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
 import { allCampaigns, campaignById, ruleById } from './data';
-import { previewTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
+import { researchTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
 import { timelineExportData } from './data/timeline/timelinePreview';
 import type { TimelineCampaign } from './data/timeline/timelineTypes';
 import type { HistoricalCaseAnalogyContext } from './data/timeline/historicalCase';
@@ -16,9 +17,16 @@ import currentCandidateFixtureJson from '@current/fixtures/example_candidates.js
 import { buildProvenance, PROVENANCE_NOT_AVAILABLE } from './data/buildProvenance';
 import { marketTodayISO } from './utils';
 
-/** ?preview=1 启用 Research 开发预览；默认生产数据（不做运行时网络访问，保持静态 PWA） */
-function previewEnabled(): boolean {
-  return new URLSearchParams(window.location.search).get('preview') === '1';
+/**
+ * ?verified=1 → 旧 verified 生产层（`data/verified`，当前为空，保留为显式回退路径）。
+ *
+ * Product 1.1 起**首页默认消费 canonical Research export**
+ * （`exports/timeline_export_v1.json`），使已 Research 的 Historical Universe
+ * 正式进入第一视觉；`?verified=1` 仅用于对照旧生产层。
+ * 不做运行时网络访问（静态 PWA 不变）。
+ */
+function verifiedEnabled(): boolean {
+  return new URLSearchParams(window.location.search).get('verified') === '1';
 }
 
 /**
@@ -36,13 +44,14 @@ function exampleCandidatesEnabled(): boolean {
 export default function App() {
   // A股市场日期基准：Asia/Shanghai（不随用户机器时区漂移）
   const today = useMemo(() => marketTodayISO(), []);
-  const preview = useMemo(() => previewEnabled(), []);
+  const verifiedMode = useMemo(() => verifiedEnabled(), []);
 
-  // Timeline 数据源：verified（生产）或 preview（Cycle-Research 研究预览）。
-  // 未来 preview → provisional → verified 的切换只改 Adapter，不改 UI。
+  // Timeline 数据源（Product 1.1）：
+  //   默认 = canonical Research export（52 Campaign + 27 Research Candidate，2015–2025）；
+  //   ?verified=1 = 旧 verified 生产层（当前为空，显式回退）。
   const dataSource = useMemo(
-    () => (preview ? previewTimelineSource() : verifiedTimelineSource()),
-    [preview],
+    () => (verifiedMode ? verifiedTimelineSource() : researchTimelineSource()),
+    [verifiedMode],
   );
   const availableYears = useMemo(() => dataSource.years(), [dataSource]);
 
@@ -55,7 +64,7 @@ export default function App() {
   );
 
   // 初始年份：当前年不在数据源年份内时回退到最近的可用年份
-  // （如 preview 源 2018–2025、当前 2026 → 打开即显示 2025，而不是空白年）
+  // （如 Research 源 2015–2025、当前 2026 → 打开即显示 2025，而不是空白年）
   const [year, setYear] = useState(() => {
     const current = Number(today.slice(0, 4));
     if (availableYears.length === 0 || availableYears.includes(current)) return current;
@@ -68,8 +77,8 @@ export default function App() {
 
   const yearData = useMemo(() => dataSource.yearData(year), [dataSource, year]);
 
-  // 预览 Campaign 索引（供详情面板解析；预览数据不进入生产 allCampaigns）
-  const previewCampaignsById = useMemo(() => {
+  // Campaign 索引（供详情面板解析；Research 数据不进入生产 allCampaigns）
+  const researchCampaignsById = useMemo(() => {
     const map = new Map<string, TimelineCampaign>();
     for (const y of dataSource.years()) {
       for (const c of dataSource.yearData(y).campaigns) map.set(c.campaign_id, c);
@@ -78,10 +87,10 @@ export default function App() {
   }, [dataSource]);
 
   const selectedRule = selection?.kind === 'rule' ? ruleById.get(selection.id) : undefined;
-  // 生产 verified 优先；预览 Campaign 仅在预览模式下解析
+  // 生产 verified 优先；Research Campaign 在非 verified 模式下解析
   const selectedCampaign =
     selection?.kind === 'campaign'
-      ? campaignById.get(selection.id) ?? (preview ? previewCampaignsById.get(selection.id) : undefined)
+      ? campaignById.get(selection.id) ?? (!verifiedMode ? researchCampaignsById.get(selection.id) : undefined)
       : undefined;
 
   return (
@@ -113,20 +122,20 @@ export default function App() {
               ))}
             </span>
           )}
-          <span>{today}</span>
         </div>
       </header>
 
-      {/* 预览模式横幅：开发预览数据，非正式历史事实 */}
-      {preview && (
-        <div className="preview-banner" role="status">
-          <strong>开发预览数据</strong>
+      {/* 数据来源说明（Product 1.1）：默认消费 canonical Research export，非运行时生成 */}
+      {!verifiedMode && (
+        <div className="preview-banner research-banner" role="status">
+          <strong>Research 数据源</strong>
           <span>
-            数据来自 Cycle-Research timeline_export_v1（commit{' '}
-            {timelineExportData.source_commit.slice(0, 7)}），尚未全部完成人工最终核验，仅用于界面与历史模式探索；非正式历史事实。
+            默认消费 Cycle-Research canonical export（52 Campaign +{' '}
+            27 Research Candidate），commit {timelineExportData.source_commit.slice(0, 7)}；
+            研究对象含 PROVISIONAL / CONFLICT，<strong>非正式历史事实</strong>，仅供研究浏览。
           </span>
-          <a className="banner-link" href={window.location.pathname}>
-            返回生产数据
+          <a className="banner-link" href={`${window.location.pathname}?verified=1`}>
+            查看旧 verified 层（当前为空）
           </a>
         </div>
       )}
@@ -149,6 +158,21 @@ export default function App() {
         {/* IA（V2.0）：① Timeline（第一视觉）→ ② 当前时间研究导航（Current Time Lens v2）
             → ③ 历史相似阶段（Lifecycle Lens）→ ④ 历史同期（Calendar Lens）。
             视觉优先级：Timeline > Current Lens > Similar Phase；Lens 是研究导航层，但不压过 Timeline。 */}
+        {/* ★ 第一视觉（Product 1.1）：Historical Opportunity Panorama ——
+            一眼看到历史上全年时间维度（Jan–Dec）的题材 / Campaign 炒作分布。
+            数据与单年 Timeline 同源（同一 Adapter / 同一 lifecycle），不做第二套研究逻辑。
+            verified 回退模式下不渲染（该层当前为空，全景无意义）。 */}
+        {!verifiedMode && (
+          <HistoricalPanorama
+            dataSource={dataSource}
+            today={today}
+            year={year}
+            selection={selection}
+            onSelect={setSelection}
+          />
+        )}
+        {/* 单年明细 Timeline（原第一视觉，现降为钻取层）：规律窗口 / 冲突标记 / Peak Window 等
+            细粒度交互仍在此层，放大某一年的结构。 */}
         <Timeline
           year={year}
           today={today}
@@ -185,12 +209,12 @@ export default function App() {
           selection={selection}
           onSelect={setSelection}
         />
-        {/* 生产模式且 verified 为空：提供开发预览入口（不把 preview 当生产数据） */}
-        {!preview && allCampaigns.length === 0 && (
+        {/* verified 模式且 verified 层为空：提示回到默认 Research 数据源 */}
+        {verifiedMode && allCampaigns.length === 0 && (
           <div className="prod-empty-note">
-            当前暂无已核验历史行情（历史核验尚未开始）。
-            <a className="banner-link" href={`${window.location.pathname}?preview=1`}>
-              开发预览：查看 Research Preview
+            旧 verified 层当前为空（人工核验尚未开始）。
+            <a className="banner-link" href={window.location.pathname}>
+              返回默认 Research 数据源
             </a>
           </div>
         )}

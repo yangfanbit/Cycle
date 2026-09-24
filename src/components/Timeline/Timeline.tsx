@@ -83,7 +83,7 @@ interface TimelineProps {
   campaigns: TimelineCampaign[];
   /** Research 导出的具体日期事件（仅 preview 数据源提供） */
   researchEvents?: TimelineResearchEvent[];
-  /** 数据源类型：verified = 生产；preview = Research 开发预览 */
+  /** 数据源类型：verified = 旧生产层；preview = canonical Research export（首页默认） */
   sourceKind: 'verified' | 'preview';
 }
 
@@ -157,6 +157,12 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
                 {MONTHS[i]}
               </span>
             ))}
+            {/* Today 标记：整年时间轴上**唯一**的 TODAY 标签（不再逐行重复） */}
+            {showTodayLine && (
+              <span className="today-header-mark" style={{ left: pct(todayFrac) }}>
+                {today.slice(5)} 今天
+              </span>
+            )}
           </div>
         </div>
 
@@ -329,12 +335,12 @@ export function Timeline({ year, today, selection, onSelect, campaigns, research
         {/* 第三层：历史行情（Campaign 为视觉主体；verified 或 Research 预览） */}
         <section className="tl-layer layer-campaigns">
           <h3 className="tl-layer-title">
-            {sourceKind === 'preview' ? '历史行情（Research 预览，非正式历史事实）' : '已核验历史行情'}
+            {sourceKind === 'preview' ? '历史研究对象（Research canonical export，非正式历史事实）' : '已核验历史行情'}
           </h3>
           {campaignRows.length === 0 && (
             <div className="empty-note">
               {sourceKind === 'preview'
-                ? '该年份当前无正式 Historical Campaign 数据。'
+                ? '该年份当前无 Historical Object（Campaign / Research Candidate）。'
                 : '当前暂无已核验历史行情（历史核验尚未开始）。'}
             </div>
           )}

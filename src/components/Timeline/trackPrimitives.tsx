@@ -48,11 +48,26 @@ export function MonthGrid({ year }: { year: number }) {
   );
 }
 
-/** 今天竖线（仅在展示年份 = 今天所在年份时渲染，由调用方判定） */
-export function TodayLine({ frac }: { frac: number }) {
+/**
+ * 今天竖线（仅在展示年份 = 今天所在年份时渲染，由调用方判定）。
+ *
+ * Product 1.1：默认**不再输出 `TODAY` 标签** —— 每行重复的红标签已删除。
+ * 标签只在调用方显式 `label` 时渲染一次（如全景图顶部 / 月份表头），
+ * 使「Today」在整张时间轴上只出现一次。
+ */
+export function TodayLine({ frac, label = false }: { frac: number; label?: boolean }) {
   return (
     <div className="today-line" style={{ left: pct(frac) }}>
-      <span className="today-flag">TODAY</span>
+      {label && <span className="today-flag">TODAY</span>}
     </div>
   );
+}
+
+/**
+ * 贯穿式 Today 竖线（供 Historical Opportunity Panorama 使用）：
+ * 一根细红线从图层顶部贯穿到底部，**不重复输出标签**。
+ * 由父容器 `position: relative` 承载，高度由 `top/bottom` 撑满。
+ */
+export function TodaySpan({ frac }: { frac: number }) {
+  return <div className="today-span" style={{ left: pct(frac) }} aria-hidden="true" />;
 }
