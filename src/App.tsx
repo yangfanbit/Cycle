@@ -1,15 +1,23 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import { HistoricalSimilarPhase } from './components/HistoricalSimilarPhase/HistoricalSimilarPhase';
+import { MacroThemeSheet } from './components/MacroThemeSheet/MacroThemeSheet';
 import { RuleDetail } from './components/RuleDetail/RuleDetail';
 import { SamePeriodView } from './components/SamePeriodView/SamePeriodView';
+import { SeasonalMap } from './components/SeasonalMap/SeasonalMap';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
 import { allCampaigns, campaignById, ruleById } from './data';
 import { researchTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
 import { timelineExportData } from './data/timeline/timelinePreview';
 import type { TimelineCampaign } from './data/timeline/timelineTypes';
+import {
+  seasonalMapRows,
+  seasonalMapSummary,
+  themeAnnualRowsOf,
+  themeKey,
+} from './data/timeline/themeAnnualWindow';
 import type { HistoricalCaseAnalogyContext } from './data/timeline/historicalCase';
 import { parseCurrentCandidateDataset } from './data/timeline/currentCandidate';
 import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
@@ -63,6 +71,17 @@ export default function App() {
     [candidatesExample],
   );
 
+  // ★ 首页第一视觉（Product 1.1 第二轮）：Macro Theme × 年内时间窗口聚合。
+  //   一主题一行，同主题的多次历史出现合并观察；不是一对象一行，也不是一年一行。
+  const allThemeRows = useMemo(() => themeAnnualRowsOf(dataSource), [dataSource]);
+  const mapRows = useMemo(() => seasonalMapRows(allThemeRows), [allThemeRows]);
+  const mapSummary = useMemo(() => seasonalMapSummary(mapRows), [mapRows]);
+  const [openTheme, setOpenTheme] = useState<string | null>(null);
+  const openThemeRow = useMemo(
+    () => allThemeRows.find((r) => themeKey(r) === openTheme) ?? null,
+    [allThemeRows, openTheme],
+  );
+
   // 初始年份：当前年不在数据源年份内时回退到最近的可用年份
   // （如 Research 源 2015–2025、当前 2026 → 打开即显示 2025，而不是空白年）
   const [year, setYear] = useState(() => {
@@ -97,118 +116,40 @@ export default function App() {
     <>
       <header className="app-header">
         <h1 className="app-title">A股机会时间轴</h1>
-        <p className="app-subtitle">历史规律 × 题材轮动 × 事件节奏 × 提前观察</p>
+        <p className="app-subtitle">一年中历史上哪些时间窗口反复出现过什么类型的题材炒作</p>
         <div className="app-today">
-          <span className="year-switch">
-            <button onClick={() => setYear((y) => y - 1)} aria-label="上一年">
-              ‹
-            </button>
-            <span className="year-label">{year}</span>
-            <button onClick={() => setYear((y) => y + 1)} aria-label="下一年">
-              ›
-            </button>
-          </span>
-          {/* 数据源可展示年份（不硬编码：来自 TimelineDataSource.years()） */}
-          {availableYears.length > 0 && (
-            <span className="year-chips">
-              {availableYears.map((y) => (
-                <button
-                  key={y}
-                  className={`year-chip${y === year ? ' on' : ''}`}
-                  onClick={() => setYear(y)}
-                >
-                  {y}
-                </button>
-              ))}
-            </span>
-          )}
+          <span className="today-chip">Today {today}</span>
         </div>
       </header>
 
-      {/* 数据来源说明（Product 1.1）：默认消费 canonical Research export，非运行时生成 */}
-      {!verifiedMode && (
-        <div className="preview-banner research-banner" role="status">
-          <strong>Research 数据源</strong>
-          <span>
-            默认消费 Cycle-Research canonical export（52 Campaign +{' '}
-            27 Research Candidate），commit {timelineExportData.source_commit.slice(0, 7)}；
-            研究对象含 PROVISIONAL / CONFLICT，<strong>非正式历史事实</strong>，仅供研究浏览。
-          </span>
-          <a className="banner-link" href={`${window.location.pathname}?verified=1`}>
-            查看旧 verified 层（当前为空）
-          </a>
-        </div>
-      )}
-
-      {/* 示例候选 fixture 横幅：绝不冒充真实研究数据 */}
-      {candidatesExample && (
-        <div className="preview-banner fixture-banner" role="status">
-          <strong>示例 Current Candidate fixture</strong>
-          <span>
-            当前展示的是<strong>协议示例数据</strong>（<code>research/current/fixtures/example_candidates.json</code>），
-            用于验证 Temporal Firewall / 阶段推断 / 相似度链路；不是任何真实研究对象，不构成投资依据。
-          </span>
-          <a className="banner-link" href={window.location.pathname}>
-            返回真实数据集
-          </a>
-        </div>
-      )}
-
       <main className="app-main">
-        {/* IA（V2.0）：① Timeline（第一视觉）→ ② 当前时间研究导航（Current Time Lens v2）
-            → ③ 历史相似阶段（Lifecycle Lens）→ ④ 历史同期（Calendar Lens）。
-            视觉优先级：Timeline > Current Lens > Similar Phase；Lens 是研究导航层，但不压过 Timeline。 */}
-        {/* ★ 第一视觉（Product 1.1）：Historical Opportunity Panorama ——
-            一眼看到历史上全年时间维度（Jan–Dec）的题材 / Campaign 炒作分布。
-            数据与单年 Timeline 同源（同一 Adapter / 同一 lifecycle），不做第二套研究逻辑。
-            verified 回退模式下不渲染（该层当前为空，全景无意义）。 */}
-        {!verifiedMode && (
-          <HistoricalPanorama
-            dataSource={dataSource}
+        {/* ★ 第一视觉（Product 1.1 第二轮）：历史季节性机会地图。
+            纵轴 = 大主题（一主题一行），横轴 = 1–12 月，条形 = 历史主要炒作在年内的窗口。
+            首页是「地图」，不是「历史数据库」——逐条对象明细一律走下面的钻取入口。 */}
+        {!verifiedMode && mapRows.length > 0 && (
+          <SeasonalMap
+            rows={mapRows}
             today={today}
-            year={year}
-            selection={selection}
-            onSelect={setSelection}
+            openTheme={openTheme}
+            onOpenTheme={setOpenTheme}
           />
         )}
-        {/* 单年明细 Timeline（原第一视觉，现降为钻取层）：规律窗口 / 冲突标记 / Peak Window 等
-            细粒度交互仍在此层，放大某一年的结构。 */}
-        <Timeline
-          year={year}
-          today={today}
-          selection={selection}
-          onSelect={setSelection}
-          campaigns={yearData.campaigns}
-          researchEvents={yearData.researchEvents}
-          sourceKind={dataSource.kind}
-        />
-        {/* ② 当前时间研究导航：A. A股整体环境 / B. 当前 Theme · Theme Cycle / C. Research Attention。
-            与 Timeline 共用 selection（entryId 定位展示实例，campaign_id 打开完整案例）。 */}
-        <CurrentTimeLens
-          dataSource={dataSource}
-          today={today}
-          selection={selection}
-          onSelect={setSelection}
-          onOpenHistoricalCase={(sel, ctx) => {
-            setAnalogyContext(ctx);
-            setSelection(sel);
-          }}
-          currentCandidates={currentCandidates}
-        />
-        {/* ③ 历史相似阶段（生命周期相似检索）：参照 = 当前选中对象 / 研究覆盖内最新案例。
-            与 ④ 历史同期（日历同期）并存，两者不可互相替代。 */}
-        <HistoricalSimilarPhase
-          dataSource={dataSource}
-          selection={selection}
-          onSelect={setSelection}
-        />
-        {/* ④ 历史同期（日历同期）：主题级；一行 = 一个主主题。保留既有能力，重新定位为 Calendar Lens。 */}
-        <SamePeriodView
-          dataSource={dataSource}
-          today={today}
-          selection={selection}
-          onSelect={setSelection}
-        />
+
+        {/* 一句数据语义说明（首页唯一的数据口径声明） */}
+        {!verifiedMode && mapRows.length > 0 && (
+          <p className="seasonal-note">
+            横轴 1–12 月、每行一个大主题；条形为该主题历史<strong>主要炒作</strong>
+            在年内的窗口（长周期仅标起始位置）；「历史 N 次 / 覆盖 N 个年份」是<strong>计数事实</strong>
+            ，不是概率、胜率或预测。共 {mapSummary.themeCount} 个大主题 /{' '}
+            {mapSummary.objectCount} 个研究对象
+            {mapSummary.yearFrom !== null && mapSummary.yearTo !== null
+              ? `（${mapSummary.yearFrom}–${mapSummary.yearTo}）`
+              : ''}
+            ，来自 Cycle-Research canonical export，研究对象含 PROVISIONAL / CONFLICT，
+            <strong>非正式历史事实</strong>。
+          </p>
+        )}
+
         {/* verified 模式且 verified 层为空：提示回到默认 Research 数据源 */}
         {verifiedMode && allCampaigns.length === 0 && (
           <div className="prod-empty-note">
@@ -218,7 +159,158 @@ export default function App() {
             </a>
           </div>
         )}
+
+        {/* ───────── 钻取区：首页不铺开数据库级内容，但能力全部保留 ─────────
+            逐年 Panorama / 单年 Timeline / Current Time Lens / Historical Similar Phase /
+            Calendar Lens / 数据来源 一律改为**默认收起的钻取入口**，不删除、不弱化。 */}
+        <section className="drill-block" aria-label="研究明细与导航（钻取入口）">
+          <p className="drill-hint">
+            以下为研究明细与导航入口，默认收起 —— 首页只保留上面的季节性地图；点开即用，能力不变。
+          </p>
+
+          {!verifiedMode && (
+            <DrillSection
+              title="逐年历史全景（Historical Panorama）"
+              note="一年一行 · 2015–2025 · 完整生命周期分段"
+            >
+              <div className="drill-yearbar">
+                <YearSwitch
+                  year={year}
+                  setYear={setYear}
+                  availableYears={availableYears}
+                />
+              </div>
+              <HistoricalPanorama
+                dataSource={dataSource}
+                today={today}
+                year={year}
+                selection={selection}
+                onSelect={setSelection}
+              />
+            </DrillSection>
+          )}
+
+          <DrillSection title="单年明细 Timeline" note={`${year} 年 · 规律窗口 / 冲突 / Peak Window`}>
+            <div className="drill-yearbar">
+              <YearSwitch year={year} setYear={setYear} availableYears={availableYears} />
+            </div>
+            <Timeline
+              year={year}
+              today={today}
+              selection={selection}
+              onSelect={setSelection}
+              campaigns={yearData.campaigns}
+              researchEvents={yearData.researchEvents}
+              sourceKind={dataSource.kind}
+            />
+          </DrillSection>
+
+          {/* ② 当前时间研究导航：A. A股整体环境 / B. 当前 Theme · Theme Cycle / C. Research Attention。
+              与 Timeline 共用 selection（entryId 定位展示实例，campaign_id 打开完整案例）。 */}
+          <DrillSection
+            title="当前时间研究导航（Current Time Lens）"
+            note="A股整体环境 / Theme Cycle / Research Attention"
+          >
+            <CurrentTimeLens
+              dataSource={dataSource}
+              today={today}
+              selection={selection}
+              onSelect={setSelection}
+              onOpenHistoricalCase={(sel, ctx) => {
+                setAnalogyContext(ctx);
+                setSelection(sel);
+              }}
+              currentCandidates={currentCandidates}
+            />
+          </DrillSection>
+
+          {/* ③ 历史相似阶段（生命周期相似检索）：参照 = 当前选中对象 / 研究覆盖内最新案例。
+              与 ④ 历史同期（日历同期）并存，两者不可互相替代。 */}
+          <DrillSection title="历史相似阶段（Lifecycle Lens）" note="生命周期相似检索">
+            <HistoricalSimilarPhase
+              dataSource={dataSource}
+              selection={selection}
+              onSelect={setSelection}
+            />
+          </DrillSection>
+
+          {/* ④ 历史同期（日历同期）：主题级；一行 = 一个主主题。保留既有能力，重新定位为 Calendar Lens。 */}
+          <DrillSection title="历史同期（Calendar Lens）" note="日历同期 · 主题级">
+            <SamePeriodView
+              dataSource={dataSource}
+              today={today}
+              selection={selection}
+              onSelect={setSelection}
+            />
+          </DrillSection>
+
+          {/* 全部大主题索引：含**未形成年内季节性窗口**的主题（首页地图上不展示，但对象可查） */}
+          <DrillSection
+            title="全部大主题索引（含无季节性窗口的主题）"
+            note={`${allThemeRows.length} 个主题 · 数据库级入口`}
+          >
+            <ul className="theme-index">
+              {allThemeRows.map((r) => (
+                <li key={themeKey(r)}>
+                  <button className="theme-index-btn" onClick={() => setOpenTheme(themeKey(r))}>
+                    <span className="ti-name">{r.label}</span>
+                    <span className="ti-meta">
+                      {r.objects.length} 个对象 · {r.campaignCount} Campaign /{' '}
+                      {r.candidateCount} RC
+                      {r.windows.length === 0 ? ' · 无年内季节性窗口' : ''}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </DrillSection>
+
+          {/* 数据来源说明（原首页横幅，改为钻取项）：默认消费 canonical Research export，非运行时生成 */}
+          <DrillSection title="数据来源" note="Research canonical export · 构建溯源">
+            {!verifiedMode && (
+              <div className="preview-banner research-banner" role="status">
+                <strong>Research 数据源</strong>
+                <span>
+                  默认消费 Cycle-Research canonical export（52 Campaign +{' '}
+                  27 Research Candidate），commit{' '}
+                  {timelineExportData.source_commit.slice(0, 7)}；研究对象含 PROVISIONAL /
+                  CONFLICT，<strong>非正式历史事实</strong>，仅供研究浏览。
+                </span>
+                <a className="banner-link" href={`${window.location.pathname}?verified=1`}>
+                  查看旧 verified 层（当前为空）
+                </a>
+              </div>
+            )}
+            {/* 示例候选 fixture 横幅：绝不冒充真实研究数据 */}
+            {candidatesExample && (
+              <div className="preview-banner fixture-banner" role="status">
+                <strong>示例 Current Candidate fixture</strong>
+                <span>
+                  当前展示的是<strong>协议示例数据</strong>（
+                  <code>research/current/fixtures/example_candidates.json</code>
+                  ），用于验证 Temporal Firewall / 阶段推断 / 相似度链路；不是任何真实研究对象，
+                  不构成投资依据。
+                </span>
+                <a className="banner-link" href={window.location.pathname}>
+                  返回真实数据集
+                </a>
+              </div>
+            )}
+          </DrillSection>
+        </section>
       </main>
+
+      {/* Macro Theme 附页（drill-down）：按年份列出该主题下的历史对象 → 可进入 CampaignDetail */}
+      {openThemeRow && (
+        <MacroThemeSheet
+          row={openThemeRow}
+          onClose={() => setOpenTheme(null)}
+          onOpenCampaign={(id, y) => {
+            setYear(y);
+            setSelection({ kind: 'campaign', id });
+          }}
+        />
+      )}
 
       {selectedRule && (
         <RuleDetail
@@ -249,6 +341,66 @@ export default function App() {
       {/* Build Provenance（Gate D7）：线上 build ↔ Research artifact 版本对应关系。
           溯源信息，**不是**质量 / 可信度指标；字段缺失显示「未标注」，不猜测。 */}
       <BuildProvenanceFooter />
+    </>
+  );
+}
+
+/** 钻取项：默认收起；能力保留，只是不在首页铺开。 */
+function DrillSection({
+  title,
+  note,
+  children,
+}: {
+  title: string;
+  note?: string;
+  children: ReactNode;
+}) {
+  return (
+    <details className="drill-item">
+      <summary className="drill-summary">
+        <span className="drill-title">{title}</span>
+        {note ? <span className="drill-note">{note}</span> : null}
+      </summary>
+      <div className="drill-body">{children}</div>
+    </details>
+  );
+}
+
+/** 年份切换（原首页顶部控件，随逐年视图一并下移到钻取区） */
+function YearSwitch({
+  year,
+  setYear,
+  availableYears,
+}: {
+  year: number;
+  setYear: (fn: (y: number) => number) => void;
+  availableYears: number[];
+}) {
+  return (
+    <>
+      <span className="year-switch">
+        <button onClick={() => setYear((y) => y - 1)} aria-label="上一年">
+          ‹
+        </button>
+        <span className="year-label">{year}</span>
+        <button onClick={() => setYear((y) => y + 1)} aria-label="下一年">
+          ›
+        </button>
+      </span>
+      {/* 数据源可展示年份（不硬编码：来自 TimelineDataSource.years()） */}
+      {availableYears.length > 0 && (
+        <span className="year-chips">
+          {availableYears.map((y) => (
+            <button
+              key={y}
+              className={`year-chip${y === year ? ' on' : ''}`}
+              onClick={() => setYear(() => y)}
+            >
+              {y}
+            </button>
+          ))}
+        </span>
+      )}
     </>
   );
 }

@@ -2531,3 +2531,298 @@ html, body {
   .pan-year-axis { font-size: 11px; padding-right: 4px; flex-direction: column; gap: 0; align-items: flex-start; }
   .pan-count { display: none; }
 }
+
+/* ---------- 历史季节性机会地图（Product 1.1 第二轮 · 首页第一视觉） ----------
+   纵轴 = 大主题（一主题一行），横轴 = 1–12 月。
+   首页是「地图」，不是「历史数据库」：逐条对象明细一律下移到钻取区 / 主题附页。 */
+.seasonal-block {
+  /* 轴列宽度：同时用于 grid 与贯穿 Today 线的左偏移，二者必须一致 */
+  --sm-axis-w: 210px;
+  margin: 2px 0 14px;
+}
+.seasonal-head { margin-bottom: 10px; }
+.seasonal-title { font-size: 18px; font-weight: 700; margin: 0 0 4px; letter-spacing: 0.01em; }
+.seasonal-legend {
+  margin: 6px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.seasonal-legend .lg { display: inline-flex; align-items: center; gap: 5px; }
+.seasonal-legend .lg::before { content: ''; width: 14px; height: 8px; border-radius: 2px; }
+.seasonal-legend .lg.win::before { background: #5a7a9a; }
+.seasonal-legend .lg.onset::before { background: #cfd8e0; }
+.seasonal-legend .lg.rc::before { background: transparent; border: 1px dashed #8a7f6a; }
+.seasonal-legend .lg.now::before { background: var(--today); width: 2px; height: 12px; border-radius: 0; }
+
+.seasonal-scroll { overflow-x: auto; }
+.seasonal-map { min-width: 720px; position: relative; }
+
+.sm-month-row,
+.sm-row {
+  display: grid;
+  grid-template-columns: var(--sm-axis-w) minmax(0, 1fr);
+  min-width: 0;
+}
+.sm-month-row { position: sticky; top: 0; background: var(--bg); z-index: 5; }
+.sm-axis {
+  padding-right: 12px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.sm-month-row .sm-axis {
+  justify-content: flex-end;
+  padding-bottom: 4px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.sm-theme {
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sm-stat { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+
+.sm-months { position: relative; height: 24px; border-bottom: 1px solid var(--line-strong); }
+.sm-months .month-label {
+  position: absolute;
+  top: 2px;
+  font-size: 11px;
+  color: var(--ink-2);
+  border-left: 1px solid var(--line);
+  padding-left: 3px;
+  height: 20px;
+}
+/* 全图唯一的 Today 日期标记（细红线上的小标签，不逐行重复） */
+.sm-today-mark {
+  position: absolute;
+  top: -2px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--today);
+  padding: 0 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 6;
+}
+
+.sm-row { border-bottom: 1px dashed #f1efea; cursor: pointer; }
+.sm-row:hover { background: #fbfaf6; }
+.sm-row.on { background: #f2f5f8; }
+.sm-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.sm-track { position: relative; min-width: 0; }
+.sm-track .tl-grid .gl { top: -3px; bottom: -3px; }
+
+/* 共识窗口：该主题历史主要炒作的集中区间（中位数，确定性聚合，不是预测） */
+.sm-consensus {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  background: #eef2f6;
+  border: 1px solid #dde4ec;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.sm-bar { position: absolute; border-radius: 2px; }
+.sm-bar.win { background: #5a7a9a; opacity: 0.88; }
+.sm-bar.onset { background: #c9d4de; opacity: 0.9; }
+.sm-bar.rc { background: transparent; border: 1px dashed #8a7f6a; }
+.sm-row:hover .sm-bar.win { opacity: 1; }
+
+/* 贯穿整张地图的**唯一** Today 细红线：左偏移必须与轴列宽度一致 */
+.sm-today-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--sm-axis-w);
+  right: 0;
+  pointer-events: none;
+}
+
+.seasonal-hint { margin: 8px 0 0; font-size: 11.5px; color: var(--ink-3); }
+.seasonal-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.75;
+  max-width: 920px;
+}
+
+/* ---------- 钻取区：能力保留，首页不铺开 ---------- */
+.drill-block {
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.drill-hint { margin: 0 0 10px; font-size: 12px; color: var(--ink-3); }
+.drill-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.drill-item[open] { border-color: var(--line-strong); }
+.drill-summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  list-style: none;
+}
+.drill-summary::-webkit-details-marker { display: none; }
+.drill-summary::before { content: '\25B8'; color: var(--ink-3); font-size: 11px; }
+.drill-item[open] .drill-summary::before { content: '\25BE'; }
+.drill-title { font-size: 13.5px; font-weight: 600; }
+.drill-note { font-size: 11.5px; color: var(--ink-3); }
+.drill-body { padding: 4px 14px 16px; border-top: 1px dashed var(--line); }
+.drill-yearbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 0; }
+
+/* 全部大主题索引（数据库级入口，不在首页地图上铺开） */
+.theme-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px;
+}
+.theme-index-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-family: var(--font);
+  color: var(--ink);
+}
+.theme-index-btn:hover { background: var(--bg); border-color: var(--line-strong); }
+.ti-name {
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ti-meta { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+
+/* ---------- Macro Theme 附页（drill-down）：数据库级细节只在这里 ---------- */
+.theme-sheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(620px, 94vw);
+  background: var(--panel);
+  border-left: 1px solid var(--line-strong);
+  box-shadow: -8px 0 28px rgba(0, 0, 0, 0.08);
+  /* 低于 CampaignDetail（40）：从附页进入完整案例时，详情浮层盖在附页之上 */
+  z-index: 30;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 22px 24px 40px;
+}
+.ts-head { display: flex; align-items: flex-start; gap: 12px; justify-content: space-between; }
+.ts-title { margin: 0; font-size: 18px; font-weight: 700; }
+.ts-sub { margin: 2px 0 0; font-size: 12px; color: var(--ink-2); font-family: var(--mono); }
+.ts-close {
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  border-radius: var(--radius);
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--ink);
+  flex: none;
+}
+.ts-note {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  line-height: 1.65;
+  margin: 12px 0 14px;
+  border-left: 2px solid var(--line);
+  padding-left: 8px;
+}
+.ts-year { margin-bottom: 14px; }
+.ts-year-h {
+  font-size: 13px;
+  font-family: var(--mono);
+  color: var(--ink-2);
+  margin: 0 0 6px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 3px;
+}
+.ts-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ts-open {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-family: var(--font);
+  color: var(--ink);
+}
+.ts-open:hover { background: var(--bg); border-color: var(--line-strong); }
+.ts-item.rc .ts-open { border-style: dashed; }
+.ts-item-title { font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.ts-item-meta { font-size: 11px; color: var(--ink-3); font-family: var(--mono); overflow-wrap: anywhere; }
+.ts-item-meta.dim { opacity: 0.85; }
+
+/* 首页顶部 Today（唯一日期显示；地图上的位置由贯穿细红线表达） */
+.today-chip {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--today);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* 移动端：轴列收窄（省下的横向空间给轨道）；季节地图仍由滚动容器承担横滚 */
+@media (max-width: 720px) {
+  .seasonal-block { --sm-axis-w: 132px; }
+  .seasonal-title { font-size: 16px; }
+  .sm-theme { font-size: 12px; }
+  .sm-stat { font-size: 10px; }
+  .theme-sheet {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 78vh;
+    border-left: none;
+    border-top: 1px solid var(--line-strong);
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.14);
+    padding: 16px 16px 28px;
+  }
+  .drill-summary { padding: 9px 12px; }
+  .drill-body { padding: 4px 12px 14px; }
+  .theme-index { grid-template-columns: minmax(0, 1fr); }
+}
