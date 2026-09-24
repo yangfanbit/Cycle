@@ -30,11 +30,13 @@
 
 **Research Core 状态**：**Release 完成并冻结** —— 后续只允许由「真实 Product Usage 暴露的问题」触发新研究轮次。
 
-**当前阶段**：**ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/ROADMAP.md`）。
+**当前阶段**：**ThreeC 1.0 Deployment / Release Engineering —— 已完成**，线下唯一剩余 Release 前置为 **Gate M（真机 / 实际浏览器复核）**（详见 `docs/ROADMAP.md`）。
 
-> ⚠️ **尚未正式发布。** 本轮只做部署工程（静态部署 / 访问入口 / 可追溯 / 可回滚），
+> ⚠️ **尚未正式发布。** 部署工程已完成（静态部署 / 访问入口 / 可追溯 / 可回滚），
 > **`package.json` 仍为 `0.1.0`，没有 `v1.0.0` tag**。
-> 只有 8 个 Release Gate 全部 PASS 后，下一轮才执行版本号变更与正式发布。
+> **Deployment Engineering 完成 ≠ 正式 1.0 Release。**
+> Gate R/P/T/Q/U/D（部署工程）/G 已 PASS；**Gate M 待真机复核**。
+> 只有 8 个 Release Gate 全部 PASS 后，下一独立 Release 轮才执行版本号变更与正式发布。
 
 最新状态详见：
 

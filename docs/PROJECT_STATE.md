@@ -7,12 +7,17 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：**`0812efc`**（本轮起点 `7c7d64f`；本轮两个提交 `f9cc007` + `0812efc`）
+- HEAD：**`1e42b6c`**（Deployment / Release Engineering 主线末次提交；**以 `git log -1` 为准**）
+  · 该主线提交链：`7c7d64f`（起点）→ `f9cc007` → `0812efc` → `1e42b6c`
+  · ★ **本文件不硬编码旧 SHA**：任何接班以 `git log -1` 实测为准
 - **★ 当前阶段：ThreeC 1.0 Deployment / Release Engineering —— 已完成**（详见 `docs/ROADMAP.md` §2）
 - **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
-- **★ Gate 状态**：**Gate T = PASS**（含 T8）· **P0 = 0** · **P1 = 0**（P1-1 已闭环）· 未闭环：**Gate M（真机复核）**
+- **★ Gate 状态**：R / P / T / Q / U = **PASS** · D（Deployment Engineering）= **已完成** · G = **本轮已同步**
+  · **未闭环：Gate M（真机 / 实际浏览器复核）** ← 当前唯一 Release 前置
+- **★ P0 = 0 · P1 = 0**
 - **★ 当前唯一目标**：**1.0 正式宣布准备** —— Gate M 真机复核 → `package.json → 1.0.0` → release commit → `git tag v1.0.0` → 部署 → 验证入口 → 收口文档
   · **本轮仍未设置 `1.0.0`、仍未创建 `v1.0.0`**；线上身份 = commit SHA
+  · **★ 注意区分**：`Deployment Engineering 已完成` ≠ `正式 1.0 Release 已执行`
 - 最近完成：**ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/DEPLOYMENT_RUNBOOK.md`）
   · **部署形态**：**GitHub Pages**（唯一平台；未使用 Vercel / Netlify / Docker / 云服务器 / CDN 产品化）
   · **访问入口**：**`https://yangfanbit.github.io/Cycle/`** —— **实测 200 OK**，`<title>A股机会时间轴</title>`

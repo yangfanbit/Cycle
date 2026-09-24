@@ -71,7 +71,7 @@ export function SamePeriodView({ dataSource, today, selection, onSelect }: SameP
             </button>
           ))}
         </div>
-        <p className="phase-text">当前研究数据未覆盖：该月份窗口内暂无研究数据（不是「历史没有机会」）。</p>
+        <p className="sp-sub">当前研究数据未覆盖：该月份窗口内暂无研究数据（不是「历史没有机会」）。</p>
       </section>
     );
   }

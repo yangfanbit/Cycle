@@ -5,6 +5,7 @@
 > | **文档性质** | **1.0 的正式发布定义（永久锁定）**。任何「宣布 1.0」的判断都必须以本文件为准。 |
 > | **建立日期** | 2026-09-24 |
 > | **审计基线** | HEAD `ad5e804`（Research Lifecycle Mapping Repair v0.1） |
+> | **复核基线** | `7c7d64f`（P0 修复轮）· `1e42b6c`（Deployment 轮末次提交） |
 > | **本轮性质** | **定义 + Gap Audit** —— 不开发新功能、不优化 Research、不扩 Universe |
 > | **上游文档** | `docs/PROJECT_STATE.md`（动态状态）· `docs/ROADMAP.md`（路线） |
 
@@ -159,22 +160,34 @@ Today → Current Candidate → Time / Calendar → Lifecycle
 
 至少验证 **375px / 390px / 412px**。重点不是「页面不崩」，而是：
 
-| # | 要求 |
-|---|---|
-| M1 | Timeline 可横向查看（`.timeline` min-width 1080px 由 `overflow-x: auto` 承载） |
-| M2 | Detail 不裁切（内容换行而非隐藏） |
-| M3 | lifecycle 可读 |
-| M4 | SA 四维可读 |
-| M5 | 长 ID / 长文本不破坏布局 |
-| M6 | 空态可读 |
-| M7 | 页面纵向信息层级明确 |
+| # | 要求 | 状态 |
+|---|---|---|
+| M1 | Timeline 可横向查看（`.timeline` min-width 1080px 由 `overflow-x: auto` 承载） | ⏳ 待真机复核 |
+| M2 | Detail 不裁切（内容换行而非隐藏） | ⏳ 待真机复核 |
+| M3 | lifecycle 可读 | ⏳ 待真机复核 |
+| M4 | SA 四维可读 | ⏳ 待真机复核 |
+| M5 | 长 ID / 长文本不破坏布局 | ⏳ 待真机复核 |
+| M6 | 空态可读 | ⏳ 待真机复核 |
+| M7 | 页面纵向信息层级明确 | ⏳ 待真机复核 |
+
+> **★ Gate M 状态 = 未完成 / 待真机**（此前仅为 375/390/412px 断点的**静态审计**，非真实浏览器复核）。
+> 真机测试对象：**线上** `https://yangfanbit.github.io/Cycle/`（而非本地 dev）。
 
 ---
 
 ### Gate D — Deployment / Release Engineering
 
 **本文件首次正式定义**（此前仓库**没有任何部署配置、没有 git tag**）。
-**当前状态**：D1–D3、D6–D8 **已落地并验证**；D4 / D5 **保留至 1.0 正式宣布**。
+
+> **★ 必须区分两个不同概念（不得混为一谈）**：
+>
+> | 概念 | 内容 | 状态 |
+> |---|---|---|
+> | **Deployment Engineering** | production build · GitHub Pages · URL · CI/CD · provenance · rollback · rebuild flow | ✅ **已完成** |
+> | **正式 1.0 Release 条件**（D4 / D5） | `package.json version = 1.0.0` · `git tag v1.0.0` | ⏳ **Gate M 通过后由独立 Release 轮执行** |
+>
+> `Gate D = PASS` 在此表示 **Deployment Engineering 已完成**，
+> **不等于**已执行正式 1.0 Release。
 
 1.0 必须具备：
 
@@ -296,9 +309,9 @@ LLM runtime
 | **Trust** | ~~★ FAIL（1 项 P0）~~ → **PASS** | T1–T9 **全部通过**：无 research lifecycle 的对象在 Historical Case 中**不再推导出具体阶段**（`[]`），`terminalPhaseOf → UNKNOWN` | ~~★ 是（P0-1）~~ → **已解除** | **已完成（P0 修复轮）** |
 | **Quality** | **PASS** | `npm test` **654 passed / 0 failed（17 files）** · `tsc -b` PASS · `vite build` PASS · 无 runtime crash · null 安全 | **否** | — |
 | **Real Usage** | **PASS（无缺口）** | 场景 A–E **全部正常通过**；**D3 已由 `it.fails` 正式化为正常断言**；新增 **Scenario F（Gate T8 全局不变量，F1–F9）** | **否** | — |
-| **Mobile** | **PASS（静态）** | 断点 110/240/300/720/900；375/390/412px **全部落在 720px 断点内** · 无 ≥400px 固定宽度（除 timeline 1080px 由 `overflow-x:auto` 承载）· `overflow-wrap` 28 处 · 7 个区块均有移动端规则 | **否** | **P2：真机/浏览器实测复核**（本轮为静态审计） |
-| **Deployment** | **PASS（P1-1 已闭环）** | `.github/workflows/deploy.yml`（GitHub Pages）· 入口 `https://yangfanbit.github.io/Cycle/` · `base = /Cycle/` · `buildProvenance()` 版本对应（D7）· `DEPLOYMENT_RUNBOOK.md`（D8 + 回滚 D6）· `npm test` / `tsc -b` / `vite build` 全 PASS | **否** | **D4（`1.0.0`）/ D5（`v1.0.0` tag）保留至正式宣布** |
-| **Documentation** | **PASS（本轮已修）** | 新建本文件；`PROJECT_STATE` HEAD→`ad5e804`、SA→v0.5；`ROADMAP` 反映 Product 主线 + Lifecycle Repair；**`README` 旧状态（2026-09-19 / v0.2 / 4 Macro Themes）已重写** | **否** | — |
+| **Mobile** | **★ 待真机（当前唯一未闭环）** | 断点 110/240/300/720/900；375/390/412px **全部落在 720px 断点内** · 无 ≥400px 固定宽度（除 timeline 1080px 由 `overflow-x:auto` 承载）· `overflow-wrap` 28 处 · 7 个区块均有移动端规则 —— 以上均为**静态审计** | **是（Gate M）** | 对**线上**入口做真机 / 实际浏览器复核（M1–M7） |
+| **Deployment** | **PASS（Deployment Engineering 已完成）** | `.github/workflows/deploy.yml`（GitHub Pages）· 入口 `https://yangfanbit.github.io/Cycle/`（实测 200 OK）· `base = /Cycle/` · `buildProvenance()` 版本对应（D7，线上实测）· `DEPLOYMENT_RUNBOOK.md`（D8 + 回滚 D6）· Actions `build` + `deploy` 全 PASS | **否** | **D4（`1.0.0`）/ D5（`v1.0.0` tag）保留至 Gate M 通过后的独立 Release 轮** |
+| **Documentation** | **PASS** | 本文件为唯一 1.0 判据；`PROJECT_STATE` 记录 HEAD → `1e42b6c`（不硬编码旧 SHA）、Gate 状态、P0/P1 = 0；`ROADMAP` §2 = Deployment 主线；`README` 真实当前阶段 + 线上入口并标注「尚未正式发布」 | **否** | — |
 
 ### 6.1 P0 修复轮复核（本文件 §8 P0 清单已清零）
 
@@ -361,37 +374,40 @@ LLM runtime
 | # | 项 |
 |---|---|
 | P2-1 | `src/components/OpportunityRadar/` **未被 App 引用**（dead code）→ 清理或保留待 1.1 |
-| P2-2 | Mobile 真机/浏览器实测复核（本轮为静态审计） |
+| P2-2 | ~~Mobile 真机/浏览器实测复核（本轮为静态审计）~~ → **已提升为 Gate M**（1.0 阻塞项，见 §6 / §9） |
 | P2-3 | 视觉 / 动画 / 边距 / 图标等 |
 
 ---
 
 ## 9. 当前 Single Goal
 
-> # **ThreeC 1.0 Deployment / Release Engineering**（P1-1）—— **已完成**。
+> # **Gate M 真机 / 实际浏览器复核 + Release Readiness Audit** —— **当前唯一未闭环 Gate**。
 
-**实现范围（已执行）**：
-- 落地 **GitHub Pages** 静态部署（`.github/workflows/deploy.yml`）：`npm ci` → `tsc -b` → `npm test` → `npm run build` → 上传 `dist/` → `deploy-pages`；
-- 正式入口 **`https://yangfanbit.github.io/Cycle/`**，Vite `base = /Cycle/`（本地 `dev` / `preview` 不受影响）；
-- **D7 provenance**：`buildProvenance()` 在 Product 内展示 `package.json.version` / git commit / `timeline_export_v1.json` 的 `source_commit` / SA / TO artifact 版本；
-- **D8 重建流程** + **D6 回滚流程**：`docs/DEPLOYMENT_RUNBOOK.md`；
-- **未修改**任何 Research artifact / schema / contract / SA rule / TO 标准；**未新增**产品功能；**未引入**后端 / runtime 网络 / LLM；
-- **未设置** `package.json.version = 1.0.0`；**未创建** `v1.0.0` tag。
+**为什么这是唯一剩下的 Gate**：R / P / T / Q / U 已 PASS；Deployment Engineering（D1–D3、D6–D8）已完成；
+G（文档）已同步。**Gate M 此前只有 375/390/412px 断点的静态审计，从未做过真实浏览器复核。**
+
+**范围（严格）**：
+- 对**线上** `https://yangfanbit.github.io/Cycle/` 做真机复核（375 / 390 / 412px；优先真实 iPhone Safari）；
+- 走通完整主链路：`Today → Current Candidate → Time/Calendar → Lifecycle → Structural Analogy → Historical Case → Evidence → Why Similar/Different → New Research Question`；
+- 验证 M1–M7，以及 Lifecycle 三类（正常 / UNKNOWN-only RC / ENDED）、Campaign vs RC identity、SA 四维、provenance；
+- **不修改**任何 Research artifact / schema / contract / SA rule / TO 标准；
+- **不新增**功能、**不引入** router / backend / runtime API；
+- **不得**为了通过 Gate M 而删除 `derivePhases()` 或把 `c.phases` 重新当作 Research lifecycle。
 
 **验收**：
 ```text
-[x] npm test 0 failed
-[x] tsc -b / vite build PASS
-[x] GitHub Actions build PASS + deploy PASS
-[x] 线上入口 `https://yangfanbit.github.io/Cycle/` 可访问
-[x] production smoke test 通过（DEPLOYMENT_RUNBOOK.md §6）
-[x] D7 provenance 可追溯（非仅文档）
-[x] D6 回滚流程可执行（基于 commit SHA，不伪造 tag）
-[x] 文档状态一致（本文件 / PROJECT_STATE / ROADMAP / README）
-[ ] ← 1.0 正式宣布（`1.0.0` + tag）**本轮不做**
+[ ] M1–M7 全部通过（真实浏览器，非仅断点审计）
+[ ] Lifecycle 三类：正常有阶段 / UNKNOWN-only RC 显示「阶段未判定 · 资料不足」/ ENDED 显示 END
+[ ] Campaign ≠ Research Candidate（identity 不混淆）
+[ ] SA 四维可读；无 score / ranking / probability / prediction
+[ ] 线上 provenance 无 `__THREEC_` / `process.env` / `undefined` / `NaN`
+[ ] `/` · `?preview=1` · `?candidates=example` 均可打开，刷新正常
+[ ] npm test 0 failed · tsc -b 0 error · vite build PASS（若本轮有代码修改则必须重跑）
+[ ] ← 1.0 正式宣布（`1.0.0` + tag）**仍不在本轮**
 ```
 
-**★ 下一 Single Goal 不是部署**：部署主线已闭环。1.0 正式宣布所需的最后动作 = 处理 Gate M 真机复核 → `1.0.0` → release commit → tag → 部署 → 验证入口 → 文档收口。**在此之前不得宣称「ThreeC 1.0 Released」。**
+**★ 通过后的结论只有一个**：**ThreeC 已具备进入 1.0 正式 Release 流程的条件。**
+**本轮不执行** `1.0.0` / `v1.0.0` / release commit / 正式 Release —— 那是**下一独立 Release 轮**的动作。
 
 ---
 
@@ -405,20 +421,22 @@ LLM runtime
 [x] Gate T  PASS（含 T8）—— ✅ 已通过（P0 修复轮）
 [x] Gate Q  PASS
 [x] Gate U  PASS（场景 A–E 全部正常通过，无 it.fails）
-[ ] Gate M  PASS（含真机复核）
-[ ] Gate D  PASS（部署已落地 · 访问入口可用 · **version=1.0.0 待设** · **tag v1.0.0 待打** · 回滚流程已定义）
-[ ] Gate G  PASS（四份文档与仓库一致）
+[ ] Gate M  PASS —— ★ 当前唯一未闭环（待真机 / 实际浏览器复核）
+[x] Gate D  Deployment Engineering PASS（D1–D3 / D6–D8 已落地并验证）
+    · ⏳ D4 `version = 1.0.0` / D5 `tag v1.0.0` —— 待 Gate M 通过后由独立 Release 轮执行
+[x] Gate G  PASS（四份文档与仓库一致）
 [x] P0 清单为空
 [x] P1 清单已处理或明确接受（P1-1 已闭环）
 ```
 
 **宣布动作**（顺序固定）：
-1. ~~P0 清零~~ ✅ → 2. ~~P1 处理~~ ✅（部署已落地）→ 3. Gate M 真机复核 →
+1. ~~P0 清零~~ ✅ → 2. ~~P1 处理~~ ✅（部署已落地）→ **3. Gate M 真机复核（当前待办）** →
 4. `package.json` → `1.0.0` → 5. release commit → 6. `git tag v1.0.0` → 7. 部署 →
 8. 验证访问入口 → 9. 更新 `PROJECT_STATE` / `ROADMAP` / `README`。
 
-> **★ 本轮边界**：**Deployment Engineering 完成 ≠ ThreeC 1.0 正式发布。**
-> 本轮**不设置 `1.0.0`**、**不创建 `v1.0.0`**。线上身份为 commit SHA。
+> **★ 边界**：**Deployment Engineering 完成 ≠ ThreeC 1.0 正式发布。**
+> `Gate D = PASS` 表示部署工程已完成；**D4 / D5 不得提前执行**。
+> 线上身份为 commit SHA。**在 Gate M 通过前不设置 `1.0.0`、不创建 `v1.0.0`。**
 
 ---
 
