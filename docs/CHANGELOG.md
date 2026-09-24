@@ -7,6 +7,77 @@
 
 ---
 
+## 2026-09-24 · Product · Gate M 真机复核 + 2 处 P1 移动端横向溢出修复
+
+**性质：Product-only 真机复核 + P1 缺陷修复。零 Research 变更、零规则变更、零 schema 变更、零 Contract 变更。**
+**唯一未闭环 Gate**：Gate M（真机 / 实际浏览器复核）—— 本轮**已完成**。
+
+**唯一目标**：把「已具备条件」变成「已实测确认」—— 用**真实浏览器**（非断点静态审计）
+复核 ThreeC 1.0 的全部 Release 前置，并修复阻碍真机可用的 P1 缺陷。
+
+**测试方法**：真实 Chromium 引擎（Edge）+ playwright-core 驱动，视口 375 / 390 / 412 / 768，
+UA 与 `isMobile` 分离以排除移动端模拟对 `innerWidth` 的干扰（该干扰此前掩盖了真实溢出）。
+
+### 1 · 修复 P1-1：SamePeriodView 空态段落类名归属错误
+
+`SamePeriodView.tsx` 空态 `<p>` 误用 `.phase-text`（全局 `white-space: nowrap`），
+375px 下 `scrollWidth 385 > clientWidth 317`，撑破 `section.sp-view`（`scrollWidth 401`），
+最终 `documentElement` 横向溢出 **39px**。
+
+**修复**：改用该 section 既有正文样式 `.sp-sub`（语义与视觉归属一致）。
+**未改**全局 `.phase-text`（Timeline 等区域依赖其 nowrap 语义）。
+
+### 2 · 修复 P1-2：`.year-chips` / `.app-today` 不换行
+
+`?preview=1` 下数据源年份为 2015–2026（12 个 chip）。`.year-chips` 为 `inline-flex`
+且无 `flex-wrap`，`.app-today` 同样不换行、无 `min-width: 0` → 375px 实测 `documentElement`
+横向溢出 **334px**（生产空态无 chips，故此前未暴露）。
+
+**修复**：`.app-today` 加 `flex-wrap: wrap` + `min-width: 0` + `max-width: 100%`；
+`.year-chips` 加 `flex-wrap: wrap` + `min-width: 0`。
+
+### 3 · 修复 P1-3：`.ccs-ev-list li` 六列固定栅格窄屏溢出
+
+证据台账行原为 `74px 92px 26px 40px 82px minmax(0,1fr)`，固定列合计 314px + gap，
+父容器仅 315px → 展开 Current Candidate（如「算电协同」）时 375px 实测溢出 **52px**。
+
+**修复**：`@media (max-width: 720px)` 内改为 `grid-template-columns: minmax(0, 1fr)` 堆叠
++ 子项 `overflow-wrap: anywhere`（与既有 `.hcx-attr-row` 等移动端处理一致）。
+
+> 3 处均为**纯 CSS / 类名归属修正**：不改 Timeline / Calendar Lens / Lifecycle Lens /
+> Structural Analogy / Time Observation / Driver 任何规则，不新增功能，不改 UI 结构，
+> 不改 Research 侧产物。
+
+### 4 · Gate M 实测结论（修复后，真实浏览器）
+
+| 项 | 结论 |
+|---|---|
+| M1 Timeline | `.timeline-scroll` sw 1141 / cw 351 / `overflow-x: auto` 可横向滚动；`scrollLeft` 生效；页面纵向滚动不受影响；**页面横向溢出 = 0** |
+| M2 Detail | Campaign 与 Research Candidate 详情 `childOverflow = 0`；长日期 / 长 ID 正常换行；无需缩放 |
+| M3 Lifecycle 三类 | A 正常生命周期显示研究阶段；**B UNKNOWN-only RC 显示「阶段未标注」**（未推导为 主升/扩张中/PEAK/DECLINE/END）；**C 已结束 Campaign 显示 ENDED** |
+| M4 SA 四维 | 生命周期 / 驱动机制 / 证据顺序 / 事件结构 四维 + 为什么对应 / 哪里不同 / 哪些维度未知 均可读 |
+| M5 长文本 | 长 RC 标题 / 长备注在 375px 正常换行 |
+| M6 空态 | 生产空态（`/`）+「暂无足够相似阶段」+ `NOT_AVAILABLE` 均可读 |
+| M7 层级 | 纵向信息层级明确 |
+
+**语义红线复核**：无 score / ranking / probability / prediction；SA 无分数；
+provenance 明确标注「不是可信度、完整度或质量评分」。
+
+**identity 复核**：Research Candidate 详情显示「Research Candidate（研究候选，非 Campaign）」
++ `RC` 徽章 + `RESEARCH_ONLY（不进 campaigns 表）` + `NOT_A_CAMPAIGN`；Campaign 显示
+「Historical Campaign」。**Campaign ≠ Research Candidate 未被混淆。**
+
+### 5 · 基线（本机）
+
+`npm test` **678 passed / 0 failed**（18 files）· `tsc -b` **0 error** · `vite build` **PASS**
+
+### 6 · 本轮未做
+
+未设置 `package.json` → `1.0.0`；未创建 `v1.0.0` tag；未执行正式 Release；
+未扩 Research Universe；未新增 R01 / SA / TO / Driver 规则；未改 UI 设计。
+
+---
+
 ## 2026-09-18 · Research · Time Observation Discovery v0.5（四族齐备后首次完整重跑）
 
 **性质：Research-only 新研究轮次。零 Product 变更、零阈值变更、零 schema 变更。**

@@ -7,13 +7,14 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：**`1e42b6c`**（Deployment / Release Engineering 主线末次提交；**以 `git log -1` 为准**）
-  · 该主线提交链：`7c7d64f`（起点）→ `f9cc007` → `0812efc` → `1e42b6c`
+- HEAD：**`6774e2e`**（Gate M 真机复核 + P1 移动端溢出修复 + 文档同步；**以 `git log -1` 为准**）
+  · 提交链：`7c7d64f`（起点）→ `f9cc007` → `0812efc` → `1e42b6c` → `6774e2e`（本轮）
   · ★ **本文件不硬编码旧 SHA**：任何接班以 `git log -1` 实测为准
 - **★ 当前阶段：ThreeC 1.0 Deployment / Release Engineering —— 已完成**（详见 `docs/ROADMAP.md` §2）
 - **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
-- **★ Gate 状态**：R / P / T / Q / U = **PASS** · D（Deployment Engineering）= **已完成** · G = **本轮已同步**
-  · **未闭环：Gate M（真机 / 实际浏览器复核）** ← 当前唯一 Release 前置
+- **★ Gate 状态**：R / P / T / Q / U = **PASS** · D（Deployment Engineering）= **已完成** · G = **PASS**
+  · **★ Gate M（真机 / 实际浏览器复核）= 本轮已完成**（真实 Chromium 驱动，375 / 390 / 412 / 768）
+  · **8 个 Release Gate 已全部闭环**；本轮修复 2 处 P1 移动端横向溢出
 - **★ P0 = 0 · P1 = 0**
 - **★ 当前唯一目标**：**1.0 正式宣布准备** —— Gate M 真机复核 → `package.json → 1.0.0` → release commit → `git tag v1.0.0` → 部署 → 验证入口 → 收口文档
   · **本轮仍未设置 `1.0.0`、仍未创建 `v1.0.0`**；线上身份 = commit SHA
