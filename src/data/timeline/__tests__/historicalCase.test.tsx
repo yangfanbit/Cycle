@@ -51,15 +51,25 @@ describe('Historical Case · 视图模型', () => {
     expect(historicalCaseOf(candidate).header.objectKind).toBe('research_candidate');
   });
 
-  it('lifecycle 原样来自 Research phases（不重新推导）', () => {
+  it('lifecycle 原样来自 Research lifecycle（不重新推导，★ 不得回退视图分段）', () => {
     const v = historicalCaseOf(campaign);
-    expect(v.lifecycle.length).toBe(campaign.phases.length);
+    const research = campaign.lifecycle ?? [];
+    // ★ Gate T8：来源必须是 Research `lifecycle`，不是 adapter 派生的 `campaign.phases`
+    expect(v.lifecycle.length).toBe(research.length);
     for (let i = 0; i < v.lifecycle.length; i += 1) {
-      expect(v.lifecycle[i].stage).toBe(campaign.phases[i].phase);
-      expect(v.lifecycle[i].start).toBe(campaign.phases[i].start);
+      expect(v.lifecycle[i].stage).toBe(research[i].stage);
+      expect(v.lifecycle[i].start).toBe(research[i].start);
     }
-    // 标签表覆盖
+    // 标签表覆盖（Research `lifecycle[].stage` 为大写枚举）
     for (const s of v.lifecycle) expect(s.label).toBeTruthy();
+  });
+
+  it('无 Research lifecycle → lifecycle = []（不得用视图分段顶替；Gate T8）', () => {
+    const noLc = all.filter((c) => (c.lifecycle ?? []).length === 0);
+    expect(noLc.length).toBeGreaterThan(0); // 前件成立，不是空断言
+    for (const c of noLc) {
+      expect(historicalCaseOf(c).lifecycle, c.campaign_id).toEqual([]);
+    }
   });
 
   it('evidenceCategories 是「证据类别」而非「驱动机制」（取值域不重叠）', () => {
@@ -271,7 +281,7 @@ describe('Historical Case · 信息层级与 Driver 分层', () => {
     expect(html).toContain('不代表');
   });
 
-  it('生命周期使用既有 phases（不重新推导）', () => {
+  it('生命周期使用既有 Research lifecycle（不重新推导）', () => {
     const html = renderCase();
     expect(html).toContain('生命周期');
     expect(html).toContain('主题形成');

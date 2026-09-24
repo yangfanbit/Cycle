@@ -140,8 +140,9 @@ export interface HistoricalCaseHeader {
 export interface LifecycleStageView {
   stage: string;
   label: string;
-  start: string;
-  end: string;
+  /** Contract：`start` / `end` **可为 null**（开放区间；`is_iso_date(None) == True`）—— 不猜测端点。 */
+  start: string | null;
+  end: string | null;
 }
 
 export interface EvidenceSequenceEntry {
@@ -158,7 +159,14 @@ export interface EvidenceSequenceEntry {
 
 export interface HistoricalCaseView {
   header: HistoricalCaseHeader;
-  /** 生命周期分段（**原样**来自 Research 导出的 phases）。 */
+  /**
+   * 生命周期分段（**原样**来自 Research 导出的 `lifecycle`）。
+   *
+   * ★ Gate T8（`UNKNOWN ≠ 自动推导具体阶段`）：
+   *   只读 `TimelineCampaign.lifecycle`（= export Research lifecycle）。
+   *   Research 未记录生命周期时 → **`[]`**，**不得**用视图分段
+   *   （`TimelineCampaign.phases`，adapter 由 `derivePhases()` 派生）顶替。
+   */
   lifecycle: LifecycleStageView[];
   /** 早期信号（前置观察，**不是**正式行情起点）。 */
   earlySignal: { start: string; end: string; label: string | null } | null;
@@ -240,11 +248,16 @@ export function historicalCaseOf(c: TimelineCampaign): HistoricalCaseView {
       seasonId: c.season_id,
       ruleId: c.rule_id,
     },
-    lifecycle: c.phases.map((p) => ({
-      stage: p.phase,
-      label: LIFECYCLE_STAGE_LABEL[p.phase] ?? p.phase,
-      start: p.start,
-      end: p.end,
+    // ★ Gate T8：**只消费 Research lifecycle**（`c.lifecycle`）。
+    //   `c.phases` 是 adapter 由 `derivePhases()` 派生的**视图分段**（Timeline 视觉用），
+    //   `peak == null` 时它会无条件产出 `main_rise` —— 用它顶替 Research lifecycle
+    //   等于在 Product 层虚构一个研究未确立的阶段。故此处**不得**回退到 `c.phases`。
+    //   `start` / `end` 可为 null（开放区间），原样透传。
+    lifecycle: (c.lifecycle ?? []).map((s) => ({
+      stage: s.stage,
+      label: LIFECYCLE_STAGE_LABEL[s.stage] ?? s.stage,
+      start: s.start,
+      end: s.end,
     })),
     earlySignal: c.early_signal
       ? { start: c.early_signal.start, end: c.early_signal.end, label: c.early_signal.label ?? null }

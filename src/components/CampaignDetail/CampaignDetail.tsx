@@ -25,7 +25,6 @@ import {
   conflictLine,
   DATA_STATUS_LABEL,
   EVENT_TYPE_LABEL,
-  LIFECYCLE_LABEL,
   RESULT_LABEL,
   ROLE_LABEL,
   RULE_STATUS_LABEL,
@@ -69,7 +68,16 @@ interface CampaignDetailModel {
   sourceText: string;
   status: 'verified' | 'provisional' | 'preview' | 'conflict';
   conflicts: ExportConflictV1[] | undefined;
-  phases: { phase: keyof typeof LIFECYCLE_LABEL; start: string; end: string }[];
+  /**
+   * ★ Gate T8：**Research lifecycle 分段**（来自 export `lifecycle`）。
+   *
+   * 与 `TimelineCampaign.phases`（= `timelineAdapter.derivePhases()` 派生的**视图分段**）
+   * **严格区分**：视图分段在 `peak == null` 时无条件产出 `main_rise`，
+   * 用它当 Research 阶段展示 = 在 Product 层虚构研究未确立的阶段。
+   * Research 未记录生命周期时本数组为 `[]` → 该字段区**不渲染**。
+   * `start` / `end` 可为 null（开放区间，Contract 允许）。
+   */
+  lifecycle: { stage: string; label: string; start: string | null; end: string | null }[];
   earlySignal: { start: string; end: string; label?: string } | null;
   strength?: HistoricalCampaign['strength'];
   result?: HistoricalCampaign['result'];
@@ -111,7 +119,7 @@ function normalize(c: HistoricalCampaign | TimelineCampaign): CampaignDetailMode
       sourceText: `data/verified（已人工核验 L2）`,
       status: 'verified' as const,
       conflicts: undefined,
-      phases: [],
+      lifecycle: [],
       earlySignal: null,
       strength: c.strength,
       result: c.result,
@@ -142,7 +150,14 @@ function normalize(c: HistoricalCampaign | TimelineCampaign): CampaignDetailMode
     sourceText: c.sourceNote ?? '—',
     status: c.status,
     conflicts: c.conflicts,
-    phases: c.phases,
+    // ★ Gate T8：只透传 **Research lifecycle**（`TimelineCampaign.lifecycle`），
+    //   不使用 `c.phases`（adapter 派生的视图分段）。
+    lifecycle: (c.lifecycle ?? []).map((s) => ({
+      stage: s.stage,
+      label: LIFECYCLE_STAGE_LABEL[s.stage] ?? s.stage,
+      start: s.start,
+      end: s.end,
+    })),
     earlySignal: c.early_signal ?? null,
     strength: undefined,
     result: undefined,
@@ -372,12 +387,16 @@ export function CampaignDetail({
           </>
         )}
 
-        {m.phases.length > 0 && (
+        {m.lifecycle.length > 0 && (
           <>
             <dt>生命周期</dt>
             <dd>
-              {m.phases
-                .map((p) => `${LIFECYCLE_LABEL[p.phase]} ${p.start.slice(5)}→${p.end.slice(5)}`)
+              {m.lifecycle
+                .map((s) => {
+                  const from = s.start ? s.start.slice(5) : '未标注';
+                  const to = s.end ? s.end.slice(5) : '未记录';
+                  return `${s.label} ${from}→${to}`;
+                })
                 .join('；')}
             </dd>
           </>

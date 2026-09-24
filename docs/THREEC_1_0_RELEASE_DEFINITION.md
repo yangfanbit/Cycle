@@ -278,18 +278,32 @@ LLM runtime
 
 ---
 
-## 6. Release Gap Matrix（审计基线 HEAD `ad5e804`）
+## 6. Release Gap Matrix
+
+> 审计基线 HEAD `ad5e804`；**P0 修复后复核基线** 见 §6.1。
 
 | Gate | 当前状态 | 证据 | 是否阻塞 1.0 | 处理任务 |
 |---|---|---|---|---|
 | **Research** | **PASS** | 52 C + 27 RC = 79 · Driver v0.4 · SA v0.5（395 pairs）· TO v0.2 · lifecycle 由 intake 派生（单一真源）· 冻结基座未改 | **否** | — |
 | **Product** | **PASS** | 5/5 Candidate 走通闭环（43 用例）· identity 52/27 正确 · 四维可读 · 无 score/ranking/probability | **否** | — |
-| **Trust** | **★ FAIL（1 项 P0）** | T1–T7、T9 通过；**T8 未通过**：无 research lifecycle 的对象在 Historical Case 中被 Product **推导出 `main_rise`**（虚构阶段） | **★ 是（P0-1）** | **修 `historicalCaseOf` / `derivePhases` 的无-lifecycle 回退** |
-| **Quality** | **PASS** | `npm test` **643 passed / 0 failed（17 files）** · `tsc -b` PASS · `vite build` PASS · 无 runtime crash · null 安全 | **否** | — |
-| **Real Usage** | **PASS（含 1 项已知缺口）** | 场景 A/B/C/E 通过；**场景 D 部分通过**（D1/D2/D4/D5 通过，**D3 用 `it.fails` 锁定为 KNOWN GAP** → 同 P0-1） | **否（由 P0-1 覆盖）** | 随 P0-1 一并解决 |
+| **Trust** | ~~★ FAIL（1 项 P0）~~ → **PASS** | T1–T9 **全部通过**：无 research lifecycle 的对象在 Historical Case 中**不再推导出具体阶段**（`[]`），`terminalPhaseOf → UNKNOWN` | ~~★ 是（P0-1）~~ → **已解除** | **已完成（P0 修复轮）** |
+| **Quality** | **PASS** | `npm test` **654 passed / 0 failed（17 files）** · `tsc -b` PASS · `vite build` PASS · 无 runtime crash · null 安全 | **否** | — |
+| **Real Usage** | **PASS（无缺口）** | 场景 A–E **全部正常通过**；**D3 已由 `it.fails` 正式化为正常断言**；新增 **Scenario F（Gate T8 全局不变量，F1–F9）** | **否** | — |
 | **Mobile** | **PASS（静态）** | 断点 110/240/300/720/900；375/390/412px **全部落在 720px 断点内** · 无 ≥400px 固定宽度（除 timeline 1080px 由 `overflow-x:auto` 承载）· `overflow-wrap` 28 处 · 7 个区块均有移动端规则 | **否** | **P2：真机/浏览器实测复核**（本轮为静态审计） |
 | **Deployment** | **★ FAIL（P1）** | **无任何部署配置**（无 netlify/vercel/docker/.github/wrangler）· **无 git tag** · `package.json version = 0.1.0` · 无访问入口 · 无回滚定义 | **否（P1）** | 落地 §2 最小静态部署 + §3 重建流程；**1.0 宣布时**再设 `1.0.0` 与 tag |
 | **Documentation** | **PASS（本轮已修）** | 新建本文件；`PROJECT_STATE` HEAD→`ad5e804`、SA→v0.5；`ROADMAP` 反映 Product 主线 + Lifecycle Repair；**`README` 旧状态（2026-09-19 / v0.2 / 4 Macro Themes）已重写** | **否** | — |
+
+### 6.1 P0 修复轮复核（本文件 §8 P0 清单已清零）
+
+| 项 | 修复前 | 修复后 |
+|---|---|---|
+| `historicalCaseOf` 无 lifecycle 时 | 回退 `c.phases` → 4 个 RC 全部显示「主升 `main_rise`」 | **`lifecycle = []`**（不渲染该字段区）→ 虚构数 **4 → 0** |
+| `terminalPhaseOf` 无 lifecycle 时 | 回退 `campaign.phases` → 4 个 RC 全部 `EXPANSION` | **`UNKNOWN`** → 虚构数 **4 → 0** |
+| `CampaignDetail` 旧字段区 | 第二处独立 `m.phases` 渲染路径，同样虚构「主升」 | 改读 Research `lifecycle`，空则整区不渲染 |
+| `STAGE_TO_PHASE` 覆盖度 | **漏 `ENDED`**（Contract 成员，export 中出现 2 次）→ `phaseOfStage('ENDED')` 静默返回 `UNKNOWN` | 补 `ENDED: 'END'` → 2 个已结束 Campaign 由 `UNKNOWN` 纠正为 **`END`** |
+| `derivePhases()` / `c.phases` | — | **完整保留**（Timeline 视觉分段仍依赖；4 个 RC 的 `phases` 均在） |
+| D3 用例 | `it.fails`（KNOWN GAP） | **`it(...)` 正常断言**（另加 D3b UI 字段区断言） |
+| 防回归 | 无 | 新增 **Scenario F1–F9**（含覆盖度与反向非空断言） |
 
 ---
 
@@ -313,16 +327,21 @@ LLM runtime
 
 ## 8. 1.0 Blocker 清单
 
-### P0 — 1.0 必须修（**1 项**）
+### P0 — 1.0 必须修（**当前 0 项，已全部关闭**）
 
-| # | 问题 | 位置 | 为什么是 P0 |
-|---|---|---|---|
-| **P0-1** | **无 research lifecycle 时，Product 推导出具体阶段** | **精确路径**：`historicalCase.ts:243` 的 `lifecycle: c.phases.map(...)` 用的是 **adapter 派生**的 `c.phases`，**不是** export 的 `lifecycle`；而 `timelineAdapter.ts::derivePhases` 在 `peak == null` 时**无条件**返回 `[{ phase: 'main_rise', start, end }]`。→ 无 research lifecycle 的对象（当前 4 个 RC）在 Historical Case 中显示为「主升」。`researchAttention.ts::terminalPhaseOf` 第 3 条回退（视图分段）同理 | 违反 Gate T8（`UNKNOWN ≠ 自动推导具体阶段`）→ **用户会被误导**：研究明确说「阶段不可识别」，产品却显示「主升」。场景 D 的 D3 因此未通过（已用 `it.fails` 锁定） |
-| **P0-1b** | **注释与行为不一致**（P0-1 的伴生问题） | `historicalCase.ts:161` 注释写「生命周期分段（**原样**来自 Research 导出的 phases）」，但实际读的是 adapter 派生的 `c.phases` —— **并非原样来自 Research** | 会误导后续维护者以为该字段可信；修 P0-1 时须一并修正注释 |
+> **P0-1 与 P0-1b 已于「ThreeC 1.0 P0 修复轮」关闭。** 修复细节见 §6.1。
 
-**修的方向（不预设实现）**：当对象**没有 research lifecycle** 时，Product **不得**给出具体阶段，
-必须显示「阶段未判定 / 资料不足」（并保留 `research_status` 的语义），
-同时**不得**因此让已结束的 Campaign 被误判为「扩张中」。
+| # | 问题 | 状态 |
+|---|---|---|
+| ~~**P0-1**~~ | ~~**无 research lifecycle 时，Product 推导出具体阶段**~~ | **✅ 已修** —— `historicalCase.ts` 改读 `c.lifecycle`（空则 `[]`）；`researchAttention.ts::terminalPhaseOf` 删除 `c.phases` 回退 → `UNKNOWN`；`CampaignDetail` 旧字段区改读 Research `lifecycle`。**修的方向**：不得给出具体阶段，保留 `research_status` 语义 |
+| ~~**P0-1b**~~ | ~~**注释与行为不一致**~~ | **✅ 已修** —— `historicalCase.ts` 的 `HistoricalCaseView.lifecycle` 注释重写为「**原样**来自 Research 导出的 `lifecycle`」并注明 Gate T8 约束 |
+
+**审计新发现（同属 Gate T8 家族，已随本轮一并关闭，非 1.0 遗留）**
+
+| # | 问题 | 状态 |
+|---|---|---|
+| **P0-1c** | `researchAttention.ts::STAGE_TO_PHASE` **漏 `ENDED`**（Contract `VALID_LIFECYCLE_STAGE` 成员）→ `phaseOfStage('ENDED')` 静默退化为 `UNKNOWN`；2 个已结束 Campaign（`C-2019-MIL-GROUP-RESTRUCTURE` / `C-2020-RE-DEBT-RISK`）被误显示为「阶段未标注」。语义：`UNKNOWN ≠ 未映射` | **✅ 已修** —— 补映射 + `CONTRACT_LIFECYCLE_STAGES` 常量 + F7/F8/F9 覆盖度不变量 |
+| **P0-1d** | `ExportLifecycleStageV1.start/end` 类型写成 `string`，但 Contract 允许 `null`（`is_iso_date(None) == True`）→ 5 处消费点存在 `null` 运行时风险 | **✅ 已修** —— 类型改为 `string \| null`，5 个消费点显式处理开放区间（不猜测端点） |
 
 ### P1 — 1.0 前应该修（**1 项**）
 
@@ -368,21 +387,23 @@ LLM runtime
 **只有以下全部为 ✅，才可宣布 ThreeC 1.0：**
 
 ```text
-[ ] Gate R  PASS（含 lifecycle 完整性定义 §1.1）
-[ ] Gate P  PASS
-[ ] Gate T  PASS（含 T8）—— 当前 FAIL（P0-1）
-[ ] Gate Q  PASS
-[ ] Gate U  PASS（场景 A–E 全部正常通过，无 it.fails）
+[x] Gate R  PASS（含 lifecycle 完整性定义 §1.1）
+[x] Gate P  PASS
+[x] Gate T  PASS（含 T8）—— ✅ 已通过（P0 修复轮）
+[x] Gate Q  PASS
+[x] Gate U  PASS（场景 A–E 全部正常通过，无 it.fails）
 [ ] Gate M  PASS（含真机复核）
 [ ] Gate D  PASS（部署已落地 · 访问入口可用 · version=1.0.0 · tag v1.0.0 · 回滚已验证）
 [ ] Gate G  PASS（四份文档与仓库一致）
-[ ] P0 清单为空
+[x] P0 清单为空
 [ ] P1 清单已处理或明确接受
 ```
 
 **宣布动作**（顺序固定）：
-1. P0 清零 → 2. P1 处理 → 3. `package.json` → `1.0.0` → 4. release commit →
+1. ~~P0 清零~~ ✅ → 2. P1 处理 → 3. `package.json` → `1.0.0` → 4. release commit →
 5. `git tag v1.0.0` → 6. 部署 → 7. 验证访问入口 → 8. 更新 `PROJECT_STATE` / `ROADMAP` / `README`。
+
+> **下一步单一目标**：进入 **ThreeC 1.0 Deployment / Release Engineering**（处理 P1-1：最小静态部署 + 重建流程 + 回滚定义 + 访问入口）。**本次不设置 `1.0.0`、不打 tag、不部署。**
 
 ---
 

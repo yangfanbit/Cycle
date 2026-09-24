@@ -94,8 +94,9 @@ export interface ExportConflictV1 {
  */
 export interface ExportLifecycleStageV1 {
   stage: string;
-  start: string;
-  end: string;
+  /** Contract：`start` / `end` **可为 null**（开放区间；`is_iso_date(None) == True`）。 */
+  start: string | null;
+  end: string | null;
   precision: string;
 }
 

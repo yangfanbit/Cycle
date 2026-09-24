@@ -9,6 +9,7 @@
  *   Scenario C  一个 Research Candidate → 明确标注为「研究候选」，**不冒充正式 Campaign**
  *   Scenario D  一个 lifecycle 只有 UNKNOWN 的 RC → 用户能理解「生命周期信息不足」，**不被错误阶段误导**
  *   Scenario E  一个 end 已知的历史 Campaign → **不显示成「当前仍处于扩张」**
+ *   Scenario F  Gate T8 全局不变量 → Research lifecycle 与阶段推导严格单向对应（P0-1 防回归）
  *
  * ★ 本文件是**验收夹具**，不是产品功能。
  */
@@ -17,7 +18,12 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { TimeObservationLayer } from '../../../components/TimeObservation/TimeObservationLayer';
 import { StructuralAnalogySection } from '../../../components/CurrentTimeLens/StructuralAnalogySection';
 import { CampaignDetail } from '../../../components/CampaignDetail/CampaignDetail';
-import { attentionOf } from '../researchAttention';
+import {
+  attentionOf,
+  terminalPhaseOf,
+  CONTRACT_LIFECYCLE_STAGES,
+  STAGE_TO_PHASE_SNAPSHOT,
+} from '../researchAttention';
 import { historicalCaseOf } from '../historicalCase';
 import { parseStructuralAnalogyDataset, structuralAnalogyForCandidate } from '../structuralAnalogy';
 import { buildTimeObservationLayer, defaultTimeObservationDataset } from '../timeObservationPatterns';
@@ -176,21 +182,39 @@ describe('Gate U · Scenario D：lifecycle 仅 UNKNOWN 的 RC → 明确「信�
   });
 
   /**
-   * ★★ **KNOWN GAP（Gate T 未通过）** —— 用 `it.fails` 显式锁定，**不当成正确行为**。
+   * ★★ **P0-1 已修复（ThreeC 1.0 P0 轮）** —— 由 `it.fails` 正式化为正常断言。
    *
-   * 期望：research lifecycle 为空（阶段不可识别）时，Historical Case **不得**给出具体阶段。
-   * 实测：`historicalCaseOf` 在无 research lifecycle 时**回退到视图分段** `derivePhases()`
-   *       → 由 `start/end` 推导出 `main_rise` —— 即**在 Product 层虚构了一个 research 未确立的阶段**。
+   * 修复前：`historicalCaseOf` 在无 research lifecycle 时**回退到视图分段** `derivePhases()`
+   *         → 由 `start/end` 推导出 `main_rise` —— 即**在 Product 层虚构了一个 research 未确立的阶段**。
+   * 修复后：`historicalCase.lifecycle` **只消费 Research `lifecycle`**；Research 未记录 → `[]`。
    *
-   * 这违反 Gate T 的 `UNKNOWN ≠ 自动推导具体阶段`。
-   * 用 `it.fails` 的意义：**当前已知不通过**；一旦该行为被修好，本用例会**失败并提醒更新**。
+   * Gate T8：`UNKNOWN ≠ 自动推导具体阶段`。
    */
-  it.fails('D3 Historical Case 侧：无 research lifecycle 时不得给出具体阶段（★ 当前 KNOWN GAP）', () => {
+  it('D3 Historical Case 侧：无 research lifecycle 时不得给出具体阶段（不得回退视图分段）', () => {
     const obj = byId(RC);
     expect(obj).toBeDefined();
+    // 该对象的视图分段（adapter 派生）确实非空 —— 正是修复前被误当成 Research lifecycle 的来源
+    expect(obj.phases.length).toBeGreaterThan(0);
     const hc = historicalCaseOf(obj);
     const stages = hc.lifecycle.map((s) => s.stage);
     expect(stages).toEqual([]);
+  });
+
+  it('D3b UI 侧：「生命周期」字段区不得出现具体阶段名（研究原文中的其它「结束」不算）', () => {
+    const obj = byId(RC);
+    const html = renderToStaticMarkup(
+      <CampaignDetail campaign={obj} onOpenRule={() => {}} onClose={() => {}} />,
+    );
+    // ★ 只截取 <dt>生命周期</dt> 之后到下一个 <dt> 之前的那一段（字段区），
+    //   避免误伤研究原文（如备注中的「市场响应层完全空白」）与归因文案中的「结束附近」。
+    const m = html.match(/<dt>生命周期<\/dt>([\s\S]*?)<dt>/);
+    if (m === null) {
+      // 无 Research lifecycle → 该字段区**整体不渲染**，这本身就是正确行为
+      expect(html).not.toContain('<dt>生命周期</dt>');
+      return;
+    }
+    const fieldText = m[1].replace(/<[^>]*>/g, '');
+    expect(fieldText).not.toMatch(/主升|扩张|峰值|退潮|结束|回撤|衰减|早期信号|主题形成|扩散确认/);
   });
 
   it('D4 SA 侧：lifecycle 维度为「资料不足」而不是「不对应」', () => {
@@ -251,6 +275,123 @@ describe('Gate U · Scenario E：end 已知的历史 Campaign 不得显示为「
     for (const c of actives) {
       expect(c.kind).toBe('campaign');
       expect(c.openEnded).toBe(true);
+    }
+  });
+});
+
+/* ==================================================================== Scenario F */
+/**
+ * Gate T8 全局防回归不变量（★ P0-1）。
+ *
+ * 对**任何** `TimelineCampaign`（正式 Campaign 与 Research Candidate 一视同仁）：
+ *
+ *   1. Research lifecycle 为空 ⇒
+ *        · `terminalPhaseOf(campaign) === 'UNKNOWN'`
+ *        · `historicalCaseOf(campaign).lifecycle.length === 0`
+ *   2. Research lifecycle 非空 ⇒
+ *        · `terminalPhaseOf(campaign) !== 'UNKNOWN'`
+ *        · `historicalCaseOf(campaign).lifecycle.length > 0`
+ *
+ * 反向（第 2 条）**保证修复不是靠「一律返回空」蒙过去的** —— 有 Research 结论的对象
+ * 必须照常给出阶段。这正是本轮修复**只去掉回退、未削弱正常路径**的机械证据。
+ *
+ * 同时锁死：视图分段 `campaign.phases` **在修复后仍然存在**（Timeline 视觉依赖它），
+ * 即「不再被误当作 Research lifecycle」≠「被删除」。
+ */
+describe('Gate T8 · 全局不变量：Research lifecycle 与阶段推导严格单向对应', () => {
+  /** 是否存在「无 lifecycle 却有视图分段」的对象 —— 这正是 P0-1 的触发条件集合 */
+  const EMPTY_LIFECYCLE = ALL.filter((c) => (c.lifecycle ?? []).length === 0);
+  const NON_EMPTY_LIFECYCLE = ALL.filter((c) => (c.lifecycle ?? []).length > 0);
+
+  it('F1 前件成立：数据集中确实存在「无 Research lifecycle」的对象（不变量不是空断言）', () => {
+    expect(EMPTY_LIFECYCLE.length).toBeGreaterThan(0);
+    expect(NON_EMPTY_LIFECYCLE.length).toBeGreaterThan(0);
+  });
+
+  it('F2 无 Research lifecycle ⇒ terminalPhaseOf = UNKNOWN 且 Historical Case lifecycle = []', () => {
+    const violated: string[] = [];
+    for (const c of EMPTY_LIFECYCLE) {
+      if (terminalPhaseOf(c) !== 'UNKNOWN') violated.push(`${c.campaign_id}: phase=${terminalPhaseOf(c)}`);
+      if (historicalCaseOf(c).lifecycle.length !== 0) {
+        violated.push(`${c.campaign_id}: hc.lifecycle=${historicalCaseOf(c).lifecycle.length}`);
+      }
+    }
+    expect(violated).toEqual([]);
+  });
+
+  it('F3 有 Research lifecycle ⇒ terminalPhaseOf ≠ UNKNOWN 且 Historical Case lifecycle 非空', () => {
+    const violated: string[] = [];
+    for (const c of NON_EMPTY_LIFECYCLE) {
+      if (terminalPhaseOf(c) === 'UNKNOWN') violated.push(`${c.campaign_id}: phase=UNKNOWN`);
+      if (historicalCaseOf(c).lifecycle.length === 0) violated.push(`${c.campaign_id}: hc.lifecycle=[]`);
+    }
+    expect(violated).toEqual([]);
+  });
+
+  it('F4 Historical Case lifecycle 原样等于 Research lifecycle（不重新推导、不重排）', () => {
+    for (const c of NON_EMPTY_LIFECYCLE) {
+      const hc = historicalCaseOf(c);
+      expect(hc.lifecycle.map((s) => s.stage)).toEqual((c.lifecycle ?? []).map((s) => s.stage));
+      expect(hc.lifecycle.map((s) => s.start)).toEqual((c.lifecycle ?? []).map((s) => s.start));
+    }
+  });
+
+  it('F5 视图分段仍然保留（Timeline 视觉依赖 phases，修复未删除它）', () => {
+    for (const c of EMPTY_LIFECYCLE) {
+      if (c.kind === 'campaign') expect(Array.isArray(c.phases)).toBe(true);
+    }
+    // 至少存在一个「无 lifecycle 但 phases 非空」的对象 —— 即修复前会被虚构阶段的样本
+    expect(EMPTY_LIFECYCLE.some((c) => c.phases.length > 0)).toBe(true);
+  });
+
+  it('F6 具体复核：4 个 lifecycle 仅 UNKNOWN 的 Research Candidate', () => {
+    const KNOWN_UNKNOWN_ONLY = [
+      'RC-2019-RE-EASING',
+      'RC-2020-FIN-BROKER-VOLUME',
+      'RC-2016-RE-SHANTY',
+      'RC-2015-FIN-LEVERAGE',
+    ];
+    for (const id of KNOWN_UNKNOWN_ONLY) {
+      const c = byId(id);
+      expect(c, id).toBeDefined();
+      expect((c.lifecycle ?? []).length, id).toBe(0);
+      expect(terminalPhaseOf(c), id).toBe('UNKNOWN');
+      expect(historicalCaseOf(c).lifecycle, id).toEqual([]);
+    }
+  });
+
+  /**
+   * ★★ 第二个缺陷（本轮审计发现，同属 Gate T8 家族）：
+   *   `STAGE_TO_PHASE` 必须覆盖 Contract 的**全部 11 个** `VALID_LIFECYCLE_STAGE`。
+   *   漏项**不报错**，只会让 `phaseOfStage()` 静默返回 `UNKNOWN`
+   *   —— 研究记录了大写阶段、Product 却显示「阶段未标注」，是**低估研究结论**的失真。
+   *   实测漏项：`ENDED`（当前 export 中出现 2 次）。
+   *   `UNKNOWN ≠ 未映射`：前者是「研究未判定」，后者是「Product 没接上」。
+   */
+  it('F7 覆盖度：STAGE_TO_PHASE 覆盖 Contract 全部 11 个阶段（含 ENDED）', () => {
+    const missing = CONTRACT_LIFECYCLE_STAGES.filter(
+      (s) => STAGE_TO_PHASE_SNAPSHOT[s] === undefined,
+    );
+    expect(missing).toEqual([]);
+    expect(CONTRACT_LIFECYCLE_STAGES.length).toBe(11);
+  });
+
+  it('F8 export 中实际出现的每个 stage 都必须被映射（不得静默退化为 UNKNOWN）', () => {
+    const seen = new Set<string>();
+    for (const c of ALL) for (const s of c.lifecycle ?? []) seen.add(s.stage);
+    expect(seen.size).toBeGreaterThan(0); // 前件成立
+    const unmapped = [...seen].filter((s) => STAGE_TO_PHASE_SNAPSHOT[s] === undefined);
+    expect(unmapped).toEqual([]);
+    // 且每个出现过的 stage 都不得被映射成 UNKNOWN
+    const toUnknown = [...seen].filter((s) => STAGE_TO_PHASE_SNAPSHOT[s] === 'UNKNOWN');
+    expect(toUnknown).toEqual([]);
+  });
+
+  it('F9 具体复核：`ENDED` 必须映射为 END（修复前静默退化为 UNKNOWN）', () => {
+    expect(STAGE_TO_PHASE_SNAPSHOT.ENDED).toBe('END');
+    for (const c of ALL) {
+      const hasEnded = (c.lifecycle ?? []).some((s) => s.stage === 'ENDED');
+      if (hasEnded) expect(terminalPhaseOf(c), c.campaign_id).toBe('END');
     }
   });
 });

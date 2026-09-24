@@ -471,7 +471,9 @@ export function peakWindowOf(
     };
   }
   const stage = (c.lifecycle ?? []).find((x) => x.stage === 'PEAK');
-  if (stage && stage.start < stage.end) {
+  // Contract：`start` / `end` 可为 null（开放区间）—— 开放式 PEAK 不构成可用区间，故回退到 peak ± 半宽。
+  if (stage && typeof stage.start === 'string' && typeof stage.end === 'string'
+    && stage.start < stage.end) {
     return { start: stage.start, end: stage.end, disputed: false };
   }
   if (!c.peak) return null;

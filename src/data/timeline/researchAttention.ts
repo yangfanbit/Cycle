@@ -34,7 +34,13 @@ import { diffDays } from '../../utils';
  *   MAIN_RISE                                          → EXPANSION
  *   PEAK                                               → PEAK
  *   SECONDARY / FIRST_DECLINE / RETRACEMENT / DECLINING → DECLINE
- *   MAIN_END                                           → END
+ *   MAIN_END / ENDED                                   → END
+ *
+ * ★ 覆盖度不变量：本表必须覆盖 `contracts/timeline_export_v1.md` 的 **全部 11 个**
+ *   `VALID_LIFECYCLE_STAGE`。漏映射不会报错，但会让 `phaseOfStage()` **静默退化为 UNKNOWN**
+ *   —— 研究明明记录了大写阶段，Product 却显示「阶段未标注」（`UNKNOWN ≠ 未映射`）。
+ *   实测漏项：`ENDED`（Contract 成员，当前 export 中出现 2 次）曾缺映射。
+ *   由 `releaseGateScenarios.test.tsx` Scenario F 的覆盖度断言机械兜底。
  */
 export type ResearchPhase =
   | 'EARLY_SIGNAL'
@@ -57,7 +63,29 @@ const STAGE_TO_PHASE: Record<string, ResearchPhase> = {
   RETRACEMENT: 'DECLINE',
   DECLINING: 'DECLINE',
   MAIN_END: 'END',
+  ENDED: 'END',
 };
+
+/**
+ * Contract `VALID_LIFECYCLE_STAGE` 全量（11 项）—— **导出即可见**，供不变量测试机械比对。
+ * 任何新增 Contract 阶段都必须同步进 `STAGE_TO_PHASE`，否则覆盖度断言会失败。
+ */
+export const CONTRACT_LIFECYCLE_STAGES = [
+  'EARLY_SIGNAL',
+  'THEME_FORMING',
+  'BROAD_CONFIRMATION',
+  'MAIN_RISE',
+  'PEAK',
+  'RETRACEMENT',
+  'DECLINING',
+  'SECONDARY',
+  'FIRST_DECLINE',
+  'MAIN_END',
+  'ENDED',
+] as const;
+
+/** 供不变量测试使用的只读映射快照（不得用于业务写入）。 */
+export const STAGE_TO_PHASE_SNAPSHOT: Readonly<Record<string, ResearchPhase>> = STAGE_TO_PHASE;
 
 export const PHASE_LABEL: Record<ResearchPhase, string> = {
   EARLY_SIGNAL: '早期信号',
@@ -81,31 +109,23 @@ export function phaseOfStage(stage: string): ResearchPhase {
  *   1. lifecycle 中存在 `MAIN_END` → `END`（主段结束是**终结标记**：
  *      其后的 SECONDARY 次级行情不改变"该 Campaign 已结束"这一事实）。
  *   2. 否则取 lifecycle 中 start 最晚的阶段。
- *   3. 无 lifecycle → 回退视图分段（early_signal / main_rise / retracement / declining / ended）。
- *   4. 仍取不到 → `UNKNOWN`（不编造）。
+ *   3. **无 Research lifecycle → `UNKNOWN`**（不编造）。
+ *
+ * ★ Gate T8（`UNKNOWN ≠ 自动推导具体阶段`）：
+ *   **不得**回退到视图分段 `campaign.phases`。`phases` 是 `timelineAdapter.derivePhases()`
+ *   由 `start/end` 派生的 **Timeline 视觉分段**（`peak == null` 时无条件产出 `main_rise`），
+ *   不是 Research 结论。用它当 Research phase fallback = 在研究明确「阶段不可识别」的对象上
+ *   Product 自行推导出一个具体阶段（误导性显示，见 `docs/THREEC_1_0_RELEASE_DEFINITION.md` P0-1）。
+ *   视图分段仍归 Timeline 视觉使用，与本函数**职责分离**。
  */
 export function terminalPhaseOf(campaign: TimelineCampaign): ResearchPhase {
   const stages = (campaign.lifecycle ?? [])
     .filter((s) => typeof s.start === 'string' && s.start.length > 0)
-    .slice()
+    .map((s) => ({ ...s, start: s.start as string }))
     .sort((a, b) => (a.start < b.start ? -1 : a.start > b.start ? 1 : 0));
-  if (stages.length > 0) {
-    if (stages.some((s) => s.stage === 'MAIN_END')) return 'END';
-    return phaseOfStage(stages[stages.length - 1].stage);
-  }
-  const segs = campaign.phases ?? [];
-  if (segs.length > 0) {
-    const last = segs[segs.length - 1].phase;
-    const map: Record<string, ResearchPhase> = {
-      early_signal: 'EARLY_SIGNAL',
-      main_rise: 'EXPANSION',
-      retracement: 'DECLINE',
-      declining: 'DECLINE',
-      ended: 'END',
-    };
-    return map[last] ?? 'UNKNOWN';
-  }
-  return 'UNKNOWN';
+  if (stages.length === 0) return 'UNKNOWN';
+  if (stages.some((s) => s.stage === 'MAIN_END')) return 'END';
+  return phaseOfStage(stages[stages.length - 1].stage);
 }
 
 /** lifecycle 中**曾出现**的全部阶段（去重，按生命周期顺序） */

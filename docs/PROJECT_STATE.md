@@ -7,8 +7,8 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：`c56e70f`（`feat(product): complete product real usage validation v0.1`；本文件随 **Research Lifecycle Mapping Repair v0.1** 提交入库）
-- **★ 当前阶段：Product / Real Usage Iteration v0.1**（Research Core 已 Release 并冻结；详见 `docs/ROADMAP.md` §2）
+- HEAD：见 `git log -1`（本文件随 **ThreeC 1.0 P0 修复轮** 提交入库）
+- **★ 当前阶段：Product / Real Usage Iteration v0.1 → 已通过 Gate T8，待进入 1.0 Deployment**（详见 `docs/ROADMAP.md` §2）
 - 最近完成：**Product Stabilization + Real Usage Validation v0.1**（详见 `docs/PRODUCT_REAL_USAGE_BASELINE_v0_1.md`）
   · **阶段 A–C**：**21 项 Product Test Failures → 0**（逐项验证分类：A 旧 universe fixture 18 · C 契约更新 1 · **B 真实缺陷 2**）；
     `npm test` **0 failed / 622 passed（16 files）** · `tsc -b` **PASS** · `vite build` **PASS**
@@ -48,8 +48,42 @@
     最小静态部署方案已设计（见定义文档 §2），**未引入后端**
   · **4 个仅 UNKNOWN lifecycle 的 RC 判定为 `KNOWN DATA LIMITATION`，不是 1.0 Blocker**（来源明确 · 无伪造 ·
     Product 可显示信息不足 · validator L4 防静默丢失）
-- **Next Single Goal**：**修 P0-1** —— 让「无 research lifecycle」的对象显示「阶段未判定」而不是推导出的具体阶段
-  （**不自动开始下一项开发**）
+- **Next Single Goal**：**进入 ThreeC 1.0 Deployment / Release Engineering** —— 处理 **P1-1**
+  （最小静态部署 + 重建流程 + 回滚定义 + 访问入口）。**本轮不设 `1.0.0`、不打 tag、不部署。**
+
+### 最近完成：**ThreeC 1.0 P0 修复轮 —— Gate T8 / P0-1（含审计新发现 P0-1c / P0-1d）**
+
+> **结果：Gate T 由 ★ FAIL → PASS；P0 清单清零（0 项）；**全 8 个 Gate 中 T/Q/U 已 PASS**。
+> 本轮为**纯 Product 语义修复**，`research/` · `exports/` · `contracts/` · `schema.sql` **零改动**。
+
+- **P0-1（原判 P0）**：`historicalCase.ts` 的 `lifecycle` 改为读 **Research `c.lifecycle`**（空则 `[]`），
+  **不再回退** adapter 派生的 `c.phases`；`researchAttention.ts::terminalPhaseOf` **删除 `c.phases` 回退**
+  → 无 Research lifecycle 时返回 `UNKNOWN`。**P0-1b** 伴生误导注释同步改写。
+  · **实证**：4 个仅 UNKNOWN 的 RC（`RC-2019-RE-EASING` / `RC-2020-FIN-BROKER-VOLUME` /
+    `RC-2016-RE-SHANTY` / `RC-2015-FIN-LEVERAGE`）修复前一律显示「主升 `main_rise`」/ `EXPANSION`，
+    修复后 **`lifecycle = []` / `UNKNOWN`**；虚构计数 **4 → 0**（两个函数各自 4 → 0）。
+  · **`derivePhases()` 与 `c.phases` 完整保留**（Timeline 视觉分段仍依赖；4 个 RC 的 `phases` 均在）。
+- **P0-1c（★ 本轮审计新发现，同属 Gate T8 家族）**：`STAGE_TO_PHASE` **漏映射 `ENDED`**
+  —— `ENDED` 是 Contract `VALID_LIFECYCLE_STAGE` 成员且在当前 export 中出现 **2 次**，
+  漏映射使 `phaseOfStage('ENDED')` **静默退化为 `UNKNOWN`**（`UNKNOWN ≠ 未映射`：前者是研究未判定，
+  后者是 Product 没接上 → **低估研究结论**）。受影响对象 `C-2019-MIL-GROUP-RESTRUCTURE` /
+  `C-2020-RE-DEBT-RISK` 由 `UNKNOWN` **纠正为 `END`**。已补映射，并新增
+  `CONTRACT_LIFECYCLE_STAGES`（11 项全量）与 F7/F8/F9 覆盖度不变量。
+- **P0-1d（★ 本轮审计新发现）**：`ExportLifecycleStageV1.start/end` 类型曾写死为 `string`，
+  但 Contract 明确 `start`/`end` **可为 null**（开放区间；`is_iso_date(None) == True`）
+  → 5 个消费点存在 `null` 运行时风险（`terminalPhaseOf` 排序、`peakWindowOf`、`stageSegmentOf`、
+  `historicalPhasesInWindow`、`CampaignDetail` 旧字段区）。**全部显式处理开放区间，不猜测端点。**
+  `tsc -b` 由 **12 error → 0 error**。
+- **P0-1e（本轮 UI 审计新发现）**：`CampaignDetail` 存在 **第二处独立 `m.phases` 渲染路径**
+  （旧 `历史行情` 字段区），与 `historicalCaseOf` 无关但同样虚构「主升」→ 已改读 Research `lifecycle`，
+  空则**整区不渲染**。
+- **Gate U 正式化**：D3 由 `it.fails`（KNOWN GAP）**正式化为 `it(...)` 正常断言**；
+  新增 **D3b**（UI「生命周期」字段区不得出现具体阶段名）与 **Scenario F1–F9**（Gate T8 全局不变量，
+  含 **F3 反向非空断言** —— 证明修复不是靠「一律返回空」蒙过、**F5** 证明 `phases` 未被删除）。
+- **验证链**：`npm test` **654 passed / 0 failed（17 files）**（643 → 654）· `tsc -b` **0 error** ·
+  `vite build` **PASS** · `researchWorkflow.test.tsx` 5/5 Candidate 闭环仍全通 · 无 runtime crash。
+- **本轮未做**：未改 `research/` / `exports/` / `contracts/` / `schema.sql` / SA v0.5 / Driver v0.4 / TO v0.2 /
+  lifecycle 映射规则 / Historical Universe；未设 `1.0.0`、未打 tag、未部署、未引入托管。
 
 ## 1. 项目当前定位
 

@@ -171,6 +171,8 @@ export function historicalPhasesInWindow(
   const stages: ExportLifecycleStageV1[] = campaign.lifecycle ?? [];
   const out: { stage: string; label: string; hit: { start: string; end: string }; days: number }[] = [];
   for (const s of stages) {
+    // Contract：`start` / `end` 可为 null（开放区间）—— 无完整区间则无法与窗口求交，跳过（不猜测端点）。
+    if (typeof s.start !== 'string' || typeof s.end !== 'string') continue;
     const hit = intersect(s.start, s.end, win.start, win.end);
     if (hit) {
       out.push({

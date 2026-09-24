@@ -267,6 +267,8 @@ function stageSegmentOf(
   phase: ResearchPhase,
 ): { stage: string; start: string; end: string; precision: string } | null {
   for (const s of campaign.lifecycle ?? []) {
+    // Contract：`start` / `end` 可为 null（开放区间）—— 无完整区间时不可作阶段区间使用（不替代推导）。
+    if (typeof s.start !== 'string' || typeof s.end !== 'string') continue;
     if (phaseOfStage(s.stage) === phase) {
       return { stage: s.stage, start: s.start, end: s.end, precision: s.precision };
     }
