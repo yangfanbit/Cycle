@@ -1,11 +1,25 @@
 # THREEC_1_0_RELEASE_DEFINITION.md — ThreeC 1.0 发布定义
 
+> ## ★ ThreeC 1.0 = **RELEASED**
+>
+> | 项 | 值 |
+> |---|---|
+> | **Version** | **`1.0.0`** |
+> | **Tag** | **`v1.0.0`**（annotated，2026-09-24） |
+> | **Release commit** | **`064d39c`** |
+> | **Production URL** | **https://yangfanbit.github.io/Cycle/** |
+> | **Gate R / P / T / Q / U / M / D / G** | **全部 PASS** |
+> | **P0 / P1** | **0 / 0** |
+>
+> **线上身份 = `v1.0.0`（commit `064d39c`）**，可经 Build Provenance 逐一核对。
+> 本节以下内容为 1.0 发布定义与 Gap Audit 的历史审计记录，**保留原貌，不篡改**。
+
 > | 项目 | 值 |
 > |---|---|
 > | **文档性质** | **1.0 的正式发布定义（永久锁定）**。任何「宣布 1.0」的判断都必须以本文件为准。 |
 > | **建立日期** | 2026-09-24 |
 > | **审计基线** | HEAD `ad5e804`（Research Lifecycle Mapping Repair v0.1） |
-> | **复核基线** | `7c7d64f`（P0 修复轮）· `1e42b6c`（Deployment 轮末次提交） |
+> | **复核基线** | `7c7d64f`（P0 修复轮）· `1e42b6c`（Deployment 轮末次提交）· `064d39c`（**1.0 Release commit**） |
 > | **本轮性质** | **定义 + Gap Audit** —— 不开发新功能、不优化 Research、不扩 Universe |
 > | **上游文档** | `docs/PROJECT_STATE.md`（动态状态）· `docs/ROADMAP.md`（路线） |
 
@@ -186,9 +200,9 @@ Today → Current Candidate → Time / Calendar → Lifecycle
 > | 概念 | 内容 | 状态 |
 > |---|---|---|
 > | **Deployment Engineering** | production build · GitHub Pages · URL · CI/CD · provenance · rollback · rebuild flow | ✅ **已完成** |
-> | **正式 1.0 Release 条件**（D4 / D5） | `package.json version = 1.0.0` · `git tag v1.0.0` | ⏳ **Gate M 通过后由独立 Release 轮执行** |
+> | **正式 1.0 Release 条件**（D4 / D5） | `package.json version = 1.0.0` · `git tag v1.0.0` | ✅ **已执行（ThreeC 1.0 RELEASED）** |
 >
-> `Gate D = PASS` 在此表示 **Deployment Engineering 已完成**，
+> `Gate D = PASS` 表示 **Deployment Engineering 已完成 + D4/D5 已在 Release 轮执行**，
 > **不等于**已执行正式 1.0 Release。
 
 1.0 必须具备：
@@ -312,8 +326,8 @@ LLM runtime
 | **Quality** | **PASS** | `npm test` **654 passed / 0 failed（17 files）** · `tsc -b` PASS · `vite build` PASS · 无 runtime crash · null 安全 | **否** | — |
 | **Real Usage** | **PASS（无缺口）** | 场景 A–E **全部正常通过**；**D3 已由 `it.fails` 正式化为正常断言**；新增 **Scenario F（Gate T8 全局不变量，F1–F9）** | **否** | — |
 | **Mobile** | **PASS（真机已复核）** | 断点 110/240/300/720/900；375/390/412px **全部落在 720px 断点内** · 无 ≥400px 固定宽度（除 timeline 1080px 由 `overflow-x:auto` 承载）· `overflow-wrap` 28 处 · 7 个区块均有移动端规则 —— 以上均为**静态审计** | **是（Gate M）** | 对**线上**入口做真机 / 实际浏览器复核（M1–M7） |
-| **Deployment** | **PASS（Deployment Engineering 已完成）** | `.github/workflows/deploy.yml`（GitHub Pages）· 入口 `https://yangfanbit.github.io/Cycle/`（实测 200 OK）· `base = /Cycle/` · `buildProvenance()` 版本对应（D7，线上实测）· `DEPLOYMENT_RUNBOOK.md`（D8 + 回滚 D6）· Actions `build` + `deploy` 全 PASS | **否** | **D4（`1.0.0`）/ D5（`v1.0.0` tag）保留至 Gate M 通过后的独立 Release 轮** |
-| **Documentation** | **PASS** | 本文件为唯一 1.0 判据；`PROJECT_STATE` 记录 HEAD → `1e42b6c`（不硬编码旧 SHA）、Gate 状态、P0/P1 = 0；`ROADMAP` §2 = Deployment 主线；`README` 真实当前阶段 + 线上入口并标注「尚未正式发布」 | **否** | — |
+| **Deployment** | **PASS（Deployment Engineering 已完成）** | `.github/workflows/deploy.yml`（GitHub Pages）· 入口 `https://yangfanbit.github.io/Cycle/`（实测 200 OK）· `base = /Cycle/` · `buildProvenance()` 版本对应（D7，线上实测）· `DEPLOYMENT_RUNBOOK.md`（D8 + 回滚 D6）· Actions `build` + `deploy` 全 PASS | **否** | **D4（`1.0.0`）/ D5（`v1.0.0` tag）已在 1.0 Release 轮执行并验证** |
+| **Documentation** | **PASS** | 本文件为唯一 1.0 判据；`PROJECT_STATE` 记录 HEAD（以 `git log -1` 实测为准，不硬编码）、Gate 状态、P0/P1 = 0；`ROADMAP` §2 = 1.0 RELEASED；`README` 真实反映 **1.0.0 / v1.0.0 / 生产入口** | **否** | — |
 
 ### 6.1 P0 修复轮复核（本文件 §8 P0 清单已清零）
 
@@ -425,7 +439,7 @@ G（文档）已同步。**Gate M 此前只有 375/390/412px 断点的静态审�
 [x] Gate U  PASS（场景 A–E 全部正常通过，无 it.fails）
 [x] Gate M  PASS —— 真机 / 实际浏览器复核已完成
 [x] Gate D  Deployment Engineering PASS（D1–D3 / D6–D8 已落地并验证）
-    · ⏳ D4 `version = 1.0.0` / D5 `tag v1.0.0` —— 待 Gate M 通过后由独立 Release 轮执行
+    · ✅ D4 `version = 1.0.0` / D5 `tag v1.0.0` —— **已在 1.0 Release 轮执行**（commit `064d39c`，tag `v1.0.0`）
 [x] Gate G  PASS（四份文档与仓库一致）
 [x] P0 清单为空
 [x] P1 清单已处理或明确接受（P1-1 已闭环）
@@ -437,8 +451,8 @@ G（文档）已同步。**Gate M 此前只有 375/390/412px 断点的静态审�
 8. 验证访问入口 → 9. 更新 `PROJECT_STATE` / `ROADMAP` / `README`。
 
 > **★ 边界**：**Deployment Engineering 完成 ≠ ThreeC 1.0 正式发布。**
-> `Gate D = PASS` 表示部署工程已完成；**D4 / D5 不得提前执行**。
-> 线上身份为 commit SHA。**在 Gate M 通过前不设置 `1.0.0`、不创建 `v1.0.0`。**
+> `Gate D = PASS` 表示部署工程已完成；**D4 / D5 已在 1.0 Release 轮执行**。
+> 线上身份 = `v1.0.0`（commit `064d39c`）。**1.0 已正式发布。**
 
 ---
 

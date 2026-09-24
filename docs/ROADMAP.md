@@ -42,12 +42,32 @@
 - Preview / Production isolation
 - Static PWA runtime
 
-## 2. ★ 当前主线：**ThreeC 1.0 Deployment / Release Engineering**（2026-09-24 起）
+## 2. ★ 当前状态：**ThreeC 1.0 — RELEASED**
 
-**目标**：把已通过 Research / Product / Trust / Quality / Real Usage 的 ThreeC，
-变成**可稳定访问、可重复构建、可追溯、可回滚**的静态产品。**不增加产品功能。**
+**目标（已达成）**：把已通过 Research / Product / Trust / Quality / Real Usage / Gate M 的 ThreeC，
+变成**可稳定访问、可重复构建、可追溯、可回滚**的静态产品，并**正式发布 1.0**。
 
-**主流程（已落地）**：
+| 项 | 值 |
+|---|---|
+| **Version** | **`1.0.0`** |
+| **Tag** | **`v1.0.0`**（annotated） |
+| **Release commit** | **`064d39c`**（`release: ThreeC 1.0.0`） |
+| **Production URL** | **https://yangfanbit.github.io/Cycle/** |
+| **Gate R / P / T / Q / U / M / D / G** | **全部 PASS** |
+| **P0 / P1** | **0 / 0** |
+
+当前冻结 / 发布状态：
+
+> Research Core：**FROZEN**
+> Product 1.0：**RELEASED**
+> Deployment：**PRODUCTION**
+> Historical Universe：**79**（52 Campaign + 27 Research Candidate）
+> Research expansion：**DEFERRED**
+> SA / TO：**FROZEN**
+
+**1.1+ 只允许由真实 Product Usage 或明确 Research Question 触发。不预设大量新功能。**
+
+**发布主流程（已落地并已执行）**：
 
 ```text
 push main
@@ -70,20 +90,20 @@ docs/DEPLOYMENT_RUNBOOK.md
 | SPA fallback | **不需要**（无 client-side router，仅 query param） |
 | `.nojekyll` | **不需要**（产物无 `_` 前缀文件） |
 
-**本轮完成**：
+**已执行（Deployment / Release Engineering + 1.0 Release）**：
 
 - `.github/workflows/deploy.yml`（`npm test` 为硬门禁，绝不跳过；只上传 `dist/`；权限最小化）
 - `vite.config.ts` base 解析 + `vite define` 注入 provenance
 - `src/data/buildProvenance.ts` + `<BuildProvenanceFooter />`
 - `src/data/__tests__/deployment.test.ts`（24 用例，workflow 契约由测试锁死）
 - `docs/DEPLOYMENT_RUNBOOK.md`
+- **1.0 Release 执行**：`package.json → 1.0.0` → release commit `064d39c` →
+  annotated tag `v1.0.0` → `git push origin main` + `git push origin v1.0.0` →
+  Actions build + deploy PASS → 线上入口 **200 OK** → smoke / 语义 smoke 全通过
 - **实测**：`npm test` 678 passed / 0 failed · `tsc -b` 0 error · `vite build` PASS ·
-  Actions `build` PASS + `deploy` PASS · 线上入口 **200 OK** · smoke test 全通过
+  Actions `build` PASS + `deploy` PASS · 线上 provenance = `1.0.0` / commit `064d39c`
 
-**下一步（1.0 正式宣布准备）**：Gate M 真机复核 → `package.json → 1.0.0` → release commit →
-`git tag v1.0.0` → 部署 → 验证入口 → 收口四份文档。**★ 本轮仍不是 1.0 发布。**
-
-**★ 明确不重开**（除非真实使用产生新的 P0 证据）：
+**★ 明确不重开**（除非真实使用产生新的 P0 证据或明确 Research Question）：
 R01 / Research 扩容 / SA 扩容 / TO 扩容 / Driver vocabulary / Dashboard / Radar / backend。
 
 ---

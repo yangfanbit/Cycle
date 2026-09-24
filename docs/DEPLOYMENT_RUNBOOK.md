@@ -457,11 +457,12 @@ Location: http://yfnwu.com/Cycle/
 
 ## 9. 部署 ≠ 发布（重要）
 
-> **本轮「Deployment Engineering 完成」≠「ThreeC 1.0 正式发布」。**
+> **「Deployment Engineering 完成」≠「ThreeC 1.0 正式发布」。**
+> **本节记录的是发布前的隔离原则（历史，已被后续 Release 轮满足）。**
 
-本轮**不**做：
+发布前**不**做：
 
-- ❌ `package.json` → `1.0.0`（本轮仍为 `0.1.0`）
+- ❌ `package.json` → `1.0.0`（当时仍为 `0.1.0`）
 - ❌ 创建 `git tag v1.0.0`
 - ❌ 对外宣称「ThreeC 1.0 Released」
 
@@ -481,3 +482,7 @@ git tag v1.0.0
     ↓
 PROJECT_STATE / ROADMAP / README 最终锁定
 ```
+
+**★ 该流程已于 2026-09-24 执行完成**：Eight Gates 全部 PASS → `package.json = 1.0.0` →
+release commit `064d39c` → tag `v1.0.0`（本地 + origin）→ production 部署 → 线上验证 PASS。
+**ThreeC 1.0 = RELEASED。**

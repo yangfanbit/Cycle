@@ -12,6 +12,14 @@
 > **核心价值 = 机会发现。**
 > ThreeC 不负责基本面、技术面、个股选择、买卖时机、预测或自动交易。
 
+**明确不提供（Product 非目标）**：
+
+- ❌ 不提供买卖信号 / 不自动交易
+- ❌ 不选股 / 不荐股
+- ❌ 不预测价格 / 不预测收益
+- ❌ 不提供概率 / 胜率 / 推荐分
+- ❌ 不运行时联网 / 不做实时行情或资金异动监控
+
 ---
 
 ## 当前状态
@@ -30,13 +38,20 @@
 
 **Research Core 状态**：**Release 完成并冻结** —— 后续只允许由「真实 Product Usage 暴露的问题」触发新研究轮次。
 
-**当前阶段**：**ThreeC 1.0 Deployment / Release Engineering —— 已完成**，线下唯一剩余 Release 前置为 **Gate M（真机 / 实际浏览器复核）**（详见 `docs/ROADMAP.md`）。
+**当前阶段**：**ThreeC 1.0 — RELEASED**
 
-> ⚠️ **尚未正式发布。** 部署工程已完成（静态部署 / 访问入口 / 可追溯 / 可回滚），
-> **`package.json` 仍为 `0.1.0`，没有 `v1.0.0` tag**。
-> **Deployment Engineering 完成 ≠ 正式 1.0 Release。**
-> Gate R/P/T/Q/U/D（部署工程）/G 已 PASS；**Gate M 待真机复核**。
-> 只有 8 个 Release Gate 全部 PASS 后，下一独立 Release 轮才执行版本号变更与正式发布。
+| 项 | 值 |
+|---|---|
+| **Version** | **`1.0.0`** |
+| **Tag** | **`v1.0.0`**（annotated） |
+| **Release commit** | **`064d39c`** |
+| **Production** | **https://yangfanbit.github.io/Cycle/** |
+| **Gate R / P / T / Q / U / M / D / G** | **全部 PASS** |
+| **P0 / P1** | **0 / 0** |
+
+> ✅ **ThreeC 1.0 已正式发布。**
+> Research Core 冻结 · Product 1.0 已发布 · Deployment 已进入生产 · 8 个 Release Gate 全部 PASS。
+> 后续版本（1.1+）只允许由真实 Product Usage 或明确 Research Question 触发，**不预设新功能**。
 
 最新状态详见：
 
@@ -47,11 +62,12 @@
 
 ---
 
-## 线上访问入口（Production）
+## 线上访问入口（Production · v1.0.0）
 
 | 项 | 值 |
 |---|---|
 | **正式入口** | **https://yangfanbit.github.io/Cycle/** |
+| **版本** | **`1.0.0`**（tag `v1.0.0`，release commit `064d39c`） |
 | 宿主 | GitHub Pages（纯静态） |
 | 部署 | GitHub Actions（`.github/workflows/deploy.yml`）· push `main` 自动构建 + 部署 |
 | 研究预览 | https://yangfanbit.github.io/Cycle/?preview=1 |

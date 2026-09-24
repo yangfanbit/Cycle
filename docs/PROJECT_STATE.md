@@ -3,44 +3,90 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
+## ★ 当前阶段：ThreeC 1.0 — **RELEASED**
+
+| 项 | 值 |
+|---|---|
+| **Version** | **`1.0.0`** |
+| **Tag** | **`v1.0.0`** |
+| **Release commit** | **`064d39c`** |
+| **Production** | **https://yangfanbit.github.io/Cycle/** |
+| **Gate R / P / T / Q / U / M / D / G** | **全部 PASS** |
+| **P0 / P1** | **0 / 0** |
+
 - 更新日期：2026-09-24
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
 - HEAD：**以 `git log -1` 实测为准**（本文件不硬编码当前 SHA）
-  · 本轮（Gate M）提交链：`1e42b6c` → `6774e2e`（真机复核 + P1 修复 + 文档同步）→ `17a5eba`（Gate M 收口文档）
+  · 1.0 Release 提交链：`f8b6c82`（Gate M 收口）→ `064d39c`（**release: ThreeC 1.0.0**）
   · ★ **任何接班第一步必须跑 `git log -1`**；上文 SHA 仅为可读线索，不是权威值
-- **★ 当前阶段：ThreeC 1.0 Deployment / Release Engineering —— 已完成**（详见 `docs/ROADMAP.md` §2）
 - **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
-- **★ Gate 状态**：R / P / T / Q / U = **PASS** · D（Deployment Engineering）= **已完成** · G = **PASS**
-  · **★ Gate M（真机 / 实际浏览器复核）= 本轮已完成**（真实 Chromium 驱动，375 / 390 / 412 / 768）
-  · **8 个 Release Gate 已全部闭环**；本轮修复 2 处 P1 移动端横向溢出
+- **★ 当前唯一目标**：**无**（1.0 已发布）
+  · 后续 1.1+ **只在真实 Product Usage / Research Question 触发时才启动**，不预设功能
+
+### 1.0 Release 完成事实
+
+- **Product version**：`package.json` = `1.0.0`（`package-lock.json` 同步）
+- **Git tag**：`v1.0.0`（annotated）→ commit `064d39c` = HEAD = origin/main
+- **部署**：GitHub Actions `build` + `deploy` 走 **Release commit**，environment `github-pages`
+- **线上 provenance 实测**：Product version `1.0.0` · 构建 commit `064d39c` ·
+  Research export 1.0 · source_commit `c56e70f` · 52 Campaign + 27 RC = 79 ·
+  SA artifact 0.5（`structural-analogy-ruleset-v0.3`）· TO artifact 0.3 ·
+  **无 `__THREEC_` / `process.env` / `undefined` / `NaN`**
+- **线上 smoke test**：`/` · `?preview=1` · `?candidates=example` · `?foo=bar`
+  → 全部 HTTP 200 / JS 200 / CSS 200 / 无 pageerror / 刷新正常 / **横向溢出 = 0**
+- **语义红线复查（线上）**：UNKNOWN-only RC 显示「阶段未标注」（无具体阶段）·
+  ENDED Campaign 显示 `ENDED`（非 UNKNOWN）· RC identity 未混淆 · SA 四维可读且无
+  score / ranking / probability / prediction
+
+### 冻结状态
+
+- **Research Core：FROZEN**（Research Model v1.0 · `schema.sql` · Timeline Export Contract v1.0）
+- **Historical Universe：79**（52 Campaign + 27 Research Candidate）
+- **SA：FROZEN**（rule set v0.3）· **TO：FROZEN**（artifact 0.3）
+- **Research expansion：DEFERRED**
+
+---
+
+- HEAD：**以 `git log -1` 实测为准**（本文件不硬编码当前 SHA）
+  · 1.0 Release 提交链：`f8b6c82`（Gate M 收口）→ `064d39c`（**release: ThreeC 1.0.0**，tag `v1.0.0`）
+  · ★ **任何接班第一步必须跑 `git log -1`**；上文 SHA 仅为可读线索，不是权威值
+- **★ 当前阶段：ThreeC 1.0 — RELEASED**
+- **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
+- **★ Gate 状态**：**R / P / T / Q / U / M / D / G = 全部 PASS**
+  · Gate M（真机 / 实际浏览器复核）已于 2026-09-24 完成（真实 Chromium 驱动，375 / 390 / 412 / 768）
+  · Gate D 的 D4（`version = 1.0.0`）/ D5（`tag v1.0.0`）**已在 1.0 Release 轮执行**
 - **★ P0 = 0 · P1 = 0**
-- **★ 当前唯一目标**：**1.0 正式宣布准备** —— Gate M 真机复核 → `package.json → 1.0.0` → release commit → `git tag v1.0.0` → 部署 → 验证入口 → 收口文档
-  · **本轮仍未设置 `1.0.0`、仍未创建 `v1.0.0`**；线上身份 = commit SHA
-  · **★ 注意区分**：`Deployment Engineering 已完成` ≠ `正式 1.0 Release 已执行`
-- 最近完成：**ThreeC 1.0 Deployment / Release Engineering**（详见 `docs/DEPLOYMENT_RUNBOOK.md`）
+- 最近完成：**ThreeC 1.0 Final Release —— v1.0.0 正式发布**
+  · `package.json` `0.1.0` → `1.0.0`（`package-lock.json` 同步）· release commit `064d39c` · annotated tag `v1.0.0`
+  · GitHub Actions 部署 Release commit（environment `github-pages`）· 线上 provenance 与 smoke test 全部实测通过
+  · 未修改 Research artifact / SA artifact / TO artifact / Export Contract / Research Model / schema 任何版本
+
+<details>
+<summary>历史：1.0 发布前的 Deployment / Gate M 阶段记录（保留原貌，不篡改）</summary>
+
+- 历史阶段：**ThreeC 1.0 Deployment / Release Engineering —— 已完成**（详见 `docs/DEPLOYMENT_RUNBOOK.md`）
   · **部署形态**：**GitHub Pages**（唯一平台；未使用 Vercel / Netlify / Docker / 云服务器 / CDN 产品化）
-  · **访问入口**：**`https://yangfanbit.github.io/Cycle/`** —— **实测 200 OK**，`<title>A股机会时间轴</title>`
   · **自动构建**：`.github/workflows/deploy.yml` —— push `main` → `npm ci` → `tsc -b` → `npm test` → `npm run build`
     → 上传 `dist/` → `deploy-pages`（**不允许跳过 `npm test`**；**不允许上传未 build 的源码**；**不提交 `dist/`**）
-    · CI **实测 PASS**：`build` PASS + `deploy` PASS（environment `github-pages`，sha `f9cc007`）
+    · CI **实测 PASS**：`build` PASS + `deploy` PASS（environment `github-pages`）
     · workflow 内**硬 Gate**「Verify base path is /Cycle/」：产物含 `/assets/` 绝对引用即 FAIL，不上线
   · **Vite `base`**：`resolveBase()` = `THREEC_BASE` 显式覆盖 > `GITHUB_ACTIONS === 'true'` → `/Cycle/` > 默认 `/`
     （**刻意不用 `command === 'serve'`**，使 `vite preview` 可复现生产行为；本地 `dev` / `preview` 不受影响）
   · **D7 provenance（非仅文档）**：`src/data/buildProvenance.ts` 在 Product 内展示 `package.json.version` ·
     git commit · `exports/timeline_export_v1.json` 的 `source_commit` · SA / TO artifact 版本
-    · **线上实测**（主 bundle 1.99 MB）：`0.1.0` · `source_commit = c56e70fc...` · `timeline_export` v1.0 ·
-      SA `rule_set_version` · SA/TO `artifact_version` · **无未替换 `__THREEC_`** · **无 `process.env`**
-  · **smoke test 实测**：`/Cycle/` · `/Cycle/?preview=1` · `/Cycle/?candidates=example` · JS / CSS asset **全部 200**
   · **D6 / D8**：`docs/DEPLOYMENT_RUNBOOK.md`（正常发布 / Product-only / Research artifact 更新 / 回滚 / smoke test）
-  · **★ 本轮排查并解决 2 个真实部署阻塞**：
+  · **★ 该阶段排查并解决 2 个真实部署阻塞**：
     (1) `has_pages = false` —— 仓库从未启用 Pages，`deploy` job 必然失败 → 已启用（`build_type = workflow`）
     (2) **user-site 自定义域名级联 301** —— `yangfanbit.github.io`（user site）设了 `cname: yfnwu.com`，
         GitHub Pages 将其级联到 `Cycle`，导致入口 301 → `yfnwu.com`（Vercel 托管、无该路由）→ 404；
         **本项目 `cname` 本就是 `null`，无法自行修复** → 已获用户授权清空该 user-site 的 custom domain，
         入口立即恢复 200。**未改动任何 DNS。** 详见 runbook §8.1 / §8.2
+  · Gate M 轮修复 3 处 P1 移动端横向溢出（详见 `docs/CHANGELOG.md` 2026-09-24 条目）
   · **未修改** `research/` · `exports/` · `contracts/` · `schema.sql` · SA rule · TO 标准；**未新增**产品功能；**未引入**后端 / runtime 网络 / LLM
+
+</details>
 - 最近完成：**ThreeC 1.0 P0 修复轮 —— Gate T8 / P0-1（含 P0-1b/c/d/e）**
   · **结果：Gate T 由 ★ FAIL → PASS；P0 清单清零**。纯 Product 语义修复，`research/` · `exports/` · `contracts/` · `schema.sql` 零改动
   · `historicalCase.ts` 改读 Research `c.lifecycle`（空则 `[]`）；`researchAttention.ts::terminalPhaseOf` 删除 `c.phases` 回退 → `UNKNOWN`
@@ -270,12 +316,27 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# **ThreeC 1.0 正式宣布准备** —— ✅ Deployment 主线已闭环
+# **ThreeC 1.0 — RELEASED** ✅
 
-**Deployment / Release Engineering 已完成**（线上入口 `https://yangfanbit.github.io/Cycle/` 实测 200 OK）。
+**1.0 正式发布已完成**：
 
-后续唯一主线 = **1.0 正式宣布流程**（Gate M 真机复核 → `package.json` → `1.0.0` → release commit → `git tag v1.0.0` → 部署 → 验证入口 → 文档收口）。
-**本轮不设 `1.0.0`、不创建 `v1.0.0`。**
+- Version `1.0.0` · Release commit `064d39c` · annotated tag `v1.0.0`（本地 + origin）
+- Production `https://yangfanbit.github.io/Cycle/` 线上 provenance = `1.0.0` / commit `064d39c`
+- Gate R/P/T/Q/U/M/D/G **全部 PASS** · P0 = 0 · P1 = 0
+
+**下一步**：无既定新主线。**1.1+ 只允许由真实 Product Usage 或明确 Research Question 触发**，
+不预设新功能。历史主线（Deployment / Gate M / R01 等）见下方存档。
+
+---
+
+<details>
+<summary>历史背景：1.0 正式发布前的「待发布」记录（保留原貌，不篡改）</summary>
+
+**（发布前状态，已过期）** Deployment / Release Engineering 已完成（线上入口实测 200 OK）；
+后续唯一主线 = Gate M 真机复核 → `package.json → 1.0.0` → release commit →
+`git tag v1.0.0` → 部署 → 验证入口 → 文档收口。**当时不设 `1.0.0`、不创建 `v1.0.0`。**
+
+</details>
 
 ---
 
