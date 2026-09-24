@@ -7,9 +7,9 @@
 - branch：`main`
 - ahead / behind：`0 / 0`
 - working tree：clean
-- HEAD：**`6774e2e`**（Gate M 真机复核 + P1 移动端溢出修复 + 文档同步；**以 `git log -1` 为准**）
-  · 提交链：`7c7d64f`（起点）→ `f9cc007` → `0812efc` → `1e42b6c` → `6774e2e`（本轮）
-  · ★ **本文件不硬编码旧 SHA**：任何接班以 `git log -1` 实测为准
+- HEAD：**以 `git log -1` 实测为准**（本文件不硬编码当前 SHA）
+  · 本轮（Gate M）提交链：`1e42b6c` → `6774e2e`（真机复核 + P1 修复 + 文档同步）→ `17a5eba`（Gate M 收口文档）
+  · ★ **任何接班第一步必须跑 `git log -1`**；上文 SHA 仅为可读线索，不是权威值
 - **★ 当前阶段：ThreeC 1.0 Deployment / Release Engineering —— 已完成**（详见 `docs/ROADMAP.md` §2）
 - **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
 - **★ Gate 状态**：R / P / T / Q / U = **PASS** · D（Deployment Engineering）= **已完成** · G = **PASS**
