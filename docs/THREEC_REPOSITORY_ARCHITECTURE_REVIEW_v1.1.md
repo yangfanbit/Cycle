@@ -11,7 +11,7 @@
 > | 结论 | **PASS WITH FINDINGS** —— 无阻断性违规；发现 **4 项架构债**，其中 **F-1 须在 Phase 1.2 前处置** |
 >
 > 上游：`docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` ·
-> `docs/MARKET_SNAPSHOT_CONTRACT_v0.1.md` · `docs/MARKET_SNAPSHOT_GOVERNANCE.md`
+> `docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md` · `docs/MARKET_SNAPSHOT_GOVERNANCE.md`
 
 ---
 

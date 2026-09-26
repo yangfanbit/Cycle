@@ -1,14 +1,29 @@
-# MARKET_SNAPSHOT_CONTRACT_v0.1.md
+# MARKET_SNAPSHOT_CONTRACT_v0.2.md
 
 > | 项目 | 值 |
 > |---|---|
-> | 文件性质 | **设计契约（DESIGN CONTRACT）** —— Phase 0 草案，**不是已冻结实现** |
+> | 文件性质 | **设计契约（DESIGN CONTRACT）** —— 0.x 阶段，结构可演进 |
 > | 契约名 | `market_snapshot` |
-> | 契约版本 | **`0.1`** |
-> | 日期 | 2026-09-25 |
-> | 依赖 | `docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` · `docs/MARKET_SNAPSHOT_GOVERNANCE.md` |
-> | 本轮不产出 | **不生成 `schema.sql` · 不实现数据库 · 不写代码** |
-> | 状态 | **等待下一阶段确认** |
+> | 契约版本 | **`0.2`** |
+> | 日期 | 2026-09-26（v0.1 为 2026-09-25） |
+> | 依赖 | `docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` · `docs/MARKET_SNAPSHOT_GOVERNANCE.md` · `docs/MARKET_REGIME_AI_INTERFACE_v0.1.md` |
+> | 实现 | `research/current/market_snapshots/`（schema + validator + generator + 两个投影器） |
+> | 本轮不产出 | **不生成 `schema.sql` · 不实现数据库** |
+> | 状态 | **v0.2 已实现并验证**（`MS-2026-09-15-01`） |
+
+## 0. 版本历史
+
+| 版本 | 日期 | 变化 | 性质 |
+|---|---|---|---|
+| `0.1` | 2026-09-25 | 初版：11 个顶层字段；`historical_candidates[]` **内嵌全部解释字段** | — |
+| **`0.2`** | **2026-09-26** | ① `historical_candidates[]` 改为**轻量索引**（只存 `identity` / `structural_status` / `strict_structural_supported`）；② **新增顶层字段 `candidates_source`**（回指冻结 SA artifact）；③ 顶层字段 11 → **12** | **minor**（0.x 阶段结构变化，按 §6.2） |
+
+**v0.2 动机（实测）**：v0.1 的内嵌模式下，单份快照 **1.9 MB** —— 把冻结 SA artifact 的内容整体复制了一份，
+按月更新约 23 MB/年，且与冻结 artifact **重复存储**、存在版本漂移风险。
+改为**回指**后同一份快照降到 **168 KB（约 1/11）**，且**不丢信息**（细节仍可按 `rule_set_version` 取回）。
+
+> **为什么是 minor 而不是 major**：契约仍在 `0.x`，§6.2 规定「0.x 阶段任何结构变化必须 minor bump」。
+> 进入 `1.0` 之后，同性质的改动才需要 major。
 >
 > 本文件只定义**字段与边界**。所有枚举**优先复用既有冻结定义**
 > （`attention_state` · `evidence_strength` · `direction` · `source_type` ·
@@ -21,22 +36,25 @@
 ```jsonc
 {
   "contract": "market_snapshot",
-  "market_snapshot_version": "0.1",     // ← 本契约版本
-  "snapshot_id": "MS-2026-09-30-01",
+  "market_snapshot_version": "0.2",     // ← 本契约版本
+  "snapshot_id": "MS-2026-09-15-01",
+  "snapshot_date": "2026-09-15",        // ★ PIT 基准（v0.2 起显式列出）
   "timestamp": "2026-09-30T20:00:00",
+  "status": "DRAFT",                    // ★ 生命周期四态（v0.2 起显式列出）
 
   "market_regime": { /* §2.1 */ },
   "research_context": { /* §2.2 */ },
   "observations": [ /* §2.3 */ ],
   "research_objects": [ /* §2.4 */ ],
 
-  "historical_candidates": [ /* §3 · 输出 */ ],
+  "historical_candidates": [ /* §3 · 输出（轻量索引） */ ],
+  "candidates_source": { /* §3.2 · 回指描述 */ },
   "provenance": { /* §4 */ }
 }
 ```
 
-- **顶层字段 = 9**（白名单式；禁止额外字段，与既有 export 风格一致）。
-- `historical_candidates` 为**输出**；其余为**输入 / 上下文**。
+- **顶层字段 = 12**（白名单式；除一个非语义的 `_comment` 外禁止额外字段，与既有 export 风格一致）。
+- `historical_candidates` + `candidates_source` 为**输出**；其余为**输入 / 上下文**。
 - **禁止字段**：`prediction` · `signal` · `score` · `ranking` · `probability` · `confidence`。
 
 ---
@@ -106,9 +124,9 @@
 
 ## 3. 输出字段
 
-### 3.1 `historical_candidates[]`（历史结构候选）
+### 3.1 `historical_candidates[]`（历史结构候选 · **轻量索引**）
 
-> **只能表达「研究候选」。** 每项 = 一个历史对象 + 逐维解释。
+> **只能表达「研究候选」。** v0.2 起每项**只存索引**，解释细节**回指** `candidates_source`（§3.2）。
 
 ```jsonc
 {
@@ -121,24 +139,8 @@
         "historical_research_candidate_id": "RC-… | null",
         "historical_theme_cycle_id": "…"
       },
-      "rule_set_version": "structural-analogy-ruleset-v0.3",   // ★ 复用冻结规则
       "structural_status": "STRUCTURAL_SUPPORTED | STRUCTURAL_PARTIAL | THEME_ONLY | INSUFFICIENT_EVIDENCE | NO_VALID_CORRESPONDENCE",
-      "strict_structural_supported": false,
-      "theme_relation": { "value": "SAME_MACRO_THEME | CROSS_MACRO_THEME", "role": "METADATA_ONLY" },
-      "dimensions": {
-        "lifecycle":         { "status": "MATCH | PARTIAL | MISMATCH | UNKNOWN | NOT_AVAILABLE | COMPARISON_POINT_UNKNOWN" },
-        "mechanism_driver":  { "status": "MATCH | PARTIAL | PERIPHERAL_OVERLAP | MISMATCH | UNKNOWN | NOT_AVAILABLE" },
-        "evidence_sequence": { "status": "MATCH | PARTIAL | MISMATCH | UNKNOWN | NOT_AVAILABLE",
-                               "subtype": "SEQUENCE_MATCH | SEQUENCE_PARTIAL | SET_ONLY | SEQUENCE_MISMATCH | UNKNOWN | NOT_AVAILABLE" },
-        "event_structure":   { "status": "MATCH | PARTIAL | MISMATCH | NOT_AVAILABLE" }
-      },
-      "supported_dimensions": ["…"],
-      "unknown_dimensions": ["…"],
-      "unsupported_dimensions": ["…"],
-      "why_similar": ["…"],
-      "why_not_similar": ["…"],
-      "dimension_evidence": { "…": ["…"] },      // 直接依据
-      "background_sources": ["…"]                // 背景，非依据
+      "strict_structural_supported": false
     }
   ]
 }
@@ -146,10 +148,41 @@
 
 **硬约束**：
 
-1. **禁止**：`prediction` · `signal` · `score` · `ranking` · `probability` · `top N` · `best analogue`。
-2. `historical_candidates[]` 按 `historical_cycle_id` **升序**（稳定 identity 顺序，**不是强弱排名**）。
-3. `theme_relation` **只作 metadata**，**不得**据此升降级。
+1. **只允许上述 3 个字段**；出现其它字段即校验 **FAIL**（`V8`）—— 其余一律**回指**，不得复制。
+2. **禁止**：`prediction` · `signal` · `score` · `ranking` · `probability` · `top N` · `best analogue`。
+3. `historical_candidates[]` 按 `historical_cycle_id` **升序**（稳定 identity 顺序，**不是强弱排名**）。
 4. 状态词表**必须**与 SA v0.3 一致（**不新增状态**）。
+
+### 3.2 `candidates_source`（回指描述 · **v0.2 新增**）
+
+> 说明「候选细节从哪里取回」。这是 v0.2 的核心：**索引在快照内，解释在冻结 artifact 里**。
+
+```jsonc
+{
+  "candidates_source": {
+    "artifact": "research/research/reports/structural_analogy_explanations_v0_5.json",
+    "artifact_version": "0.5",
+    "rule_set_version": "structural-analogy-ruleset-v0.3",   // ★ 必须为冻结版本
+    "resolve_by": "identity.historical_cycle_id",             // ★ 唯一合并键
+    "mode": "INDEX_ONLY —— 本快照只存 identity / structural_status / strict_structural_supported。",
+    "reader_must": "读取方必须先校验该 artifact 的 rule_set_version 与本字段一致，再按 resolve_by 合并。"
+  }
+}
+```
+
+**硬约束**：
+
+1. `historical_candidates` **非空**时 `candidates_source` **必填**（`V8b`）；为空时可写 `null`。
+2. `rule_set_version` **必须**是冻结的 `structural-analogy-ruleset-v0.3` —— 防止回指到非冻结产物。
+3. `resolve_by` **固定**为 `identity.historical_cycle_id`。
+4. 读取方**必须**先校验目标 artifact 的 `rule_set_version` 与本字段一致；**不一致即拒绝合并**（不得静默降级）。
+
+> **回指取回的字段**（**不在**快照内复制）：`theme_relation` · `dimensions` ·
+> `supported/unknown/unsupported_dimensions` · `why_similar` · `why_not_similar` ·
+> `dimension_evidence` · `background_sources` · `governance_context` · `supplementary_context`。
+>
+> ★ 这条规则的意义：**冻结的研究结论只有一份**（在 SA artifact 里），快照只引用它。
+> 若快照复制一份，两者就可能漂移 —— 回指从结构上消除了这种可能。
 
 ---
 

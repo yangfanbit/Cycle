@@ -1,7 +1,7 @@
 {
   "_comment": "★ 示例（example），不是真实研究数据，也不构成任何投资依据。用于验证 Market Snapshot 契约 v0.1 的 V1–V10 校验规则。status = DRAFT，未进入 CANONICAL，Product 不得消费。",
   "contract": "market_snapshot",
-  "market_snapshot_version": "0.1",
+  "market_snapshot_version": "0.2",
   "snapshot_id": "MS-2026-09-30-01",
   "snapshot_date": "2026-09-30",
   "timestamp": "2026-09-30T20:30:00",
@@ -98,28 +98,19 @@
         "historical_research_candidate_id": null,
         "historical_theme_cycle_id": "pharma_innov_2019"
       },
-      "rule_set_version": "structural-analogy-ruleset-v0.3",
       "structural_status": "STRUCTURAL_PARTIAL",
-      "strict_structural_supported": false,
-      "theme_relation": {
-        "value": "SAME_MACRO_THEME",
-        "role": "METADATA_ONLY —— 不参与结构状态判定"
-      },
-      "dimensions": {
-        "lifecycle": { "status": "PARTIAL" },
-        "mechanism_driver": { "status": "PARTIAL" },
-        "evidence_sequence": { "status": "PARTIAL", "subtype": "SEQUENCE_PARTIAL" },
-        "event_structure": { "status": "PARTIAL" }
-      },
-      "supported_dimensions": ["mechanism_driver", "evidence_sequence"],
-      "unknown_dimensions": [],
-      "unsupported_dimensions": [],
-      "why_similar": ["示例：驱动机制与证据顺序存在部分对应"],
-      "why_not_similar": ["示例：生命周期仅部分对应"],
-      "dimension_evidence": {},
-      "background_sources": []
+      "strict_structural_supported": false
     }
   ],
+
+  "candidates_source": {
+    "artifact": "research/research/reports/structural_analogy_explanations_v0_5.json",
+    "artifact_version": "0.5",
+    "rule_set_version": "structural-analogy-ruleset-v0.3",
+    "resolve_by": "identity.historical_cycle_id",
+    "mode": "INDEX_ONLY —— 示例：四维解释等细节回指该 artifact，不在本快照内复制。",
+    "reader_must": "读取方必须先校验该 artifact 的 rule_set_version 与本字段一致，再按 resolve_by 合并。"
+  },
 
   "provenance": {
     "generated_by": "ai-offline",

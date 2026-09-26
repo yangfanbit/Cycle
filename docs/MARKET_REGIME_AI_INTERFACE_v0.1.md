@@ -5,7 +5,7 @@
 > | 性质 | **AI 生成接口规范（Design Contract · 面向自动化）** |
 > | 版本 | `0.1` |
 > | 日期 | 2026-09-26 |
-> | 上游 | `docs/MARKET_SNAPSHOT_CONTRACT_v0.1.md` §2.1（`market_regime` 字段定义）· `docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` |
+> | 上游 | `docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md` §2.1（`market_regime` 字段定义）· `docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` |
 > | 定位 | **AI 离线产生 → 机器校验 → 人工审核 → CANONICAL** |
 > | 更新节奏 | **每月一次（频次由用户主导；不建自动化定时）** |
 > | 状态 | 待确认（Phase 1.2 实现） |

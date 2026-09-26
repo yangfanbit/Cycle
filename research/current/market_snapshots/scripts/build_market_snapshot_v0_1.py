@@ -42,7 +42,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SNAP_DIR = os.path.dirname(HERE)
 VALIDATOR = os.path.join(HERE, "validate_market_snapshot_v0_1.py")
 
-SNAPSHOT_VERSION = "0.1"
+SNAPSHOT_VERSION = "0.2"
 FROZEN_RULE_SET = "structural-analogy-ruleset-v0.3"
 
 
@@ -63,14 +63,19 @@ def build(args) -> dict:
 
     objects = load_json(args.objects)
     observations = load_json(args.observations)
-    candidates = load_json(args.candidates) if args.candidates else []
+
+    # ★ 契约 v0.2：historical_candidates 为轻量索引，细节由 candidates_source **回指** 冻结 SA artifact。
+    candidates_doc = load_json(args.candidates) if args.candidates else []
+    if isinstance(candidates_doc, list):
+        candidates, candidates_source = candidates_doc, None
+    else:
+        candidates = candidates_doc.get("historical_candidates", [])
+        candidates_source = candidates_doc.get("candidates_source")
 
     if isinstance(objects, dict) and "research_objects" in objects:
         objects = objects["research_objects"]
     if isinstance(observations, dict) and "observations" in observations:
         observations = observations["observations"]
-    if isinstance(candidates, dict) and "historical_candidates" in candidates:
-        candidates = candidates["historical_candidates"]
 
     # 从 regime draft 继承的 evidence（供 provenance 追溯；快照本身不重复存储）
     inherited_evidence_refs = regime.get("evidence_refs") or []
@@ -120,6 +125,8 @@ def build(args) -> dict:
         "observations": observations,
         "research_objects": objects,
         "historical_candidates": candidates,
+        # 契约 v0.2：候选细节的回指描述（无候选时为 null）
+        "candidates_source": candidates_source,
         "provenance": {
             "generated_by": regime_doc.get("generated_by", "script"),
             "ai_assisted": regime_doc.get("generated_by") == "ai-offline",

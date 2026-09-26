@@ -128,10 +128,10 @@ def validate_snapshot(path: str, label: str) -> None:
     else:
         ok("%s · V1 contract 合法" % label)
 
-    if doc.get("market_snapshot_version") != "0.1":
-        fail("V1·%s" % label, "market_snapshot_version 应为 0.1，实际 %r" % doc.get("market_snapshot_version"))
+    if doc.get("market_snapshot_version") != "0.2":
+        fail("V1·%s" % label, "market_snapshot_version 应为 0.2，实际 %r" % doc.get("market_snapshot_version"))
     else:
-        ok("%s · V1 version 0.1" % label)
+        ok("%s · V1 version 0.2" % label)
 
     sid = doc.get("snapshot_id")
     if not isinstance(sid, str) or not sid.startswith("MS-"):
@@ -229,7 +229,8 @@ def validate_snapshot(path: str, label: str) -> None:
     if objs:
         ok("%s · V7 research_objects 校验完成（%d 条）" % (label, len(objs)))
 
-    # V8 historical_candidates
+    # V8 historical_candidates（契约 v0.2：轻量索引，细节回指）
+    SLIM_KEYS = {"identity", "structural_status", "strict_structural_supported"}
     cands = doc.get("historical_candidates") or []
     if not isinstance(cands, list):
         fail("V8·%s" % label, "historical_candidates 必须是 array")
@@ -238,15 +239,38 @@ def validate_snapshot(path: str, label: str) -> None:
         if not isinstance(c, dict):
             fail("V8·%s" % label, "historical_candidates[%d] 必须是 object" % i)
             continue
-        if c.get("rule_set_version") != FROZEN_RULE_SET:
-            fail("V8·%s" % label, "historical_candidates[%d].rule_set_version 必须是冻结 %s，实际 %r"
-                 % (i, FROZEN_RULE_SET, c.get("rule_set_version")))
-        blob = json.dumps(c, ensure_ascii=False)
-        hits = scan_banned(blob)
+        if "identity" not in c or "structural_status" not in c:
+            fail("V8·%s" % label, "historical_candidates[%d] 缺 identity / structural_status" % i)
+        extra = set(c.keys()) - SLIM_KEYS
+        if extra:
+            fail("V8·%s" % label,
+                 "historical_candidates[%d] 含契约 v0.2 之外的字段（应回指而非复制）: %s"
+                 % (i, ", ".join(sorted(extra))))
+        hits = scan_banned(json.dumps(c, ensure_ascii=False))
         if hits:
             fail("V8·%s" % label, "historical_candidates[%d] 出现红线词: %s" % (i, ", ".join(hits)))
+
+    # V8b candidates_source（有候选则必须回指）
+    src = doc.get("candidates_source")
     if cands:
-        ok("%s · V8 historical_candidates 校验完成（%d 条，无红线词）" % (label, len(cands)))
+        src_ok = True
+        if not isinstance(src, dict):
+            fail("V8b·%s" % label, "有 historical_candidates 时必须提供 candidates_source（回指描述）")
+            src_ok = False
+        else:
+            if src.get("rule_set_version") != FROZEN_RULE_SET:
+                fail("V8b·%s" % label, "candidates_source.rule_set_version 必须是冻结 %s，实际 %r"
+                     % (FROZEN_RULE_SET, src.get("rule_set_version")))
+                src_ok = False
+            if not src.get("artifact"):
+                fail("V8b·%s" % label, "candidates_source.artifact 必填")
+                src_ok = False
+            if src.get("resolve_by") != "identity.historical_cycle_id":
+                fail("V8b·%s" % label, "candidates_source.resolve_by 必须为 identity.historical_cycle_id")
+                src_ok = False
+        if src_ok:
+            ok("%s · V8b candidates_source 回指校验通过（%s）" % (label, src.get("artifact")))
+        ok("%s · V8 historical_candidates 轻量索引校验完成（%d 条，无多余字段）" % (label, len(cands)))
 
     # V9 / V10 provenance + CANONICAL 闸门
     prov = doc.get("provenance") or {}

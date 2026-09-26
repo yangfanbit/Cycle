@@ -6,7 +6,7 @@
 > 输出：`historical_candidates`（历史**研究候选**）
 >
 > 规范：`docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` ·
-> `docs/MARKET_SNAPSHOT_CONTRACT_v0.1.md` ·
+> `docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md` ·
 > `docs/MARKET_SNAPSHOT_GOVERNANCE.md` ·
 > `docs/MARKET_REGIME_AI_INTERFACE_v0.1.md`
 
@@ -89,6 +89,13 @@ python3 $S/scripts/build_market_snapshot_v0_1.py \
 > `snapshot_date = 2026-09-15` 与 Current Candidate / SA v0.5 的 `snapshot_date` **一致**（PIT 对齐）。
 > 该快照为 **DRAFT**：`market_regime` 四维全 `UNKNOWN`（未接行情源，**不编造**），
 > 需人工补证后方可晋升 `CANONICAL`。
+
+**契约 v0.2 · 回指模式**：`historical_candidates` **只存轻量索引**
+（`identity` / `structural_status` / `strict_structural_supported`），
+四维解释等细节由顶层 `candidates_source` **回指**冻结 SA artifact，**不复制**。
+→ 首份快照因此从 **1.9 MB 降到 168 KB**，且不丢信息（按 `rule_set_version` 校验后可无损取回）。
+读取方**必须先校验**目标 artifact 的 `rule_set_version` 与 `candidates_source.rule_set_version` 一致，
+**不一致即拒绝合并**（不得静默降级）。
 
 ## 4. 硬边界（不得违反）
 

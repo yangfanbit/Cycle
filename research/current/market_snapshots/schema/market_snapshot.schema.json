@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "threec/research/current/market_snapshots/market_snapshot.schema.json",
   "title": "ThreeC Market Snapshot v0.1",
-  "description": "Market Snapshot = 当前研究过程的「状态记录 Artifact」。它是研究过程的快照，不是算法、不是模型、不是信号、不是预测。输入：market_regime / research_context / observations / research_objects；输出：historical_candidates（历史研究候选）。禁止出现 prediction / signal / score / ranking / probability。本 schema 只定义结构；治理规则见 docs/MARKET_SNAPSHOT_GOVERNANCE.md，语义契约见 docs/MARKET_SNAPSHOT_CONTRACT_v0.1.md。",
+  "description": "Market Snapshot = 当前研究过程的「状态记录 Artifact」。它是研究过程的快照，不是算法、不是模型、不是信号、不是预测。输入：market_regime / research_context / observations / research_objects；输出：historical_candidates（历史研究候选）。禁止出现 prediction / signal / score / ranking / probability。本 schema 只定义结构；治理规则见 docs/MARKET_SNAPSHOT_GOVERNANCE.md，语义契约见 docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md（v0.2：historical_candidates 为轻量索引，细节由 candidates_source 回指冻结 SA artifact）。",
   "type": "object",
   "required": [
     "contract",
@@ -16,6 +16,7 @@
     "observations",
     "research_objects",
     "historical_candidates",
+    "candidates_source",
     "provenance"
   ],
   "additionalProperties": false,
@@ -25,7 +26,7 @@
       "description": "★ 非语义说明字段（仅用于示例 / 注释，例如标注「本文件是示例，不是真实研究数据」）。不参与任何判定，不得承载研究结论。除此之外禁止额外字段。"
     },
     "contract": { "const": "market_snapshot" },
-    "market_snapshot_version": { "const": "0.1" },
+    "market_snapshot_version": { "const": "0.2" },
 
     "snapshot_id": {
       "type": "string",
@@ -62,6 +63,7 @@
       "type": "array",
       "items": { "$ref": "#/definitions/historicalCandidate" }
     },
+    "candidates_source": { "$ref": "#/definitions/candidatesSource" },
     "provenance": { "$ref": "#/definitions/provenance" }
   },
 
@@ -217,8 +219,8 @@
 
     "historicalCandidate": {
       "type": "object",
-      "description": "输出：历史结构候选（研究候选，不是买入机会 / 未来走势 / 预测结果）。",
-      "required": ["identity", "rule_set_version", "structural_status"],
+      "description": "输出：历史结构候选的**轻量索引**（契约 v0.2 · 回指模式）。只存 identity + structural_status + strict_structural_supported；四维解释 / theme_relation / why_similar / why_not_similar / dimension_evidence / background_sources 一律**不复制**，由顶层 `candidates_source` 回指冻结 SA artifact。",
+      "required": ["identity", "structural_status"],
       "additionalProperties": false,
       "properties": {
         "identity": {
@@ -233,7 +235,6 @@
             "historical_theme_cycle_id": { "type": ["string", "null"] }
           }
         },
-        "rule_set_version": { "const": "structural-analogy-ruleset-v0.3" },
         "structural_status": {
           "enum": [
             "STRUCTURAL_SUPPORTED",
@@ -243,54 +244,22 @@
             "NO_VALID_CORRESPONDENCE"
           ]
         },
-        "strict_structural_supported": { "type": "boolean" },
-        "theme_relation": {
-          "type": "object",
-          "properties": {
-            "value": { "enum": ["SAME_MACRO_THEME", "CROSS_MACRO_THEME"] },
-            "role": { "type": "string" }
-          },
-          "description": "METADATA_ONLY —— 不得据此升降级。"
-        },
-        "dimensions": {
-          "type": "object",
-          "properties": {
-            "lifecycle": {
-              "type": "object",
-              "description": "★ 实测 SA v0.5 取值：MATCH / PARTIAL / MISMATCH / COMPARISON_POINT_UNKNOWN。COMPARISON_POINT_UNKNOWN = 历史侧无 lifecycle（Rule Set §2）。",
-              "properties": {
-                "status": { "enum": ["MATCH", "PARTIAL", "MISMATCH", "UNKNOWN", "NOT_AVAILABLE", "COMPARISON_POINT_UNKNOWN"] }
-              }
-            },
-            "mechanism_driver": {
-              "type": "object",
-              "properties": {
-                "status": { "enum": ["MATCH", "PARTIAL", "PERIPHERAL_OVERLAP", "MISMATCH", "UNKNOWN", "NOT_AVAILABLE"] }
-              }
-            },
-            "evidence_sequence": {
-              "type": "object",
-              "description": "★ 实测 SA v0.5：`status` 用与其他维度同一套词表（MATCH/PARTIAL/MISMATCH/NOT_AVAILABLE）；`subtype` 才用 SEQUENCE_* 词表。",
-              "properties": {
-                "status": { "enum": ["MATCH", "PARTIAL", "MISMATCH", "UNKNOWN", "NOT_AVAILABLE"] },
-                "subtype": { "enum": ["SEQUENCE_MATCH", "SEQUENCE_PARTIAL", "SET_ONLY", "SEQUENCE_MISMATCH", "UNKNOWN", "NOT_AVAILABLE"] }
-              }
-            },
-            "event_structure": {
-              "type": "object",
-              "properties": {
-                "status": { "enum": ["MATCH", "PARTIAL", "MISMATCH", "NOT_AVAILABLE"] }
-              }
-            }
-          }
-        },
-        "supported_dimensions":   { "type": "array", "items": { "type": "string" } },
-        "unknown_dimensions":     { "type": "array", "items": { "type": "string" } },
-        "unsupported_dimensions": { "type": "array", "items": { "type": "string" } },
-        "why_similar":     { "type": "array", "items": { "type": "string" } },
-        "why_not_similar": { "type": "array", "items": { "type": "string" } },
-        "dimension_evidence": { "type": "object" },
-        "background_sources": { "type": "array", "items": { "type": "string" } }
+        "strict_structural_supported": { "type": "boolean" }
+      }
+    },
+
+    "candidatesSource": {
+      "type": ["object", "null"],
+      "description": "★ 契约 v0.2：`historical_candidates` 细节的**回指**描述。读取方必须先校验目标 artifact 的 rule_set_version 与本字段一致，再按 resolve_by 合并。",
+      "required": ["artifact", "rule_set_version", "resolve_by"],
+      "additionalProperties": false,
+      "properties": {
+        "artifact": { "type": "string", "minLength": 1 },
+        "artifact_version": { "type": ["string", "null"] },
+        "rule_set_version": { "const": "structural-analogy-ruleset-v0.3" },
+        "resolve_by": { "const": "identity.historical_cycle_id" },
+        "mode": { "type": "string" },
+        "reader_must": { "type": "string" }
       }
     },
 

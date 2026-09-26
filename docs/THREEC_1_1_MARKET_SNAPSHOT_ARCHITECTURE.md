@@ -11,7 +11,7 @@
 > | 状态 | **等待下一阶段确认** |
 >
 > 配套文档：
-> `docs/MARKET_SNAPSHOT_CONTRACT_v0.1.md`（字段级契约）·
+> `docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md`（字段级契约）·
 > `docs/MARKET_SNAPSHOT_GOVERNANCE.md`（治理规则）·
 > `docs/THREEC_1_1_PHASE_0_DESIGN_FREEZE_REPORT.md`（本轮报告）
 
@@ -104,7 +104,7 @@ ARCHIVED
 
 1. **只有 `CANONICAL` 状态的 Market Snapshot 允许 Product 消费。**
 2. 状态跃迁**必须**由人工评审触发（`DRAFT → REVIEW → CANONICAL`）；**不得**自动跳级。
-3. `CANONICAL` 是**不可变**的：任何内容修改都**必须**产生新 revision（见 `MARKET_SNAPSHOT_CONTRACT_v0.1.md` §版本规则），不得就地编辑。
+3. `CANONICAL` 是**不可变**的：任何内容修改都**必须**产生新 revision（见 `MARKET_SNAPSHOT_CONTRACT_v0.2.md` §版本规则），不得就地编辑。
 4. 快照被取代时置 `ARCHIVED`（**不删除**），并记录 `superseded_by`。
 
 ---

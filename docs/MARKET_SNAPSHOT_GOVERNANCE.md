@@ -4,7 +4,7 @@
 > |---|---|
 > | 文件性质 | **治理规则（GOVERNANCE）** —— Phase 0 草案，**不是实现** |
 > | 日期 | 2026-09-25 |
-> | 依赖 | `docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` · `docs/MARKET_SNAPSHOT_CONTRACT_v0.1.md` |
+> | 依赖 | `docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` · `docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md` |
 > | 适用范围 | Market Snapshot · Correction Record · Import Record · Promotion |
 > | 状态 | **等待下一阶段确认** |
 >
