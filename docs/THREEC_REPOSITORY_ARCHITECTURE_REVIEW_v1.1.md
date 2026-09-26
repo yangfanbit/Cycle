@@ -48,7 +48,7 @@ Product（src/）
 | `@exports` | `exports/` | **Canonical Export**（Contract v1.0） |
 | `@current` | `research/current/` | Current Research Discovery artifact |
 | `@observation` | `research/research/reports/` | SA / TO / Driver artifact 目录 |
-| *(无 alias)* | `data/`（仓库根） | **Product 侧手维护数据集**（经 `src/data/index.ts` barrel） |
+| *(无 alias)* | `data/`（仓库根） | Legacy 核验数据层 —— **实测无任何消费者**（见 F-3 修正），当前为死代码 |
 
 被 `src/` 直接 import 的研究产物（实测）：
 
@@ -79,7 +79,7 @@ Product（src/）
 2. **但要明文形式化边界**（写入 AGENTS.md / 本报告的硬约束章节）：
    > Product 可消费「**版本化只读研究产物** + **canonical export**」；
    > **永远不得**触碰 `research/scripts` · `research/database` · `research/intake` · 任何中间结果。
-3. **`data/`（仓库根）手维护数据集应单独立项处置** —— 见 F-3。
+3. **`data/`（仓库根）为死代码，非活跃双源** —— 见 F-3（含**初判修正**）。
 
 ---
 
@@ -204,7 +204,22 @@ research/current/
 |---|---|---|---|
 | **F-1** | `currentSimilarity.ts` 评分/tier/stars 引擎在线且已渲染 UI，与冻结 SA 双轨 | **P0（阻塞 Phase 1.2）** | Phase 1.2 前退役或降级（见 §5） |
 | **F-2** | `derivePhases()` 与研究 `lifecycle` 双轨表示 | P1 | 固化用途为「仅 Timeline 视觉分段」 |
-| **F-3** | 仓库根 `data/`（raw/candidate/verified/validation）**手维护**数据集仍经 `src/data/index.ts` 接入 Product，与 canonical export **双源** | P1 | 明确其地位：legacy / 仅测试 / 退役。生产默认源应为 `timeline_export_v1` |
+| **F-3** | 仓库根 `data/`（raw/candidate/verified/validation，759 行 TS）+ `src/data/index.ts` barrel | **P2**（**初判 P1「活跃双源」有误，已修正**） | ✅ **已处置：保留 + 标注**（人工核验为后续计划）。`data/README.md` 已加入当前状态说明。修正依据见下方「F-3 修正」 |
+
+### F-3 修正（2026-09-26 复核）
+
+初判 writing 时据 `src/data/index.ts` 的 import 语句推断其为「活跃双源」。**实测复核推翻该判断**：
+
+| 实测项 | 结果 |
+|---|---|
+| `src/` 或 `tests/` 中引用 `data/candidate` · `data/raw` · `data/validation` · `data/verified` | **0 处** |
+| `src/data/index.ts`（barrel）被 import | **0 处** |
+| `data/verified/campaigns.ts` 内容 | **空数组**（`verifiedCampaigns: HistoricalCampaign[] = []`，注释明写「当前：0 条」） |
+| `TimelineDataSource.kind = 'verified'` 的实例化 | **仅 1 处，且是测试 mock**（`historicalCycleMap.test.tsx:192`）；生产无实例化 |
+
+→ **结论**：`data/` 与 canonical export **并不构成运行时双源**。它是一条**从未接通的备用核验管线**（V1.5 遗留），
+生产 Timeline 的默认与唯一数据源仍是 `exports/timeline_export_v1.json`。
+**降级为 P2：无正确性风险，仅是可维护性问题（759 行无人引用）。**
 | **F-4** | 数据入口 4 个（3 alias + data/），无统一清单 | P2 | 在 `AGENTS.md` 固化「允许/禁止消费清单」 |
 
 ---

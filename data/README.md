@@ -1,5 +1,17 @@
 # data/ —— 历史规律核验数据目录（V1.5）
 
+> ## ★ 当前状态（2026-09-26 复核 · 保留并标注）
+>
+> - **本目录当前无消费者**：`src/` 与 `tests/` 中均未 import `data/*`，
+>   `src/data/index.ts`（barrel）亦无任何引用。
+>   生产 Timeline 的**唯一**数据源是 `exports/timeline_export_v1.json`。
+>   → **这不是「双源」，不构成运行时数据污染风险。**
+> - **`verified/` 层当前为空（0 条）** —— 这是**合法状态**：人工核验（L2）尚未执行，
+>   **不得为填充而编造历史事实**。
+> - **人工核验是后续计划**：本目录按 V1.5 核验管线语义**保留**，待后续轮次启用；
+>   启用前请勿将其当作活跃数据源，也不要删除。
+> - 详见 `docs/THREEC_REPOSITORY_ARCHITECTURE_REVIEW_v1.1.md`「F-3 修正」。
+
 本目录是核验管线的数据层，语义对应 docs/HISTORICAL_VALIDATION.md：
 
 ```
