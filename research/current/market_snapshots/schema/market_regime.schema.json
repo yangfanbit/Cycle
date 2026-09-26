@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "threec/research/current/market_snapshots/market_regime.schema.json",
+  "title": "ThreeC market_regime Draft v0.1（AI 生成接口）",
+  "description": "market_regime 的 AI 离线生成产物契约。流程：AI 生成 draft → 机器校验（V1–V10）→ 人工审核 → 并入 Market Snapshot。规则与校验项见 docs/MARKET_REGIME_AI_INTERFACE_v0.1.md。★ market_regime 不参与 Structural Status；禁止 prediction / signal / score / probability。",
+  "type": "object",
+  "required": [
+    "contract",
+    "market_regime_version",
+    "snapshot_date",
+    "generated_by",
+    "generated_at",
+    "market_regime",
+    "evidence",
+    "review"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "_comment": {
+      "type": "string",
+      "description": "★ 非语义说明字段（仅用于示例 / 注释）。不参与任何判定，不得承载研究结论。除此之外禁止额外字段。"
+    },
+    "contract": { "const": "market_regime_draft" },
+    "market_regime_version": { "const": "0.1" },
+
+    "snapshot_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "观测窗口右端点。所有 evidence.source_date 必须 <= 本值（V5）。"
+    },
+    "generated_by": {
+      "const": "ai-offline",
+      "description": "V10：AI 产物必须显式标注来源，禁止伪装为人工。"
+    },
+    "generated_at": { "type": "string" },
+    "ai_model": { "type": ["string", "null"] },
+
+    "market_regime": {
+      "type": "object",
+      "required": [
+        "broad_index_state",
+        "breadth_state",
+        "liquidity_state",
+        "risk_appetite_state",
+        "beta_note",
+        "evidence_refs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "broad_index_state": {
+          "enum": ["UP", "FLAT", "DOWN", "UNKNOWN"],
+          "description": "沪深300 近 20 交易日区间涨跌：>=+5% UP / <=-5% DOWN / 其余 FLAT。"
+        },
+        "breadth_state": {
+          "enum": ["BROAD", "NORMAL", "NARROW", "UNKNOWN"],
+          "description": "上涨家数占比（周均）：>=60% BROAD / 40-60% NORMAL / <40% NARROW。"
+        },
+        "liquidity_state": {
+          "enum": ["EXPANDING", "STABLE", "CONTRACTING", "UNKNOWN"],
+          "description": "两市日均成交额 vs 近 60 交易日均值：>=+15% EXPANDING / <=-15% CONTRACTING / 其余 STABLE。"
+        },
+        "risk_appetite_state": {
+          "enum": ["RISK_ON", "NEUTRAL", "RISK_OFF", "UNKNOWN"],
+          "description": "★ 须 >=2 个独立信号（V8），否则必须 UNKNOWN。"
+        },
+        "beta_note": {
+          "type": "string",
+          "minLength": 1,
+          "description": "V3 必填：说明本期 β 不可分离程度。"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "V4：至少 1 条，且必须能在 evidence[] 中找到。"
+        }
+      }
+    },
+
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "evidence_id",
+          "dimension",
+          "metric",
+          "window",
+          "source_tier",
+          "source_date",
+          "claim"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "pattern": "^MR-EV-[A-Za-z0-9._-]+$"
+          },
+          "dimension": {
+            "enum": [
+              "broad_index_state",
+              "breadth_state",
+              "liquidity_state",
+              "risk_appetite_state"
+            ],
+            "description": "该证据支撑哪个维度（V6 按维度配对校验）。"
+          },
+          "metric": { "type": "string", "minLength": 1 },
+          "value_text": { "type": "string" },
+          "window": { "type": "string", "minLength": 1 },
+          "source_tier": { "enum": ["T1", "T2", "T3"] },
+          "source_title": { "type": "string" },
+          "source_date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "V5：必须 <= snapshot_date。"
+          },
+          "claim": {
+            "type": "string",
+            "minLength": 1,
+            "description": "只写事实，不写推断。"
+          }
+        }
+      }
+    },
+
+    "unknown_notes": {
+      "type": "object",
+      "description": "V7：任一维度为 UNKNOWN 时，必须在此写明「为什么不知道」。",
+      "additionalProperties": { "type": "string" },
+      "properties": {
+        "broad_index_state":   { "type": "string" },
+        "breadth_state":       { "type": "string" },
+        "liquidity_state":     { "type": "string" },
+        "risk_appetite_state": { "type": "string" }
+      }
+    },
+
+    "review": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": ["PENDING", "ACCEPTED", "REJECTED", "NEEDS_EVIDENCE"],
+          "description": "★ 人工审核必过；不得由脚本/AI 自动置为 ACCEPTED。"
+        },
+        "reviewer":   { "type": ["string", "null"] },
+        "decided_at": { "type": ["string", "null"] },
+        "rationale":  { "type": ["string", "null"] }
+      }
+    }
+  }
+}

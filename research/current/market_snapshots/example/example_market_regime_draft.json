@@ -1,0 +1,91 @@
+{
+  "_comment": "★ 示例（example），不是真实研究数据。用于验证 market_regime AI 生成接口的 V1–V10 校验规则。规则见 docs/MARKET_REGIME_AI_INTERFACE_v0.1.md。",
+  "contract": "market_regime_draft",
+  "market_regime_version": "0.1",
+  "snapshot_date": "2026-09-30",
+  "generated_by": "ai-offline",
+  "generated_at": "2026-09-30T20:00:00",
+  "ai_model": "example-model",
+
+  "market_regime": {
+    "broad_index_state": "UP",
+    "breadth_state": "NORMAL",
+    "liquidity_state": "STABLE",
+    "risk_appetite_state": "NEUTRAL",
+    "beta_note": "本期沪深300 近 20 交易日区间上行，属温和上行而非单边极端区间；区间内未出现全市场普跌或普涨日，单日数据未用于定档。β 对本轮各方向的相对表现仍不可完全分离，跨方向比较须以区间口径为准。",
+    "evidence_refs": [
+      "MR-EV-01",
+      "MR-EV-02",
+      "MR-EV-03",
+      "MR-EV-04",
+      "MR-EV-05"
+    ]
+  },
+
+  "evidence": [
+    {
+      "evidence_id": "MR-EV-01",
+      "dimension": "broad_index_state",
+      "metric": "沪深300 近 20 交易日区间涨跌",
+      "value_text": "约 +6%",
+      "window": "2026-09-01 ~ 2026-09-30",
+      "source_tier": "T2",
+      "source_title": "示例：交易所行情统计（沪深300）",
+      "source_date": "2026-09-30",
+      "claim": "沪深300 于该 20 交易日区间收涨约 6%，落在 UP 分档区间（>=+5%）。"
+    },
+    {
+      "evidence_id": "MR-EV-02",
+      "dimension": "breadth_state",
+      "metric": "全市场上涨家数占比（周度均值）",
+      "value_text": "约 52%",
+      "window": "近 4 周",
+      "source_tier": "T2",
+      "source_title": "示例：市场广度统计",
+      "source_date": "2026-09-30",
+      "claim": "近 4 周全市场上涨家数占比周均约 52%，落在 NORMAL 分档区间（40%–60%）。"
+    },
+    {
+      "evidence_id": "MR-EV-03",
+      "dimension": "liquidity_state",
+      "metric": "两市日均成交额 vs 近 60 交易日均值",
+      "value_text": "约 +3%",
+      "window": "近 20 交易日 vs 近 60 交易日",
+      "source_tier": "T2",
+      "source_title": "示例：成交额统计",
+      "source_date": "2026-09-30",
+      "claim": "两市日均成交额较近 60 交易日均值高约 3%，落在 STABLE 分档区间（-15% ~ +15%）。"
+    },
+    {
+      "evidence_id": "MR-EV-04",
+      "dimension": "risk_appetite_state",
+      "metric": "高 β 板块 vs 低 β 板块 20 日相对表现",
+      "value_text": "基本持平",
+      "window": "2026-09-01 ~ 2026-09-30",
+      "source_tier": "T2",
+      "source_title": "示例：风格相对表现统计",
+      "source_date": "2026-09-30",
+      "claim": "高 β 与低 β 板块 20 日相对表现基本持平，未出现单边风险偏好扩张或收缩。"
+    },
+    {
+      "evidence_id": "MR-EV-05",
+      "dimension": "risk_appetite_state",
+      "metric": "涨停家数与炸板率（周度）",
+      "value_text": "中性区间",
+      "window": "近 4 周",
+      "source_tier": "T3",
+      "source_title": "示例：市场情绪统计（媒体转述）",
+      "source_date": "2026-09-30",
+      "claim": "近 4 周涨停家数与炸板率处于中性区间，未见情绪极端化。"
+    }
+  ],
+
+  "unknown_notes": {},
+
+  "review": {
+    "status": "PENDING",
+    "reviewer": null,
+    "decided_at": null,
+    "rationale": null
+  }
+}

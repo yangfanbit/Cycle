@@ -126,9 +126,10 @@
       "strict_structural_supported": false,
       "theme_relation": { "value": "SAME_MACRO_THEME | CROSS_MACRO_THEME", "role": "METADATA_ONLY" },
       "dimensions": {
-        "lifecycle":         { "status": "MATCH | PARTIAL | MISMATCH | UNKNOWN | NOT_AVAILABLE" },
+        "lifecycle":         { "status": "MATCH | PARTIAL | MISMATCH | UNKNOWN | NOT_AVAILABLE | COMPARISON_POINT_UNKNOWN" },
         "mechanism_driver":  { "status": "MATCH | PARTIAL | PERIPHERAL_OVERLAP | MISMATCH | UNKNOWN | NOT_AVAILABLE" },
-        "evidence_sequence": { "status": "SEQUENCE_MATCH | SEQUENCE_PARTIAL | SET_ONLY | SEQUENCE_MISMATCH | UNKNOWN | NOT_AVAILABLE" },
+        "evidence_sequence": { "status": "MATCH | PARTIAL | MISMATCH | UNKNOWN | NOT_AVAILABLE",
+                               "subtype": "SEQUENCE_MATCH | SEQUENCE_PARTIAL | SET_ONLY | SEQUENCE_MISMATCH | UNKNOWN | NOT_AVAILABLE" },
         "event_structure":   { "status": "MATCH | PARTIAL | MISMATCH | NOT_AVAILABLE" }
       },
       "supported_dimensions": ["…"],

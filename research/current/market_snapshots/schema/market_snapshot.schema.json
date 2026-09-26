@@ -1,0 +1,317 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "threec/research/current/market_snapshots/market_snapshot.schema.json",
+  "title": "ThreeC Market Snapshot v0.1",
+  "description": "Market Snapshot = 当前研究过程的「状态记录 Artifact」。它是研究过程的快照，不是算法、不是模型、不是信号、不是预测。输入：market_regime / research_context / observations / research_objects；输出：historical_candidates（历史研究候选）。禁止出现 prediction / signal / score / ranking / probability。本 schema 只定义结构；治理规则见 docs/MARKET_SNAPSHOT_GOVERNANCE.md，语义契约见 docs/MARKET_SNAPSHOT_CONTRACT_v0.1.md。",
+  "type": "object",
+  "required": [
+    "contract",
+    "market_snapshot_version",
+    "snapshot_id",
+    "snapshot_date",
+    "timestamp",
+    "status",
+    "market_regime",
+    "research_context",
+    "observations",
+    "research_objects",
+    "historical_candidates",
+    "provenance"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "_comment": {
+      "type": "string",
+      "description": "★ 非语义说明字段（仅用于示例 / 注释，例如标注「本文件是示例，不是真实研究数据」）。不参与任何判定，不得承载研究结论。除此之外禁止额外字段。"
+    },
+    "contract": { "const": "market_snapshot" },
+    "market_snapshot_version": { "const": "0.1" },
+
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^MS-[A-Za-z0-9._-]+$",
+      "description": "Market Snapshot 命名空间。禁止使用 C- / RC- / CC- 前缀。"
+    },
+    "snapshot_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "★ PIT 基准（Temporal Firewall 上界）。所有 observations / evidence 的日期必须 <= 本值。"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "快照生成时刻（ISO 8601 日期时间）。与 snapshot_date 不同：后者是判断上界，前者是生成时间。"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["DRAFT", "REVIEW", "CANONICAL", "ARCHIVED"],
+      "description": "生命周期四态。★ 只有 CANONICAL 允许 Product 消费。"
+    },
+
+    "market_regime": { "$ref": "#/definitions/marketRegime" },
+    "research_context": { "$ref": "#/definitions/researchContext" },
+    "observations": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/observation" }
+    },
+    "research_objects": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/researchObject" }
+    },
+    "historical_candidates": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/historicalCandidate" }
+    },
+    "provenance": { "$ref": "#/definitions/provenance" }
+  },
+
+  "definitions": {
+    "marketRegime": {
+      "type": "object",
+      "description": "当前市场状态。★ 只作 supplementary context，不参与 Structural Status。",
+      "required": ["broad_index_state", "breadth_state", "liquidity_state", "risk_appetite_state", "beta_note"],
+      "additionalProperties": false,
+      "properties": {
+        "broad_index_state":    { "enum": ["UP", "FLAT", "DOWN", "UNKNOWN"] },
+        "breadth_state":        { "enum": ["BROAD", "NORMAL", "NARROW", "UNKNOWN"] },
+        "liquidity_state":      { "enum": ["EXPANDING", "STABLE", "CONTRACTING", "UNKNOWN"] },
+        "risk_appetite_state":  { "enum": ["RISK_ON", "NEUTRAL", "RISK_OFF", "UNKNOWN"] },
+        "beta_note": {
+          "type": "string",
+          "minLength": 1,
+          "description": "★ 必填：说明本期 β 不可分离程度。"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "researchContext": {
+      "type": "object",
+      "required": ["research_question"],
+      "additionalProperties": false,
+      "properties": {
+        "research_question": {
+          "type": "string",
+          "minLength": 1,
+          "description": "这一轮要回答什么（**不是**「买什么」）。"
+        },
+        "research_method":  { "type": "string" },
+        "source_policy":    { "type": "string" },
+        "coverage_note":    { "type": "string" },
+        "known_limitations": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "observation": {
+      "type": "object",
+      "description": "观察。统一承载「事件 / 主题 / 产业变化」（★ OC-* 命名空间已废弃）。",
+      "required": ["observation_id", "observation_type", "date", "claim", "evidence_strength", "direction"],
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "type": "string",
+          "pattern": "^OBS-[A-Za-z0-9._-]+$"
+        },
+        "observation_type": {
+          "enum": ["POLICY", "INDUSTRY", "COMPANY", "MARKET", "CAPITAL", "EXTERNAL"],
+          "description": "证据类别（Evidence Category）★ 不等于驱动机制（Mechanism Driver）。"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1,
+          "description": "只写事实：谁在何时发布了什么。"
+        },
+        "evidence_strength": { "enum": ["STRONG", "MEDIUM", "WEAK"] },
+        "direction": { "enum": ["SUPPORTIVE", "NEUTRAL", "NEGATIVE", "UNKNOWN"] },
+        "temporal_relation": {
+          "enum": ["BEFORE_SNAPSHOT", "AT_SNAPSHOT", "AFTER_SNAPSHOT", "UNKNOWN"],
+          "description": "派生字段，不手填。AFTER_SNAPSHOT 必须被隔离，不参与任何判断。"
+        },
+        "linked_object_id": { "type": ["string", "null"] },
+        "source_tier": { "enum": ["T1", "T2", "T3"] },
+        "source_title": { "type": "string" }
+      }
+    },
+
+    "researchObject": {
+      "type": "object",
+      "required": ["object_id", "object_kind", "display_name", "phase_source", "resolution_state"],
+      "additionalProperties": false,
+      "properties": {
+        "object_id": {
+          "type": "string",
+          "description": "CC-*（引用既有离线候选）或 URO-*（用户研究对象 Draft）。★ URO-* 仅 Draft，须人工评审后才可成为 Canonical Research Object。"
+        },
+        "object_kind": { "enum": ["current_candidate", "user_research_object_draft"] },
+        "display_name": { "type": "string", "minLength": 1 },
+        "macro_theme": {
+          "type": "string",
+          "description": "必须为 CMTR v1 既有 root；不得新建 Macro Theme。"
+        },
+        "declared_phase": {
+          "enum": ["EARLY_SIGNAL", "THEME_FORMING", "BROAD_CONFIRMATION", "EXPANSION", "PEAK", "DECLINE", "UNKNOWN"]
+        },
+        "phase_source": {
+          "enum": ["DERIVED_FROM_EVIDENCE", "RESEARCH_DECLARED", "USER_DECLARED", "UNKNOWN"]
+        },
+        "canonical_drivers": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "POLICY_DRIVEN",
+              "INDUSTRY_UPGRADE",
+              "TECH_BREAKTHROUGH",
+              "DEMAND_SURGE",
+              "SUPPLY_CONTRACTION",
+              "VALUATION_RESET",
+              "CYCLE_REVERSAL",
+              "EVENT_CATALYST",
+              "UNKNOWN"
+            ]
+          },
+          "description": "驱动机制（Mechanism Driver）★ 不等于证据类别。"
+        },
+        "evidence_categories": {
+          "type": "array",
+          "items": { "enum": ["POLICY", "INDUSTRY", "COMPANY", "MARKET", "CAPITAL", "EXTERNAL"] }
+        },
+        "evidence_sequence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "date"],
+            "properties": {
+              "type": { "type": "string" },
+              "date": { "type": "string" }
+            }
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["event_type", "date"],
+            "properties": {
+              "event_type": { "type": "string" },
+              "date": { "type": "string" },
+              "role": { "type": "string" }
+            }
+          }
+        },
+        "resolution_state": {
+          "enum": ["RESOLVED", "NEEDS_RESEARCH_ROUND", "INSUFFICIENT"],
+          "description": "★ 仅 RESOLVED 的对象可进入结构匹配。"
+        }
+      }
+    },
+
+    "historicalCandidate": {
+      "type": "object",
+      "description": "输出：历史结构候选（研究候选，不是买入机会 / 未来走势 / 预测结果）。",
+      "required": ["identity", "rule_set_version", "structural_status"],
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "type": "object",
+          "required": ["historical_object_kind", "historical_cycle_id"],
+          "additionalProperties": false,
+          "properties": {
+            "historical_object_kind": { "enum": ["campaign", "research_candidate"] },
+            "historical_cycle_id": { "type": "string", "minLength": 1 },
+            "historical_campaign_id": { "type": ["string", "null"] },
+            "historical_research_candidate_id": { "type": ["string", "null"] },
+            "historical_theme_cycle_id": { "type": ["string", "null"] }
+          }
+        },
+        "rule_set_version": { "const": "structural-analogy-ruleset-v0.3" },
+        "structural_status": {
+          "enum": [
+            "STRUCTURAL_SUPPORTED",
+            "STRUCTURAL_PARTIAL",
+            "THEME_ONLY",
+            "INSUFFICIENT_EVIDENCE",
+            "NO_VALID_CORRESPONDENCE"
+          ]
+        },
+        "strict_structural_supported": { "type": "boolean" },
+        "theme_relation": {
+          "type": "object",
+          "properties": {
+            "value": { "enum": ["SAME_MACRO_THEME", "CROSS_MACRO_THEME"] },
+            "role": { "type": "string" }
+          },
+          "description": "METADATA_ONLY —— 不得据此升降级。"
+        },
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "lifecycle": {
+              "type": "object",
+              "description": "★ 实测 SA v0.5 取值：MATCH / PARTIAL / MISMATCH / COMPARISON_POINT_UNKNOWN。COMPARISON_POINT_UNKNOWN = 历史侧无 lifecycle（Rule Set §2）。",
+              "properties": {
+                "status": { "enum": ["MATCH", "PARTIAL", "MISMATCH", "UNKNOWN", "NOT_AVAILABLE", "COMPARISON_POINT_UNKNOWN"] }
+              }
+            },
+            "mechanism_driver": {
+              "type": "object",
+              "properties": {
+                "status": { "enum": ["MATCH", "PARTIAL", "PERIPHERAL_OVERLAP", "MISMATCH", "UNKNOWN", "NOT_AVAILABLE"] }
+              }
+            },
+            "evidence_sequence": {
+              "type": "object",
+              "description": "★ 实测 SA v0.5：`status` 用与其他维度同一套词表（MATCH/PARTIAL/MISMATCH/NOT_AVAILABLE）；`subtype` 才用 SEQUENCE_* 词表。",
+              "properties": {
+                "status": { "enum": ["MATCH", "PARTIAL", "MISMATCH", "UNKNOWN", "NOT_AVAILABLE"] },
+                "subtype": { "enum": ["SEQUENCE_MATCH", "SEQUENCE_PARTIAL", "SET_ONLY", "SEQUENCE_MISMATCH", "UNKNOWN", "NOT_AVAILABLE"] }
+              }
+            },
+            "event_structure": {
+              "type": "object",
+              "properties": {
+                "status": { "enum": ["MATCH", "PARTIAL", "MISMATCH", "NOT_AVAILABLE"] }
+              }
+            }
+          }
+        },
+        "supported_dimensions":   { "type": "array", "items": { "type": "string" } },
+        "unknown_dimensions":     { "type": "array", "items": { "type": "string" } },
+        "unsupported_dimensions": { "type": "array", "items": { "type": "string" } },
+        "why_similar":     { "type": "array", "items": { "type": "string" } },
+        "why_not_similar": { "type": "array", "items": { "type": "string" } },
+        "dimension_evidence": { "type": "object" },
+        "background_sources": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "provenance": {
+      "type": "object",
+      "required": ["generated_by"],
+      "additionalProperties": false,
+      "properties": {
+        "generated_by": {
+          "enum": ["manual", "script", "ai-offline", "other"],
+          "description": "AI 只允许出现在离线研究生成端；其产物一律为 draft。"
+        },
+        "ai_assisted": { "type": "boolean" },
+        "reviewed_by": { "type": ["string", "null"] },
+        "reviewed_at": { "type": ["string", "null"] },
+        "source_commit": { "type": ["string", "null"] },
+        "rule_set_version": { "type": "string" },
+        "supersedes": { "type": ["string", "null"] },
+        "superseded_by": { "type": ["string", "null"] },
+        "research_round": { "type": "string" }
+      }
+    }
+  }
+}

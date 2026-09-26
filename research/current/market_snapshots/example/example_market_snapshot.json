@@ -1,0 +1,135 @@
+{
+  "_comment": "★ 示例（example），不是真实研究数据，也不构成任何投资依据。用于验证 Market Snapshot 契约 v0.1 的 V1–V10 校验规则。status = DRAFT，未进入 CANONICAL，Product 不得消费。",
+  "contract": "market_snapshot",
+  "market_snapshot_version": "0.1",
+  "snapshot_id": "MS-2026-09-30-01",
+  "snapshot_date": "2026-09-30",
+  "timestamp": "2026-09-30T20:30:00",
+  "status": "DRAFT",
+
+  "market_regime": {
+    "broad_index_state": "UP",
+    "breadth_state": "NORMAL",
+    "liquidity_state": "STABLE",
+    "risk_appetite_state": "NEUTRAL",
+    "beta_note": "本期沪深300 近 20 交易日区间温和上行；β 对个股与方向的相对表现仍不可完全分离，跨方向比较须以区间口径为准，单日数据不参与定档。",
+    "evidence_refs": ["MR-EV-01", "MR-EV-02", "MR-EV-03"]
+  },
+
+  "research_context": {
+    "research_question": "截至本快照日，哪些方向的制度 / 产业变化已形成可核验的连续证据，值得进入历史结构比对？",
+    "research_method": "按 Market Snapshot Contract v0.1：market_regime 人工 / AI 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
+    "source_policy": "Tier 1（官方发布）优先；Tier 2 为公司公告与产业数据；Tier 3 仅用于转述 T1/T2 事实。",
+    "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
+    "known_limitations": [
+      "market_regime 依赖离线填报，无自动化行情源。",
+      "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。"
+    ]
+  },
+
+  "observations": [
+    {
+      "observation_id": "OBS-2026-09-001",
+      "observation_type": "POLICY",
+      "date": "2026-09-14",
+      "claim": "示例：某主管部门于 2026-09-14 发布某项医疗器械产品标准，自 2027-09-01 起实施。",
+      "evidence_strength": "STRONG",
+      "direction": "SUPPORTIVE",
+      "temporal_relation": "BEFORE_SNAPSHOT",
+      "linked_object_id": "CC-2026-BCI-MEDTECH",
+      "source_tier": "T1",
+      "source_title": "示例：某主管部门标准发布公告"
+    },
+    {
+      "observation_id": "OBS-2026-09-002",
+      "observation_type": "MARKET",
+      "date": "2026-09-30",
+      "claim": "示例：某概念板块热度指标自年初高位回落，成交额低于年初峰值。",
+      "evidence_strength": "MEDIUM",
+      "direction": "NEGATIVE",
+      "temporal_relation": "AT_SNAPSHOT",
+      "linked_object_id": "CC-2026-BCI-MEDTECH",
+      "source_tier": "T3",
+      "source_title": "示例：板块关注度统计（媒体转述）"
+    }
+  ],
+
+  "research_objects": [
+    {
+      "object_id": "CC-2026-BCI-MEDTECH",
+      "object_kind": "current_candidate",
+      "display_name": "示例 · 脑机接口医疗器械（标准—分类—临床—商业化）",
+      "macro_theme": "医药健康",
+      "declared_phase": "THEME_FORMING",
+      "phase_source": "DERIVED_FROM_EVIDENCE",
+      "canonical_drivers": ["POLICY_DRIVEN"],
+      "evidence_categories": ["POLICY", "INDUSTRY", "MARKET"],
+      "evidence_sequence": [
+        { "type": "policy", "date": "2026-06-30" },
+        { "type": "industry", "date": "2026-09-08" },
+        { "type": "market", "date": "2026-09-30" }
+      ],
+      "events": [
+        { "event_type": "policy", "date": "2026-09-14", "role": "trigger" }
+      ],
+      "resolution_state": "RESOLVED"
+    },
+    {
+      "object_id": "URO-2026-EXAMPLE-DECLARED",
+      "object_kind": "user_research_object_draft",
+      "display_name": "示例 · 用户声明的研究对象（Draft）",
+      "macro_theme": "电力设备",
+      "declared_phase": "UNKNOWN",
+      "phase_source": "USER_DECLARED",
+      "canonical_drivers": [],
+      "evidence_categories": [],
+      "evidence_sequence": [],
+      "events": [],
+      "resolution_state": "NEEDS_RESEARCH_ROUND"
+    }
+  ],
+
+  "historical_candidates": [
+    {
+      "identity": {
+        "historical_object_kind": "campaign",
+        "historical_cycle_id": "C-2019-PHARMA-INNOV",
+        "historical_campaign_id": "C-2019-PHARMA-INNOV",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "pharma_innov_2019"
+      },
+      "rule_set_version": "structural-analogy-ruleset-v0.3",
+      "structural_status": "STRUCTURAL_PARTIAL",
+      "strict_structural_supported": false,
+      "theme_relation": {
+        "value": "SAME_MACRO_THEME",
+        "role": "METADATA_ONLY —— 不参与结构状态判定"
+      },
+      "dimensions": {
+        "lifecycle": { "status": "PARTIAL" },
+        "mechanism_driver": { "status": "PARTIAL" },
+        "evidence_sequence": { "status": "PARTIAL", "subtype": "SEQUENCE_PARTIAL" },
+        "event_structure": { "status": "PARTIAL" }
+      },
+      "supported_dimensions": ["mechanism_driver", "evidence_sequence"],
+      "unknown_dimensions": [],
+      "unsupported_dimensions": [],
+      "why_similar": ["示例：驱动机制与证据顺序存在部分对应"],
+      "why_not_similar": ["示例：生命周期仅部分对应"],
+      "dimension_evidence": {},
+      "background_sources": []
+    }
+  ],
+
+  "provenance": {
+    "generated_by": "ai-offline",
+    "ai_assisted": true,
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "source_commit": null,
+    "rule_set_version": "structural-analogy-ruleset-v0.3",
+    "supersedes": null,
+    "superseded_by": null,
+    "research_round": "ThreeC 1.1 Phase 1.2 · example"
+  }
+}
