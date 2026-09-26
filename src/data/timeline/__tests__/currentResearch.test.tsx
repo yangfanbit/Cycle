@@ -665,15 +665,29 @@ describe('7. UI', () => {
     expect(html).toContain('ccs-fx');
   });
 
-  it('每条候选展示：名称 / 阶段 / 状态 / 证据充分度 / 相似案例数', () => {
+  it('每条候选展示：名称 / 阶段 / 状态 / 证据充分度 / 结构对应入口', () => {
     const html = renderFixture();
     expect(html).toContain('AI 医疗');
     expect(html).toContain('ccs-phase ph-theme_forming">主题形成<');
     expect(html).toContain('ccs-ev ev-medium">证据：证据中等<');
     expect(html).toContain('ccs-status">研究中<');
-    expect(html).toContain('ccs-sim">历史相似：');
+    // 正式入口为 Structural Analogy（结构对应），不再是「历史相似 N 条」
+    expect(html).toContain('ccs-sa-hint');
     // 4 条候选全部可见
     expect((html.match(/ccs-head/g) || []).length).toBe(4);
+  });
+
+  it('G-1 退役 · UI 不再出现 Product 自算的历史相似分档 / 星级', () => {
+    // 旧视图（currentSimilarity: SIMILARITY_WEIGHTS + score + tier + stars）已于 G-1 退役。
+    // 其 tier/stars 是 Product 自算，不是 Research 的正式结构结论 → 不得再出现在 UI。
+    for (const html of [renderFixture(), renderFixture('FX-AI-MEDICAL')]) {
+      expect(html).not.toContain('ccs-sim');
+      expect(html).not.toContain('ccs-stars');
+      expect(html).not.toContain('ccs-tier');
+      expect(html).not.toContain('高相似');
+      expect(html).not.toContain('中相似');
+      expect(html).not.toContain('历史相似阶段');
+    }
   });
 
   it('UI 不显示相似度分数 / 百分比（避免被读成概率）', () => {

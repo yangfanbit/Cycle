@@ -4,7 +4,7 @@ import {
   type CurrentCandidateListView,
   type CurrentCandidateView,
   CURRENT_CANDIDATE_HINT,
-  CURRENT_SIMILARITY_DISCLAIMER,
+  STRUCTURAL_ANALOGY_DISCLAIMER,
 } from '../../data/timeline/currentCandidateAdapter';
 import {
   CANDIDATE_STATUS_LABEL,
@@ -16,18 +16,12 @@ import {
   PHASE_DIMENSIONS,
   SIGNAL_LEVEL_LABEL,
   TEMPORAL_LABEL,
-  NARRATIVE_TYPE_LABEL,
 } from '../../data/timeline/currentCandidate';
 import {
   AGGREGATE_LEVEL_LABEL,
   CONFLICT_KIND_LABEL,
 } from '../../data/timeline/currentEvidence';
-import { TIER_LABEL } from '../../data/timeline/historicalSimilarPhase';
 import { PHASE_LABEL } from '../../data/timeline/researchAttention';
-import {
-  PRE_OBSERVATION_HINT,
-  PRE_OBSERVATION_LABEL,
-} from '../../data/timeline/preObservation';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
 import type { HistoricalCaseAnalogyContext } from '../../data/timeline/historicalCase';
 import { StructuralAnalogySection } from './StructuralAnalogySection';
@@ -188,8 +182,6 @@ function CandidateRow({
   historicalLabelOf?: (cycleId: string) => string | null;
 }) {
   const c = view.candidate;
-  const highCount = view.similarity.results.filter((r) => r.tier === 'HIGH').length;
-  const midCount = view.similarity.results.filter((r) => r.tier === 'MEDIUM').length;
 
   return (
     <li className={`ccs-item${open ? ' open' : ''}`}>
@@ -206,12 +198,6 @@ function CandidateRow({
         <span className="ccs-status">{view.gate.effectiveLabel}</span>
         <span className={`ccs-ev ev-${view.summary.level.toLowerCase()}`}>
           证据：{AGGREGATE_LEVEL_LABEL[view.summary.level]}
-        </span>
-        <span className="ccs-sim">
-          {view.similarity.insufficient
-            ? '历史相似：暂无足够相似阶段'
-            : `历史相似：${view.similarity.results.length} 条` +
-              (highCount || midCount ? `（高 ${highCount} / 中 ${midCount}）` : '')}
         </span>
         {/* Temporal Firewall 在概览层即可见（透明性：不隐藏被隔离的证据） */}
         {view.summary.excludedCount > 0 && (
@@ -403,96 +389,15 @@ function CandidateDetail({
         onOpenHistoricalCase={onOpenHistoricalCase}
         historicalLabelOf={historicalLabelOf}
       />
+      {/* 红线声明：随 G-1 退役从旧「历史相似」视图迁移至此（正式入口旁） */}
+      <p className="ccs-dim ccs-sa-disclaimer">{STRUCTURAL_ANALOGY_DISCLAIMER}</p>
 
-      {/* ---------- 旧视图（兼容保留 · 非正式入口，默认收起） ---------- */}
-      <details className="ccs-sec ccs-legacy">
-        <summary className="ccs-legacy-summary">
-          历史相似阶段（旧视图 · 兼容保留）
-          <span className="ccs-legacy-hint">
-            —— 该视图使用旧的阶段/分档口径，**不是**结构对应；正式入口见上方 Structural Analogy。
-          </span>
-        </summary>
-        <section className="ccs-sec">
-          <h5>Historical Similar Cases（历史相似阶段 · Lifecycle Lens）</h5>
-          <p className="ccs-dim">{CURRENT_SIMILARITY_DISCLAIMER}</p>
-          {view.similarity.insufficient ? (
-            <p className="ccs-none">{view.similarity.note}</p>
-          ) : (
-            <ul className="ccs-sim-list">
-              {view.similarity.results.map((r) => (
-                <li key={r.campaign_id} className={`ccs-sim-item tier-${r.tier.toLowerCase()}`}>
-                  <div className="ccs-sim-head">
-                    <span className="ccs-sim-title">{r.title}</span>
-                    <span className="ccs-sim-year">{r.year}</span>
-                    <span className="ccs-tier">
-                      {TIER_LABEL[r.tier]} <span className="ccs-stars">{r.stars}</span>
-                    </span>
-                  </div>
-                  <dl className="ccs-sim-kv">
-                    <dt>当时阶段</dt>
-                    <dd>
-                      {r.phaseLabel}（{r.phaseMatchLabel}
-                      {r.matchedStage ? ` ${r.matchedStage.start}~${r.matchedStage.end}` : ''}）
-                    </dd>
-                    <dt>Pattern</dt>
-                    <dd>{r.pattern}</dd>
-                    <dt>Drivers</dt>
-                    <dd>{r.drivers.length > 0 ? r.drivers.join(' / ') : '未标注'}</dd>
-                    <dt>叙事类型</dt>
-                    <dd>
-                      {r.narrativeTypes.length > 0
-                        ? r.narrativeTypes.map((n) => NARRATIVE_TYPE_LABEL[n]).join('、')
-                        : '未标注（该层不参与）'}
-                    </dd>
-                    {r.driverNotes.length > 0 && (
-                      <>
-                        <dt>当时归因</dt>
-                        <dd>{r.driverNotes.join('；')}</dd>
-                      </>
-                    )}
-                    <dt>后来结束</dt>
-                    <dd>
-                      {r.terminalPhaseLabel}（区间 {r.start} ~ {r.end}）
-                    </dd>
-                    <dt>{PRE_OBSERVATION_LABEL}</dt>
-                    <dd>
-                      {r.preObservation ? (
-                        <>
-                          {r.preObservation.start} ~ {r.preObservation.end}
-                          （形成日 {r.preObservation.formation} · 锚点 {r.preObservation.formationAnchor}）
-                          <span className="ccs-dim"> {PRE_OBSERVATION_HINT}</span>
-                        </>
-                      ) : (
-                        '无法推导（不编造）'
-                      )}
-                    </dd>
-                  </dl>
-                  <div className="ccs-sim-why">
-                    <span className="ccs-dim">为什么类似：</span>
-                    <ul>
-                      {r.reasons.map((x) => (
-                        <li key={x}>{x}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <button
-                    className="ccs-open"
-                    onClick={() => onSelect({ kind: 'campaign', id: r.campaign_id })}
-                  >
-                    查看完整历史案例 →
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-          {view.similarity.excludedByFirewall > 0 && (
-            <p className="ccs-dim">
-              另有 {view.similarity.excludedByFirewall} 条历史对象在本次快照时点尚未结束，
-              已按 Temporal Firewall 排除（否则会引用未来信息）。
-            </p>
-          )}
-        </section>
-      </details>
+      {/* ---------- 旧「历史相似阶段」视图：已于 ThreeC 1.1 G-1 退役 ----------
+          退役原因：该视图的 tier / stars 由 Product 侧 `currentSimilarity.ts` 自算
+          （SIMILARITY_WEIGHTS + score），**不是** Research 的正式结构结论；
+          与「Product 不重算 Structural Analogy / 不生成 score·ranking」硬约束冲突。
+          `currentSimilarity.ts` 文件本身保留为 LEGACY（仍供 researchQuestionsOf 引用历史案例）。
+          正式入口：上方 <StructuralAnalogySection />（冻结 SA v0.5 解释）。 */}
 
       {/* ---------- What to research next? ---------- */}
       <section className="ccs-sec">

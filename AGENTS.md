@@ -83,6 +83,26 @@ Structural Analogy 当前冻结规则以：
 
 “相似”必须说明**为什么**，不能只给一个分数。
 
+### 5.1 Product 允许 / 禁止消费清单（ThreeC 1.1 固化）
+
+实测入口共 4 个（详见 `docs/THREEC_REPOSITORY_ARCHITECTURE_REVIEW_v1.1.md`）。
+
+**允许消费**（版本化 · 只读 · 静态 import，无运行时网络）：
+
+- `exports/timeline_export_v1.json` —— canonical export（Contract v1.0）
+- `research/current/` 下的 Product-facing artifact（`current_candidates.json` · `market_snapshots/`）
+- `research/research/reports/` 下被正式指定的 Product-facing artifact（SA · TO · Driver canonicalization）
+
+**禁止触碰**：
+
+- `research/scripts` · `research/database` · `research/intake` · 任何中间结果（`_seasonal_analysis/` 等）
+- 不得在 Product 侧重新计算 Structural Analogy
+- 不得生成 score / ranking / probability / prediction
+
+> ★ **G-1（ThreeC 1.1）**：旧「历史相似阶段」视图（`currentSimilarity.ts` 自算 tier / stars）**已退役，不得再进入任何 UI**。
+> `currentSimilarity.ts` 文件保留为 LEGACY（仅供 `researchQuestionsOf` 引用历史案例），但**不得**恢复其分档 / 星级展示。
+> 正式「当前 → 历史」入口**唯一** = `StructuralAnalogySection`（冻结 SA 解释）。
+
 ## 6. Git 安全
 
 禁止未经明确授权执行：

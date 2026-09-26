@@ -412,6 +412,18 @@ export const CURRENT_SIMILARITY_DISCLAIMER =
   '「阶段 → Theme Cycle Pattern → Drivers → Narrative 结构」的可解释比对，' +
   '不是概率、不是评分、不是买卖信号。';
 
+/**
+ * Structural Analogy（正式结构对应）的边界声明。
+ *
+ * ★ ThreeC 1.1 G-1：旧「历史相似阶段」视图（tier / stars，Product 自算）已退役，
+ *   本声明接管其在 UI 上的**红线表述职责**，挂在正式入口 Structural Analogy 旁。
+ * ★ 必须保留「不是未来走势 / 不是概率 / 不是评分 / 不是买卖信号」四段表述 ——
+ *   `currentResearch.test.tsx` 以此为硬性断言，不得删除或改写语义。
+ */
+export const STRUCTURAL_ANALOGY_DISCLAIMER =
+  '对应的是**阶段与机制结构**，不是未来走势。结构状态与逐维解释来自 Research 冻结规则' +
+  '（Structural Analogy Rule Set v0.3）的可解释比对，不是概率、不是评分、不是买卖信号。';
+
 export { PRE_OBSERVATION_LABEL, PRE_OBSERVATION_HINT, NARRATIVE_TYPE_LABEL, DIMENSION_LABEL, EVIDENCE_SOURCE_LABEL };
 
 /** 类型再导出，便于 UI 层单点导入 */
