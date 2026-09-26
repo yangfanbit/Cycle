@@ -331,10 +331,14 @@ def validate_regime(path: str, label: str) -> None:
     ev = doc.get("evidence") or []
     ev_ids = {e.get("evidence_id") for e in ev if isinstance(e, dict)}
 
-    # R4 evidence_refs
+    # R4 evidence_refs（★ 例外：四维全 UNKNOWN 的「诚实空态」允许为空）
     refs = regime.get("evidence_refs") or []
+    all_unknown = all(regime.get(d) == "UNKNOWN" for d in REGIME_DIMS)
     if len(refs) < 1:
-        fail("R4·%s" % label, "evidence_refs 至少 1 条")
+        if all_unknown:
+            ok("%s · R4 四维全 UNKNOWN → 允许 evidence_refs 为空（诚实空态）" % label)
+        else:
+            fail("R4·%s" % label, "evidence_refs 至少 1 条（仅四维全 UNKNOWN 时可空）")
     for r in refs:
         if r not in ev_ids:
             fail("R4·%s" % label, "evidence_refs 中的 %r 在 evidence[] 中不存在" % r)
