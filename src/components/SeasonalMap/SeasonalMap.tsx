@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { MONTHS, MonthGrid, TodaySpan, monthFractions, pct } from '../Timeline/trackPrimitives';
 import type { ThemeAnnualRow, AnnualWindow } from '../../data/timeline/themeAnnualWindow';
 import { themeKey } from '../../data/timeline/themeAnnualWindow';
+import { themeColorOf, themeOnsetColorOf } from './themeColors';
 import { dayOfYearISO, daysInYear } from '../../utils';
 
 /**
@@ -89,6 +90,7 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
           <span className="lg onset">长周期起始（仅标起点）</span>
           <span className="lg rc">Research Candidate</span>
           <span className="lg now">Today</span>
+          <span className="lg-note">柱子颜色 = 该行大主题（分类，不表示强弱 / 涨跌）</span>
         </p>
       </div>
 
@@ -116,6 +118,9 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
             );
             const key = themeKey(row);
             const open = openTheme === key;
+            // 每个大主题一个分类色（颜色只表示「属于哪个主题」，不表示强弱 / 涨跌）
+            const rowColor = themeColorOf(row.theme);
+            const rowOnsetColor = themeOnsetColorOf(row.theme);
             return (
               <div
                 className={`sm-row${open ? ' on' : ''}`}
@@ -175,6 +180,10 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
                           width: pct(Math.max(w.endFrac - w.startFrac, 0.004)),
                           top: ROW_PAD + lane * (LANE_H + LANE_GAP),
                           height: LANE_H,
+                          // Research Candidate 保持「未晋升」语义：透明填充 + 该主题色虚线描边
+                          ...(isRc
+                            ? { borderColor: rowColor }
+                            : { background: w.kind === 'onset' ? rowOnsetColor : rowColor }),
                         }}
                       />
                     );

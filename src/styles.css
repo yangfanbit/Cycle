@@ -2552,10 +2552,13 @@ html, body {
 }
 .seasonal-legend .lg { display: inline-flex; align-items: center; gap: 5px; }
 .seasonal-legend .lg::before { content: ''; width: 14px; height: 8px; border-radius: 2px; }
-.seasonal-legend .lg.win::before { background: #5a7a9a; }
-.seasonal-legend .lg.onset::before { background: #cfd8e0; }
-.seasonal-legend .lg.rc::before { background: transparent; border: 1px dashed #8a7f6a; }
+/* 图例只解释**柱形类型**（实心 / 浅色 / 虚线 / Today），因此用中性色，
+   避免被误读成某个具体大主题。柱子的颜色 = 该行大主题（见 themeColors.ts）。 */
+.seasonal-legend .lg.win::before { background: #7E858C; }
+.seasonal-legend .lg.onset::before { background: #C9CED3; }
+.seasonal-legend .lg.rc::before { background: transparent; border: 1px dashed #7E858C; }
 .seasonal-legend .lg.now::before { background: var(--today); width: 2px; height: 12px; border-radius: 0; }
+.seasonal-legend .lg-note { color: var(--ink-3); }
 
 .seasonal-scroll { overflow-x: auto; }
 .seasonal-map { min-width: 720px; position: relative; }

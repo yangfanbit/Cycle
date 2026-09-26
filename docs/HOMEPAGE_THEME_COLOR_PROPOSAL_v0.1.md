@@ -6,7 +6,12 @@
 > | 对象 | 首页「历史季节性机会地图」（`src/components/SeasonalMap/SeasonalMap.tsx`） |
 > | 日期 | 2026-09-26 |
 > | 问题 | 12 个大主题**共用同一个颜色**，视觉上无法区分 |
-> | 状态 | **待用户确认** |
+> | 状态 | ✅ **已采纳并实现**（2026-09-26） |
+> | 实现 | `src/components/SeasonalMap/themeColors.ts` + `SeasonalMap.tsx` + `styles.css` |
+> | 测试 | `src/components/SeasonalMap/__tests__/themeColors.test.ts`（6 条不变量，含对比度 ≥3:1） |
+>
+> **用户裁定**：**绿色不作为约束** —— 本系统**不使用涨跌配色语义**（红涨绿跌与本图无关）。
+> 因此保留全色相方案，不做偏移。
 
 ---
 
@@ -84,11 +89,30 @@ export const THEME_COLOR: Record<string, string> = {
 | 相邻色相（30°）区分度有限 | 12 色是上限 | 采用**统一饱和度 + 标签冗余**；必要时对相邻两色做轻微明度差（代价：可能被读成序数，**不推荐**） |
 | 主题名新增/改名 | 映射表会缺项 | 缺项回落中性灰 `#7E858C`，并**不报错**（诚实降级） |
 
-## 6. 本轮不做
+## 6. 实现记录（2026-09-26）
 
-- ❌ 未修改任何代码 / CSS（本文件是**方案**）
-- ❌ 未改 `SeasonalMap.tsx` / `styles.css`
-- ❌ 未新增主题、未改 `macroThemeOf()` 的分组逻辑
+**已落地**：
+
+- 新增 `src/components/SeasonalMap/themeColors.ts`：`THEME_COLOR` / `THEME_ONSET_COLOR` 两张表 +
+  `themeColorOf()` / `themeOnsetColorOf()`（未知主题回落中性灰，**不报错**）。
+- `SeasonalMap.tsx`：按行取色，以 **inline style** 覆盖 CSS 默认色
+  （`win` → 主题主色；`onset` → 主题浅色；`rc` → 透明填充 + 主题色虚线描边）。
+- `styles.css`：`.sm-bar.win/.onset` 的旧默认色**保留为兜底**。
+
+**与初稿的两处偏离（均已在代码注释中说明）**：
+
+| # | 初稿 | 实际 | 理由 |
+|---|---|---|---|
+| 1 | 图例色块沿用原色 | **改为中性灰** | 图例只解释**柱形类型**（实心/浅色/虚线/Today）；颜色现在表示**主题**，沿用旧色会被误读成某个具体主题。另加一行说明「柱子颜色 = 该行大主题」 |
+| 2 | 共识窗口 `sm-consensus` 用主题浅色 | **保持中性** `#eef2f6` | 它是柱子背后的底带，若再染色会**削弱柱子的对比度**，且同一行内两者同色反而看不出层级 |
+
+**未做**：未改 `macroThemeOf()` 分组逻辑、未新增主题、未改 `sm-today-layer`（Today 仍 `var(--today)`）。
+
+## 7. 明确不做
+
+- ❌ 不改主题分组 / 不改 `themeAnnualWindow.ts` 的聚合口径
+- ❌ 不引入深浅渐变（会与「分类不是序数」原则冲突）
+- ❌ 不使用涨跌配色语义（用户已明确本系统不按涨跌着色）
 
 ---
 
