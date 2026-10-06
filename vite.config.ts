@@ -75,6 +75,10 @@ export default defineConfig({
       '@exports': fileURLToPath(new URL('./exports', import.meta.url)),
       '@current': fileURLToPath(new URL('./research/current', import.meta.url)),
       '@observation': fileURLToPath(new URL('./research/research/reports', import.meta.url)),
+      // Market Snapshot（ThreeC 1.1 Phase 1.3）：Product 只读消费。
+      // ★ 只静态 import 极小的 index.json；快照本体按需 lazy import（见 snapshotAdapter.ts），
+      //   避免主包随月份增长（快照 ~192 KB/份）。
+      '@market': fileURLToPath(new URL('./research/current/market_snapshots', import.meta.url)),
     },
   },
   test: {

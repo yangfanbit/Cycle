@@ -2829,3 +2829,87 @@ html, body {
   .drill-body { padding: 4px 12px 14px; }
   .theme-index { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- 本期研究快照（Current Snapshot · ThreeC 1.1 Phase 1.3） ---------- */
+.cs-wrap { display: flex; flex-direction: column; gap: 4px; }
+.cs-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--line);
+}
+.cs-head h5 { margin: 0; font-size: 14px; }
+.cs-meta { font-size: 11.5px; color: var(--ink-3); }
+.cs-badge {
+  font-size: 11px; padding: 2px 8px; border-radius: 10px;
+  border: 1px solid var(--line-strong); color: var(--ink-2); background: var(--panel);
+}
+.cs-badge-preview { border-color: var(--today); color: var(--today); }
+
+.cs-sec { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.cs-sec:last-child { border-bottom: none; }
+.cs-sec h5 { margin: 0 0 8px; font-size: 13px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.cs-dim { margin: 6px 0 0; font-size: 11.5px; color: var(--ink-2); line-height: 1.7; }
+.cs-dim code { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+
+/* diff 摘要 —— 页面主角 */
+.cs-diff-total { margin: 4px 0 8px; font-size: 15px; }
+.cs-diff-total strong { font-size: 20px; color: var(--accent); }
+.cs-diff-none {
+  margin: 4px 0 0; padding: 10px 12px; font-size: 12.5px; line-height: 1.75;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); color: var(--ink-2);
+}
+.cs-diff-from { font-size: 11px; color: var(--ink-3); }
+.cs-diff-layers { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.cs-diff-layers li {
+  display: inline-flex; align-items: baseline; gap: 6px; font-size: 12px;
+  padding: 3px 10px; border: 1px solid var(--line); border-radius: 12px; color: var(--ink-3); background: var(--panel);
+}
+.cs-diff-layers li.on { border-color: var(--accent); color: var(--ink); }
+.cs-diff-layer-n { font-family: var(--mono); font-size: 12px; }
+.cs-diff-list { margin: 0 0 4px; padding-left: 18px; font-size: 12px; color: var(--ink-2); line-height: 1.8; }
+.cs-diff-list code { font-family: var(--mono); font-size: 11px; }
+
+/* 市场环境 */
+.cs-regime { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.cs-regime li {
+  display: inline-flex; align-items: baseline; gap: 8px; font-size: 12px;
+  padding: 5px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel);
+}
+.cs-regime li.unknown { border-style: dashed; color: var(--ink-3); }
+.cs-regime-name { color: var(--ink-3); }
+.cs-regime-value { font-weight: 500; }
+.cs-unknown-note {
+  margin: 8px 0 0; font-size: 11.5px; line-height: 1.7; color: var(--ink-2);
+  padding: 8px 10px; border-left: 2px solid var(--line-strong);
+}
+
+/* 研究对象 */
+.cs-objs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.cs-obj { padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.cs-obj-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.cs-obj-name { font-size: 13px; font-weight: 500; }
+.cs-obj-id { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); }
+.cs-obj-phase, .cs-obj-res {
+  font-size: 11px; padding: 1px 7px; border-radius: 10px;
+  border: 1px solid var(--line-strong); color: var(--ink-2);
+}
+.cs-statusbar { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.cs-status {
+  display: inline-flex; align-items: baseline; gap: 5px; font-size: 11px;
+  padding: 3px 9px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg);
+}
+.cs-status-n { font-family: var(--mono); font-weight: 500; }
+.cs-status-name { color: var(--ink-2); }
+.cs-st-structural_supported { border-color: #389444; }
+.cs-st-structural_supported .cs-status-n { color: #389444; }
+.cs-st-structural_partial { border-color: #947238; }
+.cs-st-structural_partial .cs-status-n { color: #947238; }
+.cs-st-no_valid_correspondence { border-color: var(--line-strong); }
+.cs-st-no_valid_correspondence .cs-status-n { color: var(--ink-3); }
+.cs-no-valid {
+  margin: 8px 0 0; font-size: 11.5px; line-height: 1.75; color: var(--ink-2);
+  padding: 8px 10px; border-left: 2px solid var(--line-strong);
+}
+.cs-obs { list-style: none; margin: 0; padding: 0; font-size: 12px; color: var(--ink-2); line-height: 1.8; }
+.cs-obs code { font-family: var(--mono); font-size: 11px; }
+.cs-empty-lead { margin: 0 0 6px; font-size: 13px; }
+.cs-cs-note { margin-top: 8px; }

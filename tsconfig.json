@@ -16,12 +16,13 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vitest/globals", "node"],
+    "types": ["vitest/globals", "node", "vite/client"],
     "baseUrl": ".",
     "paths": {
       "@exports/*": ["exports/*"],
       "@current/*": ["research/current/*"],
-      "@observation/*": ["research/research/reports/*"]
+      "@observation/*": ["research/research/reports/*"],
+      "@market/*": ["research/current/market_snapshots/*"]
     }
   },
   "include": ["src", "data", "exports", "research/current", "tests", "vite.config.ts"]

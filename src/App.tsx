@@ -1,5 +1,6 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
+import { CurrentSnapshotSection } from './components/CurrentSnapshot/CurrentSnapshotSection';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import { HistoricalSimilarPhase } from './components/HistoricalSimilarPhase/HistoricalSimilarPhase';
@@ -47,6 +48,16 @@ function verifiedEnabled(): boolean {
  */
 function exampleCandidatesEnabled(): boolean {
   return new URLSearchParams(window.location.search).get('candidates') === 'example';
+}
+
+/**
+ * ?snapshot=draft 放宽 Market Snapshot 的展示门禁（Phase 1.3）。
+ *
+ * 默认**只展示已签发（`CANONICAL`）**的快照 —— 防止未经人工审核的研究被当成结论。
+ * 本开关仅用于预览未签发内容，页面会**常驻醒目徽标**标明「未签发 · 仅供预览」。
+ */
+function snapshotPreviewEnabled(): boolean {
+  return new URLSearchParams(window.location.search).get('snapshot') === 'draft';
 }
 
 export default function App() {
@@ -167,6 +178,17 @@ export default function App() {
           <p className="drill-hint">
             以下为研究明细与导航入口，默认收起 —— 首页只保留上面的季节性地图；点开即用，能力不变。
           </p>
+
+          {/* ⓪ 本期研究快照（Phase 1.3）：月度节奏下用户最关心「跟上期比变了什么」，
+              因此放在钻取区第一位。默认只展示 CANONICAL；?snapshot=draft 可预览未签发内容。 */}
+          {!verifiedMode && (
+            <DrillSection
+              title="本期研究快照（Current Snapshot）"
+              note="跟上期比变了什么 · 市场环境 / 研究对象 / 历史结构候选"
+            >
+              <CurrentSnapshotSection previewMode={snapshotPreviewEnabled()} />
+            </DrillSection>
+          )}
 
           {!verifiedMode && (
             <DrillSection
