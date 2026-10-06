@@ -29,7 +29,7 @@
 
   "observations": [
     {
-      "observation_id": "OBS-2026-09-001",
+      "observation_id": "OBS-EXAMPLE-001",
       "observation_type": "POLICY",
       "date": "2026-09-14",
       "claim": "示例：某主管部门于 2026-09-14 发布某项医疗器械产品标准，自 2027-09-01 起实施。",
@@ -41,7 +41,7 @@
       "source_title": "示例：某主管部门标准发布公告"
     },
     {
-      "observation_id": "OBS-2026-09-002",
+      "observation_id": "OBS-EXAMPLE-002",
       "observation_type": "MARKET",
       "date": "2026-09-30",
       "claim": "示例：某概念板块热度指标自年初高位回落，成交额低于年初峰值。",

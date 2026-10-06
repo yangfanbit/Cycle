@@ -34,6 +34,33 @@ export interface SnapshotObservation {
   claim: string;
   evidence_strength?: string;
   direction?: string;
+  /** 该观察关联的**当前研究对象**（`research_objects[].object_id`）；市场级观察可为空 */
+  linked_object_id?: string | null;
+  source_tier?: string;
+  source_title?: string;
+}
+
+/** Lifecycle Tracking：某个当前对象的「追加式观察时间线」条目（派生，不落盘） */
+export interface LifecycleEntry {
+  date: string;
+  observation_id: string;
+  observation_type: string;
+  claim: string;
+  evidence_strength?: string;
+  direction?: string;
+  source_tier?: string;
+  source_title?: string;
+  /** ★ 哪一期快照**首次**登记了这条观察（同一 id 在多期出现时取最早一期） */
+  first_seen_in: string;
+}
+
+export interface LifecycleTimeline {
+  object_id: string;
+  display_name: string;
+  entries: LifecycleEntry[];
+  count: number;
+  first_date: string | null;
+  last_date: string | null;
 }
 
 export interface SnapshotCandidateIdentity {

@@ -229,6 +229,21 @@ def validate_snapshot(path: str, label: str) -> None:
     if objs:
         ok("%s · V7 research_objects 校验完成（%d 条）" % (label, len(objs)))
 
+    # L1 · 观察若关联对象，必须指向本快照内的 research_objects（悬空关联即 FAIL）
+    obj_ids = {o.get("object_id") for o in objs if isinstance(o, dict)}
+    linked = 0
+    for i, o in enumerate(obs):
+        if not isinstance(o, dict):
+            continue
+        loid = o.get("linked_object_id")
+        if isinstance(loid, str) and loid:
+            linked += 1
+            if loid not in obj_ids:
+                fail("L1·%s" % label,
+                     "observations[%d].linked_object_id=%r 不在 research_objects 中（悬空关联）" % (i, loid))
+    if linked:
+        ok("%s · L1 观察→对象关联校验通过（%d 条已关联）" % (label, linked))
+
     # V8 historical_candidates（契约 v0.3：轻量索引 + 指回当前对象）
     SLIM_KEYS = {"current_object_id", "identity", "structural_status", "strict_structural_supported"}
     object_ids = {o.get("object_id") for o in objs if isinstance(o, dict)}
@@ -588,6 +603,36 @@ def main() -> int:
             validate_observations(path, label)
         else:
             warn("IO·%s" % label, "未知 contract=%r —— 跳过（仅支持 market_snapshot / market_regime_draft）" % c)
+
+    # ---- L3 · 跨快照 append-only 自检（同一 observation_id 内容必须一致）----
+    seen_obs = {}
+    for label, path in files:
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(doc, dict) or doc.get("contract") != "market_snapshot":
+            continue
+        sid = doc.get("snapshot_id")
+        for o in doc.get("observations") or []:
+            if not isinstance(o, dict):
+                continue
+            oid = o.get("observation_id")
+            if oid in seen_obs:
+                prev_sid, prev = seen_obs[oid]
+                diff = [k for k in ("date", "claim", "observation_type", "evidence_strength", "direction")
+                        if (prev.get(k) or None) != (o.get(k) or None)]
+                if diff:
+                    fail("L3·%s" % label,
+                         "observation_id=%r 内容被改写（首见 %s）：字段 %s —— 违反 append-only"
+                         % (oid, prev_sid, ", ".join(diff)))
+            else:
+                seen_obs[oid] = (sid, o)
+    if seen_obs:
+        ok("跨快照 append-only 自检完成（%d 个 observation_id）" % len(seen_obs))
 
     print("=" * 68)
     print("Market Snapshot / market_regime 验证（ThreeC 1.1 Phase 1.2）")
