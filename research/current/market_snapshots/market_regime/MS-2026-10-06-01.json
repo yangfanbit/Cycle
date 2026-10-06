@@ -1,0 +1,110 @@
+{
+  "ai_model": "ThreeC 1.1 Phase 1.4 · 首轮真实数据（B 路径：AI 离线调研 + 挂来源，待人工审核）",
+  "contract": "market_regime_draft",
+  "evidence": [
+    {
+      "claim": "2026-09-30 A 股 9 月收官，上证指数全月下跌 3.62%，收报 3842.19 点；主要指数月线集体收跌。",
+      "dimension": "broad_index_state",
+      "evidence_id": "MR-EV-01",
+      "metric": "上证指数 2026 年 9 月月度涨跌幅（规则允许的次要标的）",
+      "source_date": "2026-09-30",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇《A股9月收官：沪指跌3.62%…》2026-09-30",
+      "value_text": "-3.62%（收报 3842.19）",
+      "window": "2026-09 全月"
+    },
+    {
+      "claim": "同期深证成指、创业板指月跌幅均超 8%，科创50 指数跌超 9% —— 与上证 -3.62% 存在显著口径差异。",
+      "dimension": "broad_index_state",
+      "evidence_id": "MR-EV-02",
+      "metric": "成长类指数 2026 年 9 月月度涨跌幅（口径差异对照）",
+      "source_date": "2026-09-30",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇 2026-09-30",
+      "value_text": "深证成指、创业板指月跌超 8%；科创50 跌超 9%",
+      "window": "2026-09 全月"
+    },
+    {
+      "claim": "可得日度样本的上涨家数占比约 45%–64%，均值约 54%，落在 NORMAL 区间（40%–60%）。",
+      "dimension": "breadth_state",
+      "evidence_id": "MR-EV-03",
+      "metric": "全市场上涨/下跌家数（可得交易日样本）",
+      "source_date": "2026-09-30",
+      "source_tier": "T3",
+      "source_title": "FactorHub 每日市场摘要 2026-09-30 · 每经 2026-09-29 · 股票复盘 2026-09-04/09-07",
+      "value_text": "09-30：上涨 2567 / 下跌 2824；09-29：超 3400 只上涨；09-07：3040 涨 / 1987 跌；09-04：2249 涨",
+      "window": "2026-09-04 / 09-07 / 09-29 / 09-30（4 个交易日样本）"
+    },
+    {
+      "claim": "9 月最后一个完整交易周成交额持续萎缩，09-29 两市成交额 14091.97 亿元创近 14 个月新低。",
+      "dimension": "liquidity_state",
+      "evidence_id": "MR-EV-04",
+      "metric": "两市单日成交额（地量）",
+      "source_date": "2026-09-30",
+      "source_tier": "T3",
+      "source_title": "财联社/新浪财经 2026-09-29 · FactorHub 2026-09-30",
+      "value_text": "09-29：14091.97 亿元（较前一日缩量 2936 亿，创 2025-07-08 以来新低）；09-30：约 14501 亿元",
+      "window": "2026-09-29 ~ 2026-09-30"
+    },
+    {
+      "claim": "09-29 成交额较年内天量（2026-01-14，39414.84 亿元）萎缩超 64%，量能处于显著收缩状态。",
+      "dimension": "liquidity_state",
+      "evidence_id": "MR-EV-05",
+      "metric": "成交额相对年内天量的萎缩幅度",
+      "source_date": "2026-09-29",
+      "source_tier": "T3",
+      "source_title": "财联社/新浪财经 2026-09-29",
+      "value_text": "较 2026-01-14 天量 39414.84 亿元萎缩超 64%",
+      "window": "2026-01-14 ~ 2026-09-29"
+    },
+    {
+      "claim": "资金向低 β 防御方向（银行）集中，高 β 成长方向大幅调整 —— 该信号指向风险偏好收缩。",
+      "dimension": "risk_appetite_state",
+      "evidence_id": "MR-EV-06",
+      "metric": "低 β 权重（银行）与高 β 成长（创业板/科创）相对表现",
+      "source_date": "2026-09-30",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇 2026-09-30",
+      "value_text": "工行、建行、中行等多只银行股本月创历史新高；同期创业板指跌超 8%、科创50 跌超 9%",
+      "window": "2026-09 全月"
+    },
+    {
+      "claim": "同期部分题材方向出现大幅上涨，投机活跃度并未同步收缩 —— 与 MR-EV-06 的信号方向相反。",
+      "dimension": "risk_appetite_state",
+      "evidence_id": "MR-EV-07",
+      "metric": "题材/投机方向表现（与低 β 信号相反）",
+      "source_date": "2026-09-30",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇 2026-09-30",
+      "value_text": "CRO 近岸蛋白涨超 133%；PCB 澳弘电子涨超 88%；黄酒会稽山涨近 93%；有色金属领跌（贵金属、锂矿方向个股跌超 20%）",
+      "window": "2026-09 全月"
+    }
+  ],
+  "generated_at": "2026-10-06T21:20:00+08:00",
+  "generated_by": "ai-offline",
+  "market_regime": {
+    "beta_note": "2026-09 A 股呈「缩量调整 + 结构剧烈分化」：指数层面跌幅温和（上证 -3.62%），但成长/科创跌幅显著（深证成指、创业板指月跌超 8%，科创50 跌超 9%），低 β 银行股逆势创历史新高。★ β 在本期**不可分离程度高**：不同标的（大盘 vs 成长）方向一致但幅度差异极大，跨标的比较必须以区间口径为准，不得用单一指数代表全市场。单日数据未用于定档。",
+    "breadth_state": "NORMAL",
+    "broad_index_state": "FLAT",
+    "evidence_refs": [
+      "MR-EV-01",
+      "MR-EV-02",
+      "MR-EV-03",
+      "MR-EV-04",
+      "MR-EV-05",
+      "MR-EV-06",
+      "MR-EV-07"
+    ],
+    "liquidity_state": "CONTRACTING",
+    "risk_appetite_state": "NEUTRAL"
+  },
+  "market_regime_version": "0.1",
+  "review": {
+    "decided_at": null,
+    "rationale": null,
+    "reviewer": null,
+    "status": "PENDING"
+  },
+  "snapshot_date": "2026-10-06",
+  "unknown_notes": {}
+}

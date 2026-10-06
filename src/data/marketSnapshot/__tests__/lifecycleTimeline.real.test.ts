@@ -43,16 +43,21 @@ describe('lifecycleTimeline · 真实快照集成检查', () => {
       return;
     }
 
-    const byObject = new Map<string, number>();
+    // ★ 同一 observation_id 会**跨快照重复出现**（append-only 的必然结果），
+    //   而时间线按 id **去重** → 期望值也必须去重后再比。
+    const byObject = new Map<string, Set<string>>();
     for (const o of linked) {
       const id = o.linked_object_id as string;
-      byObject.set(id, (byObject.get(id) ?? 0) + 1);
+      if (!byObject.has(id)) byObject.set(id, new Set());
+      byObject.get(id)!.add(o.observation_id);
     }
 
-    for (const [objectId, n] of byObject) {
+    for (const [objectId, ids] of byObject) {
       const t = lifecycleTimelineOf(snaps, objectId, '2026-10-06');
       expect(t.count).toBeGreaterThanOrEqual(1);
-      expect(t.entries.length).toBe(n);
+      expect(t.entries.length).toBe(ids.size);
+      // 去重后每个 id 只出现一次
+      expect(new Set(t.entries.map((e) => e.observation_id)).size).toBe(t.entries.length);
       // 时间线按日期升序
       const dates = t.entries.map((e) => e.date);
       expect([...dates].sort()).toEqual(dates);

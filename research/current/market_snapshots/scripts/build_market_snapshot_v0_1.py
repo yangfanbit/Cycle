@@ -88,7 +88,8 @@ def build(args) -> dict:
     if args.canonical:
         status = "CANONICAL"
         reviewed_by = args.reviewer
-        reviewed_at = now
+        # ★ 审核时间必须可显式给定：若固定为 `now`，已签发快照将**永远无法逐字节复现**。
+        reviewed_at = args.reviewed_at or now
 
     snapshot_id = args.snapshot_id
     if not snapshot_id:
@@ -232,6 +233,8 @@ def main() -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--canonical", action="store_true", help="晋升 CANONICAL（必须配合 --reviewer）")
     ap.add_argument("--reviewer", default=None)
+    ap.add_argument("--reviewed-at", default=None,
+                    help="审核时间（ISO 8601）。省略则取当前时刻；★ `--check` 复现已签发快照时必须显式传。")
     ap.add_argument("--timestamp", default=None)
     ap.add_argument("--research-question", default=None)
     ap.add_argument("--research-method", default=None)
@@ -260,7 +263,39 @@ def main() -> int:
         if existing == blob:
             print("PASS  --check 逐字节一致（可复现）: %s" % args.out)
             return 0
-        print("FAIL  --check 不一致（产物已漂移）: %s" % args.out)
+
+        # ★ 内容级复现检查：**生命周期字段**（status / superseded_by / reviewed_*）
+        #   由「签发」「归档」等**后续事件**写入，不是由输入决定的。
+        #   把它们算进内容一致性，会让任何已签发 / 已归档的快照**永远无法复现** ——
+        #   那是检查语义错了，不是产物漂移了。
+        PROV_LIFECYCLE = ("superseded_by", "reviewed_by", "reviewed_at")
+        # ★ 不在复现范围内的两处（均为**已知缺口**，见 docs/MONTHLY_RUNBOOK_REHEARSAL_FINDINGS_v0.1.md）：
+        #   1) 生命周期字段 —— 由「签发 / 归档」等后续事件写入，不由输入决定；
+        #   2) `research_context` —— 目前经**命令行参数**传入，**未被输入文件捕获**。
+        NOT_AN_INPUT = ("status", "research_context")
+
+        def strip_non_input(raw: bytes):
+            d = json.loads(raw.decode("utf-8"))
+            got = {k: d.pop(k, None) for k in NOT_AN_INPUT}
+            prov = d.get("provenance")
+            if isinstance(prov, dict):
+                for k in PROV_LIFECYCLE:
+                    got[k] = prov.pop(k, None)
+            return d, got
+
+        try:
+            a, la = strip_non_input(existing)
+            b, lb = strip_non_input(blob)
+        except ValueError as e:
+            print("FAIL  --check 产物不是合法 JSON: %s（%s）" % (args.out, e))
+            return 1
+
+        if json.dumps(a, ensure_ascii=False, sort_keys=True) == json.dumps(b, ensure_ascii=False, sort_keys=True):
+            print("PASS  --check 数据内容一致（可复现）；生命周期状态不同（磁盘 %s / 重放 %s）"
+                  "，且 research_context 文本不在复现范围内" % (la, lb))
+            return 0
+
+        print("FAIL  --check 内容不一致（产物已漂移）: %s" % args.out)
         return 1
 
     out_dir = os.path.dirname(os.path.abspath(args.out)) or "."

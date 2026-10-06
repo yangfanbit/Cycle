@@ -1,0 +1,7 @@
+{
+  "contract": "market_snapshot_observations",
+  "note": "2026-09 基线快照未登记观察。",
+  "observations": [],
+  "observations_version": "0.1",
+  "snapshot_date": "2026-09-15"
+}
