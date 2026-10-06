@@ -7,6 +7,58 @@
 
 ---
 
+## 2026-10-06 · **ThreeC 1.1.0 发布** —— Market Snapshot：当前市场 → 历史结构研究
+
+**性质：Product + Research 双侧；** 新增一层「当前」能力（1.0 只有历史）。
+**未修改**：Research Model v1.0 · `schema.sql` · Export Contract v1.0 · canonical export · 冻结 SA / TO artifact · 既有历史研究结论。
+
+**目标**：补上 1.0 缺失的那一半 —— 让研究者能回答「**今天该研究什么**」，而不只是「历史上发生过什么」。
+
+### 1 · 用户可见的 Product 变化
+
+| 变化 | 说明 |
+|---|---|
+| **新增「本期研究快照」** | 首页钻取区第一个入口。展示：**与上期比变了什么** · 当前市场环境 · 研究对象 · 历史结构候选 · 观察 |
+| **旧「历史相似阶段」视图退役** | 其 tier / stars 由 Product 侧自算（`currentSimilarity`），**不是** Research 的结构结论 → 退出 UI，**不得恢复**。正式入口唯一 = `StructuralAnalogySection`（冻结 SA 解释） |
+| **首页大主题配色** | 12 个大主题由**共用一色**改为**每主题一色相**（30° 等距、对白 ≥3:1）。颜色只承担分类，**不表示强弱或涨跌** |
+
+### 2 · Research 侧新增能力
+
+| 能力 | 说明 |
+|---|---|
+| **Market Snapshot 运行时** | JSON Schema（draft-07）· 校验器（快照 V1–V10 / regime R1–R10 / 观察 O1–O7 / 索引 I1–I5 / 生命周期 L1·L3）· 生成器（**先校验后落盘** + CANONICAL 闸门 + 自动归档被取代版本） |
+| **两个纯投影器** | 冻结 SA v0.5 → `historical_candidates`（带**冻结规则版本守卫**）· Current Candidate → `research_objects` |
+| **首份真实快照** | `MS-2026-10-06-02`（CANONICAL）· 5 研究对象 · 395 历史候选 · 真实 `market_regime` |
+| **东方财富 EOD 取数** | `fetch_market_regime_v0_1.py` —— 让规则要求的 20/60 交易日窗口**真正可满足**（**Research 侧离线，非实时行情**） |
+| **Lifecycle Tracking** | 当前对象的**追加式观察时间线**，**派生自快照序列**（不新增 artifact）→ 单一事实来源、append-only 由构造保证 |
+
+### 3 · 本轮最重要的两个「被真实使用逼出来」的修正
+
+1. **契约 v0.2 → v0.3**：`historical_candidates` 拍平为数组后**丢失了「候选 ↔ 当前对象」关联** → 整份候选列表不可用。补必填 `current_object_id` + 校验 V8c。
+2. **真实数据推翻媒体证据**：首轮用上证综指替代缺失的沪深300 → 判 `FLAT`；改用 T2 序列后真实为 **-5.50% → `DOWN`**。流动性同理（`CONTRACTING` → `STABLE`）。
+   → 据此新增 **§2.7 证据等级 G1/G2/G3**：**禁用次要标的替代主标的**、**禁止缩短窗口凑档位**、**单日极值 ≠ 均值口径**、**降级必须留痕**。
+
+### 4 · 治理
+
+- 新增 `AGENTS.md` §5.1「Product 允许 / 禁止消费清单」。
+- 快照契约 `0.1 → 0.2 → 0.3`，**每次结构变化均按 0.x 规则 minor bump 并留版本历史**。
+- `CANONICAL` **不可变**：修正走**新 revision**，旧版 `ARCHIVED` + `superseded_by`。
+- **门禁**：Product 默认只展示 `CANONICAL`；`?snapshot=draft` 可预览未签发内容，带常驻徽章。
+
+### 5 · 验证
+
+- `npm test` **764 passed / 0 failed**（26 files）· `tsc -b` 0 error · `vite build` PASS
+- 快照目录校验 **84 通过 / 1 警告 / 0 失败**（警告 = 观察证据全为 T3 媒体，**设计如此**）
+- 负向测试：CANONICAL 闸门 / 索引漂移 / 悬空关联 / 改写历史观察 —— **均正确 FAIL**
+
+### 6 · 已知缺口（诚实记录）
+
+- `market_regime` 的 **breadth / risk 两维仍依赖媒体事实**（东财 EOD 不含全市场涨跌家数序列）。
+- **Lifecycle 时间线当前为空**：现有观察均为市场级，缺 `linked_object_id`；下一轮月度研究补。
+- 快照的 `historical_candidates` 由冻结 SA v0.5 派生，**历史侧机制级证据深度未变**（SUPPORTED 仍为 4/395）。
+
+---
+
 ## 2026-09-24 · Product · Gate M 真机复核 + 2 处 P1 移动端横向溢出修复
 
 **性质：Product-only 真机复核 + P1 缺陷修复。零 Research 变更、零规则变更、零 schema 变更、零 Contract 变更。**

@@ -3,14 +3,16 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★ 当前阶段：ThreeC 1.1 — **IN PROGRESS**（Phase 1.2 全部完成）
+## ★ 当前阶段：ThreeC 1.1 — **RELEASED**
 
 | 项 | 值 |
 |---|---|
-| **1.0 状态** | **RELEASED** · Tag `v1.0.0` · Release commit `064d39c` · **Gate R/P/T/Q/U/M/D/G 全部 PASS** · P0/P1 = 0/0 |
-| **Production** | **https://yangfanbit.github.io/Cycle/**（线上仍是 **1.0**，尚未包含 1.1 内容） |
-| **1.1 状态** | **IN PROGRESS** —— Phase 0 设计冻结 ✅ · Phase 1.1 架构审查 ✅ · Phase 1.2 运行时 ✅ |
-| **1.1 下一步** | **1.1 收口**（1.2d / 1.2e / 1.3 / 1.4 均已完成）→ 待定：是否发版 1.1 / 进入 2.0 规划 |
+| **Version** | **`1.1.0`** |
+| **Tag** | **`v1.1.0`** |
+| **Production** | **https://yangfanbit.github.io/Cycle/** |
+| **1.0** | RELEASED（Tag `v1.0.0` · `064d39c` · Gate R/P/T/Q/U/M/D/G 全部 PASS · P0/P1 = 0/0） |
+| **1.1** | **RELEASED** —— Phase 0 设计冻结 ✅ · 1.1 架构审查 ✅ · 1.2 运行时 ✅ · 1.3 Product 只读页面 ✅ · 1.4 观察接入 + Lifecycle Tracking ✅ |
+| **下一步** | 待定：**用一次真实月度更新检验整套流程** / 2.0 规划 |
 
 - 更新日期：**2026-10-06**
 - branch：`main` · ahead / behind：`0 / 0` · working tree：clean
