@@ -44,6 +44,15 @@ describe('snapshotAdapter · 索引与门禁', () => {
     expect(v.preview).toBe(!hasCanonical);
   });
 
+  it('★ 「上一期」必须是更早的**不同日期**（同日的 revision 不算上一期）', async () => {
+    const v = await loadCurrentSnapshot(true);
+    expect(v.snapshot).not.toBeNull();
+    if (v.previous) {
+      expect(v.previous.snapshot_date < v.snapshot!.snapshot_date).toBe(true);
+      expect(v.previous.snapshot_id).not.toBe(v.snapshot!.snapshot_id);
+    }
+  });
+
   it('预览模式：两份快照能算出 diff（有上一期才有 diff）', async () => {
     const v = await loadCurrentSnapshot(true);
     expect(v.previous).not.toBeNull();

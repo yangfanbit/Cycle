@@ -102,7 +102,12 @@ export async function loadCurrentSnapshot(previewMode = false): Promise<CurrentS
   }
 
   const latestEntry = eligible[eligible.length - 1];
-  const prevEntry = eligible.length >= 2 ? eligible[eligible.length - 2] : null;
+  // ★ 「上一期」= **更早的、snapshot_date 不同的最近一份**（不限状态）。
+  //   ① 不限状态：归档/被取代的上一期仍是对照基准，diff 不会因归档而凭空消失；
+  //   ② 必须换日期：月度工具要的是「跟上个月比」，**同日的 revision 不算上一期**
+  //      （否则一次修正就会把月度对照挤掉）。
+  const prevEntry =
+    [...entries].reverse().find((e) => e.snapshot_date < latestEntry.snapshot_date) ?? null;
 
   const snapshot = await loadOne(latestEntry.file);
   if (!snapshot) return { ...EMPTY, state: 'empty', preview: previewMode, latestDate, draftCount };
