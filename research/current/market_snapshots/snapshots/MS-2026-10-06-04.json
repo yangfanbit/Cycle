@@ -4847,18 +4847,54 @@
       "source_tier": "T3",
       "source_title": "界面新闻 2026-09-07（经 robotinfuture.com 2026-09-25 转述）",
       "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "国家药监局于 2026-09-14 批准发布 YY/T 2029—2026《脑机接口医疗器械 用于人工智能算法的脑电数据集质量要求与评价方法》—— 我国第三个脑机接口医疗器械标准，也是全球首个采用 AI 技术处理脑电数据的该类标准。",
+      "date": "2026-09-14",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "STRONG",
+      "linked_object_id": "CC-2026-BCI-MEDTECH",
+      "observation_id": "OBS-2026-09-008",
+      "observation_type": "POLICY",
+      "source_tier": "T3",
+      "source_title": "央视新闻 2026-09-15 · 腾讯新闻 2026-09-20（转述国家药监局发布）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "2026-09-12 第 27 届中国国际光电博览会（深圳）期间，多家厂商表示 1.6T 光模块「订单排到明年」，展台 800G 样机已让位于 1.6T。",
+      "date": "2026-09-12",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-OPTICAL-LINK",
+      "observation_id": "OBS-2026-09-009",
+      "observation_type": "INDUSTRY",
+      "source_tier": "T3",
+      "source_title": "科创板日报 2026-09-12（腾讯新闻/新浪财经转载）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "2026 年 7 月，国家发展改革委、国家能源局联合印发《可再生能源发展「十五五」规划》，再次明确到 2030 年底海上风电装机目标。",
+      "date": "2026-07-15",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-OFFSHORE-WIND",
+      "observation_id": "OBS-2026-07-010",
+      "observation_type": "POLICY",
+      "source_tier": "T3",
+      "source_title": "21 世纪经济报道 2026-09-16（转述发改委/能源局规划）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
     }
   ],
   "provenance": {
     "ai_assisted": true,
     "generated_by": "ai-offline",
     "research_round": "ThreeC 1.1 Phase 1.2",
-    "reviewed_at": "2026-10-06T14:30:54+00:00",
+    "reviewed_at": "2026-10-06T15:10:00+00:00",
     "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
-    "superseded_by": "MS-2026-10-06-04",
-    "supersedes": "MS-2026-10-06-02"
+    "superseded_by": null,
+    "supersedes": "MS-2026-10-06-03"
   },
   "research_context": {
     "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
@@ -5125,7 +5161,7 @@
     }
   ],
   "snapshot_date": "2026-10-06",
-  "snapshot_id": "MS-2026-10-06-03",
-  "status": "ARCHIVED",
-  "timestamp": "2026-10-06T22:00:00+08:00"
+  "snapshot_id": "MS-2026-10-06-04",
+  "status": "CANONICAL",
+  "timestamp": "2026-10-06T23:10:00+08:00"
 }
