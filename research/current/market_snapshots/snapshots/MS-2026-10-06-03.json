@@ -4823,25 +4823,49 @@
       "source_tier": "T3",
       "source_title": "新浪财经/格隆汇 2026-09-30",
       "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "通用智能控制系统国家标准 GB/T 47245—2026 于 2026-09-01 落地（首个该类国标）。",
+      "date": "2026-09-01",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-EMBODIED-AI",
+      "observation_id": "OBS-2026-09-006",
+      "observation_type": "POLICY",
+      "source_tier": "T3",
+      "source_title": "zgeo.com.cn《2026人形机器人量产元年》2026-09-03（转述国标发布）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "据界面新闻 2026-09-07 报道，特斯拉于 9 月上旬向核心供应链一次性下达约 5000 台人形机器人相关订单。",
+      "date": "2026-09-07",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-EMBODIED-AI",
+      "observation_id": "OBS-2026-09-007",
+      "observation_type": "INDUSTRY",
+      "source_tier": "T3",
+      "source_title": "界面新闻 2026-09-07（经 robotinfuture.com 2026-09-25 转述）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
     }
   ],
   "provenance": {
     "ai_assisted": true,
     "generated_by": "ai-offline",
     "research_round": "ThreeC 1.1 Phase 1.2",
-    "reviewed_at": "2026-10-06T13:30:18+00:00",
+    "reviewed_at": "2026-10-06T14:30:54+00:00",
     "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
-    "superseded_by": "MS-2026-10-06-03",
-    "supersedes": "MS-2026-10-06-01"
+    "superseded_by": null,
+    "supersedes": "MS-2026-10-06-02"
   },
   "research_context": {
     "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
     "known_limitations": [
       "market_regime 依赖离线填报，无自动化行情源。",
       "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
-      "研究对象状态沿用 2026-09-15 的研究结果（本轮未执行针对候选的新研究轮次）；market_regime 与 observations 为本轮新采集。"
+      "研究对象状态沿用 2026-09-15 的研究结果（本轮未执行针对候选的新研究轮次）。"
     ],
     "research_method": "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
     "research_question": "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
@@ -5101,7 +5125,7 @@
     }
   ],
   "snapshot_date": "2026-10-06",
-  "snapshot_id": "MS-2026-10-06-02",
-  "status": "ARCHIVED",
-  "timestamp": "2026-10-06T21:45:00+08:00"
+  "snapshot_id": "MS-2026-10-06-03",
+  "status": "CANONICAL",
+  "timestamp": "2026-10-06T22:00:00+08:00"
 }
