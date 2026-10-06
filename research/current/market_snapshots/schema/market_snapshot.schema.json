@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "threec/research/current/market_snapshots/market_snapshot.schema.json",
   "title": "ThreeC Market Snapshot v0.1",
-  "description": "Market Snapshot = 当前研究过程的「状态记录 Artifact」。它是研究过程的快照，不是算法、不是模型、不是信号、不是预测。输入：market_regime / research_context / observations / research_objects；输出：historical_candidates（历史研究候选）。禁止出现 prediction / signal / score / ranking / probability。本 schema 只定义结构；治理规则见 docs/MARKET_SNAPSHOT_GOVERNANCE.md，语义契约见 docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md（v0.2：historical_candidates 为轻量索引，细节由 candidates_source 回指冻结 SA artifact）。",
+  "description": "Market Snapshot = 当前研究过程的「状态记录 Artifact」。它是研究过程的快照，不是算法、不是模型、不是信号、不是预测。输入：market_regime / research_context / observations / research_objects；输出：historical_candidates（历史研究候选）。禁止出现 prediction / signal / score / ranking / probability。本 schema 只定义结构；治理规则见 docs/MARKET_SNAPSHOT_GOVERNANCE.md，语义契约见 docs/MARKET_SNAPSHOT_CONTRACT_v0.3.md（v0.3：historical_candidates 为轻量索引且必填 current_object_id，细节由 candidates_source 回指冻结 SA artifact）。",
   "type": "object",
   "required": [
     "contract",
@@ -26,7 +26,7 @@
       "description": "★ 非语义说明字段（仅用于示例 / 注释，例如标注「本文件是示例，不是真实研究数据」）。不参与任何判定，不得承载研究结论。除此之外禁止额外字段。"
     },
     "contract": { "const": "market_snapshot" },
-    "market_snapshot_version": { "const": "0.2" },
+    "market_snapshot_version": { "const": "0.3" },
 
     "snapshot_id": {
       "type": "string",
@@ -219,10 +219,15 @@
 
     "historicalCandidate": {
       "type": "object",
-      "description": "输出：历史结构候选的**轻量索引**（契约 v0.2 · 回指模式）。只存 identity + structural_status + strict_structural_supported；四维解释 / theme_relation / why_similar / why_not_similar / dimension_evidence / background_sources 一律**不复制**，由顶层 `candidates_source` 回指冻结 SA artifact。",
-      "required": ["identity", "structural_status"],
+      "description": "输出：历史结构候选的**轻量索引**（契约 v0.3 · 回指模式）。只存 current_object_id + identity + structural_status + strict_structural_supported；四维解释 / theme_relation / why_similar / why_not_similar / dimension_evidence / background_sources 一律**不复制**，由顶层 `candidates_source` 回指冻结 SA artifact。",
+      "required": ["current_object_id", "identity", "structural_status"],
       "additionalProperties": false,
       "properties": {
+        "current_object_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "★ v0.3 新增（修复）：指回「这条候选是对哪个当前研究对象算的」（即 `research_objects[].object_id`）。SA artifact 用嵌套保留该关联；拍平为数组后必须显式带上，否则关联丢失、快照不可用。"
+        },
         "identity": {
           "type": "object",
           "required": ["historical_object_kind", "historical_cycle_id"],

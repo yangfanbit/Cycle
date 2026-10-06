@@ -6,7 +6,7 @@
 > 输出：`historical_candidates`（历史**研究候选**）
 >
 > 规范：`docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` ·
-> `docs/MARKET_SNAPSHOT_CONTRACT_v0.2.md` ·
+> `docs/MARKET_SNAPSHOT_CONTRACT_v0.3.md` ·
 > `docs/MARKET_SNAPSHOT_GOVERNANCE.md` ·
 > `docs/MARKET_REGIME_AI_INTERFACE_v0.1.md`
 

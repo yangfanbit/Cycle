@@ -128,10 +128,10 @@ def validate_snapshot(path: str, label: str) -> None:
     else:
         ok("%s · V1 contract 合法" % label)
 
-    if doc.get("market_snapshot_version") != "0.2":
-        fail("V1·%s" % label, "market_snapshot_version 应为 0.2，实际 %r" % doc.get("market_snapshot_version"))
+    if doc.get("market_snapshot_version") != "0.3":
+        fail("V1·%s" % label, "market_snapshot_version 应为 0.3，实际 %r" % doc.get("market_snapshot_version"))
     else:
-        ok("%s · V1 version 0.2" % label)
+        ok("%s · V1 version 0.3" % label)
 
     sid = doc.get("snapshot_id")
     if not isinstance(sid, str) or not sid.startswith("MS-"):
@@ -229,8 +229,9 @@ def validate_snapshot(path: str, label: str) -> None:
     if objs:
         ok("%s · V7 research_objects 校验完成（%d 条）" % (label, len(objs)))
 
-    # V8 historical_candidates（契约 v0.2：轻量索引，细节回指）
-    SLIM_KEYS = {"identity", "structural_status", "strict_structural_supported"}
+    # V8 historical_candidates（契约 v0.3：轻量索引 + 指回当前对象）
+    SLIM_KEYS = {"current_object_id", "identity", "structural_status", "strict_structural_supported"}
+    object_ids = {o.get("object_id") for o in objs if isinstance(o, dict)}
     cands = doc.get("historical_candidates") or []
     if not isinstance(cands, list):
         fail("V8·%s" % label, "historical_candidates 必须是 array")
@@ -239,8 +240,15 @@ def validate_snapshot(path: str, label: str) -> None:
         if not isinstance(c, dict):
             fail("V8·%s" % label, "historical_candidates[%d] 必须是 object" % i)
             continue
-        if "identity" not in c or "structural_status" not in c:
-            fail("V8·%s" % label, "historical_candidates[%d] 缺 identity / structural_status" % i)
+        for k in ("current_object_id", "identity", "structural_status"):
+            if k not in c:
+                fail("V8·%s" % label, "historical_candidates[%d] 缺 %s" % (i, k))
+        # ★ V8c：current_object_id 必须能在 research_objects 里找到（否则关联悬空）
+        coid = c.get("current_object_id")
+        if isinstance(coid, str) and object_ids and coid not in object_ids:
+            fail("V8c·%s" % label,
+                 "historical_candidates[%d].current_object_id=%r 不在 research_objects 中（悬空关联）"
+                 % (i, coid))
         extra = set(c.keys()) - SLIM_KEYS
         if extra:
             fail("V8·%s" % label,

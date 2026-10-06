@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*-
 """project_sa_to_candidates_v0_1.py —— SA 解释 → Market Snapshot `historical_candidates` 投影器。
 
-★ 产出遵循 **Market Snapshot Contract v0.2**（回指模式）：
-   `historical_candidates` 只存**轻量索引**（`identity` + `structural_status` +
-   `strict_structural_supported`），四维解释 / why_similar / why_not_similar /
-   dimension_evidence / background_sources 一律**不复制**，
+★ 产出遵循 **Market Snapshot Contract v0.3**（回指模式）：
+   `historical_candidates` 只存**轻量索引**（`current_object_id` + `identity` +
+   `structural_status` + `strict_structural_supported`），四维解释 / why_similar /
+   why_not_similar / dimension_evidence / background_sources 一律**不复制**，
    改由顶层 `candidates_source` 描述**回指**的冻结 artifact。
+
+   ★ v0.3 修复：必须带 `current_object_id`。SA artifact 用 `candidates[]` 的嵌套保留
+     「候选 ↔ 当前对象」关联；拍平成数组后若不显式带上，该关联即丢失、快照不可用。
 
 ★ 本脚本是**纯投影（pure projection）**，不做任何判定：
   - **不重新计算** 任何维度 / 结构状态 / 相似度
@@ -50,9 +53,14 @@ REFERRED_KEYS = (
 )
 
 
-def project_one(exp: dict) -> dict:
-    """把一条 SA 解释压成轻量索引（契约 v0.2）。"""
-    out = {k: exp[k] for k in SLIM_KEYS if k in exp}
+def project_one(exp: dict, current_object_id: str) -> dict:
+    """把一条 SA 解释压成轻量索引（契约 v0.3）。
+
+    ★ v0.3 修复：必须带上 `current_object_id` —— 指回「这条候选是对哪个当前对象算的」。
+      SA artifact 用 `candidates[]` 的**嵌套**保留该关联；拍平成数组后若不显式带上，关联即丢失。
+    """
+    out = {"current_object_id": current_object_id}
+    out.update({k: exp[k] for k in SLIM_KEYS if k in exp})
     # identity 只保留契约字段：去掉 SA artifact 的说明性 `identity_note`
     # （它是同一段样板文字，在 395 条里逐条重复，不属契约数据）。
     ident = out.get("identity")
@@ -107,7 +115,7 @@ def main() -> int:
             st = exp.get("structural_status")
             if status_filter is not None and st not in status_filter:
                 continue
-            items.append(project_one(exp))
+            items.append(project_one(exp, cid))
             status_counter[st] += 1
             kept += 1
         per_object[cid] = kept
@@ -116,8 +124,9 @@ def main() -> int:
         print("FAIL  投影结果为空（检查 --object / --include-status）")
         return 1
 
-    # ★ 稳定 identity 顺序（不是强弱排名）
-    items.sort(key=lambda x: x.get("identity", {}).get("historical_cycle_id", ""))
+    # ★ 稳定顺序：先按当前对象，再按 historical_cycle_id（不是强弱排名）
+    items.sort(key=lambda x: (x.get("current_object_id", ""),
+                              x.get("identity", {}).get("historical_cycle_id", "")))
 
     doc = {
         "candidates_source": {

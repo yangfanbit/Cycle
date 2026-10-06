@@ -1,11 +1,11 @@
-# MARKET_SNAPSHOT_CONTRACT_v0.2.md
+# MARKET_SNAPSHOT_CONTRACT_v0.3.md
 
 > | 项目 | 值 |
 > |---|---|
 > | 文件性质 | **设计契约（DESIGN CONTRACT）** —— 0.x 阶段，结构可演进 |
 > | 契约名 | `market_snapshot` |
-> | 契约版本 | **`0.2`** |
-> | 日期 | 2026-09-26（v0.1 为 2026-09-25） |
+> | 契约版本 | **`0.3`** |
+> | 日期 | 2026-10-06（v0.2 为 2026-09-26 · v0.1 为 2026-09-25） |
 > | 依赖 | `docs/THREEC_1_1_MARKET_SNAPSHOT_ARCHITECTURE.md` · `docs/MARKET_SNAPSHOT_GOVERNANCE.md` · `docs/MARKET_REGIME_AI_INTERFACE_v0.1.md` |
 > | 实现 | `research/current/market_snapshots/`（schema + validator + generator + 两个投影器） |
 > | 本轮不产出 | **不生成 `schema.sql` · 不实现数据库** |
@@ -16,7 +16,23 @@
 | 版本 | 日期 | 变化 | 性质 |
 |---|---|---|---|
 | `0.1` | 2026-09-25 | 初版：11 个顶层字段；`historical_candidates[]` **内嵌全部解释字段** | — |
-| **`0.2`** | **2026-09-26** | ① `historical_candidates[]` 改为**轻量索引**（只存 `identity` / `structural_status` / `strict_structural_supported`）；② **新增顶层字段 `candidates_source`**（回指冻结 SA artifact）；③ 顶层字段 11 → **12** | **minor**（0.x 阶段结构变化，按 §6.2） |
+| `0.2` | 2026-09-26 | ① `historical_candidates[]` 改为**轻量索引**（只存 `identity` / `structural_status` / `strict_structural_supported`）；② **新增顶层字段 `candidates_source`**（回指冻结 SA artifact）；③ 顶层字段 11 → **12** | minor |
+| **`0.3`** | **2026-10-06** | **修复 v0.2 的可用性缺陷**：`historical_candidates[]` 新增**必填** `current_object_id`（指回当前研究对象） | **minor**（0.x 阶段结构变化，按 §6.2） |
+
+### ★ v0.3 动机：v0.2 的 `historical_candidates` 实际**不可用**
+
+**实测缺陷**：SA artifact 用 `candidates[]` 的**嵌套**保留「候选 ↔ 当前对象」关联；
+投影成**扁平数组**后，v0.2 的每项只有**历史对象**的 `identity`，
+**没有任何字段指回「这条候选是对哪个当前对象算的」**。
+
+后果：快照无法回答「`CC-2026-BCI-MEDTECH` 对应哪些历史候选」——**整份候选列表无法被消费**。
+（v0.1 内嵌模式下同样丢失该关联，只是字段多到不易察觉。）
+
+**修复**：每项**必填** `current_object_id`，且校验器 **V8c** 强制它必须能在 `research_objects` 中找到
+（**悬空关联即 FAIL**）。
+
+> **为什么这次值得记一笔**：这个缺陷不是「写错了字段」，而是**契约少了一个必要字段** ——
+> 只有真正去消费它（准备做 diff）才会暴露。**这印证了「先跑通真实用途，再扩能力」的必要性。**
 
 **v0.2 动机（实测）**：v0.1 的内嵌模式下，单份快照 **1.9 MB** —— 把冻结 SA artifact 的内容整体复制了一份，
 按月更新约 23 MB/年，且与冻结 artifact **重复存储**、存在版本漂移风险。
@@ -36,7 +52,7 @@
 ```jsonc
 {
   "contract": "market_snapshot",
-  "market_snapshot_version": "0.2",     // ← 本契约版本
+  "market_snapshot_version": "0.3",     // ← 本契约版本
   "snapshot_id": "MS-2026-09-15-01",
   "snapshot_date": "2026-09-15",        // ★ PIT 基准（v0.2 起显式列出）
   "timestamp": "2026-09-30T20:00:00",
@@ -132,6 +148,7 @@
 {
   "historical_candidates": [
     {
+      "current_object_id": "CC-2026-…",          // ★ v0.3 必填：这条候选是对哪个当前对象算的
       "identity": {
         "historical_object_kind": "campaign | research_candidate",
         "historical_cycle_id": "…",              // 稳定 id，始终非空
@@ -148,7 +165,8 @@
 
 **硬约束**：
 
-1. **只允许上述 3 个字段**；出现其它字段即校验 **FAIL**（`V8`）—— 其余一律**回指**，不得复制。
+1. **只允许上述 4 个字段**；出现其它字段即校验 **FAIL**（`V8`）—— 其余一律**回指**，不得复制。
+   · `current_object_id` **必填**，且必须能在 `research_objects[].object_id` 中找到（**悬空关联即 FAIL**，`V8c`）。
 2. **禁止**：`prediction` · `signal` · `score` · `ranking` · `probability` · `top N` · `best analogue`。
 3. `historical_candidates[]` 按 `historical_cycle_id` **升序**（稳定 identity 顺序，**不是强弱排名**）。
 4. 状态词表**必须**与 SA v0.3 一致（**不新增状态**）。

@@ -42,7 +42,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SNAP_DIR = os.path.dirname(HERE)
 VALIDATOR = os.path.join(HERE, "validate_market_snapshot_v0_1.py")
 
-SNAPSHOT_VERSION = "0.2"
+SNAPSHOT_VERSION = "0.3"
 FROZEN_RULE_SET = "structural-analogy-ruleset-v0.3"
 
 
@@ -92,8 +92,8 @@ def build(args) -> dict:
 
     snapshot_id = args.snapshot_id
     if not snapshot_id:
-        slug = args.snapshot_date.replace("-", "")
-        snapshot_id = "MS-%s-01" % slug
+        # 保留日期连字符，与契约示例 `MS-2026-09-30-01` 一致（也与文件名一致）
+        snapshot_id = "MS-%s-01" % args.snapshot_date
 
     return {
         "contract": "market_snapshot",
@@ -120,7 +120,7 @@ def build(args) -> dict:
             "known_limitations": [
                 "market_regime 依赖离线填报，无自动化行情源。",
                 "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
-            ],
+            ] + list(args.limitation or []),
         },
         "observations": observations,
         "research_objects": objects,
@@ -170,6 +170,8 @@ def main() -> int:
     ap.add_argument("--research-question", default=None)
     ap.add_argument("--research-method", default=None)
     ap.add_argument("--coverage-note", default=None)
+    ap.add_argument("--limitation", action="append", default=None,
+                    help="追加一条 research_context.known_limitations（可重复）")
     ap.add_argument("--source-commit", default=None)
     ap.add_argument("--supersedes", default=None)
     ap.add_argument("--research-round", default=None)

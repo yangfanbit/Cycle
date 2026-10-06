@@ -1,7 +1,7 @@
 {
   "_comment": "★ 示例（example），不是真实研究数据，也不构成任何投资依据。用于验证 Market Snapshot 契约 v0.1 的 V1–V10 校验规则。status = DRAFT，未进入 CANONICAL，Product 不得消费。",
   "contract": "market_snapshot",
-  "market_snapshot_version": "0.2",
+  "market_snapshot_version": "0.3",
   "snapshot_id": "MS-2026-09-30-01",
   "snapshot_date": "2026-09-30",
   "timestamp": "2026-09-30T20:30:00",
@@ -91,6 +91,7 @@
 
   "historical_candidates": [
     {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
       "identity": {
         "historical_object_kind": "campaign",
         "historical_cycle_id": "C-2019-PHARMA-INNOV",
