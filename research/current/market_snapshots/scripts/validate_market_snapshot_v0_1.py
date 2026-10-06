@@ -431,6 +431,64 @@ def validate_regime(path: str, label: str) -> None:
         ok("%s · R9 红线扫描通过" % label)
 
 
+# ---------------------------------------------------------------- observations intake
+def validate_observations(path: str, label: str) -> None:
+    """校验观察输入文件（`market_snapshot_observations`）—— 月度流程的「观察接入」一步。"""
+    with open(path, "r", encoding="utf-8") as f:
+        try:
+            doc = json.load(f)
+        except Exception as e:  # noqa: BLE001
+            fail("O1·%s" % label, "JSON 解析失败: %s" % e)
+            return
+
+    if doc.get("contract") != "market_snapshot_observations":
+        fail("O1·%s" % label, "contract 应为 market_snapshot_observations，实际 %r" % doc.get("contract"))
+    else:
+        ok("%s · O1 contract 合法" % label)
+
+    sdate = doc.get("snapshot_date")
+    if not is_date(sdate):
+        fail("O2·%s" % label, "snapshot_date 缺失或格式非法: %r" % sdate)
+        sdate = None
+
+    obs = doc.get("observations")
+    if not isinstance(obs, list):
+        fail("O3·%s" % label, "observations 必须是 array")
+        return
+
+    seen = set()
+    for i, o in enumerate(obs):
+        if not isinstance(o, dict):
+            fail("O3·%s" % label, "observations[%d] 必须是 object" % i)
+            continue
+        for k in ("observation_id", "observation_type", "date", "claim", "evidence_strength", "direction"):
+            if not o.get(k):
+                fail("O3·%s" % label, "observations[%d] 缺 %s" % (i, k))
+        oid = o.get("observation_id")
+        if oid in seen:
+            fail("O4·%s" % label, "observation_id 重复: %r" % oid)
+        seen.add(oid)
+        if o.get("observation_type") not in OBS_TYPE_OK:
+            fail("O3·%s" % label, "observations[%d].observation_type 非法: %r" % (i, o.get("observation_type")))
+        if o.get("evidence_strength") not in STRENGTH_OK:
+            fail("O3·%s" % label, "observations[%d].evidence_strength 非法: %r" % (i, o.get("evidence_strength")))
+        if o.get("direction") not in DIRECTION_OK:
+            fail("O3·%s" % label, "observations[%d].direction 非法: %r" % (i, o.get("direction")))
+        d = o.get("date")
+        if not is_date(d):
+            fail("O3·%s" % label, "observations[%d].date 格式非法: %r" % (i, d))
+        elif is_date(sdate) and d > sdate:
+            fail("O5·%s" % label, "observations[%d].date %s 晚于 snapshot_date（PIT 违规）" % (i, d))
+        if o.get("source_tier") not in ("T1", "T2", "T3"):
+            warn("O6·%s" % label, "observations[%d].source_tier 未标注或非法" % i)
+
+    if obs:
+        tiers = {o.get("source_tier") for o in obs if isinstance(o, dict)}
+        if tiers == {"T3"}:
+            warn("O7·%s" % label, "全部证据均为 T3（财经媒体转述）—— 建议补 T1/T2 一手来源")
+        ok("%s · O3/O4/O5 观察校验完成（%d 条）" % (label, len(obs)))
+
+
 # ---------------------------------------------------------------- index
 def validate_index(path: str, label: str) -> None:
     """校验 `index.json`（Product 用它发现快照；它本身也是 Product-facing artifact）。"""
@@ -526,6 +584,8 @@ def main() -> int:
             validate_regime(path, label)
         elif c == "market_snapshot_index":
             validate_index(path, label)
+        elif c == "market_snapshot_observations":
+            validate_observations(path, label)
         else:
             warn("IO·%s" % label, "未知 contract=%r —— 跳过（仅支持 market_snapshot / market_regime_draft）" % c)
 
