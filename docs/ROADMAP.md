@@ -42,7 +42,56 @@
 - Preview / Production isolation
 - Static PWA runtime
 
-## 2. ★ 当前状态：**ThreeC 1.0 — RELEASED**
+## ★★ 当前主线（下一步）：**ThreeC 1.2 —— 接通工作流（Usage-Driven）**（2026-10-06 起）
+
+> 置于此处是刻意的：**这是现在唯一要做的事**。下方 §2 起为状态与历史存档。
+
+> **规划依据**：用 §5「产品最终工作流」逐段对照现状。
+> **结论：七段都存在，但没连成一条能走通的路。**
+
+### 逐段对照（2026-10-06 实测）
+
+| 段 | 现状 | 判定 |
+|---|---|---|
+| 今天 | 首页 Today 线 | ✅ |
+| 历史同期 | Calendar Lens | ✅ |
+| 历史周期阶段 | Lifecycle Lens | ✅ |
+| **当前研究对象** | 本期快照列出 5 个对象 | ⚠️ **列了但点不进去** |
+| 历史结构对应 | `StructuralAnalogySection` 四维 | ✅ 但入口在**另一个钻取区** |
+| 为什么对应 / 哪里不同 | SA 的 `why_similar` / `why_not_similar` | ✅ 同上 |
+| **继续研究** | `research_questions` | ⚠️ 在 CurrentTimeLens 里，**不在快照页** |
+
+**★ 实测证据**：`src/components/CurrentSnapshot/CurrentSnapshotSection.tsx` 中
+**没有任何 `onClick` / `onSelect` / `href` / `<button>`** —— 它是一个**死胡同**：
+用户看到「79 条比对 · 有结构对应 1 条 · 无有效对应 47 条」，
+**既看不到是哪些历史对象，也无法跳去详情**。
+（对照：`StructuralAnalogySection.tsx` 有 11 处交互。）
+
+### 主线目标
+
+> **不加新能力，先让已有的七段连成一条能走通的路。**
+
+| 优先级 | 做什么 | 实用理由 |
+|---|---|---|
+| **P0** | **接通**：快照页的研究对象 → SA 详情；候选计数 → **具体历史对象**（含「为什么不对应」） | 现在页面**给了数字不给内容**，用户无法据此做研究 |
+| **P1** | **用户声明研究方向**（`URO-*` 入口 + Research Request） | 5 个对象是研究侧选的；用户关心的方向可能不在其中 —— **无法自己问** |
+| **P2** | 当前对象 **vs 历史生命周期**对照 | 「理解主题生命周期」目标的落点 |
+| **P3** | 补 **T1/T2 一手来源** | 现有观察**全为 T3**（媒体转述），可信度上限受限 |
+
+### 为什么 P0 排在「加功能」之前
+
+1. **零新增能力** —— SA v0.5 的 395 条解释**已经在包里**，只是**没有出口**。
+2. **不加这段，后面每加一个功能都会变成又一个死胡同。**
+3. 它直接决定「这个工具到底帮不帮得上」—— 而 ThreeC **至今没有被真实使用过一次**。
+
+### 与「使用测试」的关系
+
+**P0 完成后立即做一次真实使用**：拿一个真正关心的方向，走完整条工作流，记录卡点。
+**流程只有真跑过一次才算成立**（1.1 的月度流程演练已经证明了这一点 —— 5 个缺陷全是「真用」才暴露的）。
+
+---
+
+## 2. ★ 当前状态：**ThreeC 1.1 — RELEASED**（1.0 已冻结）
 
 **目标（已达成）**：把已通过 Research / Product / Trust / Quality / Real Usage / Gate M 的 ThreeC，
 变成**可稳定访问、可重复构建、可追溯、可回滚**的静态产品，并**正式发布 1.0**。
@@ -59,11 +108,15 @@
 当前冻结 / 发布状态：
 
 > Research Core：**FROZEN**
-> Product 1.0：**RELEASED**
+> Product **1.1.0：RELEASED**（tag `v1.1.0`）· 1.0 已冻结（tag `v1.0.0`）
 > Deployment：**PRODUCTION**
 > Historical Universe：**79**（52 Campaign + 27 Research Candidate）
 > Research expansion：**DEFERRED**
 > SA / TO：**FROZEN**
+
+**1.1 新增（已上线）**：Market Snapshot 运行时 · 本期研究快照页面 · 快照 diff（月度变化）·
+两个纯投影器 · 东方财富 EOD 取数 · Lifecycle Tracking · 首页大主题分类配色 ·
+旧「历史相似阶段」视图退役。详见 `docs/CHANGELOG.md` 1.1.0 条目。
 
 **1.1+ 只允许由真实 Product Usage 或明确 Research Question 触发。不预设大量新功能。**
 
