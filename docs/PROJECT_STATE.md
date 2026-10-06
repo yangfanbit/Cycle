@@ -3,27 +3,48 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★ 当前阶段：ThreeC 1.0 — **RELEASED**
+## ★ 当前阶段：ThreeC 1.1 — **IN PROGRESS**（Phase 1.2 全部完成）
 
 | 项 | 值 |
 |---|---|
-| **Version** | **`1.0.0`** |
-| **Tag** | **`v1.0.0`** |
-| **Release commit** | **`064d39c`** |
-| **Production** | **https://yangfanbit.github.io/Cycle/** |
-| **Gate R / P / T / Q / U / M / D / G** | **全部 PASS** |
-| **P0 / P1** | **0 / 0** |
+| **1.0 状态** | **RELEASED** · Tag `v1.0.0` · Release commit `064d39c` · **Gate R/P/T/Q/U/M/D/G 全部 PASS** · P0/P1 = 0/0 |
+| **Production** | **https://yangfanbit.github.io/Cycle/**（线上仍是 **1.0**，尚未包含 1.1 内容） |
+| **1.1 状态** | **IN PROGRESS** —— Phase 0 设计冻结 ✅ · Phase 1.1 架构审查 ✅ · Phase 1.2 运行时 ✅ |
+| **1.1 下一步** | **1.3 Product 只读页面** → 1.4 2026 接入（1.2d / 1.2e 已完成） |
 
-- 更新日期：2026-09-24
-- branch：`main`
-- ahead / behind：`0 / 0`
-- working tree：clean
+- 更新日期：**2026-10-06**
+- branch：`main` · ahead / behind：`0 / 0` · working tree：clean
 - HEAD：**以 `git log -1` 实测为准**（本文件不硬编码当前 SHA）
   · 1.0 Release 提交链：`f8b6c82`（Gate M 收口）→ `064d39c`（**release: ThreeC 1.0.0**）
   · ★ **任何接班第一步必须跑 `git log -1`**；上文 SHA 仅为可读线索，不是权威值
-- **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
-- **★ 当前唯一目标**：**无**（1.0 已发布）
-  · 后续 1.1+ **只在真实 Product Usage / Research Question 触发时才启动**，不预设功能
+
+### 1.1 已完成（2026-09-25 ~ 2026-09-26）
+
+| 阶段 | 产出 | commit |
+|---|---|---|
+| **Phase 0 设计冻结** | 架构 / 契约 / 治理 / 冻结报告 共 4 份 | `738638d` |
+| **Phase 1.1 架构审查** | `THREEC_REPOSITORY_ARCHITECTURE_REVIEW_v1.1.md`（发现 F-1~F-4） | `dc614bb` |
+| **G-1 退役** | 旧「历史相似阶段」视图（`currentSimilarity` 自算 tier/stars）退出 UI，**不得恢复** | `dc614bb` |
+| **G-2 / G-3** | `AGENTS.md` §5.1 消费白名单 · `research/current/market_snapshots/` 建立 | `dc614bb` |
+| **F-3 处置** | 仓库根 `data/` 实测**无消费者**（非双源）；保留 + 标注（人工核验为后续计划） | `7688b00` |
+| **Phase 1.2 运行时** | JSON Schema（draft-07）+ 校验器（V1–V10 / R1–R10）+ 生成器（CANONICAL 闸门） | `cd2dc2d` |
+| **Phase 1.2b 投影器** | `project_sa_to_candidates`（带冻结规则版本守卫）· `project_cc_to_objects` | `9339b47` |
+| **Phase 1.2c 首份快照** | `MS-2026-09-15-01`（DRAFT · 5 对象 · 395 候选） | `9339b47` |
+| **契约 v0.2 回指** | `historical_candidates` 改轻量索引 + `candidates_source` 回指冻结 SA；**1.9 MB → 168 KB** | `a94774e` |
+| **首页配色** | 12 个大主题分类配色（`src/components/SeasonalMap/themeColors.ts`，含不变量测试） | `b3a65fb` |
+| **契约 v0.3 修复** | `historical_candidates` 新增必填 `current_object_id` —— **修 v0.2「候选无法指回当前对象」的可用性缺陷**；校验器加 V8c（悬空关联即 FAIL） | 见下 |
+| **第二份快照** | `MS-2026-10-06-01`（延续快照，regime 全 UNKNOWN，已标注未执行新研究轮次） | 见下 |
+| **1.2d 快照 diff** | `src/data/marketSnapshot/`（types + `diffSnapshots` 纯函数 + 15 条测试，含真实快照集成检查）；四层比较，**只说事实不说好坏** | 见下 |
+| **1.2e 月度流程** | `docs/MONTHLY_RESEARCH_RUNBOOK.md`（checklist + 可直接复制的命令 + 质量门 + 踩过的坑） | 见下 |
+
+### ★ 1.1 关键结论（后续轮次必须遵守）
+
+1. **Product 数据入口 = 4 个**（已形式化进 `AGENTS.md` §5.1）：`@exports` · `@current` · `@observation` + 仓库根 `data/`（legacy，无消费者）。
+2. **正式「当前 → 历史」入口唯一** = `StructuralAnalogySection`（冻结 SA v0.5）；旧 `currentSimilarity` 分档/星级**已退役，不得恢复**。
+3. **Market Snapshot 契约 = `v0.2`**（回指模式）：`historical_candidates` 只存轻量索引，细节由 `candidates_source` 回指冻结 SA artifact；**读取方必须先校验 `rule_set_version` 一致，不一致即拒绝合并**。
+4. **`market_regime` 无任何数据源** —— 首份快照四维全 `UNKNOWN`（诚实空态，**不编造**）。
+5. **SA 产出率**：395 条解释中「有结构对应」= 45（11%），`NO_VALID_CORRESPONDENCE` = 225（57%）→ **不得靠放宽规则提高命中率**。
+6. **月度节奏 ⇒「变化」比「状态」重要** —— 快照 diff 是 1.1 的最大设计缺口（详见 §7）。
 
 ### 1.0 Release 完成事实
 
@@ -52,16 +73,19 @@
 - HEAD：**以 `git log -1` 实测为准**（本文件不硬编码当前 SHA）
   · 1.0 Release 提交链：`f8b6c82`（Gate M 收口）→ `064d39c`（**release: ThreeC 1.0.0**，tag `v1.0.0`）
   · ★ **任何接班第一步必须跑 `git log -1`**；上文 SHA 仅为可读线索，不是权威值
-- **★ 当前阶段：ThreeC 1.0 — RELEASED**
+- **★ 当前阶段：ThreeC 1.1 — IN PROGRESS**（1.0 已 RELEASED 并冻结）
 - **★ 线上入口：`https://yangfanbit.github.io/Cycle/`（HTTP 200 OK，GitHub Pages）**
 - **★ Gate 状态**：**R / P / T / Q / U / M / D / G = 全部 PASS**
   · Gate M（真机 / 实际浏览器复核）已于 2026-09-24 完成（真实 Chromium 驱动，375 / 390 / 412 / 768）
   · Gate D 的 D4（`version = 1.0.0`）/ D5（`tag v1.0.0`）**已在 1.0 Release 轮执行**
 - **★ P0 = 0 · P1 = 0**
-- 最近完成：**ThreeC 1.0 Final Release —— v1.0.0 正式发布**
+- 最近完成：**ThreeC 1.1 Phase 1.2 —— Market Snapshot 运行时 + 首份真实快照 + 契约 v0.2**
+  · 交付：JSON Schema（draft-07）· 校验器（V1–V10 / R1–R10）· 生成器（CANONICAL 闸门）· 两个投影器 · `MS-2026-09-15-01`
+  · 契约 v0.2 回指：`historical_candidates` 改轻量索引 + `candidates_source` 回指冻结 SA → **1.9 MB → 168 KB**
+  · 未修改 Research artifact / SA artifact / TO artifact / Export Contract / Research Model / schema 任何版本
+- 上一完成：**ThreeC 1.0 Final Release —— v1.0.0 正式发布**
   · `package.json` `0.1.0` → `1.0.0`（`package-lock.json` 同步）· release commit `064d39c` · annotated tag `v1.0.0`
   · GitHub Actions 部署 Release commit（environment `github-pages`）· 线上 provenance 与 smoke test 全部实测通过
-  · 未修改 Research artifact / SA artifact / TO artifact / Export Contract / Research Model / schema 任何版本
 
 <details>
 <summary>历史：1.0 发布前的 Deployment / Gate M 阶段记录（保留原貌，不篡改）</summary>
@@ -316,16 +340,28 @@ Time Observation v0.5 已完成并暂时冻结：
 
 ## 7. 当前唯一下一目标
 
-# **ThreeC 1.0 — RELEASED** ✅
+# **ThreeC 1.1 — IN PROGRESS** 🚧
 
-**1.0 正式发布已完成**：
+**1.0 已发布并冻结**：Version `1.0.0` · Release commit `064d39c` · annotated tag `v1.0.0`（本地 + origin）·
+Production 线上 provenance = `1.0.0` / `064d39c` · Gate R/P/T/Q/U/M/D/G **全部 PASS** · P0 = 0 · P1 = 0。
 
-- Version `1.0.0` · Release commit `064d39c` · annotated tag `v1.0.0`（本地 + origin）
-- Production `https://yangfanbit.github.io/Cycle/` 线上 provenance = `1.0.0` / commit `064d39c`
-- Gate R/P/T/Q/U/M/D/G **全部 PASS** · P0 = 0 · P1 = 0
+**1.1 已完成**：Phase 0 设计冻结 → Phase 1.1 架构审查 → Phase 1.2 运行时（见本文件顶部「1.1 已完成」表）。
 
-**下一步**：无既定新主线。**1.1+ 只允许由真实 Product Usage 或明确 Research Question 触发**，
-不预设新功能。历史主线（Deployment / Gate M / R01 等）见下方存档。
+### ★ 当前唯一下一目标：**1.2d 快照 diff**
+
+**理由**：用户已确认 —— **月度节奏下「变化」比「状态」重要**。
+实测发现快照契约有 `supersedes` / `superseded_by`（**版本链存在**），但
+**「变化」本身没有任何设计**（无 diff 概念）→ **这是 1.1 最大的设计缺口**。
+
+| 步 | 内容 | 前置 |
+|---|---|---|
+| **1.2d** | **快照 diff**：四层比较（环境 `market_regime` / 对象 `research_objects` / 候选 `historical_candidates` / 观察 `observations`）；Product 侧纯函数，**只说「变了什么」，不说好坏或含义** | 需第二份快照作数据 |
+| **1.2e** | **月度研究流程**：checklist + 半自动脚本（regime 填报 → 候选更新 → 快照装配 → 校验 → diff） | 需求由 1.2d 定义 |
+| **1.3** | **Product 只读页面**：基于真实数据 + diff；把「无对应」做成一等公民（57% 是 `NO_VALID_CORRESPONDENCE`） | 1.2d |
+| **1.4** | **2026 接入 / Lifecycle Tracking** | 1.3 |
+
+**★ 已明确不做**：不扩 Historical Universe（瓶颈是机制级证据深度，不是覆盖量）· 不接实时行情 ·
+不追 AI 自动化率（AI 只做 draft、人审核）· 不为「有东西可看」先做 UI。
 
 ---
 
