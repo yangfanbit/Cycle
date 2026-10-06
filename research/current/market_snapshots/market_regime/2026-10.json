@@ -1,0 +1,33 @@
+{
+  "contract": "market_regime_draft",
+  "market_regime_version": "0.1",
+  "snapshot_date": "2026-10-06",
+  "generated_by": "ai-offline",
+  "generated_at": "2026-10-06T20:45:00+08:00",
+  "ai_model": "ThreeC 1.1 Phase 1.2d baseline",
+
+  "market_regime": {
+    "broad_index_state": "UNKNOWN",
+    "breadth_state": "UNKNOWN",
+    "liquidity_state": "UNKNOWN",
+    "risk_appetite_state": "UNKNOWN",
+    "beta_note": "2026-10 轮次仍**未接入任何行情数据源**，四维无法计算，按诚实空态记 UNKNOWN。本轮快照的目的是为「快照 diff」提供第二份可比数据（验证链路与「无变化」路径），**不是**对市场环境的判断。待 B 路径补入可核验来源后再行填报。",
+    "evidence_refs": []
+  },
+
+  "evidence": [],
+
+  "unknown_notes": {
+    "broad_index_state": "未接入沪深300 区间行情数据源；不得凭印象填写（V7）。",
+    "breadth_state": "未接入全市场上涨家数统计；不得凭印象填写（V7）。",
+    "liquidity_state": "未接入两市成交额序列；不得凭印象填写（V7）。",
+    "risk_appetite_state": "未接入任何风险偏好信号；本维度要求 ≥2 个独立信号（V8），当前为 0 个。"
+  },
+
+  "review": {
+    "status": "PENDING",
+    "reviewer": null,
+    "decided_at": null,
+    "rationale": null
+  }
+}

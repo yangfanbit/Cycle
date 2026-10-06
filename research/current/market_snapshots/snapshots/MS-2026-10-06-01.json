@@ -1,0 +1,5042 @@
+{
+  "candidates_source": {
+    "artifact": "research/research/reports/structural_analogy_explanations_v0_5.json",
+    "artifact_version": "0.5",
+    "mode": "INDEX_ONLY —— 本快照只存 identity / structural_status / strict_structural_supported；其余解释字段一律回指该 artifact，不复制。",
+    "reader_must": "读取方必须先校验该 artifact 的 rule_set_version 与本字段一致，再按 resolve_by 合并。",
+    "resolve_by": "identity.historical_cycle_id",
+    "rule_set_version": "structural-analogy-ruleset-v0.3"
+  },
+  "contract": "market_snapshot",
+  "historical_candidates": [
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_cycle_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2016-HIEQ-CONSTR",
+        "historical_cycle_id": "C-2016-HIEQ-CONSTR",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_constr_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2016-PANEL-CYCLE",
+        "historical_cycle_id": "C-2016-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_cycle_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2018_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-AD",
+        "historical_cycle_id": "C-2019-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_ad_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-COMM-5G",
+        "historical_cycle_id": "C-2019-COMM-5G",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_5g_infrastructure_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-AESTHETICS",
+        "historical_cycle_id": "C-2019-CONS-AESTHETICS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_cycle_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONSUMER-TWS",
+        "historical_cycle_id": "C-2019-CONSUMER-TWS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "electronics_tws_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_group_restructure_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-PHARMA-INNOV",
+        "historical_cycle_id": "C-2019-PHARMA-INNOV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-RES-DYE-SHOCK",
+        "historical_cycle_id": "C-2019-RES-DYE-SHOCK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "dye_shock_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_cycle_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_cycle_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-DUTYFREE",
+        "historical_cycle_id": "C-2020-CONS-DUTYFREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_cycle_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "appliance_export_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_cycle_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_credit_cycle_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_cycle_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_automation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_cycle_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_equipment_order_cycle_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-NEV",
+        "historical_cycle_id": "C-2020-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-PANEL-CYCLE",
+        "historical_cycle_id": "C-2020-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-POWER-NE",
+        "historical_cycle_id": "C-2020-POWER-NE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_ne_equipment_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-RE-DEBT-RISK",
+        "historical_cycle_id": "C-2020-RE-DEBT-RISK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-LITHIUM",
+        "historical_cycle_id": "C-2020-RES-LITHIUM",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-NONFERROUS",
+        "historical_cycle_id": "C-2020-RES-NONFERROUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-RAREEARTH",
+        "historical_cycle_id": "C-2020-RES-RAREEARTH",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_cycle_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_cycle_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2021-NEV",
+        "historical_cycle_id": "C-2021-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_cycle_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_cycle_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2022-POLICY",
+        "historical_cycle_id": "C-2022-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_policy_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2022-POWER-GRID",
+        "historical_cycle_id": "C-2022-POWER-GRID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_grid_uhv_2022_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2022-RE-POLICY-THREE",
+        "historical_cycle_id": "C-2022-RE-POLICY-THREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2022-SEMI-DOWNTURN",
+        "historical_cycle_id": "C-2022-SEMI-DOWNTURN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_inventory_downturn_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2023-AD",
+        "historical_cycle_id": "C-2023-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": true,
+      "structural_status": "STRUCTURAL_SUPPORTED"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_cycle_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "ai_compute_semi_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2023-COMM-OPTICAL",
+        "historical_cycle_id": "C-2023-COMM-OPTICAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_ai_optical_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_cycle_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "value_retail_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_cycle_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-HUMANOID",
+        "historical_cycle_id": "C-2023-HIEQ-HUMANOID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2024-CONS-TRADE-IN",
+        "historical_cycle_id": "C-2024-CONS-TRADE-IN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "trade_in_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_cycle_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_cycle_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "broker_risk_appetite_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2024-RES-GOLD-CB",
+        "historical_cycle_id": "C-2024-RES-GOLD-CB",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "gold_cb_demand_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2024-ROBOTAXI",
+        "historical_cycle_id": "C-2024-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2024-SEMI-MEMORY",
+        "historical_cycle_id": "C-2024-SEMI-MEMORY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "memory_supercycle_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2024-V2X",
+        "historical_cycle_id": "C-2024-V2X",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_v2x_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2025-FIN-INSURANCE",
+        "historical_cycle_id": "C-2025-FIN-INSURANCE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "insurance_asset_liability_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": "C-2025-ROBOTAXI",
+        "historical_cycle_id": "C-2025-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-FIN-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-FIN-LEVERAGE",
+        "historical_theme_cycle_id": "finance_beta_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_theme_cycle_id": "military_reform_bull_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_theme_cycle_id": "liquidity_cycle_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RE-SHANTY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RE-SHANTY",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RES-CHEM-ENV",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RES-CHEM-ENV",
+        "historical_theme_cycle_id": "chem_env_constraint_2016"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-GPU-MINING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-GPU-MINING",
+        "historical_theme_cycle_id": "crypto_spillover_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_theme_cycle_id": "military_mixed_reform_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-RES-ALUMINUM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-RES-ALUMINUM",
+        "historical_theme_cycle_id": "aluminum_capacity_cut_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-MIL-PARADE-70",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-MIL-PARADE-70",
+        "historical_theme_cycle_id": "military_parade_event_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-RE-EASING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-RE-EASING",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_theme_cycle_id": "small_appliance_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_theme_cycle_id": "broker_risk_appetite_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-PANDEMIC",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-PANDEMIC",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-RES-GOLD-RATES",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-RES-GOLD-RATES",
+        "historical_theme_cycle_id": "gold_rates_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2021-TCM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2021-TCM",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-RES-FERTILIZER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-RES-FERTILIZER",
+        "historical_theme_cycle_id": "fertilizer_cost_2021_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_theme_cycle_id": "supply_constraint_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2023-HUAWEI",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2023-HUAWEI",
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-CONS-PET-FOOD",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-CONS-PET-FOOD",
+        "historical_theme_cycle_id": "pet_food_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_theme_cycle_id": "hieq_equip_update_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_theme_cycle_id": "hieq_humanoid_mass_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_theme_cycle_id": "commercial_space_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-RE-POLICY-517",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-RE-POLICY-517",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SECONDARY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SECONDARY",
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SEMI-FUND3",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SEMI-FUND3",
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-MIL-PARADE-80",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-MIL-PARADE-80",
+        "historical_theme_cycle_id": "military_parade_event_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-BCI-MEDTECH",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-RES-COPPER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-RES-COPPER",
+        "historical_theme_cycle_id": "copper_mine_gap_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_cycle_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2016-HIEQ-CONSTR",
+        "historical_cycle_id": "C-2016-HIEQ-CONSTR",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_constr_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2016-PANEL-CYCLE",
+        "historical_cycle_id": "C-2016-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_cycle_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2018_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-AD",
+        "historical_cycle_id": "C-2019-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_ad_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-COMM-5G",
+        "historical_cycle_id": "C-2019-COMM-5G",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_5g_infrastructure_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-AESTHETICS",
+        "historical_cycle_id": "C-2019-CONS-AESTHETICS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_cycle_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONSUMER-TWS",
+        "historical_cycle_id": "C-2019-CONSUMER-TWS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "electronics_tws_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_group_restructure_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-PHARMA-INNOV",
+        "historical_cycle_id": "C-2019-PHARMA-INNOV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-RES-DYE-SHOCK",
+        "historical_cycle_id": "C-2019-RES-DYE-SHOCK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "dye_shock_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_cycle_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_cycle_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-DUTYFREE",
+        "historical_cycle_id": "C-2020-CONS-DUTYFREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_cycle_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "appliance_export_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_cycle_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_credit_cycle_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_cycle_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_automation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_cycle_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_equipment_order_cycle_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-NEV",
+        "historical_cycle_id": "C-2020-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-PANEL-CYCLE",
+        "historical_cycle_id": "C-2020-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-POWER-NE",
+        "historical_cycle_id": "C-2020-POWER-NE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_ne_equipment_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-RE-DEBT-RISK",
+        "historical_cycle_id": "C-2020-RE-DEBT-RISK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-LITHIUM",
+        "historical_cycle_id": "C-2020-RES-LITHIUM",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-NONFERROUS",
+        "historical_cycle_id": "C-2020-RES-NONFERROUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-RAREEARTH",
+        "historical_cycle_id": "C-2020-RES-RAREEARTH",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_cycle_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_cycle_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2021-NEV",
+        "historical_cycle_id": "C-2021-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_cycle_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_cycle_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2022-POLICY",
+        "historical_cycle_id": "C-2022-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_policy_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2022-POWER-GRID",
+        "historical_cycle_id": "C-2022-POWER-GRID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_grid_uhv_2022_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2022-RE-POLICY-THREE",
+        "historical_cycle_id": "C-2022-RE-POLICY-THREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2022-SEMI-DOWNTURN",
+        "historical_cycle_id": "C-2022-SEMI-DOWNTURN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_inventory_downturn_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2023-AD",
+        "historical_cycle_id": "C-2023-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_cycle_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "ai_compute_semi_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2023-COMM-OPTICAL",
+        "historical_cycle_id": "C-2023-COMM-OPTICAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_ai_optical_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_cycle_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "value_retail_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_cycle_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-HUMANOID",
+        "historical_cycle_id": "C-2023-HIEQ-HUMANOID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2024-CONS-TRADE-IN",
+        "historical_cycle_id": "C-2024-CONS-TRADE-IN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "trade_in_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_cycle_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_cycle_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "broker_risk_appetite_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2024-RES-GOLD-CB",
+        "historical_cycle_id": "C-2024-RES-GOLD-CB",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "gold_cb_demand_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2024-ROBOTAXI",
+        "historical_cycle_id": "C-2024-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2024-SEMI-MEMORY",
+        "historical_cycle_id": "C-2024-SEMI-MEMORY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "memory_supercycle_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2024-V2X",
+        "historical_cycle_id": "C-2024-V2X",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_v2x_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2025-FIN-INSURANCE",
+        "historical_cycle_id": "C-2025-FIN-INSURANCE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "insurance_asset_liability_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": "C-2025-ROBOTAXI",
+        "historical_cycle_id": "C-2025-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-FIN-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-FIN-LEVERAGE",
+        "historical_theme_cycle_id": "finance_beta_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_theme_cycle_id": "military_reform_bull_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_theme_cycle_id": "liquidity_cycle_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RE-SHANTY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RE-SHANTY",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RES-CHEM-ENV",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RES-CHEM-ENV",
+        "historical_theme_cycle_id": "chem_env_constraint_2016"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-GPU-MINING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-GPU-MINING",
+        "historical_theme_cycle_id": "crypto_spillover_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_theme_cycle_id": "military_mixed_reform_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-RES-ALUMINUM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-RES-ALUMINUM",
+        "historical_theme_cycle_id": "aluminum_capacity_cut_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-MIL-PARADE-70",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-MIL-PARADE-70",
+        "historical_theme_cycle_id": "military_parade_event_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-RE-EASING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-RE-EASING",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_theme_cycle_id": "small_appliance_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_theme_cycle_id": "broker_risk_appetite_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-PANDEMIC",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-PANDEMIC",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-RES-GOLD-RATES",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-RES-GOLD-RATES",
+        "historical_theme_cycle_id": "gold_rates_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2021-TCM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2021-TCM",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-RES-FERTILIZER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-RES-FERTILIZER",
+        "historical_theme_cycle_id": "fertilizer_cost_2021_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_theme_cycle_id": "supply_constraint_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2023-HUAWEI",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2023-HUAWEI",
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-CONS-PET-FOOD",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-CONS-PET-FOOD",
+        "historical_theme_cycle_id": "pet_food_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_theme_cycle_id": "hieq_equip_update_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_theme_cycle_id": "hieq_humanoid_mass_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_theme_cycle_id": "commercial_space_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-RE-POLICY-517",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-RE-POLICY-517",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SECONDARY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SECONDARY",
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SEMI-FUND3",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SEMI-FUND3",
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-MIL-PARADE-80",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-MIL-PARADE-80",
+        "historical_theme_cycle_id": "military_parade_event_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-COMPUTE-POWER",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-RES-COPPER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-RES-COPPER",
+        "historical_theme_cycle_id": "copper_mine_gap_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_cycle_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2016-HIEQ-CONSTR",
+        "historical_cycle_id": "C-2016-HIEQ-CONSTR",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_constr_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2016-PANEL-CYCLE",
+        "historical_cycle_id": "C-2016-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_cycle_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2018_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-AD",
+        "historical_cycle_id": "C-2019-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_ad_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-COMM-5G",
+        "historical_cycle_id": "C-2019-COMM-5G",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_5g_infrastructure_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-AESTHETICS",
+        "historical_cycle_id": "C-2019-CONS-AESTHETICS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_cycle_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONSUMER-TWS",
+        "historical_cycle_id": "C-2019-CONSUMER-TWS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "electronics_tws_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_group_restructure_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-PHARMA-INNOV",
+        "historical_cycle_id": "C-2019-PHARMA-INNOV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-RES-DYE-SHOCK",
+        "historical_cycle_id": "C-2019-RES-DYE-SHOCK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "dye_shock_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_cycle_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_cycle_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-DUTYFREE",
+        "historical_cycle_id": "C-2020-CONS-DUTYFREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_cycle_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "appliance_export_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_cycle_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_credit_cycle_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_cycle_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_automation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_cycle_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_equipment_order_cycle_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-NEV",
+        "historical_cycle_id": "C-2020-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-PANEL-CYCLE",
+        "historical_cycle_id": "C-2020-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-POWER-NE",
+        "historical_cycle_id": "C-2020-POWER-NE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_ne_equipment_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-RE-DEBT-RISK",
+        "historical_cycle_id": "C-2020-RE-DEBT-RISK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-LITHIUM",
+        "historical_cycle_id": "C-2020-RES-LITHIUM",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-NONFERROUS",
+        "historical_cycle_id": "C-2020-RES-NONFERROUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-RAREEARTH",
+        "historical_cycle_id": "C-2020-RES-RAREEARTH",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_cycle_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_cycle_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2021-NEV",
+        "historical_cycle_id": "C-2021-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_cycle_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_cycle_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2022-POLICY",
+        "historical_cycle_id": "C-2022-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_policy_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2022-POWER-GRID",
+        "historical_cycle_id": "C-2022-POWER-GRID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_grid_uhv_2022_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2022-RE-POLICY-THREE",
+        "historical_cycle_id": "C-2022-RE-POLICY-THREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2022-SEMI-DOWNTURN",
+        "historical_cycle_id": "C-2022-SEMI-DOWNTURN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_inventory_downturn_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2023-AD",
+        "historical_cycle_id": "C-2023-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_SUPPORTED"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_cycle_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "ai_compute_semi_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2023-COMM-OPTICAL",
+        "historical_cycle_id": "C-2023-COMM-OPTICAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_ai_optical_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_cycle_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "value_retail_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_cycle_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-HUMANOID",
+        "historical_cycle_id": "C-2023-HIEQ-HUMANOID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2024-CONS-TRADE-IN",
+        "historical_cycle_id": "C-2024-CONS-TRADE-IN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "trade_in_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_cycle_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_cycle_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "broker_risk_appetite_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2024-RES-GOLD-CB",
+        "historical_cycle_id": "C-2024-RES-GOLD-CB",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "gold_cb_demand_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2024-ROBOTAXI",
+        "historical_cycle_id": "C-2024-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2024-SEMI-MEMORY",
+        "historical_cycle_id": "C-2024-SEMI-MEMORY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "memory_supercycle_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2024-V2X",
+        "historical_cycle_id": "C-2024-V2X",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_v2x_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2025-FIN-INSURANCE",
+        "historical_cycle_id": "C-2025-FIN-INSURANCE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "insurance_asset_liability_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": "C-2025-ROBOTAXI",
+        "historical_cycle_id": "C-2025-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-FIN-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-FIN-LEVERAGE",
+        "historical_theme_cycle_id": "finance_beta_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_theme_cycle_id": "military_reform_bull_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_theme_cycle_id": "liquidity_cycle_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RE-SHANTY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RE-SHANTY",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RES-CHEM-ENV",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RES-CHEM-ENV",
+        "historical_theme_cycle_id": "chem_env_constraint_2016"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-GPU-MINING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-GPU-MINING",
+        "historical_theme_cycle_id": "crypto_spillover_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_theme_cycle_id": "military_mixed_reform_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-RES-ALUMINUM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-RES-ALUMINUM",
+        "historical_theme_cycle_id": "aluminum_capacity_cut_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-MIL-PARADE-70",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-MIL-PARADE-70",
+        "historical_theme_cycle_id": "military_parade_event_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-RE-EASING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-RE-EASING",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_theme_cycle_id": "small_appliance_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_theme_cycle_id": "broker_risk_appetite_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-PANDEMIC",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-PANDEMIC",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-RES-GOLD-RATES",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-RES-GOLD-RATES",
+        "historical_theme_cycle_id": "gold_rates_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2021-TCM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2021-TCM",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-RES-FERTILIZER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-RES-FERTILIZER",
+        "historical_theme_cycle_id": "fertilizer_cost_2021_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_theme_cycle_id": "supply_constraint_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2023-HUAWEI",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2023-HUAWEI",
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-CONS-PET-FOOD",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-CONS-PET-FOOD",
+        "historical_theme_cycle_id": "pet_food_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_theme_cycle_id": "hieq_equip_update_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_theme_cycle_id": "hieq_humanoid_mass_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_theme_cycle_id": "commercial_space_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-RE-POLICY-517",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-RE-POLICY-517",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SECONDARY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SECONDARY",
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SEMI-FUND3",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SEMI-FUND3",
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-MIL-PARADE-80",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-MIL-PARADE-80",
+        "historical_theme_cycle_id": "military_parade_event_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-EMBODIED-AI",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-RES-COPPER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-RES-COPPER",
+        "historical_theme_cycle_id": "copper_mine_gap_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_cycle_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2016-HIEQ-CONSTR",
+        "historical_cycle_id": "C-2016-HIEQ-CONSTR",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_constr_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2016-PANEL-CYCLE",
+        "historical_cycle_id": "C-2016-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_cycle_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2018_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-AD",
+        "historical_cycle_id": "C-2019-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_ad_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-COMM-5G",
+        "historical_cycle_id": "C-2019-COMM-5G",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_5g_infrastructure_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-AESTHETICS",
+        "historical_cycle_id": "C-2019-CONS-AESTHETICS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_cycle_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONSUMER-TWS",
+        "historical_cycle_id": "C-2019-CONSUMER-TWS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "electronics_tws_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_group_restructure_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-PHARMA-INNOV",
+        "historical_cycle_id": "C-2019-PHARMA-INNOV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-RES-DYE-SHOCK",
+        "historical_cycle_id": "C-2019-RES-DYE-SHOCK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "dye_shock_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_cycle_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_cycle_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-DUTYFREE",
+        "historical_cycle_id": "C-2020-CONS-DUTYFREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_cycle_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "appliance_export_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_cycle_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_credit_cycle_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_cycle_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_automation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_cycle_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_equipment_order_cycle_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-NEV",
+        "historical_cycle_id": "C-2020-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-PANEL-CYCLE",
+        "historical_cycle_id": "C-2020-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-POWER-NE",
+        "historical_cycle_id": "C-2020-POWER-NE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_ne_equipment_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-RE-DEBT-RISK",
+        "historical_cycle_id": "C-2020-RE-DEBT-RISK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-LITHIUM",
+        "historical_cycle_id": "C-2020-RES-LITHIUM",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-NONFERROUS",
+        "historical_cycle_id": "C-2020-RES-NONFERROUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-RAREEARTH",
+        "historical_cycle_id": "C-2020-RES-RAREEARTH",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_cycle_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_cycle_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2021-NEV",
+        "historical_cycle_id": "C-2021-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_cycle_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_cycle_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2022-POLICY",
+        "historical_cycle_id": "C-2022-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_policy_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2022-POWER-GRID",
+        "historical_cycle_id": "C-2022-POWER-GRID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_grid_uhv_2022_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2022-RE-POLICY-THREE",
+        "historical_cycle_id": "C-2022-RE-POLICY-THREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2022-SEMI-DOWNTURN",
+        "historical_cycle_id": "C-2022-SEMI-DOWNTURN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_inventory_downturn_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2023-AD",
+        "historical_cycle_id": "C-2023-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_cycle_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "ai_compute_semi_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2023-COMM-OPTICAL",
+        "historical_cycle_id": "C-2023-COMM-OPTICAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_ai_optical_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_cycle_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "value_retail_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_cycle_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-HUMANOID",
+        "historical_cycle_id": "C-2023-HIEQ-HUMANOID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2024-CONS-TRADE-IN",
+        "historical_cycle_id": "C-2024-CONS-TRADE-IN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "trade_in_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_cycle_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_cycle_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "broker_risk_appetite_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2024-RES-GOLD-CB",
+        "historical_cycle_id": "C-2024-RES-GOLD-CB",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "gold_cb_demand_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2024-ROBOTAXI",
+        "historical_cycle_id": "C-2024-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2024-SEMI-MEMORY",
+        "historical_cycle_id": "C-2024-SEMI-MEMORY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "memory_supercycle_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2024-V2X",
+        "historical_cycle_id": "C-2024-V2X",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_v2x_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2025-FIN-INSURANCE",
+        "historical_cycle_id": "C-2025-FIN-INSURANCE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "insurance_asset_liability_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": "C-2025-ROBOTAXI",
+        "historical_cycle_id": "C-2025-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-FIN-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-FIN-LEVERAGE",
+        "historical_theme_cycle_id": "finance_beta_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_theme_cycle_id": "military_reform_bull_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_theme_cycle_id": "liquidity_cycle_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RE-SHANTY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RE-SHANTY",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RES-CHEM-ENV",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RES-CHEM-ENV",
+        "historical_theme_cycle_id": "chem_env_constraint_2016"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-GPU-MINING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-GPU-MINING",
+        "historical_theme_cycle_id": "crypto_spillover_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_theme_cycle_id": "military_mixed_reform_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-RES-ALUMINUM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-RES-ALUMINUM",
+        "historical_theme_cycle_id": "aluminum_capacity_cut_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-MIL-PARADE-70",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-MIL-PARADE-70",
+        "historical_theme_cycle_id": "military_parade_event_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-RE-EASING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-RE-EASING",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_theme_cycle_id": "small_appliance_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_theme_cycle_id": "broker_risk_appetite_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-PANDEMIC",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-PANDEMIC",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-RES-GOLD-RATES",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-RES-GOLD-RATES",
+        "historical_theme_cycle_id": "gold_rates_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2021-TCM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2021-TCM",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-RES-FERTILIZER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-RES-FERTILIZER",
+        "historical_theme_cycle_id": "fertilizer_cost_2021_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_theme_cycle_id": "supply_constraint_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2023-HUAWEI",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2023-HUAWEI",
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-CONS-PET-FOOD",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-CONS-PET-FOOD",
+        "historical_theme_cycle_id": "pet_food_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_theme_cycle_id": "hieq_equip_update_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_theme_cycle_id": "hieq_humanoid_mass_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_theme_cycle_id": "commercial_space_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-RE-POLICY-517",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-RE-POLICY-517",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SECONDARY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SECONDARY",
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SEMI-FUND3",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SEMI-FUND3",
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-MIL-PARADE-80",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-MIL-PARADE-80",
+        "historical_theme_cycle_id": "military_parade_event_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OFFSHORE-WIND",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-RES-COPPER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-RES-COPPER",
+        "historical_theme_cycle_id": "copper_mine_gap_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_cycle_id": "C-2016-CONS-BAIJIU-UPGRADE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2016-HIEQ-CONSTR",
+        "historical_cycle_id": "C-2016-HIEQ-CONSTR",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_constr_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2016-PANEL-CYCLE",
+        "historical_cycle_id": "C-2016-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_cycle_id": "C-2018-CONS-HOG-AFRICAN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_cycle_id": "C-2018-HIEQ-ROBOT-DOWN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2018_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-AD",
+        "historical_cycle_id": "C-2019-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_ad_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-COMM-5G",
+        "historical_cycle_id": "C-2019-COMM-5G",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_5g_infrastructure_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "THEME_ONLY"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-AESTHETICS",
+        "historical_cycle_id": "C-2019-CONS-AESTHETICS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_cycle_id": "C-2019-CONS-BAIJIU-CORE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "baijiu_premium_2016_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-CONSUMER-TWS",
+        "historical_cycle_id": "C-2019-CONSUMER-TWS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "electronics_tws_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_cycle_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_group_restructure_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-PHARMA-INNOV",
+        "historical_cycle_id": "C-2019-PHARMA-INNOV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-RES-DYE-SHOCK",
+        "historical_cycle_id": "C-2019-RES-DYE-SHOCK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "dye_shock_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_cycle_id": "C-2019-SEMI-LOCALIZATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_cycle_id": "C-2020-CONS-BEAUTY-CN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "beauty_aesthetics_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-DUTYFREE",
+        "historical_cycle_id": "C-2020-CONS-DUTYFREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_cycle_id": "C-2020-CONS-WHITE-GOODS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "appliance_export_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_cycle_id": "C-2020-FIN-BANK-CREDIT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_credit_cycle_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_cycle_id": "C-2020-HIEQ-AUTOMATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_automation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_cycle_id": "C-2020-MIL-EQUIP-ORDER",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "military_equipment_order_cycle_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-NEV",
+        "historical_cycle_id": "C-2020-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-PANEL-CYCLE",
+        "historical_cycle_id": "C-2020-PANEL-CYCLE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "panel_price_cycle_2016_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-POWER-NE",
+        "historical_cycle_id": "C-2020-POWER-NE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_ne_equipment_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-RE-DEBT-RISK",
+        "historical_cycle_id": "C-2020-RE-DEBT-RISK",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-LITHIUM",
+        "historical_cycle_id": "C-2020-RES-LITHIUM",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-NONFERROUS",
+        "historical_cycle_id": "C-2020-RES-NONFERROUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-RES-RAREEARTH",
+        "historical_cycle_id": "C-2020-RES-RAREEARTH",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_cycle_id": "C-2020-SEMI-EQUIPMENT",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_cycle_id": "C-2021-CONS-HOG-REVERSAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hog_cycle_2018_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2021-NEV",
+        "historical_cycle_id": "C-2021-NEV",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_nev_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_cycle_id": "C-2021-RES-CHEM-DUALCTRL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "resource_reflation_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_cycle_id": "C-2022-CONS-SERVICE-REBOUND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "service_consumption_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2022-POLICY",
+        "historical_cycle_id": "C-2022-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_policy_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2022-POWER-GRID",
+        "historical_cycle_id": "C-2022-POWER-GRID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "power_grid_uhv_2022_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2022-RE-POLICY-THREE",
+        "historical_cycle_id": "C-2022-RE-POLICY-THREE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2022-SEMI-DOWNTURN",
+        "historical_cycle_id": "C-2022-SEMI-DOWNTURN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "semi_inventory_downturn_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2023-AD",
+        "historical_cycle_id": "C-2023-AD",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_cycle_id": "C-2023-AI-COMPUTE-SEMI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "ai_compute_semi_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2023-COMM-OPTICAL",
+        "historical_cycle_id": "C-2023-COMM-OPTICAL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "comm_ai_optical_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_SUPPORTED"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_cycle_id": "C-2023-CONS-VALUE-RETAIL",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "value_retail_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_cycle_id": "C-2023-FIN-SOE-VALUATION",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-HUMANOID",
+        "historical_cycle_id": "C-2023-HIEQ-HUMANOID",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_PARTIAL"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "hieq_robot_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2024-CONS-TRADE-IN",
+        "historical_cycle_id": "C-2024-CONS-TRADE-IN",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "trade_in_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_cycle_id": "C-2024-FIN-BANK-DIVIDEND",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "bank_valuation_2023_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_cycle_id": "C-2024-FIN-BROKER-POLICY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "broker_risk_appetite_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2024-RES-GOLD-CB",
+        "historical_cycle_id": "C-2024-RES-GOLD-CB",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "gold_cb_demand_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2024-ROBOTAXI",
+        "historical_cycle_id": "C-2024-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2024-SEMI-MEMORY",
+        "historical_cycle_id": "C-2024-SEMI-MEMORY",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "memory_supercycle_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2024-V2X",
+        "historical_cycle_id": "C-2024-V2X",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "auto_v2x_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2025-FIN-INSURANCE",
+        "historical_cycle_id": "C-2025-FIN-INSURANCE",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "insurance_asset_liability_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": "C-2025-ROBOTAXI",
+        "historical_cycle_id": "C-2025-ROBOTAXI",
+        "historical_object_kind": "campaign",
+        "historical_research_candidate_id": null,
+        "historical_theme_cycle_id": "robotaxi_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "STRUCTURAL_SUPPORTED"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-FIN-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-FIN-LEVERAGE",
+        "historical_theme_cycle_id": "finance_beta_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-MIL-REFORM-BULL",
+        "historical_theme_cycle_id": "military_reform_bull_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2015-SEMI-LEVERAGE",
+        "historical_theme_cycle_id": "liquidity_cycle_2015"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RE-SHANTY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RE-SHANTY",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2016-RES-CHEM-ENV",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2016-RES-CHEM-ENV",
+        "historical_theme_cycle_id": "chem_env_constraint_2016"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-GPU-MINING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-GPU-MINING",
+        "historical_theme_cycle_id": "crypto_spillover_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-MIL-MIXED-REFORM",
+        "historical_theme_cycle_id": "military_mixed_reform_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2017-RES-ALUMINUM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2017-RES-ALUMINUM",
+        "historical_theme_cycle_id": "aluminum_capacity_cut_2017"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-MIL-PARADE-70",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-MIL-PARADE-70",
+        "historical_theme_cycle_id": "military_parade_event_2019"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2019-RE-EASING",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2019-RE-EASING",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-CONS-SMALL-APPLIANCE",
+        "historical_theme_cycle_id": "small_appliance_2020_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-FIN-BROKER-VOLUME",
+        "historical_theme_cycle_id": "broker_risk_appetite_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-PANDEMIC",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-PANDEMIC",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2020-RES-GOLD-RATES",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2020-RES-GOLD-RATES",
+        "historical_theme_cycle_id": "gold_rates_2019_2020"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2021-TCM",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2021-TCM",
+        "historical_theme_cycle_id": "medical_structural_upgrade_2019_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-RES-FERTILIZER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-RES-FERTILIZER",
+        "historical_theme_cycle_id": "fertilizer_cost_2021_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2022-SEMI-CHIPSHORTAGE",
+        "historical_theme_cycle_id": "supply_constraint_2020_2022"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2023-HUAWEI",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2023-HUAWEI",
+        "historical_theme_cycle_id": "auto_intelligence_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-CONS-PET-FOOD",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-CONS-PET-FOOD",
+        "historical_theme_cycle_id": "pet_food_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+        "historical_theme_cycle_id": "hieq_equip_update_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-HIEQ-HUMANOID-MASS",
+        "historical_theme_cycle_id": "hieq_humanoid_mass_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "NO_VALID_CORRESPONDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+        "historical_theme_cycle_id": "commercial_space_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-RE-POLICY-517",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-RE-POLICY-517",
+        "historical_theme_cycle_id": "realestate_policy_cycle_2020_2023"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SECONDARY",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SECONDARY",
+        "historical_theme_cycle_id": "robotaxi_2024"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2024-SEMI-FUND3",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2024-SEMI-FUND3",
+        "historical_theme_cycle_id": "semi_localization_2019_2021"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-MIL-PARADE-80",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-MIL-PARADE-80",
+        "historical_theme_cycle_id": "military_parade_event_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "current_object_id": "CC-2026-OPTICAL-LINK",
+      "identity": {
+        "historical_campaign_id": null,
+        "historical_cycle_id": "RC-2025-RES-COPPER",
+        "historical_object_kind": "research_candidate",
+        "historical_research_candidate_id": "RC-2025-RES-COPPER",
+        "historical_theme_cycle_id": "copper_mine_gap_2024_2025"
+      },
+      "strict_structural_supported": false,
+      "structural_status": "INSUFFICIENT_EVIDENCE"
+    }
+  ],
+  "market_regime": {
+    "beta_note": "2026-10 轮次仍**未接入任何行情数据源**，四维无法计算，按诚实空态记 UNKNOWN。本轮快照的目的是为「快照 diff」提供第二份可比数据（验证链路与「无变化」路径），**不是**对市场环境的判断。待 B 路径补入可核验来源后再行填报。",
+    "breadth_state": "UNKNOWN",
+    "broad_index_state": "UNKNOWN",
+    "evidence_refs": [],
+    "liquidity_state": "UNKNOWN",
+    "risk_appetite_state": "UNKNOWN"
+  },
+  "market_snapshot_version": "0.3",
+  "observations": [],
+  "provenance": {
+    "ai_assisted": true,
+    "generated_by": "ai-offline",
+    "research_round": "ThreeC 1.1 Phase 1.2",
+    "reviewed_at": null,
+    "reviewed_by": null,
+    "rule_set_version": "structural-analogy-ruleset-v0.3",
+    "source_commit": "",
+    "superseded_by": null,
+    "supersedes": null
+  },
+  "research_context": {
+    "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
+    "known_limitations": [
+      "market_regime 依赖离线填报，无自动化行情源。",
+      "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
+      "本轮为 2026-09 基线的**延续快照**：未执行新的研究轮次，研究对象状态沿用 2026-09-15 的研究结果；observations 为空。"
+    ],
+    "research_method": "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
+    "research_question": "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
+    "source_policy": "Tier 1（官方发布）优先；Tier 2 为公司公告与产业数据；Tier 3 仅用于转述 T1/T2 事实。"
+  },
+  "research_objects": [
+    {
+      "canonical_drivers": [
+        "POLICY_DRIVEN",
+        "TECH_BREAKTHROUGH"
+      ],
+      "declared_phase": "THEME_FORMING",
+      "display_name": "脑机接口医疗器械（标准—分类—临床—商业化）",
+      "events": [],
+      "evidence_categories": [
+        "INDUSTRY",
+        "POLICY"
+      ],
+      "evidence_sequence": [
+        {
+          "date": "2026-01-06",
+          "type": "company"
+        },
+        {
+          "date": "2026-01-06",
+          "type": "market"
+        },
+        {
+          "date": "2026-06-30",
+          "type": "policy"
+        },
+        {
+          "date": "2026-08-24",
+          "type": "policy"
+        },
+        {
+          "date": "2026-09-08",
+          "type": "industry"
+        },
+        {
+          "date": "2026-09-14",
+          "type": "policy"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "market"
+        }
+      ],
+      "macro_theme": "医药健康",
+      "object_id": "CC-2026-BCI-MEDTECH",
+      "object_kind": "current_candidate",
+      "phase_source": "RESEARCH_DECLARED",
+      "resolution_state": "RESOLVED"
+    },
+    {
+      "canonical_drivers": [
+        "DEMAND_SURGE",
+        "INDUSTRY_UPGRADE",
+        "POLICY_DRIVEN"
+      ],
+      "declared_phase": "BROAD_CONFIRMATION",
+      "display_name": "算电协同（算力网与新型电力系统协同）",
+      "events": [],
+      "evidence_categories": [
+        "CAPITAL",
+        "INDUSTRY",
+        "POLICY"
+      ],
+      "evidence_sequence": [
+        {
+          "date": "2026-04-22",
+          "type": "industry"
+        },
+        {
+          "date": "2026-04-22",
+          "type": "industry"
+        },
+        {
+          "date": "2026-04-27",
+          "type": "policy"
+        },
+        {
+          "date": "2026-05-02",
+          "type": "industry"
+        },
+        {
+          "date": "2026-05-08",
+          "type": "policy"
+        },
+        {
+          "date": "2026-08-03",
+          "type": "policy"
+        },
+        {
+          "date": "2026-09-11",
+          "type": "policy"
+        },
+        {
+          "date": "2026-09-11",
+          "type": "capital"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "market"
+        }
+      ],
+      "macro_theme": "电力设备",
+      "object_id": "CC-2026-COMPUTE-POWER",
+      "object_kind": "current_candidate",
+      "phase_source": "RESEARCH_DECLARED",
+      "resolution_state": "RESOLVED"
+    },
+    {
+      "canonical_drivers": [
+        "INDUSTRY_UPGRADE",
+        "POLICY_DRIVEN",
+        "TECH_BREAKTHROUGH"
+      ],
+      "declared_phase": "EXPANSION",
+      "display_name": "具身智能与人形机器人（标准—实训—供应链）",
+      "events": [],
+      "evidence_categories": [
+        "CAPITAL",
+        "INDUSTRY",
+        "POLICY"
+      ],
+      "evidence_sequence": [
+        {
+          "date": "2026-04-23",
+          "type": "policy"
+        },
+        {
+          "date": "2026-04-23",
+          "type": "policy"
+        },
+        {
+          "date": "2026-04-23",
+          "type": "industry"
+        },
+        {
+          "date": "2026-04-23",
+          "type": "industry"
+        },
+        {
+          "date": "2026-04-23",
+          "type": "company"
+        },
+        {
+          "date": "2026-04-23",
+          "type": "market"
+        },
+        {
+          "date": "2026-06-24",
+          "type": "policy"
+        }
+      ],
+      "macro_theme": "高端装备",
+      "object_id": "CC-2026-EMBODIED-AI",
+      "object_kind": "current_candidate",
+      "phase_source": "RESEARCH_DECLARED",
+      "resolution_state": "RESOLVED"
+    },
+    {
+      "canonical_drivers": [
+        "POLICY_DRIVEN",
+        "SUPPLY_CONTRACTION"
+      ],
+      "declared_phase": "THEME_FORMING",
+      "display_name": "海上风电与整机价格修复（『十五五』规模化 + 出海）",
+      "events": [],
+      "evidence_categories": [
+        "EXTERNAL",
+        "INDUSTRY",
+        "POLICY"
+      ],
+      "evidence_sequence": [
+        {
+          "date": "2026-09-10",
+          "type": "company"
+        },
+        {
+          "date": "2026-09-10",
+          "type": "industry"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "policy"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "macro"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "industry"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "market"
+        }
+      ],
+      "macro_theme": "电力设备",
+      "object_id": "CC-2026-OFFSHORE-WIND",
+      "object_kind": "current_candidate",
+      "phase_source": "RESEARCH_DECLARED",
+      "resolution_state": "RESOLVED"
+    },
+    {
+      "canonical_drivers": [
+        "DEMAND_SURGE",
+        "INDUSTRY_UPGRADE",
+        "TECH_BREAKTHROUGH"
+      ],
+      "declared_phase": "EXPANSION",
+      "display_name": "高速光互联（1.6T / NPO / CPO 结构迁移）",
+      "events": [],
+      "evidence_categories": [
+        "CAPITAL",
+        "INDUSTRY",
+        "POLICY"
+      ],
+      "evidence_sequence": [
+        {
+          "date": "2026-04-27",
+          "type": "company"
+        },
+        {
+          "date": "2026-07-15",
+          "type": "industry"
+        },
+        {
+          "date": "2026-09-11",
+          "type": "industry"
+        },
+        {
+          "date": "2026-09-11",
+          "type": "company"
+        },
+        {
+          "date": "2026-09-11",
+          "type": "capital"
+        },
+        {
+          "date": "2026-09-11",
+          "type": "market"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "policy"
+        }
+      ],
+      "macro_theme": "信息通信",
+      "object_id": "CC-2026-OPTICAL-LINK",
+      "object_kind": "current_candidate",
+      "phase_source": "RESEARCH_DECLARED",
+      "resolution_state": "RESOLVED"
+    }
+  ],
+  "snapshot_date": "2026-10-06",
+  "snapshot_id": "MS-2026-10-06-01",
+  "status": "DRAFT",
+  "timestamp": "2026-10-06T20:45:00+08:00"
+}
