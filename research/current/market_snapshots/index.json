@@ -1,0 +1,20 @@
+{
+  "contract": "market_snapshot_index",
+  "index_version": "0.1",
+  "snapshots": [
+    {
+      "file": "MS-2026-09-15-01.json",
+      "market_snapshot_version": "0.3",
+      "snapshot_date": "2026-09-15",
+      "snapshot_id": "MS-2026-09-15-01",
+      "status": "DRAFT"
+    },
+    {
+      "file": "MS-2026-10-06-01.json",
+      "market_snapshot_version": "0.3",
+      "snapshot_date": "2026-10-06",
+      "snapshot_id": "MS-2026-10-06-01",
+      "status": "DRAFT"
+    }
+  ]
+}

@@ -431,6 +431,62 @@ def validate_regime(path: str, label: str) -> None:
         ok("%s · R9 红线扫描通过" % label)
 
 
+# ---------------------------------------------------------------- index
+def validate_index(path: str, label: str) -> None:
+    """校验 `index.json`（Product 用它发现快照；它本身也是 Product-facing artifact）。"""
+    with open(path, "r", encoding="utf-8") as f:
+        try:
+            doc = json.load(f)
+        except Exception as e:  # noqa: BLE001
+            fail("I1·%s" % label, "JSON 解析失败: %s" % e)
+            return
+
+    if doc.get("contract") != "market_snapshot_index":
+        fail("I1·%s" % label, "contract 应为 market_snapshot_index，实际 %r" % doc.get("contract"))
+    else:
+        ok("%s · I1 contract 合法" % label)
+
+    snaps = doc.get("snapshots")
+    if not isinstance(snaps, list):
+        fail("I2·%s" % label, "snapshots 必须是 array")
+        return
+
+    snap_dir = os.path.dirname(path)
+    seen = set()
+    for i, e in enumerate(snaps):
+        if not isinstance(e, dict):
+            fail("I2·%s" % label, "snapshots[%d] 必须是 object" % i)
+            continue
+        for k in ("snapshot_id", "snapshot_date", "status", "file"):
+            if not e.get(k):
+                fail("I2·%s" % label, "snapshots[%d] 缺 %s" % (i, k))
+        if e.get("status") not in STATUS_OK:
+            fail("I2·%s" % label, "snapshots[%d].status 非法: %r" % (i, e.get("status")))
+        if not is_date(e.get("snapshot_date")):
+            fail("I2·%s" % label, "snapshots[%d].snapshot_date 非法: %r" % (i, e.get("snapshot_date")))
+        sid = e.get("snapshot_id")
+        if sid in seen:
+            fail("I3·%s" % label, "snapshot_id 重复: %r" % sid)
+        seen.add(sid)
+        # ★ 索引指向的文件必须真实存在（防索引漂移）
+        fn = e.get("file")
+        if fn and not os.path.exists(os.path.join(snap_dir, "snapshots", fn)):
+            fail("I4·%s" % label, "索引指向的快照文件不存在: snapshots/%s" % fn)
+
+    # 索引必须与目录实际内容一致（不多不少）
+    actual = set()
+    sd = os.path.join(snap_dir, "snapshots")
+    if os.path.isdir(sd):
+        actual = {fn for fn in os.listdir(sd) if fn.endswith(".json")}
+    listed = {e.get("file") for e in snaps if isinstance(e, dict)}
+    if actual != listed:
+        fail("I5·%s" % label,
+             "索引与目录不一致 —— 多: %s / 少: %s（请重跑生成器重建索引）"
+             % (sorted(listed - actual) or '-', sorted(actual - listed) or '-'))
+    else:
+        ok("%s · I5 索引与目录一致（%d 份快照）" % (label, len(actual)))
+
+
 def main() -> int:
     args = sys.argv[1:]
     files = []
@@ -468,6 +524,8 @@ def main() -> int:
             validate_snapshot(path, label)
         elif c == "market_regime_draft":
             validate_regime(path, label)
+        elif c == "market_snapshot_index":
+            validate_index(path, label)
         else:
             warn("IO·%s" % label, "未知 contract=%r —— 跳过（仅支持 market_snapshot / market_regime_draft）" % c)
 

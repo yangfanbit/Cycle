@@ -141,6 +141,43 @@ def build(args) -> dict:
     }
 
 
+def rebuild_index(snapshots_dir: str) -> str:
+    """扫描 snapshots/ 重建 `index.json`。
+
+    ★ 为什么需要：Product 必须知道「有哪些快照、哪些是 CANONICAL」，但**不能把全部快照打进主包**
+      （按月累积 ~192 KB/份）。索引极小，Product 静态 import 它，再按需 lazy import 需要的那 1–2 份。
+    """
+    entries = []
+    if os.path.isdir(snapshots_dir):
+        for fn in sorted(os.listdir(snapshots_dir)):
+            if not fn.endswith(".json"):
+                continue
+            try:
+                with open(os.path.join(snapshots_dir, fn), "r", encoding="utf-8") as f:
+                    d = json.load(f)
+            except (OSError, ValueError):
+                continue
+            if not isinstance(d, dict) or d.get("contract") != "market_snapshot":
+                continue
+            entries.append({
+                "snapshot_id": d.get("snapshot_id"),
+                "snapshot_date": d.get("snapshot_date"),
+                "status": d.get("status"),
+                "market_snapshot_version": d.get("market_snapshot_version"),
+                "file": fn,
+            })
+    entries.sort(key=lambda x: (x.get("snapshot_date") or "", x.get("snapshot_id") or ""))
+    doc = {
+        "contract": "market_snapshot_index",
+        "index_version": "0.1",
+        "snapshots": entries,
+    }
+    ipath = os.path.join(SNAP_DIR, "index.json")
+    with open(ipath, "wb") as f:
+        f.write(dump_json(doc))
+    return ipath
+
+
 def run_validator(path: str) -> int:
     """晋升 CANONICAL 前必须先通过校验器。"""
     if not os.path.exists(VALIDATOR):
@@ -228,6 +265,9 @@ def main() -> int:
     if rc != 0:
         print("FAIL  DRAFT 已落盘，但校验存在 FAIL —— 请修正后再晋升 CANONICAL")
         return 1
+
+    ipath = rebuild_index(out_dir)
+    print("已重建索引: %s" % ipath)
     if args.canonical:
         print("PASS  校验通过 + 人工审核留痕齐备 → CANONICAL（Product 可消费）")
     return 0
