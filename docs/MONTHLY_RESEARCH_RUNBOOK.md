@@ -181,23 +181,28 @@ git commit -m "chore(research-1.1): monthly market snapshot <YYYY-MM>"
 
 ### ★ 输入文件命名（约定 B · 2026-10-06 定）
 
-**每个 revision 一对独立输入，文件名 = `snapshot_id`**，与产物**一一对应**：
+**每个 revision 一组独立输入，文件名 = `snapshot_id`**，与产物**一一对应**：
 
 ```
 market_regime/MS-<snapshot_id>.json      observations/MS-<snapshot_id>.json
+context/MS-<snapshot_id>.json            ← 研究声明（research_question / known_limitations）
 ```
+
+> ★ **三份输入齐了，「输入 → 产物」才算闭合。**
+> `research_context` 曾在命令行里传、未被捕获 → 已签发快照无法逐字节复现（缺口 2d，2026-10-06 修）。
 
 > **为什么必须独立**：输入文件若**就地追加**，上一版快照就**失去可复现性**
 > （用同一份输入重跑会得到不同产物）。**不要复用上一版的输入文件名。**
 
 ```bash
-# 1) 为本版新建**独立**的 regime / observations 输入（文件名 = 本版 snapshot_id）
+# 1) 为本版新建**独立**的 regime / observations / context 三份输入（文件名 = 本版 snapshot_id）
 # 2) 装配新 revision，并归档被取代的版本
 python3 $S/scripts/build_market_snapshot_v0_1.py \
     --snapshot-date <YYYY-MM-DD> --snapshot-id MS-<YYYY-MM-DD>-NN \
     --timestamp "<ISO>" \
-    --regime     $S/market_regime/MS-<YYYY-MM-DD>-NN.json \
+    --regime       $S/market_regime/MS-<YYYY-MM-DD>-NN.json \
     --observations $S/observations/MS-<YYYY-MM-DD>-NN.json \
+    --context      $S/context/MS-<YYYY-MM-DD>-NN.json \
     --objects /tmp/objects.json --candidates /tmp/candidates.json \
     --supersedes MS-<上一版 id> \
     --canonical --reviewer "<审核人>" --reviewed-at "<ISO>"
@@ -213,8 +218,9 @@ python3 $S/scripts/build_market_snapshot_v0_1.py ... --check \
 ```
 
 - `--reviewed-at` **必须**显式传，否则 `reviewed_at` 取 `now` → 永远复现不了。
-- `--check` 是**数据级**检查：`status` / `superseded_by` / `reviewed_*` 由后续事件写入，**不参与比较**；
-  `research_context` 目前**不在复现范围内**（见 `docs/MONTHLY_RUNBOOK_REHEARSAL_FINDINGS_v0.1.md` 缺口 2d）。
+- `--check` 是**数据级**检查：`status` / `superseded_by` / `reviewed_*` 由后续事件写入，**不参与比较**。
+- ★ 自 2026-10-06 起 `research_context` 已改为输入文件（`--context`），**已纳入复现范围** ——
+  「输入 → 产物」**完全闭合**。`MS-2026-10-06-04` 实测**逐字节一致**。
 
 ## 7. 当前缺口（诚实记录）
 

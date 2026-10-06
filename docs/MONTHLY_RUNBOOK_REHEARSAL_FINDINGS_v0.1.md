@@ -76,12 +76,23 @@ market_regime/  MS-<snapshot_id>.json      observations/  MS-<snapshot_id>.json
 
 → **已修**：新增 `--reviewed-at`，签发时间**必须可显式给定**（`--check` 时传入记录值）。
 
-### 缺口 2d（**待定**）· `research_context` 未纳入输入文件
+### 缺口 2d（**已修**）· `research_context` 未纳入输入文件
 
-`research_context`（含 `research_question` / `known_limitations`）目前经**命令行参数**传入，
-**未被任何输入文件捕获** → 它不在复现范围内（`--check` 会显式排除并说明）。
+`research_context`（含 `research_question` / `known_limitations`）原经**命令行参数**传入，
+**未被任何输入文件捕获** → 不在复现范围内。
 
-→ **待定**：是否把它也做成输入文件（`context/MS-<id>.json`），让「输入 → 产物」完全闭合？
+→ **已修**：新增输入文件 **`context/MS-<snapshot_id>.json`**，与 regime / observations 同级。
+生成器新增 `--context`（给了它就完全以文件为准）；校验器新增 **C1–C3**。
+
+**修复效果（实测）**：
+
+| revision | 修复前 | 修复后 |
+|---|---|---|
+| `MS-2026-10-06-04`（CANONICAL） | 数据级一致（context 未覆盖） | ★ **逐字节一致** |
+| 其余 4 个 | 数据级一致 | 数据级一致（仅生命周期状态不同） |
+
+> ★ 至此「**输入 → 产物**」**完全闭合**：唯一的例外是 `status` / `superseded_by` / `reviewed_*`
+> —— 它们由**签发 / 归档等后续事件**写入，**本来就不该由输入决定**。
 
 ### 缺口 3（**待定**）· Runbook 步骤 5 的命令不覆盖「修订」场景
 

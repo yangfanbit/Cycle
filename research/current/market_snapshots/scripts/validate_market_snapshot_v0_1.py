@@ -504,6 +504,40 @@ def validate_observations(path: str, label: str) -> None:
         ok("%s · O3/O4/O5 观察校验完成（%d 条）" % (label, len(obs)))
 
 
+# ---------------------------------------------------------------- context
+def validate_context(path: str, label: str) -> None:
+    """校验研究声明输入文件（`market_snapshot_context`）。
+
+    ★ 它是「输入 → 产物」闭合的最后一环：`research_context` 自 2026-10-06 起不再是命令行参数，
+      而是**输入文件**，因此纳入复现范围（此前是缺口 2d）。
+    """
+    with open(path, "r", encoding="utf-8") as f:
+        try:
+            doc = json.load(f)
+        except Exception as e:  # noqa: BLE001
+            fail("C1·%s" % label, "JSON 解析失败: %s" % e)
+            return
+
+    if doc.get("contract") != "market_snapshot_context":
+        fail("C1·%s" % label, "contract 应为 market_snapshot_context，实际 %r" % doc.get("contract"))
+    else:
+        ok("%s · C1 contract 合法" % label)
+
+    q = doc.get("research_question")
+    if not (isinstance(q, str) and q.strip()):
+        fail("C2·%s" % label, "research_question 必填（且必须非空）")
+    else:
+        ok("%s · C2 research_question 已填" % label)
+
+    lim = doc.get("known_limitations")
+    if lim is not None and not isinstance(lim, list):
+        fail("C3·%s" % label, "known_limitations 必须是 array")
+    elif isinstance(lim, list) and any(not isinstance(x, str) for x in lim):
+        fail("C3·%s" % label, "known_limitations 每项必须是字符串")
+    elif not lim:
+        warn("C3·%s" % label, "known_limitations 为空 —— 建议如实记录本轮已知限制")
+
+
 # ---------------------------------------------------------------- index
 def validate_index(path: str, label: str) -> None:
     """校验 `index.json`（Product 用它发现快照；它本身也是 Product-facing artifact）。"""
@@ -601,6 +635,8 @@ def main() -> int:
             validate_index(path, label)
         elif c == "market_snapshot_observations":
             validate_observations(path, label)
+        elif c == "market_snapshot_context":
+            validate_context(path, label)
         else:
             warn("IO·%s" % label, "未知 contract=%r —— 跳过（仅支持 market_snapshot / market_regime_draft）" % c)
 

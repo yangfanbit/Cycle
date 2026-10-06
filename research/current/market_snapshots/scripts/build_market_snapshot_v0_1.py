@@ -91,6 +91,28 @@ def build(args) -> dict:
         # ★ 审核时间必须可显式给定：若固定为 `now`，已签发快照将**永远无法逐字节复现**。
         reviewed_at = args.reviewed_at or now
 
+    # ★ 研究声明（research_context）：**输入文件优先**。
+    #   过去它经命令行参数传入 → 未被任何输入文件捕获 → 不在复现范围内（缺口 2d）。
+    #   现在改为与 regime / observations 同级的**输入文件**，让「输入 → 产物」完全闭合。
+    if args.context:
+        ctx_doc = load_json(args.context)
+        research_context = {
+            k: v for k, v in ctx_doc.items() if k not in ("contract", "context_version")
+        }
+    else:
+        research_context = {
+            "research_question": args.research_question
+            or "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
+            "research_method": args.research_method
+            or "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
+            "source_policy": "Tier 1（官方发布）优先；Tier 2 为公司公告与产业数据；Tier 3 仅用于转述 T1/T2 事实。",
+            "coverage_note": args.coverage_note or "历史研究覆盖至 2025；当前年份无历史研究数据。",
+            "known_limitations": [
+                "market_regime 依赖离线填报，无自动化行情源。",
+                "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
+            ] + list(args.limitation or []),
+        }
+
     snapshot_id = args.snapshot_id
     if not snapshot_id:
         # 保留日期连字符，与契约示例 `MS-2026-09-30-01` 一致（也与文件名一致）
@@ -111,18 +133,7 @@ def build(args) -> dict:
             "beta_note": regime.get("beta_note", ""),
             "evidence_refs": inherited_evidence_refs,
         },
-        "research_context": {
-            "research_question": args.research_question
-            or "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
-            "research_method": args.research_method
-            or "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
-            "source_policy": "Tier 1（官方发布）优先；Tier 2 为公司公告与产业数据；Tier 3 仅用于转述 T1/T2 事实。",
-            "coverage_note": args.coverage_note or "历史研究覆盖至 2025；当前年份无历史研究数据。",
-            "known_limitations": [
-                "market_regime 依赖离线填报，无自动化行情源。",
-                "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
-            ] + list(args.limitation or []),
-        },
+        "research_context": research_context,
         "observations": observations,
         "research_objects": objects,
         "historical_candidates": candidates,
@@ -240,7 +251,9 @@ def main() -> int:
     ap.add_argument("--research-method", default=None)
     ap.add_argument("--coverage-note", default=None)
     ap.add_argument("--limitation", action="append", default=None,
-                    help="追加一条 research_context.known_limitations（可重复）")
+                    help="追加一条 research_context.known_limitations（可重复；仅在未给 --context 时生效）")
+    ap.add_argument("--context", default=None,
+                    help="★ 研究声明输入文件（`context/MS-<snapshot_id>.json`）。给了它就完全以文件为准。")
     ap.add_argument("--source-commit", default=None)
     ap.add_argument("--supersedes", default=None)
     ap.add_argument("--research-round", default=None)
@@ -269,10 +282,9 @@ def main() -> int:
         #   把它们算进内容一致性，会让任何已签发 / 已归档的快照**永远无法复现** ——
         #   那是检查语义错了，不是产物漂移了。
         PROV_LIFECYCLE = ("superseded_by", "reviewed_by", "reviewed_at")
-        # ★ 不在复现范围内的两处（均为**已知缺口**，见 docs/MONTHLY_RUNBOOK_REHEARSAL_FINDINGS_v0.1.md）：
-        #   1) 生命周期字段 —— 由「签发 / 归档」等后续事件写入，不由输入决定；
-        #   2) `research_context` —— 目前经**命令行参数**传入，**未被输入文件捕获**。
-        NOT_AN_INPUT = ("status", "research_context")
+        # ★ 唯一不在复现范围内的：**生命周期字段** —— 由「签发 / 归档」等后续事件写入，不由输入决定。
+        #   （`research_context` 自 2026-10-06 起已成为输入文件 `context/MS-<id>.json`，**已纳入复现范围**。）
+        NOT_AN_INPUT = ("status",)
 
         def strip_non_input(raw: bytes):
             d = json.loads(raw.decode("utf-8"))

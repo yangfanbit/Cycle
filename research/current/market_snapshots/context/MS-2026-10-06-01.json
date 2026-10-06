@@ -1,0 +1,13 @@
+{
+  "context_version": "0.1",
+  "contract": "market_snapshot_context",
+  "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
+  "known_limitations": [
+    "market_regime 依赖离线填报，无自动化行情源。",
+    "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
+    "研究对象状态沿用 2026-09-15 的研究结果（本轮未执行针对候选的新研究轮次）；market_regime 与 observations 为本轮新采集。"
+  ],
+  "research_method": "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
+  "research_question": "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
+  "source_policy": "Tier 1（官方发布）优先；Tier 2 为公司公告与产业数据；Tier 3 仅用于转述 T1/T2 事实。"
+}
