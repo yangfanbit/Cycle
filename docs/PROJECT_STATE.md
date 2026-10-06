@@ -10,7 +10,7 @@
 | **1.0 状态** | **RELEASED** · Tag `v1.0.0` · Release commit `064d39c` · **Gate R/P/T/Q/U/M/D/G 全部 PASS** · P0/P1 = 0/0 |
 | **Production** | **https://yangfanbit.github.io/Cycle/**（线上仍是 **1.0**，尚未包含 1.1 内容） |
 | **1.1 状态** | **IN PROGRESS** —— Phase 0 设计冻结 ✅ · Phase 1.1 架构审查 ✅ · Phase 1.2 运行时 ✅ |
-| **1.1 下一步** | **1.3 Product 只读页面** → 1.4 2026 接入（1.2d / 1.2e 已完成） |
+| **1.1 下一步** | **1.1 收口**（1.2d / 1.2e / 1.3 / 1.4 均已完成）→ 待定：是否发版 1.1 / 进入 2.0 规划 |
 
 - 更新日期：**2026-10-06**
 - branch：`main` · ahead / behind：`0 / 0` · working tree：clean
@@ -36,6 +36,14 @@
 | **第二份快照** | `MS-2026-10-06-01`（延续快照，regime 全 UNKNOWN，已标注未执行新研究轮次） | 见下 |
 | **1.2d 快照 diff** | `src/data/marketSnapshot/`（types + `diffSnapshots` 纯函数 + 15 条测试，含真实快照集成检查）；四层比较，**只说事实不说好坏** | 见下 |
 | **1.2e 月度流程** | `docs/MONTHLY_RESEARCH_RUNBOOK.md`（checklist + 可直接复制的命令 + 质量门 + 踩过的坑） | 见下 |
+| **1.3 Product 只读页面** | `src/components/CurrentSnapshot/` + `snapshotAdapter`（索引静态 / 快照按需 lazy）+ **CANONICAL 门禁**（`?snapshot=draft` 可预览未签发） | 见下 |
+| **1.4 观察接入** | `observations/`（契约化输入）+ 校验 **O1–O7**；**首份真实 `market_regime`** | 见下 |
+| **1.4 东财取数 + 证据等级** | `fetch_market_regime_v0_1.py`（EOD 序列，**非实时行情**）+ 规则 **§2.7 G1/G2/G3 降级机制** | 见下 |
+| **1.4 真实数据修正** | 真实序列推翻媒体证据：`broad` FLAT→**DOWN**、`liquidity` CONTRACTING→**STABLE**；走 **revision 02** 取代 01 | 见下 |
+| **1.4 Lifecycle Tracking** | `lifecycleTimeline.ts`（**派生式**、append-only、**PIT 安全**）+ 校验 **L1/L3** | 见下 |
+
+> ★ **1.1 已完成，Product 首次具备「当前 → 历史」的完整可见链路**：
+> 快照（真实 regime + 观察）→ diff（月度变化）→ 页面（只读 CANONICAL）。
 
 ### ★ 1.1 关键结论（后续轮次必须遵守）
 

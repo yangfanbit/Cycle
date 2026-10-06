@@ -70,6 +70,19 @@ python3 $S/scripts/project_cc_to_objects_v0_1.py --all --out /tmp/objects.json
 - ★ **只写事实**（谁在何时发布了什么），不写推断。
 - 无新观察 → 空数组 `[]`（合法，不要为凑数而写）。
 
+**★ 关联到研究对象（Lifecycle Tracking 的数据来源）**：
+
+- 若该观察属于某个**当前研究对象**，**必须**填 `linked_object_id`（= `research_objects[].object_id`）。
+- 校验 **L1** 会检查它必须存在于同一快照的 `research_objects` 中（悬空关联即 FAIL）。
+- 市场级观察（无归属对象）留空即可。
+
+> **为什么重要**：Lifecycle Tracking（`docs/THREEC_1_1_LIFECYCLE_TRACKING_DESIGN.md`）
+> **不建独立日志**，而是**从快照序列派生**「某对象的观察时间线」。
+> **因此：不填 `linked_object_id`，该对象的生命周期就永远是空的。**
+>
+> 校验 **L3** 会保证 append-only：同一 `observation_id` 跨快照出现时**内容必须一致** ——
+> **一旦写下，不得改写**（改了就触发 FAIL，时间线才不会变成「随时可重写的叙述」）。
+
 ### ☐ 步骤 5 · 投影候选 + 装配快照
 
 ```bash
