@@ -14,7 +14,14 @@
       "market_snapshot_version": "0.3",
       "snapshot_date": "2026-10-06",
       "snapshot_id": "MS-2026-10-06-01",
-      "status": "DRAFT"
+      "status": "ARCHIVED"
+    },
+    {
+      "file": "MS-2026-10-06-02.json",
+      "market_snapshot_version": "0.3",
+      "snapshot_date": "2026-10-06",
+      "snapshot_id": "MS-2026-10-06-02",
+      "status": "CANONICAL"
     }
   ]
 }

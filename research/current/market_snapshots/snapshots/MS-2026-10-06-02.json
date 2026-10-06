@@ -4751,9 +4751,9 @@
     }
   ],
   "market_regime": {
-    "beta_note": "2026-09 A 股呈「缩量调整 + 结构剧烈分化」：指数层面跌幅温和（上证 -3.62%），但成长/科创跌幅显著（深证成指、创业板指月跌超 8%，科创50 跌超 9%），低 β 银行股逆势创历史新高。★ β 在本期**不可分离程度高**：不同标的（大盘 vs 成长）方向一致但幅度差异极大，跨标的比较必须以区间口径为准，不得用单一指数代表全市场。单日数据未用于定档。",
+    "beta_note": "2026-09 A 股「指数温和下跌 + 结构剧烈分化」：沪深300 近 20 交易日 **-5.50%**（已破 -5% 档），但上证综指同期仅 -3.6% 左右，而创业板/科创跌幅更大。★ β 不可分离程度**高**：不同宽基方向一致但幅度差异极大，跨标的比较必须以同一区间口径为准，**不得用单一指数代表全市场**。",
     "breadth_state": "NORMAL",
-    "broad_index_state": "FLAT",
+    "broad_index_state": "DOWN",
     "evidence_refs": [
       "MR-EV-01",
       "MR-EV-02",
@@ -4761,9 +4761,10 @@
       "MR-EV-04",
       "MR-EV-05",
       "MR-EV-06",
-      "MR-EV-07"
+      "MR-EV-07",
+      "MR-EV-08"
     ],
-    "liquidity_state": "CONTRACTING",
+    "liquidity_state": "STABLE",
     "risk_appetite_state": "NEUTRAL"
   },
   "market_snapshot_version": "0.3",
@@ -4828,12 +4829,12 @@
     "ai_assisted": true,
     "generated_by": "ai-offline",
     "research_round": "ThreeC 1.1 Phase 1.2",
-    "reviewed_at": "2026-10-06T13:27:35+00:00",
+    "reviewed_at": "2026-10-06T13:30:18+00:00",
     "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
-    "superseded_by": "MS-2026-10-06-02",
-    "supersedes": null
+    "superseded_by": null,
+    "supersedes": "MS-2026-10-06-01"
   },
   "research_context": {
     "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
@@ -5100,7 +5101,7 @@
     }
   ],
   "snapshot_date": "2026-10-06",
-  "snapshot_id": "MS-2026-10-06-01",
-  "status": "ARCHIVED",
-  "timestamp": "2026-10-06T21:25:00+08:00"
+  "snapshot_id": "MS-2026-10-06-02",
+  "status": "CANONICAL",
+  "timestamp": "2026-10-06T21:45:00+08:00"
 }

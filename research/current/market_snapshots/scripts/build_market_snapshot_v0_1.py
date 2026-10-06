@@ -141,6 +141,35 @@ def build(args) -> dict:
     }
 
 
+def archive_superseded(snapshots_dir: str, old_id: str, new_id: str) -> bool:
+    """把被取代的旧快照标记为 `ARCHIVED` + `superseded_by`。
+
+    ★ 契约规定 `CANONICAL` **不可变**：内容一旦要改，必须产生**新 revision**，
+      旧的那份**归档**而不是就地编辑。本函数实现这一步。
+    """
+    if not os.path.isdir(snapshots_dir):
+        return False
+    for fn in sorted(os.listdir(snapshots_dir)):
+        if not fn.endswith(".json"):
+            continue
+        p = os.path.join(snapshots_dir, fn)
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                d = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(d, dict) or d.get("snapshot_id") != old_id:
+            continue
+        d.setdefault("provenance", {})
+        d["provenance"]["superseded_by"] = new_id
+        if d.get("status") != "ARCHIVED":
+            d["status"] = "ARCHIVED"
+        with open(p, "wb") as f:
+            f.write(dump_json(d))
+        return True
+    return False
+
+
 def rebuild_index(snapshots_dir: str) -> str:
     """扫描 snapshots/ 重建 `index.json`。
 
@@ -265,6 +294,13 @@ def main() -> int:
     if rc != 0:
         print("FAIL  DRAFT 已落盘，但校验存在 FAIL —— 请修正后再晋升 CANONICAL")
         return 1
+
+    if args.supersedes:
+        if archive_superseded(out_dir, args.supersedes, doc["snapshot_id"]):
+            print("已归档被取代快照: %s → ARCHIVED（superseded_by=%s）"
+                  % (args.supersedes, doc["snapshot_id"]))
+        else:
+            print("WARN  未找到被取代的快照: %s" % args.supersedes)
 
     ipath = rebuild_index(out_dir)
     print("已重建索引: %s" % ipath)
