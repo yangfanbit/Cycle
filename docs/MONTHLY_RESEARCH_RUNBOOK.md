@@ -174,13 +174,34 @@ git commit -m "chore(research-1.1): monthly market snapshot <YYYY-MM>"
 
 ---
 
-## 6. 当前缺口（诚实记录）
+## 6. ★ 修订（revision）流程
+
+> **只要改动了 `market_regime` / `observations` / 研究对象，就必须走新 revision** ——
+> 契约规定 `CANONICAL` **不可变**，不得就地编辑。
+
+```bash
+# 1) 新建本版**独立的**观察输入（★ 不要就地追加到上一版，否则上一版失去可复现性）
+#    命名待定，见 docs/MONTHLY_RUNBOOK_REHEARSAL_FINDINGS_v0.1.md 缺口 2
+# 2) 装配新 revision，并归档被取代的版本
+python3 $S/scripts/build_market_snapshot_v0_1.py ... \
+    --snapshot-id MS-<YYYY-MM-DD>-NN \
+    --supersedes MS-<上一版 id> \
+    --canonical --reviewer "<审核人>"
+```
+
+`--supersedes` 会把上一版标为 **`ARCHIVED`** 并写 `superseded_by`（**保留留痕，不删除**）。
+
+## 7. 当前缺口（诚实记录）
 
 | 缺口 | 影响 |
 |---|---|
-| `market_regime` **仍无数据源** | 四维只能写 `UNKNOWN`；需 B 路径（AI 调研 + 挂来源）或 C 路径（接低频公开统计） |
-| 研究对象状态**仍依赖人工更新 `current_candidates.json`** | 该步骤尚未脚本化；候选新增/阶段变化仍需研究侧动手 |
+| `market_regime` 的 **breadth / risk 仍依赖媒体事实** | 东财 EOD 不含全市场涨跌家数序列；需补一手来源或另一数据源 |
+| 研究对象状态**仍依赖人工更新 `current_candidates.json`** | 该步骤尚未脚本化 |
+| **观察输入文件的版本约定未定** | 见 `docs/MONTHLY_RUNBOOK_REHEARSAL_FINDINGS_v0.1.md` 缺口 2（建议按 `snapshot_id` 命名） |
 | 尚无「月度更新提醒」 | ★ **按用户要求不建自动化定时任务**；频次由用户主导 |
+
+> ★ **本手册已于 2026-10-06 实战演练过一次**（含补对象级观察、走 revision、签发）。
+> 演练结论与 3 处缺口见 `docs/MONTHLY_RUNBOOK_REHEARSAL_FINDINGS_v0.1.md`。
 
 ---
 
