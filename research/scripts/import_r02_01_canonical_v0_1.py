@@ -41,6 +41,10 @@ PROV = (
     "R02-PHARMA-001 = ACCEPT_WITH_CHANGES（来源改级 2 条、日期锚点证据基础调整，日期数值未改）"
 )
 
+# ★ intake → canonical 映射（供 build_lifecycle_from_intake_v0_2.py 解析；
+#   与 R01 importers 的 `intake="R01-XXX-NNN"` 等价，只是用显式表表达）
+INTAKE_MAP = [("C-2023-PHARMA-GLP1", "R02-PHARMA-001")]
+
 CAMPAIGN = dict(
     campaign_id="C-2023-PHARMA-GLP1",
     annual_review_id="AR-MED-2023",

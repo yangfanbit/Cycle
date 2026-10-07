@@ -1311,11 +1311,15 @@ RESEARCH_CANDIDATES = [
 #       本层**优先于**下面的手写字典（后者仅用于**无 intake 来源**的旧对象）。
 # ★ 只恢复 intake 中已存在的真实数据：不虚构阶段、不新增 enum、不改 Contract。
 _LIFECYCLE_FROM_INTAKE = {}
-_LFI_PATH = os.path.join(ROOT, "research", "reports", "lifecycle_from_intake_v0_1.json")
+_DRIVERS_FROM_INTAKE = {}
+_LFI_PATH = os.path.join(ROOT, "research", "reports", "lifecycle_from_intake_v0_2.json")
 # 注：本脚本的 ROOT = <repo>/research（见顶部 `ROOT = db.ROOT`），故 reports 位于 <repo>/research/research/reports
 if os.path.exists(_LFI_PATH):
     with open(_LFI_PATH, "r", encoding="utf-8") as _f:   # 本脚本未 import io
-        _LIFECYCLE_FROM_INTAKE = {k: v["lifecycle"] for k, v in json.load(_f)["by_cycle"].items()}
+        _LFI_DOC = json.load(_f)
+        _LIFECYCLE_FROM_INTAKE = {k: v["lifecycle"] for k, v in _LFI_DOC["by_cycle"].items()}
+        _DRIVERS_FROM_INTAKE = {k: {kk: vv for kk, vv in v.items() if kk != "provenance"}
+                                for k, v in (_LFI_DOC.get("drivers_by_cycle") or {}).items()}
 
 
 def lifecycle_of(cid, fallback_dict):
@@ -3227,7 +3231,7 @@ def build_campaign(c):
         "research_notes": c.get("research_notes"),
         "conflict": conflict,
         "lifecycle": lifecycle_of(cid, CAMPAIGN_LIFECYCLE),   # ★ intake 优先
-        "drivers": CAMPAIGN_DRIVERS.get(cid, {"start": [], "accelerator": [], "turning": [], "ending": []}),
+        "drivers": (CAMPAIGN_DRIVERS.get(cid) or _DRIVERS_FROM_INTAKE.get(cid) or {"start": [], "accelerator": [], "turning": [], "ending": []}),
     }
     return entry
 

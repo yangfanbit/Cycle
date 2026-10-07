@@ -1,0 +1,2710 @@
+{
+ "artifact": "lifecycle_from_intake",
+ "artifact_version": "0.2",
+ "generated_by": "research/scripts/build_lifecycle_from_intake_v0_2.py",
+ "position": "Research-only —— 从 R01 + R02 intake 包派生 export 用的 lifecycle（**单一真源**）。**不修改** schema.sql / Export Contract / CMTR / taxonomy / Campaign Decision。",
+ "contract_stages": [
+  "EARLY_SIGNAL",
+  "THEME_FORMING",
+  "BROAD_CONFIRMATION",
+  "MAIN_RISE",
+  "PEAK",
+  "RETRACEMENT",
+  "DECLINING",
+  "SECONDARY",
+  "FIRST_DECLINE",
+  "MAIN_END",
+  "ENDED"
+ ],
+ "rules": {
+  "stage": "仅接受 Contract 的 11 个 stage；`UNKNOWN` **丢弃该段**（不虚构、不新增 enum）",
+  "precision": "机械派生：start == end 且均非空 → EXACT_DATE；否则 PHASE_WINDOW",
+  "dates": "start / end **原样保留（可为 null）** —— 不制造精确日期",
+  "priority": "本产物**优先于** batch_auto_research.py 的手写静态字典（后者仅用于无 intake 的旧对象）"
+ },
+ "coverage": {
+  "objects": 80,
+  "with_intake": 63,
+  "segments_kept": 142,
+  "segments_dropped_unknown": 19,
+  "segments_unknown_stage": 0,
+  "rc_total": 27,
+  "rc_nonempty": 19,
+  "rc_only_unknown": [
+   "RC-2019-RE-EASING",
+   "RC-2020-FIN-BROKER-VOLUME",
+   "RC-2016-RE-SHANTY",
+   "RC-2015-FIN-LEVERAGE"
+  ],
+  "camp_total": 53,
+  "camp_nonempty": 40
+ },
+ "dropped_segments": [
+  {
+   "cycle_id": "C-2023-CONS-VALUE-RETAIL",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "尚无足够证据判定本段是否已进入 DECLINING 或 ENDED",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2023-FIN-SOE-VALUATION",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "峰值与结束阶段缺数据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2016-HIEQ-CONSTR",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2022-01-01",
+   "end": null,
+   "basis": "2022 年及以后工程机械的完整走势未在本任务内系统采集（Priority A 虽覆盖至 2025，但本包聚焦于机制明确的上行-转折结构）。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2023-HIEQ-ROBOT-PLUS",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2023-02-04",
+   "end": null,
+   "basis": "此后行情与「人形机器人」叙事交织，本包未取得切分所需的连续行情证据，不作阶段主张。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2023-HIEQ-HUMANOID",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2023-05-01",
+   "end": "2023-08-28",
+   "basis": "产业事件已发生（2023-05 具身智能表述、Optimus Gen1 视频、2023 年 6 月地方政策），但本包无同期市场证据证明该窗口已形成可观察的注意力中心。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2024-RES-GOLD-CB",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-12-27",
+   "end": null,
+   "basis": "窗口结束时结构仍在延续，退潮段未知",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "C-2024-SEMI-MEMORY",
+   "kind": "campaign",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-12-01",
+   "end": null,
+   "basis": "2025-12 指数回落约 12.7%，但涨价预期仍被机构维持，结束与否无法判定。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-CONS-PET-FOOD",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "结束证据不足",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2016-RES-CHEM-ENV",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2017-01-01",
+   "end": null,
+   "basis": "缺少持续期证据，阶段无法标注",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-EQUIP-UPDATE",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2024-07-27",
+   "end": null,
+   "basis": "此后阶段归属无法确定（无行情序列、无设备投资落地数据）。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2024-09-01",
+   "end": "2024-12-31",
+   "basis": "产业事件已发生（2024-11-15 华为具身智能创新中心运营与 16 家企业签约），但本包无同期市场证据，无法确认注意力中心是否已形成。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-HIEQ-HUMANOID-MASS",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-09-06",
+   "end": null,
+   "basis": "超出本包证据采集边界。",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2019-RE-EASING",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2018-12-18",
+   "end": null,
+   "basis": "政策起点可考，行情阶段不可识别",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2020-FIN-BROKER-VOLUME",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "缺连续行情数据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2016-RE-SHANTY",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "仅确认政策与基本面事实，市场阶段不可识别",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2015-FIN-LEVERAGE",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "无可靠行情数据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2025-MIL-PARADE-80",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-09-03",
+   "end": null,
+   "basis": "阅兵举办日（2025-09-03）之后的行情走向本包无证据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2017-MIL-MIXED-REFORM",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": null,
+   "end": null,
+   "basis": "2017年2月之后的走势本包无可靠证据",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  },
+  {
+   "cycle_id": "RC-2024-MIL-COMMERCIAL-SPACE",
+   "kind": "research_candidate",
+   "intake_stage": "UNKNOWN",
+   "start": "2025-12-31",
+   "end": null,
+   "basis": "2025年末之后走向超出本轮研究范围",
+   "reason": "UNKNOWN 不是 Contract 允许的 lifecycle stage（不得虚构、不得新增 enum）"
+  }
+ ],
+ "by_cycle": {
+  "C-2016-CONS-BAIJIU-UPGRADE": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-06-01",
+     "end": "2017-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2018-01-01",
+     "end": "2018-02-28",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2018-09-01",
+     "end": "2018-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-001"
+  },
+  "C-2018-CONS-HOG-AFRICAN": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-01-01",
+     "end": "2019-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2019-10-01",
+     "end": "2020-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-01-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-005"
+  },
+  "C-2019-CONS-BAIJIU-CORE": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-03-01",
+     "end": "2020-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-01-01",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-02-18",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-002"
+  },
+  "C-2019-CONS-AESTHETICS": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "009",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-01-01",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-02-18",
+     "end": "2021-07-05",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-26",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-009"
+  },
+  "C-2020-CONS-DUTYFREE": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-01",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-01-01",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-01",
+     "end": "2023-05-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-003"
+  },
+  "C-2020-CONS-WHITE-GOODS": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-01",
+     "end": "2021-02-28",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-01-06",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-008"
+  },
+  "C-2020-CONS-BEAUTY-CN": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-29",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-06-01",
+     "end": "2021-10-29",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-01",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-010"
+  },
+  "C-2021-CONS-HOG-REVERSAL": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2022-04-01",
+     "end": "2022-07-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2022-07-01",
+     "end": "2022-10-20",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-09-08",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-006"
+  },
+  "C-2022-CONS-SERVICE-REBOUND": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2022-12-07",
+     "end": "2023-01-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2023-01-01",
+     "end": "2023-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2023-05-01",
+     "end": "2023-06-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-004"
+  },
+  "C-2023-CONS-VALUE-RETAIL": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "012",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-01-01",
+     "end": "2024-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-01-01",
+     "end": "2025-08-29",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-012"
+  },
+  "C-2024-CONS-TRADE-IN": {
+   "kind": "campaign",
+   "intake_package": "R01-04",
+   "intake_candidate": "011",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-08-24",
+     "end": "2024-10-08",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2024-10-08",
+     "end": "2024-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2025-07-01",
+     "end": "2025-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-011"
+  },
+  "C-2019-MIL-GROUP-RESTRUCTURE": {
+   "kind": "campaign",
+   "intake_package": "R01-06",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-07-02",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2019-10-25",
+     "end": "2019-10-28",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "ENDED",
+     "start": "2019-11-26",
+     "end": "2019-11-26",
+     "precision": "EXACT_DATE"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-002"
+  },
+  "C-2020-MIL-EQUIP-ORDER": {
+   "kind": "campaign",
+   "intake_package": "R01-06",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-25",
+     "end": "2020-08-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2021-01-08",
+     "end": "2021-05-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-05-11",
+     "end": "2021-08-24",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2021-08-25",
+     "end": "2021-10-13",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2021-10-14",
+     "end": "2021-11-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-11-30",
+     "end": "2021-12-01",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-12-02",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-001"
+  },
+  "C-2020-RE-DEBT-RISK": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "DECLINING",
+     "start": "2020-08-20",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "ENDED",
+     "start": "2022-01-01",
+     "end": "2022-07-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-004"
+  },
+  "C-2020-FIN-BANK-CREDIT": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-10-30",
+     "end": "2021-03-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-008"
+  },
+  "C-2022-RE-POLICY-THREE": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2022-11-08",
+     "end": "2022-11-29",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2022-11-29",
+     "end": "2022-12-09",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2023-01-01",
+     "end": "2023-02-28",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-001"
+  },
+  "C-2023-FIN-SOE-VALUATION": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-04-01",
+     "end": "2023-05-11",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-006"
+  },
+  "C-2024-FIN-BROKER-POLICY": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-09-24",
+     "end": "2024-10-08",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2024-10-08",
+     "end": "2024-10-08",
+     "precision": "EXACT_DATE"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-005"
+  },
+  "C-2024-FIN-BANK-DIVIDEND": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-01-01",
+     "end": "2024-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2025-01-01",
+     "end": "2025-09-19",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-007"
+  },
+  "C-2025-FIN-INSURANCE": {
+   "kind": "campaign",
+   "intake_package": "R01-05",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-01-01",
+     "end": "2025-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-010"
+  },
+  "C-2016-HIEQ-CONSTR": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-08-01",
+     "end": "2021-03-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-03-01",
+     "end": "2021-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2021-05-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-001"
+  },
+  "C-2018-HIEQ-ROBOT-DOWN": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": null,
+     "end": "2018-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2018-09-30",
+     "end": "2019-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2019-10-01",
+     "end": "2019-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-002"
+  },
+  "C-2020-HIEQ-AUTOMATION": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-04-01",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-07-01",
+     "end": "2021-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-10-01",
+     "end": "2022-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-003"
+  },
+  "C-2023-HIEQ-ROBOT-PLUS": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-01-19",
+     "end": "2023-02-03",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-004"
+  },
+  "C-2023-HIEQ-HUMANOID": {
+   "kind": "campaign",
+   "intake_package": "R01-01",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-08-29",
+     "end": "2023-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2023-11-01",
+     "end": "2023-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-005"
+  },
+  "C-2023-PHARMA-GLP1": {
+   "kind": "campaign",
+   "intake_package": "R02-01",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-09-08",
+     "end": "2023-10-16",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2023-10-16",
+     "end": "2023-10-16",
+     "precision": "EXACT_DATE"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2023-10-17",
+     "end": "2023-10-19",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R02-01/R02-PHARMA-001"
+  },
+  "C-2019-RES-DYE-SHOCK": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-03-21",
+     "end": "2019-04-03",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2019-04-04",
+     "end": "2019-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2019-05-01",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-005"
+  },
+  "C-2020-RES-NONFERROUS": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-04-01",
+     "end": "2021-05-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-05-10",
+     "end": "2021-09-13",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-09-14",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-001"
+  },
+  "C-2020-RES-LITHIUM": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-10-30",
+     "end": "2021-09-13",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-09-13",
+     "end": "2022-11-11",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-11-12",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-002"
+  },
+  "C-2020-RES-RAREEARTH": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-05-01",
+     "end": "2021-10-01",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-10-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-01",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-003"
+  },
+  "C-2021-RES-CHEM-DUALCTRL": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-08-12",
+     "end": "2021-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2021-10-01",
+     "end": "2021-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-11-01",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-004"
+  },
+  "C-2024-RES-GOLD-CB": {
+   "kind": "campaign",
+   "intake_package": "R01-03",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-02-01",
+     "end": "2025-12-26",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-007"
+  },
+  "C-2016-PANEL-CYCLE": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "011",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-02-01",
+     "end": "2017-01-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2017-07-01",
+     "end": "2019-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-011"
+  },
+  "C-2019-SEMI-LOCALIZATION": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-05-16",
+     "end": "2020-07-14",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2020-07-15",
+     "end": "2020-09-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-001"
+  },
+  "C-2019-CONSUMER-TWS": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-01-04",
+     "end": "2020-07-14",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2020-07-15",
+     "end": "2020-11-09",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2020-11-10",
+     "end": "2021-03-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-005"
+  },
+  "C-2020-SEMI-EQUIPMENT": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-04-01",
+     "end": "2021-07-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-08-02",
+     "end": "2022-10-12",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-002"
+  },
+  "C-2020-PANEL-CYCLE": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-06-01",
+     "end": "2021-07-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-08-01",
+     "end": "2022-09-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-003"
+  },
+  "C-2022-SEMI-DOWNTURN": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "009",
+   "lifecycle": [
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-04",
+     "end": "2022-10-12",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "SECONDARY",
+     "start": "2022-06-01",
+     "end": "2022-08-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-009"
+  },
+  "C-2023-AI-COMPUTE-SEMI": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-01-30",
+     "end": "2023-04-10",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2023-06-21",
+     "end": "2023-08-25",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-006"
+  },
+  "C-2024-SEMI-MEMORY": {
+   "kind": "campaign",
+   "intake_package": "R01-02",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-07-01",
+     "end": "2025-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-10-01",
+     "end": "2025-11-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-007"
+  },
+  "RC-2020-CONS-SMALL-APPLIANCE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-04",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-02-01",
+     "end": "2021-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2020-07-23",
+     "end": "2021-07-15",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2021-07-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-007"
+  },
+  "RC-2024-CONS-PET-FOOD": {
+   "kind": "research_candidate",
+   "intake_package": "R01-04",
+   "intake_candidate": "013",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-10-01",
+     "end": "2025-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-05-30",
+     "end": "2025-06-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-013"
+  },
+  "RC-2020-RES-GOLD-RATES": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-05-01",
+     "end": "2020-08-07",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2020-08-07",
+     "end": "2020-08-07",
+     "precision": "EXACT_DATE"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2020-08-08",
+     "end": "2020-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-006"
+  },
+  "RC-2022-RES-FERTILIZER": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-01-01",
+     "end": "2022-03-01",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2022-03-01",
+     "end": "2022-04-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-05-01",
+     "end": "2022-11-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-008"
+  },
+  "RC-2025-RES-COPPER": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "009",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-03-01",
+     "end": "2024-05-20",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2024-05-21",
+     "end": "2024-09-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-09-01",
+     "end": "2025-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-009"
+  },
+  "RC-2017-RES-ALUMINUM": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2017-04-12",
+     "end": "2017-08-09",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2017-08-09",
+     "end": "2017-09-20",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2017-09-21",
+     "end": "2017-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-010"
+  },
+  "RC-2016-RES-CHEM-ENV": {
+   "kind": "research_candidate",
+   "intake_package": "R01-03",
+   "intake_candidate": "011",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2016-01-01",
+     "end": "2016-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-011"
+  },
+  "RC-2022-SEMI-CHIPSHORTAGE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2020-12-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2022-01-01",
+     "end": "2022-12-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-004"
+  },
+  "RC-2024-SEMI-FUND3": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "008",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-09-24",
+     "end": "2024-11-29",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2024-12-01",
+     "end": "2025-04-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-008"
+  },
+  "RC-2015-SEMI-LEVERAGE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "010",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2015-01-05",
+     "end": "2015-06-03",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2015-06-15",
+     "end": "2015-12-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-010"
+  },
+  "RC-2017-GPU-MINING": {
+   "kind": "research_candidate",
+   "intake_package": "R01-02",
+   "intake_candidate": "012",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2017-06-01",
+     "end": "2017-11-14",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2018-01-01",
+     "end": "2018-06-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-012"
+  },
+  "RC-2024-HIEQ-EQUIP-UPDATE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-01",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-03-07",
+     "end": "2024-07-23",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2024-07-24",
+     "end": "2024-07-26",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-006"
+  },
+  "RC-2024-HIEQ-HUMANOID-MASS": {
+   "kind": "research_candidate",
+   "intake_package": "R01-01",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-01-01",
+     "end": "2025-06-30",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2025-07-01",
+     "end": "2025-09-05",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-007"
+  },
+  "RC-2024-RE-POLICY-517": {
+   "kind": "research_candidate",
+   "intake_package": "R01-05",
+   "intake_candidate": "002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-05-17",
+     "end": "2024-05-17",
+     "precision": "EXACT_DATE"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2024-05-20",
+     "end": "2024-09-13",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-002"
+  },
+  "RC-2019-MIL-PARADE-70": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "003",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2019-08-07",
+     "end": "2019-09-03",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "PEAK",
+     "start": "2019-09-03",
+     "end": "2019-09-03",
+     "precision": "EXACT_DATE"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2019-09-04",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-003"
+  },
+  "RC-2025-MIL-PARADE-80": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "004",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2025-06-24",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-004"
+  },
+  "RC-2017-MIL-MIXED-REFORM": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "005",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2017-01-09",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-005"
+  },
+  "RC-2015-MIL-REFORM-BULL": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "006",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": null,
+     "end": "2015-06-04",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "DECLINING",
+     "start": "2015-06-05",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-006"
+  },
+  "RC-2024-MIL-COMMERCIAL-SPACE": {
+   "kind": "research_candidate",
+   "intake_package": "R01-06",
+   "intake_candidate": "007",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2024-08-06",
+     "end": null,
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R01-06/R01-MIL-007"
+  }
+ },
+ "drivers_by_cycle": {
+  "C-2016-CONS-BAIJIU-UPGRADE": {
+   "start": [
+    "高端白酒价格上行：飞天茅台一批价与零售价 2016 年持续走高（S001）",
+    "行业量价齐升：2016 年全国规上白酒产量 1358.36 万千升为历史峰值（S002）"
+   ],
+   "accelerator": [
+    "外资定价权提升：2017-06-21 MSCI 宣布自 2018 年 6 月起纳入 A 股（S003）",
+    "龙头集中与业绩兑现：贵州茅台 2017 年营收 582.18 亿元、归母净利 270.79 亿元（S009）"
+   ],
+   "turning": [
+    "2018-10-29 贵州茅台首个一字跌停，白酒股集体下跌，市场同步注意到业绩增速不及预期（S004、S005）"
+   ],
+   "ending": [
+    "板块估值与景气同步回落（S065 计算值：2018 年全年约 -26.9%）",
+    "2018 年社零增速降至 9.0%，宏观消费环境转弱（S006，仅作背景）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-001"
+  },
+  "C-2018-CONS-HOG-AFRICAN": {
+   "start": [
+    "外生供给冲击：2018-08-03 我国首例非洲猪瘟疫情确认（S026）"
+   ],
+   "accelerator": [
+    "产能去化：生猪与能繁母猪存栏大幅下降（官方数据经媒体转述，E036，置信度低）",
+    "价格与宏观传导：2019 年猪肉价格 +42.5%，拉动 CPI 约 1.81 个百分点（S031）"
+   ],
+   "turning": [
+    "产能见底回升：2019 年 10 月能繁母猪存栏环比 +0.6%，为 2018 年 4 月以来首次回升（E036，弱证据）"
+   ],
+   "ending": [
+    "2021 年猪价大幅回落，10 月集贸市场活猪 13.40 元/公斤、同比 -57.7%（S030）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-005"
+  },
+  "C-2019-CONS-BAIJIU-CORE": {
+   "start": [
+    "外资增量资金制度性启动：2019-03-01 MSCI 提高 A 股纳入因子至 20%（S007）",
+    "2019 年北向资金净流入 3517.43 亿元创历史新高（S008）"
+   ],
+   "accelerator": [
+    "2020 年疫情下\"确定性溢价\"叙事强化（本包未为该项单独建立一手证据，属解释性判断）",
+    "龙头业绩持续兑现：贵州茅台 2021 年营收 1094.64 亿元、归母净利 524.60 亿元（S010）"
+   ],
+   "turning": [
+    "2021-02-18 后核心资产集体下跌，抱团结构瓦解（S011）"
+   ],
+   "ending": [
+    "2021 年 7 月指数单月约 -21%，全年约 -3.4%（S065 计算值）",
+    "宏观消费 2021 年社零 +12.5%（S012），基本面并未同步恶化——说明结束主要由估值与资金结构驱动，而非需求端反转"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-002"
+  },
+  "C-2019-CONS-AESTHETICS": {
+   "start": [
+    "标的可得性：华熙生物 2019-11-06 科创板上市（S051）"
+   ],
+   "accelerator": [
+    "渗透率提升与国产品牌替代（E067，二手转述，置信度低）",
+    "合规化清退非法供给，份额向合规龙头集中（S047，双重性质）"
+   ],
+   "turning": [
+    "2021-05-28 八部门印发打击非法医美专项整治工作方案，2021-06-11 公开，整治期 2021 年 6–12 月（S047）"
+   ],
+   "ending": [
+    "2021-11-01 市场监管总局发布《医疗美容广告执法指南》（S048）",
+    "2022 年市场监管总局等 11 部门开展医美行业突出问题专项治理（本包未建立一手证据链接，仅叙述性提及）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-009"
+  },
+  "C-2020-CONS-DUTYFREE": {
+   "start": [
+    "公司战略重塑：聚焦免税、变更证券简称（S069）",
+    "政策方向确立：2020-06-01 海南自贸港总体方案提出放宽离岛免税额度至 10 万元（S068）"
+   ],
+   "accelerator": [
+    "2020-06-29 财政部、海关总署、税务总局 33 号公告：额度 3 万→10 万元、不限次数、品类增至 45 类、取消单件 8000 元限额，2020-07-01 施行（S013、S014）",
+    "需求验证：2020-07-01 至 10-31 离岛免税销售 120.1 亿元、同比 +214.1%（S015）；2020 年全年 274.8 亿元、+103.7%（S016）"
+   ],
+   "turning": [
+    "2021 年后疫情反复导致客流波动，离岛免税经营主体增加、竞争加剧（本项为解释性判断，本包未取得一手竞争数据）"
+   ],
+   "ending": [
+    "2022 年海南离岛免税店销售额约 487.1 亿元、同比约 -19%（S070，媒体转述，置信度低）",
+    "2023 年 5 月股价回落至 123.10 元（S066）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-003"
+  },
+  "C-2020-CONS-WHITE-GOODS": {
+   "start": [
+    "出口替代：2020 年家电出口 4582 亿元、+24.2%，出口自 6 月起强劲反弹（S036、S037）"
+   ],
+   "accelerator": [
+    "原材料涨价推动产品均价上升（S037）",
+    "2021 年行业主营收入 1.73 万亿元、+15.5%（S038）"
+   ],
+   "turning": [
+    "2021 年 7 月商品房销售面积与销售额单月同比首次下降（S075，媒体转述）"
+   ],
+   "ending": [
+    "2021 年 12 月家电零售额同比 -10.4%；利润增速 +4.5% 远低于收入增速 +15.5%（S038）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-008"
+  },
+  "C-2020-CONS-BEAUTY-CN": {
+   "start": [
+    "制度框架：《化妆品监督管理条例》2020-06-29 公布、2021-01-01 施行（S049）"
+   ],
+   "accelerator": [
+    "功效宣称规范化：《化妆品功效宣称评价规范》2021-04-08 发布、2021-05-01 施行（S050）",
+    "标的扩容与需求验证：贝泰妮 2021-03-25 创业板上市（S052）；2021 年限额以上化妆品类零售额 4026 亿元、+14.0%（S012）",
+    "线上渠道红利：抖音美妆头部品牌 GMV 由 2021 年 10 亿级升至 2022 年 20 亿级（E073，二手转述）"
+   ],
+   "turning": [
+    "2022 年化妆品类零售额转为 -4.5%，行业需求自高增长切至负增长（S077）"
+   ],
+   "ending": [
+    "行业需求负增长与板块估值回落（S077）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-010"
+  },
+  "C-2021-CONS-HOG-REVERSAL": {
+   "start": [
+    "产能去化信号：2021-08-17 公布 7 月能繁母猪存栏环比 -0.5%，结束 21 个月增长（S033）"
+   ],
+   "accelerator": [
+    "制度框架确立：2021-09-19《生猪产能调控实施方案（暂行）》明确 4100 万头正常保有量（S027）",
+    "逆周期收储：2022-02-28 启动中央冻猪肉储备收储，首批 4 万吨（S034）",
+    "价格验证：2022-07-04 至 07-10 生猪平均收购价 22.26 元/公斤、同比 +30.6%（S029）"
+   ],
+   "turning": [
+    "2022-09-08 起投放中央猪肉储备，调控方向反转（S035）"
+   ],
+   "ending": [
+    "2022 年末猪价快速回落（S074，非官方口径，置信度低）",
+    "2023 年养殖行业普遍亏损（媒体转述，本包未建立一手证据）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-006"
+  },
+  "C-2022-CONS-SERVICE-REBOUND": {
+   "start": [
+    "2022-12-07 疫情防控措施优化（新十条）（S021）",
+    "低基数背景：2020 年国内旅游 28.79 亿人次、-52.1%，餐饮收入 -16.6%（S018、S071，context）"
+   ],
+   "accelerator": [
+    "2023 年春节旅游出游 3.08 亿人次，恢复至 2019 年同期 88.6%（S019）",
+    "2023 年五一旅游出游 2.74 亿人次，可比口径恢复至 2019 年同期 119.09%（S020）"
+   ],
+   "turning": [
+    "2023 年 5 月社零 +12.7% 低于市场预期（S024）；6 月降至 +3.1%（S023）——人次恢复但消费力未同步修复"
+   ],
+   "ending": [
+    "2023 年 4–5 月服务消费标的普遍回落（S066）",
+    "叙事失效：\"强复苏\"预期被数据证伪，资金转向其他方向"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-004"
+  },
+  "C-2023-CONS-VALUE-RETAIL": {
+   "start": [
+    "渠道业态扩张：量贩零食门店快速铺开（E074/E075，第三方测算与公司数据，置信度不一）"
+   ],
+   "accelerator": [
+    "渠道商规模化：万辰集团并表门店由 2023 年末 4726 家增至 2024 年末 14196 家（S059）；2024 年营收 323.29 亿元、+247.86%（S082）",
+    "上游品牌业绩兑现：盐津铺子 2024 年营收 53.04 亿元、+28.89%，归母净利 6.40 亿元、+26.53%（S058）",
+    "头部整合：2024-06 零食很忙集团（含赵一鸣）门店总数突破 10000 家（S060）"
+   ],
+   "turning": [
+    "2025 年品牌商标（三只松鼠、良品铺子）见顶后全年收跌，板块内部出现分化"
+   ],
+   "ending": [
+    "尚无明确结束证据（见 lifecycle 的 UNKNOWN 段）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-012"
+  },
+  "C-2024-CONS-TRADE-IN": {
+   "start": [
+    "政策定调：国发〔2024〕7 号《推动大规模设备更新和消费品以旧换新行动方案》（S041）"
+   ],
+   "accelerator": [
+    "资金落地：发改环资〔2024〕1104 号安排约 1500 亿元超长期特别国债支持消费品以旧换新（S042）",
+    "补贴细则：2024-08-24 明确 8 类家电按能效补 15%/20%（S043）",
+    "需求验证：2024 年 9–12 月限额以上家电和音像器材类零售额同比 +20.5%/+39.2%/+22.2%/+39.3%（S044）；全年 10307 亿元、+12.3%（S044）"
+   ],
+   "turning": [
+    "2025 年高基数效应显现，补贴力度边际减弱（S076）"
+   ],
+   "ending": [
+    "2025 年推总口径家电零售 8931 亿元、-4.3%，Q3 起明显回落（S076）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-011"
+  },
+  "C-2019-MIL-GROUP-RESTRUCTURE": {
+   "start": [
+    "2019-07-01两船集团旗下9家上市公司同步公告筹划战略性重组（集团层面改革）"
+   ],
+   "accelerator": [
+    "2019-10-25国务院批准联合重组（国资委消息）"
+   ],
+   "turning": [
+    "重组从“筹划”进入“批准”阶段，事件不确定性下降，题材属性随之减弱"
+   ],
+   "ending": [
+    "2019-11-26中国船舶集团揭牌成立，重组执行完成"
+   ],
+   "provenance": "intake:R01-06/R01-MIL-002"
+  },
+  "C-2020-MIL-EQUIP-ORDER": {
+   "start": [
+    "装备采购与更新换代加速、训练强度提高导致装备损耗加快的需求侧叙事（2020年7月同期媒体口径）",
+    "“十四五”武器装备放量建设的产业预期（2020年券商口径，属预期而非已落地政策）",
+    "★同时存在2020年7月A股整体市场风险偏好抬升（Beta），未分离"
+   ],
+   "accelerator": [
+    "2021年3月底–4月初五大主机厂集中披露2021年度关联交易预计及甲方大额预付（一手公告+券商统计）",
+    "2021年中报合同负债大幅增长（中航沈飞2021H1末377.37亿元），中上游中报超预期",
+    "2021年国防预算13795.44亿元、增长6.8%（国防部，2021-03-08）",
+    "公募基金军工持仓比例升至2.10%、主动配置创2014年以来最高（2021Q3）"
+   ],
+   "turning": [
+    "2021年9–10月中航工业集团集中减持压制股价",
+    "2021年12月后业绩真空期 + 市场风格切换",
+    "2022年1–2月年报/一季报预告不及预期"
+   ],
+   "ending": [
+    "2022年全年板块下跌约23.6%，居31个申万一级行业第28",
+    "2023年“十四五”规划中期调整导致部分装备采购与订单下达放缓（产业侧机制）",
+    "★对照：2022年国防预算增速7.1%创阶段新高但板块下跌 —— 说明军费增长本身不是行情充分条件"
+   ],
+   "provenance": "intake:R01-06/R01-MIL-001"
+  },
+  "C-2020-RE-DEBT-RISK": {
+   "start": [
+    "房地产金融审慎管理制度（三道红线，2020-08-20）",
+    "房地产贷款集中度管理制度（两道红线，2020-12-31）"
+   ],
+   "accelerator": [
+    "2021 年房企信用债违约集中爆发（52 起、逾期余额约 630.28 亿元）",
+    "2021-12-03 恒大美元债违约"
+   ],
+   "turning": [
+    "2022 年 7 月停工停贷事件，风险从金融市场扩散至民生与交付端"
+   ],
+   "ending": [
+    "2022 年 7 月底中央政治局会议提出“保交楼、稳民生”，政策阶段由收紧转为托底"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-004"
+  },
+  "C-2020-FIN-BANK-CREDIT": {
+   "start": [
+    "2020 年下半年经济复苏，信贷需求回升",
+    "金融系统让利压力边际缓解"
+   ],
+   "accelerator": [
+    "2021-03-03 银行股全线大涨，宁波银行、南京银行等领涨"
+   ],
+   "turning": [
+    "未取得转折证据"
+   ],
+   "ending": [
+    "未取得结束证据"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-008"
+  },
+  "C-2022-RE-POLICY-THREE": {
+   "start": [
+    "房企融资政策转向：第二支箭（债券）、金融16条（信贷）、第三支箭（股权）在 20 天内连续落地",
+    "“保交楼、稳民生”政策基调（2022 年 7 月底中央政治局会议）作为风险出清的政策前提"
+   ],
+   "accelerator": [
+    "2022-11-29 证监会股权融资措施落地，板块近 40 股涨停",
+    "2022-11 房地产行业指数 +20.9%，显著跑赢同期上证指数 +7.20%"
+   ],
+   "turning": [
+    "政策脉冲充分定价后缺乏基本面接续：2022 年全年销售面积 -24.3%、投资 -10.0%（2023-01-17 公布）"
+   ],
+   "ending": [
+    "融资政策落地未能带来销售与投资拐点，行业叙事从“政策反转”退回“风险出清”"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-001"
+  },
+  "C-2023-FIN-SOE-VALUATION": {
+   "start": [
+    "政策叙事：“中国特色估值体系”（2022-11-21 提出，2023-04 成为定价因素）",
+    "风险偏好回落、数字经济分化后的资金再配置（避险 + 低估值）"
+   ],
+   "accelerator": [
+    "2023 年一季报：保险 NBV 与净利润同比超预期，负债端数据验证",
+    "低估值国有金融股的估值修复空间"
+   ],
+   "turning": [
+    "未取得转折证据"
+   ],
+   "ending": [
+    "未取得结束证据"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-006"
+  },
+  "C-2024-FIN-BROKER-POLICY": {
+   "start": [
+    "货币政策：降准 0.5 个百分点 + 政策利率下调 20BP",
+    "资本市场政策：创设支持资本市场流动性/回购增持的结构性工具（三大金融管理部门同场发布）"
+   ],
+   "accelerator": [
+    "2024 年 9 月券商指数创 2015 年以来最大月度涨幅",
+    "成交额与两融快速放大"
+   ],
+   "turning": [
+    "2024-10-08 成交额 3.5 万亿元、两融净新增破千亿后，市场高开回落"
+   ],
+   "ending": [
+    "无同期结束证据；推断为 10 月中下旬降温"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-005"
+  },
+  "C-2024-FIN-BANK-DIVIDEND": {
+   "start": [
+    "无风险利率下行与资产荒，高股息资产的相对吸引力上升",
+    "保险资金等长期资金对高股息资产的配置需求（2025H1 七家上市险企增配高息股约 3200 亿元）"
+   ],
+   "accelerator": [
+    "2024 年银行板块全年涨幅超 37%、居所有行业第一，形成明显的赚钱效应与资金正反馈",
+    "银行分红规模扩大，分红成为估值支撑叙事"
+   ],
+   "turning": [
+    "市场观点同时指出“分红能提振估值但无法替代基本面”，行业内部分化加剧"
+   ],
+   "ending": [
+    "结构尚未确认结束"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-007"
+  },
+  "C-2025-FIN-INSURANCE": {
+   "start": [
+    "资产端：权益市场表现与高股息资产配置改善投资收益",
+    "负债端：长期资金入市相关监管导向与负债成本调整"
+   ],
+   "accelerator": [
+    "险资举牌上市公司次数增加、对高股息资产配置力度加强",
+    "七家上市险企 2025H1 增配高息股约 3200 亿元"
+   ],
+   "turning": [
+    "未取得转折证据"
+   ],
+   "ending": [
+    "未取得结束证据；结构可能延续"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-010"
+  },
+  "C-2016-HIEQ-CONSTR": {
+   "start": [
+    "设备更新周期：2009-2012 年间销售的工程机械进入更新替换窗口（一手机制表述见券商研报）",
+    "「十三五」基建项目开工带来的新增需求",
+    "北方环保核查推进，排放不达标的「国二」挖掘机面临施工限制与强制淘汰",
+    "房地产与基建投资增长、海外需求复苏"
+   ],
+   "accelerator": [
+    "国产替代加速：三一挖机市占率由 2009 年 6.5% 提升至 2017 年 22.4%，超越卡特、小松、日立、神钢、斗山等外资品牌",
+    "2021Q1 代表公司业绩翻倍（三一、中联、恒立净利润同比增长），形成业绩与股价的正反馈",
+    "出口放量：2021 年出口 6.84 万台、同比 +97%，对冲内需下滑并延缓总量数据的拐点显现"
+   ],
+   "turning": [
+    "内需端先行见顶：2021 年国内销量 27.44 万台、同比 -6.32%（总量 +4.63% 由出口贡献），说明转折点先出现在内需而非总量",
+    "需求端前置透支：基建与地产投资增速前高后低、专项债发行不及预期",
+    "成本端两头承压：原材料与运费上涨压缩盈利",
+    "代表资产股价领先基本面见顶：三一与恒立股价 2021 年 1 月下旬已露疲态，早于 3 月的产业销量峰值"
+   ],
+   "ending": [
+    "销量增速连续三季负增长（Q2 -4.8% → Q3 -16% → Q4 -30.4%），2021 年 12 月创下年内国内销量「九连降」",
+    "业绩兑现转负：三一重工 2021Q2/Q3 归母净利润分别同比 -28.56%、-35.31%",
+    "股价大幅回撤：三一至 2021-11-19 较年内高点下跌近 60%",
+    "本包未能确认该周期的 ENDED 时点，出口对冲使总量数据迟迟未出现断崖，故 ending 一栏仅记录「上行段终止的确认信号」，不主张周期已结束"
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-001"
+  },
+  "C-2018-HIEQ-ROBOT-DOWN": {
+   "start": [
+    "下游需求端收缩：汽车行业增速放缓是中国机器人行业增速放缓的主要原因（业内公开表述，2019 年世界机器人大会）；2019 年中国汽车产量与销量同比分别 -7.5%、-8.2%，降幅较 2018 年分别扩大 4.2 和 5.4 个百分点",
+    "制造业固定资产投资增速由 2018 年 9.5% 下滑至 2019 年 1-4 月的 2.5%",
+    "工业机器人市场本身的高基数：2018 年销量 154032 台、占全球 36.5%，但同比已 -1.4%，为 2010 年以来首次负增长"
+   ],
+   "accelerator": [
+    "负增长持续时长本身强化了悲观预期：连续 13 个月负增长使「周期性调整」的叙事在 2019 年持续",
+    "业绩传导：新松机器人、埃斯顿、华中数控等上市公司业绩不乐观，产业下行进入财务验证阶段",
+    "进口同步收缩：2019 年中国机器人进口数量 60701 台、比上年减少 39401 台",
+    "日本工业机器人出口（按金额）2019 年占比 69.2%，可交叉印证全球需求（含中国）走弱"
+   ],
+   "turning": [
+    "2019 年 10 月单月产量同比转正（+1.7%）、11 月 +4.3%，连续 13 个月的负增长序列被打破",
+    "制造业固定资产投资在 2019 年下半年边际企稳（本包未取得该指标 2019 年下半年的逐月序列，此项为待验证的机制线索）"
+   ],
+   "ending": [
+    "2019 全年累计产量同比 -6.1%、完成 199050 台，作为该下行周期的完整年度记录收尾",
+    "2020 年产量转为 237068 台、同比 +19.1%（近三年最高增速），确认下行段已结束",
+    "2020 年 2 月疫情低点（累计同比 -19.4%）→ 3 月单月转正 → 4 月累计转正 → 全年 +19.1%，形成 V 型结构"
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-002"
+  },
+  "C-2020-HIEQ-AUTOMATION": {
+   "start": [
+    "疫情后制造业资本开支回补：2020 年 2 月产量累计同比 -19.4% 为疫情低点，3 月单月转正 +12.9%、4 月累计转正 +4%，形成 V 型反弹",
+    "自动化渗透率提升（机器换人）：2015-2019 年六轴机器人国产销量由不到 8000 台提升至近 2.4 万台、CAGR 33.8%，国产市占率由 16.4% 升至 24.1%",
+    "制造业固定资产投资回升（券商月报明确以此为自动化设备复苏的前置条件）",
+    "出口需求在 2020 年下半年走强，带动制造业整体开工与设备投资"
+   ],
+   "accelerator": [
+    "单月产量增速连续突破：5 月 +16.9% → 6 月 +29.2% → 7 月 +19.4%，增速中枢抬升形成正反馈",
+    "市场关注度快速聚集：2020 年 7 月机械设备指数上涨 12.56%，机器人板块月涨幅 18.2%、年初至今 48.1%，位居行业前三",
+    "代表资产创新高：汇川技术股价 2020-07-16 创历史新高；埃斯顿月涨幅 35.0%、年初至今 43.4%",
+    "国产替代叙事：国产六轴机器人销量与市占率双升，形成「进口替代 + 渗透率提升」的双重成长逻辑"
+   ],
+   "turning": [
+    "上游通胀与出口新增订单下滑（一手公司披露的转折归因）",
+    "制造业需求疲软导致通用自动化景气持续下行，2021 年 7 月为下行起点",
+    "2022 年 3-4 月经济下行加速行业下滑并进入筑底阶段",
+    "盈利质量隐忧在行业内已现：2020 年规上工业机器人制造企业营业收入 +6.0% 而利润总额同比 -26.9%，呈量增价跌"
+   ],
+   "ending": [
+    "2022 年上半年国内产量 20.2 万台、同比 -11% 以上；全年 44.3 万套、同比 -4.8%",
+    "公司业绩转亏：新松机器人、哈工智能、新时达、埃夫特等 2022 年上半亏损（疫情封控与原材料涨价为主要原因）",
+    "2023 年 1-2 月产量 6.2 万套、同比 -19.2%，负增长延续至政策介入前夜",
+    "本包不主张该 Campaign 已 ENDED，故 ending 一栏记录「上行段终止的确认信号」而非周期终结点"
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-003"
+  },
+  "C-2023-HIEQ-ROBOT-PLUS": {
+   "start": [
+    "产业政策（一手）：工信部等十七部门《「机器人+」应用行动实施方案》于 2023-01-18 成文、2023-01-19 发布，属十七部门联合发文的系统性产业推进文件",
+    "政策量化目标提供了可交易的锚：到 2025 年制造业机器人密度较 2020 年翻番（10 大应用领域、100 种以上创新应用技术、200 个以上典型应用场景）",
+    "政策介入时点处于行业低位：政策发布时行业产量同比为负（2022 年 -4.8%、2023 年 1-2 月 -19.2%），构成「政策底 vs 基本面底」的错位结构"
+   ],
+   "accelerator": [
+    "二级市场快速定价：发布次日板块放量跳空、多股一字涨停（信邦智能 20%、达意隆、科远智慧等），形成强关注度",
+    "卖方系统性解读：多家券商发布事件点评，预期未来 3-5 年机器人产业迎来新一轮景气周期、本轮工业机器人需求拐点或在 2023 年上半年显现",
+    "相对强弱可观测：2023-01-14 至 2023-02-03 机器人三级子行业上涨 13.48%，显著跑赢机械设备行业（+6.47%）与沪深 300（+1.65pct 之差）",
+    "估值快速抬升：至 2023-02-03 机器人板块估值达 75.45 倍，反映市场对政策目标的前置定价"
+   ],
+   "turning": [
+    "基本面与政策目标之间存在时滞：政策发布时行业产量仍处同比负增长区间（2023 年 1-2 月 -19.2%），若基本面未在政策预期的时间窗内兑现，则存在预期修正风险",
+    "2023 年 5 月起叙事重心向「具身智能/人形机器人」迁移，本政策驱动段的注意力中心被稀释（迁移本身的时间边界本包无法切分）"
+   ],
+   "ending": [
+    "本包未能确定该政策驱动段的具体结束机制与时点，故 ending 一栏仅记录风险因素而非结束事件",
+    "明确的不确定性：该候选与 R01-HIEQ-005（2023-05 起的人形机器人叙事形成）之间的边界未被切分，二者是否应视为同一 Campaign 的不同阶段，须由 ThreeC Agent 判定"
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-004"
+  },
+  "C-2023-HIEQ-HUMANOID": {
+   "start": [
+    "AI 大模型技术突破的外溢：2022-11 ChatGPT 发布后 AI 大模型能力跃升，2023-05 黄仁勋公开表述「人工智能下一个浪潮将是具身智能」，将 AI 能力与物理载体相连",
+    "产品技术催化：2023-05 特斯拉股东大会发布 Optimus Gen1 最新视频，展示运动控制、环境感知与动作捕捉进展",
+    "产业活动聚集：2023-08-16 至 08-22 世界机器人大会在北京举行，达闼、宇树、优必选、追觅等人形机器人集中亮相",
+    "地方产业基金与资本入场：北京市设立 100 亿机器人产业基金；比亚迪入股智元机器人",
+    "政策预期前置：工信部副部长在 2023 世界机器人大会分论坛表示将推动出台人形机器人创新发展指导意见"
+   ],
+   "accelerator": [
+    "国家级顶层设计落地：2023-11-02 工信部印发《人形机器人创新发展指导意见》，为该领域首个国家级文件，设定 2025 年批量生产、2027 年形成安全可靠产业链供应链体系的目标",
+    "产品代际跃升：2023-12-13 特斯拉 Optimus Gen2 亮相，采用自研执行器与传感器、2 自由度驱动颈部、11 自由度灵巧手、足部力/扭矩传感器，性能提升明显，为「量产可行性」提供了叙事支撑",
+    "资本化里程碑：2023-12 优必选登陆港交所成为人形机器人领域首家上市企业；傅利叶智能 GR-1 开启预售并实现小批量交付",
+    "叙事可交易化：市场形成以减速器、丝杠、无框力矩电机、传感器、视觉为核心的产业链映射，使主题可被板块化交易"
+   ],
+   "turning": [
+    "本包未在该候选段内识别到明确的转折催化，即 2023-12 之后叙事重心直接迁移至「量产预期 + 国产加速」（R01-HIEQ-007），而非转折下行",
+    "潜在风险（未在本包证据中证实）：Optimus Gen2 属展示品而非量产产品，产品发布与商业化之间存在时间差"
+   ],
+   "ending": [
+    "本包不主张该叙事段已结束；其后续形态被记录为 R01-HIEQ-007，二者边界未切分",
+    "ending 一栏在此仅记录「叙事重心迁移」这一可观察现象，不主张生命周期终止"
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-005"
+  },
+  "C-2023-PHARMA-GLP1": {
+   "start": [
+    "美股 GLP-1 双寡头（诺和诺德司美格鲁肽、礼来替尔泊肽）销售与临床数据超预期，市值创历史新高，外溢至 A 股",
+    "摩根大通 9 月上旬上调减重药市场空间预测（2032 年 710 亿美元），形成叙事催化"
+   ],
+   "accelerator": [
+    "海外供应短缺与多国限制使用（比利时、英国、德国），强化『需求旺盛』叙事",
+    "公司侧可验证订单出现：翰宇药业 2023-09-19 披露 3000 万美元 GLP-1 多肽原料药海外合同",
+    "10-10 司美格鲁肽三期临床提前终止（疗效达标）形成二次催化",
+    "国际学术年会（ESMO 10-20~24）临近，抬升创新药整体预期"
+   ],
+   "turning": [
+    "监管介入：康惠制药、百花医药、博瑞医药董事长于 10-16~17 收到证监局警示函或致歉，直接冲击『蹭热点』标的",
+    "叙事与基本面脱节：多只涨幅居前标的**自身并未开展减肥药研发**（公司风险提示已明确）",
+    "涨幅结构集中在上游原料药与概念标的，缺乏业绩支撑"
+   ],
+   "ending": [
+    "10-17/10-18 指数连续收跌，10-18 逾八成成分股下跌，行情进入降温",
+    "本包未取得该段后续完整走势来源，不推断其最终收敛方式"
+   ],
+   "provenance": "intake:R02-01/R02-PHARMA-001"
+  },
+  "C-2019-RES-DYE-SHOCK": {
+   "start": [
+    "2019-03-21 天嘉宜化工特别重大爆炸事故（同期通报死亡 44 人，后更新为 78 人遇难）",
+    "天嘉宜是染料中间体间苯二胺的三大核心生产工厂之一",
+    "苏北地区染料中间体产量约占全国三分之一"
+   ],
+   "accelerator": [
+    "2019-04-04 盐城市委决定彻底关闭响水化工园区",
+    "江苏省下发《化工行业整治提升方案(征求意见稿)》，拟大幅压减化工生产企业数量",
+    "2018 年苏北化工园区整治已使部分企业停产，事故进一步延迟复工"
+   ],
+   "turning": [
+    "染料价格与印染加工费急涨，下游印染行业公开抵制",
+    "绍兴市柯桥区印染工业协会倡议抵制染化料价格不正常上涨",
+    "园区关停后替代产能与库存逐步补充"
+   ],
+   "ending": [
+    "江苏省化工整治方案落地，供给侧长期收缩但价格冲击消退",
+    "染料价格回落",
+    "市场注意力转向新主题"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-005"
+  },
+  "C-2020-RES-NONFERROUS": {
+   "start": [
+    "新冠疫情后全球需求复苏",
+    "美联储零利率 + 无限量宽松，美元实际利率下行、美元走弱",
+    "疫情冲击下铜矿等矿产产量恢复缓慢，供给跟不上需求"
+   ],
+   "accelerator": [
+    "LME 与国内铜库存持续下滑",
+    "2021 年前三季度中国新能源汽车产销量同比均增长 185%，带动铜等有色金属需求",
+    "海外铜需求较上年提高约 7%，叠加跨市套利窗口，2021 年中国铜出口量同比 +25% 创历史新高"
+   ],
+   "turning": [
+    "铜价快速上涨抑制下游消费，采购意愿下降",
+    "2021 年 5 月后进入宽幅震荡，商品价格不再创新高",
+    "2022 年美联储进入加息周期、美元走强"
+   ],
+   "ending": [
+    "全球流动性转向收紧",
+    "高价抑制需求叠加供给恢复",
+    "板块资金转向新能源等结构性方向"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-001"
+  },
+  "C-2020-RES-LITHIUM": {
+   "start": [
+    "锂精矿供给出清：2020-10-27 澳洲 Altura 进入破产管理，延续 2019 年下半年的出清",
+    "《新能源汽车产业发展规划(2021-2035 年)》等政策利好 + 新能源车热销带动需求预期",
+    "上游锂价处于历史周期底部（2020 年 8 月碳酸锂约 4 万元/吨）"
+   ],
+   "accelerator": [
+    "2020-11 至 2021 年 1 月，磷酸铁锂需求推动国内锂价上涨 40% 至 18 个月高点",
+    "2021 年夏季起锂价加速，2021-10 至 2022-06 锂矿供应受限、供需缺口扩大",
+    "锂资源自主可控叙事驱动上市公司大额布局海内外锂矿"
+   ],
+   "turning": [
+    "2022-11-11 碳酸锂价格达 59 万元/吨 历史高点后转为下跌",
+    "2022-06 至 2022-11 需求快速拉升后转为需求快速缩减",
+    "下游电池厂在价格下行期转为长单交易、去库存"
+   ],
+   "ending": [
+    "供给放量（南美盐湖、非洲矿）使供需由偏紧转为过剩",
+    "2022-11 至 2023-04 价格大幅下行，板块资金流失",
+    "宁德时代锂矿返利等事件加速价格下滑与叙事失效"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-002"
+  },
+  "C-2020-RES-RAREEARTH": {
+   "start": [
+    "供给端：稀土矿产品与冶炼分离总量控制指标机制，中重稀土继续严控",
+    "2020-05 起供需基本面改善，价格进入景气上升周期",
+    "持货端锁货惜售、现货稀少"
+   ],
+   "accelerator": [
+    "缅甸政局与疫情导致中缅口岸关闭近 6 个月，2021 年前 11 个月缅甸矿进口量约 2.5 万吨（-23%）",
+    "2021-10-29 工信部与市场监管总局印发《电机能效提升计划(2021-2023 年)》，加大稀土永磁电机应用",
+    "2021 年开采指标 16.8 万吨、冶炼分离指标 16.2 万吨，同比均增 20%，但增量全部为轻稀土指标，中重稀土指标连续四年不变",
+    "北方稀土多次专场竞价推高金属镨钕成交价"
+   ],
+   "turning": [
+    "2021-10 至 11 月价格急涨后出现冲高回调",
+    "下游（中低端钕铁硼）因高价缩减用量",
+    "磁材企业采购周期结束后需求边际转弱"
+   ],
+   "ending": [
+    "配额有序释放、供给偏紧程度缓解",
+    "行业整合（2021-12-23 中国稀土集团成立）改变供给主体结构",
+    "价格回落至高位震荡"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-003"
+  },
+  "C-2021-RES-CHEM-DUALCTRL": {
+   "start": [
+    "2021-08-12 发改委发布能耗双控目标完成情况晴雨表，9 省(区)能耗强度不降反升被一级预警",
+    "2021-09-11 发改委印发《完善能源消费强度和总量双控制度方案》，明确指标分解落实机制",
+    "2020-09 中国提出碳达峰碳中和目标，双碳政策预期自 2021 年起密集落地"
+   ],
+   "accelerator": [
+    "云南要求工业硅、黄磷月均产量不超过 8 月 10%（削减约 90%）",
+    "江苏对年综合能耗 5 万吨标煤以上企业开展专项节能监察，部分纯碱企业开工率降幅约 20%",
+    "内蒙古自 2021 年起不再审批焦炭、电石、PVC、合成氨(尿素)、甲醇、乙二醇、烧碱、纯碱、磷铵、黄磷等新增产能",
+    "陕西榆林要求已投产「两高」项目限产 60%、9 月减产 50%"
+   ],
+   "turning": [
+    "化工品价格急涨后出现有价无市，厂家暂停报价",
+    "下游（印染、化纤、纺织）成本压力剧增并公开抵制原料涨价",
+    "政策转向保供稳价，限电措施边际放松"
+   ],
+   "ending": [
+    "能耗双控阶段性目标完成后限产放松",
+    "下游需求走弱、库存回补完成",
+    "价格向成本线回归"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-004"
+  },
+  "C-2024-RES-GOLD-CB": {
+   "start": [
+    "2022 年美国冻结俄罗斯外汇储备后，新兴市场央行调整外汇资产结构，减持美债、增持黄金",
+    "2024 年全球央行购金 1045 吨，占全球黄金总需求（4974 吨）21%",
+    "实际利率之外新增「去美元化 / 国际货币体系重构」定价维度"
+   ],
+   "accelerator": [
+    "2024 年伦敦现货黄金全年均价同比上涨 22.97% 至 2386.2 美元/盎司",
+    "黄金 ETF 持仓快速扩张（2024 年底中国国内黄金 ETF 持有量同比增超八成）",
+    "2025 年美联储降息预期与地缘紧张共同推动，2025 年全球央行购金延续（前三季度 634 吨）",
+    "中国黄金储备 2025 年连续第 11 个月上升，至 9 月底 2303 吨"
+   ],
+   "turning": [
+    "2025 年 12 月金价加速上行后，A 股金矿龙头股价未同步创新高，出现「现货热、股价冷」背离",
+    "头部矿企采金综合成本同比上升 12%–18%，利润增速不及金价涨幅",
+    "部分矿企股价在 2025 年 Q3 已提前大幅上涨，资金阶段性获利了结"
+   ],
+   "ending": [
+    "窗口结束时结构未结束（unknown）"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-007"
+  },
+  "C-2016-PANEL-CYCLE": {
+   "start": [
+    "三星显示关闭部分 G7 产线转产 OLED",
+    "鸿海收购夏普后减少对三星电视面板出货",
+    "2016 年新增产能较少"
+   ],
+   "accelerator": [
+    "电视面板平均尺寸由 16Q4 的 44.6 寸提升至 17Q4 的 46 寸，大尺寸化消耗产能",
+    "2016Q3 起面板厂利润明显改善（京东方单季营业利润 6.78 亿元）"
+   ],
+   "turning": [
+    "2017 年新增产能集中在下半年释放",
+    "涨价压缩整机厂盈利空间，影响旺季促销"
+   ],
+   "ending": [
+    "2017H2 起价格进入长期下行周期",
+    "2019Q4 行业指标触底"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-011"
+  },
+  "C-2019-SEMI-LOCALIZATION": {
+   "start": [
+    "美国对中兴通讯的出口禁令（2018-04-16）触发「卡脖子」认知",
+    "华为及关联公司被列入实体清单（2019-05-16）",
+    "国家集成电路产业投资基金（大基金）持续注资"
+   ],
+   "accelerator": [
+    "科创板 2019-07-22 开市，为未盈利半导体企业提供上市与再融资通道",
+    "韦尔股份并购豪威、闻泰科技并购安世等资产注入带来业绩与估值共振",
+    "5G 商用带来的终端芯片需求预期"
+   ],
+   "turning": [
+    "大基金一期 2019-12-20 公告减持兆易创新、汇顶科技、国科微",
+    "板块估值升至历史高位（部分个股 PE 达数千倍）",
+    "2020 年 3 月全球疫情冲击"
+   ],
+   "ending": [
+    "2020-07 后指数转入高位震荡与回撤",
+    "资金风格切换至新能源/光伏等顺周期方向"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-001"
+  },
+  "C-2019-CONSUMER-TWS": {
+   "start": [
+    "AirPods 带动 TWS 渗透率快速提升（2017—2019 出货增速 118%/130%/183%）",
+    "安卓阵营跟进，华为/三星/OPPO/vivo/小米入局",
+    "2019-01 起市场整体估值修复"
+   ],
+   "accelerator": [
+    "AirPods Pro 需求增加，订单向大厂集中",
+    "TWS 相关标的 2019 年涨幅达 4—5 倍，形成赚钱效应",
+    "上游模拟芯片与存储配套需求同步放大"
+   ],
+   "turning": [
+    "2020-11 两大龙头披露存货大幅上升",
+    "TWS 普通款产能利用率降至约 80%",
+    "2020-10-30 苹果 iPhone 收入同比 -20.7%"
+   ],
+   "ending": [
+    "2020-11 后连续回调，估值中枢下移",
+    "市场注意力转向新能源与半导体自主可控"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-005"
+  },
+  "C-2020-SEMI-EQUIPMENT": {
+   "start": [
+    "中芯国际回 A 并把募资投向 12 英寸产线",
+    "大基金二期聚焦设备/材料（刻蚀、薄膜、测试、清洗、大硅片、光刻胶、掩模版、电子特气）",
+    "国内晶圆厂进入扩产周期"
+   ],
+   "accelerator": [
+    "设备国产化率从个位数向两位数突破",
+    "全球缺芯推动晶圆厂加快资本开支",
+    "出口管制预期强化替代紧迫性"
+   ],
+   "turning": [
+    "2021Q3 起终端需求转弱、渠道库存累积",
+    "板块估值透支 2022 年业绩"
+   ],
+   "ending": [
+    "2022 年全球半导体增速降至 4.4%，除日本外亚太地区增速转负",
+    "A 股半导体进入去库存下行周期"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-002"
+  },
+  "C-2020-PANEL-CYCLE": {
+   "start": [
+    "三星、LG Display 宣布逐步退出 LCD，韩厂产能关停",
+    "2018-2019 年过度扩产后的产能出清，行业集中度提升",
+    "疫情催生「宅经济」，电视/笔记本/平板需求激增"
+   ],
+   "accelerator": [
+    "显示驱动 IC、偏光片、玻璃等上游元器件缺货",
+    "整机厂备货意愿强烈，渠道库存低位",
+    "产能向京东方、TCL 华星集中后具备调控产能能力"
+   ],
+   "turning": [
+    "2021 年 1—6 月价格持续上涨至 236 美元后动能衰减",
+    "终端需求透支，整机厂采购转弱"
+   ],
+   "ending": [
+    "2021-08 起价格进入下行通道",
+    "2022 年上半年地缘政治、通胀与需求透支叠加，价格跌回 2020 年上半年水平"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-003"
+  },
+  "C-2022-SEMI-DOWNTURN": {
+   "start": [
+    "2021 年供需错配与重复下单造成的渠道库存需要消化",
+    "消费电子终端需求萎缩",
+    "美国 2022-10 进一步收紧对华半导体限制"
+   ],
+   "accelerator": [
+    "全球半导体市场增速由 2021 年的 26% 降至 2022 年的 4.4%",
+    "除日本外亚太地区市场增速转负（-2%）"
+   ],
+   "turning": [
+    "2022Q3 起部分细分领域库存降幅明显",
+    "2023-10 DRAM 与 NAND Flash 均价全面上涨"
+   ],
+   "ending": [
+    "2023Q4 智能手机与 PC 市场分别结束连续 7、8 个季度的同比下滑"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-009"
+  },
+  "C-2023-AI-COMPUTE-SEMI": {
+   "start": [
+    "ChatGPT 月活快速破亿引发大模型关注（2023 年 1 月末—2 月初）",
+    "微软 2023-03-16 发布植入 GPT-4 的 Copilot",
+    "英伟达 2023-03-21 GTC 大会"
+   ],
+   "accelerator": [
+    "海外算力资本开支预期上修",
+    "国产算力芯片与存储的国产替代叙事叠加",
+    "光模块加单信息带动整条 AI 产业链情绪"
+   ],
+   "turning": [
+    "2023-04 中下旬财报与估值偏离压制情绪",
+    "加单信息对市场反应的边际效力下降"
+   ],
+   "ending": [
+    "2023-06-21 起 AI 板块整体回调",
+    "资金向算力租赁、华为产业链等分支迁移"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-006"
+  },
+  "C-2024-SEMI-MEMORY": {
+   "start": [
+    "2023 年存储价格深度下跌 60%—70% 后的低基数",
+    "2024Q2 起库存改善、价格反弹",
+    "2024-09-24 一揽子金融政策改善流动性与风险偏好"
+   ],
+   "accelerator": [
+    "AI 服务器对 DRAM 需求为普通服务器的 8 倍，OpenAI 等企业对 DRAM 晶圆需求规模巨大",
+    "三星、SK 海力士、铠侠、美光削减 NAND 供应并把产能转向 QLC/HBM",
+    "云服务商追加大容量 QLC SSD 订单"
+   ],
+   "turning": [
+    "2025Q4 DRAM 合约价季增 45%—50% 创历史最大季度涨幅后，价格涨幅成为后续需求的最大变量",
+    "下游（PC/手机）成本压力显性化"
+   ],
+   "ending": [
+    "尚未出现明确结束信号（截至 2025-12-31）"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-007"
+  },
+  "RC-2020-CONS-SMALL-APPLIANCE": {
+   "start": [
+    "疫情下居家场景需求上升（本项为解释性判断，行业数据侧证据见下条）",
+    "2020 年家电出口 4582 亿元、+24.2%（海关总署口径，不含彩电）；协会口径 837 亿美元、+18%（S036、S037）"
+   ],
+   "accelerator": [
+    "产品创新与渗透率提升：扫地机器人导航/自清洁等技术迭代（本包未取得渗透率的一手数据，属解释性判断）",
+    "盈利兑现：2021 年家电行业主营收入 1.73 万亿元、+15.5%（S038）"
+   ],
+   "turning": [
+    "2021 年下半年冷柜、冰箱、吸尘器等产量同比转负（S038）"
+   ],
+   "ending": [
+    "2021 年 12 月家电零售额同比 -10.4%（S038）",
+    "原材料涨价导致利润增速（+4.5%）远低于收入增速（+15.5%）（S038）"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-007"
+  },
+  "RC-2024-CONS-PET-FOOD": {
+   "start": [
+    "情感消费/它经济需求稳定增长：城镇犬猫消费市场规模 2022 年 2706 亿元、+8.7%，2024 年 3002 亿元、+7.5%（S063，媒体转述，置信度低）"
+   ],
+   "accelerator": [
+    "出口增长：2024 年宠物食品出口 105.29 亿元、+22.07%，出口量 33.52 万吨、+26.01%（S064，媒体转述海关数据，置信度低）"
+   ],
+   "turning": [
+    "未取得可确认的转向事件"
+   ],
+   "ending": [
+    "未取得可确认的结束证据"
+   ],
+   "provenance": "intake:R01-04/R01-CONSUMER-013"
+  },
+  "RC-2020-RES-GOLD-RATES": {
+   "start": [
+    "2019 年美联储转向降息、美元走弱",
+    "中美贸易摩擦与全球增长担忧带动避险需求",
+    "2019 年末金价接近 2011 年历史高点，形成突破预期"
+   ],
+   "accelerator": [
+    "2020 年 3 月美联储推出零利率 + 无限量宽松，资产负债表由约 4.3 万亿美元升至 5 月底 7.1 万亿美元",
+    "美国二季度 GDP 环比大幅下滑，美元实际利率深度转负",
+    "2020 年上半年投资性黄金需求创纪录（ETF 与实物同步流入）"
+   ],
+   "turning": [
+    "2020-08-07 创历史新高后转为震荡",
+    "2020 年下半年美国经济与市场情绪改善，实际利率抬升",
+    "避险情绪减弱、资金转向风险资产"
+   ],
+   "ending": [
+    "金价在 1700–2100 美元/盎司区间横盘约三年",
+    "2021–2023 年缺乏新的定价驱动",
+    "直至 2024 年才出现新一轮突破（见 C7）"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-006"
+  },
+  "RC-2022-RES-FERTILIZER": {
+   "start": [
+    "能源（天然气）价格上涨推升氮肥生产成本",
+    "2021 年作物价格上行提高化肥可承受价格，拉动需求",
+    "疫情相关供应链与高运费推高化肥到岸成本"
+   ],
+   "accelerator": [
+    "2021-11 俄罗斯对氮肥及含氮复合肥实施 6 个月出口配额",
+    "中国禁止磷肥出口（至少至 2022-06），保护国内粮食安全",
+    "2022-02 俄乌冲突冲击黑海农产品与化肥出口，俄罗斯化肥外运受阻",
+    "加拿大钾肥供应扰动、氨价飙升"
+   ],
+   "turning": [
+    "2022-07 起化肥市场价格持续下跌，秋季肥采购不积极",
+    "国际原油与天然气价格大幅下跌、美联储加息，成本支撑减弱",
+    "硫磺价格较上半年高点下跌 74.45%，液氨下跌约 32%"
+   ],
+   "ending": [
+    "俄乌粮食与化肥出口制裁放松，国际化肥供需矛盾改善",
+    "化肥企业前期满负荷生产形成库存压力",
+    "价格跌回 2022 年 3 月水平"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-008"
+  },
+  "RC-2025-RES-COPPER": {
+   "start": [
+    "美联储降息预期前移，美元走弱",
+    "2024 年上半年铜矿停产与供应担忧",
+    "国内多家冶炼厂检修造成供给扰动"
+   ],
+   "accelerator": [
+    "2025-09 印尼 Grasberg 铜矿泥石流宣布不可抗力，全面复工推迟",
+    "智利 El Teniente 安全事故、刚果(金) Kamoa-Kakula 矿震，嘉能可等下调产量指引",
+    "2025 年全球铜矿产量增速预期由 2.3% 下调至 1.4%；前 20 家铜企前三季度产量平均增速约 -1.2%",
+    "铜精矿长单加工费由 2023 年约 88 美元/吨降至 2025 年 21.3 美元/吨，进口散单加工费转负",
+    "中国电网投资保持双位数增长（截至 2024-10 完成额 4502 亿元）；新能源汽车单车用铜量约 83 公斤"
+   ],
+   "turning": [
+    "2024 年高价抑制消费，下游普遍去库存",
+    "美国关税政策预期引发经济与需求担忧，美元走强压制铜价",
+    "2024-06 至 2024-09 铜价自高点回落超 15%"
+   ],
+   "ending": [
+    "窗口结束时结构未结束（unknown）；2026 年缺口预期仍存"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-009"
+  },
+  "RC-2017-RES-ALUMINUM": {
+   "start": [
+    "2017-04-12 四部委联合发布《清理整顿电解铝行业违法违规项目专项行动工作方案的通知》",
+    "2013 年起国家已不再审批电解铝新增产能，政策延续性强",
+    "2017-02《京津冀及周边地区 2017 年大气污染防治工作方案》确立去产能基调"
+   ],
+   "accelerator": [
+    "2017-07-24 山东责令魏桥、信发关停违规产能 321 万吨（约占全国运行产能 1/11）",
+    "2017-04-16 新疆昌吉州停止 3 家违规在建项目，此后各地陆续公布关停清单",
+    "2017-07-25 发改委与能源局要求全面清理自备电厂欠缴政府性基金及附加，抬高成本",
+    "2017 年 7、8 月中国铝产量同比下降 0.3% 和 7.3%，前 6 个月为 +8.8%"
+   ],
+   "turning": [
+    "库存高企（报道称库存达 160 万吨）与产量数据背离",
+    "市场预期已充分定价去产能影响",
+    "供暖季限产的实际影响低于预期（测算最大影响产量 88 万吨以内）"
+   ],
+   "ending": [
+    "「遇事实而跌」，去产能政策效果已被价格消化",
+    "供暖季结束后关停企业存在复产预期",
+    "板块资金转向其他方向"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-010"
+  },
+  "RC-2016-RES-CHEM-ENV": {
+   "start": [
+    "2015-07 中央深改小组审议通过《环境保护督查方案(试行)》，环保督查机制建立",
+    "2016-01-04 中央环保督查组对河北省开展督查试点，由督企转向督政",
+    "2016 年初中央提出「三去一降一补」，供给侧改革全面展开"
+   ],
+   "accelerator": [
+    "环保督查三批次覆盖 23 个省市区，2017-08 第四批实现 31 省全覆盖",
+    "化工成为整治重点：产品分散、小企业多、污染严重",
+    "2016-11-20 华北制药公告石家庄调度令，要求全市制药企业全部停产",
+    "山东截至 2016-09 已关闭 935 家安全环保隐患企业、1319 家停产"
+   ],
+   "turning": [
+    "缺少证据：无法确定化工商品价格与板块的转折点时点"
+   ],
+   "ending": [
+    "缺少证据：无法确定退潮机制"
+   ],
+   "provenance": "intake:R01-03/R01-RESOURCES-011"
+  },
+  "RC-2022-SEMI-CHIPSHORTAGE": {
+   "start": [
+    "疫情导致晶圆代工与封测排产中断",
+    "智能汽车与 5G 终端芯片用量激增",
+    "8 英寸成熟产能长期缺乏新增投资"
+   ],
+   "accelerator": [
+    "美国德州寒潮、日本地震、瑞萨火灾、马来西亚封测停产等供给冲击",
+    "重复下单（同一订单下给多家工厂）放大需求信号",
+    "囤货与炒货行为推高现货价格"
+   ],
+   "turning": [
+    "市场监管总局 2021-08 处罚三家哄抬汽车芯片价格的经销商",
+    "2021-09 起原厂与代工厂集中涨价后需求开始被抑制"
+   ],
+   "ending": [
+    "新建产能 2022 年下半年陆续释放",
+    "终端需求转弱、渠道库存累积"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-004"
+  },
+  "RC-2024-SEMI-FUND3": {
+   "start": [
+    "大基金三期 3440 亿元注册资本落地，投向先进制造、高端设备、AI 芯片",
+    "美国持续收紧先进制程设备与 AI 芯片出口限制",
+    "晶圆厂加大国产设备采购，测试与涂胶显影等环节国产化率由个位数向两位数突破"
+   ],
+   "accelerator": [
+    "2024-09-24 央行、证监会、金融监管总局一揽子金融政策",
+    "并购重组政策松绑推动半导体资产整合",
+    "AI 算力需求外溢至半导体设备与材料"
+   ],
+   "turning": [
+    "估值快速抬升后交易拥挤",
+    "2024-12 起指数进入区间震荡"
+   ],
+   "ending": [
+    "叙事并入 2025 存储 / AI 算力主线，未独立结束"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-008"
+  },
+  "RC-2015-SEMI-LEVERAGE": {
+   "start": [
+    "大基金一期成立并开始投资",
+    "央行货币政策由定向宽松转向全面宽松"
+   ],
+   "accelerator": [
+    "杠杆资金入市推升全市场估值",
+    "集成电路被列入国家战略性产业"
+   ],
+   "turning": [
+    "2015-06 中旬去杠杆启动"
+   ],
+   "ending": [
+    "全面牛市结束，板块随大盘回落"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-010"
+  },
+  "RC-2017-GPU-MINING": {
+   "start": [
+    "比特币价格年内上涨约 21 倍",
+    "挖矿对显卡的突发性需求快速消耗市场库存"
+   ],
+   "accelerator": [
+    "显存等核心配件产能无法快速扩张",
+    "渠道囤货推高显卡价格"
+   ],
+   "turning": [
+    "2018 年比特币价格回落"
+   ],
+   "ending": [
+    "显卡需求与价格同步转弱"
+   ],
+   "provenance": "intake:R01-02/R01-SEMICONDUCTOR-012"
+  },
+  "RC-2024-HIEQ-EQUIP-UPDATE": {
+   "start": [
+    "产业政策（一手）：国发〔2024〕7号明确到 2027 年工业、农业、建筑、交通、教育、文旅、医疗等领域设备投资规模较 2023 年增长 25% 以上，并将「机械」列为重点行业之一",
+    "资本开支周期：政策指向的是存量设备的更新替换需求，属资本开支周期中的更新型投资",
+    "设备更新周期：中国大量工业设备的高峰投建于 2003-2014 年，按 8-15 年使用年限推算，2024-2027 年处于集中更新窗口（本包未取得该年限推算的一手来源，此项为机制线索而非已证事实）"
+   ],
+   "accelerator": [
+    "财政资金落地：2024-06-25 四部门发布设备更新贷款财政贴息政策（中央财政贴息 1 个百分点）",
+    "政策力度加码：2024-07-24 发改环资〔2024〕1104号统筹安排 3000 亿元左右超长期特别国债资金，取消「项目总投资不低于 1 亿元」申报门槛，扩大支持范围",
+    "贴息率提高：2024-07-25 将贴息由 1 个百分点提高至 1.5 个百分点",
+    "央企投资规模量化：2024-07-26 国务院国资委表示未来五年中央企业预计安排设备更新改造总投资超 3 万亿元；地方国企路线图逐步明确（辽宁 10 条支持措施等）",
+    "卖方受益映射形成：铁路装备、机床、叉车、注塑机、工程机械被列为主要受益方向，工程机械被描述为「景气度底部向上」"
+   ],
+   "turning": [
+    "本包未识别到明确的转折催化，该政策段在 2024 年内持续加码而非转向",
+    "潜在风险（本包证据不足）：政策覆盖行业过宽（11 个重点行业），缺乏单一板块口径，可能导致注意力分散；且设备投资的实际落地需经申报-审批-采购链条，政策与订单之间存在时滞",
+    "另一实质风险：政策重点行业（钢铁、有色、石化、化工、建材、电力）与 R01-03、既有 family「电力设备」高度重叠，本任务对该段的独立主张权存在边界争议"
+   ],
+   "ending": [
+    "本包不主张该政策驱动段已结束；政策目标设定至 2027 年，2024 年内不存在明确的政策退出事件",
+    "ending 一栏仅记录边界争议与证据不足两点，不构成结束判断"
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-006"
+  },
+  "RC-2024-HIEQ-HUMANOID-MASS": {
+   "start": [
+    "量产预期提升：2024-07 马斯克量产表述；2025-01 特斯拉在 2024Q4 业绩会提高 Optimus 量产指引并超出市场预期（第三代预计 2025 年推出、次年量产、5 年内年产 100 万台目标）",
+    "国产产业链组织化：2024-11-15 华为具身智能创新中心正式运营并与乐聚机器人、拓斯达、埃夫特、兆威机电等 16 家企业签署合作备忘录",
+    "技术能力承接：AI 大模型与具身智能在 2023 年形成的技术基础在本段进入工程化与产业链匹配阶段",
+    "公众曝光度提升：2025-01 宇树科技机器人亮相央视春晚"
+   ],
+   "accelerator": [
+    "规模化量产的产能规划落地：智元上海临港工厂月均产能可达千台；宇树 2025 年计划量产超 5000 台；海外特斯拉 2025 年计划生产 Optimus 1 万台、1X Technologies 预计量产数千台、Figure AI 预计未来 4 年量产 10 万台",
+    "订单驱动机制形成：2025-07 之后智元、宇树中标中国移动人形双足机器人代工服务采购项目（合计 1.24 亿元，国内人形机器人市场首笔上亿大单），随后优必选中标觅亿（上海）汽车科技 9051 万元机器人设备采购项目，大订单总额超 2 亿元、远超此前行业全年订单规模",
+    "机制转换被市场叙事确认：卖方描述板块由「概念驱动」向「业绩驱动」过渡，2025 年被媒体定调为「人形机器人量产和商业化元年」",
+    "国产厂商在全球叙事中获得独立地位：宇树、智元等国产厂商的量产计划与中标事件，使「国产加速」成为独立于特斯拉叙事的第二条驱动线"
+   ],
+   "turning": [
+    "本包未在该段内识别到明确的转折催化，机制转换（预期→订单）方向为正而非转负",
+    "潜在风险（本包证据不足，仅作线索）：量产计划属厂商计划口径，本包未取得实际交付与收入确认数据；若实际交付显著低于计划，则存在预期修正风险",
+    "订单集中于少数买方与少数厂商（如中国移动、觅亿等），订单结构的可持续性本包无法评估"
+   ],
+   "ending": [
+    "本包不主张该段已结束；end 因证据采集边界（2025-09）而标为 UNKNOWN",
+    "ending 一栏仅记录采集边界与未切分边界两点"
+   ],
+   "provenance": "intake:R01-01/R01-HIEQ-007"
+  },
+  "RC-2024-RE-POLICY-517": {
+   "start": [
+    "中央层面定调：2024-04-30 政治局会议“消化存量房产、优化增量住房”+ 保交房",
+    "货币政策与地产金融政策：首付下限降至 15%/25%、取消全国层面房贷利率政策下限、公积金利率下调 0.25pct"
+   ],
+   "accelerator": [
+    "3000 亿元保障性住房再贷款（央行结构性工具直接投放）",
+    "四部委联合发布被市场解读为“力度空前”"
+   ],
+   "turning": [
+    "政策落地后销售与投资数据未改善，行业叙事回落"
+   ],
+   "ending": [
+    "2024 年全年新建商品房销售面积 -12.9%、开发投资 -10.6%（国家统计局 2025-01-17）"
+   ],
+   "provenance": "intake:R01-05/R01-FINRE-002"
+  },
+  "RC-2019-MIL-PARADE-70": {
+   "start": [
+    "国庆70周年阅兵预期（重大纪念事件的注意力驱动）"
+   ],
+   "accelerator": [
+    "阅兵准备期的官方信息与装备展示预期"
+   ],
+   "turning": [
+    "阅兵事件兑现（2019-10-01），事件驱动型叙事的注意力衰减"
+   ],
+   "ending": [
+    "阅兵结束后注意力迁移（复盘口径，日期不可考）"
+   ],
+   "provenance": "intake:R01-06/R01-MIL-003"
+  },
+  "RC-2025-MIL-PARADE-80": {
+   "start": [
+    "2025-06-24国新办官宣9月3日纪念大会与阅兵（Tier 1官方发布）"
+   ],
+   "accelerator": [
+    "2025-08-20国新办阅兵准备发布会（Tier 1）",
+    "券商归纳的复合叙事：阅兵 + 军贸 + 景气反转 + “十五五”",
+    "“参阅装备突出智能化”等新型作战力量叙事"
+   ],
+   "turning": [
+    "未知：本包未取得阅兵后的行情转折证据"
+   ],
+   "ending": [
+    "未知；不得把阅兵事件结束直接等同于Campaign结束"
+   ],
+   "provenance": "intake:R01-06/R01-MIL-004"
+  },
+  "RC-2017-MIL-MIXED-REFORM": {
+   "start": [
+    "2017-01-04中国兵器工业集团《关于发展混合所有制经济的指导意见（试行）》（26条、4家试点）",
+    "军工被列为2017年中央经济工作会议确定的七大重点改革行业之一",
+    "2017-01-20/21中船重工年度工作会议提出混合所有制改革随资产证券化在股票市场实现"
+   ],
+   "accelerator": [
+    "2017-01-22中共中央政治局决定设立中央军民融合发展委员会（最高层面统一领导）"
+   ],
+   "turning": [
+    "未知"
+   ],
+   "ending": [
+    "未知；2017-06-22国防科工局军民融合专项行动计划与2017-12国办意见属后续政策，晚于主窗口"
+   ],
+   "provenance": "intake:R01-06/R01-MIL-005"
+  },
+  "RC-2015-MIL-REFORM-BULL": {
+   "start": [
+    "军工改革与资产证券化预期（券商事后复盘：改革预期+低估值标的涨幅居前）",
+    "2015年3月军民融合发展上升为国家战略",
+    "★2013–2014年以来军工板块已持续跑赢沪深300（行情延续而非2015年新起）"
+   ],
+   "accelerator": [
+    "★2015年A股杠杆资金推动的全面牛市（市场Beta，无法分离）"
+   ],
+   "turning": [
+    "2015年6月中旬起A股系统性去杠杆"
+   ],
+   "ending": [
+    "★与A股系统性调整同步，军工自身机制层面的结束点不可考"
+   ],
+   "provenance": "intake:R01-06/R01-MIL-006"
+  },
+  "RC-2024-MIL-COMMERCIAL-SPACE": {
+   "start": [
+    "2024-08-06千帆星座首批18星入轨（低轨星座进入批量组网阶段）",
+    "2024、2025年国务院政府工作报告两次提出推动商业航天产业加快发展"
+   ],
+   "accelerator": [
+    "2025-10-24二十届四中全会与“十五五”建议提出加快建设航天强国、发展航空航天战略性新兴产业集群",
+    "2025-11国家航天局《推进商业航天高质量安全发展行动计划（2025—2027年）》+ 商业航天司设立",
+    "2025-12朱雀三号首飞入轨（可重复使用火箭技术验证）"
+   ],
+   "turning": [
+    "未知"
+   ],
+   "ending": [
+    "无结束证据（2025年末仍活跃）"
+   ],
+   "provenance": "intake:R01-06/R01-MIL-007"
+  }
+ }
+}

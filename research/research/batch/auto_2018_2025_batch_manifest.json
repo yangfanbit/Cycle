@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-09-24T00:53:41",
-  "source_commit": "c56e70fc428cc711bff7af27203f70953131425b",
+  "generated_at": "2026-10-07T21:28:42",
+  "source_commit": "01512655085776506d913bb7a390839eb5163f21",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -5873,6 +5873,166 @@
           "代表标的分批见顶：恒瑞医药 2020-12-25、药明康德/泰格医药 2021-07-01（Peak Window）",
           "2022 年创新药估值出清：CXO 估值自 2021 年中 103x 降至约 30x（估值杀，非业绩杀）",
           "2022-09/10 各自代表标的见低点；2022Q4 出现修复迹象，Theme Cycle End 未确认"
+        ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2023-PHARMA-GLP1",
+      "db_campaign_id": "C-2023-PHARMA-GLP1",
+      "year": 2023,
+      "rule_id": "rule_pharma_upgrade",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2023-09-08",
+      "peak_date_candidate": "2023-10-16",
+      "end_date_candidate": "2023-10-19",
+      "date_confidence": "medium",
+      "theme": "减重 / GLP-1",
+      "themes": [
+        {
+          "name": "医药健康",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "减重 / GLP-1",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": null,
+      "classification": "mixed",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-MED-06",
+        "E-MED-11",
+        "E-MED-10",
+        "E-MED-12",
+        "E-MED-07",
+        "E-MED-09",
+        "E-MED-08"
+      ],
+      "source_ids": [
+        "S-MED-07",
+        "S-MED-08"
+      ],
+      "independent_groups": [
+        "IG-CO-2023GLP1-HANYU",
+        "IG-MEDIA-2023GLP1-COOLDOWN",
+        "IG-MEDIA-2023GLP1-MKTCAP",
+        "IG-REG-2023GLP1-WARNING"
+      ],
+      "independent_group_count": 4,
+      "events": [
+        {
+          "event_id": "EV-MED-06",
+          "name": "A股减肥药概念集体上涨（上行段起点）",
+          "date": "2023-09-08",
+          "event_type": "market",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-MED-07",
+          "name": "翰宇药业披露 3000 万美元 GLP-1 多肽原料药海外合同",
+          "date": "2023-09-19",
+          "event_type": "company",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-MED-08",
+          "name": "司美格鲁肽三期临床提前终止（疗效达标）",
+          "date": "2023-10-10",
+          "event_type": "company",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-MED-09",
+          "name": "减肥药概念达顶点（Wind 指数 21 个交易日 +26.43%）",
+          "date": "2023-10-16",
+          "event_type": "market",
+          "role": "catalyst"
+        },
+        {
+          "event_id": "EV-MED-10",
+          "name": "康惠制药、百花医药、博瑞医药董事长收警示函或致歉",
+          "date": "2023-10-17",
+          "event_type": "policy",
+          "role": "catalyst"
+        }
+      ],
+      "securities": [
+        {
+          "security_id": "BORUI",
+          "name": "博瑞医药",
+          "ticker": "688166",
+          "exchange": "SH",
+          "role": "representative"
+        },
+        {
+          "security_id": "CHANGSHAN",
+          "name": "常山药业",
+          "ticker": "300255",
+          "exchange": "SZ",
+          "role": "leader"
+        },
+        {
+          "security_id": "HANYU",
+          "name": "翰宇药业",
+          "ticker": "300199",
+          "exchange": "SZ",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "R02-01 Intake Package（2026-10-07）｜审查：ThreeC Agent 角色，R02-PHARMA-001 = ACCEPT_WITH_CHANGES（来源改级 2 条、日期锚点证据基础调整，日期数值未改）",
+      "conflict": null,
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-09-08",
+          "end": "2023-10-16",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2023-10-16",
+          "end": "2023-10-16",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2023-10-17",
+          "end": "2023-10-19",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "美股 GLP-1 双寡头（诺和诺德司美格鲁肽、礼来替尔泊肽）销售与临床数据超预期，市值创历史新高，外溢至 A 股",
+          "摩根大通 9 月上旬上调减重药市场空间预测（2032 年 710 亿美元），形成叙事催化"
+        ],
+        "accelerator": [
+          "海外供应短缺与多国限制使用（比利时、英国、德国），强化『需求旺盛』叙事",
+          "公司侧可验证订单出现：翰宇药业 2023-09-19 披露 3000 万美元 GLP-1 多肽原料药海外合同",
+          "10-10 司美格鲁肽三期临床提前终止（疗效达标）形成二次催化",
+          "国际学术年会（ESMO 10-20~24）临近，抬升创新药整体预期"
+        ],
+        "turning": [
+          "监管介入：康惠制药、百花医药、博瑞医药董事长于 10-16~17 收到证监局警示函或致歉，直接冲击『蹭热点』标的",
+          "叙事与基本面脱节：多只涨幅居前标的**自身并未开展减肥药研发**（公司风险提示已明确）",
+          "涨幅结构集中在上游原料药与概念标的，缺乏业绩支撑"
+        ],
+        "ending": [
+          "10-17/10-18 指数连续收跌，10-18 逾八成成分股下跌，行情进入降温",
+          "本包未取得该段后续完整走势来源，不推断其最终收敛方式"
         ]
       }
     },
