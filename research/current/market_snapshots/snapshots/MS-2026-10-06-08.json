@@ -1,7 +1,7 @@
 {
   "candidates_source": {
-    "artifact": "research/research/reports/structural_analogy_explanations_v0_7.json",
-    "artifact_version": "0.7",
+    "artifact": "research/research/reports/structural_analogy_explanations_v0_9.json",
+    "artifact_version": "0.9",
     "mode": "INDEX_ONLY —— 本快照只存 identity / structural_status / strict_structural_supported；其余解释字段一律回指该 artifact，不复制。",
     "reader_must": "读取方必须先校验该 artifact 的 rule_set_version 与本字段一致，再按 resolve_by 合并。",
     "resolve_by": "identity.historical_cycle_id",
@@ -5909,19 +5909,19 @@
     "ai_assisted": true,
     "generated_by": "ai-offline",
     "research_round": "ThreeC 1.1 Phase 1.2",
-    "reviewed_at": "2026-10-07T13:40:00+00:00",
+    "reviewed_at": "2026-10-07T14:45:00+00:00",
     "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
-    "superseded_by": "MS-2026-10-06-07",
-    "supersedes": "MS-2026-10-06-05"
+    "superseded_by": null,
+    "supersedes": "MS-2026-10-06-07"
   },
   "research_context": {
     "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
     "known_limitations": [
       "market_regime 依赖离线填报，无自动化行情源。",
       "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
-      "历史宇宙随 R02-01 扩容（79→80）；研究对象仍为 6 个。"
+      "汽车候选证据更正 + 事件重派生（SA v0_9）。"
     ],
     "research_method": "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
     "research_question": "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
@@ -5943,8 +5943,16 @@
       ],
       "evidence_sequence": [
         {
-          "date": "2025-09-30",
+          "date": "2023-11-17",
           "type": "policy"
+        },
+        {
+          "date": "2025-09-12",
+          "type": "policy"
+        },
+        {
+          "date": "2025-09-22",
+          "type": "company"
         },
         {
           "date": "2026-05-26",
@@ -5953,14 +5961,6 @@
         {
           "date": "2026-06-30",
           "type": "industry"
-        },
-        {
-          "date": "2026-07-17",
-          "type": "policy"
-        },
-        {
-          "date": "2026-07-19",
-          "type": "company"
         },
         {
           "date": "2026-07-30",
@@ -6226,7 +6226,7 @@
     }
   ],
   "snapshot_date": "2026-10-06",
-  "snapshot_id": "MS-2026-10-06-06",
-  "status": "ARCHIVED",
-  "timestamp": "2026-10-07T21:40:00+08:00"
+  "snapshot_id": "MS-2026-10-06-08",
+  "status": "CANONICAL",
+  "timestamp": "2026-10-07T22:45:00+08:00"
 }
