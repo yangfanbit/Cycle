@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentSnapshotSection } from './components/CurrentSnapshot/CurrentSnapshotSection';
+import { DirectionLookupSection } from './components/DirectionLookup/DirectionLookupSection';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import { HistoricalSimilarPhase } from './components/HistoricalSimilarPhase/HistoricalSimilarPhase';
@@ -196,6 +197,18 @@ export default function App() {
           <p className="drill-hint">
             以下为研究明细与导航入口，默认收起 —— 首页只保留上面的季节性地图；点开即用，能力不变。
           </p>
+
+          {/* ★★ 方向查询（ThreeC 1.2 · Usage-Driven）：**唯一的用户驱动入口**。
+              两次真实使用测试暴露：全库只有 5 个当前对象、历史有 52 个 Campaign，
+              用户关心的方向大概率不在这 5 个里 —— 因此必须先让用户能自己问。
+              语义边界：这是**查找**，不是结构对应（命中主题名 ≠ Structural Correspondence）。 */}
+          {!verifiedMode && (
+            <DirectionLookupSection
+              source={dataSource}
+              dataset={currentCandidates}
+              onOpenHistoricalCase={(id) => setSelection({ kind: 'campaign', id })}
+            />
+          )}
 
           {/* ⓪ 本期研究快照（Phase 1.3）：月度节奏下用户最关心「跟上期比变了什么」，
               因此放在钻取区第一位。默认只展示 CANONICAL；?snapshot=draft 可预览未签发内容。 */}
