@@ -25,7 +25,11 @@ import sqlite3
 import sys
 from datetime import date
 
-ROOT = r"D:/@AW/投资/ThreeC"
+# ★ 可移植：由本文件位置推导仓库根。
+#   原为写死的 Windows 路径 `D:/@AW/投资/ThreeC` —— 仓库迁到 macOS 后无法运行，
+#   使整条 Research 管线在本机不可复现（输出逐字节不变，仅路径来源改变）。
+import os as _os
+ROOT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", ".."))
 REP = f"{ROOT}/research/research/reports"
 CHECK = "--check" in sys.argv
 OUT_JSON = f"{REP}/structural_analogy_feasibility_v0_3.json"
