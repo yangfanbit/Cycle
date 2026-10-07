@@ -168,6 +168,12 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
         {
           objectId: 'CC-A',
           resolved: true,
+          profile: {
+            currentPhase: 'THEME_FORMING',
+            mechanismDrivers: ['POLICY_DRIVEN', 'TECH_BREAKTHROUGH'],
+            evidenceCategories: ['POLICY', 'INDUSTRY'],
+            structuralGaps: ['candidate_side_2026_market_state_not_available'],
+          },
           details: [
             {
               historicalCycleId: 'C-2023-AD',
@@ -216,9 +222,30 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
     expect(h).toContain('机制轴无交集');
   });
 
+  it('★ 历史对象可点击（接通 → 打开该历史案例）', () => {
+    const h = renderToStaticMarkup(
+      <CurrentSnapshotBody view={withDetails()} onOpenHistoricalCase={() => {}} />,
+    );
+    expect(h).toContain('<button');
+    expect(h).toContain('打开该历史案例');
+    // 未传回调时**不渲染按钮**（不给用户假出口）
+    const noCb = html(withDetails());
+    expect(noCb).not.toContain('打开该历史案例');
+  });
+
+  it('★ 展示「还缺什么」（structuralGaps）—— 继续研究的线索', () => {
+    const h = html(withDetails());
+    expect(h).toContain('当前驱动机制');
+    expect(h).toContain('POLICY_DRIVEN');
+    expect(h).toContain('当前证据类别');
+    expect(h).toContain('还缺什么');
+    expect(h).toContain('candidate_side_2026_market_state_not_available');
+    expect(h).toContain('机制轴 ≠ 证据类别');
+  });
+
   it('★ 未解析时明确说「未解析」，且不等于「没有对应」', () => {
     const h = html(
-      view({ detailsByObject: [{ objectId: 'CC-A', resolved: false, details: [] }] }),
+      view({ detailsByObject: [{ objectId: 'CC-A', resolved: false, details: [], profile: null }] }),
     );
     expect(h).toContain('未解析');
     expect(h).toContain('不等于');

@@ -204,7 +204,10 @@ export default function App() {
               title="本期研究快照（Current Snapshot）"
               note="跟上期比变了什么 · 市场环境 / 研究对象 / 历史结构候选"
             >
-              <CurrentSnapshotSection previewMode={snapshotPreviewEnabled()} />
+              <CurrentSnapshotSection
+                previewMode={snapshotPreviewEnabled()}
+                onOpenHistoricalCase={(id) => setSelection({ kind: 'campaign', id })}
+              />
             </DrillSection>
           )}
 

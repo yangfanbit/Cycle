@@ -88,7 +88,13 @@ function statusCounts(cands: SnapshotHistoricalCandidate[]): [string, number][] 
  * - **「无有效对应」默认收起** —— 数量大（常 40+），且**它同样重要**，所以给入口、给说明，不隐藏。
  * - 未解析时**明确说「未解析」**，而不是显示空 —— 空会被误读成「没有对应」。
  */
-function CandidateList({ details }: { details?: ObjectCandidateDetails }) {
+function CandidateList({
+  details,
+  onOpenHistoricalCase,
+}: {
+  details?: ObjectCandidateDetails;
+  onOpenHistoricalCase?: (campaignId: string) => void;
+}) {
   if (!details) return null;
   if (!details.resolved) {
     return (
@@ -105,7 +111,19 @@ function CandidateList({ details }: { details?: ObjectCandidateDetails }) {
   const renderItem = (d: (typeof details.details)[number]) => (
     <li key={d.historicalCycleId} className="cs-cand">
       <div className="cs-cand-head">
-        <span className="cs-cand-id">{d.historicalCycleId}</span>
+        {onOpenHistoricalCase && d.historicalObjectKind === 'campaign' ? (
+          // ★ 接通：点历史对象 → 打开该历史案例（看看它当年到底发生了什么）
+          <button
+            type="button"
+            className="cs-cand-id cs-cand-link"
+            onClick={() => onOpenHistoricalCase(d.historicalCycleId)}
+            title="打开该历史案例"
+          >
+            {d.historicalCycleId}
+          </button>
+        ) : (
+          <span className="cs-cand-id">{d.historicalCycleId}</span>
+        )}
         <span className={`cs-cand-status cs-st-${d.status.toLowerCase()}`}>{d.statusLabel}</span>
         {d.themeRelationLabel && <span className="cs-cand-theme">{d.themeRelationLabel}</span>}
       </div>
@@ -290,7 +308,14 @@ function DiffSummary({ diff, previous }: { diff: SnapshotDiff | null; previous: 
  * 异步容器在 SSR 下只会渲染「载入中」。把渲染逻辑做成**同步纯函数**，
  * 才能真正测到「无对应」等关键呈现。
  */
-export function CurrentSnapshotBody({ view }: { view: CurrentSnapshotView }) {
+export function CurrentSnapshotBody({
+  view,
+  onOpenHistoricalCase,
+}: {
+  view: CurrentSnapshotView;
+  /** ★ 接通：点历史对象 → 打开该历史案例 */
+  onOpenHistoricalCase?: (campaignId: string) => void;
+}) {
   if (view.state === 'empty') {
     return (
       <section className="cs-sec cs-empty" aria-label="本期研究快照">
@@ -391,7 +416,38 @@ export function CurrentSnapshotBody({ view }: { view: CurrentSnapshotView }) {
                     {/* ★ P0「接通」：计数 → 可看的明细（含「为什么对应 / 哪里不同」） */}
                     <CandidateList
                       details={view.detailsByObject.find((d) => d.objectId === o.object_id)}
+                      onOpenHistoricalCase={onOpenHistoricalCase}
                     />
+
+                    {/* ★ 当前结构画像（来自冻结 SA）：含 structuralGaps —— 即「还缺什么」，
+                        这正是工作流最后一步「继续研究」的线索。 */}
+                    {(() => {
+                      const p = view.detailsByObject.find((d) => d.objectId === o.object_id)?.profile;
+                      if (!p) return null;
+                      return (
+                        <div className="cs-profile">
+                          {p.mechanismDrivers.length > 0 && (
+                            <p className="cs-dim">
+                              <strong>当前驱动机制</strong>：{p.mechanismDrivers.join(' / ')}
+                              <span className="cs-profile-note">（机制轴 ≠ 证据类别）</span>
+                            </p>
+                          )}
+                          {p.evidenceCategories.length > 0 && (
+                            <p className="cs-dim">
+                              <strong>当前证据类别</strong>：{p.evidenceCategories.join(' / ')}
+                            </p>
+                          )}
+                          {p.structuralGaps.length > 0 && (
+                            <p className="cs-dim cs-gaps">
+                              <strong>还缺什么（结构缺口）</strong>
+                              {p.structuralGaps.map((g, i) => (
+                                <span key={i}>{g}</span>
+                              ))}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })()}
 
                     {noValid > 0 && (
                       <p className="cs-no-valid">
@@ -440,7 +496,13 @@ export function CurrentSnapshotBody({ view }: { view: CurrentSnapshotView }) {
 /**
  * **异步容器** —— 负责载入快照（index 静态、快照按需 lazy），把 ViewModel 交给纯展示层。
  */
-export function CurrentSnapshotSection({ previewMode }: { previewMode: boolean }) {
+export function CurrentSnapshotSection({
+  previewMode,
+  onOpenHistoricalCase,
+}: {
+  previewMode: boolean;
+  onOpenHistoricalCase?: (campaignId: string) => void;
+}) {
   const [view, setView] = useState<CurrentSnapshotView | null>(null);
 
   useEffect(() => {
@@ -454,5 +516,5 @@ export function CurrentSnapshotSection({ previewMode }: { previewMode: boolean }
   }, [previewMode]);
 
   if (!view) return <p className="cs-dim">正在载入本期快照…</p>;
-  return <CurrentSnapshotBody view={view} />;
+  return <CurrentSnapshotBody view={view} onOpenHistoricalCase={onOpenHistoricalCase} />;
 }

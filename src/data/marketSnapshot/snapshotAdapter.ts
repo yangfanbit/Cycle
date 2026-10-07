@@ -91,6 +91,13 @@ export interface ObjectCandidateDetails {
   objectId: string;
   resolved: boolean;
   details: CandidateDetail[];
+  /** ★ 该对象的「当前结构画像」（来自冻结 SA）—— 含 `structuralGaps`，即「还缺什么」 */
+  profile: {
+    currentPhase: string | null;
+    mechanismDrivers: string[];
+    evidenceCategories: string[];
+    structuralGaps: string[];
+  } | null;
 }
 
 export interface CurrentSnapshotView {
@@ -145,6 +152,7 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
       objectId: o.object_id,
       resolved: false,
       details: [] as CandidateDetail[],
+      profile: null,
     }));
 
   try {
@@ -158,7 +166,7 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
 
     return (snapshot.research_objects ?? []).map((o) => {
       const cand = structuralAnalogyForCandidate(ds, o.object_id);
-      if (!cand) return { objectId: o.object_id, resolved: false, details: [] };
+      if (!cand) return { objectId: o.object_id, resolved: false, details: [], profile: null };
       const details: CandidateDetail[] = cand.explanations.map((e) => {
         const tr = e.themeRelation?.value ?? null;
         return {
@@ -182,7 +190,16 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
           whyNotSimilar: e.whyNotSimilar ?? [],
         };
       });
-      return { objectId: o.object_id, resolved: true, details };
+      const p = cand.currentStructuralProfile;
+      const profile = p
+        ? {
+            currentPhase: p.currentPhase,
+            mechanismDrivers: p.mechanismDrivers ?? [],
+            evidenceCategories: p.evidenceCategories ?? [],
+            structuralGaps: p.structuralGaps ?? [],
+          }
+        : null;
+      return { objectId: o.object_id, resolved: true, details, profile };
     });
   } catch {
     return fallback();
