@@ -243,6 +243,16 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
     expect(h).toContain('机制轴 ≠ 证据类别');
   });
 
+  it('★ 研究对象可点击（接通 → 跳到它的结构对应详情）', () => {
+    const h = renderToStaticMarkup(
+      <CurrentSnapshotBody view={withDetails()} onOpenObject={() => {}} />,
+    );
+    expect(h).toContain('跳到该对象的结构对应详情');
+    expect(h).toContain('<button');
+    // 未传回调时**不渲染按钮**（不给用户假出口）
+    expect(html(withDetails())).not.toContain('跳到该对象的结构对应详情');
+  });
+
   it('★ 未解析时明确说「未解析」，且不等于「没有对应」', () => {
     const h = html(
       view({ detailsByObject: [{ objectId: 'CC-A', resolved: false, details: [], profile: null }] }),

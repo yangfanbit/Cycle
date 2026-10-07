@@ -40,6 +40,8 @@ interface CurrentTimeLensProps {
    * 数据集为空时显示诚实空态。`?candidates=example` 时注入**示例 fixture**（UI 会显式标注「非真实研究数据」）。
    */
   currentCandidates?: CurrentCandidateDataset | null;
+  /** ★ 接通：外部请求聚焦的候选（如「本期快照」的研究对象）→ 就地展开该候选 */
+  focusCandidateId?: string | null;
 }
 
 /**
@@ -61,6 +63,7 @@ export function CurrentTimeLens({
   onSelect,
   onOpenHistoricalCase,
   currentCandidates,
+  focusCandidateId,
 }: CurrentTimeLensProps) {
   const lens = useMemo(() => currentTimeLens(dataSource, today), [dataSource, today]);
   // v2 三层：A. A股整体环境 / B. 当前 Theme · Theme Cycle / C. Research Attention
@@ -117,6 +120,7 @@ export function CurrentTimeLens({
         onSelect={onSelect}
         dataSource={dataSource}
         onOpenHistoricalCase={onOpenHistoricalCase}
+        initialOpenId={focusCandidateId}
       />
 
       {/* ============ Historical Cycle Map（周级时间窗口浏览 · v0.1） ============

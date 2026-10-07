@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentSnapshotSection } from './components/CurrentSnapshot/CurrentSnapshotSection';
 import { DirectionLookupSection } from './components/DirectionLookup/DirectionLookupSection';
@@ -105,6 +105,24 @@ export default function App() {
   const [selection, setSelection] = useState<Selection>(null);
   // 从 Structural Analogy 进入 Historical Case 时携带的轻量上下文（原样消费，不重算）
   const [analogyContext, setAnalogyContext] = useState<HistoricalCaseAnalogyContext | null>(null);
+
+  /**
+   * ★ 接通（ThreeC 1.2 · P0 最后一块）：从「本期研究快照」的研究对象
+   * 跳到它的**结构对应详情**（Current Time Lens 里的冻结 SA 区块）。
+   *
+   * 做法：设置 focusCandidateId（由 CurrentTimeLens 透传给候选区块就地展开），
+   * 并展开承载它的原生 `<details>` 后滚过去。
+   * 只做导航，**不做任何判定**。
+   */
+  const [focusCandidateId, setFocusCandidateId] = useState<string | null>(null);
+  const focusObject = useCallback((objectId: string) => {
+    setFocusCandidateId(objectId);
+    const el = document.getElementById('drill-current-time-lens') as HTMLDetailsElement | null;
+    if (el) {
+      el.open = true;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
 
   const yearData = useMemo(() => dataSource.yearData(year), [dataSource, year]);
 
@@ -220,6 +238,7 @@ export default function App() {
               <CurrentSnapshotSection
                 previewMode={snapshotPreviewEnabled()}
                 onOpenHistoricalCase={(id) => setSelection({ kind: 'campaign', id })}
+                onOpenObject={focusObject}
               />
             </DrillSection>
           )}
@@ -266,6 +285,7 @@ export default function App() {
           <DrillSection
             title="当前时间研究导航（Current Time Lens）"
             note="A股整体环境 / Theme Cycle / Research Attention"
+            id="drill-current-time-lens"
           >
             <CurrentTimeLens
               dataSource={dataSource}
@@ -277,6 +297,7 @@ export default function App() {
                 setSelection(sel);
               }}
               currentCandidates={currentCandidates}
+              focusCandidateId={focusCandidateId}
             />
           </DrillSection>
 
@@ -406,13 +427,16 @@ function DrillSection({
   title,
   note,
   children,
+  id,
 }: {
   title: string;
   note?: string;
   children: ReactNode;
+  /** 供「从别处跳到本区块」使用（原生 `<details>`，用 id 定位后展开） */
+  id?: string;
 }) {
   return (
-    <details className="drill-item">
+    <details className="drill-item" id={id}>
       <summary className="drill-summary">
         <span className="drill-title">{title}</span>
         {note ? <span className="drill-note">{note}</span> : null}

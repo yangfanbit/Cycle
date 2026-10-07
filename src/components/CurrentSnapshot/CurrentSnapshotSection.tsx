@@ -311,10 +311,13 @@ function DiffSummary({ diff, previous }: { diff: SnapshotDiff | null; previous: 
 export function CurrentSnapshotBody({
   view,
   onOpenHistoricalCase,
+  onOpenObject,
 }: {
   view: CurrentSnapshotView;
   /** ★ 接通：点历史对象 → 打开该历史案例 */
   onOpenHistoricalCase?: (campaignId: string) => void;
+  /** ★ 接通：点研究对象 → 跳到它的结构对应详情 */
+  onOpenObject?: (objectId: string) => void;
 }) {
   if (view.state === 'empty') {
     return (
@@ -385,7 +388,19 @@ export function CurrentSnapshotBody({
             return (
               <li key={o.object_id} className="cs-obj">
                 <div className="cs-obj-head">
-                  <span className="cs-obj-name">{o.display_name}</span>
+                  {onOpenObject ? (
+                    // ★ 接通：点研究对象 → 跳到它的结构对应详情（展开 Current Time Lens 并就地展开）
+                    <button
+                      type="button"
+                      className="cs-obj-name cs-obj-link"
+                      onClick={() => onOpenObject(o.object_id)}
+                      title="跳到该对象的结构对应详情"
+                    >
+                      {o.display_name}
+                    </button>
+                  ) : (
+                    <span className="cs-obj-name">{o.display_name}</span>
+                  )}
                   <span className="cs-obj-id">{o.object_id}</span>
                   <span className="cs-obj-phase">{PHASE_LABEL[o.declared_phase] ?? o.declared_phase}</span>
                   <span className="cs-obj-res">{RESOLUTION_LABEL[o.resolution_state] ?? o.resolution_state}</span>
@@ -499,9 +514,11 @@ export function CurrentSnapshotBody({
 export function CurrentSnapshotSection({
   previewMode,
   onOpenHistoricalCase,
+  onOpenObject,
 }: {
   previewMode: boolean;
   onOpenHistoricalCase?: (campaignId: string) => void;
+  onOpenObject?: (objectId: string) => void;
 }) {
   const [view, setView] = useState<CurrentSnapshotView | null>(null);
 
@@ -516,5 +533,11 @@ export function CurrentSnapshotSection({
   }, [previewMode]);
 
   if (!view) return <p className="cs-dim">正在载入本期快照…</p>;
-  return <CurrentSnapshotBody view={view} onOpenHistoricalCase={onOpenHistoricalCase} />;
+  return (
+    <CurrentSnapshotBody
+      view={view}
+      onOpenHistoricalCase={onOpenHistoricalCase}
+      onOpenObject={onOpenObject}
+    />
+  );
 }

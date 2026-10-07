@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Selection } from '../Timeline/Timeline';
 import {
   type CurrentCandidateListView,
@@ -62,6 +62,12 @@ export function CurrentCandidateSection({
   dataSource?: TimelineDataSource | null;
 }) {
   const [openId, setOpenId] = useState<string | null>(initialOpenId);
+
+  // ★ 接通：外部（如「本期快照」的研究对象）请求聚焦某候选时就地展开。
+  //   仅当值**变化**时生效 —— 不覆盖用户自己手动折叠的选择。
+  useEffect(() => {
+    if (initialOpenId) setOpenId(initialOpenId);
+  }, [initialOpenId]);
 
   // 历史对象显示名：campaign_id → title（**纯查找，不做判定**）
   const historicalLabelOf = useMemo(() => {
