@@ -985,7 +985,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 3
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1017,8 +1017,16 @@
     },
     {
      "security_id": "LANCY",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 446,
+     "first_date": "2020-04-02",
+     "last_date": "2022-01-28",
+     "peak_date": "2021-05-31",
+     "peak_ret_pct": 1176.2,
+     "trough_date": "2020-04-29",
+     "trough_ret_pct": -14.4,
+     "final_ret_pct": 345.8,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "ROBAM",
@@ -1034,7 +1042,7 @@
      "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2021-07-07",
+   "median_peak_date": "2021-07-01",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2020-FIN-BANK-CREDIT": {
@@ -1093,7 +1101,7 @@
    },
    "coverage": {
     "securities": 5,
-    "with_data": 2
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1125,13 +1133,29 @@
     },
     {
      "security_id": "KINCO",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 536,
+     "first_date": "2020-11-12",
+     "last_date": "2023-01-30",
+     "peak_date": "2020-11-17",
+     "peak_ret_pct": 32.0,
+     "trough_date": "2022-04-26",
+     "trough_ret_pct": -67.3,
+     "final_ret_pct": -33.8,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "LEADERDRIVE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 584,
+     "first_date": "2020-08-28",
+     "last_date": "2023-01-30",
+     "peak_date": "2022-07-29",
+     "peak_ret_pct": 385.5,
+     "trough_date": "2020-08-31",
+     "trough_ret_pct": -7.0,
+     "final_ret_pct": 203.7,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "TOPSTAR",
@@ -2531,31 +2555,31 @@
     {
      "security_id": "CHINAPET",
      "status": "OK",
-     "rows": 43,
+     "rows": 59,
      "first_date": "2022-11-02",
-     "last_date": "2022-12-30",
-     "peak_date": "2022-12-14",
-     "peak_ret_pct": 10.7,
+     "last_date": "2023-01-31",
+     "peak_date": "2023-01-30",
+     "peak_ret_pct": 11.4,
      "trough_date": "2022-11-03",
      "trough_ret_pct": -1.2,
-     "final_ret_pct": 4.5,
+     "final_ret_pct": 10.9,
      "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "ECOVACS",
      "status": "OK",
-     "rows": 43,
+     "rows": 59,
      "first_date": "2022-11-02",
-     "last_date": "2022-12-30",
-     "peak_date": "2022-12-09",
-     "peak_ret_pct": 26.4,
+     "last_date": "2023-01-31",
+     "peak_date": "2023-01-16",
+     "peak_ret_pct": 34.5,
      "trough_date": "2022-11-10",
      "trough_ret_pct": -1.5,
-     "final_ret_pct": 9.4,
+     "final_ret_pct": 31.6,
      "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2022-12-09",
+   "median_peak_date": "2023-01-16",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2023-FIN-SOE-VALUATION": {
@@ -2640,7 +2664,7 @@
    },
    "coverage": {
     "securities": 5,
-    "with_data": 1
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2651,13 +2675,29 @@
     },
     {
      "security_id": "KINCO",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 205,
+     "first_date": "2023-03-02",
+     "last_date": "2023-12-29",
+     "peak_date": "2023-06-30",
+     "peak_ret_pct": 105.5,
+     "trough_date": "2023-05-12",
+     "trough_ret_pct": -20.7,
+     "final_ret_pct": 42.5,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "LEADERDRIVE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 205,
+     "first_date": "2023-03-02",
+     "last_date": "2023-12-29",
+     "peak_date": "2023-06-20",
+     "peak_ret_pct": 38.5,
+     "trough_date": "2023-03-23",
+     "trough_ret_pct": -16.9,
+     "final_ret_pct": 26.2,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "LEADSHINE",
@@ -2678,7 +2718,7 @@
      "rows": 0
     }
    ],
-   "median_peak_date": "2023-03-06",
+   "median_peak_date": "2023-06-20",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2023-HIEQ-ROBOT-PLUS": {
@@ -2712,15 +2752,15 @@
     {
      "security_id": "SHUANGHUAN",
      "status": "OK",
-     "rows": 43,
+     "rows": 59,
      "first_date": "2022-11-21",
-     "last_date": "2023-01-19",
-     "peak_date": "2023-01-12",
-     "peak_ret_pct": 0.0,
+     "last_date": "2023-02-17",
+     "peak_date": "2023-02-07",
+     "peak_ret_pct": 12.2,
      "trough_date": "2022-12-28",
      "trough_ret_pct": -15.2,
-     "final_ret_pct": -0.0,
-     "peak_verdict": "NEAR"
+     "final_ret_pct": -0.9,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "TECHLONG",
@@ -2730,18 +2770,18 @@
     {
      "security_id": "XINBANG",
      "status": "OK",
-     "rows": 43,
+     "rows": 59,
      "first_date": "2022-11-21",
-     "last_date": "2023-01-19",
+     "last_date": "2023-02-17",
      "peak_date": "2022-12-16",
      "peak_ret_pct": 37.0,
      "trough_date": "2022-11-23",
      "trough_ret_pct": -12.0,
-     "final_ret_pct": 4.9,
+     "final_ret_pct": 7.3,
      "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2023-01-12",
+   "median_peak_date": "2023-01-19",
    "median_peak_verdict": "NEAR"
   },
   "C-2023-PHARMA-GLP1": {
@@ -2813,7 +2853,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 3
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2845,8 +2885,16 @@
     },
     {
      "security_id": "LANCY",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 476,
+     "first_date": "2024-01-15",
+     "last_date": "2025-12-31",
+     "peak_date": "2025-11-19",
+     "peak_ret_pct": 25.2,
+     "trough_date": "2024-09-18",
+     "trough_ret_pct": -40.2,
+     "final_ret_pct": 7.3,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "ROBAM",
@@ -2883,40 +2931,40 @@
     {
      "security_id": "ABC",
      "status": "OK",
-     "rows": 42,
+     "rows": 64,
      "first_date": "2023-11-02",
-     "last_date": "2023-12-29",
-     "peak_date": "2023-12-27",
-     "peak_ret_pct": 1.0,
+     "last_date": "2024-01-31",
+     "peak_date": "2024-01-29",
+     "peak_ret_pct": 8.5,
      "trough_date": "2023-12-06",
      "trough_ret_pct": -4.4,
-     "final_ret_pct": -0.7,
+     "final_ret_pct": 7.8,
      "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "CMB",
      "status": "OK",
-     "rows": 42,
+     "rows": 64,
      "first_date": "2023-11-02",
-     "last_date": "2023-12-29",
-     "peak_date": "2023-11-06",
-     "peak_ret_pct": 1.9,
+     "last_date": "2024-01-31",
+     "peak_date": "2024-01-29",
+     "peak_ret_pct": 2.7,
      "trough_date": "2023-12-14",
      "trough_ret_pct": -14.8,
-     "final_ret_pct": -11.6,
+     "final_ret_pct": 0.1,
      "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "CNCB",
      "status": "OK",
-     "rows": 42,
+     "rows": 64,
      "first_date": "2023-11-02",
-     "last_date": "2023-12-29",
-     "peak_date": "2023-11-02",
-     "peak_ret_pct": 0.0,
+     "last_date": "2024-01-31",
+     "peak_date": "2024-01-29",
+     "peak_ret_pct": 18.3,
      "trough_date": "2023-12-06",
      "trough_ret_pct": -5.9,
-     "final_ret_pct": -4.7,
+     "final_ret_pct": 17.1,
      "peak_verdict": "UNKNOWN"
     },
     {
@@ -2933,7 +2981,7 @@
      "peak_verdict": "UNKNOWN"
     }
    ],
-   "median_peak_date": "2023-11-06",
+   "median_peak_date": "2024-01-29",
    "median_peak_verdict": "UNKNOWN"
   },
   "C-2024-FIN-BROKER-POLICY": {
@@ -3012,53 +3060,53 @@
     {
      "security_id": "CFGOLD",
      "status": "OK",
-     "rows": 43,
+     "rows": 58,
      "first_date": "2023-12-04",
-     "last_date": "2024-02-01",
+     "last_date": "2024-03-01",
      "peak_date": "2023-12-04",
      "peak_ret_pct": 0.0,
-     "trough_date": "2024-01-31",
-     "trough_ret_pct": -20.0,
-     "final_ret_pct": -19.9,
+     "trough_date": "2024-02-05",
+     "trough_ret_pct": -21.7,
+     "final_ret_pct": -11.0,
      "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "SDGOLD",
      "status": "OK",
-     "rows": 43,
+     "rows": 58,
      "first_date": "2023-12-04",
-     "last_date": "2024-02-01",
+     "last_date": "2024-03-01",
      "peak_date": "2023-12-04",
      "peak_ret_pct": 0.0,
      "trough_date": "2024-01-22",
      "trough_ret_pct": -17.9,
-     "final_ret_pct": -15.9,
+     "final_ret_pct": -6.7,
      "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "ZIJIN",
      "status": "OK",
-     "rows": 43,
+     "rows": 58,
      "first_date": "2023-12-04",
-     "last_date": "2024-02-01",
-     "peak_date": "2024-01-03",
-     "peak_ret_pct": 1.7,
+     "last_date": "2024-03-01",
+     "peak_date": "2024-02-23",
+     "peak_ret_pct": 10.7,
      "trough_date": "2023-12-13",
      "trough_ret_pct": -8.9,
-     "final_ret_pct": -2.0,
+     "final_ret_pct": 8.4,
      "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "ZJGOLD",
      "status": "OK",
-     "rows": 43,
+     "rows": 58,
      "first_date": "2023-12-04",
-     "last_date": "2024-02-01",
+     "last_date": "2024-03-01",
      "peak_date": "2023-12-04",
      "peak_ret_pct": 0.0,
      "trough_date": "2024-01-22",
      "trough_ret_pct": -23.2,
-     "final_ret_pct": -15.2,
+     "final_ret_pct": -0.4,
      "peak_verdict": "UNKNOWN"
     }
    ],
@@ -3138,27 +3186,27 @@
     {
      "security_id": "BIWIN",
      "status": "OK",
-     "rows": 41,
+     "rows": 58,
      "first_date": "2024-07-26",
-     "last_date": "2024-09-24",
-     "peak_date": "2024-08-01",
-     "peak_ret_pct": 8.2,
+     "last_date": "2024-10-24",
+     "peak_date": "2024-10-08",
+     "peak_ret_pct": 39.1,
      "trough_date": "2024-09-23",
      "trough_ret_pct": -23.3,
-     "final_ret_pct": -16.8,
+     "final_ret_pct": 26.9,
      "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "CAMBRICON",
      "status": "OK",
-     "rows": 41,
+     "rows": 58,
      "first_date": "2024-07-26",
-     "last_date": "2024-09-24",
-     "peak_date": "2024-07-31",
-     "peak_ret_pct": 5.3,
+     "last_date": "2024-10-24",
+     "peak_date": "2024-10-21",
+     "peak_ret_pct": 77.5,
      "trough_date": "2024-09-05",
      "trough_ret_pct": -17.6,
-     "final_ret_pct": -11.6,
+     "final_ret_pct": 70.0,
      "peak_verdict": "DIVERGENT"
     },
     {
@@ -3177,18 +3225,18 @@
     {
      "security_id": "LONGYS",
      "status": "OK",
-     "rows": 41,
+     "rows": 58,
      "first_date": "2024-07-26",
-     "last_date": "2024-09-24",
-     "peak_date": "2024-07-31",
-     "peak_ret_pct": 4.1,
+     "last_date": "2024-10-24",
+     "peak_date": "2024-10-08",
+     "peak_ret_pct": 32.6,
      "trough_date": "2024-09-23",
      "trough_ret_pct": -21.7,
-     "final_ret_pct": -19.8,
+     "final_ret_pct": 15.6,
      "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2024-07-31",
+   "median_peak_date": "2024-10-08",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2024-V2X": {
@@ -3264,40 +3312,40 @@
     {
      "security_id": "CHINALIFE",
      "status": "OK",
-     "rows": 42,
+     "rows": 60,
      "first_date": "2024-11-04",
-     "last_date": "2024-12-31",
+     "last_date": "2025-01-27",
      "peak_date": "2024-11-07",
      "peak_ret_pct": 15.1,
-     "trough_date": "2024-11-25",
-     "trough_ret_pct": -4.1,
-     "final_ret_pct": -1.7,
+     "trough_date": "2025-01-13",
+     "trough_ret_pct": -12.6,
+     "final_ret_pct": -4.9,
      "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "NCI",
      "status": "OK",
-     "rows": 42,
+     "rows": 60,
      "first_date": "2024-11-04",
-     "last_date": "2024-12-31",
+     "last_date": "2025-01-27",
      "peak_date": "2024-11-07",
      "peak_ret_pct": 19.0,
-     "trough_date": "2024-11-26",
-     "trough_ret_pct": -5.3,
-     "final_ret_pct": 4.5,
+     "trough_date": "2025-01-13",
+     "trough_ret_pct": -6.8,
+     "final_ret_pct": -0.3,
      "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "PINGAN",
      "status": "OK",
-     "rows": 42,
+     "rows": 60,
      "first_date": "2024-11-04",
-     "last_date": "2024-12-31",
+     "last_date": "2025-01-27",
      "peak_date": "2024-11-07",
      "peak_ret_pct": 7.5,
-     "trough_date": "2024-11-25",
-     "trough_ret_pct": -8.5,
-     "final_ret_pct": -8.4,
+     "trough_date": "2025-01-13",
+     "trough_ret_pct": -16.2,
+     "final_ret_pct": -11.8,
      "peak_verdict": "UNKNOWN"
     }
    ],
