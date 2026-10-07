@@ -31,29 +31,56 @@
 
 ## 2. ★ 结果：汽车候选的 79 条结构比对
 
-| 状态 | 条数 |
-|---|---|
-| `NO_VALID_CORRESPONDENCE` | 46 |
-| `INSUFFICIENT_EVIDENCE` | 23 |
-| **`STRUCTURAL_PARTIAL`** | **5** |
-| **`THEME_ONLY`** | **5** |
-| `STRUCTURAL_SUPPORTED` | **0** |
+### ★ 补证据前 → 后（质变）
 
-### 5 条「有结构对应」（`STRUCTURAL_PARTIAL`）
+| 状态 | 3 条证据 | **7 条证据** |
+|---|---|---|
+| **`STRUCTURAL_SUPPORTED`** | **0** | **1** |
+| `STRUCTURAL_PARTIAL` | 5 | **7** |
+| `THEME_ONLY` | 5 | 5 |
+| `INSUFFICIENT_EVIDENCE` | 23 | 23 |
+| `NO_VALID_CORRESPONDENCE` | 46 | 43 |
+
+### ★★ 唯一的结构支持：`C-2023-AD`（智能驾驶/无人驾驶）· **同大主题**
+
+| 维度 | 结果 |
+|---|---|
+| lifecycle | **MATCH**（历史在可比观测点同为 `THEME_FORMING`） |
+| mechanism_driver | **MATCH · `CORE_EQUIVALENT`**（交集 `[POLICY_DRIVEN, TECH_BREAKTHROUGH]`） |
+| evidence_sequence | **MATCH · `SEQUENCE_MATCH`** |
+| event_structure | PARTIAL · `MULTI_TYPE_WITH_CHRONOLOGY` |
+
+### 7 条「有结构对应」（`STRUCTURAL_PARTIAL`）
 
 | 历史对象 | 大主题关系 | lifecycle | mechanism | seq | event |
 |---|---|---|---|---|---|
-| **`C-2019-COMM-5G`**（5G 网络建设） | **跨大主题** | MATCH | PARTIAL | **MATCH** | MISMATCH |
-| **`C-2020-POWER-NE`**（光伏/新能源发电） | **跨大主题** | MATCH | PARTIAL | **MATCH** | MISMATCH |
+| `C-2019-COMM-5G`（5G 网络建设） | **跨大主题** | MATCH | PARTIAL | **MATCH** | MISMATCH |
+| `C-2019-MIL-GROUP-RESTRUCTURE`（军工重组） | 跨大主题 | MISMATCH | PARTIAL | PARTIAL | PARTIAL |
+| `C-2020-POWER-NE`（光伏/新能源发电） | **跨大主题** | MATCH | PARTIAL | **MATCH** | MISMATCH |
+| `C-2020-RE-DEBT-RISK`（地产债务） | 跨大主题 | MISMATCH | PARTIAL | **MATCH** | PARTIAL |
 | `C-2022-POLICY`（购置税刺激） | 同大主题 | MATCH | PARTIAL | MATCH | MISMATCH |
 | `C-2022-RE-POLICY-THREE`（地产三支箭） | 跨大主题 | MISMATCH | PARTIAL | MATCH | MISMATCH |
-| `C-2023-AD`（智能驾驶） | 同大主题 | MATCH | PARTIAL | MATCH | MISMATCH |
+| `C-2023-HIEQ-HUMANOID`（人形机器人） | 跨大主题 | MISMATCH | PARTIAL | PARTIAL | PARTIAL |
 
 ### 5 条「仅主题相同」（`THEME_ONLY`）—— **同主题但结构不成立**
 
 `C-2020-NEV` · `C-2021-NEV` · `C-2024-ROBOTAXI` · `C-2024-V2X` · `C-2025-ROBOTAXI`
 
-（其中 `C-2024-V2X` 的机制为 `PERIPHERAL_OVERLAP` —— **不计入**结构支持）
+（`C-2024-V2X` 机制为 `PERIPHERAL_OVERLAP` —— **不计入**结构支持）
+
+### ★★★ 这次结果与前一次（3 条证据）的差别，说明了一件重要的事
+
+补证据**不是**「把分数刷上去」，而是**让判定真正可做**：
+
+| 变化 | 原因 |
+|---|---|
+| `C-2023-AD`：PARTIAL → **SUPPORTED** | 机制轴改对 + 序列补齐 |
+| **机制轴此前只到 `PRIMARY_MECHANISM_OVERLAP`** | ★ 我把 `TECH_BREAKTHROUGH` 写在了 `drivers[].category`（**补充轴**）里；而机制轴读的是 **`narrative_types`** |
+| **序列此前 `MISMATCH`** | 只有 3 条证据；补到 7 条（policy→industry→industry→policy→company→policy→company）后才形成可比序列 |
+
+> ★ **一个真实的可用性陷阱**：`drivers[].category` 与 `narrative_types` **都叫「驱动」，但只有后者参与机制判定**
+> （`build_structural_analogy_research_v0_5.py` L224–226 有明示）。
+> 写错位置不会报错，只会**静默降级**。
 
 ---
 
