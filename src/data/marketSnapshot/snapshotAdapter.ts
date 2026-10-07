@@ -1,6 +1,18 @@
 import indexJson from '@market/index.json';
 import { diffSnapshots } from './snapshotDiff';
 import type { MarketSnapshot, SnapshotDiff } from './types';
+import {
+  DIMENSION_LABEL,
+  DIMENSION_STATUS_LABEL,
+  STRUCTURAL_STATUS_LABEL,
+  THEME_RELATION_LABEL,
+  loadStructuralAnalogyDataset,
+  structuralAnalogyForCandidate,
+  type DimensionKey,
+  type DriverStatus,
+  type StructuralStatus,
+  type ThemeRelationValue,
+} from '../timeline/structuralAnalogy';
 
 /**
  * Market Snapshot 的 **Product 只读适配器**（ThreeC 1.1 Phase 1.3）。
@@ -55,6 +67,32 @@ async function loadOne(file: string): Promise<MarketSnapshot | null> {
   return (mod?.default ?? null) as MarketSnapshot | null;
 }
 
+/**
+ * ★ 回指解析结果（P0「接通」）：快照只存 `identity + status`，**细节在冻结 SA artifact 里**。
+ * 这里按契约把两者合并，让「79 条比对」变成**可看的明细**。
+ *
+ * 只做合并与改名，**不重算**任何判定（见 `structuralAnalogy.ts` 的边界声明）。
+ */
+export interface CandidateDetail {
+  historicalCycleId: string;
+  historicalObjectKind: string;
+  status: StructuralStatus;
+  statusLabel: string;
+  themeRelation: ThemeRelationValue | null;
+  themeRelationLabel: string;
+  /** 四维度状态（lifecycle / mechanism_driver / evidence_sequence / event_structure） */
+  dimensions: { key: DimensionKey; label: string; status: DriverStatus; statusLabel: string }[];
+  whySimilar: string[];
+  whyNotSimilar: string[];
+}
+
+/** 按对象聚合的候选明细；`resolved=false` 表示 SA 数据未能载入（诚实空态，不是「无对应」） */
+export interface ObjectCandidateDetails {
+  objectId: string;
+  resolved: boolean;
+  details: CandidateDetail[];
+}
+
 export interface CurrentSnapshotView {
   /**
    * `ok`          = 有可展示的快照
@@ -72,6 +110,8 @@ export interface CurrentSnapshotView {
   latestDate: string | null;
   /** 未签发快照的数量（用于空态文案） */
   draftCount: number;
+  /** ★ 按对象聚合的候选明细（回指解析结果） */
+  detailsByObject: ObjectCandidateDetails[];
 }
 
 const EMPTY: CurrentSnapshotView = {
@@ -82,7 +122,72 @@ const EMPTY: CurrentSnapshotView = {
   diff: null,
   latestDate: null,
   draftCount: 0,
+  detailsByObject: [],
 };
+
+/** 维度顺序（契约顺序）+ 到 SA view 的 camelCase 键映射 */
+const DIMENSION_ORDER: { key: DimensionKey; viewKey: string }[] = [
+  { key: 'lifecycle', viewKey: 'lifecycle' },
+  { key: 'mechanism_driver', viewKey: 'mechanismDriver' },
+  { key: 'evidence_sequence', viewKey: 'evidenceSequence' },
+  { key: 'event_structure', viewKey: 'eventStructure' },
+];
+
+/**
+ * ★ 回指解析：把快照的 `identity + status` 与冻结 SA artifact 的**细节**合并。
+ *
+ * 契约要求读取方先校验 artifact 的 `rule_set_version` 与快照 `candidates_source` 一致 ——
+ * 不一致时**不合并**（宁可显示「未解析」，也不显示可能对不上的细节）。
+ */
+async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidateDetails[]> {
+  const fallback = () =>
+    (snapshot.research_objects ?? []).map((o) => ({
+      objectId: o.object_id,
+      resolved: false,
+      details: [] as CandidateDetail[],
+    }));
+
+  try {
+    const ds = await loadStructuralAnalogyDataset();
+    const expected = (snapshot as unknown as { candidates_source?: { rule_set_version?: string } })
+      .candidates_source?.rule_set_version;
+    if (expected && ds.ruleSetVersion !== expected) {
+      // 版本不一致 → 拒绝合并（诚实空态），避免用错版本的细节
+      return fallback();
+    }
+
+    return (snapshot.research_objects ?? []).map((o) => {
+      const cand = structuralAnalogyForCandidate(ds, o.object_id);
+      if (!cand) return { objectId: o.object_id, resolved: false, details: [] };
+      const details: CandidateDetail[] = cand.explanations.map((e) => {
+        const tr = e.themeRelation?.value ?? null;
+        return {
+          historicalCycleId: e.identity.historicalCycleId,
+          historicalObjectKind: e.identity.historicalObjectKind,
+          status: e.structuralStatus,
+          statusLabel: STRUCTURAL_STATUS_LABEL[e.structuralStatus] ?? e.structuralStatus,
+          themeRelation: tr,
+          themeRelationLabel: tr ? THEME_RELATION_LABEL[tr] ?? tr : '',
+          dimensions: DIMENSION_ORDER.map(({ key, viewKey }) => {
+            const raw = (e.dimensions as unknown as Record<string, { status?: DriverStatus }>)[viewKey];
+            const st = (raw?.status ?? 'UNKNOWN') as DriverStatus;
+            return {
+              key,
+              label: DIMENSION_LABEL[key],
+              status: st,
+              statusLabel: DIMENSION_STATUS_LABEL[st] ?? st,
+            };
+          }),
+          whySimilar: e.whySimilar ?? [],
+          whyNotSimilar: e.whyNotSimilar ?? [],
+        };
+      });
+      return { objectId: o.object_id, resolved: true, details };
+    });
+  } catch {
+    return fallback();
+  }
+}
 
 /**
  * 载入「当前快照」视图。
@@ -119,6 +224,7 @@ export async function loadCurrentSnapshot(previewMode = false): Promise<CurrentS
 
   const previous = prevEntry ? await loadOne(prevEntry.file) : null;
   const diff = previous ? diffSnapshots(previous, snapshot) : null;
+  const detailsByObject = await resolveDetails(snapshot);
 
   return {
     state: 'ok',
@@ -128,5 +234,6 @@ export async function loadCurrentSnapshot(previewMode = false): Promise<CurrentS
     diff,
     latestDate,
     draftCount,
+    detailsByObject,
   };
 }

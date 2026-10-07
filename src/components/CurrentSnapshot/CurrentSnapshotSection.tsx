@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   loadCurrentSnapshot,
   type CurrentSnapshotView,
+  type ObjectCandidateDetails,
 } from '../../data/marketSnapshot/snapshotAdapter';
 import type {
   MarketSnapshot,
@@ -75,6 +76,86 @@ function statusCounts(cands: SnapshotHistoricalCandidate[]): [string, number][] 
   const m = new Map<string, number>();
   for (const c of cands) m.set(c.structural_status, (m.get(c.structural_status) ?? 0) + 1);
   return STATUS_ORDER.filter((s) => m.has(s)).map((s) => [s, m.get(s)!]);
+}
+
+/* ---------------- 候选明细（★ P0「接通」：把计数变成可看的内容） ---------------- */
+
+/**
+ * 展示该对象的**历史结构对应明细**。
+ *
+ * 设计取舍：
+ * - **「有结构对应」默认展开** —— 那是用户真正要看的（通常只有个位数）。
+ * - **「无有效对应」默认收起** —— 数量大（常 40+），且**它同样重要**，所以给入口、给说明，不隐藏。
+ * - 未解析时**明确说「未解析」**，而不是显示空 —— 空会被误读成「没有对应」。
+ */
+function CandidateList({ details }: { details?: ObjectCandidateDetails }) {
+  if (!details) return null;
+  if (!details.resolved) {
+    return (
+      <p className="cs-dim cs-cand-unresolved">
+        结构解释<strong>未解析</strong>（SA artifact 与快照的规则版本不一致，或尚未载入）——
+        此处不显示可能对不上的细节。<strong>这不等于「没有对应」。</strong>
+      </p>
+    );
+  }
+
+  const meaningful = details.details.filter((d) => d.status !== 'NO_VALID_CORRESPONDENCE');
+  const noValid = details.details.filter((d) => d.status === 'NO_VALID_CORRESPONDENCE');
+
+  const renderItem = (d: (typeof details.details)[number]) => (
+    <li key={d.historicalCycleId} className="cs-cand">
+      <div className="cs-cand-head">
+        <span className="cs-cand-id">{d.historicalCycleId}</span>
+        <span className={`cs-cand-status cs-st-${d.status.toLowerCase()}`}>{d.statusLabel}</span>
+        {d.themeRelationLabel && <span className="cs-cand-theme">{d.themeRelationLabel}</span>}
+      </div>
+      <ul className="cs-cand-dims">
+        {d.dimensions.map((x) => (
+          <li key={x.key}>
+            <span className="cs-cand-dim-name">{x.label}</span>
+            <span className={`cs-cand-dim-val cs-dim-${x.status.toLowerCase()}`}>{x.statusLabel}</span>
+          </li>
+        ))}
+      </ul>
+      {d.whySimilar.length > 0 && (
+        <p className="cs-cand-why">
+          <strong>为什么对应</strong>
+          {d.whySimilar.map((w, i) => (
+            <span key={i}>{w}</span>
+          ))}
+        </p>
+      )}
+      {d.whyNotSimilar.length > 0 && (
+        <p className="cs-cand-why cs-cand-why-not">
+          <strong>哪里不同 / 限制</strong>
+          {d.whyNotSimilar.map((w, i) => (
+            <span key={i}>{w}</span>
+          ))}
+        </p>
+      )}
+    </li>
+  );
+
+  return (
+    <>
+      {meaningful.length > 0 && (
+        <details className="cs-cands" open>
+          <summary>
+            有结构对应 <strong>{meaningful.length}</strong> 条 —— 展开看是哪些历史对象、为什么
+          </summary>
+          <ul className="cs-cand-list">{meaningful.map(renderItem)}</ul>
+        </details>
+      )}
+      {noValid.length > 0 && (
+        <details className="cs-cands">
+          <summary>
+            无有效对应 <strong>{noValid.length}</strong> 条 —— 同样可查（默认收起）
+          </summary>
+          <ul className="cs-cand-list">{noValid.map(renderItem)}</ul>
+        </details>
+      )}
+    </>
+  );
 }
 
 /* ---------------- 空态 ---------------- */
@@ -306,12 +387,17 @@ export function CurrentSnapshotBody({ view }: { view: CurrentSnapshotView }) {
                       共 {mine.length} 条比对 · 有结构对应 <strong>{useful}</strong> 条 ·
                       无有效对应 <strong>{noValid}</strong> 条
                     </p>
+
+                    {/* ★ P0「接通」：计数 → 可看的明细（含「为什么对应 / 哪里不同」） */}
+                    <CandidateList
+                      details={view.detailsByObject.find((d) => d.objectId === o.object_id)}
+                    />
+
                     {noValid > 0 && (
                       <p className="cs-no-valid">
                         <strong>「无有效对应」不是缺陷。</strong>
                         它意味着这些历史对象与该对象<strong>主题可能同名、但结构不成立</strong> ——
                         这正是 ThreeC 与「按主题名找相似」的工具的区别所在。
-                        具体为什么不对应，见各历史对象的解释（本页只做计数，不做筛选）。
                       </p>
                     )}
                   </>

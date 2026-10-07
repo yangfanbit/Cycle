@@ -72,6 +72,7 @@ function view(over: Partial<CurrentSnapshotView> = {}): CurrentSnapshotView {
     diff: null,
     latestDate: snapshot.snapshot_date,
     draftCount: 0,
+    detailsByObject: [],
     ...over,
   };
 }
@@ -157,6 +158,70 @@ describe('CurrentSnapshotBody · 「无对应」是一等公民', () => {
     expect(h).toContain('诚实空态');
     expect(h).toContain('不猜测');
     expect(h).toContain('4 个维度为「未知」');
+  });
+});
+
+describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
+  const withDetails = () =>
+    view({
+      detailsByObject: [
+        {
+          objectId: 'CC-A',
+          resolved: true,
+          details: [
+            {
+              historicalCycleId: 'C-2023-AD',
+              historicalObjectKind: 'campaign',
+              status: 'STRUCTURAL_SUPPORTED',
+              statusLabel: '结构支持',
+              themeRelation: 'CROSS_MACRO_THEME',
+              themeRelationLabel: '跨大主题',
+              dimensions: [
+                { key: 'lifecycle', label: '生命周期阶段', status: 'MATCH', statusLabel: '对应' },
+                { key: 'mechanism_driver', label: '驱动机制', status: 'MATCH', statusLabel: '对应' },
+              ],
+              whySimilar: ['生命周期阶段对应（MATCH）', '驱动机制存在交集'],
+              whyNotSimilar: ['受历史驱动证据粒度限制'],
+            },
+            {
+              historicalCycleId: 'C-2019-PHARMA-INNOV',
+              historicalObjectKind: 'campaign',
+              status: 'NO_VALID_CORRESPONDENCE',
+              statusLabel: '无有效对应',
+              themeRelation: 'SAME_MACRO_THEME',
+              themeRelationLabel: '同大主题',
+              dimensions: [{ key: 'mechanism_driver', label: '驱动机制', status: 'MISMATCH', statusLabel: '不对应' }],
+              whySimilar: [],
+              whyNotSimilar: ['机制轴无交集'],
+            },
+          ],
+        },
+      ],
+    });
+
+  it('★ 计数之外，真的能看见「是哪几条历史对象、为什么」', () => {
+    const h = html(withDetails());
+    expect(h).toContain('C-2023-AD');
+    expect(h).toContain('结构支持');
+    expect(h).toContain('跨大主题');
+    expect(h).toContain('为什么对应');
+    expect(h).toContain('生命周期阶段对应（MATCH）');
+    expect(h).toContain('哪里不同');
+  });
+
+  it('「无有效对应」同样可查（不是被隐藏）', () => {
+    const h = html(withDetails());
+    expect(h).toContain('C-2019-PHARMA-INNOV');
+    expect(h).toContain('无有效对应');
+    expect(h).toContain('机制轴无交集');
+  });
+
+  it('★ 未解析时明确说「未解析」，且不等于「没有对应」', () => {
+    const h = html(
+      view({ detailsByObject: [{ objectId: 'CC-A', resolved: false, details: [] }] }),
+    );
+    expect(h).toContain('未解析');
+    expect(h).toContain('不等于');
   });
 });
 

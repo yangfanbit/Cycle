@@ -66,6 +66,38 @@ describe('snapshotAdapter · 索引与门禁', () => {
     );
   });
 
+  it('★★ P0 回指解析：候选明细能解析出来，且「名字像的不像、跨主题的才像」', async () => {
+    const v = await loadCurrentSnapshot(true);
+    const bci = v.detailsByObject.find((d) => d.objectId === 'CC-2026-BCI-MEDTECH');
+    expect(bci, '真实快照里应有该对象').toBeDefined();
+    expect(bci!.resolved).toBe(true);
+    expect(bci!.details).toHaveLength(79);
+
+    // 唯一的结构支持来自**跨大主题**的智能驾驶
+    const supported = bci!.details.filter((d) => d.status === 'STRUCTURAL_SUPPORTED');
+    expect(supported).toHaveLength(1);
+    expect(supported[0].historicalCycleId).toBe('C-2023-AD');
+    expect(supported[0].themeRelation).toBe('CROSS_MACRO_THEME');
+    expect(supported[0].whySimilar.length).toBeGreaterThan(0);
+    expect(supported[0].dimensions).toHaveLength(4);
+
+    // ★ 同大主题的创新药反而只是「仅主题相同」—— 这是 ThreeC 的立身之论
+    const pharma = bci!.details.find((d) => d.historicalCycleId === 'C-2019-PHARMA-INNOV');
+    expect(pharma?.status).toBe('THEME_ONLY');
+    expect(pharma?.themeRelation).toBe('SAME_MACRO_THEME');
+  });
+
+  it('回指解析只合并、不重算：状态与快照里的计数一致', async () => {
+    const v = await loadCurrentSnapshot(true);
+    const snapCount = new Map<string, number>();
+    for (const c of v.snapshot!.historical_candidates) {
+      snapCount.set(c.current_object_id, (snapCount.get(c.current_object_id) ?? 0) + 1);
+    }
+    for (const d of v.detailsByObject) {
+      expect(d.details.length).toBe(snapCount.get(d.objectId) ?? 0);
+    }
+  });
+
   it('★ 只读：载入不修改快照内容', async () => {
     const a = await loadCurrentSnapshot(true);
     const b = await loadCurrentSnapshot(true);
