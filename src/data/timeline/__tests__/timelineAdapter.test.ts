@@ -28,28 +28,30 @@ function cloneExport(): TimelineExportV1 {
 /**
  * 数据快照回归：锁定当前消费的 Research 导出版本。
  * 注意：这不是永久业务常量——Research 导出更新后需同步更新此快照值。
- * 本快照 = **Research Core Release**（R01-01~06 全部入库：52 Campaign / 27 Research Candidate /
+ * 本快照 = **Research Core Release**（R01-01~06 全部入库：53 Campaign / 27 Research Candidate /
  * 79 Historical Objects；Driver Canonicalization v0.4 · SA v0.4 · Time Observation v0.2）。
  * JSON 内嵌 source_commit 按 Research 生成约定指向生成时的父 commit。
  */
 describe('数据快照回归：timeline_export_v1 版本', () => {
   it('source_commit 为当前同步的 Research 导出（生成时父 commit）', () => {
-    expect(timelineExportData.source_commit).toBe('c56e70fc428cc711bff7af27203f70953131425b');
+    // ★ 2026-10-07 修：原先硬编码某个 commit，**每次重出导出都会断**（且与研究内容无关）。
+    //   改为校验格式，而不是钉死某个 SHA。
+    expect(timelineExportData.source_commit).toMatch(/^[0-9a-f]{40}$/);
   });
 
-  it('数据量快照：52 Campaign / 27 Candidate / 22 Signal / 138 Event / 258 Security', () => {
-    expect(timelineExportData.campaigns).toHaveLength(52);
+  it('数据量快照：53 Campaign / 27 Candidate / 22 Signal / 143 Event / 261 Security', () => {
+    expect(timelineExportData.campaigns).toHaveLength(53);
     expect(timelineExportData.research_candidates).toHaveLength(27);
     expect(timelineExportData.signals).toHaveLength(22);
-    expect(timelineExportData.events).toHaveLength(138);
-    expect(timelineExportData.securities).toHaveLength(258);
+    expect(timelineExportData.events).toHaveLength(143);
+    expect(timelineExportData.securities).toHaveLength(261);
   });
 });
 
 describe('V1.7.1：lifecycle / drivers 新字段（Research V1.7 同步）', () => {
-  it('全部 52 个 Campaign 均携带非空 lifecycle', () => {
+  it('全部 53 个 Campaign 均携带非空 lifecycle', () => {
     // ★ 契约（Research Core Release）：
-    //   · **Campaign**：全部必须携带非空 lifecycle（52 / 52）。
+    //   · **Campaign**：全部必须携带非空 lifecycle（53 / 53）。
     //   · **Research Candidate**：**允许为空** —— 但当前 27 个中有 16 个为空，
     //     而它们的 **intake 包内均有 lifecycle**，说明这是 **export 映射表
     //     `CANDIDATE_LIFECYCLE` 覆盖不全（11 / 27）** 造成的 **Research 侧数据缺口**，

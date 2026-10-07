@@ -29,7 +29,7 @@ import { parseStructuralAnalogyDataset, structuralAnalogyForCandidate } from '..
 import { buildTimeObservationLayer, defaultTimeObservationDataset } from '../timeObservationPatterns';
 import { previewTimelineSource } from '../timelineAdapter';
 import { timelineExportData } from '../timelinePreview';
-import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_6.json';
+import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_7.json';
 
 const SA = parseStructuralAnalogyDataset(structuralAnalogyJson);
 const SOURCE = previewTimelineSource();
@@ -86,7 +86,7 @@ describe('Gate U · Scenario A：时间窗口命中 TOP-01 时链路完整可走
     const cand = 'CC-2026-OFFSHORE-WIND';
     const view = structuralAnalogyForCandidate(SA, cand);
     expect(view).not.toBeNull();
-    expect(view!.explanations.length).toBe(79);
+    expect(view!.explanations.length).toBe(80);
     const html = renderToStaticMarkup(
       <StructuralAnalogySection candidateId={cand} onSelect={() => {}} dataset={SA} />,
     );

@@ -46,7 +46,7 @@ describe('Deployment · Gate D7 build provenance', () => {
   }>('../../../exports/timeline_export_v1.json');
 
   const saJson = readJson<{ artifact_version: string | number; rule_set_version: string }>(
-    '../../../research/research/reports/structural_analogy_explanations_v0_6.json',
+    '../../../research/research/reports/structural_analogy_explanations_v0_7.json',
   );
   const toJson = readJson<{ artifact_version: string | number }>(
     '../../../research/research/reports/time_observation_patterns_v0_2.json',
@@ -77,12 +77,12 @@ describe('Deployment · Gate D7 build provenance', () => {
     expect(p.toArtifactVersion).toBe(String(toJson.artifact_version));
   });
 
-  it('D7-4 研究对象数可读且与 export 一致（52 / 27）', () => {
+  it('D7-4 研究对象数可读且与 export 一致（53 / 27）', () => {
     expect(p.exportObjectCounts).toEqual({
       campaigns: exportJson.campaigns.length,
       researchCandidates: exportJson.research_candidates.length,
     });
-    expect(p.exportObjectCounts!.campaigns).toBe(52);
+    expect(p.exportObjectCounts!.campaigns).toBe(53);
     expect(p.exportObjectCounts!.researchCandidates).toBe(27);
   });
 

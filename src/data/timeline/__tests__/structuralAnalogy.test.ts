@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_6.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_7.json';
 import {
   DIMENSION_LABEL,
   DIMENSION_STATUS_LABEL,
@@ -24,16 +24,16 @@ const dataset = parseStructuralAnalogyDataset(canonicalJson);
 
 describe('structuralAnalogy · 解析与覆盖度', () => {
   it('从静态 Artifact 解析出完整数据集（无网络请求）', () => {
-    expect(dataset.artifactVersion).toBe('0.6');
+    expect(dataset.artifactVersion).toBe('0.7');
     expect(dataset.ruleSetVersion).toBe('structural-analogy-ruleset-v0.3');
     expect(dataset.snapshotDate).toBe('2026-09-15');
     expect(dataset.candidates).toHaveLength(6);
   });
 
-  it('474 个 Research explanations 全部可被稳定解析', () => {
-    expect(explanationCount(dataset)).toBe(474);
+  it('480 个 Research explanations 全部可被稳定解析', () => {
+    expect(explanationCount(dataset)).toBe(480);
     for (const c of dataset.candidates) {
-      expect(c.explanations).toHaveLength(79);
+      expect(c.explanations).toHaveLength(80);
     }
   });
 
@@ -192,7 +192,7 @@ describe('structuralAnalogy · identity（统一稳定引用）', () => {
     }
   });
 
-  it('kind 与两个 identity 字段一一对应（campaign 312 / research_candidate 162）', () => {
+  it('kind 与两个 identity 字段一一对应（campaign 318 / research_candidate 162）', () => {
     let campaign = 0;
     let rc = 0;
     for (const c of dataset.candidates) {
@@ -208,7 +208,7 @@ describe('structuralAnalogy · identity（统一稳定引用）', () => {
         }
       }
     }
-    expect(campaign).toBe(312);
+    expect(campaign).toBe(318);
     expect(rc).toBe(162);
   });
 

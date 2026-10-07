@@ -13,7 +13,7 @@ import { HistoricalPanorama } from '../../../components/HistoricalPanorama/Histo
  *
  * 锁定三条契约（防止后续轮次无声回退到旧 verified 首页）：
  *   1. 首页**默认**数据源 = canonical Research export（`researchTimelineSource()`），
- *      覆盖 52 Campaign + 27 Research Candidate，而非空置的 `data/verified`；
+ *      覆盖 53 Campaign + 27 Research Candidate，而非空置的 `data/verified`；
  *   2. `researchTimelineSource()` 与 `verifiedTimelineSource()` 是**不同**来源，
  *      且 Research Candidate 以 `kind === 'candidate'` 与正式 Campaign 区分（不伪装）；
  *   3. Today 视觉：全景只输出**一根**贯穿细红线（`.today-span`），
@@ -21,16 +21,16 @@ import { HistoricalPanorama } from '../../../components/HistoricalPanorama/Histo
  */
 
 describe('Product 1.1 · 首页默认数据源 = canonical Research export', () => {
-  it('researchTimelineSource() 覆盖 52 Campaign + 27 Research Candidate', () => {
+  it('researchTimelineSource() 覆盖 53 Campaign + 27 Research Candidate', () => {
     const src = researchTimelineSource();
     const ids = new Map<string, 'campaign' | 'candidate'>();
     for (const y of src.years()) {
       for (const c of src.yearData(y).campaigns) ids.set(c.campaign_id, c.kind);
     }
     const kinds = [...ids.values()];
-    expect(kinds.filter((k) => k === 'campaign')).toHaveLength(52);
+    expect(kinds.filter((k) => k === 'campaign')).toHaveLength(53);
     expect(kinds.filter((k) => k === 'candidate')).toHaveLength(27);
-    expect(ids.size).toBe(79);
+    expect(ids.size).toBe(80);
   });
 
   it('年份覆盖 2015–2025（Historical Universe 实际区间）', () => {

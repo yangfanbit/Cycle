@@ -50,7 +50,7 @@ describe('季节性聚合：纵轴 = 大主题（不是对象、不是年份）'
   it('首页行数远小于历史对象数 —— 首页是地图，不是明细库', () => {
     const allObjects = allRows.reduce((n, r) => n + r.objects.length, 0);
     // Historical Universe 共 79 个研究对象
-    expect(allObjects).toBe(79);
+    expect(allObjects).toBe(80);
     // 一主题一行：行数必须是「几十条」而不是「上百条」
     expect(mapRows.length).toBeLessThan(20);
     expect(mapRows.length).toBeLessThan(allObjects / 4);
@@ -79,8 +79,8 @@ describe('季节性聚合：纵轴 = 大主题（不是对象、不是年份）'
       // 对象没有被丢弃
       expect(r.objects.length).toBeGreaterThan(0);
     }
-    // 合计仍是 79（能力不删除，只是不在首页铺开）
-    expect(mapRows.reduce((n, r) => n + r.objects.length, 0) + excluded.reduce((n, r) => n + r.objects.length, 0)).toBe(79);
+    // 合计仍是 80（能力不删除，只是不在首页铺开）
+    expect(mapRows.reduce((n, r) => n + r.objects.length, 0) + excluded.reduce((n, r) => n + r.objects.length, 0)).toBe(80);
   });
 });
 
@@ -215,7 +215,7 @@ describe('统计口径：计数事实，不是概率 / 胜率 / 推荐分 / 预�
     expect(s.yearFrom).toBe(2015);
     expect(s.yearTo).toBe(2025);
     expect(s.themeCount).toBe(mapRows.length);
-    expect(s.objectCount).toBeLessThan(79); // 无 MAIN_RISE 的对象不进图
+    expect(s.objectCount).toBeLessThan(80); // 无 MAIN_RISE 的对象不进图
     expect(s.themeCount).toBeLessThan(s.windowCount);
   });
 });

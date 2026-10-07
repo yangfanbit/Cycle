@@ -523,8 +523,9 @@ describe('7. Macro Theme 聚合接口（仅 View / Adapter）', () => {
     expect(auto.themeCycleIds).toContain('auto_intelligence_2023');
 
     const pharma = groups.find((g) => g.macroTheme === '医药健康')!;
-    expect(pharma.campaigns.map((c) => c.campaign_id)).toEqual([PHARMA]);
-    expect(pharma.subThemes).toEqual(['CXO(研发外包)', '创新药']);
+    // ★ 2026-10-07：医药健康由 1 个增至 2 个 campaign（R02-01 入库 C-2023-PHARMA-GLP1）
+    expect(pharma.campaigns.map((c) => c.campaign_id).sort()).toEqual([PHARMA, 'C-2023-PHARMA-GLP1'].sort());
+    expect(pharma.subThemes.sort()).toEqual(['CXO(研发外包)', '创新药', '减重 / GLP-1'].sort());
 
     // 未标注行业者归入 null 组（不编造行业名）
     const unassigned = groups.find((g) => g.macroTheme === null)!;

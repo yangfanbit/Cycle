@@ -71,7 +71,7 @@ describe('snapshotAdapter · 索引与门禁', () => {
     const bci = v.detailsByObject.find((d) => d.objectId === 'CC-2026-BCI-MEDTECH');
     expect(bci, '真实快照里应有该对象').toBeDefined();
     expect(bci!.resolved).toBe(true);
-    expect(bci!.details).toHaveLength(79);
+    expect(bci!.details).toHaveLength(80);
 
     // 唯一的结构支持来自**跨大主题**的智能驾驶
     const supported = bci!.details.filter((d) => d.status === 'STRUCTURAL_SUPPORTED');

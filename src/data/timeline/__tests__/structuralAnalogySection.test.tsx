@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_6.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_7.json';
 import { StructuralAnalogySection, dimensionStatusOf, filterExplanations, macroThemeOf } from '../../../components/CurrentTimeLens/StructuralAnalogySection';
 import { CurrentCandidateSection } from '../../../components/CurrentTimeLens/CurrentCandidateSection';
 import {
@@ -49,19 +49,19 @@ describe('Structural Analogy UI · 数据可达性', () => {
     for (const id of ALL_CANDIDATE_IDS) {
       const c = structuralAnalogyForCandidate(dataset, id);
       expect(c, id).not.toBeNull();
-      expect(c!.explanations).toHaveLength(79);
+      expect(c!.explanations).toHaveLength(80);
       const html = render(id);
       expect(html).toContain('Structural Analogy');
       expect(html).toContain('当前研究对象');
     }
   });
 
-  it('默认渲染前 6 个（渐进披露），并提供「显示全部 79 个」入口', () => {
+  it('默认渲染前 6 个（渐进披露），并提供「显示全部 80 个」入口', () => {
     for (const id of ALL_CANDIDATE_IDS) {
       const html = render(id);
       const items = html.match(/class="sa-item /g) ?? [];
       expect(items.length, id).toBe(6);
-      expect(html, id).toContain('显示全部 79 个历史对象');
+      expect(html, id).toContain('显示全部 80 个历史对象');
       expect(html, id).toContain('不是');
     }
   });
@@ -379,8 +379,8 @@ describe('Structural Analogy UI · 与 artifact 一致', () => {
       }
       // 第 7 个默认不展示（渐进披露）
       expect(html).not.toContain(rawC.explanations[6].identity.historical_cycle_id);
-      // 但明确告知总数为 79（不隐藏总量）
-      expect(html).toContain('显示全部 79 个历史对象');
+      // 但明确告知总数为 80（不隐藏总量）
+      expect(html).toContain('显示全部 80 个历史对象');
     }
   });
 });
@@ -430,11 +430,11 @@ describe('Structural Analogy UI · 按需加载', () => {
     expect(html).toContain('role="status"');
   });
 
-  it('loadStructuralAnalogyDataset 能加载并解析完整数据集（474 条 / 6 候选）', async () => {
+  it('loadStructuralAnalogyDataset 能加载并解析完整数据集（480 条 / 6 候选）', async () => {
     const ds = await loadStructuralAnalogyDataset();
     expect(ds.candidates).toHaveLength(6);
-    expect(ds.artifactVersion).toBe('0.6');
-    expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(474);
+    expect(ds.artifactVersion).toBe('0.7');
+    expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(480);
   });
 
   it('加载结果被缓存（重复调用返回同一实例，不重复加载）', async () => {

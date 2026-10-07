@@ -475,7 +475,7 @@ describe('5. Similarity v2（当前候选 × 历史）', () => {
     const v = viewOf('FX-AI-MEDICAL');
     const pharma = v.similarity.results.find((r) => r.campaign_id === 'C-2019-PHARMA-INNOV');
     expect(pharma).toBeDefined();
-    expect(pharma!.tier).toBe('HIGH');
+    expect(pharma!.tier).toBe('MEDIUM'); // ★ 医药健康历史 cycle 1→2（R02-01），形态变化
     expect(pharma!.phaseMatch).toBe('SAME');
     expect(pharma!.narrativeTypes).toContain('INDUSTRY_UPGRADE');
   });
@@ -538,7 +538,7 @@ describe('5. Similarity v2（当前候选 × 历史）', () => {
 
   it('候选 Pattern 由该 Macro Theme 的历史 cycle 形态推导（无历史 → UNKNOWN，不推断）', () => {
     // 医药健康：历史 cycle 存在 → 可推导
-    expect(candidatePatternOf(SOURCE, viewOf('FX-AI-MEDICAL').candidate)).toBe('PARALLEL');
+    expect(candidatePatternOf(SOURCE, viewOf('FX-AI-MEDICAL').candidate)).toBe('HYBRID'); // ★ 同因：2 个 cycle → HYBRID
     // 电力设备：Wave 1A 补录 2 个历史 cycle（C-2020-POWER-NE / C-2022-POWER-GRID）后，
     // 由 UNKNOWN → 可推导（两个 cycle 各为单组件 → SEQUENTIAL）
     expect(candidatePatternOf(SOURCE, viewOf('FX-SOLID-BATTERY').candidate)).toBe('SEQUENTIAL');
