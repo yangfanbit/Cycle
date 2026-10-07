@@ -1,0 +1,27 @@
+[
+  {
+    "question_id": "R02-PHARMA-Q001",
+    "question": "R02-PHARMA-002（创新药 BD 出海）截至本包生成时可能**仍在进行中**。按 Research Model，进行中的段应作为 **Observation** 还是 **Campaign** 处理？",
+    "why_it_matters": "若应作为 Observation，则本包提交的该候选形式错误，须改写；若可作为 Campaign（以 OPEN_ENDED 标记），则其生命周期缺 peak 与 end，会直接影响 Structural Analogy 中「生命周期阶段」维度的可比性。本包已按 OPEN_ENDED 记录并标注 confidence，但**无权裁决**。"
+  },
+  {
+    "question_id": "R02-PHARMA-Q002",
+    "question": "R02-PHARMA-001（2023 减重概念）与既有 C-2019-PHARMA-INNOV 是否属**同一 ThemeCycle 的两个阶段**，而非两个独立 Campaign？",
+    "why_it_matters": "直接决定 2019–2023 医药方向应被记录为一个还是两个对象。本包按独立候选提交，依据是驱动机制不同（制度供给 vs 海外需求外溢 + 事件催化）；但该判据是否充分须由 ThreeC Agent 用 Campaign Independence Gate 判定。"
+  },
+  {
+    "question_id": "R02-PHARMA-Q003",
+    "question": "本包全部来源为 **Tier 3**，且指数/市值口径属「转述商用数据库」而非转述 Tier 1/2。此类证据是否可接受？",
+    "why_it_matters": "协议规定 Tier 3 仅可用于转述 Tier 1/2 事实。若不可接受，则 R02-PHARMA-001 的时间锚点（start/peak）将失去支撑，该候选可能须被 REJECT 或要求补一手指数数据。**这是本包最关键的开放问题。**"
+  },
+  {
+    "question_id": "R02-PHARMA-Q004",
+    "question": "「减重 / GLP-1」应作为 **SUB_THEME** 还是独立 **Macro Theme**？",
+    "why_it_matters": "按协议 §11.1，Macro Theme 归组**必须**走 CMTR v1（唯一实现 `research/scripts/theme_taxonomy.py`）。本包仅提出 SUB_THEME 提案，未自行归组。"
+  },
+  {
+    "question_id": "R02-PHARMA-Q005",
+    "question": "schema 的 `stage_proposal` 枚举只有 MAIN_RISE / PEAK / RETRACEMENT / DECLINING / SECONDARY / ENDED / UNKNOWN —— **没有「起始/早期」阶段**。当一段行情的起点在证据上可辨识、但不足以称为 MAIN_RISE 时，应如何记录？",
+    "why_it_matters": "本包因此把 R02-PHARMA-001 的 2023-09-08~09-19 段与随后的 MAIN_RISE **合并**，损失了起点与主升段的分界信息。若该分界对 Structural Analogy 的「证据顺序」维度有意义，则需要一个可表达的枚举值；若不需要，应明确「不区分」。**须由 ThreeC Agent 裁决。**"
+  }
+]

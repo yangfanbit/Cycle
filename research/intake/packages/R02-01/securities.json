@@ -1,0 +1,52 @@
+[
+  {
+    "security_id": "R02-PHARMA-SEC001",
+    "ticker": "300255",
+    "name": "常山药业",
+    "exchange": "深圳证券交易所",
+    "role": "leader",
+    "basis": "2023 减重概念中涨幅最大的标的：2023-09-01 以来市值由 41.7 亿元升至 155.5 亿元（+272.87%，S002 口径）；新浪财经口径为 +263.49%（S003）。★ 该公司**自身未开展减肥药研发**（S004 引述公司风险提示），属叙事驱动标的，非基本面龙头。",
+    "source_ids": [
+      "R02-PHARMA-S002",
+      "R02-PHARMA-S003"
+    ],
+    "point_in_time_note": "本标的为**回顾性**识别的高涨幅标的；不代表 point-in-time 可预知。"
+  },
+  {
+    "security_id": "R02-PHARMA-SEC002",
+    "ticker": "300199",
+    "name": "翰宇药业",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "2023-09-19 披露 3000 万美元 GLP-1 多肽原料药海外合同，9-20 收获 20cm 涨停，为上行段内**可验证的产业侧订单**。",
+    "source_ids": [
+      "R02-PHARMA-S002"
+    ],
+    "point_in_time_note": "本标的在**本段**中的角色为回顾性识别；不代表 point-in-time 可预知。"
+  },
+  {
+    "security_id": "R02-PHARMA-SEC003",
+    "ticker": "688166",
+    "name": "博瑞医药",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "2023-10-13 录得 20cm 涨停；其董事长因药效言论于 10-17 收到江苏证监局警示函（降温触发之一）。",
+    "source_ids": [
+      "R02-PHARMA-S001",
+      "R02-PHARMA-S002"
+    ],
+    "point_in_time_note": "本标的在**本段**中的角色为回顾性识别；不代表 point-in-time 可预知。"
+  },
+  {
+    "security_id": "R02-PHARMA-SEC004",
+    "ticker": "600276",
+    "name": "恒瑞医药",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "2026-09-29 与诺和诺德就 HRS-1596 达成合作（潜在总额最高 26 亿美元，含 3 亿美元首付款），为 BD 出海段的代表性交易主体。",
+    "source_ids": [
+      "R02-PHARMA-S005"
+    ],
+    "point_in_time_note": "本标的在**本段**中的角色为回顾性识别；不代表 point-in-time 可预知。"
+  }
+]

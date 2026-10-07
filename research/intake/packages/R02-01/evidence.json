@@ -1,0 +1,222 @@
+[
+  {
+    "evidence_id": "R02-PHARMA-E001",
+    "claim": "A股减肥药概念自 2023-09-08 起集体上涨，至 2023-10-16 达顶点。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情区间（媒体转述 Wind 口径）",
+    "event_date": "2023-09-08",
+    "evidence_date": "2023-10-19",
+    "source_id": "R02-PHARMA-S001",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023GLP1-COOLDOWN",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "给出上行段起止，为本包 start/peak 的主要依据；指数口径非一手。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E002",
+    "claim": "2023-09-08 至 2023-10-16，Wind 减肥药指数 21 个交易日上涨 26.43%，25 只成分股中 23 只上涨。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数涨跌幅",
+    "event_date": "2023-10-16",
+    "evidence_date": "2023-10-19",
+    "source_id": "R02-PHARMA-S001",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023GLP1-COOLDOWN",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "量化上行幅度；与 S002 的市值口径互证。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E003",
+    "claim": "2023-10-17 至 10-18，减肥药指数分别收跌 1.24%、1.75%；10-18 25 家成分股中 21 家收跌。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情降温（转述）",
+    "event_date": "2023-10-18",
+    "evidence_date": "2023-10-19",
+    "source_id": "R02-PHARMA-S001",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023GLP1-COOLDOWN",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "降温起点；与 E004 的监管事件同日，构成事件驱动证据。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E004",
+    "claim": "2023-10-16~17，康惠制药、百花医药、博瑞医药董事长先后收到证监局警示函或致歉，涉『蹭减肥药热点』。",
+    "evidence_role": "supporting",
+    "evidence_type": "监管与公司披露",
+    "event_date": "2023-10-17",
+    "evidence_date": "2023-10-19",
+    "source_id": "R02-PHARMA-S001",
+    "confidence": "high",
+    "independence_group": "IG-REG-2023GLP1-WARNING",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "降温的直接事件原因；公司公告为一手事实（本包经媒体转述）。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E005",
+    "claim": "2023-09-01 至 10-13，与减肥药概念相关的 27 只股票市值合计增加 1261 亿元。",
+    "evidence_role": "supporting",
+    "evidence_type": "市值变化（转述 Wind）",
+    "event_date": "2023-10-13",
+    "evidence_date": "2023-10-13",
+    "source_id": "R02-PHARMA-S002",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023GLP1-MKTCAP",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "与 E002 指数口径互证，来源独立于 S001。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E006",
+    "claim": "2023-09-19 翰宇药业披露与海外客户签订 3000 万美元 GLP-1 多肽原料药合同；9-20 收获 20cm 涨停。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司订单披露",
+    "event_date": "2023-09-19",
+    "evidence_date": "2023-10-13",
+    "source_id": "R02-PHARMA-S002",
+    "confidence": "medium",
+    "independence_group": "IG-CO-2023GLP1-HANYU",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "产业侧可验证订单；公司公告为一手事实（经媒体转述）。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E007",
+    "claim": "2023-09-01 以来常山药业总市值由 41.7 亿元升至 155.5 亿元，涨幅 272.87%。",
+    "evidence_role": "supporting",
+    "evidence_type": "个股涨幅（转述 Wind）",
+    "event_date": "2023-10-13",
+    "evidence_date": "2023-10-13",
+    "source_id": "R02-PHARMA-S002",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023GLP1-MKTCAP",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "代表性标的涨幅；与 S003 的 +263.49% 口径略有差异，见 conflicts。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E008",
+    "claim": "据医药魔方 NextPharma，2025 年中国创新药完成 157 起 BD 出海授权交易，总额 1356.55 亿美元。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业交易统计（第三方数据库转述）",
+    "event_date": "2025-12-31",
+    "evidence_date": "2026-01-26",
+    "source_id": "R02-PHARMA-S004",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2025BD-TOTAL",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "BD 出海段的规模依据；数据库口径非一手。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E009",
+    "claim": "2025 年上半年科创板创新药企业出海 BD 掀起新高潮，重磅交易频现。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业观察",
+    "event_date": "2025-06-30",
+    "evidence_date": "2025-09-09",
+    "source_id": "R02-PHARMA-S007",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2025BD-STAR",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "给出该段上行的时间线索（2025H1）。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E010",
+    "claim": "2026-09-29 恒瑞医药宣布与诺和诺德就口服 GLP-1/GIP 双受体激动剂 HRS-1596 达成合作，潜在总额最高 26 亿美元（含 3 亿美元首付款）。",
+    "evidence_role": "supporting",
+    "evidence_type": "公司 BD 交易",
+    "event_date": "2026-09-29",
+    "evidence_date": "2026-09-29",
+    "source_id": "R02-PHARMA-S005",
+    "confidence": "high",
+    "independence_group": "IG-CO-2026BD-HENGRUI",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "该段的最新可验证交易；公司公告为一手事实（经媒体转述）。"
+  },
+  {
+    "evidence_id": "R02-PHARMA-E011",
+    "claim": "A股创新药板块 2026 上半年营收 620.63 亿元（+32.54%），Q2 单季归母净利同比 +390.19%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业财务数据",
+    "event_date": "2026-06-30",
+    "evidence_date": "2026-09-30",
+    "source_id": "R02-PHARMA-S006",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2026BD-H1",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "prior",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "商业化兑现证据；为二手汇总口径。"
+  }
+]

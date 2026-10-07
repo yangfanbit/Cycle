@@ -1,0 +1,42 @@
+[
+  {
+    "conflict_id": "R02-PHARMA-CF001",
+    "subject": "常山药业 2023 年该段涨幅口径不一致（+272.87% vs +263.49%）",
+    "positions": [
+      {
+        "position": "2023-09-01 以来市值由 41.7 亿升至 155.5 亿，涨幅 272.87%",
+        "source_ids": [
+          "R02-PHARMA-S002"
+        ]
+      },
+      {
+        "position": "涨幅 263.49%",
+        "source_ids": [
+          "R02-PHARMA-S003"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两口径起点与统计日可能不同（S002 为 9/1 起、S003 为 9 月以来），差约 9 个百分点。按协议『冲突不得被自动取舍』保留双方，未裁决。"
+  },
+  {
+    "conflict_id": "R02-PHARMA-CF002",
+    "subject": "2023 减肥药行情『顶点』口径",
+    "positions": [
+      {
+        "position": "2023-10-16 达顶点，10-17 起降温",
+        "source_ids": [
+          "R02-PHARMA-S001"
+        ]
+      },
+      {
+        "position": "2023-10-13 板块继续大涨（第一财经当日报道）",
+        "source_ids": [
+          "R02-PHARMA-S002"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两者不矛盾（10-13 为上行中段、10-16 为顶点），但本包未取得指数逐日收盘序列以精确界定顶点，故顶点标注 confidence=medium。"
+  }
+]

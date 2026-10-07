@@ -1,0 +1,260 @@
+[
+  {
+    "candidate_id": "R02-PHARMA-001",
+    "title": "减重（GLP-1）概念行情 —— 海外需求外溢 + 事件催化驱动",
+    "year": 2023,
+    "macro_theme_proposal": "医药健康（既有 Macro Theme；SUBT_THEME 提案：减重/GLP-1，待 CMTR v1）",
+    "theme_name_candidates": [
+      "减肥药",
+      "GLP-1",
+      "减重",
+      "多肽原料药"
+    ],
+    "theme_summary": "由美股 GLP-1 双寡头（诺和诺德司美格鲁肽、礼来替尔泊肽）销售与临床数据超预期外溢驱动的 A 股概念行情。上行段内可验证事实包括：多肽原料药海外订单（翰宇药业 3000 万美元）、海外供应短缺与各国限制使用、摩根大通上调市场空间预测。显著特征是**涨幅由上游原料药与蹭热点标的贡献**，且**以监管警示函为降温触发**，而非业绩不达预期。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2023-09-08",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "上行段起点",
+          "basis": "央广网记载『A股减肥药概念股自 9 月 8 日起集体上涨』，且同期诺和诺德因司美格鲁肽进入英国市场而市值超越 LVMH。",
+          "source_ids": [
+            "R02-PHARMA-S001"
+          ],
+          "evidence_ids": [
+            "R02-PHARMA-E001"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2023-10-16",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "顶点",
+          "basis": "央广网记载『直至 10 月 16 日达到顶点』，此后 10-17/10-18 指数连续收跌。",
+          "source_ids": [
+            "R02-PHARMA-S001"
+          ],
+          "evidence_ids": [
+            "R02-PHARMA-E001",
+            "R02-PHARMA-E002"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-10-17",
+          "window_end": "2023-10-19",
+          "phase_note": "降温/结束段起点",
+          "basis": "10-17/10-18 指数收跌、10-18 逾八成成分股下跌；10-16~17 三家主体收警示函或致歉。本包**不**声称此为终局日期，仅界定降温起点。",
+          "source_ids": [
+            "R02-PHARMA-S001"
+          ],
+          "evidence_ids": [
+            "R02-PHARMA-E003",
+            "R02-PHARMA-E004"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "evidence_ids": [
+      "R02-PHARMA-E001",
+      "R02-PHARMA-E002",
+      "R02-PHARMA-E003",
+      "R02-PHARMA-E004",
+      "R02-PHARMA-E005",
+      "R02-PHARMA-E006",
+      "R02-PHARMA-E007"
+    ],
+    "security_ids": [
+      "R02-PHARMA-SEC001",
+      "R02-PHARMA-SEC002",
+      "R02-PHARMA-SEC003"
+    ],
+    "why_campaign": "具备独立的 start/peak/降温三段可验证时间结构；上行由可核验的海外需求与公司订单支撑；降温由监管事件触发 —— 非既有 C-2019-PHARMA-INNOV（制度先行型）机制。",
+    "why_not": "（本包主张其成立，未提出反对理由；该主张是否成立须由 ThreeC Agent 用 Campaign Independence Gate 判定。）",
+    "confidence": "medium",
+    "classification_proposal": "mixed",
+    "research_status": "PROVISIONAL",
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2023-09-08",
+        "end": "2023-10-16",
+        "basis": "上行段起点：诺和诺德因司美格鲁肽进入英国市场市值超越 LVMH（9-04），A股概念自 9-08 起集体上涨；9-19 翰宇药业披露 3000 万美元 GLP-1 多肽原料药海外合同。 Wind 减肥药指数 9-08 至 10-16 共 21 个交易日上涨 26.43%；9-01 至 10-13 相关 27 只股票市值合计增加 1261 亿元；多只标的创阶段新高。",
+        "notes": "（合并原 EARLY_SIGNAL 与 MAIN_RISE 两段 —— schema 的 stage 枚举无「起始段」，见 R02-PHARMA-Q005。）"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2023-10-16",
+        "end": "2023-10-16",
+        "basis": "媒体记载『直至 10 月 16 日达到顶点』，次日指数转跌。",
+        "notes": "顶点为单日锚点，未取得指数收盘序列以进一步收敛。"
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2023-10-17",
+        "end": "2023-10-19",
+        "basis": "10-17/10-18 指数分别收跌 1.24%/1.75%，10-18 25 家成分股中 21 家下跌；10-16~17 康惠制药、百花医药、博瑞医药董事长先后收警示函或致歉。",
+        "notes": "降温由**监管事件**触发而非业绩不达预期。本包**不**声称此为该段终局，仅界定降温起点。"
+      }
+    ],
+    "drivers": {
+      "start": [
+        "美股 GLP-1 双寡头（诺和诺德司美格鲁肽、礼来替尔泊肽）销售与临床数据超预期，市值创历史新高，外溢至 A 股",
+        "摩根大通 9 月上旬上调减重药市场空间预测（2032 年 710 亿美元），形成叙事催化"
+      ],
+      "accelerator": [
+        "海外供应短缺与多国限制使用（比利时、英国、德国），强化『需求旺盛』叙事",
+        "公司侧可验证订单出现：翰宇药业 2023-09-19 披露 3000 万美元 GLP-1 多肽原料药海外合同",
+        "10-10 司美格鲁肽三期临床提前终止（疗效达标）形成二次催化",
+        "国际学术年会（ESMO 10-20~24）临近，抬升创新药整体预期"
+      ],
+      "turning": [
+        "监管介入：康惠制药、百花医药、博瑞医药董事长于 10-16~17 收到证监局警示函或致歉，直接冲击『蹭热点』标的",
+        "叙事与基本面脱节：多只涨幅居前标的**自身并未开展减肥药研发**（公司风险提示已明确）",
+        "涨幅结构集中在上游原料药与概念标的，缺乏业绩支撑"
+      ],
+      "ending": [
+        "10-17/10-18 指数连续收跌，10-18 逾八成成分股下跌，行情进入降温",
+        "本包未取得该段后续完整走势来源，不推断其最终收敛方式"
+      ]
+    },
+    "point_in_time_notes": "时间一致性说明：①E001/E002/E003 为 2023-10-19 的**复盘性**报道，所描述事件（9-08 起涨、10-16 顶点、10-17/18 降温）均落在事件窗口内，属 subsequent 发布但描述 contemporaneous 事实；②E004（警示函/致歉）的**事件日**为 2023-10-16~17，媒体转述日为 10-19，作为降温触发的因果证据须以事件日为准；③E005/E006/E007 为 2023-10-13 当日报道，属 contemporaneous；④★ 本包**未**取得任何 Tier 1/2 一手来源，指数与市值口径均为媒体转述商用数据库 —— 该限制已记入 known_gaps 与 R02-PHARMA-Q003。",
+    "notes": "与既有 C-2019-PHARMA-INNOV 的区别在驱动源：后者为国内制度供给驱动，本段为海外需求外溢 + 事件催化。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-PHARMA-002",
+    "title": "创新药 BD 出海（License-out）行情 —— 交易兑现驱动",
+    "year": 2025,
+    "macro_theme_proposal": "医药健康（既有 Macro Theme；SUB_THEME 提案：BD 出海 / License-out，待 CMTR v1）",
+    "theme_name_candidates": [
+      "创新药",
+      "BD 出海",
+      "License-out",
+      "生物医药"
+    ],
+    "theme_summary": "以中国创新药对外授权交易（License-out）密集落地为核心驱动的一段行情。2025 年完成 157 起 BD 出海授权交易、总额 1356.55 亿美元；2026 年延续（恒瑞医药与诺和诺德 26 亿美元级交易），并伴随商业化兑现（A股创新药板块 2026H1 营收 +32.54%，Q2 单季归母净利同比 +390.19%）。与 2023 减重概念的区别：**驱动是交易与收入兑现，而非单纯叙事外溢**。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2025-01-01",
+          "window_end": "2025-06-30",
+          "phase_note": "上行段起点（窗口）",
+          "basis": "上证报记载『2025 年上半年科创板创新药企业出海 BD 掀起新高潮』；本包未取得该段精确起涨日，按半年窗口记录，**不**编造具体日期。",
+          "source_ids": [
+            "R02-PHARMA-S007"
+          ],
+          "evidence_ids": [
+            "R02-PHARMA-E009"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包未取得该段顶点的一手或可交叉证据，按协议『空缺是合法研究状态』**留空**，不推断。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "截至本包生成时可能仍在进行",
+          "basis": "2026-09-29 仍有 26 亿美元级交易落地，2026H1 财务数据仍在增长 —— 本包按 OPEN_ENDED 处理，**不**声称已结束。",
+          "source_ids": [
+            "R02-PHARMA-S005",
+            "R02-PHARMA-S006"
+          ],
+          "evidence_ids": [
+            "R02-PHARMA-E010",
+            "R02-PHARMA-E011"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "evidence_ids": [
+      "R02-PHARMA-E008",
+      "R02-PHARMA-E009",
+      "R02-PHARMA-E010",
+      "R02-PHARMA-E011"
+    ],
+    "security_ids": [
+      "R02-PHARMA-SEC004"
+    ],
+    "why_campaign": "与既有 C-2019-PHARMA-INNOV 的区别在于驱动源：C-2019-PHARMA-INNOV 为国内制度供给驱动；本段为**对外授权交易兑现**驱动，机制不同。",
+    "why_not": "（本包主张其成立，未提出反对理由；该主张是否成立须由 ThreeC Agent 用 Campaign Independence Gate 判定。）",
+    "confidence": "low",
+    "classification_proposal": "industry_trend",
+    "research_status": "PROVISIONAL",
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2025-01-01",
+        "end": "2025-06-30",
+        "basis": "上证报记载『2025 年上半年科创板创新药企业出海 BD 掀起新高潮，重磅交易频现』；本包未取得精确起涨日。",
+        "notes": "★ 本段起点精度仅为**半年窗口**，且 confidence=low。是否满足 Campaign 时间结构要求须由 ThreeC Agent 判定。"
+      },
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2025-07-01",
+        "end": "2025-12-31",
+        "basis": "据医药魔方 NextPharma，2025 年中国创新药共完成 157 起 BD 出海授权交易，总额 1356.55 亿美元。",
+        "notes": "以交易统计而非行情序列为界；本包未取得该段行情的一手数据。"
+      }
+    ],
+    "drivers": {
+      "start": [
+        "海外药企对中国创新管线（尤其 ADC / 双抗 / GLP-1 类）的引进需求上升"
+      ],
+      "accelerator": [
+        "逐笔 BD 交易密集披露：2026-09-29 恒瑞医药与诺和诺德就 HRS-1596 达成合作，潜在总额最高 26 亿美元（含 3 亿美元首付款）",
+        "商业化兑现：A股创新药板块 2026H1 营收 620.63 亿元（+32.54%），Q2 单季归母净利同比 +390.19%"
+      ],
+      "turning": [
+        "★ 本包**未识别**该段的转折信号 —— 因该段截至本包生成时可能仍在进行中，无法事后识别转折。按协议不推断。"
+      ],
+      "ending": [
+        "★ 未界定。本段按 OPEN_ENDED 处理，不声称已结束。"
+      ]
+    },
+    "point_in_time_notes": "时间一致性说明：①E009（2025-09-09 上证报）为 contemporaneous，描述 2025H1 现象；②E008（2026-01-26）为**事后统计**，描述 2025 全年交易总额，属 subsequent，仅可用于事后界定该段规模，**不得**作为同期催化；③E010（2026-09-29）为事件当日报道，contemporaneous；④E011（2026-09-30）为 2026H1 财务数据的事后汇总，属 subsequent。★ 该段 end 为 OPEN_ENDED，故后续证据的时间关系可能随轮次推进而变化。",
+    "notes": "★ 本候选可能应作为 Observation 而非 Campaign（见 research_questions R02-PHARMA-Q001）。",
+    "possible_duplicate_of": []
+  }
+]

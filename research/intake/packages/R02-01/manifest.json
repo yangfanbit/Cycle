@@ -1,0 +1,41 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R02",
+  "task_id": "R02-01",
+  "task_scope": {
+    "task_id": "R02-01",
+    "family_directions": [
+      "医药健康",
+      "生物医药",
+      "创新药",
+      "CXO",
+      "医疗器械",
+      "中药",
+      "减重/GLP-1"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "included_scope": "医药健康方向：创新药（含 License-out / BD 出海）、CXO、医疗器械、中药、GLP-1 / 减重、疫苗与疫情相关。范围以「药品与医疗器械及其研发服务」为界。",
+    "excluded_scope": "医疗服务与连锁药店；医美（归消费）；上游化工与农业原料价格本身（归资源）；2015 年之前的医药行情。",
+    "priority_a_years": {
+      "from": 2019,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2018
+    }
+  },
+  "generated_at": "2026-10-07T21:20:00+08:00",
+  "source_commit": "59a7df5781f8e76cf6ca5ef95bce610c94eea8d0",
+  "produced_by": "Research Agent role（AI 离线研究，2026-10-07）",
+  "known_gaps": [
+    "未取得 2023 减重行情的**指数一手口径**（Wind 为商用数据），仅引用媒体转述的指数涨跌幅。",
+    "R02-PHARMA-002 的 start 精度为半年窗口、peak **未界定**、end 为 OPEN_ENDED —— 该段可能仍在进行中。",
+    "**未**复核既有 RC-2020-PANDEMIC / RC-2021-TCM 是否应升格为 Campaign（需 Campaign Independence Gate Q1–Q5，超出本包范围）。",
+    "本包全部来源为 Tier 3（财经媒体）；**未取得 Tier 1/2 一手来源**。按协议 Tier 3 仅可用于转述 Tier 1/2 事实 —— 本包中公司公告类事实（警示函、订单、BD 交易）属此类，其余指数/市值口径**不满足**该要求，需 ThreeC Agent 判定是否 ACCEPT_WITH_CHANGES 或 REJECT。"
+  ],
+  "task_definition_note": "★ 本包**不是**由 ThreeC Agent 签发的 R02 task manifest 触发的 —— 由用户于 2026-10-07 明确授权（「先做医药健康补强」）。★ 协议 §3 的**角色分离**仍然适用：本包由 Research Agent 角色产出，**审查（八种结果）与 canonicalization 必须由 ThreeC Agent 角色独立执行**。"
+}
