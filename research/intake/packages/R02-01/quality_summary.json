@@ -12,12 +12,13 @@
     "medium": 1,
     "low": 1
   },
-  "coverage_notes": "本包针对「医药健康」方向（实测全库最薄：79 个历史对象中仅 1 个）提交 2 个候选、11 条证据、7 个来源、4 个证券、5 项排除、2 项冲突、4 项研究问题。按**机制轴**而非股票记忆组织：M1 海外需求外溢 + 事件催化（R02-PHARMA-001 减重概念）；M2 对外授权交易兑现（R02-PHARMA-002 BD 出海）。两段与既有 C-2019-PHARMA-INNOV（国内制度供给驱动）机制不同，但该判据是否充分须由 ThreeC Agent 裁决。",
+  "coverage_notes": "本包针对「医药健康」方向（实测全库最薄：79 个历史对象中仅 1 个）提交 2 个候选、11 条证据、7 个来源、4 个证券、5 项排除、2 项冲突、4 项研究问题。按**机制轴**而非股票记忆组织：M1 海外需求外溢 + 事件催化（R02-PHARMA-001 减重概念）；M2 对外授权交易兑现（R02-PHARMA-002 BD 出海）。两段与既有 C-2019-PHARMA-INNOV（国内制度供给驱动）机制不同，但该判据是否充分须由 ThreeC Agent 裁决。 ｜★ ThreeC Agent 审查：R02-PHARMA-001 = ACCEPT_WITH_CHANGES（来源改级 + 日期锚点证据基础调整，日期数值未改）；R02-PHARMA-002 = DEFER（缺 peak/end，须判定 Campaign vs Observation）。Q003 已裁决：Tier 3 可接受，但受独立性门槛约束且不得作 point-in-time 依据。",
   "known_gaps": [
-    "全部来源为 Tier 3；指数/市值口径不满足协议对 Tier 3 的使用要求（见 R02-PHARMA-Q003）。",
     "R02-PHARMA-002 的 peak 未界定、end 为 OPEN_ENDED。",
     "2015–2018 医药段与医疗器械段**未做**（显式排除，不编造）。",
-    "未复核 RC-2020-PANDEMIC / RC-2021-TCM 的升格问题。"
+    "未复核 RC-2020-PANDEMIC / RC-2021-TCM 的升格问题。",
+    "★ 审查后遗留：指数与市值口径为转述商用数据库，只能作 `historical_fact_support`，**不得**作 point-in-time 依据。",
+    "★ R02-PHARMA-002 为 DEFER：缺行情序列与 end 判定标准，须先判定 Campaign vs Observation。"
   ],
   "no_quantity_kpi_acknowledged": true
 }

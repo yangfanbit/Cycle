@@ -17,7 +17,7 @@
       "historical_fact_support"
     ],
     "point_in_time_note": null,
-    "description": "给出上行段起止，为本包 start/peak 的主要依据；指数口径非一手。"
+    "description": "给出上行段起止，为本包 start/peak 的主要依据；指数口径非一手。 ｜★ 审查：来源已改级为 Tier 2；本证据的**指数/行情口径**仍属**转述商用数据库**，`support_kind` 保持 `historical_fact_support`（证明事件发生），**不得**用于证明当时已知。"
   },
   {
     "evidence_id": "R02-PHARMA-E002",
@@ -37,7 +37,7 @@
       "historical_fact_support"
     ],
     "point_in_time_note": null,
-    "description": "量化上行幅度；与 S002 的市值口径互证。"
+    "description": "量化上行幅度；与 S002 的市值口径互证。 ｜★ 审查：来源已改级为 Tier 2；本证据的**指数/行情口径**仍属**转述商用数据库**，`support_kind` 保持 `historical_fact_support`（证明事件发生），**不得**用于证明当时已知。"
   },
   {
     "evidence_id": "R02-PHARMA-E003",
@@ -57,7 +57,7 @@
       "historical_fact_support"
     ],
     "point_in_time_note": null,
-    "description": "降温起点；与 E004 的监管事件同日，构成事件驱动证据。"
+    "description": "降温起点；与 E004 的监管事件同日，构成事件驱动证据。 ｜★ 审查：来源已改级为 Tier 2；本证据的**指数/行情口径**仍属**转述商用数据库**，`support_kind` 保持 `historical_fact_support`（证明事件发生），**不得**用于证明当时已知。"
   },
   {
     "evidence_id": "R02-PHARMA-E004",
@@ -77,7 +77,7 @@
       "historical_fact_support"
     ],
     "point_in_time_note": null,
-    "description": "降温的直接事件原因；公司公告为一手事实（本包经媒体转述）。"
+    "description": "降温的直接事件原因；公司公告为一手事实（本包经媒体转述）。 ｜★ 审查：来源已改级为 Tier 2；本证据的**指数/行情口径**仍属**转述商用数据库**，`support_kind` 保持 `historical_fact_support`（证明事件发生），**不得**用于证明当时已知。"
   },
   {
     "evidence_id": "R02-PHARMA-E005",

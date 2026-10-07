@@ -136,7 +136,7 @@
       ]
     },
     "point_in_time_notes": "时间一致性说明：①E001/E002/E003 为 2023-10-19 的**复盘性**报道，所描述事件（9-08 起涨、10-16 顶点、10-17/18 降温）均落在事件窗口内，属 subsequent 发布但描述 contemporaneous 事实；②E004（警示函/致歉）的**事件日**为 2023-10-16~17，媒体转述日为 10-19，作为降温触发的因果证据须以事件日为准；③E005/E006/E007 为 2023-10-13 当日报道，属 contemporaneous；④★ 本包**未**取得任何 Tier 1/2 一手来源，指数与市值口径均为媒体转述商用数据库 —— 该限制已记入 known_gaps 与 R02-PHARMA-Q003。",
-    "notes": "与既有 C-2019-PHARMA-INNOV 的区别在驱动源：后者为国内制度供给驱动，本段为海外需求外溢 + 事件催化。",
+    "notes": "与既有 C-2019-PHARMA-INNOV 的区别在驱动源：后者为国内制度供给驱动，本段为海外需求外溢 + 事件催化。 【ThreeC Agent 审查】结果 = ACCEPT_WITH_CHANGES。改动内容：①来源重新分级 —— S001 央广网、S007 上海证券报由 Tier 3 改判 **Tier 2**（权威媒体），其余保持 Tier 3；②日期锚点的**证据基础**由「指数口径」改为「公告/监管事实优先」：start 以 2023-09-19 翰宇药业海外合同公告（公司公告，Tier 1 事实经媒体转述）与 09-08 起涨表述并列，peak 以 10-16~17 监管警示函/致歉（公司公告）为**可核验的事件锚**；③`confidence` 维持 medium，不因改级而提高 —— 因为指数口径仍是二手。★ 未改动任何日期数值。",
     "possible_duplicate_of": []
   },
   {
@@ -221,7 +221,7 @@
     "why_not": "（本包主张其成立，未提出反对理由；该主张是否成立须由 ThreeC Agent 用 Campaign Independence Gate 判定。）",
     "confidence": "low",
     "classification_proposal": "industry_trend",
-    "research_status": "PROVISIONAL",
+    "research_status": "INSUFFICIENT",
     "lifecycle": [
       {
         "stage_proposal": "MAIN_RISE",
@@ -254,7 +254,7 @@
       ]
     },
     "point_in_time_notes": "时间一致性说明：①E009（2025-09-09 上证报）为 contemporaneous，描述 2025H1 现象；②E008（2026-01-26）为**事后统计**，描述 2025 全年交易总额，属 subsequent，仅可用于事后界定该段规模，**不得**作为同期催化；③E010（2026-09-29）为事件当日报道，contemporaneous；④E011（2026-09-30）为 2026H1 财务数据的事后汇总，属 subsequent。★ 该段 end 为 OPEN_ENDED，故后续证据的时间关系可能随轮次推进而变化。",
-    "notes": "★ 本候选可能应作为 Observation 而非 Campaign（见 research_questions R02-PHARMA-Q001）。",
+    "notes": "★ 本候选可能应作为 Observation 而非 Campaign（见 research_questions R02-PHARMA-Q001）。 【ThreeC Agent 审查】结果 = DEFER（不是 REJECT，也不是 ACCEPT）。理由：①该段**可能仍在进行中**（2026-09-29 仍有 26 亿美元级交易落地），缺 peak 与 end；②Campaign 需要完整的时间结构，本候选不具备；③但研究价值明确（2025 年 157 起 / 1356.55 亿美元是真实且重要的结构）。**缺失项（须补齐后才可再议）**：㈠该段的**行情序列**（用于界定 peak/end）；㈡end 的判定标准（何为「结束」）；㈢按 Research Model 判定其应作为 **Campaign** 还是 **Observation**。",
     "possible_duplicate_of": []
   }
 ]

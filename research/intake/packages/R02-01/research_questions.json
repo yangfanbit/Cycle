@@ -11,8 +11,8 @@
   },
   {
     "question_id": "R02-PHARMA-Q003",
-    "question": "本包全部来源为 **Tier 3**，且指数/市值口径属「转述商用数据库」而非转述 Tier 1/2。此类证据是否可接受？",
-    "why_it_matters": "协议规定 Tier 3 仅可用于转述 Tier 1/2 事实。若不可接受，则 R02-PHARMA-001 的时间锚点（start/peak）将失去支撑，该候选可能须被 REJECT 或要求补一手指数数据。**这是本包最关键的开放问题。**"
+    "question": "【已由 ThreeC Agent 审查裁决】原问题：「本包全部来源为 Tier 3，此类证据是否可接受？」  → 结论：Tier 3 可接受，但须依赖独立性门槛且不得作 point-in-time 依据。",
+    "why_it_matters": "★ 裁决：**原问题的前提有误**。经复核 `HISTORICAL_UNIVERSE_INTAKE_PROTOCOL_v0_1.md` §7.2，intake 协议**并未**规定「Tier 3 仅可用于转述 Tier 1/2 事实」—— 该条属**当前侧**数据集（`research/current/current_candidates.json`）的 `source_policy`，被本包误植到历史侧。协议真正的硬门槛是 **独立性纪律**（同一新闻被多站转载 ≠ 多条独立证据）与 **Confirmed 门槛：≥2 条 Evidence 且 ≥2 个 independence_group**。本包 R02-PHARMA-001 有 4 个独立组、R02-PHARMA-002 有 4 个 → **门槛满足**。另据 §7.3 复核分级：央广网（中央广播电视总台）与上海证券报属**权威媒体 → Tier 2**，已改级。**遗留**：指数与市值口径仍为转述商用数据库，故其 `support_kind` 只能是 `historical_fact_support`（证明事件发生），**不得**作为 point-in-time 依据。"
   },
   {
     "question_id": "R02-PHARMA-Q004",
