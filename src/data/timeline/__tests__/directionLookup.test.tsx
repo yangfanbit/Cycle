@@ -11,7 +11,9 @@ import { DirectionLookupSection } from '../../../components/DirectionLookup/Dire
  * 方向查询的不变量测试。
  *
  * ★ 用**真实数据**锁住 2026-10-07 两次使用测试得到的「覆盖地图」：
- *   医药健康 = 两侧都有 · 汽车 = 只有历史 · 文化传媒 = 都没有。
+ *   医药健康 = 两侧都有 · 军工 = 只有历史 · 文化传媒 = 都没有。
+ *   ★ 2026-10-07：汽车**由「只有历史」变为「两侧都有」** —— 因为采纳了汽车当前研究对象。
+ *     本文件此前用汽车当「只有历史」的样例，该断言随覆盖地图一起更新（这正是它该做的事）。
  * 这三种情况正是本模块存在的理由 —— 它们必须被明确区分，而不是都给一个空白。
  */
 
@@ -26,11 +28,20 @@ describe('directionLookup · 覆盖地图（真实数据）', () => {
     expect(r.historical.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('★ 汽车 → 只有历史（historical-only）—— 历史很厚，当前侧为空', () => {
+  it('★ 汽车 → 两侧都有（2026-10-07 采纳汽车研究对象后由 historical-only 变为 both）', () => {
     const r = lookupDirection('汽车', source, dataset);
+    expect(r.verdict).toBe('both');
+    expect(r.current.length).toBeGreaterThanOrEqual(1);
+    expect(r.historical.length).toBeGreaterThanOrEqual(5);
+    // 命中依据必须可解释
+    expect(r.historical[0].matchedOn.length).toBeGreaterThan(0);
+  });
+
+  it('★ 军工 → 只有历史（historical-only）—— 历史有，当前侧为空', () => {
+    const r = lookupDirection('军工', source, dataset);
     expect(r.verdict).toBe('historical-only');
     expect(r.current).toHaveLength(0);
-    expect(r.historical.length).toBeGreaterThanOrEqual(5);
+    expect(r.historical.length).toBeGreaterThanOrEqual(1);
     // 命中依据必须可解释
     expect(r.historical[0].matchedOn.length).toBeGreaterThan(0);
   });

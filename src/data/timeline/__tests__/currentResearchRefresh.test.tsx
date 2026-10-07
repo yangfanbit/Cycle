@@ -138,8 +138,8 @@ describe('Current Research · 与历史数据隔离', () => {
     }
   });
 
-  it('5 个候选全部进入 Product View（数量不漂移）', () => {
-    expect(views.views).toHaveLength(5);
+  it('6 个候选全部进入 Product View（数量不漂移）', () => {
+    expect(views.views).toHaveLength(6);
     expect(views.views.map((v) => v.candidate.candidate_id).sort()).toEqual(
       parsed.dataset.candidates.map((c) => c.candidate_id).sort(),
     );

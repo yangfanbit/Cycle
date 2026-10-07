@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_5.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_6.json';
 import { StructuralAnalogySection, dimensionStatusOf, filterExplanations, macroThemeOf } from '../../../components/CurrentTimeLens/StructuralAnalogySection';
 import { CurrentCandidateSection } from '../../../components/CurrentTimeLens/CurrentCandidateSection';
 import {
@@ -430,11 +430,11 @@ describe('Structural Analogy UI · 按需加载', () => {
     expect(html).toContain('role="status"');
   });
 
-  it('loadStructuralAnalogyDataset 能加载并解析完整数据集（395 条 / 5 候选）', async () => {
+  it('loadStructuralAnalogyDataset 能加载并解析完整数据集（474 条 / 6 候选）', async () => {
     const ds = await loadStructuralAnalogyDataset();
-    expect(ds.candidates).toHaveLength(5);
-    expect(ds.artifactVersion).toBe('0.5');
-    expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(395);
+    expect(ds.candidates).toHaveLength(6);
+    expect(ds.artifactVersion).toBe('0.6');
+    expect(ds.candidates.reduce((n, c) => n + c.explanations.length, 0)).toBe(474);
   });
 
   it('加载结果被缓存（重复调用返回同一实例，不重复加载）', async () => {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_5.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_6.json';
 import {
   DIMENSION_LABEL,
   DIMENSION_STATUS_LABEL,
@@ -24,14 +24,14 @@ const dataset = parseStructuralAnalogyDataset(canonicalJson);
 
 describe('structuralAnalogy · 解析与覆盖度', () => {
   it('从静态 Artifact 解析出完整数据集（无网络请求）', () => {
-    expect(dataset.artifactVersion).toBe('0.5');
+    expect(dataset.artifactVersion).toBe('0.6');
     expect(dataset.ruleSetVersion).toBe('structural-analogy-ruleset-v0.3');
     expect(dataset.snapshotDate).toBe('2026-09-15');
-    expect(dataset.candidates).toHaveLength(5);
+    expect(dataset.candidates).toHaveLength(6);
   });
 
-  it('395 个 Research explanations 全部可被稳定解析', () => {
-    expect(explanationCount(dataset)).toBe(395);
+  it('474 个 Research explanations 全部可被稳定解析', () => {
+    expect(explanationCount(dataset)).toBe(474);
     for (const c of dataset.candidates) {
       expect(c.explanations).toHaveLength(79);
     }
@@ -113,7 +113,7 @@ describe('structuralAnalogy · 五级状态各自可解析', () => {
     const strict = dataset.candidates
       .flatMap((c) => c.explanations)
       .filter((e) => e.strictStructuralSupported);
-    expect(strict).toHaveLength(1);
+    expect(strict).toHaveLength(2);
     for (const e of strict) expect(e.structuralStatus).toBe('STRUCTURAL_SUPPORTED');
   });
 });
@@ -192,7 +192,7 @@ describe('structuralAnalogy · identity（统一稳定引用）', () => {
     }
   });
 
-  it('kind 与两个 identity 字段一一对应（campaign 260 / research_candidate 135）', () => {
+  it('kind 与两个 identity 字段一一对应（campaign 312 / research_candidate 162）', () => {
     let campaign = 0;
     let rc = 0;
     for (const c of dataset.candidates) {
@@ -208,8 +208,8 @@ describe('structuralAnalogy · identity（统一稳定引用）', () => {
         }
       }
     }
-    expect(campaign).toBe(260);
-    expect(rc).toBe(135);
+    expect(campaign).toBe(312);
+    expect(rc).toBe(162);
   });
 
   it('navigationTargetOf：campaign 可导航；research_candidate 不可导航到 Campaign', () => {

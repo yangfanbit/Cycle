@@ -7,7 +7,7 @@
  *     → Lifecycle → Structural Analogy → Historical Case → Evidence
  *     → 为什么对应 / 哪里不同 → 新的 Research Question
  *
- * 对 **全部 5 个 Current Candidate** 逐一执行，并检查：
+ * 对 **全部 6 个 Current Candidate** 逐一执行，并检查：
  *   · 今天的位置可理解
  *   · 历史对象身份（Campaign vs Research Candidate）明确区分
  *   · 四维结构信息可读（不是一堆内部枚举）
@@ -37,7 +37,7 @@ import {
 import { defaultTimeObservationDataset, buildTimeObservationLayer } from '../timeObservationPatterns';
 import { previewTimelineSource } from '../timelineAdapter';
 import { timelineExportData } from '../timelinePreview';
-import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_5.json';
+import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_6.json';
 
 const TODAY = '2026-09-24';
 const SA = parseStructuralAnalogyDataset(structuralAnalogyJson);
@@ -47,8 +47,8 @@ const CANDIDATES = defaultCurrentCandidateDataset().candidates;
 const BANNED = ['推荐', '买入', '卖出', '必涨', '胜率', '概率是', '预测为', '排名第一', '最相似的是'];
 
 describe('研究闭环验收 · 0. 前置：当前研究对象与历史宇宙', () => {
-  it('5 个 Current Candidate 全部存在且带阶段 / 驱动', () => {
-    expect(CANDIDATES).toHaveLength(5);
+  it('6 个 Current Candidate 全部存在且带阶段 / 驱动', () => {
+    expect(CANDIDATES).toHaveLength(6);
     for (const c of CANDIDATES) {
       expect(c.candidate_id).toBeTruthy();
       expect(c.display_name).toBeTruthy();
@@ -309,7 +309,7 @@ describe('研究闭环验收 · 8. 语义红线：无 score / ranking / probabil
     };
     const banned = /similarity_score|weighted_score|confidence_score|probability|ranking|prediction|win_rate|expected_return/i;
     for (const [name, obj] of [
-      ['explanations_v0_5', structuralAnalogyJson],
+      ['explanations_v0_6', structuralAnalogyJson],
       ['time_observation_v0_2', defaultTimeObservationDataset()],
     ] as const) {
       const hits = walk(obj).filter((k) => banned.test(k));
