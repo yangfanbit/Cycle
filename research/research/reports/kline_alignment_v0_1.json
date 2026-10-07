@@ -14,33 +14,70 @@
   "no_score": "本 artifact **不含** score / ranking / probability；只有计数事实"
  },
  "summary": {
-  "SAME": 16,
-  "NEAR": 11,
-  "DIVERGENT": 17,
+  "SAME": 17,
+  "NEAR": 13,
+  "DIVERGENT": 19,
   "UNKNOWN": 4,
-  "NO_COVERAGE": 5
+  "NO_COVERAGE": 0
  },
  "by_campaign": {
   "C-2016-CONS-BAIJIU-UPGRADE": {
    "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
-   "status": "NO_DATA",
+   "campaign_year": 2016,
+   "status": "OK",
+   "recorded": {
+    "start": "2016-06-01",
+    "peak": "2018-01-31",
+    "end": "2018-12-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
     {
      "security_id": "LUZHOULAOJIAO",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 674,
+     "first_date": "2016-04-05",
+     "last_date": "2019-01-30",
+     "peak_date": "2018-01-16",
+     "peak_ret_pct": -613.5,
+     "trough_date": "2016-05-26",
+     "trough_ret_pct": 18.7,
+     "final_ret_pct": -250.3,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "MOUTAI",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 692,
+     "first_date": "2016-04-05",
+     "last_date": "2019-01-30",
+     "peak_date": "2018-06-12",
+     "peak_ret_pct": -1084.8,
+     "trough_date": "2016-04-20",
+     "trough_ret_pct": 13.6,
+     "final_ret_pct": -870.0,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "WULIANGYE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 692,
+     "first_date": "2016-04-05",
+     "last_date": "2019-01-30",
+     "peak_date": "2018-01-15",
+     "peak_ret_pct": -1731.2,
+     "trough_date": "2016-04-20",
+     "trough_ret_pct": 49.8,
+     "final_ret_pct": -852.8,
+     "peak_verdict": "NEAR"
     }
-   ]
+   ],
+   "median_peak_date": "2018-01-16",
+   "median_peak_verdict": "NEAR"
   },
   "C-2016-HIEQ-CONSTR": {
    "campaign_id": "C-2016-HIEQ-CONSTR",
@@ -53,7 +90,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 1
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -72,21 +109,45 @@
     },
     {
      "security_id": "SANY",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 1360,
+     "first_date": "2016-06-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-02-10",
+     "peak_ret_pct": 2294.4,
+     "trough_date": "2016-06-13",
+     "trough_ret_pct": -8.9,
+     "final_ret_pct": 1007.9,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "XCMG",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 1340,
+     "first_date": "2016-06-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-04-21",
+     "peak_ret_pct": 263.3,
+     "trough_date": "2016-06-24",
+     "trough_ret_pct": -9.1,
+     "final_ret_pct": 155.2,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "ZOOMLION",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 1360,
+     "first_date": "2016-06-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-03-01",
+     "peak_ret_pct": 1025.0,
+     "trough_date": "2018-10-18",
+     "trough_ret_pct": -35.2,
+     "final_ret_pct": 352.6,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2021-01-07",
+   "median_peak_date": "2021-02-10",
    "median_peak_verdict": "NEAR"
   },
   "C-2016-PANEL-CYCLE": {
@@ -123,24 +184,53 @@
   },
   "C-2018-CONS-HOG-AFRICAN": {
    "campaign_id": "C-2018-CONS-HOG-AFRICAN",
-   "status": "NO_DATA",
+   "campaign_year": 2018,
+   "status": "OK",
+   "recorded": {
+    "start": "2018-08-03",
+    "peak": "2020-03-09",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 2
+   },
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
     {
      "security_id": "MUYUAN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 892,
+     "first_date": "2018-06-04",
+     "last_date": "2022-01-28",
+     "peak_date": "2021-02-19",
+     "peak_ret_pct": 1178.6,
+     "trough_date": "2018-08-20",
+     "trough_ret_pct": -41.8,
+     "final_ret_pct": 657.4,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "NEWHOPE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 873,
+     "first_date": "2018-06-04",
+     "last_date": "2021-12-31",
+     "peak_date": "2020-09-02",
+     "peak_ret_pct": 505.6,
+     "trough_date": "2018-10-18",
+     "trough_ret_pct": -19.7,
+     "final_ret_pct": 123.0,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "WENS",
      "status": "NO_DATA",
      "rows": 0
     }
-   ]
+   ],
+   "median_peak_date": "2020-09-02",
+   "median_peak_verdict": "DIVERGENT"
   },
   "C-2018-HIEQ-ROBOT-DOWN": {
    "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
@@ -153,7 +243,7 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -185,11 +275,19 @@
     },
     {
      "security_id": "SIASUN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 346,
+     "first_date": "2018-08-01",
+     "last_date": "2019-12-31",
+     "peak_date": "2019-03-20",
+     "peak_ret_pct": 24.3,
+     "trough_date": "2019-01-02",
+     "trough_ret_pct": -22.0,
+     "final_ret_pct": -17.3,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2018-08-13",
+   "median_peak_date": "2019-03-20",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2019-AD": {
@@ -203,14 +301,22 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
     {
      "security_id": "ROUTE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 75,
+     "first_date": "2019-06-17",
+     "last_date": "2019-09-30",
+     "peak_date": "2019-07-02",
+     "peak_ret_pct": 11.3,
+     "trough_date": "2019-09-30",
+     "trough_ret_pct": -16.2,
+     "final_ret_pct": -16.2,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "WANAN",
@@ -239,7 +345,7 @@
      "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2019-06-21",
+   "median_peak_date": "2019-06-24",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2019-COMM-5G": {
@@ -337,7 +443,7 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 1
+    "with_data": 2
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -356,8 +462,16 @@
     },
     {
      "security_id": "PROYA",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 804,
+     "first_date": "2019-09-09",
+     "last_date": "2022-12-30",
+     "peak_date": "2022-08-02",
+     "peak_ret_pct": 253.5,
+     "trough_date": "2019-09-11",
+     "trough_ret_pct": -4.6,
+     "final_ret_pct": 228.5,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "WANCHEN",
@@ -379,7 +493,7 @@
    },
    "coverage": {
     "securities": 6,
-    "with_data": 2
+    "with_data": 6
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -411,27 +525,59 @@
     },
     {
      "security_id": "LUZHOULAOJIAO",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 730,
+     "first_date": "2019-01-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-02-10",
+     "peak_ret_pct": 2827.6,
+     "trough_date": "2019-01-03",
+     "trough_ret_pct": -15.0,
+     "final_ret_pct": 2236.0,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "MOUTAI",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 730,
+     "first_date": "2019-01-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-02-10",
+     "peak_ret_pct": 625.4,
+     "trough_date": "2019-01-03",
+     "trough_ret_pct": -2.8,
+     "final_ret_pct": 461.9,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "WULIANGYE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 730,
+     "first_date": "2019-01-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-02-19",
+     "peak_ret_pct": 1415.1,
+     "trough_date": "2019-01-03",
+     "trough_ret_pct": -4.6,
+     "final_ret_pct": 849.9,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "YILI",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 730,
+     "first_date": "2019-01-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-01-07",
+     "peak_ret_pct": 214.1,
+     "trough_date": "2019-01-03",
+     "trough_ret_pct": -1.3,
+     "final_ret_pct": 148.5,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2021-01-14",
-   "median_peak_verdict": "DIVERGENT"
+   "median_peak_date": "2021-02-10",
+   "median_peak_verdict": "NEAR"
   },
   "C-2019-CONSUMER-TWS": {
    "campaign_id": "C-2019-CONSUMER-TWS",
@@ -444,7 +590,7 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 1
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -463,13 +609,29 @@
     },
     {
      "security_id": "LUXSHARE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 585,
+     "first_date": "2018-11-05",
+     "last_date": "2021-03-31",
+     "peak_date": "2021-01-13",
+     "peak_ret_pct": 641.5,
+     "trough_date": "2018-12-19",
+     "trough_ret_pct": -20.9,
+     "final_ret_pct": 297.5,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "SGMC",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 596,
+     "first_date": "2018-11-05",
+     "last_date": "2021-04-30",
+     "peak_date": "2020-07-14",
+     "peak_ret_pct": 980.8,
+     "trough_date": "2019-01-02",
+     "trough_ret_pct": -16.2,
+     "final_ret_pct": 622.2,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2020-10-29",
@@ -593,19 +755,48 @@
   },
   "C-2019-RES-DYE-SHOCK": {
    "campaign_id": "C-2019-RES-DYE-SHOCK",
-   "status": "NO_DATA",
+   "campaign_year": 2019,
+   "status": "OK",
+   "recorded": {
+    "start": "2019-03-21",
+    "peak": "2019-04-04",
+    "end": "2019-07-30"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
     {
      "security_id": "LONGSHENG",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 127,
+     "first_date": "2019-01-21",
+     "last_date": "2019-07-30",
+     "peak_date": "2019-04-08",
+     "peak_ret_pct": 232.1,
+     "trough_date": "2019-01-22",
+     "trough_ret_pct": -1.8,
+     "final_ret_pct": 90.6,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "RUNTE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 127,
+     "first_date": "2019-01-21",
+     "last_date": "2019-07-30",
+     "peak_date": "2019-04-08",
+     "peak_ret_pct": 132.6,
+     "trough_date": "2019-01-22",
+     "trough_ret_pct": -1.8,
+     "final_ret_pct": 48.1,
+     "peak_verdict": "SAME"
     }
-   ]
+   ],
+   "median_peak_date": "2019-04-08",
+   "median_peak_verdict": "SAME"
   },
   "C-2019-SEMI-LOCALIZATION": {
    "campaign_id": "C-2019-SEMI-LOCALIZATION",
@@ -618,7 +809,7 @@
    },
    "coverage": {
     "securities": 8,
-    "with_data": 2
+    "with_data": 6
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -655,23 +846,55 @@
     },
     {
      "security_id": "MAXSCEND",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 334,
+     "first_date": "2019-06-18",
+     "last_date": "2020-10-30",
+     "peak_date": "2020-07-14",
+     "peak_ret_pct": 2111.4,
+     "trough_date": "2019-06-18",
+     "trough_ret_pct": 0.0,
+     "final_ret_pct": 1735.2,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "NAURA",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 395,
+     "first_date": "2019-03-18",
+     "last_date": "2020-10-30",
+     "peak_date": "2020-08-03",
+     "peak_ret_pct": 236.1,
+     "trough_date": "2019-05-06",
+     "trough_ret_pct": -23.8,
+     "final_ret_pct": 149.2,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "SGMC",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 385,
+     "first_date": "2019-03-18",
+     "last_date": "2020-10-30",
+     "peak_date": "2020-07-14",
+     "peak_ret_pct": 757.6,
+     "trough_date": "2019-05-06",
+     "trough_ret_pct": -17.2,
+     "final_ret_pct": 495.8,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "SMIC",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 71,
+     "first_date": "2020-07-16",
+     "last_date": "2020-10-30",
+     "peak_date": "2020-08-06",
+     "peak_ret_pct": 2.3,
+     "trough_date": "2020-09-30",
+     "trough_ret_pct": -40.1,
+     "final_ret_pct": -24.9,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "WILLSEMI",
@@ -679,12 +902,23 @@
      "rows": 0
     }
    ],
-   "median_peak_date": "2020-02-25",
-   "median_peak_verdict": "DIVERGENT"
+   "median_peak_date": "2020-07-14",
+   "median_peak_verdict": "SAME"
   },
   "C-2020-CONS-BEAUTY-CN": {
    "campaign_id": "C-2020-CONS-BEAUTY-CN",
-   "status": "NO_DATA",
+   "campaign_year": 2020,
+   "status": "OK",
+   "recorded": {
+    "start": "2020-06-29",
+    "peak": "2021-10-29",
+    "end": "2022-12-31"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 1
+   },
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
     {
      "security_id": "GAMBO",
@@ -693,10 +927,20 @@
     },
     {
      "security_id": "YANJIN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 650,
+     "first_date": "2020-04-30",
+     "last_date": "2022-12-30",
+     "peak_date": "2020-10-13",
+     "peak_ret_pct": 121.4,
+     "trough_date": "2021-08-27",
+     "trough_ret_pct": -35.3,
+     "final_ret_pct": 54.3,
+     "peak_verdict": "DIVERGENT"
     }
-   ]
+   ],
+   "median_peak_date": "2020-10-13",
+   "median_peak_verdict": "DIVERGENT"
   },
   "C-2020-CONS-DUTYFREE": {
    "campaign_id": "C-2020-CONS-DUTYFREE",
@@ -741,7 +985,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -778,11 +1022,19 @@
     },
     {
      "security_id": "ROBAM",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 446,
+     "first_date": "2020-04-02",
+     "last_date": "2022-01-28",
+     "peak_date": "2021-07-07",
+     "peak_ret_pct": 87.6,
+     "trough_date": "2020-04-09",
+     "trough_ret_pct": -1.9,
+     "final_ret_pct": 30.8,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2021-07-01",
+   "median_peak_date": "2021-07-07",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2020-FIN-BANK-CREDIT": {
@@ -901,7 +1153,7 @@
    },
    "coverage": {
     "securities": 6,
-    "with_data": 3
+    "with_data": 5
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -946,8 +1198,16 @@
     },
     {
      "security_id": "SHENFEI",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 653,
+     "first_date": "2020-04-27",
+     "last_date": "2022-12-30",
+     "peak_date": "2021-08-31",
+     "peak_ret_pct": 300.1,
+     "trough_date": "2020-04-27",
+     "trough_ret_pct": 0.0,
+     "final_ret_pct": 184.4,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "SWMIL",
@@ -956,8 +1216,16 @@
     },
     {
      "security_id": "XIFEI",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 653,
+     "first_date": "2020-04-27",
+     "last_date": "2022-12-30",
+     "peak_date": "2021-01-12",
+     "peak_ret_pct": 147.1,
+     "trough_date": "2020-06-15",
+     "trough_ret_pct": -0.4,
+     "final_ret_pct": 57.0,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2021-01-13",
@@ -1140,7 +1408,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1172,8 +1440,16 @@
     },
     {
      "security_id": "POLY",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 534,
+     "first_date": "2020-06-22",
+     "last_date": "2022-08-30",
+     "peak_date": "2022-04-15",
+     "peak_ret_pct": 46.5,
+     "trough_date": "2021-08-04",
+     "trough_ret_pct": -36.9,
+     "final_ret_pct": 31.6,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "VANKE",
@@ -1181,7 +1457,7 @@
      "rows": 0
     }
    ],
-   "median_peak_date": "2020-07-06",
+   "median_peak_date": "2020-07-10",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2020-RES-LITHIUM": {
@@ -1195,7 +1471,7 @@
    },
    "coverage": {
     "securities": 5,
-    "with_data": 1
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1214,13 +1490,29 @@
     },
     {
      "security_id": "SALTLIAKE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 304,
+     "first_date": "2021-08-10",
+     "last_date": "2022-11-11",
+     "peak_date": "2021-08-23",
+     "peak_ret_pct": 21.9,
+     "trough_date": "2022-10-31",
+     "trough_ret_pct": -40.1,
+     "final_ret_pct": -28.9,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "SINOMINE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 534,
+     "first_date": "2020-08-28",
+     "last_date": "2022-11-11",
+     "peak_date": "2022-09-14",
+     "peak_ret_pct": 1257.9,
+     "trough_date": "2020-09-11",
+     "trough_ret_pct": -4.5,
+     "final_ret_pct": 1003.3,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "TIANQI",
@@ -1229,8 +1521,16 @@
     },
     {
      "security_id": "YONGXING",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 534,
+     "first_date": "2020-08-28",
+     "last_date": "2022-11-11",
+     "peak_date": "2022-07-07",
+     "peak_ret_pct": 2475.4,
+     "trough_date": "2020-09-28",
+     "trough_ret_pct": -29.4,
+     "final_ret_pct": 2025.2,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2021-08-31",
@@ -1247,7 +1547,7 @@
    },
    "coverage": {
     "securities": 6,
-    "with_data": 1
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1276,18 +1576,42 @@
     },
     {
      "security_id": "YNCOPPER",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 471,
+     "first_date": "2020-01-23",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-09-13",
+     "peak_ret_pct": 65.8,
+     "trough_date": "2020-04-28",
+     "trough_ret_pct": -26.3,
+     "final_ret_pct": 13.5,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "YUNAL",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 471,
+     "first_date": "2020-01-23",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-09-16",
+     "peak_ret_pct": 570.5,
+     "trough_date": "2020-04-03",
+     "trough_ret_pct": -29.0,
+     "final_ret_pct": 207.5,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "ZIJIN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 490,
+     "first_date": "2020-01-23",
+     "last_date": "2022-01-28",
+     "peak_date": "2021-02-22",
+     "peak_ret_pct": 516.8,
+     "trough_date": "2020-03-19",
+     "trough_ret_pct": -46.0,
+     "final_ret_pct": 281.7,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2021-09-13",
@@ -1304,7 +1628,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 2
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1336,13 +1660,29 @@
     },
     {
      "security_id": "NPRARE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 450,
+     "first_date": "2020-03-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-09-10",
+     "peak_ret_pct": 609.3,
+     "trough_date": "2020-03-23",
+     "trough_ret_pct": -11.4,
+     "final_ret_pct": 430.0,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "SHENGHE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 450,
+     "first_date": "2020-03-02",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-08-06",
+     "peak_ret_pct": 315.3,
+     "trough_date": "2020-03-23",
+     "trough_ret_pct": -17.8,
+     "final_ret_pct": 186.8,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2021-08-31",
@@ -1359,7 +1699,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 1
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1378,8 +1718,16 @@
     },
     {
      "security_id": "NSIG",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 338,
+     "first_date": "2020-05-18",
+     "last_date": "2021-09-30",
+     "peak_date": "2020-07-14",
+     "peak_ret_pct": 210.6,
+     "trough_date": "2020-05-18",
+     "trough_ret_pct": 0.0,
+     "final_ret_pct": 39.2,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "PIOTECH",
@@ -1388,8 +1736,16 @@
     },
     {
      "security_id": "SMIC",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 297,
+     "first_date": "2020-07-16",
+     "last_date": "2021-09-30",
+     "peak_date": "2020-08-06",
+     "peak_ret_pct": 2.3,
+     "trough_date": "2020-09-30",
+     "trough_ret_pct": -40.1,
+     "final_ret_pct": -33.4,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2020-07-14",
@@ -1406,7 +1762,7 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 1
+    "with_data": 2
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1430,8 +1786,16 @@
     },
     {
      "security_id": "MUYUAN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 376,
+     "first_date": "2021-06-18",
+     "last_date": "2022-12-30",
+     "peak_date": "2022-07-11",
+     "peak_ret_pct": 15.4,
+     "trough_date": "2021-07-28",
+     "trough_ret_pct": -30.4,
+     "final_ret_pct": -15.3,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2022-04-18",
@@ -1532,7 +1896,7 @@
    },
    "coverage": {
     "securities": 5,
-    "with_data": 2
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1569,13 +1933,29 @@
     },
     {
      "security_id": "XINGFA",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 137,
+     "first_date": "2021-06-15",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-09-22",
+     "peak_ret_pct": 253.1,
+     "trough_date": "2021-06-21",
+     "trough_ret_pct": -7.5,
+     "final_ret_pct": 133.9,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "YUNTIANHUA",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 137,
+     "first_date": "2021-06-15",
+     "last_date": "2021-12-31",
+     "peak_date": "2021-09-14",
+     "peak_ret_pct": 248.8,
+     "trough_date": "2021-07-08",
+     "trough_ret_pct": -10.3,
+     "final_ret_pct": 67.9,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2021-09-14",
@@ -1592,7 +1972,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1629,11 +2009,19 @@
     },
     {
      "security_id": "SONGCHENG",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 178,
+     "first_date": "2022-10-10",
+     "last_date": "2023-06-30",
+     "peak_date": "2023-04-10",
+     "peak_ret_pct": 53.4,
+     "trough_date": "2022-10-13",
+     "trough_ret_pct": -3.3,
+     "final_ret_pct": 11.8,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2023-01-16",
+   "median_peak_date": "2023-02-13",
    "median_peak_verdict": "NEAR"
   },
   "C-2022-POLICY": {
@@ -1815,7 +2203,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1847,8 +2235,16 @@
     },
     {
      "security_id": "POLY",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 111,
+     "first_date": "2022-09-09",
+     "last_date": "2023-02-28",
+     "peak_date": "2022-09-15",
+     "peak_ret_pct": 2.2,
+     "trough_date": "2022-11-01",
+     "trough_ret_pct": -27.9,
+     "final_ret_pct": -19.4,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "VANKE",
@@ -1856,7 +2252,7 @@
      "rows": 0
     }
    ],
-   "median_peak_date": "2022-09-09",
+   "median_peak_date": "2022-09-15",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2022-SEMI-DOWNTURN": {
@@ -1870,7 +2266,7 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 1
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -1889,17 +2285,33 @@
     },
     {
      "security_id": "MAXSCEND",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 226,
+     "first_date": "2021-11-05",
+     "last_date": "2022-10-12",
+     "peak_date": "2021-11-25",
+     "peak_ret_pct": 22.1,
+     "trough_date": "2022-10-11",
+     "trough_ret_pct": -59.6,
+     "final_ret_pct": -57.2,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "SGMC",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 226,
+     "first_date": "2021-11-05",
+     "last_date": "2022-10-12",
+     "peak_date": "2021-11-11",
+     "peak_ret_pct": 7.2,
+     "trough_date": "2022-10-11",
+     "trough_ret_pct": -42.2,
+     "final_ret_pct": -35.3,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2022-09-22",
-   "median_peak_verdict": "NEAR"
+   "median_peak_date": "2021-11-25",
+   "median_peak_verdict": "DIVERGENT"
   },
   "C-2023-AD": {
    "campaign_id": "C-2023-AD",
@@ -1983,7 +2395,7 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2015,12 +2427,20 @@
     },
     {
      "security_id": "NAURA",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 180,
+     "first_date": "2022-12-01",
+     "last_date": "2023-08-25",
+     "peak_date": "2023-04-20",
+     "peak_ret_pct": 53.2,
+     "trough_date": "2022-12-23",
+     "trough_ret_pct": -5.8,
+     "final_ret_pct": 11.6,
+     "peak_verdict": "NEAR"
     }
    ],
-   "median_peak_date": "2023-04-07",
-   "median_peak_verdict": "SAME"
+   "median_peak_date": "2023-04-20",
+   "median_peak_verdict": "NEAR"
   },
   "C-2023-COMM-OPTICAL": {
    "campaign_id": "C-2023-COMM-OPTICAL",
@@ -2149,7 +2569,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 3
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2194,16 +2614,35 @@
     },
     {
      "security_id": "PINGAN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 123,
+     "first_date": "2023-01-31",
+     "last_date": "2023-07-28",
+     "peak_date": "2023-05-08",
+     "peak_ret_pct": 9.6,
+     "trough_date": "2023-04-06",
+     "trough_ret_pct": -14.4,
+     "final_ret_pct": 5.9,
+     "peak_verdict": "SAME"
     }
    ],
-   "median_peak_date": "2023-05-09",
+   "median_peak_date": "2023-05-08",
    "median_peak_verdict": "SAME"
   },
   "C-2023-HIEQ-HUMANOID": {
    "campaign_id": "C-2023-HIEQ-HUMANOID",
-   "status": "NO_DATA",
+   "campaign_year": 2023,
+   "status": "OK",
+   "recorded": {
+    "start": "2023-05-01",
+    "peak": "2023-11-02",
+    "end": "2023-12-31"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 1
+   },
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
     {
      "security_id": "EFORT",
@@ -2222,15 +2661,25 @@
     },
     {
      "security_id": "LEADSHINE",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 205,
+     "first_date": "2023-03-02",
+     "last_date": "2023-12-29",
+     "peak_date": "2023-03-06",
+     "peak_ret_pct": 0.2,
+     "trough_date": "2023-11-02",
+     "trough_ret_pct": -39.8,
+     "final_ret_pct": -16.0,
+     "peak_verdict": "DIVERGENT"
     },
     {
      "security_id": "ZHAOWEI",
      "status": "NO_DATA",
      "rows": 0
     }
-   ]
+   ],
+   "median_peak_date": "2023-03-06",
+   "median_peak_verdict": "DIVERGENT"
   },
   "C-2023-HIEQ-ROBOT-PLUS": {
    "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
@@ -2243,7 +2692,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 1
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2262,8 +2711,16 @@
     },
     {
      "security_id": "SHUANGHUAN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 43,
+     "first_date": "2022-11-21",
+     "last_date": "2023-01-19",
+     "peak_date": "2023-01-12",
+     "peak_ret_pct": 0.0,
+     "trough_date": "2022-12-28",
+     "trough_ret_pct": -15.2,
+     "final_ret_pct": -0.0,
+     "peak_verdict": "NEAR"
     },
     {
      "security_id": "TECHLONG",
@@ -2272,11 +2729,19 @@
     },
     {
      "security_id": "XINBANG",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 43,
+     "first_date": "2022-11-21",
+     "last_date": "2023-01-19",
+     "peak_date": "2022-12-16",
+     "peak_ret_pct": 37.0,
+     "trough_date": "2022-11-23",
+     "trough_ret_pct": -12.0,
+     "final_ret_pct": 4.9,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2023-01-19",
+   "median_peak_date": "2023-01-12",
    "median_peak_verdict": "NEAR"
   },
   "C-2023-PHARMA-GLP1": {
@@ -2348,7 +2813,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 2
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2385,8 +2850,16 @@
     },
     {
      "security_id": "ROBAM",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 476,
+     "first_date": "2024-01-15",
+     "last_date": "2025-12-31",
+     "peak_date": "2024-05-20",
+     "peak_ret_pct": 28.8,
+     "trough_date": "2024-09-02",
+     "trough_ret_pct": -15.0,
+     "final_ret_pct": -0.6,
+     "peak_verdict": "DIVERGENT"
     }
    ],
    "median_peak_date": "2024-10-08",
@@ -2532,7 +3005,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 1
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2551,18 +3024,42 @@
     },
     {
      "security_id": "SDGOLD",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 43,
+     "first_date": "2023-12-04",
+     "last_date": "2024-02-01",
+     "peak_date": "2023-12-04",
+     "peak_ret_pct": 0.0,
+     "trough_date": "2024-01-22",
+     "trough_ret_pct": -17.9,
+     "final_ret_pct": -15.9,
+     "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "ZIJIN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 43,
+     "first_date": "2023-12-04",
+     "last_date": "2024-02-01",
+     "peak_date": "2024-01-03",
+     "peak_ret_pct": 1.7,
+     "trough_date": "2023-12-13",
+     "trough_ret_pct": -8.9,
+     "final_ret_pct": -2.0,
+     "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "ZJGOLD",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 43,
+     "first_date": "2023-12-04",
+     "last_date": "2024-02-01",
+     "peak_date": "2023-12-04",
+     "peak_ret_pct": 0.0,
+     "trough_date": "2024-01-22",
+     "trough_ret_pct": -23.2,
+     "final_ret_pct": -15.2,
+     "peak_verdict": "UNKNOWN"
     }
    ],
    "median_peak_date": "2023-12-04",
@@ -2634,7 +3131,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 3
+    "with_data": 4
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2679,11 +3176,19 @@
     },
     {
      "security_id": "LONGYS",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 41,
+     "first_date": "2024-07-26",
+     "last_date": "2024-09-24",
+     "peak_date": "2024-07-31",
+     "peak_ret_pct": 4.1,
+     "trough_date": "2024-09-23",
+     "trough_ret_pct": -21.7,
+     "final_ret_pct": -19.8,
+     "peak_verdict": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2024-08-01",
+   "median_peak_date": "2024-07-31",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2024-V2X": {
@@ -2697,7 +3202,7 @@
    },
    "coverage": {
     "securities": 4,
-    "with_data": 1
+    "with_data": 2
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2721,8 +3226,16 @@
     },
     {
      "security_id": "SUOLING",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 49,
+     "first_date": "2024-04-12",
+     "last_date": "2024-06-25",
+     "peak_date": "2024-06-21",
+     "peak_ret_pct": 55.0,
+     "trough_date": "2024-04-16",
+     "trough_ret_pct": -16.3,
+     "final_ret_pct": 25.5,
+     "peak_verdict": "SAME"
     },
     {
      "security_id": "VANJI",
@@ -2744,7 +3257,7 @@
    },
    "coverage": {
     "securities": 3,
-    "with_data": 1
+    "with_data": 3
    },
    "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
    "per_security": [
@@ -2763,13 +3276,29 @@
     },
     {
      "security_id": "NCI",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 42,
+     "first_date": "2024-11-04",
+     "last_date": "2024-12-31",
+     "peak_date": "2024-11-07",
+     "peak_ret_pct": 19.0,
+     "trough_date": "2024-11-26",
+     "trough_ret_pct": -5.3,
+     "final_ret_pct": 4.5,
+     "peak_verdict": "UNKNOWN"
     },
     {
      "security_id": "PINGAN",
-     "status": "NO_DATA",
-     "rows": 0
+     "status": "OK",
+     "rows": 42,
+     "first_date": "2024-11-04",
+     "last_date": "2024-12-31",
+     "peak_date": "2024-11-07",
+     "peak_ret_pct": 7.5,
+     "trough_date": "2024-11-25",
+     "trough_ret_pct": -8.5,
+     "final_ret_pct": -8.4,
+     "peak_verdict": "UNKNOWN"
     }
    ],
    "median_peak_date": "2024-11-07",

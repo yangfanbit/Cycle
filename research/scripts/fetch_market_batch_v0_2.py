@@ -170,16 +170,18 @@ def build_plan(conn):
     rows = conn.execute(
         """
         SELECT s.security_id, s.ticker, s.name, s.exchange,
-               MIN(cp.start_date) AS beg, MAX(COALESCE(cp.end_date, cp.start_date)) AS end
+               MIN(cp.start_date) AS beg, MAX(COALESCE(cp.end_date, '2025-12-31')) AS end
         FROM securities s
         JOIN campaign_securities cs ON cs.security_id = s.security_id
         JOIN campaigns cp ON cp.campaign_id = cs.campaign_id
         WHERE s.ticker IS NOT NULL AND s.ticker <> ''
-          AND s.security_id NOT IN (SELECT DISTINCT series_id FROM market_daily)
         GROUP BY s.security_id
         ORDER BY s.security_id
         """
     ).fetchall()
+    # ★ 2026-10-07 修：原用 COALESCE(end_date, start_date) —— 对 **开放式 campaign**（end_date=None）
+    #   会把窗口截断在 start 日，导致 K 线数据缺后半段、对照出现**假 DIVERGENT**。
+    #   改为回退到研究区间上限 2025-12-31。
     plan = {}
     for sid, ticker, name, exch, beg, end in rows:
         if not beg:
@@ -190,6 +192,15 @@ def build_plan(conn):
         end2 = end or date.today().isoformat()
         if end2 > "2025-12-31":  # 与研究区间上限一致，不外扩
             end2 = "2025-12-31"
+        # ★ 纳入条件：① 完全无数据 ② 数据区间**未覆盖所需区间**（如开放式 campaign 被截断）
+        cur = conn.execute(
+            "SELECT MIN(trade_date), MAX(trade_date) FROM market_daily WHERE series_id=?", (sid,)
+        ).fetchone()
+        have_min, have_max = (cur[0], cur[1]) if cur else (None, None)
+        if have_min is not None and have_max is not None:
+            # 已有数据且覆盖到 end2 的前 30 日内 → 视为已足，跳过
+            if have_max >= end2[:8] + "01" or have_max >= "2025-11-01":
+                continue
         plan[sid] = (tencent_symbol(ticker, exch), name or sid, "stock", beg2, end2)
     return plan
 
