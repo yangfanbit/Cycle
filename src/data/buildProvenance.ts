@@ -36,7 +36,7 @@
  */
 
 import timelineExportJson from '@exports/timeline_export_v1.json';
-import saArtifactJson from '@observation/structural_analogy_explanations_v0_7.json';
+import saArtifactJson from '@observation/structural_analogy_explanations_v0_9.json';
 import toArtifactJson from '@observation/time_observation_patterns_v0_2.json';
 
 /** 构建时由 Vite `define` 注入；未注入时（如 vitest 直接跑源码）为 `undefined`。 */

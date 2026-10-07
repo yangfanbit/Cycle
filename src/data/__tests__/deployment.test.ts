@@ -46,7 +46,7 @@ describe('Deployment · Gate D7 build provenance', () => {
   }>('../../../exports/timeline_export_v1.json');
 
   const saJson = readJson<{ artifact_version: string | number; rule_set_version: string }>(
-    '../../../research/research/reports/structural_analogy_explanations_v0_7.json',
+    '../../../research/research/reports/structural_analogy_explanations_v0_9.json',
   );
   const toJson = readJson<{ artifact_version: string | number }>(
     '../../../research/research/reports/time_observation_patterns_v0_2.json',

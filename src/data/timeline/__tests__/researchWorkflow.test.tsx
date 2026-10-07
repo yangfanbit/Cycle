@@ -37,7 +37,7 @@ import {
 import { defaultTimeObservationDataset, buildTimeObservationLayer } from '../timeObservationPatterns';
 import { previewTimelineSource } from '../timelineAdapter';
 import { timelineExportData } from '../timelinePreview';
-import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_7.json';
+import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_9.json';
 
 const TODAY = '2026-09-24';
 const SA = parseStructuralAnalogyDataset(structuralAnalogyJson);
