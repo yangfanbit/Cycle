@@ -5903,25 +5903,67 @@
       "source_tier": "T3",
       "source_title": "21 世纪经济报道 2026-09-16（转述发改委/能源局规划）",
       "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "【更正 + 升 T1】国家标准 **GB/T 47245—2026《机器人智能控制系统总体架构》** 发布日期 2026-02-27、实施日期 2026-09-01。★ 更正 `OBS-2026-09-006`：该标准名称**不是**「通用智能控制系统」，而是《机器人智能控制系统总体架构》；「2026-09-01」是**实施日期**而非发布日。",
+      "date": "2026-02-27",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "STRONG",
+      "linked_object_id": "CC-2026-EMBODIED-AI",
+      "note": "按 append-only 纪律**不改写**原观察项，以新增条目更正。",
+      "observation_id": "OBS-2026-09-011",
+      "observation_type": "POLICY",
+      "source_tier": "T1",
+      "source_title": "国家标准全文公开系统 openstd.samr.gov.cn（GB/T 47245—2026；发布单位：国家市场监督管理总局、国家标准化管理委员会）",
+      "supersedes": "OBS-2026-09-006",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "【升 T1】国家药监局于 2026-09-14 发布 YY/T 2029—2026《脑机接口医疗器械 用于人工智能算法的脑电数据集质量要求与评价方法》。原 `OBS-2026-09-008` 的事实**经一手来源核验无误**，本条仅将其来源层级升为 T1。",
+      "date": "2026-09-14",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "STRONG",
+      "linked_object_id": "CC-2026-BCI-MEDTECH",
+      "note": "原为央视新闻/腾讯新闻转述（T3）；一手来源已取得。",
+      "observation_id": "OBS-2026-09-012",
+      "observation_type": "POLICY",
+      "source_tier": "T1",
+      "source_title": "国家药品监督管理局医疗器械标准管理中心 nidc.org.cn（关于发布 YY/T 2029—2026 医疗器械行业标准的通告，2026-09-14）",
+      "supersedes": null,
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "【更正 + 升 T1】国家发展改革委、国家能源局联合印发《可再生能源发展「十五五」规划》。★ 更正 `OBS-2026-07-010` 的日期：**成文日期 2026-07-06、发布日 2026-07-23**（原记为 2026-07-15）。",
+      "date": "2026-07-06",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-OFFSHORE-WIND",
+      "note": "按 append-only 纪律**不改写**原观察项，以新增条目更正。",
+      "observation_id": "OBS-2026-07-013",
+      "observation_type": "POLICY",
+      "source_tier": "T1",
+      "source_title": "国家发展改革委 ndrc.gov.cn（关于印发《可再生能源发展「十五五」规划》的通知）／国家能源局 nea.gov.cn",
+      "supersedes": "OBS-2026-07-010",
+      "temporal_relation": "BEFORE_SNAPSHOT"
     }
   ],
   "provenance": {
     "ai_assisted": true,
     "generated_by": "ai-offline",
     "research_round": "ThreeC 1.1 Phase 1.2",
-    "reviewed_at": "2026-10-07T14:45:00+00:00",
+    "reviewed_at": "2026-10-07T14:52:00+00:00",
     "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
-    "superseded_by": "MS-2026-10-06-09",
-    "supersedes": "MS-2026-10-06-07"
+    "superseded_by": null,
+    "supersedes": "MS-2026-10-06-08"
   },
   "research_context": {
     "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
     "known_limitations": [
       "market_regime 依赖离线填报，无自动化行情源。",
       "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
-      "汽车候选证据更正 + 事件重派生（SA v0_9）。"
+      "3 条政策类观察项取得一手来源并升 T1；2 处事实错误按 append-only 以新增条目更正。"
     ],
     "research_method": "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
     "research_question": "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
@@ -6226,7 +6268,7 @@
     }
   ],
   "snapshot_date": "2026-10-06",
-  "snapshot_id": "MS-2026-10-06-08",
-  "status": "ARCHIVED",
-  "timestamp": "2026-10-07T22:45:00+08:00"
+  "snapshot_id": "MS-2026-10-06-09",
+  "status": "CANONICAL",
+  "timestamp": "2026-10-07T22:52:00+08:00"
 }
