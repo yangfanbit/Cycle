@@ -1,0 +1,123 @@
+{
+  "contract": "market_snapshot_observations",
+  "note": "本轮（revision 4）在 revision 3 之上**追加**其余研究对象的对象级观察。★ 原有 7 条一字未改。",
+  "observations": [
+    {
+      "claim": "2026 年 9 月 A 股收官，主要指数月线集体收跌：上证指数全月下跌 3.62% 收报 3842.19 点；深证成指、创业板指月跌幅均超 8%；科创50 指数跌超 9%。",
+      "date": "2026-09-30",
+      "direction": "NEGATIVE",
+      "evidence_strength": "STRONG",
+      "observation_id": "OBS-2026-09-001",
+      "observation_type": "MARKET",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇《A股9月收官：沪指跌3.62%…》2026-09-30",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "沪深两市全天成交额 14091.97 亿元，较前一交易日缩量 2936 亿元，创 2025-07-08 以来新低；较 2026-01-14 年内天量 39414.84 亿元萎缩超 64%。",
+      "date": "2026-09-29",
+      "direction": "NEGATIVE",
+      "evidence_strength": "STRONG",
+      "observation_id": "OBS-2026-09-002",
+      "observation_type": "MARKET",
+      "source_tier": "T3",
+      "source_title": "财联社/新浪财经 2026-09-29",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "9 月内工商银行、建设银行、中国银行等多只银行股创历史新高。",
+      "date": "2026-09-30",
+      "direction": "NEUTRAL",
+      "evidence_strength": "MEDIUM",
+      "observation_id": "OBS-2026-09-003",
+      "observation_type": "MARKET",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇 2026-09-30",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "9 月内部分题材方向大幅上涨：CRO 板块近岸蛋白涨超 133%，义翘神州、南模生物涨超 60%；PCB 板块澳弘电子涨超 88%；黄酒会稽山涨近 93%。",
+      "date": "2026-09-30",
+      "direction": "NEUTRAL",
+      "evidence_strength": "MEDIUM",
+      "observation_id": "OBS-2026-09-004",
+      "observation_type": "MARKET",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇 2026-09-30",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "9 月内有色金属方向领跌，贵金属、锂矿走弱，山东黄金、盛新锂能、融捷股份等跌超 20%。",
+      "date": "2026-09-30",
+      "direction": "NEGATIVE",
+      "evidence_strength": "MEDIUM",
+      "observation_id": "OBS-2026-09-005",
+      "observation_type": "MARKET",
+      "source_tier": "T3",
+      "source_title": "新浪财经/格隆汇 2026-09-30",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "通用智能控制系统国家标准 GB/T 47245—2026 于 2026-09-01 落地（首个该类国标）。",
+      "date": "2026-09-01",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-EMBODIED-AI",
+      "observation_id": "OBS-2026-09-006",
+      "observation_type": "POLICY",
+      "source_tier": "T3",
+      "source_title": "zgeo.com.cn《2026人形机器人量产元年》2026-09-03（转述国标发布）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "据界面新闻 2026-09-07 报道，特斯拉于 9 月上旬向核心供应链一次性下达约 5000 台人形机器人相关订单。",
+      "date": "2026-09-07",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-EMBODIED-AI",
+      "observation_id": "OBS-2026-09-007",
+      "observation_type": "INDUSTRY",
+      "source_tier": "T3",
+      "source_title": "界面新闻 2026-09-07（经 robotinfuture.com 2026-09-25 转述）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "国家药监局于 2026-09-14 批准发布 YY/T 2029—2026《脑机接口医疗器械 用于人工智能算法的脑电数据集质量要求与评价方法》—— 我国第三个脑机接口医疗器械标准，也是全球首个采用 AI 技术处理脑电数据的该类标准。",
+      "date": "2026-09-14",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "STRONG",
+      "linked_object_id": "CC-2026-BCI-MEDTECH",
+      "observation_id": "OBS-2026-09-008",
+      "observation_type": "POLICY",
+      "source_tier": "T3",
+      "source_title": "央视新闻 2026-09-15 · 腾讯新闻 2026-09-20（转述国家药监局发布）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "2026-09-12 第 27 届中国国际光电博览会（深圳）期间，多家厂商表示 1.6T 光模块「订单排到明年」，展台 800G 样机已让位于 1.6T。",
+      "date": "2026-09-12",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-OPTICAL-LINK",
+      "observation_id": "OBS-2026-09-009",
+      "observation_type": "INDUSTRY",
+      "source_tier": "T3",
+      "source_title": "科创板日报 2026-09-12（腾讯新闻/新浪财经转载）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    },
+    {
+      "claim": "2026 年 7 月，国家发展改革委、国家能源局联合印发《可再生能源发展「十五五」规划》，再次明确到 2030 年底海上风电装机目标。",
+      "date": "2026-07-15",
+      "direction": "SUPPORTIVE",
+      "evidence_strength": "MEDIUM",
+      "linked_object_id": "CC-2026-OFFSHORE-WIND",
+      "observation_id": "OBS-2026-07-010",
+      "observation_type": "POLICY",
+      "source_tier": "T3",
+      "source_title": "21 世纪经济报道 2026-09-16（转述发改委/能源局规划）",
+      "temporal_relation": "BEFORE_SNAPSHOT"
+    }
+  ],
+  "observations_version": "0.1",
+  "snapshot_date": "2026-10-06"
+}
