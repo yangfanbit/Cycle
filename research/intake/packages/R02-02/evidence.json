@@ -1,0 +1,83 @@
+[
+  {
+    "evidence_id": "R02-PHARMA2-E001",
+    "claim": "2017-10-08 中共中央办公厅、国务院办公厅印发《关于深化审评审批制度改革鼓励药品医疗器械创新的意见》，覆盖药品与医疗器械审评审批制度改革。",
+    "evidence_role": "supporting",
+    "evidence_type": "政策原文",
+    "event_date": "2017-10-08",
+    "evidence_date": "2017-10-08",
+    "source_id": "R02-PHARMA2-S001",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2017-INNOVATION-OPINION",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "本候选的**制度起点锚**，Tier 1 一手来源（中国政府网）。同时覆盖药品与医疗器械。"
+  },
+  {
+    "evidence_id": "R02-PHARMA2-E002",
+    "claim": "2017 年创新研发企业迎来重大利好，恒瑞医药、复星医药等股价表现突出。",
+    "evidence_role": "supporting",
+    "evidence_type": "行情与个股表现（媒体转述）",
+    "event_date": "2017-12-24",
+    "evidence_date": "2017-12-24",
+    "source_id": "R02-PHARMA2-S002",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2017-PHARMA-RALLY",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "上行段的同期佐证；未取得指数级一手数据。"
+  },
+  {
+    "evidence_id": "R02-PHARMA2-E003",
+    "claim": "2018-07-15 国家药品监督管理局通告长春长生生物冻干人用狂犬病疫苗生产存在记录造假；2018-07-23 医药板块领跌，跌幅 4.83%。",
+    "evidence_role": "supporting",
+    "evidence_type": "监管事件与行情",
+    "event_date": "2018-07-23",
+    "evidence_date": "2018-07-23",
+    "source_id": "R02-PHARMA2-S003",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2018-VACCINE-SELLOFF",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "界定该段的**降温/终结锚**。★ 事件日 07-15 为通告日，07-23 为板块反应日，两者已区分。"
+  },
+  {
+    "evidence_id": "R02-PHARMA2-E004",
+    "claim": "自 2018-07-16 起长生生物连续五个交易日跌停，市值蒸发近百亿；国产疫苗公司集体暴跌，370 亿市值瞬间蒸发。",
+    "evidence_role": "supporting",
+    "evidence_type": "市值变化（媒体转述）",
+    "event_date": "2018-07-23",
+    "evidence_date": "2018-07-23",
+    "source_id": "R02-PHARMA2-S004",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2018-VACCINE-MKTCAP",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "与 E003 互证（来源独立于 S003）。"
+  }
+]

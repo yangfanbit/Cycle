@@ -1,0 +1,58 @@
+[
+  {
+    "source_id": "R02-PHARMA2-S001",
+    "title": "中共中央办公厅 国务院办公厅印发《关于深化审评审批制度改革鼓励药品医疗器械创新的意见》（中国政府网）",
+    "url": "https://www.gov.cn/zhengce/2017-10/08/content_5230105.htm",
+    "no_url_reason": null,
+    "publisher": "中国政府网（中共中央办公厅 / 国务院办公厅）",
+    "author": null,
+    "published_at": "2017-10-08",
+    "captured_at": "2026-10-07",
+    "source_type": "regulator",
+    "tier": 1,
+    "independence_group": "IG-POLICY-2017-INNOVATION-OPINION",
+    "description": "**一手政策原文**（Tier 1）。中办国办联合印发，覆盖**药品与医疗器械**审评审批制度改革，是 2017–2018 医药创新周期的制度起点。"
+  },
+  {
+    "source_id": "R02-PHARMA2-S002",
+    "title": "【2018A股策略报告】医药创新研发迎来黄金时代（界面新闻）",
+    "url": "https://www.jiemian.com/article/1837947.html",
+    "no_url_reason": null,
+    "publisher": "界面新闻",
+    "author": null,
+    "published_at": "2017-12-24",
+    "captured_at": "2026-10-07",
+    "source_type": "media_tier3",
+    "tier": 3,
+    "independence_group": "IG-MEDIA-2017-PHARMA-RALLY",
+    "description": "记载：2017 年创新研发企业迎来重大利好，恒瑞医药、复星医药等股价表现突出。"
+  },
+  {
+    "source_id": "R02-PHARMA2-S003",
+    "title": "长生生物被证监会立案调查 医药板块领跌市场，跌幅4.83%（经济观察网）",
+    "url": "https://www.eeo.com.cn/2018/0723/333066.shtml",
+    "no_url_reason": null,
+    "publisher": "经济观察网",
+    "author": null,
+    "published_at": "2018-07-23",
+    "captured_at": "2026-10-07",
+    "source_type": "media_tier3",
+    "tier": 3,
+    "independence_group": "IG-MEDIA-2018-VACCINE-SELLOFF",
+    "description": "记载：2018-07-23 医药板块领跌，跌幅 4.83%；背景为 2018-07-15 国家药监局通告长生生物狂犬病疫苗生产记录造假。"
+  },
+  {
+    "source_id": "R02-PHARMA2-S004",
+    "title": "国产疫苗公司集体暴跌：370亿市值瞬间蒸发（每日经济新闻）",
+    "url": "https://www.nbd.com.cn/articles/2018-07-23/1237683.html",
+    "no_url_reason": null,
+    "publisher": "每日经济新闻",
+    "author": null,
+    "published_at": "2018-07-23",
+    "captured_at": "2026-10-07",
+    "source_type": "media_tier3",
+    "tier": 3,
+    "independence_group": "IG-MEDIA-2018-VACCINE-MKTCAP",
+    "description": "记载：自 2018-07-16 起长生生物连续五个交易日跌停，市值蒸发近百亿；国产疫苗公司集体暴跌，370 亿市值瞬间蒸发。"
+  }
+]

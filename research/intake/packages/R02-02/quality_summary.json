@@ -1,0 +1,24 @@
+{
+  "counts": {
+    "campaign_candidates": 1,
+    "evidence": 4,
+    "sources": 4,
+    "securities": 1,
+    "exclusions": 4,
+    "conflicts": 1
+  },
+  "confidence_distribution": {
+    "high": 0,
+    "medium": 0,
+    "low": 1
+  },
+  "coverage_notes": "承接 R02-01 显式记录的「2015–2018 医药段」缺口。提交 1 个候选（2017–2018 审评审批制度改革驱动的创新周期）、4 条证据、4 个来源、1 个证券、4 项排除、1 项冲突、3 项研究问题。★ **本包唯一的 T1 一手来源是 2017-10-08 两办政策原文（gov.cn）**，其余为 Tier 3；该候选的 peak 缺失、MAIN_RISE 段无来源支撑，已如实标注。 ｜★ ThreeC Agent 审查：R02-PHARMA-003 = **DEFER**（缺 peak、MAIN_RISE 段无来源、与 C-2019-PHARMA-INNOV 边界未裁决）→ **不入库**，留在 intake 层。",
+  "known_gaps": [
+    "2015–2016 段未做（来源不足，显式排除）",
+    "peak 未界定",
+    "MAIN_RISE 段无来源支撑（仅半年粒度）",
+    "与 C-2019-PHARMA-INNOV 的边界争议未裁决",
+    "★ 审查结论 DEFER：缺行情序列（界定 peak）、Campaign Independence Gate 裁决、指数口径。"
+  ],
+  "no_quantity_kpi_acknowledged": true
+}

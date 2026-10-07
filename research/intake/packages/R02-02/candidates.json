@@ -1,0 +1,121 @@
+[
+  {
+    "candidate_id": "R02-PHARMA-003",
+    "title": "药品与医疗器械审评审批制度改革驱动的创新周期（2017–2018）",
+    "year": 2017,
+    "macro_theme_proposal": "医药健康（既有 Macro Theme；SUB_THEME 提案：审评审批制度改革 / 创新药与创新器械，待 CMTR v1）",
+    "theme_name_candidates": [
+      "创新药",
+      "医疗器械",
+      "审评审批制度改革",
+      "一致性评价"
+    ],
+    "theme_summary": "以 **2017-10-08 中办国办《关于深化审评审批制度改革鼓励药品医疗器械创新的意见》** 为制度起点的一段医药创新周期。该文件同时覆盖**药品与医疗器械**，是 2017–2018 医药板块上行的政策锚；2018 年上半年板块延续强势，至 **2018-07 长春长生疫苗事件**（07-15 药监局通告、07-23 医药板块领跌 4.83%）终结。与既有 `C-2019-PHARMA-INNOV`（2019-01 起，产业兑现驱动）的区别在于：本段由**制度供给（审批改革）**驱动，且**首次将医疗器械纳入同一制度框架**。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2017-10-08",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "制度起点",
+          "basis": "中国政府网原文，中办国办印发日期 2017-10-08。",
+          "source_ids": [
+            "R02-PHARMA2-S001"
+          ],
+          "evidence_ids": [
+            "R02-PHARMA2-E001"
+          ],
+          "confidence": "high",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**该段顶点的一手或可交叉证据，按协议「空缺是合法研究状态」留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "顶点缺失是本候选的主要不足，直接影响生命周期可比性。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2018-07-15",
+          "window_end": "2018-07-23",
+          "phase_note": "降温/终结窗口",
+          "basis": "2018-07-15 药监局通告疫苗记录造假；2018-07-23 医药板块领跌 4.83%。本包**不**声称此为终局日，仅界定降温窗口。",
+          "source_ids": [
+            "R02-PHARMA2-S003",
+            "R02-PHARMA2-S004"
+          ],
+          "evidence_ids": [
+            "R02-PHARMA2-E003",
+            "R02-PHARMA2-E004"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2017-10-08",
+        "end": "2018-06-30",
+        "basis": "两办意见印发后，创新研发企业迎来政策利好（界面 2017-12-24 报道）。 本包未取得该段的逐月行情证据，仅以「2018 上半年板块延续强势」的半年粒度记录。",
+        "notes": "（合并原 THEME_FORMING 与 MAIN_RISE 两段 —— intake schema 的 stage 枚举无 THEME_FORMING，比 Export Contract 窄；见 R02-PHARMA2-Q004。）"
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2018-07-15",
+        "end": "2018-07-23",
+        "basis": "疫苗事件触发，医药板块领跌 4.83%（07-23）。",
+        "notes": "★ 本段为**下行**；本包仅界定其起点窗口。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "中办国办《关于深化审评审批制度改革鼓励药品医疗器械创新的意见》（2017-10-08）—— 覆盖药品与医疗器械的制度性改革"
+      ],
+      "accelerator": [
+        "创新研发企业获政策利好，恒瑞医药、复星医药等代表性标的股价表现突出（2017-12 同期报道）"
+      ],
+      "turning": [
+        "2018-07-15 国家药监局通告长春长生狂犬病疫苗生产记录造假，直接冲击疫苗与医药板块"
+      ],
+      "ending": [
+        "2018-07-23 医药板块领跌 4.83%；长生生物自 07-16 起连续五个交易日跌停，市值蒸发近百亿"
+      ]
+    },
+    "evidence_ids": [
+      "R02-PHARMA2-E001",
+      "R02-PHARMA2-E002",
+      "R02-PHARMA2-E003",
+      "R02-PHARMA2-E004"
+    ],
+    "security_ids": [
+      "R02-PHARMA2-SEC001"
+    ],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "①E001 为 2017-10-08 当日一手政策原文，contemporaneous 且 primary_source=true，**可作 point-in-time 依据**；②E002（2017-12-24）为同期报道，contemporaneous；③E003/E004（2018-07-23）为同期报道，contemporaneous，但其中「07-15 通告」为事件日、「07-23 板块反应」为反应日，已区分；④★ 本候选**未取得任何指数级或逐月行情来源**，故 peak 留空、MAIN_RISE 段仅为半年粒度。",
+    "why_campaign": "具备独立的制度起点（T1 一手政策文件）与独立的终结事件（疫苗事件）；驱动机制为**制度供给（审评审批改革）**，且**首次将医疗器械纳入同一制度框架** —— 与既有 C-2019-PHARMA-INNOV（产业兑现驱动）可分辨。",
+    "why_not": "★ 本包**未**主张其必然成立：peak 缺失、MAIN_RISE 段无来源支撑、且与 C-2019-PHARMA-INNOV 的时间间隔仅约 1 个季度，**是否存在边界争议须由 ThreeC Agent 用 Campaign Independence Gate 判定**。",
+    "possible_duplicate_of": [
+      "C-2019-PHARMA-INNOV"
+    ],
+    "notes": "★ 本候选是 R02-01 `known_gaps` 中「2015–2018 医药段未做」的承接；医疗器械缺口由同一政策文件覆盖。 【ThreeC Agent 审查】结果 = **DEFER**（不是 REJECT，也不是 ACCEPT）。理由：①**peak 缺失** —— Campaign 需要完整时间结构，本候选不具备（本包已按 UNKNOWN 留空，未推断）；②**MAIN_RISE 段无来源支撑**（仅半年粒度）；③**与既有 C-2019-PHARMA-INNOV 的边界争议未裁决**（相隔约 1 个季度，机制均为「医药创新」，本包主张本段为「制度供给驱动」、既有段为「产业兑现驱动」，但该判据是否充分须走 Campaign Independence Gate）。**缺失项（须补齐后才可再议）**：㈠该段的**行情序列**（用于界定 peak）；㈡Campaign Independence Gate（Q1–Q5）对「与 C-2019-PHARMA-INNOV 是否同一 Cycle」的裁决；㈢「板块跌幅 4.83%」的**指数口径**。★ 本候选的**制度起点锚（2017-10-08 两办意见）质量高**（Tier 1 一手），缺的是**行情侧证据**，而非政策侧证据 —— 这是本包与 R02-01 的关键差别。"
+  }
+]

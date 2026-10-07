@@ -1,0 +1,14 @@
+[
+  {
+    "security_id": "R02-PHARMA2-SEC001",
+    "ticker": "600276",
+    "name": "恒瑞医药",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "2017 年创新研发企业代表标的（界面 2017-12-24 报道其股价表现突出）。★ 本标的在**本段**中的角色为回顾性识别。",
+    "source_ids": [
+      "R02-PHARMA2-S002"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。"
+  }
+]

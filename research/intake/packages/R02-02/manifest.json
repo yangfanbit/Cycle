@@ -1,0 +1,36 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R02",
+  "task_id": "R02-02",
+  "task_scope": {
+    "task_id": "R02-02",
+    "family_directions": [
+      "医药健康",
+      "创新药",
+      "医疗器械"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2017,
+      "to": 2018
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2016
+    },
+    "included_scope": "医药健康 **2015–2018 段**（R02-01 显式记录的缺口），含药品与医疗器械的审评审批制度改革、创新药政策周期、2018 年疫苗事件。",
+    "excluded_scope": "2019 年及以后（已由 R02-01 与既有 C-2019-PHARMA-INNOV 覆盖）；医疗服务与连锁药店；医美（归消费）。"
+  },
+  "task_definition_note": "★ 本包由用户于 2026-10-07 授权（「继续」），承接 R02-01 `known_gaps` 中显式记录的「2015–2018 医药段未做」。★ 协议 §3 角色分离仍适用：本包由 Research Agent 角色产出，**审查必须由 ThreeC Agent 角色独立执行**。",
+  "generated_at": "2026-10-07T22:15:00+08:00",
+  "source_commit": "dba19e0e059ae0acbbdf13e9f356ea05f91a52e4",
+  "produced_by": "Research Agent role（AI 离线研究，2026-10-07）",
+  "known_gaps": [
+    "**2015–2016 段仍未做** —— 检索到的多为行业综述、无精确可核验日期；且 2015 上半年为**全市场系统性行情**，单列医药段有 `SAME_CAMPAIGN` 风险。已在 exclusions 显式记录。",
+    "本候选的 **peak 未取得一手或可交叉证据**，按协议留空（不推断）。",
+    "2018 疫苗事件段为**下行段**，本包**未**将其单列为 Campaign（见 exclusions）。"
+  ]
+}

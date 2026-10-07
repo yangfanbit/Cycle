@@ -1,0 +1,26 @@
+[
+  {
+    "exclusion_id": "R02-PHARMA2-X001",
+    "subject": "2015–2016 医药段",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "检索所得多为行业综述（如「2015 年医药行业运行情况报告」），**无精确可核验日期**；且 2015 上半年为**全市场系统性行情**，单列医药段有 `SAME_CAMPAIGN` 风险。按协议 §1.3 原则 5，显式记录为未覆盖，**不编造**。"
+  },
+  {
+    "exclusion_id": "R02-PHARMA2-X002",
+    "subject": "2018 疫苗事件是否应单列为独立 Campaign（下行段）",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "本包将其作为 R02-PHARMA-003 的 **RETRACEMENT 段**记录，而非独立 Campaign —— 依据是「同一机制的反向段不自动构成新 Campaign」（R01-01 对 2022 工业机器人下行的同样处理）。是否应单列由 ThreeC Agent 判定。"
+  },
+  {
+    "exclusion_id": "R02-PHARMA2-X003",
+    "subject": "医疗器械作为独立 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2017-10-08 两办意见**同时覆盖药品与医疗器械**，二者共享同一制度起点与同一终结事件（疫苗事件对板块的整体冲击）。本包不单列器械段，而将其纳入 R02-PHARMA-003 的 `included_scope`。是否应拆分由 ThreeC Agent 判定。"
+  },
+  {
+    "exclusion_id": "R02-PHARMA2-X004",
+    "subject": "2019 年及以后医药段",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "已由 R02-01（2023 减重、2025 BD 出海）与既有 C-2019-PHARMA-INNOV（2019-01~2022-10）覆盖，本包不重复。"
+  }
+]

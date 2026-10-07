@@ -1,0 +1,22 @@
+[
+  {
+    "question_id": "R02-PHARMA2-Q001",
+    "question": "R02-PHARMA-003 与既有 `C-2019-PHARMA-INNOV`（2019-01-02 起）之间仅隔约 1 个季度，是否属**同一 ThemeCycle 的两个阶段**？",
+    "why_it_matters": "若属同一 Cycle，则应 MERGE 而非新增，本包形式错误；若可分辨，则医药健康将新增第 3 个对象。**须由 ThreeC Agent 用 Campaign Independence Gate（Q1–Q5）判定。**"
+  },
+  {
+    "question_id": "R02-PHARMA2-Q002",
+    "question": "该段 **peak 缺失**（本包未取得顶点证据）是否影响其作为 Campaign 的资格？",
+    "why_it_matters": "Campaign 需要完整时间结构；peak 缺失会直接影响 Structural Analogy 中「生命周期阶段」维度的可比性。本包已按 UNKNOWN 留空，**不推断**。"
+  },
+  {
+    "question_id": "R02-PHARMA2-Q003",
+    "question": "「板块跌幅 4.83%」未标明指数口径（申万 / 中证），是否可接受？",
+    "why_it_matters": "口径不明的统计不可复核。若不可接受，E003 需降级为 `context` 或补来源。"
+  },
+  {
+    "question_id": "R02-PHARMA2-Q004",
+    "question": "intake schema 的 `stage_proposal` 枚举（MAIN_RISE/PEAK/RETRACEMENT/DECLINING/SECONDARY/ENDED/UNKNOWN）**比 Export Contract 窄** —— Contract 含 `THEME_FORMING` 等 11 个阶段，intake 只有 7 个。两者应否对齐？",
+    "why_it_matters": "本包因此把 THEME_FORMING 段并入 MAIN_RISE，**丢失了「制度出台 → 主升」的分界**。该分界对 Structural Analogy 的「生命周期阶段」维度可能有意义（R02-01 已提出同类问题 Q005）。**须由 ThreeC Agent 裁决。**"
+  }
+]
