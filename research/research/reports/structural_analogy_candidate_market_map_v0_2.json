@@ -1,0 +1,473 @@
+{
+ "artifact": "structural_analogy_candidate_market_map",
+ "artifact_version": "0.2",
+ "generated_by": "research/scripts/build_structural_analogy_readiness_v0_2.py",
+ "mapping": {
+  "CC-2026-AUTO-SMARTDRIVE": {
+   "note": "同段代理：汽车ETF（中证800汽车）覆盖 2022-01-04~2025-12-31（1938 行）；德赛西威（汽车电子/智驾）覆盖 2023-05-04~2025-12-31（728 行）。★ 均**无法覆盖 2026**；智能驾驶概念指数（AD_AUTO / ROBOTAXI / V2X）**声明存在但无数据**（rows=0）。本映射仅为历史同段代理，**非候选自身行情**。",
+   "segment": "汽车（整车 / 汽车电子—智能驾驶）",
+   "series": [
+    "AUTO_ETF_516110",
+    "DESAYSV"
+   ],
+   "status": "PARTIAL"
+  },
+  "CC-2026-BCI-MEDTECH": {
+   "note": "同大行业但**非同产品段**（脑机接口属医疗器械，仓库无医疗器械序列）；个股覆盖 2019-01-02~2022-12-30，ETF 2019~2022 → 均无法覆盖 2026",
+   "segment": "医药（药 / 生物 / 中药），**非医疗器械**",
+   "series": [
+    "HENGRUI",
+    "TIGERMED",
+    "WUXIAPPTEC",
+    "ZHIFEI",
+    "YILING",
+    "INTCO",
+    "PIANZAIHUANG",
+    "PHARMA_ETF_512010"
+   ],
+   "status": "PARTIAL"
+  },
+  "CC-2026-COMPUTE-POWER": {
+   "note": "相关段（电网设备）；「算电协同」本身无对应序列 → 段代理，非主题代理",
+   "segment": "电网设备（自动化 / 开关 / 输配电）",
+   "series": [
+    "NARI",
+    "PINGGAO",
+    "SIEYUAN",
+    "TBEA",
+    "XUJI"
+   ],
+   "status": "PARTIAL"
+  },
+  "CC-2026-EMBODIED-AI": {
+   "note": "仓库内**无**机器人/具身智能序列；ROBOTAXI 概念指数为 EMPTY_PLACEHOLDER（0 行）；DEMEISHI/HUAYANG/MINGKEJINGJI/SAILISI 仅 2023-08~10 且属汽车零部件段",
+   "segment": "具身智能 / 人形机器人",
+   "series": [],
+   "status": "NOT_AVAILABLE"
+  },
+  "CC-2026-OFFSHORE-WIND": {
+   "note": "同产品段（风电整机）；**覆盖止于 2022-12-30** → 无法覆盖 2023–2025",
+   "segment": "风电整机",
+   "series": [
+    "GOLDWIND"
+   ],
+   "status": "PARTIAL"
+  },
+  "CC-2026-OPTICAL-LINK": {
+   "note": "同产品段（光模块/光器件），非候选自身证券；序列覆盖 2018-01-02~2025-12-31（连续日线）",
+   "segment": "光模块 / 光器件（高速光互联）",
+   "series": [
+    "INNOLIGHT",
+    "EOPTOLINK",
+    "TFC",
+    "ACCELINK"
+   ],
+   "status": "PARTIAL"
+  }
+ },
+ "position": "Research-only 派生层 —— **不进入** DB / schema.sql / timeline_export_v1.json / contracts / src。",
+ "semantics": {
+  "candidate_side_limit": "候选自身**无**2026 行情数据（无证券记录、不联网抓取）→ 映射得到的是**同段历史序列代理**，非候选自身行情",
+  "rule": "**不因 candidate 属于某行业就假设其 market series 可用** —— 必须按**产品段**逐项判定，并显式记录覆盖限制",
+  "status_vocabulary": [
+   "MATCH",
+   "PARTIAL",
+   "NOT_AVAILABLE",
+   "UNKNOWN"
+  ]
+ },
+ "series_availability": [
+  {
+   "name": "沪深300(基准)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3884,
+   "series_id": "SH000300",
+   "series_type": "benchmark"
+  },
+  {
+   "name": "智能驾驶/无人驾驶概念",
+   "range": "None~None",
+   "rows": 0,
+   "series_id": "AD_AUTO",
+   "series_type": "concept_index"
+  },
+  {
+   "name": "新能源汽车概念指数",
+   "range": "None~None",
+   "rows": 0,
+   "series_id": "NEV",
+   "series_type": "concept_index"
+  },
+  {
+   "name": "Robotaxi/无人驾驶运营概念",
+   "range": "None~None",
+   "rows": 0,
+   "series_id": "ROBOTAXI",
+   "series_type": "concept_index"
+  },
+  {
+   "name": "车路云一体化/车路协同概念",
+   "range": "None~None",
+   "rows": 0,
+   "series_id": "V2X",
+   "series_type": "concept_index"
+  },
+  {
+   "name": "汽车ETF(中证800汽车, 行业代理)",
+   "range": "2022-01-04~2025-12-31",
+   "rows": 1938,
+   "series_id": "AUTO_ETF_516110",
+   "series_type": "industry_index"
+  },
+  {
+   "name": "申万汽车零部件指数",
+   "range": "None~None",
+   "rows": 0,
+   "series_id": "AUTO_PARTS",
+   "series_type": "industry_index"
+  },
+  {
+   "name": "申万汽车行业指数",
+   "range": "None~None",
+   "rows": 0,
+   "series_id": "AUTO_SW",
+   "series_type": "industry_index"
+  },
+  {
+   "name": "医药ETF(沪深300医药, 行业代理)",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1942,
+   "series_id": "PHARMA_ETF_512010",
+   "series_type": "industry_index"
+  },
+  {
+   "name": "光迅科技(光模块/光器件)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3884,
+   "series_id": "ACCELINK",
+   "series_type": "stock"
+  },
+  {
+   "name": "比亚迪",
+   "range": "2020-01-02~2022-09-30",
+   "rows": 1266,
+   "series_id": "BIDI",
+   "series_type": "stock"
+  },
+  {
+   "name": "长安汽车",
+   "range": "2021-01-04~2022-09-30",
+   "rows": 780,
+   "series_id": "CHANGAN",
+   "series_type": "stock"
+  },
+  {
+   "name": "大众交通",
+   "range": "2024-05-06~2024-09-30",
+   "rows": 206,
+   "series_id": "DAZHONGTONG",
+   "series_type": "stock"
+  },
+  {
+   "name": "德迈仕",
+   "range": "2023-08-01~2023-10-31",
+   "rows": 120,
+   "series_id": "DEMEISHI",
+   "series_type": "stock"
+  },
+  {
+   "name": "德赛西威",
+   "range": "2023-05-04~2025-12-31",
+   "rows": 728,
+   "series_id": "DESAYSV",
+   "series_type": "stock"
+  },
+  {
+   "name": "新易盛(光模块)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3884,
+   "series_id": "EOPTOLINK",
+   "series_type": "stock"
+  },
+  {
+   "name": "烽火通信(光通信/主设备)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3884,
+   "series_id": "FIBERHOME",
+   "series_type": "stock"
+  },
+  {
+   "name": "金风科技(风电整机)",
+   "range": "2018-01-02~2022-12-30",
+   "rows": 2418,
+   "series_id": "GOLDWIND",
+   "series_type": "stock"
+  },
+  {
+   "name": "长城汽车",
+   "range": "2021-01-04~2022-09-30",
+   "rows": 850,
+   "series_id": "GREATWALL",
+   "series_type": "stock"
+  },
+  {
+   "name": "广汽集团",
+   "range": "2022-03-01~2022-09-30",
+   "rows": 294,
+   "series_id": "GUANGQI",
+   "series_type": "stock"
+  },
+  {
+   "name": "恒瑞医药",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1944,
+   "series_id": "HENGRUI",
+   "series_type": "stock"
+  },
+  {
+   "name": "亨通光电(光纤光缆/海缆)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3862,
+   "series_id": "HENGTONG",
+   "series_type": "stock"
+  },
+  {
+   "name": "华阳集团",
+   "range": "2023-08-01~2023-10-31",
+   "rows": 120,
+   "series_id": "HUAYANG",
+   "series_type": "stock"
+  },
+  {
+   "name": "中际旭创(光模块)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3884,
+   "series_id": "INNOLIGHT",
+   "series_type": "stock"
+  },
+  {
+   "name": "英科医疗",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1944,
+   "series_id": "INTCO",
+   "series_type": "stock"
+  },
+  {
+   "name": "江淮汽车",
+   "range": "2020-01-02~2023-10-31",
+   "rows": 606,
+   "series_id": "JAC",
+   "series_type": "stock"
+  },
+  {
+   "name": "锦江在线",
+   "range": "2024-05-06~2024-09-30",
+   "rows": 206,
+   "series_id": "JINJIANG",
+   "series_type": "stock"
+  },
+  {
+   "name": "金龙汽车",
+   "range": "2024-05-06~2024-09-30",
+   "rows": 206,
+   "series_id": "JINLONG",
+   "series_type": "stock"
+  },
+  {
+   "name": "隆基绿能(单晶硅片/组件)",
+   "range": "2018-01-02~2022-12-30",
+   "rows": 2418,
+   "series_id": "LONGI",
+   "series_type": "stock"
+  },
+  {
+   "name": "路畅科技",
+   "range": "2019-05-06~2019-12-31",
+   "rows": 330,
+   "series_id": "LUCHANG",
+   "series_type": "stock"
+  },
+  {
+   "name": "铭科精技",
+   "range": "2023-08-01~2023-10-31",
+   "rows": 120,
+   "series_id": "MINGKEJINGJI",
+   "series_type": "stock"
+  },
+  {
+   "name": "国电南瑞(电网自动化)",
+   "range": "2022-01-04~2025-12-31",
+   "rows": 1938,
+   "series_id": "NARI",
+   "series_type": "stock"
+  },
+  {
+   "name": "宁德时代",
+   "range": "2020-01-02~2021-12-31",
+   "rows": 972,
+   "series_id": "NINGDE",
+   "series_type": "stock"
+  },
+  {
+   "name": "片仔癀",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1944,
+   "series_id": "PIANZAIHUANG",
+   "series_type": "stock"
+  },
+  {
+   "name": "平高电气(高压开关)",
+   "range": "2022-01-04~2025-12-31",
+   "rows": 1938,
+   "series_id": "PINGGAO",
+   "series_type": "stock"
+  },
+  {
+   "name": "赛力斯",
+   "range": "2023-08-01~2023-10-31",
+   "rows": 120,
+   "series_id": "SAILISI",
+   "series_type": "stock"
+  },
+  {
+   "name": "思源电气(输配电设备)",
+   "range": "2022-01-04~2025-12-31",
+   "rows": 1938,
+   "series_id": "SIEYUAN",
+   "series_type": "stock"
+  },
+  {
+   "name": "阳光电源(光伏逆变器)",
+   "range": "2018-01-02~2022-12-30",
+   "rows": 2430,
+   "series_id": "SUNGROW",
+   "series_type": "stock"
+  },
+  {
+   "name": "特变电工(变压器/输变电)",
+   "range": "2022-01-04~2025-12-31",
+   "rows": 1938,
+   "series_id": "TBEA",
+   "series_type": "stock"
+  },
+  {
+   "name": "天孚通信(光器件)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3874,
+   "series_id": "TFC",
+   "series_type": "stock"
+  },
+  {
+   "name": "天迈科技",
+   "range": "2024-05-06~2024-09-30",
+   "rows": 206,
+   "series_id": "TIANMAI",
+   "series_type": "stock"
+  },
+  {
+   "name": "泰格医药",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1944,
+   "series_id": "TIGERMED",
+   "series_type": "stock"
+  },
+  {
+   "name": "万安科技",
+   "range": "2019-05-06~2023-10-31",
+   "rows": 572,
+   "series_id": "WANAN",
+   "series_type": "stock"
+  },
+  {
+   "name": "药明康德",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1944,
+   "series_id": "WUXIAPPTEC",
+   "series_type": "stock"
+  },
+  {
+   "name": "小康股份(现赛力斯)",
+   "range": "2021-01-04~2021-12-31",
+   "rows": 486,
+   "series_id": "XIAOKANG",
+   "series_type": "stock"
+  },
+  {
+   "name": "星网宇达",
+   "range": "2024-05-06~2024-09-30",
+   "rows": 206,
+   "series_id": "XINGYUYUDA",
+   "series_type": "stock"
+  },
+  {
+   "name": "许继电气(直流输电设备)",
+   "range": "2022-01-04~2025-12-31",
+   "rows": 1938,
+   "series_id": "XUJI",
+   "series_type": "stock"
+  },
+  {
+   "name": "旭升股份",
+   "range": "2020-01-02~2020-12-31",
+   "rows": 486,
+   "series_id": "XUSHENG",
+   "series_type": "stock"
+  },
+  {
+   "name": "亚太股份",
+   "range": "2019-05-06~2019-12-31",
+   "rows": 330,
+   "series_id": "YATAI",
+   "series_type": "stock"
+  },
+  {
+   "name": "以岭药业",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1944,
+   "series_id": "YILING",
+   "series_type": "stock"
+  },
+  {
+   "name": "长飞光纤(光纤光缆)",
+   "range": "2018-07-20~2025-12-31",
+   "rows": 3618,
+   "series_id": "YOFC",
+   "series_type": "stock"
+  },
+  {
+   "name": "浙江世宝",
+   "range": "2023-05-04~2025-12-31",
+   "rows": 728,
+   "series_id": "ZHEJIANGSHISHI",
+   "series_type": "stock"
+  },
+  {
+   "name": "智飞生物",
+   "range": "2019-01-02~2022-12-30",
+   "rows": 1944,
+   "series_id": "ZHIFEI",
+   "series_type": "stock"
+  },
+  {
+   "name": "中通客车",
+   "range": "2022-03-01~2022-09-30",
+   "rows": 264,
+   "series_id": "ZHONGTONG",
+   "series_type": "stock"
+  },
+  {
+   "name": "中兴通讯(通信主设备)",
+   "range": "2018-01-02~2025-12-31",
+   "rows": 3804,
+   "series_id": "ZTE",
+   "series_type": "stock"
+  },
+  {
+   "name": "众泰汽车",
+   "range": "2023-05-04~2023-10-31",
+   "rows": 242,
+   "series_id": "ZTELEVISION",
+   "series_type": "stock"
+  }
+ ]
+}
