@@ -2659,6 +2659,19 @@ html, body {
   max-width: 920px;
 }
 
+/* 覆盖边界（ThreeC 1.2）：先说清「不在覆盖内」，比让用户查半天查不到更诚实 */
+.seasonal-scope {
+  margin: 8px 0 0;
+  padding: 9px 12px;
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.75;
+  max-width: 920px;
+  border-left: 2px solid var(--line-strong);
+  background: var(--panel);
+}
+.seasonal-scope-note { display: block; margin-top: 2px; font-size: 11px; color: var(--ink-3); }
+
 /* ---------- 钻取区：能力保留，首页不铺开 ---------- */
 .drill-block {
   margin-top: 24px;

@@ -161,6 +161,24 @@ export default function App() {
           </p>
         )}
 
+        {/* ★ 覆盖边界（ThreeC 1.2 · Usage-Driven）
+            用户拿一个真实方向来问（例如「文化传媒」）时，第一件要知道的是「它在不在覆盖内」。
+            实测：历史 52 个 Campaign / 44 个主题名里，**传媒 / 文化 / 娱乐 / 教育 一个都没有** ——
+            与其让用户查半天查不到，不如直接说清楚边界。
+            ★ 本声明是**人工维护**的（canonical export 已冻结，不得改其 provenance）；
+              覆盖范围变化时必须同步更新此处。 */}
+        {!verifiedMode && mapRows.length > 0 && (
+          <p className="seasonal-scope">
+            <strong>覆盖边界</strong>：历史研究集中于<strong>硬科技 · 高端制造 · 消费 · 资源 · 金融</strong>
+            等方向（汽车 / 电子 / 半导体 / 电力设备 / 医药 / 资源 / 金融 / 消费 / 军工 / 地产 等）。
+            <strong>不包含</strong>传媒 / 文化 / 娱乐 / 教育 等方向 —— 这些方向在历史研究中
+            <strong>没有对应对象</strong>，因此本工具<strong>无法</strong>回答关于它们的「历史结构对应」问题。
+            <span className="seasonal-scope-note">
+              （覆盖范围由 Research 决定；扩边属研究轮次，不在 Product 侧自行推断。）
+            </span>
+          </p>
+        )}
+
         {/* verified 模式且 verified 层为空：提示回到默认 Research 数据源 */}
         {verifiedMode && allCampaigns.length === 0 && (
           <div className="prod-empty-note">
