@@ -188,6 +188,7 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
               ],
               whySimilar: ['生命周期阶段对应（MATCH）', '驱动机制存在交集'],
               whyNotSimilar: ['受历史驱动证据粒度限制'],
+              alsoSupportedBy: [],
             },
             {
               historicalCycleId: 'C-2019-PHARMA-INNOV',
@@ -199,6 +200,7 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
               dimensions: [{ key: 'mechanism_driver', label: '驱动机制', status: 'MISMATCH', statusLabel: '不对应' }],
               whySimilar: [],
               whyNotSimilar: ['机制轴无交集'],
+              alsoSupportedBy: [],
             },
           ],
         },
@@ -253,7 +255,38 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
     expect(html(withDetails())).not.toContain('跳到该对象的结构对应详情');
   });
 
-  it('★ 未解析时明确说「未解析」，且不等于「没有对应」', () => {
+  it('★ 对应的特异性：同一历史对象还被别的方向命中时必须说明', () => {
+    const v = view({
+      detailsByObject: [
+        {
+          objectId: 'CC-A',
+          resolved: true,
+          profile: null,
+          details: [
+            {
+              historicalCycleId: 'C-2023-AD',
+              historicalObjectKind: 'campaign',
+              status: 'STRUCTURAL_SUPPORTED',
+              statusLabel: '结构支持',
+              themeRelation: 'CROSS_MACRO_THEME',
+              themeRelationLabel: '跨大主题',
+              dimensions: [{ key: 'lifecycle', label: '生命周期阶段', status: 'MATCH', statusLabel: '对应' }],
+              whySimilar: ['生命周期阶段对应（MATCH）'],
+              whyNotSimilar: [],
+              alsoSupportedBy: ['CC-B', 'CC-C', 'CC-D'],
+            },
+          ],
+        },
+      ],
+    });
+    const h = html(v);
+    expect(h).toContain('这条对应并不专属');
+    expect(h).toContain('另外');
+    expect(h).toContain('CC-B · CC-C · CC-D');
+    expect(h).toContain('只报计数，不做评分');
+  });
+
+  it('未解析时明确说「未解析」，且不等于「没有对应」', () => {
     const h = html(
       view({ detailsByObject: [{ objectId: 'CC-A', resolved: false, details: [], profile: null }] }),
     );

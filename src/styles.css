@@ -2865,6 +2865,13 @@ html, body {
   border-left: 3px solid var(--line-strong); background: var(--bg); border-radius: var(--radius);
 }
 .dl-v-none { border-left-color: var(--today); }
+/* ★ 「未覆盖」≠「结构上无对应」的完整说明 */
+.dl-none-explain {
+  margin: 0 0 10px; padding: 9px 12px 9px 28px; font-size: 12px; line-height: 1.75;
+  color: var(--ink-2); background: var(--bg); border-radius: var(--radius);
+  border-left: 3px solid var(--today);
+}
+.dl-none-explain li { margin: 2px 0; }
 .dl-v-historical-only { border-left-color: var(--preheat-ink); }
 .dl-v-both { border-left-color: var(--active); }
 .dl-block { margin-top: 10px; }
@@ -3030,6 +3037,15 @@ html, body {
 .cs-cand-why span { display: block; padding-left: 10px; }
 .cs-cand-why-not strong { color: var(--ink-3); }
 .cs-cand-unresolved { border-left: 2px solid var(--line-strong); padding-left: 8px; }
+
+/* ★ 对应的特异性提示：这条对应不专属（计数事实，不是评分） */
+.cs-cand-shared {
+  margin: 6px 0 0; padding: 6px 9px; font-size: 11px; line-height: 1.7;
+  border-left: 2px solid var(--today); background: var(--bg); color: var(--ink-2);
+}
+.cs-cand-shared strong { color: var(--ink); }
+.cs-cand-shared code { font-family: var(--mono); font-size: 10.5px; display: block; padding-left: 10px; }
+.cs-cand-shared-note { display: block; font-size: 10px; color: var(--ink-3); }
 
 /* 当前结构画像（含「还缺什么」= 继续研究的线索） */
 .cs-profile { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }

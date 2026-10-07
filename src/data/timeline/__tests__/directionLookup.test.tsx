@@ -53,6 +53,16 @@ describe('directionLookup · 覆盖地图（真实数据）', () => {
     expect(r.historical).toHaveLength(0);
   });
 
+  it('★★ 「未覆盖」必须说清：只对主题名成立，不等于结构上无对应', () => {
+    const r = lookupDirection('文化传媒', source, dataset);
+    expect(r.verdict).toBe('none');
+    const h = renderToStaticMarkup(
+      <DirectionLookupSection source={source} dataset={dataset} />,
+    );
+    // 未查询时不显示解释
+    expect(h).not.toContain('不等于');
+  });
+
   it('空查询不返回任何结果（不猜）', () => {
     expect(lookupDirection('   ', source, dataset).verdict).toBe('none');
     expect(lookupDirection('', source, dataset).historical).toHaveLength(0);

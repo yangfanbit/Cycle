@@ -84,6 +84,16 @@ export interface CandidateDetail {
   dimensions: { key: DimensionKey; label: string; status: DriverStatus; statusLabel: string }[];
   whySimilar: string[];
   whyNotSimilar: string[];
+  /**
+   * ★ 该历史对象**还被哪几个当前方向**作为结构支持（跨候选统计）。
+   *
+   * 起因（2026-10-07 文化传媒使用测试）：同一个历史对象可能同时是**多个**方向的
+   * `STRUCTURAL_SUPPORTED`。若不显示，读者会以为这是**专属**对应，从而高估其信息量。
+   *
+   * ★ 这是**计数事实**，不是分数、不是排序、不是特异性评分。
+   * 不含自身；仅在 `status === 'STRUCTURAL_SUPPORTED'` 时有意义。
+   */
+  alsoSupportedBy: string[];
 }
 
 /** 按对象聚合的候选明细；`resolved=false` 表示 SA 数据未能载入（诚实空态，不是「无对应」） */
@@ -164,7 +174,7 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
       return fallback();
     }
 
-    return (snapshot.research_objects ?? []).map((o) => {
+    const rows = (snapshot.research_objects ?? []).map((o) => {
       const cand = structuralAnalogyForCandidate(ds, o.object_id);
       if (!cand) return { objectId: o.object_id, resolved: false, details: [], profile: null };
       const details: CandidateDetail[] = cand.explanations.map((e) => {
@@ -188,6 +198,7 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
           }),
           whySimilar: e.whySimilar ?? [],
           whyNotSimilar: e.whyNotSimilar ?? [],
+          alsoSupportedBy: [] as string[],
         };
       });
       const p = cand.currentStructuralProfile;
@@ -201,6 +212,26 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
         : null;
       return { objectId: o.object_id, resolved: true, details, profile };
     });
+    // ★ 跨候选计数：某历史对象在哪些**其他**当前对象上也是 STRUCTURAL_SUPPORTED。
+    //   只统计 STRUCTURAL_SUPPORTED（这是「结构支持」；PARTIAL 不参与，避免把弱对应说成强对应）。
+    const supportedBy = new Map<string, Set<string>>();
+    for (const r of rows) {
+      for (const d of r.details) {
+        if (d.status !== 'STRUCTURAL_SUPPORTED') continue;
+        if (!supportedBy.has(d.historicalCycleId)) supportedBy.set(d.historicalCycleId, new Set());
+        supportedBy.get(d.historicalCycleId)!.add(r.objectId);
+      }
+    }
+    for (const r of rows) {
+      for (const d of r.details) {
+        // ★ 只在**本条目自身就是结构支持**时提示 —— 否则在「无有效对应」上提这个只会造成噪音
+        if (d.status !== 'STRUCTURAL_SUPPORTED') continue;
+        const all = supportedBy.get(d.historicalCycleId);
+        if (!all) continue;
+        d.alsoSupportedBy = [...all].filter((x) => x !== r.objectId).sort();
+      }
+    }
+    return rows;
   } catch {
     return fallback();
   }

@@ -32,6 +32,21 @@ const VERDICT_TEXT: Record<DirectionLookupResult['verdict'], string> = {
   none: '本工具**未覆盖**该方向 —— 历史研究与当前研究对象里都没有命中。',
 };
 
+/**
+ * ★★ `none` 的**完整**说明（2026-10-07 文化传媒使用测试的产出）。
+ *
+ * 测试证明：「主题名未覆盖」**不等于**「结构上无对应」——
+ * 一个历史宇宙里完全没有的方向，只要有一个「当前研究对象」，**仍能得到结构对应**。
+ * 所以必须把这两种「没有」分开说，否则用户会以为工具**根本帮不上**。
+ */
+const NONE_EXPLAIN = [
+  '「未覆盖」指的是**主题名**：历史研究的 44 个主题名里没有它，当前研究对象里也没有它。',
+  '★ 但这**不等于**「结构上无对应」。结构对应比的是**机制 / 序列 / 事件结构**，不是名字 ——',
+  '实测：一个历史研究里完全没有的方向（文化传媒），在建立当前研究对象后，仍得到了 1 条结构支持。',
+  '**要拿到结构层面的答案，需要先为该方向建立一轮研究（当前研究对象）**；在那之前，',
+  '本工具只能如实说「还没法比」，而不是「比过了、不成立」。',
+];
+
 export function DirectionLookupSection({
   source,
   dataset,
@@ -92,6 +107,17 @@ export function DirectionLookupSection({
               .split('**')
               .map((seg, i) => (i % 2 === 1 ? <strong key={i}>{seg}</strong> : seg))}
           </p>
+
+          {/* ★ 「未覆盖」≠「结构上无对应」—— 必须分开说，否则用户以为工具根本帮不上 */}
+          {result.verdict === 'none' && (
+            <ul className="dl-none-explain">
+              {NONE_EXPLAIN.map((t, i) => (
+                <li key={i}>
+                  {t.split('**').map((seg, j) => (j % 2 === 1 ? <strong key={j}>{seg}</strong> : seg))}
+                </li>
+              ))}
+            </ul>
+          )}
 
           {result.current.length > 0 && (
             <div className="dl-block">

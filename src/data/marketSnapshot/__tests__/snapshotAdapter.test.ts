@@ -87,6 +87,25 @@ describe('snapshotAdapter · 索引与门禁', () => {
     expect(pharma?.themeRelation).toBe('SAME_MACRO_THEME');
   });
 
+  it('★★ 对应的特异性：同一历史对象被多个方向命中时如实报出（真实数据）', async () => {
+    const v = await loadCurrentSnapshot(true);
+    const bci = v.detailsByObject.find((d) => d.objectId === 'CC-2026-BCI-MEDTECH')!;
+    const sup = bci.details.find((d) => d.status === 'STRUCTURAL_SUPPORTED')!;
+    expect(sup.historicalCycleId).toBe('C-2023-AD');
+    // ★ 实测：C-2023-AD 同时是另外几个方向的结构支持 —— 必须报出来
+    expect(sup.alsoSupportedBy.length).toBeGreaterThanOrEqual(1);
+    expect(sup.alsoSupportedBy).not.toContain('CC-2026-BCI-MEDTECH'); // 不含自身
+    // 计数与全量一致：该历史对象在全部对象中的 STRUCTURAL_SUPPORTED 次数 − 1
+    const total = v.detailsByObject.filter((d) =>
+      d.details.some((x) => x.historicalCycleId === 'C-2023-AD' && x.status === 'STRUCTURAL_SUPPORTED'),
+    ).length;
+    expect(sup.alsoSupportedBy.length).toBe(total - 1);
+    // 非 SUPPORTED 的条目不应带该提示（避免把弱对应说成强对应）
+    for (const d of bci.details) {
+      if (d.status !== 'STRUCTURAL_SUPPORTED') expect(d.alsoSupportedBy).toEqual([]);
+    }
+  });
+
   it('回指解析只合并、不重算：状态与快照里的计数一致', async () => {
     const v = await loadCurrentSnapshot(true);
     const snapCount = new Map<string, number>();

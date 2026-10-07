@@ -151,6 +151,19 @@ function CandidateList({
           ))}
         </p>
       )}
+      {/* ★ 对应的**特异性**：同一历史对象往往同时是多个方向的结构支持。
+          不显示的话，读者会以为这是专属对应，从而高估它的信息量。
+          ★ 这是计数事实，不是分数。 */}
+      {d.alsoSupportedBy.length > 0 && (
+        <p className="cs-cand-shared">
+          <strong>注意：这条对应并不专属</strong>
+          该历史对象同时是另外 <strong>{d.alsoSupportedBy.length}</strong> 个当前方向的结构支持：
+          <code>{d.alsoSupportedBy.join(' · ')}</code>
+          <span className="cs-cand-shared-note">
+            （跨方向共有 —— 说明这些方向在**结构上属同一类**；此处只报计数，不做评分）
+          </span>
+        </p>
+      )}
     </li>
   );
 
