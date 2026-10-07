@@ -29,7 +29,10 @@ from datetime import date
 #   原为写死的 Windows 路径 `D:/@AW/投资/ThreeC` —— 仓库迁到 macOS 后无法运行，
 #   使整条 Research 管线在本机不可复现（输出逐字节不变，仅路径来源改变）。
 import os as _os
-ROOT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", ".."))
+# ★ 可被 `THREEC_ROOT` 覆盖：把**读写整体重定向**到沙箱副本，
+#   这样试跑（例如加一个候选）不会碰到仓库里的任何产物。
+ROOT = _os.environ.get("THREEC_ROOT") or _os.path.abspath(
+    _os.path.join(_os.path.dirname(__file__), "..", ".."))
 REP = f"{ROOT}/research/research/reports"
 CHECK = "--check" in sys.argv
 OUT_JSON = f"{REP}/structural_analogy_feasibility_v0_3.json"
@@ -376,7 +379,7 @@ else:
         f.write(body)
     print("written", OUT_JSON)
 
-with io.open(OUT_CSV, "w", encoding="utf-8", newline="") as f:
+with io.open(os.devnull if CHECK else OUT_CSV, "w", encoding="utf-8", newline="") as f:
     w = csv.writer(f, lineterminator="\n")
     w.writerow(["candidate_id", "historical_object", "historical_family", "same_macro_theme",
                 "lifecycle", "historical_stage_at_comparable_point", "drivers",
