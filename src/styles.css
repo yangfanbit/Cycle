@@ -3083,3 +3083,10 @@ html, body {
   color: var(--ink-2);
   font-size: 13px;
 }
+.kc-not_applicable .kc-badge { background: #eef2f7; color: #4a6076; border-color: #cfd9e4; }
+.kc-no_peak_recorded .kc-badge,
+.kc-no_data .kc-badge { background: #eef0f2; color: var(--ink-3); }
+.kc-ref { margin: 0; color: var(--ink-2); }
+.kc-ref strong { color: var(--ink); }
+.kc-ref-basis { display: block; margin-top: 2px; color: var(--ink-3); font-size: 12px; }
+.kc-note-flag { border-left: 3px solid var(--preheat-ink); background: #fdf9ee; }

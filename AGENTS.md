@@ -93,12 +93,26 @@ Structural Analogy 当前冻结规则以：
 - `research/current/` 下的 Product-facing artifact（`current_candidates.json` · `market_snapshots/`）
 - `research/research/reports/` 下被正式指定的 Product-facing artifact（SA · TO · Driver canonicalization · **K-Line Confirmation**）
 
-> ★ **2026-10-08 新增指定**：`research/research/reports/kline_confirmation_v0_1.json` ——
-> 每个历史对象的「K 线证实状态」（记录峰值是否被**已登记标的**的价格高点证实，±7 日 = 周粒度）。
-> 依据：产品四个视角**全部读** campaign 的 start / peak / end，而此前**没有任何机制对照过市场**。
-> 该 artifact **只读**、**不含** score / ranking / probability；
-> 其中「未证实」**不等于**「日期错误」—— 峰值可能锚定在指数 / 商品价 / 行业价 / 政策事件上，
-> 故 artifact **不做归类**，只给**原文依据**。
+> ★ **2026-10-08 新增指定**：`research/research/reports/kline_confirmation_v0_2.json` ——
+> 每个历史对象的「K 线证实状态」。四个视角（Timeline · Lifecycle · SA · 季节性地图）**全部读**
+> campaign 的 start / peak / end，而此前**没有任何机制对照过市场**。
+>
+> **五个状态（封闭集合）**：
+> `CONFIRMED`（已登记标的同周创价格高点）· `UNCONFIRMED`（未同周，**且参照物是股价或未界定** → 真问题）·
+> `NOT_APPLICABLE`（未同周，但**参照物不是股价** → K 线不是合适的检验工具）·
+> `NO_PEAK_RECORDED`（记录未标注峰值）· `NO_DATA`。
+>
+> ★★ **两条硬语义边界**（不得违反）：
+> **`NOT_APPLICABLE` 不是「未通过」**；**`UNCONFIRMED` 不是「日期错误」**。
+> 二者均可与「记录里有依据」同时成立。
+>
+> **配套声明**：`research/research/reports/peak_referent_v0_1.json` —— 为 `peak_date` 补上**参照物**
+> （8 值封闭枚举：代表标的股价 / 板块指数 / 商品价 / 政策事件 / 公司事件 / 板块级异动 / 行业指标 / 未界定）。
+> 该 artifact **不**改 `campaigns` 表、**不**改 `schema.sql`、**不**改任何日期数值；
+> 参照物属**研究判断**，全部标 `PROVISIONAL` 待 ThreeC Agent 审查。
+> 产品侧**只消费确认状态**（其中已嵌入参照物），**不**直接读参照物 artifact。
+>
+> 该产物 **只读**、**不含** score / ranking / probability。
 
 **禁止触碰**：
 

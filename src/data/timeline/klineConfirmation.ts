@@ -3,7 +3,7 @@
  *
  * ## 来源与规范
  *
- * - 数据：`research/research/reports/kline_confirmation_v0_1.json`（Research-only 只读产物）
+ * - 数据：`research/research/reports/kline_confirmation_v0_2.json`（Research-only 只读产物）
  * - 规范：`AGENTS.md` §5.1「Product 允许消费」清单中**正式指定**的 Product-facing artifact
  *
  * ## ★★ 这一层解决什么
@@ -11,32 +11,42 @@
  * 产品四个视角（Timeline · Lifecycle · Structural Analogy · 季节性地图）**全部读**
  * campaign 的 start / peak / end，但**此前没有任何机制对照过市场** —— 全都信任记录。
  *
- * 2026-10-08 用真实 K 线（原始价盘中最高）对照 49 个 campaign 后：**32 个被证实、17 个未被证实**。
- * 本模块把这件事**如实呈现**：记录峰值是否被**已登记标的**的价格高点证实。
+ * 2026-10-08 用真实 K 线（原始价盘中最高）对照后：**32 个被证实、5 个真问题、12 个「口径不同」**。
+ *
+ * ## ★★★ 五个状态（v0_2 的关键：**随参照物而变**）
+ *
+ * | 状态 | 含义 |
+ * |---|---|
+ * | `CONFIRMED` | 有已登记标的在同周（±7 日）创出价格高点 |
+ * | `UNCONFIRMED` | 未同周，**且参照物是股价或未界定** → ★ 真问题 |
+ * | `NOT_APPLICABLE` | 未同周，但**参照物不是股价**（指数 / 商品价 / 政策事件…）→ K 线不是合适的检验工具 |
+ * | `NO_PEAK_RECORDED` | 记录未标注峰值（合法空状态） |
+ * | `NO_DATA` | 无行情数据 |
  *
  * ## ★★★ 语义边界（硬约束，不得违反）
  *
- * **「未证实」≠「日期错误」。** 二者可以同时成立：
- * 记录峰值在 ±7 日内**有记录依据**（指数高点 / 商品价 / 行业价 / 政策事件），
+ * **`NOT_APPLICABLE` 不是「未通过」，`UNCONFIRMED` 也不是「日期错误」。**
+ * 二者可以同时成立：记录峰值在 ±7 日内**有记录依据**（原文见 `anchors`），
  * 只是**没有任何已登记标的**在该周创出价格高点。
  *
  * 因此本模块：
  * - **只读** artifact，**不重算**任何峰值，**不改动**任何研究数据；
- * - **不做归类**：不替 evidence 打「这是猪价 / 这是政策」的标签 —— 只给**原文摘录**；
- * - **不含** score / ranking / probability / 预测 —— 只有「证实状态」与**原文依据**；
+ * - **不做归类** —— 参照物由 Research 侧显式声明并标注 `PROVISIONAL`，产品只**原样透传**；
+ * - **不含** score / ranking / probability / 预测；
  * - 判断留给读者，结论留给研究侧。
  *
  * ## 纯函数
  * 无副作用、无 IO、无网络。
  */
 
-import confirmationJson from '@observation/kline_confirmation_v0_1.json';
+import confirmationJson from '@observation/kline_confirmation_v0_2.json';
 import exportJson from '@exports/timeline_export_v1.json';
 
 /** 证实状态（封闭集合） */
 export type KlineConfirmationStatus =
   | 'CONFIRMED'
   | 'UNCONFIRMED'
+  | 'NOT_APPLICABLE'
   | 'NO_PEAK_RECORDED'
   | 'NO_DATA';
 
@@ -50,6 +60,14 @@ export interface KlineEvidenceAnchor {
   sourceField: string;
 }
 
+/** 记录峰值的**参照物**（Research 侧声明，PROVISIONAL） */
+export interface KlinePeakReferent {
+  code: string;
+  label: string | null;
+  basis: string | null;
+  reviewStatus: string | null;
+}
+
 /** 展示用视图模型 */
 export interface KlineConfirmationView {
   campaignId: string;
@@ -57,6 +75,8 @@ export interface KlineConfirmationView {
   statusLabel: string;
   /** 记录峰值（可能为 null —— 合法空状态） */
   recordedPeak: string | null;
+  /** 该 peak 相对于什么（★ 决定「未同周」是否算问题） */
+  referent: KlinePeakReferent;
   /** 最接近记录峰值的**已登记标的**（名字由 canonical export 解析） */
   nearest: {
     securityId: string;
@@ -64,7 +84,7 @@ export interface KlineConfirmationView {
     peakDate: string;
     deltaDays: number;
   } | null;
-  /** 未证实时的记录依据（原文）；已证实或空状态时为 [] */
+  /** 未证实 / 不适用时的记录依据（原文）；已证实或空状态时为 [] */
   anchors: KlineEvidenceAnchor[];
   /** 判定容差（自然日）—— 2026-10-08 用户明确：历史日期按**周**粒度即可 */
   toleranceDays: number;
@@ -74,6 +94,7 @@ export interface KlineConfirmationView {
 const STATUS_LABEL: Record<KlineConfirmationStatus, string> = {
   CONFIRMED: 'K 线已证实',
   UNCONFIRMED: 'K 线未证实',
+  NOT_APPLICABLE: '不适用股价检验',
   NO_PEAK_RECORDED: '记录未标注峰值',
   NO_DATA: '无行情数据',
 };
@@ -94,6 +115,10 @@ interface RawRow {
   campaign_id?: string;
   recorded?: { start?: string | null; peak?: string | null; end?: string | null };
   confirmation?: string;
+  peak_referent?: string;
+  peak_referent_label?: string | null;
+  referent_basis?: string | null;
+  referent_review_status?: string | null;
   nearest?: RawNearest;
   evidence_anchors?: RawAnchor[];
   coverage?: { securities?: number | null; with_data?: number | null };
@@ -122,7 +147,13 @@ const SECURITY_NAME: Record<string, string> = (() => {
   return out;
 })();
 
-const KNOWN_STATUS: readonly string[] = ['CONFIRMED', 'UNCONFIRMED', 'NO_PEAK_RECORDED', 'NO_DATA'];
+const KNOWN_STATUS: readonly string[] = [
+  'CONFIRMED',
+  'UNCONFIRMED',
+  'NOT_APPLICABLE',
+  'NO_PEAK_RECORDED',
+  'NO_DATA',
+];
 
 /**
  * ★ 未知状态**不得猜测**：若 artifact 出现本产品不认识的状态值，
@@ -165,6 +196,12 @@ export function klineConfirmationOf(campaignId: string): KlineConfirmationView |
     status,
     statusLabel: label,
     recordedPeak: row.recorded?.peak ?? null,
+    referent: {
+      code: row.peak_referent ?? 'UNSPECIFIED',
+      label: row.peak_referent_label ?? null,
+      basis: row.referent_basis ?? null,
+      reviewStatus: row.referent_review_status ?? null,
+    },
     nearest:
       n && n.security_id && n.peak_date
         ? {
