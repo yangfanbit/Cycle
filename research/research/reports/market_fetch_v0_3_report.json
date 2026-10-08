@@ -1,0 +1,571 @@
+{
+ "generated_at": "2026-10-08T19:09:36",
+ "not_fetchable": {
+  "CNIMIL": "国证军工指数 —— 无 ticker，且**未被任何 campaign 引用**（0 引用），本轮不取。",
+  "SWMIL": "申万国防军工指数（801740.SI）—— 腾讯 GTIMG 不提供申万指数（实测 sz801740 返回空）。本脚本**不代以中证军工/军工 ETF 等替代指数**：那会偷换口径。留待研究侧决定代理口径。"
+ },
+ "planned": 56,
+ "results": {
+  "AIMEIKE": {
+   "qfq_rows": 1275,
+   "range": [
+    "2019-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1275,
+   "status": "OK",
+   "symbol": "sz300896"
+  },
+  "AMEC": {
+   "qfq_rows": 536,
+   "range": [
+    "2019-01-01",
+    "2021-09-30"
+   ],
+   "raw_rows": 536,
+   "status": "OK",
+   "symbol": "sh688012"
+  },
+  "BETTENI": {
+   "qfq_rows": 432,
+   "range": [
+    "2018-01-01",
+    "2022-12-31"
+   ],
+   "raw_rows": 432,
+   "status": "OK",
+   "symbol": "sz300957"
+  },
+  "BIDI": {
+   "qfq_rows": 891,
+   "range": [
+    "2019-01-01",
+    "2022-08-31"
+   ],
+   "raw_rows": 891,
+   "status": "OK",
+   "symbol": "sz002594"
+  },
+  "BLOOMAGE": {
+   "qfq_rows": 1495,
+   "range": [
+    "2019-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1495,
+   "status": "OK",
+   "symbol": "sh688363"
+  },
+  "CHANGAN": {
+   "qfq_rows": 647,
+   "range": [
+    "2020-01-01",
+    "2022-08-31"
+   ],
+   "raw_rows": 647,
+   "status": "OK",
+   "symbol": "sz000625"
+  },
+  "CSSC": {
+   "qfq_rows": 399,
+   "range": [
+    "2018-01-01",
+    "2019-11-26"
+   ],
+   "raw_rows": 399,
+   "status": "OK",
+   "symbol": "sh600150"
+  },
+  "CSSCDEF": {
+   "qfq_rows": 401,
+   "range": [
+    "2018-01-01",
+    "2019-11-26"
+   ],
+   "raw_rows": 401,
+   "status": "OK",
+   "symbol": "sh600685"
+  },
+  "DESAYSV": {
+   "qfq_rows": 887,
+   "range": [
+    "2022-01-01",
+    "2025-08-31"
+   ],
+   "raw_rows": 887,
+   "status": "OK",
+   "symbol": "sz002920"
+  },
+  "EFORT": {
+   "qfq_rows": 484,
+   "range": [
+    "2022-01-01",
+    "2023-12-31"
+   ],
+   "raw_rows": 484,
+   "status": "OK",
+   "symbol": "sh688165"
+  },
+  "ESTUN": {
+   "qfq_rows": 2138,
+   "range": [
+    "2017-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 2138,
+   "status": "OK",
+   "symbol": "sz002747"
+  },
+  "GAMBO": {
+   "reason": "合法 JSON + 空序列",
+   "status": "UNAVAILABLE",
+   "symbol": "sz301498"
+  },
+  "GIGADEVICE": {
+   "qfq_rows": 1898,
+   "range": [
+    "2018-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1898,
+   "status": "OK",
+   "symbol": "sh603986"
+  },
+  "HENGRUI": {
+   "qfq_rows": 1171,
+   "range": [
+    "2018-01-01",
+    "2022-10-31"
+   ],
+   "raw_rows": 1171,
+   "status": "OK",
+   "symbol": "sh600276"
+  },
+  "HYGON": {
+   "qfq_rows": 38,
+   "range": [
+    "2021-01-01",
+    "2022-10-12"
+   ],
+   "raw_rows": 38,
+   "status": "OK",
+   "symbol": "sh688041"
+  },
+  "ICBC": {
+   "qfq_rows": 1699,
+   "range": [
+    "2019-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1699,
+   "status": "OK",
+   "symbol": "sh601398"
+  },
+  "JAC": {
+   "qfq_rows": 427,
+   "range": [
+    "2019-01-01",
+    "2020-09-30"
+   ],
+   "raw_rows": 427,
+   "status": "OK",
+   "symbol": "sh600418"
+  },
+  "JCET": {
+   "qfq_rows": 670,
+   "range": [
+    "2018-01-01",
+    "2020-09-30"
+   ],
+   "raw_rows": 670,
+   "status": "OK",
+   "symbol": "sh600584"
+  },
+  "JIANGLING": {
+   "qfq_rows": 382,
+   "range": [
+    "2023-01-01",
+    "2024-07-31"
+   ],
+   "raw_rows": 382,
+   "status": "OK",
+   "symbol": "sz000550"
+  },
+  "JINJIANG": {
+   "qfq_rows": 603,
+   "range": [
+    "2021-01-01",
+    "2023-06-30"
+   ],
+   "raw_rows": 603,
+   "status": "OK",
+   "symbol": "sh600754"
+  },
+  "JINJIANGONLINE": {
+   "qfq_rows": 382,
+   "range": [
+    "2023-01-01",
+    "2024-07-31"
+   ],
+   "raw_rows": 382,
+   "status": "OK",
+   "symbol": "sh600650"
+  },
+  "JINLONG": {
+   "qfq_rows": 382,
+   "range": [
+    "2023-01-01",
+    "2024-07-31"
+   ],
+   "raw_rows": 382,
+   "status": "OK",
+   "symbol": "sh600686"
+  },
+  "JINYI": {
+   "qfq_rows": 356,
+   "range": [
+    "2023-01-01",
+    "2024-06-25"
+   ],
+   "raw_rows": 356,
+   "status": "OK",
+   "symbol": "sz002869"
+  },
+  "JUXING": {
+   "qfq_rows": 727,
+   "range": [
+    "2020-01-01",
+    "2022-12-31"
+   ],
+   "raw_rows": 727,
+   "status": "OK",
+   "symbol": "sh603477"
+  },
+  "JXCOPPER": {
+   "qfq_rows": 730,
+   "range": [
+    "2019-01-01",
+    "2021-12-31"
+   ],
+   "raw_rows": 730,
+   "status": "OK",
+   "symbol": "sh600362"
+  },
+  "KINCO": {
+   "qfq_rows": 763,
+   "range": [
+    "2019-01-01",
+    "2023-12-31"
+   ],
+   "raw_rows": 763,
+   "status": "OK",
+   "symbol": "sh688160"
+  },
+  "LEADERDRIVE": {
+   "qfq_rows": 811,
+   "range": [
+    "2019-01-01",
+    "2023-12-31"
+   ],
+   "raw_rows": 811,
+   "status": "OK",
+   "symbol": "sh688017"
+  },
+  "MAXSCEND": {
+   "qfq_rows": 806,
+   "range": [
+    "2018-01-01",
+    "2022-10-12"
+   ],
+   "raw_rows": 806,
+   "status": "OK",
+   "symbol": "sz300782"
+  },
+  "NARI": {
+   "qfq_rows": 1212,
+   "range": [
+    "2021-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1212,
+   "status": "OK",
+   "symbol": "sh600406"
+  },
+  "NSIG": {
+   "qfq_rows": 355,
+   "range": [
+    "2019-01-01",
+    "2021-09-30"
+   ],
+   "raw_rows": 355,
+   "status": "OK",
+   "symbol": "sh688126"
+  },
+  "PINGGAO": {
+   "qfq_rows": 1212,
+   "range": [
+    "2021-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1212,
+   "status": "OK",
+   "symbol": "sh600312"
+  },
+  "PIOTECH": {
+   "reason": "合法 JSON + 空序列",
+   "status": "UNAVAILABLE",
+   "symbol": "sh688072"
+  },
+  "SIEYUAN": {
+   "qfq_rows": 1212,
+   "range": [
+    "2021-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1212,
+   "status": "OK",
+   "symbol": "sz002028"
+  },
+  "SMIC": {
+   "qfq_rows": 297,
+   "range": [
+    "2018-01-01",
+    "2021-09-30"
+   ],
+   "raw_rows": 297,
+   "status": "OK",
+   "symbol": "sh688981"
+  },
+  "TBEA": {
+   "qfq_rows": 1212,
+   "range": [
+    "2021-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1212,
+   "status": "OK",
+   "symbol": "sh600089"
+  },
+  "TCLTECH": {
+   "qfq_rows": 648,
+   "range": [
+    "2019-01-01",
+    "2021-08-31"
+   ],
+   "raw_rows": 648,
+   "status": "OK",
+   "symbol": "sz000100"
+  },
+  "TECHLONG": {
+   "qfq_rows": 969,
+   "range": [
+    "2022-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 969,
+   "status": "OK",
+   "symbol": "sz002209"
+  },
+  "TIANQI": {
+   "qfq_rows": 931,
+   "range": [
+    "2019-01-01",
+    "2022-11-11"
+   ],
+   "raw_rows": 931,
+   "status": "OK",
+   "symbol": "sz002466"
+  },
+  "TIGERMED": {
+   "qfq_rows": 1171,
+   "range": [
+    "2018-01-01",
+    "2022-10-31"
+   ],
+   "raw_rows": 1171,
+   "status": "OK",
+   "symbol": "sz300347"
+  },
+  "TONGLING": {
+   "qfq_rows": 730,
+   "range": [
+    "2019-01-01",
+    "2021-12-31"
+   ],
+   "raw_rows": 730,
+   "status": "OK",
+   "symbol": "sz000630"
+  },
+  "TOPSTAR": {
+   "qfq_rows": 969,
+   "range": [
+    "2019-01-01",
+    "2022-12-31"
+   ],
+   "raw_rows": 969,
+   "status": "OK",
+   "symbol": "sz300607"
+  },
+  "VANJI": {
+   "qfq_rows": 356,
+   "range": [
+    "2023-01-01",
+    "2024-06-25"
+   ],
+   "raw_rows": 356,
+   "status": "OK",
+   "symbol": "sz300552"
+  },
+  "VANKE": {
+   "qfq_rows": 1008,
+   "range": [
+    "2019-01-01",
+    "2023-02-28"
+   ],
+   "raw_rows": 1008,
+   "status": "OK",
+   "symbol": "sz000002"
+  },
+  "WANAN": {
+   "qfq_rows": 1346,
+   "range": [
+    "2018-01-01",
+    "2023-07-19"
+   ],
+   "raw_rows": 1346,
+   "status": "OK",
+   "symbol": "sz002590"
+  },
+  "WANCHEN": {
+   "qfq_rows": 416,
+   "range": [
+    "2018-01-01",
+    "2022-12-31"
+   ],
+   "raw_rows": 416,
+   "status": "OK",
+   "symbol": "sz300972"
+  },
+  "WANHUA": {
+   "qfq_rows": 486,
+   "range": [
+    "2020-01-01",
+    "2021-12-31"
+   ],
+   "raw_rows": 486,
+   "status": "OK",
+   "symbol": "sh600309"
+  },
+  "WENS": {
+   "qfq_rows": 1217,
+   "range": [
+    "2017-01-01",
+    "2021-12-31"
+   ],
+   "raw_rows": 1217,
+   "status": "OK",
+   "symbol": "sz300498"
+  },
+  "WILLSEMI": {
+   "qfq_rows": 584,
+   "range": [
+    "2018-01-01",
+    "2020-09-30"
+   ],
+   "raw_rows": 584,
+   "status": "OK",
+   "symbol": "sh603501"
+  },
+  "WUXIAPPTEC": {
+   "qfq_rows": 1090,
+   "range": [
+    "2018-01-01",
+    "2022-10-31"
+   ],
+   "raw_rows": 1090,
+   "status": "OK",
+   "symbol": "sh603259"
+  },
+  "XIAOKANG": {
+   "qfq_rows": 424,
+   "range": [
+    "2020-01-01",
+    "2021-09-30"
+   ],
+   "raw_rows": 424,
+   "status": "OK",
+   "symbol": "sh601127"
+  },
+  "XUJI": {
+   "qfq_rows": 1212,
+   "range": [
+    "2021-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1212,
+   "status": "OK",
+   "symbol": "sz000400"
+  },
+  "XUSHENG": {
+   "qfq_rows": 427,
+   "range": [
+    "2019-01-01",
+    "2020-09-30"
+   ],
+   "raw_rows": 427,
+   "status": "OK",
+   "symbol": "sh603305"
+  },
+  "YATAI": {
+   "qfq_rows": 426,
+   "range": [
+    "2018-01-01",
+    "2019-09-30"
+   ],
+   "raw_rows": 426,
+   "status": "OK",
+   "symbol": "sz002284"
+  },
+  "ZHAOWEI": {
+   "qfq_rows": 484,
+   "range": [
+    "2022-01-01",
+    "2023-12-31"
+   ],
+   "raw_rows": 484,
+   "status": "OK",
+   "symbol": "sz003021"
+  },
+  "ZHEJIANGSHISHI": {
+   "qfq_rows": 882,
+   "range": [
+    "2022-01-01",
+    "2025-08-31"
+   ],
+   "raw_rows": 882,
+   "status": "OK",
+   "symbol": "sz002703"
+  },
+  "ZTELEVISION": {
+   "qfq_rows": 371,
+   "range": [
+    "2022-01-01",
+    "2023-07-19"
+   ],
+   "raw_rows": 371,
+   "status": "OK",
+   "symbol": "sz000980"
+  }
+ },
+ "stats": {
+  "confirmed_empty": 42,
+  "ok": 54,
+  "requests": 0,
+  "skipped_known_gap": 0,
+  "unavailable": 2
+ },
+ "ticker_fix": {
+  "EFORT": "腾讯返回名称=埃夫特-U（2026-10-08 核验）",
+  "ZHAOWEI": "腾讯返回名称=兆威机电（2026-10-08 核验）"
+ }
+}

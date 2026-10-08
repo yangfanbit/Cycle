@@ -86,6 +86,17 @@ class RateLimited(RuntimeError):
     pass
 
 
+class InvalidSymbol(RuntimeError):
+    """代码无效（腾讯不认这个 symbol）—— ★ 与「上市前无数据」**必须区分**。
+
+    实测（2026-10-08）：无效代码 `sz999999` 返回
+    `{"code":0,"msg":"","data":{"sz999999":{"day":[],"qt":{"sz999999":[],...}}}}`
+    —— **与「上市前无数据」的返回形状完全相同**（合法 JSON + 空序列）。
+    唯一可靠的区分：**`qt` 是否带证券名**（有效代码 `qt[1]` 是名称；无效代码 `qt` 为空数组）。
+    若不区分，无效代码会被静默写成「确认无数据」并持久化 —— 那是**把假 absence 固化**。
+    """
+
+
 def _num(x):
     if isinstance(x, (int, float)):
         return float(x)
@@ -152,9 +163,24 @@ def request_segment(symbol, seg_beg, seg_end, fq, retries=6):
         except Exception:
             time.sleep(2.0 * (i + 1))
             continue
-        d = data.get("data", {}).get(symbol, {})
+        # ★ 守卫①：`data` 字段不是对象（如 param error 时返回 `"data":[]`）→ 视为异常，不当作无数据
+        if not isinstance(data.get("data"), dict):
+            time.sleep(2.0 * (i + 1))
+            continue
+        d = data["data"].get(symbol)
+        # ★ 守卫②：响应里没有该 symbol 键 → 异常，不当作无数据
+        if not isinstance(d, dict):
+            time.sleep(2.0 * (i + 1))
+            continue
         ser = d.get(fq + "day") or d.get(fq) or d.get("day") or []
-        return ser or []
+        if ser:
+            return ser
+        # ★ 守卫③：序列为空时，用 `qt` 是否带证券名区分「上市前无数据」与「代码无效」
+        qt = d.get("qt", {}).get(symbol) or []
+        name = qt[1] if isinstance(qt, list) and len(qt) > 1 else None
+        if not name:
+            raise InvalidSymbol("%s %s~%s（qt 无名称 → 代码无效）" % (symbol, seg_beg, seg_end))
+        return []
     raise RateLimited("%s %s %s~%s" % (symbol, fq, seg_beg, seg_end))
 
 
@@ -326,7 +352,7 @@ def main(argv):
         conn.close()
         return 0
 
-    stats = {"ok": 0, "unavailable": 0, "confirmed_empty": 0, "skipped_known_gap": 0, "requests": 0}
+    stats = {"ok": 0, "unavailable": 0, "invalid_symbol": 0, "confirmed_empty": 0, "skipped_known_gap": 0, "requests": 0}
     results = {}
     todo = dict(plan)
     for rnd in (1, 2, 3):
@@ -338,6 +364,12 @@ def main(argv):
             try:
                 raw = fetch_series(sym, beg, end, "", gaps, stats)
                 qfq = fetch_series(sym, beg, end, "qfq", gaps, stats)
+            except InvalidSymbol as e:
+                # ★ 代码无效 ≠ 无数据。**不写 gaps**（那会把假 absence 固化），改为显式报告。
+                print("[%d轮 %2d/%2d] ✗ %-18s %-10s **代码无效** %s" % (rnd, i, len(todo), sid, sym, str(e)[:52]), flush=True)
+                stats["invalid_symbol"] += 1
+                results[sid] = {"status": "INVALID_SYMBOL", "symbol": sym, "reason": str(e)}
+                continue
             except RateLimited as e:
                 print("[%d轮 %2d/%2d] ⏸ %-18s 限流未恢复，转入下一轮  %s" % (rnd, i, len(todo), sid, str(e)[:44]), flush=True)
                 deferred[sid] = (sym, nm, stype, beg, end, why)
@@ -390,8 +422,8 @@ def main(argv):
                    ensure_ascii=False, indent=1, sort_keys=True) + "\n"
     )
     print("-" * 78)
-    print("DONE 成功 %d · 确认无数据 %d · 跳过已知空段 %d · 确认空段新增 %d" % (
-        stats["ok"], stats["unavailable"], stats["skipped_known_gap"], stats["confirmed_empty"]))
+    print("DONE 成功 %d · 确认无数据 %d · **代码无效 %d** · 跳过已知空段 %d · 确认空段新增 %d" % (
+        stats["ok"], stats["unavailable"], stats["invalid_symbol"], stats["skipped_known_gap"], stats["confirmed_empty"]))
     return 0
 
 
