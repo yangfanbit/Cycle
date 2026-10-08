@@ -1,0 +1,1239 @@
+{
+ "artifact": "kline_confirmation",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/build_kline_confirmation_v0_1.py",
+ "source_alignment": "research/research/reports/kline_alignment_v0_2.json",
+ "position": "Research-only 只读产物 —— 供产品与研究侧**看见**「记录峰值是否被 K 线证实」。**不改动任何研究数据**；**不含** score / ranking / probability。",
+ "rules": {
+  "price_basis": "原始价 high（盘中最高）—— 与 evidence 表述一致",
+  "tolerance_days": 7,
+  "meaning": "CONFIRMED = 某个**已登记标的**的价格高点落在记录 peak 的 ±7 日内；UNCONFIRMED = 没有；**不等于**日期错误。",
+  "excerpt_rule": "evidence 取 `evidences.description`、event 取 `events.name`（实测 R01 导入把**来源指针**写进了 events.description，4 个不同事件共用同一串 provenance，故不用它）；两者均**截去来源标注尾巴**（首个 `［` 或 `｜PIT:` 之前为正文），上限 220 字。规则显式记录，不静默改写。",
+  "no_score": "只有证实状态与原文依据，无评分 / 排序 / 概率"
+ },
+ "summary": {
+  "CONFIRMED": 32,
+  "UNCONFIRMED": 17,
+  "NO_PEAK_RECORDED": 4,
+  "NO_DATA": 0
+ },
+ "by_campaign": {
+  "C-2016-CONS-BAIJIU-UPGRADE": {
+   "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "campaign_year": 2016,
+   "recorded": {
+    "start": "2016-06-01",
+    "peak": "2018-01-31",
+    "end": "2018-12-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "LUZHOULAOJIAO",
+    "peak_date": "2018-01-16",
+    "delta_days": 15
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2016-HIEQ-CONSTR": {
+   "campaign_id": "C-2016-HIEQ-CONSTR",
+   "campaign_year": 2016,
+   "recorded": {
+    "start": "2016-08-01",
+    "peak": "2021-01-25",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "HENGLI",
+    "peak_date": "2021-01-08",
+    "delta_days": 17
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2016-PANEL-CYCLE": {
+   "campaign_id": "C-2016-PANEL-CYCLE",
+   "campaign_year": 2016,
+   "recorded": {
+    "start": "2016-02-01",
+    "peak": "2017-06-30",
+    "end": "2017-06-30"
+   },
+   "coverage": {
+    "securities": 1,
+    "with_data": 1
+   },
+   "nearest": {
+    "security_id": "BOE",
+    "peak_date": "2017-06-30",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2018-CONS-HOG-AFRICAN": {
+   "campaign_id": "C-2018-CONS-HOG-AFRICAN",
+   "campaign_year": 2018,
+   "recorded": {
+    "start": "2018-08-03",
+    "peak": "2020-03-09",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "MUYUAN",
+    "peak_date": "2020-03-09",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2018-HIEQ-ROBOT-DOWN": {
+   "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+   "campaign_year": 2018,
+   "recorded": {
+    "start": "2018-09-30",
+    "peak": "2019-09-30",
+    "end": "2019-12-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "INOVANCE",
+    "peak_date": "2020-01-16",
+    "delta_days": 108
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2019-09-30",
+     "type": "财经媒体（统计数据 + 公司业绩）",
+     "excerpt": "2019 年上半年前三季度中国工业机器人产量同比下滑 9.1%；新松机器人、埃斯顿、华中数控等机器人相关上市公司业绩不乐观。2023 年 1-2 月国内工业机器人产量 6.2 万套、同比下降 19.2%。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2019-10-01",
+     "type": "industry",
+     "excerpt": "2019 年 10 月中国工业机器人产量转为正增长（+1.7%），下行段结束",
+     "source_field": "events.name"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2019-AD": {
+   "campaign_id": "C-2019-AD",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-08-15",
+    "peak": "2019-09-24",
+    "end": "2019-09-30"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "ROUTE",
+    "peak_date": "2019-07-02",
+    "delta_days": 84
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2019-COMM-5G": {
+   "campaign_id": "C-2019-COMM-5G",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-06-06",
+    "peak": "2020-02-25",
+    "end": "2022-10-11"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "INNOLIGHT",
+    "peak_date": "2020-02-25",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2019-CONS-AESTHETICS": {
+   "campaign_id": "C-2019-CONS-AESTHETICS",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-11-06",
+    "peak": "2021-07-05",
+    "end": "2022-12-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "BETTENI",
+    "peak_date": "2021-07-08",
+    "delta_days": 3
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2019-CONS-BAIJIU-CORE": {
+   "campaign_id": "C-2019-CONS-BAIJIU-CORE",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-03-01",
+    "peak": "2021-02-18",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 6,
+    "with_data": 6
+   },
+   "nearest": {
+    "security_id": "LUZHOULAOJIAO",
+    "peak_date": "2021-02-18",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2019-CONSUMER-TWS": {
+   "campaign_id": "C-2019-CONSUMER-TWS",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-01-04",
+    "peak": "2020-10-13",
+    "end": "2021-03-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "LUXSHARE",
+    "peak_date": "2020-10-13",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2019-MIL-GROUP-RESTRUCTURE": {
+   "campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-07-01",
+    "peak": null,
+    "end": "2019-11-26"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "confirmation": "NO_PEAK_RECORDED"
+  },
+  "C-2019-PHARMA-INNOV": {
+   "campaign_id": "C-2019-PHARMA-INNOV",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-01-02",
+    "peak": "2021-07-01",
+    "end": "2022-10-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "TIGERMED",
+    "peak_date": "2021-07-01",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2019-RES-DYE-SHOCK": {
+   "campaign_id": "C-2019-RES-DYE-SHOCK",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-03-21",
+    "peak": "2019-04-04",
+    "end": "2019-07-30"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "RUNTE",
+    "peak_date": "2019-04-09",
+    "delta_days": 5
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2019-SEMI-LOCALIZATION": {
+   "campaign_id": "C-2019-SEMI-LOCALIZATION",
+   "campaign_year": 2019,
+   "recorded": {
+    "start": "2019-05-16",
+    "peak": "2020-07-14",
+    "end": "2020-09-30"
+   },
+   "coverage": {
+    "securities": 8,
+    "with_data": 8
+   },
+   "nearest": {
+    "security_id": "JCET",
+    "peak_date": "2020-07-14",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-CONS-BEAUTY-CN": {
+   "campaign_id": "C-2020-CONS-BEAUTY-CN",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-06-29",
+    "peak": "2021-10-29",
+    "end": "2022-12-31"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 1
+   },
+   "nearest": {
+    "security_id": "YANJIN",
+    "peak_date": "2020-10-13",
+    "delta_days": 381
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2021-10-29",
+     "type": "行情数据",
+     "excerpt": "珀莱雅（603605）2021 年 10 月 29 日盘中最高 224.43 元（历史最高）；贝泰妮（300957）2021 年 7 月 8 日盘中最高 289.35 元（不复权）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2020-CONS-DUTYFREE": {
+   "campaign_id": "C-2020-CONS-DUTYFREE",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2021-02-18",
+    "end": "2022-12-31"
+   },
+   "coverage": {
+    "securities": 1,
+    "with_data": 1
+   },
+   "nearest": {
+    "security_id": "CTGDF",
+    "peak_date": "2021-02-18",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-CONS-WHITE-GOODS": {
+   "campaign_id": "C-2020-CONS-WHITE-GOODS",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2021-02-18",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "AIMEIKE",
+    "peak_date": "2021-02-18",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-FIN-BANK-CREDIT": {
+   "campaign_id": "C-2020-FIN-BANK-CREDIT",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-10-30",
+    "peak": "2021-03-03",
+    "end": "2021-03-31"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "CMB",
+    "peak_date": "2021-02-18",
+    "delta_days": 13
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "event",
+     "date": "2021-03-03",
+     "type": "market",
+     "excerpt": "银行股全线大涨（本包唯一同期市场证据日）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-03-03",
+     "type": "财经媒体报道",
+     "excerpt": "2021-03-03，A 股银行股全线大涨，宁波银行、南京银行等涨幅居前；此前一日银保监会主席郭树清就利率等议题表态。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2020-HIEQ-AUTOMATION": {
+   "campaign_id": "C-2020-HIEQ-AUTOMATION",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-04-01",
+    "peak": "2021-07-01",
+    "end": "2022-12-31"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "ESTUN",
+    "peak_date": "2021-07-08",
+    "delta_days": 7
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-MIL-EQUIP-ORDER": {
+   "campaign_id": "C-2020-MIL-EQUIP-ORDER",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-06-25",
+    "peak": "2021-12-01",
+    "end": "2022-12-31"
+   },
+   "coverage": {
+    "securities": 6,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "CSIMIL",
+    "peak_date": "2021-11-30",
+    "delta_days": 1
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-NEV": {
+   "campaign_id": "C-2020-NEV",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2020-07-13",
+    "end": "2020-09-30"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "XUSHENG",
+    "peak_date": "2020-07-13",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-PANEL-CYCLE": {
+   "campaign_id": "C-2020-PANEL-CYCLE",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2021-07-31",
+    "end": "2021-08-31"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "BOE",
+    "peak_date": "2021-04-26",
+    "delta_days": 96
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2021-07-31",
+     "type": "行业数据",
+     "excerpt": "65 英寸 LCD 面板价格由 2020-01 的 162 美元/片最高涨至 2021-07 的 294 美元/片（涨幅超 80%），2021-08 起进入下跌通道，2022-09 跌至 106 美元/片（较高点下跌 64%）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2020-POWER-NE": {
+   "campaign_id": "C-2020-POWER-NE",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-09-22",
+    "peak": "2021-11-01",
+    "end": "2022-12-30"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "GOLDWIND",
+    "peak_date": "2021-11-05",
+    "delta_days": 4
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-RE-DEBT-RISK": {
+   "campaign_id": "C-2020-RE-DEBT-RISK",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-08-20",
+    "peak": "2021-12-03",
+    "end": "2022-07-31"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "POLY",
+    "peak_date": "2022-04-15",
+    "delta_days": 133
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "event",
+     "date": "2021-12-03",
+     "type": "company",
+     "excerpt": "中国恒大公告无法履行 2.6 亿美元担保义务（标志性债务违约）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-12-03",
+     "type": "财经媒体报道（引述 Wind）",
+     "excerpt": "截至 2021-12-03，据 Wind 统计，地产开发商及多样化房地产活动在信用债券市场共发生 52 起违约事件，整体逾期债券余额合计约 630.28 亿元。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-12-03",
+     "type": "学术文献",
+     "excerpt": "中国恒大集团于 2021-12-03 未能偿付 2.6 亿美元债券偿付义务，构成违约。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2020-RES-LITHIUM": {
+   "campaign_id": "C-2020-RES-LITHIUM",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-10-27",
+    "peak": "2021-09-13",
+    "end": "2022-11-11"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "GANFENG",
+    "peak_date": "2021-09-01",
+    "delta_days": 12
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2021-09-13",
+     "type": "行情数据",
+     "excerpt": "2020-07-01 至 2021-12-31 区间：天齐锂业涨跌幅 451.88%，赣锋锂业涨跌幅 180.74%，能源金属指数(399366.SZ) 涨跌幅 62.50%，指数区间最高点 3448.36 点（2021-09-13）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2020-RES-NONFERROUS": {
+   "campaign_id": "C-2020-RES-NONFERROUS",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-03-23",
+    "peak": "2021-09-13",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 6,
+    "with_data": 6
+   },
+   "nearest": {
+    "security_id": "CHALCO",
+    "peak_date": "2021-09-13",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2020-RES-RAREEARTH": {
+   "campaign_id": "C-2020-RES-RAREEARTH",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-05-01",
+    "peak": "2021-11-09",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "GUANGSHENG",
+    "peak_date": "2021-09-15",
+    "delta_days": 55
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2021-11-03",
+     "type": "媒体",
+     "excerpt": "2021-11-03 SMM 镨钕氧化物现货均价报 735000 元/吨，近一个月涨幅达 22.7%；包头稀土交易所北方稀土第 79 场专场竞价 20 吨金属镨钕全部以报警价 89 万元/吨成交。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2021-11-09",
+     "type": "industry",
+     "excerpt": "北方稀土更新挂牌价，氧化镨钕升至 76.26 万元/吨",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-11-09",
+     "type": "媒体",
+     "excerpt": "2021-11-09 北方稀土更新挂牌价，氧化镨钕价格飙升至 76.26 万元/吨（上调 13.94 万元/吨），金属镨钕挂牌价 93 万元/吨；镨钕氧化物自 10 月 3 日以来一个月内价格飙涨近 25%，11-04 行业现货价报 75 万元/吨，处于 2011 年 11 月以来最高水平。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2020-SEMI-EQUIPMENT": {
+   "campaign_id": "C-2020-SEMI-EQUIPMENT",
+   "campaign_year": 2020,
+   "recorded": {
+    "start": "2020-07-16",
+    "peak": "2021-07-30",
+    "end": "2021-09-30"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "SMIC",
+    "peak_date": "2020-07-16",
+    "delta_days": 379
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "event",
+     "date": "2021-07-30",
+     "type": "market",
+     "excerpt": "申万半导体板块指数月内最高 7642.58（2019–2021 全周期最高）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-07-30",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数 2021-07 月内最高 7642.58、月末收 7451.01；2021-08 月内最高 7522.05、月末收 6308.40；2022-10 月内最低 3605.80。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2021-CONS-HOG-REVERSAL": {
+   "campaign_id": "C-2021-CONS-HOG-REVERSAL",
+   "campaign_year": 2021,
+   "recorded": {
+    "start": "2021-08-17",
+    "peak": "2022-10-15",
+    "end": "2022-12-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "JUXING",
+    "peak_date": "2022-07-12",
+    "delta_days": 95
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2022-10-15",
+     "type": "行业价格（转述）",
+     "excerpt": "2022 年 10 月中旬猪价创年内新高，媒体转述外三元生猪价格约 28 元/公斤区间。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2021-NEV": {
+   "campaign_id": "C-2021-NEV",
+   "campaign_year": 2021,
+   "recorded": {
+    "start": "2021-06-01",
+    "peak": "2021-08-06",
+    "end": "2021-09-30"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "CATL",
+    "peak_date": "2021-07-30",
+    "delta_days": 7
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2021-RES-CHEM-DUALCTRL": {
+   "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+   "campaign_year": 2021,
+   "recorded": {
+    "start": "2021-08-12",
+    "peak": "2021-10-31",
+    "end": "2021-12-31"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "HUBEIYIHUA",
+    "peak_date": "2021-11-01",
+    "delta_days": 1
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2022-CONS-SERVICE-REBOUND": {
+   "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+   "campaign_year": 2022,
+   "recorded": {
+    "start": "2022-12-07",
+    "peak": "2023-01-31",
+    "end": "2023-06-30"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "CTGDF",
+    "peak_date": "2023-01-30",
+    "delta_days": 1
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2022-POLICY": {
+   "campaign_id": "C-2022-POLICY",
+   "campaign_year": 2022,
+   "recorded": {
+    "start": "2022-04-27",
+    "peak": "2022-06-10",
+    "end": "2022-08-31"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "BIDI",
+    "peak_date": "2022-06-13",
+    "delta_days": 3
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2022-POWER-GRID": {
+   "campaign_id": "C-2022-POWER-GRID",
+   "campaign_year": 2022,
+   "recorded": {
+    "start": "2022-01-10",
+    "peak": "2024-10-08",
+    "end": "2025-12-31"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "PINGGAO",
+    "peak_date": "2024-10-08",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2022-RE-POLICY-THREE": {
+   "campaign_id": "C-2022-RE-POLICY-THREE",
+   "campaign_year": 2022,
+   "recorded": {
+    "start": "2022-11-08",
+    "peak": "2022-11-29",
+    "end": "2023-02-28"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "GEMDALE",
+    "peak_date": "2022-11-30",
+    "delta_days": 1
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2022-SEMI-DOWNTURN": {
+   "campaign_id": "C-2022-SEMI-DOWNTURN",
+   "campaign_year": 2022,
+   "recorded": {
+    "start": "2022-01-04",
+    "peak": "2022-08-31",
+    "end": "2022-10-12"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "HYGON",
+    "peak_date": "2022-08-12",
+    "delta_days": 19
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2022-08-31",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数在 2022-08 出现年内唯一反弹高点 5380.53（月内最高）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2023-AD": {
+   "campaign_id": "C-2023-AD",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-06-12",
+    "peak": "2023-07-11",
+    "end": "2023-07-19"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "DESAYSV",
+    "peak_date": "2023-07-11",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2023-AI-COMPUTE-SEMI": {
+   "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-01-30",
+    "peak": "2023-04-10",
+    "end": "2023-08-25"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "GIGADEVICE",
+    "peak_date": "2023-04-06",
+    "delta_days": 4
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2023-COMM-OPTICAL": {
+   "campaign_id": "C-2023-COMM-OPTICAL",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-03-21",
+    "peak": "2025-12-25",
+    "end": "2025-12-31"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "INNOLIGHT",
+    "peak_date": "2025-12-25",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2023-CONS-VALUE-RETAIL": {
+   "campaign_id": "C-2023-CONS-VALUE-RETAIL",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-01-01",
+    "peak": "2025-08-29",
+    "end": null
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "ECOVACS",
+    "peak_date": "2023-01-20",
+    "delta_days": 952
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "event",
+     "date": "2025-08-29",
+     "type": "market",
+     "excerpt": "万辰集团收于 210.81 元（区间最高）；同期三只松鼠 2025 年初见顶后全年收跌",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2025-08-29",
+     "type": "行情数据",
+     "excerpt": "万辰集团股价 2024 年 12 月 11 日收于 80.21 元，2025 年 8 月 29 日收于 210.81 元（区间最高）；同期三只松鼠于 2025 年初见顶后全年收跌。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2023-FIN-SOE-VALUATION": {
+   "campaign_id": "C-2023-FIN-SOE-VALUATION",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-04-01",
+    "peak": "2023-05-11",
+    "end": "2023-06-30"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "CNCB",
+    "peak_date": "2023-05-09",
+    "delta_days": 2
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2023-HIEQ-HUMANOID": {
+   "campaign_id": "C-2023-HIEQ-HUMANOID",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-05-01",
+    "peak": "2023-11-02",
+    "end": "2023-12-31"
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   },
+   "nearest": {
+    "security_id": "KINCO",
+    "peak_date": "2023-06-29",
+    "delta_days": 126
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "event",
+     "date": "2023-11-02",
+     "type": "policy",
+     "excerpt": "工信部印发《人形机器人创新发展指导意见》",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-11-02",
+     "type": "官方政策文件（年度大盘点转引）",
+     "excerpt": "工业和信息化部于 2023 年 11 月 2 日印发《人形机器人创新发展指导意见》，提出到 2025 年人形机器人创新体系初步建立、「大脑、小脑、肢体」等一批关键技术取得突破、整机产品达到国际先进水平并实现批量生产；到 2027 年形成安全可靠的产业链供应链体系。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2023-HIEQ-ROBOT-PLUS": {
+   "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-01-19",
+    "peak": "2023-02-03",
+    "end": null
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "TECHLONG",
+    "peak_date": "2023-02-03",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2023-PHARMA-GLP1": {
+   "campaign_id": "C-2023-PHARMA-GLP1",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-09-08",
+    "peak": "2023-10-16",
+    "end": "2023-10-19"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "BORUI",
+    "peak_date": "2023-10-16",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2024-CONS-TRADE-IN": {
+   "campaign_id": "C-2024-CONS-TRADE-IN",
+   "campaign_year": 2024,
+   "recorded": {
+    "start": "2024-03-13",
+    "peak": "2024-10-08",
+    "end": "2025-12-31"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "BLOOMAGE",
+    "peak_date": "2024-10-08",
+    "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2024-FIN-BANK-DIVIDEND": {
+   "campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+   "campaign_year": 2024,
+   "recorded": {
+    "start": "2024-01-01",
+    "peak": null,
+    "end": null
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "confirmation": "NO_PEAK_RECORDED"
+  },
+  "C-2024-FIN-BROKER-POLICY": {
+   "campaign_id": "C-2024-FIN-BROKER-POLICY",
+   "campaign_year": 2024,
+   "recorded": {
+    "start": "2024-09-24",
+    "peak": "2024-10-08",
+    "end": "2024-10-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "CITICS",
+    "peak_date": "2024-10-09",
+    "delta_days": 1
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2024-RES-GOLD-CB": {
+   "campaign_id": "C-2024-RES-GOLD-CB",
+   "campaign_year": 2024,
+   "recorded": {
+    "start": "2024-02-01",
+    "peak": null,
+    "end": null
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "confirmation": "NO_PEAK_RECORDED"
+  },
+  "C-2024-ROBOTAXI": {
+   "campaign_id": "C-2024-ROBOTAXI",
+   "campaign_year": 2024,
+   "recorded": {
+    "start": "2024-07-08",
+    "peak": "2024-07-29",
+    "end": "2024-07-31"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "DADONGTRAFFIC",
+    "peak_date": "2024-07-31",
+    "delta_days": 2
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2024-SEMI-MEMORY": {
+   "campaign_id": "C-2024-SEMI-MEMORY",
+   "campaign_year": 2024,
+   "recorded": {
+    "start": "2024-09-24",
+    "peak": "2025-10-31",
+    "end": null
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "CAMBRICON",
+    "peak_date": "2024-10-21",
+    "delta_days": 375
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "event",
+     "date": "2025-10-31",
+     "type": "market",
+     "excerpt": "申万半导体板块指数 7964.33，超过 2021-07 的 7642.58 创指数新高",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2025-10-31",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数 2025-10 月内最高 7964.33（月内区间 6656.35—7964.33），超过 2021-07 的 7642.58，为该指数新高；2025-12-31 收 6950.35。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  },
+  "C-2024-V2X": {
+   "campaign_id": "C-2024-V2X",
+   "campaign_year": 2024,
+   "recorded": {
+    "start": "2024-06-11",
+    "peak": "2024-06-18",
+    "end": "2024-06-25"
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   },
+   "nearest": {
+    "security_id": "VANJI",
+    "peak_date": "2024-06-19",
+    "delta_days": 1
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2025-FIN-INSURANCE": {
+   "campaign_id": "C-2025-FIN-INSURANCE",
+   "campaign_year": 2025,
+   "recorded": {
+    "start": "2025-01-01",
+    "peak": null,
+    "end": null
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "confirmation": "NO_PEAK_RECORDED"
+  },
+  "C-2025-ROBOTAXI": {
+   "campaign_id": "C-2025-ROBOTAXI",
+   "campaign_year": 2025,
+   "recorded": {
+    "start": "2025-06-22",
+    "peak": "2025-06-24",
+    "end": "2025-08-31"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "DESAYSV",
+    "peak_date": "2025-09-25",
+    "delta_days": 93
+   },
+   "confirmation": "UNCONFIRMED",
+   "evidence_anchors": [
+    {
+     "kind": "event",
+     "date": "2025-06-22",
+     "type": "company",
+     "excerpt": "特斯拉奥斯汀启动Robotaxi有偿试运营",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "event",
+     "date": "2025-06-24",
+     "type": "market",
+     "excerpt": "A股无人驾驶板块全线爆发涨停潮",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2025-06-24",
+     "type": "行情数据",
+     "excerpt": "6/22特斯拉奥斯汀Robotaxi收费试点(点火)→6/24 A股无人驾驶板块全线爆发涨3%三友30%、万马/恒帅/星源卓镁20%、海马/浙江世宝涨停。板块级启动。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "anchor_note": "记录峰值在 ±7 日内**有记录依据**（原文见 evidence_anchors）；但**没有任何已登记标的**在该周创出价格高点。两者可以同时成立 —— 依据可能锚定在指数 / 商品价 / 行业价 / 政策事件上。★ 本字段不做归类，判断留给读者。"
+  }
+ }
+}
