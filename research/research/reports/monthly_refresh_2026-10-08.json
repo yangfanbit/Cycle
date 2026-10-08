@@ -1,0 +1,11 @@
+{
+ "artifact": "monthly_refresh",
+ "artifact_version": "0.1",
+ "baseline_snapshot_date": "2026-09-15",
+ "candidate_count": 6,
+ "contract_check": "PASS",
+ "diff_raw": "====================================================================\nCurrent Research Refresh Loop v0.1\n====================================================================\n  snapshot      : research/current/current_candidates.json\n  snapshot_date : 2026-10-08\n  generated_at  : 2026-10-08T23:20:00\n  version       : 1.0\n  coverage_until: 2025\n  candidates    : 6\n  content sha256: cd77c60003bac0a7…\n--------------------------------------------------------------------\n  Refresh Contract 检查\n    PASS  字段语义 / 命名空间 / 必需项 / 重复 ID / 日期一致性\n  既有 validator（复用，未重复实现）\n    PASS  schema / Temporal Firewall / Theme Boundary / Similarity / Evidence\n--------------------------------------------------------------------\n  Candidate Diff\n    baseline 2026-09-15 → target 2026-10-08\n    NEW        1  CC-2026-AUTO-SMARTDRIVE\n    UPDATED    5  CC-2026-BCI-MEDTECH, CC-2026-COMPUTE-POWER, CC-2026-EMBODIED-AI, CC-2026-OFFSHORE-WIND, CC-2026-OPTICAL-LINK\n    UNCHANGED  0  —\n    REJECTED   0  —\n    MERGED     0  —\n    stable    : False\n    limitation: MERGED（两个 Candidate 被研究判断为同一对象）**无法由数据结构机械判定** —— 需要离线研究显式声明。本轮按 §十 记录为 limitation，**不扩展状态机**。\n--------------------------------------------------------------------\n  snapshots 已登记: 2\n结果: PASS\n",
+ "generated_by": "research/scripts/monthly_refresh.py",
+ "position": "Research-only —— 月度刷新流程的**机械动作**记录。**不做研究判断**；内容由离线研究准备。",
+ "snapshot_date": "2026-10-08"
+}

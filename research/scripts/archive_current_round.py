@@ -110,6 +110,14 @@ def main(argv):
         print("✓ 已归档 %s（候选 %d）" % (os.path.basename(dest), len(data.get("candidates") or [])))
 
     idx = load_index()
+    # ★★ 幂等：同一 snapshot_date **内容哈希未变** → 沿用原 archived_at。
+    #    否则「重跑一次归档」就会改写时间戳，使 archive_index.json 逐字节不可复现
+    #    （本项目对研究产物要求逐字节可复现）。内容**确实变了**才取新时间戳。
+    prev = next((r for r in idx["rounds"] if r["snapshot_date"] == snap), None)
+    reused = prev is not None and prev.get("sha256") == h and prev.get("archived_at")
+    archived_at = (prev["archived_at"] if reused else
+                   subprocess.run(["date", "-u", "+%Y-%m-%dT%H:%M:%SZ"],
+                                  capture_output=True, text=True).stdout.strip())
     idx["rounds"] = [r for r in idx["rounds"] if r["snapshot_date"] != snap]
     idx["rounds"].append({
         "snapshot_date": snap,
@@ -117,12 +125,13 @@ def main(argv):
         "candidate_ids": [c.get("candidate_id") for c in (data.get("candidates") or [])],
         "generated_at": data.get("generated_at"),
         "sha256": h,
-        "archived_at": subprocess.run(["date", "-u", "+%Y-%m-%dT%H:%M:%SZ"],
-                                      capture_output=True, text=True).stdout.strip(),
+        "archived_at": archived_at,
         "source": ("git:%s" % from_git[:7]) if from_git else "canonical",
         "note": note,
         "file": os.path.basename(dest),
     })
+    if reused:
+        print("  （内容未变，沿用原 archived_at %s）" % archived_at)
     idx["rounds"].sort(key=lambda r: r["snapshot_date"])
     io.open(INDEX, "w", encoding="utf-8", newline="\n").write(
         json.dumps(idx, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
