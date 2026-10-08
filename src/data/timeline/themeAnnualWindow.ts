@@ -171,11 +171,68 @@ function median(nums: number[]): number {
  *
  * 排序：有名称的主题在前（按「历史出现次数」降序 → 名称升序），未归属置后。
  */
-export function themeAnnualRowsOf(source: TimelineDataSource): ThemeAnnualRow[] {
+/**
+ * 聚合粒度（ThreeC 1.2 · Usage-Driven）。
+ *
+ * - `macro`：按**大主题**聚合（`macroThemeOf`）—— 首页默认，行数少、样本厚；
+ * - `sub`  ：按**主题材**聚合（`themes[role=main].name`）—— 行数多、**样本薄**，
+ *            用于看「某个具体方向」的年内分布。
+ *
+ * ★ 粒度只是**分组口径**，不新增任何研究结论；`sub` 下样本常常只有 2–3 个窗口，
+ *   **不得**据此下结论（`themeSeasonality` 的判据已要求 ≥3 个窗口才加标注）。
+ */
+export type ThemeGranularity = 'macro' | 'sub';
+
+/** 粒度切换的界面选项（数组顺序 = 界面顺序；`axis` 同时用作纵轴表头） */
+export const GRANULARITY_OPTIONS: ReadonlyArray<{
+  value: ThemeGranularity;
+  label: string;
+  axis: string;
+}> = [
+  { value: 'macro', label: '按大主题', axis: '大主题' },
+  { value: 'sub', label: '按主题材', axis: '主题材' },
+];
+
+/** 取某个粒度的纵轴表头（找不到时回退大主题） */
+export function granularityAxis(g: ThemeGranularity): string {
+  return (GRANULARITY_OPTIONS.find((o) => o.value === g) ?? GRANULARITY_OPTIONS[0]).axis;
+}
+
+/** 取某个粒度的行名后缀（用于「N 个大主题 / N 个主题材」这类计数陈述） */
+export function granularityNoun(g: ThemeGranularity): string {
+  return g === 'macro' ? '大主题' : '主题材';
+}
+
+/**
+ * ★★ `sub` 粒度的**语义边界** —— 必须与切换控件同显，否则薄样本会被读成结论。
+ *
+ * 实测（2026-10-08 canonical export）：`macro` 12 行、`sub` 41 行；
+ * `sub` 下**窗口数 ≥ 3 的只有 2 行**（半导体 5、银行 3），
+ * 即绝大多数主题材**根本没有足够样本**支撑任何「年内集中」的说法。
+ * 这不是缺陷，是「具体方向的历史案例本来就少」这一事实的如实呈现。
+ *
+ * ★ 措辞避开既有护栏禁列（`score / ranking / probability / prediction / 胜率 / 推荐分 / 预测`）。
+ */
+export const SUB_GRANULARITY_NOTE =
+  '「按主题材」把大主题拆成具体方向：行数更多，但每行的历史案例更少 —— ' +
+  '实测 41 个主题材里只有 2 个的年内窗口数达到 3 个（集中标注的最低样本要求）。' +
+  '粒度只改变「分组口径」，不新增研究结论；样本不足时一律不做集中标注。';
+
+/** 分组键：按粒度取「大主题」或「主题材」；取不到时返回 null（**不编造**） */
+function groupingKeyOf(c: TimelineCampaign, g: ThemeGranularity): string | null {
+  if (g === 'macro') return macroThemeOf(c);
+  const main = (c.themes ?? []).find((t) => t.role === 'main');
+  return main ? main.name : null;
+}
+
+export function themeAnnualRowsOf(
+  source: TimelineDataSource,
+  granularity: ThemeGranularity = 'macro',
+): ThemeAnnualRow[] {
   const objects = allResearchObjects(source);
   const groups = new Map<string | null, TimelineCampaign[]>();
   for (const c of objects) {
-    const t = macroThemeOf(c);
+    const t = groupingKeyOf(c, granularity);
     const arr = groups.get(t);
     if (arr) arr.push(c);
     else groups.set(t, [c]);
@@ -205,7 +262,7 @@ export function themeAnnualRowsOf(source: TimelineDataSource): ThemeAnnualRow[] 
     rows.push({
       theme,
       // 未归属时**不编造行业名**：只给中性标签，完整解释在附页给出
-      label: theme ?? '未标注大主题',
+      label: theme ?? (granularity === 'macro' ? '未标注大主题' : '未标注主题材'),
       windows,
       occurrences: onMap.size,
       comparableYears: years.length,

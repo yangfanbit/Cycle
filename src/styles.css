@@ -1610,19 +1610,21 @@ html, body {
   border-radius: 6px;
   background: var(--panel);
 }
-.hsp-item.tier-high { border-left-color: #4a8f57; }
-.hsp-item.tier-medium { border-left-color: #c9a227; }
-.hsp-item.tier-reference { border-left-color: var(--line-strong); }
+/* ★ 2026-10-08：`.hsp-item.tier-*` 三档左边框配色**已删除** ——
+   分档/星标退役后不再有 `tier-*` 类（见 HistoricalSimilarPhase.tsx 注释）。
+   `.ccs-sim-item.tier-*` 保留：那是已退役的 currentSimilarity 视图遗留，无渲染方。 */
 .hsp-item-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .hsp-item-title { font-size: 13px; font-weight: 700; }
 .hsp-item-year { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
-.hsp-tier {
+/* 逐维匹配事实（取代原 `.hsp-tier` 星标分档）：陈述「哪几维对上了」，不是等级 */
+.hsp-match {
   margin-left: auto;
   padding: 1px 8px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: 999px;
   font-size: 11px;
   color: var(--ink-2);
+  background: var(--bg);
 }
 .hsp-kv {
   display: grid;
@@ -3205,3 +3207,32 @@ html, body {
 /* 年内集中区间：达到判据者加描边以示区别（★ 仅视觉强调，不代表强度） */
 .sm-band.concentrated { outline: 1px solid var(--line-strong); }
 .lg.band { background: #eef2f7; border: 1px solid var(--line-strong); }
+
+/* ---------- 粒度切换（ThreeC 1.2 · 只换分组口径，不新增研究结论） ---------- */
+.sm-gran {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 0;
+  flex-wrap: wrap;
+}
+.sm-gran-cap { font-size: 11px; color: var(--ink-3); }
+.sm-gran-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink-2);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 11.5px;
+  line-height: 1.7;
+  cursor: pointer;
+}
+.sm-gran-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+.sm-gran-btn.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--panel);
+  font-weight: 600;
+}
+.sm-granularity-note { margin-top: 2px; }

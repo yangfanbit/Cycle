@@ -1,7 +1,16 @@
 import { useMemo } from 'react';
 import { MONTHS, MonthGrid, TodaySpan, monthFractions, pct } from '../Timeline/trackPrimitives';
-import type { ThemeAnnualRow, AnnualWindow } from '../../data/timeline/themeAnnualWindow';
-import { themeKey } from '../../data/timeline/themeAnnualWindow';
+import type {
+  ThemeAnnualRow,
+  AnnualWindow,
+  ThemeGranularity,
+} from '../../data/timeline/themeAnnualWindow';
+import {
+  themeKey,
+  GRANULARITY_OPTIONS,
+  granularityAxis,
+  SUB_GRANULARITY_NOTE,
+} from '../../data/timeline/themeAnnualWindow';
 import { seasonalityByTheme, SEASONALITY_NOTE } from '../../data/timeline/themeSeasonality';
 import { themeColorOf, themeOnsetColorOf } from './themeColors';
 import { dayOfYearISO, daysInYear } from '../../utils';
@@ -11,7 +20,8 @@ import { dayOfYearISO, daysInYear } from '../../utils';
  *
  * 回答的问题是：**一年中历史上哪些时间窗口反复出现过什么类型的题材炒作**。
  *
- * - 横轴 = 1–12 月；纵轴 = **Macro Theme（大主题，一主题一行）**。
+ * - 横轴 = 1–12 月；纵轴 = **主题（一主题一行）**，粒度可切换：
+ *   `macro` = 大主题（默认，样本厚）· `sub` = 主题材（具体方向，样本薄）。
  *   不是一 Campaign 一行，也不是一年一行 —— 同主题的历史多次出现**聚合在同一行**。
  * - 每条只画 Research `MAIN_RISE`（主要炒作）在年内的投影；
  *   **不画**完整生命周期 / Decline / End 跨度（那些在主题附页与 CampaignDetail）。
@@ -24,12 +34,18 @@ import { dayOfYearISO, daysInYear } from '../../utils';
  */
 
 interface SeasonalMapProps {
-  /** 已过滤为「有年内窗口」的主题行 */
+  /** 已过滤为「有年内窗口」的主题行（已按 `granularity` 聚合） */
   rows: ThemeAnnualRow[];
   today: string;
   /** 当前展开的主题 key（null = 未展开） */
   openTheme: string | null;
   onOpenTheme: (key: string | null) => void;
+  /**
+   * 聚合粒度（默认 `macro`）。★ 只是**分组口径**，不新增研究结论。
+   * 切换时**必须重置 `openTheme`** —— 换口径后原来的 key 未必存在（由容器负责）。
+   */
+  granularity?: ThemeGranularity;
+  onGranularity?: (g: ThemeGranularity) => void;
 }
 
 const LANE_H = 9;
@@ -70,7 +86,14 @@ function packLanes(windows: AnnualWindow[]): { w: AnnualWindow; lane: number }[]
   });
 }
 
-export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMapProps) {
+export function SeasonalMap({
+  rows,
+  today,
+  openTheme,
+  onOpenTheme,
+  granularity = 'macro',
+  onGranularity,
+}: SeasonalMapProps) {
   // ★ 年内时间集中度（**纯计数**派生；不新增研究结论、不给强度）
   const seasonality = useMemo(() => seasonalityByTheme(rows), [rows]);
   // Today 的年内位置（月-日）：季节性地图的横轴是「一年」，与具体年份无关
@@ -88,6 +111,29 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
     <section className="seasonal-block" aria-label="历史季节性机会地图">
       <div className="seasonal-head">
         <h2 className="seasonal-title">历史季节性机会地图</h2>
+
+        {/* ★ 粒度切换（ThreeC 1.2 · Usage-Driven）
+            用户的原话：「很多小主题，比如煤炭、电力、流感疫苗、文化传媒……现在是大主题展示，
+            如何能在地图上加入小主题呢」。
+            ★ 这只是**换一个分组口径看同一份研究事实** —— 不新增对象、不新增结论；
+              样本薄的告警写在 SUB_GRANULARITY_NOTE 里，与切换控件同显。 */}
+        <div className="sm-gran" role="group" aria-label="聚合粒度">
+          <span className="sm-gran-cap">纵轴口径</span>
+          {GRANULARITY_OPTIONS.map((o) => (
+            <button
+              key={o.value}
+              type="button"
+              className={`sm-gran-btn${granularity === o.value ? ' on' : ''}`}
+              aria-pressed={granularity === o.value}
+              onClick={() => {
+                if (granularity !== o.value) onGranularity?.(o.value);
+              }}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+
         <p className="seasonal-legend">
           <span className="lg win">主要炒作窗口</span>
           <span className="lg onset">长周期起始（仅标起点）</span>
@@ -102,7 +148,7 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
         <div className="seasonal-map">
           {/* 月份表头 + 唯一的 Today 日期标记 */}
           <div className="sm-month-row">
-            <div className="sm-axis">大主题</div>
+            <div className="sm-axis">{granularityAxis(granularity)}</div>
             <div className="sm-months">
               {monthFractions(2025).map((f, i) => (
                 <span key={i} className="month-label" style={{ left: pct(f) }}>
@@ -222,6 +268,11 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
 
       {/* ★ 时间集中度的语义边界：与标注同显，避免被读成「明年也会」 */}
       <p className="seasonal-hint sm-seasonality-note">{SEASONALITY_NOTE}</p>
+
+      {/* ★★ 主题材粒度的样本边界：只在切到 `sub` 时出现，避免薄样本被读成结论 */}
+      {granularity === 'sub' && (
+        <p className="seasonal-hint sm-granularity-note">{SUB_GRANULARITY_NOTE}</p>
+      )}
 
       <p className="seasonal-hint">点击任一主题 → 查看该主题按年份的历史明细（完整生命周期在对象详情页）。</p>
     </section>

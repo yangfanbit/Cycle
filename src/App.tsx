@@ -15,11 +15,13 @@ import { researchTimelineSource, verifiedTimelineSource } from './data/timeline/
 import { timelineExportData } from './data/timeline/timelinePreview';
 import type { TimelineCampaign } from './data/timeline/timelineTypes';
 import {
+  granularityNoun,
   seasonalMapRows,
   seasonalMapSummary,
   themeAnnualRowsOf,
   themeKey,
 } from './data/timeline/themeAnnualWindow';
+import type { ThemeGranularity } from './data/timeline/themeAnnualWindow';
 import type { HistoricalCaseAnalogyContext } from './data/timeline/historicalCase';
 import { parseCurrentCandidateDataset } from './data/timeline/currentCandidate';
 import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
@@ -85,9 +87,15 @@ export default function App() {
     [candidatesExample],
   );
 
-  // ★ 首页第一视觉（Product 1.1 第二轮）：Macro Theme × 年内时间窗口聚合。
+  // ★ 首页第一视觉（Product 1.1 第二轮）：主题 × 年内时间窗口聚合。
   //   一主题一行，同主题的多次历史出现合并观察；不是一对象一行，也不是一年一行。
-  const allThemeRows = useMemo(() => themeAnnualRowsOf(dataSource), [dataSource]);
+  //   ★ 粒度（ThreeC 1.2）：`macro` 大主题（默认） / `sub` 主题材（具体方向）。
+  //     粒度只改**分组口径**，不新增对象、不新增研究结论。
+  const [granularity, setGranularity] = useState<ThemeGranularity>('macro');
+  const allThemeRows = useMemo(
+    () => themeAnnualRowsOf(dataSource, granularity),
+    [dataSource, granularity],
+  );
   const mapRows = useMemo(() => seasonalMapRows(allThemeRows), [allThemeRows]);
   const mapSummary = useMemo(() => seasonalMapSummary(mapRows), [mapRows]);
   const [openTheme, setOpenTheme] = useState<string | null>(null);
@@ -95,6 +103,14 @@ export default function App() {
     () => allThemeRows.find((r) => themeKey(r) === openTheme) ?? null,
     [allThemeRows, openTheme],
   );
+  /**
+   * ★ 切换粒度时**必须重置展开态**：换口径后原来的 key 未必存在
+   *   （大主题名 ≠ 主题材名），否则附页会悬空或错行。
+   */
+  const changeGranularity = useCallback((g: ThemeGranularity) => {
+    setGranularity(g);
+    setOpenTheme(null);
+  }, []);
 
   // 初始年份：当前年不在数据源年份内时回退到最近的可用年份
   // （如 Research 源 2015–2025、当前 2026 → 打开即显示 2025，而不是空白年）
@@ -168,15 +184,17 @@ export default function App() {
             today={today}
             openTheme={openTheme}
             onOpenTheme={setOpenTheme}
+            granularity={granularity}
+            onGranularity={changeGranularity}
           />
         )}
 
         {/* 一句数据语义说明（首页唯一的数据口径声明） */}
         {!verifiedMode && mapRows.length > 0 && (
           <p className="seasonal-note">
-            横轴 1–12 月、每行一个大主题；条形为该主题历史<strong>主要炒作</strong>
+            横轴 1–12 月、每行一个{granularityNoun(granularity)}；条形为该主题历史<strong>主要炒作</strong>
             在年内的窗口（长周期仅标起始位置）；「历史 N 次 / 覆盖 N 个年份」是<strong>计数事实</strong>
-            ，不是概率、胜率或预测。共 {mapSummary.themeCount} 个大主题 /{' '}
+            ，不是概率、胜率或预测。共 {mapSummary.themeCount} 个{granularityNoun(granularity)} /{' '}
             {mapSummary.objectCount} 个研究对象
             {mapSummary.yearFrom !== null && mapSummary.yearTo !== null
               ? `（${mapSummary.yearFrom}–${mapSummary.yearTo}）`
@@ -196,9 +214,15 @@ export default function App() {
           <p className="seasonal-scope">
             <strong>覆盖边界</strong>：历史研究集中于<strong>硬科技 · 高端制造 · 消费 · 资源 · 金融</strong>
             等方向（汽车 / 电子 / 半导体 / 电力设备 / 医药 / 资源 / 金融 / 消费 / 军工 / 地产 等）。
-            <strong>不包含</strong>传媒 / 文化 / 娱乐 / 教育 等方向 —— 这些方向在历史研究中
-            <strong>没有对应对象</strong>，因此本工具<strong>无法</strong>回答关于它们的「历史结构对应」问题。
+            <strong>不包含</strong>传媒 / 文化 / 娱乐 / 教育 / 煤炭 / 电力（公用事业） / 流感疫苗 等方向 ——
+            这些方向在历史研究中<strong>没有对应对象</strong>，因此本工具<strong>无法</strong>回答关于它们的
+            「历史结构对应」问题。
             <span className="seasonal-scope-note">
+              ★ 这是<strong>已实测</strong>的边界，不是保守估计：在最细的<strong>主题材</strong>口径（41 行）下，
+              「煤炭 / 电力 / 流感疫苗 / 文化传媒」<strong>一个都没有命中</strong>；
+              靠近的只有「电网 / 输变电设备」「光伏 / 新能源发电设备」（属电力设备，不是公用事业电力）。
+              与其让用户反复试，不如先说清楚 —— 需要这些方向请走上方<strong>方向查询</strong>，
+              它同样只能回答「在不在覆盖内」，不能凭空造出历史对象。
               （覆盖范围由 Research 决定；扩边属研究轮次，不在 Product 侧自行推断。）
             </span>
           </p>
@@ -336,10 +360,11 @@ export default function App() {
             />
           </DrillSection>
 
-          {/* 全部大主题索引：含**未形成年内季节性窗口**的主题（首页地图上不展示，但对象可查） */}
+          {/* 全部主题索引：含**未形成年内季节性窗口**的主题（首页地图上不展示，但对象可查）
+              ★ 随当前粒度走 —— 口径与上面的地图保持一致，避免「地图按主题材、索引按大主题」的错位 */}
           <DrillSection
-            title="全部大主题索引（含无季节性窗口的主题）"
-            note={`${allThemeRows.length} 个主题 · 数据库级入口`}
+            title={`全部${granularityNoun(granularity)}索引（含无季节性窗口的主题）`}
+            note={`${allThemeRows.length} 个${granularityNoun(granularity)} · 数据库级入口`}
           >
             <ul className="theme-index">
               {allThemeRows.map((r) => (
