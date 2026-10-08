@@ -1,0 +1,41 @@
+{
+ "artifact": "current_candidates_archive_index",
+ "artifact_version": "0.1",
+ "rounds": [
+  {
+   "archived_at": "2026-10-08T15:22:31Z",
+   "candidate_ids": [
+    "CC-2026-BCI-MEDTECH",
+    "CC-2026-COMPUTE-POWER",
+    "CC-2026-EMBODIED-AI",
+    "CC-2026-OPTICAL-LINK",
+    "CC-2026-OFFSHORE-WIND"
+   ],
+   "candidates": 5,
+   "file": "current_candidates_2026-09-15.json",
+   "generated_at": "2026-09-15T23:00:00",
+   "note": "从 git 38675c0 恢复",
+   "sha256": "08ea3f35fabd14851ed13d042670a3bdadb3b7d5375e00cc92cebb88b9e7d7fa",
+   "snapshot_date": "2026-09-15",
+   "source": "git:38675c0"
+  },
+  {
+   "archived_at": "2026-10-08T15:23:02Z",
+   "candidate_ids": [
+    "CC-2026-BCI-MEDTECH",
+    "CC-2026-COMPUTE-POWER",
+    "CC-2026-EMBODIED-AI",
+    "CC-2026-OPTICAL-LINK",
+    "CC-2026-OFFSHORE-WIND",
+    "CC-2026-AUTO-SMARTDRIVE"
+   ],
+   "candidates": 6,
+   "file": "current_candidates_2026-10-08.json",
+   "generated_at": "2026-10-08T23:20:00",
+   "note": null,
+   "sha256": "e330aafa202bf51eb5cf43db6382203eab4dbf7cf50cda4dc7dda86b32acad18",
+   "snapshot_date": "2026-10-08",
+   "source": "canonical"
+  }
+ ]
+}
