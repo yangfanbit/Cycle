@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
 import {
-  TIER_LABEL,
-  TIER_STARS,
   defaultSimilarTargetId,
+  matchFactsOf,
   similarPhaseOf,
 } from '../../data/timeline/historicalSimilarPhase';
 import { DRIVER_LABEL, PATTERN_LABEL, PHASE_LABEL } from '../../data/timeline/researchAttention';
@@ -67,7 +66,9 @@ export function HistoricalSimilarPhase({
       </h3>
       <p className="hsp-note">
         历史上处于<strong>类似生命周期位置</strong>的研究案例 —— 按「阶段 → Theme Cycle Pattern →
-        Drivers 重叠」排序的<strong>研究结构相似度</strong>，不是未来走势概率，也不是买卖建议。
+        Drivers 重叠」逐维比对，给出的是<strong>研究结构相似度</strong>：<strong>不给分、不排名</strong>，
+        每一项都列出「哪几维对上了」与下方逐条「为什么类似」。
+        不是未来走势概率，也不是买卖建议。
       </p>
 
       {/* 参照对象 */}
@@ -88,15 +89,19 @@ export function HistoricalSimilarPhase({
         <>
           <ol className="hsp-list">
             {view.results.map((r) => (
-              <li className={`hsp-item tier-${r.tier.toLowerCase()}`} key={r.campaign_id}>
+              <li className="hsp-item" key={r.campaign_id}>
                 <div className="hsp-item-head">
                   <span className="hsp-item-title">
                     {r.kind === 'candidate' && <em className="rc-badge">RC</em>}
                     {r.title}
                   </span>
                   <span className="hsp-item-year">{r.year}</span>
-                  <span className="hsp-tier" title="研究结构相似度（不是概率）">
-                    {TIER_STARS[r.tier]} {TIER_LABEL[r.tier]}
+                  {/* ★ 2026-10-08：退役「★★★ 高相似 / ★★☆ 中相似 / ★☆☆ 参考」分档。
+                      理由见 `historicalSimilarPhase.ts::TIER_STARS` 注释 ——
+                      AGENTS.md §1 禁推荐分、§5 要求「必须说明为什么，不能只给一个分数」。
+                      此处改为**逐维匹配事实**（哪几维对上了），完整理由在下方「为什么类似」。 */}
+                  <span className="hsp-match" title="按以下维度逐一比对；不评分、不排名">
+                    {matchFactsOf(r, t)}
                   </span>
                 </div>
                 <dl className="hsp-kv">

@@ -49,7 +49,7 @@ export function MacroThemeSheet({ row, onClose, onOpenCampaign }: MacroThemeShee
       <p className="ts-note">
         以下为研究记录明细（按起始年份分组）。完整生命周期、驱动因素、事件证据、
         日期分歧与结构类比在点击任一对象后进入「完整历史案例」查看。
-        本页是历史记录，**不是概率、胜率、推荐分或预测**。
+        本页是历史记录，<strong>不是概率、胜率、推荐分或预测</strong>。
       </p>
 
       {row.theme === null && (

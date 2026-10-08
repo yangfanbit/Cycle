@@ -14,7 +14,7 @@ import {
   terminalPhaseOf,
   themeCycleViewsOf,
 } from '../researchAttention';
-import { similarPhaseOf } from '../historicalSimilarPhase';
+import { matchFactsOf, similarPhaseOf } from '../historicalSimilarPhase';
 import {
   macroThemeGroupsOf,
   macroThemeTreeOf,
@@ -611,6 +611,91 @@ describe('8. 产品约束：研究导航，不是预测系统', () => {
       expect(html, banned).not.toContain(banned);
     }
     // 允许出现的否定性限定
+    expect(html).toContain('不是未来走势概率');
+  });
+});
+
+/* ================= 7. Lifecycle Lens 分档 / 星标退役（2026-10-08） ================= */
+
+/**
+ * `AGENTS.md` §1 禁止**推荐分**；§5 要求「『相似』必须说明**为什么**，不能只给一个分数」。
+ *
+ * G-1 只退役了 `currentSimilarity` 的分档/星级，**同构的第二个实例漏网** ——
+ * `HistoricalSimilarPhase` 仍在渲染 `★★★ 高相似 / ★★☆ 中相似 / ★☆☆ 参考`，
+ * 且 `.hsp-item.tier-*` 还按档位给左边框配色。2026-10-08 一并退役。
+ *
+ * ★ 退役的是**分档表达**，不是 Lifecycle Lens 本身 ——
+ *   AGENTS.md §5 把「历史上处于类似生命周期位置的案例」列为四个核心视角之一，**能力必须保留**。
+ */
+describe('7. Lifecycle Lens 分档 / 星标退役', () => {
+  const hspHtml = (sel: Selection) =>
+    renderToStaticMarkup(
+      <HistoricalSimilarPhase
+        dataSource={previewTimelineSource()}
+        selection={sel}
+        onSelect={() => {}}
+      />,
+    );
+
+  it('★ UI 不再出现星级 / 档位名（HIGH / MEDIUM / REFERENCE 与中文档位）', () => {
+    for (const sel of [
+      null,
+      { kind: 'campaign', id: 'C-2025-ROBOTAXI' } as Selection,
+      { kind: 'campaign', id: 'C-2022-POLICY' } as Selection,
+    ]) {
+      const html = hspHtml(sel);
+      for (const bad of ['★', '高相似', '中相似', '参考案例', 'hsp-tier', 'tier-high', 'tier-medium', 'tier-reference']) {
+        expect(html, `${bad} @ ${JSON.stringify(sel)}`).not.toContain(bad);
+      }
+      // 数据层 tier 值也不得泄漏成文案
+      for (const t of ['HIGH', 'MEDIUM', 'REFERENCE']) expect(html, t).not.toContain(`>${t}<`);
+    }
+  });
+
+  it('★ 取而代之的是**逐维匹配事实**（哪几维对上了），不是等级', () => {
+    const html = hspHtml(null);
+    expect(html).toContain('hsp-match');
+    expect(html).toMatch(/阶段(相同|相邻)/);
+    expect(html).toContain('Pattern ');
+    // ★ 参照对象**没有**登记驱动时，不得编造「驱动重叠 0/N」，而是明说未记录
+    expect(html).toMatch(/驱动重叠 \d+\/\d+|参照对象未记录驱动/);
+  });
+
+  it('★ 逐维事实与数据层逐维一致（matchFactsOf 不是另算一套）', () => {
+    const view = similarPhaseOf(previewTimelineSource(), 'C-2025-ROBOTAXI');
+    const t = view.target!;
+    expect(t.drivers.length).toBeGreaterThan(0); // 该参照对象有驱动 → 走「驱动重叠 N/M」分支
+    for (const r of view.results) {
+      const overlap = r.drivers.filter((d) => t.drivers.includes(d)).length;
+      expect(matchFactsOf(r, t)).toBe(
+        `${r.phase === t.phase ? '阶段相同' : '阶段相邻'} · ${
+          r.pattern === t.pattern ? 'Pattern 相同' : 'Pattern 不同'
+        } · 驱动重叠 ${overlap}/${t.drivers.length}`,
+      );
+    }
+  });
+
+  it('★ 参照对象未登记驱动时，事实里不出现「驱动重叠」（不编造分母）', () => {
+    const view = similarPhaseOf(previewTimelineSource(), null);
+    const t = view.target!;
+    if (t.drivers.length === 0) {
+      for (const r of view.results) {
+        expect(matchFactsOf(r, t)).toContain('参照对象未记录驱动');
+      }
+    }
+  });
+
+  it('★ 退役**不削弱**既有能力：Top 3 / 「为什么类似」三条 / 查看完整案例入口 全部保留', () => {
+    const html = hspHtml(null);
+    expect((html.match(/class="hsp-item"/g) ?? []).length).toBeLessThanOrEqual(3);
+    expect((html.match(/hsp-why-list/g) ?? []).length).toBeGreaterThan(0);
+    expect(html).toContain('为什么类似');
+    expect(html).toContain('hsp-open');
+  });
+
+  it('★ 组件自述改为「不给分、不排名」，且仍声明不是概率 / 不是买卖建议', () => {
+    const html = hspHtml(null);
+    expect(html).toContain('不给分、不排名');
     expect(html).toContain('不是未来走势概率');
   });
 });

@@ -106,7 +106,7 @@ export function HistoricalCycleMapSection({
           <p className="hcm-note hcm-note-warn" role="note">
             以上 5 周属于<strong>当前年份</strong>（{map.currentWeek.start.slice(0, 4)}），
             该年份尚未纳入历史研究（历史研究覆盖至 {map.years[map.years.length - 1]?.year ?? '—'}），
-            因此计数为 0。**这不代表历史上这一周附近没有周期** ——
+            因此计数为 0。<strong>这不代表历史上这一周附近没有周期</strong> ——
             请见下方「历史时间窗口」。
           </p>
         )}

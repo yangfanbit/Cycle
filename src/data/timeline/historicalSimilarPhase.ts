@@ -52,12 +52,45 @@ export const TIER_LABEL: Record<SimilarTier, string> = {
   REFERENCE: '参考',
 };
 
-/** 星标表达（等级的可视化；仍然不是概率） */
+/**
+ * 星标表达 —— **已退役，不得再进入任何 UI**（2026-10-08）。
+ *
+ * 退役理由（与 G-1 对 `currentSimilarity` 的处置同源）：
+ * - `AGENTS.md` §1 禁止**推荐分**；`★★★ 高相似 / ★★☆ 中相似 / ★☆☆ 参考` 就是分档表达；
+ * - `AGENTS.md` §5 要求「『相似』必须说明**为什么**，不能只给一个分数」——
+ *   本模块的 `reasonLines()` 已逐条给出为什么，星标只会把它**压缩成一个等级**；
+ * - 产品其余所有视图都在声明「不评分、不排名」，此处是**同模式的第二个实例**（G-1 漏网）。
+ *
+ * ★ 常量**保留**（`currentSimilarity.ts` LEGACY 仍引用，且删除会破坏历史可追溯性），
+ *   但 `HistoricalSimilarPhase.tsx` **不再渲染它**；由 `matchFactsOf()` 取代。
+ */
 export const TIER_STARS: Record<SimilarTier, string> = {
   HIGH: '★★★',
   MEDIUM: '★★☆',
   REFERENCE: '★☆☆',
 };
+
+/**
+ * ★ 逐维**匹配事实**（取代分档 / 星标）—— 只陈述「哪几维对上了」，不给等级、不给分。
+ *
+ * 这是 `AGENTS.md` §5「必须说明为什么」在**摘要位**的落地：
+ * 用户在列表里一眼看到的是「阶段相同 · Pattern 相同 · 驱动重叠 1/3」，
+ * 而不是「★★★ 高相似」。完整理由仍由 `reasonLines()` 逐条给出。
+ */
+export function matchFactsOf(
+  r: Pick<SimilarPhaseResult, 'phase' | 'pattern' | 'drivers'>,
+  t: { phase: ResearchPhase; pattern: ThemeCyclePattern; drivers: DriverCategory[] },
+): string {
+  const phase = r.phase === t.phase ? '阶段相同' : '阶段相邻';
+  const pattern =
+    r.pattern === t.pattern ? 'Pattern 相同' : r.pattern === 'HYBRID' || t.pattern === 'HYBRID' ? 'Pattern 接近' : 'Pattern 不同';
+  const overlap = r.drivers.filter((d) => t.drivers.includes(d));
+  const drivers =
+    t.drivers.length > 0
+      ? `驱动重叠 ${overlap.length}/${t.drivers.length}`
+      : '参照对象未记录驱动';
+  return `${phase} · ${pattern} · ${drivers}`;
+}
 
 export interface SimilarPhaseResult {
   campaign_id: string;
@@ -242,7 +275,7 @@ export function similarPhaseOf(
       results.length === 0
         ? `在现有研究数据中没有与「${PHASE_LABEL[targetPhase]}」相同或相邻阶段的其他案例。` +
           '不强行给出相似结果 —— 这是研究数据覆盖不足，不是「没有机会」。'
-        : '按「阶段 → Theme Cycle Pattern → Drivers 重叠」排序的研究结构相似度，不是未来走势概率。',
+        : '按「阶段 → Theme Cycle Pattern → Drivers 重叠」逐维比对后的检索顺序（不给分、不排名），不是未来走势概率。',
   };
 }
 

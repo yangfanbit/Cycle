@@ -160,7 +160,7 @@ function CandidateList({
           该历史对象同时是另外 <strong>{d.alsoSupportedBy.length}</strong> 个当前方向的结构支持：
           <code>{d.alsoSupportedBy.join(' · ')}</code>
           <span className="cs-cand-shared-note">
-            （跨方向共有 —— 说明这些方向在**结构上属同一类**；此处只报计数，不做评分）
+            （跨方向共有 —— 说明这些方向在<strong>结构上属同一类</strong>；此处只报计数，不做评分）
           </span>
         </p>
       )}
