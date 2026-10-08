@@ -18,10 +18,9 @@
   "no_score": "本 artifact **不含** score / ranking / probability。"
  },
  "summary": {
-  "NO_NAMED": 27,
-  "LISTED_EXPLAINS": 16,
+  "NO_NAMED": 32,
+  "LISTED_EXPLAINS": 13,
   "NO_PEAK": 4,
-  "NAMED_ONLY_EXPLAINS": 2,
   "NEITHER_EXPLAINS": 4
  },
  "by_campaign": {
@@ -135,30 +134,12 @@
    "recorded_peak": "2021-07-05",
    "peak_referent": "SECURITY_HIGH",
    "listed": [
-    "BETTENI",
-    "PROYA",
-    "WANCHEN"
-   ],
-   "named_not_listed": [
     "AIMEIKE",
     "BLOOMAGE",
     "LANCY"
    ],
-   "listed_hits": [
-    {
-     "security_id": "BETTENI",
-     "peak_date": "2021-07-08",
-     "delta_days": 3
-    }
-   ],
-   "named_hits": [
-    {
-     "security_id": "BLOOMAGE",
-     "peak_date": "2021-07-05",
-     "delta_days": 0
-    }
-   ],
-   "verdict": "LISTED_EXPLAINS"
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
   },
   "C-2019-CONS-BAIJIU-CORE": {
    "campaign_id": "C-2019-CONS-BAIJIU-CORE",
@@ -275,22 +256,11 @@
    "recorded_peak": "2021-10-29",
    "peak_referent": "SECURITY_HIGH",
    "listed": [
-    "GAMBO",
-    "YANJIN"
-   ],
-   "named_not_listed": [
     "BETTENI",
     "PROYA"
    ],
-   "listed_hits": [],
-   "named_hits": [
-    {
-     "security_id": "PROYA",
-     "peak_date": "2021-10-29",
-     "delta_days": 0
-    }
-   ],
-   "verdict": "NAMED_ONLY_EXPLAINS"
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
   },
   "C-2020-CONS-DUTYFREE": {
    "campaign_id": "C-2020-CONS-DUTYFREE",
@@ -307,31 +277,13 @@
    "recorded_peak": "2021-02-18",
    "peak_referent": "SECURITY_HIGH",
    "listed": [
-    "AIMEIKE",
-    "BLOOMAGE",
-    "LANCY",
-    "ROBAM"
-   ],
-   "named_not_listed": [
     "GREE",
     "HAIER",
-    "MIDEA"
+    "MIDEA",
+    "ROBAM"
    ],
-   "listed_hits": [
-    {
-     "security_id": "AIMEIKE",
-     "peak_date": "2021-02-18",
-     "delta_days": 0
-    }
-   ],
-   "named_hits": [
-    {
-     "security_id": "HAIER",
-     "peak_date": "2021-02-18",
-     "delta_days": 0
-    }
-   ],
-   "verdict": "LISTED_EXPLAINS"
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
   },
   "C-2020-FIN-BANK-CREDIT": {
    "campaign_id": "C-2020-FIN-BANK-CREDIT",
@@ -728,22 +680,11 @@
    "recorded_peak": "2025-08-29",
    "peak_referent": "SECURITY_HIGH",
    "listed": [
-    "CHINAPET",
-    "ECOVACS"
-   ],
-   "named_not_listed": [
     "WANCHEN",
     "YANJIN"
    ],
-   "listed_hits": [],
-   "named_hits": [
-    {
-     "security_id": "WANCHEN",
-     "peak_date": "2025-09-01",
-     "delta_days": 3
-    }
-   ],
-   "verdict": "NAMED_ONLY_EXPLAINS"
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
   },
   "C-2023-FIN-SOE-VALUATION": {
    "campaign_id": "C-2023-FIN-SOE-VALUATION",
@@ -843,41 +784,13 @@
    "recorded_peak": "2024-10-08",
    "peak_referent": "SECURITY_HIGH",
    "listed": [
-    "AIMEIKE",
-    "BLOOMAGE",
-    "LANCY",
-    "ROBAM"
-   ],
-   "named_not_listed": [
     "GREE",
     "HAIER",
-    "MIDEA"
+    "MIDEA",
+    "ROBAM"
    ],
-   "listed_hits": [
-    {
-     "security_id": "BLOOMAGE",
-     "peak_date": "2024-10-08",
-     "delta_days": 0
-    }
-   ],
-   "named_hits": [
-    {
-     "security_id": "GREE",
-     "peak_date": "2024-10-08",
-     "delta_days": 0
-    },
-    {
-     "security_id": "HAIER",
-     "peak_date": "2024-10-08",
-     "delta_days": 0
-    },
-    {
-     "security_id": "MIDEA",
-     "peak_date": "2024-10-08",
-     "delta_days": 0
-    }
-   ],
-   "verdict": "LISTED_EXPLAINS"
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
   },
   "C-2024-FIN-BANK-DIVIDEND": {
    "campaign_id": "C-2024-FIN-BANK-DIVIDEND",

@@ -62,6 +62,7 @@ POST_DAYS = 30
 
 TOL_SAME = 7      # 相差 ≤7 自然日 → SAME（★ 用户 2026-10-08 明确：历史日期按**周**粒度即可）
 TOL_NEAR = 31     # 相差 ≤31 日 → NEAR
+RANGE_CEIL = "2025-12-31"   # 开放式 campaign 的窗口上限（与研究区间一致）
 # 其余 → DIVERGENT
 
 
@@ -149,7 +150,11 @@ def main(argv):
             out[cid] = {"campaign_id": cid, "status": "NO_SECURITIES"}
             tally["NO_COVERAGE"] += 1
             continue
-        per = [analyse_security(conn, x, s, e or s) for x in secs]
+        # ★★ 2026-10-08 修：原为 `e or s` —— 对 **开放式 campaign**（end=None）会把窗口
+        #   截断在 start 附近（[start-60, start+30]），**算出的峰必然错**。
+        #   改为回退到研究区间上限（与 `fetch_market_batch_v0_3.py` 的 RANGE_CEIL 一致）。
+        #   实测影响：C-2023-CONS-VALUE-RETAIL 的最近标的由「差 997 日」修正为「差 3 日」。
+        per = [analyse_security(conn, x, s, e or RANGE_CEIL) for x in secs]
         ok = [x for x in per if x["status"] == "OK"]
         if not ok:
             out[cid] = {"campaign_id": cid, "status": "NO_DATA", "per_security": per}

@@ -1,0 +1,1117 @@
+{
+ "artifact": "intake_security_map_check",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/check_intake_security_map_v0_1.py",
+ "position": "Research-only 只读检查 —— 核对**导入器的标的映射**与 **intake 包自己的声明**。**不修改任何数据**。",
+ "why": "2026-10-08 实测：`import_r01_04` 的 SEC_MAP 相对包声明循环错位 16 个，把错的标的挂到了 7 条对象上，而**结构校验全程 PASS** —— 它查形状，不查映射是否忠于包。",
+ "rules": {
+  "ticker_normalization": "去交易所后缀后比较（包写 `688981.SH`，导入器写 `688981`，同一标的）",
+  "verdicts": {
+   "MATCH": "逐条一致",
+   "MISMATCH": "★ 存在不一致 → 导入会把错的标的挂上去",
+   "MERGED": "差异全部来自「包内多 SEC → 同一 canonical 标的」的有意合并",
+   "NO_IMPORTER": "未找到该包的导入器"
+  },
+  "no_score": "本 artifact **不含** score / ranking / probability。"
+ },
+ "summary": {
+  "MERGED": 1,
+  "MATCH": 4,
+  "MISMATCH": 1
+ },
+ "by_package": {
+  "R01-01": {
+   "package": "R01-01",
+   "importer": "import_r01_01_canonical_v0_1.py",
+   "package_count": 17,
+   "importer_count": 17,
+   "verdict": "MERGED",
+   "mismatched": [
+    "R01-HIEQ-SEC017"
+   ],
+   "merged": [
+    {
+     "canonical": "TOPSTAR",
+     "intake_ids": [
+      "R01-HIEQ-SEC008",
+      "R01-HIEQ-SEC017"
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "security_id": "R01-HIEQ-SEC001",
+     "package_ticker": "600031",
+     "package_name": "三一重工",
+     "importer_ticker": "600031",
+     "importer_name": "三一重工",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC002",
+     "package_ticker": "000157",
+     "package_name": "中联重科",
+     "importer_ticker": "000157",
+     "importer_name": "中联重科",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC003",
+     "package_ticker": "000425",
+     "package_name": "徐工机械",
+     "importer_ticker": "000425",
+     "importer_name": "徐工机械",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC004",
+     "package_ticker": "601100",
+     "package_name": "恒立液压",
+     "importer_ticker": "601100",
+     "importer_name": "恒立液压",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC005",
+     "package_ticker": "002747",
+     "package_name": "埃斯顿",
+     "importer_ticker": "002747",
+     "importer_name": "埃斯顿",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC006",
+     "package_ticker": "300124",
+     "package_name": "汇川技术",
+     "importer_ticker": "300124",
+     "importer_name": "汇川技术",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC007",
+     "package_ticker": "300024",
+     "package_name": "机器人",
+     "importer_ticker": "300024",
+     "importer_name": "机器人",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC008",
+     "package_ticker": "300607",
+     "package_name": "拓斯达",
+     "importer_ticker": "300607",
+     "importer_name": "拓斯达",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC009",
+     "package_ticker": "688017",
+     "package_name": "绿的谐波",
+     "importer_ticker": "688017",
+     "importer_name": "绿的谐波",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC010",
+     "package_ticker": "688160",
+     "package_name": "步科股份",
+     "importer_ticker": "688160",
+     "importer_name": "步科股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC011",
+     "package_ticker": "300753",
+     "package_name": "信邦智能",
+     "importer_ticker": "300753",
+     "importer_name": "信邦智能",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC012",
+     "package_ticker": "002209",
+     "package_name": "达意隆",
+     "importer_ticker": "002209",
+     "importer_name": "达意隆",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC013",
+     "package_ticker": "002472",
+     "package_name": "双环传动",
+     "importer_ticker": "002472",
+     "importer_name": "双环传动",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC014",
+     "package_ticker": "002979",
+     "package_name": "雷赛智能",
+     "importer_ticker": "002979",
+     "importer_name": "雷赛智能",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC015",
+     "package_ticker": "",
+     "package_name": "兆威机电",
+     "importer_ticker": "",
+     "importer_name": "兆威机电",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC016",
+     "package_ticker": "",
+     "package_name": "埃夫特",
+     "importer_ticker": "",
+     "importer_name": "埃夫特",
+     "ok": true
+    },
+    {
+     "security_id": "R01-HIEQ-SEC017",
+     "package_ticker": "",
+     "package_name": "拓斯达（国产产业链签约方，见 SEC008）",
+     "importer_ticker": "300607",
+     "importer_name": "拓斯达",
+     "ok": false
+    }
+   ]
+  },
+  "R01-02": {
+   "package": "R01-02",
+   "importer": "import_r01_02_canonical_v0_1.py",
+   "package_count": 19,
+   "importer_count": 19,
+   "verdict": "MATCH",
+   "mismatched": [],
+   "merged": [],
+   "rows": [
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC001",
+     "package_ticker": "688981",
+     "package_name": "中芯国际",
+     "importer_ticker": "688981",
+     "importer_name": "中芯国际",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC002",
+     "package_ticker": "603501",
+     "package_name": "韦尔股份",
+     "importer_ticker": "603501",
+     "importer_name": "韦尔股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC003",
+     "package_ticker": "300661",
+     "package_name": "圣邦股份",
+     "importer_ticker": "300661",
+     "importer_name": "圣邦股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC004",
+     "package_ticker": "603986",
+     "package_name": "兆易创新",
+     "importer_ticker": "603986",
+     "importer_name": "兆易创新",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC005",
+     "package_ticker": "002371",
+     "package_name": "北方华创",
+     "importer_ticker": "002371",
+     "importer_name": "北方华创",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC006",
+     "package_ticker": "300782",
+     "package_name": "卓胜微",
+     "importer_ticker": "300782",
+     "importer_name": "卓胜微",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC007",
+     "package_ticker": "000725",
+     "package_name": "京东方A",
+     "importer_ticker": "000725",
+     "importer_name": "京东方A",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC008",
+     "package_ticker": "600584",
+     "package_name": "长电科技",
+     "importer_ticker": "600584",
+     "importer_name": "长电科技",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC009",
+     "package_ticker": "688012",
+     "package_name": "中微公司",
+     "importer_ticker": "688012",
+     "importer_name": "中微公司",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC010",
+     "package_ticker": "688072",
+     "package_name": "拓荆科技",
+     "importer_ticker": "688072",
+     "importer_name": "拓荆科技",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC011",
+     "package_ticker": "688126",
+     "package_name": "沪硅产业",
+     "importer_ticker": "688126",
+     "importer_name": "沪硅产业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC012",
+     "package_ticker": "000100",
+     "package_name": "TCL科技",
+     "importer_ticker": "000100",
+     "importer_name": "TCL科技",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC013",
+     "package_ticker": "002156",
+     "package_name": "通富微电",
+     "importer_ticker": "002156",
+     "importer_name": "通富微电",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC014",
+     "package_ticker": "002475",
+     "package_name": "立讯精密",
+     "importer_ticker": "002475",
+     "importer_name": "立讯精密",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC015",
+     "package_ticker": "002241",
+     "package_name": "歌尔股份",
+     "importer_ticker": "002241",
+     "importer_name": "歌尔股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC016",
+     "package_ticker": "688256",
+     "package_name": "寒武纪",
+     "importer_ticker": "688256",
+     "importer_name": "寒武纪",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC017",
+     "package_ticker": "301308",
+     "package_name": "江波龙",
+     "importer_ticker": "301308",
+     "importer_name": "江波龙",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC018",
+     "package_ticker": "688525",
+     "package_name": "佰维存储",
+     "importer_ticker": "688525",
+     "importer_name": "佰维存储",
+     "ok": true
+    },
+    {
+     "security_id": "R01-SEMICONDUCTOR-SEC019",
+     "package_ticker": "688041",
+     "package_name": "海光信息",
+     "importer_ticker": "688041",
+     "importer_name": "海光信息",
+     "ok": true
+    }
+   ]
+  },
+  "R01-03": {
+   "package": "R01-03",
+   "importer": "import_r01_03_canonical_v0_1.py",
+   "package_count": 30,
+   "importer_count": 30,
+   "verdict": "MATCH",
+   "mismatched": [],
+   "merged": [],
+   "rows": [
+    {
+     "security_id": "R01-RESOURCES-SEC001",
+     "package_ticker": "600362",
+     "package_name": "江西铜业",
+     "importer_ticker": "600362",
+     "importer_name": "江西铜业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC002",
+     "package_ticker": "000878",
+     "package_name": "云南铜业",
+     "importer_ticker": "000878",
+     "importer_name": "云南铜业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC003",
+     "package_ticker": "601899",
+     "package_name": "紫金矿业",
+     "importer_ticker": "601899",
+     "importer_name": "紫金矿业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC004",
+     "package_ticker": "000630",
+     "package_name": "铜陵有色",
+     "importer_ticker": "000630",
+     "importer_name": "铜陵有色",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC005",
+     "package_ticker": "601600",
+     "package_name": "中国铝业",
+     "importer_ticker": "601600",
+     "importer_name": "中国铝业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC006",
+     "package_ticker": "000807",
+     "package_name": "云铝股份",
+     "importer_ticker": "000807",
+     "importer_name": "云铝股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC007",
+     "package_ticker": "000933",
+     "package_name": "神火股份",
+     "importer_ticker": "000933",
+     "importer_name": "神火股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC008",
+     "package_ticker": "002466",
+     "package_name": "天齐锂业",
+     "importer_ticker": "002466",
+     "importer_name": "天齐锂业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC009",
+     "package_ticker": "002460",
+     "package_name": "赣锋锂业",
+     "importer_ticker": "002460",
+     "importer_name": "赣锋锂业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC010",
+     "package_ticker": "002738",
+     "package_name": "中矿资源",
+     "importer_ticker": "002738",
+     "importer_name": "中矿资源",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC011",
+     "package_ticker": "002756",
+     "package_name": "永兴材料",
+     "importer_ticker": "002756",
+     "importer_name": "永兴材料",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC012",
+     "package_ticker": "000792",
+     "package_name": "盐湖股份",
+     "importer_ticker": "000792",
+     "importer_name": "盐湖股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC013",
+     "package_ticker": "600111",
+     "package_name": "北方稀土",
+     "importer_ticker": "600111",
+     "importer_name": "北方稀土",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC014",
+     "package_ticker": "600392",
+     "package_name": "盛和资源",
+     "importer_ticker": "600392",
+     "importer_name": "盛和资源",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC015",
+     "package_ticker": "000831",
+     "package_name": "中国稀土（2021 年时证券简称为五矿稀土）",
+     "importer_ticker": "000831",
+     "importer_name": "中国稀土",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC016",
+     "package_ticker": "600259",
+     "package_name": "广晟有色",
+     "importer_ticker": "600259",
+     "importer_name": "广晟有色",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC017",
+     "package_ticker": "000422",
+     "package_name": "湖北宜化",
+     "importer_ticker": "000422",
+     "importer_name": "湖北宜化",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC018",
+     "package_ticker": "600096",
+     "package_name": "云天化",
+     "importer_ticker": "600096",
+     "importer_name": "云天化",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC019",
+     "package_ticker": "600141",
+     "package_name": "兴发集团",
+     "importer_ticker": "600141",
+     "importer_name": "兴发集团",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC020",
+     "package_ticker": "603260",
+     "package_name": "合盛硅业",
+     "importer_ticker": "603260",
+     "importer_name": "合盛硅业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC021",
+     "package_ticker": "600352",
+     "package_name": "浙江龙盛",
+     "importer_ticker": "600352",
+     "importer_name": "浙江龙盛",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC022",
+     "package_ticker": "002440",
+     "package_name": "闰土股份",
+     "importer_ticker": "002440",
+     "importer_name": "闰土股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC023",
+     "package_ticker": "600547",
+     "package_name": "山东黄金",
+     "importer_ticker": "600547",
+     "importer_name": "山东黄金",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC024",
+     "package_ticker": "600489",
+     "package_name": "中金黄金",
+     "importer_ticker": "600489",
+     "importer_name": "中金黄金",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC025",
+     "package_ticker": "600988",
+     "package_name": "赤峰黄金",
+     "importer_ticker": "600988",
+     "importer_name": "赤峰黄金",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC026",
+     "package_ticker": "002155",
+     "package_name": "湖南黄金",
+     "importer_ticker": "002155",
+     "importer_name": "湖南黄金",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC027",
+     "package_ticker": "000893",
+     "package_name": "亚钾国际",
+     "importer_ticker": "000893",
+     "importer_name": "亚钾国际",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC028",
+     "package_ticker": "000902",
+     "package_name": "新洋丰",
+     "importer_ticker": "000902",
+     "importer_name": "新洋丰",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC029",
+     "package_ticker": "600309",
+     "package_name": "万华化学",
+     "importer_ticker": "600309",
+     "importer_name": "万华化学",
+     "ok": true
+    },
+    {
+     "security_id": "R01-RESOURCES-SEC030",
+     "package_ticker": "603993",
+     "package_name": "洛阳钼业",
+     "importer_ticker": "603993",
+     "importer_name": "洛阳钼业",
+     "ok": true
+    }
+   ]
+  },
+  "R01-04": {
+   "package": "R01-04",
+   "importer": "import_r01_04_canonical_v0_1.py",
+   "package_count": 31,
+   "importer_count": 31,
+   "verdict": "MISMATCH",
+   "mismatched": [
+    "R01-CONSUMER-SEC016",
+    "R01-CONSUMER-SEC017",
+    "R01-CONSUMER-SEC018",
+    "R01-CONSUMER-SEC019",
+    "R01-CONSUMER-SEC020",
+    "R01-CONSUMER-SEC021",
+    "R01-CONSUMER-SEC022",
+    "R01-CONSUMER-SEC023",
+    "R01-CONSUMER-SEC024",
+    "R01-CONSUMER-SEC025",
+    "R01-CONSUMER-SEC026",
+    "R01-CONSUMER-SEC027",
+    "R01-CONSUMER-SEC028",
+    "R01-CONSUMER-SEC029",
+    "R01-CONSUMER-SEC030",
+    "R01-CONSUMER-SEC031"
+   ],
+   "merged": [],
+   "rows": [
+    {
+     "security_id": "R01-CONSUMER-SEC001",
+     "package_ticker": "600519",
+     "package_name": "贵州茅台",
+     "importer_ticker": "600519",
+     "importer_name": "贵州茅台",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC002",
+     "package_ticker": "000858",
+     "package_name": "五粮液",
+     "importer_ticker": "000858",
+     "importer_name": "五粮液",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC003",
+     "package_ticker": "000568",
+     "package_name": "泸州老窖",
+     "importer_ticker": "000568",
+     "importer_name": "泸州老窖",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC004",
+     "package_ticker": "600809",
+     "package_name": "山西汾酒",
+     "importer_ticker": "600809",
+     "importer_name": "山西汾酒",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC005",
+     "package_ticker": "603288",
+     "package_name": "海天味业",
+     "importer_ticker": "603288",
+     "importer_name": "海天味业",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC006",
+     "package_ticker": "600887",
+     "package_name": "伊利股份",
+     "importer_ticker": "600887",
+     "importer_name": "伊利股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC007",
+     "package_ticker": "601888",
+     "package_name": "中国中免",
+     "importer_ticker": "601888",
+     "importer_name": "中国中免",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC008",
+     "package_ticker": "600754",
+     "package_name": "锦江酒店",
+     "importer_ticker": "600754",
+     "importer_name": "锦江酒店",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC009",
+     "package_ticker": "600258",
+     "package_name": "首旅酒店",
+     "importer_ticker": "600258",
+     "importer_name": "首旅酒店",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC010",
+     "package_ticker": "300144",
+     "package_name": "宋城演艺",
+     "importer_ticker": "300144",
+     "importer_name": "宋城演艺",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC011",
+     "package_ticker": "002714",
+     "package_name": "牧原股份",
+     "importer_ticker": "002714",
+     "importer_name": "牧原股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC012",
+     "package_ticker": "300498",
+     "package_name": "温氏股份",
+     "importer_ticker": "300498",
+     "importer_name": "温氏股份",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC013",
+     "package_ticker": "000876",
+     "package_name": "新希望",
+     "importer_ticker": "000876",
+     "importer_name": "新希望",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC014",
+     "package_ticker": "603477",
+     "package_name": "巨星农牧",
+     "importer_ticker": "603477",
+     "importer_name": "巨星农牧",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC015",
+     "package_ticker": "603363",
+     "package_name": "*ST傲农（傲农生物）",
+     "importer_ticker": "603363",
+     "importer_name": "傲农生物",
+     "ok": true
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC016",
+     "package_ticker": "603486",
+     "package_name": "科沃斯",
+     "importer_ticker": "000333",
+     "importer_name": "美的集团",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC017",
+     "package_ticker": "688169",
+     "package_name": "石头科技",
+     "importer_ticker": "000651",
+     "importer_name": "格力电器",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC018",
+     "package_ticker": "002959",
+     "package_name": "小熊电器",
+     "importer_ticker": "600690",
+     "importer_name": "海尔智家",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC019",
+     "package_ticker": "000333",
+     "package_name": "美的集团",
+     "importer_ticker": "002508",
+     "importer_name": "老板电器",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC020",
+     "package_ticker": "000651",
+     "package_name": "格力电器",
+     "importer_ticker": "300896",
+     "importer_name": "爱美客",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC021",
+     "package_ticker": "600690",
+     "package_name": "海尔智家",
+     "importer_ticker": "688363",
+     "importer_name": "华熙生物",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC022",
+     "package_ticker": "002508",
+     "package_name": "老板电器",
+     "importer_ticker": "002612",
+     "importer_name": "朗姿股份",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC023",
+     "package_ticker": "300896",
+     "package_name": "爱美客",
+     "importer_ticker": "603605",
+     "importer_name": "珀莱雅",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC024",
+     "package_ticker": "688363",
+     "package_name": "华熙生物",
+     "importer_ticker": "300957",
+     "importer_name": "贝泰妮",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC025",
+     "package_ticker": "002612",
+     "package_name": "朗姿股份",
+     "importer_ticker": "300972",
+     "importer_name": "万辰集团",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC026",
+     "package_ticker": "603605",
+     "package_name": "珀莱雅",
+     "importer_ticker": "002847",
+     "importer_name": "盐津铺子",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC027",
+     "package_ticker": "300957",
+     "package_name": "贝泰妮",
+     "importer_ticker": "301498",
+     "importer_name": "乖宝宠物",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC028",
+     "package_ticker": "300972",
+     "package_name": "万辰集团",
+     "importer_ticker": "002891",
+     "importer_name": "中宠股份",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC029",
+     "package_ticker": "002847",
+     "package_name": "盐津铺子",
+     "importer_ticker": "603486",
+     "importer_name": "科沃斯",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC030",
+     "package_ticker": "301498",
+     "package_name": "乖宝宠物",
+     "importer_ticker": "688169",
+     "importer_name": "石头科技",
+     "ok": false
+    },
+    {
+     "security_id": "R01-CONSUMER-SEC031",
+     "package_ticker": "002891",
+     "package_name": "中宠股份",
+     "importer_ticker": "002959",
+     "importer_name": "小熊电器",
+     "ok": false
+    }
+   ]
+  },
+  "R01-05": {
+   "package": "R01-05",
+   "importer": "import_r01_05_canonical_v0_1.py",
+   "package_count": 15,
+   "importer_count": 15,
+   "verdict": "MATCH",
+   "mismatched": [],
+   "merged": [],
+   "rows": [
+    {
+     "security_id": "R01-FINRE-SEC001",
+     "package_ticker": "600048",
+     "package_name": "保利发展（原保利地产）",
+     "importer_ticker": "600048",
+     "importer_name": "保利发展",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC002",
+     "package_ticker": "000002",
+     "package_name": "万科A",
+     "importer_ticker": "000002",
+     "importer_name": "万科A",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC003",
+     "package_ticker": "001979",
+     "package_name": "招商蛇口",
+     "importer_ticker": "001979",
+     "importer_name": "招商蛇口",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC004",
+     "package_ticker": "600383",
+     "package_name": "金地集团",
+     "importer_ticker": "600383",
+     "importer_name": "金地集团",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC005",
+     "package_ticker": "601398",
+     "package_name": "工商银行",
+     "importer_ticker": "601398",
+     "importer_name": "工商银行",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC006",
+     "package_ticker": "601288",
+     "package_name": "农业银行",
+     "importer_ticker": "601288",
+     "importer_name": "农业银行",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC007",
+     "package_ticker": "600036",
+     "package_name": "招商银行",
+     "importer_ticker": "600036",
+     "importer_name": "招商银行",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC008",
+     "package_ticker": "601998",
+     "package_name": "中信银行",
+     "importer_ticker": "601998",
+     "importer_name": "中信银行",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC009",
+     "package_ticker": "600030",
+     "package_name": "中信证券",
+     "importer_ticker": "600030",
+     "importer_name": "中信证券",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC010",
+     "package_ticker": "300059",
+     "package_name": "东方财富",
+     "importer_ticker": "300059",
+     "importer_name": "东方财富",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC011",
+     "package_ticker": "601318",
+     "package_name": "中国平安",
+     "importer_ticker": "601318",
+     "importer_name": "中国平安",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC012",
+     "package_ticker": "601628",
+     "package_name": "中国人寿",
+     "importer_ticker": "601628",
+     "importer_name": "中国人寿",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC013",
+     "package_ticker": "601336",
+     "package_name": "新华保险",
+     "importer_ticker": "601336",
+     "importer_name": "新华保险",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC014",
+     "package_ticker": "601788",
+     "package_name": "光大证券",
+     "importer_ticker": "601788",
+     "importer_name": "光大证券",
+     "ok": true
+    },
+    {
+     "security_id": "R01-FINRE-SEC015",
+     "package_ticker": "601878",
+     "package_name": "浙商证券",
+     "importer_ticker": "601878",
+     "importer_name": "浙商证券",
+     "ok": true
+    }
+   ]
+  },
+  "R01-06": {
+   "package": "R01-06",
+   "importer": "import_r01_06_canonical_v0_1.py",
+   "package_count": 13,
+   "importer_count": 13,
+   "verdict": "MATCH",
+   "mismatched": [],
+   "merged": [],
+   "rows": [
+    {
+     "security_id": "R01-MIL-SEC001",
+     "package_ticker": "399967",
+     "package_name": "中证军工指数",
+     "importer_ticker": "399967",
+     "importer_name": "中证军工指数",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC002",
+     "package_ticker": "801740",
+     "package_name": "申万国防军工指数",
+     "importer_ticker": "801740",
+     "importer_name": "申万国防军工指数",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC003",
+     "package_ticker": "",
+     "package_name": "国证军工指数（深圳证券信息有限公司编制，50只成分股）",
+     "importer_ticker": "",
+     "importer_name": "国证军工指数（深圳证券信息有限公司编制，50只成分股）",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC004",
+     "package_ticker": "600760",
+     "package_name": "中航沈飞",
+     "importer_ticker": "600760",
+     "importer_name": "中航沈飞",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC005",
+     "package_ticker": "600893",
+     "package_name": "航发动力",
+     "importer_ticker": "600893",
+     "importer_name": "航发动力",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC006",
+     "package_ticker": "000768",
+     "package_name": "中航西飞",
+     "importer_ticker": "000768",
+     "importer_name": "中航西飞",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC007",
+     "package_ticker": "600316",
+     "package_name": "洪都航空",
+     "importer_ticker": "600316",
+     "importer_name": "洪都航空",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC008",
+     "package_ticker": "600150",
+     "package_name": "中国船舶",
+     "importer_ticker": "600150",
+     "importer_name": "中国船舶",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC009",
+     "package_ticker": "601989",
+     "package_name": "中国重工",
+     "importer_ticker": "601989",
+     "importer_name": "中国重工",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC010",
+     "package_ticker": "600685",
+     "package_name": "中船防务",
+     "importer_ticker": "600685",
+     "importer_name": "中船防务",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC011",
+     "package_ticker": "600118",
+     "package_name": "中国卫星",
+     "importer_ticker": "600118",
+     "importer_name": "中国卫星",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC012",
+     "package_ticker": "003009",
+     "package_name": "中天火箭",
+     "importer_ticker": "003009",
+     "importer_name": "中天火箭",
+     "ok": true
+    },
+    {
+     "security_id": "R01-MIL-SEC013",
+     "package_ticker": "300726",
+     "package_name": "宏达电子",
+     "importer_ticker": "300726",
+     "importer_name": "宏达电子",
+     "ok": true
+    }
+   ]
+  }
+ }
+}

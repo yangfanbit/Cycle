@@ -20,8 +20,8 @@
   "no_score": "只有证实状态与原文依据，无评分 / 排序 / 概率"
  },
  "summary": {
-  "CONFIRMED": 32,
-  "UNCONFIRMED": 5,
+  "CONFIRMED": 34,
+  "UNCONFIRMED": 3,
   "NOT_APPLICABLE": 12,
   "NO_PEAK_RECORDED": 4,
   "NO_DATA": 0
@@ -224,9 +224,9 @@
     "with_data": 3
    },
    "nearest": {
-    "security_id": "BETTENI",
-    "peak_date": "2021-07-08",
-    "delta_days": 3
+    "security_id": "BLOOMAGE",
+    "peak_date": "2021-07-05",
+    "delta_days": 0
    },
    "confirmation": "CONFIRMED"
   },
@@ -377,23 +377,14 @@
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 2,
-    "with_data": 1
+    "with_data": 2
    },
    "nearest": {
-    "security_id": "YANJIN",
-    "peak_date": "2020-10-13",
-    "delta_days": 381
+    "security_id": "PROYA",
+    "peak_date": "2021-10-29",
+    "delta_days": 0
    },
-   "confirmation": "UNCONFIRMED",
-   "evidence_anchors": [
-    {
-     "kind": "evidence",
-     "date": "2021-10-29",
-     "type": "行情数据",
-     "excerpt": "珀莱雅（603605）2021 年 10 月 29 日盘中最高 224.43 元（历史最高）；贝泰妮（300957）2021 年 7 月 8 日盘中最高 289.35 元（不复权）。",
-     "source_field": "evidences.description"
-    }
-   ]
+   "confirmation": "CONFIRMED"
   },
   "C-2020-CONS-DUTYFREE": {
    "campaign_id": "C-2020-CONS-DUTYFREE",
@@ -435,7 +426,7 @@
     "with_data": 4
    },
    "nearest": {
-    "security_id": "AIMEIKE",
+    "security_id": "HAIER",
     "peak_date": "2021-02-18",
     "delta_days": 0
    },
@@ -1078,27 +1069,11 @@
     "with_data": 2
    },
    "nearest": {
-    "security_id": "ECOVACS",
-    "peak_date": "2023-01-20",
-    "delta_days": 952
+    "security_id": "WANCHEN",
+    "peak_date": "2025-09-01",
+    "delta_days": 3
    },
-   "confirmation": "UNCONFIRMED",
-   "evidence_anchors": [
-    {
-     "kind": "event",
-     "date": "2025-08-29",
-     "type": "market",
-     "excerpt": "万辰集团收于 210.81 元（区间最高）；同期三只松鼠 2025 年初见顶后全年收跌",
-     "source_field": "events.name"
-    },
-    {
-     "kind": "evidence",
-     "date": "2025-08-29",
-     "type": "行情数据",
-     "excerpt": "万辰集团股价 2024 年 12 月 11 日收于 80.21 元，2025 年 8 月 29 日收于 210.81 元（区间最高）；同期三只松鼠于 2025 年初见顶后全年收跌。",
-     "source_field": "evidences.description"
-    }
-   ]
+   "confirmation": "CONFIRMED"
   },
   "C-2023-FIN-SOE-VALUATION": {
    "campaign_id": "C-2023-FIN-SOE-VALUATION",
@@ -1179,11 +1154,20 @@
     "with_data": 4
    },
    "nearest": {
-    "security_id": "TECHLONG",
-    "peak_date": "2023-02-03",
-    "delta_days": 0
+    "security_id": "ESTUN",
+    "peak_date": "2023-06-21",
+    "delta_days": 138
    },
-   "confirmation": "CONFIRMED"
+   "confirmation": "NOT_APPLICABLE",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2023-02-03",
+     "type": "券商行业双周报（行情与估值数据）",
+     "excerpt": "2023 年 1 月 14 日至 2 月 3 日，机械设备行业上涨 6.47%、跑赢沪深 300 指数 4.82 个百分点，其中机器人三级子行业上涨 13.48% 居前；截至 2023 年 2 月 3 日机器人板块估值 75.45 倍。",
+     "source_field": "evidences.description"
+    }
+   ]
   },
   "C-2023-PHARMA-GLP1": {
    "campaign_id": "C-2023-PHARMA-GLP1",
@@ -1225,7 +1209,7 @@
     "with_data": 4
    },
    "nearest": {
-    "security_id": "BLOOMAGE",
+    "security_id": "GREE",
     "peak_date": "2024-10-08",
     "delta_days": 0
    },
@@ -1330,27 +1314,11 @@
     "with_data": 4
    },
    "nearest": {
-    "security_id": "CAMBRICON",
-    "peak_date": "2024-10-21",
-    "delta_days": 375
+    "security_id": "GIGADEVICE",
+    "peak_date": "2025-10-28",
+    "delta_days": 3
    },
-   "confirmation": "NOT_APPLICABLE",
-   "evidence_anchors": [
-    {
-     "kind": "event",
-     "date": "2025-10-31",
-     "type": "market",
-     "excerpt": "申万半导体板块指数 7964.33，超过 2021-07 的 7642.58 创指数新高",
-     "source_field": "events.name"
-    },
-    {
-     "kind": "evidence",
-     "date": "2025-10-31",
-     "type": "行情数据",
-     "excerpt": "申万半导体板块指数 2025-10 月内最高 7964.33（月内区间 6656.35—7964.33），超过 2021-07 的 7642.58，为该指数新高；2025-12-31 收 6950.35。",
-     "source_field": "evidences.description"
-    }
-   ]
+   "confirmation": "CONFIRMED"
   },
   "C-2024-V2X": {
    "campaign_id": "C-2024-V2X",

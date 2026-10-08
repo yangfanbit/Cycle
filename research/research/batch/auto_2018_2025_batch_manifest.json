@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-10-07T21:28:42",
-  "source_commit": "01512655085776506d913bb7a390839eb5163f21",
+  "generated_at": "2026-10-08T21:34:22",
+  "source_commit": "c9cbbb9f0aff5d2211e434e5437b4c720dfda292",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -2055,23 +2055,23 @@
       ],
       "securities": [
         {
-          "security_id": "BETTENI",
-          "name": "贝泰妮",
-          "ticker": "300957",
+          "security_id": "AIMEIKE",
+          "name": "爱美客",
+          "ticker": "300896",
           "exchange": "SZ",
           "role": "representative"
         },
         {
-          "security_id": "PROYA",
-          "name": "珀莱雅",
-          "ticker": "603605",
+          "security_id": "BLOOMAGE",
+          "name": "华熙生物",
+          "ticker": "688363",
           "exchange": "SH",
           "role": "representative"
         },
         {
-          "security_id": "WANCHEN",
-          "name": "万辰集团",
-          "ticker": "300972",
+          "security_id": "LANCY",
+          "name": "朗姿股份",
+          "ticker": "002612",
           "exchange": "SZ",
           "role": "representative"
         }
@@ -2323,23 +2323,23 @@
       ],
       "securities": [
         {
-          "security_id": "AIMEIKE",
-          "name": "爱美客",
-          "ticker": "300896",
+          "security_id": "GREE",
+          "name": "格力电器",
+          "ticker": "000651",
           "exchange": "SZ",
           "role": "representative"
         },
         {
-          "security_id": "BLOOMAGE",
-          "name": "华熙生物",
-          "ticker": "688363",
+          "security_id": "HAIER",
+          "name": "海尔智家",
+          "ticker": "600690",
           "exchange": "SH",
           "role": "representative"
         },
         {
-          "security_id": "LANCY",
-          "name": "朗姿股份",
-          "ticker": "002612",
+          "security_id": "MIDEA",
+          "name": "美的集团",
+          "ticker": "000333",
           "exchange": "SZ",
           "role": "representative"
         },
@@ -2456,17 +2456,17 @@
       ],
       "securities": [
         {
-          "security_id": "GAMBO",
-          "name": "乖宝宠物",
-          "ticker": "301498",
+          "security_id": "BETTENI",
+          "name": "贝泰妮",
+          "ticker": "300957",
           "exchange": "SZ",
           "role": "representative"
         },
         {
-          "security_id": "YANJIN",
-          "name": "盐津铺子",
-          "ticker": "002847",
-          "exchange": "SZ",
+          "security_id": "PROYA",
+          "name": "珀莱雅",
+          "ticker": "603605",
+          "exchange": "SH",
           "role": "representative"
         }
       ],
@@ -2878,17 +2878,17 @@
       ],
       "securities": [
         {
-          "security_id": "CHINAPET",
-          "name": "中宠股份",
-          "ticker": "002891",
+          "security_id": "WANCHEN",
+          "name": "万辰集团",
+          "ticker": "300972",
           "exchange": "SZ",
           "role": "representative"
         },
         {
-          "security_id": "ECOVACS",
-          "name": "科沃斯",
-          "ticker": "603486",
-          "exchange": "SH",
+          "security_id": "YANJIN",
+          "name": "盐津铺子",
+          "ticker": "002847",
+          "exchange": "SZ",
           "role": "representative"
         }
       ],
@@ -3007,23 +3007,23 @@
       ],
       "securities": [
         {
-          "security_id": "AIMEIKE",
-          "name": "爱美客",
-          "ticker": "300896",
+          "security_id": "GREE",
+          "name": "格力电器",
+          "ticker": "000651",
           "exchange": "SZ",
           "role": "representative"
         },
         {
-          "security_id": "BLOOMAGE",
-          "name": "华熙生物",
-          "ticker": "688363",
+          "security_id": "HAIER",
+          "name": "海尔智家",
+          "ticker": "600690",
           "exchange": "SH",
           "role": "representative"
         },
         {
-          "security_id": "LANCY",
-          "name": "朗姿股份",
-          "ticker": "002612",
+          "security_id": "MIDEA",
+          "name": "美的集团",
+          "ticker": "000333",
           "exchange": "SZ",
           "role": "representative"
         },
@@ -6428,9 +6428,9 @@
         },
         "status": "available",
         "adjusted_returns": {
-          "start_to_peak": 0.1419,
-          "start_to_end": -0.0593,
-          "peak_to_end": -0.1762,
+          "start_to_peak": 0.1428,
+          "start_to_end": -0.0597,
+          "peak_to_end": -0.1772,
           "price_type": "adjusted(qfq)",
           "note": "调整后收益，仅用于收益率口径；日期判断用 raw close"
         }

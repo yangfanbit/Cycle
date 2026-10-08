@@ -317,15 +317,15 @@
    "referent_review_status": "PROVISIONAL",
    "securities_coincide": [
     {
-     "security_id": "BETTENI",
-     "peak_date": "2021-07-08",
-     "delta_days": 3
+     "security_id": "BLOOMAGE",
+     "peak_date": "2021-07-05",
+     "delta_days": 0
     }
    ],
    "nearest_security": {
-    "security_id": "BETTENI",
-    "peak_date": "2021-07-08",
-    "delta_days": 3
+    "security_id": "BLOOMAGE",
+    "peak_date": "2021-07-05",
+    "delta_days": 0
    },
    "coverage": {
     "securities": 3,
@@ -630,15 +630,21 @@
    ],
    "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
    "referent_review_status": "PROVISIONAL",
-   "securities_coincide": [],
+   "securities_coincide": [
+    {
+     "security_id": "PROYA",
+     "peak_date": "2021-10-29",
+     "delta_days": 0
+    }
+   ],
    "nearest_security": {
-    "security_id": "YANJIN",
-    "peak_date": "2020-10-13",
-    "delta_days": 381
+    "security_id": "PROYA",
+    "peak_date": "2021-10-29",
+    "delta_days": 0
    },
    "coverage": {
     "securities": 2,
-    "with_data": 1
+    "with_data": 2
    }
   },
   "C-2020-CONS-DUTYFREE": {
@@ -709,13 +715,13 @@
    "referent_review_status": "PROVISIONAL",
    "securities_coincide": [
     {
-     "security_id": "AIMEIKE",
+     "security_id": "HAIER",
      "peak_date": "2021-02-18",
      "delta_days": 0
     }
    ],
    "nearest_security": {
-    "security_id": "AIMEIKE",
+    "security_id": "HAIER",
     "peak_date": "2021-02-18",
     "delta_days": 0
    },
@@ -1744,11 +1750,17 @@
    ],
    "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
    "referent_review_status": "PROVISIONAL",
-   "securities_coincide": [],
+   "securities_coincide": [
+    {
+     "security_id": "WANCHEN",
+     "peak_date": "2025-09-01",
+     "delta_days": 3
+    }
+   ],
    "nearest_security": {
-    "security_id": "ECOVACS",
-    "peak_date": "2023-01-20",
-    "delta_days": 952
+    "security_id": "WANCHEN",
+    "peak_date": "2025-09-01",
+    "delta_days": 3
    },
    "coverage": {
     "securities": 2,
@@ -1875,27 +1887,11 @@
    ],
    "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
    "referent_review_status": "PROVISIONAL",
-   "securities_coincide": [
-    {
-     "security_id": "ESTUN",
-     "peak_date": "2023-02-07",
-     "delta_days": 4
-    },
-    {
-     "security_id": "SHUANGHUAN",
-     "peak_date": "2023-02-07",
-     "delta_days": 4
-    },
-    {
-     "security_id": "TECHLONG",
-     "peak_date": "2023-02-03",
-     "delta_days": 0
-    }
-   ],
+   "securities_coincide": [],
    "nearest_security": {
-    "security_id": "TECHLONG",
-    "peak_date": "2023-02-03",
-    "delta_days": 0
+    "security_id": "ESTUN",
+    "peak_date": "2023-06-21",
+    "delta_days": 138
    },
    "coverage": {
     "securities": 4,
@@ -2029,13 +2025,23 @@
    "referent_review_status": "PROVISIONAL",
    "securities_coincide": [
     {
-     "security_id": "BLOOMAGE",
+     "security_id": "GREE",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    },
+    {
+     "security_id": "HAIER",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    },
+    {
+     "security_id": "MIDEA",
      "peak_date": "2024-10-08",
      "delta_days": 0
     }
    ],
    "nearest_security": {
-    "security_id": "BLOOMAGE",
+    "security_id": "GREE",
     "peak_date": "2024-10-08",
     "delta_days": 0
    },
@@ -2236,11 +2242,17 @@
    ],
    "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
    "referent_review_status": "PROVISIONAL",
-   "securities_coincide": [],
+   "securities_coincide": [
+    {
+     "security_id": "GIGADEVICE",
+     "peak_date": "2025-10-28",
+     "delta_days": 3
+    }
+   ],
    "nearest_security": {
-    "security_id": "CAMBRICON",
-    "peak_date": "2024-10-21",
-    "delta_days": 375
+    "security_id": "GIGADEVICE",
+    "peak_date": "2025-10-28",
+    "delta_days": 3
    },
    "coverage": {
     "securities": 4,
