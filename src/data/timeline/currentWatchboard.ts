@@ -1,75 +1,81 @@
 /**
  * currentWatchboard.ts —— 「**当前观察台**」的只读派生层（ThreeC 1.2 · Usage-Driven）。
  *
+ * ## ★★★ 数据来源（**必须**走这条链路，不得绕过）
+ *
+ * ```
+ * research/current/current_candidates.json          （研究侧声明：attention_state / phase_evidence / …）
+ *        ↓  parseCurrentCandidateDataset
+ *        ↓  buildCurrentCandidateViews  →  currentPhaseInference（**产品端规则引擎，可审计**）
+ * 本模块（只做分组与陈列，**不重新推导任何阶段**）
+ * ```
+ *
+ * ★★ **为什么不能直接读 `attention_state`**（本模块 v0_1 的错误）：
+ * `current_candidates.json` 的元信息写明 ——
+ * **「阶段由产品端 Phase Evidence Matrix 独立推导，不由研究声明决定」**；
+ * 引擎 `PhaseInference` 也写明「推导阶段是**权威值**，研究声明值并列保留在 `declared`」，
+ * 且「**不一致时 UI 必须并列显示，不得静默取一**」。
+ *
+ * 实测（2026-10-08）：6 个当前对象中 **2 个不一致** ——
+ * `CC-2026-BCI-MEDTECH` 与 `CC-2026-AUTO-SMARTDRIVE` 的**推导值为 `UNKNOWN`**（证据组合不满足任何阶段规则），
+ * 而研究声明为 `THEME_FORMING`。v0_1 把两者都显示成「主题形成」—— **静默取了声明值**。
+ *
  * ## ★★ 它回答什么，以及**不回答**什么
  *
- * **回答**：现在有哪几个方向在被研究侧观察 · 各自处在什么阶段 · 观察到什么 · **还缺什么**。
- * 一屏看完，不必逐条点开对照。
+ * **回答**：现在有哪几个方向在被观察 · 各自**推导**处于什么阶段 · 观察到什么 · **还缺哪些维度**。
+ * **不回答**：哪个「可能性更高」、该看哪个 —— 见下。
  *
- * **不回答**：哪个「可能性更高」、哪个「更可能被炒」、该看哪个。
+ * ## ★★★ 为什么不做「可能性排序」
  *
- * ## ★★★ 为什么不做「可能性排序」（这是设计的前提，不是保守）
- *
- * 1. **红线**：`AGENTS.md` §1 明令禁止概率 / 胜率 / 推荐分 / 预测。
- * 2. **样本极小**：当前对象只有 6 个；任何「可能性」都不可验证。
- * 3. **★ 最要紧的一条**：一旦给出排序，它就会**被当作推荐使用** ——
- *    而项目明令禁止荐股。工具无从阻止这种读法，只能**不生产排序**。
- *
- * ## ★ 因此本层的三条纪律
- *
- * - **按「阶段」分组**（封闭枚举），组内按**阶段起点时间序** —— 不是价值序；
- * - **明写「阶段越早 ≠ 越可能」** —— 阶段是**当前状态的分类**，不是可能性；
- * - **「还缺什么」是核心列** —— 它把「提前观察」落到「下一步看什么」，而不是「买什么」。
+ * 1. **红线**：`AGENTS.md` §1 禁止概率 / 胜率 / 推荐分 / 预测。
+ * 2. **样本极小**：当前对象只有 6 个，任何「可能性」都不可验证。
+ * 3. ★ **最要紧**：**一旦给出排序，它就会被当作推荐使用**（= 荐股）；
+ *    工具无从阻止这种读法，**只能不生产排序**。
  *
  * ## 纯函数
  * 无副作用、无 IO、无网络。
  */
 
-import raw from '@current/current_candidates.json';
+import canonicalJson from '@current/current_candidates.json';
+import { previewTimelineSource } from './timelineAdapter';
+import { parseCurrentCandidateDataset, DIMENSION_LABEL, type PhaseDimension } from './currentCandidate';
+import { buildCurrentCandidateViews } from './currentCandidateAdapter';
 import { PHASE_LABEL, type ResearchPhase } from './researchAttention';
-
-/** 三态证据的取值（封闭） */
-export type EvidenceState = 'EMERGING' | 'PRESENT' | 'STRONG' | 'UNKNOWN';
-
-export const EVIDENCE_STATE_LABEL: Record<EvidenceState, string> = {
-  EMERGING: '初现',
-  PRESENT: '已现',
-  STRONG: '强',
-  UNKNOWN: '未标注',
-};
-
-/** 三态证据的三个维度（与研究侧字段一一对应） */
-export const EVIDENCE_DIMENSIONS: { key: 'breadth' | 'information_marginal' | 'narrative'; label: string }[] = [
-  { key: 'breadth', label: '广度' },
-  { key: 'information_marginal', label: '信息边际' },
-  { key: 'narrative', label: '叙事' },
-];
+import type { TimelineDataSource } from './timelineTypes';
 
 export interface WatchboardItem {
   candidateId: string;
   displayName: string;
   macroTheme: string | null;
-  /** 阶段（封闭枚举；未知时为 UNKNOWN） */
+  /** ★ **推导阶段**（权威值，来自产品端规则引擎） */
   phase: ResearchPhase;
   phaseLabel: string;
-  /** 阶段窗口起点（可能为 null —— 合法空状态） */
+  /** 研究侧声明的阶段（**并列保留**，不覆盖推导值） */
+  declaredPhase: ResearchPhase;
+  declaredPhaseLabel: string;
+  /** ★ 推导值与声明值是否一致；不一致时 UI **必须**并列显示 */
+  agreesWithDeclared: boolean;
+  /** 命中的规则 id 与说明（可审计 —— 任何阶段结论都能被追问「为什么」） */
+  matchedRule: string;
+  ruleLabel: string;
+  /** 逐条理由（原样透传引擎输出） */
+  reasons: string[];
+  /** 维度覆盖度（计数事实） */
+  coverage: { level: string; label: string; known: number; total: number };
+  /** ★ 还缺什么：尚未达到「明确」水平的维度（**引擎给的**，不是本模块自算） */
+  missingDimensions: string[];
+  /** 一句话解释（研究叙事，原样透传） */
+  oneLiner: string;
+  /** 阶段窗口起点（研究侧声明；合法可为 null） */
   phaseStart: string | null;
-  /** 距今天数（用快照日算，不用「今天」，避免漂移） */
+  /** 距记录日天数（用快照日算，不用「今天」，避免漂移） */
   daysSincePhaseStart: number | null;
-  evidence: Record<'breadth' | 'information_marginal' | 'narrative', EvidenceState>;
-  narrativeTypes: string[];
-  /** ★ 还缺什么：三态中仍为 初现 / 未标注 的维度名 */
-  gaps: string[];
-  /** 未决问题数（研究侧的 `uncertainty_notes`） */
-  openIssues: number;
-  /** 研究问题数（继续研究的入口） */
-  researchQuestions: number;
-  /** 证据条数（计数事实） */
-  evidenceCount: number;
-  /** 参照历史案例（研究侧已给出，原样透传） */
-  referenceCases: string[];
-  /** 快照日（研究侧记录该对象状态的日期） */
   snapshotDate: string | null;
+  /** 是否具备进入研究的最低条件（至少 1 条快照内可用证据） */
+  researchReady: boolean;
+  /** 是否可直接作为相似度参照（阶段已推导出） */
+  similarityReady: boolean;
+  researchQuestions: number;
 }
 
 export interface WatchboardGroup {
@@ -79,13 +85,14 @@ export interface WatchboardGroup {
 }
 
 export interface WatchboardView {
-  /** 按阶段分组；组序 = 生命周期自然序（不是价值序） */
+  /** 按**推导阶段**分组；组序 = 生命周期自然序（不是价值序） */
   groups: WatchboardGroup[];
   total: number;
-  /** 快照日（取所有对象里最晚的 `snapshot_date`） */
+  /** ★ 推导值与研究声明**不一致**的对象数（计数事实，必须显示） */
+  disagreementCount: number;
   asOf: string | null;
-  /** 三态维度里「初现 / 未标注」的计数（计数事实） */
-  gapCounts: Record<string, number>;
+  /** 各维度「尚未明确」的对象数（计数事实，不是评分） */
+  gapCounts: { dimension: string; count: number }[];
 }
 
 /** 生命周期自然序 —— 只用于**分组排序**，不代表可能性高低 */
@@ -100,16 +107,6 @@ const PHASE_ORDER: ResearchPhase[] = [
   'UNKNOWN',
 ];
 
-const STATE_SET: readonly string[] = ['EMERGING', 'PRESENT', 'STRONG', 'UNKNOWN'];
-
-function toState(v: unknown): EvidenceState {
-  return typeof v === 'string' && STATE_SET.includes(v) ? (v as EvidenceState) : 'UNKNOWN';
-}
-
-function toPhase(v: unknown): ResearchPhase {
-  return typeof v === 'string' && v in PHASE_LABEL ? (v as ResearchPhase) : 'UNKNOWN';
-}
-
 function daysBetween(a: string, b: string): number | null {
   const t1 = Date.parse(a);
   const t2 = Date.parse(b);
@@ -117,65 +114,68 @@ function daysBetween(a: string, b: string): number | null {
   return Math.round((t2 - t1) / 86400000);
 }
 
-interface RawCandidate {
-  candidate_id?: string;
-  display_name?: string;
-  macro_theme?: string | null;
-  attention_state?: string;
-  phase_window?: { start?: string | null; end?: string | null } | null;
-  phase_evidence?: Record<string, unknown> | null;
-  narrative_types?: string[];
-  uncertainty_notes?: string[];
-  research_questions?: string[];
-  evidence?: unknown[];
-  reference_cases?: { campaign_id?: string }[];
-  snapshot_date?: string | null;
-}
-
 /**
  * 构造观察台视图。
  *
- * @param dataset 可注入（测试用）；缺省读 canonical `current_candidates.json`
+ * @param opts 可注入（测试用）；缺省消费 canonical 数据集与 canonical export
  */
-export function buildWatchboard(dataset?: { candidates?: RawCandidate[] }): WatchboardView {
-  const candidates = (dataset?.candidates ?? (raw as { candidates?: RawCandidate[] }).candidates ?? []);
+export function buildWatchboard(opts?: {
+  dataset?: unknown;
+  source?: TimelineDataSource;
+  today?: string;
+}): WatchboardView {
+  const raw = opts?.dataset ?? canonicalJson;
+  const dataset = parseCurrentCandidateDataset(raw).dataset;
+  const source = opts?.source ?? previewTimelineSource();
+  const today =
+    opts?.today ??
+    (dataset as { snapshot_date?: string }).snapshot_date ??
+    new Date().toISOString().slice(0, 10);
 
-  const items: WatchboardItem[] = candidates.map((c) => {
-    const pe = c.phase_evidence ?? {};
-    const ev = {
-      breadth: toState(pe.breadth),
-      information_marginal: toState(pe.information_marginal),
-      narrative: toState(pe.narrative),
+  const views = buildCurrentCandidateViews(source, dataset, today).views;
+
+  const items: WatchboardItem[] = views.map((v) => {
+    const c = v.candidate as unknown as {
+      candidate_id?: string;
+      display_name?: string;
+      macro_theme?: string | null;
+      phase_window?: { start?: string | null } | null;
+      research_questions?: string[];
+      snapshot_date?: string | null;
     };
-    const phase = toPhase(c.attention_state);
     const start = c.phase_window?.start ?? null;
     const snap = c.snapshot_date ?? null;
     return {
       candidateId: c.candidate_id ?? '（无 id）',
       displayName: c.display_name ?? c.candidate_id ?? '（无名称）',
       macroTheme: c.macro_theme ?? null,
-      phase,
-      phaseLabel: PHASE_LABEL[phase],
+      phase: v.phase as ResearchPhase,
+      phaseLabel: v.phaseLabel,
+      declaredPhase: v.inference.declared as ResearchPhase,
+      declaredPhaseLabel: PHASE_LABEL[v.inference.declared as ResearchPhase] ?? v.inference.declared,
+      agreesWithDeclared: v.inference.agreesWithDeclared,
+      matchedRule: v.inference.matchedRule,
+      ruleLabel: v.inference.ruleLabel,
+      reasons: v.inference.reasons,
+      coverage: { level: v.coverage.level, label: v.coverage.label, known: v.coverage.known, total: v.coverage.total },
+      // ★ 引擎已算好「尚未明确的维度」——本模块**不自行推导**
+      missingDimensions: (v.missingDimensions as PhaseDimension[]).map((d) => DIMENSION_LABEL[d] ?? d),
+      oneLiner: v.oneLiner,
       phaseStart: start,
       daysSincePhaseStart: start && snap ? daysBetween(start, snap) : null,
-      evidence: ev,
-      narrativeTypes: c.narrative_types ?? [],
-      // ★ 还缺什么：三态中仍为「初现 / 未标注」的维度 —— 这是「下一步看什么」
-      gaps: EVIDENCE_DIMENSIONS.filter((d) => ev[d.key] === 'EMERGING' || ev[d.key] === 'UNKNOWN').map((d) => d.label),
-      openIssues: (c.uncertainty_notes ?? []).length,
-      researchQuestions: (c.research_questions ?? []).length,
-      evidenceCount: (c.evidence ?? []).length,
-      referenceCases: (c.reference_cases ?? []).map((r) => r.campaign_id ?? '').filter(Boolean),
       snapshotDate: snap,
+      researchReady: v.researchReady,
+      similarityReady: v.similarityReady,
+      researchQuestions: (c.research_questions ?? []).length,
     };
   });
 
-  // 按阶段分组；组序 = 生命周期自然序（★ 不是价值序）
+  // 按**推导阶段**分组；组序 = 生命周期自然序（★ 不是价值序）
   const groups: WatchboardGroup[] = [];
   for (const p of PHASE_ORDER) {
     const g = items.filter((x) => x.phase === p);
     if (!g.length) continue;
-    // 组内按**阶段起点时间序**（早的在前）；起点缺失的排在最后，不猜测
+    // 组内按**阶段起点时间序**（早的在前）；起点缺失者排最后，不猜测
     g.sort((a, b) => {
       if (!a.phaseStart && !b.phaseStart) return a.candidateId < b.candidateId ? -1 : 1;
       if (!a.phaseStart) return 1;
@@ -185,18 +185,30 @@ export function buildWatchboard(dataset?: { candidates?: RawCandidate[] }): Watc
     groups.push({ phase: p, phaseLabel: PHASE_LABEL[p], items: g });
   }
 
-  const gapCounts: Record<string, number> = {};
-  for (const d of EVIDENCE_DIMENSIONS) {
-    gapCounts[d.label] = items.filter((x) => x.evidence[d.key] === 'EMERGING' || x.evidence[d.key] === 'UNKNOWN').length;
-  }
+  const dims = Object.keys(DIMENSION_LABEL) as PhaseDimension[];
+  const gapCounts = dims
+    .map((d) => ({
+      dimension: DIMENSION_LABEL[d],
+      count: items.filter((x) => x.missingDimensions.includes(DIMENSION_LABEL[d])).length,
+    }))
+    .filter((x) => x.count > 0);
 
-  const asOf = items.map((x) => x.snapshotDate).filter((x): x is string => !!x).sort().pop() ?? null;
+  const asOf =
+    items.map((x) => x.snapshotDate).filter((x): x is string => !!x).sort().pop() ?? null;
 
-  return { groups, total: items.length, asOf, gapCounts };
+  return {
+    groups,
+    total: items.length,
+    disagreementCount: items.filter((x) => !x.agreesWithDeclared).length,
+    asOf,
+    gapCounts,
+  };
 }
 
 /** ★ 必须与观察台一同展示的语义边界（防止被读成「可能性排序」） */
 export const WATCHBOARD_DISCLAIMER =
-  '本表是研究侧**观察状态的陈列**：现在有哪几个方向在被观察、各自处在什么阶段、观察到什么、还缺什么。' +
+  '本表是研究侧**观察状态的陈列**：现在有哪几个方向在被观察、各自**推导**处于什么阶段、观察到什么、还缺哪些维度。' +
+  '阶段由产品端规则引擎由证据矩阵**推导**（可审计：每个阶段都能追问命中了哪条规则），' +
+  '与研究侧声明不一致时**两者并列**、不静默取一。' +
   '阶段越早**不等于**越可能启动 —— 阶段是当前状态的分类，不是可能性；' +
   '本表按阶段分组（组内按阶段起点时间序），**不评分、不排名**，**非预测**。';

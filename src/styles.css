@@ -3173,3 +3173,19 @@ html, body {
   cursor: pointer;
 }
 .wb-gap-summary { margin: 8px 0 0; color: var(--ink-3); font-size: 12px; }
+.wb-phase-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin: 2px 0; }
+.wb-phase-src { font-size: 11px; color: var(--ink-3); }
+.wb-phase-val { padding: 0 6px; border-radius: 8px; font-size: 11.5px; background: #eef2f7; color: #4a6076; }
+.wb-p-expansion { background: #e6f1e7; color: #2f6b3a; }
+.wb-p-broad_confirmation { background: #e3ecf5; color: var(--accent); }
+.wb-p-theme_forming { background: #fdf3d7; color: var(--preheat-ink); }
+.wb-p-unknown { background: #eef0f2; color: var(--ink-3); }
+.wb-disagree {
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  background: #fdf9ee;
+  border: 1px solid var(--preheat-ink);
+  color: var(--preheat-ink);
+}
+.wb-oneliner { margin: 2px 0; color: var(--ink-2); font-size: 12.5px; }

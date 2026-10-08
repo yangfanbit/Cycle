@@ -1,86 +1,93 @@
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import {
-  buildWatchboard,
-  EVIDENCE_DIMENSIONS,
-  WATCHBOARD_DISCLAIMER,
-} from '../currentWatchboard';
+import { buildWatchboard, WATCHBOARD_DISCLAIMER } from '../currentWatchboard';
 import { CurrentWatchboardSection } from '../../../components/CurrentWatchboard/CurrentWatchboardSection';
 
 /**
  * 「当前观察台」的不变量测试。
  *
- * ★★ 它锁住的核心不是数字，而是**它不是什么**：
+ * ## ★★★ 本文件锁住的**最重要**一条：**阶段不得静默取一**
  *
- *   用户要的是「在当下这个时间点，提前看到该看什么」。项目**禁止**概率 / 评分 / 预测，
- *   且**一旦给出排序，它就会被当作推荐使用**（= 荐股）。
- *   因此本组件**按阶段分组**（封闭枚举）+ **组内按时间序** + 核心列是「**还缺什么**」。
+ * `current_candidates.json` 元信息写明「阶段由**产品端** Phase Evidence Matrix 独立推导，**不由研究声明决定**」；
+ * 引擎 `PhaseInference` 写明「推导阶段是**权威值**」，且「**不一致时 UI 必须并列显示，不得静默取一**」。
  *
- *   若有人把它改成「可能性排序」或加进任何数值分，这些断言会失败。
+ * 实测：6 个当前对象中 **2 个不一致** —— `CC-2026-BCI-MEDTECH` 与 `CC-2026-AUTO-SMARTDRIVE`
+ * 的**推导值为 `UNKNOWN`**（R8：证据组合不满足任何阶段规则），而研究声明为 `THEME_FORMING`。
+ *
+ * 本模块 v0_1 曾直接读 `attention_state`，把两者都显示成「主题形成」—— **静默取了声明值**。
+ * 这些断言防止它复发。
  */
 
-describe('currentWatchboard · 状态陈列（真实数据）', () => {
-  it('覆盖当前全部研究对象，且按阶段分组', () => {
+describe('currentWatchboard · 阶段来源（真实数据）', () => {
+  it('★★★ 推导值 ≠ 声明值时，**两者并列**保留，不静默取一', () => {
     const wb = buildWatchboard();
+    const all = wb.groups.flatMap((g) => g.items);
     expect(wb.total).toBe(6);
-    expect(wb.groups.length).toBeGreaterThanOrEqual(2);
-    // 分组内的对象数之和 = 总数（无遗漏、无重复）
-    expect(wb.groups.reduce((n, g) => n + g.items.length, 0)).toBe(wb.total);
+    // 实测：2 个不一致
+    expect(wb.disagreementCount).toBe(2);
+
+    const bci = all.find((x) => x.candidateId === 'CC-2026-BCI-MEDTECH')!;
+    expect(bci.phase).toBe('UNKNOWN'); // ★ 推导值（权威）
+    expect(bci.declaredPhase).toBe('THEME_FORMING'); // ★ 声明值**并列保留**
+    expect(bci.agreesWithDeclared).toBe(false);
+    expect(bci.matchedRule).toBe('R8_UNCLASSIFIED');
+
+    const auto = all.find((x) => x.candidateId === 'CC-2026-AUTO-SMARTDRIVE')!;
+    expect(auto.phase).toBe('UNKNOWN');
+    expect(auto.declaredPhase).toBe('THEME_FORMING');
+    expect(auto.agreesWithDeclared).toBe(false);
   });
 
-  it('★ 组序 = 生命周期自然序（不是价值序）', () => {
+  it('★ 阶段来自规则引擎（命中规则 id 可审计），不是直接抄声明', () => {
+    const all = buildWatchboard().groups.flatMap((g) => g.items);
+    for (const it of all) {
+      expect(it.matchedRule).toMatch(/^R\d+_/);
+      expect(it.ruleLabel.length).toBeGreaterThan(0);
+      expect(Array.isArray(it.reasons)).toBe(true);
+    }
+    // 四个一致的对象的推导值应与声明一致
+    for (const id of ['CC-2026-OFFSHORE-WIND', 'CC-2026-COMPUTE-POWER', 'CC-2026-EMBODIED-AI', 'CC-2026-OPTICAL-LINK']) {
+      const it = all.find((x) => x.candidateId === id)!;
+      expect(it.agreesWithDeclared, id).toBe(true);
+      expect(it.phase, id).toBe(it.declaredPhase);
+    }
+  });
+
+  it('★★ 「还缺哪些维度」来自**引擎**（八维矩阵），不是本模块自算', () => {
+    const all = buildWatchboard().groups.flatMap((g) => g.items);
+    const optic = all.find((x) => x.candidateId === 'CC-2026-OPTICAL-LINK')!;
+    expect(optic.coverage.known).toBe(8);
+    expect(optic.missingDimensions).toEqual([]);
+
+    const bci = all.find((x) => x.candidateId === 'CC-2026-BCI-MEDTECH')!;
+    expect(bci.missingDimensions).toContain('资金响应');
+    expect(bci.missingDimensions).toContain('扩散广度');
+    expect(bci.coverage.known).toBe(7);
+    expect(bci.coverage.total).toBe(8);
+  });
+
+  it('★ 组序 = 生命周期自然序；组内按**阶段起点时间序**', () => {
     const ORDER = ['EARLY_SIGNAL', 'THEME_FORMING', 'BROAD_CONFIRMATION', 'EXPANSION', 'PEAK', 'DECLINE', 'END', 'UNKNOWN'];
     const wb = buildWatchboard();
     const idx = wb.groups.map((g) => ORDER.indexOf(g.phase));
     for (let i = 1; i < idx.length; i += 1) expect(idx[i]).toBeGreaterThan(idx[i - 1]);
-  });
-
-  it('★ 组内按**阶段起点时间序**（早的在前），起点缺失者排最后', () => {
-    const wb = buildWatchboard();
     for (const g of wb.groups) {
       const dated = g.items.filter((x) => x.phaseStart).map((x) => x.phaseStart as string);
       for (let i = 1; i < dated.length; i += 1) expect(dated[i] >= dated[i - 1]).toBe(true);
-      const firstUndated = g.items.findIndex((x) => !x.phaseStart);
-      if (firstUndated >= 0) {
-        for (let i = firstUndated; i < g.items.length; i += 1) expect(g.items[i].phaseStart).toBeNull();
-      }
     }
   });
 
-  it('★ 「还缺什么」来自三态证据里仍为「初现 / 未标注」的维度', () => {
+  it('★ 分组依据是**推导阶段**，不是声明阶段（否则 2 个 UNKNOWN 会被并进「主题形成」）', () => {
     const wb = buildWatchboard();
-    const bci = wb.groups.flatMap((g) => g.items).find((x) => x.candidateId === 'CC-2026-BCI-MEDTECH')!;
-    // 该对象：广度=EMERGING、信息边际=EMERGING、叙事=PRESENT
-    expect(bci.evidence.breadth).toBe('EMERGING');
-    expect(bci.evidence.narrative).toBe('PRESENT');
-    expect(bci.gaps).toContain('广度');
-    expect(bci.gaps).toContain('信息边际');
-    expect(bci.gaps).not.toContain('叙事');
-
-    // 三维均已现的对象 → 缺口为空（不编造缺口）
-    const emb = wb.groups.flatMap((g) => g.items).find((x) => x.candidateId === 'CC-2026-EMBODIED-AI')!;
-    expect(emb.gaps).toEqual([]);
+    const forming = wb.groups.find((g) => g.phase === 'THEME_FORMING');
+    const ids = (forming?.items ?? []).map((x) => x.candidateId);
+    expect(ids).toEqual(['CC-2026-OFFSHORE-WIND']); // 只有它推导为 THEME_FORMING
+    expect(ids).not.toContain('CC-2026-BCI-MEDTECH');
+    expect(ids).not.toContain('CC-2026-AUTO-SMARTDRIVE');
   });
 
-  it('阶段起点与「距记录日天数」由快照日计算，不用「今天」（避免漂移）', () => {
-    const wb = buildWatchboard();
-    const bci = wb.groups.flatMap((g) => g.items).find((x) => x.candidateId === 'CC-2026-BCI-MEDTECH')!;
-    expect(bci.phaseStart).toBe('2026-06-30');
-    expect(bci.snapshotDate).toBe('2026-09-15');
-    expect(bci.daysSincePhaseStart).toBe(77);
-  });
-
-  it('★ 缺口计数是**计数事实**，覆盖三个维度', () => {
-    const wb = buildWatchboard();
-    for (const d of EVIDENCE_DIMENSIONS) {
-      expect(typeof wb.gapCounts[d.label]).toBe('number');
-      expect(wb.gapCounts[d.label]).toBeGreaterThanOrEqual(0);
-      expect(wb.gapCounts[d.label]).toBeLessThanOrEqual(wb.total);
-    }
-  });
-
-  it('★★ 语义边界：视图模型**不含**任何 score / 概率 / 排名字段', () => {
+  it('★ 语义边界：视图模型**不含**任何 score / 概率 / 排名字段', () => {
     const wb = buildWatchboard();
     const keys = [
       ...Object.keys(wb),
@@ -92,7 +99,8 @@ describe('currentWatchboard · 状态陈列（真实数据）', () => {
     }
   });
 
-  it('★★ 声明必须写明「不等于」与既定的否定式措辞', () => {
+  it('★★ 声明必须写明「并列不取一」与既定的否定式措辞', () => {
+    expect(WATCHBOARD_DISCLAIMER).toContain('并列');
     expect(WATCHBOARD_DISCLAIMER).toContain('不等于');
     expect(WATCHBOARD_DISCLAIMER).toContain('不评分、不排名');
     expect(WATCHBOARD_DISCLAIMER).toContain('非预测');
@@ -100,21 +108,26 @@ describe('currentWatchboard · 状态陈列（真实数据）', () => {
 });
 
 describe('CurrentWatchboardSection · 渲染', () => {
-  it('渲染阶段分组、「还缺什么」与语义声明', () => {
+  it('★ 不一致的对象在界面上**并列显示**推导值与研究声明', () => {
+    const html = renderToStaticMarkup(<CurrentWatchboardSection />);
+    expect(html).toContain('推导阶段（权威）');
+    expect(html).toContain('研究声明为「主题形成」');
+    expect(html).toContain('两者并列，不静默取一');
+    expect(html).toContain('命中规则 R8_UNCLASSIFIED');
+  });
+
+  it('渲染分组、「还缺哪些维度」与语义声明', () => {
     const html = renderToStaticMarkup(<CurrentWatchboardSection />);
     expect(html).toContain('当前观察台');
-    expect(html).toContain('主题形成');
-    expect(html).toContain('还缺什么');
+    expect(html).toContain('还缺哪些维度');
     expect(html).toContain('脑机接口医疗器械');
-    // ★ 声明必须在，且用全库既定的否定式措辞
     expect(html).toContain('不等于');
     expect(html).toContain('不评分、不排名');
     expect(html).toContain('非预测');
-    // 不得残留会字面显示的 Markdown 标记
-    expect(html).not.toContain('**');
+    expect(html).not.toContain('**'); // 不得残留会字面显示的 Markdown 标记
   });
 
-  it('★ 提供「看研究问题」入口（只做导航，不做判定）', () => {
+  it('提供「看研究问题」入口（只做导航，不做判定）', () => {
     const html = renderToStaticMarkup(<CurrentWatchboardSection onOpenCandidate={() => {}} />);
     expect(html).toContain('看研究问题');
   });
