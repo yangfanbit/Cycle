@@ -320,9 +320,23 @@ export function attentionOf(campaign: TimelineCampaign): AttentionResult {
 
 /** Macro Theme = 该研究对象题材中 `theme_type ∈ {industry, sector}` 且 `role = related` 的那个 */
 export function macroThemeOf(campaign: TimelineCampaign): string | null {
-  const macro = (campaign.themes ?? []).find(
-    (t) => t.role === 'related' && (t.theme_type === 'industry' || t.theme_type === 'sector'),
+  // ★★ 2026-10-08 修正：原实现**多绑了 `role === 'related'`** ——
+  //    大主题若被标为 `main` 就判不出来（该 campaign 的主题**就是**某个行业时，
+  //    它的 role 必然是 main，不可能同时是 related）。
+  //
+  //    实测后果：12 个对象落入首页「未标注大主题」，其中 **7 个本可归入明确大主题**
+  //    （消费×3 / 电子 / 金融 / 国防军工 / 高端装备）—— 它们既**缺席自己主题的行**，
+  //    又把「未标注」堆成首页最大的一组。
+  //
+  //    这与 `build_structural_analogy_research_v0_10.py` 修的是**同一个缺陷**（同一根因、两处实现）。
+  //
+  //    新规则：**优先取 `related`**（更宽的归组），**无 `related` 时回退 `main`**；
+  //    不取 `secondary`（并列的次题材，语义不同）。
+  //    仅有 `concept` 型主题者仍返回 `null` —— 那是**真的**没有行业归属，不得编造。
+  const cands = (campaign.themes ?? []).filter(
+    (t) => t.theme_type === 'industry' || t.theme_type === 'sector',
   );
+  const macro = cands.find((t) => t.role === 'related') ?? cands.find((t) => t.role === 'main');
   return macro ? macro.name : null;
 }
 
