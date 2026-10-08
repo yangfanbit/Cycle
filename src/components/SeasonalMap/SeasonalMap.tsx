@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { MONTHS, MonthGrid, TodaySpan, monthFractions, pct } from '../Timeline/trackPrimitives';
 import type { ThemeAnnualRow, AnnualWindow } from '../../data/timeline/themeAnnualWindow';
 import { themeKey } from '../../data/timeline/themeAnnualWindow';
+import { seasonalityByTheme, SEASONALITY_NOTE } from '../../data/timeline/themeSeasonality';
 import { themeColorOf, themeOnsetColorOf } from './themeColors';
 import { dayOfYearISO, daysInYear } from '../../utils';
 
@@ -70,6 +71,8 @@ function packLanes(windows: AnnualWindow[]): { w: AnnualWindow; lane: number }[]
 }
 
 export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMapProps) {
+  // ★ 年内时间集中度（**纯计数**派生；不新增研究结论、不给强度）
+  const seasonality = useMemo(() => seasonalityByTheme(rows), [rows]);
   // Today 的年内位置（月-日）：季节性地图的横轴是「一年」，与具体年份无关
   const todayFrac = useMemo(() => {
     const y = Number(today.slice(0, 4));
@@ -117,6 +120,7 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
               Math.min(items.reduce((m, x) => Math.max(m, x.lane + 1), 1), MAX_LANES),
             );
             const key = themeKey(row);
+            const sea = seasonality.get(row.label);
             const open = openTheme === key;
             // 每个大主题一个分类色（颜色只表示「属于哪个主题」，不表示强弱 / 涨跌）
             const rowColor = themeColorOf(row.theme);
@@ -141,9 +145,15 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
                   <span className="sm-theme">{row.label}</span>
                   <span className="sm-stat">
                     历史 {row.occurrences} 次 · 覆盖 {row.comparableYears} 个年份
-                    {row.consensus
-                      ? ` · 集中 ${fracToMD(row.consensus.startFrac)}–${fracToMD(row.consensus.endFrac)}`
+                    {sea && sea.band
+                      ? ` · 集中 ${sea.band.from}–${sea.band.to}（${sea.windowCount} 个年内窗口中的 ${sea.inBand} 个）`
                       : ''}
+                    {/* ★ 时间集中度：**纯计数**。达到判据者加标记，但不给强度 / 评分 */}
+                    {sea?.concentrated && (
+                      <span className="sm-seasonal-flag" title={SEASONALITY_NOTE}>
+                        年内集中
+                      </span>
+                    )}
                   </span>
                 </div>
                 <div
@@ -199,6 +209,9 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
           </div>
         </div>
       </div>
+
+      {/* ★ 时间集中度的语义边界：与标注同显，避免被读成「明年也会」 */}
+      <p className="seasonal-hint sm-seasonality-note">{SEASONALITY_NOTE}</p>
 
       <p className="seasonal-hint">点击任一主题 → 查看该主题按年份的历史明细（完整生命周期在对象详情页）。</p>
     </section>
