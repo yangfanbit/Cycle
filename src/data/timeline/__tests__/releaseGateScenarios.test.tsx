@@ -29,7 +29,7 @@ import { parseStructuralAnalogyDataset, structuralAnalogyForCandidate } from '..
 import { buildTimeObservationLayer, defaultTimeObservationDataset } from '../timeObservationPatterns';
 import { previewTimelineSource } from '../timelineAdapter';
 import { timelineExportData } from '../timelinePreview';
-import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_9.json';
+import structuralAnalogyJson from '@observation/structural_analogy_explanations_v0_10.json';
 
 const SA = parseStructuralAnalogyDataset(structuralAnalogyJson);
 const SOURCE = previewTimelineSource();
