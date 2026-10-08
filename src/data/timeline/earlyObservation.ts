@@ -3,39 +3,34 @@
  *
  * ## 来源与规范
  *
- * - 数据：`research/research/reports/early_observation_v0_1.json`（Research-only 只读产物）
+ * - 数据：`research/research/reports/early_observation_v0_2.json`（Research-only 只读产物）
+ * - 设计：`docs/DESIGN_EARLY_OBSERVATION_v0_2.md`
  * - 规范：`AGENTS.md` §5.1「Product 允许消费」清单中**正式指定**的 Product-facing artifact
  *
- * ## ★★ 这一层解决什么
+ * ## ★★ 分层（按**选择偏差的性质**分，不是按内容分）
  *
- * 核心链路声明 `… → 相关因素 → **提前观察** → 当前状态与历史结构对照`，
- * 但实测 export 里 `early_signal` **0 个 campaign 有值** —— 这一段**从未实现**。
- * 本模块呈现其中的**历史侧**：*该 Campaign 启动前 20 个交易日，K 线上长什么样。*
+ * | 层 | 对象 | 选择偏差 | 可否与当前并列 |
+ * |---|---|---|---|
+ * | **L1 市场层** | 基准指数 `SH000300` | **无**（指数不是选出来的） | ✅ 可以 |
+ * | **L2 标的层** | campaign 已登记标的 | **有**（**事后选定**） | ❌ 不可 |
+ * | L3 当前对象→标的 | — | — | **不做**（会事实上成为个股清单） |
  *
- * ## ★★★ 红线（硬约束，不得违反）
+ * ## ★★★ 三条硬约束
  *
- * `AGENTS.md` §1 明令禁止 **概率 / 胜率 / 推荐分 / 预测**。因此本模块**只描述事实**：
- *
- * - ✅ 「启动前 20 个交易日，成交量分位 / 相对强度 / 波动率 / 均线位置分别是多少」
- * - ❌ 「出现这种形态后 N 日内上涨的概率」—— **不做**
- * - ❌ 任何评分 / 排序 / 档位 —— **不做**
- *
- * 全部观测量都是 **ex-ante**（只用当日及之前的数据），不引入未来信息。
- *
- * ## ★ 当前侧**无法对照**（如实呈现，不掩盖）
- *
- * 6 个当前研究对象**没有任何标的字段**，无法用同一套量计算「现在像不像」。
- * 因此设计文档设想的「历史 ↔ 当前并列呈现」**目前无法实现** ——
- * 需研究侧先决定「当前对象如何映射到标的」。本模块把这一点**明写进界面**。
+ * 1. **不做「像不像」** —— 只有事实，无相似度 / 匹配 / 命中 / 概率 / 评分 / 排序。
+ * 2. **全部 ex-ante** —— 每个检查点只用它当日及之前的数据。
+ * 3. ★ **当前市场状态不与任何具体 campaign 并列** ——
+ *    在某条 campaign 的面板里同时摆「它启动前」与「现在」，等于替使用者摆好像不像的题面。
+ *    因此 `currentMarketOf()` 只供**全局位置**使用，`earlyObservationOf()` **不含**当前状态。
  *
  * ## 纯函数
  * 无副作用、无 IO、无网络。
  */
 
-import earlyJson from '@observation/early_observation_v0_1.json';
+import earlyJson from '@observation/early_observation_v0_2.json';
 import exportJson from '@exports/timeline_export_v1.json';
 
-/** 单个标的在「启动前最后一日」的观测量 */
+/** 单点的观测量（`relStrength20` 仅 L2 有 —— L1 相对自身恒为 0，故不输出） */
 export interface EarlyObservationPoint {
   date: string;
   close: number | null;
@@ -43,7 +38,7 @@ export interface EarlyObservationPoint {
   volPct60: number | null;
   /** 过去 20 个交易日收益率（%） */
   ret20Pct: number | null;
-  /** ret_20 − 基准 SH000300 同期收益（百分点） */
+  /** ret_20 − 基准同期收益（百分点）；L1 为 null */
   relStrength20: number | null;
   /** 20 日已实现波动率 / 60 日已实现波动率 */
   volRatio: number | null;
@@ -51,20 +46,26 @@ export interface EarlyObservationPoint {
   aboveMa60: boolean | null;
 }
 
+export interface EarlyObservationCheckpoint extends EarlyObservationPoint {
+  /** 启动前 N 个交易日 */
+  tMinus: number;
+}
+
+export interface EarlyObservationMarketLayer {
+  seriesId: string;
+  checkpoints: EarlyObservationCheckpoint[];
+  atLastDay: EarlyObservationCheckpoint | null;
+  note: string;
+}
+
 export interface EarlyObservationSecurity {
   securityId: string;
   securityName: string | null;
-  /** 启动前最后一日 */
   atLastDay: EarlyObservationPoint | null;
-  /** 启动前 20 个交易日的逐日序列（描述性） */
   series: EarlyObservationPoint[];
 }
 
-export interface EarlyObservationView {
-  campaignId: string;
-  status: 'OK' | 'PARTIAL' | 'NO_DATA' | 'NO_START';
-  lookbackTradingDays: number;
-  benchmark: string;
+export interface EarlyObservationSecurityLayer {
   securities: EarlyObservationSecurity[];
   /** 跨标的中位数（**辅助口径**，非主口径） */
   medianAtLastDay: {
@@ -73,19 +74,36 @@ export interface EarlyObservationView {
     relStrength20: number | null;
     volRatio: number | null;
   } | null;
-  /** 覆盖不足时的说明（原样透传 Research 的 notes） */
-  notes: string[];
+  /** ★ 偏差警告：标的是事后选定的，不得与当前并列 */
+  biasNote: string;
 }
 
-/** ★ 当前侧不可对照的原因（Research 侧 `scope.not_covered` 原样透传，仅去掉 Markdown 强调符） */
-export const EARLY_OBSERVATION_SCOPE_NOTE: string = (
-  (earlyJson as unknown as { scope?: { not_covered?: string } }).scope?.not_covered ?? ''
-).replace(/\*\*/g, '');
+export interface EarlyObservationView {
+  campaignId: string;
+  status: string;
+  marketLayer: EarlyObservationMarketLayer | null;
+  securityLayer: EarlyObservationSecurityLayer | null;
+}
+
+/** 当前市场状态（**仅供全局位置使用**，不得挂在具体 campaign 旁） */
+export interface CurrentMarketView {
+  seriesId: string;
+  asOf: string | null;
+  observables: EarlyObservationPoint | null;
+  note: string;
+}
 
 const ARTIFACT = earlyJson as unknown as {
   by_campaign?: Record<string, RawRow>;
+  current_market?: RawCurrent;
+  rules?: { checkpoints_t_minus?: number[] };
 };
-const RULES = earlyJson as unknown as { rules?: { window?: number } };
+
+/** ★ L3 未建的原因（Research 侧原样透传，去 Markdown 强调符） */
+export const EARLY_OBSERVATION_L3_NOTE: string = (
+  (ARTIFACT as unknown as { layers?: { L3_current_to_security?: { why?: string } } }).layers
+    ?.L3_current_to_security?.why ?? ''
+).replace(/\*\*/g, '');
 
 interface RawPoint {
   date?: string;
@@ -96,6 +114,7 @@ interface RawPoint {
   vol_ratio?: number;
   above_ma20?: boolean;
   above_ma60?: boolean;
+  t_minus?: number;
 }
 interface RawSecurity {
   security_id?: string;
@@ -103,14 +122,28 @@ interface RawSecurity {
   series?: RawPoint[];
   at_last_day?: RawPoint;
 }
+interface RawMarketLayer {
+  series_id?: string;
+  checkpoints?: RawPoint[];
+  at_last_day?: RawPoint;
+  note?: string;
+}
+interface RawSecurityLayer {
+  per_security?: RawSecurity[];
+  median_series?: RawPoint[];
+  bias_note?: string;
+}
 interface RawRow {
   campaign_id?: string;
   status?: string;
-  lookback_trading_days?: number;
-  benchmark?: string;
-  per_security?: RawSecurity[];
-  median_series?: RawPoint[];
-  notes?: string[];
+  market_layer?: RawMarketLayer;
+  security_layer?: RawSecurityLayer;
+}
+interface RawCurrent {
+  series_id?: string;
+  as_of?: string;
+  observables?: RawPoint;
+  note?: string;
 }
 
 /** security_id → 中文名（**来自 canonical export**，产品不碰 research/database） */
@@ -138,16 +171,38 @@ function pt(p: RawPoint | undefined): EarlyObservationPoint | null {
 }
 
 /**
- * 取某个历史对象的「启动前观察」。
+ * 取某个历史对象的「启动前观察」（**只含 L1 市场层 + L2 标的层**）。
  *
- * @param campaignId canonical campaign_id（与 export 一致）
+ * ★ **不含当前市场状态** —— 见文件头约束 3。
+ *
  * @returns 视图模型；artifact 中没有该对象时返回 `null`（**不推断、不造默认值**）
  */
 export function earlyObservationOf(campaignId: string): EarlyObservationView | null {
   const row = ARTIFACT.by_campaign?.[campaignId];
   if (!row) return null;
 
-  const securities: EarlyObservationSecurity[] = (row.per_security ?? [])
+  const ml = row.market_layer;
+  const marketLayer: EarlyObservationMarketLayer | null = ml
+    ? {
+        seriesId: ml.series_id ?? 'SH000300',
+        checkpoints: (ml.checkpoints ?? [])
+          .map((x) => {
+            const base = pt(x);
+            return base && x.t_minus !== undefined ? { ...base, tMinus: x.t_minus } : null;
+          })
+          .filter((x): x is EarlyObservationCheckpoint => x !== null),
+        atLastDay: (() => {
+          const base = pt(ml.at_last_day);
+          return base && ml.at_last_day?.t_minus !== undefined
+            ? { ...base, tMinus: ml.at_last_day.t_minus }
+            : null;
+        })(),
+        note: ml.note ?? '',
+      }
+    : null;
+
+  const sl = row.security_layer;
+  const securities: EarlyObservationSecurity[] = (sl?.per_security ?? [])
     .filter((s) => s.security_id && s.status === 'OK')
     .map((s) => ({
       securityId: s.security_id as string,
@@ -155,22 +210,44 @@ export function earlyObservationOf(campaignId: string): EarlyObservationView | n
       atLastDay: pt(s.at_last_day),
       series: (s.series ?? []).map((x) => pt(x)).filter((x): x is EarlyObservationPoint => x !== null),
     }));
+  const ms = sl?.median_series ?? [];
+  const lastMed = ms.length ? ms[ms.length - 1] : undefined;
+  const securityLayer: EarlyObservationSecurityLayer | null = sl
+    ? {
+        securities,
+        medianAtLastDay: lastMed
+          ? {
+              volPct60: lastMed.vol_pct60 ?? null,
+              ret20Pct: lastMed.ret_20_pct ?? null,
+              relStrength20: lastMed.rel_strength_20 ?? null,
+              volRatio: lastMed.vol_ratio ?? null,
+            }
+          : null,
+        biasNote: (sl.bias_note ?? '').replace(/\*\*/g, ''),
+      }
+    : null;
 
-  const m = (row.median_series ?? [])[row.median_series?.length ? row.median_series.length - 1 : 0];
   return {
     campaignId: row.campaign_id ?? campaignId,
-    status: (row.status as EarlyObservationView['status']) ?? 'NO_DATA',
-    lookbackTradingDays: row.lookback_trading_days ?? RULES.rules?.window ?? 20,
-    benchmark: row.benchmark ?? 'SH000300',
-    securities,
-    medianAtLastDay: m
-      ? {
-          volPct60: m.vol_pct60 ?? null,
-          ret20Pct: m.ret_20_pct ?? null,
-          relStrength20: m.rel_strength_20 ?? null,
-          volRatio: m.vol_ratio ?? null,
-        }
-      : null,
-    notes: row.notes ?? [],
+    status: row.status ?? 'NO_DATA',
+    marketLayer,
+    securityLayer,
+  };
+}
+
+/**
+ * 取**当前**市场状态。
+ *
+ * ★★ **仅供全局位置使用** —— **不得**渲染在某条历史 campaign 的详情里：
+ * 把「它启动前」与「现在」摆在同一张卡片，等于替使用者摆好「像不像」的题面。
+ */
+export function currentMarketOf(): CurrentMarketView | null {
+  const c = ARTIFACT.current_market;
+  if (!c) return null;
+  return {
+    seriesId: c.series_id ?? 'SH000300',
+    asOf: c.as_of ?? null,
+    observables: pt(c.observables),
+    note: (c.note ?? '').replace(/\*\*/g, ''),
   };
 }

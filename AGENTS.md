@@ -93,19 +93,25 @@ Structural Analogy 当前冻结规则以：
 - `research/current/` 下的 Product-facing artifact（`current_candidates.json` · `market_snapshots/`）
 - `research/research/reports/` 下被正式指定的 Product-facing artifact（SA · TO · Driver canonicalization · **K-Line Confirmation** · **Early Observation**）
 
-> ★ **2026-10-08 新增指定**：`research/research/reports/early_observation_v0_1.json` ——
-> 「**启动前观察**」的历史侧：每个历史 Campaign **启动前 20 个交易日**的量价状态
-> （成交量分位 / 20 日相对强度 / 波动率比 / 均线位置）。
+> ★ **2026-10-08 新增指定**：`research/research/reports/early_observation_v0_2.json` ——
+> 「**启动前观察**」：每个历史 Campaign **启动前多检查点**（T-60/40/20/10/5/1 交易日）的量价状态
+> （成交量分位 / 20 日收益 / 波动率比 / 均线位置），**外加当前市场状态**（基准 `SH000300`）。
+> 设计见 `docs/DESIGN_EARLY_OBSERVATION_v0_2.md`。
 >
 > **依据**：核心链路声明 `… → 相关因素 → **提前观察** → 当前状态与历史结构对照`，
 > 但实测 export 里 `early_signal` **0 个 campaign 有值** —— 这一段**从未实现**。
 >
-> ★★ **红线**：`AGENTS.md` §1 禁止概率 / 胜率 / 评分 / 排序 / 预测。
-> 该产物**只描述事实**，全部观测量为 **ex-ante**（只用当日及之前数据），**不含**任何概率或评分。
+> ★★ **分层（按选择偏差的性质，不是按内容）**：
+> **L1 市场层**（基准指数，**不是选出来的** → 无选择偏差）· **L2 标的层**（campaign 已登记标的，
+> **事后选定** → 有选择偏差）。**L3（当前对象→标的）不做** —— 会事实上成为个股清单。
 >
-> ★ **当前侧不可对照**（如实呈现）：6 个当前研究对象**没有任何标的字段**，
-> 无法用同一套量计算「现在像不像」→ 设计设想的「历史 ↔ 当前并列呈现」**目前无法实现**，
-> 需研究侧先决定「当前对象如何映射到标的」。该限制**写进 artifact 与界面**，不掩盖。
+> ★★ **两条硬约束**：
+> ① `L2 不得与当前并列` —— 把「已经涨过」的篮子与当下比形态，会让比较系统性偏高；
+> ② **当前市场状态只出现在全局位置，不得渲染进任何历史行情的详情面板** ——
+>    把「它启动前」与「现在」摆在同一张卡片，等于替使用者摆好「像不像」的题面。
+>    （已由测试钉死：`earlyObservation.test.tsx` 断言 campaign 详情不含当前市场状态。）
+>
+> ★★ **红线**：只描述事实，全部观测量 **ex-ante**；**不含**概率 / 评分 / 排序 / 预测 / 匹配判定。
 
 > ★ **2026-10-08 新增指定**：`research/research/reports/kline_confirmation_v0_2.json` ——
 > 每个历史对象的「K 线证实状态」。四个视角（Timeline · Lifecycle · SA · 季节性地图）**全部读**

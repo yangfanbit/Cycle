@@ -21,10 +21,7 @@ import {
 } from '../../data/timeline/historicalCase';
 import type { ExportConflictV1, ExportDriversV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
 import { klineConfirmationOf } from '../../data/timeline/klineConfirmation';
-import {
-  earlyObservationOf,
-  EARLY_OBSERVATION_SCOPE_NOTE,
-} from '../../data/timeline/earlyObservation';
+import { earlyObservationOf } from '../../data/timeline/earlyObservation';
 import { diffDays } from '../../utils';
 import {
   conflictLine,
@@ -328,7 +325,7 @@ export function CampaignDetail({
           {analogyContext.unknownDimensionLabels.length > 0 && (
             <p className="phase-text">
               未知维度：{analogyContext.unknownDimensionLabels.join('、')}
-              —— 资料不足，**不等于**「不存在」或「不对应」。
+              —— 资料不足，<strong>不等于</strong>「不存在」或「不对应」。
             </p>
           )}
           <p className="phase-text">
@@ -485,49 +482,69 @@ export function CampaignDetail({
         )}
 
         {/* ---------- 启动前观察（ThreeC 1.2 · 只读描述性产物，不含概率 / 评分 / 排序） ---------- */}
-        {early && early.securities.length > 0 && (
+        {early && (early.marketLayer || early.securityLayer) && (
           <>
             <dt>启动前观察</dt>
             <dd className="eo">
-              <span className="eo-head">
-                启动前 {early.lookbackTradingDays} 个交易日 · 逐标的（基准 {early.benchmark}）
-              </span>
-              <ul className="eo-list">
-                {early.securities.map((s) => (
-                  <li key={s.securityId}>
-                    <span className="eo-name">{s.securityName ?? s.securityId}</span>
-                    {s.atLastDay ? (
-                      <span className="eo-vals">
-                        {s.atLastDay.date} · 量分位 {num(s.atLastDay.volPct60, 2)} · 20 日相对强度{' '}
-                        {num(s.atLastDay.relStrength20, 1, 'pct')} · 波动率比{' '}
-                        {num(s.atLastDay.volRatio, 2)} · {maLabel(s.atLastDay)}
-                      </span>
-                    ) : (
-                      <span className="phase-text">启动前数据不足</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-              {early.medianAtLastDay && early.securities.length > 1 && (
-                <span className="phase-text">
-                  跨标的中位数（**辅助口径**，非主口径）：量分位{' '}
-                  {num(early.medianAtLastDay.volPct60, 2)} · 相对强度{' '}
-                  {num(early.medianAtLastDay.relStrength20, 1, 'pct')} · 波动率比{' '}
-                  {num(early.medianAtLastDay.volRatio, 2)}
-                </span>
+              {early.marketLayer && early.marketLayer.checkpoints.length > 0 && (
+                <div className="eo-layer">
+                  <span className="eo-head">
+                    L1 · 市场层（{early.marketLayer.seriesId}）· 启动前检查点
+                  </span>
+                  <span className="phase-text">
+                    基准指数不是选出来的，故不受代表标的的选择偏差影响
+                  </span>
+                  <ul className="eo-list">
+                    {early.marketLayer.checkpoints.map((c) => (
+                      <li key={c.tMinus}>
+                        <span className="eo-name">T-{c.tMinus}</span>
+                        <span className="eo-vals">
+                          {c.date} · 量分位 {num(c.volPct60, 2)} · 20 日 {num(c.ret20Pct, 1, 'pct')} ·
+                          波动率比 {num(c.volRatio, 2)} · {maLabel(c)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
-              {early.notes.map((n, i) => (
-                <span key={i} className="phase-text">
-                  {n}
-                </span>
-              ))}
+
+              {early.securityLayer && early.securityLayer.securities.length > 0 && (
+                <div className="eo-layer">
+                  <span className="eo-head">L2 · 标的层 · 启动前 20 个交易日（逐标的）</span>
+                  <ul className="eo-list">
+                    {early.securityLayer.securities.map((s) => (
+                      <li key={s.securityId}>
+                        <span className="eo-name">{s.securityName ?? s.securityId}</span>
+                        {s.atLastDay ? (
+                          <span className="eo-vals">
+                            {s.atLastDay.date} · 量分位 {num(s.atLastDay.volPct60, 2)} · 20 日相对强度{' '}
+                            {num(s.atLastDay.relStrength20, 1, 'pct')} · 波动率比{' '}
+                            {num(s.atLastDay.volRatio, 2)} · {maLabel(s.atLastDay)}
+                          </span>
+                        ) : (
+                          <span className="phase-text">启动前数据不足</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                  {early.securityLayer.medianAtLastDay && early.securityLayer.securities.length > 1 && (
+                    <span className="phase-text">
+                      跨标的中位数（辅助口径，非主口径）：量分位{' '}
+                      {num(early.securityLayer.medianAtLastDay.volPct60, 2)} · 相对强度{' '}
+                      {num(early.securityLayer.medianAtLastDay.relStrength20, 1, 'pct')} · 波动率比{' '}
+                      {num(early.securityLayer.medianAtLastDay.volRatio, 2)}
+                    </span>
+                  )}
+                  {early.securityLayer.biasNote && (
+                    <p className="kc-note kc-note-flag">★ {early.securityLayer.biasNote}</p>
+                  )}
+                </div>
+              )}
+
               <p className="kc-note">
                 只描述<strong>启动前</strong>的量价状态（全部为 ex-ante 滚动计算）；<strong>非预测</strong>，
                 不评分、不排名，也不预示启动后的走势。
               </p>
-              {EARLY_OBSERVATION_SCOPE_NOTE && (
-                <p className="phase-text">★ {EARLY_OBSERVATION_SCOPE_NOTE}</p>
-              )}
             </dd>
           </>
         )}
@@ -656,8 +673,8 @@ export function CampaignDetail({
                 ))
               )}
               <div className="phase-text">
-                证据**来源**类别（由事件的 event_type 确定性映射）。
-                「证据类别」与「驱动机制」**不是同一维**，不可混用。
+                证据<strong>来源</strong>类别（由事件的 event_type 确定性映射）。
+                「证据类别」与「驱动机制」<strong>不是同一维</strong>，不可混用。
               </div>
             </dd>
 
@@ -716,7 +733,7 @@ export function CampaignDetail({
               <p className="phase-text hcx-ev-intro">
                 {evidenceTimeline.attributionSource === 'RESEARCH'
                   ? '来自 Research V1.7 研究归因（原样展示，按阶段归组）。'
-                  : 'Research 未提供归因 → 以下为按事件时间窗口的**归组线索**。'}
+                  : 'Research 未提供归因 → 以下为按事件时间窗口的归组线索。'}
                 <strong>归因是研究归组 / 研究判断，不是单条事件的因果证明。</strong>
               </p>
               <div className="hcx-attr">

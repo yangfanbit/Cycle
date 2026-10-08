@@ -25,6 +25,7 @@ import { parseCurrentCandidateDataset } from './data/timeline/currentCandidate';
 import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
 import currentCandidateFixtureJson from '@current/fixtures/example_candidates.json';
 import { buildProvenance, PROVENANCE_NOT_AVAILABLE } from './data/buildProvenance';
+import { CurrentMarketStrip } from './components/CurrentMarket/CurrentMarketStrip';
 import { marketTodayISO } from './utils';
 
 /**
@@ -150,6 +151,10 @@ export default function App() {
         <div className="app-today">
           <span className="today-chip">Today {today}</span>
         </div>
+        {/* ★ 当前市场状态（ThreeC 1.2 · 只读描述性产物）
+            ★★ 放在**全局位置**、**不与任何历史行情并列** ——
+               把「某段历史的启动前」与「现在」摆在同一张卡片里，等于替使用者摆好「像不像」的题面。 */}
+        <CurrentMarketStrip />
       </header>
 
       <main className="app-main">
