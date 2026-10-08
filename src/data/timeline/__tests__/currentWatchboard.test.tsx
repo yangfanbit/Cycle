@@ -87,6 +87,17 @@ describe('currentWatchboard · 阶段来源（真实数据）', () => {
     expect(ids).not.toContain('CC-2026-AUTO-SMARTDRIVE');
   });
 
+  it('★★ 记录日与「距记录日天数」取自**数据集快照日**（不用「今天」，避免漂移）', () => {
+    const wb = buildWatchboard();
+    // ★ 2026-10-08：快照日已由 2026-09-15 推进到 2026-10-08（修契约违规，见 archive 说明）
+    expect(wb.asOf).toBe('2026-10-08');
+    const bci = wb.groups.flatMap((g) => g.items).find((x) => x.candidateId === 'CC-2026-BCI-MEDTECH')!;
+    expect(bci.phaseStart).toBe('2026-06-30');
+    expect(bci.snapshotDate).toBe('2026-10-08');
+    // 2026-06-30 → 2026-10-08 = 100 天
+    expect(bci.daysSincePhaseStart).toBe(100);
+  });
+
   it('★ 语义边界：视图模型**不含**任何 score / 概率 / 排名字段', () => {
     const wb = buildWatchboard();
     const keys = [
