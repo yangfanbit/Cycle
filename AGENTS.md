@@ -91,7 +91,14 @@ Structural Analogy 当前冻结规则以：
 
 - `exports/timeline_export_v1.json` —— canonical export（Contract v1.0）
 - `research/current/` 下的 Product-facing artifact（`current_candidates.json` · `market_snapshots/`）
-- `research/research/reports/` 下被正式指定的 Product-facing artifact（SA · TO · Driver canonicalization）
+- `research/research/reports/` 下被正式指定的 Product-facing artifact（SA · TO · Driver canonicalization · **K-Line Confirmation**）
+
+> ★ **2026-10-08 新增指定**：`research/research/reports/kline_confirmation_v0_1.json` ——
+> 每个历史对象的「K 线证实状态」（记录峰值是否被**已登记标的**的价格高点证实，±7 日 = 周粒度）。
+> 依据：产品四个视角**全部读** campaign 的 start / peak / end，而此前**没有任何机制对照过市场**。
+> 该 artifact **只读**、**不含** score / ranking / probability；
+> 其中「未证实」**不等于**「日期错误」—— 峰值可能锚定在指数 / 商品价 / 行业价 / 政策事件上，
+> 故 artifact **不做归类**，只给**原文依据**。
 
 **禁止触碰**：
 

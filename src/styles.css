@@ -3052,3 +3052,34 @@ html, body {
 .cs-profile-note { color: var(--ink-3); font-size: 10.5px; }
 .cs-gaps { border-left: 2px solid var(--line-strong); padding-left: 8px; }
 .cs-gaps span { display: block; font-family: var(--mono); font-size: 11px; padding-left: 10px; }
+
+/* ---------- K 线证实状态（ThreeC 1.2 · CampaignDetail） ----------
+   只读消费 Research artifact；「未证实」≠「日期错误」，故配色不用告警红。 */
+.kc { display: flex; flex-direction: column; gap: 6px; }
+.kc-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  border: 1px solid var(--line-strong);
+  background: #eef0f2;
+  color: var(--ink-2);
+}
+.kc-confirmed .kc-badge { background: #e6f1e7; color: #2f6b3a; border-color: #bcd9c1; }
+.kc-unconfirmed .kc-badge { background: #fdf3d7; color: var(--preheat-ink); border-color: #e8d9a8; }
+.kc-line { margin: 0; color: var(--ink-2); }
+.kc-line strong { color: var(--ink); }
+.kc-anchors { border-left: 2px solid var(--line-strong); padding-left: 8px; }
+.kc-anchors ul { margin: 4px 0 0; padding-left: 16px; }
+.kc-anchors li { color: var(--ink-2); font-size: 13px; margin-bottom: 4px; }
+.kc-anchor-date { display: block; color: var(--ink-3); font-size: 12px; font-family: var(--mono); }
+.kc-note {
+  margin: 0;
+  padding: 6px 8px;
+  background: #f7f7f5;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink-2);
+  font-size: 13px;
+}

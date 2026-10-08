@@ -20,6 +20,7 @@ import {
   type MechanismDriverView,
 } from '../../data/timeline/historicalCase';
 import type { ExportConflictV1, ExportDriversV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
+import { klineConfirmationOf } from '../../data/timeline/klineConfirmation';
 import { diffDays } from '../../utils';
 import {
   conflictLine,
@@ -175,6 +176,9 @@ export function CampaignDetail({
 }: CampaignDetailProps) {
   const m = normalize(campaign);
   const rule = ruleById.get(m.ruleId);
+  // ★ K 线证实状态：**只读** Research artifact（不改动任何研究数据、不重算峰值）。
+  //   artifact 中无该对象时返回 null → 整个区块不渲染（**不造默认值**）。
+  const kline = klineConfirmationOf(m.campaignId);
 
   // Historical Case 基础视图（**同步纯映射**，SSR 与首帧即可用）
   const caseBase = useMemo<HistoricalCaseView | null>(
@@ -357,6 +361,77 @@ export function CampaignDetail({
 
         <dt>峰值</dt>
         <dd>{m.peak ?? '未核验（合法空状态）'}</dd>
+
+        {/* ---------- K 线证实状态（ThreeC 1.2 · 只读消费，不改动任何研究数据） ---------- */}
+        {kline && (
+          <>
+            <dt>K 线证实</dt>
+            <dd className={`kc kc-${kline.status.toLowerCase()}`}>
+              <span className="kc-badge">{kline.statusLabel}</span>
+              {kline.status === 'CONFIRMED' && kline.nearest && (
+                <span className="kc-line">
+                  已登记标的 <strong>{kline.nearest.securityName ?? kline.nearest.securityId}</strong>{' '}
+                  的价格高点 {kline.nearest.peakDate}（相差 {kline.nearest.deltaDays} 日）落在记录峰值的
+                  ±{kline.toleranceDays} 日内
+                </span>
+              )}
+              {kline.status === 'UNCONFIRMED' && (
+                <>
+                  <p className="kc-line">
+                    记录峰值 <strong>{kline.recordedPeak}</strong>，但
+                    <strong>没有任何已登记标的</strong>在该周（±{kline.toleranceDays} 日）创出价格高点。
+                    {kline.nearest && (
+                      <>
+                        {' '}
+                        最近的是 {kline.nearest.securityName ?? kline.nearest.securityId}
+                        （{kline.nearest.peakDate}，相差 {kline.nearest.deltaDays} 日）。
+                      </>
+                    )}
+                  </p>
+                  {kline.anchors.length > 0 ? (
+                    <div className="kc-anchors">
+                      <span className="phase-text">
+                        ★ 但记录里在同一周内有依据（原文摘录，未作归类）：
+                      </span>
+                      <ul>
+                        {kline.anchors.map((a, i) => (
+                          <li key={`${a.date}-${a.kind}-${i}`}>
+                            <span className="kc-anchor-date">
+                              {a.date} · {a.kind === 'event' ? '事件' : '证据'}
+                              {a.type ? ` · ${a.type}` : ''}
+                            </span>
+                            {a.excerpt}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <p className="phase-text">
+                      ★ 且记录里在 ±{kline.toleranceDays} 日内**没有**任何 evidence / 事件依据。
+                    </p>
+                  )}
+                  <p className="kc-note">
+                    「未证实」<strong>不等于</strong>「日期错误」：峰值可能锚定在指数、商品价、行业价或
+                    政策事件上 —— 上列原文即为此类依据。本处只报**计数事实**，不作归类、不给评分。
+                  </p>
+                </>
+              )}
+              {kline.status === 'NO_PEAK_RECORDED' && (
+                <span className="kc-line">
+                  该对象记录里**未标注峰值** —— 属合法空状态，非「未通过证实」。
+                </span>
+              )}
+              {kline.status === 'NO_DATA' && (
+                <span className="kc-line">未能取得该对象的行情数据，无法对照。</span>
+              )}
+              <span className="phase-text">
+                （口径：原始价盘中最高 · 容差 ±{kline.toleranceDays} 日 · 覆盖{' '}
+                {kline.coverage.withData ?? '—'}/{kline.coverage.securities ?? '—'} 个标的；
+                本区块原样消费 Research 结果，产品不重新计算）
+              </span>
+            </dd>
+          </>
+        )}
 
         <dt>所属规律</dt>
         <dd>
