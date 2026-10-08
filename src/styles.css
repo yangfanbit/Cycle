@@ -3090,3 +3090,11 @@ html, body {
 .kc-ref strong { color: var(--ink); }
 .kc-ref-basis { display: block; margin-top: 2px; color: var(--ink-3); font-size: 12px; }
 .kc-note-flag { border-left: 3px solid var(--preheat-ink); background: #fdf9ee; }
+
+/* ---------- 启动前观察（ThreeC 1.2 · 只读描述性产物） ---------- */
+.eo { display: flex; flex-direction: column; gap: 6px; }
+.eo-head { color: var(--ink-2); }
+.eo-list { margin: 0; padding-left: 16px; }
+.eo-list li { margin-bottom: 3px; }
+.eo-name { display: inline-block; min-width: 84px; color: var(--ink); }
+.eo-vals { color: var(--ink-2); font-family: var(--mono); font-size: 12px; }

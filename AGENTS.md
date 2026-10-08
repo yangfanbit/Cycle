@@ -91,7 +91,21 @@ Structural Analogy 当前冻结规则以：
 
 - `exports/timeline_export_v1.json` —— canonical export（Contract v1.0）
 - `research/current/` 下的 Product-facing artifact（`current_candidates.json` · `market_snapshots/`）
-- `research/research/reports/` 下被正式指定的 Product-facing artifact（SA · TO · Driver canonicalization · **K-Line Confirmation**）
+- `research/research/reports/` 下被正式指定的 Product-facing artifact（SA · TO · Driver canonicalization · **K-Line Confirmation** · **Early Observation**）
+
+> ★ **2026-10-08 新增指定**：`research/research/reports/early_observation_v0_1.json` ——
+> 「**启动前观察**」的历史侧：每个历史 Campaign **启动前 20 个交易日**的量价状态
+> （成交量分位 / 20 日相对强度 / 波动率比 / 均线位置）。
+>
+> **依据**：核心链路声明 `… → 相关因素 → **提前观察** → 当前状态与历史结构对照`，
+> 但实测 export 里 `early_signal` **0 个 campaign 有值** —— 这一段**从未实现**。
+>
+> ★★ **红线**：`AGENTS.md` §1 禁止概率 / 胜率 / 评分 / 排序 / 预测。
+> 该产物**只描述事实**，全部观测量为 **ex-ante**（只用当日及之前数据），**不含**任何概率或评分。
+>
+> ★ **当前侧不可对照**（如实呈现）：6 个当前研究对象**没有任何标的字段**，
+> 无法用同一套量计算「现在像不像」→ 设计设想的「历史 ↔ 当前并列呈现」**目前无法实现**，
+> 需研究侧先决定「当前对象如何映射到标的」。该限制**写进 artifact 与界面**，不掩盖。
 
 > ★ **2026-10-08 新增指定**：`research/research/reports/kline_confirmation_v0_2.json` ——
 > 每个历史对象的「K 线证实状态」。四个视角（Timeline · Lifecycle · SA · 季节性地图）**全部读**

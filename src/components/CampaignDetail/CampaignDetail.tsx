@@ -21,6 +21,10 @@ import {
 } from '../../data/timeline/historicalCase';
 import type { ExportConflictV1, ExportDriversV1, TimelineCampaign } from '../../data/timeline/timelineTypes';
 import { klineConfirmationOf } from '../../data/timeline/klineConfirmation';
+import {
+  earlyObservationOf,
+  EARLY_OBSERVATION_SCOPE_NOTE,
+} from '../../data/timeline/earlyObservation';
 import { diffDays } from '../../utils';
 import {
   conflictLine,
@@ -179,6 +183,15 @@ export function CampaignDetail({
   // ★ K 线证实状态：**只读** Research artifact（不改动任何研究数据、不重算峰值）。
   //   artifact 中无该对象时返回 null → 整个区块不渲染（**不造默认值**）。
   const kline = klineConfirmationOf(m.campaignId);
+  // ★ 「启动前观察」：**只读** Research 描述性产物（不含概率 / 评分 / 排序）。
+  const early = earlyObservationOf(m.campaignId);
+  /** 数值展示：缺值显示「—」，不补零、不推断 */
+  const num = (v: number | null | undefined, digits = 2, suffix = '') =>
+    v === null || v === undefined ? '—' : `${v.toFixed(digits)}${suffix}`;
+  const maLabel = (p: { aboveMa20: boolean | null; aboveMa60: boolean | null }) =>
+    `MA20 ${p.aboveMa20 === null ? '—' : p.aboveMa20 ? '上' : '下'} · MA60 ${
+      p.aboveMa60 === null ? '—' : p.aboveMa60 ? '上' : '下'
+    }`;
 
   // Historical Case 基础视图（**同步纯映射**，SSR 与首帧即可用）
   const caseBase = useMemo<HistoricalCaseView | null>(
@@ -467,6 +480,54 @@ export function CampaignDetail({
                 {kline.coverage.withData ?? '—'}/{kline.coverage.securities ?? '—'} 个标的；
                 参照物由 Research 侧声明，本区块原样消费，产品不重新计算）
               </span>
+            </dd>
+          </>
+        )}
+
+        {/* ---------- 启动前观察（ThreeC 1.2 · 只读描述性产物，不含概率 / 评分 / 排序） ---------- */}
+        {early && early.securities.length > 0 && (
+          <>
+            <dt>启动前观察</dt>
+            <dd className="eo">
+              <span className="eo-head">
+                启动前 {early.lookbackTradingDays} 个交易日 · 逐标的（基准 {early.benchmark}）
+              </span>
+              <ul className="eo-list">
+                {early.securities.map((s) => (
+                  <li key={s.securityId}>
+                    <span className="eo-name">{s.securityName ?? s.securityId}</span>
+                    {s.atLastDay ? (
+                      <span className="eo-vals">
+                        {s.atLastDay.date} · 量分位 {num(s.atLastDay.volPct60, 2)} · 20 日相对强度{' '}
+                        {num(s.atLastDay.relStrength20, 1, 'pct')} · 波动率比{' '}
+                        {num(s.atLastDay.volRatio, 2)} · {maLabel(s.atLastDay)}
+                      </span>
+                    ) : (
+                      <span className="phase-text">启动前数据不足</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {early.medianAtLastDay && early.securities.length > 1 && (
+                <span className="phase-text">
+                  跨标的中位数（**辅助口径**，非主口径）：量分位{' '}
+                  {num(early.medianAtLastDay.volPct60, 2)} · 相对强度{' '}
+                  {num(early.medianAtLastDay.relStrength20, 1, 'pct')} · 波动率比{' '}
+                  {num(early.medianAtLastDay.volRatio, 2)}
+                </span>
+              )}
+              {early.notes.map((n, i) => (
+                <span key={i} className="phase-text">
+                  {n}
+                </span>
+              ))}
+              <p className="kc-note">
+                只描述<strong>启动前</strong>的量价状态（全部为 ex-ante 滚动计算）；<strong>非预测</strong>，
+                不评分、不排名，也不预示启动后的走势。
+              </p>
+              {EARLY_OBSERVATION_SCOPE_NOTE && (
+                <p className="phase-text">★ {EARLY_OBSERVATION_SCOPE_NOTE}</p>
+              )}
             </dd>
           </>
         )}
