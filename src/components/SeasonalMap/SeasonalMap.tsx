@@ -92,6 +92,7 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
           <span className="lg win">主要炒作窗口</span>
           <span className="lg onset">长周期起始（仅标起点）</span>
           <span className="lg rc">Research Candidate</span>
+          <span className="lg band">年内集中区间</span>
           <span className="lg now">Today</span>
           <span className="lg-note">柱子颜色 = 该行大主题（分类，不表示强弱 / 涨跌）</span>
         </p>
@@ -161,13 +162,22 @@ export function SeasonalMap({ rows, today, openTheme, onOpenTheme }: SeasonalMap
                   style={{ height: lanes * LANE_H + (lanes - 1) * LANE_GAP + ROW_PAD * 2 }}
                 >
                   <MonthGrid year={2025} />
-                  {/* 共识窗口：该主题历史主要炒作的集中区间（中位数，确定性聚合） */}
-                  {row.consensus && (
+                  {/* ★★ 集中区间：该主题年内窗口**最集中的约两个月**。
+                      ★ 与行内文字「集中 X–Y（M/N 个）」**同源**（同一 `bandFrac`）——
+                        避免「画的带」与「说的计数」不一致。
+                      ★ 未达到集中判据时**也画**（它就是覆盖最多窗口的那个区间），
+                        只是文字里不叫「集中」、也不加标记。 */}
+                  {sea?.bandFrac && (
                     <span
-                      className="sm-consensus"
+                      className={`sm-band${sea.concentrated ? ' concentrated' : ''}`}
+                      title={
+                        sea.concentrated
+                          ? `年内窗口 ${sea.windowCount} 个，其中 ${sea.inBand} 个落在 ${sea.band!.from} ~ ${sea.band!.to}`
+                          : `覆盖窗口最多的两个月：${sea.band!.from} ~ ${sea.band!.to}（${sea.windowCount} 个中的 ${sea.inBand} 个）`
+                      }
                       style={{
-                        left: pct(row.consensus.startFrac),
-                        width: pct(Math.max(row.consensus.endFrac - row.consensus.startFrac, 0.004)),
+                        left: pct(sea.bandFrac.startFrac),
+                        width: pct(Math.max(sea.bandFrac.endFrac - sea.bandFrac.startFrac, 0.004)),
                       }}
                     />
                   )}

@@ -46,6 +46,9 @@ export interface ThemeSeasonality {
   inBand: number;
   /** 最集中区间的起止（月-日，参考非闰年；无则 null） */
   band: { from: string; to: string } | null;
+  /** ★ 同一区间的**年内比例**（供地图精确绘制 —— 必须与 `band` 指向同一区间，
+   *  否则「画的带」与「说的计数」会不一致） */
+  bandFrac: { startFrac: number; endFrac: number } | null;
   /** ★ 是否达到「集中」判据（**仅用于是否加标注**，不是评分） */
   concentrated: boolean;
   /** ★ 面向界面的**计数陈述**（不含任何强度/概率措辞） */
@@ -87,7 +90,7 @@ export function seasonalityOf(row: ThemeAnnualRow): ThemeSeasonality {
 
   const n = starts.length;
   if (n === 0) {
-    return { label: row.label, windowCount: 0, inBand: 0, band: null, concentrated: false, statement: null };
+    return { label: row.label, windowCount: 0, inBand: 0, band: null, bandFrac: null, concentrated: false, statement: null };
   }
 
   let best = 0;
@@ -107,6 +110,8 @@ export function seasonalityOf(row: ThemeAnnualRow): ThemeSeasonality {
     windowCount: n,
     inBand: best,
     band,
+    // 年内比例：日序 → 0..1（与 `band` **同源**，保证画与说一致）
+    bandFrac: { startFrac: bestFrom / 365, endFrac: Math.min((bestFrom + BAND_DAYS) / 365, 1) },
     concentrated,
     // ★ 纯计数陈述：不含「强度 / 概率 / 规律 / 值得关注」等措辞
     statement: concentrated

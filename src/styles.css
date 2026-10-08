@@ -2625,7 +2625,7 @@ html, body {
 .sm-track .tl-grid .gl { top: -3px; bottom: -3px; }
 
 /* 共识窗口：该主题历史主要炒作的集中区间（中位数，确定性聚合，不是预测） */
-.sm-consensus {
+.sm-band {
   position: absolute;
   top: 1px;
   bottom: 1px;
@@ -3201,3 +3201,7 @@ html, body {
   border: 1px solid #e8d9a8;
 }
 .sm-seasonality-note { margin-top: 2px; }
+
+/* 年内集中区间：达到判据者加描边以示区别（★ 仅视觉强调，不代表强度） */
+.sm-band.concentrated { outline: 1px solid var(--line-strong); }
+.lg.band { background: #eef2f7; border: 1px solid var(--line-strong); }

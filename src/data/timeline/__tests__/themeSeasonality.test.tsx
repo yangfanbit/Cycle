@@ -83,6 +83,21 @@ describe('themeSeasonality · 年内集中度（真实数据）', () => {
     }
   });
 
+  it('★★★ 「画的带」与「说的计数」**同源**（bandFrac 必须对应 band）', () => {
+    const car = seasonalityOf(byLabel.get('汽车')!);
+    expect(car.bandFrac).not.toBeNull();
+    // 05-23 是一年第 143 天（非闰年）；61 天带宽
+    const doy = (mmdd: string) => {
+      const [m, d] = mmdd.split('-').map(Number);
+      const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      let n = d;
+      for (let i = 0; i < m - 1; i += 1) n += days[i];
+      return n;
+    };
+    expect(car.bandFrac!.startFrac).toBeCloseTo(doy(car.band!.from) / 365, 4);
+    expect(car.bandFrac!.endFrac).toBeCloseTo((doy(car.band!.from) + 61) / 365, 4);
+  });
+
   it('批量计算覆盖全部上地图主题', () => {
     const map = seasonalityByTheme(rows);
     expect(map.size).toBe(rows.length);
@@ -104,6 +119,15 @@ describe('SeasonalMap · 集中度标注渲染', () => {
     // 标记是 span.sm-seasonal-flag —— 汽车/资源/金融各一个
     const flags = (html.match(/sm-seasonal-flag/g) ?? []).length;
     expect(flags).toBe(3);
+  });
+
+  it('★★ 集中区间在地图上**画出来**，且与行内计数一致', () => {
+    // 达到判据者：带上有 concentrated 类；未达到者也画（覆盖最多窗口的区间）
+    expect(html).toContain('sm-band');
+    expect(html).toContain('sm-band concentrated');
+    expect(html).toContain('年内集中区间'); // 图例
+    // 汽车那一行的 title 必须与行内文字说同一件事
+    expect(html).toContain('年内窗口 6 个，其中 6 个落在 05-23 ~ 07-23');
   });
 
   it('★★ 语义边界说明必须与标注同显', () => {
