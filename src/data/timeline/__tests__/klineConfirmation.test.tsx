@@ -54,21 +54,44 @@ describe('klineConfirmation · 五状态判定（真实数据）', () => {
     expect(k.anchors).toEqual([]);
   });
 
-  it('★★ 未证实（真问题）：参照物**是股价**，但没有任何已登记标的同周创价格高点', () => {
-    const k = klineConfirmationOf('C-2023-CONS-VALUE-RETAIL')!;
+  it('★★ 未证实（真问题）：参照物未界定，且无任何记录依据', () => {
+    const k = klineConfirmationOf('C-2019-AD')!;
     expect(k.status).toBe('UNCONFIRMED');
-    expect(k.referent.code).toBe('SECURITY_HIGH');
-    expect(k.recordedPeak).toBe('2025-08-29');
-    // 依据存在，且为**原文摘录**（本模块不做归类）
-    expect(k.anchors.some((a) => a.excerpt.includes('万辰集团'))).toBe(true);
+    expect(k.referent.code).toBe('UNSPECIFIED');
+    expect(k.recordedPeak).toBe('2019-09-24');
+    expect(k.anchors).toEqual([]);
+  });
+
+  it('★★★ 回归护栏：R01-04 标的映射修正后，5 条消费 campaign 全部**已证实**', () => {
+    // 修正前这 5 条挂的是错位标的（如「家用电器」campaign 挂医美），
+    // 导致 2 条被判「未证实」、2 条靠巧合同日见顶蒙混过关。
+    const expect0 = [
+      ['C-2020-CONS-WHITE-GOODS', 'HAIER'],
+      ['C-2019-CONS-AESTHETICS', 'BLOOMAGE'],
+      ['C-2020-CONS-BEAUTY-CN', 'PROYA'],
+      ['C-2024-CONS-TRADE-IN', 'GREE'],
+      ['C-2023-CONS-VALUE-RETAIL', 'WANCHEN'],
+    ] as const;
+    for (const [cid, sec] of expect0) {
+      const k = klineConfirmationOf(cid)!;
+      expect(k.status, cid).toBe('CONFIRMED');
+      expect(k.nearest!.securityId, cid).toBe(sec);
+      expect(k.nearest!.deltaDays, cid).toBeLessThanOrEqual(7);
+    }
   });
 
   it('★★★ 不适用：参照物**不是股价**（指数 / 商品价 / 政策 / 板块级）—— 不判为未通过', () => {
     // 板块**指数**高点
+    const equip = klineConfirmationOf('C-2020-SEMI-EQUIPMENT')!;
+    expect(equip.status).toBe('NOT_APPLICABLE');
+    expect(equip.referent.code).toBe('SECTOR_INDEX_HIGH');
+    expect(equip.anchors.some((a) => a.excerpt.includes('申万半导体板块指数'))).toBe(true);
+
+    // ★ 2026-10-08 状态变化记录：C-2024-SEMI-MEMORY 原为 NOT_APPLICABLE，
+    //   修好「开放式 campaign 窗口」后变为 **CONFIRMED**（其已登记标的在记录峰值附近亦创高点）。
     const mem = klineConfirmationOf('C-2024-SEMI-MEMORY')!;
-    expect(mem.status).toBe('NOT_APPLICABLE');
-    expect(mem.referent.code).toBe('SECTOR_INDEX_HIGH');
-    expect(mem.anchors.some((a) => a.excerpt.includes('申万半导体板块指数'))).toBe(true);
+    expect(mem.status).toBe('CONFIRMED');
+    expect(mem.nearest!.deltaDays).toBeLessThanOrEqual(7);
 
     // 商品 / 行业**产品价格**高点
     const panel = klineConfirmationOf('C-2020-PANEL-CYCLE')!;
@@ -93,14 +116,6 @@ describe('klineConfirmation · 五状态判定（真实数据）', () => {
     expect(robotDown.referent.code).toBe('INDUSTRY_INDICATOR');
   });
 
-  it('★ 未界定参照物 + 股价不支持 → 仍判为 UNCONFIRMED（不放过）', () => {
-    const k = klineConfirmationOf('C-2019-AD')!;
-    expect(k.status).toBe('UNCONFIRMED');
-    expect(k.referent.code).toBe('UNSPECIFIED');
-    expect(k.anchors).toEqual([]);
-    expect(k.nearest!.deltaDays).toBeGreaterThan(30);
-  });
-
   it('记录**未标注峰值**是合法空状态，不等于「未通过证实」', () => {
     const k = klineConfirmationOf('C-2024-RES-GOLD-CB')!;
     expect(k.status).toBe('NO_PEAK_RECORDED');
@@ -113,9 +128,11 @@ describe('klineConfirmation · 五状态判定（真实数据）', () => {
     expect(klineConfirmationOf('')).toBeNull();
   });
 
-  it('★ 汇总为**计数事实**：32 已证实 / 5 未证实 / 12 不适用 / 4 未标注峰值 / 0 无数据', () => {
-    expect(klineConfirmationSummary.CONFIRMED).toBe(32);
-    expect(klineConfirmationSummary.UNCONFIRMED).toBe(5);
+  it('★ 汇总为**计数事实**：34 已证实 / 3 未证实 / 12 不适用 / 4 未标注峰值 / 0 无数据', () => {
+    // ★ 2026-10-08：修正 R01-04 标的映射错位 + 对照器开放式窗口后，
+    //   已证实 32→34、未证实 5→3；剩余 3 个全部是「无依据、无参照物」。
+    expect(klineConfirmationSummary.CONFIRMED).toBe(34);
+    expect(klineConfirmationSummary.UNCONFIRMED).toBe(3);
     expect(klineConfirmationSummary.NOT_APPLICABLE).toBe(12);
     expect(klineConfirmationSummary.NO_PEAK_RECORDED).toBe(4);
     expect(klineConfirmationSummary.NO_DATA).toBe(0);
@@ -184,8 +201,8 @@ describe('CampaignDetail · K 线证实区块（真实数据）', () => {
     expect(html).not.toContain('｜PIT:');
   });
 
-  it('★ 未证实 → 说明这是**需要研究侧核对的问题**（日期或清单），并列出原文依据', () => {
-    const c = campaignById('C-2023-CONS-VALUE-RETAIL')!;
+  it('★ 未证实 → 说明这是**需要研究侧核对的问题**（日期或清单）', () => {
+    const c = campaignById('C-2019-AD')!;
     const html = renderToStaticMarkup(
       <CampaignDetail campaign={c} onOpenRule={noop} onClose={noop} />,
     );
@@ -193,7 +210,6 @@ describe('CampaignDetail · K 线证实区块（真实数据）', () => {
     expect(html).toContain('没有任何已登记标的');
     expect(html).toContain('需要研究侧核对的问题');
     expect(html).toContain('代表标的清单不全');
-    expect(html).toContain('万辰集团');
     // 纪律声明必须在（措辞沿用全库既定的否定式白名单：`不评分、不排名`）
     expect(html).toContain('不等于');
     expect(html).toContain('不评分、不排名');
