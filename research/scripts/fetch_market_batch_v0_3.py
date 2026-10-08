@@ -267,8 +267,13 @@ def save_gaps(gaps):
     )
 
 
-def build_plan(conn, gaps, only=None):
-    """从 DB 自动构建计划：**同时**检查区间两侧是否不足。"""
+def build_plan(conn, gaps, only=None, extra=None):
+    """从 DB 自动构建计划：**同时**检查区间两侧是否不足。
+
+    `extra`：显式指定的 security_id 列表 —— 即使**未挂到任何 campaign** 也纳入抓取。
+    ★ 为什么需要：记录里**点名**但未登记的标的（如白电三巨头）不在 campaign 关联里，
+      但它们正是判断「标的清单是否错位」的关键证据，必须能取到行情。
+    """
     rows = conn.execute(
         """
         SELECT s.security_id, s.ticker, s.name, s.exchange,
@@ -322,6 +327,23 @@ def build_plan(conn, gaps, only=None):
         else:
             why = "完全无数据"
         plan[sid] = (tencent_symbol(ticker, exch), name or sid, "stock", beg2, end2, why.strip())
+
+    # ★ extra：未挂 campaign 的标的（点名但未登记），按显式区间抓取
+    for sid in (extra or []):
+        if sid in plan:
+            continue
+        row = conn.execute("SELECT ticker, name, exchange FROM securities WHERE security_id=?", (sid,)).fetchone()
+        if not row or not row[0]:
+            skipped.append((sid, "extra：不在 securities 表或缺 ticker"))
+            continue
+        ticker, name, exch = row
+        beg2, end2 = extra.get(sid) if isinstance(extra, dict) else (None, None)
+        beg2 = beg2 or "2016-01-01"
+        end2 = min(end2 or RANGE_CEIL, RANGE_CEIL)
+        cur = conn.execute("SELECT MIN(trade_date), MAX(trade_date) FROM market_daily WHERE series_id=?", (sid,)).fetchone()
+        if cur[0] and cur[1] and cur[0] <= beg2 and cur[1] >= (date.fromisoformat(end2) - timedelta(days=31)).isoformat():
+            continue
+        plan[sid] = (tencent_symbol(ticker, exch), name or sid, "stock", beg2, end2, "extra：点名但未挂 campaign")
     return plan, skipped
 
 
@@ -330,10 +352,14 @@ def main(argv):
     only = None
     if "--only" in argv:
         only = set(argv[argv.index("--only") + 1].split(","))
+    # ★ --extra MIDEA,GREE,HAIER：抓取**未挂 campaign** 的标的（记录点名但未登记）
+    extra = None
+    if "--extra" in argv:
+        extra = [x for x in argv[argv.index("--extra") + 1].split(",") if x]
 
     conn = db.connect()
     gaps = load_gaps()
-    plan, skipped = build_plan(conn, gaps, only)
+    plan, skipped = build_plan(conn, gaps, only, extra)
 
     print("ThreeC · K 线补齐 v0_3")
     print("-" * 78)

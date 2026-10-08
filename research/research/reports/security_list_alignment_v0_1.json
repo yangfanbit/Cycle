@@ -1,0 +1,1061 @@
+{
+ "artifact": "security_list_alignment",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/check_security_list_alignment_v0_1.py",
+ "source_referent": "research/research/reports/peak_referent_v0_2.json",
+ "position": "Research-only 只读检查 —— 比较「记录点名的标的」与「实际登记的标的」谁解释得了记录 peak。**不修改任何数据**；发现属研究侧 intake 复核事项。",
+ "rules": {
+  "tolerance_days": 7,
+  "named_extraction": "从 evidence 正文两路抽取：① 6 位数字**且必须存在于 `securities` 表**（避免把日期 / 金额 / 指数代码误当股票代码）；② **公司名**匹配 `securities.name`（实测 evidence 常只写公司名不写代码）。两者并集再减去已登记的，得到「点名但未登记」。",
+  "price_basis": "原始价 high（盘中最高），与 evidence 表述一致",
+  "verdicts": {
+   "LISTED_EXPLAINS": "已登记标的能解释（≥1 个同周）",
+   "NAMED_ONLY_EXPLAINS": "★ 只有点名的能解释，已登记的不能 → 清单与依据不符",
+   "NEITHER_EXPLAINS": "两者都不能 → 属参照物 / 日期问题",
+   "NO_NAMED": "记录里没有点名的已存在标的",
+   "NO_PEAK": "记录未标注峰值"
+  },
+  "no_score": "本 artifact **不含** score / ranking / probability。"
+ },
+ "summary": {
+  "NO_NAMED": 27,
+  "LISTED_EXPLAINS": 16,
+  "NO_PEAK": 4,
+  "NAMED_ONLY_EXPLAINS": 2,
+  "NEITHER_EXPLAINS": 4
+ },
+ "by_campaign": {
+  "C-2016-CONS-BAIJIU-UPGRADE": {
+   "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "recorded_peak": "2018-01-31",
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "LUZHOULAOJIAO",
+    "MOUTAI",
+    "WULIANGYE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2016-HIEQ-CONSTR": {
+   "campaign_id": "C-2016-HIEQ-CONSTR",
+   "recorded_peak": "2021-01-25",
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "HENGLI",
+    "SANY",
+    "XCMG",
+    "ZOOMLION"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2016-PANEL-CYCLE": {
+   "campaign_id": "C-2016-PANEL-CYCLE",
+   "recorded_peak": "2017-06-30",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "BOE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2018-CONS-HOG-AFRICAN": {
+   "campaign_id": "C-2018-CONS-HOG-AFRICAN",
+   "recorded_peak": "2020-03-09",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "MUYUAN",
+    "NEWHOPE",
+    "WENS"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2018-HIEQ-ROBOT-DOWN": {
+   "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+   "recorded_peak": "2019-09-30",
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "listed": [
+    "ESTUN",
+    "INOVANCE",
+    "SIASUN"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2019-AD": {
+   "campaign_id": "C-2019-AD",
+   "recorded_peak": "2019-09-24",
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "ROUTE",
+    "WANAN",
+    "YATAI"
+   ],
+   "named_not_listed": [
+    "ZHEJIANGSHISHI"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "ROUTE",
+     "peak_date": "2019-09-23",
+     "delta_days": 1
+    },
+    {
+     "security_id": "WANAN",
+     "peak_date": "2019-09-23",
+     "delta_days": 1
+    },
+    {
+     "security_id": "YATAI",
+     "peak_date": "2019-09-23",
+     "delta_days": 1
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2019-COMM-5G": {
+   "campaign_id": "C-2019-COMM-5G",
+   "recorded_peak": "2020-02-25",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "EOPTOLINK",
+    "FIBERHOME",
+    "INNOLIGHT",
+    "TFC",
+    "ZTE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2019-CONS-AESTHETICS": {
+   "campaign_id": "C-2019-CONS-AESTHETICS",
+   "recorded_peak": "2021-07-05",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "BETTENI",
+    "PROYA",
+    "WANCHEN"
+   ],
+   "named_not_listed": [
+    "AIMEIKE",
+    "BLOOMAGE",
+    "LANCY"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "BETTENI",
+     "peak_date": "2021-07-08",
+     "delta_days": 3
+    }
+   ],
+   "named_hits": [
+    {
+     "security_id": "BLOOMAGE",
+     "peak_date": "2021-07-05",
+     "delta_days": 0
+    }
+   ],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2019-CONS-BAIJIU-CORE": {
+   "campaign_id": "C-2019-CONS-BAIJIU-CORE",
+   "recorded_peak": "2021-02-18",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "FENJIU",
+    "HAITIAN",
+    "LUZHOULAOJIAO",
+    "MOUTAI",
+    "WULIANGYE",
+    "YILI"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2019-CONSUMER-TWS": {
+   "campaign_id": "C-2019-CONSUMER-TWS",
+   "recorded_peak": "2020-10-13",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "GOERTEK",
+    "LUXSHARE",
+    "SGMC"
+   ],
+   "named_not_listed": [
+    "GIGADEVICE",
+    "WILLSEMI"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "LUXSHARE",
+     "peak_date": "2020-10-13",
+     "delta_days": 0
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2019-MIL-GROUP-RESTRUCTURE": {
+   "campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+   "recorded_peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "CSIC",
+    "CSSC",
+    "CSSCDEF"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_PEAK"
+  },
+  "C-2019-PHARMA-INNOV": {
+   "campaign_id": "C-2019-PHARMA-INNOV",
+   "recorded_peak": "2021-07-01",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "HENGRUI",
+    "TIGERMED",
+    "WUXIAPPTEC"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2019-RES-DYE-SHOCK": {
+   "campaign_id": "C-2019-RES-DYE-SHOCK",
+   "recorded_peak": "2019-04-04",
+   "peak_referent": "POLICY_EVENT",
+   "listed": [
+    "LONGSHENG",
+    "RUNTE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2019-SEMI-LOCALIZATION": {
+   "campaign_id": "C-2019-SEMI-LOCALIZATION",
+   "recorded_peak": "2020-07-14",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "BOE",
+    "GIGADEVICE",
+    "JCET",
+    "MAXSCEND",
+    "NAURA",
+    "SGMC",
+    "SMIC",
+    "WILLSEMI"
+   ],
+   "named_not_listed": [
+    "ZTE"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "JCET",
+     "peak_date": "2020-07-14",
+     "delta_days": 0
+    },
+    {
+     "security_id": "SMIC",
+     "peak_date": "2020-07-16",
+     "delta_days": 2
+    },
+    {
+     "security_id": "WILLSEMI",
+     "peak_date": "2020-07-14",
+     "delta_days": 0
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2020-CONS-BEAUTY-CN": {
+   "campaign_id": "C-2020-CONS-BEAUTY-CN",
+   "recorded_peak": "2021-10-29",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "GAMBO",
+    "YANJIN"
+   ],
+   "named_not_listed": [
+    "BETTENI",
+    "PROYA"
+   ],
+   "listed_hits": [],
+   "named_hits": [
+    {
+     "security_id": "PROYA",
+     "peak_date": "2021-10-29",
+     "delta_days": 0
+    }
+   ],
+   "verdict": "NAMED_ONLY_EXPLAINS"
+  },
+  "C-2020-CONS-DUTYFREE": {
+   "campaign_id": "C-2020-CONS-DUTYFREE",
+   "recorded_peak": "2021-02-18",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "CTGDF"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-CONS-WHITE-GOODS": {
+   "campaign_id": "C-2020-CONS-WHITE-GOODS",
+   "recorded_peak": "2021-02-18",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "AIMEIKE",
+    "BLOOMAGE",
+    "LANCY",
+    "ROBAM"
+   ],
+   "named_not_listed": [
+    "GREE",
+    "HAIER",
+    "MIDEA"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "AIMEIKE",
+     "peak_date": "2021-02-18",
+     "delta_days": 0
+    }
+   ],
+   "named_hits": [
+    {
+     "security_id": "HAIER",
+     "peak_date": "2021-02-18",
+     "delta_days": 0
+    }
+   ],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2020-FIN-BANK-CREDIT": {
+   "campaign_id": "C-2020-FIN-BANK-CREDIT",
+   "recorded_peak": "2021-03-03",
+   "peak_referent": "SECTOR_MOVE",
+   "listed": [
+    "CMB",
+    "ICBC"
+   ],
+   "named_not_listed": [
+    "CITICS",
+    "POLY"
+   ],
+   "listed_hits": [],
+   "named_hits": [],
+   "verdict": "NEITHER_EXPLAINS"
+  },
+  "C-2020-HIEQ-AUTOMATION": {
+   "campaign_id": "C-2020-HIEQ-AUTOMATION",
+   "recorded_peak": "2021-07-01",
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "listed": [
+    "ESTUN",
+    "INOVANCE",
+    "KINCO",
+    "LEADERDRIVE",
+    "TOPSTAR"
+   ],
+   "named_not_listed": [
+    "EFORT",
+    "SHUANGHUAN",
+    "SIASUN"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "ESTUN",
+     "peak_date": "2021-07-08",
+     "delta_days": 7
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2020-MIL-EQUIP-ORDER": {
+   "campaign_id": "C-2020-MIL-EQUIP-ORDER",
+   "recorded_peak": "2021-12-01",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "AECPOWER",
+    "CSIMIL",
+    "HONGDU",
+    "SHENFEI",
+    "SWMIL",
+    "XIFEI"
+   ],
+   "named_not_listed": [
+    "CSSCDEF"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "CSIMIL",
+     "peak_date": "2021-11-30",
+     "delta_days": 1
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2020-NEV": {
+   "campaign_id": "C-2020-NEV",
+   "recorded_peak": "2020-07-13",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "BIDI",
+    "CATL",
+    "JAC",
+    "XUSHENG"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-PANEL-CYCLE": {
+   "campaign_id": "C-2020-PANEL-CYCLE",
+   "recorded_peak": "2021-07-31",
+   "peak_referent": "PRICE_HIGH",
+   "listed": [
+    "BOE",
+    "TCLTECH"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-POWER-NE": {
+   "campaign_id": "C-2020-POWER-NE",
+   "recorded_peak": "2021-11-01",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "GOLDWIND",
+    "LONGI",
+    "SUNGROW"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-RE-DEBT-RISK": {
+   "campaign_id": "C-2020-RE-DEBT-RISK",
+   "recorded_peak": "2021-12-03",
+   "peak_referent": "COMPANY_EVENT",
+   "listed": [
+    "CMSK",
+    "GEMDALE",
+    "POLY",
+    "VANKE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-RES-LITHIUM": {
+   "campaign_id": "C-2020-RES-LITHIUM",
+   "recorded_peak": "2021-09-13",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "GANFENG",
+    "SALTLIAKE",
+    "SINOMINE",
+    "TIANQI",
+    "YONGXING"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-RES-NONFERROUS": {
+   "campaign_id": "C-2020-RES-NONFERROUS",
+   "recorded_peak": "2021-09-13",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "CHALCO",
+    "JXCOPPER",
+    "TONGLING",
+    "YNCOPPER",
+    "YUNAL",
+    "ZIJIN"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-RES-RAREEARTH": {
+   "campaign_id": "C-2020-RES-RAREEARTH",
+   "recorded_peak": "2021-11-09",
+   "peak_referent": "PRICE_HIGH",
+   "listed": [
+    "CNRAREEARTH",
+    "GUANGSHENG",
+    "NPRARE",
+    "SHENGHE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2020-SEMI-EQUIPMENT": {
+   "campaign_id": "C-2020-SEMI-EQUIPMENT",
+   "recorded_peak": "2021-07-30",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "AMEC",
+    "NSIG",
+    "PIOTECH",
+    "SMIC"
+   ],
+   "named_not_listed": [
+    "CAMBRICON"
+   ],
+   "listed_hits": [],
+   "named_hits": [],
+   "verdict": "NEITHER_EXPLAINS"
+  },
+  "C-2021-CONS-HOG-REVERSAL": {
+   "campaign_id": "C-2021-CONS-HOG-REVERSAL",
+   "recorded_peak": "2022-10-15",
+   "peak_referent": "PRICE_HIGH",
+   "listed": [
+    "AONONG",
+    "JUXING",
+    "MUYUAN"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2021-NEV": {
+   "campaign_id": "C-2021-NEV",
+   "recorded_peak": "2021-08-06",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "BIDI",
+    "CATL",
+    "CHANGAN",
+    "GWM",
+    "XIAOKANG"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2021-RES-CHEM-DUALCTRL": {
+   "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+   "recorded_peak": "2021-10-31",
+   "peak_referent": "PRICE_HIGH",
+   "listed": [
+    "HOSHINE",
+    "HUBEIYIHUA",
+    "WANHUA",
+    "XINGFA",
+    "YUNTIANHUA"
+   ],
+   "named_not_listed": [
+    "SHENHUO",
+    "YUNAL"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "HUBEIYIHUA",
+     "peak_date": "2021-11-01",
+     "delta_days": 1
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2022-CONS-SERVICE-REBOUND": {
+   "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+   "recorded_peak": "2023-01-31",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "BTG",
+    "CTGDF",
+    "JINJIANG",
+    "SONGCHENG"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2022-POLICY": {
+   "campaign_id": "C-2022-POLICY",
+   "recorded_peak": "2022-06-10",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "ANKA",
+    "BIDI",
+    "CHANGAN",
+    "GAC",
+    "GWM"
+   ],
+   "named_not_listed": [
+    "ZHONGTONG"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "BIDI",
+     "peak_date": "2022-06-13",
+     "delta_days": 3
+    },
+    {
+     "security_id": "GAC",
+     "peak_date": "2022-06-15",
+     "delta_days": 5
+    },
+    {
+     "security_id": "GWM",
+     "peak_date": "2022-06-15",
+     "delta_days": 5
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2022-POWER-GRID": {
+   "campaign_id": "C-2022-POWER-GRID",
+   "recorded_peak": "2024-10-08",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "NARI",
+    "PINGGAO",
+    "SIEYUAN",
+    "TBEA",
+    "XUJI"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2022-RE-POLICY-THREE": {
+   "campaign_id": "C-2022-RE-POLICY-THREE",
+   "recorded_peak": "2022-11-29",
+   "peak_referent": "POLICY_EVENT",
+   "listed": [
+    "CMSK",
+    "GEMDALE",
+    "POLY",
+    "VANKE"
+   ],
+   "named_not_listed": [
+    "ICBC"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "CMSK",
+     "peak_date": "2022-11-29",
+     "delta_days": 0
+    },
+    {
+     "security_id": "GEMDALE",
+     "peak_date": "2022-11-30",
+     "delta_days": 1
+    },
+    {
+     "security_id": "POLY",
+     "peak_date": "2022-11-29",
+     "delta_days": 0
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2022-SEMI-DOWNTURN": {
+   "campaign_id": "C-2022-SEMI-DOWNTURN",
+   "recorded_peak": "2022-08-31",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "HYGON",
+    "MAXSCEND",
+    "SGMC"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2023-AD": {
+   "campaign_id": "C-2023-AD",
+   "recorded_peak": "2023-07-11",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "DESAYSV",
+    "WANAN",
+    "ZHEJIANGSHISHI",
+    "ZTELEVISION"
+   ],
+   "named_not_listed": [
+    "BIDI"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "DESAYSV",
+     "peak_date": "2023-07-11",
+     "delta_days": 0
+    },
+    {
+     "security_id": "WANAN",
+     "peak_date": "2023-07-13",
+     "delta_days": 2
+    },
+    {
+     "security_id": "ZHEJIANGSHISHI",
+     "peak_date": "2023-07-18",
+     "delta_days": 7
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2023-AI-COMPUTE-SEMI": {
+   "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+   "recorded_peak": "2023-04-10",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "CAMBRICON",
+    "GIGADEVICE",
+    "NAURA"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2023-COMM-OPTICAL": {
+   "campaign_id": "C-2023-COMM-OPTICAL",
+   "recorded_peak": "2025-12-25",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "ACCELINK",
+    "EOPTOLINK",
+    "INNOLIGHT",
+    "TFC"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2023-CONS-VALUE-RETAIL": {
+   "campaign_id": "C-2023-CONS-VALUE-RETAIL",
+   "recorded_peak": "2025-08-29",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "CHINAPET",
+    "ECOVACS"
+   ],
+   "named_not_listed": [
+    "WANCHEN",
+    "YANJIN"
+   ],
+   "listed_hits": [],
+   "named_hits": [
+    {
+     "security_id": "WANCHEN",
+     "peak_date": "2025-09-01",
+     "delta_days": 3
+    }
+   ],
+   "verdict": "NAMED_ONLY_EXPLAINS"
+  },
+  "C-2023-FIN-SOE-VALUATION": {
+   "campaign_id": "C-2023-FIN-SOE-VALUATION",
+   "recorded_peak": "2023-05-11",
+   "peak_referent": "SECTOR_MOVE",
+   "listed": [
+    "CHINALIFE",
+    "CNCB",
+    "ICBC",
+    "PINGAN"
+   ],
+   "named_not_listed": [
+    "CITICS"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "CHINALIFE",
+     "peak_date": "2023-05-15",
+     "delta_days": 4
+    },
+    {
+     "security_id": "CNCB",
+     "peak_date": "2023-05-09",
+     "delta_days": 2
+    },
+    {
+     "security_id": "ICBC",
+     "peak_date": "2023-05-09",
+     "delta_days": 2
+    },
+    {
+     "security_id": "PINGAN",
+     "peak_date": "2023-05-09",
+     "delta_days": 2
+    }
+   ],
+   "named_hits": [
+    {
+     "security_id": "CITICS",
+     "peak_date": "2023-05-09",
+     "delta_days": 2
+    }
+   ],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2023-HIEQ-HUMANOID": {
+   "campaign_id": "C-2023-HIEQ-HUMANOID",
+   "recorded_peak": "2023-11-02",
+   "peak_referent": "POLICY_EVENT",
+   "listed": [
+    "EFORT",
+    "KINCO",
+    "LEADERDRIVE",
+    "LEADSHINE",
+    "ZHAOWEI"
+   ],
+   "named_not_listed": [
+    "BIDI",
+    "SIASUN",
+    "TOPSTAR"
+   ],
+   "listed_hits": [],
+   "named_hits": [],
+   "verdict": "NEITHER_EXPLAINS"
+  },
+  "C-2023-HIEQ-ROBOT-PLUS": {
+   "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+   "recorded_peak": "2023-02-03",
+   "peak_referent": "SECTOR_MOVE",
+   "listed": [
+    "ESTUN",
+    "SHUANGHUAN",
+    "TECHLONG",
+    "XINBANG"
+   ],
+   "named_not_listed": [
+    "SIASUN"
+   ],
+   "listed_hits": [],
+   "named_hits": [],
+   "verdict": "NEITHER_EXPLAINS"
+  },
+  "C-2023-PHARMA-GLP1": {
+   "campaign_id": "C-2023-PHARMA-GLP1",
+   "recorded_peak": "2023-10-16",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "BORUI",
+    "CHANGSHAN",
+    "HANYU"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2024-CONS-TRADE-IN": {
+   "campaign_id": "C-2024-CONS-TRADE-IN",
+   "recorded_peak": "2024-10-08",
+   "peak_referent": "SECURITY_HIGH",
+   "listed": [
+    "AIMEIKE",
+    "BLOOMAGE",
+    "LANCY",
+    "ROBAM"
+   ],
+   "named_not_listed": [
+    "GREE",
+    "HAIER",
+    "MIDEA"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "BLOOMAGE",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    }
+   ],
+   "named_hits": [
+    {
+     "security_id": "GREE",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    },
+    {
+     "security_id": "HAIER",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    },
+    {
+     "security_id": "MIDEA",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    }
+   ],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2024-FIN-BANK-DIVIDEND": {
+   "campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+   "recorded_peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "ABC",
+    "CMB",
+    "CNCB",
+    "ICBC"
+   ],
+   "named_not_listed": [
+    "CITICS",
+    "PINGAN",
+    "POLY",
+    "VANKE"
+   ],
+   "verdict": "NO_PEAK"
+  },
+  "C-2024-FIN-BROKER-POLICY": {
+   "campaign_id": "C-2024-FIN-BROKER-POLICY",
+   "recorded_peak": "2024-10-08",
+   "peak_referent": "SECTOR_MOVE",
+   "listed": [
+    "CITICS",
+    "EASTMONEY",
+    "EBSEC"
+   ],
+   "named_not_listed": [
+    "ICBC",
+    "PINGAN",
+    "POLY",
+    "VANKE"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "CITICS",
+     "peak_date": "2024-10-09",
+     "delta_days": 1
+    },
+    {
+     "security_id": "EASTMONEY",
+     "peak_date": "2024-10-09",
+     "delta_days": 1
+    },
+    {
+     "security_id": "EBSEC",
+     "peak_date": "2024-10-09",
+     "delta_days": 1
+    }
+   ],
+   "named_hits": [
+    {
+     "security_id": "ICBC",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    },
+    {
+     "security_id": "PINGAN",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    }
+   ],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2024-RES-GOLD-CB": {
+   "campaign_id": "C-2024-RES-GOLD-CB",
+   "recorded_peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "CFGOLD",
+    "SDGOLD",
+    "ZIJIN",
+    "ZJGOLD"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_PEAK"
+  },
+  "C-2024-ROBOTAXI": {
+   "campaign_id": "C-2024-ROBOTAXI",
+   "recorded_peak": "2024-07-29",
+   "peak_referent": "SECTOR_MOVE",
+   "listed": [
+    "DADONGTRAFFIC",
+    "JIANGLING",
+    "JINJIANGONLINE",
+    "JINLONG"
+   ],
+   "named_not_listed": [
+    "DESAYSV"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "DADONGTRAFFIC",
+     "peak_date": "2024-07-31",
+     "delta_days": 2
+    },
+    {
+     "security_id": "JIANGLING",
+     "peak_date": "2024-07-31",
+     "delta_days": 2
+    },
+    {
+     "security_id": "JINJIANGONLINE",
+     "peak_date": "2024-07-31",
+     "delta_days": 2
+    },
+    {
+     "security_id": "JINLONG",
+     "peak_date": "2024-07-31",
+     "delta_days": 2
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2024-SEMI-MEMORY": {
+   "campaign_id": "C-2024-SEMI-MEMORY",
+   "recorded_peak": "2025-10-31",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "BIWIN",
+    "CAMBRICON",
+    "GIGADEVICE",
+    "LONGYS"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2024-V2X": {
+   "campaign_id": "C-2024-V2X",
+   "recorded_peak": "2024-06-18",
+   "peak_referent": "SECTOR_MOVE",
+   "listed": [
+    "HUAMING",
+    "JINYI",
+    "SUOLING",
+    "VANJI"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2025-FIN-INSURANCE": {
+   "campaign_id": "C-2025-FIN-INSURANCE",
+   "recorded_peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "CHINALIFE",
+    "NCI",
+    "PINGAN"
+   ],
+   "named_not_listed": [
+    "CITICS",
+    "ICBC",
+    "POLY"
+   ],
+   "verdict": "NO_PEAK"
+  },
+  "C-2025-ROBOTAXI": {
+   "campaign_id": "C-2025-ROBOTAXI",
+   "recorded_peak": "2025-06-24",
+   "peak_referent": "SECTOR_MOVE",
+   "listed": [
+    "DESAYSV",
+    "ZHEJIANGSHISHI"
+   ],
+   "named_not_listed": [
+    "ZHONGTONG"
+   ],
+   "listed_hits": [
+    {
+     "security_id": "ZHEJIANGSHISHI",
+     "peak_date": "2025-06-25",
+     "delta_days": 1
+    }
+   ],
+   "named_hits": [],
+   "verdict": "LISTED_EXPLAINS"
+  }
+ }
+}
