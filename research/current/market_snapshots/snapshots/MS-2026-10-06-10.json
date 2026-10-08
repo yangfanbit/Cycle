@@ -1,7 +1,7 @@
 {
   "candidates_source": {
-    "artifact": "research/research/reports/structural_analogy_explanations_v0_9.json",
-    "artifact_version": "0.9",
+    "artifact": "research/research/reports/structural_analogy_explanations_v0_10.json",
+    "artifact_version": "0.10",
     "mode": "INDEX_ONLY —— 本快照只存 identity / structural_status / strict_structural_supported；其余解释字段一律回指该 artifact，不复制。",
     "reader_must": "读取方必须先校验该 artifact 的 rule_set_version 与本字段一致，再按 resolve_by 合并。",
     "resolve_by": "identity.historical_cycle_id",
@@ -3763,7 +3763,7 @@
         "historical_theme_cycle_id": "hieq_equip_update_2024"
       },
       "strict_structural_supported": false,
-      "structural_status": "NO_VALID_CORRESPONDENCE"
+      "structural_status": "THEME_ONLY"
     },
     {
       "current_object_id": "CC-2026-EMBODIED-AI",
@@ -5951,19 +5951,19 @@
     "ai_assisted": true,
     "generated_by": "ai-offline",
     "research_round": "ThreeC 1.1 Phase 1.2",
-    "reviewed_at": "2026-10-07T14:52:00+00:00",
+    "reviewed_at": "2026-10-08T14:15:00+00:00",
     "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
-    "superseded_by": "MS-2026-10-06-10",
-    "supersedes": "MS-2026-10-06-08"
+    "superseded_by": null,
+    "supersedes": "MS-2026-10-06-09"
   },
   "research_context": {
     "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
     "known_limitations": [
       "market_regime 依赖离线填报，无自动化行情源。",
       "历史侧机制级证据深度有限，结构对应产出率偏低属预期结果。",
-      "3 条政策类观察项取得一手来源并升 T1；2 处事实错误按 append-only 以新增条目更正。"
+      "SA v0_10：修正 macro_theme 的 role 绑定（7 个对象补上大主题，42 条解释变化）。"
     ],
     "research_method": "market_regime 离线填报 + observations 逐条挂来源 → 研究对象 → 历史候选检索 → 复用冻结 SA v0.3 比较。",
     "research_question": "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
@@ -6268,7 +6268,7 @@
     }
   ],
   "snapshot_date": "2026-10-06",
-  "snapshot_id": "MS-2026-10-06-09",
-  "status": "ARCHIVED",
-  "timestamp": "2026-10-07T22:52:00+08:00"
+  "snapshot_id": "MS-2026-10-06-10",
+  "status": "CANONICAL",
+  "timestamp": "2026-10-08T22:15:00+08:00"
 }
