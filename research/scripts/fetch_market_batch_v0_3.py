@@ -61,7 +61,10 @@ HDRS = {
 }
 CHUNK = 700
 PACING = 1.2                      # ★ 请求级节流（秒）；v0_2 无此项
-RANGE_CEIL = "2025-12-31"         # 与研究区间上限一致
+RANGE_CEIL = "2025-12-31"         # 与研究区间上限一致（**历史 campaign** 用）
+# ★ `--series` 走独立上限：当前快照日为 2026-09-15，而 `market_daily` 原止于 2025-12-31，
+#   「提前观察」的**当前侧**（基准层）必须能取到 2026。此上限**不影响**历史 campaign 的抓取口径。
+RANGE_CEIL_SERIES = "2026-12-31"
 RAW_DIR = os.path.join(db.ROOT, "data", "market", "raw")
 NORM_DIR = os.path.join(db.ROOT, "data", "market", "normalized")
 GAP_FILE = os.path.join(db.ROOT, "data", "market", "fetch_gaps.json")
@@ -347,6 +350,33 @@ def build_plan(conn, gaps, only=None, extra=None):
     return plan, skipped
 
 
+def build_series_plan(conn, spec):
+    """`--series` 计划：抓 **market_series 里已声明的序列**（如基准指数），可指定区间。
+
+    ★ 为什么需要：`market_daily` 原止于 2025-12-31，而当前快照日为 2026-09-15 ——
+      「提前观察」的**当前侧**（基准层）需要 2026 行情。
+      指数不在 `securities` 表里，故 `--extra` 覆盖不到，须另开入口。
+
+    spec 形如 `SH000300@2026-01-01~2026-09-30`（逗号分隔多个）。
+    """
+    plan, skipped = {}, []
+    for item in (spec or []):
+        try:
+            sid, rng = item.split("@")
+            beg, end = rng.split("~")
+        except ValueError:
+            skipped.append((item, "series 规格错误，应为 ID@BEG~END"))
+            continue
+        row = conn.execute("SELECT name, symbol FROM market_series WHERE series_id=?", (sid,)).fetchone()
+        if not row or not row[1]:
+            skipped.append((sid, "market_series 中无该序列或缺 symbol"))
+            continue
+        sym = row[1] if row[1].startswith(("sh", "sz")) else tencent_symbol(row[1], "")
+        plan[sid] = (sym, row[0] or sid, "benchmark", beg, min(end, RANGE_CEIL_SERIES),
+                     "series：显式区间（当前侧需要）")
+    return plan, skipped
+
+
 def main(argv):
     dry = "--dry-run" in argv
     only = None
@@ -356,10 +386,18 @@ def main(argv):
     extra = None
     if "--extra" in argv:
         extra = [x for x in argv[argv.index("--extra") + 1].split(",") if x]
+    # ★ --series SH000300@2026-01-01~2026-09-30：抓 market_series 里已声明的序列
+    series_spec = None
+    if "--series" in argv:
+        series_spec = [x for x in argv[argv.index("--series") + 1].split(",") if x]
 
     conn = db.connect()
     gaps = load_gaps()
     plan, skipped = build_plan(conn, gaps, only, extra)
+    if series_spec:
+        sp, ss = build_series_plan(conn, series_spec)
+        plan.update(sp)
+        skipped.extend(ss)
 
     print("ThreeC · K 线补齐 v0_3")
     print("-" * 78)
@@ -406,12 +444,15 @@ def main(argv):
                 results[sid] = {"status": "UNAVAILABLE", "symbol": sym, "reason": "合法 JSON + 空序列"}
                 save_gaps(gaps)
                 continue
-            conn.execute(
-                "INSERT INTO market_series (series_id,name,series_type,provider,symbol,frequency,price_type,"
-                "adjustment_method,description) VALUES (?,?,?,?,?,'daily','adjusted','qfq',?) "
-                "ON CONFLICT(series_id) DO UPDATE SET name=excluded.name, symbol=excluded.symbol",
-                (sid, nm, stype, "tencent", sym, "腾讯GTIMG日线(qfq) v0_3 自动计划 %s~%s" % (beg, end)),
-            )
+            # ★ 非股票序列（基准 / 行业指数）**不覆盖** market_series 的既有声明 ——
+            #   那是研究侧的口径记录，不该被抓取脚本改写。
+            if stype == "stock":
+                conn.execute(
+                    "INSERT INTO market_series (series_id,name,series_type,provider,symbol,frequency,price_type,"
+                    "adjustment_method,description) VALUES (?,?,?,?,?,'daily','adjusted','qfq',?) "
+                    "ON CONFLICT(series_id) DO UPDATE SET name=excluded.name, symbol=excluded.symbol",
+                    (sid, nm, stype, "tencent", sym, "腾讯GTIMG日线(qfq) v0_3 自动计划 %s~%s" % (beg, end)),
+                )
             for rec in raw:
                 db.insert(conn, "market_daily", row_to_dict(rec, sid, "raw"))
             for rec in qfq:

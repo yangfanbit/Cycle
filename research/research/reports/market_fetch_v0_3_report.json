@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T20:03:03",
+ "generated_at": "2026-10-08T21:08:08",
  "not_fetchable": {
   "CNIMIL": "国证军工指数 —— 无 ticker，且**未被任何 campaign 引用**（0 引用），本轮不取。",
   "SWMIL": "申万国防军工指数（801740.SI）—— 腾讯 GTIMG 不提供申万指数（实测 sz801740 返回空）。本脚本**不代以中证军工/军工 ETF 等替代指数**：那会偷换口径。留待研究侧决定代理口径。"
@@ -16,23 +16,23 @@
    "status": "UNAVAILABLE",
    "symbol": "sh688072"
   },
-  "WANCHEN": {
-   "qfq_rows": 1143,
+  "SH000300": {
+   "qfq_rows": 181,
    "range": [
-    "2016-01-01",
-    "2025-12-31"
+    "2026-01-01",
+    "2026-09-30"
    ],
-   "raw_rows": 1143,
+   "raw_rows": 181,
    "status": "OK",
-   "symbol": "sz300972"
+   "symbol": "sh000300"
   }
  },
  "stats": {
-  "confirmed_empty": 4,
+  "confirmed_empty": 0,
   "invalid_symbol": 0,
   "ok": 1,
   "requests": 0,
-  "skipped_known_gap": 20,
+  "skipped_known_gap": 14,
   "unavailable": 2
  },
  "ticker_fix": {
