@@ -3,7 +3,7 @@
  "artifact_version": "0.2",
  "generated_by": "research/scripts/build_kline_confirmation_v0_2.py",
  "source_alignment": "research/research/reports/kline_alignment_v0_2.json",
- "source_referent": "research/research/reports/peak_referent_v0_1.json",
+ "source_referent": "research/research/reports/peak_referent_v0_2.json",
  "position": "Research-only 只读产物 —— 供产品与研究侧**看见**「记录峰值是否被 K 线证实」。**不改动任何研究数据**；**不含** score / ranking / probability。",
  "rules": {
   "price_basis": "原始价 high（盘中最高）—— 与 evidence 表述一致",
@@ -37,7 +37,7 @@
    },
    "peak_referent": "UNSPECIFIED",
    "peak_referent_label": "未界定",
-   "referent_basis": "记录在 peak ±7 日内无 evidence / event；最近标的差 15 日",
+   "referent_basis": "peak 日 ±7 日内无 evidence / event；最近标的差 15 日",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -61,7 +61,7 @@
    },
    "peak_referent": "UNSPECIFIED",
    "peak_referent_label": "未界定",
-   "referent_basis": "记录在 peak ±7 日内无 evidence / event；最近标的差 17 日",
+   "referent_basis": "peak 日 ±7 日内无 evidence / event；最近标的差 17 日",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -85,7 +85,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "已登记标的 BOE 于同日创区间高点（记录内该日无 evidence）",
+   "referent_basis": "已登记标的 BOE 于同日创区间高点；记录内该日无 evidence",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 1,
@@ -108,7 +108,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「牧原股份于 2020-03-09 盘中触及历史最高价 139.92 元（不复权）」",
+   "referent_basis": "记录写明牧原股份当日盘中触及历史最高价（不复权）",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -131,7 +131,7 @@
    },
    "peak_referent": "INDUSTRY_INDICATOR",
    "peak_referent_label": "行业指标拐点",
-   "referent_basis": "「2019 年上半年前三季度中国工业机器人产量同比下滑 9.1%」；2019-10 产量转正（下行段结束）",
+   "referent_basis": "记录为工业机器人产量同比下滑，次月转正（下行段结束）",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -170,7 +170,7 @@
    },
    "peak_referent": "UNSPECIFIED",
    "peak_referent_label": "未界定",
-   "referent_basis": "记录在 peak ±7 日内无 evidence / event；最近标的差 84 日",
+   "referent_basis": "peak 日 ±7 日内无 evidence / event；最近标的差 84 日",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -194,7 +194,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「代表标的行情复核（前复权）」：中际旭创 2020-02-24 区间高点、中兴通讯 2020-02-25",
+   "referent_basis": "记录为逐只标的的行情复核（前复权），逐只给出区间高点日",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -217,7 +217,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「爱美客 2021-02-18 盘中最高 1331.02 元（不复权历史最高）；华熙生物 2021-07-05 盘中最高 314.99 元」★ 点名的标的**未登记**进本 campaign",
+   "referent_basis": "记录写明三只个股的盘中最高价；★ 点名的标的未登记进本 campaign",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -240,7 +240,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「贵州茅台盘中最高 2627.88 元、五粮液 357.19 元、泸州老窖 327.66 元」（同 evidence 亦记中证白酒指数 21663.85）",
+   "referent_basis": "★ 平局：同一 evidence 既记指数亦记个股，且点名的茅台/五粮液/泸州老窖均已登记 → 按平局规则判股价",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 6,
@@ -263,7 +263,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「立讯精密月内最高价 62.73 元出现在 2020-10」",
+   "referent_basis": "记录写明立讯精密月内最高价",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -304,7 +304,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「药明康德 / 泰格医药 前复权价于 2021-07-01 达区间最高（161.83 / 202.49）」",
+   "referent_basis": "记录为逐只标的的行情复核，给出药明康德 / 泰格医药前复权区间最高",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -327,7 +327,7 @@
    },
    "peak_referent": "POLICY_EVENT",
    "peak_referent_label": "政策事件日",
-   "referent_basis": "「2019-04-04 江苏盐城市委常委会决定彻底关闭响水化工园区」",
+   "referent_basis": "记录为江苏盐城市委常委会决定关闭响水化工园区",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 2,
@@ -350,7 +350,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「申万半导体板块指数 2020-07-14 创 5869.83 的年内最高」",
+   "referent_basis": "记录只提申万半导体板块指数的年内最高",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 8,
@@ -373,7 +373,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「珀莱雅 2021-10-29 盘中最高 224.43 元（历史最高）」★ 点名的标的**未登记**进本 campaign",
+   "referent_basis": "记录写明珀莱雅盘中历史最高；★ 点名的标的未登记进本 campaign",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 2,
@@ -405,7 +405,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「中国中免 2021-02-18 盘中最高 403.78 元（不复权），为历史最高价」",
+   "referent_basis": "记录写明中国中免当日盘中最高为历史最高价",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 1,
@@ -428,7 +428,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「美的集团 2021-02-10 盘中最高 108.00；海尔智家 2021-02-18 盘中最高 35.95；格力电器 2021-01-06 盘中最高 66.78」★ 点名标的**均未登记**进本 campaign",
+   "referent_basis": "记录写明美的/海尔/格力的区间盘中最高；★ 点名标的均未登记进本 campaign",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -451,7 +451,7 @@
    },
    "peak_referent": "SECTOR_MOVE",
    "peak_referent_label": "板块级异动日",
-   "referent_basis": "「2021-03-03，A 股银行股全线大涨，宁波银行、南京银行等涨幅居前」",
+   "referent_basis": "记录为 A 股银行股全线大涨、多只个股涨幅居前",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 2,
@@ -490,7 +490,7 @@
    },
    "peak_referent": "INDUSTRY_INDICATOR",
    "peak_referent_label": "行业指标拐点",
-   "referent_basis": "「通用自动化行业景气于 2021 年 Q3 见顶（埃斯顿年报自述）」",
+   "referent_basis": "记录为通用自动化行业景气见顶",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -513,7 +513,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「中证军工指数在 2021-12-01 达到 14748 点，为该轮区间高点」",
+   "referent_basis": "记录只提中证军工指数的该轮区间高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 6,
@@ -536,7 +536,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「7/13 汽车整车走强，比亚迪首板涨停、江淮两连板」；已登记标的 JAC / XUSHENG 同周创区间高点",
+   "referent_basis": "记录写明当日整车走强、个股涨停；已登记标的 JAC / XUSHENG 同周创区间高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -559,7 +559,7 @@
    },
    "peak_referent": "PRICE_HIGH",
    "peak_referent_label": "商品或行业产品价格高点",
-   "referent_basis": "「65 英寸 LCD 面板价格由 2020-01 的 162 美元/片最高涨至 2021-07 的 294 美元/片」",
+   "referent_basis": "记录给的是 65 英寸 LCD 面板价格的高点与随后的下跌",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 2,
@@ -591,7 +591,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「代表标的行情复核（前复权）」：阳光电源 2021-10-27、隆基绿能 2021-11-01、金风科技 2021-11-04",
+   "referent_basis": "记录为逐只标的的行情复核（前复权），逐只给出区间高点日",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -614,7 +614,7 @@
    },
    "peak_referent": "COMPANY_EVENT",
    "peak_referent_label": "公司事件日",
-   "referent_basis": "「中国恒大集团于 2021-12-03 未能偿付 2.6 亿美元债券偿付义务，构成违约」",
+   "referent_basis": "记录为中国恒大未能偿付债券构成违约",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -660,7 +660,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「能源金属指数(399366.SZ)…指数区间最高点 3448.36 点（2021-09-13）」",
+   "referent_basis": "记录给出能源金属指数的区间最高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -692,7 +692,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「中证有色金属指数(000819.SH)…区间最高点 8603.88 点（2021-09-13）」",
+   "referent_basis": "记录给出中证有色金属指数的区间最高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 6,
@@ -715,7 +715,7 @@
    },
    "peak_referent": "PRICE_HIGH",
    "peak_referent_label": "商品或行业产品价格高点",
-   "referent_basis": "「2021-11-09 北方稀土更新挂牌价，氧化镨钕价格飙升至 76.26 万元/吨」",
+   "referent_basis": "记录给的是氧化镨钕挂牌价的高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -761,7 +761,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「申万半导体板块指数 2021-07 月内最高 7642.58（2019–2021 全周期最高）」",
+   "referent_basis": "记录只提申万半导体板块指数月内最高",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -800,7 +800,7 @@
    },
    "peak_referent": "PRICE_HIGH",
    "peak_referent_label": "商品或行业产品价格高点",
-   "referent_basis": "「2022 年 10 月中旬猪价创年内新高」",
+   "referent_basis": "记录给的是生猪价格创年内新高",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -832,7 +832,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「8/6 比亚迪大涨逾 5% 创历史新高」；CATL 于 2021-07-30 创区间高点",
+   "referent_basis": "记录写明比亚迪创历史新高；CATL 于同周创区间高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -855,7 +855,7 @@
    },
    "peak_referent": "PRICE_HIGH",
    "peak_referent_label": "商品或行业产品价格高点",
-   "referent_basis": "「受能耗双控政策影响…纯碱、黄磷、环氧丙烷、环氧树脂等多个化工原料价格一度飙升」",
+   "referent_basis": "记录给的是能耗双控下多种化工原料价格飙升",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -878,7 +878,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「2023 年 1 月中国中免月内最高价 239.99 元，为该疫后修复脉冲期间的股价高点」",
+   "referent_basis": "记录写明中国中免月内最高价为该脉冲期间股价高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -901,7 +901,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「6/10 比亚迪 A 股市值首破万亿（报 348.80 元 +8.19%）」",
+   "referent_basis": "记录写明比亚迪市值首破万亿及当日报价涨幅",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -924,7 +924,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「代表标的行情复核（前复权）」：国电南瑞 2024-10-08、平高电气 2024-10-14、许继电气 2024-07-09",
+   "referent_basis": "记录为逐只标的的行情复核（前复权），逐只给出区间高点日",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -947,7 +947,7 @@
    },
    "peak_referent": "POLICY_EVENT",
    "peak_referent_label": "政策事件日",
-   "referent_basis": "「2022-11-28 证监会宣布…恢复涉房上市公司并购重组及配套融资」→ 11-29『第三支箭』次日板块暴涨",
+   "referent_basis": "记录为证监会宣布恢复涉房上市公司并购重组及配套融资，次日板块暴涨",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -970,7 +970,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「申万半导体板块指数在 2022-08 出现年内唯一反弹高点 5380.53」",
+   "referent_basis": "记录只提申万半导体板块指数的年内反弹高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -1002,7 +1002,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「德赛西威 5 月上旬不足百元→7/11 最高 179.50（约 80%）」",
+   "referent_basis": "记录写明德赛西威于 7/11 创该段最高价",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1025,7 +1025,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「申万半导体板块指数 2023-04-10 达 5154.69，为 2023 年内最高」",
+   "referent_basis": "记录只提申万半导体板块指数的年内最高",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -1048,7 +1048,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「代表标的行情复核（前复权）」：中际旭创 2025-12-25 达 638.80、新易盛 2025-12-22 达 329.99",
+   "referent_basis": "记录为逐只标的的行情复核（前复权），给出中际旭创 / 新易盛高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1071,7 +1071,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「万辰集团…2025-08-29 收于 210.81 元（区间最高）」★ 点名的标的**未登记**进本 campaign",
+   "referent_basis": "记录写明万辰集团当日收盘为该区间最高；★ 点名的标的未登记进本 campaign",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 2,
@@ -1110,7 +1110,7 @@
    },
    "peak_referent": "SECTOR_MOVE",
    "peak_referent_label": "板块级异动日",
-   "referent_basis": "「2023-05-11 非银金融行业中期策略：4 月以来保险明显领涨…『中特估』成为重要定价因素」",
+   "referent_basis": "记录为券商中期策略描述保险领涨与中特估定价因素",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1133,7 +1133,7 @@
    },
    "peak_referent": "POLICY_EVENT",
    "peak_referent_label": "政策事件日",
-   "referent_basis": "「工业和信息化部于 2023-11-02 印发《人形机器人创新发展指导意见》」",
+   "referent_basis": "记录为工业和信息化部印发人形机器人创新发展指导意见",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 5,
@@ -1172,7 +1172,7 @@
    },
    "peak_referent": "SECTOR_MOVE",
    "peak_referent_label": "板块级异动日",
-   "referent_basis": "「2023-01-14 至 02-03 机械设备行业上涨 6.47%…机器人三级子行业上涨 13.48% 居前」",
+   "referent_basis": "记录为券商双周报给出机械设备与机器人子行业的区间涨幅与估值",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1195,7 +1195,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「Wind 减肥药指数 2023-09-08 至 10-16 共 21 个交易日上涨 26.43%…达顶点」",
+   "referent_basis": "记录只提 Wind 减肥药指数的区间涨幅与顶点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -1218,7 +1218,7 @@
    },
    "peak_referent": "SECURITY_HIGH",
    "peak_referent_label": "代表标的股价高点",
-   "referent_basis": "「2024-10-08 上述标的（美的/格力/海尔/海信家电/华帝/老板电器）同时出现区间最高价」；ROBAM 已登记",
+   "referent_basis": "记录写明白电等标的当日同时出现区间最高价；ROBAM 已登记",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1259,7 +1259,7 @@
    },
    "peak_referent": "SECTOR_MOVE",
    "peak_referent_label": "板块级异动日",
-   "referent_basis": "「2024-10-08 A 股复市大幅高开后回落，同日成交额 3.5 万亿元创历史新高」",
+   "referent_basis": "记录为复市当日大幅高开后回落、成交额创历史新高",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 3,
@@ -1300,7 +1300,7 @@
    },
    "peak_referent": "SECTOR_MOVE",
    "peak_referent_label": "板块级异动日",
-   "referent_basis": "「7 月下旬高峰：大众交通 16 日涨 233%、锦江 15 天 9 板、金龙 12 天 7 板」",
+   "referent_basis": "记录为龙头梯队的连续涨幅与连板数，未归结到单一标的的高点",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1323,7 +1323,7 @@
    },
    "peak_referent": "SECTOR_INDEX_HIGH",
    "peak_referent_label": "板块 / 行业指数高点",
-   "referent_basis": "「申万半导体板块指数 2025-10 月内最高 7964.33…为该指数新高」",
+   "referent_basis": "记录只提申万半导体板块指数月内最高",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1362,7 +1362,7 @@
    },
    "peak_referent": "SECTOR_MOVE",
    "peak_referent_label": "板块级异动日",
-   "referent_basis": "「6/18 车路云全线爆发…10 余股涨停、多股 2 连板——源文记为『行情高峰』」",
+   "referent_basis": "记录为车路云概念全线爆发、多股涨停，源文记为行情高峰",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 4,
@@ -1403,7 +1403,7 @@
    },
    "peak_referent": "SECTOR_MOVE",
    "peak_referent_label": "板块级异动日",
-   "referent_basis": "「6/24 A 股无人驾驶板块全线爆发…板块级启动」",
+   "referent_basis": "记录为板块全线爆发的板块级启动",
    "referent_review_status": "PROVISIONAL",
    "coverage": {
     "securities": 2,

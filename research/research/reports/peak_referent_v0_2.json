@@ -1,0 +1,2391 @@
+{
+ "artifact": "peak_referent",
+ "artifact_version": "0.2",
+ "generated_by": "research/scripts/build_peak_referent_v0_2.py",
+ "supersedes": "research/research/reports/peak_referent_v0_1.json",
+ "source_alignment": "research/research/reports/kline_alignment_v0_2.json",
+ "position": "Research-only —— 为 `peak_date` 补上**参照物**声明。**不改** `campaigns` 表、**不改** `schema.sql`、**不改**任何日期数值。",
+ "why": "2026-10-08 实测：53 个历史对象的 `peak_date` 中，17 个未被股价证实，而其中 14 个在记录里有明确依据 —— 依据指向指数 / 商品价 / 行业价 / 政策事件 / 板块级异动。`peak_date` 一个字段承载了至少 6 种语义而记录未声明是哪一种。",
+ "v0_1_to_v0_2": "★ ThreeC Agent 审查 C2（引文可溯源）发现：v0_1 的 `referent_basis` 是**手写摘要**，却用「」加了引号，且含 `…` 省略号 —— **27 条「引文」并非原文**。v0_2 据此把依据拆为 `referent_basis_note`（注，禁止使用引号）与 `referent_evidence`（**逐字摘录**，可机械证伪）。参照物取值本身**未变**。",
+ "rules": {
+  "tolerance_days": 7,
+  "assignment_rule": "以记录在 peak 日 ±7 日内**明确写了什么**为准，确定性判定，不依赖关键词猜测。",
+  "tie_break": "同一周内**既提到指数、又提到个股**时：只要记录点名了**已登记标的**的股价高点 → 判 `SECURITY_HIGH`；仅当记录**只**提指数时才判 `SECTOR_INDEX_HIGH`。理由：参照物的作用是决定「股价检验是否适用」，已登记标的被点名时该检验适用且有信息量。实测受影响 1 处（白酒：同 evidence 既记中证白酒指数亦记茅台/五粮液/泸州老窖）。",
+  "excerpt_rule": "evidence 取 `evidences.description`、event 取 `events.name`；均截去来源标注尾巴，上限 220 字。",
+  "note_rule": "`referent_basis_note` 是判断说明，**不得使用「」引号** —— 引文一律由 `referent_evidence` 逐字提供。",
+  "review": "参照物属研究判断，全部标 `PROVISIONAL`，待 ThreeC Agent 按协议 §3 审查。",
+  "no_score": "本 artifact **不含** score / ranking / probability。"
+ },
+ "enum": {
+  "SECURITY_HIGH": "代表标的股价高点",
+  "SECTOR_INDEX_HIGH": "板块 / 行业指数高点",
+  "PRICE_HIGH": "商品或行业产品价格高点",
+  "POLICY_EVENT": "政策事件日",
+  "COMPANY_EVENT": "公司事件日",
+  "SECTOR_MOVE": "板块级异动日",
+  "INDUSTRY_INDICATOR": "行业指标拐点",
+  "UNSPECIFIED": "未界定"
+ },
+ "summary": {
+  "SECURITY_HIGH": 20,
+  "SECTOR_INDEX_HIGH": 9,
+  "PRICE_HIGH": 4,
+  "POLICY_EVENT": 3,
+  "COMPANY_EVENT": 1,
+  "SECTOR_MOVE": 7,
+  "INDUSTRY_INDICATOR": 2,
+  "UNSPECIFIED": 7
+ },
+ "by_campaign": {
+  "C-2016-CONS-BAIJIU-UPGRADE": {
+   "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "recorded": {
+    "start": "2016-06-01",
+    "peak": "2018-01-31",
+    "end": "2018-12-31"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "peak 日 ±7 日内无 evidence / event；最近标的差 15 日",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "LUZHOULAOJIAO",
+    "peak_date": "2018-01-16",
+    "delta_days": 15
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 2
+   }
+  },
+  "C-2016-HIEQ-CONSTR": {
+   "campaign_id": "C-2016-HIEQ-CONSTR",
+   "recorded": {
+    "start": "2016-08-01",
+    "peak": "2021-01-25",
+    "end": "2021-12-31"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "peak 日 ±7 日内无 evidence / event；最近标的差 17 日",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "HENGLI",
+    "peak_date": "2021-01-08",
+    "delta_days": 17
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2016-PANEL-CYCLE": {
+   "campaign_id": "C-2016-PANEL-CYCLE",
+   "recorded": {
+    "start": "2016-02-01",
+    "peak": "2017-06-30",
+    "end": "2017-06-30"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "已登记标的 BOE 于同日创区间高点；记录内该日无 evidence",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "BOE",
+     "peak_date": "2017-06-30",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "BOE",
+    "peak_date": "2017-06-30",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 1,
+    "with_data": 1
+   }
+  },
+  "C-2018-CONS-HOG-AFRICAN": {
+   "campaign_id": "C-2018-CONS-HOG-AFRICAN",
+   "recorded": {
+    "start": "2018-08-03",
+    "peak": "2020-03-09",
+    "end": "2021-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明牧原股份当日盘中触及历史最高价（不复权）",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2020-03-09",
+     "type": "market",
+     "excerpt": "牧原股份盘中触及历史最高价 139.92 元（不复权）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2020-03-09",
+     "type": "行情数据",
+     "excerpt": "牧原股份（002714）于 2020 年 3 月 9 日盘中触及历史最高价 139.92 元（不复权）；温氏股份（300498）于 2019 年 3 月 13 日盘中触及 45.55 元。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "MUYUAN",
+     "peak_date": "2020-03-09",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "MUYUAN",
+    "peak_date": "2020-03-09",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2018-HIEQ-ROBOT-DOWN": {
+   "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+   "recorded": {
+    "start": "2018-09-30",
+    "peak": "2019-09-30",
+    "end": "2019-12-31"
+   },
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "peak_referent_label": "行业指标拐点",
+   "referent_basis_note": "记录为工业机器人产量同比下滑，次月转正（下行段结束）",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2019-09-30",
+     "type": "财经媒体（统计数据 + 公司业绩）",
+     "excerpt": "2019 年上半年前三季度中国工业机器人产量同比下滑 9.1%；新松机器人、埃斯顿、华中数控等机器人相关上市公司业绩不乐观。2023 年 1-2 月国内工业机器人产量 6.2 万套、同比下降 19.2%。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2019-10-01",
+     "type": "industry",
+     "excerpt": "2019 年 10 月中国工业机器人产量转为正增长（+1.7%），下行段结束",
+     "source_field": "events.name"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "INOVANCE",
+    "peak_date": "2020-01-16",
+    "delta_days": 108
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2019-AD": {
+   "campaign_id": "C-2019-AD",
+   "recorded": {
+    "start": "2019-08-15",
+    "peak": "2019-09-24",
+    "end": "2019-09-30"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "peak 日 ±7 日内无 evidence / event；最近标的差 84 日",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "ROUTE",
+    "peak_date": "2019-07-02",
+    "delta_days": 84
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2019-COMM-5G": {
+   "campaign_id": "C-2019-COMM-5G",
+   "recorded": {
+    "start": "2019-06-06",
+    "peak": "2020-02-25",
+    "end": "2022-10-11"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录为逐只标的的行情复核（前复权），逐只给出区间高点日",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2020-02-22",
+     "type": "policy",
+     "excerpt": "工信部加快推进 5G 发展、做好信息通信业复工复产工作会议",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2020-02-22",
+     "type": "media",
+     "excerpt": "2020-02-21 中央政治局会议提出推动 5G 网络等加快发展；02-22 工信部召开加快推进 5G 发展会议；02-23 中国联通宣布力争三季度完成全国 25 万基站建设（提前一个季度）。→ 02-24/25 中兴通讯连续涨停，板块进入主升。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2020-02-25",
+     "type": "行情数据",
+     "excerpt": "代表标的行情复核（前复权）：中际旭创 2020-02-24 达区间高点 49.41；中兴通讯 2020-02-25 达 52.30；烽火通信 2020-03-12 达 40.34；新易盛 2020-07-14 达 20.01；天孚通信 2020-08-04 达 12.42 → Peak Window 2020-02-24~2020-08-04（分批见顶）。另：四者于 2022-10-10/11 同步见底（中兴 18.41 / 烽火 11",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2020-02-27",
+     "type": "行业数据",
+     "excerpt": "2019 年电信业务收入 1.31 万亿元（+0.8%）；三家基础电信企业和中国铁塔完成固定资产投资比上年增长 4.7%（5G 相关投资快速增长推动）；新建光缆线路 434 万公里。→ 投资侧验证 5G 建设已启动，但增速仍温和。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "INNOLIGHT",
+     "peak_date": "2020-02-25",
+     "delta_days": 0
+    },
+    {
+     "security_id": "ZTE",
+     "peak_date": "2020-03-03",
+     "delta_days": 7
+    }
+   ],
+   "nearest_security": {
+    "security_id": "INNOLIGHT",
+    "peak_date": "2020-02-25",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2019-CONS-AESTHETICS": {
+   "campaign_id": "C-2019-CONS-AESTHETICS",
+   "recorded": {
+    "start": "2019-11-06",
+    "peak": "2021-07-05",
+    "end": "2022-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明三只个股的盘中最高价；★ 点名的标的未登记进本 campaign",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-07-05",
+     "type": "market",
+     "excerpt": "爱美客/华熙生物盘中历史最高价（爱美客 2021-02-18 1331.02 元；华熙生物 314.99 元）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-07-05",
+     "type": "行情数据",
+     "excerpt": "爱美客（300896）2021 年 2 月 18 日盘中最高 1331.02 元（不复权历史最高）；华熙生物（688363）2021 年 7 月 5 日盘中最高 314.99 元；朗姿股份（002612）2021 年 6 月 1 日盘中最高 71.60 元。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "BETTENI",
+     "peak_date": "2021-07-08",
+     "delta_days": 3
+    }
+   ],
+   "nearest_security": {
+    "security_id": "BETTENI",
+    "peak_date": "2021-07-08",
+    "delta_days": 3
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2019-CONS-BAIJIU-CORE": {
+   "campaign_id": "C-2019-CONS-BAIJIU-CORE",
+   "recorded": {
+    "start": "2019-03-01",
+    "peak": "2021-02-18",
+    "end": "2021-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "★ 平局：同一 evidence 既记指数亦记个股，且点名的茅台/五粮液/泸州老窖均已登记 → 按平局规则判股价",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-02-18",
+     "type": "market",
+     "excerpt": "中证白酒指数（399997）盘中最高 21663.85 点；贵州茅台盘中最高 2627.88 元",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-02-18",
+     "type": "行情数据",
+     "excerpt": "2021 年 2 月 18 日中证白酒指数（399997）盘中最高 21663.85 点，贵州茅台盘中最高 2627.88 元（不复权），五粮液盘中最高 357.19 元，泸州老窖盘中最高 327.66 元。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "LUZHOULAOJIAO",
+     "peak_date": "2021-02-18",
+     "delta_days": 0
+    },
+    {
+     "security_id": "MOUTAI",
+     "peak_date": "2021-02-18",
+     "delta_days": 0
+    },
+    {
+     "security_id": "WULIANGYE",
+     "peak_date": "2021-02-18",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "LUZHOULAOJIAO",
+    "peak_date": "2021-02-18",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 6,
+    "with_data": 6
+   }
+  },
+  "C-2019-CONSUMER-TWS": {
+   "campaign_id": "C-2019-CONSUMER-TWS",
+   "recorded": {
+    "start": "2019-01-04",
+    "peak": "2020-10-13",
+    "end": "2021-03-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明立讯精密月内最高价",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2020-10-13",
+     "type": "market",
+     "excerpt": "立讯精密月内最高 62.73 元、歌尔股份 2020-11 月内最高 49.05 元",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2020-10-13",
+     "type": "行情数据",
+     "excerpt": "立讯精密月内最高价 62.73 元出现在 2020-10；歌尔股份月内最高价 49.05 元出现在 2020-11；苹果概念板块指数最高点 3666.62 出现在 2020-07-14。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "LUXSHARE",
+     "peak_date": "2020-10-13",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "LUXSHARE",
+    "peak_date": "2020-10-13",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2019-MIL-GROUP-RESTRUCTURE": {
+   "campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+   "recorded": {
+    "start": "2019-07-01",
+    "peak": null,
+    "end": "2019-11-26"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "记录未标注 peak",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": null,
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2019-PHARMA-INNOV": {
+   "campaign_id": "C-2019-PHARMA-INNOV",
+   "recorded": {
+    "start": "2019-01-02",
+    "peak": "2021-07-01",
+    "end": "2022-10-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录为逐只标的的行情复核，给出药明康德 / 泰格医药前复权区间最高",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-07-01",
+     "type": "market_data",
+     "excerpt": "创新药产业链代表标的行情复核：药明康德 / 泰格医药 前复权价于 2021-07-01 达区间最高（161.83 / 202.49），此前 2019-01-02→2021-07-01 分别 +103.5% / +159.7%。恒瑞医药同期于 2020-12-25 见顶（94.76）→ Peak 分批。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2021-07-02",
+     "type": "policy",
+     "excerpt": "CDE《以临床价值为导向的抗肿瘤药物临床研发指导原则（征求意见稿）》",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-07-02",
+     "type": "official_document",
+     "excerpt": "CDE 发布《以临床价值为导向的抗肿瘤药物临床研发指导原则（征求意见稿）》，引发市场对 CXO 景气度的质疑 → 与 2021-07 见顶后的回撤相互印证。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "TIGERMED",
+     "peak_date": "2021-07-01",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "TIGERMED",
+    "peak_date": "2021-07-01",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2019-RES-DYE-SHOCK": {
+   "campaign_id": "C-2019-RES-DYE-SHOCK",
+   "recorded": {
+    "start": "2019-03-21",
+    "peak": "2019-04-04",
+    "end": "2019-07-30"
+   },
+   "peak_referent": "POLICY_EVENT",
+   "peak_referent_label": "政策事件日",
+   "referent_basis_note": "记录为江苏盐城市委常委会决定关闭响水化工园区",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2019-04-04",
+     "type": "policy",
+     "excerpt": "江苏盐城市委常委会决定彻底关闭响水化工园区",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2019-04-04",
+     "type": "行业文件",
+     "excerpt": "2019-04-04 江苏盐城市委常委会决定彻底关闭响水化工园区；江苏省随后下发《江苏省化工行业整治提升方案(征求意见稿)》，拟大幅压减化工生产企业数量（到 2020 年底或减至 2000 家、2022 年不超 1000 家）。响水事故后分散黑 ETC 300% 报价涨至 60 元/公斤，染料在印染企业成本中占比由约 10% 升至 20%~25%。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "LONGSHENG",
+     "peak_date": "2019-04-10",
+     "delta_days": 6
+    },
+    {
+     "security_id": "RUNTE",
+     "peak_date": "2019-04-09",
+     "delta_days": 5
+    }
+   ],
+   "nearest_security": {
+    "security_id": "RUNTE",
+    "peak_date": "2019-04-09",
+    "delta_days": 5
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   }
+  },
+  "C-2019-SEMI-LOCALIZATION": {
+   "campaign_id": "C-2019-SEMI-LOCALIZATION",
+   "recorded": {
+    "start": "2019-05-16",
+    "peak": "2020-07-14",
+    "end": "2020-09-30"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录只提申万半导体板块指数的年内最高",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2020-07-14",
+     "type": "market",
+     "excerpt": "申万半导体板块指数创 2020 年内最高 5869.83",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2020-07-14",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数 2020-07-14 创 5869.83 的年内最高，2020 年全年区间涨幅 61.29%。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "JCET",
+     "peak_date": "2020-07-14",
+     "delta_days": 0
+    },
+    {
+     "security_id": "SMIC",
+     "peak_date": "2020-07-16",
+     "delta_days": 2
+    },
+    {
+     "security_id": "WILLSEMI",
+     "peak_date": "2020-07-14",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "JCET",
+    "peak_date": "2020-07-14",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 8,
+    "with_data": 8
+   }
+  },
+  "C-2020-CONS-BEAUTY-CN": {
+   "campaign_id": "C-2020-CONS-BEAUTY-CN",
+   "recorded": {
+    "start": "2020-06-29",
+    "peak": "2021-10-29",
+    "end": "2022-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明珀莱雅盘中历史最高；★ 点名的标的未登记进本 campaign",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-10-29",
+     "type": "行情数据",
+     "excerpt": "珀莱雅（603605）2021 年 10 月 29 日盘中最高 224.43 元（历史最高）；贝泰妮（300957）2021 年 7 月 8 日盘中最高 289.35 元（不复权）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "YANJIN",
+    "peak_date": "2020-10-13",
+    "delta_days": 381
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 1
+   }
+  },
+  "C-2020-CONS-DUTYFREE": {
+   "campaign_id": "C-2020-CONS-DUTYFREE",
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2021-02-18",
+    "end": "2022-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明中国中免当日盘中最高为历史最高价",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-02-18",
+     "type": "行情数据",
+     "excerpt": "2021 年 2 月 18 日中国中免（601888）盘中最高 403.78 元（不复权），为历史最高价。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "CTGDF",
+     "peak_date": "2021-02-18",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "CTGDF",
+    "peak_date": "2021-02-18",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 1,
+    "with_data": 1
+   }
+  },
+  "C-2020-CONS-WHITE-GOODS": {
+   "campaign_id": "C-2020-CONS-WHITE-GOODS",
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2021-02-18",
+    "end": "2021-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明美的/海尔/格力的区间盘中最高；★ 点名标的均未登记进本 campaign",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-02-18",
+     "type": "market",
+     "excerpt": "白电龙头区间高点：海尔智家盘中最高 35.95 元、美的集团 2021-02-10 盘中 108.00 元",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-02-18",
+     "type": "行情数据",
+     "excerpt": "美的集团（000333）2021 年 2 月 10 日盘中最高 108.00 元；海尔智家（600690）2021 年 2 月 18 日盘中最高 35.95 元；格力电器（000651）2021 年 1 月 6 日盘中最高 66.78 元（不复权）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "AIMEIKE",
+     "peak_date": "2021-02-18",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "AIMEIKE",
+    "peak_date": "2021-02-18",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2020-FIN-BANK-CREDIT": {
+   "campaign_id": "C-2020-FIN-BANK-CREDIT",
+   "recorded": {
+    "start": "2020-10-30",
+    "peak": "2021-03-03",
+    "end": "2021-03-31"
+   },
+   "peak_referent": "SECTOR_MOVE",
+   "peak_referent_label": "板块级异动日",
+   "referent_basis_note": "记录为 A 股银行股全线大涨、多只个股涨幅居前",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-03-03",
+     "type": "market",
+     "excerpt": "银行股全线大涨（本包唯一同期市场证据日）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-03-03",
+     "type": "财经媒体报道",
+     "excerpt": "2021-03-03，A 股银行股全线大涨，宁波银行、南京银行等涨幅居前；此前一日银保监会主席郭树清就利率等议题表态。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "CMB",
+    "peak_date": "2021-02-18",
+    "delta_days": 13
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   }
+  },
+  "C-2020-HIEQ-AUTOMATION": {
+   "campaign_id": "C-2020-HIEQ-AUTOMATION",
+   "recorded": {
+    "start": "2020-04-01",
+    "peak": "2021-07-01",
+    "end": "2022-12-31"
+   },
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "peak_referent_label": "行业指标拐点",
+   "referent_basis_note": "记录为通用自动化行业景气见顶",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-07-01",
+     "type": "industry",
+     "excerpt": "通用自动化行业景气于 2021 年 Q3 见顶（埃斯顿年报自述）；2021-07 起受上游通胀与出口订单下滑影响",
+     "source_field": "events.name"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "ESTUN",
+     "peak_date": "2021-07-08",
+     "delta_days": 7
+    }
+   ],
+   "nearest_security": {
+    "security_id": "ESTUN",
+    "peak_date": "2021-07-08",
+    "delta_days": 7
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2020-MIL-EQUIP-ORDER": {
+   "campaign_id": "C-2020-MIL-EQUIP-ORDER",
+   "recorded": {
+    "start": "2020-06-25",
+    "peak": "2021-12-01",
+    "end": "2022-12-31"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录只提中证军工指数的该轮区间高点",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-12-01",
+     "type": "market",
+     "excerpt": "中证军工指数（399967.SZ）收于 14748 点，为 2021 年区间高点",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-12-01",
+     "type": "行业指数数据（经媒体整理）",
+     "excerpt": "中证军工指数在2021年12月1日达到14748点，为该轮区间高点；至2023年2月17日跌至11425点，跌幅21.53%。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "CSIMIL",
+     "peak_date": "2021-11-30",
+     "delta_days": 1
+    }
+   ],
+   "nearest_security": {
+    "security_id": "CSIMIL",
+    "peak_date": "2021-11-30",
+    "delta_days": 1
+   },
+   "coverage": {
+    "securities": 6,
+    "with_data": 5
+   }
+  },
+  "C-2020-NEV": {
+   "campaign_id": "C-2020-NEV",
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2020-07-13",
+    "end": "2020-09-30"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明当日整车走强、个股涨停；已登记标的 JAC / XUSHENG 同周创区间高点",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2020-07-10",
+     "type": "company",
+     "excerpt": "宁德时代与本田战略合作+为特斯拉供货",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "event",
+     "date": "2020-07-12",
+     "type": "company",
+     "excerpt": "比亚迪汉上市（首搭刀片电池）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2020-07-13",
+     "type": "行情数据",
+     "excerpt": "7/13汽车整车走强，比亚迪首板涨停、江淮两连板，宁德时代涨9.91%市值逼近5000亿。6月汽车产销同比+11.6%持续回暖。7/12比亚迪汉(刀片电池)上市。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "JAC",
+     "peak_date": "2020-07-14",
+     "delta_days": 1
+    },
+    {
+     "security_id": "XUSHENG",
+     "peak_date": "2020-07-13",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "XUSHENG",
+    "peak_date": "2020-07-13",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2020-PANEL-CYCLE": {
+   "campaign_id": "C-2020-PANEL-CYCLE",
+   "recorded": {
+    "start": "2020-06-01",
+    "peak": "2021-07-31",
+    "end": "2021-08-31"
+   },
+   "peak_referent": "PRICE_HIGH",
+   "peak_referent_label": "商品或行业产品价格高点",
+   "referent_basis_note": "记录给的是 65 英寸 LCD 面板价格的高点与随后的下跌",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-07-31",
+     "type": "行业数据",
+     "excerpt": "65 英寸 LCD 面板价格由 2020-01 的 162 美元/片最高涨至 2021-07 的 294 美元/片（涨幅超 80%），2021-08 起进入下跌通道，2022-09 跌至 106 美元/片（较高点下跌 64%）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "BOE",
+    "peak_date": "2021-04-26",
+    "delta_days": 96
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   }
+  },
+  "C-2020-POWER-NE": {
+   "campaign_id": "C-2020-POWER-NE",
+   "recorded": {
+    "start": "2020-09-22",
+    "peak": "2021-11-01",
+    "end": "2022-12-30"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录为逐只标的的行情复核（前复权），逐只给出区间高点日",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-11-01",
+     "type": "行情数据",
+     "excerpt": "代表标的行情复核（前复权）：阳光电源 2021-10-27 达区间高点 119.98；隆基绿能 2021-11-01 达 70.82；金风科技 2021-11-04 达 19.75 → Peak Window 2021-10-27~2021-11-04。此前 2019-01-02（隆基 6.24）为本轮起点低点。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "GOLDWIND",
+     "peak_date": "2021-11-05",
+     "delta_days": 4
+    }
+   ],
+   "nearest_security": {
+    "security_id": "GOLDWIND",
+    "peak_date": "2021-11-05",
+    "delta_days": 4
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2020-RE-DEBT-RISK": {
+   "campaign_id": "C-2020-RE-DEBT-RISK",
+   "recorded": {
+    "start": "2020-08-20",
+    "peak": "2021-12-03",
+    "end": "2022-07-31"
+   },
+   "peak_referent": "COMPANY_EVENT",
+   "peak_referent_label": "公司事件日",
+   "referent_basis_note": "记录为中国恒大未能偿付债券构成违约",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-12-03",
+     "type": "company",
+     "excerpt": "中国恒大公告无法履行 2.6 亿美元担保义务（标志性债务违约）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-12-03",
+     "type": "财经媒体报道（引述 Wind）",
+     "excerpt": "截至 2021-12-03，据 Wind 统计，地产开发商及多样化房地产活动在信用债券市场共发生 52 起违约事件，整体逾期债券余额合计约 630.28 亿元。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-12-03",
+     "type": "学术文献",
+     "excerpt": "中国恒大集团于 2021-12-03 未能偿付 2.6 亿美元债券偿付义务，构成违约。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "POLY",
+    "peak_date": "2022-04-15",
+    "delta_days": 133
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2020-RES-LITHIUM": {
+   "campaign_id": "C-2020-RES-LITHIUM",
+   "recorded": {
+    "start": "2020-10-27",
+    "peak": "2021-09-13",
+    "end": "2022-11-11"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录给出能源金属指数的区间最高点",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-09-13",
+     "type": "行情数据",
+     "excerpt": "2020-07-01 至 2021-12-31 区间：天齐锂业涨跌幅 451.88%，赣锋锂业涨跌幅 180.74%，能源金属指数(399366.SZ) 涨跌幅 62.50%，指数区间最高点 3448.36 点（2021-09-13）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "GANFENG",
+    "peak_date": "2021-09-01",
+    "delta_days": 12
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2020-RES-NONFERROUS": {
+   "campaign_id": "C-2020-RES-NONFERROUS",
+   "recorded": {
+    "start": "2020-03-23",
+    "peak": "2021-09-13",
+    "end": "2021-12-31"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录给出中证有色金属指数的区间最高点",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-09-13",
+     "type": "行情数据",
+     "excerpt": "中证有色金属指数(000819.SH) 2021-01-04 至 2021-12-31 区间涨跌幅 31.31%，区间最高点 8603.88 点（2021-09-13），最低点 4956.56 点（2021-03-25）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "CHALCO",
+     "peak_date": "2021-09-13",
+     "delta_days": 0
+    },
+    {
+     "security_id": "TONGLING",
+     "peak_date": "2021-09-14",
+     "delta_days": 1
+    },
+    {
+     "security_id": "YNCOPPER",
+     "peak_date": "2021-09-13",
+     "delta_days": 0
+    },
+    {
+     "security_id": "YUNAL",
+     "peak_date": "2021-09-16",
+     "delta_days": 3
+    }
+   ],
+   "nearest_security": {
+    "security_id": "CHALCO",
+    "peak_date": "2021-09-13",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 6,
+    "with_data": 6
+   }
+  },
+  "C-2020-RES-RAREEARTH": {
+   "campaign_id": "C-2020-RES-RAREEARTH",
+   "recorded": {
+    "start": "2020-05-01",
+    "peak": "2021-11-09",
+    "end": "2021-12-31"
+   },
+   "peak_referent": "PRICE_HIGH",
+   "peak_referent_label": "商品或行业产品价格高点",
+   "referent_basis_note": "记录给的是氧化镨钕挂牌价的高点",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-11-03",
+     "type": "媒体",
+     "excerpt": "2021-11-03 SMM 镨钕氧化物现货均价报 735000 元/吨，近一个月涨幅达 22.7%；包头稀土交易所北方稀土第 79 场专场竞价 20 吨金属镨钕全部以报警价 89 万元/吨成交。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2021-11-09",
+     "type": "industry",
+     "excerpt": "北方稀土更新挂牌价，氧化镨钕升至 76.26 万元/吨",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-11-09",
+     "type": "媒体",
+     "excerpt": "2021-11-09 北方稀土更新挂牌价，氧化镨钕价格飙升至 76.26 万元/吨（上调 13.94 万元/吨），金属镨钕挂牌价 93 万元/吨；镨钕氧化物自 10 月 3 日以来一个月内价格飙涨近 25%，11-04 行业现货价报 75 万元/吨，处于 2011 年 11 月以来最高水平。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "GUANGSHENG",
+    "peak_date": "2021-09-15",
+    "delta_days": 55
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2020-SEMI-EQUIPMENT": {
+   "campaign_id": "C-2020-SEMI-EQUIPMENT",
+   "recorded": {
+    "start": "2020-07-16",
+    "peak": "2021-07-30",
+    "end": "2021-09-30"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录只提申万半导体板块指数月内最高",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-07-30",
+     "type": "market",
+     "excerpt": "申万半导体板块指数月内最高 7642.58（2019–2021 全周期最高）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-07-30",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数 2021-07 月内最高 7642.58、月末收 7451.01；2021-08 月内最高 7522.05、月末收 6308.40；2022-10 月内最低 3605.80。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "SMIC",
+    "peak_date": "2020-07-16",
+    "delta_days": 379
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 3
+   }
+  },
+  "C-2021-CONS-HOG-REVERSAL": {
+   "campaign_id": "C-2021-CONS-HOG-REVERSAL",
+   "recorded": {
+    "start": "2021-08-17",
+    "peak": "2022-10-15",
+    "end": "2022-12-31"
+   },
+   "peak_referent": "PRICE_HIGH",
+   "peak_referent_label": "商品或行业产品价格高点",
+   "referent_basis_note": "记录给的是生猪价格创年内新高",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2022-10-15",
+     "type": "行业价格（转述）",
+     "excerpt": "2022 年 10 月中旬猪价创年内新高，媒体转述外三元生猪价格约 28 元/公斤区间。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "JUXING",
+    "peak_date": "2022-07-12",
+    "delta_days": 95
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2021-NEV": {
+   "campaign_id": "C-2021-NEV",
+   "recorded": {
+    "start": "2021-06-01",
+    "peak": "2021-08-06",
+    "end": "2021-09-30"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明比亚迪创历史新高；CATL 于同周创区间高点",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2021-08-01",
+     "type": "行业数据",
+     "excerpt": "反例视角：受芯片短缺加剧，4-7月乘用车产销同比连续三个月下滑(7月乘用车产量同比-10.7%)；整体汽车产销总量负增长，传统车承压。Campaign集中于新能源/电池，非全面汽车行情。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2021-08-05",
+     "type": "company",
+     "excerpt": "比亚迪7月产销快报：新能源销量5.05万辆创新高",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-08-06",
+     "type": "行情数据",
+     "excerpt": "8/6比亚迪大涨逾5%创历史新高，总市值一度超9000亿；7月新能源销量5.05万辆再创新高同比+234.38%。龙头持续创新高，主线延续至8月。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-08-13",
+     "type": "行业月度产销数据",
+     "excerpt": "中汽协7月数据：整体汽车销量同比-11.9%(缺芯)；新能源产销28.4/27.1万辆同比+1.7/1.6倍创新高，前7月累计已超历年全年，渗透率10%。新能源“淡季不淡”。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "CATL",
+     "peak_date": "2021-07-30",
+     "delta_days": 7
+    }
+   ],
+   "nearest_security": {
+    "security_id": "CATL",
+    "peak_date": "2021-07-30",
+    "delta_days": 7
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2021-RES-CHEM-DUALCTRL": {
+   "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+   "recorded": {
+    "start": "2021-08-12",
+    "peak": "2021-10-31",
+    "end": "2021-12-31"
+   },
+   "peak_referent": "PRICE_HIGH",
+   "peak_referent_label": "商品或行业产品价格高点",
+   "referent_basis_note": "记录给的是能耗双控下多种化工原料价格飙升",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2021-10-31",
+     "type": "industry",
+     "excerpt": "江苏/云南/陕西等多地化工企业停车减产，纯碱、黄磷等原料价格飙升",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-10-31",
+     "type": "行业文件",
+     "excerpt": "受能耗双控政策影响，江苏、云南、陕西等多地化工企业停车减产，纯碱、黄磷、环氧丙烷、环氧树脂等多个化工原料价格一度飙升，甚至出现有价无市的情况；陕西榆林要求本年度新建已投产「两高」项目在上月产量基础上限产 60%，确保 9 月份减产 50%。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "HUBEIYIHUA",
+     "peak_date": "2021-11-01",
+     "delta_days": 1
+    }
+   ],
+   "nearest_security": {
+    "security_id": "HUBEIYIHUA",
+    "peak_date": "2021-11-01",
+    "delta_days": 1
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2022-CONS-SERVICE-REBOUND": {
+   "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+   "recorded": {
+    "start": "2022-12-07",
+    "peak": "2023-01-31",
+    "end": "2023-06-30"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明中国中免月内最高价为该脉冲期间股价高点",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2023-01-27",
+     "type": "industry",
+     "excerpt": "2023 年春节假期全国国内旅游出游 3.08 亿人次、同比增长 23.1%（恢复至 2019 年同期 88.6%）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-01-27",
+     "type": "官方行业数据",
+     "excerpt": "2023 年春节假期全国国内旅游出游 3.08 亿人次，同比增长 23.1%，恢复至 2019 年同期的 88.6%；旅游收入 3758.43 亿元，恢复至 2019 年同期的 73.1%。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-01-31",
+     "type": "行情数据",
+     "excerpt": "2023 年 1 月中国中免月内最高价 239.99 元，为该疫后修复脉冲期间的股价高点。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "CTGDF",
+     "peak_date": "2023-01-30",
+     "delta_days": 1
+    }
+   ],
+   "nearest_security": {
+    "security_id": "CTGDF",
+    "peak_date": "2023-01-30",
+    "delta_days": 1
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2022-POLICY": {
+   "campaign_id": "C-2022-POLICY",
+   "recorded": {
+    "start": "2022-04-27",
+    "peak": "2022-06-10",
+    "end": "2022-08-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明比亚迪市值首破万亿及当日报价涨幅",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2022-06-10",
+     "type": "market",
+     "excerpt": "比亚迪A股市值首破万亿",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2022-06-10",
+     "type": "行情数据",
+     "excerpt": "6/10比亚迪A股市值首破万亿(报348.80元+8.19%)，自主品牌首家；5月新能源乘用车零售36万辆同比+91.2%；上海6月初解封+购置税6/1实施，供给与需求双击。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "BIDI",
+     "peak_date": "2022-06-13",
+     "delta_days": 3
+    },
+    {
+     "security_id": "GAC",
+     "peak_date": "2022-06-15",
+     "delta_days": 5
+    },
+    {
+     "security_id": "GWM",
+     "peak_date": "2022-06-15",
+     "delta_days": 5
+    }
+   ],
+   "nearest_security": {
+    "security_id": "BIDI",
+    "peak_date": "2022-06-13",
+    "delta_days": 3
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2022-POWER-GRID": {
+   "campaign_id": "C-2022-POWER-GRID",
+   "recorded": {
+    "start": "2022-01-10",
+    "peak": "2024-10-08",
+    "end": "2025-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录为逐只标的的行情复核（前复权），逐只给出区间高点日",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2024-10-08",
+     "type": "行情数据",
+     "excerpt": "代表标的行情复核（前复权）：许继电气 2024-07-09 达区间高点 34.17；国电南瑞 2024-10-08 达 26.71；平高电气 2024-10-14 达 20.54 → Peak Window 2024-07-09~2024-10-14。另 2022-01-18/19 三大标的同步见顶（利好兑现回撤起点）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "PINGGAO",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    },
+    {
+     "security_id": "XUJI",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "PINGGAO",
+    "peak_date": "2024-10-08",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2022-RE-POLICY-THREE": {
+   "campaign_id": "C-2022-RE-POLICY-THREE",
+   "recorded": {
+    "start": "2022-11-08",
+    "peak": "2022-11-29",
+    "end": "2023-02-28"
+   },
+   "peak_referent": "POLICY_EVENT",
+   "peak_referent_label": "政策事件日",
+   "referent_basis_note": "记录为证监会宣布恢复涉房上市公司并购重组及配套融资，次日板块暴涨",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2022-11-25",
+     "type": "财经媒体报道（引述 Wind 行业指数）",
+     "excerpt": "2022-11-01 至 2022-11-25，A 股房地产行业指数累计上涨 20.9%，同期上证指数累计上涨 7.20%，房地产位居申万一级行业涨幅前列。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2022-11-28",
+     "type": "监管机构发布（媒体转载）",
+     "excerpt": "2022-11-28，中国证监会宣布在股权融资方面调整优化 5 项措施，恢复涉房上市公司并购重组及配套融资，自即日起施行。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2022-11-29",
+     "type": "policy",
+     "excerpt": "证监会「第三支箭」恢复涉房上市公司并购重组及配套融资；次日地产股近 40 只涨停",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2022-11-29",
+     "type": "财经媒体报道（行情事实）",
+     "excerpt": "2022-11-29（“第三支箭”次日），A 股房地产板块暴涨，万科A 等近 40 只个股涨停。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "GEMDALE",
+     "peak_date": "2022-11-30",
+     "delta_days": 1
+    }
+   ],
+   "nearest_security": {
+    "security_id": "GEMDALE",
+    "peak_date": "2022-11-30",
+    "delta_days": 1
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2022-SEMI-DOWNTURN": {
+   "campaign_id": "C-2022-SEMI-DOWNTURN",
+   "recorded": {
+    "start": "2022-01-04",
+    "peak": "2022-08-31",
+    "end": "2022-10-12"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录只提申万半导体板块指数的年内反弹高点",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2022-08-31",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数在 2022-08 出现年内唯一反弹高点 5380.53（月内最高）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "HYGON",
+    "peak_date": "2022-08-12",
+    "delta_days": 19
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2023-AD": {
+   "campaign_id": "C-2023-AD",
+   "recorded": {
+    "start": "2023-06-12",
+    "peak": "2023-07-11",
+    "end": "2023-07-19"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明德赛西威于 7/11 创该段最高价",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2023-07-04",
+     "type": "行情数据",
+     "excerpt": "7/4 25只汽车股集体涨停、申万汽车涨幅居首+2.67%，整车指数创4月新高，机构称汽车产业链替代AI成新主线。板块级主升信号。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-07-11",
+     "type": "行情数据",
+     "excerpt": "7/11智能驾驶涨势加速带动汽车产业链爆发，浙江世宝8天6板、瑞玛精密6天5板、万安科技2连板，'主线地位确认'。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-07-13",
+     "type": "行情数据",
+     "excerpt": "龙头区间涨幅（源文明确记载）：浙江世宝近一月不到8元→近18元(超100%)、万安科技8.50→14.31(近70%)、德赛西威5月上旬不足百元→7/11最高179.50(约80%)、赛力斯自6/8触及24.75低点后一月近翻倍。〔Phase 7.4B 更正：原描述含「启动早于6/1(6/12预热)」——经取回源文 S-2023-05 全文核验，源文未出现「6月12日」，亦无「启动早于6/1」表述 → 该**日期断言 UNSUPPORT",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "DESAYSV",
+     "peak_date": "2023-07-11",
+     "delta_days": 0
+    },
+    {
+     "security_id": "WANAN",
+     "peak_date": "2023-07-13",
+     "delta_days": 2
+    },
+    {
+     "security_id": "ZHEJIANGSHISHI",
+     "peak_date": "2023-07-18",
+     "delta_days": 7
+    }
+   ],
+   "nearest_security": {
+    "security_id": "DESAYSV",
+    "peak_date": "2023-07-11",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2023-AI-COMPUTE-SEMI": {
+   "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+   "recorded": {
+    "start": "2023-01-30",
+    "peak": "2023-04-10",
+    "end": "2023-08-25"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录只提申万半导体板块指数的年内最高",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2023-04-10",
+     "type": "market",
+     "excerpt": "申万半导体板块指数 2023 年内最高 5154.69（AI 算力行情见顶）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-04-10",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数 2023-04-10 达 5154.69，为 2023 年内最高；2023-04 单月下跌 6.03%。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "GIGADEVICE",
+     "peak_date": "2023-04-06",
+     "delta_days": 4
+    }
+   ],
+   "nearest_security": {
+    "security_id": "GIGADEVICE",
+    "peak_date": "2023-04-06",
+    "delta_days": 4
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2023-COMM-OPTICAL": {
+   "campaign_id": "C-2023-COMM-OPTICAL",
+   "recorded": {
+    "start": "2023-03-21",
+    "peak": "2025-12-25",
+    "end": "2025-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录为逐只标的的行情复核（前复权），给出中际旭创 / 新易盛高点",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2025-12-25",
+     "type": "行情数据",
+     "excerpt": "代表标的行情复核（前复权）：中际旭创 2025-12-25 达 638.80、新易盛 2025-12-22 达 329.99 → 至本地行情窗口末端仍在上行，Theme Cycle End 未确认。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "EOPTOLINK",
+     "peak_date": "2025-12-23",
+     "delta_days": 2
+    },
+    {
+     "security_id": "INNOLIGHT",
+     "peak_date": "2025-12-25",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "INNOLIGHT",
+    "peak_date": "2025-12-25",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2023-CONS-VALUE-RETAIL": {
+   "campaign_id": "C-2023-CONS-VALUE-RETAIL",
+   "recorded": {
+    "start": "2023-01-01",
+    "peak": "2025-08-29",
+    "end": null
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明万辰集团当日收盘为该区间最高；★ 点名的标的未登记进本 campaign",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2025-08-29",
+     "type": "market",
+     "excerpt": "万辰集团收于 210.81 元（区间最高）；同期三只松鼠 2025 年初见顶后全年收跌",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2025-08-29",
+     "type": "行情数据",
+     "excerpt": "万辰集团股价 2024 年 12 月 11 日收于 80.21 元，2025 年 8 月 29 日收于 210.81 元（区间最高）；同期三只松鼠于 2025 年初见顶后全年收跌。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "ECOVACS",
+    "peak_date": "2023-01-20",
+    "delta_days": 952
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   }
+  },
+  "C-2023-FIN-SOE-VALUATION": {
+   "campaign_id": "C-2023-FIN-SOE-VALUATION",
+   "recorded": {
+    "start": "2023-04-01",
+    "peak": "2023-05-11",
+    "end": "2023-06-30"
+   },
+   "peak_referent": "SECTOR_MOVE",
+   "peak_referent_label": "板块级异动日",
+   "referent_basis_note": "记录为券商中期策略描述保险领涨与中特估定价因素",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2023-05-11",
+     "type": "market",
+     "excerpt": "同期研报仍描述保险板块「明显…」（中特估窗口右沿）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-05-11",
+     "type": "券商研究报告（同期）",
+     "excerpt": "2023-05-11 非银金融行业中期策略指出：2023 年 4 月以来保险明显领涨，一季报 NBV 及净利润同比超预期，数据验证寿险负债端改善，“中特估”成为重要定价因素。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "CHINALIFE",
+     "peak_date": "2023-05-15",
+     "delta_days": 4
+    },
+    {
+     "security_id": "CNCB",
+     "peak_date": "2023-05-09",
+     "delta_days": 2
+    },
+    {
+     "security_id": "ICBC",
+     "peak_date": "2023-05-09",
+     "delta_days": 2
+    },
+    {
+     "security_id": "PINGAN",
+     "peak_date": "2023-05-09",
+     "delta_days": 2
+    }
+   ],
+   "nearest_security": {
+    "security_id": "CNCB",
+    "peak_date": "2023-05-09",
+    "delta_days": 2
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2023-HIEQ-HUMANOID": {
+   "campaign_id": "C-2023-HIEQ-HUMANOID",
+   "recorded": {
+    "start": "2023-05-01",
+    "peak": "2023-11-02",
+    "end": "2023-12-31"
+   },
+   "peak_referent": "POLICY_EVENT",
+   "peak_referent_label": "政策事件日",
+   "referent_basis_note": "记录为工业和信息化部印发人形机器人创新发展指导意见",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2023-11-02",
+     "type": "policy",
+     "excerpt": "工信部印发《人形机器人创新发展指导意见》",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-11-02",
+     "type": "官方政策文件（年度大盘点转引）",
+     "excerpt": "工业和信息化部于 2023 年 11 月 2 日印发《人形机器人创新发展指导意见》，提出到 2025 年人形机器人创新体系初步建立、「大脑、小脑、肢体」等一批关键技术取得突破、整机产品达到国际先进水平并实现批量生产；到 2027 年形成安全可靠的产业链供应链体系。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "KINCO",
+    "peak_date": "2023-06-29",
+    "delta_days": 126
+   },
+   "coverage": {
+    "securities": 5,
+    "with_data": 5
+   }
+  },
+  "C-2023-HIEQ-ROBOT-PLUS": {
+   "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+   "recorded": {
+    "start": "2023-01-19",
+    "peak": "2023-02-03",
+    "end": null
+   },
+   "peak_referent": "SECTOR_MOVE",
+   "peak_referent_label": "板块级异动日",
+   "referent_basis_note": "记录为券商双周报给出机械设备与机器人子行业的区间涨幅与估值",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2023-02-03",
+     "type": "券商行业双周报（行情与估值数据）",
+     "excerpt": "2023 年 1 月 14 日至 2 月 3 日，机械设备行业上涨 6.47%、跑赢沪深 300 指数 4.82 个百分点，其中机器人三级子行业上涨 13.48% 居前；截至 2023 年 2 月 3 日机器人板块估值 75.45 倍。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "ESTUN",
+     "peak_date": "2023-02-07",
+     "delta_days": 4
+    },
+    {
+     "security_id": "SHUANGHUAN",
+     "peak_date": "2023-02-07",
+     "delta_days": 4
+    },
+    {
+     "security_id": "TECHLONG",
+     "peak_date": "2023-02-03",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "TECHLONG",
+    "peak_date": "2023-02-03",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2023-PHARMA-GLP1": {
+   "campaign_id": "C-2023-PHARMA-GLP1",
+   "recorded": {
+    "start": "2023-09-08",
+    "peak": "2023-10-16",
+    "end": "2023-10-19"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录只提 Wind 减肥药指数的区间涨幅与顶点",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2023-10-10",
+     "type": "company",
+     "excerpt": "司美格鲁肽三期临床提前终止（疗效达标）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-10-13",
+     "type": "market_data",
+     "excerpt": "2023-09-01 至 10-13 与减肥药概念相关的 27 只股票市值合计增加 1261 亿元。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-10-13",
+     "type": "market_data",
+     "excerpt": "2023-09-01 以来常山药业总市值由 41.7 亿元升至 155.5 亿元，涨幅 272.87%（★ 该公司自身未开展减肥药研发）。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2023-10-16",
+     "type": "market",
+     "excerpt": "减肥药概念达顶点（Wind 指数 21 个交易日 +26.43%）",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-10-16",
+     "type": "market_data",
+     "excerpt": "Wind 减肥药指数 2023-09-08 至 10-16 共 21 个交易日上涨 26.43%，25 只成分股中 23 只上涨。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "event",
+     "date": "2023-10-17",
+     "type": "policy",
+     "excerpt": "康惠制药、百花医药、博瑞医药董事长收警示函或致歉",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-10-17",
+     "type": "regulatory",
+     "excerpt": "2023-10-16~17 康惠制药、百花医药、博瑞医药董事长先后收到证监局警示函或致歉，涉『蹭减肥药热点』。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-10-18",
+     "type": "market_data",
+     "excerpt": "2023-10-17/10-18 指数分别收跌 1.24%/1.75%；10-18 25 家成分股中 21 家收跌。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "BORUI",
+     "peak_date": "2023-10-16",
+     "delta_days": 0
+    },
+    {
+     "security_id": "CHANGSHAN",
+     "peak_date": "2023-10-16",
+     "delta_days": 0
+    },
+    {
+     "security_id": "HANYU",
+     "peak_date": "2023-10-16",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "BORUI",
+    "peak_date": "2023-10-16",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2024-CONS-TRADE-IN": {
+   "campaign_id": "C-2024-CONS-TRADE-IN",
+   "recorded": {
+    "start": "2024-03-13",
+    "peak": "2024-10-08",
+    "end": "2025-12-31"
+   },
+   "peak_referent": "SECURITY_HIGH",
+   "peak_referent_label": "代表标的股价高点",
+   "referent_basis_note": "记录写明白电等标的当日同时出现区间最高价；ROBAM 已登记",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2024-10-08",
+     "type": "market",
+     "excerpt": "美的/格力/海尔/海信家电/华帝/老板电器同时出现区间最高价",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-10-08",
+     "type": "行情数据",
+     "excerpt": "2024 年 8 月 7 日至 9 月 12 日间美的集团、格力电器、海尔智家、海信家电、华帝股份、老板电器先后出现区间最低价；2024 年 10 月 8 日上述标的同时出现区间最高价。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "BLOOMAGE",
+     "peak_date": "2024-10-08",
+     "delta_days": 0
+    }
+   ],
+   "nearest_security": {
+    "security_id": "BLOOMAGE",
+    "peak_date": "2024-10-08",
+    "delta_days": 0
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2024-FIN-BANK-DIVIDEND": {
+   "campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+   "recorded": {
+    "start": "2024-01-01",
+    "peak": null,
+    "end": null
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "记录未标注 peak",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": null,
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2024-FIN-BROKER-POLICY": {
+   "campaign_id": "C-2024-FIN-BROKER-POLICY",
+   "recorded": {
+    "start": "2024-09-24",
+    "peak": "2024-10-08",
+    "end": "2024-10-31"
+   },
+   "peak_referent": "SECTOR_MOVE",
+   "peak_referent_label": "板块级异动日",
+   "referent_basis_note": "记录为复市当日大幅高开后回落、成交额创历史新高",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2024-10-08",
+     "type": "market",
+     "excerpt": "A 股复市大幅高开后回落，同日成交额 3.5 万亿元创历史新高",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-10-08",
+     "type": "财经媒体复盘",
+     "excerpt": "2024-10-08 A 股国庆假期后复市，当日大幅高开但回落明显。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-10-08",
+     "type": "券商研究报告",
+     "excerpt": "券商复盘指出：2024-10-08 A 股日度成交额达 3.5 万亿元、两融净新增破千亿元，多项市场指标创历史新高。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-10-08",
+     "type": "行情数据",
+     "excerpt": "2024-09-13 至 2024-10-08，沪深300 由 3159.25 升至 4256.10（+34.7%）；中信证券 +62.1%（相对 +27.4pct）、东方财富 +136.8%（相对 +102.1pct）、万科A +64.2%（相对 +29.5pct）、保利发展 +48.2%（相对 +13.5pct）、中国平安 +51.4%（相对 +16.6pct），而工商银行仅 +11.3%（相对 -23.4pct）。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "CITICS",
+     "peak_date": "2024-10-09",
+     "delta_days": 1
+    },
+    {
+     "security_id": "EASTMONEY",
+     "peak_date": "2024-10-09",
+     "delta_days": 1
+    },
+    {
+     "security_id": "EBSEC",
+     "peak_date": "2024-10-09",
+     "delta_days": 1
+    }
+   ],
+   "nearest_security": {
+    "security_id": "CITICS",
+    "peak_date": "2024-10-09",
+    "delta_days": 1
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2024-RES-GOLD-CB": {
+   "campaign_id": "C-2024-RES-GOLD-CB",
+   "recorded": {
+    "start": "2024-02-01",
+    "peak": null,
+    "end": null
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "记录未标注 peak",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": null,
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2024-ROBOTAXI": {
+   "campaign_id": "C-2024-ROBOTAXI",
+   "recorded": {
+    "start": "2024-07-08",
+    "peak": "2024-07-29",
+    "end": "2024-07-31"
+   },
+   "peak_referent": "SECTOR_MOVE",
+   "peak_referent_label": "板块级异动日",
+   "referent_basis_note": "记录为龙头梯队的连续涨幅与连板数，未归结到单一标的的高点",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2024-07-29",
+     "type": "行情数据",
+     "excerpt": "7月下旬高峰：大众交通16日涨233%、锦江15天9板、金龙12天7板、7/23大众交通12日+142%。龙头梯队明确。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-07-31",
+     "type": "行情数据",
+     "excerpt": "反例/退潮：7/31大众交通9连板终结(-2.65%)、大众公用天地板港股暴跌22.75%；7/24高位亏钱效应放大(锦江/金溢跌停)。约3周脉冲、快涨快退。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "DADONGTRAFFIC",
+     "peak_date": "2024-07-31",
+     "delta_days": 2
+    },
+    {
+     "security_id": "JIANGLING",
+     "peak_date": "2024-07-31",
+     "delta_days": 2
+    },
+    {
+     "security_id": "JINJIANGONLINE",
+     "peak_date": "2024-07-31",
+     "delta_days": 2
+    }
+   ],
+   "nearest_security": {
+    "security_id": "DADONGTRAFFIC",
+    "peak_date": "2024-07-31",
+    "delta_days": 2
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2024-SEMI-MEMORY": {
+   "campaign_id": "C-2024-SEMI-MEMORY",
+   "recorded": {
+    "start": "2024-09-24",
+    "peak": "2025-10-31",
+    "end": null
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis_note": "记录只提申万半导体板块指数月内最高",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2025-10-31",
+     "type": "market",
+     "excerpt": "申万半导体板块指数 7964.33，超过 2021-07 的 7642.58 创指数新高",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2025-10-31",
+     "type": "行情数据",
+     "excerpt": "申万半导体板块指数 2025-10 月内最高 7964.33（月内区间 6656.35—7964.33），超过 2021-07 的 7642.58，为该指数新高；2025-12-31 收 6950.35。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "CAMBRICON",
+    "peak_date": "2024-10-21",
+    "delta_days": 375
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2024-V2X": {
+   "campaign_id": "C-2024-V2X",
+   "recorded": {
+    "start": "2024-06-11",
+    "peak": "2024-06-18",
+    "end": "2024-06-25"
+   },
+   "peak_referent": "SECTOR_MOVE",
+   "peak_referent_label": "板块级异动日",
+   "referent_basis_note": "记录为车路云概念全线爆发、多股涨停，源文记为行情高峰",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2024-06-14",
+     "type": "policy",
+     "excerpt": "武汉车路云一体化示范项目备案170.84亿",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-06-18",
+     "type": "行情数据",
+     "excerpt": "6/18车路云全线爆发，华铭/金溢/索菱/长江通信等10余股涨停、多股2连板——行情高峰。",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-06-21",
+     "type": "行情数据",
+     "excerpt": "6/18 车路云概念全线爆发：华铭智能、中海达、鸿泉物联、索菱股份、金溢科技、长江通信等10余股涨停，华铭/金溢/索菱2连板——源文记为「行情高峰」。〔Phase 7.4B 更正：原描述含「车联网(车路协同)概念指数6/11-6/21涨超9%」「229家概念股近八成上涨」，经取回源文 S-2024-02 全文核验，源文**均未提及**（且源文发布于 2024-06-18，不可能记载 6/21 数据）→ 该**日期区间与统计断言 UNSU",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-06-24",
+     "type": "行情数据",
+     "excerpt": "反例/退潮：6/24-25车路云分化退潮，索菱断板跌停、金溢逼近跌停、华铭跌近15%；公司多公告'未参与'仍连板。约2周脉冲炒作、快涨快退、缺持续主线。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "HUAMING",
+     "peak_date": "2024-06-21",
+     "delta_days": 3
+    },
+    {
+     "security_id": "JINYI",
+     "peak_date": "2024-06-21",
+     "delta_days": 3
+    },
+    {
+     "security_id": "SUOLING",
+     "peak_date": "2024-06-24",
+     "delta_days": 6
+    },
+    {
+     "security_id": "VANJI",
+     "peak_date": "2024-06-19",
+     "delta_days": 1
+    }
+   ],
+   "nearest_security": {
+    "security_id": "VANJI",
+    "peak_date": "2024-06-19",
+    "delta_days": 1
+   },
+   "coverage": {
+    "securities": 4,
+    "with_data": 4
+   }
+  },
+  "C-2025-FIN-INSURANCE": {
+   "campaign_id": "C-2025-FIN-INSURANCE",
+   "recorded": {
+    "start": "2025-01-01",
+    "peak": null,
+    "end": null
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "记录未标注 peak",
+   "referent_evidence": [],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": null,
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   }
+  },
+  "C-2025-ROBOTAXI": {
+   "campaign_id": "C-2025-ROBOTAXI",
+   "recorded": {
+    "start": "2025-06-22",
+    "peak": "2025-06-24",
+    "end": "2025-08-31"
+   },
+   "peak_referent": "SECTOR_MOVE",
+   "peak_referent_label": "板块级异动日",
+   "referent_basis_note": "记录为板块全线爆发的板块级启动",
+   "referent_evidence": [
+    {
+     "kind": "event",
+     "date": "2025-06-22",
+     "type": "company",
+     "excerpt": "特斯拉奥斯汀启动Robotaxi有偿试运营",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "event",
+     "date": "2025-06-24",
+     "type": "market",
+     "excerpt": "A股无人驾驶板块全线爆发涨停潮",
+     "source_field": "events.name"
+    },
+    {
+     "kind": "evidence",
+     "date": "2025-06-24",
+     "type": "行情数据",
+     "excerpt": "6/22特斯拉奥斯汀Robotaxi收费试点(点火)→6/24 A股无人驾驶板块全线爆发涨3%三友30%、万马/恒帅/星源卓镁20%、海马/浙江世宝涨停。板块级启动。",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": {
+    "security_id": "DESAYSV",
+    "peak_date": "2025-09-25",
+    "delta_days": 93
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   }
+  }
+ }
+}

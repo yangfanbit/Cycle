@@ -49,7 +49,7 @@ from scripts import db  # noqa: E402
 
 REP = os.path.join(db.ROOT, "research", "reports")
 ALIGN = os.path.join(REP, "kline_alignment_v0_2.json")
-REFERENT = os.path.join(REP, "peak_referent_v0_1.json")
+REFERENT = os.path.join(REP, "peak_referent_v0_2.json")
 OUT = os.path.join(REP, "kline_confirmation_v0_2.json")
 
 TOL = 7
@@ -104,7 +104,7 @@ def main():
             "recorded": {"start": rec.get("start"), "peak": peak, "end": rec.get("end")},
             "peak_referent": ref,
             "peak_referent_label": r.get("peak_referent_label"),
-            "referent_basis": r.get("referent_basis"),
+            "referent_basis": r.get("referent_basis_note"),
             "referent_review_status": r.get("referent_review_status"),
             "coverage": {"securities": (v.get("coverage") or {}).get("securities"),
                          "with_data": (v.get("coverage") or {}).get("with_data")},
@@ -144,7 +144,7 @@ def main():
         "artifact_version": "0.2",
         "generated_by": "research/scripts/build_kline_confirmation_v0_2.py",
         "source_alignment": "research/research/reports/kline_alignment_v0_2.json",
-        "source_referent": "research/research/reports/peak_referent_v0_1.json",
+        "source_referent": "research/research/reports/peak_referent_v0_2.json",
         "position": ("Research-only 只读产物 —— 供产品与研究侧**看见**「记录峰值是否被 K 线证实」。"
                      "**不改动任何研究数据**；**不含** score / ranking / probability。"),
         "rules": {

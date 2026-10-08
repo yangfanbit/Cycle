@@ -1,0 +1,777 @@
+{
+ "artifact": "peak_referent_review",
+ "artifact_version": "0.2",
+ "generated_by": "research/scripts/review_peak_referent_v0_2.py",
+ "reviewed_artifact": "research/research/reports/peak_referent_v0_2.json",
+ "prior_review": "research/research/reports/peak_referent_review_v0_1.json —— 对 v0_1 的审查结果 ACCEPT 25 / FLAG 28，直接导致 v0_2 把「手写引文」改为「注 + 逐字摘录」，并显式写死平局规则。",
+ "reviewer_role": "ThreeC Agent role（协议 §3 角色分离：生产与审查分离）",
+ "checks": {
+  "C1": "每个 campaign 恰好一条",
+  "C2a": "referent_basis_note 不得含「」引号（注不得伪装成引文）",
+  "C2b": "referent_evidence[].excerpt 必须是该 campaign 记录原文的子串",
+  "C3": "标 UNSPECIFIED 者，peak 日 ±7 日内必须确实无依据",
+  "C4": "按参照物分别设定**必要条件**，且只看 peak ±7 日的证据行：指数→须提「指数」；商品价→须提价格；政策→须提印发/决定；公司→须提违约/公告；行业指标→须提产量/景气；板块级→须提爆发/大涨/涨停等；股价→须有已登记标的同周创高点，或证据出现股价高点措辞。",
+  "C5": "有峰值的对象必须给出参照物"
+ },
+ "verdict_vocabulary": [
+  "ACCEPT",
+  "CORRECTED",
+  "FLAG_FOR_HUMAN"
+ ],
+ "summary": {
+  "ACCEPT": 53,
+  "CORRECTED": 0,
+  "FLAG_FOR_HUMAN": 0
+ },
+ "by_campaign": {
+  "C-2016-CONS-BAIJIU-UPGRADE": {
+   "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "peak": "2018-01-31",
+   "peak_referent": "UNSPECIFIED",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C3_unspecified_really_bare": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2016-HIEQ-CONSTR": {
+   "campaign_id": "C-2016-HIEQ-CONSTR",
+   "peak": "2021-01-25",
+   "peak_referent": "UNSPECIFIED",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C3_unspecified_really_bare": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2016-PANEL-CYCLE": {
+   "campaign_id": "C-2016-PANEL-CYCLE",
+   "peak": "2017-06-30",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2018-CONS-HOG-AFRICAN": {
+   "campaign_id": "C-2018-CONS-HOG-AFRICAN",
+   "peak": "2020-03-09",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2018-HIEQ-ROBOT-DOWN": {
+   "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
+   "peak": "2019-09-30",
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-AD": {
+   "campaign_id": "C-2019-AD",
+   "peak": "2019-09-24",
+   "peak_referent": "UNSPECIFIED",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C3_unspecified_really_bare": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-COMM-5G": {
+   "campaign_id": "C-2019-COMM-5G",
+   "peak": "2020-02-25",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-CONS-AESTHETICS": {
+   "campaign_id": "C-2019-CONS-AESTHETICS",
+   "peak": "2021-07-05",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-CONS-BAIJIU-CORE": {
+   "campaign_id": "C-2019-CONS-BAIJIU-CORE",
+   "peak": "2021-02-18",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-CONSUMER-TWS": {
+   "campaign_id": "C-2019-CONSUMER-TWS",
+   "peak": "2020-10-13",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-MIL-GROUP-RESTRUCTURE": {
+   "campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
+   "peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C3_unspecified_really_bare": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-PHARMA-INNOV": {
+   "campaign_id": "C-2019-PHARMA-INNOV",
+   "peak": "2021-07-01",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-RES-DYE-SHOCK": {
+   "campaign_id": "C-2019-RES-DYE-SHOCK",
+   "peak": "2019-04-04",
+   "peak_referent": "POLICY_EVENT",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2019-SEMI-LOCALIZATION": {
+   "campaign_id": "C-2019-SEMI-LOCALIZATION",
+   "peak": "2020-07-14",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-CONS-BEAUTY-CN": {
+   "campaign_id": "C-2020-CONS-BEAUTY-CN",
+   "peak": "2021-10-29",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-CONS-DUTYFREE": {
+   "campaign_id": "C-2020-CONS-DUTYFREE",
+   "peak": "2021-02-18",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-CONS-WHITE-GOODS": {
+   "campaign_id": "C-2020-CONS-WHITE-GOODS",
+   "peak": "2021-02-18",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-FIN-BANK-CREDIT": {
+   "campaign_id": "C-2020-FIN-BANK-CREDIT",
+   "peak": "2021-03-03",
+   "peak_referent": "SECTOR_MOVE",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-HIEQ-AUTOMATION": {
+   "campaign_id": "C-2020-HIEQ-AUTOMATION",
+   "peak": "2021-07-01",
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-MIL-EQUIP-ORDER": {
+   "campaign_id": "C-2020-MIL-EQUIP-ORDER",
+   "peak": "2021-12-01",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-NEV": {
+   "campaign_id": "C-2020-NEV",
+   "peak": "2020-07-13",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-PANEL-CYCLE": {
+   "campaign_id": "C-2020-PANEL-CYCLE",
+   "peak": "2021-07-31",
+   "peak_referent": "PRICE_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-POWER-NE": {
+   "campaign_id": "C-2020-POWER-NE",
+   "peak": "2021-11-01",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-RE-DEBT-RISK": {
+   "campaign_id": "C-2020-RE-DEBT-RISK",
+   "peak": "2021-12-03",
+   "peak_referent": "COMPANY_EVENT",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-RES-LITHIUM": {
+   "campaign_id": "C-2020-RES-LITHIUM",
+   "peak": "2021-09-13",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-RES-NONFERROUS": {
+   "campaign_id": "C-2020-RES-NONFERROUS",
+   "peak": "2021-09-13",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-RES-RAREEARTH": {
+   "campaign_id": "C-2020-RES-RAREEARTH",
+   "peak": "2021-11-09",
+   "peak_referent": "PRICE_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2020-SEMI-EQUIPMENT": {
+   "campaign_id": "C-2020-SEMI-EQUIPMENT",
+   "peak": "2021-07-30",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2021-CONS-HOG-REVERSAL": {
+   "campaign_id": "C-2021-CONS-HOG-REVERSAL",
+   "peak": "2022-10-15",
+   "peak_referent": "PRICE_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2021-NEV": {
+   "campaign_id": "C-2021-NEV",
+   "peak": "2021-08-06",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2021-RES-CHEM-DUALCTRL": {
+   "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+   "peak": "2021-10-31",
+   "peak_referent": "PRICE_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2022-CONS-SERVICE-REBOUND": {
+   "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
+   "peak": "2023-01-31",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2022-POLICY": {
+   "campaign_id": "C-2022-POLICY",
+   "peak": "2022-06-10",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2022-POWER-GRID": {
+   "campaign_id": "C-2022-POWER-GRID",
+   "peak": "2024-10-08",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2022-RE-POLICY-THREE": {
+   "campaign_id": "C-2022-RE-POLICY-THREE",
+   "peak": "2022-11-29",
+   "peak_referent": "POLICY_EVENT",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2022-SEMI-DOWNTURN": {
+   "campaign_id": "C-2022-SEMI-DOWNTURN",
+   "peak": "2022-08-31",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-AD": {
+   "campaign_id": "C-2023-AD",
+   "peak": "2023-07-11",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-AI-COMPUTE-SEMI": {
+   "campaign_id": "C-2023-AI-COMPUTE-SEMI",
+   "peak": "2023-04-10",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-COMM-OPTICAL": {
+   "campaign_id": "C-2023-COMM-OPTICAL",
+   "peak": "2025-12-25",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-CONS-VALUE-RETAIL": {
+   "campaign_id": "C-2023-CONS-VALUE-RETAIL",
+   "peak": "2025-08-29",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-FIN-SOE-VALUATION": {
+   "campaign_id": "C-2023-FIN-SOE-VALUATION",
+   "peak": "2023-05-11",
+   "peak_referent": "SECTOR_MOVE",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-HIEQ-HUMANOID": {
+   "campaign_id": "C-2023-HIEQ-HUMANOID",
+   "peak": "2023-11-02",
+   "peak_referent": "POLICY_EVENT",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-HIEQ-ROBOT-PLUS": {
+   "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+   "peak": "2023-02-03",
+   "peak_referent": "SECTOR_MOVE",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2023-PHARMA-GLP1": {
+   "campaign_id": "C-2023-PHARMA-GLP1",
+   "peak": "2023-10-16",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2024-CONS-TRADE-IN": {
+   "campaign_id": "C-2024-CONS-TRADE-IN",
+   "peak": "2024-10-08",
+   "peak_referent": "SECURITY_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2024-FIN-BANK-DIVIDEND": {
+   "campaign_id": "C-2024-FIN-BANK-DIVIDEND",
+   "peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C3_unspecified_really_bare": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2024-FIN-BROKER-POLICY": {
+   "campaign_id": "C-2024-FIN-BROKER-POLICY",
+   "peak": "2024-10-08",
+   "peak_referent": "SECTOR_MOVE",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2024-RES-GOLD-CB": {
+   "campaign_id": "C-2024-RES-GOLD-CB",
+   "peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C3_unspecified_really_bare": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2024-ROBOTAXI": {
+   "campaign_id": "C-2024-ROBOTAXI",
+   "peak": "2024-07-29",
+   "peak_referent": "SECTOR_MOVE",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2024-SEMI-MEMORY": {
+   "campaign_id": "C-2024-SEMI-MEMORY",
+   "peak": "2025-10-31",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2024-V2X": {
+   "campaign_id": "C-2024-V2X",
+   "peak": "2024-06-18",
+   "peak_referent": "SECTOR_MOVE",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2025-FIN-INSURANCE": {
+   "campaign_id": "C-2025-FIN-INSURANCE",
+   "peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C3_unspecified_really_bare": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  },
+  "C-2025-ROBOTAXI": {
+   "campaign_id": "C-2025-ROBOTAXI",
+   "peak": "2025-06-24",
+   "peak_referent": "SECTOR_MOVE",
+   "checks": {
+    "C1_covered": true,
+    "C2a_note_has_no_quotes": true,
+    "C2b_evidence_verbatim": true,
+    "C4_necessary_condition": true,
+    "C5_has_referent": true
+   },
+   "verdict": "ACCEPT",
+   "notes": []
+  }
+ }
+}
