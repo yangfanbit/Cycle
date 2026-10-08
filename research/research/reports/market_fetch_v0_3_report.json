@@ -1,15 +1,20 @@
 {
- "generated_at": "2026-10-08T21:08:08",
+ "generated_at": "2026-10-08T22:03:01",
  "not_fetchable": {
   "CNIMIL": "国证军工指数 —— 无 ticker，且**未被任何 campaign 引用**（0 引用），本轮不取。",
   "SWMIL": "申万国防军工指数（801740.SI）—— 腾讯 GTIMG 不提供申万指数（实测 sz801740 返回空）。本脚本**不代以中证军工/军工 ETF 等替代指数**：那会偷换口径。留待研究侧决定代理口径。"
  },
- "planned": 3,
+ "planned": 4,
  "results": {
-  "GAMBO": {
-   "reason": "合法 JSON + 空序列",
-   "status": "UNAVAILABLE",
-   "symbol": "sz301498"
+  "LANCY": {
+   "qfq_rows": 1214,
+   "range": [
+    "2018-01-01",
+    "2022-12-31"
+   ],
+   "raw_rows": 1214,
+   "status": "OK",
+   "symbol": "sz002612"
   },
   "PIOTECH": {
    "reason": "合法 JSON + 空序列",
@@ -17,23 +22,33 @@
    "symbol": "sh688072"
   },
   "SH000300": {
-   "qfq_rows": 181,
+   "qfq_rows": 732,
    "range": [
-    "2026-01-01",
-    "2026-09-30"
+    "2015-01-01",
+    "2017-12-31"
    ],
-   "raw_rows": 181,
+   "raw_rows": 732,
    "status": "OK",
    "symbol": "sh000300"
+  },
+  "YANJIN": {
+   "qfq_rows": 969,
+   "range": [
+    "2022-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 969,
+   "status": "OK",
+   "symbol": "sz002847"
   }
  },
  "stats": {
   "confirmed_empty": 0,
   "invalid_symbol": 0,
-  "ok": 1,
+  "ok": 3,
   "requests": 0,
-  "skipped_known_gap": 14,
-  "unavailable": 2
+  "skipped_known_gap": 6,
+  "unavailable": 1
  },
  "ticker_fix": {
   "EFORT": "腾讯返回名称=埃夫特-U（2026-10-08 核验）",

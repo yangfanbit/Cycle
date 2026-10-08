@@ -241,9 +241,9 @@
   "note": "取**最新可得交易日**。当前快照日为 2026-09-15；行情已补至 2026-09-30（国庆假期后无新交易日）。"
  },
  "summary": {
-  "OK": 42,
-  "PARTIAL": 8,
-  "NO_DATA": 3
+  "OK": 44,
+  "PARTIAL": 9,
+  "NO_DATA": 0
  },
  "by_campaign": {
   "C-2016-CONS-BAIJIU-UPGRADE": {
@@ -252,8 +252,265 @@
    "start": "2016-06-01",
    "peak": "2018-01-31",
    "end": "2018-12-31",
-   "status": "NO_DATA",
-   "market_layer": null,
+   "status": "PARTIAL",
+   "market_layer": {
+    "series_id": "SH000300",
+    "checkpoints": [
+     {
+      "date": "2016-05-31",
+      "close": 3169.56,
+      "vol_pct60": 0.9,
+      "ret_20_pct": -1.37,
+      "vol_ratio": 1.01,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 1
+     },
+     {
+      "date": "2016-05-25",
+      "close": 3059.23,
+      "vol_pct60": 0.033,
+      "ret_20_pct": -3.77,
+      "vol_ratio": 0.775,
+      "above_ma20": false,
+      "above_ma60": false,
+      "t_minus": 5
+     },
+     {
+      "date": "2016-05-18",
+      "close": 3068.04,
+      "vol_pct60": 0.283,
+      "ret_20_pct": -5.26,
+      "vol_ratio": 0.662,
+      "above_ma20": false,
+      "above_ma60": false,
+      "t_minus": 10
+     },
+     {
+      "date": "2016-05-04",
+      "close": 3209.46,
+      "vol_pct60": 0.25,
+      "ret_20_pct": -1.69,
+      "vol_ratio": 0.597,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 20
+     },
+     {
+      "date": "2016-04-05",
+      "close": 3264.49,
+      "vol_pct60": 0.833,
+      "ret_20_pct": 5.14,
+      "vol_ratio": 0.542,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 40
+     },
+     {
+      "date": "2016-03-07",
+      "close": 3104.84,
+      "vol_pct60": 0.7,
+      "ret_20_pct": 7.02,
+      "vol_ratio": 0.864,
+      "above_ma20": true,
+      "above_ma60": false,
+      "t_minus": 60
+     }
+    ],
+    "series": [
+     {
+      "date": "2016-05-04",
+      "close": 3209.46,
+      "vol_pct60": 0.25,
+      "ret_20_pct": -1.69,
+      "vol_ratio": 0.597,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-05-05",
+      "close": 3213.92,
+      "vol_pct60": 0.133,
+      "ret_20_pct": -1.34,
+      "vol_ratio": 0.606,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-05-06",
+      "close": 3130.35,
+      "vol_pct60": 0.45,
+      "ret_20_pct": -2.46,
+      "vol_ratio": 0.666,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-09",
+      "close": 3065.62,
+      "vol_pct60": 0.35,
+      "ret_20_pct": -3.77,
+      "vol_ratio": 0.71,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-10",
+      "close": 3069.11,
+      "vol_pct60": 0.083,
+      "ret_20_pct": -4.98,
+      "vol_ratio": 0.674,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-11",
+      "close": 3082.81,
+      "vol_pct60": 0.2,
+      "ret_20_pct": -4.21,
+      "vol_ratio": 0.682,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-12",
+      "close": 3090.14,
+      "vol_pct60": 0.183,
+      "ret_20_pct": -5.25,
+      "vol_ratio": 0.668,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-13",
+      "close": 3074.94,
+      "vol_pct60": 0.067,
+      "ret_20_pct": -6.13,
+      "vol_ratio": 0.66,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-16",
+      "close": 3095.31,
+      "vol_pct60": 0.05,
+      "ret_20_pct": -5.41,
+      "vol_ratio": 0.674,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-17",
+      "close": 3086.02,
+      "vol_pct60": 0.1,
+      "ret_20_pct": -4.41,
+      "vol_ratio": 0.654,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-18",
+      "close": 3068.04,
+      "vol_pct60": 0.283,
+      "ret_20_pct": -5.26,
+      "vol_ratio": 0.662,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-19",
+      "close": 3062.5,
+      "vol_pct60": 0.083,
+      "ret_20_pct": -3.73,
+      "vol_ratio": 0.62,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-20",
+      "close": 3078.22,
+      "vol_pct60": 0.017,
+      "ret_20_pct": -2.61,
+      "vol_ratio": 0.625,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-23",
+      "close": 3087.22,
+      "vol_pct60": 0.083,
+      "ret_20_pct": -2.76,
+      "vol_ratio": 0.751,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-24",
+      "close": 3063.56,
+      "vol_pct60": 0.05,
+      "ret_20_pct": -3.11,
+      "vol_ratio": 0.759,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-25",
+      "close": 3059.23,
+      "vol_pct60": 0.033,
+      "ret_20_pct": -3.77,
+      "vol_ratio": 0.775,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-26",
+      "close": 3064.21,
+      "vol_pct60": 0.15,
+      "ret_20_pct": -3.21,
+      "vol_ratio": 0.791,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-27",
+      "close": 3062.5,
+      "vol_pct60": 0.183,
+      "ret_20_pct": -3.1,
+      "vol_ratio": 0.886,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-30",
+      "close": 3066.71,
+      "vol_pct60": 0.217,
+      "ret_20_pct": -2.85,
+      "vol_ratio": 0.889,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-05-31",
+      "close": 3169.56,
+      "vol_pct60": 0.9,
+      "ret_20_pct": -1.37,
+      "vol_ratio": 1.01,
+      "above_ma20": true,
+      "above_ma60": true
+     }
+    ],
+    "at_last_day": {
+     "date": "2016-05-31",
+     "close": 3169.56,
+     "vol_pct60": 0.9,
+     "ret_20_pct": -1.37,
+     "vol_ratio": 1.01,
+     "above_ma20": true,
+     "above_ma60": true,
+     "t_minus": 1
+    },
+    "note": "基准指数**不是选出来的** → 本层**可与当前并列**"
+   },
    "security_layer": {
     "per_security": [
      {
@@ -270,7 +527,7 @@
         "vol_ratio": 0.628,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.74
        },
        {
         "date": "2016-04-08",
@@ -280,7 +537,7 @@
         "vol_ratio": 0.687,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.23
        },
        {
         "date": "2016-04-11",
@@ -290,7 +547,7 @@
         "vol_ratio": 0.688,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.3
        },
        {
         "date": "2016-04-12",
@@ -300,7 +557,7 @@
         "vol_ratio": 0.719,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.26
        },
        {
         "date": "2016-04-13",
@@ -310,7 +567,7 @@
         "vol_ratio": 0.719,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.59
        },
        {
         "date": "2016-04-14",
@@ -320,7 +577,7 @@
         "vol_ratio": 0.726,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.18
        },
        {
         "date": "2016-04-15",
@@ -330,7 +587,7 @@
         "vol_ratio": 0.73,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.29
        },
        {
         "date": "2016-04-18",
@@ -340,7 +597,7 @@
         "vol_ratio": 0.733,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.44
        },
        {
         "date": "2016-04-19",
@@ -350,7 +607,7 @@
         "vol_ratio": 0.733,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.85
        },
        {
         "date": "2016-05-17",
@@ -360,7 +617,7 @@
         "vol_ratio": 0.823,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 8.13
        },
        {
         "date": "2016-05-18",
@@ -370,7 +627,7 @@
         "vol_ratio": 0.862,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.19
        },
        {
         "date": "2016-05-19",
@@ -380,7 +637,7 @@
         "vol_ratio": 0.847,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.97
        },
        {
         "date": "2016-05-20",
@@ -390,7 +647,7 @@
         "vol_ratio": 0.846,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.2
        },
        {
         "date": "2016-05-23",
@@ -400,7 +657,7 @@
         "vol_ratio": 0.81,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.81
        },
        {
         "date": "2016-05-24",
@@ -410,7 +667,7 @@
         "vol_ratio": 0.849,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.47
        },
        {
         "date": "2016-05-25",
@@ -420,7 +677,7 @@
         "vol_ratio": 0.828,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -3.11
        },
        {
         "date": "2016-05-26",
@@ -430,7 +687,7 @@
         "vol_ratio": 0.836,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -3.44
        },
        {
         "date": "2016-05-27",
@@ -440,7 +697,7 @@
         "vol_ratio": 0.887,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.39
        },
        {
         "date": "2016-05-30",
@@ -450,7 +707,7 @@
         "vol_ratio": 0.906,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.2
        },
        {
         "date": "2016-05-31",
@@ -460,7 +717,7 @@
         "vol_ratio": 0.914,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.13
        }
       ],
       "at_last_day": {
@@ -471,7 +728,7 @@
        "vol_ratio": 0.914,
        "above_ma20": true,
        "above_ma60": true,
-       "rel_strength_20": null
+       "rel_strength_20": -1.13
       }
      },
      {
@@ -488,7 +745,7 @@
         "vol_ratio": 1.05,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.04
        },
        {
         "date": "2016-05-05",
@@ -498,7 +755,7 @@
         "vol_ratio": 0.877,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.56
        },
        {
         "date": "2016-05-06",
@@ -508,7 +765,7 @@
         "vol_ratio": 0.893,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.72
        },
        {
         "date": "2016-05-09",
@@ -518,7 +775,7 @@
         "vol_ratio": 0.868,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 4.15
        },
        {
         "date": "2016-05-10",
@@ -528,7 +785,7 @@
         "vol_ratio": 0.807,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 8.41
        },
        {
         "date": "2016-05-11",
@@ -538,7 +795,7 @@
         "vol_ratio": 0.839,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 9.09
        },
        {
         "date": "2016-05-12",
@@ -548,7 +805,7 @@
         "vol_ratio": 0.828,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 10.91
        },
        {
         "date": "2016-05-13",
@@ -558,7 +815,7 @@
         "vol_ratio": 0.865,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 9.51
        },
        {
         "date": "2016-05-16",
@@ -568,7 +825,7 @@
         "vol_ratio": 0.861,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 8.16
        },
        {
         "date": "2016-05-17",
@@ -578,7 +835,7 @@
         "vol_ratio": 0.86,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 7.02
        },
        {
         "date": "2016-05-18",
@@ -588,7 +845,7 @@
         "vol_ratio": 0.903,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 5.78
        },
        {
         "date": "2016-05-19",
@@ -598,7 +855,7 @@
         "vol_ratio": 0.875,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.8
        },
        {
         "date": "2016-05-20",
@@ -608,7 +865,7 @@
         "vol_ratio": 0.912,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 7.14
        },
        {
         "date": "2016-05-23",
@@ -618,7 +875,7 @@
         "vol_ratio": 0.869,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 5.51
        },
        {
         "date": "2016-05-24",
@@ -628,7 +885,7 @@
         "vol_ratio": 0.868,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.14
        },
        {
         "date": "2016-05-25",
@@ -638,7 +895,7 @@
         "vol_ratio": 0.869,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 7.05
        },
        {
         "date": "2016-05-26",
@@ -648,7 +905,7 @@
         "vol_ratio": 0.873,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.41
        },
        {
         "date": "2016-05-27",
@@ -658,7 +915,7 @@
         "vol_ratio": 0.886,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 5.53
        },
        {
         "date": "2016-05-30",
@@ -668,7 +925,7 @@
         "vol_ratio": 0.872,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 4.81
        },
        {
         "date": "2016-05-31",
@@ -678,7 +935,7 @@
         "vol_ratio": 0.887,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 3.09
        }
       ],
       "at_last_day": {
@@ -689,7 +946,7 @@
        "vol_ratio": 0.887,
        "above_ma20": true,
        "above_ma60": true,
-       "rel_strength_20": null
+       "rel_strength_20": 3.09
       }
      },
      {
@@ -703,140 +960,140 @@
       "date": "2016-05-04",
       "vol_pct60": 0.575,
       "ret_20_pct": 7.78,
-      "rel_strength_20": null,
+      "rel_strength_20": 6.39,
       "vol_ratio": 0.839
      },
      {
       "date": "2016-05-05",
       "vol_pct60": 0.308,
       "ret_20_pct": 4.09,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.895,
       "vol_ratio": 0.782
      },
      {
       "date": "2016-05-06",
       "vol_pct60": 0.675,
       "ret_20_pct": 3.29,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.01,
       "vol_ratio": 0.79
      },
      {
       "date": "2016-05-09",
       "vol_pct60": 0.317,
       "ret_20_pct": 2.81,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.205,
       "vol_ratio": 0.793
      },
      {
       "date": "2016-05-10",
       "vol_pct60": 0.716,
       "ret_20_pct": 4.455,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.91,
       "vol_ratio": 0.763
      },
      {
       "date": "2016-05-11",
       "vol_pct60": 0.658,
       "ret_20_pct": 6.035,
-      "rel_strength_20": null,
+      "rel_strength_20": 5.135,
       "vol_ratio": 0.782
      },
      {
       "date": "2016-05-12",
       "vol_pct60": 0.192,
       "ret_20_pct": 5.055,
-      "rel_strength_20": null,
+      "rel_strength_20": 5.31,
       "vol_ratio": 0.779
      },
      {
       "date": "2016-05-13",
       "vol_pct60": 0.275,
       "ret_20_pct": 1.86,
-      "rel_strength_20": null,
+      "rel_strength_20": 4.035,
       "vol_ratio": 0.799
      },
      {
       "date": "2016-05-16",
       "vol_pct60": 0.3,
       "ret_20_pct": 1.63,
-      "rel_strength_20": null,
+      "rel_strength_20": 4.505,
       "vol_ratio": 0.797
      },
      {
       "date": "2016-05-17",
       "vol_pct60": 0.508,
       "ret_20_pct": 3.165,
-      "rel_strength_20": null,
+      "rel_strength_20": 7.575,
       "vol_ratio": 0.841
      },
      {
       "date": "2016-05-18",
       "vol_pct60": 0.733,
       "ret_20_pct": 0.725,
-      "rel_strength_20": null,
+      "rel_strength_20": 5.985,
       "vol_ratio": 0.883
      },
      {
       "date": "2016-05-19",
       "vol_pct60": 0.542,
       "ret_20_pct": 0.155,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.885,
       "vol_ratio": 0.861
      },
      {
       "date": "2016-05-20",
       "vol_pct60": 0.558,
       "ret_20_pct": 0.86,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.47,
       "vol_ratio": 0.879
      },
      {
       "date": "2016-05-23",
       "vol_pct60": 0.409,
       "ret_20_pct": -0.91,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.85,
       "vol_ratio": 0.84
      },
      {
       "date": "2016-05-24",
       "vol_pct60": 0.317,
       "ret_20_pct": -0.775,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.335,
       "vol_ratio": 0.859
      },
      {
       "date": "2016-05-25",
       "vol_pct60": 0.317,
       "ret_20_pct": -1.8,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.97,
       "vol_ratio": 0.849
      },
      {
       "date": "2016-05-26",
       "vol_pct60": 0.258,
       "ret_20_pct": -1.725,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.485,
       "vol_ratio": 0.855
      },
      {
       "date": "2016-05-27",
       "vol_pct60": 0.233,
       "ret_20_pct": -1.03,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.07,
       "vol_ratio": 0.887
      },
      {
       "date": "2016-05-30",
       "vol_pct60": 0.642,
       "ret_20_pct": -0.545,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.305,
       "vol_ratio": 0.889
      },
      {
       "date": "2016-05-31",
       "vol_pct60": 0.875,
       "ret_20_pct": -0.39,
-      "rel_strength_20": null,
+      "rel_strength_20": 0.98,
       "vol_ratio": 0.901
      }
     ],
@@ -849,8 +1106,265 @@
    "start": "2016-08-01",
    "peak": "2021-01-25",
    "end": "2021-12-31",
-   "status": "NO_DATA",
-   "market_layer": null,
+   "status": "OK",
+   "market_layer": {
+    "series_id": "SH000300",
+    "checkpoints": [
+     {
+      "date": "2016-07-29",
+      "close": 3203.93,
+      "vol_pct60": 0.617,
+      "ret_20_pct": 1.58,
+      "vol_ratio": 0.842,
+      "above_ma20": false,
+      "above_ma60": true,
+      "t_minus": 1
+     },
+     {
+      "date": "2016-07-25",
+      "close": 3230.89,
+      "vol_pct60": 0.333,
+      "ret_20_pct": 3.54,
+      "vol_ratio": 0.704,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 5
+     },
+     {
+      "date": "2016-07-18",
+      "close": 3262.02,
+      "vol_pct60": 0.85,
+      "ret_20_pct": 4.8,
+      "vol_ratio": 0.811,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 10
+     },
+     {
+      "date": "2016-07-04",
+      "close": 3204.7,
+      "vol_pct60": 0.95,
+      "ret_20_pct": 1.19,
+      "vol_ratio": 1.004,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 20
+     },
+     {
+      "date": "2016-06-02",
+      "close": 3167.1,
+      "vol_pct60": 0.433,
+      "ret_20_pct": -1.46,
+      "vol_ratio": 1.011,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 40
+     },
+     {
+      "date": "2016-05-05",
+      "close": 3213.92,
+      "vol_pct60": 0.133,
+      "ret_20_pct": -1.34,
+      "vol_ratio": 0.606,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 60
+     }
+    ],
+    "series": [
+     {
+      "date": "2016-07-04",
+      "close": 3204.7,
+      "vol_pct60": 0.95,
+      "ret_20_pct": 1.19,
+      "vol_ratio": 1.004,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-05",
+      "close": 3207.38,
+      "vol_pct60": 0.933,
+      "ret_20_pct": 0.57,
+      "vol_ratio": 1.012,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-06",
+      "close": 3216.8,
+      "vol_pct60": 0.9,
+      "ret_20_pct": 1.2,
+      "vol_ratio": 1.014,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-07",
+      "close": 3209.95,
+      "vol_pct60": 0.9,
+      "ret_20_pct": 1.04,
+      "vol_ratio": 1.032,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-08",
+      "close": 3192.28,
+      "vol_pct60": 0.65,
+      "ret_20_pct": 0.89,
+      "vol_ratio": 1.034,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-11",
+      "close": 3203.33,
+      "vol_pct60": 0.967,
+      "ret_20_pct": 4.47,
+      "vol_ratio": 0.729,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-12",
+      "close": 3273.18,
+      "vol_pct60": 1.0,
+      "ret_20_pct": 6.41,
+      "vol_ratio": 0.818,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-13",
+      "close": 3282.87,
+      "vol_pct60": 1.0,
+      "ret_20_pct": 5.34,
+      "vol_ratio": 0.786,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-14",
+      "close": 3276.76,
+      "vol_pct60": 0.817,
+      "ret_20_pct": 5.88,
+      "vol_ratio": 0.774,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-15",
+      "close": 3276.28,
+      "vol_pct60": 0.75,
+      "ret_20_pct": 5.33,
+      "vol_ratio": 0.775,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-18",
+      "close": 3262.02,
+      "vol_pct60": 0.85,
+      "ret_20_pct": 4.8,
+      "vol_ratio": 0.811,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-19",
+      "close": 3248.23,
+      "vol_pct60": 0.633,
+      "ret_20_pct": 4.57,
+      "vol_ratio": 0.821,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-20",
+      "close": 3237.6,
+      "vol_pct60": 0.4,
+      "ret_20_pct": 3.31,
+      "vol_ratio": 0.814,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-21",
+      "close": 3252.52,
+      "vol_pct60": 0.583,
+      "ret_20_pct": 4.34,
+      "vol_ratio": 0.8,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-22",
+      "close": 3225.16,
+      "vol_pct60": 0.583,
+      "ret_20_pct": 4.81,
+      "vol_ratio": 0.755,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-25",
+      "close": 3230.89,
+      "vol_pct60": 0.333,
+      "ret_20_pct": 3.54,
+      "vol_ratio": 0.704,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-26",
+      "close": 3269.59,
+      "vol_pct60": 0.45,
+      "ret_20_pct": 4.25,
+      "vol_ratio": 0.729,
+      "above_ma20": true,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-27",
+      "close": 3218.24,
+      "vol_pct60": 0.967,
+      "ret_20_pct": 2.12,
+      "vol_ratio": 0.81,
+      "above_ma20": false,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-28",
+      "close": 3221.14,
+      "vol_pct60": 0.833,
+      "ret_20_pct": 2.13,
+      "vol_ratio": 0.832,
+      "above_ma20": false,
+      "above_ma60": true
+     },
+     {
+      "date": "2016-07-29",
+      "close": 3203.93,
+      "vol_pct60": 0.617,
+      "ret_20_pct": 1.58,
+      "vol_ratio": 0.842,
+      "above_ma20": false,
+      "above_ma60": true
+     }
+    ],
+    "at_last_day": {
+     "date": "2016-07-29",
+     "close": 3203.93,
+     "vol_pct60": 0.617,
+     "ret_20_pct": 1.58,
+     "vol_ratio": 0.842,
+     "above_ma20": false,
+     "above_ma60": true,
+     "t_minus": 1
+    },
+    "note": "基准指数**不是选出来的** → 本层**可与当前并列**"
+   },
    "security_layer": {
     "per_security": [
      {
@@ -867,7 +1381,7 @@
         "vol_ratio": 0.847,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.18
        },
        {
         "date": "2016-07-05",
@@ -877,7 +1391,7 @@
         "vol_ratio": 0.844,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.58
        },
        {
         "date": "2016-07-06",
@@ -887,7 +1401,7 @@
         "vol_ratio": 0.842,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.99
        },
        {
         "date": "2016-07-07",
@@ -897,7 +1411,7 @@
         "vol_ratio": 0.85,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 3.28
        },
        {
         "date": "2016-07-08",
@@ -907,7 +1421,7 @@
         "vol_ratio": 0.843,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 4.02
        },
        {
         "date": "2016-07-11",
@@ -917,7 +1431,7 @@
         "vol_ratio": 0.641,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 7.76
        },
        {
         "date": "2016-07-12",
@@ -927,7 +1441,7 @@
         "vol_ratio": 0.64,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 5.39
        },
        {
         "date": "2016-07-13",
@@ -937,7 +1451,7 @@
         "vol_ratio": 0.658,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 7.39
        },
        {
         "date": "2016-07-14",
@@ -947,7 +1461,7 @@
         "vol_ratio": 0.667,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 7.28
        },
        {
         "date": "2016-07-15",
@@ -957,7 +1471,7 @@
         "vol_ratio": 0.674,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.7
        },
        {
         "date": "2016-07-18",
@@ -967,7 +1481,7 @@
         "vol_ratio": 0.776,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 6.34
        },
        {
         "date": "2016-07-19",
@@ -977,7 +1491,7 @@
         "vol_ratio": 0.763,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 11.28
        },
        {
         "date": "2016-07-20",
@@ -987,7 +1501,7 @@
         "vol_ratio": 0.735,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 9.44
        },
        {
         "date": "2016-07-21",
@@ -997,7 +1511,7 @@
         "vol_ratio": 0.723,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 9.61
        },
        {
         "date": "2016-07-22",
@@ -1007,7 +1521,7 @@
         "vol_ratio": 0.726,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 9.73
        },
        {
         "date": "2016-07-25",
@@ -1017,7 +1531,7 @@
         "vol_ratio": 0.762,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 8.49
        },
        {
         "date": "2016-07-26",
@@ -1027,7 +1541,7 @@
         "vol_ratio": 0.766,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 7.64
        },
        {
         "date": "2016-07-27",
@@ -1037,7 +1551,7 @@
         "vol_ratio": 1.015,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 0.03
        },
        {
         "date": "2016-07-28",
@@ -1047,7 +1561,7 @@
         "vol_ratio": 1.021,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.27
        },
        {
         "date": "2016-07-29",
@@ -1057,7 +1571,7 @@
         "vol_ratio": 0.896,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -7.69
        }
       ],
       "at_last_day": {
@@ -1068,7 +1582,7 @@
        "vol_ratio": 0.896,
        "above_ma20": false,
        "above_ma60": false,
-       "rel_strength_20": null
+       "rel_strength_20": -7.69
       }
      },
      {
@@ -1085,7 +1599,7 @@
         "vol_ratio": 0.61,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 0.39
        },
        {
         "date": "2016-07-05",
@@ -1095,7 +1609,7 @@
         "vol_ratio": 0.692,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 3.57
        },
        {
         "date": "2016-07-06",
@@ -1105,7 +1619,7 @@
         "vol_ratio": 0.713,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.96
        },
        {
         "date": "2016-07-07",
@@ -1115,7 +1629,7 @@
         "vol_ratio": 0.78,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.53
        },
        {
         "date": "2016-07-08",
@@ -1125,7 +1639,7 @@
         "vol_ratio": 0.782,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.7
        },
        {
         "date": "2016-07-11",
@@ -1135,7 +1649,7 @@
         "vol_ratio": 0.663,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.5
        },
        {
         "date": "2016-07-12",
@@ -1145,7 +1659,7 @@
         "vol_ratio": 0.699,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.69
        },
        {
         "date": "2016-07-13",
@@ -1155,7 +1669,7 @@
         "vol_ratio": 0.71,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.06
        },
        {
         "date": "2016-07-14",
@@ -1165,7 +1679,7 @@
         "vol_ratio": 0.751,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.55
        },
        {
         "date": "2016-07-15",
@@ -1175,7 +1689,7 @@
         "vol_ratio": 0.748,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.25
        },
        {
         "date": "2016-07-18",
@@ -1185,7 +1699,7 @@
         "vol_ratio": 0.78,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.41
        },
        {
         "date": "2016-07-19",
@@ -1195,7 +1709,7 @@
         "vol_ratio": 0.785,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.86
        },
        {
         "date": "2016-07-20",
@@ -1205,7 +1719,7 @@
         "vol_ratio": 0.787,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.7
        },
        {
         "date": "2016-07-21",
@@ -1215,7 +1729,7 @@
         "vol_ratio": 0.77,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.12
        },
        {
         "date": "2016-07-22",
@@ -1225,7 +1739,7 @@
         "vol_ratio": 0.743,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.74
        },
        {
         "date": "2016-07-25",
@@ -1235,7 +1749,7 @@
         "vol_ratio": 0.75,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 4.34
        },
        {
         "date": "2016-07-26",
@@ -1245,7 +1759,7 @@
         "vol_ratio": 0.753,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 3.61
        },
        {
         "date": "2016-07-27",
@@ -1255,7 +1769,7 @@
         "vol_ratio": 0.827,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.45
        },
        {
         "date": "2016-07-28",
@@ -1265,7 +1779,7 @@
         "vol_ratio": 0.844,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 2.45
        },
        {
         "date": "2016-07-29",
@@ -1275,7 +1789,7 @@
         "vol_ratio": 0.856,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 1.79
        }
       ],
       "at_last_day": {
@@ -1286,7 +1800,7 @@
        "vol_ratio": 0.856,
        "above_ma20": false,
        "above_ma60": true,
-       "rel_strength_20": null
+       "rel_strength_20": 1.79
       }
      },
      {
@@ -1303,7 +1817,7 @@
         "vol_ratio": 0.707,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -3.7
        },
        {
         "date": "2016-07-05",
@@ -1313,7 +1827,7 @@
         "vol_ratio": 0.763,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.57
        },
        {
         "date": "2016-07-06",
@@ -1323,7 +1837,7 @@
         "vol_ratio": 0.768,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.52
        },
        {
         "date": "2016-07-07",
@@ -1333,7 +1847,7 @@
         "vol_ratio": 0.829,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.36
        },
        {
         "date": "2016-07-08",
@@ -1343,7 +1857,7 @@
         "vol_ratio": 0.839,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.52
        },
        {
         "date": "2016-07-11",
@@ -1353,7 +1867,7 @@
         "vol_ratio": 0.614,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.84
        },
        {
         "date": "2016-07-12",
@@ -1363,7 +1877,7 @@
         "vol_ratio": 0.651,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.82
        },
        {
         "date": "2016-07-13",
@@ -1373,7 +1887,7 @@
         "vol_ratio": 0.638,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.46
        },
        {
         "date": "2016-07-14",
@@ -1383,7 +1897,7 @@
         "vol_ratio": 0.62,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.62
        },
        {
         "date": "2016-07-15",
@@ -1393,7 +1907,7 @@
         "vol_ratio": 0.62,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.08
        },
        {
         "date": "2016-07-18",
@@ -1403,7 +1917,7 @@
         "vol_ratio": 0.624,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.12
        },
        {
         "date": "2016-07-19",
@@ -1413,7 +1927,7 @@
         "vol_ratio": 0.706,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.31
        },
        {
         "date": "2016-07-20",
@@ -1423,7 +1937,7 @@
         "vol_ratio": 0.709,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.92
        },
        {
         "date": "2016-07-21",
@@ -1433,7 +1947,7 @@
         "vol_ratio": 0.703,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.25
        },
        {
         "date": "2016-07-22",
@@ -1443,7 +1957,7 @@
         "vol_ratio": 0.68,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 0.17
        },
        {
         "date": "2016-07-25",
@@ -1453,7 +1967,7 @@
         "vol_ratio": 0.677,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 0.41
        },
        {
         "date": "2016-07-26",
@@ -1463,7 +1977,7 @@
         "vol_ratio": 0.687,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.0
        },
        {
         "date": "2016-07-27",
@@ -1473,7 +1987,7 @@
         "vol_ratio": 0.821,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.47
        },
        {
         "date": "2016-07-28",
@@ -1483,7 +1997,7 @@
         "vol_ratio": 0.831,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.82
        },
        {
         "date": "2016-07-29",
@@ -1493,7 +2007,7 @@
         "vol_ratio": 0.836,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.6
        }
       ],
       "at_last_day": {
@@ -1504,7 +2018,7 @@
        "vol_ratio": 0.836,
        "above_ma20": false,
        "above_ma60": false,
-       "rel_strength_20": null
+       "rel_strength_20": -0.6
       }
      },
      {
@@ -1521,7 +2035,7 @@
         "vol_ratio": 0.88,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.22
        },
        {
         "date": "2016-07-05",
@@ -1531,7 +2045,7 @@
         "vol_ratio": 0.907,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 1.6
        },
        {
         "date": "2016-07-06",
@@ -1541,7 +2055,7 @@
         "vol_ratio": 0.915,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 0.49
        },
        {
         "date": "2016-07-07",
@@ -1551,7 +2065,7 @@
         "vol_ratio": 0.966,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 1.14
        },
        {
         "date": "2016-07-08",
@@ -1561,7 +2075,7 @@
         "vol_ratio": 0.957,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 1.8
        },
        {
         "date": "2016-07-11",
@@ -1571,7 +2085,7 @@
         "vol_ratio": 0.916,
         "above_ma20": true,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 0.27
        },
        {
         "date": "2016-07-12",
@@ -1581,7 +2095,7 @@
         "vol_ratio": 0.645,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -4.25
        },
        {
         "date": "2016-07-13",
@@ -1591,7 +2105,7 @@
         "vol_ratio": 0.656,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -2.95
        },
        {
         "date": "2016-07-14",
@@ -1601,7 +2115,7 @@
         "vol_ratio": 0.622,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -2.25
        },
        {
         "date": "2016-07-15",
@@ -1611,7 +2125,7 @@
         "vol_ratio": 0.633,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -2.18
        },
        {
         "date": "2016-07-18",
@@ -1621,7 +2135,7 @@
         "vol_ratio": 0.694,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.87
        },
        {
         "date": "2016-07-19",
@@ -1631,7 +2145,7 @@
         "vol_ratio": 0.683,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.13
        },
        {
         "date": "2016-07-20",
@@ -1641,7 +2155,7 @@
         "vol_ratio": 0.673,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.38
        },
        {
         "date": "2016-07-21",
@@ -1651,7 +2165,7 @@
         "vol_ratio": 0.661,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.66
        },
        {
         "date": "2016-07-22",
@@ -1661,7 +2175,7 @@
         "vol_ratio": 0.648,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.86
        },
        {
         "date": "2016-07-25",
@@ -1671,7 +2185,7 @@
         "vol_ratio": 0.636,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": 0.13
        },
        {
         "date": "2016-07-26",
@@ -1681,7 +2195,7 @@
         "vol_ratio": 0.64,
         "above_ma20": true,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.35
        },
        {
         "date": "2016-07-27",
@@ -1691,7 +2205,7 @@
         "vol_ratio": 0.754,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -1.4
        },
        {
         "date": "2016-07-28",
@@ -1701,7 +2215,7 @@
         "vol_ratio": 0.774,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.68
        },
        {
         "date": "2016-07-29",
@@ -1711,7 +2225,7 @@
         "vol_ratio": 0.774,
         "above_ma20": false,
         "above_ma60": true,
-        "rel_strength_20": null
+        "rel_strength_20": -0.12
        }
       ],
       "at_last_day": {
@@ -1722,7 +2236,7 @@
        "vol_ratio": 0.774,
        "above_ma20": false,
        "above_ma60": true,
-       "rel_strength_20": null
+       "rel_strength_20": -0.12
       }
      }
     ],
@@ -1731,140 +2245,140 @@
       "date": "2016-07-04",
       "vol_pct60": 0.766,
       "ret_20_pct": 1.275,
-      "rel_strength_20": null,
+      "rel_strength_20": 0.085,
       "vol_ratio": 0.777
      },
      {
       "date": "2016-07-05",
       "vol_pct60": 0.883,
       "ret_20_pct": 2.66,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.09,
       "vol_ratio": 0.803
      },
      {
       "date": "2016-07-06",
       "vol_pct60": 0.683,
       "ret_20_pct": 2.425,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.225,
       "vol_ratio": 0.805
      },
      {
       "date": "2016-07-07",
       "vol_pct60": 0.55,
       "ret_20_pct": 2.875,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.835,
       "vol_ratio": 0.839
      },
      {
       "date": "2016-07-08",
       "vol_pct60": 0.233,
       "ret_20_pct": 3.14,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.25,
       "vol_ratio": 0.841
      },
      {
       "date": "2016-07-11",
       "vol_pct60": 0.591,
       "ret_20_pct": 5.855,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.385,
       "vol_ratio": 0.652
      },
      {
       "date": "2016-07-12",
       "vol_pct60": 0.783,
       "ret_20_pct": 6.345,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.065,
       "vol_ratio": 0.648
      },
      {
       "date": "2016-07-13",
       "vol_pct60": 0.859,
       "ret_20_pct": 5.14,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.2,
       "vol_ratio": 0.657
      },
      {
       "date": "2016-07-14",
       "vol_pct60": 0.484,
       "ret_20_pct": 5.345,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.535,
       "vol_ratio": 0.645
      },
      {
       "date": "2016-07-15",
       "vol_pct60": 0.55,
       "ret_20_pct": 4.915,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.415,
       "vol_ratio": 0.653
      },
      {
       "date": "2016-07-18",
       "vol_pct60": 0.55,
       "ret_20_pct": 5.065,
-      "rel_strength_20": null,
+      "rel_strength_20": 0.265,
       "vol_ratio": 0.735
      },
      {
       "date": "2016-07-19",
       "vol_pct60": 0.283,
       "ret_20_pct": 4.845,
-      "rel_strength_20": null,
+      "rel_strength_20": 0.275,
       "vol_ratio": 0.734
      },
      {
       "date": "2016-07-20",
       "vol_pct60": 0.417,
       "ret_20_pct": 4.62,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.31,
       "vol_ratio": 0.722
      },
      {
       "date": "2016-07-21",
       "vol_pct60": 0.333,
       "ret_20_pct": 5.525,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.185,
       "vol_ratio": 0.713
      },
      {
       "date": "2016-07-22",
       "vol_pct60": 0.225,
       "ret_20_pct": 6.265,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.455,
       "vol_ratio": 0.703
      },
      {
       "date": "2016-07-25",
       "vol_pct60": 0.175,
       "ret_20_pct": 5.915,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.375,
       "vol_ratio": 0.714
      },
      {
       "date": "2016-07-26",
       "vol_pct60": 0.425,
       "ret_20_pct": 6.055,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.805,
       "vol_ratio": 0.72
      },
      {
       "date": "2016-07-27",
       "vol_pct60": 0.883,
       "ret_20_pct": 1.435,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.685,
       "vol_ratio": 0.824
      },
      {
       "date": "2016-07-28",
       "vol_pct60": 0.6,
       "ret_20_pct": 1.38,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.75,
       "vol_ratio": 0.837
      },
      {
       "date": "2016-07-29",
       "vol_pct60": 0.125,
       "ret_20_pct": 1.22,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.36,
       "vol_ratio": 0.846
      }
     ],
@@ -1877,8 +2391,265 @@
    "start": "2016-02-01",
    "peak": "2017-06-30",
    "end": "2017-06-30",
-   "status": "NO_DATA",
-   "market_layer": null,
+   "status": "OK",
+   "market_layer": {
+    "series_id": "SH000300",
+    "checkpoints": [
+     {
+      "date": "2016-01-29",
+      "close": 2946.09,
+      "vol_pct60": 0.2,
+      "ret_20_pct": -21.04,
+      "vol_ratio": 1.386,
+      "above_ma20": false,
+      "above_ma60": false,
+      "t_minus": 1
+     },
+     {
+      "date": "2016-01-25",
+      "close": 3128.89,
+      "vol_pct60": 0.033,
+      "ret_20_pct": -18.48,
+      "vol_ratio": 1.292,
+      "above_ma20": false,
+      "above_ma60": false,
+      "t_minus": 5
+     },
+     {
+      "date": "2016-01-18",
+      "close": 3130.73,
+      "vol_pct60": 0.033,
+      "ret_20_pct": -16.91,
+      "vol_ratio": 1.293,
+      "above_ma20": false,
+      "above_ma60": false,
+      "t_minus": 10
+     },
+     {
+      "date": "2016-01-04",
+      "close": 3470.41,
+      "vol_pct60": 0.15,
+      "ret_20_pct": -5.63,
+      "vol_ratio": 1.087,
+      "above_ma20": false,
+      "above_ma60": false,
+      "t_minus": 20
+     },
+     {
+      "date": "2015-12-04",
+      "close": 3677.59,
+      "vol_pct60": 0.367,
+      "ret_20_pct": -3.05,
+      "vol_ratio": 0.87,
+      "above_ma20": false,
+      "above_ma60": true,
+      "t_minus": 40
+     },
+     {
+      "date": "2015-11-06",
+      "close": 3793.37,
+      "vol_pct60": 0.867,
+      "ret_20_pct": 13.57,
+      "vol_ratio": 0.636,
+      "above_ma20": true,
+      "above_ma60": true,
+      "t_minus": 60
+     }
+    ],
+    "series": [
+     {
+      "date": "2016-01-04",
+      "close": 3470.41,
+      "vol_pct60": 0.15,
+      "ret_20_pct": -5.63,
+      "vol_ratio": 1.087,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-05",
+      "close": 3478.78,
+      "vol_pct60": 0.467,
+      "ret_20_pct": -5.66,
+      "vol_ratio": 1.112,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-06",
+      "close": 3539.81,
+      "vol_pct60": 0.317,
+      "ret_20_pct": -2.3,
+      "vol_ratio": 1.113,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-07",
+      "close": 3294.38,
+      "vol_pct60": 0.017,
+      "ret_20_pct": -9.39,
+      "vol_ratio": 1.242,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-08",
+      "close": 3361.56,
+      "vol_pct60": 0.65,
+      "ret_20_pct": -7.22,
+      "vol_ratio": 1.274,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-11",
+      "close": 3192.45,
+      "vol_pct60": 0.55,
+      "ret_20_pct": -11.52,
+      "vol_ratio": 1.312,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-12",
+      "close": 3215.71,
+      "vol_pct60": 0.267,
+      "ret_20_pct": -13.35,
+      "vol_ratio": 1.268,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-13",
+      "close": 3155.88,
+      "vol_pct60": 0.217,
+      "ret_20_pct": -14.58,
+      "vol_ratio": 1.271,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-14",
+      "close": 3221.57,
+      "vol_pct60": 0.317,
+      "ret_20_pct": -12.59,
+      "vol_ratio": 1.309,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-15",
+      "close": 3118.73,
+      "vol_pct60": 0.233,
+      "ret_20_pct": -16.96,
+      "vol_ratio": 1.288,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-18",
+      "close": 3130.73,
+      "vol_pct60": 0.033,
+      "ret_20_pct": -16.91,
+      "vol_ratio": 1.293,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-19",
+      "close": 3223.12,
+      "vol_pct60": 0.317,
+      "ret_20_pct": -16.63,
+      "vol_ratio": 1.282,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-20",
+      "close": 3174.38,
+      "vol_pct60": 0.367,
+      "ret_20_pct": -18.12,
+      "vol_ratio": 1.274,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-21",
+      "close": 3081.35,
+      "vol_pct60": 0.133,
+      "ret_20_pct": -20.3,
+      "vol_ratio": 1.275,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-22",
+      "close": 3113.46,
+      "vol_pct60": 0.033,
+      "ret_20_pct": -18.7,
+      "vol_ratio": 1.29,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-25",
+      "close": 3128.89,
+      "vol_pct60": 0.033,
+      "ret_20_pct": -18.48,
+      "vol_ratio": 1.292,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-26",
+      "close": 2940.51,
+      "vol_pct60": 0.35,
+      "ret_20_pct": -21.12,
+      "vol_ratio": 1.306,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-27",
+      "close": 2930.35,
+      "vol_pct60": 0.4,
+      "ret_20_pct": -22.1,
+      "vol_ratio": 1.293,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-28",
+      "close": 2853.76,
+      "vol_pct60": 0.067,
+      "ret_20_pct": -24.21,
+      "vol_ratio": 1.331,
+      "above_ma20": false,
+      "above_ma60": false
+     },
+     {
+      "date": "2016-01-29",
+      "close": 2946.09,
+      "vol_pct60": 0.2,
+      "ret_20_pct": -21.04,
+      "vol_ratio": 1.386,
+      "above_ma20": false,
+      "above_ma60": false
+     }
+    ],
+    "at_last_day": {
+     "date": "2016-01-29",
+     "close": 2946.09,
+     "vol_pct60": 0.2,
+     "ret_20_pct": -21.04,
+     "vol_ratio": 1.386,
+     "above_ma20": false,
+     "above_ma60": false,
+     "t_minus": 1
+    },
+    "note": "基准指数**不是选出来的** → 本层**可与当前并列**"
+   },
    "security_layer": {
     "per_security": [
      {
@@ -1895,7 +2666,7 @@
         "vol_ratio": 0.931,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -2.32
        },
        {
         "date": "2016-01-05",
@@ -1905,7 +2676,7 @@
         "vol_ratio": 0.996,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.94
        },
        {
         "date": "2016-01-06",
@@ -1915,7 +2686,7 @@
         "vol_ratio": 1.044,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 1.96
        },
        {
         "date": "2016-01-07",
@@ -1925,7 +2696,7 @@
         "vol_ratio": 1.208,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 1.59
        },
        {
         "date": "2016-01-08",
@@ -1935,7 +2706,7 @@
         "vol_ratio": 1.26,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 3.17
        },
        {
         "date": "2016-01-11",
@@ -1945,7 +2716,7 @@
         "vol_ratio": 1.273,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 4.74
        },
        {
         "date": "2016-01-12",
@@ -1955,7 +2726,7 @@
         "vol_ratio": 1.261,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 5.35
        },
        {
         "date": "2016-01-13",
@@ -1965,7 +2736,7 @@
         "vol_ratio": 1.263,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 5.83
        },
        {
         "date": "2016-01-14",
@@ -1975,7 +2746,7 @@
         "vol_ratio": 1.319,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 4.85
        },
        {
         "date": "2016-01-15",
@@ -1985,7 +2756,7 @@
         "vol_ratio": 1.317,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 2.49
        },
        {
         "date": "2016-01-18",
@@ -1995,7 +2766,7 @@
         "vol_ratio": 1.35,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 3.53
        },
        {
         "date": "2016-01-19",
@@ -2005,7 +2776,7 @@
         "vol_ratio": 1.313,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 2.39
        },
        {
         "date": "2016-01-20",
@@ -2015,7 +2786,7 @@
         "vol_ratio": 1.313,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 3.46
        },
        {
         "date": "2016-01-21",
@@ -2025,7 +2796,7 @@
         "vol_ratio": 1.32,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 3.85
        },
        {
         "date": "2016-01-22",
@@ -2035,7 +2806,7 @@
         "vol_ratio": 1.327,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 3.19
        },
        {
         "date": "2016-01-25",
@@ -2045,7 +2816,7 @@
         "vol_ratio": 1.329,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": 3.3
        },
        {
         "date": "2016-01-26",
@@ -2055,7 +2826,7 @@
         "vol_ratio": 1.397,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -0.36
        },
        {
         "date": "2016-01-27",
@@ -2065,7 +2836,7 @@
         "vol_ratio": 1.385,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.23
        },
        {
         "date": "2016-01-28",
@@ -2075,7 +2846,7 @@
         "vol_ratio": 1.407,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -1.54
        },
        {
         "date": "2016-01-29",
@@ -2085,7 +2856,7 @@
         "vol_ratio": 1.442,
         "above_ma20": false,
         "above_ma60": false,
-        "rel_strength_20": null
+        "rel_strength_20": -2.19
        }
       ],
       "at_last_day": {
@@ -2096,7 +2867,7 @@
        "vol_ratio": 1.442,
        "above_ma20": false,
        "above_ma60": false,
-       "rel_strength_20": null
+       "rel_strength_20": -2.19
       }
      }
     ],
@@ -2105,140 +2876,140 @@
       "date": "2016-01-04",
       "vol_pct60": 0.35,
       "ret_20_pct": -7.95,
-      "rel_strength_20": null,
+      "rel_strength_20": -2.32,
       "vol_ratio": 0.931
      },
      {
       "date": "2016-01-05",
       "vol_pct60": 0.667,
       "ret_20_pct": -6.6,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.94,
       "vol_ratio": 0.996
      },
      {
       "date": "2016-01-06",
       "vol_pct60": 0.65,
       "ret_20_pct": -0.34,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.96,
       "vol_ratio": 1.044
      },
      {
       "date": "2016-01-07",
       "vol_pct60": 0.017,
       "ret_20_pct": -7.8,
-      "rel_strength_20": null,
+      "rel_strength_20": 1.59,
       "vol_ratio": 1.208
      },
      {
       "date": "2016-01-08",
       "vol_pct60": 0.65,
       "ret_20_pct": -4.05,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.17,
       "vol_ratio": 1.26
      },
      {
       "date": "2016-01-11",
       "vol_pct60": 0.5,
       "ret_20_pct": -6.78,
-      "rel_strength_20": null,
+      "rel_strength_20": 4.74,
       "vol_ratio": 1.273
      },
      {
       "date": "2016-01-12",
       "vol_pct60": 0.217,
       "ret_20_pct": -8.0,
-      "rel_strength_20": null,
+      "rel_strength_20": 5.35,
       "vol_ratio": 1.261
      },
      {
       "date": "2016-01-13",
       "vol_pct60": 0.25,
       "ret_20_pct": -8.75,
-      "rel_strength_20": null,
+      "rel_strength_20": 5.83,
       "vol_ratio": 1.263
      },
      {
       "date": "2016-01-14",
       "vol_pct60": 0.383,
       "ret_20_pct": -7.74,
-      "rel_strength_20": null,
+      "rel_strength_20": 4.85,
       "vol_ratio": 1.319
      },
      {
       "date": "2016-01-15",
       "vol_pct60": 0.5,
       "ret_20_pct": -14.47,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.49,
       "vol_ratio": 1.317
      },
      {
       "date": "2016-01-18",
       "vol_pct60": 0.283,
       "ret_20_pct": -13.38,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.53,
       "vol_ratio": 1.35
      },
      {
       "date": "2016-01-19",
       "vol_pct60": 0.383,
       "ret_20_pct": -14.24,
-      "rel_strength_20": null,
+      "rel_strength_20": 2.39,
       "vol_ratio": 1.313
      },
      {
       "date": "2016-01-20",
       "vol_pct60": 0.183,
       "ret_20_pct": -14.66,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.46,
       "vol_ratio": 1.313
      },
      {
       "date": "2016-01-21",
       "vol_pct60": 0.133,
       "ret_20_pct": -16.45,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.85,
       "vol_ratio": 1.32
      },
      {
       "date": "2016-01-22",
       "vol_pct60": 0.133,
       "ret_20_pct": -15.51,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.19,
       "vol_ratio": 1.327
      },
      {
       "date": "2016-01-25",
       "vol_pct60": 0.033,
       "ret_20_pct": -15.18,
-      "rel_strength_20": null,
+      "rel_strength_20": 3.3,
       "vol_ratio": 1.329
      },
      {
       "date": "2016-01-26",
       "vol_pct60": 0.517,
       "ret_20_pct": -21.48,
-      "rel_strength_20": null,
+      "rel_strength_20": -0.36,
       "vol_ratio": 1.397
      },
      {
       "date": "2016-01-27",
       "vol_pct60": 0.567,
       "ret_20_pct": -23.33,
-      "rel_strength_20": null,
+      "rel_strength_20": -1.23,
       "vol_ratio": 1.385
      },
      {
       "date": "2016-01-28",
       "vol_pct60": 0.25,
       "ret_20_pct": -25.75,
-      "rel_strength_20": null,
+      "rel_strength_20": -1.54,
       "vol_ratio": 1.407
      },
      {
       "date": "2016-01-29",
       "vol_pct60": 0.367,
       "ret_20_pct": -23.23,
-      "rel_strength_20": null,
+      "rel_strength_20": -2.19,
       "vol_ratio": 1.442
      }
     ],
