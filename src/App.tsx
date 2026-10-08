@@ -26,6 +26,7 @@ import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
 import currentCandidateFixtureJson from '@current/fixtures/example_candidates.json';
 import { buildProvenance, PROVENANCE_NOT_AVAILABLE } from './data/buildProvenance';
 import { CurrentMarketStrip } from './components/CurrentMarket/CurrentMarketStrip';
+import { CurrentWatchboardSection } from './components/CurrentWatchboard/CurrentWatchboardSection';
 import { marketTodayISO } from './utils';
 
 /**
@@ -201,6 +202,15 @@ export default function App() {
               （覆盖范围由 Research 决定；扩边属研究轮次，不在 Product 侧自行推断。）
             </span>
           </p>
+        )}
+
+        {/* ★★ 当前观察台（ThreeC 1.2 · Usage-Driven）
+            用户要的是「**在当下这个时间点，一屏看到该看什么**」，而不是逐条点开对照。
+            ★★★ 但它**不是**「可能性排序」：项目禁止概率 / 评分 / 预测，且**一旦排序就会被当作推荐**。
+            因此按**阶段**分组（封闭枚举）、组内按**阶段起点时间序**，核心列是「**还缺什么**」。
+            点击对象 → 复用既有 focusObject（展开当前时间透镜并滚动过去），只做导航、不做判定。 */}
+        {!verifiedMode && (
+          <CurrentWatchboardSection onOpenCandidate={focusObject} />
         )}
 
         {/* verified 模式且 verified 层为空：提示回到默认 Research 数据源 */}
