@@ -1,0 +1,103 @@
+{
+  "manifest_version": "0.1",
+  "manifest_kind": "historical_universe_research_task_manifest",
+  "research_round_id": "R02",
+  "intake_protocol_version": "0.1",
+  "intake_protocol_doc": "research/intake/HISTORICAL_UNIVERSE_INTAKE_PROTOCOL_v0_1.md",
+  "intake_schema": "research/intake/historical_research_intake.schema.json",
+  "coverage_plan_doc": "research/intake/HISTORICAL_UNIVERSE_COVERAGE_PLAN_v0_1.md",
+  "generated_at": "2026-10-08T23:59:00+08:00",
+  "source_commit": "c742968",
+  "source_commit_note": "本 manifest 所依据的 ThreeC baseline commit（Product 1.2 Usage-Driven 轮：主题粒度切换 + 覆盖边界实测）。",
+  "status": "PLANNED_NOT_STARTED",
+  "status_note": "★ 本 manifest 只新增一个任务 R02-03，且**未被授权启动**。R02-01 / R02-02 不在此 manifest 内 —— 它们由用户于 2026-10-07 直接授权产出（见各自 manifest 的 task_definition_note），此处**不追溯改写**。",
+  "trigger": {
+    "kind": "REAL_USER_DIRECTION_QUERY",
+    "date": "2026-10-08",
+    "user_words": "很多小主题，比如 煤炭、电力、流感疫苗、文化传媒 等等 好像时间相关性都挺高的，现在是大主题展示，如何能在地图上加入小主题呢（主要是类似时间集中的小主题，可能要做research）",
+    "why_this_is_the_trigger": "这是项目历史上**第一次**由使用者自己点名、而非由我设计的使用测试。四个方向经实测**全部不在覆盖内**（见 docs/COVERAGE_GAP_2026-10-08_SUBTHEMES.md）。用户原话已预判「可能要做research」—— 本 manifest 就是该 research 的**任务签发**，不是产出。",
+    "role_separation_note": "★ 协议 §3 角色分离**必须**成立：本 manifest 由 **ThreeC Agent 角色**签发；intake package 由 **Research Agent 角色**产出；package 的审查（八种结果）与 canonicalization 回到 **ThreeC Agent 角色**。**同一个执行者不得同时产出并自审。**（依据：2026-10-08 实测在 self-review 中抓到 27 条「改写冒充引文」。）"
+  },
+  "global_constraints": {
+    "years": { "from": 2015, "to": 2025 },
+    "priority_a_years": { "from": 2018, "to": 2025 },
+    "priority_b_years": { "from": 2015, "to": 2017 },
+    "priority_definitions": {
+      "A": "2018–2025。当前 ThreeC 历史主宇宙的直接扩容区。必须独立可交付，不得被 Priority B 阻塞。",
+      "B": "2015–2017。历史回填区。允许大面积 INSUFFICIENT。"
+    },
+    "expected_output": "Research Intake Package（按协议 §5.3 目录结构）",
+    "no_quantity_kpi": true,
+    "no_quantity_kpi_note": "本 manifest 刻意不包含 expected_campaign_count 或任何数量目标（协议 §9）。数字只能用于描述覆盖与 Coverage Audit。★ 同样**不得**以「提高 SA 命中率」为动机（覆盖计划 §1.2）。",
+    "macro_theme_resolution": "必须由 ThreeC Agent 走 CMTR v1（research/scripts/theme_taxonomy.py，规则集 canonical-macro-theme-resolution-1）。Research Agent 只能提交 proposal 与 theme_name_candidates。",
+    "campaign_decision": "必须由 ThreeC Agent 走 Research Model v1.0 §5 + Campaign Independence Gate Q1–Q5（research/research/methodology/theme_campaign_separation_v1.md）。",
+    "source_tier_requirement": "★ 依 R02-01 的实测教训：Tier 3（财经媒体）**只能**用于转述 Tier 1/2 事实。凡「指数涨跌幅 / 市值口径」这类只能来自商用数据库（Wind 等）的数字，**不得**作为独立事实提交；若确需引用，必须在 manifest.known_gaps 中显式标注不满足协议要求，并交由 ThreeC Agent 判定 ACCEPT_WITH_CHANGES / REJECT。**宁可空缺，不得凑数。**",
+    "temporal_firewall": "所有 source_date / event_date 必须 ≤ 该候选的 snapshot_date。禁止 look-ahead。",
+    "forbidden_actions": [
+      "修改 canonical SQLite（research/database/cycle_research.db）",
+      "修改 research/schema/schema.sql",
+      "修改任何现有历史 Campaign / Evidence / Theme / Rule 结论",
+      "修改 DB themes 表（canonical Macro Theme taxonomy）",
+      "修改 src/**（Product）",
+      "修改 exports/timeline_export_v1.json",
+      "修改 Structural Analogy Rule Set v0.2",
+      "重跑 Time Observation",
+      "宣称产出为 VERIFIED",
+      "创造 canonical DB ID（C-* / RC-* / CC-* / TH-* / rule_* / summer_*）",
+      "新增 SQLite 表 / 列 / 实体",
+      "建立 ranking / score / probability / prediction / 胜率 / 目标价 / 推荐",
+      "覆盖已有 intake package 或同一 round 的旧 task package",
+      "因为与其他任务重复而自行删除候选",
+      "为了填满行业而把边缘事件升级为 Campaign",
+      "新增 DB themes 行（taxonomy 变更属独立轮次）",
+      "把「主题名相同 / 相近」当作 Structural Correspondence"
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "R02-03",
+      "scope": "用户点名的四个方向：煤炭（动力煤/焦煤）· 电力（公用事业运营端）· 流感疫苗 · 文化传媒。四个方向**各自独立成族**，必须分别给出 coverage 与 exclusions，不得合并成一条「泛周期」。",
+      "macro_theme_candidates": ["煤炭", "电力", "流感疫苗", "文化传媒"],
+      "years": { "from": 2015, "to": 2025 },
+      "priority": "A",
+      "priority_note": "★ 四个方向全部按 Priority A 交付；Priority B（2015–2017）允许 INSUFFICIENT，不得阻塞 2018–2025。",
+      "why_each_direction_is_worth_a_family": [
+        {
+          "direction": "煤炭",
+          "mechanism_hypothesis": "供给收缩 / 价格驱动（供给侧改革、安监限产、长协与进口政策）",
+          "why_new_axis": "现有 12 个大主题的机制集中在政策驱动 · 技术突破 · 产业升级 · 需求爆发。供给收缩轴在「资源」族内已有（有色金属 / 贵金属 / 稀有金属·稀土），但**煤炭的价格机制与政策工具（长协、进口配额、安监）和有色金属不同**，不能默认同构。"
+        },
+        {
+          "direction": "电力（公用事业）",
+          "mechanism_hypothesis": "成本—电价剪刀差 / 来水与利用小时 / 电价市场化改革 / 容量电价",
+          "why_new_axis": "★★ **必须与库内已有的「电力设备」严格区分**：库内 `电力设备` 是**制造端**（`电网/输变电设备` · `光伏/新能源发电设备` · 上游锂电/新能源车电池），机制是**设备需求与产能**；本方向是**运营端**（发电 / 电网运营），机制是**成本、电价与利用率**。两者机制不同，**不得互相替代**，也不得因为名字相近就并成一族。"
+        },
+        {
+          "direction": "流感疫苗",
+          "mechanism_hypothesis": "季节性需求 + 公共卫生事件驱动（毒株预测、批签发、接种率）",
+          "why_new_axis": "库内医药健康**最薄**（主题材层：创新药 1 · 疫情医疗 1 · 减重/GLP-1 1 · 中医药 1 · 半导体… 无关）。**注意与既有 `RC-2020-PANDEMIC` / 主题材「疫情医疗」的重叠判定** —— 流感疫苗有**可预期的年度季节性**，与一次性疫情事件机制不同，但必须走 Campaign Independence Gate 证明其独立性，**不得**仅凭名称不同就新建。"
+        },
+        {
+          "direction": "文化传媒",
+          "mechanism_hypothesis": "政策/监管周期 + 内容供给 + 平台经济（含游戏版号、影视、出版、广告）",
+          "why_new_axis": "★★★ **全库零覆盖** —— 主题材层 41 行里「传媒 / 文化 / 娱乐 / 教育」一个都不命中；大主题层 12 行同样没有。这是**最彻底**的空缺，也是用户 2026-10-07 使用测试与 2026-10-08 再次点名的方向。机制上属**监管周期 + 内容供给**，现有 12 族完全没有。"
+        }
+      ],
+      "known_overlap": [
+        "煤炭 ↔ 已有「资源」族（有色金属 / 贵金属 / 稀有金属·稀土）：**同族内新增还是新族**必须由 CMTR v1 判定，Research Agent 只能提交 proposal。若判定为同族，需说明其机制轴（供给收缩）与既有对象的差异，否则本任务对该方向等于无增量。",
+        "电力（运营）↔ 已有「电力设备」（制造）：**名字相近、机制不同**。若 Research Agent 提交的名称被 CMTR 解析到「电力设备」根节点，必须显式标记 CONFLICT 并交由 ThreeC Agent 判定，**不得**静默归入。",
+        "流感疫苗 ↔ 已有 `RC-2020-PANDEMIC`（Research Candidate）与主题材「疫情医疗」：必须走 Campaign Independence Gate Q1–Q5。",
+        "文化传媒 ↔ 无重叠（全库零覆盖）。"
+      ],
+      "explicit_non_goals": [
+        "不为「提高 SA 结构对应命中率」而扩容（覆盖计划 §1.2 明令禁止该动机）。",
+        "不把 2026 年的当下事件写成历史 Campaign（超出 2015–2025 历史研究窗口）。",
+        "不为四个方向各自凑够 N 个 Campaign；**「该方向历史上没有形成 Campaign」是合法且有价值的结论**，用 no_clear_campaign / exclusions 显式记录（覆盖计划 §5）。",
+        "不改 Product（`src/**`）：本任务是研究侧扩容，产品侧呈现另行处理。"
+      ]
+    }
+  ],
+  "task_package_drop_location": "research/intake/packages/R02-03/",
+  "task_package_naming": "R02-03",
+  "task_package_note": "目录结构须与 R02-01 / R02-02 完全一致（manifest.json · candidates.json · evidence.json · sources.json · securities.json · conflicts.json · exclusions.json · coverage.md · quality_summary.json · research_questions.json · checksums.sha256）。缺任一文件即视为未完成。"
+}
