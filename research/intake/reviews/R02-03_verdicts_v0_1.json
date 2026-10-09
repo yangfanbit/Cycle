@@ -1,0 +1,211 @@
+{
+  "review_version": "0.1",
+  "intake_protocol_version": "0.1",
+  "review_kind": "threec_agent_intake_review",
+  "research_round_id": "R02",
+  "task_id": "R02-03",
+  "package_path": "research/intake/packages/R02-03",
+  "reviewed_at": "2026-10-10",
+  "reviewed_by_role": "ThreeC Agent",
+  "review_doc": "docs/R02_03_REVIEW_v0_1.md",
+  "role_separation_declaration": "本审查由 ThreeC Agent 角色执行，与产出该 package 的 Research Agent 角色**不是**同一执行者（协议 §3 硬规则）。本审查**未**写入 canonical SQLite，**未**修改任何既有研究结论 / schema.sql / exports/ / src/**，**未**执行 taxonomy 变更。",
+  "machine_validation": {
+    "command": "validate_historical_research_intake.py research/intake/packages/R02-03",
+    "checks": 25,
+    "fail": 0,
+    "warn": 0,
+    "result": "PASS",
+    "note": "★ 结构校验只查「形状」不查「语义」。下列 semantic_checks 由 ThreeC Agent 另行实测。"
+  },
+  "semantic_checks": [
+    { "check": "Tier 3 是否被用作 point-in-time 依据（协议禁止）", "result": "PASS", "detail": "0 条" },
+    { "check": "引文是否可溯源（历史缺陷：27 条「改写冒充引文」）", "result": "PASS", "detail": "引号仅用于概念强调，未发现伪造引文" },
+    { "check": "subsequent / retrospective 是否均有 point_in_time_note", "result": "PASS", "detail": "7 / 7" },
+    { "check": "Confirmed 门槛（≥2 证据 且 ≥2 独立组）", "result": "PASS", "detail": "未达标者均已自记 INSUFFICIENT" },
+    { "check": "与库内 80 个对象的主题名碰撞", "result": "PASS", "detail": "0 碰撞" },
+    { "check": "证券 代码↔名称 一致性（12 个）", "result": "PASS", "detail": "12 / 12 人工核对正确" },
+    { "check": "证券上市日 vs campaign 起始日（R01-04 类缺陷）", "result": "PASS", "detail": "无违规；3 条低证据候选未登记标的" },
+    { "check": "exclusions 非空且非凑数", "result": "PASS", "detail": "24 项" },
+    { "check": "research_status 是否越权声明 VERIFIED", "result": "PASS", "detail": "无" },
+    { "check": "★ 日期端点是否有来源支撑", "result": "FAIL", "detail": "R02-MEDIA-001 的 start 端点 2022-11-30 无 source_id（见该候选 required_changes）" }
+  ],
+  "blocking_condition": {
+    "kind": "TAXONOMY_ROUND_REQUIRED",
+    "blocks": "全部 9 条候选写入 canonical `campaigns`",
+    "why": "协议 §3.4 / 覆盖计划 §3.3：若某新族在 DB `themes` 中不存在对应根节点，属数据决策，必须单独轮次处理，不在本任务内自动新增 taxonomy 行。",
+    "measured": {
+      "db": "research/database/cycle_research.db",
+      "themes_rows": 53,
+      "root_nodes": 11,
+      "cmtr_result_per_proposal": {
+        "R02-COAL-MT001": "UNRESOLVED_NAME",
+        "R02-POWER-MT001": "UNRESOLVED_NAME",
+        "R02-VACCINE-MT001": "UNRESOLVED_NAME",
+        "R02-MEDIA-MT001": "UNRESOLVED_NAME"
+      }
+    },
+    "electricity_trap": "★ DB 中无「电力」，但有「电力设备」(TH-POWER, 根节点)。字面/子串匹配会误判；CMTR v1 明确「不使用 direct 口径」，故正确返回 UNRESOLVED_NAME 而非静默归入。该事实必须写入 canonicalization 记录。",
+    "requires": "用户授权（属数据决策）"
+  },
+  "verdicts": [
+    {
+      "candidate_id": "R02-COAL-001",
+      "title": "2021 年动力煤供需缺口与保供稳价干预驱动的煤炭板块行情",
+      "verdict": "ACCEPT_WITH_CHANGES",
+      "evidence_count": 3,
+      "independence_groups": 3,
+      "required_changes": [
+        "★ 声明 peak(2021-10-19) 的参照物 = 政策事件（发改委干预），非股价/指数高点",
+        "★★ 连带：K 线证实状态应为 NOT_APPLICABLE，不得记为 UNCONFIRMED",
+        "★ 记录与 R02-POWER-002 的同期独立性判定（协议 §1.4 规则 4「同一时间 ≠ 同一个 Campaign」）",
+        "起涨日保留 DATE_WINDOW，不得为「漂亮日期」收窄"
+      ],
+      "missing_items": [],
+      "peak_referent": "政策事件",
+      "kline_confirmation_consequence": "NOT_APPLICABLE"
+    },
+    {
+      "candidate_id": "R02-COAL-002",
+      "title": "2022–2024 煤炭高股息 / 红利资产重估行情",
+      "verdict": "DEFER",
+      "evidence_count": 4,
+      "independence_groups": 4,
+      "required_changes": [],
+      "missing_items": [
+        "板块指数口径序列（用于界定 peak / end）",
+        "与 R02-COAL-001 及 2022 俄乌段的边界判定（Independence Gate Q1–Q5）"
+      ],
+      "peak_referent": "未界定",
+      "note": "机制（红利重估）与库内银行高股息段属同一机制轴、不同行业 —— 不构成重复，但须记录为跨族机制重叠。"
+    },
+    {
+      "candidate_id": "R02-POWER-001",
+      "title": "2015 年『新电改』（中发〔2015〕9号）驱动的电力体制改革概念",
+      "verdict": "INSUFFICIENT",
+      "evidence_count": 1,
+      "independence_groups": 1,
+      "required_changes": [],
+      "missing_items": [
+        "市场侧（行情）证据",
+        "与 2015H1 全市场系统性行情 Beta 的分离方法"
+      ],
+      "peak_referent": "未界定",
+      "note": "「资料不足」不等于「不成立」—— 按协议 §4.2 用 INSUFFICIENT 而非 REJECT。"
+    },
+    {
+      "candidate_id": "R02-POWER-002",
+      "title": "2021 年绿色电力交易试点与新能源运营商行情",
+      "verdict": "ACCEPT_WITH_CHANGES",
+      "evidence_count": 4,
+      "independence_groups": 4,
+      "required_changes": [
+        "★ 声明 peak(2021-09-28) 的参照物 = 政策事件（绿电交易试点启动）",
+        "★★ 连带：K 线证实状态应为 NOT_APPLICABLE",
+        "★★ 写入 canonicalization 记录：CMTR 实测本包名称为 UNRESOLVED_NAME，未落入「电力设备」根节点 —— 不得因名称相近静默并入",
+        "end 未界定 → 明确记 OPEN_ENDED（本包已如此处理，未编造终局日）"
+      ],
+      "missing_items": [],
+      "peak_referent": "政策事件",
+      "kline_confirmation_consequence": "NOT_APPLICABLE"
+    },
+    {
+      "candidate_id": "R02-POWER-003",
+      "title": "2022 年夏季高温限电驱动的虚拟电厂概念",
+      "verdict": "OBSERVATION_ONLY",
+      "evidence_count": 2,
+      "independence_groups": 2,
+      "required_changes": [],
+      "missing_items": [],
+      "peak_referent": "未界定",
+      "note": "★ 不用 INSUFFICIENT 的理由：本条的障碍不是「资料不够」而是「性质不够」——「某概念板块当日上涨」这类行情事实在性质上不存在 Tier 1/2 一手来源，补齐资料不能改变性质。改变性质需新的独立证据（如该概念在后续年份的复现证据）。"
+    },
+    {
+      "candidate_id": "R02-VACCINE-001",
+      "title": "2022 年南方夏季流感高峰驱动的流感疫苗 / 流感概念行情",
+      "verdict": "INSUFFICIENT",
+      "evidence_count": 2,
+      "independence_groups": 2,
+      "required_changes": [],
+      "missing_items": [
+        "国家流感中心第 23 周周报一手来源（ILI% 现为二手转述）",
+        "行情序列（界定 peak / end）"
+      ],
+      "peak_referent": "未界定",
+      "note": "障碍是来源可得性（一手周报客观存在、只是未取得）→ 属「资料不足」，补齐资料即可再评估。"
+    },
+    {
+      "candidate_id": "R02-VACCINE-002",
+      "title": "2023 年春季甲流（A(H1N1)pdm09）高发驱动的流感概念行情",
+      "verdict": "ACCEPT_WITH_CHANGES",
+      "evidence_count": 3,
+      "independence_groups": 3,
+      "required_changes": [
+        "★ peak 依据须降级标注：2023-03-20 来自官方表态的媒体转述（健康界 Tier 3），非一手；取得一手原文则升级",
+        "★ 声明 peak 参照物 = 行业指标（流感活动高峰），非股价高点",
+        "★★ 连带：K 线证实状态应为 NOT_APPLICABLE",
+        "★ 走独立性闸门：①与 R02-VACCINE-001（协议 §1.4 规则 3「不同时间 ≠ 不同 Campaign」）；②与 RC-2020-PANDEMIC / 主题材「疫情医疗」"
+      ],
+      "missing_items": [],
+      "peak_referent": "行业指标",
+      "kline_confirmation_consequence": "NOT_APPLICABLE"
+    },
+    {
+      "candidate_id": "R02-MEDIA-001",
+      "title": "2023 年 AI 主题驱动的传媒板块行情（游戏 / 出版 / 影视）",
+      "verdict": "ACCEPT_WITH_CHANGES",
+      "evidence_count": 2,
+      "independence_groups": 2,
+      "required_changes": [
+        "★★ 起始窗口端点 2022-11-30（ChatGPT 发布）在证据中无 source_id —— 须补来源，或把端点收回到 S005 实际支持的范围",
+        "peak 明确记「未界定」（本包已如此处理，未推断）",
+        "★★ 依赖 taxonomy 轮次：R02-MEDIA-MT001 经 CMTR 实测为 UNRESOLVED_NAME",
+        "记录「2023 年 AI 主题同时驱动电子/通信/计算机」的跨族重叠，并说明传媒段为何可与之分离"
+      ],
+      "missing_items": [],
+      "peak_referent": "未界定"
+    },
+    {
+      "candidate_id": "R02-MEDIA-002",
+      "title": "2018 年游戏版号暂停与恢复驱动的传媒 / 游戏板块周期",
+      "verdict": "DEFER",
+      "evidence_count": 3,
+      "independence_groups": 3,
+      "required_changes": [],
+      "missing_items": [
+        "重新界定为「版号恢复后的修复段」并取得该段行情证据",
+        "版号暂停起止日的可用口径说明（该暂停未被正式公告，无官方一手来源）"
+      ],
+      "peak_referent": "未界定",
+      "note": "★ 本条的排除本身是有价值的覆盖（覆盖计划 §5「失败案例同样是覆盖」）。"
+    }
+  ],
+  "verdict_distribution": {
+    "ACCEPT": 0,
+    "ACCEPT_WITH_CHANGES": 4,
+    "MERGE": 0,
+    "DUPLICATE": 0,
+    "OBSERVATION_ONLY": 1,
+    "REJECT": 0,
+    "INSUFFICIENT": 2,
+    "DEFER": 2
+  },
+  "side_findings": [
+    {
+      "id": "SF-1",
+      "severity": "P1",
+      "title": "产品侧 macroThemeOf() 用 direct（字面名）口径，与 CMTR v1 不一致",
+      "measured": "DB themes 根节点 11 个，但首页地图显示 12 行；多出的是「航天装备」，其在 DB 中是「国防军工」的子节点（TH-DEFENSE-SPACE, parent=TH-DEFENSE）。",
+      "consequence": "地图把「航天装备」（1 对象）与「国防军工」（6 对象）拆成两行；按 canonical 口径应合并为「国防军工 7 个」。",
+      "blocking_r02_03": false,
+      "must_be_fixed_with": "taxonomy 轮次（R02-03 正要新增 macro theme，口径不统一会让新族同样被错误分组）"
+    }
+  ],
+  "next_steps": [
+    { "order": 1, "item": "taxonomy 轮次：决定四个方向是新增根节点还是挂既有根节点", "needs": "用户授权" },
+    { "order": 2, "item": "同轮次内解决 SF-1 产品/研究口径不一致", "needs": "ThreeC Agent" },
+    { "order": 3, "item": "候选级改动（各条 required_changes）", "needs": "ThreeC Agent" },
+    { "order": 4, "item": "Campaign Independence Gate Q1–Q5", "needs": "ThreeC Agent" },
+    { "order": 5, "item": "DEFER 两条的缺失项补做", "needs": "Research Agent" },
+    { "order": 6, "item": "文化传媒当前侧对象（另行）", "needs": "另行授权" }
+  ]
+}
