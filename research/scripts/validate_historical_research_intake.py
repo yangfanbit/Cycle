@@ -1080,6 +1080,43 @@ def _check_infrastructure_once() -> Report:
                 if key.startswith("expected_") and "count" in key:
                     rep.fail("C22", "manifest task %s 出现数量 KPI 字段: %s" % (t.get("task_id"), key))
 
+    # 2b) ★ 2026-10-10 补：**R01 之外的 task manifest 此前完全没有被校验**
+    #     上面的 C02 块只硬编码 R01（tasks 必须恰为 R01-01..R01-06）。
+    #     后果：ThreeC Agent 后来签发的 `HISTORICAL_UNIVERSE_R02_TASK_MANIFEST_v0_1.json`
+    #     若有笔误，**没有任何检查会发现** —— 这与项目已固化的教训
+    #     「凡『来源声明』与『落地数据』存在两份真相处，必须有一条把两者对起来的检查」
+    #     直接冲突（见 `MEMORY.md`）。此处补齐：**凡本目录下的 task manifest 一律校验**。
+    for _name in sorted(os.listdir(INTAKE_DIR)):
+        if not _name.endswith(".json") or "TASK_MANIFEST" not in _name:
+            continue
+        if _name == os.path.basename(MANIFEST_PATH):
+            continue  # R01 已由上面的块逐项检查
+        _path = os.path.join(INTAKE_DIR, _name)
+        try:
+            _man = json.loads(read_bytes(_path).decode("utf-8"))
+        except Exception as exc:
+            rep.fail("C02", "%s JSON 解析失败: %s" % (_name, exc))
+            continue
+        _rid = _man.get("research_round_id")
+        _m = re.match(r"^HISTORICAL_UNIVERSE_(R\d{2})_TASK_MANIFEST", _name)
+        if _m and _rid != _m.group(1):
+            rep.fail("C02", "%s 的 research_round_id=%r 与文件名轮次 %r 不一致"
+                     % (_name, _rid, _m.group(1)))
+        _ids = [t.get("task_id") for t in (_man.get("tasks") or []) if isinstance(t, dict)]
+        if not _ids:
+            rep.fail("C02", "%s 的 tasks 为空" % _name)
+        for _tid in _ids:
+            if not isinstance(_tid, str) or not _tid.startswith("%s-" % _rid):
+                rep.fail("C02", "%s 的 task_id %r 不以轮次前缀 %s- 开头" % (_name, _tid, _rid))
+        _gc = _man.get("global_constraints") or {}
+        if not isinstance(_gc, dict) or _gc.get("no_quantity_kpi") is not True:
+            rep.fail("C22", "%s global_constraints.no_quantity_kpi 必须为 true" % _name)
+        for _key in ("forbidden_actions", "expected_output",
+                     "macro_theme_resolution", "campaign_decision"):
+            if not _gc.get(_key):
+                rep.fail("C02", "%s global_constraints 缺少 %s" % (_name, _key))
+        rep.info("C02", "%s：轮次 %s · tasks %s · 约束齐备" % (_name, _rid, _ids))
+
     # 3) packages 目录
     pkg_dirs = []
     if os.path.isdir(PACKAGES_DIR):
