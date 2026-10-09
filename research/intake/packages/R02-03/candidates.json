@@ -1,0 +1,1039 @@
+[
+  {
+    "candidate_id": "R02-COAL-001",
+    "title": "2021 年动力煤供需缺口与保供稳价干预驱动的煤炭板块行情",
+    "year": 2021,
+    "macro_theme_proposal": "煤炭（提案：NEW_MACRO_CANDIDATE，或作为既有『资源』族供给收缩轴的新增节点；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "煤炭",
+      "动力煤",
+      "煤炭开采",
+      "焦煤"
+    ],
+    "theme_summary": "2021 年国内动力煤供给受限（安监、环保、超能力检查、进口减量）与需求超预期（经济复苏、高温、冬储）叠加，形成显著供需缺口：秦皇岛港 Q5500 平仓均价年初约 933 元/吨，6—9 月高位震荡至 971 元/吨，9 月至 10 月中旬冬储需求释放后快速上涨；9 月出现全国多地『拉闸限电』。2021-10-19 国家发展改革委研究依法对煤炭价格实施干预，成为行情由升转降的转折锚。该段与既有『资源』族对象的机制差异在于：驱动来自煤炭特有的政策工具箱（长协履约、保供增产核增、进口配额、安监限产）与电力—煤炭联动。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-08-01",
+          "window_end": "2021-09-30",
+          "phase_note": "上行段起点窗口",
+          "basis": "行业复盘记载：6 月初至 9 月动力煤价高位震荡，9 月至 10 月中旬冬储需求释放后快速上涨（S002）；同期 9 月出现多地拉闸限电（S003）。本包未取得精确起涨日，按窗口记录，不编造具体日期。",
+          "source_ids": [
+            "R02-COAL-S002",
+            "R02-COAL-S003"
+          ],
+          "evidence_ids": [
+            "R02-COAL-E002",
+            "R02-COAL-E003"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-10-19",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "政策干预日 / 价格与情绪转折锚",
+          "basis": "国家发展改革委 2021-10-19 发布消息研究依法对煤炭价格实施干预（S001，Tier 1 一手）；行业复盘亦将『10 月中旬至今』列为保供稳价政策下价格快速回落阶段（S002）。",
+          "source_ids": [
+            "R02-COAL-S001",
+            "R02-COAL-S002"
+          ],
+          "evidence_ids": [
+            "R02-COAL-E001",
+            "R02-COAL-E002"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2021-10-20",
+              "basis": "现货 / 期货价格高点与板块高点的媒体口径可能滞后一日",
+              "source_ids": [
+                "R02-COAL-S002"
+              ]
+            }
+          ],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-10-19",
+          "window_end": "2021-11-30",
+          "phase_note": "降温窗口",
+          "basis": "保供稳价政策落地后产地供应增加、电厂库存提升，动力煤现货价格快速回落（S002）。本包不声称此为终局日，仅界定降温窗口。",
+          "source_ids": [
+            "R02-COAL-S002"
+          ],
+          "evidence_ids": [
+            "R02-COAL-E002"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2021-08-01",
+        "end": "2021-10-19",
+        "basis": "动力煤价自 6 月起高位震荡、9 月起快速上涨；秦皇岛港 Q5500 平仓均价升至 971 元/吨（S002）；9 月多省拉闸限电（S003）。",
+        "notes": "起点为窗口（8—9 月），非精确日。"
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2021-10-19",
+        "end": "2021-11-30",
+        "basis": "发改委干预后保供增产见效，动力煤现货价快速回落、市场预期降温（S002）。",
+        "notes": "★ 本段为政策触发的降温；本包仅界定起点窗口，不声称终局。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "产地安监、环保、超能力检查（2021-03 危险作业罪正式入刑）压缩产量",
+        "进口减量（澳煤）加剧高卡低硫煤种紧缺"
+      ],
+      "accelerator": [
+        "经济复苏带动工业用电与燃煤消费激增",
+        "高温与冬储需求叠加，全国火电增量与燃煤消费量激增",
+        "9 月多省能耗双控与电力供应短缺导致『拉闸限电』，强化供给紧张叙事"
+      ],
+      "turning": [
+        "2021-10-19 国家发展改革委研究依法对煤炭价格实施干预，并组织重点煤企、行业协会召开保供稳价座谈会"
+      ],
+      "ending": [
+        "保供稳价政策下产地供应增加、电厂库存提升，动力煤现货价格快速回落"
+      ]
+    },
+    "evidence_ids": [
+      "R02-COAL-E001",
+      "R02-COAL-E002",
+      "R02-COAL-E003"
+    ],
+    "security_ids": [
+      "R02-COAL-SEC001",
+      "R02-COAL-SEC002",
+      "R02-COAL-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "时间一致性说明：①E001（2021-10-19）为一手官方发布，contemporaneous 且 primary_source=true，**可作 point-in-time 依据**；②E003（2021-09-29 新华网）为同期报道，contemporaneous；③E002（2022-01-05 行业复盘）为**事后**（subsequent），仅用于证明『2021 年动力煤价格确实如此运行』与事后界定阶段，**不得**作为 2021 年同期已知信息的依据。★ 本包**未取得**任何 Tier 1/2 的**行情（板块指数）**来源，煤炭板块涨幅与个股涨幅均为二手；该限制已记入 manifest.known_gaps。",
+    "why_campaign": "具备可核验的时间结构（上行窗口 → 政策干预锚 → 降温窗口）；驱动为可核验的供给收缩与需求爆发；转折由**明确的政策事件**（2021-10-19 干预）触发。其机制轴（供给收缩 + 煤炭特有政策工具箱 + 煤电联动）与既有『资源』族对象（有色金属 / 贵金属 / 稀有金属·稀土）可分辨 —— 但『是否应作为独立 Macro Theme』须由 ThreeC Agent 走 CMTR v1 判定，本包不自行归组。",
+    "why_not": "★ 本包**不**主张其必然成立：①起涨日未精确（仅窗口），上行段起点存在边界争议；②**行情侧证据全部为二手**（无 Tier 1/2 指数口径），故 start/peak 的板块口径无法一手复核；③2021 年 9—10 月为**多因素叠加期**（煤炭供给、能耗双控、限电），板块上行中『煤炭自身机制』与『电力紧张 / 系统性因素』的贡献无法分离 —— 是否应单列或与电力段合并，须由 ThreeC Agent 用 Campaign Independence Gate 判定。",
+    "notes": "与既有『资源』族的关系：本包按 manifest 要求**只提交 proposal**，最终由 CMTR v1 判定同族或新族；若判定为同族，则须说明煤炭机制轴（长协 / 保供核增 / 煤电联动）与既有对象的差异，否则该方向等于无增量。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-COAL-002",
+    "title": "2022–2024 煤炭高股息 / 红利资产重估行情",
+    "year": 2022,
+    "macro_theme_proposal": "煤炭（提案：NEW_MACRO_CANDIDATE，或作为既有『资源』族新增节点；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "煤炭",
+      "高股息",
+      "红利资产",
+      "煤炭开采"
+    ],
+    "theme_summary": "以『高现金流 → 高分红 → 高股息』为机制的煤炭板块估值重估段。制度背景为 2022-02-24《关于进一步完善煤炭市场价格形成机制的通知》（发改价格〔2022〕303号）确立的中长期合同价格机制，使煤价中枢与盈利稳定性上移；产业侧为煤炭企业现金分红比例接近 50%、股息率约 7.08%（券商研究口径），2023 年煤炭 ETF 上涨超 10%。与 R02-COAL-001 的区别在**机制**：001 是价格冲击（供给缺口 → 涨价 → 政策干预），002 是**红利重估**（稳价 → 高分红 → 类债资产定价）。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-02-24",
+          "window_end": "2022-04-30",
+          "phase_note": "上行段起点窗口",
+          "basis": "2022-02-24 发改委 303 号文确立长协价格机制（S005，Tier 1）；2022-03-28 媒体报道煤炭板块年内涨幅约 21.53%（S004）。本包未取得精确起涨日，按窗口记录。",
+          "source_ids": [
+            "R02-COAL-S005",
+            "R02-COAL-S004"
+          ],
+          "evidence_ids": [
+            "R02-COAL-E004",
+            "R02-COAL-E007"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**该段顶点的一手或可交叉证据（行情侧全为二手），按协议『空缺是合法研究状态』留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "顶点缺失是本候选的主要不足，直接影响生命周期可比性。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "截至本包生成时可能仍在延续（OPEN_ENDED）",
+          "basis": "2024-01-02 仍有『2023 年煤炭板块受资金青睐』的报道（S007）—— 本包按 OPEN_ENDED 处理，**不**声称已结束。",
+          "source_ids": [
+            "R02-COAL-S007"
+          ],
+          "evidence_ids": [
+            "R02-COAL-E006"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2022-02-24",
+        "end": "2024-12-31",
+        "basis": "长协价格机制（2022-02）→ 高分红 / 高股息结构（2022 分红比例近 50%，S006）→ 2023 年煤炭 ETF 上涨超 10%、资金青睐（S007）。本段跨年，且本包未取得逐月行情序列。",
+        "notes": "★ 本段跨 2022–2024，粒度粗（无逐月序列）；且是否应与 2022 年『俄乌能源价格』驱动段拆分，须由 ThreeC Agent 判定。"
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "2022-02-24 发改价格〔2022〕303号确立煤炭中长期合同价格机制，价格中枢与盈利稳定性上移",
+        "俄乌冲突（2022-02-24）引发全球能源价格上行与能源安全叙事"
+      ],
+      "accelerator": [
+        "煤炭企业现金流充沛、分红比例提高（2022 年分红比例接近 50%）",
+        "低利率环境下高股息 / 红利资产受资金青睐"
+      ],
+      "turning": [
+        "★ 本包**未识别**该段的转折信号 —— 因该段截至本包生成时可能仍在延续，无法事后识别转折。按协议不推断。"
+      ],
+      "ending": [
+        "★ 未界定。本段按 OPEN_ENDED 处理，不声称已结束。"
+      ]
+    },
+    "evidence_ids": [
+      "R02-COAL-E004",
+      "R02-COAL-E005",
+      "R02-COAL-E006",
+      "R02-COAL-E007"
+    ],
+    "security_ids": [
+      "R02-COAL-SEC001",
+      "R02-COAL-SEC002",
+      "R02-COAL-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "时间一致性说明：①E004（2022-02-24）为一手政策原文，contemporaneous 且 primary_source=true，**可作 point-in-time 依据**；②E007（2022-03-28 新浪财经）为同期报道，contemporaneous，但板块涨幅为二手；③E005（2023-09-05 研报）与 E006（2024-01-02 报道）均为**事后**（subsequent），仅用于证明『煤炭板块高分红 / 高股息』与『2023 年受资金青睐』的结构事实，**不得**作为 2022 年同期已知信息的依据。★ 该段 end 为 OPEN_ENDED，后续证据的时间关系可能随轮次推进而变化。",
+    "why_campaign": "具备独立的机制（红利重估 / 类债资产定价）与制度起点（2022-02-24 长协价格机制，Tier 1 一手）。与 R02-COAL-001（价格冲击）在机制上可分辨 —— 前者是『涨价 + 政策压制』，本段是『稳价 + 高分红 + 估值重估』。",
+    "why_not": "★ 本包**不**主张其必然成立：①**peak 未界定、end 为 OPEN_ENDED** —— Campaign 需要完整时间结构，本候选不具备；②**行情侧全为二手**，无指数口径可复核；③本段跨 2022–2024 且粒度粗，**是否应与 2022 年俄乌能源价格驱动段拆分为两个 Campaign，或与 R02-COAL-001 归为同一 ThemeCycle 的不同阶段**，须由 ThreeC Agent 用 Campaign Independence Gate（Q1–Q5）判定。",
+    "notes": "★ 本候选可能应作为 **Observation** 而非 Campaign（缺 peak / end）。若 ThreeC Agent 判定应拆分，2022 年（俄乌能源价格）与 2023–2024（红利重估）可能是两个不同 Campaign。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-POWER-001",
+    "title": "2015 年『新电改』（中发〔2015〕9号）驱动的电力体制改革概念",
+    "year": 2015,
+    "macro_theme_proposal": "电力（公用事业 · 运营端）（提案：CROSS_FAMILY；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "电力体制改革",
+      "新电改",
+      "售电侧",
+      "配售电"
+    ],
+    "theme_summary": "以《中共中央 国务院关于进一步深化电力体制改革的若干意见》（中发〔2015〕9号）为制度起点的一段电力体制改革概念。核心内容为『管住中间、放开两头』：推进理顺电价形成机制、完善市场化交易机制，其中『售电侧改革 / 配售电』是当年市场最常被单独提及的细分概念。★ 本候选为 **Priority B（2015–2017）**，按协议允许大面积 `INSUFFICIENT`。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2015-03-15",
+          "window_end": "2015-04-09",
+          "phase_note": "制度起点窗口",
+          "basis": "中发〔2015〕9号于 2015 年印发、国家发展改革委于 2015-04-09 公布配套工作安排（S001，Tier 1）。本包未取得该文件的精确印发日一手来源，按窗口记录，不编造具体日期。",
+          "source_ids": [
+            "R02-POWER-S001"
+          ],
+          "evidence_ids": [
+            "R02-POWER-E001"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**该概念市场侧（行情）的可核验证据，按协议留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "市场侧证据缺失是本候选的主要不足。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "同上：本包未取得该概念的市场侧证据，不推断其终结时点。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2015-04-09",
+        "end": null,
+        "basis": "仅有制度起点（Tier 1 一手），**无市场侧证据**可界定阶段；按协议以 UNKNOWN 记录，不推断。",
+        "notes": "★ 本包**未**取得『新电改 / 售电侧』在 A 股被当作独立题材炒作的来源 —— 该细分是否应成段，须由 ThreeC Agent 判定。"
+      }
+    ],
+    "classification_proposal": "unclear",
+    "drivers": {
+      "start": [
+        "中发〔2015〕9号推进电力体制改革，售电侧 / 配售电放开成为政策看点"
+      ],
+      "accelerator": [
+        "★ 本包未取得该段的市场侧加速因素来源"
+      ],
+      "turning": [
+        "★ 未识别"
+      ],
+      "ending": [
+        "★ 未界定"
+      ]
+    },
+    "evidence_ids": [
+      "R02-POWER-E001"
+    ],
+    "security_ids": [],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "时间一致性说明：E001（2015-04-09）为一手官方发布，contemporaneous 且 primary_source=true，可作 point-in-time 依据；但本包**仅有政策侧证据、无市场侧证据**，故无法界定 peak / end。★ 2015 上半年为全市场系统性行情（杠杆牛），单列电力改革段存在 `SAME_CAMPAIGN` / Beta 不可分离的风险（参见库内 `RC-2015-FIN-LEVERAGE` / `RC-2015-MIL-REFORM-BULL` 的同类处理）。",
+    "why_campaign": "制度起点清晰且为 Tier 1 一手（中发〔2015〕9号），『售电侧 / 配售电』是当年被单独命名的概念。若 ThreeC Agent 能补充市场侧证据，该段具备成为独立 Campaign 的可能。",
+    "why_not": "★ 本包**不**主张其成立：①**完全未取得市场侧（行情）证据**，无法证明『新电改 / 售电侧』在 A 股被当作独立题材炒作过、也无法界定其时间结构；②2015 上半年为全市场系统性行情，电力改革段与 Beta 难以分离。按协议 §8.2『资料不足用 INSUFFICIENT，不用 REJECT』，本候选记为 `INSUFFICIENT`。",
+    "notes": "★ Priority B（2015–2017）候选，按协议允许大面积 `INSUFFICIENT`；**不得**因此阻塞 Priority A（2018–2025）的产出。若后续轮次补齐市场侧来源，可再评估。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-POWER-002",
+    "title": "2021 年绿色电力交易试点与新能源运营商行情",
+    "year": 2021,
+    "macro_theme_proposal": "电力（公用事业 · 运营端）（提案：CROSS_FAMILY；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "绿色电力",
+      "绿电",
+      "新能源运营商",
+      "电力"
+    ],
+    "theme_summary": "以 2021-09 绿色电力交易试点为核心的电力运营端行情。2021-09-07 前后国家发展改革委、国家能源局正式复函国家电网公司、南方电网公司推动绿电交易试点，2021-09-28 试点正式启动（首批交易 17 个省份 259 家主体、79.35 亿千瓦时）。市场侧 2021-09-08 电力板块涨停潮、2021-09-28 绿电概念 11 只个股涨停。与库内 `电力设备`（制造端：光伏 / 风电**设备**、电网 / 输变电设备）的机制不同：本段炒作主线是**电力运营商的电价与消纳预期**，而非设备需求与产能。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-09-07",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "制度起点",
+          "basis": "中国政府网 2021-09-07 发布政策解读，记载国家发展改革委、国家能源局正式复函国家电网公司、南方电网公司推动绿电交易试点（S002，Tier 1 一手）。",
+          "source_ids": [
+            "R02-POWER-S002"
+          ],
+          "evidence_ids": [
+            "R02-POWER-E002"
+          ],
+          "confidence": "high",
+          "alternative_dates": [
+            {
+              "date": "2021-09-08",
+              "basis": "市场反应日：当日电力板块涨停潮（S005）",
+              "source_ids": [
+                "R02-POWER-S005"
+              ]
+            }
+          ],
+          "conflict_note": "政策发布日（09-07）与市场反应日（09-08）不同，二者均保留，见 R02-POWER-CF001。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-09-28",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "交易正式启动日 / 概念高点候选",
+          "basis": "国家发展改革委 2021-09-28 发布『绿色电力交易试点正式启动』（S003，Tier 1 一手）；当日绿电概念 11 只个股涨停（S004）。",
+          "source_ids": [
+            "R02-POWER-S003",
+            "R02-POWER-S004"
+          ],
+          "evidence_ids": [
+            "R02-POWER-E003",
+            "R02-POWER-E004"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**该段终结的可核验证据，按协议留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "end 缺失是本候选的主要不足。"
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2021-09-07",
+        "end": "2021-09-28",
+        "basis": "2021-09-07 政策复函 → 09-08 电力板块涨停潮（S005）→ 09-28 绿电交易正式启动、绿电概念 11 只涨停（S003 / S004）。",
+        "notes": "以政策—市场事件为界；本包未取得逐日行情序列。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "2021-09-07 国家发展改革委、国家能源局复函推动绿色电力交易试点（碳达峰碳中和背景下的电力市场化改革）"
+      ],
+      "accelerator": [
+        "2021-09-28 绿色电力交易试点正式启动，首批交易规模落地",
+        "同期能耗双控与电力供应紧张（2021-09 多地限电）强化新能源运营商与绿电的稀缺性叙事"
+      ],
+      "turning": [
+        "★ 本包**未识别**该段的转折信号 —— 未取得行情序列，按协议不推断。"
+      ],
+      "ending": [
+        "★ 未界定"
+      ]
+    },
+    "evidence_ids": [
+      "R02-POWER-E002",
+      "R02-POWER-E003",
+      "R02-POWER-E004",
+      "R02-POWER-E005"
+    ],
+    "security_ids": [
+      "R02-POWER-SEC001",
+      "R02-POWER-SEC002",
+      "R02-POWER-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "时间一致性说明：①E002（2021-09-07）与 E003（2021-09-28）均为一手官方发布，contemporaneous 且 primary_source=true，**可作 point-in-time 依据**；②E004 / E005（2021-09-08、09-28）为同期财经媒体报道，contemporaneous，但涨停家数与交易电量为二手口径。★ 本包**未取得**任何 Tier 1/2 的**板块指数**来源，指数涨跌幅不得作为独立事实。",
+    "why_campaign": "具备清晰的制度起点（2021-09-07 复函，Tier 1 一手）、可核验的市场反应（09-08 涨停潮）与启动锚（09-28 正式启动）；机制为**电力运营商的电价与消纳预期**，与库内『电力设备』（制造端：设备需求与产能）**可分辨**。",
+    "why_not": "★ 本包**不**主张其必然成立：①**end 未界定**，时间结构不完整；②**行情侧为二手**，涨停家数无法一手复核；③本段与同期『能耗双控 / 限电』在时间上重叠，**是否应将『绿电交易』与『电力紧缺』视为同一 Campaign**，须由 ThreeC Agent 判定；④★ 若 CMTR v1 将『电力 / 绿电』解析到库内 `电力设备` 根节点，**必须显式标记 CONFLICT**，不得静默归入。",
+    "notes": "★ 本候选是四个方向中『电力（运营端）』最核心的一段：政策锚与市场反应都较清晰。但其与『电力设备』的族边界、以及与 2021 限电段的关系，均须由 ThreeC Agent 走 CMTR v1 与 Independence Gate 判定。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-POWER-003",
+    "title": "2022 年夏季高温限电驱动的虚拟电厂概念",
+    "year": 2022,
+    "macro_theme_proposal": "电力（公用事业 · 运营端）（提案：CROSS_FAMILY；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "虚拟电厂",
+      "需求侧响应",
+      "电力"
+    ],
+    "theme_summary": "2022 年夏季极端高温（多地 40 度、用电负荷连续刷新纪录）背景下，『虚拟电厂 / 需求侧响应』作为电力需求侧管理概念被市场热炒。该细分在 A 股确实被当作独立概念名使用（2022-07 多只概念股暴涨），但其是否构成 Campaign（持续性、完整时间结构）存疑。★ 本候选的**季节性**特征明显（夏季用电高峰），是用户点名『电力时间相关性高』的直接体现。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-07-01",
+          "window_end": "2022-07-14",
+          "phase_note": "上行段起点窗口",
+          "basis": "2022-07-12 媒体报道受夏季高温用电量飙升影响，电力板块拉升、虚拟电厂概念活跃（S006）；2022-07-14 媒体报道多城 40 度高温、用电负荷创新高、虚拟电厂概念股暴涨（S007）。",
+          "source_ids": [
+            "R02-POWER-S006",
+            "R02-POWER-S007"
+          ],
+          "evidence_ids": [
+            "R02-POWER-E006",
+            "R02-POWER-E007"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**顶点的一手或可交叉证据，按协议留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**终结证据，按协议留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2022-07-12",
+        "end": null,
+        "basis": "仅有 2022-07 的短期概念活跃证据（S006 / S007），**无**持续性证据可界定阶段；按协议以 UNKNOWN 记录。",
+        "notes": "★ 若无法证明其持续性，本候选更接近 `OBSERVATION_ONLY` 而非 Campaign。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "2022 年夏季极端高温（多地 40 度）导致用电量飙升、用电负荷刷新纪录",
+        "需求侧响应 / 虚拟电厂作为电力保供手段受到政策与市场关注"
+      ],
+      "accelerator": [
+        "★ 本包未取得该段进一步的加速因素来源"
+      ],
+      "turning": [
+        "★ 未识别"
+      ],
+      "ending": [
+        "★ 未界定"
+      ]
+    },
+    "evidence_ids": [
+      "R02-POWER-E006",
+      "R02-POWER-E007"
+    ],
+    "security_ids": [],
+    "research_status": "INSUFFICIENT",
+    "confidence": "low",
+    "point_in_time_notes": "时间一致性说明：E006（2022-07-12）与 E007（2022-07-14）均为同期财经媒体报道，contemporaneous，但**均为二手行情口径**。★ 该概念的市场反应窗口极短（约 2 周），本包**未取得**其持续性证据，故按协议记为 `INSUFFICIENT`，而非断言其为 Campaign。",
+    "why_campaign": "『虚拟电厂』在 2022-07 确实被 A 股当作**独立概念名**炒作过（满足用户『按市场炒作过的概念/板块细分』的口径），且驱动具有明显的**年内季节性**（夏季用电高峰），与用户对『电力时间相关性高』的判断一致。",
+    "why_not": "★ 本包**不**主张其成立：①**只有约 2 周的短期活跃证据**，缺持续性与完整时间结构（peak / end 均未界定）；②行情侧全为二手；③按 Research Model 的 Campaign 标准（持续性、可解释 start/end），本候选更可能应记为 **`OBSERVATION_ONLY`**。该定性由 ThreeC Agent 判定。",
+    "notes": "★ 本候选用于**显式记录**一个『被市场炒作过、但未必构成 Campaign』的细分 —— 这正是协议 §5『失败案例同样是覆盖』的体现。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-VACCINE-001",
+    "title": "2022 年南方夏季流感高峰驱动的流感疫苗 / 流感概念行情",
+    "year": 2022,
+    "macro_theme_proposal": "流感疫苗（提案：SUB_THEME（医药健康下）；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "流感疫苗",
+      "流感",
+      "抗流感",
+      "疫苗"
+    ],
+    "theme_summary": "2022 年 6 月南方省份流感活动回升（第 23 周哨点医院 ILI% 升至 5.8%，高于 2019–2021 年同期），叠加流感疫苗批签发提前启动，带动流感概念股（流感疫苗与抗流感药物）短期上涨：东阳光药近四个交易日涨幅接近 40%，华兰生物、金迪克、百克生物等上涨；2022-06-22 华兰疫苗、金迪克收盘涨幅均超 3%。与库内 `RC-2020-PANDEMIC` 的区别：本段驱动是**流感自身的季节性回升**（夏季南方流感），而非新冠疫情事件。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-06-06",
+          "window_end": "2022-06-22",
+          "phase_note": "上行段起点窗口",
+          "basis": "第 23 周（6 月 6 日—12 日）南方省份流感样病例百分比升至 5.8%（S001 引国家流感中心口径）；2022-06-21 / 06-22 媒体记载流感概念股连续上涨（S001 / S002）。本包未取得精确起涨日，按窗口记录。",
+          "source_ids": [
+            "R02-VACCINE-S001",
+            "R02-VACCINE-S002"
+          ],
+          "evidence_ids": [
+            "R02-VACCINE-E001",
+            "R02-VACCINE-E002"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**顶点的一手或可交叉证据，按协议留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**终结证据，按协议留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "UNKNOWN",
+        "start": "2022-06-06",
+        "end": null,
+        "basis": "仅有 2022-06 的短期上涨证据（S001 / S002），无持续性与终结证据；按协议以 UNKNOWN 记录。",
+        "notes": "★ 若无法证明持续性，本候选更接近 `OBSERVATION_ONLY`。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "2022 年南方省份夏季流感活动回升（第 23 周 ILI% 5.8%，高于 2019–2021 年同期）",
+        "流感疫苗批签发较往年提前启动（多家公司 5 月底即签批上市）"
+      ],
+      "accelerator": [
+        "★ 本包未取得该段进一步的加速因素来源"
+      ],
+      "turning": [
+        "★ 未识别"
+      ],
+      "ending": [
+        "★ 未界定"
+      ]
+    },
+    "evidence_ids": [
+      "R02-VACCINE-E001",
+      "R02-VACCINE-E002"
+    ],
+    "security_ids": [
+      "R02-VACCINE-SEC001",
+      "R02-VACCINE-SEC002",
+      "R02-VACCINE-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "时间一致性说明：①E001（2022-06-21 36氪）与 E002（2022-06-22 第一财经）均为同期报道，contemporaneous；②E001 引用的 ILI% 数据来自国家流感中心，但**本包未取得该周报的一手来源**，属二手转述；③涨幅（东阳光药近四日 +40%、华兰疫苗 / 金迪克 +3% 等）均为二手行情口径。★ 无任何证据可作严格 point-in-time 依据。",
+    "why_campaign": "驱动为**流感自身的季节性回升**（夏季南方流感），与库内 `RC-2020-PANDEMIC`（新冠疫情事件）在机制上可分辨；流感疫苗具备**可预期的年度季节性**（批签发与接种窗口）。",
+    "why_not": "★ 本包**不**主张其成立：①**时间结构不完整**（peak / end 未界定），上涨窗口短；②**证据强度弱**（2 条证据、2 个独立性组，但均为二手行情 + 二手 ILI% 转述）；③本段与 R02-VACCINE-002（2023 春季甲流）**是否属同一 Campaign 的不同年份，或应各自成段**，须由 ThreeC Agent 用 Independence Gate 判定（协议 §1.4 规则 3『不同时间 ≠ 不同 Campaign』）。",
+    "notes": "★ 本候选与 R02-VACCINE-002 一起，用于刻画流感疫苗方向**年内季节性**的两个不同窗口（夏季南方流感 vs 冬春流感高峰）。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-VACCINE-002",
+    "title": "2023 年春季甲流（A(H1N1)pdm09）高发驱动的流感概念行情",
+    "year": 2023,
+    "macro_theme_proposal": "流感疫苗（提案：SUB_THEME（医药健康下）；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "流感疫苗",
+      "流感",
+      "抗流感",
+      "甲流"
+    ],
+    "theme_summary": "2023 年 2—3 月国内出现甲型流感（主要为 A(H1N1)pdm09）高发：2023-02-27 抗流感概念股走高、部分药企满负荷生产；国家流感中心监测显示 3 月中旬进入高峰、整体处高位；2023-03-24（第 12 周）南方省份阳性率上升趋缓、北方下降。该段与库内 `RC-2020-PANDEMIC` 的机制差异在于：驱动是**流感自身的季节性高发**（冬春流感季），而非新冠事件；但独立性须由 ThreeC Agent 走 Q1–Q5 判定。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-02-20",
+          "window_end": "2023-03-06",
+          "phase_note": "上行段起点窗口",
+          "basis": "2023-02-27 媒体报道抗流感概念股走高、甲流高发期部分药企满负荷生产（S004）。本包未取得精确起涨日，按窗口记录。",
+          "source_ids": [
+            "R02-VACCINE-S004"
+          ],
+          "evidence_ids": [
+            "R02-VACCINE-E004"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-03-13",
+          "window_end": "2023-03-20",
+          "phase_note": "流感高峰窗口",
+          "basis": "2023-03-20 国家流感中心主任表示此次流感 3 月中旬已进入高峰、整体处于高位（S005）。本包以官方表态界定高峰窗口，不编造具体单日。",
+          "source_ids": [
+            "R02-VACCINE-S005"
+          ],
+          "evidence_ids": [
+            "R02-VACCINE-E005"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2023-03-06",
+              "basis": "另一媒体口径记载 2023 第 8 周阳性率继续上升（更早的上升期口径）",
+              "source_ids": [
+                "R02-VACCINE-S004"
+              ]
+            }
+          ],
+          "conflict_note": "高峰时点存在『3 月上旬上升 / 3 月中旬高峰』两种口径，均保留，见 R02-VACCINE-CF001。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-03-24",
+          "window_end": "2023-04-15",
+          "phase_note": "回落窗口",
+          "basis": "2023-03-24（第 12 周）国家流感中心监测显示南方省份阳性率上升趋缓、北方省份下降（S003）。本包以此界定回落起点窗口，不声称终局日。",
+          "source_ids": [
+            "R02-VACCINE-S003"
+          ],
+          "evidence_ids": [
+            "R02-VACCINE-E003"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2023-02-20",
+        "end": "2023-03-20",
+        "basis": "2023-02-27 抗流感概念股走高（S004）→ 3 月中旬流感进入高峰（S005）。",
+        "notes": "起点为窗口（2 月下旬—3 月初）。"
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2023-03-24",
+        "end": "2023-04-15",
+        "basis": "第 12 周南方阳性率上升趋缓、北方下降（S003）。",
+        "notes": "★ 本包仅界定回落起点窗口，不声称终局。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "2023 年冬春季流感高发，主要流行株为 A(H1N1)pdm09",
+        "抗流感药物需求上升，部分药企满负荷生产"
+      ],
+      "accelerator": [
+        "流感疫苗接种与抗流感药物销售预期上升，概念股集体走高"
+      ],
+      "turning": [
+        "第 12 周南方省份阳性率上升趋缓、北方省份下降（官方监测）"
+      ],
+      "ending": [
+        "流感活动回落，行情降温（本包未取得终局日的直接证据）"
+      ]
+    },
+    "evidence_ids": [
+      "R02-VACCINE-E003",
+      "R02-VACCINE-E004",
+      "R02-VACCINE-E005"
+    ],
+    "security_ids": [
+      "R02-VACCINE-SEC001",
+      "R02-VACCINE-SEC002",
+      "R02-VACCINE-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "时间一致性说明：①E003（2023-03-24 国家流感中心周报）为一手官方监测数据，contemporaneous 且 primary_source=true，**可作 point-in-time 依据**；②E004（2023-02-27）与 E005（2023-03-20）为同期媒体报道，contemporaneous，其中 E005 为官方表态的媒体转述（非一手）；③本段**未取得**板块指数口径来源。",
+    "why_campaign": "具备较清晰的时间结构（上行窗口 → 官方界定高峰 → 官方监测回落）；驱动为**流感自身的季节性高发**，有官方监测数据（Tier 1 一手）支撑；机制与库内 `RC-2020-PANDEMIC`（新冠事件）可分辨。",
+    "why_not": "★ 本包**不**主张其成立：①**行情侧为二手**，无板块指数口径；②本段与 R02-VACCINE-001（2022 夏季流感）机制相同、年份不同，**是否属同一 Campaign** 须由 ThreeC Agent 用 Independence Gate 判定（协议 §1.4 规则 3）；③与库内 `RC-2020-PANDEMIC` / 主题材『疫情医疗』的独立性**必须**走 Q1–Q5，**不得**仅凭名称不同就新建。",
+    "notes": "★ 本候选是流感疫苗方向证据最扎实的一段（含 Tier 1 官方监测数据）。是否应作为 `医药健康` 下的独立 Campaign，取决于 ThreeC Agent 的 Independence Gate 裁决。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-MEDIA-001",
+    "title": "2023 年 AI 主题驱动的传媒板块行情（游戏 / 出版 / 影视）",
+    "year": 2023,
+    "macro_theme_proposal": "文化传媒（提案：NEW_MACRO_CANDIDATE；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "文化传媒",
+      "传媒",
+      "游戏",
+      "出版",
+      "影视"
+    ],
+    "theme_summary": "2023 年由 AI（ChatGPT 等生成式 AI）主题驱动、以游戏 / 出版 / 影视子板块为载体的传媒板块行情。板块估值在 2022-11 见低点后，受 AI 技术率先落地内容行业的叙事带动修复：2023 年初至 7 月末传媒指数（申万）上涨 28%，位列 31 个申万一级行业涨幅第二名；2023H1 子板块涨幅居首为游戏（93.99%）。★ 文化传媒在库内**全库零覆盖**，本候选是该方向的第一段历史侧对象。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-11-30",
+          "window_end": "2023-03-31",
+          "phase_note": "上行段起点窗口",
+          "basis": "研究报告记载：A 股传媒板块于 2022-11 达到估值低点，此后受益于内容供给释放和 AI 技术应用，估值逐步修复（S005 相关表述）；ChatGPT 于 2022-11-30 发布。本包未取得精确起涨日，按窗口记录。",
+          "source_ids": [
+            "R02-MEDIA-S005"
+          ],
+          "evidence_ids": [
+            "R02-MEDIA-E002"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "未界定",
+          "basis": "本包**未取得**该段顶点的一手或可交叉证据，按协议留空，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-07-31",
+          "window_end": "2023-09-30",
+          "phase_note": "上行段统计终点窗口",
+          "basis": "机构研究以『年初至 7 月末』为统计区间（S004），说明该上行段至少延续至 7 月末。本包不声称此为终局日，仅界定统计终点窗口。",
+          "source_ids": [
+            "R02-MEDIA-S004"
+          ],
+          "evidence_ids": [
+            "R02-MEDIA-E001"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2022-11-30",
+        "end": "2023-07-31",
+        "basis": "2022-11 估值低点 → AI 主题驱动修复 → 年初至 7 月末传媒指数（申万）上涨 28%（S004）、2023H1 游戏子板块涨幅 93.99%（S005）。",
+        "notes": "★ 起点与终点均为窗口，粒度粗（无逐月序列）。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "2022-11-30 ChatGPT 发布，生成式 AI 主题兴起",
+        "传媒板块估值在 2022-11 处于低点，内容供给释放"
+      ],
+      "accelerator": [
+        "AI 在内容行业（游戏 / 出版 / 影视）率先落地的叙事扩散",
+        "子板块轮动：游戏涨幅居首（2023H1 约 93.99%），出版、影视跟随"
+      ],
+      "turning": [
+        "★ 本包**未识别**该段的转折信号 —— 未取得行情序列，按协议不推断。"
+      ],
+      "ending": [
+        "★ 未界定（仅界定统计终点窗口 7 月末）"
+      ]
+    },
+    "evidence_ids": [
+      "R02-MEDIA-E001",
+      "R02-MEDIA-E002"
+    ],
+    "security_ids": [
+      "R02-MEDIA-SEC001",
+      "R02-MEDIA-SEC002",
+      "R02-MEDIA-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "时间一致性说明：①E001（2023-08-07 机构研究）与 E002（2023-07-13 券商研究）均为**事后统计**（subsequent），且指数 / 子板块涨幅为二手口径；仅可作 `historical_fact_support`（证明行情确实发生），**不得**作为 point-in-time 依据。②本包**未取得**任何 Tier 1/2 的板块指数一手来源。",
+    "why_campaign": "具备可核验的板块涨幅结构（申万传媒指数 +28%、游戏子板块 +93.99%）与清晰的驱动（生成式 AI 主题）；机制为**技术主题 + 内容供给**，与现有 12 族完全不同。★ 文化传媒在库内**全库零覆盖**，本段是该方向的第一段历史侧对象。",
+    "why_not": "★ 本包**不**主张其成立：①**peak 未界定**，时间结构不完整；②**行情侧全部为二手研究口径**（申万指数 / 子板块涨幅），无一手复核；③2023 年 AI 主题同时驱动电子 / 通信 / 计算机等族，**传媒段是否可与其他 AI 段分离**须由 ThreeC Agent 判定；④★ 本候选需一个新的 Macro Theme（文化传媒），而**新增 DB `themes` 行属独立轮次**，不在本任务内自动执行。",
+    "notes": "★ 本候选是『文化传媒全库零覆盖』的首个历史侧候选；其归组依赖 taxonomy 决策（独立轮次），请 ThreeC Agent 在 CMTR v1 之后单独处理族名问题。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-MEDIA-002",
+    "title": "2018 年游戏版号暂停与恢复驱动的传媒 / 游戏板块周期",
+    "year": 2018,
+    "macro_theme_proposal": "文化传媒（提案：NEW_MACRO_CANDIDATE；最终归组由 ThreeC Agent 走 CMTR v1 判定）",
+    "theme_name_candidates": [
+      "文化传媒",
+      "游戏",
+      "传媒"
+    ],
+    "theme_summary": "以游戏版号审批暂停（2018-03 起）与恢复（2018-12-21 官方表态、12 月底首批核发）为核心的传媒 / 游戏板块监管周期。版号暂停期间游戏行业景气下行；2018-12-21 中宣部出版局在游戏产业年会上表示首批送审部分游戏已完成审核、正抓紧核发版号，构成政策转向的**同期**事件锚。机制为**监管周期**，与库内 12 族完全不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2018-03-29",
+          "window_end": "2018-12-19",
+          "phase_note": "版号暂停 / 行业下行窗口",
+          "basis": "媒体报道记载 2018 年游戏行业受版号暂停与政策收紧冲击（S003）。本包未取得暂停起止日的官方一手来源，按窗口记录，不编造具体日期。",
+          "source_ids": [
+            "R02-MEDIA-S003"
+          ],
+          "evidence_ids": [
+            "R02-MEDIA-E004"
+          ],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": "版号暂停的确切起止日缺乏官方一手来源（该暂停未被正式公告），本包仅按媒体口径记录窗口。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "UNKNOWN",
+          "date": null,
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "不适用（本段为下行—恢复型）",
+          "basis": "本段以监管事件为轴，非单一价格顶点型；本包未界定 peak，**不推断**。",
+          "source_ids": [],
+          "evidence_ids": [],
+          "confidence": "low",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2018-12-21",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": "政策转向锚（版号核发重启）",
+          "basis": "新华网 2018-12-21 报道中宣部出版局副局长冯士新在 2018 年度中国游戏产业年会上表示首批送审部分游戏已完成审核、正抓紧核发版号（S001，权威媒体转官方表态）。",
+          "source_ids": [
+            "R02-MEDIA-S001"
+          ],
+          "evidence_ids": [
+            "R02-MEDIA-E003"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [
+            {
+              "date": "2018-12-29",
+              "basis": "媒体报道 2018-12 下旬首批版号核发名单公布",
+              "source_ids": [
+                "R02-MEDIA-S003"
+              ]
+            }
+          ],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2018-03-29",
+        "end": "2018-12-19",
+        "basis": "版号暂停期间游戏行业景气下行（S003）。",
+        "notes": "★ 本段为**下行**；本包仅界定窗口，未界定其精确起止日。"
+      },
+      {
+        "stage_proposal": "SECONDARY",
+        "start": "2018-12-21",
+        "end": null,
+        "basis": "2018-12-21 官方表态版号核发重启（S001），构成政策转向；其后修复段的行情证据本包**未取得**。",
+        "notes": "★ 本段仅界定政策转向锚，修复段的行情未验证。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "2018-03 起游戏版号审批暂停，叠加行业监管收紧，游戏行业景气下行"
+      ],
+      "accelerator": [
+        "★ 本包未取得下行段的进一步加速因素来源"
+      ],
+      "turning": [
+        "2018-12-21 中宣部出版局在游戏产业年会表示首批送审部分游戏已完成审核、正抓紧核发版号（版号核发重启）"
+      ],
+      "ending": [
+        "★ 未界定"
+      ]
+    },
+    "evidence_ids": [
+      "R02-MEDIA-E003",
+      "R02-MEDIA-E004",
+      "R02-MEDIA-E008"
+    ],
+    "security_ids": [],
+    "research_status": "PROVISIONAL",
+    "confidence": "low",
+    "point_in_time_notes": "时间一致性说明：①E003（2018-12-21 新华网）为官方表态的权威媒体转述，contemporaneous，可作同期依据；②E004（2018-12-28 搜狐）为同期报道，contemporaneous；③E008（国家新闻出版署官网）为制度背景（版号核发主体），temporal_relation=unknown。★ 本包**未取得**游戏板块指数 / 个股行情的一手来源，且**版号暂停的起止日无官方一手来源**（该暂停未被正式公告）。",
+    "why_campaign": "机制为**监管周期**（版号审批暂停 → 恢复），与库内 12 族完全不同；且 2018-12-21 的官方表态是清晰的**同期**政策转向锚。★ 文化传媒在库内全库零覆盖。",
+    "why_not": "★ 本包**不**主张其成立：①**下行段 + 政策转向**的组合不构成标准的『上行 Campaign』，本候选更可能是 `OBSERVATION_ONLY` 或应改写为『版号恢复后的修复段』；②**行情侧证据缺失**，无法界定修复段的时间结构；③版号暂停起止日无官方一手来源；④本段与 R02-MEDIA-001（2023 AI+传媒）分属不同机制，**是否应各自成段**须由 ThreeC Agent 判定。",
+    "notes": "★ 本候选用于显式记录文化传媒方向的**监管周期机制**（与 2023 AI 主题机制不同）。若 ThreeC Agent 判定其不成立，应记为 `OBSERVATION_ONLY`，而非删除。",
+    "possible_duplicate_of": []
+  }
+]

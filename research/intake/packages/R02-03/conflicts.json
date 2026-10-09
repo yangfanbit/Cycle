@@ -1,0 +1,62 @@
+[
+  {
+    "conflict_id": "R02-COAL-CF001",
+    "subject": "2021 年动力煤『高点』的口径（政策干预日 vs 现货价格回落日）",
+    "positions": [
+      {
+        "position": "以 2021-10-19 政策干预日为价格与情绪转折锚",
+        "source_ids": [
+          "R02-COAL-S001"
+        ]
+      },
+      {
+        "position": "以『10 月中旬至今』为保供稳价政策下价格快速回落的阶段起点（未给具体单日）",
+        "source_ids": [
+          "R02-COAL-S002"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两者不矛盾（政策日与价格回落阶段起点基本重合），但本包未取得逐日价格 / 板块序列以精确界定顶点，故 peak 标注 confidence=medium。按协议『冲突不得被自动取舍』保留双方，未裁决。"
+  },
+  {
+    "conflict_id": "R02-POWER-CF001",
+    "subject": "2021 绿电行情『起点』的口径（政策发布日 vs 市场反应日）",
+    "positions": [
+      {
+        "position": "以 2021-09-07 政策复函日为制度起点",
+        "source_ids": [
+          "R02-POWER-S002"
+        ]
+      },
+      {
+        "position": "以 2021-09-08 电力板块涨停潮为市场反应起点",
+        "source_ids": [
+          "R02-POWER-S005"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "政策发布日（09-07）与市场反应日（09-08）相差一日，两者含义不同（制度 vs 市场），本包在 start 的 alternative_dates 中同时保留，未裁决。"
+  },
+  {
+    "conflict_id": "R02-VACCINE-CF001",
+    "subject": "2023 年流感『高峰』时点的口径",
+    "positions": [
+      {
+        "position": "2023 第 8 周（约 2 月下旬）南北方阳性率继续上升（上升期口径）",
+        "source_ids": [
+          "R02-VACCINE-S004"
+        ]
+      },
+      {
+        "position": "2023-03-20 官方表态：此次流感 3 月中旬已进入高峰、整体处高位（高峰口径）",
+        "source_ids": [
+          "R02-VACCINE-S005"
+        ]
+      }
+    ],
+    "resolution": "KEEP_BOTH",
+    "note": "两者不矛盾（上升期 vs 高峰期），本包以『3 月中旬』为 peak 窗口、并保留更早的上升期口径为 alternative_dates。按协议保留双方，未裁决。"
+  }
+]

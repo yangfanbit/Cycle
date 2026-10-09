@@ -1,0 +1,26 @@
+{
+  "counts": {
+    "campaign_candidates": 9,
+    "evidence": 32,
+    "sources": 32,
+    "securities": 12,
+    "exclusions": 24,
+    "conflicts": 3
+  },
+  "confidence_distribution": {
+    "high": 0,
+    "medium": 4,
+    "low": 5
+  },
+  "coverage_notes": "本包针对用户 2026-10-08 点名的四个方向（煤炭 / 电力（运营端）/ 流感疫苗 / 文化传媒）提交 9 个候选、32 条证据、32 个来源、12 个证券、24 项排除、3 项冲突、9 项研究问题。四个方向**各自独立成族**，分别给出 coverage 与 exclusions：①煤炭 2 段（2021 价格冲击 R02-COAL-001；2022–2024 红利重估 R02-COAL-002）；②电力（运营端）3 段（2015 新电改 R02-POWER-001；2021 绿电 R02-POWER-002；2022 虚拟电厂 R02-POWER-003）；③流感疫苗 2 段（2022 夏季流感 R02-VACCINE-001；2023 春季甲流 R02-VACCINE-002）；④文化传媒 2 段（2023 AI+传媒 R02-MEDIA-001；2018 版号周期 R02-MEDIA-002）。按**机制轴**而非股票记忆组织。★ 四个方向均按 manifest 要求只提交 proposal，Macro Theme 归组由 ThreeC Agent 走 CMTR v1 判定；Campaign 判定由 Research Model v1.0 §5 + Independence Gate Q1–Q5 完成。",
+  "known_gaps": [
+    "★ 四个方向的**行情（板块指数）侧证据全部为二手**（财经媒体 / 券商研究口径），**未取得任何 Tier 1/2 的指数一手来源**。按 prompt §8.2，指数涨跌幅 / 市值口径**不得**作为独立事实提交；本包已在各 evidence 的 `support_kind` 与 `point_in_time_note` 中限定其用途（只能作 `historical_fact_support`），并在此显式标注**不满足**协议对一手行情来源的要求，交由 ThreeC Agent 判定 ACCEPT_WITH_CHANGES / REJECT。",
+    "煤炭：**2016–2017 供给侧改革段（Priority B）未做**（R02-COAL-X001）—— 优先保证 Priority A 独立可交付。",
+    "电力：用户给出的 11 条概念候选中，本包仅对『绿电 / 新能源运营商』与『虚拟电厂』提交了 campaign candidate；其余（核电 / 水电季节性 / 火电剪刀差 / 现货市场 / 电价改革 / 抽蓄 / 绿证碳交易 / 算力+电力）**未取得『被当作独立题材炒作』的充分来源**，已逐条写入 exclusions。",
+    "煤炭与电力：2021 年 9—10 月为**多因素叠加期**（煤炭供给、能耗双控、限电），R02-COAL-001 与 R02-POWER-002 的贡献**无法分离** —— 是否应合并 / 拆分须由 ThreeC Agent 判定。",
+    "流感疫苗：**2020 秋季接种高峰**与库内 `RC-2020-PANDEMIC` 可能同源（R02-VACCINE-X001，SAME_CAMPAIGN），本包**未**自行裁决。",
+    "文化传媒：全库零覆盖，但『春节档 / 暑期档』季节性假设**未获充分证据**（R02-MEDIA-X003）；且新建 Macro Theme 属**独立轮次**，不在本任务内执行。",
+    "本包 `research_status` 全部为 `PROVISIONAL` / `INSUFFICIENT`，**无** `VERIFIED`（协议 §7.5）。`confidence` 为研究置信度，**不是**概率 / 胜率 / 分数，不得用于排序。"
+  ],
+  "no_quantity_kpi_acknowledged": true
+}

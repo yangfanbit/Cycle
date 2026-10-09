@@ -1,0 +1,166 @@
+[
+  {
+    "security_id": "R02-COAL-SEC001",
+    "ticker": "601088",
+    "name": "中国神华",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "煤炭板块高股息 / 红利重估的代表性龙头：研究报告将煤炭板块整体描述为高分红、高股息代表（S006，2022 年现金分红比例近 50%、股息率约 7.08%），媒体亦记载 2023 年煤炭板块因高分红受到资金青睐（S007）。本标的为板块内市值与分红规模最大的龙头之一，作 leader 提案。",
+    "source_ids": [
+      "R02-COAL-S006",
+      "R02-COAL-S007"
+    ],
+    "point_in_time_note": "本标的为**回顾性**识别的板块龙头（Historical Leader Set），**不代表** point-in-time 可预知；亦**不构成**任何投资建议。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-COAL-SEC002",
+    "ticker": "601225",
+    "name": "陕西煤业",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "煤炭板块内高分红代表性标的；与 S006 / S007 所描述的『煤炭板块高股息、高分红』特征一致，作 representative 提案。",
+    "source_ids": [
+      "R02-COAL-S006",
+      "R02-COAL-S007"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-COAL-SEC003",
+    "ticker": "600188",
+    "name": "兖矿能源",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "煤炭板块代表性标的之一，出现在 2022 年煤炭板块行情与后续高股息讨论的媒体报道语境中（S004 / S007）。",
+    "source_ids": [
+      "R02-COAL-S004",
+      "R02-COAL-S007"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-POWER-SEC001",
+    "ticker": "600905",
+    "name": "三峡能源",
+    "exchange": "上海证券交易所",
+    "role": "leader",
+    "basis": "国内主要新能源运营商之一，为 2021 年绿电 / 新能源运营商行情的板块龙头候选（S004 记载绿电概念板块集体上涨、11 只概念股涨停）。",
+    "source_ids": [
+      "R02-POWER-S004"
+    ],
+    "point_in_time_note": "本标的为**回顾性**识别的板块龙头；不代表 point-in-time 可预知，亦不构成投资建议。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-POWER-SEC002",
+    "ticker": "600578",
+    "name": "京能电力",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "2021-09-08 电力板块涨停潮中被点名的涨停标的之一（S005），作 representative 提案。",
+    "source_ids": [
+      "R02-POWER-S005"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-POWER-SEC003",
+    "ticker": "000862",
+    "name": "银星能源",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "2021-09-08 电力板块涨停潮中被点名的涨停标的之一（S005），作 representative 提案。",
+    "source_ids": [
+      "R02-POWER-S005"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-VACCINE-SEC001",
+    "ticker": "301207",
+    "name": "华兰疫苗",
+    "exchange": "深圳证券交易所",
+    "role": "leader",
+    "basis": "2022 年夏季流感行情中，媒体报道其收盘涨幅超过 3%（S002）；流感疫苗板块龙头候选。",
+    "source_ids": [
+      "R02-VACCINE-S001",
+      "R02-VACCINE-S002"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-VACCINE-SEC002",
+    "ticker": "688670",
+    "name": "金迪克",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "2022 年夏季流感行情中被点名上涨的流感疫苗标的（S001 / S002）。",
+    "source_ids": [
+      "R02-VACCINE-S001",
+      "R02-VACCINE-S002"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-VACCINE-SEC003",
+    "ticker": "688276",
+    "name": "百克生物",
+    "exchange": "上海证券交易所",
+    "role": "representative",
+    "basis": "2022-06-22 媒体报道其盘中涨幅一度走高（S002），为流感疫苗代表性标的。",
+    "source_ids": [
+      "R02-VACCINE-S002"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-MEDIA-SEC001",
+    "ticker": "002555",
+    "name": "三七互娱",
+    "exchange": "深圳证券交易所",
+    "role": "leader",
+    "basis": "2023H1 传媒子板块中游戏子板块涨幅居首（S005 记载游戏子板块涨幅 93.99%）；本标的为游戏板块代表性龙头候选。",
+    "source_ids": [
+      "R02-MEDIA-S004",
+      "R02-MEDIA-S005"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-MEDIA-SEC002",
+    "ticker": "300251",
+    "name": "光线传媒",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "影视子板块代表性标的；S005 记载 2023H1 传媒子板块中影视涨幅最小（约 13.85%），本标的作影视侧 representative 提案。",
+    "source_ids": [
+      "R02-MEDIA-S004",
+      "R02-MEDIA-S005"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-MEDIA-SEC003",
+    "ticker": "300364",
+    "name": "中文在线",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "出版 / 数字内容子板块的代表性标的候选（S004 / S005 记载 2023H1 传媒子板块普涨、出版子板块涨幅居前）。",
+    "source_ids": [
+      "R02-MEDIA-S004",
+      "R02-MEDIA-S005"
+    ],
+    "point_in_time_note": "回顾性识别；不代表 point-in-time 可预知。",
+    "survivorship_aware": true
+  }
+]

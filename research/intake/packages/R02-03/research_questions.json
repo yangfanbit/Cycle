@@ -1,0 +1,81 @@
+[
+  {
+    "question_id": "R02-COAL-Q001",
+    "question": "『煤炭』应作为**独立 Macro Theme**，还是归入库内既有『资源』族的供给收缩轴（有色金属 / 贵金属 / 稀有金属·稀土）？",
+    "why_it_matters": "按协议 §11.1，Macro Theme 归组**必须**走 CMTR v1（唯一实现 `research/scripts/theme_taxonomy.py`），Research Agent 只能提交 proposal。若判定为同族，则须说明煤炭的机制轴（长协 / 保供核增 / 煤电联动）与既有对象的**差异**，否则该方向等于无增量。**本包不自行归组。**",
+    "related_candidate_ids": [
+      "R02-COAL-001",
+      "R02-COAL-002"
+    ]
+  },
+  {
+    "question_id": "R02-COAL-Q002",
+    "question": "煤炭是否存在**可复现的年内季节性窗口**（冬储 / 迎峰度夏）？",
+    "why_it_matters": "用户点名这四个方向的理由是『时间相关性都挺高的』。本包在 2021 段观察到『9 月至 10 月中旬冬储需求释放』的价格上行，但**未取得**『每年该时段煤炭股被反复炒作』的证据。该假设须由后续轮次用来源核验，**不得凭常识写入**。",
+    "related_candidate_ids": [
+      "R02-COAL-001"
+    ]
+  },
+  {
+    "question_id": "R02-POWER-Q001",
+    "question": "本任务『电力（公用事业 · **运营端**）』与库内既有『**电力设备**』（制造端）的族边界应如何判定？若 CMTR v1 将本包名称（电力 / 绿电 / 虚拟电厂）解析到『电力设备』根节点，应如何标记？",
+    "why_it_matters": "manifest `known_overlap` 明确要求：若 Research Agent 提交的名称被 CMTR 解析到『电力设备』根节点，**必须显式标记 CONFLICT**，不得静默归入。两者机制不同（设备需求与产能 vs 成本、电价与利用率），不得互相替代。**须由 ThreeC Agent 裁决。**",
+    "related_candidate_ids": [
+      "R02-POWER-001",
+      "R02-POWER-002",
+      "R02-POWER-003"
+    ]
+  },
+  {
+    "question_id": "R02-POWER-Q002",
+    "question": "电力运营端下的多个概念（**绿电 / 新能源运营商** · **虚拟电厂** · **电价改革**）应各自成 Campaign，还是归并为同一 Campaign 的不同阶段？",
+    "why_it_matters": "按协议 §1.4，同一主题的不同年份 / 不同机制可形成不同 Campaign，但『同一时间 ≠ 同一个 Campaign』『不同时间 ≠ 不同 Campaign』。本包分别提交了 2021（绿电）与 2022（虚拟电厂）两段，但**是否应归并**须由 ThreeC Agent 走 Campaign Independence Gate 判定。",
+    "related_candidate_ids": [
+      "R02-POWER-002",
+      "R02-POWER-003"
+    ]
+  },
+  {
+    "question_id": "R02-POWER-Q003",
+    "question": "『水电季节性（来水 / 汛期）』—— 季节性在**基本面**上成立（Q3 主汛期），但是否构成**可复现的年内市场炒作窗口**？",
+    "why_it_matters": "★ 用户 2026-10-09 指令把『电力』列为首要方向，理由正是『时间相关性高』。本包核验结论：季节性存在于业绩层面（E010），但**未取得**其构成市场炒作窗口的证据（见 R02-POWER-X006）。若后续轮次能找到『每年汛期水电股被反复炒作』的来源，该细分可单列；否则应明确记录『不构成可复现窗口』。**须由 ThreeC Agent 裁定。**",
+    "related_candidate_ids": [
+      "R02-POWER-002"
+    ]
+  },
+  {
+    "question_id": "R02-VACCINE-Q001",
+    "question": "『流感疫苗』与库内 `RC-2020-PANDEMIC`（Research Candidate）/ 主题材『疫情医疗』是否**独立**？",
+    "why_it_matters": "manifest `known_overlap` 要求必须走 **Campaign Independence Gate Q1–Q5**，**不得**仅凭名称不同就新建。本包主张：流感疫苗有**可预期的年度季节性**（批签发与接种窗口），与一次性疫情事件机制不同 —— 但该主张是否充分须由 ThreeC Agent 裁决。",
+    "related_candidate_ids": [
+      "R02-VACCINE-001",
+      "R02-VACCINE-002"
+    ]
+  },
+  {
+    "question_id": "R02-VACCINE-Q002",
+    "question": "流感方向的**季节性**（秋季接种 / 冬春高发）是否构成可复现的年内窗口？本包提交的 2022（夏季南方流感）与 2023（春季甲流）两段应视为**两个 Campaign** 还是**同一 Campaign 的不同年份**？",
+    "why_it_matters": "直接决定流感疫苗方向在时间轴上的对象数量与形态。本包按两段分别提交，但依据（不同年份、同一机制）是否充分须由 ThreeC Agent 用 Independence Gate 判定。",
+    "related_candidate_ids": [
+      "R02-VACCINE-001",
+      "R02-VACCINE-002"
+    ]
+  },
+  {
+    "question_id": "R02-MEDIA-Q001",
+    "question": "文化传媒在库内**全库零覆盖**（主题材层 41 行 + 大主题层 12 行均零命中）。是否应新建一个 Macro Theme？",
+    "why_it_matters": "按协议 §11.1 与覆盖计划 §3.3，新增 DB `themes` 行属**数据决策**，必须**单独轮次**处理，**不在本任务内自动新增 taxonomy 行**。本包只提交 `macro_theme_proposals`（R02-MEDIA-MT001），最终归组由 ThreeC Agent 走 CMTR v1 判定。",
+    "related_candidate_ids": [
+      "R02-MEDIA-001",
+      "R02-MEDIA-002"
+    ]
+  },
+  {
+    "question_id": "R02-MEDIA-Q002",
+    "question": "『春节档 / 暑期档』档期炒作是否构成**可复现的年内窗口**？",
+    "why_it_matters": "★ 用户点名文化传媒的季节性假设为『春节档 / 暑期档』。本包核验结论：档期票房事件确实存在且被市场关注（2023 春节档超 68 亿元，E006 / E007），但**未取得**其构成可复现炒作窗口的充分证据（见 R02-MEDIA-X003）。该假设须由后续轮次用来源核验，**不得凭常识写入**。**须由 ThreeC Agent 裁定。**",
+    "related_candidate_ids": [
+      "R02-MEDIA-001"
+    ]
+  }
+]

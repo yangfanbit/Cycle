@@ -1,0 +1,146 @@
+[
+  {
+    "exclusion_id": "R02-COAL-X001",
+    "subject": "2016–2017 供给侧改革驱动的煤炭段（Priority B）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "该段（国发〔2016〕7号《关于煤炭行业化解过剩产能实现脱困发展的意见》、276 个工作日等）政策锚清晰，但属 **Priority B（2015–2017）**。本包时间预算优先保证 Priority A（2018–2025）独立可交付（协议 §2.1『不得因 2015–2017 资料较难而阻塞 2018–2025』），故本包**未完成**该段的市场侧来源收集。按协议 §1.3 原则 5，显式记录为未覆盖，**不编造**。"
+  },
+  {
+    "exclusion_id": "R02-COAL-X002",
+    "subject": "焦煤 / 炼焦煤作为独立于『煤炭』的细分题材",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "本包未取得『焦煤 / 炼焦煤』在 A 股被当作**独立于煤炭板块**的题材炒作的来源。焦煤需求受钢铁（地产 / 基建）驱动，与动力煤的电力—冬储机制不同，但其在板块层面通常与煤炭同步；是否可分离须由 ThreeC Agent 判定。故本包不单列，仅作为 R02-COAL-001 的 theme_name_candidates 之一。"
+  },
+  {
+    "exclusion_id": "R02-COAL-X003",
+    "subject": "煤化工（煤制油 / 煤制气 / 煤制烯烃）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "煤化工的机制是**化工品价差与产能**，属基础化工（库内已有 `C-2019-RES-DYE-SHOCK` / `C-2021-RES-CHEM-DUALCTRL` 等相邻对象），不属本任务『煤炭（供给收缩 / 价格驱动）』的运营端资源品口径，故不并入。"
+  },
+  {
+    "exclusion_id": "R02-COAL-X004",
+    "subject": "煤炭贸易 / 煤炭物流",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "属流通环节，非资源品生产端的供给收缩机制；本包 scope 限定为煤炭（动力煤 / 焦煤）本身，不含贸易与物流。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X001",
+    "subject": "特高压 / 电网投资 / 输变电设备",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "属库内既有 `电力设备`（**制造端**，主题材 `电网/输变电设备`，见 `C-2022-POWER-GRID`），机制是**设备需求与产能**，与本任务『电力（**运营端**）』的成本 / 电价 / 利用率机制不同。按 manifest `explicit_exclusions_from_this_direction` 明确排除。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X002",
+    "subject": "光伏 / 风电**制造**（组件、整机）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "属库内 `电力设备`（主题材 `光伏/新能源发电设备`，见 `C-2020-POWER-NE`），机制是设备需求与产能；本方向只含**运营**侧（新能源运营商），不含制造。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X003",
+    "subject": "储能**设备**（电池、PCS）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "属库内 `电力设备`（上游锂电 / 新能源车电池）；本方向若涉及储能，仅限**运营**侧（见 R02-POWER-X010）。按 manifest 明确排除储能设备。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X004",
+    "subject": "『算力+电力』/ 数据中心供电",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "该概念与『信息通信』『电子』高度交叉；按 manifest 规定『**默认不归本方向**，除非证据显示其炒作主线是电力供给侧』。本包未取得该证据，故不归入本方向。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X005",
+    "subject": "核电（2019 核准重启 / 华龙一号）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "事件事实存在（2019-01-30 前后媒体记载国家已核准 4 台华龙一号机组、核电项目重新开闸，见 E009），但本包**未取得**该概念被当作**独立题材炒作**的充分市场侧来源（无法界定其时间结构与持续性）。按协议 §8.2，资料不足用 `INSUFFICIENT_EVIDENCE`，不用 `REJECT`。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X006",
+    "subject": "水电季节性（来水 / 汛期 / 利用小时）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "★ 用户特别点名『水电季节性最可能明显』。本包核验结果：季节性**确实存在于基本面**（水电公司第三季度为主汛期、业绩受来水季节性波动影响，见 E010），但本包**未取得**其构成**可复现的年内市场炒作窗口**的证据（即『每年某时段水电股被反复炒作』）。故不单列为 Campaign，仅记录为待核验（见 R02-POWER-Q003）。**季节性假设不得凭常识写入**。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X007",
+    "subject": "火电（煤价—电价剪刀差 / 煤电联动）",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "火电盈利的核心变量是煤价，与 R02-COAL-001（2021 煤价段）**同源**：煤价上行压制火电盈利、煤价下行改善火电盈利，二者是同一底层事件的两面。本包不将其单列为独立 Campaign；是否应拆分（火电作为受益方向 vs 煤炭作为承压方向）由 ThreeC Agent 判定。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X008",
+    "subject": "电价改革（分时电价 / 容量电价）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "制度事实清晰（2023-11-10《关于建立煤电容量电价机制的通知》发改价格〔2023〕1501号，见 E008），但本包**未取得**该概念被当作独立题材炒作的充分市场侧证据。按协议记为 `INSUFFICIENT_EVIDENCE`。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X009",
+    "subject": "绿证 / CCER / 碳交易",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "属**环境权益市场**（碳资产 / 绿证交易），与电力运营端的成本 / 电价 / 利用率机制不同；且与库内『资源』族可能交叉（manifest 已标注 `overlap_risk`）。是否归入需 CMTR v1 判定，本包不并入。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X010",
+    "subject": "抽水蓄能 / 储能运营",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "该细分与『电力设备』（储能**设备**）易混淆，且本包**未取得**其被当作独立题材炒作的充分市场侧来源。按协议记为 `INSUFFICIENT_EVIDENCE`；★ 若后续判定其成立，须严格限定为**运营**侧（不含电池 / PCS 等设备）。"
+  },
+  {
+    "exclusion_id": "R02-POWER-X011",
+    "subject": "电力现货市场 / 辅助服务市场",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "属电力市场化改革的制度细分；本包**未取得**其被当作独立题材炒作的充分市场侧来源。按协议记为 `INSUFFICIENT_EVIDENCE`。"
+  },
+  {
+    "exclusion_id": "R02-VACCINE-X001",
+    "subject": "2020 秋季流感疫苗接种高峰（『一针难求』）是否应单列为独立 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2020 年流感疫苗接种高峰（一针难求、厂家三班倒，见 E006 / E007）的直接驱动是**新冠疫情引发的接种意愿上升**，与库内 `RC-2020-PANDEMIC`（2020 疫情医疗：防护耗材 / 体外诊断 / 疫苗）**可能同源**。本包不单列，仅记录为排除项。★ 该独立性判定须由 ThreeC Agent 走 **Campaign Independence Gate Q1–Q5**，本包**不得**自行裁决。"
+  },
+  {
+    "exclusion_id": "R02-VACCINE-X002",
+    "subject": "新冠疫苗 / 疫情医疗",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "库内已有 `RC-2020-PANDEMIC` 与主题材『疫情医疗』；新冠疫苗属疫情事件驱动，与流感疫苗的**年度季节性**机制不同。本任务只做『流感疫苗』方向，不重复提交疫情医疗。"
+  },
+  {
+    "exclusion_id": "R02-VACCINE-X003",
+    "subject": "抗流感药物（奥司他韦等）与流感疫苗是否属同一 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "2022 夏季流感与 2023 春季甲流期间，抗流感药物与流感疫苗标的**同步上涨**（见 E001 / E004）。本包将其**合并**计入 R02-VACCINE-001 / 002，而非各列一条 —— 依据是『同一底层事件（流感高发）拆成多个名字不应自动成为多个独立 Campaign』。是否应拆分由 ThreeC Agent 判定。"
+  },
+  {
+    "exclusion_id": "R02-VACCINE-X004",
+    "subject": "2025–2026 流感季",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "超出本任务历史研究窗口（2015–2025）。按 manifest `explicit_non_goals`『不把 2026 年的当下事件写成历史 Campaign』，显式排除。"
+  },
+  {
+    "exclusion_id": "R02-MEDIA-X001",
+    "subject": "2015 年传媒『互联网+』并购牛市段（Priority B）",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "属 **Priority B（2015–2017）**；本包时间预算优先保证 Priority A（2018–2025）独立可交付，故**未做**该段来源收集。按协议 §1.3 原则 5，显式记录为未覆盖，**不编造**。"
+  },
+  {
+    "exclusion_id": "R02-MEDIA-X002",
+    "subject": "2021 年游戏版号暂停（下行段）是否应单列为独立 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "2021-08 起国产网络游戏版号审批信息未公布、市场担忧再次暂停（见 E005），该段为**下行段**。按『同一机制的反向段不自动构成新 Campaign』，本包将其作为 R02-MEDIA-002 机制（监管周期）的同类事件记录，不单列。是否应单列由 ThreeC Agent 判定。"
+  },
+  {
+    "exclusion_id": "R02-MEDIA-X003",
+    "subject": "春节档 / 暑期档影视股档期炒作（季节性假设）",
+    "reason_code": "OBSERVATION_ONLY",
+    "rationale": "★ 用户特别点名『文化传媒的季节性假设：春节档 / 暑期档』。本包核验结果：档期票房事件确实存在且被市场关注（2023 春节档票房超 68 亿元、多家上市公司披露参与出品，见 E006 / E007），但本包**未取得**其构成**可复现的年内炒作窗口**的充分证据（部分年份有明显行情、部分年份无）。故不升级为 Campaign，记为 `OBSERVATION_ONLY` + 研究问题（R02-MEDIA-Q002）。**季节性假设不得凭常识写入**。"
+  },
+  {
+    "exclusion_id": "R02-MEDIA-X004",
+    "subject": "教育（在线教育 / K12）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "属教育服务，机制为政策监管与用户需求，与『文化传媒』的内容供给 / 平台经济口径不同；且库内主题材层『教育』零命中并不意味着应并入本方向。故不纳入。"
+  },
+  {
+    "exclusion_id": "R02-MEDIA-X005",
+    "subject": "微短剧 / 谷子经济（IP 衍生品）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "该等细分主要在 2024–2025 兴起，本包**未完成**来源收集；且部分事件接近或超出本任务历史研究窗口。按协议显式记录为未覆盖，**不编造**。"
+  }
+]

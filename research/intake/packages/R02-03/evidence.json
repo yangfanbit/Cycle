@@ -1,0 +1,657 @@
+[
+  {
+    "evidence_id": "R02-COAL-E001",
+    "claim": "2021-10-19 国家发展改革委组织重点煤炭企业、中国煤炭工业协会、中国电力企业联合会召开今冬明春能源保供工作机制煤炭专题座谈会，研究依法对煤炭价格实施干预措施。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方政策 / 监管发布",
+    "event_date": "2021-10-19",
+    "evidence_date": "2021-10-19",
+    "source_id": "R02-COAL-S001",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2021-COAL-INTERVENE",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-COAL-001 的 peak 锚与 turning 驱动；Tier 1 一手官方发布，可作 point-in-time 依据。"
+  },
+  {
+    "evidence_id": "R02-COAL-E002",
+    "claim": "2021 年动力煤供需矛盾持续：秦皇岛港 Q5500 平仓均价年初涨至 933 元/吨，6 月—9 月高位震荡至 971 元/吨，9 月至 10 月中旬冬储需求释放后快速上涨，10 月中旬后受保供稳价政策影响快速回落。",
+    "evidence_role": "supporting",
+    "evidence_type": "产业价格数据（行业网站年度复盘）",
+    "event_date": "2021-10-31",
+    "evidence_date": "2022-01-05",
+    "source_id": "R02-COAL-S002",
+    "confidence": "medium",
+    "independence_group": "IG-IND-2021-COAL-PRICE",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "本来源为 2022-01-05 的**事后复盘**（subsequent），仅用于证明『2021 年动力煤价格确实如此运行』与事后界定阶段；**不得**作为 2021 年同期已知信息的依据。",
+    "description": "R02-COAL-001 的价格侧主证据；为行业网站口径，非交易所或官方统计。"
+  },
+  {
+    "evidence_id": "R02-COAL-E003",
+    "claim": "2021 年 9 月电力供应紧张背景下，全国多地发布限电通知，出现『拉闸限电』现象。",
+    "evidence_role": "supporting",
+    "evidence_type": "权威媒体报道",
+    "event_date": "2021-09-29",
+    "evidence_date": "2021-09-29",
+    "source_id": "R02-COAL-S003",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2021-POWERCUT",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "为 R02-COAL-001 的 accelerator（供给紧张叙事）提供同期佐证；与 E002 的产业价格来源相互独立。"
+  },
+  {
+    "evidence_id": "R02-COAL-E004",
+    "claim": "2022-02-24 国家发展改革委印发《关于进一步完善煤炭市场价格形成机制的通知》（发改价格〔2022〕303号），进一步完善煤炭中长期合同价格机制。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方政策原文",
+    "event_date": "2022-02-24",
+    "evidence_date": "2022-02-24",
+    "source_id": "R02-COAL-S005",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2022-COAL-PRICEMECH",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-COAL-002 的制度背景锚（长协稳价），Tier 1 一手。"
+  },
+  {
+    "evidence_id": "R02-COAL-E005",
+    "claim": "煤炭板块是高分红、高股息的行业代表：2022 年现金分红比例接近 50%、股息率约 7.08%（券商研究口径）。",
+    "evidence_role": "supporting",
+    "evidence_type": "研究报告（券商，二手转述）",
+    "event_date": "2022-12-31",
+    "evidence_date": "2023-09-05",
+    "source_id": "R02-COAL-S006",
+    "confidence": "medium",
+    "independence_group": "IG-REPORT-2023-COAL-DIVIDEND",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "本来源为 2023-09-05 的事后研究（subsequent），仅用于证明『煤炭板块高分红 / 高股息』这一结构事实；**不得**作为 2022 年同期已知信息的依据。",
+    "description": "R02-COAL-002 的机制侧主证据（红利重估）。"
+  },
+  {
+    "evidence_id": "R02-COAL-E006",
+    "claim": "2023 年煤炭 ETF（515220）上涨超 10%，煤炭企业在高现金流背景下提高分红比例，受到资金青睐。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2023-12-29",
+    "evidence_date": "2024-01-02",
+    "source_id": "R02-COAL-S007",
+    "confidence": "low",
+    "independence_group": "IG-MEDIA-2024-COAL-DIVIDEND",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "本来源为 2024-01-02 的事后报道（subsequent），且涨幅为基金/指数二手口径；仅可作 `historical_fact_support`，**不得**作为 point-in-time 依据。",
+    "description": "R02-COAL-002 的行情侧佐证；confidence 记为 low（二手指数口径）。"
+  },
+  {
+    "evidence_id": "R02-COAL-E007",
+    "claim": "2022-03-28 媒体报道煤炭板块 2022 年内涨幅约 21.53%，驱动包括俄乌局势引发全球能源价格暴涨与能源安全逻辑。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2022-03-28",
+    "evidence_date": "2022-03-28",
+    "source_id": "R02-COAL-S004",
+    "confidence": "low",
+    "independence_group": "IG-MEDIA-2022-COAL-RALLY",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-COAL-002 的同期行情佐证；板块涨幅为二手口径，未标明指数编制方，confidence=low。"
+  },
+  {
+    "evidence_id": "R02-POWER-E001",
+    "claim": "2015 年《中共中央 国务院关于进一步深化电力体制改革的若干意见》（中发〔2015〕9号）推进电力体制改革；国家发展改革委 2015-04-09 公布配套工作安排，重点推进理顺电价形成机制、完善市场化交易机制。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方政策",
+    "event_date": "2015-04-09",
+    "evidence_date": "2015-04-09",
+    "source_id": "R02-POWER-S001",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2015-POWER-REFORM",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-POWER-001 的制度起点锚，Tier 1 一手。"
+  },
+  {
+    "evidence_id": "R02-POWER-E002",
+    "claim": "2021-09-07 前后，国家发展改革委、国家能源局正式复函国家电网公司、南方电网公司，推动开展绿色电力交易试点工作；绿电交易在现有中长期交易框架下设立独立交易品种。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方政策解读",
+    "event_date": "2021-09-07",
+    "evidence_date": "2021-09-07",
+    "source_id": "R02-POWER-S002",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2021-GREENPOWER-REPLY",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-POWER-002 的 start 锚，Tier 1 一手。"
+  },
+  {
+    "evidence_id": "R02-POWER-E003",
+    "claim": "2021-09-28 绿色电力交易试点正式启动。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方发布",
+    "event_date": "2021-09-28",
+    "evidence_date": "2021-09-28",
+    "source_id": "R02-POWER-S003",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2021-GREENPOWER-LAUNCH",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-POWER-002 的 peak 锚，Tier 1 一手。"
+  },
+  {
+    "evidence_id": "R02-POWER-E004",
+    "claim": "2021-09-28 绿色电力概念火爆，11 只概念股涨停；当日首次绿色电力交易共 17 个省份 259 家市场主体参与，达成交易电量 79.35 亿千瓦时。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2021-09-28",
+    "evidence_date": "2021-09-28",
+    "source_id": "R02-POWER-S004",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2021-GREENPOWER",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-POWER-002 的行情侧佐证；涨停家数与交易电量为二手口径。"
+  },
+  {
+    "evidence_id": "R02-POWER-E005",
+    "claim": "2021-09-08 盘中电力板块持续上扬，宁波能源、桂东电力、京能电力、银星能源等 10 股涨停，消息面为绿色电力交易开启。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2021-09-08",
+    "evidence_date": "2021-09-08",
+    "source_id": "R02-POWER-S005",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2021-POWER-LIMITUP",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-POWER-002 的行情侧佐证，且点名具体标的（用于 securities 的 basis）。来源独立于 S004。"
+  },
+  {
+    "evidence_id": "R02-POWER-E006",
+    "claim": "2022-07-12 受夏季高温用电量飙升影响，A 股电力板块拉升，虚拟电厂概念活跃，金智科技等个股走强。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2022-07-12",
+    "evidence_date": "2022-07-12",
+    "source_id": "R02-POWER-S006",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2022-VPP",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-POWER-003 的 start 佐证。"
+  },
+  {
+    "evidence_id": "R02-POWER-E007",
+    "claim": "2022-07-14 包括上海在内的多个城市持续出现 40 度极端高温，用电量持续飙升、连续刷新用电负荷最高纪录，带动虚拟电厂概念股上涨。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2022-07-14",
+    "evidence_date": "2022-07-14",
+    "source_id": "R02-POWER-S007",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2022-VPP-2",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-POWER-003 的季节性（夏季高温）佐证。来源独立于 S006。"
+  },
+  {
+    "evidence_id": "R02-POWER-E008",
+    "claim": "2023-11-10 国家发展改革委、国家能源局印发《关于建立煤电容量电价机制的通知》（发改价格〔2023〕1501号），自 2024-01-01 起实施。",
+    "evidence_role": "context",
+    "evidence_type": "官方政策",
+    "event_date": "2023-11-10",
+    "evidence_date": "2023-11-10",
+    "source_id": "R02-POWER-S008",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2023-CAPACITY-PRICE",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "为 R02-POWER-X008（电价改革）提供制度事实；本包**未**取得其被当作独立题材炒作的证据，故只作 context。"
+  },
+  {
+    "evidence_id": "R02-POWER-E009",
+    "claim": "2019-01-30 前后媒体报道国家已核准 4 台『华龙一号』机组，核电项目重新开闸。",
+    "evidence_role": "context",
+    "evidence_type": "财经媒体报道",
+    "event_date": "2019-01-30",
+    "evidence_date": "2019-01-30",
+    "source_id": "R02-POWER-S009",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2019-NUCLEAR",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "为 R02-POWER-X005（核电）提供事件事实；本包**未**取得其被独立炒作的充分市场侧证据。"
+  },
+  {
+    "evidence_id": "R02-POWER-E010",
+    "claim": "水电公司第三季度作为主汛期，业绩受来水季节性波动影响（券商研究口径）。",
+    "evidence_role": "context",
+    "evidence_type": "研究报告（券商）",
+    "event_date": "2025-09-30",
+    "evidence_date": "2025-11-01",
+    "source_id": "R02-POWER-S010",
+    "confidence": "medium",
+    "independence_group": "IG-REPORT-2025-HYDRO-SEASON",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "本来源为 2025-11-01 的事后研究（subsequent），仅用于证明『水电来水存在年内季节性（Q3 主汛期）』这一**基本面**事实；**不得**据此断言存在可复现的年内**市场炒作窗口**。",
+    "description": "用于核验用户关心的『水电季节性』假设；本包结论：季节性存在于基本面，但未取得其构成市场炒作窗口的证据（见 R02-POWER-X006）。"
+  },
+  {
+    "evidence_id": "R02-VACCINE-E001",
+    "claim": "2022 年第 23 周南方省份哨点医院流感样病例百分比（ILI%）为 5.8%，高于 2019–2021 年同期；流感概念股东阳光药近四个交易日涨幅接近 40%，华兰生物、金迪克股价接连上涨。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道",
+    "event_date": "2022-06-21",
+    "evidence_date": "2022-06-21",
+    "source_id": "R02-VACCINE-S001",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2022-FLU-36KR",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-VACCINE-001 的主证据；ILI% 引国家流感中心口径，涨幅为二手。"
+  },
+  {
+    "evidence_id": "R02-VACCINE-E002",
+    "claim": "2022-06-22 夏季流感高峰带动流感疫苗销售预期，华兰疫苗、金迪克收盘价涨幅均超过 3%，百克生物盘中涨幅一度走高。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2022-06-22",
+    "evidence_date": "2022-06-22",
+    "source_id": "R02-VACCINE-S002",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2022-FLU-YICAI",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-VACCINE-001 的行情侧佐证，来源独立于 S001；点名具体标的（用于 securities 的 basis）。"
+  },
+  {
+    "evidence_id": "R02-VACCINE-E003",
+    "claim": "2023 年第 12 周（截至 2023-03-24）南方省份流感病毒检测阳性率上升趋缓、北方省份下降；主要流行株为 A(H1N1)pdm09。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方监测数据",
+    "event_date": "2023-03-24",
+    "evidence_date": "2023-03-24",
+    "source_id": "R02-VACCINE-S003",
+    "confidence": "high",
+    "independence_group": "IG-OFFICIAL-2023-FLU-WEEKLY",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-VACCINE-002 的官方监测锚（流行株与拐点），Tier 1 一手。"
+  },
+  {
+    "evidence_id": "R02-VACCINE-E004",
+    "claim": "2023-02-27 抗流感概念股走高，甲流高发期部分药企满负荷生产。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道（行情口径）",
+    "event_date": "2023-02-27",
+    "evidence_date": "2023-02-27",
+    "source_id": "R02-VACCINE-S004",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023-FLU-RALLY",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-VACCINE-002 的行情侧佐证（上行段）。"
+  },
+  {
+    "evidence_id": "R02-VACCINE-E005",
+    "claim": "2023-03-20 中国疾控中心病毒病所国家流感中心主任王大燕表示，此次流感 3 月中旬已进入高峰、整体处于高位。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业媒体报道（转官方表态）",
+    "event_date": "2023-03-20",
+    "evidence_date": "2023-03-20",
+    "source_id": "R02-VACCINE-S005",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023-FLU-PEAK",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-VACCINE-002 的 peak 锚；为官方表态的媒体转述（非一手）。"
+  },
+  {
+    "evidence_id": "R02-VACCINE-E006",
+    "claim": "2020 年流感疫苗接种出现『一针难求』，社区接种点排长队，接种意愿因疫情上升。",
+    "evidence_role": "context",
+    "evidence_type": "财经媒体报道",
+    "event_date": "2020-10-20",
+    "evidence_date": "2020-10-20",
+    "source_id": "R02-VACCINE-S006",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2020-FLUVACC",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "为 R02-VACCINE-X001（2020 秋季接种高峰）提供事实；本包未将其单列为 Campaign。"
+  },
+  {
+    "evidence_id": "R02-VACCINE-E007",
+    "claim": "2020-10 国内流感疫苗厂家生产线 24 小时三班倒仍『一苗难求』，华兰生物、科兴等厂商满负荷生产。",
+    "evidence_role": "context",
+    "evidence_type": "财经媒体报道",
+    "event_date": "2020-10-23",
+    "evidence_date": "2020-10-23",
+    "source_id": "R02-VACCINE-S007",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2020-FLUVACC-2",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "为 R02-VACCINE-X001 提供事实，来源独立于 S006。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E001",
+    "claim": "2023 年初至 7 月末传媒指数（申万）上涨 28%，位列 31 个申万一级行业中涨幅第二名。",
+    "evidence_role": "supporting",
+    "evidence_type": "机构研究报告（指数口径，二手）",
+    "event_date": "2023-07-31",
+    "evidence_date": "2023-08-07",
+    "source_id": "R02-MEDIA-S004",
+    "confidence": "medium",
+    "independence_group": "IG-REPORT-2023-MEDIA",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "本来源为 2023-08-07 的事后统计（subsequent），指数口径为二手；仅可作 `historical_fact_support`，**不得**作为 point-in-time 依据。",
+    "description": "R02-MEDIA-001 的板块涨幅主证据。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E002",
+    "claim": "在 AI 主题行情带动下，2023H1 传媒子版块普涨，涨幅从高排列依次为游戏（93.99%）、出版等。",
+    "evidence_role": "supporting",
+    "evidence_type": "研究报告（券商，二手）",
+    "event_date": "2023-06-30",
+    "evidence_date": "2023-07-13",
+    "source_id": "R02-MEDIA-S005",
+    "confidence": "medium",
+    "independence_group": "IG-REPORT-2023-MEDIA-SUB",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "本来源为 2023-07-13 的事后统计（subsequent），子板块涨幅为券商口径；仅可作 `historical_fact_support`。",
+    "description": "R02-MEDIA-001 的子板块结构证据。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E003",
+    "claim": "2018-12-21 中宣部出版局副局长冯士新在 2018 年度中国游戏产业年会上表示，首批送审部分游戏已完成审核、正在抓紧核发版号。",
+    "evidence_role": "supporting",
+    "evidence_type": "权威媒体报道（转官方表态）",
+    "event_date": "2018-12-21",
+    "evidence_date": "2018-12-21",
+    "source_id": "R02-MEDIA-S001",
+    "confidence": "high",
+    "independence_group": "IG-MEDIA-2018-NPPA-RESUME",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-MEDIA-002 的恢复锚；为官方表态的权威媒体转述，可作同期依据。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E004",
+    "claim": "2018 年游戏行业受版号暂停与政策收紧冲击，行业景气下行，直至 2018-12 版号核发重启。",
+    "evidence_role": "supporting",
+    "evidence_type": "财经媒体报道",
+    "event_date": "2018-12-28",
+    "evidence_date": "2018-12-28",
+    "source_id": "R02-MEDIA-S003",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2018-GAME-WINTER",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "R02-MEDIA-002 的下行段佐证，来源独立于 S001。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E005",
+    "claim": "2021-09-10 记者查阅国家新闻出版署版号审批情况发现，8 月的国产网络游戏审批信息至今仍未公布，市场担忧版号再次暂停。",
+    "evidence_role": "context",
+    "evidence_type": "财经媒体报道",
+    "event_date": "2021-09-10",
+    "evidence_date": "2021-09-10",
+    "source_id": "R02-MEDIA-S006",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2021-NPPA-PAUSE",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "为 R02-MEDIA-X002（2021 版号暂停下行段）提供事实；本包未将其单列为 Campaign。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E006",
+    "claim": "2023 年春节档票房超 68 亿元，为历史第二高，《满江红》《流浪地球2》双核驱动。",
+    "evidence_role": "context",
+    "evidence_type": "媒体报道",
+    "event_date": "2023-01-27",
+    "evidence_date": "2023-01-28",
+    "source_id": "R02-MEDIA-S007",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023-SPRINGFEST",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support",
+      "retrospective_context"
+    ],
+    "point_in_time_note": "本来源为档期结束后的复盘（subsequent），仅用于证明『2023 春节档票房规模』这一事实；**不得**作为档期前的 point-in-time 依据。",
+    "description": "为 R02-MEDIA-X003（春节档 / 暑期档季节性）提供事实；本包未将其升级为 Campaign。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E007",
+    "claim": "2023-01-23 春节档《流浪地球2》《满江红》等票房领先，多家上市公司披露参与出品或发行。",
+    "evidence_role": "context",
+    "evidence_type": "权威媒体报道",
+    "event_date": "2023-01-23",
+    "evidence_date": "2023-01-23",
+    "source_id": "R02-MEDIA-S008",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2023-SPRINGFEST-2",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "为 R02-MEDIA-X003 提供同期事实，来源独立于 S007。"
+  },
+  {
+    "evidence_id": "R02-MEDIA-E008",
+    "claim": "国产网络游戏版号由国家新闻出版署核发，其官网定期公布游戏审批结果（含国产网络游戏审批信息）。",
+    "evidence_role": "context",
+    "evidence_type": "官方登记",
+    "event_date": null,
+    "evidence_date": null,
+    "source_id": "R02-MEDIA-S002",
+    "confidence": "high",
+    "independence_group": "IG-REG-NPPA-LIST",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "unknown",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": null,
+    "description": "确认『版号』工具的官方口径与核发主体，Tier 1；作为 R02-MEDIA-002 的制度背景。"
+  }
+]
