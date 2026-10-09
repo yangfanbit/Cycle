@@ -152,15 +152,53 @@
 
 ---
 
-## 六、待决策
+## 六、用户决策（2026-10-09）
 
-| # | 事项 | 需要谁 |
+四条指令全部收到，逐条落地：
+
+| # | 用户指令 | 落地 |
 |---|---|---|
-| 1 | **是否授权启动 R02-03** | **你** |
-| 2 | 若授权：由谁扮演 **Research Agent 角色**（AI 离线研究），由谁扮演 **ThreeC Agent 审查角色** —— **两者必须不是同一个执行者** | 你定 |
-| 3 | 「电力」的边界：只做**运营端**（发电/电网运营），还是也含**电价市场化改革**这类政策段 | 你定（影响 excluded_scope） |
-| 4 | 「文化传媒」是全库最彻底的空缺 —— 若只能先做一个方向，**建议优先它** | 你定 |
+| 1 | 「授权启动」 | manifest `status` 由 `PLANNED_NOT_STARTED` → **`AUTHORIZED`** |
+| 2 | 「你扮演 ThreeC Agent 审查；Research 我交给别的 Agent，你负责出 **Prompt**」 | 新增 **`docs/RESEARCH_AGENT_PROMPT_R02-03.md`**（可整段复制给 Research Agent） |
+| 3 | 「**电力 细分 根据市场炒作过的概念/板块进行区分**」 | manifest 新增 `subdivision_principle`（对四方向一律适用）+ 电力 11 条**待核验概念候选** |
+| 4 | 「文化传媒……根据目前的模式，是否需要单独 Research？」 | **需要** —— 见下 |
+
+### 6.1 关于第 4 问：需要单独 Research，且必须更正我此前的一句话
+
+**（a）「主题材」粒度不能创造覆盖。**
+本轮实测的硬不变量：两种口径的**窗口集合完全相同（68 段 / 80 个对象）** ——
+粒度只决定「怎么分行」。文化传媒在库里是 **0 个对象**，怎么分组都是 0。
+**所以它不会因为切到主题材口径就出现在地图上。**
+
+**（b）「广电 / 传媒」这个名字确实存在，但在 legacy 层。**
+`data/candidate/themes.ts` 有 `{theme_id:'th_media', name:'广电 / 传媒', theme_type:'sector'}`，
+但 `data/` 已被判定「**无消费者**」（`AGENTS.md` §5.1 / F-3），**不在 canonical export 里**。
+→ **不能把 legacy 的主题定义当成已覆盖。**
+
+**（c）★★ 我此前写过一句错话，已勘误。**
+`docs/ANSWER_2026-10-08_CURRENT_UPDATES_AND_COVERAGE.md` §2.4 我写过
+「不建议新增『文化传媒』这类**结构画像与已有方向重复**的族名」。
+该判断与 `USAGE_TEST_2026-10-07_MEDIA.md` 的**实测相反** ——
+那次实测中文化传媒拿到了 **1 条 `STRUCTURAL_SUPPORTED` + 7 条 `STRUCTURAL_PARTIAL`**。
+我那句是**基于族名相似度的推断**，把「名字不同」当成了「结构不同」——
+**恰好犯了项目自己明令禁止的那条**：`Theme / Name 相似 ≠ Structural Correspondence`。
+已在原文件加勘误块，**不删除原句**（保留 provenance）。
+
+**（d）文化传媒需要「两侧都建」。**
+历史侧 → 已并入 R02-03；**当前侧**（一个当前研究对象）**不属 R02-03 范围**，需另行处理。
+2026-10-07 那次是在**沙箱**里临时建的 `CC-2026-MEDIA-AICONTENT`，**未进 canonical**，不可复用。
+
+### 6.2 ★ 顺带修掉一个**阻塞交接**的基础设施缺陷
+
+`validate_historical_research_intake.py` 的 **C25（严格 JSON Schema）** 此前因
+`jsonschema` 未安装而 **全部 FAIL** —— 而校验器自身规定
+「**未通过严格 Schema 校验的 Package 不得接收**」。
+**即：Research Agent 交回的包在基础设施层面无法被合法接收。**
+
+- 修复前：`--check` → `checks: 25  FAIL: 9  RESULT: FAIL`
+- 修复后：`--check` → `checks: 25  FAIL: 0  RESULT: **PASS**`（8 个包 C25 全通过）
+- 新增 `research/scripts/requirements.txt`（`jsonschema>=4.0`）+ 隔离 venv 安装说明。
 
 ---
 
-*覆盖缺口实测 · 2026-10-08 · HEAD `c742968`*
+*覆盖缺口实测 · 2026-10-08 · 用户决策 2026-10-09 · HEAD `1753cc4`*

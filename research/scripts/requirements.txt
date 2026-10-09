@@ -1,0 +1,22 @@
+# Research 脚本的 Python 依赖（非 Product 依赖）
+#
+# ★ 为什么需要这个文件
+# `validate_historical_research_intake.py` 的 **C25（严格 JSON Schema, Draft-07）**
+# 依赖 `jsonschema`。若未安装，C25 会 **FAIL** ——
+# 而校验器自身规定「**未通过严格 Schema 校验的 Package 不得接收**」，
+# 于是 **Research Agent → ThreeC Agent 的交接在基础设施层面被阻塞**。
+#
+# 2026-10-09 实测：系统 python3 未安装 jsonschema → `--check` 报 FAIL 9 项。
+# 安装后 → `--check` 报 **PASS（FAIL 0）**。
+#
+# ★ 安装（必须用隔离 venv，不要污染系统 Python）
+#   /Users/yangfan/.workbuddy-ai/binaries/python/versions/3.13.12/bin/python3 \
+#       -m venv /Users/yangfan/.workbuddy-ai/binaries/python/envs/default
+#   /Users/yangfan/.workbuddy-ai/binaries/python/envs/default/bin/pip install -r \
+#       research/scripts/requirements.txt
+#
+# ★ 运行校验器时必须用该 venv 的解释器：
+#   /Users/yangfan/.workbuddy-ai/binaries/python/envs/default/bin/python \
+#       research/scripts/validate_historical_research_intake.py <package>
+
+jsonschema>=4.0

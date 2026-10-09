@@ -9,8 +9,20 @@
   "generated_at": "2026-10-08T23:59:00+08:00",
   "source_commit": "c742968",
   "source_commit_note": "本 manifest 所依据的 ThreeC baseline commit（Product 1.2 Usage-Driven 轮：主题粒度切换 + 覆盖边界实测）。",
-  "status": "PLANNED_NOT_STARTED",
-  "status_note": "★ 本 manifest 只新增一个任务 R02-03，且**未被授权启动**。R02-01 / R02-02 不在此 manifest 内 —— 它们由用户于 2026-10-07 直接授权产出（见各自 manifest 的 task_definition_note），此处**不追溯改写**。",
+  "status": "AUTHORIZED",
+  "status_note": "★ 用户于 2026-10-09 明确授权启动（原话：「1、授权启动」）。★ 本 manifest 只新增一个任务 R02-03。R02-01 / R02-02 不在此 manifest 内 —— 它们由用户于 2026-10-07 直接授权产出（见各自 manifest 的 task_definition_note），此处**不追溯改写**。",
+  "authorization": {
+    "authorized_by": "user",
+    "authorized_at": "2026-10-09",
+    "user_words": "1、授权启动；2、你扮演 ThreeC Agent 审查；Research工作我交给别的Agent进行，你负责出 Prompt；3、电力 细分 根据 市场炒作过的概念/板块进行区分；4、文化传媒你不是说包含在大主题细分里了吗，根据目前的模式，是否需要单独Research？",
+    "role_assignment": {
+      "research_agent": "用户指派的**另一个 Agent**（不是本次对话的执行者）",
+      "threec_agent": "本次对话的执行者（负责签发任务 · 出 Research Prompt · 审查 package · canonicalization）",
+      "hard_rule": "★ 两者**不得**为同一个执行者。依据：协议 §3；且 2026-10-08 实测 self-review 抓到 27 条「改写冒充引文」。"
+    },
+    "research_prompt_doc": "docs/RESEARCH_AGENT_PROMPT_R02-03.md",
+    "blocking_gap_fixed": "★ 2026-10-09 修复：`validate_historical_research_intake.py` 的 C25（严格 JSON Schema）此前因 `jsonschema` 未安装而**全部 FAIL**，而校验器自身规定「未通过严格 Schema 校验的 Package 不得接收」→ 交接**在基础设施层面被阻塞**。现已在隔离 venv 安装 jsonschema 4.26.0，`--check` 由 FAIL 9 项 → **PASS（FAIL 0）**。Research Agent 必须用该解释器自检（见 prompt）。"
+  },
   "trigger": {
     "kind": "REAL_USER_DIRECTION_QUERY",
     "date": "2026-10-08",
@@ -61,6 +73,18 @@
       "years": { "from": 2015, "to": 2025 },
       "priority": "A",
       "priority_note": "★ 四个方向全部按 Priority A 交付；Priority B（2015–2017）允许 INSUFFICIENT，不得阻塞 2018–2025。",
+      "subdivision_principle": {
+        "user_directive": "★ 用户 2026-10-09：「电力 细分 **根据市场炒作过的概念/板块**进行区分」。本原则对四个方向**一律适用**。",
+        "rule": "细分口径 = **A 股市场当年实际炒作过的概念 / 板块**，**不是**教科书式行业分类（不是「火电/水电/核电」这种静态切分，也不是申万三级行业表）。",
+        "why": "本项目要回答的是「一年中历史上哪些时间窗口**反复出现过什么类型的题材炒作**」，不是行业统计。一个细分若在市场上**从未被当作独立题材炒作过**，就不应单独成段 —— 那会制造出没有历史对应物的空行。",
+        "how_to_apply": [
+          "① 先列出该方向在 2015–2025 年**市场上被炒作过的概念 / 板块名**（用当时的**原始板块名 / 概念名**，不要事后重命名）；",
+          "② 每条都要有来源证明「它确实被当作独立题材炒作过」—— 只有行业统计分类、没有市场炒作证据的，不得作为细分；",
+          "③ 同一概念在不同年份可能是**不同 Campaign**（如「新电改」2015 与「绿电」2021 机制不同），也可能是**同一 Campaign 的延续** —— 这个判断必须显式写出依据，交 ThreeC Agent 走 Campaign Independence Gate；",
+          "④ 核验不通过的概念写入 `exclusions[]`（`reason_code = NOT_A_CAMPAIGN` 或 `NOT_INDEPENDENT_MACRO_THEME`），**不得**为了凑数保留。"
+        ],
+        "seasonality_note": "★ 用户点名这四个方向的理由是「**时间相关性都挺高的**」。因此 Research Agent 必须**专门核验季节性**：每个细分是否有可复现的年内窗口（如煤炭冬储 / 迎峰度夏、水电来水与汛期、流感疫苗秋季接种、文化传媒春节档与暑期档）。★ 这些是**待核验的假设**，不是已确认事实 —— 核验结果必须来自来源，不得凭常识写入。"
+      },
       "why_each_direction_is_worth_a_family": [
         {
           "direction": "煤炭",
@@ -68,9 +92,33 @@
           "why_new_axis": "现有 12 个大主题的机制集中在政策驱动 · 技术突破 · 产业升级 · 需求爆发。供给收缩轴在「资源」族内已有（有色金属 / 贵金属 / 稀有金属·稀土），但**煤炭的价格机制与政策工具（长协、进口配额、安监）和有色金属不同**，不能默认同构。"
         },
         {
-          "direction": "电力（公用事业）",
-          "mechanism_hypothesis": "成本—电价剪刀差 / 来水与利用小时 / 电价市场化改革 / 容量电价",
-          "why_new_axis": "★★ **必须与库内已有的「电力设备」严格区分**：库内 `电力设备` 是**制造端**（`电网/输变电设备` · `光伏/新能源发电设备` · 上游锂电/新能源车电池），机制是**设备需求与产能**；本方向是**运营端**（发电 / 电网运营），机制是**成本、电价与利用率**。两者机制不同，**不得互相替代**，也不得因为名字相近就并成一族。"
+          "direction": "电力（公用事业 · 运营端）",
+          "mechanism_hypothesis": "成本—电价剪刀差 / 来水与利用小时 / 电价市场化改革 / 容量电价 / 装机与消纳",
+          "why_new_axis": "★★ **必须与库内已有的「电力设备」严格区分**：库内 `电力设备` 是**制造端**（`电网/输变电设备` · `光伏/新能源发电设备` · 上游锂电/新能源车电池），机制是**设备需求与产能**；本方向是**运营端**（发电 / 电网运营），机制是**成本、电价与利用率**。两者机制不同，**不得互相替代**，也不得因为名字相近就并成一族。",
+          "subdivision_rule": {
+            "user_directive": "★ 用户 2026-10-09 指令原文：「3、电力 细分 根据 **市场炒作过的概念/板块**进行区分」",
+            "what_it_means": "**不要**按教科书式行业分类（火电/水电/核电/风电…）机械切分；要按 **A 股市场当年实际炒作过的概念 / 板块** 切分 —— 因为本项目要回答的是「历史上哪些时间窗口反复出现过什么类型的题材炒作」，而不是行业统计。**同一细分若在市场上从未被当作独立题材炒作过，就不应单独成段。**",
+            "concept_candidates_to_verify": [
+              { "concept": "电力体制改革 / 新电改（售电侧 · 配售电）", "likely_first_wave": "2015 前后（中发 9 号文）", "verify_required": true },
+              { "concept": "火电（煤价—电价剪刀差 · 煤电联动）", "likely_first_wave": "2015–2016 / 2021 煤价上行", "verify_required": true },
+              { "concept": "水电（来水 · 汛期 · 利用小时）", "likely_first_wave": "多轮", "verify_required": true, "seasonality_hint": "用户点名本方向的首要理由是「时间相关性高」—— 来水与汛期是**天然季节性**，必须专门核验是否存在可复现的年内窗口" },
+              { "concept": "核电（核准重启 · 华龙一号）", "likely_first_wave": "2019 前后", "verify_required": true },
+              { "concept": "绿电 / 新能源运营商（风光运营 · 绿电交易）", "likely_first_wave": "2021 前后", "verify_required": true },
+              { "concept": "电力现货市场 / 辅助服务市场", "likely_first_wave": "2022–2024", "verify_required": true },
+              { "concept": "虚拟电厂 / 需求侧响应", "likely_first_wave": "2023–2025", "verify_required": true },
+              { "concept": "抽水蓄能 / 储能运营", "likely_first_wave": "2021–2022", "verify_required": true, "overlap_risk": "储能**设备**属「电力设备」；只有**运营**侧才归本方向" },
+              { "concept": "电价改革（分时电价 · 容量电价）", "likely_first_wave": "2021–2023", "verify_required": true },
+              { "concept": "绿证 / CCER / 碳交易", "likely_first_wave": "2017 / 2021–2024", "verify_required": true, "overlap_risk": "与「资源」族可能交叉，需 CMTR v1 判定" },
+              { "concept": "「算力+电力」/ 数据中心供电", "likely_first_wave": "2024–2025", "verify_required": true, "overlap_risk": "与「信息通信」/「电子」高度交叉，**默认不归本方向**，除非证据显示其炒作主线是电力供给侧" }
+            ],
+            "explicit_exclusions_from_this_direction": [
+              "特高压 · 电网投资 · 输变电设备 —— 属**电力设备（制造）**，不属本方向",
+              "光伏/风电**制造**（组件、整机）—— 属**电力设备**，不属本方向",
+              "储能**设备**（电池、PCS）—— 属**电力设备**，不属本方向",
+              "煤炭 —— 属本次任务的**独立方向**「煤炭」，不并入电力"
+            ],
+            "★_caveat": "上表是**待核验的概念候选清单**，不是已确认的历史事实。Research Agent 必须逐条用来源核验「该概念在 A 股是否真被当作独立题材炒作过、在哪几年」；**核验不通过的概念应写入 exclusions[]，不得保留在 candidates 里。**"
+          }
         },
         {
           "direction": "流感疫苗",
@@ -80,7 +128,15 @@
         {
           "direction": "文化传媒",
           "mechanism_hypothesis": "政策/监管周期 + 内容供给 + 平台经济（含游戏版号、影视、出版、广告）",
-          "why_new_axis": "★★★ **全库零覆盖** —— 主题材层 41 行里「传媒 / 文化 / 娱乐 / 教育」一个都不命中；大主题层 12 行同样没有。这是**最彻底**的空缺，也是用户 2026-10-07 使用测试与 2026-10-08 再次点名的方向。机制上属**监管周期 + 内容供给**，现有 12 族完全没有。"
+          "why_new_axis": "★★★ **全库零覆盖** —— 主题材层 41 行里「传媒 / 文化 / 娱乐 / 教育」一个都不命中；大主题层 12 行同样没有。这是**最彻底**的空缺，也是用户 2026-10-07 使用测试与 2026-10-08 再次点名的方向。机制上属**监管周期 + 内容供给**，现有 12 族完全没有。",
+          "★_record_correction": {
+            "user_question": "用户 2026-10-09 问：「文化传媒你不是说包含在大主题细分里了吗，根据目前的模式，是否需要单独Research？」",
+            "answer": "**需要单独 Research。** 两件事必须分开：",
+            "point_1": "「主题材」粒度**只是把已有对象重新分组**，不创造覆盖。本轮的硬不变量已实测：macro 与 sub 两种口径的**窗口集合完全相同（68 段 / 80 个对象）**。文化传媒在库里是 0 个对象 —— 怎么分组都是 0。所以粒度切换**不能**让它出现在地图上。",
+            "point_2": "「广电 / 传媒」这个**名字**确实存在于仓库里，但在 **legacy 层**：`data/candidate/themes.ts` 有 `{theme_id:'th_media', name:'广电 / 传媒', theme_type:'sector'}`。而 `data/` 已被判定「**无消费者**」（`AGENTS.md` §5.1 / F-3），**不在 canonical Research export 里**，产品不消费它。因此**产品实际口径下文化传媒是 0 覆盖** —— 不能把 legacy 的主题定义当成已覆盖。",
+            "point_3": "★ 我此前在 `docs/ANSWER_2026-10-08_CURRENT_UPDATES_AND_COVERAGE.md` §2.4 写过「不建议新增文化传媒这类**结构画像与已有方向重复**的族名」。该判断与 `docs/USAGE_TEST_2026-10-07_MEDIA.md` 的**实测相反** —— 那次实测里，文化传媒（沙箱对象 `CC-2026-MEDIA-AICONTENT`）拿到了 **1 条 `STRUCTURAL_SUPPORTED` + 7 条 `STRUCTURAL_PARTIAL`**，即「名字没覆盖、**结构有对应**」。该句是**基于族名相似度的推断，不是实测**，已加勘误。",
+            "point_4": "★★ 文化传媒需要的是**两侧都建**：历史侧（本任务 R02-03）+ **当前侧**（新一轮 current research）。2026-10-07 那次是在**沙箱**里临时建的 `CC-2026-MEDIA-AICONTENT`，**未进 canonical**，不能复用。★ 当前侧不属本任务范围（本任务只做历史扩容）。"
+          }
         }
       ],
       "known_overlap": [
