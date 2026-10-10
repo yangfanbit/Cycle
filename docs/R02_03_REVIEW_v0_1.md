@@ -298,4 +298,27 @@ python research/scripts/validate_historical_research_intake.py research/intake/p
 
 ---
 
+## 七、★ 2026-10-10 补记：§二 的阻塞条件**已解除**
+
+用户批准 taxonomy 轮次建议后已执行：`themes` 表 **53 → 57 行**，**根节点 11 → 13**。
+
+| 方向 | 处置 | CMTR 验收 |
+|---|---|---|
+| 电力（运营端） | 新增根 `TH-POWER-OP` | `UNRESOLVED_NAME` → **`RESOLVED`** ✅ |
+| 文化传媒 | 新增根 `TH-MEDIA` | `UNRESOLVED_NAME` → **`RESOLVED`** ✅ |
+| 煤炭 | 子 `TH-RES-COAL` → `TH-RES` | → 根 **`资源`** ✅ |
+| 流感疫苗 | 子 `TH-PHARMA-FLU` → `TH-PHARMA` | → 根 **`医药健康`** ✅ |
+
+★ 回归：裸「电力」经 CMTR **仍为 `UNRESOLVED_NAME`** —— 未误判进「电力设备」。
+
+**执行记录**：`docs/TAXONOMY_ROUND_R02_03_EXECUTION_v0_1.md`
+**脚本**：`research/scripts/add_themes_r02_03_taxonomy_v0_1.py`
+
+→ §六 6.2 的「下一步 #1」已完成。**#2–#6 仍待做**（候选级改动 · 独立性闸门 ·
+别名归一化 · **SF-1 合同轮次** · `DEFER` 补做）。
+★★ 其中 **SF-1 合同轮次是这一轮的配套前置** —— 否则新加的两个根在首页地图上
+会渲染成与「未标注」相同的灰色。
+
+---
+
 *ThreeC Agent 审查结论 · R02-03 · 2026-10-10 · 未写库、未改研究结论*
