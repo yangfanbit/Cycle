@@ -1,8 +1,8 @@
 {
   "contract": "timeline_export",
   "timeline_export_version": "1.0",
-  "generated_at": "2026-10-08T21:34:22",
-  "source_commit": "c9cbbb9f0aff5d2211e434e5437b4c720dfda292",
+  "generated_at": "2026-10-10T23:58:14",
+  "source_commit": "72412cf7c1dd2c736956644a8da8f35e83e91e63",
   "project": "Cycle-Research",
   "rules": [
     {
@@ -74,6 +74,20 @@
       "base_pattern": "国防军工",
       "definition": "Historical Observation Window（历史观察窗口）：国防军工（航空装备 / 航天装备 / 船舶制造 / 军工电子）在装备采购与订单释放（含甲方预付款 / 合同负债）、军工集团改革与资产重组、重大纪念事件注意力驱动下形成的结构性行情；非固定买入窗口，不构成交易建议",
       "observation_window": "结构性（非季节性）：2019–2022。两条机制主线（**机制不同、窗口不重叠**）：① 装备采购订单景气 2020-06-25~2022-12-31（「十四五」装备放量；2021-03-30 主机厂关联交易预计公告为订单层可验证锚点；Peak 2021-12-01 = 14748 点）；② 军工集团战略重组 2019-07-01~2019-11-26（「南北船」合并：筹划→批准→揭牌；**peak 不可考**）。★ **CF008 军费传导时滞**：国防预算（2021-03-08）→ 订单披露（2021-03-30）→ 市场主升（2021-05-11，**距预算公布约 9 周**）→ 区间高点（2021-12-01，**约 9 个月**）；★ **反向对照 E042**：2022 年国防预算 +7.1%（阶段新高）而军工板块全年 -23.63% → **传导非稳定**；**军费层只能作 `context`，不得作为 Campaign start 锚点**"
+    },
+    {
+      "rule_id": "rule_power_operation",
+      "name": "电力（运营端）历史观察窗口",
+      "base_pattern": "电力（运营端）",
+      "definition": "Historical Observation Window（历史观察窗口）",
+      "observation_window": "—"
+    },
+    {
+      "rule_id": "rule_media",
+      "name": "文化传媒历史观察窗口",
+      "base_pattern": "文化传媒",
+      "definition": "Historical Observation Window（历史观察窗口）",
+      "observation_window": "—"
     }
   ],
   "signals": [
@@ -3239,6 +3253,47 @@
       }
     },
     {
+      "campaign_id": "C-2023-MEDIA-AI",
+      "rule_id": "rule_media",
+      "year": 2023,
+      "start_date": "2023-03-31",
+      "peak_date": null,
+      "end_date": "2023-07-31",
+      "status": "provisional",
+      "confidence": "low",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "文化传媒",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "SANQI",
+        "GUANGXIAN",
+        "ZWONLINE"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": null,
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
+      }
+    },
+    {
       "campaign_id": "C-2019-PHARMA-INNOV",
       "rule_id": "rule_pharma_upgrade",
       "year": 2019,
@@ -3435,6 +3490,52 @@
           "10-17/10-18 指数连续收跌，10-18 逾八成成分股下跌，行情进入降温",
           "本包未取得该段后续完整走势来源，不推断其最终收敛方式"
         ]
+      }
+    },
+    {
+      "campaign_id": "C-2023-PHARMA-FLU",
+      "rule_id": "rule_pharma_upgrade",
+      "year": 2023,
+      "start_date": "2023-02-20",
+      "peak_date": "2023-03-20",
+      "end_date": "2023-04-15",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "event_driven",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "医药健康",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "流感疫苗",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "HUALANVAX",
+        "BAIKEBIO",
+        "JINDIKE"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": null,
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
       }
     },
     {
@@ -3681,6 +3782,52 @@
           "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
           "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"
         ]
+      }
+    },
+    {
+      "campaign_id": "C-2021-POWER-GREEN",
+      "rule_id": "rule_power_operation",
+      "year": 2021,
+      "start_date": "2021-09-07",
+      "peak_date": "2021-09-28",
+      "end_date": null,
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电力（运营端）",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "绿电 / 新能源运营商",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "SANXIAENERGY",
+        "JINGNENG",
+        "YINXING"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": null,
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
       }
     },
     {
@@ -4112,6 +4259,52 @@
           "下游需求走弱、库存回补完成",
           "价格向成本线回归"
         ]
+      }
+    },
+    {
+      "campaign_id": "C-2021-RES-COAL",
+      "rule_id": "rule_resources",
+      "year": 2021,
+      "start_date": "2021-08-01",
+      "peak_date": "2021-10-19",
+      "end_date": "2021-11-30",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "strong",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "煤炭",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "CHINASHENHUA",
+        "SHAANXICOAL",
+        "YANKUANG"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": null,
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
       }
     },
     {
@@ -8757,6 +8950,33 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "SANXIAENERGY",
+      "name": "三峡能源",
+      "ticker": "600905",
+      "exchange": "上海证券交易所",
+      "role": "leader",
+      "campaign_id": "C-2021-POWER-GREEN",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JINGNENG",
+      "name": "京能电力",
+      "ticker": "600578",
+      "exchange": "上海证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2021-POWER-GREEN",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "YINXING",
+      "name": "银星能源",
+      "ticker": "000862",
+      "exchange": "深圳证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2021-POWER-GREEN",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "HOSHINE",
       "name": "合盛硅业",
       "ticker": "603260",
@@ -8799,6 +9019,33 @@
       "exchange": "SH",
       "role": "representative",
       "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "CHINASHENHUA",
+      "name": "中国神华",
+      "ticker": "601088",
+      "exchange": "上海证券交易所",
+      "role": "leader",
+      "campaign_id": "C-2021-RES-COAL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SHAANXICOAL",
+      "name": "陕西煤业",
+      "ticker": "601225",
+      "exchange": "上海证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2021-RES-COAL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "YANKUANG",
+      "name": "兖矿能源",
+      "ticker": "600188",
+      "exchange": "上海证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2021-RES-COAL",
       "research_candidate_id": null
     },
     {
@@ -9222,6 +9469,60 @@
       "exchange": "SZ",
       "role": "representative",
       "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "SANQI",
+      "name": "三七互娱",
+      "ticker": "002555",
+      "exchange": "深圳证券交易所",
+      "role": "leader",
+      "campaign_id": "C-2023-MEDIA-AI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "GUANGXIAN",
+      "name": "光线传媒",
+      "ticker": "300251",
+      "exchange": "深圳证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2023-MEDIA-AI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "ZWONLINE",
+      "name": "中文在线",
+      "ticker": "300364",
+      "exchange": "深圳证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2023-MEDIA-AI",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "HUALANVAX",
+      "name": "华兰疫苗",
+      "ticker": "301207",
+      "exchange": "深圳证券交易所",
+      "role": "leader",
+      "campaign_id": "C-2023-PHARMA-FLU",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "BAIKEBIO",
+      "name": "百克生物",
+      "ticker": "688276",
+      "exchange": "上海证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2023-PHARMA-FLU",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JINDIKE",
+      "name": "金迪克",
+      "ticker": "688670",
+      "exchange": "上海证券交易所",
+      "role": "representative",
+      "campaign_id": "C-2023-PHARMA-FLU",
       "research_candidate_id": null
     },
     {

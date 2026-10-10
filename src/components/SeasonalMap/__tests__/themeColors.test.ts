@@ -28,10 +28,15 @@ function contrastWithWhite(hex: string): number {
 }
 
 describe('themeColors · 大主题分类配色', () => {
-  it('11 个大主题 + 未标注，主色与浅色表一一对应', () => {
+  it('13 个大主题 + 未标注，主色与浅色表一一对应', () => {
+    // 13 = DB `themes` 表的根节点数（2026-10-10 taxonomy 轮次 11 → 13：
+    // 新增 `电力（运营端）` 与 `文化传媒`）。
+    // ★ 本表必须与 DB 根节点**一一对应** —— 缺一个，那一行就会回落成未标注色。
     const themes = Object.keys(THEME_COLOR);
-    expect(themes).toHaveLength(11);
+    expect(themes).toHaveLength(13);
     expect(Object.keys(THEME_ONSET_COLOR).sort()).toEqual([...themes].sort());
+    expect(themes).toContain('电力（运营端）');
+    expect(themes).toContain('文化传媒');
   });
 
   it('所有主色互不相同（颜色必须能区分主题，不得重复）', () => {

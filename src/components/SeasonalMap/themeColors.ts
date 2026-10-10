@@ -22,7 +22,13 @@
 export const UNASSIGNED_COLOR = '#7E858C';
 export const UNASSIGNED_ONSET_COLOR = '#C9CED3';
 
-/** Macro Theme → 主要炒作窗口色（等距色相 30°，S=45%，L=40%） */
+/**
+ * Macro Theme → 主要炒作窗口色（等距色相 30°，S=45%，L=40%）。
+ *
+ * ★★ 键必须与 **DB `themes` 表的根节点**一致 —— 新增根节点时**必须**在此补色，
+ * 否则该行会回落成 `UNASSIGNED_COLOR`（**与「未标注大主题」同色**），
+ * 看起来像一个没有归属的族。（既有教训：`航天装备` 不在表内 → 渲染成灰。）
+ */
 export const THEME_COLOR: Record<string, string> = {
   资源: '#944438',
   消费: '#947238',
@@ -35,6 +41,9 @@ export const THEME_COLOR: Record<string, string> = {
   房地产: '#443894',
   电力设备: '#723894',
   医药健康: '#943888',
+  // ↓ 2026-10-10（R02-03）：taxonomy 轮次新增的两个根节点，补色填色相轮上的空档
+  '电力（运营端）': '#94385A',
+  文化传媒: '#945D38',
 };
 
 /** Macro Theme → 长周期起始（onset）的浅色变体（同色相，S=30%，L=80%） */
@@ -50,6 +59,8 @@ export const THEME_ONSET_COLOR: Record<string, string> = {
   房地产: '#C1BDDB',
   电力设备: '#D0BDDB',
   医药健康: '#DBBDD7',
+  '电力（运营端）': '#DBBDC8',
+  文化传媒: '#DBC9BD',
 };
 
 /** 主题主色；未标注 / 未知主题回落中性灰（诚实降级，不报错） */

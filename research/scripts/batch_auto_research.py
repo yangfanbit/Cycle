@@ -41,8 +41,14 @@ RES_RULE = "rule_resources"             # 资源 / 有色 / 化工（Wave R01-03
 CONS_RULE = "rule_consumer"              # 消费（Wave R01-04 — Historical Universe Expansion）
 FINRE_RULE = "rule_fin_realestate"       # 金融 / 房地产（Wave R01-05 — Historical Universe Expansion）
 MIL_RULE = "rule_defense_military"       # 国防军工（Wave R01-06 — Historical Universe Expansion）
+# ★★ 2026-10-10（R02-03 canonicalization）：新增两个族的规则**必须**登记在此列表。
+#    漏登记时该族 Campaign 会被**静默丢弃** —— 实测踩到：漏登记后导出报
+#    「55 campaigns」而非 57，**不报错、不警告**。（脚本不校验 RULES 与 DB 的差集。）
+PWROP_RULE = "rule_power_operation"      # 电力（运营端）（R02-03 — 用户点名方向）
+MEDIA_RULE = "rule_media"                # 文化传媒（R02-03 — 用户点名方向）
 # 批量研究覆盖的 Rule（按顺序生成；新增 Macro Theme 在此登记）
-RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE, SEMI_RULE, RES_RULE, CONS_RULE, FINRE_RULE, MIL_RULE]
+RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE, SEMI_RULE, RES_RULE,
+         CONS_RULE, FINRE_RULE, MIL_RULE, PWROP_RULE, MEDIA_RULE]
 RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----

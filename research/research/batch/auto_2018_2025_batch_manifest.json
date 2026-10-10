@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-10-08T21:34:22",
-  "source_commit": "c9cbbb9f0aff5d2211e434e5437b4c720dfda292",
+  "generated_at": "2026-10-10T23:58:14",
+  "source_commit": "72412cf7c1dd2c736956644a8da8f35e83e91e63",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -12,7 +12,9 @@
     "rule_resources",
     "rule_consumer",
     "rule_fin_realestate",
-    "rule_defense_military"
+    "rule_defense_military",
+    "rule_power_operation",
+    "rule_media"
   ],
   "scope": "rule_auto_summer（汽车 2018–2025，观察窗口 6-8月） + rule_pharma_upgrade（医药健康 2019–2022，结构性升级） + rule_power_equipment（电力设备 2018–2025，发电设备 / 电网输配电） + rule_infocomm（信息通信 2018–2025，5G 建设 / AI 算力光模块） + rule_high_end_equipment（高端装备 / 机器人 2016–2022，工程机械 / 工业自动化 / 机器人） + rule_semiconductor（半导体 / 电子 2016–2025，国产替代 / 面板价格周期 / AI 算力 / 存储超级周期） + rule_resources（资源 / 有色 / 化工 2016–2025，供给收缩五子类型 / 新能源需求 / 黄金资产属性） + rule_consumer（消费 2016–2025，消费升级 / 政策替代 / 自然周期 / 财政补贴 / 渠道变革） + rule_fin_realestate（金融 / 房地产 2015–2025，地产政策周期 / 信用周期 / 估值重估 / 风险偏好；含 CF013 口径差约束） + rule_defense_military（国防军工 2019–2022，装备采购订单景气 / 军工集团战略重组；含 CF008 军费传导时滞约束）",
   "status_vocabulary": {
@@ -5663,6 +5665,84 @@
       }
     },
     {
+      "research_campaign_id": "C-2023-MEDIA-AI",
+      "db_campaign_id": "C-2023-MEDIA-AI",
+      "year": 2023,
+      "rule_id": "rule_media",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2023-03-31",
+      "peak_date_candidate": null,
+      "end_date_candidate": "2023-07-31",
+      "date_confidence": "low",
+      "theme": "文化传媒",
+      "themes": [
+        {
+          "name": "文化传媒",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": null,
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-MEDIA-02",
+        "E-MEDIA-01"
+      ],
+      "source_ids": [
+        "S-MEDIA-01",
+        "S-MEDIA-02"
+      ],
+      "independent_groups": [
+        "IG-REPORT-2023-MEDIA",
+        "IG-REPORT-2023-MEDIA-SUB"
+      ],
+      "independent_group_count": 2,
+      "events": [],
+      "securities": [
+        {
+          "security_id": "GUANGXIAN",
+          "name": "光线传媒",
+          "ticker": "300251",
+          "exchange": "深圳证券交易所",
+          "role": "representative"
+        },
+        {
+          "security_id": "SANQI",
+          "name": "三七互娱",
+          "ticker": "002555",
+          "exchange": "深圳证券交易所",
+          "role": "leader"
+        },
+        {
+          "security_id": "ZWONLINE",
+          "name": "中文在线",
+          "ticker": "300364",
+          "exchange": "深圳证券交易所",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "low",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-MEDIA-001。★★ **peak 参照物 = 未界定** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **—**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
+      "conflict": null,
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
+      }
+    },
+    {
       "research_campaign_id": "C-2019-PHARMA-INNOV",
       "db_campaign_id": "C-2019-PHARMA-INNOV",
       "year": 2019,
@@ -6034,6 +6114,92 @@
           "10-17/10-18 指数连续收跌，10-18 逾八成成分股下跌，行情进入降温",
           "本包未取得该段后续完整走势来源，不推断其最终收敛方式"
         ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2023-PHARMA-FLU",
+      "db_campaign_id": "C-2023-PHARMA-FLU",
+      "year": 2023,
+      "rule_id": "rule_pharma_upgrade",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2023-02-20",
+      "peak_date_candidate": "2023-03-20",
+      "end_date_candidate": "2023-04-15",
+      "date_confidence": "medium",
+      "theme": "流感疫苗",
+      "themes": [
+        {
+          "name": "医药健康",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "流感疫苗",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": null,
+      "classification": "event_driven",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-FLU-02",
+        "E-FLU-03",
+        "E-FLU-01"
+      ],
+      "source_ids": [
+        "S-FLU-01",
+        "S-FLU-02",
+        "S-FLU-03"
+      ],
+      "independent_groups": [
+        "IG-MEDIA-2023-FLU-PEAK",
+        "IG-MEDIA-2023-FLU-RALLY",
+        "IG-OFFICIAL-2023-FLU-WEEKLY"
+      ],
+      "independent_group_count": 3,
+      "events": [],
+      "securities": [
+        {
+          "security_id": "BAIKEBIO",
+          "name": "百克生物",
+          "ticker": "688276",
+          "exchange": "上海证券交易所",
+          "role": "representative"
+        },
+        {
+          "security_id": "HUALANVAX",
+          "name": "华兰疫苗",
+          "ticker": "301207",
+          "exchange": "深圳证券交易所",
+          "role": "leader"
+        },
+        {
+          "security_id": "JINDIKE",
+          "name": "金迪克",
+          "ticker": "688670",
+          "exchange": "上海证券交易所",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-VACCINE-002。★★ **peak 参照物 = 行业指标** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **NOT_APPLICABLE**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
+      "conflict": null,
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
       }
     },
     {
@@ -6522,6 +6688,95 @@
           "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
           "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"
         ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2021-POWER-GREEN",
+      "db_campaign_id": "C-2021-POWER-GREEN",
+      "year": 2021,
+      "rule_id": "rule_power_operation",
+      "status": "PROVISIONAL",
+      "annual_status": "medium",
+      "start_date_candidate": "2021-09-07",
+      "peak_date_candidate": "2021-09-28",
+      "end_date_candidate": null,
+      "date_confidence": "medium",
+      "theme": "绿电 / 新能源运营商",
+      "themes": [
+        {
+          "name": "电力（运营端）",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "绿电 / 新能源运营商",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": null,
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "medium",
+      "evidence_ids": [
+        "E-PWROP-01",
+        "E-PWROP-04",
+        "E-PWROP-02",
+        "E-PWROP-03"
+      ],
+      "source_ids": [
+        "S-PWROP-01",
+        "S-PWROP-02",
+        "S-PWROP-03",
+        "S-PWROP-04"
+      ],
+      "independent_groups": [
+        "IG-MEDIA-2021-GREENPOWER",
+        "IG-MEDIA-2021-POWER-LIMITUP",
+        "IG-POLICY-2021-GREENPOWER-LAUNCH",
+        "IG-POLICY-2021-GREENPOWER-REPLY"
+      ],
+      "independent_group_count": 4,
+      "events": [],
+      "securities": [
+        {
+          "security_id": "JINGNENG",
+          "name": "京能电力",
+          "ticker": "600578",
+          "exchange": "上海证券交易所",
+          "role": "representative"
+        },
+        {
+          "security_id": "SANXIAENERGY",
+          "name": "三峡能源",
+          "ticker": "600905",
+          "exchange": "上海证券交易所",
+          "role": "leader"
+        },
+        {
+          "security_id": "YINXING",
+          "name": "银星能源",
+          "ticker": "000862",
+          "exchange": "深圳证券交易所",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-POWER-002。★★ **peak 参照物 = 政策事件** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **NOT_APPLICABLE**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
+      "conflict": null,
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
       }
     },
     {
@@ -7310,6 +7565,92 @@
           "下游需求走弱、库存回补完成",
           "价格向成本线回归"
         ]
+      }
+    },
+    {
+      "research_campaign_id": "C-2021-RES-COAL",
+      "db_campaign_id": "C-2021-RES-COAL",
+      "year": 2021,
+      "rule_id": "rule_resources",
+      "status": "PROVISIONAL",
+      "annual_status": "strong",
+      "start_date_candidate": "2021-08-01",
+      "peak_date_candidate": "2021-10-19",
+      "end_date_candidate": "2021-11-30",
+      "date_confidence": "medium",
+      "theme": "煤炭",
+      "themes": [
+        {
+          "name": "资源",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "煤炭",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "theme_cycle_id": null,
+      "classification": "theme_campaign",
+      "result": "positive",
+      "strength": "strong",
+      "evidence_ids": [
+        "E-COAL-03",
+        "E-COAL-01",
+        "E-COAL-02"
+      ],
+      "source_ids": [
+        "S-COAL-01",
+        "S-COAL-02",
+        "S-COAL-03"
+      ],
+      "independent_groups": [
+        "IG-IND-2021-COAL-PRICE",
+        "IG-MEDIA-2021-POWERCUT",
+        "IG-POLICY-2021-COAL-INTERVENE"
+      ],
+      "independent_group_count": 3,
+      "events": [],
+      "securities": [
+        {
+          "security_id": "CHINASHENHUA",
+          "name": "中国神华",
+          "ticker": "601088",
+          "exchange": "上海证券交易所",
+          "role": "leader"
+        },
+        {
+          "security_id": "SHAANXICOAL",
+          "name": "陕西煤业",
+          "ticker": "601225",
+          "exchange": "上海证券交易所",
+          "role": "representative"
+        },
+        {
+          "security_id": "YANKUANG",
+          "name": "兖矿能源",
+          "ticker": "600188",
+          "exchange": "上海证券交易所",
+          "role": "representative"
+        }
+      ],
+      "market_data": {
+        "status": "unavailable",
+        "note": "无可用行情数据",
+        "adjusted_returns": null
+      },
+      "signals": [],
+      "confidence": "medium",
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-COAL-001。★★ **peak 参照物 = 政策事件** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **NOT_APPLICABLE**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
+      "conflict": null,
+      "lifecycle": [],
+      "drivers": {
+        "start": [],
+        "accelerator": [],
+        "turning": [],
+        "ending": []
       }
     },
     {
