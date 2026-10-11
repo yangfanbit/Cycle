@@ -524,8 +524,13 @@ describe('7. Macro Theme 聚合接口（仅 View / Adapter）', () => {
 
     const pharma = groups.find((g) => g.macroTheme === '医药健康')!;
     // ★ 2026-10-07：医药健康由 1 个增至 2 个 campaign（R02-01 入库 C-2023-PHARMA-GLP1）
-    expect(pharma.campaigns.map((c) => c.campaign_id).sort()).toEqual([PHARMA, 'C-2023-PHARMA-GLP1'].sort());
-    expect(pharma.subThemes.sort()).toEqual(['CXO(研发外包)', '创新药', '减重 / GLP-1'].sort());
+    // ★ 2026-10-11：再增至 3 个（R02-03 入库 C-2023-PHARMA-FLU，挂 `流感疫苗` 子主题）
+    expect(pharma.campaigns.map((c) => c.campaign_id).sort()).toEqual(
+      [PHARMA, 'C-2023-PHARMA-GLP1', 'C-2023-PHARMA-FLU'].sort(),
+    );
+    expect(pharma.subThemes.sort()).toEqual(
+      ['CXO(研发外包)', '创新药', '减重 / GLP-1', '流感疫苗'].sort(),
+    );
 
     // 未标注行业者归入 null 组（不编造行业名）
     const unassigned = groups.find((g) => g.macroTheme === null)!;
