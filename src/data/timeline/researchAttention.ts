@@ -333,6 +333,17 @@ export function macroThemeOf(campaign: TimelineCampaign): string | null {
   //    新规则：**优先取 `related`**（更宽的归组），**无 `related` 时回退 `main`**；
   //    不取 `secondary`（并列的次题材，语义不同）。
   //    仅有 `concept` 型主题者仍返回 `null` —— 那是**真的**没有行业归属，不得编造。
+  // ★★ Contract v1.1（2026-10-11）：**优先用 Research 侧（CMTR v1）解析出的根**。
+  //
+  // 为什么必须优先：canonical 口径是**沿 `themes.parent_theme_id` 上溯至根**，
+  // 而下面的字面名口径**不等价** —— 实测 `航天装备` 在 DB 里是 `国防军工` 的**子节点**，
+  // 字面名口径会把它当独立一行，且因不在配色表里而**渲染成与「未标注」相同的灰色**（不报错）。
+  //
+  // ★ 产品**只读不算**：根由 Research 侧产出，此处不重实现 taxonomy（`AGENTS.md` §4）。
+  // ★ 字段为 `null`（CONFLICT / 未解析）时**不猜** → 落到下面的字面名口径（诚实降级）。
+  if (campaign.macro_theme_root) return campaign.macro_theme_root;
+
+  // ↓ 回退：legacy `verified` 源无 `macro_theme_root` 字段（该源当前为空，保留为显式回退路径）
   const cands = (campaign.themes ?? []).filter(
     (t) => t.theme_type === 'industry' || t.theme_type === 'sector',
   );

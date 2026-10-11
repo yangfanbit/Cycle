@@ -219,7 +219,11 @@ export function validateTimelineExportV1(data: unknown): string[] {
 
   // 3. version / contract
   if (obj.contract !== 'timeline_export') issues.push('contract 必须为 "timeline_export"');
-  if (obj.timeline_export_version !== '1.0') issues.push('timeline_export_version 必须为 "1.0"');
+  // ★ Contract v1.1（2026-10-11）：允许 "1.0"（legacy）与 "1.1"（新增 macro_theme_root）。
+  //   1.1 是**向后兼容的新增字段**，不改变任何既有字段语义 → 产品两侧都必须接受。
+  if (obj.timeline_export_version !== '1.0' && obj.timeline_export_version !== '1.1') {
+    issues.push('timeline_export_version 必须为 "1.0" 或 "1.1"');
+  }
 
   const arr = (name: string): unknown[] => {
     const v = obj[name];
@@ -727,6 +731,8 @@ function formalCampaignToTimeline(c: ExportCampaignV1, ctx: ExportContext): Time
     })),
     // Theme Cycle（research metadata 透传；不推断）
     theme_cycle_id: c.theme_cycle_id ?? null,
+    macro_theme_root: c.macro_theme_root ?? null,
+    macro_theme_root_status: c.macro_theme_root_status,
     securities,
     events,
     signals,
@@ -793,6 +799,8 @@ function candidateToTimeline(rc: ExportCandidateV1, ctx: ExportContext): Timelin
     })),
     // Theme Cycle（research metadata 透传；不推断）
     theme_cycle_id: rc.theme_cycle_id ?? null,
+    macro_theme_root: rc.macro_theme_root ?? null,
+    macro_theme_root_status: rc.macro_theme_root_status,
     securities,
     events,
     signals,

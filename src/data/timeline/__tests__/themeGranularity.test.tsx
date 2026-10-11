@@ -117,6 +117,27 @@ describe('粒度切换必须重置展开态（key 集合不互相包含）', () 
     }
   });
 
+  it('★★ Contract v1.1：产品归组改用 Research 侧（CMTR v1）解析出的根', () => {
+    // 修复前的缺陷（实测）：`航天装备` 在 DB 里是 `国防军工` 的**子节点**，
+    // 但产品按**字面名**归组 → 它自占一行，且因不在 `THEME_COLOR` 里
+    // 而**渲染成与「未标注」相同的灰色**（不报错、看不出错）。
+    // Contract v1.1 后产品优先用 `macro_theme_root` → `航天装备` 并入 `国防军工`。
+    const macroNames = macroMap.map((r) => r.theme ?? '');
+    expect(macroNames).not.toContain('航天装备');
+    expect(macroNames).toContain('国防军工');
+
+    // 该对象现在计入 `国防军工` 行
+    const gj = macroMap.find((r) => r.theme === '国防军工')!;
+    expect(gj.objects.map((o) => o.campaign_id)).toContain('RC-2024-MIL-COMMERCIAL-SPACE');
+
+    // ★ 且每个对象都有解析出的根（唯一例外是已知 taxonomy 缺口 RC-2023-HUAWEI）
+    const noRoot = macroAll
+      .flatMap((r) => r.objects)
+      .filter((o) => !o.macro_theme_root)
+      .map((o) => o.campaign_id);
+    expect(noRoot).toEqual(['RC-2023-HUAWEI']);
+  });
+
   it('未归属行用哨兵 key，且标签按粒度给出（不编造行业名）', () => {
     expect(themeKey(macroAll.find((r) => r.theme === null)!)).toBe('__unassigned__');
     expect(themeKey(subAll.find((r) => r.theme === null)!)).toBe('__unassigned__');

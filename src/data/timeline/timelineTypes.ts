@@ -141,6 +141,19 @@ export interface ExportCampaignV1 {
   lifecycle?: ExportLifecycleStageV1[];
   /** Research V1.7 新增：驱动因素四问归因（可选；旧导出无此字段） */
   drivers?: ExportDriversV1;
+  /**
+   * ★ **Contract v1.1 新增**：Research 侧（**CMTR v1**）沿 `themes.parent_theme_id`
+   * 上溯至根解析出的 Macro Theme 根名。
+   *
+   * - 解析成功 → 根名（如 `航天装备` → **`国防军工`**）
+   * - 解析不出（`CONFLICT` / `UNRESOLVED_NAME` / `NO_THEME`）→ **`null`**（不猜）
+   * - legacy `verified` 源无此字段 → `undefined`
+   *
+   * ★ 产品**只读不算**：不得在 Product 侧重实现 taxonomy（`AGENTS.md` §4）。
+   */
+  macro_theme_root?: string | null;
+  /** ★ Contract v1.1：`macro_theme_root` 的解析状态（`RESOLVED` 等；诊断用） */
+  macro_theme_root_status?: string;
 }
 
 /**
@@ -168,6 +181,19 @@ export interface ExportCandidateV1 {
   lifecycle?: ExportLifecycleStageV1[];
   /** Research V1.7 新增：驱动因素四问归因（可选；旧导出无此字段） */
   drivers?: ExportDriversV1;
+  /**
+   * ★ **Contract v1.1 新增**：Research 侧（**CMTR v1**）沿 `themes.parent_theme_id`
+   * 上溯至根解析出的 Macro Theme 根名。
+   *
+   * - 解析成功 → 根名（如 `航天装备` → **`国防军工`**）
+   * - 解析不出（`CONFLICT` / `UNRESOLVED_NAME` / `NO_THEME`）→ **`null`**（不猜）
+   * - legacy `verified` 源无此字段 → `undefined`
+   *
+   * ★ 产品**只读不算**：不得在 Product 侧重实现 taxonomy（`AGENTS.md` §4）。
+   */
+  macro_theme_root?: string | null;
+  /** ★ Contract v1.1：`macro_theme_root` 的解析状态（`RESOLVED` 等；诊断用） */
+  macro_theme_root_status?: string;
 }
 
 /** 事件（顶层扁平数组；Campaign 经 event_ids 引用，不要求嵌套在 Campaign 内） */
@@ -247,6 +273,19 @@ export interface TimelineCampaign {
    * 缺失时保持 undefined —— 不推断、不编造。
    */
   theme_cycle_id?: string | null;
+  /**
+   * ★ **Contract v1.1 新增**：Research 侧（**CMTR v1**）沿 `themes.parent_theme_id`
+   * 上溯至根解析出的 Macro Theme 根名。
+   *
+   * - 解析成功 → 根名（如 `航天装备` → **`国防军工`**）
+   * - 解析不出（`CONFLICT` / `UNRESOLVED_NAME` / `NO_THEME`）→ **`null`**（不猜）
+   * - legacy `verified` 源无此字段 → `undefined`（回退到字面名口径）
+   *
+   * ★ 产品**只读不算**：不得在 Product 侧重实现 taxonomy（`AGENTS.md` §4）。
+   */
+  macro_theme_root?: string | null;
+  /** ★ Contract v1.1：`macro_theme_root` 的解析状态（诊断用，不参与归组） */
+  macro_theme_root_status?: string;
   securities: { name: string; ticker?: string; role?: string }[];
   /** 关联事件（经 event_id → 顶层 events lookup 解析） */
   events: { name: string; date: string; event_type: string; role?: string | null }[];
