@@ -82,9 +82,13 @@ def build_mapping():
         for mm in re.finditer(r'cid="((?:RC|C)-[A-Z0-9\-]+)",\s*intake="R\d{2}-[A-Z]+-(\d{3})"', t):
             m[mm.group(1)] = (pkg, mm.group(2))
         # ★ R02 起的显式映射表：INTAKE_MAP = [("<canonical>", "<intake_id>")]
+        # ★★ 2026-10-10 兼容扩展（R02-03）：捕获**完整 intake id**，而非仅序号。
+        #    原因：一个包内可能使用**多个前缀**（R02-03 有 COAL/POWER/VACCINE/MEDIA 四个），
+        #    「包 → 单一前缀」的拼接（PREFIX[pkg] + k）在那种情况下会拼错。
+        #    对 R01 / R02-01 而言完整 id 与拼接结果**逐字节相同**，故行为不变。
         for mm in re.finditer(r'INTAKE_MAP\s*=\s*\[(.*?)\]', t, re.S):
-            for cid, iid in re.findall(r'\("((?:RC|C)-[A-Z0-9\-]+)",\s*"R\d{2}-[A-Z]+-(\d{3})"\)', mm.group(1)):
-                m[cid] = (pkg, iid)
+            for cid, iid in re.findall(r'\("((?:RC|C)-[A-Z0-9\-]+)",\s*"(R\d{2}-[A-Z]+-\d{3})"\)', mm.group(1)):
+                m[cid] = (pkg, iid, True)
     return m
 
 
@@ -96,11 +100,13 @@ def main():
     def intake_of(cid):
         if cid not in mapping:
             return None
-        pkg, k = mapping[cid]
+        ent = mapping[cid]
+        pkg, k = ent[0], ent[1]
+        full_id = ent[2] if len(ent) > 2 else False   # ★ 兼容扩展：INTAKE_MAP 走完整 id
         if pkg not in cache:
             cache[pkg] = {x["candidate_id"]: x
                           for x in json.load(io.open(os.path.join(PKG, pkg, "candidates.json"), encoding="utf-8"))}
-        return cache[pkg].get(PREFIX[pkg] + k)
+        return cache[pkg].get(k if full_id else PREFIX[pkg] + k)
 
     exp = json.load(io.open(os.path.join(ROOT, "exports", "timeline_export_v1.json"), encoding="utf-8"))
     objs = ([("campaign", o) for o in exp["campaigns"]] +
@@ -151,13 +157,19 @@ def main():
         if segs:
             out[cid] = {"kind": kind, "intake_package": mapping[cid][0], "intake_candidate": mapping[cid][1],
                         "lifecycle": segs,
-                        "provenance": "intake:%s/%s" % (mapping[cid][0], PREFIX[mapping[cid][0]] + mapping[cid][1])}
+                        "provenance": "intake:%s/%s" % (
+                    mapping[cid][0],
+                    mapping[cid][1] if len(mapping[cid]) > 2
+                    else PREFIX[mapping[cid][0]] + mapping[cid][1])}
             # ★ v0_2：drivers 也从 intake 派生（**不手写静态字典**；旧对象无 intake 时由导出器回退）
             d = cand.get("drivers")
             if isinstance(d, dict) and any(d.get(k) for k in ("start", "accelerator", "turning", "ending")):
                 drivers_out[cid] = {"start": d.get("start") or [], "accelerator": d.get("accelerator") or [],
                                     "turning": d.get("turning") or [], "ending": d.get("ending") or [],
-                                    "provenance": "intake:%s/%s" % (mapping[cid][0], PREFIX[mapping[cid][0]] + mapping[cid][1])}
+                                    "provenance": "intake:%s/%s" % (
+                    mapping[cid][0],
+                    mapping[cid][1] if len(mapping[cid]) > 2
+                    else PREFIX[mapping[cid][0]] + mapping[cid][1])}
             if kind == "research_candidate":
                 stats["rc_nonempty"] += 1
             else:

@@ -23,9 +23,9 @@
   "priority": "本产物**优先于** batch_auto_research.py 的手写静态字典（后者仅用于无 intake 的旧对象）"
  },
  "coverage": {
-  "objects": 80,
-  "with_intake": 63,
-  "segments_kept": 142,
+  "objects": 84,
+  "with_intake": 67,
+  "segments_kept": 148,
   "segments_dropped_unknown": 19,
   "segments_unknown_stage": 0,
   "rc_total": 27,
@@ -36,8 +36,8 @@
    "RC-2016-RE-SHANTY",
    "RC-2015-FIN-LEVERAGE"
   ],
-  "camp_total": 53,
-  "camp_nonempty": 40
+  "camp_total": 57,
+  "camp_nonempty": 44
  },
  "dropped_segments": [
   {
@@ -809,10 +809,24 @@
    ],
    "provenance": "intake:R01-01/R01-HIEQ-005"
   },
+  "C-2023-MEDIA-AI": {
+   "kind": "campaign",
+   "intake_package": "R02-03",
+   "intake_candidate": "R02-MEDIA-001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2022-11-30",
+     "end": "2023-07-31",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R02-03/R02-MEDIA-001"
+  },
   "C-2023-PHARMA-GLP1": {
    "kind": "campaign",
    "intake_package": "R02-01",
-   "intake_candidate": "001",
+   "intake_candidate": "R02-PHARMA-001",
    "lifecycle": [
     {
      "stage": "MAIN_RISE",
@@ -834,6 +848,40 @@
     }
    ],
    "provenance": "intake:R02-01/R02-PHARMA-001"
+  },
+  "C-2023-PHARMA-FLU": {
+   "kind": "campaign",
+   "intake_package": "R02-03",
+   "intake_candidate": "R02-VACCINE-002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2023-02-20",
+     "end": "2023-03-20",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2023-03-24",
+     "end": "2023-04-15",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R02-03/R02-VACCINE-002"
+  },
+  "C-2021-POWER-GREEN": {
+   "kind": "campaign",
+   "intake_package": "R02-03",
+   "intake_candidate": "R02-POWER-002",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-09-07",
+     "end": "2021-09-28",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R02-03/R02-POWER-002"
   },
   "C-2019-RES-DYE-SHOCK": {
    "kind": "campaign",
@@ -964,6 +1012,26 @@
     }
    ],
    "provenance": "intake:R01-03/R01-RESOURCES-004"
+  },
+  "C-2021-RES-COAL": {
+   "kind": "campaign",
+   "intake_package": "R02-03",
+   "intake_candidate": "R02-COAL-001",
+   "lifecycle": [
+    {
+     "stage": "MAIN_RISE",
+     "start": "2021-08-01",
+     "end": "2021-10-19",
+     "precision": "PHASE_WINDOW"
+    },
+    {
+     "stage": "RETRACEMENT",
+     "start": "2021-10-19",
+     "end": "2021-11-30",
+     "precision": "PHASE_WINDOW"
+    }
+   ],
+   "provenance": "intake:R02-03/R02-COAL-001"
   },
   "C-2024-RES-GOLD-CB": {
    "kind": "campaign",
@@ -2008,6 +2076,23 @@
    ],
    "provenance": "intake:R01-01/R01-HIEQ-005"
   },
+  "C-2023-MEDIA-AI": {
+   "start": [
+    "2022-11-30 ChatGPT 发布，生成式 AI 主题兴起",
+    "传媒板块估值在 2022-11 处于低点，内容供给释放"
+   ],
+   "accelerator": [
+    "AI 在内容行业（游戏 / 出版 / 影视）率先落地的叙事扩散",
+    "子板块轮动：游戏涨幅居首（2023H1 约 93.99%），出版、影视跟随"
+   ],
+   "turning": [
+    "★ 本包**未识别**该段的转折信号 —— 未取得行情序列，按协议不推断。"
+   ],
+   "ending": [
+    "★ 未界定（仅界定统计终点窗口 7 月末）"
+   ],
+   "provenance": "intake:R02-03/R02-MEDIA-001"
+  },
   "C-2023-PHARMA-GLP1": {
    "start": [
     "美股 GLP-1 双寡头（诺和诺德司美格鲁肽、礼来替尔泊肽）销售与临床数据超预期，市值创历史新高，外溢至 A 股",
@@ -2029,6 +2114,38 @@
     "本包未取得该段后续完整走势来源，不推断其最终收敛方式"
    ],
    "provenance": "intake:R02-01/R02-PHARMA-001"
+  },
+  "C-2023-PHARMA-FLU": {
+   "start": [
+    "2023 年冬春季流感高发，主要流行株为 A(H1N1)pdm09",
+    "抗流感药物需求上升，部分药企满负荷生产"
+   ],
+   "accelerator": [
+    "流感疫苗接种与抗流感药物销售预期上升，概念股集体走高"
+   ],
+   "turning": [
+    "第 12 周南方省份阳性率上升趋缓、北方省份下降（官方监测）"
+   ],
+   "ending": [
+    "流感活动回落，行情降温（本包未取得终局日的直接证据）"
+   ],
+   "provenance": "intake:R02-03/R02-VACCINE-002"
+  },
+  "C-2021-POWER-GREEN": {
+   "start": [
+    "2021-09-07 国家发展改革委、国家能源局复函推动绿色电力交易试点（碳达峰碳中和背景下的电力市场化改革）"
+   ],
+   "accelerator": [
+    "2021-09-28 绿色电力交易试点正式启动，首批交易规模落地",
+    "同期能耗双控与电力供应紧张（2021-09 多地限电）强化新能源运营商与绿电的稀缺性叙事"
+   ],
+   "turning": [
+    "★ 本包**未识别**该段的转折信号 —— 未取得行情序列，按协议不推断。"
+   ],
+   "ending": [
+    "★ 未界定"
+   ],
+   "provenance": "intake:R02-03/R02-POWER-002"
   },
   "C-2019-RES-DYE-SHOCK": {
    "start": [
@@ -2146,6 +2263,24 @@
     "价格向成本线回归"
    ],
    "provenance": "intake:R01-03/R01-RESOURCES-004"
+  },
+  "C-2021-RES-COAL": {
+   "start": [
+    "产地安监、环保、超能力检查（2021-03 危险作业罪正式入刑）压缩产量",
+    "进口减量（澳煤）加剧高卡低硫煤种紧缺"
+   ],
+   "accelerator": [
+    "经济复苏带动工业用电与燃煤消费激增",
+    "高温与冬储需求叠加，全国火电增量与燃煤消费量激增",
+    "9 月多省能耗双控与电力供应短缺导致『拉闸限电』，强化供给紧张叙事"
+   ],
+   "turning": [
+    "2021-10-19 国家发展改革委研究依法对煤炭价格实施干预，并组织重点煤企、行业协会召开保供稳价座谈会"
+   ],
+   "ending": [
+    "保供稳价政策下产地供应增加、电厂库存提升，动力煤现货价格快速回落"
+   ],
+   "provenance": "intake:R02-03/R02-COAL-001"
   },
   "C-2024-RES-GOLD-CB": {
    "start": [

@@ -83,6 +83,17 @@ NEW_RULES = [
                     "**不得**据此推断季节性。（R02-03 · 2026-10-10）"},
 ]
 
+# ★★ 标准格式的 canonical → intake 映射（供 `build_lifecycle_from_intake` 提取）。
+#    格式必须是 `INTAKE_MAP = [("<canonical>", "<intake_id>")]` —— 该构建器用正则扫本文件。
+#    R02-03 的 4 个方向在**同一个包**里用了 4 个前缀（COAL/POWER/VACCINE/MEDIA），
+#    因此构建器必须按**完整 intake id** 查表，不能靠「包 → 单一前缀」拼接。
+INTAKE_MAP = [
+    ("C-2021-RES-COAL", "R02-COAL-001"),
+    ("C-2021-POWER-GREEN", "R02-POWER-002"),
+    ("C-2023-PHARMA-FLU", "R02-VACCINE-002"),
+    ("C-2023-MEDIA-AI", "R02-MEDIA-001"),
+]
+
 # 新年度综述（另两条复用既有：AR-RES-2021 / AR-MED-2023）
 NEW_ANNUAL = [
     {"annual_review_id": "AR-PWROP-2021", "rule_id": "rule_power_operation", "year": 2021,
