@@ -196,6 +196,56 @@ def preflight():
     else:
         rep(OK, "C4", "themeColors 与 DB 的 %d 个根主题一一对应" % len(db_roots))
 
+    # ---- 坑 6（2026-10-11 实测踩到，代价 117 个测试）：**版本号在多处被断言** ----
+    #
+    # 实测：把 export 升到 `1.1` 时**漏改**产品适配器的版本断言
+    # （`timelineAdapter.ts::validateTimelineExportV1` 硬断言 `'1.0'`）→
+    # `fromTimelineExportV1` 直接抛错 → **117 个测试失败**。
+    # 本检查把「**谁在断言 export 版本**」全部找出来并逐一核对。
+    exp_v = (load(EXPORT) or {}).get("timeline_export_version")
+    print()
+    print("  export 实际版本：timeline_export_version = %r" % exp_v)
+    targets = [
+        ("src/data/timeline/timelineAdapter.ts", "产品适配器"),
+        ("research/scripts/validate_timeline_export.py", "导出校验器"),
+    ]
+    bad_v = []
+    for rel, name in targets:
+        p = os.path.join(ROOT, rel)
+        if not os.path.isfile(p):
+            continue
+        lines = read(p).splitlines()
+        accepted = set()
+        for i, ln in enumerate(lines):
+            if "timeline_export_version" in ln:
+                # 取该行 ±3 行的窗口（断言可能换行写）
+                for w in lines[max(0, i - 3): i + 4]:
+                    accepted |= set(re.findall(r"['\"](\d+\.\d+)['\"]", w))
+        if accepted and exp_v not in accepted:
+            bad_v.append("%s（%s）只接受 %s" % (rel, name, sorted(accepted)))
+    if bad_v:
+        rep(FAIL, "C6", "以下位置**不接受** export 的实际版本 %r → 会在运行时报错：\n         %s"
+            % (exp_v, "\n         ".join(bad_v)))
+    else:
+        rep(OK, "C6", "产品适配器 + 导出校验器 均接受 export 版本 %r" % exp_v)
+
+    # ---- 坑 7：**合同文档**声明的版本 vs export 实际版本（两份真相）----
+    contract_docs = ["research/research/methodology/timeline_export_contract_v1.md",
+                     "contracts/timeline_export_v1.md"]
+    bad_d = []
+    for rel in contract_docs:
+        p = os.path.join(ROOT, rel)
+        if not os.path.isfile(p):
+            continue
+        found = set(re.findall(r'timeline_export_version\s*=\s*"(\d+\.\d+)"', read(p)))
+        if found and exp_v not in found:
+            bad_d.append("%s 声明 %s" % (rel, sorted(found)))
+    if bad_d:
+        rep(FAIL, "C7", "合同文档声明的版本与 export 不一致（应含 %r）：\n         %s"
+            % (exp_v, "\n         ".join(bad_d)))
+    else:
+        rep(OK, "C7", "合同文档（两份副本）声明的版本与 export 一致")
+
     # ---- 坑 5：lifecycle artifact 是否覆盖全部 DB 对象（或已在 INTAKE_MAP）----
     lfi = os.path.join(REPORTS, "lifecycle_from_intake_v0_2.json")
     if os.path.isfile(lfi):

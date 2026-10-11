@@ -1,7 +1,7 @@
-# Timeline Export Contract v1.0（Research → Cycle 唯一接口）
+# Timeline Export Contract v1.1（Research → Cycle 唯一接口）
 
 > 本文件定义 Cycle-Research → Cycle Timeline 的**唯一**数据交换契约（`timeline_export_v1.json`）。
-> 版本：`timeline_export_version = "1.0"`。未来修改走 1.1 / 2.0，保持向后兼容。
+> 版本：`timeline_export_version = "1.1"`。未来修改走 1.2 / 2.0，保持向后兼容。
 > 项目初心：让 Cycle Timeline 直接消费历史 Campaign / Research Signal / Research Candidate / Event / Security / Rule，服务"看历史时间轴 → 找当前相似阶段 → 提前观察"。
 
 ## 0. 时间精度（V1.7 引入，三档统一）
@@ -25,7 +25,7 @@
 ```json
 {
   "contract": "timeline_export",
-  "timeline_export_version": "1.0",
+  "timeline_export_version": "1.1",
   "generated_at": "ISO 时间戳",
   "source_commit": "git commit（数据来源可追溯）",
   "project": "Cycle-Research",
@@ -43,9 +43,27 @@
 
 ## 2. Version
 
-- 当前：`"1.0"`（canonical）。
+- 当前：`"1.1"`（canonical）。
 - 只允许一个版本字段；禁止新旧版本并存。
-- 未来：`1.1`（向后兼容新增可选字段）、`2.0`（破坏性变更，需迁移文档）。
+- 历史：`1.0` —— **仍被接受**（读取方必须同时接受 1.0 与 1.1）。
+- 未来：`1.2`（向后兼容新增可选字段）、`2.0`（破坏性变更，需迁移文档）。
+
+### 2.1 v1.0 → v1.1 的唯一变化
+
+**新增两个字段**（纯增量，不改任何既有字段语义）：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `macro_theme_root` | `string \| null` | Research 侧（**CMTR v1**）沿 `themes.parent_theme_id` 上溯至**根**解析出的 Macro Theme 根名 |
+| `macro_theme_root_status` | `string` | 解析状态（`RESOLVED` / `CONFLICT` / `UNRESOLVED_NAME` / `NO_THEME`） |
+
+**语义约束（读取方必须遵守）**：
+- `macro_theme_root` 为 `null` **仅当** `status != "RESOLVED"` —— **不猜**。
+- 产品侧**只读不算**：**不得**在 Product 内重实现 taxonomy（`AGENTS.md` §4）。
+- **为什么加**：产品原用**字面主题名**归组，与 canonical 口径（上溯至根）**不等价** ——
+  实测 `航天装备` 是 `国防军工` 的子节点，产品却把它当独立一行，
+  且因不在配色表里而**渲染成与「未标注」相同的灰色**（不报错）。
+- 适用对象：`campaigns[]` **与** `research_candidates[]` **都要有**。
 
 ## 3. Rules
 
@@ -209,7 +227,7 @@
 ```json
 {
   "contract": "timeline_export",
-  "timeline_export_version": "1.0",
+  "timeline_export_version": "1.1",
   "generated_at": "2026-09-13T11:49:39",
   "source_commit": "49797cc...",
   "project": "Cycle-Research",

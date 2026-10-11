@@ -593,6 +593,27 @@ def validate_index(path: str, label: str) -> None:
     else:
         ok("%s · I5 索引与目录一致（%d 份快照）" % (label, len(actual)))
 
+    # ★★ I6（2026-10-11 新增）：全索引内 **`CANONICAL` 至多一份**。
+    #
+    # 为什么需要：V2 只检查 `status` ∈ 枚举，**不约束唯一性** —— 实测（签发
+    # MS-2026-10-11-01 时**漏给 `--supersedes`**）索引里出现**两份 CANONICAL**，
+    # 而当时全部 14 项校验**照样 PASS**。这与「校验器只查形状、不查语义」是同一类缺口。
+    #
+    # ★ 语义：`CANONICAL` = 「**当前**已签发、Product 可消费的那一份」。
+    #   晋升新快照时**必须** `--supersedes <旧快照>` 把旧的一份置为 `ARCHIVED`
+    #   （生成器 `archive_superseded()` 负责）。
+    canon = [e.get("snapshot_id") for e in snaps
+             if isinstance(e, dict) and e.get("status") == "CANONICAL"]
+    if len(canon) > 1:
+        fail("I6·%s" % label,
+             "**%d 份 CANONICAL**（应至多 1 份）：%s —— 晋升新快照时必须给 "
+             "`--supersedes <旧快照>`" % (len(canon), sorted(canon)))
+    elif len(canon) == 0:
+        # 合法（尚未签发任何快照）；但显式提示，避免「以为签过」
+        warn("I6·%s" % label, "当前**没有** CANONICAL 快照（Product 默认门禁将无可展示）")
+    else:
+        ok("%s · I6 CANONICAL 唯一（%s）" % (label, canon[0]))
+
 
 def main() -> int:
     args = sys.argv[1:]
