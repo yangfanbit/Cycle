@@ -816,12 +816,21 @@
    "lifecycle": [
     {
      "stage": "MAIN_RISE",
-     "start": "2022-11-30",
+     "start": "2023-03-31",
      "end": "2023-07-31",
      "precision": "PHASE_WINDOW"
     }
    ],
-   "provenance": "intake:R02-03/R02-MEDIA-001"
+   "provenance": "intake:R02-03/R02-MEDIA-001",
+   "review_overrides": [
+    {
+     "field": "lifecycle.MAIN_RISE.start",
+     "from": "2022-11-30",
+     "to": "2023-03-31",
+     "basis": "R02-03 审查 §三 #8：intake 起始窗口端点 2022-11-30（「ChatGPT 发布」）在证据中**没有任何 source_id**（实测 start.source_ids = ['R02-MEDIA-S005']，而该来源记载的是「2022-11 估值低点」与「2023H1 子板块普涨」）。二选一：①补来源；②把端点收回到来源实际支持的范围。本轮取 ②。",
+     "review_ref": "docs/R02_03_REVIEW_v0_1.md §三 #8 required_changes 第 1 条"
+    }
+   ]
   },
   "C-2023-PHARMA-GLP1": {
    "kind": "campaign",
@@ -2841,5 +2850,18 @@
    ],
    "provenance": "intake:R01-06/R01-MIL-007"
   }
+ },
+ "review_overrides": {
+  "source": "research/research/reports/review_overrides_v0_1.json",
+  "applied": [
+   {
+    "canonical_id": "C-2023-MEDIA-AI",
+    "field": "MAIN_RISE.start",
+    "from": "2022-11-30",
+    "to": "2023-03-31"
+   }
+  ],
+  "skipped": [],
+  "rule": "覆盖只**收紧到有来源支持的范围**；原值 from 与裁定值 to 一并留档，原值不删除。"
  }
 }

@@ -1,0 +1,38 @@
+{
+  "artifact": "review_overrides",
+  "artifact_version": "0.1",
+  "generated_at": "2026-10-11T10:00:00+08:00",
+  "generated_by": "ThreeC Agent",
+  "position": "位于 intake 派生**之后**、export 装配**之前** —— 让 ThreeC Agent 的审查裁定真正生效",
+  "why_this_exists": [
+    "★ 根因（R02-03 实测）：export 的 `lifecycle` 来自 **intake 包**，而 ThreeC Agent 的审查裁定",
+    "（ACCEPT_WITH_CHANGES 的 required_changes）只写进了 **DB**。两者是**两份真相** ——",
+    "`campaigns.start_date` 已被裁定修正为 2023-03-31，但 `lifecycle[MAIN_RISE].start` 仍是",
+    "intake 里的 2022-11-30 → **地图画出的是那个无来源的起点**。",
+    "★ 直接改写 Research Agent 的 intake 包**不允许**（协议 §3 角色分离：产出者 ≠ 审查者）。",
+    "★ 在 export 里事后打补丁**不允许**（会造出第三份真相，且不可审计）。",
+    "→ 因此设一个**显式覆盖层**：由 ThreeC Agent 产出、装配时应用、**原值与依据一并留档**。"
+  ],
+  "rules": [
+    "1. 只允许**收紧到有来源支持的范围**，不得放宽、不得新增未经审查的日期。",
+    "2. 每条覆盖必须带 `basis`（依据）与 `review_ref`（审查文档位置）。",
+    "3. 应用后必须在产物里同时保留 `from`（原值）与 `to`（裁定值）—— 原值不得删除。",
+    "4. 覆盖层**只作用于装配**：不改 DB（DB 已按裁定写入）、不改 intake 包、不改 schema。",
+    "5. 覆盖是**幂等**的：同一 canonical_id + field + stage 重复应用结果一致。"
+  ],
+  "overrides": [
+    {
+      "canonical_id": "C-2023-MEDIA-AI",
+      "field": "lifecycle",
+      "stage": "MAIN_RISE",
+      "action": "set_segment_start",
+      "from": "2022-11-30",
+      "to": "2023-03-31",
+      "basis": "R02-03 审查 §三 #8：intake 起始窗口端点 2022-11-30（「ChatGPT 发布」）在证据中**没有任何 source_id**（实测 start.source_ids = ['R02-MEDIA-S005']，而该来源记载的是「2022-11 估值低点」与「2023H1 子板块普涨」）。二选一：①补来源；②把端点收回到来源实际支持的范围。本轮取 ②。",
+      "review_ref": "docs/R02_03_REVIEW_v0_1.md §三 #8 required_changes 第 1 条",
+      "verdict_ref": "research/intake/reviews/R02-03_verdicts_v0_1.json → verdicts[7].required_changes[0]",
+      "db_already_applied": "campaigns.start_date 已写入 2023-03-31（import_r02_03_canonical_v0_1.py）",
+      "note": "★ 这是**收紧**而非改写历史：2023-03-31 是 2023Q1 末，仍在 S-MEDIA-02 所记载的「2022-11 估值低点之后逐步修复」区间内，且不与任何已登记证据冲突。"
+    }
+  ]
+}

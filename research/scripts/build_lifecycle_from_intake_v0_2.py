@@ -177,6 +177,51 @@ def main():
         elif kind == "research_candidate":
             stats["rc_only_unknown"].append(cid)
 
+    # ================================================================
+    # ★★ 审查裁定覆盖层（2026-10-11，R02-03 实测踩出）
+    #
+    # 根因：export 的 lifecycle 来自 **intake 包**，而 ThreeC Agent 的审查裁定
+    # （ACCEPT_WITH_CHANGES 的 required_changes）只写进了 **DB** → **两份真相**。
+    # 实测：`campaigns.start_date` 已修正为 2023-03-31，但 `lifecycle[MAIN_RISE].start`
+    # 仍是 intake 的 2022-11-30 → 地图画出的是**无来源的起点**。
+    #
+    # 处置：应用一个**显式覆盖层**（由 ThreeC Agent 产出）。
+    #   · 不改写 Research Agent 的 intake 包（协议 §3 角色分离）
+    #   · 不在 export 上事后打补丁（会造第三份真相）
+    #   · **原值 from 与裁定值 to 一并留档**（原值不删除）
+    # ================================================================
+    ov_path = os.path.join(REP, "review_overrides_v0_1.json")
+    ov_applied, ov_skipped = [], []
+    if os.path.isfile(ov_path):
+        ov_doc = json.load(io.open(ov_path, encoding="utf-8"))
+        for ov in ov_doc.get("overrides") or []:
+            cid, stage = ov.get("canonical_id"), ov.get("stage")
+            entry = out.get(cid)
+            if not entry:
+                ov_skipped.append({"override": ov, "reason": "该 cycle 无 lifecycle（未派生）"})
+                continue
+            seg = next((s for s in entry["lifecycle"] if s["stage"] == stage), None)
+            if seg is None:
+                ov_skipped.append({"override": ov, "reason": "该 cycle 无此 stage 段"})
+                continue
+            fld = {"set_segment_start": "start", "set_segment_end": "end"}.get(ov.get("action"))
+            if fld is None:
+                ov_skipped.append({"override": ov, "reason": "未知 action %r" % ov.get("action")})
+                continue
+            if seg[fld] != ov.get("from"):
+                ov_skipped.append({"override": ov,
+                                   "reason": "原值不匹配（现=%r，裁定记录的 from=%r）—— 拒绝应用"
+                                             % (seg[fld], ov.get("from"))})
+                continue
+            seg[fld] = ov["to"]
+            seg["precision"] = derive_precision(seg["start"], seg["end"])
+            entry.setdefault("review_overrides", []).append({
+                "field": "lifecycle.%s.%s" % (stage, fld), "from": ov["from"], "to": ov["to"],
+                "basis": ov.get("basis"), "review_ref": ov.get("review_ref"),
+            })
+            ov_applied.append({"canonical_id": cid, "field": "%s.%s" % (stage, fld),
+                               "from": ov["from"], "to": ov["to"]})
+
     res = {
         "artifact": "lifecycle_from_intake", "artifact_version": "0.2",
         "generated_by": "research/scripts/build_lifecycle_from_intake_v0_2.py",
@@ -193,6 +238,12 @@ def main():
         "dropped_segments": dropped,
         "by_cycle": out,
         "drivers_by_cycle": drivers_out,
+        "review_overrides": {
+            "source": "research/research/reports/review_overrides_v0_1.json",
+            "applied": ov_applied,
+            "skipped": ov_skipped,
+            "rule": "覆盖只**收紧到有来源支持的范围**；原值 from 与裁定值 to 一并留档，原值不删除。",
+        },
     }
 
     if check:

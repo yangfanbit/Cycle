@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-10-11T09:40:17",
-  "source_commit": "82c12702569421cfa692c95421dc1cc48a5ed45a",
+  "generated_at": "2026-10-11T09:53:49",
+  "source_commit": "6876065a31ec4cb261733d98c7011977c2473c30",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -5737,7 +5737,7 @@
       "lifecycle": [
         {
           "stage": "MAIN_RISE",
-          "start": "2022-11-30",
+          "start": "2023-03-31",
           "end": "2023-07-31",
           "precision": "PHASE_WINDOW"
         }
