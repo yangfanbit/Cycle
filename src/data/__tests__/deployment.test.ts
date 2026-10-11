@@ -82,7 +82,7 @@ describe('Deployment · Gate D7 build provenance', () => {
       campaigns: exportJson.campaigns.length,
       researchCandidates: exportJson.research_candidates.length,
     });
-    expect(p.exportObjectCounts!.campaigns).toBe(53);
+    expect(p.exportObjectCounts!.campaigns).toBe(57);
     expect(p.exportObjectCounts!.researchCandidates).toBe(27);
   });
 

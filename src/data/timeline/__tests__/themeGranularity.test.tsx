@@ -47,10 +47,10 @@ const windowsOf = (rows: typeof macroAll) => rows.reduce((n, r) => n + r.windows
 
 describe('粒度 = 分组口径，不是新的研究对象', () => {
   it('★★★ 两种粒度的对象集合与窗口集合**完全一致**（一个都不多、一个都不少）', () => {
-    expect(objectsOf(macroAll)).toBe(80);
-    expect(objectsOf(subAll)).toBe(80);
-    expect(windowsOf(macroAll)).toBe(68);
-    expect(windowsOf(subAll)).toBe(68);
+    expect(objectsOf(macroAll)).toBe(84);
+    expect(objectsOf(subAll)).toBe(84);
+    expect(windowsOf(macroAll)).toBe(72);
+    expect(windowsOf(subAll)).toBe(72);
 
     // 更强：对象 id 集合逐个相等（不是只有计数相等）
     const ids = (rows: typeof macroAll) =>
@@ -59,10 +59,10 @@ describe('粒度 = 分组口径，不是新的研究对象', () => {
   });
 
   it('★ 行数差异只来自「拆得更细」：sub 行数 > macro 行数，且都在「几十条」量级', () => {
-    expect(macroAll.length).toBe(13);
-    expect(subAll.length).toBe(41);
-    expect(macroMap.length).toBe(12);
-    expect(subMap.length).toBe(35);
+    expect(macroAll.length).toBe(15);
+    expect(subAll.length).toBe(45);
+    expect(macroMap.length).toBe(14);
+    expect(subMap.length).toBe(39);
     // 首页仍不是明细库：即便最细口径也远小于对象数
     expect(subMap.length).toBeLessThan(80);
   });
@@ -164,12 +164,25 @@ describe('★★ 样本门槛不因换粒度而放宽', () => {
   });
 });
 
-describe('★ 覆盖边界：用户点名的小主题**确实不在库内**（不假装有）', () => {
-  it('煤炭 / 电力 / 流感疫苗 / 文化传媒 在最细口径下也一个都不命中', () => {
+describe('★ 覆盖边界：R02-03 之后，用户点名的方向**已在库内**', () => {
+  // ★★ 2026-10-11 反转：本测试原先断言「煤炭 / 电力 / 流感疫苗 / 文化传媒 一个都不命中」。
+  //     R02-03 canonicalization 之后该断言**已不成立**（这是好消息导致的失败）——
+  //     现在四个方向都已在库内，其中两个是**新增的根节点**。
+  it('煤炭 / 流感疫苗 / 文化传媒 / 电力（运营端）均已入库', () => {
     const names = subAll.map((r) => r.theme ?? '');
-    for (const w of ['煤炭', '电力', '流感疫苗', '文化传媒', '传媒', '文化', '娱乐', '教育']) {
-      expect(names.some((n) => n.includes(w))).toBe(false);
+    // ★ sub 粒度取的是 `themes[role=main].name` —— 所以这里断言的是**主题材**名。
+    //   `电力（运营端）` 是 `related`（macro 层），**不出现在 sub 行名里**；
+    //   它在 macro 粒度出现（见下一条断言）。
+    for (const w of ['煤炭', '流感疫苗', '文化传媒', '绿电 / 新能源运营商']) {
+      expect(names.some((n) => n.includes(w))).toBe(true);
     }
+    // macro 粒度：两个**新增的根节点**各自成行
+    const macroNames = macroAll.map((r) => r.theme ?? '');
+    for (const w of ['电力（运营端）', '文化传媒']) {
+      expect(macroNames.some((n) => n.includes(w))).toBe(true);
+    }
+    // 仍未覆盖的（如实保留）：教育
+    expect(names.some((n) => n === '教育')).toBe(false);
   });
 
   it('相近但不同：「电网/输变电设备」「光伏/新能源发电设备」存在，属电力设备而非公用事业电力', () => {

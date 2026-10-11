@@ -50,7 +50,7 @@ describe('季节性聚合：纵轴 = 大主题（不是对象、不是年份）'
   it('首页行数远小于历史对象数 —— 首页是地图，不是明细库', () => {
     const allObjects = allRows.reduce((n, r) => n + r.objects.length, 0);
     // Historical Universe 共 79 个研究对象
-    expect(allObjects).toBe(80);
+    expect(allObjects).toBe(84);
     // 一主题一行：行数必须是「几十条」而不是「上百条」
     expect(mapRows.length).toBeLessThan(20);
     expect(mapRows.length).toBeLessThan(allObjects / 4);
@@ -80,7 +80,7 @@ describe('季节性聚合：纵轴 = 大主题（不是对象、不是年份）'
       expect(r.objects.length).toBeGreaterThan(0);
     }
     // 合计仍是 80（能力不删除，只是不在首页铺开）
-    expect(mapRows.reduce((n, r) => n + r.objects.length, 0) + excluded.reduce((n, r) => n + r.objects.length, 0)).toBe(80);
+    expect(mapRows.reduce((n, r) => n + r.objects.length, 0) + excluded.reduce((n, r) => n + r.objects.length, 0)).toBe(84);
   });
 });
 

@@ -57,8 +57,8 @@ describe('研究闭环验收 · 0. 前置：当前研究对象与历史宇宙', 
     }
   });
 
-  it('历史宇宙 = 53 Campaign + 27 Research Candidate（身份已正式区分）', () => {
-    expect(timelineExportData.campaigns).toHaveLength(53);
+  it('历史宇宙 = 57 Campaign + 27 Research Candidate（身份已正式区分）', () => {
+    expect(timelineExportData.campaigns).toHaveLength(57);
     expect(timelineExportData.research_candidates).toHaveLength(27);
     // SA artifact 的 identity 必须同时含两类（不再是「全部 campaign」）
     const kinds = new Set(
@@ -110,7 +110,7 @@ describe('研究闭环验收 · 1–6. 逐 Candidate 走完整链路', () => {
             expect(e.identity.historicalResearchCandidateId).toBeNull();
           }
         }
-        expect(campaigns).toBe(53);
+        expect(campaigns).toBe(57);
         expect(rcs).toBe(27);
       });
 

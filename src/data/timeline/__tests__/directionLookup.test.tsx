@@ -46,15 +46,21 @@ describe('directionLookup · 覆盖地图（真实数据）', () => {
     expect(r.historical[0].matchedOn.length).toBeGreaterThan(0);
   });
 
-  it('★ 文化传媒 → 都没有（none）—— 诚实说覆盖不到', () => {
+  it('★ 文化传媒 → 只有历史（historical-only）—— R02-03 之后已有历史对象', () => {
+    // ★★ 2026-10-11 反转：原先断言 verdict = 'none'（未覆盖）。
+    //     R02-03 入库 `C-2023-MEDIA-AI` 之后，历史侧已命中 → historical-only。
+    //     ★ 当前侧**仍为空** —— 文化传媒的当前研究对象尚未建立（属另一轮）。
     const r = lookupDirection('文化传媒', source, dataset);
-    expect(r.verdict).toBe('none');
+    expect(r.verdict).toBe('historical-only');
     expect(r.current).toHaveLength(0);
-    expect(r.historical).toHaveLength(0);
+    expect(r.historical.length).toBeGreaterThan(0);
+    expect(r.historical.some((h) => h.id === 'C-2023-MEDIA-AI')).toBe(true);
   });
 
-  it('★★ 「未覆盖」必须说清：只对主题名成立，不等于结构上无对应', () => {
-    const r = lookupDirection('文化传媒', source, dataset);
+  it('★★ 查不到时必须说清「未覆盖」的边界（改用仍未覆盖的方向验证）', () => {
+    // ★★ 2026-10-11：原先用「文化传媒」验证本语义，但 R02-03 之后它已入库
+    //     → 改用**仍未覆盖**的方向（教育）验证同一条语义。
+    const r = lookupDirection('教育', source, dataset);
     expect(r.verdict).toBe('none');
     const h = renderToStaticMarkup(
       <DirectionLookupSection source={source} dataset={dataset} />,
