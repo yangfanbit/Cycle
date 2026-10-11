@@ -356,6 +356,19 @@ def main(argv):
         if os.path.isdir(src):
             shutil.copytree(src, os.path.join(out, "research", "intake", "packages", pkg))
 
+    # ---- 2b. ★★ 审查结论（2026-10-11 补）----
+    # 为什么必须有：**补做类任务**（如 R02-04 补 R02-03 的 DEFER 项）的
+    # 「要补什么」**只写在审查结论里**（`verdicts[].missing_items`）。
+    # 不拷进去，Research Agent 就**看不到自己要补的缺失项** —— 实测踩到。
+    reviews_src = os.path.join(INTAKE_DIR, "reviews")
+    if os.path.isdir(reviews_src):
+        dst = os.path.join(out, "research", "intake", "reviews")
+        if not os.path.isdir(dst):
+            os.makedirs(dst)
+        for fn in sorted(os.listdir(reviews_src)):
+            if fn.endswith(".json"):
+                shutil.copyfile(os.path.join(reviews_src, fn), os.path.join(dst, fn))
+
     # ---- 3. Prompt ----
     copy_file(prompt_path, os.path.join(out, "docs", prompt_name))
 

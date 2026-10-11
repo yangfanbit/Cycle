@@ -10,7 +10,7 @@
   "source_commit": "c742968",
   "source_commit_note": "本 manifest 所依据的 ThreeC baseline commit（Product 1.2 Usage-Driven 轮：主题粒度切换 + 覆盖边界实测）。",
   "status": "AUTHORIZED",
-  "status_note": "★ 用户于 2026-10-09 明确授权启动（原话：「1、授权启动」）。★ 本 manifest 只新增一个任务 R02-03。R02-01 / R02-02 不在此 manifest 内 —— 它们由用户于 2026-10-07 直接授权产出（见各自 manifest 的 task_definition_note），此处**不追溯改写**。",
+  "status_note": "★ 用户于 2026-10-09 明确授权启动（原话：「1、授权启动」）。★ 本 manifest 含两个任务：R02-03（已完成，包已交并审查）与 R02-04（2026-10-11 新增：两条 DEFER 补做）。R02-01 / R02-02 不在此 manifest 内 —— 它们由用户于 2026-10-07 直接授权产出（见各自 manifest 的 task_definition_note），此处**不追溯改写**。",
   "authorization": {
     "authorized_by": "user",
     "authorized_at": "2026-10-09",
@@ -31,9 +31,18 @@
     "role_separation_note": "★ 协议 §3 角色分离**必须**成立：本 manifest 由 **ThreeC Agent 角色**签发；intake package 由 **Research Agent 角色**产出；package 的审查（八种结果）与 canonicalization 回到 **ThreeC Agent 角色**。**同一个执行者不得同时产出并自审。**（依据：2026-10-08 实测在 self-review 中抓到 27 条「改写冒充引文」。）"
   },
   "global_constraints": {
-    "years": { "from": 2015, "to": 2025 },
-    "priority_a_years": { "from": 2018, "to": 2025 },
-    "priority_b_years": { "from": 2015, "to": 2017 },
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
     "priority_definitions": {
       "A": "2018–2025。当前 ThreeC 历史主宇宙的直接扩容区。必须独立可交付，不得被 Priority B 阻塞。",
       "B": "2015–2017。历史回填区。允许大面积 INSUFFICIENT。"
@@ -69,8 +78,16 @@
     {
       "task_id": "R02-03",
       "scope": "用户点名的四个方向：煤炭（动力煤/焦煤）· 电力（公用事业运营端）· 流感疫苗 · 文化传媒。四个方向**各自独立成族**，必须分别给出 coverage 与 exclusions，不得合并成一条「泛周期」。",
-      "macro_theme_candidates": ["煤炭", "电力", "流感疫苗", "文化传媒"],
-      "years": { "from": 2015, "to": 2025 },
+      "macro_theme_candidates": [
+        "煤炭",
+        "电力",
+        "流感疫苗",
+        "文化传媒"
+      ],
+      "years": {
+        "from": 2015,
+        "to": 2025
+      },
       "priority": "A",
       "priority_note": "★ 四个方向全部按 Priority A 交付；Priority B（2015–2017）允许 INSUFFICIENT，不得阻塞 2018–2025。",
       "subdivision_principle": {
@@ -99,17 +116,65 @@
             "user_directive": "★ 用户 2026-10-09 指令原文：「3、电力 细分 根据 **市场炒作过的概念/板块**进行区分」",
             "what_it_means": "**不要**按教科书式行业分类（火电/水电/核电/风电…）机械切分；要按 **A 股市场当年实际炒作过的概念 / 板块** 切分 —— 因为本项目要回答的是「历史上哪些时间窗口反复出现过什么类型的题材炒作」，而不是行业统计。**同一细分若在市场上从未被当作独立题材炒作过，就不应单独成段。**",
             "concept_candidates_to_verify": [
-              { "concept": "电力体制改革 / 新电改（售电侧 · 配售电）", "likely_first_wave": "2015 前后（中发 9 号文）", "verify_required": true },
-              { "concept": "火电（煤价—电价剪刀差 · 煤电联动）", "likely_first_wave": "2015–2016 / 2021 煤价上行", "verify_required": true },
-              { "concept": "水电（来水 · 汛期 · 利用小时）", "likely_first_wave": "多轮", "verify_required": true, "seasonality_hint": "用户点名本方向的首要理由是「时间相关性高」—— 来水与汛期是**天然季节性**，必须专门核验是否存在可复现的年内窗口" },
-              { "concept": "核电（核准重启 · 华龙一号）", "likely_first_wave": "2019 前后", "verify_required": true },
-              { "concept": "绿电 / 新能源运营商（风光运营 · 绿电交易）", "likely_first_wave": "2021 前后", "verify_required": true },
-              { "concept": "电力现货市场 / 辅助服务市场", "likely_first_wave": "2022–2024", "verify_required": true },
-              { "concept": "虚拟电厂 / 需求侧响应", "likely_first_wave": "2023–2025", "verify_required": true },
-              { "concept": "抽水蓄能 / 储能运营", "likely_first_wave": "2021–2022", "verify_required": true, "overlap_risk": "储能**设备**属「电力设备」；只有**运营**侧才归本方向" },
-              { "concept": "电价改革（分时电价 · 容量电价）", "likely_first_wave": "2021–2023", "verify_required": true },
-              { "concept": "绿证 / CCER / 碳交易", "likely_first_wave": "2017 / 2021–2024", "verify_required": true, "overlap_risk": "与「资源」族可能交叉，需 CMTR v1 判定" },
-              { "concept": "「算力+电力」/ 数据中心供电", "likely_first_wave": "2024–2025", "verify_required": true, "overlap_risk": "与「信息通信」/「电子」高度交叉，**默认不归本方向**，除非证据显示其炒作主线是电力供给侧" }
+              {
+                "concept": "电力体制改革 / 新电改（售电侧 · 配售电）",
+                "likely_first_wave": "2015 前后（中发 9 号文）",
+                "verify_required": true
+              },
+              {
+                "concept": "火电（煤价—电价剪刀差 · 煤电联动）",
+                "likely_first_wave": "2015–2016 / 2021 煤价上行",
+                "verify_required": true
+              },
+              {
+                "concept": "水电（来水 · 汛期 · 利用小时）",
+                "likely_first_wave": "多轮",
+                "verify_required": true,
+                "seasonality_hint": "用户点名本方向的首要理由是「时间相关性高」—— 来水与汛期是**天然季节性**，必须专门核验是否存在可复现的年内窗口"
+              },
+              {
+                "concept": "核电（核准重启 · 华龙一号）",
+                "likely_first_wave": "2019 前后",
+                "verify_required": true
+              },
+              {
+                "concept": "绿电 / 新能源运营商（风光运营 · 绿电交易）",
+                "likely_first_wave": "2021 前后",
+                "verify_required": true
+              },
+              {
+                "concept": "电力现货市场 / 辅助服务市场",
+                "likely_first_wave": "2022–2024",
+                "verify_required": true
+              },
+              {
+                "concept": "虚拟电厂 / 需求侧响应",
+                "likely_first_wave": "2023–2025",
+                "verify_required": true
+              },
+              {
+                "concept": "抽水蓄能 / 储能运营",
+                "likely_first_wave": "2021–2022",
+                "verify_required": true,
+                "overlap_risk": "储能**设备**属「电力设备」；只有**运营**侧才归本方向"
+              },
+              {
+                "concept": "电价改革（分时电价 · 容量电价）",
+                "likely_first_wave": "2021–2023",
+                "verify_required": true
+              },
+              {
+                "concept": "绿证 / CCER / 碳交易",
+                "likely_first_wave": "2017 / 2021–2024",
+                "verify_required": true,
+                "overlap_risk": "与「资源」族可能交叉，需 CMTR v1 判定"
+              },
+              {
+                "concept": "「算力+电力」/ 数据中心供电",
+                "likely_first_wave": "2024–2025",
+                "verify_required": true,
+                "overlap_risk": "与「信息通信」/「电子」高度交叉，**默认不归本方向**，除非证据显示其炒作主线是电力供给侧"
+              }
             ],
             "explicit_exclusions_from_this_direction": [
               "特高压 · 电网投资 · 输变电设备 —— 属**电力设备（制造）**，不属本方向",
@@ -150,6 +215,73 @@
         "不把 2026 年的当下事件写成历史 Campaign（超出 2015–2025 历史研究窗口）。",
         "不为四个方向各自凑够 N 个 Campaign；**「该方向历史上没有形成 Campaign」是合法且有价值的结论**，用 no_clear_campaign / exclusions 显式记录（覆盖计划 §5）。",
         "不改 Product（`src/**`）：本任务是研究侧扩容，产品侧呈现另行处理。"
+      ]
+    },
+    {
+      "task_id": "R02-04",
+      "scope": "R02-03 的**两条 DEFER 补做**（不重做 R02-03，不覆盖其包）。只补被审查指出的**缺失项**。",
+      "macro_theme_candidates": [
+        "煤炭",
+        "文化传媒"
+      ],
+      "years": {
+        "from": 2015,
+        "to": 2025
+      },
+      "priority": "A",
+      "priority_note": "★ 两条各自独立交付；**任一条拿不到就如实记 known_gaps，不得凑**。",
+      "trigger": {
+        "kind": "REVIEW_DEFERRED_ITEMS",
+        "date": "2026-10-11",
+        "why": "R02-03 审查对这两条候选给出 DEFER（不是 REJECT、不是 INSUFFICIENT）——障碍在**证据结构 / 定性**层面，需补做**指定的缺失项**才能再评估。",
+        "verdict_source": "research/intake/reviews/R02-03_verdicts_v0_1.json → verdicts[1] 与 verdicts[8]",
+        "review_doc": "docs/R02_03_REVIEW_v0_1.md §三 #2 与 #9"
+      },
+      "items": [
+        {
+          "candidate_id": "R02-COAL-002",
+          "title_ref": "2022–2024 煤炭高股息 / 红利资产重估行情",
+          "verdict": "DEFER",
+          "missing_items": [
+            "① **板块指数口径序列**（用于界定 peak / end）—— 该段目前 peak=UNKNOWN、end=OPEN_ENDED",
+            "② 与 `R02-COAL-001` 及 **2022 俄乌能源价格段**的**边界判定**（须走 Campaign Independence Gate Q1–Q5）"
+          ],
+          "★_known_obstacle": "★ R02-03 的 known_gaps 已记：「指数涨跌幅 / 板块涨幅只能来自商用数据库（Wind 等）」。**若本轮仍拿不到 Tier 1/2 一手行情口径 → 如实写入 known_gaps，不要用二手口径顶替。**「拿不到」本身是可接受的结论。",
+          "expected_output": "新包 R02-04 中对该候选的**补充证据 + 更新后的 date_candidates（含 peak/end 或明确的未界定理由）+ 边界判定依据**"
+        },
+        {
+          "candidate_id": "R02-MEDIA-002",
+          "title_ref": "2018 年游戏版号暂停与恢复驱动的传媒 / 游戏板块周期",
+          "verdict": "DEFER",
+          "missing_items": [
+            "① **重新界定为「版号恢复后的修复段」**（把政策转向当**起点**而非终点）并取得该段的行情证据",
+            "② 版号暂停**起止日**的可用口径说明 —— ★ 该暂停**未被正式公告**，无官方一手来源，须说明所用口径"
+          ],
+          "expected_output": "新包 R02-04 中给出**重新界定后的时间结构**（起点 = 2018-12-21 政策转向）+ 该段行情证据 + 暂停起止日的口径说明"
+        }
+      ],
+      "subdivision_principle": {
+        "user_directive": "★ 用户 2026-10-09：「电力 细分 **根据市场炒作过的概念/板块**进行区分」。本原则对四个方向**一律适用**。",
+        "rule": "细分口径 = **A 股市场当年实际炒作过的概念 / 板块**，**不是**教科书式行业分类（不是「火电/水电/核电」这种静态切分，也不是申万三级行业表）。",
+        "why": "本项目要回答的是「一年中历史上哪些时间窗口**反复出现过什么类型的题材炒作**」，不是行业统计。一个细分若在市场上**从未被当作独立题材炒作过**，就不应单独成段 —— 那会制造出没有历史对应物的空行。",
+        "how_to_apply": [
+          "① 先列出该方向在 2015–2025 年**市场上被炒作过的概念 / 板块名**（用当时的**原始板块名 / 概念名**，不要事后重命名）；",
+          "② 每条都要有来源证明「它确实被当作独立题材炒作过」—— 只有行业统计分类、没有市场炒作证据的，不得作为细分；",
+          "③ 同一概念在不同年份可能是**不同 Campaign**（如「新电改」2015 与「绿电」2021 机制不同），也可能是**同一 Campaign 的延续** —— 这个判断必须显式写出依据，交 ThreeC Agent 走 Campaign Independence Gate；",
+          "④ 核验不通过的概念写入 `exclusions[]`（`reason_code = NOT_A_CAMPAIGN` 或 `NOT_INDEPENDENT_MACRO_THEME`），**不得**为了凑数保留。"
+        ],
+        "seasonality_note": "★ 用户点名这四个方向的理由是「**时间相关性都挺高的**」。因此 Research Agent 必须**专门核验季节性**：每个细分是否有可复现的年内窗口（如煤炭冬储 / 迎峰度夏、水电来水与汛期、流感疫苗秋季接种、文化传媒春节档与暑期档）。★ 这些是**待核验的假设**，不是已确认事实 —— 核验结果必须来自来源，不得凭常识写入。"
+      },
+      "known_overlap": [
+        "R02-COAL-002 ↔ 已有「资源」族 + `R02-COAL-001`（同族、同机制轴的不同段）",
+        "R02-COAL-002 ↔ 库内银行高股息段（同一机制轴、不同行业 —— 不构成重复，但须记录）",
+        "R02-MEDIA-002 ↔ `R02-MEDIA-001`（同为文化传媒族，机制不同：监管周期 vs 技术主题）"
+      ],
+      "explicit_non_goals": [
+        "**不重做** R02-03 的其它 7 条候选",
+        "**不覆盖** `research/intake/packages/R02-03/`（升版规则：新版写新文件）",
+        "不为「让候选成立」而放宽证据门槛（宁可仍判 DEFER）",
+        "不改 `src/**` · `exports/` · DB"
       ]
     }
   ],
