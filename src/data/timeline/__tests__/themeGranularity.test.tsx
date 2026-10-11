@@ -158,9 +158,11 @@ describe('★★ 样本门槛不因换粒度而放宽', () => {
     expect(semi.statement).toBeNull();
   });
 
-  it('★ macro 下达到判据的 3 行仍是汽车 / 资源 / 金融（换粒度不影响既有结论）', () => {
+  it('★ macro 下达到判据的 2 行是汽车 / 金融（换粒度不影响既有结论）', () => {
+    // ★★ 2026-10-11（R02-03 入库后）由 3 行 → **2 行**：
+    // `资源` 因新增煤炭窗口（2021-08~10）落在集中带（03-02~05-02）外 → 3/5 < 2/3，不再达标。
     const conc = macroMap.filter((r) => seasonalityOf(r).concentrated).map((r) => r.theme);
-    expect(conc.sort()).toEqual(['汽车', '资源', '金融']);
+    expect(conc.sort()).toEqual(['汽车', '金融']);
   });
 });
 
@@ -250,7 +252,7 @@ describe('SeasonalMap · 粒度切换渲染', () => {
   });
 
   it('★ 集中标注随粒度重算：macro 3 个、sub 1 个', () => {
-    expect((macroHtml.match(/sm-seasonal-flag/g) ?? []).length).toBe(3);
+    expect((macroHtml.match(/sm-seasonal-flag/g) ?? []).length).toBe(2);
     expect((subHtml.match(/sm-seasonal-flag/g) ?? []).length).toBe(1);
     expect(subHtml).toContain('银行');
   });

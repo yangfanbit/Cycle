@@ -37,8 +37,16 @@ describe('themeSeasonality · 年内集中度（真实数据）', () => {
     expect(s.statement).toBe('年内窗口 6 个 · 其中 6 个落在 05-23 ~ 07-23');
   });
 
-  it('★ 资源 / 金融：3/4 达到判据；电子 / 消费（分散）**不**标注', () => {
-    expect(seasonalityOf(byLabel.get('资源')!).concentrated).toBe(true);
+  it('★ 金融：4/3 达到判据；资源（R02-03 后 5/3）· 电子 / 消费（分散）**不**标注', () => {
+    // ★★ 2026-10-11（R02-03 入库后）：`资源` 由 3/4 → **5/3** ——
+    //     新增的 `C-2021-RES-COAL` 窗口（2021-08~10）落在原集中带（03-02~05-02）**之外**，
+    //     3/5 = 0.6 < 2/3 → **不再达标**。这正是「新增对象会改变集中度」的正常后果，
+    //     不是缺陷：集中度是**计数的确定性派生**，样本变了结论就该变。
+    const zy = seasonalityOf(byLabel.get('资源')!);
+    expect(zy.windowCount).toBe(5);
+    expect(zy.inBand).toBe(3);
+    expect(zy.concentrated).toBe(false);
+    expect(zy.statement).toBeNull();
     expect(seasonalityOf(byLabel.get('金融')!).concentrated).toBe(true);
     // 分散的：电子 2/6、消费 2/4 → 不标注，且 statement 为 null（不编造）
     const el = seasonalityOf(byLabel.get('电子')!);
@@ -116,9 +124,11 @@ describe('SeasonalMap · 集中度标注渲染', () => {
   });
 
   it('★ 达到判据的主题有标记；未达到的没有', () => {
-    // 标记是 span.sm-seasonal-flag —— 汽车/资源/金融各一个
+    // 标记是 span.sm-seasonal-flag。★ 2026-10-11（R02-03 入库后）由 3 → **2**：
+    // `资源` 因新增煤炭窗口（2021-08~10）落在集中带外而不再达标（3/5 < 2/3）。
+    // 达标者 = 汽车（6/6）· 金融（4/3）。
     const flags = (html.match(/sm-seasonal-flag/g) ?? []).length;
-    expect(flags).toBe(3);
+    expect(flags).toBe(2);
   });
 
   it('★★ 集中区间在地图上**画出来**，且与行内计数一致', () => {

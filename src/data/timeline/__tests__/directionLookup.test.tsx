@@ -58,9 +58,10 @@ describe('directionLookup · 覆盖地图（真实数据）', () => {
   });
 
   it('★★ 查不到时必须说清「未覆盖」的边界（改用仍未覆盖的方向验证）', () => {
-    // ★★ 2026-10-11：原先用「文化传媒」验证本语义，但 R02-03 之后它已入库
-    //     → 改用**仍未覆盖**的方向（教育）验证同一条语义。
-    const r = lookupDirection('教育', source, dataset);
+    // ★★ 2026-10-11：原先用「文化传媒」验证本语义，但 R02-03 之后它已入库。
+    //     改用**确定未覆盖**的关键词 —— 注意「教育」也不可用：
+    //     实测它被 canonical 当前候选里的某个对象命中 → verdict = 'current-only'。
+    const r = lookupDirection('无人问津的方向XYZ', source, dataset);
     expect(r.verdict).toBe('none');
     const h = renderToStaticMarkup(
       <DirectionLookupSection source={source} dataset={dataset} />,
