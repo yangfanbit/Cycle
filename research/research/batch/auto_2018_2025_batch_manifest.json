@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-10-10T23:58:14",
-  "source_commit": "72412cf7c1dd2c736956644a8da8f35e83e91e63",
+  "generated_at": "2026-10-11T09:40:17",
+  "source_commit": "82c12702569421cfa692c95421dc1cc48a5ed45a",
   "rule_id": [
     "rule_auto_summer",
     "rule_pharma_upgrade",
@@ -5734,12 +5734,29 @@
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
       "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-MEDIA-001。★★ **peak 参照物 = 未界定** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **—**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
       "conflict": null,
-      "lifecycle": [],
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2022-11-30",
+          "end": "2023-07-31",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
       "drivers": {
-        "start": [],
-        "accelerator": [],
-        "turning": [],
-        "ending": []
+        "start": [
+          "2022-11-30 ChatGPT 发布，生成式 AI 主题兴起",
+          "传媒板块估值在 2022-11 处于低点，内容供给释放"
+        ],
+        "accelerator": [
+          "AI 在内容行业（游戏 / 出版 / 影视）率先落地的叙事扩散",
+          "子板块轮动：游戏涨幅居首（2023H1 约 93.99%），出版、影视跟随"
+        ],
+        "turning": [
+          "★ 本包**未识别**该段的转折信号 —— 未取得行情序列，按协议不推断。"
+        ],
+        "ending": [
+          "★ 未界定（仅界定统计终点窗口 7 月末）"
+        ]
       }
     },
     {
@@ -6194,12 +6211,34 @@
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
       "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-VACCINE-002。★★ **peak 参照物 = 行业指标** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **NOT_APPLICABLE**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
       "conflict": null,
-      "lifecycle": [],
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-02-20",
+          "end": "2023-03-20",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2023-03-24",
+          "end": "2023-04-15",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
       "drivers": {
-        "start": [],
-        "accelerator": [],
-        "turning": [],
-        "ending": []
+        "start": [
+          "2023 年冬春季流感高发，主要流行株为 A(H1N1)pdm09",
+          "抗流感药物需求上升，部分药企满负荷生产"
+        ],
+        "accelerator": [
+          "流感疫苗接种与抗流感药物销售预期上升，概念股集体走高"
+        ],
+        "turning": [
+          "第 12 周南方省份阳性率上升趋缓、北方省份下降（官方监测）"
+        ],
+        "ending": [
+          "流感活动回落，行情降温（本包未取得终局日的直接证据）"
+        ]
       }
     },
     {
@@ -6771,12 +6810,28 @@
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
       "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-POWER-002。★★ **peak 参照物 = 政策事件** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **NOT_APPLICABLE**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
       "conflict": null,
-      "lifecycle": [],
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2021-09-07",
+          "end": "2021-09-28",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
       "drivers": {
-        "start": [],
-        "accelerator": [],
-        "turning": [],
-        "ending": []
+        "start": [
+          "2021-09-07 国家发展改革委、国家能源局复函推动绿色电力交易试点（碳达峰碳中和背景下的电力市场化改革）"
+        ],
+        "accelerator": [
+          "2021-09-28 绿色电力交易试点正式启动，首批交易规模落地",
+          "同期能耗双控与电力供应紧张（2021-09 多地限电）强化新能源运营商与绿电的稀缺性叙事"
+        ],
+        "turning": [
+          "★ 本包**未识别**该段的转折信号 —— 未取得行情序列，按协议不推断。"
+        ],
+        "ending": [
+          "★ 未界定"
+        ]
       }
     },
     {
@@ -7645,12 +7700,36 @@
       "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
       "research_notes": "【R02-03 canonicalization · 2026-10-10】来源候选 R02-COAL-001。★★ **peak 参照物 = 政策事件** —— 按 AGENTS.md §5.1 硬语义边界，参照物非股价时 K 线证实状态为 **NOT_APPLICABLE**，**不得**记为 UNCONFIRMED。独立性闸门：见 docs/R02_03_CANONICALIZATION_PLAN_v0_1.md（Q1–Q5 通过）。审查：docs/R02_03_REVIEW_v0_1.md。",
       "conflict": null,
-      "lifecycle": [],
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2021-08-01",
+          "end": "2021-10-19",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2021-10-19",
+          "end": "2021-11-30",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
       "drivers": {
-        "start": [],
-        "accelerator": [],
-        "turning": [],
-        "ending": []
+        "start": [
+          "产地安监、环保、超能力检查（2021-03 危险作业罪正式入刑）压缩产量",
+          "进口减量（澳煤）加剧高卡低硫煤种紧缺"
+        ],
+        "accelerator": [
+          "经济复苏带动工业用电与燃煤消费激增",
+          "高温与冬储需求叠加，全国火电增量与燃煤消费量激增",
+          "9 月多省能耗双控与电力供应短缺导致『拉闸限电』，强化供给紧张叙事"
+        ],
+        "turning": [
+          "2021-10-19 国家发展改革委研究依法对煤炭价格实施干预，并组织重点煤企、行业协会召开保供稳价座谈会"
+        ],
+        "ending": [
+          "保供稳价政策下产地供应增加、电厂库存提升，动力煤现货价格快速回落"
+        ]
       }
     },
     {
