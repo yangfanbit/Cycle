@@ -41,6 +41,8 @@ CAMPAIGN_FIELDS = {
     "research_status", "theme_cycle_id", "promotion_status",
     "first_signal_date", "broad_confirmation_date", "first_decline_date",
     "conflicts", "notes",
+    # ★ Contract v1.1（2026-10-11）：CMTR v1 解析后的 Macro Theme 根
+    "macro_theme_root", "macro_theme_root_status",
     # V1.7 backward-compatible optional（时间精度 + Drivers）
     "lifecycle", "drivers",
 }
@@ -48,6 +50,8 @@ CANDIDATE_FIELDS = {
     "campaign_id", "rule_id", "year", "title", "start_date", "peak_date", "end_date",
     "themes", "event_ids", "security_ids",
     "early_signal", "research_status", "theme_cycle_id", "conflicts", "notes",
+    # ★ Contract v1.1（2026-10-11）：CMTR v1 解析后的 Macro Theme 根
+    "macro_theme_root", "macro_theme_root_status",
     # V1.7 backward-compatible optional
     "lifecycle", "drivers",
 }
@@ -152,8 +156,10 @@ def main():
     if data.get("contract") != "timeline_export":
         fail("contract", f"contract 缺失或错误: {data.get('contract')}")
     ver = data.get("timeline_export_version")
-    if ver != "1.0":
-        fail("version", f"timeline_export_version 必须为 '1.0'，当前: {ver}")
+    # ★ 2026-10-11（Contract v1.1）：允许 "1.0"（legacy）与 "1.1"（新增 macro_theme_root）。
+    #   1.1 是**向后兼容的新增字段**，不改变任何既有字段语义。
+    if ver not in ("1.0", "1.1"):
+        fail("version", f"timeline_export_version 必须为 '1.0' 或 '1.1'，当前: {ver}")
     if "export_version" in data:
         fail("version-dup", "禁止同时存在 export_version（版本语义只能 timeline_export_version）")
     # 14) source_commit 存在

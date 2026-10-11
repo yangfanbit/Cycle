@@ -1,8 +1,8 @@
 {
   "contract": "timeline_export",
-  "timeline_export_version": "1.0",
-  "generated_at": "2026-10-11T09:53:49",
-  "source_commit": "6876065a31ec4cb261733d98c7011977c2473c30",
+  "timeline_export_version": "1.1",
+  "generated_at": "2026-10-11T11:45:54",
+  "source_commit": "be87d2dc517e5847216f789451cf297c8c53f23e",
   "project": "Cycle-Research",
   "rules": [
     {
@@ -301,7 +301,9 @@
         "ending": [
           "事件驱动脉冲退潮、无持续主线（result=weak）"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-NEV",
@@ -407,7 +409,9 @@
           "主升 7/13 见顶后回调；8/21 二次启动为弱（S-2020-03 Tier4 线索）",
           "9月末宽窗口结束（暂定）"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2021-NEV",
@@ -503,7 +507,9 @@
           "8/6 峰值后分化、9月主线衰减（phase decline 08-07~09-30）",
           "9月末宽窗口结束（暂定）"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2022-POLICY",
@@ -632,7 +638,9 @@
           "8月 declining（08-01 二高点后持续衰减）",
           "政策催化缺失、板块失去同步"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-AD",
@@ -746,7 +754,9 @@
           "正式L3文件11/17成文为后续（EV-2023-03 subsequent），夏季系预期驱动",
           "FSD 2023未在华落地（反例约束）"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2024-V2X",
@@ -833,7 +843,9 @@
           "快涨快退（约2周）题材退潮",
           "5部门20城试点（EV-2024-02, 07-03）为后续事件，不充当窗口内催化"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2024-ROBOTAXI",
@@ -957,7 +969,9 @@
           "08-23 Main Campaign End（Major Breakpoint）",
           "板块同步性消失、龙头退潮"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2025-ROBOTAXI",
@@ -1053,7 +1067,9 @@
           "8/31 暂定边界（9/12月另有催化波次）",
           "beta 驱动为主、主题独立性弱"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2016-CONS-BAIJIU-UPGRADE",
@@ -1132,7 +1148,9 @@
           "板块估值与景气同步回落（S065 计算值：2018 年全年约 -26.9%）",
           "2018 年社零增速降至 9.0%，宏观消费环境转弱（S006，仅作背景）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2018-CONS-HOG-AFRICAN",
@@ -1209,7 +1227,9 @@
         "ending": [
           "2021 年猪价大幅回落，10 月集贸市场活猪 13.40 元/公斤、同比 -57.7%（S030）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-CONS-BAIJIU-CORE",
@@ -1291,7 +1311,9 @@
           "2021 年 7 月指数单月约 -21%，全年约 -3.4%（S065 计算值）",
           "宏观消费 2021 年社零 +12.5%（S012），基本面并未同步恶化——说明结束主要由估值与资金结构驱动，而非需求端反转"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-CONS-AESTHETICS",
@@ -1363,7 +1385,9 @@
           "2021-11-01 市场监管总局发布《医疗美容广告执法指南》（S048）",
           "2022 年市场监管总局等 11 部门开展医美行业突出问题专项治理（本包未建立一手证据链接，仅叙述性提及）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-CONS-DUTYFREE",
@@ -1440,7 +1464,9 @@
           "2022 年海南离岛免税店销售额约 487.1 亿元、同比约 -19%（S070，媒体转述，置信度低）",
           "2023 年 5 月股价回落至 123.10 元（S066）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-CONS-WHITE-GOODS",
@@ -1517,7 +1543,9 @@
         "ending": [
           "2021 年 12 月家电零售额同比 -10.4%；利润增速 +4.5% 远低于收入增速 +15.5%（S038）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-CONS-BEAUTY-CN",
@@ -1588,7 +1616,9 @@
         "ending": [
           "行业需求负增长与板块估值回落（S077）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2021-CONS-HOG-REVERSAL",
@@ -1667,7 +1697,9 @@
           "2022 年末猪价快速回落（S074，非官方口径，置信度低）",
           "2023 年养殖行业普遍亏损（媒体转述，本包未建立一手证据）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
@@ -1747,7 +1779,9 @@
           "2023 年 4–5 月服务消费标的普遍回落（S066）",
           "叙事失效：\"强复苏\"预期被数据证伪，资金转向其他方向"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-CONS-VALUE-RETAIL",
@@ -1812,7 +1846,9 @@
         "ending": [
           "尚无明确结束证据（见 lifecycle 的 UNKNOWN 段）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2024-CONS-TRADE-IN",
@@ -1891,7 +1927,9 @@
         "ending": [
           "2025 年推总口径家电零售 8931 亿元、-4.3%，Q3 起明显回落（S076）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-MIL-GROUP-RESTRUCTURE",
@@ -1969,7 +2007,9 @@
           "2019-11-26 中国船舶集团有限公司**揭牌成立**，重组事项执行完成（E-MIL-20，央企官网 T2）",
           "★ **市场侧行情证据完全缺失**（涨幅 / 峰值 / 持续时间均不可考）→ **无行情核验**"
         ]
-      }
+      },
+      "macro_theme_root": "国防军工",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-MIL-EQUIP-ORDER",
@@ -2085,7 +2125,9 @@
           "2023 年「十四五」中期调整致部分装备采购与订单下达放缓（E-MIL-13，subsequent，产业侧机制）",
           "★ 对照：2022 年国防预算 +7.1% 创阶段新高但板块下跌 → **军费增长不是行情充分条件**（E042，research-level，不绑定 Campaign）"
         ]
-      }
+      },
+      "macro_theme_root": "国防军工",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-RE-DEBT-RISK",
@@ -2160,7 +2202,9 @@
           "2022-07 停工停贷事件后转入「保交楼」政策阶段（**阶段边界** 2022-07-31，confidence low）",
           "★ 本条为**下行结构**（result=weak = 市场/行业方向为负，**非证据质量弱**），主升阶段不存在"
         ]
-      }
+      },
+      "macro_theme_root": "房地产",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-FIN-BANK-CREDIT",
@@ -2224,7 +2268,9 @@
           "2021-03-31 窗口末（**无可靠结束锚点**）；净利润 +12.6% 部分源于 2020 年低基数，机制解释存在争议（E-FINRE-40）",
           "★ 已知弱点：仅 4 ev / 4 IG、单一代表标的（工商银行），缺行业指数广度与多标的验证"
         ]
-      }
+      },
+      "macro_theme_root": "金融",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2022-RE-POLICY-THREE",
@@ -2305,7 +2351,9 @@
         "ending": [
           "2023-02-28 降温窗口（**推断值**，confidence low，无同期结束证据）"
         ]
-      }
+      },
+      "macro_theme_root": "房地产",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-FIN-SOE-VALUATION",
@@ -2372,7 +2420,9 @@
         "ending": [
           "无明确结束证据（peak/end 均为**推断**，confidence low；生命周期未闭合）"
         ]
-      }
+      },
+      "macro_theme_root": "金融",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2024-FIN-BROKER-POLICY",
@@ -2445,7 +2495,9 @@
         "ending": [
           "2024-10-31 降温（**推断值**，无同期结束证据）；生命周期仅 11 个交易日 → date_confidence = low"
         ]
-      }
+      },
+      "macro_theme_root": "金融",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2024-FIN-BANK-DIVIDEND",
@@ -2519,7 +2571,9 @@
         "ending": [
           "**不判定 End** —— peak_date / end_date 为 NULL，结构可能仍在延续（不得把观察窗口结束当作 End）"
         ]
-      }
+      },
+      "macro_theme_root": "金融",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2025-FIN-INSURANCE",
@@ -2584,7 +2638,9 @@
         "ending": [
           "2025 年内**未确认峰值**（peak_date / end_date 为 NULL）；年度盘点口径下**不判定 End**"
         ]
-      }
+      },
+      "macro_theme_root": "金融",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2016-HIEQ-CONSTR",
@@ -2673,7 +2729,9 @@
           "股价大幅回撤：三一至 2021-11-19 较年内高点下跌近 60%",
           "本包未能确认该周期的 ENDED 时点，出口对冲使总量数据迟迟未出现断崖，故 ending 一栏仅记录「上行段终止的确认信号」，不主张周期已结束"
         ]
-      }
+      },
+      "macro_theme_root": "高端装备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2018-HIEQ-ROBOT-DOWN",
@@ -2758,7 +2816,9 @@
           "2020 年产量转为 237068 台、同比 +19.1%（近三年最高增速），确认下行段已结束",
           "2020 年 2 月疫情低点（累计同比 -19.4%）→ 3 月单月转正 → 4 月累计转正 → 全年 +19.1%，形成 V 型结构"
         ]
-      }
+      },
+      "macro_theme_root": "高端装备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-HIEQ-AUTOMATION",
@@ -2849,7 +2909,9 @@
           "2023 年 1-2 月产量 6.2 万套、同比 -19.2%，负增长延续至政策介入前夜",
           "本包不主张该 Campaign 已 ENDED，故 ending 一栏记录「上行段终止的确认信号」而非周期终结点"
         ]
-      }
+      },
+      "macro_theme_root": "高端装备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-HIEQ-ROBOT-PLUS",
@@ -2921,7 +2983,9 @@
           "本包未能确定该政策驱动段的具体结束机制与时点，故 ending 一栏仅记录风险因素而非结束事件",
           "明确的不确定性：该候选与 R01-HIEQ-005（2023-05 起的人形机器人叙事形成）之间的边界未被切分，二者是否应视为同一 Campaign 的不同阶段，须由 ThreeC Agent 判定"
         ]
-      }
+      },
+      "macro_theme_root": "高端装备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-HIEQ-HUMANOID",
@@ -3009,7 +3073,9 @@
           "本包不主张该叙事段已结束；其后续形态被记录为 R01-HIEQ-007，二者边界未切分",
           "ending 一栏在此仅记录「叙事重心迁移」这一可观察现象，不主张生命周期终止"
         ]
-      }
+      },
+      "macro_theme_root": "高端装备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-COMM-5G",
@@ -3140,7 +3206,9 @@
           "代表标的 2022-10-10/11 同步见底（中兴 18.41 / 烽火 11.65 / 中际旭创 15.88 / 新易盛 6.33）→ 本轮 Cycle 出清完成",
           "★ 环节错位：新易盛（数通光模块）延后至 2020-07-14 见顶，主因海外云厂商资本开支与 400G 放量节奏滞后于国内 5G 建设，未另立 Cycle"
         ]
-      }
+      },
+      "macro_theme_root": "信息通信",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-COMM-OPTICAL",
@@ -3250,7 +3318,9 @@
           "unknown（至本地行情窗口末端仍在上行：中际旭创 2025-12-25 达 638.80、新易盛 2025-12-22 达 329.99）",
           "★ 通信设备（中兴通讯 / 烽火通信）2023-2025 亦受益于算力网络建设（中兴 2024 +64.8%、烽火 2025 +79.9%），但主驱动仍含运营商侧因素，本轮不作为本 Cycle 代表标的"
         ]
-      }
+      },
+      "macro_theme_root": "信息通信",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-MEDIA-AI",
@@ -3308,7 +3378,9 @@
         "ending": [
           "★ 未界定（仅界定统计终点窗口 7 月末）"
         ]
-      }
+      },
+      "macro_theme_root": "文化传媒",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-PHARMA-INNOV",
@@ -3421,7 +3493,9 @@
           "2022 年创新药估值出清：CXO 估值自 2021 年中 103x 降至约 30x（估值杀，非业绩杀）",
           "2022-09/10 各自代表标的见低点；2022Q4 出现修复迹象，Theme Cycle End 未确认"
         ]
-      }
+      },
+      "macro_theme_root": "医药健康",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-PHARMA-GLP1",
@@ -3507,7 +3581,9 @@
           "10-17/10-18 指数连续收跌，10-18 逾八成成分股下跌，行情进入降温",
           "本包未取得该段后续完整走势来源，不推断其最终收敛方式"
         ]
-      }
+      },
+      "macro_theme_root": "医药健康",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-PHARMA-FLU",
@@ -3575,7 +3651,9 @@
         "ending": [
           "流感活动回落，行情降温（本包未取得终局日的直接证据）"
         ]
-      }
+      },
+      "macro_theme_root": "医药健康",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-POWER-NE",
@@ -3703,7 +3781,9 @@
           "上游硅料环节延后至 2022-07-05 见顶（特变电工-新特能源），属同 Cycle 内环节错位",
           "2022-12-30 为本地行情窗口末端，Theme Cycle End 未确认"
         ]
-      }
+      },
+      "macro_theme_root": "电力设备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2022-POWER-GRID",
@@ -3821,7 +3901,9 @@
           "★ 特变电工 2022-07-05 高点（21.97）由子公司新特能源（多晶硅）驱动，存在混淆，未据此判定 Peak",
           "2025-12-31 为本地行情窗口末端，Theme Cycle End 未确认"
         ]
-      }
+      },
+      "macro_theme_root": "电力设备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2021-POWER-GREEN",
@@ -3883,7 +3965,9 @@
         "ending": [
           "★ 未界定"
         ]
-      }
+      },
+      "macro_theme_root": "电力（运营端）",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-RES-DYE-SHOCK",
@@ -3967,7 +4051,9 @@
           "染料价格回落",
           "市场注意力转向新主题"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-RES-NONFERROUS",
@@ -4053,7 +4139,9 @@
           "高价抑制需求叠加供给恢复",
           "板块资金转向新能源等结构性方向"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-RES-LITHIUM",
@@ -4139,7 +4227,9 @@
           "2022-11 至 2023-04 价格大幅下行，板块资金流失",
           "宁德时代锂矿返利等事件加速价格下滑与叙事失效"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-RES-RAREEARTH",
@@ -4225,7 +4315,9 @@
           "行业整合（2021-12-23 中国稀土集团成立）改变供给主体结构",
           "价格回落至高位震荡"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
@@ -4314,7 +4406,9 @@
           "下游需求走弱、库存回补完成",
           "价格向成本线回归"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2021-RES-COAL",
@@ -4384,7 +4478,9 @@
         "ending": [
           "保供稳价政策下产地供应增加、电厂库存提升，动力煤现货价格快速回落"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2024-RES-GOLD-CB",
@@ -4456,7 +4552,9 @@
         "ending": [
           "窗口结束时结构未结束（unknown）"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2016-PANEL-CYCLE",
@@ -4526,7 +4624,9 @@
           "2017H2 起价格进入长期下行周期",
           "2019Q4 行业指标触底"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-SEMI-LOCALIZATION",
@@ -4610,7 +4710,9 @@
           "2020-07 后指数转入高位震荡与回撤",
           "资金风格切换至新能源/光伏等顺周期方向"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2019-CONSUMER-TWS",
@@ -4688,7 +4790,9 @@
           "2020-11 后连续回调，估值中枢下移",
           "市场注意力转向新能源与半导体自主可控"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-SEMI-EQUIPMENT",
@@ -4771,7 +4875,9 @@
           "2022 年全球半导体增速降至 4.4%，除日本外亚太地区增速转负",
           "A 股半导体进入去库存下行周期"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2020-PANEL-CYCLE",
@@ -4847,7 +4953,9 @@
           "2021-08 起价格进入下行通道",
           "2022 年上半年地缘政治、通胀与需求透支叠加，价格跌回 2020 年上半年水平"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2022-SEMI-DOWNTURN",
@@ -4920,7 +5028,9 @@
         "ending": [
           "2023Q4 智能手机与 PC 市场分别结束连续 7、8 个季度的同比下滑"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2023-AI-COMPUTE-SEMI",
@@ -4995,7 +5105,9 @@
           "2023-06-21 起 AI 板块整体回调",
           "资金向算力租赁、华为产业链等分支迁移"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "C-2024-SEMI-MEMORY",
@@ -5070,7 +5182,9 @@
         "ending": [
           "尚未出现明确结束信号（截至 2025-12-31）"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     }
   ],
   "research_candidates": [
@@ -5145,7 +5259,9 @@
         "ending": [
           "unknown（至2023-10-31仍升，未确认结束）"
         ]
-      }
+      },
+      "macro_theme_root": null,
+      "macro_theme_root_status": "UNRESOLVED_NAME"
     },
     {
       "campaign_id": "RC-2024-SECONDARY",
@@ -5200,7 +5316,9 @@
         "ending": [
           "09-06 后回落，弱候选不成势"
         ]
-      }
+      },
+      "macro_theme_root": "汽车",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2020-PANDEMIC",
@@ -5278,7 +5396,9 @@
           "2021 全年英科医疗 -46.1%（adj）、2022 再 -56.5%；主题注意力显著减弱",
           "与主线（创新药/CXO）节奏相反：同期主线仍在上涨至 2021-07 → Pattern=Parallel"
         ]
-      }
+      },
+      "macro_theme_root": "医药健康",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2021-TCM",
@@ -5349,7 +5469,9 @@
           "2022Q4 抗疫中药再度活跃：以岭药业 2022-11-30→12-08 快速上行至区间高点",
           "2022-12-30 收于 28.36（自高点回落）；窗口末端，未确认结束"
         ]
-      }
+      },
+      "macro_theme_root": "医药健康",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2020-CONS-SMALL-APPLIANCE",
@@ -5418,7 +5540,9 @@
           "2021 年 12 月家电零售额同比 -10.4%（S038）",
           "原材料涨价导致利润增速（+4.5%）远低于收入增速（+15.5%）（S038）"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2024-CONS-PET-FOOD",
@@ -5477,7 +5601,9 @@
         "ending": [
           "未取得可确认的结束证据"
         ]
-      }
+      },
+      "macro_theme_root": "消费",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2020-RES-GOLD-RATES",
@@ -5551,7 +5677,9 @@
           "2021–2023 年缺乏新的定价驱动",
           "直至 2024 年才出现新一轮突破（见 C7）"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2022-RES-FERTILIZER",
@@ -5626,7 +5754,9 @@
           "化肥企业前期满负荷生产形成库存压力",
           "价格跌回 2022 年 3 月水平"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2025-RES-COPPER",
@@ -5700,7 +5830,9 @@
         "ending": [
           "窗口结束时结构未结束（unknown）；2026 年缺口预期仍存"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2017-RES-ALUMINUM",
@@ -5775,7 +5907,9 @@
           "供暖季结束后关停企业存在复产预期",
           "板块资金转向其他方向"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2016-RES-CHEM-ENV",
@@ -5830,7 +5964,9 @@
         "ending": [
           "缺少证据：无法确定退潮机制"
         ]
-      }
+      },
+      "macro_theme_root": "资源",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2022-SEMI-CHIPSHORTAGE",
@@ -5896,7 +6032,9 @@
           "新建产能 2022 年下半年陆续释放",
           "终端需求转弱、渠道库存累积"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2024-SEMI-FUND3",
@@ -5962,7 +6100,9 @@
         "ending": [
           "叙事并入 2025 存储 / AI 算力主线，未独立结束"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2015-SEMI-LEVERAGE",
@@ -6020,7 +6160,9 @@
         "ending": [
           "全面牛市结束，板块随大盘回落"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2017-GPU-MINING",
@@ -6078,7 +6220,9 @@
         "ending": [
           "显卡需求与价格同步转弱"
         ]
-      }
+      },
+      "macro_theme_root": "电子",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2024-HIEQ-EQUIP-UPDATE",
@@ -6146,7 +6290,9 @@
           "本包不主张该政策驱动段已结束；政策目标设定至 2027 年，2024 年内不存在明确的政策退出事件",
           "ending 一栏仅记录边界争议与证据不足两点，不构成结束判断"
         ]
-      }
+      },
+      "macro_theme_root": "高端装备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2024-HIEQ-HUMANOID-MASS",
@@ -6221,7 +6367,9 @@
           "本包不主张该段已结束；end 因证据采集边界（2025-09）而标为 UNKNOWN",
           "ending 一栏仅记录采集边界与未切分边界两点"
         ]
-      }
+      },
+      "macro_theme_root": "高端装备",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2024-RE-POLICY-517",
@@ -6282,7 +6430,9 @@
         "ending": [
           "2024 年全年新建商品房销售面积 -12.9%、开发投资 -10.6%（国家统计局 2025-01-17）"
         ]
-      }
+      },
+      "macro_theme_root": "房地产",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2019-RE-EASING",
@@ -6329,7 +6479,9 @@
         "ending": [
           "未取得结束证据"
         ]
-      }
+      },
+      "macro_theme_root": "房地产",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2020-FIN-BROKER-VOLUME",
@@ -6377,7 +6529,9 @@
         "ending": [
           "未取得结束证据"
         ]
-      }
+      },
+      "macro_theme_root": "金融",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2016-RE-SHANTY",
@@ -6424,7 +6578,9 @@
         "ending": [
           "未取得结束证据"
         ]
-      }
+      },
+      "macro_theme_root": "房地产",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2015-FIN-LEVERAGE",
@@ -6466,7 +6622,9 @@
         "ending": [
           "未取得结束证据（2015 年 6 月后市场剧烈调整，但本包未取得可靠日期证据）"
         ]
-      }
+      },
+      "macro_theme_root": "金融",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2019-MIL-PARADE-70",
@@ -6531,7 +6689,9 @@
           "阅兵结束后注意力迁移（复盘口径，日期不可考）",
           "★ 全部证据为 2025 年 retrospective 复盘，**无同期一手证据**"
         ]
-      }
+      },
+      "macro_theme_root": "国防军工",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2025-MIL-PARADE-80",
@@ -6587,7 +6747,9 @@
           "未知；★ **不得把阅兵事件结束直接等同于 Campaign 结束**",
           "★ 市场响应证据仅 Tier 3 相对强弱描述，无绝对涨幅 / 无指数点位"
         ]
-      }
+      },
+      "macro_theme_root": "国防军工",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2017-MIL-MIXED-REFORM",
@@ -6636,7 +6798,9 @@
           "未知；2017 年 2 月之后走势、峰值与结束完全不可考 → **生命周期无法闭合**",
           "★ **无任何证据显示 2017 年混改已转化为订单或业绩**"
         ]
-      }
+      },
+      "macro_theme_root": "国防军工",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2015-MIL-REFORM-BULL",
@@ -6692,7 +6856,9 @@
           "★ 与 A 股系统性调整同步，**军工自身机制层面的结束点不可考**",
           "★ 无法把军工的结束与全市场 Beta 的结束分离"
         ]
-      }
+      },
+      "macro_theme_root": "国防军工",
+      "macro_theme_root_status": "RESOLVED"
     },
     {
       "campaign_id": "RC-2024-MIL-COMMERCIAL-SPACE",
@@ -6745,7 +6911,9 @@
           "无结束证据（2025 年末仍活跃）→ **生命周期未闭合**",
           "★ 政策催化主管部门为**工信部 / 国家航天局**，主题是商业航天 / 卫星通信产业发展，**不是国防采购订单**"
         ]
-      }
+      },
+      "macro_theme_root": "国防军工",
+      "macro_theme_root_status": "RESOLVED"
     }
   ],
   "events": [

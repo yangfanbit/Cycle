@@ -51,6 +51,20 @@ RULES = [AUTO_RULE, PHARMA_RULE, POWER_RULE, COMM_RULE, HIEQ_RULE, SEMI_RULE, RE
          CONS_RULE, FINRE_RULE, MIL_RULE, PWROP_RULE, MEDIA_RULE]
 RULE = AUTO_RULE   # 兼容既有引用（汽车专用常量；build_campaign 已改为按 c["rule_id"] 取值）
 
+
+def _load_cmtr():
+    """装载 **CMTR v1**（`research/scripts/theme_taxonomy.py`）—— 唯一 Macro Theme 解析口径。
+
+    ★ 用于 Contract v1.1 的 `macro_theme_root`：把每个对象的 `themes[]` 沿
+      `themes.parent_theme_id` 上溯至根。**不在本文件重实现任何 taxonomy 逻辑。**
+    """
+    import sqlite3
+    sys.path.insert(0, os.path.join(ROOT, "research", "scripts"))
+    from theme_taxonomy import load_from_cursor  # noqa: PLC0415
+    _c = sqlite3.connect(db.DB_PATH if hasattr(db, "DB_PATH") else
+                         os.path.join(ROOT, "research", "database", "cycle_research.db"))
+    return load_from_cursor(_c.cursor())
+
 # ---- 研究级元数据（来自 theme_lifecycle_v0_2 / 年度研究） ----
 THEME_CYCLE = {
     "C-2019-AD": "auto_ad_2019",
@@ -3584,9 +3598,34 @@ def main():
             "drivers": CANDIDATE_DRIVERS.get(rcid, {"start": [], "accelerator": [], "turning": [], "ending": []}),
         })
 
+    # ================================================================
+    # ★★ Contract v1.1（2026-10-11）：为每个对象补 `macro_theme_root`
+    #
+    # 为什么：产品侧 `macroThemeOf()` 用**字面主题名**归组，而 canonical 口径是
+    # **沿 `themes.parent_theme_id` 上溯至根（CMTR v1）**。两者不等价 ——
+    # 实测：`航天装备` 在 DB 里是 `国防军工` 的子节点，产品却把它当独立一行，
+    # 且因不在配色表里而**渲染成与「未标注」相同的灰色**（不报错）。
+    #
+    # 处置：由 Research 侧（**已走 CMTR**）直接产出解析后的根，产品只读不算 ——
+    # 避免在产品里再实现一套 taxonomy（`AGENTS.md` §4 禁止第二套口径）。
+    #
+    # ★ 解析不出根时写 **null**（CONFLICT / UNRESOLVED_NAME / NO_THEME），**不猜**。
+    # ================================================================
+    try:
+        _tax = _load_cmtr()
+    except Exception as _exc:  # noqa: BLE001
+        print(f"!! CMTR 装载失败，macro_theme_root 全部写 null：{_exc}")
+        _tax = None
+    for _o in list(campaigns_out) + list(research_candidates_out):
+        _res = _tax.resolve_object(_o) if _tax else {"status": "NO_TAXONOMY"}
+        _o["macro_theme_root"] = (
+            _res["macro_theme_names"][0] if _res.get("status") == "RESOLVED" else None
+        )
+        _o["macro_theme_root_status"] = _res.get("status")
+
     export = {
         "contract": "timeline_export",
-        "timeline_export_version": "1.0",      # 唯一版本字段（不再出现 export_version）
+        "timeline_export_version": "1.1",      # ★ v1.1：新增 macro_theme_root（向后兼容的**新增字段**）
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "source_commit": get_git_head(),
         "project": "Cycle-Research",
@@ -3600,7 +3639,7 @@ def main():
     os.makedirs(os.path.dirname(EXPORT), exist_ok=True)
     with open(EXPORT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(export, f, ensure_ascii=False, indent=2, default=str)
-    print(f"timeline_export: {EXPORT} (v1.0, {len(campaigns_out)} campaigns, "
+    print(f"timeline_export: {EXPORT} (v1.1, {len(campaigns_out)} campaigns, "
           f"{len(research_candidates_out)} research_candidates, "
           f"{len(events_out)} events, {len(securities_out)} securities)")
 
