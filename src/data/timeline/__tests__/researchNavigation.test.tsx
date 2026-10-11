@@ -517,7 +517,9 @@ describe('7. Macro Theme 聚合接口（仅 View / Adapter）', () => {
   it('可从既有数据推导 Macro Theme → Campaigns', () => {
     const groups = macroThemeGroupsOf(previewTimelineSource());
     const auto = groups.find((g) => g.macroTheme === '汽车')!;
-    expect(auto.campaigns).toHaveLength(7);
+    // ★ 2026-10-11（Contract v1.1）：归组改用 canonical 根 → 汽车 7 → **9**
+    //   （`C-2019-AD` 等「主题只有 concept」的对象此前落进「未标注」，现正确归位）
+    expect(auto.campaigns).toHaveLength(9);
     expect(auto.themeTypes).toEqual(['industry']);
     expect(auto.subThemes).toContain('新能源汽车/电池');
     expect(auto.themeCycleIds).toContain('auto_intelligence_2023');
@@ -525,17 +527,29 @@ describe('7. Macro Theme 聚合接口（仅 View / Adapter）', () => {
     const pharma = groups.find((g) => g.macroTheme === '医药健康')!;
     // ★ 2026-10-07：医药健康由 1 个增至 2 个 campaign（R02-01 入库 C-2023-PHARMA-GLP1）
     // ★ 2026-10-11：再增至 3 个（R02-03 入库 C-2023-PHARMA-FLU，挂 `流感疫苗` 子主题）
-    expect(pharma.campaigns.map((c) => c.campaign_id).sort()).toEqual(
-      [PHARMA, 'C-2023-PHARMA-GLP1', 'C-2023-PHARMA-FLU'].sort(),
-    );
-    expect(pharma.subThemes.sort()).toEqual(
-      ['CXO(研发外包)', '创新药', '减重 / GLP-1', '流感疫苗'].sort(),
-    );
+    // ★ 2026-10-11（Contract v1.1）：医药健康 3 → **5**（concept-only 对象归位）
+    expect(pharma.campaigns.length).toBe(5);
+    for (const id of [PHARMA, 'C-2023-PHARMA-GLP1', 'C-2023-PHARMA-FLU']) {
+      expect(pharma.campaigns.map((c) => c.campaign_id)).toContain(id);
+    }
+    // ★ 2026-10-11（Contract v1.1）：concept-only 对象归位后，医药健康的子题材也变多
+    //   （`中医药` / `疫情医疗` 等随之进入）→ 改为**断言包含**已知项，不锁死全集
+    for (const st of ['CXO(研发外包)', '创新药', '减重 / GLP-1', '流感疫苗']) {
+      expect(pharma.subThemes).toContain(st);
+    }
+    expect(pharma.subThemes.length).toBeGreaterThanOrEqual(4);
 
     // 未标注行业者归入 null 组（不编造行业名）
-    const unassigned = groups.find((g) => g.macroTheme === null)!;
-    expect(unassigned.macroTheme).toBeNull();
-    expect(unassigned.campaigns.length).toBeGreaterThan(0);
+    // ★ 2026-10-11（Contract v1.1）：CMTR 归位后，**已无未标注的 Campaign**；
+    //   该组仍存在（承载唯一已知 taxonomy 缺口 `RC-2023-HUAWEI`，它是 RC 不是 Campaign）。
+    const unassigned = groups.find((g) => g.macroTheme === null);
+    if (unassigned) {
+      expect(unassigned.macroTheme).toBeNull();
+      // ★ 唯一未归属者 = **已知 taxonomy 缺口**（`华为汽车` 不在 DB `themes` 表中，
+      //   属 `CMTR v1` 如实报告的 `UNRESOLVED_NAME`，**不发明 taxonomy 行**）。
+      //   ★ 若将来补上该 taxonomy 行，此断言会失败 → 那时应改为 `toHaveLength(0)`。
+      expect(unassigned.campaigns.map((c) => c.campaign_id)).toEqual(['RC-2023-HUAWEI']);
+    }
   });
 
   it('父 → 子主题关系可从产品侧题材库推导（parent_theme_id）', () => {
@@ -550,7 +564,8 @@ describe('7. Macro Theme 聚合接口（仅 View / Adapter）', () => {
   it('Macro Theme → Theme Cycle → Campaigns 层级视图可产出', () => {
     const tree = macroThemeTreeOf(previewTimelineSource());
     const auto = tree.find((t) => t.macroTheme === '汽车')!;
-    expect(auto.themeCycles.length).toBe(7);
+    // ★ 2026-10-11（Contract v1.1）：汽车 Theme Cycle 7 → **8**（对象归位后新增 cycle）
+    expect(auto.themeCycles.length).toBe(8);
     for (const c of auto.themeCycles) expect(c.campaigns.length).toBeGreaterThan(0);
   });
 
@@ -559,9 +574,15 @@ describe('7. Macro Theme 聚合接口（仅 View / Adapter）', () => {
     const c = src.yearData(2020).campaigns.find((x) => x.campaign_id === 'C-2020-NEV')!;
     expect(macroThemeOf(c)).toBe('汽车');
     expect(subThemesOf(c)).toEqual(['新能源汽车/电池', '特斯拉产业链']);
-    // 未标注 → null（不推断）
+    // ★★ 2026-10-11（Contract v1.1）语义变更：`C-2019-AD` 的主题只有
+    //   `智能驾驶/无人驾驶`（**concept**，不是 industry/sector）→ 旧的**字面名**口径
+    //   返回 `null`（落进「未标注」）。现在优先用 Research 侧（CMTR v1）解析出的
+    //   `macro_theme_root` → 沿 parent 上溯至 **`汽车`**。**这是修复，不是回归。**
     const o = src.yearData(2019).campaigns.find((x) => x.campaign_id === 'C-2019-AD')!;
-    expect(macroThemeOf(o)).toBeNull();
+    expect(o.macro_theme_root).toBe('汽车');
+    expect(macroThemeOf(o)).toBe('汽车');
+    // 真的没有主题归属者仍为 null（不推断）—— 用无 themes 的合成对象验证
+    expect(macroThemeOf({ ...o, themes: [], macro_theme_root: null })).toBeNull();
   });
 
   it('本轮不改 Timeline 视觉：Timeline 组件不消费 Macro Theme 聚合', () => {

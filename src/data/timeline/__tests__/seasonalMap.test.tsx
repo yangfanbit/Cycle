@@ -73,14 +73,17 @@ describe('季节性聚合：纵轴 = 大主题（不是对象、不是年份）'
 
   it('没有任何年内窗口的主题不进入首页地图，但对象仍在附页可达', () => {
     const excluded = allRows.filter((r) => r.windows.length === 0);
-    expect(excluded.length).toBeGreaterThan(0);
+    // ★ 2026-10-11（Contract v1.1）：归组改用 **canonical 根**（CMTR）后，
+    //   对象不再散落在「未标注」等无窗口行 → **当前 excluded 为空**（此前有若干行）。
+    //   ★ 不变量本身不变：凡被排除的行**不在**地图上，且其对象**不被丢弃**。
     for (const r of excluded) {
       expect(mapRows).not.toContain(r);
-      // 对象没有被丢弃
       expect(r.objects.length).toBeGreaterThan(0);
     }
-    // 合计仍是 80（能力不删除，只是不在首页铺开）
+    // 合计仍是 84（能力不删除，只是不在首页铺开）
     expect(mapRows.reduce((n, r) => n + r.objects.length, 0) + excluded.reduce((n, r) => n + r.objects.length, 0)).toBe(84);
+    // 当前：首页行数 == 全部行数（没有无窗口的主题）
+    expect(mapRows.length).toBe(allRows.length);
   });
 });
 

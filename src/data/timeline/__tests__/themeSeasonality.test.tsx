@@ -27,14 +27,15 @@ const rows = seasonalMapRows(themeAnnualRowsOf(researchTimelineSource()));
 const byLabel = new Map<string, ThemeAnnualRow>(rows.map((r) => [r.label, r]));
 
 describe('themeSeasonality · 年内集中度（真实数据）', () => {
-  it('★★ 汽车：6 个年内窗口**全部**落在约两个月内（样本 6 年）', () => {
+  it('★★ 汽车：7 个年内窗口中 6 个落在约两个月内（样本 7 年）', () => {
     const s = seasonalityOf(byLabel.get('汽车')!);
-    expect(s.windowCount).toBe(6);
+    // ★ 2026-10-11（Contract v1.1）：`C-2019-AD` 归位到「汽车」→ 窗口 6 → **7**，带内仍 6。
+    expect(s.windowCount).toBe(7);
     expect(s.inBand).toBe(6);
     expect(s.concentrated).toBe(true);
     expect(s.band!.from).toBe('05-23');
     expect(s.band!.to).toBe('07-23');
-    expect(s.statement).toBe('年内窗口 6 个 · 其中 6 个落在 05-23 ~ 07-23');
+    expect(s.statement).toBe('年内窗口 7 个 · 其中 6 个落在 05-23 ~ 07-23');
   });
 
   it('★ 金融：4/3 达到判据；资源（R02-03 后 5/3）· 电子 / 消费（分散）**不**标注', () => {
@@ -120,7 +121,7 @@ describe('SeasonalMap · 集中度标注渲染', () => {
 
   it('★ 行内标注带**计数**（N 个窗口中的 M 个），不只是区间', () => {
     expect(html).toContain('个年内窗口中的');
-    expect(html).toContain('6 个年内窗口中的 6 个');
+    expect(html).toContain('7 个年内窗口中的 6 个');
   });
 
   it('★ 达到判据的主题有标记；未达到的没有', () => {
@@ -137,7 +138,7 @@ describe('SeasonalMap · 集中度标注渲染', () => {
     expect(html).toContain('sm-band concentrated');
     expect(html).toContain('年内集中区间'); // 图例
     // 汽车那一行的 title 必须与行内文字说同一件事
-    expect(html).toContain('年内窗口 6 个，其中 6 个落在 05-23 ~ 07-23');
+    expect(html).toContain('年内窗口 7 个，其中 6 个落在 05-23 ~ 07-23');
   });
 
   it('★★ 语义边界说明必须与标注同显', () => {

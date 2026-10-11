@@ -59,7 +59,7 @@ describe('粒度 = 分组口径，不是新的研究对象', () => {
   });
 
   it('★ 行数差异只来自「拆得更细」：sub 行数 > macro 行数，且都在「几十条」量级', () => {
-    expect(macroAll.length).toBe(15);
+    expect(macroAll.length).toBe(14);
     expect(subAll.length).toBe(45);
     expect(macroMap.length).toBe(14);
     expect(subMap.length).toBe(39);
