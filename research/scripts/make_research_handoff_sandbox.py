@@ -118,10 +118,17 @@ def find_manifest_for_task(task_id):
     return hits
 
 
-def build_existing_universe():
+def build_existing_universe(task_obj=None):
     """从 canonical export 生成**只读**参照表（供去重）。
 
     ★ 它**不是**研究结论、**不是**结构对应依据，只是「库里已有什么」的清单。
+
+    ★★ `task_obj`（可选）：用于在末尾给出**本任务方向**在表中的出现次数。
+       为什么必须传：早先这段是**硬编码**的（写死「你的四个方向是
+       煤炭 / 电力 / 流感疫苗 / 文化传媒 …… 一个都不出现」）——
+       那是 R02-03 的事实。到了 R02-05（方向 = 信息通信 / 文化传媒 /
+       电力设备 / 电力（运营端））该文案**完全错误**：R02-05 的四个方向
+       **都出现在表中**。硬编码的模板会**误导 Research Agent**。
     """
     data = json.loads(read_text(EXPORT_PATH))
     campaigns = data.get("campaigns") or []
@@ -201,8 +208,27 @@ def build_existing_universe():
     for n, k in sorted(names.items(), key=lambda kv: (-kv[1], kv[0])):
         lines.append("%-28s %d" % (n, k))
     lines.append("```")
-    lines.append("\n> ★ 你的四个方向（煤炭 / 电力 / 流感疫苗 / 文化传媒）")
-    lines.append("> 在**这张表里一个都不出现** —— 这正是本任务存在的理由。")
+    # ★★ 本任务的方向 —— **动态生成，不得硬编码**。
+    #   历史教训：此处曾写死「你的四个方向（煤炭 / 电力 / 流感疫苗 / 文化传媒）
+    #   在**这张表里一个都不出现**」——那是 R02-03 的事实。对 R02-05
+    #   （方向 = 信息通信 / 文化传媒 / 电力设备 / 电力（运营端））该陈述**完全错误**，
+    #   会误导 Research Agent（实际四个方向**都在**表中）。
+    dirs = (task_obj or {}).get("macro_theme_candidates") or []
+    if dirs:
+        lines.append("\n> ★ **本任务的方向**：%s" % " / ".join(dirs))
+        lines.append("> 它们在上表中的出现次数：")
+        for d in dirs:
+            n = names.get(d, 0)
+            if n == 0:
+                lines.append(">   · `%s` → **0**（**表中未出现** —— 这正是本任务存在的理由）" % d)
+            else:
+                lines.append(">   · `%s` → **%d** 个对象（已有对象，**不得重复提交**；"
+                             "需要的是**新的**历史段）" % (d, n))
+        lines.append(">")
+        lines.append("> ★ 出现次数只是**去重**依据，**不是**「该方向已有结构对应」的判断"
+                     "（**名字相似 ≠ 结构对应**，见 `AGENTS.md` §3）。")
+    else:
+        lines.append("\n> ★ 本任务未在 manifest 中声明方向 —— 见 manifest 的 `scope`。")
     lines.append("\n---\n\n*由 `research/scripts/make_research_handoff_sandbox.py` 生成 · 只读参照*")
     return "\n".join(lines) + "\n"
 
@@ -373,7 +399,8 @@ def main(argv):
     copy_file(prompt_path, os.path.join(out, "docs", prompt_name))
 
     # ---- 4. 参照表 + 入口说明 ----
-    write_text(os.path.join(out, "EXISTING_UNIVERSE.md"), build_existing_universe())
+    write_text(os.path.join(out, "EXISTING_UNIVERSE.md"),
+               build_existing_universe(task_obj))
     write_text(os.path.join(out, "00_START_HERE.md"),
                build_start_here(task_id, manifest_name, prompt_name, task_obj))
 
