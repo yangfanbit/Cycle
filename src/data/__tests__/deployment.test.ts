@@ -46,7 +46,7 @@ describe('Deployment · Gate D7 build provenance', () => {
   }>('../../../exports/timeline_export_v1.json');
 
   const saJson = readJson<{ artifact_version: string | number; rule_set_version: string }>(
-    '../../../research/research/reports/structural_analogy_explanations_v0_11.json',
+    '../../../research/research/reports/structural_analogy_explanations_v0_12.json',
   );
   const toJson = readJson<{ artifact_version: string | number }>(
     '../../../research/research/reports/time_observation_patterns_v0_2.json',
@@ -82,7 +82,7 @@ describe('Deployment · Gate D7 build provenance', () => {
       campaigns: exportJson.campaigns.length,
       researchCandidates: exportJson.research_candidates.length,
     });
-    expect(p.exportObjectCounts!.campaigns).toBe(57);
+    expect(p.exportObjectCounts!.campaigns).toBe(59);
     expect(p.exportObjectCounts!.researchCandidates).toBe(27);
   });
 

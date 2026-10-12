@@ -21,16 +21,16 @@ import { HistoricalPanorama } from '../../../components/HistoricalPanorama/Histo
  */
 
 describe('Product 1.1 · 首页默认数据源 = canonical Research export', () => {
-  it('researchTimelineSource() 覆盖 57 Campaign + 27 Research Candidate', () => {
+  it('researchTimelineSource() 覆盖 59 Campaign + 27 Research Candidate', () => {
     const src = researchTimelineSource();
     const ids = new Map<string, 'campaign' | 'candidate'>();
     for (const y of src.years()) {
       for (const c of src.yearData(y).campaigns) ids.set(c.campaign_id, c.kind);
     }
     const kinds = [...ids.values()];
-    expect(kinds.filter((k) => k === 'campaign')).toHaveLength(57);
+    expect(kinds.filter((k) => k === 'campaign')).toHaveLength(59);
     expect(kinds.filter((k) => k === 'candidate')).toHaveLength(27);
-    expect(ids.size).toBe(84);
+    expect(ids.size).toBe(86);
   });
 
   it('年份覆盖 2015–2025（Historical Universe 实际区间）', () => {

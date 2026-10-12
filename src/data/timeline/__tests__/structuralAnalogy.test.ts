@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import canonicalJson from '@observation/structural_analogy_explanations_v0_11.json';
+import canonicalJson from '@observation/structural_analogy_explanations_v0_12.json';
 import {
   DIMENSION_LABEL,
   DIMENSION_STATUS_LABEL,
@@ -24,16 +24,16 @@ const dataset = parseStructuralAnalogyDataset(canonicalJson);
 
 describe('structuralAnalogy · 解析与覆盖度', () => {
   it('从静态 Artifact 解析出完整数据集（无网络请求）', () => {
-    expect(dataset.artifactVersion).toBe('0.11');
+    expect(dataset.artifactVersion).toBe('0.12');
     expect(dataset.ruleSetVersion).toBe('structural-analogy-ruleset-v0.3');
     expect(dataset.snapshotDate).toBe('2026-10-08');  // v0.11：沿用 SA 的 snapshot_date（未随 universe 变）
     expect(dataset.candidates).toHaveLength(6);
   });
 
-  it('504 个 Research explanations 全部可被稳定解析', () => {
-    expect(explanationCount(dataset)).toBe(504);
+  it('516 个 Research explanations 全部可被稳定解析', () => {
+    expect(explanationCount(dataset)).toBe(516);
     for (const c of dataset.candidates) {
-      expect(c.explanations).toHaveLength(84);
+      expect(c.explanations).toHaveLength(86);
     }
   });
 
@@ -208,7 +208,7 @@ describe('structuralAnalogy · identity（统一稳定引用）', () => {
         }
       }
     }
-    expect(campaign).toBe(342);   // 57 Campaign × 6 候选
+    expect(campaign).toBe(354);   // 59 Campaign × 6 候选
     expect(rc).toBe(162);
   });
 

@@ -39,12 +39,12 @@ describe('数据快照回归：timeline_export_v1 版本', () => {
     expect(timelineExportData.source_commit).toMatch(/^[0-9a-f]{40}$/);
   });
 
-  it('数据量快照：57 Campaign / 27 Candidate / 22 Signal / 143 Event / 273 Security', () => {
-    expect(timelineExportData.campaigns).toHaveLength(57);
+  it('数据量快照：59 Campaign / 27 Candidate / 22 Signal / 143 Event / 278 Security', () => {
+    expect(timelineExportData.campaigns).toHaveLength(59);
     expect(timelineExportData.research_candidates).toHaveLength(27);
     expect(timelineExportData.signals).toHaveLength(22);
     expect(timelineExportData.events).toHaveLength(143);
-    expect(timelineExportData.securities).toHaveLength(273);
+    expect(timelineExportData.securities).toHaveLength(278);
   });
 });
 

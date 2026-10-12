@@ -47,10 +47,10 @@ const windowsOf = (rows: typeof macroAll) => rows.reduce((n, r) => n + r.windows
 
 describe('粒度 = 分组口径，不是新的研究对象', () => {
   it('★★★ 两种粒度的对象集合与窗口集合**完全一致**（一个都不多、一个都不少）', () => {
-    expect(objectsOf(macroAll)).toBe(84);
-    expect(objectsOf(subAll)).toBe(84);
-    expect(windowsOf(macroAll)).toBe(72);
-    expect(windowsOf(subAll)).toBe(72);
+    expect(objectsOf(macroAll)).toBe(86);
+    expect(objectsOf(subAll)).toBe(86);
+    expect(windowsOf(macroAll)).toBe(74);
+    expect(windowsOf(subAll)).toBe(74);
 
     // 更强：对象 id 集合逐个相等（不是只有计数相等）
     const ids = (rows: typeof macroAll) =>

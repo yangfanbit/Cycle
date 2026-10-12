@@ -119,6 +119,7 @@ def preflight():
     # ★ 基线取自 **export**（= 产品看到的世界）：
     #   DB `campaigns` 表只有 Campaign；**RC 来自 intake 包**，不在该表里。
     exp0 = load(EXPORT)
+    db_camp = list(camp)                      # ★ 先留存 DB 侧（下一步会被 export 覆盖）
     camp = [c["campaign_id"] for c in exp0["campaigns"]]
     rcs = [c["campaign_id"] for c in exp0["research_candidates"]]
     n_objects = len(camp) + len(rcs)
@@ -264,6 +265,53 @@ def preflight():
                             "INTAKE_MAP；否则导出里 lifecycle 为空（不报错）。" % not_covered)
         else:
             rep(OK, "C5", "lifecycle artifact 覆盖全部 %d 个对象" % len(all_ids))
+
+    # ---- 坑 6（C8）：**DB 与 export 是否同步** ----
+    #   ★★ 2026-10-12 实测踩到：DB 已导入 2 条新 Campaign（59），而 export 仍是 57，
+    #      但当时的 `--check` **全部 PASS** —— 因为 C0/C1/C5 全部以 **export 为基线**，
+    #      没有任何一条把 **DB 侧**与 export 对起来。
+    #      → 这正是本脚本要防的那类「静默」问题（DB 改了、下游没跟上、且不报错）。
+    #      故新增：DB `campaigns` 数必须 == export `campaigns` 数（RC 不在 DB 该表里，不参与）。
+    _db_only = sorted(set(db_camp) - set(camp))
+    _exp_only = sorted(set(camp) - set(db_camp))
+    if _db_only or _exp_only:
+        rep(FAIL, "C8", "**DB 与 export 不同步** —— DB campaigns=%d，export campaigns=%d\n"
+                        "         仅存在于 DB（未进入 export）：%s\n"
+                        "         仅存在于 export（DB 已无）：%s\n"
+                        "         → 若刚做过 canonicalization，请跑 `--apply` 重出下游；"
+                        "否则导出缺对象、且**不报错**。"
+            % (len(db_camp), len(camp), _db_only or '-', _exp_only or '-'))
+    else:
+        rep(OK, "C8", "DB 与 export 同步（campaigns 两侧均 %d）" % len(db_camp))
+
+    # ---- 坑 7（C9）：年度综述覆盖 + id 年份约定 ----
+    #   ★★ 2026-10-12 实测踩到：R02-04 的 MEDIA-002 我写成 `C-2019-MEDIA-GAMELICENSE`
+    #      但 `campaign_year` 取自 start（2018）→ `(rule_media, 2018)` **无年度综述** →
+    #      `batch_auto_research` 装配导出时抛 `TypeError: 'NoneType' object is not subscriptable`
+    #      （`q1("SELECT status FROM annual_reviews WHERE rule_id=? AND year=?")["status"]`）。
+    #   实测约定（58/58 既有对象）：`campaign_id` 前缀年份 == `campaign_year` == **start 年份**。
+    #      先例：`C-2022-CONS-SERVICE-REBOUND`（start 2022-12-07 / peak 2023-01-31 → year 2022）。
+    import sqlite3 as _sq
+    _conn = _sq.connect(DB)
+    _miss = list(_conn.execute(
+        "SELECT c.campaign_id, c.rule_id, c.campaign_year FROM campaigns c "
+        "WHERE NOT EXISTS (SELECT 1 FROM annual_reviews a "
+        "WHERE a.rule_id = c.rule_id AND a.year = c.campaign_year)"))
+    _badid = []
+    for _cid, _sd, _cy in _conn.execute(
+            "SELECT campaign_id, start_date, campaign_year FROM campaigns"):
+        _m = re.match(r"^(?:C|RC)-(\d{4})-", _cid)
+        if _m and _sd and int(_m.group(1)) != _cy:
+            _badid.append("%s（id 年份 %s ≠ campaign_year %s）" % (_cid, _m.group(1), _cy))
+    _conn.close()
+    if _miss or _badid:
+        rep(FAIL, "C9", "年度综述覆盖 / 命名约定不成立：\n"
+                        "         缺 annual_reviews 的 (rule_id, campaign_year)：%s\n"
+                        "         id 年份 ≠ campaign_year：%s\n"
+                        "         → 前者会让**导出装配直接抛错**；后者破坏 58/58 既有约定。"
+            % (_miss or '-', _badid or '-'))
+    else:
+        rep(OK, "C9", "年度综述覆盖完整 · id 年份 == campaign_year（全部 campaign）")
 
     # ---- 一致性基线（供跑后比对）----
     print()
