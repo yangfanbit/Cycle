@@ -21,17 +21,17 @@
   "no_score": "本 artifact **不含** score / ranking / probability；只有计数事实"
  },
  "summary": {
-  "SAME": 20,
-  "NEAR": 7,
-  "DIVERGENT": 22,
-  "UNKNOWN": 4,
+  "SAME": 21,
+  "NEAR": 9,
+  "DIVERGENT": 24,
+  "UNKNOWN": 5,
   "NO_COVERAGE": 0
  },
  "summary_if_adj_close_basis": {
   "SAME": 18,
-  "NEAR": 9,
-  "DIVERGENT": 22,
-  "UNKNOWN": 4
+  "NEAR": 10,
+  "DIVERGENT": 26,
+  "UNKNOWN": 5
  },
  "by_campaign": {
   "C-2016-CONS-BAIJIU-UPGRADE": {
@@ -346,6 +346,63 @@
    ],
    "median_peak_date": "2019-03-20",
    "median_peak_verdict": "DIVERGENT"
+  },
+  "C-2018-MEDIA-GAMELICENSE": {
+   "campaign_id": "C-2018-MEDIA-GAMELICENSE",
+   "campaign_year": 2018,
+   "status": "OK",
+   "recorded": {
+    "start": "2018-12-21",
+    "peak": "2019-03-12",
+    "end": "2019-08-09"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 2
+   },
+   "price_basis": "PRIMARY=raw high（盘中最高）· AUX=raw close / adjusted close",
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
+   "per_security": [
+    {
+     "security_id": "GIANTNET",
+     "status": "OK",
+     "rows": 187,
+     "first_date": "2018-11-06",
+     "last_date": "2019-08-09",
+     "peak_date": "2019-03-19",
+     "peak_high": 27.3,
+     "peak_ret_pct": 30.7,
+     "final_ret_pct": -15.8,
+     "peak_date_raw_close": "2019-03-19",
+     "peak_date_adj_close": "2019-03-19",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "SAME",
+     "peak_verdict_adj_close": "SAME"
+    },
+    {
+     "security_id": "PERFECTWORLD",
+     "status": "NO_DATA",
+     "rows": 0
+    },
+    {
+     "security_id": "SANQI",
+     "status": "OK",
+     "rows": 218,
+     "first_date": "2018-10-22",
+     "last_date": "2019-09-06",
+     "peak_date": "2019-09-05",
+     "peak_high": 19.36,
+     "peak_ret_pct": 77.6,
+     "final_ret_pct": 77.6,
+     "peak_date_raw_close": "2019-09-05",
+     "peak_date_adj_close": "2019-09-05",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    }
+   ],
+   "median_peak_date": "2019-03-19",
+   "median_peak_verdict": "SAME"
   },
   "C-2019-AD": {
    "campaign_id": "C-2019-AD",
@@ -2361,6 +2418,74 @@
    "median_peak_date": "2021-07-30",
    "median_peak_verdict": "SAME"
   },
+  "C-2021-POWER-GREEN": {
+   "campaign_id": "C-2021-POWER-GREEN",
+   "campaign_year": 2021,
+   "status": "OK",
+   "recorded": {
+    "start": "2021-09-07",
+    "peak": "2021-09-28",
+    "end": null
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "price_basis": "PRIMARY=raw high（盘中最高）· AUX=raw close / adjusted close",
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
+   "per_security": [
+    {
+     "security_id": "JINGNENG",
+     "status": "OK",
+     "rows": 1088,
+     "first_date": "2021-07-09",
+     "last_date": "2025-12-31",
+     "peak_date": "2025-12-26",
+     "peak_high": 5.43,
+     "peak_ret_pct": 86.0,
+     "final_ret_pct": 76.7,
+     "peak_date_raw_close": "2025-12-26",
+     "peak_date_adj_close": "2025-12-26",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    },
+    {
+     "security_id": "SANXIAENERGY",
+     "status": "OK",
+     "rows": 1088,
+     "first_date": "2021-07-09",
+     "last_date": "2025-12-31",
+     "peak_date": "2021-12-24",
+     "peak_high": 8.05,
+     "peak_ret_pct": 12.1,
+     "final_ret_pct": -42.9,
+     "peak_date_raw_close": "2021-11-01",
+     "peak_date_adj_close": "2021-12-24",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    },
+    {
+     "security_id": "YINXING",
+     "status": "OK",
+     "rows": 1082,
+     "first_date": "2021-07-09",
+     "last_date": "2025-12-31",
+     "peak_date": "2022-03-10",
+     "peak_high": 10.7,
+     "peak_ret_pct": 83.5,
+     "final_ret_pct": 0.7,
+     "peak_date_raw_close": "2021-12-27",
+     "peak_date_adj_close": "2021-12-27",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    }
+   ],
+   "median_peak_date": "2022-03-10",
+   "median_peak_verdict": "DIVERGENT"
+  },
   "C-2021-RES-CHEM-DUALCTRL": {
    "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
    "campaign_year": 2021,
@@ -2459,6 +2584,74 @@
     }
    ],
    "median_peak_date": "2021-09-14",
+   "median_peak_verdict": "DIVERGENT"
+  },
+  "C-2021-RES-COAL": {
+   "campaign_id": "C-2021-RES-COAL",
+   "campaign_year": 2021,
+   "status": "OK",
+   "recorded": {
+    "start": "2021-08-01",
+    "peak": "2021-10-19",
+    "end": "2021-11-30"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "price_basis": "PRIMARY=raw high（盘中最高）· AUX=raw close / adjusted close",
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
+   "per_security": [
+    {
+     "security_id": "CHINASHENHUA",
+     "status": "OK",
+     "rows": 144,
+     "first_date": "2021-06-02",
+     "last_date": "2021-12-30",
+     "peak_date": "2021-09-16",
+     "peak_high": 24.45,
+     "peak_ret_pct": 21.1,
+     "final_ret_pct": 11.0,
+     "peak_date_raw_close": "2021-09-09",
+     "peak_date_adj_close": "2021-09-09",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    },
+    {
+     "security_id": "SHAANXICOAL",
+     "status": "OK",
+     "rows": 144,
+     "first_date": "2021-06-02",
+     "last_date": "2021-12-30",
+     "peak_date": "2021-09-16",
+     "peak_high": 16.83,
+     "peak_ret_pct": 38.9,
+     "final_ret_pct": 1.7,
+     "peak_date_raw_close": "2021-09-23",
+     "peak_date_adj_close": "2021-09-23",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "NEAR"
+    },
+    {
+     "security_id": "YANKUANG",
+     "status": "OK",
+     "rows": 122,
+     "first_date": "2021-06-02",
+     "last_date": "2021-11-30",
+     "peak_date": "2021-09-17",
+     "peak_high": 36.95,
+     "peak_ret_pct": 155.4,
+     "final_ret_pct": 64.3,
+     "peak_date_raw_close": "2021-09-16",
+     "peak_date_adj_close": "2021-09-16",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    }
+   ],
+   "median_peak_date": "2021-09-16",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2022-CONS-SERVICE-REBOUND": {
@@ -3168,21 +3361,21 @@
     {
      "security_id": "YANJIN",
      "status": "OK",
-     "rows": 43,
+     "rows": 770,
      "first_date": "2022-11-02",
-     "last_date": "2022-12-30",
-     "peak_date": "2022-12-05",
-     "peak_high": 112.0,
-     "peak_ret_pct": 16.4,
-     "final_ret_pct": 14.3,
-     "peak_date_raw_close": "2022-12-27",
-     "peak_date_adj_close": "2022-12-27",
+     "last_date": "2025-12-31",
+     "peak_date": "2023-04-10",
+     "peak_high": 139.5,
+     "peak_ret_pct": 45.0,
+     "final_ret_pct": -28.4,
+     "peak_date_raw_close": "2023-04-10",
+     "peak_date_adj_close": "2025-06-04",
      "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
      "peak_verdict": "DIVERGENT",
      "peak_verdict_adj_close": "DIVERGENT"
     }
    ],
-   "median_peak_date": "2022-12-05",
+   "median_peak_date": "2023-04-10",
    "median_peak_verdict": "DIVERGENT"
   },
   "C-2023-FIN-SOE-VALUATION": {
@@ -3453,6 +3646,142 @@
    "median_peak_date": "2025-07-17",
    "median_peak_verdict": "DIVERGENT"
   },
+  "C-2023-MEDIA-AI": {
+   "campaign_id": "C-2023-MEDIA-AI",
+   "campaign_year": 2023,
+   "status": "OK",
+   "recorded": {
+    "start": "2023-03-31",
+    "peak": null,
+    "end": "2023-07-31"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "price_basis": "PRIMARY=raw high（盘中最高）· AUX=raw close / adjusted close",
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
+   "per_security": [
+    {
+     "security_id": "GUANGXIAN",
+     "status": "OK",
+     "rows": 125,
+     "first_date": "2023-01-30",
+     "last_date": "2023-07-31",
+     "peak_date": "2023-04-14",
+     "peak_high": 12.14,
+     "peak_ret_pct": 30.8,
+     "final_ret_pct": -7.4,
+     "peak_date_raw_close": "2023-04-12",
+     "peak_date_adj_close": "2023-04-12",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "UNKNOWN",
+     "peak_verdict_adj_close": "UNKNOWN"
+    },
+    {
+     "security_id": "SANQI",
+     "status": "OK",
+     "rows": 125,
+     "first_date": "2023-01-30",
+     "last_date": "2023-07-31",
+     "peak_date": "2023-06-20",
+     "peak_high": 37.97,
+     "peak_ret_pct": 75.4,
+     "final_ret_pct": 27.3,
+     "peak_date_raw_close": "2023-06-20",
+     "peak_date_adj_close": "2023-06-20",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "UNKNOWN",
+     "peak_verdict_adj_close": "UNKNOWN"
+    },
+    {
+     "security_id": "ZWONLINE",
+     "status": "OK",
+     "rows": 125,
+     "first_date": "2023-01-30",
+     "last_date": "2023-07-31",
+     "peak_date": "2023-04-13",
+     "peak_high": 27.76,
+     "peak_ret_pct": 153.7,
+     "final_ret_pct": 47.3,
+     "peak_date_raw_close": "2023-04-11",
+     "peak_date_adj_close": "2023-04-11",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "UNKNOWN",
+     "peak_verdict_adj_close": "UNKNOWN"
+    }
+   ],
+   "median_peak_date": "2023-04-14",
+   "median_peak_verdict": "UNKNOWN"
+  },
+  "C-2023-PHARMA-FLU": {
+   "campaign_id": "C-2023-PHARMA-FLU",
+   "campaign_year": 2023,
+   "status": "OK",
+   "recorded": {
+    "start": "2023-02-20",
+    "peak": "2023-03-20",
+    "end": "2023-04-15"
+   },
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "price_basis": "PRIMARY=raw high（盘中最高）· AUX=raw close / adjusted close",
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
+   "per_security": [
+    {
+     "security_id": "BAIKEBIO",
+     "status": "OK",
+     "rows": 75,
+     "first_date": "2022-12-22",
+     "last_date": "2023-04-14",
+     "peak_date": "2022-12-26",
+     "peak_high": 75.0,
+     "peak_ret_pct": 9.5,
+     "final_ret_pct": -5.1,
+     "peak_date_raw_close": "2023-01-20",
+     "peak_date_adj_close": "2023-01-20",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    },
+    {
+     "security_id": "HUALANVAX",
+     "status": "OK",
+     "rows": 75,
+     "first_date": "2022-12-22",
+     "last_date": "2023-04-14",
+     "peak_date": "2023-02-27",
+     "peak_high": 56.01,
+     "peak_ret_pct": 17.9,
+     "final_ret_pct": 10.5,
+     "peak_date_raw_close": "2023-02-28",
+     "peak_date_adj_close": "2023-02-28",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "NEAR",
+     "peak_verdict_adj_close": "NEAR"
+    },
+    {
+     "security_id": "JINDIKE",
+     "status": "OK",
+     "rows": 75,
+     "first_date": "2022-12-22",
+     "last_date": "2023-04-14",
+     "peak_date": "2023-02-27",
+     "peak_high": 59.87,
+     "peak_ret_pct": 43.2,
+     "final_ret_pct": 43.2,
+     "peak_date_raw_close": "2023-04-14",
+     "peak_date_adj_close": "2023-04-14",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "NEAR",
+     "peak_verdict_adj_close": "NEAR"
+    }
+   ],
+   "median_peak_date": "2023-02-27",
+   "median_peak_verdict": "NEAR"
+  },
   "C-2023-PHARMA-GLP1": {
    "campaign_id": "C-2023-PHARMA-GLP1",
    "campaign_year": 2023,
@@ -3520,6 +3849,58 @@
    ],
    "median_peak_date": "2023-10-16",
    "median_peak_verdict": "SAME"
+  },
+  "C-2023-RES-COAL-DIVIDEND": {
+   "campaign_id": "C-2023-RES-COAL-DIVIDEND",
+   "campaign_year": 2023,
+   "status": "OK",
+   "recorded": {
+    "start": "2023-08-21",
+    "peak": "2024-05-29",
+    "end": "2024-09-11"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "price_basis": "PRIMARY=raw high（盘中最高）· AUX=raw close / adjusted close",
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
+   "per_security": [
+    {
+     "security_id": "CHINASHENHUA",
+     "status": "OK",
+     "rows": 299,
+     "first_date": "2023-06-26",
+     "last_date": "2024-09-11",
+     "peak_date": "2024-07-03",
+     "peak_high": 46.02,
+     "peak_ret_pct": 54.4,
+     "final_ret_pct": 25.1,
+     "peak_date_raw_close": "2024-07-02",
+     "peak_date_adj_close": "2024-07-02",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "DIVERGENT",
+     "peak_verdict_adj_close": "DIVERGENT"
+    },
+    {
+     "security_id": "SHAANXICOAL",
+     "status": "OK",
+     "rows": 299,
+     "first_date": "2023-06-26",
+     "last_date": "2024-09-11",
+     "peak_date": "2024-06-12",
+     "peak_high": 28.03,
+     "peak_ret_pct": 58.9,
+     "final_ret_pct": 28.8,
+     "peak_date_raw_close": "2024-06-12",
+     "peak_date_adj_close": "2024-07-01",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "NEAR",
+     "peak_verdict_adj_close": "DIVERGENT"
+    }
+   ],
+   "median_peak_date": "2024-06-12",
+   "median_peak_verdict": "NEAR"
   },
   "C-2024-CONS-TRADE-IN": {
    "campaign_id": "C-2024-CONS-TRADE-IN",

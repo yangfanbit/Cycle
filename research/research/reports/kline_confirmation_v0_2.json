@@ -20,10 +20,10 @@
   "no_score": "只有证实状态与原文依据，无评分 / 排序 / 概率"
  },
  "summary": {
-  "CONFIRMED": 34,
+  "CONFIRMED": 35,
   "UNCONFIRMED": 3,
-  "NOT_APPLICABLE": 12,
-  "NO_PEAK_RECORDED": 4,
+  "NOT_APPLICABLE": 16,
+  "NO_PEAK_RECORDED": 5,
   "NO_DATA": 0
  },
  "by_campaign": {
@@ -159,6 +159,29 @@
      "source_field": "events.name"
     }
    ]
+  },
+  "C-2018-MEDIA-GAMELICENSE": {
+   "campaign_id": "C-2018-MEDIA-GAMELICENSE",
+   "campaign_year": 2018,
+   "recorded": {
+    "start": "2018-12-21",
+    "peak": "2019-03-12",
+    "end": "2019-08-09"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": 3,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "GIANTNET",
+    "peak_date": "2019-03-19",
+    "delta_days": 7
+   },
+   "confirmation": "CONFIRMED"
   },
   "C-2019-AD": {
    "campaign_id": "C-2019-AD",
@@ -836,6 +859,45 @@
    },
    "confirmation": "CONFIRMED"
   },
+  "C-2021-POWER-GREEN": {
+   "campaign_id": "C-2021-POWER-GREEN",
+   "campaign_year": 2021,
+   "recorded": {
+    "start": "2021-09-07",
+    "peak": "2021-09-28",
+    "end": null
+   },
+   "peak_referent": "POLICY_EVENT",
+   "peak_referent_label": "政策事件日",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "SANXIAENERGY",
+    "peak_date": "2021-12-24",
+    "delta_days": 87
+   },
+   "confirmation": "NOT_APPLICABLE",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2021-09-28",
+     "type": "官方发布",
+     "excerpt": "2021-09-28 绿色电力交易试点正式启动。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support,point_in_time_support · independence_group=IG-POLICY-2021-GREENPOWER-LAUNCH · point_",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2021-09-28",
+     "type": "财经媒体报道（行情口径）",
+     "excerpt": "2021-09-28 绿色电力概念火爆，11 只概念股涨停；当日首次绿色电力交易共 17 个省份 259 家市场主体参与，达成交易电量 79.35 亿千瓦时。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support · independence_group=IG-MEDIA",
+     "source_field": "evidences.description"
+    }
+   ]
+  },
   "C-2021-RES-CHEM-DUALCTRL": {
    "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
    "campaign_year": 2021,
@@ -858,6 +920,38 @@
     "delta_days": 1
    },
    "confirmation": "CONFIRMED"
+  },
+  "C-2021-RES-COAL": {
+   "campaign_id": "C-2021-RES-COAL",
+   "campaign_year": 2021,
+   "recorded": {
+    "start": "2021-08-01",
+    "peak": "2021-10-19",
+    "end": "2021-11-30"
+   },
+   "peak_referent": "POLICY_EVENT",
+   "peak_referent_label": "政策事件日",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "YANKUANG",
+    "peak_date": "2021-09-17",
+    "delta_days": 32
+   },
+   "confirmation": "NOT_APPLICABLE",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2021-10-19",
+     "type": "官方政策 / 监管发布",
+     "excerpt": "2021-10-19 国家发展改革委组织重点煤炭企业、中国煤炭工业协会、中国电力企业联合会召开今冬明春能源保供工作机制煤炭专题座谈会，研究依法对煤炭价格实施干预措施。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support,point_in_time_support · i",
+     "source_field": "evidences.description"
+    }
+   ]
   },
   "C-2022-CONS-SERVICE-REBOUND": {
    "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
@@ -1169,6 +1263,63 @@
     }
    ]
   },
+  "C-2023-MEDIA-AI": {
+   "campaign_id": "C-2023-MEDIA-AI",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-03-31",
+    "peak": null,
+    "end": "2023-07-31"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "confirmation": "NO_PEAK_RECORDED"
+  },
+  "C-2023-PHARMA-FLU": {
+   "campaign_id": "C-2023-PHARMA-FLU",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-02-20",
+    "peak": "2023-03-20",
+    "end": "2023-04-15"
+   },
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "peak_referent_label": "行业指标拐点",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": 3,
+    "with_data": 3
+   },
+   "nearest": {
+    "security_id": "HUALANVAX",
+    "peak_date": "2023-02-27",
+    "delta_days": 21
+   },
+   "confirmation": "NOT_APPLICABLE",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2023-03-20",
+     "type": "行业媒体报道（转官方表态）",
+     "excerpt": "2023-03-20 中国疾控中心病毒病所国家流感中心主任王大燕表示，此次流感 3 月中旬已进入高峰、整体处于高位。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support · independence_group=IG-MEDIA-2023-FLU-PEAK · poin",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-03-24",
+     "type": "官方监测数据",
+     "excerpt": "2023 年第 12 周（截至 2023-03-24）南方省份流感病毒检测阳性率上升趋缓、北方省份下降；主要流行株为 A(H1N1)pdm09。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support,point_in_time_support · independence",
+     "source_field": "evidences.description"
+    }
+   ]
+  },
   "C-2023-PHARMA-GLP1": {
    "campaign_id": "C-2023-PHARMA-GLP1",
    "campaign_year": 2023,
@@ -1191,6 +1342,45 @@
     "delta_days": 0
    },
    "confirmation": "CONFIRMED"
+  },
+  "C-2023-RES-COAL-DIVIDEND": {
+   "campaign_id": "C-2023-RES-COAL-DIVIDEND",
+   "campaign_year": 2023,
+   "recorded": {
+    "start": "2023-08-21",
+    "peak": "2024-05-29",
+    "end": "2024-09-11"
+   },
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "peak_referent_label": "板块 / 行业指数高点",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": 2,
+    "with_data": 2
+   },
+   "nearest": {
+    "security_id": "SHAANXICOAL",
+    "peak_date": "2024-06-12",
+    "delta_days": 14
+   },
+   "confirmation": "NOT_APPLICABLE",
+   "evidence_anchors": [
+    {
+     "kind": "evidence",
+     "date": "2024-05-29",
+     "type": "指数日行情（官方指数机构一手口径）",
+     "excerpt": "中证申万煤炭指数（000820）在 2022-01-01 至 2024-12-31 区间内，最低收盘为 3178.22（2022-01-28），最高收盘为 5242.93（2024-05-29）。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support · independ",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2024-05-29",
+     "type": "跨指数比较（由同一来源的日行情计算）",
+     "excerpt": "煤炭板块指数与红利指数的「顶」错位天数在三个段之间差异显著：2021 年同日（均为 2021-09-13，煤炭 4347.21 / 红利 5772.51）、2022 年相差 153 天（煤炭 2022-09-06 / 红利 2022-04-06）、2024 年相差 8 天（煤炭 2024-05-29 / 红利 2024-05-21）。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_rela",
+     "source_field": "evidences.description"
+    }
+   ]
   },
   "C-2024-CONS-TRADE-IN": {
    "campaign_id": "C-2024-CONS-TRADE-IN",

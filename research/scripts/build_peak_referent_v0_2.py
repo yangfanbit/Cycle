@@ -209,6 +209,53 @@ def main():
                          "with_data": (v.get("coverage") or {}).get("with_data")},
         }
 
+    # ================================================================
+    # ★★ ThreeC Agent 审查裁定覆盖层（2026-10-13）
+    #
+    # 为什么：本派生器的**证据类型映射表不认识 R02-03 / R02-04 引入的新证据类型**
+    #   （如 `指数日行情（官方指数机构一手口径）`）→ 6 个新对象全被派生成 `UNSPECIFIED`。
+    #   而 `UNSPECIFIED` 会被下游判成 `UNCONFIRMED` —— 违反 `AGENTS.md` §5.1
+    #   「参照物非股价时……**不得**记为 UNCONFIRMED」。
+    #
+    # 为什么用覆盖层而不是改映射表：参照物属**研究判断**（本 artifact 自标 PROVISIONAL
+    #   待 ThreeC Agent 审查）。审查裁定应**显式、可审计、可回滚**，而不是悄悄改派生器
+    #   行为（那会同时改变另外 53 个对象）。
+    #
+    # 规则：应用前校验 `from` 与当前值一致，**不一致则拒绝应用**（防漂移）；
+    #   原值与裁定值一并留档。与 `review_overrides_v0_1.json`（lifecycle）同机制。
+    # ================================================================
+    _ovr_applied, _ovr_skipped = [], []
+    _ovr_path = os.path.join(REP, "peak_referent_overrides_v0_1.json")
+    if os.path.isfile(_ovr_path):
+        _ovr = json.load(io.open(_ovr_path, encoding="utf-8"))
+        for _o in _ovr.get("overrides") or []:
+            _cid = _o["campaign_id"]
+            _e = out.get(_cid)
+            if _e is None:
+                _ovr_skipped.append({"campaign_id": _cid, "reason": "artifact 中无该对象"})
+                continue
+            _cur = _e.get(_o["field"])
+            if _cur != _o["from"]:
+                _ovr_skipped.append({"campaign_id": _cid,
+                                     "reason": "原值不匹配（现=%r，裁定记录的 from=%r）—— 拒绝应用"
+                                               % (_cur, _o["from"])})
+                continue
+            _e[_o["field"]] = _o["to"]
+            _e["peak_referent_label"] = LABEL.get(_o["to"], _o["to"])
+            _e["referent_overridden"] = {
+                "from": _o["from"], "to": _o["to"],
+                "basis": _o.get("basis"), "review_ref": _o.get("review_ref"),
+                "overridden_by": "ThreeC Agent（审查裁定）· 2026-10-13",
+                "source": "research/research/reports/peak_referent_overrides_v0_1.json",
+            }
+            # 覆盖后重算 tally
+            tally[_o["from"]] = tally.get(_o["from"], 0) - 1
+            tally[_o["to"]] = tally.get(_o["to"], 0) + 1
+            _ovr_applied.append({"campaign_id": _cid, "field": _o["field"],
+                                 "from": _o["from"], "to": _o["to"]})
+        print("review_overrides.applied:", json.dumps(_ovr_applied, ensure_ascii=False))
+        print("review_overrides.skipped:", json.dumps(_ovr_skipped, ensure_ascii=False))
+
     res = {
         "artifact": "peak_referent",
         "artifact_version": "0.2",
@@ -234,6 +281,12 @@ def main():
             "excerpt_rule": "evidence 取 `evidences.description`、event 取 `events.name`；均截去来源标注尾巴，上限 %d 字。" % EXCERPT_MAX,
             "note_rule": "`referent_basis_note` 是判断说明，**不得使用「」引号** —— 引文一律由 `referent_evidence` 逐字提供。",
             "review": "参照物属研究判断，全部标 `PROVISIONAL`，待 ThreeC Agent 按协议 §3 审查。",
+            "review_overrides": {
+                "source": "research/research/reports/peak_referent_overrides_v0_1.json",
+                "applied": _ovr_applied,
+                "skipped": _ovr_skipped,
+                "note": "覆盖层由 ThreeC Agent 产出；应用前校验 from 一致（不一致则拒绝）。原值一并留档于各对象的 referent_overridden。",
+            },
             "no_score": "本 artifact **不含** score / ranking / probability。",
         },
         "enum": {k: LABEL[k] for k in REFERENTS},

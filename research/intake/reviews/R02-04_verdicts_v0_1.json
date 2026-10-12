@@ -129,11 +129,12 @@
     "★ **季节性未核验**（known_gaps #6）：本候选的 `rule_id` 与观察窗口**不得**写成 `confirmed`；若新建规则必须以 `status='candidate'` 建立并注明「观察窗口未经核验」。",
     "★ `ticker` 一律留空待核（known_gaps #7：煤炭侧标的代码未在任何来源中出现）—— **禁止凭常识补代码**；canonicalization 时如实留空或从库内既有 securities 匹配。",
     "★ 记录与 `C-2024-FIN-BANK-DIVIDEND` / `C-2023-FIN-SOE-VALUATION` 的**同机制轴不同行业**重叠（CT002），并在 canonicalization 记录中显式写明「机制轴相同不构成重复」（协议 §1.4）。是否视为同一 Theme Cycle 的行业载体属 Campaign Decision，本审查**不**代为合并。",
-    "★ 记录与 `C-2021-RES-COAL`（R02-03）与 2022 俄乌能源段的**边界判定**（CT001/CT003）——即缺失项② 已补齐的形式证据。"
+    "★ 记录与 `C-2021-RES-COAL`（R02-03）与 2022 俄乌能源段的**边界判定**（CT001/CT003）——即缺失项② 已补齐的形式证据。",
+    "★★ **更正**：`kline_confirmation_consequence` 由 `CONFIRMED` 改为 **`NOT_APPLICABLE`** —— 原判断混淆了「板块指数创高」与「已登记标的同周创高」（§5.1 的定义是后者）。"
    ],
    "missing_items": [],
    "peak_referent": "板块指数（000820 收盘高点 2024-05-29）",
-   "kline_confirmation_consequence": "CONFIRMED（参照物即板块指数，且该日经一手来源复算确为区间最高收盘）"
+   "kline_confirmation_consequence": "NOT_APPLICABLE —— ★★ **本项为 2026-10-13 自我更正**：原写 `CONFIRMED` 是**错的**。`CONFIRMED` 的定义是「**已登记标的**同周创价格高点」（`AGENTS.md` §5.1），**不是**「板块指数创高点」。实测：该段 peak 2024-05-29 时，已登记标的（中国神华 / 陕西煤业）最近价格高点差 **14 日**（不同周）→ 不满足 `CONFIRMED`；而参照物是**板块指数**（非股价）→ 按 §5.1 应为 **`NOT_APPLICABLE`**。★ 更正依据：`kline_confirmation_v0_2.json` 实测输出 + §5.1 定义。"
   },
   {
    "candidate_id": "R02-MEDIA-002",

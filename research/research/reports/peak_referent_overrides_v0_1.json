@@ -1,0 +1,69 @@
+{
+ "artifact": "peak_referent_overrides",
+ "artifact_version": "0.1",
+ "generated_by": "ThreeC Agent（审查角色）· 2026-10-13",
+ "position": "对 `peak_referent_v0_2.json` 的**审查裁定覆盖层**。位置：参照物派生**之后**、`build_kline_confirmation` 消费**之前**。**只作用于装配，不改 DB / 不改 intake 包 / 不改派生器逻辑。**",
+ "why": [
+  "★★ 实测（2026-10-13）：`build_peak_referent_v0_2.py` 的证据类型映射表**不认识 R02-03 / R02-04 引入的新证据类型**（如 `指数日行情（官方指数机构一手口径）`、`官方政策 / 监管发布`、`行业指标`），于是把 6 个新对象全部派生成 `UNSPECIFIED`。",
+  "后果是**宪法级**的：`AGENTS.md` §5.1 明文「参照物非股价时 K 线证实状态为 NOT_APPLICABLE，**不得**记为 UNCONFIRMED」。而 `UNSPECIFIED` 会被下游判成 `UNCONFIRMED` —— 恰好违反该条。",
+  "★ 为什么用覆盖层而不是改派生器：参照物属**研究判断**（artifact 自标 PROVISIONAL，待 ThreeC Agent 审查）。审查者的裁定应当是**显式、可审计、可回滚**的，而不是悄悄改掉派生器的行为（那会同时改变另外 53 个对象）。",
+  "★ 与 `review_overrides_v0_1.json`（lifecycle）**同机制** —— 这是「审查裁定生效通道」在 K 线链上的落地。"
+ ],
+ "rules": [
+  "① 只允许把**已声明**的参照物落进 artifact；不得新增未经审查的判断。",
+  "② 每条必须带 `basis`（依据）与 `review_ref`（审查出处）。",
+  "③ 应用前校验 `from` 与当前值一致；**不一致则拒绝应用**并记录原因（防漂移）。",
+  "④ 应用后原值 `from` 与裁定值 `to` **一并留档**，原值不删除。",
+  "⑤ 幂等：重复运行结果相同。",
+  "⑥ 只作用于该 artifact 的装配：**不改 DB、不改 intake 包、不改派生器**。"
+ ],
+ "overrides": [
+  {
+   "campaign_id": "C-2021-RES-COAL",
+   "field": "peak_referent",
+   "from": "UNSPECIFIED",
+   "to": "POLICY_EVENT",
+   "basis": "R02-03 审查裁定：peak(2021-10-19) 的参照物 = **政策事件**（发改委研究依法干预煤炭价格），非股价/指数高点。",
+   "review_ref": "docs/R02_03_REVIEW_v0_1.md · research/intake/reviews/R02-03_verdicts_v0_1.json"
+  },
+  {
+   "campaign_id": "C-2021-POWER-GREEN",
+   "field": "peak_referent",
+   "from": "UNSPECIFIED",
+   "to": "POLICY_EVENT",
+   "basis": "R02-03 审查裁定：peak(2021-09-28) 的参照物 = **政策事件**（绿色电力交易试点正式启动）。",
+   "review_ref": "docs/R02_03_REVIEW_v0_1.md · research/intake/reviews/R02-03_verdicts_v0_1.json"
+  },
+  {
+   "campaign_id": "C-2023-PHARMA-FLU",
+   "field": "peak_referent",
+   "from": "UNSPECIFIED",
+   "to": "INDUSTRY_INDICATOR",
+   "basis": "R02-03 审查裁定：peak(2023-03-20) 的参照物 = **行业指标**（流感活动高峰），非股价。",
+   "review_ref": "docs/R02_03_REVIEW_v0_1.md · research/intake/reviews/R02-03_verdicts_v0_1.json"
+  },
+  {
+   "campaign_id": "C-2023-RES-COAL-DIVIDEND",
+   "field": "peak_referent",
+   "from": "UNSPECIFIED",
+   "to": "SECTOR_INDEX_HIGH",
+   "basis": "R02-04 审查裁定：peak(2024-05-29) 的参照物 = **板块指数**（中证申万煤炭指数 000820 收盘高点，经一手来源复算命中）。",
+   "review_ref": "docs/R02_04_REVIEW_v0_1.md · research/intake/reviews/R02-04_verdicts_v0_1.json"
+  },
+  {
+   "campaign_id": "C-2018-MEDIA-GAMELICENSE",
+   "field": "peak_referent",
+   "from": "UNSPECIFIED",
+   "to": "SECTOR_INDEX_HIGH",
+   "basis": "R02-04 审查裁定：peak(2019-03-12) 的参照物 = **板块指数**（中证传媒指数 399971 收盘高点，经复算为 2019 年内最高收盘）。",
+   "review_ref": "docs/R02_04_REVIEW_v0_1.md · research/intake/reviews/R02-04_verdicts_v0_1.json"
+  }
+ ],
+ "not_overridden": [
+  {
+   "campaign_id": "C-2023-MEDIA-AI",
+   "reason": "该对象 **peak_date 为 NULL**（R02-04 审查裁定「未界定峰值」）→ 无参照物可言。K 线证实状态应为 **NO_PEAK_RECORDED**，**不是** UNCONFIRMED。留 `UNSPECIFIED` 是如实的。"
+  }
+ ],
+ "known_gap_in_deriver": "★ `build_peak_referent_v0_2.py` 的证据类型映射表未覆盖 R02 轮次引入的证据类型。本覆盖层是**补丁而非根治**；根治需扩派生器的类型映射（属 Research 侧改动，独立轮次）。**未做。**"
+}
