@@ -3623,12 +3623,42 @@ def main():
         )
         _o["macro_theme_root_status"] = _res.get("status")
 
+    # ================================================================
+    # ★★ Contract v1.2（2026-10-12）：导出 `taxonomy` 段（DB `themes` 表全量）
+    #
+    # 为什么：产品只能看到**对象实际挂的主题名**，看不到父子关系。于是查询一个
+    # 「库内主题、但暂无对象挂靠」的名字（实测：`半导体材料` —— concept，属
+    # `半导体` → 根 `电子`）只能得到笼统的「未覆盖」，**无法区分**：
+    #   ② 库内主题·暂无对象   vs   ③ 根本不是库内主题（如 `动力煤`）
+    #
+    # 处置：由 Research 侧导出 DB `themes` 表**全量**（**唯一事实来源**），
+    # 产品**只读不算** —— 不在产品里重实现 taxonomy（`AGENTS.md` §4）。
+    # ★ 与 v1.1 的 `macro_theme_root` **同源**（同一张表 / 同一 CMTR v1 口径）。
+    # ★ 本段**只描述主题树**，不含 score / 相似度 / 别名 —— 不得据此做模糊匹配。
+    # ================================================================
+    try:
+        import sqlite3 as _sq
+        # ★ ROOT 已是 <repo>/research（`ROOT = db.ROOT`）→ 用 db.DB_PATH，别再拼 research/
+        _tc = _sq.connect(db.DB_PATH)
+        taxonomy_out = [
+            {"theme_id": _r[0], "name": _r[1],
+             "theme_type": _r[2], "parent_theme_id": _r[3]}
+            for _r in _tc.execute(
+                "SELECT theme_id, name, theme_type, parent_theme_id FROM themes "
+                "ORDER BY COALESCE(parent_theme_id, ''), name")
+        ]
+        _tc.close()
+    except Exception as _exc:  # noqa: BLE001
+        print(f"!! taxonomy 段导出失败，写空数组：{_exc}")
+        taxonomy_out = []
+
     export = {
         "contract": "timeline_export",
-        "timeline_export_version": "1.1",      # ★ v1.1：新增 macro_theme_root（向后兼容的**新增字段**）
+        "timeline_export_version": "1.2",      # ★ v1.2：新增 taxonomy 段（向后兼容的**新增段**）
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "source_commit": get_git_head(),
         "project": "Cycle-Research",
+        "taxonomy": taxonomy_out,
         "rules": rules_out,
         "signals": signals_out,
         "campaigns": campaigns_out,
@@ -3639,7 +3669,7 @@ def main():
     os.makedirs(os.path.dirname(EXPORT), exist_ok=True)
     with open(EXPORT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(export, f, ensure_ascii=False, indent=2, default=str)
-    print(f"timeline_export: {EXPORT} (v1.1, {len(campaigns_out)} campaigns, "
+    print(f"timeline_export: {EXPORT} (v{export['timeline_export_version']}, {len(campaigns_out)} campaigns, "
           f"{len(research_candidates_out)} research_candidates, "
           f"{len(events_out)} events, {len(securities_out)} securities)")
 

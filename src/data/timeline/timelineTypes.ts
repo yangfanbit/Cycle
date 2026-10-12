@@ -218,10 +218,20 @@ export interface ExportSecurityV1 {
   research_candidate_id: string | null;
 }
 
-/** timeline_export_v1.json 顶层结构（canonical，11 字段白名单） */
+/** ★ Contract v1.2：`taxonomy` 段的一个节点（DB `themes` 表全量 · 唯一事实来源） */
+export interface ExportTaxonomyNodeV1 {
+  theme_id: string;
+  name: string;
+  theme_type: string;
+  /** 根节点为 null */
+  parent_theme_id: string | null;
+}
+
+/** timeline_export_v1.json 顶层结构（canonical） */
 export interface TimelineExportV1 {
   contract: 'timeline_export';
-  timeline_export_version: '1.0';
+  /** ★ v1.2 起为 `1.2`；读取方必须同时接受 1.0 / 1.1 / 1.2 */
+  timeline_export_version: '1.0' | '1.1' | '1.2';
   generated_at: string;
   source_commit: string;
   project: string;
@@ -231,6 +241,12 @@ export interface TimelineExportV1 {
   research_candidates: ExportCandidateV1[];
   events: ExportEventV1[];
   securities: ExportSecurityV1[];
+  /**
+   * ★ Contract v1.2：主题树（DB `themes` 表全量）。
+   *   只描述父子关系；**不含** score / 相似度 / 别名。
+   *   v1.0 / v1.1 导出无此段 → 可选。
+   */
+  taxonomy?: ExportTaxonomyNodeV1[];
 }
 
 /* ---------------- Timeline 视图模型 ---------------- */
@@ -341,4 +357,10 @@ export interface TimelineDataSource {
   /** 数据源可展示的年份（UI 不硬编码年份） */
   years(): number[];
   yearData(year: number): TimelineYearData;
+  /**
+   * ★ Contract v1.2：主题树（DB `themes` 表全量）。
+   *   只用于**披露**（名称 → 主题 → 根）；**不得**据此做模糊匹配或编造父主题。
+   *   legacy verified 源无此段 → 返回空数组。
+   */
+  taxonomy?(): ExportTaxonomyNodeV1[];
 }

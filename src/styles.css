@@ -2874,6 +2874,12 @@ html, body {
   border-left: 3px solid var(--today);
 }
 .dl-none-explain li { margin: 2px 0; }
+/* ★ Contract v1.2：把「未覆盖」分成两类 —— ②库内主题·暂无对象 / ③不在库内主题表 */
+.dl-resolution {
+  margin: 0 0 10px; padding: 9px 12px; font-size: 12.5px; line-height: 1.75;
+  color: var(--ink-2); background: var(--bg); border-radius: var(--radius);
+  border-left: 3px solid var(--line-strong);
+}
 .dl-v-historical-only { border-left-color: var(--preheat-ink); }
 .dl-v-both { border-left-color: var(--active); }
 .dl-block { margin-top: 10px; }

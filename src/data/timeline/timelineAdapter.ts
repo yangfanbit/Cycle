@@ -179,6 +179,8 @@ const TOP_LEVEL_KEYS = [
   'research_candidates',
   'events',
   'securities',
+  // ★ Contract v1.2：主题树段
+  'taxonomy',
 ] as const;
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -221,8 +223,9 @@ export function validateTimelineExportV1(data: unknown): string[] {
   if (obj.contract !== 'timeline_export') issues.push('contract 必须为 "timeline_export"');
   // ★ Contract v1.1（2026-10-11）：允许 "1.0"（legacy）与 "1.1"（新增 macro_theme_root）。
   //   1.1 是**向后兼容的新增字段**，不改变任何既有字段语义 → 产品两侧都必须接受。
-  if (obj.timeline_export_version !== '1.0' && obj.timeline_export_version !== '1.1') {
-    issues.push('timeline_export_version 必须为 "1.0" 或 "1.1"');
+  // ★ Contract v1.2（2026-10-12）：接受 1.0 / 1.1 / 1.2（均为向后兼容的新增）
+  if (!['1.0', '1.1', '1.2'].includes(String(obj.timeline_export_version))) {
+    issues.push('timeline_export_version 必须为 "1.0" / "1.1" / "1.2"');
   }
 
   const arr = (name: string): unknown[] => {
@@ -831,6 +834,10 @@ export function fromTimelineExportV1(data: TimelineExportV1): TimelineDataSource
 
   return {
     kind: 'preview',
+    // ★ Contract v1.2：把主题树交给消费方（只读；v1.0/v1.1 导出无此段 → 空数组）
+    taxonomy() {
+      return data.taxonomy ?? [];
+    },
     years() {
       // 统一规则（V1.9.1 Year Coverage）：Campaign / Research Candidate 覆盖年份
       // = start 年 → end 年**连续**（含中间年份）——与 verified 源同一规则、同一 helper。

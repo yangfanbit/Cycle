@@ -30,7 +30,10 @@ EXPORT = db.TIMELINE_EXPORT_PATH  # canonical: <repo>/exports/timeline_export_v1
 TOP_LEVEL = {
     "contract", "timeline_export_version", "generated_at", "source_commit",
     "project", "rules", "signals", "campaigns", "research_candidates", "events", "securities",
+    # ★ Contract v1.2（2026-10-12）：DB `themes` 表全量（唯一事实来源）
+    "taxonomy",
 }
+TAXONOMY_FIELDS = {"theme_id", "name", "theme_type", "parent_theme_id"}
 RULE_FIELDS = {"rule_id", "name", "base_pattern", "definition", "observation_window"}
 SIGNAL_FIELDS = {"type", "date", "confidence", "campaign_id", "research_candidate_id"}
 CAMPAIGN_FIELDS = {
@@ -153,13 +156,41 @@ def main():
 
     # 1) 顶层字段
     check_whitelist("timeline_export", data.keys(), TOP_LEVEL)
+
+    # ★ Contract v1.2（2026-10-12）：`taxonomy` 段自洽性
+    #   · 每个 parent_theme_id 必须指向本段内存在的 theme_id（不得悬空）
+    #   · theme_id / name 均不得重复
+    tax = data.get("taxonomy")
+    if data.get("timeline_export_version") in ("1.0", "1.1") and tax is not None:
+        fail("v1.2-taxonomy", "版本 <1.2 却出现 taxonomy 段（版本与内容不一致）")
+    if tax is not None:
+        if not isinstance(tax, list):
+            fail("v1.2-taxonomy", "taxonomy 必须是数组")
+        else:
+            _ids = [t.get("theme_id") for t in tax]
+            _names = [t.get("name") for t in tax]
+            for _t in tax:
+                check_whitelist("taxonomy %s" % _t.get("theme_id"),
+                                _t.keys(), TAXONOMY_FIELDS)
+            if len(set(_ids)) != len(_ids):
+                fail("v1.2-taxonomy", "taxonomy.theme_id 有重复")
+            if len(set(_names)) != len(_names):
+                fail("v1.2-taxonomy", "taxonomy.name 有重复")
+            _dangling = sorted({t.get("parent_theme_id") for t in tax
+                                if t.get("parent_theme_id") is not None
+                                and t.get("parent_theme_id") not in set(_ids)})
+            if _dangling:
+                fail("v1.2-taxonomy", "taxonomy 中悬空的 parent_theme_id: %s" % _dangling)
+            else:
+                print("  OK    [v1.2-taxonomy] taxonomy 自洽（%d 行 · %d 个根 · 无悬空 parent）"
+                      % (len(tax), sum(1 for t in tax if not t.get("parent_theme_id"))))
     if data.get("contract") != "timeline_export":
         fail("contract", f"contract 缺失或错误: {data.get('contract')}")
     ver = data.get("timeline_export_version")
     # ★ 2026-10-11（Contract v1.1）：允许 "1.0"（legacy）与 "1.1"（新增 macro_theme_root）。
     #   1.1 是**向后兼容的新增字段**，不改变任何既有字段语义。
-    if ver not in ("1.0", "1.1"):
-        fail("version", f"timeline_export_version 必须为 '1.0' 或 '1.1'，当前: {ver}")
+    if ver not in ("1.0", "1.1", "1.2"):
+        fail("version", f"timeline_export_version 必须为 '1.0' / '1.1' / '1.2'，当前: {ver}")
     if "export_version" in data:
         fail("version-dup", "禁止同时存在 export_version（版本语义只能 timeline_export_version）")
     # 14) source_commit 存在

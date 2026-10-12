@@ -1,7 +1,7 @@
 # Timeline Export Contract v1.1（Research → Cycle 唯一接口）
 
 > 本文件定义 Cycle-Research → Cycle Timeline 的**唯一**数据交换契约（`timeline_export_v1.json`）。
-> 版本：`timeline_export_version = "1.1"`。未来修改走 1.2 / 2.0，保持向后兼容。
+> 版本：`timeline_export_version = "1.2"`。未来修改走 1.3 / 2.0，保持向后兼容。
 > 项目初心：让 Cycle Timeline 直接消费历史 Campaign / Research Signal / Research Candidate / Event / Security / Rule，服务"看历史时间轴 → 找当前相似阶段 → 提前观察"。
 
 ## 0. 时间精度（V1.7 引入，三档统一）
@@ -25,7 +25,7 @@
 ```json
 {
   "contract": "timeline_export",
-  "timeline_export_version": "1.1",
+  "timeline_export_version": "1.2",
   "generated_at": "ISO 时间戳",
   "source_commit": "git commit（数据来源可追溯）",
   "project": "Cycle-Research",
@@ -46,7 +46,45 @@
 - 当前：`"1.1"`（canonical）。
 - 只允许一个版本字段；禁止新旧版本并存。
 - 历史：`1.0` —— **仍被接受**（读取方必须同时接受 1.0 与 1.1）。
-- 未来：`1.2`（向后兼容新增可选字段）、`2.0`（破坏性变更，需迁移文档）。
+- 历史：`1.1` —— **仍被接受**（读取方必须同时接受 1.0 / 1.1 / 1.2）。
+- 未来：`1.3`（向后兼容新增可选字段）、`2.0`（破坏性变更，需迁移文档）。
+
+
+### 2.2 v1.1 → v1.2 的唯一变化
+
+**新增一个顶层段** `taxonomy`（纯增量，不改任何既有字段语义）：
+
+| 项 | 值 |
+|---|---|
+| 段名 | `taxonomy`（顶层数组） |
+| 元素字段 | `theme_id` · `name` · `theme_type` · `parent_theme_id` |
+| 来源 | DB `themes` 表**全量** —— **唯一事实来源** |
+| 同源 | 与 v1.1 的 `macro_theme_root` **同一张表 / 同一 CMTR v1 口径** |
+
+```json
+"taxonomy": [
+  { "theme_id": "TH-RES",      "name": "资源", "theme_type": "industry", "parent_theme_id": null },
+  { "theme_id": "TH-RES-COAL", "name": "煤炭", "theme_type": "industry", "parent_theme_id": "TH-RES" }
+]
+```
+
+**语义约束（读取方必须遵守）**：
+
+- 本段**只描述主题树**（父子关系）。**不含** score / 相似度 / 别名 / 排序。
+- `parent_theme_id` 为 `null` = 根节点。
+- 产品侧**只读不算**：**不得**据此做模糊匹配、**不得**为库外名称编造父主题
+  （`AGENTS.md` §4：不得在产品里重实现 taxonomy）。
+- 校验器检查：`theme_id` / `name` 不重复 · `parent_theme_id` **不得悬空** ·
+  版本 <1.2 时**不得**出现该段。
+
+**为什么加**：产品只能看到**对象实际挂的主题名**，看不到父子关系。于是查询一个
+「**库内主题、但暂无对象挂靠**」的名字（实测 `半导体材料` —— 属 `半导体` → 根 `电子`）
+只能得到笼统的「未覆盖」，**无法区分**两种情况：
+①「库内主题 · 暂无对象」 ②「根本不是库内主题」（如 `动力煤`）。
+本段让产品能把查询名解析到主题与根，并给出**精确陈述**。
+
+★ **明确边界**：本段**不能**为**库外**名称（如 `动力煤` / `游戏`）编出父主题 ——
+那需要别名表或模糊匹配，**本契约不做**（会造第二套 taxonomy）。
 
 ### 2.1 v1.0 → v1.1 的唯一变化
 
@@ -227,7 +265,7 @@
 ```json
 {
   "contract": "timeline_export",
-  "timeline_export_version": "1.1",
+  "timeline_export_version": "1.2",
   "generated_at": "2026-09-13T11:49:39",
   "source_commit": "49797cc...",
   "project": "Cycle-Research",

@@ -1,9 +1,359 @@
 {
   "contract": "timeline_export",
-  "timeline_export_version": "1.1",
-  "generated_at": "2026-10-12T22:10:13",
-  "source_commit": "82397288a6dd8302b354f3e536ffd9d4f14a9fb9",
+  "timeline_export_version": "1.2",
+  "generated_at": "2026-10-12T22:55:45",
+  "source_commit": "b7121ecd0d994a607948505e062300f1c1510c1b",
   "project": "Cycle-Research",
+  "taxonomy": [
+    {
+      "theme_id": "TH-COMM",
+      "name": "信息通信",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-PHARMA",
+      "name": "医药健康",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-DEFENSE",
+      "name": "国防军工",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-REALESTATE",
+      "name": "房地产",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-MEDIA",
+      "name": "文化传媒",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-AUTO",
+      "name": "汽车",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-CONSUMER",
+      "name": "消费",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-POWER",
+      "name": "电力设备",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-POWER-OP",
+      "name": "电力（运营端）",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-ELEC",
+      "name": "电子",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-RES",
+      "name": "资源",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-FIN",
+      "name": "金融",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-HIEQ",
+      "name": "高端装备",
+      "theme_type": "industry",
+      "parent_theme_id": null
+    },
+    {
+      "theme_id": "TH-ROBOTAXI",
+      "name": "Robotaxi/无人驾驶/智能网约车",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-AUTO"
+    },
+    {
+      "theme_id": "TH-NEV",
+      "name": "新能源汽车/电池",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-AUTO"
+    },
+    {
+      "theme_id": "TH-AD",
+      "name": "智能驾驶/无人驾驶",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-AUTO"
+    },
+    {
+      "theme_id": "TH-CAR-CONSUMPTION",
+      "name": "汽车消费/购置税刺激",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-AUTO"
+    },
+    {
+      "theme_id": "TH-V2X",
+      "name": "车路云一体化/车路协同",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-AUTO"
+    },
+    {
+      "theme_id": "TH-COMM-5G",
+      "name": "5G网络建设/通信设备",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-COMM"
+    },
+    {
+      "theme_id": "TH-COMM-OPTICAL",
+      "name": "光模块/高速光互联",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-COMM"
+    },
+    {
+      "theme_id": "TH-CONSUMER-AGRI",
+      "name": "农林牧渔",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-CONSUMER"
+    },
+    {
+      "theme_id": "TH-CONSUMER-APPLIANCE",
+      "name": "家用电器",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-CONSUMER"
+    },
+    {
+      "theme_id": "TH-CONSUMER-SERVICE",
+      "name": "社会服务",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-CONSUMER"
+    },
+    {
+      "theme_id": "TH-CONSUMER-FOOD",
+      "name": "食品饮料",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-CONSUMER"
+    },
+    {
+      "theme_id": "TH-DEFENSE-ELEC",
+      "name": "军工电子",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-DEFENSE"
+    },
+    {
+      "theme_id": "TH-DEFENSE-SPACE",
+      "name": "航天装备",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-DEFENSE"
+    },
+    {
+      "theme_id": "TH-DEFENSE-AIR",
+      "name": "航空装备",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-DEFENSE"
+    },
+    {
+      "theme_id": "TH-DEFENSE-SHIP",
+      "name": "船舶制造",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-DEFENSE"
+    },
+    {
+      "theme_id": "TH-ELEC-SEMI",
+      "name": "半导体",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-ELEC"
+    },
+    {
+      "theme_id": "TH-ELEC-PANEL",
+      "name": "面板/显示",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-ELEC"
+    },
+    {
+      "theme_id": "TH-ELEC-SEMI-MAT",
+      "name": "半导体材料",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-ELEC-SEMI"
+    },
+    {
+      "theme_id": "TH-ELEC-SEMI-EQUIP",
+      "name": "半导体设备",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-ELEC-SEMI"
+    },
+    {
+      "theme_id": "TH-FIN-BANK",
+      "name": "银行",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-FIN"
+    },
+    {
+      "theme_id": "TH-FIN-NONBANK",
+      "name": "非银金融",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-FIN"
+    },
+    {
+      "theme_id": "TH-HIEQ-AUTOMATION",
+      "name": "工业自动化",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-HIEQ"
+    },
+    {
+      "theme_id": "TH-HIEQ-CONSTR",
+      "name": "工程机械",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-HIEQ"
+    },
+    {
+      "theme_id": "TH-HIEQ-ROBOT",
+      "name": "机器人",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-HIEQ"
+    },
+    {
+      "theme_id": "TH-HIEQ-RAIL",
+      "name": "轨道交通装备",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-HIEQ"
+    },
+    {
+      "theme_id": "TH-HIEQ-HUMANOID",
+      "name": "人形机器人",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-HIEQ-ROBOT"
+    },
+    {
+      "theme_id": "TH-TESLA-CHAIN",
+      "name": "特斯拉产业链",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-NEV"
+    },
+    {
+      "theme_id": "TH-PHARMA-CXO",
+      "name": "CXO(研发外包)",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-PHARMA"
+    },
+    {
+      "theme_id": "TH-PHARMA-TCM",
+      "name": "中医药",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-PHARMA"
+    },
+    {
+      "theme_id": "TH-PHARMA-GLP1",
+      "name": "减重 / GLP-1",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-PHARMA"
+    },
+    {
+      "theme_id": "TH-PHARMA-INNOV",
+      "name": "创新药",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-PHARMA"
+    },
+    {
+      "theme_id": "TH-PHARMA-FLU",
+      "name": "流感疫苗",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-PHARMA"
+    },
+    {
+      "theme_id": "TH-PHARMA-PANDEMIC",
+      "name": "疫情医疗",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-PHARMA"
+    },
+    {
+      "theme_id": "TH-POWER-PV",
+      "name": "光伏/新能源发电设备",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-POWER"
+    },
+    {
+      "theme_id": "TH-POWER-GRID",
+      "name": "电网/输变电设备",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-POWER"
+    },
+    {
+      "theme_id": "TH-POWER-WIND",
+      "name": "风电设备",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-POWER"
+    },
+    {
+      "theme_id": "TH-POWER-OP-GREEN",
+      "name": "绿电 / 新能源运营商",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-POWER-OP"
+    },
+    {
+      "theme_id": "TH-REALESTATE-MATERIAL",
+      "name": "建筑材料",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-REALESTATE"
+    },
+    {
+      "theme_id": "TH-REALESTATE-DEV",
+      "name": "房地产开发",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-REALESTATE"
+    },
+    {
+      "theme_id": "TH-RES-CHEM",
+      "name": "基础化工",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-RES"
+    },
+    {
+      "theme_id": "TH-RES-METAL",
+      "name": "有色金属",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-RES"
+    },
+    {
+      "theme_id": "TH-RES-COAL",
+      "name": "煤炭",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-RES"
+    },
+    {
+      "theme_id": "TH-RES-AGRI",
+      "name": "农化",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-RES-CHEM"
+    },
+    {
+      "theme_id": "TH-RES-RARE",
+      "name": "稀有金属/稀土",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-RES-METAL"
+    },
+    {
+      "theme_id": "TH-RES-PRECIOUS",
+      "name": "贵金属",
+      "theme_type": "industry",
+      "parent_theme_id": "TH-RES-METAL"
+    }
+  ],
   "rules": [
     {
       "rule_id": "rule_auto_summer",

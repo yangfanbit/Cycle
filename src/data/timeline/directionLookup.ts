@@ -43,11 +43,37 @@ export interface DirectionHit {
 
 export type DirectionVerdict = 'both' | 'current-only' | 'historical-only' | 'none';
 
+/**
+ * ★ Contract v1.2：查询名的**名称 → 主题 → 根**披露。
+ *
+ * ★★ **它不改变命中集合** —— 只是把「库内主题但暂无对象」与
+ *    「根本不是库内主题」两种情况**区分开**（此前都只得到笼统的 `none`）。
+ *
+ * ★ 不得据此做模糊匹配、不得为库外名称编造父主题。
+ */
+export interface DirectionResolution {
+  /** 查询名**精确**匹配到的库内主题（无则 null） */
+  matchedTheme: { id: string; name: string; theme_type: string } | null;
+  /** 该主题的根（`matchedTheme` 为 null 时为 null） */
+  root: { id: string; name: string } | null;
+  /** 该主题**直接**挂靠的历史对象数（通常 0 —— 这正是要披露的事实） */
+  directObjectCount: number;
+  /** 根（大主题）下的历史对象数 —— 用于说明「根下有 N 个」 */
+  rootObjectCount: number;
+  /** 库内主题总数 —— 用于「不在库内」时的上下文 */
+  taxonomySize: number;
+}
+
 export interface DirectionLookupResult {
   query: string;
   current: DirectionHit[];
   historical: DirectionHit[];
   verdict: DirectionVerdict;
+  /**
+   * ★ Contract v1.2：名称 → 主题 → 根的披露（数据源无 taxonomy 段时为 null）。
+   *   仅当 `verdict === 'none'` 时才有信息量（有命中时用户已经看到结果了）。
+   */
+  resolution: DirectionResolution | null;
 }
 
 function norm(s: string): string {
@@ -84,7 +110,7 @@ export function lookupDirection(
   dataset: CurrentCandidateDataset | null,
 ): DirectionLookupResult {
   const q = norm(query);
-  const empty: DirectionLookupResult = { query, current: [], historical: [], verdict: 'none' };
+  const empty: DirectionLookupResult = { query, current: [], historical: [], verdict: 'none', resolution: null };
   if (!q) return empty;
 
   /* ---- 当前侧 ---- */
@@ -135,7 +161,44 @@ export function lookupDirection(
           ? 'historical-only'
           : 'none';
 
-  return { query, current, historical, verdict };
+  /* ---- ★ Contract v1.2：名称 → 主题 → 根（**披露**，不改变命中集合） ---- */
+  let resolution: DirectionResolution | null = null;
+  const tax = source?.taxonomy?.() ?? [];
+  if (tax.length > 0) {
+    const byId = new Map(tax.map((t) => [t.theme_id, t]));
+    // ★ 只认**精确**名称匹配 —— 不做模糊 / 相似度 / 别名
+    const matched = tax.find((t) => norm(t.name) === q) ?? null;
+    let root: { id: string; name: string } | null = null;
+    if (matched) {
+      let cur = matched;
+      const seen = new Set<string>();
+      while (cur.parent_theme_id && byId.has(cur.parent_theme_id) && !seen.has(cur.theme_id)) {
+        seen.add(cur.theme_id);
+        cur = byId.get(cur.parent_theme_id)!;
+      }
+      root = { id: cur.theme_id, name: cur.name };
+    }
+    const objects = allResearchObjects(source!);
+    const matchedName = matched ? norm(matched.name) : null;
+    const rootName = root ? root.name : null;
+    resolution = {
+      matchedTheme: matched
+        ? { id: matched.theme_id, name: matched.name, theme_type: matched.theme_type }
+        : null,
+      root,
+      directObjectCount: matchedName
+        ? objects.filter((c) =>
+            (c.themes ?? []).some((t) => norm(t?.name ?? '') === matchedName),
+          ).length
+        : 0,
+      rootObjectCount: rootName
+        ? objects.filter((c) => macroThemeOf(c) === rootName).length
+        : 0,
+      taxonomySize: tax.length,
+    };
+  }
+
+  return { query, current, historical, verdict, resolution };
 }
 
 /** 覆盖词表（供用户知道「能查什么」）—— 计数事实，不是排序或评分 */

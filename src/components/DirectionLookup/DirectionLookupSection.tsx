@@ -108,6 +108,35 @@ export function DirectionLookupSection({
               .map((seg, i) => (i % 2 === 1 ? <strong key={i}>{seg}</strong> : seg))}
           </p>
 
+          {/* ★★ Contract v1.2：「未覆盖」必须**说清是哪一种** ——
+              此前两种情况都只得到笼统的「未覆盖」：
+                ② 库内主题、但暂无对象挂靠（如「半导体材料」）
+                ③ 根本不是库内主题（如「动力煤」）
+              ★ 本块只做**披露**，不改变命中集合（不得把根下的对象算作该查询的命中）。 */}
+          {result.verdict === 'none' && result.resolution && (
+            <p className="dl-resolution">
+              {result.resolution.matchedTheme ? (
+                <>
+                  该名称是<strong>库内主题</strong>
+                  {result.resolution.root && result.resolution.root.name !== result.resolution.matchedTheme.name && (
+                    <>（属「{result.resolution.root.name}」）</>
+                  )}
+                  ：该主题下<strong>暂无历史对象</strong>
+                  {result.resolution.rootObjectCount > 0 && result.resolution.root && (
+                    <>
+                      ；「{result.resolution.root.name}」大主题下有 {result.resolution.rootObjectCount} 个历史对象
+                    </>
+                  )}
+                  。
+                </>
+              ) : (
+                <>
+                  该名称<strong>不在库内主题表中</strong>（库内共 {result.resolution.taxonomySize} 个主题）。
+                </>
+              )}
+            </p>
+          )}
+
           {/* ★ 「未覆盖」≠「结构上无对应」—— 必须分开说，否则用户以为工具根本帮不上 */}
           {result.verdict === 'none' && (
             <ul className="dl-none-explain">

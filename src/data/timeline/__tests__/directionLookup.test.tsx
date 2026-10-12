@@ -20,6 +20,49 @@ import { DirectionLookupSection } from '../../../components/DirectionLookup/Dire
 const source = researchTimelineSource();
 const dataset = parseCurrentCandidateDataset(canonicalJson).dataset;
 
+/* ================================================================
+ * ★★ Contract v1.2（2026-10-12）：名称 → 主题 → 根 的**披露**
+ *
+ * 此前「未覆盖」把两种情况混同成同一个 `none`：
+ *   ② 库内主题、但暂无对象挂靠（实测 `半导体材料`）
+ *   ③ 根本不是库内主题（实测 `动力煤` / `游戏` / `影视` / `虚拟电厂`）
+ *
+ * ★★ 硬约束（本组测试钉死）：**披露不得改变命中集合** ——
+ *    查 `半导体材料` **不得**把根「电子」下的 9 个对象算作命中（那是 over-claim）。
+ * ================================================================ */
+describe('★ Contract v1.2 · 未覆盖的两类必须分清', () => {
+  it('② 库内主题但暂无对象 → 报「库内主题」并给出根，**且命中集合仍为空**', () => {
+    const r = lookupDirection('半导体材料', source, dataset);
+    expect(r.verdict).toBe('none');
+    // ★ 披露：它是库内主题，属「电子」
+    expect(r.resolution).not.toBeNull();
+    expect(r.resolution!.matchedTheme?.name).toBe('半导体材料');
+    expect(r.resolution!.root?.name).toBe('电子');
+    expect(r.resolution!.directObjectCount).toBe(0);
+    expect(r.resolution!.rootObjectCount).toBeGreaterThan(0);
+    // ★★ 关键：披露 ≠ 命中 —— 不得把「电子」下的对象算作该查询的命中
+    expect(r.historical).toHaveLength(0);
+  });
+
+  it('③ 不在库内主题表 → 报「不在库内主题表中」，且不编造父主题', () => {
+    for (const q of ['动力煤', '游戏', '影视', '虚拟电厂']) {
+      const r = lookupDirection(q, source, dataset);
+      expect(r.verdict, q).toBe('none');
+      expect(r.resolution, q).not.toBeNull();
+      // ★ 不得为库外名称编造主题/根
+      expect(r.resolution!.matchedTheme, q).toBeNull();
+      expect(r.resolution!.root, q).toBeNull();
+      expect(r.resolution!.taxonomySize, q).toBeGreaterThan(0);
+    }
+  });
+
+  it('库内主题且有对象时 → 照常命中（披露不干扰既有行为）', () => {
+    const r = lookupDirection('半导体设备', source, dataset);
+    expect(r.verdict).toBe('historical-only');
+    expect(r.historical.length).toBeGreaterThan(0);
+  });
+});
+
 describe('directionLookup · 覆盖地图（真实数据）', () => {
   it('★ 医药健康 → 两侧都有（both）', () => {
     const r = lookupDirection('医药健康', source, dataset);
