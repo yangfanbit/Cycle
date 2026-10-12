@@ -128,17 +128,23 @@ describe('klineConfirmation · 五状态判定（真实数据）', () => {
     expect(klineConfirmationOf('')).toBeNull();
   });
 
-  it('★ 汇总为**计数事实**：34 已证实 / 3 未证实 / 12 不适用 / 4 未标注峰值 / 0 无数据', () => {
+  it('★ 汇总为**计数事实**：35 已证实 / 3 未证实 / 16 不适用 / 5 未标注峰值 / 0 无数据', () => {
     // ★ 2026-10-08：修正 R01-04 标的映射错位 + 对照器开放式窗口后，
     //   已证实 32→34、未证实 5→3；剩余 3 个全部是「无依据、无参照物」。
-    expect(klineConfirmationSummary.CONFIRMED).toBe(34);
+    // ★★ 2026-10-13（宇宙 53 → 59 + 参照物覆盖层）：34→**35** · 12→**16** · 4→**5**。
+    //   新增的 6 个对象里：1 个 CONFIRMED（传媒·版号段）· 3 个 NOT_APPLICABLE
+    //   （政策事件/行业指标 → K 线非合适检验工具）· 1 个 NO_PEAK_RECORDED（peak 为 NULL）
+    //   · 1 个 NOT_APPLICABLE（煤炭高股息：参照物=板块指数）。
+    //   ★ 未证实仍为 3 —— **没有**因为扩容而增加（这是对的：§5.1 不允许把
+    //     「参照物非股价」错记为 UNCONFIRMED）。
+    expect(klineConfirmationSummary.CONFIRMED).toBe(35);
     expect(klineConfirmationSummary.UNCONFIRMED).toBe(3);
-    expect(klineConfirmationSummary.NOT_APPLICABLE).toBe(12);
-    expect(klineConfirmationSummary.NO_PEAK_RECORDED).toBe(4);
+    expect(klineConfirmationSummary.NOT_APPLICABLE).toBe(16);
+    expect(klineConfirmationSummary.NO_PEAK_RECORDED).toBe(5);
     expect(klineConfirmationSummary.NO_DATA).toBe(0);
   });
 
-  it('★ 参照物声明覆盖全部 53 个历史对象（含 8 种取值）', () => {
+  it('★ 参照物声明覆盖全部 59 个历史对象（含 8 种取值）', () => {
     let n = 0;
     const codes = new Set<string>();
     for (const y of source.years()) {
