@@ -11,7 +11,11 @@ import {
   granularityAxis,
   SUB_GRANULARITY_NOTE,
 } from '../../data/timeline/themeAnnualWindow';
-import { seasonalityByTheme, SEASONALITY_NOTE } from '../../data/timeline/themeSeasonality';
+import {
+  seasonalityByTheme,
+  SEASONALITY_NOTE,
+  isTodayInConcentrationWindow,
+} from '../../data/timeline/themeSeasonality';
 import { themeColorOf, themeOnsetColorOf } from './themeColors';
 import { dayOfYearISO, daysInYear } from '../../utils';
 
@@ -199,6 +203,22 @@ export function SeasonalMap({
                     {sea?.concentrated && (
                       <span className="sm-seasonal-flag" title={SEASONALITY_NOTE}>
                         年内集中
+                      </span>
+                    )}
+                    {/* ★★ 「今天是否落在窗口内」—— 项目落脚点在**时间**，这是最直接的兑现。
+                        ★ 只在**已达集中判据**时才有意义（未达判据时 band 只是「覆盖最多的两个月」，
+                          据此说「在窗口内」会过度声称）。
+                        ★ 纯日期比较：在 / 不在，**不含**概率、强度、排序或「值得关注」。 */}
+                    {sea && isTodayInConcentrationWindow(sea, today) && (
+                      <span
+                        className="sm-in-window"
+                        title={
+                          `今天 ${today.slice(5)} 落在该主题的年内集中窗口 ` +
+                          `${sea.band!.from} ~ ${sea.band!.to} 之内` +
+                          `（${sea.windowCount} 个年内窗口中的 ${sea.inBand} 个在此区间）`
+                        }
+                      >
+                        今天在窗口内
                       </span>
                     )}
                   </span>

@@ -120,6 +120,40 @@ export function seasonalityOf(row: ThemeAnnualRow): ThemeSeasonality {
   };
 }
 
+/** 非闰年各月天数（与 `monthDay()` **同一参考系**，保证比较口径一致） */
+const NONLEAP_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+/** `MM-DD` → 非闰年日序（1..365） */
+function monthDayToDoy(md: string): number {
+  const [m, d] = md.split('-').map(Number);
+  let n = d;
+  for (let i = 0; i < m - 1; i += 1) n += NONLEAP_DAYS[i];
+  return n;
+}
+
+/**
+ * ★★ 「今天是否落在该主题的集中窗口内」—— 只做**日期比较**，不含任何判断。
+ *
+ * 依据：项目落脚点在**时间**，所以最有用的提醒是「把窗口与今天对起来」。
+ *
+ * ★ 判据（**纯事实**）：
+ *   - 仅在 `sea.concentrated === true` 时才有意义 —— 未达集中判据时，
+ *     `band` 只是「覆盖最多窗口的两个月」，据此说「在窗口内」会**过度声称**。
+ *   - 因此本函数对未达判据者**一律返回 false**。
+ *   - 支持**跨年窗口**（如 `12-15 ~ 02-14`）。
+ *
+ * ★ 红线：返回的是**布尔事实**（在 / 不在），**不得**据此产生
+ *   概率、强度、排序、「值得关注」等任何推荐性结论。
+ */
+export function isTodayInConcentrationWindow(sea: ThemeSeasonality | undefined, today: string): boolean {
+  if (!sea || !sea.concentrated || !sea.band) return false;
+  const t = monthDayToDoy(today.slice(5));
+  const a = monthDayToDoy(sea.band.from);
+  const b = monthDayToDoy(sea.band.to);
+  // a > b ⇒ 窗口跨年（如 12-15 ~ 02-14）
+  return a <= b ? t >= a && t <= b : t >= a || t <= b;
+}
+
 /** 批量计算；返回 `label → ThemeSeasonality` */
 export function seasonalityByTheme(rows: ThemeAnnualRow[]): Map<string, ThemeSeasonality> {
   const out = new Map<string, ThemeSeasonality>();

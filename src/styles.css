@@ -2873,6 +2873,11 @@ html, body {
   color: var(--ink-2); background: var(--bg); border-radius: var(--radius);
   border-left: 3px solid var(--today);
 }
+/* ★★ 「今天在窗口内」—— 时间落脚点的直接兑现（纯事实：在/不在） */
+.sm-in-window {
+  margin-left: 6px; padding: 1px 6px; border-radius: 999px; font-size: 10.5px;
+  font-weight: 600; color: var(--today-ink, #fff); background: var(--today);
+}
 .dl-none-explain li { margin: 2px 0; }
 /* ★ Contract v1.2：把「未覆盖」分成两类 —— ②库内主题·暂无对象 / ③不在库内主题表 */
 .dl-resolution {

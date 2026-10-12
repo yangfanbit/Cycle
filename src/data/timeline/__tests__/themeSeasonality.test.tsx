@@ -8,6 +8,7 @@ import {
   seasonalityByTheme,
   SEASONALITY_NOTE,
   MIN_WINDOWS_FOR_CONCENTRATION,
+  isTodayInConcentrationWindow,
 } from '../themeSeasonality';
 import { SeasonalMap } from '../../../components/SeasonalMap/SeasonalMap';
 
@@ -144,5 +145,64 @@ describe('SeasonalMap · 集中度标注渲染', () => {
   it('★★ 语义边界说明必须与标注同显', () => {
     expect(html).toContain('历史计数事实');
     expect(html).toContain('不代表该主题');
+  });
+});
+
+/* ================================================================
+ * ★★ 「今天是否落在集中窗口内」—— 项目落脚点在**时间**，这是最直接的兑现
+ *
+ * ★ 判据是**纯日期比较**；本组测试同时钉死两条**不得越过**的边界：
+ *   ① 未达集中判据的主题，**不得**声称「今天在窗口内」
+ *      （未达判据时 band 只是「覆盖最多的两个月」）
+ *   ② 跨年窗口必须正确处理（如 12-15 ~ 02-14）
+ * ================================================================ */
+describe('★★ 今天是否落在集中窗口内（纯日期比较）', () => {
+  const rows = seasonalMapRows(themeAnnualRowsOf(researchTimelineSource(), 'macro'));
+  const byLabel = new Map(rows.map((r) => [r.label, r]));
+  const seaOf = (label: string) => seasonalityOf(byLabel.get(label)!);
+
+  it('窗口内的日期 → true；窗口外的日期 → false（汽车：集中带内的日子才算）', () => {
+    const sea = seaOf('汽车');
+    expect(sea.concentrated).toBe(true);
+    expect(sea.band).not.toBeNull();
+    const from = sea.band!.from;
+    const to = sea.band!.to;
+    // 带内取一天（起点当日）
+    expect(isTodayInConcentrationWindow(sea, `2026-${from}`)).toBe(true);
+    // 带外取一天：带起点前 60 天（非闰年参考下一定在带外）
+    const outside = new Date(Date.UTC(2026, Number(from.slice(0, 2)) - 1, Number(from.slice(3, 5))));
+    outside.setUTCDate(outside.getUTCDate() - 60);
+    const md = `${String(outside.getUTCMonth() + 1).padStart(2, '0')}-${String(outside.getUTCDate()).padStart(2, '0')}`;
+    expect(isTodayInConcentrationWindow(sea, `2026-${md}`)).toBe(false);
+    // 带上界当日也算「在窗口内」（闭区间）
+    expect(isTodayInConcentrationWindow(sea, `2026-${to}`)).toBe(true);
+  });
+
+  it('★ 未达集中判据的主题 —— **一律不得**声称「今天在窗口内」', () => {
+    // 资源在 R02-03 之后为 5/3（不达标），它仍有 band，但**不得**标「今天在窗口内」
+    const zy = seaOf('资源');
+    expect(zy.concentrated).toBe(false);
+    expect(zy.band).not.toBeNull();          // band 仍存在（覆盖最多的两个月）
+    // ★ 即使今天正好落在那个 band 里，也必须返回 false —— 不得过度声称
+    expect(isTodayInConcentrationWindow(zy, `2026-${zy.band!.from}`)).toBe(false);
+  });
+
+  it('★ 跨年窗口正确处理（12-15 ~ 02-14 这类）', () => {
+    const wrap = {
+      label: 'x', windowCount: 3, inBand: 3,
+      band: { from: '12-15', to: '02-14' }, bandFrac: null,
+      concentrated: true, statement: null,
+    };
+    expect(isTodayInConcentrationWindow(wrap, '2026-12-20')).toBe(true);   // 年末
+    expect(isTodayInConcentrationWindow(wrap, '2026-01-10')).toBe(true);   // 年初
+    expect(isTodayInConcentrationWindow(wrap, '2026-02-14')).toBe(true);   // 上界闭
+    expect(isTodayInConcentrationWindow(wrap, '2026-12-15')).toBe(true);   // 下界闭
+    expect(isTodayInConcentrationWindow(wrap, '2026-06-01')).toBe(false);  // 年中
+  });
+
+  it('无 band / undefined 时安全返回 false', () => {
+    expect(isTodayInConcentrationWindow(undefined, '2026-06-01')).toBe(false);
+    const noBand = { label: 'y', windowCount: 0, inBand: 0, band: null, bandFrac: null, concentrated: false, statement: null };
+    expect(isTodayInConcentrationWindow(noBand, '2026-06-01')).toBe(false);
   });
 });
