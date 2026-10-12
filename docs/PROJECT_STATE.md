@@ -3,7 +3,51 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★ 当前阶段：ThreeC 1.1 — **RELEASED**
+## ★★ 当前状态（2026-10-12 修订）
+
+> ★ **本节 2026-10-12 重写** —— 原文停留在 R01-06（52 Campaign），
+> 完全未反映其后的 **R02 波次**、**Contract v1.1**、**`refresh_downstream.py`**。
+> 下方「1.1 已完成」等历史小节保留（仍是事实），但**不代表当前进度**。
+
+### 实测基线（2026-10-12 · 全部实测）
+
+| 项 | 值 |
+|---|---|
+| **git HEAD** | `1aa34d7` · working tree **clean**（★ 接班仍须跑 `git log -1`，本文件不硬编码权威 SHA） |
+| **历史宇宙** | **57 Campaign + 27 Research Candidate = 84 对象** · DB `themes` **58** |
+| **测试** | **874 passed / 0 failed / 33 files** |
+| **Export** | **Contract v1.1** —— 新增 `macro_theme_root` / `macro_theme_root_status`（83 RESOLVED / 1 UNRESOLVED_NAME） |
+| **SA** | `structural_analogy_explanations_v0_11.json` · **6 候选 × 84 = 504 对** · 规则集冻结未变 |
+| **快照** | `MS-2026-10-11-01` = **CANONICAL**（已签发；旧 11 份 ARCHIVED/DRAFT） |
+| **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
+
+### 当前阶段：**R02 波次收口中**
+
+```
+R01-01..06   ✅ 已入库（52 Campaign）
+R02-01       ✅ 已入库（医药：GLP-1 / 创新药 BD）
+R02-02       ⚠️ **从未入库**（无导入器 / 无 campaign / 无审查结论 —— 待确认是遗漏还是已否决）
+R02-03       ✅ 已闭环（+4 Campaign → 57；Contract v1.1；SA v0.11；快照已签发）
+R02-04       ⏸ **研究侧完成 + 已审查，但未写库**
+              · 2 条由 DEFER → ACCEPT_WITH_CHANGES（语义数字 14/14 经一手来源复算命中）
+              · 待办：写 `import_r02_04_canonical_v0_1.py` → 下游刷新 → 快照重出
+```
+
+### 本阶段的三个新增能力（1.1 RELEASED 之后建立）
+
+1. **审查裁定生效通道** `research/research/reports/review_overrides_v0_1.json`
+   —— 让 `ACCEPT_WITH_CHANGES` 的裁定真正落地，且**防漂移**（原值不匹配则拒绝应用）。
+2. **下游刷新入口** `research/scripts/refresh_downstream.py --check / --apply`
+   —— 前置自检 C0–C7（版本号 / 字段白名单 / 配色 / lifecycle 覆盖的**全局一致性**）。
+   ★ 做它的理由：**下游每一层都硬编码上游版本**，且**不报错** —— 同类缺陷已踩 **5 次**。
+3. **标的映射检查泛化** `check_intake_security_map_v0_2.py`
+   —— v0_1 只扫 `R01-*`，R02 包的标的映射**从未被检查**。
+
+### ★ 进度明细与分工
+
+**以 `docs/TASK_ALLOCATION_2026-10-11.md` §「进度修订（2026-10-12）」为准**（A–F 逐项状态 + 新增 G/H/I）。
+
+### 原「当前阶段」记录（2026-10-06 · 保留为历史）
 
 | 项 | 值 |
 |---|---|
@@ -12,9 +56,7 @@
 | **Production** | **https://yangfanbit.github.io/Cycle/** |
 | **1.0** | RELEASED（Tag `v1.0.0` · `064d39c` · Gate R/P/T/Q/U/M/D/G 全部 PASS · P0/P1 = 0/0） |
 | **1.1** | **RELEASED** —— Phase 0 设计冻结 ✅ · 1.1 架构审查 ✅ · 1.2 运行时 ✅ · 1.3 Product 只读页面 ✅ · 1.4 观察接入 + Lifecycle Tracking ✅ |
-| **下一步** | 待定：**用一次真实月度更新检验整套流程** / 2.0 规划 |
 
-- 更新日期：**2026-10-06**
 - branch：`main` · ahead / behind：`0 / 0` · working tree：clean
 - HEAD：**以 `git log -1` 实测为准**（本文件不硬编码当前 SHA）
   · 1.0 Release 提交链：`f8b6c82`（Gate M 收口）→ `064d39c`（**release: ThreeC 1.0.0**）
