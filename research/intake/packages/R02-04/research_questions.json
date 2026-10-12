@@ -1,0 +1,74 @@
+[
+  {
+    "question_id": "R02-COAL2-Q001",
+    "question": "R02-COAL-002 的标题区间「2022–2024」是否应据指数口径收敛为「2023-08—2024-09」？即：2022 年那一段（煤炭指数 2022-01-28 → 2022-09-06）与本候选（2023-08-21 → 2024-09-11）是否应拆为两段？",
+    "why_it_matters": "本包取得的一手指数结构显示，2022 年那一段与 2023-08–2024-05 那一段的**机制不同轴**（判据：煤炭顶与红利顶的错位在 2022 年为 153 天、在 2024 年仅 8 天；且 2022 段的驱动是煤价 / 供给冲击，2023-08 后是分红 / 贴现率）。若应拆，则本候选的现有形式（单一 Campaign、区间 2022–2024）**不成立**，须改写为两段；若不拆，则须说明为何同一 Campaign 可容纳两个机制轴。★ 该判定属 Campaign Independence Gate Q1–Q5，权在 ThreeC Agent。",
+    "related_candidate_ids": [
+      "R02-COAL-002"
+    ]
+  },
+  {
+    "question_id": "R02-COAL2-Q002",
+    "question": "R02-COAL-002 的 end 应以「煤炭板块指数」为基准（2024-09-11，已结束）还是以「红利指数」为基准（2025-11-13 创新高 → OPEN_ENDED）？",
+    "why_it_matters": "两个口径下「该段是否已结束」结论**相反**（见 conflicts.json R02-COAL2-CF003）。这直接决定该候选能否满足 Campaign 的「可解释 start / end」要件：若 end 为 OPEN_ENDED，则按 R02-03 审查对 R02-PHARMA-002 与 R02-COAL-002 的先例，该候选**可能仍应判 DEFER**。★ 该选择同时影响该段与库内 `C-2024-FIN-BANK-DIVIDEND` 的可比性（同一机制轴、不同行业的段界是否应一致）。",
+    "related_candidate_ids": [
+      "R02-COAL-002"
+    ]
+  },
+  {
+    "question_id": "R02-COAL2-Q003",
+    "question": "煤炭方向是否存在**可复现的年内窗口**（冬储 / 迎峰度夏）？若存在，它是否构成独立的 Campaign 或仅为本 Campaign 的季节性形态？",
+    "why_it_matters": "R02-03 的 subdivision_principle.seasonality_note 明确要求专门核验季节性，并指出用户点名这四个方向的首要理由是「时间相关性高」。本包受任务范围限制**未取得**任何来源证明该窗口可复现（见 exclusions.json R02-COAL2-X005）。该问题不解决，则「煤炭方向的时间结构」在本宇宙中仍是未核验假设，无法用于 Structural Analogy 的季节性维度。",
+    "related_candidate_ids": [
+      "R02-COAL-002"
+    ]
+  },
+  {
+    "question_id": "R02-MEDIA2-Q001",
+    "question": "R02-MEDIA-002 的 start 应取**政策转向日 2018-12-21**，还是**行情低点 2019-01-31**？",
+    "why_it_matters": "R02-03 审查要求「把政策转向当起点」，但一手指数数据显示：政策转向日之后板块仍下跌 41 天（-4.40%），同期沪深300 +5.68%（相对跑输 10.08pp）——**2018-12-21 不是价格低点**（见 conflicts.json R02-MEDIA2-CF005）。若取 2018-12-21，则该 Campaign 的第一阶段是**下行**，可能再次落入 R02-03 审查所指的「下行段不构成标准 MAIN_RISE」困境；若取 2019-01-31，则 Campaign 的起点晚于其核心催化事件 41 天。★ 两种口径的取舍属 Campaign Start 判定，权在 ThreeC Agent。",
+    "related_candidate_ids": [
+      "R02-MEDIA-002"
+    ]
+  },
+  {
+    "question_id": "R02-MEDIA2-Q002",
+    "question": "在**无官方公告**的前提下，「版号恢复」这一政策转向的可用口径应如何认定？「行业媒体同日现场报道 + 后续批次名单公布」是否足以支撑一个 Campaign 的 start？",
+    "why_it_matters": "本包实测到一个关键的口径不一致事实：中国青年网 2018-12-21 发布的致辞**全文**未含版号恢复表述（R02-MEDIA2-S002），而行业媒体 GameLook 同日现场报道引用了该句（R02-MEDIA2-S001）。→ 「政策转向」只有**现场报道口径**、没有**官方发布文本口径**。该情形与 R02-03 对 R02-VACCINE-002 的处理（「peak 依据来自官方表态的媒体转述，非一手；取得一手原文则升级」）同类，但更弱一级：这里连「官方表态的转述」都只有行业媒体版本。★ 该问题的答案将决定本候选 start 的 confidence 上限，并可能影响其它「无正式公告的政策转向」类候选的处理惯例。",
+    "related_candidate_ids": [
+      "R02-MEDIA-002"
+    ]
+  },
+  {
+    "question_id": "R02-MEDIA2-Q003",
+    "question": "2019 年 2–3 月传媒板块的领涨主线，是否可分离为「游戏 / 版号修复」与「党媒 / 融媒体」两条子线？若可分离，本候选（R02-MEDIA-002）应归属哪一条？",
+    "why_it_matters": "本包检索到「2019 上半年文化传媒板块的热点集中在党媒（2-3 月）、广电系（3-6 月）」一类**研报口径**表述，但**未**取得可核验原文，也**未**取得能把两条子线分开的指数口径（中证传媒 399971 与中证动漫游戏 930901 只能分出「游戏 vs 非游戏」，见 exclusions.json R02-MEDIA2-X009）。若该子线确实存在且占主导，则本候选把 2019 年 2–3 月涨幅整体归给「版号修复」将**高估**版号机制的解释力 —— 这会直接影响本候选的 `why_campaign` 是否成立。★ 本包不据此拆分，也不据未核验的摘要下结论。",
+    "related_candidate_ids": [
+      "R02-MEDIA-002"
+    ]
+  },
+  {
+    "question_id": "R02-XTASK-Q001",
+    "question": "`EXISTING_UNIVERSE.md` 与 `reviews/R02-03_verdicts_v0_1.json` 对「煤炭 / 文化传媒 / 电力（运营端）/ 流感疫苗」的覆盖状态给出**相互矛盾**的信息，应以哪个为准？该参照表是否与 R02-03 的审查时点不一致？",
+    "why_it_matters": "① `EXISTING_UNIVERSE.md` 的 Campaign 表列出 `C-2021-RES-COAL`（主题含「煤炭」）、`C-2023-MEDIA-AI`（主题含「文化传媒」）、`C-2021-POWER-GREEN`（主题「电力（运营端）」）、`C-2023-PHARMA-FLU`（主题「流感疫苗」），主题名表也含这四个名字；但同一文件文末写「★ 你的四个方向（煤炭 / 电力 / 流感疫苗 / 文化传媒）在**这张表里一个都不出现**」—— 两处**不能同时为真**。② `reviews/R02-03_verdicts_v0_1.json` 的 `blocking_condition` 记载：四方向经 CMTR v1 实测均为 `UNRESOLVED_NAME`、**不得**写入 canonical `campaigns`。若 ① 为真，则四方向**已**在 canonical，与 ② 冲突。③ 该文件是**去重参照**的唯一来源（协议 §10），若它自身不一致，本包（以及后续轮次）的 `possible_duplicate_of` 判断都建立在不可靠的基础上。★ 本包**不**据此判定任何覆盖状态，仅上报。",
+    "related_candidate_ids": [
+      "R02-COAL-002",
+      "R02-MEDIA-002"
+    ]
+  },
+  {
+    "question_id": "R02-XTASK-Q002",
+    "question": "本沙箱不是 git 仓库（`git rev-parse` 返回 `fatal: not a git repository`），Package 的 `source_commit` 应如何填写才符合协议 §5.2 的 provenance 要求？",
+    "why_it_matters": "`manifest.json.source_commit` 被 schema 要求为 7–40 位十六进制（C16 强制）。本包填写的 `c742968` 来自 R02 任务清单自述的基线 commit，**不是**本包产出的 commit —— 这构成一个**看似合规、实则不实**的 provenance 字段。协议 §5.2 把 `source_commit` 定义为「产出该 Package 时的仓库 commit」。★ 该问题的答案会影响所有在沙箱中产出的 Package（R02-01 / R02-02 也面临同样情形），属基础设施层面问题，**须由 ThreeC Agent 裁决**（协议 §13 校验器不检查该语义）。",
+    "related_candidate_ids": []
+  },
+  {
+    "question_id": "R02-XTASK-Q003",
+    "question": "中证指数有限公司官网公开接口取得的**指数日行情**，应归为 Tier 1（`source_type = exchange`，理由：交易所合资设立的官方指数编制机构）还是应降级？",
+    "why_it_matters": "本包把 6 个指数来源（000820 / 000922 / 399971 / 930901 / 000300 / 000001）按 `exchange` / Tier 1 提交，这是本包相对 R02-03 的**核心增量**（R02-03 的行情侧只有 Tier 3）。但该判定是本包的判断，可能被审查认为：① 中证指数公司不是「交易所」本身；② 官网接口不是「交易所公告」这类正式发布物；③ 指数编制机构对自己编制的指数而言是**一手**，但对「板块行情」这一研究对象而言可能被视为**二手加工**。★ 若 ThreeC Agent 降级为 Tier 2，本包的结论**不变**（数值仍是一手指数口径），仅来源层级标注变化；若判为 Tier 3，则协议 global_constraints 的 source_tier_requirement 会被触发（Tier 3 只能用于转述 Tier 1/2 事实）。**该判定影响后续所有轮次可否用同一手段补行情缺口**，请明确。",
+    "related_candidate_ids": [
+      "R02-COAL-002",
+      "R02-MEDIA-002"
+    ]
+  }
+]

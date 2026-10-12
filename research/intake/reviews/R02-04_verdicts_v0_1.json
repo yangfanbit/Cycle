@@ -1,0 +1,187 @@
+{
+ "review_version": "0.1",
+ "intake_protocol_version": "0.1",
+ "review_kind": "REWORK_VERDICT（DEFER 补做的再审查）",
+ "research_round_id": "R02",
+ "task_id": "R02-04",
+ "package_path": "research/intake/packages/R02-04",
+ "reviewed_at": "2026-10-12",
+ "reviewed_by_role": "ThreeC Agent（审查 + canonicalization 权限；与产出方**不是**同一执行者，协议 §3）",
+ "review_doc": "docs/R02_04_REVIEW_v0_1.md",
+ "role_separation_declaration": "本包由 Research Agent 产出；本裁定由 ThreeC Agent 独立给出。未改写包的任何一个文件；所有「必须改」都以 required_changes 形式交回，不在审查环节替产出方修改数据。",
+ "machine_validation": {
+  "validator": "research/scripts/validate_historical_research_intake.py",
+  "result": "PASS",
+  "detail": "checks: 25  FAIL: 0  WARN: 0（C25 严格 JSON Schema 通过）",
+  "caveat": "★★ 结构校验**只查形状，不查语义** —— 本项目已两次因此放过错误（错日期、错标的）。故本审查的**主证据**是下面的 semantic_checks，不是这个 PASS。"
+ },
+ "semantic_checks": {
+  "why": "R02-04 的实质增量是「用指数口径界定 peak/end」——即**包自己算出的行情数字**。凡「来源声明」与「落地数据」存在两份真相，必须有一条把两者对起来的检查。",
+  "method": "从中证指数有限公司官网公开接口**重新抓取**原始日行情（与包声明**同一发布方**），逐条复算包中声明的每个点位与涨幅。抓取时间 2026-10-12；区间与包一致。",
+  "checks": [
+   {
+    "candidate": "R02-COAL-002",
+    "index": "000820 中证申万煤炭",
+    "verified": [
+     {
+      "claim": "2022-01-28 最低收盘 3178.22",
+      "measured": 3178.22,
+      "ok": true
+     },
+     {
+      "claim": "2023-08-21 收盘 3541.84",
+      "measured": 3541.84,
+      "ok": true
+     },
+     {
+      "claim": "2024-05-29 收盘 5242.93",
+      "measured": 5242.93,
+      "ok": true
+     },
+     {
+      "claim": "2021-09-13 煤炭 4347.21",
+      "measured": 4347.21,
+      "ok": true
+     },
+     {
+      "claim": "区间涨幅 2023-08-21→2024-05-29 = +48.03%",
+      "measured": 48.03,
+      "ok": true
+     },
+     {
+      "claim": "2022–2024 区间极值 = 最低 3178.22 / 最高 5242.93",
+      "measured": "一致",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "candidate": "R02-MEDIA-002",
+    "index": "399971 中证传媒 · 930901 中证动漫游戏 · 000300 沪深300",
+    "verified": [
+     {
+      "claim": "399971 2019-01-31 = 1072.63",
+      "measured": 1072.63,
+      "ok": true
+     },
+     {
+      "claim": "399971 2019-03-12 = 1569.91",
+      "measured": 1569.91,
+      "ok": true
+     },
+     {
+      "claim": "399971 2018-12-21 = 1121.99",
+      "measured": 1121.99,
+      "ok": true
+     },
+     {
+      "claim": "399971 2019-08-09 = 1116.74",
+      "measured": 1116.74,
+      "ok": true
+     },
+     {
+      "claim": "930901 2019-03-12 = 2138.41",
+      "measured": 2138.41,
+      "ok": true
+     },
+     {
+      "claim": "930901 2019-08-09 = 1471.71",
+      "measured": 1471.71,
+      "ok": true
+     },
+     {
+      "claim": "930901 2019-01-31 = 1500.90",
+      "measured": 1500.9,
+      "ok": true
+     },
+     {
+      "claim": "000300 2019-01-31 = 3201.63 / 2019-03-12 = 3755.35",
+      "measured": "一致",
+      "ok": true
+     },
+     {
+      "claim": "2019-01-31→03-12 涨幅：传媒 46.36% / 动漫 42.48% / 沪深300 17.29%",
+      "measured": "46.36 / 42.48 / 17.29",
+      "ok": true
+     },
+     {
+      "claim": "399971 2019 年内极值 = 最低 1072.63(01-31) / 最高 1569.91(03-12)",
+      "measured": "一致",
+      "ok": true
+     }
+    ]
+   }
+  ],
+  "result": "**14/14 逐条精确命中**（点位与涨幅均与一手来源一致，无一条四舍五入差异）",
+  "residual_caveat": "诚实记录：本次复算与包**使用同一发布方**（中证官网），**未**取得第二家独立一手来源交叉核对 —— 这一点包自己在 known_gaps #1 已如实声明，审查认可该降级。"
+ },
+ "blocking_condition": "无阻塞项：结构校验 PASS · 语义数字 14/14 命中 · 两条缺失项均已补齐 · 无 MERGE/DUPLICATE 判定需要（CT005 的「同名不同包」声明经核对属实）。",
+ "verdicts": [
+  {
+   "candidate_id": "R02-COAL-002",
+   "title": "2022–2024 煤炭高股息 / 红利资产重估行情（R02-03 同名候选的 DEFER 补做）",
+   "verdict": "ACCEPT_WITH_CHANGES",
+   "evidence_count": 10,
+   "independence_groups": 1,
+   "required_changes": [
+    "★★ **标题区间必须收窄为指数结构支持的那一段**：本包已用指数口径把行情段收敛至 **2023-08-21 → 2024-09-11**；而「2022–2024」这个标题区间**未被指数结构支持为单一段**（2022 段与 2023-08 段机制不同轴，包自己在 why_not ① 已声明）。→ canonical 时取 `2023-08-21 → peak 2024-05-29 → end 2024-09-11`，标题改写为 **2023–2024**。",
+    "★ **end 口径必须锁定为煤炭指数，不得改用红利指数**：包中已记录两种口径结论相反（煤炭口径 → 2024-09-11 结束；红利口径 → 2025-11-13 仍创新高、OPEN_ENDED）。按本项目「不代以其他指数」的登记原则，**主体是煤炭 → 用煤炭指数**。",
+    "★ **季节性未核验**（known_gaps #6）：本候选的 `rule_id` 与观察窗口**不得**写成 `confirmed`；若新建规则必须以 `status='candidate'` 建立并注明「观察窗口未经核验」。",
+    "★ `ticker` 一律留空待核（known_gaps #7：煤炭侧标的代码未在任何来源中出现）—— **禁止凭常识补代码**；canonicalization 时如实留空或从库内既有 securities 匹配。",
+    "★ 记录与 `C-2024-FIN-BANK-DIVIDEND` / `C-2023-FIN-SOE-VALUATION` 的**同机制轴不同行业**重叠（CT002），并在 canonicalization 记录中显式写明「机制轴相同不构成重复」（协议 §1.4）。是否视为同一 Theme Cycle 的行业载体属 Campaign Decision，本审查**不**代为合并。",
+    "★ 记录与 `C-2021-RES-COAL`（R02-03）与 2022 俄乌能源段的**边界判定**（CT001/CT003）——即缺失项② 已补齐的形式证据。"
+   ],
+   "missing_items": [],
+   "peak_referent": "板块指数（000820 收盘高点 2024-05-29）",
+   "kline_confirmation_consequence": "CONFIRMED（参照物即板块指数，且该日经一手来源复算确为区间最高收盘）"
+  },
+  {
+   "candidate_id": "R02-MEDIA-002",
+   "title": "2018 年游戏版号暂停与恢复驱动的传媒 / 游戏板块周期（R02-03 同名候选的 DEFER 补做）",
+   "verdict": "ACCEPT_WITH_CHANGES",
+   "evidence_count": 9,
+   "independence_groups": 1,
+   "required_changes": [
+    "★ **start 取 2018-12-21（政策转向日）的口径成立**，但必须**连同「该日不是行情低点」一并落库**：包已如实记录此后指数仍跌至 2019-01-31（-4.40%，相对沪深300 跑输 10.08pp）。→ canonical 的 `start_date_basis` 必须写明「起点 = 政策转向日，**非**行情低点」，且 lifecycle 保留 DECLINING 段（2018-12-21 → 2019-01-31）—— **不得**为了让 start 之后就是上涨而删掉它。",
+    "★★ **MAIN_RISE 仅约 6 周（28 个交易日）**：是否满足 Campaign 五要件中的「持续性」属 Campaign Decision。本审查判定**成立**（理由：峰值经指数复算确为 2019 年内最高收盘，回撤段完整至 2019-08-09，且相对沪深300 超额 +29.07pp —— 不是噪声）。但**必须**在 canonical 记录中写明「短持续段」这一事实。",
+    "★ **超额收益含 Beta 成分必须如实降级**：该窗口恰为 2019 年春季全市场快速反弹（沪深300 +17.29%、上证 +18.41%），包已声明**未做**因子回归、仅做指数减法。→ canonical 记录须写明「超额 = 指数减法，**非**因子分离后的 Alpha」。",
+    "★ **政策转向日无官方一手发布文本**（known_gaps #5 + E002 反向证据）：现有 GameLook(T3) 与中证网(T2) 同期报道，而中国青年网同日致辞全文**不含该句**。→ canonical 时 `start_date_basis` 必须写明「多家媒体同期一致报道，**无**官方文本」，并把这个**反向证据**一并留档（已由 E002 承载，不得在 canonicalization 时丢失）。",
+    "★ 版号暂停起点 2018-03-29 同样**无官方一手来源**（通知原文随机构改革下线）→ 若 canonical 记录涉及该日期，必须标注「多源一致的媒体转述」。",
+    "★ `ticker`：002555/002558 有来源支撑可填；`完美世界` 留空待核（同 known_gaps #7）。"
+   ],
+   "missing_items": [],
+   "peak_referent": "板块指数（399971 收盘高点 2019-03-12，经复算为 2019 年内最高收盘）",
+   "kline_confirmation_consequence": "CONFIRMED"
+  }
+ ],
+ "verdict_distribution": {
+  "ACCEPT_WITH_CHANGES": 2,
+  "DEFER": 0,
+  "REJECT": 0,
+  "INSUFFICIENT": 0,
+  "OBSERVATION_ONLY": 0
+ },
+ "side_findings": [
+  {
+   "id": "SF-R02-04-a",
+   "severity": "INFO",
+   "finding": "`research/scripts/check_intake_security_map_v0_1.py` 的扫描范围**硬编码为 R01-01..06**（`for i in range(1,7)` + `import_r01_0%d_...`）→ R02-* 包的标的映射**从未被检查**。已建泛化版 `check_intake_security_map_v0_2.py`（自动发现全部 intake 包）。这是本轮第 3 个「硬编码扫描范围」类缺陷（前两个：`RULES` 白名单、`SA_ARTIFACT_REL`）。"
+  },
+  {
+   "id": "SF-R02-04-b",
+   "severity": "WARN",
+   "finding": "R02-01 包声明 4 条 securities，但其导入器只登记 3 条 —— `R02-PHARMA-SEC004`（恒瑞医药/600276，DB 中已存在为 `HENGRUI`，挂在 `C-2019-PHARMA-INNOV`）**没有进入** `C-2023-PHARMA-GLP1`。这是「包声明 ≠ 落地」的一处实例，但发生在已 canonicalization 的 R02-01，**不在本审查修改范围**，记录待确认。"
+  },
+  {
+   "id": "SF-R02-04-c",
+   "severity": "WARN",
+   "finding": "`research/intake/packages/R02-02/`（`R02-PHARMA-003`，2017–2018 医药审评审批改革）**既无导入器、也无 campaign 入库、且无审查结论文件** —— 该包处于「已校验未处置」状态。需确认是遗漏还是当时已口头否决。**不在本审查范围**，记录待用户决策。"
+  }
+ ],
+ "next_steps": [
+  "① 本裁定提交用户确认（canonicalization 是写 canonical 的不可逆动作）",
+  "② 确认后写 `import_r02_04_canonical_v0_1.py`：2 Campaign + securities（ticker 留空者如实留空）+ 2 rule（若新建必须 `status='candidate'`）+ 对应 sources/evidences/phases/date_observations",
+  "③ 走下游刷新链：`refresh_downstream.py --check` → `--apply` → 快照重出（DRAFT，待签发）",
+  "④ SF-R02-04-b / c 两项需用户决策后再处置"
+ ]
+}

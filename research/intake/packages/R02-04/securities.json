@@ -1,0 +1,69 @@
+[
+  {
+    "security_id": "R02-COAL2-SEC001",
+    "ticker": null,
+    "name": "中国神华",
+    "exchange": null,
+    "role": "leader",
+    "basis": "R02-COAL2-S005（2024-05 煤炭行业研报）在投资建议中将其列为「长久期稳盈利优质龙头」，并称「对应高长协公司中国神华股息率依旧有 5% 以上（假设分红比例和 23 年持平，市值截至 24 年 4 月底）」。★ 本包**未**在任何来源中取得其证券代码，故 `ticker` 与 `exchange` 留空 —— 不凭常识填写（回应 R02-03 审查教训「每一个日期都必须指得出出处」，本包把同一纪律扩展到代码）。",
+    "source_ids": [
+      "R02-COAL2-S005"
+    ],
+    "point_in_time_note": "★ 本标的属 **Historical Leader Set（回顾性识别）**：其「龙头」地位由 2024-05 的研报回顾性给出，**不**代表 point-in-time 可预知。★ 本包**未**登记 **Point-in-Time Basket**（即无法还原「若在 2024-01 当时，哪些标的会被选中」）—— 因为本包只有事后研报口径，缺当时的成分股 / 资金流数据。★ 该缺失已写入 quality_summary.known_gaps。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-COAL2-SEC002",
+    "ticker": null,
+    "name": "陕西煤业",
+    "exchange": null,
+    "role": "second_leader",
+    "basis": "R02-COAL2-S005（2024-05 煤炭行业研报）在投资建议中将其与「中国神华」并列为「长久期稳盈利优质龙头」，并在同一份建议中称其为「受益标的」。★ 代码未在任何来源中出现，留空待核（同 SEC001 的纪律）。",
+    "source_ids": [
+      "R02-COAL2-S005"
+    ],
+    "point_in_time_note": "★ 属 **Historical Leader Set（回顾性识别）**，不代表 point-in-time 可预知；本包**未**登记 Point-in-Time Basket。★ 另注：`survivorship_aware` 标 true 但本包**未**做退市 / 更名核查 —— 该字段在此表示「已意识到幸存者偏差风险」，不表示已排除。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-MEDIA2-SEC001",
+    "ticker": "002555",
+    "name": "三七互娱",
+    "exchange": "深圳证券交易所",
+    "role": "leader",
+    "basis": "① 获 2018 年 12 月首批版号（R02-MEDIA2-S003，该来源明确给出代码 002555 与交易所归属）；② 2018-12-21 政策表态当日股价大涨 6.2%（R02-MEDIA2-S001，截至发稿口径）；③ 2019-01-09 第二批版号亦有产品获批（R02-MEDIA2-S009）。★ 代码与名称的对应关系**取自来源原文**，非本包推断。",
+    "source_ids": [
+      "R02-MEDIA2-S003",
+      "R02-MEDIA2-S001",
+      "R02-MEDIA2-S009"
+    ],
+    "point_in_time_note": "★ **Point-in-Time Basket 可部分还原**：2018-12-21 当日，本标的因「版号恢复表态」而出现可观察的当日涨幅（R02-MEDIA2-S001 为同日发布），故它在**当时**即已被市场当作受益标的 —— 这一点与本包其它标的（仅事后回顾）不同。★ **Historical Leader Set** 口径下，它同时是首批版号获批方（R02-MEDIA2-S003），两个口径一致。★ 局限：当日涨幅为「截至发稿」口径、非收盘价，本包**未**用其作为行情证据。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-MEDIA2-SEC002",
+    "ticker": null,
+    "name": "完美世界",
+    "exchange": null,
+    "role": "representative",
+    "basis": "2018-12-21 政策表态当日股价大涨 7.16%（R02-MEDIA2-S001，截至发稿口径）。★ 该来源未给出其证券代码，故 `ticker` / `exchange` 留空待核。",
+    "source_ids": [
+      "R02-MEDIA2-S001"
+    ],
+    "point_in_time_note": "★ 同 SEC001：属 **Point-in-Time 可部分还原**（当日有可观察涨幅），但**不**在首批 / 第二批版号获批名单中被本包来源提及，故其受益逻辑在当时属「板块 Beta」而非「个体事件」。★ 属 Historical Leader Set 与 Point-in-Time Basket 的交集较弱的一类。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-MEDIA2-SEC003",
+    "ticker": "002558",
+    "name": "巨人网络",
+    "exchange": "深圳证券交易所",
+    "role": "representative",
+    "basis": "获 2018 年 12 月首批版号（R02-MEDIA2-S003，该来源明确给出代码 002558）。★ 代码与名称的对应关系取自来源原文。",
+    "source_ids": [
+      "R02-MEDIA2-S003"
+    ],
+    "point_in_time_note": "★ 属 **Historical Leader Set（回顾性识别）**：其入选依据是「在首批 80 款名单中」，该名单于 2018-12-29 公布，**晚于**本候选 start（2018-12-21）8 天 —— 故它在 start 当日**尚不**构成 point-in-time 可知的受益标的。该时序差别已显式标注。",
+    "survivorship_aware": true
+  }
+]

@@ -1,0 +1,128 @@
+[
+  {
+    "exclusion_id": "R02-COAL2-X001",
+    "subject": "2022 年俄乌冲突引发的全球能源价格上行段（煤炭指数 2022-01-28 → 2022-09-06，+61.63%）是否应单列为独立 Campaign",
+    "reason_code": "SAME_CAMPAIGN",
+    "rationale": "本包**不**将其单列为独立 Campaign，也**不**将其并入 R02-COAL-002。理由：该段的驱动是**煤价 / 供给冲击**，与 R02-COAL-001（2021 动力煤供需缺口 + 保供稳价）**同机制轴**，而与 R02-COAL-002 的「分红 / 贴现率」轴不同。可核验判据（见 candidates.json → R02-COAL-002.notes 的缺失项②）：① 2022 年煤炭指数的顶（2022-09-06）与中证红利指数的顶（2022-04-06）**错位 153 天**，而 2021 年两者同日见顶、2024 年错位仅 8 天；② IEA《煤炭 2022》记载 2022 年全球煤炭市场受俄乌战争严重冲击、国际动力煤价格创历史新高（R02-COAL2-E010）。★ **是否应与 R02-COAL-001 合并**属 Campaign Independence Gate Q1–Q5 的判定范围，**权在 ThreeC Agent**，本包不裁决。",
+    "source_ids": [
+      "R02-COAL2-S001",
+      "R02-COAL2-S002",
+      "R02-COAL2-S011"
+    ],
+    "evidence_ids": [
+      "R02-COAL2-E001",
+      "R02-COAL2-E003",
+      "R02-COAL2-E004",
+      "R02-COAL2-E010"
+    ]
+  },
+  {
+    "exclusion_id": "R02-COAL2-X002",
+    "subject": "R02-COAL-001（2021 年动力煤供需缺口与保供稳价干预段）是否并入 R02-COAL-002",
+    "reason_code": "OTHER",
+    "rationale": "本包**不**将两者合并。理由：① 机制轴不同（供给冲击 / 煤价 vs 分红 / 贴现率）；② 时间不连续（R02-COAL-001 的行情在 2021-09-13 见顶后回落至 2021-12-31 的 3235.08，此后 2022 年又走了一段俄乌驱动的独立上行）；③ 两者的 peak 参照物性质不同 —— R02-COAL-001 的 peak（2021-10-19）参照物是**政策事件**（发改委干预），R02-COAL-002 的 peak（2024-05-29）参照物是**指数高点**。★ 该判定属 Campaign Independence Gate，**权在 ThreeC Agent**。",
+    "source_ids": [
+      "R02-COAL2-S001"
+    ],
+    "evidence_ids": [
+      "R02-COAL2-E001",
+      "R02-COAL2-E002"
+    ]
+  },
+  {
+    "exclusion_id": "R02-COAL2-X003",
+    "subject": "焦煤 / 炼焦煤作为独立于动力煤的细分 Campaign",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "本包**未**取得可区分「焦煤」与「动力煤」两个子板块的独立指数口径（中证申万煤炭指数 000820 是煤炭全行业口径，成分数 27–30，不区分子行业），也**未**取得任何来源证明「焦煤」在 2023-08—2024-09 段被 A 股当作**独立题材**炒作过。按 R02-03 的 subdivision_principle ②「只有行业统计分类、没有市场炒作证据的，不得作为细分」，显式排除，**不**凭常识拆分。",
+    "source_ids": [
+      "R02-COAL2-S001"
+    ],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R02-COAL2-X004",
+    "subject": "库内银行 / 国企高股息段（C-2024-FIN-BANK-DIVIDEND、C-2023-FIN-SOE-VALUATION）是否与本候选重复",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "两者属**金融**方向、已在 canonical（见 EXISTING_UNIVERSE.md），不在本任务 scope（煤炭 / 文化传媒）。按协议 §1.4「同一机制、不同行业不自动构成重复」，本包**不**主张重复，但必须记录为**跨族机制重叠**（已写入 manifest.cross_task_notes CT002）。★ 若 ThreeC Agent 认为三者应视为同一 Theme Cycle 的不同行业载体，属 Campaign Decision 权限。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R02-COAL2-X005",
+    "subject": "煤炭板块的季节性（冬储 / 迎峰度夏）作为可复现的年内窗口",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "R02-03 的 subdivision_principle.seasonality_note 明确要求「专门核验季节性」，并指出这是**待核验的假设**、核验结果必须来自来源。本包受任务范围（只补两条 DEFER 的指定缺失项）限制，**未**取得任何证明「煤炭板块存在可复现年内窗口」的来源，故如实记为未核验，**不**凭常识写入。★ 已登记为研究问题 R02-COAL2-Q003。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R02-COAL2-X006",
+    "subject": "「高股息 / 红利资产」作为独立 Macro Theme",
+    "reason_code": "NOT_INDEPENDENT_MACRO_THEME",
+    "rationale": "「高股息 / 红利资产」是一条**机制轴**（分红率 + 无风险利率 → 估值重估），不是行业族。覆盖计划 §3.2 明确「Mechanism（机制轴）是机制，不是 Macro Theme」。本包**不**为其提交 Macro Theme proposal，只把它作为 `theme_name_candidates` 之一交给 CMTR v1 解析（见 manifest.macro_theme_proposals）。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R02-MEDIA2-X007",
+    "subject": "2018 年版号暂停期间的下行段（中证传媒指数 2018-01-26 收 1820.23 → 2018-10-16 收 1033.84，-43.2%）是否单列为独立 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "本包**不**将其单列。依据 R02-03 审查对 R02-MEDIA-002 的判定理由（「下行段 + 政策转向」不构成标准的 `MAIN_RISE` Campaign）：该段为**下行段**，且其驱动（版号暂停）是**政策收紧**，与 Campaign 通常需要的「可解释 start / end + 主升段」不符。本包按审查要求把政策转向当**起点**重新界定后，下行段自然不单列。★ 但 R02-03 审查同时指出「本条的排除本身是有价值的覆盖」（覆盖计划 §5），故本包**保留**该排除记录，不因补做而删除。★ 是否应作为 `OBSERVATION_ONLY` 保留，权在 ThreeC Agent。",
+    "source_ids": [
+      "R02-MEDIA2-S005"
+    ],
+    "evidence_ids": [
+      "R02-MEDIA2-E005"
+    ]
+  },
+  {
+    "exclusion_id": "R02-MEDIA2-X008",
+    "subject": "影视 / 出版 / 广告作为独立于游戏的细分 Campaign",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "本包**未**取得可区分「游戏」与「影视 / 出版 / 广告」的独立指数口径（中证传媒指数 399971 是传媒全行业口径，成分数 50；中证动漫游戏指数 930901 是游戏口径 —— 两者只能分出「游戏 vs 非游戏」，不能分出影视 / 出版 / 广告），也**未**取得来源证明这些子方向在 2018-12—2019-08 段被当作**独立题材**炒作过。按 subdivision_principle ② 显式排除。★ 该限制同时写入 R02-MEDIA-002 的 `theme_summary` 边界（本候选按「传媒 / 游戏」双口径界定）。",
+    "source_ids": [
+      "R02-MEDIA2-S005",
+      "R02-MEDIA2-S006"
+    ],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R02-MEDIA2-X009",
+    "subject": "2019 年 2–3 月传媒板块中「党媒 / 融媒体」子线是否独立于「游戏 / 版号修复」子线",
+    "reason_code": "INSUFFICIENT_EVIDENCE",
+    "rationale": "本包在检索中见到「2019 上半年文化传媒板块的热点集中在党媒（2-3 月）、广电系（3-6 月）」一类**研报口径**表述，但**未**取得该表述的可核验原文（仅有检索摘要），也**未**取得能把两条子线分开的指数口径或成分数据。故本包**不**据此拆分，也**不**据未核验的摘要写入任何结论；如实记为未核验。★ 已登记为研究问题 R02-MEDIA2-Q003。★ 若该子线确实存在，则本候选的 `theme_summary` 把 2019 年 2–3 月涨幅整体归给「版号修复」可能高估 —— 该风险已写入 R02-MEDIA-002 的 `why_not`。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R02-MEDIA2-X010",
+    "subject": "2023 年 AI 主题驱动的传媒板块行情（库内 C-2023-MEDIA-AI / R02-03 的 R02-MEDIA-001）",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "该段属 R02-03 的其它候选（已定 `ACCEPT_WITH_CHANGES`），本任务**不重做**、**不覆盖**。此处仅作范围边界记录。★ 与 R02-MEDIA-002 的关系：同族（文化传媒）、机制不同（技术主题 vs 监管周期）、时间不重叠（2023 vs 2018-12—2019-08）。",
+    "source_ids": [],
+    "evidence_ids": []
+  },
+  {
+    "exclusion_id": "R02-MEDIA2-X011",
+    "subject": "「游戏版号暂停 / 恢复」这一政策事件本身作为 Campaign",
+    "reason_code": "NOT_A_CAMPAIGN",
+    "rationale": "政策事件本身不是 Campaign —— Campaign 需要**市场参与**与**时间结构**。本包的处理方式是：把「恢复」当作 R02-MEDIA-002 的**起点催化**，把「暂停」当作**背景**（其本身不单列，见 X007）。★ 另注：该暂停**未被正式公告**，无官方一手来源（见 candidates.json → R02-MEDIA-002.notes 的口径说明），这也使它不适合作独立研究对象。",
+    "source_ids": [
+      "R02-MEDIA2-S003",
+      "R02-MEDIA2-S010",
+      "R02-MEDIA2-S011",
+      "R02-MEDIA2-S012"
+    ],
+    "evidence_ids": [
+      "R02-MEDIA2-E003"
+    ]
+  },
+  {
+    "exclusion_id": "R02-XTASK-X012",
+    "subject": "用户点名的另两个方向「电力（运营端）」「流感疫苗」",
+    "reason_code": "OUT_OF_SCOPE",
+    "rationale": "本任务 scope 只含煤炭与文化传媒两条 DEFER 补做（依据 `HISTORICAL_UNIVERSE_R02_TASK_MANIFEST_v0_1.json` → `tasks[task_id=R02-04].macro_theme_candidates`）。电力与流感疫苗的候选由 R02-03 提交（R02-POWER-001~003 / R02-VACCINE-001~002），本包**不重做**、**不补充**。★ 这是协议 §8.2 要求的「范围边界类 exclusion」。",
+    "source_ids": [],
+    "evidence_ids": []
+  }
+]

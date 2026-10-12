@@ -1,0 +1,136 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R02",
+  "task_id": "R02-04",
+  "task_scope": {
+    "task_id": "R02-04",
+    "family_directions": [
+      "煤炭",
+      "文化传媒"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "只做 R02-03 两条被判 DEFER 的候选的**指定缺失项补做**，不新增方向、不重做其它候选。(1) R02-COAL-002（2022–2024 煤炭高股息 / 红利资产重估行情）—— 补「板块指数口径序列（用于界定 peak / end）」与「与 R02-COAL-001 及 2022 俄乌能源价格段的边界判定判据」。(2) R02-MEDIA-002（2018 年游戏版号暂停与恢复驱动的传媒 / 游戏板块周期）—— 按审查要求重新界定为「版号恢复后的修复段」（把 2018-12-21 政策转向当**起点**），取得该段行情证据与时间结构，并给出暂停起止日的**可用口径说明**。",
+    "excluded_scope": "不重做 R02-03 的其它 7 条候选（R02-COAL-001 / R02-POWER-001~003 / R02-VACCINE-001~002 / R02-MEDIA-001）；不覆盖 research/intake/packages/R02-03/；不做 taxonomy 变更（新增 DB themes 行属独立轮次）；不做 canonicalization（属 ThreeC Agent 权限）；不做文化传媒的**当前侧**（2026 年当下事件）研究；不做 2015–2017 的额外回填。"
+  },
+  "generated_at": "2026-10-11T14:45:00+08:00",
+  "source_commit": "c742968",
+  "source_commit_note": "★★ 本沙箱**不是 git 仓库**（实测 `git rev-parse --short HEAD` 返回 `fatal: not a git repository (or any of the parent directories): .git`），因此**无法**取得本包生成时的真实 commit。此处填写的 `c742968` 是 R02 任务清单自述的基线 commit（`HISTORICAL_UNIVERSE_R02_TASK_MANIFEST_v0_1.json` → `source_commit`，ThreeC baseline，Product 1.2 Usage-Driven 轮）。**该值不是本包产出的 commit，不得当作本包 provenance 使用。** 已登记为研究问题 R02-XTASK-Q002。",
+  "produced_by": "Research Agent role（AI 离线研究，2026-10-11）",
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R02-COAL2-MT001",
+      "proposed_name": "煤炭",
+      "theme_name_candidates": [
+        "煤炭",
+        "煤炭开采",
+        "动力煤",
+        "高股息 / 红利资产"
+      ],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "R02-04 的两条候选都落在「煤炭」方向。本包**只提交 proposal**，不主张最终归组：同族内新增（挂既有「资源 / 有色 / 化工」）还是新建根节点，须由 ThreeC Agent 走 CMTR v1（规则集 canonical-macro-theme-resolution-1）判定。本候选的机制轴为**分红 / 贴现率**（高股息重估），与「资源」族既有对象的**供给收缩 / 涨价**轴不同 —— 该差异是本方向的结构增量所在，也是边界判定的核心（见 candidates.json R02-COAL-002.notes）。",
+      "known_overlap": [
+        "既有「资源 / 有色 / 化工」族（有色金属 · 贵金属 · 稀有金属/稀土 · 基础化工）—— 同族还是新族须由 CMTR v1 判定",
+        "库内 C-2021-RES-COAL（2021 煤炭，资源族）—— 同族同行业、不同段；本包不重复提交该段",
+        "库内 C-2024-FIN-BANK-DIVIDEND / C-2023-FIN-SOE-VALUATION（金融族 · 银行高股息）—— **同一机制轴、不同行业**，不构成重复，但必须记录为跨族机制重叠"
+      ],
+      "notes": "★ R02-03 已实测：同一方向提交的 R02-COAL-MT001 经 CMTR v1 返回 `UNRESOLVED_NAME`（见 `reviews/R02-03_verdicts_v0_1.json` → `blocking_condition.measured.cmtr_result_per_proposal`）。本包不重复该判定，仅原样再提交 proposal。★ 本包**未**新增 taxonomy 行，**未**预填目标 canonical 节点。"
+    },
+    {
+      "proposal_id": "R02-MEDIA2-MT001",
+      "proposed_name": "文化传媒",
+      "theme_name_candidates": [
+        "文化传媒",
+        "传媒",
+        "游戏",
+        "网络游戏",
+        "影视"
+      ],
+      "proposal_kind": "NEW_MACRO_CANDIDATE",
+      "rationale": "R02-04 的传媒侧候选落在「文化传媒」方向。机制轴为**监管周期（版号审批）→ 内容供给 → 估值修复**，与现有各族的「政策驱动 / 技术突破 / 产业升级 / 需求爆发」均不同构。本包只提交 proposal，最终归组须由 CMTR v1 判定。",
+      "known_overlap": [
+        "库内 C-2023-MEDIA-AI（2023 AI 驱动的传媒行情，文化传媒族）—— 同族、机制不同（技术主题 vs 监管周期）；本包不重做该条",
+        "R02-03 的 R02-MEDIA-001 —— 同族候选，本包不重做",
+        "★ `EXISTING_UNIVERSE.md` 的主题名表中「文化传媒」出现 1 次（对应 `C-2023-MEDIA-AI`），但该表文末又称「你的四个方向在表中一个都不出现」，两处**相互矛盾**；本包不以该表判定覆盖状态，已登记为 R02-XTASK-Q001"
+      ],
+      "notes": "★ R02-03 已实测：R02-MEDIA-MT001 经 CMTR v1 返回 `UNRESOLVED_NAME`。本包原样再提交 proposal，不重复判定。"
+    }
+  ],
+  "cross_task_notes": [
+    {
+      "note_id": "R02-XTASK-CT001",
+      "kind": "BOUNDARY",
+      "target_task_id": "R02-03",
+      "related_candidate_ids": [
+        "R02-COAL-002",
+        "R02-COAL-001"
+      ],
+      "note": "边界提示（判据见 candidates.json → R02-COAL-002.notes 的「缺失项②」段）：本包主张 R02-COAL-001（2021 动力煤供需缺口 / 保供稳价）与 R02-COAL-002（高股息重估）**不是同一段**，且 2022 年俄乌能源价格段**不并入** R02-COAL-002。判据是可核验的指数口径事实：①2022 年煤炭指数的顶（2022-09-06）与中证红利指数的顶（2022-04-06）相差 **153 天**，而 2021 年两者同日见顶（均 2021-09-13）、2024 年相差仅 **8 天**（05-29 vs 05-21）→ 2022 段的「煤炭—红利同轴性」显著低于 2021/2024 段；②2023-08 至 2024-05 煤炭指数的上行段伴随**煤价与煤企盈利同比回落**（见 R02-COAL2-E007/E008/E009），无法由煤价解释。**最终判定权在 ThreeC Agent**，须走 Campaign Independence Gate Q1–Q5。"
+    },
+    {
+      "note_id": "R02-XTASK-CT002",
+      "kind": "OVERLAP",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-COAL-002"
+      ],
+      "note": "跨族机制重叠提示：本候选的机制轴（低利率 + 分红监管强化下的**高股息 / 红利资产重估**）与库内 `C-2024-FIN-BANK-DIVIDEND`（2024 银行高股息）、`C-2023-FIN-SOE-VALUATION`（2023 国企估值）**属同一机制轴、不同行业**。按协议 §1.4，机制轴相同**不**自动构成重复，但该重叠必须在 canonicalization 记录中显式写明；是否应把这三者视为同一 Theme Cycle 的不同行业载体，属 ThreeC Agent 的 Campaign Decision 权限。"
+    },
+    {
+      "note_id": "R02-XTASK-CT003",
+      "kind": "OVERLAP",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-COAL-002"
+      ],
+      "note": "同族同行业重叠：`EXISTING_UNIVERSE.md` 列出 `C-2021-RES-COAL`（起始年 2021，主题 煤炭 / 资源）。该对象与 R02-03 的 R02-COAL-001 在时间与机制上高度接近，但**不属于本任务范围**（本任务不重做 R02-03 的其它候选）。此处仅作记录，供 ThreeC Agent 做 cross-task dedupe 时参考。"
+    },
+    {
+      "note_id": "R02-XTASK-CT004",
+      "kind": "BOUNDARY",
+      "target_task_id": "R02-03",
+      "related_candidate_ids": [
+        "R02-MEDIA-002",
+        "R02-MEDIA-001"
+      ],
+      "note": "边界提示：R02-MEDIA-001（2023 AI 驱动的传媒行情）与本候选同属「文化传媒」方向但机制不同（技术主题 vs 监管周期 / 版号审批），时间不重叠（2018-12 至 2019-08 vs 2023）。本包按审查要求把 R02-MEDIA-002 **重新界定为「版号恢复后的修复段」**，起点取政策转向日 2018-12-21；该重新界定改变了候选的时间边界，须由 ThreeC Agent 重新走 Independence Gate。"
+    },
+    {
+      "note_id": "R02-XTASK-CT005",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": "R02-03",
+      "related_candidate_ids": [
+        "R02-COAL-002",
+        "R02-MEDIA-002"
+      ],
+      "note": "★ 声明：本包的 `R02-COAL-002` 与 `R02-MEDIA-002` **沿用 R02-03 的同名 candidate_id**，但**不是重复提交** —— 它们是 R02-03 审查判 `DEFER` 后、只补「指定缺失项」的补做版本。按升版规则（新版写新文件），R02-03 的包**未被覆盖**，仍在 `research/intake/packages/R02-03/`。审查时请以本包为**补充证据与更新后的 date_candidates**，并保留 R02-03 的 provenance。"
+    },
+    {
+      "note_id": "R02-XTASK-CT006",
+      "kind": "HANDOFF",
+      "target_task_id": null,
+      "related_candidate_ids": [],
+      "note": "交接提示（基础设施层面，影响去重可靠性）：`EXISTING_UNIVERSE.md` 的表格列出 57 个 Campaign，其中包含 `C-2021-RES-COAL`、`C-2023-MEDIA-AI`、`C-2021-POWER-GREEN`、`C-2023-PHARMA-FLU`，主题名表中也出现「煤炭」「文化传媒」「电力（运营端）」「流感疫苗」；但同一文件文末写「★ 你的四个方向（煤炭 / 电力 / 流感疫苗 / 文化传媒）在**这张表里一个都不出现**」。两处**不能同时为真**。同时，`reviews/R02-03_verdicts_v0_1.json` 的 `blocking_condition` 记载四方向经 CMTR v1 实测均为 `UNRESOLVED_NAME`、**不得**写入 canonical。本包不据此判定任何覆盖状态，仅作为**去重参照可靠性**的问题上报（详见 R02-XTASK-Q001）。"
+    }
+  ],
+  "known_gaps": [
+    "★ 本包的两条候选都**仍未取得**「板块指数」以外的**一手行情来源交叉验证**：指数日行情来自中证指数有限公司官网公开接口（单一发布方），本包**未**取得第二家独立一手来源（如交易所行情文件）交叉核对。",
+    "★ 中证指数公司接口在本次抓取过程中**被限流**（同一批请求成功后，后续请求返回 HTTP 403，等待后仍未恢复）。因此「相对强度比值序列的完整日频极值」**未取得**，只能以已取得的月末 / 关键锚点计算，相关结论已按此降级标注（见 R02-MEDIA-002 的 end 候选）。",
+    "R02-COAL-002 的 **peak / end 已由指数口径界定**（这是本轮相对 R02-03 的实质增量），但「2022–2024」这个**标题区间**未被指数结构支持为单一段 —— 指数结构显示 2022 年那一段与 2023-08–2024-05 那一段**机制不同轴**。是否改写标题区间属 ThreeC Agent 的 Campaign Decision 权限。",
+    "R02-MEDIA-002 的 **start（2018-12-21）不是行情低点**：该日后中证传媒指数仍下跌至 2019-01-31（-4.40%），同期沪深300 上涨 +5.68%，相对跑输约 10.1pp。该事实已如实写入 date_candidates 与 why_not，**未**为迁就「政策转向当起点」而隐去。",
+    "版号暂停的**起点（2018-03-29）无官方一手来源**：多源一致转述原国家新闻出版广电总局《游戏申报审批重要事项通知》，但通知原文随 2018 年机构改革从原总局官网下线，本包**未取得**任何可引用的官方一手链接或文号。按协议「宁可空缺，不得凑数」，如实标注为「多源一致的媒体转述」，**不**假装存在官方公告。",
+    "煤炭方向的**季节性**（冬储 / 迎峰度夏）**未核验**：R02-03 的 subdivision_principle 要求专门核验季节性，本包受任务范围限制未取得可复现年内窗口的来源，已在 exclusions 显式记录。",
+    "**证券代码**：本包来源中直接出现代码的仅 3 个（002555 三七互娱、600637 东方明珠、002558 巨人网络）；煤炭侧标的名称出现在研报来源中，但**代码未在任何来源中出现**，故 `ticker` 一律留空待核（未凭常识填写）。"
+  ],
+  "task_definition_note": "★ 本包由 R02 任务清单（`HISTORICAL_UNIVERSE_R02_TASK_MANIFEST_v0_1.json` → `tasks[task_id=R02-04]`）触发，是 R02-03 两条 `DEFER` 候选的**指定缺失项补做**。★ 协议 §3 角色分离仍适用：本包由 **Research Agent 角色**产出；**审查（八种结果）与 canonicalization 必须由 ThreeC Agent 角色独立执行**。★ 本包**未**写入 canonical、**未**修改任何既有文件、**未**执行 taxonomy 变更、**未**声明 VERIFIED。★ 允许的结果是「仍然 DEFER」。"
+}

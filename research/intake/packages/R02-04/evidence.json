@@ -1,0 +1,388 @@
+[
+  {
+    "evidence_id": "R02-COAL2-E001",
+    "claim": "中证申万煤炭指数（000820）在 2022-01-01 至 2024-12-31 区间内，最低收盘为 3178.22（2022-01-28），最高收盘为 5242.93（2024-05-29）。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数日行情（官方指数机构一手口径）",
+    "event_date": "2024-05-29",
+    "evidence_date": "2026-10-11",
+    "source_id": "R02-COAL2-S001",
+    "confidence": "high",
+    "independence_group": "IG-IDX-CSI-000820-COAL",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "本证据用于界定 peak，不用于证明「当时已知」。★ 数值由 2026-10-11 从官方指数机构公开接口回溯取得，本包**未**另取当日快照交叉验证，故只标 historical_fact_support。",
+    "description": "★ 这是 R02-03 缺失项①所要求的「板块指数口径序列」的直接来源。指数全名「中证申万煤炭指数」（CSI SWS Coal Index），成分数 27–30（2022–2024 期间）。本包取得 2021-01-04 至 2025-12-31 共 1212 个交易日的日线后计算区间极值。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E002",
+    "claim": "中证申万煤炭指数自 2023-08-21 的收盘低点 3541.84 上行至 2024-05-29 的收盘高点 5242.93（+48.03%），随后回落至 2024-09-11 的收盘 3857.16（自高点 -26.43%）。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数日行情（官方指数机构一手口径）",
+    "event_date": "2024-09-11",
+    "evidence_date": "2026-10-11",
+    "source_id": "R02-COAL2-S001",
+    "confidence": "high",
+    "independence_group": "IG-IDX-CSI-000820-COAL",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "用于界定 start / peak / end 的时间结构，不用于证明「当时已知」。数值由 2026-10-11 回溯取得。",
+    "description": "★ 该条把 R02-03 判为缺失的「时间结构」补齐：上行段 2023-08-21 → 2024-05-29，回撤段 2024-05-29 → 2024-09-11。涨幅与回撤由本包用同一来源的日线计算，非媒体转述。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E003",
+    "claim": "中证红利指数（000922）2022 年内最高收盘 5447.77（2022-04-06）、2024 年内最高收盘 5757.02（2024-05-21）、2025 年内最高收盘 5801.99（2025-11-13）—— 2025 年高点**高于** 2024 年高点。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数日行情（官方指数机构一手口径）",
+    "event_date": "2025-11-13",
+    "evidence_date": "2026-10-11",
+    "source_id": "R02-COAL2-S002",
+    "confidence": "high",
+    "independence_group": "IG-IDX-CSI-000922-DIVIDEND",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "用于界定「红利口径」的顶与是否已结束，不用于证明「当时已知」。数值由 2026-10-11 回溯取得。",
+    "description": "★ 本证据是 end 口径分歧的来源：红利指数在 2025-11-13 创出高于 2024-05-21 的新高，而煤炭指数 2025 年内最高仅 4710.91（未收复 5242.93）→ 同一段在两个口径下「是否已结束」结论相反。本包如实保留双方，不裁决。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E004",
+    "claim": "煤炭板块指数与红利指数的「顶」错位天数在三个段之间差异显著：2021 年同日（均为 2021-09-13，煤炭 4347.21 / 红利 5772.51）、2022 年相差 153 天（煤炭 2022-09-06 / 红利 2022-04-06）、2024 年相差 8 天（煤炭 2024-05-29 / 红利 2024-05-21）。",
+    "evidence_role": "context",
+    "evidence_type": "跨指数比较（由同一来源的日行情计算）",
+    "event_date": "2024-05-29",
+    "evidence_date": "2026-10-11",
+    "source_id": "R02-COAL2-S001",
+    "confidence": "medium",
+    "independence_group": "IG-IDX-CROSS-COAL-DIVIDEND",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "★ 本证据是**本包的分析结论**（跨指数比较），不是来源中的现成陈述。计算使用 R02-COAL2-S001（煤炭）与 R02-COAL2-S002（红利）两条日线，`source_id` 仅登记主来源。用途是给 ThreeC Agent 的 Independence Gate 提供可核验判据，**不代替裁决**。",
+    "description": "判据逻辑：若某段确由「红利 / 高股息」机制驱动，则煤炭板块指数与红利指数的顶应当接近。实测 2022 年那一段的同轴性（错位 153 天）显著弱于 2021 与 2024 两段（0 天 / 8 天）→ 不支持把 2022 俄乌段并入「红利重估」机制。★ 反向说明：2021 年两者同日见顶，也可能是因为 2021 年中证红利的成分权重本身偏周期资源股，故该判据**不能单独定案**，须与 R02-COAL2-E010（驱动源）合用。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E005",
+    "claim": "2024-01-24，国务院国资委产权管理局负责人在国务院新闻办公室发布会上表示，将「进一步研究将市值管理纳入中央企业负责人业绩考核」，并称将「加大现金分红力度，更好地回报投资者」。",
+    "evidence_role": "supporting",
+    "evidence_type": "官方发布会（经权威媒体当日转述）",
+    "event_date": "2024-01-24",
+    "evidence_date": "2024-01-25",
+    "source_id": "R02-COAL2-S006",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2024-SASAC-MKTVALUE",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "★ 该事件落在本候选指数上行段（2023-08-21 → 2024-05-29）**内部**，是判据 3 的依据之一。来源为新华网 2024-01-25 转证券时报，属权威媒体（Tier 2）；原始发布为国务院国资委（Tier 1），本包未直接取得国资委官网原文链接。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E006",
+    "claim": "2024-04-12，国务院印发《关于加强监管防范风险推动资本市场高质量发展的若干意见》（国发〔2024〕10 号），其中明确「强化上市公司现金分红监管」「加大对分红优质公司的激励力度，多措并举推动提高股息率」「研究将上市公司市值管理纳入企业内外部考核评价体系」。",
+    "evidence_role": "supporting",
+    "evidence_type": "国务院政策原文",
+    "event_date": "2024-04-12",
+    "evidence_date": "2024-04-12",
+    "source_id": "R02-COAL2-S008",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2024-NEW-NINE",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "★ Tier 1 一手政策原文（中国政府网）。文件成文日期为 2024-04-04、对外印发/发布日为 2024-04-12。该事件同样落在指数上行段内部（距 peak 2024-05-29 约 6 周）。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E007",
+    "claim": "2022-11-21，中国证监会主席易会满在 2022 金融街论坛年会上表示，需要探索建立具有中国特色的估值体系（市场通称「中特估」）。",
+    "evidence_role": "context",
+    "evidence_type": "官方讲话（经权威媒体当日报道）",
+    "event_date": "2022-11-21",
+    "evidence_date": "2022-11-21",
+    "source_id": "R02-COAL2-S007",
+    "confidence": "high",
+    "independence_group": "IG-POLICY-2022-CHINESE-VALUATION",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "★ 本包**未**把该日选为 start（见 candidates.json 的 start.alternative_dates 与 conflict_note）：该事件后煤炭指数仍下行至 2023-08-21，与行情段不同步。此处登记为「叙事起点」的备选，供 ThreeC Agent 裁决。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E008",
+    "claim": "2024-05-08 发布的煤炭行业 2024 年中期投资策略研报称：「2023 年 11 月以来的煤炭股行情与煤价已经脱敏，弱经济和低利率环境下高股息逻辑仍有望重（估）」。",
+    "evidence_role": "supporting",
+    "evidence_type": "券商研报（当时市场叙事）",
+    "event_date": "2024-05-08",
+    "evidence_date": "2024-05-08",
+    "source_id": "R02-COAL2-S004",
+    "confidence": "medium",
+    "independence_group": "IG-RESEARCH-2024-COAL-DIVIDEND",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": null,
+    "description": "★ 该条是判据 2（驱动源）的关键同期记录：**当时**的卖方研究即把上行归因于「与煤价脱敏」+ 高股息，而非煤价弹性。★ 本包只引用了可完整核验的从句「2023 年 11 月以来的煤炭股行情与煤价已经脱敏」，**未**补全被截断的后半句。★ 性质为**观点**（研报判断），不是独立事实核验。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E009",
+    "claim": "2024-05 发布的煤炭行业研报以「一季报大幅回落 煤炭高股息是否证伪?」为题，记录 2024 年一季报煤炭板块盈利大幅回落并就此展开争论；同文记载「截至 24 年 4 月底，动力煤市场价为 827 元/吨」。",
+    "evidence_role": "supporting",
+    "evidence_type": "券商研报（当时市场叙事）",
+    "event_date": "2024-04-30",
+    "evidence_date": "2024-05-01",
+    "source_id": "R02-COAL2-S005",
+    "confidence": "medium",
+    "independence_group": "IG-RESEARCH-2024-COAL-Q1-EARNINGS",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": "★ `evidence_date` 记为 2024-05-01 是**近似值**：该研报由新浪财经研报页转载，页面未提供精确发布日，本包据其标题与正文中的「截至 24 年 4 月底」推断为 2024 年 5 月上中旬，**未**取得精确日期。",
+    "description": "★ 该条是判据 2 的第二支柱：**上行段内煤企盈利同比回落而指数上涨**，说明该段定价对象是股息率与贴现率而非当期盈利。★ 局限：本包**未**取得煤企 2024 一季报的一手财务数据（公司公告），只有研报口径；「动力煤市场价 827 元/吨」亦为转述口径，不作为独立事实。"
+  },
+  {
+    "evidence_id": "R02-COAL2-E010",
+    "claim": "国际能源署（IEA）《煤炭 2022》年度报告指出，2022 年全球煤炭市场受到严重冲击、俄乌战争极大地改变了全球煤炭贸易格局；国际动力煤价格依次在 2021 年 10 月、2022 年 1 月、3 月和 5 月创下历史新高。",
+    "evidence_role": "contradicting",
+    "evidence_type": "国际机构年度报告（经行业媒体转述）",
+    "event_date": "2022-12-21",
+    "evidence_date": "2022-12-21",
+    "source_id": "R02-COAL2-S011",
+    "confidence": "medium",
+    "independence_group": "IG-IEA-COAL2022",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "subsequent",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "★ 本证据**不得**作为本候选（2023-08—2024-09）的同期催化 —— 它描述的是 2021–2022 年那一段的驱动源，在本候选的行情段之前。其作用恰好相反：证明 **2022 年那一段由煤价 / 供给冲击驱动**，从而支持「2022 俄乌段不应并入本候选」的边界判定。",
+    "description": "★ `evidence_role` 标为 `contradicting` 是**针对本候选**而言（它与本候选所主张的「红利 / 贴现率」机制相竞争，用于界定段界），并非与来源内容矛盾。★ 转述层级：本包引用的是北极星电力网 2022-12-21 对 IEA 报告的报道，**未**取得 IEA 报告原文；报告原文为英文，标题 Coal 2022。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E001",
+    "claim": "2018-12-21，中宣部出版局副局长冯士新在 2018 中国游戏产业年会致辞末尾表示「首批游戏已完成审核，正在抓紧核发版号」；同日 A 股游戏公司股价普涨，截至发稿三七互娱涨 6.2%、完美世界涨 7.16%、游族网络涨 9.98%、腾讯涨 3.51%。",
+    "evidence_role": "supporting",
+    "evidence_type": "行业媒体现场报道",
+    "event_date": "2018-12-21",
+    "evidence_date": "2018-12-21",
+    "source_id": "R02-MEDIA2-S001",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2018-12-21-GAMELOOK-ONSITE",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "★ 本证据虽为**同日**发布（2018-12-21），但来源为 Tier 3（行业媒体），按 R02-01 的实测教训（Tier 3 只能用于转述 Tier 1/2 事实）与 R02-03 审查的语义口径（Tier 3 不得作为 point-in-time 依据），本包**不**将其标为 `point_in_time_support` —— 即：本证据只用于**证明该表态确实发生**，不用于**证明当时投资者已据此定价**。",
+    "description": "★ 这是「政策转向日 = 2018-12-21」的直接来源之一，层级为**行业媒体（GameLook，Tier 3）的现场记录**，不是官方公告；另有中国证券报·中证网同日 Tier 2 报道交叉支持（R02-MEDIA2-E009）。★ 同日股价为「截至发稿」口径，非收盘价，本包**未**将其作为行情证据使用（行情一律以官方指数口径为准）。★ 该表态属**监管机构官方表态**（Tier 1 性质的事实），GameLook 属**转述**；但转述方层级为 Tier 3，故该条仍不得作 point-in-time 依据。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E002",
+    "claim": "中国青年网于 2018-12-21 发布的《中宣部出版局副局长冯士新：共创中国网络游戏产业美好未来》讲话**全文**中，**不包含**任何关于「版号已完成审核 / 正在核发版号」的表述。",
+    "evidence_role": "context",
+    "evidence_type": "官方媒体发布的讲话文本",
+    "event_date": "2018-12-21",
+    "evidence_date": "2018-12-21",
+    "source_id": "R02-MEDIA2-S002",
+    "confidence": "high",
+    "independence_group": "IG-MEDIA-2018-12-21-YOUTH-FULLTEXT",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "本证据只用于证明「官方发布文本与现场报道**口径不一致**」这一事实，**不**用于证明版号恢复是否发生。",
+    "description": "★★ 这是 R02-03 缺失项②所要求的「可用口径说明」的核心证据。本包实测：中国青年网（中央重点新闻网站，Tier 2）发布的致辞全文含「第一，更好地担负文化使命」「第二，更好地履行社会责任」「第三，加快产业转型升级」「第四，推动优秀游戏海外传播」四节，**全文无版号相关段落**；行业媒体 GameLook 同日另发的《中宣部出版局副局长冯士新 2018 年游戏产业年会致辞（全文）》（R02-MEDIA2-S014）亦无该段。→ 结论：**政策转向这一关键节点有多家同期媒体报道（GameLook Tier 3、中国证券报·中证网 Tier 2），但没有官方发布文本口径**。本包**不**假装存在官方公告。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E003",
+    "claim": "2018-12-29 晚间，原国家新闻出版广电总局网站发布「2018 年 12 月份国产网络游戏审批信息」，共 80 款游戏获得版号（审批日期为 2018-12-19），其中 67 款移动游戏、6 款客户端游戏、6 款网页游戏、1 款 PS4 游戏；腾讯、网易均不在列。",
+    "evidence_role": "supporting",
+    "evidence_type": "监管机构名单公布（经财经媒体转述）",
+    "event_date": "2018-12-29",
+    "evidence_date": "2018-12-29",
+    "source_id": "R02-MEDIA2-S003",
+    "confidence": "high",
+    "independence_group": "IG-MEDIA-2018-12-29-FIRST-BATCH",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "★ 本证据为同期报道，但来源为 Tier 3（财经媒体），按 R02-01 的实测教训与 R02-03 审查的语义口径，本包**不**将其标为 `point_in_time_support` —— 只用于证明首批 80 款版号确实公布，不用于证明当时投资者已据此定价。",
+    "description": "★ 该条是「版号恢复」的**结果验证**（替代缺失的官方公告口径），也是本候选 start 的备选日（2018-12-29）。★ 局限：原总局官网页面在 2018 年机构改革后已下线，本包**未取得**可引用的一手链接；来源为第一财经（Tier 3）转述，另有澎湃新闻独立转述（R02-MEDIA2-S004，同批次 80 款）。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E004",
+    "claim": "2019-01-09 公布 2019 年首批游戏版号共 84 款，距首批 80 款仅 10 天；同期券商观点称游戏板块「政策底」的特征较为明显、板块低估值下政策边际改善带来板块估值修复的逻辑将继续演绎。",
+    "evidence_role": "supporting",
+    "evidence_type": "监管机构名单公布 + 券商观点（经财经媒体转述）",
+    "event_date": "2019-01-09",
+    "evidence_date": "2019-01-09",
+    "source_id": "R02-MEDIA2-S009",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2019-01-09-SECOND-BATCH",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "★ 本证据为同期报道，但来源为 Tier 3（财经媒体），按 R02-01 的实测教训与 R02-03 审查的语义口径，本包**不**将其标为 `point_in_time_support`。★ 其中「申万宏源认为游戏板块『政策底』特征明显」为**券商观点**的二手转述，连 historical_fact_support 意义上的「事实」也仅限「该观点在 2019-01-09 被公开发表」这一层。",
+    "description": "★ 该条同时提供两个东西：(a) 版号发放**节奏加快**的事实（10 天两批）；(b) 当时卖方已形成「政策底 → 估值修复」的叙事 —— 后者属**观点**，本包按观点记录，不当作事实。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E005",
+    "claim": "中证传媒指数（399971）2019 年内最低收盘 1072.63（2019-01-31）、最高收盘 1569.91（2019-03-12）；2018-12-21 收 1121.99、2019-08-09 收 1116.74。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数日行情（官方指数机构一手口径）",
+    "event_date": "2019-03-12",
+    "evidence_date": "2026-10-11",
+    "source_id": "R02-MEDIA2-S005",
+    "confidence": "high",
+    "independence_group": "IG-IDX-CSI-399971-MEDIA",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "用于界定修复段的 start / peak / end，不用于证明「当时已知」。数值由 2026-10-11 回溯取得，未另取当日快照交叉验证。",
+    "description": "★ 关键事实：**2018-12-21（政策转向日）不是低点** —— 指数在其后仍跌至 2019-01-31 的 1072.63（-4.40%）。本包如实报告该事实，未为迁就「政策转向当起点」而隐去。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E006",
+    "claim": "中证动漫游戏指数（930901）2019 年内最高收盘 2138.41（2019-03-12）、最低收盘 1471.71（2019-08-09）；2019-01-31 收 1500.90 —— 即 2019-08-09 的收盘**低于**修复段起点。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数日行情（官方指数机构一手口径）",
+    "event_date": "2019-08-09",
+    "evidence_date": "2026-10-11",
+    "source_id": "R02-MEDIA2-S006",
+    "confidence": "high",
+    "independence_group": "IG-IDX-CSI-930901-GAME",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "用于界定 end（游戏口径：绝对涨幅全部回吐），不用于证明「当时已知」。数值由 2026-10-11 回溯取得。",
+    "description": "★ 与 R02-MEDIA2-E005 构成双口径：游戏口径在 2019-08-09 创新低（1471.71 < 起点 1500.90），传媒口径未创新低（2019-08-09 收 1116.74 > 起点 1072.63）→ end 取哪个口径结论不同，本包保留双方。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E007",
+    "claim": "2019-01-31 至 2019-03-12，沪深300 自 3201.63 升至 3755.35（+17.29%），上证综指自 2584.57 升至 3060.31（+18.41%）；同期中证传媒指数 +46.36%、中证动漫游戏指数 +42.48%。",
+    "evidence_role": "supporting",
+    "evidence_type": "指数日行情（官方指数机构一手口径）+ 本包计算",
+    "event_date": "2019-03-12",
+    "evidence_date": "2026-10-11",
+    "source_id": "R02-MEDIA2-S007",
+    "confidence": "high",
+    "independence_group": "IG-IDX-CSI-000300-BENCHMARK",
+    "same_origin": false,
+    "retelling": false,
+    "primary_source": true,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "★ 本证据是**本包的计算结论**（指数减法），不是来源中的现成陈述。计算使用 R02-MEDIA2-S005 / S006 / S007 / S008 四条日线，`source_id` 仅登记主来源（沪深300）。用途是做 Beta 对照，**不代替**因子分离。",
+    "description": "★ 该条给出超额收益（传媒 +29.07pp / 游戏 +25.19pp，均相对沪深300），用于说明本段不是纯 Beta；★ 但本包**未做**因子回归或 Beta 分离，仅做指数减法，该局限已写入 candidates.json 的 why_not ③。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E008",
+    "claim": "2019-01-31，新浪财经报道：按当时已公布的传媒企业业绩预告，共有 21 家传媒企业 2018 年业绩预计大幅亏损，亏损总额超过 367 亿元。",
+    "evidence_role": "context",
+    "evidence_type": "财经媒体报道（业绩预告汇总）",
+    "event_date": "2019-01-31",
+    "evidence_date": "2019-01-31",
+    "source_id": "R02-MEDIA2-S013",
+    "confidence": "medium",
+    "independence_group": "IG-MEDIA-2019-01-31-MEDIA-LOSSES",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support"
+    ],
+    "point_in_time_note": "★ 本证据为同期报道，但来源为 Tier 3（财经媒体），按 R02-01 的实测教训与 R02-03 审查的语义口径，本包**不**将其标为 `point_in_time_support`。",
+    "description": "★ 该条解释修复段起点（2019-01-31）的**背景**：行情低点当日，板块正集中披露 2018 年业绩预告巨亏（商誉减值）。★ 局限：亏损总额为媒体汇总口径，非公司公告一手数据；本包**未**取得各公司公告原文。"
+  },
+  {
+    "evidence_id": "R02-MEDIA2-E009",
+    "claim": "2018-12-21，中国证券报·中证网报道，中宣部出版局副局长冯士新在当日上午的 2018 中国游戏产业年会上表示「首批送审游戏已经完成审核，正在抓紧核发版号」；报道同时记录游戏公司代表称监管部门已就版号恢复给出明确态度和进度。",
+    "evidence_role": "supporting",
+    "evidence_type": "权威证券媒体同期现场报道",
+    "event_date": "2018-12-21",
+    "evidence_date": "2018-12-21",
+    "source_id": "R02-MEDIA2-S015",
+    "confidence": "high",
+    "independence_group": "IG-MEDIA-2018-12-21-CSJ-RESPONSES",
+    "same_origin": false,
+    "retelling": true,
+    "primary_source": false,
+    "temporal_relation": "contemporaneous",
+    "support_kind": [
+      "historical_fact_support",
+      "point_in_time_support"
+    ],
+    "point_in_time_note": "来源为 Tier 2 权威证券媒体的同期报道，可用于证明该表态在 2018-12-21 已被媒体公开报道、并证明当日企业代表已作出回应；仍非官方公告原文，不单独证明官方政策文件存在。",
+    "description": "★ 该来源与 GameLook（R02-MEDIA2-S001）为不同媒体、不同报道，形成独立交叉支持；报道的原话与 GameLook 大意一致。★ 当日媒体同时记录上市公司董秘对版号恢复的回应，表明市场参与者当日已获知此表态；但不据此推断整个传媒指数已在当天启动（指数数据显示政策转向后仍下跌至 2019-01-31）。"
+  }
+]
