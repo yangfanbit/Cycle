@@ -313,6 +313,43 @@ def preflight():
     else:
         rep(OK, "C9", "年度综述覆盖完整 · id 年份 == campaign_year（全部 campaign）")
 
+    # ---- 坑 8（C10）：**行情依赖层**是否覆盖全部 campaign ----
+    #   ★★ 2026-10-12 实测踩到：`early_observation_v0_2.json` 与
+    #      `kline_confirmation_v0_2.json` **都只覆盖 53/59** —— 缺的正是
+    #      R02-03 的 4 个 + R02-04 的 2 个。而**两个刷新入口都不覆盖这两层**
+    #      （`refresh_downstream.py` 与 `monthly_refresh.py` 中 "early_observation" 均 0 次）
+    #      → 它们**完全靠手工、且无任何自检**。
+    #   根因：这两个产物依赖 **`market_daily` 行情数据**，而新对象的标的
+    #      在 `market_series` 中**从未注册**（实测 14 个标的 0 个在表内）。
+    #   → 判据：覆盖数必须等于 DB campaign 数；不等则 WARN（**不静默**）。
+    _conn2 = _sq.connect(DB)
+    _camp_set = {r[0] for r in _conn2.execute("SELECT campaign_id FROM campaigns")}
+    for _art, _fn in (("early_observation", "early_observation_v0_2.json"),
+                      ("kline_confirmation", "kline_confirmation_v0_2.json")):
+        _p = os.path.join(REPORTS, _fn)
+        if not os.path.isfile(_p):
+            rep(WARN, "C10", "%s 产物不存在：%s" % (_art, _fn))
+            continue
+        _doc = load(_p)
+        _by = None
+        for _k in ("by_campaign", "by_cycle", "objects"):
+            if isinstance(_doc.get(_k), dict):
+                _by = _doc[_k]
+                break
+        if _by is None:
+            rep(WARN, "C10", "%s 找不到按对象索引的字段（by_campaign/by_cycle）" % _art)
+            continue
+        _miss = sorted(_camp_set - set(_by))
+        if _miss:
+            rep(WARN, "C10", "**%s 未覆盖全部 campaign** —— %d / %d，缺 %d 个：\n"
+                             "         %s\n"
+                             "         → 该层依赖 `market_daily` 行情；新对象的标的可能未注册/"
+                             "未抓取。**不报错，但用户看不到这些对象的前瞻观察。**"
+                % (_art, len(set(_by) & _camp_set), len(_camp_set), len(_miss), _miss[:8]))
+        else:
+            rep(OK, "C10", "%s 覆盖全部 %d 个 campaign" % (_art, len(_camp_set)))
+    _conn2.close()
+
     # ---- 一致性基线（供跑后比对）----
     print()
     rep(OK, "C0", "一致性基线：对象数 = **%d**（= export.campaigns + export.research_candidates "

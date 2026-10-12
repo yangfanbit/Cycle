@@ -1,51 +1,151 @@
 {
- "generated_at": "2026-10-08T22:03:01",
+ "generated_at": "2026-10-13T00:02:14",
  "not_fetchable": {
   "CNIMIL": "国证军工指数 —— 无 ticker，且**未被任何 campaign 引用**（0 引用），本轮不取。",
   "SWMIL": "申万国防军工指数（801740.SI）—— 腾讯 GTIMG 不提供申万指数（实测 sz801740 返回空）。本脚本**不代以中证军工/军工 ETF 等替代指数**：那会偷换口径。留待研究侧决定代理口径。"
  },
- "planned": 4,
+ "planned": 14,
  "results": {
-  "LANCY": {
-   "qfq_rows": 1214,
+  "BAIKEBIO": {
+   "qfq_rows": 310,
    "range": [
-    "2018-01-01",
-    "2022-12-31"
+    "2022-01-01",
+    "2023-04-15"
    ],
-   "raw_rows": 1214,
+   "raw_rows": 310,
    "status": "OK",
-   "symbol": "sz002612"
+   "symbol": "sh688276"
+  },
+  "CHINASHENHUA": {
+   "qfq_rows": 1140,
+   "range": [
+    "2020-01-01",
+    "2024-09-11"
+   ],
+   "raw_rows": 1140,
+   "status": "OK",
+   "symbol": "sh601088"
+  },
+  "GIANTNET": {
+   "qfq_rows": 600,
+   "range": [
+    "2017-01-01",
+    "2019-08-09"
+   ],
+   "raw_rows": 600,
+   "status": "OK",
+   "symbol": "sz002558"
+  },
+  "GUANGXIAN": {
+   "qfq_rows": 381,
+   "range": [
+    "2022-01-01",
+    "2023-07-31"
+   ],
+   "raw_rows": 381,
+   "status": "OK",
+   "symbol": "sz300251"
+  },
+  "HUALANVAX": {
+   "qfq_rows": 282,
+   "range": [
+    "2022-01-01",
+    "2023-04-15"
+   ],
+   "raw_rows": 282,
+   "status": "OK",
+   "symbol": "sz301207"
+  },
+  "JINDIKE": {
+   "qfq_rows": 310,
+   "range": [
+    "2022-01-01",
+    "2023-04-15"
+   ],
+   "raw_rows": 310,
+   "status": "OK",
+   "symbol": "sh688670"
+  },
+  "JINGNENG": {
+   "qfq_rows": 1455,
+   "range": [
+    "2020-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1455,
+   "status": "OK",
+   "symbol": "sh600578"
   },
   "PIOTECH": {
    "reason": "合法 JSON + 空序列",
    "status": "UNAVAILABLE",
    "symbol": "sh688072"
   },
-  "SH000300": {
-   "qfq_rows": 732,
+  "SANQI": {
+   "qfq_rows": 1587,
    "range": [
-    "2015-01-01",
-    "2017-12-31"
+    "2017-01-01",
+    "2023-07-31"
    ],
-   "raw_rows": 732,
+   "raw_rows": 1587,
    "status": "OK",
-   "symbol": "sh000300"
+   "symbol": "sz002555"
   },
-  "YANJIN": {
-   "qfq_rows": 969,
+  "SANXIAENERGY": {
+   "qfq_rows": 1108,
    "range": [
-    "2022-01-01",
+    "2020-01-01",
     "2025-12-31"
    ],
-   "raw_rows": 969,
+   "raw_rows": 1108,
    "status": "OK",
-   "symbol": "sz002847"
+   "symbol": "sh600905"
+  },
+  "SHAANXICOAL": {
+   "qfq_rows": 1140,
+   "range": [
+    "2020-01-01",
+    "2024-09-11"
+   ],
+   "raw_rows": 1140,
+   "status": "OK",
+   "symbol": "sh601225"
+  },
+  "YANKUANG": {
+   "qfq_rows": 463,
+   "range": [
+    "2020-01-01",
+    "2021-11-30"
+   ],
+   "raw_rows": 463,
+   "status": "OK",
+   "symbol": "sh600188"
+  },
+  "YINXING": {
+   "qfq_rows": 1449,
+   "range": [
+    "2020-01-01",
+    "2025-12-31"
+   ],
+   "raw_rows": 1449,
+   "status": "OK",
+   "symbol": "sz000862"
+  },
+  "ZWONLINE": {
+   "qfq_rows": 381,
+   "range": [
+    "2022-01-01",
+    "2023-07-31"
+   ],
+   "raw_rows": 381,
+   "status": "OK",
+   "symbol": "sz300364"
   }
  },
  "stats": {
-  "confirmed_empty": 0,
+  "confirmed_empty": 2,
   "invalid_symbol": 0,
-  "ok": 3,
+  "ok": 13,
   "requests": 0,
   "skipped_known_gap": 6,
   "unavailable": 1
