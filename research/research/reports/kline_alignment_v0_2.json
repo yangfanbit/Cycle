@@ -21,14 +21,14 @@
   "no_score": "本 artifact **不含** score / ranking / probability；只有计数事实"
  },
  "summary": {
-  "SAME": 21,
+  "SAME": 22,
   "NEAR": 9,
   "DIVERGENT": 24,
   "UNKNOWN": 5,
-  "NO_COVERAGE": 0
+  "NO_COVERAGE": 2
  },
  "summary_if_adj_close_basis": {
-  "SAME": 18,
+  "SAME": 19,
   "NEAR": 10,
   "DIVERGENT": 26,
   "UNKNOWN": 5
@@ -209,6 +209,47 @@
     }
    ],
    "median_peak_date": "2017-06-30",
+   "median_peak_verdict": "SAME"
+  },
+  "C-2017-COMM-5G-SPECTRUM": {
+   "campaign_id": "C-2017-COMM-5G-SPECTRUM",
+   "campaign_year": 2017,
+   "status": "OK",
+   "recorded": {
+    "start": "2017-08-31",
+    "peak": "2017-11-21",
+    "end": "2018-02-09"
+   },
+   "coverage": {
+    "securities": 2,
+    "with_data": 1
+   },
+   "price_basis": "PRIMARY=raw high（盘中最高）· AUX=raw close / adjusted close",
+   "aggregation": "PRIMARY=per_security · AUX=median_peak_date（★ 不用等权组合作主口径）",
+   "per_security": [
+    {
+     "security_id": "WUHANFANGU",
+     "status": "NO_DATA",
+     "rows": 0
+    },
+    {
+     "security_id": "ZTE",
+     "status": "OK",
+     "rows": 169,
+     "first_date": "2017-07-03",
+     "last_date": "2018-03-09",
+     "peak_date": "2017-11-22",
+     "peak_high": 41.39,
+     "peak_ret_pct": 73.3,
+     "final_ret_pct": 40.9,
+     "peak_date_raw_close": "2017-11-22",
+     "peak_date_adj_close": "2017-11-22",
+     "basis_note": "主口径 = 原始价 high（盘中最高）；辅助记录原始 close 峰与前复权 close 峰。★ 前复权会按后续分红缩放历史价，峰值日可能移位。",
+     "peak_verdict": "SAME",
+     "peak_verdict_adj_close": "SAME"
+    }
+   ],
+   "median_peak_date": "2017-11-22",
    "median_peak_verdict": "SAME"
   },
   "C-2018-CONS-HOG-AFRICAN": {
@@ -2318,6 +2359,17 @@
    "median_peak_date": "2022-07-12",
    "median_peak_verdict": "DIVERGENT"
   },
+  "C-2021-MEDIA-METAVERSE": {
+   "campaign_id": "C-2021-MEDIA-METAVERSE",
+   "status": "NO_DATA",
+   "per_security": [
+    {
+     "security_id": "ZHONGQINGBAO",
+     "status": "NO_DATA",
+     "rows": 0
+    }
+   ]
+  },
   "C-2021-NEV": {
    "campaign_id": "C-2021-NEV",
    "campaign_year": 2021,
@@ -3849,6 +3901,27 @@
    ],
    "median_peak_date": "2023-10-16",
    "median_peak_verdict": "SAME"
+  },
+  "C-2023-POWEROP-THERMAL": {
+   "campaign_id": "C-2023-POWEROP-THERMAL",
+   "status": "NO_DATA",
+   "per_security": [
+    {
+     "security_id": "HUADIAN",
+     "status": "NO_DATA",
+     "rows": 0
+    },
+    {
+     "security_id": "JIANTONENERGY",
+     "status": "NO_DATA",
+     "rows": 0
+    },
+    {
+     "security_id": "TIANFUENERGY",
+     "status": "NO_DATA",
+     "rows": 0
+    }
+   ]
   },
   "C-2023-RES-COAL-DIVIDEND": {
    "campaign_id": "C-2023-RES-COAL-DIVIDEND",

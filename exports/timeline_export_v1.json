@@ -1,8 +1,8 @@
 {
   "contract": "timeline_export",
   "timeline_export_version": "1.2",
-  "generated_at": "2026-10-12T22:55:45",
-  "source_commit": "b7121ecd0d994a607948505e062300f1c1510c1b",
+  "generated_at": "2026-10-13T21:39:29",
+  "source_commit": "ceb42639757d54c02fea7bfc2adab81fa0329489",
   "project": "Cycle-Research",
   "taxonomy": [
     {
@@ -298,6 +298,12 @@
       "name": "风电设备",
       "theme_type": "concept",
       "parent_theme_id": "TH-POWER"
+    },
+    {
+      "theme_id": "TH-POWER-OP-THERMAL",
+      "name": "火电 / 煤电",
+      "theme_type": "concept",
+      "parent_theme_id": "TH-POWER-OP"
     },
     {
       "theme_id": "TH-POWER-OP-GREEN",
@@ -3428,6 +3434,82 @@
       "macro_theme_root_status": "RESOLVED"
     },
     {
+      "campaign_id": "C-2017-COMM-5G-SPECTRUM",
+      "rule_id": "rule_infocomm",
+      "year": 2017,
+      "start_date": "2017-08-31",
+      "peak_date": "2017-11-21",
+      "end_date": "2018-02-09",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "theme_campaign",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "信息通信",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "5G网络建设/通信设备",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "ZTE",
+        "WUHANFANGU"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": null,
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2017-08-31",
+          "end": "2017-11-21",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2017-11-21",
+          "end": "2017-11-21",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2017-11-22",
+          "end": "2018-02-09",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "5G 国际标准制定进入第一版基础版本的关键期，市场形成「5G 建设周期临近」的预期",
+          "国内 5G 技术研发试验推进"
+        ],
+        "accelerator": [
+          "2017-09 出现 5G 概念股涨停潮（中通国脉、武汉凡谷等）",
+          "2017-11-15 工信部发布 5G 系统在 3000-5000MHz 频段内的频率使用规划 —— 中国成为国际上率先发布 5G 中频段频率使用规划的国家"
+        ],
+        "turning": [
+          "★ 本包**未取得**该段转折的事件性一手证据；指数自 2017-11-21 后回落，同期大盘亦自 2017-11-22 见顶回落，二者**同向**，故无法把转折单独归因于 5G 主题自身。"
+        ],
+        "ending": [
+          "2018-01 至 2018-02 通信板块跌幅显著大于大盘（931079 -27.14% vs 沪深300 -8.94%）"
+        ]
+      },
+      "macro_theme_root": "信息通信",
+      "macro_theme_root_status": "RESOLVED"
+    },
+    {
       "campaign_id": "C-2019-COMM-5G",
       "rule_id": "rule_infocomm",
       "year": 2019,
@@ -3748,6 +3830,79 @@
         "ending": [
           "2019-08-09 中证动漫游戏指数收 1471.71，低于修复段起点 2019-01-31 的 1500.90 —— 绝对口径涨幅全部回吐",
           "中证传媒指数同期未创新低（2019-08-09 收 1116.74，仍高于 2019-01-31 的 1072.63）—— 两个口径的回吐程度不同"
+        ]
+      },
+      "macro_theme_root": "文化传媒",
+      "macro_theme_root_status": "RESOLVED"
+    },
+    {
+      "campaign_id": "C-2021-MEDIA-METAVERSE",
+      "rule_id": "rule_media",
+      "year": 2021,
+      "start_date": "2021-09-06",
+      "peak_date": "2022-01-05",
+      "end_date": "2022-01-28",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "event_driven",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "文化传媒",
+          "theme_type": "industry",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "ZHONGQINGBAO"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": null,
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2021-09-06",
+          "end": "2022-01-05",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2022-01-05",
+          "end": "2022-01-05",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "RETRACEMENT",
+          "start": "2022-01-06",
+          "end": "2022-01-28",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "海外映射：2021-03 Roblox 于纽交所上市；2021-05 Facebook 表示 5 年内转型元宇宙公司；2021-08 底字节跳动收购 VR 创业公司 Pico",
+          "国内点火：2021-09-06 中青宝公告元宇宙游戏《酿酒大师》"
+        ],
+        "accelerator": [
+          "2021-09-13 中青宝五个交易日上涨 116.7%",
+          "2021-10-28 Facebook 正式更名 Meta（★ 本包**未取得**该事实的一手来源，故未作为 evidence 提交，仅在此列为研究线索，见 known_gaps）",
+          "传媒板块 Q3-Q4 情绪面升温（浙商证券）"
+        ],
+        "turning": [
+          "2022 年 1 月业绩预告期担忧",
+          "国内板块对 NFT 等热炒业务暂无实际布局",
+          "海外中概互联网股回调传导"
+        ],
+        "ending": [
+          "2022-01 元宇宙概念龙头带头回调，930901 自峰值 -21.49%"
         ]
       },
       "macro_theme_root": "文化传媒",
@@ -4395,6 +4550,84 @@
         ],
         "ending": [
           "★ 未界定"
+        ]
+      },
+      "macro_theme_root": "电力（运营端）",
+      "macro_theme_root_status": "RESOLVED"
+    },
+    {
+      "campaign_id": "C-2023-POWEROP-THERMAL",
+      "rule_id": "rule_power_operation",
+      "year": 2023,
+      "start_date": "2023-01-03",
+      "peak_date": "2023-05-29",
+      "end_date": "2023-10-23",
+      "status": "provisional",
+      "confidence": "medium",
+      "classification": "mixed",
+      "strength": "medium",
+      "result": "positive",
+      "themes": [
+        {
+          "name": "电力（运营端）",
+          "theme_type": "industry",
+          "role": "related"
+        },
+        {
+          "name": "火电 / 煤电",
+          "theme_type": "concept",
+          "role": "main"
+        }
+      ],
+      "event_ids": [],
+      "security_ids": [
+        "TIANFUENERGY",
+        "HUADIAN",
+        "JIANTONENERGY"
+      ],
+      "research_status": "PROVISIONAL",
+      "theme_cycle_id": null,
+      "promotion_status": null,
+      "first_signal_date": null,
+      "broad_confirmation_date": null,
+      "first_decline_date": null,
+      "conflicts": [],
+      "notes": "主题可识别 + 有行情/媒体证据 + ≥1 可靠来源 + 主要日期有依据 + 无跨时间因果错误（多来源已交叉比对）",
+      "lifecycle": [
+        {
+          "stage": "MAIN_RISE",
+          "start": "2023-01-03",
+          "end": "2023-05-29",
+          "precision": "PHASE_WINDOW"
+        },
+        {
+          "stage": "PEAK",
+          "start": "2023-05-29",
+          "end": "2023-05-29",
+          "precision": "EXACT_DATE"
+        },
+        {
+          "stage": "DECLINING",
+          "start": "2023-05-30",
+          "end": "2023-10-23",
+          "precision": "PHASE_WINDOW"
+        }
+      ],
+      "drivers": {
+        "start": [
+          "燃料成本下行：港口动力煤价格自 2022 年高位回落，2023 春节后加速",
+          "用电需求提升（2023-04 电力、热力、燃气及水生产和供应业利润同比 +36.5%）"
+        ],
+        "accelerator": [
+          "迎峰度夏预期：2023 年高温提前（华北、西北、华南 5 月上旬即出现 30℃ 以上），市场提前炒作用电高峰",
+          "新一轮电改预期升温（现货市场、容量市场、辅助服务市场；第一批 8 个试点省份转入长周期结算试运行）",
+          "板块估值安全边际 + 公募基金持仓上升"
+        ],
+        "turning": [
+          "★ 本包未取得该段转折的一手事件证据；2023-05-29 后回落，部分与「预期兑现」有关（本包未取得该归因的来源，故不写入）。"
+        ],
+        "ending": [
+          "000995 至 2023-10-23 较峰值 -14.44%"
         ]
       },
       "macro_theme_root": "电力（运营端）",
@@ -8795,6 +9028,24 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "ZTE",
+      "name": "中兴通讯",
+      "ticker": "000063",
+      "exchange": "SZ",
+      "role": "leader",
+      "campaign_id": "C-2017-COMM-5G-SPECTRUM",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "WUHANFANGU",
+      "name": "武汉凡谷",
+      "ticker": null,
+      "exchange": null,
+      "role": "representative",
+      "campaign_id": "C-2017-COMM-5G-SPECTRUM",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "MUYUAN",
       "name": "牧原股份",
       "ticker": "002714",
@@ -9695,6 +9946,15 @@
       "research_candidate_id": null
     },
     {
+      "security_id": "ZHONGQINGBAO",
+      "name": "中青宝",
+      "ticker": null,
+      "exchange": null,
+      "role": "leader",
+      "campaign_id": "C-2021-MEDIA-METAVERSE",
+      "research_candidate_id": null
+    },
+    {
       "security_id": "BIDI",
       "name": "比亚迪",
       "ticker": "002594",
@@ -10340,6 +10600,33 @@
       "exchange": "SZ",
       "role": "representative",
       "campaign_id": "C-2023-PHARMA-GLP1",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "TIANFUENERGY",
+      "name": "天富能源",
+      "ticker": null,
+      "exchange": null,
+      "role": "follow",
+      "campaign_id": "C-2023-POWEROP-THERMAL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "HUADIAN",
+      "name": "华电国际",
+      "ticker": null,
+      "exchange": null,
+      "role": "leader",
+      "campaign_id": "C-2023-POWEROP-THERMAL",
+      "research_candidate_id": null
+    },
+    {
+      "security_id": "JIANTONENERGY",
+      "name": "建投能源",
+      "ticker": null,
+      "exchange": null,
+      "role": "representative",
+      "campaign_id": "C-2023-POWEROP-THERMAL",
       "research_candidate_id": null
     },
     {

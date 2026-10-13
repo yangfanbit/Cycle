@@ -71,7 +71,7 @@
   "COMPANY_EVENT": 1,
   "SECTOR_MOVE": 7,
   "INDUSTRY_INDICATOR": 3,
-  "UNSPECIFIED": 8
+  "UNSPECIFIED": 11
  },
  "by_campaign": {
   "C-2016-CONS-BAIJIU-UPGRADE": {
@@ -149,6 +149,79 @@
    },
    "coverage": {
     "securities": 1,
+    "with_data": 1
+   }
+  },
+  "C-2017-COMM-5G-SPECTRUM": {
+   "campaign_id": "C-2017-COMM-5G-SPECTRUM",
+   "recorded": {
+    "start": "2017-08-31",
+    "peak": "2017-11-21",
+    "end": "2018-02-09"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "未在本表中声明",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2017-11-15",
+     "type": "官方政策文件（一手）",
+     "excerpt": "该段峰值前 6 日的政策催化，Tier 1 一手。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2017-11-21",
+     "type": "指数日行情（一手指数口径）",
+     "excerpt": "本段上行幅度的一手口径。审查方可按同一 URL 复算。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2017-11-21",
+     "type": "指数日行情（一手指数口径 · 基准对照）",
+     "excerpt": "基准对照：同期全市场 +12.91%，5G 主题（+24.88%，E001）相对全市场超额约 +11.97pp。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2017-11-21",
+     "type": "指数日行情（一手指数口径 · 基准对照）",
+     "excerpt": "★ 基准对照显示 2017 年大盘本身上行明显（沪深300 全年 +20.6%），故本段超额收益**含 Beta 成分**，本包不声称其为纯 Alpha。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2017-11-21",
+     "type": "媒体同期报道（转述个股表现）",
+     "excerpt": "峰值日市场状态佐证。★ 该报道为港股口径，与 A 股代码不可直接对应。 ｜ ★ support_kind=historical_fact_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2017-11-22",
+     "type": "指数日行情（一手指数口径）",
+     "excerpt": "以「全指通信服务」这一更宽口径交叉验证 931079 的上行；两指数峰值相邻一日（11-21 / 11-22），已记入 conflicts。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [
+    {
+     "security_id": "ZTE",
+     "peak_date": "2017-11-22",
+     "delta_days": 1
+    }
+   ],
+   "nearest_security": {
+    "security_id": "ZTE",
+    "peak_date": "2017-11-22",
+    "delta_days": 1
+   },
+   "coverage": {
+    "securities": 2,
     "with_data": 1
    }
   },
@@ -1317,6 +1390,62 @@
     "with_data": 3
    }
   },
+  "C-2021-MEDIA-METAVERSE": {
+   "campaign_id": "C-2021-MEDIA-METAVERSE",
+   "recorded": {
+    "start": "2021-09-06",
+    "peak": "2022-01-05",
+    "end": "2022-01-28"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "未在本表中声明",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2022-01-05",
+     "type": "指数日行情（一手指数口径）",
+     "excerpt": "该段幅度与峰谷的一手口径。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2022-01-05",
+     "type": "指数日行情（一手指数口径）",
+     "excerpt": "以宽口径「中证传媒」交叉验证；该指数峰值同为 2022-01-05。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2022-01-05",
+     "type": "指数日行情（一手指数口径）",
+     "excerpt": "以「虚拟现实」这一元宇宙硬件侧口径交叉验证。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2022-01-05",
+     "type": "指数日行情（一手指数口径 · 基准对照）",
+     "excerpt": "基准对照：同期沪深300 仅 +2.07%，动漫游戏主题超额约 +41.44pp —— 该段相对强度**显著**。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2022-01-12",
+     "type": "卖方研究报告",
+     "excerpt": "界定该段降温起点与原因。 ｜ ★ support_kind=historical_fact_support",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": null,
+   "coverage": {
+    "securities": null,
+    "with_data": null
+   }
+  },
   "C-2021-NEV": {
    "campaign_id": "C-2021-NEV",
    "recorded": {
@@ -2237,6 +2366,69 @@
    "coverage": {
     "securities": 3,
     "with_data": 3
+   }
+  },
+  "C-2023-POWEROP-THERMAL": {
+   "campaign_id": "C-2023-POWEROP-THERMAL",
+   "recorded": {
+    "start": "2023-01-03",
+    "peak": "2023-05-29",
+    "end": "2023-10-23"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis_note": "未在本表中声明",
+   "referent_evidence": [
+    {
+     "kind": "evidence",
+     "date": "2023-05-29",
+     "type": "指数日行情（一手指数口径）",
+     "excerpt": "该段幅度与峰值的一手口径。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-05-29",
+     "type": "指数日行情（一手指数口径 · 基准对照）",
+     "excerpt": "基准对照：同期沪深300 -1.39%，公用事业超额约 +12.32pp。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-05-29",
+     "type": "媒体同期报道（转述板块与个股表现）",
+     "excerpt": "峰值日的市场反应；该报道同时给出三因素归因（用电需求、估值安全边际、煤价下跌）。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-05-29",
+     "type": "媒体同期报道（转述煤价与板块指数）",
+     "excerpt": "成本侧驱动（煤价）的量化佐证。★ 板块指数口径未标明（「电力板块指数」），已在 conflicts 中记录口径不明。 ｜ ★ support_kind=historical_fact_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-05-31",
+     "type": "媒体同期报道（引用指数口径）",
+     "excerpt": "以「中证全指电力公用事业指数（H30199）」这一更纯的电力口径独立交叉验证 000995 的结论；★ 该指数与本包所用的 000995 同属中证指数有限公司发布，故本条为**媒体转述**（非一手复算）。 ｜ ★ support_kind=historical_fact_support",
+     "source_field": "evidences.description"
+    },
+    {
+     "kind": "evidence",
+     "date": "2023-06-02",
+     "type": "媒体观点（季节性主张）",
+     "excerpt": "★ 这是**来源的主张**，本包照录并显式标注为**待核验假设**，不作为已确认的季节性结论（任务 Prompt §二.1：不得为了凑出「集中」而挑选日期）。 ｜ ★ support_kind=historical_fact_support",
+     "source_field": "evidences.description"
+    }
+   ],
+   "referent_assigned_by": "Research Agent role（AI 离线判定，2026-10-08）",
+   "referent_review_status": "PROVISIONAL",
+   "securities_coincide": [],
+   "nearest_security": null,
+   "coverage": {
+    "securities": null,
+    "with_data": null
    }
   },
   "C-2023-RES-COAL-DIVIDEND": {

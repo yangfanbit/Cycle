@@ -29,7 +29,7 @@ import { SeasonalMap } from '../../../components/SeasonalMap/SeasonalMap';
  *   粒度只决定「这些窗口怎么分行」，**一个对象都不会凭空出现或消失**。
  *   任何让 `sub` 比 `macro` 多出对象的改动，都意味着在 Product 侧伪造了研究对象 —— 必须失败。
  *
- * ★★ 第二重要：`sub` 下**绝大多数行样本不足**（41 行里只有 2 行的窗口数 ≥ 3）。
+ * ★★ 第二重要：`sub` 下**绝大多数行样本不足**（46 行里只有 4 行的窗口数 ≥ 3）。
  *   集中标注的样本门槛（`MIN_WINDOWS_FOR_CONCENTRATION`）因此**不可因换粒度而放宽**。
  *
  * ★ 第三：粒度切换会**换掉行的 key**（大主题名 ≠ 主题材名），
@@ -47,10 +47,10 @@ const windowsOf = (rows: typeof macroAll) => rows.reduce((n, r) => n + r.windows
 
 describe('粒度 = 分组口径，不是新的研究对象', () => {
   it('★★★ 两种粒度的对象集合与窗口集合**完全一致**（一个都不多、一个都不少）', () => {
-    expect(objectsOf(macroAll)).toBe(86);
-    expect(objectsOf(subAll)).toBe(86);
-    expect(windowsOf(macroAll)).toBe(74);
-    expect(windowsOf(subAll)).toBe(74);
+    expect(objectsOf(macroAll)).toBe(89);
+    expect(objectsOf(subAll)).toBe(89);
+    expect(windowsOf(macroAll)).toBe(78);
+    expect(windowsOf(subAll)).toBe(78);
 
     // 更强：对象 id 集合逐个相等（不是只有计数相等）
     const ids = (rows: typeof macroAll) =>
@@ -60,9 +60,9 @@ describe('粒度 = 分组口径，不是新的研究对象', () => {
 
   it('★ 行数差异只来自「拆得更细」：sub 行数 > macro 行数，且都在「几十条」量级', () => {
     expect(macroAll.length).toBe(14);
-    expect(subAll.length).toBe(45);
+    expect(subAll.length).toBe(46);
     expect(macroMap.length).toBe(14);
-    expect(subMap.length).toBe(39);
+    expect(subMap.length).toBe(40);
     // 首页仍不是明细库：即便最细口径也远小于对象数
     expect(subMap.length).toBeLessThan(80);
   });
@@ -147,10 +147,14 @@ describe('粒度切换必须重置展开态（key 集合不互相包含）', () 
 });
 
 describe('★★ 样本门槛不因换粒度而放宽', () => {
-  it('sub 下只有 2 行的窗口数 ≥ 3；其余一律不做集中标注', () => {
+  it('sub 下只有 4 行的窗口数 ≥ 3；其余一律不做集中标注', () => {
     const eligible = subMap.filter((r) => seasonalityOf(r).windowCount >= MIN_WINDOWS_FOR_CONCENTRATION);
-    expect(eligible.length).toBe(2);
-    expect(eligible.map((r) => r.theme).sort()).toEqual(['半导体', '银行']);
+    expect(eligible.length).toBe(4);
+    // ★★ 2026-10-13（R02-05）：新增 **5G网络建设/通信设备**（3 个对象 → 窗口 ≥ 3）。
+    // ★★ 2026-10-13（R02-05）：新增 **5G网络建设/通信设备** 与 **文化传媒**（窗口数 ≥ 3）。
+    expect(eligible.map((r) => r.theme).sort()).toEqual(
+      ['5G网络建设/通信设备', '半导体', '文化传媒', '银行'].sort(),
+    );
   });
 
   it('★★ 不变量：窗口数 < 门槛 ⇒ 永远不 concentrated，且不给陈述', () => {
@@ -179,11 +183,15 @@ describe('★★ 样本门槛不因换粒度而放宽', () => {
     expect(semi.statement).toBeNull();
   });
 
-  it('★ macro 下达到判据的 2 行是汽车 / 金融（换粒度不影响既有结论）', () => {
-    // ★★ 2026-10-11（R02-03 入库后）由 3 行 → **2 行**：
+  it('★ macro 下达到判据的 3 行是汽车 / 金融 / 信息通信（换粒度不影响既有结论）', () => {
+    // ★★ 2026-10-11（R02-03 入库后）由 3 行 → 2 行：
     // `资源` 因新增煤炭窗口（2021-08~10）落在集中带（03-02~05-02）外 → 3/5 < 2/3，不再达标。
+    // ★★ 2026-10-13（R02-05 入库后）2 行 → **3 行**：新增 **信息通信** ——
+    //    T1 补入 `C-2017-COMM-5G-SPECTRUM` 后，该主题由 2 个对象增至 **3 个**，
+    //    **跨过样本门槛**（MIN_WINDOWS_FOR_CONCENTRATION = 3）且年内窗口集中。
+    //    ★ 这正是「让季节性可评估」这一任务目标的直接兑现。
     const conc = macroMap.filter((r) => seasonalityOf(r).concentrated).map((r) => r.theme);
-    expect(conc.sort()).toEqual(['汽车', '金融']);
+    expect(conc.sort()).toEqual(['汽车', '金融', '信息通信'].sort());
   });
 });
 
@@ -272,9 +280,9 @@ describe('SeasonalMap · 粒度切换渲染', () => {
     expect(macroHtml).not.toContain('样本不足时一律不做集中标注');
   });
 
-  it('★ 集中标注随粒度重算：macro 3 个、sub 1 个', () => {
-    expect((macroHtml.match(/sm-seasonal-flag/g) ?? []).length).toBe(2);
-    expect((subHtml.match(/sm-seasonal-flag/g) ?? []).length).toBe(1);
+  it('★ 集中标注随粒度重算：macro 3 个、sub 2 个', () => {
+    expect((macroHtml.match(/sm-seasonal-flag/g) ?? []).length).toBe(3);
+    expect((subHtml.match(/sm-seasonal-flag/g) ?? []).length).toBe(2);
     expect(subHtml).toContain('银行');
   });
 

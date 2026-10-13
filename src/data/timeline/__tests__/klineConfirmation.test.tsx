@@ -128,7 +128,7 @@ describe('klineConfirmation · 五状态判定（真实数据）', () => {
     expect(klineConfirmationOf('')).toBeNull();
   });
 
-  it('★ 汇总为**计数事实**：35 已证实 / 3 未证实 / 16 不适用 / 5 未标注峰值 / 0 无数据', () => {
+  it('★ 汇总为**计数事实**：36 已证实 / 3 未证实 / 16 不适用 / 5 未标注峰值 / 2 无数据', () => {
     // ★ 2026-10-08：修正 R01-04 标的映射错位 + 对照器开放式窗口后，
     //   已证实 32→34、未证实 5→3；剩余 3 个全部是「无依据、无参照物」。
     // ★★ 2026-10-13（宇宙 53 → 59 + 参照物覆盖层）：34→**35** · 12→**16** · 4→**5**。
@@ -137,14 +137,19 @@ describe('klineConfirmation · 五状态判定（真实数据）', () => {
     //   · 1 个 NOT_APPLICABLE（煤炭高股息：参照物=板块指数）。
     //   ★ 未证实仍为 3 —— **没有**因为扩容而增加（这是对的：§5.1 不允许把
     //     「参照物非股价」错记为 UNCONFIRMED）。
-    expect(klineConfirmationSummary.CONFIRMED).toBe(35);
+    // ★★ 2026-10-13（R02-05 三条机制段入库 · 宇宙 59 → 62）：35 → **36** · 0 → **2**。
+    //   · `C-2017-COMM-5G-SPECTRUM` → **CONFIRMED**（标的 中兴通讯 同周创价格高点，已抓到行情）
+    //   · `C-2021-MEDIA-METAVERSE` / `C-2023-POWEROP-THERMAL` → **NO_DATA**
+    //     —— ★ 其标的 **ticker 留空**（R02-05 包未取得代码来源，审查裁定「不得凭常识补」）
+    //       → 无行情 → 如实记 `NO_DATA`。**这不是缺陷，是「不编造」的直接后果。**
+    expect(klineConfirmationSummary.CONFIRMED).toBe(36);
     expect(klineConfirmationSummary.UNCONFIRMED).toBe(3);
     expect(klineConfirmationSummary.NOT_APPLICABLE).toBe(16);
     expect(klineConfirmationSummary.NO_PEAK_RECORDED).toBe(5);
-    expect(klineConfirmationSummary.NO_DATA).toBe(0);
+    expect(klineConfirmationSummary.NO_DATA).toBe(2);
   });
 
-  it('★ 参照物声明覆盖全部 59 个历史对象（含 8 种取值）', () => {
+  it('★ 参照物声明覆盖全部 62 个历史对象（含 8 种取值）', () => {
     let n = 0;
     const codes = new Set<string>();
     for (const y of source.years()) {

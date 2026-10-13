@@ -20,11 +20,11 @@
   "no_score": "只有证实状态与原文依据，无评分 / 排序 / 概率"
  },
  "summary": {
-  "CONFIRMED": 35,
+  "CONFIRMED": 36,
   "UNCONFIRMED": 3,
   "NOT_APPLICABLE": 16,
   "NO_PEAK_RECORDED": 5,
-  "NO_DATA": 0
+  "NO_DATA": 2
  },
  "by_campaign": {
   "C-2016-CONS-BAIJIU-UPGRADE": {
@@ -95,6 +95,29 @@
     "security_id": "BOE",
     "peak_date": "2017-06-30",
     "delta_days": 0
+   },
+   "confirmation": "CONFIRMED"
+  },
+  "C-2017-COMM-5G-SPECTRUM": {
+   "campaign_id": "C-2017-COMM-5G-SPECTRUM",
+   "campaign_year": 2017,
+   "recorded": {
+    "start": "2017-08-31",
+    "peak": "2017-11-21",
+    "end": "2018-02-09"
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": 2,
+    "with_data": 1
+   },
+   "nearest": {
+    "security_id": "ZTE",
+    "peak_date": "2017-11-22",
+    "delta_days": 1
    },
    "confirmation": "CONFIRMED"
   },
@@ -836,6 +859,24 @@
     }
    ]
   },
+  "C-2021-MEDIA-METAVERSE": {
+   "campaign_id": "C-2021-MEDIA-METAVERSE",
+   "campaign_year": null,
+   "recorded": {
+    "start": null,
+    "peak": null,
+    "end": null
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": null,
+    "with_data": null
+   },
+   "confirmation": "NO_DATA"
+  },
   "C-2021-NEV": {
    "campaign_id": "C-2021-NEV",
    "campaign_year": 2021,
@@ -1342,6 +1383,24 @@
     "delta_days": 0
    },
    "confirmation": "CONFIRMED"
+  },
+  "C-2023-POWEROP-THERMAL": {
+   "campaign_id": "C-2023-POWEROP-THERMAL",
+   "campaign_year": null,
+   "recorded": {
+    "start": null,
+    "peak": null,
+    "end": null
+   },
+   "peak_referent": "UNSPECIFIED",
+   "peak_referent_label": "未界定",
+   "referent_basis": "未在本表中声明",
+   "referent_review_status": "PROVISIONAL",
+   "coverage": {
+    "securities": null,
+    "with_data": null
+   },
+   "confirmation": "NO_DATA"
   },
   "C-2023-RES-COAL-DIVIDEND": {
    "campaign_id": "C-2023-RES-COAL-DIVIDEND",

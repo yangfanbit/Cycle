@@ -129,8 +129,10 @@ describe('SeasonalMap · 集中度标注渲染', () => {
     // 标记是 span.sm-seasonal-flag。★ 2026-10-11（R02-03 入库后）由 3 → **2**：
     // `资源` 因新增煤炭窗口（2021-08~10）落在集中带外而不再达标（3/5 < 2/3）。
     // 达标者 = 汽车（6/6）· 金融（4/3）。
+    // ★★ 2026-10-13（R02-05 入库后）2 → **3**：新增 **信息通信**
+    //   （T1 补入 C-2017-COMM-5G-SPECTRUM → 对象数 2 → 3，跨过样本门槛）。
     const flags = (html.match(/sm-seasonal-flag/g) ?? []).length;
-    expect(flags).toBe(2);
+    expect(flags).toBe(3);
   });
 
   it('★★ 集中区间在地图上**画出来**，且与行内计数一致', () => {

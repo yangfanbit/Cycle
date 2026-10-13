@@ -13,7 +13,7 @@
 
 退出码: 0 = 全部通过（无 FAIL）；1 = 存在 FAIL。
 
-检查项（25 项；C01–C20 对应协议 §18 的 20 条，C21–C24 为一致性补强，C25 为严格 JSON Schema 校验）:
+检查项（26 项；C01–C20 对应协议 §18 的 20 条，C21–C24 为一致性补强，C25 为严格 JSON Schema 校验，C26 为产品红线词检查）:
   C01  schema version            —— intake_protocol_version 必须等于协议版本
   C02  required fields           —— 顶层 16 个必需字段齐备且类型正确
   C03  candidate_id uniqueness   —— campaign_candidates[].candidate_id 本包内唯一
@@ -39,6 +39,7 @@
   C23  year in scope             —— candidate.year 必须落在 task_scope.years 内
   C24  task id consistency       —— task_id 与 task_scope.task_id 一致、round 前缀一致
   C25  strict JSON Schema        —— **真正执行 Draft-07 Schema 校验**（见下方「C25 说明」）
+  C26  product redline words     —— 会进入产品渲染的字段不得含买卖建议红线词（★ 2026-10-13 新增）
 
 ### C25 说明（Strict JSON Schema 校验）
 
@@ -443,6 +444,7 @@ def validate_package(pkg: dict, rep: Report) -> None:
     c22_no_quantity_kpi(pkg, rep)
     c23_year_in_scope(pkg, rep)
     c24_task_id_consistency(pkg, rep)
+    c26_product_redline_words(pkg, rep)
     c25_json_schema_draft07(pkg, rep)
     # C20 的「确定性」部分由 run_validation() 的两次比较完成
 
@@ -898,7 +900,35 @@ def c24_task_id_consistency(pkg: dict, rep: Report) -> None:
                 rep.fail("C24", "id 前缀与 research_round_id 不一致: %s = %r" % (path, val))
 
 
+
 # ------------------------------------------------------------------ 运行
+
+
+# ---- C26：产品红线词（★ 2026-10-13 新增）----
+#   依据：R02-05 包 `R02-POWEROP-001` 的 `drivers` 含「公募基金加仓」→
+#   触发产品红线测试（`preObservation.test.tsx` 的 no buy/sell language 断言）。
+#   该维度**此前不在任何检查范围内** —— C01–C25 查形状 / 业务语义，
+#   **不查自由文本是否触发产品红线**。
+#   ★ 范围：只查**会进入 export 并被产品渲染**的字段；`exclusions` / `known_gaps`
+#     等「声明性文本」不在范围内（它们可能引述这些词来说明「不含」）。
+PRODUCT_REDLINE_WORDS = ("买入", "卖出", "建仓", "加仓", "减仓",
+                         "止盈", "止损", "仓位", "布局区", "信号区")
+PRODUCT_RENDER_FIELDS = ("drivers", "theme_summary", "notes", "title")
+
+
+def c26_product_redline_words(pkg: dict, rep: Report) -> None:
+    for c in _dicts(pkg, "campaign_candidates"):
+        cid = c.get("candidate_id")
+        for f in PRODUCT_RENDER_FIELDS:
+            v = c.get(f)
+            if v is None:
+                continue
+            txt = v if isinstance(v, str) else json.dumps(v, ensure_ascii=False)
+            hits = sorted({w for w in PRODUCT_REDLINE_WORDS if w in txt})
+            if hits:
+                rep.fail("C26",
+                         "candidate %s 的 %s 含买卖建议红线词 %s —— 该文本会进入产品渲染"
+                         % (cid, f, hits))
 
 
 CHECKS = [
@@ -927,6 +957,7 @@ CHECKS = [
     ("C23", "year in scope"),
     ("C24", "task id consistency"),
     ("C25", "strict JSON Schema (Draft-07)"),
+    ("C26", "product redline words"),
 ]
 
 
@@ -1002,6 +1033,13 @@ def check_infrastructure(as_json: bool) -> int:
     second = _check_infrastructure_once()
     rep = Report("--check (infrastructure)")
     for issue in first.sorted_issues():
+        # ★ 2026-10-13：**内容类**检查（C26 产品红线词）不属于「基础设施」范畴。
+        #   基础设施自检的语义是 schema / manifest / 目录 / 确定性；
+        #   而 C26 查的是**包内容**，它应在**单包校验**（`validate <pkg>`）时生效 ——
+        #   这样新包交回时立刻能发现红线词，同时不因**历史包**的既有瑕疵
+        #   让基础设施自检永久 FAIL（历史包按角色分离**不得**回改）。
+        if issue["check"] == "C26":
+            continue
         rep.add(issue["check"], issue["level"], issue["message"])
     if first.sorted_issues() != second.sorted_issues():
         rep.fail("C20", "--check 重复运行结果不一致（确定性失败）")

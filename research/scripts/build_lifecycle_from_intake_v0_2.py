@@ -87,7 +87,10 @@ def build_mapping():
         #    「包 → 单一前缀」的拼接（PREFIX[pkg] + k）在那种情况下会拼错。
         #    对 R01 / R02-01 而言完整 id 与拼接结果**逐字节相同**，故行为不变。
         for mm in re.finditer(r'INTAKE_MAP\s*=\s*\[(.*?)\]', t, re.S):
-            for cid, iid in re.findall(r'\("((?:RC|C)-[A-Z0-9\-]+)",\s*"(R\d{2}-[A-Z]+-\d{3})"\)', mm.group(1)):
+            # ★★ 2026-10-13 修正：intake id 的 slug 部分**可含数字**（如 `R02-MEDIA2-001`）——
+            #    原正则 `[A-Z]+` 不匹配数字 → 该映射**静默提取失败** → 对应对象 lifecycle 为空。
+            #    （R02-05 实测：`C-2021-MEDIA-METAVERSE` 因 `R02-MEDIA2-001` 而漏掉。）
+            for cid, iid in re.findall(r'\("((?:RC|C)-[A-Z0-9\-]+)",\s*"(R\d{2}-[A-Z0-9]+-\d{3})"\)', mm.group(1)):
                 m[cid] = (pkg, iid, True)
     return m
 
@@ -192,10 +195,43 @@ def main():
     # ================================================================
     ov_path = os.path.join(REP, "review_overrides_v0_1.json")
     ov_applied, ov_skipped = [], []
+    drv_ov_log = {}
     if os.path.isfile(ov_path):
         ov_doc = json.load(io.open(ov_path, encoding="utf-8"))
         for ov in ov_doc.get("overrides") or []:
-            cid, stage = ov.get("canonical_id"), ov.get("stage")
+            cid = ov.get("canonical_id")
+
+            # ---- ★ 2026-10-13 新增：drivers 文本覆盖 ----
+            # 为什么：R02-05 包 `R02-POWEROP-001` 的 drivers.accelerator 含
+            #   「公募基金加仓」—— 该措辞会**触发产品红线**（`preObservation.test.tsx`
+            #   的 no buy/sell language 断言，banned 含「加仓」）。
+            #   ★ 文本类问题**结构校验发现不了**（只查形状），且审查当时**未覆盖
+            #   drivers 措辞**这一维度 → 已在 R02-05 审查报告加勘误。
+            #   ★ 处置沿用覆盖层机制（不改包、可审计、可回滚、from 防漂移）。
+            if ov.get("action") == "replace_driver_item":
+                dk = ov.get("driver_key")
+                dlist = (drivers_out.get(cid) or {}).get(dk)
+                if dlist is None:
+                    ov_skipped.append({"override": ov,
+                                       "reason": "该 cycle 无 drivers.%s（未派生）" % dk})
+                    continue
+                try:
+                    _i = dlist.index(ov["from"])
+                except ValueError:
+                    ov_skipped.append({"override": ov,
+                                       "reason": "原值不匹配（drivers.%s 中未找到 %r）—— 拒绝应用"
+                                                 % (dk, ov["from"])})
+                    continue
+                dlist[_i] = ov["to"]
+                drv_ov_log.setdefault(cid, []).append({
+                    "field": "drivers.%s[%d]" % (dk, _i),
+                    "from": ov["from"], "to": ov["to"],
+                    "basis": ov.get("basis"), "review_ref": ov.get("review_ref")})
+                ov_applied.append({"canonical_id": cid, "field": "drivers.%s" % dk,
+                                   "from": ov["from"], "to": ov["to"]})
+                continue
+
+            stage = ov.get("stage")
             entry = out.get(cid)
             if not entry:
                 ov_skipped.append({"override": ov, "reason": "该 cycle 无 lifecycle（未派生）"})
@@ -240,6 +276,7 @@ def main():
         "drivers_by_cycle": drivers_out,
         "review_overrides": {
             "source": "research/research/reports/review_overrides_v0_1.json",
+            "driver_overrides": drv_ov_log,
             "applied": ov_applied,
             "skipped": ov_skipped,
             "rule": "覆盖只**收紧到有来源支持的范围**；原值 from 与裁定值 to 一并留档，原值不删除。",
