@@ -18,9 +18,9 @@
   "no_score": "本 artifact **不含** score / ranking / probability。"
  },
  "summary": {
-  "NO_NAMED": 32,
+  "NO_NAMED": 37,
   "LISTED_EXPLAINS": 13,
-  "NO_PEAK": 4,
+  "NO_PEAK": 5,
   "NEITHER_EXPLAINS": 4
  },
  "by_campaign": {
@@ -79,6 +79,18 @@
     "ESTUN",
     "INOVANCE",
     "SIASUN"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2018-MEDIA-GAMELICENSE": {
+   "campaign_id": "C-2018-MEDIA-GAMELICENSE",
+   "recorded_peak": "2019-03-12",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "GIANTNET",
+    "PERFECTWORLD",
+    "SANQI"
    ],
    "named_not_listed": [],
    "verdict": "NO_NAMED"
@@ -486,6 +498,18 @@
    "named_not_listed": [],
    "verdict": "NO_NAMED"
   },
+  "C-2021-POWER-GREEN": {
+   "campaign_id": "C-2021-POWER-GREEN",
+   "recorded_peak": "2021-09-28",
+   "peak_referent": "POLICY_EVENT",
+   "listed": [
+    "JINGNENG",
+    "SANXIAENERGY",
+    "YINXING"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
   "C-2021-RES-CHEM-DUALCTRL": {
    "campaign_id": "C-2021-RES-CHEM-DUALCTRL",
    "recorded_peak": "2021-10-31",
@@ -510,6 +534,18 @@
    ],
    "named_hits": [],
    "verdict": "LISTED_EXPLAINS"
+  },
+  "C-2021-RES-COAL": {
+   "campaign_id": "C-2021-RES-COAL",
+   "recorded_peak": "2021-10-19",
+   "peak_referent": "POLICY_EVENT",
+   "listed": [
+    "CHINASHENHUA",
+    "SHAANXICOAL",
+    "YANKUANG"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
   },
   "C-2022-CONS-SERVICE-REBOUND": {
    "campaign_id": "C-2022-CONS-SERVICE-REBOUND",
@@ -767,6 +803,30 @@
    "named_hits": [],
    "verdict": "NEITHER_EXPLAINS"
   },
+  "C-2023-MEDIA-AI": {
+   "campaign_id": "C-2023-MEDIA-AI",
+   "recorded_peak": null,
+   "peak_referent": "UNSPECIFIED",
+   "listed": [
+    "GUANGXIAN",
+    "SANQI",
+    "ZWONLINE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_PEAK"
+  },
+  "C-2023-PHARMA-FLU": {
+   "campaign_id": "C-2023-PHARMA-FLU",
+   "recorded_peak": "2023-03-20",
+   "peak_referent": "INDUSTRY_INDICATOR",
+   "listed": [
+    "BAIKEBIO",
+    "HUALANVAX",
+    "JINDIKE"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
   "C-2023-PHARMA-GLP1": {
    "campaign_id": "C-2023-PHARMA-GLP1",
    "recorded_peak": "2023-10-16",
@@ -775,6 +835,17 @@
     "BORUI",
     "CHANGSHAN",
     "HANYU"
+   ],
+   "named_not_listed": [],
+   "verdict": "NO_NAMED"
+  },
+  "C-2023-RES-COAL-DIVIDEND": {
+   "campaign_id": "C-2023-RES-COAL-DIVIDEND",
+   "recorded_peak": "2024-05-29",
+   "peak_referent": "SECTOR_INDEX_HIGH",
+   "listed": [
+    "CHINASHENHUA",
+    "SHAANXICOAL"
    ],
    "named_not_listed": [],
    "verdict": "NO_NAMED"

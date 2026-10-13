@@ -17,7 +17,7 @@
  "summary": {
   "MERGED": 1,
   "MATCH": 5,
-  "MISMATCH": 2,
+  "MISMATCH": 3,
   "NO_IMPORTER": 2
  },
  "by_package": {
@@ -1271,6 +1271,58 @@
   },
   "R02-04": {
    "package": "R02-04",
+   "importer": "import_r02_04_canonical_v0_1.py",
+   "package_count": 5,
+   "importer_count": 0,
+   "verdict": "MISMATCH",
+   "mismatched": [
+    "R02-COAL2-SEC001",
+    "R02-COAL2-SEC002",
+    "R02-MEDIA2-SEC001",
+    "R02-MEDIA2-SEC002",
+    "R02-MEDIA2-SEC003"
+   ],
+   "merged": [],
+   "rows": [
+    {
+     "security_id": "R02-COAL2-SEC001",
+     "package_ticker": "",
+     "package_name": "中国神华",
+     "importer": null,
+     "ok": false
+    },
+    {
+     "security_id": "R02-COAL2-SEC002",
+     "package_ticker": "",
+     "package_name": "陕西煤业",
+     "importer": null,
+     "ok": false
+    },
+    {
+     "security_id": "R02-MEDIA2-SEC001",
+     "package_ticker": "002555",
+     "package_name": "三七互娱",
+     "importer": null,
+     "ok": false
+    },
+    {
+     "security_id": "R02-MEDIA2-SEC002",
+     "package_ticker": "",
+     "package_name": "完美世界",
+     "importer": null,
+     "ok": false
+    },
+    {
+     "security_id": "R02-MEDIA2-SEC003",
+     "package_ticker": "002558",
+     "package_name": "巨人网络",
+     "importer": null,
+     "ok": false
+    }
+   ]
+  },
+  "R02-05": {
+   "package": "R02-05",
    "verdict": "NO_IMPORTER"
   }
  }
