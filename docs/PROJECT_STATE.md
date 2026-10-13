@@ -21,6 +21,7 @@
 | **快照** | `MS-2026-10-13-01` = **DRAFT（待签发）** · `MS-2026-10-12-01` = CANONICAL（回指 **v0_12**） |
 | **CI** | Product（tsc / npm test / build）+ **Research 只读 5 项**（`validate_db` / `validate_timeline_export` / `validate_market_snapshot` / `intake --check` / `refresh_downstream --check`） |
 | **DB 体积** | **59.5 MB**（≈ 全部来自 `market_daily` 338k 行；canonical < 1 MB）· 方案见 `docs/DB_GROWTH_PLAN_v0_1.md` |
+| **外部季节性日历** | `research/current/external_seasonal_calendar_v0_1.json` · **25 项** · 全部 `EXTERNAL_REFERENCE` |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### ★★ 两处**已知未解决**（不得当成已完成）

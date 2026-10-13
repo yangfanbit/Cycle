@@ -3247,3 +3247,84 @@ html, body {
   font-weight: 600;
 }
 .sm-granularity-note { margin-top: 2px; }
+
+/* ============================================================================
+   外部季节性观察雷达（ExternalSeasonalRadar）
+   ★ 与上方历史 SeasonalMap 并列但**来源分离** —— 本区块用**虚线边框** +
+     「外部资料参考」徽标，视觉上即与「ThreeC 历史结论」区分开。
+   ★ 遵循既有浅色主题变量，不引入新配色体系。
+   ============================================================================ */
+.esr {
+  margin: 20px 0 28px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px dashed var(--line-strong);   /* ★ 虚线 = 外部/未验证 */
+  border-radius: var(--radius);
+}
+.esr-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.esr-title { font-size: 15px; margin: 0; }
+.esr-source-badge {
+  font-size: 11px; padding: 1px 7px; border-radius: 10px;
+  background: #fdf3e3; color: var(--preheat-ink); border: 1px solid #f0dcb8;
+}
+.esr-note { color: var(--ink-2); font-size: 12.5px; margin: 8px 0 6px; }
+.esr-count { color: var(--ink-3); font-size: 12px; margin: 0 0 12px; }
+.esr-count code { font-family: var(--mono); font-size: 11.5px; }
+.esr-vs { display: block; margin-top: 3px; color: var(--ink-3); }
+.esr-sub { font-size: 13px; margin: 14px 0 8px; color: var(--ink-2); }
+.esr-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.esr-card {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 10px 12px; background: #fffefb;
+}
+.esr-card-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.esr-name { font-weight: 600; font-size: 13.5px; }
+.esr-rel {
+  font-size: 11px; padding: 1px 7px; border-radius: 10px; border: 1px solid transparent;
+}
+.esr-rel-in   { background: #eaf5ec; color: #2f6b3c; border-color: #cbe3d1; }
+.esr-rel-soon { background: #fdf3e3; color: var(--preheat-ink); border-color: #f0dcb8; }
+.esr-rel-past { background: #f2f2f0; color: var(--ink-3); border-color: var(--line); }
+.esr-rel-none { background: #f4f4f6; color: var(--ink-3); border-color: var(--line); }
+.esr-meta { display: grid; grid-template-columns: 78px 1fr; gap: 3px 10px; margin: 8px 0 6px; }
+.esr-meta dt { color: var(--ink-3); font-size: 11.5px; }
+.esr-meta dd { margin: 0; font-size: 12.5px; color: var(--ink); }
+.esr-window { font-family: var(--mono); font-size: 12px; }
+.esr-src-tag {
+  display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 3px;
+  background: #f4f6f8; color: var(--ink-2); font-size: 11.5px;
+}
+.esr-theme {
+  display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 3px;
+  background: #eef3f8; color: var(--accent); font-size: 12px;
+}
+.esr-map-basis { color: var(--ink-2); font-size: 12px; }
+.esr-unmapped { color: var(--ink-2); font-size: 12px; }
+.esr-mat-tag {
+  display: inline-block; padding: 0 6px; border-radius: 3px;
+  background: #f2f2f0; color: var(--ink-2); font-size: 11.5px;
+}
+.esr-mat-note { color: var(--ink-3); font-size: 11.5px; margin-left: 4px; }
+.esr-caveat { color: var(--ink-2); font-size: 12px; }
+.esr-foot {
+  display: flex; justify-content: space-between; color: var(--ink-3);
+  font-size: 11px; border-top: 1px solid var(--line); padding-top: 5px; margin-top: 4px;
+}
+.esr-id { font-family: var(--mono); }
+.esr-rest-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.esr-toggle {
+  font-size: 12px; padding: 2px 10px; border: 1px solid var(--line-strong);
+  background: #fff; border-radius: 12px; cursor: pointer; color: var(--ink-2);
+}
+.esr-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.esr-filters { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 10px; }
+.esr-chip {
+  font-size: 11.5px; padding: 1px 9px; border: 1px solid var(--line);
+  background: #fff; border-radius: 10px; cursor: pointer; color: var(--ink-2);
+}
+.esr-chip.is-on { border-color: var(--accent); color: var(--accent); background: #eef3f8; }
+.esr-empty { color: var(--ink-3); font-size: 12px; }
+.esr-foot-note {
+  margin: 12px 0 0; padding-top: 8px; border-top: 1px solid var(--line);
+  color: var(--ink-3); font-size: 11.5px;
+}

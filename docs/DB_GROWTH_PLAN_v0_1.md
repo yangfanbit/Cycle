@@ -202,3 +202,105 @@ GitHub：**建议 50 MB / 硬上限 100 MB**。实测增长：
 ---
 
 *评估 · 2026-10-13 · ThreeC Agent · 未执行迁移*
+
+---
+
+# 附录 A：2026-10-13 第二轮审计（★ 修正上一轮的结论）
+
+> 用户要求「重新实测，而不是当作无需核实的既定事实」。
+> ★ **本轮实测推翻了本文件 §1.2 的一处结论** —— 见 A.3。
+
+## A.1 DB 构成（重新实测 · 与上轮一致）
+
+```
+文件体积  59.46 MB · freelist 2 页（无空闲 → VACUUM 无用）
+
+market_daily       337,995 行   ★ 体积主因
+trading_calendar       371 行
+market_series          191 行
+（canonical 全部表合计 < 3,000 行）
+```
+
+★ 结论不变：**体积 ≈ `market_daily` 一张表**。
+
+## A.2 直接连接清单（28 个脚本 · 实测）
+
+**直接 `sqlite3.connect`**：**28 个**脚本；**经 `db.py` 统一入口**：45 个。
+
+★ **同时满足「直接连接」且「触及行情表」的**（拆分方案的主要改动面）：
+
+```
+research/scripts/_audit_dump.py
+research/scripts/audit_historical_coverage.py
+research/scripts/batch_auto_research.py
+research/scripts/build_structural_analogy_readiness_v0_2.py
+research/scripts/check_doc_schema_consistency.py   （连的是 :memory:）
+research/scripts/db.py                              （统一入口本身）
+```
+
+★ 目标路径形态：多数为 `DB_PATH`（来自 `db.py`），少数内联
+`'database/cycle_research.db'` / `f"file:{ROOT}/research/database/cycle_research.db..."`。
+→ **路径形态不统一**，拆库前需逐个核对。
+
+## A.3 ★★ 重复性验证：**上一轮的结论需要修正**
+
+### 上一轮的说法（本文件 §1.2）
+
+> 「实测 ZTE 2016-01-04 的 adjusted 行**逐字段一致** → 确认重复」
+
+### 本轮更系统的抽样（5 个标的 · adjusted 行 · 比对 open/close）
+
+```
+标的        CSV总行   adj行    DB行    一致    不一致
+ABC          1454     727     727      0      727
+ACCELINK     3884    1942    1942      0     1942
+AECPOWER     1922     961     961      0      961
+AIMEIKE      2550    1275    1275      0     1275
+AMEC         1072     536     536      0      536
+★ 一致 0 行 · 不一致 5,441 行
+```
+
+### ★ 修正后的结论
+
+- **行数与日期完全对应**（727=727、1942=1942 …）→ 二者**同源**（同一批行情、同一交易日集合）。
+- **数值系统性不一致** → **不是**「逐字段一致的重复」。
+  ★ 最可能的原因是**复权基准时点不同**（前复权价随每次除权**整体重算** ——
+  这正是本项目已知的纪律：抓取器「必须整段重取，不能只补缺口」）。
+- → 上一轮基于**单个标的（ZTE）**得出「确认重复」，**样本不足**。
+  本轮的 5 标的抽样**推翻**了该结论。
+
+★★ **因此方案 A 的前提需要重新论证**：在「CSV 与 DB 数值不一致」的情况下，
+**不能**简单地把任一方当作另一方的可重建来源 —— 必须先确定
+**哪一方是权威**（以及各自对应哪个复权基准时点），否则「重建」会**静默换口径**。
+
+### A.4 附带发现：CSV **格式不统一**（三种列集）
+
+```
+157 个: trade_date,open,high,low,close,adj_close,volume,amount,price_type
+ 20 个: date,open,high,low,close,volume,amount,price_type          ← 列名不同 + 无 adj_close
+  3 个: trade_date,open,high,low,close,volume,amount,price_type   ← 无 adj_close
+```
+
+★ 这是**独立于体积问题**的数据质量问题：任何「读 CSV 重建」的脚本
+都必须先处理**三种格式**，否则会**静默漏读**（`KeyError` 或整列缺失）。
+
+## A.5 压缩率（不变）
+
+```
+market_daily → CSV      : 32.1 MB
+market_daily → CSV+gzip : 6.1 MB（19%）
+```
+
+## A.6 ★ 本轮结论：**暂缓迁移**，先补两项前置
+
+1. ★ **确定权威来源**：CSV 与 DB 谁是权威？各自对应哪个复权基准时点？
+   → 未确定前，**任何「重建」都可能换口径**（属静默失真）。
+2. ★ **统一 CSV 格式**（三种列集 → 一种），否则重建脚本无法可靠工作。
+
+★ 在这两项完成前，**方案 A 不具可执行性**；方案 B（只去重 CSV）**同样受阻**
+（因为 CSV 可能承载 DB 没有的信息，如不同的复权口径）。
+→ **本轮明确不改动任何数据**（符合用户指令）。
+
+---
+
+*附录 A · 2026-10-13 · ThreeC Agent · 只读审计，未修改任何数据*

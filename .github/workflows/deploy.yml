@@ -137,25 +137,21 @@ jobs:
         run: |
           set -euo pipefail
 
-          # ---- ★ SA artifact：**自动发现最新版**，不硬编码 ----
-          #   历史教训（2026-10-13）：此处曾写死 `…_v0_5.json`，而产品早已消费
-          #   `…_v0_13.json` → 部署摘要**报错误的版本号**（0.5 vs 0.13），
-          #   而 v0_5 文件仍在，所以**不会报错、只会静默失真**。
-          #   → 改为「按版本号取最大」，并加**硬门禁**：必须与产品实际 import 的一致。
-          SA_FILE=$(ls research/research/reports/structural_analogy_explanations_v*.json \
-            | awk -F'_v0_' '{print $2" "$0}' | sort -n | tail -1 | cut -d' ' -f2-)
-          SA_LATEST=$(basename "$SA_FILE")
+          # ---- ★ SA artifact 版本解析（规则抽到可测试脚本里）----
+          #   历史教训（2026-10-13）：此处曾写死 `…_v0_5.json`，而产品早已消费 `…_v0_13.json`
+          #   → 部署摘要**报错误的版本号**，而 v0_5 文件仍在，所以**不报错、只静默失真**。
+          #
+          #   ★ 规则（见 `scripts/resolve_sa_artifact.py` 的模块 docstring，可独立单测）：
+          #     ① **权威来源 = 产品实际消费**（`src/data/buildProvenance.ts` 的静态 import），不是推断
+          #     ② 最新 = 按 **(minor, patch) 数值**比较取最大 —— ★ **不是**字典序
+          #        （字典序会把 `v0_9` 排到 `v0_13` 之后），★ **不是** mtime
+          #     ③ 两者必须一致，且权威来源指向的文件必须存在；否则**拒绝部署**
+          echo "::group::SA artifact 版本解析"
+          python scripts/resolve_sa_artifact.py
+          echo "::endgroup::"
 
-          # 产品**实际消费**的 SA 版本（唯一事实来源 = buildProvenance.ts 的静态 import）
-          SA_IMPORTED=$(grep -oE 'structural_analogy_explanations_v0_[0-9]+\.json' \
-            src/data/buildProvenance.ts | head -1)
-
-          echo "SA latest   = $SA_LATEST"
-          echo "SA imported = $SA_IMPORTED"
-          if [ "$SA_LATEST" != "$SA_IMPORTED" ]; then
-            echo "::error::SA 版本不一致 —— 最新 artifact 为 $SA_LATEST，而产品消费 $SA_IMPORTED。部署摘要会失真，拒绝部署。"
-            exit 1
-          fi
+          SA_JSON=$(python scripts/resolve_sa_artifact.py --json)
+          SA_FILE=$(printf '%s' "$SA_JSON" | python -c 'import json,sys; print(json.load(sys.stdin)["imported"])')
 
           {
             echo '## Deployment provenance'
@@ -169,9 +165,9 @@ jobs:
             echo "| Research export version | \`$(node -p "require('./exports/timeline_export_v1.json').timeline_export_version")\` |"
             echo "| Research export generated_at | \`$(node -p "require('./exports/timeline_export_v1.json').generated_at")\` |"
             echo "| Historical objects | \`$(node -p "require('./exports/timeline_export_v1.json').campaigns.length")\` Campaign + \`$(node -p "require('./exports/timeline_export_v1.json').research_candidates.length")\` RC |"
-            echo "| SA artifact | \`${SA_LATEST}\` |"
-            echo "| SA artifact_version | \`$(node -p "require('./${SA_FILE}').artifact_version")\` |"
-            echo "| SA rule_set_version | \`$(node -p "require('./${SA_FILE}').rule_set_version")\` |"
+            echo "| SA artifact | \`${SA_FILE}\` |"
+            echo "| SA artifact_version | \`$(node -p "require('./research/research/reports/${SA_FILE}').artifact_version")\` |"
+            echo "| SA rule_set_version | \`$(node -p "require('./research/research/reports/${SA_FILE}').rule_set_version")\` |"
             echo "| TO artifact_version | \`$(node -p "require('./research/research/reports/time_observation_patterns_v0_2.json').artifact_version")\` |"
           } >> "$GITHUB_STEP_SUMMARY"
 

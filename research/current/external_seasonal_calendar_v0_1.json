@@ -1,0 +1,315 @@
+{
+  "artifact": "external_seasonal_calendar",
+  "artifact_version": "0.1",
+  "generated_at": "2026-10-13",
+  "generated_by": "ThreeC Agent",
+  "position": "★ **外部研究线索** —— 不是 ThreeC 研究结论。本文件记录**外部资料声称的**季节性窗口，及其与 ThreeC 现有主题的**映射尝试**。它**不**证明任何规律成立。",
+  "source_reports": [
+    {
+      "source_id": "SRC-SEASONAL-2026",
+      "title": "A股季节性题材日历（2026版）",
+      "kind": "external_reference",
+      "note": "用户于 2026-10-13 在任务指令中提供其 25 项清单与窗口。★ **原始报告文件未在本仓库或本机找到**（已实测搜索），故本文件的窗口口径**直接采自该指令中的表格**；如与原始报告有差异，以原始报告为准并应在此留痕。"
+    },
+    {
+      "source_id": "SRC-INVEST-PATTERN",
+      "title": "A股投资规律深度研究报告",
+      "kind": "external_reference",
+      "note": "同上 —— 原始文件未找到。第 25 项「高送转」的「效应已减弱」说法源自该报告（经用户指令转述），本文件**仅作为外部意见记录**，不转为 ThreeC 结论。"
+    }
+  ],
+  "governance": {
+    "why_this_file_exists": "现有 SeasonalMap 呈现的是 ThreeC **从历史数据中得到的**窗口与覆盖；本文件补充**另一类**信息：外部资料声称的题材线索。两者必须在产品中**明确区分**（见 § 前端）。",
+    "hard_rules": [
+      "① **月份级资料只记录到月份** —— 不补造具体起止日期（`precision` 恒为 `MONTH`）。",
+      "② **跨年窗口必须显式标注** `cross_year`（如 12 月至次年 2 月）。",
+      "③ **事件驱动型题材不得伪造固定季节窗口** —— 无固定月份的记为 `NO_FIXED_WINDOW`。",
+      "④ **来源报告中的星级 / 定性强弱仅保留为外部意见** —— 不转换为 ThreeC 分数、排名或置信度。",
+      "⑤ 报告给出的「指数月度上涨比例」**不得**转化为主题出现概率或 ThreeC 统计事实。",
+      "⑥ **不为填满映射字段而创建虚假的 canonical Theme 或 Campaign**。",
+      "⑦ 名称相似 **≠** 同一结构 —— 映射必须有 `mapping_basis`，无依据则记 `UNMAPPED` 并写明原因。",
+      "⑧ **窗口活跃不提升研究成熟度** —— 两者是**不同维度**（见 § maturity_model）。",
+      "⑨ 本文件为**追加式**：修改窗口须新增 `revision` 记录，不得静默改写。"
+    ]
+  },
+  "maturity_model": {
+    "note": "★ 与「窗口日期状态」**完全分离** —— 窗口是否活跃是**时间事实**，成熟度是**研究进展**。二者不得合并为一个字段。",
+    "levels": [
+      { "code": "EXTERNAL_REFERENCE", "label": "外部参考", "meaning": "外部资料中的线索，尚未由 ThreeC 验证" },
+      { "code": "MAPPED", "label": "已映射", "meaning": "已建立有依据的 ThreeC 映射，但**不代表规律成立**" },
+      { "code": "OBSERVING", "label": "观察中", "meaning": "已建立明确观察方案，正在积累记录" },
+      { "code": "PARTIALLY_VALIDATED", "label": "部分验证", "meaning": "已有部分历史或观察证据，但不足以认定为正式规律" },
+      { "code": "THREEC_VALIDATED", "label": "ThreeC 已验证", "meaning": "满足现有正式研究标准" },
+      { "code": "WEAKENED", "label": "已减弱", "meaning": "证据表明原线索可能减弱或适用性下降" },
+      { "code": "REJECTED", "label": "已拒绝", "meaning": "有足够依据拒绝该线索" }
+    ],
+    "current_distribution_note": "★ 本轮导入的 25 项**全部为 `EXTERNAL_REFERENCE`** —— 无一项经过 ThreeC 验证。导入 ≠ 值得优先验证 ≠ 已验证。"
+  },
+  "window_relation_model": {
+    "note": "★ 「当前时间关系」由**实际日期**与**原始月份范围**计算得出（见 `externalSeasonalCalendar.ts` 的 `windowRelationOf`），**不是**预设值。",
+    "states": [
+      { "code": "IN_WINDOW", "label": "窗口内", "meaning": "当前月落在原始月份范围内" },
+      { "code": "UPCOMING", "label": "即将进入", "meaning": "距窗口起点 ≤ 1 个月" },
+      { "code": "PASSED", "label": "窗口已过", "meaning": "窗口已结束（按当前年份计算）" },
+      { "code": "NO_FIXED_WINDOW", "label": "无固定窗口", "meaning": "事件驱动型，无固定月份" },
+      { "code": "INSUFFICIENT_DATE", "label": "日期不足", "meaning": "年度事件缺当年具体日期" }
+    ]
+  },
+  "entries": [
+    {
+      "id": "EXT-01", "name": "中央一号文件 / 农业", "category": "政策文件",
+      "windows": [{ "start_month": 1, "end_month": 2, "cross_year": false, "raw_text": "1 月底至 2 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料表述为「1 月底至 2 月」—— 含「月底」的模糊表述，本文件**不**转为具体日期。",
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "库内 13 个根主题中**无「农业」**（`消费` 下有农林牧渔相关对象但无对应根节点）。★ 名称相近不足以映射；按治理规则 ⑥ 不为此新建 canonical 主题。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-02", "name": "春节消费", "category": "消费旺季",
+      "windows": [{ "start_month": 1, "end_month": 2, "cross_year": false, "raw_text": "1–2 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "春节日期逐年浮动，原资料只给月份区间。",
+      "mapping": { "status": "MAPPED", "macro_theme": "消费", "basis": "库内存在根主题「消费」（含食品饮料 / 家电 / 商贸零售 / 服务消费等对象）；春节为消费旺季，映射到该根。★ 但**未**指定具体 Campaign —— 库内无「春节消费」专项对象。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-03", "name": "两会", "category": "政策事件",
+      "windows": [{ "start_month": 3, "end_month": 3, "cross_year": false, "raw_text": "3 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "两会为年度政治事件，具体日期逐年公布；本文件只记月份。",
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "两会为**跨主题政策事件**，不对应单一 Macro Theme。★ 不因「政策」二字就映射到某个根。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-04", "name": "年报 / 一季报", "category": "财报季",
+      "windows": [{ "start_month": 3, "end_month": 4, "cross_year": false, "raw_text": "3–4 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "披露期为制度性安排（非题材）。",
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "财报披露是**全市场制度性安排**，不是某个主题的行情机制。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-05", "name": "军工 / 「九月效应」", "category": "行业季节性",
+      "windows": [{ "start_month": 7, "end_month": 9, "cross_year": false, "raw_text": "7–9 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料称「九月效应」；本文件保留该外部说法，**不**主张其成立。",
+      "mapping": { "status": "MAPPED", "macro_theme": "国防军工", "basis": "库内存在根主题「国防军工」（含航空装备 / 船舶制造 / 军工混改等对象）。映射到**根主题**，★ **未**指定具体 Campaign。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-06", "name": "科技产品发布季", "category": "行业季节性",
+      "windows": [{ "start_month": 8, "end_month": 9, "cross_year": false, "raw_text": "8–9 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料未指明具体公司或产品线。",
+      "mapping": { "status": "MAPPED", "macro_theme": "电子", "basis": "库内存在根主题「电子」（含面板 / 半导体等对象）。★ 映射强度**弱** —— 「科技产品发布」涵盖面宽，且库内消费电子相关对象（TWS 等）属**其他年份**。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-07", "name": "中秋、国庆消费", "category": "消费旺季",
+      "windows": [{ "start_month": 9, "end_month": 10, "cross_year": false, "raw_text": "9–10 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "中秋为农历节日，逐年浮动。",
+      "mapping": { "status": "MAPPED", "macro_theme": "消费", "basis": "同 EXT-02 —— 映射到根主题「消费」，不指定 Campaign。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-08", "name": "双十一", "category": "消费旺季",
+      "windows": [{ "start_month": 10, "end_month": 11, "cross_year": false, "raw_text": "10–11 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "电商大促，日期为商业安排（非制度性）。",
+      "mapping": { "status": "MAPPED", "macro_theme": "消费", "basis": "映射到根主题「消费」（含商贸零售 / 家电等对象）。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-09", "name": "供暖 / 能源", "category": "行业季节性",
+      "windows": [{ "start_month": 11, "end_month": 12, "cross_year": false, "raw_text": "11–12 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料未区分燃料端与运营端。",
+      "mapping": { "status": "MAPPED", "macro_theme": "电力（运营端）", "basis": "★ **谨慎映射**：库内「电力（运营端）」是**运营端**机制；而「供暖」既涉及燃料（资源）也涉及供热运营。此处映射到电力（运营端）为**最接近的现有根**，★ 但**机制未必相同** —— 已在 `source_note` 与页面标注保留该不确定性。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-10", "name": "春季躁动", "category": "市场现象",
+      "windows": [{ "start_month": 12, "end_month": 2, "cross_year": true, "raw_text": "12 月至次年 2 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "★ **跨年窗口**（12 月 → 次年 2 月）。",
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "「春季躁动」是**全市场现象**（流动性 / 风险偏好），不对应单一 Macro Theme。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-11", "name": "冰雪经济", "category": "行业季节性",
+      "windows": [{ "start_month": 10, "end_month": 3, "cross_year": true, "raw_text": "10 月至次年 3 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "★ **跨年窗口**（10 月 → 次年 3 月）。原资料未细分雪季起止。",
+      "mapping": { "status": "MAPPED", "macro_theme": "消费", "basis": "冰雪经济以旅游 / 装备消费为主，映射到根主题「消费」。★ 库内**无**冰雪经济专项对象 —— 映射到根，不指定 Campaign。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-12", "name": "流感 / 医药", "category": "行业季节性",
+      "windows": [{ "start_month": 9, "end_month": 1, "cross_year": true, "raw_text": "9 月至次年 1 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "★ **跨年窗口**（9 月 → 次年 1 月）。",
+      "mapping": { "status": "MAPPED", "macro_theme": "医药健康", "basis": "★ **库内有直接对应对象**：`C-2023-MED-VACCINE-FLU`（流感疫苗）等属根主题「医药健康」。映射强度**较高**（同主题 + 同季节机制）。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-13", "name": "暑期档电影 / 旅游 / 游戏", "category": "行业季节性",
+      "windows": [{ "start_month": 6, "end_month": 8, "cross_year": false, "raw_text": "6–8 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料把电影 / 旅游 / 游戏三类合并；本文件**保留原合并口径**，不擅自拆分。",
+      "mapping": { "status": "MAPPED", "macro_theme": "文化传媒", "basis": "电影 / 游戏属根主题「文化传媒」（库内有版号周期 / AI+内容等对象）。★ 旅游部分更接近「消费」—— 原资料合并表述，此处按**主要成分**（影视 / 游戏）映射，并保留该不确定性。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-14", "name": "迎峰度夏电力", "category": "行业季节性",
+      "windows": [{ "start_month": 5, "end_month": 7, "cross_year": false, "raw_text": "5–7 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料为月度区间。",
+      "mapping": { "status": "MAPPED", "macro_theme": "电力（运营端）", "basis": "★ **库内有直接对应对象**：`C-2023-POWEROP-THERMAL`（2023 火电·煤价下行 + 迎峰度夏）。映射强度**较高**。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-15", "name": "五一假期", "category": "消费旺季",
+      "windows": [{ "start_month": 4, "end_month": 5, "cross_year": false, "raw_text": "4–5 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": null,
+      "mapping": { "status": "MAPPED", "macro_theme": "消费", "basis": "映射到根主题「消费」。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-16", "name": "制冷 / 降温商品", "category": "行业季节性",
+      "windows": [{ "start_month": 6, "end_month": 8, "cross_year": false, "raw_text": "6–8 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料未指明具体品类。",
+      "mapping": { "status": "MAPPED", "macro_theme": "消费", "basis": "家电类降温商品属根主题「消费」。★ 映射强度**弱**（品类未明）。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-17", "name": "防汛 / 水利", "category": "行业季节性",
+      "windows": [{ "start_month": 6, "end_month": 7, "cross_year": false, "raw_text": "6–7 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": null,
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "库内 13 个根主题中**无「建筑 / 水利」**。★ 按治理规则 ⑥ 不为此新建 canonical 主题。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-18", "name": "618 电商", "category": "消费旺季",
+      "windows": [{ "start_month": 5, "end_month": 6, "cross_year": false, "raw_text": "5–6 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "电商大促，日期为商业安排。",
+      "mapping": { "status": "MAPPED", "macro_theme": "消费", "basis": "映射到根主题「消费」（商贸零售）。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-19", "name": "金九银十行业 / 周期", "category": "行业季节性",
+      "windows": [{ "start_month": 9, "end_month": 10, "cross_year": false, "raw_text": "9–10 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料表述较宽泛（「行业 / 周期」）。",
+      "mapping": { "status": "MAPPED", "macro_theme": "房地产", "basis": "★ **谨慎映射**：「金九银十」在 A 股语境内**最常指地产销售旺季**，库内有根主题「房地产」。★ 但该说法亦可指汽车 / 家电等 —— 原资料未限定，此处保留该不确定性。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-20", "name": "黄金 / 稀土", "category": "资源品",
+      "windows": [{ "start_month": 10, "end_month": 10, "cross_year": false, "raw_text": "10 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "原资料将黄金与稀土并列为 10 月；★ 二者机制**不同**（贵金属 vs 战略小金属），本文件保留原合并口径但在此标注差异。",
+      "mapping": { "status": "MAPPED", "macro_theme": "资源", "basis": "库内根主题「资源」含黄金 / 稀土相关对象（如 `C-2024-RES-GOLD-CB` 等）。★ 映射到**根**，不指定 Campaign。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-21", "name": "环保", "category": "政策 / 行业",
+      "windows": [
+        { "start_month": 3, "end_month": 3, "cross_year": false, "raw_text": "3 月" },
+        { "start_month": 11, "end_month": 1, "cross_year": true, "raw_text": "11 月至次年 1 月" }
+      ],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "★ **多段窗口**（3 月；11 月至次年 1 月），后者跨年。",
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "库内 13 个根主题中**无「环保 / 公用事业」**（`电力（运营端）` 是运营端机制，与环保主题不同轴）。★ 名称相近不足以映射。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-22", "name": "教育", "category": "行业季节性",
+      "windows": [{ "start_month": 6, "end_month": 9, "cross_year": false, "raw_text": "6–9 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": null,
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "库内 13 个根主题中**无「教育」**。★ 不为此新建 canonical 主题。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-23", "name": "AI+、机器人、商业航天、低空经济等事件驱动题材", "category": "事件驱动",
+      "windows": [],
+      "precision": "NONE", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "★ 原资料明确：「**无固定月份，取决于催化事件**」。",
+      "mapping": { "status": "MAPPED", "macro_theme": "高端装备", "basis": "机器人 / 商业航天 / 低空经济在库内多属根主题「高端装备」（如 `C-2023-HIEQ-HUMANOID` 等）；AI+ 更接近「信息通信」。★ 原资料为**合并条目**，故映射为**部分**（不能唯一），此处记「高端装备」为主要成分并保留该不确定性。",
+        "reason": null },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "window_relation_override": "NO_FIXED_WINDOW",
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-24", "name": "展会 / 年度事件", "category": "事件驱动",
+      "windows": [],
+      "precision": "NONE", "source_ids": ["SRC-SEASONAL-2026"],
+      "source_note": "★ 原资料：「**逐年变化，需有当年具体日期**」。",
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "年度事件无当年具体日期时**无法确定当期状态**（见 `INSUFFICIENT_DATE`）。★ 治理规则 ③ 禁止伪造固定窗口。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "window_relation_override": "INSUFFICIENT_DATE",
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）" }]
+    },
+    {
+      "id": "EXT-25", "name": "高送转预案", "category": "财报季 / 事件",
+      "windows": [{ "start_month": 3, "end_month": 4, "cross_year": false, "raw_text": "3–4 月" }],
+      "precision": "MONTH", "source_ids": ["SRC-SEASONAL-2026", "SRC-INVEST-PATTERN"],
+      "source_note": "★★ **原报告指出该效应已减弱** —— ★ 本文件**仅将其记录为外部意见**，**不**据此把成熟度标为 `WEAKENED`（那需要 ThreeC 自己的证据）。治理规则 ④。",
+      "mapping": { "status": "UNMAPPED", "macro_theme": null, "basis": null,
+        "reason": "「高送转」是**跨行业事件**，不对应单一 Macro Theme。" },
+      "maturity": "EXTERNAL_REFERENCE", "evidence_refs": [], "observations": [],
+      "revision": [{ "date": "2026-10-13", "change": "初始导入（v0.1）；记录原报告「效应减弱」为外部意见" }]
+    }
+  ]
+}

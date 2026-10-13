@@ -42,6 +42,7 @@
 | Market Snapshot | `MS-2026-10-13-01` = **DRAFT**（待签发）· `MS-2026-10-12-01` = CANONICAL |
 | 测试 | **881 passed / 0 failed / 33 files** |
 | CI 门禁 | **Product**（tsc / npm test / build）+ **Research 只读**（5 项校验，2026-10-13 接入） |
+| 外部季节性日历 | **v0.1**（25 项外部线索 · 全部 `EXTERNAL_REFERENCE` · 页面「外部季节性观察雷达」） |
 
 **当前阶段**：**R02 波次**（历史宇宙扩展）—— 已完成 R02-01 / R02-03 / R02-04 / R02-05，
 4 条 DEFER 待处置；粒度已裁定为「**机制段**」。

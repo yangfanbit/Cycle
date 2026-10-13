@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentSnapshotSection } from './components/CurrentSnapshot/CurrentSnapshotSection';
 import { DirectionLookupSection } from './components/DirectionLookup/DirectionLookupSection';
+import { ExternalSeasonalRadar } from './components/ExternalSeasonalRadar/ExternalSeasonalRadar';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import { HistoricalSimilarPhase } from './components/HistoricalSimilarPhase/HistoricalSimilarPhase';
@@ -203,6 +204,12 @@ export default function App() {
             <strong>非正式历史事实</strong>。
           </p>
         )}
+
+        {/* ★ 外部季节性观察雷达（2026-10-13 新增）——
+            ★★ 与上方地图**并列但来源分离**：上方是 ThreeC **从历史数据得到的**窗口（研究结果），
+               本视图是**外部资料声称的**季节性线索（未经 ThreeC 验证）。
+               两者**不得**混为一个没有来源区分的指标体系。 */}
+        {!verifiedMode && <ExternalSeasonalRadar today={today} />}
 
         {/* ★ 覆盖边界（ThreeC 1.2 · Usage-Driven）
             用户拿一个真实方向来问（例如「文化传媒」）时，第一件要知道的是「它在不在覆盖内」。
