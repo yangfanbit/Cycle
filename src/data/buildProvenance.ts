@@ -16,10 +16,15 @@
  *   | `exportVersion` | `exports/timeline_export_v1.json` `timeline_export_version` | Contract 版本 |
  *   | `exportSourceCommit` | 同文件 `source_commit` | **Research 生成该 export 时的 commit** —— 关键溯源锚点 |
  *   | `exportGeneratedAt` | 同文件 `generated_at` | export 生成时间 |
- *   | `exportObjectCounts` | 同文件 `campaigns` / `research_candidates` 长度 | 52 / 27 |
- *   | `saArtifactVersion` | SA artifact `artifact_version` | 例：`0.5`（文件：`…_v0_5.json`） |
+ *   | `exportObjectCounts` | 同文件 `campaigns` / `research_candidates` 长度 | 由数据决定 |
+ *   | `saArtifactVersion` | SA artifact `artifact_version` | 取自下方**静态 import 的文件**（当前 `…_v0_13.json`） |
  *   | `saRuleSetVersion` | SA artifact `rule_set_version` | 例：`structural-analogy-ruleset-v0.3` |
  *   | `toArtifactVersion` | TO artifact `artifact_version` | 例：`0.3`（文件：`…_v0_2.json`） |
+ *
+ * ★★ **本文件的 import 是「产品消费哪一版 Research」的唯一事实来源**。
+ *   升 SA 版本时**必须同步**：本文件 import + `refresh_downstream.py --check` 的 C2
+ *   + `.github/workflows/deploy.yml` 的部署摘要（后者已改为**自动发现 + 硬门禁**）。
+ *   （历史教训：`deploy.yml` 曾写死 `v0_5`，而产品已消费 `v0_13` → 摘要**静默失真**。）
  *
  * ## 为什么这些能直接 import
  * 三个 artifact 都是**静态 import**（Vite 的 `@exports` / `@observation` alias，

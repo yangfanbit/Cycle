@@ -3,23 +3,36 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-12 修订）
+## ★★ 当前状态（2026-10-13 修订）
 
-> ★ **本节 2026-10-12 重写** —— 原文停留在 R01-06（52 Campaign），
-> 完全未反映其后的 **R02 波次**、**Contract v1.1**、**`refresh_downstream.py`**。
-> 下方「1.1 已完成」等历史小节保留（仍是事实），但**不代表当前进度**。
+> ★ **本节 2026-10-13 重写** —— 上一版停在 2026-10-12（57 Campaign / SA v0.11 / 874 测试），
+> 未反映其后的 **R02-04 / R02-05 入库**、**SA v0.13**、**Contract v1.2**、**Research CI 门禁**。
+> 下方历史小节保留（仍是事实），但**不代表当前进度**。
 
-### 实测基线（2026-10-12 · 全部实测）
+### 实测基线（2026-10-13 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `1aa34d7` · working tree **clean**（★ 接班仍须跑 `git log -1`，本文件不硬编码权威 SHA） |
-| **历史宇宙** | **57 Campaign + 27 Research Candidate = 84 对象** · DB `themes` **58** |
-| **测试** | **874 passed / 0 failed / 33 files** |
-| **Export** | **Contract v1.1** —— 新增 `macro_theme_root` / `macro_theme_root_status`（83 RESOLVED / 1 UNRESOLVED_NAME） |
-| **SA** | `structural_analogy_explanations_v0_11.json` · **6 候选 × 84 = 504 对** · 规则集冻结未变 |
-| **快照** | `MS-2026-10-11-01` = **CANONICAL**（已签发；旧 11 份 ARCHIVED/DRAFT） |
+| **git HEAD** | `ad3d854` · working tree **clean**（★ 接班仍须跑 `git log -1`，本文件不硬编码权威 SHA） |
+| **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
+| **测试** | **881 passed / 0 failed / 33 files** |
+| **Export** | **Contract v1.2** —— `macro_theme_root` + **`taxonomy` 段**（59 行 · 13 根） |
+| **SA** | `structural_analogy_explanations_v0_13.json` · **6 候选 × 89 = 534 对** · 规则集冻结未变 |
+| **快照** | `MS-2026-10-13-01` = **DRAFT（待签发）** · `MS-2026-10-12-01` = CANONICAL（回指 **v0_12**） |
+| **CI** | Product（tsc / npm test / build）+ **Research 只读 5 项**（`validate_db` / `validate_timeline_export` / `validate_market_snapshot` / `intake --check` / `refresh_downstream --check`） |
+| **DB 体积** | **59.5 MB**（≈ 全部来自 `market_daily` 338k 行；canonical < 1 MB）· 方案见 `docs/DB_GROWTH_PLAN_v0_1.md` |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
+
+### ★★ 两处**已知未解决**（不得当成已完成）
+
+1. **`MS-2026-10-13-01` 未签发** —— 产品当前 CANONICAL 是 `MS-2026-10-12-01`（回指 **v0_12**），
+   而产品消费 **SA v0_13**。`snapshotAdapter` 已修复为**同时校验 `artifact_version`**
+   → 因此**默认视图的「候选明细」现在显示「未解析」**（诚实空态，拒绝跨版本合并）。
+   **签发 `MS-2026-10-13-01` 后恢复**（签发 = 人工审核，属用户决定）。
+2. **R02-05 的 4 条 DEFER 未处置** —— `COMM-002`（证据错配 D1）· `POWEREQ-001/002`
+   （与 `C-2020-POWER-NE` 的阶段归属）· `POWEROP-002`（驱动复合）。
+   粒度裁定（机制段）**只解除「粒度」阻塞**，不自动通过其余缺陷。
+   ★ 结果：**电力设备仍 2 个、电力（运营端）仍 2 个**（< 3，季节性仍不可评估）。
 
 ### 当前阶段：**R02 波次收口中**
 

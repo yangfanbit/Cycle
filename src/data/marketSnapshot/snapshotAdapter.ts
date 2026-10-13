@@ -167,10 +167,33 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
 
   try {
     const ds = await loadStructuralAnalogyDataset();
-    const expected = (snapshot as unknown as { candidates_source?: { rule_set_version?: string } })
-      .candidates_source?.rule_set_version;
-    if (expected && ds.ruleSetVersion !== expected) {
-      // 版本不一致 → 拒绝合并（诚实空态），避免用错版本的细节
+    const src = (snapshot as unknown as {
+      candidates_source?: { artifact_version?: string; rule_set_version?: string };
+    }).candidates_source;
+
+    // ★★ 2026-10-13 修复：**必须同时校验 `artifact_version`**。
+    //
+    //   原实现只校验 `rule_set_version` —— 而该值在 SA v0.10 → v0.13 之间
+    //   **一直是 `structural-analogy-ruleset-v0.3`**（规则集未变），
+    //   于是「v0_12 生成的快照」与「v0_13 的细节」**校验通过、被静默合并**
+    //   （快照 86 对象 vs 细节 89 对象 —— 版本错配但不报错）。
+    //
+    //   快照的 `candidates_source` **本来就带 `artifact_version`**（数据是有的），
+    //   只是读取方没校验它。→ 补上。
+    //
+    //   契约依据：`candidates_source.mode` 明确写「读取方必须**先校验**该 artifact 的
+    //   `rule_set_version` 与本字段一致，再按 `resolve_by` 合并」——
+    //   本修复把「本字段」补全为**同时包含 artifact 版本**（更严格的兼容规则）。
+    const expectedRuleSet = src?.rule_set_version;
+    const expectedArtifact = src?.artifact_version;
+
+    if (expectedRuleSet && ds.ruleSetVersion !== expectedRuleSet) {
+      // 规则集不一致 → 拒绝合并（诚实空态），避免用错版本的细节
+      return fallback();
+    }
+    if (expectedArtifact && ds.artifactVersion !== expectedArtifact) {
+      // ★ 快照与细节的 **artifact 版本**不一致 → 拒绝合并（同一原则：宁可「未解析」，
+      //   也不把两个不同版本的产物拼在一起 —— 那会让使用者看到**混合的**结构对应）。
       return fallback();
     }
 

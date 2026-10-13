@@ -6,6 +6,11 @@
 #
 # 设计约束（不得违反）
 #   - production deployment **必须**建立在 `npm test` + `build` 成功之上
+#   - ★ **Research 只读门禁**（2026-10-13 新增）：`validate_db` /
+#     `validate_timeline_export` / `validate_market_snapshot` /
+#     `validate_historical_research_intake --check` / `refresh_downstream --check`
+#     任一失败 → **不得部署**。理由：Product 消费 Research 产物，
+#     而跨层不一致（DB↔export / 产品↔SA 版本 / 快照回指）**不一定**被某个 Product 测试覆盖。
 #   - 不允许跳过 `npm test`；不允许直接上传未构建源码
 #   - **不提交** `dist/`（走 artifact 上传，见 .gitignore）
 #   - permissions 最小化：仅 `contents: read` + `pages: write` + `id-token: write`
@@ -65,10 +70,53 @@ jobs:
       - name: Unit & integration tests (npm test)
         run: npm test
 
+      # ----------------------------------------------------------------------
+      # ★★ Research 只读门禁（2026-10-13 接入）
+      #
+      # 为什么：Product 消费的是**Research 产物**（export / SA / 快照 / lifecycle）。
+      # 此前 CI **只**跑 Product 测试 —— 若 Research 侧出现「DB 与 export 不同步」
+      # 「产品引用了旧 SA 版本」「快照回指悬空」等，Product 测试**可能仍然全绿**
+      # （因为那些不一致不一定被某个测试覆盖）→ **不合格产物会被部署**。
+      #
+      # 这些检查全部是**只读**（不改任何文件）、**无网络**、总耗时 < 10s（实测）。
+      # 任一失败 → workflow 失败 → **不会部署**。
+      # ----------------------------------------------------------------------
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install research dependencies
+        run: pip install -r research/scripts/requirements.txt
+
+      - name: Research read-only gates
+        run: |
+          set -euo pipefail
+          echo "::group::validate_db"
+          python research/scripts/validate_db.py
+          echo "::endgroup::"
+
+          echo "::group::validate_timeline_export"
+          python research/scripts/validate_timeline_export.py
+          echo "::endgroup::"
+
+          echo "::group::validate_market_snapshot"
+          python research/current/market_snapshots/scripts/validate_market_snapshot_v0_1.py
+          echo "::endgroup::"
+
+          echo "::group::validate_historical_research_intake (infrastructure)"
+          python research/scripts/validate_historical_research_intake.py --check
+          echo "::endgroup::"
+
+          # ★ 这条最关键：C0–C10 覆盖「DB↔export 同步」「产品引用最新 SA」
+          #   「快照回指」「themeColors↔根主题」「lifecycle 覆盖」等**跨层一致性**。
+          echo "::group::refresh_downstream --check (C0–C10)"
+          python research/scripts/refresh_downstream.py --check
+          echo "::endgroup::"
+
       # GITHUB_ACTIONS 由 GitHub 内置，vite.config.ts 据此取 base = /Cycle/
       - name: Build (base = /Cycle/)
         run: npm run build
-
       - name: Verify base path is /Cycle/
         run: |
           set -euo pipefail
@@ -88,6 +136,27 @@ jobs:
       - name: Write build provenance summary
         run: |
           set -euo pipefail
+
+          # ---- ★ SA artifact：**自动发现最新版**，不硬编码 ----
+          #   历史教训（2026-10-13）：此处曾写死 `…_v0_5.json`，而产品早已消费
+          #   `…_v0_13.json` → 部署摘要**报错误的版本号**（0.5 vs 0.13），
+          #   而 v0_5 文件仍在，所以**不会报错、只会静默失真**。
+          #   → 改为「按版本号取最大」，并加**硬门禁**：必须与产品实际 import 的一致。
+          SA_FILE=$(ls research/research/reports/structural_analogy_explanations_v*.json \
+            | awk -F'_v0_' '{print $2" "$0}' | sort -n | tail -1 | cut -d' ' -f2-)
+          SA_LATEST=$(basename "$SA_FILE")
+
+          # 产品**实际消费**的 SA 版本（唯一事实来源 = buildProvenance.ts 的静态 import）
+          SA_IMPORTED=$(grep -oE 'structural_analogy_explanations_v0_[0-9]+\.json' \
+            src/data/buildProvenance.ts | head -1)
+
+          echo "SA latest   = $SA_LATEST"
+          echo "SA imported = $SA_IMPORTED"
+          if [ "$SA_LATEST" != "$SA_IMPORTED" ]; then
+            echo "::error::SA 版本不一致 —— 最新 artifact 为 $SA_LATEST，而产品消费 $SA_IMPORTED。部署摘要会失真，拒绝部署。"
+            exit 1
+          fi
+
           {
             echo '## Deployment provenance'
             echo ''
@@ -100,8 +169,9 @@ jobs:
             echo "| Research export version | \`$(node -p "require('./exports/timeline_export_v1.json').timeline_export_version")\` |"
             echo "| Research export generated_at | \`$(node -p "require('./exports/timeline_export_v1.json').generated_at")\` |"
             echo "| Historical objects | \`$(node -p "require('./exports/timeline_export_v1.json').campaigns.length")\` Campaign + \`$(node -p "require('./exports/timeline_export_v1.json').research_candidates.length")\` RC |"
-            echo "| SA artifact_version | \`$(node -p "require('./research/research/reports/structural_analogy_explanations_v0_5.json').artifact_version")\` |"
-            echo "| SA rule_set_version | \`$(node -p "require('./research/research/reports/structural_analogy_explanations_v0_5.json').rule_set_version")\` |"
+            echo "| SA artifact | \`${SA_LATEST}\` |"
+            echo "| SA artifact_version | \`$(node -p "require('./${SA_FILE}').artifact_version")\` |"
+            echo "| SA rule_set_version | \`$(node -p "require('./${SA_FILE}').rule_set_version")\` |"
             echo "| TO artifact_version | \`$(node -p "require('./research/research/reports/time_observation_patterns_v0_2.json').artifact_version")\` |"
           } >> "$GITHUB_STEP_SUMMARY"
 

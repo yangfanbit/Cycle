@@ -24,21 +24,29 @@
 
 ## 当前状态
 
-截至 **2026-09-24**：
+> ★ **本节 2026-10-13 重写** —— 原表格停留在 **2026-09-24**（79 对象 / 11 根 / SA v0.5），
+> 完全未反映其后的 **R02 波次**、**Contract v1.1 / v1.2**、**SA v0.6 → v0.13**。
+> 下方「ThreeC 1.0 — RELEASED」小节保留（仍是事实），但**不代表当前进度**。
+
+截至 **2026-10-13**（全部实测）：
 
 | 项 | 当前基线 |
 |---|---|
-| Historical Universe | **79** Historical Objects（52 Campaign + 27 Research Candidate） |
-| Macro Theme roots | **11** |
+| Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
+| Macro Theme roots | **13**（DB `themes` 共 59 行） |
+| Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
 | Driver Canonicalization | **v0.4** |
-| Structural Analogy | **v0.5**（395 pairs） |
+| Structural Analogy | **v0.13**（**534** pairs · 规则集 `structural-analogy-ruleset-v0.3` **冻结未变**） |
 | Time Observation | **v0.2**（内部 `artifact_version` 0.3） |
-| Current Candidates | **5** |
-| Product | **已消费最新 SA / TO artifact**（5 / 5 Current Candidate 可走通完整研究闭环） |
+| Current Candidates | **6** |
+| Market Snapshot | `MS-2026-10-13-01` = **DRAFT**（待签发）· `MS-2026-10-12-01` = CANONICAL |
+| 测试 | **881 passed / 0 failed / 33 files** |
+| CI 门禁 | **Product**（tsc / npm test / build）+ **Research 只读**（5 项校验，2026-10-13 接入） |
 
-**Research Core 状态**：**Release 完成并冻结** —— 后续只允许由「真实 Product Usage 暴露的问题」触发新研究轮次。
+**当前阶段**：**R02 波次**（历史宇宙扩展）—— 已完成 R02-01 / R02-03 / R02-04 / R02-05，
+4 条 DEFER 待处置；粒度已裁定为「**机制段**」。
 
-**当前阶段**：**ThreeC 1.0 — RELEASED**
+### ThreeC 1.0 — RELEASED（历史，仍是事实）
 
 | 项 | 值 |
 |---|---|
