@@ -1,123 +1,188 @@
-# 遗留事项 G / H 核实结论
+# 遗留事项 G / H 核查结论（v0.2 · 2026-10-14）
 
-> 核实人：ThreeC Agent · 2026-10-13 · **只读核实，未修改任何 canonical 数据**
-> 触发：用户 2026-10-13 任务 §4.2
-> 定义来源：`docs/TASK_ALLOCATION_2026-10-11.md:60-61` · `docs/PROJECT_RETROSPECTIVE_AND_PLAN_2026-10-12.md:91-92`
-
----
-
-## G：R02-01 标的漏挂（恒瑞医药）
-
-### 定义（原文）
-
-> R02-01 包声明 4 条 securities，导入器只登记 3 条 —— `R02-PHARMA-SEC004`（恒瑞医药，
-> 库内 `HENGRUI`）**没进** `C-2023-PHARMA-GLP1`
-
-### 实测事实
-
-```
-包声明（research/intake/packages/R02-01/securities.json）:
-  R02-PHARMA-SEC001 常山药业 · SEC002 翰宇药业 · SEC003 博瑞医药 · SEC004 恒瑞医药   ← 4 条
-
-DB campaign_securities（C-2023-PHARMA-GLP1）:
-  CHANGSHAN 常山药业 leader · HANYU 翰宇药业 representative · BORUI 博瑞医药 representative   ← 3 条
-
-HENGRUI 是否在 securities 表      : **是**（已存在）
-HENGRUI 是否挂在 C-2023-PHARMA-GLP1: **否**   ← ★ 确认漏挂
-```
-
-### 结论
-
-| 项 | 判定 |
-|---|---|
-| 原始输入是否存在 | ✅ 存在（包内声明 4 条） |
-| 当前记录情况 | ★ **`HENGRUI` 在 `securities` 表，但 `campaign_securities` 缺一行** |
-| 性质 | **漏挂**（不是「未入库」，也不是「被排除」）—— 标的主记录已在，只缺关联 |
-| 影响面 | `campaign_securities` 1 行；下游 `export.securities`（campaign_id 关联）会少 1 条；产品「代表股票」少显示恒瑞医药 |
-
-### ★ 修正的可行性与风险
-
-- **技术成本**：极低（新增 1 行 `campaign_securities`）。
-- ★ **但必须确认「role」** —— 包内声明的角色是什么？**未取得**该字段（需查包内 securities.json 的 role）。
-  ★ 若包未给 role，**不得**臆测（`leader` / `representative` 语义不同）。
-- ★ **属已入库轮次**（R02-01 已 canonicalize）→ 按 `AGENTS.md` §4，
-  修改已冻结研究结论需**明确授权**。
-
-### 建议
-
-**待负责人裁决**（不建议自行补挂）：
-- 若批准：以**覆盖层机制**（同 `review_overrides`）补该关联，并留 `basis` + `review_ref`；
-- 补后需重跑下游（export / SA 不受影响，但 export 的 securities 段会变）。
+> 核查人：ThreeC Agent · 2026-10-14 · **只读核查，未修改任何 canonical 数据**
+> ★ v0.1（2026-10-13）对 **G 的判定是错的**，本轮更正 —— 见 §G.4。
 
 ---
 
-## H：R02-02 从未入库
+## G：恒瑞医药 —— ★★ **不是「漏挂」，是「候选未处置」**
 
-### 定义（原文）
+### G.1 包内声明的真实结构（实测）
 
-> R02-02 包（`R02-PHARMA-003`）**无导入器、无 campaign、无审查结论** = 「已校验未处置」
-
-### 实测事实
+`research/intake/packages/R02-01/` 有 **2 个候选**，4 条 securities **分属两个候选**：
 
 ```
-包存在            : ✅ research/intake/packages/R02-02/（11 个文件）
-候选              : R02-PHARMA-003「药品与医疗器械审评审批制度改革驱动的创新周期（2017–2018）」
-                    research_status = **INSUFFICIENT**（包内自称）
-导入器            : **无**
-DB 对应 campaign  : **无**（DB 只有 C-2019-PHARMA-INNOV / C-2023-PHARMA-FLU / C-2023-PHARMA-GLP1）
-独立审查裁定文件   : **无**（research/intake/reviews/ 下无 R02-02*）
+R02-PHARMA-001「减重（GLP-1）概念行情」  → security_ids = [SEC001 常山药业, SEC002 翰宇药业, SEC003 博瑞医药]
+R02-PHARMA-002「创新药 BD 出海行情」      → security_ids = [SEC004 恒瑞医药]
 ```
 
-### ★★ 关键澄清：「无审查结论」**不完全准确**
+### G.2 导入器的实际映射（实测）
 
-实测在**文档层**找到了处置结论：
-
-```
-docs/STAGE_REVIEW_2026-10-07.md:109   intake 包  R02-01 PASS · **R02-02 PASS(DEFER)**
-docs/STAGE_REVIEW_2026-10-07.md:132   | 2 | **R02-02（2017–2018 医药）为 DEFER** |
-                                        缺行情序列 + 与 C-2019-PHARMA-INNOV 的边界裁决 |
-docs/DESIGN_KLINE_VALIDATION_AND_EARLY_WINDOW_v0_1.md:90
-                                      R02-02 被 DEFER 的原因是「缺行情序列、peak 无法界定」
+```python
+# research/scripts/import_r02_01_canonical_v0_1.py:46
+INTAKE_MAP = [("C-2023-PHARMA-GLP1", "R02-PHARMA-001")]   # ★ 只映射了 001
 ```
 
-→ **R02-02 已判 `DEFER`**（2026-10-07），**未入库是正确的**（DEFER 不应入库）。
-★ 缺的是**结构化裁定文件**（`R02-02_verdicts_v0_1.json` 之类），而非「没有结论」。
+→ **`R02-PHARMA-002` 从未被导入**。
 
-### 结论
+### G.3 DB 实际状态（实测）
 
-| 项 | 判定 |
+```
+campaigns 里的 PHARMA 对象：C-2019-PHARMA-INNOV · C-2023-PHARMA-FLU · C-2023-PHARMA-GLP1
+  ★ **没有** BD 出海段（即 R02-PHARMA-002 无对应 campaign）
+
+C-2023-PHARMA-GLP1 的 3 条 securities：常山药业 / 翰宇药业 / 博瑞医药
+  → 与 R02-PHARMA-001 的声明**完全一致** ✓（**没有漏挂**）
+
+HENGRUI（600276 恒瑞医药）：
+  securities 表        : 存在
+  campaign_securities  : 挂在 **C-2019-PHARMA-INNOV**（2019 创新药，**另一个轮次的对象**）
+```
+
+### G.4 ★★ 更正 v0.1 的错误判定
+
+v0.1 写「**确认漏挂**：`HENGRUI` 在 securities 表但未挂 `C-2023-PHARMA-GLP1`」。
+
+**这是错的** —— 恒瑞**本就不属于** `C-2023-PHARMA-GLP1`
+（该对象对应 `R02-PHARMA-001`，其声明只有 3 条标的）。
+
+★ 误判根因：v0.1 **只比较了「包内 securities 总数（4）vs DB 登记数（3）」**，
+**没有先看候选与标的的归属关系**。★ 与「结构校验只查形状、不查语义」同族：
+**计数对不上 ≠ 有东西漏了**。
+
+### G.5 真正的缺口
+
+| 项 | 状态 |
 |---|---|
-| 原始输入是否存在 | ✅ 存在 |
-| 是否「漏挂 / 未入库 / 被排除 / 未完成审核」 | ★ **都不是** —— 是**已判 DEFER**（文档级），故**按规则不入库** |
-| 当前记录缺口 | ★ **缺结构化裁定文件**（只有 `.md` 记录，无 `.json` 裁定） |
+| `R02-PHARMA-002` 的包内自评 | `research_status = INSUFFICIENT` · `confidence = low` |
+| 其 lifecycle | `MAIN_RISE 2025-01-01 ~ 2025-06-30`（**半年窗口**，未取得精确起涨日） |
+| 是否有审查裁定 | ★ **无**（`research/intake/reviews/` 下无 R02-01*） |
+| 是否有处置记录 | ★ **无**（`docs/*.md` 中检索不到其处置结论） |
+| 是否入库 | **否** |
 
-### ★ 新情况：原 DEFER 理由之一**可能已解除**
+→ ★ **`R02-PHARMA-002` 处于「已校验未处置」状态 —— 与 H（R02-02）完全同类。**
 
-原 DEFER 理由 ①「**缺行情序列、peak 无法界定**」——
-★ 而本项目此后已落地 **K 线证实机制**（`kline_confirmation_v0_2.json`，
-五状态含 `NO_PEAK_RECORDED` / `NO_DATA`）与 **peak 参照物**（`peak_referent_v0_2.json`）。
-→ 该理由**在基础设施层面已可处理**（至少可给出明确状态，而非「无法界定」）。
+### G.6 补挂是否可行 / 是否改冻结结论
 
-★ 理由 ②「与 `C-2019-PHARMA-INNOV` 的边界裁决」—— **未变**，仍需裁决。
+- **不存在「补挂」这件事**：恒瑞不属于 `C-2023-PHARMA-GLP1`，没有该补的关联。
+- 若要让恒瑞有归属 → **必须先把 `R02-PHARMA-002` canonicalize**（新建 BD 出海段对象）。
+- ★ 那属于**新增对象**，会改变：
+  `campaigns` +1 · `campaign_securities` +1 · `export.campaigns` +1 · SA 宇宙 +1 · 快照需重出。
+  → **属独立研究轮次**（不是勘误）。
 
-### 建议
+### G.7 治理建议
 
-**待负责人裁决**（不建议自行重新评估）：
-1. **是否重新评估 R02-02**（理由 ① 的基础设施已具备）；
-2. 若重新评估 → 走**独立轮次**（角色分离：Research 产出 / ThreeC 审查）；
-3. **补结构化裁定文件**（把 `.md` 里的 DEFER 结论形式化，便于机器追溯）。
+| 选项 | 说明 |
+|---|---|
+| **建议：与 H 合并处理** | 两者同为「包内已产出、未被正式处置」。建议**统一走一个独立轮次**：先补**结构化裁定**（`R02-01` / `R02-02` 各一份），再决定是否入库。 |
+| 不建议：勘误流程 | 勘误用于「执行偏离已决结论」；此处**没有已决结论**，故不适用。 |
+
+★ **本轮未修改任何数据。**
+
+---
+
+## H：R02-02 / R02-PHARMA-003
+
+### H.1 候选与 DEFER 起点（实测）
+
+```
+候选      : R02-PHARMA-003「药品与医疗器械审评审批制度改革驱动的创新周期（2017–2018）」
+包内自评  : research_status = INSUFFICIENT · confidence = low
+lifecycle : MAIN_RISE 2017-10-08 ~ 2018-06-30
+            basis 自述「**未取得该段的逐月行情证据**，仅以半年粒度记录」
+date      : start = EXACT_DATE 2017-10-08（制度起点，confidence=high，**有来源**）
+标的      : 恒瑞医药 600276（role = leader）
+possible_duplicate_of : ['C-2019-PHARMA-INNOV']
+
+DEFER 裁决 : docs/STAGE_REVIEW_2026-10-07.md:109「R02-02 PASS(DEFER)」
+             :109/132 原因 = ① 缺行情序列 + ② 与 C-2019-PHARMA-INNOV 的边界裁决
+```
+
+### H.2 ★ 逐项判断（用户要求的四个问题）
+
+#### ① 技术基础设施是否已具备？—— **部分具备**
+
+```
+K 线机制已落地：kline_confirmation_v0_2.json（五状态）
+  实测分布：CONFIRMED 36 · NOT_APPLICABLE 16 · **NO_PEAK_RECORDED 5** · UNCONFIRMED 3 · NO_DATA 2
+★ **NO_PEAK_RECORDED 有 5 个对象** → 证明机制**能处理「未标注峰值」的对象**
+  （不会因此崩溃或静默跳过）✓
+peak 参照物机制亦已落地（peak_referent_v0_2.json，8 值封闭枚举）✓
+```
+
+→ **「peak 无法界定」在机制层面已可表达**（记为 `NO_PEAK_RECORDED` 而非阻塞）✓
+
+#### ② 候选本身所需的数据是否完整？—— ★★ **不完整（这是关键）**
+
+```
+HENGRUI 的 market_daily 覆盖：**2018-01-02 ~ 2022-12-30**（2430 行）
+  目标区间 2017-10 ~ 2018-06 内：486 行（仅覆盖 2018-01 之后）
+★ **2017-10-08 ~ 2017-12-31 无行情**（数据从 2018-01-02 起）
+
+而该候选的 MAIN_RISE **起点正是 2017-10-08** → ★ **起点落在无行情区间**
+```
+
+★ 且 `HENGRUI` **未登记 floor**（`fetch_gaps.json` 的 `floors` 中无此条目）
+→ 抓取器**尚未确认**其最早可得日（可能还有更早数据未抓，也可能确实没有）。
+
+#### ③ 与 `C-2019-PHARMA-INNOV` 的边界问题是否解决？—— **未解决**
+
+```
+C-2019-PHARMA-INNOV : 2019-01-02 → 2021-07-01 → 2022-10-31
+R02-PHARMA-003 提议 : 2017-10-08 → 2018-06-30
+★ 两者**不重叠**（相隔约半年），但**机制相近**（同属医药创新周期）
+→ 包内自己也标注 possible_duplicate_of = ['C-2019-PHARMA-INNOV']
+→ ★ 仍需走 Campaign Independence Gate（本轮**未做**该判定 —— 那是研究判断）
+```
+
+#### ④ 当前证据是否足以启动新一轮复核？—— ★ **不足以**
+
+### H.3 ★★ 结论：**继续 DEFER**，**不适合**现在启动独立复核
+
+**依据**：
+
+1. ★ **理由①仅部分解除**：K 线机制已能表达「无峰值」，但**该候选的起点（2017-10-08）
+   落在无行情区间** —— 行情序列**仍不足以界定该段**。
+   → **机制具备 ≠ 数据具备**。这是两件事。
+2. **理由②未变**：`MAIN_RISE` 段仍**只有半年粒度**、**无逐月来源支撑**。
+3. **理由③未变**：与 `C-2019-PHARMA-INNOV` 的边界**未裁决**。
+
+★ **因此：无充分证据 → 继续 DEFER**（符合用户「没有充分证据时继续 DEFER」的要求）。
+
+### H.4 结构化裁定方案（保留原 DEFER 历史）
+
+★ 现状：DEFER 结论**只存在于 `.md` 文档**（`STAGE_REVIEW_2026-10-07.md`），
+**无结构化裁定文件** → 机器不可追溯。
+
+**建议方案**（本轮**未执行**，待批准）：
+
+1. 新建 `research/intake/reviews/R02-02_verdicts_v0_1.json`，
+   内容**如实转录** 2026-10-07 的 DEFER 裁决（**不改写、不追认**）：
+   ```json
+   { "candidate_id": "R02-PHARMA-003", "verdict": "DEFER",
+     "decided_at": "2026-10-07", "decided_by": "（转录自 STAGE_REVIEW_2026-10-07.md:109/132）",
+     "reasons": ["缺行情序列、peak 无法界定", "与 C-2019-PHARMA-INNOV 的边界需裁决"],
+     "source_doc": "docs/STAGE_REVIEW_2026-10-07.md:109,132",
+     "note": "★ 本文件为**事后转录**，非新裁决；原 DEFER 结论不变。" }
+   ```
+2. ★ **保留原 `.md` 不动**（历史留痕）。
+3. 同样为 `R02-01` 补一份（含 `R02-PHARMA-001` 的入库结论 + `R02-PHARMA-002` 的未处置状态）。
+
+★ **不覆盖、不追认旧结论** ✓
 
 ---
 
 ## 总表
 
-| 项 | 原始输入 | 当前记录 | 性质 | 本轮动作 | 待决 |
-|---|---|---|---|---|---|
-| **G** | ✅ 有（4 条） | 3 条关联，`HENGRUI` **漏挂** | **漏挂** | 未动 | ★ 是否授权补挂（需先确认 role） |
-| **H** | ✅ 有 | 无 campaign / 无结构化裁定 | **已判 DEFER**（文档级） | 未动 | ★ 是否重新评估 + 补结构化裁定 |
+| 项 | v0.1 判定 | ★ v0.2 更正后 | 本轮动作 |
+|---|---|---|---|
+| **G** | 「确认漏挂」 | ★ **不是漏挂** —— 是 `R02-PHARMA-002` **从未处置**（包内 `INSUFFICIENT`，无裁定、无入库） | 未修改 |
+| **H** | 「可能可重新评估」 | ★ **继续 DEFER** —— 理由①仅部分解除（**起点无行情**）；②③未变 | 未修改 |
 
-★★ **两项均未修改任何数据**（符合用户「不得在未确认来源及影响前直接补挂、入库」的指令）。
+**共同缺口**：两者都**缺结构化裁定文件** → 建议**同一轮次**补齐 + 决定是否入库。
+
+★ **本轮未修改任何 canonical 数据、未补挂、未入库。**
 
 ---
 
-*核实结论 · 2026-10-13 · ThreeC Agent · 只读*
+*核查结论 v0.2 · 2026-10-14 · ThreeC Agent · 只读*
