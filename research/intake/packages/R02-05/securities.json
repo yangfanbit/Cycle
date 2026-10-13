@@ -1,0 +1,81 @@
+[
+  {
+    "security_id": "R02-COMM-SEC001",
+    "ticker": null,
+    "name": "中兴通讯",
+    "exchange": null,
+    "role": "representative",
+    "basis": "2017 段主升期的代表性标的：中国证券报·中证网 2017-10-10 记载其 A 股冲击涨停、年内大涨逾七成；新浪财经 2017-11-21 记载其涨 8.42%、创上市新高。★ 两份来源均**未给出证券代码**，且 11-21 那份为**港股**口径 —— 按 R02-04 审查要求「ticker 一律留空待核，禁止凭常识补代码」，本包 ticker 与 exchange 一律留空。",
+    "source_ids": [
+      "R02-COMM-S007",
+      "R02-COMM-S008"
+    ],
+    "point_in_time_note": "本标的为**回顾性**识别的该段代表性标的（Historical Leader Set），**不代表** point-in-time 可预知；且来源未给出代码，不可用于构造 point-in-time 篮子。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-COMM-SEC002",
+    "ticker": null,
+    "name": "武汉凡谷",
+    "exchange": null,
+    "role": "representative",
+    "basis": "2017-09-29 5G 概念股再度活跃时涨停（证券时报网，经新浪新闻转载）。★ 来源未给出证券代码，ticker 留空待核。",
+    "source_ids": [
+      "R02-COMM-S009"
+    ],
+    "point_in_time_note": "回顾性识别的该段代表性标的；来源未给出代码，不可用于构造 point-in-time 篮子。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-MEDIA2-SEC001",
+    "ticker": null,
+    "name": "中青宝",
+    "exchange": null,
+    "role": "leader",
+    "basis": "2021 元宇宙段的点火标的：证券日报（经中证网刊载）2021-09-14 记载其 2021-09-06 公告元宇宙游戏《酿酒大师》、五个交易日上涨 116.7%、2021-09-13 再次涨停。★ 来源未给出证券代码，ticker 留空待核。",
+    "source_ids": [
+      "R02-MEDIA2-S004"
+    ],
+    "point_in_time_note": "本标的为该段**点火事件的主体**（事件日 2021-09-06 当日公开），属 point-in-time 可观察；但来源未给出代码，本包不代填。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-POWEROP-SEC001",
+    "ticker": null,
+    "name": "华电国际",
+    "exchange": null,
+    "role": "leader",
+    "basis": "2023-05-29 火电板块大涨当日的涨停标的（证券日报，经今日头条转载）。★ 来源未给出证券代码，ticker 留空待核。",
+    "source_ids": [
+      "R02-POWEROP-S002"
+    ],
+    "point_in_time_note": "回顾性识别的该段代表性标的；来源未给出代码，不可用于构造 point-in-time 篮子。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-POWEROP-SEC002",
+    "ticker": null,
+    "name": "建投能源",
+    "exchange": null,
+    "role": "representative",
+    "basis": "2023-05-29 涨停，且 5 月以来累计涨幅超过 20%（证券日报 / 证券时报·数据宝）。★ 来源未给出证券代码，ticker 留空待核。",
+    "source_ids": [
+      "R02-POWEROP-S002"
+    ],
+    "point_in_time_note": "回顾性识别的该段代表性标的；来源未给出代码，不可用于构造 point-in-time 篮子。",
+    "survivorship_aware": true
+  },
+  {
+    "security_id": "R02-POWEROP-SEC003",
+    "ticker": null,
+    "name": "天富能源",
+    "exchange": null,
+    "role": "follow",
+    "basis": "2023-05-29 火电板块涨停标的之一（证券日报，经今日头条转载）。★ 来源未给出证券代码，ticker 留空待核。",
+    "source_ids": [
+      "R02-POWEROP-S002"
+    ],
+    "point_in_time_note": "回顾性识别的该段代表性标的；来源未给出代码，不可用于构造 point-in-time 篮子。",
+    "survivorship_aware": true
+  }
+]

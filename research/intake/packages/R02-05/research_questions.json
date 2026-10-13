@@ -1,0 +1,71 @@
+[
+  {
+    "question_id": "R02-POWEREQ-Q001",
+    "question": "R02-POWEREQ-001（2021 光伏/新能源发电设备）与既有 C-2020-POWER-NE（2020 · 光伏/新能源发电设备）是否属**同一 Theme Cycle 的延续**，而非两个独立 Campaign？",
+    "why_it_matters": "两者同子主题、相邻年份，2020 年该指数亦上涨 +105.1%。若判为同一 Cycle，则本候选应被 MERGE，电力设备方向的实际增量为 0（仅剩 R02-POWEREQ-002）。本包主张可分辨（驱动源不同：平价需求爆发 vs 双碳政策+上游涨价+整县推进），但该判据是否充分**必须**由 ThreeC Agent 走 Campaign Independence Gate Q1–Q5 判定。",
+    "related_candidate_ids": [
+      "R02-POWEREQ-001"
+    ]
+  },
+  {
+    "question_id": "R02-POWEREQ-Q002",
+    "question": "R02-POWEREQ-002（2022 光伏组件出口）与既有 C-2022-POWER-GRID（2022 电网/输变电设备）**同年不同机制**，能否并存为两个独立 Campaign？",
+    "why_it_matters": "任务 manifest 明确「同一年不同机制亦可，但须说明」。若判为不可并存，则 2022 年只能保留一个对象。本包已说明机制差异（海外需求驱动 vs 国内电网投资驱动），并给出两段指数口径证据，但**无权裁决**。",
+    "related_candidate_ids": [
+      "R02-POWEREQ-002"
+    ]
+  },
+  {
+    "question_id": "R02-MEDIA2-Q001",
+    "question": "R02-MEDIA2-001（2021 元宇宙）的峰值落在 **2022-01-05**（跨年）。candidate.year 应记**起始年 2021**（本包做法）还是峰值年 2022？生命周期是否应允许跨年闭合？",
+    "why_it_matters": "该判定直接决定 2021 与 2022 两年各记几个对象，进而影响**季节性评估的年内窗口归属**（本任务的落脚点）。既有对象 C-2018-MEDIA-GAMELICENSE 即为 2018-12-21 → 2019-08-09 的跨年段，故本包按「起始年」口径处理，但须由 ThreeC Agent 明确该口径是否为全局规则。",
+    "related_candidate_ids": [
+      "R02-MEDIA2-001"
+    ]
+  },
+  {
+    "question_id": "R02-COMM-Q001",
+    "question": "R02-COMM-001（2017 · 5G 预期驱动）与既有 C-2019-COMM-5G（2019 · 牌照与建设驱动）是否属**同一 Theme Cycle 的两个阶段**？",
+    "why_it_matters": "协议 §1.4 明确「同一个主题的不同年份 / 不同机制可以形成不同 Campaign」（以 C-2019-COMM-5G 与 C-2023-COMM-OPTICAL 为例），但同时也规定「不同时间 ≠ 不同 Campaign」（§1.4 规则 3）。2017 与 2019 相隔约 1 年、同为 5G，落在两者之间的灰区。若判为同一 Cycle，信息通信方向的实际增量将减 1。",
+    "related_candidate_ids": [
+      "R02-COMM-001"
+    ]
+  },
+  {
+    "question_id": "R02-COMM-Q002",
+    "question": "本包发现 2017 段与 2020 段的超额收益均**含 Beta 成分**（2017 年沪深300 全年 +20.6%；2020 年同期沪深300 +31.65%）。对于「年内窗口」这类结构性判定，是否需要一个统一的 **Beta 处理口径**（例如统一以中证全指为基准做指数减法，并显式声明未做因子回归）？",
+    "why_it_matters": "R02-04 审查已对 2019 传媒段要求「超额 = 指数减法，非因子分离后的 Alpha」必须写明。本包在 7 条候选上均以「指数减法 + 显式声明」处理，但**未做**因子回归；若下游季节性判定会消费该超额值，则口径必须统一，否则跨段不可比。",
+    "related_candidate_ids": [
+      "R02-COMM-001",
+      "R02-COMM-002",
+      "R02-POWEREQ-001",
+      "R02-POWEROP-001"
+    ]
+  },
+  {
+    "question_id": "R02-POWEROP-Q001",
+    "question": "「电力（运营端）」的候选名称（火电 / 水电 / 核电 / 绿电）经 CMTR v1 解析后，是否落入既有根节点？还是如 R02-03 实测的「电力」一样返回 `UNRESOLVED_NAME`？",
+    "why_it_matters": "R02-03 已实测：DB `themes` 表中有「电力设备」根节点（TH-POWER）但**无**「电力」；CMTR v1 明确不使用字面/子串匹配，故「电力」返回 UNRESOLVED_NAME。若本包的火电/水电名称同样无法解析，则该方向的 3 个对象在 canonical 侧可能仍无法归族 —— 这直接决定本任务的「补样本」是否真正转化为**可评估**。",
+    "related_candidate_ids": [
+      "R02-POWEROP-001",
+      "R02-POWEROP-002"
+    ]
+  },
+  {
+    "question_id": "R02-POWEROP-Q002",
+    "question": "来源（澎湃新闻 2023-06-02）明确写出季节性主张「A 股历来有『冬炒煤、夏炒电』的说法」。本包已照录并标注为**待核验假设**。该假设应由谁、以何判据核验？",
+    "why_it_matters": "本任务的落脚点是**时间/季节性**（用户 2026-10-12 明确）。本包已把该主张与指数证据分离（E006 标 role=context、confidence=medium），避免把来源观点当作已确认的季节性结论；但**跨年份**的季节性核验需要「年内窗口 ≥3」的样本，而本任务正是为凑足样本而设 —— 即该核验必须在本包被 canonicalization **之后**、由 ThreeC Agent 按既定季节性判据执行，不应由 Research Agent 预先下结论。",
+    "related_candidate_ids": [
+      "R02-POWEROP-001"
+    ]
+  },
+  {
+    "question_id": "R02-COMM-Q003",
+    "question": "intake schema 的 `stage_proposal` 枚举（MAIN_RISE / PEAK / RETRACEMENT / DECLINING / SECONDARY / ENDED / UNKNOWN）**没有「起始段 / 主题形成段」**。当一段行情的起点在证据上可辨识、但不足以称为 MAIN_RISE 时，应如何记录？",
+    "why_it_matters": "本包因此把 2021 元宇宙段的「概念点火段」与主升段**合并**记录（同 R02-01 Q005、R02-02 Q004 的同类问题），损失了「点火 → 主升」的分界信息。若该分界对 Structural Analogy 的「证据顺序」维度有意义，则需要一个可表达的枚举值。**须由 ThreeC Agent 裁决。**",
+    "related_candidate_ids": [
+      "R02-MEDIA2-001",
+      "R02-COMM-001"
+    ]
+  }
+]

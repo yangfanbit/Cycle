@@ -1,0 +1,181 @@
+{
+  "intake_protocol_version": "0.1",
+  "research_round_id": "R02",
+  "task_id": "R02-05",
+  "task_scope": {
+    "task_id": "R02-05",
+    "family_directions": [
+      "信息通信",
+      "文化传媒",
+      "电力设备",
+      "电力（运营端）"
+    ],
+    "years": {
+      "from": 2015,
+      "to": 2025
+    },
+    "priority_a_years": {
+      "from": 2018,
+      "to": 2025
+    },
+    "priority_b_years": {
+      "from": 2015,
+      "to": 2017
+    },
+    "included_scope": "为「季节性 / 年内窗口评估」补齐**样本量**：把四个「历史对象数 < 3」的大主题（信息通信 · 文化传媒 · 电力设备 · 电力（运营端））各补到 ≥3 个历史对象。四个方向**各自独立成族**，分别给出 coverage 与 exclusions。本任务只提交 campaign_candidates / evidence / sources / securities / exclusions / conflicts / cross_task_notes / research_questions 与 macro_theme_proposals（proposal），不新增 taxonomy 行、不写 canonical、不裁决归组。",
+    "excluded_scope": "①「电力设备」（制造端）与「电力（运营端）」（运营端）**互不替代**，本包严格分列；②煤炭、流感疫苗、医药健康等其它方向不属本任务；③文化传媒**当前侧**（2026 年）研究不属本任务（本任务只做历史扩容）；④既有对象（信息通信 2019/2023 · 文化传媒 2018/2023 · 电力设备 2020/2022 · 电力（运营端）2021）**不重复提交**；⑤2015 年之前的行情不在搜索范围内（结构性资料缺口）；⑥不做 taxonomy 变更、不做 canonicalization、不裁决 Campaign 独立性。"
+  },
+  "generated_at": "2026-10-13T21:05:00+08:00",
+  "source_commit": "c742968",
+  "produced_by": "Research Agent role（AI 离线研究，2026-10-13）",
+  "source_commit_note": "★ 本沙箱**不含 .git**（实测 `git rev-parse HEAD` → `fatal: not a git repository`）。因此 `source_commit` **继承自权威 R02 task manifest 的 `source_commit`（c742968）**，**不是**本包自行测得的 commit。如实声明，避免冒充 provenance。",
+  "role_separation_declaration": "★ 协议 §3 角色分离硬规则：本包由 **Research Agent 角色**产出；对每个 candidate 的审查（八种封闭结果）与 canonicalization 属 **ThreeC Agent 角色**，**不得**为同一执行者。本包**未**写入 canonical SQLite、**未**修改 schema / export / src/**、**未**创造任何 canonical DB ID、**未**宣称 VERIFIED。",
+  "known_gaps": [
+    "★★ 信息通信 / 文化传媒 / 电力设备 / 电力（运营端）四族**各自的补样本结果**：信息通信 2 个新对象（2017 · 2020）→ 合计 4；文化传媒 1 个新对象（2021）→ 合计 3；电力设备 2 个新对象（2021 · 2022）→ 合计 4；电力（运营端）2 个新对象（2023 · 2024）→ 合计 3。★ 以上为**提交数**，是否成立须由 ThreeC Agent 审查；若某族被判 MERGE / REJECT 而回落到 <3，属**可接受的交付结果**（任务 Prompt §二.2）。",
+    "★ **一手缺失（本包已刻意不用二手顶替）**：①煤价（CECI / 中国煤炭市场网）为行业/付费口径，仅由 Tier 2 媒体转述，本包未取得一手序列；②硅料/多晶硅价格指数为付费数据库口径，未取得，故 2021 / 2022 光伏段的「上游涨价」仅列于 drivers，**未**写成 evidence；③「来水改善」仅取得研报口径，未取得一手气象/水文数据。",
+    "★ **本包未取得任何个股 A 股代码的一手来源**：故 securities 中 6 条标的的 `ticker` 与 `exchange` **一律留空**（依 R02-04 审查要求「禁止凭常识补代码」）。",
+    "★ **Beta 未分离**：所有候选的超额收益均为「指数减法」，**未做**因子回归；2017 与 2020 两段的超额中 Beta 成分明显（见 R02-COMM-001/002 的 why_not）。",
+    "★ **Meta 更名（2021-10-28）未取得一手来源**，故未列入 evidence，仅作为 R02-MEDIA2-001 的研究线索。",
+    "★ **未覆盖**：2015–2017 的 4G 建设（信息通信）、2016 传媒并购潮、2020 影院复工（文化传媒）、2019 特高压（电力设备）、2015 新电改 / 2019 核电（电力运营端）—— 均已在 exclusions 显式记录，**不编造**（协议 §1.3 原则 5）。",
+    "★ 四个主题的 taxonomy 归组（CMTR v1）与 Campaign 独立性（Independence Gate Q1–Q5）**均未裁决**，见 research_questions 与 cross_task_notes。"
+  ],
+  "task_definition_note": [
+    "本包由 ThreeC Agent 于 2026-10-13 签发的 R02-05 任务触发（`HISTORICAL_UNIVERSE_R02_TASK_MANIFEST_v0_1.json` → tasks[2]，trigger.kind = COVERAGE_FOR_SEASONALITY）。★ 目的是**让季节性评估成为可能**，**不是**「做出一个集中的结论」：补到 3 个之后若年内窗口仍不集中，那是阴性结论，同样有价值。★ 本包**未**为了凑出「集中」而挑选起止日期（所有日期均由指数一手口径或 Tier 1 政策事件决定），也**未**为凑数放宽证据门槛。"
+  ],
+  "macro_theme_proposals": [
+    {
+      "proposal_id": "R02-COMM-MT001",
+      "proposed_name": "信息通信",
+      "theme_name_candidates": [
+        "信息通信",
+        "5G网络建设/通信设备",
+        "通信设备",
+        "数据中心/IDC"
+      ],
+      "proposal_kind": "EXISTING_MACRO",
+      "rationale": "任务 manifest 的 macro_theme_candidates 已列「信息通信」，且 EXISTING_UNIVERSE 显示该 Macro Theme 已存在（既有 C-2019-COMM-5G / C-2023-COMM-OPTICAL）。本包**只补历史对象**，不新增 taxonomy 行。★ 最终归组必须由 ThreeC Agent 走 CMTR v1（`research/scripts/theme_taxonomy.py`，规则集 canonical-macro-theme-resolution-1）判定；「数据中心/IDC」是否可解析为既有节点，本包不预判。",
+      "known_overlap": [
+        "C-2019-COMM-5G（2019）",
+        "C-2023-COMM-OPTICAL（2023）"
+      ],
+      "notes": "已占年份 2019 / 2023；本包提交的起始年为 2017 与 2020。"
+    },
+    {
+      "proposal_id": "R02-MEDIA2-MT001",
+      "proposed_name": "文化传媒",
+      "theme_name_candidates": [
+        "文化传媒",
+        "元宇宙",
+        "游戏",
+        "虚拟现实"
+      ],
+      "proposal_kind": "EXISTING_MACRO",
+      "rationale": "任务 manifest 的 macro_theme_candidates 已列「文化传媒」，且 EXISTING_UNIVERSE 显示该 Macro Theme 已存在（C-2018-MEDIA-GAMELICENSE / C-2023-MEDIA-AI）。本包**只补历史对象**。★ 最终归组必须由 ThreeC Agent 走 CMTR v1 判定。",
+      "known_overlap": [
+        "C-2018-MEDIA-GAMELICENSE（2018）",
+        "C-2023-MEDIA-AI（2023）"
+      ],
+      "notes": "已占年份 2018 / 2023；本包提交的起始年为 2021。★ 本包**不重复** R02-03 / R02-04 已提交的版号段与 AI 段。"
+    },
+    {
+      "proposal_id": "R02-POWEREQ-MT001",
+      "proposed_name": "电力设备",
+      "theme_name_candidates": [
+        "电力设备",
+        "光伏/新能源发电设备",
+        "风电设备",
+        "组件出口"
+      ],
+      "proposal_kind": "EXISTING_MACRO",
+      "rationale": "任务 manifest 的 macro_theme_candidates 已列「电力设备」，且 EXISTING_UNIVERSE 显示该 Macro Theme 已存在（C-2020-POWER-NE / C-2022-POWER-GRID）。本包**只补历史对象**。★ 本方向为**制造端**；与「电力（运营端）」机制不同，不得互相顶替。★ 最终归组必须由 ThreeC Agent 走 CMTR v1 判定。",
+      "known_overlap": [
+        "C-2020-POWER-NE（2020）",
+        "C-2022-POWER-GRID（2022）"
+      ],
+      "notes": "已占年份 2020 / 2022；本包提交的起始年为 2021 与 2022（2022 为同年不同机制）。"
+    },
+    {
+      "proposal_id": "R02-POWEROP-MT001",
+      "proposed_name": "电力（运营端）",
+      "theme_name_candidates": [
+        "电力（运营端）",
+        "火电",
+        "水电",
+        "电力体制改革"
+      ],
+      "proposal_kind": "EXISTING_MACRO",
+      "rationale": "任务 manifest 的 macro_theme_candidates 已列「电力（运营端）」，且 EXISTING_UNIVERSE 显示该对象已存在（C-2021-POWER-GREEN 挂在「电力（运营端）」下）。本包**只补历史对象**。★★ 本方向为**运营端**（发电/电网运营，机制 = 成本、电价与利用率）；与「电力设备」（制造端，机制 = 设备需求与产能）**不得互相顶替**。★ 最终归组必须由 ThreeC Agent 走 CMTR v1 判定；R02-03 曾实测「电力」类名称返回 UNRESOLVED_NAME，本包不预判解析结果。",
+      "known_overlap": [
+        "C-2021-POWER-GREEN（2021）",
+        "C-2021-RES-COAL（上游变量重叠，不同族）"
+      ],
+      "notes": "已占年份 2021；本包提交的起始年为 2023 与 2024。"
+    }
+  ],
+  "cross_task_notes": [
+    {
+      "note_id": "R02-COMM-CT001",
+      "kind": "POSSIBLE_DUPLICATE",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-COMM-001"
+      ],
+      "note": "R02-COMM-001（2017 年 5G 主题预期行情）与库内既有 C-2019-COMM-5G（2019 · 5G网络建设/通信设备）同属「信息通信」且同挂「5G网络建设/通信设备」子主题，相隔约 1 年。本包主张二者驱动源不同（标准/频谱**预期** vs 牌照/网络**建设**），但**不自行裁决**，交 ThreeC Agent 走 Campaign Independence Gate Q1–Q5。★ 本包 `related_candidate_ids` 只填 intake-local id；库内 canonical id 仅在此说明文字中引用，不写入任何 `*_id(s)` 字段（协议 §6.1 / §12）。"
+    },
+    {
+      "note_id": "R02-COMM-CT002",
+      "kind": "OVERLAP",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-COMM-002"
+      ],
+      "note": "R02-COMM-002（2020 · 新基建）与既有 2019 段（C-2019-COMM-5G，5G 建设）与 2023 段（C-2023-COMM-OPTICAL，AI 算力/光模块）在「5G/通信基础设施」上有交叉。本包主张 2020 段的机制为**政策（新基建）+ 算力基础设施资本开支**，与两段均不同轴，交 ThreeC Agent 判定。★ canonical id 仅在此说明文字中引用。"
+    },
+    {
+      "note_id": "R02-COMM-CT003",
+      "kind": "BOUNDARY",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-COMM-002"
+      ],
+      "note": "R02-COMM-002 的 `theme_name_candidates` 含「数据中心/IDC」—— 该概念与「电子 / 计算机」族高度交叉，且既有 DB `themes` 表中无对应节点。按覆盖计划 §3.4 的顺序：本包只提交原始名称，最终归组（RESOLVED / CONFLICT / UNRESOLVED_NAME）由 ThreeC Agent 用 CMTR v1 判定，本包**不**自行归族。"
+    },
+    {
+      "note_id": "R02-POWEREQ-CT001",
+      "kind": "OVERLAP",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-POWEREQ-001",
+        "R02-POWEREQ-002"
+      ],
+      "note": "R02-POWEREQ-001（2021 光伏设备）与 C-2020-POWER-NE（2020 光伏/新能源发电设备）同子主题、相邻年份；R02-POWEREQ-002（2022 光伏设备出口）与 C-2022-POWER-GRID（2022 电网/输变电设备）同年但机制不同（海外需求 vs 国内电网投资）。本包已用「2021-08-30 → 2022-04-26 的 -44.48% 深回撤」作为 2021 段与 2022 段可分离的形式证据，但**不自行裁决**。★ canonical id 仅在此说明文字中引用。"
+    },
+    {
+      "note_id": "R02-POWEROP-CT001",
+      "kind": "OVERLAP",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-POWEROP-001",
+        "R02-POWEROP-002"
+      ],
+      "note": "★ 两条候选的机制轴与**其他族**存在跨族重叠：①R02-POWEROP-001（2023 火电）的上游变量是**煤价**，与资源族煤炭段（C-2021-RES-COAL / C-2023-RES-COAL-DIVIDEND）共享同一上游变量（但主体不同：发电运营商 vs 煤炭开采）；②R02-POWEROP-002（2024）含「红利重估」成分，与 C-2023-RES-COAL-DIVIDEND、C-2024-FIN-BANK-DIVIDEND 属**同一机制轴、不同行业** —— 按协议 §1.4「机制轴相同不构成重复」，但须记录。"
+    },
+    {
+      "note_id": "R02-POWEROP-CT002",
+      "kind": "BOUNDARY",
+      "target_task_id": null,
+      "related_candidate_ids": [
+        "R02-POWEROP-001",
+        "R02-POWEROP-002"
+      ],
+      "note": "★ 任务 manifest 硬约束：「电力设备」与「电力（运营端）」是两个不同的根，机制不同（制造 vs 运营），不得互相顶替。本包的 R02-POWEREQ-*（制造端）与 R02-POWEROP-*（运营端）严格分列，且各自的 `excluded_scope` 与 `why_not` 均写明对方不属本方向。★ 另：R02-03 曾实测「电力」类名称经 CMTR v1 返回 UNRESOLVED_NAME（DB 中只有「电力设备」根节点）—— 该事实沿用。"
+    },
+    {
+      "note_id": "R02-MEDIA2-CT001",
+      "kind": "HANDOFF",
+      "target_task_id": null,
+      "related_candidate_ids": [],
+      "note": "文化传媒**当前侧**（2026 年）研究不在本任务范围（本任务只做历史扩容）。该需求由 R02-03 的 `record_correction.point_4` 记录为「两侧都建」中的当前侧，须另行授权。"
+    }
+  ]
+}

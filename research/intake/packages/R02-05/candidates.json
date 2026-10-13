@@ -1,0 +1,959 @@
+[
+  {
+    "candidate_id": "R02-COMM-001",
+    "title": "2017 年 5G 主题「标准与频谱预期」驱动的通信板块行情",
+    "year": 2017,
+    "macro_theme_proposal": "信息通信（既有 Macro Theme；SUB_THEME 提案：5G网络建设/通信设备，待 CMTR v1）",
+    "theme_name_candidates": [
+      "信息通信",
+      "5G网络建设/通信设备",
+      "5G",
+      "通信设备"
+    ],
+    "theme_summary": "以 5G 国际标准制定与国内频谱规划预期为主线的一段通信板块行情。上行自 2017 年 8 月末启动，2017-09 出现 5G 概念股涨停潮，2017-11-15 工信部发布 5G 系统中频段频率使用规划后于 2017-11-21/22 见顶，其后随大盘调整回落至 2018-02-09。机制为**预期驱动（标准/频谱/试验）**，与既有 C-2019-COMM-5G（2019 · 牌照落地与网络建设）在驱动源上可分辨，但该判断须由 ThreeC Agent 走 Campaign Independence Gate 判定。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2017-08-31",
+          "window_end": "2017-09-29",
+          "phase_note": null,
+          "basis": "中证5G通信主题指数（931079）自 2017-08-31 收 907.46 上行至 2017-09-29 收 1026.97；同期媒体（证券时报网 2017-09-29）记载 5G 概念股涨停潮。本包**不**声称更精确的起涨日。",
+          "source_ids": [
+            "R02-COMM-S001",
+            "R02-COMM-S009"
+          ],
+          "evidence_ids": [
+            "R02-COMM-E001",
+            "R02-COMM-E009"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2017-11-21",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "931079 于 2017-11-21 收 1133.22，为该段最高收盘；次日（11-22）中证全指通信服务指数（000994）收 7510.12 见顶。政策侧 2017-11-15 工信部发布 5G 中频段频率使用规划，媒体同日记载 5G 概念股大涨、中兴通讯创上市新高。",
+          "source_ids": [
+            "R02-COMM-S001",
+            "R02-COMM-S002",
+            "R02-COMM-S006",
+            "R02-COMM-S008"
+          ],
+          "evidence_ids": [
+            "R02-COMM-E002",
+            "R02-COMM-E003",
+            "R02-COMM-E006",
+            "R02-COMM-E008"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "两指数峰值相邻一日（931079 = 11-21，000994 = 11-22），本包取 931079 口径并保留另一口径，见 conflicts CF001。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2018-02-09",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "931079 于 2018-02-09 收 825.64，为该段最低收盘，自峰值回撤 -27.14%。本包**不**声称此为该段的「终局日」，仅界定该段在证据范围内的低点。",
+          "source_ids": [
+            "R02-COMM-S001"
+          ],
+          "evidence_ids": [
+            "R02-COMM-E002"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2017-08-31",
+        "end": "2017-11-21",
+        "basis": "931079 自 907.46 升至 1133.22（+24.88%）；同期中证全指 +12.91%、沪深300 +20.58%。政策侧：5G 标准制定推进 + 2017-11-15 频谱规划。",
+        "notes": "★ 本段超额收益**含 Beta 成分**（2017 年大盘本身上行，沪深300 全年 +20.6%），本包不声称其为纯 Alpha。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2017-11-21",
+        "end": "2017-11-21",
+        "basis": "931079 收 1133.22，为该段最高收盘。",
+        "notes": "峰值为单日锚点。"
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2017-11-22",
+        "end": "2018-02-09",
+        "basis": "931079 回落至 825.64，自峰值 -27.14%；同期沪深300 自 4217.70 回落至 3840.65（-8.94%），通信板块跌幅显著大于大盘。",
+        "notes": "本段为**下行**；本包仅界定其低点，不推断终局。"
+      }
+    ],
+    "classification_proposal": "theme_campaign",
+    "drivers": {
+      "start": [
+        "5G 国际标准制定进入第一版基础版本的关键期，市场形成「5G 建设周期临近」的预期",
+        "国内 5G 技术研发试验推进"
+      ],
+      "accelerator": [
+        "2017-09 出现 5G 概念股涨停潮（中通国脉、武汉凡谷等）",
+        "2017-11-15 工信部发布 5G 系统在 3000-5000MHz 频段内的频率使用规划 —— 中国成为国际上率先发布 5G 中频段频率使用规划的国家"
+      ],
+      "turning": [
+        "★ 本包**未取得**该段转折的事件性一手证据；指数自 2017-11-21 后回落，同期大盘亦自 2017-11-22 见顶回落，二者**同向**，故无法把转折单独归因于 5G 主题自身。"
+      ],
+      "ending": [
+        "2018-01 至 2018-02 通信板块跌幅显著大于大盘（931079 -27.14% vs 沪深300 -8.94%）"
+      ]
+    },
+    "evidence_ids": [
+      "R02-COMM-E001",
+      "R02-COMM-E002",
+      "R02-COMM-E003",
+      "R02-COMM-E004",
+      "R02-COMM-E005",
+      "R02-COMM-E006",
+      "R02-COMM-E007",
+      "R02-COMM-E008",
+      "R02-COMM-E009"
+    ],
+    "security_ids": [
+      "R02-COMM-SEC001",
+      "R02-COMM-SEC002"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "①E006（2017-11-15 工信部频率规划）为 Tier 1 一手，属 contemporaneous 且可作 point-in-time 依据；②E001—E005 为指数口径，其点位为**当时即可观察**的同期事实，故 support_kind 含 point_in_time_support；③E007—E009 为同期媒体（10-10 / 11-21 / 09-29 发布），属 contemporaneous，但其中个股口径为**港股或未给代码**，已记入 description。",
+    "why_campaign": "具备可核验的 start（窗口）/ peak / 降温低点三段结构；上行期相对全市场有可量化超额（931079 +24.88% vs 中证全指 +12.91%）；驱动源（标准与频谱**预期**）与既有 C-2019-COMM-5G（牌照与**建设**）可分辨；峰谷均为一手指数口径。",
+    "why_not": "★ 本包主动列出反对理由：①**Beta 成分**——2017 年沪深300 全年 +20.6%，本段超额仅约 +12pp（对中证全指）/+4.3pp（对沪深300，按 E005 口径 24.88%−20.58%），**不足以单独证明**其为独立于大盘的主题行情；②**转折归因不成立**——2017-11-22 沪深300 同步见顶，无法把该段结束归因于 5G 主题自身；③**与 C-2019-COMM-5G 的边界**——同属「信息通信 · 5G网络建设/通信设备」，相隔约 1 年，是否属同一 Theme Cycle 的两个阶段，本包**无权裁决**，须走 Campaign Independence Gate Q1–Q5；④本包**未取得**该段任何个股 A 股代码来源，故 securities 的 ticker 一律留空待核。",
+    "notes": "★ 本候选是任务 Prompt §二.3「需要**新的**历史段」的落点之一（已占年份 2019 / 2023，本段为 2017，未被占用）。",
+    "possible_duplicate_of": [
+      "C-2019-COMM-5G"
+    ]
+  },
+  {
+    "candidate_id": "R02-COMM-002",
+    "title": "2020 年「新基建」政策驱动的 5G 网络与数据中心行情",
+    "year": 2020,
+    "macro_theme_proposal": "信息通信（既有 Macro Theme；SUB_THEME 提案：5G网络建设/通信设备 + 数据中心/IDC，待 CMTR v1）",
+    "theme_name_candidates": [
+      "信息通信",
+      "5G网络建设/通信设备",
+      "数据中心/IDC",
+      "新基建"
+    ],
+    "theme_summary": "以 2020-03-04 中央政治局常委会会议「加快 5G 网络、数据中心等新型基础设施建设进度」为政策起点的一段通信/算力基础设施行情。指数自 2020-03-31（全球疫情冲击低点）回升至 2020-07-13 见顶，其后回落。驱动为**政策（新基建）+ 云厂商与运营商资本开支预期**，与 2019 段的牌照/建设驱动、2023 段（C-2023-COMM-OPTICAL）的 AI 算力需求驱动均不同轴。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-03-04",
+          "window_end": "2020-04-20",
+          "phase_note": null,
+          "basis": "政策窗口：2020-03-04 中央政治局常委会会议首提加快 5G 网络、数据中心等新型基础设施建设进度（E012）；2020-04-20 前后官方进一步明确新基建范围（本包仅取得 Tier 2/3 转述，未取得该次表述的一手原文，故不单列该日为锚）。指数侧 931079 于 2020-03-31 收 875.94 见底。",
+          "source_ids": [
+            "R02-COMM-S010",
+            "R02-COMM-S011",
+            "R02-COMM-S001"
+          ],
+          "evidence_ids": [
+            "R02-COMM-E011",
+            "R02-COMM-E012",
+            "R02-COMM-E013"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "政策锚（03-04）早于指数低点（03-31）：03-04 之后指数仍因全球疫情冲击继续下行。本包按「政策起点 ≠ 行情低点」如实并列记录，**不**为得到漂亮区间而改选起点。"
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2020-07-13",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "931079 于 2020-07-13 收 1304.30，为该段最高收盘；931160（中证全指通信设备）同日收 7435.88（该指数 2020 年内最高收盘为 2020-02-25 的 7560.65，属疫情后反弹段，不在本段范围内）。",
+          "source_ids": [
+            "R02-COMM-S001",
+            "R02-COMM-S003"
+          ],
+          "evidence_ids": [
+            "R02-COMM-E010",
+            "R02-COMM-E011"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2020-07-15",
+          "window_end": "2020-09-30",
+          "phase_note": null,
+          "basis": "2020-07-15/07-16 连续大跌（931079 1286.10 → 1220.15 → 1136.52），至 2020-09-30 收 1053.10，跌破 6 月末水平。本包**不**声称此为终局日，仅界定降温窗口。",
+          "source_ids": [
+            "R02-COMM-S001"
+          ],
+          "evidence_ids": [
+            "R02-COMM-E011"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2020-03-31",
+        "end": "2020-07-13",
+        "basis": "931079 自 875.94 升至 1304.30（+48.90%）；931160 自 5884.94 升至 7435.88（+26.35%）；同期沪深300 自 3686.16 升至 4852.96（+31.65%）。",
+        "notes": "★ 对**沪深300** 的超额（931079 +17.25pp）明显，但对 931160 而言同期跑输沪深300（-5.30pp）—— 口径差异已如实记录，见 conflicts CF002。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2020-07-13",
+        "end": "2020-07-13",
+        "basis": "931079 收 1304.30，为该段最高收盘。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2020-07-15",
+        "end": "2020-09-30",
+        "basis": "931079 回落至 1053.10，自峰值 -19.26%。",
+        "notes": "本段为**下行**。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "2020-03-04 中央政治局常委会会议提出加快 5G 网络、数据中心等新型基础设施建设进度",
+        "数据中心被正式定义为「新基建」"
+      ],
+      "accelerator": [
+        "互联网企业、云厂商与运营商表示加大对数据中心基础设施投入",
+        "5G 独立组网建设推进、运营商年度基站建设计划"
+      ],
+      "turning": [
+        "★ 本包未取得该段转折的一手事件证据；指数自 2020-07-13 后回落，与大盘同期（沪深300 于 2020-07 亦震荡）部分同向，故转折归因**不充分**。"
+      ],
+      "ending": [
+        "2020-07-15/16 连续大跌，至 2020-09-30 跌破 6 月末水平"
+      ]
+    },
+    "evidence_ids": [
+      "R02-COMM-E001",
+      "R02-COMM-E005",
+      "R02-COMM-E010",
+      "R02-COMM-E011",
+      "R02-COMM-E012",
+      "R02-COMM-E013"
+    ],
+    "security_ids": [],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "①E012 为 2020-03-05 对 2020-03-04 中央会议的权威媒体报道，属 contemporaneous（事件次日），可作为同期催化依据，但**非**会议文件原文；②E010/E011 为指数口径，同期可观察；③本包**未取得**任何公司公告（云厂商投资额等）的一手来源，故未提交相关证据 —— 按协议「宁可空缺，不得凑数」。",
+    "why_campaign": "具备政策起点 + 指数可核验的峰谷结构；931079 相对沪深300 有可量化超额（+17.25pp）；驱动源（新基建政策 + 算力基础设施资本开支）与 C-2019-COMM-5G（牌照/网络建设）及 C-2023-COMM-OPTICAL（AI 算力需求）均不同轴。",
+    "why_not": "★ 本包主动列出反对理由：①**口径分歧**——931079（+48.90%）与 931160（+26.35%）在该窗口内表现差异大，且 931160 跑输沪深300，说明「通信板块」内部并不同步，本段的「主题」边界不清晰；②**2020-02 段未纳入**——931160 在 2020-02-25 的年内最高收盘（7560.65）属疫情后流动性反弹段，本包未将其并入，也未另立候选（该段性质更接近 Beta，见 exclusions）；③**与 C-2019-COMM-5G 的边界**——同为 5G 建设主题，相隔 1 年，须走 Independence Gate；④**IDC 归族争议**——「数据中心/IDC」在既有 taxonomy 中无对应节点，本包仅作 theme_name_candidates 提交，最终归组由 CMTR v1 判定（见 cross_task_notes CT005）。",
+    "notes": "★ 已占年份 2019 / 2023，本段为 2020，未被占用。",
+    "possible_duplicate_of": [
+      "C-2019-COMM-5G"
+    ]
+  },
+  {
+    "candidate_id": "R02-MEDIA2-001",
+    "title": "2021 年「元宇宙」概念驱动的传媒 / 游戏板块行情",
+    "year": 2021,
+    "macro_theme_proposal": "文化传媒（既有 Macro Theme；SUB_THEME 提案：元宇宙 / 游戏 / 虚拟现实，待 CMTR v1）",
+    "theme_name_candidates": [
+      "文化传媒",
+      "元宇宙",
+      "游戏",
+      "虚拟现实"
+    ],
+    "theme_summary": "由海外巨头布局（Roblox 上市、Facebook 表态、字节跳动收购 Pico）与国内公司公告（中青宝 2021-09-06 宣布元宇宙游戏《酿酒大师》）共同点火的一段概念行情。中证动漫游戏指数自 2021-08-20 低点升至 2022-01-05 高点（+43.51%），同期沪深300 仅 +2.07%。机制为**概念/情绪催化**（卖方研究明确记为「情绪面催化行情」），与既有 C-2018-MEDIA-GAMELICENSE（监管周期）、C-2023-MEDIA-AI（技术主题）均不同轴。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-09-06",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "2021-09-06 中青宝公告将推出元宇宙游戏《酿酒大师》，被媒体记为概念启动日（证券日报 2021-09-14：「9 月 6 日，中青宝宣布……」）；同期指数自 2021-08-20 低点 1255.89 已开始回升。",
+          "source_ids": [
+            "R02-MEDIA2-S004",
+            "R02-MEDIA2-S001"
+          ],
+          "evidence_ids": [
+            "R02-MEDIA2-E001",
+            "R02-MEDIA2-E005"
+          ],
+          "confidence": "high",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2022-01-05",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "930901（中证动漫游戏）于 2022-01-05 收 1802.38，为该段最高收盘；399971（中证传媒）与 930821（中证虚拟现实）同日见段内最高收盘（1386.74 / 3440.57）。三个口径同日一致。",
+          "source_ids": [
+            "R02-MEDIA2-S001",
+            "R02-MEDIA2-S002",
+            "R02-MEDIA2-S003"
+          ],
+          "evidence_ids": [
+            "R02-MEDIA2-E001",
+            "R02-MEDIA2-E002",
+            "R02-MEDIA2-E003"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "★ 峰值落在 **2022-01-05**（跨年）。本包按证据如实记录，**不**把峰值改记为 2021-12-31 以求「年内闭合」；candidate.year 按**起始年**记 2021（沿用既有对象的起始年口径）。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-01-05",
+          "window_end": "2022-01-28",
+          "phase_note": null,
+          "basis": "2022 年 1 月传媒板块整体回调、元宇宙概念龙头带头回调（中银策略 2022-01-12）；930901 至 2022-01-28 收 1415.14，自峰值 -21.49%。",
+          "source_ids": [
+            "R02-MEDIA2-S006",
+            "R02-MEDIA2-S001"
+          ],
+          "evidence_ids": [
+            "R02-MEDIA2-E001",
+            "R02-MEDIA2-E007"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2021-09-06",
+        "end": "2022-01-05",
+        "basis": "930901 自 2021-08-20 低点 1255.89 升至 2022-01-05 高点 1802.38（+43.51%）；399971 +32.92%；930821 +17.71%；同期沪深300 仅 +2.07%。",
+        "notes": "★ 起点（2021-09-06）晚于指数低点（2021-08-20）：本包按「事件起点 ≠ 行情低点」如实并列记录。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2022-01-05",
+        "end": "2022-01-05",
+        "basis": "三个指数口径同日见段内最高收盘。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2022-01-06",
+        "end": "2022-01-28",
+        "basis": "930901 回落至 1415.14（-21.49%）；卖方研究归因于业绩预告期担忧、NFT 等业务未落地、海外中概互联网股回调。",
+        "notes": "本段为**下行**。"
+      }
+    ],
+    "classification_proposal": "event_driven",
+    "drivers": {
+      "start": [
+        "海外映射：2021-03 Roblox 于纽交所上市；2021-05 Facebook 表示 5 年内转型元宇宙公司；2021-08 底字节跳动收购 VR 创业公司 Pico",
+        "国内点火：2021-09-06 中青宝公告元宇宙游戏《酿酒大师》"
+      ],
+      "accelerator": [
+        "2021-09-13 中青宝五个交易日上涨 116.7%",
+        "2021-10-28 Facebook 正式更名 Meta（★ 本包**未取得**该事实的一手来源，故未作为 evidence 提交，仅在此列为研究线索，见 known_gaps）",
+        "传媒板块 Q3-Q4 情绪面升温（浙商证券）"
+      ],
+      "turning": [
+        "2022 年 1 月业绩预告期担忧",
+        "国内板块对 NFT 等热炒业务暂无实际布局",
+        "海外中概互联网股回调传导"
+      ],
+      "ending": [
+        "2022-01 元宇宙概念龙头带头回调，930901 自峰值 -21.49%"
+      ]
+    },
+    "evidence_ids": [
+      "R02-MEDIA2-E001",
+      "R02-MEDIA2-E002",
+      "R02-MEDIA2-E003",
+      "R02-MEDIA2-E004",
+      "R02-MEDIA2-E005",
+      "R02-MEDIA2-E006",
+      "R02-MEDIA2-E007"
+    ],
+    "security_ids": [
+      "R02-MEDIA2-SEC001"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "①E005（证券日报 2021-09-14）为同期报道，属 contemporaneous，可作起点依据；②E006（浙商证券 2021-12-30）、E007（中银策略 2022-01-12）均为区间内发布，属 contemporaneous；③E001—E004 为指数口径，同期可观察；④★ 本包**未**取得 Meta 更名（2021-10-28）等海外事件的一手来源，故未列入 evidence。",
+    "why_campaign": "起点有明确的事件锚（公司公告，经 Tier 2 媒体记载）；峰值由三个指数口径同日一致确认；相对沪深300 超额约 +41.44pp，**不是噪声**；机制（概念情绪）与族内既有两段（监管周期、技术主题）均不同轴。",
+    "why_not": "★ 本包主动列出反对理由：①**峰值跨年**——峰值 2022-01-05 不在 candidate.year（2021）内，若 ThreeC Agent 要求「年内闭合」，则本段须改记 year=2021 并跨年（本包已如此处理），或需裁定是否改为 2022；②**机制为情绪面**——卖方研究自身即记为「情绪面催化行情」，其「可解释 start / end」的强度弱于政策或业绩驱动的段；③**与 C-2023-MEDIA-AI 的边界**——2023 年 AI 行情亦推动传媒/游戏，两段相隔约 1 年，须走 Independence Gate；④**个股代码缺失**——本包未取得中青宝 A 股代码的一手来源，ticker 留空待核。",
+    "notes": "★ 已占年份 2018 / 2023，本段起始年为 2021，未被占用。★ 本包**不重复** R02-03/R02-04 已提交的 2018 版号段与 2023 AI 段。",
+    "possible_duplicate_of": []
+  },
+  {
+    "candidate_id": "R02-POWEREQ-001",
+    "title": "2021 年「双碳」目标与硅料涨价驱动的光伏 / 新能源发电设备行情（制造端）",
+    "year": 2021,
+    "macro_theme_proposal": "电力设备（既有 Macro Theme；SUB_THEME 提案：光伏/新能源发电设备，待 CMTR v1）",
+    "theme_name_candidates": [
+      "电力设备",
+      "光伏/新能源发电设备",
+      "光伏",
+      "风电设备"
+    ],
+    "theme_summary": "2021 年制造端（光伏产业链）行情：中证光伏产业指数自 2021-03-09 低点升至 2021-08-30 高点（+90.24%），同期沪深300 为 -3.17%。驱动为**双碳政策目标 + 整县推进分布式光伏 + 上游硅料价格大幅上行**。本段属**制造端**（组件/硅料/设备），与同族「电力（运营端）」机制不同，不得互相顶替。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-03-09",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "931151（中证光伏产业）于 2021-03-09 收 3097.37，为该段最低收盘；399808（中证新能源）同日收 2726.65。本包**不**声称该日为「政策日」，仅以指数可核验低点作为段起点。",
+          "source_ids": [
+            "R02-POWEREQ-S001",
+            "R02-POWEREQ-S002"
+          ],
+          "evidence_ids": [
+            "R02-POWEREQ-E001",
+            "R02-POWEREQ-E002"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2021-08-30",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "931151 于 2021-08-30 收 5892.54，为 2021 年内最高收盘；★ 399808 的 2021 年内最高收盘为 2021-11-22 的 5096.52（不同日）。本包取 931151 口径并保留另一口径。",
+          "source_ids": [
+            "R02-POWEREQ-S001",
+            "R02-POWEREQ-S002"
+          ],
+          "evidence_ids": [
+            "R02-POWEREQ-E001",
+            "R02-POWEREQ-E002"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": "两指数年内峰值相差近 3 个月（931151 = 08-30；399808 = 11-22）。按协议「冲突不得被自动取舍」保留双方，见 conflicts CF003。"
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2021-08-30",
+          "window_end": "2021-12-31",
+          "phase_note": null,
+          "basis": "931151 自 2021-08-30 高点回落至 2021-12-31 收 5302.90（-10.01%）；其后于 2022-04-26 进一步跌至 3271.77（自高点 -44.48%）。本包以 2021 年末为段末窗口，**不**声称终局日。",
+          "source_ids": [
+            "R02-POWEREQ-S001"
+          ],
+          "evidence_ids": [
+            "R02-POWEREQ-E005"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2021-03-09",
+        "end": "2021-08-30",
+        "basis": "931151 自 3097.37 升至 5892.54（+90.24%）；399808 自 2726.65 升至 4905.68（+79.92%，同日至 2021-08-30）；同期沪深300 -3.17%。政策侧：2021-06 整县推进分布式光伏试点通知（Tier 1）。",
+        "notes": "相对强度显著（对沪深300 超额约 +93.41pp），Beta 成分不足以解释该幅度。"
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2021-08-30",
+        "end": "2021-08-30",
+        "basis": "931151 收 5892.54，2021 年内最高收盘。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2021-08-31",
+        "end": "2021-12-31",
+        "basis": "931151 回落至 5302.90（自峰值 -10.01%）；★ 399808 于 2021-11-22 才见年内高点，故两口径的降温起点不同。",
+        "notes": "本段为**下行**。"
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "「双碳」目标下的新能源装机长期预期",
+        "上游硅料价格进入上行通道，产业链利润向设备/材料端集中"
+      ],
+      "accelerator": [
+        "2021-06 国家能源局综合司印发整县（市、区）屋顶分布式光伏开发试点方案报送通知，2021-09-08 公布试点名单（Tier 1）",
+        "全球能源转型背景下的海外装机需求"
+      ],
+      "turning": [
+        "★ 本包**未取得**该段转折的一手事件证据；指数自 2021-08-30 后回落，而 399808 至 11-22 仍创新高，说明板块内部已分化。转折归因**不充分**。"
+      ],
+      "ending": [
+        "931151 至 2021-12-31 较高点回落 -10.01%，并在 2022 年 4 月进一步下跌 -44.48%"
+      ]
+    },
+    "evidence_ids": [
+      "R02-POWEREQ-E001",
+      "R02-POWEREQ-E002",
+      "R02-POWEREQ-E003",
+      "R02-POWEREQ-E004"
+    ],
+    "security_ids": [],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "①E004 为 Tier 1 一手政策（gov.cn），属 contemporaneous 且可作 point-in-time 依据；②E001—E003 为指数口径，同期可观察；③★ 本包**未取得**硅料价格的一手数据来源（多晶硅价格指数属付费/行业数据库口径），故**未**把「硅料涨价」写成 evidence，仅作为研究线索列于 drivers，并记入 known_gaps。",
+    "why_campaign": "峰值与起点均为一手指数口径、可由审查方按同一 URL 复算；相对沪深300 超额约 +93.41pp，量级远超 Beta 解释力；政策锚为 Tier 1 一手。",
+    "why_not": "★★ 本包主动列出**最强**反对理由：①**与 C-2020-POWER-NE 的边界**——两者同属「电力设备 · 光伏/新能源发电设备」，2020 年该指数亦上涨 +105.1%，本段（2021）可能只是同一上行周期的延续，而非独立 Campaign。本包主张可分辨（2020 段驱动为平价上网后的**需求爆发**；2021 段驱动为**双碳政策 + 上游涨价 + 整县推进**），但该判据是否充分**必须**由 ThreeC Agent 走 Campaign Independence Gate Q1–Q5 判定；②**峰谷口径分歧**——两个指数年内峰值相差近 3 个月；③本包未取得任何个股代码来源，securities 为空数组（不凭常识补标的）。",
+    "notes": "★ 已占年份 2020 / 2022，本段为 2021，未被占用。★ 本段为**制造端**；与「电力（运营端）」机制不同，不得互相顶替。",
+    "possible_duplicate_of": [
+      "C-2020-POWER-NE"
+    ]
+  },
+  {
+    "candidate_id": "R02-POWEREQ-002",
+    "title": "2022 年海外能源危机驱动的光伏组件出口行情（制造端）",
+    "year": 2022,
+    "macro_theme_proposal": "电力设备（既有 Macro Theme；SUB_THEME 提案：光伏/新能源发电设备，待 CMTR v1）",
+    "theme_name_candidates": [
+      "电力设备",
+      "光伏/新能源发电设备",
+      "光伏",
+      "组件出口"
+    ],
+    "theme_summary": "2022 年制造端行情：中证光伏产业指数自 2022-04-26 低点升至 2022-08-18 高点（+76.07%），同期沪深300 +10.46%。驱动为**海外（尤其欧洲）能源危机下的组件出口激增**（2022H1 组件出口量同比 +74.3%、出口额同比 +116.1%）叠加硅料价格高位。★ 本段与既有 C-2022-POWER-GRID（2022 · 电网/输变电设备）**同年但机制不同**（海外需求 vs 国内电网投资），本包按「同一年不同机制亦可，但须说明」显式说明并交 ThreeC Agent 判定。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2022-04-26",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "931151 于 2022-04-26 收 3271.77，为 2022 年内最低收盘（亦为该指数自 2021-08-30 高点回撤 -44.48% 的低点）；同期沪深300 收 3784.12。",
+          "source_ids": [
+            "R02-POWEREQ-S001",
+            "R02-COMM-S005"
+          ],
+          "evidence_ids": [
+            "R02-POWEREQ-E005",
+            "R02-POWEREQ-E006"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2022-08-18",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "931151 于 2022-08-18 收 5760.49，为 2022 年内最高收盘；自低点 +76.07%。",
+          "source_ids": [
+            "R02-POWEREQ-S001"
+          ],
+          "evidence_ids": [
+            "R02-POWEREQ-E005"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2022-08-18",
+          "window_end": "2022-12-30",
+          "phase_note": null,
+          "basis": "931151 自 2022-08-18 高点回落至 2022-12-30 收 4234.33（自峰值 -26.49%）。",
+          "source_ids": [
+            "R02-POWEREQ-S001"
+          ],
+          "evidence_ids": [
+            "R02-POWEREQ-E005"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2022-04-26",
+        "end": "2022-08-18",
+        "basis": "931151 自 3271.77 升至 5760.49（+76.07%）；同期沪深300 +10.46%（超额约 +65.61pp）。需求侧：2022H1 组件出口量 +74.3%、出口额 +116.1%。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2022-08-18",
+        "end": "2022-08-18",
+        "basis": "931151 收 5760.49，2022 年内最高收盘。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2022-08-19",
+        "end": "2022-12-30",
+        "basis": "931151 回落至 4234.33（-26.49%）。",
+        "notes": "本段为**下行**。"
+      }
+    ],
+    "classification_proposal": "industry_trend",
+    "drivers": {
+      "start": [
+        "2022 年 2 月俄乌冲突后欧洲能源价格飙升，海外（尤其欧洲）分布式与集中式光伏装机需求激增",
+        "2022 年 4 月为全市场低点（沪深300 同期亦处年内低位）"
+      ],
+      "accelerator": [
+        "2022H1 中国组件出口量同比 +74.3%、出口额同比 +116.1%",
+        "分布式光伏延续高增长，2022Q1 光伏「淡季不淡」（2022-05-17 国家能源局数据：1-4 月光伏新增装机 16.88GW 居首）"
+      ],
+      "turning": [
+        "★ 本包未取得该段转折的一手事件证据；2022-08-18 后回落，部分与大盘同期调整同向。"
+      ],
+      "ending": [
+        "931151 至 2022-12-30 较峰值回落 -26.49%"
+      ]
+    },
+    "evidence_ids": [
+      "R02-POWEREQ-E005",
+      "R02-POWEREQ-E006",
+      "R02-POWEREQ-E007",
+      "R02-POWEREQ-E008"
+    ],
+    "security_ids": [],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "①E007 为 2022-09-01 发布的行业研报（描述 2022H1 出口数据），属 contemporaneous 但为**事后汇总**口径，本包仅用于证明「出口激增确实发生」；②E008 为 2022-06-07 同期报道，属 contemporaneous；③E005/E006 为指数口径，同期可观察。",
+    "why_campaign": "起点与峰值均为一手指数口径；相对沪深300 超额约 +65.61pp；驱动（海外能源危机 → 组件出口激增）为**可量化、可核验**的产业事实，与同族既有两段的机制（国内需求爆发 / 国内电网投资）均不同轴。",
+    "why_not": "★ 本包主动列出反对理由：①**与 C-2022-POWER-GRID 同年**——2022 年已有「电网/输变电设备」对象，本段为同年不同机制（海外需求 vs 国内电网投资）。按协议 §1.4 规则 4「同一时间 ≠ 同一个 Campaign」，两者可并存，但**须由 ThreeC Agent 判定**；②**与 R02-POWEREQ-001 的边界**——本段与本包 2021 段同属光伏设备，中间夹一段 -44.48% 的深回撤（本包据此主张可分离），但该判据是否充分须走 Independence Gate；③**硅料口径缺失**——本包未取得硅料价格的一手数据来源；④本包未取得任何个股代码来源，securities 为空数组。",
+    "notes": "★ 2022 年已由 C-2022-POWER-GRID 占用（电网/输变电设备）；本段为同年**不同机制**，已按任务 Prompt §二.3「同一年不同机制亦可，但须说明」显式说明。",
+    "possible_duplicate_of": [
+      "C-2022-POWER-GRID",
+      "R02-POWEREQ-001"
+    ]
+  },
+  {
+    "candidate_id": "R02-POWEROP-001",
+    "title": "2023 年煤价下行与迎峰度夏驱动的火电 / 电力运营行情",
+    "year": 2023,
+    "macro_theme_proposal": "电力（运营端）（既有 Macro Theme；SUB_THEME 提案：火电 / 煤电，待 CMTR v1）",
+    "theme_name_candidates": [
+      "电力（运营端）",
+      "火电",
+      "煤电",
+      "电力体制改革"
+    ],
+    "theme_summary": "2023 年上半年电力运营端（尤其火电）行情：中证全指公用事业指数自 2023-01-03 升至 2023-05-29 高点（+10.93%），同期沪深300 为 -1.39%；媒体引用的中证全指电力指数（H30199）2023-01-01 至 05-31 涨 11.36%。驱动为**燃料成本下行（煤价同比近 -30%）+ 夏季用电高峰预期 + 新一轮电改预期**。★ 本段为**运营端**（成本—电价剪刀差），与同族既有 C-2021-POWER-GREEN（绿电/新能源运营商）机制不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-01-03",
+          "window_end": "2023-03-31",
+          "phase_note": null,
+          "basis": "000995 于 2023-01-03 收 2329.82 为年初基准；媒体记载煤价自 2022-10 起逐步回落、2023 春节后加速（本包未取得煤价一手序列，见 known_gaps）。本包以年初至一季末为起点窗口，**不**编造精确起涨日。",
+          "source_ids": [
+            "R02-POWEROP-S001",
+            "R02-POWEROP-S002"
+          ],
+          "evidence_ids": [
+            "R02-POWEROP-E001",
+            "R02-POWEROP-E003"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2023-05-29",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "000995 于 2023-05-29 收 2584.43，为 2023 年内最高收盘；当日火电板块（申万三级）涨 5.07%、28 家中 27 家上涨，电力板块指数盘中创当年新高。",
+          "source_ids": [
+            "R02-POWEROP-S001",
+            "R02-POWEROP-S002",
+            "R02-POWEROP-S003"
+          ],
+          "evidence_ids": [
+            "R02-POWEROP-E001",
+            "R02-POWEROP-E003",
+            "R02-POWEROP-E004"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2023-05-29",
+          "window_end": "2023-10-23",
+          "phase_note": null,
+          "basis": "000995 自 2023-05-29 高点回落至 2023-10-23 收 2211.32（2023 年内最低收盘，自峰值 -14.44%）。本包**不**声称此为终局日。",
+          "source_ids": [
+            "R02-POWEROP-S001"
+          ],
+          "evidence_ids": [
+            "R02-POWEROP-E001"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2023-01-03",
+        "end": "2023-05-29",
+        "basis": "000995 自 2329.82 升至 2584.43（+10.93%）；同期沪深300 -1.39%（超额约 +12.32pp）。火电侧：2023-05-29 板块涨 5.07%；煤价同比近 -30%。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2023-05-29",
+        "end": "2023-05-29",
+        "basis": "000995 收 2584.43，2023 年内最高收盘。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "DECLINING",
+        "start": "2023-05-30",
+        "end": "2023-10-23",
+        "basis": "000995 回落至 2211.32（-14.44%）。",
+        "notes": "本段为**下行**。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "燃料成本下行：港口动力煤价格自 2022 年高位回落，2023 春节后加速",
+        "用电需求提升（2023-04 电力、热力、燃气及水生产和供应业利润同比 +36.5%）"
+      ],
+      "accelerator": [
+        "迎峰度夏预期：2023 年高温提前（华北、西北、华南 5 月上旬即出现 30℃ 以上），市场提前炒作用电高峰",
+        "新一轮电改预期升温（现货市场、容量市场、辅助服务市场；第一批 8 个试点省份转入长周期结算试运行）",
+        "板块估值安全边际 + 公募基金加仓"
+      ],
+      "turning": [
+        "★ 本包未取得该段转折的一手事件证据；2023-05-29 后回落，部分与「预期兑现」有关（本包未取得该归因的来源，故不写入）。"
+      ],
+      "ending": [
+        "000995 至 2023-10-23 较峰值 -14.44%"
+      ]
+    },
+    "evidence_ids": [
+      "R02-POWEROP-E001",
+      "R02-POWEROP-E002",
+      "R02-POWEROP-E003",
+      "R02-POWEROP-E004",
+      "R02-POWEROP-E005",
+      "R02-POWEROP-E006"
+    ],
+    "security_ids": [
+      "R02-POWEROP-SEC001",
+      "R02-POWEROP-SEC002",
+      "R02-POWEROP-SEC003"
+    ],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "①E003/E004 为 2023-05-29 当日报道，属 contemporaneous；②E005/E006 为 2023-06-02 报道，仍在区间内，属 contemporaneous；③E001/E002 为指数口径，同期可观察；④★ E006 中的季节性表述（「冬炒煤、夏炒电」）是**来源的主张**，本包照录但标注为**待核验假设**，不作为已确认的季节性结论。",
+    "why_campaign": "峰值日有板块级、个股级的当日证据（火电板块 +5.07%、3 只涨停）；相对沪深300 超额约 +12.32pp；驱动为可量化的成本侧事实（煤价同比近 -30%）；机制（火电成本—电价剪刀差）与既有 C-2021-POWER-GREEN（绿电运营商）不同轴。",
+    "why_not": "★ 本包主动列出反对理由：①**相对强度中等**——超额约 +12.32pp（对沪深300）/+10.74pp（对中证全指，按 E001 与 000985 口径），显著弱于本包其他候选（如 2021 光伏 +93pp），是否满足 Campaign 五要件中的「市场关注」须由 ThreeC Agent 判定；②**季节性主张未被独立核验**——「夏炒电」为来源观点，本包**未**取得跨年份可复现的年内窗口证据；③**煤价为一手缺失**——本包未取得煤价的一手序列（CECI / 中国煤炭市场网为行业/付费口径），仅由 Tier 2 媒体转述；④**与 C-2021-POWER-GREEN 的边界**——同属「电力（运营端）」，但机制不同（火电 vs 绿电），须走 Independence Gate；⑤个股代码未在来源中出现，ticker 留空待核。",
+    "notes": "★ 已占年份 2021，本段为 2023，未被占用。",
+    "possible_duplicate_of": [
+      "C-2021-POWER-GREEN"
+    ]
+  },
+  {
+    "candidate_id": "R02-POWEROP-002",
+    "title": "2024 年水电来水改善与容量电价落地驱动的电力运营行情",
+    "year": 2024,
+    "macro_theme_proposal": "电力（运营端）（既有 Macro Theme；SUB_THEME 提案：水电 / 电力运营，待 CMTR v1）",
+    "theme_name_candidates": [
+      "电力（运营端）",
+      "水电",
+      "电力运营",
+      "容量电价"
+    ],
+    "theme_summary": "2024 年上半年电力运营端行情：中证全指公用事业指数自 2024-01-22 低点升至 2024-07-09 高点（+29.86%），同期中证全指仅 +0.56%、沪深300 +6.86%。驱动为**来水改善带动水电基本面向好 + 煤电容量电价机制自 2024-01-01 落地 + 低利率环境下的红利重估**。★ 本段为**运营端**，与同族 C-2021-POWER-GREEN（绿电运营商）与 R02-POWEROP-001（2023 火电）机制均不同。",
+    "date_candidates": {
+      "start": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2024-01-22",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "000995 于 2024-01-22 收 2231.51，为 2024 年内最低收盘。",
+          "source_ids": [
+            "R02-POWEROP-S001"
+          ],
+          "evidence_ids": [
+            "R02-POWEROP-E010"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "peak": [
+        {
+          "date_precision": "EXACT_DATE",
+          "date": "2024-07-09",
+          "window_start": null,
+          "window_end": null,
+          "phase_note": null,
+          "basis": "000995 于 2024-07-09 收 2897.87，为 2024 年内最高收盘；自低点 +29.86%，同期中证全指 +0.56%。",
+          "source_ids": [
+            "R02-POWEROP-S001",
+            "R02-COMM-S004"
+          ],
+          "evidence_ids": [
+            "R02-POWEROP-E010",
+            "R02-POWEROP-E011"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ],
+      "end": [
+        {
+          "date_precision": "DATE_WINDOW",
+          "date": null,
+          "window_start": "2024-07-09",
+          "window_end": "2024-12-31",
+          "phase_note": null,
+          "basis": "000995 自 2024-07-09 高点回落至 2024-12-31 收 2649.53（自峰值 -8.57%）。",
+          "source_ids": [
+            "R02-POWEROP-S001"
+          ],
+          "evidence_ids": [
+            "R02-POWEROP-E010"
+          ],
+          "confidence": "medium",
+          "alternative_dates": [],
+          "conflict_note": null
+        }
+      ]
+    },
+    "lifecycle": [
+      {
+        "stage_proposal": "MAIN_RISE",
+        "start": "2024-01-22",
+        "end": "2024-07-09",
+        "basis": "000995 自 2231.51 升至 2897.87（+29.86%）；同期中证全指 +0.56%（超额约 +29.30pp）。基本面：2024H1 来水改善带动水电向好，水电收入同比 +10.9%。政策：煤电容量电价机制自 2024-01-01 起实施。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "PEAK",
+        "start": "2024-07-09",
+        "end": "2024-07-09",
+        "basis": "000995 收 2897.87，2024 年内最高收盘。",
+        "notes": null
+      },
+      {
+        "stage_proposal": "RETRACEMENT",
+        "start": "2024-07-10",
+        "end": "2024-12-31",
+        "basis": "000995 回落至 2649.53（-8.57%）。",
+        "notes": "本段为**下行**。"
+      }
+    ],
+    "classification_proposal": "mixed",
+    "drivers": {
+      "start": [
+        "煤电容量电价机制自 2024-01-01 起实施（发改价格〔2023〕1501号，2023-11-08 发布）—— 煤电固定成本回收渠道确立",
+        "低利率环境下的红利资产重估需求"
+      ],
+      "accelerator": [
+        "2024 年上半年来水改善带动水电向好（水电收入同比 +10.9%、二季度 +15.8%）",
+        "2024H1 用电量整体高速增长",
+        "火电上游燃料价格反弹可能性较弱，成本端利好"
+      ],
+      "turning": [
+        "★ 本包未取得该段转折的一手事件证据；2024-07-09 后回落。"
+      ],
+      "ending": [
+        "000995 至 2024-12-31 较峰值 -8.57%"
+      ]
+    },
+    "evidence_ids": [
+      "R02-POWEROP-E007",
+      "R02-POWEROP-E010",
+      "R02-POWEROP-E011",
+      "R02-POWEROP-E012"
+    ],
+    "security_ids": [],
+    "research_status": "PROVISIONAL",
+    "confidence": "medium",
+    "point_in_time_notes": "①E007（容量电价政策）为 2023-11-08 发布的 Tier 1 一手，相对 2024 段为 **prior**，可作先期政策条件；②E012 为 2024-10-11 发布的事后汇总研报，属 **subsequent**，已按协议填 point_in_time_note，**不得**用作同期催化；③E010/E011 为指数口径，同期可观察。",
+    "why_campaign": "起点与峰值均为一手指数口径；相对中证全指超额约 +29.30pp；驱动复合但每一项均可溯源（Tier 1 政策 + 基本面研报 + 指数口径）。",
+    "why_not": "★ 本包主动列出反对理由：①**驱动复合、单一主线不清晰**——「来水改善 / 容量电价 / 红利重估」三条并存，其中「红利重估」与资源族煤炭红利段（C-2023-RES-COAL-DIVIDEND）及金融族银行红利段（C-2024-FIN-BANK-DIVIDEND）属**同一机制轴、不同行业**，按协议不构成重复但须记录；②**「来水」缺少一手气象/水文来源**——本包仅取得研报口径；③**与 C-2021-POWER-GREEN 的边界**——同属「电力（运营端）」；④本包未取得任何个股代码来源，securities 为空数组。",
+    "notes": "★ 已占年份 2021，本段为 2024，未被占用。",
+    "possible_duplicate_of": [
+      "C-2021-POWER-GREEN"
+    ]
+  }
+]
