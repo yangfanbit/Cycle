@@ -14,6 +14,7 @@ import {
   EVENT_CLASS_LABEL,
   EVENT_STUDY_LABEL,
   EVIDENCE_LEVEL_LABEL,
+  MARKET_PERFORMANCE_CAVEAT,
   NO_MARKET_DATA_LABEL,
   eventStudyState,
   fluEventById,
@@ -95,12 +96,31 @@ describe('B. 核心展示', () => {
     expect(html).not.toMatch(/\+?0\.0%/);
   });
 
-  it('无行情事件状态 = NO_PRICE_DATA；2023 事件 = HAS_PRICE_DATA', () => {
-    expect(eventStudyState(fluEventById('SUPERFUNGUS-2019-CANDIDA')!)).toBe('NO_PRICE_DATA');
-    expect(eventStudyState(fluEventById('PUBLICHEALTH-2019-WUHAN')!)).toBe('NO_PRICE_DATA');
-    expect(eventStudyState(fluEventById('FLU-2017-AVIAN')!)).toBe('NO_PRICE_DATA');
-    expect(eventStudyState(fluEventById('FLU-2023-H1N1')!)).toBe('HAS_PRICE_DATA');
-    expect(renderToStaticMarkup(<FluEventMap />)).toContain(EVENT_STUDY_LABEL.NO_PRICE_DATA);
+  it('★ v0_3 后四个事件**全部**为 HAS_PRICE_DATA（历史事件已补行情）', () => {
+    for (const id of ['FLU-2017-AVIAN', 'SUPERFUNGUS-2019-CANDIDA',
+                      'PUBLICHEALTH-2019-WUHAN', 'FLU-2023-H1N1']) {
+      expect(eventStudyState(fluEventById(id)!), id).toBe('HAS_PRICE_DATA');
+    }
+    expect(renderToStaticMarkup(<FluEventMap />)).toContain(EVENT_STUDY_LABEL.HAS_PRICE_DATA);
+  });
+
+  it('★ 无 market_performance 的事件仍可被识别为 NO_PRICE_DATA（合成边界）', () => {
+    const e = { ...fluEventById('FLU-2017-AVIAN')!,
+      participants: [{ ...fluEventById('FLU-2017-AVIAN')!.participants[0], market_data: undefined }] };
+    expect(eventStudyState(e)).toBe('NO_PRICE_DATA');
+  });
+
+  it('★★ 行情段免责声明文本正确（事后描述 ≠ Campaign 裁定）', () => {
+    // ★ 该声明在事件**展开后**的行情表内渲染 → 断言常量文本 + 数据文件声明
+    expect(MARKET_PERFORMANCE_CAVEAT).toContain('不是');
+    expect(MARKET_PERFORMANCE_CAVEAT).toContain('事后行情描述');
+    expect(MARKET_PERFORMANCE_CAVEAT).toContain('不得');
+    for (const e of fluEvents()) {
+      if (e.market_performance) {
+        expect(e.market_performance.note, e.event_id).toContain('不是');
+        expect(e.market_performance.is_campaign_ruling).toBe(false);
+      }
+    }
   });
 
   it('证据等级标签常量存在且被使用', () => {
@@ -218,12 +238,55 @@ describe('C. ★★ 事件归属更正', () => {
     }
   });
 
-  it('★ hasMarketData 对未登记标的返回 false（2017/2019 标的全部）', () => {
+  it('★ v0_3 后 2017/2019 标的均有行情（补数生效）', () => {
     for (const id of ['FLU-2017-AVIAN', 'SUPERFUNGUS-2019-CANDIDA', 'PUBLICHEALTH-2019-WUHAN']) {
       const e = fluEventById(id)!;
       for (const p of e.participants) {
-        expect(hasMarketData(p), `${p.name} 不应被判为有行情`).toBe(false);
+        expect(hasMarketData(p), `${p.name} 应有行情`).toBe(true);
       }
     }
+  });
+
+  it('★ 行情字段完整：区间涨跌 / 至高点 / 高点日 / 回撤 / 超额 均有值', () => {
+    for (const id of ['FLU-2017-AVIAN', 'SUPERFUNGUS-2019-CANDIDA', 'PUBLICHEALTH-2019-WUHAN']) {
+      const mp = fluEventById(id)!.market_performance!;
+      expect(mp, id).toBeDefined();
+      expect(Object.keys(mp.benchmark).length).toBeGreaterThan(0);
+      for (const [sid, st] of Object.entries(mp.by_security)) {
+        expect(st.trading_days, `${id}/${sid} 交易日`).toBeGreaterThan(0);
+        expect(typeof st.period_return_pct, `${id}/${sid} 区间涨跌`).toBe('number');
+        expect(typeof st.to_high_pct, `${id}/${sid} 至高点`).toBe('number');
+        expect(st.high?.date, `${id}/${sid} 高点日`).toBeTruthy();
+        expect(typeof st.max_drawdown_from_high_pct, `${id}/${sid} 回撤`).toBe('number');
+        expect(typeof st.excess_to_high_pp, `${id}/${sid} 超额`).toBe('number');
+      }
+    }
+  });
+
+  it('★ 2017 事件的高点日与报道日吻合（莱茵生物 = 报道次日 2017-02-16）', () => {
+    const mp = fluEventById('FLU-2017-AVIAN')!.market_performance!;
+    expect(mp.by_security['LAYNE-002166'].high!.date).toBe('2017-02-16');
+  });
+
+  it('★ 2019-04 事件多数标的的高点日为报道日 2019-04-11', () => {
+    const mp = fluEventById('SUPERFUNGUS-2019-CANDIDA')!.market_performance!;
+    const on0411 = Object.values(mp.by_security).filter((s) => s.high?.date === '2019-04-11');
+    expect(on0411.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('★ 混杂因素被标注（福安药业涨幅不得全归因于该事件）', () => {
+    const e = fluEventById('SUPERFUNGUS-2019-CANDIDA')!;
+    const fa = e.participants.find((p) => p.security_id === 'FUAN-300194')!;
+    expect(fa.note).toContain('混杂');
+  });
+
+  it('★ 报道当日涨幅与区间行情分开保存（两回事）', () => {
+    const e = fluEventById('FLU-2017-AVIAN')!;
+    // 报道当日涨幅在 observed_performance.reported_same_day_moves
+    expect(Object.keys(e.observed_performance.reported_same_day_moves ?? {}).length).toBeGreaterThan(0);
+    // 区间行情在 market_performance.by_security
+    expect(Object.keys(e.market_performance!.by_security).length).toBeGreaterThan(0);
+    // 且两者不是同一份数据（莱茵生物：报道日涨停 vs 区间 +10.1%）
+    expect(e.market_performance!.by_security['LAYNE-002166'].period_return_pct).not.toBe(10);
   });
 });

@@ -14,7 +14,7 @@
  *   **不**证明业务与事件机制相关（联环药业对耳念珠菌的澄清即是反例）。
  * - 无行情的标的**如实显示缺失**，不展示为 0 涨幅、不补造数据。
  */
-import eventsRaw from '@current/flu_historical_events_v0_2.json';
+import eventsRaw from '@current/flu_historical_events_v0_3.json';
 
 export type ParticipantCategory =
   | 'MECHANISM_DIRECT'
@@ -42,6 +42,39 @@ export interface FluParticipant {
   note?: string;
   /** 库内行情覆盖；`undefined`/含「无」表示不可得 */
   market_data?: string;
+  /* ---- ★ 实测行情（事后描述，非 Campaign 裁定）---- */
+  /** 窗口内区间涨跌 % */
+  period_return_pct?: number;
+  /** 窗口首日 → 窗口内高点 % */
+  to_high_pct?: number;
+  /** 窗口内高点日 */
+  high_date?: string;
+  /** 相对基准的「至高点」超额（pp） */
+  excess_to_high_pp?: number;
+}
+
+/** 单只标的的行情统计 */
+export interface SecurityPerformance {
+  status?: string;
+  trading_days?: number;
+  first?: { date: string; close: number };
+  last?: { date: string; close: number };
+  high?: { date: string; close: number };
+  low?: { date: string; close: number };
+  period_return_pct?: number;
+  to_high_pct?: number;
+  max_drawdown_from_high_pct?: number;
+  excess_to_high_pp?: number;
+  excess_period_pp?: number;
+}
+
+/** ★ 事件级行情表现（**事后描述**，`is_campaign_ruling` 恒为 false） */
+export interface MarketPerformance {
+  window: [string, string];
+  is_campaign_ruling: false;
+  note: string;
+  benchmark: Record<string, SecurityPerformance>;
+  by_security: Record<string, SecurityPerformance>;
 }
 
 export interface FluEvent {
@@ -61,6 +94,8 @@ export interface FluEvent {
     by_security: Record<string, string> | null;
     reported_same_day_moves?: Record<string, string>;
   };
+  /** ★ 实测行情（事后描述；v0_3 起为历史事件补入） */
+  market_performance?: MarketPerformance;
   known_gaps: string[];
 }
 
@@ -70,6 +105,7 @@ export interface FluEventsDoc {
   supersedes?: string;
   position: string;
   corrections?: { at: string; what: string; why: string; source?: string; note?: string }[];
+  market_data_note?: Record<string, unknown>;
   event_classes?: { code: EventClass; label: string; meaning: string }[];
   events: FluEvent[];
   concept_index_availability: Record<string, unknown>;
@@ -135,6 +171,13 @@ export const ADJACENT_EVENT_CAVEAT =
 
 /** 「行情不可得」的醒目标识（页面必须显示，不得隐藏） */
 export const NO_MARKET_DATA_LABEL = '行情不可得';
+
+/** ★ 行情段的免责声明（页面必须显示） */
+export const MARKET_PERFORMANCE_CAVEAT =
+  '★ 以下为**事后行情描述**（区间涨跌 / 至高点 / 回撤 / 相对基准），'
+  + '**不是** Campaign 的起止日期或峰值裁定。'
+  + '★ 历史炒作参与证据（报道点名）与业务机制**仍须分别看待** —— '
+  + '**不得**因个股上涨就提高其相关性等级。';
 
 export type EventStudyState = 'HAS_PRICE_DATA' | 'NO_PRICE_DATA' | 'NOT_VERIFIED';
 

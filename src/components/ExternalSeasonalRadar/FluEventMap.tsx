@@ -13,6 +13,7 @@ import {
   EVENT_STUDY_LABEL,
   EVIDENCE_LEVEL_LABEL,
   FLU_EVENTS_NOTE,
+  MARKET_PERFORMANCE_CAVEAT,
   NO_MARKET_DATA_LABEL,
   PARTICIPANT_CATEGORY_LABEL,
   eventStudyState,
@@ -21,6 +22,69 @@ import {
   type FluEvent,
   type FluParticipant,
 } from '../../data/timeline/fluHistoricalEvents';
+
+function MarketPerformanceBlock({ e }: { e: FluEvent }) {
+  const mp = e.market_performance;
+  if (!mp) return null;
+  const bench = Object.entries(mp.benchmark)[0];
+  const rows = Object.entries(mp.by_security);
+  return (
+    <>
+      <h5>实测行情（窗口 {mp.window[0]} ~ {mp.window[1]}）</h5>
+      <p className="fem-perf-caveat">{MARKET_PERFORMANCE_CAVEAT}</p>
+      <div className="fem-table-wrap">
+        <table className="fem-table">
+          <thead>
+            <tr>
+              <th>标的</th><th>交易日</th><th>区间涨跌</th><th>至高点</th>
+              <th>高点日</th><th>自高点回撤</th><th>超额(vs 基准)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bench && (
+              <tr className="fem-bench-row">
+                <td>{bench[0]}（基准）</td>
+                <td>{bench[1].trading_days ?? '—'}</td>
+                <td>{fmtPct(bench[1].period_return_pct)}</td>
+                <td>{fmtPct(bench[1].to_high_pct)}</td>
+                <td>{bench[1].high?.date ?? '—'}</td>
+                <td>{fmtPct(bench[1].max_drawdown_from_high_pct)}</td>
+                <td>—</td>
+              </tr>
+            )}
+            {rows.map(([sid, st]) => (
+              <tr key={sid}>
+                <td><code>{sid}</code></td>
+                <td>{st.trading_days ?? '—'}</td>
+                <td className={cls(st.period_return_pct)}>{fmtPct(st.period_return_pct)}</td>
+                <td className={cls(st.to_high_pct)}>{fmtPct(st.to_high_pct)}</td>
+                <td>{st.high?.date ?? '—'}</td>
+                <td>{fmtPct(st.max_drawdown_from_high_pct)}</td>
+                <td className={cls(st.excess_to_high_pp)}>
+                  {st.excess_to_high_pp == null ? '—' : (st.excess_to_high_pp > 0 ? '+' : '') + st.excess_to_high_pp + 'pp'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="fem-perf-note">
+        ★ 「报道当日涨幅」见上方各标的（`reported_move`），与这里的**区间行情是两回事**。
+      </p>
+    </>
+  );
+}
+
+/** 中国股市惯例：涨红跌绿 */
+function cls(v?: number | null): string {
+  if (v == null) return '';
+  return v > 0 ? 'num-up' : v < 0 ? 'num-down' : '';
+}
+
+function fmtPct(v?: number | null): string {
+  if (v == null) return '—';
+  return (v > 0 ? '+' : '') + v.toFixed(1) + '%';
+}
 
 function ParticipantRow({ p }: { p: FluParticipant }) {
   const ok = hasMarketData(p);
@@ -112,7 +176,9 @@ function EventCard({ e }: { e: FluEvent }) {
             </ul>
           )}
 
-          <h5>表现</h5>
+          <MarketPerformanceBlock e={e} />
+
+          <h5>报道当日涨幅</h5>
           <p className="fem-perf-note">{e.observed_performance.note}</p>
           {e.observed_performance.by_security ? (
             <ul className="fem-perf">

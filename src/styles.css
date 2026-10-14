@@ -3411,3 +3411,21 @@ html, body {
 .fem-part-ev.ev-business_verified { background: #eaf5ec; color: #2f6b3c; }
 .fem-part-move { font-size: 10.5px; color: var(--ink-2); font-family: var(--mono); }
 .fem-part-note { margin: 3px 0 0; font-size: 11.5px; color: #b0492f; }
+
+/* ---- 事件实测行情表（2026-10-14 v0_3）---- */
+.fem-perf-caveat {
+  margin: 0 0 6px; padding: 4px 8px; font-size: 11.5px;
+  background: #f4f6f8; color: var(--ink-2); border-left: 3px solid var(--line-strong);
+  border-radius: 3px;
+}
+.fem-table-wrap { overflow-x: auto; }
+.fem-table { border-collapse: collapse; font-size: 11.5px; width: 100%; }
+.fem-table th, .fem-table td {
+  border-bottom: 1px solid var(--line); padding: 3px 8px; text-align: right; white-space: nowrap;
+}
+.fem-table th:first-child, .fem-table td:first-child { text-align: left; }
+.fem-table th { color: var(--ink-3); font-weight: 500; }
+.fem-table code { font-family: var(--mono); font-size: 11px; }
+.fem-bench-row { background: #fbfaf7; color: var(--ink-2); }
+.fem-table .num-up { color: #c0392b; font-weight: 600; }    /* ★ A 股惯例：涨=红 */
+.fem-table .num-down { color: #2f6b3c; font-weight: 600; }  /* ★ 跌=绿 */
