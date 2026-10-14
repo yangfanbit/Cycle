@@ -1,0 +1,98 @@
+{
+ "authorized_ranges": [
+  [
+   "2017-09-01",
+   "2019-02-28"
+  ],
+  [
+   "2024-09-01",
+   "2025-02-28"
+  ]
+ ],
+ "generated_at": "2026-10-14T20:26:08",
+ "results": {
+  "BAIKEBIO": {
+   "2017-09-01": {
+    "note": "接口确认无数据（上市前/停牌等），已按既有纪律记 gaps，不补造",
+    "qfq": 0,
+    "raw": 0,
+    "status": "NO_DATA"
+   },
+   "2024-09-01": {
+    "actual_range": [
+     "2024-09-02",
+     "2025-02-28"
+    ],
+    "floor_after": "2024-09-02",
+    "floor_before": null,
+    "qfq_rows": 116,
+    "raw_rows": 116,
+    "rows_after": 232,
+    "rows_before": 0,
+    "status": "OK"
+   },
+   "_coverage": {
+    "adjusted_rows": 426,
+    "max": "2025-02-28",
+    "min": "2022-01-04"
+   }
+  },
+  "HUALANVAX": {
+   "2017-09-01": {
+    "note": "接口确认无数据（上市前/停牌等），已按既有纪律记 gaps，不补造",
+    "qfq": 0,
+    "raw": 0,
+    "status": "NO_DATA"
+   },
+   "2024-09-01": {
+    "actual_range": [
+     "2024-09-02",
+     "2025-02-28"
+    ],
+    "floor_after": "2022-02-18",
+    "floor_before": "2022-02-18",
+    "qfq_rows": 116,
+    "raw_rows": 116,
+    "rows_after": 232,
+    "rows_before": 0,
+    "status": "OK"
+   },
+   "_coverage": {
+    "adjusted_rows": 398,
+    "max": "2025-02-28",
+    "min": "2022-02-18"
+   }
+  },
+  "JINDIKE": {
+   "2017-09-01": {
+    "note": "接口确认无数据（上市前/停牌等），已按既有纪律记 gaps，不补造",
+    "qfq": 0,
+    "raw": 0,
+    "status": "NO_DATA"
+   },
+   "2024-09-01": {
+    "actual_range": [
+     "2024-09-02",
+     "2025-02-28"
+    ],
+    "floor_after": "2024-09-02",
+    "floor_before": null,
+    "qfq_rows": 116,
+    "raw_rows": 116,
+    "rows_after": 232,
+    "rows_before": 0,
+    "status": "OK"
+   },
+   "_coverage": {
+    "adjusted_rows": 426,
+    "max": "2025-02-28",
+    "min": "2022-01-04"
+   }
+  }
+ },
+ "targets": [
+  "HUALANVAX",
+  "BAIKEBIO",
+  "JINDIKE"
+ ]
+}
