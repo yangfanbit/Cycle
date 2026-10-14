@@ -18,7 +18,7 @@
 | **测试** | **881 passed / 0 failed / 33 files** |
 | **Export** | **Contract v1.2** —— `macro_theme_root` + **`taxonomy` 段**（59 行 · 13 根） |
 | **SA** | `structural_analogy_explanations_v0_13.json` · **6 候选 × 89 = 534 对** · 规则集冻结未变 |
-| **快照** | `MS-2026-10-13-01` = **DRAFT（待签发）** · `MS-2026-10-12-01` = CANONICAL（回指 **v0_12**） |
+| **快照** | `MS-2026-10-13-01` = **CANONICAL**（已签发，回指 **v0_13**；supersedes `MS-2026-10-12-01`→ARCHIVED）· 批准记录 2026-10-14 |
 | **CI** | Product（tsc / npm test / build）+ **Research 只读 5 项**（`validate_db` / `validate_timeline_export` / `validate_market_snapshot` / `intake --check` / `refresh_downstream --check`） |
 | **DB 体积** | **59.5 MB**（≈ 全部来自 `market_daily` 338k 行；canonical < 1 MB）· 方案见 `docs/DB_GROWTH_PLAN_v0_1.md` |
 | **外部季节性日历** | `research/current/external_seasonal_calendar_v0_1.json` · **25 项** · 全部 `EXTERNAL_REFERENCE` |

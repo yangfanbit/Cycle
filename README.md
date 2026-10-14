@@ -39,7 +39,7 @@
 | Structural Analogy | **v0.13**（**534** pairs · 规则集 `structural-analogy-ruleset-v0.3` **冻结未变**） |
 | Time Observation | **v0.2**（内部 `artifact_version` 0.3） |
 | Current Candidates | **6** |
-| Market Snapshot | `MS-2026-10-13-01` = **DRAFT**（待签发）· `MS-2026-10-12-01` = CANONICAL |
+| Market Snapshot | `MS-2026-10-13-01` = **CANONICAL**（已签发 · supersedes `MS-2026-10-12-01`） |
 | 测试 | **881 passed / 0 failed / 33 files** |
 | CI 门禁 | **Product**（tsc / npm test / build）+ **Research 只读**（5 项校验，2026-10-13 接入） |
 | 外部季节性日历 | **v0.1**（25 项外部线索 · 全部 `EXTERNAL_REFERENCE` · 页面「外部季节性观察雷达」） |
