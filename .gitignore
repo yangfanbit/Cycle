@@ -84,3 +84,21 @@ _probe*.sh
 #      不因通用最佳实践自动忽略 SQLite。
 # research/data/market/**/*.csv
 #   —— 行情原始与归一化 CSV，研究对象，提交 Git。
+
+# ============================================================================
+# 行情规范化 CSV（research/data/market/normalized/*_daily.csv）
+#
+# ★ 2026-10-14 移出 Git 跟踪 —— 依据 docs/DB_GROWTH_PLAN_v0_1.md 附录 A.7
+#
+# 为什么安全（三项实测）：
+#   ① 全仓库搜索：**没有任何消费者读取这些 CSV**（引用方全是抓取器=生成方）
+#   ② CI 全部 Research 门禁在**无 CSV 环境**下仍全 PASS（实测）
+#   ③ CSV 可从权威 DB **逐字节重建**（`regen_normalized_csv`，SHA256 实测相同）
+#
+# ★ 权威来源 = research/database/cycle_research.db 的 `market_daily` 表
+#   （由 research/scripts/fetch_market_batch_v0_3.py 写入）
+# ★ 需要 CSV 时：先跑重建，**不要**假设文件已存在
+#
+# 保留：.gitkeep（monorepo 完整性校验查目录存在性）
+# ============================================================================
+research/data/market/normalized/*.csv

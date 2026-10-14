@@ -243,3 +243,25 @@ python research/scripts/make_research_handoff_sandbox.py --task R02-04
 2. **R02-05 四条 DEFER** 保留（不降门槛）。
 3. **DB 迁移暂缓** —— 先补两项前置（确定权威来源 / 统一 CSV 格式）。
 4. **G / H** 仍需负责人拍板（G 可安全修复？H 是否重新评估 —— K 线机制已落地，原 DEFER 理由之一可能已解除）。
+
+---
+
+## 进度修订（2026-10-14 · 第四轮：审批准备 + CSV 去重实施）
+
+| # | 事项 | 结果 |
+|---|---|---|
+| **1** | 快照签发前置授权链 | ✅ 核实。★ 结论：**授权实质存在但无仓库内留痕**（用户批准在 2026-10-13 对话中；`review_ref=None`）。→ **维持 DRAFT**。材料：`docs/SNAPSHOT_SIGNING_PREREQUISITES_v0_1.md` |
+| **2** | G/H 独立研究材料 | ✅ `docs/GH_INDEPENDENT_REVIEW_MATERIAL_v0_1.md`。★ G=`R02-PHARMA-002` **未裁决（PENDING）**，6 项证据缺口；★ H=`R02-PHARMA-003` **维持 DEFER**（机制具备但**候选数据仍缺**——起点 2017-10-08 落在无行情区间）。**两项未合并** |
+| **3** | CSV 去重（方案 B） | ✅ **已实施** —— 180 个 CSV 移出 git 跟踪，**本地文件保留**，`.gitignore` 已加，`.gitkeep` 仍在。**git 内 18.1 MB → ~0** |
+
+### CSV 去重的三项隔离验证（全在 `--depth 1` clone + 无 CSV 环境实测）
+
+1. 全仓库搜索：**零个消费者读 CSV**（引用方全是抓取器=生成方）
+2. CI 全部 Research 门禁在**无 CSV**环境下**全 PASS**（`validate_db` / `export` / `snapshot` / `intake --check` / `refresh --check` exit=0 / `resolve_sa_artifact` exit=0）
+3. **重建保真**：`regen_normalized_csv` 从 DB 重建的 ZTE / ABC / AMEC **SHA256 逐字节相同**
+
+### ★★ 未解决
+
+1. **快照仍 DRAFT** —— 缺「用户授权的结构化留痕」（只授权未落盘，**非缺授权**）
+2. **G / H** 均待负责人裁决
+3. **DB 本身 59 MB** 仍在 git 中（方案 A 待 28 处直连前置）
