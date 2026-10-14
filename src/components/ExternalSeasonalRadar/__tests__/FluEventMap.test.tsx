@@ -11,6 +11,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { FluEventMap } from '../FluEventMap';
 import {
   ADJACENT_EVENT_CAVEAT,
+  BUSINESS_MECHANISM_CAVEAT,
   EVENT_CLASS_LABEL,
   EVENT_STUDY_LABEL,
   EVIDENCE_LEVEL_LABEL,
@@ -189,8 +190,56 @@ describe('C. ★★ 事件归属更正', () => {
     expect(e.participants).toHaveLength(10);
     for (const p of e.participants) {
       expect(p.reported_move, `${p.name} 缺报道涨幅`).toBeTruthy();
-      expect(p.evidence_level).toBe('REPORT_NAMED');
+      // ★ v0_4 起：业务机制核实过的标的为 BUSINESS_VERIFIED，其余仍 REPORT_NAMED
+      expect(['REPORT_NAMED', 'BUSINESS_VERIFIED']).toContain(p.evidence_level);
+      // ★★ 但**参与证据仍是报道点名** → category 不得因业务核实而变成 MECHANISM_DIRECT
+      expect(p.category, `${p.name} 不应因业务机制核实而变成直接机制相关`).toBe('MARKET_PARTICIPANT');
     }
+  });
+
+  it('★★ 业务机制核实**不改变** category（参与证据 ≠ 业务机制）', () => {
+    for (const e of fluEvents()) {
+      if (e.event_id === 'FLU-2023-H1N1') continue;  // 2023 有 Campaign 业务依据，本就是 MECHANISM_DIRECT
+      for (const p of e.participants) {
+        if (p.evidence_level === 'BUSINESS_VERIFIED') {
+          expect(p.category, `${p.name} 业务已核实但参与证据仍是报道点名`).toBe('MARKET_PARTICIPANT');
+        }
+      }
+    }
+  });
+
+  it('★★ 业务机制证据必须带时间边界声明', () => {
+    for (const e of fluEvents()) {
+      for (const p of e.participants) {
+        if (p.business_mechanism) {
+          expect(p.business_mechanism_caveat, `${p.name} 缺时间边界声明`).toBeTruthy();
+        }
+      }
+    }
+    expect(BUSINESS_MECHANISM_CAVEAT).toContain('当年');
+    expect(BUSINESS_MECHANISM_CAVEAT).toContain('不因');
+  });
+
+  it('★★ 2023 事件必须显式区分三个「高峰」概念', () => {
+    const e = fluEventById('FLU-2023-H1N1')!;
+    expect(e.three_peaks_note).toBeTruthy();
+    expect(e.three_peaks_note).toContain('流行病学高峰');
+    expect(e.three_peaks_note).toContain('peak_date');
+    expect(e.three_peaks_note).toContain('行情高点');
+    // ★ 且三只的行情高点日**不**等于 Campaign peak_date
+    const mp = e.market_performance!;
+    const highs = Object.values(mp.by_security).map((s) => s.high?.date);
+    expect(highs).not.toContain('2023-03-20');
+    // 三只高点日各不相同
+    expect(new Set(highs).size).toBe(highs.length);
+  });
+
+  it('★ 2023 事件已纳入且有完整行情', () => {
+    const e = fluEventById('FLU-2023-H1N1')!;
+    expect(e).toBeDefined();
+    expect(eventStudyState(e)).toBe('HAS_PRICE_DATA');
+    expect(Object.keys(e.market_performance!.by_security)).toHaveLength(3);
+    expect(Object.keys(e.market_performance!.benchmark)).toHaveLength(1);
   });
 
   it('★ 联环药业代码为 600513（更正 v0_1 的 600735）', () => {

@@ -9,6 +9,7 @@
 import { useState } from 'react';
 import {
   ADJACENT_EVENT_CAVEAT,
+  BUSINESS_MECHANISM_CAVEAT,
   EVENT_CLASS_LABEL,
   EVENT_STUDY_LABEL,
   EVIDENCE_LEVEL_LABEL,
@@ -108,6 +109,14 @@ function ParticipantRow({ p }: { p: FluParticipant }) {
           <span className="fem-part-md miss">{NO_MARKET_DATA_LABEL}</span>
         )}
       </div>
+      {p.business_mechanism && (
+        <p className="fem-part-biz">
+          <strong>业务机制</strong>：{p.business_mechanism}
+          {p.business_mechanism_caveat && (
+            <span className="fem-part-biz-caveat">{p.business_mechanism_caveat}</span>
+          )}
+        </p>
+      )}
       <p className="fem-part-why"><strong>纳入理由</strong>：{p.rationale}</p>
       <p className="fem-part-src"><strong>来源</strong>：{p.source}</p>
       {p.note && <p className="fem-part-note">{p.note}</p>}
@@ -142,6 +151,7 @@ function EventCard({ e }: { e: FluEvent }) {
       <p className="fem-event-basis">依据：{e.evidence_basis}</p>
 
       {adjacent && <p className="fem-adjacent-caveat">{ADJACENT_EVENT_CAVEAT}</p>}
+      {e.three_peaks_note && <p className="fem-three-peaks">{e.three_peaks_note}</p>}
 
       {open && (
         <div className="fem-event-body">
@@ -168,6 +178,7 @@ function EventCard({ e }: { e: FluEvent }) {
           )}
 
           <h5>当次历史炒作标的（{e.participants.length} 只）</h5>
+          <p className="fem-biz-caveat">{BUSINESS_MECHANISM_CAVEAT}</p>
           {e.participants.length === 0 ? (
             <p className="fem-empty">（未建立候选清单）</p>
           ) : (

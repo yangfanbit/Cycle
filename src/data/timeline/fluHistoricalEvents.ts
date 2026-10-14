@@ -14,7 +14,7 @@
  *   **不**证明业务与事件机制相关（联环药业对耳念珠菌的澄清即是反例）。
  * - 无行情的标的**如实显示缺失**，不展示为 0 涨幅、不补造数据。
  */
-import eventsRaw from '@current/flu_historical_events_v0_3.json';
+import eventsRaw from '@current/flu_historical_events_v0_4.json';
 
 export type ParticipantCategory =
   | 'MECHANISM_DIRECT'
@@ -51,6 +51,11 @@ export interface FluParticipant {
   high_date?: string;
   /** 相对基准的「至高点」超额（pp） */
   excess_to_high_pp?: number;
+  /* ---- ★ 业务机制（独立证据，2026-10-14 核实）---- */
+  /** 业务机制说明（有独立来源） */
+  business_mechanism?: string;
+  /** ★ 业务机制证据的**时间边界**声明 */
+  business_mechanism_caveat?: string;
 }
 
 /** 单只标的的行情统计 */
@@ -87,6 +92,8 @@ export interface FluEvent {
   evidence_basis: string;
   study_state?: string;
   media_label_note?: string;
+  /** ★★ 三概念区分（流感监测高峰 / Campaign peak_date / 个股行情高点） */
+  three_peaks_note?: string;
   catalysts: { date: string; text: string; source: string; note?: string }[];
   participants: FluParticipant[];
   observed_performance: {
@@ -106,6 +113,7 @@ export interface FluEventsDoc {
   position: string;
   corrections?: { at: string; what: string; why: string; source?: string; note?: string }[];
   market_data_note?: Record<string, unknown>;
+  business_mechanism_note?: Record<string, string>;
   event_classes?: { code: EventClass; label: string; meaning: string }[];
   events: FluEvent[];
   concept_index_availability: Record<string, unknown>;
@@ -171,6 +179,12 @@ export const ADJACENT_EVENT_CAVEAT =
 
 /** 「行情不可得」的醒目标识（页面必须显示，不得隐藏） */
 export const NO_MARKET_DATA_LABEL = '行情不可得';
+
+/** ★★ 业务机制证据的时间边界声明（页面必须显示） */
+export const BUSINESS_MECHANISM_CAVEAT =
+  '★★ 业务机制证据来自**当前时点**公开资料 —— **不能确定该业务在事件当年的规模**，'
+  + '也**不能**证明它是当次行情的驱动因素。'
+  + '★★ **不因报道当日涨停、区间涨幅高或概念标签**就提升为直接相关。';
 
 /** ★ 行情段的免责声明（页面必须显示） */
 export const MARKET_PERFORMANCE_CAVEAT =

@@ -3429,3 +3429,16 @@ html, body {
 .fem-bench-row { background: #fbfaf7; color: var(--ink-2); }
 .fem-table .num-up { color: #c0392b; font-weight: 600; }    /* ★ A 股惯例：涨=红 */
 .fem-table .num-down { color: #2f6b3c; font-weight: 600; }  /* ★ 跌=绿 */
+
+/* ---- 业务机制与三概念区分（2026-10-14 v0_4）---- */
+.fem-biz-caveat {
+  margin: 0 0 6px; padding: 4px 8px; font-size: 11.5px;
+  background: #fbf7f2; color: var(--ink-2); border-left: 3px solid #d9a441; border-radius: 3px;
+}
+.fem-part-biz { margin: 3px 0 0; font-size: 11.5px; color: var(--ink); }
+.fem-part-biz-caveat { display: block; margin-top: 2px; color: var(--ink-3); font-size: 11px; }
+.fem-three-peaks {
+  margin: 5px 0 0; padding: 5px 8px; font-size: 11.5px;
+  background: #eef3f8; color: var(--accent);
+  border-left: 3px solid var(--accent); border-radius: 3px;
+}
