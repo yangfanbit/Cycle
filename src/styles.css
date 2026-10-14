@@ -3389,3 +3389,25 @@ html, body {
 .fem-perf li { font-size: 11.5px; }
 .fem-gaps li { font-size: 11.5px; color: var(--ink-2); }
 .fem-empty { font-size: 11.5px; color: var(--ink-3); }
+
+/* ---- 事件类别分组 + 证据等级（2026-10-14 归属更正）---- */
+.fem-group { margin: 10px 0 0; }
+.fem-group-title {
+  font-size: 12px; margin: 0 0 6px; color: var(--ink-2);
+  display: flex; align-items: baseline; gap: 8px;
+  padding-left: 8px; border-left: 3px solid var(--line-strong);
+}
+.fem-group.grp-flu_direct .fem-group-title { border-left-color: #7fb285; }
+.fem-group.grp-adjacent_public_health .fem-group-title { border-left-color: #d9a441; }
+.fem-group-count { font-size: 10.5px; color: var(--ink-3); font-weight: 400; }
+.fem-adjacent-caveat {
+  margin: 5px 0 0; padding: 4px 8px; font-size: 11.5px;
+  background: #fdf3e3; color: var(--preheat-ink);
+  border-left: 3px solid #d9a441; border-radius: 3px;
+}
+.fem-media-note { margin: 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-part-ev { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); }
+.fem-part-ev.ev-report_named      { background: #f4f4f6; color: var(--ink-2); }
+.fem-part-ev.ev-business_verified { background: #eaf5ec; color: #2f6b3c; }
+.fem-part-move { font-size: 10.5px; color: var(--ink-2); font-family: var(--mono); }
+.fem-part-note { margin: 3px 0 0; font-size: 11.5px; color: #b0492f; }
