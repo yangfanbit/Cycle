@@ -6387,7 +6387,7 @@
     "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
-    "superseded_by": null,
+    "superseded_by": "MS-2026-10-13-01",
     "supersedes": "MS-2026-10-11-01"
   },
   "research_context": {
@@ -6704,6 +6704,6 @@
   ],
   "snapshot_date": "2026-10-12",
   "snapshot_id": "MS-2026-10-12-01",
-  "status": "CANONICAL",
+  "status": "ARCHIVED",
   "timestamp": "2026-10-12T14:28:40+00:00"
 }

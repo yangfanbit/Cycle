@@ -6599,12 +6599,12 @@
     "ai_assisted": true,
     "generated_by": "ai-offline",
     "research_round": "ThreeC 1.1 Phase 1.2",
-    "reviewed_at": null,
-    "reviewed_by": null,
+    "reviewed_at": "2026-10-14T11:28:32+00:00",
+    "reviewed_by": "yangfan",
     "rule_set_version": "structural-analogy-ruleset-v0.3",
     "source_commit": "",
     "superseded_by": null,
-    "supersedes": null
+    "supersedes": "MS-2026-10-12-01"
   },
   "research_context": {
     "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。",
@@ -6920,6 +6920,6 @@
   ],
   "snapshot_date": "2026-10-13",
   "snapshot_id": "MS-2026-10-13-01",
-  "status": "DRAFT",
-  "timestamp": "2026-10-13T13:39:42+00:00"
+  "status": "CANONICAL",
+  "timestamp": "2026-10-14T11:28:32+00:00"
 }

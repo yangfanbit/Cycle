@@ -265,3 +265,36 @@ python research/scripts/make_research_handoff_sandbox.py --task R02-04
 1. **快照仍 DRAFT** —— 缺「用户授权的结构化留痕」（只授权未落盘，**非缺授权**）
 2. **G / H** 均待负责人裁决
 3. **DB 本身 59 MB** 仍在 git 中（方案 A 待 28 处直连前置）
+
+---
+
+## 进度修订（2026-10-14 · 第五轮：**快照已签发** + H 窄核查）
+
+### 本轮完成
+
+| # | 事项 | 结果 |
+|---|---|---|
+| **1** | **快照签发** | ✅ **`MS-2026-10-13-01` → CANONICAL**（`--canonical --reviewer yangfan --supersedes MS-2026-10-12-01`）。授权留痕：`docs/AUTHORIZATION_R02_05_CANONICALIZATION_2026-10-13.md`（**只转录实际发生的授权，不扩展、不虚构 review_ref**）。 |
+| **2** | H（R02-02）窄核查 | ✅ 实测：**权威数据中 2017 年 0 行**，起点 2017-10-08 无行情；★ 但 `floors` 未登记 → **「不可得」未经确认**。→ **维持原 DEFER**，未创建形式化裁定文件。 |
+| **3** | G（R02-01/002） | ✅ 维持 **PENDING**（未入库、未补挂、未改冻结数据）。阻塞归纳为 3 项：精确起涨日 / 单一标的 / 独立性证据。 |
+| **4** | DB | ✅ 本轮**未拆库**、未动 28 处直连（按指示）。 |
+
+### 签发验收（全部实测）
+
+```
+索引            : {DRAFT:1, ARCHIVED:12, CANONICAL:**1**}   ← CANONICAL 唯一
+supersedes 关系 : MS-2026-10-13-01.supersedes = MS-2026-10-12-01 ✓
+                  MS-2026-10-12-01.superseded_by = MS-2026-10-13-01 ✓（字段在 `provenance` 内）
+复现校验        : **PASS 逐字节一致**（用实际 reviewed_at/timestamp）
+validate_market_snapshot : 342 通过 / 8 警告 / 0 失败
+签发时校验      : **14 通过 / 0 警告 / 0 失败**（比 DRAFT 多 1 项 = 签发留痕检查）
+★ 产品默认视图  : **resolved=true · details=89**（签发前为 resolved=false · 0）
+```
+
+### ★★ 未解决
+
+1. **G** 仍 `PENDING`（3 项阻塞）
+2. **H** 维持 DEFER；若要推进，最小动作是「对 HENGRUI 抓一次 2017-10~12 并登记 floors」
+   —— ★ 那会**写入权威数据**，需授权
+3. **DB 59 MB** 仍在 git（方案 A 待前置，**本轮按指示不动**）
+4. **推送**：本地 **4 个未推**（`00aa931`/`dbc270e`/`0bee299`/本轮）
