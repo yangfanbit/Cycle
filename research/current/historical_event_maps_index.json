@@ -1,0 +1,101 @@
+{
+  "artifact": "historical_event_maps_index",
+  "artifact_version": "0.1",
+  "generated_at": "2026-10-14",
+  "position": "★ 通用历史事件地图的**题材索引**。每个题材一个独立数据文件（各自版本化、逐字节保留）。",
+  "purpose": "把「题材 → 年份 → 历史事件 → 相关证券 → 证据与行情」从流感单题材推广到多题材，供产品侧 `HistoricalEventMap` 数据驱动渲染。",
+  "contract": {
+    "consumer": "Product",
+    "mode": "READ_ONLY —— Product 不得重新实现事件重建逻辑",
+    "entry": "ExternalSeasonalRadar 按 `external_entry_ids` 匹配外部季节性线索 ID（如 EXT-14），命中则渲染对应题材的事件地图",
+    "no_empty_shell": "★ 无数据文件的题材**不显示空壳**（避免暗示「已研究过」）"
+  },
+  "maps": [
+    {
+      "theme_id": "FLU",
+      "label": "流感 / 邻近公共卫生",
+      "file": "flu_historical_events_v0_4.json",
+      "external_entry_ids": ["EXT-12"],
+      "display": {
+        "title": "历史事件（按年份）",
+        "aria_label": "历史流感事件地图",
+        "badge": "事后重建 · 同期报道 + 库内 Campaign",
+        "class_order": ["FLU_DIRECT", "ADJACENT_PUBLIC_HEALTH"],
+        "class_caveats": {
+          "ADJACENT_PUBLIC_HEALTH": "★ 本事件**不是流感**机制。可用于研究「市场如何交易公共卫生新闻」，**不得**作为流感季节性的支持证据。"
+        },
+        "note": "本区展示**历史事件**的事后重建（来源：同期报道 + 库内 Campaign）。★ 事件按**机制**分类：直接流感相关 vs 邻近传染病（后者不得用于支持流感季节性）。历史炒作标的**不等于**季节性研究股票池；「仅报道点名」**不**证明业务机制相关。行情不可得的标的如实标注，不补造数据。"
+      },
+      "event_count": 4,
+      "status": "ACTIVE"
+    },
+    {
+      "theme_id": "POWER_SUMMER",
+      "label": "迎峰度夏 / 电力运营",
+      "file": "power_historical_events_v0_1.json",
+      "external_entry_ids": ["EXT-14"],
+      "display": {
+        "title": "历史事件（按年份）",
+        "aria_label": "历史电力迎峰度夏事件地图",
+        "badge": "事后重建 · 库内 Campaign + 实测行情",
+        "class_order": ["THEME_DIRECT", "THEME_ADJACENT"],
+        "class_caveats": {
+          "THEME_ADJACENT": "★ 本事件**不是**迎峰度夏机制（如绿电交易试点）。可用于对照，**不得**作为迎峰度夏季节性的支持证据。"
+        },
+        "note": "本区展示电力运营端的历史事件（来源：库内 Campaign + 实测行情）。★ **Campaign 的 `peak_date`、外部季节窗口、催化剂日期与个股行情高点分属四个不同概念，不得强行对齐**；股价上涨**不得**直接解释为题材因果。"
+      },
+      "event_count": 1,
+      "status": "ACTIVE"
+    },
+    {
+      "theme_id": "MEDIA",
+      "label": "文化传媒",
+      "file": "media_historical_events_v0_1.json",
+      "external_entry_ids": ["EXT-13"],
+      "display": {
+        "title": "历史事件（按年份）",
+        "aria_label": "历史文化传媒事件地图",
+        "badge": "事后重建 · 库内 Campaign + 实测行情",
+        "class_order": ["THEME_DIRECT", "THEME_ADJACENT"],
+        "class_caveats": {
+          "THEME_ADJACENT": "★ 本事件**不是**暑期档机制（如版号政策 / 元宇宙情绪）。可用于对照，**不得**作为暑期档季节性的支持证据。"
+        },
+        "note": "本区展示文化传媒的历史事件（来源：库内 Campaign + 实测行情）。★ 三段历史事件的机制分别是**版号政策 / 元宇宙情绪 / AI+内容**，**均非暑期档季节性** —— 页面据此明确标注，不把窗口重合当作机制一致。"
+      },
+      "event_count": 1,
+      "status": "ACTIVE"
+    },
+    {
+      "theme_id": "ROBOTICS",
+      "label": "AI+ / 机器人 / 高端装备",
+      "file": "robotics_historical_events_v0_1.json",
+      "external_entry_ids": ["EXT-23"],
+      "display": {
+        "title": "历史事件（按年份）",
+        "aria_label": "历史机器人与高端装备事件地图",
+        "badge": "事后重建 · 库内 Campaign + 实测行情",
+        "class_order": ["THEME_DIRECT", "THEME_ADJACENT"],
+        "class_caveats": {
+          "THEME_ADJACENT": "★ 本事件机制为**工业机器人下行 / 自动化周期**，与人形机器人叙事不同轴。"
+        },
+        "note": "本区展示高端装备 / 机器人方向的历史事件（来源：库内 Campaign + 实测行情）。★ 外部线索 EXT-23 为**无固定窗口**的事件驱动型线索，故本区以**机制比对**为主，不做窗口对齐。"
+      },
+      "event_count": 1,
+      "status": "ACTIVE"
+    }
+  ],
+  "not_included": {
+    "note": "★ 以下题材**未**建立事件地图，原因记录在此以免重复尝试",
+    "items": [
+      { "theme_id": "EXT-09", "label": "供暖 / 能源", "reason": "对应对象 peak 在 9 月 / 5 月，**不在** 11–12 月外部窗口；且**供暖/供热机制库内从未入库**（覆盖不足）" },
+      { "theme_id": "EXT-05", "label": "军工 / 九月效应", "reason": "机制为**一次性资产重组 / 装备订单**，非季节性；样本 2 个且机制异质" },
+      { "theme_id": "EXT-19", "label": "金九银十", "reason": "「金九银十」是**地产销售旺季（基本面口径）**，库内是**债务风险 / 政策修复**（资本市场口径）→ **概念不同轴**" }
+    ]
+  },
+  "shared_disclaimers": {
+    "note": "★★ 以下三条为**跨题材通用**免责声明，由代码常量提供，**不**进题材 JSON（避免被题材化后丢失）",
+    "business_mechanism_caveat": "业务机制证据来自**当前时点**公开资料 —— 不能确定该业务在事件当年的规模，也不能证明它是当次行情的驱动因素。不因报道当日涨停、区间涨幅高或概念标签就提升为直接相关。",
+    "market_performance_caveat": "行情为**事后行情描述**（区间涨跌 / 至高点 / 回撤 / 相对基准），**不是** Campaign 的起止日期或峰值裁定。",
+    "no_market_data_label": "行情不可得"
+  }
+}

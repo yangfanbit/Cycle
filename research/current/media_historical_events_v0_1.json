@@ -1,0 +1,378 @@
+{
+ "artifact": "historical_events",
+ "artifact_version": "0.1",
+ "theme": {
+  "theme_id": "MEDIA",
+  "label": "文化传媒"
+ },
+ "generated_at": "2026-10-14",
+ "generated_by": "ThreeC Agent",
+ "position": "★ 历史事后重建（来源：库内 Campaign + 实测行情），**不是**正式研究结论。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "本题材机制相关",
+   "meaning": "机制与本题材一致"
+  },
+  {
+   "code": "THEME_ADJACENT",
+   "label": "邻近机制 / 对照",
+   "meaning": "机制不同轴，仅供对照，不得作为本题材季节性的支持证据"
+  }
+ ],
+ "source_discipline": {
+  "no_price_to_causation": "★★ 股价上涨**不得**直接解释为题材因果。",
+  "four_concepts": "外部季节窗口 / Campaign peak_date / 催化剂日期 / 个股行情高点，四者分属不同概念。",
+  "no_fabrication": "不得伪造行情、证券代码、指数数据或历史事件。",
+  "note": "★ 三段历史事件的机制分别是**版号政策 / 元宇宙情绪 / AI+内容**，**均非暑期档季节性** —— 外部线索 EXT-13 的 6–8 月窗口与实际窗口**不对应**。"
+ },
+ "events": [
+  {
+   "event_id": "MEDIA-2018-GAMELICENSE",
+   "event_class": "THEME_DIRECT",
+   "label": "2018–19 年游戏版号政策转向行情",
+   "year": 2018,
+   "window_text": "2018-12-21 → 2019-08-09（Campaign 记录窗口）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2018-MEDIA-GAMELICENSE`（rule_media · date_confidence=medium）",
+   "study_state": "HAS_PRICE_DATA",
+   "four_concepts_note": "★★ 四个不同概念**不得强行对齐**：① 外部季节窗口；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见行情表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "campaign_id": "C-2018-MEDIA-GAMELICENSE",
+    "start": "2018-12-21",
+    "peak_date": "2019-03-12",
+    "end": "2019-08-09",
+    "note": "★ `peak_date` 是 **Campaign 研究侧记录**，**不是**个股行情高点"
+   },
+   "catalysts": [
+    {
+     "date": "2018-12-21",
+     "text": "2018-12-21，中宣部出版局副局长冯士新在 2018 中国游戏产业年会致辞末尾表示「首批游戏已完成审核，正在抓紧核发版号」；同日 A 股游戏公司股价普涨，截至发稿三七互娱涨 6.2%、完美世界涨 7.16%、游族网络涨 9.98%、腾讯涨 3.51%。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=his",
+     "source": "E-MEDIA2-01 · 行业媒体现场报道（medium）"
+    },
+    {
+     "date": "2018-12-21",
+     "text": "中国青年网于 2018-12-21 发布的《中宣部出版局副局长冯士新：共创中国网络游戏产业美好未来》讲话**全文**中，**不包含**任何关于「版号已完成审核 / 正在核发版号」的表述。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support · independence_",
+     "source": "E-MEDIA2-02 · 官方媒体发布的讲话文本（high）"
+    },
+    {
+     "date": "2018-12-21",
+     "text": "2018-12-21，中国证券报·中证网报道，中宣部出版局副局长冯士新在当日上午的 2018 中国游戏产业年会上表示「首批送审游戏已经完成审核，正在抓紧核发版号」；报道同时记录游戏公司代表称监管部门已就版号恢复给出明确态度和进度。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_s",
+     "source": "E-MEDIA2-09 · 权威证券媒体同期现场报道（high）"
+    },
+    {
+     "date": "2018-12-29",
+     "text": "2018-12-29 晚间，原国家新闻出版广电总局网站发布「2018 年 12 月份国产网络游戏审批信息」，共 80 款游戏获得版号（审批日期为 2018-12-19），其中 67 款移动游戏、6 款客户端游戏、6 款网页游戏、1 款 PS4 游戏；腾讯、网易均不在列。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_ki",
+     "source": "E-MEDIA2-03 · 监管机构名单公布（经财经媒体转述）（high）"
+    },
+    {
+     "date": "2019-01-09",
+     "text": "2019-01-09 公布 2019 年首批游戏版号共 84 款，距首批 80 款仅 10 天；同期券商观点称游戏板块「政策底」的特征较为明显、板块低估值下政策边际改善带来板块估值修复的逻辑将继续演绎。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support · indep",
+     "source": "E-MEDIA2-04 · 监管机构名单公布 + 券商观点（经财经媒体转述）（medium）"
+    },
+    {
+     "date": "2019-01-31",
+     "text": "2019-01-31，新浪财经报道：按当时已公布的传媒企业业绩预告，共有 21 家传媒企业 2018 年业绩预计大幅亏损，亏损总额超过 367 亿元。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_support · independence_group=IG-MEDIA-201",
+     "source": "E-MEDIA2-08 · 财经媒体报道（业绩预告汇总）（medium）"
+    },
+    {
+     "date": "2019-03-12",
+     "text": "中证传媒指数（399971）2019 年内最低收盘 1072.63（2019-01-31）、最高收盘 1569.91（2019-03-12）；2018-12-21 收 1121.99、2019-08-09 收 1116.74。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=historical_fact_sup",
+     "source": "E-MEDIA2-05 · 指数日行情（官方指数机构一手口径）（high）"
+    },
+    {
+     "date": "2019-03-12",
+     "text": "2019-01-31 至 2019-03-12，沪深300 自 3201.63 升至 3755.35（+17.29%），上证综指自 2584.57 升至 3060.31（+18.41%）；同期中证传媒指数 +46.36%、中证动漫游戏指数 +42.48%。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=hist",
+     "source": "E-MEDIA2-07 · 指数日行情（官方指数机构一手口径）+ 本包计算（high）"
+    },
+    {
+     "date": "2019-08-09",
+     "text": "中证动漫游戏指数（930901）2019 年内最高收盘 2138.41（2019-03-12）、最低收盘 1471.71（2019-08-09）；2019-01-31 收 1500.90 —— 即 2019-08-09 的收盘**低于**修复段起点。\n\n【Temporal Firewall（DB 无对应列，追加于此以免丢失）】temporal_relation=contemporaneous · support_kind=histori",
+     "source": "E-MEDIA2-06 · 指数日行情（官方指数机构一手口径）（high）"
+    }
+   ],
+   "phases": [
+    {
+     "phase_id": "PH-MEDIA2-01",
+     "stage": "decline",
+     "start": "2018-12-21",
+     "end": "2019-01-31",
+     "description": "★★ **保留此段** —— 政策转向日之后指数仍下跌（-4.40%，相对沪深300 跑输 10.08pp），反映政策转向**未被市场即时定价**。不得为让 start 之后就是上涨而删除本段。"
+    },
+    {
+     "phase_id": "PH-MEDIA2-02",
+     "stage": "main_rise",
+     "start": "2019-01-31",
+     "end": "2019-03-12",
+     "description": "上行：2018-12-29 首批 80 款版号公布（审批日 2018-12-19）、2019-01-09 第二批 84 款，券商侧形成「政策底」叙事；同期叠加 2019 年春季全市场快速反弹的系统性 Beta。"
+    },
+    {
+     "phase_id": "PH-MEDIA2-03",
+     "stage": "retracement",
+     "start": "2019-03-12",
+     "end": "2019-08-09",
+     "description": "回撤：自 1569.91 高点回落，至 2019-08-09 收 1116.74（低于起点附近水平）。"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "GIANTNET",
+     "ticker": "002558",
+     "name": "巨人网络",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2018-MEDIA-GAMELICENSE` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities"
+    },
+    {
+     "security_id": "PERFECTWORLD",
+     "ticker": "002624",
+     "name": "完美世界",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2018-MEDIA-GAMELICENSE` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2018-12-21 ~ 2019-08-09（adjusted 308 行）",
+     "period_return_pct": -15.7,
+     "to_high_pct": 30.0,
+     "high_date": "2019-03-12",
+     "excess_to_high_pp": -6.0
+    },
+    {
+     "security_id": "SANQI",
+     "ticker": "002555",
+     "name": "三七互娱",
+     "exchange": "深圳证券交易所",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2018-MEDIA-GAMELICENSE` 登记的标的（role=leader）",
+     "source": "DB campaign_securities / securities"
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 完美世界区间 **-15.7%**（**跑输基准 -6.0pp**），至高点 +30.0%（高点 2019-03-12）。★ 外部窗口 6–8 月与实际窗口**不对应**。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2018-12-21",
+     "2019-08-09"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**，**不是** Campaign 裁定。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 154,
+      "first": {
+       "date": "2018-12-21",
+       "close": 3029.4
+      },
+      "last": {
+       "date": "2019-08-09",
+       "close": 3633.53
+      },
+      "high": {
+       "date": "2019-04-19",
+       "close": 4120.61
+      },
+      "low": {
+       "date": "2019-01-03",
+       "close": 2964.84
+      },
+      "period_return_pct": 19.9,
+      "to_high_pct": 36.0,
+      "max_drawdown_from_high_pct": -13.5
+     }
+    },
+    "by_security": {
+     "PERFECTWORLD": {
+      "trading_days": 154,
+      "first": {
+       "date": "2018-12-21",
+       "close": 15.8
+      },
+      "last": {
+       "date": "2019-08-09",
+       "close": 13.31
+      },
+      "high": {
+       "date": "2019-03-12",
+       "close": 20.54
+      },
+      "low": {
+       "date": "2019-06-06",
+       "close": 12.4
+      },
+      "period_return_pct": -15.7,
+      "to_high_pct": 30.0,
+      "max_drawdown_from_high_pct": -39.6,
+      "excess_to_high_pp": -6.0,
+      "excess_period_pp": -35.6
+     }
+    }
+   },
+   "known_gaps": [
+    "★ 外部线索 EXT-13（暑期档 6–8 月）与本事件窗口**不对应** → 归为**对照事件**，非暑期档证据",
+    "★ 仅 1 只标的（完美世界）有本轮补入的行情；其余标的有行情但未在本窗口计算",
+    "★ 机制是**版号政策转向**，非暑期档季节性"
+   ]
+  },
+  {
+   "event_id": "MEDIA-2021-METAVERSE",
+   "event_class": "THEME_DIRECT",
+   "label": "2021 年元宇宙概念行情",
+   "year": 2021,
+   "window_text": "2021-09-06 → 2022-01-28（Campaign 记录窗口）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2021-MEDIA-METAVERSE`（rule_media · date_confidence=medium）",
+   "study_state": "HAS_PRICE_DATA",
+   "four_concepts_note": "★★ 四个不同概念**不得强行对齐**：① 外部季节窗口；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见行情表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "campaign_id": "C-2021-MEDIA-METAVERSE",
+    "start": "2021-09-06",
+    "peak_date": "2022-01-05",
+    "end": "2022-01-28",
+    "note": "★ `peak_date` 是 **Campaign 研究侧记录**，**不是**个股行情高点"
+   },
+   "catalysts": [
+    {
+     "date": "2021-09-06",
+     "text": "该段起点锚（事件驱动）。同一报道给出海外映射时间线（Roblox 2021-03 上市、Facebook 2021-05 表态、字节跳动 2021-08 底收购 Pico）。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-MEDIA3-005 · 媒体同期报道（转述公司公告与个股表现）（high）"
+    },
+    {
+     "date": "2021-12-20",
+     "text": "第三方对上行区间与机制的独立描述，与本包指数口径互证。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-MEDIA3-006 · 卖方研究报告（medium）"
+    },
+    {
+     "date": "2022-01-05",
+     "text": "该段幅度与峰谷的一手口径。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-MEDIA3-001 · 指数日行情（一手指数口径）（medium）"
+    },
+    {
+     "date": "2022-01-05",
+     "text": "以宽口径「中证传媒」交叉验证；该指数峰值同为 2022-01-05。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-MEDIA3-002 · 指数日行情（一手指数口径）（medium）"
+    },
+    {
+     "date": "2022-01-05",
+     "text": "以「虚拟现实」这一元宇宙硬件侧口径交叉验证。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-MEDIA3-003 · 指数日行情（一手指数口径）（medium）"
+    },
+    {
+     "date": "2022-01-05",
+     "text": "基准对照：同期沪深300 仅 +2.07%，动漫游戏主题超额约 +41.44pp —— 该段相对强度**显著**。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-MEDIA3-004 · 指数日行情（一手指数口径 · 基准对照）（medium）"
+    },
+    {
+     "date": "2022-01-12",
+     "text": "界定该段降温起点与原因。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-MEDIA3-007 · 卖方研究报告（medium）"
+    }
+   ],
+   "phases": [
+    {
+     "phase_id": "PH-MEDIA3-01",
+     "stage": "main_rise",
+     "start": "2021-09-06",
+     "end": "2022-01-05",
+     "description": "上行段：930901 自 2021-08-20 收 1255.89 至 2022-01-05 收 1802.38（+43.51%）。"
+    },
+    {
+     "phase_id": "PH-MEDIA3-02",
+     "stage": "retracement",
+     "start": "2022-01-05",
+     "end": "2022-01-28",
+     "description": "回调段（元宇宙概念龙头带头回调）。"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "ZHONGQINGBAO",
+     "ticker": "300052",
+     "name": "中青宝",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2021-MEDIA-METAVERSE` 登记的标的（role=leader）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2021-09-06 ~ 2022-01-28（adjusted 194 行）",
+     "period_return_pct": 187.2,
+     "to_high_pct": 382.7,
+     "high_date": "2021-11-11",
+     "excess_to_high_pp": 379.7
+    }
+   ],
+   "observed_performance": {
+    "note": "★★ 中青宝区间 **+187.2%**、至高点 **+382.7%**（高点 2021-11-11）、自高点回撤 **-40.5%**。★ 涨幅极端，是**情绪驱动**的典型；**不得**据此认定其业务机制与元宇宙直接相关。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2021-09-06",
+     "2022-01-28"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**，**不是** Campaign 裁定。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 97,
+      "first": {
+       "date": "2021-09-06",
+       "close": 4933.73
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 4563.77
+      },
+      "high": {
+       "date": "2021-12-13",
+       "close": 5083.8
+      },
+      "low": {
+       "date": "2022-01-28",
+       "close": 4563.77
+      },
+      "period_return_pct": -7.5,
+      "to_high_pct": 3.0,
+      "max_drawdown_from_high_pct": -10.2
+     }
+    },
+    "by_security": {
+     "ZHONGQINGBAO": {
+      "trading_days": 97,
+      "first": {
+       "date": "2021-09-06",
+       "close": 8.2
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 23.55
+      },
+      "high": {
+       "date": "2021-11-11",
+       "close": 39.58
+      },
+      "low": {
+       "date": "2021-09-06",
+       "close": 8.2
+      },
+      "period_return_pct": 187.2,
+      "to_high_pct": 382.7,
+      "max_drawdown_from_high_pct": -40.5,
+      "excess_to_high_pp": 379.7,
+      "excess_period_pp": 194.7
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **单只标的**（中青宝）+ **单一年份** → 样本极薄，**不得**据此建立任何规律",
+    "★ 机制是**元宇宙情绪炒作**，与暑期档无机制关系",
+    "★ 该股涨幅极端（+382.7%），须警惕「涨幅高 = 相关性高」的误推"
+   ]
+  }
+ ]
+}

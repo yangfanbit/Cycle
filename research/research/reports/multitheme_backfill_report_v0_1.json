@@ -1,0 +1,98 @@
+{
+ "generated_at": "2026-10-14T23:38:14",
+ "stats": {
+  "ok": 5,
+  "no_data": 0,
+  "invalid": 0,
+  "ticker_only": 2
+ },
+ "results": [
+  {
+   "sid": "HUADIAN",
+   "ticker": "600027",
+   "range": [
+    "2022-06-01",
+    "2024-12-31"
+   ],
+   "status": "OK",
+   "raw": 620,
+   "qfq": 620,
+   "actual": [
+    "2022-06-01",
+    "2024-12-31"
+   ]
+  },
+  {
+   "sid": "JIANTONENERGY",
+   "ticker": "000600",
+   "range": [
+    "2022-06-01",
+    "2024-12-31"
+   ],
+   "status": "OK",
+   "raw": 630,
+   "qfq": 630,
+   "actual": [
+    "2022-06-01",
+    "2024-12-31"
+   ]
+  },
+  {
+   "sid": "TIANFUENERGY",
+   "ticker": "600509",
+   "range": [
+    "2022-06-01",
+    "2024-12-31"
+   ],
+   "status": "OK",
+   "raw": 630,
+   "qfq": 630,
+   "actual": [
+    "2022-06-01",
+    "2024-12-31"
+   ]
+  },
+  {
+   "sid": "ZHONGQINGBAO",
+   "ticker": "300052",
+   "range": [
+    "2021-06-01",
+    "2022-06-30"
+   ],
+   "status": "OK",
+   "raw": 263,
+   "qfq": 263,
+   "actual": [
+    "2021-06-01",
+    "2022-06-30"
+   ]
+  },
+  {
+   "sid": "PERFECTWORLD",
+   "ticker": "002624",
+   "range": [
+    "2018-09-01",
+    "2019-12-31"
+   ],
+   "status": "OK",
+   "raw": 323,
+   "qfq": 323,
+   "actual": [
+    "2018-09-03",
+    "2019-12-31"
+   ]
+  },
+  {
+   "sid": "EFORT",
+   "ticker": "688165",
+   "status": "TICKER_ONLY",
+   "rows": 968
+  },
+  {
+   "sid": "ZHAOWEI",
+   "ticker": "003021",
+   "status": "TICKER_ONLY",
+   "rows": 968
+  }
+ ]
+}

@@ -1,0 +1,261 @@
+{
+ "artifact": "historical_events",
+ "artifact_version": "0.1",
+ "theme": {
+  "theme_id": "POWER_SUMMER",
+  "label": "迎峰度夏 / 电力运营"
+ },
+ "generated_at": "2026-10-14",
+ "generated_by": "ThreeC Agent",
+ "position": "★ 历史事后重建（来源：库内 Campaign + 实测行情），**不是**正式研究结论。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "本题材机制相关",
+   "meaning": "机制与本题材一致"
+  },
+  {
+   "code": "THEME_ADJACENT",
+   "label": "邻近机制 / 对照",
+   "meaning": "机制不同轴，仅供对照，不得作为本题材季节性的支持证据"
+  }
+ ],
+ "source_discipline": {
+  "no_price_to_causation": "★★ 股价上涨**不得**直接解释为题材因果。",
+  "four_concepts": "外部季节窗口 / Campaign peak_date / 催化剂日期 / 个股行情高点，四者分属不同概念。",
+  "no_fabrication": "不得伪造行情、证券代码、指数数据或历史事件。",
+  "note": "★ 本轮为 EXT-14 补入 3 只标的的 ticker 与 2022-06~2024-12 行情（此前完全无行情）。"
+ },
+ "events": [
+  {
+   "event_id": "POWER-2023-SUMMER",
+   "event_class": "THEME_DIRECT",
+   "label": "2023 年迎峰度夏 / 火电运营行情",
+   "year": 2023,
+   "window_text": "2023-01-03 → 2023-10-23（Campaign 记录窗口）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2023-POWEROP-THERMAL`（rule_power_operation · date_confidence=medium）",
+   "study_state": "HAS_PRICE_DATA",
+   "four_concepts_note": "★★ 四个不同概念**不得强行对齐**：① 外部季节窗口；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见行情表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "campaign_id": "C-2023-POWEROP-THERMAL",
+    "start": "2023-01-03",
+    "peak_date": "2023-05-29",
+    "end": "2023-10-23",
+    "note": "★ `peak_date` 是 **Campaign 研究侧记录**，**不是**个股行情高点"
+   },
+   "catalysts": [
+    {
+     "date": "2023-05-29",
+     "text": "该段幅度与峰值的一手口径。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-POWEROP2-001 · 指数日行情（一手指数口径）（medium）"
+    },
+    {
+     "date": "2023-05-29",
+     "text": "基准对照：同期沪深300 -1.39%，公用事业超额约 +12.32pp。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-POWEROP2-002 · 指数日行情（一手指数口径 · 基准对照）（medium）"
+    },
+    {
+     "date": "2023-05-29",
+     "text": "峰值日的市场反应；该报道同时给出三因素归因（用电需求、估值安全边际、煤价下跌）。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-POWEROP2-003 · 媒体同期报道（转述板块与个股表现）（medium）"
+    },
+    {
+     "date": "2023-05-29",
+     "text": "成本侧驱动（煤价）的量化佐证。★ 板块指数口径未标明（「电力板块指数」），已在 conflicts 中记录口径不明。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-POWEROP2-004 · 媒体同期报道（转述煤价与板块指数）（medium）"
+    },
+    {
+     "date": "2023-05-31",
+     "text": "以「中证全指电力公用事业指数（H30199）」这一更纯的电力口径独立交叉验证 000995 的结论；★ 该指数与本包所用的 000995 同属中证指数有限公司发布，故本条为**媒体转述**（非一手复算）。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-POWEROP2-005 · 媒体同期报道（引用指数口径）（medium）"
+    },
+    {
+     "date": "2023-06-02",
+     "text": "★ 这是**来源的主张**，本包照录并显式标注为**待核验假设**，不作为已确认的季节性结论（任务 Prompt §二.1：不得为了凑出「集中」而挑选日期）。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-POWEROP2-006 · 媒体观点（季节性主张）（medium）"
+    }
+   ],
+   "phases": [
+    {
+     "phase_id": "PH-POWEROP2-01",
+     "stage": "main_rise",
+     "start": "2023-01-03",
+     "end": "2023-05-29",
+     "description": "上行段：000995 自 2329.82 至 2584.43（+10.93%）。"
+    },
+    {
+     "phase_id": "PH-POWEROP2-02",
+     "stage": "decline",
+     "start": "2023-05-29",
+     "end": "2023-10-23",
+     "description": "回落段（包原记为 DECLINING）。"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUADIAN",
+     "ticker": "600027",
+     "name": "华电国际",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-POWEROP-THERMAL` 登记的标的（role=leader）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-01-03 ~ 2023-10-23（adjusted 386 行）",
+     "period_return_pct": -27.6,
+     "to_high_pct": 12.9,
+     "high_date": "2023-05-30",
+     "excess_to_high_pp": 4.8
+    },
+    {
+     "security_id": "JIANTONENERGY",
+     "ticker": "000600",
+     "name": "建投能源",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-POWEROP-THERMAL` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-01-03 ~ 2023-10-23（adjusted 386 行）",
+     "period_return_pct": -2.5,
+     "to_high_pct": 56.2,
+     "high_date": "2023-06-28",
+     "excess_to_high_pp": 48.1
+    },
+    {
+     "security_id": "TIANFUENERGY",
+     "ticker": "600509",
+     "name": "天富能源",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-POWEROP-THERMAL` 登记的标的（role=follow）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-01-03 ~ 2023-10-23（adjusted 386 行）",
+     "period_return_pct": 12.2,
+     "to_high_pct": 58.6,
+     "high_date": "2023-06-26",
+     "excess_to_high_pp": 50.5
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 三只标的**分化极大**：华电国际区间 **-27.6%**（跑输基准），而建投能源 / 天富能源至高点 +56~59%。★★ 建投/天富的**行情高点（06-28 / 06-26）落在外部窗口 5–7 月内**，但 **Campaign `peak_date` 是 2023-05-29** —— 二者不一致，**不得**强行对齐。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2023-01-03",
+     "2023-10-23"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**，**不是** Campaign 裁定。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 3887.9
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 3474.24
+      },
+      "high": {
+       "date": "2023-01-30",
+       "close": 4201.35
+      },
+      "low": {
+       "date": "2023-10-23",
+       "close": 3474.24
+      },
+      "period_return_pct": -10.6,
+      "to_high_pct": 8.1,
+      "max_drawdown_from_high_pct": -17.3
+     }
+    },
+    "by_security": {
+     "HUADIAN": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 5.68
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 4.11
+      },
+      "high": {
+       "date": "2023-05-30",
+       "close": 6.41
+      },
+      "low": {
+       "date": "2023-10-23",
+       "close": 4.11
+      },
+      "period_return_pct": -27.6,
+      "to_high_pct": 12.9,
+      "max_drawdown_from_high_pct": -35.9,
+      "excess_to_high_pp": 4.8,
+      "excess_period_pp": -17.0
+     },
+     "JIANTONENERGY": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 4.86
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 4.74
+      },
+      "high": {
+       "date": "2023-06-28",
+       "close": 7.59
+      },
+      "low": {
+       "date": "2023-04-04",
+       "close": 4.52
+      },
+      "period_return_pct": -2.5,
+      "to_high_pct": 56.2,
+      "max_drawdown_from_high_pct": -37.5,
+      "excess_to_high_pp": 48.1,
+      "excess_period_pp": 8.1
+     },
+     "TIANFUENERGY": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 5.01
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 5.62
+      },
+      "high": {
+       "date": "2023-06-26",
+       "close": 7.95
+      },
+      "low": {
+       "date": "2023-01-09",
+       "close": 4.98
+      },
+      "period_return_pct": 12.2,
+      "to_high_pct": 58.6,
+      "max_drawdown_from_high_pct": -29.3,
+      "excess_to_high_pp": 50.5,
+      "excess_period_pp": 22.8
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **样本仅 1 个年份**（2023）→ 只能展示实际历史事件与样本局限，**不得**宣称存在稳定季节性规律",
+    "★ 三只标的**机制异质**：华电国际为火电龙头（区间大幅跑输），建投/天富为区域火电 —— 不宜视为同一驱动",
+    "★ 外部窗口（5–7 月）与个股行情高点（06-26 / 06-28 / 05-30）**部分吻合但不完全**；华电国际高点在 05-30",
+    "★ 未取得同期一手报道（催化证据全部来自库内 Campaign 的既有 evidences）",
+    "概念指数不可得（同花顺 885879/885508 均不可得；电力类概念指数未核实）"
+   ]
+  }
+ ]
+}

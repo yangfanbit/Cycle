@@ -1,0 +1,256 @@
+{
+ "artifact": "historical_events",
+ "artifact_version": "0.1",
+ "theme": {
+  "theme_id": "ROBOTICS",
+  "label": "AI+ / 机器人 / 高端装备"
+ },
+ "generated_at": "2026-10-14",
+ "generated_by": "ThreeC Agent",
+ "position": "★ 历史事后重建（来源：库内 Campaign + 实测行情），**不是**正式研究结论。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "本题材机制相关",
+   "meaning": "机制与本题材一致"
+  },
+  {
+   "code": "THEME_ADJACENT",
+   "label": "邻近机制 / 对照",
+   "meaning": "机制不同轴，仅供对照，不得作为本题材季节性的支持证据"
+  }
+ ],
+ "source_discipline": {
+  "no_price_to_causation": "★★ 股价上涨**不得**直接解释为题材因果。",
+  "four_concepts": "外部季节窗口 / Campaign peak_date / 催化剂日期 / 个股行情高点，四者分属不同概念。",
+  "no_fabrication": "不得伪造行情、证券代码、指数数据或历史事件。",
+  "note": "★ 外部线索 EXT-23 为无固定窗口的事件驱动型线索。"
+ },
+ "events": [
+  {
+   "event_id": "ROBOTICS-2023-HUMANOID",
+   "event_class": "THEME_DIRECT",
+   "label": "2023 年人形机器人 / 具身智能行情",
+   "year": 2023,
+   "window_text": "2023-05-01 → 2023-12-31（Campaign 记录窗口）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2023-HIEQ-HUMANOID`（rule_high_end_equipment · date_confidence=medium）",
+   "study_state": "HAS_PRICE_DATA",
+   "four_concepts_note": "★★ 四个不同概念**不得强行对齐**：① 外部季节窗口；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见行情表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "campaign_id": "C-2023-HIEQ-HUMANOID",
+    "start": "2023-05-01",
+    "peak_date": "2023-11-02",
+    "end": "2023-12-31",
+    "note": "★ `peak_date` 是 **Campaign 研究侧记录**，**不是**个股行情高点"
+   },
+   "catalysts": [
+    {
+     "date": "2023-05-17",
+     "text": "2023 年 5 月英伟达创始人兼 CEO 黄仁勋公开表示人工智能下一个浪潮将是「具身智能」；同期特斯拉在 2023 年年度股东大会发布 Optimus Gen1 最新视频，展示运动控制、环境感知与动作捕捉方面的进展。［intake R01-HIEQ-E020｜role=supporting｜independence=IG-INDUSTRY-EMBODIED-AI］｜PIT: 本条来源发布于 2025-09-16，属两年后的产业进程复盘",
+     "source": "E-HIEQ-20 · 行业研究（产业事件梳理）（medium）"
+    },
+    {
+     "date": "2023-08-22",
+     "text": "2023 年 8 月 29 日盘前可获得的产业催化包括：2023 世界机器人大会于 8 月 16 日至 22 日在北京举行，达闼、宇树、优必选、追觅等人形机器人集中亮相；北京市设立 100 亿机器人产业基金；比亚迪入股智元机器人；工信部副部长徐晓兰在大会分论坛表示将推动出台人形机器人创新发展指导意见。［intake R01-HIEQ-E025｜role=supporting｜independence=IG-MARKET-ROBOT-20",
+     "source": "E-HIEQ-25 · 财经媒体（催化清单）（medium）"
+    },
+    {
+     "date": "2023-08-29",
+     "text": "2023 年 8 月 29 日机器人概念股掀涨停潮：拓斯达、步科股份、昊志机电、百胜智能等 20cm 涨停，绿的谐波、双飞股份等涨超 10%；当日机器人执行器概念上涨 6.23%、人形机器人概念上涨 6.14%、机器人概念上涨 3.52%。［intake R01-HIEQ-E024｜role=supporting｜independence=IG-MARKET-ROBOT-20230829］",
+     "source": "E-HIEQ-24 · 行情数据（当日板块与个股涨跌幅）（high）"
+    },
+    {
+     "date": "2023-08-29",
+     "text": "2023 年 8 月 29 日 A 股三大指数低开高走，沪指涨 1.20%、深成指涨 2.17%、创业板指涨 2.82%，两市超 4700 只个股上涨、成交额连续两个交易日突破一万亿元。［intake R01-HIEQ-E026｜role=contradicting｜independence=IG-MARKET-BETA-20230829］",
+     "source": "E-HIEQ-26 · 行情数据（市场整体）（high）"
+    },
+    {
+     "date": "2023-11-02",
+     "text": "工业和信息化部于 2023 年 11 月 2 日印发《人形机器人创新发展指导意见》，提出到 2025 年人形机器人创新体系初步建立、「大脑、小脑、肢体」等一批关键技术取得突破、整机产品达到国际先进水平并实现批量生产；到 2027 年形成安全可靠的产业链供应链体系。［intake R01-HIEQ-E021｜role=supporting｜independence=IG-POLICY-HUMANOID-GUIDE］｜PIT: 本条来源为 ",
+     "source": "E-HIEQ-21 · 官方政策文件（年度大盘点转引）（high）"
+    },
+    {
+     "date": "2023-12-13",
+     "text": "2023 年 12 月 13 日特斯拉自研的第二代人形机器人 Optimus Gen2 正式亮相，采用特斯拉自研执行器与传感器、2 自由度驱动颈部、11 自由度灵巧手、足部力/扭矩传感器等，并在行走速度、平衡感与手部精细操作上有明显性能提升。［intake R01-HIEQ-E022｜role=supporting｜independence=IG-PRODUCT-OPTIMUS-GEN2］",
+     "source": "E-HIEQ-22 · 产品发布（媒体报道）（high）"
+    },
+    {
+     "date": "2023-12-29",
+     "text": "2023 年 12 月优必选成功登陆港交所，成为人形机器人领域首家上市企业；傅利叶智能 GR-1 开启预售并实现小批量交付。［intake R01-HIEQ-E023｜role=supporting｜independence=IG-INDUSTRY-UBTECH-IPO］",
+     "source": "E-HIEQ-23 · 媒体报道（产业里程碑）（medium）"
+    }
+   ],
+   "phases": [
+    {
+     "phase_id": "PH-HIEQ-08",
+     "stage": "unclear",
+     "start": "2023-05-01",
+     "end": "2023-08-28",
+     "description": "PEAK（intake lifecycle）｜R01-01 Intake Package（source_commit 2153f6d）｜审查 docs/R01_01_INTAKE_REVIEW_v0_1.md"
+    },
+    {
+     "phase_id": "PH-HIEQ-09",
+     "stage": "main_rise",
+     "start": "2023-08-29",
+     "end": "2023-10-31",
+     "description": "PEAK（intake lifecycle）｜R01-01 Intake Package（source_commit 2153f6d）｜审查 docs/R01_01_INTAKE_REVIEW_v0_1.md"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "EFORT",
+     "ticker": "688165",
+     "name": "埃夫特",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-HIEQ-HUMANOID` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-05-04 ~ 2023-12-29（adjusted 328 行）",
+     "period_return_pct": 18.4,
+     "to_high_pct": 37.4,
+     "high_date": "2023-06-21",
+     "excess_to_high_pp": 36.6
+    },
+    {
+     "security_id": "KINCO",
+     "ticker": "688160",
+     "name": "步科股份",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-HIEQ-HUMANOID` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities"
+    },
+    {
+     "security_id": "LEADERDRIVE",
+     "ticker": "688017",
+     "name": "绿的谐波",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-HIEQ-HUMANOID` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities"
+    },
+    {
+     "security_id": "LEADSHINE",
+     "ticker": "002979",
+     "name": "雷赛智能",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-HIEQ-HUMANOID` 登记的标的（role=follow）",
+     "source": "DB campaign_securities / securities"
+    },
+    {
+     "security_id": "ZHAOWEI",
+     "ticker": "003021",
+     "name": "兆威机电",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 Campaign `C-2023-HIEQ-HUMANOID` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-05-04 ~ 2023-12-29（adjusted 328 行）",
+     "period_return_pct": 33.2,
+     "to_high_pct": 34.7,
+     "high_date": "2023-06-01",
+     "excess_to_high_pp": 33.9
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 埃夫特区间 +18.4%（至高点 +37.4%，高点 2023-06-21）· 兆威机电 +33.2%（至高点 +34.7%，高点 2023-06-01）；★ 同期基准 **-14.9%** → 两者超额 +36.6pp / +33.9pp。★ 外部线索 EXT-23 为**无固定窗口**的事件驱动型线索，故以**机制比对**为主，不做窗口对齐。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2023-05-01",
+     "2023-12-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**，**不是** Campaign 裁定。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 164,
+      "first": {
+       "date": "2023-05-04",
+       "close": 4030.25
+      },
+      "last": {
+       "date": "2023-12-29",
+       "close": 3431.11
+      },
+      "high": {
+       "date": "2023-05-08",
+       "close": 4062.66
+      },
+      "low": {
+       "date": "2023-12-20",
+       "close": 3297.5
+      },
+      "period_return_pct": -14.9,
+      "to_high_pct": 0.8,
+      "max_drawdown_from_high_pct": -18.8
+     }
+    },
+    "by_security": {
+     "EFORT": {
+      "trading_days": 164,
+      "first": {
+       "date": "2023-05-04",
+       "close": 9.68
+      },
+      "last": {
+       "date": "2023-12-29",
+       "close": 11.46
+      },
+      "high": {
+       "date": "2023-06-21",
+       "close": 13.3
+      },
+      "low": {
+       "date": "2023-06-08",
+       "close": 9.08
+      },
+      "period_return_pct": 18.4,
+      "to_high_pct": 37.4,
+      "max_drawdown_from_high_pct": -27.4,
+      "excess_to_high_pp": 36.6,
+      "excess_period_pp": 33.3
+     },
+     "ZHAOWEI": {
+      "trading_days": 164,
+      "first": {
+       "date": "2023-05-04",
+       "close": 49.6
+      },
+      "last": {
+       "date": "2023-12-29",
+       "close": 66.07
+      },
+      "high": {
+       "date": "2023-06-01",
+       "close": 66.79
+      },
+      "low": {
+       "date": "2023-08-21",
+       "close": 43.79
+      },
+      "period_return_pct": 33.2,
+      "to_high_pct": 34.7,
+      "max_drawdown_from_high_pct": -34.4,
+      "excess_to_high_pp": 33.9,
+      "excess_period_pp": 48.1
+     }
+    }
+   },
+   "known_gaps": [
+    "★ 外部线索 EXT-23 **无固定窗口** → 不做窗口对齐，仅作机制比对",
+    "★ **单一年份**（2023）→ 展示实际事件与样本局限，不宣称规律",
+    "★ 埃夫特 / 兆威机电此前**有行情但缺 ticker**（本轮已回填 688165 / 003021）",
+    "★ 业务机制（是否直接参与人形机器人产业链）**未逐只核实** → 全部保持 `REPORT_NAMED`"
+   ]
+  }
+ ]
+}
