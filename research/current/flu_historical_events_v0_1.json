@@ -1,0 +1,143 @@
+{
+  "artifact": "flu_historical_events",
+  "artifact_version": "0.1",
+  "generated_at": "2026-10-14",
+  "generated_by": "ThreeC Agent",
+  "position": "★ **历史事后重建 + 外部报道线索**，不是 ThreeC 正式研究结论。本文件用于研究回顾，不证明任何季节性规律成立。",
+  "source_discipline": {
+    "report_vs_threec": "同期报道是**发现历史事件的线索**，不是全部研究结论；催化事件与行情反应须另行核对。",
+    "no_label_only_inclusion": "★★ **不得仅凭当前概念标签纳入**，也**不得仅凭历史涨幅高**就认为概念相关。",
+    "two_pools": "★ 本文件分离两个池：① **历史炒作标的**（事后重建，可含领涨股）② **季节性研究股票池**（须跨年可比、须包含未上涨股）。两者通过 `event_id` + `security_id` 关联，**不得**用①单独证明季节性。",
+    "official_data_boundary": "同花顺概念指数（885879 流感 / 885508 禽流感）经腾讯 GTIMG 实测**不可得**（sz/sh 前缀代码无效；ths 前缀限流未能确认）→ 本文件不代以其他指数（避免偷换口径）。"
+  },
+  "participant_categories": [
+    { "code": "MECHANISM_DIRECT", "label": "直接机制相关", "meaning": "人用流感疫苗 / 抗流感药物 / 流感诊断检测等与机制直接相关的业务" },
+    { "code": "MARKET_PARTICIPANT", "label": "历史市场参与者", "meaning": "同期因事件被市场明确关注、且有可核验行情反应的股票" },
+    { "code": "SPILLOVER", "label": "间接关联 / 扩散", "meaning": "业务关系较弱或催化因素混杂的标的" },
+    { "code": "INSUFFICIENT", "label": "证据不足 / 负面参照", "meaning": "无充分同期证据表明其参与；或作为反例/对照留存" }
+  ],
+  "events": [
+    {
+      "event_id": "FLU-2023-H1N1",
+      "label": "2023 年甲流（A(H1N1)pdm09）行情",
+      "year": 2023,
+      "window_text": "2023-02-20 → 2023-04-15（峰值 2023-03-20）",
+      "external_window_ref": "EXT-12（外部资料：9 月至次年 1 月）",
+      "evidence_basis": "库内已有正式 Campaign `C-2023-PHARMA-FLU`（rule_pharma_upgrade · date_confidence medium）",
+      "catalysts": [
+        { "date": "2023-02-20", "text": "甲型流感高发，抗流感概念股走高、部分药企满负荷生产", "source": "S-FLU-02（财经媒体，行情口径，medium）" },
+        { "date": "2023-03-20", "text": "中国疾控中心国家流感中心主任表示本次流感 3 月中旬已进入高峰、整体处高位", "source": "S-FLU-03（行业媒体转官方表态，medium）" },
+        { "date": "2023-03-24", "text": "国家流感中心第 12 周：南方阳性率上升趋缓、北方下降；主要流行株 A(H1N1)pdm09", "source": "S-FLU-01（官方监测数据，**high**）" }
+      ],
+      "participants": [
+        { "security_id": "HUALANVAX", "ticker": "301207", "name": "华兰疫苗", "category": "MECHANISM_DIRECT",
+          "rationale": "人用流感疫苗生产商，Campaign 登记的 leader",
+          "source": "C-2023-PHARMA-FLU / securities.json",
+          "market_data": "2022-02-18 ~ 2025-02-28（adjusted 282 行，含 2024 补数）" },
+        { "security_id": "BAIKEBIO", "ticker": "688276", "name": "百克生物", "category": "MECHANISM_DIRECT",
+          "rationale": "疫苗企业，Campaign 登记的 representative",
+          "source": "C-2023-PHARMA-FLU / securities.json",
+          "market_data": "2022-01-04 ~ 2025-02-28（adjusted 426 行）" },
+        { "security_id": "JINDIKE", "ticker": "688670", "name": "金迪克", "category": "MECHANISM_DIRECT",
+          "rationale": "流感疫苗企业，Campaign 登记的 representative",
+          "source": "C-2023-PHARMA-FLU / securities.json",
+          "market_data": "2022-01-04 ~ 2025-02-28（adjusted 426 行）" }
+      ],
+      "observed_performance": {
+        "note": "★ 事后重建（非信号）",
+        "range": "2023-02-20 → 2023-04-15",
+        "by_security": {
+          "HUALANVAX": "首 30.66 → 峰值 32.89（+7.3%）",
+          "BAIKEBIO": "首 62.29 → 峰值 64.46（+3.5%）",
+          "JINDIKE": "首 35.44 → 峰值 42.02（+18.6%）"
+        }
+      },
+      "known_gaps": [
+        "peak 的依据是**官方流感监测高峰**（3 月中旬），**不是**行情高点日",
+        "驱动证据仅 3 条（1 条 Tier 1 监测 + 2 条 media tier3）",
+        "未与同年其他因子对照，无法排除同期板块因素"
+      ]
+    },
+    {
+      "event_id": "FLU-2019-ANTIFLU",
+      "label": "2019 年抗流感行情（多波次）",
+      "year": 2019,
+      "window_text": "2019-01 ~ 2019-12（至少两波：4 月上旬、12 月 31 日）",
+      "external_window_ref": "EXT-12（外部资料：9 月至次年 1 月）",
+      "evidence_basis": "同期公开报道（东方财富 / 证券时报，2019-04-11 与 2019-12-31）",
+      "catalysts": [
+        { "date": "2019-04-11", "text": "医药产业链板块集体走强，联环药业、九典制药、福安药业、鲁抗医药、海翔药业等涨停（报道原文）", "source": "格隆汇转引公开报道 2019-04-11" },
+        { "date": "2019-12-31", "text": "抗流感概念股盘中直线拉升，鲁抗医药、联环药业涨停，莱茵生物涨超 8%（报道原文）", "source": "东方财富网 / 证券时报 e 公司，2019-12-31" }
+      ],
+      "participants": [
+        { "security_id": "LUKANG-600789", "ticker": "600789", "name": "鲁抗医药", "category": "MECHANISM_DIRECT",
+          "rationale": "抗流感概念核心标的，两波均被报道涨停",
+          "source": "东方财富 2019-12-31 · 格隆汇 2019-04-11",
+          "market_data": "★★ **库内无登记、无行情**（securities 表与 market_daily 均无）" },
+        { "security_id": "LIANHUAN-600735", "ticker": "600735", "name": "联环药业", "category": "MECHANISM_DIRECT",
+          "rationale": "抗流感概念核心标的，两波均被报道涨停",
+          "source": "同上",
+          "market_data": "★★ **库内无登记、无行情**" },
+        { "security_id": "LAYNE-002166", "ticker": "002166", "name": "莱茵生物", "category": "MECHANISM_DIRECT",
+          "rationale": "报道称 2019-12-31 涨超 8%",
+          "source": "东方财富 2019-12-31",
+          "market_data": "★★ **库内无登记、无行情**" },
+        { "security_id": "JIUDIAN-300705", "ticker": "300705", "name": "九典制药", "category": "MARKET_PARTICIPANT",
+          "rationale": "报道称 2019-04-11 涨停",
+          "source": "格隆汇 2019-04-11",
+          "market_data": "★★ **库内无登记、无行情**" },
+        { "security_id": "HENGRUI", "ticker": "600276", "name": "恒瑞医药", "category": "INSUFFICIENT",
+          "rationale": "★ 库内有 2019 年行情，但**未找到同期报道表明其参与 2019 抗流感行情**",
+          "source": "（反面留档：有行情 ≠ 参与该事件）",
+          "market_data": "2018-01-02 ~ 2022-12-30（adjusted 1215 行）" },
+        { "security_id": "TIGERMED", "ticker": "300347", "name": "泰格医药", "category": "INSUFFICIENT",
+          "rationale": "同上 —— 有行情但无同期参与证据",
+          "source": "（反面留档）",
+          "market_data": "2018-01-02 ~ 2022-12-30（adjusted 1215 行）" },
+        { "security_id": "WUXIAPPTEC", "ticker": "603259", "name": "药明康德", "category": "INSUFFICIENT",
+          "rationale": "同上 —— 有行情但无同期参与证据",
+          "source": "（反面留档）",
+          "market_data": "2018-05-08 ~ 2022-12-30（adjusted 1134 行）" }
+      ],
+      "observed_performance": {
+        "note": "★★ **核心炒作标的行情不可得**，本事件**无法**做事后价格分析。库内三只医药股（恒瑞/泰格/药明）被标为 INSUFFICIENT，**不**作为该事件的表现证据。",
+        "by_security": null
+      },
+      "known_gaps": [
+        "★★ 鲁抗/联环/莱茵等核心标的**不在 securities 表、无 market_daily** → 无法起跌/峰值分析",
+        "2019 年的流感活动高峰月份未取得官方监测序列（库内仅 2023 年第 12 周一条）",
+        "报道为二手转述（部分经格隆汇/百家号），建议回溯一手来源后再定稿",
+        "两波（4 月 / 12 月）是否为同一机制段，未做边界判定"
+      ]
+    },
+    {
+      "event_id": "FLU-2017-AVIAN",
+      "label": "2017 年禽流感相关行情",
+      "year": 2017,
+      "window_text": "（未取得同期一手报道，暂不可界定）",
+      "external_window_ref": "EXT-12（外部资料：9 月至次年 1 月）",
+      "evidence_basis": "★★ **本轮未取得 2017 年可核验的同期报道**",
+      "catalysts": [],
+      "participants": [],
+      "observed_performance": { "note": "无数据", "by_security": null },
+      "known_gaps": [
+        "★★ **2017 年禽流感事件本轮未核实**（检索所得强同期报道集中于 2013 年 H7N9 与 2026 年，非 2017）",
+        "★ 且**DB 中无一只能覆盖 2017 全年的医药标的**（能覆盖 2017 的 12 只全部非医药）→ **即使确认事件也无法做价格分析**",
+        "→ 结论：本事件**暂不可研究**，须先（a）取得 2017 同期一手报道 （b）补入 2017 前后上市的流感概念标的行情"
+      ]
+    }
+  ],
+  "concept_index_availability": {
+    "flu_885879": { "provider": "同花顺", "sources_tried": ["sz885879", "sh885879", "ths885879"],
+      "result": "**不可得**（腾讯 GTIMG：sz/sh 代码无效；ths 限流未能确认）",
+      "note": "★ 按项目既有纪律，不代以其他概念指数/ETF（避免偷换口径）" },
+    "avian_flu_885508": { "provider": "同花顺", "sources_tried": ["sz885508", "sh885508", "ths885508"],
+      "result": "**不可得**（同上）" },
+    "benchmark_available": "SH000300（沪深 300）在库内可用，作 Beta 对照"
+  },
+  "research_pool_note": {
+    "historical_participant_pool": "各 event 的 `participants`（事后重建，可含领涨股）",
+    "seasonal_pool": "★ **尚未建立**。若建，须满足：跨年可比、含未上涨股、范围依据当时可获得的成分资料或清晰业务规则；**不得**使用本文件的事后挑选领涨股单独证明季节性。",
+    "current_status": "季节性研究股票池 = 仅 `C-2023-PHARMA-FLU` 已登记的 3 只（且其行情起始于 2022，**覆盖不到 2017–2019**）"
+  }
+}

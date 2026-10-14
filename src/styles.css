@@ -3328,3 +3328,64 @@ html, body {
   margin: 12px 0 0; padding-top: 8px; border-top: 1px solid var(--line);
   color: var(--ink-3); font-size: 11.5px;
 }
+
+/* ============================================================================
+   历史流感事件地图（FluEventMap）
+   ★ 与外部季节性雷达同一浅色体系；用颜色区分「机制相关 / 市场参与 / 扩散 / 证据不足」
+   ============================================================================ */
+.fem {
+  margin: 10px 0 4px; padding: 10px 12px;
+  background: #fbfaf7; border: 1px solid var(--line); border-radius: var(--radius);
+}
+.fem-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.fem-title { font-size: 13px; margin: 0; }
+.fem-badge {
+  font-size: 10.5px; padding: 0 6px; border-radius: 9px;
+  background: #f2f2f0; color: var(--ink-2);
+}
+.fem-note { color: var(--ink-2); font-size: 11.5px; margin: 6px 0 8px; }
+.fem-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.fem-event {
+  border: 1px solid var(--line); border-radius: var(--radius); background: #fff;
+  padding: 8px 10px;
+}
+.fem-event-head {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  width: 100%; background: none; border: 0; padding: 0; cursor: pointer;
+  font: inherit; text-align: left;
+}
+.fem-event-year {
+  font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent);
+}
+.fem-event-label { font-size: 12.5px; font-weight: 600; }
+.fem-event-state {
+  font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid transparent;
+}
+.fem-event-state.st-has_price_data  { background: #eaf5ec; color: #2f6b3c; border-color: #cbe3d1; }
+.fem-event-state.st-no_price_data   { background: #fdf3e3; color: var(--preheat-ink); border-color: #f0dcb8; }
+.fem-event-state.st-not_verified    { background: #f4f4f6; color: var(--ink-3); border-color: var(--line); }
+.fem-event-caret { margin-left: auto; font-size: 11px; color: var(--ink-3); }
+.fem-event-win, .fem-event-basis { margin: 5px 0 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-event-body { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.fem-event-body h5 { margin: 8px 0 4px; font-size: 11.5px; color: var(--ink-2); }
+.fem-cats, .fem-parts, .fem-gaps, .fem-perf { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.fem-cats li { display: flex; gap: 6px; flex-wrap: wrap; font-size: 11.5px; }
+.fem-cat-date { font-family: var(--mono); color: var(--ink-2); }
+.fem-cat-src { color: var(--ink-3); font-size: 11px; }
+.fem-part { border: 1px solid var(--line); border-radius: 4px; padding: 5px 7px; background: #fdfdfc; }
+.fem-part-head { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.fem-part-name { font-size: 12.5px; font-weight: 600; }
+.fem-part-ticker { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+.fem-part-cat { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); }
+.fem-part-cat.cat-mechanism_direct   { background: #eaf5ec; color: #2f6b3c; }
+.fem-part-cat.cat-market_participant { background: #eef3f8; color: var(--accent); }
+.fem-part-cat.cat-spillover          { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-cat.cat-insufficient       { background: #f4f4f6; color: var(--ink-3); }
+.fem-part-md { font-size: 10.5px; }
+.fem-part-md.ok   { color: #2f6b3c; }
+.fem-part-md.miss { color: #b0492f; font-weight: 600; }
+.fem-part-why, .fem-part-src { margin: 3px 0 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-perf-note { margin: 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-perf li { font-size: 11.5px; }
+.fem-gaps li { font-size: 11.5px; color: var(--ink-2); }
+.fem-empty { font-size: 11.5px; color: var(--ink-3); }

@@ -9,6 +9,7 @@
  * ★ 无映射时直接展示 `UNMAPPED` 与原因，**不隐藏空白**。
  */
 import { useMemo, useState } from 'react';
+import { FluEventMap } from './FluEventMap';
 import {
   EXTERNAL_CALENDAR_NOTE,
   EXTERNAL_SOURCE_LABEL,
@@ -25,6 +26,13 @@ import {
 
 /** 用户 2026-10-13 指定的优先展示四项 */
 const PRIORITY_IDS = ['EXT-11', 'EXT-08', 'EXT-12', 'EXT-09'];
+
+/**
+ * ★ 哪些外部线索**已有**历史事件地图（2026-10-14 起）。
+ * 只有已建成 `flu_historical_events_v0_1.json` 的主题才显示入口 ——
+ * 其余主题**不显示空壳**（避免暗示「已研究过」）。
+ */
+const EVENT_MAP_IDS = ['EXT-12'];
 
 const RELATION_CLASS: Record<WindowRelation, string> = {
   IN_WINDOW: 'esr-rel-in',
@@ -84,6 +92,8 @@ function EntryCard({ e, today }: { e: ExternalCalendarEntry; today: string }) {
           </>
         )}
       </dl>
+
+      {EVENT_MAP_IDS.includes(e.id) && <FluEventMap />}
 
       <div className="esr-foot">
         <span className="esr-id">{e.id}</span>
