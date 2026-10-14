@@ -17,8 +17,8 @@
  */
 import indexRaw from '@current/historical_event_maps_index.json';
 // ★ 各题材事件数据：**静态 import**（vite/TS 要求；索引只提供展示配置与入口映射）
-import fluDoc from '@current/flu_historical_events_v0_4.json';
-import powerDoc from '@current/power_historical_events_v0_1.json';
+import fluDoc from '@current/flu_historical_events_v0_5.json';
+import powerDoc from '@current/power_historical_events_v0_2.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 
@@ -49,7 +49,10 @@ export interface HistoricalParticipant {
   period_return_pct?: number;
   to_high_pct?: number;
   high_date?: string;
+  /** ★ 相对基准的「至高点」超额（pp）—— 至高点涨幅 − 基准至高点涨幅 */
   excess_to_high_pp?: number;
+  /** ★ 相对基准的「区间」超额（pp）—— 区间涨跌 − 基准区间涨跌（**与至高点超额不同口径**） */
+  excess_period_pp?: number;
   business_mechanism?: string;
   business_mechanism_caveat?: string;
 }
@@ -141,7 +144,7 @@ export interface EventMapIndexEntry {
   status?: string;
 }
 
-interface EventMapIndex {
+export interface EventMapIndex {
   artifact: string;
   artifact_version: string;
   maps: EventMapIndexEntry[];
@@ -247,6 +250,66 @@ export function hasMarketData(p: HistoricalParticipant): boolean {
   return Boolean(m) && !m!.includes('无登记') && !m!.includes('无行情');
 }
 
+/* ------------------------------------------------------ 行情状态（四类，必须可验证区分） */
+
+/**
+ * ★★ 标的在某事件窗口的行情状态 —— **四类互斥**，不得用字符串推断。
+ *
+ * - `COMPUTED`      该窗口已完成计算（`by_security[sid]` 存在且 `trading_days > 0` 且覆盖足够）
+ * - `NOT_COMPUTED`  该标的**有**行情登记，但**未在本事件窗口计算**（事件有 `market_performance` 但 `by_security` 无该 id）
+ * - `UNAVAILABLE`   所需证券行情**确实不可得**（`market_data` 含「无登记」「无行情」，或 `by_security[sid].status === 'NO_DATA'`）
+ * - `INSUFFICIENT`  数据存在但**覆盖不足**，不能算完整窗口（`trading_days` < 窗口交易日数 × 60%）
+ *
+ * ★ `NOT_COMPUTED` 与 `UNAVAILABLE` 是**不同**的事：前者是「没算」，后者是「算不了」。
+ * ★ 任何情况下都**不得**用 0 代表缺失数据。
+ */
+export type MarketDataStatus = 'COMPUTED' | 'NOT_COMPUTED' | 'UNAVAILABLE' | 'INSUFFICIENT';
+
+/** 覆盖不足的判定阈值：窗口交易日的 60% */
+export const MARKET_DATA_COVERAGE_RATIO = 0.6;
+
+/** `market_data` 是否**显式**标注为不可得（★ 缺字段 ≠ 不可得，那是「未计算」） */
+export function isMarketDataUnavailable(p: HistoricalParticipant | undefined): boolean {
+  const m = p?.market_data;
+  return Boolean(m) && (m!.includes('无登记') || m!.includes('无行情'));
+}
+
+/** 事件窗口的交易日数（以基准为准，缺基准则取窗口内最长标的） */
+function windowTradingDays(mp: MarketPerformance | undefined): number {
+  if (!mp) return 0;
+  const bench = Object.values(mp.benchmark ?? {})[0]?.trading_days ?? 0;
+  if (bench > 0) return bench;
+  return Object.values(mp.by_security ?? {}).reduce((m, s) => Math.max(m, s.trading_days ?? 0), 0);
+}
+
+export function marketDataStatus(event: HistoricalEvent, securityId: string): MarketDataStatus {
+  const p = event.participants.find((x) => x.security_id === securityId);
+  const mp = event.market_performance;
+  const st = mp?.by_security?.[securityId];
+
+  // ① 该标的在本窗口有行情记录
+  if (st) {
+    if (st.status === 'NO_DATA') return 'UNAVAILABLE';
+    const days = st.trading_days ?? 0;
+    if (days <= 0) return 'UNAVAILABLE';
+    const window = windowTradingDays(mp);
+    if (window > 0 && days < window * MARKET_DATA_COVERAGE_RATIO) return 'INSUFFICIENT';
+    return 'COMPUTED';
+  }
+
+  // ② 无本窗口记录：显式不可得 → UNAVAILABLE；否则只是**没算** → NOT_COMPUTED
+  if (isMarketDataUnavailable(p)) return 'UNAVAILABLE';
+  return 'NOT_COMPUTED';
+}
+
+/** ★ 四类状态的展示文案（页面必须显示，不得隐藏） */
+export const MARKET_DATA_STATUS_LABEL: Record<MarketDataStatus, string> = {
+  COMPUTED: '该窗口已计算',
+  NOT_COMPUTED: '该窗口未计算',
+  UNAVAILABLE: NO_MARKET_DATA_LABEL,
+  INSUFFICIENT: '覆盖不足',
+};
+
 /** ★ 只看**非 INSUFFICIENT** 的标的是否有行情（INSUFFICIENT 有行情≠参与证据） */
 export function eventHasAnalysableData(e: HistoricalEvent): boolean {
   return e.participants.some((p) => p.category !== 'INSUFFICIENT' && hasMarketData(p));
@@ -274,6 +337,75 @@ export function eventsByClass(
       events: doc.events.filter((e) => (e.event_class ?? 'UNCLASSIFIED') === cls),
     }))
     .filter((g) => g.events.length > 0);
+}
+
+/* ------------------------------------------------------ 索引一致性校验 */
+
+/**
+ * ★ 最低限度的**索引 ↔ 题材文档**一致性校验。
+ *
+ * 检查项：
+ *   1. `event_count` 与实际 `events` 数一致
+ *   2. `external_entry_ids` 非空、条目内唯一、跨条目不重复
+ *   3. `theme_id` 在注册表里有对应 doc
+ *   4. `display` 必填字段齐全（title / aria_label / badge / note / class_order）
+ */
+export function validateEventMapIndex(
+  index: EventMapIndex = eventMapIndex(),
+  docs: Record<string, HistoricalEventsDoc> = DOCS,
+): EventMapValidationIssue[] {
+  const issues: EventMapValidationIssue[] = [];
+  const push = (themeId: string | null, field: string, message: string) =>
+    issues.push({ themeId, eventId: null, field, message });
+
+  if (!Array.isArray(index.maps) || index.maps.length === 0) {
+    push(null, 'maps', 'maps 缺失或为空'); return issues;
+  }
+
+  const usedEntryIds = new Set<string>();
+  for (const m of index.maps) {
+    const themeId = m.theme_id || null;
+    if (!themeId) { push(null, 'theme_id', '缺少 theme_id'); continue; }
+
+    // ③ theme_id → doc
+    const doc = docs[themeId];
+    if (!doc) push(themeId, 'theme_id', '注册表里没有对应题材文档: ' + themeId);
+
+    // ② external_entry_ids
+    const ids = m.external_entry_ids;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      push(themeId, 'external_entry_ids', 'external_entry_ids 为空');
+    } else {
+      const dup = Array.from(new Set(ids.filter((id, i) => ids.indexOf(id) !== i)));
+      if (dup.length) push(themeId, 'external_entry_ids', 'external_entry_ids 条目内重复: ' + dup.join(','));
+      for (const id of ids) {
+        if (usedEntryIds.has(id)) push(themeId, 'external_entry_ids', '外部线索 ID 被多个题材占用: ' + id);
+        else usedEntryIds.add(id);
+      }
+    }
+
+    // ④ display 必填字段
+    const d = m.display;
+    if (!d) {
+      push(themeId, 'display', '缺少 display');
+    } else {
+      for (const f of ['title', 'aria_label', 'badge', 'note'] as const) {
+        if (!d[f]) push(themeId, 'display.' + f, 'display 缺必填字段: ' + f);
+      }
+      if (!Array.isArray(d.class_order) || d.class_order.length === 0) {
+        push(themeId, 'display.class_order', 'display.class_order 为空');
+      }
+    }
+
+    // ① event_count ↔ 实际事件数
+    if (doc) {
+      const actual = doc.events?.length ?? 0;
+      if (m.event_count !== actual) {
+        push(themeId, 'event_count', `event_count=${m.event_count} 与实际事件数 ${actual} 不一致`);
+      }
+    }
+  }
+  return issues;
 }
 
 /* ------------------------------------------------------ 通用校验 */

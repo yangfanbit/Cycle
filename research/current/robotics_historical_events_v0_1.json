@@ -139,9 +139,11 @@
      "name": "雷赛智能",
      "exchange": "SZ",
      "category": "MARKET_PARTICIPANT",
-     "evidence_level": "REPORT_NAMED",
+     "evidence_level": "BUSINESS_VERIFIED",
      "rationale": "库内 Campaign `C-2023-HIEQ-HUMANOID` 登记的标的（role=follow）",
-     "source": "DB campaign_securities / securities"
+     "source": "DB campaign_securities / securities",
+     "business_mechanism": "谐波减速器（**人形机器人关节核心零部件**，占其收入 >90%）",
+     "business_mechanism_caveat": "★ 证据为公开资料；谐波减速器为其**核心主营**。★★ 但人形机器人产业在 **2023 年尚未放量**；「该机制驱动了 2023 年行情」**无法确认**。"
     },
     {
      "security_id": "ZHAOWEI",
@@ -252,5 +254,11 @@
     "★ 业务机制（是否直接参与人形机器人产业链）**未逐只核实** → 全部保持 `REPORT_NAMED`"
    ]
   }
- ]
+ ],
+ "business_mechanism_note": {
+  "method": "定向检索公司公告/年报/官方资料（2026-10-15）",
+  "hard_rule": "★★ **不因业务机制核实就改 `category`** —— 参与证据仍是库内 Campaign 登记；★★ **不因涨幅/涨停/概念标签**提升相关性等级。",
+  "five_levels": "① 具备业务 ② 当时已存在 ③ 当时重要 ④ 参与行情 ⑤ 机制驱动行情 —— 五者**不可相互替代**。",
+  "coverage": "本轮仅对 **Q1+Q2+Q3 三项均充分**的证券填写 `business_mechanism`；★ 全部证券的 **Q5（机制驱动行情）均无法确认**。"
+ }
 }

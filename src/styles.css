@@ -3384,6 +3384,8 @@ html, body {
 .fem-part-md { font-size: 10.5px; }
 .fem-part-md.ok   { color: #2f6b3c; }
 .fem-part-md.miss { color: #b0492f; font-weight: 600; }
+.fem-part-md.pending { color: var(--ink-3); }
+.fem-part-md.warn    { color: var(--preheat-ink); font-weight: 600; }
 .fem-part-why, .fem-part-src { margin: 3px 0 0; font-size: 11.5px; color: var(--ink-2); }
 .fem-perf-note { margin: 0; font-size: 11.5px; color: var(--ink-2); }
 .fem-perf li { font-size: 11.5px; }

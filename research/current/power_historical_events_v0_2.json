@@ -1,0 +1,2565 @@
+{
+ "artifact": "historical_events",
+ "artifact_version": "0.2",
+ "theme": {
+  "theme_id": "POWER_SUMMER",
+  "label": "迎峰度夏 / 电力运营"
+ },
+ "generated_at": "2026-10-14",
+ "generated_by": "ThreeC Agent",
+ "position": "★ 历史事后重建（来源：库内 Campaign + 实测行情），**不是**正式研究结论。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "本题材机制相关",
+   "meaning": "机制与本题材一致"
+  },
+  {
+   "code": "THEME_ADJACENT",
+   "label": "邻近机制 / 对照",
+   "meaning": "机制不同轴，仅供对照，不得作为本题材季节性的支持证据"
+  }
+ ],
+ "source_discipline": {
+  "no_price_to_causation": "★★ 股价上涨**不得**直接解释为题材因果。",
+  "four_concepts": "外部季节窗口 / Campaign peak_date / 催化剂日期 / 个股行情高点，四者分属不同概念。",
+  "no_fabrication": "不得伪造行情、证券代码、指数数据或历史事件。",
+  "note": "★ 本轮为 EXT-14 补入 3 只标的的 ticker 与 2022-06~2024-12 行情（此前完全无行情）。"
+ },
+ "events": [
+  {
+   "event_id": "POWER-2017-SUMMER-COUNTEREXAMPLE",
+   "event_class": "THEME_ADJACENT",
+   "label": "2017 年迎峰度夏 —— **反例**（基本面强劲但股价下跌）",
+   "year": 2017,
+   "window_text": "季节观察窗口 2017-05-01 → 2017-07-31",
+   "external_window_ref": "EXT-14（外部资料：5–7 月）",
+   "evidence_basis": "同期官方数据 + 行业统计（见催化时间线）",
+   "study_state": "HAS_PRICE_DATA",
+   "window_basis": "SEASON_WINDOW_5_7",
+   "four_concepts_note": "★★ **窗口口径必须显式说明**：本事件用的是**季节观察窗口（每年 5/1–7/31）**，**不等于** Campaign 全周期，**也不等于**催化剂窗口。★ Campaign 全周期口径另见 `campaign_full_period`。",
+   "catalysts": [
+    {
+     "date": "2017-07-17",
+     "text": "国家发展改革委迎峰度夏电力煤炭供应专题会议：1-6 月电煤、电力消费同比分别增长 8.2%、6.3%，为近几年最大增幅；华北、西北两个区域电网和 12 个省级电网用电负荷刷新纪录；7 月 13 日全国用电峰值超出历史最高水平 7 个百分点，电煤日消耗 555 万吨，创夏季历史新高。",
+     "source": "国家发展改革委官网"
+    },
+    {
+     "date": "2018-06-20",
+     "text": "中电联《中国电力行业年度发展报告 2018》：2017 年全国规模以上火电企业仅实现利润 207 亿元，比上年下降 83.3%，直接拉动发电企业利润同比下降 32.4%。",
+     "source": "澎湃新闻转述中电联报告"
+    },
+    {
+     "date": "2017-09-05",
+     "text": "券商 17H1 业绩回顾：年初至今电力板块下跌 0.78%、火电板块下跌 1.23%（同期上证指数上涨 7.17%）；火电收入同比增长，煤价高企拖累盈利。",
+     "source": "券商研报（金投网转载）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUADIAN",
+     "ticker": "600027",
+     "name": "华电国际",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2419 行）",
+     "business_mechanism": "火电运营（华电集团旗下核心火电上市平台，装机以火电为主）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+    },
+    {
+     "security_id": "JIANTONENERGY",
+     "ticker": "000600",
+     "name": "建投能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2428 行）",
+     "business_mechanism": "火电运营（河北省属火电企业，主营电力、热力生产销售）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    },
+    {
+     "security_id": "TIANFUENERGY",
+     "ticker": "600509",
+     "name": "天富能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2415 行）",
+     "business_mechanism": "火电 + 热力运营（新疆区域电力企业）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    },
+    {
+     "security_id": "JINGNENG",
+     "ticker": "600578",
+     "name": "京能电力",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-02-24~2025-12-31（2393 行）"
+    },
+    {
+     "security_id": "SANXIAENERGY",
+     "ticker": "600905",
+     "name": "三峡能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2021-06-10~2025-12-31（1108 行）"
+    },
+    {
+     "security_id": "YINXING",
+     "ticker": "000862",
+     "name": "银星能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2271 行）"
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 发改委记录 12 个省级电网负荷刷新纪录、电煤日耗创夏季历史新高；但中电联记录火电利润 **-83.3%**，火电池 3/4 下跌。**基本面 ≠ 股价**。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2017-05-01",
+     "2017-07-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ 季节观察窗口（5–7 月），**非** Campaign 裁定。★★ 收益、最高价与回撤只能**描述历史价格表现**，**不能**单独证明价格变化由某个催化因素引起。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 63,
+      "first": {
+       "date": "2017-05-02",
+       "close": 3426.58
+      },
+      "last": {
+       "date": "2017-07-31",
+       "close": 3737.87
+      },
+      "period_return_pct": 9.08,
+      "high_date": "2017-07-20",
+      "high_close": 3747.88,
+      "to_high_pct": 9.38,
+      "max_drawdown_from_high_pct": -1.13
+     }
+    },
+    "by_security": {
+     "HUADIAN": {
+      "trading_days": 63,
+      "first": {
+       "date": "2017-05-02",
+       "close": 3.334
+      },
+      "last": {
+       "date": "2017-07-31",
+       "close": 3.06
+      },
+      "period_return_pct": -8.22,
+      "high_date": "2017-06-06",
+      "high_close": 3.444,
+      "to_high_pct": 3.3,
+      "max_drawdown_from_high_pct": -15.1,
+      "excess_period_pp": -17.3,
+      "excess_to_high_pp": -6.08
+     },
+     "JIANTONENERGY": {
+      "trading_days": 63,
+      "first": {
+       "date": "2017-05-02",
+       "close": 12.65
+      },
+      "last": {
+       "date": "2017-07-31",
+       "close": 9.19
+      },
+      "period_return_pct": -27.35,
+      "high_date": "2017-06-23",
+      "high_close": 13.24,
+      "to_high_pct": 4.66,
+      "max_drawdown_from_high_pct": -30.59,
+      "excess_period_pp": -36.43,
+      "excess_to_high_pp": -4.72
+     },
+     "TIANFUENERGY": {
+      "trading_days": 63,
+      "first": {
+       "date": "2017-05-02",
+       "close": 7.56
+      },
+      "last": {
+       "date": "2017-07-31",
+       "close": 8.167
+      },
+      "period_return_pct": 8.03,
+      "high_date": "2017-07-31",
+      "high_close": 8.167,
+      "to_high_pct": 8.03,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": -1.05,
+      "excess_to_high_pp": -1.35
+     },
+     "JINGNENG": {
+      "trading_days": 63,
+      "first": {
+       "date": "2017-05-02",
+       "close": 3.466
+      },
+      "last": {
+       "date": "2017-07-31",
+       "close": 3.326
+      },
+      "period_return_pct": -4.04,
+      "high_date": "2017-05-02",
+      "high_close": 3.466,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -12.12,
+      "excess_period_pp": -13.12,
+      "excess_to_high_pp": -9.38
+     },
+     "SANXIAENERGY": {
+      "error": "insufficient_data_in_window"
+     },
+     "YINXING": {
+      "error": "insufficient_data_in_window"
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **反例**：基本面（负荷/利润）强劲但股价下跌 → **不得**用基本面推股价",
+    "★ 参与者全部 `REPORT_NAMED`",
+    "★ 单年样本；与 2022 年对比才构成「跨年不一致」的证据"
+   ]
+  },
+  {
+   "event_id": "POWER-2022-SUMMER",
+   "event_class": "THEME_DIRECT",
+   "label": "2022 年迎峰度夏 + 煤价见顶预期行情",
+   "year": 2022,
+   "window_text": "季节观察窗口 2022-05-01 → 2022-07-31",
+   "external_window_ref": "EXT-14（外部资料：5–7 月）",
+   "evidence_basis": "同期报道 + 官方文件（见催化时间线）",
+   "study_state": "HAS_PRICE_DATA",
+   "window_basis": "SEASON_WINDOW_5_7",
+   "four_concepts_note": "★★ **窗口口径必须显式说明**：本事件用的是**季节观察窗口（每年 5/1–7/31）**，**不等于** Campaign 全周期，**也不等于**催化剂窗口。★ Campaign 全周期口径另见 `campaign_full_period`。",
+   "catalysts": [
+    {
+     "date": "2022-07-20",
+     "text": "Wind 火电指数 4 月 27 日至 7 月 19 日大涨 **36.82%**，同期沪深 300 涨幅 12.82%；报道归因于多重『利好』预期，火电股涨势自四月底启动。",
+     "source": "媒体（转述 Wind 指数）"
+    },
+    {
+     "date": "2022-07-20",
+     "text": "天风证券：7 月动力煤供需或维持紧平衡，煤价大幅向上动能有限；伴随 7 月用电高峰度过、水电满发，8 月火电发电需求有望下滑，煤价有望逐步滑落，进而带动火电盈利修复。",
+     "source": "媒体转述天风证券"
+    },
+    {
+     "date": "2022-08-16",
+     "text": "四川省启动三级保供电调控措施：8 月 14–20 日对部分高载能企业实施停产让电于民，让出用电负荷约 700 万千瓦（《四川省 2022 年迎峰度夏部分高载能行业停产让电于民实施方案》）。",
+     "source": "四川省人民政府官网"
+    },
+    {
+     "date": "2022-06-21",
+     "text": "国家发展改革委答复媒体『电力迎峰度夏』问题：全国发电装机容量充足；各大流域来水好于预期。",
+     "source": "国家发展改革委（媒体转述）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUADIAN",
+     "ticker": "600027",
+     "name": "华电国际",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（机制直接，纳入原则见 cross_year_comparison.method）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2419 行）",
+     "business_mechanism": "火电运营（华电集团旗下核心火电上市平台，装机以火电为主）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+    },
+    {
+     "security_id": "JIANTONENERGY",
+     "ticker": "000600",
+     "name": "建投能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（机制直接，纳入原则见 cross_year_comparison.method）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2428 行）",
+     "business_mechanism": "火电运营（河北省属火电企业，主营电力、热力生产销售）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    },
+    {
+     "security_id": "TIANFUENERGY",
+     "ticker": "600509",
+     "name": "天富能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（机制直接，纳入原则见 cross_year_comparison.method）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2415 行）",
+     "business_mechanism": "火电 + 热力运营（新疆区域电力企业）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    },
+    {
+     "security_id": "JINGNENG",
+     "ticker": "600578",
+     "name": "京能电力",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（机制直接，纳入原则见 cross_year_comparison.method）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-02-24~2025-12-31（2393 行）"
+    },
+    {
+     "security_id": "SANXIAENERGY",
+     "ticker": "600905",
+     "name": "三峡能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（机制直接，纳入原则见 cross_year_comparison.method）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2021-06-10~2025-12-31（1108 行）"
+    },
+    {
+     "security_id": "YINXING",
+     "ticker": "000862",
+     "name": "银星能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（机制直接，纳入原则见 cross_year_comparison.method）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2271 行）"
+    }
+   ],
+   "observed_performance": {
+    "note": "见 `market_performance`（5–7 月季节窗口）",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2022-05-01",
+     "2022-07-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ 季节观察窗口（5–7 月），**非** Campaign 裁定。★★ 收益、最高价与回撤只能**描述历史价格表现**，**不能**单独证明价格变化由某个催化因素引起。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 4010.21
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 4170.1
+      },
+      "period_return_pct": 3.99,
+      "high_date": "2022-07-04",
+      "high_close": 4496.03,
+      "to_high_pct": 12.11,
+      "max_drawdown_from_high_pct": -7.25
+     }
+    },
+    "by_security": {
+     "HUADIAN": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 2.71
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 3.53
+      },
+      "period_return_pct": 30.26,
+      "high_date": "2022-07-18",
+      "high_close": 4.0,
+      "to_high_pct": 47.6,
+      "max_drawdown_from_high_pct": -12.5,
+      "excess_period_pp": 26.27,
+      "excess_to_high_pp": 35.49
+     },
+     "JIANTONENERGY": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 3.61
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 4.48
+      },
+      "period_return_pct": 24.1,
+      "high_date": "2022-07-11",
+      "high_close": 5.85,
+      "to_high_pct": 62.05,
+      "max_drawdown_from_high_pct": -23.76,
+      "excess_period_pp": 20.11,
+      "excess_to_high_pp": 49.94
+     },
+     "TIANFUENERGY": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 4.093
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 5.283
+      },
+      "period_return_pct": 29.07,
+      "high_date": "2022-07-25",
+      "high_close": 5.463,
+      "to_high_pct": 33.47,
+      "max_drawdown_from_high_pct": -3.29,
+      "excess_period_pp": 25.08,
+      "excess_to_high_pp": 21.36
+     },
+     "JINGNENG": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 2.445
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 2.945
+      },
+      "period_return_pct": 20.45,
+      "high_date": "2022-07-22",
+      "high_close": 3.105,
+      "to_high_pct": 26.99,
+      "max_drawdown_from_high_pct": -6.76,
+      "excess_period_pp": 16.46,
+      "excess_to_high_pp": 14.88
+     },
+     "SANXIAENERGY": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 5.527
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 5.997
+      },
+      "period_return_pct": 8.5,
+      "high_date": "2022-07-13",
+      "high_close": 6.537,
+      "to_high_pct": 18.27,
+      "max_drawdown_from_high_pct": -9.33,
+      "excess_period_pp": 4.51,
+      "excess_to_high_pp": 6.16
+     },
+     "YINXING": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 6.36
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 7.46
+      },
+      "period_return_pct": 17.3,
+      "high_date": "2022-07-18",
+      "high_close": 8.1,
+      "to_high_pct": 27.36,
+      "max_drawdown_from_high_pct": -9.14,
+      "excess_period_pp": 13.31,
+      "excess_to_high_pp": 15.25
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **这是 10 年中唯一「火电池一致上涨」的年份** —— 单年样本**不能**证明季节性",
+    "★ 驱动为「迎峰度夏 + 煤价见顶预期」**双因素**，本包数据**无法分离**两者贡献",
+    "★ 参与者全部 `REPORT_NAMED`（业务机制已核实但「机制驱动行情」无法确认）",
+    "★ 外部窗口 5–7 月与真实行情起点（报道称 4 月底启动）**不完全一致**"
+   ]
+  },
+  {
+   "event_id": "POWER-2023-SUMMER",
+   "event_class": "THEME_DIRECT",
+   "label": "2023 年迎峰度夏 / 火电运营行情",
+   "year": 2023,
+   "window_text": "2023-01-03 → 2023-10-23（Campaign 记录窗口）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2023-POWEROP-THERMAL`（rule_power_operation · date_confidence=medium）",
+   "study_state": "HAS_PRICE_DATA",
+   "four_concepts_note": "★★ **本事件用的是 Campaign 全周期口径（2023-01-03 ~ 2023-10-23）**，**不等于**外部季节窗口 5–7 月，**也不等于**催化剂窗口。★ 5–7 月口径见 `cross_year_comparison.yearly_5_7`。★ Campaign `peak_date`（2023-05-29）与三只个股行情高点（05-30/06-28/06-26）**都不一致**。",
+   "campaign_facts": {
+    "campaign_id": "C-2023-POWEROP-THERMAL",
+    "start": "2023-01-03",
+    "peak_date": "2023-05-29",
+    "end": "2023-10-23",
+    "note": "★ `peak_date` 是 **Campaign 研究侧记录**，**不是**个股行情高点"
+   },
+   "catalysts": [
+    {
+     "date": "2023-05-29",
+     "text": "该段幅度与峰值的一手口径。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-POWEROP2-001 · 指数日行情（一手指数口径）（medium）"
+    },
+    {
+     "date": "2023-05-29",
+     "text": "基准对照：同期沪深300 -1.39%，公用事业超额约 +12.32pp。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-POWEROP2-002 · 指数日行情（一手指数口径 · 基准对照）（medium）"
+    },
+    {
+     "date": "2023-05-29",
+     "text": "峰值日的市场反应；该报道同时给出三因素归因（用电需求、估值安全边际、煤价下跌）。 ｜ ★ support_kind=historical_fact_support,point_in_time_support",
+     "source": "E-POWEROP2-003 · 媒体同期报道（转述板块与个股表现）（medium）"
+    },
+    {
+     "date": "2023-05-29",
+     "text": "成本侧驱动（煤价）的量化佐证。★ 板块指数口径未标明（「电力板块指数」），已在 conflicts 中记录口径不明。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-POWEROP2-004 · 媒体同期报道（转述煤价与板块指数）（medium）"
+    },
+    {
+     "date": "2023-05-31",
+     "text": "以「中证全指电力公用事业指数（H30199）」这一更纯的电力口径独立交叉验证 000995 的结论；★ 该指数与本包所用的 000995 同属中证指数有限公司发布，故本条为**媒体转述**（非一手复算）。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-POWEROP2-005 · 媒体同期报道（引用指数口径）（medium）"
+    },
+    {
+     "date": "2023-06-02",
+     "text": "★ 这是**来源的主张**，本包照录并显式标注为**待核验假设**，不作为已确认的季节性结论（任务 Prompt §二.1：不得为了凑出「集中」而挑选日期）。 ｜ ★ support_kind=historical_fact_support",
+     "source": "E-POWEROP2-006 · 媒体观点（季节性主张）（medium）"
+    }
+   ],
+   "phases": [
+    {
+     "phase_id": "PH-POWEROP2-01",
+     "stage": "main_rise",
+     "start": "2023-01-03",
+     "end": "2023-05-29",
+     "description": "上行段：000995 自 2329.82 至 2584.43（+10.93%）。"
+    },
+    {
+     "phase_id": "PH-POWEROP2-02",
+     "stage": "decline",
+     "start": "2023-05-29",
+     "end": "2023-10-23",
+     "description": "回落段（包原记为 DECLINING）。"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUADIAN",
+     "ticker": "600027",
+     "name": "华电国际",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 Campaign `C-2023-POWEROP-THERMAL` 登记的标的（role=leader）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-01-03 ~ 2023-10-23（adjusted 386 行）",
+     "period_return_pct": -27.6,
+     "to_high_pct": 12.9,
+     "high_date": "2023-05-30",
+     "excess_to_high_pp": 4.8,
+     "business_mechanism": "火电运营（华电集团旗下核心火电上市平台，装机以火电为主）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+    },
+    {
+     "security_id": "JIANTONENERGY",
+     "ticker": "000600",
+     "name": "建投能源",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 Campaign `C-2023-POWEROP-THERMAL` 登记的标的（role=representative）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-01-03 ~ 2023-10-23（adjusted 386 行）",
+     "period_return_pct": -2.5,
+     "to_high_pct": 56.2,
+     "high_date": "2023-06-28",
+     "excess_to_high_pp": 48.1,
+     "business_mechanism": "火电运营（河北省属火电企业，主营电力、热力生产销售）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    },
+    {
+     "security_id": "TIANFUENERGY",
+     "ticker": "600509",
+     "name": "天富能源",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 Campaign `C-2023-POWEROP-THERMAL` 登记的标的（role=follow）",
+     "source": "DB campaign_securities / securities",
+     "market_data": "2023-01-03 ~ 2023-10-23（adjusted 386 行）",
+     "period_return_pct": 12.2,
+     "to_high_pct": 58.6,
+     "high_date": "2023-06-26",
+     "excess_to_high_pp": 50.5,
+     "business_mechanism": "火电 + 热力运营（新疆区域电力企业）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 三只标的**分化极大**：华电国际区间 **-27.6%**（跑输基准），而建投能源 / 天富能源至高点 +56~59%。★★ 建投/天富的**行情高点（06-28 / 06-26）落在外部窗口 5–7 月内**，但 **Campaign `peak_date` 是 2023-05-29** —— 二者不一致，**不得**强行对齐。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2023-01-03",
+     "2023-10-23"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**，**不是** Campaign 裁定。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 3887.9
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 3474.24
+      },
+      "high": {
+       "date": "2023-01-30",
+       "close": 4201.35
+      },
+      "low": {
+       "date": "2023-10-23",
+       "close": 3474.24
+      },
+      "period_return_pct": -10.6,
+      "to_high_pct": 8.1,
+      "max_drawdown_from_high_pct": -17.3
+     }
+    },
+    "by_security": {
+     "HUADIAN": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 5.68
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 4.11
+      },
+      "high": {
+       "date": "2023-05-30",
+       "close": 6.41
+      },
+      "low": {
+       "date": "2023-10-23",
+       "close": 4.11
+      },
+      "period_return_pct": -27.6,
+      "to_high_pct": 12.9,
+      "max_drawdown_from_high_pct": -35.9,
+      "excess_to_high_pp": 4.8,
+      "excess_period_pp": -17.0
+     },
+     "JIANTONENERGY": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 4.86
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 4.74
+      },
+      "high": {
+       "date": "2023-06-28",
+       "close": 7.59
+      },
+      "low": {
+       "date": "2023-04-04",
+       "close": 4.52
+      },
+      "period_return_pct": -2.5,
+      "to_high_pct": 56.2,
+      "max_drawdown_from_high_pct": -37.5,
+      "excess_to_high_pp": 48.1,
+      "excess_period_pp": 8.1
+     },
+     "TIANFUENERGY": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 5.01
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 5.62
+      },
+      "high": {
+       "date": "2023-06-26",
+       "close": 7.95
+      },
+      "low": {
+       "date": "2023-01-09",
+       "close": 4.98
+      },
+      "period_return_pct": 12.2,
+      "to_high_pct": 58.6,
+      "max_drawdown_from_high_pct": -29.3,
+      "excess_to_high_pp": 50.5,
+      "excess_period_pp": 22.8
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **样本仅 1 个年份**（2023）→ 只能展示实际历史事件与样本局限，**不得**宣称存在稳定季节性规律",
+    "★ 三只标的**机制异质**：华电国际为火电龙头（区间大幅跑输），建投/天富为区域火电 —— 不宜视为同一驱动",
+    "★ 外部窗口（5–7 月）与个股行情高点（06-26 / 06-28 / 05-30）**部分吻合但不完全**；华电国际高点在 05-30",
+    "★ 未取得同期一手报道（催化证据全部来自库内 Campaign 的既有 evidences）",
+    "概念指数不可得（同花顺 885879/885508 均不可得；电力类概念指数未核实）"
+   ],
+   "window_basis": "CAMPAIGN_FULL_PERIOD"
+  },
+  {
+   "event_id": "POWER-2024-SUMMER-COUNTEREXAMPLE",
+   "event_class": "THEME_ADJACENT",
+   "label": "2024 年迎峰度夏 —— **反例**（负荷新高 + 煤价下行，火电池 4/4 下跌）",
+   "year": 2024,
+   "window_text": "季节观察窗口 2024-05-01 → 2024-07-31",
+   "external_window_ref": "EXT-14（外部资料：5–7 月）",
+   "evidence_basis": "同期官方数据 + 行业统计（见催化时间线）",
+   "study_state": "HAS_PRICE_DATA",
+   "window_basis": "SEASON_WINDOW_5_7",
+   "four_concepts_note": "★★ **窗口口径必须显式说明**：本事件用的是**季节观察窗口（每年 5/1–7/31）**，**不等于** Campaign 全周期，**也不等于**催化剂窗口。★ Campaign 全周期口径另见 `campaign_full_period`。",
+   "catalysts": [
+    {
+     "date": "2024-07-12",
+     "text": "国家能源局：电厂存煤超 1.2 亿吨，迎峰度夏煤炭供需大体平衡；预计 2024 年全国全社会用电量增速接近 2023 年。",
+     "source": "国家能源局官网"
+    },
+    {
+     "date": "2024-10-18",
+     "text": "国家能源局：四川省 2024 年遭遇较 2022 年更加恶劣的连续高温天气，全省用电负荷 5 次创历史新高，最高达 6929 万千瓦，同比增幅达 13.5%；最大用电负荷累计 39 天保持 6000 万以上。",
+     "source": "国家能源局官网"
+    },
+    {
+     "date": "2024-04-09",
+     "text": "中金公司：煤价持续下行提振 1Q24 火电企业盈利，实现同比扭亏为盈。",
+     "source": "媒体转述中金报告"
+    },
+    {
+     "date": "2025-05-09",
+     "text": "2024 年火电行业归母净利润达 656 亿元，同比增长 31%；核心驱动为动力煤价格持续低位运行。",
+     "source": "媒体（百家号）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUADIAN",
+     "ticker": "600027",
+     "name": "华电国际",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2419 行）",
+     "business_mechanism": "火电运营（华电集团旗下核心火电上市平台，装机以火电为主）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+    },
+    {
+     "security_id": "JIANTONENERGY",
+     "ticker": "000600",
+     "name": "建投能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2428 行）",
+     "business_mechanism": "火电运营（河北省属火电企业，主营电力、热力生产销售）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    },
+    {
+     "security_id": "TIANFUENERGY",
+     "ticker": "600509",
+     "name": "天富能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2415 行）",
+     "business_mechanism": "火电 + 热力运营（新疆区域电力企业）",
+     "business_mechanism_caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+    },
+    {
+     "security_id": "JINGNENG",
+     "ticker": "600578",
+     "name": "京能电力",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-02-24~2025-12-31（2393 行）"
+    },
+    {
+     "security_id": "SANXIAENERGY",
+     "ticker": "600905",
+     "name": "三峡能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2021-06-10~2025-12-31（1108 行）"
+    },
+    {
+     "security_id": "YINXING",
+     "ticker": "000862",
+     "name": "银星能源",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "火电运营池（同 2022 年池，**未按收益筛选**）",
+     "source": "DB campaign_securities / 本轮研究",
+     "market_data": "2016-01-04~2025-12-31（2271 行）"
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 负荷创新高、煤价下行、火电利润 **+31%**，但火电池 **4/4 下跌**（建投能源 -27.5%）。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2024-05-01",
+     "2024-07-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ 季节观察窗口（5–7 月），**非** Campaign 裁定。★★ 收益、最高价与回撤只能**描述历史价格表现**，**不能**单独证明价格变化由某个催化因素引起。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 62,
+      "first": {
+       "date": "2024-05-06",
+       "close": 3657.88
+      },
+      "last": {
+       "date": "2024-07-31",
+       "close": 3442.08
+      },
+      "period_return_pct": -5.9,
+      "high_date": "2024-05-20",
+      "high_close": 3690.96,
+      "to_high_pct": 0.9,
+      "max_drawdown_from_high_pct": -8.71
+     }
+    },
+    "by_security": {
+     "HUADIAN": {
+      "trading_days": 53,
+      "first": {
+       "date": "2024-05-06",
+       "close": 6.36
+      },
+      "last": {
+       "date": "2024-07-18",
+       "close": 5.49
+      },
+      "period_return_pct": -13.68,
+      "high_date": "2024-06-13",
+      "high_close": 6.68,
+      "to_high_pct": 5.03,
+      "max_drawdown_from_high_pct": -19.61,
+      "excess_period_pp": -7.78,
+      "excess_to_high_pp": 4.13
+     },
+     "JIANTONENERGY": {
+      "trading_days": 62,
+      "first": {
+       "date": "2024-05-06",
+       "close": 6.51
+      },
+      "last": {
+       "date": "2024-07-31",
+       "close": 4.72
+      },
+      "period_return_pct": -27.5,
+      "high_date": "2024-05-14",
+      "high_close": 6.53,
+      "to_high_pct": 0.31,
+      "max_drawdown_from_high_pct": -28.94,
+      "excess_period_pp": -21.6,
+      "excess_to_high_pp": -0.59
+     },
+     "TIANFUENERGY": {
+      "trading_days": 62,
+      "first": {
+       "date": "2024-05-06",
+       "close": 5.533
+      },
+      "last": {
+       "date": "2024-07-31",
+       "close": 4.891
+      },
+      "period_return_pct": -11.6,
+      "high_date": "2024-05-28",
+      "high_close": 5.803,
+      "to_high_pct": 4.88,
+      "max_drawdown_from_high_pct": -21.58,
+      "excess_period_pp": -5.7,
+      "excess_to_high_pp": 3.98
+     },
+     "JINGNENG": {
+      "trading_days": 62,
+      "first": {
+       "date": "2024-05-06",
+       "close": 3.115
+      },
+      "last": {
+       "date": "2024-07-31",
+       "close": 3.1
+      },
+      "period_return_pct": -0.48,
+      "high_date": "2024-07-09",
+      "high_close": 3.155,
+      "to_high_pct": 1.28,
+      "max_drawdown_from_high_pct": -8.4,
+      "excess_period_pp": 5.42,
+      "excess_to_high_pp": 0.38
+     },
+     "SANXIAENERGY": {
+      "trading_days": 62,
+      "first": {
+       "date": "2024-05-06",
+       "close": 4.554
+      },
+      "last": {
+       "date": "2024-07-31",
+       "close": 4.674
+      },
+      "period_return_pct": 2.64,
+      "high_date": "2024-07-29",
+      "high_close": 4.744,
+      "to_high_pct": 4.17,
+      "max_drawdown_from_high_pct": -1.48,
+      "excess_period_pp": 8.54,
+      "excess_to_high_pp": 3.27
+     },
+     "YINXING": {
+      "trading_days": 62,
+      "first": {
+       "date": "2024-05-06",
+       "close": 5.28
+      },
+      "last": {
+       "date": "2024-07-31",
+       "close": 4.38
+      },
+      "period_return_pct": -17.05,
+      "high_date": "2024-05-30",
+      "high_close": 6.13,
+      "to_high_pct": 16.1,
+      "max_drawdown_from_high_pct": -31.97,
+      "excess_period_pp": -11.15,
+      "excess_to_high_pp": 15.2
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **反例**：基本面（负荷/利润）强劲但股价下跌 → **不得**用基本面推股价",
+    "★ 参与者全部 `REPORT_NAMED`",
+    "★ 单年样本；与 2022 年对比才构成「跨年不一致」的证据"
+   ]
+  }
+ ],
+ "supersedes": "power_historical_events_v0_1.json",
+ "supersedes_note": "v0_1 **逐字节保留**。本版新增：① **2022 年**事件（10 年中唯一「火电池一致上涨」年）；② **2017 / 2024 两个反例年**（强基本面但股价下跌）；③ 顶层 `cross_year_comparison`（2016–2025 × 5–7 月窗口）；④ 每个事件显式标注 **窗口口径**（季节窗口 vs Campaign 全周期）。",
+ "window_basis_note": {
+  "season_window": "每年 5/1 – 7/31（对应外部线索 EXT-14 的 5–7 月）",
+  "campaign_full_period": "Campaign 的 start_date ~ end_date（如 2023-01-03 ~ 2023-10-23）",
+  "catalyst_window": "由证据确定的催化剂日期区间",
+  "hard_rule": "★★ 三者**不可混用**。★ 把 Campaign 全周期收益当作 5–7 月季节性收益是**口径错误**。"
+ },
+ "cross_year_comparison": {
+  "method": {
+   "target_pool": [
+    {
+     "security_id": "HUADIAN",
+     "ticker": "600027",
+     "name": "华电国际",
+     "exchange": "SH",
+     "tier": "A_火电运营（机制直接）",
+     "rationale": "库内 C-2023-POWEROP-THERMAL 登记标的（role=leader）；全国性火电龙头",
+     "db_coverage": "2022-06-01~2024-12-31",
+     "probe_coverage": "2016-01-04~2025-12-31（2419 行）"
+    },
+    {
+     "security_id": "JIANTONENERGY",
+     "ticker": "000600",
+     "name": "建投能源",
+     "exchange": "SZ",
+     "tier": "A_火电运营（机制直接）",
+     "rationale": "库内 C-2023-POWEROP-THERMAL 登记标的（representative）；河北区域火电",
+     "db_coverage": "2022-06-01~2024-12-31",
+     "probe_coverage": "2016-01-04~2025-12-31（2428 行）"
+    },
+    {
+     "security_id": "TIANFUENERGY",
+     "ticker": "600509",
+     "name": "天富能源",
+     "exchange": "SH",
+     "tier": "A_火电运营（机制直接）",
+     "rationale": "库内 C-2023-POWEROP-THERMAL 登记标的（follow）；新疆区域热电",
+     "db_coverage": "2022-06-01~2024-12-31",
+     "probe_coverage": "2016-01-04~2025-12-31（2415 行）"
+    },
+    {
+     "security_id": "JINGNENG",
+     "ticker": "600578",
+     "name": "京能电力",
+     "exchange": "SH",
+     "tier": "A_火电运营（机制直接）",
+     "rationale": "库内 C-2021-POWER-GREEN 登记标的；京津唐区域火电 —— 用于**把火电运营池从 3 只扩到 4 只**，降低单一标的主导",
+     "db_coverage": "2020-01-02~2025-12-31",
+     "probe_coverage": "2016-02-24~2025-12-31（2393 行）"
+    },
+    {
+     "security_id": "SANXIAENERGY",
+     "ticker": "600905",
+     "name": "三峡能源",
+     "exchange": "SH",
+     "tier": "B_新能源运营（★ 邻近机制）",
+     "rationale": "库内 C-2021-POWER-GREEN 登记标的（leader）；**海上风电/光伏运营商，非火电** —— 只作对照，不并入火电池",
+     "db_coverage": "2021-06-10~2025-12-31",
+     "probe_coverage": "2021-06-10~2025-12-31（1108 行）",
+     "listing_note": "2021-06-10 上市 → 2016–2020 结构性无数据"
+    },
+    {
+     "security_id": "YINXING",
+     "ticker": "000862",
+     "name": "银星能源",
+     "exchange": "SZ",
+     "tier": "B_新能源运营（★ 邻近机制）",
+     "rationale": "库内 C-2021-POWER-GREEN 登记标的（representative）；宁夏风电/光伏 —— 只作对照",
+     "db_coverage": "2020-01-02~2025-12-31",
+     "probe_coverage": "2016-01-04~2025-12-31（2271 行）"
+    }
+   ],
+   "inclusion_principle": "★ **不得按收益选样本**。纳入原则为**机制 + 可得性**：(1) 标的须在库内 securities 表存在且可归属到『电力（运营端）』机制；(2) 须有可核验的行情（DB 或本次只读探测）；(3) **同一比较组内机制必须一致** —— 火电运营（A 组）与新能源运营（B 组）分开统计，不合并、不互相佐证；(4) 上市晚于研究年份的标的**如实记为结构性无数据**，不删、不替代；(5) 失败年份 / 无价格反应年份 / 机制不匹配年份**一律保留**。",
+   "mechanism_groups": {
+    "SUMMER_PEAK": {
+     "label": "用电旺季 / 迎峰度夏",
+     "definition": "夏季高温 → 用电负荷创新高 → 电力运营端需求预期",
+     "securities": [
+      "HUADIAN",
+      "JIANTONENERGY",
+      "TIANFUENERGY",
+      "JINGNENG"
+     ],
+     "windows": [
+      "summer_5_7（5/1~7/31）"
+     ]
+    },
+    "COAL_PRICE": {
+     "label": "煤价变化 → 火电成本",
+     "definition": "动力煤价格上行/下行 → 火电燃料成本 → 盈利预期",
+     "securities": [
+      "HUADIAN",
+      "JIANTONENERGY",
+      "TIANFUENERGY",
+      "JINGNENG"
+     ],
+     "note": "★ 与 SUMMER_PEAK **不同轴**；同一年份可同时存在（2022/2023/2024），但归因须分开。"
+    },
+    "ONE_OFF_POLICY": {
+     "label": "一次性政策",
+     "definition": "绿电交易试点 / 电价机制改革等一次性制度安排",
+     "securities": [
+      "JINGNENG",
+      "SANXIAENERGY",
+      "YINXING"
+     ],
+     "db_objects": [
+      "C-2021-POWER-GREEN"
+     ],
+     "class": "★ THEME_ADJACENT（与迎峰度夏不同轴）"
+    },
+    "NEW_ENERGY_INVEST": {
+     "label": "新能源投资 / 新能源运营商",
+     "definition": "风光装机与新能源运营商",
+     "securities": [
+      "SANXIAENERGY",
+      "YINXING"
+     ],
+     "class": "★ THEME_ADJACENT（非火电运营）"
+    },
+    "EQUIPMENT": {
+     "label": "电力设备（制造端）",
+     "definition": "光伏/风电设备、电网/输变电设备 —— **≠ 运营端**",
+     "db_objects": [
+      "C-2020-POWER-NE",
+      "C-2022-POWER-GRID"
+     ],
+     "securities": [
+      "LONGI",
+      "SUNGROW",
+      "GOLDWIND",
+      "NARI",
+      "XUJI",
+      "PINGGAO",
+      "SIEYUAN",
+      "TBEA"
+     ],
+     "class": "★ 明确排除出本比较组"
+    }
+   },
+   "window_definitions": {
+    "summer_5_7": "每年 5/1 ~ 7/31（外部季节窗口 EXT-14）。★ 用窗口内**首个**与**末个**交易日收盘（前复权）计算区间收益。",
+    "campaign_full": "库内 Campaign 记录的 start_date ~ end_date（★ 仅 2023 年存在完整的电力运营 Campaign）。",
+    "event_window": "有明确外部事件月份的年份，单列『事件观察窗口』，并显式标注为**非 Campaign 记录**。",
+    "high_date": "窗口内**最高收盘价**（前复权）的交易日。",
+    "excess": "相对沪深300（SH000300，前复权）同窗口区间收益的超额（pp）。"
+   },
+   "benchmark": {
+    "series_id": "SH000300",
+    "name": "沪深300",
+    "source": "DB market_daily（adjusted）",
+    "coverage": "2015-01-05~2026-09-30"
+   },
+   "known_limitations": [
+    "★★ 所有 2016–2025 标的行情均为**本次只读探测**所得（腾讯 GTIMG 前复权），**未写入 DB** —— 与库内 2022-06 起的片段可能存在除权重算差异，但已用 2023 Campaign 全周期做一致性校验（完全一致）。",
+    "★ 只有 1 个年份（2023）有库内 Campaign 全周期口径；其余年份的 `campaign_full` 为 null。",
+    "★ 板块指数（000995 公用事业 / H30199 电力公用事业）未纳入本包复算，仅有 2023 年库内记录。"
+   ]
+  },
+  "season_window": "每年 5/1 – 7/31",
+  "target_pool": "火电运营 A 组：华电国际 600027 · 建投能源 000600 · 天富能源 600509 · 京能电力 600578",
+  "outcome_by_year": {
+   "2016": "DIVERGENT",
+   "2017": "UNDERPERFORM",
+   "2018": "DIVERGENT",
+   "2019": "DIVERGENT",
+   "2020": "DIVERGENT",
+   "2021": "DIVERGENT",
+   "2022": "UP",
+   "2023": "DIVERGENT",
+   "2024": "UNDERPERFORM",
+   "2025": "DIVERGENT"
+  },
+  "all_up_years": [
+   2022
+  ],
+  "all_down_years": [
+   2017,
+   2024
+  ],
+  "divergent_years": [
+   2016,
+   2018,
+   2019,
+   2020,
+   2021,
+   2023,
+   2025
+  ],
+  "annual_high_in_season_window": {
+   "note": "★ 每只标的在 2016–2025 中，**年内最高收盘价**落在 5/1–7/31 的年数（检验『夏季高点』是否成立）",
+   "HUADIAN": "1/10（仅 2023）",
+   "JIANTONENERGY": "3/10（2020/2022/2023）",
+   "TIANFUENERGY": "1/10（仅 2023）",
+   "JINGNENG": "1/10（仅 2023）",
+   "SANXIAENERGY": "1/5（仅 2021）",
+   "YINXING": "1/10（仅 2023）",
+   "SH000300": "0/10",
+   "reading": "★★ 只有 **2023 年**出现 4 只火电标的中 3 只（华电/建投/天富）+ 京能 的年内高点同时落在 5–7 月 —— 而 2023 恰是库内唯一登记 Campaign 的年份。这是**单一年份现象**，不是跨年规律。"
+  },
+  "yearly_5_7": [
+   {
+    "year": 2016,
+    "mechanism": "SUMMER_PEAK",
+    "outcome": "DIVERGENT",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 62,
+      "first": {
+       "date": "2016-05-03",
+       "close": 3213.54
+      },
+      "last": {
+       "date": "2016-07-29",
+       "close": 3203.93
+      },
+      "period_return_pct": -0.3,
+      "high_date": "2016-07-13",
+      "high_close": 3282.87,
+      "to_high_pct": 2.16,
+      "max_drawdown_from_high_pct": -2.4
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 62,
+       "first": {
+        "date": "2016-05-03",
+        "close": 3.404
+       },
+       "last": {
+        "date": "2016-07-29",
+        "close": 3.524
+       },
+       "period_return_pct": 3.53,
+       "high_date": "2016-07-28",
+       "high_close": 3.584,
+       "to_high_pct": 5.29,
+       "max_drawdown_from_high_pct": -1.67,
+       "excess_period_pp": 3.83,
+       "excess_to_high_pp": 3.13
+      },
+      "JIANTONENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2016-05-03",
+        "close": 7.93
+       },
+       "last": {
+        "date": "2016-07-29",
+        "close": 7.98
+       },
+       "period_return_pct": 0.63,
+       "high_date": "2016-05-10",
+       "high_close": 8.12,
+       "to_high_pct": 2.4,
+       "max_drawdown_from_high_pct": -11.95,
+       "excess_period_pp": 0.93,
+       "excess_to_high_pp": 0.24
+      },
+      "TIANFUENERGY": {
+       "trading_days": 57,
+       "first": {
+        "date": "2016-05-03",
+        "close": 7.07
+       },
+       "last": {
+        "date": "2016-07-29",
+        "close": 6.82
+       },
+       "period_return_pct": -3.54,
+       "high_date": "2016-07-26",
+       "high_close": 7.28,
+       "to_high_pct": 2.97,
+       "max_drawdown_from_high_pct": -6.32,
+       "excess_period_pp": -3.24,
+       "excess_to_high_pp": 0.81
+      },
+      "JINGNENG": {
+       "trading_days": 62,
+       "first": {
+        "date": "2016-05-03",
+        "close": 3.526
+       },
+       "last": {
+        "date": "2016-07-29",
+        "close": 3.286
+       },
+       "period_return_pct": -6.81,
+       "high_date": "2016-05-03",
+       "high_close": 3.526,
+       "to_high_pct": 0.0,
+       "max_drawdown_from_high_pct": -16.45,
+       "excess_period_pp": -6.51,
+       "excess_to_high_pp": -2.16
+      },
+      "SANXIAENERGY": {
+       "error": "insufficient_data_in_window"
+      },
+      "YINXING": {
+       "trading_days": 62,
+       "first": {
+        "date": "2016-05-03",
+        "close": 6.98
+       },
+       "last": {
+        "date": "2016-07-29",
+        "close": 7.5
+       },
+       "period_return_pct": 7.45,
+       "high_date": "2016-07-28",
+       "high_close": 7.7,
+       "to_high_pct": 10.32,
+       "max_drawdown_from_high_pct": -2.6,
+       "excess_period_pp": 7.75,
+       "excess_to_high_pp": 8.16
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2017,
+    "mechanism": "SUMMER_PEAK+COAL_PRICE",
+    "outcome": "UNDERPERFORM",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 63,
+      "first": {
+       "date": "2017-05-02",
+       "close": 3426.58
+      },
+      "last": {
+       "date": "2017-07-31",
+       "close": 3737.87
+      },
+      "period_return_pct": 9.08,
+      "high_date": "2017-07-20",
+      "high_close": 3747.88,
+      "to_high_pct": 9.38,
+      "max_drawdown_from_high_pct": -1.13
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 63,
+       "first": {
+        "date": "2017-05-02",
+        "close": 3.334
+       },
+       "last": {
+        "date": "2017-07-31",
+        "close": 3.06
+       },
+       "period_return_pct": -8.22,
+       "high_date": "2017-06-06",
+       "high_close": 3.444,
+       "to_high_pct": 3.3,
+       "max_drawdown_from_high_pct": -15.1,
+       "excess_period_pp": -17.3,
+       "excess_to_high_pp": -6.08
+      },
+      "JIANTONENERGY": {
+       "trading_days": 63,
+       "first": {
+        "date": "2017-05-02",
+        "close": 12.65
+       },
+       "last": {
+        "date": "2017-07-31",
+        "close": 9.19
+       },
+       "period_return_pct": -27.35,
+       "high_date": "2017-06-23",
+       "high_close": 13.24,
+       "to_high_pct": 4.66,
+       "max_drawdown_from_high_pct": -30.59,
+       "excess_period_pp": -36.43,
+       "excess_to_high_pp": -4.72
+      },
+      "TIANFUENERGY": {
+       "trading_days": 63,
+       "first": {
+        "date": "2017-05-02",
+        "close": 7.56
+       },
+       "last": {
+        "date": "2017-07-31",
+        "close": 8.167
+       },
+       "period_return_pct": 8.03,
+       "high_date": "2017-07-31",
+       "high_close": 8.167,
+       "to_high_pct": 8.03,
+       "max_drawdown_from_high_pct": 0.0,
+       "excess_period_pp": -1.05,
+       "excess_to_high_pp": -1.35
+      },
+      "JINGNENG": {
+       "trading_days": 63,
+       "first": {
+        "date": "2017-05-02",
+        "close": 3.466
+       },
+       "last": {
+        "date": "2017-07-31",
+        "close": 3.326
+       },
+       "period_return_pct": -4.04,
+       "high_date": "2017-05-02",
+       "high_close": 3.466,
+       "to_high_pct": 0.0,
+       "max_drawdown_from_high_pct": -12.12,
+       "excess_period_pp": -13.12,
+       "excess_to_high_pp": -9.38
+      },
+      "SANXIAENERGY": {
+       "error": "insufficient_data_in_window"
+      },
+      "YINXING": {
+       "error": "insufficient_data_in_window"
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2018,
+    "mechanism": "SUMMER_PEAK+COAL_PRICE",
+    "outcome": "DIVERGENT",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 64,
+      "first": {
+       "date": "2018-05-02",
+       "close": 3763.65
+      },
+      "last": {
+       "date": "2018-07-31",
+       "close": 3517.66
+      },
+      "period_return_pct": -6.54,
+      "high_date": "2018-05-15",
+      "high_close": 3924.1,
+      "to_high_pct": 4.26,
+      "max_drawdown_from_high_pct": -14.82
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 64,
+       "first": {
+        "date": "2018-05-02",
+        "close": 2.02
+       },
+       "last": {
+        "date": "2018-07-31",
+        "close": 2.988
+       },
+       "period_return_pct": 47.92,
+       "high_date": "2018-07-23",
+       "high_close": 3.02,
+       "to_high_pct": 49.5,
+       "max_drawdown_from_high_pct": -5.96,
+       "excess_period_pp": 54.46,
+       "excess_to_high_pp": 45.24
+      },
+      "JIANTONENERGY": {
+       "trading_days": 64,
+       "first": {
+        "date": "2018-05-02",
+        "close": 5.31
+       },
+       "last": {
+        "date": "2018-07-31",
+        "close": 4.9
+       },
+       "period_return_pct": -7.72,
+       "high_date": "2018-05-23",
+       "high_close": 5.89,
+       "to_high_pct": 10.92,
+       "max_drawdown_from_high_pct": -26.49,
+       "excess_period_pp": -1.18,
+       "excess_to_high_pp": 6.66
+      },
+      "TIANFUENERGY": {
+       "trading_days": 64,
+       "first": {
+        "date": "2018-05-02",
+        "close": 4.847
+       },
+       "last": {
+        "date": "2018-07-31",
+        "close": 4.144
+       },
+       "period_return_pct": -14.5,
+       "high_date": "2018-05-22",
+       "high_close": 5.187,
+       "to_high_pct": 7.01,
+       "max_drawdown_from_high_pct": -28.4,
+       "excess_period_pp": -7.96,
+       "excess_to_high_pp": 2.75
+      },
+      "JINGNENG": {
+       "trading_days": 64,
+       "first": {
+        "date": "2018-05-02",
+        "close": 2.606
+       },
+       "last": {
+        "date": "2018-07-31",
+        "close": 2.476
+       },
+       "period_return_pct": -4.99,
+       "high_date": "2018-05-31",
+       "high_close": 2.726,
+       "to_high_pct": 4.6,
+       "max_drawdown_from_high_pct": -20.54,
+       "excess_period_pp": 1.55,
+       "excess_to_high_pp": 0.34
+      },
+      "SANXIAENERGY": {
+       "error": "insufficient_data_in_window"
+      },
+      "YINXING": {
+       "trading_days": 64,
+       "first": {
+        "date": "2018-05-02",
+        "close": 3.64
+       },
+       "last": {
+        "date": "2018-07-31",
+        "close": 3.68
+       },
+       "period_return_pct": 1.1,
+       "high_date": "2018-05-23",
+       "high_close": 4.02,
+       "to_high_pct": 10.44,
+       "max_drawdown_from_high_pct": -25.62,
+       "excess_period_pp": 7.64,
+       "excess_to_high_pp": 6.18
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2019,
+    "mechanism": "COAL_PRICE+SUMMER_PEAK",
+    "outcome": "DIVERGENT",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 62,
+      "first": {
+       "date": "2019-05-06",
+       "close": 3684.62
+      },
+      "last": {
+       "date": "2019-07-31",
+       "close": 3835.36
+      },
+      "period_return_pct": 4.09,
+      "high_date": "2019-07-02",
+      "high_close": 3937.17,
+      "to_high_pct": 6.85,
+      "max_drawdown_from_high_pct": -4.29
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 62,
+       "first": {
+        "date": "2019-05-06",
+        "close": 2.338
+       },
+       "last": {
+        "date": "2019-07-31",
+        "close": 2.494
+       },
+       "period_return_pct": 6.67,
+       "high_date": "2019-07-31",
+       "high_close": 2.494,
+       "to_high_pct": 6.67,
+       "max_drawdown_from_high_pct": 0.0,
+       "excess_period_pp": 2.58,
+       "excess_to_high_pp": -0.18
+      },
+      "JIANTONENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2019-05-06",
+        "close": 6.48
+       },
+       "last": {
+        "date": "2019-07-31",
+        "close": 5.24
+       },
+       "period_return_pct": -19.14,
+       "high_date": "2019-05-06",
+       "high_close": 6.48,
+       "to_high_pct": 0.0,
+       "max_drawdown_from_high_pct": -19.29,
+       "excess_period_pp": -23.23,
+       "excess_to_high_pp": -6.85
+      },
+      "TIANFUENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2019-05-06",
+        "close": 4.094
+       },
+       "last": {
+        "date": "2019-07-31",
+        "close": 4.59
+       },
+       "period_return_pct": 12.12,
+       "high_date": "2019-06-24",
+       "high_close": 5.764,
+       "to_high_pct": 40.79,
+       "max_drawdown_from_high_pct": -20.54,
+       "excess_period_pp": 8.03,
+       "excess_to_high_pp": 33.94
+      },
+      "JINGNENG": {
+       "trading_days": 62,
+       "first": {
+        "date": "2019-05-06",
+        "close": 2.426
+       },
+       "last": {
+        "date": "2019-07-31",
+        "close": 2.396
+       },
+       "period_return_pct": -1.24,
+       "high_date": "2019-07-01",
+       "high_close": 2.516,
+       "to_high_pct": 3.71,
+       "max_drawdown_from_high_pct": -7.15,
+       "excess_period_pp": -5.33,
+       "excess_to_high_pp": -3.14
+      },
+      "SANXIAENERGY": {
+       "error": "insufficient_data_in_window"
+      },
+      "YINXING": {
+       "trading_days": 52,
+       "first": {
+        "date": "2019-05-06",
+        "close": 5.04
+       },
+       "last": {
+        "date": "2019-07-31",
+        "close": 5.66
+       },
+       "period_return_pct": 12.3,
+       "high_date": "2019-06-24",
+       "high_close": 8.36,
+       "to_high_pct": 65.87,
+       "max_drawdown_from_high_pct": -35.29,
+       "excess_period_pp": 8.21,
+       "excess_to_high_pp": 59.02
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2020,
+    "mechanism": "SUMMER_PEAK",
+    "outcome": "DIVERGENT",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 61,
+      "first": {
+       "date": "2020-05-06",
+       "close": 3936.25
+      },
+      "last": {
+       "date": "2020-07-31",
+       "close": 4695.05
+      },
+      "period_return_pct": 19.28,
+      "high_date": "2020-07-13",
+      "high_close": 4852.96,
+      "to_high_pct": 23.29,
+      "max_drawdown_from_high_pct": -7.16
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 61,
+       "first": {
+        "date": "2020-05-06",
+        "close": 2.264
+       },
+       "last": {
+        "date": "2020-07-31",
+        "close": 2.34
+       },
+       "period_return_pct": 3.36,
+       "high_date": "2020-07-21",
+       "high_close": 2.514,
+       "to_high_pct": 11.04,
+       "max_drawdown_from_high_pct": -6.92,
+       "excess_period_pp": -15.92,
+       "excess_to_high_pp": -12.25
+      },
+      "JIANTONENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2020-05-06",
+        "close": 4.04
+       },
+       "last": {
+        "date": "2020-07-31",
+        "close": 4.81
+       },
+       "period_return_pct": 19.06,
+       "high_date": "2020-07-14",
+       "high_close": 5.29,
+       "to_high_pct": 30.94,
+       "max_drawdown_from_high_pct": -11.91,
+       "excess_period_pp": -0.22,
+       "excess_to_high_pp": 7.65
+      },
+      "TIANFUENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2020-05-06",
+        "close": 2.74
+       },
+       "last": {
+        "date": "2020-07-31",
+        "close": 3.25
+       },
+       "period_return_pct": 18.61,
+       "high_date": "2020-07-14",
+       "high_close": 3.5,
+       "to_high_pct": 27.74,
+       "max_drawdown_from_high_pct": -8.86,
+       "excess_period_pp": -0.67,
+       "excess_to_high_pp": 4.45
+      },
+      "JINGNENG": {
+       "trading_days": 61,
+       "first": {
+        "date": "2020-05-06",
+        "close": 2.156
+       },
+       "last": {
+        "date": "2020-07-31",
+        "close": 2.426
+       },
+       "period_return_pct": 12.52,
+       "high_date": "2020-07-21",
+       "high_close": 2.576,
+       "to_high_pct": 19.48,
+       "max_drawdown_from_high_pct": -7.76,
+       "excess_period_pp": -6.76,
+       "excess_to_high_pp": -3.81
+      },
+      "SANXIAENERGY": {
+       "error": "insufficient_data_in_window"
+      },
+      "YINXING": {
+       "trading_days": 61,
+       "first": {
+        "date": "2020-05-06",
+        "close": 3.67
+       },
+       "last": {
+        "date": "2020-07-31",
+        "close": 4.3
+       },
+       "period_return_pct": 17.17,
+       "high_date": "2020-07-31",
+       "high_close": 4.3,
+       "to_high_pct": 17.17,
+       "max_drawdown_from_high_pct": 0.0,
+       "excess_period_pp": -2.11,
+       "excess_to_high_pp": -6.12
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2021,
+    "mechanism": "COAL_PRICE+ONE_OFF_POLICY",
+    "outcome": "DIVERGENT",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 61,
+      "first": {
+       "date": "2021-05-06",
+       "close": 5061.12
+      },
+      "last": {
+       "date": "2021-07-30",
+       "close": 4811.17
+      },
+      "period_return_pct": -4.94,
+      "high_date": "2021-06-01",
+      "high_close": 5341.68,
+      "to_high_pct": 5.54,
+      "max_drawdown_from_high_pct": -11.05
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 61,
+       "first": {
+        "date": "2021-05-06",
+        "close": 2.13
+       },
+       "last": {
+        "date": "2021-07-30",
+        "close": 2.15
+       },
+       "period_return_pct": 0.94,
+       "high_date": "2021-06-28",
+       "high_close": 2.23,
+       "to_high_pct": 4.69,
+       "max_drawdown_from_high_pct": -5.83,
+       "excess_period_pp": 5.88,
+       "excess_to_high_pp": -0.85
+      },
+      "JIANTONENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2021-05-06",
+        "close": 4.45
+       },
+       "last": {
+        "date": "2021-07-30",
+        "close": 3.86
+       },
+       "period_return_pct": -13.26,
+       "high_date": "2021-05-21",
+       "high_close": 4.9,
+       "to_high_pct": 10.11,
+       "max_drawdown_from_high_pct": -24.49,
+       "excess_period_pp": -8.32,
+       "excess_to_high_pp": 4.57
+      },
+      "TIANFUENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2021-05-06",
+        "close": 5.33
+       },
+       "last": {
+        "date": "2021-07-30",
+        "close": 6.103
+       },
+       "period_return_pct": 14.5,
+       "high_date": "2021-06-23",
+       "high_close": 8.05,
+       "to_high_pct": 51.03,
+       "max_drawdown_from_high_pct": -28.78,
+       "excess_period_pp": 19.44,
+       "excess_to_high_pp": 45.49
+      },
+      "JINGNENG": {
+       "trading_days": 61,
+       "first": {
+        "date": "2021-05-06",
+        "close": 2.345
+       },
+       "last": {
+        "date": "2021-07-30",
+        "close": 2.145
+       },
+       "period_return_pct": -8.53,
+       "high_date": "2021-05-21",
+       "high_close": 2.555,
+       "to_high_pct": 8.96,
+       "max_drawdown_from_high_pct": -17.22,
+       "excess_period_pp": -3.59,
+       "excess_to_high_pp": 3.42
+      },
+      "SANXIAENERGY": {
+       "trading_days": 36,
+       "first": {
+        "date": "2021-06-10",
+        "close": 3.499
+       },
+       "last": {
+        "date": "2021-07-30",
+        "close": 5.799
+       },
+       "period_return_pct": 65.73,
+       "high_date": "2021-06-23",
+       "high_close": 7.669,
+       "to_high_pct": 119.18,
+       "max_drawdown_from_high_pct": -28.03,
+       "excess_period_pp": 70.67,
+       "excess_to_high_pp": 113.64
+      },
+      "YINXING": {
+       "trading_days": 61,
+       "first": {
+        "date": "2021-05-06",
+        "close": 5.36
+       },
+       "last": {
+        "date": "2021-07-30",
+        "close": 6.34
+       },
+       "period_return_pct": 18.28,
+       "high_date": "2021-07-30",
+       "high_close": 6.34,
+       "to_high_pct": 18.28,
+       "max_drawdown_from_high_pct": 0.0,
+       "excess_period_pp": 23.22,
+       "excess_to_high_pp": 12.74
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2022,
+    "mechanism": "SUMMER_PEAK+COAL_PRICE",
+    "outcome": "UP",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 61,
+      "first": {
+       "date": "2022-05-05",
+       "close": 4010.21
+      },
+      "last": {
+       "date": "2022-07-29",
+       "close": 4170.1
+      },
+      "period_return_pct": 3.99,
+      "high_date": "2022-07-04",
+      "high_close": 4496.03,
+      "to_high_pct": 12.11,
+      "max_drawdown_from_high_pct": -7.25
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 61,
+       "first": {
+        "date": "2022-05-05",
+        "close": 2.71
+       },
+       "last": {
+        "date": "2022-07-29",
+        "close": 3.53
+       },
+       "period_return_pct": 30.26,
+       "high_date": "2022-07-18",
+       "high_close": 4.0,
+       "to_high_pct": 47.6,
+       "max_drawdown_from_high_pct": -12.5,
+       "excess_period_pp": 26.27,
+       "excess_to_high_pp": 35.49
+      },
+      "JIANTONENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2022-05-05",
+        "close": 3.61
+       },
+       "last": {
+        "date": "2022-07-29",
+        "close": 4.48
+       },
+       "period_return_pct": 24.1,
+       "high_date": "2022-07-11",
+       "high_close": 5.85,
+       "to_high_pct": 62.05,
+       "max_drawdown_from_high_pct": -23.76,
+       "excess_period_pp": 20.11,
+       "excess_to_high_pp": 49.94
+      },
+      "TIANFUENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2022-05-05",
+        "close": 4.093
+       },
+       "last": {
+        "date": "2022-07-29",
+        "close": 5.283
+       },
+       "period_return_pct": 29.07,
+       "high_date": "2022-07-25",
+       "high_close": 5.463,
+       "to_high_pct": 33.47,
+       "max_drawdown_from_high_pct": -3.29,
+       "excess_period_pp": 25.08,
+       "excess_to_high_pp": 21.36
+      },
+      "JINGNENG": {
+       "trading_days": 61,
+       "first": {
+        "date": "2022-05-05",
+        "close": 2.445
+       },
+       "last": {
+        "date": "2022-07-29",
+        "close": 2.945
+       },
+       "period_return_pct": 20.45,
+       "high_date": "2022-07-22",
+       "high_close": 3.105,
+       "to_high_pct": 26.99,
+       "max_drawdown_from_high_pct": -6.76,
+       "excess_period_pp": 16.46,
+       "excess_to_high_pp": 14.88
+      },
+      "SANXIAENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2022-05-05",
+        "close": 5.527
+       },
+       "last": {
+        "date": "2022-07-29",
+        "close": 5.997
+       },
+       "period_return_pct": 8.5,
+       "high_date": "2022-07-13",
+       "high_close": 6.537,
+       "to_high_pct": 18.27,
+       "max_drawdown_from_high_pct": -9.33,
+       "excess_period_pp": 4.51,
+       "excess_to_high_pp": 6.16
+      },
+      "YINXING": {
+       "trading_days": 61,
+       "first": {
+        "date": "2022-05-05",
+        "close": 6.36
+       },
+       "last": {
+        "date": "2022-07-29",
+        "close": 7.46
+       },
+       "period_return_pct": 17.3,
+       "high_date": "2022-07-18",
+       "high_close": 8.1,
+       "to_high_pct": 27.36,
+       "max_drawdown_from_high_pct": -9.14,
+       "excess_period_pp": 13.31,
+       "excess_to_high_pp": 15.25
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2023,
+    "mechanism": "SUMMER_PEAK+COAL_PRICE",
+    "outcome": "DIVERGENT",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 61,
+      "first": {
+       "date": "2023-05-04",
+       "close": 4030.25
+      },
+      "last": {
+       "date": "2023-07-31",
+       "close": 4014.63
+      },
+      "period_return_pct": -0.39,
+      "high_date": "2023-05-08",
+      "high_close": 4062.66,
+      "to_high_pct": 0.8,
+      "max_drawdown_from_high_pct": -6.73
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 61,
+       "first": {
+        "date": "2023-05-04",
+        "close": 5.54
+       },
+       "last": {
+        "date": "2023-07-31",
+        "close": 5.09
+       },
+       "period_return_pct": -8.12,
+       "high_date": "2023-05-30",
+       "high_close": 6.41,
+       "to_high_pct": 15.7,
+       "max_drawdown_from_high_pct": -21.68,
+       "excess_period_pp": -7.73,
+       "excess_to_high_pp": 14.9
+      },
+      "JIANTONENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2023-05-04",
+        "close": 5.58
+       },
+       "last": {
+        "date": "2023-07-31",
+        "close": 6.52
+       },
+       "period_return_pct": 16.85,
+       "high_date": "2023-06-28",
+       "high_close": 7.59,
+       "to_high_pct": 36.02,
+       "max_drawdown_from_high_pct": -17.65,
+       "excess_period_pp": 17.24,
+       "excess_to_high_pp": 35.22
+      },
+      "TIANFUENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2023-05-04",
+        "close": 6.443
+       },
+       "last": {
+        "date": "2023-07-31",
+        "close": 6.633
+       },
+       "period_return_pct": 2.95,
+       "high_date": "2023-06-26",
+       "high_close": 7.953,
+       "to_high_pct": 23.44,
+       "max_drawdown_from_high_pct": -17.85,
+       "excess_period_pp": 3.34,
+       "excess_to_high_pp": 22.64
+      },
+      "JINGNENG": {
+       "trading_days": 61,
+       "first": {
+        "date": "2023-05-04",
+        "close": 2.865
+       },
+       "last": {
+        "date": "2023-07-31",
+        "close": 3.145
+       },
+       "period_return_pct": 9.77,
+       "high_date": "2023-06-26",
+       "high_close": 3.585,
+       "to_high_pct": 25.13,
+       "max_drawdown_from_high_pct": -13.67,
+       "excess_period_pp": 10.16,
+       "excess_to_high_pp": 24.33
+      },
+      "SANXIAENERGY": {
+       "trading_days": 61,
+       "first": {
+        "date": "2023-05-04",
+        "close": 5.198
+       },
+       "last": {
+        "date": "2023-07-31",
+        "close": 5.128
+       },
+       "period_return_pct": -1.35,
+       "high_date": "2023-05-22",
+       "high_close": 5.298,
+       "to_high_pct": 1.92,
+       "max_drawdown_from_high_pct": -6.61,
+       "excess_period_pp": -0.96,
+       "excess_to_high_pp": 1.12
+      },
+      "YINXING": {
+       "trading_days": 61,
+       "first": {
+        "date": "2023-05-04",
+        "close": 7.77
+       },
+       "last": {
+        "date": "2023-07-31",
+        "close": 7.55
+       },
+       "period_return_pct": -2.83,
+       "high_date": "2023-06-02",
+       "high_close": 7.92,
+       "to_high_pct": 1.93,
+       "max_drawdown_from_high_pct": -9.09,
+       "excess_period_pp": -2.44,
+       "excess_to_high_pp": 1.13
+      }
+     }
+    },
+    "campaign_full": {
+     "label": "C-2023-POWEROP-THERMAL 全周期 2023-01-03 ~ 2023-10-23（★ 与 5–7 月窗口**不同**）",
+     "benchmark": {
+      "trading_days": 193,
+      "first": {
+       "date": "2023-01-03",
+       "close": 3887.9
+      },
+      "last": {
+       "date": "2023-10-23",
+       "close": 3474.24
+      },
+      "period_return_pct": -10.64,
+      "high_date": "2023-01-30",
+      "high_close": 4201.35,
+      "to_high_pct": 8.06,
+      "max_drawdown_from_high_pct": -17.31
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 193,
+       "first": {
+        "date": "2023-01-03",
+        "close": 5.68
+       },
+       "last": {
+        "date": "2023-10-23",
+        "close": 4.11
+       },
+       "period_return_pct": -27.64,
+       "high_date": "2023-05-30",
+       "high_close": 6.41,
+       "to_high_pct": 12.85,
+       "max_drawdown_from_high_pct": -35.88,
+       "excess_period_pp": -17.0,
+       "excess_to_high_pp": 4.79
+      },
+      "JIANTONENERGY": {
+       "trading_days": 193,
+       "first": {
+        "date": "2023-01-03",
+        "close": 4.86
+       },
+       "last": {
+        "date": "2023-10-23",
+        "close": 4.74
+       },
+       "period_return_pct": -2.47,
+       "high_date": "2023-06-28",
+       "high_close": 7.59,
+       "to_high_pct": 56.17,
+       "max_drawdown_from_high_pct": -37.55,
+       "excess_period_pp": 8.17,
+       "excess_to_high_pp": 48.11
+      },
+      "TIANFUENERGY": {
+       "trading_days": 193,
+       "first": {
+        "date": "2023-01-03",
+        "close": 5.013
+       },
+       "last": {
+        "date": "2023-10-23",
+        "close": 5.623
+       },
+       "period_return_pct": 12.17,
+       "high_date": "2023-06-26",
+       "high_close": 7.953,
+       "to_high_pct": 58.65,
+       "max_drawdown_from_high_pct": -29.3,
+       "excess_period_pp": 22.81,
+       "excess_to_high_pp": 50.59
+      },
+      "JINGNENG": {
+       "trading_days": 193,
+       "first": {
+        "date": "2023-01-03",
+        "close": 2.765
+       },
+       "last": {
+        "date": "2023-10-23",
+        "close": 2.385
+       },
+       "period_return_pct": -13.74,
+       "high_date": "2023-06-26",
+       "high_close": 3.585,
+       "to_high_pct": 29.66,
+       "max_drawdown_from_high_pct": -33.47,
+       "excess_period_pp": -3.1,
+       "excess_to_high_pp": 21.6
+      },
+      "SANXIAENERGY": {
+       "trading_days": 193,
+       "first": {
+        "date": "2023-01-03",
+        "close": 5.578
+       },
+       "last": {
+        "date": "2023-10-23",
+        "close": 4.454
+       },
+       "period_return_pct": -20.15,
+       "high_date": "2023-01-06",
+       "high_close": 5.708,
+       "to_high_pct": 2.33,
+       "max_drawdown_from_high_pct": -21.97,
+       "excess_period_pp": -9.51,
+       "excess_to_high_pp": -5.73
+      },
+      "YINXING": {
+       "trading_days": 193,
+       "first": {
+        "date": "2023-01-03",
+        "close": 6.55
+       },
+       "last": {
+        "date": "2023-10-23",
+        "close": 5.93
+       },
+       "period_return_pct": -9.47,
+       "high_date": "2023-06-02",
+       "high_close": 7.92,
+       "to_high_pct": 20.92,
+       "max_drawdown_from_high_pct": -25.13,
+       "excess_period_pp": 1.17,
+       "excess_to_high_pp": 12.86
+      }
+     }
+    }
+   },
+   {
+    "year": 2024,
+    "mechanism": "SUMMER_PEAK+COAL_PRICE",
+    "outcome": "UNDERPERFORM",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 62,
+      "first": {
+       "date": "2024-05-06",
+       "close": 3657.88
+      },
+      "last": {
+       "date": "2024-07-31",
+       "close": 3442.08
+      },
+      "period_return_pct": -5.9,
+      "high_date": "2024-05-20",
+      "high_close": 3690.96,
+      "to_high_pct": 0.9,
+      "max_drawdown_from_high_pct": -8.71
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 53,
+       "first": {
+        "date": "2024-05-06",
+        "close": 6.36
+       },
+       "last": {
+        "date": "2024-07-18",
+        "close": 5.49
+       },
+       "period_return_pct": -13.68,
+       "high_date": "2024-06-13",
+       "high_close": 6.68,
+       "to_high_pct": 5.03,
+       "max_drawdown_from_high_pct": -19.61,
+       "excess_period_pp": -7.78,
+       "excess_to_high_pp": 4.13
+      },
+      "JIANTONENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2024-05-06",
+        "close": 6.51
+       },
+       "last": {
+        "date": "2024-07-31",
+        "close": 4.72
+       },
+       "period_return_pct": -27.5,
+       "high_date": "2024-05-14",
+       "high_close": 6.53,
+       "to_high_pct": 0.31,
+       "max_drawdown_from_high_pct": -28.94,
+       "excess_period_pp": -21.6,
+       "excess_to_high_pp": -0.59
+      },
+      "TIANFUENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2024-05-06",
+        "close": 5.533
+       },
+       "last": {
+        "date": "2024-07-31",
+        "close": 4.891
+       },
+       "period_return_pct": -11.6,
+       "high_date": "2024-05-28",
+       "high_close": 5.803,
+       "to_high_pct": 4.88,
+       "max_drawdown_from_high_pct": -21.58,
+       "excess_period_pp": -5.7,
+       "excess_to_high_pp": 3.98
+      },
+      "JINGNENG": {
+       "trading_days": 62,
+       "first": {
+        "date": "2024-05-06",
+        "close": 3.115
+       },
+       "last": {
+        "date": "2024-07-31",
+        "close": 3.1
+       },
+       "period_return_pct": -0.48,
+       "high_date": "2024-07-09",
+       "high_close": 3.155,
+       "to_high_pct": 1.28,
+       "max_drawdown_from_high_pct": -8.4,
+       "excess_period_pp": 5.42,
+       "excess_to_high_pp": 0.38
+      },
+      "SANXIAENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2024-05-06",
+        "close": 4.554
+       },
+       "last": {
+        "date": "2024-07-31",
+        "close": 4.674
+       },
+       "period_return_pct": 2.64,
+       "high_date": "2024-07-29",
+       "high_close": 4.744,
+       "to_high_pct": 4.17,
+       "max_drawdown_from_high_pct": -1.48,
+       "excess_period_pp": 8.54,
+       "excess_to_high_pp": 3.27
+      },
+      "YINXING": {
+       "trading_days": 62,
+       "first": {
+        "date": "2024-05-06",
+        "close": 5.28
+       },
+       "last": {
+        "date": "2024-07-31",
+        "close": 4.38
+       },
+       "period_return_pct": -17.05,
+       "high_date": "2024-05-30",
+       "high_close": 6.13,
+       "to_high_pct": 16.1,
+       "max_drawdown_from_high_pct": -31.97,
+       "excess_period_pp": -11.15,
+       "excess_to_high_pp": 15.2
+      }
+     }
+    },
+    "campaign_full": null
+   },
+   {
+    "year": 2025,
+    "mechanism": "SUMMER_PEAK",
+    "outcome": "DIVERGENT",
+    "summer_5_7": {
+     "benchmark": {
+      "trading_days": 62,
+      "first": {
+       "date": "2025-05-06",
+       "close": 3808.54
+      },
+      "last": {
+       "date": "2025-07-31",
+       "close": 4075.59
+      },
+      "period_return_pct": 7.01,
+      "high_date": "2025-07-29",
+      "high_close": 4152.02,
+      "to_high_pct": 9.02,
+      "max_drawdown_from_high_pct": -1.84
+     },
+     "by_security": {
+      "HUADIAN": {
+       "trading_days": 62,
+       "first": {
+        "date": "2025-05-06",
+        "close": 5.45
+       },
+       "last": {
+        "date": "2025-07-31",
+        "close": 5.07
+       },
+       "period_return_pct": -6.97,
+       "high_date": "2025-05-21",
+       "high_close": 5.64,
+       "to_high_pct": 3.49,
+       "max_drawdown_from_high_pct": -10.11,
+       "excess_period_pp": -13.98,
+       "excess_to_high_pp": -5.53
+      },
+      "JIANTONENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2025-05-06",
+        "close": 6.12
+       },
+       "last": {
+        "date": "2025-07-31",
+        "close": 6.84
+       },
+       "period_return_pct": 11.76,
+       "high_date": "2025-07-14",
+       "high_close": 8.06,
+       "to_high_pct": 31.7,
+       "max_drawdown_from_high_pct": -15.14,
+       "excess_period_pp": 4.75,
+       "excess_to_high_pp": 22.68
+      },
+      "TIANFUENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2025-05-06",
+        "close": 6.801
+       },
+       "last": {
+        "date": "2025-07-31",
+        "close": 6.376
+       },
+       "period_return_pct": -6.25,
+       "high_date": "2025-05-12",
+       "high_close": 6.881,
+       "to_high_pct": 1.18,
+       "max_drawdown_from_high_pct": -12.21,
+       "excess_period_pp": -13.26,
+       "excess_to_high_pp": -7.84
+      },
+      "JINGNENG": {
+       "trading_days": 62,
+       "first": {
+        "date": "2025-05-06",
+        "close": 3.87
+       },
+       "last": {
+        "date": "2025-07-31",
+        "close": 4.08
+       },
+       "period_return_pct": 5.43,
+       "high_date": "2025-07-07",
+       "high_close": 4.64,
+       "to_high_pct": 19.9,
+       "max_drawdown_from_high_pct": -12.07,
+       "excess_period_pp": -1.58,
+       "excess_to_high_pp": 10.88
+      },
+      "SANXIAENERGY": {
+       "trading_days": 62,
+       "first": {
+        "date": "2025-05-06",
+        "close": 4.192
+       },
+       "last": {
+        "date": "2025-07-31",
+        "close": 4.222
+       },
+       "period_return_pct": 0.72,
+       "high_date": "2025-07-22",
+       "high_close": 4.312,
+       "to_high_pct": 2.86,
+       "max_drawdown_from_high_pct": -2.09,
+       "excess_period_pp": -6.29,
+       "excess_to_high_pp": -6.16
+      },
+      "YINXING": {
+       "trading_days": 62,
+       "first": {
+        "date": "2025-05-06",
+        "close": 5.77
+       },
+       "last": {
+        "date": "2025-07-31",
+        "close": 5.54
+       },
+       "period_return_pct": -3.99,
+       "high_date": "2025-07-14",
+       "high_close": 5.94,
+       "to_high_pct": 2.95,
+       "max_drawdown_from_high_pct": -6.73,
+       "excess_period_pp": -11.0,
+       "excess_to_high_pp": -6.07
+      }
+     }
+    },
+    "campaign_full": null
+   }
+  ],
+  "conclusion": "【能说明什么】\n1) 2016—2025 每一年都存在可追溯的『迎峰度夏 / 夏季电力供需』官方或权威记录（用电量、最高负荷、发改委/能源局/中电联文件），该**物理现象**年年成立，且 2017/2022/2023/2024/2025 的负荷或电煤日耗多次创历史新高。\n2) 火电运营池（华电/建投/天富/京能）在 5–7 月窗口的表现**年度差异极大**：2016–2025 中只有 **2022 年**出现 4 只全体上涨且全体跑赢基准；2017 与 2024 两年**全体下跌**（2017 中电联记录火电利润 -83.3%、2024 火电利润却 +31% 而股价下跌）。\n3) 『年内最高收盘价落在 5–7 月』在 10 年中：华电 1/10、天富 1/10、京能 1/10、银星 1/10、建投 3/10 —— 且这 4 只的『夏季高点』**全部集中在同一年（2023）**，与库内唯一 Campaign 年份重合。\n4) 同一年的两个口径会给出不同结论：2023 年 Campaign 全周期（-10.64% 基准）与 5–7 月窗口（-0.39% 基准）不可混用；三只标的的行情高点（05-30/06-28/06-26）与 Campaign peak_date（2023-05-29）**都不一致**。\n\n【不能说明什么】\n★ **『迎峰度夏季节性』在现有证据下不成立**：(a) 反例年份明确 —— 2017、2024 负荷/基本面均强而火电股下跌；2025 负荷创 15.08 亿 kW 新高而池内半数下跌；(b) 高点不落在夏季窗口是常态（每只标的 10 年中 7–9 年不落在 5–7 月）；(c) 库内 research_rules.rule_power_operation 本身即标注『观察窗口未经核验 · R02-03 明确记载季节性未取得可复现炒作窗口的证据』。\n★ **煤价轴与旺季轴不可合并**：2021 年 9 月电力股大涨（华电 +25.9%、建投 +31.2%、银星 +47.3%）的同期背景是**拉闸限电 + 煤价暴涨 + 绿电交易试点政策**，与『旺季需求驱动盈利』方向相反；2022/2023/2024 的上涨/下跌中，煤价方向与负荷方向的贡献**无法用本包数据分离**。\n★ **不同机制不可混为一谈**：库内 C-2021-POWER-GREEN（绿电交易试点）属一次性政策，必须标为 THEME_ADJACENT；C-2020-POWER-NE / C-2022-POWER-GRID 属**电力设备（制造端）**，与运营端机制不同，已排除出本比较组。\n★ 新能源运营（三峡能源/银星能源）与火电运营**不同轴**：2023 年 5–7 月火电池分化而新能源运营池双双下跌（三峡 -1.35%、银星 -2.83%），2021 年 5–7 月则相反（三峡 +65.73%）；不可互相佐证。\n★ 本包**未取得**的：板块指数（000995 / H30199）在 2016–2025 的一手复算序列；2016/2019/2020/2021/2024 年全国最大负荷的官方一手数值；2018 年华电国际 +47.9%、2024 年火电股下跌的同期归因报道。上述均不得由本包推断。",
+  "reading": "★★ **「迎峰度夏季节性」在现有证据下不成立**：① 10 个 5–7 月窗口中，火电池**仅 2022 年一致上涨**（2017/2024 一致下跌，其余 7 年分化）；② ★★ 4 只火电标的的**年内最高收盘价落在 5–7 月**的情况，**只有 2023 年**同时出现 3/4 只 —— 而 2023 恰是库内**唯一**登记 Campaign 的年份，属**单一年份现象，不是跨年规律**；③ 2017/2024 两年基本面强劲（负荷创新高、火电利润改善）但股价**下跌** → 基本面 ≠ 股价。"
+ },
+ "business_mechanism_note": {
+  "method": "定向检索公司公告/年报/官方资料（2026-10-15）",
+  "hard_rule": "★★ **不因业务机制核实就改 `category`** —— 参与证据仍是库内 Campaign 登记；★★ **不因涨幅/涨停/概念标签**提升相关性等级。",
+  "five_levels": "① 具备业务 ② 当时已存在 ③ 当时重要 ④ 参与行情 ⑤ 机制驱动行情 —— 五者**不可相互替代**。",
+  "coverage": "本轮仅对 **Q1+Q2+Q3 三项均充分**的证券填写 `business_mechanism`；★ 全部证券的 **Q5（机制驱动行情）均无法确认**。"
+ }
+}

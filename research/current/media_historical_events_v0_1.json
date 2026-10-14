@@ -131,14 +131,16 @@
      "name": "完美世界",
      "exchange": "SZ",
      "category": "MARKET_PARTICIPANT",
-     "evidence_level": "REPORT_NAMED",
+     "evidence_level": "BUSINESS_VERIFIED",
      "rationale": "库内 Campaign `C-2018-MEDIA-GAMELICENSE` 登记的标的（role=representative）",
      "source": "DB campaign_securities / securities",
      "market_data": "2018-12-21 ~ 2019-08-09（adjusted 308 行）",
      "period_return_pct": -15.7,
      "to_high_pct": 30.0,
      "high_date": "2019-03-12",
-     "excess_to_high_pp": -6.0
+     "excess_to_high_pp": -6.0,
+     "business_mechanism": "网络游戏研发与运营（含游戏发行）",
+     "business_mechanism_caveat": "★ 证据为公开资料；游戏为主营。★ 但该事件机制是**版号政策**，公司是**受益方之一**，非政策制定者；「机制驱动行情」**无法确认**。"
     },
     {
      "security_id": "SANQI",
@@ -146,9 +148,11 @@
      "name": "三七互娱",
      "exchange": "深圳证券交易所",
      "category": "MARKET_PARTICIPANT",
-     "evidence_level": "REPORT_NAMED",
+     "evidence_level": "BUSINESS_VERIFIED",
      "rationale": "库内 Campaign `C-2018-MEDIA-GAMELICENSE` 登记的标的（role=leader）",
-     "source": "DB campaign_securities / securities"
+     "source": "DB campaign_securities / securities",
+     "business_mechanism": "网络游戏研发与运营（页游/手游）",
+     "business_mechanism_caveat": "★ 证据为公开资料；游戏为主营。★ 同完美世界 —— 受益方之一，**机制驱动无法确认**。"
     }
    ],
    "observed_performance": {
@@ -374,5 +378,11 @@
     "★ 该股涨幅极端（+382.7%），须警惕「涨幅高 = 相关性高」的误推"
    ]
   }
- ]
+ ],
+ "business_mechanism_note": {
+  "method": "定向检索公司公告/年报/官方资料（2026-10-15）",
+  "hard_rule": "★★ **不因业务机制核实就改 `category`** —— 参与证据仍是库内 Campaign 登记；★★ **不因涨幅/涨停/概念标签**提升相关性等级。",
+  "five_levels": "① 具备业务 ② 当时已存在 ③ 当时重要 ④ 参与行情 ⑤ 机制驱动行情 —— 五者**不可相互替代**。",
+  "coverage": "本轮仅对 **Q1+Q2+Q3 三项均充分**的证券填写 `business_mechanism`；★ 全部证券的 **Q5（机制驱动行情）均无法确认**。"
+ }
 }

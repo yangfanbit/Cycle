@@ -11,12 +11,12 @@ import {
   BUSINESS_MECHANISM_CAVEAT,
   EVENT_STUDY_LABEL,
   EVIDENCE_LEVEL_LABEL,
+  MARKET_DATA_STATUS_LABEL,
   MARKET_PERFORMANCE_CAVEAT,
-  NO_MARKET_DATA_LABEL,
   PARTICIPANT_CATEGORY_LABEL,
   eventStudyState,
   eventsByClass,
-  hasMarketData,
+  marketDataStatus,
   type HistoricalEvent,
   type HistoricalEventsDoc,
   type HistoricalParticipant,
@@ -34,7 +34,14 @@ function fmtPct(v?: number | null): string {
   return (v > 0 ? '+' : '') + v.toFixed(1) + '%';
 }
 
-function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
+/** ★ 超额（pp）：不可计算时显示 `—`，**不得**补 0 */
+function fmtPp(v?: number | null): string {
+  if (v == null) return '—';
+  return (v > 0 ? '+' : '') + v.toFixed(1) + 'pp';
+}
+
+/** ★ 导出以便测试直接渲染（页面仍只经 `EventCard` 使用） */
+export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
   const mp = e.market_performance;
   if (!mp) return null;
   const bench = Object.entries(mp.benchmark)[0];
@@ -48,7 +55,9 @@ function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
           <thead>
             <tr>
               <th>标的</th><th>交易日</th><th>区间涨跌</th><th>至高点</th>
-              <th>高点日</th><th>自高点回撤</th><th>超额(vs 基准)</th>
+              <th>高点日</th><th>自高点回撤</th>
+              <th title="区间涨跌 − 基准区间涨跌（excess_period_pp）">区间超额</th>
+              <th title="至高点涨幅 − 基准至高点涨幅（excess_to_high_pp）">至高点超额</th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +70,7 @@ function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
                 <td>{bench[1].high?.date ?? '—'}</td>
                 <td>{fmtPct(bench[1].max_drawdown_from_high_pct)}</td>
                 <td>—</td>
+                <td>—</td>
               </tr>
             )}
             {rows.map(([sid, st]) => (
@@ -71,15 +81,17 @@ function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
                 <td className={cls(st.to_high_pct)}>{fmtPct(st.to_high_pct)}</td>
                 <td>{st.high?.date ?? '—'}</td>
                 <td>{fmtPct(st.max_drawdown_from_high_pct)}</td>
-                <td className={cls(st.excess_to_high_pp)}>
-                  {st.excess_to_high_pp == null ? '—'
-                    : (st.excess_to_high_pp > 0 ? '+' : '') + st.excess_to_high_pp + 'pp'}
-                </td>
+                <td className={cls(st.excess_period_pp)}>{fmtPp(st.excess_period_pp)}</td>
+                <td className={cls(st.excess_to_high_pp)}>{fmtPp(st.excess_to_high_pp)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <p className="fem-perf-note">
+        ★ **两列超额口径不同，不得混用**：「区间超额」= 区间涨跌 − 基准区间涨跌（`excess_period_pp`）；
+        「至高点超额」= 至高点涨幅 − 基准至高点涨幅（`excess_to_high_pp`）。不可计算时显示 `—`，**不补 0**。
+      </p>
       <p className="fem-perf-note">
         ★ 「报道当日涨幅」见上方各标的（`reported_move`），与这里的**区间行情是两回事**。
       </p>
@@ -87,8 +99,13 @@ function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
   );
 }
 
-function ParticipantRow({ p }: { p: HistoricalParticipant }) {
-  const ok = hasMarketData(p);
+/** ★ 导出以便测试直接渲染（页面仍只经 `EventCard` 使用） */
+export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: HistoricalEvent }) {
+  // ★ 四类状态：已计算 / 该窗口未计算 / 行情不可得 / 覆盖不足 —— 不得用 0 代表缺失
+  const status = marketDataStatus(e, p.security_id);
+  const mdClass = status === 'COMPUTED' ? 'ok'
+    : status === 'UNAVAILABLE' ? 'miss'
+      : status === 'INSUFFICIENT' ? 'warn' : 'pending';
   return (
     <li className="fem-part">
       <div className="fem-part-head">
@@ -103,11 +120,11 @@ function ParticipantRow({ p }: { p: HistoricalParticipant }) {
           </span>
         )}
         {p.reported_move && <span className="fem-part-move">报道当日 {p.reported_move}</span>}
-        {ok ? (
-          <span className="fem-part-md ok">行情: {p.market_data}</span>
-        ) : (
-          <span className="fem-part-md miss">{NO_MARKET_DATA_LABEL}</span>
-        )}
+        <span className={`fem-part-md ${mdClass}`} data-market-status={status}>
+          {status === 'COMPUTED'
+            ? `行情: ${p.market_data}`
+            : MARKET_DATA_STATUS_LABEL[status]}
+        </span>
       </div>
       {p.business_mechanism && (
         <p className="fem-part-biz">
@@ -203,7 +220,7 @@ function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: strin
             <p className="fem-empty">（未建立候选清单）</p>
           ) : (
             <ul className="fem-parts">
-              {e.participants.map((p) => <ParticipantRow key={p.security_id} p={p} />)}
+              {e.participants.map((p) => <ParticipantRow key={p.security_id} p={p} e={e} />)}
             </ul>
           )}
 
