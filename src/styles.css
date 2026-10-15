@@ -3444,3 +3444,42 @@ html, body {
   background: #eef3f8; color: var(--accent);
   border-left: 3px solid var(--accent); border-radius: 3px;
 }
+
+/* ---- 跨年份比较区段（2026-10-15 A1）---- */
+.fem-cy {
+  margin: 8px 0; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: #fff;
+}
+.fem-cy-head {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  width: 100%; background: none; border: 0; padding: 0; cursor: pointer;
+  font: inherit; text-align: left;
+}
+.fem-cy-title { font-size: 12.5px; font-weight: 600; }
+.fem-cy-tag {
+  font-size: 10.5px; padding: 0 6px; border-radius: 9px;
+  background: #f2f2f0; color: var(--ink-2);
+}
+.fem-cy-summary { margin: 5px 0 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-cy-caveat {
+  margin: 5px 0 0; padding: 4px 8px; font-size: 11.5px;
+  background: #fdf3e3; color: var(--preheat-ink);
+  border-left: 3px solid #d9a441; border-radius: 3px;
+}
+.fem-cy-body { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.fem-cy-body h5 { margin: 8px 0 4px; font-size: 11.5px; color: var(--ink-2); }
+.fem-cy-note { margin: 5px 0 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-cy-table td:first-child, .fem-cy-table th:first-child { white-space: nowrap; }
+.fem-cy-outcome { font-weight: 600; }
+.fem-cy-outcome.out-up    { color: #c0392b; }   /* 涨=红 */
+.fem-cy-outcome.out-down  { color: #2f6b3c; }   /* 跌=绿 */
+.fem-cy-outcome.out-flat  { color: var(--preheat-ink); }
+.fem-cy-outcome.out-muted { color: var(--ink-3); font-weight: 400; }
+
+/* ---- 事件级状态扩充（2026-10-15 A2：行情覆盖不足 / 该窗口未计算）---- */
+.fem-event-state.st-insufficient_coverage {
+  background: #fdf3e3; color: var(--preheat-ink); border-color: #f0dcb8;
+}
+.fem-event-state.st-not_computed {
+  background: #f4f4f6; color: var(--ink-2); border-color: var(--line);
+}

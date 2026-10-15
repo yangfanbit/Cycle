@@ -14,13 +14,17 @@ import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { HistoricalEventMap, MarketPerformanceBlock, ParticipantRow } from '../HistoricalEventMap';
 import {
+  CROSS_YEAR_CAVEAT,
+  CROSS_YEAR_OUTCOME_LABEL,
   MARKET_DATA_STATUS_LABEL,
   allResolvedEventMaps,
+  crossYearComparisonOf,
   eventMapByExternalId,
   eventMapByTheme,
   eventMapIndex,
   eventMapsNotIncluded,
   eventStudyState,
+  marketDataCoverage,
   marketDataStatus,
   validateEventMapIndex,
   validateHistoricalEvents,
@@ -129,15 +133,70 @@ describe('C. 通用组件渲染非流感题材', () => {
 });
 
 describe('D. 向后兼容（入口层）', () => {
-  it('★ FLU 题材已升版 v0_5（6 事件，含 2018/2024 跨年份）', () => {
+  it('★ FLU 题材已升版 v0_6（6 事件，含 2018/2024 跨年份）', () => {
     const m = eventMapByTheme('FLU')!;
-    expect(m.doc.artifact_version).toBe('0.5');
+    expect(m.doc.artifact_version).toBe('0.6');
     expect(m.doc.events).toHaveLength(6);
     // ★ 跨年份事件已接入
     expect(m.doc.events.map((e) => e.event_id)).toContain('FLU-2018-SEASONAL');
     expect(m.doc.events.map((e) => e.event_id)).toContain('FLU-2024-SEASONAL');
     // ★ 流感专属的 corrections 更正痕迹仍在
     expect(JSON.stringify(m.doc.corrections)).toContain('600513');
+  });
+
+  it('★★ FLU 跨年份：11 个季节窗口 · year=季节开始年 · 含 2025/26 季', () => {
+    const cy = crossYearComparisonOf(eventMapByTheme('FLU')!.doc)!;
+    expect(cy.years).toHaveLength(11);
+    expect(cy.years.map((y) => y.year)).toEqual(
+      Array.from({ length: 11 }, (_, i) => 2015 + i));
+    // ★ season_label 与窗口必须显式（不得只有 year）
+    for (const y of cy.years) {
+      expect(y.season_label, String(y.year)).toBeTruthy();
+      expect(y.window, String(y.year)).toEqual([`${y.year}-09-01`, `${y.year + 1}-01-31`]);
+      expect(y.window_type).toBe('SEASON_WINDOW_9_1');
+    }
+    // ★ 2025/26 季必须存在且端点可达（用户明确要求补数的窗口）
+    const last = cy.years[cy.years.length - 1];
+    expect(last.year).toBe(2025);
+    expect(last.coverage).toBe('FULL');
+    expect(last.comparable).toBe(true);
+    expect(last.benchmark!.last!.date >= '2026-01-01').toBe(true);
+    // ★ 11 季中「不可比」为 0 —— 不得用 10 行数据宣称 11 个完整窗口
+    expect(cy.years.filter((y) => y.comparable === false)).toHaveLength(0);
+  });
+
+  it('★★ 窗口外事件被显式列出（不得混入 9–1 月季节性）', () => {
+    const doc = eventMapByTheme('FLU')!.doc as unknown as {
+      cross_year: { out_of_window_events: { year: number; why_out: string }[] };
+    };
+    const ids = doc.cross_year.out_of_window_events.map((x) => x.year);
+    expect(ids).toContain(2017);
+    expect(ids).toContain(2022);
+    for (const x of doc.cross_year.out_of_window_events) expect(x.why_out).toContain('不得');
+  });
+
+  it('★★ POWER 跨年份：每年都带 window_type / coverage / comparable（口径不得缺失）', () => {
+    const cy = crossYearComparisonOf(eventMapByTheme('POWER_SUMMER')!.doc)!;
+    expect(cy.years).toHaveLength(10);
+    for (const y of cy.years) {
+      expect(y.window_type, String(y.year)).toBe('SEASON_WINDOW_5_7');
+      expect(y.window, String(y.year)).toEqual([`${y.year}-05-01`, `${y.year}-07-31`]);
+      expect(['FULL', 'PARTIAL', 'NONE'], String(y.year)).toContain(y.coverage!);
+      expect(y.comparable, String(y.year)).toBeDefined();
+    }
+    // ★ 2024 华电停牌至 07-18 → 端点不可达 → 该年必须标为「部分可比」而非「可比」
+    const y2024 = cy.years.find((y) => y.year === 2024)!;
+    expect(y2024.coverage).toBe('PARTIAL');
+    expect(y2024.comparable).toBe('partial');
+    expect(y2024.comparable_reason).toContain('2024-07-18');
+    // ★ outcome 与数值对齐：2024 四只全跌 → ALL_DOWN
+    expect(y2024.outcome).toBe('ALL_DOWN');
+    // ★ 2017 四只全部跑输（天富 +8.03% 并非全跌）→ UNDERPERFORM，且不在 all_down 里
+    const cyRaw = eventMapByTheme('POWER_SUMMER')!.doc as unknown as {
+      cross_year_comparison: { all_down_years: number[]; all_underperform_years: number[] };
+    };
+    expect(cyRaw.cross_year_comparison.all_down_years).toEqual([2024]);
+    expect(cyRaw.cross_year_comparison.all_underperform_years).toContain(2017);
   });
 
   it('★ 流感题材的 class caveat 文本与既有常量一致（未在通用化中改写）', () => {
@@ -252,7 +311,8 @@ describe('F. ★★ 区分「行情未计算」与「行情不可得」（四类
   });
 
   it('INSUFFICIENT：trading_days 仅 30 < 窗口 100 的 60% → 覆盖不足', () => {
-    const e = mkEvent({ market_performance: mkMp({ SID: { trading_days: 30 } }) });
+    // ★ A3 起：本窗口「有可用行情」要求 `period_return_pct` 存在（缺失即视为未算出）→ 合成数据补上该字段
+    const e = mkEvent({ market_performance: mkMp({ SID: { trading_days: 30, period_return_pct: 1 } }) });
     expect(marketDataStatus(e, 'SID')).toBe('INSUFFICIENT');
   });
 
@@ -265,11 +325,11 @@ describe('F. ★★ 区分「行情未计算」与「行情不可得」（四类
   });
 
   it('★ 标的行按状态渲染不同文案', () => {
-    const computed = mkEvent({ market_performance: mkMp({ SID: { trading_days: 100 } }) });
+    const computed = mkEvent({ market_performance: mkMp({ SID: { trading_days: 100, period_return_pct: 1 } }) });
     const notComputed = mkEvent({ market_performance: mkMp({}) });
     const unavailable = mkEvent({ participants: [{ security_id: 'SID', ticker: '000001', name: '无行情标的',
       category: 'MARKET_PARTICIPANT', rationale: '测试用', source: 'test', market_data: '无行情' }] });
-    const insufficient = mkEvent({ market_performance: mkMp({ SID: { trading_days: 30 } }) });
+    const insufficient = mkEvent({ market_performance: mkMp({ SID: { trading_days: 30, period_return_pct: 1 } }) });
 
     const text = (e: HistoricalEvent) =>
       renderToStaticMarkup(<ParticipantRow p={e.participants[0]} e={e} />);
@@ -308,5 +368,144 @@ describe('G. ★ 索引一致性校验（event_count / external_entry_ids / them
     expect(issues.some((i) => i.field === 'external_entry_ids' && /占用/.test(i.message))).toBe(true);
     expect(issues.some((i) => i.field === 'theme_id')).toBe(true);
     expect(issues.some((i) => i.field === 'display.badge')).toBe(true);
+  });
+});
+
+/* ---------------------------------------------- H. ★★ 跨年份比较（A1） */
+
+describe('H. ★★ 跨年份比较：取值映射 + 渲染 + 缺失不补 0', () => {
+  it('★★ 两列超额锚点：华电国际 区间超额 ≈ -17.0pp 且 ≠ 至高点超额 ≈ +4.8pp（不得混用）', () => {
+    const e = eventMapByTheme('POWER_SUMMER')!.doc.events
+      .find((x) => x.event_id === 'POWER-2023-SUMMER')!;
+    const st = e.market_performance!.by_security['HUADIAN'];
+    expect(st.excess_period_pp).toBeCloseTo(-17.0, 0);
+    expect(st.excess_to_high_pp).toBeCloseTo(4.8, 0);
+    expect(st.excess_period_pp).not.toBe(st.excess_to_high_pp);
+    const cells = rowOf(renderToStaticMarkup(<MarketPerformanceBlock e={e} />), 'HUADIAN');
+    expect(cells[6]).toBe('-17.0pp');
+    expect(cells[7]).toBe('+4.8pp');
+  });
+
+  it('★★ 跨年份区段真的渲染：FLU / POWER 均非 null（≥4 年），HTML 含年份与中文 outcome 标签', () => {
+    for (const theme of ['FLU', 'POWER_SUMMER']) {
+      const m = eventMapByTheme(theme)!;
+      const cy = crossYearComparisonOf(m.doc);
+      expect(cy, theme).not.toBeNull();
+      expect(cy!.years.length, theme).toBeGreaterThanOrEqual(4);
+      const html = renderToStaticMarkup(<HistoricalEventMap doc={m.doc} display={m.display} />);
+      expect(html, theme).toContain('data-cross-year="1"');
+      expect(html, theme).toContain(CROSS_YEAR_CAVEAT);
+      // ★ 徽标：season_window 与 target_pool
+      expect(cy!.season_window, theme).toBeTruthy();
+      expect(cy!.target_pool, theme).toBeTruthy();
+      expect(html, theme).toContain(cy!.season_window!);
+      expect(html, theme).toContain(cy!.target_pool!);
+      // ★ 年份与**中文** outcome 标签都要出现（不得只显示英文码）
+      expect(html, theme).toContain(String(cy!.years[0].year));
+      expect(html, theme).toContain(CROSS_YEAR_OUTCOME_LABEL[cy!.years[0].outcome]);
+      expect(html, theme).toContain('个年份');
+    }
+  });
+
+  it('★ 无跨年份数据 → 不渲染空壳（crossYearComparisonOf 返回 null）', () => {
+    const m = eventMapByTheme('POWER_SUMMER')!;
+    const stripped = JSON.parse(JSON.stringify(m.doc));
+    delete stripped.cross_year_comparison;
+    delete stripped.cross_year;
+    expect(crossYearComparisonOf(stripped)).toBeNull();
+    const html = renderToStaticMarkup(<HistoricalEventMap doc={stripped} display={m.display} />);
+    expect(html).not.toContain('data-cross-year');
+    // 传媒 / 机器人本就没有跨年份数据
+    expect(crossYearComparisonOf(eventMapByTheme('MEDIA')!.doc)).toBeNull();
+    expect(crossYearComparisonOf(eventMapByTheme('ROBOTICS')!.doc)).toBeNull();
+  });
+
+  it('★ 缺失不补 0：跨年份表缺失显示 —，不出现 +0.0% / 0.0pp', () => {
+    const m = eventMapByTheme('POWER_SUMMER')!;
+    const html = renderToStaticMarkup(<HistoricalEventMap doc={m.doc} display={m.display} />);
+    expect(html).not.toContain('+0.0%');
+    expect(html).not.toContain('0.0pp');
+    // ★ FLU 跨年份**已有**逐标的数值（v0_6 补数后）→ 必须渲染出逐标的行，
+    //   而上市前无数据的标的必须显示 `—`（不得补 0）
+    const flu = eventMapByTheme('FLU')!;
+    const fluHtml = renderToStaticMarkup(<HistoricalEventMap doc={flu.doc} display={flu.display} />);
+    expect(fluHtml).toContain('data-cy-sec="HUALAN-002007"');
+    // ★ 短历史三只在 2015 季为上市前 → 该行必须出现且不显示数字
+    expect(fluHtml).toContain('data-cy-sec="HUALANVAX"');
+    expect(fluHtml).toContain('—');
+    expect(fluHtml).not.toContain('+0.0%');
+    // ★ 精确断言：不存在「整格就是 0.0pp」的单元格（避免误伤 +80.0pp 这类**真实**值）
+    expect(fluHtml).not.toMatch(/>\+?0\.0pp</);
+    // 合成：字段缺失 → `—`
+    const doc = JSON.parse(JSON.stringify(m.doc));
+    doc.cross_year_comparison.years = [
+      { year: 1999, window_type: 'SEASON_WINDOW_5_7', outcome: 'DIVERGENT', by_security: { X: {} } },
+    ];
+    const h2 = renderToStaticMarkup(<HistoricalEventMap doc={doc} display={m.display} />);
+    expect(h2).toContain('1999');
+    expect(h2).toContain('—');
+    expect(h2).not.toContain('+0.0%');
+    expect(h2).not.toContain('0.0pp');
+  });
+});
+
+/* ---------------------------------------------- I. ★★ 事件级状态必须基于「本事件窗口」 */
+
+describe('I. ★★ 事件级行情状态基于事件窗口（A2/A3）', () => {
+  it('★★ market_data 有字符串但未在本事件窗口计算 → 不得 HAS_PRICE_DATA（钉死旧实现漏洞）', () => {
+    const e = mkEvent({
+      participants: [{
+        security_id: 'SID', ticker: '000001', name: '别处有行情的标的',
+        category: 'MARKET_PARTICIPANT', rationale: '测试用', source: 'test',
+        market_data: '2022-01-04~2023-04-14（310 行）',   // ★ 看起来「有行情」
+      }],
+      market_performance: mkMp({}),                        // ★ 本窗口 by_security 不含 SID
+    });
+    expect(marketDataStatus(e, 'SID')).toBe('NOT_COMPUTED');
+    expect(eventStudyState(e)).not.toBe('HAS_PRICE_DATA');
+    expect(eventStudyState(e)).toBe('NOT_COMPUTED');
+  });
+
+  it('★ 四类标的级状态各一断言（COMPUTED / NOT_COMPUTED / UNAVAILABLE / INSUFFICIENT）', () => {
+    const participant = (market_data?: string) => ({
+      security_id: 'SID', ticker: '000001', name: '测试标的',
+      category: 'MARKET_PARTICIPANT' as const, rationale: '测试用', source: 'test', market_data,
+    });
+    const computed = mkEvent({ market_performance: mkMp({ SID: { trading_days: 100, period_return_pct: 1 } }) });
+    const notComputed = mkEvent({ market_performance: mkMp({}) });
+    const unavailable = mkEvent({ participants: [participant('无登记行情')] });
+    const insufficient = mkEvent({ market_performance: mkMp({ SID: { trading_days: 30, period_return_pct: 1 } }) });
+
+    expect(marketDataStatus(computed, 'SID')).toBe('COMPUTED');
+    expect(marketDataStatus(notComputed, 'SID')).toBe('NOT_COMPUTED');
+    expect(marketDataStatus(unavailable, 'SID')).toBe('UNAVAILABLE');
+    expect(marketDataStatus(insufficient, 'SID')).toBe('INSUFFICIENT');
+  });
+
+  it('★★ 端点不可达 → INSUFFICIENT（交易日数量达标也**不等于**完整窗口已计算）', () => {
+    const e = mkEvent({
+      market_performance: mkMp({
+        SID: {
+          trading_days: 100, period_return_pct: 1.2,
+          first: { date: '2020-03-02', close: 10 }, last: { date: '2020-06-30', close: 11 },
+        },
+      }),
+    });
+    const c = marketDataCoverage(e, 'SID');
+    expect(c.tradingDays).toBe(100);
+    expect(c.ratio).toBe(1);                       // ★ 数量阈值达标
+    expect(c.endpointsCovered).toBe(false);        // ★ 但窗口起点端点不可达
+    expect(c.status).toBe('INSUFFICIENT');
+    expect(c.reasons.join('；')).toContain('窗口起点端点不可达');
+  });
+
+  it('★ 覆盖不足的 reasons 明确区分「交易日数量不足」与「端点不可达」', () => {
+    const fewDays = mkEvent({
+      market_performance: mkMp({ SID: { trading_days: 30, period_return_pct: 1 } }),
+    });
+    const c = marketDataCoverage(fewDays, 'SID');
+    expect(c.status).toBe('INSUFFICIENT');
+    expect(c.reasons.join('；')).toContain('交易日覆盖');
+    expect(c.reasons.join('；')).not.toContain('端点不可达');
   });
 });

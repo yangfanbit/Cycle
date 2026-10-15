@@ -84,5 +84,19 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    /**
+     * ★ 超时预算（2026-10-15）。
+     *
+     * vitest 默认 `testTimeout = 5000ms`。随着测试文件与静态研究 Artifact 增长，
+     * **在 39 个文件并行**时，Vite 的模块转换在共享管线里排队，个别「动态 import + SSR 渲染」
+     * 的测试会**偶发超过 5s**（实测：`src/utils/__tests__/timeline.test.ts` 的
+     * 「Timeline 第三层 …」在 6 文件并行时即触发；单文件运行 52/52 通过，
+     * 失败类型为 **timeout 而非断言失败**，CI 的 CPU 更少 → 风险更高）。
+     *
+     * ★ 这只调整**时间预算**，**不放宽任何断言或校验规则**；
+     *   任何真实的语义/数据问题仍会以断言失败暴露。
+     */
+    testTimeout: 20000,
+    hookTimeout: 20000,
   },
 });

@@ -9,14 +9,21 @@
 import { useState } from 'react';
 import {
   BUSINESS_MECHANISM_CAVEAT,
+  COMPARABLE_LABEL,
+  CROSS_YEAR_CAVEAT,
+  CROSS_YEAR_OUTCOME_LABEL,
   EVENT_STUDY_LABEL,
   EVIDENCE_LEVEL_LABEL,
   MARKET_DATA_STATUS_LABEL,
   MARKET_PERFORMANCE_CAVEAT,
   PARTICIPANT_CATEGORY_LABEL,
+  WINDOW_BASIS_LABEL,
+  WINDOW_TYPE_LABEL,
+  crossYearComparisonOf,
   eventStudyState,
   eventsByClass,
-  marketDataStatus,
+  marketDataCoverage,
+  type CrossYearYear,
   type HistoricalEvent,
   type HistoricalEventsDoc,
   type HistoricalParticipant,
@@ -102,7 +109,8 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
 /** ★ 导出以便测试直接渲染（页面仍只经 `EventCard` 使用） */
 export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: HistoricalEvent }) {
   // ★ 四类状态：已计算 / 该窗口未计算 / 行情不可得 / 覆盖不足 —— 不得用 0 代表缺失
-  const status = marketDataStatus(e, p.security_id);
+  const coverage = marketDataCoverage(e, p.security_id);
+  const status = coverage.status;
   const mdClass = status === 'COMPUTED' ? 'ok'
     : status === 'UNAVAILABLE' ? 'miss'
       : status === 'INSUFFICIENT' ? 'warn' : 'pending';
@@ -120,7 +128,8 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
           </span>
         )}
         {p.reported_move && <span className="fem-part-move">报道当日 {p.reported_move}</span>}
-        <span className={`fem-part-md ${mdClass}`} data-market-status={status}>
+        <span className={`fem-part-md ${mdClass}`} data-market-status={status}
+              title={status === 'COMPUTED' ? undefined : coverage.reasons.join('；')}>
           {status === 'COMPUTED'
             ? `行情: ${p.market_data}`
             : MARKET_DATA_STATUS_LABEL[status]}
@@ -248,6 +257,174 @@ function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: strin
   );
 }
 
+/* ---------------------------------------------- 跨年份比较（默认折叠；无数据不渲染） */
+
+/** ★ 摘要按固定顺序统计 outcome（未知码原样显示码值，**不猜含义**） */
+const CROSS_YEAR_SUMMARY_ORDER = [
+  'UP', 'ALL_DOWN', 'UNDERPERFORM', 'DIVERGENT', 'NO_CLEAR_REACTION',
+  'NO_EVENT', 'INSUFFICIENT_DATA', 'WINDOW_MISMATCH', 'NOT_COMPARABLE',
+];
+
+function outcomeLabel(code: string): string {
+  return CROSS_YEAR_OUTCOME_LABEL[code] ?? code;
+}
+
+/** 结果颜色类（未知码 → 中性，不给颜色暗示） */
+function outcomeClass(code: string): string {
+  if (code === 'UP') return 'up';
+  if (code === 'ALL_DOWN' || code === 'UNDERPERFORM') return 'down';
+  if (code === 'DIVERGENT' || code === 'NO_CLEAR_REACTION') return 'flat';
+  return 'muted';
+}
+
+/** 折叠态摘要：`N 个年份 · 一致上涨 X · …`（只列出现过的 outcome） */
+function crossYearSummary(years: CrossYearYear[]): string {
+  const counts = new Map<string, number>();
+  for (const y of years) counts.set(y.outcome, (counts.get(y.outcome) ?? 0) + 1);
+  const known = CROSS_YEAR_SUMMARY_ORDER.filter((c) => counts.has(c));
+  const unknown = [...counts.keys()].filter((k) => !CROSS_YEAR_SUMMARY_ORDER.includes(k)).sort();
+  const parts = [...known, ...unknown].map((c) => `${outcomeLabel(c)} ${counts.get(c)}`);
+  return [`${years.length} 个年份`, ...parts].join(' · ');
+}
+
+/** 窗口日期：有目标窗口用目标窗口，否则用实际可得区间（并标注「实际」） */
+function windowText(y: CrossYearYear): string {
+  const w = y.window ?? y.actual_window;
+  if (!w) return '—';
+  return `${y.window ? '' : '实际 '}${w[0]} ~ ${w[1]}`;
+}
+
+function comparableText(y: CrossYearYear): string {
+  if (y.comparable === undefined || y.comparable === null) return '—';
+  return COMPARABLE_LABEL[String(y.comparable)] ?? String(y.comparable);
+}
+
+/**
+ * ★★ 跨年份比较区段（A1）。
+ *
+ * - 默认**折叠**；折叠时显示一行摘要
+ * - 无跨年份数据 → **不渲染**（不显示空壳）
+ * - ★ 不挤占逐事件详情：本区段独立于事件分组，事件详情原样保留
+ */
+export function CrossYearSection({ doc }: { doc: HistoricalEventsDoc }) {
+  const [open, setOpen] = useState(false);
+  const cmp = crossYearComparisonOf(doc);
+  if (!cmp) return null;                        // ★ 无数据 → 不渲染空壳
+  const years = cmp.years ?? [];
+  const basis = WINDOW_BASIS_LABEL[cmp.window_basis] ?? cmp.window_basis;
+  const withSecurity = years.filter((y) => y.by_security && Object.keys(y.by_security).length > 0);
+  const withNote = years.filter((y) => Boolean(y.note));
+
+  return (
+    <div className="fem-cy" data-cross-year="1">
+      <button type="button" className="fem-cy-head" aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}>
+        <span className="fem-cy-title">跨年份比较（{basis}）</span>
+        {cmp.season_window && <span className="fem-cy-tag">窗口 {cmp.season_window}</span>}
+        {cmp.target_pool && <span className="fem-cy-tag">标的池 {cmp.target_pool}</span>}
+        <span className="fem-event-caret">{open ? '收起' : '展开'}</span>
+      </button>
+      <p className="fem-cy-summary">{crossYearSummary(years)}</p>
+      <p className="fem-cy-caveat">{CROSS_YEAR_CAVEAT}</p>
+
+      {/* ★ 默认折叠：折叠时摘要可见，明细 `hidden`（内容仍在 DOM，便于检索/打印） */}
+      <div className="fem-cy-body" hidden={!open}>
+        <h5>年份表（{years.length} 个年份）</h5>
+          <div className="fem-table-wrap">
+            <table className="fem-table fem-cy-table">
+              <thead>
+                <tr>
+                  <th>年份</th><th>窗口类型 / 日期</th><th>机制 / 事件类型</th><th>结果</th>
+                  <th>可比性</th><th>基准区间涨跌</th><th>标的数</th><th>覆盖</th>
+                </tr>
+              </thead>
+              <tbody>
+                {years.map((y) => (
+                  <tr key={y.year} data-cy-year={y.year}>
+                    <td>{y.year}{y.season_label ? ` ${y.season_label}` : ''}</td>
+                    <td>{WINDOW_TYPE_LABEL[y.window_type] ?? y.window_type} · {windowText(y)}</td>
+                    <td>{[y.mechanism, y.event_type].filter(Boolean).join(' / ') || '—'}</td>
+                    <td className={`fem-cy-outcome out-${outcomeClass(y.outcome)}`}>{outcomeLabel(y.outcome)}</td>
+                    <td title={y.comparable_reason ?? undefined}>{comparableText(y)}</td>
+                    <td className={cls(y.benchmark?.period_return_pct)}>{fmtPct(y.benchmark?.period_return_pct)}</td>
+                    <td>{y.by_security ? Object.keys(y.by_security).length : '—'}</td>
+                    <td>{y.coverage ?? '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {withSecurity.length === 0 ? (
+            <p className="fem-empty">
+              源数据未提供逐标的数值（`by_security` 为空）—— 如实留空，**不补造数字**。
+            </p>
+          ) : (
+            <>
+              <h5>逐年 × 标的明细（{withSecurity.length} 个年份有数值）</h5>
+              <div className="fem-table-wrap">
+                <table className="fem-table fem-cy-table">
+                  <thead>
+                    <tr>
+                      <th>年份</th><th>标的</th><th>交易日</th><th>区间涨跌</th><th>至高点</th>
+                      <th>高点日</th><th>自高点回撤</th><th>区间超额</th><th>至高点超额</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {withSecurity.flatMap((y) => Object.entries(y.by_security!)
+                      .map(([sid, s]) => (
+                        <tr key={`${y.year}-${sid}`} data-cy-sec={sid}>
+                          <td>{y.year}</td>
+                          <td><code>{sid}</code></td>
+                          <td>{s.trading_days ?? '—'}</td>
+                          <td className={cls(s.period_return_pct)}>{fmtPct(s.period_return_pct)}</td>
+                          <td className={cls(s.to_high_pct)}>{fmtPct(s.to_high_pct)}</td>
+                          <td>{s.high?.date ?? '—'}</td>
+                          <td>{fmtPct(s.max_drawdown_from_high_pct)}</td>
+                          <td className={cls(s.excess_period_pp)}>{fmtPp(s.excess_period_pp)}</td>
+                          <td className={cls(s.excess_to_high_pp)}>{fmtPp(s.excess_to_high_pp)}</td>
+                        </tr>
+                      )))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="fem-perf-note">
+                ★ 「区间超额」与「至高点超额」口径不同，**不得混用**；缺失一律显示 `—`，**不补 0**。
+              </p>
+            </>
+          )}
+
+          {withNote.length > 0 && (
+            <>
+              <h5>年份备注（含其他窗口口径，不得混用）</h5>
+              <ul className="fem-gaps">
+                {withNote.map((y) => (
+                  <li key={y.year}><strong>{y.year}</strong>：{y.note}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {cmp.conclusion_short && (
+            <p className="fem-cy-note"><strong>结论摘要</strong>：{cmp.conclusion_short}</p>
+          )}
+          {cmp.reading && <p className="fem-cy-note">{cmp.reading}</p>}
+          {cmp.inclusion_principle && (
+            <p className="fem-cy-note"><strong>纳入原则</strong>：{cmp.inclusion_principle}</p>
+          )}
+          {cmp.limitations && cmp.limitations.length > 0 && (
+            <>
+              <h5>本比较不能得出（源数据已声明）</h5>
+              <ul className="fem-gaps">
+                {cmp.limitations.map((l) => <li key={l.slice(0, 24)}>{l}</li>)}
+              </ul>
+            </>
+          )}
+      </div>
+    </div>
+  );
+}
+
 export interface HistoricalEventMapProps {
   /** ★ 题材事件数据（由调用方注入） */
   doc: HistoricalEventsDoc;
@@ -269,6 +446,9 @@ export function HistoricalEventMap({ doc, display }: HistoricalEventMapProps) {
         <span className="fem-badge">{badge}</span>
       </div>
       {note && <p className="fem-note">{note}</p>}
+
+      {/* ★ 跨年份比较：在 note 之后、事件分组之前（不挤占逐事件详情） */}
+      <CrossYearSection doc={doc} />
 
       {groups.length === 0 ? (
         <p className="fem-empty">（无历史事件记录）</p>

@@ -1,0 +1,167 @@
+{
+ "after": {
+  "hash": "b006c30182e9cca6",
+  "market_daily_rows": 372757
+ },
+ "before": {
+  "hash": "c3e464fcd1d147d0",
+  "market_daily_rows": 348109
+ },
+ "generated_at": "2026-10-15T22:38:58",
+ "price_type": [
+  "raw",
+  "adjusted(qfq)"
+ ],
+ "purpose": "使 11 个「9 月–次年 1 月」季节窗口在库内可核验",
+ "range": [
+  "2015-08-01",
+  "2026-01-31"
+ ],
+ "securities": {
+  "BAIKEBIO": {
+   "actual": [
+    "2021-06-25",
+    "2026-01-30"
+   ],
+   "qfq_rows": 1118,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 1118,
+   "status": "OK",
+   "symbol": "sh688276"
+  },
+  "DAAN-002030": {
+   "actual": [
+    "2015-10-14",
+    "2026-01-30"
+   ],
+   "qfq_rows": 2507,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 2507,
+   "status": "OK",
+   "symbol": "sz002030"
+  },
+  "HUALAN-002007": {
+   "actual": [
+    "2015-08-03",
+    "2026-01-30"
+   ],
+   "qfq_rows": 2552,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 2552,
+   "status": "OK",
+   "symbol": "sz002007"
+  },
+  "HUALANVAX": {
+   "actual": [
+    "2022-02-18",
+    "2026-01-30"
+   ],
+   "qfq_rows": 961,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 961,
+   "status": "OK",
+   "symbol": "sz301207"
+  },
+  "JINDIKE": {
+   "actual": [
+    "2021-08-02",
+    "2026-01-30"
+   ],
+   "qfq_rows": 1092,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 1092,
+   "status": "OK",
+   "symbol": "sh688670"
+  },
+  "TIANKA-002100": {
+   "actual": [
+    "2015-08-03",
+    "2026-01-30"
+   ],
+   "qfq_rows": 2542,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 2542,
+   "status": "OK",
+   "symbol": "sz002100"
+  },
+  "XIANGXUE-300147": {
+   "actual": [
+    "2015-08-03",
+    "2026-01-30"
+   ],
+   "qfq_rows": 2551,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 2551,
+   "status": "OK",
+   "symbol": "sz300147"
+  },
+  "YILING": {
+   "actual": [
+    "2015-08-03",
+    "2026-01-30"
+   ],
+   "qfq_rows": 2542,
+   "range": [
+    "2015-08-01",
+    "2026-01-31"
+   ],
+   "raw_rows": 2542,
+   "status": "OK",
+   "symbol": "sz002603"
+  }
+ },
+ "source": "tencent_gtimg via research/scripts/fetch_market_batch_v0_3.py",
+ "stats": {
+  "confirmed_empty": 32,
+  "invalid_symbol": 0,
+  "ok": 8,
+  "requests": 0,
+  "skipped_known_gap": 6,
+  "unavailable": 0
+ },
+ "tables": {
+  "after": {
+   "campaign_phases": 136,
+   "campaign_securities": 220,
+   "campaign_themes": 124,
+   "campaigns": 62,
+   "evidences": 414,
+   "market_daily": 372757,
+   "market_series": 213,
+   "securities": 210,
+   "themes": 59
+  },
+  "before": {
+   "campaign_phases": 136,
+   "campaign_securities": 220,
+   "campaign_themes": 124,
+   "campaigns": 62,
+   "evidences": 414,
+   "market_daily": 348109,
+   "market_series": 213,
+   "securities": 210,
+   "themes": 59
+  }
+ }
+}

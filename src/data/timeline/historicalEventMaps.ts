@@ -17,8 +17,8 @@
  */
 import indexRaw from '@current/historical_event_maps_index.json';
 // ★ 各题材事件数据：**静态 import**（vite/TS 要求；索引只提供展示配置与入口映射）
-import fluDoc from '@current/flu_historical_events_v0_5.json';
-import powerDoc from '@current/power_historical_events_v0_2.json';
+import fluDoc from '@current/flu_historical_events_v0_6.json';
+import powerDoc from '@current/power_historical_events_v0_3.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 
@@ -151,6 +151,59 @@ export interface EventMapIndex {
   not_included?: { items: { theme_id: string; label: string; reason: string }[] };
 }
 
+/* ------------------------------------------------------ 跨年份比较（通用规范类型） */
+
+/**
+ * ★★ 跨年份比较的**规范类型**。
+ *
+ * 设计原则：本模块只做**字段名映射**（把各题材 JSON 里不同名字的同一含义字段归一到一套名字），
+ * **不重新推导任何研究结论、不重算任何收益**。因此：
+ * - `outcome` 原样保留（未知码原样显示，见 `CROSS_YEAR_OUTCOME_LABEL`）
+ * - 缺失字段一律留空（`undefined` / `null`），**不得**补 0
+ * - `comparable` 在归一化时由 `outcome` 映射而来，并**显式声明这是映射规则**，不是研究判断
+ */
+export interface CrossYearSecurityPerf {
+  period_return_pct?: number; trading_days?: number;
+  first?: { date: string; close?: number };
+  last?: { date: string; close?: number };
+  high?: { date: string; close?: number };
+  to_high_pct?: number; max_drawdown_from_high_pct?: number;
+  excess_period_pp?: number; excess_to_high_pp?: number;
+  status?: string; note?: string;
+}
+
+export interface CrossYearBenchmarkPerf {
+  id: string; label?: string; trading_days?: number;
+  first?: { date: string; close?: number };
+  last?: { date: string; close?: number };
+  high?: { date: string; close?: number };
+  period_return_pct?: number; to_high_pct?: number; max_drawdown_from_high_pct?: number;
+}
+
+export interface CrossYearYear {
+  year: number;
+  season_label?: string;            // 如 "2017/18 季"
+  window_type: string;              // 'SEASON_WINDOW_9_1' | 'SEASON_WINDOW_5_7' | 'CAMPAIGN_FULL_PERIOD' | ...
+  window?: [string, string] | null;         // 目标窗口
+  actual_window?: [string, string] | null;  // 实际可得区间
+  coverage?: 'FULL' | 'PARTIAL' | 'NONE';
+  event_type?: string; mechanism?: string;
+  outcome: string;                  // 见 CROSS_YEAR_OUTCOME_LABEL 码表
+  comparable?: boolean | 'partial';
+  comparable_reason?: string;
+  benchmark?: CrossYearBenchmarkPerf | null;
+  by_security?: Record<string, CrossYearSecurityPerf> | null;
+  note?: string;
+  /** ★ 原始 `campaign_full` 原样保留（不同窗口口径，不在主表渲染，**不得丢失**） */
+  campaign_full?: unknown;
+}
+
+export interface CrossYearComparison {
+  window_basis: string; season_window?: string; target_pool?: string;
+  inclusion_principle?: string; benchmark?: string; conclusion_short?: string;
+  years: CrossYearYear[]; reading?: string; limitations?: string[];
+}
+
 /* ------------------------------------------------------ 题材文档注册表 */
 
 /**
@@ -239,8 +292,52 @@ export const EVIDENCE_LEVEL_LABEL: Record<EvidenceLevel, string> = {
 
 export const EVENT_STUDY_LABEL: Record<string, string> = {
   HAS_PRICE_DATA: '有可分析行情',
+  INSUFFICIENT_COVERAGE: '行情覆盖不足',
+  NOT_COMPUTED: '该窗口未计算',
   NO_PRICE_DATA: '事件已核实但核心标的行情不可得',
   NOT_VERIFIED: '本轮未核实',
+};
+
+/* ------------------------------------------------------ 跨年份比较：展示常量 */
+
+/**
+ * ★★ 跨年份 outcome 码表 —— **必须用这套中文标签**；未知码**原样显示码值**，不得编造含义。
+ */
+export const CROSS_YEAR_OUTCOME_LABEL: Record<string, string> = {
+  UP: '一致上涨',
+  ALL_DOWN: '一致下跌',
+  UNDERPERFORM: '整体跑输',
+  DIVERGENT: '分化',
+  NO_CLEAR_REACTION: '无明显反应',
+  NO_EVENT: '无事件',
+  INSUFFICIENT_DATA: '数据不足',
+  WINDOW_MISMATCH: '窗口不符',
+  NOT_COMPARABLE: '不可比',
+};
+
+/** 窗口口径（`window_basis`）中文标签；未知口径原样显示 */
+export const WINDOW_BASIS_LABEL: Record<string, string> = {
+  SEASON_WINDOW_9_1: '9 月–次年 1 月窗口',
+  SEASON_WINDOW_5_7: '5–7 月窗口',
+  CAMPAIGN_FULL_PERIOD: 'Campaign 全周期',
+};
+
+/** 窗口类型（`window_type`）中文标签；未知类型原样显示 */
+export const WINDOW_TYPE_LABEL: Record<string, string> = {
+  SEASON_WINDOW_9_1: '9–1 月窗口',
+  SEASON_WINDOW_5_7: '5–7 月窗口',
+  CAMPAIGN_FULL_PERIOD: 'Campaign 全周期',
+};
+
+/** ★★ 跨年比较区段必须显示的声明：只描述历史价格表现，不构成季节性结论 / 因果 */
+export const CROSS_YEAR_CAVEAT =
+  '★ 跨年比较只描述历史价格表现，不构成季节性结论，也不构成因果。';
+
+/** 可比性标签（`comparable` 三态） */
+export const COMPARABLE_LABEL: Record<string, string> = {
+  true: '可比',
+  partial: '部分可比',
+  false: '不可比',
 };
 
 /* ------------------------------------------------------ 通用计算 */
@@ -250,23 +347,271 @@ export function hasMarketData(p: HistoricalParticipant): boolean {
   return Boolean(m) && !m!.includes('无登记') && !m!.includes('无行情');
 }
 
+/* ------------------------------------------------------ 跨年份比较取值（仅字段名映射） */
+
+function asRecord(v: unknown): Record<string, unknown> | null {
+  return v !== null && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : null;
+}
+function asStr(v: unknown): string | undefined {
+  return typeof v === 'string' && v.length > 0 ? v : undefined;
+}
+function asNum(v: unknown): number | undefined {
+  return typeof v === 'number' && Number.isFinite(v) ? v : undefined;
+}
+function asArr(v: unknown): unknown[] | null {
+  return Array.isArray(v) ? v : null;
+}
+function asStrArr(v: unknown): string[] | undefined {
+  const arr = asArr(v);
+  if (!arr) return undefined;
+  const out = arr.filter((x): x is string => typeof x === 'string' && x.length > 0);
+  return out.length ? out : undefined;
+}
+/** `{date, close}` 取点（缺 close 时只保留 date；缺 date 时返回 undefined） */
+function asPoint(date: unknown, close: unknown): { date: string; close?: number } | undefined {
+  const d = asStr(date);
+  if (!d) return undefined;
+  const c = asNum(close);
+  return c === undefined ? { date: d } : { date: d, close: c };
+}
+/** 原始首/末/高点：兼容 `{date, close}` 与 `high_date` + `high_close` 两种写法（仅字段名映射） */
+function asHighPoint(r: Record<string, unknown>): { date: string; close?: number } | undefined {
+  const nested = asRecord(r.high);
+  if (nested) return asPoint(nested.date, nested.close);
+  return asPoint(r.high_date, r.high_close);
+}
+
+function mapCrossSecurityPerf(raw: unknown): CrossYearSecurityPerf | null {
+  const r = asRecord(raw);
+  if (!r) return null;
+  const first = asRecord(r.first);
+  const last = asRecord(r.last);
+  return {
+    period_return_pct: asNum(r.period_return_pct),
+    trading_days: asNum(r.trading_days),
+    first: first ? asPoint(first.date, first.close) : undefined,
+    last: last ? asPoint(last.date, last.close) : undefined,
+    high: asHighPoint(r),
+    to_high_pct: asNum(r.to_high_pct),
+    max_drawdown_from_high_pct: asNum(r.max_drawdown_from_high_pct),
+    excess_period_pp: asNum(r.excess_period_pp),
+    excess_to_high_pp: asNum(r.excess_to_high_pp),
+    status: asStr(r.status),
+    note: asStr(r.note),
+  };
+}
+
+function mapCrossBenchmarkPerf(raw: unknown, fallbackId: string): CrossYearBenchmarkPerf | null {
+  const r = asRecord(raw);
+  if (!r) return null;
+  const first = asRecord(r.first);
+  const last = asRecord(r.last);
+  return {
+    id: asStr(r.id) ?? fallbackId,
+    label: asStr(r.label),
+    trading_days: asNum(r.trading_days),
+    first: first ? asPoint(first.date, first.close) : undefined,
+    last: last ? asPoint(last.date, last.close) : undefined,
+    high: asHighPoint(r),
+    period_return_pct: asNum(r.period_return_pct),
+    to_high_pct: asNum(r.to_high_pct),
+    max_drawdown_from_high_pct: asNum(r.max_drawdown_from_high_pct),
+  };
+}
+
+function mapCrossBySecurity(raw: unknown): Record<string, CrossYearSecurityPerf> | null {
+  const r = asRecord(raw);
+  if (!r) return null;
+  const out: Record<string, CrossYearSecurityPerf> = {};
+  for (const [sid, v] of Object.entries(r)) {
+    const m = mapCrossSecurityPerf(v);
+    if (m) out[sid] = m;
+  }
+  return Object.keys(out).length ? out : null;
+}
+
+/** 标的池：字符串原样用；数组（`{name, security_id}`）→ 拼成一行文本（仅字段名映射） */
+function targetPoolText(v: unknown): string | undefined {
+  const s = asStr(v);
+  if (s) return s;
+  const arr = asArr(v);
+  if (!arr) return undefined;
+  const names = arr
+    .map((x) => {
+      const r = asRecord(x);
+      return r ? (asStr(r.name) ?? asStr(r.security_id)) : asStr(x);
+    })
+    .filter((x): x is string => Boolean(x));
+  return names.length ? names.join(' · ') : undefined;
+}
+
+/**
+ * ★ 源数据行里**可选**的窗口口径字段（**仅字段名映射**，缺就留空 —— 不猜、不补 0）。
+ *
+ * 这些字段由研究侧写入（如 `window_type` / `window` / `actual_window` / `coverage` /
+ * `comparable` / `comparable_reason`）；Product **只消费**，不推导。
+ */
+function crossYearPassthrough(y: Record<string, unknown>): {
+  window_type?: string; window?: [string, string] | null; actual_window?: [string, string] | null;
+  coverage?: 'FULL' | 'PARTIAL' | 'NONE'; comparable?: boolean | 'partial'; comparable_reason?: string;
+} {
+  const pair = (v: unknown): [string, string] | null => {
+    const a = asArr(v);
+    if (!a || a.length < 2) return null;
+    const x = asStr(a[0]); const y2 = asStr(a[1]);
+    return x && y2 ? [x, y2] : null;
+  };
+  const cov = asStr(y.coverage);
+  const cmp = y.comparable;
+  return {
+    window_type: asStr(y.window_type),
+    window: pair(y.window),
+    actual_window: pair(y.actual_window),
+    coverage: cov === 'FULL' || cov === 'PARTIAL' || cov === 'NONE' ? cov : undefined,
+    comparable: typeof cmp === 'boolean' || cmp === 'partial' ? cmp : undefined,
+    comparable_reason: asStr(y.comparable_reason),
+  };
+}
+
+/**
+ * ★★ 从题材文档取出**跨年份比较**（规范形态）。
+ *
+ * 按优先级取值（**只做字段名映射**，不推导结论、不重算收益）：
+ *  1. `doc.cross_year_comparison.years: CrossYearYear[]` → 规范形态，直接返回
+ *  2. `doc.cross_year_comparison.yearly_5_7: []` → 归一化（电力）
+ *  3. `doc.cross_year.years_summary: []` → 归一化（流感；**无 per-security 数值则留空**）
+ *  4. 都没有 → `null`（页面**不渲染空壳**）
+ *
+ * ★ 归一化时的 `comparable` 规则：`outcome !== 'NO_EVENT' && outcome !== 'INSUFFICIENT_DATA'`
+ *   —— 这是**映射规则**，不是研究判断。
+ */
+export function crossYearComparisonOf(doc: HistoricalEventsDoc): CrossYearComparison | null {
+  const c = asRecord(doc.cross_year_comparison) ?? asRecord(doc.cross_year);
+  if (!c) return null;
+
+  // ① 规范形态
+  if (Array.isArray(c.years)) {
+    const canonical = c as unknown as CrossYearComparison;
+    return { ...canonical, window_basis: asStr(c.window_basis) ?? '' };
+  }
+
+  const method = asRecord(c.method);
+
+  // ② 电力：yearly_5_7
+  const yearly = asArr(c.yearly_5_7);
+  if (yearly) {
+    const years: CrossYearYear[] = yearly.map((raw) => {
+      const y = asRecord(raw) ?? {};
+      const summer = asRecord(y.summer_5_7);
+      const bench = summer ? mapCrossBenchmarkPerf(summer.benchmark, 'SH000300') : null;
+      const campaign = asRecord(y.campaign_full);
+      const outcome = asStr(y.outcome) ?? '';
+      const notes: string[] = [];
+      const own = asStr(y.note);
+      if (own) notes.push(own);
+      if (campaign) {
+        notes.push('另有 Campaign 全周期口径（' + (asStr(campaign.label) ?? '未命名')
+          + '），与 5–7 月窗口**不同口径，不可混用**。');
+      }
+      const passthrough = crossYearPassthrough(y);
+      return {
+        year: asNum(y.year) ?? 0,
+        season_label: asStr(y.season_label),
+        window_type: passthrough.window_type ?? 'SEASON_WINDOW_5_7',
+        // ★ 源数据给出目标窗口日期时用源数据；未给出 → null（**不猜**）
+        window: passthrough.window ?? null,
+        actual_window: passthrough.actual_window ?? (bench?.first?.date && bench?.last?.date
+          ? [bench.first.date, bench.last.date] : null),
+        coverage: passthrough.coverage,
+        event_type: asStr(y.event_type),
+        mechanism: asStr(y.mechanism),
+        outcome,
+        comparable: passthrough.comparable
+          ?? (outcome !== 'NO_EVENT' && outcome !== 'INSUFFICIENT_DATA'),
+        comparable_reason: asStr(y.comparable_reason) ?? passthrough.comparable_reason,
+        benchmark: bench,
+        by_security: summer ? mapCrossBySecurity(summer.by_security) : null,
+        note: notes.length ? notes.join(' ') : undefined,
+        campaign_full: campaign ?? undefined,
+      };
+    });
+    return {
+      window_basis: 'SEASON_WINDOW_5_7',
+      season_window: asStr(c.season_window) ?? asStr(asRecord(method?.window_definitions)?.summer_5_7),
+      target_pool: targetPoolText(c.target_pool) ?? targetPoolText(method?.target_pool),
+      inclusion_principle: asStr(method?.inclusion_principle),
+      benchmark: asStr(asRecord(method?.benchmark)?.series_id),
+      conclusion_short: asStr(c.conclusion),
+      years,
+      reading: asStr(c.reading),
+      limitations: asStrArr(method?.known_limitations),
+    };
+  }
+
+  // ③ 流感：years_summary（★ 源数据给出 per-security 数值时**直接消费**；未给出则留空）
+  const summary = asArr(c.years_summary);
+  if (summary) {
+    const years: CrossYearYear[] = summary.map((raw) => {
+      const y = asRecord(raw) ?? {};
+      const cmp = y.comparable;
+      const bench = mapCrossBenchmarkPerf(y.benchmark, 'SH000300');
+      const passthrough = crossYearPassthrough(y);
+      const noteBits = [asStr(y.note), asStr(y.driver)].filter(Boolean) as string[];
+      return {
+        year: asNum(y.year) ?? 0,
+        season_label: asStr(y.season_label),
+        window_type: passthrough.window_type ?? 'SEASON_WINDOW_9_1',
+        window: passthrough.window ?? null,
+        actual_window: passthrough.actual_window ?? null,
+        coverage: passthrough.coverage,
+        event_type: asStr(y.event_type),
+        mechanism: asStr(y.mechanism),
+        outcome: asStr(y.outcome) ?? '',
+        comparable: typeof cmp === 'boolean' || cmp === 'partial' ? cmp : undefined,
+        comparable_reason: asStr(y.comparable_reason) ?? passthrough.comparable_reason,
+        benchmark: bench,
+        by_security: mapCrossBySecurity(y.by_security),   // ★ 无则 null（页面显示缺失，**不补 0**）
+        note: noteBits.length ? noteBits.join(' ') : undefined,
+      };
+    });
+    const wd = asRecord(method?.window_definition);
+    const conclusion = asRecord(c.conclusion);
+    return {
+      window_basis: 'SEASON_WINDOW_9_1',
+      season_window: asStr(c.season_window) ?? asStr(wd?.external_window),
+      target_pool: targetPoolText(c.target_pool) ?? targetPoolText(method?.target_pool),
+      inclusion_principle: asStr(method?.inclusion_principle),
+      conclusion_short: undefined,
+      years,
+      reading: asStr(c.reading),
+      limitations: asStrArr(conclusion?.cannot_conclude),
+    };
+  }
+
+  return null;
+}
+
 /* ------------------------------------------------------ 行情状态（四类，必须可验证区分） */
 
 /**
  * ★★ 标的在某事件窗口的行情状态 —— **四类互斥**，不得用字符串推断。
  *
- * - `COMPUTED`      该窗口已完成计算（`by_security[sid]` 存在且 `trading_days > 0` 且覆盖足够）
+ * - `COMPUTED`      该窗口已完成计算（`by_security[sid]` 存在、`trading_days > 0`、覆盖率 ≥ 60%
+ *                   **且窗口端点可达**）
  * - `NOT_COMPUTED`  该标的**有**行情登记，但**未在本事件窗口计算**（事件有 `market_performance` 但 `by_security` 无该 id）
  * - `UNAVAILABLE`   所需证券行情**确实不可得**（`market_data` 含「无登记」「无行情」，或 `by_security[sid].status === 'NO_DATA'`）
- * - `INSUFFICIENT`  数据存在但**覆盖不足**，不能算完整窗口（`trading_days` < 窗口交易日数 × 60%）
+ * - `INSUFFICIENT`  数据存在但**覆盖不足**（交易日数量不足 **或** 窗口端点不可达）
  *
  * ★ `NOT_COMPUTED` 与 `UNAVAILABLE` 是**不同**的事：前者是「没算」，后者是「算不了」。
  * ★ 任何情况下都**不得**用 0 代表缺失数据。
  */
 export type MarketDataStatus = 'COMPUTED' | 'NOT_COMPUTED' | 'UNAVAILABLE' | 'INSUFFICIENT';
 
-/** 覆盖不足的判定阈值：窗口交易日的 60% */
+/** 覆盖不足的判定阈值：窗口交易日的 60%（★ **只是数量阈值**，不等于「完整窗口已计算」） */
 export const MARKET_DATA_COVERAGE_RATIO = 0.6;
+
+/** ★ 窗口端点可达性的容差：窗口端点前后各 5 个交易日 */
+export const MARKET_DATA_ENDPOINT_TOLERANCE_TRADING_DAYS = 5;
 
 /** `market_data` 是否**显式**标注为不可得（★ 缺字段 ≠ 不可得，那是「未计算」） */
 export function isMarketDataUnavailable(p: HistoricalParticipant | undefined): boolean {
@@ -282,24 +627,151 @@ function windowTradingDays(mp: MarketPerformance | undefined): number {
   return Object.values(mp.by_security ?? {}).reduce((m, s) => Math.max(m, s.trading_days ?? 0), 0);
 }
 
-export function marketDataStatus(event: HistoricalEvent, securityId: string): MarketDataStatus {
+/**
+ * ★★ 标的行情覆盖的**明细**（可验证、可展示）。
+ *
+ * ★ 设计要点：**「交易日数量」与「窗口端点可达性」分开判定** ——
+ *   达到 60% 交易日数量**不等于**完整窗口已计算（例如中途停牌、尾部截断）。
+ *   `reasons` 里必须能区分「交易日数量不足」与「窗口端点不可达」。
+ * ★ 窗口端点来源：优先 `event.market_performance.window`；为 `null` 时回退用
+ *   基准的 `first.date` / `last.date`（并在 `reasons` 里说明用了回退口径）。
+ *   **不猜测**窗口日期。
+ */
+export interface MarketDataCoverage {
+  status: MarketDataStatus;
+  tradingDays: number;
+  /** 窗口交易日数：以基准为准；基准缺失时取窗口内最长标的 */
+  windowDays: number;
+  /** `tradingDays / windowDays`（`windowDays = 0` 时为 0） */
+  ratio: number;
+  /** 首笔 ≤ 窗口起点 + 5 个交易日 **且** 末笔 ≥ 窗口终点 − 5 个交易日 */
+  endpointsCovered: boolean;
+  /** ★ 明确区分「交易日数量不足」与「窗口端点不可达」（也记录口径回退） */
+  reasons: string[];
+}
+
+/** 按**交易日**（跳过周六日）平移日期；无法解析时返回 `null`（不猜日期） */
+function shiftTradingDays(iso: string, n: number): string | null {
+  const d = new Date(iso + 'T00:00:00Z');
+  if (Number.isNaN(d.getTime())) return null;
+  let remaining = Math.abs(n);
+  const step = n < 0 ? -1 : 1;
+  while (remaining > 0) {
+    d.setUTCDate(d.getUTCDate() + step);
+    const wd = d.getUTCDay();
+    if (wd !== 0 && wd !== 6) remaining -= 1;
+  }
+  return d.toISOString().slice(0, 10);
+}
+
+interface WindowReference {
+  start?: string; end?: string;
+  /** 事件未登记 `window` → 用了基准首/末笔日期作为口径 */
+  usedBenchmarkFallback: boolean;
+  /** 窗口端点非基准交易日 → 按基准可达区间收窄 */
+  narrowed: boolean;
+}
+
+/**
+ * 窗口端点参照：优先 `window`；否则回退基准首/末笔。
+ * ★ 若**基准自己**也到不了窗口端点（该端点不是交易日 / 全市场停牌），
+ *   则把参照收窄到基准可达区间 —— 否则会把「全市场都没交易」误判成个股端点缺失。
+ */
+function windowReferenceOf(mp: MarketPerformance | undefined): WindowReference {
+  if (!mp) return { usedBenchmarkFallback: false, narrowed: false };
+  const bench = Object.values(mp.benchmark ?? {})[0];
+  const bFirst = bench?.first?.date;
+  const bLast = bench?.last?.date;
+  let start = mp.window?.[0] ?? bFirst;
+  let end = mp.window?.[1] ?? bLast;
+  let narrowed = false;
+  if (bFirst && start && bFirst > start) { start = bFirst; narrowed = true; }
+  if (bLast && end && bLast < end) { end = bLast; narrowed = true; }
+  return { start, end, usedBenchmarkFallback: !mp.window, narrowed };
+}
+
+/**
+ * ★★ 标的在本事件窗口的**行情覆盖**（唯一判定入口）。
+ *
+ * 判定顺序（**端点与数量分开**）：
+ *  1. 无 `by_security[sid]` → `isMarketDataUnavailable(p)` ? `UNAVAILABLE` : `NOT_COMPUTED`
+ *  2. `status === 'NO_DATA'` / `trading_days <= 0` / `period_return_pct == null` → `UNAVAILABLE`
+ *  3. `ratio < 60%` → `INSUFFICIENT`（reasons 记「交易日覆盖 x% < 60%」）
+ *  4. `!endpointsCovered` → `INSUFFICIENT`（reasons 记「窗口端点不可达」）
+ *  5. 否则 → `COMPUTED`
+ */
+export function marketDataCoverage(event: HistoricalEvent, securityId: string): MarketDataCoverage {
   const p = event.participants.find((x) => x.security_id === securityId);
   const mp = event.market_performance;
   const st = mp?.by_security?.[securityId];
+  const windowDays = windowTradingDays(mp);
 
-  // ① 该标的在本窗口有行情记录
-  if (st) {
-    if (st.status === 'NO_DATA') return 'UNAVAILABLE';
-    const days = st.trading_days ?? 0;
-    if (days <= 0) return 'UNAVAILABLE';
-    const window = windowTradingDays(mp);
-    if (window > 0 && days < window * MARKET_DATA_COVERAGE_RATIO) return 'INSUFFICIENT';
-    return 'COMPUTED';
+  // ① 无本窗口记录：显式不可得 → UNAVAILABLE；否则只是**没算** → NOT_COMPUTED
+  if (!st) {
+    return isMarketDataUnavailable(p)
+      ? {
+        status: 'UNAVAILABLE', tradingDays: 0, windowDays, ratio: 0, endpointsCovered: false,
+        reasons: ['market_data 显式标注行情不可得（无登记 / 无行情）'],
+      }
+      : {
+        status: 'NOT_COMPUTED', tradingDays: 0, windowDays, ratio: 0, endpointsCovered: false,
+        reasons: ['该标的未出现在本事件窗口的 by_security 中（≠ 行情不可得）'],
+      };
   }
 
-  // ② 无本窗口记录：显式不可得 → UNAVAILABLE；否则只是**没算** → NOT_COMPUTED
-  if (isMarketDataUnavailable(p)) return 'UNAVAILABLE';
-  return 'NOT_COMPUTED';
+  const tradingDays = st.trading_days ?? 0;
+  const ratio = windowDays > 0 ? tradingDays / windowDays : 0;
+
+  // ② 有记录但本窗口不可用
+  if (st.status === 'NO_DATA' || tradingDays <= 0 || st.period_return_pct == null) {
+    return {
+      status: 'UNAVAILABLE', tradingDays, windowDays, ratio, endpointsCovered: false,
+      reasons: ['本窗口无可用行情（status=NO_DATA / 交易日 ≤ 0 / 区间收益缺失）'],
+    };
+  }
+
+  // ③ 窗口端点可达性（★ 与交易日数量阈值**分开**判定）
+  const ref = windowReferenceOf(mp);
+  const reasons: string[] = [];
+  if (ref.usedBenchmarkFallback && ref.start && ref.end) {
+    reasons.push(`事件未登记窗口，回退用基准首/末笔日期（${ref.start} ~ ${ref.end}）作为窗口口径`);
+  }
+  if (ref.narrowed) {
+    reasons.push(`窗口端点非基准交易日，按基准可达区间收窄为（${ref.start ?? '—'} ~ ${ref.end ?? '—'}）`);
+  }
+  let endpointsCovered = true;
+  const firstD = st.first?.date;
+  const lastD = st.last?.date;
+  if (!ref.start || !ref.end || !firstD || !lastD) {
+    // ★ 端点数据缺失 → 不作「不可达」判定（无证据），但如实记录未校验
+    reasons.push('首/末笔或窗口端点日期缺失，未校验端点可达性');
+  } else {
+    const startLimit = shiftTradingDays(ref.start, MARKET_DATA_ENDPOINT_TOLERANCE_TRADING_DAYS);
+    const endLimit = shiftTradingDays(ref.end, -MARKET_DATA_ENDPOINT_TOLERANCE_TRADING_DAYS);
+    if (startLimit && firstD > startLimit) {
+      endpointsCovered = false;
+      reasons.push(`窗口起点端点不可达（首笔 ${firstD}，晚于窗口起点 ${ref.start} 后 ${MARKET_DATA_ENDPOINT_TOLERANCE_TRADING_DAYS} 个交易日）`);
+    }
+    if (endLimit && lastD < endLimit) {
+      endpointsCovered = false;
+      reasons.push(`窗口终点端点不可达（末笔 ${lastD}，早于窗口终点 ${ref.end} 前 ${MARKET_DATA_ENDPOINT_TOLERANCE_TRADING_DAYS} 个交易日）`);
+    }
+  }
+
+  // ④ 交易日数量阈值（★ 达到 60% **不等于**完整窗口已计算）
+  if (ratio < MARKET_DATA_COVERAGE_RATIO) {
+    reasons.push(`交易日覆盖 ${(ratio * 100).toFixed(0)}% < ${MARKET_DATA_COVERAGE_RATIO * 100}%`);
+    return { status: 'INSUFFICIENT', tradingDays, windowDays, ratio, endpointsCovered, reasons };
+  }
+  if (!endpointsCovered) {
+    return { status: 'INSUFFICIENT', tradingDays, windowDays, ratio, endpointsCovered, reasons };
+  }
+  return { status: 'COMPUTED', tradingDays, windowDays, ratio, endpointsCovered, reasons };
+}
+
+/** 标的级状态 = 覆盖明细的 `status`（★ 页面与测试都只经此入口） */
+export function marketDataStatus(event: HistoricalEvent, securityId: string): MarketDataStatus {
+  return marketDataCoverage(event, securityId).status;
 }
 
 /** ★ 四类状态的展示文案（页面必须显示，不得隐藏） */
@@ -310,14 +782,33 @@ export const MARKET_DATA_STATUS_LABEL: Record<MarketDataStatus, string> = {
   INSUFFICIENT: '覆盖不足',
 };
 
-/** ★ 只看**非 INSUFFICIENT** 的标的是否有行情（INSUFFICIENT 有行情≠参与证据） */
+/** ★ 只看**非 INSUFFICIENT** 的标的是否有行情登记（INSUFFICIENT 有行情≠参与证据） */
 export function eventHasAnalysableData(e: HistoricalEvent): boolean {
   return e.participants.some((p) => p.category !== 'INSUFFICIENT' && hasMarketData(p));
 }
 
+/**
+ * ★★ 事件级行情状态 —— **必须基于 `marketDataStatus(event, securityId)` 的实际结果**。
+ *
+ * ★ 不得再用 `market_data` 字符串推断：某标的**在别的时期**有行情，
+ *   不代表它**在本事件窗口**被计算过（这正是旧实现的漏洞）。
+ *
+ * 判定顺序：
+ *  1. 无参与标的 / 无催化 → `NOT_VERIFIED`
+ *  2. 任一**合格标的**（`category !== 'INSUFFICIENT'`）为 `COMPUTED` → `HAS_PRICE_DATA`
+ *  3. 否则任一为 `INSUFFICIENT` → `INSUFFICIENT_COVERAGE`
+ *  4. 否则任一为 `NOT_COMPUTED` → `NOT_COMPUTED`
+ *  5. 否则（全为 `UNAVAILABLE` / 无合格标的）→ `NO_PRICE_DATA`
+ */
 export function eventStudyState(e: HistoricalEvent): string {
   if (e.participants.length === 0 || e.catalysts.length === 0) return 'NOT_VERIFIED';
-  return eventHasAnalysableData(e) ? 'HAS_PRICE_DATA' : 'NO_PRICE_DATA';
+  const statuses = e.participants
+    .filter((p) => p.category !== 'INSUFFICIENT')
+    .map((p) => marketDataStatus(e, p.security_id));
+  if (statuses.includes('COMPUTED')) return 'HAS_PRICE_DATA';
+  if (statuses.includes('INSUFFICIENT')) return 'INSUFFICIENT_COVERAGE';
+  if (statuses.includes('NOT_COMPUTED')) return 'NOT_COMPUTED';
+  return 'NO_PRICE_DATA';
 }
 
 /** 按 `display.class_order` 分组（无该字段时按事件出现顺序） */

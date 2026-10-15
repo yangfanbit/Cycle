@@ -26,6 +26,8 @@ import {
   validateFluEvents,
   type FluEventsDoc,
 } from '../../../data/timeline/fluHistoricalEvents';
+// ★ 通用侧的状态文案常量（用于钉死「行情不可得」的唯一来源）
+import { MARKET_DATA_STATUS_LABEL } from '../../../data/timeline/historicalEventMaps';
 
 /** 构造「只有壳」的 doc（用于构造非法输入；以真实 doc 为底，保证类型完整） */
 const doc = (): FluEventsDoc => ({ ...JSON.parse(JSON.stringify(fluEventsDoc())), events: [] });
@@ -93,6 +95,9 @@ describe('B. 核心展示', () => {
 
   it('★ 行情不可得显式标注，且渲染不含伪造涨幅', () => {
     const html = renderToStaticMarkup(<FluEventMap />);
+    // ★ 语义锚点：「行情不可得」是 UNAVAILABLE 的**唯一**文案，且与通用常量一致
+    //   （真实数据下是否出现该文案会随补数变化 → 不在真实渲染上做脆断言）
+    expect(MARKET_DATA_STATUS_LABEL.UNAVAILABLE).toBe(NO_MARKET_DATA_LABEL);
     expect(html).toContain(NO_MARKET_DATA_LABEL);
     expect(html).not.toMatch(/\+?0\.0%/);
   });
