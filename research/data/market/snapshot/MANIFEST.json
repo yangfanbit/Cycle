@@ -144,26 +144,26 @@
    }
   },
   "trading_calendar": {
-   "bytes": 1073,
+   "bytes": 7814,
    "columns": [
     "trade_date",
     "is_trading_day",
     "calendar_type",
     "created_at"
    ],
-   "rows": 371,
+   "rows": 2855,
    "shard_count": 1,
    "shards": {
     "all": {
-     "bytes": 1073,
+     "bytes": 7814,
      "file": "trading_calendar.csv.gz",
-     "rows": 371,
-     "sha256": "d5f966ad31b5d0743270dc4d4927751697f3881cec63a49b717dae771341e107"
+     "rows": 2855,
+     "sha256": "987f28b94fce74602e550245cebfe956f221773e6974234e501df54a0858add0"
     }
    }
   }
  },
- "total_bytes": 6375405,
- "total_rows": 373917,
+ "total_bytes": 6382146,
+ "total_rows": 376401,
  "why": "`cycle_research.db` 曾达 66 MB（market_daily 373k 行占绝大部分），超过 GitHub 建议的 50 MB。行情三表拆出为不入库的本地 `market_data.db`，由本快照恢复。"
 }

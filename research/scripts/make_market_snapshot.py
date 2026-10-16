@@ -56,7 +56,12 @@ FORMAT_VERSION = "0.1"
 
 
 def resolve_source(explicit: str | None) -> str:
-    """源库解析：显式 → market_data.db（拆分后）→ cycle_research.db（拆分前）。"""
+    """源库解析：显式 → market_data.db（拆分后）→ cycle_research.db（拆分前）。
+
+    ★★ 2026-10-16 增补警告：拆分后 canonical 库里**已无**行情三表。若有人在
+       `cycle_research.db` 里新建了同名表并落到这个分支，快照会**静默**从一个
+       非权威库生成（不报错、只是内容错）→ 在此显式断言三表非空，避免错源。
+    """
     if explicit:
         if not os.path.exists(explicit):
             raise SystemExit("源库不存在: %s" % explicit)
@@ -64,6 +69,24 @@ def resolve_source(explicit: str | None) -> str:
     if os.path.exists(MARKET_DB):
         return MARKET_DB
     if os.path.exists(CANONICAL_DB):
+        # 拆分后的正常克隆**不该**走到这里（canonical 无行情表）→ 走这里即异常
+        conn = sqlite3.connect("file:%s?mode=ro" % CANONICAL_DB, uri=True)
+        try:
+            n = conn.execute("SELECT COUNT(*) FROM market_daily").fetchone()[0]
+        except sqlite3.OperationalError:
+            raise SystemExit(
+                "FAIL: %s 中没有 market_daily 表 —— 拆分后行情只住在 %s。\n"
+                "  ★ 请先恢复行情库：python research/scripts/restore_market_data.py --apply"
+                % (os.path.relpath(CANONICAL_DB, ROOT), os.path.relpath(MARKET_DB, ROOT)))
+        finally:
+            conn.close()
+        if n == 0:
+            raise SystemExit(
+                "FAIL: %s 的 market_daily 为 **0 行** —— 这不是有效的行情源。\n"
+                "  ★ 请先恢复行情库：python research/scripts/restore_market_data.py --apply"
+                % os.path.relpath(CANONICAL_DB, ROOT))
+        print("  ★ 警告：从 canonical 库读取行情三表（%d 行）—— 拆分后这不该发生，"
+              "请确认源库选择是否符合预期。" % n)
         return CANONICAL_DB
     raise SystemExit("找不到源库（既无 market_data.db 也无 cycle_research.db）")
 

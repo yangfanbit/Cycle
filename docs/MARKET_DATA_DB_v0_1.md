@@ -136,10 +136,16 @@ Research 门禁之前新增一步 **`Restore market data DB (from versioned snap
 
 ## 9. 已知缺口（均为**迁移前既有**，本轮不掩盖、不扩大）
 
-1. ★ **`trading_calendar` 只有 371 行**，而 benchmark `SH000300` 有 **2,855** 个交易日
-   → 2,484 个 `market_daily` 日期无日历覆盖（实测：`seed_trading_calendar.py` 一跑即
-   371→2855）。拆分前原库同样 371 → **既有缺口**。日历补满是**数据决策**，不在迁移范围，
-   如实记录；快照按**当前真实状态**（371）导出，不以「修数据」充数。
+1. ~~★ **`trading_calendar` 只有 371 行**，而 benchmark `SH000300` 有 **2,855** 个交易日~~ →
+   **已于 2026-10-16 补全**（长程任务 v0.5·B 工作流）。补全前的事实经过：
+   371 行 = 2022-03-01~2024-09-30 的单次批插（`created_at` 全是 2026-09-12），
+   实测**日历 ⊆ 基准集合、无外来日期** → 判定为**过时 seed 非丢失**（seed 时 `market_daily`
+   恰好 371 天且自检 PASS，后续回填扩至 2,855 未重跑）。
+   ★ 补全**不改变任何研究数字** —— B 工作流实测**无一处交易日逻辑以日历表为来源**
+   （事件窗口用 JSON 预计算窗口、60% 阈值分母用 JSON 的 `benchmark.trading_days`、
+   偏移全用自然日/工作日）。口径 = **基准 `SH000300` 的 distinct `trade_date`**（无外部源）。
+   ★ 执行顺序必须是 **先 seed 后重生成快照**（否则 CI 的哈希校验会 FAIL）。
+   → 现状：**2,855 行**（2015-01-05~2026-09-30），覆盖 `market_daily` 全部 distinct 日期。
 2. `research/research/reports/structural_analogy_feasibility_v0_2.json` 与当前 DB **漂移**
    （`sar_v0_2 --check` FAIL：重算比较数如 event_structure PARTIAL 74→317）。
    实测**原版脚本 + 拆分前原库同样 FAIL** → 与迁移无关，是 DB 增长后未重算的**冻结产物**。

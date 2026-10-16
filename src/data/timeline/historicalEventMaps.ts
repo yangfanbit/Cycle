@@ -103,7 +103,8 @@ export interface HistoricalEvent {
     note?: string;
   };
   catalysts: { date: string; text: string; source: string; note?: string }[];
-  phases?: { phase_id: string; phase_type: string; start: string; end: string; description: string }[];
+  // ★ 研究侧对阶段名的字段是 `stage`（power v0_3 实测），`phase_type` 为历史别名 → 两读
+  phases?: { phase_id: string; phase_type?: string; stage?: string; start: string; end: string; description: string }[];
   participants: HistoricalParticipant[];
   observed_performance: {
     note: string;

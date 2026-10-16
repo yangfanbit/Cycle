@@ -3,55 +3,69 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-16 修订 · 行情库拆分）
+## ★★ 当前状态（2026-10-16 修订 · 行情库拆分 + 事件地图质量修正）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
-> ★★ **2026-10-16：行情数据库拆分完成** —— `cycle_research.db` **66.15 MB → 0.96 MB**，
+> ★★ **2026-10-16 上午：行情数据库拆分完成** —— `cycle_research.db` **66.15 MB → 0.96 MB**，
 > 行情三表迁入**不入库**的 `market_data.db`，干净克隆由**被跟踪的便携快照**无网恢复。
-> 完整说明：`docs/MARKET_DATA_DB_v0_1.md`。
+> ★★ **2026-10-16 同日晚（长程任务 v0.5：研究数据治理与地图有效性）** ——
+> ① `trading_calendar` 由 **371 行补全到 2,855 行**（口径 = 基准 `SH000300` 的 distinct 交易日，
+> 无外部源；补全**不改变任何研究数字**，因**无一处交易日逻辑读该表**）；
+> ② 流感 v0_6 / 电力 v0_3 的**陈旧文字与分类口径**更正（`corrections` 留痕，**数值零变化**）；
+> ③ 组件三处误导性展示修复 + 5 条回归测试；④ readiness `--check` 措辞与覆盖面改正。
+> 完整说明：`docs/MARKET_DATA_DB_v0_1.md`（拆分）与本文本节（治理）。
 
 ### 实测基线（2026-10-16 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `975108f`（parent `486249f` = 拆分前基线）· working tree **clean** · ★ 接班仍须跑 `git log -1` |
-| **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17 表，**入库**） · `market_data.db` **65.48 MB**（行情三表 373,917 行，**不入库**） · `data/market/snapshot/` **6.08 MiB**（**入库**，恢复唯一输入） |
+| **git HEAD** | `975108f`（拆分）· `e171d93`（回填）—— **v0.5 批次的新提交见 `git log`** · working tree clean · ★ 接班仍须跑 `git log -1` |
+| **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
+| **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
-| **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（2,053,911 个 REAL 差异 0）· 两次生成 sha256 相同 |
+| **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1016 passed / 0 failed / 39 files**（`testTimeout` 调至 20s，只调时间预算、不放宽断言） |
-| **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分改动**（DB canonical 内容逐行不变） |
-| **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` exit=0 · `validate_monorepo` exit=0 |
-| **CI** | deploy.yml 在 Research 门禁**之前**新增 `Restore market data DB` 步骤（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 的 CI **success**（Actions runner 本身就是干净检出 = 干净环境实证） |
-| **历史事件地图** | 4 题材 / **13 事件** · 跨年份比较已产品化（流感 **11 季** / 电力 **10 年**）· 回归正常（DB canonical 逐行未变） |
+| **测试** | **1021 passed / 0 failed / 39 files**（本轮 +5 条回归，全部针对真实缺陷） |
+| **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
+| **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
+| **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁） |
+| **历史事件地图** | 4 题材 / **13 事件** · 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· v0.5 审计结论：**全部 13 事件数值零计算错误**（DB 逐项复算一致），缺陷集中在陈旧文字/分类/UI 呈现，已修 |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
-### 访问层（拆后新约定，详见 `docs/MARKET_DATA_DB_v0_1.md` §5）
+### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
 
-- `db.connect()` → canonical；行情库存在时自动挂 `market` schema + 三表 **TEMP VIEW 只读兼容层**
-  → 未限定表名的查询**行为不变**（读侧 14 个脚本零改动）
-- `db.connect_market()` / `db.insert()` 自动路由 → 写侧只改 `market.` 前缀（7 个脚本）
-- 行情库缺失：不需要行情的脚本照常；需要的脚本**明确失败**（`MarketDataMissing` / `no such table`），
-  **不静默返回空**
+| # | 缺陷 | 修法 |
+|---|---|---|
+| 1 | `trading_calendar` 371 行 vs 基准 2,855 个交易日（**2,484 个 `market_daily` 日期无日历**） | 重跑权威生成器 `seed_trading_calendar.py`（从 SH000300 distinct date 推导）→ **2,855 行**；随后**重生成快照**（顺序：先 seed 后 snapshot）并 `restore --check` PASS。★ 先证明**无消费者**才对数据动手 |
+| 2 | 流感 v0_6 `cannot_conclude⑥` 称「疫苗三只 2023 行情为碎片」，而同文件 2023/24 季行自身 `coverage=FULL`、三只**实测各 102/102 交易日** | 按 DB 实测重写该条 + `can_conclude⑤` + `recommended_next_steps[1]` + 9 只 `db_coverage`；真实缺口改为**智飞生物（2023+）** |
+| 3 | 三个事件级 `by_security` 用重复序列 id `YILING-002603`（与跨年表 `YILING` 撞成两个 id，同窗口数值完全相同） | 统一为 `YILING`（改名前后值已断言一致） |
+| 4 | 三个事件 `window_text` 仍写「行情窗口待核验」（补数后已有完整行情表） | 删除陈旧短语 |
+| 5 | power 两个**反例**事件被标 `THEME_ADJACENT`（定义 = 机制不同轴、仅供参考）→ 把最强负面证据挡在范围外 | 改判 `THEME_DIRECT`（label 仍写「反例」，证据方向不丢） |
+| 6 | 「2023 恰是库内唯一登记 Campaign 的年份」未加限定（`rule_power_operation` 下另有 2021 新能源发电·开放式） | 两处补范围限定 |
+| 7 | UI：「报道当日涨幅」区在 `by_security=null` 时恒显「无行情」，而 10/8 只报道点名涨幅一直在 `reported_same_day_moves` 里从未渲染（note 还引用不存在的「上表」） | 组件改为渲染 `reported_same_day_moves` |
+| 8 | UI：阶段名只读 `phase_type`，研究侧真字段是 `stage` → `<strong></strong>` 空标签 | 两读 + 缺省「（阶段名未标注）」；类型同步 |
+| 9 | UI：标的区标题硬编码「当次历史炒作标的」（机制池事件被说成炒作池） | 改中性「事件相关标的」，池性质交回各标的 `category`/`rationale` |
+| 10 | readiness `--check`：① FAIL 一律叫「非 deterministic」（最常见其实是**产物过期**）② CSV 伴生产物**从不校验**（曾 85→534 行漂移永不报） | 措辞改为区分「过期 / 不确定」并指明处置路径；四份产物（含 CSV）全部纳入比对并**汇总报告** |
+| 11 | `restore --apply` 遇不一致只提示 `--force`（诱导丢弃本地未快照数据） | 提示改为先判断「忘重生成快照」还是「确要重建」 |
+| 12 | `make_market_snapshot` 源库回退分支可能静默从错源生成 | canonical 分支加断言（无表/0 行即 FAIL） |
 
-### ★★ 本轮起新增的**未解决**项（不得当成已完成）
+### ★★ v0.5 后仍**未解决**（不得当成已完成）
 
-1. ★ **`trading_calendar` 只有 371 行**，而 benchmark `SH000300` 有 **2,855** 个交易日
-   → 2,484 个 `market_daily` 日期无日历覆盖。**拆分前原库同样 371**（实测）→ 既有缺口；
-   补满是**数据决策**，未在迁移中顺手改（快照按真实状态导出）。
-2. `structural_analogy_feasibility_v0_2.json` / `historical_coverage_matrix_v0_1.json`
-   与当前 DB **漂移**（`sar_v0_2 --check` FAIL：重算比较数 74→317）。
-   ★ 实测：**原版脚本 + 拆分前原库同样 FAIL** → 与拆分无关，是 DB 增长后未重算的冻结产物。
-   **不重生成**（属 Research 动作）。
-3. 11 只证券负前复权价（qfq 口径特性）· `SH000300` 2015-03-27 OHLC 违律（源缺陷，不在任何窗口）·
-   `YILING-002603` 重复序列（登记冗余）→ 均**不修正**（三项均已论证非数据错误）。
-4. `raw/**/*.json` 6.5 MB 仍在 Git 中并按序列增长；**旧提交里已入库的大 DB blob 仍在历史中**
-   （禁止改写历史）→ 仓库**历史**体积不变，**未来**不再增长。
-5. 上一版的 2 项未解决仍未解决：`MS-2026-10-13-01` 未签发（产品 CANONICAL 仍是 `MS-2026-10-12-01`）·
-   R02-05 的 4 条 DEFER 未处置。
+1. ★ **SAR 冻结产物漂移（A 工作流定性：影响 = 0，不重生成）** ——
+   `structural_analogy_feasibility_v0_2.json`（+2 个伴生产物）与 `historical_coverage_matrix_v0_1.json`
+   与当前 DB 漂移（重算比较数如 74→317）。**实测证据**：原版脚本 + 拆分前原库**同样 FAIL/同样差异**
+   → 早于本轮；**消费者矩阵**：产品 / CI / 快照投影器**均不读**；按冻结规则**不得原地重生成**。
+   → 已把 `--check` 改成诚实诊断（见上表 #10），漂移本身留给后续 Research 轮次审批处理。
+2. `ms-2026-10-13-01` 未签发（产品 CANONICAL 仍是 `MS-2026-10-12-01`）· R02-05 的 4 条 DEFER 未处置。
+3. 三项存量异常均**不修正**（已论证非数据错误）：11 只负前复权价（qfq 口径特性）·
+   `SH000300` 2015-03-27 OHLC 违律（源缺陷，不在任何窗口）· `YILING-002603` 重复序列
+   （★ 本轮的 id 统一已让**事件地图层面**不再双计，DB 层的重复序列仍在）。
+4. `raw/**/*.json` 6.5 MB 仍入库并按序列增长；旧提交里已入库的大 DB blob **仍在历史中**
+   （禁改写历史）→ 历史体积不变，**未来不再增长**。
+5. 智飞生物（ZHIFEI）库内止于 2022-12-30 → 2022/23 之后各季跨年比较实际为 8 只（已如实标注）。
 
-## ★★ 当前状态（2026-10-13 修订）—— 已被 2026-10-16 一节取代，保留为历史
+## ★★ 当前状态（2026-10-16 上午 · 行情库拆分）—— 已被上一节取代，保留为历史
 
 > ★ **本节 2026-10-13 重写** —— 上一版停在 2026-10-12（57 Campaign / SA v0.11 / 874 测试），
 > 未反映其后的 **R02-04 / R02-05 入库**、**SA v0.13**、**Contract v1.2**、**Research CI 门禁**。

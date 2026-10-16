@@ -78,8 +78,13 @@ def restore(snap_dir: str, target: str, force: bool) -> int:
             if verify_against_snapshot(conn, snap_dir) == 0:
                 print("  已与快照一致 → no-op（未改动 %s）" % os.path.relpath(target, ROOT))
                 return 0
-            print("  ★ 目标库已存在但与快照**不一致**。")
-            print("    若要按快照重建（会丢弃本地未快照化的行情），请加 `--force`。")
+            # ★ 2026-10-16：旧提示只说要加 `--force`，会**诱导丢弃本地未快照化的行情**。
+            #   抓数后忘跑 make_market_snapshot 时，正确动作是**先重生成快照**，不是 --force。
+            print("  ★ 目标库已存在但与快照**不一致**。先判断是哪一种：")
+            print("    (a) 抓取/补数后忘了重生成快照 → 先跑：")
+            print("            python research/scripts/make_market_snapshot.py")
+            print("        然后复查（此时应变为 no-op）。**不要**直接 --force —— 那会丢弃本地新数据。")
+            print("    (b) 确实要按快照重建（丢弃本地未快照化的行情）→ 加 `--force`。")
             return 1
 
         # 先删依赖方，再删被依赖方

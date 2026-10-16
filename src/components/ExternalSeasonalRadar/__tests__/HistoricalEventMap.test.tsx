@@ -12,7 +12,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { HistoricalEventMap, MarketPerformanceBlock, ParticipantRow } from '../HistoricalEventMap';
+import { EventCardBody, HistoricalEventMap, MarketPerformanceBlock, ParticipantRow } from '../HistoricalEventMap';
 import {
   CROSS_YEAR_CAVEAT,
   CROSS_YEAR_OUTCOME_LABEL,
@@ -507,5 +507,88 @@ describe('I. ★★ 事件级行情状态基于事件窗口（A2/A3）', () => {
     expect(c.status).toBe('INSUFFICIENT');
     expect(c.reasons.join('；')).toContain('交易日覆盖');
     expect(c.reasons.join('；')).not.toContain('端点不可达');
+  });
+});
+
+/* ------------------------------------ I. ★★ 2026-10-16 三项修复的回归（真实缺陷，非凑数） */
+
+describe('I. 2026-10-16 修复回归', () => {
+  /** 取某题材某事件（原始 doc，不经过适配器改写） */
+  const rawEvent = (themeId: string, eventId: string): HistoricalEvent => {
+    const m = eventMapByTheme(themeId)!;
+    const e = (m.doc.events as HistoricalEvent[]).find((x) => x.event_id === eventId);
+    if (!e) throw new Error(`未找到事件 ${themeId}/${eventId}`);
+    return e;
+  };
+
+  it('★★ 报道当日涨幅渲染 `reported_same_day_moves`（by_security 为 null ≠ 无数据）', () => {
+    // 真实数据：FLU-2017-AVIAN 的 observed_performance.by_security 是 null，
+    // 但同期报道点名的 10 只当日涨幅一直在 `reported_same_day_moves` 里 ——
+    // 旧组件只读 by_security → 页面恒显「无行情」，而 note 又引用并不存在的「上表」。
+    const e = rawEvent('FLU', 'FLU-2017-AVIAN');
+    expect(e.observed_performance.by_security).toBeNull();
+    const moves = e.observed_performance.reported_same_day_moves ?? {};
+    expect(Object.keys(moves)).toHaveLength(10);
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(html).toContain('涨停');                       // LAYNE-002166 莱茵生物
+    expect(html).toContain('+8.36%');                     // LUKANG-600789 鲁抗医药
+    expect(html).not.toContain('无行情');                  // ★ 不得再出现误导性空态
+  });
+
+  it('★ 阶段名读取研究侧 `stage` 字段（旧实现只读 phase_type → 渲染成空）', () => {
+    // 真实数据：power v0_3 的 phases 用 `stage`，组件原读 `phase_type` → <strong></strong> 空标签
+    const e = rawEvent('POWER_SUMMER', 'POWER-2023-SUMMER');
+    const ph = (e.phases ?? [])[0];
+    expect(ph).toBeTruthy();
+    expect(ph.phase_type).toBeUndefined();   // 研究侧**没有**这个字段
+    expect(ph.stage).toBeTruthy();           // 真字段是 stage
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(html).not.toContain('<strong></strong>');
+    expect(html).toContain(String(ph.stage));
+  });
+
+  it('★ 标的区标题不再硬编码「炒作」——机制池事件同样是研究池', () => {
+    // FLU-2018-SEASONAL 的 participants 是**机制研究池**（未按收益筛选），
+    // 旧标题「当次历史炒作标的」把研究池说成炒作池（研究池 ≠ 炒作池 正是本文件的核心结论）。
+    const e = rawEvent('FLU', 'FLU-2018-SEASONAL');
+    expect(e.participants.length).toBeGreaterThan(0);
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(html).toContain('事件相关标的');
+    expect(html).not.toContain('炒作标的');
+  });
+
+  it('★★ 事件级 by_security 不得出现重复序列 id（与跨年表口径一致）', () => {
+    // `YILING-002603` 是 `YILING` 的重复碎片序列（同窗口数值完全相同）——
+    // 曾有三个事件用它当键，与同文件跨年表的 `YILING` 撞成两个 id。
+    for (const m of allResolvedEventMaps()) {
+      for (const e of m.doc.events) {
+        const keys = Object.keys(e.market_performance?.by_security ?? {});
+        expect(keys, `${m.theme_id}/${e.event_id}`).not.toContain('YILING-002603');
+        const seen = new Set<string>();
+        for (const k of keys) {
+          expect(seen.has(k), `${m.theme_id}/${e.event_id} 重复键 ${k}`).toBe(false);
+          seen.add(k);
+        }
+      }
+    }
+    // 跨年表侧仍用 YILING，且同一文件内两个口径已统一
+    const cy = crossYearComparisonOf(eventMapByTheme('FLU')!.doc)!;
+    const anyYear = cy.years.find((y) => (y.by_security ?? {})['YILING']);
+    expect(anyYear, '跨年表应仍含 YILING').toBeTruthy();
+  });
+
+  it('★★ 反例事件不再被标为「机制不同轴」的 THEME_ADJACENT', () => {
+    // power 的两个 COUNTEREXAMPLE 是迎峰度夏**同机制**的负面结果；
+    // 旧分类 THEME_ADJACENT（定义：机制不同轴、仅供参考）会把最强负面证据挡在范围外。
+    const m = eventMapByTheme('POWER_SUMMER')!.doc as unknown as {
+      events: { event_id: string; event_class: string }[];
+    };
+    for (const id of ['POWER-2017-SUMMER-COUNTEREXAMPLE', 'POWER-2024-SUMMER-COUNTEREXAMPLE']) {
+      const e = m.events.find((x) => x.event_id === id)!;
+      expect(e.event_class).toBe('THEME_DIRECT');
+    }
+    // label 仍写明「反例」——证据方向不因改分类而丢失
+    const labels = m.events.map((x) => (x as unknown as { label: string }).label);
+    expect(labels.filter((l) => l.includes('反例'))).toHaveLength(2);
   });
 });

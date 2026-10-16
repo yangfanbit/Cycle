@@ -150,31 +150,14 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
   );
 }
 
-function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: string }) {
-  const [open, setOpen] = useState(false);
-  const state = eventStudyState(e);
+/**
+ * ★★ 事件卡**展开后的正文**（单独导出：`EventCard` 只负责折叠状态，
+ *   正文抽出来才能被测试直接渲染 —— 单一实现，不为测试复制逻辑）。
+ */
+export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: string }) {
   const conceptsNote = e.three_peaks_note ?? e.four_concepts_note;
   return (
-    <li className="fem-event" data-event-id={e.event_id}
-        data-event-class={e.event_class ?? ''} data-study-state={state}>
-      <button type="button" className="fem-event-head" aria-expanded={open}
-              onClick={() => setOpen((v) => !v)}>
-        <span className="fem-event-year">{e.year}</span>
-        <span className="fem-event-label">{e.label}</span>
-        <span className={`fem-event-state st-${state.toLowerCase()}`}>
-          {EVENT_STUDY_LABEL[state] ?? state}
-        </span>
-        <span className="fem-event-caret">{open ? '收起' : '展开'}</span>
-      </button>
-
-      <p className="fem-event-win">窗口：{e.window_text}</p>
-      <p className="fem-event-basis">依据：{e.evidence_basis}</p>
-
-      {classCaveat && <p className="fem-adjacent-caveat">{classCaveat}</p>}
-      {conceptsNote && <p className="fem-three-peaks">{conceptsNote}</p>}
-
-      {open && (
-        <div className="fem-event-body">
+    <div className="fem-event-body">
           {e.campaign_facts && (
             <>
               <h5>Campaign 事实</h5>
@@ -216,14 +199,20 @@ function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: strin
                 {e.phases.map((ph) => (
                   <li key={ph.phase_id}>
                     <span className="fem-cat-date">{ph.start} → {ph.end}</span>
-                    <span className="fem-cat-text"><strong>{ph.phase_type}</strong>：{ph.description}</span>
+                    {/* ★ 研究侧字段名是 `stage`；`phase_type` 为旧别名 —— 两读，都不许渲染成空 */}
+                    <span className="fem-cat-text">
+                      <strong>{ph.phase_type ?? ph.stage ?? '（阶段名未标注）'}</strong>：{ph.description}
+                    </span>
                   </li>
                 ))}
               </ul>
             </>
           )}
 
-          <h5>当次历史炒作标的（{e.participants.length} 只）</h5>
+          {/* ★ 2026-10-16：标题不再硬编码「历史炒作标的」——
+             机制池事件的 participants 是**研究池**（事后重建、未按收益筛选），
+             不是炒作池；池的性质由各标的 `category` / `rationale` 逐条说明。 */}
+          <h5>事件相关标的（{e.participants.length} 只）</h5>
           <p className="fem-biz-caveat">{BUSINESS_MECHANISM_CAVEAT}</p>
           {e.participants.length === 0 ? (
             <p className="fem-empty">（未建立候选清单）</p>
@@ -243,16 +232,50 @@ function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: strin
                 <li key={k}><code>{k}</code> {v}</li>
               ))}
             </ul>
+          ) : e.observed_performance.reported_same_day_moves
+            && Object.keys(e.observed_performance.reported_same_day_moves).length > 0 ? (
+            /* ★ 2026-10-16 修复：`by_security` 为 null **不代表没有报道当日涨幅** ——
+               研究侧把同期报道点名的当日涨幅放在 `reported_same_day_moves`
+               （此前从不渲染 → 页面恒显「无行情」，而 note 又引用不存在的「上表」）。 */
+            <ul className="fem-perf">
+              {Object.entries(e.observed_performance.reported_same_day_moves).map(([k, v]) => (
+                <li key={k}><code>{k}</code> {v}</li>
+              ))}
+            </ul>
           ) : (
-            <p className="fem-empty">（无行情 → 不展示数字，**不**以 0 涨幅代替）</p>
+            <p className="fem-empty">（无同期报道点名的当日涨幅 → 不展示数字，**不**以 0 涨幅代替）</p>
           )}
 
           <h5>缺失 / 不确定事项</h5>
           <ul className="fem-gaps">
             {e.known_gaps.map((g) => <li key={g.slice(0, 20)}>{g}</li>)}
           </ul>
-        </div>
-      )}
+    </div>
+  );
+}
+
+/** 事件卡：头部（可折叠）+ 展开后的 `EventCardBody` */
+export function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: string }) {
+  const [open, setOpen] = useState(false);
+  const state = eventStudyState(e);
+  return (
+    <li className="fem-event" data-event-id={e.event_id}
+        data-event-class={e.event_class ?? ''} data-study-state={state}>
+      <button type="button" className="fem-event-head" aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}>
+        <span className="fem-event-year">{e.year}</span>
+        <span className="fem-event-label">{e.label}</span>
+        <span className={`fem-event-state st-${state.toLowerCase()}`}>
+          {EVENT_STUDY_LABEL[state] ?? state}
+        </span>
+        <span className="fem-event-caret">{open ? '收起' : '展开'}</span>
+      </button>
+
+      <p className="fem-event-win">窗口：{e.window_text}</p>
+      <p className="fem-event-basis">依据：{e.evidence_basis}</p>
+
+      {classCaveat && <p className="fem-adjacent-caveat">{classCaveat}</p>}
+      {open && <EventCardBody e={e} classCaveat={classCaveat} />}
     </li>
   );
 }

@@ -558,21 +558,10 @@ mk_doc = {
 }
 mk_body = json.dumps(mk_doc, ensure_ascii=False, indent=1) + "\n"
 
-if CHECK:
-    for p, b in ((OUT_JSON, body), (OUT_EVENTS, ev_body), (OUT_MARKET, mk_body)):
-        if not os.path.exists(p):
-            raise SystemExit(f"FAIL —— 产物不存在：{p}")
-        if io.open(p, encoding="utf-8").read() != b:
-            raise SystemExit(f"FAIL —— 与重算结果不一致（非 deterministic）：{p}")
-    print("PASS —— 三份产物与重算结果逐字节一致（deterministic）。")
-else:
-    for p, b in ((OUT_JSON, body), (OUT_EVENTS, ev_body), (OUT_MARKET, mk_body)):
-        with io.open(p, "w", encoding="utf-8", newline="\n") as f:
-            f.write(b)
-        print("written", p)
-
-with io.open(os.devnull if CHECK else OUT_CSV, "w", encoding="utf-8", newline="") as f:
-    w = csv.writer(f, lineterminator="\n")
+def _csv_body() -> str:
+    """CSV 伴生产物的完整内容（**CHECK 模式也要生成它** —— 否则 CSV 漂移永不报）。"""
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
     w.writerow(["candidate_id", "historical_object", "historical_kind", "historical_family",
                 "same_macro_theme", "lifecycle", "historical_stage_at_comparable_point",
                 "lifecycle_terminal_legacy", "drivers", "driver_overlap_count",
@@ -585,7 +574,40 @@ with io.open(os.devnull if CHECK else OUT_CSV, "w", encoding="utf-8", newline=""
                     m["drivers"], m["driver_overlap_count"], m["evidence_sequence"],
                     m["event_structure"], m["temporal_structure"], m["market_structure"],
                     m["tier"], "|".join(m["matched_dimensions"])])
-print("written", OUT_CSV)
+    return buf.getvalue()
+
+
+csv_b = _csv_body()
+
+if CHECK:
+    # ★★ 2026-10-16：FAIL 措辞改正 + CSV 纳入校验 + **汇总报告全部**不一致产物
+    #   旧措辞把任何不一致都叫「非 deterministic」，但**最常见的原因是产物过期** ——
+    #   本脚本**没有快照守卫**：export / DB 自产物生成后增长（对象 17→89、market series 56→213…），
+    #   全部聚合量都是行函数 → 必然整体位移。把过期说成不确定，会误导人去改生成器而非走审批重出。
+    # ★ 因此**不降低校验强度**：四份产物（JSON + EVENTS + MARKET + **CSV**）逐字节比对比旧实现更严，
+    #   且 CSV 漂移（曾 85→534 行而永不报）现在会被点名。
+    _bad = []
+    for p, b in ((OUT_JSON, body), (OUT_EVENTS, ev_body), (OUT_MARKET, mk_body), (OUT_CSV, csv_b)):
+        if not os.path.exists(p):
+            _bad.append("%s（产物不存在）" % p)
+        elif io.open(p, encoding="utf-8").read() != b:
+            _bad.append(p)
+    if _bad:
+        raise SystemExit(
+            "FAIL —— %d 份产物与**当前输入**的重算结果不一致：\n%s\n"
+            "  ★ 两种可能，勿混为一谈：\n"
+            "    ① **产物过期**（最常见）：自生成后 export / DB 增长，而本脚本无快照守卫\n"
+            "       → 处置：走完整 Research validation chain + 人工差异审阅后**重出新版本**；\n"
+            "          ★ **不得**为了通过检查而原地改写冻结产物（AGENTS.md §4 / RESEARCH_PIPELINE_SAFETY §4.3）\n"
+            "    ② 生成器不确定：用**生成当时的输入**重跑应为逐字节一致；若仍不一致才是这条\n"
+            "  ★ 本脚本不在 CI 门禁内 —— 此 FAIL 当前不阻塞部署，但**不得**据此认为产物仍有效。"
+            % (len(_bad), "\n".join("    - " + x for x in _bad)))
+    print("PASS —— 四份产物（含 CSV）与重算结果逐字节一致。")
+else:
+    for p, b in ((OUT_JSON, body), (OUT_EVENTS, ev_body), (OUT_MARKET, mk_body), (OUT_CSV, csv_b)):
+        with io.open(p, "w", encoding="utf-8", newline="\n") as f:
+            f.write(b)
+        print("written", p)
 print()
 print("=== 维度分布（v0.2）===")
 for k, v in res["sensitivity_analysis"]["dimension_status_distribution"].items():

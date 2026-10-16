@@ -29,7 +29,7 @@
  "events": [
   {
    "event_id": "POWER-2017-SUMMER-COUNTEREXAMPLE",
-   "event_class": "THEME_ADJACENT",
+   "event_class": "THEME_DIRECT",
    "label": "2017 年迎峰度夏 —— **反例**（基本面强劲但股价下跌）",
    "year": 2017,
    "window_text": "季节观察窗口 2017-05-01 → 2017-07-31",
@@ -726,7 +726,7 @@
   },
   {
    "event_id": "POWER-2024-SUMMER-COUNTEREXAMPLE",
-   "event_class": "THEME_ADJACENT",
+   "event_class": "THEME_DIRECT",
    "label": "2024 年迎峰度夏 —— **反例**（负荷新高 + 煤价下行，火电池 4/4 下跌）",
    "year": 2024,
    "window_text": "季节观察窗口 2024-05-01 → 2024-07-31",
@@ -1115,7 +1115,7 @@
    },
    "window_definitions": {
     "summer_5_7": "每年 5/1 ~ 7/31（外部季节窗口 EXT-14）。★ 用窗口内**首个**与**末个**交易日收盘（前复权）计算区间收益。",
-    "campaign_full": "库内 Campaign 记录的 start_date ~ end_date（★ 仅 2023 年存在完整的电力运营 Campaign）。",
+    "campaign_full": "库内 Campaign 记录的 start_date ~ end_date（★ 仅 2023 年存在完整的电力运营 Campaign）。（★ 限定：`rule_power_operation` 下另有 `C-2021-POWER-GREEN`，属**新能源发电**且 `end_date=None` 开放式、无完整周期口径；在**火电 / 迎峰度夏**范围内 2023 为唯一）",
     "event_window": "有明确外部事件月份的年份，单列『事件观察窗口』，并显式标注为**非 Campaign 记录**。",
     "high_date": "窗口内**最高收盘价**（前复权）的交易日。",
     "excess": "相对沪深300（SH000300，前复权）同窗口区间收益的超额（pp）。"
@@ -1169,7 +1169,7 @@
    "SANXIAENERGY": "1/5（仅 2021）",
    "YINXING": "1/10（仅 2023）",
    "SH000300": "0/10",
-   "reading": "★★ 只有 **2023 年**出现 A 组 4 只火电标的（华电/建投/天富/京能）的年内最高收盘价**全部**落在 5–7 月（4/4）—— 而 2023 恰是库内唯一登记 Campaign 的年份。这是**单一年份现象**，不是跨年规律。★ 2026-10-15 更正：原文写「3 只」但同句列出 4 只，自相矛盾，现按实测改为 **4/4**。★★ 该统计**只描述日期分布**，**不得**当作收益或因果证据。"
+   "reading": "★★ 只有 **2023 年**出现 A 组 4 只火电标的（华电/建投/天富/京能）的年内最高收盘价**全部**落在 5–7 月（4/4）—— 而 2023 恰是库内唯一登记**火电 / 迎峰度夏** Campaign 的年份（★ 限定：`rule_power_operation` 下另有 `C-2021-POWER-GREEN`，属**新能源发电**且 `end_date=None` 开放式、无完整周期口径；在**火电 / 迎峰度夏**范围内 2023 为唯一）这是**单一年份现象**，不是跨年规律。★ 2026-10-15 更正：原文写「3 只」但同句列出 4 只，自相矛盾，现按实测改为 **4/4**。★★ 该统计**只描述日期分布**，**不得**当作收益或因果证据。"
   },
   "yearly_5_7": [
    {
@@ -3086,6 +3086,13 @@
    "what": "把华电国际/建投能源/天富能源的库内起点由 2022-06-01 提前到 **2022-01-04**（只补该 3 只 × 2022-01-04~2024-12-31），使 **2022 年**（10 年中唯一「4 只全部上涨且全部跑赢基准」的年份）可在库内复算。★ 既有 3760 个重叠键**数值 0 差异**；非 A 组序列逐字节未变。",
    "why": "工作流 D 独立审查发现 2022 年 18 处「复算差异」，根因是库内起点（2022-06-01）晚于探测起点（2022-05-05），导致该年无法用库内数据复核。",
    "source": ".tmp/ws_d_audit.json（独立审查，2026-10-15）"
+  },
+  {
+   "at": "2026-10-16",
+   "what": "① `POWER-2017-SUMMER-COUNTEREXAMPLE` 与 `POWER-2024-SUMMER-COUNTEREXAMPLE` 的 `event_class` 由 `THEME_ADJACENT` 改判 `THEME_DIRECT`；② `window_definitions.campaign_full` 与 `annual_high_in_season_window.reading` 中「唯一登记 Campaign 的年份」补上范围限定。",
+   "why": "历史事件地图质量审计 + DB 实测：`THEME_ADJACENT` 的定义是「机制**不同轴**，仅供对照，**不得**作为本题材季节性的支持证据」，而两个反例事件的 label 自述「迎峰度夏反例」——机制同轴、结果为负；标成不同轴会让读者把**最强的负面证据**当作范围外材料。另：`rule_power_operation` 下实有两条 Campaign（2021 新能源发电·开放式 + 2023 火电），原文「唯一」未加限定。",
+   "numbers_unchanged": "★ 收益 / 高点 / 超额 / 交易日数**一个数字都没改**（10 年 × 6 标的已由 DB 逐项复算一致）；本轮只改分类口径与文字限定。",
+   "source": ".tmp/ws_c5_eventmap_audit.json + cycle_research.db campaigns 实测"
   }
  ]
 }
