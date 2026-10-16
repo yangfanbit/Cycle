@@ -15,7 +15,7 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | 本轮新建提交（parent `486249f` = 拆分前基线，working tree clean）· ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | `975108f`（parent `486249f` = 拆分前基线）· working tree **clean** · ★ 接班仍须跑 `git log -1` |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17 表，**入库**） · `market_data.db` **65.48 MB**（行情三表 373,917 行，**不入库**） · `data/market/snapshot/` **6.08 MiB**（**入库**，恢复唯一输入） |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（2,053,911 个 REAL 差异 0）· 两次生成 sha256 相同 |
@@ -23,7 +23,7 @@
 | **测试** | **1016 passed / 0 failed / 39 files**（`testTimeout` 调至 20s，只调时间预算、不放宽断言） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分改动**（DB canonical 内容逐行不变） |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` exit=0 · `validate_monorepo` exit=0 |
-| **CI** | deploy.yml 在 Research 门禁**之前**新增 `Restore market data DB` 步骤（失败即 workflow 失败，不跳门禁） |
+| **CI** | deploy.yml 在 Research 门禁**之前**新增 `Restore market data DB` 步骤（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 的 CI **success**（Actions runner 本身就是干净检出 = 干净环境实证） |
 | **历史事件地图** | 4 题材 / **13 事件** · 跨年份比较已产品化（流感 **11 季** / 电力 **10 年**）· 回归正常（DB canonical 逐行未变） |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
