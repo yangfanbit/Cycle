@@ -224,7 +224,9 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
     expect(h).toContain('机制轴无交集');
   });
 
-  it('★ 历史对象可点击（接通 → 打开该历史案例）', () => {
+  // ★ v0.7 标题更正：本测试只验证**渲染为可点击按钮 + 提示文案**；
+  //   实际点击行为需 DOM（本项目无 jsdom）→ 不再声称「已接通」
+  it('★ 历史对象**渲染为可点击按钮**（点击行为未在本测试验证）', () => {
     const h = renderToStaticMarkup(
       <CurrentSnapshotBody view={withDetails()} onOpenHistoricalCase={() => {}} />,
     );
@@ -245,7 +247,8 @@ describe('CurrentSnapshotBody · ★ P0 接通：候选明细可见', () => {
     expect(h).toContain('机制轴 ≠ 证据类别');
   });
 
-  it('★ 研究对象可点击（接通 → 跳到它的结构对应详情）', () => {
+  // ★ v0.7 标题更正：同上一一 只验证渲染，不声称点击已验证
+  it('★ 研究对象**渲染为可点击按钮**（点击行为未在本测试验证）', () => {
     const h = renderToStaticMarkup(
       <CurrentSnapshotBody view={withDetails()} onOpenObject={() => {}} />,
     );

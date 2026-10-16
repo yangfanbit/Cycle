@@ -22,6 +22,26 @@
  */
 import type { DirectionLookupResult } from './directionLookup';
 
+/**
+ * ★★ 与草稿**关联的那一次**覆盖查询的**冻结快照**（v0.7）。
+ *
+ * 为什么必须冻结：`result` 随用户每次查询而变，而草稿是独立 state。
+ * v0.6 导出时直接取「当前 result」→ 用户先查「汽车」（草稿方向自动填「汽车」）再改查「医药」，
+ * 导出的「覆盖查询证据」就变成**医药的**，而草稿内容还是汽车的 → **静默混合两份请求**。
+ *
+ * → 把「草稿成立时那一次查询」的证据**冻结**下来随草稿一起持久化：
+ *   · 恢复草稿时能如实展示**原来的**证据（不是用新查询冒充）；
+ *   · 用户换查询时能**披露**「证据已变」，而不是无声改绑。
+ */
+export interface LinkedCoverage {
+  query: string;
+  verdict: DirectionLookupResult['verdict'];
+  current: { id: string; title: string }[];
+  historical: { id: string; title: string }[];
+  resolution: DirectionLookupResult['resolution'];
+  captured_at: string;
+}
+
 /** 用户可填写的草稿字段（全部是**自然语言**，不做结构化推断） */
 export interface ResearchRequestDraft {
   /** 方向（与查询一致；可编辑以细化，如「汽车 → 智能驾驶合规化」） */
@@ -34,6 +54,16 @@ export interface ResearchRequestDraft {
   knownLeads: string;
   /** 希望调查的历史时间范围（如 2018-2025） */
   timeRange: string;
+  /**
+   * ★ 本草稿关联的**那一次**覆盖查询词（未关联 → ''）。
+   *   它是「证据归属」的唯一依据 —— 与 `direction` **不要求相同**
+   *   （用户可把方向细化为「智能驾驶合规化」而查询词仍是「汽车」）。
+   */
+  linkedQuery: string;
+  /** 关联建立时间（ISO；未关联 → ''） */
+  linkedAt: string;
+  /** 关联的冻结证据（未关联 → null） */
+  linkedCoverage: LinkedCoverage | null;
 }
 
 export const EMPTY_DRAFT: ResearchRequestDraft = {
@@ -42,20 +72,29 @@ export const EMPTY_DRAFT: ResearchRequestDraft = {
   whyCare: '',
   knownLeads: '',
   timeRange: '',
+  linkedQuery: '',
+  linkedAt: '',
+  linkedCoverage: null,
 };
 
 /** ★ 单字段长度上限：草稿是**交接线索**，不是论文；超长应引导用户分次提交 */
 export const DRAFT_FIELD_MAX = 2000;
 
+/** 草稿里的**纯文本**字段（关联字段是对象/时间，不参与「空不空」的文本判定） */
+export type DraftTextField =
+  | 'direction' | 'researchQuestions' | 'whyCare' | 'knownLeads' | 'timeRange';
+
 /** 草稿必填项（缺了仍可导出，但会在 `missing` 里如实列出 —— 不阻塞、不伪造） */
-export const DRAFT_REQUIRED_FIELDS: (keyof ResearchRequestDraft)[] = [
-  'direction',
-  'researchQuestions',
-];
+export const DRAFT_REQUIRED_FIELDS: DraftTextField[] = ['direction', 'researchQuestions'];
 
 export function isDraftEmpty(d: ResearchRequestDraft): boolean {
   return DRAFT_REQUIRED_FIELDS.every((k) => !d[k].trim())
     && !d.whyCare.trim() && !d.knownLeads.trim() && !d.timeRange.trim();
+}
+
+/** 草稿是否**完全**没有内容（含关联）—— 用于判断「这份记录值不值得保留」 */
+export function isDraftBlank(d: ResearchRequestDraft): boolean {
+  return isDraftEmpty(d) && !d.linkedQuery.trim() && d.linkedCoverage === null;
 }
 
 /** 缺哪些必填项（用于 UI 提示；**不**阻止导出 —— 草稿允许不完整） */
@@ -76,23 +115,48 @@ export function toLines(s: string): string[] {
 /** 草稿 → 可交接载荷（**确定性**：同输入同输出，便于用户核对与 diff） */
 export interface ResearchRequestPayload {
   kind: 'threec_research_request_draft';
-  draft_version: '0.1';
+  draft_version: '0.2';
   /** ★ 明确：草稿**没有**正式 ID —— 不伪造 URO / R 编号 */
   id: null;
   status: 'DRAFT_NOT_REVIEWED';
   review_required: true;
   generated_at: string;
   request: {
+    /** 用户填写（或经用户确认自动填入）的方向 —— **请求原文** */
     direction: string;
     research_questions: string[];
     why_care: string;
     known_leads: string[];
     time_range: string;
   };
-  /** 与覆盖查询的衔接（四态之一 + 命中明细） */
+  /**
+   * ★★ 请求原文 ↔ 查询证据的**关联事实**（v0.7）。
+   *   只披露事实，**不做**相似度匹配、不判断「是否同一方向」、不评分。
+   */
+  linkage: {
+    /** 本草稿的证据属于哪一次查询（未关联 → ''） */
+    linked_query: string;
+    /** 关联建立时间（未关联 → ''） */
+    linked_at: string;
+    /** 当前界面上的查询词（未查询 → ''） */
+    current_query: string;
+    /** 当前查询是否与关联查询不同（★ 只比字符串，不做语义归并） */
+    changed: boolean;
+    /** 证据来源：冻结快照 / 未关联 */
+    evidence_source: 'frozen_snapshot' | 'none';
+    /** ★ 关联证据不可用时为 true（读者不得把缺失当成「无对应」） */
+    evidence_unavailable: boolean;
+    note: string;
+  };
+  /**
+   * 与覆盖查询的衔接。
+   * ★★ `executed: false` 时 `verdict` 为 **null** —— v0.6 用默认值 `'none'` 会让读者
+   *   把「没查过」误读成「查过、两侧都没覆盖」（两者字面完全相同）。
+   */
   coverage_check: {
+    executed: boolean;
     query: string;
-    verdict: DirectionLookupResult['verdict'];
+    verdict: DirectionLookupResult['verdict'] | null;
     verdict_meaning: string;
     current_objects: { id: string; title: string; matched_on: string[] }[];
     historical_cases: { id: string; title: string; matched_on: string[] }[];
@@ -146,19 +210,28 @@ export const DRAFT_CONSTRAINTS: string[] = [
 /**
  * 构造交接载荷。
  *
- * @param draft   用户填写的草稿
- * @param lookup  覆盖查询结果（可为 null —— 用户没查就直接写草稿时）
- * @param now     生成时间（ISO 字符串；由调用方注入，便于测试确定性）
+ * ★★ v0.7 关键语义：**证据只来自草稿自己冻结的那一次查询**（`draft.linkedCoverage`）。
+ *   参数 `lookup` 是**当前界面**上的查询结果，**只**用于披露「当前查询已与关联查询不同」，
+ *   **绝不**被当作本草稿的证据 —— 否则用户换了查询词就会把新证据静默贴到旧草稿上。
+ *
+ * @param draft   草稿（含 `linkedQuery` / `linkedAt` / `linkedCoverage`）
+ * @param lookup  当前查询结果（可为 null）；**不作为证据**
+ * @param now     生成时间（ISO；由调用方注入，便于测试确定性）
  */
 export function buildResearchRequestPayload(
   draft: ResearchRequestDraft,
   lookup: DirectionLookupResult | null,
   now: string,
 ): ResearchRequestPayload {
-  const direction = draft.direction.trim() || lookup?.query || '';
+  const direction = draft.direction.trim();
+  const linkedQuery = draft.linkedQuery.trim();
+  const currentQuery = (lookup?.query ?? '').trim();
+  const frozen = draft.linkedCoverage;
+  const executed = frozen !== null;
+
   return {
     kind: 'threec_research_request_draft',
-    draft_version: '0.1',
+    draft_version: '0.2',
     id: null,
     status: 'DRAFT_NOT_REVIEWED',
     review_required: true,
@@ -170,17 +243,37 @@ export function buildResearchRequestPayload(
       known_leads: toLines(draft.knownLeads),
       time_range: draft.timeRange.trim(),
     },
+    linkage: {
+      linked_query: linkedQuery,
+      linked_at: draft.linkedAt,
+      current_query: currentQuery,
+      // ★ 只做字符串比较（trim 后），**不做**语义归并 / 相似度 —— 事实披露，不是判断
+      changed: Boolean(currentQuery) && currentQuery !== linkedQuery,
+      evidence_source: executed ? 'frozen_snapshot' : 'none',
+      evidence_unavailable: !executed,
+      note: executed
+        ? (Boolean(currentQuery) && currentQuery !== linkedQuery
+          ? `★ 本草稿的证据属于查询「${linkedQuery}」；当前界面的查询是「${currentQuery}」，`
+            + '**两者不同** —— 新查询结果**未**附加到本草稿。若要以新查询新建草稿，请用界面上的'
+            + '「以当前查询新建草稿」。'
+          : `本草稿的证据来自查询「${linkedQuery}」（${draft.linkedAt || '时间未记录'}）。`)
+        : '★ 本草稿**未关联任何覆盖查询** —— 导出内容里没有查询证据。'
+          + '这不代表「未覆盖」，只代表「没查过」（或原证据已不可恢复）。',
+    },
     coverage_check: {
-      query: lookup?.query ?? '',
-      verdict: lookup?.verdict ?? 'none',
-      verdict_meaning: lookup ? VERDICT_MEANING[lookup.verdict] : '未执行覆盖查询（用户直接填写草稿）。',
-      current_objects: (lookup?.current ?? []).map((h) => ({
-        id: h.id, title: h.title, matched_on: h.matchedOn,
-      })),
-      historical_cases: (lookup?.historical ?? []).map((h) => ({
-        id: h.id, title: h.title, matched_on: h.matchedOn,
-      })),
-      resolution: lookup?.resolution ?? null,
+      executed,
+      query: executed ? frozen!.query : '',
+      verdict: executed ? frozen!.verdict : null,
+      verdict_meaning: executed
+        ? VERDICT_MEANING[frozen!.verdict]
+        : '未执行覆盖查询 —— **无结论**（不是「未覆盖」，也不是「无有效对应」）。',
+      current_objects: executed
+        ? frozen!.current.map((h) => ({ id: h.id, title: h.title, matched_on: [] }))
+        : [],
+      historical_cases: executed
+        ? frozen!.historical.map((h) => ({ id: h.id, title: h.title, matched_on: [] }))
+        : [],
+      resolution: executed ? frozen!.resolution : null,
     },
     handoff: {
       intended_protocol: 'research/intake/HISTORICAL_UNIVERSE_INTAKE_PROTOCOL_v0_1.md',
@@ -197,6 +290,25 @@ export function buildResearchRequestPayload(
     },
     known_limitations: KNOWN_LIMITATIONS,
     constraints: DRAFT_CONSTRAINTS,
+  };
+}
+
+/**
+ * 把一次**查询结果**冻结成草稿证据（纯函数）。
+ * ★ 只保留 id / title（不复制全部字段）：证据是「查了哪个词、命中了哪些对象」，
+ *   具体解释仍以冻结 SA 为唯一入口。
+ */
+export function freezeCoverage(
+  r: DirectionLookupResult,
+  at: string,
+): LinkedCoverage {
+  return {
+    query: r.query,
+    verdict: r.verdict,
+    current: r.current.map((h) => ({ id: h.id, title: h.title })),
+    historical: r.historical.map((h) => ({ id: h.id, title: h.title })),
+    resolution: r.resolution,
+    captured_at: at,
   };
 }
 
@@ -236,23 +348,38 @@ export function renderResearchRequestMarkdown(p: ResearchRequestPayload): string
   L.push('');
   L.push('## 6. 覆盖查询结果（工具侧事实）');
   L.push('');
-  L.push(`- 查询词：\`${p.coverage_check.query || '（未查询）'}\``);
-  L.push(`- 结论：**${p.coverage_check.verdict}** —— ${p.coverage_check.verdict_meaning}`);
-  L.push(`- 当前研究对象命中 ${p.coverage_check.current_objects.length} 个`
-    + (p.coverage_check.current_objects.length
-      ? `：${p.coverage_check.current_objects.map((o) => `${o.id}（${o.title}）`).join('；')}`
-      : ''));
-  L.push(`- 历史案例命中 ${p.coverage_check.historical_cases.length} 个`
-    + (p.coverage_check.historical_cases.length
-      ? `：${p.coverage_check.historical_cases.map((o) => `${o.id}（${o.title}）`).join('；')}`
-      : ''));
-  if (p.coverage_check.resolution) {
-    const r = p.coverage_check.resolution;
-    L.push(`- 名称解析：${r.matchedTheme
-      ? `库内主题「${r.matchedTheme.name}」${r.root && r.root.name !== r.matchedTheme.name ? `（属「${r.root.name}」）` : ''}，`
-        + `该主题下直接挂靠对象 ${r.directObjectCount} 个；根下共 ${r.rootObjectCount} 个`
-      : `不在库内主题表中（库内共 ${r.taxonomySize} 个主题）`}`);
+  L.push(`- 本草稿**关联的查询词**：\`${p.linkage.linked_query || '（未关联任何查询）'}\``);
+  L.push(`- 关联建立时间：\`${p.linkage.linked_at || '（未记录）'}\``);
+  if (p.linkage.current_query) {
+    L.push(`- 当前界面上的查询词：\`${p.linkage.current_query}\``
+      + (p.linkage.changed ? ' —— ★ **与关联查询不同**，新查询结果**未**附加到本草稿' : ''));
   }
+  L.push('');
+  if (!p.coverage_check.executed) {
+    L.push('★ **本草稿未关联任何覆盖查询** —— 因此**没有**查询证据可附。');
+    L.push('  这不代表「未覆盖」，只代表「没查过」（或原证据已不可恢复）。');
+    L.push('');
+  } else {
+    L.push(`- 查询词：\`${p.coverage_check.query}\``);
+    L.push(`- 结论：**${p.coverage_check.verdict}** —— ${p.coverage_check.verdict_meaning}`);
+    L.push(`- 当前研究对象命中 ${p.coverage_check.current_objects.length} 个`
+      + (p.coverage_check.current_objects.length
+        ? `：${p.coverage_check.current_objects.map((o) => `${o.id}（${o.title}）`).join('；')}`
+        : ''));
+    L.push(`- 历史案例命中 ${p.coverage_check.historical_cases.length} 个`
+      + (p.coverage_check.historical_cases.length
+        ? `：${p.coverage_check.historical_cases.map((o) => `${o.id}（${o.title}）`).join('；')}`
+        : ''));
+    if (p.coverage_check.resolution) {
+      const r = p.coverage_check.resolution;
+      L.push(`- 名称解析：${r.matchedTheme
+        ? `库内主题「${r.matchedTheme.name}」${r.root && r.root.name !== r.matchedTheme.name ? `（属「${r.root.name}」）` : ''}，`
+          + `该主题下直接挂靠对象 ${r.directObjectCount} 个；根下共 ${r.rootObjectCount} 个`
+        : `不在库内主题表中（库内共 ${r.taxonomySize} 个主题）`}`);
+    }
+    L.push('');
+  }
+  L.push(`> ${p.linkage.note}`);
   L.push('');
   L.push('## 7. 已知限制（**请勿把本草稿当作结论**）');
   L.push('');

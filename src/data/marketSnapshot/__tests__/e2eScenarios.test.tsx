@@ -5,7 +5,7 @@ import { CANONICAL, loadCurrentSnapshot, snapshotIndex } from '../snapshotAdapte
 import { researchTimelineSource } from '../../timeline/timelineAdapter';
 import { selectCurrentCandidateDataset } from '../../timeline/appDatasets';
 import { lookupDirection } from '../../timeline/directionLookup';
-import { buildResearchRequestPayload, renderResearchRequestMarkdown, EMPTY_DRAFT } from '../../timeline/researchRequestDraft';
+import { buildResearchRequestPayload, renderResearchRequestMarkdown, EMPTY_DRAFT, freezeCoverage, type ResearchRequestDraft } from '../../timeline/researchRequestDraft';
 import { ResearchRequestDraftBlock } from '../../../components/DirectionLookup/DirectionLookupSection';
 import { CurrentSnapshotSection } from '../../../components/CurrentSnapshot/CurrentSnapshotSection';
 
@@ -82,17 +82,27 @@ describe('E2E 场景 · 三个真实方向', () => {
     expect(r.historical.length).toBeGreaterThan(0);
     expect(r.current).toHaveLength(1); // 当前侧只有智能驾驶合规化这一个切片
     expect(r.current[0].id).toBe('CC-2026-AUTO-SMARTDRIVE');
-    // ★ 页面呈现（草稿区把结论原样展示；SSR 无法模拟输入 → 直接渲染该块）
+    // ★ 页面呈现：草稿区展示的**证据**来自草稿自己冻结的那次查询（v0.7）
+    //   —— SSR 无法模拟输入，故直接构造「已关联该查询」的草稿并渲染该块。
+    const draft: ResearchRequestDraft = {
+      ...EMPTY_DRAFT, direction: '汽车', linkedQuery: '汽车', linkedAt: NOW,
+      linkedCoverage: freezeCoverage(r, NOW),
+    };
     const block = renderToStaticMarkup(
       <ResearchRequestDraftBlock
         lookup={r}
-        draft={{ ...EMPTY_DRAFT, direction: '汽车' }}
+        draft={draft}
         setDraft={() => {}}
-        payload={buildResearchRequestPayload({ ...EMPTY_DRAFT, direction: '汽车' }, r, NOW)}
+        payload={buildResearchRequestPayload(draft, r, NOW)}
         payloadJson="{}"
         payloadMd=""
         copied={null}
         onCopy={() => {}}
+        onClear={() => {}}
+        onRelink={() => {}}
+        queryChanged={false}
+        saveState={{ ok: true, action: 'written' }}
+        loadState={{ status: 'empty' }}
       />,
     );
     expect(block).toContain('both');
@@ -116,24 +126,34 @@ describe('E2E 场景 · 三个真实方向', () => {
     expect(r.historical.length).toBeGreaterThan(0);
     expect(r.current).toHaveLength(0);
     // ★ 文案层面：判定说明必须点明「当前侧没有研究对象」（不是空白/不解释）
+    const draft: ResearchRequestDraft = {
+      ...EMPTY_DRAFT, direction: '文化传媒', linkedQuery: '文化传媒', linkedAt: NOW,
+      linkedCoverage: freezeCoverage(r, NOW),
+    };
     const block = renderToStaticMarkup(
       <ResearchRequestDraftBlock
         lookup={r}
-        draft={{ ...EMPTY_DRAFT, direction: '文化传媒' }}
+        draft={draft}
         setDraft={() => {}}
-        payload={buildResearchRequestPayload({ ...EMPTY_DRAFT, direction: '文化传媒' }, r, NOW)}
+        payload={buildResearchRequestPayload(draft, r, NOW)}
         payloadJson="{}"
         payloadMd=""
         copied={null}
         onCopy={() => {}}
+        onClear={() => {}}
+        onRelink={() => {}}
+        queryChanged={false}
+        saveState={{ ok: true, action: 'written' }}
+        loadState={{ status: 'empty' }}
       />,
     );
     expect(block).toContain('historical-only');
     expect(block).toContain('当前侧没有研究对象');
   });
 
-  it('③b ★★ 覆盖边界横幅**数据驱动**：文化传媒已出现在根大主题列表里', () => {
-    // v0.6 修复前横幅硬编码称「传媒/文化/娱乐/教育 一个都没有」——与数据矛盾
+  it('③b ★★ 根主题清单来自 taxonomy 数据（文化传媒已在其中）', () => {
+    // ★ 本测试只验证**数据源**（横幅渲染由 App 层测试覆盖，见 AppTaxonomyBanner）。
+    //   v0.6 修复前横幅硬编码称「传媒/文化/娱乐/教育 一个都没有」——与数据矛盾。
     const roots = (source.taxonomy?.() ?? [])
       .filter((n) => n.parent_theme_id === null)
       .map((n) => n.name);
@@ -153,6 +173,9 @@ describe('E2E 场景 · 三个真实方向', () => {
         whyCare: '所在行业',
         knownLeads: '2021 版号收紧',
         timeRange: '2016-2025',
+        linkedQuery: '娱乐',
+        linkedAt: '2026-10-16T00:00:00.000Z',
+        linkedCoverage: freezeCoverage(r, '2026-10-16T00:00:00.000Z'),
       },
       r,
       '2026-10-16T00:00:00.000Z',

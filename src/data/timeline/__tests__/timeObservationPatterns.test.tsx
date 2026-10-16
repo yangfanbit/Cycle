@@ -421,7 +421,9 @@ describe('Time Observation Pattern · 映射与 UI', () => {
     expectNoPredictiveLanguage(html);
   });
 
-  it('展示年份上点出该年的研究观察起点，并可点击进入历史案例', () => {
+  // ★ v0.7 标题更正：SSR 不执行 effect、无法模拟点击 → 本测试只验证**渲染**
+  //   （原题「并可点击进入历史案例」属**虚假宣称**，见 docs/PROJECT_STATE.md 测试能力边界）
+  it('展示年份上点出该年的研究观察起点，并**渲染**历史案例入口', () => {
     const ds = defaultTimeObservationDataset();
     const html = renderToStaticMarkup(
       <TimeObservationLayer year={2024} today="2026-06-12" onSelect={() => {}} dataset={ds} />,

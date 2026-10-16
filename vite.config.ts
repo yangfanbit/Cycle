@@ -85,6 +85,16 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     /**
+     * ★★ 排除临时/一次性探针（v0.7）。
+     *
+     * `.tmp/` 是工作流与调试用的**草稿区**（gitignore），里面常会临时放「复现缺陷」的
+     * `.test.ts(x)`。它们**不是**仓库测试套件的一部分，却会被默认 include 捞进来 ——
+     * 于是：① 让 `npm test` 的计数虚高；② 缺陷修好后它们**故意失败**（因为断言的是修复前行为），
+     * 使 CI 变红而掩盖真实回归。实测踩到过一次（16 个 scratch 失败）。
+     * → 显式排除，让「测试套件 = 仓库里被跟踪的测试」。
+     */
+    exclude: ['**/node_modules/**', '**/dist/**', '.tmp/**'],
+    /**
      * ★ 超时预算（2026-10-15）。
      *
      * vitest 默认 `testTimeout = 5000ms`。随着测试文件与静态研究 Artifact 增长，

@@ -39,8 +39,34 @@ import { marketTodayISO } from './utils';
  * 正式进入第一视觉；`?verified=1` 仅用于对照旧生产层。
  * 不做运行时网络访问（静态 PWA 不变）。
  */
+/**
+ * ★ v0.7：SSR / 预渲染 / node 测试环境下安全读取 URL 查询参数。
+ *
+ * 原来这三处 flag 直接访问 `window.location` —— 于是 **`<App />` 在 node 下渲染即崩**
+ * （`window is not defined`），这也正是「App 层零测试」的原因之一。
+ * 无 `window` 时返回空串 = **默认模式**（与生产环境不带参数时行为一致）。
+ */
+function urlParam(name: string): string {
+  if (typeof window === 'undefined') return '';
+  try {
+    return new URLSearchParams(window.location.search).get(name) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+/** ★ v0.7：SSR 安全的当前路径（无 window → '/'） */
+function currentPath(): string {
+  if (typeof window === 'undefined') return '/';
+  try {
+    return window.location.pathname;
+  } catch {
+    return '/';
+  }
+}
+
 function verifiedEnabled(): boolean {
-  return new URLSearchParams(window.location.search).get('verified') === '1';
+  return urlParam('verified') === '1';
 }
 
 /**
@@ -52,7 +78,7 @@ function verifiedEnabled(): boolean {
  * 「示例 fixture（非真实研究数据）」。
  */
 function exampleCandidatesEnabled(): boolean {
-  return new URLSearchParams(window.location.search).get('candidates') === 'example';
+  return urlParam('candidates') === 'example';
 }
 
 /**
@@ -62,7 +88,7 @@ function exampleCandidatesEnabled(): boolean {
  * 本开关仅用于预览未签发内容，页面会**常驻醒目徽标**标明「未签发 · 仅供预览」。
  */
 function snapshotPreviewEnabled(): boolean {
-  return new URLSearchParams(window.location.search).get('snapshot') === 'draft';
+  return urlParam('snapshot') === 'draft';
 }
 
 export default function App() {
@@ -239,24 +265,35 @@ export default function App() {
               Product 侧不自行推断、不编造父主题。 */}
         {!verifiedMode && mapRows.length > 0 && (
           <p className="seasonal-scope">
-            <strong>覆盖边界</strong>：
+            <strong>分类体系</strong>：
             {taxonomyRoots.length > 0 ? (
               <>
-                历史研究当前覆盖 <strong>{taxonomyRoots.length}</strong> 个大主题：
+                当前研究分类体系有 <strong>{taxonomyRoots.length}</strong> 个<strong>根主题</strong>：
                 <strong>{taxonomyRoots.join(' · ')}</strong>
                 （数据来源：Contract v1.2 `taxonomy` 段，由 DB `themes` 表推导 ——
                 **不是人工列举**，研究轮次新增主题后此处自动跟上）。
               </>
             ) : (
-              <>当前数据源未提供 taxonomy 段（legacy verified 源）→ 无法列出覆盖范围，</>
+              <>当前数据源未提供 taxonomy 段（legacy verified 源）→ 无法列出根主题，</>
             )}
-            不在此列表内的方向即为<strong>未覆盖</strong>。
             <span className="seasonal-scope-note">
+              ★★ <strong>这是分类体系事实，不是覆盖承诺</strong>：根主题下可能<strong>只有 1–2 个</strong>
+              历史对象，也可能某个<strong>具体方向名</strong>根本不在根清单里却仍有命中
+              （例如「半导体」属「电子」、「电力」是运营端口径、子主题名与概念名通常与根名不同）。
+              因此<strong>「不在上面的根清单里」并不等于「未覆盖」</strong> ——
+              <strong>具体结论以方向查询的实际命中为准</strong>，本清单只描述分类结构。
+              <br />
+              ★ 四件事互不相同，不要合并成一个标签：
+              <strong>① 分类体系里有没有对应根主题</strong> ·
+              <strong>② 查询有没有命中对象</strong>（当前侧 / 历史侧分别看）·
+              <strong>③ 有没有冻结 SA 给出的结构对应</strong> ·
+              <strong>④ 是「资料不足」还是「确实没有对应」</strong>。
+              <br />
               ★ 语义边界：<strong>名字没命中 ≠ 结构上无对应</strong>（结构对应比的是机制 / 序列 /
               事件结构，不是名字）；反过来，<strong>名字命中 ≠ 结构对应</strong> ——
-              冻结 SA 的解释才是唯一的结构对应入口。需要未覆盖方向请走上方<strong>方向查询</strong>，
-              它同样只能回答「在不在覆盖内」，不能凭空造出历史对象。
-              （覆盖范围由 Research 决定；扩边属研究轮次，不在 Product 侧自行推断。）
+              冻结 SA 的解释才是唯一的结构对应入口。
+              （覆盖范围由 Research 决定；扩边属研究轮次，不在 Product 侧自行推断，
+              也不为把清单凑齐而推断缺失对象。）
             </span>
           </p>
         )}
@@ -274,7 +311,7 @@ export default function App() {
         {verifiedMode && allCampaigns.length === 0 && (
           <div className="prod-empty-note">
             旧 verified 层当前为空（人工核验尚未开始）。
-            <a className="banner-link" href={window.location.pathname}>
+            <a className="banner-link" href={currentPath()}>
               返回默认 Research 数据源
             </a>
           </div>
@@ -426,7 +463,7 @@ export default function App() {
                   {timelineExportData.source_commit.slice(0, 7)}；研究对象含 PROVISIONAL /
                   CONFLICT，<strong>非正式历史事实</strong>，仅供研究浏览。
                 </span>
-                <a className="banner-link" href={`${window.location.pathname}?verified=1`}>
+                <a className="banner-link" href={`${currentPath()}?verified=1`}>
                   查看旧 verified 层（当前为空）
                 </a>
               </div>
@@ -441,7 +478,7 @@ export default function App() {
                   ），用于验证 Temporal Firewall / 阶段推断 / 相似度链路；不是任何真实研究对象，
                   不构成投资依据。
                 </span>
-                <a className="banner-link" href={window.location.pathname}>
+                <a className="banner-link" href={currentPath()}>
                   返回真实数据集
                 </a>
               </div>

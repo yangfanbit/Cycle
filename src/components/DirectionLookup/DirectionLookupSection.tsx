@@ -8,12 +8,22 @@ import {
   DRAFT_FIELD_MAX,
   EMPTY_DRAFT,
   buildResearchRequestPayload,
-  isDraftEmpty,
+  freezeCoverage,
+  isDraftBlank,
   missingDraftFields,
   renderResearchRequestMarkdown,
   type ResearchRequestDraft,
   type ResearchRequestPayload,
 } from '../../data/timeline/researchRequestDraft';
+import {
+  browserDraftStorage,
+  loadDraft,
+  saveDraft,
+  shouldAutoFillDirection,
+  type DraftStorage,
+  type LoadDraftResult,
+  type SaveDraftResult,
+} from '../../data/timeline/researchRequestDraftStorage';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
 import type { CurrentCandidateDataset } from '../../data/timeline/currentCandidate';
 
@@ -48,50 +58,35 @@ const VERDICT_TEXT: Record<DirectionLookupResult['verdict'], string> = {
  * 测试证明：「主题名未覆盖」**不等于**「结构上无对应」——
  * 一个历史宇宙里完全没有的方向，只要有一个「当前研究对象」，**仍能得到结构对应**。
  * 所以必须把这两种「没有」分开说，否则用户会以为工具**根本帮不上**。
+ *
+ * ★ v0.7：`themeCount` 由**数据**注入（原先硬编码「44 个主题名」，实测已增至 59）——
+ *   数字类声明必须随数据走，否则又会变成过期文案。
  */
-const NONE_EXPLAIN = [
-  '「未覆盖」指的是**主题名**：历史研究的 44 个主题名里没有它，当前研究对象里也没有它。',
-  '★ 但这**不等于**「结构上无对应」。结构对应比的是**机制 / 序列 / 事件结构**，不是名字 ——',
-  '实测：一个历史研究里完全没有的方向（文化传媒），在建立当前研究对象后，仍得到了 1 条结构支持。',
-  '**要拿到结构层面的答案，需要先为该方向建立一轮研究（当前研究对象）**；在那之前，',
-  '本工具只能如实说「还没法比」，而不是「比过了、不成立」。',
-];
+export function noneExplain(themeCount: number): string[] {
+  return [
+    `「未覆盖」指的是**主题名**：库内 ${themeCount} 个主题名里没有它，当前研究对象里也没有它。`,
+    '★ 但这**不等于**「结构上无对应」。结构对应比的是**机制 / 序列 / 事件结构**，不是名字 ——',
+    '实测：一个历史研究里完全没有的方向（文化传媒），在建立当前研究对象后，仍得到了 1 条结构支持。',
+    '**要拿到结构层面的答案，需要先为该方向建立一轮研究（当前研究对象）**；在那之前，',
+    '本工具只能如实说「还没法比」，而不是「比过了、不成立」。',
+  ];
+}
 
 /**
- * 草稿的本机持久化（★ 只在本机；不上传、不写库）。
- * 键名带版本号：将来改结构时可安全弃用旧键，不会读到半截数据。
+ * ★ v0.7：草稿的读写**全部**走 `researchRequestDraftStorage`（纯函数 + 可注入接口）。
+ *   组件只负责：把存储结果翻译成 UI 状态（是否可用 / 是否保存成功 / 是否有坏数据）。
  */
-const DRAFT_STORAGE_KEY = 'threec.researchRequestDraft.v1';
-
-function loadDraft(): ResearchRequestDraft {
-  try {
-    const raw = window.localStorage.getItem(DRAFT_STORAGE_KEY);
-    if (!raw) return EMPTY_DRAFT;
-    const parsed = JSON.parse(raw) as Partial<ResearchRequestDraft>;
-    return { ...EMPTY_DRAFT, ...parsed };
-  } catch {
-    // 隐私模式 / 存储被禁 / 内容损坏 → 静默降级为空草稿（不阻塞使用）
-    return EMPTY_DRAFT;
-  }
-}
-
-function saveDraft(d: ResearchRequestDraft): void {
-  try {
-    if (isDraftEmpty(d)) window.localStorage.removeItem(DRAFT_STORAGE_KEY);
-    else window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(d));
-  } catch {
-    // 存不下就算了 —— 草稿仍在本页内存里可用
-  }
-}
-
 export function DirectionLookupSection({
   source,
   dataset,
   onOpenHistoricalCase,
+  draftStorage,
 }: {
   source: TimelineDataSource | null;
   dataset: CurrentCandidateDataset | null;
   onOpenHistoricalCase?: (campaignId: string) => void;
+  /** ★ 测试可注入内存实现；默认走浏览器 localStorage（不可用 → null） */
+  draftStorage?: DraftStorage | null;
 }) {
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
@@ -108,24 +103,50 @@ export function DirectionLookupSection({
   };
 
   /* ------------------------------------------------------------------
-   * 研究请求草稿（ThreeC 1.3）
+   * 研究请求草稿（ThreeC 1.3 · v0.7 生命周期修复）
    *
-   * ★ 草稿只存在**本机**：localStorage（键名自带版本，便于将来清理）。
-   *   不上传、不写库、不生成正式 ID。读取失败（隐私模式 / 禁用存储）静默降级为空草稿。
+   * ★ 草稿只存在**本机**；不上传、不写库、不生成正式 ID。
+   * ★ v0.7 修复（缺陷 #1）：清空必须**真的清空** —— 用 `userClearedFor` 记住
+   *   「用户为哪个查询显式清空过」，自动回填**不得**把它填回来。
    * ------------------------------------------------------------------ */
-  const [draft, setDraft] = useState<ResearchRequestDraft>(() => loadDraft());
+  const storage = useMemo<DraftStorage | null>(
+    () => (draftStorage !== undefined ? draftStorage : browserDraftStorage()),
+    [draftStorage],
+  );
+  /** 首屏读取（只在挂载时一次）—— 保留完整结果以便诚实披露「坏数据 / 不可用」 */
+  const [initialLoad] = useState<LoadDraftResult>(() => loadDraft(storage));
+  const [draft, setDraft] = useState<ResearchRequestDraft>(() =>
+    initialLoad.status === 'loaded' ? initialLoad.draft : { ...EMPTY_DRAFT });
+  /** ★ 保存结果（诚实披露：失败绝不假装成功） */
+  const [saveState, setSaveState] = useState<SaveDraftResult | null>(null);
+  /** ★ 用户显式清空时对应的查询词（防回填） */
+  const [userClearedFor, setUserClearedFor] = useState('');
   const [copied, setCopied] = useState<'json' | 'md' | null>(null);
 
+  // 持久化：每次草稿变化写一次（空草稿 → 删除记录）
   useEffect(() => {
-    saveDraft(draft);
-  }, [draft]);
+    setSaveState(saveDraft(storage, draft));
+  }, [storage, draft]);
 
-  // 首次查询命中时，把方向回填进草稿（用户不必重打；仍可编辑）
+  // ★★ 自动回填（v0.7 修复）：**只对空草稿**、且用户**没有**为当前查询清空过。
+  //    v0.6 的判定是「方向字段为空就填」→ 清空后立刻被填回、手删方向也被填回。
   useEffect(() => {
-    if (result && !draft.direction.trim()) {
-      setDraft((d) => ({ ...d, direction: result.query }));
-    }
-  }, [result, draft.direction]);
+    if (!result) return;
+    if (!shouldAutoFillDirection({
+      query: result.query,
+      direction: draft.direction,
+      draftEmpty: isDraftBlank(draft),
+      userClearedFor,
+    })) return;
+    // 填入方向 **并冻结这次查询的证据**（关联从此显式，不再靠隐式取「当前 result」）
+    setDraft((d) => ({
+      ...d,
+      direction: d.direction.trim() ? d.direction : result.query,
+      linkedQuery: result.query,
+      linkedAt: new Date().toISOString(),
+      linkedCoverage: freezeCoverage(result, new Date().toISOString()),
+    }));
+  }, [result, draft, userClearedFor]);
 
   const payload = useMemo(
     () => buildResearchRequestPayload(draft, result, new Date().toISOString()),
@@ -145,6 +166,26 @@ export function DirectionLookupSection({
       setCopied(null);
     }
   };
+
+  /** ★ 清空草稿：表单 + 关联状态 + 持久化 + 复制态**一起**清，并记住「为哪个查询清空过」 */
+  const clearDraft = () => {
+    setDraft({ ...EMPTY_DRAFT });
+    setCopied(null);
+    setUserClearedFor(query);
+  };
+
+  /** ★ 以当前查询**新建**草稿：重置草稿并**改绑**到当前查询（显式动作，非静默） */
+  const relinkToCurrentQuery = () => {
+    if (!result) return;
+    setDraft({ ...EMPTY_DRAFT, direction: result.query });
+    setCopied(null);
+    setUserClearedFor('');
+  };
+
+  /** 当前查询是否与草稿关联的查询不同（★ 只比字符串；用于决定是否提示/提供「新建」按钮） */
+  const queryChanged = Boolean(result)
+    && Boolean(draft.linkedQuery)
+    && result!.query !== draft.linkedQuery;
 
   return (
     <section className="dl" aria-label="方向查询">
@@ -216,7 +257,7 @@ export function DirectionLookupSection({
           {/* ★ 「未覆盖」≠「结构上无对应」—— 必须分开说，否则用户以为工具根本帮不上 */}
           {result.verdict === 'none' && (
             <ul className="dl-none-explain">
-              {NONE_EXPLAIN.map((t, i) => (
+              {noneExplain(result.resolution?.taxonomySize ?? 0).map((t, i) => (
                 <li key={i}>
                   {t.split('**').map((seg, j) => (j % 2 === 1 ? <strong key={j}>{seg}</strong> : seg))}
                 </li>
@@ -283,9 +324,12 @@ export function DirectionLookupSection({
         </div>
       )}
 
-      {/* ★ 研究请求草稿：**只在查询之后出现**（先把方向查清楚，再谈把它变成请求）。
-          ★ 未查询时不渲染 —— 与既有语义守卫一致：未查询不得出现「未覆盖 ≠ …」类解释。 */}
-      {result && (
+      {/* ★ 研究请求草稿（v0.7）：
+          · **有查询结果**时出现（把方向变成请求）
+          · **草稿非空**时也出现 —— 这样**刷新/重进页面后恢复的草稿可见可编辑**
+            （v0.6 只在有 `result` 时渲染 → 恢复的草稿在用户再查一次之前**看不见**，
+             再查一次时新查询结果又会冒充原证据） */}
+      {(result || !isDraftBlank(draft)) && (
         <ResearchRequestDraftBlock
           lookup={result}
           draft={draft}
@@ -295,6 +339,11 @@ export function DirectionLookupSection({
           payloadMd={payloadMd}
           copied={copied}
           onCopy={copy}
+          onClear={clearDraft}
+          onRelink={relinkToCurrentQuery}
+          queryChanged={queryChanged}
+          saveState={saveState}
+          loadState={initialLoad}
         />
       )}
 
@@ -337,8 +386,14 @@ export function ResearchRequestDraftBlock({
   payloadMd,
   copied,
   onCopy,
+  onClear,
+  onRelink,
+  queryChanged,
+  saveState,
+  loadState,
 }: {
-  lookup: DirectionLookupResult;
+  /** 当前查询结果（未查询 → null）。★ **不是**证据来源，证据在 `draft.linkedCoverage` */
+  lookup: DirectionLookupResult | null;
   draft: ResearchRequestDraft;
   setDraft: (updater: (d: ResearchRequestDraft) => ResearchRequestDraft) => void;
   payload: ResearchRequestPayload;
@@ -346,15 +401,31 @@ export function ResearchRequestDraftBlock({
   payloadMd: string;
   copied: 'json' | 'md' | null;
   onCopy: (kind: 'json' | 'md', text: string) => void;
+  /** ★ 清空：表单 + 关联 + 持久化 + 复制态一起清，且不得被自动回填 */
+  onClear: () => void;
+  /** ★ 以当前查询**新建**草稿（显式改绑，非静默） */
+  onRelink: () => void;
+  /** 当前查询与草稿关联查询是否不同（只比字符串） */
+  queryChanged: boolean;
+  /** 保存结果（null = 尚未写）—— ★ 失败必须显示「未保存」 */
+  saveState: SaveDraftResult | null;
+  /** 首屏读取结果 —— ★ 坏数据 / 存储不可用必须披露 */
+  loadState: LoadDraftResult;
 }) {
   const missing = missingDraftFields(draft);
   const set = (k: keyof ResearchRequestDraft) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => setDraft((d) => ({ ...d, [k]: e.target.value.slice(0, DRAFT_FIELD_MAX) }));
 
+  const storageUnavailable = saveState?.ok === false && saveState.reason === 'unavailable';
+  const saveFailed = saveState?.ok === false && saveState.reason !== 'unavailable';
+  const cc = payload.coverage_check;
+
   return (
     <details className="dl-draft" open>
-      <summary>把「{lookup.query}」变成研究请求草稿（可导出交接）</summary>
+      <summary>
+        把「{lookup?.query || draft.linkedQuery || '这个方向'}」变成研究请求草稿（可导出交接）
+      </summary>
       <p className="dl-draft-lead">
         研究侧当前<strong>只覆盖研究侧选定的方向</strong>。若你关心的方向不在其中，
         可以在这里写下你<strong>真正想回答的问题</strong>，导出成一份
@@ -363,9 +434,30 @@ export function ResearchRequestDraftBlock({
         它只是你的诉求记录（存在本机，不上传）。
       </p>
 
+      {/* ★★ 存储状态必须**诚实**：不可用 / 保存失败 / 读到坏数据，都要说，不得假装成功 */}
+      {(storageUnavailable || saveFailed || loadState.status === 'corrupt'
+        || (loadState.status === 'loaded' && loadState.issues.length > 0)) && (
+        <p className="dl-draft-storage" role="status">
+          {storageUnavailable && <>★ <strong>本机存储不可用</strong>（浏览器隐私模式或被禁用）——
+            草稿仍可填写与导出，但<strong>刷新后会丢失</strong>，请先复制内容。</>}
+          {saveFailed && <>★ <strong>草稿未能保存到本机</strong>（{saveState!.reason === 'write_failed'
+            ? '存储写入失败（可能已满）' : '存储删除失败'}）—— 当前内容仍在本页可用，
+            <strong>刷新后可能丢失</strong>，请先复制内容。</>}
+          {loadState.status === 'corrupt' && <>★ 检测到<strong>无法使用的旧草稿记录</strong>
+            （{loadState.reason === 'json' ? 'JSON 语法损坏'
+              : loadState.reason === 'shape' ? '结构不合法' : '内容过大'}）→
+            已<strong>忽略</strong>该记录，未覆盖你的新输入。</>}
+          {loadState.status === 'loaded' && loadState.issues.length > 0 && (
+            <>★ 恢复草稿时发现<strong>不合法的字段</strong>，已安全降级（
+              {loadState.issues.slice(0, 3).join('；')}
+              {loadState.issues.length > 3 ? ` 等 ${loadState.issues.length} 项` : ''}）。</>
+          )}
+        </p>
+      )}
+
       <div className="dl-draft-form">
         <label className="dl-draft-field">
-          <span>研究方向</span>
+          <span>研究方向（可细化，不必与查询词相同）</span>
           <input value={draft.direction} onChange={set('direction')}
                  placeholder="例如：汽车 · 智能驾驶合规化" aria-label="研究方向" />
         </label>
@@ -402,14 +494,29 @@ export function ResearchRequestDraftBlock({
         </p>
       )}
 
+      {/* ★★ 关联披露：请求原文 ↔ 查询证据**分开说**（不做相似度判断，只陈述事实） */}
       <p className="dl-draft-facts">
-        <strong>随草稿一起带走的覆盖查询结果</strong>（工具侧事实，供审查者核对）：
-        <span className={`dl-verdict dl-v-${payload.coverage_check.verdict}`}>
-          {payload.coverage_check.verdict}
-        </span>
-        —— {payload.coverage_check.verdict_meaning}
-        当前研究对象 {payload.coverage_check.current_objects.length} 个 ·
-        历史案例 {payload.coverage_check.historical_cases.length} 个。
+        <strong>本草稿的覆盖查询证据</strong>：
+        {cc.executed ? (
+          <>
+            属于查询 <code>{payload.linkage.linked_query}</code>
+            （{payload.linkage.linked_at ? payload.linkage.linked_at.slice(0, 19).replace('T', ' ') : '时间未记录'}）：
+            <span className={`dl-verdict dl-v-${cc.verdict}`}>{cc.verdict}</span>
+            —— {cc.verdict_meaning}
+            当前研究对象 {cc.current_objects.length} 个 ·
+            历史案例 {cc.historical_cases.length} 个。
+          </>
+        ) : (
+          <>★ <strong>未关联任何查询</strong> —— 导出内容里<strong>没有</strong>查询证据。
+            这不代表「未覆盖」，只代表「没查过」。</>
+        )}
+        {queryChanged && (
+          <>
+            <br />
+            ★ 当前界面的查询是 <code>{payload.linkage.current_query}</code>，
+            <strong>与本草稿的证据不同</strong> —— 新查询结果<strong>未</strong>附加到本草稿。
+          </>
+        )}
         <br />
         ★ <strong>主题名命中 ≠ 结构对应</strong>；<strong>未覆盖 ≠ 结构上不存在对应</strong>。
       </p>
@@ -423,15 +530,26 @@ export function ResearchRequestDraftBlock({
                 onClick={() => onCopy('md', payloadMd)}>
           {copied === 'md' ? '已复制 ✓' : '复制 Markdown'}
         </button>
-        <button type="button" className="dl-btn dl-btn-ghost"
-                onClick={() => setDraft(() => EMPTY_DRAFT)}>
+        {lookup && (
+          <button type="button" className="dl-btn"
+                  onClick={onRelink}
+                  title="清空当前草稿，并以当前查询重新建立关联">
+            以当前查询新建草稿
+          </button>
+        )}
+        <button type="button" className="dl-btn dl-btn-ghost" onClick={onClear}>
           清空草稿
         </button>
-        <span className="dl-draft-note">
-          ★ 草稿无正式编号（<code>id: null</code>）· 状态 <code>DRAFT_NOT_REVIEWED</code> ·
-          仅存本机、未上传
-        </span>
       </div>
+
+      <p className="dl-draft-note">
+        ★ 草稿无正式编号（<code>id: null</code>）· 状态 <code>DRAFT_NOT_REVIEWED</code> ·
+        {storageUnavailable
+          ? <strong>本机存储不可用 —— 刷新后会丢失</strong>
+          : saveFailed
+            ? <strong>未保存到本机 —— 刷新后可能丢失</strong>
+            : <>仅存本机、未上传{saveState?.ok ? '（已保存）' : ''}</>}
+      </p>
 
       <details className="dl-draft-preview">
         <summary>预览导出内容（可手动选中复制）</summary>
