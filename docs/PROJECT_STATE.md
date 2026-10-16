@@ -20,7 +20,7 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `975108f`（拆分）· `e171d93`（回填）—— **v0.5 批次的新提交见 `git log`** · working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | `5d7efaa`（v0.5 治理批次）· 前序 `975108f`（拆分）· `e171d93`（回填）· working tree clean · ★ 接班仍须跑 `git log -1` |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
@@ -29,7 +29,7 @@
 | **测试** | **1021 passed / 0 failed / 39 files**（本轮 +5 条回归，全部针对真实缺陷） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
-| **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁） |
+| **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 与 **`5d7efaa` 的 CI 均 success**（Actions runner 本身就是干净检出 = 干净环境实证；干净克隆另在本地复验：恢复 2,855 行日历 + 全部门禁 PASS + monorepo 25/25 + npm ci/tsc/**1021 测试**/build 全 OK） |
 | **历史事件地图** | 4 题材 / **13 事件** · 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· v0.5 审计结论：**全部 13 事件数值零计算错误**（DB 逐项复算一致），缺陷集中在陈旧文字/分类/UI 呈现，已修 |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
