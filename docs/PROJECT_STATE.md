@@ -20,7 +20,7 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `796ede2`（**文档提交**：回填 v0.5 HEAD）· 前序 `5d7efaa`（**实现提交**：日历补全 + 事件地图更正）· `975108f`（实现：行情库拆分）· `e171d93`（文档：回填）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | `d3a5a15`（**实现提交**：v0.6 产品工作流验收 + 研究请求草稿）· 前序 `796ede2` / `e171d93`（文档：回填 HEAD）· `5d7efaa`（实现：日历补全 + 事件地图更正）· `975108f`（实现：行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
