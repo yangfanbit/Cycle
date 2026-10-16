@@ -40,12 +40,23 @@ const ALL_CANDIDATE_IDS = [
   'CC-2026-EMBODIED-AI',
   'CC-2026-OPTICAL-LINK',
   'CC-2026-OFFSHORE-WIND',
+  // ★★ 2026-10-16 补（v0.6 D 工作流发现）：此前漏了第 6 个候选 ——
+  //   本清单是**手写**的，新增候选时不会报错，于是 AUTO-SMARTDRIVE（汽车方向）
+  //   从未被这套 UI 测试覆盖过。下面的完整性断言就是防它再次漂移。
+  'CC-2026-AUTO-SMARTDRIVE',
 ];
 
 /* ---------------- 1. 数据可达性 ---------------- */
 
 describe('Structural Analogy UI · 数据可达性', () => {
-  it('5 个 Current Candidate 都能找到自己的 Structural Analogy 数据', () => {
+  it('★★ 手写候选清单必须与真实数据集**完全一致**（防再次漏候选）', () => {
+    // ★ 2026-10-16：此前清单漏了 CC-2026-AUTO-SMARTDRIVE 而无人发现 ——
+    //   手写清单与数据集的漂移必须被钉死，否则「新增候选 → 无 UI 测试」会静默重演。
+    const realIds = dataset.candidates.map((c) => c.candidateId).sort();
+    expect([...ALL_CANDIDATE_IDS].sort()).toEqual(realIds);
+  });
+
+  it('6 个 Current Candidate 都能找到自己的 Structural Analogy 数据', () => {
     for (const id of ALL_CANDIDATE_IDS) {
       const c = structuralAnalogyForCandidate(dataset, id);
       expect(c, id).not.toBeNull();

@@ -42,9 +42,44 @@
 - Preview / Production isolation
 - Static PWA runtime
 
-## ★★ 当前主线（下一步）：**ThreeC 1.2 —— 接通工作流（Usage-Driven）**（2026-10-06 起）
+## ★★ 当前主线（下一步）：**ThreeC 1.3 —— 用户驱动的研究请求 + 真实工作流验证**（2026-10-16 起）
 
 > 置于此处是刻意的：**这是现在唯一要做的事**。下方 §2 起为状态与历史存档。
+
+### 上一主线（ThreeC 1.2 · 接通工作流）—— ✅ **已完成**（2026-10-16 实测确认）
+
+> 原文与逐段对照保留在下方「2026-10-06 规划」存档中，**不改写**。
+> 这里只记录**完成事实与证据**（v0.6 A 工作流逐条核验）：
+
+| 原 P0 | 状态 | 代码证据 | 测试证据 |
+|---|---|---|---|
+| 快照页的**研究对象 → SA 详情** | ✅ 已完成 | `CurrentSnapshotSection.tsx:404-413`（`onOpenObject` → `onClick`）· 接线 `App.tsx:313` → `focusObject`（`App.tsx:155`） | `CurrentSnapshotBody.test.tsx:248` |
+| **候选计数 → 具体历史对象**（含「为什么不对应」） | ✅ 已完成 | `CurrentSnapshotSection.tsx:114-123`（`onOpenHistoricalCase` → `onClick`）· 接线 `App.tsx:312` | `CurrentSnapshotBody.test.tsx:210 / 220 / 227` |
+| **结构对应可查看**（维度 / 为什么 / 哪里不同 / 还缺什么） | ✅ 已完成 | `snapshotAdapter.ts`（回指解析）+ `CurrentSnapshotSection.tsx:440-475` | `CurrentSnapshotBody.test.tsx:238 / 258` · `snapshotAdapter.test.ts:69-88`（真实数据：resolved=true、89 条明细、唯一 `SUPPORTED` = `C-2023-AD` 跨主题） |
+| 覆盖边界**不再人工维护** | ✅ 已完成（v0.6） | `App.tsx` 覆盖边界横幅改为由 Contract v1.2 `taxonomy` 段**实时推导**根大主题 | `themeGranularity` / 现有 taxonomy 断言 |
+
+★ 2026-10-06 的原文与当时的对象数（5 个当前对象 / 79 条比对）是**当时的快照**，
+不得与当前（6 个候选 / 89 个历史对象 / 534 对）混写 —— 故原文整体保留为历史。
+
+### 主线目标（1.3）
+
+> **不再无条件扩大题材或 Research Core** —— 先让**真实用户**能把「我关心的方向」
+> 变成可交接的研究请求，并用**真实工作流**验证它跑得通。
+
+| 优先级 | 做什么 | 实用理由 |
+|---|---|---|
+| **P0** | **用户研究请求草稿**（方向 + 研究问题 + 为什么关注 + 已知线索 + 时间范围；随行带覆盖查询结果；导出 JSON / Markdown） | 6 个候选是研究侧选的；用户关心的方向**大概率不在其中**，此前只能「查到没有」然后**无处可去**。★ 草稿**不落库、不给正式编号**，须经 Research 审查 |
+| **P1** | **真实工作流验证**：汽车（历史足 / 当前窄）· 医药（两侧都有）· 文化传媒（仅历史）三场景走通 | 用**真实场景**而非单元测试证明「七段连成一条路」 |
+| **P2** | 当前对象 **vs 历史生命周期**对照 | 「理解主题生命周期」目标的落点 |
+| **P3** | 补 **T1/T2 一手来源** | 现有观察**全为 T3**（媒体转述），可信度上限受限 |
+
+★ 明确**不做**：评分 / 排序 / 概率 / 预测 / 买卖信号；不因「题材数好看」而扩题材
+（扩边属**研究轮次**，须有真实用户需求或研究依据）。
+
+## 存档：上一主线（ThreeC 1.2 —— 接通工作流（Usage-Driven））（2026-10-06 起）
+
+> ★ 以下为 **2026-10-06 的规划原文**，保留为历史分析（含当时的对象数与判定）。
+> 完成情况见上方「上一主线 —— ✅ 已完成」。
 
 > **规划依据**：用 §5「产品最终工作流」逐段对照现状。
 > **结论：七段都存在，但没连成一条能走通的路。**
@@ -178,9 +213,12 @@
 > Research Core：**FROZEN**
 > Product **1.1.0：RELEASED**（tag `v1.1.0`）· 1.0 已冻结（tag `v1.0.0`）
 > Deployment：**PRODUCTION**
-> Historical Universe：**79**（52 Campaign + 27 Research Candidate）
+> Historical Universe：**89**（62 Campaign + 27 Research Candidate）
+> ★ 2026-10-16 更正：此前此处写 **79**（52 + 27）—— 那是 **v0.4 冻结时的对象数**，
+>   此后 R02-03 / R02-04 / R02-05 等研究轮次已入库 10 个 Campaign（52 → 62）。
+>   （v0.4 的 79 保留在本文上方「Research Core Release v0.4」历史记录里，**不改**。）
 > Research expansion：**DEFERRED**
-> SA / TO：**FROZEN**
+> SA / TO：**FROZEN**（SA `v0_13` · 快照 `MS-2026-10-13-01` = 唯一 CANONICAL）
 
 **1.1 新增（已上线）**：Market Snapshot 运行时 · 本期研究快照页面 · 快照 diff（月度变化）·
 两个纯投影器 · 东方财富 EOD 取数 · Lifecycle Tracking · 首页大主题分类配色 ·

@@ -1,9 +1,19 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   coveredTerms,
   lookupDirection,
   type DirectionLookupResult,
 } from '../../data/timeline/directionLookup';
+import {
+  DRAFT_FIELD_MAX,
+  EMPTY_DRAFT,
+  buildResearchRequestPayload,
+  isDraftEmpty,
+  missingDraftFields,
+  renderResearchRequestMarkdown,
+  type ResearchRequestDraft,
+  type ResearchRequestPayload,
+} from '../../data/timeline/researchRequestDraft';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
 import type { CurrentCandidateDataset } from '../../data/timeline/currentCandidate';
 
@@ -47,6 +57,33 @@ const NONE_EXPLAIN = [
   '本工具只能如实说「还没法比」，而不是「比过了、不成立」。',
 ];
 
+/**
+ * 草稿的本机持久化（★ 只在本机；不上传、不写库）。
+ * 键名带版本号：将来改结构时可安全弃用旧键，不会读到半截数据。
+ */
+const DRAFT_STORAGE_KEY = 'threec.researchRequestDraft.v1';
+
+function loadDraft(): ResearchRequestDraft {
+  try {
+    const raw = window.localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (!raw) return EMPTY_DRAFT;
+    const parsed = JSON.parse(raw) as Partial<ResearchRequestDraft>;
+    return { ...EMPTY_DRAFT, ...parsed };
+  } catch {
+    // 隐私模式 / 存储被禁 / 内容损坏 → 静默降级为空草稿（不阻塞使用）
+    return EMPTY_DRAFT;
+  }
+}
+
+function saveDraft(d: ResearchRequestDraft): void {
+  try {
+    if (isDraftEmpty(d)) window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+    else window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(d));
+  } catch {
+    // 存不下就算了 —— 草稿仍在本页内存里可用
+  }
+}
+
 export function DirectionLookupSection({
   source,
   dataset,
@@ -68,6 +105,45 @@ export function DirectionLookupSection({
   const submit = (v: string) => {
     const t = v.trim();
     if (t) setQuery(t);
+  };
+
+  /* ------------------------------------------------------------------
+   * 研究请求草稿（ThreeC 1.3）
+   *
+   * ★ 草稿只存在**本机**：localStorage（键名自带版本，便于将来清理）。
+   *   不上传、不写库、不生成正式 ID。读取失败（隐私模式 / 禁用存储）静默降级为空草稿。
+   * ------------------------------------------------------------------ */
+  const [draft, setDraft] = useState<ResearchRequestDraft>(() => loadDraft());
+  const [copied, setCopied] = useState<'json' | 'md' | null>(null);
+
+  useEffect(() => {
+    saveDraft(draft);
+  }, [draft]);
+
+  // 首次查询命中时，把方向回填进草稿（用户不必重打；仍可编辑）
+  useEffect(() => {
+    if (result && !draft.direction.trim()) {
+      setDraft((d) => ({ ...d, direction: result.query }));
+    }
+  }, [result, draft.direction]);
+
+  const payload = useMemo(
+    () => buildResearchRequestPayload(draft, result, new Date().toISOString()),
+    [draft, result],
+  );
+  const payloadJson = useMemo(() => JSON.stringify(payload, null, 2), [payload]);
+  const payloadMd = useMemo(() => renderResearchRequestMarkdown(payload), [payload]);
+
+  const copy = async (kind: 'json' | 'md', text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(kind);
+      window.setTimeout(() => setCopied(null), 2000);
+    } catch {
+      // ★ 剪贴板不可用（旧浏览器 / 非安全上下文 / 测试环境）→ 不假装成功：
+      //   草稿区里的 <textarea> 永远可见可选中，用户可手动复制。
+      setCopied(null);
+    }
   };
 
   return (
@@ -207,6 +283,21 @@ export function DirectionLookupSection({
         </div>
       )}
 
+      {/* ★ 研究请求草稿：**只在查询之后出现**（先把方向查清楚，再谈把它变成请求）。
+          ★ 未查询时不渲染 —— 与既有语义守卫一致：未查询不得出现「未覆盖 ≠ …」类解释。 */}
+      {result && (
+        <ResearchRequestDraftBlock
+          lookup={result}
+          draft={draft}
+          setDraft={setDraft}
+          payload={payload}
+          payloadJson={payloadJson}
+          payloadMd={payloadMd}
+          copied={copied}
+          onCopy={copy}
+        />
+      )}
+
       <details className="dl-terms">
         <summary>能查什么？—— 覆盖词表（{terms.length} 个大主题）</summary>
         <p className="dl-dim">
@@ -226,5 +317,131 @@ export function DirectionLookupSection({
         </ul>
       </details>
     </section>
+  );
+}
+
+/* ================================================================================
+ * 研究请求草稿区（ThreeC 1.3 · Usage-Driven）
+ *
+ * ★★ 定位：用户查到方向之后，**把它变成一次真正的研究请求**。
+ * ★ 这是**草稿** —— 无正式 ID、不入库、不上传；须经 Research 审查。
+ * ★ 覆盖查询四态结果**随草稿一起导出**（用户与审查者看到同一份事实）。
+ * ★ 单独导出以便测试直接渲染（`DirectionLookupSection` 只在查询后渲染它）。
+ * ================================================================================ */
+export function ResearchRequestDraftBlock({
+  lookup,
+  draft,
+  setDraft,
+  payload,
+  payloadJson,
+  payloadMd,
+  copied,
+  onCopy,
+}: {
+  lookup: DirectionLookupResult;
+  draft: ResearchRequestDraft;
+  setDraft: (updater: (d: ResearchRequestDraft) => ResearchRequestDraft) => void;
+  payload: ResearchRequestPayload;
+  payloadJson: string;
+  payloadMd: string;
+  copied: 'json' | 'md' | null;
+  onCopy: (kind: 'json' | 'md', text: string) => void;
+}) {
+  const missing = missingDraftFields(draft);
+  const set = (k: keyof ResearchRequestDraft) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => setDraft((d) => ({ ...d, [k]: e.target.value.slice(0, DRAFT_FIELD_MAX) }));
+
+  return (
+    <details className="dl-draft" open>
+      <summary>把「{lookup.query}」变成研究请求草稿（可导出交接）</summary>
+      <p className="dl-draft-lead">
+        研究侧当前<strong>只覆盖研究侧选定的方向</strong>。若你关心的方向不在其中，
+        可以在这里写下你<strong>真正想回答的问题</strong>，导出成一份
+        <strong>草稿</strong>交给研究流程。
+        <strong>草稿不会自动进入研究库</strong>，也<strong>不会自动获得正式编号</strong> ——
+        它只是你的诉求记录（存在本机，不上传）。
+      </p>
+
+      <div className="dl-draft-form">
+        <label className="dl-draft-field">
+          <span>研究方向</span>
+          <input value={draft.direction} onChange={set('direction')}
+                 placeholder="例如：汽车 · 智能驾驶合规化" aria-label="研究方向" />
+        </label>
+
+        <label className="dl-draft-field">
+          <span>希望回答的研究问题（一行一条）</span>
+          <textarea value={draft.researchQuestions} onChange={set('researchQuestions')}
+                    rows={3} aria-label="研究问题"
+                    placeholder={'例如：\nL3 强制国标落地前后，产业链哪一段先反应？\n历史上类似「合规化驱动」的行情持续多久？'} />
+        </label>
+
+        <label className="dl-draft-field">
+          <span>为什么关注这个方向</span>
+          <textarea value={draft.whyCare} onChange={set('whyCare')} rows={2}
+                    aria-label="为什么关注" placeholder="例如：所在行业 / 客户需求 / 已观察到现象" />
+        </label>
+
+        <label className="dl-draft-field">
+          <span>已知线索 / 来源（可选，一行一条）</span>
+          <textarea value={draft.knownLeads} onChange={set('knownLeads')} rows={2}
+                    aria-label="已知线索" placeholder="例如：2024-06 某部委征求意见稿；某券商报告" />
+        </label>
+
+        <label className="dl-draft-field">
+          <span>希望调查的历史时间范围</span>
+          <input value={draft.timeRange} onChange={set('timeRange')}
+                 aria-label="历史时间范围" placeholder="例如：2018-2025" />
+        </label>
+      </div>
+
+      {missing.length > 0 && (
+        <p className="dl-draft-missing">
+          ★ 还缺：{missing.join(' / ')}（可以继续补，也可以先导出不完整的草稿 —— 草稿允许不完整）
+        </p>
+      )}
+
+      <p className="dl-draft-facts">
+        <strong>随草稿一起带走的覆盖查询结果</strong>（工具侧事实，供审查者核对）：
+        <span className={`dl-verdict dl-v-${payload.coverage_check.verdict}`}>
+          {payload.coverage_check.verdict}
+        </span>
+        —— {payload.coverage_check.verdict_meaning}
+        当前研究对象 {payload.coverage_check.current_objects.length} 个 ·
+        历史案例 {payload.coverage_check.historical_cases.length} 个。
+        <br />
+        ★ <strong>主题名命中 ≠ 结构对应</strong>；<strong>未覆盖 ≠ 结构上不存在对应</strong>。
+      </p>
+
+      <div className="dl-draft-actions">
+        <button type="button" className="dl-btn"
+                onClick={() => onCopy('json', payloadJson)}>
+          {copied === 'json' ? '已复制 ✓' : '复制 JSON'}
+        </button>
+        <button type="button" className="dl-btn"
+                onClick={() => onCopy('md', payloadMd)}>
+          {copied === 'md' ? '已复制 ✓' : '复制 Markdown'}
+        </button>
+        <button type="button" className="dl-btn dl-btn-ghost"
+                onClick={() => setDraft(() => EMPTY_DRAFT)}>
+          清空草稿
+        </button>
+        <span className="dl-draft-note">
+          ★ 草稿无正式编号（<code>id: null</code>）· 状态 <code>DRAFT_NOT_REVIEWED</code> ·
+          仅存本机、未上传
+        </span>
+      </div>
+
+      <details className="dl-draft-preview">
+        <summary>预览导出内容（可手动选中复制）</summary>
+        <h5>JSON</h5>
+        <textarea className="dl-draft-out" readOnly value={payloadJson}
+                  rows={12} aria-label="草稿 JSON" />
+        <h5>Markdown</h5>
+        <textarea className="dl-draft-out" readOnly value={payloadMd}
+                  rows={12} aria-label="草稿 Markdown" />
+      </details>
+    </details>
   );
 }

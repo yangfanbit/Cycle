@@ -187,11 +187,28 @@ async function resolveDetails(snapshot: MarketSnapshot): Promise<ObjectCandidate
     const expectedRuleSet = src?.rule_set_version;
     const expectedArtifact = src?.artifact_version;
 
-    if (expectedRuleSet && ds.ruleSetVersion !== expectedRuleSet) {
+    // ★★ 2026-10-16 修复（fail-open → fail-closed）：
+    //
+    //   原实现是 `if (expected && 不一致) return fallback()` —— 于是当快照
+    //   **缺 `candidates_source`** 或**缺任一版本字段**时，`expected` 为 undefined，
+    //   校验被**短路跳过**，两个不同版本（甚至来源不明）的产物被**静默合并**。
+    //
+    //   这与 2026-10-13 那次「v0_12 快照 × v0_13 细节被静默合并」是**同一模式**
+    //   —— 那次是「只校验了 rule_set_version」，这次是「缺字段就完全不校验」。
+    //   当前 14 份快照都带版本字段（有测试钉死），故为**潜伏缺陷**：
+    //   一旦将来有快照漏写版本，页面会**不加提示地**展示可能对不上的结构对应。
+    //
+    //   修法：版本字段是**必须项**。缺失/为空 → 一律拒绝合并（诚实「未解析」），
+    //   ★ 不降低既有严格度（原本能拒绝的仍然拒绝），只是把「没得可校」也从
+    //   「放行」改为「拒绝」—— 与契约「读取方必须先校验版本再合并」一致。
+    if (!expectedRuleSet || !expectedArtifact) {
+      return fallback();
+    }
+    if (ds.ruleSetVersion !== expectedRuleSet) {
       // 规则集不一致 → 拒绝合并（诚实空态），避免用错版本的细节
       return fallback();
     }
-    if (expectedArtifact && ds.artifactVersion !== expectedArtifact) {
+    if (ds.artifactVersion !== expectedArtifact) {
       // ★ 快照与细节的 **artifact 版本**不一致 → 拒绝合并（同一原则：宁可「未解析」，
       //   也不把两个不同版本的产物拼在一起 —— 那会让使用者看到**混合的**结构对应）。
       return fallback();

@@ -2921,6 +2921,37 @@ html, body {
 .dl-term:hover { border-color: var(--accent); color: var(--ink); }
 .dl-term-n { font-size: 10px; color: var(--ink-3); }
 
+/* ---------- 研究请求草稿（Research Request Draft · ThreeC 1.3） ---------- */
+.dl-draft { margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 10px; }
+.dl-draft > summary { cursor: pointer; font-size: 12.5px; color: var(--ink-2); font-weight: 600; }
+.dl-draft-lead { margin: 8px 0 10px; font-size: 11.5px; color: var(--ink-2); line-height: 1.75; }
+.dl-draft-form { display: flex; flex-direction: column; gap: 8px; }
+.dl-draft-field { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--ink-3); }
+.dl-draft-field > span { font-weight: 600; color: var(--ink-2); }
+.dl-draft-field input, .dl-draft-field textarea {
+  font-family: var(--font); font-size: 12px; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 5px 8px; width: 100%; box-sizing: border-box; resize: vertical;
+}
+.dl-draft-field input:focus, .dl-draft-field textarea:focus { outline: none; border-color: var(--accent); }
+.dl-draft-missing { margin: 8px 0 0; font-size: 11px; color: var(--ink-3); }
+.dl-draft-facts {
+  margin: 10px 0; font-size: 11.5px; color: var(--ink-2); line-height: 1.8;
+  border-left: 2px solid var(--line); padding-left: 8px;
+}
+.dl-draft-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.dl-btn-ghost { background: transparent; color: var(--ink-3); }
+.dl-draft-note { font-size: 10.5px; color: var(--ink-3); }
+.dl-draft-note code { font-size: 10px; }
+.dl-draft-preview { margin-top: 10px; }
+.dl-draft-preview > summary { cursor: pointer; font-size: 11.5px; color: var(--ink-2); }
+.dl-draft-preview h5 { margin: 10px 0 4px; font-size: 11px; color: var(--ink-3); }
+.dl-draft-out {
+  width: 100%; box-sizing: border-box; font-family: var(--mono, monospace); font-size: 10.5px;
+  color: var(--ink-2); background: var(--bg-2, var(--bg)); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 8px; resize: vertical; white-space: pre;
+}
+
 /* ---------- 本期研究快照（Current Snapshot · ThreeC 1.1 Phase 1.3） ---------- */
 .cs-wrap { display: flex; flex-direction: column; gap: 4px; }
 .cs-head {

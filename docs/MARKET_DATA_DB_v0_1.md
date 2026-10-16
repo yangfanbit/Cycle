@@ -16,9 +16,9 @@
 ```
 research/database/
   cycle_research.db    canonical 研究表（被 Git 跟踪）        0.96 MB   ← 入库
-  market_data.db       行情三表（本地生成，.gitignore 忽略）   65.48 MB  ← 不入库
+  market_data.db       行情三表（本地生成，.gitignore 忽略）   65.62 MB  ← 不入库
 research/data/market/
-  snapshot/            便携快照（被 Git 跟踪）                  6.08 MiB  ← 入库
+  snapshot/            便携快照（被 Git 跟踪）                  6.09 MiB  ← 入库
     MANIFEST.json      格式版本 / 源库 sha256 / 每分片 rows+bytes+sha256 / 列顺序
     market_schema.sql  三表 DDL + 索引（与源库逐字节一致）
     market_daily/YYYY.csv.gz   按 trade_date 年份分片（含 raw + adjusted 全部 price_type）
@@ -45,7 +45,7 @@ research/data/market/
 
 | 方案 | 体积 | 可 diff | 恢复复杂度 | 结论 |
 |---|---|---|---|---|
-| **按年分片 gzip CSV + MANIFEST** | **6.08 MiB（9.2%）** | ✅ 只动变化年 | 低 | **采用** |
+| **按年分片 gzip CSV + MANIFEST** | **6.09 MiB（9.2%）** | ✅ 只动变化年 | 低 | **采用** |
 | 单个 `.db.gz` 快照 | ~15 MB 量级 | ❌ 任何变动整包重传 | 低 | 否决 |
 | 单一 CSV.gz（不分片） | 与分片相近 | ❌ 同上 | 低 | 否决 |
 | Parquet | — | — | 需 pyarrow | 环境不具备，跳过 |

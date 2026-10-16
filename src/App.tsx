@@ -24,9 +24,8 @@ import {
 } from './data/timeline/themeAnnualWindow';
 import type { ThemeGranularity } from './data/timeline/themeAnnualWindow';
 import type { HistoricalCaseAnalogyContext } from './data/timeline/historicalCase';
-import { parseCurrentCandidateDataset } from './data/timeline/currentCandidate';
 import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
-import currentCandidateFixtureJson from '@current/fixtures/example_candidates.json';
+import { selectCurrentCandidateDataset } from './data/timeline/appDatasets';
 import { buildProvenance, PROVENANCE_NOT_AVAILABLE } from './data/buildProvenance';
 import { CurrentMarketStrip } from './components/CurrentMarket/CurrentMarketStrip';
 import { CurrentWatchboardSection } from './components/CurrentWatchboard/CurrentWatchboardSection';
@@ -80,11 +79,18 @@ export default function App() {
   );
   const availableYears = useMemo(() => dataSource.years(), [dataSource]);
 
-  // Current Candidate 数据集（Phase 7）：canonical（默认空集）或示例 fixture（显式开启）
+  // Current Candidate 数据集（Phase 7）：
+  //   · `?candidates=example` → 示例 fixture（显式开启）
+  //   · 默认 → **canonical 数据集**（与 CurrentTimeLens 的 `defaultCurrentCandidateParse()`
+  //     同一份静态数据，单一数据源）
+  // ★★ 2026-10-16 修复（v0.6 D 工作流发现的 P0 接线 bug）：默认曾是 `null`，
+  //   于是「查一个方向」在默认页面上**看不到任何当前研究对象** —— 同页 Watchboard
+  //   明明展示着 6 个候选，方向查询却对「汽车」回答「只有历史案例」。
+  //   根因：选取规则只存在于本文件的接线约定里，而组件测试都直接注入 dataset
+  //   → 接线错误永远逃过测试。现抽到 `selectCurrentCandidateDataset()`（纯函数，可断言）。
   const candidatesExample = useMemo(() => exampleCandidatesEnabled(), []);
-  const currentCandidates = useMemo<CurrentCandidateDataset | null>(
-    () =>
-      candidatesExample ? parseCurrentCandidateDataset(currentCandidateFixtureJson).dataset : null,
+  const currentCandidates = useMemo<CurrentCandidateDataset>(
+    () => selectCurrentCandidateDataset({ exampleFixture: candidatesExample }),
     [candidatesExample],
   );
 
@@ -98,6 +104,18 @@ export default function App() {
     [dataSource, granularity],
   );
   const mapRows = useMemo(() => seasonalMapRows(allThemeRows), [allThemeRows]);
+
+  // ★★ 覆盖边界横幅的**数据驱动**来源（2026-10-16）：Contract v1.2 `taxonomy` 段的根大主题。
+  //   取代原人工维护的硬编码「不包含传媒/煤炭/电力/流感疫苗」—— 那四个方向此后都已入库，
+  //   硬编码声明与同页季节地图、themeGranularity 测试三方矛盾。根节点 = `parent_theme_id` 为 null。
+  //   legacy verified 源无 taxonomy 段 → 空数组 → 横幅走「无法列出」的诚实分支。
+  const taxonomyRoots = useMemo(
+    () =>
+      (dataSource.taxonomy?.() ?? [])
+        .filter((n) => n.parent_theme_id === null)
+        .map((n) => n.name),
+    [dataSource],
+  );
   const mapSummary = useMemo(() => seasonalMapSummary(mapRows), [mapRows]);
   const [openTheme, setOpenTheme] = useState<string | null>(null);
   const openThemeRow = useMemo(
@@ -213,22 +231,30 @@ export default function App() {
 
         {/* ★ 覆盖边界（ThreeC 1.2 · Usage-Driven）
             用户拿一个真实方向来问（例如「文化传媒」）时，第一件要知道的是「它在不在覆盖内」。
-            实测：历史 52 个 Campaign / 44 个主题名里，**传媒 / 文化 / 娱乐 / 教育 一个都没有** ——
-            与其让用户查半天查不到，不如直接说清楚边界。
-            ★ 本声明是**人工维护**的（canonical export 已冻结，不得改其 provenance）；
-              覆盖范围变化时必须同步更新此处。 */}
+            ★★ 2026-10-16 改为**数据驱动**（此前是人工维护的硬编码文本，已两次落后于数据：
+               原文仍称「煤炭 / 电力 / 流感疫苗 / 文化传媒 一个都没有命中」，而这四个方向
+               **此后都已被研究轮次入库** —— 与同页季节地图、themeGranularity 测试三方矛盾）。
+            ★ 现在由 Contract v1.2 的 `taxonomy` 段**实时推导**：列出当前**根大主题**，
+              「不在其中」即未覆盖。覆盖范围由 Research 决定；扩边属研究轮次，
+              Product 侧不自行推断、不编造父主题。 */}
         {!verifiedMode && mapRows.length > 0 && (
           <p className="seasonal-scope">
-            <strong>覆盖边界</strong>：历史研究集中于<strong>硬科技 · 高端制造 · 消费 · 资源 · 金融</strong>
-            等方向（汽车 / 电子 / 半导体 / 电力设备 / 医药 / 资源 / 金融 / 消费 / 军工 / 地产 等）。
-            <strong>不包含</strong>传媒 / 文化 / 娱乐 / 教育 / 煤炭 / 电力（公用事业） / 流感疫苗 等方向 ——
-            这些方向在历史研究中<strong>没有对应对象</strong>，因此本工具<strong>无法</strong>回答关于它们的
-            「历史结构对应」问题。
+            <strong>覆盖边界</strong>：
+            {taxonomyRoots.length > 0 ? (
+              <>
+                历史研究当前覆盖 <strong>{taxonomyRoots.length}</strong> 个大主题：
+                <strong>{taxonomyRoots.join(' · ')}</strong>
+                （数据来源：Contract v1.2 `taxonomy` 段，由 DB `themes` 表推导 ——
+                **不是人工列举**，研究轮次新增主题后此处自动跟上）。
+              </>
+            ) : (
+              <>当前数据源未提供 taxonomy 段（legacy verified 源）→ 无法列出覆盖范围，</>
+            )}
+            不在此列表内的方向即为<strong>未覆盖</strong>。
             <span className="seasonal-scope-note">
-              ★ 这是<strong>已实测</strong>的边界，不是保守估计：在最细的<strong>主题材</strong>口径（41 行）下，
-              「煤炭 / 电力 / 流感疫苗 / 文化传媒」<strong>一个都没有命中</strong>；
-              靠近的只有「电网 / 输变电设备」「光伏 / 新能源发电设备」（属电力设备，不是公用事业电力）。
-              与其让用户反复试，不如先说清楚 —— 需要这些方向请走上方<strong>方向查询</strong>，
+              ★ 语义边界：<strong>名字没命中 ≠ 结构上无对应</strong>（结构对应比的是机制 / 序列 /
+              事件结构，不是名字）；反过来，<strong>名字命中 ≠ 结构对应</strong> ——
+              冻结 SA 的解释才是唯一的结构对应入口。需要未覆盖方向请走上方<strong>方向查询</strong>，
               它同样只能回答「在不在覆盖内」，不能凭空造出历史对象。
               （覆盖范围由 Research 决定；扩边属研究轮次，不在 Product 侧自行推断。）
             </span>

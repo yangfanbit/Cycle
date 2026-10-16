@@ -20,7 +20,8 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `5d7efaa`（v0.5 治理批次）· 前序 `975108f`（拆分）· `e171d93`（回填）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | `796ede2`（**文档提交**：回填 v0.5 HEAD）· 前序 `5d7efaa`（**实现提交**：日历补全 + 事件地图更正）· `975108f`（实现：行情库拆分）· `e171d93`（文档：回填）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
@@ -50,6 +51,16 @@
 | 11 | `restore --apply` 遇不一致只提示 `--force`（诱导丢弃本地未快照数据） | 提示改为先判断「忘重生成快照」还是「确要重建」 |
 | 12 | `make_market_snapshot` 源库回退分支可能静默从错源生成 | canonical 分支加断言（无表/0 行即 FAIL） |
 
+### v0.6 批次已修（产品工作流验收与用户研究请求入口）
+
+| # | 缺陷 | 严重度 | 修法 |
+|---|---|---|---|
+| 1 | ★★ **方向查询默认看不到当前研究对象**（`App.tsx` 默认传 `dataset=null`）→ 同页 Watchboard 展示汽车候选，而查询「汽车」答「只有历史案例」——**一页两个相反答案** | **P0** | 默认改为 canonical 数据集；★ 选取规则抽成纯函数 `selectCurrentCandidateDataset()`（`appDatasets.ts`）使「默认必须是 canonical」**可断言**，并补 App 层接线回归（5 条，含反向对照） |
+| 2 | ★ **快照×SA 版本门禁 fail-open**：`if (expected && …)` 在快照缺 `candidates_source` / 缺版本字段时**短路放行**，静默合并来源不明的产物（与 2026-10-13 混版事故同模式） | 中（潜伏） | 改为 **fail-closed**：版本字段缺失/空串一律拒绝合并（诚实「未解析」）；补 7 条回归测试（`snapshotVersionGate.test.ts`） |
+| 3 | ★ **覆盖边界横幅过期**：硬编码称「煤炭 / 电力 / 流感疫苗 / 文化传媒 一个都没有命中」，而这四个方向**此后都已入库**（DB 实测：`TH-MEDIA` 文化传媒为**根主题**、`TH-RES-COAL` 煤炭、`TH-POWER-OP` 电力（运营端）、`TH-PHARMA-FLU` 流感疫苗） | P1 | 改为**数据驱动**：由 Contract v1.2 `taxonomy` 段实时列出根大主题，不再人工维护（已两次落后于数据） |
+| 4 | **SA UI 测试清单漏第 6 个候选**（`ALL_CANDIDATE_IDS` 手写 5 个，缺 `CC-2026-AUTO-SMARTDRIVE`）→ 汽车方向从未被该套 UI 测试覆盖 | P2 | 补齐 + 加**清单完整性断言**（手写清单必须与数据集逐一相等，防再次漂移） |
+| 5 | **无用户研究请求入口**（用户关心的方向无法转化为可交接的研究请求） | P2 | 新增**草稿**能力（扩建 `DirectionLookupSection`，非新建第二套）：5 字段表单 + 覆盖查询结果随行 + JSON/Markdown 导出/复制 + 本机 localStorage；★ 无正式 ID、不入库、不上传 |
+
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 
 1. ★ **SAR 冻结产物漂移（A 工作流定性：影响 = 0，不重生成）** ——
@@ -57,7 +68,13 @@
    与当前 DB 漂移（重算比较数如 74→317）。**实测证据**：原版脚本 + 拆分前原库**同样 FAIL/同样差异**
    → 早于本轮；**消费者矩阵**：产品 / CI / 快照投影器**均不读**；按冻结规则**不得原地重生成**。
    → 已把 `--check` 改成诚实诊断（见上表 #10），漂移本身留给后续 Research 轮次审批处理。
-2. `ms-2026-10-13-01` 未签发（产品 CANONICAL 仍是 `MS-2026-10-12-01`）· R02-05 的 4 条 DEFER 未处置。
+2. R02-05 的 4 条 DEFER 未处置（`COMM-002` · `POWEREQ-001/002` · `POWEROP-002`）。
+   ★ 2026-10-16（v0.6）**删除**了此前写在这里的「`MS-2026-10-13-01` 未签发、产品 CANONICAL
+   仍是 `MS-2026-10-12-01`」—— 实测 `research/current/market_snapshots/index.json`：
+   **10-13 是唯一 `CANONICAL`**（10-12 及更早全部 `ARCHIVED`），该说法**早已不成立**。
+   第一手证据：索引里 `CANONICAL` 计数 = 1；10-13 快照 `candidates_source`
+   `artifact_version=0.13` / `rule_set_version=structural-analogy-ruleset-v0.3`
+   与 SA `v0_13` 顶层字段**逐一相等**。
 3. 三项存量异常均**不修正**（已论证非数据错误）：11 只负前复权价（qfq 口径特性）·
    `SH000300` 2015-03-27 OHLC 违律（源缺陷，不在任何窗口）· `YILING-002603` 重复序列
    （★ 本轮的 id 统一已让**事件地图层面**不再双计，DB 层的重复序列仍在）。
@@ -93,6 +110,12 @@
    而产品消费 **SA v0_13**。`snapshotAdapter` 已修复为**同时校验 `artifact_version`**
    → 因此**默认视图的「候选明细」现在显示「未解析」**（诚实空态，拒绝跨版本合并）。
    **签发 `MS-2026-10-13-01` 后恢复**（签发 = 人工审核，属用户决定）。
+
+   > ★★ **【2026-10-16 作废】本条已不成立**：`MS-2026-10-13-01` **已于 2026-10-14 签发**，
+   > 是当前**唯一** `CANONICAL`（10-12 及更早全部 `ARCHIVED`）。
+   > 原文保留仅为留痕；**以文件顶部「当前状态」一节为准**。
+   > 实测依据：`research/current/market_snapshots/index.json`（CANONICAL 计数 = 1）+
+   > 10-13 快照 `candidates_source` 与 SA `v0_13` 版本字段逐一相等。
 2. **R02-05 的 4 条 DEFER 未处置** —— `COMM-002`（证据错配 D1）· `POWEREQ-001/002`
    （与 `C-2020-POWER-NE` 的阶段归属）· `POWEROP-002`（驱动复合）。
    粒度裁定（机制段）**只解除「粒度」阻塞**，不自动通过其余缺陷。
