@@ -19,6 +19,8 @@ BENCHMARK_SERIES = "SH000300"
 
 def main():
     conn = db.connect()
+    # ★ 2026-10-16 拆分后：trading_calendar 住在 market_data.db → 缺失必须明确失败
+    db.require_market(conn)
     dates = [r[0] for r in conn.execute(
         "SELECT DISTINCT trade_date FROM market_daily WHERE series_id=? ORDER BY trade_date",
         (BENCHMARK_SERIES,)).fetchall()]
@@ -29,8 +31,9 @@ def main():
 
     before = conn.execute("SELECT COUNT(*) FROM trading_calendar").fetchone()[0]
     for d in dates:
+        # ★ market. 限定：TEMP VIEW 兼容层只读，写必须显式指向 ATTACH 的行情 schema
         conn.execute(
-            "INSERT OR IGNORE INTO trading_calendar (trade_date, is_trading_day, calendar_type) VALUES (?,1,'cn')",
+            "INSERT OR IGNORE INTO market.trading_calendar (trade_date, is_trading_day, calendar_type) VALUES (?,1,'cn')",
             (d,))
     conn.commit()
     after = conn.execute("SELECT COUNT(*) FROM trading_calendar").fetchone()[0]

@@ -237,7 +237,9 @@ def main(argv):
             fail += 1
             continue
         conn.execute(
-            "INSERT INTO market_series (series_id,name,series_type,provider,symbol,frequency,price_type,"
+            # ★ 2026-10-16 拆分后：market_series 住在 ATTACH 的 market schema
+            #   （TEMP VIEW 兼容层只读，写必须显式限定 market.）
+            "INSERT INTO market.market_series (series_id,name,series_type,provider,symbol,frequency,price_type,"
             "adjustment_method,description) VALUES (?,?,?,?,?,'daily','adjusted','qfq',?) "
             "ON CONFLICT(series_id) DO UPDATE SET name=excluded.name, symbol=excluded.symbol",
             (sid, nm, stype, "tencent", sym, f"腾讯GTIMG日线(qfq) v0_2 自动计划 {beg}~{end}"),

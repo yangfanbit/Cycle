@@ -81,7 +81,13 @@ def chi2_uniform_month(months_count, n_months=12):
 
 
 def main():
-    con = sqlite3.connect(DB)
+    # ★ 2026-10-16 行情库拆分：本脚本同时读 canonical（events）与行情表
+    #   （AUTO_SW / PHARMA_ETF 等）→ 走 `db.connect()`（行情库存在时自动挂
+    #   TEMP VIEW 只读兼容层；未限定表名的查询行为不变）。
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(REPO, "research"))
+    from scripts import db
+    con = db.connect()
     con.row_factory = sqlite3.Row
     cur = con.cursor()
     out = {}

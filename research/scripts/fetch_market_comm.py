@@ -145,7 +145,9 @@ def main():
                   f"→ 按「不写入已知损坏数据」纪律**跳过该序列**，仅登记 raw", flush=True)
             qfq = []
         conn.execute(
-            "INSERT INTO market_series (series_id, name, series_type, provider, symbol, frequency, price_type, adjustment_method, description) "
+            # ★ 2026-10-16 拆分后：market_series 住在 ATTACH 的 market schema
+            #   （TEMP VIEW 兼容层只读，写必须显式限定 market.）
+            "INSERT INTO market.market_series (series_id, name, series_type, provider, symbol, frequency, price_type, adjustment_method, description) "
             "VALUES (?,?,?,?,?, 'daily',?,?,?) "
             "ON CONFLICT(series_id) DO UPDATE SET name=excluded.name, symbol=excluded.symbol",
             (key, name, stype, "tencent", sym,

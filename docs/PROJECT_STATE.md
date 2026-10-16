@@ -3,7 +3,55 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-13 修订）
+## ★★ 当前状态（2026-10-16 修订 · 行情库拆分）
+
+> 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
+> 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
+> ★★ **2026-10-16：行情数据库拆分完成** —— `cycle_research.db` **66.15 MB → 0.96 MB**，
+> 行情三表迁入**不入库**的 `market_data.db`，干净克隆由**被跟踪的便携快照**无网恢复。
+> 完整说明：`docs/MARKET_DATA_DB_v0_1.md`。
+
+### 实测基线（2026-10-16 · 全部实测）
+
+| 项 | 值 |
+|---|---|
+| **git HEAD** | 本轮新建提交（parent `486249f` = 拆分前基线，working tree clean）· ★ 接班仍须跑 `git log -1` |
+| **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17 表，**入库**） · `market_data.db` **65.48 MB**（行情三表 373,917 行，**不入库**） · `data/market/snapshot/` **6.08 MiB**（**入库**，恢复唯一输入） |
+| **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
+| **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（2,053,911 个 REAL 差异 0）· 两次生成 sha256 相同 |
+| **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
+| **测试** | **1016 passed / 0 failed / 39 files**（`testTimeout` 调至 20s，只调时间预算、不放宽断言） |
+| **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分改动**（DB canonical 内容逐行不变） |
+| **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` exit=0 · `validate_monorepo` exit=0 |
+| **CI** | deploy.yml 在 Research 门禁**之前**新增 `Restore market data DB` 步骤（失败即 workflow 失败，不跳门禁） |
+| **历史事件地图** | 4 题材 / **13 事件** · 跨年份比较已产品化（流感 **11 季** / 电力 **10 年**）· 回归正常（DB canonical 逐行未变） |
+| **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
+
+### 访问层（拆后新约定，详见 `docs/MARKET_DATA_DB_v0_1.md` §5）
+
+- `db.connect()` → canonical；行情库存在时自动挂 `market` schema + 三表 **TEMP VIEW 只读兼容层**
+  → 未限定表名的查询**行为不变**（读侧 14 个脚本零改动）
+- `db.connect_market()` / `db.insert()` 自动路由 → 写侧只改 `market.` 前缀（7 个脚本）
+- 行情库缺失：不需要行情的脚本照常；需要的脚本**明确失败**（`MarketDataMissing` / `no such table`），
+  **不静默返回空**
+
+### ★★ 本轮起新增的**未解决**项（不得当成已完成）
+
+1. ★ **`trading_calendar` 只有 371 行**，而 benchmark `SH000300` 有 **2,855** 个交易日
+   → 2,484 个 `market_daily` 日期无日历覆盖。**拆分前原库同样 371**（实测）→ 既有缺口；
+   补满是**数据决策**，未在迁移中顺手改（快照按真实状态导出）。
+2. `structural_analogy_feasibility_v0_2.json` / `historical_coverage_matrix_v0_1.json`
+   与当前 DB **漂移**（`sar_v0_2 --check` FAIL：重算比较数 74→317）。
+   ★ 实测：**原版脚本 + 拆分前原库同样 FAIL** → 与拆分无关，是 DB 增长后未重算的冻结产物。
+   **不重生成**（属 Research 动作）。
+3. 11 只证券负前复权价（qfq 口径特性）· `SH000300` 2015-03-27 OHLC 违律（源缺陷，不在任何窗口）·
+   `YILING-002603` 重复序列（登记冗余）→ 均**不修正**（三项均已论证非数据错误）。
+4. `raw/**/*.json` 6.5 MB 仍在 Git 中并按序列增长；**旧提交里已入库的大 DB blob 仍在历史中**
+   （禁止改写历史）→ 仓库**历史**体积不变，**未来**不再增长。
+5. 上一版的 2 项未解决仍未解决：`MS-2026-10-13-01` 未签发（产品 CANONICAL 仍是 `MS-2026-10-12-01`）·
+   R02-05 的 4 条 DEFER 未处置。
+
+## ★★ 当前状态（2026-10-13 修订）—— 已被 2026-10-16 一节取代，保留为历史
 
 > ★ **本节 2026-10-13 重写** —— 上一版停在 2026-10-12（57 Campaign / SA v0.11 / 874 测试），
 > 未反映其后的 **R02-04 / R02-05 入库**、**SA v0.13**、**Contract v1.2**、**Research CI 门禁**。

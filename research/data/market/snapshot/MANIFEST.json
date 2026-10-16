@@ -1,0 +1,169 @@
+{
+ "artifact": "market_data_snapshot",
+ "float_encoding": "Python repr() —— 精确 round-trip，**不得**四舍五入",
+ "format_version": "0.1",
+ "gzip": {
+  "compresslevel": 9,
+  "filename": "",
+  "mtime": 0
+ },
+ "null_encoding": "空字段（CSV 空列）",
+ "position": "★ 行情三表的**便携快照** —— 干净克隆在**无网络**下据此恢复 `research/database/market_data.db`。权威写入方仍是抓取器；本快照是它的**可版本化镜像**。",
+ "restore": {
+  "apply": "python research/scripts/restore_market_data.py --apply",
+  "check": "python research/scripts/restore_market_data.py --check",
+  "script": "research/scripts/restore_market_data.py",
+  "target": "research/database/market_data.db"
+ },
+ "schema_file": "market_schema.sql",
+ "schema_sha256": "2e1b7b068a1b56a75fa625f65a9dfa44ba98c2ab81a5aea6d2c7841c075aed14",
+ "shard_key": "trade_date 的年份（YYYY）",
+ "sharded_table": "market_daily",
+ "source_tables": [
+  "market_series",
+  "trading_calendar",
+  "market_daily"
+ ],
+ "tables": {
+  "market_daily": {
+   "bytes": 6367571,
+   "columns": [
+    "series_id",
+    "trade_date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "adj_close",
+    "price_type",
+    "volume",
+    "amount",
+    "data_source",
+    "retrieved_at"
+   ],
+   "rows": 373333,
+   "shard_count": 12,
+   "shards": {
+    "2015": {
+     "bytes": 82653,
+     "file": "market_daily/2015.csv.gz",
+     "rows": 4894,
+     "sha256": "8a08c23ccb334ffaad74789c13e533474145de34a1f8c801024262d20fa285d4"
+    },
+    "2016": {
+     "bytes": 129180,
+     "file": "market_daily/2016.csv.gz",
+     "rows": 8060,
+     "sha256": "9fb02ca6d6753152b610cb90b89576d9b4dbc5f1d060c3bcd0f02335193d9498"
+    },
+    "2017": {
+     "bytes": 206891,
+     "file": "market_daily/2017.csv.gz",
+     "rows": 12940,
+     "sha256": "9035fa00ea0d3969743628b0e926c5f61a81feefd53943fdd7107b5febe4184f"
+    },
+    "2018": {
+     "bytes": 483905,
+     "file": "market_daily/2018.csv.gz",
+     "rows": 27581,
+     "sha256": "a4dd5409fde0707f18b3d79b4ca4597b52a3a655976f2f14502afc311565fb5f"
+    },
+    "2019": {
+     "bytes": 819387,
+     "file": "market_daily/2019.csv.gz",
+     "rows": 48402,
+     "sha256": "a0c2f0781c12ec156a385dd240a89e204241d9053e6a9d410995b9c596ea871c"
+    },
+    "2020": {
+     "bytes": 934361,
+     "file": "market_daily/2020.csv.gz",
+     "rows": 53122,
+     "sha256": "d9fbcb957276f6cc25b82aa1c44c41e267d99520fc91662eeb6202c68eac062a"
+    },
+    "2021": {
+     "bytes": 1027146,
+     "file": "market_daily/2021.csv.gz",
+     "rows": 58152,
+     "sha256": "898f0b58f32101f5133c2a4cb8a443d0f0f7bff04ffab395b31fa1e14fade068"
+    },
+    "2022": {
+     "bytes": 922170,
+     "file": "market_daily/2022.csv.gz",
+     "rows": 54046,
+     "sha256": "8f1a0e3b0c91f8a28b45823012868f827d7304e09d7c1d5ab5e88e86f0d13030"
+    },
+    "2023": {
+     "bytes": 695636,
+     "file": "market_daily/2023.csv.gz",
+     "rows": 42676,
+     "sha256": "9ec0bb7e37f1b4c3decac6e6c37934144c7117bb987e34cff6a50f55a6062003"
+    },
+    "2024": {
+     "bytes": 574523,
+     "file": "market_daily/2024.csv.gz",
+     "rows": 34520,
+     "sha256": "c8a02bdcc44e01223c865e56e02bc7d8303d85cf43419fa0f821a60d50dbe271"
+    },
+    "2025": {
+     "bytes": 480781,
+     "file": "market_daily/2025.csv.gz",
+     "rows": 28258,
+     "sha256": "3d87021165ee566c961ee576d8d97f217142b9f3e4ed9d092fb0dd2481ead59b"
+    },
+    "2026": {
+     "bytes": 10938,
+     "file": "market_daily/2026.csv.gz",
+     "rows": 682,
+     "sha256": "fb6a9c1078eaa459439476b975a909ed5717f2494b5001101df13aa9410c0b32"
+    }
+   }
+  },
+  "market_series": {
+   "bytes": 6761,
+   "columns": [
+    "series_id",
+    "name",
+    "series_type",
+    "provider",
+    "symbol",
+    "frequency",
+    "price_type",
+    "adjustment_method",
+    "description",
+    "created_at"
+   ],
+   "rows": 213,
+   "shard_count": 1,
+   "shards": {
+    "all": {
+     "bytes": 6761,
+     "file": "market_series.csv.gz",
+     "rows": 213,
+     "sha256": "db7e4e227444dae42cd832845428f483d31ce9a68466d97e90c0d89cdeabeb61"
+    }
+   }
+  },
+  "trading_calendar": {
+   "bytes": 1073,
+   "columns": [
+    "trade_date",
+    "is_trading_day",
+    "calendar_type",
+    "created_at"
+   ],
+   "rows": 371,
+   "shard_count": 1,
+   "shards": {
+    "all": {
+     "bytes": 1073,
+     "file": "trading_calendar.csv.gz",
+     "rows": 371,
+     "sha256": "d5f966ad31b5d0743270dc4d4927751697f3881cec63a49b717dae771341e107"
+    }
+   }
+  }
+ },
+ "total_bytes": 6375405,
+ "total_rows": 373917,
+ "why": "`cycle_research.db` 曾达 66 MB（market_daily 373k 行占绝大部分），超过 GitHub 建议的 50 MB。行情三表拆出为不入库的本地 `market_data.db`，由本快照恢复。"
+}

@@ -113,6 +113,19 @@ CAND_MARKET_PROXY = {
 
 conn = sqlite3.connect(f"file:{ROOT}/research/database/cycle_research.db?mode=ro", uri=True)
 conn.row_factory = sqlite3.Row
+# ★ 2026-10-16 行情库拆分：market_series / market_daily / trading_calendar 已搬到
+#   `{ROOT}/research/database/market_data.db`（不入库）。本脚本只读行情 →
+#   以 `?mode=ro` 挂载 + TEMP VIEW 兼容层（未限定表名的查询行为不变）。
+#   ★★ 必须用**本脚本的 ROOT** 拼路径（**不能**用 db.MARKET_DB_PATH）——
+#      否则 THREEC_ROOT 沙箱重定向会失效，试跑将读到仓库里的真行情库。
+_mkt_db = f"{ROOT}/research/database/market_data.db"
+if not _os.path.exists(_mkt_db):
+    sys.exit("FAIL: 行情数据库不存在：%s\n"
+             "  ★ 恢复命令（干净克隆在无网络下即可完成）：\n"
+             "      python research/scripts/restore_market_data.py --apply" % _mkt_db)
+conn.execute("ATTACH DATABASE ? AS market", (f"file:{_mkt_db}?mode=ro",))
+for _t in ("market_series", "market_daily", "trading_calendar"):
+    conn.execute(f"CREATE TEMP VIEW {_t} AS SELECT * FROM market.{_t}")
 cur = json.load(io.open(f"{ROOT}/research/current/current_candidates.json", encoding="utf-8"))
 exp = json.load(io.open(f"{ROOT}/exports/timeline_export_v1.json", encoding="utf-8"))
 

@@ -38,6 +38,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scripts import db
 
 conn = db.connect()
+# ★ 2026-10-16 行情库拆分：本脚本的 market 检查（唯一性 / 外键 / 日期格式 / 重复键 /
+#   price_type 枚举 / adj_close 口径）是**真实数据检查**，不是可选项。
+#   → 行情库缺失必须**明确失败**并告知恢复命令，不得静默跳过这组检查。
+db.require_market(conn)
 FAILS = []
 WARNS = []
 
@@ -308,12 +312,21 @@ def check_no_future_backfill():
     这里复核 campaign 的 JSON 导出不包含 market 字段已在 export 层隔离。"""
     # 占位说明性检查：无 market_daily/gen 源自动写入脚本被注册
     if not _table_exists(conn, "market_daily"):
-        warn("market-infra", "market 表尚未创建或为空（此阶段允许，仅检查 infra 就绪）")
+        warn("market-infra",
+             "market_daily 表在当前连接中不可见（行情库未挂载或快照恢复不完整）。"
+             "★ 恢复命令：python research/scripts/restore_market_data.py --apply")
 
 
 def _table_exists(conn, name):
+    """★ 2026-10-16 行情库拆分后：行情三表以 **TEMP VIEW 兼容层**存在
+    （登记在 `sqlite_temp_master`，**不在** `sqlite_master`）→ 两处都要看，
+    否则会把「已挂载的行情表」误判为「表不存在」而静默丢掉整组 market 检查。"""
+    r = conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (name,)).fetchone()
+    if r:
+        return True
     return conn.execute(
-        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (name,)).fetchone() is not None
+        "SELECT 1 FROM sqlite_temp_master WHERE name=?", (name,)).fetchone() is not None
 
 
 def main():

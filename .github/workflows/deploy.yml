@@ -11,6 +11,8 @@
 #     `validate_historical_research_intake --check` / `refresh_downstream --check`
 #     任一失败 → **不得部署**。理由：Product 消费 Research 产物，
 #     而跨层不一致（DB↔export / 产品↔SA 版本 / 快照回指）**不一定**被某个 Product 测试覆盖。
+#   - ★ **行情库先行恢复**（2026-10-16 新增）：行情三表已拆到不入库的 `market_data.db`，
+#     Research 门禁跑之前必须由被跟踪的便携快照恢复它（失败即 workflow 失败）。
 #   - 不允许跳过 `npm test`；不允许直接上传未构建源码
 #   - **不提交** `dist/`（走 artifact 上传，见 .gitignore）
 #   - permissions 最小化：仅 `contents: read` + `pages: write` + `id-token: write`
@@ -88,6 +90,31 @@ jobs:
 
       - name: Install research dependencies
         run: pip install -r research/scripts/requirements.txt
+
+      # ----------------------------------------------------------------------
+      # ★★ 行情数据库恢复（2026-10-16 拆分）
+      #
+      # 背景：`market_daily`（373k 行）/ `market_series` / `trading_calendar` 已从
+      #   `cycle_research.db`（曾 66 MB）拆到**不入库**的 `market_data.db`，
+      #   否则 GitHub 单文件 50 MB 阈值会被持续突破。
+      #
+      # 干净克隆**无网络**也可恢复：输入是**被 Git 跟踪的便携快照**
+      #   `research/data/market/snapshot/`（按年分片 `*.csv.gz` + `MANIFEST.json`，
+      #   约 6.1 MiB = 原库 9.2%）。
+      #
+      # ★ 铁律：恢复失败 → 非零退出 → workflow 失败。
+      #   **不得**跳过行情依赖检查，**不得**关闭 Research 门禁。
+      #   `--check` 在 `--apply` 之后再跑一遍，确认「快照 ↔ 已恢复库」一致。
+      # ----------------------------------------------------------------------
+      - name: Restore market data DB (from versioned snapshot)
+        run: |
+          set -euo pipefail
+          echo "::group::restore_market_data --apply"
+          python research/scripts/restore_market_data.py --apply
+          echo "::endgroup::"
+          echo "::group::restore_market_data --check"
+          python research/scripts/restore_market_data.py --check
+          echo "::endgroup::"
 
       - name: Research read-only gates
         run: |

@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
-"""临时审计脚本：全库状态检查（任务后删除）。"""
-import sqlite3, sys, io
+"""临时审计脚本：全库状态检查（任务后删除）。
+
+★ 2026-10-16 行情库拆分后：market_series / market_daily / trading_calendar 住在
+  `market_data.db`（不入库）→ 走 `db.connect()` 挂 TEMP VIEW 只读兼容层，
+  行情库缺失时报错信息含恢复命令（不再静默查不到）。
+"""
+import sqlite3, sys, os, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-c = sqlite3.connect('database/cycle_research.db')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from scripts import db
+c = db.connect()
 c.row_factory = sqlite3.Row
 
 print('== TABLES ==')

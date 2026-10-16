@@ -1483,7 +1483,12 @@ def _patch_derived_notes(art):
 def build_artifact():
     export = load_export()
     current = load_current_candidates()
-    conn = sqlite3.connect(DB_PATH)
+    # ★ 2026-10-16 行情库拆分：行情三表已拆到 market_data.db（不入库）。
+    #   本脚本同时读 canonical 与行情表 → 走 `db.connect()`（行情库存在时自动挂
+    #   TEMP VIEW 只读兼容层；未限定表名的查询行为不变）。
+    sys.path.insert(0, os.path.join(ROOT, "research"))
+    from scripts import db
+    conn = db.connect()
     try:
         cur = conn.cursor()
         inv = dataset_inventory(cur, export)

@@ -143,7 +143,9 @@ def main():
             summary[key] = "unavailable"
             continue
         conn.execute(
-            "INSERT INTO market_series (series_id, name, series_type, provider, symbol, frequency, price_type, adjustment_method, description) "
+            # ★ 2026-10-16 拆分后：market_series 住在 ATTACH 的 market schema
+            #   （TEMP VIEW 兼容层只读，写必须显式限定 market.）
+            "INSERT INTO market.market_series (series_id, name, series_type, provider, symbol, frequency, price_type, adjustment_method, description) "
             "VALUES (?,?,?,?,?, 'daily','adjusted','qfq',?) "
             "ON CONFLICT(series_id) DO UPDATE SET name=excluded.name, symbol=excluded.symbol",
             (key, name, stype, "tencent", sym, f"腾讯GTIMG日线(qfq) 电力设备 Wave 1A {beg}~{end}"))

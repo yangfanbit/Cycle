@@ -103,13 +103,15 @@ def to_row(rec, series_id, price_type):
             "tencent_gtimg", datetime.now().isoformat())
 
 
-INSERT_SQL = """INSERT OR REPLACE INTO market_daily
+INSERT_SQL = """INSERT OR REPLACE INTO market.market_daily
     (series_id, trade_date, open, high, low, close, adj_close, price_type, volume, amount, data_source, retrieved_at)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"""
 
 
 def main():
     conn = db.connect()
+    # ★ 2026-10-16 拆分后：行情表住在 market_data.db → 缺失必须明确失败
+    db.require_market(conn)
     db.migrate(conn)
 
     # 1) 注册 market_series（幂等）

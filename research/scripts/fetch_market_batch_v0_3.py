@@ -392,6 +392,9 @@ def main(argv):
         series_spec = [x for x in argv[argv.index("--series") + 1].split(",") if x]
 
     conn = db.connect()
+    # ★ 2026-10-16 拆分后：行情表住在 market_data.db（本脚本是权威写入方）。
+    #   行情库缺失 → 明确失败并给恢复命令（不静默写坏 / 不静默跳过）。
+    db.require_market(conn)
     gaps = load_gaps()
     plan, skipped = build_plan(conn, gaps, only, extra)
     if series_spec:
@@ -447,8 +450,10 @@ def main(argv):
             # ★ 非股票序列（基准 / 行业指数）**不覆盖** market_series 的既有声明 ——
             #   那是研究侧的口径记录，不该被抓取脚本改写。
             if stype == "stock":
+                # ★ 2026-10-16 拆分后：market_series 住在 ATTACH 的 market schema
+                #   （TEMP VIEW 兼容层只读，写必须显式限定 market.）
                 conn.execute(
-                    "INSERT INTO market_series (series_id,name,series_type,provider,symbol,frequency,price_type,"
+                    "INSERT INTO market.market_series (series_id,name,series_type,provider,symbol,frequency,price_type,"
                     "adjustment_method,description) VALUES (?,?,?,?,?,'daily','adjusted','qfq',?) "
                     "ON CONFLICT(series_id) DO UPDATE SET name=excluded.name, symbol=excluded.symbol",
                     (sid, nm, stype, "tencent", sym, "腾讯GTIMG日线(qfq) v0_3 自动计划 %s~%s" % (beg, end)),

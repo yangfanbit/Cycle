@@ -82,8 +82,20 @@ _probe*.sh
 # research/database/cycle_research.db
 #   —— Research 明确依赖可回查数据库，继续提交 Git。
 #      不因通用最佳实践自动忽略 SQLite。
-# research/data/market/**/*.csv
-#   —— 行情原始与归一化 CSV，研究对象，提交 Git。
+#
+# ★★ 行情数据的**三种角色**（2026-10-16 拆分后，勿混淆）：
+#
+#   ① research/data/market/raw/**/*.json   —— 抓取器留痕的**原始响应快照**（被跟踪，146 个）。
+#      用途：复核「当时接口到底返回了什么」。**不是**恢复入口。
+#   ② research/data/market/snapshot/**     —— **便携快照**（被跟踪）：按年分片 `*.csv.gz`
+#      + MANIFEST.json + market_schema.sql。★★ **干净克隆恢复 market_data.db 的唯一输入**
+#      （`python research/scripts/restore_market_data.py --apply`，无网络可用）。
+#   ③ research/data/market/normalized/*.csv —— 派生便捷 CSV（**不跟踪**，见下方 2026-10-14 规则）。
+#      全仓库**无消费者**（引用方全是抓取器=生成方）；需要时先跑重建，不要假设文件已存在。
+#
+# ★ research/data/market/normalized/*.csv 已于 2026-10-14 移出 Git 跟踪，
+#   与 ① 的 raw/**/*.json **不矛盾**：raw 是来源留痕（仍提交），normalized 是派生物（不提交）。
+#   2026-10-16 起，恢复行情的权威输入是 ② snapshot/，**不是** ③ normalized/。
 
 # ============================================================================
 # 行情规范化 CSV（research/data/market/normalized/*_daily.csv）
@@ -95,10 +107,28 @@ _probe*.sh
 #   ② CI 全部 Research 门禁在**无 CSV 环境**下仍全 PASS（实测）
 #   ③ CSV 可从权威 DB **逐字节重建**（`regen_normalized_csv`，SHA256 实测相同）
 #
-# ★ 权威来源 = research/database/cycle_research.db 的 `market_daily` 表
-#   （由 research/scripts/fetch_market_batch_v0_3.py 写入）
+# ★ 权威来源 = 行情库的 `market_daily` 表
+#   （2026-10-16 拆分后住在 `research/database/market_data.db`，由
+#    research/scripts/fetch_market_batch_v0_3.py 写入；干净克隆先用
+#    restore_market_data.py 从 snapshot/ 恢复该库）
 # ★ 需要 CSV 时：先跑重建，**不要**假设文件已存在
+# ★ 恢复**整份行情库**请用 snapshot/（见上方"三种角色"②），不要用这些 CSV
 #
 # 保留：.gitkeep（monorepo 完整性校验查目录存在性）
 # ============================================================================
 research/data/market/normalized/*.csv
+
+# ============================================================================
+# 行情数据库（research/database/market_data.db）—— 本地生成物，**不入 Git**
+#
+# ★ 为什么：cycle_research.db 曾达 66 MB，其中 market_daily（373k 行）占绝大部分，
+#   超过 GitHub 建议的 50 MB 单文件阈值。行情三表已拆到本文件。
+# ★ 恢复方式（干净克隆在**无网络**下即可完成）：
+#     python research/scripts/restore_market_data.py --apply
+#   数据来自**被跟踪的便携快照** research/data/market/snapshot/（按年分片 *.csv.gz + MANIFEST.json）
+# ★ 权威写入方仍是抓取器（fetch_market_batch_v0_3.py）；快照是它的可版本化镜像。
+# ★ 快照目录**不得**被忽略（它是恢复的唯一输入）。
+# ============================================================================
+research/database/market_data.db
+research/database/market_data.db-journal
+research/database/market_data.db-wal
