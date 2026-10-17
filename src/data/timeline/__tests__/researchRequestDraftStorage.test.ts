@@ -68,8 +68,8 @@ const FULL: ResearchRequestDraft = {
   linkedCoverage: {
     query: '汽车',
     verdict: 'both',
-    current: [{ id: 'CC-2026-AUTO-SMARTDRIVE', title: '智能驾驶合规化' }],
-    historical: [{ id: 'C-2019-AD', title: '自动驾驶' }],
+    current: [{ id: 'CC-2026-AUTO-SMARTDRIVE', title: '智能驾驶合规化', matchedOn: ['汽车', '智能驾驶合规化'] }],
+    historical: [{ id: 'C-2019-AD', title: '自动驾驶', matchedOn: ['汽车'] }],
     resolution: null,
     captured_at: '2026-10-16T00:00:00.000Z',
   },

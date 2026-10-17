@@ -23,10 +23,16 @@
 import {
   DRAFT_FIELD_MAX,
   EMPTY_DRAFT,
-  isDraftEmpty,
+  isDraftBlank,
+  type CoverageHit,
   type LinkedCoverage,
   type ResearchRequestDraft,
 } from './researchRequestDraft';
+
+/** 存储适配器写入的**结构版本**（与 `draft_version` 同步演进；用于识别旧草稿） */
+export const DRAFT_STORAGE_FORMAT_VERSION = 3;
+/** 序列化时写入的版本键名（读取时在白名单内，**不**当未知字段丢弃） */
+export const DRAFT_VERSION_KEY = '__v';
 
 /** 可注入的存储接口（测试传内存实现；浏览器传 `localStorage`） */
 export interface DraftStorage {
@@ -45,6 +51,8 @@ const FIELDS = [
   'direction', 'researchQuestions', 'whyCare', 'knownLeads', 'timeRange',
   'linkedQuery', 'linkedAt',
 ] as const satisfies readonly (keyof ResearchRequestDraft)[];
+/** 读取时的**白名单键**（含结构版本键与关联证据键） */
+const KNOWN_KEYS = new Set<string>([...FIELDS, 'linkedCoverage', DRAFT_VERSION_KEY]);
 
 /** 取一个「一定是字符串」的值；非字符串（含 null / 数字 / 对象 / 数组 / 布尔）→ '' */
 function asText(v: unknown): string {
@@ -60,11 +68,22 @@ function asLinkedCoverage(v: unknown): LinkedCoverage | null {
   if (verdict !== 'both' && verdict !== 'current-only' && verdict !== 'historical-only' && verdict !== 'none') {
     return null;
   }
-  const hits = (x: unknown): { id: string; title: string }[] => {
+  const hits = (x: unknown): CoverageHit[] => {
     if (!Array.isArray(x)) return [];
     return x
       .filter((h): h is Record<string, unknown> => !!h && typeof h === 'object' && !Array.isArray(h))
-      .map((h) => ({ id: asText(h.id), title: asText(h.title) }))
+      .map((h) => {
+        // ★ v0.8：`matchedOn` 三态保留 —— 缺键 / null → null（旧草稿未保存该信息）；
+        //   是数组 → 只留字符串元素；其它类型 → null（**不得**伪造成 []）
+        const mo = Object.prototype.hasOwnProperty.call(h, 'matchedOn') ? h.matchedOn : null;
+        return {
+          id: asText(h.id),
+          title: asText(h.title),
+          matchedOn: Array.isArray(mo)
+            ? (mo.filter((s): s is string => typeof s === 'string'))
+            : null,
+        };
+      })
       .filter((h) => h.id.length > 0);
   };
   const res = o.resolution;
@@ -96,7 +115,7 @@ export function normalizeDraft(value: unknown): { draft: ResearchRequestDraft; i
 
   // 未知字段：丢弃（不再写回存储）
   for (const k of Object.keys(o)) {
-    if (!(FIELDS as readonly string[]).includes(k) && k !== 'linkedCoverage') {
+    if (!KNOWN_KEYS.has(k)) {
       issues.push(`未知字段已丢弃：${k}`);
     }
   }
@@ -122,10 +141,10 @@ export function normalizeDraft(value: unknown): { draft: ResearchRequestDraft; i
   return { draft, issues };
 }
 
-/** 序列化：空草稿 → `null`（调用方据此 `removeItem`，不留垃圾记录） */
+/** 序列化：空草稿（含关联）→ `null`（调用方据此 `removeItem`，不留垃圾记录） */
 export function serializeDraft(d: ResearchRequestDraft): string | null {
-  if (isDraftEmpty(d)) return null;
-  return JSON.stringify({ ...d, __v: 2 });
+  if (isDraftBlank(d)) return null;
+  return JSON.stringify({ [DRAFT_VERSION_KEY]: DRAFT_STORAGE_FORMAT_VERSION, ...d });
 }
 
 export type LoadDraftResult =
@@ -161,8 +180,8 @@ export function loadDraft(storage: DraftStorage | null): LoadDraftResult {
     return { status: 'corrupt', reason: 'shape', rawLength: raw.length };
   }
   const { draft, issues } = normalizeDraft(parsed);
-  // 规范化后**全空** → 视为没有草稿（避免把一堆坏字段当成用户内容展示）
-  if (isDraftEmpty(draft) && draft.linkedQuery === '' && draft.linkedCoverage === null) {
+  // 规范化后**全空**（含关联）→ 视为没有草稿（避免把一堆空字段当成用户内容展示）
+  if (isDraftBlank(draft)) {
     return { status: 'empty' };
   }
   return { status: 'loaded', draft, issues };

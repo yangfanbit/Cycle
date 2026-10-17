@@ -195,6 +195,10 @@ export const LIFECYCLE_STAGE_LABEL: Record<string, string> = {
   EARLY_SIGNAL: '早期信号', THEME_FORMING: '主题形成', BROAD_CONFIRMATION: '扩散确认',
   MAIN_RISE: '主升', PEAK: '峰值', RETRACEMENT: '回撤', SECONDARY: '次级行情',
   DECLINING: '衰减', FIRST_DECLINE: '首次回落', MAIN_END: '主段结束',
+  // ★ 2026-10-16（v0.8）补 `ENDED`：Contract v1.2 的 11 个阶段之一，导出中实测有 2 条
+  //   （此前缺标签 → UI 会回落英文）。`EXPANSION` 是 `ResearchPhase`（当前候选
+  //   `attention_state` 的值），标签见 `PHASE_LABEL`，不在此表重复。
+  ENDED: '已结束',
   startup: '启动',
   acceleration: '加速',
   diffusion: '扩散',

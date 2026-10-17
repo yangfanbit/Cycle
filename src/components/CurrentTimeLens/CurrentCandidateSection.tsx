@@ -24,6 +24,7 @@ import {
 import { PHASE_LABEL } from '../../data/timeline/researchAttention';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
 import type { HistoricalCaseAnalogyContext } from '../../data/timeline/historicalCase';
+import { LifecycleComparisonSection } from './LifecycleComparisonSection';
 import { StructuralAnalogySection } from './StructuralAnalogySection';
 
 /**
@@ -150,6 +151,7 @@ export function CurrentCandidateSection({
               onSelect={onSelect}
               onOpenHistoricalCase={onOpenHistoricalCase}
               historicalLabelOf={historicalLabelOf}
+              dataSource={dataSource}
             />
           ))}
         </ol>
@@ -178,6 +180,7 @@ function CandidateRow({
   onSelect,
   onOpenHistoricalCase,
   historicalLabelOf,
+  dataSource,
 }: {
   view: CurrentCandidateView;
   index: number;
@@ -186,6 +189,8 @@ function CandidateRow({
   onSelect: (sel: Selection) => void;
   onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
   historicalLabelOf?: (cycleId: string) => string | null;
+  /** Timeline 数据源（用于生命周期对照读历史阶段序列；纯查找，不参与判定）。 */
+  dataSource?: TimelineDataSource | null;
 }) {
   const c = view.candidate;
 
@@ -227,6 +232,7 @@ function CandidateRow({
           onSelect={onSelect}
           onOpenHistoricalCase={onOpenHistoricalCase}
           historicalLabelOf={historicalLabelOf}
+          dataSource={dataSource}
         />
       )}
     </li>
@@ -238,11 +244,14 @@ function CandidateDetail({
   onSelect,
   onOpenHistoricalCase,
   historicalLabelOf,
+  dataSource,
 }: {
   view: CurrentCandidateView;
   onSelect: (sel: Selection) => void;
   onOpenHistoricalCase?: (sel: Selection, ctx: HistoricalCaseAnalogyContext) => void;
   historicalLabelOf?: (cycleId: string) => string | null;
+  /** Timeline 数据源（仅供生命周期对照读历史阶段序列；纯查找，不参与判定）。 */
+  dataSource?: TimelineDataSource | null;
 }) {
   const c = view.candidate;
   const inferred = view.inference.phase;
@@ -397,6 +406,17 @@ function CandidateDetail({
       />
       {/* 红线声明：随 G-1 退役从旧「历史相似」视图迁移至此（正式入口旁） */}
       <p className="ccs-dim ccs-sa-disclaimer">{STRUCTURAL_ANALOGY_DISCLAIMER}</p>
+
+      {/* ---------- 生命周期对照（ThreeC 1.3 P2 · v0.8） ----------
+          ★ 位置刻意选在 SA 之后：先看**唯一权威**的结构对应，再看**并排展示**的阶段对照。
+          ★ 两者不得互相替代，也 不得 把本区当作结构对应结论。
+          ★ 用 `onSelect` 而非 SA 的 `onOpenHistoricalCase`：本区不是结构声明，
+          打开历史案例时**不附带** SA 上下文（附了反而是把描述当结论）。 */}
+      <LifecycleComparisonSection
+        candidate={c}
+        dataSource={dataSource}
+        onSelect={onSelect}
+      />
 
       {/* ---------- 旧「历史相似阶段」视图：已于 ThreeC 1.1 G-1 退役 ----------
           退役原因：该视图的 tier / stars 由 Product 侧 `currentSimilarity.ts` 自算

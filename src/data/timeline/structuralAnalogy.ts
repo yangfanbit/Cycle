@@ -38,7 +38,23 @@ export type StructuralStatus =
   | 'INSUFFICIENT_EVIDENCE'
   | 'NO_VALID_CORRESPONDENCE';
 
-export type DimensionStatus = 'MATCH' | 'PARTIAL' | 'MISMATCH' | 'UNKNOWN' | 'NOT_AVAILABLE';
+/**
+ * 维度状态。
+ *
+ * ★★ 2026-10-16（v0.8）：补 `COMPARISON_POINT_UNKNOWN`。
+ *   冻结 SA v0.13 的 534 条解释里有 **24 条** lifecycle 维度就是它
+ *   （「可比观测点未确定」），而原类型/文案/不确定集都没有这个值 →
+ *   页面会**回落英文**且**不被识别为「不确定」**（被当成确定结论处理）。
+ *   口径依据：它是「无法确定是否对应」—— 与 `UNKNOWN` / `NOT_AVAILABLE` 同类，
+ *   **不得**被压缩成 `MISMATCH`（那等于把「不知道」说成「不对应」）。
+ */
+export type DimensionStatus =
+  | 'MATCH'
+  | 'PARTIAL'
+  | 'MISMATCH'
+  | 'UNKNOWN'
+  | 'NOT_AVAILABLE'
+  | 'COMPARISON_POINT_UNKNOWN';
 
 /** Driver 维度额外允许 `PERIPHERAL_OVERLAP`（**不计为结构支持**）。 */
 export type DriverStatus = DimensionStatus | 'PERIPHERAL_OVERLAP';
@@ -57,6 +73,7 @@ export type DimensionKey =
 export const INDETERMINATE_DIMENSION_STATUSES: readonly DimensionStatus[] = [
   'UNKNOWN',
   'NOT_AVAILABLE',
+  'COMPARISON_POINT_UNKNOWN',
 ];
 
 /* ================= 2. 文案（枚举 → 中文，纯展示映射，不改语义） ================= */
@@ -75,6 +92,9 @@ export const DIMENSION_STATUS_LABEL: Record<DriverStatus, string> = {
   MISMATCH: '不对应',
   UNKNOWN: '未知',
   NOT_AVAILABLE: '无可用资料',
+  // ★ v0.8：「可比观测点未确定」—— 独立于 UNKNOWN / NOT_AVAILABLE 的第三种「不知道」：
+  //   前两者是「信息缺」，这个是「比较的两个点还没法对齐」。
+  COMPARISON_POINT_UNKNOWN: '可比观测点未确定',
   PERIPHERAL_OVERLAP: '仅外围机制重叠',
 };
 
@@ -538,8 +558,17 @@ export function explanationsByStatus(
 }
 
 /** 维度状态是否为「不确定」（`UNKNOWN` / `NOT_AVAILABLE`）—— **必须与 `MISMATCH` 区分**。 */
+/**
+ * 该维度状态是否属于「**无法确定**是否对应」。
+ *
+ * ★★ v0.8 修复：原来这里**硬编码** `status === 'UNKNOWN' || status === 'NOT_AVAILABLE'`，
+ *   与 `INDETERMINATE_DIMENSION_STATUSES` 常量**脱节** → 冻结 SA v0.13 里有 24 条
+ *   lifecycle 是 `COMPARISON_POINT_UNKNOWN`，**artifact 自己已把它们列进
+ *   `unknown_dimensions`**，而本函数却回答「不是未知」（实测被既有测试抓到）。
+ * → 改为读常量，让「什么算未知」只有**一个**事实源。
+ */
 export function isIndeterminate(status: DriverStatus): boolean {
-  return status === 'UNKNOWN' || status === 'NOT_AVAILABLE';
+  return (INDETERMINATE_DIMENSION_STATUSES as readonly string[]).includes(status);
 }
 
 /** 是否达到「结构支持」等级（**仅用于展示分组，不是分数**）。 */

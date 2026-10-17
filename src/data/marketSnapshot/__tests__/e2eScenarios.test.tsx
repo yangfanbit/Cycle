@@ -103,6 +103,9 @@ describe('E2E 场景 · 三个真实方向', () => {
         queryChanged={false}
         saveState={{ ok: true, action: 'written' }}
         loadState={{ status: 'empty' }}
+        copyError={null}
+        previewOpen={false}
+        onPreviewOpenChange={() => {}}
       />,
     );
     expect(block).toContain('both');
@@ -145,6 +148,9 @@ describe('E2E 场景 · 三个真实方向', () => {
         queryChanged={false}
         saveState={{ ok: true, action: 'written' }}
         loadState={{ status: 'empty' }}
+        copyError={null}
+        previewOpen={false}
+        onPreviewOpenChange={() => {}}
       />,
     );
     expect(block).toContain('historical-only');

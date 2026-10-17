@@ -7,14 +7,15 @@ import {
 import {
   DRAFT_FIELD_MAX,
   EMPTY_DRAFT,
+  buildLinkedDraft,
   buildResearchRequestPayload,
-  freezeCoverage,
   isDraftBlank,
   missingDraftFields,
   renderResearchRequestMarkdown,
   type ResearchRequestDraft,
   type ResearchRequestPayload,
 } from '../../data/timeline/researchRequestDraft';
+import { copyFailureMessage, copyTextToClipboard } from '../../data/timeline/clipboard';
 import {
   browserDraftStorage,
   loadDraft,
@@ -122,6 +123,10 @@ export function DirectionLookupSection({
   /** ★ 用户显式清空时对应的查询词（防回填） */
   const [userClearedFor, setUserClearedFor] = useState('');
   const [copied, setCopied] = useState<'json' | 'md' | null>(null);
+  /** ★ v0.8：复制失败原因（null = 未失败）—— 失败**必须**告知用户并给下一步 */
+  const [copyError, setCopyError] = useState<string | null>(null);
+  /** ★ v0.8：导出预览是否展开（复制失败时自动展开，用户不必猜下一步） */
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   // 持久化：每次草稿变化写一次（空草稿 → 删除记录）
   useEffect(() => {
@@ -138,14 +143,9 @@ export function DirectionLookupSection({
       draftEmpty: isDraftBlank(draft),
       userClearedFor,
     })) return;
-    // 填入方向 **并冻结这次查询的证据**（关联从此显式，不再靠隐式取「当前 result」）
-    setDraft((d) => ({
-      ...d,
-      direction: d.direction.trim() ? d.direction : result.query,
-      linkedQuery: result.query,
-      linkedAt: new Date().toISOString(),
-      linkedCoverage: freezeCoverage(result, new Date().toISOString()),
-    }));
+    // ★ v0.8：与「以当前查询新建草稿」**共用同一个纯函数** —— 一次性写全
+    //   direction + linkedQuery + linkedAt + linkedCoverage，不依赖后续 effect。
+    setDraft((d) => buildLinkedDraft(result.query, result, new Date().toISOString()));
   }, [result, draft, userClearedFor]);
 
   const payload = useMemo(
@@ -156,29 +156,41 @@ export function DirectionLookupSection({
   const payloadMd = useMemo(() => renderResearchRequestMarkdown(payload), [payload]);
 
   const copy = async (kind: 'json' | 'md', text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
+    const outcome = await copyTextToClipboard(text);
+    if (outcome.ok) {
+      // ★ 只有**真的成功**才显示「已复制」
+      setCopyError(null);
       setCopied(kind);
-      window.setTimeout(() => setCopied(null), 2000);
-    } catch {
-      // ★ 剪贴板不可用（旧浏览器 / 非安全上下文 / 测试环境）→ 不假装成功：
-      //   草稿区里的 <textarea> 永远可见可选中，用户可手动复制。
-      setCopied(null);
+      window.setTimeout(() => setCopied((c) => (c === kind ? null : c)), 2000);
+      return;
     }
+    // ★ v0.8：失败 → 明确告知 + **自动展开导出预览**，用户能立刻手动选中复制
+    setCopied(null);
+    setCopyError(copyFailureMessage(outcome));
+    setPreviewOpen(true);
   };
 
   /** ★ 清空草稿：表单 + 关联状态 + 持久化 + 复制态**一起**清，并记住「为哪个查询清空过」 */
   const clearDraft = () => {
     setDraft({ ...EMPTY_DRAFT });
     setCopied(null);
+    setCopyError(null);
     setUserClearedFor(query);
   };
 
-  /** ★ 以当前查询**新建**草稿：重置草稿并**改绑**到当前查询（显式动作，非静默） */
+  /**
+   * ★ 以当前查询**新建**草稿（v0.8 修复：**一次性建立完整关联**）。
+   *
+   * v0.7 只设 `direction`，指望随后的自动回填 effect 补关联 —— 而 effect 的守卫是
+   * `isDraftBlank(draft)`：`direction` 非空 ⇒ **不 blank** ⇒ effect **不跑**
+   * ⇒ 关联**永远不建立**（导出仍显示「未关联任何查询」）。
+   * → 现在直接调 `buildLinkedDraft()` 写全四个字段。
+   */
   const relinkToCurrentQuery = () => {
     if (!result) return;
-    setDraft({ ...EMPTY_DRAFT, direction: result.query });
+    setDraft(buildLinkedDraft(result.query, result, new Date().toISOString()));
     setCopied(null);
+    setCopyError(null);
     setUserClearedFor('');
   };
 
@@ -344,6 +356,9 @@ export function DirectionLookupSection({
           queryChanged={queryChanged}
           saveState={saveState}
           loadState={initialLoad}
+          copyError={copyError}
+          previewOpen={previewOpen}
+          onPreviewOpenChange={setPreviewOpen}
         />
       )}
 
@@ -391,6 +406,9 @@ export function ResearchRequestDraftBlock({
   queryChanged,
   saveState,
   loadState,
+  copyError,
+  previewOpen,
+  onPreviewOpenChange,
 }: {
   /** 当前查询结果（未查询 → null）。★ **不是**证据来源，证据在 `draft.linkedCoverage` */
   lookup: DirectionLookupResult | null;
@@ -403,7 +421,7 @@ export function ResearchRequestDraftBlock({
   onCopy: (kind: 'json' | 'md', text: string) => void;
   /** ★ 清空：表单 + 关联 + 持久化 + 复制态一起清，且不得被自动回填 */
   onClear: () => void;
-  /** ★ 以当前查询**新建**草稿（显式改绑，非静默） */
+  /** ★ 以当前查询**新建**草稿（显式改绑，一次性建立完整关联） */
   onRelink: () => void;
   /** 当前查询与草稿关联查询是否不同（只比字符串） */
   queryChanged: boolean;
@@ -411,6 +429,12 @@ export function ResearchRequestDraftBlock({
   saveState: SaveDraftResult | null;
   /** 首屏读取结果 —— ★ 坏数据 / 存储不可用必须披露 */
   loadState: LoadDraftResult;
+  /** ★ 复制失败的一句话（null = 未失败）—— 失败必须告知，不得假装成功 */
+  copyError: string | null;
+  /** ★ 导出预览是否展开（复制失败时自动展开） */
+  previewOpen: boolean;
+  /** 用户手动开合预览 */
+  onPreviewOpenChange: (open: boolean) => void;
 }) {
   const missing = missingDraftFields(draft);
   const set = (k: keyof ResearchRequestDraft) => (
@@ -533,7 +557,7 @@ export function ResearchRequestDraftBlock({
         {lookup && (
           <button type="button" className="dl-btn"
                   onClick={onRelink}
-                  title="清空当前草稿，并以当前查询重新建立关联">
+                  title="以当前查询重新建立草稿与关联（会清空当前草稿内容）">
             以当前查询新建草稿
           </button>
         )}
@@ -541,6 +565,15 @@ export function ResearchRequestDraftBlock({
           清空草稿
         </button>
       </div>
+
+      {/* ★★ v0.8：复制失败必须**明确告知 + 给下一步**（不显示「已复制」假成功） */}
+      {copyError && (
+        <p className="dl-draft-copy-error" role="alert">
+          {copyError}
+          <br />
+          下方导出预览<strong>已自动展开</strong> —— 请**手动选中复制**（内容与你刚才点的那份完全相同）。
+        </p>
+      )}
 
       <p className="dl-draft-note">
         ★ 草稿无正式编号（<code>id: null</code>）· 状态 <code>DRAFT_NOT_REVIEWED</code> ·
@@ -551,7 +584,11 @@ export function ResearchRequestDraftBlock({
             : <>仅存本机、未上传{saveState?.ok ? '（已保存）' : ''}</>}
       </p>
 
-      <details className="dl-draft-preview">
+      <details
+        className="dl-draft-preview"
+        open={previewOpen}
+        onToggle={(e) => onPreviewOpenChange(e.currentTarget.open)}
+      >
         <summary>预览导出内容（可手动选中复制）</summary>
         <h5>JSON</h5>
         <textarea className="dl-draft-out" readOnly value={payloadJson}

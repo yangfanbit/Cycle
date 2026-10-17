@@ -23,6 +23,21 @@
 import type { DirectionLookupResult } from './directionLookup';
 
 /**
+ * 冻结证据里的**一条命中**。
+ *
+ * ★★ `matchedOn` 的三种取值（v0.8）：
+ *   - `string[]`（**当前**草稿）—— 真实匹配依据（主题名 / 大主题 / 标题），可解释、可核对；
+ *   - `null`（**v0.7 及更早**的本机草稿）—— 当时**没有保存**该信息；
+ *   - `[]` —— 理论上表示「上游确实没有依据」（当前 `lookupDirection` 总会给 ≥1 条）。
+ * ★ **绝不**用 `[]` 冒充「没有依据」：缺少就是缺少，必须标「未保存该信息」。
+ */
+export interface CoverageHit {
+  id: string;
+  title: string;
+  matchedOn: string[] | null;
+}
+
+/**
  * ★★ 与草稿**关联的那一次**覆盖查询的**冻结快照**（v0.7）。
  *
  * 为什么必须冻结：`result` 随用户每次查询而变，而草稿是独立 state。
@@ -36,8 +51,8 @@ import type { DirectionLookupResult } from './directionLookup';
 export interface LinkedCoverage {
   query: string;
   verdict: DirectionLookupResult['verdict'];
-  current: { id: string; title: string }[];
-  historical: { id: string; title: string }[];
+  current: CoverageHit[];
+  historical: CoverageHit[];
   resolution: DirectionLookupResult['resolution'];
   captured_at: string;
 }
@@ -115,7 +130,7 @@ export function toLines(s: string): string[] {
 /** 草稿 → 可交接载荷（**确定性**：同输入同输出，便于用户核对与 diff） */
 export interface ResearchRequestPayload {
   kind: 'threec_research_request_draft';
-  draft_version: '0.2';
+  draft_version: '0.1' | '0.2' | '0.3';
   /** ★ 明确：草稿**没有**正式 ID —— 不伪造 URO / R 编号 */
   id: null;
   status: 'DRAFT_NOT_REVIEWED';
@@ -158,8 +173,9 @@ export interface ResearchRequestPayload {
     query: string;
     verdict: DirectionLookupResult['verdict'] | null;
     verdict_meaning: string;
-    current_objects: { id: string; title: string; matched_on: string[] }[];
-    historical_cases: { id: string; title: string; matched_on: string[] }[];
+    /** ★ `matched_on: null` = 旧草稿未保存该信息；`[]` = 上游确实无依据 */
+    current_objects: { id: string; title: string; matched_on: string[] | null }[];
+    historical_cases: { id: string; title: string; matched_on: string[] | null }[];
     resolution: DirectionLookupResult['resolution'];
   };
   /** 拟交接范围（对齐 intake 协议的 `task_scope`；**不含** `task_id` —— 由 Research 侧签发） */
@@ -231,7 +247,7 @@ export function buildResearchRequestPayload(
 
   return {
     kind: 'threec_research_request_draft',
-    draft_version: '0.2',
+    draft_version: '0.3',
     id: null,
     status: 'DRAFT_NOT_REVIEWED',
     review_required: true,
@@ -268,10 +284,16 @@ export function buildResearchRequestPayload(
         ? VERDICT_MEANING[frozen!.verdict]
         : '未执行覆盖查询 —— **无结论**（不是「未覆盖」，也不是「无有效对应」）。',
       current_objects: executed
-        ? frozen!.current.map((h) => ({ id: h.id, title: h.title, matched_on: [] }))
+        // ★★ v0.8：`matched_on` 透传真实依据；`null` = 旧草稿未保存该信息（**不得**用 [] 冒充）
+        //   ★ `?? null` 也兜住「未过 normalizeDraft 的旧对象」（缺键 → null，而不是 undefined）
+        ? frozen!.current.map((h) => ({
+          id: h.id, title: h.title, matched_on: h.matchedOn ?? null,
+        }))
         : [],
       historical_cases: executed
-        ? frozen!.historical.map((h) => ({ id: h.id, title: h.title, matched_on: [] }))
+        ? frozen!.historical.map((h) => ({
+          id: h.id, title: h.title, matched_on: h.matchedOn ?? null,
+        }))
         : [],
       resolution: executed ? frozen!.resolution : null,
     },
@@ -295,8 +317,8 @@ export function buildResearchRequestPayload(
 
 /**
  * 把一次**查询结果**冻结成草稿证据（纯函数）。
- * ★ 只保留 id / title（不复制全部字段）：证据是「查了哪个词、命中了哪些对象」，
- *   具体解释仍以冻结 SA 为唯一入口。
+ * ★ 只保留 id / title / **matchedOn**（不复制全部字段）：证据是「查了哪个词、命中了哪些对象、
+ *   各因什么命中」，具体解释仍以冻结 SA 为唯一入口。
  */
 export function freezeCoverage(
   r: DirectionLookupResult,
@@ -305,10 +327,34 @@ export function freezeCoverage(
   return {
     query: r.query,
     verdict: r.verdict,
-    current: r.current.map((h) => ({ id: h.id, title: h.title })),
-    historical: r.historical.map((h) => ({ id: h.id, title: h.title })),
+    current: r.current.map((h) => ({ id: h.id, title: h.title, matchedOn: [...h.matchedOn] })),
+    historical: r.historical.map((h) => ({ id: h.id, title: h.title, matchedOn: [...h.matchedOn] })),
     resolution: r.resolution,
     captured_at: at,
+  };
+}
+
+/**
+ * ★★ v0.8：**一次性**建立一份「已关联当前查询」的完整草稿（纯函数）。
+ *
+ * v0.7 的「以当前查询新建草稿」只设了 `direction`，指望随后的自动回填 effect 补关联 ——
+ * 而 effect 的守卫是 `isDraftBlank(draft)`：`direction` 非空 ⇒ 不 blank ⇒ **effect 不跑**
+ * ⇒ **关联永远不建立**（导出仍显示「未关联任何查询」，SSR 渲染实测复现）。
+ *
+ * → 改为在此处**一次性**写入 `direction` + `linkedQuery` + `linkedAt` + `linkedCoverage`，
+ *   **不依赖任何后续 effect**。自动回填与「新建草稿」共用它，避免两处漂移。
+ */
+export function buildLinkedDraft(
+  query: string,
+  r: DirectionLookupResult,
+  at: string,
+): ResearchRequestDraft {
+  return {
+    ...EMPTY_DRAFT,
+    direction: query,
+    linkedQuery: query,
+    linkedAt: at,
+    linkedCoverage: freezeCoverage(r, at),
   };
 }
 
@@ -364,11 +410,21 @@ export function renderResearchRequestMarkdown(p: ResearchRequestPayload): string
     L.push(`- 结论：**${p.coverage_check.verdict}** —— ${p.coverage_check.verdict_meaning}`);
     L.push(`- 当前研究对象命中 ${p.coverage_check.current_objects.length} 个`
       + (p.coverage_check.current_objects.length
-        ? `：${p.coverage_check.current_objects.map((o) => `${o.id}（${o.title}）`).join('；')}`
+        ? `：${p.coverage_check.current_objects.map((o) => `**${o.id}**（${o.title}）`
+          + (o.matched_on === null
+            ? '〔命中依据：未保存该信息（旧草稿）〕'
+            : o.matched_on.length
+              ? `〔命中：${o.matched_on.join(' / ')}〕`
+              : '〔命中依据：无〕')).join('；')}`
         : ''));
     L.push(`- 历史案例命中 ${p.coverage_check.historical_cases.length} 个`
       + (p.coverage_check.historical_cases.length
-        ? `：${p.coverage_check.historical_cases.map((o) => `${o.id}（${o.title}）`).join('；')}`
+        ? `：${p.coverage_check.historical_cases.map((o) => `**${o.id}**（${o.title}）`
+          + (o.matched_on === null
+            ? '〔命中依据：未保存该信息（旧草稿）〕'
+            : o.matched_on.length
+              ? `〔命中：${o.matched_on.join(' / ')}〕`
+              : '〔命中依据：无〕')).join('；')}`
         : ''));
     if (p.coverage_check.resolution) {
       const r = p.coverage_check.resolution;

@@ -9,7 +9,9 @@ import {
   DRAFT_CONSTRAINTS,
   EMPTY_DRAFT,
   KNOWN_LIMITATIONS,
+  buildLinkedDraft,
   buildResearchRequestPayload,
+  isDraftBlank,
   freezeCoverage,
   isDraftEmpty,
   missingDraftFields,
@@ -17,6 +19,7 @@ import {
   toLines,
   type ResearchRequestDraft,
 } from '../researchRequestDraft';
+import { normalizeDraft } from '../researchRequestDraftStorage';
 import { DirectionLookupSection, ResearchRequestDraftBlock } from '../../../components/DirectionLookup/DirectionLookupSection';
 
 /**
@@ -260,8 +263,8 @@ describe('研究请求草稿 · 字段处理', () => {
     expect(JSON.stringify(a)).toBe(JSON.stringify(b));
   });
 
-  it('★ `draft_version` 已升到 0.2（关联字段是新增的）', () => {
-    expect(buildResearchRequestPayload(FULL_DRAFT, null, NOW).draft_version).toBe('0.2');
+  it('★ `draft_version` 已升到 0.3（新增 matched_on 与关联语义）', () => {
+    expect(buildResearchRequestPayload(FULL_DRAFT, null, NOW).draft_version).toBe('0.3');
   });
 });
 
@@ -300,6 +303,9 @@ describe('研究请求草稿 · UI 渲染（props 驱动）', () => {
         queryChanged={false}
         saveState={{ ok: true, action: 'written' }}
         loadState={{ status: 'empty' }}
+        copyError={null}
+        previewOpen={false}
+        onPreviewOpenChange={() => {}}
         {...over}
       />,
     );
@@ -393,5 +399,95 @@ describe('研究请求草稿 · UI 渲染（props 驱动）', () => {
     const html = block({ lookup: lookupDirection('汽车', source, dataset) });
     expect(html).toContain('清空草稿');
     expect(html).toContain('以当前查询新建草稿');
+  });
+});
+
+/* ---------------------------------------------- 6. v0.8：一次性关联 + 命中依据 + 旧数据兼容 */
+
+describe('v0.8 · buildLinkedDraft（一次性建立完整关联）', () => {
+  it('★★ 新草稿四件套齐全：direction + linkedQuery + linkedAt + linkedCoverage', () => {
+    const r = lookupDirection('汽车', source, dataset);
+    const d = buildLinkedDraft('汽车', r, NOW);
+    expect(d.direction).toBe('汽车');
+    expect(d.linkedQuery).toBe('汽车');
+    expect(d.linkedAt).toBe(NOW);
+    expect(d.linkedCoverage).not.toBeNull();
+    expect(d.linkedCoverage!.query).toBe('汽车');
+    expect(d.linkedCoverage!.verdict).toBe('both');
+    expect(d.linkedCoverage!.current.length).toBeGreaterThan(0);
+    // 用户文本字段是空的（新建草稿不预填用户内容）
+    expect(d.researchQuestions).toBe('');
+    expect(isDraftBlank(d)).toBe(false);
+  });
+
+  it('★★ 用 buildLinkedDraft 建的草稿导出后**不等于**「未关联」', () => {
+    const r = lookupDirection('医药', source, dataset);
+    const p = buildResearchRequestPayload(buildLinkedDraft('医药', r, NOW), r, NOW);
+    expect(p.linkage.evidence_source).toBe('frozen_snapshot');
+    expect(p.coverage_check.executed).toBe(true);
+    expect(p.coverage_check.verdict).toBe('both');
+    expect(p.request.direction).toBe('医药');
+    const md = renderResearchRequestMarkdown(p);
+    expect(md).not.toContain('未关联任何覆盖查询');
+    expect(md).toContain('医药');
+  });
+});
+
+describe('v0.8 · 命中依据（matched_on）全程不丢', () => {
+  it('★★ 当前草稿：matched_on 是**真实依据**（与查询结果的 matchedOn 逐条一致）', () => {
+    const r = lookupDirection('汽车', source, dataset);
+    const p = buildResearchRequestPayload(buildLinkedDraft('汽车', r, NOW), null, NOW);
+    expect(p.coverage_check.current_objects[0].matched_on)
+      .toEqual(r.current[0].matchedOn);
+    expect(p.coverage_check.historical_cases[0].matched_on)
+      .toEqual(r.historical[0].matchedOn);
+    // Markdown 也把依据写出来
+    const md = renderResearchRequestMarkdown(p);
+    expect(md).toContain('命中');
+    for (const m of r.current[0].matchedOn) expect(md, m).toContain(m);
+  });
+
+  it('★★ **旧草稿**（linkedCoverage 无 matchedOn）→ matched_on = null + 明说「未保存该信息」', () => {
+    // 模拟 v0.7 留下来的本机记录：只有 id/title，没有 matchedOn
+    const oldStyle = {
+      query: '汽车',
+      verdict: 'both',
+      current: [{ id: 'CC-2026-AUTO-SMARTDRIVE', title: '智能驾驶合规化（L3/L4 强制国标—责任划分—量产准入）' }],
+      historical: [{ id: 'C-2019-AD', title: '自动驾驶' }],
+      resolution: null,
+      captured_at: NOW,
+    } as unknown as ResearchRequestDraft['linkedCoverage'];
+    const draft = { ...FULL_DRAFT, linkedQuery: '汽车', linkedAt: NOW, linkedCoverage: oldStyle };
+    const p = buildResearchRequestPayload(draft, null, NOW);
+    expect(p.coverage_check.executed).toBe(true);
+    expect(p.coverage_check.current_objects[0].matched_on).toBeNull();   // ★ 不是 []
+    expect(p.coverage_check.historical_cases[0].matched_on).toBeNull();
+    // Markdown 明说，而不是留空让人以为「没有依据」
+    const md = renderResearchRequestMarkdown(p);
+    expect(md).toContain('命中依据：未保存该信息（旧草稿）');
+  });
+
+  it('★ normalizeDraft 保留 matchedOn（三态：数组 / null / 缺键）', () => {
+    const withArr = normalizeDraft({ direction: 'x', linkedQuery: '汽车', linkedCoverage: {
+      query: '汽车', verdict: 'both',
+      current: [{ id: 'A', title: 'a', matchedOn: ['汽车'] }],
+      historical: [], resolution: null, captured_at: NOW,
+    } });
+    expect(withArr.draft.linkedCoverage?.current[0].matchedOn).toEqual(['汽车']);
+    expect(withArr.issues).toEqual([]);
+
+    const withoutKey = normalizeDraft({ direction: 'x', linkedQuery: '汽车', linkedCoverage: {
+      query: '汽车', verdict: 'both',
+      current: [{ id: 'A', title: 'a' }],
+      historical: [], resolution: null, captured_at: NOW,
+    } });
+    expect(withoutKey.draft.linkedCoverage?.current[0].matchedOn).toBeNull();
+
+    const badType = normalizeDraft({ direction: 'x', linkedQuery: '汽车', linkedCoverage: {
+      query: '汽车', verdict: 'both',
+      current: [{ id: 'A', title: 'a', matchedOn: '汽车' }],
+      historical: [], resolution: null, captured_at: NOW,
+    } });
+    expect(badType.draft.linkedCoverage?.current[0].matchedOn).toBeNull(); // 不得强转成 ["汽","车"]
   });
 });

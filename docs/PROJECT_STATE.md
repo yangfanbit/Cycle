@@ -20,14 +20,14 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `d3a5a15`（**实现提交**：v0.6 产品工作流验收 + 研究请求草稿）· 前序 `796ede2` / `e171d93`（文档：回填 HEAD）· `5d7efaa`（实现：日历补全 + 事件地图更正）· `975108f`（实现：行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | v0.8 见 `git log -1`（实现提交）+ 紧随的文档回填提交 · 前序：`f012dc3`（v0.7 实现）· `2a675cd`（v0.6 文档）· `d3a5a15`（v0.6 实现）· `5d7efaa`（v0.5 实现）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1021 passed / 0 failed / 39 files**（本轮 +5 条回归，全部针对真实缺陷） |
+| **测试** | **1167 passed / 0 failed / 48 files**（v0.8：+37，含 jsdom 交互测试 7 条 + 生命周期对照 14 条 + 剪贴板 10 条 + 草稿关联/matchedOn 13 条） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
 | **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 与 **`5d7efaa` 的 CI 均 success**（Actions runner 本身就是干净检出 = 干净环境实证；干净克隆另在本地复验：恢复 2,855 行日历 + 全部门禁 PASS + monorepo 25/25 + npm ci/tsc/**1021 测试**/build 全 OK） |
@@ -93,6 +93,54 @@
 - 另：`<App />` 此前**在 node 下渲染即崩**（`window is not defined`），这也是「App 层零测试」的原因之一；
   v0.7 把 3 处 URL flag 与路径访问改为 **SSR 安全**（无 `window` → 默认模式），
   于是**新增了 App 层的分类体系横幅测试**（守住「横幅与查询结论不矛盾」这类跨区块 bug）。
+
+### v0.8 批次已修（草稿交接三缺陷 + 生命周期对照交付）
+
+> ★ **只做产品实现**：未新增 Campaign / RC、未改 schema / canonical export / 冻结 SA /
+> CANONICAL 快照、未动行情库拆分、无网络无 LLM、不云同步。
+> ★ 4 个并行工作流中 A/B 完成并产出证据；C/D 因外部限流未启动，其职责
+> （jsdom 可行性实测、文档与发布验收）由主 Agent 直接完成。
+
+#### ① 草稿交接三缺陷（A 节，全部有 jsdom 真实点击回归）
+
+| # | 缺陷 | 修法 |
+|---|---|---|
+| 1 | ★★ **「以当前查询新建草稿」关联永不建立** —— 只设 `direction`，指望后续自动回填 effect 补关联；而 effect 守卫是 `isDraftBlank(draft)`：`direction` 非空 ⇒ **不 blank** ⇒ effect **不跑** ⇒ 导出仍显示「未关联任何查询」 | 新增纯函数 `buildLinkedDraft(query, r, at)` **一次性**写全 `direction` + `linkedQuery` + `linkedAt` + `linkedCoverage`；自动回填与新建草稿**共用**它（防两处漂移） |
+| 2 | ★★ **命中依据 `matchedOn` 五处丢失** —— `DirectionHit.matchedOn` → `LinkedCoverage` → localStorage → JSON → Markdown，**每层都只留 id/title**，导出层甚至写死 `matched_on: []` | 全链路保留：`CoverageHit.matchedOn: string[] \| null`（`null` = **旧草稿未保存该信息**，`[]` = 上游确实无依据）；`draft_version 0.2 → 0.3`、存储结构版本 `__v 3`；**存储键不换**（换键会丢用户在机草稿）；旧数据**不得**用当前 live 查询回填依据 |
+| 3 | ★ **复制失败无反馈** —— catch 只 `setCopied(null)`，用户既不知道失败、也不知道下一步（预览是折叠的） | 新增 `src/data/timeline/clipboard.ts`：`copyTextToClipboard()` 分级降级（`navigator.clipboard` → `execCommand`）并**返回结果对象**；失败 → 明确文案「复制失败：…」（按 `unavailable` / `rejected` / `no_dom` / `no_platform` 分因）+ **自动展开导出预览**；**绝不**显示「已复制」 |
+
+★ 顺带修掉 3 个连带问题：① `serializeDraft` 只看 `isDraftEmpty` → 「仅有关联」的草稿被误删（与 `loadDraft` 的合取不一致）→ 改 `isDraftBlank`；② 序列化写的 `__v` 被 `normalizeDraft` 当未知字段每次报一条 issue → 进白名单；③ payload builder 直读 `h.matchedOn`，未过 normalize 的对象会得 `undefined` → `?? null`。
+
+#### ② 功能交付：生命周期对照（B 节）
+
+- 新增 `src/components/CurrentTimeLens/LifecycleComparisonSection.tsx`，宿主 = `CurrentCandidateSection` 的
+  `CandidateDetail`，**紧随 SA 之后**（先看唯一权威的结构对应，再看并排展示的阶段对照）。
+- 呈现 = **两列表格**（刻意不做甘特/时间轴：画轴需归一化两侧尺度，属「为图表重建数据管线」）：
+  左列当前侧研究自述（`attention_state` + `phase_window`），右列历史对象阶段序列（导出**原序**，
+  标注起点/终点/**开放区间**/精度），末列**原样引用**冻结 SA 的 lifecycle 维度。
+- 默认只列 SA 判为「结构支持」的历史对象；`COMPUTE-POWER` / `OFFSHORE-WIND` **零 SUPPORTED → 诚实空态**。
+- 入口用 `onSelect`（**不**带 SA 上下文）—— 本区不是结构声明，附上下文等于把描述当结论。
+- ★★ 前置必修的真实缺陷：`COMPARISON_POINT_UNKNOWN`（534 条 SA 里 **24 条**）**不在**类型 /
+  文案 / `INDETERMINATE_DIMENSION_STATUSES` 里 → 回落英文且**不被识别为不确定**；
+  `isIndeterminate()` 又**硬编码**两个值 → artifact 自己把它列入 `unknown_dimensions` 而函数说
+  「不是未知」（被既有测试抓到）。→ 类型 + 文案 + 常量集三处补齐，`isIndeterminate` 改为读常量。
+- ★ 另补 `LIFECYCLE_STAGE_LABEL.ENDED`（Contract 11 阶段之一，导出实测 2 条，此前无标签）。
+
+### ★★ 测试能力边界（v0.8 更新：引入 jsdom）
+
+- **本版本轮起引入 `jsdom`（devDependency）** —— 用户明确允许「必要时引入轻量测试依赖」。
+  用**文件级** `// @vitest-environment jsdom`，**不影响**其它 44 个文件仍跑在 node 下。
+- 于是 **v0.7 声明的「交互无法自动化」已被打破**：`draftInteraction.test.tsx`（7 条）用
+  `react-dom/client` + `act` **真点真输入**，覆盖用户要求的 5 条交互：
+  ① 查询→建草稿、导出与页面一致 ② 改查询→证据不漂移+披露变更 ③ 点「以当前查询新建草稿」→
+  一次性关联新证据 ④ 清空→不被回填、**刷新（重挂载）后也不恢复** ⑤ 剪贴板失败→不假报成功+
+  预览自动展开。
+- ★ 仍未自动化（诚实声明）：`document.execCommand` 在 jsdom **未实现** → 降级路径由
+  `clipboard.test.ts` 以**注入 env** 覆盖；生命周期对照的「打开历史案例」真实跳转、以及
+  `useLayoutEffect` / 布局相关行为仍靠人工验收。
+- ★ 踩坑记录：jsdom 下 `document` 在同文件所有用例间**共享** → 失败的用例若没 unmount 干净，
+  后续用例的 `querySelector` 会读到别人的 DOM（实测踩到）。→ 测试用**作用域化 Session**（
+  `host.querySelector`）+ `afterEach` 清 `document.body`。
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 
