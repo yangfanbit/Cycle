@@ -21,13 +21,17 @@
  * - **不新增数据管线**：跨年份比较与经验基准概率仍由 `HistoricalEventMap` 内部渲染。
  * - **不与外部雷达互相替代**：雷达只展示外部线索；本区只展示历史事后重建。
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
   allResolvedEventMaps,
   eventMapsNotIncluded,
   type ResolvedEventMap,
 } from '../../data/timeline/historicalEventMaps';
+import {
+  loadSaCrossReference,
+  type SaCrossReferenceIndex,
+} from '../../data/marketSnapshot/saCrossReference';
 import { HistoricalEventMap } from '../ExternalSeasonalRadar/HistoricalEventMap';
 import { ThemeSecurityIndexSection } from './ThemeSecurityIndexSection';
 
@@ -76,6 +80,15 @@ export function HistoricalThemeMaps({
   const summaries = useMemo(() => themeMapSummaries(maps), [maps]);
   const [innerActive, setInnerActive] = useState<string>('');
   const [openNote, setOpenNote] = useState(false);
+  /** ★★ v0.21：当前唯一 CANONICAL 快照的 SA 交叉引用（一次性载入；失败 → `loaded=false`，不崩） */
+  const [saRef, setSaRef] = useState<SaCrossReferenceIndex | null>(null);
+  useEffect(() => {
+    let alive = true;
+    loadSaCrossReference()
+      .then((x) => { if (alive) setSaRef(x); })
+      .catch(() => { /* 载入失败已在索引内标记，不额外抛错 */ });
+    return () => { alive = false; };
+  }, []);
 
   if (maps.length === 0) return null;          // ★ 无数据 → 不渲染空壳
 
@@ -147,6 +160,7 @@ export function HistoricalThemeMaps({
           display={current.display}
           onOpenObject={onOpenObject}
           canOpenObject={canOpenObject}
+          saRef={saRef}
         />
       </div>
 

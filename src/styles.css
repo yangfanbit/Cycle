@@ -3458,6 +3458,17 @@ html, body {
 .fem-recon-summary li { display: flex; justify-content: space-between; gap: 8px; padding: 1px 0; }
 .fem-recon-summary li.fem-recon-object { display: block; color: var(--ink-3); }
 .fem-recon-miss { color: #b0492f; }
+/* ---- v0.21：与当前冻结 SA 的关系（精确对象 ID 交叉引用） ---- */
+.fem-sa-src { margin: 0 0 4px; font-size: 11px; color: var(--ink-3); }
+.fem-sa-miss { margin: 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-sa-found { margin: 0 0 4px; font-size: 11.5px; }
+.fem-sa-list { list-style: none; margin: 4px 0; padding: 0; }
+.fem-sa-list li { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 11px; padding: 2px 0; }
+.fem-sa-name { color: var(--ink-2); }
+.fem-sa-theme { font-size: 9.5px; border: 1px solid var(--line); border-radius: 8px; padding: 0 6px; color: var(--ink-3); }
+.fem-sa-status { font-size: 10.5px; border: 1px solid var(--line); border-radius: 9px; padding: 0 6px; }
+.fem-sa-strict { font-size: 9.5px; color: #2f6b3c; }
+.fem-sa-note { font-size: 10.5px; color: var(--ink-3); }
 
 /* ---- 事件类别分组 + 证据等级（2026-10-14 归属更正）---- */
 .fem-group { margin: 10px 0 0; }

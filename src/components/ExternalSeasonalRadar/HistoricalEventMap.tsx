@@ -41,6 +41,16 @@ import {
   reconciliationOf,
   registeredSecurityOf,
 } from '../../data/timeline/objectReconciliation';
+import {
+  SA_BLOCK_TITLE,
+  SA_NOT_FOUND_CAVEAT,
+  SA_NOT_FOUND_LABEL,
+  SA_NOT_LOADED_LABEL,
+  SA_NO_OBJECT_LABEL,
+  SA_OBJECT_LEVEL_CAVEAT,
+  saReferenceFor,
+  type SaCrossReferenceIndex,
+} from '../../data/marketSnapshot/saCrossReference';
 
 /** 中国股市惯例：涨红跌绿 */
 function cls(v?: number | null): string {
@@ -262,12 +272,14 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
  *   正文抽出来才能被测试直接渲染 —— 单一实现，不为测试复制逻辑）。
  */
 export function EventCardBody({
-  e, classCaveat, onOpenObject, canOpenObject,
+  e, classCaveat, onOpenObject, canOpenObject, saRef,
 }: {
   e: HistoricalEvent; classCaveat?: string;
   /** ★ v0.15：进入该事件关联的历史对象详情（复用 App selection 流程） */
   onOpenObject?: (objectId: string) => void;
   canOpenObject?: (objectId: string) => boolean;
+  /** ★★ v0.21：当前唯一 CANONICAL 快照的 SA 交叉引用索引（未载入 → null/undefined） */
+  saRef?: SaCrossReferenceIndex | null;
 }) {
   const conceptsNote = e.three_peaks_note ?? e.four_concepts_note;
   // ★ v0.17：事件级标的对账（与关联 Research 对象的 `security_ids` 精确比对）
@@ -281,6 +293,8 @@ export function EventCardBody({
   const objKind = cf
     ? (cf.object_kind ?? (cf.campaign_id ? 'campaign' : undefined))
     : undefined;
+  // ★★ v0.21：与当前冻结 SA 的**精确对象 ID** 交叉引用（只读快照，不重算 SA）
+  const saRefRows = saRef ? saReferenceFor(saRef, objId ?? null).rows : [];
   // ★ 两道检查缺一不可，否则只给事实文本（不给假按钮）
   const objResolvable = typeof objId === 'string' && objId.length > 0
     && typeof onOpenObject === 'function'
@@ -328,6 +342,50 @@ export function EventCardBody({
                   )}
                 </span>
               </p>
+            </>
+          )}
+
+          {/* ★★ v0.21：与**当前唯一 CANONICAL 快照**的 SA 的关系（精确对象 ID 交叉引用） */}
+          {saRef && (
+            <>
+              <h5>{SA_BLOCK_TITLE}</h5>
+              <p className="fem-sa-src">
+                来源快照 <code>{saRef.snapshotId || '—'}</code>
+                {saRef.snapshotStatus && <>（<strong>{saRef.snapshotStatus}</strong></>}
+                {saRef.marketSnapshotVersion && <> · snapshot {saRef.marketSnapshotVersion}</>}
+                {saRef.artifactVersion && <> · artifact {saRef.artifactVersion}</>}
+                {saRef.snapshotStatus && <>）</>}
+                {saRef.sourceCommit && <> · source {saRef.sourceCommit.slice(0, 7)}</>}
+              </p>
+              {!objId ? (
+                <p className="fem-sa-miss" data-sa-match="no-object">{SA_NO_OBJECT_LABEL}</p>
+              ) : !saRef.loaded ? (
+                <p className="fem-sa-miss" data-sa-match="not-loaded">{SA_NOT_LOADED_LABEL}</p>
+              ) : saRefRows.length === 0 ? (
+                <p className="fem-sa-miss" data-sa-match="none">
+                  {SA_NOT_FOUND_LABEL}
+                  <span className="fem-sa-note"> {SA_NOT_FOUND_CAVEAT}</span>
+                </p>
+              ) : (
+                <>
+                  <p className="fem-sa-found" data-sa-match="found">
+                    该历史对象<strong>被 {saRefRows.length} 个当前研究对象</strong>在冻结 SA 中引用：
+                  </p>
+                  <ul className="fem-sa-list">
+                    {saRefRows.map((r) => (
+                      <li key={r.currentObjectId} data-sa-current={r.currentObjectId}
+                          data-sa-status={r.structuralStatus}>
+                        <code>{r.currentObjectId}</code>
+                        <span className="fem-sa-name">{r.currentObjectName}</span>
+                        {r.currentObjectTheme && <span className="fem-sa-theme">{r.currentObjectTheme}</span>}
+                        <span className="fem-sa-status">{r.statusLabel}</span>
+                        {r.strictStructuralSupported && <span className="fem-sa-strict">strict</span>}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="fem-sa-note">{SA_OBJECT_LEVEL_CAVEAT}</p>
+                </>
+              )}
             </>
           )}
 
@@ -468,11 +526,13 @@ export function EventCardBody({
 
 /** 事件卡：头部（可折叠）+ 展开后的 `EventCardBody` */
 export function EventCard({
-  e, classCaveat, onOpenObject, canOpenObject,
+  e, classCaveat, onOpenObject, canOpenObject, saRef,
 }: {
   e: HistoricalEvent; classCaveat?: string;
   onOpenObject?: (objectId: string) => void;
   canOpenObject?: (objectId: string) => boolean;
+  /** ★★ v0.21：冻结 SA 交叉引用索引 */
+  saRef?: SaCrossReferenceIndex | null;
 }) {
   const [open, setOpen] = useState(false);
   const state = eventStudyState(e);
@@ -494,7 +554,7 @@ export function EventCard({
 
       {classCaveat && <p className="fem-adjacent-caveat"><RichText text={classCaveat} /></p>}
       {open && <EventCardBody e={e} classCaveat={classCaveat}
-        onOpenObject={onOpenObject} canOpenObject={canOpenObject} />}
+        onOpenObject={onOpenObject} canOpenObject={canOpenObject} saRef={saRef} />}
     </li>
   );
 }
@@ -685,9 +745,13 @@ export interface HistoricalEventMapProps {
   onOpenObject?: (objectId: string) => void;
   /** ★ v0.15：对象能否通过现有详情流程解析 */
   canOpenObject?: (objectId: string) => boolean;
+  /** ★★ v0.21：当前唯一 CANONICAL 快照的 SA 交叉引用索引（由容器一次性载入后注入） */
+  saRef?: SaCrossReferenceIndex | null;
 }
 
-export function HistoricalEventMap({ doc, display, onOpenObject, canOpenObject }: HistoricalEventMapProps) {
+export function HistoricalEventMap({
+  doc, display, onOpenObject, canOpenObject, saRef,
+}: HistoricalEventMapProps) {
   const groups = eventsByClass(doc, display?.class_order);
   const title = display?.title ?? '历史事件（按年份）';
   const ariaLabel = display?.aria_label ?? '历史事件地图';
@@ -718,7 +782,8 @@ export function HistoricalEventMap({ doc, display, onOpenObject, canOpenObject }
               {g.events.map((e) => (
                 <EventCard key={e.event_id} e={e} classCaveat={display?.class_caveats?.[g.cls]}
                   onOpenObject={onOpenObject}
-                  canOpenObject={canOpenObject} />
+                  canOpenObject={canOpenObject}
+                  saRef={saRef} />
               ))}
             </ul>
           </div>
