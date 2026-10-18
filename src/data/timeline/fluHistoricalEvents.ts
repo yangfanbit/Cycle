@@ -20,6 +20,7 @@ export type ParticipantCategory =
   | 'MECHANISM_DIRECT'
   | 'MARKET_PARTICIPANT'
   | 'SPILLOVER'
+  | 'COUNTER_EXAMPLE'
   | 'INSUFFICIENT';
 
 /** ★ 事件类别：直接流感 vs 邻近传染病（不得混为一谈） */
@@ -148,18 +149,20 @@ export function hasMarketData(p: FluParticipant): boolean {
 }
 
 /**
- * ★ 事件的「可分析行情」只看**非 INSUFFICIENT** 的标的是否有行情。
- *   （`INSUFFICIENT` = 有行情但无同期参与证据，**不得**当作该事件的表现证据。）
+ * ★ 事件的「可分析行情」只看**本题材方向**标的（排除反例 `COUNTER_EXAMPLE` 与证据不足 `INSUFFICIENT`）
+ *   是否有行情。（`INSUFFICIENT` = 有行情但无同期参与证据，**不得**当作该事件的表现证据。）
  */
 export function eventHasAnalysableData(e: FluEvent): boolean {
-  return e.participants.some((p) => p.category !== 'INSUFFICIENT' && hasMarketData(p));
+  return e.participants.some(
+    (p) => p.category !== 'INSUFFICIENT' && p.category !== 'COUNTER_EXAMPLE' && hasMarketData(p));
 }
 
 export const PARTICIPANT_CATEGORY_LABEL: Record<ParticipantCategory, string> = {
   MECHANISM_DIRECT: '直接机制相关',
   MARKET_PARTICIPANT: '历史市场参与者',
   SPILLOVER: '间接关联 / 扩散',
-  INSUFFICIENT: '证据不足 / 反面参照',
+  COUNTER_EXAMPLE: '反例（不同轴）',
+  INSUFFICIENT: '证据不足',
 };
 
 export const EVENT_CLASS_LABEL: Record<EventClass, string> = {
@@ -220,7 +223,7 @@ export interface FluEventsValidationIssue {
   message: string;
 }
 
-const CATS: readonly string[] = ['MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'INSUFFICIENT'];
+const CATS: readonly string[] = ['MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'COUNTER_EXAMPLE', 'INSUFFICIENT'];
 const CLASSES: readonly string[] = ['FLU_DIRECT', 'ADJACENT_PUBLIC_HEALTH'];
 const LEVELS: readonly string[] = ['REPORT_NAMED', 'BUSINESS_VERIFIED'];
 

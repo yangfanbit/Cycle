@@ -1091,7 +1091,7 @@
      "ticker": "600611",
      "name": "大众交通",
      "exchange": "SH",
-     "category": "INSUFFICIENT",
+     "category": "COUNTER_EXAMPLE",
      "evidence_level": "BUSINESS_VERIFIED",
      "rationale": "export 注册表 leader；**反例**：出租运营牌照方，非智驾技术链",
      "source": "export securities + 当前公开资料",
@@ -1170,7 +1170,7 @@
    },
    "known_gaps": [
     "★★ Campaign status=CONFLICT：end_date 口径未收敛（notes 记录）",
-    "★ 大众交通 relation=INSUFFICIENT（反例）：运营牌照方，非技术链",
+    "★ 大众交通 relation=COUNTER_EXAMPLE（反例·不同轴）：运营牌照方，非智驾技术链",
     "c2 封存记录（research-level）：Historical Leader Set 为**事后**确认样本；Point-in-Time Basket 才可模拟实时研究"
    ],
    "research_corpus_note": "c2/2024_robotaxi_final_research_record.md（research-level 封存记录，T3）：Main Campaign 2024-07-08→08-23；Secondary 2024-09-05→09-06（weak，未升级为正式 Campaign，**本题材不建事件**）。",

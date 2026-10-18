@@ -65,12 +65,14 @@ describe('v0.15 端到端：汽车智能化题材 → 标的证据 → 历史对
     expect(card.textContent).toContain('2024-07-11 → 2024-07-29');
     expect(card.textContent).toContain('C-2024-ROBOTAXI');
 
-    // ⑤ ★★ 反例标的：大众交通 category=INSUFFICIENT（运营牌照方，非技术链）
+    // ⑤ ★★ 反例标的：大众交通 category=COUNTER_EXAMPLE（运营牌照方，非智驾技术链）
+    //    ★★ 反例（COUNTER_EXAMPLE）与证据不足（INSUFFICIENT）是**两回事**，页面不得混同
     const dt = [...card.querySelectorAll('li, tr, div')].find((el) =>
       el.textContent?.includes('大众交通')
-      && el.textContent?.includes('证据不足')) as HTMLElement;
-    expect(dt, '大众交通应标「证据不足 / 反面参照」').toBeTruthy();
-    expect(dt.textContent).toContain('反例');
+      && el.textContent?.includes('反例')) as HTMLElement;
+    expect(dt, '大众交通应标「反例（不同轴）」').toBeTruthy();
+    expect(dt.textContent).toContain('反例（不同轴）');
+    expect(dt.textContent).not.toContain('证据不足');
     // 反例的行情如实显示（不是隐藏）
     expect(card.textContent).toContain('600611');
 

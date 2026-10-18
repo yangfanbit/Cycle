@@ -103,7 +103,7 @@ export interface ThemeSecurityIndex {
 
 const EVIDENCE_ORDER: EvidenceLevel[] = ['BUSINESS_VERIFIED', 'REPORT_NAMED'];
 const CATEGORY_ORDER: ParticipantCategory[] = [
-  'MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'INSUFFICIENT',
+  'MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'COUNTER_EXAMPLE', 'INSUFFICIENT',
 ];
 
 /** 中文名称排序（稳定；同名再按 security_id） */

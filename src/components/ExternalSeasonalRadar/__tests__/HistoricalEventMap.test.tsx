@@ -48,10 +48,10 @@ describe('A. 索引驱动', () => {
     expect(eventMapsNotIncluded().length).toBeGreaterThanOrEqual(3);
   });
 
-  it('★ 题材全部解析成功（索引有条目 + 注册表有文档；v0.15 起 5 个）', () => {
+  it('★ 题材全部解析成功（索引有条目 + 注册表有文档；v0.16 起 6 个）', () => {
     const maps = allResolvedEventMaps();
     expect(maps.map((m) => m.theme_id).sort()).toEqual(
-      ['AUTO_INTELLIGENCE', 'FLU', 'MEDIA', 'POWER_SUMMER', 'ROBOTICS'].sort());
+      ['AUTO_INTELLIGENCE', 'FLU', 'MEDIA', 'POWER_SUMMER', 'ROBOTICS', 'SEMICONDUCTOR_AI'].sort());
     for (const m of maps) expect(m.doc.events.length, m.theme_id).toBeGreaterThan(0);
   });
 
@@ -112,10 +112,20 @@ describe('C. 通用组件渲染非流感题材', () => {
     expect(html).toContain('ROBOTICS-2023-HUMANOID');
   });
 
-  it('★ 所有题材的事件都有可分析行情（本轮补数生效）', () => {
+  it('★ 每个题材都有事件带可分析行情（本轮补数生效；诚实空洞事件必须显式留 error）', () => {
     for (const m of allResolvedEventMaps()) {
+      const states = m.doc.events.map((e) => eventStudyState(e));
+      // 每个题材至少有一个事件带可分析行情（题材可用）
+      expect(states, m.theme_id).toContain('HAS_PRICE_DATA');
       for (const e of m.doc.events) {
-        expect(eventStudyState(e), `${m.theme_id}/${e.event_id}`).toBe('HAS_PRICE_DATA');
+        if (eventStudyState(e) !== 'NO_PRICE_DATA') continue;
+        // ★★ 诚实空洞：行情块必须逐条显式 error，**不得**静默缺省或补 0
+        const by = e.market_performance?.by_security ?? {};
+        const keys = Object.keys(by);
+        expect(keys.length, `${m.theme_id}/${e.event_id}`).toBeGreaterThan(0);
+        for (const k of keys) {
+          expect(by[k].error, `${m.theme_id}/${e.event_id}/${k}`).toBe('insufficient_data_in_window');
+        }
       }
     }
   });

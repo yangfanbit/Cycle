@@ -22,6 +22,7 @@ import powerDoc from '@current/power_historical_events_v0_3.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
+import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_1.json';
 
 /* ------------------------------------------------------ 通用类型 */
 
@@ -31,7 +32,22 @@ export type ParticipantCategory =
   | 'MECHANISM_DIRECT'
   | 'MARKET_PARTICIPANT'
   | 'SPILLOVER'
+  | 'COUNTER_EXAMPLE'
   | 'INSUFFICIENT';
+
+/**
+ * ★★ 2026-10-18（v0.16）：**反例**（`COUNTER_EXAMPLE`）与**证据不足**（`INSUFFICIENT`）是**两回事**：
+ *   - `COUNTER_EXAMPLE`：确进了记录，但与本题材机制**不同轴**，作为**反面参照**保留
+ *     （如大众交通＝运营牌照方、与智驾技术链不同轴）；
+ *   - `INSUFFICIENT`：参与 / 机制证据**不足**，尚不足以判断。
+ * 二者都**不**计入「本题材的可分析行情」—— 但**不得**互相等同。
+ */
+export const NON_THEME_CATEGORIES = ['COUNTER_EXAMPLE', 'INSUFFICIENT'] as const;
+
+/** 是否属于「本题材方向」的参与者（反例 / 证据不足 → `false`） */
+export function isThemeParticipant(p: { category: ParticipantCategory }): boolean {
+  return !(NON_THEME_CATEGORIES as readonly string[]).includes(p.category);
+}
 
 export type EvidenceLevel = 'REPORT_NAMED' | 'BUSINESS_VERIFIED';
 
@@ -242,6 +258,8 @@ const DOCS: Record<string, HistoricalEventsDoc> = {
   ROBOTICS: roboticsDoc as unknown as HistoricalEventsDoc,
   // ★ v0.15：汽车智能化 / 智能驾驶（6 事件 · 22 参与者，赛力斯行情不覆盖窗口→如实留空）
   AUTO_INTELLIGENCE: autoDoc as unknown as HistoricalEventsDoc,
+  // ★ v0.16：半导体 / AI 算力 / 存储（7 事件 · 29 参与记录，大基金三期窗口行情不可得→如实留空）
+  SEMICONDUCTOR_AI: semiDoc as unknown as HistoricalEventsDoc,
 };
 
 /** 索引条目 + 已加载的题材文档 */
@@ -308,7 +326,8 @@ export const PARTICIPANT_CATEGORY_LABEL: Record<ParticipantCategory, string> = {
   MECHANISM_DIRECT: '直接机制相关',
   MARKET_PARTICIPANT: '历史市场参与者',
   SPILLOVER: '间接关联 / 扩散',
-  INSUFFICIENT: '证据不足 / 反面参照',
+  COUNTER_EXAMPLE: '反例（不同轴）',
+  INSUFFICIENT: '证据不足',
 };
 
 export const EVIDENCE_LEVEL_LABEL: Record<EvidenceLevel, string> = {
@@ -817,9 +836,9 @@ export const MARKET_DATA_STATUS_LABEL: Record<MarketDataStatus, string> = {
   INSUFFICIENT: '覆盖不足',
 };
 
-/** ★ 只看**非 INSUFFICIENT** 的标的是否有行情登记（INSUFFICIENT 有行情≠参与证据） */
+/** ★ 只看**本题材方向**标的（排除反例 / 证据不足）是否有行情登记 */
 export function eventHasAnalysableData(e: HistoricalEvent): boolean {
-  return e.participants.some((p) => p.category !== 'INSUFFICIENT' && hasMarketData(p));
+  return e.participants.some((p) => isThemeParticipant(p) && hasMarketData(p));
 }
 
 /**
@@ -838,7 +857,7 @@ export function eventHasAnalysableData(e: HistoricalEvent): boolean {
 export function eventStudyState(e: HistoricalEvent): string {
   if (e.participants.length === 0 || e.catalysts.length === 0) return 'NOT_VERIFIED';
   const statuses = e.participants
-    .filter((p) => p.category !== 'INSUFFICIENT')
+    .filter((p) => isThemeParticipant(p))
     .map((p) => marketDataStatus(e, p.security_id));
   if (statuses.includes('COMPUTED')) return 'HAS_PRICE_DATA';
   if (statuses.includes('INSUFFICIENT')) return 'INSUFFICIENT_COVERAGE';
@@ -949,7 +968,7 @@ export interface EventMapValidationIssue {
   message: string;
 }
 
-const CATS: readonly string[] = ['MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'INSUFFICIENT'];
+const CATS: readonly string[] = ['MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'COUNTER_EXAMPLE', 'INSUFFICIENT'];
 const LEVELS: readonly string[] = ['REPORT_NAMED', 'BUSINESS_VERIFIED'];
 
 /** 题材无关的结构校验：必填、枚举、id 唯一、事件—标的自洽、事件类别必须显式 */

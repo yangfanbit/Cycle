@@ -20,7 +20,7 @@ const exportSecurities = (timelineExport as {
 }).securities;
 
 const PART_CATEGORIES = new Set([
-  'MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'INSUFFICIENT',
+  'MECHANISM_DIRECT', 'MARKET_PARTICIPANT', 'SPILLOVER', 'COUNTER_EXAMPLE', 'INSUFFICIENT',
 ]);
 const EVIDENCE_LEVELS = new Set(['REPORT_NAMED', 'BUSINESS_VERIFIED']);
 
@@ -90,15 +90,19 @@ describe('汽车智能化题材 · 参与者与证据', () => {
     }
   });
 
-  it('★★ 关系性质含四类：直接机制 / 间接扩散 / 运营侧反例 / 证据不足', () => {
+  it('★★ 关系性质含五类：直接机制 / 间接扩散 / 历史市场参与 / 运营侧反例 / 证据不足', () => {
     const cats = new Set(doc.events.flatMap((e) => e.participants.map((p) => p.category)));
     expect(cats.has('MECHANISM_DIRECT')).toBe(true);
     expect(cats.has('SPILLOVER')).toBe(true);
-    expect(cats.has('INSUFFICIENT')).toBe(true);   // 反例（大众交通）
-    // 大众交通 = 运营牌照方反例：category=INSUFFICIENT 且说明写在 rationale
+    // ★★ 反例（COUNTER_EXAMPLE）与证据不足（INSUFFICIENT）是**两回事**，不得互相等同
+    expect(cats.has('COUNTER_EXAMPLE')).toBe(true);
+    expect(cats.has('INSUFFICIENT')).toBe(true);
+    // 大众交通 = 运营牌照方反例：category=COUNTER_EXAMPLE（**不是** INSUFFICIENT）且说明写在 rationale
     const dt = doc.events.flatMap((e) => e.participants).find((p) => p.security_id === 'DADONGTRAFFIC')!;
-    expect(dt.category).toBe('INSUFFICIENT');
+    expect(dt.category).toBe('COUNTER_EXAMPLE');
+    expect(dt.category).not.toBe('INSUFFICIENT');
     expect(dt.rationale).toContain('反例');
+    expect(dt.business_mechanism_caveat).toContain('不同轴');
   });
 
   it('★★ 标的索引：19 只（22 次出现按 security_id 合并），多事件标的带多年份', () => {

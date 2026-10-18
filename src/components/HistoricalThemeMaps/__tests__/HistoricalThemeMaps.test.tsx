@@ -37,15 +37,16 @@ describe('历史题材地图 · 入口', () => {
     expect((html.match(/role="tab"/g) ?? [])).toHaveLength(fromIndex.length);
   });
 
-  it('★★ 事件数由 doc 现算，且与总数自洽（当前 6+4+2+1+6=19）', () => {
+  it('★★ 事件数由 doc 现算，且与总数自洽（当前 6+4+2+1+6+7=26）', () => {
     const byId = Object.fromEntries(summaries.map((s) => [s.themeId, s.eventCount]));
     expect(byId.FLU).toBe(6);
     expect(byId.POWER_SUMMER).toBe(4);
     expect(byId.MEDIA).toBe(2);
     expect(byId.ROBOTICS).toBe(1);
-    expect(byId.AUTO_INTELLIGENCE).toBe(6);   // v0.15 新增：汽车智能化
+    expect(byId.AUTO_INTELLIGENCE).toBe(6);      // v0.15 新增：汽车智能化
+    expect(byId.SEMICONDUCTOR_AI).toBe(7);       // v0.16 新增：半导体 / AI 算力 / 存储
     const total = summaries.reduce((a, b) => a + b.eventCount, 0);
-    expect(total).toBe(6 + 4 + 2 + 1 + 6);
+    expect(total).toBe(6 + 4 + 2 + 1 + 6 + 7);
     expect(html).toContain(`<strong>${total}</strong> 个历史事件`);
   });
 
@@ -85,7 +86,7 @@ describe('历史题材地图 · 入口', () => {
   });
 
   it('★★ 渲染里没有 Markdown 星号', () => {
-    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS']) {
+    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS', 'AUTO_INTELLIGENCE', 'SEMICONDUCTOR_AI']) {
       const h = renderToStaticMarkup(<HistoricalThemeMaps activeThemeId={id} />);
       expect(h, id).not.toContain('**');
     }
@@ -93,8 +94,8 @@ describe('历史题材地图 · 入口', () => {
 });
 
 describe('历史题材地图 · 标的索引（v0.11）', () => {
-  it('★★ 四个题材都能看到自己的标的索引，且**在逐事件列表之前**', () => {
-    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS']) {
+  it('★★ 每个题材都能看到自己的标的索引，且**在逐事件列表之前**', () => {
+    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS', 'AUTO_INTELLIGENCE', 'SEMICONDUCTOR_AI']) {
       const h = renderToStaticMarkup(<HistoricalThemeMaps activeThemeId={id} />);
       const iIndex = h.indexOf('aria-label="历史参与标的索引"');
       const iEvents = h.indexOf('class="fem-list"');
@@ -105,7 +106,7 @@ describe('历史题材地图 · 标的索引（v0.11）', () => {
   });
 
   it('★ 索引里没有字面 Markdown 星号', () => {
-    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS']) {
+    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS', 'AUTO_INTELLIGENCE', 'SEMICONDUCTOR_AI']) {
       const h = renderToStaticMarkup(<HistoricalThemeMaps activeThemeId={id} />);
       expect(h, id).not.toContain('**');
     }

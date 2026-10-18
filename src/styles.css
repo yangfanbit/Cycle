@@ -3369,7 +3369,7 @@ html, body {
 
 /* ============================================================================
    历史流感事件地图（FluEventMap）
-   ★ 与外部季节性雷达同一浅色体系；用颜色区分「机制相关 / 市场参与 / 扩散 / 证据不足」
+   ★ 与外部季节性雷达同一浅色体系；用颜色区分「机制相关 / 市场参与 / 扩散 / 反例 / 证据不足」
    ============================================================================ */
 .fem {
   margin: 10px 0 4px; padding: 10px 12px;
@@ -3418,6 +3418,7 @@ html, body {
 .fem-part-cat.cat-mechanism_direct   { background: #eaf5ec; color: #2f6b3c; }
 .fem-part-cat.cat-market_participant { background: #eef3f8; color: var(--accent); }
 .fem-part-cat.cat-spillover          { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-cat.cat-counter_example    { background: #fbeef0; color: #8a4256; }
 .fem-part-cat.cat-insufficient       { background: #f4f4f6; color: var(--ink-3); }
 .fem-part-md { font-size: 10.5px; }
 .fem-part-md.ok   { color: #2f6b3c; }
