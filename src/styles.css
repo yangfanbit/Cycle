@@ -3437,6 +3437,9 @@ html, body {
 .fem-part-recon.recon-map_supplement   { background: #fdf3e3; color: var(--preheat-ink); }
 .fem-part-recon.recon-no_object_reference { background: #f4f4f6; color: #6b6b76; }
 .fem-part-recon.recon-unresolved       { background: #fbeef0; color: #8a4256; }
+/* ★ v0.19：注册表命中是独立事实，未命中单独标出（≠ 证券不存在） */
+.fem-part-registry { font-size: 10.5px; border: 1px dashed var(--line); border-radius: 9px; padding: 0 6px; color: var(--ink-3); }
+.fem-part-registry.miss { border-color: #c9a227; color: #8a6d1b; }
 .fem-perf-ticker { font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); margin-left: 6px; }
 .fem-perf-table tr.fem-perf-partial td { color: var(--ink-3); }
 .fem-perf-table tr.fem-perf-partial td.num-up,
@@ -3766,6 +3769,8 @@ html, body {
 .tsi-recon.recon-no_object_reference { color: #6b6b76; }
 .tsi-recon.recon-unresolved       { color: #8a4256; }
 .tsi-recon-totals { margin: 4px 0; font-size: 10.5px; color: var(--ink-3); }
+.tsi-registry-totals { margin: 2px 0 4px; font-size: 10.5px; color: var(--ink-3); }
+.tsi-registry { color: #8a6d1b; }
 .tsi-hint { font-size: 9.5px; color: var(--ink-3); margin-left: 4px; }
 .tsi-missing { color: var(--ink-3); }
 .tsi-caveat { display: block; font-size: 9.5px; color: var(--ink-3); margin-top: 2px; }

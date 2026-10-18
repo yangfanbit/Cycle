@@ -31,7 +31,11 @@ import {
   type SecurityOccurrence,
   type ThemeSecurityEntry,
 } from '../../data/timeline/themeSecurityIndex';
-import { RECON_LINK_LABEL } from '../../data/timeline/objectReconciliation';
+import {
+  REGISTRY_MISS_CAVEAT,
+  REGISTRY_STATUS_LABEL,
+  RECON_LINK_LABEL,
+} from '../../data/timeline/objectReconciliation';
 import { RichText } from '../RichText';
 
 function pct(v?: number | null): string {
@@ -67,6 +71,14 @@ function OccurrenceRow({ o }: { o: SecurityOccurrence }) {
           : '（事件未记录关联对象）'}
         <span className="tsi-hint">{o.reconReason}</span>
       </p>
+
+      {/* ★★ v0.19：注册表命中是**独立事实** —— 未命中如实标出（≠ 证券不存在、≠ 可自动匹配） */}
+      {!o.securityRegistered && (
+        <p className="tsi-line tsi-registry" data-registry="miss">
+          <strong>{REGISTRY_STATUS_LABEL.miss}</strong>
+          <span className="tsi-hint">{REGISTRY_MISS_CAVEAT}</span>
+        </p>
+      )}
 
       {(o.reportedMove || o.eventReportedMove) && (
         <p className="tsi-line">
@@ -169,6 +181,17 @@ export function ThemeSecurityIndexSection({ doc }: { doc: HistoricalEventsDoc })
         地图补充记录 <strong>{index.totals.reconCounts.MAP_SUPPLEMENT}</strong> ·
         未登记对象关联 <strong>{index.totals.reconCounts.NO_OBJECT_REFERENCE}</strong> ·
         无法核对 <strong>{index.totals.reconCounts.UNRESOLVED}</strong>
+      </p>
+
+      {/* ★★ v0.19：注册表命中 —— 与上面四分类**独立**的第二个事实（分开统计） */}
+      <p className="tsi-registry-totals" data-tsi-registry="totals">
+        ★ 证券注册表精确命中 <strong>{index.totals.registry.hit}</strong> ·
+        未命中 <strong>{index.totals.registry.miss}</strong>
+        {index.totals.registry.miss > 0 && (
+          <span className="tsi-hint">
+            （未命中只是需核对的标识差异 —— 不等于证券不存在、也不等于可自动匹配其它 ID）
+          </span>
+        )}
       </p>
 
       <p className="tsi-disc"><RichText text={SECURITY_INDEX_DISCLAIMER} /></p>

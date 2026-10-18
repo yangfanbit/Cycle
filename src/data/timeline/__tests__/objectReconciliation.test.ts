@@ -8,12 +8,16 @@ import { describe, it, expect } from 'vitest';
 import { eventMapByTheme, type HistoricalEvent, type HistoricalEventsDoc } from '../historicalEventMaps';
 import {
   RECON_LINK_LABEL,
+  REGISTRY_MISS_CAVEAT,
+  REGISTRY_STATUS_LABEL,
   eventReconciliation,
   isExportObject,
   isRegisteredSecurity,
   objectSecurityIds,
   reconciliationOf,
+  registryStatusOf,
   themeReconciliation,
+  themeRegistrySummary,
 } from '../objectReconciliation';
 
 const semi = eventMapByTheme('SEMICONDUCTOR_AI')!.doc;
@@ -134,5 +138,70 @@ describe('C. ★★ 六题材对账汇总（真实数据锚点）', () => {
     expect(totals).toEqual({
       OBJECT_REGISTERED: 66, MAP_SUPPLEMENT: 0, NO_OBJECT_REFERENCE: 57, UNRESOLVED: 0,
     });
+  });
+});
+
+describe('D. ★★ v0.19：证券注册表命中 —— 与对象关联状态**独立的第二个事实**', () => {
+  const THEMES = ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS', 'AUTO_INTELLIGENCE', 'SEMICONDUCTOR_AI'];
+
+  it('★★ 全局锚点：123 条记录 = 精确命中 87 · 未命中 36', () => {
+    let hit = 0;
+    let miss = 0;
+    for (const t of THEMES) {
+      const s = themeRegistrySummary(eventMapByTheme(t)!.doc);
+      hit += s.hit;
+      miss += s.miss;
+    }
+    expect(hit).toBe(87);
+    expect(miss).toBe(36);
+    expect(hit + miss).toBe(123);
+  });
+
+  it('★ 各题材命中明细（未命中全部集中在流感 v0_7 的旧式标识）', () => {
+    const per: Record<string, [number, number]> = {};
+    for (const t of THEMES) {
+      const s = themeRegistrySummary(eventMapByTheme(t)!.doc);
+      per[t] = [s.hit, s.miss];
+    }
+    expect(per.FLU).toEqual([6, 36]);
+    expect(per.POWER_SUMMER).toEqual([21, 0]);
+    expect(per.MEDIA).toEqual([4, 0]);
+    expect(per.ROBOTICS).toEqual([5, 0]);
+    expect(per.AUTO_INTELLIGENCE).toEqual([22, 0]);
+    expect(per.SEMICONDUCTOR_AI).toEqual([29, 0]);
+  });
+
+  it('★★ 边界一：无对象引用 且 证券 ID 未命中注册表 —— 两个事实各自独立', () => {
+    // 武汉不明原因肺炎：无 `campaign_facts`，且 `YILING-002603` 为旧式标识
+    const e = ev(flu, 'PUBLICHEALTH-2019-WUHAN');
+    const r = reconciliationOf(e, 'YILING-002603');
+    expect(r.objectId).toBeNull();
+    expect(r.link).toBe('NO_OBJECT_REFERENCE');   // ① 未登记对象关联
+    expect(r.link).not.toBe('UNRESOLVED');        // ★ 不是「对象解析失败」
+    expect(r.securityRegistered).toBe(false);     // ② 未命中注册表 —— **未被 ① 掩盖**
+    // ★ 注册表里确实有代码相同、标识不同的 `YILING`（仅作核对线索，不自动合并）
+    expect(isRegisteredSecurity('YILING')).toBe(true);
+    expect(objectSecurityIds('YILING')).toBeNull();  // `YILING` 不是对象 id
+  });
+
+  it('★★ 边界二：对象已登记关联 且 注册表精确命中', () => {
+    const e = ev(semi, 'SEMI-2023-AI-COMPUTE');
+    const r = reconciliationOf(e, 'CAMBRICON');
+    expect(r.link).toBe('OBJECT_REGISTERED');
+    expect(r.securityRegistered).toBe(true);
+  });
+
+  it('★ registryStatusOf：命中无 caveat；未命中给出「不等于证券不存在」声明', () => {
+    const hit = registryStatusOf('CAMBRICON');
+    expect(hit.registered).toBe(true);
+    expect(hit.label).toBe('证券注册表：精确命中');
+    expect(hit.caveat).toBeNull();
+
+    const miss = registryStatusOf('YILING-002603');
+    expect(miss.registered).toBe(false);
+    expect(miss.label).toBe(REGISTRY_STATUS_LABEL.miss);
+    expect(miss.caveat).toBe(REGISTRY_MISS_CAVEAT);
+    expect(miss.caveat).toContain('**不等于**证券不存在');
+    expect(miss.caveat).toContain('YILING-002603');
   });
 });

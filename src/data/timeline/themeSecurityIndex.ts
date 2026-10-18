@@ -34,6 +34,7 @@ import {
   RECON_LINK_ORDER,
   reconciliationOf,
   type ReconLink,
+  type RegistrySummary,
 } from './objectReconciliation';
 
 /** 一次「该标的出现在某个事件里」的记录（原样保留该次事件的字段） */
@@ -70,6 +71,11 @@ export interface SecurityOccurrence {
   reconReason: string;
   /** 事件关联对象 id（`campaign_facts.object_id` ?? `campaign_id`），可能为 `null` */
   reconObjectId: string | null;
+  /**
+   * ★★ v0.19：该 `security_id` 是否**精确命中** canonical export 的 `securities` 注册表 ——
+   * **独立于** `reconLink`（未登记对象关联时**仍照常判定**）。
+   */
+  securityRegistered: boolean;
 }
 
 export interface ThemeSecurityEntry {
@@ -111,6 +117,8 @@ export interface ThemeSecurityIndex {
     unlinkedReports: number;
     /** ★ v0.17：逐次出现的**标的对账**汇总（对象已登记 / 地图补充 / 无法核对） */
     reconCounts: Record<ReconLink, number>;
+    /** ★ v0.19：**证券注册表命中**汇总（与 `reconCounts` **分开**统计 —— 两个独立事实） */
+    registry: RegistrySummary;
   };
 }
 
@@ -161,6 +169,8 @@ function occurrenceOf(e: HistoricalEvent, p: HistoricalParticipant): SecurityOcc
     reconLink: recon.link,
     reconReason: recon.reason,
     reconObjectId: recon.objectId,
+    // ★ v0.19：注册表命中是**独立事实**（未被对象关联状态覆盖）
+    securityRegistered: recon.securityRegistered,
   };
 }
 
@@ -267,6 +277,15 @@ export function themeSecurityIndexOf(doc: HistoricalEventsDoc): ThemeSecurityInd
         );
         return acc;
       }, { OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, NO_OBJECT_REFERENCE: 0, UNRESOLVED: 0 } as Record<ReconLink, number>),
+      registry: {
+        hit: entries.reduce(
+          (n, x) => n + x.occurrences.filter((o) => o.securityRegistered).length, 0,
+        ),
+        miss: entries.reduce(
+          (n, x) => n + x.occurrences.filter((o) => !o.securityRegistered).length, 0,
+        ),
+        total: occurrences,
+      },
     },
   };
 }

@@ -52,7 +52,9 @@ export const RECON_CAVEAT =
   + '属 Product 地图的**补充关联**，**不自动**视为错误；'
   + '「**未登记对象关联**」= 该事件**未记录关联对象**（缺 `object_id`）→ 当前**无法做对象级对账**，'
   + '**不**暗示证券不存在、**不**自动判定其应属于某个 Campaign；'
-  + '「无法核对」= **已提供**对象引用但对象无法解析，**或**证券注册信息缺失，**不猜测**身份。';
+  + '「无法核对」= **已提供**对象引用但对象无法解析，**或**证券注册信息缺失，**不猜测**身份。'
+  + '★ ★★「**对象关联状态**」（上列四分类）与「**证券是否精确命中注册表**」是**两个独立事实** ——'
+  + '后者单独呈现（见 `REGISTRY_MISS_CAVEAT`），**不**参与四分类、**不**互相推导。';
 
 export interface ObjectSecurityReconciliation {
   /** 事件关联对象 id（`campaign_facts.object_id` ?? `campaign_facts.campaign_id`） */
@@ -140,12 +142,17 @@ export function eventObjectId(event: HistoricalEvent): string | null {
 /**
  * ★★ 单个标的的对账（纯函数、确定性）。
  *
- * 判定顺序：
- *  1. 无关联对象 id → `UNRESOLVED`（原因：事件未记录关联对象）
- *  2. 对象不在 export → `UNRESOLVED`（原因：关联对象不存在）
+ * ★ 注意：本函数产出**两个独立事实** ——
+ *   ① `link`（对象关联状态，四分类）；② `securityRegistered`（该 ID 是否**精确命中**证券注册表）。
+ *   二者**互不推导**：未登记对象关联（①）时，②**仍照常判定**（并如实返回），
+ *   不得因为「没对象」就跳过注册表核对。
+ *
+ * 判定顺序（①）：
+ *  1. 无关联对象 id → `NO_OBJECT_REFERENCE`（原因：事件未记录关联对象）—— ★ **不是** `UNRESOLVED`
+ *  2. 有对象 id 但不在 export → `UNRESOLVED`（原因：关联对象无法解析）
  *  3. 证券在对象的 `security_ids` 中 → `OBJECT_REGISTERED`
  *  4. 否则证券在全局注册表 → `MAP_SUPPLEMENT`
- *  5. 否则 → `UNRESOLVED`（原因：证券不在注册表 / 对象 security_ids 不可解析）
+ *  5. 否则 → `UNRESOLVED`（原因：证券注册信息缺失）
  */
 export function reconciliationOf(
   event: HistoricalEvent, securityId: string,
@@ -235,4 +242,62 @@ export function themeReconciliation(doc: HistoricalEventsDoc): Record<ReconLink,
     }
   }
   return totals;
+}
+
+/* ------------------------------------------------------ 证券注册表命中（**独立于**对象关联状态） */
+
+/**
+ * ★★ 2026-10-18（v0.19）：把「证券是否**精确命中** canonical export 的 `securities` 注册表」
+ * 作为**独立事实**呈现 —— 它与四分类**不是一回事**：
+ *   · 事件**未登记对象**（`NO_OBJECT_REFERENCE`）时，该 ID 是否在注册表中**仍照常判定**；
+ *   · 实测：流感地图用旧式标识 `YILING-002603`，export 注册表用 `YILING` —— **代码相同、标识不同**。
+ *     ★ 这**只是需要核对的标识差异**，**不等于**证券不存在，也**不是**自动合并的依据。
+ */
+export const REGISTRY_STATUS_LABEL = {
+  hit: '证券注册表：精确命中',
+  miss: '证券注册表：未命中',
+} as const;
+
+/** ★★ 「未命中注册表」的语义声明（UI 原样渲染，避免被读成「证券不存在」） */
+export const REGISTRY_MISS_CAVEAT =
+  '★ 「未命中注册表」= 该 `security_id` **未在** canonical export 的 `securities` 中**精确命中**。'
+  + '这只是**需要核对的标识差异**：**不等于**证券不存在，也**不代表**可以自动匹配到其它 ID'
+  + '（例：地图里的 `YILING-002603` 与 export 里的 `YILING` 代码相同、标识不同）。'
+  + '★ 系统**不做**名称模糊匹配、**不擅自改写** `security_id`、**不**据此改写历史事件。';
+
+export interface RegistryStatus {
+  registered: boolean;
+  label: string;
+  /** 未命中时给出语义声明；命中时为 `null` */
+  caveat: string | null;
+}
+
+/** ★★ 单条证券 ID 的注册表状态（**独立于**「对象关联状态」） */
+export function registryStatusOf(securityId: string): RegistryStatus {
+  const registered = REGISTERED_SECURITIES.has(securityId);
+  return {
+    registered,
+    label: registered ? REGISTRY_STATUS_LABEL.hit : REGISTRY_STATUS_LABEL.miss,
+    caveat: registered ? null : REGISTRY_MISS_CAVEAT,
+  };
+}
+
+export interface RegistrySummary {
+  /** 精确命中注册表的记录数 */
+  hit: number;
+  /** 未命中注册表的记录数（需核对的标识差异） */
+  miss: number;
+  total: number;
+}
+
+/** ★★ 整个题材文档的注册表命中汇总（与四分类**分开**统计） */
+export function themeRegistrySummary(doc: HistoricalEventsDoc): RegistrySummary {
+  let hit = 0;
+  let miss = 0;
+  for (const e of doc.events ?? []) {
+    for (const p of e.participants ?? []) {
+      if (REGISTERED_SECURITIES.has(p.security_id)) hit += 1; else miss += 1;
+    }
+  }
+  return { hit, miss, total: hit + miss };
 }

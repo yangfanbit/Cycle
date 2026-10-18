@@ -34,7 +34,10 @@ import { RichText, plain } from '../RichText';
 import {
   RECON_CAVEAT,
   RECON_LINK_LABEL,
+  REGISTRY_MISS_CAVEAT,
+  REGISTRY_STATUS_LABEL,
   eventReconciliation,
+  isRegisteredSecurity,
   reconciliationOf,
 } from '../../data/timeline/objectReconciliation';
 
@@ -194,6 +197,13 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
               data-recon-link={recon.link} title={recon.reason}>
           对象对账：{RECON_LINK_LABEL[recon.link]}
         </span>
+        {/* ★★ v0.19：注册表命中是**独立事实** —— 未命中时如实标出（≠ 证券不存在、≠ 可自动匹配） */}
+        {!recon.securityRegistered && (
+          <span className="fem-part-registry miss" data-registry="miss"
+                title={REGISTRY_MISS_CAVEAT}>
+            {REGISTRY_STATUS_LABEL.miss}
+          </span>
+        )}
       </div>
       {p.business_mechanism && (
         <p className="fem-part-biz">
@@ -225,6 +235,9 @@ export function EventCardBody({
   const conceptsNote = e.three_peaks_note ?? e.four_concepts_note;
   // ★ v0.17：事件级标的对账（与关联 Research 对象的 `security_ids` 精确比对）
   const recon = eventReconciliation(e);
+  // ★★ v0.19：证券注册表命中是**独立事实**（与四分类分开统计；未命中 ≠ 证券不存在）
+  const registryHit = e.participants.filter((p) => isRegisteredSecurity(p.security_id)).length;
+  const registryMiss = e.participants.length - registryHit;
   // ★ 对象身份：object_id（v0.15，含 Research Candidate）优先，兼容旧 campaign_id
   const cf = e.campaign_facts;
   const objId = cf ? (cf.object_id ?? cf.campaign_id) : undefined;
@@ -293,8 +306,11 @@ export function EventCardBody({
             <p className="fem-empty">（本轮未核实到催化事件）</p>
           ) : (
             <ul className="fem-cats">
-              {e.catalysts.map((c) => (
-                <li key={c.date + c.text.slice(0, 12)}>
+              {/* ★ v0.19 修复：`date + text.slice(0,12)` 会在**同日同前缀**的催化上产生重复 key
+                  （实测文化传媒 MEDIA 事件触发 React 重复 key 警告 → 子节点可能被复制 / 丢项）。
+                  改用「日期 + 序号」保证同一数据快照内唯一。 */}
+              {e.catalysts.map((c, i) => (
+                <li key={`${c.date}#${i}`}>
                   <span className="fem-cat-date">{c.date}</span>
                   <span className="fem-cat-text"><RichText text={c.text} /></span>
                   <span className="fem-cat-src">{c.source}</span>
@@ -342,6 +358,16 @@ export function EventCardBody({
                 <li data-recon="UNRESOLVED">
                   无法核对（已提供对象引用但无法解析，或证券注册信息缺失）
                   <strong>{recon.counts.UNRESOLVED}</strong>
+                </li>
+                {/* ★★ v0.19：注册表命中 —— 与上面四分类**独立**的第二个事实 */}
+                <li className="fem-recon-registry" data-recon="REGISTRY">
+                  证券注册表：精确命中 <strong>{registryHit}</strong> · 未命中{' '}
+                  <strong>{registryMiss}</strong>
+                  {registryMiss > 0 && (
+                    <span className="fem-recon-miss">
+                      （未命中只是**需要核对的标识差异** —— 不等于证券不存在、也不等于可自动匹配其它 ID）
+                    </span>
+                  )}
                 </li>
                 <li className="fem-recon-object">
                   事件关联对象：<code>{recon.objectId ?? '—'}</code>
