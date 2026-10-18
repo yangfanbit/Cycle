@@ -23,7 +23,7 @@
  */
 
 import type { ExternalCalendarEntry } from './externalSeasonalCalendar';
-import type { AnnualWindow, ThemeAnnualRow } from './themeAnnualWindow';
+import { mainRiseOf, type AnnualWindow, type ThemeAnnualRow } from './themeAnnualWindow';
 
 export interface ComparisonWindow {
   year: number;
@@ -56,10 +56,29 @@ export interface ThemeComparison {
   windows: ComparisonWindow[];
   /** 涉及年份（升序去重） */
   years: number[];
-  /** 该主题下正式 Campaign / Research Candidate 计数（用于说明口径） */
+  /** 该主题下正式 Campaign / Research Candidate 计数（**全部对象**，含未进入窗口的） */
   counts: { campaign: number; candidate: number };
+  /**
+   * ★★ 历史窗口**实际涉及**的对象数（按 `objectId` 去重）。
+   * 不能拿 `windows.length` 当对象数 —— 一个对象跨年可产生多段投影。
+   */
+  windowCounts: { campaign: number; candidate: number };
+  /**
+   * 该主题下**未**进入窗口列表的对象（即没有可投影的 `MAIN_RISE`）。
+   * ★ 原样列出、逐条带原因；**不得**把它们算进窗口里，也不得从窗口计数里悄悄抹掉。
+   */
+  objectsOutsideWindows: OutsideWindowObject[];
   /** 空态 / 未映射时的说明（**只陈述事实**） */
   note: string;
+}
+
+/** 未进入历史窗口的对象（含**为什么**没进） */
+export interface OutsideWindowObject {
+  objectId: string;
+  title: string;
+  objectKind: 'campaign' | 'candidate';
+  /** 未进入窗口的原因（逐条判定，不合并、不猜） */
+  reason: 'no-main-rise' | 'main-rise-not-projected';
 }
 
 function toComparisonWindow(w: AnnualWindow): ComparisonWindow {
@@ -87,7 +106,11 @@ export function compareExternalToTheme(
   entry: ExternalCalendarEntry,
   macroRows: readonly ThemeAnnualRow[],
 ): ThemeComparison {
-  const empty = { campaign: 0, candidate: 0 };
+  const empty = {
+    counts: { campaign: 0, candidate: 0 },
+    windowCounts: { campaign: 0, candidate: 0 },
+    objectsOutsideWindows: [],
+  };
 
   if (entry.mapping.status !== 'MAPPED' || !entry.mapping.macro_theme) {
     return {
@@ -96,7 +119,7 @@ export function compareExternalToTheme(
       theme: null,
       windows: [],
       years: [],
-      counts: empty,
+      ...empty,
       note: '该线索**未映射**到 ThreeC 宏观主题 → 没有可对照的历史窗口。'
         + '（未映射 ≠ 库内不存在相关对象；只是名称层面没有对应根主题。）',
     };
@@ -113,7 +136,7 @@ export function compareExternalToTheme(
       theme,
       windows: [],
       years: [],
-      counts: empty,
+      ...empty,
       note: `已映射到「${theme}」，但**当前研究数据里没有同名宏观主题行** —— `
         + '因此没有历史窗口可对照。★ 不补造窗口。',
     };
@@ -123,6 +146,43 @@ export function compareExternalToTheme(
     .map(toComparisonWindow)
     .sort((a, b) => a.year - b.year || a.startFrac - b.startFrac
       || a.objectId.localeCompare(b.objectId));
+
+  // ★★ 窗口**段数** ≠ 对象数：同一对象跨年可有多个投影段 → 按 objectId 去重
+  const inWindow = new Map<string, 'campaign' | 'candidate'>();
+  for (const w of windows) {
+    if (!inWindow.has(w.objectId)) inWindow.set(w.objectId, w.objectKind);
+  }
+  const windowCounts = {
+    campaign: [...inWindow.values()].filter((k) => k === 'campaign').length,
+    candidate: [...inWindow.values()].filter((k) => k === 'candidate').length,
+  };
+
+  // 主题下**全部**对象里未进入窗口的 → 原样列出 + 逐条原因。
+  // ★ 两种原因都保留：一是没有 MAIN_RISE；二是有 MAIN_RISE 但投影为空（异常路径，
+  //   宁可显示出来让人核对，也不悄悄塞进任一侧计数里）。
+  const objectsOutsideWindows: OutsideWindowObject[] = row.objects
+    .filter((c) => !inWindow.has(c.campaign_id))
+    .map((c) => ({
+      objectId: c.campaign_id,
+      title: c.title,
+      objectKind: c.kind,
+      reason: (mainRiseOf(c) === null
+        ? 'no-main-rise'
+        : 'main-rise-not-projected') as OutsideWindowObject['reason'],
+    }))
+    .sort((a, b) => a.objectId.localeCompare(b.objectId));
+
+  const outside = objectsOutsideWindows.length;
+  const note = windows.length === 0
+    ? `已映射到「${theme}」，但该主题下**没有可投影的 MAIN_RISE 窗口** —— 历史侧为空。`
+      + (outside > 0 ? `（该主题共 ${row.objects.length} 个对象，均无 MAIN_RISE 记录。）` : '')
+    : `「${theme}」下有 ${windows.length} 段历史 MAIN_RISE 窗口`
+      + `（投影段数；实际涉及 ${windowCounts.campaign} 个 Campaign + `
+      + `${windowCounts.candidate} 个 Research Candidate，按对象去重）。`
+      + (outside > 0
+        ? `另有 ${outside} 个对象因**没有 MAIN_RISE 记录**未进入窗口`
+          + `（该主题共 ${row.objects.length} 个对象）。`
+        : '');
 
   return {
     entryId: entry.id,
@@ -134,10 +194,9 @@ export function compareExternalToTheme(
       campaign: row.campaignCount,
       candidate: row.candidateCount,
     },
-    note: windows.length === 0
-      ? `已映射到「${theme}」，但该主题下**没有可投影的 MAIN_RISE 窗口** —— 历史侧为空。`
-      : `「${theme}」下有 ${windows.length} 段历史 MAIN_RISE 窗口`
-        + `（${row.campaignCount} Campaign + ${row.candidateCount} Research Candidate）。`,
+    windowCounts,
+    objectsOutsideWindows,
+    note,
   };
 }
 

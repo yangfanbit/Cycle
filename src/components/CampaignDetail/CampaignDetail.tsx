@@ -239,7 +239,15 @@ export function CampaignDetail({
   ];
 
   return (
-    <aside className="detail-panel" role="dialog" aria-label="完整历史案例">
+    <aside
+      className="detail-panel"
+      role="dialog"
+      aria-label="完整历史案例"
+      /* ★ v0.14：对象身份锚点（标题只显示 season_id；这里给 campaign_id，
+         让「从哪个对象进来」可被页面本身与测试核对） */
+      data-campaign-id={m.campaignId}
+      data-object-kind={m.kind}
+    >
       <button className="detail-close" onClick={onClose} aria-label="关闭">
         ×
       </button>

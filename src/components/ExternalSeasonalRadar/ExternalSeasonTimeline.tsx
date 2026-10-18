@@ -132,6 +132,8 @@ export function ExternalSeasonTimeline({
   onCategory,
   onOpenMap,
   onRequestDraft,
+  onOpenObject,
+  canOpenObject,
   macroRows,
   today,
 }: {
@@ -145,6 +147,10 @@ export function ExternalSeasonTimeline({
   onOpenMap?: (themeId: string) => void;
   /** ★ v0.13：未映射线索 → 带入现有研究请求草稿（由 App 注入） */
   onRequestDraft?: (entry: ExternalCalendarEntry) => void;
+  /** ★ v0.14：历史窗口 → 对象详情（复用 App 的 selection / CampaignDetail 流程） */
+  onOpenObject?: (objectId: string, year: number) => void;
+  /** ★ v0.14：对象能否被现有详情流程解析（不可解析 → 不渲染无效按钮） */
+  canOpenObject?: (objectId: string) => boolean;
   /** **宏观粒度**的主题行（v0.13：历史窗口对照；与首页当前粒度无关） */
   macroRows: readonly ThemeAnnualRow[];
   /** 当前日期（ISO）→ 只用于标出当前月份，**不产生任何涨跌含义** */
@@ -174,6 +180,8 @@ export function ExternalSeasonTimeline({
           entry={entry}
           segments={segments}
           macroRows={macroRows}
+          onOpenObject={onOpenObject}
+          canOpenObject={canOpenObject}
         />
       </td>
     </tr>

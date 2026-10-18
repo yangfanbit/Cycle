@@ -170,3 +170,33 @@ export function crossYearNote(t: ExternalTimeline): string {
     + `跨年窗口拆到年末与年初显示 → 轴上共 ${t.totals.segments} 段；`
     + `另有 ${t.totals.withoutWindow} 条无固定窗口（事件驱动），单列在下方。`;
 }
+
+/* ================================================================
+ * ★★ 月份坐标（v0.14：两层时间轴共用的「一把尺」）
+ *
+ * 外部层与历史层以前各自算位置：外部用 `(月份-1)/12`，历史用年内日期比例 `frac`。
+ * 两者都是 0..1，但「1 月刻度在 0%、frac=0.5 在 50%」意味着 50% 既被读成
+ * 「7 月 1 日」又被读成「年中第 182 天」—— 同一把尺两种解释。
+ *
+ * 现在统一规范成**月份坐标** `mf ∈ [0, 12]`：
+ *   - 外部月份窗口只落在整数月边界（`monthToMonthFraction`），保持月份精度；
+ *   - 历史 MAIN_RISE 的年内比例经 `fracToMonthFraction` 换算到同一把尺上。
+ *
+ * ★ 这两个函数是**唯一**允许把「年内日期比例」与「月份」互相换算的地方。
+ *   Research 的原始起止日期不被重算、外部月份不被解释成日级 —— 换算只为对齐坐标。
+ * ================================================================ */
+
+/** 年内日期比例（0..1）→ 月份坐标（0..12）。例：0 → 1 月起点，6/12=0.5 → 年中 */
+export function fracToMonthFraction(frac: number): number {
+  return Math.min(Math.max(frac, 0), 1) * 12;
+}
+
+/** 月份（1..12）→ 月份坐标起点（0..11）。例：1 → 0（1 月格左缘） */
+export function monthToMonthFraction(month: number): number {
+  return Math.min(Math.max(month, 1), 12) - 1;
+}
+
+/** 月份坐标 → 轨道百分比字符串（0..12 → '0%'..'100%'） */
+export function monthFractionToPct(mf: number): string {
+  return `${(Math.min(Math.max(mf, 0), 12) / 12) * 100}%`;
+}

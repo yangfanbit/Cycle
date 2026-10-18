@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-18 修订 · 季节性线索 → 历史窗口对照 → 研究请求闭环）
+## ★★ 当前状态（2026-10-18 修订 · 季节性线索 → 历史窗口对照 → 对象详情闭环）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -20,8 +20,8 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD（真实）** | `b522f02`（**v0.13 实现**：季节性线索 → 历史窗口对照 → 研究请求闭环 · CI **success**）· ★ 若其后还有 `docs(state)` 回填提交，HEAD 会再前移一位 —— **接班必须跑 `git log -1`**，不要假设 HEAD 就是功能提交 |
-| **最近功能提交** | `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **git HEAD（真实）** | v0.14 见 `git log -1`（本批次提交后再回填真实 hash）· ★ 文档回填提交会让 HEAD 前移一位 —— **接班必须跑 `git log -1`**，不要假设 HEAD 就是功能功能提交 |
+| **最近功能提交** | v0.14 见 `git log -1`（本批次后回填）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
@@ -492,6 +492,77 @@ npx tsc -b OK · npm run build 成功 · npm test **1312 passed / 0 failed / 61 
       重写 2 条既有断言（卡片默认展开 → 时间轴全覆盖 + 卡片按需展开；按钮回调缺失）
 ```
 
+### v0.14 批次（完整用户工作流 + 历史窗口详情跳转）
+
+> ★ 只做产品打通与可核对性：未新增题材 / 历史对象、未改 `schema.sql` / canonical export /
+> 冻结 SA / CANONICAL 快照、未训练模型、无网络无 LLM。
+
+#### ① ★★ A：历史窗口对照的数量语义修正（真实错误）
+
+**问题（实测复现）**：对照 note 把 `row.campaignCount` / `row.candidateCount`（**整个宏观主题**的对象数）
+当成「历史窗口涉及的对象数」。实测 EXT-05 国防军工：窗口只有 2 段、实际涉及 **1 Campaign + 1 RC**，
+但旧文案写成「2 Campaign + 5 Research Candidate」—— 5 个 RC 里只有 1 个有 `MAIN_RISE`，另外
+4 个 RC + 1 个 Campaign 根本没有 MAIN_RISE 记录，却被算进窗口。
+
+**修法**（`externalThemeComparison.ts`，纯函数）：
+- 新增 `windowCounts`：按 `objectId` **去重**统计投影实际涉及的 Campaign / RC 数；
+- 新增 `objectsOutsideWindows`：主题下未进入窗口的对象**逐条列出 + 原因**
+  （`no-main-rise` / `main-rise-not-projected` 异常路径）；
+- `counts`（全主题对象数）**仍然保留**，与 `windowCounts` 分开呈现；
+- note 改为可核对表述：「N 段历史 MAIN_RISE 窗口（投影段数；实际涉及 X Campaign + Y RC，按对象去重）。
+  另有 Z 个对象因没有 MAIN_RISE 记录未进入窗口（该主题共 M 个对象）」；
+- UI（`ExternalThemeComparisonPanel`）加 `data-ecp-counts` 计数块：段数 / 去重对象数 /
+  「同一对象跨年可有多段投影，段数不是对象数」/ 未进入对象可展开（`<details>`）。
+
+实测（真实数据）：军工 2 段 → 1C+1RC（5 个未进入）；医药健康 4 段 → 3C+1RC（`RC-2021-TCM` 未进入）；
+消费 14 段 → 11C+2RC；电子 11 段 → 7C+4RC；房地产 2 段 → 1C+1RC（3 个未进入）；高端装备 6 段 → 4C+2RC；
+文化传媒 4 段 → 3C+0RC；电力 2 段 → 2C+0RC。
+
+#### ② ★★ B：历史窗口 → 对象详情（复用既有流程，零新弹窗）
+
+- `ExternalThemeComparisonPanel` 历史对象列表每条加「**查看对象详情**」按钮；
+- 接线：面板 → `ExternalSeasonTimeline` → `ExternalSeasonalRadar` → **App**：
+  `openHistoricalObject(id)` = 既有的 `setSelection({kind:'campaign', id})` → 同一个 `CampaignDetail`；
+  Campaign 与 Research Candidate 都走这里，**身份保持原样**（详情头部「历史行情 ·」vs「研究候选 ·」）。
+- ★ B.4「返回不丢上下文」：关详情只清 `selection`，不碰时间轴 `openCompareId` / `mapTheme` /
+  `draftSeed` → 对照面板仍展开、线索仍选中（场景测试实点断言）。
+- ★ B.5「不能放无效按钮」：两道检查缺一不可 —— ① 页面注入了 `onOpenObject`；
+  ② `canOpenObject(id)` 为真（App 用 `campaignById` / `researchCampaignsById` 判定）。
+  否则渲染事实文本（「无法通过现有详情流程解析」/「本页未接线对象详情」），**不给假按钮**。
+- ★ 顺手补 `data-campaign-id` / `data-object-kind` 锚点到详情面板
+  （此前标题只显示 `season_id`，「从哪个对象进来」无法在页面上核对 —— B.3 要求「至少能看到对象身份」）。
+
+#### ③ ★★ C：两层时间轴统一月份坐标
+
+**问题**：`MonthScale` 刻度在 `(m-1)/12`，外部条在 `(月份-1)/12`，历史条在 `frac×100%`。
+`frac` 是**年内日期比例**，与「等月格」是同一把 0..1 尺上的两种解释（50% 既是「7 月初」也是「年中第 182 天」）。
+
+**修法**（`externalSeasonalTimeline.ts` 新增唯一换算处）：
+- `fracToMonthFraction(frac)` = `frac × 12`；`monthToMonthFraction(m)` = `m-1`；
+  `monthFractionToPct(mf)` = `mf/12 × 100%`；
+- 两层全部改为在月份坐标 `mf ∈ [0,12]` 上定位：刻度 tick、外部条、历史条同一把尺；
+- ★ 不重算 Research 原始起止、不把外部月份解释成日级 —— 换算只用于对齐坐标；
+- 闰年 / 单日窗口（最小可视宽度 0.8/12 月）/ 跨年拆分段 / 长周期 onset 均按各自身份呈现。
+
+#### ④ ★★ D：四个真实用户场景（页面级 jsdom：挂载真实 `<App />`）
+
+| 场景 | 路径 | 实测结果 |
+|---|---|---|
+| 1 汽车 | 首页地图点「汽车」行 → 附页（8 Campaign / 1 RC）→ 第一个对象进详情 → 关闭回附页 → 「查一个方向」查「汽车」→ 历史案例进详情 | ✅ 附页计数如实；详情含生命周期；「这是查找，不是结构对应」在场；两侧判定与渲染一致 |
+| 2 医药健康 | 查「医药」→ 历史案例进详情（生命周期 / 研究问题）→ 关详情 → 流感题材地图 | ✅ 历史侧命中；FLU tab 选中后「历史参与标的索引」+ `FLU-2017-AVIAN` 事件卡 + `data-empirical-probability` + `data-cross-year` 全部仍在 |
+| 3 文化传媒 | 查「文化传媒」→ 历史侧展示、当前侧不谎报 → 历史案例进详情 → 草稿编辑 → 导出 | ✅ verdict 与块存在一致（无当前块时不说「两侧都有」）；`研究方向` 输入可编辑；无 clipboard → 「复制失败 + 手动选中复制」，**不出现「已复制」** |
+| 4 外部线索 | EXT-12 对照 → 查看对象详情 → 关闭 → EXT-17 带入研究请求 | ✅ 详情 = 该行 `data-ecp-hist` 对象；关闭后对照面板仍展开、上下文不丢；EXT-17 草稿方向含「防汛」+「6–7 月」原文 + 「外部参考」 |
+
+★ 环境限制（如实说明）：本机无 Chrome/Chromium，`playwright-core` 因沙箱拦截 node_modules
+rename 装不上 → **未做浏览器截图 / 窄屏视觉核验**；上述为页面级真实点击（断言基于点击后真实状态）。
+
+#### ⑤ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test 1328 passed / 0 failed / 62 files
+新增：externalThemeComparison +5（计数语义）· 时间轴交互 +5（计数块 / 跳转 / 假按钮 / 坐标）
+      v014UserFlows 6（四个场景）
+既有断言重写 0 条（v0.13 场景测试全部保持通过）
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 
 1. ★ **SAR 冻结产物漂移（A 工作流定性：影响 = 0，不重生成）** ——

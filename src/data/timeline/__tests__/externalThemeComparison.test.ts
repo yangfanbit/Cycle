@@ -114,3 +114,63 @@ describe('外部 × 历史对照 · 空态与未映射', () => {
     expect(macroRows.some((r) => r.theme === null)).toBe(true);
   });
 });
+
+/* ================================================================
+ * v0.14：历史窗口的**数量语义**（段数 ≠ 对象数；全主题对象数 ≠ 窗口对象数）
+ * ================================================================ */
+
+describe('外部×历史对照 · 计数语义（v0.14 修正）', () => {
+  it('★★ EXT-05 国防军工：段数 2，但窗口只涉及 1 Campaign + 1 RC（不是 2 + 5）', () => {
+    const cmp = compareExternalToTheme(entryOf('EXT-05'), macroRows);
+    expect(cmp.status).toBe('matched');
+    expect(cmp.windows.length).toBe(2);                 // 投影段数
+    expect(cmp.windowCounts.campaign).toBe(1);          // 去重后
+    expect(cmp.windowCounts.candidate).toBe(1);         // 去重后
+    // 旧文案错误地把全主题计数（2 Campaign + 5 RC）当成窗口计数 —— 现在分开报
+    expect(cmp.counts.campaign + cmp.counts.candidate).toBe(7);
+    expect(cmp.windowCounts.campaign + cmp.windowCounts.candidate).toBe(2);
+    // 未进入窗口的对象逐条列出，且都带原因
+    expect(cmp.objectsOutsideWindows.length).toBe(5);
+    for (const o of cmp.objectsOutsideWindows) {
+      expect(o.reason).toBe('no-main-rise');
+      expect(o.objectId.length).toBeGreaterThan(0);
+    }
+    // note 必须自己说清「段数」与「去重对象数」的区别
+    const plain = cmp.note.split('**').join('');
+    expect(plain).toContain('投影段数');
+    expect(plain).toContain('按对象去重');
+    expect(plain).toContain('未进入窗口');
+  });
+
+  it('★★ EXT-12 医药健康：4 段窗口 → 3 Campaign + 1 RC；1 个 RC 无 MAIN_RISE', () => {
+    const cmp = compareExternalToTheme(entryOf('EXT-12'), macroRows);
+    expect(cmp.windows.length).toBe(4);
+    expect(cmp.windowCounts.campaign).toBe(3);
+    expect(cmp.windowCounts.candidate).toBe(1);
+    expect(cmp.objectsOutsideWindows.map((o) => o.objectId)).toEqual(['RC-2021-TCM']);
+    expect(cmp.counts.campaign + cmp.counts.candidate).toBe(5);
+  });
+
+  it('★★ 跨年对象多段投影：段数 > 对象数时**不得**把段数当对象数', () => {
+    // 消费：14 段窗口只涉及 11 Campaign + 2 RC = 13 个对象（至少一个对象有多段）
+    const cmp = compareExternalToTheme(entryOf('EXT-02'), macroRows);
+    expect(cmp.windows.length).toBe(14);
+    expect(cmp.windowCounts.campaign + cmp.windowCounts.candidate).toBeLessThan(14);
+    // 每个窗口段都能在去重对象集合里找到
+    const ids = new Set(cmp.windows.map((w) => w.objectId));
+    expect(ids.size).toBe(cmp.windowCounts.campaign + cmp.windowCounts.candidate);
+  });
+
+  it('★ 无 outside 时不显示该块信息（note 不出现「未进入窗口」）', () => {
+    const cmp = compareExternalToTheme(entryOf('EXT-14'), macroRows);
+    expect(cmp.windows.length).toBe(2);
+    expect(cmp.objectsOutsideWindows).toEqual([]);
+    expect(cmp.note).not.toContain('未进入窗口');
+  });
+
+  it('★ 未映射 / 无主题行：计数全为 0，不出现窗口数字', () => {
+    const unmapped = compareExternalToTheme(entryOf('EXT-17'), macroRows);
+    expect(unmapped.windowCounts).toEqual({ campaign: 0, candidate: 0 });
+    expect(unmapped.objectsOutsideWindows).toEqual([]);
+  });
+});

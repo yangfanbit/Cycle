@@ -127,12 +127,16 @@ function EntryCard({ e, today, onOpenMap }: {
   );
 }
 
-export function ExternalSeasonalRadar({ today, onOpenMap, onRequestDraft, macroRows }: {
+export function ExternalSeasonalRadar({ today, onOpenMap, onRequestDraft, onOpenObject, canOpenObject, macroRows }: {
   today: string;
   /** ★ v0.10：跳转到首页「历史题材地图」并选中该题材（由 App 注入） */
   onOpenMap?: (themeId: string) => void;
   /** ★ v0.13：未映射线索 → 带入现有研究请求草稿 */
   onRequestDraft?: (entry: ExternalCalendarEntry) => void;
+  /** ★ v0.14：历史窗口 → 对象详情（复用 App 的 CampaignDetail 流程） */
+  onOpenObject?: (objectId: string, year: number) => void;
+  /** ★ v0.14：对象能否通过现有详情流程解析 */
+  canOpenObject?: (objectId: string) => boolean;
   /** ★ v0.13：**宏观粒度**主题行（历史窗口对照；与首页当前粒度无关） */
   macroRows?: readonly ThemeAnnualRow[];
 }) {
@@ -181,6 +185,8 @@ export function ExternalSeasonalRadar({ today, onOpenMap, onRequestDraft, macroR
         onCategory={setCatFilter}
         onOpenMap={onOpenMap}
         onRequestDraft={onRequestDraft}
+        onOpenObject={onOpenObject}
+        canOpenObject={canOpenObject}
         macroRows={macroRows ?? []}
         today={today}
       />

@@ -257,6 +257,22 @@ export default function App() {
     return map;
   }, [dataSource]);
 
+  /**
+   * ★ v0.14：外部×历史窗口对照 → 进入**具体对象**详情。
+   * 复用同一套 selection / CampaignDetail 流程（不建第二个详情弹窗）；
+   * Research Candidate 与 Campaign 都走这里，**保持原身份**（详情内部自己呈现 kind）。
+   */
+  const openHistoricalObject = useCallback((id: string, _year: number) => {
+    setSelection({ kind: 'campaign', id });
+  }, []);
+  /**
+   * 该历史对象能否通过现有详情流程解析。
+   * 解析不了 → 对照面板不渲染「查看对象详情」按钮（不放无效按钮）。
+   */
+  const canOpenHistoricalObject = useCallback((id: string) =>
+    campaignById.has(id) || (!verifiedMode && researchCampaignsById.has(id)),
+  [campaignById, verifiedMode, researchCampaignsById]);
+
   const selectedRule = selection?.kind === 'rule' ? ruleById.get(selection.id) : undefined;
   // 生产 verified 优先；Research Campaign 在非 verified 模式下解析
   const selectedCampaign =
@@ -326,6 +342,8 @@ export default function App() {
             today={today}
             onOpenMap={openMapTheme}
             onRequestDraft={bringExternalLead}
+            onOpenObject={openHistoricalObject}
+            canOpenObject={canOpenHistoricalObject}
             macroRows={macroThemeRows}
           />
         )}
