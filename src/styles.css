@@ -3431,6 +3431,25 @@ html, body {
 .fem-gaps li { font-size: 11.5px; color: var(--ink-2); }
 .fem-empty { font-size: 11.5px; color: var(--ink-3); }
 
+/* ---- v0.17：行情表可信展示（类别 / 窗口状态 / 局部数据分组）+ 标的对账 ---- */
+.fem-part-recon { font-size: 10.5px; border: 1px solid var(--line); border-radius: 9px; padding: 0 6px; color: var(--ink-3); }
+.fem-part-recon.recon-object_registered { background: #eaf5ec; color: #2f6b3c; }
+.fem-part-recon.recon-map_supplement   { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-recon.recon-unresolved       { background: #f4f4f6; color: var(--ink-3); }
+.fem-perf-ticker { font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); margin-left: 6px; }
+.fem-perf-table tr.fem-perf-partial td { color: var(--ink-3); }
+.fem-perf-table tr.fem-perf-partial td.num-up,
+.fem-perf-table tr.fem-perf-partial td.num-down { opacity: .75; }
+.fem-perf-table tr.fem-perf-counter td:first-child { border-left: 3px solid #8a4256; }
+.fem-perf-partial-cell { white-space: normal; }
+.fem-perf-partial-note { display: block; margin-top: 2px; font-size: 9.5px; color: #b0492f; }
+.fem-perf-ok { color: #2f6b3c; font-size: 10.5px; }
+.fem-recon-note { margin: 0 0 4px; font-size: 11px; color: var(--ink-3); }
+.fem-recon-summary { list-style: none; margin: 4px 0; padding: 0; font-size: 11px; color: var(--ink-2); }
+.fem-recon-summary li { display: flex; justify-content: space-between; gap: 8px; padding: 1px 0; }
+.fem-recon-summary li.fem-recon-object { display: block; color: var(--ink-3); }
+.fem-recon-miss { color: #b0492f; }
+
 /* ---- 事件类别分组 + 证据等级（2026-10-14 归属更正）---- */
 .fem-group { margin: 10px 0 0; }
 .fem-group-title {
@@ -3740,6 +3759,11 @@ html, body {
 .tsi-line { margin: 3px 0; font-size: 10.5px; line-height: 1.7; color: var(--ink-2); }
 .tsi-src { color: var(--ink-3); }
 .tsi-note { color: var(--ink-3); }
+/* ---- v0.17：标的索引的 Research 对象对账 ---- */
+.tsi-recon.recon-object_registered { color: #2f6b3c; }
+.tsi-recon.recon-map_supplement   { color: var(--preheat-ink); }
+.tsi-recon.recon-unresolved       { color: var(--ink-3); }
+.tsi-recon-totals { margin: 4px 0; font-size: 10.5px; color: var(--ink-3); }
 .tsi-hint { font-size: 9.5px; color: var(--ink-3); margin-left: 4px; }
 .tsi-missing { color: var(--ink-3); }
 .tsi-caveat { display: block; font-size: 9.5px; color: var(--ink-3); margin-top: 2px; }

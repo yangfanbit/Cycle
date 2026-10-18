@@ -31,6 +31,7 @@ import {
   type SecurityOccurrence,
   type ThemeSecurityEntry,
 } from '../../data/timeline/themeSecurityIndex';
+import { RECON_LINK_LABEL } from '../../data/timeline/objectReconciliation';
 import { RichText } from '../RichText';
 
 function pct(v?: number | null): string {
@@ -57,6 +58,15 @@ function OccurrenceRow({ o }: { o: SecurityOccurrence }) {
 
       <p className="tsi-line"><strong>纳入理由</strong>：<RichText text={o.rationale} /></p>
       <p className="tsi-line tsi-src"><strong>来源</strong>：<RichText text={o.source} /></p>
+
+      {/* ★ v0.17：与事件关联 Research 对象的标的对账（精确匹配，不猜身份） */}
+      <p className={`tsi-line tsi-recon recon-${o.reconLink.toLowerCase()}`} data-recon-link={o.reconLink}>
+        <strong>与 Research 对象对账</strong>：{RECON_LINK_LABEL[o.reconLink]}
+        {o.reconObjectId
+          ? <>（关联对象 <code>{o.reconObjectId}</code>）</>
+          : '（事件未记录关联对象）'}
+        <span className="tsi-hint">{o.reconReason}</span>
+      </p>
 
       {(o.reportedMove || o.eventReportedMove) && (
         <p className="tsi-line">
@@ -152,6 +162,13 @@ export function ThemeSecurityIndexSection({ doc }: { doc: HistoricalEventsDoc })
         </span>
         <span className="tsi-sort">按公司名称排序（<strong>不是</strong>按涨幅或出现次数）</span>
       </div>
+
+      <p className="tsi-recon-totals" data-tsi-recon="totals">
+        ★ 与 Research 对象的标的对账（逐次出现，精确匹配）：
+        对象已登记关联 <strong>{index.totals.reconCounts.OBJECT_REGISTERED}</strong> ·
+        地图补充记录 <strong>{index.totals.reconCounts.MAP_SUPPLEMENT}</strong> ·
+        无法核对 <strong>{index.totals.reconCounts.UNRESOLVED}</strong>
+      </p>
 
       <p className="tsi-disc"><RichText text={SECURITY_INDEX_DISCLAIMER} /></p>
 

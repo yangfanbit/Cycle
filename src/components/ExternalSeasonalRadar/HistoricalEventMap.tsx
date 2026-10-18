@@ -31,6 +31,12 @@ import {
 } from '../../data/timeline/historicalEventMaps';
 import { EmpiricalProbabilityBlock } from './EmpiricalProbabilityBlock';
 import { RichText, plain } from '../RichText';
+import {
+  RECON_CAVEAT,
+  RECON_LINK_LABEL,
+  eventReconciliation,
+  reconciliationOf,
+} from '../../data/timeline/objectReconciliation';
 
 /** 中国股市惯例：涨红跌绿 */
 function cls(v?: number | null): string {
@@ -54,16 +60,29 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
   const mp = e.market_performance;
   if (!mp) return null;
   const bench = Object.entries(mp.benchmark)[0];
-  const rows = Object.entries(mp.by_security);
+  const pMap = new Map(e.participants.map((p) => [p.security_id, p]));
+  // ★ v0.17：完整窗口（COMPUTED）优先，其余（覆盖不足 / 未计算 / 不可得）下沉分组 ——
+  //   避免「局部数据」与「完整窗口结果」在视觉上等价。
+  const rank: Record<string, number> = {
+    COMPUTED: 0, INSUFFICIENT: 1, NOT_COMPUTED: 2, UNAVAILABLE: 3,
+  };
+  const rows = Object.entries(mp.by_security)
+    .map(([sid, st]) => ({ sid, st, coverage: marketDataCoverage(e, sid), p: pMap.get(sid) }))
+    .sort((a, b) => rank[a.coverage.status] - rank[b.coverage.status]);
   return (
     <>
       <h5>实测行情（窗口 {mp.window?.[0]} ~ {mp.window?.[1]}）</h5>
       <p className="fem-perf-caveat">{MARKET_PERFORMANCE_CAVEAT}</p>
+      <p className="fem-perf-caveat">
+        ★ 只有<strong>窗口状态 = 完整窗口已计算</strong>的标的，其数值才可与完整窗口结果并列比较；
+        其余（覆盖不足 / 未计算 / 行情不可得）为<strong>仅局部数据，不可视为完整窗口可比结果</strong>
+        —— 仍**原样保留**、可查看，但**不**与完整窗口结果等价。
+      </p>
       <div className="fem-table-wrap">
-        <table className="fem-table">
+        <table className="fem-table fem-perf-table">
           <thead>
             <tr>
-              <th>标的</th><th>交易日</th><th>区间涨跌</th><th>至高点</th>
+              <th>标的</th><th>关系类别</th><th>窗口状态</th><th>交易日</th><th>区间涨跌</th><th>至高点</th>
               <th>高点日</th><th>自高点回撤</th>
               <th title="区间涨跌 − 基准区间涨跌（excess_period_pp）">区间超额</th>
               <th title="至高点涨幅 − 基准至高点涨幅（excess_to_high_pp）">至高点超额</th>
@@ -73,6 +92,8 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
             {bench && (
               <tr className="fem-bench-row">
                 <td>{bench[0]}（基准）</td>
+                <td>—</td>
+                <td>基准</td>
                 <td>{bench[1].trading_days ?? '—'}</td>
                 <td>{fmtPct(bench[1].period_return_pct)}</td>
                 <td>{fmtPct(bench[1].to_high_pct)}</td>
@@ -82,18 +103,47 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
                 <td>—</td>
               </tr>
             )}
-            {rows.map(([sid, st]) => (
-              <tr key={sid}>
-                <td><code>{sid}</code></td>
-                <td>{st.trading_days ?? '—'}</td>
-                <td className={cls(st.period_return_pct)}>{fmtPct(st.period_return_pct)}</td>
-                <td className={cls(st.to_high_pct)}>{fmtPct(st.to_high_pct)}</td>
-                <td>{st.high?.date ?? '—'}</td>
-                <td>{fmtPct(st.max_drawdown_from_high_pct)}</td>
-                <td className={cls(st.excess_period_pp)}>{fmtPp(st.excess_period_pp)}</td>
-                <td className={cls(st.excess_to_high_pp)}>{fmtPp(st.excess_to_high_pp)}</td>
-              </tr>
-            ))}
+            {rows.map(({ sid, st, coverage, p }) => {
+              const computed = coverage.status === 'COMPUTED';
+              const isCounter = p?.category === 'COUNTER_EXAMPLE';
+              return (
+                <tr
+                  key={sid}
+                  data-security-id={sid}
+                  data-perf-status={coverage.status}
+                  className={[computed ? '' : 'fem-perf-partial', isCounter ? 'fem-perf-counter' : '']
+                    .filter(Boolean).join(' ')}
+                >
+                  <td>
+                    <strong>{p?.name ?? sid}</strong>
+                    <code className="fem-perf-ticker">{p?.ticker ?? ''}</code>
+                  </td>
+                  <td>
+                    {p ? (
+                      <span className={`fem-part-cat cat-${p.category.toLowerCase()}`}>
+                        {PARTICIPANT_CATEGORY_LABEL[p.category]}
+                      </span>
+                    ) : '—'}
+                  </td>
+                  <td className={computed ? 'fem-perf-ok' : 'fem-perf-partial-cell'}>
+                    {computed ? '完整窗口已计算' : MARKET_DATA_STATUS_LABEL[coverage.status]}
+                    {!computed && (
+                      <span className="fem-perf-partial-note">
+                        实际可用 {st.first?.date ?? '—'} ~ {st.last?.date ?? '—'}
+                        <br />仅局部数据，不可视为完整窗口可比结果
+                      </span>
+                    )}
+                  </td>
+                  <td>{st.trading_days ?? '—'}</td>
+                  <td className={cls(st.period_return_pct)}>{fmtPct(st.period_return_pct)}</td>
+                  <td className={cls(st.to_high_pct)}>{fmtPct(st.to_high_pct)}</td>
+                  <td>{st.high?.date ?? '—'}</td>
+                  <td>{fmtPct(st.max_drawdown_from_high_pct)}</td>
+                  <td className={cls(st.excess_period_pp)}>{fmtPp(st.excess_period_pp)}</td>
+                  <td className={cls(st.excess_to_high_pp)}>{fmtPp(st.excess_to_high_pp)}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -115,6 +165,8 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
   // ★ 四类状态：已计算 / 该窗口未计算 / 行情不可得 / 覆盖不足 —— 不得用 0 代表缺失
   const coverage = marketDataCoverage(e, p.security_id);
   const status = coverage.status;
+  // ★ v0.17：与事件关联对象（Research 对象）的标的对账
+  const recon = reconciliationOf(e, p.security_id);
   const mdClass = status === 'COMPUTED' ? 'ok'
     : status === 'UNAVAILABLE' ? 'miss'
       : status === 'INSUFFICIENT' ? 'warn' : 'pending';
@@ -137,6 +189,10 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
           {status === 'COMPUTED'
             ? `行情: ${p.market_data}`
             : MARKET_DATA_STATUS_LABEL[status]}
+        </span>
+        <span className={`fem-part-recon recon-${recon.link.toLowerCase()}`}
+              data-recon-link={recon.link} title={recon.reason}>
+          对象对账：{RECON_LINK_LABEL[recon.link]}
         </span>
       </div>
       {p.business_mechanism && (
@@ -167,6 +223,8 @@ export function EventCardBody({
   canOpenObject?: (objectId: string) => boolean;
 }) {
   const conceptsNote = e.three_peaks_note ?? e.four_concepts_note;
+  // ★ v0.17：事件级标的对账（与关联 Research 对象的 `security_ids` 精确比对）
+  const recon = eventReconciliation(e);
   // ★ 对象身份：object_id（v0.15，含 Research Candidate）优先，兼容旧 campaign_id
   const cf = e.campaign_facts;
   const objId = cf ? (cf.object_id ?? cf.campaign_id) : undefined;
@@ -259,6 +317,39 @@ export function EventCardBody({
                     </span>
                   </li>
                 ))}
+              </ul>
+            </>
+          )}
+
+          {/* ★ v0.17：与 Research 对象的标的对账（精确匹配，不猜身份、不改数据） */}
+          {e.participants.length > 0 && (
+            <>
+              <h5>与 Research 对象的标的对账</h5>
+              <p className="fem-recon-note"><RichText text={RECON_CAVEAT} /></p>
+              <ul className="fem-recon-summary">
+                <li data-recon="OBJECT_REGISTERED">
+                  对象已登记关联（该证券在关联对象的 <code>security_ids</code> 中）
+                  <strong>{recon.counts.OBJECT_REGISTERED}</strong>
+                </li>
+                <li data-recon="MAP_SUPPLEMENT">
+                  地图补充记录（在全局注册表、不在关联对象 <code>security_ids</code> 中）
+                  <strong>{recon.counts.MAP_SUPPLEMENT}</strong>
+                </li>
+                <li data-recon="UNRESOLVED">
+                  无法核对（缺少关联对象或注册信息）
+                  <strong>{recon.counts.UNRESOLVED}</strong>
+                </li>
+                <li className="fem-recon-object">
+                  事件关联对象：<code>{recon.objectId ?? '—'}</code>
+                  {recon.objectId && !recon.objectFound && (
+                    <span className="fem-recon-miss">（不在 canonical export 的 Campaign / Research Candidate 中）</span>
+                  )}
+                  {recon.objectId && recon.objectFound && (
+                    <span className={`ecp-kind ecp-kind-${recon.objectKind}`}>
+                      {recon.objectKind === 'campaign' ? 'Campaign' : 'Research Candidate'}
+                    </span>
+                  )}
+                </li>
               </ul>
             </>
           )}

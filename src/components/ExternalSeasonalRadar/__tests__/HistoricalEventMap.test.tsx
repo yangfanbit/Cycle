@@ -240,23 +240,23 @@ describe('E. ★★ 行情超额必须拆成两列（区间超额 / 至高点超
 
   it('★★ 锚点：华电国际 区间超额 = -17.0pp（excess_period_pp），至高点超额 = +4.8pp（excess_to_high_pp）', () => {
     const cells = rowOf(html, 'HUADIAN');
-    expect(cells).toHaveLength(8);
-    expect(cells[2]).toBe('-27.6%');      // 区间涨跌
-    expect(cells[6]).toBe('-17.0pp');     // ★ 区间超额 = 区间涨跌 - 基准(-10.6%)
-    expect(cells[7]).toBe('+4.8pp');      // ★ 至高点超额
+    expect(cells).toHaveLength(10);
+    expect(cells[4]).toBe('-27.6%');      // 区间涨跌
+    expect(cells[8]).toBe('-17.0pp');     // ★ 区间超额 = 区间涨跌 - 基准(-10.6%)
+    expect(cells[9]).toBe('+4.8pp');      // ★ 至高点超额
   });
 
   it('★★ 锚点：建投能源 区间超额 +8.1pp 与至高点超额 +48.1pp 分列（旧实现会把 +48.1 当成区间超额）', () => {
     const cells = rowOf(html, 'JIANTONENERGY');
-    expect(cells[6]).toBe('+8.1pp');
-    expect(cells[7]).toBe('+48.1pp');
-    expect(cells[6]).not.toBe(cells[7]);
+    expect(cells[8]).toBe('+8.1pp');
+    expect(cells[9]).toBe('+48.1pp');
+    expect(cells[8]).not.toBe(cells[9]);
   });
 
   it('★ 基准行两列超额均为 —（不可计算时不得补 0）', () => {
     const cells = rowOf(html, '（基准）');
-    expect(cells[6]).toBe('—');
-    expect(cells[7]).toBe('—');
+    expect(cells[8]).toBe('—');
+    expect(cells[9]).toBe('—');
   });
 
   it('★ 超额字段确实来自 by_security 的两个不同字段', () => {
@@ -351,6 +351,74 @@ describe('F. ★★ 区分「行情未计算」与「行情不可得」（四类
   });
 });
 
+/* ---------------------------------------------- F2. ★★ v0.17 行情表可信展示 + 标的对账 */
+
+describe('F2. ★★ v0.17：行情表显示名称/代码/类别/窗口状态（局部数据不得与完整窗口等价）', () => {
+  const counterEvent = mkEvent({
+    campaign_facts: { object_id: 'C-2024-ROBOTAXI', start: null, peak_date: null, end: null },
+    participants: [
+      { security_id: 'DADONGTRAFFIC', ticker: '600611', name: '大众交通',
+        category: 'COUNTER_EXAMPLE', rationale: '出租运营牌照方', source: 'test',
+        business_mechanism_caveat: '与智驾技术链不同轴' },
+      { security_id: 'JINLONG', ticker: '600686', name: '金龙汽车',
+        category: 'MECHANISM_DIRECT', rationale: '整车', source: 'test' },
+    ],
+    market_performance: mkMp({
+      DADONGTRAFFIC: { trading_days: 100, period_return_pct: 12, to_high_pct: 10,
+        first: { date: '2020-01-02', close: 1 }, last: { date: '2020-06-30', close: 1.12 } },
+      JINLONG: { trading_days: 30, period_return_pct: 5, to_high_pct: 4,
+        first: { date: '2020-01-02', close: 1 }, last: { date: '2020-03-02', close: 1.05 } },
+    }),
+  });
+  const html = renderToStaticMarkup(<MarketPerformanceBlock e={counterEvent} />);
+
+  it('★★ 标的列显示名称 + 代码（不再是裸 security_id）；新增「关系类别」「窗口状态」列', () => {
+    expect(html).toContain('大众交通');
+    expect(html).toContain('600611');
+    expect(html).toContain('关系类别');
+    expect(html).toContain('窗口状态');
+  });
+
+  it('★★ 反例单独标为「反例（不同轴）」(COUNTER_EXAMPLE ≠ INSUFFICIENT)', () => {
+    expect(html).toContain('反例（不同轴）');
+    expect(html).toContain('fem-perf-counter');
+  });
+
+  it('★★ 完整窗口行标「完整窗口已计算」；覆盖不足行标「仅局部数据，不可视为完整窗口可比结果」并显示实际首末', () => {
+    expect(html).toContain('完整窗口已计算');
+    expect(html).toContain('覆盖不足');
+    expect(html).toContain('仅局部数据，不可视为完整窗口可比结果');
+    expect(html).toContain('实际可用 2020-01-02 ~ 2020-03-02');
+    const row = html.split('<tr').find((s) => s.includes('JINLONG'))!;
+    expect(row).toContain('data-perf-status="INSUFFICIENT"');
+  });
+
+  it('★ 覆盖不足行下沉分组（完整窗口行在前）', () => {
+    expect(html.indexOf('DADONGTRAFFIC')).toBeLessThan(html.indexOf('JINLONG'));
+  });
+
+  it('★★ 参与者行带「对象对账」徽标（三类之一，精确匹配）', () => {
+    const rowHtml = renderToStaticMarkup(
+      <ParticipantRow p={counterEvent.participants[0]} e={counterEvent} />);
+    expect(rowHtml).toContain('对象对账：对象已登记关联');
+    expect(rowHtml).toContain('data-recon-link="OBJECT_REGISTERED"');
+  });
+
+  it('★★ 地图补充 / 无法核对两类徽标（用真实 export 对象）', () => {
+    const mapSupp = mkEvent({
+      campaign_facts: { object_id: 'C-2023-AI-COMPUTE-SEMI', start: null, peak_date: null, end: null },
+      participants: [{ security_id: 'HUALANVAX', ticker: '301207', name: '华兰疫苗',
+        category: 'MARKET_PARTICIPANT', rationale: 'x', source: 'test' }],
+    });
+    expect(renderToStaticMarkup(<ParticipantRow p={mapSupp.participants[0]} e={mapSupp} />))
+      .toContain('对象对账：地图补充记录');
+
+    const noObj = mkEvent();   // 无 campaign_facts → 无法核对
+    expect(renderToStaticMarkup(<ParticipantRow p={noObj.participants[0]} e={noObj} />))
+      .toContain('对象对账：无法核对');
+  });
+});
+
 /* ---------------------------------------------- G. ★ 索引一致性校验 */
 
 describe('G. ★ 索引一致性校验（event_count / external_entry_ids / theme_id / display）', () => {
@@ -409,8 +477,8 @@ describe('H. ★★ 跨年份比较：取值映射 + 渲染 + 缺失不补 0', (
     expect(st.excess_to_high_pp).toBeCloseTo(4.8, 0);
     expect(st.excess_period_pp).not.toBe(st.excess_to_high_pp);
     const cells = rowOf(renderToStaticMarkup(<MarketPerformanceBlock e={e} />), 'HUADIAN');
-    expect(cells[6]).toBe('-17.0pp');
-    expect(cells[7]).toBe('+4.8pp');
+    expect(cells[8]).toBe('-17.0pp');
+    expect(cells[9]).toBe('+4.8pp');
   });
 
   it('★★ 跨年份区段真的渲染：FLU / POWER 均非 null（≥4 年），HTML 含年份与中文 outcome 标签', () => {

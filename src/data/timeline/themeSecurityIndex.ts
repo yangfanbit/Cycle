@@ -30,6 +30,11 @@ import {
   type HistoricalParticipant,
   type ParticipantCategory,
 } from './historicalEventMaps';
+import {
+  RECON_LINK_ORDER,
+  reconciliationOf,
+  type ReconLink,
+} from './objectReconciliation';
 
 /** 一次「该标的出现在某个事件里」的记录（原样保留该次事件的字段） */
 export interface SecurityOccurrence {
@@ -59,6 +64,12 @@ export interface SecurityOccurrence {
   highDate?: string;
   excessPeriodPp?: number;
   excessToHighPp?: number;
+  /** ★ v0.17：与事件关联对象（Research 对象）的**标的对账**结果（精确匹配） */
+  reconLink: ReconLink;
+  /** 对账判定原因（无法核对时逐条说明缺什么） */
+  reconReason: string;
+  /** 事件关联对象 id（`campaign_facts.object_id` ?? `campaign_id`），可能为 `null` */
+  reconObjectId: string | null;
 }
 
 export interface ThemeSecurityEntry {
@@ -98,6 +109,8 @@ export interface ThemeSecurityIndex {
     occurrences: number;
     eventsWithParticipants: number;
     unlinkedReports: number;
+    /** ★ v0.17：逐次出现的**标的对账**汇总（对象已登记 / 地图补充 / 无法核对） */
+    reconCounts: Record<ReconLink, number>;
   };
 }
 
@@ -121,6 +134,8 @@ function occurrenceOf(e: HistoricalEvent, p: HistoricalParticipant): SecurityOcc
   // ★ 只做**精确匹配**：`security_id` 或 `ticker` 与 key 完全相等。
   //   不做大小写/前缀/名称模糊匹配 —— 猜错身份比留空更糟。
   const exactMove = moves[p.security_id] ?? moves[p.ticker];
+  // ★ v0.17：与事件关联对象的标的对账（精确匹配，不猜身份）
+  const recon = reconciliationOf(e, p.security_id);
   return {
     eventId: e.event_id,
     year: e.year,
@@ -143,6 +158,9 @@ function occurrenceOf(e: HistoricalEvent, p: HistoricalParticipant): SecurityOcc
     highDate: perf?.high?.date ?? p.high_date,
     excessPeriodPp: perf?.excess_period_pp ?? p.excess_period_pp,
     excessToHighPp: perf?.excess_to_high_pp ?? p.excess_to_high_pp,
+    reconLink: recon.link,
+    reconReason: recon.reason,
+    reconObjectId: recon.objectId,
   };
 }
 
@@ -243,6 +261,12 @@ export function themeSecurityIndexOf(doc: HistoricalEventsDoc): ThemeSecurityInd
       occurrences,
       eventsWithParticipants,
       unlinkedReports: unlinkedReports.length,
+      reconCounts: RECON_LINK_ORDER.reduce((acc, k) => {
+        acc[k] = entries.reduce(
+          (n, x) => n + x.occurrences.filter((o) => o.reconLink === k).length, 0,
+        );
+        return acc;
+      }, { OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, UNRESOLVED: 0 } as Record<ReconLink, number>),
     },
   };
 }
