@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-18 修订 · 季节性线索 → 历史窗口对照 → 对象详情闭环）
+## ★★ 当前状态（2026-10-18 修订 · 历史题材地图 ×5 + 汽车智能化纵切片 + v0.14 残余修复）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -20,8 +20,8 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD（真实）** | `3edfe80`（**v0.14 实现**：对象详情闭环 + 计数语义修正 + 月份坐标统一 · CI **success**）· ★ 若其后还有 `docs(state)` 回填提交，HEAD 会再前移一位 —— **接班必须跑 `git log -1`**，不要假设 HEAD 就是功能提交 |
-| **最近功能提交** | `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **git HEAD（真实）** | v0.15 见 `git log -1`（本批次提交后回填）· ★ 文档回填提交会让 HEAD 前移一位 —— **接班必须跑 `git log -1`** |
+| **最近功能提交** | v0.15 见 `git log -1`（本批次后回填）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
@@ -563,6 +563,74 @@ npx tsc -b OK · npm run build 成功 · npm test 1328 passed / 0 failed / 62 fi
 新增：externalThemeComparison +5（计数语义）· 时间轴交互 +5（计数块 / 跳转 / 假按钮 / 坐标）
       v014UserFlows 6（四个场景）
 既有断言重写 0 条（v0.13 场景测试全部保持通过）
+### v0.15 批次（汽车智能化题材纵切片 + v0.14 残余修复 + 计数口径澄清）
+
+> ★ 新增数据走**现有认可机制**：`research/current/` 新增版本化文件（不覆盖任何旧轮次），
+> 沿用事件 JSON 契约（TS 类型 + `validateHistoricalEvents`）与索引 `maps[]` 登记；
+> 未改 `schema.sql` / canonical export / 冻结 SA / CANONICAL 快照、无网络无 LLM、未训练模型。
+
+#### ① ★★ 主交付：第 5 个历史题材「汽车智能化 / 智能驾驶」纵切片
+
+**方向选择依据（证据盘点实测）**：汽车方向有 10 个库内对象（8 Campaign + 2 RC）、
+export securities 注册表直接登记 22 条「对象→标的」关系、行情库 26 只全入库；
+半导体/算力方向有 RC-2024-SEMI-FUND3 行情链断裂（4 只登记标的全不覆盖窗口）且叙事横跨
+电子+信息通信两个 macro 主题 → **选汽车智能化**。
+
+- 新数据文件 `research/current/auto_intelligence_historical_events_v0_1.json`（新文件，
+  旧文件逐字节未动）：**6 个事件 / 22 条参与记录（19 只标的去重）/ 21 个可算行情组合**。
+- 事件 → 库内对象：C-2019-AD · C-2023-AD · RC-2023-HUAWEI（RC，**不伪装 Campaign**）·
+  C-2024-V2X（无 MAIN_RISE → 用 Campaign 起止，口径已标注）· C-2024-ROBOTAXI（CONFLICT
+  状态如实标注）· C-2025-ROBOTAXI（3 日窗口 + β 主导如实标注）。
+- ★ **题材边界**：新能源消费 / 购置税叙事（C-2020/21/22-NEV/POLICY）与智能化**不同轴，不纳入**；
+  RC-2024-SECONDARY（弱次级，c2 封存记录「强度不足，不升级」）不建事件 —— 均写进 known_gaps。
+- ★ **关系性质四类齐全**：直接机制（德赛西威域控 / 浙江世宝转向 / 万安线控 / V2X 终端三只 /
+  赛力斯问界整车）· 产业链（江淮代工 / 华阳 HUD / 亚太制动 / 金龙客车等）· **运营侧反例**
+  （大众交通 = 出租牌照方，category=INSUFFICIENT，说明「与技术链不同轴」）· 证据不足（众泰）。
+- ★ **行情全部由 market_data.db 实算**（窗口内首末/高低/区间/至高点/回撤/相对 SH000300 超额），
+  `by_security` 与 `participants` 同源同值；**赛力斯 series 止于 2021-12-31 → 不覆盖 2023 华为
+  窗口 → 如实 `insufficient_data_in_window`（不补造）**。
+- ★ **时间与证据区分**：每事件带四概念声明（事件窗口 / Campaign peak_date / 催化剂日期 /
+  个股行情高点不得强行对齐）；催化剂全部引自库内 drivers（含 EV-/S-/E- 引用编号）+
+  c2 封存记录（T3，research-level）。
+- 注册：`historicalEventMaps.ts` DOCS 静态登记 + 索引 `maps[]` 追加（纯增量 diff）；
+  `external_entry_ids=[]` + **显式 `external_link_status: NO_EXTERNAL_COUNTERPART`**
+  （校验器允许显式声明无外部对应；未声明而留空仍报问题）。
+
+**产品路径（全部实测可用）**：首页「历史题材地图」→ 选「汽车智能化」→ 标的索引（19 只，
+可搜索/展开逐次证据）→ 事件卡展开（窗口 / 对象身份 / 催化 / 标的 / 行情）→
+**「查看对象详情」→ 既有 CampaignDetail（复用 selection 流程，RC 保持 Research Candidate 身份）→
+关闭回到原题材与展开中的事件（上下文不丢）**。事件卡 / 对照面板两处的详情跳转都执行
+「两道检查」：注入了回调 **且** 对象可解析，缺一不给按钮。
+
+#### ② ★★ v0.14 残余修复
+
+| # | 问题 | 修法 |
+|---|---|---|
+| 1 | 未进入窗口对象的汇总说明把两种原因混在一句 | `outsideByReason` 分开计数（`no-main-rise` / `main-rise-not-projected`）；note 与 UI 同源，逐条原因与汇总严格一致 |
+| 2 | 详情按钮条件可被短路 | 收紧为 `onOpenObject` 与 `canOpenObject` **都有效**才渲染；缺任一给事实说明（「本页未接线」/「无法解析」） |
+| 3 | 历史窗口用 `frac×12` 近似定位（50% 既读成 7 月初又读成年中第 182 天） | `projectMainRise` 输出每段**裁剪后真实日期**（`segStart`/`segEnd`）；新增 `dateToMonthFraction`（按真实公历：月初落刻度 / 月末落前一格 / 闰年 2 月 29 合法）；外部月份仍走整数月边界，**不伪装成日级** |
+| 4 | 文档计数口径混用 | 见下表（三层分列，均实测） |
+
+**三层对象计数口径（不得混用）**：
+
+| 层 | Campaign | Research Candidate | securities | 备注 |
+|---|---|---|---|---|
+| DB（cycle_research.db） | **62**（campaigns 表） | **不落表**（RC 不进 campaigns） | 210（campaign_securities 220 行） | events 表 136 |
+| canonical export（timeline_export_v1.json） | **62** | **27** | **284**（含 RC 登记标的） | events 136 |
+| Product 实际消费（researchTimelineSource） | 去重 **89**（62+27） | — | 事件地图 5 题材合计 **54 只**标的（20+6+4+5+19） | ★ 年份切片 **157** ≠ 对象数（跨年对象按年切） |
+
+#### ③ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test 1349 passed / 0 failed / 64 files
+新增：autoIntelligenceEvents 9（注册表核对 / 枚举 / 反例 / 索引合并 / 超额自洽 / 赛力斯留空）
+      v015UserFlows 3（页面级端到端：题材→事件→反例标的→证据→对象详情→关闭回上下文；
+      RC 不伪装；标的索引搜索）
+      HistoricalEventMap +2（NO_EXTERNAL_COUNTERPART 显式声明 / 未声明仍报问题）
+      ExternalSeasonTimeline +6（dateToMonthFraction 公历性质）· 交互测试改写 3 条
+硬编码断言更新 3 条（题材清单 4→5 · 事件总数 13→19 · DESAYSV 出现次数）
+```
+
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 
 1. ★ **SAR 冻结产物漂移（A 工作流定性：影响 = 0，不重生成）** ——

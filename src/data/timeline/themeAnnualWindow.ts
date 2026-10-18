@@ -68,6 +68,13 @@ export interface AnnualWindow {
   object: TimelineCampaign;
   /** 真实 MAIN_RISE 起止（原样来自 Research，不裁剪） */
   mainRise: { start: string; end: string } | null;
+  /**
+   * ★ v0.15：该投影段**裁剪后**的真实起止日期（YYYY-MM-DD）。
+   * 跨年窗口按年裁成多段，每段带自己的真实日期 → 两层对照的时间轴可**按公历月日**定位，
+   * 而不是把年内比例近似成等分月。`onset` 标记是纯视觉宽度（非真实结束日）→ `segEnd` 为 null。
+   */
+  segStart: string;
+  segEnd: string | null;
 }
 
 export interface ThemeAnnualRow {
@@ -136,6 +143,9 @@ export function projectMainRise(
         kind: 'onset',
         object,
         mainRise: mr,
+        // 起始位置用真实日期；9 天是视觉宽度，没有真实结束日 → segEnd 保持 null
+        segStart: mr.start,
+        segEnd: null,
       },
     ];
   }
@@ -154,6 +164,8 @@ export function projectMainRise(
       kind: 'window',
       object,
       mainRise: mr,
+      segStart,
+      segEnd,
     });
   }
   return out;

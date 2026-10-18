@@ -3915,3 +3915,14 @@ html, body {
 }
 .ecp-open-btn:hover { border-color: #1f5f7a; background: #d6eaf2; }
 .ecp-open-na { font-size: 9.5px; color: var(--ink-3); font-style: italic; }
+
+/* 事件卡内的对象身份与详情跳转（v0.15） */
+.fem-obj-actions { margin-left: 8px; }
+.fem-obj-open {
+  cursor: pointer; font-size: 10px; padding: 1px 8px; border-radius: 6px;
+  border: 1px solid #7fb6cd; background: #e8f3f8; color: #1f5f7a;
+}
+.fem-obj-open:hover { border-color: #1f5f7a; background: #d6eaf2; }
+.fem-obj-open-na { font-size: 9.5px; color: var(--ink-3); font-style: italic; }
+.fem-obj-status { font-size: 9.5px; color: var(--ink-3); margin: 0 4px; }
+.fem-obj-mr { color: var(--ink-2); }

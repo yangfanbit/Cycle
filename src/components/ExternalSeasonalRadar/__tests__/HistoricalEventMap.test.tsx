@@ -48,10 +48,10 @@ describe('A. 索引驱动', () => {
     expect(eventMapsNotIncluded().length).toBeGreaterThanOrEqual(3);
   });
 
-  it('★ 四个题材全部解析成功（索引有条目 + 注册表有文档）', () => {
+  it('★ 题材全部解析成功（索引有条目 + 注册表有文档；v0.15 起 5 个）', () => {
     const maps = allResolvedEventMaps();
     expect(maps.map((m) => m.theme_id).sort()).toEqual(
-      ['FLU', 'MEDIA', 'POWER_SUMMER', 'ROBOTICS'].sort());
+      ['AUTO_INTELLIGENCE', 'FLU', 'MEDIA', 'POWER_SUMMER', 'ROBOTICS'].sort());
     for (const m of maps) expect(m.doc.events.length, m.theme_id).toBeGreaterThan(0);
   });
 
@@ -346,6 +346,23 @@ describe('F. ★★ 区分「行情未计算」与「行情不可得」（四类
 describe('G. ★ 索引一致性校验（event_count / external_entry_ids / theme_id / display）', () => {
   it('★ 真实索引通过校验（event_count 与实际事件数一致）', () => {
     expect(validateEventMapIndex()).toEqual([]);
+  });
+
+  it('★★ v0.15：显式声明 NO_EXTERNAL_COUNTERPART 的题材允许无外部挂靠', () => {
+    const idx = JSON.parse(JSON.stringify(eventMapIndex()));
+    const auto = idx.maps.find((m: { theme_id: string }) => m.theme_id === 'AUTO_INTELLIGENCE');
+    expect(auto.external_entry_ids).toEqual([]);
+    expect(auto.external_link_status).toBe('NO_EXTERNAL_COUNTERPART');
+    expect(validateEventMapIndex(idx)).toEqual([]);
+  });
+
+  it('★★ v0.15：未声明而 external_entry_ids 为空 → 仍然报问题', () => {
+    const idx = JSON.parse(JSON.stringify(eventMapIndex()));
+    const auto = idx.maps.find((m: { theme_id: string }) => m.theme_id === 'AUTO_INTELLIGENCE');
+    delete auto.external_link_status;
+    const issues = validateEventMapIndex(idx);
+    expect(issues.some((i) => i.themeId === 'AUTO_INTELLIGENCE'
+      && i.field === 'external_entry_ids')).toBe(true);
   });
 
   it('★★ 能抓到 event_count 与实际不一致（A2 的 MEDIA 虚增 bug）', () => {

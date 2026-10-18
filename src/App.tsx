@@ -262,7 +262,7 @@ export default function App() {
    * 复用同一套 selection / CampaignDetail 流程（不建第二个详情弹窗）；
    * Research Candidate 与 Campaign 都走这里，**保持原身份**（详情内部自己呈现 kind）。
    */
-  const openHistoricalObject = useCallback((id: string, _year: number) => {
+  const openHistoricalObject = useCallback((id: string, _year?: number) => {
     setSelection({ kind: 'campaign', id });
   }, []);
   /**
@@ -325,12 +325,17 @@ export default function App() {
         )}
 
         {/* ★★ 历史题材地图（v0.10 新增 · **直接入口**）——
-            4 个题材的历史事后重建，首屏可切换，**不需要**先展开外部线索。
+            5 个题材的历史事后重建（索引驱动），首屏可切换，**不需要**先展开外部线索。
             ★ 复用 `HistoricalEventMap`（事件卡 / 跨年份比较 / 经验基准概率原样），
               题材清单由 `historical_event_maps_index.json` 驱动。
             ★ 与下方外部雷达**职责分离**：本区 = ThreeC 从历史数据得到；雷达 = 外部资料声称。 */}
         {!verifiedMode && (
-          <HistoricalThemeMaps activeThemeId={mapTheme ?? undefined} onSelectTheme={setMapTheme} />
+          <HistoricalThemeMaps
+            activeThemeId={mapTheme ?? undefined}
+            onSelectTheme={setMapTheme}
+            onOpenObject={openHistoricalObject}
+            canOpenObject={canOpenHistoricalObject}
+          />
         )}
 
         {/* ★ 外部季节性观察雷达（2026-10-13 新增）——

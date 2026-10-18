@@ -37,14 +37,15 @@ describe('历史题材地图 · 入口', () => {
     expect((html.match(/role="tab"/g) ?? [])).toHaveLength(fromIndex.length);
   });
 
-  it('★★ 事件数由 doc 现算，且与总数自洽（当前 6+4+2+1=13）', () => {
+  it('★★ 事件数由 doc 现算，且与总数自洽（当前 6+4+2+1+6=19）', () => {
     const byId = Object.fromEntries(summaries.map((s) => [s.themeId, s.eventCount]));
     expect(byId.FLU).toBe(6);
     expect(byId.POWER_SUMMER).toBe(4);
     expect(byId.MEDIA).toBe(2);
     expect(byId.ROBOTICS).toBe(1);
+    expect(byId.AUTO_INTELLIGENCE).toBe(6);   // v0.15 新增：汽车智能化
     const total = summaries.reduce((a, b) => a + b.eventCount, 0);
-    expect(total).toBe(13);
+    expect(total).toBe(6 + 4 + 2 + 1 + 6);
     expect(html).toContain(`<strong>${total}</strong> 个历史事件`);
   });
 

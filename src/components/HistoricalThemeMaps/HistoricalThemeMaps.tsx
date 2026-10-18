@@ -3,7 +3,7 @@
  *
  * ## 为什么需要它
  *
- * v0.9 之前，4 个题材的历史事件地图**只能**从「外部季节性观察雷达」的线索卡里间接进入：
+ * v0.9 之前，5 个题材（索引驱动）的历史事件地图**只能**从「外部季节性观察雷达」的线索卡里间接进入：
  * 用户必须先展开「全部线索」、找到某条外部线索、再在卡内看到地图。
  * 但地图本身是**ThreeC 自己的历史事后重建**，与「外部资料声称的窗口」是两种东西 ——
  * 把它藏在外部线索里，等于让用户以为它也是外部参考。
@@ -61,10 +61,16 @@ export function themeMapSummaries(maps: readonly ResolvedEventMap[]): ThemeMapSu
 export function HistoricalThemeMaps({
   activeThemeId,
   onSelectTheme,
+  onOpenObject,
+  canOpenObject,
 }: {
   /** 受控的当前题材（由 App 持有，便于外部雷达跳转时联动） */
   activeThemeId?: string;
   onSelectTheme?: (themeId: string) => void;
+  /** ★ v0.15：事件 → 历史对象详情（复用 App selection / CampaignDetail 流程） */
+  onOpenObject?: (objectId: string) => void;
+  /** ★ v0.15：对象能否通过现有详情流程解析（不可解析 → 不给按钮） */
+  canOpenObject?: (objectId: string) => boolean;
 }) {
   const maps = useMemo(() => allResolvedEventMaps(), []);
   const summaries = useMemo(() => themeMapSummaries(maps), [maps]);
@@ -136,7 +142,12 @@ export function HistoricalThemeMaps({
         <ThemeSecurityIndexSection key={current.theme_id} doc={current.doc} />
 
         {/* ★ 复用既有地图组件：事件卡 / 跨年份比较 / 经验基准概率全部原样 */}
-        <HistoricalEventMap doc={current.doc} display={current.display} />
+        <HistoricalEventMap
+          doc={current.doc}
+          display={current.display}
+          onOpenObject={onOpenObject}
+          canOpenObject={canOpenObject}
+        />
       </div>
 
       {notIncluded.length > 0 && (

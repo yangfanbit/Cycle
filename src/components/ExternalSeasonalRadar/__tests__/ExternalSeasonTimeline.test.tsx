@@ -9,6 +9,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { externalCalendarEntries } from '../../../data/timeline/externalSeasonalCalendar';
 import {
   buildExternalTimeline,
+  dateToMonthFraction,
+  fracToMonthFraction,
+  monthToMonthFraction,
   segmentsOfWindow,
 } from '../../../data/timeline/externalSeasonalTimeline';
 import { eventMapByExternalId } from '../../../data/timeline/historicalEventMaps';
@@ -214,5 +217,55 @@ describe('外部时间轴 · 段拆分函数', () => {
   it('★ 单月窗口', () => {
     const segs = segmentsOfWindow({ start_month: 3, end_month: 3, cross_year: false, raw_text: '3 月' });
     expect(segs[0].months).toEqual([3]);
+  });
+});
+
+/* ================================================================
+ * v0.15：公历月日 → 月份坐标（月初落刻度 / 月末落前一格 / 闰年正确）
+ * ================================================================ */
+
+describe('dateToMonthFraction（真实公历映射，v0.15）', () => {
+  it('★★ 月初：每月 1 日恰好落在该月刻度线上', () => {
+    expect(dateToMonthFraction('2023-02-01')).toBeCloseTo(1, 12);   // 2 月刻度
+    expect(dateToMonthFraction('2023-07-01')).toBeCloseTo(6, 12);   // 7 月刻度
+    expect(dateToMonthFraction('2023-12-01')).toBeCloseTo(11, 12);  // 12 月刻度
+    expect(dateToMonthFraction('2023-01-01')).toBeCloseTo(0, 12);   // 年首
+  });
+
+  it('★★ 月末：月末落在下一刻度之前（不等于下一月 1 日）', () => {
+    expect(dateToMonthFraction('2023-01-31')!).toBeLessThan(1);     // 2 月刻度前
+    expect(dateToMonthFraction('2023-01-31')!).toBeGreaterThan(0.9);
+    expect(dateToMonthFraction('2023-12-31')!).toBeLessThan(12);
+  });
+
+  it('★★ 闰年：2 月按 29 天占位（2024-02-29 合法且接近 3 月刻度前）', () => {
+    expect(dateToMonthFraction('2024-02-29')!).toBeGreaterThan(1.9);
+    expect(dateToMonthFraction('2024-02-29')!).toBeLessThan(2);
+    // 平年 2 月 28 日与闰年 2 月 29 日都合法且都落在 (1,2) 区间
+    expect(dateToMonthFraction('2023-02-28')!).toBeLessThan(2);
+    // 闰年 1 月 31 日到 2 月 1 日的跨度只跨 1 天，但 2 月内部占 29 天
+    const feb1 = dateToMonthFraction('2024-02-01')!;
+    const feb29 = dateToMonthFraction('2024-02-29')!;
+    expect(feb29 - feb1).toBeCloseTo(28 / 29, 6);
+  });
+
+  it('★ 与 frac 近似的区别：2 月 1 日在 frac*12 下不落刻度，在真实日历下落刻度', () => {
+    // frac = (dayOfYear(2/1)-1)/365 = 31/365 → *12 ≈ 1.0192（不落刻度）
+    expect(fracToMonthFraction(31 / 365)).toBeCloseTo(1.01918, 4);
+    expect(fracToMonthFraction(31 / 365)).not.toBeCloseTo(1, 2);
+    // dateToMonthFraction 落刻度
+    expect(dateToMonthFraction('2023-02-01')).toBeCloseTo(1, 12);
+  });
+
+  it('★ 非法日期返回 null（不猜、不补）', () => {
+    expect(dateToMonthFraction('2023-02-30')).toBeNull();
+    expect(dateToMonthFraction('2023-13-01')).toBeNull();
+    expect(dateToMonthFraction('not-a-date')).toBeNull();
+    expect(dateToMonthFraction('')).toBeNull();
+  });
+
+  it('★ monthToMonthFraction：月 → 月刻度起点', () => {
+    expect(monthToMonthFraction(1)).toBe(0);
+    expect(monthToMonthFraction(12)).toBe(11);
   });
 });

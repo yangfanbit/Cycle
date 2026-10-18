@@ -163,7 +163,10 @@ describe('对照面板 · 数量语义与详情跳转（v0.14 · jsdom 真点）
 
   it('★★ 「查看对象详情」点击后把 objectId + 年份传出去', async () => {
     const seen: Array<[string, number]> = [];
-    const { host } = await mount({ onOpenObject: (id, y) => seen.push([id, y]) });
+    const { host } = await mount({
+      onOpenObject: (id, y) => seen.push([id, y]),
+      canOpenObject: () => true,
+    });
     await act(async () => {
       rowBtn(host, 'EXT-12', '对照历史窗口').click();
     });
@@ -178,8 +181,8 @@ describe('对照面板 · 数量语义与详情跳转（v0.14 · jsdom 真点）
     expect(targetId.startsWith('C-')).toBe(true);
   });
 
-  it('★★ 对象不可解析 → **不渲染**无效按钮，给真实说明', async () => {
-    const { host } = await mount({ canOpenObject: () => false });
+  it('★★ v0.15：canOpenObject 返回 false → **不渲染**无效按钮，给事实说明', async () => {
+    const { host } = await mount({ onOpenObject: () => {}, canOpenObject: () => false });
     await act(async () => {
       rowBtn(host, 'EXT-12', '对照历史窗口').click();
     });
@@ -190,27 +193,36 @@ describe('对照面板 · 数量语义与详情跳转（v0.14 · jsdom 真点）
     ).toBe(false);
   });
 
-  it('★★ 两层共用月份坐标：历史条左缘 = frac × 12 月（与 1–12 月刻度同一把尺）', async () => {
+  it('★★ v0.15：缺 onOpenObject（未接线）→ 同样**不给**按钮', async () => {
+    const { host } = await mount({ canOpenObject: () => true });
+    await act(async () => {
+      rowBtn(host, 'EXT-12', '对照历史窗口').click();
+    });
+    const panel = host.querySelector('[data-ecp-status="matched"]')!;
+    expect(panel.textContent).toContain('本页未接线对象详情');
+    expect(
+      [...panel.querySelectorAll('button')].some((b) => b.textContent?.includes('查看对象详情')),
+    ).toBe(false);
+  });
+
+  it('★★ v0.15：历史条按**真实公历月日**映射（与 1–12 月刻度同一把尺）', async () => {
     const { host } = await mount();
     await act(async () => {
       rowBtn(host, 'EXT-14', '对照历史窗口').click();
     });
-    // 历史条 style.left 由 fracToMonthFraction 换算；与刻度 tick 同一坐标系
     const bar = host.querySelector('.ecp-bar-hist') as HTMLElement;
     expect(bar).not.toBeNull();
-    const left = bar.style.left;
-    expect(left.endsWith('%')).toBe(true);
-    // 2–3 月的历史窗口（C-2023-POWEROP-THERMAL 1–5 月）左缘应在 0–100% 之间
-    const v = Number(left.slice(0, -1));
+    expect(bar.style.left.endsWith('%')).toBe(true);
+    const v = Number(bar.style.left.slice(0, -1));
     expect(v).toBeGreaterThanOrEqual(0);
     expect(v).toBeLessThanOrEqual(100);
-    // 刻度数量 12（1–12 月），与两层的尺一致
-    const track = bar.parentElement!;
-    expect(track.querySelectorAll('.ecp-scale-tick').length).toBe(12);
-  });
-
-  it('★★ 关闭详情回到原上下文（App 级）：在 v014UserFlows 场景中断言', () => {
-    // 占位说明：返回行为依赖 App selection 生命周期，见页面级场景测试
-    expect(true).toBe(true);
+    // 刻度 12 个（1–12 月）
+    expect(bar.parentElement!.querySelectorAll('.ecp-scale-tick').length).toBe(12);
+    // C-2023-POWEROP-THERMAL 的 MAIN_RISE 起点 2023-01-03 → 月初附近（≈ 0 + 2/31 月）
+    // dateToMonthFraction('2023-01-03') = 2/31 → 2/31/12 = 0.538%
+    const row = host.querySelector('li[data-ecp-hist="C-2023-POWEROP-THERMAL"]')!;
+    const thatBar = row.querySelector('.ecp-bar-hist') as HTMLElement;
+    expect(thatBar).not.toBeNull();
+    expect(thatBar.style.left).toBe(`${((2 / 31) / 12) * 100}%`);
   });
 });

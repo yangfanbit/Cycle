@@ -158,18 +158,67 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
  * ★★ 事件卡**展开后的正文**（单独导出：`EventCard` 只负责折叠状态，
  *   正文抽出来才能被测试直接渲染 —— 单一实现，不为测试复制逻辑）。
  */
-export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: string }) {
+export function EventCardBody({
+  e, classCaveat, onOpenObject, canOpenObject,
+}: {
+  e: HistoricalEvent; classCaveat?: string;
+  /** ★ v0.15：进入该事件关联的历史对象详情（复用 App selection 流程） */
+  onOpenObject?: (objectId: string) => void;
+  canOpenObject?: (objectId: string) => boolean;
+}) {
   const conceptsNote = e.three_peaks_note ?? e.four_concepts_note;
+  // ★ 对象身份：object_id（v0.15，含 Research Candidate）优先，兼容旧 campaign_id
+  const cf = e.campaign_facts;
+  const objId = cf ? (cf.object_id ?? cf.campaign_id) : undefined;
+  const objKind = cf
+    ? (cf.object_kind ?? (cf.campaign_id ? 'campaign' : undefined))
+    : undefined;
+  // ★ 两道检查缺一不可，否则只给事实文本（不给假按钮）
+  const objResolvable = typeof objId === 'string' && objId.length > 0
+    && typeof onOpenObject === 'function'
+    && typeof canOpenObject === 'function'
+    && canOpenObject(objId) === true;
   return (
     <div className="fem-event-body">
-          {e.campaign_facts && (
+          {cf && (
             <>
-              <h5>Campaign 事实</h5>
+              <h5>历史对象事实{objKind === 'candidate' ? '（Research Candidate）' : ''}</h5>
               <p className="fem-media-note">
-                <code>{e.campaign_facts.campaign_id}</code> ·{' '}
-                start {e.campaign_facts.start ?? '—'} · <strong>peak_date {e.campaign_facts.peak_date ?? '—'}</strong> ·{' '}
-                end {e.campaign_facts.end ?? '—'}
-                {e.campaign_facts.note && <span className="fem-campaign-note"><RichText text={e.campaign_facts.note} /></span>}
+                <code>{objId ?? '—'}</code>
+                {objKind && (
+                  <span className={`ecp-kind ecp-kind-${objKind}`}>
+                    {objKind === 'campaign' ? 'Campaign' : 'Research Candidate'}
+                  </span>
+                )}
+                {cf.status && <span className="fem-obj-status">{cf.status}</span>} ·{' '}
+                start {cf.start ?? '—'} · <strong>peak_date {cf.peak_date ?? '—'}</strong> ·{' '}
+                end {cf.end ?? '—'}
+                {cf.main_rise && (
+                  <span className="fem-obj-mr">
+                    {' '}· MAIN_RISE {cf.main_rise.start} → {cf.main_rise.end}
+                    {cf.main_rise.precision ? `（${cf.main_rise.precision}）` : ''}
+                  </span>
+                )}
+                {cf.note && <span className="fem-campaign-note"><RichText text={cf.note} /></span>}
+                <span className="fem-obj-actions">
+                  {objResolvable ? (
+                    <button
+                      type="button"
+                      className="fem-obj-open"
+                      onClick={() => onOpenObject!(objId!)}
+                    >
+                      查看对象详情
+                    </button>
+                  ) : (
+                    <span className="fem-obj-open-na">
+                      {objId
+                        ? (typeof onOpenObject === 'function'
+                          ? '该对象无法通过现有详情流程解析'
+                          : '本页未接线对象详情')
+                        : '未记录关联对象'}
+                    </span>
+                  )}
+                </span>
               </p>
             </>
           )}
@@ -260,7 +309,13 @@ export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCav
 }
 
 /** 事件卡：头部（可折叠）+ 展开后的 `EventCardBody` */
-export function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?: string }) {
+export function EventCard({
+  e, classCaveat, onOpenObject, canOpenObject,
+}: {
+  e: HistoricalEvent; classCaveat?: string;
+  onOpenObject?: (objectId: string) => void;
+  canOpenObject?: (objectId: string) => boolean;
+}) {
   const [open, setOpen] = useState(false);
   const state = eventStudyState(e);
   return (
@@ -280,7 +335,8 @@ export function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?
       <p className="fem-event-basis">依据：<RichText text={e.evidence_basis} /></p>
 
       {classCaveat && <p className="fem-adjacent-caveat"><RichText text={classCaveat} /></p>}
-      {open && <EventCardBody e={e} classCaveat={classCaveat} />}
+      {open && <EventCardBody e={e} classCaveat={classCaveat}
+        onOpenObject={onOpenObject} canOpenObject={canOpenObject} />}
     </li>
   );
 }
@@ -467,9 +523,13 @@ export interface HistoricalEventMapProps {
   doc: HistoricalEventsDoc;
   /** ★ 题材展示配置（标题 / 免责声明 / 分组顺序） */
   display?: ThemeDisplay;
+  /** ★ v0.15：进入历史对象详情（复用 App selection / CampaignDetail 流程） */
+  onOpenObject?: (objectId: string) => void;
+  /** ★ v0.15：对象能否通过现有详情流程解析 */
+  canOpenObject?: (objectId: string) => boolean;
 }
 
-export function HistoricalEventMap({ doc, display }: HistoricalEventMapProps) {
+export function HistoricalEventMap({ doc, display, onOpenObject, canOpenObject }: HistoricalEventMapProps) {
   const groups = eventsByClass(doc, display?.class_order);
   const title = display?.title ?? '历史事件（按年份）';
   const ariaLabel = display?.aria_label ?? '历史事件地图';
@@ -498,7 +558,9 @@ export function HistoricalEventMap({ doc, display }: HistoricalEventMapProps) {
             </h4>
             <ul className="fem-list">
               {g.events.map((e) => (
-                <EventCard key={e.event_id} e={e} classCaveat={display?.class_caveats?.[g.cls]} />
+                <EventCard key={e.event_id} e={e} classCaveat={display?.class_caveats?.[g.cls]}
+                  onOpenObject={onOpenObject}
+                  canOpenObject={canOpenObject} />
               ))}
             </ul>
           </div>

@@ -186,9 +186,36 @@ export function crossYearNote(t: ExternalTimeline): string {
  *   Research 的原始起止日期不被重算、外部月份不被解释成日级 —— 换算只为对齐坐标。
  * ================================================================ */
 
-/** 年内日期比例（0..1）→ 月份坐标（0..12）。例：0 → 1 月起点，6/12=0.5 → 年中 */
+/** 年内日期比例（0..1）→ 月份坐标（0..12）。例：0 → 1 月起点，6/12=0.5 → 年中。
+ *  ★ 这是**近似**（按年内天数比例），只用于没有真实日期的场景（如 onset 视觉宽度）。 */
 export function fracToMonthFraction(frac: number): number {
   return Math.min(Math.max(frac, 0), 1) * 12;
+}
+
+/** 某年某月天数（闰年 2 月 = 29） */
+function daysInMonthOf(year: number, month: number): number {
+  if (month === 2) return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28;
+  return [4, 6, 9, 11].includes(month) ? 30 : 31;
+}
+
+/**
+ * ★★ 真实公历日期（YYYY-MM-DD）→ 月份坐标（0..12）。
+ *
+ * 与 `fracToMonthFraction` 的区别：这里走**真实日历**——每月按实际天数占位，
+ * 因此「2 月 1 日」恰好落在 2 月刻度线上、「1 月 31 日」落在 2 月刻度前一点、
+ * 闰年 2 月 29 日仍正确（2 月按 29 天占位）。月初 = 月刻度线上，月末 = 下一刻度前。
+ *
+ * ★ 历史 `MAIN_RISE` 有真实起止 → 一律用本函数；外部月份窗口没有日级信息 →
+ *   仍走整数月边界（`monthToMonthFraction`），**不**把外部月份伪装成日级。
+ */
+export function dateToMonthFraction(date: string): number | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date.trim());
+  if (!m) return null;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  if (mo < 1 || mo > 12 || d < 1 || d > daysInMonthOf(y, mo)) return null;
+  return (mo - 1) + (d - 1) / daysInMonthOf(y, mo);
 }
 
 /** 月份（1..12）→ 月份坐标起点（0..11）。例：1 → 0（1 月格左缘） */

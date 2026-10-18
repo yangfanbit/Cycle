@@ -37,6 +37,9 @@ export interface ComparisonWindow {
   objectKind: 'campaign' | 'candidate';
   /** 原始 MAIN_RISE 起止（**原样**，不裁剪、不补全） */
   mainRise: { start: string; end: string } | null;
+  /** ★ v0.15：本段裁剪后的真实起止（跨年窗口按年裁剪）；onset 的 segEnd = null */
+  segStart: string;
+  segEnd: string | null;
 }
 
 export type ComparisonStatus =
@@ -68,6 +71,8 @@ export interface ThemeComparison {
    * ★ 原样列出、逐条带原因；**不得**把它们算进窗口里，也不得从窗口计数里悄悄抹掉。
    */
   objectsOutsideWindows: OutsideWindowObject[];
+  /** `objectsOutsideWindows` 按原因的汇总计数（UI 与 note 同源，保证口径一致） */
+  outsideByReason: Record<OutsideWindowObject['reason'], number>;
   /** 空态 / 未映射时的说明（**只陈述事实**） */
   note: string;
 }
@@ -92,6 +97,8 @@ function toComparisonWindow(w: AnnualWindow): ComparisonWindow {
     objectKind: w.object.kind,
     mainRise: w.mainRise,
     // ★ 不补：mainRise 缺失就保持 null（长周期对象也可能没有完整起止）
+    segStart: w.segStart,
+    segEnd: w.segEnd,
   };
 }
 
@@ -109,7 +116,11 @@ export function compareExternalToTheme(
   const empty = {
     counts: { campaign: 0, candidate: 0 },
     windowCounts: { campaign: 0, candidate: 0 },
-    objectsOutsideWindows: [],
+    objectsOutsideWindows: [] as OutsideWindowObject[],
+    outsideByReason: {
+      'no-main-rise': 0,
+      'main-rise-not-projected': 0,
+    } as Record<OutsideWindowObject['reason'], number>,
   };
 
   if (entry.mapping.status !== 'MAPPED' || !entry.mapping.macro_theme) {
@@ -173,16 +184,33 @@ export function compareExternalToTheme(
     .sort((a, b) => a.objectId.localeCompare(b.objectId));
 
   const outside = objectsOutsideWindows.length;
+
+  // 按原因分组计数（★ 汇总说明必须与逐条原因一致：两种原因分开报）
+  const outsideByReason = {
+    'no-main-rise': objectsOutsideWindows.filter((o) => o.reason === 'no-main-rise').length,
+    'main-rise-not-projected':
+      objectsOutsideWindows.filter((o) => o.reason === 'main-rise-not-projected').length,
+  };
+  /** 汇总片段（**只有事实陈述**；供 note 与 UI 共用，保证两边口径一致） */
+  const outsideSummary = () => {
+    if (outside === 0) return '';
+    const parts: string[] = [];
+    if (outsideByReason['no-main-rise'] > 0) {
+      parts.push(`${outsideByReason['no-main-rise']} 个没有 MAIN_RISE 记录`);
+    }
+    if (outsideByReason['main-rise-not-projected'] > 0) {
+      parts.push(`${outsideByReason['main-rise-not-projected']} 个有 MAIN_RISE 记录但投影为空（待核对）`);
+    }
+    return `另有 ${outside} 个对象未进入窗口（${parts.join(' · ')}；该主题共 ${row.objects.length} 个对象）`;
+  };
+
   const note = windows.length === 0
     ? `已映射到「${theme}」，但该主题下**没有可投影的 MAIN_RISE 窗口** —— 历史侧为空。`
-      + (outside > 0 ? `（该主题共 ${row.objects.length} 个对象，均无 MAIN_RISE 记录。）` : '')
+      + (outside > 0 ? `（该主题共 ${row.objects.length} 个对象：${outsideSummary()}）` : '')
     : `「${theme}」下有 ${windows.length} 段历史 MAIN_RISE 窗口`
       + `（投影段数；实际涉及 ${windowCounts.campaign} 个 Campaign + `
       + `${windowCounts.candidate} 个 Research Candidate，按对象去重）。`
-      + (outside > 0
-        ? `另有 ${outside} 个对象因**没有 MAIN_RISE 记录**未进入窗口`
-          + `（该主题共 ${row.objects.length} 个对象）。`
-        : '');
+      + (outside > 0 ? outsideSummary() : '');
 
   return {
     entryId: entry.id,
@@ -196,6 +224,7 @@ export function compareExternalToTheme(
     },
     windowCounts,
     objectsOutsideWindows,
+    outsideByReason,
     note,
   };
 }

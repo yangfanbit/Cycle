@@ -168,6 +168,18 @@ describe('外部×历史对照 · 计数语义（v0.14 修正）', () => {
     expect(cmp.note).not.toContain('未进入窗口');
   });
 
+  it('★★ v0.15：汇总说明按原因分开（no-main-rise 与 not-projected 不混）', () => {
+    const cmp = compareExternalToTheme(entryOf('EXT-05'), macroRows);
+    // 逐条原因与汇总计数同源（数据层保证一致）
+    expect(cmp.objectsOutsideWindows.every((o) => o.reason === 'no-main-rise')).toBe(true);
+    expect(cmp.outsideByReason['no-main-rise']).toBe(5);
+    expect(cmp.outsideByReason['main-rise-not-projected']).toBe(0);
+    const plain = cmp.note.split('**').join('');
+    expect(plain).toContain('5 个没有 MAIN_RISE 记录');
+    // 没有第二类原因时，不得出现「投影为空（待核对）」
+    expect(plain).not.toContain('投影为空');
+  });
+
   it('★ 未映射 / 无主题行：计数全为 0，不出现窗口数字', () => {
     const unmapped = compareExternalToTheme(entryOf('EXT-17'), macroRows);
     expect(unmapped.windowCounts).toEqual({ campaign: 0, candidate: 0 });

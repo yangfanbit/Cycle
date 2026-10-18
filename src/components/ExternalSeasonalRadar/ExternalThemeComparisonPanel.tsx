@@ -17,6 +17,7 @@
  */
 
 import {
+  dateToMonthFraction,
   fracToMonthFraction,
   monthFractionToPct,
   monthToMonthFraction,
@@ -95,11 +96,18 @@ function ExternalLayer({ entry, segments }: {
   );
 }
 
-/** 一层历史窗口条（青蓝）—— 位置由 frac 经月份坐标换算得到 */
+/** 一层历史窗口条（青蓝）—— 位置按**真实公历月日**映射到 12 个月坐标 */
 function HistoryBar({ w }: { w: ComparisonWindow }) {
-  const left = fracToMonthFraction(w.startFrac);
-  // 同一把尺上算宽度；单日窗口给最小可视宽度（不能因此夸大时长）
-  const width = Math.max(fracToMonthFraction(w.endFrac) - left, 0.8 / 12);
+  // ★ v0.15：有真实起止 → dateToMonthFraction（月初落刻度、月末落前一格、闰年正确）；
+  //   缺失 / 不可解析 → 退回 frac 近似（并如实降级，不假装有日级精度）。
+  const left = dateToMonthFraction(w.segStart) ?? fracToMonthFraction(w.startFrac);
+  const endMf = w.segEnd
+    ? dateToMonthFraction(w.segEnd)
+    : null;
+  const width = endMf !== null && endMf > left
+    ? endMf - left
+    // onset 标记是视觉宽度（9 天）→ 用 frac 表达，不虚构结束日
+    : Math.max(fracToMonthFraction(w.endFrac) - fracToMonthFraction(w.startFrac), 0.8 / 12);
   return (
     <div
       className={`ecp-bar ecp-bar-hist${w.kind === 'onset' ? ' is-onset' : ''}`}
@@ -138,10 +146,13 @@ function HistoryLayer({
         <ul className="ecp-hlist">
           {windows.map((w) => {
             // 同一对象的多个投影段：每段都能进同一个详情（详情本身按对象呈现）
-            // ★ 两道检查，缺一不可（v0.13 MapLink 教训：不给「看起来能点但没反应」的东西）：
-            //   ① 页面注入了 onOpenObject（有接线）；
-            //   ② 该对象能通过现有详情流程解析（canOpenObject 未注入时默认可解析）。
-            const resolvable = canOpenObject ? canOpenObject(w.objectId) : true;
+            // ★★ v0.15 收紧：`onOpenObject` 与 `canOpenObject` **都有效**才渲染按钮 ——
+            //   ① 页面注入了 onOpenObject（有接线，点了有反应）；
+            //   ② 注入了 canOpenObject **且**它对该对象返回 true（能解析出详情）。
+            //   缺任一条件 → 事实说明。不给「看起来能点但没反应 / 解析不了」的按钮。
+            const resolvable = typeof onOpenObject === 'function'
+              && typeof canOpenObject === 'function'
+              && canOpenObject(w.objectId) === true;
             return (
               <li key={`${w.objectId}-${w.year}-${w.startFrac}`} data-ecp-hist={w.objectId}>
                 <div className="ecp-htrack">
@@ -162,19 +173,19 @@ function HistoryLayer({
                     <span className="ecp-onset-note">（长周期：仅投影起始位置）</span>
                   )}
                   <span className="ecp-actions">
-                    {onOpenObject && resolvable ? (
+                    {resolvable ? (
                       <button
                         type="button"
                         className="ecp-open-btn"
-                        onClick={() => onOpenObject(w.objectId, w.year)}
+                        onClick={() => onOpenObject!(w.objectId, w.year)}
                       >
                         查看对象详情
                       </button>
-                    ) : resolvable ? (
-                      <span className="ecp-open-na">本页未接线对象详情</span>
                     ) : (
                       <span className="ecp-open-na">
-                        该对象无法通过现有详情流程解析（不渲染无效按钮）
+                        {typeof onOpenObject === 'function'
+                          ? '该对象无法通过现有详情流程解析（不渲染无效按钮）'
+                          : '本页未接线对象详情'}
                       </span>
                     )}
                   </span>

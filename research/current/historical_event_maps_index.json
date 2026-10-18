@@ -102,6 +102,25 @@
    },
    "event_count": 1,
    "status": "ACTIVE"
+  },
+  {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "label": "汽车智能化 / 智能驾驶",
+   "file": "auto_intelligence_historical_events_v0_1.json",
+   "external_entry_ids": [],
+   "display": {
+    "title": "历史事件（按年份）",
+    "aria_label": "历史汽车智能化事件地图",
+    "badge": "事后重建 · 库内 Campaign/RC + 实测行情",
+    "class_order": [
+     "THEME_DIRECT"
+    ],
+    "class_caveats": {},
+    "note": "本区展示**智能驾驶 / 车路云 / Robotaxi** 相关历史事件（来源：库内 Campaign / Research Candidate + 实测行情）。★★ **不纳入**新能源汽车消费与购置税叙事（C-2020/21/22-NEV/POLICY）—— 与智能化**不同轴**；★★ **不纳入** RC-2024-SECONDARY（弱次级候选，c2 封存记录明确「强度不足，不升级」）。★★ **关系性质不是评分**：`category` 只描述直接机制 / 间接扩散 / 运营侧反例 / 证据不足；★ 大众交通是**反例**（运营牌照方，非智驾技术链）。★ **赛力斯行情不覆盖 2023 华为窗口**（series 止于 2021-12-31）→ 该标的行情如实留空。★ 本题材无外部季节性线索挂靠（`external_entry_ids` 为空）—— 外部窗口口径见「外部季节性参考时间轴」。"
+   },
+   "event_count": 6,
+   "status": "ACTIVE",
+   "external_link_status": "NO_EXTERNAL_COUNTERPART"
   }
  ],
  "not_included": {

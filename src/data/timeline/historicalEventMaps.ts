@@ -21,6 +21,7 @@ import fluDoc from '@current/flu_historical_events_v0_6.json';
 import powerDoc from '@current/power_historical_events_v0_3.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
+import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
 
 /* ------------------------------------------------------ 通用类型 */
 
@@ -59,6 +60,8 @@ export interface HistoricalParticipant {
 
 export interface SecurityPerformance {
   status?: string;
+  /** ★ 行情无覆盖 / 数据不足：`insufficient_data_in_window`（既有文件既有形态，类型补齐） */
+  error?: string;
   trading_days?: number;
   first?: { date: string; close: number };
   last?: { date: string; close: number };
@@ -96,7 +99,14 @@ export interface HistoricalEvent {
   media_label_note?: string;
   /** Campaign 事实（多题材） */
   campaign_facts?: {
-    campaign_id: string;
+    /** 旧字段（仅 Campaign）；v0.15 起新文件用 `object_id` + `object_kind`（RC 不伪装 Campaign） */
+    campaign_id?: string;
+    /** ★ v0.15：对象 id（Campaign 或 Research Candidate） */
+    object_id?: string;
+    /** ★ v0.15：对象类型；缺省按 `campaign_id` 存在视为 campaign */
+    object_kind?: 'campaign' | 'candidate';
+    status?: string;
+    main_rise?: { start: string; end: string; precision?: string } | null;
     start: string | null;
     peak_date: string | null;
     end: string | null;
@@ -140,6 +150,11 @@ export interface EventMapIndexEntry {
   label: string;
   file: string;
   external_entry_ids: string[];
+  /**
+   * ★ v0.15：显式声明「本题材**没有**外部季节性对应线索」。
+   * 未声明而 `external_entry_ids` 为空 → 索引校验按问题处理（防「忘了挂」被静默放过）。
+   */
+  external_link_status?: 'NO_EXTERNAL_COUNTERPART';
   display: ThemeDisplay;
   event_count?: number;
   status?: string;
@@ -225,6 +240,8 @@ const DOCS: Record<string, HistoricalEventsDoc> = {
   POWER_SUMMER: powerDoc as unknown as HistoricalEventsDoc,
   MEDIA: mediaDoc as unknown as HistoricalEventsDoc,
   ROBOTICS: roboticsDoc as unknown as HistoricalEventsDoc,
+  // ★ v0.15：汽车智能化 / 智能驾驶（6 事件 · 22 参与者，赛力斯行情不覆盖窗口→如实留空）
+  AUTO_INTELLIGENCE: autoDoc as unknown as HistoricalEventsDoc,
 };
 
 /** 索引条目 + 已加载的题材文档 */
@@ -881,10 +898,16 @@ export function validateEventMapIndex(
     if (!doc) push(themeId, 'theme_id', '注册表里没有对应题材文档: ' + themeId);
 
     // ② external_entry_ids
+    // ★ v0.15：并非每个题材都有外部季节性对应线索。允许**显式声明**
+    //   `external_link_status: 'NO_EXTERNAL_COUNTERPART'` 的题材留空；
+    //   未声明而留空仍按问题处理（防止「忘了挂」被静默放过）。
     const ids = m.external_entry_ids;
-    if (!Array.isArray(ids) || ids.length === 0) {
-      push(themeId, 'external_entry_ids', 'external_entry_ids 为空');
-    } else {
+    const optedOut = m.external_link_status === 'NO_EXTERNAL_COUNTERPART';
+    if ((!Array.isArray(ids) || ids.length === 0) && !optedOut) {
+      push(themeId, 'external_entry_ids',
+        'external_entry_ids 为空（若确无外部对应线索，请在索引条目显式声明 '
+        + 'external_link_status: NO_EXTERNAL_COUNTERPART）');
+    } else if (Array.isArray(ids) && ids.length > 0) {
       const dup = Array.from(new Set(ids.filter((id, i) => ids.indexOf(id) !== i)));
       if (dup.length) push(themeId, 'external_entry_ids', 'external_entry_ids 条目内重复: ' + dup.join(','));
       for (const id of ids) {

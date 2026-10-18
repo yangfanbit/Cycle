@@ -1,0 +1,1478 @@
+{
+ "artifact": "historical_events",
+ "artifact_version": "0.1",
+ "theme": {
+  "theme_id": "AUTO_INTELLIGENCE",
+  "label": "汽车智能化 / 智能驾驶"
+ },
+ "generated_at": "2026-10-18",
+ "generated_by": "ThreeC Agent（v0.15）",
+ "supersedes": null,
+ "position": "★ 历史事后重建（来源：库内 Campaign / Research Candidate + 实测行情），**不是**正式研究结论。★ 本切片**只收智能驾驶 / 车路云 / Robotaxi 相关对象**；新能源汽车消费与购置税叙事（C-2020-NEV / C-2021-NEV / C-2022-POLICY 等）与智能化**不同轴**，**不纳入**本题材。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "本题材机制相关",
+   "meaning": "机制与本题材一致"
+  }
+ ],
+ "source_discipline": {
+  "no_price_to_causation": "★★ 股价上涨**不得**直接解释为题材因果；不得因股票上涨反推其属于该题材。",
+  "four_concepts": "★★ 四个不同概念**不得强行对齐**：① 事件窗口（MAIN_RISE）；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见市场表现表）。★ 股价上涨**不得**直接解释为题材因果。",
+  "no_fabrication": "不得伪造行情、证券代码、指数数据或历史事件；无覆盖即 insufficient_data_in_window。",
+  "relation_nature": "★ category 只描述**关系性质**（直接机制 / 间接扩散 / 运营侧反例 / 证据不足），**不是**相关性评分、不是排序依据。"
+ },
+ "business_mechanism_note": {
+  "method": "export securities 注册表（role=leader/second_leader/representative）+ 当前时点公开资料（检索日 2026-10-18）",
+  "hard_rule": "★★ **不因业务机制核实就改 `category`** —— 参与证据仍是库内注册表登记；★★ **不因涨幅 / 涨停 / 概念标签**提升相关性等级。",
+  "five_levels": "① 具备业务 ② 当时已存在 ③ 当时重要 ④ 参与行情 ⑤ 机制驱动行情 —— 五者**不可相互替代**。",
+  "coverage": "Q1–Q3 充分的已填 business_mechanism；★ **全部证券的 Q5（机制驱动行情）均无法确认**。"
+ },
+ "known_gaps_topic": [
+  " contemporaneous 一手报道原文未逐条入库：catalysts 主要转述库内 drivers 的 Research 记录（含 EV-/S-/E- 引用编号）",
+  "未纳入：C-2020-NEV / C-2021-NEV / C-2022-POLICY（新能源消费 / 购置税叙事，与智能化不同轴）",
+  "未纳入：RC-2024-SECONDARY（弱次级候选，c2 封存记录明确「强度不足，不升级」）",
+  "赛力斯在本题材的行情不可算（series 止于 2021-12-31）",
+  "category / evidence_level 为 Product 侧按注册表 role + 公开资料的**可核对标注**，不是 Research 的正式裁定"
+ ],
+ "events": [
+  {
+   "event_id": "AUTO-2019-ADAS",
+   "event_class": "THEME_DIRECT",
+   "label": "2019 年夏季智能驾驶概念脉冲",
+   "year": 2019,
+   "window_text": "2019-08-15 → 2019-09-24（Campaign MAIN_RISE，DATE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2019-AD`（rule_auto_summer · status=PROVISIONAL · MAIN_RISE 2019-08-15→2019-09-24）",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "★★ 四个不同概念**不得强行对齐**：① 事件窗口（MAIN_RISE）；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见市场表现表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "object_id": "C-2019-AD",
+    "object_kind": "campaign",
+    "start": "2019-08-15",
+    "peak_date": "2019-09-24",
+    "end": "2019-09-30",
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2019-08-15",
+     "end": "2019-09-24",
+     "precision": "DATE_WINDOW"
+    },
+    "note": "★ Campaign 的 `peak_date` 是**研究侧记录**，不是个股行情高点；★ 个股行情高点见各标的市场表现。"
+   },
+   "catalysts": [
+    {
+     "date": "2019-08-27",
+     "text": "交通部研究自动驾驶法规与指导意见（EV-2019-03 trigger）。",
+     "source": "库内 Campaign drivers[driver.start]（EV-2019-03）· Research 记录"
+    },
+    {
+     "date": "2019-09",
+     "text": "智能汽车概念午后走强、无人驾驶板块活跃（E-2019-04 / E-2019-05）。",
+     "source": "库内 Campaign drivers[driver.accelerator] · Research 记录"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "WANAN",
+     "ticker": "002590",
+     "name": "万安科技",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 leader/second_leader；线控制动与 ADAS 执行层机构",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "leader",
+     "business_mechanism": "汽车制动系统与**线控制动**（ADAS 执行层）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2019-08-15 ~ 2019-09-24（adjusted 28 行）",
+     "period_return_pct": 13.5,
+     "to_high_pct": 16.8,
+     "high_date": "2019-09-23",
+     "excess_period_pp": 7.9,
+     "excess_to_high_pp": 9.2
+    },
+    {
+     "security_id": "ROUTE",
+     "ticker": "002813",
+     "name": "路畅科技",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 representative；车机导航（智能座舱相邻）",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "representative",
+     "business_mechanism": "**车载导航 / 车机**（智能座舱相邻环节）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2019-08-15 ~ 2019-09-24（adjusted 28 行）",
+     "period_return_pct": 15.3,
+     "to_high_pct": 18.6,
+     "high_date": "2019-09-23",
+     "excess_period_pp": 9.7,
+     "excess_to_high_pp": 11.0
+    },
+    {
+     "security_id": "YATAI",
+     "ticker": "002284",
+     "name": "亚太股份",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 representative；制动系统产业链",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "representative",
+     "business_mechanism": "汽车**制动系统**（与线控制动同链）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2019-08-15 ~ 2019-09-24（adjusted 28 行）",
+     "period_return_pct": 17.9,
+     "to_high_pct": 21.9,
+     "high_date": "2019-09-20",
+     "excess_period_pp": 12.3,
+     "excess_to_high_pp": 14.3
+    }
+   ],
+   "observed_performance": {
+    "note": "result=weak：事件驱动脉冲退潮、无持续主线。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "缺 contemporaneous 一手报道原文（drivers 为 Research 转述）",
+    "行情库覆盖自 2018-01-02，窗口内可算；但窗口外的机制延续无证据",
+    "MAIN_RISE 精度为 DATE_WINDOW（非逐日 EXACT）"
+   ],
+   "market_performance": {
+    "window": [
+     "2019-08-15",
+     "2019-09-24"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2019-08-15 → 2019-09-24（Campaign MAIN_RISE，DATE_WINDOW）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-08-15",
+       "close": 3694.0
+      },
+      "last": {
+       "date": "2019-09-24",
+       "close": 3901.08
+      },
+      "high": {
+       "date": "2019-09-09",
+       "close": 3972.95
+      },
+      "low": {
+       "date": "2019-08-15",
+       "close": 3694.0
+      },
+      "period_return_pct": 5.6,
+      "to_high_pct": 7.6,
+      "max_drawdown_from_high_pct": -2.1
+     }
+    },
+    "by_security": {
+     "WANAN": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-08-15",
+       "close": 6.24
+      },
+      "last": {
+       "date": "2019-09-24",
+       "close": 7.08
+      },
+      "high": {
+       "date": "2019-09-23",
+       "close": 7.29
+      },
+      "low": {
+       "date": "2019-08-16",
+       "close": 6.2
+      },
+      "period_return_pct": 13.5,
+      "to_high_pct": 16.8,
+      "max_drawdown_from_high_pct": -2.9,
+      "excess_period_pp": 7.9,
+      "excess_to_high_pp": 9.2
+     },
+     "ROUTE": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-08-15",
+       "close": 26.03
+      },
+      "last": {
+       "date": "2019-09-24",
+       "close": 30.0
+      },
+      "high": {
+       "date": "2019-09-23",
+       "close": 30.86
+      },
+      "low": {
+       "date": "2019-08-15",
+       "close": 26.03
+      },
+      "period_return_pct": 15.3,
+      "to_high_pct": 18.6,
+      "max_drawdown_from_high_pct": -2.8,
+      "excess_period_pp": 9.7,
+      "excess_to_high_pp": 11.0
+     },
+     "YATAI": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-08-15",
+       "close": 4.25
+      },
+      "last": {
+       "date": "2019-09-24",
+       "close": 5.01
+      },
+      "high": {
+       "date": "2019-09-20",
+       "close": 5.18
+      },
+      "low": {
+       "date": "2019-08-15",
+       "close": 4.25
+      },
+      "period_return_pct": 17.9,
+      "to_high_pct": 21.9,
+      "max_drawdown_from_high_pct": -3.3,
+      "excess_period_pp": 12.3,
+      "excess_to_high_pp": 14.3
+     }
+    }
+   }
+  },
+  {
+   "event_id": "AUTO-2023-NOA",
+   "event_class": "THEME_DIRECT",
+   "label": "2023 年夏季城市 NOA / L3 准入预期行情",
+   "year": 2023,
+   "window_text": "2023-07-03 → 2023-07-19（Campaign MAIN_RISE，EXACT_DATE）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2023-AD`（rule_auto_summer · status=PROVISIONAL · MAIN_RISE 2023-07-03→2023-07-19）",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "★★ 四个不同概念**不得强行对齐**：① 事件窗口（MAIN_RISE）；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见市场表现表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "object_id": "C-2023-AD",
+    "object_kind": "campaign",
+    "start": "2023-06-12",
+    "peak_date": "2023-07-11",
+    "end": "2023-07-19",
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2023-07-03",
+     "end": "2023-07-19",
+     "precision": "EXACT_DATE"
+    },
+    "note": "★ Campaign 的 `peak_date` 是**研究侧记录**，不是个股行情高点；★ 个股行情高点见各标的市场表现。"
+   },
+   "catalysts": [
+    {
+     "date": "2023-06-21",
+     "text": "工信部吹风会：支持 L3 商业化 + 启动准入和上路通行试点（THEME_FORMING）。",
+     "source": "库内 drivers[driver.start]（EV-2023-01）· Research 记录"
+    },
+    {
+     "date": "2023-07-03",
+     "text": "比亚迪首发「天神之眼」高阶智驾（腾势 N7）；7/3–7/4 板块约 25 股涨停。",
+     "source": "库内 drivers[driver.accelerator]（EV-2023-02 / S-2023-02）· Research 记录"
+    },
+    {
+     "date": "2023-07-11",
+     "text": "峰值后板块让位地产 / 顺周期、快速轮动；获利盘兑现（PEAK→DECLINING）。",
+     "source": "库内 drivers[driver.turning] · Research 记录"
+    },
+    {
+     "date": "2023-11-17",
+     "text": "正式 L3 文件成文 —— **窗口外后续事件**，不充当本窗口催化。",
+     "source": "库内 drivers[driver.ending]（EV-2023-03 subsequent）· Research 记录"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "ZHEJIANGSHISHI",
+     "ticker": "002703",
+     "name": "浙江世宝",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 leader；汽车转向系统（EPS）",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "leader",
+     "business_mechanism": "汽车**转向器 / EPS**（转向系统）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "reported_move": "「8 天 6 板」（研究记录 S-2023-05，转述）",
+     "market_data": "2023-07-03 ~ 2023-07-19（adjusted 13 行）",
+     "period_return_pct": 50.9,
+     "to_high_pct": 62.1,
+     "high_date": "2023-07-17",
+     "excess_period_pp": 52.0,
+     "excess_to_high_pp": 61.9
+    },
+    {
+     "security_id": "ZTELEVISION",
+     "ticker": "000980",
+     "name": "众泰汽车",
+     "exchange": "SZ",
+     "category": "INSUFFICIENT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "export 注册表 representative；整车厂商，与智驾机制的关系未在库内证实",
+     "source": "export securities",
+     "registry_role": "representative",
+     "market_data": "2023-07-03 ~ 2023-07-19（adjusted 13 行）",
+     "period_return_pct": 60.9,
+     "to_high_pct": 60.9,
+     "high_date": "2023-07-19",
+     "excess_period_pp": 62.0,
+     "excess_to_high_pp": 60.7
+    },
+    {
+     "security_id": "DESAYSV",
+     "ticker": "002920",
+     "name": "德赛西威",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 second_leader；智能驾驶域控制器供应商",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "智能驾驶**域控制器**与智能座舱电子",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2023-07-03 ~ 2023-07-19（adjusted 13 行）",
+     "period_return_pct": 0.7,
+     "to_high_pct": 10.2,
+     "high_date": "2023-07-04",
+     "excess_period_pp": 1.8,
+     "excess_to_high_pp": 10.0
+    },
+    {
+     "security_id": "WANAN",
+     "ticker": "002590",
+     "name": "万安科技",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 leader/second_leader；线控制动与 ADAS 执行层机构",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "汽车制动系统与**线控制动**（ADAS 执行层）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2023-07-03 ~ 2023-07-19（adjusted 13 行）",
+     "period_return_pct": 25.5,
+     "to_high_pct": 54.6,
+     "high_date": "2023-07-13",
+     "excess_period_pp": 26.6,
+     "excess_to_high_pp": 54.4
+    }
+   ],
+   "observed_performance": {
+    "note": "c2/2023_smart_driving_research.md：07-03→07-19 SDIdx(4 只研究龙头等权) +33.5% 而汽车行业代理仅 +1.3% —— 7 月主升几乎不依赖行业 β（research-level）。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "FSD 2023 未在华落地（反例约束，drivers[ending]）",
+    "众泰汽车的机制关系未在库内证实（category=INSUFFICIENT）"
+   ],
+   "research_corpus_note": "c2/2023_smart_driving_research.md（research-level 封存记录，T3）：德赛西威 / 浙江世宝 / 万安科技 / 众泰 为 2023 年研究龙头样本；SDIdx 为**事后研究工具，非板块指数**。",
+   "market_performance": {
+    "window": [
+     "2023-07-03",
+     "2023-07-19"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2023-07-03 → 2023-07-19（Campaign MAIN_RISE，EXACT_DATE）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 13,
+      "first": {
+       "date": "2023-07-03",
+       "close": 3892.88
+      },
+      "last": {
+       "date": "2023-07-19",
+       "close": 3850.87
+      },
+      "high": {
+       "date": "2023-07-14",
+       "close": 3899.1
+      },
+      "low": {
+       "date": "2023-07-07",
+       "close": 3825.7
+      },
+      "period_return_pct": -1.1,
+      "to_high_pct": 0.2,
+      "max_drawdown_from_high_pct": -1.2
+     }
+    },
+    "by_security": {
+     "ZHEJIANGSHISHI": {
+      "trading_days": 13,
+      "first": {
+       "date": "2023-07-03",
+       "close": 11.306
+      },
+      "last": {
+       "date": "2023-07-19",
+       "close": 17.056
+      },
+      "high": {
+       "date": "2023-07-17",
+       "close": 18.326
+      },
+      "low": {
+       "date": "2023-07-03",
+       "close": 11.306
+      },
+      "period_return_pct": 50.9,
+      "to_high_pct": 62.1,
+      "max_drawdown_from_high_pct": -6.9,
+      "excess_period_pp": 52.0,
+      "excess_to_high_pp": 61.9
+     },
+     "ZTELEVISION": {
+      "trading_days": 13,
+      "first": {
+       "date": "2023-07-03",
+       "close": 2.71
+      },
+      "last": {
+       "date": "2023-07-19",
+       "close": 4.36
+      },
+      "high": {
+       "date": "2023-07-19",
+       "close": 4.36
+      },
+      "low": {
+       "date": "2023-07-03",
+       "close": 2.71
+      },
+      "period_return_pct": 60.9,
+      "to_high_pct": 60.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 62.0,
+      "excess_to_high_pp": 60.7
+     },
+     "DESAYSV": {
+      "trading_days": 13,
+      "first": {
+       "date": "2023-07-03",
+       "close": 153.536
+      },
+      "last": {
+       "date": "2023-07-19",
+       "close": 154.606
+      },
+      "high": {
+       "date": "2023-07-04",
+       "close": 169.216
+      },
+      "low": {
+       "date": "2023-07-17",
+       "close": 149.716
+      },
+      "period_return_pct": 0.7,
+      "to_high_pct": 10.2,
+      "max_drawdown_from_high_pct": -11.5,
+      "excess_period_pp": 1.8,
+      "excess_to_high_pp": 10.0
+     },
+     "WANAN": {
+      "trading_days": 13,
+      "first": {
+       "date": "2023-07-03",
+       "close": 10.085
+      },
+      "last": {
+       "date": "2023-07-19",
+       "close": 12.655
+      },
+      "high": {
+       "date": "2023-07-13",
+       "close": 15.595
+      },
+      "low": {
+       "date": "2023-07-03",
+       "close": 10.085
+      },
+      "period_return_pct": 25.5,
+      "to_high_pct": 54.6,
+      "max_drawdown_from_high_pct": -20.6,
+      "excess_period_pp": 26.6,
+      "excess_to_high_pp": 54.4
+     }
+    }
+   }
+  },
+  {
+   "event_id": "AUTO-2023-HUAWEI",
+   "event_class": "THEME_DIRECT",
+   "label": "2023 年秋季华为汽车 / 问界新 M7 行情",
+   "year": 2023,
+   "window_text": "2023-09-20 → 2023-10-31（Research Candidate MAIN_RISE，PHASE_WINDOW 粗粒度）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Research Candidate `RC-2023-HUAWEI`（rule_auto_summer · status=PROVISIONAL · MAIN_RISE 2023-09-20→2023-10-31）",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "★★ 四个不同概念**不得强行对齐**：① 事件窗口（MAIN_RISE）；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见市场表现表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "object_id": "RC-2023-HUAWEI",
+    "object_kind": "candidate",
+    "start": "2023-09-12",
+    "peak_date": null,
+    "end": null,
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2023-09-20",
+     "end": "2023-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    "note": "★ Campaign 的 `peak_date` 是**研究侧记录**，不是个股行情高点；★ 个股行情高点见各标的市场表现。"
+   },
+   "catalysts": [
+    {
+     "date": "2023-09-12",
+     "text": "问界新 M7 上市发布会（EV-RC-2023-HUAWEI-01）。",
+     "source": "库内 RC drivers[driver.start] · Research 记录"
+    },
+    {
+     "date": "2023-09-18",
+     "text": "Broad Confirmation：华为汽车核心扩散 + 多股同步；HUAWEI ADS 2.0 随车亮相。",
+     "source": "库内 RC drivers[driver.accelerator] · Research 记录"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "XIAOKANG",
+     "ticker": "601127",
+     "name": "赛力斯(原小康股份)",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 leader（问界 / AITO 整车载体）",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "leader",
+     "business_mechanism": "问界（AITO）**整车**（华为智选车模式载体）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "库内行情不覆盖该窗口（series 起止见 market_series）",
+     "market_status": "insufficient_data_in_window"
+    },
+    {
+     "security_id": "JAC",
+     "ticker": "600418",
+     "name": "江淮汽车",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 second_leader；华为合作代工整车",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "与华为合作的**整车代工**（尊界等）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2023-09-20 ~ 2023-10-31（adjusted 24 行）",
+     "period_return_pct": 35.1,
+     "to_high_pct": 48.3,
+     "high_date": "2023-10-30",
+     "excess_period_pp": 38.7,
+     "excess_to_high_pp": 47.4
+    },
+    {
+     "security_id": "DEMEISHI",
+     "ticker": "301007",
+     "name": "德迈仕",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "export 注册表 representative；精密零部件——具体产品与智驾的关系未在库内证实",
+     "source": "export securities",
+     "registry_role": "representative",
+     "market_data": "2023-09-20 ~ 2023-10-31（adjusted 24 行）",
+     "period_return_pct": -13.6,
+     "to_high_pct": 9.7,
+     "high_date": "2023-10-09",
+     "excess_period_pp": -10.0,
+     "excess_to_high_pp": 8.8
+    },
+    {
+     "security_id": "MINGKEJINGJI",
+     "ticker": "001319",
+     "name": "铭科精技",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "export 注册表 representative；精密零部件——具体产品与智驾的关系未在库内证实",
+     "source": "export securities",
+     "registry_role": "representative",
+     "market_data": "2023-09-20 ~ 2023-10-31（adjusted 24 行）",
+     "period_return_pct": 8.3,
+     "to_high_pct": 32.3,
+     "high_date": "2023-10-27",
+     "excess_period_pp": 11.9,
+     "excess_to_high_pp": 31.4
+    },
+    {
+     "security_id": "HUAYANG",
+     "ticker": "002906",
+     "name": "华阳集团",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 representative；HUD / 座舱电子",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "representative",
+     "business_mechanism": "**HUD** 与汽车座舱电子",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2023-09-20 ~ 2023-10-31（adjusted 24 行）",
+     "period_return_pct": 4.6,
+     "to_high_pct": 11.7,
+     "high_date": "2023-10-16",
+     "excess_period_pp": 8.2,
+     "excess_to_high_pp": 10.8
+    }
+   ],
+   "observed_performance": {
+    "note": "该对象为 **Research Candidate（未达正式 Campaign 门槛）**，主升结束日 unknown（至 2023-10-31 仍升，未确认结束）。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "对象为 RC 而非正式 Campaign —— 身份更弱，不得按正式 Campaign 引用",
+    "MAIN_RISE 精度为 PHASE_WINDOW（粗粒度，非逐日）",
+    "★ 赛力斯（XIAOKANG）行情 series 止于 2021-12-31，**不覆盖本窗口** → by_security 为 insufficient_data_in_window（不补造）",
+    "德迈仕 / 铭科精技的具体产品与智驾关系未在库内证实",
+    "08-29 Early Signal 存在市场 Beta contamination（low confidence）"
+   ],
+   "market_performance": {
+    "window": [
+     "2023-09-20",
+     "2023-10-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2023-09-20 → 2023-10-31（Research Candidate MAIN_RISE，PHASE_WINDOW 粗粒度）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 24,
+      "first": {
+       "date": "2023-09-20",
+       "close": 3705.69
+      },
+      "last": {
+       "date": "2023-10-31",
+       "close": 3572.51
+      },
+      "high": {
+       "date": "2023-09-22",
+       "close": 3738.93
+      },
+      "low": {
+       "date": "2023-10-23",
+       "close": 3474.24
+      },
+      "period_return_pct": -3.6,
+      "to_high_pct": 0.9,
+      "max_drawdown_from_high_pct": -7.1
+     }
+    },
+    "by_security": {
+     "XIAOKANG": {
+      "error": "insufficient_data_in_window"
+     },
+     "JAC": {
+      "trading_days": 24,
+      "first": {
+       "date": "2023-09-20",
+       "close": 13.379
+      },
+      "last": {
+       "date": "2023-10-31",
+       "close": 18.079
+      },
+      "high": {
+       "date": "2023-10-30",
+       "close": 19.839
+      },
+      "low": {
+       "date": "2023-09-27",
+       "close": 12.599
+      },
+      "period_return_pct": 35.1,
+      "to_high_pct": 48.3,
+      "max_drawdown_from_high_pct": -8.9,
+      "excess_period_pp": 38.7,
+      "excess_to_high_pp": 47.4
+     },
+     "DEMEISHI": {
+      "trading_days": 24,
+      "first": {
+       "date": "2023-09-20",
+       "close": 20.311
+      },
+      "last": {
+       "date": "2023-10-31",
+       "close": 17.551
+      },
+      "high": {
+       "date": "2023-10-09",
+       "close": 22.291
+      },
+      "low": {
+       "date": "2023-10-23",
+       "close": 16.911
+      },
+      "period_return_pct": -13.6,
+      "to_high_pct": 9.7,
+      "max_drawdown_from_high_pct": -24.1,
+      "excess_period_pp": -10.0,
+      "excess_to_high_pp": 8.8
+     },
+     "MINGKEJINGJI": {
+      "trading_days": 24,
+      "first": {
+       "date": "2023-09-20",
+       "close": 25.17
+      },
+      "last": {
+       "date": "2023-10-31",
+       "close": 27.27
+      },
+      "high": {
+       "date": "2023-10-27",
+       "close": 33.29
+      },
+      "low": {
+       "date": "2023-10-17",
+       "close": 22.05
+      },
+      "period_return_pct": 8.3,
+      "to_high_pct": 32.3,
+      "max_drawdown_from_high_pct": -18.1,
+      "excess_period_pp": 11.9,
+      "excess_to_high_pp": 31.4
+     },
+     "HUAYANG": {
+      "trading_days": 24,
+      "first": {
+       "date": "2023-09-20",
+       "close": 30.55
+      },
+      "last": {
+       "date": "2023-10-31",
+       "close": 31.96
+      },
+      "high": {
+       "date": "2023-10-16",
+       "close": 34.13
+      },
+      "low": {
+       "date": "2023-09-27",
+       "close": 29.36
+      },
+      "period_return_pct": 4.6,
+      "to_high_pct": 11.7,
+      "max_drawdown_from_high_pct": -11.4,
+      "excess_period_pp": 8.2,
+      "excess_to_high_pp": 10.8
+     }
+    }
+   }
+  },
+  {
+   "event_id": "AUTO-2024-V2X",
+   "event_class": "THEME_DIRECT",
+   "label": "2024 年车路云一体化 / 车路协同脉冲",
+   "year": 2024,
+   "window_text": "2024-06-11 → 2024-06-25（Campaign 起止；**无 MAIN_RISE 段**）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2024-V2X`（rule_auto_summer · status=PROVISIONAL · 无 MAIN_RISE 段（用 Campaign 起止））",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "★★ 四个不同概念**不得强行对齐**：① 事件窗口（MAIN_RISE）；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见市场表现表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "object_id": "C-2024-V2X",
+    "object_kind": "campaign",
+    "start": "2024-06-11",
+    "peak_date": "2024-06-18",
+    "end": "2024-06-25",
+    "status": "PROVISIONAL",
+    "main_rise": null,
+    "note": "★ Campaign 的 `peak_date` 是**研究侧记录**，不是个股行情高点；★ 个股行情高点见各标的市场表现。"
+   },
+   "catalysts": [
+    {
+     "date": "2024-06-14",
+     "text": "武汉车路云一体化示范项目备案 170.84 亿（THEME_FORMING）。",
+     "source": "库内 drivers[driver.start]（EV-2024-01）· Research 记录"
+    },
+    {
+     "date": "2024-06-18",
+     "text": "PEAK：车路云概念全线爆发、华铭智能等 10 余股涨停（S-2024-02）。",
+     "source": "库内 drivers[driver.accelerator] · Research 记录"
+    },
+    {
+     "date": "2024-06-25",
+     "text": "MAIN_END：公司多公告「未参与」（题材证伪）；索菱断板跌停、金溢逼近跌停（S-2024-03）。",
+     "source": "库内 drivers[driver.turning / ending] · Research 记录"
+    },
+    {
+     "date": "2024-07-03",
+     "text": "5 部门 20 城试点（EV-2024-02）—— **窗口外后续事件**，不充当本窗口催化。",
+     "source": "库内 drivers[driver.ending] · Research 记录"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "SUOLING",
+     "ticker": "002766",
+     "name": "索菱股份",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 leader；车联网车载终端",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "leader",
+     "business_mechanism": "**车联网车载终端**",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2024-06-11 ~ 2024-06-25（adjusted 11 行）",
+     "period_return_pct": 37.1,
+     "to_high_pct": 69.3,
+     "high_date": "2024-06-21",
+     "excess_period_pp": 39.5,
+     "excess_to_high_pp": 69.2
+    },
+    {
+     "security_id": "HUAMING",
+     "ticker": "300462",
+     "name": "华铭智能",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 representative；公交 AFC / 智能化终端",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "representative",
+     "business_mechanism": "公交 **AFC（自动收费）系统**与智能化终端",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2024-06-11 ~ 2024-06-25（adjusted 11 行）",
+     "period_return_pct": 79.7,
+     "to_high_pct": 113.8,
+     "high_date": "2024-06-20",
+     "excess_period_pp": 82.1,
+     "excess_to_high_pp": 113.7
+    },
+    {
+     "security_id": "JINYI",
+     "ticker": "002869",
+     "name": "金溢科技",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 second_leader；V2X / ETC 终端",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "**ETC / V2X 终端**（车路协同路侧与车载）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2024-06-11 ~ 2024-06-25（adjusted 11 行）",
+     "period_return_pct": 44.9,
+     "to_high_pct": 60.9,
+     "high_date": "2024-06-21",
+     "excess_period_pp": 47.3,
+     "excess_to_high_pp": 60.8
+    },
+    {
+     "security_id": "VANJI",
+     "ticker": "300552",
+     "name": "万集科技",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 second_leader；V2X 终端与智能交通",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "**V2X 车载 / 路侧单元**与智能交通产品",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2024-06-11 ~ 2024-06-25（adjusted 11 行）",
+     "period_return_pct": 5.0,
+     "to_high_pct": 21.9,
+     "high_date": "2024-06-18",
+     "excess_period_pp": 7.4,
+     "excess_to_high_pp": 21.8
+    }
+   ],
+   "observed_performance": {
+    "note": "快涨快退（约 2 周）题材退潮；driver 明确记录「题材证伪」（公司公告未参与）。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "无 MAIN_RISE 段 → 事件窗口用 Campaign 起止，与有 MAIN_RISE 的事件**口径不同**（已标注）",
+    "行情 series 统一止于 2024-06-25，窗口末段之后无数据"
+   ],
+   "market_performance": {
+    "window": [
+     "2024-06-11",
+     "2024-06-25"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2024-06-11 → 2024-06-25（Campaign 起止；**无 MAIN_RISE 段**）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 11,
+      "first": {
+       "date": "2024-06-11",
+       "close": 3542.88
+      },
+      "last": {
+       "date": "2024-06-25",
+       "close": 3457.9
+      },
+      "high": {
+       "date": "2024-06-18",
+       "close": 3545.59
+      },
+      "low": {
+       "date": "2024-06-25",
+       "close": 3457.9
+      },
+      "period_return_pct": -2.4,
+      "to_high_pct": 0.1,
+      "max_drawdown_from_high_pct": -2.5
+     }
+    },
+    "by_security": {
+     "SUOLING": {
+      "trading_days": 11,
+      "first": {
+       "date": "2024-06-11",
+       "close": 3.88
+      },
+      "last": {
+       "date": "2024-06-25",
+       "close": 5.32
+      },
+      "high": {
+       "date": "2024-06-21",
+       "close": 6.57
+      },
+      "low": {
+       "date": "2024-06-11",
+       "close": 3.88
+      },
+      "period_return_pct": 37.1,
+      "to_high_pct": 69.3,
+      "max_drawdown_from_high_pct": -19.0,
+      "excess_period_pp": 39.5,
+      "excess_to_high_pp": 69.2
+     },
+     "HUAMING": {
+      "trading_days": 11,
+      "first": {
+       "date": "2024-06-11",
+       "close": 7.38
+      },
+      "last": {
+       "date": "2024-06-25",
+       "close": 13.26
+      },
+      "high": {
+       "date": "2024-06-20",
+       "close": 15.78
+      },
+      "low": {
+       "date": "2024-06-11",
+       "close": 7.38
+      },
+      "period_return_pct": 79.7,
+      "to_high_pct": 113.8,
+      "max_drawdown_from_high_pct": -16.0,
+      "excess_period_pp": 82.1,
+      "excess_to_high_pp": 113.7
+     },
+     "JINYI": {
+      "trading_days": 11,
+      "first": {
+       "date": "2024-06-11",
+       "close": 23.28
+      },
+      "last": {
+       "date": "2024-06-25",
+       "close": 33.73
+      },
+      "high": {
+       "date": "2024-06-21",
+       "close": 37.45
+      },
+      "low": {
+       "date": "2024-06-11",
+       "close": 23.28
+      },
+      "period_return_pct": 44.9,
+      "to_high_pct": 60.9,
+      "max_drawdown_from_high_pct": -9.9,
+      "excess_period_pp": 47.3,
+      "excess_to_high_pp": 60.8
+     },
+     "VANJI": {
+      "trading_days": 11,
+      "first": {
+       "date": "2024-06-11",
+       "close": 36.94
+      },
+      "last": {
+       "date": "2024-06-25",
+       "close": 38.8
+      },
+      "high": {
+       "date": "2024-06-18",
+       "close": 45.03
+      },
+      "low": {
+       "date": "2024-06-13",
+       "close": 35.47
+      },
+      "period_return_pct": 5.0,
+      "to_high_pct": 21.9,
+      "max_drawdown_from_high_pct": -13.8,
+      "excess_period_pp": 7.4,
+      "excess_to_high_pp": 21.8
+     }
+    }
+   }
+  },
+  {
+   "event_id": "AUTO-2024-ROBOTAXI",
+   "event_class": "THEME_DIRECT",
+   "label": "2024 年夏季 Robotaxi / 萝卜快跑行情",
+   "year": 2024,
+   "window_text": "2024-07-11 → 2024-07-29（Campaign MAIN_RISE，EXACT_DATE）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2024-ROBOTAXI`（rule_auto_summer · status=CONFLICT · MAIN_RISE 2024-07-11→2024-07-29）",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "★★ 四个不同概念**不得强行对齐**：① 事件窗口（MAIN_RISE）；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见市场表现表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "object_id": "C-2024-ROBOTAXI",
+    "object_kind": "campaign",
+    "start": "2024-07-08",
+    "peak_date": "2024-07-29",
+    "end": "2024-07-31",
+    "status": "CONFLICT",
+    "main_rise": {
+     "start": "2024-07-11",
+     "end": "2024-07-29",
+     "precision": "EXACT_DATE"
+    },
+    "note": "★ Campaign 的 `peak_date` 是**研究侧记录**，不是个股行情高点；★ 个股行情高点见各标的市场表现。"
+   },
+   "catalysts": [
+    {
+     "date": "2024-07-10",
+     "text": "萝卜快跑武汉跑出圈（Broad Confirmation）；无人驾驶板块大涨约 4%（S-2024-04）。",
+     "source": "库内 drivers[driver.start]（EV-2024-03 / S-2024-04）· Research 记录"
+    },
+    {
+     "date": "2024-07",
+     "text": "大众交通 16 日涨 233%；锦江 15 天 9 板、金龙 12 天 7 板（S-2024-05）。",
+     "source": "库内 drivers[driver.accelerator] · Research 记录"
+    },
+    {
+     "date": "2024-07-31",
+     "text": "大众交通 9 连板终结、大众公用「天地板」（S-2024-06）。",
+     "source": "库内 drivers[driver.turning] · Research 记录"
+    },
+    {
+     "date": "2024-08-23",
+     "text": "Main Campaign End（Major Breakpoint，MAIN_END DATE_WINDOW）—— **事件窗口外**。",
+     "source": "库内 lifecycle + drivers[driver.ending] · Research 记录"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "DADONGTRAFFIC",
+     "ticker": "600611",
+     "name": "大众交通",
+     "exchange": "SH",
+     "category": "INSUFFICIENT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 leader；**反例**：出租运营牌照方，非智驾技术链",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "leader",
+     "business_mechanism": "出租车**运营**（大众交通为上海出租运营方）",
+     "business_mechanism_caveat": "★★ 该股上涨属**运营侧 / 牌照叙事**，与智能驾驶**技术链不同轴** —— 保留为反例，不作机制相关",
+     "reported_move": "16 个交易日涨 233%（研究记录 S-2024-05，转述）",
+     "market_data": "2024-07-11 ~ 2024-07-29（adjusted 13 行）",
+     "period_return_pct": 143.4,
+     "to_high_pct": 143.4,
+     "high_date": "2024-07-29",
+     "excess_period_pp": 145.6,
+     "excess_to_high_pp": 141.4
+    },
+    {
+     "security_id": "JIANGLING",
+     "ticker": "000550",
+     "name": "江铃汽车",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 representative；商用车整车",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "representative",
+     "business_mechanism": "**商用车 / 轻客**整车",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2024-07-11 ~ 2024-07-29（adjusted 13 行）",
+     "period_return_pct": 23.3,
+     "to_high_pct": 23.3,
+     "high_date": "2024-07-29",
+     "excess_period_pp": 25.5,
+     "excess_to_high_pp": 21.3
+    },
+    {
+     "security_id": "JINJIANGONLINE",
+     "ticker": "600650",
+     "name": "锦江在线",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 second_leader；运输运营侧",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "**出租 / 运输运营**（锦江在线为上海运营方）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2024-07-11 ~ 2024-07-29（adjusted 13 行）",
+     "period_return_pct": 56.9,
+     "to_high_pct": 60.0,
+     "high_date": "2024-07-22",
+     "excess_period_pp": 59.1,
+     "excess_to_high_pp": 58.0
+    },
+    {
+     "security_id": "JINLONG",
+     "ticker": "600686",
+     "name": "金龙汽车",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 second_leader；客车整车",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "**客车整车**制造",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2024-07-11 ~ 2024-07-29（adjusted 13 行）",
+     "period_return_pct": 90.8,
+     "to_high_pct": 90.8,
+     "high_date": "2024-07-29",
+     "excess_period_pp": 93.0,
+     "excess_to_high_pp": 88.8
+    }
+   ],
+   "observed_performance": {
+    "note": "上涨主体是**运营 / 牌照侧**（大众交通、锦江在线）而非智驾技术链 —— 保留为反例与对照。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "★★ Campaign status=CONFLICT：end_date 口径未收敛（notes 记录）",
+    "★ 大众交通 relation=INSUFFICIENT（反例）：运营牌照方，非技术链",
+    "c2 封存记录（research-level）：Historical Leader Set 为**事后**确认样本；Point-in-Time Basket 才可模拟实时研究"
+   ],
+   "research_corpus_note": "c2/2024_robotaxi_final_research_record.md（research-level 封存记录，T3）：Main Campaign 2024-07-08→08-23；Secondary 2024-09-05→09-06（weak，未升级为正式 Campaign，**本题材不建事件**）。",
+   "market_performance": {
+    "window": [
+     "2024-07-11",
+     "2024-07-29"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2024-07-11 → 2024-07-29（Campaign MAIN_RISE，EXACT_DATE）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 13,
+      "first": {
+       "date": "2024-07-11",
+       "close": 3468.17
+      },
+      "last": {
+       "date": "2024-07-29",
+       "close": 3390.74
+      },
+      "high": {
+       "date": "2024-07-19",
+       "close": 3539.02
+      },
+      "low": {
+       "date": "2024-07-29",
+       "close": 3390.74
+      },
+      "period_return_pct": -2.2,
+      "to_high_pct": 2.0,
+      "max_drawdown_from_high_pct": -4.2
+     }
+    },
+    "by_security": {
+     "DADONGTRAFFIC": {
+      "trading_days": 13,
+      "first": {
+       "date": "2024-07-11",
+       "close": 3.76
+      },
+      "last": {
+       "date": "2024-07-29",
+       "close": 9.15
+      },
+      "high": {
+       "date": "2024-07-29",
+       "close": 9.15
+      },
+      "low": {
+       "date": "2024-07-11",
+       "close": 3.76
+      },
+      "period_return_pct": 143.4,
+      "to_high_pct": 143.4,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 145.6,
+      "excess_to_high_pp": 141.4
+     },
+     "JIANGLING": {
+      "trading_days": 13,
+      "first": {
+       "date": "2024-07-11",
+       "close": 20.442
+      },
+      "last": {
+       "date": "2024-07-29",
+       "close": 25.206
+      },
+      "high": {
+       "date": "2024-07-29",
+       "close": 25.206
+      },
+      "low": {
+       "date": "2024-07-11",
+       "close": 20.442
+      },
+      "period_return_pct": 23.3,
+      "to_high_pct": 23.3,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 25.5,
+      "excess_to_high_pp": 21.3
+     },
+     "JINJIANGONLINE": {
+      "trading_days": 13,
+      "first": {
+       "date": "2024-07-11",
+       "close": 9.107
+      },
+      "last": {
+       "date": "2024-07-29",
+       "close": 14.287
+      },
+      "high": {
+       "date": "2024-07-22",
+       "close": 14.567
+      },
+      "low": {
+       "date": "2024-07-11",
+       "close": 9.107
+      },
+      "period_return_pct": 56.9,
+      "to_high_pct": 60.0,
+      "max_drawdown_from_high_pct": -19.4,
+      "excess_period_pp": 59.1,
+      "excess_to_high_pp": 58.0
+     },
+     "JINLONG": {
+      "trading_days": 13,
+      "first": {
+       "date": "2024-07-11",
+       "close": 7.97
+      },
+      "last": {
+       "date": "2024-07-29",
+       "close": 15.21
+      },
+      "high": {
+       "date": "2024-07-29",
+       "close": 15.21
+      },
+      "low": {
+       "date": "2024-07-11",
+       "close": 7.97
+      },
+      "period_return_pct": 90.8,
+      "to_high_pct": 90.8,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 93.0,
+      "excess_to_high_pp": 88.8
+     }
+    }
+   }
+  },
+  {
+   "event_id": "AUTO-2025-ROBOTAXI",
+   "event_class": "THEME_DIRECT",
+   "label": "2025 年夏季 Robotaxi / 特斯拉奥斯汀试运营行情",
+   "year": 2025,
+   "window_text": "2025-06-22 → 2025-06-24（Campaign MAIN_RISE，仅 3 个自然日）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign `C-2025-ROBOTAXI`（rule_auto_summer · status=PROVISIONAL · MAIN_RISE 2025-06-22→2025-06-24）",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "★★ 四个不同概念**不得强行对齐**：① 事件窗口（MAIN_RISE）；② Campaign 的 `peak_date`；③ 催化剂日期；④ **个股行情高点**（见市场表现表）。★ 股价上涨**不得**直接解释为题材因果。",
+   "campaign_facts": {
+    "object_id": "C-2025-ROBOTAXI",
+    "object_kind": "campaign",
+    "start": "2025-06-22",
+    "peak_date": "2025-06-24",
+    "end": "2025-08-31",
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2025-06-22",
+     "end": "2025-06-24",
+     "precision": "EXACT_DATE"
+    },
+    "note": "★ Campaign 的 `peak_date` 是**研究侧记录**，不是个股行情高点；★ 个股行情高点见各标的市场表现。"
+   },
+   "catalysts": [
+    {
+     "date": "2025-06-22",
+     "text": "特斯拉奥斯汀启动 Robotaxi 有偿试运营（EARLY_SIGNAL / MAIN_RISE 起点同日）。",
+     "source": "库内 drivers[driver.start]（EV-2025-01）· Research 记录"
+    },
+    {
+     "date": "2025-06-24",
+     "text": "A 股无人驾驶板块全线爆发涨停潮（Broad Confirmation / PEAK）。",
+     "source": "库内 drivers[driver.accelerator]（EV-2025-02）· Research 记录"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "ZHEJIANGSHISHI",
+     "ticker": "002703",
+     "name": "浙江世宝",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 leader；汽车转向系统（EPS）",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "leader",
+     "business_mechanism": "汽车**转向器 / EPS**（转向系统）",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "reported_move": "「8 天 6 板」（研究记录 S-2023-05，转述）",
+     "market_data": "2025-06-23 ~ 2025-06-24（adjusted 2 行）",
+     "period_return_pct": 10.1,
+     "to_high_pct": 10.1,
+     "high_date": "2025-06-24",
+     "excess_period_pp": 8.9,
+     "excess_to_high_pp": 8.9
+    },
+    {
+     "security_id": "DESAYSV",
+     "ticker": "002920",
+     "name": "德赛西威",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "export 注册表 second_leader；智能驾驶域控制器供应商",
+     "source": "export securities + 当前公开资料",
+     "registry_role": "second_leader",
+     "business_mechanism": "智能驾驶**域控制器**与智能座舱电子",
+     "business_mechanism_caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。",
+     "market_data": "2025-06-23 ~ 2025-06-24（adjusted 2 行）",
+     "period_return_pct": 4.6,
+     "to_high_pct": 4.6,
+     "high_date": "2025-06-24",
+     "excess_period_pp": 3.4,
+     "excess_to_high_pp": 3.4
+    }
+   ],
+   "observed_performance": {
+    "note": "窗口仅 3 个自然日；驱动记录明确「大盘 β 主导、主题独立性弱」（8 月沪指 +8%、创业板 +24%，S-2025-07）。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "窗口极短（3 日）→ 样本量小，任何描述性结论都要谨慎",
+    "β contamination 明确记录在案",
+    "MAIN_END 2025-08-31 为暂定边界（9/12 月另有催化波次）—— 事件窗口外"
+   ],
+   "market_performance": {
+    "window": [
+     "2025-06-22",
+     "2025-06-24"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2025-06-22 → 2025-06-24（Campaign MAIN_RISE，仅 3 个自然日）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 2,
+      "first": {
+       "date": "2025-06-23",
+       "close": 3857.9
+      },
+      "last": {
+       "date": "2025-06-24",
+       "close": 3904.03
+      },
+      "high": {
+       "date": "2025-06-24",
+       "close": 3904.03
+      },
+      "low": {
+       "date": "2025-06-23",
+       "close": 3857.9
+      },
+      "period_return_pct": 1.2,
+      "to_high_pct": 1.2,
+      "max_drawdown_from_high_pct": 0.0
+     }
+    },
+    "by_security": {
+     "ZHEJIANGSHISHI": {
+      "trading_days": 2,
+      "first": {
+       "date": "2025-06-23",
+       "close": 11.52
+      },
+      "last": {
+       "date": "2025-06-24",
+       "close": 12.68
+      },
+      "high": {
+       "date": "2025-06-24",
+       "close": 12.68
+      },
+      "low": {
+       "date": "2025-06-23",
+       "close": 11.52
+      },
+      "period_return_pct": 10.1,
+      "to_high_pct": 10.1,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 8.9,
+      "excess_to_high_pp": 8.9
+     },
+     "DESAYSV": {
+      "trading_days": 2,
+      "first": {
+       "date": "2025-06-23",
+       "close": 96.206
+      },
+      "last": {
+       "date": "2025-06-24",
+       "close": 100.676
+      },
+      "high": {
+       "date": "2025-06-24",
+       "close": 100.676
+      },
+      "low": {
+       "date": "2025-06-23",
+       "close": 96.206
+      },
+      "period_return_pct": 4.6,
+      "to_high_pct": 4.6,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 3.4,
+      "excess_to_high_pp": 3.4
+     }
+    }
+   }
+  }
+ ]
+}
