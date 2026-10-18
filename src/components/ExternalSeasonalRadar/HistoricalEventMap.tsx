@@ -30,26 +30,7 @@ import {
   type ThemeDisplay,
 } from '../../data/timeline/historicalEventMaps';
 import { EmpiricalProbabilityBlock } from './EmpiricalProbabilityBlock';
-
-/**
- * ★★ 源数据文本里的 `**强调**` → `<strong>`。
- *
- * 索引 JSON 的 `display.note` / `class_caveats` 是**研究侧写的 Markdown**，
- * 直接塞进 JSX 会**原样显示两个星号**（本项目已知陷阱）。这里统一渲染。
- */
-function RichText({ text }: { text: string }) {
-  const parts = text.split('**');
-  return (
-    <>
-      {parts.map((p, i) => (i % 2 === 1 ? <strong key={i}>{p}</strong> : <span key={i}>{p}</span>))}
-    </>
-  );
-}
-
-/** 纯文本化：`title` 属性里不能放标签，只能把 `**` 去掉（可见文本仍走 RichText） */
-function plain(text: string): string {
-  return text.split('**').join('');
-}
+import { RichText, plain } from '../RichText';
 
 /** 中国股市惯例：涨红跌绿 */
 function cls(v?: number | null): string {

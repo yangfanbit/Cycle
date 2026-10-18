@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-18 修订 · 历史题材地图主入口 + 概率基准修正）
+## ★★ 当前状态（2026-10-18 修订 · 历史题材地图主入口 + 标的索引 + 概率基准修正）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -27,7 +27,7 @@
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1245 passed / 0 failed / 53 files**（v0.10：+22，含历史题材地图 11 条 + 题材切换 2 条 + 概率基准 9 条） |
+| **测试** | **1261 passed / 0 failed / 55 files**（v0.11：+16，含标的索引 12 条 + 搜索展开 2 条 + 入口顺序 2 条） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
 | **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 与 **`5d7efaa` 的 CI 均 success**（Actions runner 本身就是干净检出 = 干净环境实证；干净克隆另在本地复验：恢复 2,855 行日历 + 全部门禁 PASS + monorepo 25/25 + npm ci/tsc/**1021 测试**/build 全 OK） |
@@ -296,6 +296,68 @@ npx tsc -b OK · npm run build 成功 · npm test **1245 passed / 0 failed / 53 
       HistoricalThemeMaps.interaction 2（jsdom 真点：题材切换 / 受控模式）
       empiricalProbability +6（Jeffreys 公式 / 单样本不再主导 / 两道门槛分离）
       EmpiricalProbabilityBlock +3（基准标注 / 原始 k/n 与平滑值并列 / 三格门槛）
+```
+
+### v0.11 批次（历史题材标的索引 + 跨事件证据追踪）
+
+> ★ 只用**现有**题材 / 事件 / 参与标的 / 证据 / 行情数据：未新增题材或事件、未改 `outcome` 规则、
+> 未编造指数、未改 `schema.sql` / canonical export / 冻结 SA / CANONICAL 快照、无网络无 LLM。
+
+#### ① 新增：题材 → 参与标的 → 跨事件记录
+
+**动机**：v0.10 的入口只能「按年看事件」。用户真正会问的第二层问题是
+「这个题材历史上涉及哪些股票、各自出现在哪几年、当时为什么被纳入」。
+
+- 聚合模块 `src/data/timeline/themeSecurityIndex.ts`（纯函数，无 IO）：
+  `themeSecurityIndexOf(doc)` · `filterSecurityIndex(index, q)` ·
+  `evidenceSummaryOf(entry)` · `SECURITY_INDEX_DISCLAIMER`
+- UI `src/components/HistoricalThemeMaps/ThemeSecurityIndexSection.tsx`，
+  放在 `HistoricalThemeMaps` 当前题材面板内、**逐事件列表之前**；
+  数据完全来自当前题材 `doc.events[].participants`，**不复制**研究数据、不建第二套地图。
+- 展示：公司名称 / 代码 / 涉及事件数 / 出现年份 / **逐次统计的证据类别**；
+  展开后逐次列出：事件（年 + 标题）/ 参与类别 / 证据等级 / 纳入理由 / 来源 /
+  同期报道当日涨幅 / 该事件实测行情（区间 / 至高点 / 超额，**按该事件原口径**）。
+- 搜索：按名称 / 代码 / **历史别名**（如 `ST香雪`）过滤；无命中时明说
+  「本索引只含**已记录**的参与标的，**未记录 ≠ 未参与**」。
+
+**实测（真实数据）**：
+
+| 题材 | 标的数 | 出现次数 | 有标的事件 |
+|---|---|---|---|
+| 流感 / 邻近公共卫生 | **20** | 42 | 6 |
+| 迎峰度夏 / 电力运营 | **6** | 21 | 4 |
+| 文化传媒 | **4** | 4 | 2 |
+| AI+ / 机器人 | **5** | 5 | 1 |
+
+★ 流感 21 条参与者记录合并为 **20 只**：`XIANGXUE-300147` 在 2024 年改名为「香雪制药（ST香雪）」，
+按 `security_id` 合并为同一标的，**两个名称都保留**（展示名 + 别名）。
+
+#### ② ★★ 证据区别（本轮的核心约束）
+
+| 规则 | 实现 |
+|---|---|
+| `REPORT_NAMED` = 同期报道点名，**不等于**业务机制已证实 | 逐次显示「仅报道点名」；不因出现次数多就升级 |
+| `BUSINESS_VERIFIED` = 业务有独立资料，**不等于**驱动了当次行情 | 逐次显示「业务机制已核实」；配合 `business_mechanism_caveat` 原文 |
+| **不得**合成「概念相关度」分数 | 无 score / rank / relevance 字段（测试钉死 `Object.keys`） |
+| **不得**跨事件汇总收益率或做统一排名 | 行情数字只挂在**单次 occurrence** 上；entry 上**没有** `periodReturnPct` 等字段 |
+| 同一标的跨事件可能是**混合**证据等级 | 摘要按类型计数（`业务机制已核实 ×1 · 仅报道点名 ×1`），**不取最高级**当整只股票的标签 |
+| 报道点名但**未关联**参与者的记录 | `unlinkedReports` 独立状态 `REPORTED_NOT_LINKED`；只在 `security_id` 或 `ticker` **完全相等**时关联，否则**不猜身份**（当前真实数据 0 条，用合成输入测该分支） |
+| 排序 | **只按公司名称**（中文 locale）→ `security_id`；**不按**涨幅 / 出现次数（测试断言顺序 ≠ 次数降序） |
+
+#### ③ 顺带整理
+
+- 把 `RichText` / `plain`（源数据 `**强调**` 渲染）抽成共享组件 `src/components/RichText.tsx`，
+  `HistoricalEventMap` 与 `EmpiricalProbabilityBlock` 改为引用 —— 消除三份重复实现。
+- 修正 v0.10 的入口说明：`PROJECT_STATE` / `ROADMAP` 里「地图只能从外部雷达进入」的表述已过期。
+
+#### ④ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test **1261 passed / 0 failed / 55 files**（+16）
+新增：themeSecurityIndex 12（跨事件汇总 / 名称变体合并 / 混合证据 / 排序 / 无收益汇总字段 /
+      未关联报道独立状态）
+      ThemeSecurityIndexSection.interaction 2（jsdom 真点：搜索 / 展开 / 收起）
+      HistoricalThemeMaps +2（四题材索引都在且位于事件列表之前 / 无字面星号）
 ```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）

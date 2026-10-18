@@ -29,6 +29,7 @@ import {
   type ResolvedEventMap,
 } from '../../data/timeline/historicalEventMaps';
 import { HistoricalEventMap } from '../ExternalSeasonalRadar/HistoricalEventMap';
+import { ThemeSecurityIndexSection } from './ThemeSecurityIndexSection';
 
 /** 组件 id（供外部雷达「查看地图」跳转定位） */
 export const HISTORICAL_THEME_MAPS_ID = 'historical-theme-maps';
@@ -128,6 +129,12 @@ export function HistoricalThemeMaps({
         id={`htm-panel-${current.theme_id}`}
         aria-labelledby={`htm-tab-${current.theme_id}`}
       >
+        {/* ★★ v0.11：先给「这个题材历史上有哪些标的」，再给逐事件列表。
+            ★ 数据完全来自当前题材的 `doc.events[].participants`（`themeSecurityIndexOf`），
+              不复制研究数据、不建第二套地图。
+            ★ key 用 theme_id：切题材时搜索/展开态自然重置（不串题材）。 */}
+        <ThemeSecurityIndexSection key={current.theme_id} doc={current.doc} />
+
         {/* ★ 复用既有地图组件：事件卡 / 跨年份比较 / 经验基准概率全部原样 */}
         <HistoricalEventMap doc={current.doc} display={current.display} />
       </div>

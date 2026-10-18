@@ -91,6 +91,26 @@ describe('历史题材地图 · 入口', () => {
   });
 });
 
+describe('历史题材地图 · 标的索引（v0.11）', () => {
+  it('★★ 四个题材都能看到自己的标的索引，且**在逐事件列表之前**', () => {
+    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS']) {
+      const h = renderToStaticMarkup(<HistoricalThemeMaps activeThemeId={id} />);
+      const iIndex = h.indexOf('aria-label="历史参与标的索引"');
+      const iEvents = h.indexOf('class="fem-list"');
+      expect(iIndex, `${id} 应有标的索引`).toBeGreaterThan(0);
+      expect(iEvents, `${id} 应有事件列表`).toBeGreaterThan(0);
+      expect(iIndex, `${id} 索引应在事件列表之前`).toBeLessThan(iEvents);
+    }
+  });
+
+  it('★ 索引里没有字面 Markdown 星号', () => {
+    for (const id of ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS']) {
+      const h = renderToStaticMarkup(<HistoricalThemeMaps activeThemeId={id} />);
+      expect(h, id).not.toContain('**');
+    }
+  });
+});
+
 describe('外部雷达 · 不再内嵌地图（避免同一批事件渲染两遍）', () => {
   const radar = renderToStaticMarkup(<ExternalSeasonalRadar today="2026-10-18" />);
   const radarWired = renderToStaticMarkup(

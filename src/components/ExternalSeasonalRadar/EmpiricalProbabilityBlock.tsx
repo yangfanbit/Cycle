@@ -34,26 +34,12 @@ import {
   type CrossYearYear,
   type HistoricalEventsDoc,
 } from '../../data/timeline/historicalEventMaps';
+import { RichText } from '../RichText';
 
 /** 比例 → 百分比字符串（保留 1 位；`null` → `—`，**不补 0**） */
 function pct(v: number | null | undefined): string {
   if (v == null || !Number.isFinite(v)) return '—';
   return `${(v * 100).toFixed(1)}%`;
-}
-
-/**
- * ★★ 把常量里的 `**强调**` 渲染成 `<strong>`。
- *
- * 本项目既有教训：**Markdown 在 JSX 里不生效**，直接写 `**` 会原样显示两个星号。
- * 常量（免责声明 / 口径说明）里有强调，故统一走这个函数，而不是把星号删掉。
- */
-function RichText({ text }: { text: string }) {
-  const parts = text.split('**');
-  return (
-    <>
-      {parts.map((p, i) => (i % 2 === 1 ? <strong key={i}>{p}</strong> : <span key={i}>{p}</span>))}
-    </>
-  );
 }
 
 function outcomeLabel(code: string): string {
