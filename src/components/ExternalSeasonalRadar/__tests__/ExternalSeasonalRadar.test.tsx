@@ -79,9 +79,14 @@ describe('ExternalSeasonalRadar · 空白状态如实展示', () => {
     }
   });
 
-  it('★ 折叠区默认收起，并提供展开入口（不丢弃其余 21 项）', () => {
-    expect(html).toContain('展开其余 21 项');
+  it('★★ v0.12：详细卡片**默认展开全部 25 项**（不再把 21 项藏在「展开其余」后面）', () => {
+    // 默认即展开：不出现「展开其余」；提供「收起」入口
+    expect(html).not.toContain('展开其余');
+    expect(html).toContain('收起 21 项的详细卡片');
     expect(html).toContain('全部线索（25 项）');
+    // 25 张卡片都在（优先 4 + 其余 21）—— 用卡片自身的 class 计数，
+    // 不用 data-entry-id（时间轴的 <th> 也用同名属性）
+    expect((html.match(/class="esr-card"/g) ?? [])).toHaveLength(25);
   });
 
   it('★ 总数与版本可追溯', () => {

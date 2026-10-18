@@ -178,6 +178,12 @@ export function themeSecurityIndexOf(doc: HistoricalEventsDoc): ThemeSecurityInd
         });
         continue;
       }
+      // ★ 先记住「本次之前」的最晚年份 —— 之后 push 会把 e.year 算进去，
+      //   那样 `e.year >= latestYear` 恒真，同一年里就变成「最后遇到的名称获胜」。
+      const prevLatestYear = existing.years.length > 0
+        ? Math.max(...existing.years)
+        : Number.NEGATIVE_INFINITY;
+
       existing.eventCount += 1;
       if (!existing.years.includes(e.year)) existing.years.push(e.year);
       if (p.evidence_level && !existing.evidenceLevels.includes(p.evidence_level)) {
@@ -185,11 +191,15 @@ export function themeSecurityIndexOf(doc: HistoricalEventsDoc): ThemeSecurityInd
       }
       if (!existing.categories.includes(p.category)) existing.categories.push(p.category);
       existing.occurrences.push(occ);
-      // 名称变化：保留别名，展示名取最近年份
+
+      // 名称变化：保留别名；展示名取**最近年份**的名称，
+      // ★ 同一年出现多个名称时取**字典序最小** —— 与事件出现顺序无关（确定性）。
       if (p.name !== existing.name) {
         if (!existing.aliases.includes(p.name)) existing.aliases.push(p.name);
-        const latestYear = Math.max(...existing.years);
-        if (e.year >= latestYear) {
+        const fromNewerYear = e.year > prevLatestYear;
+        const sameYearTieBreak = e.year === prevLatestYear
+          && p.name.localeCompare(existing.name, 'zh-Hans-CN') < 0;
+        if (fromNewerYear || sameYearTieBreak) {
           if (!existing.aliases.includes(existing.name)) existing.aliases.push(existing.name);
           existing.name = p.name;
         }

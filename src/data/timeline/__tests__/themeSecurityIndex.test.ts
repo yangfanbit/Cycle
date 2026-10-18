@@ -140,6 +140,56 @@ describe('题材标的索引 · 报道点名但未关联（独立状态）', () 
   });
 });
 
+describe('题材标的索引 · 同年多名称的确定性（v0.12 修正）', () => {
+  /** 合成：同一年里同一 security_id 出现两个名称，事件顺序可互换 */
+  const docWith = (names: [string, string]) => ({
+    artifact: 'synthetic', artifact_version: '0', position: '', events: names.map((name, i) => ({
+      event_id: `E-${i}`, label: `事件${i}`, year: 2020, window_text: '', external_window_ref: null,
+      evidence_basis: '', catalysts: [],
+      participants: [{
+        security_id: 'AAA-000001', ticker: '000001', name,
+        category: 'MECHANISM_DIRECT', evidence_level: 'REPORT_NAMED',
+        rationale: '合成理由', source: '合成来源',
+      }],
+      observed_performance: { note: '', by_security: null, reported_same_day_moves: {} },
+      known_gaps: [],
+    })),
+  }) as unknown as HistoricalEventsDoc;
+
+  it('★★ 同一年多个名称 → 展示名取**字典序最小**，与事件顺序无关', () => {
+    const a = themeSecurityIndexOf(docWith(['甲公司', '乙公司']));
+    const b = themeSecurityIndexOf(docWith(['乙公司', '甲公司']));
+    expect(a.entries[0].name).toBe(b.entries[0].name);
+    // 字典序：甲 < 乙（zh-Hans-CN）
+    expect(a.entries[0].name).toBe('甲公司');
+    // 两个名称都保留（展示名 + 别名）
+    const names = [a.entries[0].name, ...a.entries[0].aliases];
+    expect(names).toContain('甲公司');
+    expect(names).toContain('乙公司');
+  });
+
+  it('★ 更晚年份的名称优先于更早年份（年份优先于字典序）', () => {
+    const doc = {
+      artifact: 'synthetic', artifact_version: '0', position: '', events: [
+        { event_id: 'E-1', label: '早', year: 2019, window_text: '', external_window_ref: null,
+          evidence_basis: '', catalysts: [],
+          participants: [{ security_id: 'AAA-000001', ticker: '000001', name: '甲公司',
+            category: 'MECHANISM_DIRECT', rationale: 'r', source: 's' }],
+          observed_performance: { note: '', by_security: null, reported_same_day_moves: {} }, known_gaps: [] },
+        { event_id: 'E-2', label: '晚', year: 2024, window_text: '', external_window_ref: null,
+          evidence_basis: '', catalysts: [],
+          participants: [{ security_id: 'AAA-000001', ticker: '000001', name: '乙公司',
+            category: 'MECHANISM_DIRECT', rationale: 'r', source: 's' }],
+          observed_performance: { note: '', by_security: null, reported_same_day_moves: {} }, known_gaps: [] },
+      ],
+    } as unknown as HistoricalEventsDoc;
+    const idx = themeSecurityIndexOf(doc);
+    // 2024 的「乙公司」比 2019 的「甲公司」更新 → 展示名用乙
+    expect(idx.entries[0].name).toBe('乙公司');
+    expect(idx.entries[0].aliases).toContain('甲公司');
+  });
+});
+
 describe('题材标的索引 · 搜索', () => {
   it('★ 按代码 / 名称 / 别名搜索，且不改变排序', () => {
     expect(filterSecurityIndex(flu, '002007').entries.map((x) => x.securityId)).toEqual(['HUALAN-002007']);

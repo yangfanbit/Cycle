@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-18 修订 · 历史题材地图主入口 + 标的索引 + 概率基准修正）
+## ★★ 当前状态（2026-10-18 修订 · 外部季节性时间轴 + 历史题材地图 + 标的索引）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -20,7 +20,8 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `126ce8d`（**v0.11 实现**：历史题材标的索引 + 跨事件证据追踪 · CI **success**）· 前序：`50300f8`（v0.10 实现）· `c1a5b1d`（v0.9 文档）· `d3a01dc`（v0.9 实现）· `f578ddb`（v0.8 文档）· `05c897d`（v0.8 实现）· `c3aad6f`（lockfile）· `f012dc3`（v0.7）· `d3a5a15`（v0.6）· `5d7efaa`（v0.5）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD（真实）** | `4dd3a66`（**文档回填**：v0.11 真实 HEAD 与线上核验）· working tree clean · ★ 接班**必须**跑 `git log -1` —— 文档提交通常紧随实现提交，两者不同 |
+| **最近功能提交** | `126ce8d`（v0.11 实现：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
@@ -358,6 +359,66 @@ npx tsc -b OK · npm run build 成功 · npm test **1261 passed / 0 failed / 55 
       未关联报道独立状态）
       ThemeSecurityIndexSection.interaction 2（jsdom 真点：搜索 / 展开 / 收起）
       HistoricalThemeMaps +2（四题材索引都在且位于事件列表之前 / 无字面星号）
+```
+
+### v0.12 批次（完整外部季节性时间轴）
+
+> ★ 只做产品呈现：未新增题材 / 线索、未补造日级日期、未改外部日历数据、
+> 未改 `schema.sql` / canonical export / 冻结 SA / CANONICAL 快照、无网络无 LLM。
+
+#### ① 主交付：25 条外部线索全部上轴
+
+- 数据层 `src/data/timeline/externalSeasonalTimeline.ts`（纯函数）：
+  `buildExternalTimeline(entries)` · `segmentsOfWindow(w)` · `isActiveInMonth` · `segmentAt` ·
+  `crossYearNote` · `EXTERNAL_TIMELINE_NOTE`
+- UI `src/components/ExternalSeasonalRadar/ExternalSeasonTimeline.tsx`，
+  位于 `ExternalSeasonalRadar` 内、详细卡片**之前**；**一个筛选器**同时作用于时间轴与卡片。
+- 呈现：12 个月表头 × 每条线索一行（名称 / 类别 / 窗口原文 / 映射状态 / 地图跳转），
+  填充格 = 该月在该线索声称的窗口内；跨年窗口用深一档底色区分。
+
+**实测（全部由 `externalCalendarEntries()` 现算）**：
+
+| 项 | 值 |
+|---|---|
+| 外部线索总数 | **25** |
+| 有月份窗口 | **23**（上轴） |
+| 无固定窗口 | **2**（`EXT-23` / `EXT-24`，单列「事件驱动 / 无固定窗口」区） |
+| 窗口段数 | **24** |
+| 跨年窗口 | **4**（EXT-10 12→2 · EXT-11 10→3 · EXT-12 9→1 · EXT-21 11→1） |
+| 上轴显示段数 | **28**（跨年拆到年末 + 年初） |
+| 映射状态 | 已映射 **16** / 未映射 **9** |
+
+★ 每月覆盖条数（1→12 月）：6 · 4 · 5 · 3 · 3 · 6 · 6 · 5 · 6 · 6 · 5 · 5。
+
+#### ② 口径与边界（全部有断言）
+
+| 约束 | 实现 |
+|---|---|
+| **月份精度**，不推断日级 | 只输出 `1..12`；页面不出现任何 `YYYY-MM-DD`（测试扫描） |
+| **跨年正确拆分** | EXT-11 → `[10,11,12] + [1,2,3]`；EXT-21（两窗口）→ `[3] + [11,12] + [1]` |
+| **无窗口不消失** | EXT-23 / EXT-24 在独立区，仍带「外部参考」与映射状态 |
+| **UNMAPPED 正常显示** | 9 条全部可见，不因未映射被隐藏或折叠 |
+| **一律外部参考** | 每条带「外部参考」徽标；`MAPPED` 只写「已映射 · 宏观主题」，**不写成 ThreeC 结论** |
+| **跳转只在真有关系时** | `eventMapByExternalId()` 有值才给按钮（**4 条**：EXT-12/13/14/23）；其余 **21 条**明写「未建历史题材地图」 |
+| **不再藏 21 条** | 详细卡片默认**全部展开**（25 张），折叠按钮改为「收起 21 项的详细卡片」 |
+| **与历史地图区分** | 本区统一**琥珀色** + 「外部资料参考」徽标 + 明写「与历史季节性地图不同源、不同色、不合并」 |
+
+#### ③ 顺手修复
+
+- `themeSecurityIndex` 的**同年多名称**规则：原实现先 push 年份再比较，导致
+  `e.year >= latestYear` 恒真 → 同一年里「最后遇到的名称获胜」（依赖事件顺序）。
+  改为先记 `prevLatestYear`：**更晚年份优先**；**同一年取字典序最小** —— 与顺序无关。
+  测试用两份顺序相反的合成 doc 断言展示名一致。
+- `PROJECT_STATE` 把**真实 git HEAD**（文档回填提交）与**最近功能提交**拆成两行 ——
+  此前一行混写，会让接班人误以为 HEAD 就是功能提交。
+
+#### ④ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test **1282 passed / 0 failed / 56 files**（+21）
+新增：ExternalSeasonTimeline 19（完整覆盖 / 跨年拆分 / 无窗口 / 映射状态 / 跳转 / 来源区分）
+      themeSecurityIndex +2（同年多名称确定性）
+      重写 1 条既有断言（折叠区默认收起 → 默认展开全部 25 条）
 ```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）

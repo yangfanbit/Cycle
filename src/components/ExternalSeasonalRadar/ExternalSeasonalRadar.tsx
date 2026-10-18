@@ -10,6 +10,8 @@
  */
 import { useMemo, useState } from 'react';
 import { eventMapByExternalId } from '../../data/timeline/historicalEventMaps';
+import { ExternalSeasonTimeline } from './ExternalSeasonTimeline';
+import { RichText } from '../RichText';
 import {
   EXTERNAL_CALENDAR_NOTE,
   EXTERNAL_SOURCE_LABEL,
@@ -129,7 +131,8 @@ export function ExternalSeasonalRadar({ today, onOpenMap }: {
   /** ★ v0.10：跳转到首页「历史题材地图」并选中该题材（由 App 注入） */
   onOpenMap?: (themeId: string) => void;
 }) {
-  const [showAll, setShowAll] = useState(false);
+  // ★ v0.12：默认**展开全部 25 条**（不再把 21 条藏在「展开其余」后面）
+  const [showAll, setShowAll] = useState(true);
   const [catFilter, setCatFilter] = useState<string>('ALL');
 
   const doc = externalCalendarDoc();
@@ -140,11 +143,10 @@ export function ExternalSeasonalRadar({ today, onOpenMap }: {
     [all],
   );
 
-  const priority = all.filter((e) => PRIORITY_IDS.includes(e.id));
-  const rest = all.filter((e) => !PRIORITY_IDS.includes(e.id));
-  const restShown = catFilter === 'ALL'
-    ? rest
-    : rest.filter((e) => e.category === catFilter);
+  // ★ 一个筛选器同时作用于「时间轴」与「详细卡片」，避免两处口径不一致
+  const filtered = catFilter === 'ALL' ? all : all.filter((e) => e.category === catFilter);
+  const priority = filtered.filter((e) => PRIORITY_IDS.includes(e.id));
+  const rest = filtered.filter((e) => !PRIORITY_IDS.includes(e.id));
 
   return (
     <section className="esr" aria-label="外部季节性观察雷达">
@@ -153,7 +155,7 @@ export function ExternalSeasonalRadar({ today, onOpenMap }: {
         <span className="esr-source-badge">{EXTERNAL_SOURCE_LABEL}</span>
       </div>
 
-      <p className="esr-note">{EXTERNAL_CALENDAR_NOTE}</p>
+      <p className="esr-note"><RichText text={EXTERNAL_CALENDAR_NOTE} /></p>
       <p className="esr-count">
         共 <strong>{all.length}</strong> 项外部线索 · 版本 <code>{doc.artifact_version}</code> ·
         生成 {doc.generated_at}
@@ -162,6 +164,17 @@ export function ExternalSeasonalRadar({ today, onOpenMap }: {
           <strong>外部资料声称</strong>的窗口，两者来源不同）
         </span>
       </p>
+
+      {/* ★★ v0.12 主交付：外部季节性**参考时间轴**（全部 25 条按 1–12 月铺开）
+          ★ 与上方「历史季节性机会地图」来源不同、配色不同：本区一律「外部参考」。 */}
+      <ExternalSeasonTimeline
+        entries={filtered}
+        allEntries={all}
+        categories={categories}
+        category={catFilter}
+        onCategory={setCatFilter}
+        onOpenMap={onOpenMap}
+      />
 
       <h3 className="esr-sub">当前优先观察（{priority.length} 项）</h3>
       <ul className="esr-list">
@@ -176,29 +189,16 @@ export function ExternalSeasonalRadar({ today, onOpenMap }: {
           aria-expanded={showAll}
           onClick={() => setShowAll((v) => !v)}
         >
-          {showAll ? '收起其余线索' : `展开其余 ${rest.length} 项`}
+          {showAll ? `收起 ${rest.length} 项的详细卡片` : `展开其余 ${rest.length} 项的详细卡片`}
         </button>
       </div>
 
       {showAll && (
         <>
-          <div className="esr-filters" role="group" aria-label="按类别筛选（不是排序）">
-            {categories.map((c) => (
-              <button
-                key={c}
-                type="button"
-                className={`esr-chip${catFilter === c ? ' is-on' : ''}`}
-                aria-pressed={catFilter === c}
-                onClick={() => setCatFilter(c)}
-              >
-                {c === 'ALL' ? '全部类别' : c}
-              </button>
-            ))}
-          </div>
           <ul className="esr-list">
-            {restShown.map((e) => <EntryCard key={e.id} e={e} today={today} onOpenMap={onOpenMap} />)}
+            {rest.map((e) => <EntryCard key={e.id} e={e} today={today} onOpenMap={onOpenMap} />)}
           </ul>
-          {restShown.length === 0 && (
+          {rest.length === 0 && (
             <p className="esr-empty">该类别下暂无线索。</p>
           )}
         </>

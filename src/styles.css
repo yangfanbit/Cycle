@@ -3746,3 +3746,74 @@ html, body {
 .tsi-unlinked h6 { margin: 0 0 4px; font-size: 11px; color: var(--ink); }
 .tsi-unlinked ul { margin: 4px 0 0; padding-left: 18px; font-size: 10.5px; line-height: 1.8; color: var(--ink-2); }
 .tsi-status { margin-left: 6px; font-size: 9.5px; color: #b26a00; }
+
+/* ---------- 外部季节性参考时间轴（v0.12） ----------
+   ★ 与 ThreeC 历史季节性地图**不同色**：本区一律琥珀色（外部参考），
+     历史地图用主题色。两套窗口不合并、不共色。 */
+.est {
+  margin: 14px 0 10px; padding: 12px 14px;
+  border: 1px solid #e0c9a6; border-radius: 10px;
+  background: #fdf8f1;
+}
+.est-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+.est-title { margin: 0; font-size: 14px; color: var(--ink); }
+.est-badge {
+  font-size: 10px; padding: 1px 8px; border-radius: 10px;
+  border: 1px solid #d9b98a; color: #8a5a12; background: #fbf0e0;
+}
+.est-note { margin: 0 0 6px; font-size: 10.5px; line-height: 1.8; color: #6b5a45; }
+.est-totals { margin: 0 0 8px; font-size: 10.5px; color: var(--ink-2); line-height: 1.8; }
+.est-carry { display: block; color: #8a5a12; }
+.est-filters { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.est-chip {
+  cursor: pointer; font-size: 10.5px; padding: 2px 8px; border-radius: 10px;
+  border: 1px solid #d9b98a; background: #fffdf9; color: #6b5a45;
+}
+.est-chip.is-on { background: #b26a00; border-color: #b26a00; color: #fff; }
+.est-chip-n { margin-left: 4px; font-size: 9.5px; opacity: 0.75; }
+.est-empty { margin: 6px 0; font-size: 10.5px; color: var(--ink-3); }
+.est-table-wrap { overflow-x: auto; }
+.est-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 10px; }
+.est-table caption {
+  caption-side: top; text-align: left; font-size: 10px; color: #8a5a12;
+  line-height: 1.7; padding-bottom: 5px;
+}
+.est-table th, .est-table td { border: 1px solid #e6d6bd; }
+.est-corner { width: 33%; text-align: left; font-size: 9.5px; color: #8a5a12; background: #fbf0e0; padding: 3px 5px; }
+.est-month-head {
+  text-align: center; font-size: 9.5px; font-weight: 600; color: #8a5a12;
+  background: #fbf0e0; padding: 2px 0;
+}
+.est-label { text-align: left; vertical-align: top; padding: 4px 6px; background: #fffdf9; font-weight: 400; }
+.est-name { display: block; font-size: 11px; color: var(--ink); font-weight: 600; }
+.est-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0; }
+.est-cat { font-size: 9px; color: #6b5a45; border: 1px solid #e0c9a6; border-radius: 8px; padding: 0 5px; }
+.est-ext { font-size: 9px; color: #8a5a12; border: 1px dashed #d9b98a; border-radius: 8px; padding: 0 5px; }
+.est-mapped { font-size: 9px; color: #2e6b2e; border: 1px solid #b9d6b9; border-radius: 8px; padding: 0 5px; }
+.est-unmapped { font-size: 9px; color: #8a5a12; border: 1px solid #e0c9a6; border-radius: 8px; padding: 0 5px; background: #fdf3e4; }
+.est-window { display: block; font-size: 9.5px; color: var(--ink-3); margin-top: 1px; }
+.est-map-link {
+  margin-top: 3px; cursor: pointer; font-size: 9.5px; padding: 0 6px;
+  border: 1px solid #d9b98a; border-radius: 6px; background: #fffdf9; color: #8a5a12;
+}
+.est-map-link:hover { border-color: #b26a00; }
+.est-no-map { display: block; margin-top: 3px; font-size: 9px; color: var(--ink-3); }
+.est-cell { height: 22px; text-align: center; background: #fffdf9; }
+.est-cell.is-on { background: #f3d9b0; }
+.est-cell.is-cross { background: #eecb98; }
+.est-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #b26a00; }
+.est-nowin { margin-top: 10px; padding-top: 8px; border-top: 1px dashed #e0c9a6; }
+.est-nowin-title { margin: 0 0 5px; font-size: 11.5px; color: var(--ink); }
+.est-nowin-hint { margin-left: 8px; font-size: 9.5px; font-weight: 400; color: var(--ink-3); }
+.est-nowin-list { margin: 0; padding: 0; list-style: none; }
+.est-nowin-list li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px;
+  padding: 4px 0; border-bottom: 1px dotted #e6d6bd; font-size: 10.5px;
+}
+.est-nowin-list li:last-child { border-bottom: none; }
+.est-nowin-list .est-name { display: inline; }
+.est-legend { margin: 8px 0 0; font-size: 9.5px; color: #6b5a45; line-height: 1.8; }
+.est-legend-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 2px;
+  background: #f3d9b0; border: 1px solid #d9b98a; margin-right: 3px;
+}
