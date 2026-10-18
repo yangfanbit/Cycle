@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-18 修订 · 历史题材地图 ×5 + 汽车智能化纵切片 + v0.14 残余修复）
+## ★★ 当前状态（2026-10-18 修订 · 历史题材地图 ×6 + 半导体/AI 算力纵切片 + 反例与证据不足语义分离）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -15,24 +15,28 @@
 > ② 流感 v0_6 / 电力 v0_3 的**陈旧文字与分类口径**更正（`corrections` 留痕，**数值零变化**）；
 > ③ 组件三处误导性展示修复 + 5 条回归测试；④ readiness `--check` 措辞与覆盖面改正。
 > 完整说明：`docs/MARKET_DATA_DB_v0_1.md`（拆分）与本文本节（治理）。
+> ★★ **2026-10-18 晚（v0.16）**：① 新增**第 6 个历史题材「半导体 / AI 算力 / 存储」**纵切片
+> （**7 事件 / 29 参与记录 / 16 只去重标的**，行情全部来自 `market_data.db` 实算；大基金三期窗口
+> 登记标的不覆盖 → **逐条如实留空、不补数**）；② 把**反例（`COUNTER_EXAMPLE`）**从
+> **证据不足（`INSUFFICIENT`）**中分离出来（各自类别、各自文案）。
 
 ### 实测基线（2026-10-18 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **git HEAD（真实）** | `59dedcc`（**v0.15 实现**：汽车智能化题材纵切片 + v0.14 残余修复 · CI **success**）· ★ 若其后还有 `docs(state)` 回填提交，HEAD 会再前移一位 —— **接班必须跑 `git log -1`** |
-| **最近功能提交** | `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **git HEAD（真实）** | `0c8ee96`（**v0.16 实现**：半导体/AI 算力第 6 题材纵切片 + 反例语义分离）· ★ 若其后还有 `docs(state)` 回填提交，HEAD 会再前移一位 —— **接班必须跑 `git log -1`** |
+| **最近功能提交** | `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1261 passed / 0 failed / 55 files**（v0.11：+16，含标的索引 12 条 + 搜索展开 2 条 + 入口顺序 2 条） |
+| **测试** | **1361 passed / 0 failed / 66 files**（v0.16：+3 —— 半导体数据口径、反例标签、v0.16 端到端；v0.11 起的 1261 计入 55 files） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
 | **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 与 **`5d7efaa` 的 CI 均 success**（Actions runner 本身就是干净检出 = 干净环境实证；干净克隆另在本地复验：恢复 2,855 行日历 + 全部门禁 PASS + monorepo 25/25 + npm ci/tsc/**1021 测试**/build 全 OK） |
-| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · 4 题材 / **13 事件** · 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：**全部 13 事件数值零计算错误** |
+| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
@@ -630,6 +634,49 @@ npx tsc -b OK · npm run build 成功 · npm test 1349 passed / 0 failed / 64 fi
       ExternalSeasonTimeline +6（dateToMonthFraction 公历性质）· 交互测试改写 3 条
 硬编码断言更新 3 条（题材清单 4→5 · 事件总数 13→19 · DESAYSV 出现次数）
 ```
+
+### v0.16 批次（半导体 / AI 算力 / 存储题材纵切片 + 反例语义分离）
+
+> ★ 新增数据走**现有认可机制**：`research/current/` 新增**版本化文件**（不覆盖任何旧轮次），
+> 沿用事件 JSON 契约（TS 类型 + `validateHistoricalEvents`）与索引 `maps[]` 登记；
+> 未改 `schema.sql` / canonical export / 冻结 SA / CANONICAL 快照、无网络无 LLM、未训练模型。
+
+#### ① ★★ 主交付：第 6 个历史题材「半导体 / AI 算力 / 存储」纵切片
+
+- 新数据文件 `research/current/semiconductor_ai_compute_historical_events_v0_1.json`（新文件，
+  旧文件逐字节未动）：**7 个事件 / 29 条参与记录 / 16 只去重标的 / 21 个可算行情组合**。
+- 事件 → 库内对象：`C-2019-SEMI-LOCALIZATION` · `RC-2022-SEMI-CHIPSHORTAGE`（RC，**不伪装 Campaign**）·
+  `C-2020-SEMI-EQUIPMENT` · `C-2022-SEMI-DOWNTURN` · `C-2023-AI-COMPUTE-SEMI` ·
+  `RC-2024-SEMI-FUND3`（RC，官方 `status=INSUFFICIENT`）· `C-2024-SEMI-MEMORY`。
+- ★ **关系性质五类齐全**：直接机制 · 产业链扩散（长电科技封测 / 中芯国际代工）· 历史市场参与（寒武纪）·
+  **反例**（京东方A = 显示面板与集成电路不同轴）· 证据不足（中芯@2019 / 拓荆 / 通富）。
+- ★ **行情全部由 `market_data.db` 实算**（窗口内首末/高低/区间/至高点/回撤/相对 `SH000300` 超额），
+  `by_security` 与 `participants` 同源同值。★ **大基金三期窗口（2024-09-24 → 2024-11-29）的全部 4 只
+  登记标的**（中芯国际 / 中微公司 / 拓荆科技 / 海光信息）**库内 series 均不覆盖该窗口 →
+  逐条 `insufficient_data_in_window`（不补数）**；拓荆科技无登记 series、海光信息 series 止于
+  2022-10-12 → 同此处理。事件级行情状态 = `NO_PRICE_DATA`（诚实空洞，索引校验允许）。
+- 注册：`historicalEventMaps.ts` DOCS 静态登记 + 索引 `maps[]` 追加（纯增量 diff）；
+  `external_entry_ids=[]` + **显式 `external_link_status: NO_EXTERNAL_COUNTERPART`**。
+
+#### ② ★★ 反例（`COUNTER_EXAMPLE`）与证据不足（`INSUFFICIENT`）语义分离
+
+| # | 问题 | 修法 |
+|---|---|---|
+| 1 | 大众交通是**运营侧反例**却被放进 `INSUFFICIENT`，通用 UI 显示为「证据不足 / 反面参照」—— 与「尚不足以判断」混同 | 新增独立类别 `COUNTER_EXAMPLE` + 文案「反例（不同轴）」；`INSUFFICIENT` 文案改为「证据不足」（去掉「/ 反面参照」）；新增 `NON_THEME_CATEGORIES` + `isThemeParticipant()` |
+| 2 | 通用组件与标的索引仍把两者同等处理 | `eventHasAnalysableData` / `eventStudyState` / 标的索引 `CATEGORY_ORDER` 全部改读 `isThemeParticipant`；`styles.css` 增 `.cat-counter_example`；`fluHistoricalEvents.ts` 同构同步 |
+| 3 | 汽车题材把大众交通当 `INSUFFICIENT` | 大众交通改判 `COUNTER_EXAMPLE`（**保留**「运营牌照方、与智驾技术链不同轴」原解释）；众泰汽车保留 `INSUFFICIENT` → **两类别在同一题材并存可测** |
+
+#### ③ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test 1361 passed / 0 failed / 66 files
+新增：semiconductorEvents 9（注册表核对 / 枚举 / 反例≠证据不足 / 索引合并 / 超额自洽 / 大基金三期全留空）
+      v016UserFlows 3（页面级端到端：题材→事件行情→对象详情→关闭；反例与证据不足同卡并存；RC 不伪装 + 留空）
+硬编码断言更新 3 条（题材清单 5→6 · 事件总数 19→26 · 事件级行情「诚实空洞」允许项）
+```
+
+★ 环境限制（如实说明）：本机无 Node/Chrome —— `tsc` / `vite build` / `vitest` 由**便携 Node v22.23.3**
+跑通，**未做浏览器截图 / 窄屏视觉核验**；上述为页面级真实点击（断言基于点击后真实状态）。
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 

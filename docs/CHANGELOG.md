@@ -7,6 +7,53 @@
 
 ---
 
+## 2026-10-18 · **v0.16 —— 第 6 个历史题材（半导体 / AI 算力 / 存储）+ 反例与证据不足语义分离**
+
+**性质：Product + Research 数据（版本化新增）。** ✔ 只新增版本化产物与产品接线。
+**未修改**：Research Model v1.0 · `schema.sql` · Export Contract v1.0/v1.2 · canonical export · 冻结 SA / TO artifact · CANONICAL 快照 · 既有历史研究结论与旧题材 JSON（逐字节未动）。
+**未做**：不训练预测模型、不生成 score / ranking / probability / 买卖信号；无网络、无 LLM 运行时。
+
+**目标**：① 地图题材 5 → 6（补硬科技/AI 主线）；② 修正关系性质的语义混用 ——
+**反例（运营侧、与技术链不同轴）** 此前被并入 **证据不足**，通用 UI 一律显示「证据不足 / 反面参照」。
+
+### 1 · 用户可见的 Product 变化
+
+| 变化 | 说明 |
+|---|---|
+| **新增第 6 个题材「半导体 / AI 算力 / 存储」** | 首页「历史题材地图」可切换到该题材：先给**历史参与标的索引**（16 只，跨事件汇总 / 搜索 / 展开逐次证据），再给 **7 个事件卡**；复用同一个 `HistoricalEventMap`，索引驱动、无题材硬编码 |
+| **反例独立成类** | 大众交通由 `INSUFFICIENT` 改判 `COUNTER_EXAMPLE`，文案「**反例（不同轴）**」；`INSUFFICIENT` 文案去掉「/ 反面参照」。二者不再混同 |
+| **事件级行情状态诚实** | 大基金三期（2024 窗口）4 只登记标的 `market_data.db` series 均不覆盖 → 事件 `NO_PRICE_DATA`、逐条 `insufficient_data_in_window`（**留空不补数**） |
+
+### 2 · Research / 数据侧新增
+
+| 项 | 值 |
+|---|---|
+| 新数据文件 | `research/current/semiconductor_ai_compute_historical_events_v0_1.json`（**新文件，不覆盖旧轮次**） |
+| 规模 | **7 事件 / 29 参与记录 / 16 只去重标的 / 21 可算行情组合** |
+| 事件 → 库内对象 | `C-2019-SEMI-LOCALIZATION` · `RC-2022-SEMI-CHIPSHORTAGE`（RC）· `C-2020-SEMI-EQUIPMENT` · `C-2022-SEMI-DOWNTURN` · `C-2023-AI-COMPUTE-SEMI` · `RC-2024-SEMI-FUND3`（RC，`status=INSUFFICIENT`）· `C-2024-SEMI-MEMORY` |
+| 关系性质五类 | 直接机制 · 产业链扩散 · 历史市场参与 · **反例**（京东方A 显示面板与集成电路不同轴）· 证据不足 |
+| 行情来源 | 全部 `market_data.db` 实算（窗口首末/高低/区间/至高点/回撤/相对 `SH000300` 超额）；`by_security` 与 `participants` 同源同值；未新增 DB 数据 |
+
+### 3 · 契约 / 语义变更（最小结构化）
+
+- `ParticipantCategory` 新增 `COUNTER_EXAMPLE`；新增 `NON_THEME_CATEGORIES` 与 `isThemeParticipant()`。
+- `eventHasAnalysableData` / `eventStudyState` / 标的索引 `CATEGORY_ORDER` 全部改读 `isThemeParticipant`；`fluHistoricalEvents.ts` 同构同步；`styles.css` 增 `.cat-counter_example`。
+- 索引 `historical_event_maps_index.json` 追加 `SEMICONDUCTOR_AI`（`external_entry_ids=[]` + `external_link_status: NO_EXTERNAL_COUNTERPART`）；纯增量。
+
+### 4 · 验证（全部实测）
+
+- `npx tsc -b` OK · `npm run build` 成功 · `npm test` **1361 passed / 0 failed / 66 files**
+- 新增：`semiconductorEvents.test.ts`（9）· `v016UserFlows.test.tsx`（3，页面级端到端）
+- 更新硬编码断言 3 条（题材清单 5→6 · 事件总数 19→26 · 事件级行情「诚实空洞」允许项）
+
+### 5 · 已知缺口（诚实记录）
+
+- 大基金三期事件 4 只标的行情 **在库中不可得**（series 不覆盖 2024 窗口）；拓荆科技无登记 series、海光信息 series 止于 2022-10-12。
+- 本机无浏览器 → **未做截图 / 窄屏视觉核验**（端到端为 jsdom 页面级真实点击）。
+- 标的索引仍只到「事件内参与记录」，**未与 Campaign / SA 标的身份交叉核对**。
+
+---
+
 ## 2026-10-06 · **ThreeC 1.1.0 发布** —— Market Snapshot：当前市场 → 历史结构研究
 
 **性质：Product + Research 双侧；** 新增一层「当前」能力（1.0 只有历史）。
