@@ -25,25 +25,31 @@
 > 反例（`COUNTER_EXAMPLE`）单独标「反例（不同轴）」、数据仍可查看。② **标的 × Research 对象对账** ——
 > 按 `campaign_facts.object_id`（兼容 `campaign_id`）与 canonical export 的 Campaign / RC `security_ids`
 > **精确对账**，分**对象已登记关联 / 地图补充记录 / 无法核对**三类（**不猜身份、不改 Research 数据**），
-> 在事件详情与标的索引逐次记录呈现，**六题材通用**（实测：123 条参与记录 = 已登记 63 / 地图补充 0 / 无法核对 60）。
+> 在事件详情与标的索引逐次记录呈现，**六题材通用**（v0.17 当时口径：123 条参与记录 = 已登记 63 / 地图补充 0 / 无法核对 60 —— **v0.18 起已拆为四分类**，见下）。
+> ★★ **2026-10-18 晚（v0.18）**：① **补齐已有明确证据的对象关联** —— `FLU-2023-H1N1` 新增
+> `campaign_facts → object_id = C-2023-PHARMA-FLU`（依据：其 `evidence_basis` 明确引用该 Campaign、
+> 3 只标的与对象 `security_ids` **逐一相等**），流感题材升 **v0_7**（v0_1~v0_6 逐字节保留，**数值零变化**）；
+> ② **对账四分类** —— 把「事件未记录对象」从 `UNRESOLVED` 拆出为 **`NO_OBJECT_REFERENCE`（未登记对象关联）**，
+> 与「已提供引用但对象无法解析 / 证券注册信息缺失」的 `UNRESOLVED` **区分**。
+> 实测 123 条参与记录 = 已登记 **66** / 地图补充 0 / 未登记对象关联 **57** / 无法核对 **0**。
 
 ### 实测基线（2026-10-18 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **git HEAD（真实）** | `bcfa36c`（**v0.17 实现**：历史行情可信展示 + 标的与 Research 对象对账）· ★ 若其后还有 `docs(state)` 回填提交，HEAD 会再前移一位 —— **接班必须跑 `git log -1`** |
-| **最近功能提交** | `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最近功能提交** | `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类「未登记对象关联」）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最后核实 Git 状态** | 核实于 2026-10-18：本地 `main` = `origin/main`，工作区仅有 **2 个未跟踪本地库**（`market_data.db` / `cycle_research.db`，**不入库、不提交**）· ★ **本行不再写「HEAD = 某个功能提交」** —— `docs(state)` 回填提交本身会把 HEAD 前移一位，旧写法两次制造了「HEAD 滞后」的误读。**接班必须跑 `git log -1` / `git status` / `git rev-parse origin/main`** 以实际为准，不要相信文档里的固定 SHA |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1383 passed / 0 failed / 68 files**（v0.17：+22 —— 对账 13 + 行情表可信展示 6 + v0.17 端到端 3；v0.16 计 1361/66) |
+| **测试** | **1386 passed / 0 failed / 68 files**（v0.18：+3 —— 对账补齐/四分类 15 条内新增 2 + 事件地图对象关联 1；v0.17 计 1383/68) |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
 | **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 与 **`5d7efaa` 的 CI 均 success**（Actions runner 本身就是干净检出 = 干净环境实证；干净克隆另在本地复验：恢复 2,855 行日历 + 全部门禁 PASS + monorepo 25/25 + npm ci/tsc/**1021 测试**/build 全 OK） |
-| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · ★ **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账**（六题材通用） |
+| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类**（含「未登记对象关联」） |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
@@ -736,6 +742,63 @@ npx tsc -b OK · npm run build 成功 · npm test 1383 passed / 0 failed / 68 fi
       HistoricalEventMap F2 6（行情表类别+窗口状态 / 局部数据声明+首末 / 反例样式 / 对账徽标）
       v017UserFlows 3（页面级端到端：行情→对象详情→关闭；覆盖不足如实；索引对账）
 更新：行情表列位断言（8 列→10 列，超额列移至 [8]/[9]）
+```
+
+★ 环境限制（如实说明）：本机无 Node/Chrome —— 由**便携 Node v22.23.3** 跑通，**未做浏览器截图 / 窄屏视觉核验**。
+
+### v0.18 批次（补齐明确对象关联 + 对账四分类）
+
+> ★ 只读 + **版本化新增**：不覆盖旧轮次、不改 canonical export / 冻结 SA / CANONICAL 快照；无网络、无 LLM 运行时、未训练模型。
+> 依据（原任务书）：`objectReconciliation` 把「事件没记录对象 ID」与「对象 ID 已有但无法解析」
+> 都归入 `UNRESOLVED` → 汇总容易把**缺字段**误读成**对象解析失败**。
+
+#### ① ★★ 补齐已有明确证据的对象关联（任务 A）
+
+| # | 事件 | 处理 | 依据 |
+|---|---|---|---|
+| 1 | `FLU-2023-H1N1` | ✅ 补 `campaign_facts → object_id = C-2023-PHARMA-FLU`（`object_kind = campaign`） | `evidence_basis` **明确引用**该 Campaign；3 只标的（HUALANVAX / BAIKEBIO / JINDIKE）与对象 `security_ids` **逐一相等**；行情窗口匹配 |
+| 2 | `FLU-2024-SEASONAL` | ⛔ 不补 | `evidence_basis` = 「官方监测 / 发布会 + 同期市场报道」，**无**对象引用；虽有 3 只标的与上面重合，但**股票重合不足以指定** Campaign |
+| 3 | `FLU-2017-AVIAN` / `FLU-2018-SEASONAL` / `PUBLICHEALTH-2019-WUHAN` / `SUPERFUNGUS-2019-CANDIDA` | ⛔ 不补 | 依据均为**同期报道**，**无**库内对象引用 |
+| 4 | 电力 `POWER-2017/2022/2024-*-SUMMER` | ⛔ 不补 | 季节性观察窗口**不必然**对应一个正式 Campaign；**无**对象引用证据 → 保留未登记 |
+| — | 电力 `POWER-2023-SUMMER` | 既有（v0_3 已带 `C-2023-POWEROP-THERMAL`，**未改动**） | 既有 |
+
+- 新增版本化文件 `research/current/flu_historical_events_v0_7.json`（**保留** v0_1~v0_6 逐字节；
+  `supersedes` = v0_6；`corrections` 留痕）。**只**改 `FLU-2023-H1N1.campaign_facts` —— 事件 / 行情 / 跨年份**数值零变化**。
+- 流感通用地图导入升 v0_7；索引 `maps[FLU].file` → v0_7（索引 `artifact_version` 0.3 → 0.4）。
+
+#### ② ★★ 对账四分类（最小修正）
+
+| 状态 | 含义 |
+|---|---|
+| `OBJECT_REGISTERED` | 证券在关联对象的 `security_ids` 中 |
+| `MAP_SUPPLEMENT` | 证券在全局注册表、但不在关联对象 `security_ids` 中 |
+| `NO_OBJECT_REFERENCE` | **事件未记录关联对象** → 当前无法做对象级对账（★ 不暗示证券不存在、不自动判定归属） |
+| `UNRESOLVED` | **已提供**对象引用但对象无法解析，**或**证券注册信息缺失 |
+
+- 统一更新：事件详情汇总（`EventCardBody`）· 参与者行徽标（`ParticipantRow`）· 标的索引逐次记录（`OccurrenceRow`）+ 头部汇总。
+
+**★ 更新后的对账分类数量（六题材，123 条参与记录）**：
+
+| 题材 | 事件 | 参与记录 | 已登记关联 | 地图补充 | 未登记对象关联 | 无法核对 |
+|---|---|---|---|---|---|---|
+| 流感 FLU | 6 | 42 | **3** | 0 | **39** | 0 |
+| 电力 POWER_SUMMER | 4 | 21 | 3 | 0 | 18 | 0 |
+| 文化传媒 MEDIA | 2 | 4 | 4 | 0 | 0 | 0 |
+| 机器人 ROBOTICS | 1 | 5 | 5 | 0 | 0 | 0 |
+| 汽车智能化 AUTO_INTELLIGENCE | 6 | 22 | 22 | 0 | 0 | 0 |
+| 半导体/AI 算力 SEMICONDUCTOR_AI | 7 | 29 | 29 | 0 | 0 | 0 |
+| **合计** | **26** | **123** | **66** | **0** | **57** | **0** |
+
+> ★ v0.17 → v0.18 变化：**已登记 63 → 66**（`FLU-2023-H1N1` 3 条）；**无法核对 60 → 0**
+> —— 其中 57 条为「**未登记对象关联**」（流感 39 + 电力 18），另 3 条随补齐转为已登记。
+> ★ 「无法核对 0」**不是**把缺口藏起来：57 条**明确标注「未登记对象关联」**，逐条保留原因，**不**自动判定其应属某个 Campaign。
+
+#### ③ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test 1386 passed / 0 failed / 68 files
+新增/更新：objectReconciliation 15（FLU 补齐生效 / 未登记 vs 无法核对区分 / 四分类文案 / 全局锚点 66·0·57·0）
+          HistoricalEventMap +1（FLU-2023-H1N1 对象关联补齐）+ D 区版本断言 0.6 → 0.7
 ```
 
 ★ 环境限制（如实说明）：本机无 Node/Chrome —— 由**便携 Node v22.23.3** 跑通，**未做浏览器截图 / 窄屏视觉核验**。
