@@ -3693,6 +3693,13 @@ html, body {
 .htm-count { font-size: 11px; color: var(--ink-3); }
 .htm-note { margin: 0 0 10px; font-size: 11px; line-height: 1.8; color: var(--ink-3); }
 .htm-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+/* ★★ v0.21 修复（真实浏览器窄屏实测发现）：
+   窄屏（677px 视口实测）下，题材地图里的**长不可断串**（催化来源 URL / 长 id）把
+   `.htm-panel` 撑到 876px，进而把整页撑出横向滚动条（docEl.scrollWidth 904 > clientWidth 662）。
+   `overflow-wrap` 是**继承**属性 → 在 `.htm` 上设一次即可覆盖其下所有文本块；
+   `anywhere` 会参与 min-content 计算，故容器**能收缩**（与 `break-word` 的关键差别）。
+   ★ 只影响「放不下的长串」；常规中文/英文排版与桌面布局**不变**。 */
+.htm { overflow-wrap: anywhere; }
 .htm-tab {
   display: flex; flex-direction: column; gap: 1px; align-items: flex-start;
   padding: 6px 10px; cursor: pointer; text-align: left;
