@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-18 修订 · 外部季节性时间轴 + 历史题材地图 + 标的索引）
+## ★★ 当前状态（2026-10-18 修订 · 季节性线索 → 历史窗口对照 → 研究请求闭环）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -419,6 +419,77 @@ npx tsc -b OK · npm run build 成功 · npm test **1282 passed / 0 failed / 56 
 新增：ExternalSeasonTimeline 19（完整覆盖 / 跨年拆分 / 无窗口 / 映射状态 / 跳转 / 来源区分）
       themeSecurityIndex +2（同年多名称确定性）
       重写 1 条既有断言（折叠区默认收起 → 默认展开全部 25 条）
+```
+
+### v0.13 批次（季节性线索 → 历史窗口对照 → 研究请求闭环）
+
+> ★ 只做产品打通：未新增题材 / 线索 / 历史对象、未改外部日历与事件数据数值、
+> 未改 `schema.sql` / canonical export / 冻结 SA / CANONICAL 快照、无网络请求（产品侧）、无 LLM。
+
+#### ① 主交付 A：外部窗口 × 历史 `MAIN_RISE` 并排对照
+
+- 数据层 `src/data/timeline/externalThemeComparison.ts`：`compareExternalToTheme(entry, macroRows)`
+  · `fracToMonthLabel` · `THEME_COMPARISON_DISCLAIMER`
+- UI `ExternalSeasonTimeline` 内点「对照历史窗口」展开 `ExternalThemeComparisonPanel`
+  （`src/components/ExternalSeasonalRadar/ExternalThemeComparisonPanel.tsx`）。
+- **关联方式唯一**：`mapping.status === 'MAPPED'` 时，用 `mapping.macro_theme` 与
+  **宏观粒度**主题行的 `theme` 做**精确字符串相等**匹配。★ 不做模糊 / 语义 / 同义词匹配。
+  ★ 对照行由 App 以 `themeAnnualRowsOf(dataSource, 'macro')` 单独传入 —— **不随首页粒度切换变化**。
+- **两层时间轴**：① 外部资料声称的月份窗口（琥珀 · 月份精度 · 外部参考）；
+  ② 该宏观主题历史 `MAIN_RISE` 窗口（青蓝 · 来自 Research 投影）。
+  历史侧逐条显示：标题 / ID / `Campaign` 或 `Research Candidate` / 年份 / **原始起止**。
+- 显式声明：**宏观主题映射 ≠ 事件机制相同；并排对照不是统计验证。**
+  不计算重合率 / 命中率 / 规律成立率，不生成分数 / 排名 / 预测。
+
+**实测（真实数据）**：
+
+| 线索 | 映射主题 | 历史窗口 | 关键事实 |
+|---|---|---|---|
+| EXT-12 流感 / 医药（9–1 月） | 医药健康 | 4 段（3 Campaign + 2 RC） | 流感疫苗对象 `C-2023-PHARMA-FLU` 的 MAIN_RISE 在 **2023-02-20 → 2023-03-20**，与外部 9–1 月**明显不同** —— 页面并排呈现差异 |
+| EXT-14 迎峰度夏电力（5–7 月） | 电力（运营端） | 2 段 | `C-2023-POWEROP-THERMAL` 2023-01-03→05-29、`C-2021-POWER-GREEN` 2021-09-07→09-28，用户可自行比对 |
+| EXT-23（无固定窗口） | 高端装备 | 6 段 | 外部层明示「无固定月份窗口 → 不绘制外部月份条」，历史层正常显示 |
+| EXT-17 防汛 / 水利 | **未映射** | 无 | 明示未映射、不给历史关联；改走「带入研究请求」 |
+
+#### ② 主交付 B：未映射线索 → 现有研究请求草稿
+
+- 数据层 `src/data/timeline/externalLeadDraft.ts`：`draftFromExternalLead` / `makeDraftSeed`
+  · `EXTERNAL_LEAD_DRAFT_NOTE` · `draftReplaceConfirmText`
+- `DirectionLookupSection` 新增 `seed` prop：**空草稿直接带入；非空草稿先出确认横幅**，
+  只有点「替换现有草稿」才写入；「保留现有草稿」不动原内容。
+  → 复用的是**同一份**草稿 / 同一个 localStorage 键 / 同一套导出，不新建第二套表单。
+- 带入内容：研究方向 = 线索名；已知线索 = 原始窗口文本（月份精度）/ 类别 / 来源名 /
+  `evidence_refs` / 「外部参考、未经 ThreeC 验证」；研究问题建议 = 可核实句式。
+  ★ `linkedQuery` / `linkedCoverage` 全空（种子不是一次覆盖查询，不伪造证据）。
+
+#### ③ 体验与修复（C 节）
+
+1. 时间轴接入 `today` → 标出**当前月份**（表头加深 + 「今」标记），并明写「仅日历事实，无涨跌含义」。
+2. 25 条外部线索在**时间轴上默认全部可见**（23 行 + 2 条无窗口）—— 全覆盖由时间轴保证。
+3. 详细卡片改回**按需展开**（时间轴已给概览，卡片不再重复铺开）；来源 / 线索正文 / 交互全部保留。
+4. 修 `MapLink`：未提供 `onOpenMap` 时**不渲染按钮**，只给事实文本（不给「看起来能点但点了没反应」的东西）。
+5. 跨年拆分 / 月份精度 / 外部参考标记维持不变。
+
+#### ③-bis ★★ 三个真实用户场景（页面级 jsdom：挂载真实 `<App />` + 真实点击）
+
+| 场景 | 用户路径 | 实测结果 |
+|---|---|---|
+| 1 流感 / 医药 | EXT-12「对照历史窗口」→ 两层时间轴 → 跳历史题材地图 | ✅ 外部层 9–1 月；历史层 `C-2023-PHARMA-FLU` **MAIN_RISE 2023-02-20 → 2023-03-20**（与外部窗口**明显不同**，页面并排呈现）；跳转后 FLU 题材选中、`FLU-2017-AVIAN` 事件卡、标的索引、经验概率全部在场 |
+| 2 迎峰度夏电力 | EXT-14「对照历史窗口」→ 电力事件地图 | ✅ `C-2023-POWEROP-THERMAL` 2023-01-03→05-29 与 `C-2021-POWER-GREEN` 2021-09-07→09-28 逐条显示（含 ID / 类型 / 年份 / 原始起止）；两层来源标签不同；跳转后 POWER-2022-SUMMER 事件在场 |
+| 3 防汛 / 水利 | EXT-17（未映射）→ 带入研究请求 | ✅ 未映射行**没有**「对照历史窗口」；草稿方向 = 防汛 / 水利、已知线索含「6–7 月 + 来源名 + 未经 ThreeC 验证」、无日级日期；预置非空草稿后再带入 → **先出确认横幅**，「保留现有草稿」不动、「替换现有草稿」才写入 |
+| 附加 EXT-23 | 无固定窗口但有映射 | ✅ 历史主题窗口正常显示；外部层明示「无固定月份窗口 → 不绘制外部月份条（不虚构）」 |
+
+★ 环境限制（如实说明）：本机无 Chrome/Chromium，`playwright-core` 因沙箱拦截 node_modules rename 装不上
+→ 未做 Chromium 截图级验证；改为**页面级真实点击**（挂载 `<App />`，断言基于点击后真实状态，非静态字符串扫描）。
+
+#### ④ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test **1312 passed / 0 failed / 61 files**（+30）
+新增：externalThemeComparison 12 · externalLeadDraft 7
+      ExternalSeasonTimeline.interaction 4（jsdom 真点：两层对照 / 无窗口线索 / 带入回调 / 当前月）
+      externalLeadSeed.interaction 3（jsdom 真点：空草稿带入 / 非空确认 / 保留与替换）
+      v013UserFlows 6（**挂载真实 <App /> 页面级**走完用户指定场景）
+      重写 2 条既有断言（卡片默认展开 → 时间轴全覆盖 + 卡片按需展开；按钮回调缺失）
 ```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）

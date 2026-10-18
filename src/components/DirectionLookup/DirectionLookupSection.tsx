@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   coveredTerms,
   lookupDirection,
@@ -16,6 +16,12 @@ import {
   type ResearchRequestPayload,
 } from '../../data/timeline/researchRequestDraft';
 import { copyFailureMessage, copyTextToClipboard } from '../../data/timeline/clipboard';
+import {
+  EXTERNAL_LEAD_DRAFT_NOTE,
+  draftReplaceConfirmText,
+  type DraftSeed,
+} from '../../data/timeline/externalLeadDraft';
+import { RichText } from '../RichText';
 import {
   browserDraftStorage,
   loadDraft,
@@ -82,12 +88,19 @@ export function DirectionLookupSection({
   dataset,
   onOpenHistoricalCase,
   draftStorage,
+  seed,
 }: {
   source: TimelineDataSource | null;
   dataset: CurrentCandidateDataset | null;
   onOpenHistoricalCase?: (campaignId: string) => void;
   /** ★ 测试可注入内存实现；默认走浏览器 localStorage（不可用 → null） */
   draftStorage?: DraftStorage | null;
+  /**
+   * ★ v0.13：从外部季节性线索**带入**的草稿种子。
+   *   - 现有草稿为空 → 直接带入；
+   *   - 现有草稿非空 → **先问用户**，绝不静默覆盖。
+   */
+  seed?: DraftSeed | null;
 }) {
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
@@ -194,6 +207,28 @@ export function DirectionLookupSection({
     setUserClearedFor('');
   };
 
+  /** ★ v0.13：待用户确认的带入（现有草稿非空时出现） */
+  const [pendingSeed, setPendingSeed] = useState<DraftSeed | null>(null);
+  /** 已处理过的 seed token（防止草稿每次变化都重新带入） */
+  const appliedSeedToken = useRef<number | null>(null);
+
+  const applySeed = (s: DraftSeed) => {
+    setDraft({ ...s.draft });
+    setPendingSeed(null);
+    setCopied(null);
+    setCopyError(null);
+    setPreviewOpen(false);
+    setUserClearedFor('');
+  };
+
+  // ★ 带入判定：空草稿直接带入；非空 → 询问（**不得静默覆盖用户已填内容**）
+  useEffect(() => {
+    if (!seed || appliedSeedToken.current === seed.token) return;
+    appliedSeedToken.current = seed.token;
+    if (isDraftBlank(draft)) applySeed(seed);
+    else setPendingSeed(seed);
+  }, [seed, draft]);
+
   /** 当前查询是否与草稿关联的查询不同（★ 只比字符串；用于决定是否提示/提供「新建」按钮） */
   const queryChanged = Boolean(result)
     && Boolean(draft.linkedQuery)
@@ -208,6 +243,23 @@ export function DirectionLookupSection({
         <strong>这是查找，不是结构对应</strong> —— 命中的是主题名 / 标题；
         真正的「当前 ↔ 历史 结构对应」只在研究对象的解释里，由冻结规则给出。
       </p>
+
+      {/* ★ v0.13：外部线索带入的确认横幅（只有现有草稿非空时才出现） */}
+      {pendingSeed && (
+        <div className="dl-seed-confirm" role="alert" data-seed-entry={pendingSeed.entryId}>
+          <p><RichText text={draftReplaceConfirmText(pendingSeed.entryName)} /></p>
+          <p className="dl-seed-note"><RichText text={EXTERNAL_LEAD_DRAFT_NOTE} /></p>
+          <div className="dl-seed-confirm-actions">
+            <button type="button" className="dl-btn" onClick={() => applySeed(pendingSeed)}>
+              替换现有草稿
+            </button>
+            <button type="button" className="dl-btn dl-btn-ghost"
+                    onClick={() => setPendingSeed(null)}>
+              保留现有草稿
+            </button>
+          </div>
+        </div>
+      )}
 
       <form
         className="dl-form"

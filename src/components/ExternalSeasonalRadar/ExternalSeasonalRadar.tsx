@@ -10,6 +10,7 @@
  */
 import { useMemo, useState } from 'react';
 import { eventMapByExternalId } from '../../data/timeline/historicalEventMaps';
+import type { ThemeAnnualRow } from '../../data/timeline/themeAnnualWindow';
 import { ExternalSeasonTimeline } from './ExternalSeasonTimeline';
 import { RichText } from '../RichText';
 import {
@@ -126,13 +127,18 @@ function EntryCard({ e, today, onOpenMap }: {
   );
 }
 
-export function ExternalSeasonalRadar({ today, onOpenMap }: {
+export function ExternalSeasonalRadar({ today, onOpenMap, onRequestDraft, macroRows }: {
   today: string;
   /** ★ v0.10：跳转到首页「历史题材地图」并选中该题材（由 App 注入） */
   onOpenMap?: (themeId: string) => void;
+  /** ★ v0.13：未映射线索 → 带入现有研究请求草稿 */
+  onRequestDraft?: (entry: ExternalCalendarEntry) => void;
+  /** ★ v0.13：**宏观粒度**主题行（历史窗口对照；与首页当前粒度无关） */
+  macroRows?: readonly ThemeAnnualRow[];
 }) {
-  // ★ v0.12：默认**展开全部 25 条**（不再把 21 条藏在「展开其余」后面）
-  const [showAll, setShowAll] = useState(true);
+  // ★ v0.13：时间轴已默认展示全部 25 条 → 详细卡片改回**按需展开**
+  //   （减少与时间轴重复铺开；来源 / 线索正文 / 交互全部保留）
+  const [showAll, setShowAll] = useState(false);
   const [catFilter, setCatFilter] = useState<string>('ALL');
 
   const doc = externalCalendarDoc();
@@ -174,6 +180,9 @@ export function ExternalSeasonalRadar({ today, onOpenMap }: {
         category={catFilter}
         onCategory={setCatFilter}
         onOpenMap={onOpenMap}
+        onRequestDraft={onRequestDraft}
+        macroRows={macroRows ?? []}
+        today={today}
       />
 
       <h3 className="esr-sub">当前优先观察（{priority.length} 项）</h3>

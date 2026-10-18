@@ -79,14 +79,16 @@ describe('ExternalSeasonalRadar · 空白状态如实展示', () => {
     }
   });
 
-  it('★★ v0.12：详细卡片**默认展开全部 25 项**（不再把 21 项藏在「展开其余」后面）', () => {
-    // 默认即展开：不出现「展开其余」；提供「收起」入口
-    expect(html).not.toContain('展开其余');
-    expect(html).toContain('收起 21 项的详细卡片');
+  it('★★ v0.12/13：**时间轴默认覆盖全部 25 条**，详细卡片按需展开', () => {
+    // ★ 25 条在**时间轴**上默认可见（23 行 + 2 条无窗口）→ 这才是「默认全覆盖」
+    expect((html.match(/data-est-row=/g) ?? [])).toHaveLength(23);
+    expect((html.match(/data-est-nowin-id=/g) ?? [])).toHaveLength(2);
+    // 每条在时间轴上都有「外部参考」标记
+    expect((html.match(/est-ext/g) ?? []).length).toBeGreaterThanOrEqual(25);
+    // 详细卡片默认收起（避免与时间轴重复铺开），但展开入口与 25 项计数都在
+    expect(html).toContain('展开其余 21 项的详细卡片');
     expect(html).toContain('全部线索（25 项）');
-    // 25 张卡片都在（优先 4 + 其余 21）—— 用卡片自身的 class 计数，
-    // 不用 data-entry-id（时间轴的 <th> 也用同名属性）
-    expect((html.match(/class="esr-card"/g) ?? [])).toHaveLength(25);
+    expect((html.match(/class="esr-card"/g) ?? [])).toHaveLength(4);
   });
 
   it('★ 总数与版本可追溯', () => {

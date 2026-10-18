@@ -14,7 +14,11 @@ import {
 import { eventMapByExternalId } from '../../../data/timeline/historicalEventMaps';
 import { ExternalSeasonTimeline } from '../ExternalSeasonTimeline';
 
+import { researchTimelineSource } from '../../../data/timeline/timelineAdapter';
+import { themeAnnualRowsOf } from '../../../data/timeline/themeAnnualWindow';
+
 const all = externalCalendarEntries();
+const macroRows = themeAnnualRowsOf(researchTimelineSource(), 'macro');
 const t = buildExternalTimeline(all);
 const html = renderToStaticMarkup(
   <ExternalSeasonTimeline
@@ -23,6 +27,9 @@ const html = renderToStaticMarkup(
     categories={['ALL']}
     category="ALL"
     onCategory={() => {}}
+    onOpenMap={() => {}}
+    macroRows={macroRows}
+    today="2026-10-18"
   />,
 );
 const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
@@ -170,6 +177,25 @@ describe('外部时间轴 · 来源区分', () => {
 
   it('★ 渲染无字面 Markdown 星号', () => {
     expect(html).not.toContain('**');
+  });
+});
+
+describe('外部时间轴 · 不给「假按钮」（v0.13）', () => {
+  it('★★ 未提供 onOpenMap → 只给事实文本，**不渲染**可点按钮', () => {
+    const plain = renderToStaticMarkup(
+      <ExternalSeasonTimeline
+        entries={all}
+        allEntries={all}
+        categories={['ALL']}
+        category="ALL"
+        onCategory={() => {}}
+        macroRows={macroRows}
+      />,
+    );
+    expect(plain).not.toContain('est-map-link');
+    expect(plain).toContain('本页未接线跳转');
+    // 有回调时才出现按钮
+    expect(html).toContain('est-map-link');
   });
 });
 

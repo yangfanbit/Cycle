@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
 import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentSnapshotSection } from './components/CurrentSnapshot/CurrentSnapshotSection';
 import { DirectionLookupSection } from './components/DirectionLookup/DirectionLookupSection';
@@ -17,6 +17,12 @@ import { SeasonalMap } from './components/SeasonalMap/SeasonalMap';
 import { Timeline, type Selection } from './components/Timeline/Timeline';
 import { allCampaigns, campaignById, ruleById } from './data';
 import { researchTimelineSource, verifiedTimelineSource } from './data/timeline/timelineAdapter';
+import {
+  externalCalendarDoc,
+  type ExternalCalendarEntry,
+} from './data/timeline/externalSeasonalCalendar';
+import { makeDraftSeed, type DraftSeed } from './data/timeline/externalLeadDraft';
+import type { ResearchRequestDraft } from './data/timeline/researchRequestDraft';
 import { timelineExportData } from './data/timeline/timelinePreview';
 import type { TimelineCampaign } from './data/timeline/timelineTypes';
 import {
@@ -50,6 +56,9 @@ import { marketTodayISO } from './utils';
  * （`window is not defined`），这也正是「App 层零测试」的原因之一。
  * 无 `window` 时返回空串 = **默认模式**（与生产环境不带参数时行为一致）。
  */
+
+/** 方向查询区的 id（供外部线索「带入研究请求」滚动定位） */
+const DIRECTION_LOOKUP_ID = 'direction-lookup';
 function urlParam(name: string): string {
   if (typeof window === 'undefined') return '';
   try {
@@ -107,6 +116,37 @@ export default function App() {
     () => (verifiedMode ? verifiedTimelineSource() : researchTimelineSource()),
     [verifiedMode],
   );
+
+  /**
+   * ★ v0.13：历史窗口对照用的**宏观主题行**。
+   * 显式使用 `granularity='macro'` —— 不随用户在首页切换 `macro`/`sub` 而变化。
+   */
+  const macroThemeRows = useMemo(
+    () => (dataSource ? themeAnnualRowsOf(dataSource, 'macro') : []),
+    [dataSource],
+  );
+
+  /**
+   * ★ v0.13：未映射外部线索 → 研究请求草稿的「种子」。
+   * `token` 每次自增，让同一条线索再次点击也能重新触发（组件据此决定带入）。
+   */
+  const [draftSeed, setDraftSeed] = useState<DraftSeed | null>(null);
+  const draftSeedToken = useRef(0);
+
+  const bringExternalLead = useCallback((entry: ExternalCalendarEntry) => {
+    draftSeedToken.current += 1;
+    setDraftSeed(makeDraftSeed(
+      entry,
+      externalCalendarDoc().source_reports,
+      draftSeedToken.current,
+    ));
+    // 滚到方向查询区（SSR / 无 DOM 时不假装滚动了）
+    if (typeof document === 'undefined') return;
+    const el = document.getElementById(DIRECTION_LOOKUP_ID);
+    if (el && typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
   const availableYears = useMemo(() => dataSource.years(), [dataSource]);
 
   // Current Candidate 数据集（Phase 7）：
@@ -281,7 +321,14 @@ export default function App() {
             ★★ 与上方地图**并列但来源分离**：上方是 ThreeC **从历史数据得到的**窗口（研究结果），
                本视图是**外部资料声称的**季节性线索（未经 ThreeC 验证）。
                两者**不得**混为一个没有来源区分的指标体系。 */}
-        {!verifiedMode && <ExternalSeasonalRadar today={today} onOpenMap={openMapTheme} />}
+        {!verifiedMode && (
+          <ExternalSeasonalRadar
+            today={today}
+            onOpenMap={openMapTheme}
+            onRequestDraft={bringExternalLead}
+            macroRows={macroThemeRows}
+          />
+        )}
 
         {/* ★ 覆盖边界（ThreeC 1.2 · Usage-Driven）
             用户拿一个真实方向来问（例如「文化传媒」）时，第一件要知道的是「它在不在覆盖内」。
@@ -358,11 +405,14 @@ export default function App() {
               用户关心的方向大概率不在这 5 个里 —— 因此必须先让用户能自己问。
               语义边界：这是**查找**，不是结构对应（命中主题名 ≠ Structural Correspondence）。 */}
           {!verifiedMode && (
-            <DirectionLookupSection
-              source={dataSource}
-              dataset={currentCandidates}
-              onOpenHistoricalCase={(id) => setSelection({ kind: 'campaign', id })}
-            />
+            <div id={DIRECTION_LOOKUP_ID}>
+              <DirectionLookupSection
+                source={dataSource}
+                dataset={currentCandidates}
+                onOpenHistoricalCase={(id) => setSelection({ kind: 'campaign', id })}
+                seed={draftSeed}
+              />
+            </div>
           )}
 
           {/* ⓪ 本期研究快照（Phase 1.3）：月度节奏下用户最关心「跟上期比变了什么」，
