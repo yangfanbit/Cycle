@@ -45,12 +45,18 @@
 
 > ★★ 浏览器复核（v0.20 起）：本机**有 Edge / Safari**，用户已指出此前「本机无浏览器」的说法不成立 ——
 > 自本批次起，**部署后必须用浏览器实机复核线上 Pages**（不再以「无浏览器」为由跳过视觉核验）。
+> ★★ **2026-10-18/19（v0.21）**：① **历史事件 × 冻结 SA 精确交叉引用** —— 事件详情新增
+> 「与当前冻结 SA 的关系」块：按事件 `object_id`（兼容 `campaign_id`）与唯一 `CANONICAL` 快照
+> （`MS-2026-10-13-01`）的 `historical_candidates.identity` **精确匹配**，列出引用该历史对象的
+> 当前研究对象与**既有** `structural_status`（**不重算 SA、不推测归属**）；
+> 实测 **26 事件中 18 个有对象引用 · 18 个命中 · 0 个未命中**，匹配记录 **108 条**；
+> ② **真实浏览器窄屏实测发现并修复一处布局缺陷**（长不可断串撑破题材地图 → 整页横向溢出）。
 
 ### 实测基线（2026-10-18 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **最近功能提交** | `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类「未登记对象关联」）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最近功能提交** | `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **最后核实 Git 状态** | 核实于 2026-10-18：本地 `main` = `origin/main`，工作区仅有 **2 个未跟踪本地库**（`market_data.db` / `cycle_research.db`，**不入库、不提交**）· ★ **本行不再写「HEAD = 某个功能提交」** —— `docs(state)` 回填提交本身会把 HEAD 前移一位，旧写法两次制造了「HEAD 滞后」的误读。**接班必须跑 `git log -1` / `git status` / `git rev-parse origin/main`** 以实际为准，不要相信文档里的固定 SHA |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
@@ -58,11 +64,11 @@
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1405 passed / 0 failed / 69 files**（v0.20：+9 —— 未关联行情行回归 5 + 数据一致性核查 2 + 复制动作验收 2；v0.19 计 1396/69) |
+| **测试** | **1415 passed / 0 failed / 71 files**（v0.21：+10 —— SA 交叉引用 8 + v0.21 端到端 2；v0.20 计 1405/69) |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
-| **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.20 功能提交 `5ae9c84`）**：run [`39142698558`](https://github.com/yangfanbit/Cycle/actions/runs/39142698558) 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**（并已用浏览器实机复核，见本文 v0.20 批次） |
-| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**） |
+| **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.21）**：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200** 并用**真实浏览器**复核（见 v0.21 批次） |
+| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录） |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
@@ -925,6 +931,67 @@ npx tsc -b OK · npm run build 成功 · npm test 1405 passed / 0 failed / 69 fi
 
 > ★ 说明：本机**有 Edge / Safari**，此前文档中「本机无浏览器」的表述**不成立**，已在本批更正为
 > 「**部署后必须用浏览器实机复核**」（截图证据见会话记录）。
+
+### v0.21 批次（历史事件 × 冻结 SA 交叉引用 + 窄屏实机验收）
+
+> ★ 不改冻结产物：未动 canonical export / SA / TO / Driver / 历史快照 / `schema.sql` / 行情快照；
+> 未新增题材；**不**自动合并证券 ID；**不**产生新的结构状态或评分。
+
+#### ① ★★ 历史事件 × 冻结 SA 的**精确交叉引用**
+
+| 项 | 做法 |
+|---|---|
+| 数据来源 | **唯一** `CANONICAL` 快照 `MS-2026-10-13-01` 的 `historical_candidates`（`current_object_id` / `identity` / `structural_status`）+ 同快照 `research_objects`（当前对象显示名 / 大主题） |
+| 匹配 | 事件侧 `campaign_facts.object_id`（兼容 `campaign_id`）；SA 侧 `identity.historical_campaign_id` **或** `identity.historical_research_candidate_id` —— **完全相等**才匹配 |
+| 不做什么 | **不**重算 SA、**不**按主题名/年份/名称相似度推测、**不**新增状态 |
+| 展示 | 事件详情「**与当前冻结 SA 的关系**」块：匹配 → 列出引用它的当前研究对象 + **既有** `structural_status`；未匹配 → 「**当前冻结 SA 快照未找到该历史对象的对应记录**」（≠ 不存在结构对应、≠ 已否决）；事件未记录对象 → 明确「无法进行对象级交叉引用」；快照未载入 → 「**无法判定**」（≠ 未找到） |
+| 硬边界 | 对象级 `structural_status` 是**对象之间**的判定，**不是**对某只股票的确认 —— 与证券注册表 / 四分类对账**分开呈现、不得混为一谈** |
+
+**★ 精确交叉核对（真实文件计算，非预填）**：
+
+| 项 | 数量 |
+|---|---|
+| 事件总数 | **26** |
+| 有明确对象引用的事件 | **18** |
+| 在冻结 SA 快照中**找到**对应历史对象的事件 | **18** |
+| **未找到**对应历史对象的事件 | **0** |
+| 另有**未记录对象**的事件（对象级交叉引用不适用） | **8** |
+| 匹配后的 SA 记录数（18 × 6 当前对象） | **108** |
+
+**★ 匹配记录按既有 `structural_status` 汇总**：`STRUCTURAL_SUPPORTED` **4** ·
+`STRUCTURAL_PARTIAL` **9** · `NO_VALID_CORRESPONDENCE` **56** · `INSUFFICIENT_EVIDENCE` **36** · `THEME_ONLY` **3**。
+
+#### ② ★★ 窄屏 / 实机验收（真实浏览器，非 jsdom）
+
+> ★★ 工具限制（**如实**）：所用浏览器工具**无法模拟**要求的目标视口
+> （1366×768 / 768×1024 / 390×844 / 320×700）—— **实际视口 677×662**；
+> 也未按 Edge / Safari 分别验收（工具是单一内置浏览器）。故本轮为**单浏览器 × 677×662**
+> 的真实渲染验收；窄于 720px 断点，属有效窄屏证据，但**不等于**四个目标视口已逐一验收。
+
+| 检查 | 结果 |
+|---|---|
+| 流感 tab 切换 + 展开 `PUBLICHEALTH-2019-WUHAN` | ✅（真实 DOM 点击） |
+| `data-security-id="YILING"` 行显示「行情记录未关联事件参与者」 | ✅ |
+| 历史参与标的索引（`tsi-table`）渲染、无裁剪/重叠 | ✅ |
+| 行情表容器 `fem-table-wrap` 存在且 `clientWidth == scrollWidth`（578 ≈ 可视宽） | ✅（该视口下表格未溢宽，无需滚动） |
+| 控制台错误 / 失败请求 | 仅 `@vite/client` 404（静态部署无害），**无其它错误** |
+
+★★ **实测发现并修复的一处真实布局缺陷**：
+
+| 阶段 | 数值（677px 视口） |
+|---|---|
+| **修复前** | `documentElement.scrollWidth` **904** > `clientWidth` **662**；`.htm-panel` 876 vs 604；`.app-main` 905 vs 662 → **整页横向溢出** |
+| 根因 | 题材地图里的**长不可断串**（催化来源 URL / 长 id）不换行，撑宽 `.htm-panel` |
+| 修法 | `.htm { overflow-wrap: anywhere; }`（继承属性，覆盖其下文本块；`anywhere` 参与 min-content 计算 → 容器可收缩）。**未**把宽表改成卡片，全部宽表仍在 `fem-table-wrap`（`overflow-x:auto`）内 |
+| **修复后（真实浏览器复测）** | `documentElement` clientWidth 662 / scrollWidth **662**；`body` 662/662；`.htm-panel` 604/604；`.app-main` 662/662 → **整页溢出已消除**（`.seasonal-scroll` 638/720 为其**自身**设计内的横向滚动） |
+
+#### ③ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test 1415 passed / 0 failed / 71 files（+10）
+新增：saCrossReference 8（索引 89×6=534 · 事件侧 18/18/0 + 108 · 状态汇总 · RC 类型 · 旧字段兼容 · 未匹配 · 空索引）
+      v021UserFlows 2（页面级：半导体命中列出 6 个当前对象；流感未记录对象说明）
+```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 
