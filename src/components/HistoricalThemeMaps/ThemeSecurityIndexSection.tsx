@@ -167,6 +167,7 @@ export function ThemeSecurityIndexSection({ doc }: { doc: HistoricalEventsDoc })
         ★ 与 Research 对象的标的对账（逐次出现，精确匹配）：
         对象已登记关联 <strong>{index.totals.reconCounts.OBJECT_REGISTERED}</strong> ·
         地图补充记录 <strong>{index.totals.reconCounts.MAP_SUPPLEMENT}</strong> ·
+        未登记对象关联 <strong>{index.totals.reconCounts.NO_OBJECT_REFERENCE}</strong> ·
         无法核对 <strong>{index.totals.reconCounts.UNRESOLVED}</strong>
       </p>
 

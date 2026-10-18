@@ -3435,7 +3435,8 @@ html, body {
 .fem-part-recon { font-size: 10.5px; border: 1px solid var(--line); border-radius: 9px; padding: 0 6px; color: var(--ink-3); }
 .fem-part-recon.recon-object_registered { background: #eaf5ec; color: #2f6b3c; }
 .fem-part-recon.recon-map_supplement   { background: #fdf3e3; color: var(--preheat-ink); }
-.fem-part-recon.recon-unresolved       { background: #f4f4f6; color: var(--ink-3); }
+.fem-part-recon.recon-no_object_reference { background: #f4f4f6; color: #6b6b76; }
+.fem-part-recon.recon-unresolved       { background: #fbeef0; color: #8a4256; }
 .fem-perf-ticker { font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); margin-left: 6px; }
 .fem-perf-table tr.fem-perf-partial td { color: var(--ink-3); }
 .fem-perf-table tr.fem-perf-partial td.num-up,
@@ -3762,7 +3763,8 @@ html, body {
 /* ---- v0.17：标的索引的 Research 对象对账 ---- */
 .tsi-recon.recon-object_registered { color: #2f6b3c; }
 .tsi-recon.recon-map_supplement   { color: var(--preheat-ink); }
-.tsi-recon.recon-unresolved       { color: var(--ink-3); }
+.tsi-recon.recon-no_object_reference { color: #6b6b76; }
+.tsi-recon.recon-unresolved       { color: #8a4256; }
 .tsi-recon-totals { margin: 4px 0; font-size: 10.5px; color: var(--ink-3); }
 .tsi-hint { font-size: 9.5px; color: var(--ink-3); margin-left: 4px; }
 .tsi-missing { color: var(--ink-3); }

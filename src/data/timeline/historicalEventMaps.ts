@@ -17,7 +17,8 @@
  */
 import indexRaw from '@current/historical_event_maps_index.json';
 // ★ 各题材事件数据：**静态 import**（vite/TS 要求；索引只提供展示配置与入口映射）
-import fluDoc from '@current/flu_historical_events_v0_6.json';
+// ★ v0.18：流感题材升到 v0_7（**只**为 `FLU-2023-H1N1` 补齐对象关联 `C-2023-PHARMA-FLU`；数值零变化）
+import fluDoc from '@current/flu_historical_events_v0_7.json';
 import powerDoc from '@current/power_historical_events_v0_3.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';

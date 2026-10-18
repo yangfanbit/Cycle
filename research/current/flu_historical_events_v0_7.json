@@ -1,0 +1,4684 @@
+{
+ "artifact": "flu_historical_events",
+ "artifact_version": "0.7",
+ "generated_at": "2026-10-18",
+ "generated_by": "ThreeC Agent",
+ "supersedes": "flu_historical_events_v0_6.json",
+ "supersedes_note": "v0_1~v0_6 **逐字节保留**。本版**只**做一处变更：为 `FLU-2023-H1N1` 补齐**对象关联**（`campaign_facts` → `object_id = C-2023-PHARMA-FLU`）。该事件 `evidence_basis` 已明确引用该 Campaign，且其 3 只标的与该对象 `security_ids` 完全一致。★ 事件 / 行情 / 跨年份**数值零变化**。",
+ "position": "★ **历史事后重建 + 外部报道线索**，不是 ThreeC 正式研究结论。本文件用于研究回顾，不证明任何季节性规律成立。",
+ "corrections": [
+  {
+   "at": "2026-10-18",
+   "what": "`FLU-2023-H1N1` 补齐对象关联：新增 `campaign_facts` → `object_id = C-2023-PHARMA-FLU`",
+   "why": "该事件 `evidence_basis` 明确引用库内正式 Campaign `C-2023-PHARMA-FLU`；其 3 只标的（HUALANVAX / BAIKEBIO / JINDIKE）与该对象的 `security_ids` **逐一相等**，且行情窗口匹配 → 属**已有明确证据**下的关联补齐，**非**按股票重合推测",
+   "effect": "★ 该事件由「未登记对象关联」改为「对象已登记关联」；**不改变任何事件 / 行情 / 跨年份数值**"
+  },
+  {
+   "at": "2026-10-14",
+   "what": "`FLU-2019-ANTIFLU`（v0_1）**已移除** —— 它把两个不同机制的事件合并计为「抗流感行情」",
+   "why": "实测两份同期报道证实：2019-04 是**耳念珠菌「超级真菌」**（真菌，非流感）；2019-12 是**武汉不明原因肺炎**（公共卫生事件，媒体虽用「抗流感概念」标签，但机制未获确认）",
+   "split_into": [
+    "SUPERFUNGUS-2019-CANDIDA",
+    "PUBLICHEALTH-2019-WUHAN"
+   ],
+   "effect": "★ 该记录**不再**作为流感季节性的历史表现证据"
+  },
+  {
+   "at": "2026-10-14",
+   "what": "`FLU-2017-AVIAN` 状态由「本轮未核实」→「已发现同期市场报道，行情待核验」",
+   "why": "取得 2017-02-15 同期报道（新浪财经转载中国证券网），点名 10 只个股并给出当日涨幅",
+   "source": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+  },
+  {
+   "at": "2026-10-14",
+   "what": "★ **更正一处代码错误**：联环药业由 v0_1 的 `600735` 改为 **`600513`**",
+   "why": "v0_1 的代码系凭记忆填写且**错误**；600513 经两份同期报道原文（新浪/证券时报的行情链接）与腾讯接口双向核实",
+   "note": "600735 为另一家公司，与本事件无关"
+  },
+  {
+   "at": "2026-10-15",
+   "what": "① `year` 口径统一为**季节开始年**并新增 `season_label`；`years_summary` 由 10 行（事件日历年）改为 **11 个季节窗口**（2015/16–2025/26）；② 窗口外事件移入 `out_of_window_events`（事件详情仍在 `events`）；③ `reading` 与 `can_conclude①` 的「11」与表行数对齐；④ 每个窗口补 `window_type`/`window`/`actual_window`/`coverage`/`comparable`/`comparable_reason`/`benchmark`/`by_security`/`outcome_rule`。",
+   "why": "工作流 B 核验发现 v0_5「正文说 11 个窗口、表只列 10 行」，根因是 `year` 语义为事件日历年；且 11 个窗口中库内仅 2 季接近可比 → 跨年比较无法在库内核验。",
+   "source": ".tmp/ws_b_flu_windows.json（只读核验）+ 库内补数（见 flu_window_backfill_report_v0_1.json）",
+   "note": "★ 原 v0_5 **逐字节保留**；`years_summary_legacy_v0_5` 保留原 10 行以便追溯。"
+  },
+  {
+   "at": "2026-10-16",
+   "what": "① 三个事件级 `market_performance.by_security` 的重复序列 id `YILING-002603` 统一为 `YILING`（与跨年表口径一致；同窗口行数/汇总/min/max 实测完全相同，无信息损失）；② 三个事件 `window_text` 删除陈旧「行情窗口待核验」；③ `target_pool[*].db_coverage`、`can_conclude⑤`、`cannot_conclude⑥`、`recommended_next_steps[1]` 按 DB 实测重写（原文描述的是 2026-10-14 补数前状态）。",
+   "why": "历史事件地图质量审计：`cannot_conclude⑥` 称「三只流感疫苗标的 2023 年行情为碎片、2023/24 季无法用其计算完整窗口」，而同文件 2023/24 季行自身即 `coverage=FULL`、`by_security` 含该三只且**实测各 102/102 交易日** → 文字与自家表格矛盾；`can_conclude⑤` 的「库内只有 2017 年窗口」「2023/2024/2025 为碎片」同样已被补数证伪。",
+   "numbers_unchanged": "★ 全部区间涨跌 / 至高点 / 超额 / 交易日数**一个数字都没改**（13 事件 + 11 季 + 电力 10 年已由 DB 逐项复算一致）；本轮只改文字与序列 id 口径。",
+   "source": ".tmp/ws_c5_eventmap_audit.json + 本脚本 DB 实测断言"
+  }
+ ],
+ "event_classes": [
+  {
+   "code": "FLU_DIRECT",
+   "label": "直接流感相关",
+   "meaning": "机制为流感（含禽流感、季节性流感）本身的行情"
+  },
+  {
+   "code": "ADJACENT_PUBLIC_HEALTH",
+   "label": "邻近传染病 / 公共卫生事件",
+   "meaning": "★ **非流感**机制；可用于研究「市场如何交易公共卫生新闻」，**不得**作为流感季节性的支持证据"
+  }
+ ],
+ "evidence_levels": [
+  {
+   "code": "REPORT_NAMED",
+   "label": "同期报道点名",
+   "meaning": "★ 仅证明其为**历史市场参与者**；**不**证明其业务与事件机制直接相关"
+  },
+  {
+   "code": "BUSINESS_VERIFIED",
+   "label": "业务机制已核实",
+   "meaning": "有独立来源证明其业务与事件机制直接相关（如疫苗/检测试剂生产）"
+  }
+ ],
+ "source_discipline": {
+  "report_vs_threec": "同期报道是**发现历史事件的线索**，不是全部研究结论；催化事件与行情反应须另行核对。",
+  "no_label_only_inclusion": "★★ **不得仅凭当前概念标签纳入**，也**不得仅凭历史涨幅高**就认为概念相关。",
+  "two_pools": "★ 分离两个池：① **历史炒作标的**（事后重建，可含领涨股）② **季节性研究股票池**（须跨年可比、须包含未上涨股）。两者通过 `event_id` + `security_id` 关联，**不得**用①单独证明季节性。",
+  "media_label_vs_mechanism": "★★ **媒体使用的概念标签与实际可核实的催化事件分开保存** —— 例如 2019-12 媒体称「抗流感概念」，但当时可核实的催化是武汉不明原因肺炎通知。",
+  "official_data_boundary": "同花顺概念指数（885879 流感 / 885508 禽流感）经腾讯 GTIMG 实测**不可得** → 本文件不代以其他指数（避免偷换口径）。"
+ },
+ "events": [
+  {
+   "event_id": "FLU-2017-AVIAN",
+   "event_class": "FLU_DIRECT",
+   "label": "2017 年禽流感概念行情",
+   "year": 2017,
+   "window_text": "2017-02-15（报道日）",
+   "external_window_ref": "EXT-12（外部资料：9 月至次年 1 月）",
+   "evidence_basis": "★ 同期市场报道：新浪财经转载中国证券网，2017-02-15",
+   "study_state": "HAS_PRICE_DATA",
+   "catalysts": [
+    {
+     "date": "2017-02-15",
+     "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+     "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "LAYNE-002166",
+     "ticker": "002166",
+     "name": "莱茵生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "reported_move": "**涨停**",
+     "rationale": "报道标题即点名（「莱茵生物涨停」）",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 10.1,
+     "to_high_pct": 28.4,
+     "high_date": "2017-02-16",
+     "excess_to_high_pp": 24.7,
+     "note": "★ 该股在 2017 与 2019-12 两个窗口均出现，机制归因须分别看待。",
+     "business_mechanism": "从八角提取**莽草酸**，为抗流感药**奥司他韦（达菲）的关键前体**；医药中间体为其主力业务（公开资料称约 78%，抗流感为绝对主力）",
+     "business_mechanism_caveat": "★ 证据为**当前时点**公开资料；不能确定该业务在 2017 年的规模，也不能证明它是当次行情的驱动"
+    },
+    {
+     "security_id": "LUKANG-600789",
+     "ticker": "600789",
+     "name": "鲁抗医药",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "+8.36%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 5.5,
+     "to_high_pct": 16.4,
+     "high_date": "2017-02-16",
+     "excess_to_high_pp": 12.7,
+     "business_mechanism": "**兽用药占其主营收入约 39.7%**（另有制剂、原料药）；原料药/抗生素巨头，旗下鲁抗动保为兽用生物药品企业",
+     "business_mechanism_caveat": "★★ 有兽药业务，但**未找到其产品与禽流感机制直接相关的证据** —— 禽流感关联**偏间接**"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "ticker": "000078",
+     "name": "海王生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "+5.21%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 5.5,
+     "to_high_pct": 9.2,
+     "high_date": "2017-02-24",
+     "excess_to_high_pp": 5.5
+    },
+    {
+     "security_id": "DAAN-002030",
+     "ticker": "002030",
+     "name": "达安基因",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "+4.13%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 17.2,
+     "to_high_pct": 17.2,
+     "high_date": "2017-03-15",
+     "excess_to_high_pp": 13.5,
+     "business_mechanism": "**诊断试剂**（POCT / 核酸检测方向）",
+     "business_mechanism_caveat": "★★ 检测业务存在，但**未找到禽流感检测试剂的具体证据** —— 关联待核实"
+    },
+    {
+     "security_id": "WOHUA-002107",
+     "ticker": "002107",
+     "name": "沃华医药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "+3.18%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 5.5,
+     "to_high_pct": 5.5,
+     "high_date": "2017-03-15",
+     "excess_to_high_pp": 1.8
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "ticker": "000597",
+     "name": "东北制药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "+2.61%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 19.9,
+     "to_high_pct": 19.9,
+     "high_date": "2017-03-15",
+     "excess_to_high_pp": 16.2
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "ticker": "600513",
+     "name": "联环药业",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "+2.58%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "note": "★ v0_1 误记为 600735，本版更正为 **600513**",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 2.4,
+     "to_high_pct": 5.3,
+     "high_date": "2017-02-13",
+     "excess_to_high_pp": 1.6,
+     "business_mechanism": "化学药 / 原料药",
+     "business_mechanism_caveat": "★★ **公司已澄清其主要品种不能用于治疗耳念珠菌** —— 「市场炒作标签 ≠ 业务机制」的**典型反例**"
+    },
+    {
+     "security_id": "HUALAN-002007",
+     "ticker": "002007",
+     "name": "华兰生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "reported_move": "+1.59%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 5.7,
+     "to_high_pct": 9.4,
+     "high_date": "2017-03-03",
+     "excess_to_high_pp": 5.7,
+     "business_mechanism": "**流感疫苗**（四价流感疫苗龙头）+ 血液制品",
+     "business_mechanism_caveat": "★ 疫苗业务存在；但 2017 年时其营收主力仍为血制品，疫苗贡献度需按当年口径核实"
+    },
+    {
+     "security_id": "TIANKA-002100",
+     "ticker": "002100",
+     "name": "天康生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "reported_move": "+1.32%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 4.8,
+     "to_high_pct": 8.3,
+     "high_date": "2017-02-28",
+     "excess_to_high_pp": 4.6,
+     "business_mechanism": "**兽用生物制品 / 动物疫苗**（控股天康制药，动物疫苗贡献其主营收入九成以上）",
+     "business_mechanism_caveat": "★ 动物疫苗业务存在，但**未确认含禽流感疫苗**；且证据为当前时点"
+    },
+    {
+     "security_id": "TAILONG-600222",
+     "ticker": "600222",
+     "name": "太龙药业",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "+1.11%",
+     "rationale": "报道点名",
+     "source": "同上报",
+     "market_data": "2017-02-03 ~ 2017-03-15（adjusted 58 行）",
+     "period_return_pct": 0.3,
+     "to_high_pct": 3.2,
+     "high_date": "2017-02-23",
+     "excess_to_high_pp": -0.5
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 上表为**报道当日涨幅**（2017-02-15 盘中，非事后重建的完整区间表现）；★ 事后区间行情见本事件「实测行情」表（已由 2026-10-14 补数支持）。★★ 2026-10-15 更正：原文称「库内无这些标的的行情」，与本事件 `market_performance` 已含 10 只标的不符。",
+    "by_security": null,
+    "reported_same_day_moves": {
+     "LAYNE-002166": "涨停",
+     "LUKANG-600789": "+8.36%",
+     "HAIWANG-000078": "+5.21%",
+     "DAAN-002030": "+4.13%",
+     "WOHUA-002107": "+3.18%",
+     "NEPHARM-000597": "+2.61%",
+     "LIANHUAN-600513": "+2.58%",
+     "HUALAN-002007": "+1.59%",
+     "TIANKA-002100": "+1.32%",
+     "TAILONG-600222": "+1.11%"
+    },
+    "note_corrected_at": "2026-10-15"
+   },
+   "known_gaps": [
+    "★★ **仅一份报道（2017-02-15）** —— 事件的**起止窗口、峰值、后续走势均未核验**",
+    "★★ **业务机制全部未核实** —— 全部标 `REPORT_NAMED`（仅证明是历史市场参与者），**不**因该报道就认定其业务与禽流感直接相关",
+    "★ 报道为**单日快照**（只有当日涨幅），不构成完整事件描述",
+    "禽流感的具体疫病类型（H7N9 或其他）与该日行情的关系未核验",
+    "★ 已补入 2017-02-01~03-15 行情（10 只全部）；★ 但**仅一份报道**，事件窗口仍以该报道日为锚，非 Campaign 裁定"
+   ],
+   "market_performance": {
+    "window": [
+     "2017-02-01",
+     "2017-03-15"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**（区间涨跌 / 至高点 / 高点日 / 回撤），**不是** Campaign 裁定。「报道当日涨幅」见各标的的 `reported_move`，与区间行情是**两回事**。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 3364.49
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 3463.64
+      },
+      "high": {
+       "date": "2017-02-22",
+       "close": 3489.76
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 3364.49
+      },
+      "period_return_pct": 2.9,
+      "to_high_pct": 3.7,
+      "max_drawdown_from_high_pct": -1.8
+     }
+    },
+    "by_security": {
+     "LAYNE-002166": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 9.22
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 10.15
+      },
+      "high": {
+       "date": "2017-02-16",
+       "close": 11.85
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 9.22
+      },
+      "period_return_pct": 10.1,
+      "to_high_pct": 28.4,
+      "max_drawdown_from_high_pct": -14.5,
+      "excess_to_high_pp": 24.7,
+      "excess_period_pp": 7.2
+     },
+     "LUKANG-600789": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 6.76
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 7.13
+      },
+      "high": {
+       "date": "2017-02-16",
+       "close": 7.87
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 6.76
+      },
+      "period_return_pct": 5.5,
+      "to_high_pct": 16.4,
+      "max_drawdown_from_high_pct": -9.7,
+      "excess_to_high_pp": 12.7,
+      "excess_period_pp": 2.6
+     },
+     "HAIWANG-000078": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 5.99
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 6.32
+      },
+      "high": {
+       "date": "2017-02-24",
+       "close": 6.54
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 5.99
+      },
+      "period_return_pct": 5.5,
+      "to_high_pct": 9.2,
+      "max_drawdown_from_high_pct": -3.5,
+      "excess_to_high_pp": 5.5,
+      "excess_period_pp": 2.6
+     },
+     "DAAN-002030": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 7.41
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 8.69
+      },
+      "high": {
+       "date": "2017-03-15",
+       "close": 8.69
+      },
+      "low": {
+       "date": "2017-02-07",
+       "close": 7.38
+      },
+      "period_return_pct": 17.2,
+      "to_high_pct": 17.2,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 13.5,
+      "excess_period_pp": 14.3
+     },
+     "WOHUA-002107": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 7.96
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 8.4
+      },
+      "high": {
+       "date": "2017-03-15",
+       "close": 8.4
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 7.96
+      },
+      "period_return_pct": 5.5,
+      "to_high_pct": 5.5,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 1.8,
+      "excess_period_pp": 2.6
+     },
+     "NEPHARM-000597": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 4.26
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 5.11
+      },
+      "high": {
+       "date": "2017-03-15",
+       "close": 5.11
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 4.26
+      },
+      "period_return_pct": 19.9,
+      "to_high_pct": 19.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 16.2,
+      "excess_period_pp": 17.0
+     },
+     "LIANHUAN-600513": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 11.09
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 11.36
+      },
+      "high": {
+       "date": "2017-02-13",
+       "close": 11.68
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 11.09
+      },
+      "period_return_pct": 2.4,
+      "to_high_pct": 5.3,
+      "max_drawdown_from_high_pct": -4.3,
+      "excess_to_high_pp": 1.6,
+      "excess_period_pp": -0.5
+     },
+     "HUALAN-002007": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 14.46
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 15.29
+      },
+      "high": {
+       "date": "2017-03-03",
+       "close": 15.82
+      },
+      "low": {
+       "date": "2017-02-03",
+       "close": 14.46
+      },
+      "period_return_pct": 5.7,
+      "to_high_pct": 9.4,
+      "max_drawdown_from_high_pct": -3.7,
+      "excess_to_high_pp": 5.7,
+      "excess_period_pp": 2.8
+     },
+     "TIANKA-002100": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 7.32
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 7.67
+      },
+      "high": {
+       "date": "2017-02-28",
+       "close": 7.93
+      },
+      "low": {
+       "date": "2017-02-07",
+       "close": 7.31
+      },
+      "period_return_pct": 4.8,
+      "to_high_pct": 8.3,
+      "max_drawdown_from_high_pct": -3.4,
+      "excess_to_high_pp": 4.6,
+      "excess_period_pp": 1.9
+     },
+     "TAILONG-600222": {
+      "trading_days": 29,
+      "first": {
+       "date": "2017-02-03",
+       "close": 7.92
+      },
+      "last": {
+       "date": "2017-03-15",
+       "close": 7.94
+      },
+      "high": {
+       "date": "2017-02-23",
+       "close": 8.17
+      },
+      "low": {
+       "date": "2017-03-03",
+       "close": 7.89
+      },
+      "period_return_pct": 0.3,
+      "to_high_pct": 3.2,
+      "max_drawdown_from_high_pct": -3.4,
+      "excess_to_high_pp": -0.5,
+      "excess_period_pp": -2.6
+     }
+    }
+   }
+  },
+  {
+   "event_id": "FLU-2018-SEASONAL",
+   "event_class": "FLU_DIRECT",
+   "label": "2017–18 年冬春季流感行情（★ **窗口可比**）",
+   "year": 2018,
+   "window_text": "2017-09-01 ~ 2018-01-31（★ 真实流感高峰 2018-01 落在窗口内）（★ 落在外部窗口 9 月–次年 1 月**内**）",
+   "external_window_ref": "EXT-12（外部资料：9 月至次年 1 月）",
+   "evidence_basis": "官方监测 / 发布会 + 同期市场报道（见催化时间线）",
+   "study_state": "HAS_PRICE_DATA",
+   "window_comparison": {
+    "external_window": "9月-次年1月",
+    "actual_window": "2017-09-01 ~ 2018-01-31（★ 真实流感高峰 2018-01 落在窗口内）",
+    "comparable": true,
+    "reason": "★ 有**官方监测 + 卫计委发布会日期**支持：流感高峰在 2018-01，确实落在 9 月–次年 1 月窗口内 → **可以**做窗口比较（这是 2016–2025 中少数「机制与窗口双吻合」的年份之一）。",
+    "returns_qfq": {
+     "season_window_2017-09-01~2018-01-31": {
+      "HUALAN-002007": -4.9,
+      "DAAN-002030": -27.9,
+      "YILING": -11.9,
+      "XIANGXUE-300147": -10.8,
+      "TIANKA-002100": 2.5,
+      "ZHIFEI": 20.9,
+      "SH000300": 11.6
+     },
+     "event_window_2018-01-01~2018-02-28": {
+      "HUALAN-002007": -5.6,
+      "DAAN-002030": -35.5,
+      "YILING": -14.9,
+      "XIANGXUE-300147": -4.0,
+      "TIANKA-002100": -3.1,
+      "ZHIFEI": 0.2,
+      "SH000300": -1.6
+     }
+    }
+   },
+   "four_concepts_note": "★★ **本事件的窗口是季节观察窗口（2017-09-01 ~ 2018-01-31），落在外部窗口 9 月–次年 1 月内** —— 因此**可以**用于窗口比较。★ 但仍**不等于** Campaign 裁定；行情只是描述，**不是**归因结论。",
+   "catalysts": [
+    {
+     "date": "2018-01-10",
+     "text": "国家卫计委首度回应今冬流感疫情：要求全国医疗机构紧急临时采购奥司他韦、扎那米韦、帕拉米韦",
+     "source": "央广网 http://m.cnr.cn/news/20180110/t20180110_524093846.html"
+    },
+    {
+     "date": "2018-01-12",
+     "text": "卫计委医政医管局副局长焦雅辉介绍抗流感药物（奥司他韦/扎那米韦/帕拉米韦）与医疗救治能力",
+     "source": "东方财富 https://finance.eastmoney.com/a/20180112821096683.html"
+    },
+    {
+     "date": "2018-01-26",
+     "text": "卫计委：预计流感活动高峰还将持续一段时间，随学校/幼托寒假来临将逐渐下降",
+     "source": "卫计委发布会（地方转载）"
+    },
+    {
+     "date": "2018-01-25",
+     "text": "2018 年第 1 周（1/1-1/7）全国南方省份哨点医院 ILI% 数据（新型流感感染人数较往年高数倍）",
+     "source": "微信公众号转载监测解读"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUALAN-002007",
+     "ticker": "002007",
+     "name": "华兰生物",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2015-08-03~2025-12-31"
+    },
+    {
+     "security_id": "DAAN-002030",
+     "ticker": "002030",
+     "name": "达安基因",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2015-10-14~2025-12-31"
+    },
+    {
+     "security_id": "XIANGXUE-300147",
+     "ticker": "300147",
+     "name": "香雪制药",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2015-08-03~2025-12-31"
+    },
+    {
+     "security_id": "TIANKA-002100",
+     "ticker": "002100",
+     "name": "天康生物",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2015-08-03~2025-12-31"
+    }
+   ],
+   "observed_performance": {
+    "note": "",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2017-09-01",
+     "2018-01-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ 季节观察窗口（落在外部 9–1 月窗口内），**非** Campaign 裁定。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 3830.54
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 4275.9
+      },
+      "high": {
+       "date": "2018-01-24",
+       "close": 4389.89
+      },
+      "low": {
+       "date": "2017-09-25",
+       "close": 3817.79
+      },
+      "period_return_pct": 11.6,
+      "to_high_pct": 14.6,
+      "max_drawdown_from_high_pct": -3.0
+     }
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 11.45
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 10.89
+      },
+      "high": {
+       "date": "2017-11-14",
+       "close": 12.73
+      },
+      "low": {
+       "date": "2017-12-28",
+       "close": 10.68
+      },
+      "period_return_pct": -4.9,
+      "to_high_pct": 11.1,
+      "max_drawdown_from_high_pct": -16.1,
+      "excess_to_high_pp": -3.5,
+      "excess_period_pp": -16.5
+     },
+     "DAAN-002030": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 6.99
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 5.04
+      },
+      "high": {
+       "date": "2017-09-14",
+       "close": 8.09
+      },
+      "low": {
+       "date": "2018-01-31",
+       "close": 5.04
+      },
+      "period_return_pct": -27.9,
+      "to_high_pct": 15.7,
+      "max_drawdown_from_high_pct": -37.7,
+      "excess_to_high_pp": 1.1,
+      "excess_period_pp": -39.5
+     },
+     "TIANKA-002100": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 6.87
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 7.04
+      },
+      "high": {
+       "date": "2018-01-16",
+       "close": 7.15
+      },
+      "low": {
+       "date": "2017-12-25",
+       "close": 6.52
+      },
+      "period_return_pct": 2.5,
+      "to_high_pct": 4.1,
+      "max_drawdown_from_high_pct": -3.9,
+      "excess_to_high_pp": -10.5,
+      "excess_period_pp": -9.1
+     },
+     "YILING": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 9.2
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 8.1
+      },
+      "high": {
+       "date": "2017-11-20",
+       "close": 10.15
+      },
+      "low": {
+       "date": "2017-12-18",
+       "close": 8.1
+      },
+      "period_return_pct": -11.9,
+      "to_high_pct": 10.4,
+      "max_drawdown_from_high_pct": -20.2,
+      "excess_to_high_pp": -4.2,
+      "excess_period_pp": -23.5
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 9.94
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 8.87
+      },
+      "high": {
+       "date": "2017-10-10",
+       "close": 10.3
+      },
+      "low": {
+       "date": "2017-12-05",
+       "close": 8.3
+      },
+      "period_return_pct": -10.8,
+      "to_high_pct": 3.6,
+      "max_drawdown_from_high_pct": -19.4,
+      "excess_to_high_pp": -11.0,
+      "excess_period_pp": -22.4
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **本事件是「机制池跑输」的反例** —— 有官方证据（卫计委 2018-01 回应、紧急采购奥司他韦等）但机制池整体**跑输基准**",
+    "★ 全部标的 `REPORT_NAMED`（业务机制未逐只核实）",
+    "★★ 同期「流感概念涨停潮」集中在**机制池之外**的标签股（鲁抗医药/东北制药等）→ 「历史炒作池」与「机制研究池」**不重合**"
+   ]
+  },
+  {
+   "event_id": "PUBLICHEALTH-2019-WUHAN",
+   "event_class": "ADJACENT_PUBLIC_HEALTH",
+   "label": "2019 年 12 月公共卫生事件驱动行情（武汉不明原因肺炎）",
+   "year": 2019,
+   "window_text": "2019-12-30 ~ 2019-12-31（报道日）",
+   "external_window_ref": null,
+   "evidence_basis": "同期报道：证券时报 2019-12-31 · 每日经济新闻 2019-12-31",
+   "study_state": "HAS_PRICE_DATA",
+   "media_label_note": "★★ **媒体标签 vs 可核实催化分开保存**：证券时报标题用「**抗流感概念股**」，但每日经济新闻同日的报道显示**可核实的催化是武汉不明原因肺炎通知** —— 两者不是同一件事。",
+   "catalysts": [
+    {
+     "date": "2019-12-30",
+     "text": "武汉市卫生健康委员会医政医管处发布《关于做好不明原因肺炎救治工作的紧急通知》，称武汉市部分医疗机构陆续出现不明原因肺炎病人",
+     "source": "央视新闻（经每日经济新闻 2019-12-31 转述）"
+    },
+    {
+     "date": "2019-12-31",
+     "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+     "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）"
+    },
+    {
+     "date": "2019-12-31",
+     "text": "证券时报标题：「**抗流感概念股**直线拉升 鲁抗医药、联环药业涨停，莱茵生物涨超 8%」",
+     "source": "证券时报网 2019-12-31（https://www.stcn.com/article/detail/37160.html）",
+     "note": "★ 这是**媒体标签**，非机制认定"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "LUKANG-600789",
+     "ticker": "600789",
+     "name": "鲁抗医药",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "涨停",
+     "rationale": "两份报道均点名",
+     "source": "证券时报 / 每日经济新闻 2019-12-31",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 81.2,
+     "to_high_pct": 81.2,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 75.8,
+     "business_mechanism": "**兽用药占其主营收入约 39.7%**（另有制剂、原料药）；原料药/抗生素巨头，旗下鲁抗动保为兽用生物药品企业",
+     "business_mechanism_caveat": "★★ 有兽药业务，但**未找到其产品与禽流感机制直接相关的证据** —— 禽流感关联**偏间接**"
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "ticker": "600513",
+     "name": "联环药业",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "涨停",
+     "rationale": "两份报道均点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 105.0,
+     "to_high_pct": 105.0,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 99.6,
+     "business_mechanism": "化学药 / 原料药",
+     "business_mechanism_caveat": "★★ **公司已澄清其主要品种不能用于治疗耳念珠菌** —— 「市场炒作标签 ≠ 业务机制」的**典型反例**"
+    },
+    {
+     "security_id": "LAYNE-002166",
+     "ticker": "002166",
+     "name": "莱茵生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "reported_move": "涨超 8%（证券时报）/ 涨停（每经）",
+     "rationale": "两份报道均点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 54.4,
+     "to_high_pct": 54.4,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 49.0,
+     "note": "★ 该股在 2017 与 2019-12 两个窗口均出现，机制归因须分别看待。",
+     "business_mechanism": "从八角提取**莽草酸**，为抗流感药**奥司他韦（达菲）的关键前体**；医药中间体为其主力业务（公开资料称约 78%，抗流感为绝对主力）",
+     "business_mechanism_caveat": "★ 证据为**当前时点**公开资料；不能确定该业务在 2017 年的规模，也不能证明它是当次行情的驱动"
+    },
+    {
+     "security_id": "XIANGXUE-300147",
+     "ticker": "300147",
+     "name": "香雪制药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "reported_move": "涨停",
+     "rationale": "每日经济新闻点名",
+     "source": "每日经济新闻 2019-12-31",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 67.9,
+     "to_high_pct": 67.9,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 62.5,
+     "business_mechanism": "**抗病毒口服液**（称我国抗病毒口服液国家标准起草者）",
+     "business_mechanism_caveat": "★ 证据为当前时点；★ 该股 2019 年报存在虚假记载、后变更为 ST —— 引用其资料时须留意"
+    },
+    {
+     "security_id": "WEIMING-002581",
+     "ticker": "002581",
+     "name": "未名医药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "涨停",
+     "rationale": "每日经济新闻点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 17.5,
+     "to_high_pct": 18.6,
+     "high_date": "2020-01-21",
+     "excess_to_high_pp": 13.2
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "ticker": "000597",
+     "name": "东北制药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "涨停",
+     "rationale": "每日经济新闻点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 34.0,
+     "to_high_pct": 36.8,
+     "high_date": "2020-01-21",
+     "excess_to_high_pp": 31.4
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "ticker": "000078",
+     "name": "海王生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "涨停",
+     "rationale": "每日经济新闻点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 46.5,
+     "to_high_pct": 46.5,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 41.1
+    },
+    {
+     "security_id": "YILING-002603",
+     "ticker": "002603",
+     "name": "以岭药业",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "reported_move": "涨停",
+     "rationale": "每日经济新闻点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 69.9,
+     "to_high_pct": 69.9,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 64.5,
+     "business_mechanism": "**连花清瘟**（治感冒防流感的代表性中成药，公司独家专利药）",
+     "business_mechanism_caveat": "★ 证据为当前时点；★ 该事件机制是**武汉不明原因肺炎**（邻近题材），非流感"
+    },
+    {
+     "security_id": "SIHUAN-000518",
+     "ticker": "000518",
+     "name": "四环生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "涨停",
+     "rationale": "每日经济新闻点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 64.9,
+     "to_high_pct": 64.9,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 59.5
+    },
+    {
+     "security_id": "NANWEI-603880",
+     "ticker": "603880",
+     "name": "南卫股份",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "涨停",
+     "rationale": "每日经济新闻点名",
+     "source": "同上",
+     "market_data": "2019-12-16 ~ 2020-01-23（adjusted 56 行）",
+     "period_return_pct": 35.9,
+     "to_high_pct": 35.9,
+     "high_date": "2020-01-23",
+     "excess_to_high_pp": 30.5
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 上表为**报道当日涨幅**；★ 事后区间行情见本事件「实测行情」表。★★ 2026-10-15 更正：原文称「库内无这些标的行情」，与 `market_performance` 已含 10 只标的不符。",
+    "by_security": null,
+    "note_corrected_at": "2026-10-15"
+   },
+   "known_gaps": [
+    "★★ **催化是武汉不明原因肺炎（公共卫生事件），不是流感** —— 媒体「抗流感概念」标签 ≠ 机制认定",
+    "★★ 不得作为流感季节性的支持证据；可用于研究「市场如何交易公共卫生新闻」",
+    "该窗口（2019-12-30 起）与后续疫情演进的边界未划定",
+    "★ 已补入 2019-12-16~2020-01-23 行情（10 只全部，止于春节休市）"
+   ],
+   "market_performance": {
+    "window": [
+     "2019-12-16",
+     "2020-01-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**（区间涨跌 / 至高点 / 高点日 / 回撤），**不是** Campaign 裁定。「报道当日涨幅」见各标的的 `reported_move`，与区间行情是**两回事**。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 3987.55
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 4003.9
+      },
+      "high": {
+       "date": "2020-01-13",
+       "close": 4203.99
+      },
+      "low": {
+       "date": "2019-12-23",
+       "close": 3967.1
+      },
+      "period_return_pct": 0.4,
+      "to_high_pct": 5.4,
+      "max_drawdown_from_high_pct": -4.8
+     }
+    },
+    "by_security": {
+     "LUKANG-600789": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 6.02
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 10.91
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 10.91
+      },
+      "low": {
+       "date": "2019-12-18",
+       "close": 6.01
+      },
+      "period_return_pct": 81.2,
+      "to_high_pct": 81.2,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 75.8,
+      "excess_period_pp": 80.8
+     },
+     "LIANHUAN-600513": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 6.13
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 12.57
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 12.57
+      },
+      "low": {
+       "date": "2019-12-16",
+       "close": 6.13
+      },
+      "period_return_pct": 105.0,
+      "to_high_pct": 105.0,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 99.6,
+      "excess_period_pp": 104.6
+     },
+     "LAYNE-002166": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 6.64
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 10.25
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 10.25
+      },
+      "low": {
+       "date": "2019-12-23",
+       "close": 6.61
+      },
+      "period_return_pct": 54.4,
+      "to_high_pct": 54.4,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 49.0,
+      "excess_period_pp": 54.0
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 6.7
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 11.25
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 11.25
+      },
+      "low": {
+       "date": "2019-12-16",
+       "close": 6.7
+      },
+      "period_return_pct": 67.9,
+      "to_high_pct": 67.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 62.5,
+      "excess_period_pp": 67.5
+     },
+     "WEIMING-002581": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 6.92
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 8.13
+      },
+      "high": {
+       "date": "2020-01-21",
+       "close": 8.21
+      },
+      "low": {
+       "date": "2019-12-23",
+       "close": 6.5
+      },
+      "period_return_pct": 17.5,
+      "to_high_pct": 18.6,
+      "max_drawdown_from_high_pct": -8.2,
+      "excess_to_high_pp": 13.2,
+      "excess_period_pp": 17.1
+     },
+     "NEPHARM-000597": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 4.2
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 5.63
+      },
+      "high": {
+       "date": "2020-01-21",
+       "close": 5.74
+      },
+      "low": {
+       "date": "2019-12-27",
+       "close": 4.17
+      },
+      "period_return_pct": 34.0,
+      "to_high_pct": 36.8,
+      "max_drawdown_from_high_pct": -6.7,
+      "excess_to_high_pp": 31.4,
+      "excess_period_pp": 33.6
+     },
+     "HAIWANG-000078": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 3.29
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 4.82
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 4.82
+      },
+      "low": {
+       "date": "2019-12-16",
+       "close": 3.29
+      },
+      "period_return_pct": 46.5,
+      "to_high_pct": 46.5,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 41.1,
+      "excess_period_pp": 46.1
+     },
+     "YILING": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 5.2
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 8.84
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 8.84
+      },
+      "low": {
+       "date": "2019-12-16",
+       "close": 5.2
+      },
+      "period_return_pct": 69.9,
+      "to_high_pct": 69.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 64.5,
+      "excess_period_pp": 69.5
+     },
+     "SIHUAN-000518": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 3.33
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 5.49
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 5.49
+      },
+      "low": {
+       "date": "2019-12-23",
+       "close": 3.3
+      },
+      "period_return_pct": 64.9,
+      "to_high_pct": 64.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 59.5,
+      "excess_period_pp": 64.5
+     },
+     "NANWEI-603880": {
+      "trading_days": 28,
+      "first": {
+       "date": "2019-12-16",
+       "close": 5.55
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 7.54
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 7.54
+      },
+      "low": {
+       "date": "2019-12-23",
+       "close": 5.45
+      },
+      "period_return_pct": 35.9,
+      "to_high_pct": 35.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 30.5,
+      "excess_period_pp": 35.5
+     }
+    }
+   }
+  },
+  {
+   "event_id": "SUPERFUNGUS-2019-CANDIDA",
+   "event_class": "ADJACENT_PUBLIC_HEALTH",
+   "label": "2019 年 4 月「超级真菌」（耳念珠菌）概念行情",
+   "year": 2019,
+   "window_text": "2019-04-10 ~ 2019-04-11（报道日）",
+   "external_window_ref": null,
+   "evidence_basis": "同期报道：每日经济新闻 2019-04-11（另见新京报同源报道）",
+   "study_state": "HAS_PRICE_DATA",
+   "catalysts": [
+    {
+     "date": "2019-04-08",
+     "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+     "source": "每日经济新闻 2019-04-11（转述）"
+    },
+    {
+     "date": "2019-04-10",
+     "text": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停",
+     "source": "每日经济新闻 2019-04-11"
+    },
+    {
+     "date": "2019-04-11",
+     "text": "超级真菌概念股持续走强，未名医药、四环生物、联环药业再度涨停；海王生物、鲁抗医药、东北制药均涨逾 5%",
+     "source": "同上"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "SIHUAN-000518",
+     "ticker": "000518",
+     "name": "四环生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-10 涨停 · 04-11 再度涨停",
+     "rationale": "报道点名",
+     "source": "每日经济新闻 2019-04-11",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": -15.5,
+     "to_high_pct": 19.8,
+     "high_date": "2019-04-11",
+     "excess_to_high_pp": 16.1
+    },
+    {
+     "security_id": "WEIMING-002581",
+     "ticker": "002581",
+     "name": "未名医药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-10 涨停 · 04-11 再度涨停",
+     "rationale": "报道点名",
+     "source": "同上",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": 0.4,
+     "to_high_pct": 38.5,
+     "high_date": "2019-04-11",
+     "excess_to_high_pp": 34.8
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "ticker": "600513",
+     "name": "联环药业",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-10 涨停 · 04-11 再度涨停",
+     "rationale": "报道点名",
+     "source": "同上",
+     "note": "★★ 报道另载：该公司**后来澄清其主要品种不能用于治疗耳念珠菌** —— 是「市场炒作标签 ≠ 业务机制」的**典型反例**",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": -4.1,
+     "to_high_pct": 28.9,
+     "high_date": "2019-04-11",
+     "excess_to_high_pp": 25.2,
+     "business_mechanism": "化学药 / 原料药",
+     "business_mechanism_caveat": "★★ **公司已澄清其主要品种不能用于治疗耳念珠菌** —— 「市场炒作标签 ≠ 业务机制」的**典型反例**"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "ticker": "000078",
+     "name": "海王生物",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-10 涨停 · 04-11 涨逾 5%",
+     "rationale": "报道点名",
+     "source": "同上",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": -9.2,
+     "to_high_pct": 14.3,
+     "high_date": "2019-04-11",
+     "excess_to_high_pp": 10.6
+    },
+    {
+     "security_id": "LUKANG-600789",
+     "ticker": "600789",
+     "name": "鲁抗医药",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-10 涨停 · 04-11 涨逾 5%",
+     "rationale": "报道点名",
+     "source": "同上",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": -10.1,
+     "to_high_pct": 16.5,
+     "high_date": "2019-04-11",
+     "excess_to_high_pp": 12.8,
+     "business_mechanism": "**兽用药占其主营收入约 39.7%**（另有制剂、原料药）；原料药/抗生素巨头，旗下鲁抗动保为兽用生物药品企业",
+     "business_mechanism_caveat": "★★ 有兽药业务，但**未找到其产品与禽流感机制直接相关的证据** —— 禽流感关联**偏间接**"
+    },
+    {
+     "security_id": "FUAN-300194",
+     "ticker": "300194",
+     "name": "福安药业",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-10 涨停",
+     "rationale": "报道点名",
+     "source": "同上",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": 79.9,
+     "to_high_pct": 153.6,
+     "high_date": "2019-04-19",
+     "excess_to_high_pp": 149.9,
+     "note": "★★ **混杂因素**：该窗口内涨幅异常（至高点 +153.6%），2019 年 4 月同期该股另有「工业大麻」等题材炒作 —— **不得**将全部涨幅归因于超级真菌事件。"
+    },
+    {
+     "security_id": "JIUDIAN-300705",
+     "ticker": "300705",
+     "name": "九典制药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-10 涨停",
+     "rationale": "报道点名",
+     "source": "同上",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": -15.8,
+     "to_high_pct": 19.0,
+     "high_date": "2019-04-10",
+     "excess_to_high_pp": 15.3
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "ticker": "000597",
+     "name": "东北制药",
+     "exchange": "SZ",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "reported_move": "04-11 涨逾 5%",
+     "rationale": "报道点名",
+     "source": "同上",
+     "market_data": "2019-04-01 ~ 2019-04-30（adjusted 42 行）",
+     "period_return_pct": -6.0,
+     "to_high_pct": 10.3,
+     "high_date": "2019-04-11",
+     "excess_to_high_pp": 6.6
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 上表为**报道当日涨幅**；★ 事后区间行情见本事件「实测行情」表。★★ 2026-10-15 更正：原文称「库内无这些标的行情」，与 `market_performance` 已含 8 只标的不符。",
+    "by_security": null,
+    "note_corrected_at": "2026-10-15"
+   },
+   "known_gaps": [
+    "★★ **该事件为真菌（耳念珠菌）驱动，非流感** —— 不得作为流感季节性的支持证据",
+    "★★ 全部标的仅 `REPORT_NAMED`；联环药业的**公司澄清**已证伪其业务关联",
+    "事件窗口仅 2 个交易日（04-10/04-11）的快照，起止与峰值未核验",
+    "★ 已补入 2019-04-01~04-30 行情（8 只全部）；★ 福安药业涨幅含**其他题材混杂**（见其 note）"
+   ],
+   "market_performance": {
+    "window": [
+     "2019-04-01",
+     "2019-04-30"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**（区间涨跌 / 至高点 / 高点日 / 回撤），**不是** Campaign 裁定。「报道当日涨幅」见各标的的 `reported_move`，与区间行情是**两回事**。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 3973.93
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 3913.21
+      },
+      "high": {
+       "date": "2019-04-19",
+       "close": 4120.61
+      },
+      "low": {
+       "date": "2019-04-26",
+       "close": 3889.27
+      },
+      "period_return_pct": -1.5,
+      "to_high_pct": 3.7,
+      "max_drawdown_from_high_pct": -5.6
+     }
+    },
+    "by_security": {
+     "SIHUAN-000518": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 4.2
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 3.55
+      },
+      "high": {
+       "date": "2019-04-11",
+       "close": 5.03
+      },
+      "low": {
+       "date": "2019-04-29",
+       "close": 3.49
+      },
+      "period_return_pct": -15.5,
+      "to_high_pct": 19.8,
+      "max_drawdown_from_high_pct": -30.6,
+      "excess_to_high_pp": 16.1,
+      "excess_period_pp": -14.0
+     },
+     "WEIMING-002581": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 8.16
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 8.19
+      },
+      "high": {
+       "date": "2019-04-11",
+       "close": 11.3
+      },
+      "low": {
+       "date": "2019-04-29",
+       "close": 8.02
+      },
+      "period_return_pct": 0.4,
+      "to_high_pct": 38.5,
+      "max_drawdown_from_high_pct": -29.0,
+      "excess_to_high_pp": 34.8,
+      "excess_period_pp": 1.9
+     },
+     "LIANHUAN-600513": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 7.0
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 6.71
+      },
+      "high": {
+       "date": "2019-04-11",
+       "close": 9.02
+      },
+      "low": {
+       "date": "2019-04-29",
+       "close": 6.53
+      },
+      "period_return_pct": -4.1,
+      "to_high_pct": 28.9,
+      "max_drawdown_from_high_pct": -27.6,
+      "excess_to_high_pp": 25.2,
+      "excess_period_pp": -2.6
+     },
+     "HAIWANG-000078": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 4.56
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 4.14
+      },
+      "high": {
+       "date": "2019-04-11",
+       "close": 5.21
+      },
+      "low": {
+       "date": "2019-04-29",
+       "close": 3.99
+      },
+      "period_return_pct": -9.2,
+      "to_high_pct": 14.3,
+      "max_drawdown_from_high_pct": -23.4,
+      "excess_to_high_pp": 10.6,
+      "excess_period_pp": -7.7
+     },
+     "LUKANG-600789": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 7.39
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 6.65
+      },
+      "high": {
+       "date": "2019-04-11",
+       "close": 8.61
+      },
+      "low": {
+       "date": "2019-04-29",
+       "close": 6.6
+      },
+      "period_return_pct": -10.1,
+      "to_high_pct": 16.5,
+      "max_drawdown_from_high_pct": -23.3,
+      "excess_to_high_pp": 12.8,
+      "excess_period_pp": -8.6
+     },
+     "FUAN-300194": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 4.22
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 7.59
+      },
+      "high": {
+       "date": "2019-04-19",
+       "close": 10.7
+      },
+      "low": {
+       "date": "2019-04-01",
+       "close": 4.22
+      },
+      "period_return_pct": 79.9,
+      "to_high_pct": 153.6,
+      "max_drawdown_from_high_pct": -29.1,
+      "excess_to_high_pp": 149.9,
+      "excess_period_pp": 81.4
+     },
+     "JIUDIAN-300705": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 6.21
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 5.23
+      },
+      "high": {
+       "date": "2019-04-10",
+       "close": 7.39
+      },
+      "low": {
+       "date": "2019-04-29",
+       "close": 5.12
+      },
+      "period_return_pct": -15.8,
+      "to_high_pct": 19.0,
+      "max_drawdown_from_high_pct": -30.8,
+      "excess_to_high_pp": 15.3,
+      "excess_period_pp": -14.3
+     },
+     "NEPHARM-000597": {
+      "trading_days": 21,
+      "first": {
+       "date": "2019-04-01",
+       "close": 5.66
+      },
+      "last": {
+       "date": "2019-04-30",
+       "close": 5.33
+      },
+      "high": {
+       "date": "2019-04-11",
+       "close": 6.24
+      },
+      "low": {
+       "date": "2019-04-30",
+       "close": 5.33
+      },
+      "period_return_pct": -6.0,
+      "to_high_pct": 10.3,
+      "max_drawdown_from_high_pct": -14.7,
+      "excess_to_high_pp": 6.6,
+      "excess_period_pp": -4.5
+     }
+    }
+   }
+  },
+  {
+   "event_id": "FLU-2023-H1N1",
+   "event_class": "FLU_DIRECT",
+   "label": "2023 年甲流（A(H1N1)pdm09）行情",
+   "year": 2023,
+   "window_text": "2023-02-20 → 2023-04-15（Campaign `C-2023-PHARMA-FLU` 记录窗口）",
+   "external_window_ref": "EXT-12（外部资料：9 月至次年 1 月）",
+   "evidence_basis": "库内正式 Campaign `C-2023-PHARMA-FLU`（rule_pharma_upgrade · date_confidence medium）",
+   "study_state": "HAS_PRICE_DATA",
+   "three_peaks_note": "★★ **三个不同概念，不得混用**：① **流感流行病学高峰** = 2023 年 3 月中旬（官方监测，S-FLU-03）；② **Campaign 记录的 `peak_date`** = 2023-03-20（研究侧裁定）；③ **个股实际行情高点** = 见下方 `market_performance`（★ **三只各不相同，且无一为 2023-03-20**）。★ 页面**不得**把 ① / ② 显示为三只股票的行情高点。",
+   "catalysts": [
+    {
+     "date": "2023-02-20",
+     "text": "甲型流感高发，抗流感概念股走高、部分药企满负荷生产",
+     "source": "S-FLU-02（财经媒体，行情口径，medium）"
+    },
+    {
+     "date": "2023-03-20",
+     "text": "中国疾控中心国家流感中心主任表示本次流感 3 月中旬已进入高峰、整体处高位",
+     "source": "S-FLU-03（行业媒体转官方表态，medium）"
+    },
+    {
+     "date": "2023-03-24",
+     "text": "国家流感中心第 12 周：南方阳性率上升趋缓、北方下降；主要流行株 A(H1N1)pdm09",
+     "source": "S-FLU-01（官方监测数据，**high**）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUALANVAX",
+     "ticker": "301207",
+     "name": "华兰疫苗",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "人用流感疫苗生产商（Campaign 登记的 leader）",
+     "source": "C-2023-PHARMA-FLU / securities.json",
+     "business_mechanism": "四价流感疫苗生产（公开资料核实）",
+     "business_mechanism_caveat": "★ 该业务有 Campaign 依据（`securities.json`）；但证据为**当前时点**公开资料，不能确定该业务在 2023 年的规模。",
+     "market_data": "2023-02-20 ~ 2023-04-15（adjusted 39 行）"
+    },
+    {
+     "security_id": "BAIKEBIO",
+     "ticker": "688276",
+     "name": "百克生物",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "疫苗企业（Campaign 登记的 representative）",
+     "source": "C-2023-PHARMA-FLU / securities.json",
+     "business_mechanism": "疫苗研发生产（含流感疫苗方向）",
+     "business_mechanism_caveat": "★ 该业务有 Campaign 依据（`securities.json`）；但证据为**当前时点**公开资料，不能确定该业务在 2023 年的规模。",
+     "market_data": "2023-02-20 ~ 2023-04-15（adjusted 39 行）"
+    },
+    {
+     "security_id": "JINDIKE",
+     "ticker": "688670",
+     "name": "金迪克",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "流感疫苗企业（Campaign 登记的 representative）",
+     "source": "C-2023-PHARMA-FLU / securities.json",
+     "business_mechanism": "四价流感疫苗专业厂商（公开资料核实）",
+     "business_mechanism_caveat": "★ 该业务有 Campaign 依据（`securities.json`）；但证据为**当前时点**公开资料，不能确定该业务在 2023 年的规模。",
+     "market_data": "2023-02-20 ~ 2023-04-15（adjusted 39 行）"
+    }
+   ],
+   "observed_performance": {
+    "note": "★ 报道/监测证据见催化时间线；行情见 `market_performance`。",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2023-02-20",
+     "2023-04-15"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事后行情描述**，**不是** Campaign 裁定。★★ 注意：**个股行情高点日与 Campaign `peak_date`(2023-03-20) 及流感监测高峰均不一致**。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 39,
+      "first": {
+       "date": "2023-02-20",
+       "close": 4133.49
+      },
+      "last": {
+       "date": "2023-04-14",
+       "close": 4092.0
+      },
+      "high": {
+       "date": "2023-02-21",
+       "close": 4144.35
+      },
+      "low": {
+       "date": "2023-03-20",
+       "close": 3939.08
+      },
+      "period_return_pct": -1.0,
+      "to_high_pct": 0.3,
+      "max_drawdown_from_high_pct": -5.0
+     }
+    },
+    "by_security": {
+     "HUALANVAX": {
+      "trading_days": 39,
+      "first": {
+       "date": "2023-02-20",
+       "close": 30.66
+      },
+      "last": {
+       "date": "2023-04-14",
+       "close": 32.14
+      },
+      "high": {
+       "date": "2023-02-28",
+       "close": 32.89
+      },
+      "low": {
+       "date": "2023-03-20",
+       "close": 28.28
+      },
+      "period_return_pct": 4.9,
+      "to_high_pct": 7.3,
+      "max_drawdown_from_high_pct": -14.0,
+      "excess_to_high_pp": 7.0,
+      "excess_period_pp": 5.9
+     },
+     "BAIKEBIO": {
+      "trading_days": 39,
+      "first": {
+       "date": "2023-02-20",
+       "close": 62.29
+      },
+      "last": {
+       "date": "2023-04-14",
+       "close": 63.48
+      },
+      "high": {
+       "date": "2023-03-10",
+       "close": 64.46
+      },
+      "low": {
+       "date": "2023-04-03",
+       "close": 52.34
+      },
+      "period_return_pct": 1.9,
+      "to_high_pct": 3.5,
+      "max_drawdown_from_high_pct": -18.8,
+      "excess_to_high_pp": 3.2,
+      "excess_period_pp": 2.9
+     },
+     "JINDIKE": {
+      "trading_days": 39,
+      "first": {
+       "date": "2023-02-20",
+       "close": 35.44
+      },
+      "last": {
+       "date": "2023-04-14",
+       "close": 42.02
+      },
+      "high": {
+       "date": "2023-04-14",
+       "close": 42.02
+      },
+      "low": {
+       "date": "2023-03-20",
+       "close": 35.06
+      },
+      "period_return_pct": 18.6,
+      "to_high_pct": 18.6,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_to_high_pp": 18.3,
+      "excess_period_pp": 19.6
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **个股行情高点日（02-28 / 03-10 / 04-14）与 Campaign peak_date（03-20）、流感监测高峰（3 月中旬）三者均不一致**",
+    "★ 三只标的**分别于 2022/2021/2021 上市** —— 代表范围**仅限该 Campaign 已登记股票**，不能作为流感概念的历史代表",
+    "★ 三只行情高点**分散**（不似 2017/2019 事件那样同步）→ 驱动可能较分散或含个股独立因素",
+    "驱动证据仅 3 条（1 条 Tier 1 监测 + 2 条 media tier3）",
+    "未与同年其他因子对照，无法排除同期板块因素"
+   ],
+   "campaign_facts": {
+    "object_id": "C-2023-PHARMA-FLU",
+    "object_kind": "campaign",
+    "start": "2023-02-20",
+    "peak_date": "2023-03-20",
+    "end": "2023-04-15",
+    "note": "★ `peak_date` 是 **Campaign 研究侧记录**，**不是**个股行情高点；来源：本事件 `evidence_basis` 引用库内正式 Campaign，且标的与对象 `security_ids` 完全一致"
+   }
+  },
+  {
+   "event_id": "FLU-2024-SEASONAL",
+   "event_class": "FLU_DIRECT",
+   "label": "2024–25 年冬春季流感行情（★ **窗口可比**）",
+   "year": 2024,
+   "window_text": "2024-09-01 ~ 2025-01-31（★ 真实流感高发 2024-12，落在窗口内）（★ 落在外部窗口 9 月–次年 1 月**内**）",
+   "external_window_ref": "EXT-12（外部资料：9 月至次年 1 月）",
+   "evidence_basis": "官方监测 / 发布会 + 同期市场报道（见催化时间线）",
+   "study_state": "HAS_PRICE_DATA",
+   "window_comparison": {
+    "external_window": "9月-次年1月",
+    "actual_window": "2024-09-01 ~ 2025-01-31（★ 真实流感高发 2024-12，落在窗口内）",
+    "comparable": true,
+    "reason": "★ 有**官方监测（2024 第 50/52 周）+ 同期市场报道（2024-12-23、2025-01-06）**支持，事件落在 9 月–次年 1 月窗口内 → 可比。",
+    "returns_qfq": {
+     "season_window_2024-09-01~2025-01-31": {
+      "HUALAN-002007": 6.6,
+      "DAAN-002030": -1.1,
+      "YILING": -10.7,
+      "XIANGXUE-300147": 31.1,
+      "TIANKA-002100": -1.0,
+      "ZHIFEI": 8.8,
+      "SH000300": 16.9,
+      "HUALANVAX": -4.5,
+      "BAIKEBIO": -5.5,
+      "JINDIKE": 3.7
+     },
+     "event_window_2024-12-01~2025-01-31": {
+      "HUALAN-002007": -7.6,
+      "DAAN-002030": -19.8,
+      "YILING": -22.8,
+      "XIANGXUE-300147": -25.9,
+      "TIANKA-002100": -8.0,
+      "ZHIFEI": -18.4,
+      "SH000300": -3.3,
+      "HUALANVAX": -3.0,
+      "BAIKEBIO": -12.9,
+      "JINDIKE": -20.9
+     }
+    }
+   },
+   "four_concepts_note": "★★ **本事件的窗口是季节观察窗口（2024-09-01 ~ 2025-01-31），落在外部窗口 9 月–次年 1 月内** —— 因此**可以**用于窗口比较。★ 但仍**不等于** Campaign 裁定；行情只是描述，**不是**归因结论。",
+   "catalysts": [
+    {
+     "date": "2024-12-23",
+     "text": "「A 股流感概念股部分逆势走强！鲁抗医药盘中逼近涨停」；北京疾控：当前已进入流感高发季节",
+     "source": "格隆汇（百家号转载）"
+    },
+    {
+     "date": "2024-12-25",
+     "text": "中疾控第 50 周《全国急性呼吸道传染病哨点监测情况》：急性呼吸道传染病持续上升，门急诊流感样病例阳性病原体主要为流感病毒",
+     "source": "光明网 https://m.gmw.cn/2024-12/25/content_1303932053.htm"
+    },
+    {
+     "date": "2025-01-06",
+     "text": "流感概念股高开高走，流感概念指数大涨 3.40%，华北制药/百花医药/鲁抗医药/东北制药/哈药股份/众生药业等涨停",
+     "source": "东方财富 https://wap.eastmoney.com/a/202501063288450664.html"
+    },
+    {
+     "date": "2025-01-08",
+     "text": "Wind 流感指数 1/6 涨 3.62%；香雪制药涨超 10%，太龙药业、鲁抗医药、东北制药、以岭药业涨停",
+     "source": "百家号（转 Wind 数据）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "HUALANVAX",
+     "ticker": "301207",
+     "name": "华兰疫苗",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2024-09-02~2025-12-31（库内 2024 仅 80 行碎片）"
+    },
+    {
+     "security_id": "BAIKEBIO",
+     "ticker": "688276",
+     "name": "百克生物",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2024-09-02~2025-12-31"
+    },
+    {
+     "security_id": "JINDIKE",
+     "ticker": "688670",
+     "name": "金迪克",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2024-09-02~2025-12-31"
+    },
+    {
+     "security_id": "HUALAN-002007",
+     "ticker": "002007",
+     "name": "华兰生物",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe 2015-08-03~2025-12-31"
+    },
+    {
+     "security_id": "DAAN-002030",
+     "ticker": "002030",
+     "name": "达安基因",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe"
+    },
+    {
+     "security_id": "XIANGXUE-300147",
+     "ticker": "300147",
+     "name": "香雪制药（ST香雪）",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe"
+    },
+    {
+     "security_id": "TIANKA-002100",
+     "ticker": "002100",
+     "name": "天康生物",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "流感机制相关标的池（纳入原则见 cross_year.method，**未按收益筛选**）",
+     "source": "本轮跨年份研究（工作流 B）",
+     "market_data": "probe"
+    }
+   ],
+   "observed_performance": {
+    "note": "",
+    "by_security": null
+   },
+   "market_performance": {
+    "window": [
+     "2024-09-01",
+     "2025-01-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ 季节观察窗口（落在外部 9–1 月窗口内），**非** Campaign 裁定。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 3265.01
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 3817.08
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 4256.1
+      },
+      "low": {
+       "date": "2024-09-13",
+       "close": 3159.25
+      },
+      "period_return_pct": 16.9,
+      "to_high_pct": 30.4,
+      "max_drawdown_from_high_pct": -12.5
+     }
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 13.71
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 14.61
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 17.5
+      },
+      "low": {
+       "date": "2024-09-13",
+       "close": 12.64
+      },
+      "period_return_pct": 6.6,
+      "to_high_pct": 27.6,
+      "max_drawdown_from_high_pct": -17.8,
+      "excess_to_high_pp": -2.8,
+      "excess_period_pp": -10.3
+     },
+     "DAAN-002030": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 5.34
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 5.28
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 6.84
+      },
+      "low": {
+       "date": "2024-09-18",
+       "close": 5.02
+      },
+      "period_return_pct": -1.1,
+      "to_high_pct": 28.1,
+      "max_drawdown_from_high_pct": -22.8,
+      "excess_to_high_pp": -2.3,
+      "excess_period_pp": -18.0
+     },
+     "TIANKA-002100": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 6.06
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 6.0
+      },
+      "high": {
+       "date": "2024-09-30",
+       "close": 6.87
+      },
+      "low": {
+       "date": "2024-09-18",
+       "close": 5.41
+      },
+      "period_return_pct": -1.0,
+      "to_high_pct": 13.4,
+      "max_drawdown_from_high_pct": -16.0,
+      "excess_to_high_pp": -17.0,
+      "excess_period_pp": -17.9
+     },
+     "YILING": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 14.35
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 12.81
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 18.07
+      },
+      "low": {
+       "date": "2025-01-27",
+       "close": 12.81
+      },
+      "period_return_pct": -10.7,
+      "to_high_pct": 25.9,
+      "max_drawdown_from_high_pct": -29.1,
+      "excess_to_high_pp": -4.5,
+      "excess_period_pp": -27.6
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 7.29
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 9.56
+      },
+      "high": {
+       "date": "2024-10-30",
+       "close": 15.76
+      },
+      "low": {
+       "date": "2024-09-18",
+       "close": 6.2
+      },
+      "period_return_pct": 31.1,
+      "to_high_pct": 116.2,
+      "max_drawdown_from_high_pct": -39.6,
+      "excess_to_high_pp": 85.8,
+      "excess_period_pp": 14.2
+     },
+     "HUALANVAX": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 16.2
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 15.47
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 21.47
+      },
+      "low": {
+       "date": "2024-09-23",
+       "close": 14.11
+      },
+      "period_return_pct": -4.5,
+      "to_high_pct": 32.5,
+      "max_drawdown_from_high_pct": -29.0,
+      "excess_to_high_pp": 2.1,
+      "excess_period_pp": -21.4
+     },
+     "BAIKEBIO": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 23.32
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 22.04
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 34.83
+      },
+      "low": {
+       "date": "2024-09-18",
+       "close": 21.13
+      },
+      "period_return_pct": -5.5,
+      "to_high_pct": 49.4,
+      "max_drawdown_from_high_pct": -36.7,
+      "excess_to_high_pp": 19.0,
+      "excess_period_pp": -22.4
+     },
+     "JINDIKE": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 11.11
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 11.52
+      },
+      "high": {
+       "date": "2024-11-29",
+       "close": 16.68
+      },
+      "low": {
+       "date": "2024-09-20",
+       "close": 9.51
+      },
+      "period_return_pct": 3.7,
+      "to_high_pct": 50.1,
+      "max_drawdown_from_high_pct": -32.1,
+      "excess_to_high_pp": 19.7,
+      "excess_period_pp": -13.2
+     }
+    }
+   },
+   "known_gaps": [
+    "★★ **又一个反例**：有官方监测（中疾控第 50 周）+ 同期报道（2024-12-23 鲁抗医药逼近涨停），但机制池整体**跑输**",
+    "★ 三只疫苗股（华兰疫苗/百克生物/金迪克）本轮已补入 2024-08~2025-02 行情",
+    "★ 全部标的 `REPORT_NAMED`",
+    "★★ 报道点名的**仍是机制池外的标签股**（鲁抗医药），与 2018 年同一模式"
+   ]
+  }
+ ],
+ "concept_index_availability": {
+  "flu_885879": {
+   "provider": "同花顺",
+   "sources_tried": [
+    "sz885879",
+    "sh885879",
+    "ths885879"
+   ],
+   "result": "**不可得**（腾讯 GTIMG：sz/sh 代码无效；ths 限流未能确认）",
+   "note": "★ 按项目既有纪律，不代以其他概念指数/ETF（避免偷换口径）"
+  },
+  "avian_flu_885508": {
+   "provider": "同花顺",
+   "sources_tried": [
+    "sz885508",
+    "sh885508",
+    "ths885508"
+   ],
+   "result": "**不可得**（同上）"
+  },
+  "benchmark_available": "SH000300（沪深 300）在库内可用，作 Beta 对照"
+ },
+ "research_pool_note": {
+  "historical_participant_pool": "各 event 的 `participants`（事后重建，可含领涨股）",
+  "seasonal_pool": "★ **尚未建立**。若建，须满足：跨年可比、含未上涨股、范围依据当时可获得的成分资料或清晰业务规则；**不得**使用本文件的事后挑选领涨股单独证明季节性。",
+  "current_status": "季节性研究股票池 = 仅 `C-2023-PHARMA-FLU` 已登记的 3 只（行情起始于 2022，**覆盖不到 2017–2019**）",
+  "adjacent_events_rule": "★★ `ADJACENT_PUBLIC_HEALTH` 类事件（超级真菌 / 武汉不明原因肺炎）**不得**作为流感季节性的支持证据。"
+ },
+ "market_data_note": {
+  "authorized_ranges": [
+   {
+    "label": "FLU-2017-AVIAN",
+    "range": [
+     "2017-02-01",
+     "2017-03-15"
+    ]
+   },
+   {
+    "label": "SUPERFUNGUS-2019-CANDIDA",
+    "range": [
+     "2019-04-01",
+     "2019-04-30"
+    ]
+   },
+   {
+    "label": "PUBLICHEALTH-2019-WUHAN",
+    "range": [
+     "2019-12-16",
+     "2020-01-31"
+    ]
+   }
+  ],
+  "fetched_at": "2026-10-14",
+  "source": "腾讯 GTIMG（raw + adjusted qfq 双写）",
+  "actions": "17 只标的 / **28** 个「标的 × 窗口」动作（★ 清单正文误写 20，实为 28）",
+  "result": "**28 / 28 成功** · 无数据 0 · 代码无效 0 · 限流 0",
+  "caveat": "★★ 本段是**事后行情描述**，**不是**正式 Campaign 的起止日期或峰值裁定。★ 历史炒作参与证据（报道点名）与业务机制（是否有直接业务）**仍须分别看待** —— **不得**因个股上涨就提高其相关性等级。",
+  "benchmark": "SH000300（沪深 300），同窗口同口径",
+  "exchange_holiday_note": "★ 2019-12-16~2020-01-31 段实际止于 **2020-01-23**（春节休市，非缺数据）"
+ },
+ "business_mechanism_note": {
+  "method": "定向检索公开资料（2026-10-14），核实标的产品/业务/诊断能力与事件机制的**直接关系**",
+  "hard_rule": "★★ **不因报道当日涨停、区间涨幅高或现有概念标签**就提升为直接相关。业务机制核实**仅**说明「该业务存在」，**不**说明「该业务驱动了当次行情」。",
+  "temporal_caveat": "★★ 证据为**当前时点**公开资料，**不能确定该业务在事件当年的规模**，也**不能**证明它是当次行情的驱动因素。"
+ },
+ "next_theme_note": {
+  "candidate": "EXT-14 迎峰度夏电力",
+  "status": "★ **已核对，本轮不适合做端到端试点**",
+  "why_candidate": "25 项中唯一另一个「有同机制历史对象」的线索：`C-2023-POWEROP-THERMAL`（2023 火电·煤价下行 + 迎峰度夏），且其 peak **2023-05-29 落在外部窗口 5–7 月内**（机制与窗口**双吻合**）",
+  "blocking_finding": "★★ 该对象的 **3 只标的（华电国际 / 建投能源 / 天富能源）在库内 ticker 为 `None`、`market_daily` 0 行** → **行情完全不可得**，无法展示实际表现",
+  "secondary_finding": "`电力（运营端）` 下另一个对象 `C-2021-POWER-GREEN`（3 标的：京能电力/三峡能源/银星能源）**行情齐全**，但其 peak 在 **2021-09-28**，**不在** 5–7 月窗口 → 窗口不符",
+  "conclusion": "★ 若要做 EXT-14 试点，**前置动作 = 补 `C-2023-POWEROP-THERMAL` 三只标的的 ticker 与行情**；本轮「不抓新行情」，故**停在核对**。",
+  "not_done": "★ 本轮**未**为 EXT-14 建立任何历史事件数据（避免造出无行情的空壳事件）"
+ },
+ "cross_year": {
+  "method": {
+   "target_pool": [
+    {
+     "security_id": "HUALANVAX",
+     "ticker": "301207",
+     "name": "华兰疫苗",
+     "exchange": "SZ",
+     "tier": "A_机制直接",
+     "mechanism": "四价流感疫苗龙头（人用流感疫苗生产商）",
+     "listing": "2022-02-18 创业板上市",
+     "db_coverage": "2022-02-18 ~ 2026-01-30（961 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2024-09-02~2025-12-31（本次只读补取）"
+    },
+    {
+     "security_id": "BAIKEBIO",
+     "ticker": "688276",
+     "name": "百克生物",
+     "exchange": "SH",
+     "tier": "A_机制直接",
+     "mechanism": "疫苗企业（含流感疫苗方向）",
+     "listing": "2021 年科创板上市",
+     "db_coverage": "2021-06-25 ~ 2026-01-30（1118 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2024-09-02~2025-12-31（本次只读补取）"
+    },
+    {
+     "security_id": "JINDIKE",
+     "ticker": "688670",
+     "name": "金迪克",
+     "exchange": "SH",
+     "tier": "A_机制直接",
+     "mechanism": "四价流感疫苗专业厂商（国内第二家四价流感疫苗批签发及上市销售企业）",
+     "listing": "2021-08 科创板上市",
+     "db_coverage": "2021-08-02 ~ 2026-01-30（1092 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2024-09-02~2025-12-31（本次只读补取）"
+    },
+    {
+     "security_id": "HUALAN-002007",
+     "ticker": "002007",
+     "name": "华兰生物",
+     "exchange": "SZ",
+     "tier": "A_机制直接",
+     "mechanism": "血液制品 + 人用流感疫苗（华兰疫苗母公司）",
+     "listing": "2004 年上市（上市早 → 理论上可覆盖 2016+）",
+     "db_coverage": "2015-08-03 ~ 2026-01-30（2552 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2015-08-03~2025-12-31（本次只读补取，2532 行）"
+    },
+    {
+     "security_id": "DAAN-002030",
+     "ticker": "002030",
+     "name": "达安基因",
+     "exchange": "SZ",
+     "tier": "A_机制直接",
+     "mechanism": "分子诊断 / 核酸检测（呼吸道病原检测方向）",
+     "listing": "2004 年上市（上市早 → 理论上可覆盖 2016+）",
+     "db_coverage": "2015-10-14 ~ 2026-01-30（2507 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2015-10-14~2025-12-31（本次只读补取，2487 行；★ 起点 2015-10-14 疑为停牌/数据边界，不影响 2016+ 窗口）"
+    },
+    {
+     "security_id": "YILING",
+     "ticker": "002603",
+     "name": "以岭药业",
+     "exchange": "SZ",
+     "tier": "A_机制直接",
+     "mechanism": "连花清瘟（治感冒/流感代表性中成药，公司独家专利药）",
+     "listing": "2011 年上市",
+     "db_coverage": "2015-08-03 ~ 2026-01-30（2542 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2015-08-03~2025-12-31（本次只读补取，2522 行）"
+    },
+    {
+     "security_id": "XIANGXUE-300147",
+     "ticker": "300147",
+     "name": "香雪制药（后为 ST香雪）",
+     "exchange": "SZ",
+     "tier": "A_机制直接",
+     "mechanism": "抗病毒口服液（中成药）",
+     "listing": "2010 年上市",
+     "db_coverage": "2015-08-03 ~ 2026-01-30（2551 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2015-08-03~2025-12-31（本次只读补取，2531 行）",
+     "caveat": "★ 公司 2019 年报存在虚假记载、后变更为 ST，并进入预重整；引用其资料须留意"
+    },
+    {
+     "security_id": "TIANKA-002100",
+     "ticker": "002100",
+     "name": "天康生物",
+     "exchange": "SZ",
+     "tier": "B_动物疫苗/禽流感相关",
+     "mechanism": "兽用生物制品 / 动物疫苗（★ 未确认含禽流感疫苗）",
+     "listing": "2006 年上市",
+     "db_coverage": "2015-08-03 ~ 2026-01-30（2542 行，adjusted；2023/24 季窗口 102/102 交易日）",
+     "probe_coverage": "2015-08-03~2025-12-31（本次只读补取，2522 行）"
+    },
+    {
+     "security_id": "ZHIFEI",
+     "ticker": "300122",
+     "name": "智飞生物",
+     "exchange": "SZ",
+     "tier": "C_宽口径疫苗对照",
+     "mechanism": "疫苗企业（代理 HPV 疫苗等，★ **非流感专属**）",
+     "listing": "2010 年上市",
+     "db_coverage": "2019-01-02 ~ 2022-12-30（972 行，adjusted；2023/24 季窗口 0/102 交易日）",
+     "probe_coverage": "2015-08-03~2025-12-31（本次只读补取，2532 行）"
+    }
+   ],
+   "excluded_from_flu_pool": [
+    {
+     "security_id": "HENGRUI",
+     "ticker": "600276",
+     "name": "恒瑞医药",
+     "reason": "★ 任务候选清单中列出，但机制为**创新药**，与流感无直接关联 —— 按纳入原则**排除出流感池**（仅可作宽口径医药 Beta 对照）"
+    },
+    {
+     "security_id": "TIGERMED",
+     "ticker": "300347",
+     "name": "泰格医药",
+     "reason": "★ 机制为 **CXO（研发外包）**，与流感无直接关联 —— 排除出流感池"
+    },
+    {
+     "security_id": "WUXIAPPTEC",
+     "ticker": "603259",
+     "name": "药明康德",
+     "reason": "★ 机制为 **CXO**，与流感无直接关联 —— 排除出流感池"
+    },
+    {
+     "security_id": "PHARMA_ETF_512010",
+     "ticker": "512010",
+     "name": "医药 ETF",
+     "reason": "★ 行业 Beta 对照，非个股机制池成员（库内有 2019-01~2022-12 行情）"
+    }
+   ],
+   "inclusion_principle": "★★ 机制相关 = 有独立来源证明其**主营业务与流感直接相关**（人用流感疫苗生产 / 抗流感药或中成药 / 呼吸道病原检测 / 动物流感疫苗）。标的池在**看行情之前**定义（本文件 method 段落即前置定义）。纳入只看业务机制，不看行情。",
+   "why_not_return_based": "★★ 三条硬约束：① 不得因**历史涨幅高**而纳入（领涨股多为「标签股」，如 2025-12 海王生物已**公开澄清不产流感疫苗**）；② 不得仅凭**媒体概念标签**纳入（2019-12 媒体称「抗流感概念」，可核实催化却是武汉不明原因肺炎）；③ 不得用**当前概念指数成分**回溯纳入（同花顺流感/禽流感指数经实测不可得，见 v0_4）。宽口径医药（恒瑞/泰格/药明）虽有行情，但与流感机制不同轴 → 排除，避免用「医药涨」冒充「流感涨」。",
+   "window_definition": {
+    "external_window": "9 月至次年 1 月（EXT-12）",
+    "actual_window": "以**真实日期 + 证据**为准；无证据不做窗口比较",
+    "hard_rule": "★★ **不得**把 2–4 月的事件（2017-02 禽流感、2023-02~04 甲流）或 6–7 月事件（2022 夏流感）拿去证明 9–1 月季节性"
+   },
+   "market_probe_note": {
+    "mode": "只读探测（read-only）：调用 research/scripts/fetch_market_batch_v0_3.py 的 fetch_series + tencent_symbol",
+    "no_save_gaps": "★ **未调用 fm.save_gaps()**；未写数据库；未修改仓库任何文件",
+    "pacing": "脚本自带请求级节流 PACING=1.2s，另在证券间 sleep ≥1.2s",
+    "price_type": "窗口涨跌一律用**前复权 qfq**（adjusted）口径；基准 = SH000300（库内 2015-01-05~2026-09-30，同口径）",
+    "fetched_at": "2026-10-15",
+    "fetched": [
+     "HUALAN-002007 / DAAN-002030 / YILING / XIANGXUE-300147 / TIANKA-002100 / ZHIFEI：2015-08-01~2025-12-31",
+     "HUALANVAX / BAIKEBIO / JINDIKE：2024-09-01~2025-12-31"
+    ],
+    "result": "全部成功，无缺数据、无代码无效、无限流"
+   },
+   "year_convention_note": "★ `year` = **季节开始年**（window = 当年 9/1 → 次年 1/31）；`season_label` = 「YYYY/YY 季」",
+   "market_data_source": "★ v0_6 起，11 个窗口的数值**全部来自库内持久化数据**（`market_daily`，前复权 qfq），不再依赖只读探测。补数清单见 `research/research/reports/FLU_WINDOW_BACKFILL_LIST_v0_1.md`，执行报告见 `flu_window_backfill_report_v0_1.json`。基准 = SH000300（库内 2015-01-05~2026-09-30）。"
+  },
+  "years_summary": [
+   {
+    "year": 2015,
+    "season_label": "2015/16 季",
+    "window": [
+     "2015-09-01",
+     "2016-01-31"
+    ],
+    "actual_window": [
+     "2015-09-01",
+     "2016-01-29"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "PARTIAL",
+    "comparable": "partial",
+    "comparable_reason": "★ 部分可比：DAAN-002030（达安基因）交易日 77/101；首笔 2015-10-14 > 窗口首 2015-09-01；YILING（以岭药业）交易日 91/101；★ 短历史三只（华兰疫苗/百克生物/金迪克）本季仅 0/3 只有数据（上市晚，2021–2022 起）",
+    "event_type": "NONE",
+    "in_window_event": false,
+    "driver": "未核实到窗口内事件（v0_5 无对应事件记录）",
+    "outcome": "DIVERGENT",
+    "counts": {
+     "up": 3,
+     "down": 2,
+     "underperform_vs_benchmark": 1,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 101,
+     "first": {
+      "date": "2015-09-01",
+      "close": 3362.08
+     },
+     "last": {
+      "date": "2016-01-29",
+      "close": 2946.09
+     },
+     "high": {
+      "date": "2015-12-22",
+      "close": 3876.73
+     },
+     "period_return_pct": -12.37,
+     "to_high_pct": 15.31,
+     "max_drawdown_from_high_pct": -26.39
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 101,
+      "first": {
+       "date": "2015-09-01",
+       "close": 8.758
+      },
+      "last": {
+       "date": "2016-01-29",
+       "close": 10.716
+      },
+      "high": {
+       "date": "2015-12-30",
+       "close": 11.155
+      },
+      "period_return_pct": 22.36,
+      "to_high_pct": 27.37,
+      "max_drawdown_from_high_pct": -25.66,
+      "excess_period_pp": 34.73,
+      "excess_to_high_pp": 12.06
+     },
+     "DAAN-002030": {
+      "trading_days": 77,
+      "first": {
+       "date": "2015-10-14",
+       "close": 17.644
+      },
+      "last": {
+       "date": "2016-01-29",
+       "close": 10.299
+      },
+      "high": {
+       "date": "2015-10-22",
+       "close": 20.254
+      },
+      "period_return_pct": -41.63,
+      "to_high_pct": 14.79,
+      "max_drawdown_from_high_pct": -51.63,
+      "excess_period_pp": -29.26,
+      "excess_to_high_pp": -0.52
+     },
+     "YILING": {
+      "trading_days": 91,
+      "first": {
+       "date": "2015-09-01",
+       "close": 6.623
+      },
+      "last": {
+       "date": "2016-01-29",
+       "close": 6.438
+      },
+      "high": {
+       "date": "2015-11-11",
+       "close": 10.566
+      },
+      "period_return_pct": -2.79,
+      "to_high_pct": 59.53,
+      "max_drawdown_from_high_pct": -44.75,
+      "excess_period_pp": 9.58,
+      "excess_to_high_pp": 44.22
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 101,
+      "first": {
+       "date": "2015-09-01",
+       "close": 13.991
+      },
+      "last": {
+       "date": "2016-01-29",
+       "close": 14.761
+      },
+      "high": {
+       "date": "2015-12-28",
+       "close": 26.181
+      },
+      "period_return_pct": 5.5,
+      "to_high_pct": 87.13,
+      "max_drawdown_from_high_pct": -47.48,
+      "excess_period_pp": 17.87,
+      "excess_to_high_pp": 71.82
+     },
+     "TIANKA-002100": {
+      "trading_days": 101,
+      "first": {
+       "date": "2015-09-01",
+       "close": 5.984
+      },
+      "last": {
+       "date": "2016-01-29",
+       "close": 6.004
+      },
+      "high": {
+       "date": "2015-11-09",
+       "close": 9.484
+      },
+      "period_return_pct": 0.33,
+      "to_high_pct": 58.49,
+      "max_drawdown_from_high_pct": -38.91,
+      "excess_period_pp": 12.7,
+      "excess_to_high_pp": 43.18
+     },
+     "HUALANVAX": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2022-02-18，**晚于**本窗口 → 上市前无数据"
+     },
+     "BAIKEBIO": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-06-25，**晚于**本窗口 → 上市前无数据"
+     },
+     "JINDIKE": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-08-02，**晚于**本窗口 → 上市前无数据"
+     }
+    },
+    "note": "★ 本季短历史三只均无数据（上市前）"
+   },
+   {
+    "year": 2016,
+    "season_label": "2016/17 季",
+    "window": [
+     "2016-09-01",
+     "2017-01-31"
+    ],
+    "actual_window": [
+     "2016-09-01",
+     "2017-01-26"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "PARTIAL",
+    "comparable": "partial",
+    "comparable_reason": "★ 部分可比：TIANKA-002100（天康生物）交易日 88/98；★ 短历史三只（华兰疫苗/百克生物/金迪克）本季仅 0/3 只有数据（上市晚，2021–2022 起）",
+    "event_type": "AVIAN",
+    "in_window_event": false,
+    "driver": "禽流感相关（v0_5 `years_summary` 将 2016 记为 `AVIAN`）；★ 库内**无独立事件记录**，具体窗口与催化**未经核实** —— 如实保留为「未核实」",
+    "outcome": "ALL_DOWN",
+    "counts": {
+     "up": 0,
+     "down": 5,
+     "underperform_vs_benchmark": 5,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 98,
+     "first": {
+      "date": "2016-09-01",
+      "close": 3301.58
+     },
+     "last": {
+      "date": "2017-01-26",
+      "close": 3387.96
+     },
+     "high": {
+      "date": "2016-12-01",
+      "close": 3565.04
+     },
+     "period_return_pct": 2.62,
+     "to_high_pct": 7.98,
+     "max_drawdown_from_high_pct": -7.5
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 98,
+      "first": {
+       "date": "2016-09-01",
+       "close": 16.967
+      },
+      "last": {
+       "date": "2017-01-26",
+       "close": 14.459
+      },
+      "high": {
+       "date": "2016-09-01",
+       "close": 16.967
+      },
+      "period_return_pct": -14.78,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -18.05,
+      "excess_period_pp": -17.4,
+      "excess_to_high_pp": -7.98
+     },
+     "DAAN-002030": {
+      "trading_days": 98,
+      "first": {
+       "date": "2016-09-01",
+       "close": 10.458
+      },
+      "last": {
+       "date": "2017-01-26",
+       "close": 7.436
+      },
+      "high": {
+       "date": "2016-09-07",
+       "close": 11.785
+      },
+      "period_return_pct": -28.9,
+      "to_high_pct": 12.69,
+      "max_drawdown_from_high_pct": -39.53,
+      "excess_period_pp": -31.52,
+      "excess_to_high_pp": 4.71
+     },
+     "YILING": {
+      "trading_days": 98,
+      "first": {
+       "date": "2016-09-01",
+       "close": 9.059
+      },
+      "last": {
+       "date": "2017-01-26",
+       "close": 8.959
+      },
+      "high": {
+       "date": "2016-12-08",
+       "close": 10.302
+      },
+      "period_return_pct": -1.1,
+      "to_high_pct": 13.72,
+      "max_drawdown_from_high_pct": -17.4,
+      "excess_period_pp": -3.72,
+      "excess_to_high_pp": 5.74
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 98,
+      "first": {
+       "date": "2016-09-01",
+       "close": 14.051
+      },
+      "last": {
+       "date": "2017-01-26",
+       "close": 11.931
+      },
+      "high": {
+       "date": "2016-11-15",
+       "close": 14.781
+      },
+      "period_return_pct": -15.09,
+      "to_high_pct": 5.2,
+      "max_drawdown_from_high_pct": -21.85,
+      "excess_period_pp": -17.71,
+      "excess_to_high_pp": -2.78
+     },
+     "TIANKA-002100": {
+      "trading_days": 88,
+      "first": {
+       "date": "2016-09-01",
+       "close": 7.874
+      },
+      "last": {
+       "date": "2017-01-26",
+       "close": 7.364
+      },
+      "high": {
+       "date": "2016-10-20",
+       "close": 8.524
+      },
+      "period_return_pct": -6.48,
+      "to_high_pct": 8.26,
+      "max_drawdown_from_high_pct": -15.49,
+      "excess_period_pp": -9.1,
+      "excess_to_high_pp": 0.28
+     },
+     "HUALANVAX": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2022-02-18，**晚于**本窗口 → 上市前无数据"
+     },
+     "BAIKEBIO": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-06-25，**晚于**本窗口 → 上市前无数据"
+     },
+     "JINDIKE": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-08-02，**晚于**本窗口 → 上市前无数据"
+     }
+    },
+    "note": "★ 本季短历史三只均无数据（上市前）"
+   },
+   {
+    "year": 2017,
+    "season_label": "2017/18 季",
+    "window": [
+     "2017-09-01",
+     "2018-01-31"
+    ],
+    "actual_window": [
+     "2017-09-01",
+     "2018-01-31"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（103 个交易日）；★ 短历史三只（华兰疫苗/百克生物/金迪克）本季仅 0/3 只有数据（上市晚，2021–2022 起）",
+    "event_type": "SEASONAL_FLU",
+    "in_window_event": true,
+    "driver": "流感高峰 2018-01（国家卫计委 1/10 回应、1/12 介绍抗流感药物、1/26 预计高峰持续）→ 事件 `FLU-2018-SEASONAL`",
+    "outcome": "UNDERPERFORM",
+    "counts": {
+     "up": 1,
+     "down": 4,
+     "underperform_vs_benchmark": 5,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 103,
+     "first": {
+      "date": "2017-09-01",
+      "close": 3830.54
+     },
+     "last": {
+      "date": "2018-01-31",
+      "close": 4275.9
+     },
+     "high": {
+      "date": "2018-01-24",
+      "close": 4389.89
+     },
+     "period_return_pct": 11.63,
+     "to_high_pct": 14.6,
+     "max_drawdown_from_high_pct": -3.05
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 11.454
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 10.89
+      },
+      "high": {
+       "date": "2017-11-14",
+       "close": 12.726
+      },
+      "period_return_pct": -4.92,
+      "to_high_pct": 11.11,
+      "max_drawdown_from_high_pct": -16.08,
+      "excess_period_pp": -16.55,
+      "excess_to_high_pp": -3.49
+     },
+     "DAAN-002030": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 6.989
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 5.042
+      },
+      "high": {
+       "date": "2017-09-14",
+       "close": 8.089
+      },
+      "period_return_pct": -27.86,
+      "to_high_pct": 15.74,
+      "max_drawdown_from_high_pct": -37.67,
+      "excess_period_pp": -39.49,
+      "excess_to_high_pp": 1.14
+     },
+     "YILING": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 9.195
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 8.102
+      },
+      "high": {
+       "date": "2017-11-20",
+       "close": 10.152
+      },
+      "period_return_pct": -11.89,
+      "to_high_pct": 10.41,
+      "max_drawdown_from_high_pct": -20.19,
+      "excess_period_pp": -23.52,
+      "excess_to_high_pp": -4.19
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 9.941
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 8.871
+      },
+      "high": {
+       "date": "2017-10-10",
+       "close": 10.301
+      },
+      "period_return_pct": -10.76,
+      "to_high_pct": 3.62,
+      "max_drawdown_from_high_pct": -19.42,
+      "excess_period_pp": -22.39,
+      "excess_to_high_pp": -10.98
+     },
+     "TIANKA-002100": {
+      "trading_days": 103,
+      "first": {
+       "date": "2017-09-01",
+       "close": 6.874
+      },
+      "last": {
+       "date": "2018-01-31",
+       "close": 7.044
+      },
+      "high": {
+       "date": "2018-01-16",
+       "close": 7.154
+      },
+      "period_return_pct": 2.47,
+      "to_high_pct": 4.07,
+      "max_drawdown_from_high_pct": -3.91,
+      "excess_period_pp": -9.16,
+      "excess_to_high_pp": -10.53
+     },
+     "HUALANVAX": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2022-02-18，**晚于**本窗口 → 上市前无数据"
+     },
+     "BAIKEBIO": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-06-25，**晚于**本窗口 → 上市前无数据"
+     },
+     "JINDIKE": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-08-02，**晚于**本窗口 → 上市前无数据"
+     }
+    },
+    "note": "★ 本季短历史三只均无数据（上市前）"
+   },
+   {
+    "year": 2018,
+    "season_label": "2018/19 季",
+    "window": [
+     "2018-09-01",
+     "2019-01-31"
+    ],
+    "actual_window": [
+     "2018-09-03",
+     "2019-01-31"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（101 个交易日）；★ 短历史三只（华兰疫苗/百克生物/金迪克）本季仅 0/3 只有数据（上市晚，2021–2022 起）",
+    "event_type": "NONE",
+    "in_window_event": false,
+    "driver": "未核实到窗口内事件（v0_5 无对应事件记录）",
+    "outcome": "ALL_DOWN",
+    "counts": {
+     "up": 0,
+     "down": 5,
+     "underperform_vs_benchmark": 5,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 101,
+     "first": {
+      "date": "2018-09-03",
+      "close": 3321.82
+     },
+     "last": {
+      "date": "2019-01-31",
+      "close": 3201.63
+     },
+     "high": {
+      "date": "2018-09-28",
+      "close": 3438.86
+     },
+     "period_return_pct": -3.62,
+     "to_high_pct": 3.52,
+     "max_drawdown_from_high_pct": -13.78
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 101,
+      "first": {
+       "date": "2018-09-03",
+       "close": 15.331
+      },
+      "last": {
+       "date": "2019-01-31",
+       "close": 14.423
+      },
+      "high": {
+       "date": "2018-12-05",
+       "close": 17.885
+      },
+      "period_return_pct": -5.92,
+      "to_high_pct": 16.66,
+      "max_drawdown_from_high_pct": -30.03,
+      "excess_period_pp": -2.3,
+      "excess_to_high_pp": 13.14
+     },
+     "DAAN-002030": {
+      "trading_days": 101,
+      "first": {
+       "date": "2018-09-03",
+       "close": 6.965
+      },
+      "last": {
+       "date": "2019-01-31",
+       "close": 1.835
+      },
+      "high": {
+       "date": "2018-10-10",
+       "close": 7.284
+      },
+      "period_return_pct": -73.65,
+      "to_high_pct": 4.58,
+      "max_drawdown_from_high_pct": -74.81,
+      "excess_period_pp": -70.03,
+      "excess_to_high_pp": 1.06
+     },
+     "YILING": {
+      "trading_days": 101,
+      "first": {
+       "date": "2018-09-03",
+       "close": 6.28
+      },
+      "last": {
+       "date": "2019-01-31",
+       "close": 4.873
+      },
+      "high": {
+       "date": "2018-09-03",
+       "close": 6.28
+      },
+      "period_return_pct": -22.4,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -31.16,
+      "excess_period_pp": -18.78,
+      "excess_to_high_pp": -3.52
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 101,
+      "first": {
+       "date": "2018-09-03",
+       "close": 6.951
+      },
+      "last": {
+       "date": "2019-01-31",
+       "close": 6.091
+      },
+      "high": {
+       "date": "2018-09-04",
+       "close": 7.031
+      },
+      "period_return_pct": -12.37,
+      "to_high_pct": 1.15,
+      "max_drawdown_from_high_pct": -18.92,
+      "excess_period_pp": -8.75,
+      "excess_to_high_pp": -2.37
+     },
+     "TIANKA-002100": {
+      "trading_days": 101,
+      "first": {
+       "date": "2018-09-03",
+       "close": 4.414
+      },
+      "last": {
+       "date": "2019-01-31",
+       "close": 3.884
+      },
+      "high": {
+       "date": "2018-09-04",
+       "close": 4.434
+      },
+      "period_return_pct": -12.01,
+      "to_high_pct": 0.45,
+      "max_drawdown_from_high_pct": -44.65,
+      "excess_period_pp": -8.39,
+      "excess_to_high_pp": -3.07
+     },
+     "HUALANVAX": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2022-02-18，**晚于**本窗口 → 上市前无数据"
+     },
+     "BAIKEBIO": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-06-25，**晚于**本窗口 → 上市前无数据"
+     },
+     "JINDIKE": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-08-02，**晚于**本窗口 → 上市前无数据"
+     }
+    },
+    "note": "★ 本季短历史三只均无数据（上市前）"
+   },
+   {
+    "year": 2019,
+    "season_label": "2019/20 季",
+    "window": [
+     "2019-09-01",
+     "2020-01-31"
+    ],
+    "actual_window": [
+     "2019-09-02",
+     "2020-01-23"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（97 个交易日）；★ 短历史三只（华兰疫苗/百克生物/金迪克）本季仅 0/3 只有数据（上市晚，2021–2022 起）",
+    "event_type": "UNKNOWN_PUBLIC_HEALTH",
+    "in_window_event": true,
+    "driver": "★★ **非流感**：2019-12 武汉不明原因肺炎 → 事件 `PUBLICHEALTH-2019-WUHAN`（邻近题材，**不得**作流感季节性证据）",
+    "outcome": "UP",
+    "counts": {
+     "up": 5,
+     "down": 0,
+     "underperform_vs_benchmark": 0,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 97,
+     "first": {
+      "date": "2019-09-02",
+      "close": 3848.32
+     },
+     "last": {
+      "date": "2020-01-23",
+      "close": 4003.9
+     },
+     "high": {
+      "date": "2020-01-13",
+      "close": 4203.99
+     },
+     "period_return_pct": 4.04,
+     "to_high_pct": 9.24,
+     "max_drawdown_from_high_pct": -4.76
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 97,
+      "first": {
+       "date": "2019-09-02",
+       "close": 22.569
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 25.154
+      },
+      "high": {
+       "date": "2019-11-19",
+       "close": 26.431
+      },
+      "period_return_pct": 11.45,
+      "to_high_pct": 17.11,
+      "max_drawdown_from_high_pct": -16.27,
+      "excess_period_pp": 7.41,
+      "excess_to_high_pp": 7.87
+     },
+     "DAAN-002030": {
+      "trading_days": 97,
+      "first": {
+       "date": "2019-09-02",
+       "close": 2.847
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 5.239
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 5.239
+      },
+      "period_return_pct": 84.02,
+      "to_high_pct": 84.02,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 79.98,
+      "excess_to_high_pp": 74.78
+     },
+     "YILING": {
+      "trading_days": 97,
+      "first": {
+       "date": "2019-09-02",
+       "close": 5.237
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 8.837
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 8.837
+      },
+      "period_return_pct": 68.74,
+      "to_high_pct": 68.74,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 64.7,
+      "excess_to_high_pp": 59.5
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 97,
+      "first": {
+       "date": "2019-09-02",
+       "close": 6.434
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 11.254
+      },
+      "high": {
+       "date": "2020-01-23",
+       "close": 11.254
+      },
+      "period_return_pct": 74.91,
+      "to_high_pct": 74.91,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 70.87,
+      "excess_to_high_pp": 65.67
+     },
+     "TIANKA-002100": {
+      "trading_days": 97,
+      "first": {
+       "date": "2019-09-02",
+       "close": 8.703
+      },
+      "last": {
+       "date": "2020-01-23",
+       "close": 9.803
+      },
+      "high": {
+       "date": "2019-11-04",
+       "close": 14.123
+      },
+      "period_return_pct": 12.64,
+      "to_high_pct": 62.28,
+      "max_drawdown_from_high_pct": -30.59,
+      "excess_period_pp": 8.6,
+      "excess_to_high_pp": 53.04
+     },
+     "HUALANVAX": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2022-02-18，**晚于**本窗口 → 上市前无数据"
+     },
+     "BAIKEBIO": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-06-25，**晚于**本窗口 → 上市前无数据"
+     },
+     "JINDIKE": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-08-02，**晚于**本窗口 → 上市前无数据"
+     }
+    },
+    "note": "★ 本季短历史三只均无数据（上市前）"
+   },
+   {
+    "year": 2020,
+    "season_label": "2020/21 季",
+    "window": [
+     "2020-09-01",
+     "2021-01-31"
+    ],
+    "actual_window": [
+     "2020-09-01",
+     "2021-01-29"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（102 个交易日）；★ 短历史三只（华兰疫苗/百克生物/金迪克）本季仅 0/3 只有数据（上市晚，2021–2022 起）",
+    "event_type": "NONE",
+    "in_window_event": false,
+    "driver": "未核实到窗口内事件（v0_5 无对应事件记录）",
+    "outcome": "ALL_DOWN",
+    "counts": {
+     "up": 0,
+     "down": 5,
+     "underperform_vs_benchmark": 5,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 102,
+     "first": {
+      "date": "2020-09-01",
+      "close": 4842.12
+     },
+     "last": {
+      "date": "2021-01-29",
+      "close": 5351.96
+     },
+     "high": {
+      "date": "2021-01-25",
+      "close": 5625.92
+     },
+     "period_return_pct": 10.53,
+     "to_high_pct": 16.19,
+     "max_drawdown_from_high_pct": -4.87
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 102,
+      "first": {
+       "date": "2020-09-01",
+       "close": 53.6
+      },
+      "last": {
+       "date": "2021-01-29",
+       "close": 43.69
+      },
+      "high": {
+       "date": "2020-10-13",
+       "close": 60.23
+      },
+      "period_return_pct": -18.49,
+      "to_high_pct": 12.37,
+      "max_drawdown_from_high_pct": -36.58,
+      "excess_period_pp": -29.02,
+      "excess_to_high_pp": -3.82
+     },
+     "DAAN-002030": {
+      "trading_days": 102,
+      "first": {
+       "date": "2020-09-01",
+       "close": 20.844
+      },
+      "last": {
+       "date": "2021-01-29",
+       "close": 19.0
+      },
+      "high": {
+       "date": "2021-01-22",
+       "close": 23.125
+      },
+      "period_return_pct": -8.85,
+      "to_high_pct": 10.94,
+      "max_drawdown_from_high_pct": -17.84,
+      "excess_period_pp": -19.38,
+      "excess_to_high_pp": -5.25
+     },
+     "YILING": {
+      "trading_days": 102,
+      "first": {
+       "date": "2020-09-01",
+       "close": 17.743
+      },
+      "last": {
+       "date": "2021-01-29",
+       "close": 14.857
+      },
+      "high": {
+       "date": "2021-01-08",
+       "close": 19.029
+      },
+      "period_return_pct": -16.27,
+      "to_high_pct": 7.25,
+      "max_drawdown_from_high_pct": -22.94,
+      "excess_period_pp": -26.8,
+      "excess_to_high_pp": -8.94
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 102,
+      "first": {
+       "date": "2020-09-01",
+       "close": 10.46
+      },
+      "last": {
+       "date": "2021-01-29",
+       "close": 7.98
+      },
+      "high": {
+       "date": "2020-10-19",
+       "close": 13.4
+      },
+      "period_return_pct": -23.71,
+      "to_high_pct": 28.11,
+      "max_drawdown_from_high_pct": -40.45,
+      "excess_period_pp": -34.24,
+      "excess_to_high_pp": 11.92
+     },
+     "TIANKA-002100": {
+      "trading_days": 102,
+      "first": {
+       "date": "2020-09-01",
+       "close": 17.522
+      },
+      "last": {
+       "date": "2021-01-29",
+       "close": 9.782
+      },
+      "high": {
+       "date": "2020-09-01",
+       "close": 17.522
+      },
+      "period_return_pct": -44.17,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -45.14,
+      "excess_period_pp": -54.7,
+      "excess_to_high_pp": -16.19
+     },
+     "HUALANVAX": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2022-02-18，**晚于**本窗口 → 上市前无数据"
+     },
+     "BAIKEBIO": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-06-25，**晚于**本窗口 → 上市前无数据"
+     },
+     "JINDIKE": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2021-08-02，**晚于**本窗口 → 上市前无数据"
+     }
+    },
+    "note": "★ 本季短历史三只均无数据（上市前）"
+   },
+   {
+    "year": 2021,
+    "season_label": "2021/22 季",
+    "window": [
+     "2021-09-01",
+     "2022-01-31"
+    ],
+    "actual_window": [
+     "2021-09-01",
+     "2022-01-28"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（100 个交易日）；★ 短历史三只（华兰疫苗/百克生物/金迪克）本季仅 2/3 只有数据（上市晚，2021–2022 起）",
+    "event_type": "NONE",
+    "in_window_event": false,
+    "driver": "未核实到窗口内事件（v0_5 无对应事件记录）",
+    "outcome": "DIVERGENT",
+    "counts": {
+     "up": 2,
+     "down": 3,
+     "underperform_vs_benchmark": 3,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 100,
+     "first": {
+      "date": "2021-09-01",
+      "close": 4869.46
+     },
+     "last": {
+      "date": "2022-01-28",
+      "close": 4563.77
+     },
+     "high": {
+      "date": "2021-12-13",
+      "close": 5083.8
+     },
+     "period_return_pct": -6.28,
+     "to_high_pct": 4.4,
+     "max_drawdown_from_high_pct": -10.23
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 100,
+      "first": {
+       "date": "2021-09-01",
+       "close": 27.87
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 23.22
+      },
+      "high": {
+       "date": "2021-11-05",
+       "close": 29.14
+      },
+      "period_return_pct": -16.68,
+      "to_high_pct": 4.56,
+      "max_drawdown_from_high_pct": -20.32,
+      "excess_period_pp": -10.4,
+      "excess_to_high_pp": 0.16
+     },
+     "DAAN-002030": {
+      "trading_days": 100,
+      "first": {
+       "date": "2021-09-01",
+       "close": 16.035
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 14.935
+      },
+      "high": {
+       "date": "2022-01-14",
+       "close": 20.295
+      },
+      "period_return_pct": -6.86,
+      "to_high_pct": 26.57,
+      "max_drawdown_from_high_pct": -27.35,
+      "excess_period_pp": -0.58,
+      "excess_to_high_pp": 22.17
+     },
+     "YILING": {
+      "trading_days": 100,
+      "first": {
+       "date": "2021-09-01",
+       "close": 15.43
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 18.92
+      },
+      "high": {
+       "date": "2022-01-17",
+       "close": 25.7
+      },
+      "period_return_pct": 22.62,
+      "to_high_pct": 66.56,
+      "max_drawdown_from_high_pct": -28.4,
+      "excess_period_pp": 28.9,
+      "excess_to_high_pp": 62.16
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 100,
+      "first": {
+       "date": "2021-09-01",
+       "close": 7.25
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 6.79
+      },
+      "high": {
+       "date": "2022-01-04",
+       "close": 8.98
+      },
+      "period_return_pct": -6.34,
+      "to_high_pct": 23.86,
+      "max_drawdown_from_high_pct": -25.61,
+      "excess_period_pp": -0.06,
+      "excess_to_high_pp": 19.46
+     },
+     "TIANKA-002100": {
+      "trading_days": 100,
+      "first": {
+       "date": "2021-09-01",
+       "close": 6.902
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 10.122
+      },
+      "high": {
+       "date": "2022-01-10",
+       "close": 11.792
+      },
+      "period_return_pct": 46.65,
+      "to_high_pct": 70.85,
+      "max_drawdown_from_high_pct": -17.38,
+      "excess_period_pp": 52.93,
+      "excess_to_high_pp": 66.45
+     },
+     "HUALANVAX": {
+      "status": "PRE_LISTING",
+      "trading_days": 0,
+      "note": "★ 该标的行情起始于 2022-02-18，**晚于**本窗口 → 上市前无数据"
+     },
+     "BAIKEBIO": {
+      "trading_days": 100,
+      "first": {
+       "date": "2021-09-01",
+       "close": 79.781
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 53.801
+      },
+      "high": {
+       "date": "2021-09-30",
+       "close": 97.411
+      },
+      "period_return_pct": -32.56,
+      "to_high_pct": 22.1,
+      "max_drawdown_from_high_pct": -45.51,
+      "excess_period_pp": -26.28,
+      "excess_to_high_pp": 17.7
+     },
+     "JINDIKE": {
+      "trading_days": 100,
+      "first": {
+       "date": "2021-09-01",
+       "close": 60.25
+      },
+      "last": {
+       "date": "2022-01-28",
+       "close": 43.986
+      },
+      "high": {
+       "date": "2021-10-14",
+       "close": 73.471
+      },
+      "period_return_pct": -26.99,
+      "to_high_pct": 21.94,
+      "max_drawdown_from_high_pct": -40.7,
+      "excess_period_pp": -20.71,
+      "excess_to_high_pp": 17.54
+     }
+    },
+    "note": "★ 本季短历史三只有数据者：百克生物、金迪克"
+   },
+   {
+    "year": 2022,
+    "season_label": "2022/23 季",
+    "window": [
+     "2022-09-01",
+     "2023-01-31"
+    ],
+    "actual_window": [
+     "2022-09-01",
+     "2023-01-31"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（97 个交易日）",
+    "event_type": "NONE",
+    "in_window_event": false,
+    "driver": "未核实到窗口内事件（★ 2022-06~07 夏流感与 2023-02~04 甲流**均在窗口外**，不得用于本季）",
+    "outcome": "DIVERGENT",
+    "counts": {
+     "up": 3,
+     "down": 2,
+     "underperform_vs_benchmark": 2,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 97,
+     "first": {
+      "date": "2022-09-01",
+      "close": 4043.74
+     },
+     "last": {
+      "date": "2023-01-31",
+      "close": 4156.86
+     },
+     "high": {
+      "date": "2023-01-30",
+      "close": 4201.35
+     },
+     "period_return_pct": 2.8,
+     "to_high_pct": 3.9,
+     "max_drawdown_from_high_pct": -1.06
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 18.66
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 20.5
+      },
+      "high": {
+       "date": "2023-01-03",
+       "close": 21.7
+      },
+      "period_return_pct": 9.86,
+      "to_high_pct": 16.29,
+      "max_drawdown_from_high_pct": -5.53,
+      "excess_period_pp": 7.06,
+      "excess_to_high_pp": 12.39
+     },
+     "DAAN-002030": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 16.265
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 14.145
+      },
+      "high": {
+       "date": "2022-11-21",
+       "close": 16.965
+      },
+      "period_return_pct": -13.03,
+      "to_high_pct": 4.3,
+      "max_drawdown_from_high_pct": -18.98,
+      "excess_period_pp": -15.83,
+      "excess_to_high_pp": 0.4
+     },
+     "YILING": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 20.59
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 27.4
+      },
+      "high": {
+       "date": "2022-12-08",
+       "close": 50.16
+      },
+      "period_return_pct": 33.07,
+      "to_high_pct": 143.61,
+      "max_drawdown_from_high_pct": -46.23,
+      "excess_period_pp": 30.27,
+      "excess_to_high_pp": 139.71
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 5.27
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 5.86
+      },
+      "high": {
+       "date": "2022-12-13",
+       "close": 9.3
+      },
+      "period_return_pct": 11.2,
+      "to_high_pct": 76.47,
+      "max_drawdown_from_high_pct": -38.82,
+      "excess_period_pp": 8.4,
+      "excess_to_high_pp": 72.57
+     },
+     "TIANKA-002100": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 11.122
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 8.452
+      },
+      "high": {
+       "date": "2022-09-02",
+       "close": 11.362
+      },
+      "period_return_pct": -24.01,
+      "to_high_pct": 2.16,
+      "max_drawdown_from_high_pct": -33.8,
+      "excess_period_pp": -26.81,
+      "excess_to_high_pp": -1.74
+     },
+     "HUALANVAX": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 35.023
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 29.616
+      },
+      "high": {
+       "date": "2022-09-01",
+       "close": 35.023
+      },
+      "period_return_pct": -15.44,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -29.32,
+      "excess_period_pp": -18.24,
+      "excess_to_high_pp": -3.9
+     },
+     "BAIKEBIO": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 60.731
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 68.231
+      },
+      "high": {
+       "date": "2022-12-08",
+       "close": 76.821
+      },
+      "period_return_pct": 12.35,
+      "to_high_pct": 26.49,
+      "max_drawdown_from_high_pct": -14.83,
+      "excess_period_pp": 9.55,
+      "excess_to_high_pp": 22.59
+     },
+     "JINDIKE": {
+      "trading_days": 97,
+      "first": {
+       "date": "2022-09-01",
+       "close": 32.086
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 34.864
+      },
+      "high": {
+       "date": "2022-11-10",
+       "close": 38.357
+      },
+      "period_return_pct": 8.66,
+      "to_high_pct": 19.54,
+      "max_drawdown_from_high_pct": -27.19,
+      "excess_period_pp": 5.86,
+      "excess_to_high_pp": 15.64
+     }
+    },
+    "note": "★ 本季短历史三只有数据者：华兰疫苗、百克生物、金迪克"
+   },
+   {
+    "year": 2023,
+    "season_label": "2023/24 季",
+    "window": [
+     "2023-09-01",
+     "2024-01-31"
+    ],
+    "actual_window": [
+     "2023-09-01",
+     "2024-01-31"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（102 个交易日）",
+    "event_type": "SEASONAL_FLU",
+    "in_window_event": false,
+    "driver": "媒体记录 2023-11 流感概念涨停潮；★ 库内**无独立事件记录**（未建事件，如实保留为「未核实」）",
+    "outcome": "ALL_DOWN",
+    "counts": {
+     "up": 0,
+     "down": 5,
+     "underperform_vs_benchmark": 4,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 102,
+     "first": {
+      "date": "2023-09-01",
+      "close": 3791.49
+     },
+     "last": {
+      "date": "2024-01-31",
+      "close": 3215.35
+     },
+     "high": {
+      "date": "2023-09-04",
+      "close": 3848.95
+     },
+     "period_return_pct": -15.2,
+     "to_high_pct": 1.52,
+     "max_drawdown_from_high_pct": -16.46
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 19.83
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 16.1
+      },
+      "high": {
+       "date": "2023-12-01",
+       "close": 22.94
+      },
+      "period_return_pct": -18.81,
+      "to_high_pct": 15.68,
+      "max_drawdown_from_high_pct": -29.82,
+      "excess_period_pp": -3.61,
+      "excess_to_high_pp": 14.16
+     },
+     "DAAN-002030": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 9.365
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 7.435
+      },
+      "high": {
+       "date": "2023-11-23",
+       "close": 10.795
+      },
+      "period_return_pct": -20.61,
+      "to_high_pct": 15.27,
+      "max_drawdown_from_high_pct": -31.13,
+      "excess_period_pp": -5.41,
+      "excess_to_high_pp": 13.75
+     },
+     "YILING": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 21.94
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 18.59
+      },
+      "high": {
+       "date": "2023-11-24",
+       "close": 24.87
+      },
+      "period_return_pct": -15.27,
+      "to_high_pct": 13.35,
+      "max_drawdown_from_high_pct": -25.25,
+      "excess_period_pp": -0.07,
+      "excess_to_high_pp": 11.83
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 4.99
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 4.08
+      },
+      "high": {
+       "date": "2023-11-24",
+       "close": 6.2
+      },
+      "period_return_pct": -18.24,
+      "to_high_pct": 24.25,
+      "max_drawdown_from_high_pct": -34.19,
+      "excess_period_pp": -3.04,
+      "excess_to_high_pp": 22.73
+     },
+     "TIANKA-002100": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 6.952
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 6.842
+      },
+      "high": {
+       "date": "2023-12-11",
+       "close": 8.642
+      },
+      "period_return_pct": -1.58,
+      "to_high_pct": 24.31,
+      "max_drawdown_from_high_pct": -20.83,
+      "excess_period_pp": 13.62,
+      "excess_to_high_pp": 22.79
+     },
+     "HUALANVAX": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 27.566
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 19.586
+      },
+      "high": {
+       "date": "2023-10-09",
+       "close": 32.146
+      },
+      "period_return_pct": -28.95,
+      "to_high_pct": 16.61,
+      "max_drawdown_from_high_pct": -39.07,
+      "excess_period_pp": -13.75,
+      "excess_to_high_pp": 15.09
+     },
+     "BAIKEBIO": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 52.481
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 46.581
+      },
+      "high": {
+       "date": "2023-10-27",
+       "close": 65.521
+      },
+      "period_return_pct": -11.24,
+      "to_high_pct": 24.85,
+      "max_drawdown_from_high_pct": -28.91,
+      "excess_period_pp": 3.96,
+      "excess_to_high_pp": 23.33
+     },
+     "JINDIKE": {
+      "trading_days": 102,
+      "first": {
+       "date": "2023-09-01",
+       "close": 31.05
+      },
+      "last": {
+       "date": "2024-01-31",
+       "close": 20.19
+      },
+      "high": {
+       "date": "2023-11-24",
+       "close": 37.42
+      },
+      "period_return_pct": -34.98,
+      "to_high_pct": 20.52,
+      "max_drawdown_from_high_pct": -46.04,
+      "excess_period_pp": -19.78,
+      "excess_to_high_pp": 19.0
+     }
+    },
+    "note": "★ 本季短历史三只有数据者：华兰疫苗、百克生物、金迪克"
+   },
+   {
+    "year": 2024,
+    "season_label": "2024/25 季",
+    "window": [
+     "2024-09-01",
+     "2025-01-31"
+    ],
+    "actual_window": [
+     "2024-09-02",
+     "2025-01-27"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（98 个交易日）",
+    "event_type": "SEASONAL_FLU",
+    "in_window_event": true,
+    "driver": "流感高发 2024-12（中疾控第 50 周监测 + 12/23 报道 + 2025-01-06 概念指数 +3.40%）→ 事件 `FLU-2024-SEASONAL`",
+    "outcome": "DIVERGENT",
+    "counts": {
+     "up": 2,
+     "down": 3,
+     "underperform_vs_benchmark": 4,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 98,
+     "first": {
+      "date": "2024-09-02",
+      "close": 3265.01
+     },
+     "last": {
+      "date": "2025-01-27",
+      "close": 3817.08
+     },
+     "high": {
+      "date": "2024-10-08",
+      "close": 4256.1
+     },
+     "period_return_pct": 16.91,
+     "to_high_pct": 30.35,
+     "max_drawdown_from_high_pct": -12.54
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 13.71
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 14.61
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 17.5
+      },
+      "period_return_pct": 6.56,
+      "to_high_pct": 27.64,
+      "max_drawdown_from_high_pct": -17.83,
+      "excess_period_pp": -10.35,
+      "excess_to_high_pp": -2.71
+     },
+     "DAAN-002030": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 5.34
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 5.28
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 6.84
+      },
+      "period_return_pct": -1.12,
+      "to_high_pct": 28.09,
+      "max_drawdown_from_high_pct": -22.81,
+      "excess_period_pp": -18.03,
+      "excess_to_high_pp": -2.26
+     },
+     "YILING": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 14.35
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 12.81
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 18.07
+      },
+      "period_return_pct": -10.73,
+      "to_high_pct": 25.92,
+      "max_drawdown_from_high_pct": -29.11,
+      "excess_period_pp": -27.64,
+      "excess_to_high_pp": -4.43
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 7.29
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 9.56
+      },
+      "high": {
+       "date": "2024-10-30",
+       "close": 15.76
+      },
+      "period_return_pct": 31.14,
+      "to_high_pct": 116.19,
+      "max_drawdown_from_high_pct": -39.59,
+      "excess_period_pp": 14.23,
+      "excess_to_high_pp": 85.84
+     },
+     "TIANKA-002100": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 6.062
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 6.002
+      },
+      "high": {
+       "date": "2024-09-30",
+       "close": 6.872
+      },
+      "period_return_pct": -0.99,
+      "to_high_pct": 13.36,
+      "max_drawdown_from_high_pct": -16.01,
+      "excess_period_pp": -17.9,
+      "excess_to_high_pp": -16.99
+     },
+     "HUALANVAX": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 16.196
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 15.466
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 21.466
+      },
+      "period_return_pct": -4.51,
+      "to_high_pct": 32.54,
+      "max_drawdown_from_high_pct": -29.02,
+      "excess_period_pp": -21.42,
+      "excess_to_high_pp": 2.19
+     },
+     "BAIKEBIO": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 23.321
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 22.041
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 34.831
+      },
+      "period_return_pct": -5.49,
+      "to_high_pct": 49.35,
+      "max_drawdown_from_high_pct": -36.72,
+      "excess_period_pp": -22.4,
+      "excess_to_high_pp": 19.0
+     },
+     "JINDIKE": {
+      "trading_days": 98,
+      "first": {
+       "date": "2024-09-02",
+       "close": 11.11
+      },
+      "last": {
+       "date": "2025-01-27",
+       "close": 11.52
+      },
+      "high": {
+       "date": "2024-11-29",
+       "close": 16.68
+      },
+      "period_return_pct": 3.69,
+      "to_high_pct": 50.14,
+      "max_drawdown_from_high_pct": -32.13,
+      "excess_period_pp": -13.22,
+      "excess_to_high_pp": 19.79
+     }
+    },
+    "note": "★ 本季短历史三只有数据者：华兰疫苗、百克生物、金迪克"
+   },
+   {
+    "year": 2025,
+    "season_label": "2025/26 季",
+    "window": [
+     "2025-09-01",
+     "2026-01-31"
+    ],
+    "actual_window": [
+     "2025-09-01",
+     "2026-01-30"
+    ],
+    "window_type": "SEASON_WINDOW_9_1",
+    "coverage": "FULL",
+    "comparable": true,
+    "comparable_reason": "5 只长历史机制池与基准的窗口交易日数、首末交易日**完全一致**（102 个交易日）",
+    "event_type": "SEASONAL_FLU",
+    "in_window_event": false,
+    "driver": "媒体记录 2025-11 流感相关行情；★ 库内**无独立事件记录**（未建事件，如实保留为「未核实」）",
+    "outcome": "DIVERGENT",
+    "counts": {
+     "up": 2,
+     "down": 3,
+     "underperform_vs_benchmark": 3,
+     "with_data": 5
+    },
+    "benchmark": {
+     "id": "SH000300",
+     "label": "沪深300",
+     "trading_days": 102,
+     "first": {
+      "date": "2025-09-01",
+      "close": 4523.71
+     },
+     "last": {
+      "date": "2026-01-30",
+      "close": 4706.34
+     },
+     "high": {
+      "date": "2026-01-06",
+      "close": 4790.69
+     },
+     "period_return_pct": 4.04,
+     "to_high_pct": 5.9,
+     "max_drawdown_from_high_pct": -1.84
+    },
+    "by_security": {
+     "HUALAN-002007": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 16.18
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 15.13
+      },
+      "high": {
+       "date": "2025-11-11",
+       "close": 16.33
+      },
+      "period_return_pct": -6.49,
+      "to_high_pct": 0.93,
+      "max_drawdown_from_high_pct": -10.53,
+      "excess_period_pp": -10.53,
+      "excess_to_high_pp": -4.97
+     },
+     "DAAN-002030": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 6.71
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 6.6
+      },
+      "high": {
+       "date": "2026-01-27",
+       "close": 7.71
+      },
+      "period_return_pct": -1.64,
+      "to_high_pct": 14.9,
+      "max_drawdown_from_high_pct": -14.4,
+      "excess_period_pp": -5.68,
+      "excess_to_high_pp": 9.0
+     },
+     "YILING": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 15.93
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 17.07
+      },
+      "high": {
+       "date": "2025-11-14",
+       "close": 20.55
+      },
+      "period_return_pct": 7.16,
+      "to_high_pct": 29.0,
+      "max_drawdown_from_high_pct": -19.37,
+      "excess_period_pp": 3.12,
+      "excess_to_high_pp": 23.1
+     },
+     "XIANGXUE-300147": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 11.46
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 9.44
+      },
+      "high": {
+       "date": "2025-09-17",
+       "close": 11.49
+      },
+      "period_return_pct": -17.63,
+      "to_high_pct": 0.26,
+      "max_drawdown_from_high_pct": -22.54,
+      "excess_period_pp": -21.67,
+      "excess_to_high_pp": -5.64
+     },
+     "TIANKA-002100": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 6.622
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 7.182
+      },
+      "high": {
+       "date": "2025-09-15",
+       "close": 7.972
+      },
+      "period_return_pct": 8.46,
+      "to_high_pct": 20.39,
+      "max_drawdown_from_high_pct": -15.18,
+      "excess_period_pp": 4.42,
+      "excess_to_high_pp": 14.49
+     },
+     "HUALANVAX": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 16.974
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 21.148
+      },
+      "high": {
+       "date": "2026-01-27",
+       "close": 25.258
+      },
+      "period_return_pct": 24.59,
+      "to_high_pct": 48.8,
+      "max_drawdown_from_high_pct": -16.27,
+      "excess_period_pp": 20.55,
+      "excess_to_high_pp": 42.9
+     },
+     "BAIKEBIO": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 23.6
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 20.29
+      },
+      "high": {
+       "date": "2025-11-14",
+       "close": 23.77
+      },
+      "period_return_pct": -14.03,
+      "to_high_pct": 0.72,
+      "max_drawdown_from_high_pct": -20.66,
+      "excess_period_pp": -18.07,
+      "excess_to_high_pp": -5.18
+     },
+     "JINDIKE": {
+      "trading_days": 102,
+      "first": {
+       "date": "2025-09-01",
+       "close": 15.83
+      },
+      "last": {
+       "date": "2026-01-30",
+       "close": 20.66
+      },
+      "high": {
+       "date": "2025-11-26",
+       "close": 30.9
+      },
+      "period_return_pct": 30.51,
+      "to_high_pct": 95.2,
+      "max_drawdown_from_high_pct": -34.53,
+      "excess_period_pp": 26.47,
+      "excess_to_high_pp": 89.3
+     }
+    },
+    "note": "★ 本季短历史三只有数据者：华兰疫苗、百克生物、金迪克"
+   }
+  ],
+  "conclusion": {
+   "can_conclude": [
+    "① 2015/16 – 2025/26 共 **11 个**「9 月–次年 1 月」季节窗口中，**机制相关标的池没有稳定为正的季节性表现**：多数为下跌或高度分化，唯一大幅为正的 2019/20 季由**非流感事件**（武汉不明原因肺炎）驱动。★ v0_6 更正：窗口总数 = **11**（2015/16–2025/26），与表行数一致；v0_5 正文称「11」而表只列 10 行，系 `year` 口径为「事件日历年」所致。",
+    "② 有**真实日期与证据**支持、且落在 9–1 月窗口内的流感事件年份为：**2018（2017–18 季）、2023（11 月段）、2024（12 月段）、2025（11 月段）**；其中 2018 机制池跑输、2023/2024/2025 机制池表现分化或跑输。",
+    "③ 媒体多次记录的「流感概念涨停潮」（2023-11、2024-12~2025-01、2025-11）**集中在不在机制池的标签股**上（鲁抗医药、东北制药、哈药股份、华北制药、众生药业、康芝药业、海王生物、广济药业、海南海药等），且已有公司**公开澄清与流感业务无关**（海王生物不产流感疫苗）。",
+    "④ 「历史炒作标的池」与「机制研究股票池」在本研究区间内**高度不重合** —— 这本身是重要结论：仅用领涨股无法代表流感机制。",
+    "⑤ 库内行情覆盖（**2026-10-16 按 DB 实测更正**）：机制池 9 只中 **8 只已覆盖 2023/24 季完整窗口（102/102 交易日）**——华兰生物/达安基因/以岭药业/香雪制药/天康生物（2015-08/10 起）、华兰疫苗/百克生物/金迪克（2021–2022 上市起）；**唯一缺口是智飞生物（库内止于 2022-12-30，2023/24 季 0 交易日）**。★ 长历史五只与疫苗三只的完整覆盖由 2026-10-14/15 两轮只读补取+入库实现，才使 11 季跨年比较成为可能。"
+   ],
+   "cannot_conclude": [
+    "① **不能**得出「流感季（9–1 月）存在稳定的流感概念超额收益」——现有证据反而显示机制池多数年份跑输或无明确反应。",
+    "② **不能**用 2017-02（禽流感）、2023-02~04（甲流）、2022-06~07（夏流感）的行情证明 9–1 月季节性。",
+    "③ **不能**用 2019 年的两个事件（超级真菌 / 武汉不明原因肺炎）作为流感季节性证据（v0_4 已定性为邻近题材）。",
+    "④ **不能**把「媒体流感概念涨停」等同于「流感机制标的上涨」——两者在本区间多次分离。",
+    "⑤ 部分年份的驱动**未核实**（2021 天康 +46.7%、2024-10 香雪 +65.4%、2025-11 金迪克 +61.2%），不得归因流感。",
+    "⑥ 库内**智飞生物（ZHIFEI）止于 2022-12-30**，2022/23 之后各季无其样本 → 含 2022/23 之后的跨年比较实际为 8 只（缺智飞），已在 `by_security` 与页面覆盖状态中如实体现。★ 2026-10-16 更正：原文称「三只流感疫苗标的 2023 年行情为碎片、2023/24 季无法用其计算完整窗口」，与 DB 实测矛盾（三只该季均为 102/102 交易日）。"
+   ],
+   "recommended_next_steps": [
+    "若要产品化「多年份可比较」：建议以**长历史机制池**（华兰生物/达安基因/以岭药业/香雪制药/天康生物）为跨年可比基准，流感疫苗三只仅覆盖 2022+，须在页面标注覆盖起点。",
+    "补取 **智飞生物（ZHIFEI）2023-01 起**的行情（当前库内止于 2022-12-30），以便 2022/23 之后的季节比较覆盖全部 9 只机制池成员。★ 2026-10-16 更正：原文要求补取疫苗三只 2022–2023 行情，该补数已于 2026-10-14 完成。",
+    "对「标签股」（鲁抗医药/海王生物/众生药业/康芝药业等）单列**炒作标的池**，与机制池**并列展示、不得混用**。",
+    "所有 `event_found=false` 或窗口不可比的年份，在页面**如实显示为「无事件/窗口不符/数据不足」**，不得补造事件。"
+   ]
+  },
+  "reading": "★★ **11 个「9 月–次年 1 月」季节窗口（2015/16 – 2025/26）中，机制池无稳定为正的季节性收益**：唯一大幅为正的 **2019/20 季由非流感事件驱动**（2019-12 武汉不明原因肺炎）；**2017/18 季与 2024/25 季（两季有真实流感高峰证据）机制池均跑输或分化**；其余各季为分化、下跌或无明显反应。★★ 媒体所称「流感概念涨停潮」（2023-11、2024-12~2025-01、2025-11）**集中在机制池之外的标签股**（鲁抗医药、东北制药、哈药股份、众生药业、康芝药业、海王生物等）——「历史炒作池」与「机制研究池」**高度不重合**，两者**不可互证**。★★ 本表为**事后价格描述**，不构成季节性结论，也不构成因果；窗口外事件（2017-02 禽流感、2022-06 夏流感、2023-02~04 甲流、2019-04 超级真菌）**不得**用于 9–1 月季节性。",
+  "year_semantics": {
+   "adopted": "★ `year` = **季节开始年**（window = 当年 9/1 → 次年 1/31）；`season_label` = 「YYYY/YY 季」",
+   "previous_field_semantics": "★★ v0_5 的 `years_summary.year` 实为**该行所依据的事件/流感活动发生的日历年份**（既非季节开始年、也非结束年）—— 因此 10 行里只有 8 行能对应到 9–1 月窗口，而 2017（禽流感 2017-02）与 2022（夏流感 2022-06~07）**落在任何 9–1 月窗口之外**。",
+   "why_changed": "★ 这直接造成 v0_5「正文说 11 个窗口、表只列 10 行」的自相矛盾。v0_6 把表统一为 **11 个季节窗口**，窗口外事件改由 `out_of_window_events` 记录（其事件详情仍在 `events` 中）。",
+   "windows_total": 11,
+   "windows_list": [
+    "2015/16 季",
+    "2016/17 季",
+    "2017/18 季",
+    "2018/19 季",
+    "2019/20 季",
+    "2020/21 季",
+    "2021/22 季",
+    "2022/23 季",
+    "2023/24 季",
+    "2024/25 季",
+    "2025/26 季"
+   ],
+   "out_of_window_note": "★ `out_of_window_events` 列出**落在任何 9–1 月窗口之外**的事件/行情段。其中 2022-06~07 夏流感**只有同期报道线索、未建立独立事件记录**（`event_id: null`），故其详情不在 `events` 数组中 —— 这是**如实保留的缺口**，不是遗漏。"
+  },
+  "years_summary_legacy_v0_5": [
+   {
+    "year": 2016,
+    "event_type": "AVIAN",
+    "outcome": "NO_CLEAR_REACTION",
+    "comparable": false
+   },
+   {
+    "year": 2017,
+    "event_type": "AVIAN",
+    "outcome": "UP",
+    "comparable": false
+   },
+   {
+    "year": 2018,
+    "event_type": "SEASONAL_FLU",
+    "outcome": "UNDERPERFORM",
+    "comparable": true
+   },
+   {
+    "year": 2019,
+    "event_type": "UNKNOWN_PUBLIC_HEALTH",
+    "outcome": "UP",
+    "comparable": false
+   },
+   {
+    "year": 2020,
+    "event_type": "NONE",
+    "outcome": "UNDERPERFORM",
+    "comparable": false
+   },
+   {
+    "year": 2021,
+    "event_type": "NONE",
+    "outcome": "NO_CLEAR_REACTION",
+    "comparable": false
+   },
+   {
+    "year": 2022,
+    "event_type": "SEASONAL_FLU",
+    "outcome": "UP",
+    "comparable": false
+   },
+   {
+    "year": 2023,
+    "event_type": "SEASONAL_FLU",
+    "outcome": "NO_CLEAR_REACTION",
+    "comparable": "partial"
+   },
+   {
+    "year": 2024,
+    "event_type": "SEASONAL_FLU",
+    "outcome": "UNDERPERFORM",
+    "comparable": true
+   },
+   {
+    "year": 2025,
+    "event_type": "SEASONAL_FLU",
+    "outcome": "NO_CLEAR_REACTION",
+    "comparable": true
+   }
+  ],
+  "out_of_window_events": [
+   {
+    "year": 2017,
+    "event_id": "FLU-2017-AVIAN",
+    "window": [
+     "2017-02-01",
+     "2017-03-15"
+    ],
+    "why_out": "★ 2017-02 禽流感落在**任何** 9–1 月窗口之外（2016/17 季止于 2017-01-31）→ **不得**用于 9–1 月季节性"
+   },
+   {
+    "year": 2022,
+    "event_id": null,
+    "window": [
+     "2022-06-01",
+     "2022-07-31"
+    ],
+    "why_out": "★ 2022-06~07 夏流感落在**任何** 9–1 月窗口之外 → **不得**用于 9–1 月季节性"
+   },
+   {
+    "year": 2023,
+    "event_id": "FLU-2023-H1N1",
+    "window": [
+     "2023-02-20",
+     "2023-04-15"
+    ],
+    "why_out": "★ 2023-02~04 甲流落在 2022/23 季之外（该季止于 2023-01-31）→ **不得**用于 9–1 月季节性"
+   },
+   {
+    "year": 2019,
+    "event_id": "SUPERFUNGUS-2019-CANDIDA",
+    "window": [
+     "2019-04-01",
+     "2019-04-30"
+    ],
+    "why_out": "★ 2019-04「超级真菌」（耳念珠菌，**真菌**）非流感，且落在 2018/19 季之外 —— **不得**用于 9–1 月季节性（v0_4 已定性为**邻近题材**）"
+   }
+  ],
+  "outcome_rule": "★ outcome 判定规则（**只看库内已计算数值**，不推导因果）：① 有数据标的**全部上涨**且**全部跑赢基准** → `UP`；② 有数据标的**全部下跌** → `ALL_DOWN`；③ 有数据标的**全部跑输基准** → `UNDERPERFORM`；④ 方向或相对基准不一致 → `DIVERGENT`；⑤ 无任何标的行情 → `INSUFFICIENT_DATA`。★★ `comparable` 只看**窗口端点是否可达 + 交易日是否充分**，与 outcome 无关。",
+  "coverage_basis": "★★ `coverage` 与 `comparable` 的判定基准 = **5 只长历史机制池**（华兰生物 002007 / 达安基因 002030 / 以岭药业 002603 / 香雪制药 300147 / 天康生物 002100）与基准 SH000300 的**窗口交易日数 + 首末交易日**是否一致。★ 短历史三只（华兰疫苗 301207 / 百克生物 688276 / 金迪克 688670，2021–2022 上市）**不参与** coverage 判定，其可得性记在各窗口 `note` 中 —— 因此 `coverage=FULL` **只代表 5/8 只可比**，不得读作「8 只全部完整」。★ 逐窗口的**未达标明细**已写在 `comparable_reason` 中（不另设冗余字段）。"
+ }
+}

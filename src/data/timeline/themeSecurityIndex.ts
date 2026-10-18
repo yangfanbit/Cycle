@@ -266,7 +266,7 @@ export function themeSecurityIndexOf(doc: HistoricalEventsDoc): ThemeSecurityInd
           (n, x) => n + x.occurrences.filter((o) => o.reconLink === k).length, 0,
         );
         return acc;
-      }, { OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, UNRESOLVED: 0 } as Record<ReconLink, number>),
+      }, { OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, NO_OBJECT_REFERENCE: 0, UNRESOLVED: 0 } as Record<ReconLink, number>),
     },
   };
 }

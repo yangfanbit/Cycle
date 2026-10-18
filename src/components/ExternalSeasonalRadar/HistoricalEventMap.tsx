@@ -335,8 +335,12 @@ export function EventCardBody({
                   地图补充记录（在全局注册表、不在关联对象 <code>security_ids</code> 中）
                   <strong>{recon.counts.MAP_SUPPLEMENT}</strong>
                 </li>
+                <li data-recon="NO_OBJECT_REFERENCE">
+                  未登记对象关联（事件未记录关联对象 → 当前无法做对象级对账）
+                  <strong>{recon.counts.NO_OBJECT_REFERENCE}</strong>
+                </li>
                 <li data-recon="UNRESOLVED">
-                  无法核对（缺少关联对象或注册信息）
+                  无法核对（已提供对象引用但无法解析，或证券注册信息缺失）
                   <strong>{recon.counts.UNRESOLVED}</strong>
                 </li>
                 <li className="fem-recon-object">

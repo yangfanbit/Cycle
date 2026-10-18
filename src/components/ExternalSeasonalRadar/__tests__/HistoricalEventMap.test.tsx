@@ -143,15 +143,23 @@ describe('C. 通用组件渲染非流感题材', () => {
 });
 
 describe('D. 向后兼容（入口层）', () => {
-  it('★ FLU 题材已升版 v0_6（6 事件，含 2018/2024 跨年份）', () => {
+  it('★ FLU 题材已升版 v0_7（6 事件，含 2018/2024 跨年份）', () => {
     const m = eventMapByTheme('FLU')!;
-    expect(m.doc.artifact_version).toBe('0.6');
+    expect(m.doc.artifact_version).toBe('0.7');
     expect(m.doc.events).toHaveLength(6);
     // ★ 跨年份事件已接入
     expect(m.doc.events.map((e) => e.event_id)).toContain('FLU-2018-SEASONAL');
     expect(m.doc.events.map((e) => e.event_id)).toContain('FLU-2024-SEASONAL');
     // ★ 流感专属的 corrections 更正痕迹仍在
     expect(JSON.stringify(m.doc.corrections)).toContain('600513');
+  });
+
+  it('★★ v0.18：FLU-2023-H1N1 已补齐对象关联（evidence_basis 明确引用 → 精确命中）', () => {
+    const e = eventMapByTheme('FLU')!.doc.events.find((x) => x.event_id === 'FLU-2023-H1N1')!;
+    expect(e.campaign_facts?.object_id).toBe('C-2023-PHARMA-FLU');
+    expect(e.campaign_facts?.object_kind).toBe('campaign');
+    // evidence_basis 确实引用该 Campaign（补齐依据，非凭空指定）
+    expect(e.evidence_basis).toContain('C-2023-PHARMA-FLU');
   });
 
   it('★★ FLU 跨年份：11 个季节窗口 · year=季节开始年 · 含 2025/26 季', () => {
@@ -404,7 +412,7 @@ describe('F2. ★★ v0.17：行情表显示名称/代码/类别/窗口状态（
     expect(rowHtml).toContain('data-recon-link="OBJECT_REGISTERED"');
   });
 
-  it('★★ 地图补充 / 无法核对两类徽标（用真实 export 对象）', () => {
+  it('★★ 地图补充 / 未登记对象关联 两类徽标（用真实 export 对象）', () => {
     const mapSupp = mkEvent({
       campaign_facts: { object_id: 'C-2023-AI-COMPUTE-SEMI', start: null, peak_date: null, end: null },
       participants: [{ security_id: 'HUALANVAX', ticker: '301207', name: '华兰疫苗',
@@ -413,9 +421,9 @@ describe('F2. ★★ v0.17：行情表显示名称/代码/类别/窗口状态（
     expect(renderToStaticMarkup(<ParticipantRow p={mapSupp.participants[0]} e={mapSupp} />))
       .toContain('对象对账：地图补充记录');
 
-    const noObj = mkEvent();   // 无 campaign_facts → 无法核对
+    const noObj = mkEvent();   // 无 campaign_facts → 未登记对象关联（≠ 无法核对）
     expect(renderToStaticMarkup(<ParticipantRow p={noObj.participants[0]} e={noObj} />))
-      .toContain('对象对账：无法核对');
+      .toContain('对象对账：未登记对象关联');
   });
 });
 

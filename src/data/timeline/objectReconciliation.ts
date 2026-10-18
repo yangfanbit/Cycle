@@ -15,24 +15,32 @@
  * - **不修改 Research 数据**：纯只读派生，不写回、不改冻结产物。
  * - **不把「地图补充」当成错误**：Product 地图里的补充关联是**记录**，不是判定。
  *
- * ## 三种对账结果（封闭集合）
+ * ## 四种对账结果（封闭集合）
  *
  * | link | 含义 |
  * |---|---|
  * | `OBJECT_REGISTERED` | 该证券在**关联对象**的 `security_ids` 中（Research 侧已登记关联） |
  * | `MAP_SUPPLEMENT` | 该证券在**全局注册表**中存在，但**不在**关联对象的 `security_ids` 中（Product 地图补充记录） |
- * | `UNRESOLVED` | 关联对象或证券注册信息缺失 → **无法核对**（逐条显示原因） |
+ * | `NO_OBJECT_REFERENCE` | 事件**未记录关联对象**（无 `campaign_facts` / 无 `object_id`）→ 当前**无法进行对象级对账**（★ **不**暗示证券不存在，**不**自动判定其应属于某个 Campaign） |
+ * | `UNRESOLVED` | **已提供**对象引用，但对象**无法解析**（不在 canonical export），**或**证券注册信息缺失 → **无法核对** |
  *
  * ★ 对账是**结构事实核对**，**不是**「相关度」或「对错」判定。
+ * ★ ★★ 2026-10-18（v0.18）：把「事件未记录对象」从 `UNRESOLVED` 中**拆出**为
+ *   `NO_OBJECT_REFERENCE` —— 否则汇总会把「缺少关联字段」误读成「对象解析失败」。
  */
 import exportJson from '@exports/timeline_export_v1.json';
 import type { HistoricalEvent, HistoricalEventsDoc } from './historicalEventMaps';
 
-export type ReconLink = 'OBJECT_REGISTERED' | 'MAP_SUPPLEMENT' | 'UNRESOLVED';
+export type ReconLink =
+  | 'OBJECT_REGISTERED'
+  | 'MAP_SUPPLEMENT'
+  | 'NO_OBJECT_REFERENCE'
+  | 'UNRESOLVED';
 
 export const RECON_LINK_LABEL: Record<ReconLink, string> = {
   OBJECT_REGISTERED: '对象已登记关联',
   MAP_SUPPLEMENT: '地图补充记录',
+  NO_OBJECT_REFERENCE: '未登记对象关联',
   UNRESOLVED: '无法核对',
 };
 
@@ -41,8 +49,10 @@ export const RECON_CAVEAT =
   '★ 对账只做**精确匹配**：按「事件关联对象的 `security_ids`」与「canonical export 的证券注册表」'
   + '逐条比对，**不**按名称模糊匹配、**不**推断证券身份、**不**修改 Research 数据。'
   + '「地图补充记录」= 该证券在全局注册表中、但不在关联对象的 `security_ids` 中，'
-  + '属 Product 地图的**补充关联**，**不自动**视为错误；「无法核对」= 缺少关联对象或注册信息，'
-  + '**不猜测**身份。';
+  + '属 Product 地图的**补充关联**，**不自动**视为错误；'
+  + '「**未登记对象关联**」= 该事件**未记录关联对象**（缺 `object_id`）→ 当前**无法做对象级对账**，'
+  + '**不**暗示证券不存在、**不**自动判定其应属于某个 Campaign；'
+  + '「无法核对」= **已提供**对象引用但对象无法解析，**或**证券注册信息缺失，**不猜测**身份。';
 
 export interface ObjectSecurityReconciliation {
   /** 事件关联对象 id（`campaign_facts.object_id` ?? `campaign_facts.campaign_id`） */
@@ -60,7 +70,7 @@ export interface ObjectSecurityReconciliation {
 }
 
 export const RECON_LINK_ORDER: ReconLink[] = [
-  'OBJECT_REGISTERED', 'MAP_SUPPLEMENT', 'UNRESOLVED',
+  'OBJECT_REGISTERED', 'MAP_SUPPLEMENT', 'NO_OBJECT_REFERENCE', 'UNRESOLVED',
 ];
 
 /* ------------------------------------------------------ 只读索引（canonical export） */
@@ -153,8 +163,9 @@ export function reconciliationOf(
 
   if (!objectId) {
     return {
-      ...base, link: 'UNRESOLVED',
-      reason: '事件未记录关联对象（`campaign_facts` 缺失或未填 `object_id` / `campaign_id`）→ 无法与 Research 对象核对',
+      ...base, link: 'NO_OBJECT_REFERENCE',
+      reason: '事件**未记录关联对象**（`campaign_facts` 缺失或未填 `object_id` / `campaign_id`）'
+        + '→ 当前**无法做对象级对账**；★ 这不表示该证券不存在、也不表示它应属于某个 Campaign',
     };
   }
   if (!objectFound) {
@@ -195,7 +206,7 @@ export interface EventReconciliation {
 export function eventReconciliation(event: HistoricalEvent): EventReconciliation {
   const bySecurity = new Map<string, ObjectSecurityReconciliation>();
   const counts: Record<ReconLink, number> = {
-    OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, UNRESOLVED: 0,
+    OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, NO_OBJECT_REFERENCE: 0, UNRESOLVED: 0,
   };
   for (const p of event.participants ?? []) {
     const r = reconciliationOf(event, p.security_id);
@@ -216,7 +227,7 @@ export function eventReconciliation(event: HistoricalEvent): EventReconciliation
 /** ★★ 整个题材文档的对账汇总（供索引头部 / 报表共用） */
 export function themeReconciliation(doc: HistoricalEventsDoc): Record<ReconLink, number> {
   const totals: Record<ReconLink, number> = {
-    OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, UNRESOLVED: 0,
+    OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, NO_OBJECT_REFERENCE: 0, UNRESOLVED: 0,
   };
   for (const e of doc.events ?? []) {
     for (const p of e.participants ?? []) {

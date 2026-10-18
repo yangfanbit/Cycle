@@ -62,46 +62,77 @@ describe('B. ★★ 三分类必须可区分', () => {
     expect(r.reason).toContain('地图补充');
   });
 
-  it('★★ 无法核对：流感 2023 事件未记录关联对象（campaign_facts 缺失）→ UNRESOLVED', () => {
+  it('★★ FLU-2023-H1N1 已补齐对象关联（v0_7）→ 三只标的全部 OBJECT_REGISTERED', () => {
     const e = ev(flu, 'FLU-2023-H1N1');
     const r = eventReconciliation(e);
-    expect(r.objectId).toBeNull();
-    expect(r.objectKind).toBeNull();
-    expect(r.objectFound).toBe(false);
-    expect(r.counts.UNRESOLVED).toBe(e.participants.length);
-    const one = reconciliationOf(e, e.participants[0].security_id);
-    expect(one.link).toBe('UNRESOLVED');
-    expect(one.reason).toContain('未记录关联对象');
+    expect(r.objectId).toBe('C-2023-PHARMA-FLU');   // evidence_basis 明确引用
+    expect(r.objectKind).toBe('campaign');
+    expect(r.objectFound).toBe(true);
+    expect(r.counts.OBJECT_REGISTERED).toBe(e.participants.length);   // 3
+    expect(r.counts.NO_OBJECT_REFERENCE).toBe(0);
+    expect(r.counts.UNRESOLVED).toBe(0);
   });
 
-  it('★ 三分类文案互不相同', () => {
+  it('★★ 未登记对象关联：FLU-2017-AVIAN 未记录关联对象 → NO_OBJECT_REFERENCE（不暗示证券不存在）', () => {
+    const e = ev(flu, 'FLU-2017-AVIAN');
+    const r = eventReconciliation(e);
+    expect(r.objectId).toBeNull();
+    expect(r.objectFound).toBe(false);
+    expect(r.counts.NO_OBJECT_REFERENCE).toBe(e.participants.length);
+    expect(r.counts.UNRESOLVED).toBe(0);            // ★ 不是「对象解析失败」
+    const one = reconciliationOf(e, e.participants[0].security_id);
+    expect(one.link).toBe('NO_OBJECT_REFERENCE');
+    expect(one.reason).toContain('未记录关联对象');
+    expect(one.reason).toContain('无法做对象级对账');
+  });
+
+  it('★★ 真 UNRESOLVED：已提供对象引用但对象无法解析 → 与 NO_OBJECT_REFERENCE 区分', () => {
+    const e = ev(flu, 'FLU-2017-AVIAN');
+    const withBadRef = {
+      ...e,
+      campaign_facts: { object_id: 'NOT-A-REAL-OBJECT', start: null, peak_date: null, end: null },
+    };
+    const r = eventReconciliation(withBadRef);
+    expect(r.objectId).toBe('NOT-A-REAL-OBJECT');
+    expect(r.objectFound).toBe(false);
+    expect(r.counts.UNRESOLVED).toBe(e.participants.length);
+    expect(r.counts.NO_OBJECT_REFERENCE).toBe(0);   // ★ 有引用 → 不算「未登记」
+    expect(reconciliationOf(withBadRef, e.participants[0].security_id).link).toBe('UNRESOLVED');
+  });
+
+  it('★ 四分类文案互不相同', () => {
     const labels = Object.values(RECON_LINK_LABEL);
-    expect(new Set(labels).size).toBe(3);
+    expect(new Set(labels).size).toBe(4);
     expect(RECON_LINK_LABEL.OBJECT_REGISTERED).toBe('对象已登记关联');
     expect(RECON_LINK_LABEL.MAP_SUPPLEMENT).toBe('地图补充记录');
+    expect(RECON_LINK_LABEL.NO_OBJECT_REFERENCE).toBe('未登记对象关联');
     expect(RECON_LINK_LABEL.UNRESOLVED).toBe('无法核对');
   });
 });
 
 describe('C. ★★ 六题材对账汇总（真实数据锚点）', () => {
   const THEMES = ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS', 'AUTO_INTELLIGENCE', 'SEMICONDUCTOR_AI'];
-  const totals = { OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, UNRESOLVED: 0 };
+  const totals = { OBJECT_REGISTERED: 0, MAP_SUPPLEMENT: 0, NO_OBJECT_REFERENCE: 0, UNRESOLVED: 0 };
   let records = 0;
   for (const t of THEMES) {
     const doc = eventMapByTheme(t)!.doc;
     const rec = themeReconciliation(doc);
     const n = doc.events.reduce((s, e) => s + (e.participants?.length ?? 0), 0);
-    it(`★ ${t}：三分类之和 = 参与记录数（${n}）`, () => {
-      expect(rec.OBJECT_REGISTERED + rec.MAP_SUPPLEMENT + rec.UNRESOLVED).toBe(n);
+    it(`★ ${t}：四分类之和 = 参与记录数（${n}）`, () => {
+      expect(rec.OBJECT_REGISTERED + rec.MAP_SUPPLEMENT
+        + rec.NO_OBJECT_REFERENCE + rec.UNRESOLVED).toBe(n);
     });
     totals.OBJECT_REGISTERED += rec.OBJECT_REGISTERED;
     totals.MAP_SUPPLEMENT += rec.MAP_SUPPLEMENT;
+    totals.NO_OBJECT_REFERENCE += rec.NO_OBJECT_REFERENCE;
     totals.UNRESOLVED += rec.UNRESOLVED;
     records += n;
   }
 
-  it('★★ 全局锚点：记录 123 条 · 已登记 63 · 地图补充 0 · 无法核对 60', () => {
+  it('★★ 全局锚点：记录 123 条 · 已登记 66 · 地图补充 0 · 未登记对象关联 57 · 无法核对 0', () => {
     expect(records).toBe(123);
-    expect(totals).toEqual({ OBJECT_REGISTERED: 63, MAP_SUPPLEMENT: 0, UNRESOLVED: 60 });
+    expect(totals).toEqual({
+      OBJECT_REGISTERED: 66, MAP_SUPPLEMENT: 0, NO_OBJECT_REFERENCE: 57, UNRESOLVED: 0,
+    });
   });
 });
