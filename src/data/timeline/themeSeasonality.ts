@@ -163,9 +163,11 @@ export function seasonalityByTheme(rows: ThemeAnnualRow[]): Map<string, ThemeSea
 
 /** ★ 必须与标注一同展示的语义边界
  *
- * ★ 措辞受既有护栏约束：`seasonalMap.test.tsx` 禁止地图 HTML 出现
+ * ★ 措辞受**本层**护栏约束：`seasonalMap.test.tsx` 禁止**季节性地图 HTML** 出现
  *   `score / ranking / probability / 胜率 / 推荐分 / 预测`。
- *   **不放宽护栏**，改用「不是概率」+「不代表明年」表达同一件事（「概率」不在禁列）。
+ *   **不放宽本层护栏**，改用「不是概率」+「不代表明年」表达同一件事。
+ * ★ v0.9 口径：该护栏是**季节性地图这一层**的范围限定 —— 项目已允许概率研究，
+ *   由 `empiricalProbability` 层承载（有独立断言：分母 / Wilson 区间 / 未校准声明）。
  * ★ 不得含 `**` —— 它会字面显示。
  */
 export const SEASONALITY_NOTE =

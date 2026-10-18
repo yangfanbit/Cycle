@@ -266,7 +266,8 @@ describe('SeasonalMap 渲染契约', () => {
     expect(html).toContain('个年份');
   });
 
-  it('不引入评分 / 排名 / 概率 / 预测 / 胜率 / 推荐分', () => {
+  // ★ v0.9：这是**季节性地图本层**的语义范围（该层只做历史描述，不承载概率层）
+  it('本层（季节性地图）不引入评分 / 排名 / 概率 / 预测 / 胜率 / 推荐分', () => {
     for (const bad of ['score', 'ranking', 'probability', 'prediction', '胜率', '推荐分', '预测']) {
       expect(html.toLowerCase()).not.toContain(bad.toLowerCase());
     }

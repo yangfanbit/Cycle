@@ -29,6 +29,7 @@ import {
   type StructuralAnalogyDataset,
 } from '../../data/timeline/structuralAnalogy';
 import { PHASE_LABEL, phaseOfStage } from '../../data/timeline/researchAttention';
+import { formatDuration, stageDurationOf } from '../../data/timeline/lifecycleDuration';
 import type { TimelineDataSource } from '../../data/timeline/timelineTypes';
 import type { CurrentCandidate } from '../../data/timeline/currentCandidate';
 
@@ -176,21 +177,21 @@ export function LifecycleComparisonSection({
           <dd>{phaseWindowLabel(candidate.phase_window)}</dd>
         </dl>
         <p className="lcc-current-note">
-          ★ 以上是**研究侧自述**（`attention_state` / `phase_window`），不是从行情推导的结论；
-          窗口结束日为 null 表示**研究未给出结束日**（开放区间）。
+          ★ 以上是<strong>研究侧自述</strong>（attention_state / phase_window），不是从行情推导的结论；
+          窗口结束日为 null 表示<strong>研究未给出结束日</strong>（开放区间）。
         </p>
       </div>
 
       {state === 'loading' && <p className="lcc-state">正在载入冻结 SA 解释…</p>}
       {state === 'failed' && (
         <p className="lcc-state lcc-state-warn">
-          ★ 冻结 SA 解释**未能载入** —— 无法给出历史对象范围。这不代表「没有历史对照」，
+          ★ 冻结 SA 解释<strong>未能载入</strong> —— 无法给出历史对象范围。这不代表「没有历史对照」，
           只代表本次没能取到；请稍后重试或查看上方结构对应区。
         </p>
       )}
       {state === 'ready' && !dataSource && (
         <p className="lcc-state lcc-state-warn">
-          ★ 当前数据源**未提供** Timeline（verified 源）→ 无法读取历史阶段序列。
+          ★ 当前数据源<strong>未提供</strong> Timeline（verified 源）→ 无法读取历史阶段序列。
           上方冻结 SA 仍给出结构对应结论；本节仅做阶段展示，故暂不可用。
         </p>
       )}
@@ -216,15 +217,17 @@ export function LifecycleComparisonSection({
 
               {visible.length === 0 && (
                 <p className="lcc-state">
-                  ★ 该候选**没有** SA 判为「结构支持」的历史对象（共 {rows.length} 个，
+                  ★ 该候选<strong>没有</strong> SA 判为「结构支持」的历史对象（共 {rows.length} 个，
                   状态分布见上方结构对应区）。勾选上方复选框可查看全部。
                 </p>
               )}
 
               <table className="lcc-table">
                 <caption>
-                  左列 = 当前研究对象（研究自述）· 右列 = 历史对象阶段序列（导出原序）·
-                  末列 = 冻结 SA 的 lifecycle 维度（**原样引用**，非本组件计算）
+                  左列 = <strong>历史对象</strong>（含结构状态与入口）·
+                  第二列 = <strong>当前研究对象</strong>（研究自述阶段）·
+                  第三列 = 该历史对象的<strong>阶段序列</strong>（导出原序 + 起止 + 可计算时给持续时长）·
+                  末列 = 冻结 SA 的 lifecycle 维度（原样引用，非本组件计算）
                 </caption>
                 <thead>
                   <tr>
@@ -260,16 +263,26 @@ export function LifecycleComparisonSection({
                           <span className="lcc-missing">{unrecordedStages}</span>
                         ) : (
                           <ol className="lcc-stages">
-                            {r.lifecycle.map((p, i) => (
-                              <li key={`${p.stage}-${i}`}>
-                                <strong>{stageLabel(p.stage)}</strong>
-                                <span className="lcc-raw">（{p.stage}）</span>
-                                <span className="lcc-dates">
-                                  {p.start ?? '起点未记录'} → {p.end ?? '开放区间'}
-                                </span>
-                                <span className="lcc-prec">{p.precision}</span>
-                              </li>
-                            ))}
+                            {r.lifecycle.map((p, i) => {
+                              const dur = stageDurationOf(p.start, p.end, p.precision);
+                              return (
+                                <li key={`${p.stage}-${i}`}>
+                                  <strong>{stageLabel(p.stage)}</strong>
+                                  <span className="lcc-raw">（{p.stage}）</span>
+                                  <span className="lcc-dates">
+                                    {p.start ?? '起点未记录'} → {p.end ?? '开放区间'}
+                                  </span>
+                                  <span className="lcc-prec">{p.precision}</span>
+                                  {/* ★ v0.9：能算才给时长；不能算就说明原因，**不推断** */}
+                                  <span
+                                    className={`lcc-dur${dur.ok ? '' : ' lcc-dur-na'}`}
+                                    data-duration={dur.ok ? 'ok' : dur.reason}
+                                  >
+                                    {dur.ok ? `持续 ${formatDuration(dur)}` : dur.label}
+                                  </span>
+                                </li>
+                              );
+                            })}
                           </ol>
                         )}
                       </td>
@@ -279,7 +292,7 @@ export function LifecycleComparisonSection({
                         </span>
                         {INDETERMINATE_DIMENSION_STATUSES.includes(
                           r.saLifecycle.status as 'UNKNOWN',
-                        ) && <span className="lcc-indet">（不确定，**不得**读作「不对应」）</span>}
+                        ) && <span className="lcc-indet">（不确定，<strong>不得</strong>读作「不对应」）</span>}
                         <dl className="lcc-sa-kv">
                           <dt>SA 记载的候选阶段</dt>
                           <dd>{r.saLifecycle.candidatePhase ?? '（未记载）'}</dd>
@@ -287,7 +300,12 @@ export function LifecycleComparisonSection({
                           <dd>{r.saLifecycle.historicalStageAtComparablePoint ?? '（未记载）'}</dd>
                         </dl>
                         {r.saLifecycle.forbiddenComparison && (
-                          <p className="lcc-forbid">★ SA 明文禁止：{r.saLifecycle.forbiddenComparison}</p>
+                          <p className="lcc-forbid">
+                            ★ SA 明文禁止：
+                            {/* ★ 源数据文本自带 `**`，按强调渲染（否则会露出两个星号） */}
+                            {r.saLifecycle.forbiddenComparison.split('**').map((seg, i) =>
+                              i % 2 === 1 ? <strong key={i}>{seg}</strong> : <span key={i}>{seg}</span>)}
+                          </p>
                         )}
                       </td>
                     </tr>

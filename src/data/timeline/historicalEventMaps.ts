@@ -189,6 +189,14 @@ export interface CrossYearYear {
   actual_window?: [string, string] | null;  // 实际可得区间
   coverage?: 'FULL' | 'PARTIAL' | 'NONE';
   event_type?: string; mechanism?: string;
+  /**
+   * ★ v0.9：源数据的「窗口内是否确有本题材事件」标志（流感有，电力无）。
+   * **只透传，不推断** —— 缺字段 → `undefined`（不是 `false`）。
+   * 用途：区分「价格结果」与「事件机制」（如 2019/20 季 UP 由非流感事件驱动）。
+   */
+  in_window_event?: boolean;
+  /** ★ v0.9：源数据的驱动说明原文（**不重写、不改写**） */
+  driver?: string;
   outcome: string;                  // 见 CROSS_YEAR_OUTCOME_LABEL 码表
   comparable?: boolean | 'partial';
   comparable_reason?: string;
@@ -455,6 +463,7 @@ function targetPoolText(v: unknown): string | undefined {
 function crossYearPassthrough(y: Record<string, unknown>): {
   window_type?: string; window?: [string, string] | null; actual_window?: [string, string] | null;
   coverage?: 'FULL' | 'PARTIAL' | 'NONE'; comparable?: boolean | 'partial'; comparable_reason?: string;
+  in_window_event?: boolean; driver?: string;
 } {
   const pair = (v: unknown): [string, string] | null => {
     const a = asArr(v);
@@ -464,6 +473,7 @@ function crossYearPassthrough(y: Record<string, unknown>): {
   };
   const cov = asStr(y.coverage);
   const cmp = y.comparable;
+  const iwe = y.in_window_event;
   return {
     window_type: asStr(y.window_type),
     window: pair(y.window),
@@ -471,6 +481,9 @@ function crossYearPassthrough(y: Record<string, unknown>): {
     coverage: cov === 'FULL' || cov === 'PARTIAL' || cov === 'NONE' ? cov : undefined,
     comparable: typeof cmp === 'boolean' || cmp === 'partial' ? cmp : undefined,
     comparable_reason: asStr(y.comparable_reason),
+    // ★ 只透传布尔值；缺失 → undefined（**不得**默认 false，否则「未记录」会被读成「确认没有」）
+    in_window_event: typeof iwe === 'boolean' ? iwe : undefined,
+    driver: asStr(y.driver),
   };
 }
 
@@ -526,6 +539,8 @@ export function crossYearComparisonOf(doc: HistoricalEventsDoc): CrossYearCompar
         coverage: passthrough.coverage,
         event_type: asStr(y.event_type),
         mechanism: asStr(y.mechanism),
+        in_window_event: passthrough.in_window_event,
+        driver: passthrough.driver,
         outcome,
         comparable: passthrough.comparable
           ?? (outcome !== 'NO_EVENT' && outcome !== 'INSUFFICIENT_DATA'),
@@ -567,6 +582,8 @@ export function crossYearComparisonOf(doc: HistoricalEventsDoc): CrossYearCompar
         coverage: passthrough.coverage,
         event_type: asStr(y.event_type),
         mechanism: asStr(y.mechanism),
+        in_window_event: passthrough.in_window_event,
+        driver: passthrough.driver,
         outcome: asStr(y.outcome) ?? '',
         comparable: typeof cmp === 'boolean' || cmp === 'partial' ? cmp : undefined,
         comparable_reason: asStr(y.comparable_reason) ?? passthrough.comparable_reason,

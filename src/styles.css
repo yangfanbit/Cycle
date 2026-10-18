@@ -3590,3 +3590,55 @@ html, body {
 .lcc-sa-kv dd { margin: 0 0 2px; color: var(--ink-2); }
 .lcc-forbid { margin: 4px 0 0; font-size: 10px; color: var(--ink-3); }
 .lcc-raw { font-size: 9.5px; color: var(--ink-3); }
+
+/* ---------- 生命周期持续时长（v0.9） ---------- */
+.lcc-dur { display: block; font-size: 10px; color: var(--ink-2); margin-top: 1px; }
+.lcc-dur-na { color: var(--ink-3); font-style: italic; }
+
+/* ---------- 经验基准概率（Empirical Probability · v0.9） ---------- */
+.fem-ep {
+  margin: 14px 0 10px; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--bg);
+}
+.fem-ep-title {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px;
+  margin: 0 0 6px; font-size: 12px; color: var(--ink);
+}
+.fem-ep-badge {
+  font-size: 9.5px; color: var(--ink-3); padding: 1px 7px;
+  border: 1px dashed var(--line); border-radius: 10px; font-weight: 400;
+}
+.fem-ep-disc { margin: 0 0 8px; font-size: 10.5px; line-height: 1.8; color: var(--ink-3); }
+.fem-ep-def {
+  display: grid; grid-template-columns: 132px 1fr; gap: 2px 10px;
+  margin: 0 0 10px; font-size: 10.5px;
+}
+.fem-ep-def dt { color: var(--ink-3); }
+.fem-ep-def dd { margin: 0; color: var(--ink-2); }
+.fem-ep-rule { line-height: 1.7; }
+.fem-ep-h6 { margin: 10px 0 5px; font-size: 11px; color: var(--ink); }
+.fem-ep-table th { font-size: 10px; }
+.fem-ep-table td { font-size: 10.5px; }
+.fem-ep-table th:nth-child(1) { width: auto; }
+.fem-ep-est {
+  margin: 6px 0; font-size: 11.5px; color: var(--ink); line-height: 1.7;
+}
+.fem-ep-rate { margin-left: 4px; }
+.fem-ep-ci { margin-left: 4px; color: var(--ink-2); }
+.fem-ep-ci-note { display: block; font-size: 10px; color: var(--ink-3); margin-top: 2px; }
+.fem-ep-samples { margin: 4px 0 8px; font-size: 10.5px; color: var(--ink-2); line-height: 1.8; }
+.fem-ep-hit {
+  display: inline-block; margin: 2px 4px 2px 0; padding: 0 6px;
+  border: 1px solid var(--line); border-radius: 8px; font-size: 10px; color: var(--ink);
+}
+.fem-ep-reason { font-size: 10px; color: var(--ink-3); line-height: 1.6; }
+.fem-ep-note { margin: 5px 0 8px; font-size: 10px; color: var(--ink-3); line-height: 1.75; }
+.fem-ep-tier {
+  margin: 8px 0; padding: 6px 8px; font-size: 10px; line-height: 1.75;
+  color: var(--ink-2); border-left: 2px solid var(--line); background: var(--panel);
+}
+.fem-ep-model { margin-top: 8px; font-size: 10.5px; }
+.fem-ep-model > summary { cursor: pointer; font-size: 10.5px; color: var(--ink-2); }
+.fem-ep-verdict {
+  margin: 6px 0; font-size: 10.5px; line-height: 1.75; color: var(--ink);
+}

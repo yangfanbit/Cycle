@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-16 修订 · 行情库拆分 + 事件地图质量修正）
+## ★★ 当前状态（2026-10-18 修订 · 概率研究开放 + 首个经验基准概率原型）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -16,22 +16,22 @@
 > ③ 组件三处误导性展示修复 + 5 条回归测试；④ readiness `--check` 措辞与覆盖面改正。
 > 完整说明：`docs/MARKET_DATA_DB_v0_1.md`（拆分）与本文本节（治理）。
 
-### 实测基线（2026-10-16 · 全部实测）
+### 实测基线（2026-10-18 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `05c897d`（**v0.8 实现**：草稿交接修复 + 生命周期对照）· `c3aad6f`（lockfile 同步，修 CI）· 前序：`f012dc3`（v0.7 实现）· `2a675cd`（v0.6 文档）· `d3a5a15`（v0.6 实现）· `5d7efaa`（v0.5 实现）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | v0.9 见 `git log -1`（实现提交 + 紧随的文档回填）· 前序：`f578ddb`（v0.8 文档）· `05c897d`（v0.8 实现）· `c3aad6f`（lockfile）· `f012dc3`（v0.7）· `d3a5a15`（v0.6）· `5d7efaa`（v0.5）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1167 passed / 0 failed / 48 files**（v0.8：+37，含 jsdom 交互测试 7 条 + 生命周期对照 14 条 + 剪贴板 10 条 + 草稿关联/matchedOn 13 条） |
+| **测试** | **1223 passed / 0 failed / 51 files**（v0.9：+56，含经验概率 27 条 + 概率区块渲染 15 条 + 阶段时长 9 条 + 生命周期展示 5 条） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
 | **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 与 **`5d7efaa` 的 CI 均 success**（Actions runner 本身就是干净检出 = 干净环境实证；干净克隆另在本地复验：恢复 2,855 行日历 + 全部门禁 PASS + monorepo 25/25 + npm ci/tsc/**1021 测试**/build 全 OK） |
-| **历史事件地图** | 4 题材 / **13 事件** · 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· v0.5 审计结论：**全部 13 事件数值零计算错误**（DB 逐项复算一致），缺陷集中在陈旧文字/分类/UI 呈现，已修 |
+| **历史事件地图** | 4 题材 / **13 事件** · 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· **v0.9 新增经验基准概率区块**（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：**全部 13 事件数值零计算错误**（DB 逐项复算一致） |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
@@ -141,6 +141,101 @@
 - ★ 踩坑记录：jsdom 下 `document` 在同文件所有用例间**共享** → 失败的用例若没 unmount 干净，
   后续用例的 `querySelector` 会读到别人的 DOM（实测踩到）。→ 测试用**作用域化 Session**（
   `host.querySelector`）+ `afterEach` 清 `document.body`。
+
+### v0.9 批次（概率研究开放 + 首个经验基准概率原型）
+
+> ★ **只做产品与研究表达**：未新增 Campaign / Research Candidate、未改 `schema.sql`、
+> 未重算冻结 SA / CANONICAL 快照、未改任何事件数据数值、未动行情库拆分、无网络、无 LLM。
+> ★ 4 个工作流：A（规则修订与全局审计）· B（跨年份统计与区间）· C（展示修复与 UI 接入）·
+> D（真实数据测试、样本外评估可行性、发布验收）。
+
+#### ① ★★ 规则调整：撤销「概率 / 预测」全局禁令（A 节）
+
+`AGENTS.md` §1 原来把「价格或收益预测」「概率 / 胜率 / 推荐分」列为**禁止做**的产品形态。
+v0.9 改为：**可以研究**历史频率 / 条件概率 / 阶段变化概率 / 未来窗口预测，
+但必须满足**准入条件**（新增 §3.1，长期有效）：
+
+1. 口径七要素写明：预测目标 · 样本范围 · 观察期限 · **分母** · 排除规则 · 来源 · 不确定性；
+2. 分母只含**完整可比较**观察；`partial` / 不可比 / 缺数据**逐条列出原因**，不得算成成功或失败；
+   ★ `ThemeAnnualRow.comparableYears` **不是**分母（它只数「含历史窗口的年份」）；
+3. 结果定义**来自原数据**（沿用 `outcome_rule`），不得把「任意上涨」当作严格规则的成功；
+4. 不确定性必须显示（二元比例给 **95% Wilson 区间**，小样本自然宽）；
+5. 新预测模型**必须按时间顺序验证**（禁随机拆分 / 禁未来信息泄漏），与**简单历史基准**比较，
+   记录 **Brier / Log Loss / 校准 / 样本量**；
+6. 价格 / 收益预测**不自动等于买卖建议**；但概率输出不得与买卖措辞共现、不得生成买卖信号；
+7. 架构不变：Research 生产 · Product 消费版本化产物 · 纯静态 / 不联网 / 不调 LLM。
+
+**三层口径**（产品与文档都必须分开）：① 历史统计描述 → ② **经验基准概率**（未校准）→
+③ 已验证预测模型（**目前没有**）。②不得写成「未来概率」。
+
+★ **真实语义守卫全部保留，只限定范围**（不删断言）：
+`timeObservationPatterns` 的 `expectNoPredictiveLanguage` 明确限定为 **Time Observation 层**；
+`seasonalMap` / `researchWorkflow` 的禁词测试标题改为「**本层**不引入…」；
+`researchRequestDraft` 的 `DRAFT_CONSTRAINTS` 原写「不给概率；不做预测」（现已不成立）→
+改为「本文件本身不含概率或预测数值（若请求涉及历史频率 / 条件比例，须在正式研究中声明分母、样本与不确定性）」。
+
+#### ② ★★ 首个经验基准概率原型（C 节）
+
+- 计算模块：`src/data/timeline/empiricalProbability.ts`（纯函数，无 IO）
+  · `wilsonInterval(k, n, z)` · `computeEmpiricalEstimate(years, target)` ·
+  `timeOrderedBaseline(years, target)` · `assessModelFeasibility(ev)` ·
+  `empiricalTargetOf(doc, cmp)`（**只读定义**，缺 `outcome_rule` → 返回 `null`，宁可不展示）
+- UI：`src/components/ExternalSeasonalRadar/EmpiricalProbabilityBlock.tsx`，
+  挂在**既有**「跨年份比较」区段内部（`CrossYearSection` 年份表之后），**不另造第二套地图**。
+- 展示：目标定义（含 `outcome_rule` 原文）· 结果分布 · **k/n + 95% Wilson** ·
+  计入分母年份 · 成功年份明细 · **排除表（逐年带源数据原因）** · 机制分布 · 三层口径说明 ·
+  模型可行性（默认折叠）。
+
+**实测结果（全部由数据算出，无硬编码）**：
+
+| 题材 | 分母 | 成功 | 比例 | 95% Wilson | 排除 |
+|---|---|---|---|---|---|
+| 电力（迎峰度夏 5–7 月） | **7** | **1**（2022） | 14.3% | **2.6% – 51.3%** | 2016 / 2019 / 2024（`partial`，交易日不足或末笔早于窗口末） |
+| 流感（9 月–次年 1 月） | **9** | **1**（2019/20） | 11.1% | **2.0% – 43.5%** | 2015 / 2016（`partial`） |
+
+★★ **流感的关键事实**：唯一 UP 年（2019/20）的窗口内事件类型是 **`UNKNOWN_PUBLIC_HEALTH`**
+（2019-12 武汉不明原因肺炎），**不是流感**；`SEASONAL_FLU` 的 4 个完整可比年份 UP 计数 = **0**。
+→ 页面原样列出事件类型，**不把价格结果写成机制成功**。
+
+★ 电力逐年没有 `event_type` → 机制桶显示 `UNRECORDED`（**不猜**成某个机制）。
+
+#### ③ 模型可行性（D 节）：**不训练**
+
+- 评估方式：**严格按年份升序** expanding-window；第 i 年只用**严格早于**它的年份估计历史频率；
+  **不做**随机拆分（会打乱时间顺序）。
+- 门槛**预先声明**：`MODEL_MIN_OUT_OF_SAMPLE_STEPS = 30`（写死在代码里，先定门槛再看数据）。
+- 实测：
+
+| 题材 | 样本外步数 | Brier | LogLoss | 结论 |
+|---|---|---|---|---|
+| 电力 | **4**（7−3） | 0.267 | **5.282** | 不训练 |
+| 流感 | **6**（9−3） | 0.046 | 0.231 | 不训练 |
+
+★ 电力 LogLoss 5.28 的来源是**一次「预测 0 实际 1」**（2022）→ `-log(1e-9)` ≈ 20.7 被平均进 4 步。
+这正是「样本太小 + 基线无特征」的直接后果，**不是**模型缺陷。
+- 缺什么（页面逐条列出）：样本外步数不足（缺 26 / 24 步）· 完整可比年份仅 7–9 个 ·
+  **缺事前特征**（窗口开始前可观测：库存 / 来水 / 煤价 / 气温 / 政策日历）· 缺跨题材样本。
+
+#### ④ v0.8 遗留展示修复（B 节）
+
+| # | 问题 | 修法 |
+|---|---|---|
+| 1 | `LifecycleComparisonSection` 的 caption 写「左列 = 当前研究对象」，而表头第一列是**历史对象**（说明与表头矛盾） | caption 改为「左列 = 历史对象 · 第二列 = 当前研究对象 · 第三列 = 阶段序列」，并加断言锁死顺序 |
+| 2 | 历史阶段只显示起止，**没有持续时间** | 新增 `src/data/timeline/lifecycleDuration.ts`：`EXACT_DATE` / `DATE_WINDOW` 且起止不同 → 给天数 + 近似月数；**开放区间 / 单日锚点 / 缺日期 / 阶段窗口精度 / 起止倒置 / 不可解析** → 逐项说明**无法计算**（实测电力/流感数据里 129 个单日锚点、15 个开放区间、347 个阶段窗口精度） |
+| 3 | 生命周期区与概率区**露出 Markdown 星号**（JSX 不解析 `**`） | 统一按 `**` 切分渲染 `<strong>`（含源数据自带 `**` 的 `forbidden_comparison` / `outcome_rule`），并加「渲染结果不含 `**`」断言 |
+| 4 | README 状态表停在 **2026-10-13 / 881 测试 / 33 files** | 更新为 2026-10-18 / **1222 / 51**，并补概率层与「预测模型未建立」两行 |
+
+#### ⑤ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test **1223 passed / 0 failed / 51 files**（+56）
+新增：empiricalProbability 27（Wilson 数学性质 / 分母筛选 / partial 排除 / UP 严格规则 /
+      流感非流感机制 / 缺失数据 / 时间前推无泄漏 / Brier-LogLoss 可复算 / 可行性门槛）
+      EmpiricalProbabilityBlock 15（分母与区间上屏 / 排除原因 / 三层口径 / 校准分箱 / 无字面星号 / 无买卖词）
+      lifecycleDuration 9（六类「不能算」原因逐条）/ LifecycleComparisonSection +5（列序 / 时长）
+Research 门禁：validate_db PASS · validate_timeline_export PASS · validate_market_snapshot 342/8/0
+      intake --check PASS · refresh_downstream --check PASS · resolve_sa_artifact / monorepo / restore 全 exit=0
+```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 

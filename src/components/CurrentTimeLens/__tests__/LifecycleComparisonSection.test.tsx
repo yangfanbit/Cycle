@@ -180,3 +180,51 @@ describe('生命周期对照 · 标签覆盖度（机械比对）', () => {
     }
   });
 });
+
+/* ================================================================
+ * v0.9 展示修复：列序说明 + 持续时长（能算才给，不能算说原因）
+ * ================================================================ */
+
+describe('生命周期对照 · 展示修复（v0.9）', () => {
+  it('★★ 表头与说明一致：**第一列是历史对象**，第二列才是当前研究对象', () => {
+    const html = render('CC-2026-BCI-MEDTECH');
+    // 表头顺序
+    const iHist = html.indexOf('>历史对象<');
+    const iCur = html.indexOf('>当前侧（自述）<');
+    expect(iHist).toBeGreaterThan(0);
+    expect(iCur).toBeGreaterThan(iHist);
+    // caption 必须与表头一致（v0.8 的 caption 写反了）
+    const cap = html.slice(html.indexOf('<caption>'), html.indexOf('</caption>'));
+    expect(cap).toContain('左列 = ');
+    expect(cap.indexOf('历史对象')).toBeLessThan(cap.indexOf('当前研究对象'));
+    expect(cap).toContain('第二列');
+    expect(cap).not.toContain('左列 = 当前研究对象');
+  });
+
+  it('★★ 起止与精度足够时**给出持续时长**（真实数据）', () => {
+    const html = render('CC-2026-BCI-MEDTECH');
+    expect(html).toContain('data-duration="ok"');
+    const m = html.match(/持续 (\d+) 天（约 ([\d.]+) 个月）/);
+    expect(m, '应至少有一个可计算的阶段').toBeTruthy();
+    expect(Number(m![1])).toBeGreaterThan(0);
+  });
+
+  it('★★ 单日锚点 → 明说**无法计算**（不得显示「持续 0 天」）', () => {
+    const html = render('CC-2026-BCI-MEDTECH');
+    expect(html).toContain('data-duration="SINGLE_DAY"');
+    expect(html).toContain('单日锚点（起止同日）→ 无法计算时长');
+    expect(html).not.toContain('持续 0 天');
+  });
+
+  it('★★ 阶段窗口精度（粗粒度）→ 不给出精确时长', () => {
+    const html = render('CC-2026-BCI-MEDTECH');
+    expect(html).toContain('data-duration="LOW_PRECISION"');
+    expect(html).toContain('精度为阶段窗口（粗粒度）→ 不给出精确时长');
+  });
+
+  it('★★ 生命周期区不再露出 Markdown 星号（v0.8 遗留展示缺陷）', () => {
+    for (const id of ['CC-2026-BCI-MEDTECH', 'CC-2026-OPTICAL-LINK', 'CC-2026-AUTO-SMARTDRIVE']) {
+      expect(render(id), id).not.toContain('**');
+    }
+  });
+});

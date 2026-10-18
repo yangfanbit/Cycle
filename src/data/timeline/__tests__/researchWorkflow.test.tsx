@@ -43,7 +43,11 @@ const TODAY = '2026-09-24';
 const SA = parseStructuralAnalogyDataset(structuralAnalogyJson);
 const CANDIDATES = defaultCurrentCandidateDataset().candidates;
 
-/** 禁止出现的语义（score / ranking / probability / prediction） */
+/**
+ * 禁止出现的语义 —— ★ v0.9 口径：这是**本组组件输出**的语义守卫，
+ * 不是全局禁令（概率研究由 `empiricalProbability` 层承载，另有专属断言）。
+ * 禁的是「把结论说成断言」：`概率是 X` / `预测为 Y` / 排名 / 荐股。
+ */
 const BANNED = ['推荐', '买入', '卖出', '必涨', '胜率', '概率是', '预测为', '排名第一', '最相似的是'];
 
 describe('研究闭环验收 · 0. 前置：当前研究对象与历史宇宙', () => {
@@ -251,7 +255,7 @@ describe('研究闭环验收 · 7. Time Observation 契约', () => {
   });
 });
 
-describe('研究闭环验收 · 8. 语义红线：无 score / ranking / probability / prediction', () => {
+describe('研究闭环验收 · 8. 语义红线（本层）：无 score / ranking / 概率断言 / 预测断言', () => {
   /**
    * ★ 重要区分（避免把「忠实呈现研究原文」误判为违规）：
    *   Product 必须**原样呈现研究证据原文**。例如 export 的

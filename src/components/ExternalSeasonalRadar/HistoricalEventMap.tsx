@@ -29,6 +29,7 @@ import {
   type HistoricalParticipant,
   type ThemeDisplay,
 } from '../../data/timeline/historicalEventMaps';
+import { EmpiricalProbabilityBlock } from './EmpiricalProbabilityBlock';
 
 /** 中国股市惯例：涨红跌绿 */
 function cls(v?: number | null): string {
@@ -377,6 +378,10 @@ export function CrossYearSection({ doc }: { doc: HistoricalEventsDoc }) {
               </tbody>
             </table>
           </div>
+
+          {/* ★★ v0.9：历史结果分布 / 经验基准概率 —— 挂在**既有**跨年份区段内部，
+              不另造第二套地图；数据仍是同一份题材文档。 */}
+          <EmpiricalProbabilityBlock doc={doc} cmp={cmp} />
 
           {withSecurity.length === 0 ? (
             <p className="fem-empty">

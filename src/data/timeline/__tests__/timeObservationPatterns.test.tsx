@@ -96,7 +96,12 @@ function rawArtifact(patterns: Record<string, unknown>[]): Record<string, unknow
   };
 }
 
-/** 正例：任何断言不要落到「非否定语境的预测 / 买卖用词」上 */
+/**
+ * ★ v0.9 口径：这是 **Time Observation 层**的语义守卫 —— 该层只描述事实，不承载概率。
+ * 概率研究由 `empiricalProbability` 层承载，其断言在
+ * `empiricalProbability.test.ts` / `EmpiricalProbabilityBlock.test.tsx` 里（分母 / 区间 / 未校准）。
+ * 本函数**不得**被理解为「项目全局禁止出现概率 / 预测字样」。
+ */
 function expectNoPredictiveLanguage(markup: string) {
   for (const hard of ['推荐', '目标价', '胜率', '大概率', '买入区', '布局窗口']) {
     expect(markup, `不应出现「${hard}」`).not.toContain(hard);
