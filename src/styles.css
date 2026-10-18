@@ -3642,3 +3642,49 @@ html, body {
 .fem-ep-verdict {
   margin: 6px 0; font-size: 10.5px; line-height: 1.75; color: var(--ink);
 }
+
+/* ---------- 历史题材地图（主入口 · v0.10） ---------- */
+.htm {
+  margin: 18px 0 6px; padding: 14px 16px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
+}
+.htm-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+.htm-title { margin: 0; font-size: 15px; color: var(--ink); }
+.htm-count { font-size: 11px; color: var(--ink-3); }
+.htm-note { margin: 0 0 10px; font-size: 11px; line-height: 1.8; color: var(--ink-3); }
+.htm-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.htm-tab {
+  display: flex; flex-direction: column; gap: 1px; align-items: flex-start;
+  padding: 6px 10px; cursor: pointer; text-align: left;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink-2);
+}
+.htm-tab:hover { border-color: var(--accent); }
+.htm-tab.is-on {
+  border-color: var(--accent); background: var(--accent-soft, var(--bg));
+  color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent);
+}
+.htm-tab-label { font-size: 12px; font-weight: 600; }
+.htm-tab-meta { font-size: 10px; color: var(--ink-3); }
+.htm-panel { margin-top: 4px; }
+.htm-panel > .fem { margin: 0; border: none; padding: 0; background: transparent; }
+.htm-missing { margin-top: 8px; font-size: 10.5px; color: var(--ink-3); }
+.htm-missing-toggle {
+  cursor: pointer; border: 1px dashed var(--line); border-radius: 6px;
+  padding: 2px 8px; background: var(--bg); color: var(--ink-3); font-size: 10.5px;
+}
+.htm-missing-list { margin: 6px 0 0; padding-left: 18px; line-height: 1.7; }
+
+/* 外部雷达 → 历史题材地图 的跳转指针 */
+.esr-map-link { margin: 6px 0 0; font-size: 10.5px; color: var(--ink-3); line-height: 1.7; }
+.esr-map-open {
+  margin-left: 6px; cursor: pointer; font-size: 10.5px;
+  border: 1px solid var(--line); border-radius: 6px; padding: 1px 8px;
+  background: var(--bg); color: var(--accent);
+}
+.esr-map-open:hover { border-color: var(--accent); }
+
+/* 概率基准的两道门槛（v0.10） */
+.fem-ep-gates { margin: 6px 0 2px; font-size: 10.5px; color: var(--ink-2); line-height: 1.8; }
+.fem-ep-gates .gate-ok { color: #2e7d32; }
+.fem-ep-gates .gate-no { color: #b26a00; }
+.fem-ep-raw { color: var(--ink-3); }

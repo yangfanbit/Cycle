@@ -31,6 +31,26 @@ import {
 } from '../../data/timeline/historicalEventMaps';
 import { EmpiricalProbabilityBlock } from './EmpiricalProbabilityBlock';
 
+/**
+ * ★★ 源数据文本里的 `**强调**` → `<strong>`。
+ *
+ * 索引 JSON 的 `display.note` / `class_caveats` 是**研究侧写的 Markdown**，
+ * 直接塞进 JSX 会**原样显示两个星号**（本项目已知陷阱）。这里统一渲染。
+ */
+function RichText({ text }: { text: string }) {
+  const parts = text.split('**');
+  return (
+    <>
+      {parts.map((p, i) => (i % 2 === 1 ? <strong key={i}>{p}</strong> : <span key={i}>{p}</span>))}
+    </>
+  );
+}
+
+/** 纯文本化：`title` 属性里不能放标签，只能把 `**` 去掉（可见文本仍走 RichText） */
+function plain(text: string): string {
+  return text.split('**').join('');
+}
+
 /** 中国股市惯例：涨红跌绿 */
 function cls(v?: number | null): string {
   if (v == null) return '';
@@ -97,11 +117,13 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
         </table>
       </div>
       <p className="fem-perf-note">
-        ★ **两列超额口径不同，不得混用**：「区间超额」= 区间涨跌 − 基准区间涨跌（`excess_period_pp`）；
-        「至高点超额」= 至高点涨幅 − 基准至高点涨幅（`excess_to_high_pp`）。不可计算时显示 `—`，**不补 0**。
+        ★ <strong>两列超额口径不同，不得混用</strong>：「区间超额」= 区间涨跌 − 基准区间涨跌
+        （<code>excess_period_pp</code>）；「至高点超额」= 至高点涨幅 − 基准至高点涨幅
+        （<code>excess_to_high_pp</code>）。不可计算时显示 <code>—</code>，<strong>不补 0</strong>。
       </p>
       <p className="fem-perf-note">
-        ★ 「报道当日涨幅」见上方各标的（`reported_move`），与这里的**区间行情是两回事**。
+        ★ 「报道当日涨幅」见上方各标的（<code>reported_move</code>），
+        与这里的<strong>区间行情是两回事</strong>。
       </p>
     </>
   );
@@ -130,7 +152,7 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
         )}
         {p.reported_move && <span className="fem-part-move">报道当日 {p.reported_move}</span>}
         <span className={`fem-part-md ${mdClass}`} data-market-status={status}
-              title={status === 'COMPUTED' ? undefined : coverage.reasons.join('；')}>
+              title={status === 'COMPUTED' ? undefined : plain(coverage.reasons.join('；'))}>
           {status === 'COMPUTED'
             ? `行情: ${p.market_data}`
             : MARKET_DATA_STATUS_LABEL[status]}
@@ -138,15 +160,15 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
       </div>
       {p.business_mechanism && (
         <p className="fem-part-biz">
-          <strong>业务机制</strong>：{p.business_mechanism}
+          <strong>业务机制</strong>：<RichText text={p.business_mechanism} />
           {p.business_mechanism_caveat && (
-            <span className="fem-part-biz-caveat">{p.business_mechanism_caveat}</span>
+            <span className="fem-part-biz-caveat"><RichText text={p.business_mechanism_caveat} /></span>
           )}
         </p>
       )}
-      <p className="fem-part-why"><strong>纳入理由</strong>：{p.rationale}</p>
-      <p className="fem-part-src"><strong>来源</strong>：{p.source}</p>
-      {p.note && <p className="fem-part-note">{p.note}</p>}
+      <p className="fem-part-why"><strong>纳入理由</strong>：<RichText text={p.rationale} /></p>
+      <p className="fem-part-src"><strong>来源</strong>：<RichText text={p.source} /></p>
+      {p.note && <p className="fem-part-note"><RichText text={p.note} /></p>}
     </li>
   );
 }
@@ -166,7 +188,7 @@ export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCav
                 <code>{e.campaign_facts.campaign_id}</code> ·{' '}
                 start {e.campaign_facts.start ?? '—'} · <strong>peak_date {e.campaign_facts.peak_date ?? '—'}</strong> ·{' '}
                 end {e.campaign_facts.end ?? '—'}
-                {e.campaign_facts.note && <span className="fem-campaign-note">{e.campaign_facts.note}</span>}
+                {e.campaign_facts.note && <span className="fem-campaign-note"><RichText text={e.campaign_facts.note} /></span>}
               </p>
             </>
           )}
@@ -174,7 +196,7 @@ export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCav
           {e.media_label_note && (
             <>
               <h5>媒体标签 vs 可核实催化</h5>
-              <p className="fem-media-note">{e.media_label_note}</p>
+              <p className="fem-media-note"><RichText text={e.media_label_note} /></p>
             </>
           )}
 
@@ -186,7 +208,7 @@ export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCav
               {e.catalysts.map((c) => (
                 <li key={c.date + c.text.slice(0, 12)}>
                   <span className="fem-cat-date">{c.date}</span>
-                  <span className="fem-cat-text">{c.text}</span>
+                  <span className="fem-cat-text"><RichText text={c.text} /></span>
                   <span className="fem-cat-src">{c.source}</span>
                 </li>
               ))}
@@ -202,7 +224,8 @@ export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCav
                     <span className="fem-cat-date">{ph.start} → {ph.end}</span>
                     {/* ★ 研究侧字段名是 `stage`；`phase_type` 为旧别名 —— 两读，都不许渲染成空 */}
                     <span className="fem-cat-text">
-                      <strong>{ph.phase_type ?? ph.stage ?? '（阶段名未标注）'}</strong>：{ph.description}
+                      <strong>{ph.phase_type ?? ph.stage ?? '（阶段名未标注）'}</strong>：
+                      <RichText text={ph.description} />
                     </span>
                   </li>
                 ))}
@@ -226,7 +249,7 @@ export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCav
           <MarketPerformanceBlock e={e} />
 
           <h5>报道当日涨幅</h5>
-          <p className="fem-perf-note">{e.observed_performance.note}</p>
+          <p className="fem-perf-note"><RichText text={e.observed_performance.note} /></p>
           {e.observed_performance.by_security ? (
             <ul className="fem-perf">
               {Object.entries(e.observed_performance.by_security).map(([k, v]) => (
@@ -249,7 +272,7 @@ export function EventCardBody({ e, classCaveat }: { e: HistoricalEvent; classCav
 
           <h5>缺失 / 不确定事项</h5>
           <ul className="fem-gaps">
-            {e.known_gaps.map((g) => <li key={g.slice(0, 20)}>{g}</li>)}
+            {e.known_gaps.map((g) => <li key={g.slice(0, 20)}><RichText text={g} /></li>)}
           </ul>
     </div>
   );
@@ -265,17 +288,17 @@ export function EventCard({ e, classCaveat }: { e: HistoricalEvent; classCaveat?
       <button type="button" className="fem-event-head" aria-expanded={open}
               onClick={() => setOpen((v) => !v)}>
         <span className="fem-event-year">{e.year}</span>
-        <span className="fem-event-label">{e.label}</span>
+        <span className="fem-event-label"><RichText text={e.label} /></span>
         <span className={`fem-event-state st-${state.toLowerCase()}`}>
           {EVENT_STUDY_LABEL[state] ?? state}
         </span>
         <span className="fem-event-caret">{open ? '收起' : '展开'}</span>
       </button>
 
-      <p className="fem-event-win">窗口：{e.window_text}</p>
-      <p className="fem-event-basis">依据：{e.evidence_basis}</p>
+      <p className="fem-event-win">窗口：<RichText text={e.window_text} /></p>
+      <p className="fem-event-basis">依据：<RichText text={e.evidence_basis} /></p>
 
-      {classCaveat && <p className="fem-adjacent-caveat">{classCaveat}</p>}
+      {classCaveat && <p className="fem-adjacent-caveat"><RichText text={classCaveat} /></p>}
       {open && <EventCardBody e={e} classCaveat={classCaveat} />}
     </li>
   );
@@ -369,7 +392,7 @@ export function CrossYearSection({ doc }: { doc: HistoricalEventsDoc }) {
                     <td>{WINDOW_TYPE_LABEL[y.window_type] ?? y.window_type} · {windowText(y)}</td>
                     <td>{[y.mechanism, y.event_type].filter(Boolean).join(' / ') || '—'}</td>
                     <td className={`fem-cy-outcome out-${outcomeClass(y.outcome)}`}>{outcomeLabel(y.outcome)}</td>
-                    <td title={y.comparable_reason ?? undefined}>{comparableText(y)}</td>
+                    <td title={y.comparable_reason ? plain(y.comparable_reason) : undefined}>{comparableText(y)}</td>
                     <td className={cls(y.benchmark?.period_return_pct)}>{fmtPct(y.benchmark?.period_return_pct)}</td>
                     <td>{y.by_security ? Object.keys(y.by_security).length : '—'}</td>
                     <td>{y.coverage ?? '—'}</td>
@@ -417,7 +440,8 @@ export function CrossYearSection({ doc }: { doc: HistoricalEventsDoc }) {
                 </table>
               </div>
               <p className="fem-perf-note">
-                ★ 「区间超额」与「至高点超额」口径不同，**不得混用**；缺失一律显示 `—`，**不补 0**。
+                ★ 「区间超额」与「至高点超额」口径不同，<strong>不得混用</strong>；
+                缺失一律显示 <code>—</code>，<strong>不补 0</strong>。
               </p>
             </>
           )}
@@ -427,24 +451,28 @@ export function CrossYearSection({ doc }: { doc: HistoricalEventsDoc }) {
               <h5>年份备注（含其他窗口口径，不得混用）</h5>
               <ul className="fem-gaps">
                 {withNote.map((y) => (
-                  <li key={y.year}><strong>{y.year}</strong>：{y.note}</li>
+                  <li key={y.year}><strong>{y.year}</strong>：<RichText text={y.note ?? ''} /></li>
                 ))}
               </ul>
             </>
           )}
 
           {cmp.conclusion_short && (
-            <p className="fem-cy-note"><strong>结论摘要</strong>：{cmp.conclusion_short}</p>
+            <p className="fem-cy-note">
+              <strong>结论摘要</strong>：<RichText text={cmp.conclusion_short} />
+            </p>
           )}
-          {cmp.reading && <p className="fem-cy-note">{cmp.reading}</p>}
+          {cmp.reading && <p className="fem-cy-note"><RichText text={cmp.reading} /></p>}
           {cmp.inclusion_principle && (
-            <p className="fem-cy-note"><strong>纳入原则</strong>：{cmp.inclusion_principle}</p>
+            <p className="fem-cy-note">
+              <strong>纳入原则</strong>：<RichText text={cmp.inclusion_principle} />
+            </p>
           )}
           {cmp.limitations && cmp.limitations.length > 0 && (
             <>
               <h5>本比较不能得出（源数据已声明）</h5>
               <ul className="fem-gaps">
-                {cmp.limitations.map((l) => <li key={l.slice(0, 24)}>{l}</li>)}
+                {cmp.limitations.map((l) => <li key={l.slice(0, 24)}><RichText text={l} /></li>)}
               </ul>
             </>
           )}
@@ -473,7 +501,7 @@ export function HistoricalEventMap({ doc, display }: HistoricalEventMapProps) {
         <h3 className="fem-title">{title}</h3>
         <span className="fem-badge">{badge}</span>
       </div>
-      {note && <p className="fem-note">{note}</p>}
+      {note && <p className="fem-note"><RichText text={note} /></p>}
 
       {/* ★ 跨年份比较：在 note 之后、事件分组之前（不挤占逐事件详情） */}
       <CrossYearSection doc={doc} />

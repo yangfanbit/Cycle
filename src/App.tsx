@@ -5,6 +5,10 @@ import { DirectionLookupSection } from './components/DirectionLookup/DirectionLo
 import { ExternalSeasonalRadar } from './components/ExternalSeasonalRadar/ExternalSeasonalRadar';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
+import {
+  HistoricalThemeMaps,
+  HISTORICAL_THEME_MAPS_ID,
+} from './components/HistoricalThemeMaps/HistoricalThemeMaps';
 import { HistoricalSimilarPhase } from './components/HistoricalSimilarPhase/HistoricalSimilarPhase';
 import { MacroThemeSheet } from './components/MacroThemeSheet/MacroThemeSheet';
 import { RuleDetail } from './components/RuleDetail/RuleDetail';
@@ -143,6 +147,21 @@ export default function App() {
     [dataSource],
   );
   const mapSummary = useMemo(() => seasonalMapSummary(mapRows), [mapRows]);
+  /**
+   * ★ v0.10：首页「历史题材地图」当前题材。
+   * 由外部雷达的「在历史题材地图中查看」联动 —— 点一下即选中并滚到该区块。
+   */
+  const [mapTheme, setMapTheme] = useState<string | null>(null);
+  const openMapTheme = useCallback((themeId: string) => {
+    setMapTheme(themeId);
+    // SSR / 无 DOM 环境 → 只改状态，不滚动（不得假装滚动了）
+    if (typeof document === 'undefined') return;
+    const el = document.getElementById(HISTORICAL_THEME_MAPS_ID);
+    if (el && typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
   const [openTheme, setOpenTheme] = useState<string | null>(null);
   const openThemeRow = useMemo(
     () => allThemeRows.find((r) => themeKey(r) === openTheme) ?? null,
@@ -249,11 +268,20 @@ export default function App() {
           </p>
         )}
 
+        {/* ★★ 历史题材地图（v0.10 新增 · **直接入口**）——
+            4 个题材的历史事后重建，首屏可切换，**不需要**先展开外部线索。
+            ★ 复用 `HistoricalEventMap`（事件卡 / 跨年份比较 / 经验基准概率原样），
+              题材清单由 `historical_event_maps_index.json` 驱动。
+            ★ 与下方外部雷达**职责分离**：本区 = ThreeC 从历史数据得到；雷达 = 外部资料声称。 */}
+        {!verifiedMode && (
+          <HistoricalThemeMaps activeThemeId={mapTheme ?? undefined} onSelectTheme={setMapTheme} />
+        )}
+
         {/* ★ 外部季节性观察雷达（2026-10-13 新增）——
             ★★ 与上方地图**并列但来源分离**：上方是 ThreeC **从历史数据得到的**窗口（研究结果），
                本视图是**外部资料声称的**季节性线索（未经 ThreeC 验证）。
                两者**不得**混为一个没有来源区分的指标体系。 */}
-        {!verifiedMode && <ExternalSeasonalRadar today={today} />}
+        {!verifiedMode && <ExternalSeasonalRadar today={today} onOpenMap={openMapTheme} />}
 
         {/* ★ 覆盖边界（ThreeC 1.2 · Usage-Driven）
             用户拿一个真实方向来问（例如「文化传媒」）时，第一件要知道的是「它在不在覆盖内」。

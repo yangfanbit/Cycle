@@ -82,7 +82,12 @@ describe('A. 数据正确性', () => {
 describe('B. 核心展示', () => {
   it('★ 邻近传染病事件在页面上带免责声明（不得作为流感季节性证据）', () => {
     const html = renderToStaticMarkup(<FluEventMap />);
-    expect(html).toContain(ADJACENT_EVENT_CAVEAT);
+    // ★ v0.10：源数据的 `**强调**` 现在渲染成 <strong>（不再露星号）——
+    //   断言**可见文本**相等，并额外确认强调真的被渲染。
+    const visible = html.replace(/<[^>]+>/g, '');
+    expect(visible).toContain(ADJACENT_EVENT_CAVEAT.split('**').join(''));
+    expect(html).toContain('<strong>不是流感</strong>');
+    expect(html).not.toContain('**');
     expect(html).toContain(EVENT_CLASS_LABEL.ADJACENT_PUBLIC_HEALTH);
   });
 

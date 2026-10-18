@@ -126,6 +126,35 @@ describe('经验基准概率 · 渲染事实', () => {
     expect(steps).toBeGreaterThan(0);
   });
 
+  it('★★ 评估基准写明 Jeffreys 平滑，且声明「只用于评估、k/n 未平滑」', () => {
+    const html = renderPower();
+    expect(html).toContain('data-ep-baseline-kind="JEFFREYS_SMOOTHED_FREQUENCY"');
+    const t = textOf(html);
+    expect(t).toContain('Jeffreys');
+    expect(t).toContain('(k + 0.5) / (n + 1)');
+    expect(t).toContain('只用于评估');
+    expect(t).toContain('未做平滑');
+  });
+
+  it('★★ 逐步表同时给出「原始 k/n」与「平滑基准预测」（可核对）', () => {
+    const html = renderPower();
+    expect(html).toContain('原始 k/n');
+    expect(html).toContain('基准预测（平滑）');
+    expect(html).toContain('fem-ep-raw');
+  });
+
+  it('★★ 可行性分成**两道门槛**显示：步数 / 事前特征 / 训练条件', () => {
+    const html = renderPower();
+    expect(html).toContain('data-ep-gates="1"');
+    const t = textOf(html);
+    expect(t).toContain('样本外步数');
+    expect(t).toContain('事前特征');
+    expect(t).toContain('训练条件');
+    expect(t).toContain('不具备');
+    // 现有数据 0 个事前特征 → 特征那一道必须是「不足」
+    expect(t).toContain('事前特征：0 / 3');
+  });
+
   it('★★ 渲染里**没有** Markdown 星号（JSX 不解析 `**`）', () => {
     for (const html of [renderPower(), renderFlu()]) {
       expect(html).not.toContain('**');

@@ -9,7 +9,6 @@
  * ★ 无映射时直接展示 `UNMAPPED` 与原因，**不隐藏空白**。
  */
 import { useMemo, useState } from 'react';
-import { HistoricalEventMap } from './HistoricalEventMap';
 import { eventMapByExternalId } from '../../data/timeline/historicalEventMaps';
 import {
   EXTERNAL_CALENDAR_NOTE,
@@ -43,7 +42,9 @@ const RELATION_CLASS: Record<WindowRelation, string> = {
   INSUFFICIENT_DATE: 'esr-rel-none',
 };
 
-function EntryCard({ e, today }: { e: ExternalCalendarEntry; today: string }) {
+function EntryCard({ e, today, onOpenMap }: {
+  e: ExternalCalendarEntry; today: string; onOpenMap?: (themeId: string) => void;
+}) {
   const rel = windowRelationOf(e, today);
   const sources = e.source_ids.map((s) => externalSourceById(s)).filter(Boolean);
   return (
@@ -94,9 +95,23 @@ function EntryCard({ e, today }: { e: ExternalCalendarEntry; today: string }) {
         )}
       </dl>
 
+      {/* ★ v0.10：**不再内嵌**完整历史地图 —— 雷达的职责是「外部线索」。
+          已有地图的线索给出跳转指针（地图本身在首页「历史题材地图」区，可切换题材）。
+          这样同一批 13 个事件不会在页面上渲染两遍。 */}
       {(() => {
         const map = eventMapByExternalId(e.id);
-        return map ? <HistoricalEventMap doc={map.doc} display={map.display} /> : null;
+        if (!map) return null;
+        return (
+          <p className="esr-map-link">
+            ★ 该线索已有<strong>历史事件地图</strong>（{map.doc.events.length} 个事件，事后重建）
+            {onOpenMap && (
+              <button type="button" className="esr-map-open"
+                      onClick={() => onOpenMap(map.theme_id)}>
+                在「历史题材地图」中查看 →
+              </button>
+            )}
+          </p>
+        );
       })()}
 
       <div className="esr-foot">
@@ -109,7 +124,11 @@ function EntryCard({ e, today }: { e: ExternalCalendarEntry; today: string }) {
   );
 }
 
-export function ExternalSeasonalRadar({ today }: { today: string }) {
+export function ExternalSeasonalRadar({ today, onOpenMap }: {
+  today: string;
+  /** ★ v0.10：跳转到首页「历史题材地图」并选中该题材（由 App 注入） */
+  onOpenMap?: (themeId: string) => void;
+}) {
   const [showAll, setShowAll] = useState(false);
   const [catFilter, setCatFilter] = useState<string>('ALL');
 
@@ -146,7 +165,7 @@ export function ExternalSeasonalRadar({ today }: { today: string }) {
 
       <h3 className="esr-sub">当前优先观察（{priority.length} 项）</h3>
       <ul className="esr-list">
-        {priority.map((e) => <EntryCard key={e.id} e={e} today={today} />)}
+        {priority.map((e) => <EntryCard key={e.id} e={e} today={today} onOpenMap={onOpenMap} />)}
       </ul>
 
       <div className="esr-rest-head">
@@ -177,7 +196,7 @@ export function ExternalSeasonalRadar({ today }: { today: string }) {
             ))}
           </div>
           <ul className="esr-list">
-            {restShown.map((e) => <EntryCard key={e.id} e={e} today={today} />)}
+            {restShown.map((e) => <EntryCard key={e.id} e={e} today={today} onOpenMap={onOpenMap} />)}
           </ul>
           {restShown.length === 0 && (
             <p className="esr-empty">该类别下暂无线索。</p>

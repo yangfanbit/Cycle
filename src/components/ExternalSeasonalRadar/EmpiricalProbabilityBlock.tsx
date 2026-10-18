@@ -237,11 +237,20 @@ export function EmpiricalProbabilityBlock({
 
       {/* ---------- 模型可行性（D）：只陈述事实 ---------- */}
       <details className="fem-ep-model">
-        <summary>下一步：预测模型可行性（样本外 {ev.n} 步 / 门槛 {feas.requiredSteps} 步）</summary>
+        <summary>
+          下一步：预测模型可行性（样本外 {ev.n} 步 / 门槛 {feas.requiredSteps} 步 ·
+          事前特征 {feas.exAnteFeatureCount} / 需 {feas.requiredFeatures}）
+        </summary>
         <p className="fem-ep-note">
           ★ 评估方式：<strong>严格按年份升序</strong>做 expanding-window 预测 ——
           第 i 年只用<strong>严格早于</strong>它的年份估计历史频率，再看该年实际结果。
           <strong>不做</strong>随机拆分（会打乱时间顺序、造成未来信息泄漏）。
+        </p>
+        <p className="fem-ep-note" data-ep-baseline-kind={ev.baseline.kind}>
+          ★ <strong>评估基准</strong>：{ev.baseline.label}。
+          用平滑频率是为了避免「训练集成功数为 0 → 预测 0 → 一次意外成功让 LogLoss 爆到 20+」，
+          从而<strong>被单个样本主导</strong>。★ 平滑<strong>只用于评估</strong> ——
+          上方展示的 <code>k/n</code> 与 Wilson 区间<strong>未做平滑</strong>。
         </p>
         {ev.n > 0 ? (
           <div className="fem-table-wrap">
@@ -249,7 +258,8 @@ export function EmpiricalProbabilityBlock({
               <thead>
                 <tr>
                   <th>被预测年</th><th>训练年份</th><th>训练集成功/样本</th>
-                  <th>基准预测</th><th>实际</th><th>Brier</th><th>LogLoss</th>
+                  <th>原始 k/n</th><th>基准预测（平滑）</th><th>实际</th>
+                  <th>Brier</th><th>LogLoss</th>
                 </tr>
               </thead>
               <tbody>
@@ -258,6 +268,7 @@ export function EmpiricalProbabilityBlock({
                     <td>{s.year}</td>
                     <td>{s.trainYears.join(' · ')}</td>
                     <td>{s.trainSuccesses}/{s.trainN}</td>
+                    <td className="fem-ep-raw">{pct(s.rawFrequency)}</td>
                     <td>{pct(s.predicted)}</td>
                     <td>{s.observed}</td>
                     <td>{s.brier.toFixed(3)}</td>
@@ -303,6 +314,21 @@ export function EmpiricalProbabilityBlock({
             </tbody>
           </table>
         </div>
+        <p className="fem-ep-gates" data-ep-gates="1">
+          <span className={feas.stepsSufficient ? 'gate-ok' : 'gate-no'}>
+            样本外步数：{feas.outOfSampleSteps} / {feas.requiredSteps}
+            （{feas.stepsSufficient ? '达标' : '不足'}）
+          </span>
+          {' · '}
+          <span className={feas.featuresSufficient ? 'gate-ok' : 'gate-no'}>
+            事前特征：{feas.exAnteFeatureCount} / {feas.requiredFeatures}
+            （{feas.featuresSufficient ? '够用' : '不足'}）
+          </span>
+          {' · '}
+          <span className={feas.sufficient ? 'gate-ok' : 'gate-no'}>
+            训练条件：{feas.sufficient ? '具备' : '不具备'}
+          </span>
+        </p>
         <p className="fem-ep-verdict" data-ep-feasibility={feas.sufficient ? 'sufficient' : 'insufficient'}>
           <strong>可行性结论</strong>：<RichText text={feas.verdict} />
         </p>

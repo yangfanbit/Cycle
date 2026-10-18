@@ -8,11 +8,15 @@ import { describe, it, expect } from 'vitest';
 
 import {
   EMPIRICAL_PROBABILITY_LABEL,
+  JEFFREYS_ALPHA,
+  JEFFREYS_BETA,
+  MODEL_MIN_EX_ANTE_FEATURES,
   MODEL_MIN_OUT_OF_SAMPLE_STEPS,
   assessModelFeasibility,
   comparableCodeOf,
   computeEmpiricalEstimate,
   empiricalTargetOf,
+  jeffreysFrequency,
   timeOrderedBaseline,
   wilsonInterval,
   type EmpiricalTarget,
@@ -77,6 +81,34 @@ describe('Wilson 95% 区间', () => {
     expect(b.high).toBeLessThanOrEqual(1);
     expect(a).toEqual(wilsonInterval(0, 7));
     expect(b).toEqual(wilsonInterval(7, 7));
+  });
+});
+
+describe('Jeffreys 平滑频率（评估基准）', () => {
+  it('★ 公式：(k + 0.5) / (n + 1)，恒在 (0,1) 内', () => {
+    expect(JEFFREYS_ALPHA).toBe(0.5);
+    expect(JEFFREYS_BETA).toBe(0.5);
+    expect(jeffreysFrequency(0, 0)).toBeCloseTo(0.5, 12);
+    expect(jeffreysFrequency(0, 3)).toBeCloseTo(0.125, 12);
+    expect(jeffreysFrequency(1, 5)).toBeCloseTo(0.25, 12);
+    for (const [k, n] of [[0, 1], [0, 100], [100, 100], [1, 7]] as const) {
+      const p = jeffreysFrequency(k, n);
+      expect(p).toBeGreaterThan(0);
+      expect(p).toBeLessThan(1);
+    }
+  });
+
+  it('★★ 与原始频率的关系：0 与 1 被拉向 0.5，中间值几乎不变', () => {
+    expect(jeffreysFrequency(0, 10)).toBeGreaterThan(0);        // 原始 0 → 不为 0
+    expect(jeffreysFrequency(10, 10)).toBeLessThan(1);          // 原始 1 → 不为 1
+    expect(Math.abs(jeffreysFrequency(5, 10) - 0.5)).toBeLessThan(0.02);
+  });
+
+  it('★ 原始经验比例 k/n 与 Wilson 区间**不受平滑影响**', () => {
+    const e = computeEmpiricalEstimate(powerCmp.years, powerTarget);
+    expect(e.rate).toBeCloseTo(1 / 7, 12);          // 仍是 1/7，不是平滑值
+    expect(e.wilson!.low).toBeCloseTo(0.0257, 3);   // 仍是未平滑的 Wilson
+    expect(e.wilson!.high).toBeCloseTo(0.5131, 3);
   });
 });
 
@@ -240,11 +272,31 @@ describe('★★ 时间前推（expanding window）基线', () => {
     }
   });
 
-  it('★★ 预测值 = 训练集历史频率（简单基准，不是拟合出来的模型）', () => {
+  it('★★ 预测值 = **Jeffreys 平滑**历史频率（原始 k/n 另行保留作参照）', () => {
     const ev = timeOrderedBaseline(powerCmp.years, powerTarget);
     for (const s of ev.steps) {
-      expect(s.predicted).toBeCloseTo(s.trainSuccesses / s.trainN, 12);
+      // 评估基准 = (k + 0.5) / (n + 1)
+      expect(s.predicted).toBeCloseTo((s.trainSuccesses + 0.5) / (s.trainN + 1), 12);
+      // 原始频率仍如实保留（页面展示的 k/n 用它，不参与 Brier / LogLoss）
+      expect(s.rawFrequency).toBeCloseTo(s.trainSuccesses / s.trainN, 12);
     }
+    expect(ev.baseline.kind).toBe('JEFFREYS_SMOOTHED_FREQUENCY');
+    expect(ev.baseline.alpha).toBe(0.5);
+    expect(ev.baseline.beta).toBe(0.5);
+    expect(ev.baseline.label).toContain('Jeffreys');
+  });
+
+  it('★★ 平滑的作用：一次意外成功不再主导整组 LogLoss', () => {
+    // 电力 2022 是「训练集 0 成功 → 预测 0 → 实际 1」的那一步
+    const ev = timeOrderedBaseline(powerCmp.years, powerTarget);
+    const miss = ev.steps.find((s) => s.year === 2022)!;
+    expect(miss.trainSuccesses).toBe(0);
+    expect(miss.rawFrequency).toBe(0);          // 原始频率确实是 0
+    // 该步训练集 = 2017/2018/2020/2021（4 年，0 成功）→ (0 + 0.5) / (4 + 1) = 0.1
+    expect(miss.predicted).toBeCloseTo(0.1, 12);
+    expect(miss.logLoss).toBeCloseTo(-Math.log(0.1), 9);   // ≈ 2.30，不是 20.7
+    // 整组 LogLoss 不再被单步拉到 5+
+    expect(ev.pooledLogLoss!).toBeLessThan(1.5);
   });
 
   it('★★ 步数 = 分母 − minTrain（默认 3）；电力 7−3=4，流感 9−3=6', () => {
@@ -283,11 +335,37 @@ describe('★★ 时间前推（expanding window）基线', () => {
     expect(f.missing.join('\n')).toContain('事前');
   });
 
-  it('★ 达到门槛时结论翻转（门槛是唯一开关，不受「看起来准不准」影响）', () => {
+  it('★★ 步数达标**不等于**具备训练条件（v0.10 修正）', () => {
     const ev = timeOrderedBaseline(fluCmp.years, fluTarget);
+    // 步数门槛降到 3 → 6 步达标
     const f = assessModelFeasibility(ev, { required: 3, comparableYears: 9 });
+    expect(f.stepsSufficient).toBe(true);
+    // 但现有数据**没有任何事前特征** → 仍不具备训练条件
+    expect(f.exAnteFeatureCount).toBe(0);
+    expect(f.featuresSufficient).toBe(false);
+    expect(f.sufficient).toBe(false);
+    expect(f.verdict).toContain('不具备训练条件');
+    expect(f.verdict).toContain('步数达标 ≠ 可以训练');
+  });
+
+  it('★ 两道门槛**同时**满足才叫「可以开始」（不是只看步数）', () => {
+    const ev = timeOrderedBaseline(fluCmp.years, fluTarget);
+    const f = assessModelFeasibility(ev, {
+      required: 3, comparableYears: 9, exAnteFeatureCount: 4,
+    });
+    expect(f.stepsSufficient).toBe(true);
+    expect(f.featuresSufficient).toBe(true);
     expect(f.sufficient).toBe(true);
     expect(f.verdict).toContain('可以开始');
+  });
+
+  it('★ 特征够但步数不够 → 仍不训练', () => {
+    const ev = timeOrderedBaseline(fluCmp.years, fluTarget);
+    const f = assessModelFeasibility(ev, { required: 30, exAnteFeatureCount: 5 });
+    expect(f.featuresSufficient).toBe(true);
+    expect(f.stepsSufficient).toBe(false);
+    expect(f.sufficient).toBe(false);
+    expect(f.verdict).toContain('不训练');
   });
 });
 

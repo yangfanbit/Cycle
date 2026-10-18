@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-18 修订 · 概率研究开放 + 首个经验基准概率原型）
+## ★★ 当前状态（2026-10-18 修订 · 历史题材地图主入口 + 概率基准修正）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -20,18 +20,18 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `d3a01dc`（**v0.9 实现**：概率规则开放 + 经验基准概率原型 + 展示修复 · CI **success**）· 前序：`f578ddb`（v0.8 文档）· `05c897d`（v0.8 实现）· `c3aad6f`（lockfile）· `f012dc3`（v0.7）· `d3a5a15`（v0.6）· `5d7efaa`（v0.5）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | v0.10 见 `git log -1`（实现提交 + 紧随的文档回填）· 前序：`c1a5b1d`（v0.9 文档）· `d3a01dc`（v0.9 实现）· `f578ddb`（v0.8 文档）· `05c897d`（v0.8 实现）· `c3aad6f`（lockfile）· `f012dc3`（v0.7）· `d3a5a15`（v0.6）· `5d7efaa`（v0.5）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1223 passed / 0 failed / 51 files**（v0.9：+56，含经验概率 27 条 + 概率区块渲染 15 条 + 阶段时长 9 条 + 生命周期展示 5 条） |
+| **测试** | **1245 passed / 0 failed / 53 files**（v0.10：+22，含历史题材地图 11 条 + 题材切换 2 条 + 概率基准 9 条） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
 | **CI** | deploy.yml 在 Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁）· ★ 真实提交 `975108f` 与 **`5d7efaa` 的 CI 均 success**（Actions runner 本身就是干净检出 = 干净环境实证；干净克隆另在本地复验：恢复 2,855 行日历 + 全部门禁 PASS + monorepo 25/25 + npm ci/tsc/**1021 测试**/build 全 OK） |
-| **历史事件地图** | 4 题材 / **13 事件** · 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· **v0.9 新增经验基准概率区块**（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：**全部 13 事件数值零计算错误**（DB 逐项复算一致） |
+| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · 4 题材 / **13 事件** · 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：**全部 13 事件数值零计算错误** |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
@@ -235,6 +235,67 @@ npx tsc -b OK · npm run build 成功 · npm test **1223 passed / 0 failed / 51 
       lifecycleDuration 9（六类「不能算」原因逐条）/ LifecycleComparisonSection +5（列序 / 时长）
 Research 门禁：validate_db PASS · validate_timeline_export PASS · validate_market_snapshot 342/8/0
       intake --check PASS · refresh_downstream --check PASS · resolve_sa_artifact / monorepo / restore 全 exit=0
+```
+
+### v0.10 批次（历史题材地图主入口 + 概率基准修正）
+
+> ★ **只做产品入口与展示**：未新增题材、未补造事件、未改写任何历史行情数值、
+> 未改 `schema.sql` / canonical export / 冻结 SA / CANONICAL 快照、无网络、无 LLM。
+
+#### ① ★★ 主交付：历史题材地图成为**直接入口**
+
+**问题**：v0.9 之前，4 个题材的历史事件地图**只能**从「外部季节性观察雷达」的线索卡里间接进入 ——
+用户必须先展开「全部线索」、找到某条外部线索，才能在卡内看到地图。
+但地图是 **ThreeC 自己的历史事后重建**，与「外部资料声称的窗口」是两种东西；
+把它藏在外部线索里，等于让用户以为它也是外部参考。
+
+**修法**（复用，不重建）：
+
+- 新增容器 `src/components/HistoricalThemeMaps/HistoricalThemeMaps.tsx`：
+  **索引驱动**（`allResolvedEventMaps()`）列出全部已建地图题材，通过题材切换渲染
+  **同一个** `HistoricalEventMap` —— 事件卡 / 跨年份比较 / 经验基准概率**全部原样复用**，
+  **没有**第二套事件卡实现。
+- 位置：首页「季节性地图」之后、「外部季节性观察雷达」之前 → **首屏即可切换**，
+  不需要展开任何外部线索。
+- 计数全部现算：题材数来自索引，事件数来自 `doc.events.length`（**不读**索引里的 `event_count`，防漂移）。
+  当前实测 **4 个题材 / 13 个事件**（流感 6 · 电力 4 · 文化传媒 2 · 机器人 1）。
+- ★ **雷达职责收窄**：不再内嵌完整地图（同一批 13 个事件会渲染两遍），
+  改为「该线索已有历史事件地图（N 个事件）→ 在「历史题材地图」中查看」的**跳转指针**
+  （点一下即选中该题材并滚到区块；无 `onOpenMap` 时只给事实说明，**不假装可点**）。
+- ★ 顺手修掉地图里的**可见缺陷**：源数据文本（`display.note` / `class_caveats` / `reading` /
+  `limitations` / 事件 `label` / `window_text` / `evidence_basis` / 催化 `text` / 阶段 `description` /
+  标的 `rationale` / `known_gaps` …）此前把 `**强调**` **原样显示成星号** → 统一按 `**` 切分渲染
+  `<strong>`；`title` 属性无法放标签 → 去标记。
+
+#### ② 概率基准修正（B 节，小修）
+
+| 问题 | 修法 |
+|---|---|
+| 训练集成功数为 0 时原始频率 = **0**，LogLoss 用 `1e-9` 裁剪 → 一次未预料到的成功即 `-log(1e-9) ≈ 20.7`，**整组结果被单样本主导**（v0.9 电力 LogLoss 5.28 就是这么来的） | 评估基准改为 **Jeffreys 平滑频率** `(k + 0.5) / (n + 1)`（`JEFFREYS_ALPHA/BETA = 0.5`，**固定先验、不调参**）；Brier / LogLoss 用**实际展示的**逐步预测值计算；原始 `k/n` 另存 `rawFrequency` 作参照 |
+| 原始经验比例与区间**不得**被平滑污染 | `computeEmpiricalEstimate` **未改**：`rate = k/n`（电力 1/7 · 流感 1/9）、Wilson 区间**仍是未平滑值**；页面明写「平滑只用于评估」 |
+| `assessModelFeasibility()` 只看步数 → 「步数达标」被当成「已具备训练条件」，而现有数据**一个事前特征都没有** | 拆成**两道门槛**：`stepsSufficient`（≥ 30 步）· `featuresSufficient`（≥ **3** 个事前特征，`MODEL_MIN_EX_ANTE_FEATURES`）；`sufficient`（训练条件）= 两者**同时**满足；结论文案明写「**步数达标 ≠ 可以训练**」；UI 分三格显示（步数 / 事前特征 / 训练条件） |
+
+**实测（重算后）**：
+
+| 题材 | k/n（未平滑） | 95% Wilson | 样本外步数 | Brier | LogLoss | 训练条件 |
+|---|---|---|---|---|---|---|
+| 电力 | **1/7 = 14.3%** | 2.6% – 51.3% | 4 | **0.234**（原 0.267） | **0.741**（原 **5.282**） | 不具备（0 个事前特征） |
+| 流感 | **1/9 = 11.1%** | 2.0% – 43.5% | 6 | **0.067**（原 0.046） | **0.291**（原 0.231） | 不具备（0 个事前特征） |
+
+★ 平滑的代价也要说清：流感 LogLoss 从 0.231 **升到** 0.291 ——
+因为预测不再贴着 0（原始频率 0.13 被抬到 0.167），对「实际 0」的拟合略差。
+这正是「不假装确定」的成本，**不是**退步；电力的 5.28 → 0.741 才是修掉的那个真问题。
+
+★ **不训练新模型**，也不把平滑后的回测描述成已验证预测模型。
+
+#### ③ 验证（全部实测）
+
+```
+npx tsc -b OK · npm run build 成功 · npm test **1245 passed / 0 failed / 53 files**（+22）
+新增：HistoricalThemeMaps 11（入口 / 索引驱动 / 计数现算 / 概率区块归属 / 雷达指针）
+      HistoricalThemeMaps.interaction 2（jsdom 真点：题材切换 / 受控模式）
+      empiricalProbability +6（Jeffreys 公式 / 单样本不再主导 / 两道门槛分离）
+      EmpiricalProbabilityBlock +3（基准标注 / 原始 k/n 与平滑值并列 / 三格门槛）
 ```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）

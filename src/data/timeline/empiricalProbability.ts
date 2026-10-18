@@ -271,8 +271,18 @@ export interface BaselineStep {
   /** 训练集里的成功数 / 样本数 */
   trainSuccesses: number;
   trainN: number;
-  /** 预测值 = 训练集历史频率（简单历史基准） */
+  /**
+   * ★★ 评估用的**平滑**历史频率（Jeffreys：(k + 0.5) / (n + 1)）。
+   *
+   * 为什么不用原始 k/n：n = 3 且 k = 0 时原始频率 = **0**，
+   * 一次未预料到的成功就会让 LogLoss 变成 `-log(1e-9) ≈ 20.7`，
+   * 把整组结果**由一个样本主导**（实测电力 LogLoss 5.28 就是这么来的）。
+   * ★ 这只是**评估基准**的平滑，不是对经验比例的修正 ——
+   *   页面展示的 `k/n` 与 Wilson 区间**仍然是未平滑的原始值**。
+   */
   predicted: number;
+  /** 原始频率 k/n（**仅作参照**，不参与 Brier / LogLoss 计算） */
+  rawFrequency: number;
   /** 实际结果（1/0） */
   observed: 0 | 1;
   brier: number;
@@ -293,6 +303,13 @@ export interface CalibrationBin {
 export interface BaselineEvaluation {
   /** 目标定义 */
   targetId: string;
+  /** ★ 评估基准的**显式定义**（读者必须能看出「这个 0.125 是怎么来的」） */
+  baseline: {
+    kind: 'JEFFREYS_SMOOTHED_FREQUENCY';
+    label: string;
+    alpha: number;
+    beta: number;
+  };
   /** 严格按时间顺序的逐步预测（**不得**随机拆分） */
   steps: BaselineStep[];
   /** 样本外步数 */
@@ -308,7 +325,28 @@ export interface BaselineEvaluation {
   note: string;
 }
 
-/** 预测值裁剪，避免 log(0) */
+/** ★ Jeffreys 先验（Beta(0.5, 0.5)）—— **固定且事先声明**，不随数据调参 */
+export const JEFFREYS_ALPHA = 0.5;
+export const JEFFREYS_BETA = 0.5;
+
+/** 评估基准的名称（UI 与文档共用同一句话） */
+export const EVALUATION_BASELINE_LABEL =
+  'Jeffreys 平滑历史频率（(k + 0.5) / (n + 1)，固定先验，不调参）';
+
+/**
+ * ★★ 评估用的平滑频率（Jeffreys）。
+ *
+ * @param successes 训练集成功数 k
+ * @param n         训练集样本数
+ * @returns `(k + 0.5) / (n + 1)` —— 恒在 (0,1) 内，n = 0 时为 0.5
+ */
+export function jeffreysFrequency(successes: number, n: number): number {
+  const k = Math.max(0, successes);
+  const m = Math.max(0, n);
+  return (k + JEFFREYS_ALPHA) / (m + JEFFREYS_ALPHA + JEFFREYS_BETA);
+}
+
+/** 预测值裁剪（仅防御性；Jeffreys 已在 (0,1) 内，理论上不会触发） */
 const EPS = 1e-9;
 const clip = (p: number): number => Math.min(1 - EPS, Math.max(EPS, p));
 
@@ -339,7 +377,9 @@ export function timeOrderedBaseline(
   for (let i = minTrain; i < usable.length; i += 1) {
     const train = usable.slice(0, i);
     const trainSuccesses = train.filter((y) => target.successOutcomes.includes(y.outcome)).length;
-    const predicted = trainSuccesses / train.length;
+    const rawFrequency = trainSuccesses / train.length;
+    // ★ 评估用平滑频率（Brier / LogLoss 都基于这个**实际展示**的值）
+    const predicted = jeffreysFrequency(trainSuccesses, train.length);
     const observed: 0 | 1 = target.successOutcomes.includes(usable[i].outcome) ? 1 : 0;
     const p = clip(predicted);
     steps.push({
@@ -348,6 +388,7 @@ export function timeOrderedBaseline(
       trainSuccesses,
       trainN: train.length,
       predicted,
+      rawFrequency,
       observed,
       brier: (predicted - observed) ** 2,
       logLoss: -(observed === 1 ? Math.log(p) : Math.log(1 - p)),
@@ -386,12 +427,19 @@ export function timeOrderedBaseline(
     ? `完整可比较年份 ${usable.length} 个，少于训练所需的最小样本（${minTrain} + 1），`
       + '**无法**做时间前推评估。'
     : `完整可比较年份 ${usable.length} 个 → 样本外预测 ${n} 步。`
-      + `基准 = 训练集历史频率（无特征）。Brier ${pooledBrier!.toFixed(3)} · `
-      + `LogLoss ${pooledLogLoss!.toFixed(3)}。`
-      + '★ 这是**必须被超越的基准**，不是已交付的预测模型。';
+      + `基准 = ${EVALUATION_BASELINE_LABEL}（无特征）。`
+      + `Brier ${pooledBrier!.toFixed(3)} · LogLoss ${pooledLogLoss!.toFixed(3)}。`
+      + '★ 这是**必须被超越的基准**，不是已交付的预测模型；'
+      + '页面展示的 k/n 与 Wilson 区间**未做平滑**。';
 
   return {
     targetId: target.id,
+    baseline: {
+      kind: 'JEFFREYS_SMOOTHED_FREQUENCY',
+      label: EVALUATION_BASELINE_LABEL,
+      alpha: JEFFREYS_ALPHA,
+      beta: JEFFREYS_BETA,
+    },
     steps,
     n,
     pooledBrier,
@@ -413,11 +461,31 @@ export function timeOrderedBaseline(
  */
 export const MODEL_MIN_OUT_OF_SAMPLE_STEPS = 30;
 
+/**
+ * ★★ 预先声明的**事前特征数量门槛**。
+ *
+ * 一个只用「历史频率」的模型不是模型，是基准本身。
+ * 要谈「训练模型」，至少要有几个**窗口开始前就可观测**的自变量
+ * （如库存 / 来水 / 煤价 / 气温 / 政策日历），否则模型无法区分机制状态。
+ * ★ 同样是先声明、后看数据。
+ */
+export const MODEL_MIN_EX_ANTE_FEATURES = 3;
+
 export interface ModelFeasibility {
   targetId: string;
   outOfSampleSteps: number;
   requiredSteps: number;
-  /** 是否达到门槛 */
+  /** ★ 仅表示「步数达标」—— **不等于**可以训练 */
+  stepsSufficient: boolean;
+  /** 当前可用的**事前**特征数（窗口开始前可观测） */
+  exAnteFeatureCount: number;
+  requiredFeatures: number;
+  /** ★ 仅表示「特征够用」 */
+  featuresSufficient: boolean;
+  /**
+   * ★★ **是否具备训练条件** = 步数达标 **且** 特征够用。
+   * ★ 不得用「步数达标」单独代表这个字段（v0.10 修正的正是这一点）。
+   */
   sufficient: boolean;
   /** 事实陈述（不含建议措辞） */
   verdict: string;
@@ -428,35 +496,72 @@ export interface ModelFeasibility {
 /**
  * 判断「现在能不能训练一个可信的预测模型」。
  *
- * ★ 只回答**样本量**这一个问题；它不会因为「模型看起来很准」而放宽。
+ * ★★ v0.10 修正：原实现只比 `ev.n >= required`，于是「步数达标」被当成
+ *   「已具备训练条件」—— 而现有数据**一个事前特征都没有**，那种「达标」毫无意义。
+ *   现在把两件事**分开报**：`stepsSufficient` / `featuresSufficient`，
+ *   `sufficient` 只在两者**同时**满足时为真。
  */
 export function assessModelFeasibility(
   ev: BaselineEvaluation,
-  opts: { required?: number; comparableYears?: number } = {},
+  opts: {
+    required?: number;
+    comparableYears?: number;
+    /** 当前可用的事前特征数（默认 0 —— 现有数据确实没有） */
+    exAnteFeatureCount?: number;
+    requiredFeatures?: number;
+  } = {},
 ): ModelFeasibility {
   const required = opts.required ?? MODEL_MIN_OUT_OF_SAMPLE_STEPS;
-  const sufficient = ev.n >= required;
+  const requiredFeatures = opts.requiredFeatures ?? MODEL_MIN_EX_ANTE_FEATURES;
+  const exAnteFeatureCount = opts.exAnteFeatureCount ?? 0;
+
+  const stepsSufficient = ev.n >= required;
+  const featuresSufficient = exAnteFeatureCount >= requiredFeatures;
+  const sufficient = stepsSufficient && featuresSufficient;
+
   const missing: string[] = [];
-  if (!sufficient) {
+  if (!stepsSufficient) {
     missing.push(`样本外预测步数 ${ev.n} < 门槛 ${required}（缺 ${required - ev.n} 步）`);
+  }
+  if (!featuresSufficient) {
+    missing.push(`可用**事前**特征 ${exAnteFeatureCount} 个 < 门槛 ${requiredFeatures} 个`
+      + '（窗口开始前可观测：库存 / 来水 / 煤价 / 气温 / 政策日历等）'
+      + '—— 现有数据只有结果，没有可用的事前自变量');
   }
   if ((opts.comparableYears ?? 0) > 0 && (opts.comparableYears ?? 0) < required) {
     missing.push(`完整可比较年份仅 ${opts.comparableYears} 个 —— 不足以覆盖多种机制状态`
       + '（如「有事件 / 无事件」「强基本面 / 弱基本面」的组合）');
   }
-  missing.push('缺少**事前**可用特征（窗口开始前可观测：库存 / 来水 / 煤价 / 气温 / 政策日历等）'
-    + '—— 现有数据只有结果，没有可用的事前自变量');
   missing.push('缺少**跨题材**样本（当前仅 2 个题材各自 7–9 个完整窗口）'
     + '—— 无法检验「同一规则换个题材还成立吗」');
+
+  let verdict: string;
+  if (sufficient) {
+    verdict = `样本外步数 ${ev.n} ≥ ${required} 且事前特征 ${exAnteFeatureCount} ≥ ${requiredFeatures}`
+      + ' —— 可以开始按时间前推训练并记录校准。';
+  } else if (stepsSufficient) {
+    verdict = `样本外步数 ${ev.n} 已达标（≥ ${required}），但**不具备训练条件**：`
+      + `事前特征只有 ${exAnteFeatureCount} 个（需 ≥ ${requiredFeatures}）——`
+      + '★ **步数达标 ≠ 可以训练**。';
+  } else if (featuresSufficient) {
+    verdict = `事前特征够用（${exAnteFeatureCount} 个），但样本外步数 ${ev.n} < 门槛 ${required}`
+      + ' —— 仍**不训练**。';
+  } else {
+    verdict = `样本外步数 ${ev.n} < 门槛 ${required}，且事前特征 ${exAnteFeatureCount} 个`
+      + `（需 ≥ ${requiredFeatures}）—— **不训练**预测模型；`
+      + '保留经验基准概率，并把「还缺什么」写清楚。';
+  }
+
   return {
     targetId: ev.targetId,
     outOfSampleSteps: ev.n,
     requiredSteps: required,
+    stepsSufficient,
+    exAnteFeatureCount,
+    requiredFeatures,
+    featuresSufficient,
     sufficient,
-    verdict: sufficient
-      ? `样本外步数 ${ev.n} ≥ 门槛 ${required} —— 可以开始按时间前推训练并记录校准。`
-      : `样本外步数 ${ev.n} < 门槛 ${required} —— **不训练**预测模型；`
-        + '保留经验基准概率，并把「还缺什么」写清楚。',
+    verdict,
     missing,
   };
 }
