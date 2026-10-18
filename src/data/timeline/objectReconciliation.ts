@@ -130,6 +130,34 @@ export function isRegisteredSecurity(securityId: string): boolean {
   return REGISTERED_SECURITIES.has(securityId);
 }
 
+/**
+ * ★★ v0.20：按**同一个精确 ID**取 canonical export 注册表里的展示信息（名称 / 代码）。
+ *
+ * ★ 用途：行情表里**找不到同名参与者**的行，可用它显示「这条行情记录是哪个 ID 的」，
+ *   避免只显示裸 ID。★ **不**做任何跨 ID 推断 —— 查不到就返回 `null`，**不得**用别的 ID 顶上。
+ */
+export interface RegisteredSecurityInfo {
+  securityId: string;
+  name?: string;
+  ticker?: string;
+}
+
+const REGISTRY_BY_ID: Map<string, RegisteredSecurityInfo> = (() => {
+  const raw = exportJson as unknown as {
+    securities?: { security_id?: string; name?: string; ticker?: string }[];
+  };
+  const map = new Map<string, RegisteredSecurityInfo>();
+  for (const s of raw.securities ?? []) {
+    if (!s.security_id) continue;
+    map.set(s.security_id, { securityId: s.security_id, name: s.name, ticker: s.ticker });
+  }
+  return map;
+})();
+
+export function registeredSecurityOf(securityId: string): RegisteredSecurityInfo | null {
+  return REGISTRY_BY_ID.get(securityId) ?? null;
+}
+
 /** 从事件解析关联对象 id（`object_id` 优先，兼容旧 `campaign_id`） */
 export function eventObjectId(event: HistoricalEvent): string | null {
   const cf = event.campaign_facts;

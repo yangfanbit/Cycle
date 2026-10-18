@@ -3448,6 +3448,11 @@ html, body {
 .fem-perf-partial-cell { white-space: normal; }
 .fem-perf-partial-note { display: block; margin-top: 2px; font-size: 9.5px; color: #b0492f; }
 .fem-perf-ok { color: #2f6b3c; font-size: 10.5px; }
+/* ★★ v0.20：行情记录未关联事件参与者（行情存在 ≠ 参与者记录存在） */
+.fem-perf-table tr.fem-perf-unlinked-row td:first-child { border-left: 3px dashed #c9a227; }
+.fem-perf-sid { font-family: var(--mono); font-size: 9.5px; color: #8a6d1b; margin-left: 6px; }
+.fem-perf-unlinked { display: inline-block; font-size: 10px; color: #8a6d1b; }
+.fem-perf-unlinked-note { display: block; margin-top: 2px; font-size: 9.5px; color: var(--ink-3); white-space: normal; }
 .fem-recon-note { margin: 0 0 4px; font-size: 11px; color: var(--ink-3); }
 .fem-recon-summary { list-style: none; margin: 4px 0; padding: 0; font-size: 11px; color: var(--ink-2); }
 .fem-recon-summary li { display: flex; justify-content: space-between; gap: 8px; padding: 1px 0; }

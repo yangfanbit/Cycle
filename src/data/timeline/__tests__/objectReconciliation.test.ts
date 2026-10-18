@@ -205,3 +205,43 @@ describe('D. ★★ v0.19：证券注册表命中 —— 与对象关联状态**
     expect(miss.caveat).toContain('YILING-002603');
   });
 });
+
+describe('E. ★★ v0.20：数据一致性轻量核查（帮助未来识别新问题，不把不匹配一律判为错误）', () => {
+  const THEMES = ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS', 'AUTO_INTELLIGENCE', 'SEMICONDUCTOR_AI'];
+
+  it('★ 全题材「行情键无同 ID 参与者」共 3 条 —— 全是 `YILING`（逐条列事件 ID）', () => {
+    const found: { eventId: string; key: string }[] = [];
+    for (const t of THEMES) {
+      const doc = eventMapByTheme(t)!.doc;
+      for (const e of doc.events) {
+        const by = e.market_performance?.by_security ?? {};
+        const ids = new Set((e.participants ?? []).map((p) => p.security_id));
+        for (const k of Object.keys(by)) if (!ids.has(k)) found.push({ eventId: e.event_id, key: k });
+      }
+    }
+    expect(found.map((f) => f.key)).toEqual(['YILING', 'YILING', 'YILING']);
+    expect(found.map((f) => f.eventId).sort()).toEqual([
+      'FLU-2018-SEASONAL', 'FLU-2024-SEASONAL', 'PUBLICHEALTH-2019-WUHAN',
+    ]);
+  });
+
+  it('★ 反向：参与者无同 ID 行情键 6 条（登记核查，**不等于**数据错误 / 应补造）', () => {
+    const found: string[] = [];
+    for (const t of THEMES) {
+      const doc = eventMapByTheme(t)!.doc;
+      for (const e of doc.events) {
+        const by = e.market_performance?.by_security ?? {};
+        for (const p of e.participants ?? []) if (!(p.security_id in by)) found.push(`${e.event_id}:${p.security_id}`);
+      }
+    }
+    expect(found).toHaveLength(6);
+    expect(found.sort()).toEqual([
+      'MEDIA-2018-GAMELICENSE:GIANTNET',
+      'MEDIA-2018-GAMELICENSE:SANQI',
+      'PUBLICHEALTH-2019-WUHAN:YILING-002603',
+      'ROBOTICS-2023-HUMANOID:KINCO',
+      'ROBOTICS-2023-HUMANOID:LEADERDRIVE',
+      'ROBOTICS-2023-HUMANOID:LEADSHINE',
+    ]);
+  });
+});

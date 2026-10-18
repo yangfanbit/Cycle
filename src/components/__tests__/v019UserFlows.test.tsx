@@ -78,10 +78,16 @@ async function fillDraft(doc: Document, questions: string, range: string) {
 }
 
 /** 读取导出载荷（JSON / Markdown 预览 textarea） */
-const exportJson = (doc: Document): Record<string, unknown> =>
-  JSON.parse((doc.querySelector('textarea[aria-label="草稿 JSON"]') as HTMLTextAreaElement).value);
+const exportJsonRaw = (doc: Document): string =>
+  (doc.querySelector('textarea[aria-label="草稿 JSON"]') as HTMLTextAreaElement).value;
+const exportJson = (doc: Document): Record<string, unknown> => JSON.parse(exportJsonRaw(doc));
 const exportMd = (doc: Document): string =>
   (doc.querySelector('textarea[aria-label="草稿 Markdown"]') as HTMLTextAreaElement).value;
+
+/** ★ 注入可捕获的剪贴板（`currentClipboardEnv()` 读 `navigator.clipboard`） */
+function stubClipboard(impl: { writeText(text: string): Promise<void> } | null) {
+  Object.defineProperty(window.navigator, 'clipboard', { configurable: true, value: impl });
+}
 
 /* ================================================================ 场景 1 */
 
@@ -279,6 +285,68 @@ describe('场景 3｜文化传媒：历史有记录，当前无对应对象', ()
     await click(card.querySelector('button.fem-event-head') as HTMLButtonElement);
     expect(card.textContent).toContain('纳入理由');
     expect(card.querySelector('li.fem-part')).not.toBeNull();
+
+    await act(async () => { root.unmount(); });
+  });
+
+  it('★★ 复制 JSON / Markdown：捕获真实复制内容，与预览一致，且用户输入与系统命中分开', async () => {
+    const { root, doc } = await mountApp();
+    const copied: string[] = [];
+    stubClipboard({ writeText: async (t) => { copied.push(t); } });
+
+    await queryDirection(doc, '文化传媒');
+    await fillDraft(doc, '文化传媒 2023 的 AI 行情是否有历史同类案例？', '2015-2025');
+
+    const jsonPreview = exportJsonRaw(doc);
+    const mdPreview = exportMd(doc);
+    const dl = doc.querySelector('section.dl') as HTMLElement;
+
+    // ① 复制 JSON：捕获内容 = 预览内容
+    await click(btnIn(dl, '复制 JSON'));
+    expect(copied).toHaveLength(1);
+    expect(copied[0]).toBe(jsonPreview);
+    expect(dl.textContent).toContain('已复制');
+
+    // ② 复制 Markdown：捕获内容 = 预览内容
+    await click(btnIn(dl, '复制 Markdown'));
+    expect(copied).toHaveLength(2);
+    expect(copied[1]).toBe(mdPreview);
+
+    // ③ 复制内容里，**用户输入**与**系统命中**仍然分开
+    const payload = JSON.parse(copied[0]) as {
+      request: { research_questions: string[]; time_range: string };
+      coverage_check: { executed: boolean; current_objects: unknown[]; historical_cases: unknown[] };
+    };
+    expect(payload.request.research_questions).toContain('文化传媒 2023 的 AI 行情是否有历史同类案例？');
+    expect(payload.request.time_range).toBe('2015-2025');
+    expect(payload.coverage_check.executed).toBe(true);
+    expect(payload.coverage_check.current_objects).toHaveLength(0);      // 当前侧空
+    expect(payload.coverage_check.historical_cases.length).toBeGreaterThan(0);
+    expect(copied[1]).toContain('## 1. 研究方向');
+    expect(copied[1]).toContain('## 6. 覆盖查询结果（工具侧事实）');
+    expect(copied[1]).toContain('当前研究对象命中 0 个');
+
+    await act(async () => { root.unmount(); });
+  });
+
+  it('★★ 复制失败（权限被拒）不虚报成功，并给出下一步（复用既有失败路径）', async () => {
+    const { root, doc } = await mountApp();
+    stubClipboard({
+      writeText: async () => {
+        const err = new Error('denied');
+        err.name = 'NotAllowedError';
+        throw err;
+      },
+    });
+
+    await queryDirection(doc, '文化传媒');
+    const dl = doc.querySelector('section.dl') as HTMLElement;
+    await click(btnIn(dl, '复制 JSON'));
+
+    expect(dl.textContent).toContain('复制失败');
+    expect(dl.textContent).toContain('权限被拒绝');
+    expect(dl.textContent).toContain('手动选中复制');       // 给出下一步
+    expect(dl.textContent).not.toContain('已复制');         // ★ 绝不虚报成功
 
     await act(async () => { root.unmount(); });
   });

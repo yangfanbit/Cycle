@@ -427,6 +427,79 @@ describe('F2. ★★ v0.17：行情表显示名称/代码/类别/窗口状态（
   });
 });
 
+/* ---------------------------------------------- F3. ★★ v0.20 行情记录未关联事件参与者 */
+
+describe('F3. ★★ v0.20：行情键与参与者「同一精确 ID」对不上时，必须给出关联状态', () => {
+  const fluDoc = eventMapByTheme('FLU')!.doc;
+  const evOf = (id: string) => fluDoc.events.find((x) => x.event_id === id)!;
+  const UNLINKED_EVENTS = ['FLU-2018-SEASONAL', 'PUBLICHEALTH-2019-WUHAN', 'FLU-2024-SEASONAL'];
+
+  it('★★ 三个未关联行情行（YILING）都带明确状态文案（不再是裸 ID + 「—」）', () => {
+    for (const id of UNLINKED_EVENTS) {
+      const html = renderToStaticMarkup(<MarketPerformanceBlock e={evOf(id)} />);
+      const cells = rowOf(html, 'data-security-id="YILING"');
+      expect(cells[1], id).toContain('行情记录未关联事件参与者');
+      expect(cells[1], id).not.toBe('—');
+      expect(cells[0], id).toContain('YILING');            // ★ 原始 ID 保留
+      expect(html, id).toContain('data-perf-unlinked-caveat="1"');   // 表内声明在场
+      expect(html, id).toContain('「行情记录存在」');
+    }
+  });
+
+  it('★★ PUBLICHEALTH-2019-WUHAN 的 YILING 行**不会**变成 YILING-002603 参与者', () => {
+    const e = evOf('PUBLICHEALTH-2019-WUHAN');
+    const html = renderToStaticMarkup(<MarketPerformanceBlock e={e} />);
+    const row = html.split('<tr').find((s) => s.includes('data-security-id="YILING"'))!;
+    expect(row).toContain('data-perf-raw-id="YILING"');
+    expect(row).not.toContain('YILING-002603');            // ★ 不自动合并到另一个 ID
+    expect(row).toContain('data-perf-linked="false"');
+    // 名称 / 代码只取自**同一精确 ID** 的 canonical export 注册表
+    expect(row).toContain('以岭药业');
+    expect(row).toContain('002603');
+    // 参与者 `YILING-002603` 仍是**另一个独立事实**（在参与者列表里，不在行情表里被顶替）
+    const body = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(body).toContain('YILING-002603');
+  });
+
+  it('★★ 该行原始行情数值不变（标注不改写历史数值）', () => {
+    const e = evOf('FLU-2018-SEASONAL');
+    const cells = rowOf(renderToStaticMarkup(<MarketPerformanceBlock e={e} />), 'data-security-id="YILING"');
+    expect(cells).toHaveLength(10);
+    expect(cells[3]).toBe('103');                 // 交易日
+    expect(cells[4]).toBe('-11.9%');              // 区间涨跌（原值）
+    expect(e.market_performance!.by_security['YILING'].period_return_pct).toBe(-11.9);
+
+    const e2 = evOf('PUBLICHEALTH-2019-WUHAN');
+    const cells2 = rowOf(renderToStaticMarkup(<MarketPerformanceBlock e={e2} />), 'data-security-id="YILING"');
+    expect(cells2[4]).toBe('+69.9%');
+    expect(e2.market_performance!.by_security['YILING'].period_return_pct).toBe(69.9);
+  });
+
+  it('★★ 有参与者记录的正常行情行仍展示名称 / 代码 / 关系类别 / 窗口状态', () => {
+    const e = evOf('PUBLICHEALTH-2019-WUHAN');
+    const cells = rowOf(renderToStaticMarkup(<MarketPerformanceBlock e={e} />), 'LUKANG-600789');
+    expect(cells[0]).toContain('鲁抗医药');
+    expect(cells[0]).toContain('600789');
+    expect(cells[1]).toContain('历史市场参与者');
+    expect(cells[2]).toContain('完整窗口已计算');
+    expect(cells[1]).not.toContain('未关联事件参与者');
+  });
+
+  it('★ 没有行情键的参与者仍如实显示行情状态（不补 0、不伪造计算结果）', () => {
+    // 参与者 `YILING-002603`：有行情描述，但本事件窗口的 by_security 里没有同 ID → 该窗口未计算
+    const body = renderToStaticMarkup(<EventCardBody e={evOf('PUBLICHEALTH-2019-WUHAN')} />);
+    expect(body).toContain('该窗口未计算');
+    expect(body).not.toContain('+0.0%');
+    // MEDIA / ROBOTICS 同类（无 market_data 字段）
+    for (const theme of ['MEDIA', 'ROBOTICS']) {
+      const ev = eventMapByTheme(theme)!.doc.events[0];
+      const h = renderToStaticMarkup(<EventCardBody e={ev} />);
+      expect(h, theme).toContain('该窗口未计算');
+      expect(h, theme).not.toContain('+0.0%');
+    }
+  });
+});
+
 /* ---------------------------------------------- G. ★ 索引一致性校验 */
 
 describe('G. ★ 索引一致性校验（event_count / external_entry_ids / theme_id / display）', () => {

@@ -39,6 +39,7 @@ import {
   eventReconciliation,
   isRegisteredSecurity,
   reconciliationOf,
+  registeredSecurityOf,
 } from '../../data/timeline/objectReconciliation';
 
 /** 中国股市惯例：涨红跌绿 */
@@ -70,7 +71,19 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
     COMPUTED: 0, INSUFFICIENT: 1, NOT_COMPUTED: 2, UNAVAILABLE: 3,
   };
   const rows = Object.entries(mp.by_security)
-    .map(([sid, st]) => ({ sid, st, coverage: marketDataCoverage(e, sid), p: pMap.get(sid) }))
+    .map(([sid, st]) => {
+      const p = pMap.get(sid);
+      return {
+        sid, st,
+        coverage: marketDataCoverage(e, sid),
+        p,
+        // ★★ v0.20：该行情键是否与**同一精确 ID**的事件参与者对应（找不到 → 未关联）
+        linked: Boolean(p),
+        // 未关联行：用**同一精确 ID**在 canonical export 注册表里的名称/代码（查不到则 null，
+        // ★ 绝不拿别的 ID 顶上）
+        registry: p ? null : registeredSecurityOf(sid),
+      };
+    })
     .sort((a, b) => rank[a.coverage.status] - rank[b.coverage.status]);
   return (
     <>
@@ -80,6 +93,12 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
         ★ 只有<strong>窗口状态 = 完整窗口已计算</strong>的标的，其数值才可与完整窗口结果并列比较；
         其余（覆盖不足 / 未计算 / 行情不可得）为<strong>仅局部数据，不可视为完整窗口可比结果</strong>
         —— 仍**原样保留**、可查看，但**不**与完整窗口结果等价。
+      </p>
+      <p className="fem-perf-caveat" data-perf-unlinked-caveat="1">
+        ★★ <strong>「行情记录存在」≠「事件参与者记录存在」</strong>：本表中标注
+        「<strong>行情记录未关联事件参与者</strong>」的行，表示**存在该 ID 的行情记录**，
+        但本事件的 <code>participants</code> 中**没有同一精确 ID** —— 这**不代表**该证券已被本事件确认纳入，
+        也**不**把该 ID 合并到其它 ID（名称 / 代码若显示，仅取自**同一精确 ID** 的 canonical export 注册表）。
       </p>
       <div className="fem-table-wrap">
         <table className="fem-table fem-perf-table">
@@ -106,27 +125,45 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
                 <td>—</td>
               </tr>
             )}
-            {rows.map(({ sid, st, coverage, p }) => {
+            {rows.map(({ sid, st, coverage, p, linked, registry }) => {
               const computed = coverage.status === 'COMPUTED';
               const isCounter = p?.category === 'COUNTER_EXAMPLE';
+              const displayName = p?.name ?? registry?.name ?? sid;
+              const displayTicker = p?.ticker ?? registry?.ticker ?? '';
               return (
                 <tr
                   key={sid}
                   data-security-id={sid}
                   data-perf-status={coverage.status}
-                  className={[computed ? '' : 'fem-perf-partial', isCounter ? 'fem-perf-counter' : '']
-                    .filter(Boolean).join(' ')}
+                  data-perf-linked={linked ? 'true' : 'false'}
+                  className={[
+                    computed ? '' : 'fem-perf-partial',
+                    isCounter ? 'fem-perf-counter' : '',
+                    linked ? '' : 'fem-perf-unlinked-row',
+                  ].filter(Boolean).join(' ')}
                 >
                   <td>
-                    <strong>{p?.name ?? sid}</strong>
-                    <code className="fem-perf-ticker">{p?.ticker ?? ''}</code>
+                    <strong>{displayName}</strong>
+                    {displayTicker && <code className="fem-perf-ticker">{displayTicker}</code>}
+                    {/* ★★ v0.20：未关联行保留**原始 ID**（不得被注册表名称掩盖） */}
+                    {!linked && <code className="fem-perf-sid" data-perf-raw-id={sid}>{sid}</code>}
                   </td>
                   <td>
                     {p ? (
                       <span className={`fem-part-cat cat-${p.category.toLowerCase()}`}>
                         {PARTICIPANT_CATEGORY_LABEL[p.category]}
                       </span>
-                    ) : '—'}
+                    ) : (
+                      /* ★★ v0.20：行情键在 participants 里**找不到同一精确 ID** ——
+                         不得只显示裸 ID + 「—」；必须说明「行情记录存在」≠「事件参与者记录存在」 */
+                      <span className="fem-perf-unlinked" data-perf-unlinked="1">
+                        行情记录未关联事件参与者
+                        <span className="fem-perf-unlinked-note">
+                          本行只表示「存在该 ID 的行情记录」；本事件 <code>participants</code> 中**没有**同一 ID
+                          —— <strong>不代表</strong>该证券已被本事件确认纳入，也**不**合并到其它 ID。
+                        </span>
+                      </span>
+                    )}
                   </td>
                   <td className={computed ? 'fem-perf-ok' : 'fem-perf-partial-cell'}>
                     {computed ? '完整窗口已计算' : MARKET_DATA_STATUS_LABEL[coverage.status]}
