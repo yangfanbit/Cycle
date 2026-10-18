@@ -20,7 +20,7 @@
 
 | 项 | 值 |
 |---|---|
-| **git HEAD** | `50300f8`（**v0.10 实现**：历史题材地图主入口 + 概率基准修正 · CI **success**）· 前序：`c1a5b1d`（v0.9 文档）· `d3a01dc`（v0.9 实现）· `f578ddb`（v0.8 文档）· `05c897d`（v0.8 实现）· `c3aad6f`（lockfile）· `f012dc3`（v0.7）· `d3a5a15`（v0.6）· `5d7efaa`（v0.5）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
+| **git HEAD** | `126ce8d`（**v0.11 实现**：历史题材标的索引 + 跨事件证据追踪 · CI **success**）· 前序：`50300f8`（v0.10 实现）· `c1a5b1d`（v0.9 文档）· `d3a01dc`（v0.9 实现）· `f578ddb`（v0.8 文档）· `05c897d`（v0.8 实现）· `c3aad6f`（lockfile）· `f012dc3`（v0.7）· `d3a5a15`（v0.6）· `5d7efaa`（v0.5）· `975108f`（行情库拆分）· working tree clean · ★ 接班仍须跑 `git log -1` |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
