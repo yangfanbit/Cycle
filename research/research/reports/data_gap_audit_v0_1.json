@@ -1,0 +1,848 @@
+{
+ "artifact": "data_gap_audit",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-19",
+ "generated_by": "research/scripts/build_data_gap_audit_v0_1.py",
+ "supersedes": null,
+ "position": "★ v0.23 数据缺口审计：把 A（证券注册表未命中）· B（未登记对象关联）· C（大基金三期窗口行情缺口）逐条核验为**可追溯裁决表**。★ 本产物**只读、不改任何数据**；不新增题材、不改 SA 判定、不推断逐证券结构对应。",
+ "hard_constraints": [
+  "不按名称相似 / 代码片段 / 题材推断归属（只做精确 ID / ticker / 交易所披露核对）",
+  "YILING 与 YILING-002603 不得自动合并（只提出映射，标注 PROVISIONAL）",
+  "未获授权不做网络行情入库；market_data.db 与便携快照逐字节未动",
+  "不改 canonical export / SA / TO / Driver / schema.sql / 冻结历史轮次"
+ ],
+ "workflows": {
+  "A_registry_miss": {
+   "before": {
+    "participant_rows": 36,
+    "distinct_security_ids": 17
+   },
+   "after": {
+    "participant_rows": 36,
+    "distinct_security_ids": 17
+   },
+   "root_cause": "export 的 `securities` 注册表是 **owner-scoped**（合同 §8：每条必须带 owner；实测：注册表 190 条 == 各 owner `security_ids` 并集 190 条，两侧零差集）。17 个标识**全部**存在于 Research DB 的 `securities` 原始记录中（含 ticker / 交易所），但**未被任何导出对象引用** → 必然落在注册表外。",
+   "classification_tally": {
+    "RESOLVED": 0,
+    "PROVISIONAL": 1,
+    "UNRESOLVED": 16
+   },
+   "items": [
+    {
+     "original_id": "DAAN-002030",
+     "name": "达安基因",
+     "ticker": "002030",
+     "exchange": "SZ",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "FLU-2018-SEASONAL",
+      "FLU-2024-SEASONAL"
+     ],
+     "names_in_map": [
+      "达安基因"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "广州达安基因股份有限公司 2025 年年度报告摘要",
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2026-04-28/7b54b538-c950-482c-9e0c-5d1253e0c431.PDF",
+      "published_at": "2026-04-28",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「股票简称 达安基因 / 股票代码 002030 / 股票上市交易所 深圳证券交易所」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（达安基因 / 002030 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "FUAN-300194",
+     "name": "福安药业",
+     "ticker": "300194",
+     "exchange": "SZ",
+     "rows": 1,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "福安药业"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "福安药业（集团）股份有限公司 2025 年年度报告摘要",
+      "url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-04-27/d8331680-8c6a-4da7-96d3-7f14486b5d45.PDF",
+      "published_at": "2026-04-27",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「股票简称 福安药业 / 股票代码 300194」；2024 年报摘要表列「股票上市交易所 深圳证券交易所」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（福安药业 / 300194 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "HAIWANG-000078",
+     "name": "海王生物",
+     "ticker": "000078",
+     "exchange": "SZ",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "PUBLICHEALTH-2019-WUHAN",
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "海王生物"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "深圳市海王生物工程股份有限公司 2024 年年度报告摘要",
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-04-28/9565628e-e623-43a0-93cf-71f6c7c8cfd0.PDF",
+      "published_at": "2025-04-28",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「股票简称 海王生物 / 股票代码 000078 / 股票上市交易所 深圳证券交易所」（2026 年简称变更为 ST海王）"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（海王生物 / 000078 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "HUALAN-002007",
+     "name": "华兰生物",
+     "ticker": "002007",
+     "exchange": "SZ",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "FLU-2018-SEASONAL",
+      "FLU-2024-SEASONAL"
+     ],
+     "names_in_map": [
+      "华兰生物"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "关于华兰生物工程股份有限公司股票上市交易的通知",
+      "url": "https://www.szse.cn/disclosure/notice/company/t20040618_508040.html",
+      "published_at": "2004-06-18",
+      "publisher": "深圳证券交易所",
+      "evidence": "「证券简称为“华兰生物”,证券代码为“002007”」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（华兰生物 / 002007 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "JIUDIAN-300705",
+     "name": "九典制药",
+     "ticker": "300705",
+     "exchange": "SZ",
+     "rows": 1,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "九典制药"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "关于湖南九典制药股份有限公司股票在创业板上市交易的公告",
+      "url": "https://www.szse.cn/certificate/secondb/GEMdynamice/t20171009_502176.html",
+      "published_at": "2017-10-09",
+      "publisher": "深圳证券交易所",
+      "evidence": "「证券简称为“九典制药”,证券代码为“300705”」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（九典制药 / 300705 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "LAYNE-002166",
+     "name": "莱茵生物",
+     "ticker": "002166",
+     "exchange": "SZ",
+     "rows": 2,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "PUBLICHEALTH-2019-WUHAN"
+     ],
+     "names_in_map": [
+      "莱茵生物"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "桂林莱茵生物科技股份有限公司 2025 年年度报告摘要",
+      "url": "http://static.cninfo.com.cn/finalpage/2026-03-31/1225057506.PDF",
+      "published_at": "2026-03-31",
+      "publisher": "巨潮资讯网",
+      "evidence": "「股票简称 莱茵生物 / 股票代码 002166 / 股票上市交易所 深圳证券交易所」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（莱茵生物 / 002166 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "LIANHUAN-600513",
+     "name": "联环药业",
+     "ticker": "600513",
+     "exchange": "SH",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "PUBLICHEALTH-2019-WUHAN",
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "联环药业"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "江苏联环药业股份有限公司 2025 年年度报告",
+      "url": "http://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-04-21/600513_20260421_ALPO.pdf",
+      "published_at": "2026-04-21",
+      "publisher": "上海证券交易所",
+      "evidence": "「公司代码：600513 / 公司简称：联环药业」；正文「公司股票简况」表含股票代码 600513"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（联环药业 / 600513 / SH，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "LUKANG-600789",
+     "name": "鲁抗医药",
+     "ticker": "600789",
+     "exchange": "SH",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "PUBLICHEALTH-2019-WUHAN",
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "鲁抗医药"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "山东鲁抗医药股份有限公司 2025 年年度报告摘要",
+      "url": "http://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-04-25/600789_20260425_PRXK.pdf",
+      "published_at": "2026-04-25",
+      "publisher": "上海证券交易所",
+      "evidence": "「公司代码：600789 / 公司简称：鲁抗医药」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（鲁抗医药 / 600789 / SH，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "NANWEI-603880",
+     "name": "南卫股份",
+     "ticker": "603880",
+     "exchange": "SH",
+     "rows": 1,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "PUBLICHEALTH-2019-WUHAN"
+     ],
+     "names_in_map": [
+      "南卫股份"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "江苏南方卫材医药股份有限公司 2025 年年度报告",
+      "url": "http://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-04-30/603880_20260430_G58L.pdf",
+      "published_at": "2026-04-30",
+      "publisher": "上海证券交易所",
+      "evidence": "「A股 | 上海证券交易所 | 南卫股份 | 603880」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（南卫股份 / 603880 / SH，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "NEPHARM-000597",
+     "name": "东北制药",
+     "ticker": "000597",
+     "exchange": "SZ",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "PUBLICHEALTH-2019-WUHAN",
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "东北制药"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "东北制药集团股份有限公司 2025 年年度报告",
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2026-04-03/d1d4fbb6-1bee-4e21-98b3-351d94f3027f.PDF",
+      "published_at": "2026-04-03",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「股票简称 东北制药 / 股票代码 000597 / 股票上市证券交易所 深圳证券交易所」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（东北制药 / 000597 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "SIHUAN-000518",
+     "name": "四环生物",
+     "ticker": "000518",
+     "exchange": "SZ",
+     "rows": 2,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "PUBLICHEALTH-2019-WUHAN",
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "四环生物"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "江苏四环生物股份有限公司 2024 年年度报告",
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-04-28/ab78f2c7-052d-4b2b-b6d7-1c9c06d05a44.PDF",
+      "published_at": "2025-04-28",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「股票简称 四环生物 / 股票代码 000518 / 股票上市证券交易所 深圳证券交易所」（2026 年简称变更为 *ST四环）"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（四环生物 / 000518 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "TAILONG-600222",
+     "name": "太龙药业",
+     "ticker": "600222",
+     "exchange": "SH",
+     "rows": 1,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN"
+     ],
+     "names_in_map": [
+      "太龙药业"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "河南太龙药业股份有限公司 2024 年年度报告",
+      "url": "https://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-04-09/600222_20250409_R8ON.pdf",
+      "published_at": "2025-04-09",
+      "publisher": "上海证券交易所",
+      "evidence": "文件标题为「河南太龙药业股份有限公司 2024 年年度报告」，代码 600222；正文「公司股票简况」表"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（太龙药业 / 600222 / SH，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "TIANKA-002100",
+     "name": "天康生物",
+     "ticker": "002100",
+     "exchange": "SZ",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN",
+      "FLU-2018-SEASONAL",
+      "FLU-2024-SEASONAL"
+     ],
+     "names_in_map": [
+      "天康生物"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "关于新疆天康畜牧生物技术股份有限公司股票上市交易的公告",
+      "url": "https://www.szse.cn/disclosure/notice/company/t20061222_508129.html",
+      "published_at": "2006-12-22",
+      "publisher": "深圳证券交易所",
+      "evidence": "「证券简称为“天康生物”,证券代码为“002100”」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（天康生物 / 002100 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "WEIMING-002581",
+     "name": "未名医药",
+     "ticker": "002581",
+     "exchange": "SZ",
+     "rows": 2,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "PUBLICHEALTH-2019-WUHAN",
+      "SUPERFUNGUS-2019-CANDIDA"
+     ],
+     "names_in_map": [
+      "未名医药"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "山东未名生物医药股份有限公司 2021 年年度报告摘要",
+      "url": "http://disc.static.szse.cn/download/disc/disk03/finalpage/2022-04-30/c21a7c6d-fc58-41d5-835d-e680c12be876.PDF",
+      "published_at": "2022-04-30",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「股票简称 未名医药 / 股票代码 002581 / 股票上市交易所 深圳证券交易所」（2026 年简称变更为 ST未名）"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（未名医药 / 002581 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "WOHUA-002107",
+     "name": "沃华医药",
+     "ticker": "002107",
+     "exchange": "SZ",
+     "rows": 1,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2017-AVIAN"
+     ],
+     "names_in_map": [
+      "沃华医药"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "山东沃华医药科技股份有限公司 2022 年年度报告摘要",
+      "url": "http://disc.static.szse.cn/download/disc/disk03/finalpage/2023-03-22/22495868-5a68-4d69-b0fb-f10f7aa9a168.PDF",
+      "published_at": "2023-03-22",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「证券代码:002107 证券简称:沃华医药」；表列「股票上市交易所 深圳证券交易所」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（沃华医药 / 002107 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "XIANGXUE-300147",
+     "name": "香雪制药",
+     "ticker": "300147",
+     "exchange": "SZ",
+     "rows": 3,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "FLU-2018-SEASONAL",
+      "FLU-2024-SEASONAL",
+      "PUBLICHEALTH-2019-WUHAN"
+     ],
+     "names_in_map": [
+      "香雪制药",
+      "香雪制药（ST香雪）"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "关于广州市香雪制药股份有限公司股票在创业板上市交易的公告",
+      "url": "https://www.szse.cn/disclosure/notice/company/t20101213_500617.html",
+      "published_at": "2010-12-13",
+      "publisher": "深圳证券交易所",
+      "evidence": "「证券简称为“香雪制药”,证券代码为“300147”」（2026 年简称变更为 ST香雪）"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [],
+     "proposed_canonical_id": null,
+     "classification": "UNRESOLVED",
+     "conclusion": "身份已确认（香雪制药 / 300147 / SZ，交易所披露一致），**但没有可映射的规范 ID**；且 DB 内**没有**同 ticker 同名称的其它标识 —— 该证券**未被任何导出对象（Campaign / RC）引用**，故不在 owner-scoped 的 export 注册表内。缺口的性质是**注册表覆盖（ownership）缺口**，**不是**标识错误：要关闭它，须由 Research 轮次按证据决定「该证券是否归属于某个对象」——**本轮不改数据**。"
+    },
+    {
+     "original_id": "YILING-002603",
+     "name": "以岭药业",
+     "ticker": "002603",
+     "exchange": "SZ",
+     "rows": 1,
+     "themes": [
+      "FLU"
+     ],
+     "events": [
+      "PUBLICHEALTH-2019-WUHAN"
+     ],
+     "names_in_map": [
+      "以岭药业"
+     ],
+     "in_db_securities": true,
+     "id_suffix_equals_ticker": true,
+     "authoritative_source": {
+      "title": "石家庄以岭药业股份有限公司 2018 年年度报告全文",
+      "url": "https://disc.static.szse.cn/disc/disk01/finalpage/2019-04-25/89a18b72-e5be-4c24-8ecb-9201d6d1cb4d.PDF",
+      "published_at": "2019-04-25",
+      "publisher": "深圳证券交易所（巨潮披露）",
+      "evidence": "「证券代码:002603 / 证券简称:以岭药业」；表列「股票上市证券交易所 深圳证券交易所」"
+     },
+     "identity_evidence_sufficient": true,
+     "canonical_candidates_same_ticker_name": [
+      "YILING"
+     ],
+     "proposed_canonical_id": "YILING",
+     "classification": "PROVISIONAL",
+     "conclusion": "身份已确认（以岭药业 / 002603 / SZ，交易所披露一致）；DB 内存在**同一 ticker + 同一名称**的重复标识 `YILING`，且该标识**在** canonical export 注册表中 → **提出映射** `YILING-002603` → `YILING`（属**重复标识**，非身份不明）。★ 依 AGENTS/本轮硬约束，**不自动合并**；落库合并须单独 Research 轮次裁定。"
+    }
+   ]
+  },
+  "B_unregistered_object": {
+   "before": {
+    "participant_rows": 57,
+    "events": 8
+   },
+   "after": {
+    "participant_rows": 57,
+    "events": 8
+   },
+   "evidence_standard": "★ 沿用 v0.18 已确立的证据标准：只有当事件的 `evidence_basis` **明确引用**某对象，**且**其标的集合与该对象 `security_ids` **逐一相等**时，才补对象关联（v0.18 的 `FLU-2023-H1N1 → C-2023-PHARMA-FLU` 即此标准）。",
+   "classification_tally": {
+    "RESOLVED": 0,
+    "PROVISIONAL": 0,
+    "UNRESOLVED": 8
+   },
+   "events": [
+    {
+     "theme": "FLU",
+     "event_id": "FLU-2017-AVIAN",
+     "year": 2017,
+     "participant_rows": 10,
+     "evidence_basis": "★ 同期市场报道：新浪财经转载中国证券网，2017-02-15",
+     "window_text": "2017-02-15（报道日）",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    },
+    {
+     "theme": "FLU",
+     "event_id": "FLU-2018-SEASONAL",
+     "year": 2018,
+     "participant_rows": 4,
+     "evidence_basis": "官方监测 / 发布会 + 同期市场报道（见催化时间线）",
+     "window_text": "2017-09-01 ~ 2018-01-31（★ 真实流感高峰 2018-01 落在窗口内）（★ 落在外部窗口 9 月–次年 1 月**内**）",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    },
+    {
+     "theme": "FLU",
+     "event_id": "FLU-2024-SEASONAL",
+     "year": 2024,
+     "participant_rows": 7,
+     "evidence_basis": "官方监测 / 发布会 + 同期市场报道（见催化时间线）",
+     "window_text": "2024-09-01 ~ 2025-01-31（★ 真实流感高发 2024-12，落在窗口内）（★ 落在外部窗口 9 月–次年 1 月**内**）",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [
+      {
+       "object_id": "C-2023-PHARMA-FLU",
+       "overlap": 3,
+       "object_size": 3
+      }
+     ],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    },
+    {
+     "theme": "FLU",
+     "event_id": "PUBLICHEALTH-2019-WUHAN",
+     "year": 2019,
+     "participant_rows": 10,
+     "evidence_basis": "同期报道：证券时报 2019-12-31 · 每日经济新闻 2019-12-31",
+     "window_text": "2019-12-30 ~ 2019-12-31（报道日）",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    },
+    {
+     "theme": "FLU",
+     "event_id": "SUPERFUNGUS-2019-CANDIDA",
+     "year": 2019,
+     "participant_rows": 8,
+     "evidence_basis": "同期报道：每日经济新闻 2019-04-11（另见新京报同源报道）",
+     "window_text": "2019-04-10 ~ 2019-04-11（报道日）",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    },
+    {
+     "theme": "POWER_SUMMER",
+     "event_id": "POWER-2017-SUMMER-COUNTEREXAMPLE",
+     "year": 2017,
+     "participant_rows": 6,
+     "evidence_basis": "同期官方数据 + 行业统计（见催化时间线）",
+     "window_text": "季节观察窗口 2017-05-01 → 2017-07-31",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [
+      {
+       "object_id": "C-2021-POWER-GREEN",
+       "overlap": 3,
+       "object_size": 3
+      },
+      {
+       "object_id": "C-2023-POWEROP-THERMAL",
+       "overlap": 3,
+       "object_size": 3
+      }
+     ],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    },
+    {
+     "theme": "POWER_SUMMER",
+     "event_id": "POWER-2022-SUMMER",
+     "year": 2022,
+     "participant_rows": 6,
+     "evidence_basis": "同期报道 + 官方文件（见催化时间线）",
+     "window_text": "季节观察窗口 2022-05-01 → 2022-07-31",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [
+      {
+       "object_id": "C-2021-POWER-GREEN",
+       "overlap": 3,
+       "object_size": 3
+      },
+      {
+       "object_id": "C-2023-POWEROP-THERMAL",
+       "overlap": 3,
+       "object_size": 3
+      }
+     ],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    },
+    {
+     "theme": "POWER_SUMMER",
+     "event_id": "POWER-2024-SUMMER-COUNTEREXAMPLE",
+     "year": 2024,
+     "participant_rows": 6,
+     "evidence_basis": "同期官方数据 + 行业统计（见催化时间线）",
+     "window_text": "季节观察窗口 2024-05-01 → 2024-07-31",
+     "campaign_ids_mentioned_in_event": [],
+     "objects_with_EXACT_security_ids_equality": [],
+     "top_overlapping_objects": [
+      {
+       "object_id": "C-2021-POWER-GREEN",
+       "overlap": 3,
+       "object_size": 3
+      },
+      {
+       "object_id": "C-2023-POWEROP-THERMAL",
+       "overlap": 3,
+       "object_size": 3
+      }
+     ],
+     "classification": "UNRESOLVED",
+     "reason": "事件文本**未引用**任何 Campaign / RC id；且参与者 `security_id` 集合与**任何**导出对象的 `security_ids` **不相等**（无精确相等者）→ 无证据支持归属，**不得**按主题相近或年份相近认定属于同一 Campaign。"
+    }
+   ]
+  },
+  "C_market_coverage": {
+   "before": {
+    "securities": 4,
+    "securities_with_window_data": 0
+   },
+   "after": {
+    "securities": 4,
+    "securities_with_window_data": 0
+   },
+   "classification_tally": {
+    "RESOLVED": 0,
+    "PROVISIONAL": 0,
+    "UNRESOLVED": 4
+   },
+   "items": [
+    {
+     "security_id": "SMIC",
+     "name": "中芯国际",
+     "ticker": "688981",
+     "intended_series_symbol": "sh688981",
+     "series_registered": true,
+     "series_symbol": "sh688981",
+     "coverage": {
+      "min": "2020-07-16",
+      "max": "2021-09-30",
+      "rows": 594
+     },
+     "window": [
+      "2024-09-24",
+      "2024-11-29"
+     ],
+     "rows_in_window": 0,
+     "root_cause": "FETCH_COVERAGE_GAP",
+     "identity_source": "题材事件 `participants` 登记的 name + ticker（Research 侧原始记录）；本轮**未**做交易所披露二次核验",
+     "classification": "UNRESOLVED",
+     "reason": "缺口**不是**标识问题（市场序列 `series_id` 与题材 `security_id` 处于同一命名空间）而是**覆盖 / 登记问题**：序列已登记（symbol 与 ticker 一致），但**抓取止于窗口之前**（无窗口内行）。补齐需要**网络行情入库**（既有 Research 抓取流程），本轮**未获授权**故**未执行**；`market_data.db` 与便携快照**逐字节未动**。"
+    },
+    {
+     "security_id": "AMEC",
+     "name": "中微公司",
+     "ticker": "688012",
+     "intended_series_symbol": "sh688012",
+     "series_registered": true,
+     "series_symbol": "sh688012",
+     "coverage": {
+      "min": "2019-07-22",
+      "max": "2021-09-30",
+      "rows": 1072
+     },
+     "window": [
+      "2024-09-24",
+      "2024-11-29"
+     ],
+     "rows_in_window": 0,
+     "root_cause": "FETCH_COVERAGE_GAP",
+     "identity_source": "题材事件 `participants` 登记的 name + ticker（Research 侧原始记录）；本轮**未**做交易所披露二次核验",
+     "classification": "UNRESOLVED",
+     "reason": "缺口**不是**标识问题（市场序列 `series_id` 与题材 `security_id` 处于同一命名空间）而是**覆盖 / 登记问题**：序列已登记（symbol 与 ticker 一致），但**抓取止于窗口之前**（无窗口内行）。补齐需要**网络行情入库**（既有 Research 抓取流程），本轮**未获授权**故**未执行**；`market_data.db` 与便携快照**逐字节未动**。"
+    },
+    {
+     "security_id": "PIOTECH",
+     "name": "拓荆科技",
+     "ticker": "688072",
+     "intended_series_symbol": "sh688072",
+     "series_registered": false,
+     "series_symbol": null,
+     "coverage": null,
+     "window": [
+      "2024-09-24",
+      "2024-11-29"
+     ],
+     "rows_in_window": 0,
+     "root_cause": "SERIES_NOT_REGISTERED",
+     "identity_source": "题材事件 `participants` 登记的 name + ticker（Research 侧原始记录）；本轮**未**做交易所披露二次核验",
+     "classification": "UNRESOLVED",
+     "reason": "缺口**不是**标识问题（市场序列 `series_id` 与题材 `security_id` 处于同一命名空间）而是**覆盖 / 登记问题**：该标的在 `market_data.db` **无任何日线序列登记**（series 从未建立或抓取）。补齐需要**网络行情入库**（既有 Research 抓取流程），本轮**未获授权**故**未执行**；`market_data.db` 与便携快照**逐字节未动**。"
+    },
+    {
+     "security_id": "HYGON",
+     "name": "海光信息",
+     "ticker": "688041",
+     "intended_series_symbol": "sh688041",
+     "series_registered": true,
+     "series_symbol": "sh688041",
+     "coverage": {
+      "min": "2022-08-12",
+      "max": "2022-10-12",
+      "rows": 76
+     },
+     "window": [
+      "2024-09-24",
+      "2024-11-29"
+     ],
+     "rows_in_window": 0,
+     "root_cause": "FETCH_COVERAGE_GAP",
+     "identity_source": "题材事件 `participants` 登记的 name + ticker（Research 侧原始记录）；本轮**未**做交易所披露二次核验",
+     "classification": "UNRESOLVED",
+     "reason": "缺口**不是**标识问题（市场序列 `series_id` 与题材 `security_id` 处于同一命名空间）而是**覆盖 / 登记问题**：序列已登记（symbol 与 ticker 一致），但**抓取止于窗口之前**（无窗口内行）。补齐需要**网络行情入库**（既有 Research 抓取流程），本轮**未获授权**故**未执行**；`market_data.db` 与便携快照**逐字节未动**。"
+    }
+   ]
+  }
+ },
+ "summary": {
+  "A": {
+   "RESOLVED": 0,
+   "PROVISIONAL": 1,
+   "UNRESOLVED": 16
+  },
+  "B": {
+   "RESOLVED": 0,
+   "PROVISIONAL": 0,
+   "UNRESOLVED": 8
+  },
+  "C": {
+   "RESOLVED": 0,
+   "PROVISIONAL": 0,
+   "UNRESOLVED": 4
+  },
+  "resolved_total": 0,
+  "provisional_total": 1,
+  "unresolved_total": 28
+ }
+}
