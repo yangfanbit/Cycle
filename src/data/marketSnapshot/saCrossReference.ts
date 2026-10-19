@@ -23,7 +23,7 @@
  * - **只读**：不写文件、不联网、不调 LLM、不改冻结产物。
  */
 import type { MarketSnapshot } from './types';
-import { CANONICAL, snapshotIndex } from './snapshotAdapter';
+import { CANONICAL, snapshotIndex, type SnapshotIndexEntry } from './snapshotAdapter';
 import { STRUCTURAL_STATUS_LABEL, type StructuralStatus } from '../timeline/structuralAnalogy';
 
 const SNAPSHOT_BASE = '/research/current/market_snapshots/snapshots/';
@@ -78,16 +78,59 @@ export function emptySaCrossReference(reason: string | null = null): SaCrossRefe
 }
 
 /**
+ * ★★ 选择「唯一 `CANONICAL` 快照」的结果。
+ *
+ * - `ok=true`  → 恰好 1 个 CANONICAL，可以载入（仍需二次确认快照自身 `status`）。
+ * - `ok=false` → **无法判定**（0 个）或**拒绝选择**（多于 1 个，索引违反唯一性预期），
+ *   `reason` 是**可披露**的原因文本。
+ */
+export type CanonicalSnapshotPick =
+  | { ok: true; entry: SnapshotIndexEntry }
+  | { ok: false; reason: string };
+
+/**
+ * ★★ CANONICAL 唯一性门禁（**纯函数**，可独立测试，不读文件、不改索引）。
+ *
+ * 语义（不得违反）：
+ * - **0 个** → `ok=false`：索引里没有 CANONICAL → 无法判定是否有对应记录（**≠ 未找到**）。
+ * - **恰好 1 个** → `ok=true`：交由调用方载入并**二次确认**快照自身状态。
+ * - **多于 1 个** → `ok=false`：**拒绝选择** —— 违反「唯一 CANONICAL」预期。
+ *   ★ 此前实现是「排序后取最后一份」，会在索引意外出现两个 CANONICAL 时**静默选最新**，
+ *     把一个未经察觉的索引异常当成正常结果。此处改为显式拒绝并披露。
+ */
+export function pickCanonicalSnapshot(
+  entries: readonly SnapshotIndexEntry[],
+): CanonicalSnapshotPick {
+  const canon = entries.filter((e) => e.status === CANONICAL);
+  if (canon.length === 0) {
+    return {
+      ok: false,
+      reason: '索引中没有 CANONICAL 快照 —— 无法判定是否有对应记录（这不等于「未找到」）。',
+    };
+  }
+  if (canon.length > 1) {
+    const ids = canon.map((e) => e.snapshot_id).join('、');
+    return {
+      ok: false,
+      reason: `索引中有 ${canon.length} 个 CANONICAL 快照（${ids}）`
+        + ' —— 违反「唯一 CANONICAL」预期，拒绝选择（不静默取最新一份）。',
+    };
+  }
+  return { ok: true, entry: canon[0] };
+}
+
+/**
  * ★★ 载入唯一 `CANONICAL` 快照并建立「历史对象 → 当前研究对象」索引。
  *
  * ★ 默认门禁与页面一致：**只读 `CANONICAL`**；索引里没有任何 CANONICAL → 返回空索引。
+ * ★ 唯一性由 `pickCanonicalSnapshot` 判定：0 个 → 无法判定；**多于 1 个 → 拒绝选择**。
  * ★ 任何异常都转成空索引（诚实「无法判定」），**不**让页面崩。
  */
 export async function loadSaCrossReference(): Promise<SaCrossReferenceIndex> {
   try {
-    const entries = snapshotIndex().filter((e) => e.status === CANONICAL);
-    if (entries.length === 0) return emptySaCrossReference('索引中没有 CANONICAL 快照');
-    const entry = entries[entries.length - 1];
+    const pick = pickCanonicalSnapshot(snapshotIndex());
+    if (!pick.ok) return emptySaCrossReference(pick.reason);
+    const entry = pick.entry;
 
     const loader = LOADERS[`${SNAPSHOT_BASE}${entry.file}`];
     if (!loader) return emptySaCrossReference(`快照文件未随构建打包：${entry.file}`);

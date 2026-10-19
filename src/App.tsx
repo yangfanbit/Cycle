@@ -239,10 +239,14 @@ export default function App() {
   const [focusCandidateId, setFocusCandidateId] = useState<string | null>(null);
   const focusObject = useCallback((objectId: string) => {
     setFocusCandidateId(objectId);
+    // SSR / 无 DOM 环境 → 只改状态，不假装滚动了
+    if (typeof document === 'undefined') return;
     const el = document.getElementById('drill-current-time-lens') as HTMLDetailsElement | null;
     if (el) {
       el.open = true;
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (typeof el.scrollIntoView === 'function') {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   }, []);
 
@@ -272,6 +276,23 @@ export default function App() {
   const canOpenHistoricalObject = useCallback((id: string) =>
     campaignById.has(id) || (!verifiedMode && researchCampaignsById.has(id)),
   [campaignById, verifiedMode, researchCampaignsById]);
+
+  /**
+   * ★★ v0.22：**当前研究对象**能否通过既有 `focusObject` / CurrentTimeLens 流程解析。
+   *
+   * 语义边界：这里是「当前研究对象」（canonical `current_candidates.json` 的 `CC-*`），
+   * 与上面的**历史对象**（Campaign / Research Candidate）是**两种对象类型**，
+   * 走**各自**的既有导航流程 —— **不得**用 `openHistoricalObject` 处理当前对象。
+   * 只认**精确 `candidate_id`**；解析不了 → SA 列表不渲染按钮（放无效按钮是错误）。
+   */
+  const currentObjectIdSet = useMemo(
+    () => new Set(currentCandidates.candidates.map((c) => c.candidate_id)),
+    [currentCandidates],
+  );
+  const canOpenCurrentObject = useCallback(
+    (objectId: string) => currentObjectIdSet.has(objectId),
+    [currentObjectIdSet],
+  );
 
   const selectedRule = selection?.kind === 'rule' ? ruleById.get(selection.id) : undefined;
   // 生产 verified 优先；Research Campaign 在非 verified 模式下解析
@@ -335,6 +356,8 @@ export default function App() {
             onSelectTheme={setMapTheme}
             onOpenObject={openHistoricalObject}
             canOpenObject={canOpenHistoricalObject}
+            onOpenCurrentObject={focusObject}
+            canOpenCurrentObject={canOpenCurrentObject}
           />
         )}
 

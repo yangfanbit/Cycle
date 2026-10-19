@@ -3469,6 +3469,14 @@ html, body {
 .fem-sa-status { font-size: 10.5px; border: 1px solid var(--line); border-radius: 9px; padding: 0 6px; }
 .fem-sa-strict { font-size: 9.5px; color: #2f6b3c; }
 .fem-sa-note { font-size: 10.5px; color: var(--ink-3); }
+/* ---- v0.22：SA 列表 → 当前研究对象详情的导航动作 ---- */
+.fem-sa-actions { margin-left: auto; }
+.fem-sa-open {
+  cursor: pointer; font-size: 10px; padding: 1px 8px; border-radius: 6px;
+  border: 1px solid #7fb6cd; background: #e8f3f8; color: #1f5f7a;
+}
+.fem-sa-open:hover { border-color: #1f5f7a; background: #d6eaf2; }
+.fem-sa-open-na { font-size: 9.5px; color: var(--ink-3); font-style: italic; }
 
 /* ---- 事件类别分组 + 证据等级（2026-10-14 归属更正）---- */
 .fem-group { margin: 10px 0 0; }

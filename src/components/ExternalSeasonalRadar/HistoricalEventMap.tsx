@@ -272,12 +272,16 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
  *   正文抽出来才能被测试直接渲染 —— 单一实现，不为测试复制逻辑）。
  */
 export function EventCardBody({
-  e, classCaveat, onOpenObject, canOpenObject, saRef,
+  e, classCaveat, onOpenObject, canOpenObject, onOpenCurrentObject, canOpenCurrentObject, saRef,
 }: {
   e: HistoricalEvent; classCaveat?: string;
   /** ★ v0.15：进入该事件关联的历史对象详情（复用 App selection 流程） */
   onOpenObject?: (objectId: string) => void;
   canOpenObject?: (objectId: string) => boolean;
+  /** ★★ v0.22：进入 SA 记录里的**当前研究对象**详情（复用 App `focusObject` / CurrentTimeLens 流程） */
+  onOpenCurrentObject?: (objectId: string) => void;
+  /** ★★ v0.22：当前研究对象能否通过既有流程解析（不可解析 → 不给按钮） */
+  canOpenCurrentObject?: (objectId: string) => boolean;
   /** ★★ v0.21：当前唯一 CANONICAL 快照的 SA 交叉引用索引（未载入 → null/undefined） */
   saRef?: SaCrossReferenceIndex | null;
 }) {
@@ -360,7 +364,14 @@ export function EventCardBody({
               {!objId ? (
                 <p className="fem-sa-miss" data-sa-match="no-object">{SA_NO_OBJECT_LABEL}</p>
               ) : !saRef.loaded ? (
-                <p className="fem-sa-miss" data-sa-match="not-loaded">{SA_NOT_LOADED_LABEL}</p>
+                <p className="fem-sa-miss" data-sa-match="not-loaded">
+                  {SA_NOT_LOADED_LABEL}
+                  {/* ★★ v0.22：**清楚披露**为何无法判定（如索引违反「唯一 CANONICAL」预期），
+                      不静默 —— 载入失败原因原样呈现 */}
+                  {saRef.loadError && (
+                    <span className="fem-sa-note" data-sa-load-error="1"> {saRef.loadError}</span>
+                  )}
+                </p>
               ) : saRefRows.length === 0 ? (
                 <p className="fem-sa-miss" data-sa-match="none">
                   {SA_NOT_FOUND_LABEL}
@@ -372,16 +383,40 @@ export function EventCardBody({
                     该历史对象<strong>被 {saRefRows.length} 个当前研究对象</strong>在冻结 SA 中引用：
                   </p>
                   <ul className="fem-sa-list">
-                    {saRefRows.map((r) => (
-                      <li key={r.currentObjectId} data-sa-current={r.currentObjectId}
-                          data-sa-status={r.structuralStatus}>
-                        <code>{r.currentObjectId}</code>
-                        <span className="fem-sa-name">{r.currentObjectName}</span>
-                        {r.currentObjectTheme && <span className="fem-sa-theme">{r.currentObjectTheme}</span>}
-                        <span className="fem-sa-status">{r.statusLabel}</span>
-                        {r.strictStructuralSupported && <span className="fem-sa-strict">strict</span>}
-                      </li>
-                    ))}
+                    {saRefRows.map((r) => {
+                      // ★★ v0.22：操作对象 = SA 记录里的 `currentObjectId`，**按精确 ID** 确认
+                      //   能否被当前研究对象数据解析（App `canOpenCurrentObject`）。
+                      //   解析不了 → 保留 ID / 名称 / 状态，明确说明无法导航，**不**渲染按钮。
+                      const navOk = typeof onOpenCurrentObject === 'function'
+                        && typeof canOpenCurrentObject === 'function'
+                        && canOpenCurrentObject(r.currentObjectId) === true;
+                      return (
+                        <li key={r.currentObjectId} data-sa-current={r.currentObjectId}
+                            data-sa-status={r.structuralStatus}>
+                          <code>{r.currentObjectId}</code>
+                          <span className="fem-sa-name">{r.currentObjectName}</span>
+                          {r.currentObjectTheme && <span className="fem-sa-theme">{r.currentObjectTheme}</span>}
+                          <span className="fem-sa-status">{r.statusLabel}</span>
+                          {r.strictStructuralSupported && <span className="fem-sa-strict">strict</span>}
+                          <span className="fem-sa-actions">
+                            {navOk ? (
+                              <button
+                                type="button"
+                                className="fem-sa-open"
+                                data-sa-open="current-object"
+                                onClick={() => onOpenCurrentObject!(r.currentObjectId)}
+                              >
+                                查看当前对象详情
+                              </button>
+                            ) : (
+                              <span className="fem-sa-open-na" data-sa-open="unresolved">
+                                该当前研究对象无法通过现有详情流程解析（保留 ID / 名称 / 状态，不提供导航）
+                              </span>
+                            )}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                   <p className="fem-sa-note">{SA_OBJECT_LEVEL_CAVEAT}</p>
                 </>
@@ -526,11 +561,14 @@ export function EventCardBody({
 
 /** 事件卡：头部（可折叠）+ 展开后的 `EventCardBody` */
 export function EventCard({
-  e, classCaveat, onOpenObject, canOpenObject, saRef,
+  e, classCaveat, onOpenObject, canOpenObject, onOpenCurrentObject, canOpenCurrentObject, saRef,
 }: {
   e: HistoricalEvent; classCaveat?: string;
   onOpenObject?: (objectId: string) => void;
   canOpenObject?: (objectId: string) => boolean;
+  /** ★★ v0.22：SA 列表 → 当前研究对象详情 */
+  onOpenCurrentObject?: (objectId: string) => void;
+  canOpenCurrentObject?: (objectId: string) => boolean;
   /** ★★ v0.21：冻结 SA 交叉引用索引 */
   saRef?: SaCrossReferenceIndex | null;
 }) {
@@ -554,7 +592,9 @@ export function EventCard({
 
       {classCaveat && <p className="fem-adjacent-caveat"><RichText text={classCaveat} /></p>}
       {open && <EventCardBody e={e} classCaveat={classCaveat}
-        onOpenObject={onOpenObject} canOpenObject={canOpenObject} saRef={saRef} />}
+        onOpenObject={onOpenObject} canOpenObject={canOpenObject}
+        onOpenCurrentObject={onOpenCurrentObject} canOpenCurrentObject={canOpenCurrentObject}
+        saRef={saRef} />}
     </li>
   );
 }
@@ -745,12 +785,16 @@ export interface HistoricalEventMapProps {
   onOpenObject?: (objectId: string) => void;
   /** ★ v0.15：对象能否通过现有详情流程解析 */
   canOpenObject?: (objectId: string) => boolean;
+  /** ★★ v0.22：SA 列表 → **当前研究对象**详情（复用 App `focusObject` / CurrentTimeLens 流程） */
+  onOpenCurrentObject?: (objectId: string) => void;
+  /** ★★ v0.22：当前研究对象能否通过既有流程解析（不可解析 → 不给按钮） */
+  canOpenCurrentObject?: (objectId: string) => boolean;
   /** ★★ v0.21：当前唯一 CANONICAL 快照的 SA 交叉引用索引（由容器一次性载入后注入） */
   saRef?: SaCrossReferenceIndex | null;
 }
 
 export function HistoricalEventMap({
-  doc, display, onOpenObject, canOpenObject, saRef,
+  doc, display, onOpenObject, canOpenObject, onOpenCurrentObject, canOpenCurrentObject, saRef,
 }: HistoricalEventMapProps) {
   const groups = eventsByClass(doc, display?.class_order);
   const title = display?.title ?? '历史事件（按年份）';
@@ -783,6 +827,8 @@ export function HistoricalEventMap({
                 <EventCard key={e.event_id} e={e} classCaveat={display?.class_caveats?.[g.cls]}
                   onOpenObject={onOpenObject}
                   canOpenObject={canOpenObject}
+                  onOpenCurrentObject={onOpenCurrentObject}
+                  canOpenCurrentObject={canOpenCurrentObject}
                   saRef={saRef} />
               ))}
             </ul>

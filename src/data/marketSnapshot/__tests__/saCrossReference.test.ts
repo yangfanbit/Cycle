@@ -9,10 +9,12 @@ import { describe, it, expect } from 'vitest';
 import {
   emptySaCrossReference,
   loadSaCrossReference,
+  pickCanonicalSnapshot,
   saReferenceFor,
   summarizeSaCrossReference,
   SA_NOT_FOUND_LABEL,
 } from '../saCrossReference';
+import { snapshotIndex, type SnapshotIndexEntry } from '../snapshotAdapter';
 import { eventMapByTheme } from '../../timeline/historicalEventMaps';
 
 const THEMES = ['FLU', 'POWER_SUMMER', 'MEDIA', 'ROBOTICS', 'AUTO_INTELLIGENCE', 'SEMICONDUCTOR_AI'];
@@ -134,5 +136,59 @@ describe('B. ★ 对象类型 / 旧字段兼容 / 未匹配（只做精确 ID）
     for (const arr of idx.byHistoricalObject.values()) {
       for (const r of arr) expect(allowed.has(r.structuralStatus), r.structuralStatus).toBe(true);
     }
+  });
+});
+
+/**
+ * ★★ v0.22：CANONICAL 唯一性门禁（**纯函数**）。用**合成数组**测试，
+ *   **不**读取、不修改真实冻结索引 / 快照文件。
+ */
+describe('C. ★★ CANONICAL 唯一性门禁 pickCanonicalSnapshot（纯函数，合成输入）', () => {
+  const entry = (snapshot_id: string, status: string): SnapshotIndexEntry => ({
+    snapshot_id,
+    snapshot_date: '2026-10-13',
+    status,
+    market_snapshot_version: '1.0',
+    file: `${snapshot_id}.json`,
+  });
+
+  it('★ 0 个 CANONICAL → ok=false，披露「无法判定」（≠「未找到」）', () => {
+    const pick = pickCanonicalSnapshot([entry('MS-A', 'DRAFT'), entry('MS-B', 'ARCHIVED')]);
+    expect(pick.ok).toBe(false);
+    if (pick.ok) throw new Error('unreachable');
+    expect(pick.reason).toContain('没有 CANONICAL');
+    expect(pick.reason).toContain('无法判定');
+  });
+
+  it('★ 恰好 1 个 CANONICAL → ok=true（交由调用方二次确认状态）', () => {
+    const pick = pickCanonicalSnapshot([
+      entry('MS-A', 'ARCHIVED'),
+      entry('MS-B', 'CANONICAL'),
+      entry('MS-C', 'DRAFT'),
+    ]);
+    expect(pick.ok).toBe(true);
+    if (!pick.ok) throw new Error('unreachable');
+    expect(pick.entry.snapshot_id).toBe('MS-B');
+  });
+
+  it('★★ 多于 1 个 CANONICAL → **拒绝选择**，披露索引违反唯一性（不静默取最新一份）', () => {
+    const pick = pickCanonicalSnapshot([
+      entry('MS-OLD', 'CANONICAL'),
+      entry('MS-NEW', 'CANONICAL'),
+      entry('MS-X', 'ARCHIVED'),
+    ]);
+    expect(pick.ok).toBe(false);
+    if (pick.ok) throw new Error('unreachable');
+    expect(pick.reason).toContain('2 个 CANONICAL');
+    expect(pick.reason).toContain('MS-OLD');
+    expect(pick.reason).toContain('MS-NEW');
+    expect(pick.reason).toContain('唯一 CANONICAL');
+  });
+
+  it('★ 真实索引：恰好 1 个 CANONICAL → 选中 MS-2026-10-13-01（不改真实索引）', () => {
+    const pick = pickCanonicalSnapshot(snapshotIndex());
+    expect(pick.ok).toBe(true);
+    if (!pick.ok) throw new Error('unreachable');
+    expect(pick.entry.snapshot_id).toBe('MS-2026-10-13-01');
   });
 });

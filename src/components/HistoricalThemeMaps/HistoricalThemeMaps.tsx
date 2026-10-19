@@ -67,6 +67,8 @@ export function HistoricalThemeMaps({
   onSelectTheme,
   onOpenObject,
   canOpenObject,
+  onOpenCurrentObject,
+  canOpenCurrentObject,
 }: {
   /** 受控的当前题材（由 App 持有，便于外部雷达跳转时联动） */
   activeThemeId?: string;
@@ -75,6 +77,10 @@ export function HistoricalThemeMaps({
   onOpenObject?: (objectId: string) => void;
   /** ★ v0.15：对象能否通过现有详情流程解析（不可解析 → 不给按钮） */
   canOpenObject?: (objectId: string) => boolean;
+  /** ★★ v0.22：SA 列表 → **当前研究对象**详情（复用 App `focusObject` / CurrentTimeLens 流程，**不**复用历史对象流程） */
+  onOpenCurrentObject?: (objectId: string) => void;
+  /** ★★ v0.22：当前研究对象能否通过既有流程解析（不可解析 → 不给按钮） */
+  canOpenCurrentObject?: (objectId: string) => boolean;
 }) {
   const maps = useMemo(() => allResolvedEventMaps(), []);
   const summaries = useMemo(() => themeMapSummaries(maps), [maps]);
@@ -160,6 +166,8 @@ export function HistoricalThemeMaps({
           display={current.display}
           onOpenObject={onOpenObject}
           canOpenObject={canOpenObject}
+          onOpenCurrentObject={onOpenCurrentObject}
+          canOpenCurrentObject={canOpenCurrentObject}
           saRef={saRef}
         />
       </div>
