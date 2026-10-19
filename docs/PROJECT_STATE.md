@@ -77,28 +77,36 @@
 > → **8 / 8 UNRESOLVED**（无证据支持归属；**不**按主题相近或年份相近推断）。
 > **C** 大基金三期窗口 4 只标的（SMIC / AMEC / PIOTECH / HYGON）→ 实测根因：**3 只序列抓取止于
 > 2021-09-30 / 2022-10-12**（`FETCH_COVERAGE_GAP`）+ **1 只序列从未登记**（拓荆科技，`SERIES_NOT_REGISTERED`）
-> —— **非标识问题**；补齐需**网络行情入库**，**本轮未获授权、未执行** → **4 UNRESOLVED**。
-> ★ **本轮未改任何数据**（A/B/C 的前后计数**完全相同**）：canonical export / SA / TO / Driver / `schema.sql` /
-> 历史快照 / `market_data.db` 与便携快照**逐字节未动**；未新增题材、未改 SA 判定、未推断逐证券结构对应。
+> —— **非标识问题**。★★ **用户授权后已执行「数据层补齐」**：用**既有**抓取流程
+> `research/scripts/fetch_market_batch_v0_3.py`（`--only` + `--series` 显式区间）从**同一 provider**
+> 取真值 → `market_daily` **376,401 → 380,771 行**、`market_series` **213 → 214**（补登拓荆科技序列），
+> 随后 `make_market_snapshot.py` **重生成便携快照**（**6.09 → 6.22 MiB**）且 `restore --check` **PASS**
+> （逐分片哈希一致、REAL 逐位相同）；★ 既有行**逐 (date,price_type) 比对：0 变更 / 0 丢失**。
+> → 窗口 2024-09-24 ~ 2024-11-29 现各有 **44** 个 adjusted 交易日 ⇒ **数据层缺口已关闭（4 RESOLVED）**。
+> ★★ 但**地图展示未刷新**（**UNRESOLVED**）：实测 **12 份题材文档的 `max_drawdown_from_high_pct` 等口径
+> 互相不一致**，任一单一公式都**无法复现**（逐一验算仅 3/12 可完全复现）⇒ 强行重算＝编造，
+> 须由**独立、可复现的转写流程**（新轮次）统一口径后再生效；本轮**未手工改任何展示值**。
+> ★ **A/B 未改任何数据**（前后计数完全相同）；未改 canonical export / SA / TO / Driver / `schema.sql` /
+> 冻结历史轮次。合计 **RESOLVED 4 · PROVISIONAL 1 · UNRESOLVED 24**（+ C 的转写待办 1 项）。
 
 ### 实测基线（2026-10-18 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **最近功能提交** | `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最近功能提交** | `a018f72`（v0.23：C 数据层补齐 —— 大基金三期 4 只标的行情 + 快照重生成）· `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **最后核实 Git 状态** | 核实于 2026-10-19：本地 `main` = `origin/main`，工作区仅有 **2 个未跟踪本地库**（`market_data.db` / `cycle_research.db`，**不入库、不提交**） · ★ **本行不再写「HEAD = 某个功能提交」** —— `docs(state)` 回填提交本身会把 HEAD 前移一位，旧写法两次制造了「HEAD 滞后」的误读。**接班必须跑 `git log -1` / `git status` / `git rev-parse origin/main`** 以实际为准，不要相信文档里的固定 SHA |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
-| **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
+| **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **70.14 MB**（行情三表 **380,771 行** = v0.23 补齐 **+4,370** 行；原 65.62 MB，**不入库**） · `data/market/snapshot/` **6.22 MiB**（**入库**，恢复唯一输入；原 6.09 MiB） |
 | **trading_calendar** | **2,855 行**（2015-01-05 ~ 2026-09-30，`calendar_type='cn'`）· 覆盖 `market_daily` **全部** distinct 日期 · **0** 个基准外日期 |
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
-| **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
+| **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **380,771 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
 | **测试** | **1422 passed / 0 failed / 72 files**（v0.23：**产品代码未改动 → 计数不变**；v0.22：+7 —— saCrossReference CANONICAL 门禁 +4 · v022UserFlows +3；v0.21 计 1415/71，v0.20 计 1405/69) |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
 | **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.23）**：`c9e4f26` run [`39248636166`](https://github.com/yangfanbit/Cycle/actions/runs/39248636166) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**。历史（v0.22）：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285)（两 job success，含真实浏览器复核）· `f07d839` run [`39244995823`](https://github.com/yangfanbit/Cycle/actions/runs/39244995823)（两 job success）· v0.21：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
 | **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录）· **v0.22**：SA 列表每条带「**查看当前对象详情**」（按精确 `currentObjectId` 解析，不可解析则不给按钮）· **v0.23**：三处缺口的**裁决表**（数据本身**未改**，计数不变） |
-| **数据缺口审计（v0.23）** | `research/research/reports/data_gap_audit_v0_1.json`（只读 · 确定性生成）· **A 注册表未命中** = 36 条记录 / 17 标识（全流感）→ 根因 **owner-scoped 注册表**（190 == 190 零差集）· 身份**逐条**经交易所披露核验 · **1 PROVISIONAL**（`YILING-002603` → `YILING`，**不自动合并**）+ **16 UNRESOLVED**（无规范 ID 可映射）· **B 未登记对象** = 57 条 / 8 事件 → **8 UNRESOLVED**（无精确 `security_ids` 相等、事件未引用对象）· **C 大基金三期行情** = 4 只 → 3 只**抓取止于 2021/2022** + 1 只**序列未登记** → **4 UNRESOLVED**（补齐需授权后网络入库，本轮未执行）· 合计 **RESOLVED 0 / PROVISIONAL 1 / UNRESOLVED 28** |
+| **数据缺口审计（v0.23）** | `research/research/reports/data_gap_audit_v0_1.json`（只读 · 确定性生成）· **A 注册表未命中** = 36 条记录 / 17 标识（全流感）→ 根因 **owner-scoped 注册表**（190 == 190 零差集）· 身份**逐条**经交易所披露核验 · **1 PROVISIONAL**（`YILING-002603` → `YILING`，**不自动合并**）+ **16 UNRESOLVED**（无规范 ID 可映射）· **B 未登记对象** = 57 条 / 8 事件 → **8 UNRESOLVED**（无精确 `security_ids` 相等、事件未引用对象）· **C 大基金三期行情** = 4 只 → **已授权补齐数据层**（既有抓取流程 + 快照重生成，窗口各 44 交易日）→ **4 RESOLVED**；★ 地图转写 **UNRESOLVED**（口径不可复现）· 合计 **RESOLVED 4 / PROVISIONAL 1 / UNRESOLVED 24** |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
@@ -1118,28 +1126,42 @@ npx tsc -b OK · npm run build 成功 · npm test 1422 passed / 0 failed / 72 fi
   ⇒ **不得**按主题相近或年份相近认定属于同一 Campaign。
 - 前后计数：57 / 8 → **57 / 8（未变）**。
 
-#### ③ C · 大基金三期窗口（2024-09-24 ~ 2024-11-29）4 只缺价标的
+#### ③ C · 大基金三期窗口（2024-09-24 ~ 2024-11-29）4 只缺价标的 —— **数据层已补齐**
 
-| 标的 | ticker | 序列 | 实测量程 | 窗口内行数 | 根因 |
+| 标的 | ticker | 补齐前根因 | 补齐前量程 | 补齐后量程 | 窗口内（adjusted） |
 |---|---|---|---|---|---|
-| SMIC 中芯国际 | 688981 | 已登记 `sh688981` | 2020-07-16 → 2021-09-30 | **0** | `FETCH_COVERAGE_GAP` |
-| AMEC 中微公司 | 688012 | 已登记 `sh688012` | 2019-07-22 → 2021-09-30 | **0** | `FETCH_COVERAGE_GAP` |
-| HYGON 海光信息 | 688041 | 已登记 `sh688041` | 2022-08-12 → 2022-10-12 | **0** | `FETCH_COVERAGE_GAP` |
-| PIOTECH 拓荆科技 | 688072 | **无任何序列登记** | — | **0** | `SERIES_NOT_REGISTERED` |
+| SMIC 中芯国际 | 688981 | `FETCH_COVERAGE_GAP` | 2020-07-16 → 2021-09-30 | 2020-07-16 → **2025-12-31** | **44** |
+| AMEC 中微公司 | 688012 | `FETCH_COVERAGE_GAP` | 2019-07-22 → 2021-09-30 | 2019-07-22 → **2025-12-18** | **44** |
+| HYGON 海光信息 | 688041 | `FETCH_COVERAGE_GAP` | 2022-08-12 → 2022-10-12 | 2022-08-12 → **2025-12-31** | **44** |
+| PIOTECH 拓荆科技 | 688072 | `SERIES_NOT_REGISTERED` | —（无序列） | **2022-04-20** → 2025-12-31 | **44** |
 
-- 结论：**不是标识问题**（`series_id` 与 `security_id` 同一命名空间）—— **3 只抓取止于窗口之前 + 1 只序列从未建立**。
-- **未执行补齐**：需要**网络行情入库**（既有 Research 抓取流程）；本轮**未获授权** ⇒ **未抓取**，
-  `market_data.db` 与便携快照**逐字节未动**。
-- 分类：**UNRESOLVED ×4**；前后计数 4 → **4（未变）**。
+**补齐动作（用户授权后 · 全部走既有流程）**：
+
+| 项 | 值 |
+|---|---|
+| 抓取器 | `research/scripts/fetch_market_batch_v0_3.py`（**既有权威抓取器**，未新建抓取代码） |
+| 命令 | `--only SMIC,AMEC,HYGON,PIOTECH --series SMIC@2016-01-01~2025-12-31,AMEC@…,HYGON@…,PIOTECH@2022-01-01~2025-12-31` |
+| 来源 | `tencent_gtimg`（项目既有抓取流程所用源），每行记 `price_type`（raw / adjusted-qfq 两套）、`data_source`、`retrieved_at` |
+| 取回 | AMEC raw/qfq **1557/1557** · HYGON **812/812** · PIOTECH **900/900** · SMIC **1321/1321** |
+| 序列登记 | 拓荆科技**补登** `market_series`（provider=tencent / symbol=sh688072）—— 原无登记 |
+| 历史保护 | ★ 逐 `(trade_date, price_type)` 与补齐前备份比对：SMIC/AMEC/HYGON **既有行 0 变更 / 0 丢失**（`INSERT OR REPLACE` 幂等，且实测 qfq **未重算**） |
+| 快照 | `make_market_snapshot.py` 重生成 → `market_daily` **376,401 → 380,771 行** · `market_series` **213 → 214** · 快照 **6.09 → 6.22 MiB**；`restore_market_data.py --check` **PASS**（逐分片哈希一致 + REAL 逐位相同） |
+| 溯源 | `research/research/reports/market_fetch_v0_3_report.json`（本次 4 只的 symbol / 区间 / 行数）+ 审计产物 `C.backfill` |
+| 分类 | **数据层 4 RESOLVED** |
+
+**★★ 仍未解决（与数据层分开记录）**：**地图展示未刷新** —— 题材文档（`semiconductor_ai_compute_historical_events_v0_1.json`）的 `market_data` 文本与 `by_security` 仍是「不覆盖」状态。**本轮不刷新**，且**未手工改任何展示值**：实测 **12 份题材文档的 `max_drawdown_from_high_pct` 等口径互相不一致**（逐一用两组候选公式验算，**仅 3/12 份可完全复现**），任何单一公式都会**编造**数字 ⇒ 须由**独立、可复现的转写流程**（新轮次）统一口径后再生效。
 
 #### ④ 本轮合计与验证
 
 ```
-RESOLVED 0 · PROVISIONAL 1 · UNRESOLVED 28（A:16 + B:8 + C:4）
-npx tsc -b OK · npm run build OK · npm test 1422 passed / 0 failed / 72 files（产品代码未改动 → 计数不变）
+RESOLVED 4（C 数据层）· PROVISIONAL 1（A 的 YILING-002603 → YILING 提案）· UNRESOLVED 24（A:16 + B:8）
++ C 地图转写待办 1 项（UNRESOLVED）
+A / B 前后计数完全相同（36/17 · 57/8，未改任何数据）
+tsc -b OK · npm run build OK · npm test 1422 passed / 0 failed / 72 files（产品代码未改动 → 计数不变）
 Research 门禁：validate_db PASS（4 警告，同基线）· validate_timeline_export PASS（0 警告）·
   validate_market_snapshot 342/8/0 · intake --check PASS（26 checks / 0 FAIL）·
   refresh_downstream --check 0 FAIL / 12 PASS · validate_monorepo_integrity PASS（25 项）· resolve_sa_artifact PASS
+  restore_market_data --check PASS · make_market_snapshot 重生成后两次内容一致
 ```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
