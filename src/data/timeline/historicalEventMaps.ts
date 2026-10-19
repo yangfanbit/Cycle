@@ -23,7 +23,9 @@ import powerDoc from '@current/power_historical_events_v0_3.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
-import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_1.json';
+// ★ v0.24：半导体题材升到 v0_2（大基金三期四只标的行情按 theme_market_performance_v1 重算；
+//   其余 6 事件百分比数值不变；v0_1 逐字节保留）
+import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_2.json';
 
 /* ------------------------------------------------------ 通用类型 */
 
@@ -79,11 +81,20 @@ export interface SecurityPerformance {
   status?: string;
   /** ★ 行情无覆盖 / 数据不足：`insufficient_data_in_window`（既有文件既有形态，类型补齐） */
   error?: string;
+  /** ★ v0.24：缺失原因（`no_series` / `no_rows_in_window` / `single_row`），**不代替** error */
+  reason?: string;
   trading_days?: number;
   first?: { date: string; close: number };
   last?: { date: string; close: number };
   high?: { date: string; close: number };
   low?: { date: string; close: number };
+  /**
+   * ★ v0.24：`power_historical_events_v0_3.json` 用的是**扁平写法**
+   * （`high_date` + `high_close`）。两种写法**语义相同**，读取一律走 `highPointOf()`，
+   * 否则扁平写法的「高点日」会被静默显示成 `—`。
+   */
+  high_date?: string;
+  high_close?: number;
   period_return_pct?: number;
   to_high_pct?: number;
   max_drawdown_from_high_pct?: number;
@@ -91,8 +102,18 @@ export interface SecurityPerformance {
   excess_period_pp?: number;
 }
 
+/** ★ 高点（兼容 `high:{date,close}` 与扁平 `high_date`/`high_close` 两种既有写法） */
+export function highPointOf(st: SecurityPerformance | undefined): { date: string; close: number } | undefined {
+  if (!st) return undefined;
+  if (st.high) return st.high;
+  if (st.high_date) return { date: st.high_date, close: st.high_close as number };
+  return undefined;
+}
+
 export interface MarketPerformance {
   window: [string, string] | null;
+  /** ★ v0.24：行情计算合同版本（`theme_market_performance_v1`）；旧文件无此字段 */
+  contract_version?: string;
   is_campaign_ruling: false;
   note: string;
   benchmark: Record<string, SecurityPerformance>;
@@ -156,7 +177,12 @@ export interface HistoricalEventsDoc {
   artifact_version: string;
   theme?: { theme_id: string; label: string };
   position: string;
-  corrections?: { at: string; what: string; why: string; source?: string; note?: string }[];
+  corrections?: {
+    at: string; what: string; why: string;
+    /** ★ v0.24：生成方式（可复现入口）与影响范围 */
+    how?: string; effect?: string;
+    source?: string; note?: string;
+  }[];
   event_classes?: { code: string; label: string; meaning: string }[];
   events: HistoricalEvent[];
   [k: string]: unknown;

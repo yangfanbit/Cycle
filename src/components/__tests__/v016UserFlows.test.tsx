@@ -126,7 +126,7 @@ describe('v0.16 端到端：半导体 / AI 算力题材 → 标的证据 → 历
     await act(async () => { root.unmount(); });
   });
 
-  it('★★ Research Candidate 不伪装 Campaign；大基金三期行情全无覆盖如实留空', async () => {
+  it('★★ Research Candidate 不伪装 Campaign；大基金三期行情已可算但仍非因果', async () => {
     const { root, doc } = await mountApp();
     const maps = await openTheme(doc);
 
@@ -139,8 +139,22 @@ describe('v0.16 端到端：半导体 / AI 算力题材 → 标的证据 → 历
     expect(t).toContain('Research Candidate');
     expect(card.querySelector('.ecp-kind-candidate')).not.toBeNull();
 
-    // 行情：大基金三期窗口（2024-09→2024-11）的全部登记标的均不覆盖 → 如实显示不可得
-    expect(t).toMatch(/行情不可得|无行情|NO_PRICE_DATA|insufficient/);
+    // ★★ v0.24：4 只标的窗口行情已可计算 → 逐行 COMPUTED（不再显示「行情不可得」行）
+    expect(t).toContain('中芯国际');
+    expect(t).toContain('+101.3%');
+    for (const sid of ['SMIC', 'AMEC', 'PIOTECH', 'HYGON']) {
+      const row = card.querySelector(`tr[data-security-id="${sid}"]`) as HTMLElement;
+      expect(row, sid).toBeTruthy();
+      expect(row.getAttribute('data-perf-status'), sid).toBe('COMPUTED');
+      expect(row.textContent, sid).toContain('完整窗口已计算');
+      expect(row.textContent, sid).toContain('44');
+    }
+    // 没有任何一行落在「行情不可得」
+    expect(card.querySelectorAll('tr[data-perf-status="UNAVAILABLE"]').length).toBe(0);
+
+    // ★★ 但「行情可算」≠「机制被证明」：Beta Contamination 与 INSUFFICIENT 必须同屏可见
+    expect(t).toContain('Beta Contamination');
+    expect(t).toContain('INSUFFICIENT');
     // 不补 0：不得出现把无覆盖显示成 0% 的情况
     expect(t).not.toContain('+0.0%');
 

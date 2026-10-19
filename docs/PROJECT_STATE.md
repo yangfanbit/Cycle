@@ -88,12 +88,38 @@
 > 须由**独立、可复现的转写流程**（新轮次）统一口径后再生效；本轮**未手工改任何展示值**。
 > ★ **A/B 未改任何数据**（前后计数完全相同）；未改 canonical export / SA / TO / Driver / `schema.sql` /
 > 冻结历史轮次。合计 **RESOLVED 4 · PROVISIONAL 1 · UNRESOLVED 24**（+ C 的转写待办 1 项）。
+> ★★ **2026-10-19（v0.24 · 行情转写合同 + 漂移门禁）**：把「行情库 ↔ 题材地图」这条**唯一断链**接上。
+> ① **查清了口径**（这是 v0.23「仅 3/12 可复现」的根因，**不是**文件互相矛盾）：
+>    `max_drawdown_from_high_pct` 的语义是「**自窗口最高收盘价之后**的最大回撤」，
+>    而 v0.23 的验算用的是「**全窗口**最大回撤」——两者在「高点不在窗口首日」时必然不同
+>    （实测 FLU-2018 基准：-3.0 vs -6.07）。改用合同口径后，**93 / 105 组数值逐字段复现**
+>    （容差 0.05pp = 1 位小数的半个单位），**12 份文档中 11 份可完全复现**。
+> ② **建立唯一入口** `research/scripts/build_theme_market_performance.py`，口径写成
+>    **代码 + 产物里的 `market_performance_contract`**（`theme_market_performance_v1`）：
+>    adjusted 收盘 · 窗口双端包含 · `high` = 窗口内最高**收盘**（非 `high` 列、非 Campaign `peak_date`）·
+>    回撤自至高点之后 · 超额 = 个股 − 基准（两列口径不同）· 1 位小数 · 缺失给 `error + reason`。
+>    `--check` 只读、非零退出；`--write` 生成**新版本**、**拒绝覆盖**、同时改索引。
+> ③ **交付 `SEMI-2024-FUND3`**：`semiconductor_ai_compute_historical_events_v0_2.json`（v0_1 逐字节保留），
+>    4 只标的**从恢复后的库重算**（各 44 个 adjusted 交易日）：
+>    中芯国际 **+101.3%**（至高点 +134.5%，高点 2024-11-11）· 中微公司 **+83.6%**（+103.8%，11-12）·
+>    拓荆科技 **+86.2%**（+98.5%，11-11）· 海光信息 **+61.4%**（+81.9%，11-07）；
+>    同期基准 SH000300 **+16.8%**（至高点 +27.0%）。`study_state` `NO_PRICE_DATA → HAS_PRICE_DATA`。
+>    ★★ **`RC-2024-SEMI-FUND3` 官方 `INSUFFICIENT` 判定不变**，Beta Contamination 写在 `known_gaps` 首条。
+> ④ **顺手暴露并修复一处静默缺陷**：`power_historical_events_v0_3.json` 用**扁平**
+>    `high_date`/`high_close` 写高点，而 UI 只读 `high.date` → **12 行「高点日」一直显示 `—`**；
+>    新增 `highPointOf()` 两种写法统一读取（数值零变化）。
+> ⑤ **新发现（本轮未关闭）**：`POWER-2017-SUMMER-COUNTEREXAMPLE` 的 4 组数值**无法由当前行情库复算**
+>    —— 华电 / 建投能源 / 天富能源 序列**自 2022-01-04 起**、京能 2020-01-02 起，2017 窗口**无任何行**。
+>    按纪律标 **UNVERIFIABLE（WARN）**：**不改数、不删数、不补数**，要关闭须补 2017 段行情。
+> ⑥ **CI 门禁**：`deploy.yml` 在 `restore_market_data --apply/--check` **之后**新增
+>    「Theme market performance consistency (--check)」+ 契约单测；**只读**，失败即**不部署**，
+>    **不得**在 CI 内 `--write`（CI 不自行签发版本化产物）。
 
-### 实测基线（2026-10-18 · 全部实测）
+### 实测基线（2026-10-19 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **最近功能提交** | `a018f72`（v0.23：C 数据层补齐 —— 大基金三期 4 只标的行情 + 快照重生成）· `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最近功能提交** | `V024_SHA`（v0.24：行情转写合同 `theme_market_performance_v1` + 题材文件漂移门禁 + 大基金三期行情落地 + 高点日扁平写法修复）· `8d3d32a`（v0.23：状态回填）· `a018f72`（v0.23：C 数据层补齐 —— 大基金三期 4 只标的行情 + 快照重生成）· `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **最后核实 Git 状态** | 核实于 2026-10-19：本地 `main` = `origin/main`，工作区仅有 **2 个未跟踪本地库**（`market_data.db` / `cycle_research.db`，**不入库、不提交**） · ★ **本行不再写「HEAD = 某个功能提交」** —— `docs(state)` 回填提交本身会把 HEAD 前移一位，旧写法两次制造了「HEAD 滞后」的误读。**接班必须跑 `git log -1` / `git status` / `git rev-parse origin/main`** 以实际为准，不要相信文档里的固定 SHA |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **70.14 MB**（行情三表 **380,771 行** = v0.23 补齐 **+4,370** 行；原 65.62 MB，**不入库**） · `data/market/snapshot/` **6.22 MiB**（**入库**，恢复唯一输入；原 6.09 MiB） |
@@ -103,11 +129,47 @@
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
 | **测试** | **1422 passed / 0 failed / 72 files**（v0.23：**产品代码未改动 → 计数不变**；v0.22：+7 —— saCrossReference CANONICAL 门禁 +4 · v022UserFlows +3；v0.21 计 1415/71，v0.20 计 1405/69) |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
-| **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
+| **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 · ★ **v0.24 新增** `build_theme_market_performance --check` = **PASS（FAIL 0 · WARN 4 = UNVERIFIABLE）** + 契约单测 **12 passed**（在 CI 的 restore 之后运行） |
 | **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.23）**：`c9e4f26` run [`39248636166`](https://github.com/yangfanbit/Cycle/actions/runs/39248636166) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**。历史（v0.22）：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285)（两 job success，含真实浏览器复核）· `f07d839` run [`39244995823`](https://github.com/yangfanbit/Cycle/actions/runs/39244995823)（两 job success）· v0.21：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
-| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录）· **v0.22**：SA 列表每条带「**查看当前对象详情**」（按精确 `currentObjectId` 解析，不可解析则不给按钮）· **v0.23**：三处缺口的**裁决表**（数据本身**未改**，计数不变） |
-| **数据缺口审计（v0.23）** | `research/research/reports/data_gap_audit_v0_1.json`（只读 · 确定性生成）· **A 注册表未命中** = 36 条记录 / 17 标识（全流感）→ 根因 **owner-scoped 注册表**（190 == 190 零差集）· 身份**逐条**经交易所披露核验 · **1 PROVISIONAL**（`YILING-002603` → `YILING`，**不自动合并**）+ **16 UNRESOLVED**（无规范 ID 可映射）· **B 未登记对象** = 57 条 / 8 事件 → **8 UNRESOLVED**（无精确 `security_ids` 相等、事件未引用对象）· **C 大基金三期行情** = 4 只 → **已授权补齐数据层**（既有抓取流程 + 快照重生成，窗口各 44 交易日）→ **4 RESOLVED**；★ 地图转写 **UNRESOLVED**（口径不可复现）· 合计 **RESOLVED 4 / PROVISIONAL 1 / UNRESOLVED 24** |
+| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录）· **v0.22**：SA 列表每条带「**查看当前对象详情**」（按精确 `currentObjectId` 解析，不可解析则不给按钮）· **v0.23**：三处缺口的**裁决表**（数据本身**未改**，计数不变）· **v0.24**：半导体题材升 **v0_2**（大基金三期 4 只标的行情按合同重算，`study_state` → `HAS_PRICE_DATA`；其余 6 事件百分比零变化）· 高点日扁平写法（power）修复 |
+| **数据缺口审计（v0.23）** | `research/research/reports/data_gap_audit_v0_1.json`（只读 · 确定性生成）· **A 注册表未命中** = 36 条记录 / 17 标识（全流感）→ 根因 **owner-scoped 注册表**（190 == 190 零差集）· 身份**逐条**经交易所披露核验 · **1 PROVISIONAL**（`YILING-002603` → `YILING`，**不自动合并**）+ **16 UNRESOLVED**（无规范 ID 可映射）· **B 未登记对象** = 57 条 / 8 事件 → **8 UNRESOLVED**（无精确 `security_ids` 相等、事件未引用对象）· **C 大基金三期行情** = 4 只 → **已授权补齐数据层**（既有抓取流程 + 快照重生成，窗口各 44 交易日）→ **4 RESOLVED**；★ 地图转写 **UNRESOLVED**（口径不可复现）· 合计 **RESOLVED 4 / PROVISIONAL 1 / UNRESOLVED 24** · **v0.24 追加**：C 的**转写待办关闭**（`theme_market_performance_v1` 合同 + `--check` 门禁，FUND3 四只标的落地）→ 审计口径变为 **RESOLVED 5 / PROVISIONAL 1 / UNRESOLVED 23**；★ 同时新发现 **POWER-2017 4 组数值不可复算**（序列自 2022 起）→ **+4 UNVERIFIABLE**（WARN，不改数） |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
+
+### 行情转写合同（v0.24 · `theme_market_performance_v1` · 唯一口径）
+
+> 代码即合同：`research/scripts/build_theme_market_performance.py`；产物里的
+> `market_performance_contract` 是**同内容的副本**（供 Product / 人工核对）。
+> 改口径 = 改版本号，**不得**只改一边。
+
+| 项 | 定义 | 反例（不要这样做） |
+|---|---|---|
+| 价格序列 | `market_daily.price_type='adjusted'` 的 **`adj_close`** | 混用 raw；用 `close` 冒充前复权 |
+| 窗口 | `market_performance.window = [start, end]`，`trade_date BETWEEN start AND end`（**双端包含**） | 只取 `>` / `<`；按日历天数 |
+| 交易日数 | 窗口内该序列**实际行数** | 用基准交易日数代替个股（停牌会多算） |
+| `high` | 窗口内 adj_close 的**最大值**（首次出现） | 用 `high` 列（日内最高）；用 Campaign `peak_date` |
+| `period_return_pct` | `(last.close / first.close − 1) × 100` | 用窗口外首日 |
+| `to_high_pct` | `(high.close / first.close − 1) × 100` | 用 `peak_date` 的收盘 |
+| `max_drawdown_from_high_pct` | ★★ `min over t ≥ high.date of (close_t / high.close − 1) × 100`（**自至高点之后**） | **全窗口**最大回撤（v0.23 的误判来源） |
+| 超额 | `excess_period_pp` = 区间 − 基准区间；`excess_to_high_pp` = 至高点 − 基准至高点（**两列不同口径**） | 把两列混用；用「相对收益」代替 |
+| 舍入 | 百分比 **1 位小数**（Python `round`）；超额由**已舍入**的两数相减 | 用 3 位小数冒充精度 |
+| 缺失 | `< 2` 行 → `{"error":"insufficient_data_in_window","reason":...}`（`no_series` / `no_rows_in_window` / `single_row`） | 补 0；借相邻日期；用「上一次收盘」延展 |
+
+**命令**（都在仓库根执行）：
+
+```bash
+python research/scripts/restore_market_data.py --apply          # 干净克隆先恢复行情库
+python research/scripts/build_theme_market_performance.py --check        # 只读校验（CI 门禁）
+python research/scripts/build_theme_market_performance.py --write SEMICONDUCTOR_AI   # 升版（不覆盖）
+python research/scripts/test_build_theme_market_performance.py           # 契约单测（12 项）
+```
+
+**校验分级**（`--check` 的语义，必须分清）：
+
+| 级别 | 触发条件 | 处置 |
+|---|---|---|
+| **FAIL** | 库内**可算**但产物写 `error`（**旧缺失状态过期**）；或数值 / 日期 / 交易日 / 超额超出容差；或 `study_state` 与现算不符；或 `[AUTO:MARKET_DATA]` 行与覆盖不符 | 非零退出，**阻止部署**；按合同 `--write` 重生成，**不手改数值** |
+| **WARN · UNVERIFIABLE** | 库内**不覆盖**该窗口（无行），而产物有数值 | **不改数、不删数**；如实计入汇总，等补行情 |
+| **WARN** | 事件未登记 `window` | 跳过，不猜 |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
 

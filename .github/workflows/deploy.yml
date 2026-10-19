@@ -116,13 +116,36 @@ jobs:
           python research/scripts/restore_market_data.py --check
           echo "::endgroup::"
 
+      # ----------------------------------------------------------------------
+      # ★★ 题材行情一致性（v0.24 接入）
+      #
+      # 为什么：历史题材地图的 `market_performance` 曾是**逐份手写**，与 `market_data.db`
+      #   之间没有任何自动对账。v0.23 补齐大基金三期 4 只标的行情后，地图**仍停在
+      #   「行情不可得」的旧静态 JSON** —— 数据库变了、产物没变，而所有 Product 测试仍然全绿。
+      #
+      # 这一条把「产物 ↔ 行情库」对起来（唯一入口 `theme_market_performance_v1`）：
+      #   · `--check` **只读**：不写任何文件、不重签版本化产物（CI 不得自行签发产物）；
+      #   · 任一活跃题材文件的数值 / 缺失状态 / AUTO 缺口行与库内实况不符 → 非零退出 → **不部署**；
+      #   · 「行情库不覆盖该窗口」的旧数值标 UNVERIFIABLE（WARN），**不**当失败、也**不**改数。
+      #
+      # 前置：必须在 `restore_market_data --apply` **之后**运行（本步骤即在其后）。
+      # ----------------------------------------------------------------------
+      - name: Theme market performance consistency (--check)
+        run: |
+          set -euo pipefail
+          echo "::group::build_theme_market_performance --check"
+          python research/scripts/build_theme_market_performance.py --check
+          echo "::endgroup::"
+          echo "::group::theme market performance contract tests"
+          python research/scripts/test_build_theme_market_performance.py
+          echo "::endgroup::"
+
       - name: Research read-only gates
         run: |
           set -euo pipefail
           echo "::group::validate_db"
           python research/scripts/validate_db.py
           echo "::endgroup::"
-
           echo "::group::validate_timeline_export"
           python research/scripts/validate_timeline_export.py
           echo "::endgroup::"

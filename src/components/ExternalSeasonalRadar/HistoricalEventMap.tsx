@@ -22,6 +22,7 @@ import {
   crossYearComparisonOf,
   eventStudyState,
   eventsByClass,
+  highPointOf,
   marketDataCoverage,
   type CrossYearYear,
   type HistoricalEvent,
@@ -129,7 +130,7 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
                 <td>{bench[1].trading_days ?? '—'}</td>
                 <td>{fmtPct(bench[1].period_return_pct)}</td>
                 <td>{fmtPct(bench[1].to_high_pct)}</td>
-                <td>{bench[1].high?.date ?? '—'}</td>
+                <td>{highPointOf(bench[1])?.date ?? '—'}</td>
                 <td>{fmtPct(bench[1].max_drawdown_from_high_pct)}</td>
                 <td>—</td>
                 <td>—</td>
@@ -187,7 +188,7 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
                   <td>{st.trading_days ?? '—'}</td>
                   <td className={cls(st.period_return_pct)}>{fmtPct(st.period_return_pct)}</td>
                   <td className={cls(st.to_high_pct)}>{fmtPct(st.to_high_pct)}</td>
-                  <td>{st.high?.date ?? '—'}</td>
+                  <td>{highPointOf(st)?.date ?? '—'}</td>
                   <td>{fmtPct(st.max_drawdown_from_high_pct)}</td>
                   <td className={cls(st.excess_period_pp)}>{fmtPp(st.excess_period_pp)}</td>
                   <td className={cls(st.excess_to_high_pp)}>{fmtPp(st.excess_to_high_pp)}</td>
