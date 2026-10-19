@@ -356,6 +356,39 @@ FUND3_TARGETS = [
     ("HYGON", "海光信息", "688041", "sh688041"),
 ]
 
+# ★★ v0.23 已执行的数据层补齐记录（授权后 · 既有抓取流程 `fetch_market_batch_v0_3.py`）。
+#    数字来自该次运行；快照随后由 `make_market_snapshot.py` 重生成。
+FUND3_BACKFILL = {
+    "executed": True,
+    "fetcher": "research/scripts/fetch_market_batch_v0_3.py",
+    "provider": "tencent_gtimg（web.ifzq.gtimg.cn，项目既有抓取流程所用源）",
+    "command": ("--only SMIC,AMEC,HYGON,PIOTECH --series "
+                "SMIC@2016-01-01~2025-12-31,AMEC@2016-01-01~2025-12-31,"
+                "HYGON@2016-01-01~2025-12-31,PIOTECH@2022-01-01~2025-12-31"),
+    "range_ceiling": "2025-12-31",
+    "fetched": {
+        "AMEC": {"symbol": "sh688012", "range": ["2016-01-01", "2025-12-31"], "raw": 1557, "qfq": 1557},
+        "HYGON": {"symbol": "sh688041", "range": ["2016-01-01", "2025-12-31"], "raw": 812, "qfq": 812},
+        "PIOTECH": {"symbol": "sh688072", "range": ["2022-01-01", "2025-12-31"], "raw": 900, "qfq": 900},
+        "SMIC": {"symbol": "sh688981", "range": ["2016-01-01", "2025-12-31"], "raw": 1321, "qfq": 1321},
+    },
+    "series_registered": {"PIOTECH": "原无 market_series 登记 —— 本轮补登（provider=tencent / symbol=sh688072）"},
+    "pre_existing_rows_unchanged": "已逐 (trade_date, price_type) 比对：SMIC/AMEC/HYGON 既有行 **0 变更 / 0 丢失**",
+    "snapshot": {
+        "regenerated_by": "research/scripts/make_market_snapshot.py",
+        "market_daily_rows": "376,401 → 380,771", "market_series_rows": "213 → 214",
+        "restore_check": "PASS（逐分片内容哈希一致，含全部 REAL 逐位相同）",
+    },
+    "fetch_report": "research/research/reports/market_fetch_v0_3_report.json",
+    "map_transcription": {
+        "status": "UNRESOLVED",
+        "reason": ("★ 数据层已补齐，但**题材文档（地图展示）未刷新** —— 且**不应在本轮刷新**："
+                   "实测 12 份题材文档的 `max_drawdown_from_high_pct` 等口径**互相不一致**，"
+                   "任一单一公式都无法复现（逐一验算：仅 3/12 份可完全复现），"
+                   "强行重算＝编造。须由**独立、可复现的转写流程**（新轮次）统一口径后再生效。"),
+    },
+}
+
 
 def audit_market_gap(docs):
     mconn = sqlite3.connect(os.path.join(REPO, "research", "database", "market_data.db"))
@@ -379,9 +412,11 @@ def audit_market_gap(docs):
                 (sid,)).fetchone()
             cov = {"min": r[0], "max": r[1], "rows": r[2]}
             inwin = mconn.execute(
-                "SELECT COUNT(*) FROM market_daily WHERE series_id=? AND trade_date BETWEEN ? AND ?",
+                "SELECT COUNT(*) FROM market_daily WHERE series_id=? AND price_type='adjusted'"
+                " AND trade_date BETWEEN ? AND ?",
                 (sid, window[0], window[1])).fetchone()[0] if window else 0
-            cause = "FETCH_COVERAGE_GAP"
+            cause = "FETCH_COVERAGE_GAP" if inwin == 0 else "RESOLVED_BY_BACKFILL"
+        ok = inwin > 0
         items.append({
             "security_id": sid, "name": name, "ticker": ticker,
             "intended_series_symbol": sym,
@@ -390,27 +425,31 @@ def audit_market_gap(docs):
             "coverage": cov,
             "window": window,
             "rows_in_window": inwin,
-            "root_cause": cause,
-            "identity_source": "题材事件 `participants` 登记的 name + ticker（Research 侧原始记录）；本轮**未**做交易所披露二次核验",
-            "classification": "UNRESOLVED",
+            "root_cause_before_backfill": (
+                "SERIES_NOT_REGISTERED" if cause == "SERIES_NOT_REGISTERED" else
+                "FETCH_COVERAGE_GAP" if not ok else "FETCH_COVERAGE_GAP（已补齐）"),
+            "identity_source": "题材事件 `participants` 登记的 name + ticker（Research 侧原始记录）",
+            "data_layer_classification": "RESOLVED" if ok else "UNRESOLVED",
+            "classification": "RESOLVED" if ok else "UNRESOLVED",
             "reason": (
-                "缺口**不是**标识问题（市场序列 `series_id` 与题材 `security_id` 处于同一命名空间）"
-                "而是**覆盖 / 登记问题**：" +
-                ("该标的在 `market_data.db` **无任何日线序列登记**（series 从未建立或抓取）"
-                 if cause == "SERIES_NOT_REGISTERED" else
-                 "序列已登记（symbol 与 ticker 一致），但**抓取止于窗口之前**（无窗口内行）")
-                + "。补齐需要**网络行情入库**（既有 Research 抓取流程），本轮**未获授权**故**未执行**；"
-                  "`market_data.db` 与便携快照**逐字节未动**。"
+                f"窗口 {window[0]} ~ {window[1]} 现有 **{inwin}** 个交易日（adjusted）→ 数据层缺口已关闭。"
+                if ok else
+                "窗口内仍无数据 —— 需继续抓取（见 backfill 记录）"
+            ),
+            "follow_up": (
+                "★ 地图展示**未**刷新：题材文档的行情转写口径不可复现（见 C.map_transcription），"
+                "须由独立可复现的转写流程在后续轮次统一后再生效。"
             ),
         })
+    n_ok = sum(1 for i in items if i["classification"] == "RESOLVED")
     return {
-        "before": {"securities": len(items), "securities_with_window_data": sum(
-            1 for i in items if i["rows_in_window"])},
-        "after": {"securities": len(items), "securities_with_window_data": sum(
-            1 for i in items if i["rows_in_window"])},
+        "before": {"securities": len(items), "securities_with_window_data": len(items) - n_ok},
+        "after": {"securities": len(items), "securities_with_window_data": n_ok},
         "classification_tally": {
-            "RESOLVED": 0, "PROVISIONAL": 0, "UNRESOLVED": len(items),
+            "RESOLVED": n_ok, "PROVISIONAL": 0, "UNRESOLVED": len(items) - n_ok,
         },
+        "follow_up": FUND3_BACKFILL["map_transcription"],
+        "backfill": FUND3_BACKFILL,
         "items": items,
     }
 
@@ -431,12 +470,15 @@ def main():
         "position": (
             "★ v0.23 数据缺口审计：把 A（证券注册表未命中）· B（未登记对象关联）· "
             "C（大基金三期窗口行情缺口）逐条核验为**可追溯裁决表**。"
-            "★ 本产物**只读、不改任何数据**；不新增题材、不改 SA 判定、不推断逐证券结构对应。"
+            "★ A/B **只读、不改数据**；C 在**用户明确授权后**执行了**数据层补齐**"
+            "（既有抓取流程 + 便携快照重生成），但**地图展示（题材文档）未刷新** —— 见 C.map_transcription。"
+            "★ 不新增题材、不改 SA 判定、不推断逐证券结构对应。"
         ),
         "hard_constraints": [
             "不按名称相似 / 代码片段 / 题材推断归属（只做精确 ID / ticker / 交易所披露核对）",
             "YILING 与 YILING-002603 不得自动合并（只提出映射，标注 PROVISIONAL）",
-            "未获授权不做网络行情入库；market_data.db 与便携快照逐字节未动",
+            "C 的行情**只能**由既有抓取流程取真值；不得编造价格、不得用相邻日期替换窗口端点",
+            "C 的**地图展示值不得手工修改** —— 题材文档转写口径不可复现，须由独立可复现流程（新轮次）统一",
             "不改 canonical export / SA / TO / Driver / schema.sql / 冻结历史轮次",
         ],
         "workflows": {
@@ -453,7 +495,9 @@ def main():
             "provisional_total": a["classification_tally"]["PROVISIONAL"]
             + b["classification_tally"]["PROVISIONAL"] + c["classification_tally"]["PROVISIONAL"],
             "unresolved_total": a["classification_tally"]["UNRESOLVED"]
-            + b["classification_tally"]["UNRESOLVED"] + c["classification_tally"]["UNRESOLVED"],
+            + b["classification_tally"]["UNRESOLVED"]
+            + c["classification_tally"]["UNRESOLVED"],
+            "c_follow_up_map_transcription": c["follow_up"]["status"],
         },
     }
 

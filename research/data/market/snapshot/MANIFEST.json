@@ -26,7 +26,7 @@
  ],
  "tables": {
   "market_daily": {
-   "bytes": 6367571,
+   "bytes": 6504563,
    "columns": [
     "series_id",
     "trade_date",
@@ -41,7 +41,7 @@
     "data_source",
     "retrieved_at"
    ],
-   "rows": 373333,
+   "rows": 380771,
    "shard_count": 12,
    "shards": {
     "2015": {
@@ -69,46 +69,46 @@
      "sha256": "a4dd5409fde0707f18b3d79b4ca4597b52a3a655976f2f14502afc311565fb5f"
     },
     "2019": {
-     "bytes": 819387,
+     "bytes": 819771,
      "file": "market_daily/2019.csv.gz",
      "rows": 48402,
-     "sha256": "a0c2f0781c12ec156a385dd240a89e204241d9053e6a9d410995b9c596ea871c"
+     "sha256": "ae3133e86bf1688baf84ea2e3aceea0874e9529ef4baf70497879f73e89a5d02"
     },
     "2020": {
-     "bytes": 934361,
+     "bytes": 935590,
      "file": "market_daily/2020.csv.gz",
      "rows": 53122,
-     "sha256": "d9fbcb957276f6cc25b82aa1c44c41e267d99520fc91662eeb6202c68eac062a"
+     "sha256": "8decaebcbf8174b11ed2313d43c0f608669f9eebfed6d2379807dffa63654b72"
     },
     "2021": {
-     "bytes": 1027146,
+     "bytes": 1032616,
      "file": "market_daily/2021.csv.gz",
-     "rows": 58152,
-     "sha256": "898f0b58f32101f5133c2a4cb8a443d0f0f7bff04ffab395b31fa1e14fade068"
+     "rows": 58396,
+     "sha256": "489be6731a7760a2c80acc9dc9e1979674b13fd550c6fa049977cc70010b19cb"
     },
     "2022": {
-     "bytes": 922170,
+     "bytes": 948168,
      "file": "market_daily/2022.csv.gz",
-     "rows": 54046,
-     "sha256": "8f1a0e3b0c91f8a28b45823012868f827d7304e09d7c1d5ab5e88e86f0d13030"
+     "rows": 55474,
+     "sha256": "31cbb5ff7f063c804143296f9d54b7f65a48a623df6bfa41e314db17a849a267"
     },
     "2023": {
-     "bytes": 695636,
+     "bytes": 730990,
      "file": "market_daily/2023.csv.gz",
-     "rows": 42676,
-     "sha256": "9ec0bb7e37f1b4c3decac6e6c37934144c7117bb987e34cff6a50f55a6062003"
+     "rows": 44612,
+     "sha256": "df43ded5b02c073e50381f3b41a3b373cd3c2f4faa1d74c835748db4774a942d"
     },
     "2024": {
-     "bytes": 574523,
+     "bytes": 609272,
      "file": "market_daily/2024.csv.gz",
-     "rows": 34520,
-     "sha256": "c8a02bdcc44e01223c865e56e02bc7d8303d85cf43419fa0f821a60d50dbe271"
+     "rows": 36456,
+     "sha256": "cba9c5232a42e5617dc6acae584f2255679c9f9161714e1cd1b3d46c070b39c9"
     },
     "2025": {
-     "bytes": 480781,
+     "bytes": 514589,
      "file": "market_daily/2025.csv.gz",
-     "rows": 28258,
-     "sha256": "3d87021165ee566c961ee576d8d97f217142b9f3e4ed9d092fb0dd2481ead59b"
+     "rows": 30152,
+     "sha256": "905b4137cb23562efa142866b2ffae49ba9b5ca93b7b25b56c24a8919edef7f6"
     },
     "2026": {
      "bytes": 10938,
@@ -119,7 +119,7 @@
    }
   },
   "market_series": {
-   "bytes": 6761,
+   "bytes": 6832,
    "columns": [
     "series_id",
     "name",
@@ -132,14 +132,14 @@
     "description",
     "created_at"
    ],
-   "rows": 213,
+   "rows": 214,
    "shard_count": 1,
    "shards": {
     "all": {
-     "bytes": 6761,
+     "bytes": 6832,
      "file": "market_series.csv.gz",
-     "rows": 213,
-     "sha256": "db7e4e227444dae42cd832845428f483d31ce9a68466d97e90c0d89cdeabeb61"
+     "rows": 214,
+     "sha256": "925cfcce77a810b94739c3067535ccbc9bd687740bfd33f3938f5ea60c2bc6b5"
     }
    }
   },
@@ -163,7 +163,7 @@
    }
   }
  },
- "total_bytes": 6382146,
- "total_rows": 376401,
+ "total_bytes": 6519209,
+ "total_rows": 383840,
  "why": "`cycle_research.db` 曾达 66 MB（market_daily 373k 行占绝大部分），超过 GitHub 建议的 50 MB。行情三表拆出为不入库的本地 `market_data.db`，由本快照恢复。"
 }
