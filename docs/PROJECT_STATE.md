@@ -3,7 +3,7 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
-## ★★ 当前状态（2026-10-19 修订 · 历史题材地图 ×6 + 行情可信展示 + 标的与 Research 对象对账 + SA 交叉引用可导航）
+## ★★ 当前状态（2026-10-19 修订 · 历史题材地图 ×6 + 行情可信展示 + 标的与 Research 对象对账 + SA 交叉引用可导航 + 数据缺口审计）
 
 > 上一版停在 2026-10-13。本节之后（10-14/15）完成了：历史事件地图**跨年份比较产品化**、
 > 流感 **11 季**窗口统一（v0_6）、电力 10 年复核（v0_3）、事件级行情状态与端点可达性修复。
@@ -62,12 +62,30 @@
 > ③ **真实浏览器复测线上 Pages**：缓存绕过（`?v=nocache1`）后「半导体事件 → SA 当前对象列表 →
 > 当前对象结构详情」**闭环走通**（6 行 × 6 个按钮；点击后定位 Current Time Lens、恰好一个候选展开、
 > 显示 Structural Analogy 区块与当前对象名称）。
+> ★★ **2026-10-19（v0.23 · 数据缺口审计）**：本轮**不堆 UI**，只把三处长期缺口核验成**可追溯裁决表**
+> （`research/research/reports/data_gap_audit_v0_1.json`，由 `research/scripts/build_data_gap_audit_v0_1.py`
+> 确定性生成，**只读**）：
+> **A** 证券注册表未命中（**36 条记录 / 17 个不同标识**，全部流感）→ 根因 = canonical export 的 `securities`
+> 注册表是 **owner-scoped**（合同 §8；**实测**注册表 190 条 == 各 owner `security_ids` 并集 190 条，零差集），
+> 17 个标识**全部存在于** DB `securities` 原始记录（含 ticker / 交易所），但**未被任何导出对象引用**；
+> 逐条经**交易所披露**（深/沪年报摘要或上市交易通知，URL + 日期入表）核验身份 →
+> **1 PROVISIONAL**（`YILING-002603` → `YILING`：DB 内同 ticker 002603 同名的**重复标识**，目标在注册表内；
+> ★ 依硬约束**不自动合并**，仅**提出**映射）+ **16 UNRESOLVED**（身份已确认但**无**规范 ID 可映射 ⇒
+> 缺口性质是 **ownership 覆盖**，**不是**标识错误）。
+> **B** 未登记对象关联（**57 条记录 / 8 事件**：流感 5 + 电力 3）→ 逐事件核验：事件文本**未引用**任何
+> Campaign / RC id，且参与者 `security_id` 集合与**任何**导出对象的 `security_ids`**均不相等**
+> → **8 / 8 UNRESOLVED**（无证据支持归属；**不**按主题相近或年份相近推断）。
+> **C** 大基金三期窗口 4 只标的（SMIC / AMEC / PIOTECH / HYGON）→ 实测根因：**3 只序列抓取止于
+> 2021-09-30 / 2022-10-12**（`FETCH_COVERAGE_GAP`）+ **1 只序列从未登记**（拓荆科技，`SERIES_NOT_REGISTERED`）
+> —— **非标识问题**；补齐需**网络行情入库**，**本轮未获授权、未执行** → **4 UNRESOLVED**。
+> ★ **本轮未改任何数据**（A/B/C 的前后计数**完全相同**）：canonical export / SA / TO / Driver / `schema.sql` /
+> 历史快照 / `market_data.db` 与便携快照**逐字节未动**；未新增题材、未改 SA 判定、未推断逐证券结构对应。
 
 ### 实测基线（2026-10-18 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **最近功能提交** | `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最近功能提交** | `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **最后核实 Git 状态** | 核实于 2026-10-19：本地 `main` = `origin/main`，工作区仅有 **2 个未跟踪本地库**（`market_data.db` / `cycle_research.db`，**不入库、不提交**） · ★ **本行不再写「HEAD = 某个功能提交」** —— `docs(state)` 回填提交本身会把 HEAD 前移一位，旧写法两次制造了「HEAD 滞后」的误读。**接班必须跑 `git log -1` / `git status` / `git rev-parse origin/main`** 以实际为准，不要相信文档里的固定 SHA |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **65.62 MB**（行情三表 **376,401 行**，**不入库**） · `data/market/snapshot/` **6.09 MiB**（**入库**，恢复唯一输入） |
@@ -75,11 +93,12 @@
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **376,401 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1422 passed / 0 failed / 72 files**（v0.22：+7 —— saCrossReference CANONICAL 门禁 +4 · v022UserFlows +3；v0.21 计 1415/71，v0.20 计 1405/69) |
+| **测试** | **1422 passed / 0 failed / 72 files**（v0.23：**产品代码未改动 → 计数不变**；v0.22：+7 —— saCrossReference CANONICAL 门禁 +4 · v022UserFlows +3；v0.21 计 1415/71，v0.20 计 1405/69) |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 |
-| **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.22）**：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200** 并用**真实浏览器**复核（缓存绕过 `?v=nocache1`；见 v0.22 批次）。历史（v0.21）：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
-| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录）· **v0.22**：SA 列表每条带「**查看当前对象详情**」（按精确 `currentObjectId` 解析，不可解析则不给按钮） |
+| **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.23）**：`c9e4f26` run [`39248636166`](https://github.com/yangfanbit/Cycle/actions/runs/39248636166) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**。历史（v0.22）：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285)（两 job success，含真实浏览器复核）· `f07d839` run [`39244995823`](https://github.com/yangfanbit/Cycle/actions/runs/39244995823)（两 job success）· v0.21：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
+| **历史事件地图** | **v0.10 起为首页直接入口**（`HistoricalThemeMaps`，索引驱动 · **6 题材 / 26 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录）· **v0.22**：SA 列表每条带「**查看当前对象详情**」（按精确 `currentObjectId` 解析，不可解析则不给按钮）· **v0.23**：三处缺口的**裁决表**（数据本身**未改**，计数不变） |
+| **数据缺口审计（v0.23）** | `research/research/reports/data_gap_audit_v0_1.json`（只读 · 确定性生成）· **A 注册表未命中** = 36 条记录 / 17 标识（全流感）→ 根因 **owner-scoped 注册表**（190 == 190 零差集）· 身份**逐条**经交易所披露核验 · **1 PROVISIONAL**（`YILING-002603` → `YILING`，**不自动合并**）+ **16 UNRESOLVED**（无规范 ID 可映射）· **B 未登记对象** = 57 条 / 8 事件 → **8 UNRESOLVED**（无精确 `security_ids` 相等、事件未引用对象）· **C 大基金三期行情** = 4 只 → 3 只**抓取止于 2021/2022** + 1 只**序列未登记** → **4 UNRESOLVED**（补齐需授权后网络入库，本轮未执行）· 合计 **RESOLVED 0 / PROVISIONAL 1 / UNRESOLVED 28** |
 | **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
 
 ### v0.5 批次已修（真实缺陷，逐条有 DB 实测依据）
@@ -1054,7 +1073,74 @@ npx tsc -b OK · npm run build 成功 · npm test 1422 passed / 0 failed / 72 fi
 | 点击第一条（`CC-2026-AUTO-SMARTDRIVE`） | 页面定位到「当前时间研究导航（Current Time Lens）」；**恰好一个**当前候选展开，含「Structural Analogy（结构对应 · 当前 → 历史）」与当前研究对象名「智能驾驶合规化（L3/L4 强制国标—责任划分—量产准入）」→ **闭环走通** |
 | 控制台错误 | 无（首次缓存加载时见 `@vite/client` ERR_ABORTED，静态部署无害） |
 | 实际视口 | **1085 × 750**（工具**无法模拟**目标视口 1366×768 / 768×1024 / 390×844 / 320×700；也未按 Edge / Safari 分别验收 —— **如实记录**） |
-| 整页横向溢出 | 该视口下 **无**整页横向溢出（内容宽 1070 ≤ 视口 1085）；★ **窄屏（~677px）**未在本轮复测（工具无法设视口），v0.21 的 `.htm { overflow-wrap: anywhere; }` 仍在，本轮仅新增 flex-wrap 行内按钮 |
+| 整页横向溢出 | 该视口下 **无** 整页横向溢出（内容宽 1070 ≤ 视口 1085）；★ **窄屏（~677px）**未在本轮复测（工具无法设视口），v0.21 的 `.htm { overflow-wrap: anywhere; }` 仍在，本轮仅新增 flex-wrap 行内按钮 |
+
+### v0.23 批次（数据缺口审计 · 只读裁决表）（2026-10-19）
+
+> ★★ 本轮**性质是「核验 + 建裁决表」，不是「改数据」** —— A/B/C 三处缺口的**前后计数完全相同**。
+> ★ 未改 canonical export / SA / TO / Driver / `schema.sql` / 历史快照 / `market_data.db` 与便携快照（逐字节未动）；
+> 未新增题材、未改 SA 判定、未推断逐证券结构对应；**不**做买卖信号 / 选股 / 预测。
+
+**产物与生成器**：
+
+| 项 | 值 |
+|---|---|
+| 产物 | `research/research/reports/data_gap_audit_v0_1.json`（`artifact=data_gap_audit` · `artifact_version=0.1`） |
+| 生成器 | `research/scripts/build_data_gap_audit_v0_1.py`（**确定性**：连跑两次 sha1 相同 `8ddf599e…`；**只读**；自检：未命中标识缺权威来源 / 标识后缀与 ticker 不一致 → **FAIL 退出**） |
+| 数据来源 | `cycle_research.db :: securities`（既有原始记录）· `exports/timeline_export_v1.json` · `historical_event_maps_index.json` 指到的 **ACTIVE** 题材版本 · `market_data.db`（`market_series` / `market_daily` 实测量程） |
+
+#### ① A · 证券注册表未命中（36 条记录 / 17 个不同标识）
+
+| 项 | 实测 |
+|---|---|
+| 记录行数 / 不同标识 | **36 / 17**（全部在流感题材；单标识最多 3 行：`DAAN-002030` · `HAIWANG-000078` · `HUALAN-002007` · `LIANHUAN-600513` · `LUKANG-600789` · `NEPHARM-000597` · `TIANKA-002100` · `XIANGXUE-300147`） |
+| **根本原因** | canonical export 的 `securities` 注册表是 **owner-scoped**（合同 §8「扁平数组，必须知道属于谁」）。**实测零差集**：注册表 **190** 条 == 各 owner（Campaign / RC）`security_ids` **并集 190** 条。17 个标识**全部存在于** DB `securities` 原始记录（含 ticker / 交易所），但**未被任何导出对象引用** ⇒ 必然落在注册表外 |
+| 身份核验 | 17 个**逐条**经交易所披露核验：`股票简称 / 股票代码 / 交易所` 与 DB 记录**一致**；标识后缀 == DB ticker（脚本自检 **17/17 通过**）。来源为**深交所/上交所年报摘要或上市交易通知**（URL + 发布日期入表，如 `DAAN-002030` 2026-04-28 年报摘要、`HUALAN-002007` 2004-06-18 上市交易通知、`LIANHUAN-600513` 2026-04-21 上交所年报） |
+| 分类 | **PROVISIONAL ×1**：`YILING-002603` → `YILING` —— DB 内存在**同 ticker(002603) + 同名称(以岭药业)** 的**重复标识**，且 `YILING` **在**注册表内（owner = `RC-2021-TCM`）⇒ **提出映射**。★ 依硬约束**不自动合并**（`YILING` ≠ `YILING-002603`）—— 落库合并须单独 Research 轮次裁定 |
+| 分类 | **UNRESOLVED ×16**：身份已确认，但 DB 内**没有**可映射的规范 ID（既无声称的同名同 ticker 其它标识，也无它们在 export 注册表中的身影）⇒ 缺口性质是 **ownership / 覆盖缺口**，**不是**标识错误。关闭它须由 Research 轮次按证据决定「该证券是否归属于某个对象」 |
+| 前后计数 | 36 / 17 → **36 / 17（未变）** |
+
+#### ② B · 未登记对象关联（57 条记录 / 8 个事件）
+
+| 事件 | 题材 | 参与者记录 | 文本引用对象 | 精确 `security_ids` 相等的对象 |
+|---|---|---|---|---|
+| `FLU-2017-AVIAN` | FLU | 10 | 无 | 无 |
+| `FLU-2018-SEASONAL` | FLU | 4 | 无 | 无 |
+| `FLU-2024-SEASONAL` | FLU | 7 | 无 | 无（与 `C-2023-PHARMA-FLU` 仅 **3/3** 重叠但其参与者共 7 只，**不相等**） |
+| `PUBLICHEALTH-2019-WUHAN` | FLU | 10 | 无 | 无 |
+| `SUPERFUNGUS-2019-CANDIDA` | FLU | 8 | 无 | 无 |
+| `POWER-2017-SUMMER-COUNTEREXAMPLE` | POWER_SUMMER | 6 | 无 | 无（与 `C-2021-POWER-GREEN` / `C-2023-POWEROP-THERMAL` 各 **3/3** 重叠，**不相等**） |
+| `POWER-2022-SUMMER` | POWER_SUMMER | 6 | 无 | 无 |
+| `POWER-2024-SUMMER-COUNTEREXAMPLE` | POWER_SUMMER | 6 | 无 | 无 |
+
+- 证据标准沿用 **v0.18**：只有 `evidence_basis` **明确引用**某对象**且**标的集合与该对象 `security_ids` **逐一相等**才补关联。
+- 结果：**UNRESOLVED ×8（0 新补）** —— 事件文本**未引用**任何 Campaign / RC id，精确相等者**为零**
+  ⇒ **不得**按主题相近或年份相近认定属于同一 Campaign。
+- 前后计数：57 / 8 → **57 / 8（未变）**。
+
+#### ③ C · 大基金三期窗口（2024-09-24 ~ 2024-11-29）4 只缺价标的
+
+| 标的 | ticker | 序列 | 实测量程 | 窗口内行数 | 根因 |
+|---|---|---|---|---|---|
+| SMIC 中芯国际 | 688981 | 已登记 `sh688981` | 2020-07-16 → 2021-09-30 | **0** | `FETCH_COVERAGE_GAP` |
+| AMEC 中微公司 | 688012 | 已登记 `sh688012` | 2019-07-22 → 2021-09-30 | **0** | `FETCH_COVERAGE_GAP` |
+| HYGON 海光信息 | 688041 | 已登记 `sh688041` | 2022-08-12 → 2022-10-12 | **0** | `FETCH_COVERAGE_GAP` |
+| PIOTECH 拓荆科技 | 688072 | **无任何序列登记** | — | **0** | `SERIES_NOT_REGISTERED` |
+
+- 结论：**不是标识问题**（`series_id` 与 `security_id` 同一命名空间）—— **3 只抓取止于窗口之前 + 1 只序列从未建立**。
+- **未执行补齐**：需要**网络行情入库**（既有 Research 抓取流程）；本轮**未获授权** ⇒ **未抓取**，
+  `market_data.db` 与便携快照**逐字节未动**。
+- 分类：**UNRESOLVED ×4**；前后计数 4 → **4（未变）**。
+
+#### ④ 本轮合计与验证
+
+```
+RESOLVED 0 · PROVISIONAL 1 · UNRESOLVED 28（A:16 + B:8 + C:4）
+npx tsc -b OK · npm run build OK · npm test 1422 passed / 0 failed / 72 files（产品代码未改动 → 计数不变）
+Research 门禁：validate_db PASS（4 警告，同基线）· validate_timeline_export PASS（0 警告）·
+  validate_market_snapshot 342/8/0 · intake --check PASS（26 checks / 0 FAIL）·
+  refresh_downstream --check 0 FAIL / 12 PASS · validate_monorepo_integrity PASS（25 项）· resolve_sa_artifact PASS
+```
 
 ### ★★ v0.5 后仍**未解决**（不得当成已完成）
 
