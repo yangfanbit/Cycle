@@ -234,7 +234,9 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
             {EVIDENCE_LEVEL_LABEL[p.evidence_level]}
           </span>
         )}
-        {p.reported_move && <span className="fem-part-move">报道当日 {p.reported_move}</span>}
+        {p.reported_move && (
+          <span className="fem-part-move">报道当日 <RichText text={p.reported_move} /></span>
+        )}
         <span className={`fem-part-md ${mdClass}`} data-market-status={status}
               title={status === 'COMPUTED' ? undefined : plain(coverage.reasons.join('；'))}>
           {status === 'COMPUTED'
@@ -242,13 +244,13 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
             : MARKET_DATA_STATUS_LABEL[status]}
         </span>
         <span className={`fem-part-recon recon-${recon.link.toLowerCase()}`}
-              data-recon-link={recon.link} title={recon.reason}>
+              data-recon-link={recon.link} title={recon.reason ? plain(recon.reason) : undefined}>
           对象对账：{RECON_LINK_LABEL[recon.link]}
         </span>
         {/* ★★ v0.19：注册表命中是**独立事实** —— 未命中时如实标出（≠ 证券不存在、≠ 可自动匹配） */}
         {!recon.securityRegistered && (
           <span className="fem-part-registry miss" data-registry="miss"
-                title={REGISTRY_MISS_CAVEAT}>
+                title={plain(REGISTRY_MISS_CAVEAT)}>
             {REGISTRY_STATUS_LABEL.miss}
           </span>
         )}
@@ -363,10 +365,10 @@ export function EventCardBody({
                 {saRef.sourceCommit && <> · source {saRef.sourceCommit.slice(0, 7)}</>}
               </p>
               {!objId ? (
-                <p className="fem-sa-miss" data-sa-match="no-object">{SA_NO_OBJECT_LABEL}</p>
+                <p className="fem-sa-miss" data-sa-match="no-object"><RichText text={SA_NO_OBJECT_LABEL} /></p>
               ) : !saRef.loaded ? (
                 <p className="fem-sa-miss" data-sa-match="not-loaded">
-                  {SA_NOT_LOADED_LABEL}
+                  <RichText text={SA_NOT_LOADED_LABEL} />
                   {/* ★★ v0.22：**清楚披露**为何无法判定（如索引违反「唯一 CANONICAL」预期），
                       不静默 —— 载入失败原因原样呈现 */}
                   {saRef.loadError && (
@@ -376,7 +378,7 @@ export function EventCardBody({
               ) : saRefRows.length === 0 ? (
                 <p className="fem-sa-miss" data-sa-match="none">
                   {SA_NOT_FOUND_LABEL}
-                  <span className="fem-sa-note"> {SA_NOT_FOUND_CAVEAT}</span>
+                  <span className="fem-sa-note"> <RichText text={SA_NOT_FOUND_CAVEAT} /></span>
                 </p>
               ) : (
                 <>
@@ -419,7 +421,7 @@ export function EventCardBody({
                       );
                     })}
                   </ul>
-                  <p className="fem-sa-note">{SA_OBJECT_LEVEL_CAVEAT}</p>
+                  <p className="fem-sa-note"><RichText text={SA_OBJECT_LEVEL_CAVEAT} /></p>
                 </>
               )}
             </>
@@ -444,7 +446,7 @@ export function EventCardBody({
                 <li key={`${c.date}#${i}`}>
                   <span className="fem-cat-date">{c.date}</span>
                   <span className="fem-cat-text"><RichText text={c.text} /></span>
-                  <span className="fem-cat-src">{c.source}</span>
+                  <span className="fem-cat-src"><RichText text={c.source} /></span>
                 </li>
               ))}
             </ul>
@@ -496,7 +498,7 @@ export function EventCardBody({
                   <strong>{registryMiss}</strong>
                   {registryMiss > 0 && (
                     <span className="fem-recon-miss">
-                      （未命中只是**需要核对的标识差异** —— 不等于证券不存在、也不等于可自动匹配其它 ID）
+                      （未命中只是<strong>需要核对的标识差异</strong> —— 不等于证券不存在、也不等于可自动匹配其它 ID）
                     </span>
                   )}
                 </li>

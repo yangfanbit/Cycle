@@ -88,6 +88,24 @@ describe('B. 多题材数据通过通用校验', () => {
   });
 });
 
+// ★ 合成 saRef：覆盖 SA 交叉引用的三条分支（未载入 / 未找到 / 有记录）
+const saBase = {
+  snapshotId: 'MS-TEST-01', marketSnapshotVersion: '0.3', snapshotStatus: 'CANONICAL',
+  ruleSetVersion: 'r', artifactVersion: '0.13', sourceCommit: null,
+  byHistoricalObject: new Map(), unidentifiedRows: 0,
+};
+const notLoadedSa = { ...saBase, loaded: false, loadError: '合成载入失败' };
+const notFoundSa = { ...saBase, loaded: true, loadError: null };
+/** 有记录分支：必须用**该事件真实的 object_id** 做键，否则走不到「被 N 个对象引用」 */
+const foundSaFor = (objectId: string) => ({
+  ...saBase, loaded: true, loadError: null,
+  byHistoricalObject: new Map([[objectId, [{
+    currentObjectId: 'CC-TEST-01', currentObjectName: '合成当前对象',
+    currentObjectTheme: '测试', structuralStatus: 'SUPPORTED',
+    statusLabel: '结构支持', strictStructuralSupported: true,
+  }]]]),
+});
+
 describe('C. 通用组件渲染非流感题材', () => {
   it('★ 电力题材可渲染，且带该题材自己的 class caveat 与 note', () => {
     const m = eventMapByTheme('POWER_SUMMER')!;
@@ -105,6 +123,22 @@ describe('C. 通用组件渲染非流感题材', () => {
     for (const m of allResolvedEventMaps()) {
       const html = renderToStaticMarkup(<HistoricalEventMap doc={m.doc} display={m.display} />);
       expect(html, m.theme_id).not.toContain('**');
+      // ★★ 展开态也要扫一遍（含 SA 交叉引用的三种分支）—— 折叠态扫不到正文
+      for (const e of m.doc.events) {
+        const objId = e.campaign_facts?.object_id ?? e.campaign_facts?.campaign_id ?? '';
+        const found = objId ? foundSaFor(objId) : notFoundSa;
+        for (const saRef of [undefined, notLoadedSa, notFoundSa, found]) {
+          const body = renderToStaticMarkup(<EventCardBody e={e} saRef={saRef} />);
+          expect(body, `${m.theme_id}/${e.event_id}/${saRef ? 'saRef' : 'no-sa'}`)
+            .not.toContain('**');
+        }
+        // 确认「有记录」分支确实渲染到了（否则这条扫描等于没扫 SA 声明）
+        if (objId) {
+          const body = renderToStaticMarkup(<EventCardBody e={e} saRef={found} />);
+          expect(body, `${m.theme_id}/${e.event_id}`).toContain('data-sa-match="found"');
+          expect(body, `${m.theme_id}/${e.event_id}`).toContain('对象级');
+        }
+      }
     }
     // 行情段免责声明：常量里的 `**` 必须变成 <strong>（此前原样显示星号）
     const semi = eventMapByTheme('SEMICONDUCTOR_AI')!;
