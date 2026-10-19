@@ -13,7 +13,9 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { EventCardBody, HistoricalEventMap, MarketPerformanceBlock, ParticipantRow } from '../HistoricalEventMap';
+import { RichText } from '../../RichText';
 import {
+  BUSINESS_MECHANISM_CAVEAT,
   CROSS_YEAR_CAVEAT,
   CROSS_YEAR_OUTCOME_LABEL,
   MARKET_DATA_STATUS_LABEL,
@@ -97,6 +99,23 @@ describe('C. 通用组件渲染非流感题材', () => {
     expect(html).toContain('不可混用');
     // ★ Campaign 事实（含 peak_date，且注明不是行情高点）
     expect(html).toContain('C-2023-POWEROP-THERMAL');
+  });
+
+  it('★★ 免责声明里的 `**` 必须渲染为 <strong>，不得原样显示星号（v0.24 修复）', () => {
+    for (const m of allResolvedEventMaps()) {
+      const html = renderToStaticMarkup(<HistoricalEventMap doc={m.doc} display={m.display} />);
+      expect(html, m.theme_id).not.toContain('**');
+    }
+    // 行情段免责声明：常量里的 `**` 必须变成 <strong>（此前原样显示星号）
+    const semi = eventMapByTheme('SEMICONDUCTOR_AI')!;
+    const perf = renderToStaticMarkup(
+      <MarketPerformanceBlock e={semi.doc.events.find((e) => e.event_id === 'SEMI-2024-FUND3')!} />);
+    expect(perf).not.toContain('**');
+    expect(perf).toContain('<strong>事后行情描述</strong>');
+    // 业务机制免责声明同理
+    const biz = renderToStaticMarkup(<p><RichText text={BUSINESS_MECHANISM_CAVEAT} /></p>);
+    expect(biz).not.toContain('**');
+    expect(biz).toContain('<strong>当前时点</strong>');
   });
 
   it('★ 传媒题材可渲染，且明确标注机制非暑期档', () => {

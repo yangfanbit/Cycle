@@ -99,17 +99,17 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
   return (
     <>
       <h5>实测行情（窗口 {mp.window?.[0]} ~ {mp.window?.[1]}）</h5>
-      <p className="fem-perf-caveat">{MARKET_PERFORMANCE_CAVEAT}</p>
+      <p className="fem-perf-caveat"><RichText text={MARKET_PERFORMANCE_CAVEAT} /></p>
       <p className="fem-perf-caveat">
         ★ 只有<strong>窗口状态 = 完整窗口已计算</strong>的标的，其数值才可与完整窗口结果并列比较；
         其余（覆盖不足 / 未计算 / 行情不可得）为<strong>仅局部数据，不可视为完整窗口可比结果</strong>
-        —— 仍**原样保留**、可查看，但**不**与完整窗口结果等价。
+        —— 仍<strong>原样保留</strong>、可查看，但<strong>不</strong>与完整窗口结果等价。
       </p>
       <p className="fem-perf-caveat" data-perf-unlinked-caveat="1">
         ★★ <strong>「行情记录存在」≠「事件参与者记录存在」</strong>：本表中标注
-        「<strong>行情记录未关联事件参与者</strong>」的行，表示**存在该 ID 的行情记录**，
-        但本事件的 <code>participants</code> 中**没有同一精确 ID** —— 这**不代表**该证券已被本事件确认纳入，
-        也**不**把该 ID 合并到其它 ID（名称 / 代码若显示，仅取自**同一精确 ID** 的 canonical export 注册表）。
+        「<strong>行情记录未关联事件参与者</strong>」的行，表示<strong>存在该 ID 的行情记录</strong>，
+        但本事件的 <code>participants</code> 中<strong>没有同一精确 ID</strong> —— 这<strong>不代表</strong>该证券已被本事件确认纳入，
+        也<strong>不</strong>把该 ID 合并到其它 ID（名称 / 代码若显示，仅取自<strong>同一精确 ID</strong> 的 canonical export 注册表）。
       </p>
       <div className="fem-table-wrap">
         <table className="fem-table fem-perf-table">
@@ -170,8 +170,8 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
                       <span className="fem-perf-unlinked" data-perf-unlinked="1">
                         行情记录未关联事件参与者
                         <span className="fem-perf-unlinked-note">
-                          本行只表示「存在该 ID 的行情记录」；本事件 <code>participants</code> 中**没有**同一 ID
-                          —— <strong>不代表</strong>该证券已被本事件确认纳入，也**不**合并到其它 ID。
+                          本行只表示「存在该 ID 的行情记录」；本事件 <code>participants</code> 中<strong>没有</strong>同一 ID
+                          —— <strong>不代表</strong>该证券已被本事件确认纳入，也<strong>不</strong>合并到其它 ID。
                         </span>
                       </span>
                     )}
@@ -519,7 +519,7 @@ export function EventCardBody({
              机制池事件的 participants 是**研究池**（事后重建、未按收益筛选），
              不是炒作池；池的性质由各标的 `category` / `rationale` 逐条说明。 */}
           <h5>事件相关标的（{e.participants.length} 只）</h5>
-          <p className="fem-biz-caveat">{BUSINESS_MECHANISM_CAVEAT}</p>
+          <p className="fem-biz-caveat"><RichText text={BUSINESS_MECHANISM_CAVEAT} /></p>
           {e.participants.length === 0 ? (
             <p className="fem-empty">（未建立候选清单）</p>
           ) : (
@@ -549,7 +549,7 @@ export function EventCardBody({
               ))}
             </ul>
           ) : (
-            <p className="fem-empty">（无同期报道点名的当日涨幅 → 不展示数字，**不**以 0 涨幅代替）</p>
+            <p className="fem-empty">（无同期报道点名的当日涨幅 → 不展示数字，<strong>不</strong>以 0 涨幅代替）</p>
           )}
 
           <h5>缺失 / 不确定事项</h5>

@@ -48,7 +48,7 @@
 | Time Observation | **v0.2**（内部 `artifact_version` 0.3） |
 | Current Candidates | **6** |
 | Market Snapshot | `MS-2026-10-13-01` = **CANONICAL**（已签发 · supersedes `MS-2026-10-12-01`） |
-| 测试 | **1425 passed / 0 failed / 72 files**（含 v0.24 新增的行情合同断言） |
+| 测试 | **1426 passed / 0 failed / 72 files**（含 v0.24 新增的行情合同断言） |
 | CI 门禁 | **Product**（tsc / npm test / build）+ **Research 只读**（5 项校验，2026-10-13 接入） + **题材行情一致性**（v0.24 接入：`build_theme_market_performance --check` + 契约单测，在行情库恢复之后运行；**只读**，失败即不部署） |
 | 外部季节性日历 | **v0.1**（25 项外部线索 · 全部 `EXTERNAL_REFERENCE`）· **v0.12 起 25 条全部铺到 1–12 月时间轴**（23 条上轴 / 24 段窗口 / 跨年拆成 28 段 + 2 条无固定窗口单列）· **v0.13 起每条 MAPPED 线索可展开「外部月份窗口 × 该主题历史 MAIN_RISE 窗口」两层对照；UNMAPPED 线索可带入现有研究请求草稿** · **v0.14 起历史对象可一键「查看对象详情」（复用既有案例面板，返回不丢对照上下文），窗口计数改为「投影段数 / 去重对象数」可核对口径 |
 | **经验基准概率（v0.9 新增）** | 电力 **1/7**（95% Wilson **2.6%–51.3%**）· 流感 **1/9**（**2.0%–43.5%**，唯一 UP 属 `UNKNOWN_PUBLIC_HEALTH`）· 均标「**未校准**」 |

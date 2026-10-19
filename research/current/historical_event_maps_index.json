@@ -135,7 +135,7 @@
      "THEME_DIRECT"
     ],
     "class_caveats": {},
-    "note": "本区展示**半导体 / AI 算力 / 存储**相关历史事件（来源：库内 Campaign / Research Candidate + 实测行情）。★★ **关系性质不是评分**：`category` 只描述直接机制（`MECHANISM_DIRECT`）/ 产业链扩散（`SPILLOVER`）/ 历史市场参与（`MARKET_PARTICIPANT`）/ 反例（`COUNTER_EXAMPLE`）/ 证据不足（`INSUFFICIENT`）；★ 京东方A＝`COUNTER_EXAMPLE`（反例·不同轴：显示面板与集成电路不同轴），**不得**与「证据不足」混同。★★ **两个 Research Candidate 官方 `status=INSUFFICIENT`**（RC-2022-SEMI-CHIPSHORTAGE 缺芯、RC-2024-SEMI-FUND3 大基金三期），如实标注 —— **RC 不伪装 Campaign**。★ 大基金三期窗口（2024-09→2024-11）的**全部登记标的行情均不覆盖** → 逐条留空、不补数。★ 本题材无外部季节性线索挂靠（`external_entry_ids` 为空）—— 外部窗口口径见「外部季节性参考时间轴」。"
+    "note": "本区展示**半导体 / AI 算力 / 存储**相关历史事件（来源：库内 Campaign / Research Candidate + 实测行情）。★★ **关系性质不是评分**：`category` 只描述直接机制（`MECHANISM_DIRECT`）/ 产业链扩散（`SPILLOVER`）/ 历史市场参与（`MARKET_PARTICIPANT`）/ 反例（`COUNTER_EXAMPLE`）/ 证据不足（`INSUFFICIENT`）；★ 京东方A＝`COUNTER_EXAMPLE`（反例·不同轴：显示面板与集成电路不同轴），**不得**与「证据不足」混同。★★ **两个 Research Candidate 官方 `status=INSUFFICIENT`**（RC-2022-SEMI-CHIPSHORTAGE 缺芯、RC-2024-SEMI-FUND3 大基金三期），如实标注 —— **RC 不伪装 Campaign**。★ 大基金三期窗口（2024-09-24→2024-11-29）的 4 只登记标的**已可计算**（v0_2，各 44 个 adjusted 交易日；同期基准 +16.8% → **普涨行情，不得解释为题材因果**）；其余事件中 SMIC（2019）/ PIOTECH（2021）/ TFME、JCET（2020）/ HYGON（2022 覆盖不足）仍逐条留空、**不补数**。★ 本题材无外部季节性线索挂靠（`external_entry_ids` 为空）—— 外部窗口口径见「外部季节性参考时间轴」。"
    },
    "event_count": 7,
    "status": "ACTIVE",

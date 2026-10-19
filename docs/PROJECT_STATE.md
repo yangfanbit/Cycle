@@ -105,9 +105,12 @@
 >    拓荆科技 **+86.2%**（+98.5%，11-11）· 海光信息 **+61.4%**（+81.9%，11-07）；
 >    同期基准 SH000300 **+16.8%**（至高点 +27.0%）。`study_state` `NO_PRICE_DATA → HAS_PRICE_DATA`。
 >    ★★ **`RC-2024-SEMI-FUND3` 官方 `INSUFFICIENT` 判定不变**，Beta Contamination 写在 `known_gaps` 首条。
-> ④ **顺手暴露并修复一处静默缺陷**：`power_historical_events_v0_3.json` 用**扁平**
+> ④ **实机渲染探针暴露并修复两处静默缺陷**：① `power_historical_events_v0_3.json` 用**扁平**
 >    `high_date`/`high_close` 写高点，而 UI 只读 `high.date` → **12 行「高点日」一直显示 `—`**；
->    新增 `highPointOf()` 两种写法统一读取（数值零变化）。
+>    新增 `highPointOf()` 两种写法统一读取（数值零变化）。② 行情段 / 业务机制段的两条免责声明
+>    与 3 处说明文字把 `**` **原样显示成星号**（本项目已知陷阱）→ 全部改走 `<RichText>` / `<strong>`
+>    （新增断言：**任何题材的渲染结果都不得出现 `**`**）。③ 索引 `display.note` 里「大基金三期窗口
+>    全部标的行情均不覆盖」**已成假话** → 按实况改写（这是**渲染**才暴露的语义漂移，不是字段问题）。
 > ⑤ **新发现（本轮未关闭）**：`POWER-2017-SUMMER-COUNTEREXAMPLE` 的 4 组数值**无法由当前行情库复算**
 >    —— 华电 / 建投能源 / 天富能源 序列**自 2022-01-04 起**、京能 2020-01-02 起，2017 窗口**无任何行**。
 >    按纪律标 **UNVERIFIABLE（WARN）**：**不改数、不删数、不补数**，要关闭须补 2017 段行情。
@@ -127,7 +130,7 @@
 | **恢复命令** | `python research/scripts/restore_market_data.py --apply`（`--check` 校验；`--force` 重建）—— **无网络可用** |
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **380,771 行** |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
-| **测试** | **1422 passed / 0 failed / 72 files**（v0.23：**产品代码未改动 → 计数不变**；v0.22：+7 —— saCrossReference CANONICAL 门禁 +4 · v022UserFlows +3；v0.21 计 1415/71，v0.20 计 1405/69) |
+| **测试** | **1426 passed / 0 failed / 72 files**（v0.23：**产品代码未改动 → 计数不变**；v0.22：+7 —— saCrossReference CANONICAL 门禁 +4 · v022UserFlows +3；v0.21 计 1415/71，v0.20 计 1405/69) |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 · ★ **v0.24 新增** `build_theme_market_performance --check` = **PASS（FAIL 0 · WARN 4 = UNVERIFIABLE）** + 契约单测 **12 passed**（在 CI 的 restore 之后运行） |
 | **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.23）**：`c9e4f26` run [`39248636166`](https://github.com/yangfanbit/Cycle/actions/runs/39248636166) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**。历史（v0.22）：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285)（两 job success，含真实浏览器复核）· `f07d839` run [`39244995823`](https://github.com/yangfanbit/Cycle/actions/runs/39244995823)（两 job success）· v0.21：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
