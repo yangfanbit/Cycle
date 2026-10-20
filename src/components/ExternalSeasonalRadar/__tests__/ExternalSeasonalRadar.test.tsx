@@ -11,6 +11,7 @@ import {
   EXTERNAL_SOURCE_LABEL,
   externalCalendarEntries,
 } from '../../../data/timeline/externalSeasonalCalendar';
+import { eventMapByExternalId } from '../../../data/timeline/historicalEventMaps';
 
 const TODAY = '2026-10-13';
 const html = renderToStaticMarkup(<ExternalSeasonalRadar today={TODAY} />);
@@ -67,6 +68,40 @@ describe('ExternalSeasonalRadar · 优先展示四项', () => {
   });
 });
 
+describe('ExternalSeasonalRadar · 下一步入口（v0.25）', () => {
+  const mapOpen = (themeId: string) => { void themeId; };
+  const draftOpen = (entry: { id: string }) => { void entry.id; };
+  const withHandlers = renderToStaticMarkup(
+    <ExternalSeasonalRadar today={TODAY} onOpenMap={mapOpen} onRequestDraft={draftOpen} />,
+  );
+
+  it('★★ 每项线索都有下一步：有地图 → 地图按钮，无地图且核验为「带入草稿」→ 草稿按钮', () => {
+    // 优先区四项：冰雪经济(DRAFT) · 双十一(MAP) · 流感(MAP) · 供暖(DRAFT)
+    expect((withHandlers.match(/esr-map-open/g) ?? [])).toHaveLength(2);
+    expect((withHandlers.match(/esr-draft-open/g) ?? [])).toHaveLength(2);
+    // 不伪装：无地图的入口必须明写「暂无历史事件地图」
+    expect(withHandlers).toContain('暂无历史事件地图');
+    expect(withHandlers).toContain('不伪装成已有地图');
+  });
+
+  it('★★ 25 项中，有地图 + 有草稿入口的条目数与产物核验结论一致', () => {
+    // 数据层核对：kind=MAP 的条目必须都能在索引里找到地图；其余 DRAFT/OBSERVE 给草稿入口
+    const entries = externalCalendarEntries();
+    const mapKinds = entries.filter((e) => e.verification?.next_step.kind === 'MAP');
+    const draftKinds = entries.filter((e) =>
+      e.verification?.next_step.kind === 'DRAFT' || e.verification?.next_step.kind === 'OBSERVE');
+    for (const e of mapKinds) {
+      expect(eventMapByExternalId(e.id), `${e.id} 声明 MAP 但索引里没有地图`).toBeTruthy();
+    }
+    // 有地图的条目不必再给草稿按钮（地图即下一步）
+    for (const e of draftKinds) {
+      expect(eventMapByExternalId(e.id), `${e.id} 无地图却给了 MAP 结论`).toBeUndefined();
+    }
+    expect(mapKinds.length + draftKinds.length
+           + entries.filter((e) => e.verification?.next_step.kind === 'NONE').length).toBe(25);
+  });
+});
+
 describe('ExternalSeasonalRadar · 空白状态如实展示', () => {
   it('★ 优先区含未映射条目时，直接展示「未映射」与原因（不隐藏）', () => {
     // 流感/医药 与 供暖/能源 是 MAPPED；冰雪/双十一是 MAPPED。
@@ -91,9 +126,13 @@ describe('ExternalSeasonalRadar · 空白状态如实展示', () => {
     expect((html.match(/class="esr-card"/g) ?? [])).toHaveLength(4);
   });
 
-  it('★ 总数与版本可追溯', () => {
+  it('★ 总数与版本可追溯（v0.25：日历已升 v0_2，25 项逐项核验）', () => {
     expect(html).toContain('25');
-    expect(html).toContain('0.1');
+    expect(html, '日历版本号必须与产物一致').toContain('0.2');
     expect(html).toContain('2026-10-13');
+    // ★ v0.25：核验结论段必须渲染（六问的落地结果），且不写死「全部未经验证」
+    expect(html).toContain('核验结论');
+    expect(html).toContain('性质：');
+    expect(html).toContain('下一步');
   });
 });

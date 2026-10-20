@@ -46,89 +46,17 @@
  },
  "current_market": {
   "series_id": "SH000300",
-  "as_of": "2026-09-30",
+  "as_of": "2026-10-19",
   "observables": {
-   "date": "2026-09-30",
-   "close": 4357.62,
-   "vol_pct60": 0.133,
-   "ret_20_pct": -5.5,
-   "vol_ratio": 0.649,
+   "date": "2026-10-19",
+   "close": 4174.53,
+   "vol_pct60": 0.083,
+   "ret_20_pct": -7.44,
+   "vol_ratio": 0.788,
    "above_ma20": false,
    "above_ma60": false
   },
   "series": [
-   {
-    "date": "2026-09-02",
-    "close": 4547.96,
-    "vol_pct60": 0.117,
-    "ret_20_pct": -2.37,
-    "vol_ratio": 0.654,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-03",
-    "close": 4552.58,
-    "vol_pct60": 0.083,
-    "ret_20_pct": -2.12,
-    "vol_ratio": 0.657,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-04",
-    "close": 4548.05,
-    "vol_pct60": 0.167,
-    "ret_20_pct": -3.12,
-    "vol_ratio": 0.638,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-07",
-    "close": 4575.02,
-    "vol_pct60": 0.1,
-    "ret_20_pct": -2.7,
-    "vol_ratio": 0.648,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-08",
-    "close": 4558.74,
-    "vol_pct60": 0.05,
-    "ret_20_pct": -2.25,
-    "vol_ratio": 0.656,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-09",
-    "close": 4572.6,
-    "vol_pct60": 0.017,
-    "ret_20_pct": -2.52,
-    "vol_ratio": 0.65,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-10",
-    "close": 4548.39,
-    "vol_pct60": 0.017,
-    "ret_20_pct": -2.48,
-    "vol_ratio": 0.652,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-11",
-    "close": 4510.16,
-    "vol_pct60": 0.283,
-    "ret_20_pct": -3.34,
-    "vol_ratio": 0.659,
-    "above_ma20": false,
-    "above_ma60": false
-   },
    {
     "date": "2026-09-14",
     "close": 4480.08,
@@ -236,13 +164,85 @@
     "vol_ratio": 0.649,
     "above_ma20": false,
     "above_ma60": false
+   },
+   {
+    "date": "2026-10-08",
+    "close": 4310.28,
+    "vol_pct60": 0.433,
+    "ret_20_pct": -5.23,
+    "vol_ratio": 0.633,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-09",
+    "close": 4317.25,
+    "vol_pct60": 0.467,
+    "ret_20_pct": -5.17,
+    "vol_ratio": 0.659,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-12",
+    "close": 4287.98,
+    "vol_pct60": 0.283,
+    "ret_20_pct": -5.72,
+    "vol_ratio": 0.673,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-13",
+    "close": 4275.68,
+    "vol_pct60": 0.283,
+    "ret_20_pct": -6.54,
+    "vol_ratio": 0.662,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-14",
+    "close": 4217.68,
+    "vol_pct60": 0.167,
+    "ret_20_pct": -7.48,
+    "vol_ratio": 0.705,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-15",
+    "close": 4166.01,
+    "vol_pct60": 0.65,
+    "ret_20_pct": -8.89,
+    "vol_ratio": 0.704,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-16",
+    "close": 4170.61,
+    "vol_pct60": 0.4,
+    "ret_20_pct": -8.31,
+    "vol_ratio": 0.723,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-19",
+    "close": 4174.53,
+    "vol_pct60": 0.083,
+    "ret_20_pct": -7.44,
+    "vol_ratio": 0.788,
+    "above_ma20": false,
+    "above_ma60": false
    }
   ],
   "note": "取**最新可得交易日**。当前快照日为 2026-09-15；行情已补至 2026-09-30（国庆假期后无新交易日）。"
  },
  "summary": {
-  "OK": 49,
-  "PARTIAL": 13,
+  "OK": 54,
+  "PARTIAL": 8,
   "NO_DATA": 0
  },
  "by_campaign": {
@@ -252,7 +252,7 @@
    "start": "2016-06-01",
    "peak": "2018-01-31",
    "end": "2018-12-31",
-   "status": "PARTIAL",
+   "status": "OK",
    "market_layer": {
     "series_id": "SH000300",
     "checkpoints": [
@@ -951,150 +951,363 @@
      },
      {
       "security_id": "WULIANGYE",
-      "status": "NO_DATA",
-      "rows_before_start": 0
+      "status": "OK",
+      "lookback_from": "2016-05-04",
+      "lookback_to": "2016-05-31",
+      "series": [
+       {
+        "date": "2016-05-04",
+        "close": 30.66,
+        "vol_pct60": 0.917,
+        "ret_20_pct": 9.19,
+        "vol_ratio": 1.185,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 10.88
+       },
+       {
+        "date": "2016-05-05",
+        "close": 30.4,
+        "vol_pct60": 0.85,
+        "ret_20_pct": 6.33,
+        "vol_ratio": 1.179,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 7.67
+       },
+       {
+        "date": "2016-05-06",
+        "close": 29.31,
+        "vol_pct60": 0.9,
+        "ret_20_pct": 5.47,
+        "vol_ratio": 1.171,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 7.93
+       },
+       {
+        "date": "2016-05-09",
+        "close": 29.27,
+        "vol_pct60": 0.8,
+        "ret_20_pct": 7.41,
+        "vol_ratio": 1.147,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 11.18
+       },
+       {
+        "date": "2016-05-10",
+        "close": 29.72,
+        "vol_pct60": 0.9,
+        "ret_20_pct": 9.1,
+        "vol_ratio": 1.169,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 14.08
+       },
+       {
+        "date": "2016-05-11",
+        "close": 30.32,
+        "vol_pct60": 0.9,
+        "ret_20_pct": 11.47,
+        "vol_ratio": 1.183,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 15.68
+       },
+       {
+        "date": "2016-05-12",
+        "close": 30.1,
+        "vol_pct60": 0.683,
+        "ret_20_pct": 9.97,
+        "vol_ratio": 1.206,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 15.22
+       },
+       {
+        "date": "2016-05-13",
+        "close": 29.88,
+        "vol_pct60": 0.667,
+        "ret_20_pct": 8.22,
+        "vol_ratio": 1.21,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 14.35
+       },
+       {
+        "date": "2016-05-16",
+        "close": 29.82,
+        "vol_pct60": 0.667,
+        "ret_20_pct": 7.65,
+        "vol_ratio": 1.225,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 13.06
+       },
+       {
+        "date": "2016-05-17",
+        "close": 29.35,
+        "vol_pct60": 0.4,
+        "ret_20_pct": 8.74,
+        "vol_ratio": 1.194,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 13.15
+       },
+       {
+        "date": "2016-05-18",
+        "close": 29.2,
+        "vol_pct60": 0.467,
+        "ret_20_pct": 9.45,
+        "vol_ratio": 1.193,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 14.71
+       },
+       {
+        "date": "2016-05-19",
+        "close": 29.05,
+        "vol_pct60": 0.183,
+        "ret_20_pct": 10.88,
+        "vol_ratio": 1.17,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 14.61
+       },
+       {
+        "date": "2016-05-20",
+        "close": 29.44,
+        "vol_pct60": 0.167,
+        "ret_20_pct": 12.02,
+        "vol_ratio": 1.171,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 14.63
+       },
+       {
+        "date": "2016-05-23",
+        "close": 29.99,
+        "vol_pct60": 0.367,
+        "ret_20_pct": 11.9,
+        "vol_ratio": 1.228,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 14.66
+       },
+       {
+        "date": "2016-05-24",
+        "close": 29.5,
+        "vol_pct60": 0.067,
+        "ret_20_pct": 8.7,
+        "vol_ratio": 1.241,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 11.81
+       },
+       {
+        "date": "2016-05-25",
+        "close": 28.92,
+        "vol_pct60": 0.25,
+        "ret_20_pct": 5.93,
+        "vol_ratio": 1.315,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 9.7
+       },
+       {
+        "date": "2016-05-26",
+        "close": 28.88,
+        "vol_pct60": 0.233,
+        "ret_20_pct": 4.22,
+        "vol_ratio": 1.312,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 7.43
+       },
+       {
+        "date": "2016-05-27",
+        "close": 28.86,
+        "vol_pct60": 0.133,
+        "ret_20_pct": 4.83,
+        "vol_ratio": 1.362,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 7.93
+       },
+       {
+        "date": "2016-05-30",
+        "close": 28.8,
+        "vol_pct60": 0.15,
+        "ret_20_pct": 1.41,
+        "vol_ratio": 1.33,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 4.26
+       },
+       {
+        "date": "2016-05-31",
+        "close": 30.03,
+        "vol_pct60": 0.717,
+        "ret_20_pct": -3.13,
+        "vol_ratio": 0.898,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": -1.76
+       }
+      ],
+      "at_last_day": {
+       "date": "2016-05-31",
+       "close": 30.03,
+       "vol_pct60": 0.717,
+       "ret_20_pct": -3.13,
+       "vol_ratio": 0.898,
+       "above_ma20": true,
+       "above_ma60": true,
+       "rel_strength_20": -1.76
+      }
      }
     ],
     "median_series": [
      {
       "date": "2016-05-04",
-      "vol_pct60": 0.575,
-      "ret_20_pct": 7.78,
-      "rel_strength_20": 6.39,
-      "vol_ratio": 0.839
+      "vol_pct60": 0.617,
+      "ret_20_pct": 9.19,
+      "rel_strength_20": 6.74,
+      "vol_ratio": 1.05
      },
      {
       "date": "2016-05-05",
-      "vol_pct60": 0.308,
-      "ret_20_pct": 4.09,
-      "rel_strength_20": 1.895,
-      "vol_ratio": 0.782
+      "vol_pct60": 0.6,
+      "ret_20_pct": 6.33,
+      "rel_strength_20": 2.23,
+      "vol_ratio": 0.877
      },
      {
       "date": "2016-05-06",
-      "vol_pct60": 0.675,
-      "ret_20_pct": 3.29,
-      "rel_strength_20": 1.01,
-      "vol_ratio": 0.79
+      "vol_pct60": 0.883,
+      "ret_20_pct": 5.47,
+      "rel_strength_20": 1.72,
+      "vol_ratio": 0.893
      },
      {
       "date": "2016-05-09",
-      "vol_pct60": 0.317,
-      "ret_20_pct": 2.81,
-      "rel_strength_20": 2.205,
-      "vol_ratio": 0.793
+      "vol_pct60": 0.5,
+      "ret_20_pct": 5.24,
+      "rel_strength_20": 4.15,
+      "vol_ratio": 0.868
      },
      {
       "date": "2016-05-10",
-      "vol_pct60": 0.716,
-      "ret_20_pct": 4.455,
-      "rel_strength_20": 3.91,
-      "vol_ratio": 0.763
+      "vol_pct60": 0.833,
+      "ret_20_pct": 5.48,
+      "rel_strength_20": 8.41,
+      "vol_ratio": 0.807
      },
      {
       "date": "2016-05-11",
-      "vol_pct60": 0.658,
-      "ret_20_pct": 6.035,
-      "rel_strength_20": 5.135,
-      "vol_ratio": 0.782
+      "vol_pct60": 0.9,
+      "ret_20_pct": 7.19,
+      "rel_strength_20": 9.09,
+      "vol_ratio": 0.839
      },
      {
       "date": "2016-05-12",
-      "vol_pct60": 0.192,
-      "ret_20_pct": 5.055,
-      "rel_strength_20": 5.31,
-      "vol_ratio": 0.779
+      "vol_pct60": 0.2,
+      "ret_20_pct": 5.66,
+      "rel_strength_20": 10.91,
+      "vol_ratio": 0.828
      },
      {
       "date": "2016-05-13",
-      "vol_pct60": 0.275,
-      "ret_20_pct": 1.86,
-      "rel_strength_20": 4.035,
-      "vol_ratio": 0.799
+      "vol_pct60": 0.467,
+      "ret_20_pct": 3.38,
+      "rel_strength_20": 9.51,
+      "vol_ratio": 0.865
      },
      {
       "date": "2016-05-16",
-      "vol_pct60": 0.3,
-      "ret_20_pct": 1.63,
-      "rel_strength_20": 4.505,
-      "vol_ratio": 0.797
-     },
-     {
-      "date": "2016-05-17",
-      "vol_pct60": 0.508,
-      "ret_20_pct": 3.165,
-      "rel_strength_20": 7.575,
-      "vol_ratio": 0.841
-     },
-     {
-      "date": "2016-05-18",
-      "vol_pct60": 0.733,
-      "ret_20_pct": 0.725,
-      "rel_strength_20": 5.985,
-      "vol_ratio": 0.883
-     },
-     {
-      "date": "2016-05-19",
-      "vol_pct60": 0.542,
-      "ret_20_pct": 0.155,
-      "rel_strength_20": 3.885,
+      "vol_pct60": 0.367,
+      "ret_20_pct": 2.75,
+      "rel_strength_20": 8.16,
       "vol_ratio": 0.861
      },
      {
+      "date": "2016-05-17",
+      "vol_pct60": 0.4,
+      "ret_20_pct": 3.72,
+      "rel_strength_20": 8.13,
+      "vol_ratio": 0.86
+     },
+     {
+      "date": "2016-05-18",
+      "vol_pct60": 0.483,
+      "ret_20_pct": 0.93,
+      "rel_strength_20": 6.19,
+      "vol_ratio": 0.903
+     },
+     {
+      "date": "2016-05-19",
+      "vol_pct60": 0.217,
+      "ret_20_pct": 3.07,
+      "rel_strength_20": 6.8,
+      "vol_ratio": 0.875
+     },
+     {
       "date": "2016-05-20",
-      "vol_pct60": 0.558,
-      "ret_20_pct": 0.86,
-      "rel_strength_20": 3.47,
-      "vol_ratio": 0.879
+      "vol_pct60": 0.367,
+      "ret_20_pct": 4.53,
+      "rel_strength_20": 7.14,
+      "vol_ratio": 0.912
      },
      {
       "date": "2016-05-23",
-      "vol_pct60": 0.409,
-      "ret_20_pct": -0.91,
-      "rel_strength_20": 1.85,
-      "vol_ratio": 0.84
+      "vol_pct60": 0.367,
+      "ret_20_pct": 2.75,
+      "rel_strength_20": 5.51,
+      "vol_ratio": 0.869
      },
      {
       "date": "2016-05-24",
-      "vol_pct60": 0.317,
-      "ret_20_pct": -0.775,
-      "rel_strength_20": 2.335,
-      "vol_ratio": 0.859
+      "vol_pct60": 0.067,
+      "ret_20_pct": 3.03,
+      "rel_strength_20": 6.14,
+      "vol_ratio": 0.868
      },
      {
       "date": "2016-05-25",
-      "vol_pct60": 0.317,
-      "ret_20_pct": -1.8,
-      "rel_strength_20": 1.97,
-      "vol_ratio": 0.849
+      "vol_pct60": 0.25,
+      "ret_20_pct": 3.28,
+      "rel_strength_20": 7.05,
+      "vol_ratio": 0.869
      },
      {
       "date": "2016-05-26",
-      "vol_pct60": 0.258,
-      "ret_20_pct": -1.725,
-      "rel_strength_20": 1.485,
-      "vol_ratio": 0.855
+      "vol_pct60": 0.233,
+      "ret_20_pct": 3.2,
+      "rel_strength_20": 6.41,
+      "vol_ratio": 0.873
      },
      {
       "date": "2016-05-27",
-      "vol_pct60": 0.233,
-      "ret_20_pct": -1.03,
-      "rel_strength_20": 2.07,
+      "vol_pct60": 0.133,
+      "ret_20_pct": 2.43,
+      "rel_strength_20": 5.53,
       "vol_ratio": 0.887
      },
      {
       "date": "2016-05-30",
-      "vol_pct60": 0.642,
-      "ret_20_pct": -0.545,
-      "rel_strength_20": 2.305,
-      "vol_ratio": 0.889
+      "vol_pct60": 0.617,
+      "ret_20_pct": 1.41,
+      "rel_strength_20": 4.26,
+      "vol_ratio": 0.906
      },
      {
       "date": "2016-05-31",
-      "vol_pct60": 0.875,
-      "ret_20_pct": -0.39,
-      "rel_strength_20": 0.98,
-      "vol_ratio": 0.901
+      "vol_pct60": 0.833,
+      "ret_20_pct": -2.5,
+      "rel_strength_20": -1.13,
+      "vol_ratio": 0.898
      }
     ],
     "bias_note": "★ 本层标的为**事后选定**（记录自己声明为回顾性识别）——**不得与当前并列**：那会把「已经涨过」混进输入，使任何形态比较系统性偏高。"
@@ -3286,7 +3499,9 @@
      {
       "security_id": "WUHANFANGU",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "no_series",
+      "why": "行情库无该证券的行情序列（可能是未登记证券，或本抓取流程不覆盖该代码类型，如申万指数）"
      },
      {
       "security_id": "ZTE",
@@ -5792,7 +6007,7 @@
    "start": "2018-12-21",
    "peak": "2019-03-12",
    "end": "2019-08-09",
-   "status": "PARTIAL",
+   "status": "OK",
    "market_layer": {
     "series_id": "SH000300",
     "checkpoints": [
@@ -6273,8 +6488,221 @@
      },
      {
       "security_id": "PERFECTWORLD",
-      "status": "NO_DATA",
-      "rows_before_start": 0
+      "status": "OK",
+      "lookback_from": "2018-11-23",
+      "lookback_to": "2018-12-20",
+      "series": [
+       {
+        "date": "2018-11-23",
+        "close": 24.15,
+        "vol_pct60": 0.7,
+        "ret_20_pct": 3.87,
+        "vol_ratio": 0.902,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": 4.82
+       },
+       {
+        "date": "2018-11-26",
+        "close": 24.43,
+        "vol_pct60": 0.3,
+        "ret_20_pct": 1.58,
+        "vol_ratio": 0.875,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -0.51
+       },
+       {
+        "date": "2018-11-27",
+        "close": 24.92,
+        "vol_pct60": 0.433,
+        "ret_20_pct": 4.18,
+        "vol_ratio": 0.915,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 3.31
+       },
+       {
+        "date": "2018-11-28",
+        "close": 24.81,
+        "vol_pct60": 0.167,
+        "ret_20_pct": 1.6,
+        "vol_ratio": 0.938,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 0.8
+       },
+       {
+        "date": "2018-11-29",
+        "close": 24.12,
+        "vol_pct60": 0.417,
+        "ret_20_pct": -6.94,
+        "vol_ratio": 0.837,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -5.7
+       },
+       {
+        "date": "2018-11-30",
+        "close": 24.12,
+        "vol_pct60": 0.183,
+        "ret_20_pct": -11.97,
+        "vol_ratio": 0.705,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -8.4
+       },
+       {
+        "date": "2018-12-03",
+        "close": 24.88,
+        "vol_pct60": 0.7,
+        "ret_20_pct": -6.33,
+        "vol_ratio": 0.752,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -6.27
+       },
+       {
+        "date": "2018-12-04",
+        "close": 25.12,
+        "vol_pct60": 0.617,
+        "ret_20_pct": -1.61,
+        "vol_ratio": 0.704,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -2.37
+       },
+       {
+        "date": "2018-12-05",
+        "close": 25.7,
+        "vol_pct60": 0.967,
+        "ret_20_pct": 1.1,
+        "vol_ratio": 0.726,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 0.17
+       },
+       {
+        "date": "2018-12-06",
+        "close": 25.8,
+        "vol_pct60": 0.85,
+        "ret_20_pct": 1.57,
+        "vol_ratio": 0.737,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 2.54
+       },
+       {
+        "date": "2018-12-07",
+        "close": 25.83,
+        "vol_pct60": 0.7,
+        "ret_20_pct": 1.65,
+        "vol_ratio": 0.747,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 1.2
+       },
+       {
+        "date": "2018-12-10",
+        "close": 27.1,
+        "vol_pct60": 1.0,
+        "ret_20_pct": 2.65,
+        "vol_ratio": 0.766,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 4.53
+       },
+       {
+        "date": "2018-12-11",
+        "close": 27.29,
+        "vol_pct60": 0.967,
+        "ret_20_pct": 3.06,
+        "vol_ratio": 0.781,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 5.46
+       },
+       {
+        "date": "2018-12-12",
+        "close": 27.08,
+        "vol_pct60": 0.633,
+        "ret_20_pct": 6.7,
+        "vol_ratio": 0.702,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 7.77
+       },
+       {
+        "date": "2018-12-13",
+        "close": 26.94,
+        "vol_pct60": 0.95,
+        "ret_20_pct": 3.74,
+        "vol_ratio": 0.685,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 4.44
+       },
+       {
+        "date": "2018-12-14",
+        "close": 26.91,
+        "vol_pct60": 0.683,
+        "ret_20_pct": 5.12,
+        "vol_ratio": 0.673,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 7.94
+       },
+       {
+        "date": "2018-12-17",
+        "close": 26.52,
+        "vol_pct60": 0.417,
+        "ret_20_pct": 5.36,
+        "vol_ratio": 0.673,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 9.41
+       },
+       {
+        "date": "2018-12-18",
+        "close": 26.29,
+        "vol_pct60": 0.267,
+        "ret_20_pct": 4.2,
+        "vol_ratio": 0.683,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 7.0
+       },
+       {
+        "date": "2018-12-19",
+        "close": 25.8,
+        "vol_pct60": 0.6,
+        "ret_20_pct": 2.71,
+        "vol_ratio": 0.704,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 6.91
+       },
+       {
+        "date": "2018-12-20",
+        "close": 26.38,
+        "vol_pct60": 0.617,
+        "ret_20_pct": 5.1,
+        "vol_ratio": 0.72,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 9.67
+       }
+      ],
+      "at_last_day": {
+       "date": "2018-12-20",
+       "close": 26.38,
+       "vol_pct60": 0.617,
+       "ret_20_pct": 5.1,
+       "vol_ratio": 0.72,
+       "above_ma20": true,
+       "above_ma60": true,
+       "rel_strength_20": 9.67
+      }
      },
      {
       "security_id": "SANQI",
@@ -6498,143 +6926,143 @@
     "median_series": [
      {
       "date": "2018-11-23",
-      "vol_pct60": 0.692,
-      "ret_20_pct": 7.565,
-      "rel_strength_20": 8.515,
-      "vol_ratio": 0.897
+      "vol_pct60": 0.7,
+      "ret_20_pct": 3.87,
+      "rel_strength_20": 4.82,
+      "vol_ratio": 0.902
      },
      {
       "date": "2018-11-26",
-      "vol_pct60": 0.483,
-      "ret_20_pct": 5.545,
-      "rel_strength_20": 3.455,
-      "vol_ratio": 0.904
+      "vol_pct60": 0.367,
+      "ret_20_pct": 4.37,
+      "rel_strength_20": 2.28,
+      "vol_ratio": 0.875
      },
      {
       "date": "2018-11-27",
-      "vol_pct60": 0.392,
-      "ret_20_pct": 8.895,
-      "rel_strength_20": 8.025,
-      "vol_ratio": 0.921
+      "vol_pct60": 0.433,
+      "ret_20_pct": 7.57,
+      "rel_strength_20": 6.7,
+      "vol_ratio": 0.915
      },
      {
       "date": "2018-11-28",
-      "vol_pct60": 0.317,
-      "ret_20_pct": 6.445,
-      "rel_strength_20": 5.645,
-      "vol_ratio": 0.923
+      "vol_pct60": 0.3,
+      "ret_20_pct": 5.0,
+      "rel_strength_20": 4.2,
+      "vol_ratio": 0.938
      },
      {
       "date": "2018-11-29",
-      "vol_pct60": 0.525,
-      "ret_20_pct": 1.01,
-      "rel_strength_20": 2.25,
-      "vol_ratio": 0.887
+      "vol_pct60": 0.467,
+      "ret_20_pct": -0.42,
+      "rel_strength_20": 0.82,
+      "vol_ratio": 0.837
      },
      {
       "date": "2018-11-30",
-      "vol_pct60": 0.25,
-      "ret_20_pct": -1.625,
-      "rel_strength_20": 1.945,
-      "vol_ratio": 0.835
+      "vol_pct60": 0.183,
+      "ret_20_pct": -6.42,
+      "rel_strength_20": -2.85,
+      "vol_ratio": 0.741
      },
      {
       "date": "2018-12-03",
-      "vol_pct60": 0.575,
-      "ret_20_pct": -0.5,
-      "rel_strength_20": -0.44,
-      "vol_ratio": 0.873
+      "vol_pct60": 0.7,
+      "ret_20_pct": -4.21,
+      "rel_strength_20": -4.15,
+      "vol_ratio": 0.752
      },
      {
       "date": "2018-12-04",
-      "vol_pct60": 0.366,
-      "ret_20_pct": -2.73,
-      "rel_strength_20": -3.49,
-      "vol_ratio": 0.84
+      "vol_pct60": 0.617,
+      "ret_20_pct": -1.86,
+      "rel_strength_20": -2.62,
+      "vol_ratio": 0.704
      },
      {
       "date": "2018-12-05",
-      "vol_pct60": 0.459,
-      "ret_20_pct": -0.51,
-      "rel_strength_20": -1.44,
-      "vol_ratio": 0.828
+      "vol_pct60": 0.667,
+      "ret_20_pct": 1.1,
+      "rel_strength_20": 0.17,
+      "vol_ratio": 0.726
      },
      {
       "date": "2018-12-06",
-      "vol_pct60": 0.4,
-      "ret_20_pct": -2.015,
-      "rel_strength_20": -1.045,
-      "vol_ratio": 0.84
+      "vol_pct60": 0.717,
+      "ret_20_pct": 0.47,
+      "rel_strength_20": 1.44,
+      "vol_ratio": 0.737
      },
      {
       "date": "2018-12-07",
-      "vol_pct60": 0.209,
-      "ret_20_pct": -4.66,
-      "rel_strength_20": -5.11,
-      "vol_ratio": 0.749
+      "vol_pct60": 0.4,
+      "ret_20_pct": -3.34,
+      "rel_strength_20": -3.79,
+      "vol_ratio": 0.747
      },
      {
       "date": "2018-12-10",
-      "vol_pct60": 0.516,
-      "ret_20_pct": -3.6,
-      "rel_strength_20": -1.72,
+      "vol_pct60": 1.0,
+      "ret_20_pct": -0.63,
+      "rel_strength_20": 1.25,
       "vol_ratio": 0.766
      },
      {
       "date": "2018-12-11",
-      "vol_pct60": 0.484,
-      "ret_20_pct": -3.82,
-      "rel_strength_20": -1.42,
-      "vol_ratio": 0.772
+      "vol_pct60": 0.917,
+      "ret_20_pct": -1.56,
+      "rel_strength_20": 0.84,
+      "vol_ratio": 0.781
      },
      {
       "date": "2018-12-12",
-      "vol_pct60": 0.334,
-      "ret_20_pct": -3.745,
-      "rel_strength_20": -2.675,
-      "vol_ratio": 0.77
+      "vol_pct60": 0.6,
+      "ret_20_pct": -1.92,
+      "rel_strength_20": -0.85,
+      "vol_ratio": 0.702
      },
      {
       "date": "2018-12-13",
-      "vol_pct60": 0.3,
-      "ret_20_pct": -5.495,
-      "rel_strength_20": -4.795,
-      "vol_ratio": 0.762
+      "vol_pct60": 0.5,
+      "ret_20_pct": -5.36,
+      "rel_strength_20": -4.66,
+      "vol_ratio": 0.685
      },
      {
       "date": "2018-12-14",
-      "vol_pct60": 0.308,
-      "ret_20_pct": -9.285,
-      "rel_strength_20": -6.465,
-      "vol_ratio": 0.747
+      "vol_pct60": 0.517,
+      "ret_20_pct": -8.81,
+      "rel_strength_20": -5.99,
+      "vol_ratio": 0.673
      },
      {
       "date": "2018-12-17",
-      "vol_pct60": 0.534,
-      "ret_20_pct": -8.42,
-      "rel_strength_20": -4.37,
-      "vol_ratio": 0.768
+      "vol_pct60": 0.417,
+      "ret_20_pct": -7.5,
+      "rel_strength_20": -3.45,
+      "vol_ratio": 0.673
      },
      {
       "date": "2018-12-18",
-      "vol_pct60": 0.358,
-      "ret_20_pct": -2.31,
-      "rel_strength_20": 0.49,
-      "vol_ratio": 0.647
+      "vol_pct60": 0.267,
+      "ret_20_pct": -1.28,
+      "rel_strength_20": 1.52,
+      "vol_ratio": 0.683
      },
      {
       "date": "2018-12-19",
-      "vol_pct60": 0.492,
-      "ret_20_pct": -6.175,
-      "rel_strength_20": -1.975,
-      "vol_ratio": 0.656
+      "vol_pct60": 0.6,
+      "ret_20_pct": -3.52,
+      "rel_strength_20": 0.68,
+      "vol_ratio": 0.704
      },
      {
       "date": "2018-12-20",
-      "vol_pct60": 0.358,
-      "ret_20_pct": -6.72,
-      "rel_strength_20": -2.15,
-      "vol_ratio": 0.68
+      "vol_pct60": 0.483,
+      "ret_20_pct": -3.12,
+      "rel_strength_20": 1.45,
+      "vol_ratio": 0.72
      }
     ],
     "bias_note": "★ 本层标的为**事后选定**（记录自己声明为回顾性识别）——**不得与当前并列**：那会把「已经涨过」混进输入，使任何形态比较系统性偏高。"
@@ -9480,12 +9908,16 @@
      {
       "security_id": "AIMEIKE",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2020-09-28 晚于或等于 Campaign 起始日 2019-11-06 → 启动前无行情"
      },
      {
       "security_id": "BLOOMAGE",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2019-11-06 晚于或等于 Campaign 起始日 2019-11-06 → 启动前无行情"
      },
      {
       "security_id": "LANCY",
@@ -9857,7 +10289,7 @@
    "start": "2019-03-01",
    "peak": "2021-02-18",
    "end": "2021-12-31",
-   "status": "PARTIAL",
+   "status": "OK",
    "market_layer": {
     "series_id": "SH000300",
     "checkpoints": [
@@ -10992,8 +11424,221 @@
      },
      {
       "security_id": "WULIANGYE",
-      "status": "NO_DATA",
-      "rows_before_start": 0
+      "status": "OK",
+      "lookback_from": "2019-01-25",
+      "lookback_to": "2019-02-28",
+      "series": [
+       {
+        "date": "2019-01-25",
+        "close": 55.25,
+        "vol_pct60": 0.667,
+        "ret_20_pct": 9.6,
+        "vol_ratio": 1.006,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 3.52
+       },
+       {
+        "date": "2019-01-28",
+        "close": 57.47,
+        "vol_pct60": 0.983,
+        "ret_20_pct": 14.6,
+        "vol_ratio": 1.047,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 8.14
+       },
+       {
+        "date": "2019-01-29",
+        "close": 58.58,
+        "vol_pct60": 0.817,
+        "ret_20_pct": 15.13,
+        "vol_ratio": 1.169,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 9.04
+       },
+       {
+        "date": "2019-01-30",
+        "close": 57.28,
+        "vol_pct60": 0.8,
+        "ret_20_pct": 14.7,
+        "vol_ratio": 1.203,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 8.0
+       },
+       {
+        "date": "2019-01-31",
+        "close": 60.3,
+        "vol_pct60": 0.967,
+        "ret_20_pct": 23.16,
+        "vol_ratio": 1.206,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 15.17
+       },
+       {
+        "date": "2019-02-01",
+        "close": 61.18,
+        "vol_pct60": 0.883,
+        "ret_20_pct": 23.5,
+        "vol_ratio": 1.206,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 16.53
+       },
+       {
+        "date": "2019-02-11",
+        "close": 64.7,
+        "vol_pct60": 0.9,
+        "ret_20_pct": 31.21,
+        "vol_ratio": 1.22,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 22.95
+       },
+       {
+        "date": "2019-02-12",
+        "close": 64.75,
+        "vol_pct60": 0.9,
+        "ret_20_pct": 32.09,
+        "vol_ratio": 1.217,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 22.82
+       },
+       {
+        "date": "2019-02-13",
+        "close": 66.07,
+        "vol_pct60": 0.833,
+        "ret_20_pct": 32.06,
+        "vol_ratio": 1.212,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 21.71
+       },
+       {
+        "date": "2019-02-14",
+        "close": 67.96,
+        "vol_pct60": 0.9,
+        "ret_20_pct": 36.3,
+        "vol_ratio": 1.201,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 25.58
+       },
+       {
+        "date": "2019-02-15",
+        "close": 66.4,
+        "vol_pct60": 0.733,
+        "ret_20_pct": 30.99,
+        "vol_ratio": 1.261,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 23.11
+       },
+       {
+        "date": "2019-02-18",
+        "close": 69.87,
+        "vol_pct60": 0.883,
+        "ret_20_pct": 40.9,
+        "vol_ratio": 1.211,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 28.58
+       },
+       {
+        "date": "2019-02-19",
+        "close": 69.67,
+        "vol_pct60": 0.783,
+        "ret_20_pct": 31.53,
+        "vol_ratio": 1.114,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 21.57
+       },
+       {
+        "date": "2019-02-20",
+        "close": 69.01,
+        "vol_pct60": 0.667,
+        "ret_20_pct": 32.2,
+        "vol_ratio": 1.102,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 21.87
+       },
+       {
+        "date": "2019-02-21",
+        "close": 68.05,
+        "vol_pct60": 0.633,
+        "ret_20_pct": 31.07,
+        "vol_ratio": 1.126,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 20.42
+       },
+       {
+        "date": "2019-02-22",
+        "close": 68.5,
+        "vol_pct60": 0.517,
+        "ret_20_pct": 27.13,
+        "vol_ratio": 1.101,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 16.02
+       },
+       {
+        "date": "2019-02-25",
+        "close": 71.26,
+        "vol_pct60": 1.0,
+        "ret_20_pct": 27.25,
+        "vol_ratio": 1.083,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 10.18
+       },
+       {
+        "date": "2019-02-26",
+        "close": 68.92,
+        "vol_pct60": 0.883,
+        "ret_20_pct": 24.83,
+        "vol_ratio": 1.127,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 7.61
+       },
+       {
+        "date": "2019-02-27",
+        "close": 70.06,
+        "vol_pct60": 0.9,
+        "ret_20_pct": 27.22,
+        "vol_ratio": 1.117,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 10.11
+       },
+       {
+        "date": "2019-02-28",
+        "close": 71.5,
+        "vol_pct60": 0.767,
+        "ret_20_pct": 29.53,
+        "vol_ratio": 1.114,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 13.37
+       }
+      ],
+      "at_last_day": {
+       "date": "2019-02-28",
+       "close": 71.5,
+       "vol_pct60": 0.767,
+       "ret_20_pct": 29.53,
+       "vol_ratio": 1.114,
+       "above_ma20": true,
+       "above_ma60": true,
+       "rel_strength_20": 13.37
+      }
      },
      {
       "security_id": "YILI",
@@ -11217,143 +11862,143 @@
     "median_series": [
      {
       "date": "2019-01-25",
-      "vol_pct60": 0.4,
-      "ret_20_pct": 8.97,
-      "rel_strength_20": 2.89,
-      "vol_ratio": 1.053
+      "vol_pct60": 0.534,
+      "ret_20_pct": 9.285,
+      "rel_strength_20": 3.205,
+      "vol_ratio": 1.03
      },
      {
       "date": "2019-01-28",
-      "vol_pct60": 0.65,
-      "ret_20_pct": 9.05,
-      "rel_strength_20": 2.59,
-      "vol_ratio": 0.979
-     },
-     {
-      "date": "2019-01-29",
-      "vol_pct60": 0.483,
-      "ret_20_pct": 6.69,
-      "rel_strength_20": 0.6,
+      "vol_pct60": 0.734,
+      "ret_20_pct": 9.39,
+      "rel_strength_20": 2.93,
       "vol_ratio": 1.013
      },
      {
+      "date": "2019-01-29",
+      "vol_pct60": 0.617,
+      "ret_20_pct": 10.38,
+      "rel_strength_20": 4.29,
+      "vol_ratio": 1.072
+     },
+     {
       "date": "2019-01-30",
-      "vol_pct60": 0.317,
-      "ret_20_pct": 7.62,
-      "rel_strength_20": 0.92,
-      "vol_ratio": 1.008
+      "vol_pct60": 0.525,
+      "ret_20_pct": 10.24,
+      "rel_strength_20": 3.54,
+      "vol_ratio": 1.077
      },
      {
       "date": "2019-01-31",
-      "vol_pct60": 0.75,
-      "ret_20_pct": 11.91,
-      "rel_strength_20": 3.92,
-      "vol_ratio": 0.972
+      "vol_pct60": 0.758,
+      "ret_20_pct": 14.395,
+      "rel_strength_20": 6.405,
+      "vol_ratio": 1.02
      },
      {
       "date": "2019-02-01",
-      "vol_pct60": 0.6,
-      "ret_20_pct": 12.94,
-      "rel_strength_20": 5.97,
-      "vol_ratio": 0.961
+      "vol_pct60": 0.609,
+      "ret_20_pct": 14.0,
+      "rel_strength_20": 7.03,
+      "vol_ratio": 1.012
      },
      {
       "date": "2019-02-11",
       "vol_pct60": 0.9,
-      "ret_20_pct": 19.79,
-      "rel_strength_20": 11.53,
-      "vol_ratio": 1.02
+      "ret_20_pct": 20.34,
+      "rel_strength_20": 12.08,
+      "vol_ratio": 1.075
      },
      {
       "date": "2019-02-12",
-      "vol_pct60": 0.8,
-      "ret_20_pct": 18.71,
-      "rel_strength_20": 9.44,
-      "vol_ratio": 1.041
+      "vol_pct60": 0.834,
+      "ret_20_pct": 20.59,
+      "rel_strength_20": 11.32,
+      "vol_ratio": 1.088
      },
      {
       "date": "2019-02-13",
-      "vol_pct60": 0.633,
-      "ret_20_pct": 19.34,
-      "rel_strength_20": 8.99,
-      "vol_ratio": 1.052
+      "vol_pct60": 0.733,
+      "ret_20_pct": 20.08,
+      "rel_strength_20": 9.73,
+      "vol_ratio": 1.087
      },
      {
       "date": "2019-02-14",
-      "vol_pct60": 0.783,
-      "ret_20_pct": 19.13,
-      "rel_strength_20": 8.41,
-      "vol_ratio": 1.071
+      "vol_pct60": 0.808,
+      "ret_20_pct": 22.515,
+      "rel_strength_20": 11.795,
+      "vol_ratio": 1.089
      },
      {
       "date": "2019-02-15",
-      "vol_pct60": 0.5,
-      "ret_20_pct": 13.98,
-      "rel_strength_20": 6.1,
-      "vol_ratio": 1.098
+      "vol_pct60": 0.592,
+      "ret_20_pct": 17.675,
+      "rel_strength_20": 9.795,
+      "vol_ratio": 1.113
      },
      {
       "date": "2019-02-18",
       "vol_pct60": 0.817,
-      "ret_20_pct": 18.48,
-      "rel_strength_20": 6.16,
-      "vol_ratio": 1.061
+      "ret_20_pct": 24.07,
+      "rel_strength_20": 11.75,
+      "vol_ratio": 1.082
      },
      {
       "date": "2019-02-19",
-      "vol_pct60": 0.817,
-      "ret_20_pct": 10.72,
-      "rel_strength_20": 0.76,
-      "vol_ratio": 0.88
+      "vol_pct60": 0.8,
+      "ret_20_pct": 15.15,
+      "rel_strength_20": 5.19,
+      "vol_ratio": 0.899
      },
      {
       "date": "2019-02-20",
-      "vol_pct60": 0.75,
-      "ret_20_pct": 9.21,
-      "rel_strength_20": -1.12,
-      "vol_ratio": 0.873
+      "vol_pct60": 0.709,
+      "ret_20_pct": 15.735,
+      "rel_strength_20": 5.405,
+      "vol_ratio": 0.883
      },
      {
       "date": "2019-02-21",
-      "vol_pct60": 0.5,
-      "ret_20_pct": 9.25,
-      "rel_strength_20": -1.4,
-      "vol_ratio": 0.886
+      "vol_pct60": 0.567,
+      "ret_20_pct": 15.24,
+      "rel_strength_20": 4.59,
+      "vol_ratio": 0.901
      },
      {
       "date": "2019-02-22",
-      "vol_pct60": 0.633,
-      "ret_20_pct": 6.2,
-      "rel_strength_20": -4.91,
-      "vol_ratio": 0.864
+      "vol_pct60": 0.575,
+      "ret_20_pct": 12.46,
+      "rel_strength_20": 1.35,
+      "vol_ratio": 0.87
      },
      {
       "date": "2019-02-25",
-      "vol_pct60": 0.983,
-      "ret_20_pct": 8.06,
-      "rel_strength_20": -9.01,
-      "vol_ratio": 0.883
+      "vol_pct60": 0.992,
+      "ret_20_pct": 15.475,
+      "rel_strength_20": -1.595,
+      "vol_ratio": 0.913
      },
      {
       "date": "2019-02-26",
       "vol_pct60": 0.9,
-      "ret_20_pct": 8.4,
-      "rel_strength_20": -8.82,
-      "vol_ratio": 0.869
+      "ret_20_pct": 14.665,
+      "rel_strength_20": -2.555,
+      "vol_ratio": 0.921
      },
      {
       "date": "2019-02-27",
       "vol_pct60": 0.95,
-      "ret_20_pct": 11.27,
-      "rel_strength_20": -5.84,
-      "vol_ratio": 0.864
+      "ret_20_pct": 16.305,
+      "rel_strength_20": -0.805,
+      "vol_ratio": 0.917
      },
      {
       "date": "2019-02-28",
-      "vol_pct60": 0.867,
-      "ret_20_pct": 12.27,
-      "rel_strength_20": -3.89,
-      "vol_ratio": 0.876
+      "vol_pct60": 0.825,
+      "ret_20_pct": 16.545,
+      "rel_strength_20": 0.385,
+      "vol_ratio": 0.926
      }
     ],
     "bias_note": "★ 本层标的为**事后选定**（记录自己声明为回顾性识别）——**不得与当前并列**：那会把「已经涨过」混进输入，使任何形态比较系统性偏高。"
@@ -16333,7 +16978,9 @@
      {
       "security_id": "MAXSCEND",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2019-06-18 晚于或等于 Campaign 起始日 2019-05-16 → 启动前无行情"
      },
      {
       "security_id": "NAURA",
@@ -16774,7 +17421,9 @@
      {
       "security_id": "SMIC",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2020-07-16 晚于或等于 Campaign 起始日 2019-05-16 → 启动前无行情"
      },
      {
       "security_id": "WILLSEMI",
@@ -17410,7 +18059,9 @@
      {
       "security_id": "BETTENI",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2021-03-25 晚于或等于 Campaign 起始日 2020-06-29 → 启动前无行情"
      },
      {
       "security_id": "PROYA",
@@ -21247,12 +21898,16 @@
      {
       "security_id": "KINCO",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2020-11-12 晚于或等于 Campaign 起始日 2020-04-01 → 启动前无行情"
      },
      {
       "security_id": "LEADERDRIVE",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2020-08-28 晚于或等于 Campaign 起始日 2020-04-01 → 启动前无行情"
      },
      {
       "security_id": "TOPSTAR",
@@ -22760,7 +23415,9 @@
      {
       "security_id": "SWMIL",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "no_series",
+      "why": "行情库无该证券的行情序列（可能是未登记证券，或本抓取流程不覆盖该代码类型，如申万指数）"
      },
      {
       "security_id": "XIFEI",
@@ -32609,17 +33266,23 @@
      {
       "security_id": "NSIG",
       "status": "NO_DATA",
-      "rows_before_start": 58
+      "rows_before_start": 58,
+      "reason": "insufficient_pre_history",
+      "why": "序列自 2020-04-20 起，但 Campaign 起始前只有 58 个交易日（< 60）→ 观察窗口不足"
      },
      {
       "security_id": "PIOTECH",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2022-04-20 晚于或等于 Campaign 起始日 2020-07-16 → 启动前无行情"
      },
      {
       "security_id": "SMIC",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2020-07-16 晚于或等于 Campaign 起始日 2020-07-16 → 启动前无行情"
      }
     ],
     "median_series": [
@@ -33840,7 +34503,7 @@
    "start": "2021-09-06",
    "peak": "2022-01-05",
    "end": "2022-01-28",
-   "status": "PARTIAL",
+   "status": "OK",
    "market_layer": {
     "series_id": "SH000300",
     "checkpoints": [
@@ -34099,7 +34762,371 @@
     },
     "note": "基准指数**不是选出来的** → 本层**可与当前并列**"
    },
-   "security_layer": null
+   "security_layer": {
+    "per_security": [
+     {
+      "security_id": "ZHONGQINGBAO",
+      "status": "OK",
+      "lookback_from": "2021-08-09",
+      "lookback_to": "2021-09-03",
+      "series": [
+       {
+        "date": "2021-08-09",
+        "close": 8.22,
+        "vol_pct60": 0.333,
+        "ret_20_pct": -10.55,
+        "vol_ratio": 1.418,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -7.68
+       },
+       {
+        "date": "2021-08-10",
+        "close": 8.36,
+        "vol_pct60": 0.417,
+        "ret_20_pct": -24.21,
+        "vol_ratio": 0.93,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -22.29
+       },
+       {
+        "date": "2021-08-11",
+        "close": 8.36,
+        "vol_pct60": 0.283,
+        "ret_20_pct": -17.31,
+        "vol_ratio": 0.828,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -15.98
+       },
+       {
+        "date": "2021-08-12",
+        "close": 8.29,
+        "vol_pct60": 0.233,
+        "ret_20_pct": -17.43,
+        "vol_ratio": 0.828,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -13.97
+       },
+       {
+        "date": "2021-08-13",
+        "close": 8.16,
+        "vol_pct60": 0.2,
+        "ret_20_pct": -19.92,
+        "vol_ratio": 0.815,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -17.0
+       },
+       {
+        "date": "2021-08-16",
+        "close": 8.25,
+        "vol_pct60": 0.1,
+        "ret_20_pct": -22.02,
+        "vol_ratio": 0.775,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -18.65
+       },
+       {
+        "date": "2021-08-17",
+        "close": 7.86,
+        "vol_pct60": 0.333,
+        "ret_20_pct": -22.56,
+        "vol_ratio": 0.781,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -17.24
+       },
+       {
+        "date": "2021-08-18",
+        "close": 8.04,
+        "vol_pct60": 0.283,
+        "ret_20_pct": -21.79,
+        "vol_ratio": 0.792,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -16.93
+       },
+       {
+        "date": "2021-08-19",
+        "close": 8.03,
+        "vol_pct60": 0.067,
+        "ret_20_pct": -23.6,
+        "vol_ratio": 0.77,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -17.98
+       },
+       {
+        "date": "2021-08-20",
+        "close": 7.9,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -20.84,
+        "vol_ratio": 0.738,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -14.55
+       },
+       {
+        "date": "2021-08-23",
+        "close": 8.18,
+        "vol_pct60": 0.2,
+        "ret_20_pct": -15.32,
+        "vol_ratio": 0.766,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -13.5
+       },
+       {
+        "date": "2021-08-24",
+        "close": 8.11,
+        "vol_pct60": 0.083,
+        "ret_20_pct": -9.59,
+        "vol_ratio": 0.665,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -12.48
+       },
+       {
+        "date": "2021-08-25",
+        "close": 8.34,
+        "vol_pct60": 0.55,
+        "ret_20_pct": -3.25,
+        "vol_ratio": 0.655,
+        "above_ma20": true,
+        "above_ma60": false,
+        "rel_strength_20": -6.14
+       },
+       {
+        "date": "2021-08-26",
+        "close": 8.21,
+        "vol_pct60": 0.183,
+        "ret_20_pct": -6.81,
+        "vol_ratio": 0.645,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -5.81
+       },
+       {
+        "date": "2021-08-27",
+        "close": 8.06,
+        "vol_pct60": 0.183,
+        "ret_20_pct": -10.54,
+        "vol_ratio": 0.631,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.87
+       },
+       {
+        "date": "2021-08-30",
+        "close": 8.36,
+        "vol_pct60": 0.433,
+        "ret_20_pct": -8.13,
+        "vol_ratio": 0.663,
+        "above_ma20": true,
+        "above_ma60": false,
+        "rel_strength_20": -5.69
+       },
+       {
+        "date": "2021-08-31",
+        "close": 7.98,
+        "vol_pct60": 0.517,
+        "ret_20_pct": -7.21,
+        "vol_ratio": 0.644,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -4.6
+       },
+       {
+        "date": "2021-09-01",
+        "close": 8.19,
+        "vol_pct60": 0.417,
+        "ret_20_pct": -5.32,
+        "vol_ratio": 0.661,
+        "above_ma20": true,
+        "above_ma60": false,
+        "rel_strength_20": -3.12
+       },
+       {
+        "date": "2021-09-02",
+        "close": 8.06,
+        "vol_pct60": 0.133,
+        "ret_20_pct": -1.71,
+        "vol_ratio": 0.599,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -0.11
+       },
+       {
+        "date": "2021-09-03",
+        "close": 8.08,
+        "vol_pct60": 0.183,
+        "ret_20_pct": 0.0,
+        "vol_ratio": 0.596,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": 1.6
+       }
+      ],
+      "at_last_day": {
+       "date": "2021-09-03",
+       "close": 8.08,
+       "vol_pct60": 0.183,
+       "ret_20_pct": 0.0,
+       "vol_ratio": 0.596,
+       "above_ma20": false,
+       "above_ma60": false,
+       "rel_strength_20": 1.6
+      }
+     }
+    ],
+    "median_series": [
+     {
+      "date": "2021-08-09",
+      "vol_pct60": 0.333,
+      "ret_20_pct": -10.55,
+      "rel_strength_20": -7.68,
+      "vol_ratio": 1.418
+     },
+     {
+      "date": "2021-08-10",
+      "vol_pct60": 0.417,
+      "ret_20_pct": -24.21,
+      "rel_strength_20": -22.29,
+      "vol_ratio": 0.93
+     },
+     {
+      "date": "2021-08-11",
+      "vol_pct60": 0.283,
+      "ret_20_pct": -17.31,
+      "rel_strength_20": -15.98,
+      "vol_ratio": 0.828
+     },
+     {
+      "date": "2021-08-12",
+      "vol_pct60": 0.233,
+      "ret_20_pct": -17.43,
+      "rel_strength_20": -13.97,
+      "vol_ratio": 0.828
+     },
+     {
+      "date": "2021-08-13",
+      "vol_pct60": 0.2,
+      "ret_20_pct": -19.92,
+      "rel_strength_20": -17.0,
+      "vol_ratio": 0.815
+     },
+     {
+      "date": "2021-08-16",
+      "vol_pct60": 0.1,
+      "ret_20_pct": -22.02,
+      "rel_strength_20": -18.65,
+      "vol_ratio": 0.775
+     },
+     {
+      "date": "2021-08-17",
+      "vol_pct60": 0.333,
+      "ret_20_pct": -22.56,
+      "rel_strength_20": -17.24,
+      "vol_ratio": 0.781
+     },
+     {
+      "date": "2021-08-18",
+      "vol_pct60": 0.283,
+      "ret_20_pct": -21.79,
+      "rel_strength_20": -16.93,
+      "vol_ratio": 0.792
+     },
+     {
+      "date": "2021-08-19",
+      "vol_pct60": 0.067,
+      "ret_20_pct": -23.6,
+      "rel_strength_20": -17.98,
+      "vol_ratio": 0.77
+     },
+     {
+      "date": "2021-08-20",
+      "vol_pct60": 0.017,
+      "ret_20_pct": -20.84,
+      "rel_strength_20": -14.55,
+      "vol_ratio": 0.738
+     },
+     {
+      "date": "2021-08-23",
+      "vol_pct60": 0.2,
+      "ret_20_pct": -15.32,
+      "rel_strength_20": -13.5,
+      "vol_ratio": 0.766
+     },
+     {
+      "date": "2021-08-24",
+      "vol_pct60": 0.083,
+      "ret_20_pct": -9.59,
+      "rel_strength_20": -12.48,
+      "vol_ratio": 0.665
+     },
+     {
+      "date": "2021-08-25",
+      "vol_pct60": 0.55,
+      "ret_20_pct": -3.25,
+      "rel_strength_20": -6.14,
+      "vol_ratio": 0.655
+     },
+     {
+      "date": "2021-08-26",
+      "vol_pct60": 0.183,
+      "ret_20_pct": -6.81,
+      "rel_strength_20": -5.81,
+      "vol_ratio": 0.645
+     },
+     {
+      "date": "2021-08-27",
+      "vol_pct60": 0.183,
+      "ret_20_pct": -10.54,
+      "rel_strength_20": -10.87,
+      "vol_ratio": 0.631
+     },
+     {
+      "date": "2021-08-30",
+      "vol_pct60": 0.433,
+      "ret_20_pct": -8.13,
+      "rel_strength_20": -5.69,
+      "vol_ratio": 0.663
+     },
+     {
+      "date": "2021-08-31",
+      "vol_pct60": 0.517,
+      "ret_20_pct": -7.21,
+      "rel_strength_20": -4.6,
+      "vol_ratio": 0.644
+     },
+     {
+      "date": "2021-09-01",
+      "vol_pct60": 0.417,
+      "ret_20_pct": -5.32,
+      "rel_strength_20": -3.12,
+      "vol_ratio": 0.661
+     },
+     {
+      "date": "2021-09-02",
+      "vol_pct60": 0.133,
+      "ret_20_pct": -1.71,
+      "rel_strength_20": -0.11,
+      "vol_ratio": 0.599
+     },
+     {
+      "date": "2021-09-03",
+      "vol_pct60": 0.183,
+      "ret_20_pct": 0.0,
+      "rel_strength_20": 1.6,
+      "vol_ratio": 0.596
+     }
+    ],
+    "bias_note": "★ 本层标的为**事后选定**（记录自己声明为回顾性识别）——**不得与当前并列**：那会把「已经涨过」混进输入，使任何形态比较系统性偏高。"
+   }
   },
   "C-2021-NEV": {
    "campaign_id": "C-2021-NEV",
@@ -44917,7 +45944,9 @@
      {
       "security_id": "HYGON",
       "status": "NO_DATA",
-      "rows_before_start": 0
+      "rows_before_start": 0,
+      "reason": "listed_after_campaign_start",
+      "why": "该证券首个交易日 2022-08-12 晚于或等于 Campaign 起始日 2022-01-04 → 启动前无行情"
      },
      {
       "security_id": "MAXSCEND",
@@ -57267,7 +58296,7 @@
    "start": "2023-01-03",
    "peak": "2023-05-29",
    "end": "2023-10-23",
-   "status": "PARTIAL",
+   "status": "OK",
    "market_layer": {
     "series_id": "SH000300",
     "checkpoints": [
@@ -57526,7 +58555,807 @@
     },
     "note": "基准指数**不是选出来的** → 本层**可与当前并列**"
    },
-   "security_layer": null
+   "security_layer": {
+    "per_security": [
+     {
+      "security_id": "HUADIAN",
+      "status": "OK",
+      "lookback_from": "2022-12-05",
+      "lookback_to": "2022-12-30",
+      "series": [
+       {
+        "date": "2022-12-05",
+        "close": 5.83,
+        "vol_pct60": 0.467,
+        "ret_20_pct": 10.21,
+        "vol_ratio": 0.632,
+        "above_ma20": true,
+        "above_ma60": false,
+        "rel_strength_20": 5.67
+       },
+       {
+        "date": "2022-12-06",
+        "close": 5.71,
+        "vol_pct60": 0.15,
+        "ret_20_pct": 7.53,
+        "vol_ratio": 0.654,
+        "above_ma20": true,
+        "above_ma60": false,
+        "rel_strength_20": 1.69
+       },
+       {
+        "date": "2022-12-07",
+        "close": 5.54,
+        "vol_pct60": 0.233,
+        "ret_20_pct": 4.53,
+        "vol_ratio": 0.704,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -2.04
+       },
+       {
+        "date": "2022-12-08",
+        "close": 5.48,
+        "vol_pct60": 0.083,
+        "ret_20_pct": 2.05,
+        "vol_ratio": 0.752,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -5.37
+       },
+       {
+        "date": "2022-12-09",
+        "close": 5.36,
+        "vol_pct60": 0.333,
+        "ret_20_pct": -0.56,
+        "vol_ratio": 0.767,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -6.1
+       },
+       {
+        "date": "2022-12-12",
+        "close": 5.23,
+        "vol_pct60": 0.317,
+        "ret_20_pct": -5.25,
+        "vol_ratio": 0.764,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -9.45
+       },
+       {
+        "date": "2022-12-13",
+        "close": 5.27,
+        "vol_pct60": 0.083,
+        "ret_20_pct": -5.22,
+        "vol_ratio": 0.775,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -7.28
+       },
+       {
+        "date": "2022-12-14",
+        "close": 5.19,
+        "vol_pct60": 0.267,
+        "ret_20_pct": -7.32,
+        "vol_ratio": 0.776,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.46
+       },
+       {
+        "date": "2022-12-15",
+        "close": 5.3,
+        "vol_pct60": 0.183,
+        "ret_20_pct": -3.28,
+        "vol_ratio": 0.785,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -6.77
+       },
+       {
+        "date": "2022-12-16",
+        "close": 5.41,
+        "vol_pct60": 0.567,
+        "ret_20_pct": -2.7,
+        "vol_ratio": 0.79,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -6.72
+       },
+       {
+        "date": "2022-12-19",
+        "close": 5.24,
+        "vol_pct60": 0.117,
+        "ret_20_pct": -7.91,
+        "vol_ratio": 0.798,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -11.2
+       },
+       {
+        "date": "2022-12-20",
+        "close": 5.26,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -6.9,
+        "vol_ratio": 0.801,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -8.48
+       },
+       {
+        "date": "2022-12-21",
+        "close": 5.18,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -9.44,
+        "vol_ratio": 0.815,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.95
+       },
+       {
+        "date": "2022-12-22",
+        "close": 5.08,
+        "vol_pct60": 0.033,
+        "ret_20_pct": -13.75,
+        "vol_ratio": 0.781,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -15.86
+       },
+       {
+        "date": "2022-12-23",
+        "close": 5.2,
+        "vol_pct60": 0.267,
+        "ret_20_pct": -12.61,
+        "vol_ratio": 0.803,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -14.0
+       },
+       {
+        "date": "2022-12-26",
+        "close": 5.37,
+        "vol_pct60": 0.283,
+        "ret_20_pct": -15.03,
+        "vol_ratio": 0.701,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -17.98
+       },
+       {
+        "date": "2022-12-27",
+        "close": 5.37,
+        "vol_pct60": 0.1,
+        "ret_20_pct": -9.6,
+        "vol_ratio": 0.591,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.62
+       },
+       {
+        "date": "2022-12-28",
+        "close": 5.74,
+        "vol_pct60": 0.867,
+        "ret_20_pct": -2.71,
+        "vol_ratio": 0.745,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": -3.18
+       },
+       {
+        "date": "2022-12-29",
+        "close": 5.75,
+        "vol_pct60": 0.333,
+        "ret_20_pct": -0.17,
+        "vol_ratio": 0.729,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 0.81
+       },
+       {
+        "date": "2022-12-30",
+        "close": 5.88,
+        "vol_pct60": 0.583,
+        "ret_20_pct": 2.62,
+        "vol_ratio": 0.74,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 2.6
+       }
+      ],
+      "at_last_day": {
+       "date": "2022-12-30",
+       "close": 5.88,
+       "vol_pct60": 0.583,
+       "ret_20_pct": 2.62,
+       "vol_ratio": 0.74,
+       "above_ma20": true,
+       "above_ma60": true,
+       "rel_strength_20": 2.6
+      }
+     },
+     {
+      "security_id": "JIANTONENERGY",
+      "status": "OK",
+      "lookback_from": "2022-12-05",
+      "lookback_to": "2022-12-30",
+      "series": [
+       {
+        "date": "2022-12-05",
+        "close": 5.91,
+        "vol_pct60": 0.65,
+        "ret_20_pct": 9.04,
+        "vol_ratio": 0.931,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 4.5
+       },
+       {
+        "date": "2022-12-06",
+        "close": 5.67,
+        "vol_pct60": 0.733,
+        "ret_20_pct": 5.98,
+        "vol_ratio": 0.955,
+        "above_ma20": true,
+        "above_ma60": true,
+        "rel_strength_20": 0.14
+       },
+       {
+        "date": "2022-12-07",
+        "close": 5.6,
+        "vol_pct60": 0.383,
+        "ret_20_pct": 6.46,
+        "vol_ratio": 0.955,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -0.11
+       },
+       {
+        "date": "2022-12-08",
+        "close": 5.52,
+        "vol_pct60": 0.367,
+        "ret_20_pct": 6.56,
+        "vol_ratio": 0.954,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -0.86
+       },
+       {
+        "date": "2022-12-09",
+        "close": 5.52,
+        "vol_pct60": 0.267,
+        "ret_20_pct": 6.15,
+        "vol_ratio": 0.954,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 0.61
+       },
+       {
+        "date": "2022-12-12",
+        "close": 5.38,
+        "vol_pct60": 0.367,
+        "ret_20_pct": 4.26,
+        "vol_ratio": 0.963,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 0.06
+       },
+       {
+        "date": "2022-12-13",
+        "close": 5.44,
+        "vol_pct60": 0.117,
+        "ret_20_pct": 1.87,
+        "vol_ratio": 0.946,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -0.19
+       },
+       {
+        "date": "2022-12-14",
+        "close": 5.4,
+        "vol_pct60": 0.1,
+        "ret_20_pct": -0.18,
+        "vol_ratio": 0.949,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -3.32
+       },
+       {
+        "date": "2022-12-15",
+        "close": 5.49,
+        "vol_pct60": 0.333,
+        "ret_20_pct": 3.2,
+        "vol_ratio": 0.959,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -0.29
+       },
+       {
+        "date": "2022-12-16",
+        "close": 5.37,
+        "vol_pct60": 0.317,
+        "ret_20_pct": 1.13,
+        "vol_ratio": 0.987,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -2.89
+       },
+       {
+        "date": "2022-12-19",
+        "close": 5.24,
+        "vol_pct60": 0.167,
+        "ret_20_pct": -2.06,
+        "vol_ratio": 0.993,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -5.35
+       },
+       {
+        "date": "2022-12-20",
+        "close": 5.33,
+        "vol_pct60": 0.15,
+        "ret_20_pct": 2.9,
+        "vol_ratio": 0.979,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": 1.32
+       },
+       {
+        "date": "2022-12-21",
+        "close": 5.21,
+        "vol_pct60": 0.067,
+        "ret_20_pct": -8.6,
+        "vol_ratio": 0.831,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.11
+       },
+       {
+        "date": "2022-12-22",
+        "close": 5.05,
+        "vol_pct60": 0.167,
+        "ret_20_pct": -19.46,
+        "vol_ratio": 0.511,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -21.57
+       },
+       {
+        "date": "2022-12-23",
+        "close": 5.06,
+        "vol_pct60": 0.033,
+        "ret_20_pct": -15.81,
+        "vol_ratio": 0.477,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -17.2
+       },
+       {
+        "date": "2022-12-26",
+        "close": 5.17,
+        "vol_pct60": 0.05,
+        "ret_20_pct": -13.11,
+        "vol_ratio": 0.516,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -16.06
+       },
+       {
+        "date": "2022-12-27",
+        "close": 5.16,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -13.13,
+        "vol_ratio": 0.516,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -14.15
+       },
+       {
+        "date": "2022-12-28",
+        "close": 5.26,
+        "vol_pct60": 0.433,
+        "ret_20_pct": -10.24,
+        "vol_ratio": 0.55,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.71
+       },
+       {
+        "date": "2022-12-29",
+        "close": 5.16,
+        "vol_pct60": 0.083,
+        "ret_20_pct": -12.1,
+        "vol_ratio": 0.556,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -11.12
+       },
+       {
+        "date": "2022-12-30",
+        "close": 5.25,
+        "vol_pct60": 0.083,
+        "ret_20_pct": -12.06,
+        "vol_ratio": 0.556,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -12.08
+       }
+      ],
+      "at_last_day": {
+       "date": "2022-12-30",
+       "close": 5.25,
+       "vol_pct60": 0.083,
+       "ret_20_pct": -12.06,
+       "vol_ratio": 0.556,
+       "above_ma20": false,
+       "above_ma60": false,
+       "rel_strength_20": -12.08
+      }
+     },
+     {
+      "security_id": "TIANFUENERGY",
+      "status": "OK",
+      "lookback_from": "2022-12-05",
+      "lookback_to": "2022-12-30",
+      "series": [
+       {
+        "date": "2022-12-05",
+        "close": 5.97,
+        "vol_pct60": 0.233,
+        "ret_20_pct": -1.32,
+        "vol_ratio": 0.629,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -5.86
+       },
+       {
+        "date": "2022-12-06",
+        "close": 5.84,
+        "vol_pct60": 0.3,
+        "ret_20_pct": -4.42,
+        "vol_ratio": 0.662,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -10.26
+       },
+       {
+        "date": "2022-12-07",
+        "close": 5.76,
+        "vol_pct60": 0.633,
+        "ret_20_pct": -6.49,
+        "vol_ratio": 0.666,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -13.06
+       },
+       {
+        "date": "2022-12-08",
+        "close": 5.58,
+        "vol_pct60": 0.65,
+        "ret_20_pct": -8.37,
+        "vol_ratio": 0.705,
+        "above_ma20": false,
+        "above_ma60": true,
+        "rel_strength_20": -15.79
+       },
+       {
+        "date": "2022-12-09",
+        "close": 5.53,
+        "vol_pct60": 0.2,
+        "ret_20_pct": -8.6,
+        "vol_ratio": 0.711,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -14.14
+       },
+       {
+        "date": "2022-12-12",
+        "close": 5.45,
+        "vol_pct60": 0.217,
+        "ret_20_pct": -9.32,
+        "vol_ratio": 0.719,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -13.52
+       },
+       {
+        "date": "2022-12-13",
+        "close": 5.42,
+        "vol_pct60": 0.033,
+        "ret_20_pct": -10.41,
+        "vol_ratio": 0.711,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -12.47
+       },
+       {
+        "date": "2022-12-14",
+        "close": 5.45,
+        "vol_pct60": 0.083,
+        "ret_20_pct": -10.07,
+        "vol_ratio": 0.742,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -13.21
+       },
+       {
+        "date": "2022-12-15",
+        "close": 5.44,
+        "vol_pct60": 0.05,
+        "ret_20_pct": -7.17,
+        "vol_ratio": 0.701,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.66
+       },
+       {
+        "date": "2022-12-16",
+        "close": 5.36,
+        "vol_pct60": 0.083,
+        "ret_20_pct": -8.69,
+        "vol_ratio": 0.742,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -12.71
+       },
+       {
+        "date": "2022-12-19",
+        "close": 5.23,
+        "vol_pct60": 0.1,
+        "ret_20_pct": -10.6,
+        "vol_ratio": 0.78,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -13.89
+       },
+       {
+        "date": "2022-12-20",
+        "close": 5.24,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -8.71,
+        "vol_ratio": 0.769,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -10.29
+       },
+       {
+        "date": "2022-12-21",
+        "close": 5.16,
+        "vol_pct60": 0.033,
+        "ret_20_pct": -13.86,
+        "vol_ratio": 0.568,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -15.37
+       },
+       {
+        "date": "2022-12-22",
+        "close": 5.09,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -13.87,
+        "vol_ratio": 0.569,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -15.98
+       },
+       {
+        "date": "2022-12-23",
+        "close": 5.09,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -15.45,
+        "vol_ratio": 0.522,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -16.84
+       },
+       {
+        "date": "2022-12-26",
+        "close": 5.07,
+        "vol_pct60": 0.117,
+        "ret_20_pct": -16.06,
+        "vol_ratio": 0.519,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -19.01
+       },
+       {
+        "date": "2022-12-27",
+        "close": 5.13,
+        "vol_pct60": 0.017,
+        "ret_20_pct": -15.07,
+        "vol_ratio": 0.561,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -16.09
+       },
+       {
+        "date": "2022-12-28",
+        "close": 5.19,
+        "vol_pct60": 0.717,
+        "ret_20_pct": -12.77,
+        "vol_ratio": 0.604,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -13.24
+       },
+       {
+        "date": "2022-12-29",
+        "close": 5.1,
+        "vol_pct60": 0.217,
+        "ret_20_pct": -14.29,
+        "vol_ratio": 0.612,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -13.31
+       },
+       {
+        "date": "2022-12-30",
+        "close": 5.18,
+        "vol_pct60": 0.05,
+        "ret_20_pct": -12.94,
+        "vol_ratio": 0.661,
+        "above_ma20": false,
+        "above_ma60": false,
+        "rel_strength_20": -12.96
+       }
+      ],
+      "at_last_day": {
+       "date": "2022-12-30",
+       "close": 5.18,
+       "vol_pct60": 0.05,
+       "ret_20_pct": -12.94,
+       "vol_ratio": 0.661,
+       "above_ma20": false,
+       "above_ma60": false,
+       "rel_strength_20": -12.96
+      }
+     }
+    ],
+    "median_series": [
+     {
+      "date": "2022-12-05",
+      "vol_pct60": 0.467,
+      "ret_20_pct": 9.04,
+      "rel_strength_20": 4.5,
+      "vol_ratio": 0.632
+     },
+     {
+      "date": "2022-12-06",
+      "vol_pct60": 0.3,
+      "ret_20_pct": 5.98,
+      "rel_strength_20": 0.14,
+      "vol_ratio": 0.662
+     },
+     {
+      "date": "2022-12-07",
+      "vol_pct60": 0.383,
+      "ret_20_pct": 4.53,
+      "rel_strength_20": -2.04,
+      "vol_ratio": 0.704
+     },
+     {
+      "date": "2022-12-08",
+      "vol_pct60": 0.367,
+      "ret_20_pct": 2.05,
+      "rel_strength_20": -5.37,
+      "vol_ratio": 0.752
+     },
+     {
+      "date": "2022-12-09",
+      "vol_pct60": 0.267,
+      "ret_20_pct": -0.56,
+      "rel_strength_20": -6.1,
+      "vol_ratio": 0.767
+     },
+     {
+      "date": "2022-12-12",
+      "vol_pct60": 0.317,
+      "ret_20_pct": -5.25,
+      "rel_strength_20": -9.45,
+      "vol_ratio": 0.764
+     },
+     {
+      "date": "2022-12-13",
+      "vol_pct60": 0.083,
+      "ret_20_pct": -5.22,
+      "rel_strength_20": -7.28,
+      "vol_ratio": 0.775
+     },
+     {
+      "date": "2022-12-14",
+      "vol_pct60": 0.1,
+      "ret_20_pct": -7.32,
+      "rel_strength_20": -10.46,
+      "vol_ratio": 0.776
+     },
+     {
+      "date": "2022-12-15",
+      "vol_pct60": 0.183,
+      "ret_20_pct": -3.28,
+      "rel_strength_20": -6.77,
+      "vol_ratio": 0.785
+     },
+     {
+      "date": "2022-12-16",
+      "vol_pct60": 0.317,
+      "ret_20_pct": -2.7,
+      "rel_strength_20": -6.72,
+      "vol_ratio": 0.79
+     },
+     {
+      "date": "2022-12-19",
+      "vol_pct60": 0.117,
+      "ret_20_pct": -7.91,
+      "rel_strength_20": -11.2,
+      "vol_ratio": 0.798
+     },
+     {
+      "date": "2022-12-20",
+      "vol_pct60": 0.017,
+      "ret_20_pct": -6.9,
+      "rel_strength_20": -8.48,
+      "vol_ratio": 0.801
+     },
+     {
+      "date": "2022-12-21",
+      "vol_pct60": 0.033,
+      "ret_20_pct": -9.44,
+      "rel_strength_20": -10.95,
+      "vol_ratio": 0.815
+     },
+     {
+      "date": "2022-12-22",
+      "vol_pct60": 0.033,
+      "ret_20_pct": -13.87,
+      "rel_strength_20": -15.98,
+      "vol_ratio": 0.569
+     },
+     {
+      "date": "2022-12-23",
+      "vol_pct60": 0.033,
+      "ret_20_pct": -15.45,
+      "rel_strength_20": -16.84,
+      "vol_ratio": 0.522
+     },
+     {
+      "date": "2022-12-26",
+      "vol_pct60": 0.117,
+      "ret_20_pct": -15.03,
+      "rel_strength_20": -17.98,
+      "vol_ratio": 0.519
+     },
+     {
+      "date": "2022-12-27",
+      "vol_pct60": 0.017,
+      "ret_20_pct": -13.13,
+      "rel_strength_20": -14.15,
+      "vol_ratio": 0.561
+     },
+     {
+      "date": "2022-12-28",
+      "vol_pct60": 0.717,
+      "ret_20_pct": -10.24,
+      "rel_strength_20": -10.71,
+      "vol_ratio": 0.604
+     },
+     {
+      "date": "2022-12-29",
+      "vol_pct60": 0.217,
+      "ret_20_pct": -12.1,
+      "rel_strength_20": -11.12,
+      "vol_ratio": 0.612
+     },
+     {
+      "date": "2022-12-30",
+      "vol_pct60": 0.083,
+      "ret_20_pct": -12.06,
+      "rel_strength_20": -12.08,
+      "vol_ratio": 0.661
+     }
+    ],
+    "bias_note": "★ 本层标的为**事后选定**（记录自己声明为回顾性识别）——**不得与当前并列**：那会把「已经涨过」混进输入，使任何形态比较系统性偏高。"
+   }
   },
   "C-2023-RES-COAL-DIVIDEND": {
    "campaign_id": "C-2023-RES-COAL-DIVIDEND",

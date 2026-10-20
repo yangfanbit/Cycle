@@ -147,9 +147,17 @@ describe('④ 外部线索与 ThreeC 历史结论的独立性', () => {
     expect(EXTERNAL_CALENDAR_NOTE).toContain('外部资料');
   });
 
-  it('★ 所有条目成熟度均为 EXTERNAL_REFERENCE（无一项被 ThreeC 验证）', () => {
+  it('★★ v0_2：25 项逐项核验，**没有**一项达到 THREEC_VALIDATED', () => {
+    // ★ 旧断言是「全部 EXTERNAL_REFERENCE」——那是**旧行为快照**（v0_1 只导入未核验）。
+    //   v0_2 的不变量是：每项都有核验结论，且**没有**任何一项被标成「ThreeC 已验证」。
     for (const e of entries) {
-      expect(e.maturity, e.id).toBe('EXTERNAL_REFERENCE');
+      expect(e.verification, `${e.id} 缺少逐项核验结论`).toBeTruthy();
+      expect(e.verification!.disposition, e.id).toBe(e.maturity);
+      expect(e.maturity, `${e.id} 不得未经正式研究就标 THREEC_VALIDATED`)
+        .not.toBe('THREEC_VALIDATED');
+      expect(e.verification!.reason.length, e.id).toBeGreaterThan(20);
+      expect(e.verification!.next_step.text.length, e.id).toBeGreaterThan(10);
+      expect(e.verification!.source_check.report_available, `${e.id} 不得声称读过原报告`).toBe(false);
     }
   });
 
@@ -171,10 +179,16 @@ describe('④ 外部线索与 ThreeC 历史结论的独立性', () => {
         expect(ROOTS.has(e.mapping.macro_theme!), `${e.id} 映射到未知根主题`).toBe(true);
       }
     }
-    // 本文件不得包含任何 campaign_id / theme_id（不新建 canonical）
-    const raw = JSON.stringify(externalCalendarDoc());
-    expect(raw).not.toMatch(/"C-\d{4}-[A-Z]/);
-    expect(raw).not.toMatch(/"TH-[A-Z]/);
+    // ★ v0_2：`verification.threec_evidence.mechanism_matched` 会**引用**库内既有 campaign id
+    //   —— 那是**引用证据**，不是新建对象。不变量改为：不出现 canonical 表结构 / 新建对象定义。
+    const doc = externalCalendarDoc();
+    expect(Object.keys(doc)).not.toContain('campaigns');
+    expect(Object.keys(doc)).not.toContain('themes');
+    const raw = JSON.stringify(doc);
+    expect(raw).not.toMatch(/"TH-[A-Z]/);           // 不写 theme_id
+    // 引用到的 campaign 必须是**库内既有**（以 C- 开头且带年份），且只出现在证据字段里
+    const refs = entries.flatMap((e) => e.verification?.threec_evidence.mechanism_matched_campaigns ?? []);
+    for (const cid of refs) expect(cid).toMatch(/^C-\d{4}-/);   // 只引用库内既有 Campaign
   });
 
   it('★ 未创建虚假 canonical：UNMAPPED 条目不指向任何主题', () => {
@@ -221,20 +235,22 @@ describe('⑤ 无映射线索可正常展示', () => {
 /* ---------------------------------------- ⑥ 窗口活跃 ≠ 成熟度提升 */
 
 describe('⑥ 窗口活跃不自动提升研究成熟度', () => {
-  it('★ 基准日 2026-10-13：窗口内条目的成熟度仍为 EXTERNAL_REFERENCE', () => {
+  it('★★ 窗口活跃**不**改变成熟度：窗口内条目的 maturity === 核验结论', () => {
     const inWindow = entries.filter((e) => windowRelationOf(e, TODAY) === 'IN_WINDOW');
     expect(inWindow.length).toBeGreaterThan(0);
     for (const e of inWindow) {
-      expect(e.maturity, `${e.id} 窗口内但成熟度被提升`).toBe('EXTERNAL_REFERENCE');
+      // 成熟度只由**核验结论**决定，与「今天是否在窗口内」无关
+      expect(e.maturity, `${e.id} 窗口内但成熟度与核验结论不符`)
+        .toBe(e.verification!.disposition);
     }
   });
 
   it('★ 成熟度与窗口关系是**两个独立字段**（不合并）', () => {
-    // 同一条目可同时「窗口内」且「EXTERNAL_REFERENCE」—— 证明两者解耦
+    // 同一条目可同时「窗口内」且**未验证**（OBSERVING）—— 证明两者解耦
     const e = entries.find((x) => x.id === 'EXT-08')!; // 双十一 10–11 月
     expect(windowRelationOf(e, TODAY)).toBe('IN_WINDOW');
-    expect(e.maturity).toBe('EXTERNAL_REFERENCE');
-    expect(MATURITY_LABEL[e.maturity]).toBe('外部参考');
+    expect(e.maturity).toBe('OBSERVING');
+    expect(MATURITY_LABEL[e.maturity]).toBe('观察中');
     expect(RELATION_LABEL.IN_WINDOW).toBe('窗口内');
   });
 
@@ -254,7 +270,7 @@ describe('⑦ 来源与版本可追溯', () => {
   it('文档带 artifact 名与版本', () => {
     const doc = externalCalendarDoc();
     expect(doc.artifact).toBe('external_seasonal_calendar');
-    expect(doc.artifact_version).toBe('0.1');
+    expect(doc.artifact_version).toBe('0.2');
     expect(doc.generated_at).toBeTruthy();
   });
 

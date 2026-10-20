@@ -28,6 +28,8 @@
 | 基准 | `SH000300`，**同窗口、同价格口径**。`excess_period_pp = period_return_pct − bench.period_return_pct`；`excess_to_high_pp = to_high_pct − bench.to_high_pct`（**两列口径不同，不得混用**）。 |
 | 舍入 | 所有百分比 **1 位小数**（Python `round`，即 IEEE754 下的银行家舍入；实测与既有文件一致）。超额由**已舍入**的两个百分比相减后再舍入。 |
 | 缺失 | 窗口内 < 2 行 → `{"error": "insufficient_data_in_window", "reason": ...}`。**绝不用 0 / 相邻日期 / 推测值代替**。`reason` 取值：`no_series`（库内无该序列）· `no_rows_in_window`（序列存在但窗口内无行）· `single_row`（只有 1 行）。 |
+| 非正价格 | ★ 窗口内任一条 `adj_close <= 0` → `{"error": "invalid_price_series", "reason": "non_positive_adj_close"}`。**不得**用负价算收益率（上游 qfq 按除权价差计算，高分红个股在早年会出现负价 —— 这是**数据源方法学限制**，不是抓取错误）。 |
+| 序列不连续 | ★ 窗口内任一对相邻交易日 `abs(close_t/close_{t-1} - 1) > 0.45` → `{"error": "invalid_price_series", "reason": "discontinuous_series"}`（A 股单日涨跌幅上限 ≤30%；qfq 已消除除权跳空）。 |
 
 ★ 合同**不**推断因果：价格结果 ≠ 题材机制成功。所有 `market_performance` 都带
 `is_campaign_ruling: false`，且 Beta Contamination（同期全市场涨跌）必须在 `known_gaps` 里明写。
@@ -152,6 +154,13 @@ def compute_raw(conn, sid: str, start: str, end: str) -> dict:
 
     dates = [r["trade_date"] for r in rows]
     closes = [r["adj_close"] for r in rows]
+    # ★★ 非正价格 → 明确失败（负价算收益率会产生 +1000% 级假数）
+    if any(c <= 0 for c in closes):
+        return {"error": "invalid_price_series", "reason": "non_positive_adj_close"}
+    # ★★ 单日跳变 > 45% → 序列不连续（A 股单日涨跌幅上限 ≤30%，qfq 不应出现跳空）
+    for a, b in zip(closes, closes[1:]):
+        if a > 0 and abs(b / a - 1.0) > 0.45:
+            return {"error": "invalid_price_series", "reason": "discontinuous_series"}
     high_i = closes.index(max(closes))            # ★ 首次出现
     low_i = closes.index(min(closes))
     hi = closes[high_i]
@@ -477,9 +486,13 @@ def _compare_block(fname, event, sid, act, exp, issues, is_bench=False, alt=None
             return
         # ★★ 行情库**不覆盖**该窗口，而产物给出了数值 → **无法复算**。
         #    这不是「数值错了」，也不据此改数/删数 —— 如实标 UNVERIFIABLE 并计入汇总。
+        why = {
+            "non_positive_adj_close": "序列在窗口内出现**非正价格**（上游 qfq 除权价差法，高分红个股早年会出现负价）",
+            "discontinuous_series": "序列在窗口内出现 **>45% 的单日跳变**（不连续）",
+        }.get(exp.get("reason"), "行情库不覆盖该窗口")
         issues.append(Issue("WARN", fname, eid, sid, "UNVERIFIABLE",
-                            "行情库不覆盖该窗口（%s；序列 %s）→ 产物数值**无法复算**，原样保留"
-                            % (exp["reason"], span_text)))
+                            "%s（%s；序列 %s）→ 产物数值**无法复算**，原样保留"
+                            % (why, exp["reason"], span_text)))
         return
     if act.get("error"):
         issues.append(Issue("FAIL", fname, eid, sid, "error",
@@ -629,6 +642,8 @@ def write_theme(theme_id: str, out: str | None, update_index: bool) -> int:
         "benchmark": "SH000300，同窗口、同价格口径；excess = 个股 − 基准（区间与至高点两列口径不同，不得混用）",
         "rounding": "百分比 1 位小数（Python round）；超额由已舍入的两个百分比相减后再舍入",
         "missing": "窗口内 < 2 行 → error=insufficient_data_in_window + reason（no_series / no_rows_in_window / single_row），不补 0",
+        "non_positive_price": "★ 窗口内任一条 adj_close <= 0 → error=invalid_price_series（上游 qfq 除权价差法在高分红个股早年会产生负价，属数据源方法学限制）",
+        "discontinuous_series": "★ 窗口内相邻交易日跳变 > 45% → error=invalid_price_series（A 股单日涨跌幅上限 ≤30%）",
         "source": "research/database/market_data.db（由被跟踪的便携快照恢复）",
         "generated_by": "research/scripts/build_theme_market_performance.py",
     }

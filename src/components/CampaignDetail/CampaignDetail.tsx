@@ -530,7 +530,19 @@ export function CampaignDetail({
                             {num(s.atLastDay.volRatio, 2)} · {maLabel(s.atLastDay)}
                           </span>
                         ) : (
-                          <span className="phase-text">启动前数据不足</span>
+                          <span className="phase-text">
+                            启动前数据不足（{s.reason === 'listed_after_campaign_start'
+                              ? '该证券上市/序列起始日晚于本 Campaign 起始'
+                              : s.reason === 'no_series'
+                                ? '行情库无该证券序列'
+                                : s.reason === 'insufficient_pre_history'
+                                  ? '启动前交易日不足 60'
+                                  : s.reason === 'no_observable_points'
+                                    ? '启动前数据算不出检查点'
+                                    : '原因未标注'}）
+                            {s.rowsBeforeStart !== null && ` · 启动前 ${s.rowsBeforeStart} 个交易日`}
+                            {s.why && ` · ${s.why}`}
+                          </span>
                         )}
                       </li>
                     ))}

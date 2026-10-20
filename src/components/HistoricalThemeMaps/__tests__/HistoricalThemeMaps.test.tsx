@@ -37,7 +37,7 @@ describe('历史题材地图 · 入口', () => {
     expect((html.match(/role="tab"/g) ?? [])).toHaveLength(fromIndex.length);
   });
 
-  it('★★ 事件数由 doc 现算，且与总数自洽（当前 6+4+2+1+6+7=26）', () => {
+  it('★★ 事件数由 doc 现算，且与总数自洽（v0.25：8 题材 = 6+4+2+1+6+7+5+2 = 33）', () => {
     const byId = Object.fromEntries(summaries.map((s) => [s.themeId, s.eventCount]));
     expect(byId.FLU).toBe(6);
     expect(byId.POWER_SUMMER).toBe(4);
@@ -45,8 +45,10 @@ describe('历史题材地图 · 入口', () => {
     expect(byId.ROBOTICS).toBe(1);
     expect(byId.AUTO_INTELLIGENCE).toBe(6);      // v0.15 新增：汽车智能化
     expect(byId.SEMICONDUCTOR_AI).toBe(7);       // v0.16 新增：半导体 / AI 算力 / 存储
+    expect(byId.CONSUMER_SEASON).toBe(5);        // v0.25 新增：消费旺季 / 大众消费
+    expect(byId.RESOURCE_METAL).toBe(2);         // v0.25 新增：资源品 / 黄金 · 稀土
     const total = summaries.reduce((a, b) => a + b.eventCount, 0);
-    expect(total).toBe(6 + 4 + 2 + 1 + 6 + 7);
+    expect(total).toBe(6 + 4 + 2 + 1 + 6 + 7 + 5 + 2);
     expect(html).toContain(`<strong>${total}</strong> 个历史事件`);
   });
 

@@ -20,7 +20,8 @@
  * - **不**把外部资料的星级 / 强弱转为分数、排名或置信度。
  * - 无映射时**直接展示 `UNMAPPED`**，不隐藏空白、不自动补结论。
  */
-import calendarRaw from '@current/external_seasonal_calendar_v0_1.json';
+// ★ v0.25：升到 v0_2（25 项逐项核验；v0_1 逐字节保留）
+import calendarRaw from '@current/external_seasonal_calendar_v0_2.json';
 
 /* ------------------------------------------------------------------ 类型 */
 
@@ -50,6 +51,35 @@ export interface ExternalWindow {
   raw_text: string;
 }
 
+/**
+ * ★ v0.25：逐项核验结论（v0_2 起）。
+ *
+ * 六问逐条落地：性质 / 来源可核实性 / 库内证据 / 反例 / 代表标的 / 处置与下一步。
+ * ★ `threec_evidence.campaigns_starting_in_window` 是**机械统计**，
+ *   `mechanism_matched` 是**研究判断** —— 两者分开记录，不得互相冒充。
+ */
+export interface ExternalVerification {
+  reviewed_at: string;
+  nature: string;
+  source_check: { report_available: boolean; note: string };
+  threec_evidence: {
+    macro_theme: string | null;
+    theme_campaigns: number;
+    campaigns_starting_in_window: number;
+    /** ★ 机制吻合的**库内 Campaign**（研究判断，不是机械统计） */
+    mechanism_matched_campaigns: string[];
+    /** ★ 机制吻合的**地图事件**（已有历史地图时引用事件 id） */
+    mechanism_matched_events: string[];
+    map_theme_id: string | null;
+    note: string;
+  };
+  counter_evidence: string[];
+  representatives: { security_id: string; name: string; role: string; note: string }[];
+  disposition: MaturityLevel;
+  reason: string;
+  next_step: { kind: 'MAP' | 'OBSERVE' | 'DRAFT' | 'NONE'; target: string | null; text: string };
+}
+
 export interface ExternalCalendarEntry {
   id: string;
   name: string;
@@ -68,6 +98,8 @@ export interface ExternalCalendarEntry {
   evidence_refs: string[];
   observations: string[];
   window_relation_override?: WindowRelation;
+  /** ★ v0.25：逐项核验结论（v0_1 无此字段） */
+  verification?: ExternalVerification;
   revision: { date: string; change: string }[];
 }
 

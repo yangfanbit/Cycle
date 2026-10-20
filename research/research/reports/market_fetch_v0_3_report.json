@@ -1,58 +1,118 @@
 {
- "generated_at": "2026-10-19T20:18:07",
+ "generated_at": "2026-10-20T07:49:51",
  "not_fetchable": {
   "CNIMIL": "国证军工指数 —— 无 ticker，且**未被任何 campaign 引用**（0 引用），本轮不取。",
   "SWMIL": "申万国防军工指数（801740.SI）—— 腾讯 GTIMG 不提供申万指数（实测 sz801740 返回空）。本脚本**不代以中证军工/军工 ETF 等替代指数**：那会偷换口径。留待研究侧决定代理口径。"
  },
- "planned": 4,
+ "planned": 10,
  "results": {
-  "AMEC": {
-   "qfq_rows": 1557,
+  "AIMEIKE": {
+   "qfq_rows": 1464,
    "range": [
-    "2016-01-01",
-    "2025-12-31"
+    "2015-01-01",
+    "2026-10-19"
    ],
-   "raw_rows": 1557,
+   "raw_rows": 1464,
    "status": "OK",
-   "symbol": "sh688012"
+   "symbol": "sz300896"
+  },
+  "BETTENI": {
+   "qfq_rows": 1348,
+   "range": [
+    "2015-01-01",
+    "2026-10-19"
+   ],
+   "raw_rows": 1348,
+   "status": "OK",
+   "symbol": "sz300957"
+  },
+  "BLOOMAGE": {
+   "qfq_rows": 1684,
+   "range": [
+    "2015-01-01",
+    "2026-10-19"
+   ],
+   "raw_rows": 1684,
+   "status": "OK",
+   "symbol": "sh688363"
   },
   "HYGON": {
-   "qfq_rows": 812,
+   "qfq_rows": 1001,
    "range": [
-    "2016-01-01",
-    "2025-12-31"
+    "2015-01-01",
+    "2026-10-19"
    ],
-   "raw_rows": 812,
+   "raw_rows": 1001,
    "status": "OK",
    "symbol": "sh688041"
   },
-  "PIOTECH": {
-   "qfq_rows": 900,
+  "KINCO": {
+   "qfq_rows": 1437,
    "range": [
-    "2022-01-01",
-    "2025-12-31"
+    "2015-01-01",
+    "2026-10-19"
    ],
-   "raw_rows": 900,
+   "raw_rows": 1437,
+   "status": "OK",
+   "symbol": "sh688160"
+  },
+  "LEADERDRIVE": {
+   "qfq_rows": 1485,
+   "range": [
+    "2015-01-01",
+    "2026-10-19"
+   ],
+   "raw_rows": 1485,
+   "status": "OK",
+   "symbol": "sh688017"
+  },
+  "MAXSCEND": {
+   "qfq_rows": 1779,
+   "range": [
+    "2015-01-01",
+    "2026-10-19"
+   ],
+   "raw_rows": 1779,
+   "status": "OK",
+   "symbol": "sz300782"
+  },
+  "NSIG": {
+   "qfq_rows": 1564,
+   "range": [
+    "2015-01-01",
+    "2026-10-19"
+   ],
+   "raw_rows": 1564,
+   "status": "OK",
+   "symbol": "sh688126"
+  },
+  "PIOTECH": {
+   "qfq_rows": 1079,
+   "range": [
+    "2015-01-01",
+    "2026-10-19"
+   ],
+   "raw_rows": 1079,
    "status": "OK",
    "symbol": "sh688072"
   },
   "SMIC": {
-   "qfq_rows": 1321,
+   "qfq_rows": 1510,
    "range": [
-    "2016-01-01",
-    "2025-12-31"
+    "2015-01-01",
+    "2026-10-19"
    ],
-   "raw_rows": 1321,
+   "raw_rows": 1510,
    "status": "OK",
    "symbol": "sh688981"
   }
  },
  "stats": {
-  "confirmed_empty": 20,
+  "confirmed_empty": 64,
   "invalid_symbol": 0,
-  "ok": 4,
+  "ok": 10,
   "requests": 0,
-  "skipped_known_gap": 6,
+  "skipped_known_gap": 42,
   "unavailable": 0
  },
  "ticker_fix": {

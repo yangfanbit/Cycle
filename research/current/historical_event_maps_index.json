@@ -1,6 +1,6 @@
 {
  "artifact": "historical_event_maps_index",
- "artifact_version": "0.4",
+ "artifact_version": "0.5",
  "generated_at": "2026-10-19",
  "position": "★ 通用历史事件地图的**题材索引**。每个题材一个独立数据文件（各自版本化、逐字节保留）。",
  "purpose": "把「题材 → 年份 → 历史事件 → 相关证券 → 证据与行情」从流感单题材推广到多题材，供产品侧 `HistoricalEventMap` 数据驱动渲染。",
@@ -125,7 +125,7 @@
   {
    "theme_id": "SEMICONDUCTOR_AI",
    "label": "半导体 / AI 算力 / 存储",
-   "file": "semiconductor_ai_compute_historical_events_v0_2.json",
+   "file": "semiconductor_ai_compute_historical_events_v0_3.json",
    "external_entry_ids": [],
    "display": {
     "title": "历史事件（按年份）",
@@ -140,6 +140,50 @@
    "event_count": 7,
    "status": "ACTIVE",
    "external_link_status": "NO_EXTERNAL_COUNTERPART"
+  },
+  {
+   "theme_id": "CONSUMER_SEASON",
+   "label": "消费旺季 / 大众消费",
+   "file": "consumer_season_historical_events_v0_1.json",
+   "external_entry_ids": [
+    "EXT-02",
+    "EXT-07",
+    "EXT-08",
+    "EXT-15",
+    "EXT-18"
+   ],
+   "display": {
+    "title": "历史事件（按年份）",
+    "aria_label": "历史消费旺季 / 大众消费事件地图",
+    "badge": "事后重建 · 库内 Campaign + 实测行情",
+    "class_order": [
+     "THEME_DIRECT"
+    ],
+    "class_caveats": {},
+    "note": "本区展示**消费旺季 / 大众消费**相关历史事件（来源：库内 Campaign + 实测行情）。★★ **事件窗口 = Campaign 主升段（MAIN_RISE）**，与「1–2 月春节」「10–11 月双十一」等**外部季节性窗口不是同一件事** —— 本图**不**证明消费旺季季节性规律成立。★★ 关系性质不是评分：`category` 只描述直接机制 / 产业链扩散 / 历史市场参与。★ 2024 家电以旧换新窗口（2024-08-24→2024-10-08）与 2024-09-24 起的全市场普涨重叠，**Beta Contamination 无法排除**。★ 本图不含跨年份比较 / 经验基准概率。"
+   },
+   "event_count": 5,
+   "status": "ACTIVE"
+  },
+  {
+   "theme_id": "RESOURCE_METAL",
+   "label": "资源品 / 黄金 · 稀土",
+   "file": "resource_metal_historical_events_v0_1.json",
+   "external_entry_ids": [
+    "EXT-20"
+   ],
+   "display": {
+    "title": "历史事件（按年份）",
+    "aria_label": "历史资源品（黄金 / 稀土）事件地图",
+    "badge": "事后重建 · 库内 Campaign + 实测行情",
+    "class_order": [
+     "THEME_DIRECT"
+    ],
+    "class_caveats": {},
+    "note": "本区展示**资源品（黄金 / 稀土）**相关历史事件（来源：库内 Campaign + 实测行情）。★★ 黄金（官方购金 / 实际利率）与稀土（总量控制 / 新能源需求）**机制不同**，并列 ≠ 同轴。★★ 窗口 = Campaign 主升段，**不是**外部日历声称的「10 月」窗口 —— 本图**不**证明该季节性说法。★ 本图不含跨年份比较 / 经验基准概率。"
+   },
+   "event_count": 2,
+   "status": "ACTIVE"
   }
  ],
  "not_included": {

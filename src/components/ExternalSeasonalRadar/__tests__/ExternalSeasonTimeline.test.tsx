@@ -145,10 +145,13 @@ describe('外部时间轴 · 历史地图跳转', () => {
   it('★★ 只有索引真有关系时才给跳转；其余明写「未建历史题材地图」', () => {
     const withMap = all.filter((e) => Boolean(eventMapByExternalId(e.id)));
     const withoutMap = all.filter((e) => !eventMapByExternalId(e.id));
-    expect(withMap.length).toBe(4);
-    expect(withoutMap.length).toBe(21);
-    expect((html.match(/est-map-link/g) ?? [])).toHaveLength(4);
-    expect((html.match(/est-no-map/g) ?? [])).toHaveLength(21);
+    // ★ v0.25：地图从 6 个题材扩到 8 个（+ 消费旺季 / 资源品），可跳转线索 4 → 10。
+    //   不变量 = 「有地图的条目数 === 跳转链接数」且「其余明写未建」，不是固定数字 4。
+    expect(withMap.length).toBe(10);
+    expect(withoutMap.length).toBe(15);
+    expect(withMap.length + withoutMap.length).toBe(all.length);
+    expect((html.match(/est-map-link/g) ?? [])).toHaveLength(withMap.length);
+    expect((html.match(/est-no-map/g) ?? [])).toHaveLength(withoutMap.length);
     // 跳转按钮带目标题材 id（可被 App 用于选中）
     for (const e of withMap) {
       expect(html).toContain(`data-map-theme="${eventMapByExternalId(e.id)!.theme_id}"`);

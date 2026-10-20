@@ -25,7 +25,12 @@ import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
 // ★ v0.24：半导体题材升到 v0_2（大基金三期四只标的行情按 theme_market_performance_v1 重算；
 //   其余 6 事件百分比数值不变；v0_1 逐字节保留）
-import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_2.json';
+// ★ v0.25：升到 v0_3（SMIC / PIOTECH / HYGON / MAXSCEND / NSIG 补抓全历史后，
+//   参与者覆盖文本与数值按合同重算；SMIC 2019/2021/2022、PIOTECH、HYGON 等窗口状态不变）
+import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_3.json';
+// ★ v0.25：消费旺季（5 事件）/ 资源品（2 事件）—— 由 `build_theme_map_v0_1.py` 从库内 Campaign 生成
+import consumerDoc from '@current/consumer_season_historical_events_v0_1.json';
+import resourceDoc from '@current/resource_metal_historical_events_v0_1.json';
 
 /* ------------------------------------------------------ 通用类型 */
 
@@ -287,6 +292,10 @@ const DOCS: Record<string, HistoricalEventsDoc> = {
   AUTO_INTELLIGENCE: autoDoc as unknown as HistoricalEventsDoc,
   // ★ v0.16：半导体 / AI 算力 / 存储（7 事件 · 29 参与记录，大基金三期窗口行情不可得→如实留空）
   SEMICONDUCTOR_AI: semiDoc as unknown as HistoricalEventsDoc,
+  // ★ v0.25：消费旺季 / 大众消费（5 事件 · 17 参与记录；窗口 = Campaign 主升段，**不是**季节性月份）
+  CONSUMER_SEASON: consumerDoc as unknown as HistoricalEventsDoc,
+  // ★ v0.25：资源品 / 黄金 · 稀土（2 事件 · 8 参与记录；黄金与稀土机制不同轴）
+  RESOURCE_METAL: resourceDoc as unknown as HistoricalEventsDoc,
 };
 
 /** 索引条目 + 已加载的题材文档 */

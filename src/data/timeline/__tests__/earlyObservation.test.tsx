@@ -83,13 +83,16 @@ describe('earlyObservation · L2 标的层（事后选定 → 必须带偏差警
 });
 
 describe('earlyObservation · 当前市场状态（只供全局位置）', () => {
-  it('★ 取最新可得交易日，且与 market_regime 的记录一致（交叉验证）', () => {
+  it('★ 取最新可得交易日（asOf 随数据刷新，断言与产物交叉一致）', () => {
+    // ★ v0.25：旧断言写死 `2026-09-30 / 4357.62 / -5.5` —— 那是**旧行为快照**，
+    //   每补一次行情就得改测试。改为「与产物逐字一致」的交叉断言（唯一写死的数字是
+    //   本轮实测值，作为**回归基线**，下次刷新时连同 docs 一起更新）。
     const m = currentMarketOf()!;
     expect(m.seriesId).toBe('SH000300');
-    expect(m.asOf).toBe('2026-09-30');
-    // ★ market_regime 记录：沪深300 2026-09-30 收 4357.62、近 20 交易日 −5.50%
-    expect(m.observables!.close).toBe(4357.62);
-    expect(m.observables!.ret20Pct).toBeCloseTo(-5.5, 1);
+    expect(m.asOf).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(m.asOf).toBe('2026-10-19');            // 本轮实测：最后交易日
+    expect(m.observables!.close).toBe(4174.53);    // 产物 current_market 逐字一致
+    expect(m.observables!.ret20Pct).toBeCloseTo(-7.4, 1);
   });
 
   it('artifact 中没有的对象 → null（**不造默认值**）', () => {
@@ -140,8 +143,40 @@ describe('CampaignDetail · 启动前观察区块（真实数据）', () => {
       <CampaignDetail campaign={c} onOpenRule={noop} onClose={noop} />,
     );
     expect(html).not.toContain('当前市场状态');
-    expect(html).not.toContain('2026-09-30');
-    expect(html).not.toContain('2026-06');
+    // ★ v0.25：不写死具体日期 —— 用**当轮真实的 asOf** 做不变量：
+    //   下次补行情后页面日期变了，这条断言依然成立（写死日期等于每次都要改测试）。
+    const asOf = currentMarketOf()!.asOf;
+    expect(asOf).toBeTruthy();
+    expect(html, '当前市场状态泄漏进了 campaign 详情').not.toContain(asOf);
+  });
+});
+
+describe('earlyObservation · L2 缺失必须带原因（v0.25 新增）', () => {
+  const noop = () => {};
+
+  it('★★ NO_DATA 行不过滤、且逐条带 reason / why', () => {
+    // ★ 曾把非 OK 行**静默过滤**掉 —— 用户看不到「哪几只没数据、为什么」。
+    const sl = earlyObservationOf('C-2016-CONS-BAIJIU-UPGRADE')!.securityLayer;
+    // 该 campaign 三只标的均为 2015–2016 负价段 → 全部 NO_DATA（2016 事件无 L2 层）
+    const layer = earlyObservationOf('C-2020-HIEQ-AUTOMATION')!.securityLayer!;
+    const missing = layer.securities.filter((s) => s.status === 'NO_DATA');
+    expect(missing.length, '步科 / 绿的谐波在 2020-04-01 前未上市 → 必须留在列表里').toBeGreaterThan(0);
+    for (const s of missing) {
+      expect(['listed_after_campaign_start', 'no_series', 'insufficient_pre_history',
+              'no_observable_points'], s.securityId).toContain(s.reason);
+      expect(s.why, s.securityId).toBeTruthy();
+      expect(s.rowsBeforeStart, s.securityId).not.toBeNull();
+    }
+  });
+
+  it('★★ CampaignDetail 渲染 NO_DATA 的原因文字（不显示成「无数据」就完事）', () => {
+    const c = campaignById('C-2020-HIEQ-AUTOMATION')!;
+    const html = renderToStaticMarkup(
+      <CampaignDetail campaign={c} onOpenRule={noop} onClose={noop} />,
+    );
+    expect(html).toContain('启动前数据不足');
+    expect(html, '必须写明缺口原因').toContain('上市');
+    expect(html, '缺数据的标的必须仍然列出').toContain('步科');
   });
 });
 
@@ -149,7 +184,10 @@ describe('CurrentMarketStrip · 全局位置（独立组件）', () => {
   it('渲染当前市场状态，并明写「不与任何历史行情并列」', () => {
     const html = renderToStaticMarkup(<CurrentMarketStrip />);
     expect(html).toContain('当前市场状态');
-    expect(html).toContain('2026-09-30');
+    // ★ v0.25：页面显示的日期必须与产物 current_market.asOf **逐字一致**
+    //   （用户能分清「当前状态」与「历史数据」的日期，验收标准第 2 条）
+    const m = currentMarketOf()!;
+    expect(html, `页面未显示产物日期 ${m.asOf}`).toContain(m.asOf!);
     expect(html).toContain('SH000300');
     expect(html).toContain('不与任何历史行情并列');
     expect(html).toContain('不作任何匹配判定');

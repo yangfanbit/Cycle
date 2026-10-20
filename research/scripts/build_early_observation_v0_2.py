@@ -51,6 +51,14 @@ LOOKBACK = 20
 MIN_HISTORY = 60
 
 
+def series_first_day(conn, sid):
+    """该证券序列的首个交易日（任一价格类型）—— 用于区分「上市前」与「序列缺失」。"""
+    r = conn.execute(
+        "SELECT MIN(trade_date) FROM market_daily WHERE series_id=? AND trade_date IS NOT NULL",
+        (sid,)).fetchone()
+    return r[0] if r and r[0] else None
+
+
 def load(conn, sid):
     return conn.execute(
         "SELECT trade_date, close, volume FROM market_daily "
@@ -143,11 +151,22 @@ def main():
         per = []
         for sid in secs:
             if sid not in cache:
-                cache[sid] = load(conn, sid)
-            rs = cache[sid]
+                cache[sid] = (load(conn, sid), series_first_day(conn, sid))
+            rs, first_day = cache[sid]
             idx = [i for i, r in enumerate(rs) if r[0] < s]
             if len(idx) < MIN_HISTORY:
-                per.append({"security_id": sid, "status": "NO_DATA", "rows_before_start": len(idx)})
+                # ★ v0.25：NO_DATA 必须写**原因** —— 上市前 / 序列缺失 / 历史不足是三种不同的缺口
+                if first_day is None:
+                    reason = "no_series"
+                    why = "行情库无该证券的行情序列（可能是未登记证券，或本抓取流程不覆盖该代码类型，如申万指数）"
+                elif first_day >= s:
+                    reason = "listed_after_campaign_start"
+                    why = "该证券首个交易日 %s 晚于或等于 Campaign 起始日 %s → 启动前无行情" % (first_day, s)
+                else:
+                    reason = "insufficient_pre_history"
+                    why = "序列自 %s 起，但 Campaign 起始前只有 %d 个交易日（< %d）→ 观察窗口不足" % (first_day, len(idx), MIN_HISTORY)
+                per.append({"security_id": sid, "status": "NO_DATA",
+                            "rows_before_start": len(idx), "reason": reason, "why": why})
                 continue
             pts = idx[-LOOKBACK:]
             series = []
@@ -158,7 +177,9 @@ def main():
                 if o:
                     series.append(o)
             if not series:
-                per.append({"security_id": sid, "status": "NO_DATA", "rows_before_start": len(idx)})
+                per.append({"security_id": sid, "status": "NO_DATA", "rows_before_start": len(idx),
+                            "reason": "no_observable_points",
+                            "why": "启动前有数据但算不出任何检查点（%d 个交易日 < %d）" % (len(idx), MIN_HISTORY)})
                 continue
             per.append({"security_id": sid, "status": "OK",
                         "lookback_from": series[0]["date"], "lookback_to": series[-1]["date"],

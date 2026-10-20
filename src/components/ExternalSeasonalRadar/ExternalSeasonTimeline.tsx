@@ -47,6 +47,18 @@ function themeMapOf(entryId: string) {
   return eventMapByExternalId(entryId);
 }
 
+/**
+ * ★ v0.25：无地图线索的**下一步**是否应给「带入研究请求草稿」。
+ * 判据 = v0_2 逐项核验结论的 `next_step.kind`（DRAFT / OBSERVE），
+ * **不再**看 `mapping.status` —— v0_2 之后「已映射宏观主题」与「有地图」不是一回事
+ * （映射 ≠ 规律成立 ≠ 已有历史事件地图）。REJECTED（NONE）不给入口： verdict 已说明依据。
+ */
+function wantsDraftEntry(entry: ExternalCalendarEntry): boolean {
+  if (themeMapOf(entry.id)) return false;
+  const kind = entry.verification?.next_step.kind;
+  return kind === 'DRAFT' || kind === 'OBSERVE';
+}
+
 function MapLink({ entry, onOpenMap }: {
   entry: ExternalCalendarEntry; onOpenMap?: (themeId: string) => void;
 }) {
@@ -110,7 +122,7 @@ function RowLabel({
             {compareOpen ? '收起历史窗口对照' : '对照历史窗口'}
           </button>
         )}
-        {e.mapping.status === 'UNMAPPED' && onRequestDraft && (
+        {wantsDraftEntry(e) && onRequestDraft && (
           <button
             type="button"
             className="est-draft-btn"
@@ -323,7 +335,7 @@ export function ExternalSeasonTimeline({
                         {open ? '收起历史窗口对照' : '对照历史窗口'}
                       </button>
                     )}
-                    {e.mapping.status === 'UNMAPPED' && onRequestDraft && (
+                    {wantsDraftEntry(e) && onRequestDraft && (
                       <button
                         type="button"
                         className="est-draft-btn"

@@ -50,10 +50,11 @@ describe('A. 索引驱动', () => {
     expect(eventMapsNotIncluded().length).toBeGreaterThanOrEqual(3);
   });
 
-  it('★ 题材全部解析成功（索引有条目 + 注册表有文档；v0.16 起 6 个）', () => {
+  it('★ 题材全部解析成功（索引有条目 + 注册表有文档；v0.25 起 8 个）', () => {
     const maps = allResolvedEventMaps();
     expect(maps.map((m) => m.theme_id).sort()).toEqual(
-      ['AUTO_INTELLIGENCE', 'FLU', 'MEDIA', 'POWER_SUMMER', 'ROBOTICS', 'SEMICONDUCTOR_AI'].sort());
+      ['AUTO_INTELLIGENCE', 'CONSUMER_SEASON', 'FLU', 'MEDIA', 'POWER_SUMMER',
+       'RESOURCE_METAL', 'ROBOTICS', 'SEMICONDUCTOR_AI'].sort());
     for (const m of maps) expect(m.doc.events.length, m.theme_id).toBeGreaterThan(0);
   });
 
@@ -173,11 +174,16 @@ describe('C. 通用组件渲染非流感题材', () => {
       for (const e of m.doc.events) {
         if (eventStudyState(e) !== 'NO_PRICE_DATA') continue;
         // ★★ 诚实空洞：行情块必须逐条显式 error，**不得**静默缺省或补 0
+        // ★ v0.25：error 有两种**都算诚实**的取值：`insufficient_data_in_window`（窗口无数据）
+        //   与 `invalid_price_series`（库内有行但**非正价格 / >45% 跳变** —— 数据源方法学限制，
+        //   用负价算收益率会产出 +1000% 级假数）。两者都必须带 reason。
         const by = e.market_performance?.by_security ?? {};
         const keys = Object.keys(by);
         expect(keys.length, `${m.theme_id}/${e.event_id}`).toBeGreaterThan(0);
         for (const k of keys) {
-          expect(by[k].error, `${m.theme_id}/${e.event_id}/${k}`).toBe('insufficient_data_in_window');
+          expect(by[k].error, `${m.theme_id}/${e.event_id}/${k}`)
+            .toMatch(/^(insufficient_data_in_window|invalid_price_series)$/);
+          expect(by[k].reason, `${m.theme_id}/${e.event_id}/${k}`).toBeTruthy();
         }
       }
     }

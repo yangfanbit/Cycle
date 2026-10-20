@@ -3738,6 +3738,15 @@ html, body {
 }
 .esr-map-open:hover { border-color: var(--accent); }
 
+/* ★ v0.25：无地图线索 → 研究请求草稿的跳转指针（与地图指针同族不同色：虚线 = 未建地图） */
+.esr-draft-link { margin: 6px 0 0; font-size: 10.5px; color: var(--ink-3); line-height: 1.7; }
+.esr-draft-open {
+  margin-left: 6px; cursor: pointer; font-size: 10.5px;
+  border: 1px dashed var(--line); border-radius: 6px; padding: 1px 8px;
+  background: var(--bg); color: var(--ink-2);
+}
+.esr-draft-open:hover { border-color: var(--accent); color: var(--accent); }
+
 /* 概率基准的两道门槛（v0.10） */
 .fem-ep-gates { margin: 6px 0 2px; font-size: 10.5px; color: var(--ink-2); line-height: 1.8; }
 .fem-ep-gates .gate-ok { color: #2e7d32; }

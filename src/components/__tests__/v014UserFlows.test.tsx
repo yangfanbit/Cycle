@@ -55,7 +55,10 @@ async function queryDirection(doc: Document, q: string) {
     setter.call(input, q);
     input.dispatchEvent(new window.Event('input', { bubbles: true }));
   });
-  await click(btnIn(doc, '查询'));
+  // ★ v0.25：按**类选择器**点查询按钮 —— 页面上还有 radar 的「带入…草稿」按钮，
+  //   用文本包含匹配会误点它（这是 v0.25 接线时真实踩到的坑）。
+  const btn = doc.querySelector('button.dl-btn') as HTMLButtonElement;
+  await click(btn);
   return doc.querySelector('div.dl-result[role="status"]') as HTMLElement;
 }
 

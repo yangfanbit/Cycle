@@ -63,6 +63,14 @@ export interface EarlyObservationSecurity {
   securityName: string | null;
   atLastDay: EarlyObservationPoint | null;
   series: EarlyObservationPoint[];
+  /** ★ v0.25：`OK` / `NO_DATA`。**不再过滤掉 NO_DATA 行** —— 缺数据必须看得见 */
+  status: 'OK' | 'NO_DATA';
+  /** ★ v0.25：缺数据的原因代码（`listed_after_campaign_start` / `no_series` / `insufficient_pre_history` / `no_observable_points`） */
+  reason: string | null;
+  /** ★ v0.25：缺数据的原因文字（Research 侧原样透传） */
+  why: string | null;
+  /** 启动前可得的交易日数（不足 60 时为缺口证据） */
+  rowsBeforeStart: number | null;
 }
 
 export interface EarlyObservationSecurityLayer {
@@ -121,6 +129,9 @@ interface RawSecurity {
   status?: string;
   series?: RawPoint[];
   at_last_day?: RawPoint;
+  rows_before_start?: number;
+  reason?: string;
+  why?: string;
 }
 interface RawMarketLayer {
   series_id?: string;
@@ -203,12 +214,17 @@ export function earlyObservationOf(campaignId: string): EarlyObservationView | n
 
   const sl = row.security_layer;
   const securities: EarlyObservationSecurity[] = (sl?.per_security ?? [])
-    .filter((s) => s.security_id && s.status === 'OK')
+    .filter((s) => s.security_id)
     .map((s) => ({
       securityId: s.security_id as string,
       securityName: SECURITY_NAME[s.security_id as string] ?? null,
       atLastDay: pt(s.at_last_day),
       series: (s.series ?? []).map((x) => pt(x)).filter((x): x is EarlyObservationPoint => x !== null),
+      // ★ v0.25：NO_DATA 行**保留在视图里**，带原因透出（缺数据知情权 > 列表干净）
+      status: s.status === 'OK' ? 'OK' : 'NO_DATA',
+      reason: s.reason ?? null,
+      why: s.why ? String(s.why).replace(/\*\*/g, '') : null,
+      rowsBeforeStart: typeof s.rows_before_start === 'number' ? s.rows_before_start : null,
     }));
   const ms = sl?.median_series ?? [];
   const lastMed = ms.length ? ms[ms.length - 1] : undefined;
