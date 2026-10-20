@@ -46,26 +46,17 @@
  },
  "current_market": {
   "series_id": "SH000300",
-  "as_of": "2026-10-19",
+  "as_of": "2026-10-20",
   "observables": {
-   "date": "2026-10-19",
-   "close": 4174.53,
-   "vol_pct60": 0.083,
-   "ret_20_pct": -7.44,
-   "vol_ratio": 0.788,
+   "date": "2026-10-20",
+   "close": 4152.11,
+   "vol_pct60": 0.183,
+   "ret_20_pct": -7.32,
+   "vol_ratio": 0.803,
    "above_ma20": false,
    "above_ma60": false
   },
   "series": [
-   {
-    "date": "2026-09-14",
-    "close": 4480.08,
-    "vol_pct60": 0.033,
-    "ret_20_pct": -5.51,
-    "vol_ratio": 0.615,
-    "above_ma20": false,
-    "above_ma60": false
-   },
    {
     "date": "2026-09-15",
     "close": 4450.04,
@@ -234,6 +225,15 @@
     "vol_pct60": 0.083,
     "ret_20_pct": -7.44,
     "vol_ratio": 0.788,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-10-20",
+    "close": 4152.11,
+    "vol_pct60": 0.183,
+    "ret_20_pct": -7.32,
+    "vol_ratio": 0.803,
     "above_ma20": false,
     "above_ma60": false
    }

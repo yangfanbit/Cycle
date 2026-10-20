@@ -19,14 +19,17 @@ import indexRaw from '@current/historical_event_maps_index.json';
 // ★ 各题材事件数据：**静态 import**（vite/TS 要求；索引只提供展示配置与入口映射）
 // ★ v0.18：流感题材升到 v0_7（**只**为 `FLU-2023-H1N1` 补齐对象关联 `C-2023-PHARMA-FLU`；数值零变化）
 import fluDoc from '@current/flu_historical_events_v0_7.json';
-import powerDoc from '@current/power_historical_events_v0_3.json';
+// ★ v0.26：升到 v0_4 —— POWER-2017 四只标的按合同重算并**验证通过**（WARN→0），
+//   参与者 market_data 文案更正为库内实况（2017-04-05 起）；百分比与原 2 位小数值等量
+import powerDoc from '@current/power_historical_events_v0_4.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
 // ★ v0.24：半导体题材升到 v0_2（大基金三期四只标的行情按 theme_market_performance_v1 重算；
 //   其余 6 事件百分比数值不变；v0_1 逐字节保留）
 // ★ v0.25：升到 v0_4（AUTO 缺口行逐类写原因：非正价格 / 不连续 ≠ 库内无登记）
-import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_4.json';
+// ★ v0.26：升到 v0_5（序列范围延至 2026-10-20，覆盖文本刷新，数值不变）
+import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_5.json';
 // ★ v0.25：消费旺季（5 事件）/ 资源品（2 事件）—— 由 `build_theme_map_v0_1.py` 从库内 Campaign 生成
 import consumerDoc from '@current/consumer_season_historical_events_v0_2.json';
 import resourceDoc from '@current/resource_metal_historical_events_v0_2.json';

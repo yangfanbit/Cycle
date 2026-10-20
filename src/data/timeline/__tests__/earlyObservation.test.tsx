@@ -90,9 +90,9 @@ describe('earlyObservation · 当前市场状态（只供全局位置）', () =>
     const m = currentMarketOf()!;
     expect(m.seriesId).toBe('SH000300');
     expect(m.asOf).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-    expect(m.asOf).toBe('2026-10-19');            // 本轮实测：最后交易日
-    expect(m.observables!.close).toBe(4174.53);    // 产物 current_market 逐字一致
-    expect(m.observables!.ret20Pct).toBeCloseTo(-7.4, 1);
+    expect(m.asOf).toBe('2026-10-20');            // 本轮实测：最后交易日（v0.26 刷新）
+    expect(m.observables!.close).toBe(4152.11);    // 产物 current_market 逐字一致
+    expect(m.observables!.ret20Pct).toBeCloseTo(-7.3, 1);
   });
 
   it('artifact 中没有的对象 → null（**不造默认值**）', () => {

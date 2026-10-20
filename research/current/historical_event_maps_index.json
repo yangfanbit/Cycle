@@ -1,7 +1,7 @@
 {
  "artifact": "historical_event_maps_index",
  "artifact_version": "0.6",
- "generated_at": "2026-10-20",
+ "generated_at": "2026-10-19",
  "position": "★ 通用历史事件地图的**题材索引**。每个题材一个独立数据文件（各自版本化、逐字节保留）。",
  "purpose": "把「题材 → 年份 → 历史事件 → 相关证券 → 证据与行情」从流感单题材推广到多题材，供产品侧 `HistoricalEventMap` 数据驱动渲染。",
  "contract": {
@@ -37,7 +37,7 @@
   {
    "theme_id": "POWER_SUMMER",
    "label": "迎峰度夏 / 电力运营",
-   "file": "power_historical_events_v0_3.json",
+   "file": "power_historical_events_v0_4.json",
    "external_entry_ids": [
     "EXT-14"
    ],
@@ -125,7 +125,7 @@
   {
    "theme_id": "SEMICONDUCTOR_AI",
    "label": "半导体 / AI 算力 / 存储",
-   "file": "semiconductor_ai_compute_historical_events_v0_4.json",
+   "file": "semiconductor_ai_compute_historical_events_v0_5.json",
    "external_entry_ids": [],
    "display": {
     "title": "历史事件（按年份）",
