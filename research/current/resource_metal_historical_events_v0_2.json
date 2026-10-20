@@ -1,0 +1,513 @@
+{
+ "artifact": "resource_metal_historical_events",
+ "artifact_version": "v0.1",
+ "theme": {
+  "theme_id": "RESOURCE_METAL",
+  "label": "资源品 / 黄金 · 稀土"
+ },
+ "generated_at": "2026-10-19",
+ "generated_by": "research/scripts/build_theme_map_v0_1.py（v0.25）",
+ "supersedes": null,
+ "position": "历史题材地图第 8 个题材（v0.25）。题材 = **资源品（黄金 / 稀土）**。★ 两个事件的机制**不同**（贵金属避险与官方购金 vs 战略小金属总量控制 + 新能源需求），并列只为「同属资源品」，**不得**当作同一机制。★ 事件窗口 = Campaign MAIN_RISE，**不是**外部日历 EXT-20 声称的「10 月」窗口 —— 本图**不**证明该季节性说法。数据 = 库内既有 Campaign + `market_data.db` 实测行情（adjusted）。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "资源品 / 黄金 · 稀土",
+   "meaning": "本题材直接机制或产业链相邻的历史事件（窗口 = Campaign MAIN_RISE）。"
+  }
+ ],
+ "source_discipline": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+ "business_mechanism_note": "★★ 下列标的的「业务机制」是**事后核实**的产业事实；它**不**证明该机制驱动了本事件窗口的行情。业务机制相关 ≠ 因果。每只标的的 `business_mechanism_caveat` 逐条重申此边界。",
+ "known_gaps_topic": [
+  "★★ 黄金（官方部门购金 / 实际利率）与稀土（总量控制指标 / 新能源需求）**机制不同**，不得合并解释",
+  "★ 外部日历 EXT-20 声称「10 月」，而库内两个 Campaign 分别起始于 5 月与 2 月 —— **窗口不吻合**，不支持该季节性说法",
+  "★ 本图不含跨年份比较 / 经验基准概率（未建立该口径）"
+ ],
+ "events": [
+  {
+   "event_id": "RES-2020-RAREEARTH",
+   "event_class": "THEME_DIRECT",
+   "label": "稀土景气上行（总量控制 + 新能源需求）",
+   "year": 2020,
+   "window_text": "2020-05-01 → 2021-10-01（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2020-RES-RAREEARTH（2020-05 起 稀土（总量控制指标 + 新能源需求）景气上行［intake R01-RESOURCES-003］）+ 实测行情；★ 事件窗口 = Campaign 主升段，**不是**季节性月份窗口。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+   "campaign_facts": {
+    "object_id": "C-2020-RES-RAREEARTH",
+    "object_kind": "campaign",
+    "status": "CAMPAIGN",
+    "main_rise": {
+     "start": "2020-05-01",
+     "end": "2021-10-01",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2020-05-01",
+    "peak_date": "2021-11-09",
+    "end": "2021-12-31",
+    "note": "库内正式 Campaign（非 Research Candidate）。2020-05 起 稀土（总量控制指标 + 新能源需求）景气上行［intake R01-RESOURCES-003］"
+   },
+   "catalysts": [
+    {
+     "date": "2021-10-28",
+     "text": "氧化镨钕价格自 10 月初 59.8 万元/吨涨至 73.5 万元/吨：R01-RESOURCES-E024｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+     "source": "库内 events（industry） · 来源：稀土价格站上历史高位 产业链上下游公司积极应对（http://www.ccpitfujian.org.cn/mcsj/tzxx/167606.html）"
+    },
+    {
+     "date": "2021-11-09",
+     "text": "北方稀土更新挂牌价，氧化镨钕升至 76.26 万元/吨：R01-RESOURCES-E026｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+     "source": "库内 events（industry） · 来源：行业动态｜北方稀土宣布再次提价 氧化镨钕价格创十年新高 四季度仍具备上涨基础（https://www.cls.cn/detail/871006）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "NPRARE",
+     "ticker": "600111",
+     "name": "北方稀土",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；轻稀土龙头，配额与挂牌价主体",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "稀土（轻稀土）采选与冶炼分离",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2021-12-31（730 行）；本窗口 346 个交易日"
+    },
+    {
+     "security_id": "CNRAREEARTH",
+     "ticker": "000831",
+     "name": "中国稀土",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；中重稀土平台",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "稀土（中重稀土）冶炼分离",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2021-12-31（730 行）；本窗口 346 个交易日"
+    },
+    {
+     "security_id": "GUANGSHENG",
+     "ticker": "600259",
+     "name": "广晟有色",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；南方稀土冶炼分离",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "稀土冶炼分离",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2021-12-31（730 行）；本窗口 346 个交易日"
+    },
+    {
+     "security_id": "SHENGHE",
+     "ticker": "600392",
+     "name": "盛和资源",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；稀土冶炼分离与贸易",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "稀土冶炼分离与金属加工",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2021-12-31（730 行）；本窗口 346 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign 记录；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 4 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 4 只本题材标的）",
+    "★ 窗口 = Campaign MAIN_RISE（2020-05-01 → 2021-10-01），**不是**「10 月」季节性窗口",
+    "★ 4 只标的同属稀土产业链，**不是**独立样本"
+   ],
+   "market_performance": {
+    "window": [
+     "2020-05-01",
+     "2021-10-01"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = Campaign MAIN_RISE，**不是**季节性月份窗口。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）。★★ 不得把「区间上涨」解释为题材因果。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 346,
+      "first": {
+       "date": "2020-05-06",
+       "close": 3936.25
+      },
+      "last": {
+       "date": "2021-09-30",
+       "close": 4866.38
+      },
+      "high": {
+       "date": "2021-02-10",
+       "close": 5807.72
+      },
+      "low": {
+       "date": "2020-05-22",
+       "close": 3824.06
+      },
+      "period_return_pct": 23.6,
+      "to_high_pct": 47.5,
+      "max_drawdown_from_high_pct": -18.2
+     }
+    },
+    "by_security": {
+     "NPRARE": {
+      "trading_days": 346,
+      "first": {
+       "date": "2020-05-06",
+       "close": 8.652
+      },
+      "last": {
+       "date": "2021-09-30",
+       "close": 43.422
+      },
+      "high": {
+       "date": "2021-09-10",
+       "close": 60.162
+      },
+      "low": {
+       "date": "2020-05-12",
+       "close": 8.252
+      },
+      "period_return_pct": 401.9,
+      "to_high_pct": 595.4,
+      "max_drawdown_from_high_pct": -32.5,
+      "excess_period_pp": 378.3,
+      "excess_to_high_pp": 547.9
+     },
+     "CNRAREEARTH": {
+      "trading_days": 346,
+      "first": {
+       "date": "2020-05-06",
+       "close": 10.381
+      },
+      "last": {
+       "date": "2021-09-30",
+       "close": 39.751
+      },
+      "high": {
+       "date": "2021-08-31",
+       "close": 57.051
+      },
+      "low": {
+       "date": "2020-05-12",
+       "close": 10.011
+      },
+      "period_return_pct": 282.9,
+      "to_high_pct": 449.6,
+      "max_drawdown_from_high_pct": -33.7,
+      "excess_period_pp": 259.3,
+      "excess_to_high_pp": 402.1
+     },
+     "GUANGSHENG": {
+      "trading_days": 346,
+      "first": {
+       "date": "2020-05-06",
+       "close": 29.62
+      },
+      "last": {
+       "date": "2021-09-30",
+       "close": 52.85
+      },
+      "high": {
+       "date": "2021-09-14",
+       "close": 72.54
+      },
+      "low": {
+       "date": "2020-11-02",
+       "close": 27.45
+      },
+      "period_return_pct": 78.4,
+      "to_high_pct": 144.9,
+      "max_drawdown_from_high_pct": -30.1,
+      "excess_period_pp": 54.8,
+      "excess_to_high_pp": 97.4
+     },
+     "SHENGHE": {
+      "trading_days": 346,
+      "first": {
+       "date": "2020-05-06",
+       "close": 6.6
+      },
+      "last": {
+       "date": "2021-09-30",
+       "close": 19.38
+      },
+      "high": {
+       "date": "2021-08-06",
+       "close": 27.37
+      },
+      "low": {
+       "date": "2020-10-30",
+       "close": 5.81
+      },
+      "period_return_pct": 193.6,
+      "to_high_pct": 314.7,
+      "max_drawdown_from_high_pct": -30.8,
+      "excess_period_pp": 170.0,
+      "excess_to_high_pp": 267.2
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "RES-2024-GOLD",
+   "event_class": "THEME_DIRECT",
+   "label": "黄金：官方部门结构性购金驱动（2024–2025）",
+   "year": 2024,
+   "window_text": "2024-02-01 → 2025-12-26（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2024-RES-GOLD-CB（2024–2025 黄金：官方部门结构性购金驱动的新一轮上行［intake R01-RESOURCES-007］）+ 实测行情；★ 事件窗口 = Campaign 主升段，**不是**季节性月份窗口。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+   "campaign_facts": {
+    "object_id": "C-2024-RES-GOLD-CB",
+    "object_kind": "campaign",
+    "status": "CAMPAIGN",
+    "main_rise": {
+     "start": "2024-02-01",
+     "end": "2025-12-26",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2024-02-01",
+    "peak_date": null,
+    "end": null,
+    "note": "库内正式 Campaign（非 Research Candidate）。2024–2025 黄金：官方部门结构性购金驱动的新一轮上行［intake R01-RESOURCES-007］"
+   },
+   "catalysts": [
+    {
+     "date": "2025-02-11",
+     "text": "国际现货黄金一度涨至 2942.7 美元/盎司，创历史新高：R01-RESOURCES-E061｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+     "source": "库内 events（market） · 来源：黄金价格持续走强 上市企业业绩飘红（http://m.ce.cn/cj/202502/18/t20250218_39294673.shtml）"
+    },
+    {
+     "date": "2025-09-30",
+     "text": "2025 年以来 A 股黄金股指数整体上涨超一倍（紫金矿业、山东黄金等）：R01-RESOURCES-E064｜provenance: R01-03 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_03_INTAKE_REVIEW_v0_1.md + ADDENDUM_v0_1.md",
+     "source": "库内 events（market） · 来源：黄金股到底贵不贵？（https://zhengguannews.cn/zghnews/366734.html）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "ZIJIN",
+     "ticker": "601899",
+     "name": "紫金矿业",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；金 / 铜矿龙头，产量与金价双敏感",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "黄金 / 铜矿采选",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2025-12-31（1695 行）；本窗口 460 个交易日"
+    },
+    {
+     "security_id": "SDGOLD",
+     "ticker": "600547",
+     "name": "山东黄金",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；黄金采选",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "黄金采选与冶炼",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2023-01-03~2025-12-31（727 行）；本窗口 460 个交易日"
+    },
+    {
+     "security_id": "CFGOLD",
+     "ticker": "600988",
+     "name": "赤峰黄金",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；黄金采选",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "黄金采选",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2023-01-03~2025-12-31（727 行）；本窗口 460 个交易日"
+    },
+    {
+     "security_id": "ZJGOLD",
+     "ticker": "600489",
+     "name": "中金黄金",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；黄金采选（央企）",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "黄金采选与冶炼",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2023-01-03~2025-12-31（727 行）；本窗口 460 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign 记录；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 4 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 4 只本题材标的）",
+    "★ 窗口 = Campaign MAIN_RISE（2024-02-01 → 2025-12-26），跨越约 23 个月 —— 区间收益包含多轮波动，不能当作单次事件",
+    "★ 金价驱动的**外生性**（美元实际利率 / 央行购金）无法用 A 股个股数据检验"
+   ],
+   "market_performance": {
+    "window": [
+     "2024-02-01",
+     "2025-12-26"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = Campaign MAIN_RISE，**不是**季节性月份窗口。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）。★★ 不得把「区间上涨」解释为题材因果。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 460,
+      "first": {
+       "date": "2024-02-01",
+       "close": 3217.71
+      },
+      "last": {
+       "date": "2025-12-26",
+       "close": 4657.24
+      },
+      "high": {
+       "date": "2025-10-29",
+       "close": 4747.84
+      },
+      "low": {
+       "date": "2024-09-13",
+       "close": 3159.25
+      },
+      "period_return_pct": 44.7,
+      "to_high_pct": 47.6,
+      "max_drawdown_from_high_pct": -6.3
+     }
+    },
+    "by_security": {
+     "ZIJIN": {
+      "trading_days": 460,
+      "first": {
+       "date": "2024-02-01",
+       "close": 10.53
+      },
+      "last": {
+       "date": "2025-12-26",
+       "close": 32.73
+      },
+      "high": {
+       "date": "2025-12-26",
+       "close": 32.73
+      },
+      "low": {
+       "date": "2024-02-02",
+       "close": 10.43
+      },
+      "period_return_pct": 210.8,
+      "to_high_pct": 210.8,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 166.1,
+      "excess_to_high_pp": 163.2
+     },
+     "SDGOLD": {
+      "trading_days": 460,
+      "first": {
+       "date": "2024-02-01",
+       "close": 19.657
+      },
+      "last": {
+       "date": "2025-12-26",
+       "close": 39.42
+      },
+      "high": {
+       "date": "2025-10-13",
+       "close": 43.145
+      },
+      "low": {
+       "date": "2024-02-01",
+       "close": 19.657
+      },
+      "period_return_pct": 100.5,
+      "to_high_pct": 119.5,
+      "max_drawdown_from_high_pct": -21.1,
+      "excess_period_pp": 55.8,
+      "excess_to_high_pp": 71.9
+     },
+     "CFGOLD": {
+      "trading_days": 460,
+      "first": {
+       "date": "2024-02-01",
+       "close": 11.481
+      },
+      "last": {
+       "date": "2025-12-26",
+       "close": 31.95
+      },
+      "high": {
+       "date": "2025-12-23",
+       "close": 33.04
+      },
+      "low": {
+       "date": "2024-02-05",
+       "close": 11.231
+      },
+      "period_return_pct": 178.3,
+      "to_high_pct": 187.8,
+      "max_drawdown_from_high_pct": -4.8,
+      "excess_period_pp": 133.6,
+      "excess_to_high_pp": 140.2
+     },
+     "ZJGOLD": {
+      "trading_days": 460,
+      "first": {
+       "date": "2024-02-01",
+       "close": 8.202
+      },
+      "last": {
+       "date": "2025-12-26",
+       "close": 22.982
+      },
+      "high": {
+       "date": "2025-10-13",
+       "close": 25.042
+      },
+      "low": {
+       "date": "2024-02-05",
+       "close": 8.142
+      },
+      "period_return_pct": 180.2,
+      "to_high_pct": 205.3,
+      "max_drawdown_from_high_pct": -19.2,
+      "excess_period_pp": 135.5,
+      "excess_to_high_pp": 157.7
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  }
+ ],
+ "market_performance_contract": {
+  "version": "theme_market_performance_v1",
+  "price_series": "market_daily.price_type='adjusted' → adj_close（前复权收盘）",
+  "window": "market_performance.window [start, end]，双端包含",
+  "trading_days": "窗口内该序列实际行数（不是日历天数、不是基准交易日数）",
+  "high": "窗口内 adj_close 最大值（首次出现）；不是 high 列、不是 Campaign peak_date",
+  "period_return_pct": "(last.close / first.close - 1) × 100",
+  "to_high_pct": "(high.close / first.close - 1) × 100",
+  "max_drawdown_from_high_pct": "★ 自至高点「之后」的最大回撤 = min over t>=high.date of (close_t/high.close - 1) × 100；不是全窗口最大回撤",
+  "benchmark": "SH000300，同窗口、同价格口径；excess = 个股 − 基准（区间与至高点两列口径不同，不得混用）",
+  "rounding": "百分比 1 位小数（Python round）；超额由已舍入的两个百分比相减后再舍入",
+  "missing": "窗口内 < 2 行 → error=insufficient_data_in_window + reason（no_series / no_rows_in_window / single_row），不补 0",
+  "source": "research/database/market_data.db（由被跟踪的便携快照恢复）",
+  "generated_by": "research/scripts/build_theme_map_v0_1.py"
+ }
+}

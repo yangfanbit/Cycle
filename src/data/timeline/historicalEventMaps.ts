@@ -25,12 +25,11 @@ import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
 // ★ v0.24：半导体题材升到 v0_2（大基金三期四只标的行情按 theme_market_performance_v1 重算；
 //   其余 6 事件百分比数值不变；v0_1 逐字节保留）
-// ★ v0.25：升到 v0_3（SMIC / PIOTECH / HYGON / MAXSCEND / NSIG 补抓全历史后，
-//   参与者覆盖文本与数值按合同重算；SMIC 2019/2021/2022、PIOTECH、HYGON 等窗口状态不变）
-import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_3.json';
+// ★ v0.25：升到 v0_4（AUTO 缺口行逐类写原因：非正价格 / 不连续 ≠ 库内无登记）
+import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_4.json';
 // ★ v0.25：消费旺季（5 事件）/ 资源品（2 事件）—— 由 `build_theme_map_v0_1.py` 从库内 Campaign 生成
-import consumerDoc from '@current/consumer_season_historical_events_v0_1.json';
-import resourceDoc from '@current/resource_metal_historical_events_v0_1.json';
+import consumerDoc from '@current/consumer_season_historical_events_v0_2.json';
+import resourceDoc from '@current/resource_metal_historical_events_v0_2.json';
 
 /* ------------------------------------------------------ 通用类型 */
 

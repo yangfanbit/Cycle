@@ -393,6 +393,8 @@ def build_doc(conn, theme, registry) -> dict:
 def main(argv):
     ap = argparse.ArgumentParser(description="从库内 Campaign 生成题材事件地图")
     ap.add_argument("--only", help="只生成指定 theme_id")
+    ap.add_argument("--version", type=int, default=1,
+                    help="产物版本号（默认 1；旧版本已存在时升版，**不覆盖**）")
     a = ap.parse_args(argv)
 
     registry = load_export_registry()
@@ -402,7 +404,7 @@ def main(argv):
         for theme in THEMES:
             if a.only and theme["theme_id"] != a.only:
                 continue
-            out = os.path.join(CURRENT, "%s_v0_1.json" % theme["artifact"])
+            out = os.path.join(CURRENT, "%s_v0_%d.json" % (theme["artifact"], a.version))
             if os.path.exists(out):
                 print("FAIL: 目标已存在，拒绝覆盖：%s" % os.path.relpath(out, REPO))
                 return 1

@@ -1,0 +1,1812 @@
+{
+ "artifact": "semiconductor_ai_compute_historical_events",
+ "artifact_version": "v0.4",
+ "theme": {
+  "theme_id": "SEMICONDUCTOR_AI",
+  "label": "半导体 / AI 算力 / 存储"
+ },
+ "generated_at": "2026-10-19",
+ "generated_by": "research/scripts/build_theme_market_performance.py（v0.24）",
+ "supersedes": "semiconductor_ai_compute_historical_events_v0_3.json",
+ "corrections": [
+  {
+   "at": "2026-10-19",
+   "what": "★ 全部 7 个事件的行情块按 `theme_market_performance_v1` **重新转写**（`market_data.db` 复算）；`SEMI-2024-FUND3` 四只标的由「行情不可得」更正为**实测窗口行情**",
+   "why": "v0.23 已按既有抓取流程补齐 4 只标的行情（SMIC / AMEC / PIOTECH / HYGON 各 44 个 adjusted 交易日），但地图仍停在旧静态 JSON；且此前 `market_performance` 是**逐份手写**、口径未落文字（用「全窗口最大回撤」验算时仅 3/12 可复现）",
+   "how": "`research/scripts/build_theme_market_performance.py --write SEMICONDUCTOR_AI`（唯一入口；`--check` 只读校验，CI 门禁）",
+   "effect": "① FUND3 的 `study_state`：`NO_PRICE_DATA` → `HAS_PRICE_DATA`；② 其余 6 个事件的**全部百分比数值逐字段不变**（仅 `close` 由 2 位小数改为 `adj_close` 原值、参与者 `market_data` 文案改为「序列全量范围 + 本窗口交易日数」）；③ `RC-2024-SEMI-FUND3` 官方 **INSUFFICIENT 判定不变** —— 行情可算 ≠ 机制被证明"
+  }
+ ],
+ "position": "历史题材地图第 6 个题材（v0.16）。纯粹**事后重建**：题材=半导体 / AI 算力 / 存储。数据 = 库内既有对象（C-2019-SEMI-LOCALIZATION · C-2020-SEMI-EQUIPMENT · C-2022-SEMI-DOWNTURN · C-2023-AI-COMPUTE-SEMI · C-2024-SEMI-MEMORY · RC-2022-SEMI-CHIPSHORTAGE · RC-2024-SEMI-FUND3）+ market_data.db 实测行情（adjusted / 前复权）。★ 不新增研究结论、不生成评分 / 排名 / 概率 / 预测。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "半导体 / AI 算力 / 存储主线",
+   "meaning": "本题材直接机制或产业链相邻的历史事件（含 1 个下行对照事件）。"
+  }
+ ],
+ "source_discipline": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+ "business_mechanism_note": "★★ 下列标的的「业务机制」是**事后核实**的产业事实；它**不**证明该机制驱动了本事件窗口的行情。业务机制相关 ≠ 因果。每只标的的 `business_mechanism_caveat` 逐条重申此边界。",
+ "known_gaps_topic": [
+  "★ 半导体 / AI 算力 / 存储的 7 个事件中，2 个为官方 status=INSUFFICIENT 的 Research Candidate（缺芯、大基金三期），如实标注",
+  "★ 个别事件窗口仍不覆盖行情：SMIC（2019）· PIOTECH（2021）· TFME / JCET（2020）· HYGON（2022 仅 38 个交易日，覆盖不足）—— 逐条留空、**不补数**；★ 大基金三期（2024-09-24 → 2024-11-29）4 只标的**已覆盖**（v0_2，各 44 个交易日）",
+  "★ 本题材无外部季节性线索挂靠（external_entry_ids 为空）",
+  "★ 本切片不含跨年份比较 / 经验基准概率（未建立该口径）"
+ ],
+ "events": [
+  {
+   "event_id": "SEMI-2019-LOCALIZATION",
+   "event_class": "THEME_DIRECT",
+   "label": "半导体自主可控 / 国产替代（卡脖子）",
+   "year": 2019,
+   "window_text": "2019-05-16 → 2020-07-14（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2019-SEMI-LOCALIZATION（rule_semiconductor）+ 实测行情；主线：华为实体清单后「卡脖子」认知 + 大基金注资 + 科创板开市。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction；本事件只描述「库内记录了什么」与「实测行情是多少」。",
+   "campaign_facts": {
+    "object_id": "C-2019-SEMI-LOCALIZATION",
+    "object_kind": "campaign",
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2019-05-16",
+     "end": "2020-07-14",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2019-05-16",
+    "peak_date": "2020-07-14",
+    "end": "2020-09-30"
+   },
+   "catalysts": [
+    {
+     "date": "2019-05-16",
+     "text": "美国将华为及关联公司列入实体清单，「卡脖子」认知发酵",
+     "source": "库内 Campaign drivers.start"
+    },
+    {
+     "date": "2019-07-22",
+     "text": "科创板开市，为未盈利半导体企业提供上市 / 再融资通道",
+     "source": "库内 Campaign drivers.accelerator"
+    },
+    {
+     "date": "2019-12-20",
+     "text": "大基金一期公告减持兆易创新 / 汇顶科技 / 国科微",
+     "source": "库内 Campaign drivers.turning"
+    },
+    {
+     "date": "2020-03-23",
+     "text": "全球疫情冲击，板块随大盘回撤（基准低点）",
+     "source": "库内 Campaign drivers.turning"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "GIGADEVICE",
+     "ticker": "603986",
+     "name": "兆易创新",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；存储与 MCU 设计，属国产替代主线",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "存储芯片（NOR Flash / DRAM）与 MCU 设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-03-02~2025-12-31（1898 行）；本窗口 284 个交易日",
+     "period_return_pct": 446.2,
+     "to_high_pct": 475.4,
+     "high_date": "2020-02-25",
+     "excess_period_pp": 417.8,
+     "excess_to_high_pp": 445.8
+    },
+    {
+     "security_id": "NAURA",
+     "ticker": "002371",
+     "name": "北方华创",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；半导体设备，属国产替代主线",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "半导体设备（刻蚀 / 薄膜沉积 / 炉管）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2023-08-25（1373 行）；本窗口 284 个交易日",
+     "period_return_pct": 232.8,
+     "to_high_pct": 249.3,
+     "high_date": "2020-07-13",
+     "excess_period_pp": 204.4,
+     "excess_to_high_pp": 219.7
+    },
+    {
+     "security_id": "MAXSCEND",
+     "ticker": "300782",
+     "name": "卓胜微",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；射频前端芯片设计",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "射频前端芯片设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-06-18~2026-10-19（1779 行）；本窗口 262 个交易日",
+     "period_return_pct": 2111.4,
+     "to_high_pct": 2111.4,
+     "high_date": "2020-07-14",
+     "excess_period_pp": 2083.0,
+     "excess_to_high_pp": 2081.8
+    },
+    {
+     "security_id": "SGMC",
+     "ticker": "300661",
+     "name": "圣邦股份",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；模拟芯片设计",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "模拟集成电路设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2022-10-12（1148 行）；本窗口 274 个交易日",
+     "period_return_pct": 802.9,
+     "to_high_pct": 802.9,
+     "high_date": "2020-07-14",
+     "excess_period_pp": 774.5,
+     "excess_to_high_pp": 773.3
+    },
+    {
+     "security_id": "WILLSEMI",
+     "ticker": "603501",
+     "name": "韦尔股份",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；CIS 设计（并购豪威后）",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "图像传感器（CIS）设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2020-09-30（584 行）；本窗口 284 个交易日",
+     "period_return_pct": 397.9,
+     "to_high_pct": 397.9,
+     "high_date": "2020-07-14",
+     "excess_period_pp": 369.5,
+     "excess_to_high_pp": 368.3
+    },
+    {
+     "security_id": "JCET",
+     "ticker": "600584",
+     "name": "长电科技",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；封测属产业链后道，与设计 / 制造相邻而非同轴",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "集成电路封装测试（后道）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2020-09-30（670 行）；本窗口 284 个交易日",
+     "period_return_pct": 385.5,
+     "to_high_pct": 385.5,
+     "high_date": "2020-07-14",
+     "excess_period_pp": 357.1,
+     "excess_to_high_pp": 355.9
+    },
+    {
+     "security_id": "SMIC",
+     "ticker": "688981",
+     "name": "中芯国际",
+     "exchange": "SH",
+     "category": "INSUFFICIENT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 representative；晶圆代工，但**关系证据不足**（本轮未纳入机制判断）",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "note": "本事件窗口行情不可得 → 不作表现证据。",
+     "market_data": "库内行情不覆盖该窗口（series 2020-07-16 → 2026-10-19；本窗口 0 个交易日）"
+    },
+    {
+     "security_id": "BOE",
+     "ticker": "000725",
+     "name": "京东方A",
+     "exchange": "SZ",
+     "category": "COUNTER_EXAMPLE",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative 但为**反例**：面板 / 显示器件，与集成电路（设计 / 制造 / 封测）不同轴；其区间大涨属显示面板周期，保留为反面参照",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "显示面板（LCD / OLED）制造",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2015-01-05~2021-08-31（1620 行）；本窗口 284 个交易日",
+     "period_return_pct": 62.8,
+     "to_high_pct": 85.1,
+     "high_date": "2020-02-25",
+     "excess_period_pp": 34.4,
+     "excess_to_high_pp": 55.5
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 drivers；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 5 / 覆盖不足 1 / 不可得 0 / 未计算 0（共 6 只本题材标的）",
+    "★ SMIC 行情不覆盖 2019-05 → 2020-07 窗口（series 2020-07-16 起）→ 该标的行情如实留空",
+    "★ MAXSCEND 于 2019-06-18 上市，窗口起点（2019-05-16）不可达 → 覆盖不足，如实标注",
+    "★ BOE 为**反例**（面板，与集成电路不同轴），**不**计入本题材的可分析行情",
+    "C-2019-SEMI-LOCALIZATION status=PROVISIONAL（非 VERIFIED）"
+   ],
+   "market_performance": {
+    "window": [
+     "2019-05-16",
+     "2020-07-14"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2019-05-16 → 2020-07-14（Campaign MAIN_RISE，PHASE_WINDOW）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 284,
+      "first": {
+       "date": "2019-05-16",
+       "close": 3743.96
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 4806.69
+      },
+      "high": {
+       "date": "2020-07-13",
+       "close": 4852.96
+      },
+      "low": {
+       "date": "2020-03-23",
+       "close": 3530.31
+      },
+      "period_return_pct": 28.4,
+      "to_high_pct": 29.6,
+      "max_drawdown_from_high_pct": -1.0
+     }
+    },
+    "by_security": {
+     "GIGADEVICE": {
+      "trading_days": 284,
+      "first": {
+       "date": "2019-05-16",
+       "close": 37.2
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 203.188
+      },
+      "high": {
+       "date": "2020-02-25",
+       "close": 214.065
+      },
+      "low": {
+       "date": "2019-06-06",
+       "close": 34.596
+      },
+      "period_return_pct": 446.2,
+      "to_high_pct": 475.4,
+      "max_drawdown_from_high_pct": -45.3,
+      "excess_period_pp": 417.8,
+      "excess_to_high_pp": 445.8
+     },
+     "NAURA": {
+      "trading_days": 284,
+      "first": {
+       "date": "2019-05-16",
+       "close": 46.835
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 155.876
+      },
+      "high": {
+       "date": "2020-07-13",
+       "close": 163.617
+      },
+      "low": {
+       "date": "2019-08-07",
+       "close": 38.888
+      },
+      "period_return_pct": 232.8,
+      "to_high_pct": 249.3,
+      "max_drawdown_from_high_pct": -4.7,
+      "excess_period_pp": 204.4,
+      "excess_to_high_pp": 219.7
+     },
+     "MAXSCEND": {
+      "trading_days": 262,
+      "first": {
+       "date": "2019-06-18",
+       "close": 8.137
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 179.938
+      },
+      "high": {
+       "date": "2020-07-14",
+       "close": 179.938
+      },
+      "low": {
+       "date": "2019-06-18",
+       "close": 8.137
+      },
+      "period_return_pct": 2111.4,
+      "to_high_pct": 2111.4,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 2083.0,
+      "excess_to_high_pp": 2081.8
+     },
+     "SGMC": {
+      "trading_days": 274,
+      "first": {
+       "date": "2019-05-16",
+       "close": 11.279
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 101.835
+      },
+      "high": {
+       "date": "2020-07-14",
+       "close": 101.835
+      },
+      "low": {
+       "date": "2019-05-16",
+       "close": 11.279
+      },
+      "period_return_pct": 802.9,
+      "to_high_pct": 802.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 774.5,
+      "excess_to_high_pp": 773.3
+     },
+     "WILLSEMI": {
+      "trading_days": 284,
+      "first": {
+       "date": "2019-05-16",
+       "close": 36.783
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 183.154
+      },
+      "high": {
+       "date": "2020-07-14",
+       "close": 183.154
+      },
+      "low": {
+       "date": "2019-06-06",
+       "close": 26.946
+      },
+      "period_return_pct": 397.9,
+      "to_high_pct": 397.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 369.5,
+      "excess_to_high_pp": 368.3
+     },
+     "JCET": {
+      "trading_days": 284,
+      "first": {
+       "date": "2019-05-16",
+       "close": 10.36
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 50.3
+      },
+      "high": {
+       "date": "2020-07-14",
+       "close": 50.3
+      },
+      "low": {
+       "date": "2019-05-16",
+       "close": 10.36
+      },
+      "period_return_pct": 385.5,
+      "to_high_pct": 385.5,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 357.1,
+      "excess_to_high_pp": 355.9
+     },
+     "SMIC": {
+      "error": "insufficient_data_in_window",
+      "reason": "no_rows_in_window"
+     },
+     "BOE": {
+      "trading_days": 284,
+      "first": {
+       "date": "2019-05-16",
+       "close": 2.867
+      },
+      "last": {
+       "date": "2020-07-14",
+       "close": 4.667
+      },
+      "high": {
+       "date": "2020-02-25",
+       "close": 5.307
+      },
+      "low": {
+       "date": "2019-05-17",
+       "close": 2.767
+      },
+      "period_return_pct": 62.8,
+      "to_high_pct": 85.1,
+      "max_drawdown_from_high_pct": -43.2,
+      "excess_period_pp": 34.4,
+      "excess_to_high_pp": 55.5
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "SEMI-2020-CHIPSHORTAGE",
+   "event_class": "THEME_DIRECT",
+   "label": "全球「缺芯」与半导体全产业链涨价",
+   "year": 2020,
+   "window_text": "2020-12-01 → 2021-12-31（Research Candidate MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Research Candidate RC-2022-SEMI-CHIPSHORTAGE（rule_semiconductor，proposal=industry_trend）+ 实测行情；★ 该 RC 官方 status=INSUFFICIENT（机制属行业景气，A 股侧行情难独立切分）。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction；本事件只描述「库内记录了什么」与「实测行情是多少」。",
+   "campaign_facts": {
+    "object_id": "RC-2022-SEMI-CHIPSHORTAGE",
+    "object_kind": "candidate",
+    "status": "INSUFFICIENT",
+    "main_rise": {
+     "start": "2020-12-01",
+     "end": "2021-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": null,
+    "peak_date": null,
+    "end": "2022-12-31",
+    "note": "Research Candidate（**不伪装 Campaign**）；status=INSUFFICIENT。"
+   },
+   "catalysts": [
+    {
+     "date": "2020-12-01",
+     "text": "疫情致晶圆代工 / 封测排产中断，8 英寸成熟产能长期缺乏新增投资",
+     "source": "库内 RC drivers.start"
+    },
+    {
+     "date": "2021-08-01",
+     "text": "市场监管总局处罚三家哄抬汽车芯片价格的经销商",
+     "source": "库内 RC drivers.turning"
+    },
+    {
+     "date": "2021-09-01",
+     "text": "原厂与代工厂集中涨价后需求开始被抑制",
+     "source": "库内 RC drivers.turning"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "MAXSCEND",
+     "ticker": "300782",
+     "name": "卓胜微",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；射频前端设计，缺芯涨价链条中的设计环节",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "射频前端芯片设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-06-18~2026-10-19（1779 行）；本窗口 266 个交易日",
+     "period_return_pct": 5.2,
+     "to_high_pct": 73.3,
+     "high_date": "2021-06-30",
+     "excess_period_pp": 7.7,
+     "excess_to_high_pp": 58.7
+    },
+    {
+     "security_id": "JCET",
+     "ticker": "600584",
+     "name": "长电科技",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；封测环节受排产中断 / 涨价影响（产业链相邻）",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "集成电路封装测试（后道）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "库内行情不覆盖该窗口（series 2018-01-02 → 2020-09-30；本窗口 0 个交易日）"
+    },
+    {
+     "security_id": "TFME",
+     "ticker": "002156",
+     "name": "通富微电",
+     "exchange": "SZ",
+     "category": "INSUFFICIENT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 representative；封测，但**关系证据不足 / 行情不可得**",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "market_data": "库内无该证券日线登记（无行情）"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 RC drivers；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 1 / 覆盖不足 0 / 不可得 1 / 未计算 0（共 2 只本题材标的）",
+    "[AUTO:MARKET_DATA] 行情不可得：JCET —— 序列存在，但本窗口内无交易日（上市 / 序列起始晚于窗口），**不补数**",
+    "★★ RC-2022-SEMI-CHIPSHORTAGE status=INSUFFICIENT：机制属行业景气而非主题叙事，A 股侧行情与 001/002 高度重合 → 不足以独立切分",
+    "★ JCET 行情止于 2020-09-30，不覆盖 2020-12 起窗口 → 区间行情留空",
+    "★ TFME 库内无日线登记 → 行情留空"
+   ],
+   "market_performance": {
+    "window": [
+     "2020-12-01",
+     "2021-12-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2020-12-01 → 2021-12-31（Research Candidate MAIN_RISE，PHASE_WINDOW）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 266,
+      "first": {
+       "date": "2020-12-01",
+       "close": 5067.1
+      },
+      "last": {
+       "date": "2021-12-31",
+       "close": 4940.37
+      },
+      "high": {
+       "date": "2021-02-10",
+       "close": 5807.72
+      },
+      "low": {
+       "date": "2021-07-27",
+       "close": 4751.31
+      },
+      "period_return_pct": -2.5,
+      "to_high_pct": 14.6,
+      "max_drawdown_from_high_pct": -18.2
+     }
+    },
+    "by_security": {
+     "MAXSCEND": {
+      "trading_days": 266,
+      "first": {
+       "date": "2020-12-01",
+       "close": 193.306
+      },
+      "last": {
+       "date": "2021-12-31",
+       "close": 203.317
+      },
+      "high": {
+       "date": "2021-06-30",
+       "close": 335.004
+      },
+      "low": {
+       "date": "2020-12-03",
+       "close": 174.438
+      },
+      "period_return_pct": 5.2,
+      "to_high_pct": 73.3,
+      "max_drawdown_from_high_pct": -44.6,
+      "excess_period_pp": 7.7,
+      "excess_to_high_pp": 58.7
+     },
+     "JCET": {
+      "error": "insufficient_data_in_window",
+      "reason": "no_rows_in_window"
+     },
+     "TFME": {
+      "error": "insufficient_data_in_window",
+      "reason": "no_series"
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "SEMI-2021-EQUIPMENT",
+   "event_class": "THEME_DIRECT",
+   "label": "半导体设备 / 材料国产化",
+   "year": 2021,
+   "window_text": "2021-04-01 → 2021-07-30（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2020-SEMI-EQUIPMENT（rule_semiconductor，main=半导体设备）+ 实测行情；主线：大基金二期 + 晶圆厂扩产 + 设备国产化率提升。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction；本事件只描述「库内记录了什么」与「实测行情是多少」。",
+   "campaign_facts": {
+    "object_id": "C-2020-SEMI-EQUIPMENT",
+    "object_kind": "campaign",
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2021-04-01",
+     "end": "2021-07-30",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2020-07-16",
+    "peak_date": "2021-07-30",
+    "end": "2021-09-30"
+   },
+   "catalysts": [
+    {
+     "date": "2021-04-01",
+     "text": "大基金二期聚焦设备 / 材料，国内晶圆厂进入扩产周期",
+     "source": "库内 Campaign drivers.start"
+    },
+    {
+     "date": "2021-06-01",
+     "text": "设备国产化率由个位数向两位数突破；全球缺芯推动晶圆厂加快资本开支",
+     "source": "库内 Campaign drivers.accelerator"
+    },
+    {
+     "date": "2021-07-27",
+     "text": "2021Q3 起终端需求转弱、渠道库存累积（板块见顶后回撤）",
+     "source": "库内 Campaign drivers.turning"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "AMEC",
+     "ticker": "688012",
+     "name": "中微公司",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；刻蚀 / MOCVD 设备，设备国产化主线核心",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "半导体设备（刻蚀 / MOCVD）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-07-22~2025-12-18（1557 行）；本窗口 82 个交易日",
+     "period_return_pct": 101.1,
+     "to_high_pct": 101.1,
+     "high_date": "2021-07-30",
+     "excess_period_pp": 107.0,
+     "excess_to_high_pp": 96.6
+    },
+    {
+     "security_id": "NSIG",
+     "ticker": "688126",
+     "name": "沪硅产业",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；大硅片材料，属设备 / 材料国产化主线",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "半导体材料（大硅片）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2020-04-20~2026-10-19（1564 行）；本窗口 82 个交易日",
+     "period_return_pct": 56.0,
+     "to_high_pct": 56.0,
+     "high_date": "2021-07-30",
+     "excess_period_pp": 61.9,
+     "excess_to_high_pp": 51.5
+    },
+    {
+     "security_id": "SMIC",
+     "ticker": "688981",
+     "name": "中芯国际",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；晶圆代工是设备的下游客户，属产业链相邻而非设备主轴",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "晶圆代工（先进 / 成熟制程）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2020-07-16~2026-10-19（1510 行）；本窗口 82 个交易日",
+     "period_return_pct": 15.7,
+     "to_high_pct": 15.7,
+     "high_date": "2021-07-30",
+     "excess_period_pp": 21.6,
+     "excess_to_high_pp": 11.2
+    },
+    {
+     "security_id": "PIOTECH",
+     "ticker": "688072",
+     "name": "拓荆科技",
+     "exchange": "SH",
+     "category": "INSUFFICIENT",
+     "evidence_level": "REPORT_NAMED",
+     "rationale": "库内 representative；薄膜沉积设备，但**行情不可得**（2022 上市，不覆盖窗口）",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "market_data": "库内行情不覆盖该窗口（series 2022-04-20 → 2026-10-19；本窗口 0 个交易日）"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign drivers；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 3 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 3 只本题材标的）",
+    "★ PIOTECH 库内无该窗口日线（2022 年上市）→ 行情留空",
+    "C-2020-SEMI-EQUIPMENT status=PROVISIONAL（非 VERIFIED）",
+    "★ 窗口为 Campaign MAIN_RISE（2021-04-01 → 2021-07-30），非 Campaign 全周期（2020-07-16 → 2021-09-30）"
+   ],
+   "market_performance": {
+    "window": [
+     "2021-04-01",
+     "2021-07-30"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2021-04-01 → 2021-07-30（Campaign MAIN_RISE，PHASE_WINDOW）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 82,
+      "first": {
+       "date": "2021-04-01",
+       "close": 5110.78
+      },
+      "last": {
+       "date": "2021-07-30",
+       "close": 4811.17
+      },
+      "high": {
+       "date": "2021-06-01",
+       "close": 5341.68
+      },
+      "low": {
+       "date": "2021-07-27",
+       "close": 4751.31
+      },
+      "period_return_pct": -5.9,
+      "to_high_pct": 4.5,
+      "max_drawdown_from_high_pct": -11.1
+     }
+    },
+    "by_security": {
+     "AMEC": {
+      "trading_days": 82,
+      "first": {
+       "date": "2021-04-01",
+       "close": 76.344
+      },
+      "last": {
+       "date": "2021-07-30",
+       "close": 153.518
+      },
+      "high": {
+       "date": "2021-07-30",
+       "close": 153.518
+      },
+      "low": {
+       "date": "2021-05-10",
+       "close": 71.256
+      },
+      "period_return_pct": 101.1,
+      "to_high_pct": 101.1,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 107.0,
+      "excess_to_high_pp": 96.6
+     },
+     "NSIG": {
+      "trading_days": 82,
+      "first": {
+       "date": "2021-04-01",
+       "close": 24.07
+      },
+      "last": {
+       "date": "2021-07-30",
+       "close": 37.56
+      },
+      "high": {
+       "date": "2021-07-30",
+       "close": 37.56
+      },
+      "low": {
+       "date": "2021-05-10",
+       "close": 21.74
+      },
+      "period_return_pct": 56.0,
+      "to_high_pct": 56.0,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 61.9,
+      "excess_to_high_pp": 51.5
+     },
+     "SMIC": {
+      "trading_days": 82,
+      "first": {
+       "date": "2021-04-01",
+       "close": 55.89
+      },
+      "last": {
+       "date": "2021-07-30",
+       "close": 64.69
+      },
+      "high": {
+       "date": "2021-07-30",
+       "close": 64.69
+      },
+      "low": {
+       "date": "2021-07-19",
+       "close": 51.8
+      },
+      "period_return_pct": 15.7,
+      "to_high_pct": 15.7,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 21.6,
+      "excess_to_high_pp": 11.2
+     },
+     "PIOTECH": {
+      "error": "insufficient_data_in_window",
+      "reason": "no_rows_in_window"
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "SEMI-2022-DOWNTURN",
+   "event_class": "THEME_DIRECT",
+   "label": "半导体下行周期（去库存，对照事件）",
+   "year": 2022,
+   "window_text": "2022-01-04 → 2022-10-12（Campaign 起止；**无 MAIN_RISE 段**）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2022-SEMI-DOWNTURN（rule_semiconductor）+ 实测行情；★ 这是本题材的**下行对照事件**（非「机会」），保留以便与上行期对照。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction；本事件只描述「库内记录了什么」与「实测行情是多少」。",
+   "campaign_facts": {
+    "object_id": "C-2022-SEMI-DOWNTURN",
+    "object_kind": "campaign",
+    "status": "PROVISIONAL",
+    "main_rise": null,
+    "start": "2022-01-04",
+    "peak_date": "2022-08-31",
+    "end": "2022-10-12",
+    "note": "★ 无 MAIN_RISE 段（DECLINING / SECONDARY）→ 窗口取 Campaign 起止。"
+   },
+   "catalysts": [
+    {
+     "date": "2022-01-04",
+     "text": "渠道库存消化 + 消费电子需求萎缩开始压制板块",
+     "source": "库内 Campaign drivers.start"
+    },
+    {
+     "date": "2022-06-01",
+     "text": "部分个股出现 SECONDARY 反弹（样本内高点 2022-08-31）",
+     "source": "库内 Campaign lifecycle SECONDARY"
+    },
+    {
+     "date": "2022-10-12",
+     "text": "美国进一步收紧对华半导体限制；板块延续下行",
+     "source": "库内 Campaign drivers.start"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "MAXSCEND",
+     "ticker": "300782",
+     "name": "卓胜微",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；射频前端设计，随消费电子需求萎缩深跌",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "射频前端芯片设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-06-18~2026-10-19（1779 行）；本窗口 185 个交易日",
+     "period_return_pct": -59.1,
+     "to_high_pct": 0.0,
+     "high_date": "2022-01-04",
+     "excess_period_pp": -36.1,
+     "excess_to_high_pp": 0.0
+    },
+    {
+     "security_id": "SGMC",
+     "ticker": "300661",
+     "name": "圣邦股份",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；模拟芯片设计",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "模拟集成电路设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2022-10-12（1148 行）；本窗口 185 个交易日",
+     "period_return_pct": -25.5,
+     "to_high_pct": 16.1,
+     "high_date": "2022-03-01",
+     "excess_period_pp": -2.5,
+     "excess_to_high_pp": 16.1
+    },
+    {
+     "security_id": "HYGON",
+     "ticker": "688041",
+     "name": "海光信息",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；CPU / DCU 设计（2022-08-12 上市）",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "CPU / DCU（算力芯片）设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "note": "★ 2022-08-12 上市，窗口起点（2022-01-04）不可达 → 覆盖不足，如实标注。",
+     "market_data": "2022-08-12~2026-10-19（1001 行）；本窗口 38 个交易日",
+     "period_return_pct": -36.2,
+     "to_high_pct": 5.4,
+     "high_date": "2022-09-22",
+     "excess_period_pp": -13.2,
+     "excess_to_high_pp": 5.4
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign drivers；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 2 / 覆盖不足 1 / 不可得 0 / 未计算 0（共 3 只本题材标的）",
+    "★ 本事件为**下行对照**（Declining），不作为「历史机会」类正面样本",
+    "★ HYGON 2022-08-12 上市，窗口起点不可达 → 覆盖不足（仅 38 个交易日）",
+    "★ 窗口 = Campaign 全周期（无 MAIN_RISE 段），与其余事件的 MAIN_RISE 口径不同，**不得混用**"
+   ],
+   "market_performance": {
+    "window": [
+     "2022-01-04",
+     "2022-10-12"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2022-01-04 → 2022-10-12（Campaign 起止；**无 MAIN_RISE 段**）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 185,
+      "first": {
+       "date": "2022-01-04",
+       "close": 4917.77
+      },
+      "last": {
+       "date": "2022-10-12",
+       "close": 3784.31
+      },
+      "high": {
+       "date": "2022-01-04",
+       "close": 4917.77
+      },
+      "low": {
+       "date": "2022-10-10",
+       "close": 3720.94
+      },
+      "period_return_pct": -23.0,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -24.3
+     }
+    },
+    "by_security": {
+     "MAXSCEND": {
+      "trading_days": 185,
+      "first": {
+       "date": "2022-01-04",
+       "close": 204.442
+      },
+      "last": {
+       "date": "2022-10-12",
+       "close": 83.524
+      },
+      "high": {
+       "date": "2022-01-04",
+       "close": 204.442
+      },
+      "low": {
+       "date": "2022-10-11",
+       "close": 78.904
+      },
+      "period_return_pct": -59.1,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -61.4,
+      "excess_period_pp": -36.1,
+      "excess_to_high_pp": 0.0
+     },
+     "SGMC": {
+      "trading_days": 185,
+      "first": {
+       "date": "2022-01-04",
+       "close": 118.094
+      },
+      "last": {
+       "date": "2022-10-12",
+       "close": 87.978
+      },
+      "high": {
+       "date": "2022-03-01",
+       "close": 137.104
+      },
+      "low": {
+       "date": "2022-10-11",
+       "close": 78.664
+      },
+      "period_return_pct": -25.5,
+      "to_high_pct": 16.1,
+      "max_drawdown_from_high_pct": -42.6,
+      "excess_period_pp": -2.5,
+      "excess_to_high_pp": 16.1
+     },
+     "HYGON": {
+      "trading_days": 38,
+      "first": {
+       "date": "2022-08-12",
+       "close": 59.541
+      },
+      "last": {
+       "date": "2022-10-12",
+       "close": 37.991
+      },
+      "high": {
+       "date": "2022-09-22",
+       "close": 62.781
+      },
+      "low": {
+       "date": "2022-10-11",
+       "close": 37.441
+      },
+      "period_return_pct": -36.2,
+      "to_high_pct": 5.4,
+      "max_drawdown_from_high_pct": -40.4,
+      "excess_period_pp": -13.2,
+      "excess_to_high_pp": 5.4
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "SEMI-2023-AI-COMPUTE",
+   "event_class": "THEME_DIRECT",
+   "label": "AI 算力 / 大模型驱动的芯片行情",
+   "year": 2023,
+   "window_text": "2023-01-30 → 2023-04-10（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2023-AI-COMPUTE-SEMI（rule_semiconductor）+ 实测行情；主线：ChatGPT 破亿 → 海外算力资本开支上修 → 国产算力芯片叙事。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction；本事件只描述「库内记录了什么」与「实测行情是多少」。",
+   "campaign_facts": {
+    "object_id": "C-2023-AI-COMPUTE-SEMI",
+    "object_kind": "campaign",
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2023-01-30",
+     "end": "2023-04-10",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2023-01-30",
+    "peak_date": "2023-04-10",
+    "end": "2023-08-25"
+   },
+   "catalysts": [
+    {
+     "date": "2023-01-30",
+     "text": "ChatGPT 月活快速破亿，大模型关注度骤升",
+     "source": "库内 Campaign drivers.start"
+    },
+    {
+     "date": "2023-03-16",
+     "text": "微软发布植入 GPT-4 的 Copilot",
+     "source": "库内 Campaign drivers.start"
+    },
+    {
+     "date": "2023-03-21",
+     "text": "英伟达 GTC 大会，海外算力资本开支预期上修",
+     "source": "库内 Campaign drivers.start"
+    },
+    {
+     "date": "2023-04-07",
+     "text": "国产算力芯片情绪高点（样本内高点）",
+     "source": "实测行情（market_data.db）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "CAMBRICON",
+     "ticker": "688256",
+     "name": "寒武纪",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；AI 芯片设计，本事件机制核心",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "AI 芯片（训练 / 推理）设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2022-01-04~2025-12-31（969 行）；本窗口 50 个交易日",
+     "period_return_pct": 228.1,
+     "to_high_pct": 256.6,
+     "high_date": "2023-04-07",
+     "excess_period_pp": 230.4,
+     "excess_to_high_pp": 256.6
+    },
+    {
+     "security_id": "GIGADEVICE",
+     "ticker": "603986",
+     "name": "兆易创新",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；存储 / MCU，AI 算力叙事叠加国产替代",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "存储芯片（NOR Flash / DRAM）与 MCU 设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-03-02~2025-12-31（1898 行）；本窗口 50 个交易日",
+     "period_return_pct": 8.0,
+     "to_high_pct": 14.5,
+     "high_date": "2023-04-07",
+     "excess_period_pp": 10.3,
+     "excess_to_high_pp": 14.5
+    },
+    {
+     "security_id": "NAURA",
+     "ticker": "002371",
+     "name": "北方华创",
+     "exchange": "SZ",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；半导体设备，属 AI 算力扩散（上游资本开支），非 AI 算力直接机制",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "半导体设备（刻蚀 / 薄膜沉积 / 炉管）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2023-08-25（1373 行）；本窗口 50 个交易日",
+     "period_return_pct": 23.1,
+     "to_high_pct": 28.5,
+     "high_date": "2023-04-07",
+     "excess_period_pp": 25.4,
+     "excess_to_high_pp": 28.5
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign drivers；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 3 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 3 只本题材标的）",
+    "★ 事件窗口为 Campaign MAIN_RISE（2023-01-30 → 2023-04-10），仅 50 个交易日",
+    "C-2023-AI-COMPUTE-SEMI status=PROVISIONAL（非 VERIFIED）",
+    "★ 不得把「区间上涨」解释为题材因果；Campaign peak_date（2023-04-10）不等于全部个股高点"
+   ],
+   "market_performance": {
+    "window": [
+     "2023-01-30",
+     "2023-04-10"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2023-01-30 → 2023-04-10（Campaign MAIN_RISE，PHASE_WINDOW）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 50,
+      "first": {
+       "date": "2023-01-30",
+       "close": 4201.35
+      },
+      "last": {
+       "date": "2023-04-10",
+       "close": 4104.81
+      },
+      "high": {
+       "date": "2023-01-30",
+       "close": 4201.35
+      },
+      "low": {
+       "date": "2023-03-20",
+       "close": 3939.08
+      },
+      "period_return_pct": -2.3,
+      "to_high_pct": 0.0,
+      "max_drawdown_from_high_pct": -6.2
+     }
+    },
+    "by_security": {
+     "CAMBRICON": {
+      "trading_days": 50,
+      "first": {
+       "date": "2023-01-30",
+       "close": 42.154
+      },
+      "last": {
+       "date": "2023-04-10",
+       "close": 138.315
+      },
+      "high": {
+       "date": "2023-04-07",
+       "close": 150.336
+      },
+      "low": {
+       "date": "2023-01-31",
+       "close": 40.671
+      },
+      "period_return_pct": 228.1,
+      "to_high_pct": 256.6,
+      "max_drawdown_from_high_pct": -8.0,
+      "excess_period_pp": 230.4,
+      "excess_to_high_pp": 256.6
+     },
+     "GIGADEVICE": {
+      "trading_days": 50,
+      "first": {
+       "date": "2023-01-30",
+       "close": 119.54
+      },
+      "last": {
+       "date": "2023-04-10",
+       "close": 129.15
+      },
+      "high": {
+       "date": "2023-04-07",
+       "close": 136.89
+      },
+      "low": {
+       "date": "2023-03-10",
+       "close": 99.32
+      },
+      "period_return_pct": 8.0,
+      "to_high_pct": 14.5,
+      "max_drawdown_from_high_pct": -5.7,
+      "excess_period_pp": 10.3,
+      "excess_to_high_pp": 14.5
+     },
+     "NAURA": {
+      "trading_days": 50,
+      "first": {
+       "date": "2023-01-30",
+       "close": 178.383
+      },
+      "last": {
+       "date": "2023-04-10",
+       "close": 219.546
+      },
+      "high": {
+       "date": "2023-04-07",
+       "close": 229.146
+      },
+      "low": {
+       "date": "2023-02-27",
+       "close": 168.486
+      },
+      "period_return_pct": 23.1,
+      "to_high_pct": 28.5,
+      "max_drawdown_from_high_pct": -4.2,
+      "excess_period_pp": 25.4,
+      "excess_to_high_pp": 28.5
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "SEMI-2024-FUND3",
+   "event_class": "THEME_DIRECT",
+   "label": "大基金三期与半导体自主可控（破局）",
+   "year": 2024,
+   "window_text": "2024-09-24 → 2024-11-29（Research Candidate MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Research Candidate RC-2024-SEMI-FUND3（rule_semiconductor）+ 实测行情；★ 该 RC 官方 status=INSUFFICIENT（无法排除 Beta Contamination：2024-09-24 起全市场普涨）。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction；本事件只描述「库内记录了什么」与「实测行情是多少」。",
+   "campaign_facts": {
+    "object_id": "RC-2024-SEMI-FUND3",
+    "object_kind": "candidate",
+    "status": "INSUFFICIENT",
+    "main_rise": {
+     "start": "2024-09-24",
+     "end": "2024-11-29",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2024-05-24",
+    "peak_date": "2024-12-31",
+    "end": null,
+    "note": "Research Candidate（**不伪装 Campaign**）；status=INSUFFICIENT。"
+   },
+   "catalysts": [
+    {
+     "date": "2024-05-24",
+     "text": "大基金三期 3440 亿元注册资本落地，投向先进制造 / 高端设备 / AI 芯片",
+     "source": "库内 RC drivers.start"
+    },
+    {
+     "date": "2024-09-24",
+     "text": "央行 / 证监会 / 金融监管总局一揽子金融政策，改善流动性与风险偏好",
+     "source": "库内 RC drivers.accelerator"
+    },
+    {
+     "date": "2024-11-29",
+     "text": "估值快速抬升后交易拥挤，2024-12 起进入区间震荡",
+     "source": "库内 RC drivers.turning"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "SMIC",
+     "ticker": "688981",
+     "name": "中芯国际",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；晶圆代工 / 先进制程，自主可控主线",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "晶圆代工（先进 / 成熟制程）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2020-07-16~2026-10-19（1510 行）；本窗口 44 个交易日"
+    },
+    {
+     "security_id": "AMEC",
+     "ticker": "688012",
+     "name": "中微公司",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；刻蚀设备，设备国产化主线",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "半导体设备（刻蚀 / MOCVD）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-07-22~2025-12-18（1557 行）；本窗口 44 个交易日"
+    },
+    {
+     "security_id": "PIOTECH",
+     "ticker": "688072",
+     "name": "拓荆科技",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；薄膜沉积设备",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "半导体设备（薄膜沉积 PECVD / ALD）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2022-04-20~2026-10-19（1079 行）；本窗口 44 个交易日"
+    },
+    {
+     "security_id": "HYGON",
+     "ticker": "688041",
+     "name": "海光信息",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；CPU / DCU 算力芯片",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "CPU / DCU（算力芯片）设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2022-08-12~2026-10-19（1001 行）；本窗口 44 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 RC drivers；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 4 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 4 只本题材标的）",
+    "★★ 行情可算 **≠** 因果：同期基准 SH000300 区间 **+16.8%**、至高点 **+27.0%** —— 2024-09-24 起为**全市场普涨**，Beta Contamination **无法排除**；4 只标的区间涨幅（+61.4% ~ +101.3%）显著高于基准，但这是「高弹性 + 题材叙事」共同作用的**事后价格描述**，**不能**据此认定大基金三期驱动了该窗口行情",
+    "★★ `RC-2024-SEMI-FUND3` 官方 status **仍为 INSUFFICIENT**（不因行情补齐而改变）：行情可算 ≠ 机制被证明",
+    "★ 行情口径 = `theme_market_performance_v1`（见文档 `market_performance_contract`）：adjusted 收盘、窗口双端包含、至高点 = 窗口内**最高收盘价**、`max_drawdown_from_high_pct` = **自至高点之后**的最大回撤；★ 不得把 Campaign `peak_date`（2024-12-31）当作个股高点",
+    "★ 事件窗口取自 RC 的 MAIN_RISE（PHASE_WINDOW，非精确日）；两端均为交易日，44 个交易日 = 同期基准交易日数"
+   ],
+   "market_performance": {
+    "window": [
+     "2024-09-24",
+     "2024-11-29"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2024-09-24 → 2024-11-29（Research Candidate MAIN_RISE，PHASE_WINDOW）。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）：adjusted 收盘、窗口双端包含、至高点 = 窗口内最高收盘价、`max_drawdown_from_high_pct` = 自至高点之后的最大回撤。★★ 同期基准 SH000300 **+16.8%**（普涨）→ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 44,
+      "first": {
+       "date": "2024-09-24",
+       "close": 3351.91
+      },
+      "last": {
+       "date": "2024-11-29",
+       "close": 3916.58
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 4256.1
+      },
+      "low": {
+       "date": "2024-09-24",
+       "close": 3351.91
+      },
+      "period_return_pct": 16.8,
+      "to_high_pct": 27.0,
+      "max_drawdown_from_high_pct": -11.0
+     }
+    },
+    "by_security": {
+     "SMIC": {
+      "trading_days": 44,
+      "first": {
+       "date": "2024-09-24",
+       "close": 44.77
+      },
+      "last": {
+       "date": "2024-11-29",
+       "close": 90.1
+      },
+      "high": {
+       "date": "2024-11-11",
+       "close": 104.98
+      },
+      "low": {
+       "date": "2024-09-24",
+       "close": 44.77
+      },
+      "period_return_pct": 101.3,
+      "to_high_pct": 134.5,
+      "max_drawdown_from_high_pct": -18.9,
+      "excess_period_pp": 84.5,
+      "excess_to_high_pp": 107.5
+     },
+     "AMEC": {
+      "trading_days": 44,
+      "first": {
+       "date": "2024-09-24",
+       "close": 80.907
+      },
+      "last": {
+       "date": "2024-11-29",
+       "close": 148.558
+      },
+      "high": {
+       "date": "2024-11-12",
+       "close": 164.867
+      },
+      "low": {
+       "date": "2024-09-25",
+       "close": 80.752
+      },
+      "period_return_pct": 83.6,
+      "to_high_pct": 103.8,
+      "max_drawdown_from_high_pct": -17.4,
+      "excess_period_pp": 66.8,
+      "excess_to_high_pp": 76.8
+     },
+     "PIOTECH": {
+      "trading_days": 44,
+      "first": {
+       "date": "2024-09-24",
+       "close": 106.552
+      },
+      "last": {
+       "date": "2024-11-29",
+       "close": 198.362
+      },
+      "high": {
+       "date": "2024-11-11",
+       "close": 211.502
+      },
+      "low": {
+       "date": "2024-09-25",
+       "close": 104.852
+      },
+      "period_return_pct": 86.2,
+      "to_high_pct": 98.5,
+      "max_drawdown_from_high_pct": -13.5,
+      "excess_period_pp": 69.4,
+      "excess_to_high_pp": 71.5
+     },
+     "HYGON": {
+      "trading_days": 44,
+      "first": {
+       "date": "2024-09-24",
+       "close": 77.711
+      },
+      "last": {
+       "date": "2024-11-29",
+       "close": 125.401
+      },
+      "high": {
+       "date": "2024-11-07",
+       "close": 141.341
+      },
+      "low": {
+       "date": "2024-09-24",
+       "close": 77.711
+      },
+      "period_return_pct": 61.4,
+      "to_high_pct": 81.9,
+      "max_drawdown_from_high_pct": -16.7,
+      "excess_period_pp": 44.6,
+      "excess_to_high_pp": 54.9
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "SEMI-2025-MEMORY",
+   "event_class": "THEME_DIRECT",
+   "label": "存储超级周期（DRAM / NAND 涨价）",
+   "year": 2025,
+   "window_text": "2025-07-01 → 2025-10-31（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2024-SEMI-MEMORY（rule_semiconductor）+ 实测行情；主线：存储价格深跌后反弹 + AI 服务器 DRAM 需求 + 原厂削减 NAND 供应。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction；本事件只描述「库内记录了什么」与「实测行情是多少」。",
+   "campaign_facts": {
+    "object_id": "C-2024-SEMI-MEMORY",
+    "object_kind": "campaign",
+    "status": "PROVISIONAL",
+    "main_rise": {
+     "start": "2025-07-01",
+     "end": "2025-10-31",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2024-09-24",
+    "peak_date": "2025-10-31",
+    "end": null,
+    "note": "end 未定（截至 2025-12-31 尚无明确结束信号）。"
+   },
+   "catalysts": [
+    {
+     "date": "2025-07-01",
+     "text": "存储价格自 2023 年深跌 60%—70% 后进入反弹（库存改善）",
+     "source": "库内 Campaign drivers.start"
+    },
+    {
+     "date": "2025-08-28",
+     "text": "AI 服务器 DRAM 需求推动算力 / 存储主线情绪（样本内 CAMBRICON 高点）",
+     "source": "实测行情（market_data.db）"
+    },
+    {
+     "date": "2025-10-29",
+     "text": "DRAM 合约价季增 45%—50% 创历史最大季度涨幅（基准高点 2025-10-29）",
+     "source": "库内 Campaign drivers.turning"
+    },
+    {
+     "date": "2025-10-31",
+     "text": "下游（PC / 手机）成本压力显性化，价格涨幅成为后续需求最大变量",
+     "source": "库内 Campaign drivers.turning"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "LONGYS",
+     "ticker": "301308",
+     "name": "江波龙",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；存储模组，涨价链条直接受益环节",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "存储模组 / 品牌存储",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2023-01-03~2025-12-31（727 行）；本窗口 83 个交易日",
+     "period_return_pct": 209.5,
+     "to_high_pct": 235.3,
+     "high_date": "2025-10-30",
+     "excess_period_pp": 191.8,
+     "excess_to_high_pp": 214.9
+    },
+    {
+     "security_id": "BIWIN",
+     "ticker": "688525",
+     "name": "佰维存储",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；存储模组",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "存储模组（嵌入式 / 消费级）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2023-01-03~2025-12-31（727 行）；本窗口 83 个交易日",
+     "period_return_pct": 94.1,
+     "to_high_pct": 101.1,
+     "high_date": "2025-10-30",
+     "excess_period_pp": 76.4,
+     "excess_to_high_pp": 80.7
+    },
+    {
+     "security_id": "GIGADEVICE",
+     "ticker": "603986",
+     "name": "兆易创新",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；存储芯片（NOR / DRAM）设计",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "存储芯片（NOR Flash / DRAM）与 MCU 设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-03-02~2025-12-31（1898 行）；本窗口 83 个交易日",
+     "period_return_pct": 78.4,
+     "to_high_pct": 100.3,
+     "high_date": "2025-10-28",
+     "excess_period_pp": 60.7,
+     "excess_to_high_pp": 79.9
+    },
+    {
+     "security_id": "CAMBRICON",
+     "ticker": "688256",
+     "name": "寒武纪",
+     "exchange": "SH",
+     "category": "MARKET_PARTICIPANT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；AI 芯片，**历史市场参与者**：参与本窗口存储 / AI 行情，但其业务机制非「存储」主轴",
+     "source": "canonical export securities 注册表 + 库内对象 drivers",
+     "registry_role": "representative",
+     "business_mechanism": "AI 芯片（训练 / 推理）设计",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2022-01-04~2025-12-31（969 行）；本窗口 83 个交易日",
+     "period_return_pct": 144.6,
+     "to_high_pct": 182.5,
+     "high_date": "2025-08-28",
+     "excess_period_pp": 126.9,
+     "excess_to_high_pp": 162.1
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign drivers；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 4 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 4 只本题材标的）",
+    "★ 事件窗口为 Campaign MAIN_RISE（2025-07-01 → 2025-10-31），Campaign start（2024-09-24）早于窗口",
+    "★ C-2024-SEMI-MEMORY end 未定（截至 2025-12-31 尚无明确结束信号）",
+    "C-2024-SEMI-MEMORY status=PROVISIONAL（非 VERIFIED）"
+   ],
+   "market_performance": {
+    "window": [
+     "2025-07-01",
+     "2025-10-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = 2025-07-01 → 2025-10-31（Campaign MAIN_RISE，PHASE_WINDOW）。★★ 不得把「区间上涨」解释为题材因果，也不得把 Campaign `peak_date` 当作个股高点。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 83,
+      "first": {
+       "date": "2025-07-01",
+       "close": 3942.76
+      },
+      "last": {
+       "date": "2025-10-31",
+       "close": 4640.67
+      },
+      "high": {
+       "date": "2025-10-29",
+       "close": 4747.84
+      },
+      "low": {
+       "date": "2025-07-01",
+       "close": 3942.76
+      },
+      "period_return_pct": 17.7,
+      "to_high_pct": 20.4,
+      "max_drawdown_from_high_pct": -2.3
+     }
+    },
+    "by_security": {
+     "LONGYS": {
+      "trading_days": 83,
+      "first": {
+       "date": "2025-07-01",
+       "close": 84.099
+      },
+      "last": {
+       "date": "2025-10-31",
+       "close": 260.319
+      },
+      "high": {
+       "date": "2025-10-30",
+       "close": 282.009
+      },
+      "low": {
+       "date": "2025-07-10",
+       "close": 79.539
+      },
+      "period_return_pct": 209.5,
+      "to_high_pct": 235.3,
+      "max_drawdown_from_high_pct": -7.7,
+      "excess_period_pp": 191.8,
+      "excess_to_high_pp": 214.9
+     },
+     "BIWIN": {
+      "trading_days": 83,
+      "first": {
+       "date": "2025-07-01",
+       "close": 67.162
+      },
+      "last": {
+       "date": "2025-10-31",
+       "close": 130.362
+      },
+      "high": {
+       "date": "2025-10-30",
+       "close": 135.052
+      },
+      "low": {
+       "date": "2025-08-08",
+       "close": 62.292
+      },
+      "period_return_pct": 94.1,
+      "to_high_pct": 101.1,
+      "max_drawdown_from_high_pct": -3.5,
+      "excess_period_pp": 76.4,
+      "excess_to_high_pp": 80.7
+     },
+     "GIGADEVICE": {
+      "trading_days": 83,
+      "first": {
+       "date": "2025-07-01",
+       "close": 122.93
+      },
+      "last": {
+       "date": "2025-10-31",
+       "close": 219.25
+      },
+      "high": {
+       "date": "2025-10-28",
+       "close": 246.2
+      },
+      "low": {
+       "date": "2025-07-16",
+       "close": 113.49
+      },
+      "period_return_pct": 78.4,
+      "to_high_pct": 100.3,
+      "max_drawdown_from_high_pct": -10.9,
+      "excess_period_pp": 60.7,
+      "excess_to_high_pp": 79.9
+     },
+     "CAMBRICON": {
+      "trading_days": 83,
+      "first": {
+       "date": "2025-07-01",
+       "close": 376.846
+      },
+      "last": {
+       "date": "2025-10-31",
+       "close": 921.812
+      },
+      "high": {
+       "date": "2025-08-28",
+       "close": 1064.705
+      },
+      "low": {
+       "date": "2025-07-10",
+       "close": 350.336
+      },
+      "period_return_pct": 144.6,
+      "to_high_pct": 182.5,
+      "max_drawdown_from_high_pct": -24.7,
+      "excess_period_pp": 126.9,
+      "excess_to_high_pp": 162.1
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  }
+ ],
+ "market_performance_contract": {
+  "version": "theme_market_performance_v1",
+  "price_series": "market_daily.price_type='adjusted' → adj_close（前复权收盘）",
+  "window": "market_performance.window [start, end]，双端包含",
+  "trading_days": "窗口内该序列实际行数（不是日历天数、不是基准交易日数）",
+  "high": "窗口内 adj_close 最大值（首次出现）；不是 high 列、不是 Campaign peak_date",
+  "period_return_pct": "(last.close / first.close - 1) × 100",
+  "to_high_pct": "(high.close / first.close - 1) × 100",
+  "max_drawdown_from_high_pct": "★ 自至高点「之后」的最大回撤 = min over t>=high.date of (close_t/high.close - 1) × 100；不是全窗口最大回撤",
+  "benchmark": "SH000300，同窗口、同价格口径；excess = 个股 − 基准（区间与至高点两列口径不同，不得混用）",
+  "rounding": "百分比 1 位小数（Python round）；超额由已舍入的两个百分比相减后再舍入",
+  "missing": "窗口内 < 2 行 → error=insufficient_data_in_window + reason（no_series / no_rows_in_window / single_row），不补 0",
+  "non_positive_price": "★ 窗口内任一条 adj_close <= 0 → error=invalid_price_series（上游 qfq 除权价差法在高分红个股早年会产生负价，属数据源方法学限制）",
+  "discontinuous_series": "★ 窗口内相邻交易日跳变 > 45% → error=invalid_price_series（A 股单日涨跌幅上限 ≤30%）",
+  "source": "research/database/market_data.db（由被跟踪的便携快照恢复）",
+  "generated_by": "research/scripts/build_theme_market_performance.py"
+ }
+}

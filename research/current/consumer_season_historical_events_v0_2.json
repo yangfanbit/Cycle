@@ -1,0 +1,1046 @@
+{
+ "artifact": "consumer_season_historical_events",
+ "artifact_version": "v0.1",
+ "theme": {
+  "theme_id": "CONSUMER_SEASON",
+  "label": "消费旺季 / 大众消费"
+ },
+ "generated_at": "2026-10-19",
+ "generated_by": "research/scripts/build_theme_map_v0_1.py（v0.25）",
+ "supersedes": null,
+ "position": "历史题材地图第 7 个题材（v0.25）。题材 = **消费旺季 / 大众消费**（食品饮料 · 免税 · 服务消费 · 家电）。★★ **事件窗口 = Campaign 的 MAIN_RISE 主升段，不是春节 / 五一 / 十一 / 双十一的月份窗口** —— 本图**不**证明「消费旺季」季节性规律成立；季节性结论见外部日历 v0_2 的 EXT-02 / 07 / 08 / 15 / 18。数据 = 库内既有 Campaign（`campaigns` / `campaign_phases` / `campaign_events` / `campaign_securities`）+ `market_data.db` 实测行情（adjusted / 前复权）。★ 不新增研究结论、不生成评分 / 排名 / 概率 / 预测。",
+ "event_classes": [
+  {
+   "code": "THEME_DIRECT",
+   "label": "消费旺季 / 大众消费",
+   "meaning": "本题材直接机制或产业链相邻的历史事件（窗口 = Campaign MAIN_RISE）。"
+  }
+ ],
+ "source_discipline": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+ "business_mechanism_note": "★★ 下列标的的「业务机制」是**事后核实**的产业事实；它**不**证明该机制驱动了本事件窗口的行情。业务机制相关 ≠ 因果。每只标的的 `business_mechanism_caveat` 逐条重申此边界。",
+ "known_gaps_topic": [
+  "★★ 5 个事件的窗口均为 **Campaign MAIN_RISE**（多为 1–2 年），**不是**季节性月份窗口 —— 不能据此判定「春节/国庆/双十一消费行情」成立",
+  "★ 2024 家电以旧换新的窗口止于 2024-10-08（Campaign 主升段结束），2024-10 之后的政策延续期未纳入",
+  "★ 本图不含跨年份比较 / 经验基准概率（未建立该口径）"
+ ],
+ "events": [
+  {
+   "event_id": "CONS-2016-BAIJIU",
+   "event_class": "THEME_DIRECT",
+   "label": "白酒 / 大众消费升级与白马蓝筹（2016–2018）",
+   "year": 2016,
+   "window_text": "2016-06-01 → 2017-12-31（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2016-CONS-BAIJIU-UPGRADE（2016–2018 白酒/大众消费升级与白马蓝筹行情（含 2018 年回撤结束）［intake R01-CONSUMER-001］）+ 实测行情；★ 事件窗口 = Campaign 主升段，**不是**季节性月份窗口。",
+   "study_state": "NO_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+   "campaign_facts": {
+    "object_id": "C-2016-CONS-BAIJIU-UPGRADE",
+    "object_kind": "campaign",
+    "status": "CAMPAIGN",
+    "main_rise": {
+     "start": "2016-06-01",
+     "end": "2017-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2016-06-01",
+    "peak_date": "2018-01-31",
+    "end": "2018-12-31",
+    "note": "库内正式 Campaign（非 Research Candidate）。2016–2018 白酒/大众消费升级与白马蓝筹行情（含 2018 年回撤结束）［intake R01-CONSUMER-001］"
+   },
+   "catalysts": [
+    {
+     "date": "2017-06-21",
+     "text": "MSCI 宣布自 2018 年 6 月起将中国 A 股纳入 MSCI 新兴市场指数：R01-CONSUMER-E003｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（policy） · 来源：中国A股被纳入明晟（MSCI）新兴市场指数（https://news.cctv.com/2017/06/21/ARTIk5bxKaDbdLDk0GmR7MzX170621.shtml）"
+    },
+    {
+     "date": "2018-10-29",
+     "text": "贵州茅台出现上市以来首个「一」字跌停（Q3 收入 +3.8%、利润 +2.7% 低于预期）：R01-CONSUMER-E005｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（market） · 来源：白酒股集体暴跌 贵州茅台\"一\"字跌停（https://finance.sina.com.cn/roll/2018-10-29/doc-ihnaivxq1677625.shtml）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "MOUTAI",
+     "ticker": "600519",
+     "name": "贵州茅台",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；高端白酒龙头，消费升级主线的核心定价标的",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "高端白酒（酱香型）生产与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2015-01-05~2021-12-31（1705 行）；本窗口 388 个交易日"
+    },
+    {
+     "security_id": "WULIANGYE",
+     "ticker": "000858",
+     "name": "五粮液",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；浓香型白酒龙头，渠道与价格带升级",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "浓香型白酒生产与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2015-01-05~2021-12-31（1645 行）；本窗口 388 个交易日"
+    },
+    {
+     "security_id": "LUZHOULAOJIAO",
+     "ticker": "000568",
+     "name": "泸州老窖",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；次高端/中端白酒，受益于价格带抬升",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "浓香型白酒生产与销售（中高端价格带）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2015-01-05~2021-12-31（1687 行）；本窗口 388 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign 记录；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 0 / 覆盖不足 0 / 不可得 3 / 未计算 0（共 3 只本题材标的）",
+    "[AUTO:MARKET_DATA] 行情不可得：LUZHOULAOJIAO / MOUTAI / WULIANGYE —— 上游前复权（qfq）按除权价差计算，早年高分红段出现**非正价格**（分红累计超过当时股价），按合同不用于算收益率，**不补数**",
+    "★ 窗口 = Campaign MAIN_RISE（2016-06-01 → 2017-12-31），**不是**「春节消费」月份窗口",
+    "★ 2018 年回撤段（2018-09-01 → 2018-12-31）未纳入本窗口",
+    "★★ **本事件行情不可用**：上游前复权（qfq）按「除权价差」计算，三只白酒在 2015–2016 年**出现非正价格**（分红累计超过当时股价）→ 按合同 `invalid_price_series` 如实留空，**不用负价算收益率**。要覆盖该段须改用后复权或原始价（本轮未引入，属数据源方法学限制）"
+   ],
+   "market_performance": {
+    "window": [
+     "2016-06-01",
+     "2017-12-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = Campaign MAIN_RISE，**不是**季节性月份窗口。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）。★★ 不得把「区间上涨」解释为题材因果。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 388,
+      "first": {
+       "date": "2016-06-01",
+       "close": 3160.55
+      },
+      "last": {
+       "date": "2017-12-29",
+       "close": 4030.85
+      },
+      "high": {
+       "date": "2017-11-22",
+       "close": 4227.57
+      },
+      "low": {
+       "date": "2016-06-13",
+       "close": 3066.34
+      },
+      "period_return_pct": 27.5,
+      "to_high_pct": 33.8,
+      "max_drawdown_from_high_pct": -6.1
+     }
+    },
+    "by_security": {
+     "MOUTAI": {
+      "error": "invalid_price_series",
+      "reason": "non_positive_adj_close"
+     },
+     "WULIANGYE": {
+      "error": "invalid_price_series",
+      "reason": "non_positive_adj_close"
+     },
+     "LUZHOULAOJIAO": {
+      "error": "invalid_price_series",
+      "reason": "non_positive_adj_close"
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "CONS-2019-BAIJIU-CORE",
+   "event_class": "THEME_DIRECT",
+   "label": "白酒 / 食品饮料核心资产主升（2019–2021）",
+   "year": 2019,
+   "window_text": "2019-03-01 → 2020-12-31（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2019-CONS-BAIJIU-CORE（2019–2021 白酒/食品饮料核心资产主升（外资增量 + 确定性溢价）［intake R01-CONSUMER-002］）+ 实测行情；★ 事件窗口 = Campaign 主升段，**不是**季节性月份窗口。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+   "campaign_facts": {
+    "object_id": "C-2019-CONS-BAIJIU-CORE",
+    "object_kind": "campaign",
+    "status": "CAMPAIGN",
+    "main_rise": {
+     "start": "2019-03-01",
+     "end": "2020-12-31",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2019-03-01",
+    "peak_date": "2021-02-18",
+    "end": "2021-12-31",
+    "note": "库内正式 Campaign（非 Research Candidate）。2019–2021 白酒/食品饮料核心资产主升（外资增量 + 确定性溢价）［intake R01-CONSUMER-002］"
+   },
+   "catalysts": [
+    {
+     "date": "2019-03-01",
+     "text": "MSCI 宣布将中国 A 股纳入因子由 5% 提高至 20%（5/8/11 月三步实施）：R01-CONSUMER-E009｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（policy） · 来源：MSCI increases the weight of China A shares in the MSCI indexes（https://www.msci.com/documents/10199/35706476-c424-9a58-fab7-9b5cd3610e95）"
+    },
+    {
+     "date": "2021-02-18",
+     "text": "中证白酒指数（399997）盘中最高 21663.85 点；贵州茅台盘中最高 2627.88 元：R01-CONSUMER-E012｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（market） · 来源：东方财富历史行情接口（日K线/月K线，不复权）（https://push2his.eastmoney.com/api/qt/stock/kline/get）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "MOUTAI",
+     "ticker": "600519",
+     "name": "贵州茅台",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；核心资产定价锚",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "高端白酒（酱香型）生产与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2015-01-05~2021-12-31（1705 行）；本窗口 450 个交易日"
+    },
+    {
+     "security_id": "WULIANGYE",
+     "ticker": "000858",
+     "name": "五粮液",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；浓香龙头，渠道改革",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "浓香型白酒生产与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2015-01-05~2021-12-31（1645 行）；本窗口 450 个交易日"
+    },
+    {
+     "security_id": "FENJIU",
+     "ticker": "600809",
+     "name": "山西汾酒",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；清香型白酒，全国化扩张",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "清香型白酒生产与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2021-12-31（963 行）；本窗口 450 个交易日"
+    },
+    {
+     "security_id": "HAITIAN",
+     "ticker": "603288",
+     "name": "海天味业",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；调味品龙头，与食品饮料核心资产同属「确定性溢价」交易",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "酱油 / 调味品生产与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2021-12-31（973 行）；本窗口 450 个交易日"
+    },
+    {
+     "security_id": "YILI",
+     "ticker": "600887",
+     "name": "伊利股份",
+     "exchange": "SH",
+     "category": "SPILLOVER",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；乳制品龙头，同属食品饮料核心资产",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "液态奶 / 乳制品生产与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2018-01-02~2021-12-31（973 行）；本窗口 450 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign 记录；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 5 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 5 只本题材标的）",
+    "★ 窗口 = Campaign MAIN_RISE（2019-03-01 → 2020-12-31）；2021-02 起的回撤段未纳入",
+    "★ 「核心资产」是**市场交易结构**描述，不是单一产业机制；跨行业（白酒 / 调味品 / 乳制品）并列时不得当作同一机制"
+   ],
+   "market_performance": {
+    "window": [
+     "2019-03-01",
+     "2020-12-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = Campaign MAIN_RISE，**不是**季节性月份窗口。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）。★★ 不得把「区间上涨」解释为题材因果。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 450,
+      "first": {
+       "date": "2019-03-01",
+       "close": 3749.71
+      },
+      "last": {
+       "date": "2020-12-31",
+       "close": 5211.29
+      },
+      "high": {
+       "date": "2020-12-31",
+       "close": 5211.29
+      },
+      "low": {
+       "date": "2020-03-23",
+       "close": 3530.31
+      },
+      "period_return_pct": 39.0,
+      "to_high_pct": 39.0,
+      "max_drawdown_from_high_pct": 0.0
+     }
+    },
+    "by_security": {
+     "MOUTAI": {
+      "trading_days": 450,
+      "first": {
+       "date": "2019-03-01",
+       "close": 515.502
+      },
+      "last": {
+       "date": "2020-12-31",
+       "close": 1755.766
+      },
+      "high": {
+       "date": "2020-12-31",
+       "close": 1755.766
+      },
+      "low": {
+       "date": "2019-03-08",
+       "close": 463.702
+      },
+      "period_return_pct": 240.6,
+      "to_high_pct": 240.6,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 201.6,
+      "excess_to_high_pp": 201.6
+     },
+     "WULIANGYE": {
+      "trading_days": 450,
+      "first": {
+       "date": "2019-03-01",
+       "close": 47.044
+      },
+      "last": {
+       "date": "2020-12-31",
+       "close": 266.894
+      },
+      "high": {
+       "date": "2020-12-31",
+       "close": 266.894
+      },
+      "low": {
+       "date": "2019-03-08",
+       "close": 42.584
+      },
+      "period_return_pct": 467.3,
+      "to_high_pct": 467.3,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 428.3,
+      "excess_to_high_pp": 428.3
+     },
+     "FENJIU": {
+      "trading_days": 450,
+      "first": {
+       "date": "2019-03-01",
+       "close": 14.076
+      },
+      "last": {
+       "date": "2020-12-31",
+       "close": 245.812
+      },
+      "high": {
+       "date": "2020-12-31",
+       "close": 245.812
+      },
+      "low": {
+       "date": "2019-03-08",
+       "close": 13.14
+      },
+      "period_return_pct": 1646.3,
+      "to_high_pct": 1646.3,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 1607.3,
+      "excess_to_high_pp": 1607.3
+     },
+     "HAITIAN": {
+      "trading_days": 450,
+      "first": {
+       "date": "2019-03-01",
+       "close": 32.025
+      },
+      "last": {
+       "date": "2020-12-31",
+       "close": 112.226
+      },
+      "high": {
+       "date": "2020-12-25",
+       "close": 112.494
+      },
+      "low": {
+       "date": "2019-03-13",
+       "close": 29.855
+      },
+      "period_return_pct": 250.4,
+      "to_high_pct": 251.3,
+      "max_drawdown_from_high_pct": -2.3,
+      "excess_period_pp": 211.4,
+      "excess_to_high_pp": 212.3
+     },
+     "YILI": {
+      "trading_days": 450,
+      "first": {
+       "date": "2019-03-01",
+       "close": 19.68
+      },
+      "last": {
+       "date": "2020-12-31",
+       "close": 37.75
+      },
+      "high": {
+       "date": "2020-12-31",
+       "close": 37.75
+      },
+      "low": {
+       "date": "2019-03-14",
+       "close": 18.19
+      },
+      "period_return_pct": 91.8,
+      "to_high_pct": 91.8,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 52.8,
+      "excess_to_high_pp": 52.8
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "CONS-2020-DUTYFREE",
+   "event_class": "THEME_DIRECT",
+   "label": "离岛免税额度提升（2020）",
+   "year": 2020,
+   "window_text": "2020-06-01 → 2021-02-18（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2020-CONS-DUTYFREE（2019–2021 海南离岛免税（政策额度放开 + 出境需求回流替代）［intake R01-CONSUMER-003］）+ 实测行情；★ 事件窗口 = Campaign 主升段，**不是**季节性月份窗口。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+   "campaign_facts": {
+    "object_id": "C-2020-CONS-DUTYFREE",
+    "object_kind": "campaign",
+    "status": "CAMPAIGN",
+    "main_rise": {
+     "start": "2020-06-01",
+     "end": "2021-02-18",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2020-06-01",
+    "peak_date": "2021-02-18",
+    "end": "2022-12-31",
+    "note": "库内正式 Campaign（非 Research Candidate）。2019–2021 海南离岛免税（政策额度放开 + 出境需求回流替代）［intake R01-CONSUMER-003］"
+   },
+   "catalysts": [
+    {
+     "date": "2020-06-29",
+     "text": "财政部等三部门公告 2020 年第 33 号：离岛免税额度由 3 万元提高至 10 万元/年、不限次数：R01-CONSUMER-E016｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（policy） · 来源：关于海南离岛旅客免税购物政策的公告（财政部 海关总署 税务总局公告2020年第33号）（https://www.mof.gov.cn/zcsjtsgb/gfxwj/202006/t20200629_3583825.htm）"
+    },
+    {
+     "date": "2021-12-31",
+     "text": "2021 年海南 10 家离岛免税店总销售额 601.73 亿元、同比增长 84%：R01-CONSUMER-E019｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（industry） · 来源：2021年海南离岛免税店销售额突破600亿元 同比增长84%（https://dofcom.hainan.gov.cn/dofcom/1100/202201/d4d5418d7459455f9953f8f0218f8109.shtml）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "CTGDF",
+     "ticker": "601888",
+     "name": "中国中免",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；离岛免税牌照与门店运营主体",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "免税品零售（离岛免税 / 机场免税）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2023-06-30（1090 行）；本窗口 175 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign 记录；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 1 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 1 只本题材标的）",
+    "★ 单一标的（库内该 Campaign 只登记 1 只），无同业对照 —— 无法区分「政策驱动」与「个股自身因素」",
+    "★ 窗口 = Campaign MAIN_RISE（2020-06-01 → 2021-02-18）；2021-07 起的回撤段未纳入"
+   ],
+   "market_performance": {
+    "window": [
+     "2020-06-01",
+     "2021-02-18"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = Campaign MAIN_RISE，**不是**季节性月份窗口。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）。★★ 不得把「区间上涨」解释为题材因果。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 175,
+      "first": {
+       "date": "2020-06-01",
+       "close": 3971.34
+      },
+      "last": {
+       "date": "2021-02-18",
+       "close": 5768.38
+      },
+      "high": {
+       "date": "2021-02-10",
+       "close": 5807.72
+      },
+      "low": {
+       "date": "2020-06-15",
+       "close": 3954.99
+      },
+      "period_return_pct": 45.3,
+      "to_high_pct": 46.2,
+      "max_drawdown_from_high_pct": -0.7
+     }
+    },
+    "by_security": {
+     "CTGDF": {
+      "trading_days": 175,
+      "first": {
+       "date": "2020-06-01",
+       "close": 94.76
+      },
+      "last": {
+       "date": "2021-02-18",
+       "close": 373.2
+      },
+      "high": {
+       "date": "2021-02-10",
+       "close": 381.16
+      },
+      "low": {
+       "date": "2020-06-02",
+       "close": 92.45
+      },
+      "period_return_pct": 293.8,
+      "to_high_pct": 302.2,
+      "max_drawdown_from_high_pct": -2.1,
+      "excess_period_pp": 248.5,
+      "excess_to_high_pp": 256.0
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "CONS-2022-SERVICE-REBOUND",
+   "event_class": "THEME_DIRECT",
+   "label": "疫后服务消费修复脉冲（2022-12 – 2023）",
+   "year": 2022,
+   "window_text": "2022-12-07 → 2023-01-31（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2022-CONS-SERVICE-REBOUND（2022-12–2023 疫后服务消费修复脉冲与\"弱复苏\"证伪［intake R01-CONSUMER-004］）+ 实测行情；★ 事件窗口 = Campaign 主升段，**不是**季节性月份窗口。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+   "campaign_facts": {
+    "object_id": "C-2022-CONS-SERVICE-REBOUND",
+    "object_kind": "campaign",
+    "status": "CAMPAIGN",
+    "main_rise": {
+     "start": "2022-12-07",
+     "end": "2023-01-31",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2022-12-07",
+    "peak_date": "2023-01-31",
+    "end": "2023-06-30",
+    "note": "库内正式 Campaign（非 Research Candidate）。2022-12–2023 疫后服务消费修复脉冲与\"弱复苏\"证伪［intake R01-CONSUMER-004］"
+   },
+   "catalysts": [
+    {
+     "date": "2022-12-07",
+     "text": "国务院联防联控机制综合组印发《关于进一步优化落实新冠肺炎疫情防控措施的通知》（新十条）：R01-CONSUMER-E026｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（policy） · 来源：关于进一步优化落实新冠肺炎疫情防控措施的通知（\"新十条\"）（https://www.gov.cn/xinwen/2022-12/07/content_5730443.htm）"
+    },
+    {
+     "date": "2023-01-27",
+     "text": "2023 年春节假期全国国内旅游出游 3.08 亿人次、同比增长 23.1%（恢复至 2019 年同期 88.6%）：R01-CONSUMER-E027｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（industry） · 来源：2023年春节假期文化和旅游市场情况（https://www.gov.cn/xinwen/2023-01/27/content_5738858.htm）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "CTGDF",
+     "ticker": "601888",
+     "name": "中国中免",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；免税零售，出行链修复的直接受益方",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "免税品零售（离岛免税 / 机场免税）",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2023-06-30（1090 行）；本窗口 34 个交易日"
+    },
+    {
+     "security_id": "BTG",
+     "ticker": "600258",
+     "name": "首旅酒店",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；酒店运营，出行链",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "酒店运营与管理",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2021-01-04~2023-06-30（603 行）；本窗口 34 个交易日"
+    },
+    {
+     "security_id": "JINJIANG",
+     "ticker": "600754",
+     "name": "锦江酒店",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；连锁酒店，出行链",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "连锁酒店运营",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2021-01-04~2024-09-30（706 行）；本窗口 34 个交易日"
+    },
+    {
+     "security_id": "SONGCHENG",
+     "ticker": "300144",
+     "name": "宋城演艺",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；文旅演艺，线下客流敏感",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "主题公园 / 文旅演艺",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2021-01-04~2023-06-30（603 行）；本窗口 34 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign 记录；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 4 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 4 只本题材标的）",
+    "★ 窗口仅 2 个月（2022-12-07 → 2023-01-31），样本期短；「弱复苏证伪」发生在 2023-05 之后，未纳入",
+    "★ 4 只标的同属出行链，**不是**独立样本 —— 不得当作「4 次独立验证」"
+   ],
+   "market_performance": {
+    "window": [
+     "2022-12-07",
+     "2023-01-31"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = Campaign MAIN_RISE，**不是**季节性月份窗口。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）。★★ 不得把「区间上涨」解释为题材因果。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 34,
+      "first": {
+       "date": "2022-12-07",
+       "close": 3958.44
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 4156.86
+      },
+      "high": {
+       "date": "2023-01-30",
+       "close": 4201.35
+      },
+      "low": {
+       "date": "2022-12-23",
+       "close": 3828.22
+      },
+      "period_return_pct": 5.0,
+      "to_high_pct": 6.1,
+      "max_drawdown_from_high_pct": -1.1
+     }
+    },
+    "by_security": {
+     "CTGDF": {
+      "trading_days": 34,
+      "first": {
+       "date": "2022-12-07",
+       "close": 210.2
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 208.1
+      },
+      "high": {
+       "date": "2023-01-16",
+       "close": 228.6
+      },
+      "low": {
+       "date": "2023-01-31",
+       "close": 208.1
+      },
+      "period_return_pct": -1.0,
+      "to_high_pct": 8.8,
+      "max_drawdown_from_high_pct": -9.0,
+      "excess_period_pp": -6.0,
+      "excess_to_high_pp": 2.7
+     },
+     "BTG": {
+      "trading_days": 34,
+      "first": {
+       "date": "2022-12-07",
+       "close": 23.03
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 22.27
+      },
+      "high": {
+       "date": "2022-12-26",
+       "close": 24.86
+      },
+      "low": {
+       "date": "2023-01-31",
+       "close": 22.27
+      },
+      "period_return_pct": -3.3,
+      "to_high_pct": 7.9,
+      "max_drawdown_from_high_pct": -10.4,
+      "excess_period_pp": -8.3,
+      "excess_to_high_pp": 1.8
+     },
+     "JINJIANG": {
+      "trading_days": 34,
+      "first": {
+       "date": "2022-12-07",
+       "close": 54.55
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 55.93
+      },
+      "high": {
+       "date": "2023-01-30",
+       "close": 57.53
+      },
+      "low": {
+       "date": "2022-12-09",
+       "close": 53.41
+      },
+      "period_return_pct": 2.5,
+      "to_high_pct": 5.5,
+      "max_drawdown_from_high_pct": -2.8,
+      "excess_period_pp": -2.5,
+      "excess_to_high_pp": -0.6
+     },
+     "SONGCHENG": {
+      "trading_days": 34,
+      "first": {
+       "date": "2022-12-07",
+       "close": 14.191
+      },
+      "last": {
+       "date": "2023-01-31",
+       "close": 13.901
+      },
+      "high": {
+       "date": "2022-12-26",
+       "close": 14.561
+      },
+      "low": {
+       "date": "2022-12-20",
+       "close": 13.711
+      },
+      "period_return_pct": -2.0,
+      "to_high_pct": 2.6,
+      "max_drawdown_from_high_pct": -5.5,
+      "excess_period_pp": -7.0,
+      "excess_to_high_pp": -3.5
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  },
+  {
+   "event_id": "CONS-2024-TRADE-IN",
+   "event_class": "THEME_DIRECT",
+   "label": "消费品以旧换新（2024–2025）",
+   "year": 2024,
+   "window_text": "2024-08-24 → 2024-10-08（Campaign MAIN_RISE，PHASE_WINDOW）",
+   "external_window_ref": null,
+   "evidence_basis": "库内 Campaign C-2024-CONS-TRADE-IN（2024–2025 消费品以旧换新（财政补贴 → 销量验证 → 高基数回落）［intake R01-CONSUMER-011］）+ 实测行情；★ 事件窗口 = Campaign 主升段，**不是**季节性月份窗口。",
+   "study_state": "HAS_PRICE_DATA",
+   "source_discipline_note": "Source ≠ Evidence ≠ Rule ≠ Historical Fact ≠ Verification ≠ Prediction。每只标的的 `category` 只描述「关系性质」：直接机制（MECHANISM_DIRECT）/ 产业链扩散（SPILLOVER）/ 历史市场参与（MARKET_PARTICIPANT）/ 反例（COUNTER_EXAMPLE）/ 证据不足（INSUFFICIENT）—— **不是**评分、不是排名、不构成买卖信号。",
+   "campaign_facts": {
+    "object_id": "C-2024-CONS-TRADE-IN",
+    "object_kind": "campaign",
+    "status": "CAMPAIGN",
+    "main_rise": {
+     "start": "2024-08-24",
+     "end": "2024-10-08",
+     "precision": "PHASE_WINDOW"
+    },
+    "start": "2024-03-13",
+    "peak_date": "2024-10-08",
+    "end": "2025-12-31",
+    "note": "库内正式 Campaign（非 Research Candidate）。2024–2025 消费品以旧换新（财政补贴 → 销量验证 → 高基数回落）［intake R01-CONSUMER-011］"
+   },
+   "catalysts": [
+    {
+     "date": "2024-08-24",
+     "text": "商务部等 4 部门发布《关于进一步做好家电以旧换新工作的通知》（8 类家电补 15%/20%）：R01-CONSUMER-E057｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（policy） · 来源：商务部等4部门办公厅关于进一步做好家电以旧换新工作的通知（https://www.gov.cn/zhengce/zhengceku/202408/content_6970495.htm）"
+    },
+    {
+     "date": "2024-10-08",
+     "text": "美的/格力/海尔/海信家电/华帝/老板电器同时出现区间最高价：R01-CONSUMER-E061｜provenance: R01-04 Intake Package（source_commit 2153f6d）｜Canonical Decision docs/R01_04_INTAKE_REVIEW_v0_1.md",
+     "source": "库内 events（market） · 来源：腾讯财经历史行情接口（日K线/月K线）（https://web.ifzq.gtimg.cn/appstock/app/fqkline/get）"
+    }
+   ],
+   "participants": [
+    {
+     "security_id": "GREE",
+     "ticker": "000651",
+     "name": "格力电器",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；空调 / 白电，以旧换新补贴直接品类",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "空调 / 家用电器制造与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2016-01-04~2025-12-31（2273 行）；本窗口 25 个交易日"
+    },
+    {
+     "security_id": "HAIER",
+     "ticker": "600690",
+     "name": "海尔智家",
+     "exchange": "SH",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；冰洗 / 白电，补贴直接品类",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "冰洗 / 家用电器制造与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2016-02-01~2025-12-31（2408 行）；本窗口 25 个交易日"
+    },
+    {
+     "security_id": "MIDEA",
+     "ticker": "000333",
+     "name": "美的集团",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；全品类家电",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "家用电器制造与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2016-01-04~2025-12-31（2380 行）；本窗口 25 个交易日"
+    },
+    {
+     "security_id": "ROBAM",
+     "ticker": "002508",
+     "name": "老板电器",
+     "exchange": "SZ",
+     "category": "MECHANISM_DIRECT",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "rationale": "库内 representative；厨电，补贴覆盖品类",
+     "source": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "registry_role": "representative",
+     "business_mechanism": "厨房电器制造与销售",
+     "business_mechanism_caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。",
+     "market_data": "2019-01-02~2025-12-31（1699 行）；本窗口 25 个交易日"
+    }
+   ],
+   "observed_performance": {
+    "note": "直引库内 Campaign 记录；未核实到可引用的「同期报道点名当日涨幅」→ 留空，不补造数字。",
+    "by_security": null
+   },
+   "known_gaps": [
+    "[AUTO:MARKET_DATA] 本窗口行情覆盖：可计算 4 / 覆盖不足 0 / 不可得 0 / 未计算 0（共 4 只本题材标的）",
+    "★ 窗口 = Campaign MAIN_RISE（2024-08-24 → 2024-10-08），**仅 45 天**；政策延续期（2025）未纳入",
+    "★★ 该窗口与 2024-09-24 起的全市场普涨重叠 —— **Beta Contamination 无法排除**，不得把区间涨幅当作政策效果"
+   ],
+   "market_performance": {
+    "window": [
+     "2024-08-24",
+     "2024-10-08"
+    ],
+    "is_campaign_ruling": false,
+    "note": "★ **事件窗口内**的实测行情（事后描述，非 Campaign 裁定）。窗口 = Campaign MAIN_RISE，**不是**季节性月份窗口。★ 口径见文档 `market_performance_contract`（theme_market_performance_v1）。★★ 不得把「区间上涨」解释为题材因果。",
+    "benchmark": {
+     "SH000300": {
+      "trading_days": 25,
+      "first": {
+       "date": "2024-08-26",
+       "close": 3324.22
+      },
+      "last": {
+       "date": "2024-10-08",
+       "close": 4256.1
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 4256.1
+      },
+      "low": {
+       "date": "2024-09-13",
+       "close": 3159.25
+      },
+      "period_return_pct": 28.0,
+      "to_high_pct": 28.0,
+      "max_drawdown_from_high_pct": 0.0
+     }
+    },
+    "by_security": {
+     "GREE": {
+      "trading_days": 25,
+      "first": {
+       "date": "2024-08-26",
+       "close": 33.748
+      },
+      "last": {
+       "date": "2024-10-08",
+       "close": 45.512
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 45.512
+      },
+      "low": {
+       "date": "2024-09-12",
+       "close": 32.672
+      },
+      "period_return_pct": 34.9,
+      "to_high_pct": 34.9,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 6.9,
+      "excess_to_high_pp": 6.9
+     },
+     "HAIER": {
+      "trading_days": 25,
+      "first": {
+       "date": "2024-08-26",
+       "close": 22.734
+      },
+      "last": {
+       "date": "2024-10-08",
+       "close": 31.024
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 31.024
+      },
+      "low": {
+       "date": "2024-08-29",
+       "close": 21.524
+      },
+      "period_return_pct": 36.5,
+      "to_high_pct": 36.5,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": 8.5,
+      "excess_to_high_pp": 8.5
+     },
+     "MIDEA": {
+      "trading_days": 25,
+      "first": {
+       "date": "2024-08-26",
+       "close": 58.629
+      },
+      "last": {
+       "date": "2024-10-08",
+       "close": 72.499
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 72.499
+      },
+      "low": {
+       "date": "2024-09-10",
+       "close": 53.059
+      },
+      "period_return_pct": 23.7,
+      "to_high_pct": 23.7,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": -4.3,
+      "excess_to_high_pp": -4.3
+     },
+     "ROBAM": {
+      "trading_days": 25,
+      "first": {
+       "date": "2024-08-26",
+       "close": 17.29
+      },
+      "last": {
+       "date": "2024-10-08",
+       "close": 21.9
+      },
+      "high": {
+       "date": "2024-10-08",
+       "close": 21.9
+      },
+      "low": {
+       "date": "2024-09-02",
+       "close": 16.12
+      },
+      "period_return_pct": 26.7,
+      "to_high_pct": 26.7,
+      "max_drawdown_from_high_pct": 0.0,
+      "excess_period_pp": -1.3,
+      "excess_to_high_pp": -1.3
+     }
+    },
+    "contract_version": "theme_market_performance_v1"
+   }
+  }
+ ],
+ "market_performance_contract": {
+  "version": "theme_market_performance_v1",
+  "price_series": "market_daily.price_type='adjusted' → adj_close（前复权收盘）",
+  "window": "market_performance.window [start, end]，双端包含",
+  "trading_days": "窗口内该序列实际行数（不是日历天数、不是基准交易日数）",
+  "high": "窗口内 adj_close 最大值（首次出现）；不是 high 列、不是 Campaign peak_date",
+  "period_return_pct": "(last.close / first.close - 1) × 100",
+  "to_high_pct": "(high.close / first.close - 1) × 100",
+  "max_drawdown_from_high_pct": "★ 自至高点「之后」的最大回撤 = min over t>=high.date of (close_t/high.close - 1) × 100；不是全窗口最大回撤",
+  "benchmark": "SH000300，同窗口、同价格口径；excess = 个股 − 基准（区间与至高点两列口径不同，不得混用）",
+  "rounding": "百分比 1 位小数（Python round）；超额由已舍入的两个百分比相减后再舍入",
+  "missing": "窗口内 < 2 行 → error=insufficient_data_in_window + reason（no_series / no_rows_in_window / single_row），不补 0",
+  "source": "research/database/market_data.db（由被跟踪的便携快照恢复）",
+  "generated_by": "research/scripts/build_theme_map_v0_1.py"
+ }
+}

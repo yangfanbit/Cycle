@@ -87,6 +87,17 @@ GENERATED_AT = "2026-10-19"                  # ★ 固定值 → 生成结果可
 #   人类写的 Beta Contamination 等条目**原样保留**（本脚本不发明研究结论）。
 AUTO_GAP_PREFIX = "[AUTO:MARKET_DATA]"
 
+# ★ UNAVAILABLE 的逐类原因措辞（v0.25 修：不得把「有序列但价格为负」写成「库内无登记」）
+UNAVAILABLE_REASON_TEXT = {
+    "no_series": "库内无该证券的行情序列",
+    "no_rows_in_window": "序列存在，但本窗口内无交易日（上市 / 序列起始晚于窗口）",
+    "single_row": "本窗口内只有 1 个交易日，不足以计算",
+    "non_positive_adj_close": ("上游前复权（qfq）按除权价差计算，早年高分红段出现"
+                               "**非正价格**（分红累计超过当时股价），按合同不用于算收益率"),
+    "discontinuous_series": "窗口内出现 **>45% 的单日跳变**，序列不连续（A 股单日涨跌幅上限 ≤30%）",
+    "unknown": "原因未标注（应补 reason）",
+}
+
 # 与 Product 侧 `marketDataCoverage()` 对齐的判定常量（改动必须两边同时改 + 测试）
 COVERAGE_RATIO = 0.6
 ENDPOINT_TOLERANCE_TRADING_DAYS = 5
@@ -340,7 +351,12 @@ def coverage_text(conn, sid: str, start: str, end: str) -> str:
 
 
 def auto_gap_lines(event: dict, doc: dict, conn, window) -> list:
-    """按当前覆盖状况生成 `[AUTO:MARKET_DATA]` 行（★ 只描述计数与缺失，不解释原因）。"""
+    """按当前覆盖状况生成 `[AUTO:MARKET_DATA]` 行。
+
+    ★ 只描述计数与缺失，**逐类写原因**：四种不可得是不同性质的缺口，
+    混成一句「库内无登记或无窗口数据」会把「库内有序列但价格为负」说成「没有数据」
+    （v0.25 实机复核发现并修复的措辞漂移）。
+    """
     parts = [p for p in (event.get("participants") or [])
              if p.get("category") not in ("COUNTER_EXAMPLE", "INSUFFICIENT")]
     if not parts or not window:
@@ -352,10 +368,20 @@ def auto_gap_lines(event: dict, doc: dict, conn, window) -> list:
     n = sum(1 for s in statuses.values() if s == "NOT_COMPUTED")
     lines = ["%s 本窗口行情覆盖：可计算 %d / 覆盖不足 %d / 不可得 %d / 未计算 %d（共 %d 只本题材标的）"
              % (AUTO_GAP_PREFIX, c, i, u, n, len(parts))]
-    missing = sorted(sid for sid, s in statuses.items() if s == "UNAVAILABLE")
-    if missing:
-        lines.append("%s 行情不可得：%s —— 库内无该证券日线登记或无窗口数据，**不补数**"
-                     % (AUTO_GAP_PREFIX, " / ".join(missing)))
+
+    # ★ 按 reason 分组 —— 每组一句，原因逐类写清（见 compute_raw 的守卫生成）
+    start, end = window[0], window[1]
+    by_reason: dict = {}
+    for p in parts:
+        sid = p["security_id"]
+        if statuses[sid] != "UNAVAILABLE":
+            continue
+        raw = compute_raw(conn, sid, start, end)
+        by_reason.setdefault(raw.get("reason") or "unknown", []).append(sid)
+    for reason, sids in sorted(by_reason.items()):
+        lines.append("%s 行情不可得：%s —— %s，**不补数**"
+                     % (AUTO_GAP_PREFIX, " / ".join(sorted(sids)),
+                        UNAVAILABLE_REASON_TEXT.get(reason, UNAVAILABLE_REASON_TEXT["unknown"])))
     return lines
 
 
