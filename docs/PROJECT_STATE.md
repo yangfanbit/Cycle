@@ -196,20 +196,55 @@
 > ⑤ **v0.26 结果**：`--check` = **FAIL 0 / WARN 0**（`--write` 前为 FAIL 11 / WARN 4 ——
 >    同一次运行里「过期检测」与「不可复算」两类问题都被抓出并按流程处置）。
 
+> ★★ **2026-10-20（v0.27 · 行情计算方法审计 + 历史收益恢复的裁定）**：
+> ① **早年高分红股（茅台 / 五粮液 / 泸州老窖）的历史收益：仍不可计算，但原因已查清并留证。**
+>    `CONS-2016-BAIJIU` 的窗口起点 2016-06-01 落在 qfq **非正价格**区间
+>    （茅台 2015-01-05~2016-06-29 共 363 日 · 五粮液 ~2016-06-16 共 285 日 · 泸州老窖 ~2016-10-21 共 393 日），
+>    按合同 `invalid_price_series / non_positive_adj_close` **如实拒绝计算**。
+>    ★ **评估了三种替代口径，全部未采用**，审计产物 `research/research/reports/hfq_basis_audit_v0_1.json`：
+>    · **hfq（后复权）**：取数可得、无非正价格、跨请求区间取值稳定（锚定上市首日）；
+>      **但逐日复权因子并非常数** —— 57% / 72% / 86% 的交易日的因子变化超过 0.05%
+>      （舍入量级约 0.0001%，即超出 500–8600 倍），p99 达 0.38% / 0.77% / 1.90%，除权日 +1.53%；
+>      且「hfq = k·raw + c」的加性模型残差**不随跨度缩小**（15 日段仍达 4.8–32.3）。
+>      ⇒ 复权约定**无法从数据解释**、收益**无法由 raw + 公司行为独立核验** → **NOT_ADOPTED**。
+>    · **raw（原始价）**：仅价格、不含分红 → 会把「价格涨幅」冒充「含分红收益」，明令禁止。
+>    · **自建复权因子**：缺少可核验的分红/送转记录，等于自造因子 → 不采用。
+>    ★ **真正缺失的东西**：一份可核验的分红 / 送转记录（除权日 + 每股派息 / 送转比例），
+>    或换用**复权方法有明文文档**的数据源。拿到之前，该事件的行情状态**保持不可计算**。
+> ② **`>45% 单日跳变` 守卫：全库实证完成，阈值保留、分类修正。**
+>    审计产物 `research/research/reports/jump_guard_audit_v0_1.json`（确定性生成器 `audit_jump_guard_v0_1.py`）：
+>    全库 adjusted 序列共 **222 次** >45% 的「跳变」，实测分布为
+>    **相邻交易日 + raw 不同步 = 217 次**（provider qfq「除权价差」法的**方法学产物**，
+>    价格被打到 0 附近再继续累计）· **跨记录缺口 = 5 次**（缺口 14–1095 个交易日，
+>    根本不是单日变化）· **真实单日 >45% = 0 次**。
+>    ⇒ **阈值没有误伤真实价格变化 → 保持 45% 不变**（放宽只会让 qfq 产物进入产物）；
+>       **分类改为按证据三分**：`qfq_method_artifact` / `series_gap` / `discontinuous_series`，
+>       ★ 三者**仍然拒绝计算**，数值零变化。
+>    ★ 顺带查实一处真实缺陷：`LAG` 把「跨 4.3 年的两条记录」（建投能源 2017-08-31 → 2022-01-04，
+>       1055 个交易日）当成「相邻日」，于是把跨四年的价格变化误读成「单日 -60% 跳变」。
+>       现在 `series_gap` 只用于**给超阈值的跳变定性**，**不**否决「含缺口的窗口」
+>       （圣邦股份窗口覆盖 96.5%、+802.9% 合法，未被误杀）。
+> ③ **合同升 `theme_market_performance_v2`**：① 每个标的块显式声明 `price_basis`（当前只有
+>    `adjusted_qfq`）；② 跳变按证据分类（见上）。★ 四个受影响产物按现有规则升版
+>    （power **v0_5** · semiconductor **v0_6** · consumer **v0_3** · resource **v0_3**，
+>    旧版逐字节保留），**全部数值零变化**（逐字段比对 = 0 差异）。
+
 ### 后续待办（含 v0.26 新增）
 
-> · **「>45% 单日跳变 = 序列错误」是方法学假设，不是已验证判据**（v0.26 列入待办）：
->   当前合同用「窗口内相邻交易日跳变 > 45% → `discontinuous_series`」作为守卫（A 股单日涨跌幅
->   上限 ≤30%，qfq 已消除除权跳空，故正常情况下不应出现）。但该阈值**未经误报 / 漏报实证** ——
->   极端行情（如复牌首日无涨跌限制、长期停牌后补跌）可能合法超过 45%。★ 本轮**不**改阈值、
->   **不**改历史结果；待办 = 用全库扫描统计「>45% 跳变的真实案例分布」，再裁定阈值或改为
->   「跳变 + 相邻几日缺口」双条件。**不得**为消除警告而放宽。
+> · ✅ **「>45% 单日跳变 = 序列错误」已完成实证（v0.27 关闭）**：全库 222 次实测 =
+>   相邻日 qfq 方法学产物 **217** · 跨记录缺口 **5** · **真实单日 >45% = 0** ⇒ 阈值保留 45%，
+>   分类改为 `qfq_method_artifact` / `series_gap` / `discontinuous_series`（仍拒绝计算）。
+>   证据：`research/research/reports/jump_guard_audit_v0_1.json`。
+> · ⛔ **早年高分红股（2016 白酒段）收益仍不可计算（v0.27 裁定，未解决）**：qfq 非正价格；
+>   hfq 复权约定无法解释（逐日因子变化 57–86% 的交易日超舍入量级）→ NOT_ADOPTED。
+>   需要的输入：**可核验的分红/送转记录**或**复权方法有明文文档**的数据源。
+>   证据：`research/research/reports/hfq_basis_audit_v0_1.json`。
 
 ### 实测基线（2026-10-20 · 全部实测）
 
 | 项 | 值 |
 |---|---|
-| **最近功能提交** | `afd30d9`（v0.26：行情刷新到 2026-10-20 + POWER-2017 四只补齐验证 + 事实一致性修正）· `9230af2`（v0.25：行情刷新到 2026-10-19 + 25 项季节性逐项核验 v0_2 + 消费旺季 / 资源品两张新地图 + 提前观察缺因披露）· `3fcdf24`（v0.24：行情转写合同 `theme_market_performance_v1` + 题材文件漂移门禁 + 大基金三期行情落地 + 高点日扁平写法修复）· `8d3d32a`（v0.23：状态回填）· `a018f72`（v0.23：C 数据层补齐 —— 大基金三期 4 只标的行情 + 快照重生成）· `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最近功能提交** | `V027_SHA`（v0.27：行情计算方法审计 —— hfq 裁定 NOT_ADOPTED · >45% 守卫全库实证 · 合同 v2）· `afd30d9`（v0.26：行情刷新到 2026-10-20 + POWER-2017 四只补齐验证 + 事实一致性修正）· `9230af2`（v0.25：行情刷新到 2026-10-19 + 25 项季节性逐项核验 v0_2 + 消费旺季 / 资源品两张新地图 + 提前观察缺因披露）· `3fcdf24`（v0.24：行情转写合同 `theme_market_performance_v1` + 题材文件漂移门禁 + 大基金三期行情落地 + 高点日扁平写法修复）· `8d3d32a`（v0.23：状态回填）· `a018f72`（v0.23：C 数据层补齐 —— 大基金三期 4 只标的行情 + 快照重生成）· `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **最后核实 Git 状态** | 核实于 2026-10-19：本地 `main` = `origin/main`，工作区仅有 **2 个未跟踪本地库**（`market_data.db` / `cycle_research.db`，**不入库、不提交**） · ★ **本行不再写「HEAD = 某个功能提交」** —— `docs(state)` 回填提交本身会把 HEAD 前移一位，旧写法两次制造了「HEAD 滞后」的误读。**接班必须跑 `git log -1` / `git status` / `git rev-parse origin/main`** 以实际为准，不要相信文档里的固定 SHA |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **72.85 MB**（行情三表 **395,038 行** = v0.26 补齐 **+854** 行；v0.25 时 394,184，**不入库**） · `data/market/snapshot/` **6.45 MiB**（**入库**，恢复唯一输入） |
@@ -218,9 +253,9 @@
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **395,038 行**（market_daily 单表；3 表合计 398,116） |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
 | **当前市场 / 提前观察（v0.26 刷新）** | `SH000300` **as_of = 2026-10-20**（收盘 4152.11 · 20 日 -7.32% · 量分位 0.183 · 波动率比 0.803 · MA20 下 · MA60 下；全页面唯一「当前」标签）· 提前观察（`research/research/reports/early_observation_v0_2.json`）：**OK 54 / PARTIAL 8 / NO_DATA 0**（62 Campaign）· PARTIAL 缺因分布：**上市/序列起始晚于 Campaign 起始 10** · 启动前不足 60 个交易日 1 · **无行情序列 2**（WUHANFANGU 无 ticker = A 的归属缺口；SWMIL = 申万指数，本抓取流程不覆盖）· L1 市场层全 62 段可算 |
-| **测试** | **1432 passed / 0 failed / 73 files**（v0.25：+6 —— v025UserFlows 端到端 2 · earlyObservation 缺因披露 2 · 雷达下一步入口 2；v0.24 计 1426/72，v0.23 产品未改动计数不变；v0.22：+7） |
+| **测试** | **1433 passed / 0 failed / 73 files**（v0.27：+1 —— price_basis 声明断言；v0.25：+6 —— v025UserFlows 端到端 2 · earlyObservation 缺因披露 2 · 雷达下一步入口 2；v0.24 计 1426/72，v0.23 产品未改动计数不变；v0.22：+7） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
-| **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 · ★ **v0.24 新增** `build_theme_market_performance --check` = **PASS（FAIL 0 · WARN 4 = UNVERIFIABLE）** + 契约单测 **12 passed**（在 CI 的 restore 之后运行）· ★ **v0.25 新增** `build_theme_map_v0_1.py`（消费 / 资源两张地图的确定性生成器）与 `build_external_seasonal_review_v0_2.py`（25 项核验产物生成器）—— 均**确定性**（同输入同输出） |
+| **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 · ★ **v0.24 新增** `build_theme_market_performance --check`（合同 **v2**，v0.27）= **PASS（FAIL 0 / WARN 0）** + 契约单测 **12 passed**（在 CI 的 restore 之后运行）· ★ **v0.25 新增** `build_theme_map_v0_1.py`（消费 / 资源两张地图的确定性生成器）与 `build_external_seasonal_review_v0_2.py`（25 项核验产物生成器）—— 均**确定性**（同输入同输出） |
 | **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.26）**：`afd30d9` run [`39427385891`](https://github.com/yangfanbit/Cycle/actions/runs/39427385891) —— 两 job 均 **success**。历史（v0.25）：`9230af2` run [`39354976253`](https://github.com/yangfanbit/Cycle/actions/runs/39354976253) —— 两 job 均 **success**（含 v0.25 新增的门禁步骤）。历史（v0.24）：`2f03db4` run [`39272571712`](https://github.com/yangfanbit/Cycle/actions/runs/39272571712) —— 两 job 均 **success**；`3fcdf24` run [`39264015668`](https://github.com/yangfanbit/Cycle/actions/runs/39264015668) · `e4c0c01` run [`39267989768`](https://github.com/yangfanbit/Cycle/actions/runs/39267989768) 均 success · ★ **门禁实证**：临时分支 `verify/v024-gate`（已删）run [`39264948321`](https://github.com/yangfanbit/Cycle/actions/runs/39264948321) —— `npm test` **success**、`--check` **failure**、build/upload **skipped**、`Deploy` **skipped**。历史（v0.23）：`c9e4f26` run [`39248636166`](https://github.com/yangfanbit/Cycle/actions/runs/39248636166) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**。历史（v0.22）：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285)（两 job success，含真实浏览器复核）· `f07d839` run [`39244995823`](https://github.com/yangfanbit/Cycle/actions/runs/39244995823)（两 job success）· v0.21：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
 | **历史事件地图** | **v0.10 起为首页直接入口**（索引驱动（`HistoricalThemeMaps`，索引驱动 · **8 题材 / 33 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7 · 消费旺季 5 · 资源品 2）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录）· **v0.22**：SA 列表每条带「**查看当前对象详情**」（按精确 `currentObjectId` 解析，不可解析则不给按钮）· **v0.23**：三处缺口的**裁决表**（数据本身**未改**，计数不变）· **v0.24**：半导体题材升 **v0_2**（大基金三期 4 只标的行情按合同重算，`study_state` → `HAS_PRICE_DATA`；其余 6 事件百分比零变化）· 高点日扁平写法（power）修复 · **v0.25**：地图 **6 → 8**（+ 消费旺季 / 大众消费 **5 事件** · 资源品 / 黄金·稀土 **2 事件**，均从库内 Campaign 生成、窗口 = 主升段）；合同新增 `invalid_price_series`（非正价格 / >45% 跳变）守卫 · **AUTO 缺口行逐类写原因** · **v0.26**：电力升 **v0_4**（POWER-2017 四只补齐验证通过，WARN 4→0；`market_data` 陈旧文案更正）、半导体升 **v0_5**（覆盖文本随刷新更新，**数值零变化**） |
 | **数据缺口审计（v0.23）** | `research/research/reports/data_gap_audit_v0_1.json`（只读 · 确定性生成）· **A 注册表未命中** = 36 条记录 / 17 标识（全流感）→ 根因 **owner-scoped 注册表**（190 == 190 零差集）· 身份**逐条**经交易所披露核验 · **1 PROVISIONAL**（`YILING-002603` → `YILING`，**不自动合并**）+ **16 UNRESOLVED**（无规范 ID 可映射）· **B 未登记对象** = 57 条 / 8 事件 → **8 UNRESOLVED**（无精确 `security_ids` 相等、事件未引用对象）· **C 大基金三期行情** = 4 只 → **已授权补齐数据层**（既有抓取流程 + 快照重生成，窗口各 44 交易日）→ **4 RESOLVED**；★ 地图转写 **UNRESOLVED**（口径不可复现）· 合计 **RESOLVED 4 / PROVISIONAL 1 / UNRESOLVED 24** · **v0.24 追加**：C 的**转写待办关闭**（`theme_market_performance_v1` 合同 + `--check` 门禁，FUND3 四只标的落地）→ 审计口径变为 **RESOLVED 5 / PROVISIONAL 1 / UNRESOLVED 23**；★ 同时新发现 **POWER-2017 4 组数值不可复算**（序列自 2022 起）→ **+4 UNVERIFIABLE**（WARN，不改数） |

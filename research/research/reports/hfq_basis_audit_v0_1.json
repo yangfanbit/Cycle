@@ -1,0 +1,148 @@
+{
+ "artifact": "hfq_basis_audit",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-20",
+ "generated_by": "research/scripts/audit_hfq_basis_v0_1.py",
+ "supersedes": null,
+ "question": "早年高分红股（qfq 在 2015–2016 段为非正价格）能否用 hfq 作为可核验的替代收益口径？",
+ "verdict": "NOT_ADOPTED",
+ "verdict_reason": "hfq 数值可得且取数可复现，但**逐日复权因子并非常数**（常态 ±0.15%、p99≈3.9%、除权日 +1.53%），加性模型（hfq = k·raw + c）的残差随跨度增长（15 日≈0 → 230 日 15–45）⇒ 复权约定**无法从数据解释**，收益**无法由 raw + 公司行为独立核验**。按纪律保留 `invalid_price_series / non_positive_adj_close` 的不可计算状态。",
+ "what_is_missing": [
+  "一份可核验的分红 / 送转记录（除权日 + 每股派息 / 送转比例）——有了它，总收益可由 raw 与公司行为独立重建并审计；",
+  "或换用**复权方法有明文文档**的数据源（当前 provider 未公开其 hfq 算法）。"
+ ],
+ "rejected_alternatives": {
+  "raw": "仅价格、不含分红 → 会把「价格涨幅」冒充「含分红收益」，明令禁止。",
+  "hfq": "见 verdict_reason；且与默认 qfq（乘性再投资）在高分红长窗口下会系统性分叉，混用会破坏事件内可比性。",
+  "自建复权因子": "缺少可核验的分红记录，等于自造因子 —— 不采用。"
+ },
+ "source": {
+  "provider": "tencent",
+  "endpoint": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get",
+  "params": "fq ∈ {''(raw), 'qfq', 'hfq'}",
+  "retrieved_range": [
+   "2015-01-01",
+   "2018-12-31"
+  ],
+  "note": "与 market_daily 同源同 endpoint、不同 fq 参数；本产物**只做审计**，不进入任何产品产物、不覆盖 market_daily。"
+ },
+ "series": {
+  "MOUTAI": {
+   "symbol": "sh600519",
+   "range": [
+    "2015-01-05",
+    "2018-12-28"
+   ],
+   "trading_days": 975,
+   "qfq_non_positive_days": 363,
+   "hfq_non_positive_days": 0,
+   "factor_steps": {
+    "n": 974,
+    "p50_pct": 0.003,
+    "p90_pct": 0.138,
+    "p99_pct": 0.38,
+    "max_pct": 11.798,
+    "min_pct": -0.752,
+    "rounding_noise_pct": 0.0001,
+    "days_over_0_05pct": 558,
+    "share_over_0_05pct": 57.3
+   },
+   "affine_rms_by_span": {
+    "15d": 32.269,
+    "60d": 26.54,
+    "120d": 26.247,
+    "230d": 61.636
+   },
+   "window_check": {
+    "window": [
+     "2016-06-01",
+     "2017-12-29"
+    ],
+    "trading_days": 388,
+    "raw_period_return_pct": 173.63,
+    "hfq_period_return_pct": 164.47,
+    "qfq_period_return_pct": null,
+    "qfq_non_positive_at_start": true,
+    "note": "raw = 仅价格（不含分红，**不得**当作含分红收益）；qfq = 前复权（本窗口起点为非正价格 → 合同拒绝计算）；hfq = 后复权（数值可得，但复权约定不可解释 → 未采用）"
+   }
+  },
+  "WULIANGYE": {
+   "symbol": "sz000858",
+   "range": [
+    "2015-01-05",
+    "2018-12-28"
+   ],
+   "trading_days": 915,
+   "qfq_non_positive_days": 285,
+   "hfq_non_positive_days": 0,
+   "factor_steps": {
+    "n": 914,
+    "p50_pct": 0.006,
+    "p90_pct": 0.207,
+    "p99_pct": 0.765,
+    "max_pct": 2.514,
+    "min_pct": -1.066,
+    "rounding_noise_pct": 0.0001,
+    "days_over_0_05pct": 662,
+    "share_over_0_05pct": 72.4
+   },
+   "affine_rms_by_span": {
+    "15d": 4.768,
+    "60d": 5.548,
+    "120d": 7.176,
+    "230d": 4.134
+   },
+   "window_check": {
+    "window": [
+     "2016-06-01",
+     "2017-12-29"
+    ],
+    "trading_days": 388,
+    "raw_period_return_pct": 171.39,
+    "hfq_period_return_pct": 160.03,
+    "qfq_period_return_pct": null,
+    "qfq_non_positive_at_start": true,
+    "note": "raw = 仅价格（不含分红，**不得**当作含分红收益）；qfq = 前复权（本窗口起点为非正价格 → 合同拒绝计算）；hfq = 后复权（数值可得，但复权约定不可解释 → 未采用）"
+   }
+  },
+  "LUZHOULAOJIAO": {
+   "symbol": "sz000568",
+   "range": [
+    "2015-01-05",
+    "2018-12-28"
+   ],
+   "trading_days": 957,
+   "qfq_non_positive_days": 393,
+   "hfq_non_positive_days": 0,
+   "factor_steps": {
+    "n": 956,
+    "p50_pct": 0.009,
+    "p90_pct": 0.531,
+    "p99_pct": 1.903,
+    "max_pct": 4.107,
+    "min_pct": -2.458,
+    "rounding_noise_pct": 0.0001,
+    "days_over_0_05pct": 825,
+    "share_over_0_05pct": 86.3
+   },
+   "affine_rms_by_span": {
+    "15d": 9.46,
+    "60d": 7.916,
+    "120d": 6.466,
+    "230d": 7.334
+   },
+   "window_check": {
+    "window": [
+     "2016-06-01",
+     "2017-12-29"
+    ],
+    "trading_days": 388,
+    "raw_period_return_pct": 173.09,
+    "hfq_period_return_pct": 134.91,
+    "qfq_period_return_pct": null,
+    "qfq_non_positive_at_start": true,
+    "note": "raw = 仅价格（不含分红，**不得**当作含分红收益）；qfq = 前复权（本窗口起点为非正价格 → 合同拒绝计算）；hfq = 后复权（数值可得，但复权约定不可解释 → 未采用）"
+   }
+  }
+ }
+}

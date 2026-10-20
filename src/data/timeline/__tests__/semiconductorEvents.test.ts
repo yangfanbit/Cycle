@@ -135,7 +135,9 @@ describe('半导体 / AI 算力题材 · 行情实测（内部自洽）', () => 
     const e = doc.events.find((x) => x.event_id === 'SEMI-2024-FUND3')!;
     const mp = e.market_performance!;
     expect(mp.window).toEqual(['2024-09-24', '2024-11-29']);
-    expect(mp.contract_version).toBe('theme_market_performance_v1');
+    // ★ 不变量：合同版本必须是「本仓库当前合同」（v2 起），**不写死**具体小版本号以外的东西
+    expect(mp.contract_version).toMatch(/^theme_market_performance_v\d+$/);
+    expect(mp.contract_version).toBe('theme_market_performance_v2');
 
     // 基准（同窗口、同口径）
     const bench = mp.benchmark.SH000300;
@@ -217,6 +219,16 @@ describe('半导体 / AI 算力题材 · 行情实测（内部自洽）', () => 
       const block = (sid === 'PIOTECH' ? eq : cs).market_performance!.by_security[sid];
       expect(block.period_return_pct).toBeUndefined();
       expect(block.to_high_pct).toBeUndefined();
+    }
+  });
+
+  it('★★ v2 起每个标的块显式声明 price_basis（口径不得隐式）', () => {
+    for (const e of doc.events) {
+      const mp = e.market_performance!;
+      for (const [sid, s] of Object.entries(mp.by_security)) {
+        expect(s.price_basis, `${e.event_id}/${sid}`).toBe('adjusted_qfq');
+      }
+      expect(mp.benchmark.SH000300.price_basis, e.event_id).toBe('adjusted_qfq');
     }
   });
 

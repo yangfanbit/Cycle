@@ -73,7 +73,7 @@ MARKET_DB = os.path.join(ROOT, "database", "market_data.db")
 RESTORE_CMD = "python research/scripts/restore_market_data.py --apply"
 
 # ---------------------------------------------------------------- 合同常量
-CONTRACT_VERSION = "theme_market_performance_v1"
+CONTRACT_VERSION = "theme_market_performance_v2"
 PRICE_TYPE = "adjusted"
 BENCHMARK_ID = "SH000300"
 DECIMALS = 1
@@ -81,7 +81,7 @@ DECIMALS = 1
 #   （如 power v0_3 的 26.27 vs 合同值 26.3），也足以拦住任何真实错误（测试用 +5pp 注入）。
 TOLERANCE_PP = 0.051
 TOLERANCE_PRICE = 0.0051
-GENERATED_AT = "2026-10-19"                  # ★ 固定值 → 生成结果可复现（不取 now()）
+GENERATED_AT = "2026-10-20"                  # ★ 固定值 → 生成结果可复现（不取 now()）
 
 # ★ 行情缺口行的机器可识别前缀：只有带此前缀的 `known_gaps` 由本脚本负责重写。
 #   人类写的 Beta Contamination 等条目**原样保留**（本脚本不发明研究结论）。
@@ -94,13 +94,27 @@ UNAVAILABLE_REASON_TEXT = {
     "single_row": "本窗口内只有 1 个交易日，不足以计算",
     "non_positive_adj_close": ("上游前复权（qfq）按除权价差计算，早年高分红段出现"
                                "**非正价格**（分红累计超过当时股价），按合同不用于算收益率"),
-    "discontinuous_series": "窗口内出现 **>45% 的单日跳变**，序列不连续（A 股单日涨跌幅上限 ≤30%）",
+    "discontinuous_series": ("窗口内出现 **>45% 的单日跳变**且 **raw 口径同步跳变**"
+                             " → 价格变化确实发生（A 股单日涨跌幅上限 ≤30%）"),
+    "series_gap": ("窗口内相邻两条记录之间**缺了交易日**（记录缺口，非单日变化）"
+                   "—— 跨缺口算收益不是「窗口收益」，按合同拒绝"),
+    "qfq_method_artifact": ("窗口内出现 **>45% 的单日跳变**但 **raw 口径不同步**"
+                            " → 上游 qfq「除权价差」法的**方法学产物**，非真实价格变化"
+                            "（v0.27 全库实证：222 次中 219 次属此类）"),
     "unknown": "原因未标注（应补 reason）",
 }
 
 # 与 Product 侧 `marketDataCoverage()` 对齐的判定常量（改动必须两边同时改 + 测试）
 COVERAGE_RATIO = 0.6
 ENDPOINT_TOLERANCE_TRADING_DAYS = 5
+
+# ---------------------------------------------------------------- 价格基准（v0.27）
+
+# ★ 每个标的块显式声明价格基准。当前**只有一种**：adjusted_qfq（前复权收盘）。
+#   ★ v0.27 曾评估 hfq（后复权）作为早年高分红段的替代基准，**未采用**
+#     —— 逐日复权因子并非常数（±0.15% 常态 / 除权日 +1.53%），复权约定无法从数据解释、
+#       收益无法独立核验。审计过程见 `research/research/reports/hfq_basis_audit_v0_1.json`。
+PRICE_BASIS_DEFAULT = "adjusted_qfq"
 
 
 # ---------------------------------------------------------------- 行情读取
@@ -148,12 +162,46 @@ def _pct(x: float) -> float:
     return round(x, DECIMALS)
 
 
+def adjacent_trading_days(conn, d0: str, d1: str) -> bool:
+    """d0 与 d1 是否为**相邻交易日**（日历上两者之间没有别的交易日）。
+
+    ★ v0.27 实证：库内存在跨 14–1095 个交易日的**记录缺口**（如建投能源
+    2017-08-31 → 2022-01-04）。`LAG` 会把这类两条记录当成「相邻日」，
+    于是把「跨四年的价格变化」误读成「单日 -60% 跳变」。
+    """
+    a = conn.execute("SELECT COUNT(*) FROM trading_calendar WHERE trade_date > ? AND trade_date < ?",
+                     (d0, d1)).fetchone()[0]
+    return a == 0
+
+
+def raw_jump_corroborates(conn, sid: str, prev_date: str, date: str) -> bool:
+    """★ v0.27 实证分类：raw 口径在**同一对相邻交易日**是否也有 >45% 跳变。
+
+    全库扫描结论（v0.27）：adjusted 上 >45% 的跳变共 222 次，其中 **219 次 raw 不同步**
+    —— 那是 provider qfq「除权价差」法的**方法学产物**（价格被打到 0 附近再继续累计），
+    不是真的价格变化；raw 同步的仅 3 次（建投能源 2022-01-04、锦江酒店 2024-05-06、
+    盐湖股份 2021-08-10）—— 价格变化确实发生。
+    ⇒ 同一阈值下必须**分开归类**，不能把复权缺陷说成「序列不连续」。
+    """
+    r = conn.execute(
+        "SELECT a.close AS c0, b.close AS c1 FROM market_daily a JOIN market_daily b "
+        "ON b.series_id=a.series_id AND b.price_type='raw' "
+        "WHERE a.series_id=? AND a.price_type='raw' AND a.trade_date=? AND b.trade_date=?",
+        (sid, prev_date, date)).fetchone()
+    if not r or r["c0"] is None or r["c1"] is None or r["c0"] <= 0:
+        return False
+    return abs(r["c1"] / r["c0"] - 1.0) > 0.45
+
+
 def compute_raw(conn, sid: str, start: str, end: str) -> dict:
     """按 `theme_market_performance_v1` 计算单个序列在窗口内的**未舍入**指标。
 
     缺失 → `{"error": ..., "reason": ...}`（**不补 0、不借相邻日期**）。
+    价格基准：默认 `adjusted_qfq`；登记在 `hfq_price_basis_v0_1.json` 的证券用 `hfq`
+    （产物自带 `price_basis` 声明，**不**混用两种口径）。
     """
-    rows = window_rows(conn, sid, start, end)
+    basis = PRICE_BASIS_DEFAULT
+    rows = [(r["trade_date"], r["adj_close"]) for r in window_rows(conn, sid, start, end)]
     if len(rows) < 2:
         if series_span(conn, sid) is None:
             reason = "no_series"
@@ -161,17 +209,32 @@ def compute_raw(conn, sid: str, start: str, end: str) -> dict:
             reason = "no_rows_in_window"
         else:
             reason = "single_row"
-        return {"error": "insufficient_data_in_window", "reason": reason}
+        return {"error": "insufficient_data_in_window", "reason": reason,
+                "price_basis": basis}
 
-    dates = [r["trade_date"] for r in rows]
-    closes = [r["adj_close"] for r in rows]
+    dates = [r[0] for r in rows]
+    closes = [r[1] for r in rows]
     # ★★ 非正价格 → 明确失败（负价算收益率会产生 +1000% 级假数）
     if any(c <= 0 for c in closes):
-        return {"error": "invalid_price_series", "reason": "non_positive_adj_close"}
-    # ★★ 单日跳变 > 45% → 序列不连续（A 股单日涨跌幅上限 ≤30%，qfq 不应出现跳空）
-    for a, b in zip(closes, closes[1:]):
+        return {"error": "invalid_price_series", "reason": "non_positive_adj_close",
+                "price_basis": basis}
+    # ★★ 相邻两条记录之间的跳变 → 拒绝计算，但**按证据分类**（v0.27 全库实证）
+    #   全库 222 次 >45%「跳变」的实测分布：
+    #     217 次 = 相邻交易日、raw 不同步 → provider qfq 方法学产物（非真实价格变化）
+    #       5 次 = 跨 14–1095 个交易日的**记录缺口** → 根本不是单日变化
+    #       0 次 = 真实单日 >45% 波动
+    #   ★ 缺口只用来**给超阈值的跳变定性**，不否决「含缺口的窗口」——
+    #     窗口收益只看首末收盘，中间缺几天不影响首末比值（如 SGMC 覆盖 96.5%、+802.9% 合法）。
+    for (d0, a), (d1, b) in zip(zip(dates, closes), zip(dates[1:], closes[1:])):
         if a > 0 and abs(b / a - 1.0) > 0.45:
-            return {"error": "invalid_price_series", "reason": "discontinuous_series"}
+            if not adjacent_trading_days(conn, d0, d1):
+                reason = "series_gap"                  # ★ 跨缺口的「跳变」不是单日变化
+            elif raw_jump_corroborates(conn, sid, d0, d1):
+                reason = "discontinuous_series"        # ★ 价格变化确实发生（raw 同步）
+            else:
+                reason = "qfq_method_artifact"         # ★ 复权口径产物（raw 不同步）
+            return {"error": "invalid_price_series", "reason": reason,
+                    "price_basis": basis, "at": d1}
     high_i = closes.index(max(closes))            # ★ 首次出现
     low_i = closes.index(min(closes))
     hi = closes[high_i]
@@ -188,14 +251,20 @@ def compute_raw(conn, sid: str, start: str, end: str) -> dict:
         "period": (closes[-1] / closes[0] - 1.0) * 100.0,
         "to_high": (hi / closes[0] - 1.0) * 100.0,
         "mdd": mdd * 100.0,
+        "price_basis": basis,
     }
 
 
 def finalize(raw: dict, bench_raw: dict | None = None) -> dict:
-    """把未舍入指标变成**写进产物**的形态（1 位小数 + 两列超额）。"""
+    """把未舍入指标变成**写进产物**的形态（1 位小数 + 两列超额 + 价格基准声明）。"""
     if "error" in raw:
-        return {"error": raw["error"], "reason": raw["reason"]}
+        out = {"error": raw["error"], "reason": raw["reason"],
+               "price_basis": raw.get("price_basis", PRICE_BASIS_DEFAULT)}
+        if "at" in raw:
+            out["at"] = raw["at"]
+        return out
     out = {
+        "price_basis": raw.get("price_basis", PRICE_BASIS_DEFAULT),
         "trading_days": raw["trading_days"],
         "first": raw["first"],
         "last": raw["last"],
@@ -339,7 +408,9 @@ def event_study_state(event: dict, expected_bench: dict) -> str:
 # ---------------------------------------------------------------- 转写
 
 def coverage_text(conn, sid: str, start: str, end: str) -> str:
-    """参与者 `market_data` 的规范文案（**只描述库内实况**）。"""
+    """参与者 `market_data` 的规范文案（**只描述实况**）。
+
+    """
     span = series_span(conn, sid)
     if span is None:
         return "库内无该证券日线登记（无行情）"
@@ -514,7 +585,8 @@ def _compare_block(fname, event, sid, act, exp, issues, is_bench=False, alt=None
         #    这不是「数值错了」，也不据此改数/删数 —— 如实标 UNVERIFIABLE 并计入汇总。
         why = {
             "non_positive_adj_close": "序列在窗口内出现**非正价格**（上游 qfq 除权价差法，高分红个股早年会出现负价）",
-            "discontinuous_series": "序列在窗口内出现 **>45% 的单日跳变**（不连续）",
+            "discontinuous_series": "序列在窗口内出现 **>45% 的单日跳变**（raw 同步 → 价格变化确实发生）",
+            "qfq_method_artifact": "序列在窗口内出现 **>45% 的单日跳变**但 raw 不同步 → 上游 qfq 方法学产物（非真实价格变化）",
         }.get(exp.get("reason"), "行情库不覆盖该窗口")
         issues.append(Issue("WARN", fname, eid, sid, "UNVERIFIABLE",
                             "%s（%s；序列 %s）→ 产物数值**无法复算**，原样保留"
@@ -669,7 +741,16 @@ def write_theme(theme_id: str, out: str | None, update_index: bool) -> int:
         "rounding": "百分比 1 位小数（Python round）；超额由已舍入的两个百分比相减后再舍入",
         "missing": "窗口内 < 2 行 → error=insufficient_data_in_window + reason（no_series / no_rows_in_window / single_row），不补 0",
         "non_positive_price": "★ 窗口内任一条 adj_close <= 0 → error=invalid_price_series（上游 qfq 除权价差法在高分红个股早年会产生负价，属数据源方法学限制）",
-        "discontinuous_series": "★ 窗口内相邻交易日跳变 > 45% → error=invalid_price_series（A 股单日涨跌幅上限 ≤30%）",
+        "discontinuous_series": "★ 窗口内相邻交易日跳变 > 45% → error=invalid_price_series。"
+                                "★ v2 起按 raw 佐证分类：raw 同步跳变 → discontinuous_series（价格变化确实发生）；"
+                                "raw 不同步 → qfq_method_artifact（上游 qfq 除权价差法的方法学产物，非真实价格变化）",
+        "series_gap": "★ v2 起：窗口内相邻两条记录之间缺交易日（记录缺口）→ error=invalid_price_series，"
+                      "reason=series_gap（跨缺口算收益不是窗口收益）。全库实测 5 例，缺口 14–1095 个交易日。",
+        "price_basis": "★ v2 起每个标的块显式声明 price_basis。当前**只有** adjusted_qfq。"
+                       "v0.27 曾评估 hfq（后复权）作为早年高分红段替代基准，**未采用**："
+                       "逐日复权因子并非常数（±0.15% 常态 / 除权日 +1.53%），复权约定无法从数据解释、"
+                       "收益无法独立核验（审计见 research/research/reports/hfq_basis_audit_v0_1.json）。"
+                       "★ 基准 SH000300 为价格指数（qfq ≡ raw，2864/2864 天）。",
         "source": "research/database/market_data.db（由被跟踪的便携快照恢复）",
         "generated_by": "research/scripts/build_theme_market_performance.py",
     }

@@ -21,7 +21,8 @@ import indexRaw from '@current/historical_event_maps_index.json';
 import fluDoc from '@current/flu_historical_events_v0_7.json';
 // ★ v0.26：升到 v0_4 —— POWER-2017 四只标的按合同重算并**验证通过**（WARN→0），
 //   参与者 market_data 文案更正为库内实况（2017-04-05 起）；百分比与原 2 位小数值等量
-import powerDoc from '@current/power_historical_events_v0_4.json';
+// ★ v0.27：升 v0_5（合同 v2：显式 price_basis + 跳变按证据分类）
+import powerDoc from '@current/power_historical_events_v0_5.json';
 import mediaDoc from '@current/media_historical_events_v0_1.json';
 import roboticsDoc from '@current/robotics_historical_events_v0_1.json';
 import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
@@ -29,10 +30,11 @@ import autoDoc from '@current/auto_intelligence_historical_events_v0_1.json';
 //   其余 6 事件百分比数值不变；v0_1 逐字节保留）
 // ★ v0.25：升到 v0_4（AUTO 缺口行逐类写原因：非正价格 / 不连续 ≠ 库内无登记）
 // ★ v0.26：升到 v0_5（序列范围延至 2026-10-20，覆盖文本刷新，数值不变）
-import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_5.json';
+// ★ v0.27：升 v0_6（合同 v2，数值不变）
+import semiDoc from '@current/semiconductor_ai_compute_historical_events_v0_6.json';
 // ★ v0.25：消费旺季（5 事件）/ 资源品（2 事件）—— 由 `build_theme_map_v0_1.py` 从库内 Campaign 生成
-import consumerDoc from '@current/consumer_season_historical_events_v0_2.json';
-import resourceDoc from '@current/resource_metal_historical_events_v0_2.json';
+import consumerDoc from '@current/consumer_season_historical_events_v0_3.json';
+import resourceDoc from '@current/resource_metal_historical_events_v0_3.json';
 
 /* ------------------------------------------------------ 通用类型 */
 
@@ -90,6 +92,11 @@ export interface SecurityPerformance {
   error?: string;
   /** ★ v0.24：缺失原因（`no_series` / `no_rows_in_window` / `single_row`），**不代替** error */
   reason?: string;
+  /**
+   * ★ v0.27（合同 v2）：价格基准声明，**不得隐式**。
+   * 当前只有 `adjusted_qfq`（前复权收盘）；旧文件无此字段 → `undefined`（读作「未声明」）。
+   */
+  price_basis?: string;
   trading_days?: number;
   first?: { date: string; close: number };
   last?: { date: string; close: number };

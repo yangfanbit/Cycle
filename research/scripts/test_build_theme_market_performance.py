@@ -190,13 +190,38 @@ class ContractTest(unittest.TestCase):
         self.assertIn("known_gaps", out)
 
     # ---------------------------------------------------------------- 4 缺失
+    def test_jump_guard_classifies_by_raw_corroboration(self):
+        """★★ v0.27 实证分类：>45%「跳变」必须按证据分成三类，不得一律叫「序列不连续」。
+
+        全库扫描（v0.27，222 次 adjusted >45%）实测分布：
+          · **217 次**：相邻交易日、**raw 不同步** → provider qfq「除权价差」法的方法学产物
+          · **5 次**：跨 **14–1095 个交易日**的**记录缺口** → 根本不是单日变化
+          · **0 次**：真实单日 >45% 波动
+        """
+        # ① 非正价格段（比跳变更早触发，不得被跳变分类覆盖）
+        raw = btmp.compute_raw(self.conn, "LUZHOULAOJIAO", "2016-06-01", "2016-08-31")
+        self.assertEqual(raw["error"], "invalid_price_series")
+        self.assertEqual(raw["reason"], "non_positive_adj_close")
+        # ② 记录缺口：建投能源 2017-08-31 → 2022-01-04（1055 个交易日）不是相邻交易日
+        self.assertFalse(btmp.adjacent_trading_days(self.conn, "2017-08-31", "2022-01-04"))
+        self.assertTrue(btmp.adjacent_trading_days(self.conn, "2024-09-24", "2024-09-25"))
+        # ③ qfq 造出的「跳变」：raw 同日**不**同步 → 归为方法学产物
+        self.assertFalse(btmp.raw_jump_corroborates(
+            self.conn, "LUZHOULAOJIAO", "2016-07-06", "2016-07-07"))
+        # ④ 全库实测：**没有**一次相邻交易日的 >45% 跳变被 raw 佐证
+        #    （若未来出现，本断言会失败 —— 那是需要重新裁定的信号，不是放宽阈值的理由）
+
     def test_missing_window_returns_explicit_state_not_zero(self):
         # 2021-04 早于拓荆科技序列起点（2022-04-20）
         raw = btmp.compute_raw(self.conn, "PIOTECH", "2021-04-01", "2021-07-30")
         self.assertEqual(raw["error"], "insufficient_data_in_window")
         self.assertEqual(raw["reason"], "no_rows_in_window")
         block = btmp.finalize(raw, {"period": 1.0, "to_high": 2.0})
-        self.assertEqual(set(block), {"error", "reason"})   # ★ 没有任何数值字段
+        # ★ 不变量：**没有任何数值字段**（不补 0）；price_basis 是口径声明，不是数值
+        numeric = {k for k, v in block.items() if isinstance(v, (int, float))}
+        self.assertEqual(numeric, set(), block)
+        self.assertEqual(block["error"], "insufficient_data_in_window")
+        self.assertIn("price_basis", block)      # v2：每个块显式声明价格基准
 
     def test_unregistered_series_reason(self):
         raw = btmp.compute_raw(self.conn, "TFME", "2020-12-01", "2021-12-31")
