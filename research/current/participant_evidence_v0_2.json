@@ -1,0 +1,5598 @@
+{
+ "artifact": "participant_evidence",
+ "artifact_version": "0.2",
+ "generated_at": "2026-10-21",
+ "generated_by": "research/scripts/build_participant_evidence_v0_1.py",
+ "supersedes": "research/current/participant_evidence_v0_1.json",
+ "participant_evidence_contract": {
+  "version": "participant_evidence_v1",
+  "purpose": "把「同期市场表现 / 业务机制关系 / Research 对象登记角色 / 研究立场 / 无法判定」拆成互不冒充的独立维度，并逐条给出依据与出处",
+  "source_kind": {
+   "REPORT_WITH_URL": "参与者 source 指向同期报道，且事件 catalyst 记录了 URL",
+   "REPORT_NAMED_NO_URL": "指向同期报道，但本库未记录 URL（可追溯性弱一档）",
+   "DB_OR_RESEARCH_ONLY": "★ 只有数据库 / 注册表 / 研究轮次说明 —— **不是**同期报道",
+   "NOT_RECORDED": "★ 无任何来源记录 —— 不等于「已检索未找到」",
+   "UNKNOWN_SOURCE": "有来源文本但无法归类"
+  },
+  "market_participation": {
+   "REPORT_CONFIRMED_LIMIT_UP": "同期报道明确涨停 / 连板（仍只是「被报道点名」级别）",
+   "REPORT_CONFIRMED_GAIN": "同期报道给出当日涨幅",
+   "REPORT_CONFIRMED_WINDOW_GAIN": "同期报道给出**区间**涨幅（非单日）",
+   "REPORT_CONFIRMED_NAMED": "同期报道点名但未给涨幅",
+   "reported_move_backed": "★ 涨跌幅文本是否**有同期报道出处**（false = 只有库内/研究记录，不得当报道引用）",
+   "RESEARCH_OR_DB_ONLY": "★ 只有 DB / 注册表 / 研究记录 —— 不得说成「报道确认」",
+   "NOT_RECORDED": "★ 无来源记录 —— 不等于当日没涨、不等于不是参与者",
+   "UNKNOWN": "来源无法归类"
+  },
+  "mechanism_relation": {
+   "DIRECT_CONFIRMED": "研究已明确判定为直接机制相关（≠ 驱动了当次行情）",
+   "INDIRECT_CONFIRMED": "产业链扩散 / 研究自述偏间接",
+   "BUSINESS_DESCRIBED_UNCONFIRMED": "★ 有业务说明，但与本题材的**直接关系未被研究确认**",
+   "NOT_STUDIED": "未登记业务说明，也未判定机制类别",
+   "DIFFERENT_AXIS": "反例：机制轴不同",
+   "UNKNOWN": "证据不足"
+  },
+  "registry_role": {
+   "VERIFIED_DB": "与 cycle_research.db · campaign_securities.role 逐字一致",
+   "SECURITY_IN_OBJECT_ROLE_UNVERIFIED": "RC 无角色表：只能确认证券属于该对象，角色本身无机器可核来源",
+   "SECURITY_NOT_IN_OBJECT": "库内该对象无此证券登记",
+   "ROLE_MISMATCH": "库内角色与文档不一致（需人工裁定）",
+   "UNSOURCED": "未能在库内或导出中确认归属",
+   "★ 语义": "这是**Research 对象内部登记**，不是「历史炒作龙头」；两者必须分开显示"
+  },
+  "study_standing": "INCLUDED / COUNTER_EXAMPLE / INSUFFICIENT（来自既有 category）",
+  "must_not": [
+   "不得把 registry_role=leader 当作「当时的龙头」",
+   "不得把 BUSINESS_VERIFIED 当作「参与过当次行情」",
+   "★ 不得因 `business_mechanism` 非空就判「直接机制」—— 必须看研究分类",
+   "★ 不得因 `evidence_level` 写 REPORT_NAMED 就说「报道点名」—— 必须看 source 类型",
+   "不得把 NO_REPORTED_EVIDENCE 当作「当日没涨」",
+   "不得用事后涨幅反推角色"
+  ]
+ },
+ "summary": {
+  "events": 33,
+  "participants": 148,
+  "market_participation": {
+   "REPORT_CONFIRMED_LIMIT_UP": 18,
+   "REPORT_CONFIRMED_GAIN": 10,
+   "RESEARCH_OR_DB_ONLY": 120
+  },
+  "mechanism_relation": {
+   "BUSINESS_DESCRIBED_UNCONFIRMED": 29,
+   "NOT_STUDIED": 41,
+   "DIRECT_CONFIRMED": 56,
+   "INDIRECT_CONFIRMED": 16,
+   "UNKNOWN": 4,
+   "DIFFERENT_AXIS": 2
+  },
+  "registry_role_verification": {
+   "NO_REGISTRY_ROLE": 60,
+   "VERIFIED_DB": 76,
+   "SECURITY_IN_OBJECT_ROLE_UNVERIFIED": 12
+  },
+  "study_standing": {
+   "INCLUDED": 142,
+   "INSUFFICIENT": 4,
+   "COUNTER_EXAMPLE": 2
+  }
+ },
+ "events": {
+  "FLU-2017-AVIAN": {
+   "theme_id": "FLU",
+   "theme_file": "flu_historical_events_v0_7.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "LAYNE-002166": {
+     "name": "莱茵生物",
+     "ticker": "002166",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "**涨停**",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为**当前时点**公开资料；不能确定该业务在 2017 年的规模，也不能证明它是当次行情的驱动"
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "LUKANG-600789": {
+     "name": "鲁抗医药",
+     "ticker": "600789",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+8.36%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★★ 有兽药业务，但**未找到其产品与禽流感机制直接相关的证据** —— 禽流感关联**偏间接**"
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "HAIWANG-000078": {
+     "name": "海王生物",
+     "ticker": "000078",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+5.21%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "DAAN-002030": {
+     "name": "达安基因",
+     "ticker": "002030",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+4.13%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★★ 检测业务存在，但**未找到禽流感检测试剂的具体证据** —— 关联待核实"
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "WOHUA-002107": {
+     "name": "沃华医药",
+     "ticker": "002107",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+3.18%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "NEPHARM-000597": {
+     "name": "东北制药",
+     "ticker": "000597",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+2.61%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "LIANHUAN-600513": {
+     "name": "联环药业",
+     "ticker": "600513",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+2.58%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★★ **公司已澄清其主要品种不能用于治疗耳念珠菌** —— 「市场炒作标签 ≠ 业务机制」的**典型反例**"
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "HUALAN-002007": {
+     "name": "华兰生物",
+     "ticker": "002007",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+1.59%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 疫苗业务存在；但 2017 年时其营收主力仍为血制品，疫苗贡献度需按当年口径核实"
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "TIANKA-002100": {
+     "name": "天康生物",
+     "ticker": "002100",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+1.32%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 动物疫苗业务存在，但**未确认含禽流感疫苗**；且证据为当前时点"
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "TAILONG-600222": {
+     "name": "太龙药业",
+     "ticker": "600222",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上报",
+      "reported_move": "+1.11%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2017-02-15",
+       "text": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）",
+       "source": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+       "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml"
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上报",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "FLU-2018-SEASONAL": {
+   "theme_id": "FLU",
+   "theme_file": "flu_historical_events_v0_7.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "HUALAN-002007": {
+     "name": "华兰生物",
+     "ticker": "002007",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "DAAN-002030": {
+     "name": "达安基因",
+     "ticker": "002030",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "XIANGXUE-300147": {
+     "name": "香雪制药",
+     "ticker": "300147",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "TIANKA-002100": {
+     "name": "天康生物",
+     "ticker": "002100",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "PUBLICHEALTH-2019-WUHAN": {
+   "theme_id": "FLU",
+   "theme_file": "flu_historical_events_v0_7.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "LUKANG-600789": {
+     "name": "鲁抗医药",
+     "ticker": "600789",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "证券时报 / 每日经济新闻 2019-12-31",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★★ 有兽药业务，但**未找到其产品与禽流感机制直接相关的证据** —— 禽流感关联**偏间接**"
+     },
+     "registry_role": null,
+     "source_text": "证券时报 / 每日经济新闻 2019-12-31",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "LIANHUAN-600513": {
+     "name": "联环药业",
+     "ticker": "600513",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★★ **公司已澄清其主要品种不能用于治疗耳念珠菌** —— 「市场炒作标签 ≠ 业务机制」的**典型反例**"
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "LAYNE-002166": {
+     "name": "莱茵生物",
+     "ticker": "002166",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨超 8%（证券时报）/ 涨停（每经）",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为**当前时点**公开资料；不能确定该业务在 2017 年的规模，也不能证明它是当次行情的驱动"
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "XIANGXUE-300147": {
+     "name": "香雪制药",
+     "ticker": "300147",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "每日经济新闻 2019-12-31",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为当前时点；★ 该股 2019 年报存在虚假记载、后变更为 ST —— 引用其资料时须留意"
+     },
+     "registry_role": null,
+     "source_text": "每日经济新闻 2019-12-31",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "WEIMING-002581": {
+     "name": "未名医药",
+     "ticker": "002581",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "NEPHARM-000597": {
+     "name": "东北制药",
+     "ticker": "000597",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "HAIWANG-000078": {
+     "name": "海王生物",
+     "ticker": "000078",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "YILING-002603": {
+     "name": "以岭药业",
+     "ticker": "002603",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为当前时点；★ 该事件机制是**武汉不明原因肺炎**（邻近题材），非流感"
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "SIHUAN-000518": {
+     "name": "四环生物",
+     "ticker": "000518",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "NANWEI-603880": {
+     "name": "南卫股份",
+     "ticker": "603880",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_WITH_URL",
+      "source_text": "同上",
+      "reported_move": "涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-12-31",
+       "text": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停",
+       "source": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+       "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html"
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "SUPERFUNGUS-2019-CANDIDA": {
+   "theme_id": "FLU",
+   "theme_file": "flu_historical_events_v0_7.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "SIHUAN-000518": {
+     "name": "四环生物",
+     "ticker": "000518",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "每日经济新闻 2019-04-11",
+      "reported_move": "04-10 涨停 · 04-11 再度涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "每日经济新闻 2019-04-11",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "WEIMING-002581": {
+     "name": "未名医药",
+     "ticker": "002581",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "同上",
+      "reported_move": "04-10 涨停 · 04-11 再度涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "LIANHUAN-600513": {
+     "name": "联环药业",
+     "ticker": "600513",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "同上",
+      "reported_move": "04-10 涨停 · 04-11 再度涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★★ **公司已澄清其主要品种不能用于治疗耳念珠菌** —— 「市场炒作标签 ≠ 业务机制」的**典型反例**"
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "HAIWANG-000078": {
+     "name": "海王生物",
+     "ticker": "000078",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "同上",
+      "reported_move": "04-10 涨停 · 04-11 涨逾 5%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "LUKANG-600789": {
+     "name": "鲁抗医药",
+     "ticker": "600789",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "同上",
+      "reported_move": "04-10 涨停 · 04-11 涨逾 5%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★★ 有兽药业务，但**未找到其产品与禽流感机制直接相关的证据** —— 禽流感关联**偏间接**"
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "FUAN-300194": {
+     "name": "福安药业",
+     "ticker": "300194",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "同上",
+      "reported_move": "04-10 涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JIUDIAN-300705": {
+     "name": "九典制药",
+     "ticker": "300705",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "同上",
+      "reported_move": "04-10 涨停",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_LIMIT_UP",
+      "basis": "同期报道明确涨停 / 连板"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "NEPHARM-000597": {
+     "name": "东北制药",
+     "ticker": "000597",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "REPORT_NAMED_NO_URL",
+      "source_text": "同上",
+      "reported_move": "04-11 涨逾 5%",
+      "reported_move_backed": true,
+      "report": {
+       "date": "2019-04-08",
+       "text": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例",
+       "source": "每日经济新闻 2019-04-11（转述）",
+       "url": null
+      },
+      "status": "REPORT_CONFIRMED_GAIN",
+      "basis": "同期报道给出涨幅"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "同上",
+     "unknowns": [
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "FLU-2023-H1N1": {
+   "theme_id": "FLU",
+   "theme_file": "flu_historical_events_v0_7.json",
+   "object_id": "C-2023-PHARMA-FLU",
+   "object_kind": "campaign",
+   "participants": {
+    "HUALANVAX": {
+     "name": "华兰疫苗",
+     "ticker": "301207",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "C-2023-PHARMA-FLU / securities.json",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "四价流感疫苗生产（公开资料核实）",
+      "caveat": "★ 该业务有 Campaign 依据（`securities.json`）；但证据为**当前时点**公开资料，不能确定该业务在 2023 年的规模。"
+     },
+     "registry_role": null,
+     "source_text": "C-2023-PHARMA-FLU / securities.json",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "BAIKEBIO": {
+     "name": "百克生物",
+     "ticker": "688276",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "C-2023-PHARMA-FLU / securities.json",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "疫苗研发生产（含流感疫苗方向）",
+      "caveat": "★ 该业务有 Campaign 依据（`securities.json`）；但证据为**当前时点**公开资料，不能确定该业务在 2023 年的规模。"
+     },
+     "registry_role": null,
+     "source_text": "C-2023-PHARMA-FLU / securities.json",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JINDIKE": {
+     "name": "金迪克",
+     "ticker": "688670",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "C-2023-PHARMA-FLU / securities.json",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "四价流感疫苗专业厂商（公开资料核实）",
+      "caveat": "★ 该业务有 Campaign 依据（`securities.json`）；但证据为**当前时点**公开资料，不能确定该业务在 2023 年的规模。"
+     },
+     "registry_role": null,
+     "source_text": "C-2023-PHARMA-FLU / securities.json",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "FLU-2024-SEASONAL": {
+   "theme_id": "FLU",
+   "theme_file": "flu_historical_events_v0_7.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "HUALANVAX": {
+     "name": "华兰疫苗",
+     "ticker": "301207",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "BAIKEBIO": {
+     "name": "百克生物",
+     "ticker": "688276",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JINDIKE": {
+     "name": "金迪克",
+     "ticker": "688670",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "HUALAN-002007": {
+     "name": "华兰生物",
+     "ticker": "002007",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "DAAN-002030": {
+     "name": "达安基因",
+     "ticker": "002030",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "XIANGXUE-300147": {
+     "name": "香雪制药（ST香雪）",
+     "ticker": "300147",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "TIANKA-002100": {
+     "name": "天康生物",
+     "ticker": "002100",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "本轮跨年份研究（工作流 B）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "本轮跨年份研究（工作流 B）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "POWER-2017-SUMMER-COUNTEREXAMPLE": {
+   "theme_id": "POWER_SUMMER",
+   "theme_file": "power_historical_events_v0_5.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "HUADIAN": {
+     "name": "华电国际",
+     "ticker": "600027",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JIANTONENERGY": {
+     "name": "建投能源",
+     "ticker": "000600",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "TIANFUENERGY": {
+     "name": "天富能源",
+     "ticker": "600509",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JINGNENG": {
+     "name": "京能电力",
+     "ticker": "600578",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "SANXIAENERGY": {
+     "name": "三峡能源",
+     "ticker": "600905",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "YINXING": {
+     "name": "银星能源",
+     "ticker": "000862",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "POWER-2022-SUMMER": {
+   "theme_id": "POWER_SUMMER",
+   "theme_file": "power_historical_events_v0_5.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "HUADIAN": {
+     "name": "华电国际",
+     "ticker": "600027",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JIANTONENERGY": {
+     "name": "建投能源",
+     "ticker": "000600",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "TIANFUENERGY": {
+     "name": "天富能源",
+     "ticker": "600509",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JINGNENG": {
+     "name": "京能电力",
+     "ticker": "600578",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "SANXIAENERGY": {
+     "name": "三峡能源",
+     "ticker": "600905",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "YINXING": {
+     "name": "银星能源",
+     "ticker": "000862",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "POWER-2023-SUMMER": {
+   "theme_id": "POWER_SUMMER",
+   "theme_file": "power_historical_events_v0_5.json",
+   "object_id": "C-2023-POWEROP-THERMAL",
+   "object_kind": "campaign",
+   "participants": {
+    "HUADIAN": {
+     "name": "华电国际",
+     "ticker": "600027",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2023-POWEROP-THERMAL",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "JIANTONENERGY": {
+     "name": "建投能源",
+     "ticker": "000600",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-POWEROP-THERMAL",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "TIANFUENERGY": {
+     "name": "天富能源",
+     "ticker": "600509",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": {
+      "role": "follow",
+      "object_id": "C-2023-POWEROP-THERMAL",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    }
+   }
+  },
+  "POWER-2024-SUMMER-COUNTEREXAMPLE": {
+   "theme_id": "POWER_SUMMER",
+   "theme_file": "power_historical_events_v0_5.json",
+   "object_id": null,
+   "object_kind": null,
+   "participants": {
+    "HUADIAN": {
+     "name": "华电国际",
+     "ticker": "600027",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电业务在 2023 年已存在且为**主营**。★ 但「该业务驱动了当次行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JIANTONENERGY": {
+     "name": "建投能源",
+     "ticker": "000600",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "TIANFUENERGY": {
+     "name": "天富能源",
+     "ticker": "600509",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；火电/热力为其**主营**。★ 「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "JINGNENG": {
+     "name": "京能电力",
+     "ticker": "600578",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "SANXIAENERGY": {
+     "name": "三峡能源",
+     "ticker": "600905",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    },
+    "YINXING": {
+     "name": "银星能源",
+     "ticker": "000862",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / 本轮研究",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": null,
+     "source_text": "DB campaign_securities / 本轮研究",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "该证券未在任何 Research 对象中登记角色"
+      }
+     ]
+    }
+   }
+  },
+  "MEDIA-2018-GAMELICENSE": {
+   "theme_id": "MEDIA",
+   "theme_file": "media_historical_events_v0_1.json",
+   "object_id": "C-2018-MEDIA-GAMELICENSE",
+   "object_kind": "campaign",
+   "participants": {
+    "GIANTNET": {
+     "name": "巨人网络",
+     "ticker": "002558",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2018-MEDIA-GAMELICENSE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "PERFECTWORLD": {
+     "name": "完美世界",
+     "ticker": "002624",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；游戏为主营。★ 但该事件机制是**版号政策**，公司是**受益方之一**，非政策制定者；「机制驱动行情」**无法确认**。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2018-MEDIA-GAMELICENSE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "SANQI": {
+     "name": "三七互娱",
+     "ticker": "002555",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；游戏为主营。★ 同完美世界 —— 受益方之一，**机制驱动无法确认**。"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2018-MEDIA-GAMELICENSE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    }
+   }
+  },
+  "MEDIA-2021-METAVERSE": {
+   "theme_id": "MEDIA",
+   "theme_file": "media_historical_events_v0_1.json",
+   "object_id": "C-2021-MEDIA-METAVERSE",
+   "object_kind": "campaign",
+   "participants": {
+    "ZHONGQINGBAO": {
+     "name": "中青宝",
+     "ticker": "300052",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2021-MEDIA-METAVERSE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    }
+   }
+  },
+  "ROBOTICS-2023-HUMANOID": {
+   "theme_id": "ROBOTICS",
+   "theme_file": "robotics_historical_events_v0_1.json",
+   "object_id": "C-2023-HIEQ-HUMANOID",
+   "object_kind": "campaign",
+   "participants": {
+    "EFORT": {
+     "name": "埃夫特",
+     "ticker": "688165",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-HIEQ-HUMANOID",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "KINCO": {
+     "name": "步科股份",
+     "ticker": "688160",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-HIEQ-HUMANOID",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "LEADERDRIVE": {
+     "name": "绿的谐波",
+     "ticker": "688017",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-HIEQ-HUMANOID",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "LEADSHINE": {
+     "name": "雷赛智能",
+     "ticker": "002979",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 证据为公开资料；谐波减速器为其**核心主营**。★★ 但人形机器人产业在 **2023 年尚未放量**；「该机制驱动了 2023 年行情」**无法确认**。"
+     },
+     "registry_role": {
+      "role": "follow",
+      "object_id": "C-2023-HIEQ-HUMANOID",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "ZHAOWEI": {
+     "name": "兆威机电",
+     "ticker": "003021",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "DB campaign_securities / securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "NOT_STUDIED",
+      "basis": "未登记业务机制说明，也未判定机制类别",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-HIEQ-HUMANOID",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.rationale 文本",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.rationale 文本）"
+     },
+     "source_text": "DB campaign_securities / securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    }
+   }
+  },
+  "AUTO-2019-ADAS": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "theme_file": "auto_intelligence_historical_events_v0_1.json",
+   "object_id": "C-2019-AD",
+   "object_kind": "campaign",
+   "participants": {
+    "WANAN": {
+     "name": "万安科技",
+     "ticker": "002590",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "汽车制动系统与**线控制动**（ADAS 执行层）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2019-AD",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "ROUTE": {
+     "name": "路畅科技",
+     "ticker": "002813",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "**车载导航 / 车机**（智能座舱相邻环节）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-AD",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "YATAI": {
+     "name": "亚太股份",
+     "ticker": "002284",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "汽车**制动系统**（与线控制动同链）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-AD",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "AUTO-2023-NOA": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "theme_file": "auto_intelligence_historical_events_v0_1.json",
+   "object_id": "C-2023-AD",
+   "object_kind": "campaign",
+   "participants": {
+    "ZHEJIANGSHISHI": {
+     "name": "浙江世宝",
+     "ticker": "002703",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": "「8 天 6 板」（研究记录 S-2023-05，转述）",
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书（附带的涨跌幅亦无报道出处）"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "汽车**转向器 / EPS**（转向系统）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2023-AD",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "ZTELEVISION": {
+     "name": "众泰汽车",
+     "ticker": "000980",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INSUFFICIENT",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "UNKNOWN",
+      "basis": "证据不足，机制关系未确认",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-AD",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "DESAYSV": {
+     "name": "德赛西威",
+     "ticker": "002920",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "智能驾驶**域控制器**与智能座舱电子",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "C-2023-AD",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "WANAN": {
+     "name": "万安科技",
+     "ticker": "002590",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "汽车制动系统与**线控制动**（ADAS 执行层）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "C-2023-AD",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "AUTO-2023-HUAWEI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "theme_file": "auto_intelligence_historical_events_v0_1.json",
+   "object_id": "RC-2023-HUAWEI",
+   "object_kind": "candidate",
+   "participants": {
+    "XIAOKANG": {
+     "name": "赛力斯(原小康股份)",
+     "ticker": "601127",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "问界（AITO）**整车**（华为智选车模式载体）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "RC-2023-HUAWEI",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "JAC": {
+     "name": "江淮汽车",
+     "ticker": "600418",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "与华为合作的**整车代工**（尊界等）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "RC-2023-HUAWEI",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "DEMEISHI": {
+     "name": "德迈仕",
+     "ticker": "301007",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "产业链扩散（未登记逐条说明）",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2023-HUAWEI",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "export securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "MINGKEJINGJI": {
+     "name": "铭科精技",
+     "ticker": "001319",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "产业链扩散（未登记逐条说明）",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2023-HUAWEI",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "export securities",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "HUAYANG": {
+     "name": "华阳集团",
+     "ticker": "002906",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "**HUD** 与汽车座舱电子",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2023-HUAWEI",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    }
+   }
+  },
+  "AUTO-2024-V2X": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "theme_file": "auto_intelligence_historical_events_v0_1.json",
+   "object_id": "C-2024-V2X",
+   "object_kind": "campaign",
+   "participants": {
+    "SUOLING": {
+     "name": "索菱股份",
+     "ticker": "002766",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "**车联网车载终端**",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2024-V2X",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "HUAMING": {
+     "name": "华铭智能",
+     "ticker": "300462",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "公交 **AFC（自动收费）系统**与智能化终端",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-V2X",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "JINYI": {
+     "name": "金溢科技",
+     "ticker": "002869",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "**ETC / V2X 终端**（车路协同路侧与车载）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "C-2024-V2X",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "VANJI": {
+     "name": "万集科技",
+     "ticker": "300552",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "**V2X 车载 / 路侧单元**与智能交通产品",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "C-2024-V2X",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "AUTO-2024-ROBOTAXI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "theme_file": "auto_intelligence_historical_events_v0_1.json",
+   "object_id": "C-2024-ROBOTAXI",
+   "object_kind": "campaign",
+   "participants": {
+    "DADONGTRAFFIC": {
+     "name": "大众交通",
+     "ticker": "600611",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "COUNTER_EXAMPLE",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": "16 个交易日涨 233%（研究记录 S-2024-05，转述）",
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书（附带的涨跌幅亦无报道出处）"
+     },
+     "mechanism_relation": {
+      "status": "DIFFERENT_AXIS",
+      "basis": "反例：机制轴与本题材不同",
+      "caveat": "★★ 该股上涨属**运营侧 / 牌照叙事**，与智能驾驶**技术链不同轴** —— 保留为反例，不作机制相关"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2024-ROBOTAXI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "JIANGLING": {
+     "name": "江铃汽车",
+     "ticker": "000550",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "**商用车 / 轻客**整车",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-ROBOTAXI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "JINJIANGONLINE": {
+     "name": "锦江在线",
+     "ticker": "600650",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "**出租 / 运输运营**（锦江在线为上海运营方）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "C-2024-ROBOTAXI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "JINLONG": {
+     "name": "金龙汽车",
+     "ticker": "600686",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "**客车整车**制造",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "C-2024-ROBOTAXI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "AUTO-2025-ROBOTAXI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "theme_file": "auto_intelligence_historical_events_v0_1.json",
+   "object_id": "C-2025-ROBOTAXI",
+   "object_kind": "campaign",
+   "participants": {
+    "ZHEJIANGSHISHI": {
+     "name": "浙江世宝",
+     "ticker": "002703",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": "「8 天 6 板」（研究记录 S-2023-05，转述）",
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书（附带的涨跌幅亦无报道出处）"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "汽车**转向器 / EPS**（转向系统）",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "leader",
+      "object_id": "C-2025-ROBOTAXI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "DESAYSV": {
+     "name": "德赛西威",
+     "ticker": "002920",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "export securities + 当前公开资料",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "智能驾驶**域控制器**与智能座舱电子",
+      "caveat": "★ 业务机制依据**当前时点**公开资料（检索日 2026-10-18）；不能确定该业务在事件当年的规模，也不能证明它驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "second_leader",
+      "object_id": "C-2025-ROBOTAXI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "export securities + 当前公开资料",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "SEMI-2019-LOCALIZATION": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "theme_file": "semiconductor_ai_compute_historical_events_v0_6.json",
+   "object_id": "C-2019-SEMI-LOCALIZATION",
+   "object_kind": "campaign",
+   "participants": {
+    "GIGADEVICE": {
+     "name": "兆易创新",
+     "ticker": "603986",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "存储芯片（NOR Flash / DRAM）与 MCU 设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "NAURA": {
+     "name": "北方华创",
+     "ticker": "002371",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "半导体设备（刻蚀 / 薄膜沉积 / 炉管）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "MAXSCEND": {
+     "name": "卓胜微",
+     "ticker": "300782",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "射频前端芯片设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "SGMC": {
+     "name": "圣邦股份",
+     "ticker": "300661",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "模拟集成电路设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "WILLSEMI": {
+     "name": "韦尔股份",
+     "ticker": "603501",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "图像传感器（CIS）设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "JCET": {
+     "name": "长电科技",
+     "ticker": "600584",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "集成电路封装测试（后道）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "SMIC": {
+     "name": "中芯国际",
+     "ticker": "688981",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INSUFFICIENT",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "UNKNOWN",
+      "basis": "证据不足，机制关系未确认",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    },
+    "BOE": {
+     "name": "京东方A",
+     "ticker": "000725",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "COUNTER_EXAMPLE",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIFFERENT_AXIS",
+      "basis": "反例：机制轴与本题材不同",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-SEMI-LOCALIZATION",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "SEMI-2020-CHIPSHORTAGE": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "theme_file": "semiconductor_ai_compute_historical_events_v0_6.json",
+   "object_id": "RC-2022-SEMI-CHIPSHORTAGE",
+   "object_kind": "candidate",
+   "participants": {
+    "MAXSCEND": {
+     "name": "卓胜微",
+     "ticker": "300782",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "射频前端芯片设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2022-SEMI-CHIPSHORTAGE",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "JCET": {
+     "name": "长电科技",
+     "ticker": "600584",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "集成电路封装测试（后道）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2022-SEMI-CHIPSHORTAGE",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "TFME": {
+     "name": "通富微电",
+     "ticker": "002156",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INSUFFICIENT",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "UNKNOWN",
+      "basis": "证据不足，机制关系未确认",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2022-SEMI-CHIPSHORTAGE",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    }
+   }
+  },
+  "SEMI-2021-EQUIPMENT": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "theme_file": "semiconductor_ai_compute_historical_events_v0_6.json",
+   "object_id": "C-2020-SEMI-EQUIPMENT",
+   "object_kind": "campaign",
+   "participants": {
+    "AMEC": {
+     "name": "中微公司",
+     "ticker": "688012",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "半导体设备（刻蚀 / MOCVD）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-SEMI-EQUIPMENT",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "NSIG": {
+     "name": "沪硅产业",
+     "ticker": "688126",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "半导体材料（大硅片）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-SEMI-EQUIPMENT",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "SMIC": {
+     "name": "中芯国际",
+     "ticker": "688981",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "晶圆代工（先进 / 成熟制程）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-SEMI-EQUIPMENT",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "PIOTECH": {
+     "name": "拓荆科技",
+     "ticker": "688072",
+     "evidence_level": "REPORT_NAMED",
+     "study_standing": "INSUFFICIENT",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "UNKNOWN",
+      "basis": "证据不足，机制关系未确认",
+      "caveat": null
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-SEMI-EQUIPMENT",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    }
+   }
+  },
+  "SEMI-2022-DOWNTURN": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "theme_file": "semiconductor_ai_compute_historical_events_v0_6.json",
+   "object_id": "C-2022-SEMI-DOWNTURN",
+   "object_kind": "campaign",
+   "participants": {
+    "MAXSCEND": {
+     "name": "卓胜微",
+     "ticker": "300782",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "射频前端芯片设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2022-SEMI-DOWNTURN",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "SGMC": {
+     "name": "圣邦股份",
+     "ticker": "300661",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "模拟集成电路设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2022-SEMI-DOWNTURN",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "HYGON": {
+     "name": "海光信息",
+     "ticker": "688041",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "CPU / DCU（算力芯片）设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2022-SEMI-DOWNTURN",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "SEMI-2023-AI-COMPUTE": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "theme_file": "semiconductor_ai_compute_historical_events_v0_6.json",
+   "object_id": "C-2023-AI-COMPUTE-SEMI",
+   "object_kind": "campaign",
+   "participants": {
+    "CAMBRICON": {
+     "name": "寒武纪",
+     "ticker": "688256",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "AI 芯片（训练 / 推理）设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-AI-COMPUTE-SEMI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "GIGADEVICE": {
+     "name": "兆易创新",
+     "ticker": "603986",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "存储芯片（NOR Flash / DRAM）与 MCU 设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-AI-COMPUTE-SEMI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "NAURA": {
+     "name": "北方华创",
+     "ticker": "002371",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "半导体设备（刻蚀 / 薄膜沉积 / 炉管）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2023-AI-COMPUTE-SEMI",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "SEMI-2024-FUND3": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "theme_file": "semiconductor_ai_compute_historical_events_v0_6.json",
+   "object_id": "RC-2024-SEMI-FUND3",
+   "object_kind": "candidate",
+   "participants": {
+    "SMIC": {
+     "name": "中芯国际",
+     "ticker": "688981",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "晶圆代工（先进 / 成熟制程）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2024-SEMI-FUND3",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "AMEC": {
+     "name": "中微公司",
+     "ticker": "688012",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "半导体设备（刻蚀 / MOCVD）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2024-SEMI-FUND3",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "PIOTECH": {
+     "name": "拓荆科技",
+     "ticker": "688072",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "半导体设备（薄膜沉积 PECVD / ALD）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2024-SEMI-FUND3",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    },
+    "HYGON": {
+     "name": "海光信息",
+     "ticker": "688041",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "CPU / DCU（算力芯片）设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "RC-2024-SEMI-FUND3",
+      "object_kind": "candidate",
+      "verification": "SECURITY_IN_OBJECT_ROLE_UNVERIFIED",
+      "role_source": "participant.registry_role",
+      "source": "RC 无角色表：仅能确认证券属于该对象；**角色本身无机器可核来源**"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "registry_role",
+       "reason": "角色无机器可核来源（SECURITY_IN_OBJECT_ROLE_UNVERIFIED）—— 只能作为**对象内部登记**引用，不得当作历史炒作龙头"
+      }
+     ]
+    }
+   }
+  },
+  "SEMI-2025-MEMORY": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "theme_file": "semiconductor_ai_compute_historical_events_v0_6.json",
+   "object_id": "C-2024-SEMI-MEMORY",
+   "object_kind": "campaign",
+   "participants": {
+    "LONGYS": {
+     "name": "江波龙",
+     "ticker": "301308",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "存储模组 / 品牌存储",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-SEMI-MEMORY",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "BIWIN": {
+     "name": "佰维存储",
+     "ticker": "688525",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "存储模组（嵌入式 / 消费级）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-SEMI-MEMORY",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "GIGADEVICE": {
+     "name": "兆易创新",
+     "ticker": "603986",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "存储芯片（NOR Flash / DRAM）与 MCU 设计",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-SEMI-MEMORY",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "CAMBRICON": {
+     "name": "寒武纪",
+     "ticker": "688256",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+      "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**（category = MARKET_PARTICIPANT）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-SEMI-MEMORY",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内对象 drivers",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      },
+      {
+       "field": "mechanism_relation",
+       "reason": "业务与本题材的**直接关系未被研究确认**（有业务说明 ≠ 机制相关）"
+      }
+     ]
+    }
+   }
+  },
+  "CONS-2016-BAIJIU": {
+   "theme_id": "CONSUMER_SEASON",
+   "theme_file": "consumer_season_historical_events_v0_3.json",
+   "object_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "object_kind": "campaign",
+   "participants": {
+    "MOUTAI": {
+     "name": "贵州茅台",
+     "ticker": "600519",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "高端白酒（酱香型）生产与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2016-CONS-BAIJIU-UPGRADE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "WULIANGYE": {
+     "name": "五粮液",
+     "ticker": "000858",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "浓香型白酒生产与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2016-CONS-BAIJIU-UPGRADE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "LUZHOULAOJIAO": {
+     "name": "泸州老窖",
+     "ticker": "000568",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "浓香型白酒生产与销售（中高端价格带）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2016-CONS-BAIJIU-UPGRADE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "CONS-2019-BAIJIU-CORE": {
+   "theme_id": "CONSUMER_SEASON",
+   "theme_file": "consumer_season_historical_events_v0_3.json",
+   "object_id": "C-2019-CONS-BAIJIU-CORE",
+   "object_kind": "campaign",
+   "participants": {
+    "MOUTAI": {
+     "name": "贵州茅台",
+     "ticker": "600519",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "高端白酒（酱香型）生产与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-CONS-BAIJIU-CORE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "WULIANGYE": {
+     "name": "五粮液",
+     "ticker": "000858",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "浓香型白酒生产与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-CONS-BAIJIU-CORE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "FENJIU": {
+     "name": "山西汾酒",
+     "ticker": "600809",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "清香型白酒生产与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-CONS-BAIJIU-CORE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "HAITIAN": {
+     "name": "海天味业",
+     "ticker": "603288",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "酱油 / 调味品生产与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-CONS-BAIJIU-CORE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "YILI": {
+     "name": "伊利股份",
+     "ticker": "600887",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "INDIRECT_CONFIRMED",
+      "basis": "液态奶 / 乳制品生产与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2019-CONS-BAIJIU-CORE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "CONS-2020-DUTYFREE": {
+   "theme_id": "CONSUMER_SEASON",
+   "theme_file": "consumer_season_historical_events_v0_3.json",
+   "object_id": "C-2020-CONS-DUTYFREE",
+   "object_kind": "campaign",
+   "participants": {
+    "CTGDF": {
+     "name": "中国中免",
+     "ticker": "601888",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "免税品零售（离岛免税 / 机场免税）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-CONS-DUTYFREE",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "CONS-2022-SERVICE-REBOUND": {
+   "theme_id": "CONSUMER_SEASON",
+   "theme_file": "consumer_season_historical_events_v0_3.json",
+   "object_id": "C-2022-CONS-SERVICE-REBOUND",
+   "object_kind": "campaign",
+   "participants": {
+    "CTGDF": {
+     "name": "中国中免",
+     "ticker": "601888",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "免税品零售（离岛免税 / 机场免税）",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2022-CONS-SERVICE-REBOUND",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "BTG": {
+     "name": "首旅酒店",
+     "ticker": "600258",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "酒店运营与管理",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2022-CONS-SERVICE-REBOUND",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "JINJIANG": {
+     "name": "锦江酒店",
+     "ticker": "600754",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "连锁酒店运营",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2022-CONS-SERVICE-REBOUND",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "SONGCHENG": {
+     "name": "宋城演艺",
+     "ticker": "300144",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "主题公园 / 文旅演艺",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2022-CONS-SERVICE-REBOUND",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "CONS-2024-TRADE-IN": {
+   "theme_id": "CONSUMER_SEASON",
+   "theme_file": "consumer_season_historical_events_v0_3.json",
+   "object_id": "C-2024-CONS-TRADE-IN",
+   "object_kind": "campaign",
+   "participants": {
+    "GREE": {
+     "name": "格力电器",
+     "ticker": "000651",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "空调 / 家用电器制造与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-CONS-TRADE-IN",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "HAIER": {
+     "name": "海尔智家",
+     "ticker": "600690",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "冰洗 / 家用电器制造与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-CONS-TRADE-IN",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "MIDEA": {
+     "name": "美的集团",
+     "ticker": "000333",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "家用电器制造与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-CONS-TRADE-IN",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "ROBAM": {
+     "name": "老板电器",
+     "ticker": "002508",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "厨房电器制造与销售",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-CONS-TRADE-IN",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "RES-2020-RAREEARTH": {
+   "theme_id": "RESOURCE_METAL",
+   "theme_file": "resource_metal_historical_events_v0_3.json",
+   "object_id": "C-2020-RES-RAREEARTH",
+   "object_kind": "campaign",
+   "participants": {
+    "NPRARE": {
+     "name": "北方稀土",
+     "ticker": "600111",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "稀土（轻稀土）采选与冶炼分离",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-RES-RAREEARTH",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "CNRAREEARTH": {
+     "name": "中国稀土",
+     "ticker": "000831",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "稀土（中重稀土）冶炼分离",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-RES-RAREEARTH",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "GUANGSHENG": {
+     "name": "广晟有色",
+     "ticker": "600259",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "稀土冶炼分离",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-RES-RAREEARTH",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "SHENGHE": {
+     "name": "盛和资源",
+     "ticker": "600392",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "稀土冶炼分离与金属加工",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2020-RES-RAREEARTH",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  },
+  "RES-2024-GOLD": {
+   "theme_id": "RESOURCE_METAL",
+   "theme_file": "resource_metal_historical_events_v0_3.json",
+   "object_id": "C-2024-RES-GOLD-CB",
+   "object_kind": "campaign",
+   "participants": {
+    "ZIJIN": {
+     "name": "紫金矿业",
+     "ticker": "601899",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "黄金 / 铜矿采选",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-RES-GOLD-CB",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "SDGOLD": {
+     "name": "山东黄金",
+     "ticker": "600547",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "黄金采选与冶炼",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-RES-GOLD-CB",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "CFGOLD": {
+     "name": "赤峰黄金",
+     "ticker": "600988",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "黄金采选",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-RES-GOLD-CB",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    },
+    "ZJGOLD": {
+     "name": "中金黄金",
+     "ticker": "600489",
+     "evidence_level": "BUSINESS_VERIFIED",
+     "study_standing": "INCLUDED",
+     "market_participation": {
+      "source_kind": "DB_OR_RESEARCH_ONLY",
+      "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+      "reported_move": null,
+      "reported_move_backed": false,
+      "status": "RESEARCH_OR_DB_ONLY",
+      "basis": "只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+     },
+     "mechanism_relation": {
+      "status": "DIRECT_CONFIRMED",
+      "basis": "黄金采选与冶炼",
+      "caveat": "★ 业务机制相关 ≠ 已证明该机制驱动了当次行情。"
+     },
+     "registry_role": {
+      "role": "representative",
+      "object_id": "C-2024-RES-GOLD-CB",
+      "object_kind": "campaign",
+      "verification": "VERIFIED_DB",
+      "role_source": "participant.registry_role",
+      "source": "cycle_research.db · campaign_securities.role（逐字一致；角色声明来自 participant.registry_role）"
+     },
+     "source_text": "canonical export securities 注册表 + 库内 campaign_securities（role=representative）",
+     "unknowns": [
+      {
+       "field": "market_participation",
+       "reason": "本库无同期报道背书（来源类型 DB_OR_RESEARCH_ONLY）—— 需补当时报道 / 交易所披露才能证明其在当次行情中的表现"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

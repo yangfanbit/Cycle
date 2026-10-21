@@ -101,50 +101,122 @@ def load_rc_securities():
     return out
 
 
-def market_participation(p: dict) -> dict:
-    """同期报道能证明什么 —— **只按字段实况分类，不推测**。"""
+DB_MARKERS = ("DB ", "export", "注册表", "本轮研究", "工作流", "库内", "securities")
+REPORT_MARKERS = ("报", "新闻", "证券网", "每经", "财经", "时报", "日报")
+INDIRECT_CAVEAT = ("偏间接", "未找到其产品", "未找到其", "不同轴", "非直接", "运营侧")
+
+
+def pick_catalyst(event: dict):
+    """取事件里**带 URL 的同期报道**（优先），否则第一条报道型 catalyst。"""
+    cats = event.get("catalysts") or []
+    with_url = [c for c in cats if "http" in (c.get("source") or "")]
+    pool = with_url or cats
+    for c in pool:
+        src = c.get("source") or ""
+        if "报" in src or "新闻" in src or "证券网" in src or "每经" in src:
+            return c
+    return pool[0] if pool else None
+
+
+def classify_source(p: dict, event: dict) -> dict:
+    """★ v0.29：**来源类型**必须单独判定 —— 字段非空 ≠ 有同期报道。
+
+    返回 `kind`：
+      · `REPORT_WITH_URL`    —— 参与者 source 指向同期报道，且事件 catalyst 带 URL
+      · `REPORT_NAMED_NO_URL`—— 指向同期报道，但本库未记录 URL
+      · `DB_OR_RESEARCH_ONLY`—— 只有数据库 / 注册表 / 研究轮次说明（**不是**同期报道）
+      · `NOT_RECORDED`       —— 没有任何来源记录（≠ 已检索未找到）
+      · `UNKNOWN_SOURCE`     —— 有文本但无法归类
+    """
+    src = (p.get("source") or "").strip()
+    if not src:
+        return {"kind": "NOT_RECORDED", "text": None, "catalyst": None}
+    if any(m in src for m in DB_MARKERS):
+        return {"kind": "DB_OR_RESEARCH_ONLY", "text": src, "catalyst": None}
+    is_inherit = src in ("同上", "同上报") or "同上报" in src or "同上" in src
+    if is_inherit or any(m in src for m in REPORT_MARKERS):
+        cat = pick_catalyst(event)
+        kind = "REPORT_WITH_URL" if (cat and "http" in (cat.get("source") or "")) else "REPORT_NAMED_NO_URL"
+        return {"kind": kind, "text": src, "catalyst": cat}
+    return {"kind": "UNKNOWN_SOURCE", "text": src, "catalyst": None}
+
+
+def market_participation(p: dict, event: dict) -> dict:
+    """同期报道能证明什么 —— ★ 必须先看**来源类型**，再看报道文本。
+
+    只有 `REPORT_*` 来源才允许出现 `REPORT_CONFIRMED_*`；
+    `DB_OR_RESEARCH_ONLY` 即使带 `reported_move` 也只能记 `RESEARCH_OR_DB_ONLY`
+    （涨跌幅没有同期报道背书时，不得说成「报道确认」）。
+    """
+    backing = classify_source(p, event)
     move = (p.get("reported_move") or "").strip()
-    lvl = p.get("evidence_level")
-    if move:
-        if LIMIT_UP_RE.search(move):
-            return {"status": "REPORTED_LIMIT_UP", "reported_move": move,
-                    "basis": "同期报道明确涨停 / 连板"}
-        if WINDOW_RE.search(move) and GAIN_RE.search(move):
-            return {"status": "REPORTED_WINDOW_GAIN", "reported_move": move,
-                    "basis": "同期报道给出**区间**涨幅（非单日）"}
-        if GAIN_RE.search(move):
-            return {"status": "REPORTED_DAILY_GAIN", "reported_move": move,
-                    "basis": "同期报道给出涨幅"}
-        return {"status": "REPORTED_NAMED_ONLY", "reported_move": move,
-                "basis": "同期报道点名（未给出可解析涨幅）"}
-    if lvl == "REPORT_NAMED":
-        return {"status": "REPORTED_NAMED_ONLY", "reported_move": None,
-                "basis": "同期报道点名（未给出涨幅）"}
-    if p.get("category") == "COUNTER_EXAMPLE":
-        return {"status": "NO_REPORTED_EVIDENCE", "reported_move": None,
-                "basis": "反例：本轮未找到其参与当次行情的点名报道"}
-    if p.get("category") == "INSUFFICIENT":
-        return {"status": "UNKNOWN", "reported_move": None,
-                "basis": "证据不足，无法判断是否参与当次行情"}
-    return {"status": "NO_REPORTED_EVIDENCE", "reported_move": None,
-            "basis": "★ 本轮**未找到**点名报道 —— 不代表当日未上涨，也不代表不是参与者"}
+    # ★ 涨跌幅文本是否存在，与「它是否有报道出处」是两件事 —— 必须分开记
+    out = {"source_kind": backing["kind"], "source_text": backing["text"],
+           "reported_move": move or None,
+           "reported_move_backed": bool(move) and backing["kind"].startswith("REPORT_")}
+    if backing.get("catalyst"):
+        c = backing["catalyst"]
+        out["report"] = {"date": c.get("date"), "text": c.get("text"),
+                         "source": c.get("source"), "url": c.get("source") and
+                         (c["source"].split("（")[1].rstrip("）") if "（http" in (c.get("source") or "") else None)}
+    if backing["kind"] in ("REPORT_WITH_URL", "REPORT_NAMED_NO_URL"):
+        if move:
+            if LIMIT_UP_RE.search(move):
+                st, basis = "REPORT_CONFIRMED_LIMIT_UP", "同期报道明确涨停 / 连板"
+            elif WINDOW_RE.search(move) and GAIN_RE.search(move):
+                st, basis = "REPORT_CONFIRMED_WINDOW_GAIN", "同期报道给出**区间**涨幅（非单日）"
+            elif GAIN_RE.search(move):
+                st, basis = "REPORT_CONFIRMED_GAIN", "同期报道给出涨幅"
+            else:
+                st, basis = "REPORT_CONFIRMED_NAMED", "同期报道点名（未给出可解析涨幅）"
+        else:
+            st, basis = "REPORT_CONFIRMED_NAMED", "同期报道点名（未给出涨幅）"
+    elif backing["kind"] == "DB_OR_RESEARCH_ONLY":
+        st = "RESEARCH_OR_DB_ONLY"
+        basis = ("只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
+                 + ("（附带的涨跌幅亦无报道出处）" if move else ""))
+    elif backing["kind"] == "NOT_RECORDED":
+        st, basis = "NOT_RECORDED", "本库无任何来源记录 —— 不等于已检索未找到，也不等于当日没涨"
+    else:
+        st, basis = "UNKNOWN", "来源文本无法归类"
+    out["status"] = st
+    out["basis"] = basis
+    return out
 
 
 def mechanism_relation(p: dict) -> dict:
+    """★ v0.29：**不再**因 `business_mechanism` 非空就判直接机制。
+
+    判据优先级：既有研究分类（`category`）→ caveat 里的反向结论 → 业务说明是否只是描述。
+      · `DIRECT_CONFIRMED`              —— 研究已明确判定为直接机制相关
+      · `INDIRECT_CONFIRMED`            —— 产业链扩散 / 研究自述偏间接
+      · `BUSINESS_DESCRIBED_UNCONFIRMED`—— 有业务说明，但与本题材的直接关系**未被研究确认**
+      · `NOT_STUDIED`                   —— 连业务说明都没有
+      · `DIFFERENT_AXIS` / `UNKNOWN`
+    """
     cat = p.get("category")
     mech = p.get("business_mechanism")
+    caveat = p.get("business_mechanism_caveat") or ""
     if cat == "COUNTER_EXAMPLE":
-        return {"status": "DIFFERENT_AXIS", "basis": "反例：机制轴与本题材不同",
-                "caveat": p.get("business_mechanism_caveat")}
+        return {"status": "DIFFERENT_AXIS", "basis": "反例：机制轴与本题材不同", "caveat": caveat or None}
     if cat == "INSUFFICIENT":
-        return {"status": "UNKNOWN", "basis": "证据不足，机制关系未确认", "caveat": None}
+        return {"status": "UNKNOWN", "basis": "证据不足，机制关系未确认", "caveat": caveat or None}
     if cat == "SPILLOVER":
-        return {"status": "SPILLOVER", "basis": mech or "产业链扩散（未登记逐条说明）",
-                "caveat": p.get("business_mechanism_caveat")}
+        return {"status": "INDIRECT_CONFIRMED", "basis": mech or "产业链扩散（未登记逐条说明）",
+                "caveat": caveat or None}
+    if cat == "MECHANISM_DIRECT":
+        if any(k in caveat for k in INDIRECT_CAVEAT):
+            return {"status": "INDIRECT_CONFIRMED",
+                    "basis": "研究分类为直接机制，但 caveat 自述偏间接 / 不同轴 → 按间接记",
+                    "caveat": caveat}
+        return {"status": "DIRECT_CONFIRMED", "basis": mech or "研究判定为直接机制相关",
+                "caveat": caveat or None}
+    # MARKET_PARTICIPANT：研究只判定「参与行情」，**没有**判定机制类别
     if mech:
-        return {"status": "DIRECT", "basis": mech,
-                "caveat": p.get("business_mechanism_caveat")}
-    return {"status": "UNSPECIFIED", "basis": "参与行情但未登记机制说明",
+        return {"status": "BUSINESS_DESCRIBED_UNCONFIRMED",
+                "basis": "有业务说明，但该业务与本题材的**直接关系未被研究确认**"
+                         "（category = MARKET_PARTICIPANT）", "caveat": caveat or None}
+    return {"status": "NOT_STUDIED", "basis": "未登记业务机制说明，也未判定机制类别",
             "caveat": None}
 
 
@@ -195,13 +267,14 @@ def registry_role_of(p: dict, object_id, object_kind, roles, rc_secs) -> dict | 
 
 def unknowns_of(p: dict, mp: dict, mr: dict, rr) -> list:
     out = []
-    if mp["status"] in ("NO_REPORTED_EVIDENCE", "UNKNOWN"):
+    if mp["status"] in ("NOT_RECORDED", "UNKNOWN", "RESEARCH_OR_DB_ONLY"):
         out.append({"field": "market_participation",
-                    "reason": "无同期报道可证明其在当次行情中的表现"
-                              "（≠ 当日未上涨；需补当时行情报道或交易所披露）"})
-    if mr["status"] in ("UNSPECIFIED", "UNKNOWN"):
+                    "reason": "本库无同期报道背书（来源类型 %s）—— 需补当时报道 / 交易所披露"
+                              "才能证明其在当次行情中的表现" % mp["source_kind"]})
+    if mr["status"] in ("BUSINESS_DESCRIBED_UNCONFIRMED", "NOT_STUDIED", "UNKNOWN"):
         out.append({"field": "mechanism_relation",
-                    "reason": "未登记业务与题材机制的逐条说明"})
+                    "reason": "业务与本题材的**直接关系未被研究确认**"
+                              "（有业务说明 ≠ 机制相关）"})
     if rr and rr["verification"] != "VERIFIED_DB":
         out.append({"field": "registry_role",
                     "reason": "角色无机器可核来源（%s）—— 只能作为**对象内部登记**引用，"
@@ -225,7 +298,7 @@ def build(conn) -> dict:
             kind = cf.get("object_kind") or ("campaign" if cf.get("campaign_id") else None)
             parts = {}
             for p in e.get("participants") or []:
-                mp = market_participation(p)
+                mp = market_participation(p, e)
                 mr = mechanism_relation(p)
                 rr = registry_role_of(p, oid, kind, roles, rc_secs)
                 parts[p["security_id"]] = {
@@ -263,18 +336,28 @@ def build(conn) -> dict:
             "version": "participant_evidence_v1",
             "purpose": "把「同期市场表现 / 业务机制关系 / Research 对象登记角色 / 研究立场 / 无法判定」"
                        "拆成互不冒充的独立维度，并逐条给出依据与出处",
+            "source_kind": {
+                "REPORT_WITH_URL": "参与者 source 指向同期报道，且事件 catalyst 记录了 URL",
+                "REPORT_NAMED_NO_URL": "指向同期报道，但本库未记录 URL（可追溯性弱一档）",
+                "DB_OR_RESEARCH_ONLY": "★ 只有数据库 / 注册表 / 研究轮次说明 —— **不是**同期报道",
+                "NOT_RECORDED": "★ 无任何来源记录 —— 不等于「已检索未找到」",
+                "UNKNOWN_SOURCE": "有来源文本但无法归类",
+            },
             "market_participation": {
-                "REPORTED_LIMIT_UP": "同期报道明确涨停 / 连板（最强，但仍只是「被报道点名」级别的证据）",
-                "REPORTED_DAILY_GAIN": "同期报道给出当日涨幅",
-                "REPORTED_WINDOW_GAIN": "同期报道给出**区间**涨幅（非单日）",
-                "REPORTED_NAMED_ONLY": "同期报道点名但未给涨幅",
-                "NO_REPORTED_EVIDENCE": "★ 本轮未找到点名报道 —— **不等于**当日没涨、**不等于**不是参与者",
-                "UNKNOWN": "证据不足，无法判断",
+                "REPORT_CONFIRMED_LIMIT_UP": "同期报道明确涨停 / 连板（仍只是「被报道点名」级别）",
+                "REPORT_CONFIRMED_GAIN": "同期报道给出当日涨幅",
+                "REPORT_CONFIRMED_WINDOW_GAIN": "同期报道给出**区间**涨幅（非单日）",
+                "REPORT_CONFIRMED_NAMED": "同期报道点名但未给涨幅",
+                "reported_move_backed": "★ 涨跌幅文本是否**有同期报道出处**（false = 只有库内/研究记录，不得当报道引用）",
+                "RESEARCH_OR_DB_ONLY": "★ 只有 DB / 注册表 / 研究记录 —— 不得说成「报道确认」",
+                "NOT_RECORDED": "★ 无来源记录 —— 不等于当日没涨、不等于不是参与者",
+                "UNKNOWN": "来源无法归类",
             },
             "mechanism_relation": {
-                "DIRECT": "有业务机制说明（业务与题材机制有关 ≠ 驱动了当次行情）",
-                "SPILLOVER": "产业链扩散",
-                "UNSPECIFIED": "参与行情但未登记机制说明",
+                "DIRECT_CONFIRMED": "研究已明确判定为直接机制相关（≠ 驱动了当次行情）",
+                "INDIRECT_CONFIRMED": "产业链扩散 / 研究自述偏间接",
+                "BUSINESS_DESCRIBED_UNCONFIRMED": "★ 有业务说明，但与本题材的**直接关系未被研究确认**",
+                "NOT_STUDIED": "未登记业务说明，也未判定机制类别",
                 "DIFFERENT_AXIS": "反例：机制轴不同",
                 "UNKNOWN": "证据不足",
             },
@@ -290,6 +373,8 @@ def build(conn) -> dict:
             "must_not": [
                 "不得把 registry_role=leader 当作「当时的龙头」",
                 "不得把 BUSINESS_VERIFIED 当作「参与过当次行情」",
+                "★ 不得因 `business_mechanism` 非空就判「直接机制」—— 必须看研究分类",
+                "★ 不得因 `evidence_level` 写 REPORT_NAMED 就说「报道点名」—— 必须看 source 类型",
                 "不得把 NO_REPORTED_EVIDENCE 当作「当日没涨」",
                 "不得用事后涨幅反推角色",
             ],

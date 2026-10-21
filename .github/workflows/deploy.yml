@@ -157,6 +157,21 @@ jobs:
           python research/scripts/test_build_participant_evidence.py
           echo "::endgroup::"
 
+      # ----------------------------------------------------------------------
+      # ★★ v0.29：历史市场角色（Point-in-Time）一致性 + PIT 纪律门禁
+      #   `--check` 重算角色并与产物比对；不变量测试覆盖「事后集合不得 pit_safe」
+      #   「识别日不得晚于窗口末仍标 pit_safe」「报道称龙头必须有原文措辞」。
+      # ----------------------------------------------------------------------
+      - name: Historical market roles (--check + PIT invariants)
+        run: |
+          set -euo pipefail
+          echo "::group::build_historical_market_roles --check"
+          python research/scripts/build_historical_market_roles_v0_1.py --check
+          echo "::endgroup::"
+          echo "::group::market roles PIT invariants"
+          python research/scripts/test_build_historical_market_roles.py
+          echo "::endgroup::"
+
       - name: Research read-only gates
         run: |
           set -euo pipefail

@@ -3498,20 +3498,59 @@ html, body {
 .fem-part-axis { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); white-space: nowrap; }
 .fem-part-axis-src { font-style: normal; opacity: .72; font-size: 9.5px; }
 
-/* 同期市场表现：报道证据越强，色越实 */
-.fem-part-axis.axis-market.mp-reported_limit_up    { background: #fdecec; color: #a33232; border-color: #f0c9c9; }
-.fem-part-axis.axis-market.mp-reported_daily_gain  { background: #fdf3e3; color: var(--preheat-ink); }
-.fem-part-axis.axis-market.mp-reported_window_gain { background: #fdf3e3; color: var(--preheat-ink); }
-.fem-part-axis.axis-market.mp-reported_named_only  { background: #f4f4f6; color: var(--ink-2); }
-.fem-part-axis.axis-market.mp-no_reported_evidence { background: #fff; color: var(--ink-3); border-style: dashed; }
-.fem-part-axis.axis-market.mp-unknown              { background: #fff; color: var(--ink-3); border-style: dotted; }
+/* 同期市场表现：报道证据越强，色越实；★ v0.29「仅库内/研究记录」必须视觉上明显弱一档 */
+.fem-part-axis.axis-market.mp-report_confirmed_limit_up    { background: #fdecec; color: #a33232; border-color: #f0c9c9; }
+.fem-part-axis.axis-market.mp-report_confirmed_gain        { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-axis.axis-market.mp-report_confirmed_window_gain { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-axis.axis-market.mp-report_confirmed_named       { background: #f4f4f6; color: var(--ink-2); }
+.fem-part-axis.axis-market.mp-research_or_db_only          { background: #fff; color: var(--ink-3); border-style: dashed; }
+.fem-part-axis.axis-market.mp-not_recorded                 { background: #fff; color: var(--ink-3); border-style: dotted; }
+.fem-part-axis.axis-market.mp-unknown                      { background: #fff; color: var(--ink-3); border-style: dotted; }
 
 /* 机制关系：业务层面，与「是否参与行情」无关 */
-.fem-part-axis.axis-mech.mr-direct          { background: #eaf5ec; color: #2f6b3c; }
-.fem-part-axis.axis-mech.mr-spillover       { background: #eef3f8; color: var(--accent); }
-.fem-part-axis.axis-mech.mr-unspecified     { background: #fff; color: var(--ink-3); border-style: dashed; }
-.fem-part-axis.axis-mech.mr-different_axis  { background: #fbeef0; color: #8a4256; }
-.fem-part-axis.axis-mech.mr-unknown         { background: #fff; color: var(--ink-3); border-style: dotted; }
+.fem-part-axis.axis-mech.mr-direct_confirmed              { background: #eaf5ec; color: #2f6b3c; }
+.fem-part-axis.axis-mech.mr-indirect_confirmed            { background: #eef3f8; color: var(--accent); }
+.fem-part-axis.axis-mech.mr-business_described_unconfirmed{ background: #fff; color: var(--ink-2); border-style: dashed; }
+.fem-part-axis.axis-mech.mr-not_studied                   { background: #fff; color: var(--ink-3); border-style: dotted; }
+.fem-part-axis.axis-mech.mr-different_axis                { background: #fbeef0; color: #8a4256; }
+.fem-part-axis.axis-mech.mr-unknown                       { background: #fff; color: var(--ink-3); border-style: dotted; }
+
+/* ★★ v0.29：历史市场角色（PIT）—— 与参与证据分开的一节 */
+.fem-roles { margin: 8px 0 10px; padding: 8px 10px; background: #fbfaf7; border: 1px solid var(--line); border-radius: 6px; }
+.fem-roles h5 { margin: 0 0 4px; }
+.fem-roles-status { margin: 0 0 6px; font-size: 11.5px; color: var(--ink-2); line-height: 1.7; }
+.fem-roles-empty { margin: 0; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+.fem-roles-gap { display: block; margin-top: 2px; }
+.fem-roles-list { list-style: none; margin: 0 0 6px; padding: 0; }
+.fem-roles-list li { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; padding: 3px 0; font-size: 11.5px; }
+.fem-role-name { font-weight: 600; }
+.fem-role-badge { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); }
+.fem-role-badge.role-pit_media_named_leader { background: #fdecec; color: #a33232; }
+.fem-role-badge.role-pit_media_named_mover  { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-role-badge.role-pit_market_observed    { background: #eef3f8; color: var(--accent); }
+.fem-role-badge.role-posthoc_leader_set     { background: #f4f4f6; color: var(--ink-3); border-style: dashed; }
+.fem-role-date, .fem-role-conf { color: var(--ink-3); font-family: var(--mono); font-size: 10.5px; }
+.fem-role-src { font-size: 10.5px; color: var(--accent); }
+.fem-role-unbound { font-size: 10px; padding: 0 5px; border-radius: 8px; background: #fbeef0; color: #8a4256; }
+.fem-role-review { font-size: 10px; padding: 0 5px; border-radius: 8px; background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-ev-raw { font-size: 10px; color: var(--ink-3); cursor: help; }
+.fem-role-src.muted { color: var(--ink-3); }
+.fem-role-note { flex-basis: 100%; color: var(--ink-2); font-size: 10.5px; }
+.fem-slices { margin: 6px 0; font-size: 11.5px; }
+.fem-slices-title { margin: 0 0 2px; color: var(--ink-2); }
+.fem-slices ul { margin: 0; padding-left: 16px; }
+.fem-slices li { margin: 1px 0; color: var(--ink-2); }
+.fem-slice-drift { color: #8a4256; }
+.fem-posthoc { margin: 6px 0 0; font-size: 11.5px; color: var(--ink-2); }
+.fem-posthoc-note { display: block; margin-top: 2px; color: var(--ink-3); font-size: 10.5px; }
+.fem-roles-caveat { margin: 6px 0 0; font-size: 10.5px; color: var(--ink-3); line-height: 1.6; }
+.fem-part-axis.axis-role { background: #f3f1fa; color: #4a3f78; }
+.fem-part-axis.axis-role.role-pit_market_observed { background: #eef3f8; color: var(--accent); }
+
+.fem-part-report-link {
+  margin-left: 6px; font-size: 11px; color: var(--accent);
+  text-decoration: underline; text-underline-offset: 2px;
+}
 
 /* 对象登记角色：库内可核=实线，仅文档登记=虚线（提醒「来源强度不同」） */
 .fem-part-axis.axis-registry                { background: #f3f1fa; color: #4a3f78; }

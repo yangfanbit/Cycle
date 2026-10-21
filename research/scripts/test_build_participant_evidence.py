@@ -28,7 +28,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 CURRENT = os.path.join(REPO, "research", "current")
 DB = os.path.join(REPO, "research", "database", "cycle_research.db")
-ARTIFACT = os.path.join(CURRENT, "participant_evidence_v0_1.json")
+ARTIFACT = os.path.join(CURRENT, "participant_evidence_v0_2.json")
 INDEX = os.path.join(CURRENT, "historical_event_maps_index.json")
 LIMIT_UP_RE = re.compile(r"涨停|(?:\d+\s*天\s*\d+\s*板)|(?:\d+\s*连板)")
 
@@ -50,7 +50,7 @@ class ParticipantEvidenceTest(unittest.TestCase):
 
     def test_contract_declares_axes(self):
         c = self.doc["participant_evidence_contract"]
-        self.assertEqual(c["version"], "participant_evidence_v1")
+        self.assertEqual(c["version"], "participant_evidence_v1")  # 合同名不随产物版本变
         for k in ("market_participation", "mechanism_relation", "registry_role", "study_standing"):
             self.assertIn(k, c)
         # ★ 必须写明「不得把 registry_role 当龙头」
@@ -68,20 +68,80 @@ class ParticipantEvidenceTest(unittest.TestCase):
                         missing.append((e["event_id"], p["security_id"]))
         self.assertEqual(missing, [], "参与者证据缺失：%s" % missing[:6])
 
-    def test_limit_up_only_when_reported(self):
-        """分类：涨停只能来自报道原文，不能靠推测"""
+    def test_report_status_requires_report_source(self):
+        """★★ 核心不变量：`REPORT_CONFIRMED_*` **只允许**出现在 `REPORT_*` 来源上。
+
+        这条正是 v0.28 的缺陷：`evidence_level=REPORT_NAMED` 但 source 是
+        「DB campaign_securities / 本轮研究」，却被写成「报道点名」。
+        """
+        bad = []
         for eid, ev in self.doc["events"].items():
             for sid, p in ev["participants"].items():
                 mp = p["market_participation"]
-                if mp["status"] == "REPORTED_LIMIT_UP":
+                st, kind = mp["status"], mp["source_kind"]
+                if st.startswith("REPORT_CONFIRMED_") and not kind.startswith("REPORT_"):
+                    bad.append((eid, sid, st, kind))
+                if kind == "DB_OR_RESEARCH_ONLY" and st.startswith("REPORT_CONFIRMED_"):
+                    bad.append((eid, sid, st, kind))
+                if kind == "NOT_RECORDED" and st != "NOT_RECORDED":
+                    bad.append((eid, sid, st, kind))
+        self.assertEqual(bad, [], "报道状态与来源类型不一致：%s" % bad[:5])
+
+    def test_limit_up_requires_reported_move(self):
+        """涨停只能来自报道原文，不能靠推测"""
+        for eid, ev in self.doc["events"].items():
+            for sid, p in ev["participants"].items():
+                mp = p["market_participation"]
+                if mp["status"] == "REPORT_CONFIRMED_LIMIT_UP":
                     self.assertTrue(mp.get("reported_move"), "%s/%s 无 reported_move" % (eid, sid))
                     self.assertRegex(mp["reported_move"], LIMIT_UP_RE,
                                      "%s/%s 报道文本不含涨停特征" % (eid, sid))
+                elif mp["status"].startswith("REPORT_CONFIRMED_"):
+                    # 报道类状态且给了涨幅 → 必须有出处
+                    if mp.get("reported_move"):
+                        self.assertTrue(mp.get("reported_move_backed"),
+                                        "%s/%s 报道状态 %s 却标为无出处" % (eid, sid, mp["status"]))
                 else:
-                    mv = mp.get("reported_move") or ""
-                    if mv:
-                        self.assertIsNone(LIMIT_UP_RE.search(mv),
-                                          "%s/%s 含涨停特征却被归为 %s" % (eid, sid, mp["status"]))
+                    # ★ 非报道状态却有涨跌幅文本 → **必须**标为「无报道出处」
+                    if mp.get("reported_move"):
+                        self.assertFalse(mp.get("reported_move_backed"),
+                                         "%s/%s 状态 %s 却标成有报道出处" % (eid, sid, mp["status"]))
+
+    def test_traceable_report_has_url_and_date(self):
+        """声称有 URL 的报道，必须真的带 URL + 日期（可追溯性不能只写在文案里）"""
+        for eid, ev in self.doc["events"].items():
+            for sid, p in ev["participants"].items():
+                mp = p["market_participation"]
+                if mp["source_kind"] != "REPORT_WITH_URL":
+                    continue
+                rep = mp.get("report") or {}
+                self.assertTrue(str(rep.get("url") or "").startswith("http"),
+                                "%s/%s 声称有 URL 却没有" % (eid, sid))
+                self.assertRegex(str(rep.get("date") or ""), r"^\d{4}-\d{2}-\d{2}$",
+                                 "%s/%s 报道日期缺失或格式不对" % (eid, sid))
+
+    def test_mechanism_status_matches_research_category(self):
+        """★★ 机制关系必须来自**研究分类**，不能因 business_mechanism 非空就判直接机制。"""
+        # ★ 全库建一张 (event, security) → category 的对照表（跨题材）
+        cats = {}
+        for doc in self.theme_docs.values():
+            for e in doc["events"]:
+                for p in e["participants"]:
+                    cats[(e["event_id"], p["security_id"])] = p.get("category")
+        bad = []
+        for eid, ev in self.doc["events"].items():
+            for sid, p in ev["participants"].items():
+                mr = p["mechanism_relation"]["status"]
+                cat = cats.get((eid, sid))
+                if cat is None:
+                    bad.append((eid, sid, mr, "NO_CATEGORY"))
+                elif mr == "DIRECT_CONFIRMED" and cat != "MECHANISM_DIRECT":
+                    bad.append((eid, sid, mr, cat))
+                elif mr == "BUSINESS_DESCRIBED_UNCONFIRMED" and cat != "MARKET_PARTICIPANT":
+                    bad.append((eid, sid, mr, cat))
+                elif mr == "INDIRECT_CONFIRMED" and cat not in ("SPILLOVER", "MECHANISM_DIRECT"):
+                    bad.append((eid, sid, mr, cat))
+        self.assertEqual(bad, [], "机制状态与研究分类不一致：%s" % bad[:5])
 
     def test_standing_axis_orthogonal_to_market_axis(self):
         """★★ 三条轴**正交**：反例/证据不足说的是**机制关系**，不是「有没有被报道」。
@@ -113,9 +173,13 @@ class ParticipantEvidenceTest(unittest.TestCase):
         self.assertEqual(p["mechanism_relation"]["status"], "DIFFERENT_AXIS")
         self.assertEqual(p["registry_role"]["role"], "leader")
         self.assertEqual(p["registry_role"]["verification"], "VERIFIED_DB")
-        self.assertEqual(p["market_participation"]["status"], "REPORTED_WINDOW_GAIN")
-        # ★ 有反例身份 → 必须进 unknowns（提醒读者这条不能被当成机制证据）
-        self.assertTrue(any(u["field"] == "registry_role" for u in p["unknowns"]) or True)
+        # ★ v0.29：该 +233% 来自研究记录（export securities + 公开资料），无同期报道背书
+        self.assertEqual(p["market_participation"]["status"], "RESEARCH_OR_DB_ONLY")
+        self.assertFalse(p["market_participation"]["reported_move_backed"])
+        # ★ 反例身份必须进 unknowns 之外，还要**保留**角色出处（可核）
+        self.assertEqual(p["registry_role"]["role_source"], "participant.registry_role")
+        self.assertTrue(any(u["field"] == "mechanism_relation" for u in p["unknowns"])
+                        or p["mechanism_relation"]["status"] == "DIFFERENT_AXIS")
 
     def test_registry_role_verified_matches_db(self):
         """库内可核 → 必须逐字一致（这是「角色有出处」的唯一硬保证）"""
@@ -146,7 +210,8 @@ class ParticipantEvidenceTest(unittest.TestCase):
 
     def test_check_passes(self):
         code = subprocess.run(
-            [sys.executable, os.path.join(HERE, "build_participant_evidence_v0_1.py"), "--check"],
+            [sys.executable, os.path.join(HERE, "build_participant_evidence_v0_1.py"),
+             "--check", "--version", "2"],
             capture_output=True, text=True).returncode
         self.assertEqual(code, 0)
 

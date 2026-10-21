@@ -1,0 +1,1757 @@
+{
+ "artifact": "historical_market_roles",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-22",
+ "generated_by": "research/scripts/build_historical_market_roles_v0_1.py",
+ "supersedes": null,
+ "historical_market_roles_contract": {
+  "version": "historical_market_roles_v1",
+  "axes_are_separate": [
+   "market_participation（同期报道能证明什么）",
+   "mechanism_relation（业务与题材机制的关系）",
+   "registry_role（Research 对象内部登记）",
+   "study_standing（纳入 / 反例 / 证据不足）",
+   "historical_market_role（本产物：当时可识别的市场角色）",
+   "行情表现（价格结果，**不得**反推角色）"
+  ],
+  "roles": {
+   "PIT_MEDIA_NAMED_LEADER": "同期报道**明确称**其为龙头 / 领涨 / 核心（当前库内 0 条）",
+   "PIT_MEDIA_NAMED_MOVER": "同期报道点名且给出涨停 / 涨幅（**未**称龙头）",
+   "PIT_MARKET_OBSERVED": "只有盘面可观察异动（放量 / 涨停 / 连板），无报道定性",
+   "POSTHOC_LEADER_SET": "行情结束后回看总结出的龙头集合 —— **后验**，不得当作当时可知",
+   "INSUFFICIENT": "有研究但证据不足"
+  },
+  "pit_rules": [
+   "identified_date 只能使用当时已公开的信息日期",
+   "pit_safe 要求 identified_date ≤ 事件窗口结束日，且证据发布时间 ≤ identified_date",
+   "POSTHOC_LEADER_SET 一律 posthoc=true / pit_safe=false",
+   "切片只收 identified_date ≤ 切片日 的成员；成员 <2 或没有媒体识别 → NOT_USABLE",
+   "不得用完整事件结束后的龙头集合证明早期已形成同样的股票池"
+  ],
+  "must_not": [
+   "不得把「报道涨停」写成「龙头」",
+   "不得用事后涨幅反推当时可识别的角色",
+   "不得把 registry_role=leader 当作历史市场角色",
+   "不得用事后集合证明早期 basket"
+  ]
+ },
+ "summary": {
+  "events": 33,
+  "by_research_status": {
+   "RESEARCHED_PIT": 1,
+   "DERIVED_FROM_REPORT": 3,
+   "NOT_RESEARCHED": 29
+  },
+  "roles_by_type": {
+   "PIT_MEDIA_NAMED_MOVER": 32,
+   "PIT_MARKET_OBSERVED": 1
+  },
+  "events_with_pit_slices": 1,
+  "events_with_posthoc_set": 1
+ },
+ "events": {
+  "FLU-2017-AVIAN": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2017-02-01",
+    "2017-03-15"
+   ],
+   "research_status": "DERIVED_FROM_REPORT",
+   "source_records": [
+    "research/current/participant_evidence_v0_2.json"
+   ],
+   "roles": [
+    {
+     "security_id": "LAYNE-002166",
+     "source_security_id": "LAYNE-002166",
+     "name": "莱茵生物",
+     "binding": {
+      "bound_to": "LAYNE-002166",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "LUKANG-600789",
+     "source_security_id": "LUKANG-600789",
+     "name": "鲁抗医药",
+     "binding": {
+      "bound_to": "LUKANG-600789",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "source_security_id": "HAIWANG-000078",
+     "name": "海王生物",
+     "binding": {
+      "bound_to": "HAIWANG-000078",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "DAAN-002030",
+     "source_security_id": "DAAN-002030",
+     "name": "达安基因",
+     "binding": {
+      "bound_to": "DAAN-002030",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "WOHUA-002107",
+     "source_security_id": "WOHUA-002107",
+     "name": "沃华医药",
+     "binding": {
+      "bound_to": "WOHUA-002107",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "source_security_id": "NEPHARM-000597",
+     "name": "东北制药",
+     "binding": {
+      "bound_to": "NEPHARM-000597",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "source_security_id": "LIANHUAN-600513",
+     "name": "联环药业",
+     "binding": {
+      "bound_to": "LIANHUAN-600513",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "HUALAN-002007",
+     "source_security_id": "HUALAN-002007",
+     "name": "华兰生物",
+     "binding": {
+      "bound_to": "HUALAN-002007",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "TIANKA-002100",
+     "source_security_id": "TIANKA-002100",
+     "name": "天康生物",
+     "binding": {
+      "bound_to": "TIANKA-002100",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "TAILONG-600222",
+     "source_security_id": "TAILONG-600222",
+     "name": "太龙药业",
+     "binding": {
+      "bound_to": "TAILONG-600222",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "中国证券网 / 新浪财经 2017-02-15（https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml）",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 10,
+    "report_backed_participants": 10,
+    "pit_roles": 10,
+    "pit_roles_bound": 10,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者）"
+   ]
+  },
+  "FLU-2018-SEASONAL": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2017-09-01",
+    "2018-01-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "PUBLICHEALTH-2019-WUHAN": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2019-12-16",
+    "2020-01-31"
+   ],
+   "research_status": "DERIVED_FROM_REPORT",
+   "source_records": [
+    "research/current/participant_evidence_v0_2.json"
+   ],
+   "roles": [
+    {
+     "security_id": "LUKANG-600789",
+     "source_security_id": "LUKANG-600789",
+     "name": "鲁抗医药",
+     "binding": {
+      "bound_to": "LUKANG-600789",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "source_security_id": "LIANHUAN-600513",
+     "name": "联环药业",
+     "binding": {
+      "bound_to": "LIANHUAN-600513",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "LAYNE-002166",
+     "source_security_id": "LAYNE-002166",
+     "name": "莱茵生物",
+     "binding": {
+      "bound_to": "LAYNE-002166",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "XIANGXUE-300147",
+     "source_security_id": "XIANGXUE-300147",
+     "name": "香雪制药",
+     "binding": {
+      "bound_to": "XIANGXUE-300147",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "WEIMING-002581",
+     "source_security_id": "WEIMING-002581",
+     "name": "未名医药",
+     "binding": {
+      "bound_to": "WEIMING-002581",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "source_security_id": "NEPHARM-000597",
+     "name": "东北制药",
+     "binding": {
+      "bound_to": "NEPHARM-000597",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "source_security_id": "HAIWANG-000078",
+     "name": "海王生物",
+     "binding": {
+      "bound_to": "HAIWANG-000078",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "YILING-002603",
+     "source_security_id": "YILING-002603",
+     "name": "以岭药业",
+     "binding": {
+      "bound_to": "YILING-002603",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "SIHUAN-000518",
+     "source_security_id": "SIHUAN-000518",
+     "name": "四环生物",
+     "binding": {
+      "bound_to": "SIHUAN-000518",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "NANWEI-603880",
+     "source_security_id": "NANWEI-603880",
+     "name": "南卫股份",
+     "binding": {
+      "bound_to": "NANWEI-603880",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-12-31（https://www.nbd.com.cn/articles/2019-12-31/1397396.html）",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 10,
+    "report_backed_participants": 10,
+    "pit_roles": 10,
+    "pit_roles_bound": 10,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者）"
+   ]
+  },
+  "SUPERFUNGUS-2019-CANDIDA": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2019-04-01",
+    "2019-04-30"
+   ],
+   "research_status": "DERIVED_FROM_REPORT",
+   "source_records": [
+    "research/current/participant_evidence_v0_2.json"
+   ],
+   "roles": [
+    {
+     "security_id": "SIHUAN-000518",
+     "source_security_id": "SIHUAN-000518",
+     "name": "四环生物",
+     "binding": {
+      "bound_to": "SIHUAN-000518",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "WEIMING-002581",
+     "source_security_id": "WEIMING-002581",
+     "name": "未名医药",
+     "binding": {
+      "bound_to": "WEIMING-002581",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "source_security_id": "LIANHUAN-600513",
+     "name": "联环药业",
+     "binding": {
+      "bound_to": "LIANHUAN-600513",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "source_security_id": "HAIWANG-000078",
+     "name": "海王生物",
+     "binding": {
+      "bound_to": "HAIWANG-000078",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "LUKANG-600789",
+     "source_security_id": "LUKANG-600789",
+     "name": "鲁抗医药",
+     "binding": {
+      "bound_to": "LUKANG-600789",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "FUAN-300194",
+     "source_security_id": "FUAN-300194",
+     "name": "福安药业",
+     "binding": {
+      "bound_to": "FUAN-300194",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "JIUDIAN-300705",
+     "source_security_id": "JIUDIAN-300705",
+     "name": "九典制药",
+     "binding": {
+      "bound_to": "JIUDIAN-300705",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "source_security_id": "NEPHARM-000597",
+     "name": "东北制药",
+     "binding": {
+      "bound_to": "NEPHARM-000597",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的同期报道直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-08",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道",
+      "source_text": "每日经济新闻 2019-04-11（转述）",
+      "url": null,
+      "published_at": "2019-04-08",
+      "summary": "中国工程院院士廖万清接受采访时表示，中国已确认 18 例耳念珠菌（超级真菌）临床感染病例"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_2.json"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 8,
+    "report_backed_participants": 8,
+    "pit_roles": 8,
+    "pit_roles_bound": 8,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者）"
+   ]
+  },
+  "FLU-2023-H1N1": {
+   "theme_id": "FLU",
+   "object_id": "C-2023-PHARMA-FLU",
+   "window": [
+    "2023-02-20",
+    "2023-04-15"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "FLU-2024-SEASONAL": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2024-09-01",
+    "2025-01-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 7,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "POWER-2017-SUMMER-COUNTEREXAMPLE": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": null,
+   "window": [
+    "2017-05-01",
+    "2017-07-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 6,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "POWER-2022-SUMMER": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": null,
+   "window": [
+    "2022-05-01",
+    "2022-07-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 6,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "POWER-2023-SUMMER": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": "C-2023-POWEROP-THERMAL",
+   "window": [
+    "2023-01-03",
+    "2023-10-23"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "POWER-2024-SUMMER-COUNTEREXAMPLE": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": null,
+   "window": [
+    "2024-05-01",
+    "2024-07-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 6,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "MEDIA-2018-GAMELICENSE": {
+   "theme_id": "MEDIA",
+   "object_id": "C-2018-MEDIA-GAMELICENSE",
+   "window": [
+    "2018-12-21",
+    "2019-08-09"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "MEDIA-2021-METAVERSE": {
+   "theme_id": "MEDIA",
+   "object_id": "C-2021-MEDIA-METAVERSE",
+   "window": [
+    "2021-09-06",
+    "2022-01-28"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 1,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "ROBOTICS-2023-HUMANOID": {
+   "theme_id": "ROBOTICS",
+   "object_id": "C-2023-HIEQ-HUMANOID",
+   "window": [
+    "2023-05-01",
+    "2023-12-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 5,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "AUTO-2019-ADAS": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2019-AD",
+   "window": [
+    "2019-08-15",
+    "2019-09-24"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "AUTO-2023-NOA": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2023-AD",
+   "window": [
+    "2023-07-03",
+    "2023-07-19"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "AUTO-2023-HUAWEI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "RC-2023-HUAWEI",
+   "window": [
+    "2023-09-20",
+    "2023-10-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 5,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "AUTO-2024-V2X": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2024-V2X",
+   "window": [
+    "2024-06-11",
+    "2024-06-25"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "AUTO-2024-ROBOTAXI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2024-ROBOTAXI",
+   "window": [
+    "2024-07-11",
+    "2024-07-29"
+   ],
+   "research_status": "RESEARCHED_PIT",
+   "source_records": [
+    "research/research/c2/point_in_time_leaders.csv",
+    "research/research/c2/2024_robotaxi_point_in_time.md"
+   ],
+   "roles": [
+    {
+     "security_id": "DADONGTRAFFIC",
+     "source_security_id": "DAZHONGTONG",
+     "name": "大众交通",
+     "binding": {
+      "bound_to": "DADONGTRAFFIC",
+      "status": "BOUND_BY_NAME",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "CSV security_id 与注册表不一致（注册表可能指向另一家公司），按名称精确相等绑定到本事件参与者；CSV 无 ticker 可交叉核对",
+      "review": "NAME_MATCH_ONLY"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-07-08",
+     "identification_type": "market_breadth",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "7/8放量+6.12%启动、7/9一字板，无人驾驶-网约车叙事早段(公开盘面/7/9媒体归因)",
+      "url": null,
+      "published_at": "2024-07-08",
+      "summary": "识别较早：7/8当日已有可观察异动(低置信主题归因)，7/9一字板获媒体归入无人驾驶"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "识别较早：7/8当日已有可观察异动(低置信主题归因)，7/9一字板获媒体归入无人驾驶",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": "JINJIANGONLINE",
+     "source_security_id": "JINJIANG",
+     "name": "锦江在线",
+     "binding": {
+      "bound_to": "JINJIANGONLINE",
+      "status": "BOUND_BY_NAME",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "CSV security_id 与注册表不一致（注册表可能指向另一家公司），按名称精确相等绑定到本事件参与者；CSV 无 ticker 可交叉核对",
+      "review": "NAME_MATCH_ONLY"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-09",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "7/9无人驾驶概念一字连板（当日市场盘面/媒体复盘报道）",
+      "url": null,
+      "published_at": "2024-07-09",
+      "summary": "与星网宇达同为首批一字连板的无人驾驶/智能网约车标的"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "与星网宇达同为首批一字连板的无人驾驶/智能网约车标的",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": null,
+     "source_security_id": "XINGYUYUDA",
+     "name": "星网宇达",
+     "binding": {
+      "bound_to": null,
+      "status": "UNBOUND",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "本事件参与者中无该名称 → 该角色不在地图覆盖范围内（不强行挂靠）"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-09",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "7/9无人驾驶概念一字连板（当日市场盘面/媒体复盘报道）",
+      "url": null,
+      "published_at": "2024-07-09",
+      "summary": "首批无人驾驶概念一字连板标的"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "首批无人驾驶概念一字连板标的",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": null,
+     "source_security_id": "TIANMAI",
+     "name": "天迈科技",
+     "binding": {
+      "bound_to": null,
+      "status": "UNBOUND",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "本事件参与者中无该名称 → 该角色不在地图覆盖范围内（不强行挂靠）"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-10",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "证券时报7/10报道：天迈科技20cm涨停（无人驾驶+车路云共涨）【E-2024-05】",
+      "url": null,
+      "published_at": "2024-07-10",
+      "summary": "7/10有当日Tier2公开报道直接点名其为无人驾驶热点"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "7/10有当日Tier2公开报道直接点名其为无人驾驶热点",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": "JINLONG",
+     "source_security_id": "JINLONG",
+     "name": "金龙汽车",
+     "binding": {
+      "bound_to": "JINLONG",
+      "status": "BOUND",
+      "method": "SECURITY_ID_IN_EVENT_PARTICIPANTS",
+      "note": "CSV 的 security_id 与地图参与者完全一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-12",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "7/12金龙汽车涨停（无人驾驶客车/萝卜快跑概念公开报道）",
+      "url": null,
+      "published_at": "2024-07-12",
+      "summary": "识别晚于前四只；7/12涨停获公开归因"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "识别晚于前四只；7/12涨停获公开归因",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    }
+   ],
+   "pit_slices": [
+    {
+     "date": "2024-07-08",
+     "members": [
+      "DADONGTRAFFIC"
+     ],
+     "basket_status": "NOT_USABLE",
+     "documented_members": [
+      "DAZHONGTONG"
+     ],
+     "documented_status": "NOT_USABLE",
+     "matches_document": true,
+     "not_in_map": [],
+     "note": "仅大众交通有 market_breadth 低置信异动，不足以认定已形成题材篮子"
+    },
+    {
+     "date": "2024-07-10",
+     "members": [
+      "DADONGTRAFFIC",
+      "JINJIANGONLINE"
+     ],
+     "basket_status": "USABLE",
+     "documented_members": [
+      "DAZHONGTONG",
+      "JINJIANG",
+      "XINGYUYUDA",
+      "TIANMAI"
+     ],
+     "documented_status": "USABLE",
+     "matches_document": true,
+     "not_in_map": [
+      "XINGYUYUDA",
+      "TIANMAI"
+     ],
+     "note": "4 只；金龙 07-12 才被公开识别"
+    },
+    {
+     "date": "2024-07-15",
+     "members": [
+      "DADONGTRAFFIC",
+      "JINJIANGONLINE",
+      "JINLONG"
+     ],
+     "basket_status": "USABLE",
+     "documented_members": [
+      "DAZHONGTONG",
+      "JINJIANG",
+      "XINGYUYUDA",
+      "TIANMAI",
+      "JINLONG"
+     ],
+     "documented_status": "USABLE",
+     "matches_document": true,
+     "not_in_map": [
+      "XINGYUYUDA",
+      "TIANMAI"
+     ],
+     "note": "5 只；至此与事后集合一致（识别顺序有先后）"
+    }
+   ],
+   "posthoc_leader_set": {
+    "basis": "行情结束后回看总结的核心集合（research/research/c2/2024_robotaxi_point_in_time.md 第 1 节）",
+    "members": [
+     "DADONGTRAFFIC",
+     "JINJIANGONLINE",
+     "XINGYUYUDA",
+     "TIANMAI",
+     "JINLONG"
+    ],
+    "posthoc": true,
+    "pit_safe": false,
+    "survivorship_note": "★ 该集合是**后验**结论：成员按事后表现与叙事回看选出，含幸存者偏差，**不得**用来证明窗口早期已可识别同样的股票池。"
+   },
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 5,
+    "pit_roles_bound": 3,
+    "pit_roles_unbound": 2
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者）"
+   ]
+  },
+  "AUTO-2025-ROBOTAXI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2025-ROBOTAXI",
+   "window": [
+    "2025-06-22",
+    "2025-06-24"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 2,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "SEMI-2019-LOCALIZATION": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2019-SEMI-LOCALIZATION",
+   "window": [
+    "2019-05-16",
+    "2020-07-14"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 8,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "SEMI-2020-CHIPSHORTAGE": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "RC-2022-SEMI-CHIPSHORTAGE",
+   "window": [
+    "2020-12-01",
+    "2021-12-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "SEMI-2021-EQUIPMENT": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2020-SEMI-EQUIPMENT",
+   "window": [
+    "2021-04-01",
+    "2021-07-30"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "SEMI-2022-DOWNTURN": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2022-SEMI-DOWNTURN",
+   "window": [
+    "2022-01-04",
+    "2022-10-12"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "SEMI-2023-AI-COMPUTE": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2023-AI-COMPUTE-SEMI",
+   "window": [
+    "2023-01-30",
+    "2023-04-10"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "SEMI-2024-FUND3": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "RC-2024-SEMI-FUND3",
+   "window": [
+    "2024-09-24",
+    "2024-11-29"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "SEMI-2025-MEMORY": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2024-SEMI-MEMORY",
+   "window": [
+    "2025-07-01",
+    "2025-10-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "CONS-2016-BAIJIU": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "window": [
+    "2016-06-01",
+    "2017-12-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "CONS-2019-BAIJIU-CORE": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2019-CONS-BAIJIU-CORE",
+   "window": [
+    "2019-03-01",
+    "2020-12-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 5,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "CONS-2020-DUTYFREE": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2020-CONS-DUTYFREE",
+   "window": [
+    "2020-06-01",
+    "2021-02-18"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 1,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "CONS-2022-SERVICE-REBOUND": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2022-CONS-SERVICE-REBOUND",
+   "window": [
+    "2022-12-07",
+    "2023-01-31"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "CONS-2024-TRADE-IN": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2024-CONS-TRADE-IN",
+   "window": [
+    "2024-08-24",
+    "2024-10-08"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "RES-2020-RAREEARTH": {
+   "theme_id": "RESOURCE_METAL",
+   "object_id": "C-2020-RES-RAREEARTH",
+   "window": [
+    "2020-05-01",
+    "2021-10-01"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  },
+  "RES-2024-GOLD": {
+   "theme_id": "RESOURCE_METAL",
+   "object_id": "C-2024-RES-GOLD-CB",
+   "window": [
+    "2024-02-01",
+    "2025-12-26"
+   ],
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL）或当日盘面数据"
+   ]
+  }
+ }
+}

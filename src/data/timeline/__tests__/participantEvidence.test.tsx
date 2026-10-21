@@ -32,7 +32,9 @@ describe('参与者证据 · 数据层', () => {
     expect(ev.registry_role!.verification).toBe('VERIFIED_DB');
     expect(ev.study_standing).toBe('COUNTER_EXAMPLE');
     expect(ev.mechanism_relation.status).toBe('DIFFERENT_AXIS');
-    expect(ev.market_participation.status).toBe('REPORTED_WINDOW_GAIN');
+    // ★ v0.29 校正：该涨幅来自研究记录（export securities + 公开资料），无同期报道背书
+    expect(ev.market_participation.status).toBe('RESEARCH_OR_DB_ONLY');
+    expect(ev.market_participation.source_kind).toBe('DB_OR_RESEARCH_ONLY');
     // 限定语必须同时说清两件事，并禁止两种误读
     const note = registryRoleCaveat(ev)!;
     expect(note).toContain('互不取消');
@@ -42,7 +44,7 @@ describe('参与者证据 · 数据层', () => {
 
   it('★ 报道涨停来自报道原文（流感 2017 莱茵生物）', () => {
     const ev = participantEvidenceOf('FLU-2017-AVIAN', 'LAYNE-002166')!;
-    expect(ev.market_participation.status).toBe('REPORTED_LIMIT_UP');
+    expect(ev.market_participation.status).toBe('REPORT_CONFIRMED_LIMIT_UP');
     expect(ev.market_participation.reported_move).toContain('涨停');
     expect(hasReportedParticipation(ev)).toBe(true);
   });
@@ -53,7 +55,8 @@ describe('参与者证据 · 数据层', () => {
     const counts = evidenceCounts('FLU-2017-AVIAN');
     expect(counts.total).toBeGreaterThan(0);
     expect(counts.reported).toBeLessThanOrEqual(counts.total);
-    expect(MARKET_PARTICIPATION_LABEL.NO_REPORTED_EVIDENCE).toBe('未见点名报道');
+    expect(MARKET_PARTICIPATION_LABEL.RESEARCH_OR_DB_ONLY).toBe('仅库内/研究记录');
+    expect(MARKET_PARTICIPATION_LABEL.NOT_RECORDED).toBe('无来源记录');
   });
 
   it('事件级计数与产物 summary 自洽（不另算一套口径）', () => {
@@ -78,7 +81,7 @@ describe('参与者证据 · 渲染', () => {
     expect(html).toContain('data-axis="market_participation"');
     expect(html).toContain('data-axis="mechanism_relation"');
     expect(html).toContain('data-axis="registry_role"');
-    expect(html).toContain('同期：报道区间涨幅');
+    expect(html).toContain('同期：仅库内/研究记录');
     expect(html).toContain('机制：不同机制轴');
     expect(html).toContain('登记 leader');
     expect(html).toContain('库内可核');
@@ -105,12 +108,12 @@ describe('参与者证据 · 渲染', () => {
     const e = eventOf('FLU', 'FLU-2023-H1N1');
     const p = e.participants.find((x) => {
       const ev = participantEvidenceOf('FLU-2023-H1N1', x.security_id);
-      return ev?.market_participation.status === 'NO_REPORTED_EVIDENCE'
+      return ev?.market_participation.source_kind === 'DB_OR_RESEARCH_ONLY'
         && ev.study_standing === 'INCLUDED';
     })!;
     expect(p, '应存在一只「无报道但纳入」的机制池股票').toBeTruthy();
     const html = renderToStaticMarkup(<ParticipantRow p={p} e={e} />);
-    expect(html).toContain('同期：未见点名报道');
+    expect(html).toContain('同期：仅库内/研究记录');
     expect(html).toContain('data-no-report="1"');
     expect(html).toContain('不等于');
   });

@@ -33,6 +33,7 @@ import {
 import {
   MARKET_PARTICIPATION_LABEL,
   MECHANISM_RELATION_LABEL,
+  SOURCE_KIND_LABEL,
   REGISTRY_ROLE_LABEL,
   REGISTRY_VERIFICATION_LABEL,
   evidenceCounts,
@@ -40,6 +41,14 @@ import {
   participantEvidenceOf,
   registryRoleCaveat,
 } from '../../data/timeline/participantEvidence';
+import {
+  MARKET_ROLE_LABEL,
+  MARKET_ROLE_MEANING,
+  RESEARCH_STATUS_LABEL,
+  eventRoles,
+  marketRoleOf,
+  roleCounts,
+} from '../../data/timeline/historicalMarketRoles';
 import { EmpiricalProbabilityBlock } from './EmpiricalProbabilityBlock';
 import { RichText, plain } from '../RichText';
 import {
@@ -228,6 +237,8 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
   const status = coverage.status;
   // ★★ v0.28：证据维度（同期表现 / 机制关系 / 对象登记）—— 来自 participant_evidence 产物
   const ev = participantEvidenceOf(e.event_id, p.security_id);
+  // ★★ v0.29：历史市场角色（Point-in-Time）—— 与上面三者**不同维度**
+  const role = marketRoleOf(e.event_id, p.security_id);
   // ★ v0.17：与事件关联对象（Research 对象）的标的对账
   const recon = reconciliationOf(e, p.security_id);
   const mdClass = status === 'COMPUTED' ? 'ok'
@@ -254,6 +265,16 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
                   title={plain(ev.mechanism_relation.basis)}>
               机制：{MECHANISM_RELATION_LABEL[ev.mechanism_relation.status]}
             </span>
+            {role && (
+              <span className={`fem-part-axis axis-role role-${role.role.toLowerCase()}`}
+                    data-axis="historical_market_role"
+                    data-status={role.role}
+                    data-identified={role.identified_date}
+                    title={plain(`${MARKET_ROLE_MEANING[role.role]}｜识别日 ${role.identified_date}`
+                      + `｜置信度 ${role.confidence ?? '—'}`)}>
+                角色：{MARKET_ROLE_LABEL[role.role]}·{role.identified_date.slice(5)}
+              </span>
+            )}
             {ev.registry_role ? (
               <span className={`fem-part-axis axis-registry rv-${ev.registry_role.verification.toLowerCase()}`}
                     data-axis="registry_role"
@@ -283,9 +304,13 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
             {ev.study_standing === 'COUNTER_EXAMPLE' ? '反例（不同机制轴）' : '证据不足'}
           </span>
         )}
+        {/* ★ v0.29：`evidence_level` 是**原始标注**，与校正后的来源类型可能矛盾
+            （曾出现 evidence_level=REPORT_NAMED 但来源是 DB/研究记录）。
+            不再作为徽标显示，只在 title 里留原始值供追溯。 */}
         {p.evidence_level && (
-          <span className={`fem-part-ev ev-${p.evidence_level.toLowerCase()}`}>
-            {EVIDENCE_LEVEL_LABEL[p.evidence_level]}
+          <span className="fem-part-ev-raw" data-raw-evidence-level={p.evidence_level}
+                title={`原始标注 evidence_level=${p.evidence_level}（★ 以「同期」徽标的来源类型为准）`}>
+            ⓘ
           </span>
         )}
         {p.reported_move && (
@@ -324,12 +349,19 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
       )}
       {ev && !hasReportedParticipation(ev) && ev.study_standing === 'INCLUDED' && (
         <p className="fem-part-no-report" data-no-report="1">
-          ★ 本轮未找到同期点名报道 —— <strong>不等于</strong>当日没涨，也<strong>不等于</strong>它不是参与者；
-          只表示「参与过当次行情」这件事<strong>尚无报道证据</strong>。
+          ★ <strong>本库无同期报道背书</strong>（来源：{SOURCE_KIND_LABEL[ev.market_participation.source_kind]}）
+          —— 这<strong>不等于</strong>当日没涨，也<strong>不等于</strong>它不是参与者；
+          只表示「参与过当次行情」这件事<strong>还没有报道证据</strong>。
         </p>
       )}
       <p className="fem-part-why"><strong>纳入理由</strong>：<RichText text={p.rationale} /></p>
-      <p className="fem-part-src"><strong>来源</strong>：<RichText text={p.source} /></p>
+      <p className="fem-part-src"><strong>来源</strong>：<RichText text={p.source} />
+        {ev?.market_participation.report?.url && (
+          <a className="fem-part-report-link" href={ev.market_participation.report.url}
+             target="_blank" rel="noreferrer"
+             data-report-url="1">同期报道原文（{ev.market_participation.report.date ?? '日期未记录'}）</a>
+        )}
+      </p>
       {p.note && <p className="fem-part-note"><RichText text={p.note} /></p>}
     </li>
   );
@@ -585,6 +617,99 @@ export function EventCardBody({
           {/* ★ 2026-10-16：标题不再硬编码「历史炒作标的」——
              机制池事件的 participants 是**研究池**（事后重建、未按收益筛选），
              不是炒作池；池的性质由各标的 `category` / `rationale` 逐条说明。 */}
+          {/* ★★ v0.29：历史市场角色（Point-in-Time）—— 与「参与证据」分开的一节 */}
+          {(() => {
+            const r = eventRoles(e.event_id);
+            if (!r) return null;
+            const c = roleCounts(e.event_id);
+            return (
+              <section className="fem-roles" data-market-roles="1">
+                <h5>历史市场角色（Point-in-Time）</h5>
+                <p className="fem-roles-status" data-research-status={r.research_status}>
+                  研究状态：<strong>{RESEARCH_STATUS_LABEL[r.research_status]}</strong>
+                  {r.roles.length > 0 && (
+                    <> · 可识别角色 <strong>{c.pit}</strong> 只
+                      （报道点名 {c.media} · 盘面异动 {c.observed} · <strong>报道称龙头 {c.leaderNamed}</strong>）
+                    </>
+                  )}
+                  {r.posthoc_leader_set && (
+                    <> · 事后龙头集合 <strong>{c.posthoc}</strong> 只（<strong>后验，非当时可知</strong>）</>
+                  )}
+                </p>
+                {r.roles.length === 0 && (
+                  <p className="fem-roles-empty">
+                    本事件尚未做角色研究 —— <strong>不设角色</strong>，也不从涨幅倒推。
+                    {r.gaps.length > 0 && <span className="fem-roles-gap">需补：{r.gaps[0]}</span>}
+                  </p>
+                )}
+                {r.roles.length > 0 && (
+                  <ul className="fem-roles-list">
+                    {r.roles.map((x) => (
+                      <li key={x.source_security_id ?? x.security_id}
+                          data-role-id={x.security_id ?? x.source_security_id}
+                          data-role={x.role} data-identified={x.identified_date}
+                          data-binding={(x as unknown as { binding?: { status?: string } }).binding?.status ?? 'BOUND'}>
+                        <span className="fem-role-name">{x.name ?? x.security_id}</span>
+                        {!x.security_id && (
+                          <span className="fem-role-unbound" data-role-unbound="1"
+                                title={(x as unknown as { binding?: { note?: string } }).binding?.note ?? ''}>
+                            未在地图参与者中
+                          </span>
+                        )}
+                        {(x as unknown as { binding?: { review?: string } }).binding?.review === 'NAME_MATCH_ONLY' && (
+                          <span className="fem-role-review" data-role-review="NAME_MATCH_ONLY"
+                                title="CSV 的 security_id 与注册表不一致，按名称精确相等绑定 —— 需人工确认">
+                            名称匹配·待确认
+                          </span>
+                        )}
+                        <span className={`fem-role-badge role-${x.role.toLowerCase()}`}>
+                          {MARKET_ROLE_LABEL[x.role]}
+                        </span>
+                        <span className="fem-role-date">识别日 {x.identified_date}</span>
+                        <span className="fem-role-conf">置信度 {x.confidence ?? '—'}</span>
+                        {x.evidence.url ? (
+                          <a href={x.evidence.url} target="_blank" rel="noreferrer"
+                             className="fem-role-src" data-role-url="1">来源原文</a>
+                        ) : (
+                          <span className="fem-role-src muted">来源：{x.evidence.source_type}</span>
+                        )}
+                        <span className="fem-role-note"><RichText text={x.notes ?? ''} /></span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {r.pit_slices.length > 0 && (
+                  <div className="fem-slices">
+                    <p className="fem-slices-title">时间切片（只用该日之前已公开的信息）</p>
+                    <ul>
+                      {r.pit_slices.map((sl) => (
+                        <li key={sl.date} data-slice-date={sl.date}
+                            data-basket={sl.basket_status}>
+                          <strong>{sl.date}</strong>：
+                          {sl.basket_status === 'USABLE'
+                            ? <>可识别 {sl.members.length} 只（{sl.members.join(' / ')}）</>
+                            : <>不可用 —— {sl.note}</>}
+                          {!sl.matches_document && <em className="fem-slice-drift">（与原始研究记录不一致）</em>}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {r.posthoc_leader_set && (
+                  <p className="fem-posthoc" data-posthoc="1">
+                    <strong>事后龙头集合</strong>（{r.posthoc_leader_set.members.length} 只）：
+                    {r.posthoc_leader_set.members.join(' / ')}
+                    <span className="fem-posthoc-note"><RichText text={r.posthoc_leader_set.survivorship_note} /></span>
+                  </p>
+                )}
+                <p className="fem-roles-caveat">
+                  ★ 角色与「参与证据」「机制关系」「对象登记」是<strong>不同维度</strong>：
+                  被报道点名 ≠ 是龙头；登记 leader ≠ 历史市场角色；事后集合 ≠ 当时可知。
+                </p>
+              </section>
+            );
+          })()}
+
           <h5>事件相关标的（{e.participants.length} 只）</h5>
           {/* ★★ v0.28：三个维度的**可核对计数** —— 用户先看到「证据有多少」，再逐只看依据 */}
           {(() => {

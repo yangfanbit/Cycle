@@ -17,20 +17,30 @@
  * 不重新推导任何维度 —— 单一真相在产物里。
  */
 
-import raw from '@current/participant_evidence_v0_1.json';
+import raw from '@current/participant_evidence_v0_2.json';
 
 export type MarketParticipationStatus =
-  | 'REPORTED_LIMIT_UP'
-  | 'REPORTED_DAILY_GAIN'
-  | 'REPORTED_WINDOW_GAIN'
-  | 'REPORTED_NAMED_ONLY'
-  | 'NO_REPORTED_EVIDENCE'
+  | 'REPORT_CONFIRMED_LIMIT_UP'
+  | 'REPORT_CONFIRMED_GAIN'
+  | 'REPORT_CONFIRMED_WINDOW_GAIN'
+  | 'REPORT_CONFIRMED_NAMED'
+  | 'RESEARCH_OR_DB_ONLY'
+  | 'NOT_RECORDED'
   | 'UNKNOWN';
 
+/** ★ v0.29：来源类型 —— 决定「报道点名」这句话能不能说 */
+export type SourceKind =
+  | 'REPORT_WITH_URL'
+  | 'REPORT_NAMED_NO_URL'
+  | 'DB_OR_RESEARCH_ONLY'
+  | 'NOT_RECORDED'
+  | 'UNKNOWN_SOURCE';
+
 export type MechanismRelationStatus =
-  | 'DIRECT'
-  | 'SPILLOVER'
-  | 'UNSPECIFIED'
+  | 'DIRECT_CONFIRMED'
+  | 'INDIRECT_CONFIRMED'
+  | 'BUSINESS_DESCRIBED_UNCONFIRMED'
+  | 'NOT_STUDIED'
   | 'DIFFERENT_AXIS'
   | 'UNKNOWN';
 
@@ -45,8 +55,13 @@ export type StudyStanding = 'INCLUDED' | 'COUNTER_EXAMPLE' | 'INSUFFICIENT' | 'U
 
 export interface MarketParticipation {
   status: MarketParticipationStatus;
+  /** ★ 来源类型：`DB_OR_RESEARCH_ONLY` 时**不得**说「报道点名」 */
+  source_kind: SourceKind;
+  source_text?: string | null;
   reported_move?: string | null;
   basis: string;
+  /** 同期报道的可追溯出处（仅 REPORT_WITH_URL 有 URL） */
+  report?: { date?: string | null; text?: string | null; source?: string | null; url?: string | null } | null;
 }
 
 export interface MechanismRelation {
@@ -115,19 +130,30 @@ export function eventParticipantEvidence(eventId: string): Record<string, Partic
 
 /** ★ 同期市场表现：说的是**报道证明了什么**，不是「它涨了多少」 */
 export const MARKET_PARTICIPATION_LABEL: Record<MarketParticipationStatus, string> = {
-  REPORTED_LIMIT_UP: '报道涨停',
-  REPORTED_DAILY_GAIN: '报道涨幅',
-  REPORTED_WINDOW_GAIN: '报道区间涨幅',
-  REPORTED_NAMED_ONLY: '报道点名',
-  NO_REPORTED_EVIDENCE: '未见点名报道',
-  UNKNOWN: '未知',
+  REPORT_CONFIRMED_LIMIT_UP: '报道涨停',
+  REPORT_CONFIRMED_GAIN: '报道涨幅',
+  REPORT_CONFIRMED_WINDOW_GAIN: '报道区间涨幅',
+  REPORT_CONFIRMED_NAMED: '报道点名',
+  RESEARCH_OR_DB_ONLY: '仅库内/研究记录',
+  NOT_RECORDED: '无来源记录',
+  UNKNOWN: '来源未归类',
+};
+
+/** 来源类型的展示文案（与「报道点名」是否成立直接相关） */
+export const SOURCE_KIND_LABEL: Record<SourceKind, string> = {
+  REPORT_WITH_URL: '同期报道（有链接）',
+  REPORT_NAMED_NO_URL: '同期报道（无链接）',
+  DB_OR_RESEARCH_ONLY: '仅数据库/研究记录',
+  NOT_RECORDED: '无来源记录',
+  UNKNOWN_SOURCE: '来源未归类',
 };
 
 /** ★ 机制关系：业务与题材机制的关系，**不**代表驱动了行情 */
 export const MECHANISM_RELATION_LABEL: Record<MechanismRelationStatus, string> = {
-  DIRECT: '直接机制',
-  SPILLOVER: '产业链扩散',
-  UNSPECIFIED: '机制未登记',
+  DIRECT_CONFIRMED: '直接机制',
+  INDIRECT_CONFIRMED: '间接/扩散',
+  BUSINESS_DESCRIBED_UNCONFIRMED: '业务相关·未定级',
+  NOT_STUDIED: '机制未研究',
   DIFFERENT_AXIS: '不同机制轴',
   UNKNOWN: '机制未知',
 };
@@ -175,11 +201,12 @@ export function registryRoleCaveat(ev: ParticipantEvidence | null): string | nul
       + '**也不能**因为它是反例就说它当时没涨。';
   }
   if (rr.role === 'leader' || rr.role === 'second_leader') {
-    if (mp === 'REPORTED_LIMIT_UP' || mp === 'REPORTED_DAILY_GAIN' || mp === 'REPORTED_WINDOW_GAIN') {
+    if (mp === 'REPORT_CONFIRMED_LIMIT_UP' || mp === 'REPORT_CONFIRMED_GAIN'
+      || mp === 'REPORT_CONFIRMED_WINDOW_GAIN') {
       return '★ 该角色来自 Research 对象登记；同期报道也点名了它，但报道**未**称其为「龙头」——'
         + '「登记 leader」≠「当时公认的龙头」。';
     }
-    return '★ 该角色来自 Research 对象登记，**同期报道未点名**——'
+    return '★ 该角色来自 Research 对象登记，**本库无同期报道背书**——'
       + '不能据此认定它是当时的龙头或行情驱动者。';
   }
   return '★ 该角色来自 Research 对象登记，不是历史市场角色的认定。';
@@ -188,8 +215,13 @@ export function registryRoleCaveat(ev: ParticipantEvidence | null): string | nul
 /** 该参与者在同期报道层面的**最强**证据是否足以支持「参与过」 */
 export function hasReportedParticipation(ev: ParticipantEvidence | null): boolean {
   const s = ev?.market_participation.status;
-  return s === 'REPORTED_LIMIT_UP' || s === 'REPORTED_DAILY_GAIN'
-    || s === 'REPORTED_WINDOW_GAIN' || s === 'REPORTED_NAMED_ONLY';
+  return s === 'REPORT_CONFIRMED_LIMIT_UP' || s === 'REPORT_CONFIRMED_GAIN'
+    || s === 'REPORT_CONFIRMED_WINDOW_GAIN' || s === 'REPORT_CONFIRMED_NAMED';
+}
+
+/** 同期报道**可追溯**（有 URL）—— 比「有报道」更严一档 */
+export function hasTraceableReport(ev: ParticipantEvidence | null): boolean {
+  return ev?.market_participation.source_kind === 'REPORT_WITH_URL';
 }
 
 /** 事件级统计：报道点名数 / 有机制说明数 / 有对象登记角色数（页面可核对口径） */
@@ -198,9 +230,10 @@ export function evidenceCounts(eventId: string) {
   return {
     total: all.length,
     reported: all.filter(hasReportedParticipation).length,
-    limitUp: all.filter((x) => x.market_participation.status === 'REPORTED_LIMIT_UP').length,
-    mechanism: all.filter((x) => x.mechanism_relation.status === 'DIRECT'
-      || x.mechanism_relation.status === 'SPILLOVER').length,
+    limitUp: all.filter((x) => x.market_participation.status === 'REPORT_CONFIRMED_LIMIT_UP').length,
+    traceable: all.filter(hasTraceableReport).length,
+    mechanism: all.filter((x) => x.mechanism_relation.status === 'DIRECT_CONFIRMED'
+      || x.mechanism_relation.status === 'INDIRECT_CONFIRMED').length,
     registry: all.filter((x) => x.registry_role).length,
     registryVerified: all.filter((x) => x.registry_role?.verification === 'VERIFIED_DB').length,
   };
