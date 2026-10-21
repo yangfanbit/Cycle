@@ -404,7 +404,16 @@ def main(argv: list) -> int:
     finally:
         conn.close()
 
-    out = os.path.join(CURRENT, "participant_evidence_v0_%d.json" % a.version)
+    # ★ v0.29.1：`--check` 默认对齐**最新已有版本**（避免「忘了传 --version 就比对旧版」）
+    version = a.version
+    if a.check:
+        existing = sorted(
+            int(re.search(r"_v0_(\d+)\.json$", f).group(1))
+            for f in os.listdir(CURRENT)
+            if re.match(r"participant_evidence_v0_\d+\.json$", f))
+        if existing:
+            version = existing[-1]
+    out = os.path.join(CURRENT, "participant_evidence_v0_%d.json" % version)
     if a.check:
         if not os.path.exists(out):
             print("FAIL: 产物不存在：%s" % os.path.relpath(out, REPO))
@@ -423,8 +432,8 @@ def main(argv: list) -> int:
         if diffs:
             print("FAIL: 产物与重新推导不一致（%d 处）：%s" % (len(diffs), ", ".join(diffs[:8])))
             return 1
-        print("PASS: 参与者证据产物与重新推导一致（%d 事件 / %d 条参与者记录）"
-              % (doc["summary"]["events"], doc["summary"]["participants"]))
+        print("PASS: 参与者证据产物 v0_%d 与重新推导一致（%d 事件 / %d 条参与者记录）"
+              % (version, doc["summary"]["events"], doc["summary"]["participants"]))
         return 0
 
     if not a.write:
