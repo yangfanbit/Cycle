@@ -30,6 +30,16 @@ import {
   type HistoricalParticipant,
   type ThemeDisplay,
 } from '../../data/timeline/historicalEventMaps';
+import {
+  MARKET_PARTICIPATION_LABEL,
+  MECHANISM_RELATION_LABEL,
+  REGISTRY_ROLE_LABEL,
+  REGISTRY_VERIFICATION_LABEL,
+  evidenceCounts,
+  hasReportedParticipation,
+  participantEvidenceOf,
+  registryRoleCaveat,
+} from '../../data/timeline/participantEvidence';
 import { EmpiricalProbabilityBlock } from './EmpiricalProbabilityBlock';
 import { RichText, plain } from '../RichText';
 import {
@@ -216,6 +226,8 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
   // ★ 四类状态：已计算 / 该窗口未计算 / 行情不可得 / 覆盖不足 —— 不得用 0 代表缺失
   const coverage = marketDataCoverage(e, p.security_id);
   const status = coverage.status;
+  // ★★ v0.28：证据维度（同期表现 / 机制关系 / 对象登记）—— 来自 participant_evidence 产物
+  const ev = participantEvidenceOf(e.event_id, p.security_id);
   // ★ v0.17：与事件关联对象（Research 对象）的标的对账
   const recon = reconciliationOf(e, p.security_id);
   const mdClass = status === 'COMPUTED' ? 'ok'
@@ -226,9 +238,51 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
       <div className="fem-part-head">
         <span className="fem-part-name">{p.name}</span>
         <span className="fem-part-ticker">{p.ticker}</span>
-        <span className={`fem-part-cat cat-${p.category.toLowerCase()}`}>
-          {PARTICIPANT_CATEGORY_LABEL[p.category]}
-        </span>
+        {/* ★★ v0.28：三个维度**分开显示** —— 同期市场表现 / 机制关系 / 对象登记角色。
+            绝不合成一个「角色」标签：三者证据强度与含义都不同。 */}
+        {ev && (
+          <>
+            <span className={`fem-part-axis axis-market mp-${ev.market_participation.status.toLowerCase()}`}
+                  data-axis="market_participation"
+                  data-status={ev.market_participation.status}
+                  title={plain(ev.market_participation.basis)}>
+              同期：{MARKET_PARTICIPATION_LABEL[ev.market_participation.status]}
+            </span>
+            <span className={`fem-part-axis axis-mech mr-${ev.mechanism_relation.status.toLowerCase()}`}
+                  data-axis="mechanism_relation"
+                  data-status={ev.mechanism_relation.status}
+                  title={plain(ev.mechanism_relation.basis)}>
+              机制：{MECHANISM_RELATION_LABEL[ev.mechanism_relation.status]}
+            </span>
+            {ev.registry_role ? (
+              <span className={`fem-part-axis axis-registry rv-${ev.registry_role.verification.toLowerCase()}`}
+                    data-axis="registry_role"
+                    data-status={ev.registry_role.verification}
+                    title={plain(ev.registry_role.source)}>
+                {REGISTRY_ROLE_LABEL[ev.registry_role.role] ?? ev.registry_role.role}
+                <em className="fem-part-axis-src">
+                  （{REGISTRY_VERIFICATION_LABEL[ev.registry_role.verification]}）
+                </em>
+              </span>
+            ) : (
+              <span className="fem-part-axis axis-registry rv-none" data-axis="registry_role"
+                    data-status="NONE" title="该证券未在任何 Research 对象中登记角色">
+                对象：未登记角色
+              </span>
+            )}
+          </>
+        )}
+        {!ev && (
+          <span className={`fem-part-cat cat-${p.category.toLowerCase()}`}>
+            {PARTICIPANT_CATEGORY_LABEL[p.category]}
+          </span>
+        )}
+        {ev && ev.study_standing !== 'INCLUDED' && (
+          <span className={`fem-part-standing st-${ev.study_standing.toLowerCase()}`}
+                data-standing={ev.study_standing}>
+            {ev.study_standing === 'COUNTER_EXAMPLE' ? '反例（不同机制轴）' : '证据不足'}
+          </span>
+        )}
         {p.evidence_level && (
           <span className={`fem-part-ev ev-${p.evidence_level.toLowerCase()}`}>
             {EVIDENCE_LEVEL_LABEL[p.evidence_level]}
@@ -261,6 +315,17 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
           {p.business_mechanism_caveat && (
             <span className="fem-part-biz-caveat"><RichText text={p.business_mechanism_caveat} /></span>
           )}
+        </p>
+      )}
+      {ev && registryRoleCaveat(ev) && (
+        <p className="fem-part-role-caveat" data-role-caveat="1">
+          <RichText text={registryRoleCaveat(ev)!} />
+        </p>
+      )}
+      {ev && !hasReportedParticipation(ev) && ev.study_standing === 'INCLUDED' && (
+        <p className="fem-part-no-report" data-no-report="1">
+          ★ 本轮未找到同期点名报道 —— <strong>不等于</strong>当日没涨，也<strong>不等于</strong>它不是参与者；
+          只表示「参与过当次行情」这件事<strong>尚无报道证据</strong>。
         </p>
       )}
       <p className="fem-part-why"><strong>纳入理由</strong>：<RichText text={p.rationale} /></p>
@@ -521,6 +586,21 @@ export function EventCardBody({
              机制池事件的 participants 是**研究池**（事后重建、未按收益筛选），
              不是炒作池；池的性质由各标的 `category` / `rationale` 逐条说明。 */}
           <h5>事件相关标的（{e.participants.length} 只）</h5>
+          {/* ★★ v0.28：三个维度的**可核对计数** —— 用户先看到「证据有多少」，再逐只看依据 */}
+          {(() => {
+            const c = evidenceCounts(e.event_id);
+            if (c.total === 0) return null;
+            return (
+              <p className="fem-evidence-counts" data-evidence-counts="1">
+                同期报道点名 <strong>{c.reported}</strong> 只（其中报道涨停 <strong>{c.limitUp}</strong> 只）
+                {' · '}业务机制说明 <strong>{c.mechanism}</strong> 只
+                {' · '}对象登记角色 <strong>{c.registry}</strong> 只（库内可核 <strong>{c.registryVerified}</strong> 只）
+                <span className="fem-evidence-counts-note">
+                  —— 三者是<strong>不同维度</strong>：报道点名 ≠ 机制相关 ≠ 对象登记角色
+                </span>
+              </p>
+            );
+          })()}
           <p className="fem-biz-caveat"><RichText text={BUSINESS_MECHANISM_CAVEAT} /></p>
           {e.participants.length === 0 ? (
             <p className="fem-empty">（未建立候选清单）</p>

@@ -116,9 +116,9 @@ describe('v0.16 端到端：半导体 / AI 算力题材 → 标的证据 → 历
       el.textContent?.includes('京东方A')) as HTMLElement;
     const smicRow = [...card.querySelectorAll('li.fem-part')].find((el) =>
       el.textContent?.includes('中芯国际')) as HTMLElement;
-    expect(boeRow, '京东方A 应标「反例（不同轴）」').toBeTruthy();
+    expect(boeRow, '京东方A 应标「反例（不同机制轴）」').toBeTruthy();
     expect(smicRow, '中芯国际 应标「证据不足」').toBeTruthy();
-    expect(boeRow.textContent).toContain('反例（不同轴）');
+    expect(boeRow.textContent).toContain('反例（不同机制轴）');
     expect(boeRow.textContent).not.toContain('证据不足');
     expect(smicRow.textContent).toContain('证据不足');
     expect(smicRow.textContent).not.toContain('反例');

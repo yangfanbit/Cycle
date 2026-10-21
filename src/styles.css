@@ -3494,6 +3494,46 @@ html, body {
   border-left: 3px solid #d9a441; border-radius: 3px;
 }
 .fem-media-note { margin: 0; font-size: 11.5px; color: var(--ink-2); }
+/* ★★ v0.28：参与者证据三维度 —— 同期表现 / 机制关系 / 对象登记（各用不同色阶，不合成一个「角色」） */
+.fem-part-axis { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); white-space: nowrap; }
+.fem-part-axis-src { font-style: normal; opacity: .72; font-size: 9.5px; }
+
+/* 同期市场表现：报道证据越强，色越实 */
+.fem-part-axis.axis-market.mp-reported_limit_up    { background: #fdecec; color: #a33232; border-color: #f0c9c9; }
+.fem-part-axis.axis-market.mp-reported_daily_gain  { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-axis.axis-market.mp-reported_window_gain { background: #fdf3e3; color: var(--preheat-ink); }
+.fem-part-axis.axis-market.mp-reported_named_only  { background: #f4f4f6; color: var(--ink-2); }
+.fem-part-axis.axis-market.mp-no_reported_evidence { background: #fff; color: var(--ink-3); border-style: dashed; }
+.fem-part-axis.axis-market.mp-unknown              { background: #fff; color: var(--ink-3); border-style: dotted; }
+
+/* 机制关系：业务层面，与「是否参与行情」无关 */
+.fem-part-axis.axis-mech.mr-direct          { background: #eaf5ec; color: #2f6b3c; }
+.fem-part-axis.axis-mech.mr-spillover       { background: #eef3f8; color: var(--accent); }
+.fem-part-axis.axis-mech.mr-unspecified     { background: #fff; color: var(--ink-3); border-style: dashed; }
+.fem-part-axis.axis-mech.mr-different_axis  { background: #fbeef0; color: #8a4256; }
+.fem-part-axis.axis-mech.mr-unknown         { background: #fff; color: var(--ink-3); border-style: dotted; }
+
+/* 对象登记角色：库内可核=实线，仅文档登记=虚线（提醒「来源强度不同」） */
+.fem-part-axis.axis-registry                { background: #f3f1fa; color: #4a3f78; }
+.fem-part-axis.axis-registry.rv-verified_db { border-style: solid; }
+.fem-part-axis.axis-registry.rv-security_in_object_role_unverified { border-style: dashed; }
+.fem-part-axis.axis-registry.rv-none        { background: #fff; color: var(--ink-3); border-style: dashed; }
+
+.fem-part-standing { font-size: 10.5px; padding: 0 6px; border-radius: 9px; }
+.fem-part-standing.st-counter_example { background: #fbeef0; color: #8a4256; }
+.fem-part-standing.st-insufficient    { background: #f4f4f6; color: var(--ink-3); }
+
+.fem-part-role-caveat {
+  margin: 4px 0 0; padding: 5px 8px; font-size: 11.5px; line-height: 1.6;
+  background: #fbf9f2; border-left: 2px solid var(--preheat-ink); color: var(--ink-2);
+}
+.fem-part-no-report {
+  margin: 4px 0 0; font-size: 11px; line-height: 1.55; color: var(--ink-3);
+}
+.fem-evidence-counts {
+  margin: 2px 0 6px; font-size: 11.5px; color: var(--ink-2); line-height: 1.7;
+}
+.fem-evidence-counts-note { color: var(--ink-3); }
 .fem-part-ev { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); }
 .fem-part-ev.ev-report_named      { background: #f4f4f6; color: var(--ink-2); }
 .fem-part-ev.ev-business_verified { background: #eaf5ec; color: #2f6b3c; }

@@ -1,0 +1,250 @@
+{
+ "artifact": "data_gap_ticker_identity",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-21",
+ "generated_by": "research/scripts/build_data_gap_ticker_identity_v0_1.py",
+ "supersedes": null,
+ "position": "★ 本产物只核验**身份**，不改 `data_gap_audit_v0_1.json` 的裁决、不写 DB / export / 题材文件",
+ "method": {
+  "key": "(ticker, exchange) 精确相等",
+  "why_ticker": "ticker 在同一交易所内唯一；名称相似没有证明力",
+  "not_doing": [
+   "不按名称匹配",
+   "不按题材推断归属",
+   "不自动合并 YILING",
+   "不因身份确定而建立 Campaign 归属"
+  ]
+ },
+ "tally": {
+  "IDENTITY_VERIFIED_BY_TICKER": 1,
+  "OWNERSHIP_GAP": 16,
+  "AMBIGUOUS": 0
+ },
+ "items": [
+  {
+   "original_id": "DAAN-002030",
+   "name": "达安基因",
+   "ticker": "002030",
+   "exchange": "SZ",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "FUAN-300194",
+   "name": "福安药业",
+   "ticker": "300194",
+   "exchange": "SZ",
+   "participant_rows": 1,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "HAIWANG-000078",
+   "name": "海王生物",
+   "ticker": "000078",
+   "exchange": "SZ",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "HUALAN-002007",
+   "name": "华兰生物",
+   "ticker": "002007",
+   "exchange": "SZ",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "JIUDIAN-300705",
+   "name": "九典制药",
+   "ticker": "300705",
+   "exchange": "SZ",
+   "participant_rows": 1,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "LAYNE-002166",
+   "name": "莱茵生物",
+   "ticker": "002166",
+   "exchange": "SZ",
+   "participant_rows": 2,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "LIANHUAN-600513",
+   "name": "联环药业",
+   "ticker": "600513",
+   "exchange": "SH",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "LUKANG-600789",
+   "name": "鲁抗医药",
+   "ticker": "600789",
+   "exchange": "SH",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "NANWEI-603880",
+   "name": "南卫股份",
+   "ticker": "603880",
+   "exchange": "SH",
+   "participant_rows": 1,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "NEPHARM-000597",
+   "name": "东北制药",
+   "ticker": "000597",
+   "exchange": "SZ",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "SIHUAN-000518",
+   "name": "四环生物",
+   "ticker": "000518",
+   "exchange": "SZ",
+   "participant_rows": 2,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "TAILONG-600222",
+   "name": "太龙药业",
+   "ticker": "600222",
+   "exchange": "SH",
+   "participant_rows": 1,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "TIANKA-002100",
+   "name": "天康生物",
+   "ticker": "002100",
+   "exchange": "SZ",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "WEIMING-002581",
+   "name": "未名医药",
+   "ticker": "002581",
+   "exchange": "SZ",
+   "participant_rows": 2,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "WOHUA-002107",
+   "name": "沃华医药",
+   "ticker": "002107",
+   "exchange": "SZ",
+   "participant_rows": 1,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "XIANGXUE-300147",
+   "name": "香雪制药",
+   "ticker": "300147",
+   "exchange": "SZ",
+   "participant_rows": 3,
+   "prior_verdict": "UNRESOLVED",
+   "verdict": "OWNERSHIP_GAP",
+   "registry_security_ids": [],
+   "registry_owners": [],
+   "evidence": "注册表无该 (ticker, exchange) —— 未被任何导出对象引用",
+   "next_step": "需 Research 轮次按**同期报道 + 对象证券记录**决定它属于哪个对象；本轮**不**建立归属。缺的具体证据：该证券与某对象的 `security_ids` 有据可查的交集（或该对象事件明确点名它）"
+  },
+  {
+   "original_id": "YILING-002603",
+   "name": "以岭药业",
+   "ticker": "002603",
+   "exchange": "SZ",
+   "participant_rows": 1,
+   "prior_verdict": "PROVISIONAL",
+   "verdict": "IDENTITY_VERIFIED_BY_TICKER",
+   "registry_security_ids": [
+    "YILING"
+   ],
+   "registry_owners": [
+    "RC-2021-TCM"
+   ],
+   "evidence": "(ticker, exchange) 精确相等",
+   "next_step": "身份已确定（ticker+交易所唯一）；**归属不变** —— 是否并入该对象仍须独立轮次裁定"
+  }
+ ]
+}

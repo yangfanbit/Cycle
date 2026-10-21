@@ -140,6 +140,23 @@ jobs:
           python research/scripts/test_build_theme_market_performance.py
           echo "::endgroup::"
 
+      # ----------------------------------------------------------------------
+      # ★★ v0.28：参与者证据维度（同期表现 / 机制关系 / 对象登记）一致性门禁
+      #
+      # 为什么放在 CI：这三条轴是**产品文案的依据**，一旦产物与题材文档漂移，
+      # 页面就会用旧维度解释新数据（v0.25 的 AUTO 措辞漂移就是这么漏出去的）。
+      # `--check` 只读：重新推导并与已发布产物逐字段比对。
+      # ----------------------------------------------------------------------
+      - name: Participant evidence consistency (--check)
+        run: |
+          set -euo pipefail
+          echo "::group::build_participant_evidence --check"
+          python research/scripts/build_participant_evidence_v0_1.py --check
+          echo "::endgroup::"
+          echo "::group::participant evidence invariants"
+          python research/scripts/test_build_participant_evidence.py
+          echo "::endgroup::"
+
       - name: Research read-only gates
         run: |
           set -euo pipefail
