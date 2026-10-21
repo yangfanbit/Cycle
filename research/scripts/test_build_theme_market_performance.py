@@ -239,6 +239,33 @@ class ContractTest(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("FAIL 0", out)
 
+    # ---------------------------------------------------------------- 6 字段映射回归
+    def test_hfq_audit_uses_close_not_high(self):
+        """★★ v0.27.1 回归：HFQ 审计必须用 **close（rec[2]）**，不得用 high（rec[3]）。
+
+        背景：v0_1 产物把最高价当收盘价算了全部统计（因子步进 / 仿射拟合 / 窗口收益）。
+        本测试锁住三件事，任何一条不满足即说明字段映射又错了：
+          ① 产物声明 `field_used` 含 rec[2] / close；
+          ② 每只证券的自检 `close_ne_high` 为真（同日收盘 ≠ 最高）；
+          ③ 每只证券的 `regression_ok` 为真（close 收益 ≠ high 收益 ⇒ 字段确实生效）。
+        """
+        path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "research", "reports", "hfq_basis_audit_v0_2.json")
+        if not os.path.exists(path):
+            self.skipTest("hfq_basis_audit_v0_2.json 尚未生成")
+        doc = json.load(open(path, encoding="utf-8"))
+        self.assertIn("rec[2]", doc["source"]["field_used"])
+        self.assertIn("close", doc["source"]["field_used"])
+        for sid, s in doc["series"].items():
+            fa = s["field_audit"]
+            self.assertTrue(fa["close_ne_high"], "%s: close 与 high 同日相同 → 字段没生效" % sid)
+            self.assertTrue(fa["regression_ok"], "%s: close/high 收益无法区分 → 字段没生效" % sid)
+            # 窗口收益必须等于「用 close 复算」的比值
+            w = s["window_check"]
+            if w["hfq_period_return_pct"] is not None:
+                self.assertAlmostEqual(w["hfq_period_return_pct"], fa["return_from_close_pct"], places=2,
+                                       msg="%s: 窗口收益不是 close→close 口径" % sid)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

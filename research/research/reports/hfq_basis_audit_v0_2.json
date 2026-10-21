@@ -1,0 +1,311 @@
+{
+ "artifact": "hfq_basis_audit",
+ "artifact_version": "0.2",
+ "generated_at": "2026-10-21",
+ "generated_by": "research/scripts/audit_hfq_basis_v0_1.py",
+ "supersedes": "research/research/reports/hfq_basis_audit_v0_1.json",
+ "question": "早年高分红股（qfq 在 2015–2016 段为非正价格）能否用 hfq 作为可核验的替代收益口径？",
+ "corrections": [
+  {
+   "at": "2026-10-21",
+   "what": "v0.1 用 **high（rec[3]）** 代替收盘价计算了全部统计；v0.2 改用 **close（rec[2]）** 并加字段自检",
+   "why": "腾讯 fqkline 记录为 [date, open, close, high, low, volume]；v0.1 取 r[3] → 实际取的是最高价，注释却写「收盘」",
+   "affected": [
+    "因子步进分布（p50/p90/p99/max、超阈值天数）",
+    "仿射模型残差（按跨度）",
+    "三只股票的窗口收益 raw / hfq / qfq",
+    "qfq 非正价格的「天数」不受影响（非正与否与取哪个字段无关，区间端点可能差一天）"
+   ],
+   "recheck": "按 close 重算后：因子仍不恒定（65.9% 的交易日 >0.05%）、仿射残差仍不随跨度缩小、hfq 收益仍低于 raw 收益 ⇒ **NOT_ADOPTED 的结论不变**，但 v0.1 引用的具体数字**作废**，以 v0.2 为准"
+  }
+ ],
+ "verdict": "NOT_ADOPTED",
+ "verdict_basis": {
+  "1_available_and_stable": "✓ 可取数、无非正价格、同一交易日跨请求区间取值一致（锚定上市首日）",
+  "2_explainable_adjustment_model": "✗ 现金分红步进为正、窗口内因子却**净下降**（−3.21% / −4.13% / −13.95%），且无送转负步进可解释；结果是 hfq 收益**低于** raw 价格收益 —— 任何标准后复权都不可能如此",
+  "3_documented_method": "✗ provider 未公开 hfq 算法",
+  "4_independently_verifiable": "✗ 缺分红/送转记录，无法由 raw + 公司行为独立复算"
+ },
+ "what_is_missing": [
+  "一份可核验的分红 / 送转记录（除权日 + 每股派息 / 送转比例）——有了它，总收益可由 raw 与公司行为独立重建并审计；",
+  "或换用**复权方法有明文文档**的数据源（当前 provider 未公开其 hfq 算法）。"
+ ],
+ "rejected_alternatives": {
+  "raw": "仅价格、不含分红 → 会把「价格涨幅」冒充「含分红收益」，明令禁止。",
+  "hfq": "见 verdict_basis.2；且与默认 qfq 在高分红长窗口下会系统性分叉，混用会破坏事件内可比性。",
+  "自建复权因子": "缺少可核验的分红记录，等于自造因子 —— 不采用。"
+ },
+ "source": {
+  "provider": "tencent",
+  "endpoint": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get",
+  "params": "fq ∈ {''(raw), 'qfq', 'hfq'}",
+  "field_used": "rec[2] = close（★ v0.2 修正；v0.1 误用 rec[3] = high）",
+  "retrieved_range": [
+   "2015-01-01",
+   "2018-12-31"
+  ],
+  "note": "与 market_daily 同源同 endpoint、不同 fq 参数；本产物**只做审计**，不进入任何产品产物、不覆盖 market_daily。"
+ },
+ "series": {
+  "MOUTAI": {
+   "symbol": "sh600519",
+   "range": [
+    "2015-01-05",
+    "2018-12-28"
+   ],
+   "trading_days": 975,
+   "qfq_non_positive_days": 369,
+   "qfq_non_positive_range": [
+    "2015-01-05",
+    "2016-09-29"
+   ],
+   "hfq_non_positive_days": 0,
+   "factor_steps": {
+    "n": 974,
+    "p50_pct": -0.0015,
+    "p90_pct": 0.1678,
+    "p99_pct": 0.4886,
+    "max_pct": 11.7867,
+    "min_pct": -0.8264,
+    "rounding_noise_pct": 0.0001,
+    "days_over_0_05pct": 642,
+    "share_over_0_05pct": 65.9
+   },
+   "affine_rms_by_span": {
+    "15d": 28.233,
+    "60d": 28.1424,
+    "120d": 27.9563,
+    "230d": 61.2987
+   },
+   "affine_full_range": {
+    "k": 5.918143,
+    "c": 33.9,
+    "residual_rms": 51.1939
+   },
+   "window_check": {
+    "window": [
+     "2016-06-01",
+     "2017-12-29"
+    ],
+    "trading_days": 388,
+    "raw_period_return_pct": 164.41,
+    "hfq_period_return_pct": 155.92,
+    "qfq_period_return_pct": null,
+    "qfq_non_positive_at_start": true,
+    "factor_at_start": 6.1116,
+    "factor_at_end": 5.9153,
+    "factor_change_pct": -3.21,
+    "cash_dividend_steps": [
+     {
+      "date": "2016-07-01",
+      "step_pct": 2.15
+     },
+     {
+      "date": "2017-07-07",
+      "step_pct": 1.56
+     }
+    ],
+    "split_steps": [],
+    "dividend_steps_sum_pct": 3.71,
+    "split_steps_sum_pct": 0,
+    "all_steps_sum_pct": -3.19,
+    "unexplained_drift_pct": -6.92,
+    "note": "raw = 仅价格（不含分红，**不得**当作含分红收益）；qfq = 前复权（起点非正价格 → 拒绝计算）；hfq = 后复权（数值可得，但见 verdict）。★ unexplained_drift_pct = 因子累计变化 − 现金分红步进 − 送转步进；无送转时它应 ≥ 0（分红只会抬高后复权价），**负值即不可解释**。"
+   },
+   "field_audit": {
+    "fields": {
+     "date": 0,
+     "open": 1,
+     "close": 2,
+     "high": 3,
+     "low": 4,
+     "volume": 5
+    },
+    "used_for_all_metrics": "close (F_CLOSE = 2)",
+    "sample_date": "2016-06-01",
+    "close_raw": 263.79,
+    "hfq_close": 1612.169,
+    "hfq_high_same_date": 1621.792,
+    "close_ne_high": true,
+    "return_from_close_pct": 155.92,
+    "return_from_high_pct": 164.47,
+    "regression_ok": true
+   }
+  },
+  "WULIANGYE": {
+   "symbol": "sz000858",
+   "range": [
+    "2015-01-05",
+    "2018-12-28"
+   ],
+   "trading_days": 915,
+   "qfq_non_positive_days": 294,
+   "qfq_non_positive_range": [
+    "2015-01-05",
+    "2016-06-24"
+   ],
+   "hfq_non_positive_days": 0,
+   "factor_steps": {
+    "n": 914,
+    "p50_pct": 0.0,
+    "p90_pct": 0.2306,
+    "p99_pct": 0.8476,
+    "max_pct": 2.5533,
+    "min_pct": -1.1591,
+    "rounding_noise_pct": 0.0001,
+    "days_over_0_05pct": 701,
+    "share_over_0_05pct": 76.7
+   },
+   "affine_rms_by_span": {
+    "15d": 4.8032,
+    "60d": 5.8517,
+    "120d": 7.2845,
+    "230d": 4.1285
+   },
+   "affine_full_range": {
+    "k": 14.51284,
+    "c": 29.58,
+    "residual_rms": 9.2675
+   },
+   "window_check": {
+    "window": [
+     "2016-06-01",
+     "2017-12-29"
+    ],
+    "trading_days": 388,
+    "raw_period_return_pct": 166.98,
+    "hfq_period_return_pct": 155.95,
+    "qfq_period_return_pct": null,
+    "qfq_non_positive_at_start": true,
+    "factor_at_start": 15.3662,
+    "factor_at_end": 14.7314,
+    "factor_change_pct": -4.13,
+    "cash_dividend_steps": [
+     {
+      "date": "2016-07-25",
+      "step_pct": 2.18
+     },
+     {
+      "date": "2017-05-12",
+      "step_pct": 1.88
+     }
+    ],
+    "split_steps": [],
+    "dividend_steps_sum_pct": 4.06,
+    "split_steps_sum_pct": 0,
+    "all_steps_sum_pct": -4.09,
+    "unexplained_drift_pct": -8.19,
+    "note": "raw = 仅价格（不含分红，**不得**当作含分红收益）；qfq = 前复权（起点非正价格 → 拒绝计算）；hfq = 后复权（数值可得，但见 verdict）。★ unexplained_drift_pct = 因子累计变化 − 现金分红步进 − 送转步进；无送转时它应 ≥ 0（分红只会抬高后复权价），**负值即不可解释**。"
+   },
+   "field_audit": {
+    "fields": {
+     "date": 0,
+     "open": 1,
+     "close": 2,
+     "high": 3,
+     "low": 4,
+     "volume": 5
+    },
+    "used_for_all_metrics": "close (F_CLOSE = 2)",
+    "sample_date": "2016-06-01",
+    "close_raw": 29.92,
+    "hfq_close": 459.758,
+    "hfq_high_same_date": 463.644,
+    "close_ne_high": true,
+    "return_from_close_pct": 155.95,
+    "return_from_high_pct": 160.03,
+    "regression_ok": true
+   }
+  },
+  "LUZHOULAOJIAO": {
+   "symbol": "sz000568",
+   "range": [
+    "2015-01-05",
+    "2018-12-28"
+   ],
+   "trading_days": 957,
+   "qfq_non_positive_days": 414,
+   "qfq_non_positive_range": [
+    "2015-01-05",
+    "2016-10-24"
+   ],
+   "hfq_non_positive_days": 0,
+   "factor_steps": {
+    "n": 956,
+    "p50_pct": -0.0185,
+    "p90_pct": 0.6017,
+    "p99_pct": 2.2036,
+    "max_pct": 5.0712,
+    "min_pct": -2.5221,
+    "rounding_noise_pct": 0.0001,
+    "days_over_0_05pct": 854,
+    "share_over_0_05pct": 89.3
+   },
+   "affine_rms_by_span": {
+    "15d": 9.3237,
+    "60d": 7.79,
+    "120d": 6.7334,
+    "230d": 7.3499
+   },
+   "affine_full_range": {
+    "k": 21.287753,
+    "c": 142.0,
+    "residual_rms": 15.924
+   },
+   "window_check": {
+    "window": [
+     "2016-06-01",
+     "2017-12-29"
+    ],
+    "trading_days": 388,
+    "raw_period_return_pct": 167.86,
+    "hfq_period_return_pct": 130.5,
+    "qfq_period_return_pct": null,
+    "qfq_non_positive_at_start": true,
+    "factor_at_start": 27.013,
+    "factor_at_end": 23.2456,
+    "factor_change_pct": -13.95,
+    "cash_dividend_steps": [
+     {
+      "date": "2016-08-12",
+      "step_pct": 2.75
+     },
+     {
+      "date": "2017-06-19",
+      "step_pct": 1.75
+     }
+    ],
+    "split_steps": [
+     {
+      "date": "2016-07-06",
+      "step_pct": -1.81
+     }
+    ],
+    "dividend_steps_sum_pct": 4.5,
+    "split_steps_sum_pct": -1.81,
+    "all_steps_sum_pct": -14.8,
+    "unexplained_drift_pct": -16.64,
+    "note": "raw = 仅价格（不含分红，**不得**当作含分红收益）；qfq = 前复权（起点非正价格 → 拒绝计算）；hfq = 后复权（数值可得，但见 verdict）。★ unexplained_drift_pct = 因子累计变化 − 现金分红步进 − 送转步进；无送转时它应 ≥ 0（分红只会抬高后复权价），**负值即不可解释**。"
+   },
+   "field_audit": {
+    "fields": {
+     "date": 0,
+     "open": 1,
+     "close": 2,
+     "high": 3,
+     "low": 4,
+     "volume": 5
+    },
+    "used_for_all_metrics": "close (F_CLOSE = 2)",
+    "sample_date": "2016-06-01",
+    "close_raw": 24.64,
+    "hfq_close": 665.601,
+    "hfq_high_same_date": 674.464,
+    "close_ne_high": true,
+    "return_from_close_pct": 130.5,
+    "return_from_high_pct": 134.91,
+    "regression_ok": true
+   }
+  }
+ }
+}
