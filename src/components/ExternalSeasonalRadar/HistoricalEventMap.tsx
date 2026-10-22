@@ -706,6 +706,13 @@ export function EventCardBody({
                   ★ 角色与「参与证据」「机制关系」「对象登记」是<strong>不同维度</strong>：
                   被报道点名 ≠ 是龙头；登记 leader ≠ 历史市场角色；事后集合 ≠ 当时可知。
                 </p>
+                <p className="fem-roles-caveat" data-role-scope-note="1">
+                  ★ <strong>两处「报道点名」口径不同，数量不一致是正常的</strong>：
+                  本节的「报道点名」来自 Point-in-Time 研究登记的<strong>同期报道记录</strong>（带 URL 与识别日）；
+                  上方标的行的「同期」徽标要求<strong>该参与者自己的来源字段</strong>就是报道
+                  —— 若它的来源写的是「DB / 研究轮次」，就只算「仅库内/研究记录」，
+                  即使另有一篇同期报道点名过它。
+                </p>
               </section>
             );
           })()}
@@ -718,7 +725,8 @@ export function EventCardBody({
             return (
               <p className="fem-evidence-counts" data-evidence-counts="1">
                 同期报道点名 <strong>{c.reported}</strong> 只（其中报道涨停 <strong>{c.limitUp}</strong> 只）
-                {' · '}业务机制说明 <strong>{c.mechanism}</strong> 只
+                {' · '}机制已确认 <strong>{c.mechanism}</strong> 只
+                {' · '}有业务说明但机制未定级 <strong>{c.businessOnly}</strong> 只
                 {' · '}对象登记角色 <strong>{c.registry}</strong> 只（库内可核 <strong>{c.registryVerified}</strong> 只）
                 <span className="fem-evidence-counts-note">
                   —— 三者是<strong>不同维度</strong>：报道点名 ≠ 机制相关 ≠ 对象登记角色

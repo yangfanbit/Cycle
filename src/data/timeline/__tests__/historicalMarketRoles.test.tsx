@@ -80,6 +80,12 @@ describe('历史市场角色 · 渲染', () => {
     expect(html).toContain('后验');
     // 不得把「报道点名」渲染成龙头
     expect(html).not.toContain('报道称龙头</span>');
+    // ★ 两处「报道点名」口径不同 → 必须有显式说明，否则用户会把数量差读成矛盾
+    expect(html).toContain('data-role-scope-note="1"');
+    expect(html).toContain('口径不同');
+    // ★ 计数行不得把「有业务说明但机制未定级」算进「机制已确认」
+    expect(html).toContain('机制已确认');
+    expect(html).toContain('有业务说明但机制未定级');
   });
 
   it('★ 未绑定角色显式标注「未在地图参与者中」+ 名称匹配待确认', () => {

@@ -232,8 +232,12 @@ export function evidenceCounts(eventId: string) {
     reported: all.filter(hasReportedParticipation).length,
     limitUp: all.filter((x) => x.market_participation.status === 'REPORT_CONFIRMED_LIMIT_UP').length,
     traceable: all.filter(hasTraceableReport).length,
+    /** ★ 机制**已确认**（直接 / 间接）—— 不含「有业务说明但未定级」 */
     mechanism: all.filter((x) => x.mechanism_relation.status === 'DIRECT_CONFIRMED'
       || x.mechanism_relation.status === 'INDIRECT_CONFIRMED').length,
+    /** ★ v0.29.1：有业务说明但研究**未**确认与本题材机制的关系（≠ 机制相关） */
+    businessOnly: all.filter((x) =>
+      x.mechanism_relation.status === 'BUSINESS_DESCRIBED_UNCONFIRMED').length,
     registry: all.filter((x) => x.registry_role).length,
     registryVerified: all.filter((x) => x.registry_role?.verification === 'VERIFIED_DB').length,
   };
