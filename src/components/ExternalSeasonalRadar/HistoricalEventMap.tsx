@@ -45,6 +45,7 @@ import {
   MARKET_ROLE_LABEL,
   MARKET_ROLE_MEANING,
   RESEARCH_STATUS_LABEL,
+  SLICE_SCOPE_LABEL,
   eventRoles,
   marketRoleOf,
   roleCounts,
@@ -356,11 +357,24 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
       )}
       <p className="fem-part-why"><strong>纳入理由</strong>：<RichText text={p.rationale} /></p>
       <p className="fem-part-src"><strong>来源</strong>：<RichText text={p.source} />
-        {ev?.market_participation.report?.url && (
+        {/* ★★ v0.30：有 URL → 原文链接；无 URL → 明说「缺原文链接，尚无法独立核验」，
+            不再只显示泛化的「同期报道」。发布日用 published_at，**不是**事实日期。 */}
+        {ev?.market_participation.report?.url ? (
           <a className="fem-part-report-link" href={ev.market_participation.report.url}
              target="_blank" rel="noreferrer"
-             data-report-url="1">同期报道原文（{ev.market_participation.report.date ?? '日期未记录'}）</a>
-        )}
+             data-report-url="1">
+            同期报道原文（发布于 {ev.market_participation.report.published_at ?? '日期未记录'}）
+          </a>
+        ) : ev?.market_participation.report ? (
+          <span className="fem-part-no-url" data-report-no-url="1"
+                title={ev.market_participation.report.publisher ?? undefined}>
+            报道发布于 {ev.market_participation.report.published_at ?? '日期不可确定'}
+            {ev.market_participation.report.fact_date
+              && ev.market_participation.report.fact_date !== ev.market_participation.report.published_at
+              ? `（事实日期 ${ev.market_participation.report.fact_date}）` : ''}
+            {' · '}缺少原文链接，尚无法独立核验
+          </span>
+        ) : null}
       </p>
       {p.note && <p className="fem-part-note"><RichText text={p.note} /></p>}
     </li>
@@ -639,7 +653,9 @@ export function EventCardBody({
                 {r.roles.length === 0 && (
                   <p className="fem-roles-empty">
                     本事件尚未做角色研究 —— <strong>不设角色</strong>，也不从涨幅倒推。
-                    {r.gaps.length > 0 && <span className="fem-roles-gap">需补：{r.gaps[0]}</span>}
+                    {r.gaps.length > 0 && (
+                      <span className="fem-roles-gap"><RichText text={`需补：${r.gaps[0]}`} /></span>
+                    )}
                   </p>
                 )}
                 {r.roles.length > 0 && (
@@ -684,12 +700,29 @@ export function EventCardBody({
                     <ul>
                       {r.pit_slices.map((sl) => (
                         <li key={sl.date} data-slice-date={sl.date}
-                            data-basket={sl.basket_status}>
+                            data-basket={sl.basket_status}
+                            data-match-scope={sl.match_scope}>
                           <strong>{sl.date}</strong>：
                           {sl.basket_status === 'USABLE'
                             ? <>可识别 {sl.members.length} 只（{sl.members.join(' / ')}）</>
                             : <>不可用 —— {sl.note}</>}
-                          {!sl.matches_document && <em className="fem-slice-drift">（与原始研究记录不一致）</em>}
+                          {/* ★★ v0.30：原始篮子规模 vs 地图覆盖，分开说清 */}
+                          <span className="fem-slice-scope" data-slice-scope={sl.match_scope}>
+                            {SLICE_SCOPE_LABEL[sl.match_scope]}
+                            {sl.match_scope === 'SUBSET' && (
+                              <>：原始研究记录 {sl.documented_count} 只，地图覆盖 {sl.bound_count} 只</>
+                            )}
+                          </span>
+                          {(sl.not_in_map?.length ?? 0) > 0 && (
+                            <span className="fem-slice-gap" data-slice-gap={sl.not_in_map!.length}>
+                              {' '}未纳入本地图：
+                              {(sl.not_in_map_names?.length ? sl.not_in_map_names : sl.not_in_map)!.join(' / ')}
+                              （覆盖缺口，不是研究结论不一致）
+                            </span>
+                          )}
+                          {sl.match_scope === 'MISMATCH' && (
+                            <em className="fem-slice-drift">（已绑定成员与原始研究记录不一致）</em>
+                          )}
                         </li>
                       ))}
                     </ul>

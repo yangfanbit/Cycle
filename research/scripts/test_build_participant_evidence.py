@@ -28,7 +28,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 CURRENT = os.path.join(REPO, "research", "current")
 DB = os.path.join(REPO, "research", "database", "cycle_research.db")
-ARTIFACT = os.path.join(CURRENT, "participant_evidence_v0_2.json")
+ARTIFACT = os.path.join(CURRENT, "participant_evidence_v0_3.json")
 INDEX = os.path.join(CURRENT, "historical_event_maps_index.json")
 LIMIT_UP_RE = re.compile(r"涨停|(?:\d+\s*天\s*\d+\s*板)|(?:\d+\s*连板)")
 
@@ -117,7 +117,7 @@ class ParticipantEvidenceTest(unittest.TestCase):
                 rep = mp.get("report") or {}
                 self.assertTrue(str(rep.get("url") or "").startswith("http"),
                                 "%s/%s 声称有 URL 却没有" % (eid, sid))
-                self.assertRegex(str(rep.get("date") or ""), r"^\d{4}-\d{2}-\d{2}$",
+                self.assertRegex(str(rep.get("published_at") or ""), r"^\d{4}-\d{2}-\d{2}$",
                                  "%s/%s 报道日期缺失或格式不对" % (eid, sid))
 
     def test_mechanism_status_matches_research_category(self):
@@ -211,9 +211,88 @@ class ParticipantEvidenceTest(unittest.TestCase):
     def test_check_passes(self):
         code = subprocess.run(
             [sys.executable, os.path.join(HERE, "build_participant_evidence_v0_1.py"),
-             "--check", "--version", "2"],
+             "--check"],
             capture_output=True, text=True).returncode
         self.assertEqual(code, 0)
+
+
+    # ---------------------------------------------------------------- v0.30 时间与归属
+
+    def _catalyst_sources(self, eid):
+        for doc in self.theme_docs.values():
+            for e in doc["events"]:
+                if e["event_id"] == eid:
+                    return " ".join((c.get("source") or "") for c in (e.get("catalysts") or []))
+        return ""
+
+    def test_published_at_is_never_the_catalyst_fact_date(self):
+        """★★ v0.30 核心不变量：报道**发布日**不得被 catalyst 的**事实日期**静默替代。
+
+        机械判据：
+          · 每条报道背书都必须写出 `published_at_source`；
+          · `SOURCE_TEXT` 时，`published_at` 必须真的出现在该事件的 catalyst source 文本里；
+          · `identified_date` 必须 == `published_at`。
+        """
+        checked = 0
+        for eid, ev in self.doc["events"].items():
+            for sid, p in ev["participants"].items():
+                mp = p["market_participation"]
+                rep = mp.get("report") or {}
+                if not rep:
+                    continue
+                checked += 1
+                self.assertIn(rep.get("published_at_source"),
+                              ("SOURCE_TEXT", "INHERITED_FROM_PREVIOUS_CATALYST", "MISSING",
+                               "INHERIT_WITHOUT_PREVIOUS"),
+                              "%s/%s 未声明发布日来源" % (eid, sid))
+                if rep.get("published_at_source") == "SOURCE_TEXT":
+                    self.assertIn(rep["published_at"], self._catalyst_sources(eid),
+                                  "%s/%s 声称发布日来自文本，但该日期不在任何 catalyst source 里"
+                                  % (eid, sid))
+                if mp.get("identified_date"):
+                    self.assertEqual(mp["identified_date"], rep.get("published_at"),
+                                     "%s/%s identified_date 必须等于 published_at" % (eid, sid))
+        self.assertGreater(checked, 0, "没有任何报道背书记录 → 测试失效")
+
+    def test_superfungus_dates_fixed(self):
+        """★★ 已确认的错配：8 条识别日曾是 2019-04-08（catalyst 事实日），报道实际发布于 04-11。"""
+        ev = self.doc["events"]["SUPERFUNGUS-2019-CANDIDA"]["participants"]
+        self.assertEqual(len(ev), 8)
+        for sid, p in ev.items():
+            mp = p["market_participation"]
+            rep = mp.get("report") or {}
+            self.assertEqual(rep.get("published_at"), "2019-04-11", "%s 发布日未修正" % sid)
+            self.assertEqual(mp.get("identified_date"), "2019-04-11", "%s 识别日未修正" % sid)
+            self.assertIn(rep.get("fact_date"), ("2019-04-10", "2019-04-11"),
+                          "%s 事实日期应保留" % sid)
+            self.assertEqual(mp.get("attribution"), "NAME_IN_TEXT",
+                             "%s 应由报道正文点名支持" % sid)
+
+    def test_backed_requires_matching_report(self):
+        """★★ `reported_move_backed` 必须由**能支持该股**的报道决定，不能只看来源类型。"""
+        for eid, ev in self.doc["events"].items():
+            for sid, p in ev["participants"].items():
+                mp = p["market_participation"]
+                if mp.get("reported_move_backed"):
+                    self.assertIsNotNone(mp.get("report"), "%s/%s backed 却无报道" % (eid, sid))
+                    self.assertIn(mp.get("attribution"), ("NAME_IN_TEXT", "REPORT_LIST_AGGREGATE"),
+                                  "%s/%s 关联级别非法" % (eid, sid))
+                    self.assertTrue(mp["status"].startswith("REPORT_CONFIRMED_"),
+                                    "%s/%s backed 但状态 %s" % (eid, sid, mp["status"]))
+                if mp["status"] == "UNVERIFIED_REPORT_ATTRIBUTION":
+                    self.assertFalse(mp.get("reported_move_backed"),
+                                     "%s/%s 未核验归属却标 backed" % (eid, sid))
+                    self.assertIsNone(mp.get("identified_date"),
+                                      "%s/%s 未核验归属却给了识别日" % (eid, sid))
+
+    def test_report_status_requires_publication_date(self):
+        """没有发布日 → 不得出现 `REPORT_CONFIRMED_*`（宁可留白，不用事实日冒充）。"""
+        for eid, ev in self.doc["events"].items():
+            for sid, p in ev["participants"].items():
+                mp = p["market_participation"]
+                if mp["status"].startswith("REPORT_CONFIRMED_"):
+                    self.assertTrue(mp.get("identified_date"),
+                                    "%s/%s 报道状态却无识别日" % (eid, sid))
 
 
 if __name__ == "__main__":

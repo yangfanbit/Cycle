@@ -49,11 +49,48 @@ describe('历史市场角色 · 数据', () => {
       .toEqual(['TIANMAI', 'XINGYUYUDA']);
   });
 
-  it('★ 切片：07-08 不可用、07-10 起可用（与原始研究一致）', () => {
+  it('★★ 切片：07-08 不可用、07-10 起可用；覆盖范围必须三态明确', () => {
     const e = eventRoles('AUTO-2024-ROBOTAXI')!;
     expect(e.pit_slices[0].basket_status).toBe('NOT_USABLE');
     expect(e.pit_slices[1].basket_status).toBe('USABLE');
-    for (const s of e.pit_slices) expect(s.matches_document).toBe(true);
+    const byDate = Object.fromEntries(e.pit_slices.map((s) => [s.date, s]));
+    // 07-08：原始 1 只，全部可绑定 → FULL
+    expect(byDate['2024-07-08'].match_scope).toBe('FULL');
+    expect(byDate['2024-07-08'].matches_document).toBe(true);
+    // 07-10 / 07-15：原始 4 / 5 只，地图只覆盖 2 / 3 只 → SUBSET（**不是**完全一致）
+    for (const d of ['2024-07-10', '2024-07-15']) {
+      expect(byDate[d].match_scope, d).toBe('SUBSET');
+      expect(byDate[d].matches_document, d).toBe(false);
+      expect(byDate[d].not_in_map!.sort()).toEqual(['TIANMAI', 'XINGYUYUDA']);
+      expect(byDate[d].not_in_map_names!.sort()).toEqual(['天迈科技', '星网宇达']);
+      expect(byDate[d].bound_count!).toBeLessThan(byDate[d].documented_count!);
+    }
+    // 任何切片都不允许 MISMATCH
+    for (const s of e.pit_slices) expect(s.match_scope).not.toBe('MISMATCH');
+  });
+
+  it('★★ 超级真菌：8 条角色识别日 = 报道发布日 2019-04-11（不是事实日 04-08）', () => {
+    const e = eventRoles('SUPERFUNGUS-2019-CANDIDA')!;
+    expect(e.research_status).toBe('DERIVED_FROM_REPORT');
+    expect(e.roles).toHaveLength(8);
+    for (const r of e.roles) {
+      expect(r.identified_date, r.security_id ?? '').toBe('2019-04-11');
+      expect(r.evidence.published_at ?? '', r.security_id ?? '').toBe('2019-04-11');
+      // 事实日期保留原样（东北制药的「04-11 涨逾 5%」来自 04-11 那条）
+      expect(['2019-04-10', '2019-04-11']).toContain(r.evidence.fact_date ?? '');
+    }
+  });
+
+  it('★ 盘面角色（DERIVED_FROM_MARKET）不得声称媒体定性', () => {
+    const e = eventRoles('AUTO-2023-NOA')!;
+    expect(e.research_status).toBe('DERIVED_FROM_MARKET');
+    const obs = e.roles.filter((r) => r.role === 'PIT_MARKET_OBSERVED');
+    expect(obs.length).toBeGreaterThan(0);
+    for (const r of obs) {
+      expect(r.evidence.source_type).not.toContain('同期报道');
+      expect(r.evidence.limit_up_days!.length).toBeGreaterThanOrEqual(2);
+      expect(r.confidence).toBe('medium');
+    }
   });
 
   it('★ 未研究的事件必须写明缺什么（不得静默留空）', () => {
@@ -86,6 +123,23 @@ describe('历史市场角色 · 渲染', () => {
     // ★ 计数行不得把「有业务说明但机制未定级」算进「机制已确认」
     expect(html).toContain('机制已确认');
     expect(html).toContain('有业务说明但机制未定级');
+  });
+
+  it('★★ 切片必须显示覆盖缺口（未纳入本地图的成员 + 原始规模 vs 地图覆盖）', () => {
+    const e = eventOf('AUTO_INTELLIGENCE', 'AUTO-2024-ROBOTAXI');
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    // 三态标记
+    expect(html).toContain('data-match-scope="FULL"');
+    expect(html).toContain('data-match-scope="SUBSET"');
+    expect(html).not.toContain('data-match-scope="MISMATCH"');
+    // 缺口数字与成员名
+    expect(html).toContain('data-slice-gap="2"');
+    expect(html).toContain('未纳入本地图');
+    expect(html).toContain('星网宇达');
+    expect(html).toContain('天迈科技');
+    // 原始规模 vs 地图覆盖
+    expect(html).toContain('原始研究记录 4 只，地图覆盖 2 只');
+    expect(html).toContain('原始研究记录 5 只，地图覆盖 3 只');
   });
 
   it('★ 未绑定角色显式标注「未在地图参与者中」+ 名称匹配待确认', () => {

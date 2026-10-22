@@ -25,9 +25,9 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 CURRENT = os.path.join(REPO, "research", "current")
-ARTIFACT = os.path.join(CURRENT, "historical_market_roles_v0_1.json")
+ARTIFACT = os.path.join(CURRENT, "historical_market_roles_v0_2.json")
 INDEX = os.path.join(CURRENT, "historical_event_maps_index.json")
-EVIDENCE = os.path.join(CURRENT, "participant_evidence_v0_2.json")
+EVIDENCE = os.path.join(CURRENT, "participant_evidence_v0_3.json")
 
 
 class MarketRolesTest(unittest.TestCase):
@@ -46,7 +46,8 @@ class MarketRolesTest(unittest.TestCase):
         self.assertEqual(len(self.doc["events"]), 33)
         for eid, ev in self.doc["events"].items():
             self.assertIn(ev["research_status"],
-                          ("RESEARCHED_PIT", "DERIVED_FROM_REPORT", "NOT_RESEARCHED"), eid)
+                          ("RESEARCHED_PIT", "DERIVED_FROM_REPORT",
+                           "DERIVED_FROM_MARKET", "NOT_RESEARCHED"), eid)
             if ev["research_status"] == "NOT_RESEARCHED":
                 self.assertTrue(ev["gaps"], "%s 未研究却没写缺什么" % eid)
             if not ev["roles"]:
@@ -90,16 +91,145 @@ class MarketRolesTest(unittest.TestCase):
         self.assertEqual(n, 0, "出现了「报道称龙头」记录 → 请确认原文确实如此")
 
     def test_slices_match_documented_study(self):
-        """切片必须与原始 PIT 研究记录逐条一致（防推导规则悄悄漂移）。"""
+        """★★ 切片与原始 PIT 研究记录的关系必须**三态明确**（FULL / SUBSET / MISMATCH）。
+
+        v0.29 用 `matches_document` 一个布尔，且只与「已绑定子集」比对 → 会把
+        「地图只覆盖 2/4」显示成「完全一致」。v0.30 拆成 `match_scope`：
+          · Robotaxi 07-08  → FULL（1 只，全部可绑定）
+          · Robotaxi 07-10  → SUBSET（原始 4 只，地图覆盖 2 只：星网宇达 / 天迈科技 不在参与者里）
+          · Robotaxi 07-15  → SUBSET（原始 5 只，地图覆盖 3 只）
+        ★ 任何切片都不允许出现 MISMATCH（真不一致），且 `matches_document` 只在 FULL 为真。
+        """
         for eid, ev in self.doc["events"].items():
             for s in ev["pit_slices"]:
-                self.assertTrue(s["matches_document"],
-                                "%s %s 切片与原始记录不一致：推导 %s vs 文档 %s"
-                                % (eid, s["date"], s["members"], s["documented_members"]))
+                self.assertIn(s["match_scope"], ("FULL", "SUBSET", "MISMATCH"),
+                              "%s %s scope 非法" % (eid, s["date"]))
+                self.assertNotEqual(s["match_scope"], "MISMATCH",
+                                    "%s %s 与原始研究不一致：推导 %s vs 文档 %s"
+                                    % (eid, s["date"], s["members"], s["documented_members"]))
+                self.assertEqual(s["matches_document"], s["match_scope"] == "FULL",
+                                 "%s %s matches_document 与 scope 不符" % (eid, s["date"]))
                 # 成员只能来自 identified_date ≤ 切片日 的角色
                 for sid in s["members"]:
                     r = next(x for x in ev["roles"] if x["security_id"] == sid)
                     self.assertLessEqual(r["identified_date"], s["date"])
+
+    def test_robotaxi_slice_coverage_gap_is_visible(self):
+        """★★ 覆盖缺口必须出现在数据里（不是只写在说明文字里）。"""
+        ev = self.doc["events"]["AUTO-2024-ROBOTAXI"]
+        by_date = {s["date"]: s for s in ev["pit_slices"]}
+        self.assertEqual(by_date["2024-07-08"]["match_scope"], "FULL")
+        for d in ("2024-07-10", "2024-07-15"):
+            s = by_date[d]
+            self.assertEqual(s["match_scope"], "SUBSET", d)
+            self.assertEqual(sorted(s["not_in_map"]), ["TIANMAI", "XINGYUYUDA"], d)
+            self.assertEqual(sorted(s["not_in_map_names"]), ["天迈科技", "星网宇达"], d)
+            self.assertEqual(s["documented_count"], len(s["documented_members"]), d)
+            self.assertLess(s["bound_count"], s["documented_count"], d)
+
+    def test_media_role_date_is_publication_date(self):
+        """★★ 媒体角色的识别日 == 报道发布日，且不得早于发布日（防时间泄漏）。"""
+        for eid, ev in self.doc["events"].items():
+            for r in ev["roles"]:
+                if not r["role"].startswith("PIT_MEDIA"):
+                    continue
+                pub = (r.get("evidence") or {}).get("published_at")
+                self.assertRegex(str(pub or ""), r"^\d{4}-\d{2}-\d{2}$",
+                                 "%s/%s 媒体角色缺发布日" % (eid, r["security_id"]))
+                self.assertEqual(r["identified_date"], pub,
+                                 "%s/%s 识别日必须等于发布日" % (eid, r["security_id"]))
+                self.assertGreaterEqual(r["identified_date"], pub,
+                                        "%s/%s 识别日早于发布日（时间泄漏）" % (eid, r["security_id"]))
+                fact = (r.get("evidence") or {}).get("fact_date")
+                if fact:
+                    self.assertLessEqual(fact, r["identified_date"],
+                                         "%s/%s 事实日期晚于识别日" % (eid, r["security_id"]))
+
+    def test_superfungus_roles_use_correct_date(self):
+        """★ 已确认错配案例：超级真菌 8 条角色识别日必须是 2019-04-11（不是 04-08）。"""
+        ev = self.doc["events"]["SUPERFUNGUS-2019-CANDIDA"]
+        self.assertEqual(ev["research_status"], "DERIVED_FROM_REPORT")
+        self.assertEqual(len(ev["roles"]), 8)
+        for r in ev["roles"]:
+            self.assertEqual(r["identified_date"], "2019-04-11", r["security_id"])
+
+    def test_market_role_requires_consecutive_limit_up(self):
+        """★★ 盘面角色（PIT_MARKET_OBSERVED）必须满足**可复核判据**：
+        窗口内 ≥2 次涨停、至少一次相邻交易日连板，识别日 = 首次连板的第二个涨停日。
+        """
+        cal = self._calendar()
+        checked = 0
+        for eid, ev in self.doc["events"].items():
+            window = ev.get("window")
+            for r in ev["roles"]:
+                if r["role"] != "PIT_MARKET_OBSERVED":
+                    continue
+                days_ev = (r["evidence"].get("limit_up_days") or [])
+                if not days_ev:
+                    # ★ CSV 里的 market_breadth 角色（人工研究结论）没有涨停日明细，
+                    #   只要求它明确标为「盘面观察」而不是媒体归因。
+                    self.assertEqual(r.get("identification_type"), "market_breadth",
+                                     "%s/%s 无涨停日明细却不是 CSV market_breadth" % (eid, r["security_id"]))
+                    self.assertNotIn("同期报道", r["evidence"].get("source_type") or "")
+                    continue
+                checked += 1
+                days = [d["date"] for d in (r["evidence"].get("limit_up_days") or [])]
+                self.assertGreaterEqual(len(days), 2, "%s/%s 涨停日不足 2" % (eid, r["security_id"]))
+                pairs = [(a, b) for a, b in zip(days, days[1:])
+                         if cal.get(b, -99) - cal.get(a, -99) == 1]
+                self.assertTrue(pairs, "%s/%s 无连板" % (eid, r["security_id"]))
+                self.assertEqual(r["identified_date"], pairs[0][1],
+                                 "%s/%s 识别日应为首次连板的第二个涨停日" % (eid, r["security_id"]))
+                if window:
+                    self.assertGreaterEqual(r["identified_date"], window[0], eid)
+                    self.assertLessEqual(r["identified_date"], window[1], eid)
+                # ★ 盘面角色不得声称媒体定性
+                self.assertNotIn("媒体归因", r["evidence"].get("source_type") or "")
+        self.assertGreater(checked, 0, "没有任何盘面角色 → 测试失效")
+
+    def _calendar(self):
+        import sqlite3
+        conn = sqlite3.connect(os.path.join(REPO, "research", "database", "market_data.db"))
+        try:
+            return {r[0]: i for i, r in enumerate(
+                conn.execute("SELECT trade_date FROM trading_calendar ORDER BY trade_date"))}
+        finally:
+            conn.close()
+
+    def test_id_conflict_is_not_bound(self):
+        """★★ 身份安全：**ID 相同但名称不同**不得自动绑定（回归 v0.29 的隐患）。
+
+        用真实数据构造反例：把 CSV 的 `JINLONG`（金龙汽车）名称改成「锦江在线」，
+        它与地图参与者 `JINLONG` 的 id 相同但名称不同 → 必须 `ID_CONFLICT_NAME_MISMATCH`。
+        """
+        sys.path.insert(0, os.path.join(REPO, "research"))
+        from scripts import build_historical_market_roles_v0_1 as roles  # noqa: E402
+        participants = [{"security_id": "JINLONG", "name": "金龙汽车", "ticker": "600686"},
+                        {"security_id": "JINJIANGONLINE", "name": "锦江在线", "ticker": "600650"}]
+        rows = [{"security_id": "JINLONG", "name": "锦江在线"},
+                {"security_id": "JINJIANG", "name": "锦江在线"}]
+        secs = {"JINLONG": {"name": "金龙汽车", "ticker": "600686"},
+                "JINJIANG": {"name": "锦江酒店", "ticker": "600754"},
+                "JINJIANGONLINE": {"name": "锦江在线", "ticker": "600650"}}
+        b = roles.bind_pit_ids("TEST", rows, participants, secs)
+        self.assertEqual(b["JINLONG"]["status"], "ID_CONFLICT_NAME_MISMATCH")
+        self.assertIsNone(b["JINLONG"]["bound_to"])
+        # 名称正确的那条 → 按名称绑定，但必须暴露「该 id 指向另一家公司」
+        self.assertEqual(b["JINJIANG"]["status"], "BOUND_BY_NAME")
+        self.assertEqual(b["JINJIANG"]["bound_to"], "JINJIANGONLINE")
+        self.assertEqual(b["JINJIANG"]["registry_name_conflict"]["registry_name"], "锦江酒店")
+
+    def test_robotaxi_binding_flags_review(self):
+        """★ Robotaxi 的两条名称绑定必须带 `NAME_MATCH_ONLY`，未绑定的必须有原因。"""
+        ev = self.doc["events"]["AUTO-2024-ROBOTAXI"]
+        by_src = {r["source_security_id"]: r for r in ev["roles"]}
+        self.assertEqual(by_src["JINJIANG"]["binding"]["review"], "NAME_MATCH_ONLY")
+        self.assertEqual(by_src["JINJIANG"]["binding"]["registry_name_conflict"]["registry_name"],
+                         "锦江酒店")
+        self.assertEqual(by_src["DAZHONGTONG"]["binding"]["status"], "BOUND_BY_NAME")
+        for sid in ("XINGYUYUDA", "TIANMAI"):
+            self.assertEqual(by_src[sid]["binding"]["status"], "UNBOUND")
+            self.assertIsNone(by_src[sid]["security_id"])
 
     def test_role_binding_is_explicit(self):
         """★ 角色要么绑到本事件参与者上，要么**显式**标未绑定并写明原因。

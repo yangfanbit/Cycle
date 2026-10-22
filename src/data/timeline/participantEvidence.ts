@@ -17,7 +17,8 @@
  * 不重新推导任何维度 —— 单一真相在产物里。
  */
 
-import raw from '@current/participant_evidence_v0_2.json';
+// ★ v0.30：v0_3 —— 报道**发布日**与**事实日期**分开；新增 `UNVERIFIED_REPORT_ATTRIBUTION`
+import raw from '@current/participant_evidence_v0_3.json';
 
 export type MarketParticipationStatus =
   | 'REPORT_CONFIRMED_LIMIT_UP'
@@ -26,7 +27,9 @@ export type MarketParticipationStatus =
   | 'REPORT_CONFIRMED_NAMED'
   | 'RESEARCH_OR_DB_ONLY'
   | 'NOT_RECORDED'
-  | 'UNKNOWN';
+  | 'UNKNOWN'
+  /** ★ v0.30：来源指向报道，但**无法把任何一篇报道与该股的涨跌事实对上**（或发布日不可确定） */
+  | 'UNVERIFIED_REPORT_ATTRIBUTION';
 
 /** ★ v0.29：来源类型 —— 决定「报道点名」这句话能不能说 */
 export type SourceKind =
@@ -60,8 +63,26 @@ export interface MarketParticipation {
   source_text?: string | null;
   reported_move?: string | null;
   basis: string;
-  /** 同期报道的可追溯出处（仅 REPORT_WITH_URL 有 URL） */
-  report?: { date?: string | null; text?: string | null; source?: string | null; url?: string | null } | null;
+  /** ★ v0.30：报道背书来自哪里（参与者自己的来源 / 事件催化剂） */
+  source_kind_from?: 'PARTICIPANT_SOURCE' | 'EVENT_CATALYST';
+  /** ★ v0.30：关联级别 —— 正文点名 / 多股汇总 */
+  attribution?: 'NAME_IN_TEXT' | 'REPORT_LIST_AGGREGATE' | null;
+  /**
+   * 同期报道的可追溯出处。
+   * ★★ v0.30：`published_at` 是**报道发布日**，`fact_date` 是**事实日期**（盘面/采访日）。
+   * 两者不得混用；`identified_date` 只能取 `published_at`。
+   */
+  report?: {
+    published_at?: string | null;
+    published_at_source?: string | null;
+    fact_date?: string | null;
+    publisher?: string | null;
+    text?: string | null;
+    url?: string | null;
+    attribution?: string | null;
+  } | null;
+  /** ★ PIT 可识别日（= published_at；不可确定 → 不出现） */
+  identified_date?: string | null;
 }
 
 export interface MechanismRelation {
@@ -137,6 +158,7 @@ export const MARKET_PARTICIPATION_LABEL: Record<MarketParticipationStatus, strin
   RESEARCH_OR_DB_ONLY: '仅库内/研究记录',
   NOT_RECORDED: '无来源记录',
   UNKNOWN: '来源未归类',
+  UNVERIFIED_REPORT_ATTRIBUTION: '报道未对上该股',
 };
 
 /** 来源类型的展示文案（与「报道点名」是否成立直接相关） */

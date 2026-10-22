@@ -117,4 +117,31 @@ describe('参与者证据 · 渲染', () => {
     expect(html).toContain('data-no-report="1"');
     expect(html).toContain('不等于');
   });
+
+  it('★★ 无原文链接的报道必须显式说「无法独立核验」，有 URL 的必须给原文链接', () => {
+    // 超级真菌：来源「每日经济新闻 2019-04-11」，本库无 URL
+    const e1 = eventOf('FLU', 'SUPERFUNGUS-2019-CANDIDA');
+    const p1 = e1.participants.find((x) => x.security_id === 'SIHUAN-000518')!;
+    const h1 = renderToStaticMarkup(<ParticipantRow p={p1} e={e1} />);
+    expect(h1).toContain('data-report-no-url="1"');
+    expect(h1).toContain('缺少原文链接');
+    expect(h1).toContain('2019-04-11');
+    expect(h1).not.toContain('data-report-url="1"');
+
+    // 禽流感 2017：催化剂带新浪财经 URL
+    const e2 = eventOf('FLU', 'FLU-2017-AVIAN');
+    const p2 = e2.participants.find((x) => x.security_id === 'LAYNE-002166')!;
+    const h2 = renderToStaticMarkup(<ParticipantRow p={p2} e={e2} />);
+    expect(h2).toContain('data-report-url="1"');
+    expect(h2).toContain('finance.sina.com.cn');
+    expect(h2).not.toContain('data-report-no-url="1"');
+  });
+
+  it('★ 报道发布日与事实日期不同时，页面必须同时写出（不得只显示一个）', () => {
+    const e = eventOf('FLU', 'SUPERFUNGUS-2019-CANDIDA');
+    const p = e.participants.find((x) => x.security_id === 'SIHUAN-000518')!;
+    const html = renderToStaticMarkup(<ParticipantRow p={p} e={e} />);
+    expect(html).toContain('报道发布于 2019-04-11');
+    expect(html).toContain('事实日期 2019-04-10');
+  });
 });

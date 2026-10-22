@@ -15,7 +15,9 @@
  * ★ `POSTHOC_LEADER_SET` 是**后验**结论（含幸存者偏差），必须单独呈现并标注。
  */
 
-import raw from '@current/historical_market_roles_v0_1.json';
+// ★ v0.30：v0_2 —— 新增 `DERIVED_FROM_MARKET`（盘面连板）、切片 `match_scope` 三态、
+//   身份绑定冲突（ID_CONFLICT_NAME_MISMATCH / registry_name_conflict）
+import raw from '@current/historical_market_roles_v0_2.json';
 
 export type MarketRoleType =
   | 'PIT_MEDIA_NAMED_LEADER'
@@ -24,23 +26,38 @@ export type MarketRoleType =
   | 'POSTHOC_LEADER_SET'
   | 'INSUFFICIENT';
 
-export type ResearchStatus = 'RESEARCHED_PIT' | 'DERIVED_FROM_REPORT' | 'NOT_RESEARCHED';
+export type ResearchStatus =
+  | 'RESEARCHED_PIT'
+  | 'DERIVED_FROM_REPORT'
+  /** ★ v0.30：只有盘面可观察信息（窗口内 ≥2 次涨停且至少一次连板），**无媒体定性** */
+  | 'DERIVED_FROM_MARKET'
+  | 'NOT_RESEARCHED';
 
 export interface RoleEvidence {
   source_type?: string | null;
   source_text?: string | null;
   url?: string | null;
+  /** ★ 报道发布日（媒体角色）或首次连板日（盘面角色）—— 与 `fact_date` 严格区分 */
   published_at?: string | null;
+  /** ★ 事实日期（盘面/采访日）—— **不得**当作识别日 */
+  fact_date?: string | null;
+  attribution?: string | null;
   summary?: string | null;
+  /** ★ 盘面角色的涨停日明细（判据可复核） */
+  limit_up_days?: { date: string; pct: number }[] | null;
+  rule?: string | null;
 }
 
 export interface RoleBinding {
   bound_to: string | null;
-  status: 'BOUND' | 'BOUND_BY_NAME' | 'UNBOUND' | 'AMBIGUOUS';
+  /** ★ v0.30：`ID_CONFLICT_NAME_MISMATCH` = ID 相同但名称不一致 → **不绑定**，等人工确认 */
+  status: 'BOUND' | 'BOUND_BY_NAME' | 'UNBOUND' | 'AMBIGUOUS' | 'ID_CONFLICT_NAME_MISMATCH';
   method: string;
   note?: string | null;
   /** ★ 名称绑定没有证明力 → 标 NAME_MATCH_ONLY，需人工确认 */
   review?: string | null;
+  /** ★ v0.30：该 id 在注册表里指向**另一家公司**（如 JINJIANG = 锦江酒店） */
+  registry_name_conflict?: { registry_name: string; registry_ticker?: string | null } | null;
 }
 
 export interface MarketRole {
@@ -61,13 +78,23 @@ export interface MarketRole {
   source_record?: string | null;
 }
 
+export type SliceMatchScope = 'FULL' | 'SUBSET' | 'MISMATCH';
+
 export interface PitSlice {
   date: string;
   members: string[];
   basket_status: 'USABLE' | 'NOT_USABLE';
   documented_members: string[];
   documented_status: string;
+  /** ★★ 三态：FULL 完全一致 / SUBSET 地图只覆盖一部分 / MISMATCH 真不一致 */
+  match_scope: SliceMatchScope;
+  /** ★ 只有 FULL 才为真 —— 不得用子集匹配冒充完全一致 */
   matches_document: boolean;
+  documented_count?: number;
+  bound_count?: number;
+  /** ★ 原始篮子中**不在本地图**的成员（覆盖缺口，不是不一致） */
+  not_in_map?: string[];
+  not_in_map_names?: string[];
   note?: string | null;
 }
 
@@ -143,7 +170,15 @@ export const MARKET_ROLE_MEANING: Record<MarketRoleType, string> = {
 export const RESEARCH_STATUS_LABEL: Record<ResearchStatus, string> = {
   RESEARCHED_PIT: '已做 Point-in-Time 研究',
   DERIVED_FROM_REPORT: '由同期报道推导（未做完整 PIT 切片）',
+  DERIVED_FROM_MARKET: '仅由盘面连板推导（无媒体报道）',
   NOT_RESEARCHED: '尚未研究',
+};
+
+/** ★ 切片匹配范围文案（FULL / SUBSET / MISMATCH） */
+export const SLICE_SCOPE_LABEL: Record<SliceMatchScope, string> = {
+  FULL: '与原始研究完全一致',
+  SUBSET: '地图只覆盖其中一部分',
+  MISMATCH: '与原始研究不一致',
 };
 
 /** 该事件是否有可展示的角色证据 */

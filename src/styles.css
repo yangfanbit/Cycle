@@ -3531,6 +3531,16 @@ html, body {
 .fem-role-badge.role-posthoc_leader_set     { background: #f4f4f6; color: var(--ink-3); border-style: dashed; }
 .fem-role-date, .fem-role-conf { color: var(--ink-3); font-family: var(--mono); font-size: 10.5px; }
 .fem-role-src { font-size: 10.5px; color: var(--accent); }
+/* ★★ v0.30：无原文链接的报道 —— 必须显式说「无法独立核验」，不能只写「同期报道」 */
+.fem-part-no-url {
+  margin-left: 6px; font-size: 10.5px; color: var(--ink-3);
+  border-bottom: 1px dotted var(--line);
+}
+/* ★★ v0.30：切片覆盖范围（FULL / SUBSET / MISMATCH）与未纳入成员 */
+.fem-slice-scope { margin-left: 6px; font-size: 10.5px; color: var(--ink-3); }
+.fem-slice-scope[data-slice-scope="SUBSET"] { color: var(--preheat-ink); }
+.fem-slice-scope[data-slice-scope="MISMATCH"] { color: #8a4256; font-weight: 600; }
+.fem-slice-gap { display: block; margin-top: 1px; font-size: 10.5px; color: #8a4256; }
 .fem-role-unbound { font-size: 10px; padding: 0 5px; border-radius: 8px; background: #fbeef0; color: #8a4256; }
 .fem-role-review { font-size: 10px; padding: 0 5px; border-radius: 8px; background: #fdf3e3; color: var(--preheat-ink); }
 .fem-part-ev-raw { font-size: 10px; color: var(--ink-3); cursor: help; }

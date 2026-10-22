@@ -106,71 +106,210 @@ REPORT_MARKERS = ("报", "新闻", "证券网", "每经", "财经", "时报", "�
 INDIRECT_CAVEAT = ("偏间接", "未找到其产品", "未找到其", "不同轴", "非直接", "运营侧")
 
 
-def pick_catalyst(event: dict):
-    """取事件里**带 URL 的同期报道**（优先），否则第一条报道型 catalyst。"""
-    cats = event.get("catalysts") or []
-    with_url = [c for c in cats if "http" in (c.get("source") or "")]
-    pool = with_url or cats
-    for c in pool:
-        src = c.get("source") or ""
-        if "报" in src or "新闻" in src or "证券网" in src or "每经" in src:
-            return c
-    return pool[0] if pool else None
+URL_RE = re.compile(r"https?://[^\s（）()]+")
+DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+INHERIT_MARKERS = ("同上", "同上报")
+# ★ 「多股汇总」型描述：能支持「该报道列了多只股票及其涨跌」，但**不能**证明某只股票在其中
+AGGREGATE_RE = re.compile(r"(?:多只|十余只|\d+\s*只)个股|个股[^。；]{0,14}涨停|"
+                          r"板块[^。；]{0,14}(?:大涨|拉升|活跃)|概念股[^。；]{0,10}(?:走强|拉升|爆发)")
 
 
-def classify_source(p: dict, event: dict) -> dict:
-    """★ v0.29：**来源类型**必须单独判定 —— 字段非空 ≠ 有同期报道。
+def parse_catalysts(event: dict) -> list:
+    """把事件 `catalysts` 解析成**事实日期 / 发布日期 / 媒体 / URL** 四件事分开的结构。
 
-    返回 `kind`：
-      · `REPORT_WITH_URL`    —— 参与者 source 指向同期报道，且事件 catalyst 带 URL
-      · `REPORT_NAMED_NO_URL`—— 指向同期报道，但本库未记录 URL
-      · `DB_OR_RESEARCH_ONLY`—— 只有数据库 / 注册表 / 研究轮次说明（**不是**同期报道）
-      · `NOT_RECORDED`       —— 没有任何来源记录（≠ 已检索未找到）
-      · `UNKNOWN_SOURCE`     —— 有文本但无法归类
+    ★★ v0.30 修复的根因：`catalyst.date` 是**事实日期**（采访日 / 盘面日），
+       **不是**报道发布日期。发布日只能从 `source` 文本里读，或从「同上」继承。
+       v0.29 把 catalyst.date 当报道日 → 超级真菌 8 条记录的识别日变成 2019-04-08，
+       而它们依据的报道实际发布于 2019-04-11（**识别日早于报道存在 = 时间泄漏**）。
     """
-    src = (p.get("source") or "").strip()
-    if not src:
-        return {"kind": "NOT_RECORDED", "text": None, "catalyst": None}
-    if any(m in src for m in DB_MARKERS):
-        return {"kind": "DB_OR_RESEARCH_ONLY", "text": src, "catalyst": None}
-    is_inherit = src in ("同上", "同上报") or "同上报" in src or "同上" in src
-    if is_inherit or any(m in src for m in REPORT_MARKERS):
-        cat = pick_catalyst(event)
-        kind = "REPORT_WITH_URL" if (cat and "http" in (cat.get("source") or "")) else "REPORT_NAMED_NO_URL"
-        return {"kind": kind, "text": src, "catalyst": cat}
-    return {"kind": "UNKNOWN_SOURCE", "text": src, "catalyst": None}
+    out, prev_pub, prev_publisher = [], None, None
+    for i, c in enumerate(event.get("catalysts") or []):
+        src = (c.get("source") or "").strip()
+        inherit = any(m in src for m in INHERIT_MARKERS)
+        m = DATE_RE.search(src)
+        if m:
+            pub, pub_src = m.group(1), "SOURCE_TEXT"
+            publisher = re.split(r"[（(]", src[:m.start()])[0].strip(" ·、") or None
+        elif inherit and prev_pub:
+            pub, pub_src, publisher = prev_pub, "INHERITED_FROM_PREVIOUS_CATALYST", prev_publisher
+        else:
+            pub = None
+            pub_src = "INHERIT_WITHOUT_PREVIOUS" if inherit else "MISSING"
+            publisher = re.split(r"[（(]", src)[0].strip(" ·、") or None
+        u = URL_RE.search(src)
+        out.append({
+            "index": i,
+            "fact_date": c.get("date"),
+            "published_at": pub,
+            "published_at_source": pub_src,
+            "publisher": publisher,
+            "url": u.group(0) if u else None,
+            "text": c.get("text"),
+            "raw_source": src,
+        })
+        if pub:
+            prev_pub, prev_publisher = pub, publisher
+    return out
 
 
-def market_participation(p: dict, event: dict) -> dict:
-    """同期报道能证明什么 —— ★ 必须先看**来源类型**，再看报道文本。
+def resolve_participant_sources(participants: list) -> list:
+    """★★ 参与者 source 的「同上 / 同上报」要**在参与者列表内**继承，不能靠第一条 catalyst 猜。
 
-    只有 `REPORT_*` 来源才允许出现 `REPORT_CONFIRMED_*`；
-    `DB_OR_RESEARCH_ONLY` 即使带 `reported_move` 也只能记 `RESEARCH_OR_DB_ONLY`
-    （涨跌幅没有同期报道背书时，不得说成「报道确认」）。
+    返回与 participants 等长的列表：{raw, resolved, inherited}。
+    第一条就写「同上报」→ `resolved=None`（下文再按「事件只有一篇报道」兜底，否则视为无法定位）。
     """
-    backing = classify_source(p, event)
+    out, prev = [], None
+    for p in participants:
+        raw = (p.get("source") or "").strip()
+        if any(m in raw for m in INHERIT_MARKERS):
+            out.append({"raw": raw, "resolved": prev, "inherited": True})
+        else:
+            out.append({"raw": raw, "resolved": raw or None, "inherited": False})
+            if raw:
+                prev = raw
+    return out
+
+
+def match_backing(p: dict, resolved_src, cats: list) -> dict | None:
+    """★★ v0.30：把「这只股票的涨跌事实」与**能支持它**的那篇报道对上。
+
+    禁止的两条捷径（v0.29 的 bug）：
+      · 取第一条报道型 catalyst；
+      · 媒体名相同就当成依据。
+
+    允许的两级关联：
+      1. `NAME_IN_TEXT` —— 报道正文**点名该股**（最强；若来源写了日期，优先该日发布的那篇）。
+      2. `REPORT_LIST_AGGREGATE` —— 报道正文明确是「多股汇总（列出多只个股及其涨跌）」，
+         且能唯一定位到一篇（来源日期 / 媒体名匹配，或事件只有这一篇汇总型报道）。
+         ★ 这一级只支持「该股属于当次被报道的群体」，个股归属仍依赖研究记录的转录。
+      对不上 → `None`（→ `UNVERIFIED_REPORT_ATTRIBUTION`）。
+    """
+    name = p.get("name") or ""
+    claim_date = None
+    if resolved_src:
+        m = DATE_RE.search(resolved_src)
+        claim_date = m.group(1) if m else None
+
+    named = [c for c in cats if name and name in (c.get("text") or "")]
+    if named:
+        if claim_date:
+            on_claim = [c for c in named if c.get("published_at") == claim_date]
+            if on_claim:
+                named = on_claim
+        c = sorted(named, key=lambda x: (x.get("published_at") or "9999-12-31", x["index"]))[0]
+        return {"attribution": "NAME_IN_TEXT", "catalyst": c}
+
+    media = None
+    if resolved_src:
+        media = re.split(r"[（(]", resolved_src)[0].strip(" ·、") or None
+    cands = []
+    for c in cats:
+        if not AGGREGATE_RE.search(c.get("text") or ""):
+            continue
+        if claim_date and c.get("published_at") != claim_date:
+            continue
+        if not claim_date and media:
+            src = c.get("raw_source") or ""
+            if media not in src and c.get("publisher") != media:
+                continue
+        cands.append(c)
+    if len(cands) == 1:
+        return {"attribution": "REPORT_LIST_AGGREGATE", "catalyst": cands[0]}
+    if len(cands) > 1 and claim_date:
+        return {"attribution": "REPORT_LIST_AGGREGATE",
+                "catalyst": sorted(cands, key=lambda x: x["index"])[0]}
+    return None
+
+
+def classify_source(p: dict, resolved_src, cats: list) -> dict:
+    """来源类型 + **可支持该股的报道**。`kind` 只描述来源文本性质，不等于有背书。
+
+    · `REPORT_WITH_URL` / `REPORT_NAMED_NO_URL` —— 来源指向同期报道（是否有 URL 另说）
+    · `DB_OR_RESEARCH_ONLY` —— 只有数据库 / 注册表 / 研究轮次说明（**不是**同期报道）
+    · `NOT_RECORDED` —— 无任何来源记录（≠ 已检索未找到）
+    · `UNKNOWN_SOURCE` —— 有文本但无法归类
+    """
+    src = (resolved_src or "").strip()
+    raw = (p.get("source") or "").strip()
+    if not raw:
+        return {"kind": "NOT_RECORDED", "text": None, "backing": None}
+    if any(m in raw for m in DB_MARKERS):
+        # ★★ v0.30 决定**不**从「事件催化剂正文点名」升级为报道背书：
+        #   实测这些催化剂多为「库内 events（market）· 来源：东方财富历史行情接口」这类**行情数据源**
+        #   或**无发布日**的转述，且出现过「跌停报道被当成参与证据」（CONS-2016-BAIJIU / 贵州茅台）。
+        #   ⇒ 只有当参与者**自己的来源**指向报道时才算报道背书；催化剂的点名另在角色层处理。
+        return {"kind": "DB_OR_RESEARCH_ONLY", "text": raw, "backing": None}
+    if any(m in raw for m in INHERIT_MARKERS) or any(m in src for m in REPORT_MARKERS):
+        backing = match_backing(p, src or None, cats)
+        if backing:
+            c = backing["catalyst"]
+            kind = "REPORT_WITH_URL" if c.get("url") else "REPORT_NAMED_NO_URL"
+        else:
+            # 来源指向报道，但无法把任何一篇报道与这只股票的涨跌事实对上
+            kind = "REPORT_WITH_URL" if any(c.get("url") for c in cats) else "REPORT_NAMED_NO_URL"
+        return {"kind": kind, "text": src or raw, "backing": backing}
+    return {"kind": "UNKNOWN_SOURCE", "text": src or raw, "backing": None}
+
+
+def market_participation(p: dict, event: dict, cats: list, resolved_src) -> dict:
+    """同期报道能证明什么 —— ★ 三层判定：来源性质 → **报道能否支持该股** → 涨幅文本。
+
+    ★★ v0.30：`reported_move_backed` **不再**只看来源类型是不是 `REPORT_*`；
+      必须存在能支持「这只股票 + 这个涨跌事实」的报道（`match_backing` 非空）。
+      来源指向报道但对不上任何一篇 → `UNVERIFIED_REPORT_ATTRIBUTION`（新状态，诚实留白）。
+    """
+    backing = classify_source(p, resolved_src, cats)
     move = (p.get("reported_move") or "").strip()
-    # ★ 涨跌幅文本是否存在，与「它是否有报道出处」是两件事 —— 必须分开记
-    out = {"source_kind": backing["kind"], "source_text": backing["text"],
-           "reported_move": move or None,
-           "reported_move_backed": bool(move) and backing["kind"].startswith("REPORT_")}
-    if backing.get("catalyst"):
-        c = backing["catalyst"]
-        out["report"] = {"date": c.get("date"), "text": c.get("text"),
-                         "source": c.get("source"), "url": c.get("source") and
-                         (c["source"].split("（")[1].rstrip("）") if "（http" in (c.get("source") or "") else None)}
-    if backing["kind"] in ("REPORT_WITH_URL", "REPORT_NAMED_NO_URL"):
+    bk = backing["backing"]
+    out = {
+        "source_kind": backing["kind"],
+        "source_kind_from": backing.get("kind_from", "PARTICIPANT_SOURCE"),
+        "source_text": backing["text"],
+        "reported_move": move or None,
+        "reported_move_backed": bool(move) and bk is not None,
+        "attribution": bk["attribution"] if bk else None,
+    }
+    if bk:
+        c = bk["catalyst"]
+        out["report"] = {
+            "published_at": c.get("published_at"),
+            "published_at_source": c.get("published_at_source"),
+            "fact_date": c.get("fact_date"),
+            "publisher": c.get("publisher"),
+            "url": c.get("url"),
+            "text": c.get("text"),
+            "attribution": bk["attribution"],
+        }
+        out["identified_date"] = c.get("published_at")
+
+    report_kind = backing["kind"] in ("REPORT_WITH_URL", "REPORT_NAMED_NO_URL")
+    if report_kind and bk is None:
+        st = "UNVERIFIED_REPORT_ATTRIBUTION"
+        basis = ("来源指向同期报道，但**无法把任何一篇报道与这只股票的涨跌事实对上**"
+                 "（报道正文未点名该股，且没有可定位的「多股汇总」报道）"
+                 "—— 不等于当日没涨，只表示这条涨跌**没有可核验的报道出处**")
+    elif report_kind and not out.get("identified_date"):
+        st = "UNVERIFIED_REPORT_ATTRIBUTION"
+        basis = ("报道可对上该股，但**发布日不可确定**（来源未写日期 / 「同上」无前文）"
+                 "—— 不给识别日，避免用事实日期冒充报道日")
+        out["reported_move_backed"] = False
+    elif report_kind:
+        att = ("报道正文点名该股" if bk["attribution"] == "NAME_IN_TEXT"
+               else "该报道为**多股汇总**（个股归属依研究记录转录，未逐只原文核验）")
+        pub = out["identified_date"]
+        fact = out["report"].get("fact_date")
         if move:
             if LIMIT_UP_RE.search(move):
-                st, basis = "REPORT_CONFIRMED_LIMIT_UP", "同期报道明确涨停 / 连板"
+                st, lvl = "REPORT_CONFIRMED_LIMIT_UP", "报道明确涨停 / 连板"
             elif WINDOW_RE.search(move) and GAIN_RE.search(move):
-                st, basis = "REPORT_CONFIRMED_WINDOW_GAIN", "同期报道给出**区间**涨幅（非单日）"
+                st, lvl = "REPORT_CONFIRMED_WINDOW_GAIN", "报道给出**区间**涨幅（非单日）"
             elif GAIN_RE.search(move):
-                st, basis = "REPORT_CONFIRMED_GAIN", "同期报道给出涨幅"
+                st, lvl = "REPORT_CONFIRMED_GAIN", "报道给出涨幅"
             else:
-                st, basis = "REPORT_CONFIRMED_NAMED", "同期报道点名（未给出可解析涨幅）"
+                st, lvl = "REPORT_CONFIRMED_NAMED", "报道点名（未给出可解析涨幅）"
         else:
-            st, basis = "REPORT_CONFIRMED_NAMED", "同期报道点名（未给出涨幅）"
+            st, lvl = "REPORT_CONFIRMED_NAMED", "报道点名（未给出涨幅）"
+        basis = "%s；报道发布于 **%s**（事实日期 %s）；%s" % (lvl, pub, fact or "未记录", att)
     elif backing["kind"] == "DB_OR_RESEARCH_ONLY":
         st = "RESEARCH_OR_DB_ONLY"
         basis = ("只有数据库 / 注册表 / 研究轮次记录，**没有**同期报道背书"
@@ -267,7 +406,8 @@ def registry_role_of(p: dict, object_id, object_kind, roles, rc_secs) -> dict | 
 
 def unknowns_of(p: dict, mp: dict, mr: dict, rr) -> list:
     out = []
-    if mp["status"] in ("NOT_RECORDED", "UNKNOWN", "RESEARCH_OR_DB_ONLY"):
+    if mp["status"] in ("NOT_RECORDED", "UNKNOWN", "RESEARCH_OR_DB_ONLY",
+                        "UNVERIFIED_REPORT_ATTRIBUTION"):
         out.append({"field": "market_participation",
                     "reason": "本库无同期报道背书（来源类型 %s）—— 需补当时报道 / 交易所披露"
                               "才能证明其在当次行情中的表现" % mp["source_kind"]})
@@ -297,8 +437,10 @@ def build(conn) -> dict:
             oid = cf.get("object_id") or cf.get("campaign_id")
             kind = cf.get("object_kind") or ("campaign" if cf.get("campaign_id") else None)
             parts = {}
-            for p in e.get("participants") or []:
-                mp = market_participation(p, e)
+            cats = parse_catalysts(e)
+            resolved = resolve_participant_sources(e.get("participants") or [])
+            for idx, p in enumerate(e.get("participants") or []):
+                mp = market_participation(p, e, cats, resolved[idx]["resolved"])
                 mr = mechanism_relation(p)
                 rr = registry_role_of(p, oid, kind, roles, rc_secs)
                 parts[p["security_id"]] = {
@@ -336,6 +478,17 @@ def build(conn) -> dict:
             "version": "participant_evidence_v1",
             "purpose": "把「同期市场表现 / 业务机制关系 / Research 对象登记角色 / 研究立场 / 无法判定」"
                        "拆成互不冒充的独立维度，并逐条给出依据与出处",
+            "date_semantics": {
+                "event_date": "事件窗口（题材文档 market_performance.window）",
+                "catalyst_date": "★★ catalyst.date = **事实日期**（采访日 / 盘面日），**不是**报道发布日期",
+                "published_at": "★★ 报道发布日期：只能从 catalyst.source 文本解析，或从「同上」继承上一条；无法确定 → null",
+                "identified_date": "★★ PIT 可识别日 = published_at（**不得**用事实日期冒充）；无 published_at → 不给识别日",
+                "rule": "published_at ≤ identified_date，且 identified_date 必须落在事件窗口内才允许 pit_safe",
+            },
+            "attribution": {
+                "NAME_IN_TEXT": "报道正文点名该股（最强）",
+                "REPORT_LIST_AGGREGATE": "报道为多股汇总（个股归属依研究记录转录，未逐只原文核验）",
+            },
             "source_kind": {
                 "REPORT_WITH_URL": "参与者 source 指向同期报道，且事件 catalyst 记录了 URL",
                 "REPORT_NAMED_NO_URL": "指向同期报道，但本库未记录 URL（可追溯性弱一档）",
@@ -348,7 +501,8 @@ def build(conn) -> dict:
                 "REPORT_CONFIRMED_GAIN": "同期报道给出当日涨幅",
                 "REPORT_CONFIRMED_WINDOW_GAIN": "同期报道给出**区间**涨幅（非单日）",
                 "REPORT_CONFIRMED_NAMED": "同期报道点名但未给涨幅",
-                "reported_move_backed": "★ 涨跌幅文本是否**有同期报道出处**（false = 只有库内/研究记录，不得当报道引用）",
+                "reported_move_backed": "★★ 涨跌幅文本是否**有能支持该股的报道**（false = 无可核验出处，不得当报道引用）",
+                "UNVERIFIED_REPORT_ATTRIBUTION": "★★ 来源指向报道，但无法把任何一篇报道与该股的涨跌事实对上 → 不给报道日、不给识别日",
                 "RESEARCH_OR_DB_ONLY": "★ 只有 DB / 注册表 / 研究记录 —— 不得说成「报道确认」",
                 "NOT_RECORDED": "★ 无来源记录 —— 不等于当日没涨、不等于不是参与者",
                 "UNKNOWN": "来源无法归类",
