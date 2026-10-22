@@ -689,6 +689,19 @@ export function EventCardBody({
                         ) : (
                           <span className="fem-role-src muted">来源：{x.evidence.source_type}</span>
                         )}
+                        {/* ★★ v0.31：盘面信号分「截至识别日（支持角色）」与「识别日之后（全窗口事后统计）」两行 */}
+                        {(x.evidence.limit_up_days_as_of || x.evidence.retrospective_limit_up_days) && (
+                          <span className="fem-role-signals"
+                                data-signals-as-of={(x.evidence.limit_up_days_as_of ?? []).length}
+                                data-signals-retro={(x.evidence.retrospective_limit_up_days ?? []).length}>
+                            截至识别日 {(x.evidence.limit_up_days_as_of ?? []).length} 次信号（支持本角色）
+                            {(x.evidence.retrospective_limit_up_days ?? []).length > 0 && (
+                              <> · 另有 {(x.evidence.retrospective_limit_up_days ?? []).length} 次
+                                <strong>识别日之后</strong>的信号（<strong>全窗口事后统计</strong>，
+                                不参与本角色成立判断）</>
+                            )}
+                          </span>
+                        )}
                         <span className="fem-role-note"><RichText text={x.notes ?? ''} /></span>
                       </li>
                     ))}

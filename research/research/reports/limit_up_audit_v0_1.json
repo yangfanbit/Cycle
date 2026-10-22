@@ -1,0 +1,100 @@
+{
+ "artifact": "limit_up_audit",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-22",
+ "generated_by": "research/scripts/audit_market_limit_up_v0_1.py",
+ "supersedes": null,
+ "schema_facts": {
+  "market_daily_columns": [
+   "series_id",
+   "trade_date",
+   "open",
+   "high",
+   "low",
+   "close",
+   "adj_close",
+   "price_type",
+   "volume",
+   "amount",
+   "data_source",
+   "retrieved_at"
+  ],
+  "price_types": [
+   "raw",
+   "adjusted"
+  ],
+  "has_pre_close": false,
+  "pre_close_consequence": "★ 库内**没有** `pre_close`（交易所参考前收）→ 官方「当日涨跌幅」无法直接取到，只能用相邻交易日比值近似。",
+  "securities_columns": [
+   "security_id",
+   "ticker",
+   "name",
+   "exchange"
+  ],
+  "has_st_flag": false,
+  "st_consequence": "★ `securities` 无 ST 标记 → ST 状态**无法从库内判定**。ST 涨跌停为 5%，落在 10%/20% 带之外 ⇒ 天然不被识别（漏报，可接受方向）；qfq 噪声把价格拉到带内时可能误报 → 由双口径核验兜底。"
+ },
+ "adjustment_relation": {
+  "finding": "★★ 该 provider 的前复权与原始价是**仿射**关系：`adj_close ≈ k·raw_close − c`（k/c 只在公司行为日变化）。",
+  "samples": [
+   {
+    "security_id": "MOUTAI",
+    "range": [
+     "2016-06-20",
+     "2016-06-30"
+    ],
+    "k": 1.0,
+    "c": -297.755,
+    "note": "k=1 → 纯加法复权（c=累计分红调整，故早年高分红段出现负价）"
+   },
+   {
+    "security_id": "GIGADEVICE",
+    "range": [
+     "2020-04-28",
+     "2020-05-06"
+    ],
+    "k": 0.510216,
+    "c": -3.367,
+    "note": "k≠1 → 仿射复权；adj_close 比值会偏离原始价环比"
+   }
+  ],
+  "consequence": "★ 因此 `adj_close` 比值**不能**等同于官方涨跌幅：偏移（c）越大，比值偏离越大；茅台 2016 段 c=−297.755 已使 adj_close 变负（`non_positive_adj_close`）。"
+ },
+ "final_rule": {
+  "primary": "非公司行为日取**原始价收盘环比**（= 官方涨跌幅）",
+  "action_day": "|raw 环比| > 21.6%（拆股/送转/大额除权）→ 取复权环比",
+  "cross_check": "同时用复权环比核验：两者都在带内 → `both_series_agree`；仅复权在带内 → `adjusted_ratio_ex_dividend`（当日除息，官方以复权为准）；**仅原始价在带内 → 不确认**",
+  "bands": {
+   "MAIN": "9.8–10.6%",
+   "GEM_before_2020-08-24": "9.8–10.6%",
+   "GEM_after_2020-08-24": "19.5–21.2%",
+   "STAR": "19.5–21.2%"
+  },
+  "why_band": "用「带」而非「≥阈值」：复权噪声会产生 13%/16% 这类非涨停跳变"
+ },
+ "rejected_approach": {
+  "formula": "pre_close_t = raw_{t-1} − (offset_t − offset_{t-1})，offset = adj − raw",
+  "why_rejected": "★ 该公式假设复权是**纯加法**（k=1）。实测存在 k≠1 的序列（兆易创新 k≈0.51）→ 会把 2020-05-06 的真实 +10.0% 算成 +4.86%，从而漏判涨停。已改用双口径规则，此处留证避免重复踩。"
+ },
+ "verdict": {
+  "signal_days_audited": 137,
+  "by_board": {
+   "GEM": 28,
+   "MAIN": 102,
+   "STAR": 7
+  },
+  "basis_agree_with_artifact": 137,
+  "basis_mismatch": 0,
+  "not_a_signal_under_final_rule": 0,
+  "raw_adj_differ_gt_0_5pp": 7,
+  "missing_rows": 0,
+  "mismatch_samples": []
+ },
+ "limits": [
+  "★ 识别结果是「价格区间信号」，不是交易所官方涨停认定；没有 pre_close 字段，除权除息日的官方涨跌幅无法逐日复算。",
+  "★ ST / 退市整理 / 新股上市首日等特殊状态无法从库内判定 → 不检测（漏报方向）。",
+  "★ 板块规则按 ticker 前缀与日期近似；规则生效日（科创板 2019-07-22、创业板 2020-08-24）边界日未逐日核对交易所公告。",
+  "★ 小额除息日（原始价跳变在日涨跌停范围内）无法与普通交易日区分 → 此类日子原始价环比会略低于官方涨跌幅，可能漏报（方向可接受）。",
+  "★ 盘面异动只能证明「当时观察到某种市场行为」，**不能**证明该股是题材核心、当时公认的龙头或题材上涨的驱动者。"
+ ]
+}

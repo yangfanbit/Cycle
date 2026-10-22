@@ -17,7 +17,8 @@
 
 // ★ v0.30：v0_2 —— 新增 `DERIVED_FROM_MARKET`（盘面连板）、切片 `match_scope` 三态、
 //   身份绑定冲突（ID_CONFLICT_NAME_MISMATCH / registry_name_conflict）
-import raw from '@current/historical_market_roles_v0_2.json';
+// ★ v0.31：v0_3 —— PIT 证据时间封口（as_of / retrospective 拆分）
+import raw from '@current/historical_market_roles_v0_3.json';
 
 export type MarketRoleType =
   | 'PIT_MEDIA_NAMED_LEADER'
@@ -33,6 +34,22 @@ export type ResearchStatus =
   | 'DERIVED_FROM_MARKET'
   | 'NOT_RESEARCHED';
 
+/** ★ v0.31：一个盘面信号日（含计算基础） */
+export interface LimitUpSignal {
+  date: string;
+  pct: number;
+  /** 计算基础：both_series_agree / adjusted_ratio_ex_dividend / adjusted_ratio_action_day */
+  basis: string;
+  corroborated: boolean;
+}
+
+export interface WindowSemantics {
+  market_performance_window: [string, string] | null;
+  /** ★ 本产物角色识别日的实际跨度（可能早于行情窗口） */
+  pit_observation_window: [string, string] | null;
+  note?: string | null;
+}
+
 export interface RoleEvidence {
   source_type?: string | null;
   source_text?: string | null;
@@ -43,8 +60,12 @@ export interface RoleEvidence {
   fact_date?: string | null;
   attribution?: string | null;
   summary?: string | null;
-  /** ★ 盘面角色的涨停日明细（判据可复核） */
-  limit_up_days?: { date: string; pct: number }[] | null;
+  /** ★★ v0.31 PIT 封口：截至识别日的信号 —— **支持**角色成立 */
+  evidence_as_of_date?: string | null;
+  limit_up_days_as_of?: LimitUpSignal[] | null;
+  /** ★★ v0.31：识别日**之后**的信号 —— 仅事后观察，不参与成立判断 */
+  retrospective_limit_up_days?: LimitUpSignal[] | null;
+  retrospective_note?: string | null;
   rule?: string | null;
 }
 
@@ -110,6 +131,8 @@ export interface EventRoles {
   theme_id: string;
   object_id: string | null;
   window: [string, string] | null;
+  /** ★ v0.31：三种窗口分开记（行情统计 / PIT 观察） */
+  window_semantics?: WindowSemantics | null;
   research_status: ResearchStatus;
   source_records: string[];
   roles: MarketRole[];

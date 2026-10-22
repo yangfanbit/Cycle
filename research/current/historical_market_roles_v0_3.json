@@ -1,0 +1,3803 @@
+{
+ "artifact": "historical_market_roles",
+ "artifact_version": "0.3",
+ "generated_at": "2026-10-22",
+ "generated_by": "research/scripts/build_historical_market_roles_v0_1.py",
+ "supersedes": "research/current/historical_market_roles_v0_2.json",
+ "historical_market_roles_contract": {
+  "version": "historical_market_roles_v1",
+  "axes_are_separate": [
+   "market_participation（同期报道能证明什么）",
+   "mechanism_relation（业务与题材机制的关系）",
+   "registry_role（Research 对象内部登记）",
+   "study_standing（纳入 / 反例 / 证据不足）",
+   "historical_market_role（本产物：当时可识别的市场角色）",
+   "行情表现（价格结果，**不得**反推角色）"
+  ],
+  "roles": {
+   "PIT_MEDIA_NAMED_LEADER": "同期报道**明确称**其为龙头 / 领涨 / 核心（当前库内 0 条）",
+   "PIT_MEDIA_NAMED_MOVER": "同期报道点名且给出涨停 / 涨幅（**未**称龙头）",
+   "PIT_MARKET_OBSERVED": "只有盘面可观察异动（放量 / 涨停 / 连板），无报道定性",
+   "POSTHOC_LEADER_SET": "行情结束后回看总结出的龙头集合 —— **后验**，不得当作当时可知",
+   "INSUFFICIENT": "有研究但证据不足"
+  },
+  "date_semantics": {
+   "catalyst_date": "★★ catalyst.date 是**事实日期**（采访日 / 盘面日），不是报道发布日",
+   "published_at": "★★ 报道发布日：从 catalyst.source 文本解析或「同上」继承；无法确定 → null",
+   "identified_date": "★★ PIT 可识别日 = published_at（媒体报道）或**首次连板的第二个涨停日**（盘面）",
+   "rule": "published_at ≤ identified_date；identified_date 晚于窗口结束 → pit_safe=false"
+  },
+  "derivation": {
+   "RESEARCHED_PIT": "有正式 PIT 研究记录（CSV + 方法论文档）—— 以研究记录为准，不混入自动盘面角色",
+   "DERIVED_FROM_REPORT": "由参与者证据的**报道背书**派生（要求 reported_move_backed 且 published_at 可定）",
+   "DERIVED_FROM_MARKET": "只有盘面可观察信息（窗口内 ≥2 次涨停且至少一次连板）",
+   "NOT_RESEARCHED": "两者皆无 —— 合法状态，不设角色"
+  },
+  "pit_evidence_closure": {
+   "rule": "★★ PIT 角色的成立判断**只能**使用 `evidence_date <= identified_date` 的证据；识别日之后的价格记录**不得**进入支持性证据集合，也不得参与成立判断。",
+   "fields": {
+    "identified_date": "PIT 可识别日",
+    "evidence_as_of_date": "支持性证据的截止日（= identified_date）",
+    "limit_up_days_as_of": "★ 截至识别日的信号 —— **支持**角色成立",
+    "retrospective_limit_up_days": "★ 识别日之后的信号 —— **仅事后观察**，不参与成立判断"
+   },
+   "pit_safe": "★ 由**支持性证据的时点**决定（全部 ≤ 识别日），不是只检查 identified_date 是否早于事件窗口结束日",
+   "v031_fix": "v0.30 曾把整窗涨停列表混在 evidence.limit_up_days 里并标 pit_safe=true（21 条中 17 条含识别日之后的数据）→ v0.31 拆开并加断言"
+  },
+  "market_observed_rule": {
+   "trigger": "窗口内信号 ≥2 次，且至少一次**相邻交易日**连板",
+   "identified_date": "首次连板的第二个信号日（此时「连板」才可观察）",
+   "limit_band": "主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%",
+   "why_band": "★ 用「带」而非「≥阈值」：qfq 噪声会产生 13%/16% 这类非涨停跳变（实测已排除）",
+   "excluded": "ST（5%）无法从库内判定 → 不检测（宁可漏，不误报）"
+  },
+  "slice_match_scope": {
+   "FULL": "原始研究篮子全部可在地图绑定，且状态一致 → matches_document=true",
+   "SUBSET": "地图只覆盖其中一部分（not_in_map 非空）→ **不是**不一致，但不得说成完全一致",
+   "MISMATCH": "已绑定部分与推导结果不一致（真问题）"
+  },
+  "pit_rules": [
+   "identified_date 只能使用当时已公开的信息日期",
+   "pit_safe 要求 identified_date ≤ 事件窗口结束日，且证据发布时间 ≤ identified_date",
+   "POSTHOC_LEADER_SET 一律 posthoc=true / pit_safe=false",
+   "切片只收 identified_date ≤ 切片日 的成员；成员 <2 或没有媒体识别 → NOT_USABLE",
+   "不得用完整事件结束后的龙头集合证明早期已形成同样的股票池"
+  ],
+  "must_not": [
+   "不得把「报道涨停」写成「龙头」",
+   "不得用事后涨幅反推当时可识别的角色",
+   "不得把 registry_role=leader 当作历史市场角色",
+   "不得用事后集合证明早期 basket",
+   "★★ 不得用 catalyst 的事实日期冒充报道发布日（v0.30 修复：超级真菌 04-08 → 04-11）",
+   "★★ ID 相同但名称冲突 → 不自动绑定（ID_CONFLICT_NAME_MISMATCH）",
+   "★★ 盘面可观察 ≠ 媒体报道，也 ≠ 龙头"
+  ]
+ },
+ "summary": {
+  "events": 33,
+  "by_research_status": {
+   "RESEARCHED_PIT": 1,
+   "DERIVED_FROM_REPORT": 3,
+   "DERIVED_FROM_MARKET": 9,
+   "NOT_RESEARCHED": 20
+  },
+  "roles_by_type": {
+   "PIT_MEDIA_NAMED_MOVER": 32,
+   "PIT_MARKET_OBSERVED": 21
+  },
+  "events_with_pit_slices": 1,
+  "events_with_posthoc_set": 1
+ },
+ "events": {
+  "FLU-2017-AVIAN": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2017-02-01",
+    "2017-03-15"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2017-02-01",
+     "2017-03-15"
+    ],
+    "pit_observation_window": [
+     "2017-02-15",
+     "2017-02-15"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_REPORT",
+   "source_records": [
+    "research/current/participant_evidence_v0_4.json"
+   ],
+   "roles": [
+    {
+     "security_id": "LAYNE-002166",
+     "source_security_id": "LAYNE-002166",
+     "name": "莱茵生物",
+     "binding": {
+      "bound_to": "LAYNE-002166",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "LUKANG-600789",
+     "source_security_id": "LUKANG-600789",
+     "name": "鲁抗医药",
+     "binding": {
+      "bound_to": "LUKANG-600789",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "source_security_id": "HAIWANG-000078",
+     "name": "海王生物",
+     "binding": {
+      "bound_to": "HAIWANG-000078",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "DAAN-002030",
+     "source_security_id": "DAAN-002030",
+     "name": "达安基因",
+     "binding": {
+      "bound_to": "DAAN-002030",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "WOHUA-002107",
+     "source_security_id": "WOHUA-002107",
+     "name": "沃华医药",
+     "binding": {
+      "bound_to": "WOHUA-002107",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "source_security_id": "NEPHARM-000597",
+     "name": "东北制药",
+     "binding": {
+      "bound_to": "NEPHARM-000597",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "source_security_id": "LIANHUAN-600513",
+     "name": "联环药业",
+     "binding": {
+      "bound_to": "LIANHUAN-600513",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "HUALAN-002007",
+     "source_security_id": "HUALAN-002007",
+     "name": "华兰生物",
+     "binding": {
+      "bound_to": "HUALAN-002007",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "TIANKA-002100",
+     "source_security_id": "TIANKA-002100",
+     "name": "天康生物",
+     "binding": {
+      "bound_to": "TIANKA-002100",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "TAILONG-600222",
+     "source_security_id": "TAILONG-600222",
+     "name": "太龙药业",
+     "binding": {
+      "bound_to": "TAILONG-600222",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2017-02-15",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "中国证券网 / 新浪财经",
+      "url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "published_at": "2017-02-15",
+      "fact_date": "2017-02-15",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "「禽流感概念股爆发」—— 报道列出 10 只个股及其当日涨幅（莱茵生物涨停）"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 10,
+    "report_backed_participants": 10,
+    "media_roles": 10,
+    "market_roles": 0,
+    "pit_roles": 10,
+    "pit_roles_bound": 10,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "FLU-2018-SEASONAL": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2017-09-01",
+    "2018-01-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2017-09-01",
+     "2018-01-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "PUBLICHEALTH-2019-WUHAN": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2019-12-16",
+    "2020-01-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2019-12-16",
+     "2020-01-31"
+    ],
+    "pit_observation_window": [
+     "2019-12-31",
+     "2019-12-31"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_REPORT",
+   "source_records": [
+    "research/current/participant_evidence_v0_4.json"
+   ],
+   "roles": [
+    {
+     "security_id": "LUKANG-600789",
+     "source_security_id": "LUKANG-600789",
+     "name": "鲁抗医药",
+     "binding": {
+      "bound_to": "LUKANG-600789",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "证券时报网",
+      "url": "https://www.stcn.com/article/detail/37160.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "证券时报标题：「**抗流感概念股**直线拉升 鲁抗医药、联环药业涨停，莱茵生物涨超 8%」"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "source_security_id": "LIANHUAN-600513",
+     "name": "联环药业",
+     "binding": {
+      "bound_to": "LIANHUAN-600513",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "证券时报网",
+      "url": "https://www.stcn.com/article/detail/37160.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "证券时报标题：「**抗流感概念股**直线拉升 鲁抗医药、联环药业涨停，莱茵生物涨超 8%」"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "LAYNE-002166",
+     "source_security_id": "LAYNE-002166",
+     "name": "莱茵生物",
+     "binding": {
+      "bound_to": "LAYNE-002166",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "证券时报网",
+      "url": "https://www.stcn.com/article/detail/37160.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "证券时报标题：「**抗流感概念股**直线拉升 鲁抗医药、联环药业涨停，莱茵生物涨超 8%」"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "XIANGXUE-300147",
+     "source_security_id": "XIANGXUE-300147",
+     "name": "香雪制药",
+     "binding": {
+      "bound_to": "XIANGXUE-300147",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "每日经济新闻",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "WEIMING-002581",
+     "source_security_id": "WEIMING-002581",
+     "name": "未名医药",
+     "binding": {
+      "bound_to": "WEIMING-002581",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "每日经济新闻",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "source_security_id": "NEPHARM-000597",
+     "name": "东北制药",
+     "binding": {
+      "bound_to": "NEPHARM-000597",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "每日经济新闻",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "source_security_id": "HAIWANG-000078",
+     "name": "海王生物",
+     "binding": {
+      "bound_to": "HAIWANG-000078",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "每日经济新闻",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "YILING-002603",
+     "source_security_id": "YILING-002603",
+     "name": "以岭药业",
+     "binding": {
+      "bound_to": "YILING-002603",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "每日经济新闻",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "SIHUAN-000518",
+     "source_security_id": "SIHUAN-000518",
+     "name": "四环生物",
+     "binding": {
+      "bound_to": "SIHUAN-000518",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "每日经济新闻",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "NANWEI-603880",
+     "source_security_id": "NANWEI-603880",
+     "name": "南卫股份",
+     "binding": {
+      "bound_to": "NANWEI-603880",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-12-31",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（多股汇总，个股归属依研究记录转录）",
+      "source_text": "每日经济新闻",
+      "url": "https://www.nbd.com.cn/articles/2019-12-31/1397396.html",
+      "published_at": "2019-12-31",
+      "fact_date": "2019-12-31",
+      "attribution": "REPORT_LIST_AGGREGATE",
+      "summary": "国家卫健委专家组上午抵达武汉，展开相关检测核实工作；同日医药股午后大涨、多只个股涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 10,
+    "report_backed_participants": 10,
+    "media_roles": 10,
+    "market_roles": 0,
+    "pit_roles": 10,
+    "pit_roles_bound": 10,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "SUPERFUNGUS-2019-CANDIDA": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2019-04-01",
+    "2019-04-30"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2019-04-01",
+     "2019-04-30"
+    ],
+    "pit_observation_window": [
+     "2019-04-11",
+     "2019-04-11"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_REPORT",
+   "source_records": [
+    "research/current/participant_evidence_v0_4.json"
+   ],
+   "roles": [
+    {
+     "security_id": "SIHUAN-000518",
+     "source_security_id": "SIHUAN-000518",
+     "name": "四环生物",
+     "binding": {
+      "bound_to": "SIHUAN-000518",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-10",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "WEIMING-002581",
+     "source_security_id": "WEIMING-002581",
+     "name": "未名医药",
+     "binding": {
+      "bound_to": "WEIMING-002581",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-10",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "LIANHUAN-600513",
+     "source_security_id": "LIANHUAN-600513",
+     "name": "联环药业",
+     "binding": {
+      "bound_to": "LIANHUAN-600513",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-10",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "HAIWANG-000078",
+     "source_security_id": "HAIWANG-000078",
+     "name": "海王生物",
+     "binding": {
+      "bound_to": "HAIWANG-000078",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-10",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "LUKANG-600789",
+     "source_security_id": "LUKANG-600789",
+     "name": "鲁抗医药",
+     "binding": {
+      "bound_to": "LUKANG-600789",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-10",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "FUAN-300194",
+     "source_security_id": "FUAN-300194",
+     "name": "福安药业",
+     "binding": {
+      "bound_to": "FUAN-300194",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-10",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "JIUDIAN-300705",
+     "source_security_id": "JIUDIAN-300705",
+     "name": "九典制药",
+     "binding": {
+      "bound_to": "JIUDIAN-300705",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-10",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "受《纽约时报》报道耳念珠菌在美国多地爆发（587 例确诊、CDC 列为「紧急威胁」）影响，医药板块活跃；四环生物、海王生物、联环药业、福安药业、鲁抗医药、未名医药、九典制药等十余只个股封死涨停"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道明确涨停）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    },
+    {
+     "security_id": "NEPHARM-000597",
+     "source_security_id": "NEPHARM-000597",
+     "name": "东北制药",
+     "binding": {
+      "bound_to": "NEPHARM-000597",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的报道背书直接派生，id 一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2019-04-11",
+     "identification_type": "media_identified",
+     "confidence": "low",
+     "evidence": {
+      "source_type": "同期报道（正文点名该股）",
+      "source_text": "每日经济新闻",
+      "url": null,
+      "published_at": "2019-04-11",
+      "fact_date": "2019-04-11",
+      "attribution": "NAME_IN_TEXT",
+      "summary": "超级真菌概念股持续走强，未名医药、四环生物、联环药业再度涨停；海王生物、鲁抗医药、东北制药均涨逾 5%"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "报道点名并给出涨跌幅（报道给出当日涨幅）；报道**未**称其为龙头，故只记「被报道点名的参与者」；★ 无原文链接 → 尚无法独立核验",
+     "source_record": "research/current/participant_evidence_v0_3.json"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 8,
+    "report_backed_participants": 8,
+    "media_roles": 8,
+    "market_roles": 0,
+    "pit_roles": 8,
+    "pit_roles_bound": 8,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "FLU-2023-H1N1": {
+   "theme_id": "FLU",
+   "object_id": "C-2023-PHARMA-FLU",
+   "window": [
+    "2023-02-20",
+    "2023-04-15"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2023-02-20",
+     "2023-04-15"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "FLU-2024-SEASONAL": {
+   "theme_id": "FLU",
+   "object_id": null,
+   "window": [
+    "2024-09-01",
+    "2025-01-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2024-09-01",
+     "2025-01-31"
+    ],
+    "pit_observation_window": [
+     "2024-10-29",
+     "2024-10-29"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "XIANGXUE-300147",
+     "source_security_id": "XIANGXUE-300147",
+     "name": "香雪制药（ST香雪）",
+     "binding": {
+      "bound_to": "XIANGXUE-300147",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-10-29",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2024-10-29",
+      "evidence_as_of_date": "2024-10-29",
+      "summary": "首次连板 2024-10-28→2024-10-29（19.96% → 20.00%）；截至识别日的信号 3 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2024-10-10",
+        "pct": 19.97,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-10-28",
+        "pct": 19.96,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-10-29",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 3 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 7,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 1,
+    "pit_roles": 1,
+    "pit_roles_bound": 1,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "POWER-2017-SUMMER-COUNTEREXAMPLE": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": null,
+   "window": [
+    "2017-05-01",
+    "2017-07-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2017-05-01",
+     "2017-07-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 6,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "POWER-2022-SUMMER": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": null,
+   "window": [
+    "2022-05-01",
+    "2022-07-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2022-05-01",
+     "2022-07-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 6,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "POWER-2023-SUMMER": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": "C-2023-POWEROP-THERMAL",
+   "window": [
+    "2023-01-03",
+    "2023-10-23"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2023-01-03",
+     "2023-10-23"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "POWER-2024-SUMMER-COUNTEREXAMPLE": {
+   "theme_id": "POWER_SUMMER",
+   "object_id": null,
+   "window": [
+    "2024-05-01",
+    "2024-07-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2024-05-01",
+     "2024-07-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 6,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "MEDIA-2018-GAMELICENSE": {
+   "theme_id": "MEDIA",
+   "object_id": "C-2018-MEDIA-GAMELICENSE",
+   "window": [
+    "2018-12-21",
+    "2019-08-09"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2018-12-21",
+     "2019-08-09"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "MEDIA-2021-METAVERSE": {
+   "theme_id": "MEDIA",
+   "object_id": "C-2021-MEDIA-METAVERSE",
+   "window": [
+    "2021-09-06",
+    "2022-01-28"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2021-09-06",
+     "2022-01-28"
+    ],
+    "pit_observation_window": [
+     "2021-09-08",
+     "2021-09-08"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "ZHONGQINGBAO",
+     "source_security_id": "ZHONGQINGBAO",
+     "name": "中青宝",
+     "binding": {
+      "bound_to": "ZHONGQINGBAO",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2021-09-08",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2021-09-08",
+      "evidence_as_of_date": "2021-09-08",
+      "summary": "首次连板 2021-09-07→2021-09-08（20.00% → 20.02%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2021-09-07",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-09-08",
+        "pct": 20.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2021-09-13",
+        "pct": 19.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-10-22",
+        "pct": 20.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-10-29",
+        "pct": 20.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-11-01",
+        "pct": 19.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-11-04",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2022-01-05",
+        "pct": 20.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 6 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 1,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 1,
+    "pit_roles": 1,
+    "pit_roles_bound": 1,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "ROBOTICS-2023-HUMANOID": {
+   "theme_id": "ROBOTICS",
+   "object_id": "C-2023-HIEQ-HUMANOID",
+   "window": [
+    "2023-05-01",
+    "2023-12-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2023-05-01",
+     "2023-12-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 5,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "AUTO-2019-ADAS": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2019-AD",
+   "window": [
+    "2019-08-15",
+    "2019-09-24"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2019-08-15",
+     "2019-09-24"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "AUTO-2023-NOA": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2023-AD",
+   "window": [
+    "2023-07-03",
+    "2023-07-19"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2023-07-03",
+     "2023-07-19"
+    ],
+    "pit_observation_window": [
+     "2023-07-04",
+     "2023-07-11"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "ZHEJIANGSHISHI",
+     "source_security_id": "ZHEJIANGSHISHI",
+     "name": "浙江世宝",
+     "binding": {
+      "bound_to": "ZHEJIANGSHISHI",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2023-07-04",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2023-07-04",
+      "evidence_as_of_date": "2023-07-04",
+      "summary": "首次连板 2023-07-03→2023-07-04（9.99% → 10.04%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2023-07-03",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-04",
+        "pct": 10.04,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2023-07-05",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-06",
+        "pct": 10.03,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-11",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 3 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "ZTELEVISION",
+     "source_security_id": "ZTELEVISION",
+     "name": "众泰汽车",
+     "binding": {
+      "bound_to": "ZTELEVISION",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2023-07-04",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2023-07-04",
+      "evidence_as_of_date": "2023-07-04",
+      "summary": "首次连板 2023-07-03→2023-07-04（10.16% → 9.96%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2023-07-03",
+        "pct": 10.16,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-04",
+        "pct": 9.96,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2023-07-06",
+        "pct": 10.06,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-11",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-12",
+        "pct": 9.97,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-17",
+        "pct": 10.06,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-19",
+        "pct": 10.1,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 5 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "WANAN",
+     "source_security_id": "WANAN",
+     "name": "万安科技",
+     "binding": {
+      "bound_to": "WANAN",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2023-07-11",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2023-07-11",
+      "evidence_as_of_date": "2023-07-11",
+      "summary": "首次连板 2023-07-10→2023-07-11（10.05% → 9.97%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2023-07-10",
+        "pct": 10.05,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-11",
+        "pct": 9.97,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2023-07-12",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-07-13",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 2 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 3,
+    "pit_roles": 3,
+    "pit_roles_bound": 3,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "AUTO-2023-HUAWEI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "RC-2023-HUAWEI",
+   "window": [
+    "2023-09-20",
+    "2023-10-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2023-09-20",
+     "2023-10-31"
+    ],
+    "pit_observation_window": [
+     "2023-10-26",
+     "2023-10-26"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "JAC",
+     "source_security_id": "JAC",
+     "name": "江淮汽车",
+     "binding": {
+      "bound_to": "JAC",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2023-10-26",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2023-10-26",
+      "evidence_as_of_date": "2023-10-26",
+      "summary": "首次连板 2023-10-25→2023-10-26（9.99% → 10.00%）；截至识别日的信号 3 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2023-10-09",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-10-25",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-10-26",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2023-10-27",
+        "pct": 9.98,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 3 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 1 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "MINGKEJINGJI",
+     "source_security_id": "MINGKEJINGJI",
+     "name": "铭科精技",
+     "binding": {
+      "bound_to": "MINGKEJINGJI",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2023-10-26",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2023-10-26",
+      "evidence_as_of_date": "2023-10-26",
+      "summary": "首次连板 2023-10-25→2023-10-26（10.02% → 9.99%）；截至识别日的信号 5 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2023-09-25",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-10-09",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-10-18",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-10-25",
+        "pct": 10.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2023-10-26",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2023-10-27",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 5 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 1 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 5,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 2,
+    "pit_roles": 2,
+    "pit_roles_bound": 2,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "AUTO-2024-V2X": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2024-V2X",
+   "window": [
+    "2024-06-11",
+    "2024-06-25"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2024-06-11",
+     "2024-06-25"
+    ],
+    "pit_observation_window": [
+     "2024-06-18",
+     "2024-06-18"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "SUOLING",
+     "source_security_id": "SUOLING",
+     "name": "索菱股份",
+     "binding": {
+      "bound_to": "SUOLING",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-06-18",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2024-06-18",
+      "evidence_as_of_date": "2024-06-18",
+      "summary": "首次连板 2024-06-17→2024-06-18（10.05% → 10.02%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2024-06-17",
+        "pct": 10.05,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-06-18",
+        "pct": 10.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2024-06-19",
+        "pct": 9.92,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-06-20",
+        "pct": 9.94,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-06-21",
+        "pct": 10.05,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 3 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "HUAMING",
+     "source_security_id": "HUAMING",
+     "name": "华铭智能",
+     "binding": {
+      "bound_to": "HUAMING",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-06-18",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2024-06-18",
+      "evidence_as_of_date": "2024-06-18",
+      "summary": "首次连板 2024-06-17→2024-06-18（19.97% → 20.04%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2024-06-17",
+        "pct": 19.97,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-06-18",
+        "pct": 20.04,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2024-06-19",
+        "pct": 19.98,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-06-20",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 2 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "JINYI",
+     "source_security_id": "JINYI",
+     "name": "金溢科技",
+     "binding": {
+      "bound_to": "JINYI",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-06-18",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2024-06-18",
+      "evidence_as_of_date": "2024-06-18",
+      "summary": "首次连板 2024-06-17→2024-06-18（10.00% → 10.01%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2024-06-17",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-06-18",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2024-06-19",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 1 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 3,
+    "pit_roles": 3,
+    "pit_roles_bound": 3,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "AUTO-2024-ROBOTAXI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2024-ROBOTAXI",
+   "window": [
+    "2024-07-11",
+    "2024-07-29"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2024-07-11",
+     "2024-07-29"
+    ],
+    "pit_observation_window": [
+     "2024-07-08",
+     "2024-07-12"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "RESEARCHED_PIT",
+   "source_records": [
+    "research/research/c2/point_in_time_leaders.csv",
+    "research/research/c2/2024_robotaxi_point_in_time.md"
+   ],
+   "roles": [
+    {
+     "security_id": "DADONGTRAFFIC",
+     "source_security_id": "DAZHONGTONG",
+     "name": "大众交通",
+     "binding": {
+      "bound_to": "DADONGTRAFFIC",
+      "status": "BOUND_BY_NAME",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "CSV security_id 与注册表不一致，按名称精确相等绑定到本事件参与者；CSV 无 ticker 可交叉核对",
+      "review": "NAME_MATCH_ONLY"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-07-08",
+     "identification_type": "market_breadth",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "7/8放量+6.12%启动、7/9一字板，无人驾驶-网约车叙事早段(公开盘面/7/9媒体归因)",
+      "url": null,
+      "published_at": "2024-07-08",
+      "summary": "识别较早：7/8当日已有可观察异动(低置信主题归因)，7/9一字板获媒体归入无人驾驶"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "识别较早：7/8当日已有可观察异动(低置信主题归因)，7/9一字板获媒体归入无人驾驶",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": "JINJIANGONLINE",
+     "source_security_id": "JINJIANG",
+     "name": "锦江在线",
+     "binding": {
+      "bound_to": "JINJIANGONLINE",
+      "status": "BOUND_BY_NAME",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "CSV security_id 与注册表不一致，按名称精确相等绑定到本事件参与者；CSV 无 ticker 可交叉核对；★ 注册表 `JINJIANG` 实为「锦江酒店」（600754），该 id **指向另一家公司**",
+      "review": "NAME_MATCH_ONLY",
+      "registry_name_conflict": {
+       "registry_name": "锦江酒店",
+       "registry_ticker": "600754"
+      }
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-09",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "7/9无人驾驶概念一字连板（当日市场盘面/媒体复盘报道）",
+      "url": null,
+      "published_at": "2024-07-09",
+      "summary": "与星网宇达同为首批一字连板的无人驾驶/智能网约车标的"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "与星网宇达同为首批一字连板的无人驾驶/智能网约车标的",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": null,
+     "source_security_id": "XINGYUYUDA",
+     "name": "星网宇达",
+     "binding": {
+      "bound_to": null,
+      "status": "UNBOUND",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "本事件参与者中无该名称 → 该角色不在地图覆盖范围内（不强行挂靠）"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-09",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "7/9无人驾驶概念一字连板（当日市场盘面/媒体复盘报道）",
+      "url": null,
+      "published_at": "2024-07-09",
+      "summary": "首批无人驾驶概念一字连板标的"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "首批无人驾驶概念一字连板标的",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": null,
+     "source_security_id": "TIANMAI",
+     "name": "天迈科技",
+     "binding": {
+      "bound_to": null,
+      "status": "UNBOUND",
+      "method": "NAME_EXACT_IN_EVENT_PARTICIPANTS",
+      "note": "本事件参与者中无该名称 → 该角色不在地图覆盖范围内（不强行挂靠）"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-10",
+     "identification_type": "media_identified",
+     "confidence": "high",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "证券时报7/10报道：天迈科技20cm涨停（无人驾驶+车路云共涨）【E-2024-05】",
+      "url": null,
+      "published_at": "2024-07-10",
+      "summary": "7/10有当日Tier2公开报道直接点名其为无人驾驶热点"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "7/10有当日Tier2公开报道直接点名其为无人驾驶热点",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    },
+    {
+     "security_id": "JINLONG",
+     "source_security_id": "JINLONG",
+     "name": "金龙汽车",
+     "binding": {
+      "bound_to": "JINLONG",
+      "status": "BOUND",
+      "method": "SECURITY_ID_AND_NAME_IN_EVENT_PARTICIPANTS",
+      "note": "CSV 的 security_id 与名称同时与本事件参与者一致"
+     },
+     "role": "PIT_MEDIA_NAMED_MOVER",
+     "identified_date": "2024-07-12",
+     "identification_type": "media_identified",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "同期报道（媒体归因）",
+      "source_text": "7/12金龙汽车涨停（无人驾驶客车/萝卜快跑概念公开报道）",
+      "url": null,
+      "published_at": "2024-07-12",
+      "summary": "识别晚于前四只；7/12涨停获公开归因"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "识别晚于前四只；7/12涨停获公开归因",
+     "source_record": "research/research/c2/point_in_time_leaders.csv"
+    }
+   ],
+   "pit_slices": [
+    {
+     "date": "2024-07-08",
+     "members": [
+      "DADONGTRAFFIC"
+     ],
+     "basket_status": "NOT_USABLE",
+     "documented_members": [
+      "DAZHONGTONG"
+     ],
+     "documented_status": "NOT_USABLE",
+     "match_scope": "FULL",
+     "matches_document": true,
+     "documented_count": 1,
+     "bound_count": 1,
+     "not_in_map": [],
+     "not_in_map_names": [],
+     "note": "仅大众交通有 market_breadth 低置信异动，不足以认定已形成题材篮子"
+    },
+    {
+     "date": "2024-07-10",
+     "members": [
+      "DADONGTRAFFIC",
+      "JINJIANGONLINE"
+     ],
+     "basket_status": "USABLE",
+     "documented_members": [
+      "DAZHONGTONG",
+      "JINJIANG",
+      "XINGYUYUDA",
+      "TIANMAI"
+     ],
+     "documented_status": "USABLE",
+     "match_scope": "SUBSET",
+     "matches_document": false,
+     "documented_count": 4,
+     "bound_count": 2,
+     "not_in_map": [
+      "XINGYUYUDA",
+      "TIANMAI"
+     ],
+     "not_in_map_names": [
+      "星网宇达",
+      "天迈科技"
+     ],
+     "note": "4 只；金龙 07-12 才被公开识别"
+    },
+    {
+     "date": "2024-07-15",
+     "members": [
+      "DADONGTRAFFIC",
+      "JINJIANGONLINE",
+      "JINLONG"
+     ],
+     "basket_status": "USABLE",
+     "documented_members": [
+      "DAZHONGTONG",
+      "JINJIANG",
+      "XINGYUYUDA",
+      "TIANMAI",
+      "JINLONG"
+     ],
+     "documented_status": "USABLE",
+     "match_scope": "SUBSET",
+     "matches_document": false,
+     "documented_count": 5,
+     "bound_count": 3,
+     "not_in_map": [
+      "XINGYUYUDA",
+      "TIANMAI"
+     ],
+     "not_in_map_names": [
+      "星网宇达",
+      "天迈科技"
+     ],
+     "note": "5 只；至此与事后集合一致（识别顺序有先后）"
+    }
+   ],
+   "posthoc_leader_set": {
+    "basis": "行情结束后回看总结的核心集合（research/research/c2/2024_robotaxi_point_in_time.md 第 1 节）",
+    "members": [
+     "DADONGTRAFFIC",
+     "JINJIANGONLINE",
+     "XINGYUYUDA",
+     "TIANMAI",
+     "JINLONG"
+    ],
+    "posthoc": true,
+    "pit_safe": false,
+    "survivorship_note": "★ 该集合是**后验**结论：成员按事后表现与叙事回看选出，含幸存者偏差，**不得**用来证明窗口早期已可识别同样的股票池。"
+   },
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 4,
+    "market_roles": 1,
+    "pit_roles": 5,
+    "pit_roles_bound": 3,
+    "pit_roles_unbound": 2,
+    "name_review_required": 2
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）",
+    "原始研究篮子里有 2 只不在本地图参与者中：天迈科技 / 星网宇达"
+   ]
+  },
+  "AUTO-2025-ROBOTAXI": {
+   "theme_id": "AUTO_INTELLIGENCE",
+   "object_id": "C-2025-ROBOTAXI",
+   "window": [
+    "2025-06-22",
+    "2025-06-24"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2025-06-22",
+     "2025-06-24"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 2,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "SEMI-2019-LOCALIZATION": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2019-SEMI-LOCALIZATION",
+   "window": [
+    "2019-05-16",
+    "2020-07-14"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2019-05-16",
+     "2020-07-14"
+    ],
+    "pit_observation_window": [
+     "2019-07-16",
+     "2020-05-06"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "GIGADEVICE",
+     "source_security_id": "GIGADEVICE",
+     "name": "兆易创新",
+     "binding": {
+      "bound_to": "GIGADEVICE",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2020-05-06",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2020-05-06",
+      "evidence_as_of_date": "2020-05-06",
+      "summary": "首次连板 2020-04-30→2020-05-06（10.00% → 10.00%）；截至识别日的信号 8 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2019-09-09",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2019-09-23",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2019-10-30",
+        "pct": 10.22,
+        "basis": "adjusted_ratio_ex_dividend",
+        "corroborated": false
+       },
+       {
+        "date": "2019-12-25",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-02-20",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-04-02",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-04-30",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-05-06",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2020-05-07",
+        "pct": 3.74,
+        "basis": "adjusted_ratio_action_day",
+        "corroborated": false
+       },
+       {
+        "date": "2020-06-05",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-07-06",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 8 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 3 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "MAXSCEND",
+     "source_security_id": "MAXSCEND",
+     "name": "卓胜微",
+     "binding": {
+      "bound_to": "MAXSCEND",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2019-07-16",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2019-07-16",
+      "evidence_as_of_date": "2019-07-16",
+      "summary": "首次连板 2019-07-15→2019-07-16（10.00% → 10.00%）；截至识别日的信号 3 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2019-07-05",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2019-07-15",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2019-07-16",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2019-08-12",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2019-09-27",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2019-11-05",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-02-13",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-02-18",
+        "pct": 9.83,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-04-02",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-04-28",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-04-30",
+        "pct": 9.86,
+        "basis": "adjusted_ratio_ex_dividend",
+        "corroborated": false
+       },
+       {
+        "date": "2020-06-18",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-06-30",
+        "pct": 6.56,
+        "basis": "adjusted_ratio_action_day",
+        "corroborated": false
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 3 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 10 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 8,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 2,
+    "pit_roles": 2,
+    "pit_roles_bound": 2,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "SEMI-2020-CHIPSHORTAGE": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "RC-2022-SEMI-CHIPSHORTAGE",
+   "window": [
+    "2020-12-01",
+    "2021-12-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2020-12-01",
+     "2021-12-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "SEMI-2021-EQUIPMENT": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2020-SEMI-EQUIPMENT",
+   "window": [
+    "2021-04-01",
+    "2021-07-30"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2021-04-01",
+     "2021-07-30"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "SEMI-2022-DOWNTURN": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2022-SEMI-DOWNTURN",
+   "window": [
+    "2022-01-04",
+    "2022-10-12"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2022-01-04",
+     "2022-10-12"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "SEMI-2023-AI-COMPUTE": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2023-AI-COMPUTE-SEMI",
+   "window": [
+    "2023-01-30",
+    "2023-04-10"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2023-01-30",
+     "2023-04-10"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "SEMI-2024-FUND3": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "RC-2024-SEMI-FUND3",
+   "window": [
+    "2024-09-24",
+    "2024-11-29"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2024-09-24",
+     "2024-11-29"
+    ],
+    "pit_observation_window": [
+     "2024-10-08",
+     "2024-10-08"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "SMIC",
+     "source_security_id": "SMIC",
+     "name": "中芯国际",
+     "binding": {
+      "bound_to": "SMIC",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-10-08",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2024-10-08",
+      "evidence_as_of_date": "2024-10-08",
+      "summary": "首次连板 2024-09-30→2024-10-08（20.00% → 20.00%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2024-09-30",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-10-08",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2024-10-18",
+        "pct": 19.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 1 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "AMEC",
+     "source_security_id": "AMEC",
+     "name": "中微公司",
+     "binding": {
+      "bound_to": "AMEC",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-10-08",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2024-10-08",
+      "evidence_as_of_date": "2024-10-08",
+      "summary": "首次连板 2024-09-30→2024-10-08（19.80% → 20.00%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2024-09-30",
+        "pct": 19.8,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-10-08",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "HYGON",
+     "source_security_id": "HYGON",
+     "name": "海光信息",
+     "binding": {
+      "bound_to": "HYGON",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2024-10-08",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2024-10-08",
+      "evidence_as_of_date": "2024-10-08",
+      "summary": "首次连板 2024-09-30→2024-10-08（19.97% → 20.00%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2024-09-30",
+        "pct": 19.97,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2024-10-08",
+        "pct": 20.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 3,
+    "pit_roles": 3,
+    "pit_roles_bound": 3,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "SEMI-2025-MEMORY": {
+   "theme_id": "SEMICONDUCTOR_AI",
+   "object_id": "C-2024-SEMI-MEMORY",
+   "window": [
+    "2025-07-01",
+    "2025-10-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2025-07-01",
+     "2025-10-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "CONS-2016-BAIJIU": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2016-CONS-BAIJIU-UPGRADE",
+   "window": [
+    "2016-06-01",
+    "2017-12-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2016-06-01",
+     "2017-12-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 3,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "CONS-2019-BAIJIU-CORE": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2019-CONS-BAIJIU-CORE",
+   "window": [
+    "2019-03-01",
+    "2020-12-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2019-03-01",
+     "2020-12-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 5,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "CONS-2020-DUTYFREE": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2020-CONS-DUTYFREE",
+   "window": [
+    "2020-06-01",
+    "2021-02-18"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2020-06-01",
+     "2021-02-18"
+    ],
+    "pit_observation_window": [
+     "2020-07-06",
+     "2020-07-06"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "CTGDF",
+     "source_security_id": "CTGDF",
+     "name": "中国中免",
+     "binding": {
+      "bound_to": "CTGDF",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2020-07-06",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2020-07-06",
+      "evidence_as_of_date": "2020-07-06",
+      "summary": "首次连板 2020-07-03→2020-07-06（10.00% → 10.00%）；截至识别日的信号 3 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2020-06-30",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-07-03",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-07-06",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2020-07-17",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-07-23",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 3 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 2 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 1,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 1,
+    "pit_roles": 1,
+    "pit_roles_bound": 1,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "CONS-2022-SERVICE-REBOUND": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2022-CONS-SERVICE-REBOUND",
+   "window": [
+    "2022-12-07",
+    "2023-01-31"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2022-12-07",
+     "2023-01-31"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "CONS-2024-TRADE-IN": {
+   "theme_id": "CONSUMER_SEASON",
+   "object_id": "C-2024-CONS-TRADE-IN",
+   "window": [
+    "2024-08-24",
+    "2024-10-08"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2024-08-24",
+     "2024-10-08"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  },
+  "RES-2020-RAREEARTH": {
+   "theme_id": "RESOURCE_METAL",
+   "object_id": "C-2020-RES-RAREEARTH",
+   "window": [
+    "2020-05-01",
+    "2021-10-01"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2020-05-01",
+     "2021-10-01"
+    ],
+    "pit_observation_window": [
+     "2021-01-21",
+     "2021-07-12"
+    ],
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "DERIVED_FROM_MARKET",
+   "source_records": [
+    "research/database/market_data.db（market_daily.adjusted）"
+   ],
+   "roles": [
+    {
+     "security_id": "NPRARE",
+     "source_security_id": "NPRARE",
+     "name": "北方稀土",
+     "binding": {
+      "bound_to": "NPRARE",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2021-07-12",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2021-07-12",
+      "evidence_as_of_date": "2021-07-12",
+      "summary": "首次连板 2021-07-09→2021-07-12（10.00% → 10.00%）；截至识别日的信号 5 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2021-02-22",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-03-01",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-05",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-09",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-12",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2021-07-15",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-21",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-29",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-30",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-08-31",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 5 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 5 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "CNRAREEARTH",
+     "source_security_id": "CNRAREEARTH",
+     "name": "中国稀土",
+     "binding": {
+      "bound_to": "CNRAREEARTH",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2021-01-21",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2021-01-21",
+      "evidence_as_of_date": "2021-01-21",
+      "summary": "首次连板 2021-01-20→2021-01-21（10.01% → 9.98%）；截至识别日的信号 5 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2020-05-18",
+        "pct": 9.98,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-07-08",
+        "pct": 10.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2020-07-20",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-01-20",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-01-21",
+        "pct": 9.98,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2021-01-26",
+        "pct": 10.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-03-01",
+        "pct": 9.83,
+        "basis": "adjusted_ratio_ex_dividend",
+        "corroborated": false
+       },
+       {
+        "date": "2021-03-03",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-06-22",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-06",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-09",
+        "pct": 9.82,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-15",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-29",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-30",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-08-11",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-08-31",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-09-24",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 5 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 12 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "GUANGSHENG",
+     "source_security_id": "GUANGSHENG",
+     "name": "广晟有色",
+     "binding": {
+      "bound_to": "GUANGSHENG",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2021-01-21",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2021-01-21",
+      "evidence_as_of_date": "2021-01-21",
+      "summary": "首次连板 2021-01-20→2021-01-21（10.01% → 9.99%）；截至识别日的信号 4 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2020-07-08",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-01-18",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-01-20",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-01-21",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2021-03-01",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-03-03",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-03-30",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-09",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-15",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-08-25",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-09-09",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-09-10",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-09-13",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-09-14",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 4 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 10 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    },
+    {
+     "security_id": "SHENGHE",
+     "source_security_id": "SHENGHE",
+     "name": "盛和资源",
+     "binding": {
+      "bound_to": "SHENGHE",
+      "status": "BOUND",
+      "method": "FROM_EVENT_PARTICIPANTS",
+      "note": "角色由该事件参与者的行情序列直接计算，id 一致"
+     },
+     "role": "PIT_MARKET_OBSERVED",
+     "identified_date": "2021-02-03",
+     "identification_type": "market_observed",
+     "confidence": "medium",
+     "evidence": {
+      "source_type": "当日盘面可观察信息（无媒体定性）",
+      "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
+      "url": null,
+      "published_at": "2021-02-03",
+      "evidence_as_of_date": "2021-02-03",
+      "summary": "首次连板 2021-02-02→2021-02-03（9.97% → 9.99%）；截至识别日的信号 2 次",
+      "limit_up_days_as_of": [
+       {
+        "date": "2021-02-02",
+        "pct": 9.97,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-02-03",
+        "pct": 9.99,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_limit_up_days": [
+       {
+        "date": "2021-02-09",
+        "pct": 10.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-02-10",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-02-18",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-03-30",
+        "pct": 9.97,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-06-03",
+        "pct": 10.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-07",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-09",
+        "pct": 10.0,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-07-15",
+        "pct": 10.01,
+        "basis": "both_series_agree",
+        "corroborated": true
+       },
+       {
+        "date": "2021-08-04",
+        "pct": 10.02,
+        "basis": "both_series_agree",
+        "corroborated": true
+       }
+      ],
+      "retrospective_note": "★ 以下为**识别日之后**才发生的信号，属事后观察，**不**参与本角色的成立判断，也不得用来证明当时已可识别",
+      "rule": "信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；两者都落在板块涨停带内才记 `both_series_agree`，仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；ST 无法从库内判定 → 不检测",
+      "audit": "research/research/reports/limit_up_audit_v0_1.json"
+     },
+     "pit_safe": true,
+     "posthoc": false,
+     "notes": "★ 盘面可观察：截至识别日已有 2 次涨停信号、至少一次连板 → 当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头；★ 另有 9 次识别日之后的信号，仅为事后统计",
+     "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）"
+    }
+   ],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 4,
+    "pit_roles": 4,
+    "pit_roles_bound": 4,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "★ 没有任何同期材料**明确称**某股为龙头 → 不设「龙头」角色（只记被点名参与者 / 盘面异动）"
+   ]
+  },
+  "RES-2024-GOLD": {
+   "theme_id": "RESOURCE_METAL",
+   "object_id": "C-2024-RES-GOLD-CB",
+   "window": [
+    "2024-02-01",
+    "2025-12-26"
+   ],
+   "window_semantics": {
+    "market_performance_window": [
+     "2024-02-01",
+     "2025-12-26"
+    ],
+    "pit_observation_window": null,
+    "note": "market_performance_window = 行情统计窗口；pit_observation_window = 本产物角色识别日的实际跨度。★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi 的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"
+   },
+   "research_status": "NOT_RESEARCHED",
+   "source_records": [],
+   "roles": [],
+   "pit_slices": [],
+   "posthoc_leader_set": null,
+   "coverage": {
+    "participants": 4,
+    "report_backed_participants": 0,
+    "media_roles": 0,
+    "market_roles": 0,
+    "pit_roles": 0,
+    "pit_roles_bound": 0,
+    "pit_roles_unbound": 0,
+    "name_review_required": 0
+   },
+   "gaps": [
+    "该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），或窗口内至少一次**连板**的盘面数据"
+   ]
+  }
+ }
+}

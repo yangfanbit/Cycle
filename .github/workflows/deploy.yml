@@ -162,6 +162,17 @@ jobs:
       #   `--check` 重算角色并与产物比对；不变量测试覆盖「事后集合不得 pit_safe」
       #   「识别日不得晚于窗口末仍标 pit_safe」「报道称龙头必须有原文措辞」。
       # ----------------------------------------------------------------------
+      # ----------------------------------------------------------------------
+      # ★★ v0.31：盘面涨停识别方法的**可验证性审计**（raw/adjusted 双口径 + 除权日处理）
+      #   产物 limit_up_audit_v0_1.json 是角色层「计算基础 / 限制 / 置信度」的依据。
+      # ----------------------------------------------------------------------
+      - name: Market limit-up method audit (--check)
+        run: |
+          set -euo pipefail
+          echo "::group::audit_market_limit_up"
+          python research/scripts/audit_market_limit_up_v0_1.py --check
+          echo "::endgroup::"
+
       - name: Historical market roles (--check + PIT invariants)
         run: |
           set -euo pipefail

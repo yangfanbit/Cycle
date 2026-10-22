@@ -18,7 +18,8 @@
  */
 
 // ★ v0.30：v0_3 —— 报道**发布日**与**事实日期**分开；新增 `UNVERIFIED_REPORT_ATTRIBUTION`
-import raw from '@current/participant_evidence_v0_3.json';
+// ★ v0.31：v0_4 —— 报道事实**逐条**核验（股票 + 交易日期 + 涨跌）
+import raw from '@current/participant_evidence_v0_4.json';
 
 export type MarketParticipationStatus =
   | 'REPORT_CONFIRMED_LIMIT_UP'
@@ -56,12 +57,33 @@ export type RegistryVerification =
 
 export type StudyStanding = 'INCLUDED' | 'COUNTER_EXAMPLE' | 'INSUFFICIENT' | 'UNKNOWN';
 
+/** ★ v0.31：一条可核验的「交易日期 + 涨跌事实」 */
+export interface MoveFact {
+  /** 交易日期（YYYY-MM-DD；无日期 → null，由 catalyst 事实日期补） */
+  date: string | null;
+  kind: 'limit_up' | 'gain' | 'named';
+  text: string;
+  source_hint?: string | null;
+  /** 该条事实是否有能支持它的报道 */
+  backed: boolean;
+  /** 未背书原因（no_report_on_that_date / no_named_report） */
+  reason?: string | null;
+  published_at?: string | null;
+  fact_date?: string | null;
+  attribution?: 'NAME_IN_TEXT' | 'REPORT_LIST_AGGREGATE' | null;
+  catalyst_index?: number | null;
+  /** ★ 多股汇总候选不唯一 → 取了最早发布，需人工复核 */
+  ambiguous_report_choice?: boolean;
+}
+
 export interface MarketParticipation {
   status: MarketParticipationStatus;
   /** ★ 来源类型：`DB_OR_RESEARCH_ONLY` 时**不得**说「报道点名」 */
   source_kind: SourceKind;
   source_text?: string | null;
   reported_move?: string | null;
+  /** ★★ v0.31：逐条事实（同一段里混了不同日期的事实时，逐条判真假） */
+  move_facts?: MoveFact[];
   basis: string;
   /** ★ v0.30：报道背书来自哪里（参与者自己的来源 / 事件催化剂） */
   source_kind_from?: 'PARTICIPANT_SOURCE' | 'EVENT_CATALYST';

@@ -26,9 +26,11 @@ import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
+sys.path.insert(0, os.path.join(REPO, "research"))
+from scripts import build_participant_evidence_v0_1 as btmp  # noqa: E402
 CURRENT = os.path.join(REPO, "research", "current")
 DB = os.path.join(REPO, "research", "database", "cycle_research.db")
-ARTIFACT = os.path.join(CURRENT, "participant_evidence_v0_3.json")
+ARTIFACT = os.path.join(CURRENT, "participant_evidence_v0_4.json")
 INDEX = os.path.join(CURRENT, "historical_event_maps_index.json")
 LIMIT_UP_RE = re.compile(r"涨停|(?:\d+\s*天\s*\d+\s*板)|(?:\d+\s*连板)")
 
@@ -284,6 +286,100 @@ class ParticipantEvidenceTest(unittest.TestCase):
                                      "%s/%s 未核验归属却标 backed" % (eid, sid))
                     self.assertIsNone(mp.get("identified_date"),
                                       "%s/%s 未核验归属却给了识别日" % (eid, sid))
+
+    # ---------------------------------------------------------------- v0.31 逐事实核验
+
+    def _cats(self, *specs):
+        """构造 catalyst 列表（specs: (index, fact_date, published_at, text, source)）"""
+        out = []
+        for i, (idx, fd, pub, text, src) in enumerate(specs):
+            out.append({"index": idx, "fact_date": fd, "published_at": pub,
+                        "published_at_source": "SOURCE_TEXT" if pub else "MISSING",
+                        "publisher": (src or "").split("（")[0] or None,
+                        "url": None, "text": text, "raw_source": src})
+        return out
+
+    def test_multi_day_move_verified_fact_by_fact(self):
+        """★★ 同一段里混了不同日期的事实时，必须**逐条**核验（超级真菌案例）。"""
+        cats = self._cats(
+            (0, "2019-04-10", "2019-04-11",
+             "受《纽约时报》报道影响，医药板块活跃；四环生物、海王生物等十余只个股封死涨停",
+             "每日经济新闻 2019-04-11"),
+            (1, "2019-04-11", "2019-04-11",
+             "超级真菌概念股持续走强，四环生物再度涨停；东北制药涨逾 5%",
+             "同上"),
+        )
+        p = {"name": "四环生物", "reported_move": "04-10 涨停 · 04-11 再度涨停"}
+        vf = btmp.verify_move_facts(p, cats, ["2019-04-01", "2019-04-30"], "每日经济新闻 2019-04-11")
+        self.assertEqual(len(vf["facts"]), 2)
+        self.assertTrue(all(f["backed"] for f in vf["facts"]), vf["facts"])
+        self.assertEqual(vf["earliest_published_at"], "2019-04-11")
+        self.assertEqual(vf["facts"][0]["fact_date"], "2019-04-10")
+        self.assertEqual(vf["facts"][1]["fact_date"], "2019-04-11")
+
+    def test_fact_without_matching_report_is_not_backed(self):
+        """★★ 指定日期找不到对应报道 → 该条不成立，**不得**回退到其他日期的报道。"""
+        cats = self._cats(
+            (0, "2019-04-10", "2019-04-11", "四环生物封死涨停", "每日经济新闻 2019-04-11"),
+        )
+        p = {"name": "四环生物", "reported_move": "04-10 涨停 · 04-12 涨停"}
+        vf = btmp.verify_move_facts(p, cats, ["2019-04-01", "2019-04-30"], "每日经济新闻 2019-04-11")
+        self.assertTrue(vf["facts"][0]["backed"])
+        self.assertFalse(vf["facts"][1]["backed"])
+        self.assertEqual(vf["facts"][1]["reason"], "no_report_on_that_date")
+        self.assertFalse(vf["backed"], "有一条无出处就不算已背书")
+
+    def test_same_day_reports_matched_by_content(self):
+        """★★ 多篇报道同日发布 → 必须按**正文内容**匹配，不能按数组顺序取第一条。"""
+        cats = self._cats(
+            (0, "2019-12-31", "2019-12-31", "医药股午后大涨，多只个股涨停", "每日经济新闻 2019-12-31"),
+            (1, "2019-12-31", "2019-12-31", "抗流感概念股直线拉升 鲁抗医药、联环药业涨停",
+             "证券时报网 2019-12-31"),
+        )
+        p = {"name": "鲁抗医药", "reported_move": "涨停"}
+        # 来源指明证券时报 → 必须落到第 2 篇（正文点名），而不是第 1 篇
+        vf = btmp.verify_move_facts(p, cats, ["2019-12-16", "2020-01-31"],
+                                    "证券时报 / 每日经济新闻 2019-12-31")
+        self.assertTrue(vf["facts"][0]["backed"])
+        self.assertEqual(vf["facts"][0]["attribution"], "NAME_IN_TEXT")
+        self.assertEqual(vf["facts"][0]["catalyst_index"], 1)
+
+    def test_report_must_support_the_security(self):
+        """★★ 报道正文没有点名该股、也不是可定位的多股汇总 → 不予背书。"""
+        cats = self._cats(
+            (0, "2019-12-31", "2019-12-31", "抗流感概念股直线拉升 鲁抗医药涨停",
+             "证券时报网 2019-12-31"),
+        )
+        p = {"name": "香雪制药", "reported_move": "涨停"}
+        vf = btmp.verify_move_facts(p, cats, ["2019-12-16", "2020-01-31"], "证券时报 2019-12-31")
+        # ★ 安全属性：**不得**声称正文点名了该股（只能落到多股汇总，且带转录限制）
+        self.assertNotEqual(vf["facts"][0].get("attribution"), "NAME_IN_TEXT")
+        self.assertEqual(vf["facts"][0].get("attribution"), "REPORT_LIST_AGGREGATE")
+
+    def test_aggregate_ambiguity_is_flagged(self):
+        """★ 多股汇总候选不唯一时取最早发布，但必须标 `ambiguous_report_choice`。"""
+        cats = self._cats(
+            (0, "2019-12-30", "2019-12-31", "武汉市部分医疗机构出现不明原因肺炎病人", "央视新闻"),
+            (1, "2019-12-31", "2019-12-31", "医药股午后大涨、多只个股涨停", "每日经济新闻 2019-12-31"),
+            (2, "2019-12-31", "2019-12-31", "抗流感概念股直线拉升 鲁抗医药涨停", "证券时报网 2019-12-31"),
+        )
+        p = {"name": "香雪制药", "reported_move": "涨停"}
+        vf = btmp.verify_move_facts(p, cats, ["2019-12-16", "2020-01-31"], None)
+        # 两篇汇总型报道 → 歧义
+        self.assertTrue(any(f.get("ambiguous_report_choice") for f in vf["facts"]),
+                        "汇总候选歧义未标记")
+
+    def test_superfungus_facts_all_verified(self):
+        """★ 产物里超级真菌 8 条的**每一条**事实都必须有出处。"""
+        ev = self.doc["events"]["SUPERFUNGUS-2019-CANDIDA"]["participants"]
+        for sid, p in ev.items():
+            mp = p["market_participation"]
+            self.assertTrue(mp.get("reported_move_backed"), sid)
+            facts = mp.get("move_facts") or []
+            self.assertTrue(facts, sid)
+            for f in facts:
+                self.assertTrue(f.get("backed"), "%s/%s" % (sid, f))
+                self.assertTrue(f.get("published_at"), "%s/%s 缺发布日" % (sid, f))
 
     def test_report_status_requires_publication_date(self):
         """没有发布日 → 不得出现 `REPORT_CONFIRMED_*`（宁可留白，不用事实日冒充）。"""

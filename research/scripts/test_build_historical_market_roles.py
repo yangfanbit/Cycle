@@ -25,9 +25,9 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 CURRENT = os.path.join(REPO, "research", "current")
-ARTIFACT = os.path.join(CURRENT, "historical_market_roles_v0_2.json")
+ARTIFACT = os.path.join(CURRENT, "historical_market_roles_v0_3.json")
 INDEX = os.path.join(CURRENT, "historical_event_maps_index.json")
-EVIDENCE = os.path.join(CURRENT, "participant_evidence_v0_3.json")
+EVIDENCE = os.path.join(CURRENT, "participant_evidence_v0_4.json")
 
 
 class MarketRolesTest(unittest.TestCase):
@@ -155,37 +155,99 @@ class MarketRolesTest(unittest.TestCase):
 
     def test_market_role_requires_consecutive_limit_up(self):
         """★★ 盘面角色（PIT_MARKET_OBSERVED）必须满足**可复核判据**：
-        窗口内 ≥2 次涨停、至少一次相邻交易日连板，识别日 = 首次连板的第二个涨停日。
+        截至识别日 ≥2 次信号且至少一次相邻交易日连板，识别日 = 首次连板的第二个信号日。
         """
         cal = self._calendar()
         checked = 0
         for eid, ev in self.doc["events"].items():
-            window = ev.get("window")
             for r in ev["roles"]:
                 if r["role"] != "PIT_MARKET_OBSERVED":
                     continue
-                days_ev = (r["evidence"].get("limit_up_days") or [])
+                days_ev = (r["evidence"].get("limit_up_days_as_of") or [])
                 if not days_ev:
-                    # ★ CSV 里的 market_breadth 角色（人工研究结论）没有涨停日明细，
-                    #   只要求它明确标为「盘面观察」而不是媒体归因。
+                    # CSV 里的 market_breadth 角色（人工研究结论）没有信号明细
                     self.assertEqual(r.get("identification_type"), "market_breadth",
-                                     "%s/%s 无涨停日明细却不是 CSV market_breadth" % (eid, r["security_id"]))
+                                     "%s/%s 无信号明细却不是 CSV market_breadth" % (eid, r["security_id"]))
                     self.assertNotIn("同期报道", r["evidence"].get("source_type") or "")
                     continue
                 checked += 1
-                days = [d["date"] for d in (r["evidence"].get("limit_up_days") or [])]
-                self.assertGreaterEqual(len(days), 2, "%s/%s 涨停日不足 2" % (eid, r["security_id"]))
+                days = [d["date"] for d in days_ev]
+                self.assertGreaterEqual(len(days), 2, "%s/%s 截至识别日信号不足 2" % (eid, r["security_id"]))
                 pairs = [(a, b) for a, b in zip(days, days[1:])
                          if cal.get(b, -99) - cal.get(a, -99) == 1]
                 self.assertTrue(pairs, "%s/%s 无连板" % (eid, r["security_id"]))
                 self.assertEqual(r["identified_date"], pairs[0][1],
-                                 "%s/%s 识别日应为首次连板的第二个涨停日" % (eid, r["security_id"]))
-                if window:
-                    self.assertGreaterEqual(r["identified_date"], window[0], eid)
-                    self.assertLessEqual(r["identified_date"], window[1], eid)
-                # ★ 盘面角色不得声称媒体定性
-                self.assertNotIn("媒体归因", r["evidence"].get("source_type") or "")
+                                 "%s/%s 识别日应为首次连板第二个信号日" % (eid, r["security_id"]))
+                self.assertEqual(r["evidence"].get("evidence_as_of_date"), r["identified_date"],
+                                 "%s/%s evidence_as_of_date 必须等于识别日" % (eid, r["security_id"]))
         self.assertGreater(checked, 0, "没有任何盘面角色 → 测试失效")
+
+    def test_pit_safe_evidence_never_after_identified_date(self):
+        """★★★ v0.31 PIT 封口：`pit_safe=true` 的角色，其**支持性证据**不得晚于识别日。
+
+        必须覆盖「识别日之后还有更多行情数据」的真实事件
+        （SEMI-2019-LOCALIZATION / AUTO-2024-V2X / RES-2020-RAREEARTH 等）。
+        """
+        checked = 0
+        for eid, ev in self.doc["events"].items():
+            for r in ev["roles"]:
+                if r["role"] != "PIT_MARKET_OBSERVED" or not r.get("pit_safe"):
+                    continue
+                evd = r.get("evidence") or {}
+                ident = r["identified_date"]
+                for x in (evd.get("limit_up_days_as_of") or []):
+                    self.assertLessEqual(x["date"], ident,
+                                         "%s/%s PIT 证据含识别日之后的信号 %s"
+                                         % (eid, r["security_id"], x["date"]))
+                # 识别日之后的信号必须**只**出现在 retrospective 里，且带事后说明
+                retro = evd.get("retrospective_limit_up_days") or []
+                for x in retro:
+                    self.assertGreater(x["date"], ident,
+                                       "%s/%s retrospective 里混了识别日之前的信号" % (eid, r["security_id"]))
+                if retro:
+                    checked += 1
+                    self.assertIn("事后", evd.get("retrospective_note") or "",
+                                  "%s/%s 缺事后说明" % (eid, r["security_id"]))
+        # ★ 至少 3 个真实事件的识别日之后还有行情数据（否则测试没覆盖到目标场景）
+        self.assertGreaterEqual(checked, 3,
+                                "识别日之后仍有行情数据的角色不足 3 个 → 未覆盖目标场景")
+
+    def test_retrospective_signals_not_in_supporting_set(self):
+        """★ 事后信号不得进入支持性证据集合（两个列表不得重叠）。"""
+        for eid, ev in self.doc["events"].items():
+            for r in ev["roles"]:
+                if r["role"] != "PIT_MARKET_OBSERVED":
+                    continue
+                evd = r.get("evidence") or {}
+                a = {x["date"] for x in (evd.get("limit_up_days_as_of") or [])}
+                b = {x["date"] for x in (evd.get("retrospective_limit_up_days") or [])}
+                self.assertEqual(a & b, set(), "%s/%s 支持性证据与事后观察重叠" % (eid, r["security_id"]))
+
+    def test_signal_basis_is_recorded(self):
+        """★ 每个信号都必须带计算基础（双口径核验结果），不得只给一个百分比。"""
+        for eid, ev in self.doc["events"].items():
+            for r in ev["roles"]:
+                if r["role"] != "PIT_MARKET_OBSERVED":
+                    continue
+                for x in ((r.get("evidence") or {}).get("limit_up_days_as_of") or []):
+                    self.assertIn(x.get("basis"),
+                                  ("both_series_agree", "adjusted_ratio_ex_dividend",
+                                   "adjusted_ratio_action_day"),
+                                  "%s/%s 信号缺计算基础" % (eid, r["security_id"]))
+                    self.assertTrue(x.get("corroborated") in (True, False))
+
+    def test_window_semantics_separates_market_and_pit(self):
+        """★★ 三种窗口必须分开记录；Robotaxi 的 PIT 观察窗口早于行情窗口（不得删）。"""
+        for eid, ev in self.doc["events"].items():
+            ws = ev.get("window_semantics") or {}
+            self.assertIn("market_performance_window", ws, eid)
+            self.assertIn("pit_observation_window", ws, eid)
+        rb = self.doc["events"]["AUTO-2024-ROBOTAXI"]
+        ws = rb["window_semantics"]
+        self.assertEqual(ws["market_performance_window"], ["2024-07-11", "2024-07-29"])
+        # PIT 研究切片从 07-08 开始 → 观察窗口必须早于行情窗口且被保留
+        self.assertEqual(ws["pit_observation_window"][0], "2024-07-08")
+        self.assertLess(ws["pit_observation_window"][0], ws["market_performance_window"][0])
 
     def _calendar(self):
         import sqlite3

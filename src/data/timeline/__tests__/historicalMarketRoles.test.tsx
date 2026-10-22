@@ -88,7 +88,15 @@ describe('历史市场角色 · 数据', () => {
     expect(obs.length).toBeGreaterThan(0);
     for (const r of obs) {
       expect(r.evidence.source_type).not.toContain('同期报道');
-      expect(r.evidence.limit_up_days!.length).toBeGreaterThanOrEqual(2);
+      // ★★ v0.31：支持性证据只含识别日及之前的信号，且带计算基础
+      const asOf = r.evidence.limit_up_days_as_of!;
+      expect(asOf.length).toBeGreaterThanOrEqual(2);
+      for (const x of asOf) {
+        expect(x.date <= r.identified_date, `${r.security_id}/${x.date}`).toBe(true);
+        expect(['both_series_agree', 'adjusted_ratio_ex_dividend',
+                'adjusted_ratio_action_day']).toContain(x.basis);
+      }
+      expect(r.evidence.evidence_as_of_date).toBe(r.identified_date);
       expect(r.confidence).toBe('medium');
     }
   });
@@ -140,6 +148,40 @@ describe('历史市场角色 · 渲染', () => {
     // 原始规模 vs 地图覆盖
     expect(html).toContain('原始研究记录 4 只，地图覆盖 2 只');
     expect(html).toContain('原始研究记录 5 只，地图覆盖 3 只');
+  });
+
+  it('★★★ PIT 封口：支持性证据不得晚于识别日；识别日后的信号只能进事后集合', () => {
+    // AUTO-2024-V2X / SUOLING：识别日 2024-06-18，之后还有 06-19~06-21 的信号
+    const e = eventRoles('AUTO-2024-V2X')!;
+    const r = e.roles.find((x) => x.security_id === 'SUOLING')!;
+    expect(r.role).toBe('PIT_MARKET_OBSERVED');
+    expect(r.identified_date).toBe('2024-06-18');
+    expect(r.evidence.evidence_as_of_date).toBe('2024-06-18');
+    expect(r.evidence.limit_up_days_as_of!.map((x) => x.date)).toEqual(['2024-06-17', '2024-06-18']);
+    expect(r.evidence.retrospective_limit_up_days!.map((x) => x.date))
+      .toEqual(['2024-06-19', '2024-06-20', '2024-06-21']);
+    expect(r.pit_safe).toBe(true);
+    // 两个集合不得重叠
+    const a = new Set(r.evidence.limit_up_days_as_of!.map((x) => x.date));
+    for (const x of r.evidence.retrospective_limit_up_days!) expect(a.has(x.date)).toBe(false);
+  });
+
+  it('★★ 窗口语义：行情窗口与 PIT 观察窗口分开，Robotaxi 观察窗口早于行情窗口', () => {
+    const e = eventRoles('AUTO-2024-ROBOTAXI')!;
+    const ws = e.window_semantics!;
+    expect(ws.market_performance_window).toEqual(['2024-07-11', '2024-07-29']);
+    expect(ws.pit_observation_window![0]).toBe('2024-07-08');
+    expect(ws.pit_observation_window![0] < ws.market_performance_window![0]).toBe(true);
+  });
+
+  it('★★ 页面必须把「识别日之后的信号」标成全窗口事后统计', () => {
+    const e = eventOf('AUTO_INTELLIGENCE', 'AUTO-2024-V2X');
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(html).toContain('data-signals-retro="3"');
+    expect(html).toContain('全窗口事后统计');
+    expect(html).toContain('不参与本角色成立判断');
+    // 支持性证据与事后统计必须分开呈现
+    expect(html).toContain('截至识别日');
   });
 
   it('★ 未绑定角色显式标注「未在地图参与者中」+ 名称匹配待确认', () => {

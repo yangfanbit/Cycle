@@ -62,10 +62,10 @@ from scripts import db  # noqa: E402
 REPO = db.REPO_ROOT
 CURRENT = os.path.join(REPO, "research", "current")
 INDEX_PATH = os.path.join(CURRENT, "historical_event_maps_index.json")
-EVIDENCE_PATH = os.path.join(CURRENT, "participant_evidence_v0_3.json")
+EVIDENCE_PATH = os.path.join(CURRENT, "participant_evidence_v0_4.json")
 PIT_CSV = os.path.join(REPO, "research", "research", "c2", "point_in_time_leaders.csv")
 GENERATED_AT = "2026-10-22"
-EVIDENCE_REL = "research/current/participant_evidence_v0_3.json"
+EVIDENCE_REL = "research/current/participant_evidence_v0_4.json"
 
 # ★ PIT CSV 的 identification_type → 本产物 role
 PIT_TYPE_TO_ROLE = {
@@ -120,9 +120,23 @@ CONTRACT = {
         "DERIVED_FROM_MARKET": "只有盘面可观察信息（窗口内 ≥2 次涨停且至少一次连板）",
         "NOT_RESEARCHED": "两者皆无 —— 合法状态，不设角色",
     },
+    "pit_evidence_closure": {
+        "rule": ("★★ PIT 角色的成立判断**只能**使用 `evidence_date <= identified_date` 的证据；"
+                 "识别日之后的价格记录**不得**进入支持性证据集合，也不得参与成立判断。"),
+        "fields": {
+            "identified_date": "PIT 可识别日",
+            "evidence_as_of_date": "支持性证据的截止日（= identified_date）",
+            "limit_up_days_as_of": "★ 截至识别日的信号 —— **支持**角色成立",
+            "retrospective_limit_up_days": "★ 识别日之后的信号 —— **仅事后观察**，不参与成立判断",
+        },
+        "pit_safe": ("★ 由**支持性证据的时点**决定（全部 ≤ 识别日），"
+                     "不是只检查 identified_date 是否早于事件窗口结束日"),
+        "v031_fix": ("v0.30 曾把整窗涨停列表混在 evidence.limit_up_days 里并标 pit_safe=true"
+                     "（21 条中 17 条含识别日之后的数据）→ v0.31 拆开并加断言"),
+    },
     "market_observed_rule": {
-        "trigger": "窗口内涨停 ≥2 次，且至少一次**相邻交易日**连板",
-        "identified_date": "首次连板的第二个涨停日（此时「连板」才可观察）",
+        "trigger": "窗口内信号 ≥2 次，且至少一次**相邻交易日**连板",
+        "identified_date": "首次连板的第二个信号日（此时「连板」才可观察）",
         "limit_band": "主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%",
         "why_band": "★ 用「带」而非「≥阈值」：qfq 噪声会产生 13%/16% 这类非涨停跳变（实测已排除）",
         "excluded": "ST（5%）无法从库内判定 → 不检测（宁可漏，不误报）",
@@ -346,12 +360,11 @@ def derive_report_roles(evidence_ev, event):
 # ---------------------------------------------------------------- 盘面可观察角色
 
 def limit_band(ticker, date):
-    """A 股涨跌停幅度（返回允许的**涨跌幅区间带**）。
+    """A 股涨跌停幅度区间带（按板块与日期；**用带不用阈值**）。
 
-    ★ 用「带」而不是「≥阈值」：qfq 复权噪声会产生 13% / 16% 这类**非涨停**跳变，
-      用 ≥9.8% 会把它们误判成涨停（v0.30 实测：13.45% / 16.37% 都不是涨停）。
-    ★ 板块规则随日期变化：科创板 20%（2019-07-22 起）；创业板 10% → 20%（2020-08-24 起）；
-      主板 10%。ST（5%）无法从库内判定 → **不检测**（宁可漏，不误报）。
+    ★ 创业板 2020-08-24 前 10%、之后 20%；科创板（688）20%；主板 10%。
+    ★ ST（5%）无法从库内判定（`securities` 无 ST 标记）→ 落在带外，天然不被识别
+      （漏报方向，可接受）；qfq 噪声把价格拉到带内时才可能误报，由双口径核验兜底。
     """
     t = ticker or ""
     if t.startswith("688"):
@@ -361,51 +374,117 @@ def limit_band(ticker, date):
     return (9.8, 10.6)
 
 
-def limit_up_days(conn, sid, ticker, start, end):
-    """窗口内该股的涨停日（按 adjusted 收盘的日变化，落在板块涨跌停带内）。"""
-    rows = conn.execute(
-        "SELECT trade_date, adj_close FROM market_daily "
-        "WHERE series_id=? AND price_type='adjusted' AND trade_date BETWEEN ? AND ? "
-        "ORDER BY trade_date", (sid, start, end)).fetchall()
-    out, prev = [], None
-    for r in rows:
-        c = r["adj_close"]
-        if prev and prev > 0 and c and c > 0:
-            pct = (c / prev - 1.0) * 100.0
-            lo, hi = limit_band(ticker, r["trade_date"])
-            if lo <= pct <= hi:
-                out.append({"date": r["trade_date"], "pct": round(pct, 2)})
-        prev = c
+# ★ 公司行为日判定阈值：原始价单日跳变超出 A 股日涨跌停可能范围 → 拆股 / 送转 / 大额除权
+ACTION_DAY_PCT = 21.6
+
+
+def daily_change(conn, sid, dt, ticker):
+    """单日涨跌幅（**双口径交叉核验**）—— 返回 None 表示无法计算。
+
+    v0.31 审计发现（`research/research/reports/limit_up_audit_v0_1.json`）：
+      · 库内**没有** `pre_close`，官方涨跌幅只能近似；
+      · 该 provider 的前复权是**仿射**变换（`adj_close ≈ k·raw_close − c`，k/c 只在公司行为日变化），
+        所以 `adj_close` 比值会**系统性偏离**官方涨跌幅（偏移越大越明显）；
+      · 原始价收盘环比在**非行为日**等于官方涨跌幅。
+    ⇒ 规则：
+      · 行为日（|raw 环比| > 21.6%）→ 用复权环比（`adjusted_ratio_action_day`）；
+      · 非行为日 → 用原始价环比；同时用复权环比**交叉核验**：
+          · 两者都落在涨停带 → `both_series_agree`（最可信）；
+          · 只有复权在带内、原始价略低 → 当日除息，官方应以复权为准
+            （`adjusted_ratio_ex_dividend`）；
+          · 只有原始价在带内 → **不确认**（复权说没有，可能是复权噪声）；
+          · 都不在带内 → 非信号。
+    """
+    cur = conn.execute(
+        "SELECT a.trade_date td, r.close raw_close, a.adj_close adj_close "
+        "FROM market_daily a JOIN market_daily r "
+        "  ON r.series_id=a.series_id AND r.trade_date=a.trade_date AND r.price_type='raw' "
+        "WHERE a.series_id=? AND a.price_type='adjusted' AND a.trade_date=?",
+        (sid, dt)).fetchone()
+    prv = conn.execute(
+        "SELECT a.trade_date td, r.close raw_close, a.adj_close adj_close "
+        "FROM market_daily a JOIN market_daily r "
+        "  ON r.series_id=a.series_id AND r.trade_date=a.trade_date AND r.price_type='raw' "
+        "WHERE a.series_id=? AND a.price_type='adjusted' AND a.trade_date<? "
+        "ORDER BY a.trade_date DESC LIMIT 1", (sid, dt)).fetchone()
+    if not (cur and prv):
+        return None
+    raw_pct = adj_pct = None
+    if cur["raw_close"] and prv["raw_close"]:
+        raw_pct = (cur["raw_close"] / prv["raw_close"] - 1.0) * 100.0
+    if cur["adj_close"] and prv["adj_close"]:
+        adj_pct = (cur["adj_close"] / prv["adj_close"] - 1.0) * 100.0
+    if raw_pct is None and adj_pct is None:
+        return None
+    lo, hi = limit_band(ticker, dt)
+    if raw_pct is not None and abs(raw_pct) > ACTION_DAY_PCT:
+        if adj_pct is None:
+            return None
+        return {"pct": adj_pct, "basis": "adjusted_ratio_action_day",
+                "raw_pct": round(raw_pct, 3), "adjusted_pct": round(adj_pct, 3),
+                "corroborated": False, "prev_date": prv["td"]}
+    in_raw = raw_pct is not None and lo <= raw_pct <= hi
+    in_adj = adj_pct is not None and lo <= adj_pct <= hi
+    if in_raw and in_adj:
+        return {"pct": raw_pct, "basis": "both_series_agree",
+                "raw_pct": round(raw_pct, 3), "adjusted_pct": round(adj_pct, 3),
+                "corroborated": True, "prev_date": prv["td"]}
+    if in_adj and not in_raw:
+        return {"pct": adj_pct, "basis": "adjusted_ratio_ex_dividend",
+                "raw_pct": round(raw_pct, 3) if raw_pct is not None else None,
+                "adjusted_pct": round(adj_pct, 3),
+                "corroborated": False, "prev_date": prv["td"]}
+    return None
+
+
+def limit_up_signals(conn, sid, ticker, start, end):
+    """窗口内的涨停信号日（双口径核验后的**候选**，不是交易所官方认定）。"""
+    out = []
+    for r in conn.execute(
+            "SELECT trade_date FROM market_daily "
+            "WHERE series_id=? AND price_type='adjusted' AND trade_date BETWEEN ? AND ? "
+            "ORDER BY trade_date", (sid, start, end)).fetchall():
+        chg = daily_change(conn, sid, r["trade_date"], ticker)
+        if chg:
+            out.append({"date": r["trade_date"], "pct": round(chg["pct"], 2),
+                        "basis": chg["basis"], "corroborated": chg["corroborated"]})
     return out
 
 
 def derive_market_roles(conn, event, evidence_ev, cal_index):
-    """从**行情库**识别「当时盘面可观察的市场核心」—— 判据：**连板**（连续交易日涨停 ≥2）。
+    """从**行情库**识别「当时盘面可观察的市场核心」—— 判据：**连板**（相邻交易日信号 ≥2）。
 
-    ★★ 这是 `PIT_MARKET_OBSERVED`，与「报道点名」严格分开：
-      · 不声称任何媒体定性，也不声称是龙头；
-      · 识别日 = **首次连板的第二个涨停日**（此时「连板」才成为可观察事实）；
-      · 只对「窗口内有 ≥2 个涨停日且至少一次相邻交易日连板」的参与者给出；
-      · 已有更强报道角色的参与者**不重复**给盘面角色（媒体报道优先）。
+    ★★ v0.31 PIT 时间封口：
+      · 角色的成立判断**只用** `date <= identified_date` 的信号；
+      · 证据拆成两部分：`limit_up_days_as_of`（截至识别日，**支持**角色）与
+        `retrospective_limit_up_days`（识别日之后，**仅事后观察**，不参与成立判断）；
+      · `evidence_as_of_date` = `identified_date`；
+      · `pit_safe` 由**支持性证据的时点**决定（全部 ≤ 识别日），
+        不是只检查识别日是否早于窗口结束日。
+    ★ 这是「复权/原始价区间信号」，**不是**交易所官方涨停认定，也不等于龙头。
     """
     window = (event.get("market_performance") or {}).get("window")
     if not window:
         return []
-    already = {r["security_id"] for r in
-               (derive_report_roles(evidence_ev, event)) if r["security_id"]}
+    already = {r["security_id"] for r in derive_report_roles(evidence_ev, event)
+               if r["security_id"]}
     out = []
     for p in event.get("participants") or []:
         sid = p["security_id"]
         if sid in already:
             continue
-        days = limit_up_days(conn, sid, p.get("ticker"), window[0], window[1])
-        if len(days) < 2:
+        signals = limit_up_signals(conn, sid, p.get("ticker"), window[0], window[1])
+        if len(signals) < 2:
             continue
-        pairs = [(a, b) for a, b in zip(days, days[1:])
+        pairs = [(a, b) for a, b in zip(signals, signals[1:])
                  if cal_index.get(b["date"], -99) - cal_index.get(a["date"], -99) == 1]
         if not pairs:
             continue
         first_pair = pairs[0]
+        ident = first_pair[1]["date"]
+        # ★★ 只用识别日之前（含）的信号作为**支持性证据**
+        as_of = [x for x in signals if x["date"] <= ident]
+        retro = [x for x in signals if x["date"] > ident]
         out.append({
             "security_id": sid,
             "source_security_id": sid,
@@ -414,26 +493,39 @@ def derive_market_roles(conn, event, evidence_ev, cal_index):
                         "method": "FROM_EVENT_PARTICIPANTS",
                         "note": "角色由该事件参与者的行情序列直接计算，id 一致"},
             "role": "PIT_MARKET_OBSERVED",
-            "identified_date": first_pair[1]["date"],
+            "identified_date": ident,
             "identification_type": "market_observed",
             "confidence": "medium",
             "evidence": {
                 "source_type": "当日盘面可观察信息（无媒体定性）",
-                "source_text": "market_data.db · adjusted 收盘日变化（板块涨跌停带内）",
+                "source_text": "market_data.db · raw/adjusted 收盘日变化（双口径交叉核验）",
                 "url": None,
-                "published_at": first_pair[1]["date"],
-                "summary": ("窗口内涨停 %d 次（%s ~ %s），首次连板 %s→%s"
-                            % (len(days), days[0]["date"], days[-1]["date"],
-                               first_pair[0]["date"], first_pair[1]["date"])),
-                "limit_up_days": days,
-                "rule": ("涨停带按板块与日期判定（主板 9.8–10.6%；创业板 2020-08-24 前 9.8–10.6%、"
-                         "之后 19.5–21.2%；科创板 19.5–21.2%）；ST 不检测"),
+                "published_at": ident,
+                "evidence_as_of_date": ident,
+                "summary": ("首次连板 %s→%s（%.2f%% → %.2f%%）；截至识别日的信号 %d 次"
+                            % (first_pair[0]["date"], first_pair[1]["date"],
+                               first_pair[0]["pct"], first_pair[1]["pct"], len(as_of))),
+                # ★★ PIT 支持性证据（≤ 识别日）
+                "limit_up_days_as_of": as_of,
+                # ★★ 事后观察（> 识别日）—— 不得参与成立判断
+                "retrospective_limit_up_days": retro,
+                "retrospective_note": ("★ 以下为**识别日之后**才发生的信号，属事后观察，"
+                                       "**不**参与本角色的成立判断，也不得用来证明当时已可识别"),
+                "rule": ("信号判据：非公司行为日取原始价收盘环比，行为日取复权环比；"
+                         "两者都落在板块涨停带内才记 `both_series_agree`，"
+                         "仅复权在带内记 `adjusted_ratio_ex_dividend`（当日除息），"
+                         "仅原始价在带内**不确认**。板块带：主板 9.8–10.6%；"
+                         "创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；"
+                         "ST 无法从库内判定 → 不检测"),
+                "audit": "research/research/reports/limit_up_audit_v0_1.json",
             },
-            "pit_safe": True,
+            "pit_safe": bool(all(x["date"] <= ident for x in as_of)),
             "posthoc": False,
-            "notes": ("★ 盘面可观察：窗口内 %d 次涨停、至少一次连板 → 当时「有资金持续参与」是可观察事实；"
-                      "**但没有任何媒体定性**，也不等于龙头" % len(days)),
-            "source_record": "research/database/market_data.db（market_daily.adjusted）",
+            "notes": ("★ 盘面可观察：截至识别日已有 %d 次涨停信号、至少一次连板 → "
+                      "当时「有资金持续参与」是可观察事实；**但没有任何媒体定性**，也不等于龙头"
+                      % len(as_of))
+                     + ("；★ 另有 %d 次识别日之后的信号，仅为事后统计" % len(retro) if retro else ""),
+            "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
         })
     return out
 
@@ -527,11 +619,17 @@ def build(conn=None) -> dict:
                     else:
                         status = "NOT_RESEARCHED"
                 tally[status] += 1
-                # 时间前推校验：识别日不得晚于窗口结束日
+                # ★★ v0.31：pit_safe 由**支持性证据的时点**决定，而不是只看窗口结束日
                 for r in roles:
+                    ev_as_of = (r.get("evidence") or {}).get("evidence_as_of_date")
+                    if ev_as_of is not None:
+                        # 有显式证据截止日 → 必须全部支持性证据 ≤ 识别日
+                        r["pit_safe"] = bool(ev_as_of <= r["identified_date"])
                     if window and r["identified_date"] > window[1]:
                         r["pit_safe"] = False
                         r["notes"] = (r["notes"] or "") + "；★ 识别日晚于事件窗口结束日 → 非 PIT"
+                    if not r.get("pit_safe"):
+                        r["notes"] = (r["notes"] or "") + "；★ 支持性证据时点不满足 PIT 纪律"
                 slices = build_slices(eid, roles, source["slices"]) if source else []
                 posthoc = None
                 if source:
@@ -559,10 +657,20 @@ def build(conn=None) -> dict:
                     gaps.append("原始研究篮子里有 %d 只不在本地图参与者中：%s"
                                 % (len(unbound), " / ".join(sorted(
                                     r.get("name") or r["source_security_id"] for r in unbound))))
+                idents = [r["identified_date"] for r in roles]
                 events[eid] = {
                     "theme_id": entry["theme_id"],
                     "object_id": oid,
                     "window": window,
+                    # ★★ v0.31：三种窗口分开记，不得互相冒充
+                    "window_semantics": {
+                        "market_performance_window": window,
+                        "pit_observation_window": ([min(idents), max(idents)] if idents else None),
+                        "note": ("market_performance_window = 行情统计窗口；"
+                                 "pit_observation_window = 本产物角色识别日的实际跨度。"
+                                 "★ 识别日早于行情窗口起点 ≠ 错误：PIT 研究记录（如 2024 Robotaxi "
+                                 "的 07-08 切片）本就可早于行情窗口，其真实日期与来源另行保留。"),
+                    },
                     "research_status": status,
                     "source_records": ([source["csv"], source["record"]] if source else
                                        ([EVIDENCE_REL] if media_roles else []) +
@@ -643,6 +751,19 @@ def main(argv: list) -> int:
                 if r["role"] == "POSTHOC_LEADER_SET" and r.get("pit_safe"):
                     print("FAIL: %s/%s 事后角色被标为 pit_safe" % (eid, r["security_id"]))
                     return 1
+                # ★★ v0.31 PIT 封口：pit_safe 角色的支持性证据不得晚于识别日
+                if r.get("pit_safe"):
+                    evd = r.get("evidence") or {}
+                    ident = r.get("identified_date")
+                    for x in (evd.get("limit_up_days_as_of") or []):
+                        if x["date"] > ident:
+                            print("FAIL: %s/%s PIT 证据含识别日之后的信号 %s"
+                                  % (eid, r["security_id"], x["date"]))
+                            return 1
+                    if evd.get("evidence_as_of_date") and evd["evidence_as_of_date"] > ident:
+                        print("FAIL: %s/%s evidence_as_of_date 晚于 identified_date"
+                              % (eid, r["security_id"]))
+                        return 1
         print("PASS: 角色产物一致（%d 事件 · %d 条角色 · %s）"
               % (doc["summary"]["events"], sum(by_type.values()), by_type))
         return 0
