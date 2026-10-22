@@ -729,7 +729,7 @@ export function EventCardBody({
                 {' · '}有业务说明但机制未定级 <strong>{c.businessOnly}</strong> 只
                 {' · '}对象登记角色 <strong>{c.registry}</strong> 只（库内可核 <strong>{c.registryVerified}</strong> 只）
                 <span className="fem-evidence-counts-note">
-                  —— 三者是<strong>不同维度</strong>：报道点名 ≠ 机制相关 ≠ 对象登记角色
+                  —— 这几列是<strong>不同维度</strong>：报道点名 ≠ 机制已确认 ≠ 有业务说明 ≠ 对象登记角色
                 </span>
               </p>
             );
