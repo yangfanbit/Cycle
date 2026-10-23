@@ -192,6 +192,78 @@ describe('历史市场角色 · 渲染', () => {
     expect(html).toContain('data-role-review="NAME_MATCH_ONLY"');
   });
 
+  // ───────────────────────────── v0.32：PIT 全路径封口
+
+  it('★★★ 大众交通 7/8 记录：支持性证据只有 7/8，7/9 事实被隔离到事后背景', () => {
+    const e = eventRoles('AUTO-2024-ROBOTAXI')!;
+    const r = e.roles.find((x) => x.source_security_id === 'DAZHONGTONG')!;
+    expect(r.identified_date).toBe('2024-07-08');
+    expect(r.support_level).toBe('EARLY_LOW_CONFIDENCE_OBSERVATION');
+    expect(r.confidence).toBe('low');
+    expect(r.evidence.evidence_as_of_date).toBe('2024-07-08');
+    expect(r.evidence.supporting_evidence!.map((x) => x.date)).toEqual(['2024-07-08']);
+    expect(r.evidence.supporting_evidence![0].text).toContain('6.12');
+    expect(r.evidence.posthoc_background!.map((x) => x.date)).toEqual(['2024-07-09']);
+    // 支持性文字里不得出现 7/9
+    for (const blob of [r.evidence.source_text, r.notes, r.evidence.summary]) {
+      expect(String(blob ?? '')).not.toContain('7/9');
+      expect(String(blob ?? '')).not.toContain('2024-07-09');
+    }
+    // 盘面记录不得伪造发布日
+    expect(r.evidence.published_at ?? null).toBeNull();
+    // 降级必须写明限制
+    expect((r.support_limits ?? []).join(' ')).toContain('不构成');
+  });
+
+  it('★★ 页面：早期低置信观察徽标 + 支持性证据截止日 + 事后背景独立成段', () => {
+    const e = eventOf('AUTO_INTELLIGENCE', 'AUTO-2024-ROBOTAXI');
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(html).toContain('data-support-level="EARLY_LOW_CONFIDENCE_OBSERVATION"');
+    expect(html).toContain('data-support-as-of="2024-07-08"');
+    expect(html).toContain('早期低置信观察');
+    expect(html).toContain('支持性证据截至 2024-07-08');
+    expect(html).toContain('data-posthoc-background="1"');
+    expect(html).toContain('事后背景');
+    expect(html).toContain('不参与');
+    expect(html).toContain('data-support-limits="1"');
+  });
+
+  it('★★ 每条 pit_safe 角色都有 support_level 与 evidence_as_of_date（无类别豁免）', () => {
+    const allowed = ['AUTO_RULE_MET', 'MEDIA_NAMED_SAME_DAY', 'REPORT_BACKED',
+      'EARLY_LOW_CONFIDENCE_OBSERVATION'];
+    let n = 0;
+    for (const eid of ['AUTO-2024-ROBOTAXI', 'AUTO-2023-NOA', 'SUPERFUNGUS-2019-CANDIDA',
+      'SEMI-2019-LOCALIZATION', 'RES-2020-RAREEARTH']) {
+      for (const r of eventRoles(eid)!.roles) {
+        n += 1;
+        expect(allowed, `${eid}/${r.security_id}`).toContain(r.support_level);
+        if (r.pit_safe) {
+          expect(r.evidence.evidence_as_of_date, `${eid}/${r.security_id}`)
+            .toMatch(/^\d{4}-\d{2}-\d{2}$/);
+          expect(r.evidence.supporting_evidence!.length, `${eid}/${r.security_id}`)
+            .toBeGreaterThan(0);
+          for (const x of r.evidence.supporting_evidence!) {
+            expect(x.date <= r.identified_date, `${eid}/${r.security_id} 证据 ${x.date}`).toBe(true);
+          }
+        }
+      }
+    }
+    expect(n).toBeGreaterThan(10);
+  });
+
+  it('★★ 来源路径必须指向本次真实输入（不得残留 v0_3）', () => {
+    const seen = new Set<string>();
+    for (const eid of ['AUTO-2024-ROBOTAXI', 'AUTO-2023-NOA', 'SUPERFUNGUS-2019-CANDIDA',
+      'SEMI-2019-LOCALIZATION']) {
+      for (const r of eventRoles(eid)!.roles) {
+        const rec = String(r.source_record ?? '');
+        seen.add(rec);
+        expect(rec).not.toContain('participant_evidence_v0_3');
+      }
+    }
+    expect([...seen].some((x) => x.includes('participant_evidence_v0_4.json'))).toBe(true);
+  });
+
   it('★ 未研究事件显示「不设角色」+ 缺什么（不展示假角色）', () => {
     const e = eventOf('MEDIA', 'MEDIA-2018-GAMELICENSE');
     const html = renderToStaticMarkup(<EventCardBody e={e} />);

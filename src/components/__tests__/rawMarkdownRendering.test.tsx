@@ -52,8 +52,19 @@ describe('★★ 渲染不变量 · Markdown 星号不得原样显示', () => {
     for (let i = 0; i < 20; i += 1) {
       await act(async () => { await new Promise((r) => setTimeout(r, 100)); });
     }
-    const text = container.textContent ?? '';
-    const m = text.match(RAW_MD);
-    expect(m?.[0] ?? null, `页面上出现了裸 Markdown：${m?.[0] ?? ''}`).toBeNull();
+    // ★ 只看**渲染出来的正文**：`<textarea>` 里是导出原文（Markdown / JSON），
+    //   本来就该保留 `**`，不算渲染缺陷。
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    const offenders: string[] = [];
+    let node: Node | null = walker.nextNode();
+    while (node) {
+      const tag = (node.parentElement?.tagName ?? '').toUpperCase();
+      const text = node.nodeValue ?? '';
+      if (!['TEXTAREA', 'SCRIPT', 'STYLE'].includes(tag) && RAW_MD.test(text)) {
+        offenders.push(`${tag}: ${text.slice(0, 60)}`);
+      }
+      node = walker.nextNode();
+    }
+    expect(offenders, `页面上出现了裸 Markdown：${offenders.slice(0, 3).join(' | ')}`).toEqual([]);
   });
 });

@@ -46,6 +46,7 @@ import {
   MARKET_ROLE_MEANING,
   RESEARCH_STATUS_LABEL,
   SLICE_SCOPE_LABEL,
+  SUPPORT_LEVEL_MEANING,
   eventRoles,
   marketRoleOf,
   roleCounts,
@@ -644,6 +645,9 @@ export function EventCardBody({
                   {r.roles.length > 0 && (
                     <> · 可识别角色 <strong>{c.pit}</strong> 只
                       （报道点名 {c.media} · 盘面异动 {c.observed} · <strong>报道称龙头 {c.leaderNamed}</strong>）
+                      {c.earlyLowConfidence > 0 && (
+                        <> · <strong>早期低置信观察 {c.earlyLowConfidence}</strong>（不满足自动盘面判据）</>
+                      )}
                     </>
                   )}
                   {r.posthoc_leader_set && (
@@ -664,6 +668,9 @@ export function EventCardBody({
                       <li key={x.source_security_id ?? x.security_id}
                           data-role-id={x.security_id ?? x.source_security_id}
                           data-role={x.role} data-identified={x.identified_date}
+                          data-support-level={x.support_level ?? 'UNSPECIFIED'}
+                          data-support-as-of={x.evidence.evidence_as_of_date ?? ''}
+                          data-posthoc-background={(x.evidence.posthoc_background ?? []).length}
                           data-binding={(x as unknown as { binding?: { status?: string } }).binding?.status ?? 'BOUND'}>
                         <span className="fem-role-name">{x.name ?? x.security_id}</span>
                         {!x.security_id && (
@@ -683,6 +690,18 @@ export function EventCardBody({
                         </span>
                         <span className="fem-role-date">识别日 {x.identified_date}</span>
                         <span className="fem-role-conf">置信度 {x.confidence ?? '—'}</span>
+                        {/* ★★ v0.32：支持等级 —— 决定这条角色能说多重的话 */}
+                        {x.support_level === 'EARLY_LOW_CONFIDENCE_OBSERVATION' && (
+                          <span className="fem-role-support is-low" data-support-badge="EARLY_LOW_CONFIDENCE_OBSERVATION"
+                                title={plain(SUPPORT_LEVEL_MEANING.EARLY_LOW_CONFIDENCE_OBSERVATION)}>
+                            早期低置信观察
+                          </span>
+                        )}
+                        {x.evidence.evidence_as_of_date && (
+                          <span className="fem-role-asof" data-support-as-of-label="1">
+                            支持性证据截至 {x.evidence.evidence_as_of_date}
+                          </span>
+                        )}
                         {x.evidence.url ? (
                           <a href={x.evidence.url} target="_blank" rel="noreferrer"
                              className="fem-role-src" data-role-url="1">来源原文</a>
@@ -700,6 +719,21 @@ export function EventCardBody({
                                 <strong>识别日之后</strong>的信号（<strong>全窗口事后统计</strong>，
                                 不参与本角色成立判断）</>
                             )}
+                          </span>
+                        )}
+                        {/* ★★ v0.32：识别日之后的后续事实 —— 独立隔离，明写不参与成立判断 */}
+                        {(x.evidence.posthoc_background ?? []).length > 0 && (
+                          <span className="fem-role-posthoc" data-posthoc-background-list="1">
+                            <strong>事后背景</strong>（识别日之后，<strong>不参与</strong>本角色成立判断）：
+                            {(x.evidence.posthoc_background ?? [])
+                              .map((i) => `${i.date} ${i.text}`).join('；')}
+                          </span>
+                        )}
+                        {(x.support_limits ?? []).length > 0 && (
+                          <span className="fem-role-limits" data-support-limits="1">
+                            {(x.support_limits ?? []).map((t, i) => (
+                              <RichText key={i} text={t} />
+                            ))}
                           </span>
                         )}
                         <span className="fem-role-note"><RichText text={x.notes ?? ''} /></span>

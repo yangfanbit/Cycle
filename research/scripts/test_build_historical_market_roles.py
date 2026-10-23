@@ -25,9 +25,19 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 CURRENT = os.path.join(REPO, "research", "current")
-ARTIFACT = os.path.join(CURRENT, "historical_market_roles_v0_3.json")
 INDEX = os.path.join(CURRENT, "historical_event_maps_index.json")
 EVIDENCE = os.path.join(CURRENT, "participant_evidence_v0_4.json")
+
+
+def _latest(prefix):
+    """★ v0.32：测试对齐**最新**版本产物（避免「产物升版、测试还在测旧版」）。"""
+    import re
+    files = [f for f in os.listdir(CURRENT) if re.match(prefix + r"_v0_(\d+)\.json$", f)]
+    files.sort(key=lambda f: int(re.search(r"v0_(\d+)", f).group(1)))
+    return os.path.join(CURRENT, files[-1])
+
+
+ARTIFACT = _latest("historical_market_roles")
 
 
 class MarketRolesTest(unittest.TestCase):
@@ -165,11 +175,18 @@ class MarketRolesTest(unittest.TestCase):
                     continue
                 days_ev = (r["evidence"].get("limit_up_days_as_of") or [])
                 if not days_ev:
-                    # CSV 里的 market_breadth 角色（人工研究结论）没有信号明细
-                    self.assertEqual(r.get("identification_type"), "market_breadth",
-                                     "%s/%s 无信号明细却不是 CSV market_breadth" % (eid, r["security_id"]))
+                    # ★★ v0.32：人工 PIT 记录**不再豁免** —— 没有信号明细就不许声称
+                    #   「满足自动盘面判据」，必须显式降级为早期低置信观察，且要有支持性证据。
+                    self.assertEqual(r.get("support_level"), "EARLY_LOW_CONFIDENCE_OBSERVATION",
+                                     "%s/%s 无信号明细却没有降级标记" % (eid, r["security_id"]))
+                    self.assertTrue(r["evidence"].get("supporting_evidence"),
+                                    "%s/%s 降级后仍必须有支持性证据" % (eid, r["security_id"]))
+                    self.assertTrue(r.get("support_limits"),
+                                    "%s/%s 降级后必须写明限制" % (eid, r["security_id"]))
                     self.assertNotIn("同期报道", r["evidence"].get("source_type") or "")
                     continue
+                self.assertEqual(r.get("support_level"), "AUTO_RULE_MET",
+                                 "%s/%s 有信号明细却不是 AUTO_RULE_MET" % (eid, r["security_id"]))
                 checked += 1
                 days = [d["date"] for d in days_ev]
                 self.assertGreaterEqual(len(days), 2, "%s/%s 截至识别日信号不足 2" % (eid, r["security_id"]))
@@ -313,6 +330,136 @@ class MarketRolesTest(unittest.TestCase):
                 # ★ 名称绑定必须标注 review（名称比对没有证明力，需人工确认）
                 if b.get("status") == "BOUND_BY_NAME":
                     self.assertEqual(b.get("review"), "NAME_MATCH_ONLY")
+
+    # ───────────────────────────── v0.32：PIT 全路径封口
+
+    def test_dazhongtong_78_support_only(self):
+        """★★★ 已确认的残余时间混入：大众交通识别日 2024-07-08，
+        7/9 的一字板与媒体归因**不得**出现在 7/8 的支持性来源/说明里。
+
+        要求：
+          · 支持性证据只有 2024-07-08 一条（放量 +6.12%）；
+          · 7/9 事实只能出现在 `posthoc_background`（带日期、标事后）；
+          · `source_text` / `notes` / `summary` 都不得出现 7/9；
+          · 不满足自动判据（未涨停/未连板）→ 必须显式降级 + 低置信度；
+          · 识别日仍是 2024-07-08（**不得**为对齐行情窗口而删除或后移）。
+        """
+        ev = self.doc["events"]["AUTO-2024-ROBOTAXI"]
+        r = next(x for x in ev["roles"] if x["source_security_id"] == "DAZHONGTONG")
+        self.assertEqual(r["identified_date"], "2024-07-08")
+        self.assertEqual(r["confidence"], "low")
+        self.assertEqual(r["support_level"], "EARLY_LOW_CONFIDENCE_OBSERVATION")
+        evd = r["evidence"]
+        self.assertEqual(evd["evidence_as_of_date"], "2024-07-08")
+        sup = evd["supporting_evidence"]
+        self.assertEqual([x["date"] for x in sup], ["2024-07-08"])
+        self.assertIn("6.12", sup[0]["text"])
+        # 7/9 只能在后验字段里
+        ph = evd["posthoc_background"]
+        self.assertEqual([x["date"] for x in ph], ["2024-07-09"])
+        self.assertIn("7/9", ph[0]["text"])
+        self.assertIn("事后", evd["posthoc_note"] or "")
+        # 支持性文字里不得出现 7/9（两种写法都查）
+        for fld in ("source_text", "notes", "summary"):
+            blob = str(evd.get(fld) or "")
+            for token in ("7/9", "07-09", "2024-07-09"):
+                self.assertNotIn(token, blob, "%s 泄漏了识别日之后的事实：%s" % (fld, token))
+        self.assertNotIn("7/9", r.get("notes") or "")
+        # 盘面记录不得伪造「发布日」
+        self.assertIsNone(evd.get("published_at"))
+        # 行情窗口与 PIT 观察窗口继续分开，且 07-08 记录被保留
+        ws = ev["window_semantics"]
+        self.assertEqual(ws["pit_observation_window"][0], "2024-07-08")
+        self.assertLess(ws["pit_observation_window"][0], ws["market_performance_window"][0])
+
+    def test_all_pit_safe_roles_meet_contract(self):
+        """★★★ 通用断言：**所有** pit_safe 角色都必须满足 PIT 时点合同（无类别豁免）。"""
+        sys.path.insert(0, os.path.join(REPO, "research"))
+        from scripts import build_historical_market_roles_v0_1 as roles  # noqa: E402
+        errs = roles.validate_pit_contract(self.doc, self._calendar())
+        self.assertEqual(errs, [], "PIT 合同违规：\n" + "\n".join(errs[:10]))
+        # 且每一条 pit_safe 都真的带截止日 + 支持性证据
+        n = 0
+        for eid, ev in self.doc["events"].items():
+            for r in ev["roles"]:
+                if not r.get("pit_safe"):
+                    continue
+                n += 1
+                self.assertRegex(str((r["evidence"] or {}).get("evidence_as_of_date") or ""),
+                                 r"^\d{4}-\d{2}-\d{2}$", "%s/%s 缺 evidence_as_of_date" % (eid, r["security_id"]))
+                self.assertTrue((r["evidence"] or {}).get("supporting_evidence"),
+                                "%s/%s 缺支持性证据" % (eid, r["security_id"]))
+        self.assertEqual(n, self.doc["summary"]["pit_safe_roles"])
+        self.assertGreater(n, 40, "pit_safe 角色太少 → 测试失效")
+
+    def test_negative_control_posthoc_leak_is_caught(self):
+        """★★ 负向对照：把 7/9 事实放回 7/8 的支持性说明 → 校验器必须报错。
+
+        证明这条断言**有判别力**，不是无条件成立。
+        """
+        import copy
+        sys.path.insert(0, os.path.join(REPO, "research"))
+        from scripts import build_historical_market_roles_v0_1 as roles  # noqa: E402
+        bad = copy.deepcopy(self.doc)
+        ev = bad["events"]["AUTO-2024-ROBOTAXI"]
+        r = next(x for x in ev["roles"] if x["source_security_id"] == "DAZHONGTONG")
+        # ① 支持性来源里写回 7/9 一字板与媒体归因（v0.31 的真实缺陷形态）
+        r["evidence"]["source_text"] = "7/8放量+6.12%启动、7/9一字板，无人驾驶-网约车叙事早段(公开盘面/7/9媒体归因)"
+        errs = roles.validate_pit_contract(bad, self._calendar())
+        self.assertTrue(any("source_text" in e and "2024-07-09" in e for e in errs),
+                        "把 7/9 写回支持性来源却没被检出：%s" % errs[:3])
+        # ② 支持性证据集合里塞入 7/9 的事实
+        bad2 = copy.deepcopy(self.doc)
+        r2 = next(x for x in bad2["events"]["AUTO-2024-ROBOTAXI"]["roles"]
+                  if x["source_security_id"] == "DAZHONGTONG")
+        r2["evidence"]["supporting_evidence"].append(
+            {"date": "2024-07-09", "text": "7/9 一字板（媒体归因）", "kind": "SUPPORTING"})
+        errs2 = roles.validate_pit_contract(bad2, self._calendar())
+        self.assertTrue(any("晚于识别日" in e for e in errs2),
+                        "把 7/9 塞进支持性证据却没被检出：%s" % errs2[:3])
+        # ③ 事后字段日期不晚于识别日（假事后）
+        bad3 = copy.deepcopy(self.doc)
+        r3 = next(x for x in bad3["events"]["AUTO-2024-ROBOTAXI"]["roles"]
+                  if x["source_security_id"] == "DAZHONGTONG")
+        r3["evidence"]["posthoc_background"][0]["date"] = "2024-07-08"
+        errs3 = roles.validate_pit_contract(bad3, self._calendar())
+        self.assertTrue(any("事后字段" in e for e in errs3), errs3[:3])
+
+    def test_source_record_matches_actual_input(self):
+        """★★ 来源路径必须与**真实生成输入**一致（v0.31 曾把 28 条指向 v0_3）。"""
+        import re as _re
+        ev_version = str(self.evid.get("artifact_version") or "").replace(".", "_")
+        expected = "research/current/participant_evidence_v%s.json" % ev_version
+        self.assertTrue(os.path.exists(os.path.join(REPO, expected)), expected)
+        seen = set()
+        for eid, ev in self.doc["events"].items():
+            for r in ev["roles"]:
+                rec = r.get("source_record") or ""
+                seen.add(rec)
+                self.assertNotIn("participant_evidence_v0_3", rec,
+                                 "%s/%s 仍指向旧版输入" % (eid, r["security_id"]))
+                # 事件级 source_records 必须包含角色级 source_record（同一来源体系）
+                if rec.startswith("research/current/participant_evidence"):
+                    self.assertIn(rec, ev["source_records"],
+                                  "%s 事件级 source_records 与角色级不一致" % eid)
+        # 所有可核验的文件路径都必须真实存在
+        for rec in seen:
+            path = rec.split("（")[0].strip()
+            if path.startswith("research/") and not path.endswith(".db"):
+                self.assertTrue(os.path.exists(os.path.join(REPO, path)),
+                                "来源文件不存在：%s" % path)
+        self.assertIn(expected, seen, "没有任何角色引用本次真实输入 %s" % expected)
+
+    def test_support_levels_cover_all_roles(self):
+        """★ 每条角色都有 support_level，且取值在合同内。"""
+        allowed = {"AUTO_RULE_MET", "MEDIA_NAMED_SAME_DAY", "REPORT_BACKED",
+                   "EARLY_LOW_CONFIDENCE_OBSERVATION"}
+        n = 0
+        for eid, ev in self.doc["events"].items():
+            for r in ev["roles"]:
+                n += 1
+                self.assertIn(r.get("support_level"), allowed, "%s/%s" % (eid, r["security_id"]))
+        self.assertEqual(sum(self.doc["summary"]["support_levels"].values()), n)
 
     def test_check_passes(self):
         code = subprocess.run(

@@ -41,6 +41,7 @@ import argparse
 import collections
 import json
 import os
+import re
 import sqlite3
 import sys
 
@@ -50,9 +51,29 @@ from scripts import db  # noqa: E402
 REPO = db.REPO_ROOT
 CURRENT = os.path.join(REPO, "research", "current")
 MARKET_DB = os.path.join(REPO, "research", "database", "market_data.db")
-ROLES_PATH = os.path.join(CURRENT, "historical_market_roles_v0_3.json")
-OUT_PATH = os.path.join(REPO, "research", "research", "reports", "limit_up_audit_v0_1.json")
-GENERATED_AT = "2026-10-22"
+OUT_DIR = os.path.join(REPO, "research", "research", "reports")
+GENERATED_AT = "2026-10-23"
+AUDIT_RE = re.compile(r"limit_up_audit_v0_(\d+)\.json$")
+
+
+def latest_roles_path():
+    """★ v0.32：角色产物按版本号取**最新**，不再硬编码 v0_3。"""
+    files = [f for f in os.listdir(CURRENT)
+             if re.match(r"historical_market_roles_v0_(\d+)\.json$", f)]
+    if not files:
+        raise SystemExit("FAIL: 找不到历史市场角色产物")
+    files.sort(key=lambda f: int(re.search(r"v0_(\d+)", f).group(1)))
+    return os.path.join(CURRENT, files[-1])
+
+
+def audit_out_path(version=None):
+    if version is None:
+        files = [f for f in os.listdir(OUT_DIR) if AUDIT_RE.match(f)]
+        if not files:
+            return os.path.join(OUT_DIR, "limit_up_audit_v0_1.json")
+        files.sort(key=lambda f: int(AUDIT_RE.match(f).group(1)))
+        return os.path.join(OUT_DIR, files[-1])
+    return os.path.join(OUT_DIR, "limit_up_audit_v0_%d.json" % version)
 
 # 与角色层同一规则（公司行为日阈值 / 板块带）
 ACTION_DAY_PCT = 21.6
@@ -132,11 +153,76 @@ def classify(raw_pct, adj_pct, lo, hi):
     return None, None
 
 
+# ---------------------------------------------------------------- ST 规则（按板块 × 时期）
+# ★★ v0.32：原文「ST 一律 5% → 天然不被识别」是**错的**，按板块与时期拆开：
+#   · 主板风险警示股票：5%（≤ 2026-07-05）→ 2026-07-06 起放宽至 **10%**；
+#   · 创业板风险警示股票：5%（改革前）→ 2020-08-24 起 **20%**；
+#   · 科创板风险警示股票：**20%**（与普通股一致，无 5% 档）。
+#   ⇒ 只有「主板 2026-07-06 之前」与「创业板 2020-08-24 之前」的 ST 才落在带外（漏报）；
+#     创业板/科创板 ST 与主板新规后的 ST 都**落在现有带内**，不会被漏掉。
+ST_RULES = {
+    "detectable_from_db": False,
+    "why": ("`securities` 只有 security_id / ticker / name / exchange，**没有** ST/*ST 标记 → "
+            "无法逐日判定某只股票在某个交易日是否处于风险警示状态。"),
+    "bands_by_board_and_period": {
+        "MAIN": [
+            {"period": "<= 2026-07-05", "limit_pct": 5,
+             "consequence": "落在 9.8–10.6% 带**之外** → 不被识别（**漏报方向**）"},
+            {"period": ">= 2026-07-06", "limit_pct": 10,
+             "consequence": "与主板普通股同带（9.8–10.6%）→ **不漏报**（规则已放宽）"},
+        ],
+        "GEM": [
+            {"period": "<= 2020-08-23", "limit_pct": 5,
+             "consequence": "落在 9.8–10.6% 带外 → 漏报"},
+            {"period": ">= 2020-08-24", "limit_pct": 20,
+             "consequence": "与创业板普通股同带（19.5–21.2%）→ 不漏报"},
+        ],
+        "STAR": [
+            {"period": "全部", "limit_pct": 20,
+             "consequence": "与科创板普通股同带（19.5–21.2%）→ 不漏报"},
+        ],
+    },
+    "sources": [
+        {"title": "关于创业板风险警示股票和退市整理期股票交易制度安排的通知（深证上〔2020〕620 号）",
+         "url": "https://www.szse.cn/disclosure/notice/general/t20200710_579459.html",
+         "date": "2020-07-10",
+         "quote": ("《特别规定》实施前，创业板风险警示股票 …… 价格涨跌幅限制比例为 5%；"
+                   "《特别规定》正式实施后，创业板风险警示股票涨跌幅限制比例为 20%。")},
+        {"title": "深交所投教：风险警示股票价格涨跌幅限制比例是多少？",
+         "url": "https://www.szse.cn/www/investor/knowledge/stock/deal/t20210127_584469.html",
+         "date": "2021-01-27",
+         "quote": ("深交所对风险警示股票实行价格涨跌幅限制，主板、中小企业板风险警示股票"
+                   "价格涨跌幅限制比例为 5%，创业板风险警示股票价格涨跌幅限制比例为 20%。")},
+        {"title": "A股交易新规 7 月 6 日起施行（证监会上海监管局转载证券日报）",
+         "url": "https://www.csrc.gov.cn/shanghai/c105566/c7643909/content.shtml",
+         "date": "2026-07-06",
+         "quote": ("沪深交易所将主板风险警示股票的涨跌幅限制由 5% 放宽至 10%，"
+                   "创业板和科创板的风险警示股票涨跌幅限制此前已统一为 20%，"
+                   "北交所风险警示股票为 30%，均维持不变。")},
+    ],
+    "impact_on_current_universe": (
+        "本产物涉及的事件行情窗口最晚到 **2025-12-26**（< 2026-07-06）→ "
+        "主板 ST 的 5% 档在本库历史窗口内仍然适用；创业板 2020-08-24 前后已按日期分带处理。"),
+    "not_verified": [
+        "《特别规定》的正式实施日未在该通知原文中给出；本库按首批注册制股票上市日 "
+        "2020-08-24 近似，未逐日核对交易所公告。",
+        "科创板风险警示股票的 20% 未取得交易所原文（本轮只核到证监会转载与投教材料），"
+        "按「与科创板普通股同带」处理。",
+        "退市整理期股票（主板 / 创业板 / 科创板）的涨跌幅与风险警示股票不同，"
+        "本轮未独立核实，且库内无退市整理期标记 → 未纳入检测。",
+        "北交所（8/4 开头）风险警示股票为 30%，本库 `board_of()` 会误判为主板；"
+        "当前事件参与者里**没有**北交所代码（实测前缀仅 600/601/603/000/001/002/003/300/301/688），"
+        "故不影响既有结论，但属已知限制。",
+    ],
+}
+
+
 def audit():
     index = json.load(open(os.path.join(CURRENT, "historical_event_maps_index.json"),
                            encoding="utf-8"))
     tickers = load_tickers(index)
-    roles = json.load(open(ROLES_PATH, encoding="utf-8"))
+    roles_path = latest_roles_path()
+    roles = json.load(open(roles_path, encoding="utf-8"))
     con = sqlite3.connect("file:%s?mode=ro" % MARKET_DB, uri=True)
     con.row_factory = sqlite3.Row
     stats = collections.Counter()
@@ -217,10 +303,13 @@ def audit():
     }
     doc = {
         "artifact": "limit_up_audit",
-        "artifact_version": "0.1",
+        "artifact_version": "0.2",
         "generated_at": GENERATED_AT,
         "generated_by": "research/scripts/audit_market_limit_up_v0_1.py",
-        "supersedes": None,
+        "supersedes": "research/research/reports/limit_up_audit_v0_1.json",
+        # ★ v0.32：审计对象可追溯（读的是哪个版本的角色产物）
+        "audited_roles_artifact": os.path.relpath(roles_path, REPO).replace(os.sep, "/"),
+        "st_rules": ST_RULES,
         "schema_facts": {
             "market_daily_columns": ["series_id", "trade_date", "open", "high", "low", "close",
                                      "adj_close", "price_type", "volume", "amount",
@@ -232,8 +321,11 @@ def audit():
             "securities_columns": ["security_id", "ticker", "name", "exchange"],
             "has_st_flag": False,
             "st_consequence": ("★ `securities` 无 ST 标记 → ST 状态**无法从库内判定**。"
-                               "ST 涨跌停为 5%，落在 10%/20% 带之外 ⇒ 天然不被识别（漏报，可接受方向）；"
-                               "qfq 噪声把价格拉到带内时可能误报 → 由双口径核验兜底。"),
+                               "但「ST 一律 5%、一律漏报」的说法**不成立**（v0.32 按板块与时期更正）："
+                               "主板 ST 5%（≤2026-07-05）/ 10%（≥2026-07-06）、"
+                               "创业板 ST 5%（≤2020-08-23）/ 20%（≥2020-08-24）、科创板 ST 20%。"
+                               "⇒ 只有主板新规前与创业板改革前的 ST 落在带外（漏报）；"
+                               "其余与普通股同带，**不会被漏掉**。详见 `st_rules`。"),
         },
         "adjustment_relation": {
             "finding": ("★★ 该 provider 的前复权与原始价是**仿射**关系："
@@ -263,7 +355,11 @@ def audit():
         "limits": [
             "★ 识别结果是「价格区间信号」，不是交易所官方涨停认定；没有 pre_close 字段，"
             "除权除息日的官方涨跌幅无法逐日复算。",
-            "★ ST / 退市整理 / 新股上市首日等特殊状态无法从库内判定 → 不检测（漏报方向）。",
+            "★ ST 状态无法从库内判定；漏报范围**按板块与时期**不同（见 `st_rules`）—— "
+            "只有主板 2026-07-06 之前、创业板 2020-08-24 之前的 ST 落在带外；"
+            "创业板/科创板 ST 与主板新规后的 ST 与普通股同带。",
+            "★ 退市整理期 / 新股上市首日等特殊状态同样无法从库内判定 → 不检测；"
+            "相关规则本轮未独立核实（见 `st_rules.not_verified`）。",
             "★ 板块规则按 ticker 前缀与日期近似；规则生效日（科创板 2019-07-22、"
             "创业板 2020-08-24）边界日未逐日核对交易所公告。",
             "★ 小额除息日（原始价跳变在日涨跌停范围内）无法与普通交易日区分 → "
@@ -279,6 +375,8 @@ def main(argv):
     ap = argparse.ArgumentParser(description="盘面涨停识别可验证性审计")
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--version", type=int, default=None,
+                    help="写产物时的版本号（--check 恒用最新版本）")
     a = ap.parse_args(argv)
     doc = audit()
     v = doc["verdict"]
@@ -289,10 +387,19 @@ def main(argv):
     print("  raw 与复权差 >0.5pp 的交易日: %d | 缺行: %d"
           % (v["raw_adj_differ_gt_0_5pp"], v["missing_rows"]))
     if a.check:
-        if not os.path.exists(OUT_PATH):
-            print("FAIL: 审计产物不存在：%s" % os.path.relpath(OUT_PATH, REPO))
+        out_path = audit_out_path()
+        if not os.path.exists(out_path):
+            print("FAIL: 审计产物不存在：%s" % os.path.relpath(out_path, REPO))
             return 1
-        cur = json.load(open(OUT_PATH, encoding="utf-8"))
+        cur = json.load(open(out_path, encoding="utf-8"))
+        # ★ v0.32：审计必须对齐**当前最新角色产物**，否则「审的是旧角色」
+        if cur.get("audited_roles_artifact") != doc["audited_roles_artifact"]:
+            print("FAIL: 审计产物审计的角色版本不是最新：%s vs %s"
+                  % (cur.get("audited_roles_artifact"), doc["audited_roles_artifact"]))
+            return 1
+        if cur.get("st_rules") != doc["st_rules"]:
+            print("FAIL: 审计产物的 ST 规则说明与脚本不一致（规则改了就升版重写）")
+            return 1
         if cur.get("verdict") != doc["verdict"]:
             print("FAIL: 审计产物与重新推导不一致")
             return 1
@@ -303,13 +410,17 @@ def main(argv):
               % v["signal_days_audited"])
         return 0
     if a.write:
-        os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
-        if os.path.exists(OUT_PATH):
-            print("FAIL: 目标已存在，拒绝覆盖：%s" % os.path.relpath(OUT_PATH, REPO))
+        if a.version is None:
+            print("FAIL: --write 必须显式给 --version N（产物只增不改）")
             return 1
-        with open(OUT_PATH, "w", encoding="utf-8", newline="\n") as fh:
+        out_path = audit_out_path(a.version)
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        if os.path.exists(out_path):
+            print("FAIL: 目标已存在，拒绝覆盖：%s" % os.path.relpath(out_path, REPO))
+            return 1
+        with open(out_path, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
-        print("已生成 %s" % os.path.relpath(OUT_PATH, REPO))
+        print("已生成 %s" % os.path.relpath(out_path, REPO))
     return 0
 
 

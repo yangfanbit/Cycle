@@ -164,7 +164,9 @@ jobs:
       # ----------------------------------------------------------------------
       # ----------------------------------------------------------------------
       # ★★ v0.31：盘面涨停识别方法的**可验证性审计**（raw/adjusted 双口径 + 除权日处理）
-      #   产物 limit_up_audit_v0_1.json 是角色层「计算基础 / 限制 / 置信度」的依据。
+      #   产物 limit_up_audit_v0_2.json 是角色层「计算基础 / 限制 / 置信度」的依据。
+      #   ★ v0.32：`--check` 同时校验「审的是最新角色产物」与「ST 规则说明与脚本一致」，
+      #     并由 test_audit_market_limit_up.py 锁板块 × 时期的 ST 涨跌幅规则。
       # ----------------------------------------------------------------------
       - name: Market limit-up method audit (--check)
         run: |
@@ -172,7 +174,12 @@ jobs:
           echo "::group::audit_market_limit_up"
           python research/scripts/audit_market_limit_up_v0_1.py --check
           echo "::endgroup::"
+          echo "::group::ST rule invariants"
+          python research/scripts/test_audit_market_limit_up.py
+          echo "::endgroup::"
 
+      # ★★ v0.32：PIT **全路径**封口 —— legacy CSV 的 market_breadth 记录不再豁免；
+      #   `--check` 跑统一 PIT 合同（截止日 / 逐条证据日期 / 事后字段 / 泄漏检查）。
       - name: Historical market roles (--check + PIT invariants)
         run: |
           set -euo pipefail

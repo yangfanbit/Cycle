@@ -18,7 +18,9 @@
 // ★ v0.30：v0_2 —— 新增 `DERIVED_FROM_MARKET`（盘面连板）、切片 `match_scope` 三态、
 //   身份绑定冲突（ID_CONFLICT_NAME_MISMATCH / registry_name_conflict）
 // ★ v0.31：v0_3 —— PIT 证据时间封口（as_of / retrospective 拆分）
-import raw from '@current/historical_market_roles_v0_3.json';
+// ★ v0.32：v0_4 —— PIT **全路径**封口：legacy CSV 也走同一时点合同
+//   （support_level / supporting_evidence / posthoc_background / evidence_as_of_date）
+import raw from '@current/historical_market_roles_v0_4.json';
 
 export type MarketRoleType =
   | 'PIT_MEDIA_NAMED_LEADER'
@@ -50,6 +52,25 @@ export interface WindowSemantics {
   note?: string | null;
 }
 
+/** ★★ v0.32：角色**支持等级** —— 决定这条角色能说什么、不能说什么 */
+export type RoleSupportLevel =
+  /** 自动盘面判据满足（≥2 次信号且至少一次相邻交易日连板） */
+  | 'AUTO_RULE_MET'
+  /** 同期报道当日点名（CSV 人工 PIT 记录） */
+  | 'MEDIA_NAMED_SAME_DAY'
+  /** 由参与者证据的报道背书派生（发布日 = 识别日） */
+  | 'REPORT_BACKED'
+  /** ★ 早期低置信观察：当日有盘面/研究记录，但不满足自动判据（未涨停 / 未连板） */
+  | 'EARLY_LOW_CONFIDENCE_OBSERVATION';
+
+/** ★★ v0.32：一条带日期的事实（支持性证据或事后背景） */
+export interface DatedEvidence {
+  date: string;
+  text: string;
+  /** SUPPORTING / LIMIT_UP_SIGNAL / REPORT / SUBSEQUENT_FACT */
+  kind?: string | null;
+}
+
 export interface RoleEvidence {
   source_type?: string | null;
   source_text?: string | null;
@@ -67,6 +88,11 @@ export interface RoleEvidence {
   retrospective_limit_up_days?: LimitUpSignal[] | null;
   retrospective_note?: string | null;
   rule?: string | null;
+  /** ★★ v0.32：支持性证据清单（每条自带事实日期，全部 ≤ 识别日） */
+  supporting_evidence?: DatedEvidence[] | null;
+  /** ★★ v0.32：识别日**之后**的后续事实 —— 仅事后背景，不参与成立判断 */
+  posthoc_background?: DatedEvidence[] | null;
+  posthoc_note?: string | null;
 }
 
 export interface RoleBinding {
@@ -92,7 +118,11 @@ export interface MarketRole {
   identified_date: string;
   identification_type?: string | null;
   confidence?: string | null;
+  /** ★★ v0.32：支持等级（缺省视为未声明 —— 页面不得当成「已确认」） */
+  support_level?: RoleSupportLevel | string | null;
   evidence: RoleEvidence;
+  /** ★★ v0.32：降级后的限制说明（早期低置信观察必须写） */
+  support_limits?: string[] | null;
   pit_safe: boolean;
   posthoc: boolean;
   notes?: string | null;
@@ -190,6 +220,23 @@ export const MARKET_ROLE_MEANING: Record<MarketRoleType, string> = {
   INSUFFICIENT: '有研究但证据不足以判定角色。',
 };
 
+/** ★★ v0.32：支持等级文案 —— 决定读者能据此说多重的话 */
+export const SUPPORT_LEVEL_LABEL: Record<string, string> = {
+  AUTO_RULE_MET: '自动判据满足',
+  MEDIA_NAMED_SAME_DAY: '报道当日点名',
+  REPORT_BACKED: '报道背书',
+  EARLY_LOW_CONFIDENCE_OBSERVATION: '早期低置信观察',
+};
+
+export const SUPPORT_LEVEL_MEANING: Record<string, string> = {
+  AUTO_RULE_MET: '窗口内 ≥2 次涨停信号且至少一次相邻交易日连板 —— 满足自动盘面判据。',
+  MEDIA_NAMED_SAME_DAY: '同期报道在当日点名该股（报道日 = 识别日）。',
+  REPORT_BACKED: '由参与者证据的报道背书派生，发布日 = 识别日。',
+  EARLY_LOW_CONFIDENCE_OBSERVATION:
+    '★ 当日只有盘面异动（未涨停 / 未连板），**不满足**自动盘面判据 → 只作早期线索，'
+    + '**不构成**「当时已确认的盘面核心」。',
+};
+
 export const RESEARCH_STATUS_LABEL: Record<ResearchStatus, string> = {
   RESEARCHED_PIT: '已做 Point-in-Time 研究',
   DERIVED_FROM_REPORT: '由同期报道推导（未做完整 PIT 切片）',
@@ -213,7 +260,7 @@ export function hasRoleEvidence(eventId: string): boolean {
 /** 事件级角色统计（页面可核对口径） */
 export function roleCounts(eventId: string) {
   const e = eventRoles(eventId);
-  if (!e) return { pit: 0, media: 0, observed: 0, posthoc: 0, leaderNamed: 0 };
+  if (!e) return { pit: 0, media: 0, observed: 0, posthoc: 0, leaderNamed: 0, earlyLowConfidence: 0 };
   return {
     pit: e.roles.length,
     media: e.roles.filter((r) => r.role === 'PIT_MEDIA_NAMED_MOVER').length,
@@ -221,5 +268,8 @@ export function roleCounts(eventId: string) {
     posthoc: e.posthoc_leader_set?.members.length ?? 0,
     unbound: e.roles.filter((r) => !r.security_id).length,
     leaderNamed: e.roles.filter((r) => r.role === 'PIT_MEDIA_NAMED_LEADER').length,
+    // ★★ v0.32：降级为「早期低置信观察」的角色数（不满足自动判据）
+    earlyLowConfidence: e.roles.filter(
+      (r) => r.support_level === 'EARLY_LOW_CONFIDENCE_OBSERVATION').length,
   };
 }
