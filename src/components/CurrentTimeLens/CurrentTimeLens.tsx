@@ -5,6 +5,7 @@ import { timelineEntryId } from '../../data/timeline/entryIdentity';
 import type { Selection } from '../Timeline/Timeline';
 import { isEntrySelected } from '../Timeline/Timeline';
 import { DATA_STATUS_CLASS, DATA_STATUS_LABEL } from '../labels';
+import { RichText } from '../RichText';
 import { isInPreObservation, PRE_OBSERVATION_LABEL } from '../../data/timeline/preObservation';
 import {
   ATTENTION_LABEL,
@@ -219,7 +220,7 @@ export function CurrentTimeLens({
                   <span className="ctl-driver-labels">
                     {d.labels.map((l) => (
                       <span className="ctl-driver-chip" key={l}>
-                        {l}
+                        <RichText text={l} />
                       </span>
                     ))}
                   </span>
@@ -305,7 +306,7 @@ function LensV2({
       <div className="ctl2-layer">
         <h4 className="ctl2-layer-title">A · A股整体环境</h4>
         <p className="ctl2-unknown">{v2.layerA.label}</p>
-        <p className="ctl2-note">{v2.layerA.note}</p>
+        <p className="ctl2-note"><RichText text={v2.layerA.note} /></p>
       </div>
 
       {/* ---------- Layer B：当前 Theme / Theme Cycle ---------- */}
@@ -315,7 +316,7 @@ function LensV2({
           <span className="ctl2-badge">{v2.currentYear}</span>
         </h4>
         <p className={`ctl2-note${v2.layerB.hasCurrentData ? '' : ' ctl2-note-empty'}`}>
-          {v2.layerB.note}
+          <RichText text={v2.layerB.note} />
         </p>
         <p className="ctl2-sub">
           研究覆盖内的 Theme Cycle（{v2.layerB.coverage.from ?? '—'}–{v2.layerB.coverage.to ?? '—'}，
@@ -357,7 +358,7 @@ function LensV2({
       {/* ---------- Layer C：Research Attention ---------- */}
       <div className="ctl2-layer">
         <h4 className="ctl2-layer-title">C · Research Attention（研究关注）</h4>
-        <p className="ctl2-note">{v2.layerC.note}</p>
+        <p className="ctl2-note"><RichText text={v2.layerC.note} /></p>
         <div className="ctl2-att-grid">
           <AttentionColumn
             state="ACTIVE_RESEARCH"

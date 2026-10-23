@@ -88,11 +88,11 @@ function EntryCard({ e, today, onOpenMap, onRequestDraft }: {
           {e.mapping.status === 'MAPPED' ? (
             <>
               <span className="esr-theme">{e.mapping.macro_theme}</span>
-              <span className="esr-map-basis">{e.mapping.basis}</span>
+              <span className="esr-map-basis"><RichText text={e.mapping.basis ?? ''} /></span>
             </>
           ) : (
             <span className="esr-unmapped">
-              未映射 —— {e.mapping.reason}
+              未映射 —— <RichText text={e.mapping.reason ?? ''} />
             </span>
           )}
         </dd>
@@ -134,7 +134,7 @@ function EntryCard({ e, today, onOpenMap, onRequestDraft }: {
         {e.source_note && (
           <>
             <dt>不确定性</dt>
-            <dd className="esr-caveat">{e.source_note}</dd>
+            <dd className="esr-caveat"><RichText text={e.source_note} /></dd>
           </>
         )}
       </dl>
@@ -287,7 +287,7 @@ export function ExternalSeasonalRadar({ today, onOpenMap, onRequestDraft, onOpen
       )}
 
       <p className="esr-foot-note">
-        ★ 本视图的窗口<strong>不代表</strong>该题材会上涨；「窗口内」只是**时间事实**，
+        ★ 本视图的窗口<strong>不代表</strong>该题材会上涨；「窗口内」只是<strong>时间事实</strong>，
         <strong>不提升</strong>研究成熟度。所有条目当前均为<strong>外部参考</strong>。
       </p>
     </section>

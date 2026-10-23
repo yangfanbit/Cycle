@@ -392,7 +392,7 @@ export default function App() {
                 当前研究分类体系有 <strong>{taxonomyRoots.length}</strong> 个<strong>根主题</strong>：
                 <strong>{taxonomyRoots.join(' · ')}</strong>
                 （数据来源：Contract v1.2 `taxonomy` 段，由 DB `themes` 表推导 ——
-                **不是人工列举**，研究轮次新增主题后此处自动跟上）。
+                <strong>不是人工列举</strong>，研究轮次新增主题后此处自动跟上）。
               </>
             ) : (
               <>当前数据源未提供 taxonomy 段（legacy verified 源）→ 无法列出根主题，</>
@@ -772,7 +772,7 @@ function BuildProvenanceFooter() {
           </dd>
         </dl>
         <p className="build-provenance-note">
-          本区块是**溯源信息**，用于确认线上 build 与 Research artifact 的对应关系；
+          本区块是<strong>溯源信息</strong>，用于确认线上 build 与 Research artifact 的对应关系；
           它不是可信度、完整度或质量评分，也不影响任何研究结论的语义。
         </p>
       </details>

@@ -6,6 +6,7 @@ import {
   CURRENT_CANDIDATE_HINT,
   STRUCTURAL_ANALOGY_DISCLAIMER,
 } from '../../data/timeline/currentCandidateAdapter';
+import { RichText } from '../RichText';
 import {
   CANDIDATE_STATUS_LABEL,
   DIMENSION_LABEL,
@@ -96,7 +97,7 @@ export function CurrentCandidateSection({
         </p>
       )}
 
-      <p className="ctl2-note">{CURRENT_CANDIDATE_HINT}</p>
+      <p className="ctl2-note"><RichText text={CURRENT_CANDIDATE_HINT} /></p>
 
       {/* 快照日与滞后提示：明确「这不是实时」 */}
       {list.snapshotDate ? (
@@ -217,7 +218,7 @@ function CandidateRow({
         <span className="ccs-caret">{open ? '收起' : '展开'}</span>
       </button>
 
-      <p className="ccs-oneliner">{view.oneLiner}</p>
+      <p className="ccs-oneliner"><RichText text={view.oneLiner} /></p>
 
       {c.candidate_status !== view.gate.effective && (
         <p className="ccs-demote">

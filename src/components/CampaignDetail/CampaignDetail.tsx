@@ -34,6 +34,7 @@ import {
   SIGNAL_TYPE_LABEL,
   STRENGTH_LABEL,
 } from '../labels';
+import { RichText } from '../RichText';
 
 interface CampaignDetailProps {
   /** 生产 HistoricalCampaign（verified）或 Timeline 预览 Campaign（Research Preview） */
@@ -325,7 +326,7 @@ export function CampaignDetail({
               <span className="phase-text">哪里不同</span>
               <ul>
                 {analogyContext.whyNotSimilar.map((t) => (
-                  <li key={t}>{t}</li>
+                  <li key={t}><RichText text={t} /></li>
                 ))}
               </ul>
             </div>

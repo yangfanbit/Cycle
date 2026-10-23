@@ -9,6 +9,7 @@ import type {
   SnapshotDiff,
   SnapshotHistoricalCandidate,
 } from '../../data/marketSnapshot/types';
+import { RichText } from '../RichText';
 
 /**
  * 本期研究快照（Current Snapshot）—— ThreeC 1.1 Phase 1.3。
@@ -139,7 +140,7 @@ function CandidateList({
         <p className="cs-cand-why">
           <strong>为什么对应</strong>
           {d.whySimilar.map((w, i) => (
-            <span key={i}>{w}</span>
+            <span key={i}><RichText text={w} /></span>
           ))}
         </p>
       )}
@@ -147,7 +148,7 @@ function CandidateList({
         <p className="cs-cand-why cs-cand-why-not">
           <strong>哪里不同 / 限制</strong>
           {d.whyNotSimilar.map((w, i) => (
-            <span key={i}>{w}</span>
+            <span key={i}><RichText text={w} /></span>
           ))}
         </p>
       )}
@@ -379,7 +380,9 @@ export function CurrentSnapshotBody({
             );
           })}
         </ul>
-        {regime.beta_note && <p className="cs-dim">{regime.beta_note}</p>}
+        {regime.beta_note && (
+          <p className="cs-dim"><RichText text={regime.beta_note} /></p>
+        )}
         {unknownDims.length > 0 && (
           <p className="cs-unknown-note">
             <strong>{unknownDims.length} 个维度为「未知」</strong> —— 这是<strong>诚实空态</strong>：
@@ -500,7 +503,7 @@ export function CurrentSnapshotBody({
           <ul className="cs-obs">
             {s.observations.map((o) => (
               <li key={o.observation_id}>
-                <code>{o.date}</code> · {o.observation_type} · {o.claim}
+                <code>{o.date}</code> · {o.observation_type} · <RichText text={o.claim} />
               </li>
             ))}
           </ul>
