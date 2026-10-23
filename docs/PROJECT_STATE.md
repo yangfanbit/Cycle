@@ -472,6 +472,67 @@
 >    `src/components/__tests__/rawMarkdownRendering.test.tsx`（挂载真实 `<App />` + 真实数据扫整棵渲染树），
 >    ★ 已做**负向对照**（临时还原一处裸星号 → 测试失败；还原修复 → 通过）。
 
+> ★★ **2026-10-23（v0.32 · PIT 全路径封口 + 证据来源修正 + 下一阶段路线）**：
+> ① **修掉 legacy PIT 记录的残余时间混入**（v0.31 遗留）：`AUTO-2024-ROBOTAXI / DAZHONGTONG`（大众交通）
+>    识别日 2024-07-08，但 `identification_source` 写「7/8放量+6.12%启动、**7/9一字板**…**7/9媒体归因**」、
+>    `notes` 写「**7/9一字板**获媒体归入无人驾驶」，却仍标 `pit_safe=true` ——
+>    v0.31 的结构化日期检查只覆盖**自动盘面角色**，`market_breadth`（人工记录）被测试**跳过**。
+>    修复：CSV 升级为**显式日期字段**（`evidence_as_of_date` / `supporting_evidence(_dates)` /
+>    `posthoc_background(_dates)` / `support_level`）—— 7/8 只有「放量 +6.12%」，
+>    7/9 一字板与媒体归因只进 `posthoc_background`（date=2024-07-09）。
+>    ★ **降级**：7/8 单日 +6.12%、未涨停、未连板 → 不满足自动判据（≥2 信号 + 连板）
+>    ⇒ `support_level = EARLY_LOW_CONFIDENCE_OBSERVATION`、`confidence: medium → low`、
+>    写明「**不构成**当时已确认的盘面核心」。识别日仍为 07-08，**没有**为对齐 07-11 起的行情窗口而删除早期记录。
+>    盘面记录不再伪造 `published_at`（改为 `null`）。
+> ② **PIT 合同覆盖所有角色类别**：新增 `validate_pit_contract()`（`--check` 直接失败）——
+>    每条 `pit_safe` 角色必须有 `evidence_as_of_date`（≤ 识别日）与逐条带日期的 `supporting_evidence`
+>    （全部 ≤ 识别日）；`posthoc_background` / `retrospective_limit_up_days` 的日期必须 **> 识别日**；
+>    事后日期**不得**出现在 `source_text` / `notes` / `summary` / `supporting_evidence[].text` 里
+>    （结构性字段优先，正则只用来查泄漏）；`AUTO_RULE_MET` 另验 ≥2 信号 + 连板 + 识别日 = 首个连板第二日。
+>    **`market_breadth` 不再是例外**。★ **负向对照**：把 7/9 写回 `source_text` / 塞进支持性证据 /
+>    把事后日期改成 7/8 → 三种情形校验器**全部报错**（测试锁定）。
+> ③ **来源路径修正**：`derive_report_roles` 原硬编码 `participant_evidence_v0_3.json`（28 条角色），
+>    改为读取**本次实际加载的输入路径**（由产物 `artifact_version` 反推 + 与常量交叉核对 + 文件必须存在）；
+>    28 条全部指向 `participant_evidence_v0_4.json`，与事件级 `source_records` 一致，所有可核验来源文件均存在。
+> ④ **ST 规则按板块 × 时期更正**（原「ST 一律 5% → 一律漏报」**不成立**）：
+>    主板 ST **5%（≤2026-07-05）/ 10%（≥2026-07-06 新规放宽）**；创业板 ST **5%（≤2020-08-23）/ 20%（≥2020-08-24）**；
+>    科创板 ST **20%**。⇒ 只有**主板新规前**与**创业板改革前**的 ST 落在带外（漏报方向）；
+>    创业板/科创板 ST 与主板新规后的 ST 与普通股同带，**不会被漏掉**。
+>    来源写入 `limit_up_audit_v0_2.json.st_rules`（深证上〔2020〕620 号 · 深交所投教 2021-01-27 ·
+>    证监会上海监管局转载 2026-07-06），未核实项（《特别规定》实施日、科创板 ST 交易所原文、
+>    退市整理期、北交所 30%）进 `not_verified`。★ 本库事件窗口最晚 **2025-12-26**（< 2026-07-06）
+>    → 历史窗口内主板 ST 5% 档仍适用；参与者无北交所代码（前缀实测仅 600/601/603/000/001/002/003/300/301/688）。
+> ⑤ **产物**：`historical_market_roles_v0_4.json`（supersedes v0_3，v0_3 逐字节保留）·
+>    `limit_up_audit_v0_2.json`（supersedes v0_1，新增 `st_rules` + `audited_roles_artifact`）。
+>    角色仍 **53** 条（报道点名 32 + 盘面异动 21）· **报道称龙头 0**；
+>    支持等级分布：`REPORT_BACKED 28` · `AUTO_RULE_MET 20` · `MEDIA_NAMED_SAME_DAY 4` ·
+>    `EARLY_LOW_CONFIDENCE_OBSERVATION 1`；`pit_safe` 53 条 / 违规 **0**。
+> ⑥ **测试**：Python 角色不变量 **22** 项（+6：7/8 支持性证据 / 全类别合同 / 三种负向对照 / 来源路径 / 支持等级）
+>    + 新增 `test_audit_market_limit_up.py` **7** 项（板块 × 时期 ST 比例 / 来源可引 / 未核实项已声明 /
+>    审计对象可追溯 / 不得残留笼统说法）；产品侧 +4（数据 + 渲染 + 全类别 + 来源路径）。
+> ⑦ **1.3 目标裁定（本轮正式收口）**：**ThreeC 1.3（Product 只读页面 + 完整工作流）已完成** ——
+>    真实数据 / diff / 「无对应」一等公民 / 只读不写库 / 全流程可走通（见
+>    `docs/ACCEPTANCE_v0_31_2026-10-23.md` 的 41 项检查）。**主线切换**为「历史证据覆盖扩展 + 真实用户反馈驱动」。
+
+#### 下一阶段优先级（证据驱动，2026-10-23 实测）
+
+> ★ 排序依据**不是**「能新增多少龙头」，而是**缺的证据有多便宜补齐**。全库实测：
+> · **catalysts 带 URL 的事件 = 0 / 33**（`catalysts[].url` 全为空）；
+> · 参与者报道带 URL 的 **20 条，全部落在已研究的 2 个事件**（`FLU-2017-AVIAN` / `PUBLICHEALTH-2019-WUHAN`）；
+> · 20 个未研究事件**没有任何** `report.url` 或 `published_at` ⇒ 缺的**只有同期报道**，不是行情数据。
+> · 其中 6 个事件已有「多次涨停但**无相邻日连板**」，所以自动判据不成立（不是数据缺失）。
+
+| 优先 | 事件 | 已有证据 | 缺什么 | 为什么值得先做 |
+|---|---|---|---|---|
+| 1 | `ROBOTICS-2023-HUMANOID`（人形机器人） | 5 参与者 · 7 catalysts · 赵威 3 / 金科 2 / 雷赛 2 次涨停（无连板） | **带发布日的同期报道**（1–2 篇即可定识别日） | 与已完成的 Robotaxi / 华为汽车同属「主题叙事驱动」，方法可直接复用；参与者多、信号密 |
+| 2 | `SEMI-2025-MEMORY`（存储超级周期） | 4 参与者 · GIGADEVICE 4 次 / CAMBRICON 2 次涨停（无连板） | 同期报道（含涨价/合约价消息） | 窗口最新（2025-07~10），报道最易获取；可检验「涨价驱动」与「政策驱动」的角色差异 |
+| 3 | `RES-2024-GOLD`（黄金） | 4 参与者 · CFGOLD 4 次 / ZJGOLD 3 次涨停（无连板） | 同期报道 | 窗口最长（2024-02~2025-12），可检验「长周期不拆」下 PIT 识别日是否稳定 |
+| 4 | `CONS-2019-BAIJIU-CORE`（白酒核心资产） | 5 参与者 · 汾酒 6 次涨停（无连板） | 同期报道 | 与 `CONS-2016-BAIJIU` 构成**同题材跨年份对照**，可回答「同一题材角色是否稳定」；且 2016 段收益不可算的已知限制需并行说明 |
+| 5 | `MEDIA-2018-GAMELICENSE`（游戏版号） | 3 参与者 · 三七 2 次涨停（无连板）· 9 catalysts（0 URL） | 同期报道（政策转向类） | 政策转向与 Robotaxi 同类，可复用「发布日 = 识别日」的教训；catalysts 最多、只差链接与日期 |
+
+> ★ 共同前提：这 5 个事件**都不会**因补数据自动产生「龙头」——`PIT_MEDIA_NAMED_LEADER` 仍为 0，
+> 补的是「当时谁被点名 / 谁有可观察异动」，不是「谁是龙头」。
+
 ### 后续待办（含 v0.26 新增）
 
 > · ✅ **「>45% 单日跳变 = 序列错误」已完成实证（v0.27 关闭）**：全库 222 次实测 =
@@ -487,7 +548,7 @@
 
 | 项 | 值 |
 |---|---|
-| **最近功能提交** | `bfa6c09`（v0.31.1：研究侧 Markdown `**` 原样显示修复 51→0 + 页面级不变量测试）· `3adfe29`（v0.31：PIT 证据时间封口 + 逐日报道事实核验 + 涨停方法审计）· `c901dd2`（v0.30：PIT 时间防火墙 + 身份安全不变量 + 角色覆盖扩展）· `b5a1f45`（v0.29：证据分类校正 + 历史市场角色 PIT 层）· `3b0e14f`（v0.28：地图证据三维度 + 角色来源核验 + 缺口 A 身份层）· `4e92c04`（v0.27.1：HFQ 审计字段修正 + 重新裁定）· `9a44e89`（v0.27：行情计算方法审计 —— hfq 裁定 NOT_ADOPTED · >45% 守卫全库实证 · 合同 v2）· `afd30d9`（v0.26：行情刷新到 2026-10-20 + POWER-2017 四只补齐验证 + 事实一致性修正）· `9230af2`（v0.25：行情刷新到 2026-10-19 + 25 项季节性逐项核验 v0_2 + 消费旺季 / 资源品两张新地图 + 提前观察缺因披露）· `3fcdf24`（v0.24：行情转写合同 `theme_market_performance_v1` + 题材文件漂移门禁 + 大基金三期行情落地 + 高点日扁平写法修复）· `8d3d32a`（v0.23：状态回填）· `a018f72`（v0.23：C 数据层补齐 —— 大基金三期 4 只标的行情 + 快照重生成）· `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
+| **最近功能提交** | `1371d3f`（v0.32：PIT 全路径封口 + 证据来源修正 + ST 规则更正）· `bfa6c09`（v0.31.1：研究侧 Markdown `**` 原样显示修复 51→0 + 页面级不变量测试）· `3adfe29`（v0.31：PIT 证据时间封口 + 逐日报道事实核验 + 涨停方法审计）· `c901dd2`（v0.30：PIT 时间防火墙 + 身份安全不变量 + 角色覆盖扩展）· `b5a1f45`（v0.29：证据分类校正 + 历史市场角色 PIT 层）· `3b0e14f`（v0.28：地图证据三维度 + 角色来源核验 + 缺口 A 身份层）· `4e92c04`（v0.27.1：HFQ 审计字段修正 + 重新裁定）· `9a44e89`（v0.27：行情计算方法审计 —— hfq 裁定 NOT_ADOPTED · >45% 守卫全库实证 · 合同 v2）· `afd30d9`（v0.26：行情刷新到 2026-10-20 + POWER-2017 四只补齐验证 + 事实一致性修正）· `9230af2`（v0.25：行情刷新到 2026-10-19 + 25 项季节性逐项核验 v0_2 + 消费旺季 / 资源品两张新地图 + 提前观察缺因披露）· `3fcdf24`（v0.24：行情转写合同 `theme_market_performance_v1` + 题材文件漂移门禁 + 大基金三期行情落地 + 高点日扁平写法修复）· `8d3d32a`（v0.23：状态回填）· `a018f72`（v0.23：C 数据层补齐 —— 大基金三期 4 只标的行情 + 快照重生成）· `c9e4f26`（v0.23：数据缺口审计 A/B/C）· `1fc52a8`（v0.22：SA 交叉引用可导航到当前对象详情 + CANONICAL 唯一性门禁）· `9bc2c45`（v0.21 修复：窄屏长不可断串撑破题材地图容器）· `d47fd1d`（v0.21：历史事件 × 冻结 SA 精确交叉引用）· `5ae9c84`（v0.20：未关联行情行显式标注 + 草稿复制动作验收）· `5c0bce5`（v0.19：对账语义收口 + 三场景真实工作流）· `b0ca645`（v0.18：FLU-2023-H1N1 对象关联补齐 + 对账四分类）· `bcfa36c`（v0.17：行情可信展示 + 标的对账）· `0c8ee96`（v0.16：半导体/AI 算力纵切片 + 反例语义分离）· `59dedcc`（v0.15：汽车智能化纵切片）· `3edfe80`（v0.14：窗口→对象详情闭环）· `b522f02`（v0.13：线索→对照→研究请求闭环）· `8ecdb64`（v0.12：外部季节性时间轴）· `126ce8d`（v0.11：题材标的索引）· `50300f8`（v0.10：历史题材地图主入口）· `d3a01dc`（v0.9：概率层）· `05c897d`（v0.8：草稿交接 + 生命周期对照）· `f012dc3`（v0.7：草稿生命周期） |
 | **最后核实 Git 状态** | 核实于 2026-10-19：本地 `main` = `origin/main`，工作区仅有 **2 个未跟踪本地库**（`market_data.db` / `cycle_research.db`，**不入库、不提交**） · ★ **本行不再写「HEAD = 某个功能提交」** —— `docs(state)` 回填提交本身会把 HEAD 前移一位，旧写法两次制造了「HEAD 滞后」的误读。**接班必须跑 `git log -1` / `git status` / `git rev-parse origin/main`** 以实际为准，不要相信文档里的固定 SHA |
 | **快照** | **`MS-2026-10-13-01` = 唯一 `CANONICAL`**（实测 `index.json`：CANONICAL 计数 = 1；10-12 及更早 12 份 `ARCHIVED`，09-15 仍 `DRAFT`）· `candidates_source` = `artifact_version 0.13` / `rule_set_version structural-analogy-ruleset-v0.3`，与 SA `v0_13` **逐一相等** |
 | **数据库拓扑** | `cycle_research.db` **0.96 MB**（canonical 17→14 表，**入库**） · `market_data.db` **72.85 MB**（行情三表 **395,038 行** = v0.26 补齐 **+854** 行；v0.25 时 394,184，**不入库**） · `data/market/snapshot/` **6.45 MiB**（**入库**，恢复唯一输入） |
@@ -496,13 +557,13 @@
 | **快照格式** | 按年分片 `market_daily/YYYY.csv.gz` + `MANIFEST.json`（每分片 sha256）· repr() 浮点**逐位无损**（**2,053,911 个 REAL 差异 0**）· 两次生成 sha256 相同 · **395,038 行**（market_daily 单表；3 表合计 398,116） |
 | **历史宇宙** | **62 Campaign + 27 Research Candidate = 89 对象** · DB `themes` **59**（13 个根） |
 | **当前市场 / 提前观察（v0.26 刷新）** | `SH000300` **as_of = 2026-10-20**（收盘 4152.11 · 20 日 -7.32% · 量分位 0.183 · 波动率比 0.803 · MA20 下 · MA60 下；全页面唯一「当前」标签）· 提前观察（`research/research/reports/early_observation_v0_2.json`）：**OK 54 / PARTIAL 8 / NO_DATA 0**（62 Campaign）· PARTIAL 缺因分布：**上市/序列起始晚于 Campaign 起始 10** · 启动前不足 60 个交易日 1 · **无行情序列 2**（WUHANFANGU 无 ticker = A 的归属缺口；SWMIL = 申万指数，本抓取流程不覆盖）· L1 市场层全 62 段可算 |
-| **测试** | **1457 passed / 0 failed / 76 files**（实测于 2026-10-23 本机 `npm test`；★ v0.31 曾误记为 1456、v0.31.1 前实测 1455/75，均已按实测校正 —— 数字以跑出来的为准）（v0.31.1：+2 —— 页面级裸 Markdown 不变量）（v0.31：+4 —— PIT 封口 / 事后统计渲染 / 窗口语义）（v0.30：+5 —— 盘面角色判据 / 切片覆盖缺口 / 来源两态渲染；v0.29：+8 —— 历史市场角色 PIT 语义与渲染；v0.28：+7 —— 参与者证据三维度语义与渲染；v0.27：+1 —— price_basis 声明断言；v0.25：+6 —— v025UserFlows 端到端 2 · earlyObservation 缺因披露 2 · 雷达下一步入口 2；v0.24 计 1426/72，v0.23 产品未改动计数不变；v0.22：+7） |
+| **测试** | **1461 passed / 0 failed / 76 files**（实测于 2026-10-23 本机 `npm test`；★ v0.31 曾误记为 1456、v0.31.1 前实测 1455/75，均已按实测校正 —— 数字以跑出来的为准）（v0.32：+4 —— 大众交通 7/8 支持性证据 / 支持等级与截止日渲染 / 全类别合同 / 来源路径）（v0.31.1：+2 —— 页面级裸 Markdown 不变量）（v0.31：+4 —— PIT 封口 / 事后统计渲染 / 窗口语义）（v0.30：+5 —— 盘面角色判据 / 切片覆盖缺口 / 来源两态渲染；v0.29：+8 —— 历史市场角色 PIT 语义与渲染；v0.28：+7 —— 参与者证据三维度语义与渲染；v0.27：+1 —— price_basis 声明断言；v0.25：+6 —— v025UserFlows 端到端 2 · earlyObservation 缺因披露 2 · 雷达下一步入口 2；v0.24 计 1426/72，v0.23 产品未改动计数不变；v0.22：+7） |
 | **Export / SA / 快照** | Contract v1.2 · SA `v0_13` · 快照 `MS-2026-10-13-01` —— 均**未随拆分/治理改动** |
 | **Research 门禁** | `validate_db` PASS（4 警告，同基线）· `validate_timeline_export` PASS（0 警告）· `validate_market_snapshot` 342/8/0 · `intake --check` PASS · `refresh_downstream --check` PASS · `resolve_sa_artifact` / `validate_monorepo` / `make_market_snapshot --check` 全 exit=0 · ★ **v0.24 新增** `build_theme_market_performance --check`（合同 **v2**，v0.27）= **PASS（FAIL 0 / WARN 0）** + 契约单测 **12 passed**（在 CI 的 restore 之后运行）· ★ **v0.25 新增** `build_theme_map_v0_1.py`（消费 / 资源两张地图的确定性生成器）与 `build_external_seasonal_review_v0_2.py`（25 项核验产物生成器）—— 均**确定性**（同输入同输出） |
-| **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.31）**：`3adfe29` run [`39805805414`](https://github.com/yangfanbit/Cycle/actions/runs/39805805414) —— 两 job 均 **success**（含参与者证据 / 历史市场角色 / 涨停方法审计三道门禁）。历史（v0.30）：`c901dd2` run [`39789819817`](https://github.com/yangfanbit/Cycle/actions/runs/39789819817) —— 两 job 均 **success**（含参与者证据 + 历史市场角色两套门禁）。历史（v0.29.2）：`c4c256e` run [`39770954602`](https://github.com/yangfanbit/Cycle/actions/runs/39770954602) —— 两 job 均 **success**；`c80738a` run [`39698508466`](https://github.com/yangfanbit/Cycle/actions/runs/39698508466) 亦 success。历史（v0.29.1）：`86e23cc` run [`39697919429`](https://github.com/yangfanbit/Cycle/actions/runs/39697919429) —— 两 job 均 **success**（含参与者证据 + 历史市场角色两套新门禁）。历史（v0.29）：`b5a1f45` run [`39640926287`](https://github.com/yangfanbit/Cycle/actions/runs/39640926287) —— 两 job 均 **success**；★ `a1d8872` 首跑 **failure**（`--check` 未带 `--version` → 比对了旧产物），由 `b5a1f45` 修为「自动对齐最新版本」后通过。历史（v0.28）：`3b0e14f` run [`39631075960`](https://github.com/yangfanbit/Cycle/actions/runs/39631075960) —— 两 job 均 **success**（含新增的参与者证据门禁）。历史（v0.27.1）：`4e92c04` run [`39521857909`](https://github.com/yangfanbit/Cycle/actions/runs/39521857909) —— 两 job 均 **success**。历史（v0.27）：`9a44e89` run [`39453720795`](https://github.com/yangfanbit/Cycle/actions/runs/39453720795) —— 两 job 均 **success**。历史（v0.26）：`afd30d9` run [`39427385891`](https://github.com/yangfanbit/Cycle/actions/runs/39427385891) —— 两 job 均 **success**。历史（v0.25）：`9230af2` run [`39354976253`](https://github.com/yangfanbit/Cycle/actions/runs/39354976253) —— 两 job 均 **success**（含 v0.25 新增的门禁步骤）。历史（v0.24）：`2f03db4` run [`39272571712`](https://github.com/yangfanbit/Cycle/actions/runs/39272571712) —— 两 job 均 **success**；`3fcdf24` run [`39264015668`](https://github.com/yangfanbit/Cycle/actions/runs/39264015668) · `e4c0c01` run [`39267989768`](https://github.com/yangfanbit/Cycle/actions/runs/39267989768) 均 success · ★ **门禁实证**：临时分支 `verify/v024-gate`（已删）run [`39264948321`](https://github.com/yangfanbit/Cycle/actions/runs/39264948321) —— `npm test` **success**、`--check` **failure**、build/upload **skipped**、`Deploy` **skipped**。历史（v0.23）：`c9e4f26` run [`39248636166`](https://github.com/yangfanbit/Cycle/actions/runs/39248636166) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**。历史（v0.22）：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285)（两 job success，含真实浏览器复核）· `f07d839` run [`39244995823`](https://github.com/yangfanbit/Cycle/actions/runs/39244995823)（两 job success）· v0.21：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
+| **CI / 部署（当前）** | workflow `deploy.yml` = `Verify & build` + `Deploy` 两 job：Research 门禁**之前**跑 restore `--apply` + `--check`（失败即 workflow 失败，不跳门禁），随后 `npm ci` / `tsc -b` / `npm test` / build（base = `/Cycle/`）→ GitHub Pages。★ **本行不写死旧 run**（旧编号属「当时」状态，不得当作当前）—— 每次推送以 Actions 实际为准。**最近核实（v0.32）**：`1371d3f` run [`39983817266`](https://github.com/yangfanbit/Cycle/actions/runs/39983817266) —— 两 job 均 **success**（含 PIT 全路径合同 + ST 规则两套新门禁）。历史（v0.31）：`3adfe29` run [`39805805414`](https://github.com/yangfanbit/Cycle/actions/runs/39805805414) —— 两 job 均 **success**（含参与者证据 / 历史市场角色 / 涨停方法审计三道门禁）。历史（v0.30）：`c901dd2` run [`39789819817`](https://github.com/yangfanbit/Cycle/actions/runs/39789819817) —— 两 job 均 **success**（含参与者证据 + 历史市场角色两套门禁）。历史（v0.29.2）：`c4c256e` run [`39770954602`](https://github.com/yangfanbit/Cycle/actions/runs/39770954602) —— 两 job 均 **success**；`c80738a` run [`39698508466`](https://github.com/yangfanbit/Cycle/actions/runs/39698508466) 亦 success。历史（v0.29.1）：`86e23cc` run [`39697919429`](https://github.com/yangfanbit/Cycle/actions/runs/39697919429) —— 两 job 均 **success**（含参与者证据 + 历史市场角色两套新门禁）。历史（v0.29）：`b5a1f45` run [`39640926287`](https://github.com/yangfanbit/Cycle/actions/runs/39640926287) —— 两 job 均 **success**；★ `a1d8872` 首跑 **failure**（`--check` 未带 `--version` → 比对了旧产物），由 `b5a1f45` 修为「自动对齐最新版本」后通过。历史（v0.28）：`3b0e14f` run [`39631075960`](https://github.com/yangfanbit/Cycle/actions/runs/39631075960) —— 两 job 均 **success**（含新增的参与者证据门禁）。历史（v0.27.1）：`4e92c04` run [`39521857909`](https://github.com/yangfanbit/Cycle/actions/runs/39521857909) —— 两 job 均 **success**。历史（v0.27）：`9a44e89` run [`39453720795`](https://github.com/yangfanbit/Cycle/actions/runs/39453720795) —— 两 job 均 **success**。历史（v0.26）：`afd30d9` run [`39427385891`](https://github.com/yangfanbit/Cycle/actions/runs/39427385891) —— 两 job 均 **success**。历史（v0.25）：`9230af2` run [`39354976253`](https://github.com/yangfanbit/Cycle/actions/runs/39354976253) —— 两 job 均 **success**（含 v0.25 新增的门禁步骤）。历史（v0.24）：`2f03db4` run [`39272571712`](https://github.com/yangfanbit/Cycle/actions/runs/39272571712) —— 两 job 均 **success**；`3fcdf24` run [`39264015668`](https://github.com/yangfanbit/Cycle/actions/runs/39264015668) · `e4c0c01` run [`39267989768`](https://github.com/yangfanbit/Cycle/actions/runs/39267989768) 均 success · ★ **门禁实证**：临时分支 `verify/v024-gate`（已删）run [`39264948321`](https://github.com/yangfanbit/Cycle/actions/runs/39264948321) —— `npm test` **success**、`--check` **failure**、build/upload **skipped**、`Deploy` **skipped**。历史（v0.23）：`c9e4f26` run [`39248636166`](https://github.com/yangfanbit/Cycle/actions/runs/39248636166) —— `Verify & build` 与 `Deploy` 两 job 均 **success**；线上 https://yangfanbit.github.io/Cycle/ 实测 **HTTP 200**。历史（v0.22）：`1fc52a8` run [`39243767285`](https://github.com/yangfanbit/Cycle/actions/runs/39243767285)（两 job success，含真实浏览器复核）· `f07d839` run [`39244995823`](https://github.com/yangfanbit/Cycle/actions/runs/39244995823)（两 job success）· v0.21：`d47fd1d` run [`39144898184`](https://github.com/yangfanbit/Cycle/actions/runs/39144898184) · `9bc2c45` run [`39145683955`](https://github.com/yangfanbit/Cycle/actions/runs/39145683955) —— 两 job 均 success |
 | **历史事件地图** | **v0.10 起为首页直接入口**（索引驱动（`HistoricalThemeMaps`，索引驱动 · **8 题材 / 33 事件**（流感 6 · 电力 4 · 传媒 2 · 机器人 1 · 汽车智能化 6 · 半导体/AI 算力 7 · 消费旺季 5 · 资源品 2）· 可切换）· 跨年比较已产品化（流感 **11 季** / 电力 **10 年**）· 经验基准概率区块（分母 = `comparable === true`：电力 **7** / 流感 **9**）· v0.5 审计结论：当时 13 事件数值零计算错误 · **v0.17**：行情表带**关系类别 / 窗口状态**，参与者与标的索引带 **Research 对象对账** · **v0.18**：流感题材升 **v0_7**（`FLU-2023-H1N1` 补齐对象关联），对账拆为**四分类** · **v0.19**：再分出**独立事实**「证券注册表精确命中」（实测 **87 / 36**）· **v0.21**：事件详情带「**与当前冻结 SA 的关系**」（精确对象 ID 交叉引用；实测 18 命中 / 108 条匹配记录）· **v0.22**：SA 列表每条带「**查看当前对象详情**」（按精确 `currentObjectId` 解析，不可解析则不给按钮）· **v0.23**：三处缺口的**裁决表**（数据本身**未改**，计数不变）· **v0.24**：半导体题材升 **v0_2**（大基金三期 4 只标的行情按合同重算，`study_state` → `HAS_PRICE_DATA`；其余 6 事件百分比零变化）· 高点日扁平写法（power）修复 · **v0.25**：地图 **6 → 8**（+ 消费旺季 / 大众消费 **5 事件** · 资源品 / 黄金·稀土 **2 事件**，均从库内 Campaign 生成、窗口 = 主升段）；合同新增 `invalid_price_series`（非正价格 / >45% 跳变）守卫 · **AUTO 缺口行逐类写原因** · **v0.26**：电力升 **v0_4**（POWER-2017 四只补齐验证通过，WARN 4→0；`market_data` 陈旧文案更正）、半导体升 **v0_5**（覆盖文本随刷新更新，**数值零变化**） |
 | **数据缺口审计（v0.23）** | `research/research/reports/data_gap_audit_v0_1.json`（只读 · 确定性生成）· **A 注册表未命中** = 36 条记录 / 17 标识（全流感）→ 根因 **owner-scoped 注册表**（190 == 190 零差集）· 身份**逐条**经交易所披露核验 · **1 PROVISIONAL**（`YILING-002603` → `YILING`，**不自动合并**）+ **16 UNRESOLVED**（无规范 ID 可映射）· **B 未登记对象** = 57 条 / 8 事件 → **8 UNRESOLVED**（无精确 `security_ids` 相等、事件未引用对象）· **C 大基金三期行情** = 4 只 → **已授权补齐数据层**（既有抓取流程 + 快照重生成，窗口各 44 交易日）→ **4 RESOLVED**；★ 地图转写 **UNRESOLVED**（口径不可复现）· 合计 **RESOLVED 4 / PROVISIONAL 1 / UNRESOLVED 24** · **v0.24 追加**：C 的**转写待办关闭**（`theme_market_performance_v1` 合同 + `--check` 门禁，FUND3 四只标的落地）→ 审计口径变为 **RESOLVED 5 / PROVISIONAL 1 / UNRESOLVED 23**；★ 同时新发现 **POWER-2017 4 组数值不可复算**（序列自 2022 起）→ **+4 UNVERIFIABLE**（WARN，不改数） |
-| **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`） |
+| **版本** | 1.0 RELEASED（`v1.0.0` · `064d39c`）· 1.1 RELEASED（`v1.1.0`）· **1.3（Product 只读页面 + 完整工作流）已完成**（v0.31 验收 41/41；v0.32 正式收口并切换主线） |
 
 ### 行情转写合同（v0.24 · `theme_market_performance_v1` · 唯一口径）
 
