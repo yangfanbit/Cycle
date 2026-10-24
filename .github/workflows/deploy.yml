@@ -191,11 +191,14 @@ jobs:
           echo "::endgroup::"
 
       # ★★ v0.33 / v0.35：当前前瞻观察 + 季节性发现（**不联网**，只校验最新产物）
+      # ★ v0.40：季节性改用 v0_3 校验器 —— 它额外要求 protocol / pit_eligible_years /
+      #   discovery_basis 一致 / bias_audit / walk_forward_audit 齐备。
+      #   （v0_2 的 --check 仍可读新产物，作为向后兼容，不再作为门禁入口。）
       - name: Forward observation + seasonal discovery (--check)
         run: |
           set -euo pipefail
           python research/scripts/build_forward_observation_v0_1.py --check
-          python research/scripts/discover_seasonal_patterns_v0_2.py --check
+          python research/scripts/discover_seasonal_patterns_v0_3.py --check
 
       - name: Research read-only gates
         run: |

@@ -3,14 +3,16 @@
 """build_candidate_digest_v0_1.py —— 统一「当前候选前瞻」汇总产物（v0.38）。
 
 把四类来源合并成**一份**候选池，按可解释规则分组排序：
-  · current_candidates.json       当前研究对象（6 个，研究记录 2026-10-08）
+  · current_candidates.json       当前研究对象（6 个，研究记录 2026-10-23）
   · forward_observation_v0_2.json 专项前瞻候选（生肖 / 流感 / 台海）
-  · pattern_discovery_v0_7.json   自动发现的当前/下月窗口（204 条）
+  · pattern_discovery_v0_8.json   自动发现的当前/下月窗口（204 条，含时点可发现性）
   · market_snapshots/index.json   本期快照状态（已签发/草稿）
 
 ★ 合并只按**明确 ID**；名称相近不合并（宁可分开）。
 ★ 排序是**研究浏览优先顺序**，不是收益预测：G1 历史重复+OOS+时间优势 → G2 结构参照/催化临近 →
-  G3 有当前事实但历史证据不足 → G4 探索/陈旧/无法检验。
+  G3 有当前事实但历史证据不足 → G4 探索/陈旧/无法检验/时点不可发现。
+★ ★★ G1/G2 额外要求 `pit_eligible_years >= 1`：只在回看时成立（当年无法被发现）的窗口一律降到 G4，
+  否则等于用未来信息给它排序。
 ★ 所有日期原样保留（price_as_of / research_as_of / snapshot_status），不把旧数据改成最新。
 """
 from __future__ import annotations
@@ -73,8 +75,11 @@ def main(argv):
     # ① 自动发现的当前/下月窗口
     for p in pd["current_windows"]:
         oos_ok = p.get("oos_status") == "REPORTED" and (p.get("oos_hit_rate") or 0) >= 0.5
-        g = ("G1" if (p["tier"] == "STRICT" and oos_ok) else
-             "G2" if p["tier"] == "STRICT" else "G4")
+        # ★★ 时点可发现性是**独立门槛**：只在回看时成立（当年无法被发现）的窗口，
+        #    不得进 G1/G2 —— 否则等于用未来信息给它排序。
+        discoverable = (p.get("pit_eligible_years") or 0) >= 1
+        g = ("G1" if (discoverable and p["tier"] == "STRICT" and oos_ok) else
+             "G2" if (discoverable and p["tier"] == "STRICT") else "G4")
         cards.append({
             "id": p["pattern_id"], "source": ["pattern_discovery"], "kind": "SEASONAL_WINDOW",
             "title": "%s · %d 月" % (p["board"], p["month"]),
@@ -86,7 +91,12 @@ def main(argv):
                         "oos_status": p.get("oos_status"), "oos_tests": p.get("oos_tests"),
                         "oos_hit_rate": p.get("oos_hit_rate"),
                         "oos_median_excess_pct": p.get("oos_median_excess_pct"),
-                        "years": p.get("years")},
+                        "years": p.get("years"),
+                        # ★ 时点可发现性 + 证据等级（新方法新增，产品据此降级）
+                        "pit_eligible_years": p.get("pit_eligible_years"),
+                        "pit_first_year": p.get("pit_first_year"),
+                        "discovery_basis": p.get("discovery_basis"),
+                        "evidence_grade": p.get("evidence_grade")},
             "representative_stocks": p.get("representative_stocks") or [],
             "gap": ("行业板块无历史成分 → 不绑个股" if p["kind"] != "concept_basket" else
                     p.get("rep_stock_gap")),
@@ -272,6 +282,8 @@ def main(argv):
                 h = c["history"]
                 if h.get("tier") != "STRICT" or h.get("oos_status") != "REPORTED":
                     errs.append("%s 进 G1 但证据不足" % c["id"])
+                if (h.get("pit_eligible_years") or 0) < 1:
+                    errs.append("%s 进 G1 但时点不可发现（只在回看时成立）" % c["id"])
         if len(d["cards"]) < 100:
             errs.append("候选过少（%d）—— 自动发现窗口未接入？" % len(d["cards"]))
         if errs:

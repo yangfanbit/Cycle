@@ -1,9 +1,13 @@
 /**
- * 从多年行情**发现**的季节性结构（v0.34）。
+ * 从多年行情**发现**的季节性结构（v0.34 · v0.40 起接时点验证产物）。
  * ★ 只展示 STRICT（预先声明标准）与少量 EXPLORATORY；每条必须带年份数、命中率、中位超额。
  * ★ 当前状态：IN_WINDOW（当月）/ PRE_WINDOW（下月，前置观察）。
+ * ★★ 三层口径分开显示：① 历史统计（n_years/中位/命中）② 滚动检验（逐年训练+测试）
+ *    ③ 时点结论（oos_* / evidence_grade）。**历史命中率不是未来概率**。
+ * ★★ 时点可发现性：`pit_eligible_years = 0` 表示该模式**只有回看才成立**（当年无法被发现），
+ *    必须显式标注，不得与「当时可预判」混为一谈。
  */
-import raw from '@current/pattern_discovery_v0_7.json';
+import raw from '@current/pattern_discovery_v0_8.json';
 import { RichText } from '../RichText';
 
 interface P {
@@ -16,6 +20,8 @@ interface P {
   rep_stock_gap?: string;
   oos_tests?: number; oos_hit_rate?: number | null; oos_median_excess_pct?: number | null;
   oos_status?: string; oos_note?: string | null;
+  pit_eligible_years?: number; pit_first_year?: string | null;
+  discovery_basis?: string; evidence_grade?: string;
 }
 interface Cov { series: number; rows: number; first_date: string | null; last_date: string | null }
 interface D {
@@ -25,6 +31,7 @@ interface D {
     min_oos_tests?: number; in_sample_min_years?: number };
   source: { industry_boards: string; concept_baskets: string; benchmark: string };
   patterns: P[]; current_windows: P[]; tier_note: string; limitations: string[];
+  pit_only_count?: number;
 }
 const doc = raw as unknown as D;
 
@@ -32,6 +39,7 @@ const STATUS: Record<string, string> = { IN_WINDOW: '当月窗口', PRE_WINDOW: 
 
 export function DiscoveredPatterns() {
   const strict = doc.patterns.filter((p) => p.tier === 'STRICT');
+  const expl = doc.patterns.filter((p) => p.tier === 'EXPLORATORY');
   const top = [...doc.current_windows].sort((a, b) => b.median_excess_pct - a.median_excess_pct).slice(0, 6);
   return (
     <section className="fwd-disc" aria-label="数据发现的历史季节性结构" data-discovery-as-of={doc.as_of}>
@@ -43,13 +51,18 @@ export function DiscoveredPatterns() {
       <p className="fwd-cand-note" data-discovery-counts={`${strict.length}/${doc.patterns.length}`}>
         STRICT <strong>{strict.length}</strong> 条（标准：≥{doc.criteria.min_years} 年 · 中位超额 ≥
         {doc.criteria.min_median_excess}pp · 命中 ≥ {(doc.criteria.min_hit_rate * 100).toFixed(0)}%）
-        · 探索 {doc.patterns.length - strict.length} 条 · 当前/下月窗口 <strong>{doc.current_windows.length}</strong> 条
+        · 探索 <strong>{expl.length}</strong> 条 · 当前/下月窗口 <strong>{doc.current_windows.length}</strong> 条
         <span className="fwd-note">
           数据：股票 {doc.coverage_detail.stocks.series} 只（{doc.coverage_detail.stocks.first_date}–
           {doc.coverage_detail.stocks.last_date}）· 概念 {doc.coverage_detail.concept_baskets.rows.toLocaleString()} 行
-          · 仅用<strong>已完成月份</strong>做历史统计；样本外训练 ≥{doc.criteria.min_train_years ?? 5} 年、
-          报告需 ≥{doc.criteria.min_oos_tests ?? 5} 个检验年
+          · 仅用<strong>已完成月份</strong>做历史统计；样本外资格按年份滚动（训练 ≥
+          {doc.criteria.min_train_years ?? 5} 年、报告需 ≥{doc.criteria.min_oos_tests ?? 5} 个检验年）
         </span>
+      </p>
+      <p className="fwd-note" data-pit-only={doc.pit_only_count ?? 0}>
+        ★ 另有 <strong>{doc.pit_only_count ?? 0}</strong> 个模式「只在时点上曾达标、全样本不达标」——
+        旧方法（先按全样本筛选）看不到它们；本页不展示，仅作为方法对照记录在产物里。
+        时点可发现 ≠ 未来有效：<strong>历史命中率不是成功概率</strong>。
       </p>
       <ul className="fwd-patterns">
         {top.map((p) => (
@@ -74,6 +87,12 @@ export function DiscoveredPatterns() {
                 ? <>检验 <strong>{p.oos_tests}</strong> 年 · 命中 <strong>{((p.oos_hit_rate ?? 0) * 100).toFixed(0)}%</strong>
                     · 中位超额 <strong>{p.oos_median_excess_pct}%</strong></>
                 : <span className="fwd-note">证据不足（{p.oos_note ?? '检验年数不足'}）—— 不作结论</span>}
+            </p>
+            <p className="fwd-stats" data-pit={p.pit_eligible_years ?? 0}>
+              时点可发现：{(p.pit_eligible_years ?? 0) > 0
+                ? <><strong>{p.pit_eligible_years}</strong> 个年份在「只用之前年份」的条件下取得检验资格
+                    {p.pit_first_year ? `（最早 ${p.pit_first_year}）` : ''}</>
+                : <span className="fwd-note">★ 0 次 —— 该窗口<strong>只有回看才成立</strong>（当年无法被发现），不得当作「当时可预判」</span>}
             </p>
             {(p.representative_stocks ?? []).length > 0 && (
               <p className="fwd-stats" data-rep-stocks={p.representative_stocks!.length}>

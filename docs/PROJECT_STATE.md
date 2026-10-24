@@ -3,6 +3,52 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
+## ★★ 2026-10-24（续 · v0.40）季节性「先筛选后检验」偏差修正 + 快照签发准备
+
+> **B · 季节性发现改成真·时点流程**（新脚本 `discover_seasonal_patterns_v0_3.py` → 产物 `pattern_discovery_v0_8.json`）
+>
+> ★★ **旧方法（v0_2）到底错在哪**：逐年后验逻辑**本身没有泄漏**（每个检验年只用该年之前的年份训练）；
+> 错在**谁进入检验** —— 先按**全样本**判 STRICT/EXPLORATORY，只有通过者才跑 walk-forward，
+> 而全样本包含未来信息。实测（2026-10-23 数据）：
+> | 口径 | 检验次数 | 命中率 | 中位超额 |
+> |---|---|---|---|
+> | 旧（仅全样本幸存者） | 6,399 | **67.7%** | +2.07pp |
+> | 新（全部时点资格，不看全样本） | 8,290 | **57.9%** | +0.96pp |
+> | 被旧方法挡掉的 1,891 次 | 1,891 | **24.9%** | -1.86pp |
+> → 旧口径**高估 9.8pp 命中率 / 1.11pp 中位超额**；另有 **770 个模式**（125 个可报告 OOS）
+> 在旧产物里**完全不可见**。
+>
+> **新流程**（`protocol = seasonal_walk_forward_pit_v1`，阈值预先声明、不随结果调整）：
+> 每年资格 = 只用该年之前的年份，训练 ≥5 年且训练集中位≥1.5pp / 命中≥60%；
+> 模式是否入库 = **曾有时点资格 OR 全样本达标**（全样本不再决定谁被检验）；
+> 产物新增 `pit_eligible_years / pit_first_year / discovery_basis / evidence_grade /
+> walk_forward_failures / walk_forward_detail` + `bias_audit` + `walk_forward_audit.by_year`；
+> 770 个「仅时点达标」放独立数组 `pit_only_patterns`（`patterns` 形状与旧版一致，1300 条不变）。
+>
+> ★★ **逐年命中率波动极大**（`walk_forward_audit.by_year`）：2019 **28.7%**（中位 -1.33pp）·
+> 2021 **80.6%**（+4.77pp）· 2024 **48.9%**（-0.11pp）· 2026 57.8%（+1.25pp）→
+> **不能把任何一段的命中率当作稳定规律**，也不能写成未来概率。
+>
+> **产品侧影响**：`current_windows` 仍 204 条（成员不变），但其中 **65 条 `pit_eligible_years = 0`**
+> （只在回看时成立）；G1/G2 新增 `pit_eligible_years ≥ 1` 门槛 → **2 条从 G2 降到 G4**
+> （纺织制造 10 月、生态农业 11 月），G1 29 条不变、精选 6 条不变（全部可时点发现）。
+> `DiscoveredPatterns` 改为分三层显示（历史统计 / 滚动检验 / 时点结论）并显式标注「时点可发现 0 次」。
+> CI 门禁切到 `discover_seasonal_patterns_v0_3.py --check`（同一 Job，未新增）。
+>
+> **A · 快照签发准备**（`MS-2026-10-23-01` 仍 **DRAFT**，未晋升、未归档）：
+> ① BCI 获批证据改用**国家药监局原文**（`nmpa.gov.cn/.../20261020110807191.html`，2026-10-20）：
+> 原文称「国内首创的听觉脑干植入体（ABI）」「我国第一个在脑干区域进行电刺激和神经信号提取的产品」，
+> **未使用「脑机接口」表述**、未提型号 → 已从证据中删除「WH-01A」等媒体细节；
+> 对应 observation `OBS-2026-10-001` 升 **T1** 并挂原文 URL。
+> ② 旧 UNKNOWN「未检索到任何企业取得注册证」已**限定为 2026-10-08 轮判断**（原句保留 + 标注已被部分推翻），
+> 不再与 10-20 事实并列成冲突结论。
+> ③ 6 个对象新增 `stage_review` 字段：全部为 **REVIEWED_MAINTAINED**（本轮重查后维持，含逐条理由），
+> 与「沿用旧判断未重查」显式区分；BCI 仍 THEME_FORMING（单一产品获批 ≠ 规模商业化，且该产品属听觉植入方向）。
+> ④ 摘要升 `candidate_digest_v0_7.json`（213 张 · G1 29 / G2 62 / G4 122），快照重建后
+> `validate_market_snapshot` 仍 370 PASS / 8 WARN / 0 FAIL、`--check` 逐字节一致。
+>
+> **待人工签发**：`--canonical --reviewer <name> --supersedes MS-2026-10-13-01`（会自动把旧快照置 ARCHIVED）。
+
 ## ★★ 2026-10-24（长程任务 P0）Market Snapshot 刷新至 2026-10-23 —— **DRAFT，未签发**
 
 > 产物 `MS-2026-10-23-01.json`（status=DRAFT，274 KB）· regime 输入 `market_regime/MS-2026-10-23-01.json` ·

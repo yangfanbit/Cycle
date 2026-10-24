@@ -167,11 +167,12 @@
       "observation_type": "POLICY",
       "direction": "SUPPORTIVE",
       "evidence_strength": "STRONG",
-      "claim": "国内首个植入式听觉神经接口产品（诺尔康-WH-01A 听觉脑干植入体，ABI）经国家药监局创新医疗器械注册申请批准上市，为我国首个进入脑干刺激领域的国产植入装置。",
-      "source_tier": "T3",
-      "source_title": "国家药监局发布消息（2026-10-20），经多家媒体转述",
+      "claim": "国家药品监督管理局批准浙江诺尔康神经电子科技股份有限公司「听觉脑干植入体」创新产品注册申请；官方原文称其为「国内首创的听觉脑干植入体（ABI）」「我国第一个在脑干区域进行电刺激和神经信号提取的产品」。★ 原文未使用「脑机接口」表述。",
+      "source_tier": "T1",
+      "source_title": "国家药监局《听觉脑干植入体获批上市》（2026-10-20）",
       "temporal_relation": "BEFORE_SNAPSHOT",
-      "linked_object_id": "CC-2026-BCI-MEDTECH"
+      "linked_object_id": "CC-2026-BCI-MEDTECH",
+      "source_url": "https://www.nmpa.gov.cn/zhuanti/cxylqx/cxylqxlm/20261020110807191.html"
     },
     {
       "observation_id": "OBS-2026-10-002",
