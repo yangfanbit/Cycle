@@ -5,6 +5,7 @@ import { DirectionLookupSection } from './components/DirectionLookup/DirectionLo
 import { ExternalSeasonalRadar } from './components/ExternalSeasonalRadar/ExternalSeasonalRadar';
 import { ForwardObservationSection } from './components/ForwardObservation/ForwardObservationSection';
 import { ExternalClaimsSummary } from './components/ForwardObservation/ExternalClaimsSummary';
+import { CurrentCandidatesSection } from './components/Candidates/CurrentCandidatesSection';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import {
@@ -322,9 +323,6 @@ export default function App() {
         {/* ★ 第一视觉（Product 1.1 第二轮）：历史季节性机会地图。
             纵轴 = 大主题（一主题一行），横轴 = 1–12 月，条形 = 历史主要炒作在年内的窗口。
             首页是「地图」，不是「历史数据库」——逐条对象明细一律走下面的钻取入口。 */}
-        {/* ★★ A. 本期机会前瞻（v0.37 首屏第一视觉）：历史窗口型 + 新题材结构型 */}
-        {!verifiedMode && <ForwardObservationSection />}
-
         {/* ★★ B. 历史机会地图（标签切换：年内窗口 / 历史题材·事件） */}
         <div className="hm-tabs" role="tablist" aria-label="历史机会地图视图">
           <button type="button" role="tab" aria-selected={mapTab === 'seasonal'}
@@ -384,6 +382,15 @@ export default function App() {
           />
         )}
         </div>
+
+        {/* ★★ 第二主模块：统一当前候选前瞻（v0.38） */}
+        {!verifiedMode && <CurrentCandidatesSection />}
+
+        {/* ★★ 第三模块：模式发现与验证（默认收起，不抢首屏） */}
+        <details className="fwd-mode-block" data-mode-block="1">
+          <summary>模式发现与验证（专项假设 · 自动发现 · 外部线索）</summary>
+          {!verifiedMode && <ForwardObservationSection />}
+        </details>
 
         {/* ★ 外部季节性观察雷达（2026-10-13 新增）——
             ★★ 与上方地图**并列但来源分离**：上方是 ThreeC **从历史数据得到的**窗口（研究结果），
