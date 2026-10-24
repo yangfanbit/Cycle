@@ -148,15 +148,18 @@ def build_concepts(c, min_members=8, max_members=120):
             series.setdefault(d, {})[sid] = close
         prev_map = {}
         level = 1000.0
+        cov = []
         for d in sorted(series):
             cur = series[d]
             rets = [cur[s] / prev_map[s] - 1.0 for s in cur if s in prev_map and prev_map[s] > 0]
             if rets:
                 level *= 1.0 + statistics.fmean(rets)
-            out.append([d, level, level, level, level, float(len(rets))])
+            # ★★ volume 字段**不塞成分数**：合成序列没有成交量 → 写 0，成分覆盖另存 meta
+            out.append([d, level, level, level, level, 0.0])
+            cov.append(len(rets))
             prev_map = cur
-        if len(out) < 250:
-            continue
+        if len(out) < 250 or (cov and min(cov) < max(3, 0.3 * len(syms))):
+            continue   # ★ 覆盖率过低的日子（停牌/未上市）过多 → 不生成，避免假序列
         sid = "CPT_" + cpt["node"].replace("gn_", "")
         c.execute("INSERT OR REPLACE INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                   (sid, cpt["name"], "concept_basket", "sina+selfbuild", cpt["node"], "raw",
@@ -166,6 +169,12 @@ def build_concepts(c, min_members=8, max_members=120):
                       [(sid, r[0], r[1], r[2], r[3], r[4], r[5]) for r in out])
         c.execute("INSERT OR REPLACE INTO scan_meta VALUES (?,?)",
                   ("members:" + sid, json.dumps(syms, ensure_ascii=False)))
+        c.execute("INSERT OR REPLACE INTO scan_meta VALUES (?,?)",
+                  ("coverage:" + sid, json.dumps({"members": len(syms),
+                                                  "avg_daily_covered": round(sum(cov) / len(cov), 1) if cov else 0,
+                                                  "min_daily_covered": min(cov) if cov else 0,
+                                                  "snapshot_at": time.strftime("%Y-%m-%d %H:%M:%S")},
+                                                 ensure_ascii=False)))
         c.commit()
         built += 1
         if built % 10 == 0:

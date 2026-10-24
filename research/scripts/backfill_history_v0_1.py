@@ -82,6 +82,14 @@ def conn():
     return c
 
 
+def refresh_stats(c, sid):
+    """★ 写完后按**数据库实际内容**回填 rows/first_date/last_date（不再相信传入值）。"""
+    n, f, l = c.execute(
+        "SELECT COUNT(*), MIN(trade_date), MAX(trade_date) FROM scan_daily WHERE series_id=?", (sid,)).fetchone()
+    c.execute("UPDATE scan_series SET rows=?, first_date=?, last_date=? WHERE series_id=?", (n, f, l, sid))
+    return n, f, l
+
+
 def upsert_series(c, sid, name, kind, provider, symbol, rows, status="OK", note=None):
     if not rows:
         c.execute("INSERT OR REPLACE INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -95,6 +103,7 @@ def upsert_series(c, sid, name, kind, provider, symbol, rows, status="OK", note=
     c.execute("INSERT OR REPLACE INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
               (sid, name, kind, provider, symbol, "raw", rows[0][0], rows[-1][0], len(rows),
                time.strftime("%Y-%m-%d %H:%M:%S"), status, note))
+    refresh_stats(c, sid)
     c.commit()
 
 
@@ -167,7 +176,7 @@ def backfill_boards(c, years):
     return done
 
 
-def backfill_stocks(c, limit=None, force=False, datalen=3000):
+def backfill_stocks(c, limit=None, force=False, datalen=3000, since_days=45):
     uni_path = os.path.join(REPO, "research", "data", "forward_scan", "universe_v0_1.json")
     if os.path.exists(uni_path):
         universe = json.load(open(uni_path, encoding="utf-8"))
@@ -194,11 +203,28 @@ def backfill_stocks(c, limit=None, force=False, datalen=3000):
         if limit and done >= limit:
             break
         row = c.execute("SELECT last_date, rows FROM scan_series WHERE series_id=?", (sym,)).fetchone()
-        if row and row[1] and not force:
-            skipped += 1
-            continue
+        # ★★ 默认**增量刷新最近一段**（不再「有数据就永久跳过」）；--force 才整段重取
+        has = bool(row and row[1])
+        if has and not force:
+            if row[0] and row[0] >= _latest_trade_day(c):
+                skipped += 1
+                continue
+            datalen_use = max(60, int(since_days * 5 / 7) + 10)
+        else:
+            datalen_use = datalen
+        rows = []
+        for attempt in range(3):
+            try:
+                rows = sina_kline(sym, datalen_use)
+                if rows:
+                    break
+            except Exception:
+                time.sleep(0.5 * (attempt + 1))
         try:
-            rows = sina_kline(sym, datalen)
+            if has and not force:
+                old = [list(r) for r in c.execute(
+                    "SELECT trade_date, open, high, low, close, volume FROM scan_daily WHERE series_id=?", (sym,))]
+                rows = merge_rows(old, rows)
             upsert_series(c, sym, name, "stock", "sina", sym, rows,
                           status="OK" if rows else "EMPTY")
         except Exception as exc:  # noqa: BLE001
@@ -222,6 +248,23 @@ def backfill_indices(c):
         upsert_series(c, sid, name, "index", "sina", sym, rows, status="OK" if rows else "EMPTY")
         time.sleep(PACING)
     c.commit()
+
+
+def _latest_trade_day(c):
+    r = c.execute("SELECT MAX(trade_date) FROM scan_daily WHERE series_id='CSI300'").fetchone()
+    return (r[0] or "9999-99-99").replace("-", "") if r[0] else "99999999"
+
+
+def merge_rows(old, new):
+    """按日期合并（新值覆盖旧值），日期统一为无横线格式。"""
+    m = {}
+    for r in old:
+        d = str(r[0]).replace("-", "")
+        m[d] = [d, r[1], r[2], r[3], r[4], r[5]]
+    for r in new:
+        d = str(r[0]).replace("-", "")
+        m[d] = [d, r[1], r[2], r[3], r[4], r[5]]
+    return [m[d] for d in sorted(m)]
 
 
 def report():

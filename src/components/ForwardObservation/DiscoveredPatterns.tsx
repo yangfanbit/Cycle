@@ -3,7 +3,7 @@
  * ★ 只展示 STRICT（预先声明标准）与少量 EXPLORATORY；每条必须带年份数、命中率、中位超额。
  * ★ 当前状态：IN_WINDOW（当月）/ PRE_WINDOW（下月，前置观察）。
  */
-import raw from '@current/pattern_discovery_v0_4.json';
+import raw from '@current/pattern_discovery_v0_5.json';
 import { RichText } from '../RichText';
 
 interface P {
@@ -11,7 +11,10 @@ interface P {
   median_excess_pct: number; hit_rate: number; tier: string;
   current_status: string; kind: string; best_year: { year: string; excess_pct: number };
   worst_year: { year: string; excess_pct: number };
-  representative_stocks?: { series_id: string; median_excess_pct: number; years: number }[];
+  representative_stocks?: { series_id: string; median_excess_pct: number; years: number; source?: string }[];
+  rep_stock_gap?: string;
+  oos_tests?: number; oos_hit_rate?: number | null; oos_median_excess_pct?: number | null;
+  oos_status?: string; oos_note?: string | null;
 }
 interface D {
   as_of: string; coverage: string; criteria: { min_years: number; min_median_excess: number; min_hit_rate: number };
@@ -51,11 +54,22 @@ export function DiscoveredPatterns() {
               · 最好 {p.best_year.year} {p.best_year.excess_pct > 0 ? '+' : ''}{p.best_year.excess_pct}%
               / 最差 {p.worst_year.year} {p.worst_year.excess_pct}%
             </p>
+            <p className="fwd-stats" data-oos={p.oos_status ?? ''}>
+              样本外（滚动）：{p.oos_status === 'REPORTED'
+                ? <>检验 <strong>{p.oos_tests}</strong> 年 · 命中 <strong>{((p.oos_hit_rate ?? 0) * 100).toFixed(0)}%</strong>
+                    · 中位超额 <strong>{p.oos_median_excess_pct}%</strong></>
+                : <span className="fwd-note">证据不足（{p.oos_note ?? '检验年数不足'}）—— 不作结论</span>}
+            </p>
             {(p.representative_stocks ?? []).length > 0 && (
               <p className="fwd-stats" data-rep-stocks={p.representative_stocks!.length}>
                 代表性股票（当前成分）：{p.representative_stocks!.map((x) =>
                   `${x.series_id} ${x.median_excess_pct > 0 ? '+' : ''}${x.median_excess_pct}%`).join(' · ')}
                 <span className="fwd-note">★ 当前成分回溯，非当年成分</span>
+              </p>
+            )}
+            {p.kind !== 'concept_basket' && (
+              <p className="fwd-note" data-rep-stock-gap="1">
+                数据缺口：行业板块<strong>没有历史成分</strong> → 不绑定个股（不代表没有代表股，只代表本数据无法证明）
               </p>
             )}
           </li>
