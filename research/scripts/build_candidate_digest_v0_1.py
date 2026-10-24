@@ -171,7 +171,7 @@ def main(argv):
         oos_hit = h.get("oos_hit_rate") or 0
         n_years = h.get("n_years") or 0
         pos = {"IN_WINDOW": 3, "PRE_WINDOW": 2}.get(c["time_position"], 1)
-        # ★ 顺序与 featured_note 一致：OOS 证据 → 检验年数 → 历史年数 → 时间位置 → 中位超额 → 分组
+        # ★ 顺序与 featured_note 逐字一致：样本外证据（可报告 → 检验年数 → 命中率）→ 历史年数 → 时间位置 → 中位超额 → 分组
         return (-oos_ok, -oos_tests, -oos_hit, -n_years, -pos,
                 -(h.get("median_excess_pct") or -99), order[c["group"]])
 
@@ -234,7 +234,8 @@ def main(argv):
         ],
         "cards": cards,
         "featured": featured,
-        "featured_note": ("精选 6 条：按「样本外证据 → 检验年数 → 历史年数 → 时间位置 → 中位超额 → 分组」排序，"
+        "featured_note": ("精选 6 条：按「样本外证据（是否可报告 → 检验年数 → 样本外命中率）"
+                          " → 历史年数 → 时间位置 → 中位超额 → 分组」排序，"
                           "并限制同月份季节窗口 ≤2、同类型 ≤3、当前题材保底 1 条；"
                           "仅代表研究浏览顺序，不是收益预测。"),
         "limitations": [
