@@ -12,6 +12,7 @@ import {
   type ForwardPattern,
 } from '../../data/timeline/forwardObservation';
 import { RichText } from '../RichText';
+import { DiscoveredPatterns } from './DiscoveredPatterns';
 
 function num(v: number | null | undefined, suffix = '%'): string {
   return v === null || v === undefined ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}${suffix}`;
@@ -155,6 +156,8 @@ export function ForwardObservationSection() {
         {D.sector_scan.top_20d.slice(0, 5).map((x) => `${x.name} ${num(x.ret_20d)}`).join(' · ')}
         <span className="fwd-note">（仅用于定位「哪些已经涨过」，不作为候选）</span>
       </p>
+
+      <DiscoveredPatterns />
 
       <details className="fwd-limits">
         <summary>已知限制（必读）</summary>

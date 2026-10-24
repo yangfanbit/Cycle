@@ -135,3 +135,6 @@ research/database/market_data.db-wal
 
 # v0.33 前瞻扫描的抓取缓存（可重跑生成，不入库）
 research/data/forward_scan/
+
+# v0.34 全市场回补库（可重建，不入库）
+research/database/history_scan.db

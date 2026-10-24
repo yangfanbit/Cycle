@@ -1,0 +1,31 @@
+{
+ "artifact": "pattern_discovery",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-23",
+ "as_of": "2026-10-23",
+ "as_of_source": "history_scan.db · CSI300 最后一根日线",
+ "coverage": "20100104 → 20261023",
+ "source": {
+  "db": "research/database/history_scan.db",
+  "provider": "ths（行业板块按年接口 bk_881xxx/01/<year>.js）",
+  "benchmark": "sina sh000300（原始收盘）",
+  "price_type": "raw",
+  "boards_scanned": 90
+ },
+ "criteria": {
+  "min_years": 8,
+  "min_median_excess": 1.5,
+  "min_hit_rate": 0.6,
+  "declared_before_scan": true,
+  "rule": "板块该月收益 − 沪深300同月收益（原始收盘，首→末交易日）"
+ },
+ "patterns": [],
+ "current_windows": [],
+ "tier_note": "STRICT = 预先声明标准（n≥8 年、中位超额≥1.5pp、命中≥60%）；EXPLORATORY = 放宽到 ≥0.8pp / ≥55%，**仅作探索线索**，不得当已验证规律。",
+ "limitations": [
+  "★ 描述性统计，不是因果，也不预测；单年极端行情会主导中位数，必须同时看 hit_rate 与 per_year。",
+  "★ 行业分类为**当前**分类回溯，历史分类变更无法还原（幸存者/分类偏差）。",
+  "★ 代表股票暂缺：板块历史成分不可得，不臆造「当年龙头」。",
+  "★ 板块序列来自同花顺按年接口，缺失年份已在 n_years 中体现。"
+ ]
+}
