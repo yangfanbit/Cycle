@@ -3,7 +3,7 @@
  * ★ 只展示 STRICT（预先声明标准）与少量 EXPLORATORY；每条必须带年份数、命中率、中位超额。
  * ★ 当前状态：IN_WINDOW（当月）/ PRE_WINDOW（下月，前置观察）。
  */
-import raw from '@current/pattern_discovery_v0_6.json';
+import raw from '@current/pattern_discovery_v0_7.json';
 import { RichText } from '../RichText';
 
 interface P {
@@ -11,7 +11,8 @@ interface P {
   median_excess_pct: number; hit_rate: number; tier: string;
   current_status: string; kind: string; best_year: { year: string; excess_pct: number };
   worst_year: { year: string; excess_pct: number };
-  representative_stocks?: { series_id: string; median_excess_pct: number; years: number; source?: string }[];
+  representative_stocks?: { series_id: string; name?: string | null; name_status?: string;
+    median_excess_pct: number; years: number; source?: string }[];
   rep_stock_gap?: string;
   oos_tests?: number; oos_hit_rate?: number | null; oos_median_excess_pct?: number | null;
   oos_status?: string; oos_note?: string | null;
@@ -77,7 +78,8 @@ export function DiscoveredPatterns() {
             {(p.representative_stocks ?? []).length > 0 && (
               <p className="fwd-stats" data-rep-stocks={p.representative_stocks!.length}>
                 代表性股票（当前成分）：{p.representative_stocks!.map((x) =>
-                  `${x.series_id} ${x.median_excess_pct > 0 ? '+' : ''}${x.median_excess_pct}%`).join(' · ')}
+                  `${x.name ? x.name : x.series_id}（${x.series_id}）${x.name ? '' : '· 名称缺失'} ${
+                    x.median_excess_pct > 0 ? '+' : ''}${x.median_excess_pct}%`).join(' · ')}
                 <span className="fwd-note">★ 当前成分回溯，非当年成分</span>
               </p>
             )}

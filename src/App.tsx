@@ -4,6 +4,7 @@ import { CurrentSnapshotSection } from './components/CurrentSnapshot/CurrentSnap
 import { DirectionLookupSection } from './components/DirectionLookup/DirectionLookupSection';
 import { ExternalSeasonalRadar } from './components/ExternalSeasonalRadar/ExternalSeasonalRadar';
 import { ForwardObservationSection } from './components/ForwardObservation/ForwardObservationSection';
+import { ExternalClaimsSummary } from './components/ForwardObservation/ExternalClaimsSummary';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import {
@@ -204,6 +205,7 @@ export default function App() {
   }, []);
 
   const [openTheme, setOpenTheme] = useState<string | null>(null);
+  const [mapTab, setMapTab] = useState<'seasonal' | 'events'>('events');
   const openThemeRow = useMemo(
     () => allThemeRows.find((r) => themeKey(r) === openTheme) ?? null,
     [allThemeRows, openTheme],
@@ -320,7 +322,24 @@ export default function App() {
         {/* ★ 第一视觉（Product 1.1 第二轮）：历史季节性机会地图。
             纵轴 = 大主题（一主题一行），横轴 = 1–12 月，条形 = 历史主要炒作在年内的窗口。
             首页是「地图」，不是「历史数据库」——逐条对象明细一律走下面的钻取入口。 */}
-        {!verifiedMode && mapRows.length > 0 && (
+        {/* ★★ A. 本期机会前瞻（v0.37 首屏第一视觉）：历史窗口型 + 新题材结构型 */}
+        {!verifiedMode && <ForwardObservationSection />}
+
+        {/* ★★ B. 历史机会地图（标签切换：年内窗口 / 历史题材·事件） */}
+        <div className="hm-tabs" role="tablist" aria-label="历史机会地图视图">
+          <button type="button" role="tab" aria-selected={mapTab === 'seasonal'}
+                  className={`hm-tab${mapTab === 'seasonal' ? ' is-active' : ''}`}
+                  data-map-tab="seasonal" onClick={() => setMapTab('seasonal')}>
+            年内窗口
+          </button>
+          <button type="button" role="tab" aria-selected={mapTab === 'events'}
+                  className={`hm-tab${mapTab === 'events' ? ' is-active' : ''}`}
+                  data-map-tab="events" onClick={() => setMapTab('events')}>
+            历史题材 / 事件
+          </button>
+        </div>
+
+        {!verifiedMode && mapTab === 'seasonal' && mapRows.length > 0 && (
           <SeasonalMap
             rows={mapRows}
             today={today}
@@ -351,7 +370,7 @@ export default function App() {
             ★ 复用 `HistoricalEventMap`（事件卡 / 跨年份比较 / 经验基准概率原样），
               题材清单由 `historical_event_maps_index.json` 驱动。
             ★ 与下方外部雷达**职责分离**：本区 = ThreeC 从历史数据得到；雷达 = 外部资料声称。 */}
-        {!verifiedMode && (
+        {!verifiedMode && mapTab === 'events' && (
           <HistoricalThemeMaps
             activeThemeId={mapTheme ?? undefined}
             onSelectTheme={setMapTheme}
@@ -362,24 +381,12 @@ export default function App() {
           />
         )}
 
-        {/* ★★ 当前前瞻观察（v0.33）—— 历史重复模式 × 当前窗口。
-            与上方历史地图**职责分离**：地图 = 事后重建；本区 = 以 as_of 为截止的前瞻候选。 */}
-        {!verifiedMode && <ForwardObservationSection />}
-
         {/* ★ 外部季节性观察雷达（2026-10-13 新增）——
             ★★ 与上方地图**并列但来源分离**：上方是 ThreeC **从历史数据得到的**窗口（研究结果），
                本视图是**外部资料声称的**季节性线索（未经 ThreeC 验证）。
                两者**不得**混为一个没有来源区分的指标体系。 */}
-        {!verifiedMode && (
-          <ExternalSeasonalRadar
-            today={today}
-            onOpenMap={openMapTheme}
-            onRequestDraft={bringExternalLead}
-            onOpenObject={openHistoricalObject}
-            canOpenObject={canOpenHistoricalObject}
-            macroRows={macroThemeRows}
-          />
-        )}
+                {/* ★ C. 外部季节性线索：只作参考资料，默认折叠；状态来自**证据核验**产物 */}
+        {!verifiedMode && <ExternalClaimsSummary />}
 
         {/* ★ 覆盖边界（ThreeC 1.2 · Usage-Driven）
             用户拿一个真实方向来问（例如「文化传媒」）时，第一件要知道的是「它在不在覆盖内」。

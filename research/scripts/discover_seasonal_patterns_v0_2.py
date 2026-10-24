@@ -180,8 +180,15 @@ def main(argv):
             if len(exs) >= MIN_STOCK_YEARS:
                 scored.append((sid, round(statistics.median(exs), 2), len(exs)))
         scored.sort(key=lambda x: -x[1])
+        # ★ 代表股票写入**可核实的证券名称**（来自 scan_series 元数据）；解析不到就留空并标缺失
+        name_map = {}
+        for s_, _v, _n in scored[:3]:
+            row_n = conn.execute("SELECT name FROM scan_series WHERE series_id=?", (s_,)).fetchone()
+            name_map[s_] = (row_n[0] if row_n and row_n[0] else None)
         p["representative_stocks"] = [
-            {"series_id": s_, "median_excess_pct": v, "years": n,
+            {"series_id": s_, "name": name_map.get(s_),
+             "name_status": "RESOLVED" if name_map.get(s_) else "MISSING",
+             "median_excess_pct": v, "years": n,
              "source": "当前概念成分 + 基准日历对齐"} for s_, v, n in scored[:3]]
         if not scored:
             p["rep_stock_gap"] = "成分内没有 ≥%d 年可比样本的个股" % MIN_STOCK_YEARS

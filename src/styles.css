@@ -4121,3 +4121,13 @@ html, body {
 .fwd-cand-note, .fwd-sectors { font-size: 11.5px; color: var(--ink-3); }
 .fwd-limits { margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
 .fwd-limits ul { margin: 4px 0 0; padding-left: 16px; }
+
+/* ★★ v0.37 首页：地图标签 + 外部线索摘要 */
+.hm-tabs { display: flex; gap: 8px; margin: 10px 0 6px; }
+.hm-tab { font-size: 12.5px; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--panel); color: var(--ink-2); cursor: pointer; }
+.hm-tab.is-active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.fwd-ext { margin: 10px 0; font-size: 12px; color: var(--ink-2); }
+.fwd-ext summary { cursor: pointer; color: var(--ink-2); }
+.fwd-ext-list { margin: 6px 0 0; padding-left: 16px; }
+.fwd-ext-list li { margin: 4px 0; line-height: 1.6; }

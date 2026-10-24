@@ -1,0 +1,567 @@
+{
+ "artifact": "external_claim_verification",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-24T15:10:14",
+ "as_of": "20261023",
+ "source": {
+  "external": "research/current/external_seasonal_calendar_v0_2.json（外部资料，原始报告不在库内）",
+  "internal": "research/current/pattern_discovery_v0_7.json（板块×日历月，基准沪深300）"
+ },
+ "rule": "★ 内部数据支持「类似时间结构」≠ 外部报告的具体说法已得到验证。本库没有外部原始报告 → 所有条目 external_report_verified = false。",
+ "counts": {
+  "total": 25,
+  "internal_supported": 10,
+  "internal_weak": 2,
+  "not_supported": 0,
+  "untestable": 11,
+  "not_calendar": 2
+ },
+ "claims": [
+  {
+   "claim_id": "EXT-01",
+   "name": "中央一号文件 / 农业",
+   "category": "政策文件",
+   "claimed_window": "1 月底至 2 月",
+   "claimed_months": [
+    1
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（CPT_stny）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "农业",
+   "internal_pattern": {
+    "pattern_id": "SEAS-CPT_stny-M02",
+    "board": "生态农业",
+    "kind": "concept_basket",
+    "month": 2,
+    "n_years": 12,
+    "median_excess_pct": 2.96,
+    "hit_rate": 0.667,
+    "oos_status": "REPORTED",
+    "oos_tests": 6,
+    "oos_hit_rate": 0.667
+   }
+  },
+  {
+   "claim_id": "EXT-02",
+   "name": "春节消费",
+   "category": "消费旺季",
+   "claimed_window": "1–2 月",
+   "claimed_months": [
+    1
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-03",
+   "name": "两会",
+   "category": "政策事件",
+   "claimed_window": "3 月",
+   "claimed_months": [
+    3
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-04",
+   "name": "年报 / 一季报",
+   "category": "财报季",
+   "claimed_window": "3–4 月",
+   "claimed_months": [
+    3
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-05",
+   "name": "军工 / 「九月效应」",
+   "category": "行业季节性",
+   "claimed_window": "7–9 月",
+   "claimed_months": [
+    7
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（CPT_jght）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "军工",
+   "internal_pattern": {
+    "pattern_id": "SEAS-CPT_jght-M02",
+    "board": "军工航天",
+    "kind": "concept_basket",
+    "month": 2,
+    "n_years": 12,
+    "median_excess_pct": 5.48,
+    "hit_rate": 0.917,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 1.0
+   }
+  },
+  {
+   "claim_id": "EXT-06",
+   "name": "科技产品发布季",
+   "category": "行业季节性",
+   "claimed_window": "8–9 月",
+   "claimed_months": [
+    8
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-07",
+   "name": "中秋、国庆消费",
+   "category": "消费旺季",
+   "claimed_window": "9–10 月",
+   "claimed_months": [
+    9
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-08",
+   "name": "双十一",
+   "category": "消费旺季",
+   "claimed_window": "10–11 月",
+   "claimed_months": [
+    10
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-09",
+   "name": "供暖 / 能源",
+   "category": "行业季节性",
+   "claimed_window": "11–12 月",
+   "claimed_months": [
+    11
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（BK881267）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "能源",
+   "internal_pattern": {
+    "pattern_id": "SEAS-BK881267-M02",
+    "board": "能源金属",
+    "kind": "industry_board",
+    "month": 2,
+    "n_years": 12,
+    "median_excess_pct": 8.78,
+    "hit_rate": 0.75,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 0.571
+   }
+  },
+  {
+   "claim_id": "EXT-10",
+   "name": "春季躁动",
+   "category": "市场现象",
+   "claimed_window": "12 月至次年 2 月",
+   "claimed_months": [
+    12
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-11",
+   "name": "冰雪经济",
+   "category": "行业季节性",
+   "claimed_window": "10 月至次年 3 月",
+   "claimed_months": [
+    10
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-12",
+   "name": "流感 / 医药",
+   "category": "行业季节性",
+   "claimed_window": "9 月至次年 1 月",
+   "claimed_months": [
+    9
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（CPT_jxlg）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "流感",
+   "internal_pattern": {
+    "pattern_id": "SEAS-CPT_jxlg-M03",
+    "board": "甲型流感",
+    "kind": "concept_basket",
+    "month": 3,
+    "n_years": 12,
+    "median_excess_pct": 5.91,
+    "hit_rate": 0.917,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 1.0
+   }
+  },
+  {
+   "claim_id": "EXT-13",
+   "name": "暑期档电影 / 旅游 / 游戏",
+   "category": "行业季节性",
+   "claimed_window": "6–8 月",
+   "claimed_months": [
+    6
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（BK881160）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "旅游",
+   "internal_pattern": {
+    "pattern_id": "SEAS-BK881160-M03",
+    "board": "旅游及酒店",
+    "kind": "industry_board",
+    "month": 3,
+    "n_years": 12,
+    "median_excess_pct": 6.28,
+    "hit_rate": 1.0,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 1.0
+   }
+  },
+  {
+   "claim_id": "EXT-14",
+   "name": "迎峰度夏电力",
+   "category": "行业季节性",
+   "claimed_window": "5–7 月",
+   "claimed_months": [
+    5
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（BK881145）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "迎峰度夏电力",
+   "internal_pattern": {
+    "pattern_id": "SEAS-BK881145-M03",
+    "board": "电力",
+    "kind": "industry_board",
+    "month": 3,
+    "n_years": 12,
+    "median_excess_pct": 4.89,
+    "hit_rate": 0.75,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 0.714
+   }
+  },
+  {
+   "claim_id": "EXT-15",
+   "name": "五一假期",
+   "category": "消费旺季",
+   "claimed_window": "4–5 月",
+   "claimed_months": [
+    4
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-16",
+   "name": "制冷 / 降温商品",
+   "category": "行业季节性",
+   "claimed_window": "6–8 月",
+   "claimed_months": [
+    6
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_WEAK",
+   "reason": "内部同月结构为正但未同时满足 STRICT + OOS 门槛",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "制冷",
+   "internal_pattern": {
+    "pattern_id": "SEAS-BK884073-M02",
+    "board": "制冷空调设备",
+    "kind": "industry_board",
+    "month": 2,
+    "n_years": 8,
+    "median_excess_pct": 6.18,
+    "hit_rate": 1.0,
+    "oos_status": "INSUFFICIENT_OOS",
+    "oos_tests": 3,
+    "oos_hit_rate": 1.0
+   }
+  },
+  {
+   "claim_id": "EXT-17",
+   "name": "防汛 / 水利",
+   "category": "行业季节性",
+   "claimed_window": "6–7 月",
+   "claimed_months": [
+    6
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（CPT_sljs）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "水利",
+   "internal_pattern": {
+    "pattern_id": "SEAS-CPT_sljs-M02",
+    "board": "水利建设",
+    "kind": "concept_basket",
+    "month": 2,
+    "n_years": 12,
+    "median_excess_pct": 4.33,
+    "hit_rate": 0.75,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 0.714
+   }
+  },
+  {
+   "claim_id": "EXT-18",
+   "name": "618 电商",
+   "category": "消费旺季",
+   "claimed_window": "5–6 月",
+   "claimed_months": [
+    5
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（BK881177）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "电商",
+   "internal_pattern": {
+    "pattern_id": "SEAS-BK881177-M03",
+    "board": "互联网电商",
+    "kind": "industry_board",
+    "month": 3,
+    "n_years": 12,
+    "median_excess_pct": 4.04,
+    "hit_rate": 0.667,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 0.571
+   }
+  },
+  {
+   "claim_id": "EXT-19",
+   "name": "金九银十行业 / 周期",
+   "category": "行业季节性",
+   "claimed_window": "9–10 月",
+   "claimed_months": [
+    9
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  },
+  {
+   "claim_id": "EXT-20",
+   "name": "黄金 / 稀土",
+   "category": "资源品",
+   "claimed_window": "10 月",
+   "claimed_months": [
+    10
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（CPT_hjgn）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "黄金",
+   "internal_pattern": {
+    "pattern_id": "SEAS-CPT_hjgn-M03",
+    "board": "黄金概念",
+    "kind": "concept_basket",
+    "month": 3,
+    "n_years": 12,
+    "median_excess_pct": 3.83,
+    "hit_rate": 0.75,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 0.857
+   }
+  },
+  {
+   "claim_id": "EXT-21",
+   "name": "环保",
+   "category": "政策 / 行业",
+   "claimed_window": "3 月",
+   "claimed_months": [
+    3,
+    11
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_WEAK",
+   "reason": "内部同月结构为正但未同时满足 STRICT + OOS 门槛",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "环保",
+   "internal_pattern": {
+    "pattern_id": "SEAS-BK881284-M02",
+    "board": "环保设备",
+    "kind": "industry_board",
+    "month": 2,
+    "n_years": 8,
+    "median_excess_pct": 5.27,
+    "hit_rate": 0.875,
+    "oos_status": "INSUFFICIENT_OOS",
+    "oos_tests": 3,
+    "oos_hit_rate": 0.667
+   }
+  },
+  {
+   "claim_id": "EXT-22",
+   "name": "教育",
+   "category": "行业季节性",
+   "claimed_window": "6–9 月",
+   "claimed_months": [
+    6
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "INTERNAL_SUPPORTED",
+   "reason": "内部同月结构达 STRICT 且有样本外证据（BK881178）",
+   "match_method": "NAME_SUBSTRING（弱匹配，仅作对照，不作为验证）",
+   "matched_keyword": "教育",
+   "internal_pattern": {
+    "pattern_id": "SEAS-BK881178-M02",
+    "board": "教育",
+    "kind": "industry_board",
+    "month": 2,
+    "n_years": 12,
+    "median_excess_pct": 4.43,
+    "hit_rate": 1.0,
+    "oos_status": "REPORTED",
+    "oos_tests": 7,
+    "oos_hit_rate": 1.0
+   }
+  },
+  {
+   "claim_id": "EXT-23",
+   "name": "AI+、机器人、商业航天、低空经济等事件驱动题材",
+   "category": "事件驱动",
+   "claimed_window": null,
+   "claimed_months": [],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "NOT_CALENDAR",
+   "reason": "无固定月份窗口（事件驱动）→ 只能核事件，不能核日历"
+  },
+  {
+   "claim_id": "EXT-24",
+   "name": "展会 / 年度事件",
+   "category": "事件驱动",
+   "claimed_window": null,
+   "claimed_months": [],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026"
+   ],
+   "status": "NOT_CALENDAR",
+   "reason": "无固定月份窗口（事件驱动）→ 只能核事件，不能核日历"
+  },
+  {
+   "claim_id": "EXT-25",
+   "name": "高送转预案",
+   "category": "财报季 / 事件",
+   "claimed_window": "3–4 月",
+   "claimed_months": [
+    3
+   ],
+   "external_report_verified": false,
+   "external_source_ids": [
+    "SRC-SEASONAL-2026",
+    "SRC-INVEST-PATTERN"
+   ],
+   "status": "UNTESTABLE_NO_SERIES",
+   "reason": "内部板块/概念序列中找不到可对照对象（不按名称硬配）"
+  }
+ ],
+ "limitations": [
+  "★ 名称子串匹配是**弱匹配**，仅用于找对照序列，不能证明外部说法正确。",
+  "★ 外部报告原件不在库内 → 任何条目都不得标为「已验证」。",
+  "★ 板块/概念均为当前分类回溯；概念为自建等权合成序列。"
+ ]
+}
