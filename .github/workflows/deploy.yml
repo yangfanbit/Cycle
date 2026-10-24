@@ -190,6 +190,12 @@ jobs:
           python research/scripts/test_build_historical_market_roles.py
           echo "::endgroup::"
 
+      # ★★ v0.33：当前前瞻观察（--check 只校验产物结构与 PIT 口径，**不联网**）
+      - name: Forward observation (--check)
+        run: |
+          set -euo pipefail
+          python research/scripts/build_forward_observation_v0_1.py --check
+
       - name: Research read-only gates
         run: |
           set -euo pipefail

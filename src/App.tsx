@@ -3,6 +3,7 @@ import { CampaignDetail } from './components/CampaignDetail/CampaignDetail';
 import { CurrentSnapshotSection } from './components/CurrentSnapshot/CurrentSnapshotSection';
 import { DirectionLookupSection } from './components/DirectionLookup/DirectionLookupSection';
 import { ExternalSeasonalRadar } from './components/ExternalSeasonalRadar/ExternalSeasonalRadar';
+import { ForwardObservationSection } from './components/ForwardObservation/ForwardObservationSection';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import {
@@ -360,6 +361,10 @@ export default function App() {
             canOpenCurrentObject={canOpenCurrentObject}
           />
         )}
+
+        {/* ★★ 当前前瞻观察（v0.33）—— 历史重复模式 × 当前窗口。
+            与上方历史地图**职责分离**：地图 = 事后重建；本区 = 以 as_of 为截止的前瞻候选。 */}
+        {!verifiedMode && <ForwardObservationSection />}
 
         {/* ★ 外部季节性观察雷达（2026-10-13 新增）——
             ★★ 与上方地图**并列但来源分离**：上方是 ThreeC **从历史数据得到的**窗口（研究结果），

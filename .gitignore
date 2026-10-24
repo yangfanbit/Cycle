@@ -132,3 +132,6 @@ research/data/market/normalized/*.csv
 research/database/market_data.db
 research/database/market_data.db-journal
 research/database/market_data.db-wal
+
+# v0.33 前瞻扫描的抓取缓存（可重跑生成，不入库）
+research/data/forward_scan/

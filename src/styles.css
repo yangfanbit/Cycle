@@ -4094,3 +4094,30 @@ html, body {
 .fem-obj-open-na { font-size: 9.5px; color: var(--ink-3); font-style: italic; }
 .fem-obj-status { font-size: 9.5px; color: var(--ink-3); margin: 0 4px; }
 .fem-obj-mr { color: var(--ink-2); }
+
+/* ★★ v0.33 当前前瞻观察 */
+.fwd { margin: 18px 0 10px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.fwd-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
+.fwd-title { margin: 0; font-size: 15px; }
+.fwd-asof { font-size: 11.5px; color: var(--ink-3); }
+.fwd-lead { margin: 6px 0; font-size: 12px; color: var(--ink-2); line-height: 1.7; }
+.fwd-bench { margin: 4px 0 8px; font-size: 11.5px; color: var(--ink-3); font-family: var(--mono); }
+.fwd-sub { margin: 12px 0 4px; font-size: 12.5px; }
+.fwd-patterns, .fwd-cands { margin: 0; padding-left: 16px; }
+.fwd-pattern, .fwd-cand { margin: 6px 0 10px; font-size: 12px; }
+.fwd-pattern-head, .fwd-cand-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.fwd-status, .fwd-ev { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); }
+.fwd-status.st-a_repeated { background: #eaf4ec; color: #2f6b3f; }
+.fwd-status.st-b_repeated { background: #fdf3e3; color: var(--preheat-ink); }
+.fwd-status.st-c_exploratory { background: #f4f4f6; color: var(--ink-3); }
+.fwd-ev.st-pre_observation { background: #eef3f8; color: var(--accent); }
+.fwd-ev.st-already_warm { background: #fdecec; color: #a33232; }
+.fwd-ev.st-insufficient, .fwd-ev.st-watch_only { background: #f4f4f6; color: var(--ink-3); }
+.fwd-stats, .fwd-window, .fwd-perf, .fwd-why, .fwd-watch, .fwd-invalidate, .fwd-not, .fwd-fact, .fwd-reason, .fwd-bias { margin: 3px 0; color: var(--ink-2); line-height: 1.65; }
+.fwd-bias { color: var(--ink-3); font-size: 11px; }
+.fwd-chip { display: inline-block; margin: 2px 6px 2px 0; padding: 0 6px; border-radius: 8px; background: #f4f4f6; font-size: 10.5px; color: var(--ink-2); }
+.fwd-chip.is-hit { background: #eaf4ec; color: #2f6b3f; }
+.fwd-note { display: block; margin-top: 3px; font-size: 10.5px; color: var(--ink-3); }
+.fwd-cand-note, .fwd-sectors { font-size: 11.5px; color: var(--ink-3); }
+.fwd-limits { margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
+.fwd-limits ul { margin: 4px 0 0; padding-left: 16px; }
