@@ -155,6 +155,11 @@ def main(argv):
     ap.add_argument("--version", type=int, default=None)
     a = ap.parse_args(argv)
 
+    # ★ CI 不携带 history_scan.db（1.3GB、不入库）→ --check 只能做结构校验，
+    #   源数据核对显式 SKIP（不静默假装核对过）。
+    if a.check and not os.path.exists(DB):
+        return check(None, None, None, None)
+
     conn = sqlite3.connect(DB)
     bench = load(conn, "CSI300")
     if not bench:
@@ -167,7 +172,6 @@ def main(argv):
 
     if a.check:
         return check(conn, as_of, bounds_hist, bench_ret)
-
     series_rows = conn.execute(
         "SELECT series_id, name, kind, first_date, last_date, rows FROM scan_series "
         "WHERE kind IN ('industry_board','concept_basket') AND rows>0 AND status='OK'").fetchall()
@@ -493,7 +497,11 @@ def main(argv):
 
 
 def check(conn, as_of, bounds_hist, bench_ret):
-    """--check：结构不变量 + **源数据一致性**（重算当前窗口并与产物逐字段比对）。"""
+    """--check：结构不变量 + **源数据一致性**（重算当前窗口并与产物逐字段比对）。
+
+    ★ conn 为 None 表示源库不可用（CI 场景）→ 只做结构校验，并**显式打印 SKIP**，
+      不得把「没核对」说成「核对通过」。
+    """
     files = sorted([f for f in os.listdir(CURRENT) if OUT_RE.match(f)],
                    key=lambda f: int(OUT_RE.match(f).group(1)))
     if not files:
@@ -501,6 +509,7 @@ def check(conn, as_of, bounds_hist, bench_ret):
     path = os.path.join(CURRENT, files[-1])
     doc = json.load(open(path, encoding="utf-8"))
     errs = []
+    src_checked = conn is not None
     c = doc.get("criteria") or {}
 
     # ① 协议版本
@@ -515,8 +524,8 @@ def check(conn, as_of, bounds_hist, bench_ret):
             errs.append("criteria.%s 期望 %r，实际 %r" % (key, val, c.get(key)))
     if (c.get("exploratory") or {}).get("min_median_excess") != EXP_MEDIAN:
         errs.append("criteria.exploratory.min_median_excess 与脚本不一致")
-    # ③ 产物 as_of == 当前基准序列最后一个完整交易日
-    if doc.get("as_of") != as_of:
+    # ③ 产物 as_of == 当前基准序列最后一个完整交易日（源库不可用时跳过）
+    if src_checked and doc.get("as_of") != as_of:
         errs.append("as_of 期望 %s（基准最后交易日），实际 %r —— 产物已过期或基准变了"
                     % (as_of, doc.get("as_of")))
 
@@ -557,25 +566,26 @@ def check(conn, as_of, bounds_hist, bench_ret):
 
     # ⑤ ★★ 源数据一致性：重算每个当前窗口的年度超额 / 时点资格 / OOS，并逐字段比对
     drift = []
-    for p in doc.get("current_windows") or []:
-        sid, m = p["board_series"], p["month"]
-        mr = month_returns(load(conn, sid), bounds_hist)
-        vals = sorted((int(ym[:4]), ret - bench_ret[ym]) for ym, ret in mr.items()
-                      if ym in bench_ret and int(ym[4:6]) == m)
-        if not vals:
-            drift.append("%s 源数据为空" % p["pattern_id"]); continue
-        exs = [v for _, v in vals]
-        recs, elig = walk_forward(vals)
-        got = {
-            "n_years": len(vals),
-            "median_excess_pct": round(statistics.median(exs), 2),
-            "hit_rate": round(sum(1 for x in exs if x > 0) / len(exs), 3),
-            "pit_eligible_years": len(elig),
-            "oos_tests": len(elig),
-        }
-        for k, v in got.items():
-            if p.get(k) != v:
-                drift.append("%s.%s 产物 %r ≠ 重算 %r" % (p["pattern_id"], k, p.get(k), v))
+    if src_checked:
+        for p in doc.get("current_windows") or []:
+            sid, m = p["board_series"], p["month"]
+            mr = month_returns(load(conn, sid), bounds_hist)
+            vals = sorted((int(ym[:4]), ret - bench_ret[ym]) for ym, ret in mr.items()
+                          if ym in bench_ret and int(ym[4:6]) == m)
+            if not vals:
+                drift.append("%s 源数据为空" % p["pattern_id"]); continue
+            exs = [v for _, v in vals]
+            recs, elig = walk_forward(vals)
+            got = {
+                "n_years": len(vals),
+                "median_excess_pct": round(statistics.median(exs), 2),
+                "hit_rate": round(sum(1 for x in exs if x > 0) / len(exs), 3),
+                "pit_eligible_years": len(elig),
+                "oos_tests": len(elig),
+            }
+            for k, v in got.items():
+                if p.get(k) != v:
+                    drift.append("%s.%s 产物 %r ≠ 重算 %r" % (p["pattern_id"], k, p.get(k), v))
     if drift:
         errs.extend(drift[:6])
         if len(drift) > 6:
@@ -583,9 +593,14 @@ def check(conn, as_of, bounds_hist, bench_ret):
 
     if errs:
         print("FAIL: %s" % errs[:6]); return 1
-    print("PASS: 季节性产物与源数据一致（%s · as_of %s · 样本内达标 %d · 仅时点资格 %d · 窗口 %d 已逐条重算）"
-          % (os.path.basename(path), as_of, len(doc["patterns"]),
-             len(doc.get("pit_only_patterns") or []), len(doc.get("current_windows") or [])))
+    if src_checked:
+        print("PASS: 季节性产物与源数据一致（%s · as_of %s · 样本内达标 %d · 仅时点资格 %d · 窗口 %d 已逐条重算）"
+              % (os.path.basename(path), as_of, len(doc["patterns"]),
+                 len(doc.get("pit_only_patterns") or []), len(doc.get("current_windows") or [])))
+    else:
+        print("PASS（结构）· SKIP 源数据核对：history_scan.db 不存在（CI 不携带该库，1.3GB 未入库）"
+              " —— 已校验 protocol/criteria/结构不变量，**未**重算源数据（%s · 窗口 %d）"
+              % (os.path.basename(path), len(doc.get("current_windows") or [])))
     return 0
 
 
