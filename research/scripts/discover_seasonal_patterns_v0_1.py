@@ -99,11 +99,11 @@ def main(argv):
     as_of = bench[-1][0]
     bm = month_returns(bench)
     boards = conn.execute(
-        "SELECT series_id, name, first_date, last_date, rows FROM scan_series "
-        "WHERE kind='industry_board' AND rows>0").fetchall()
+        "SELECT series_id, name, first_date, last_date, rows, kind FROM scan_series "
+        "WHERE kind IN ('industry_board','concept_basket') AND rows>0").fetchall()
 
     patterns = []
-    for sid, name, first, last, nrows in boards:
+    for sid, name, first, last, nrows, kind in boards:
         rows = load(conn, sid)
         bmr = month_returns(rows)
         by_month = {}
@@ -127,7 +127,7 @@ def main(argv):
                 continue
             patterns.append({
                 "pattern_id": "SEAS-%s-M%02d" % (sid, m),
-                "board": name, "board_series": sid, "month": m,
+                "board": name, "board_series": sid, "month": m, "kind": kind,
                 "n_years": len(vals), "years": sorted(v[0] for v in vals),
                 "tier": tier,
                 "median_excess_pct": round(med, 2),
@@ -137,6 +137,38 @@ def main(argv):
                 "per_year": [{"year": v[0], "excess_pct": v[1]} for v in sorted(vals)],
                 "board_first_date": first, "board_last_date": last,
             })
+    # ★ 代表性股票：概念篮子有成分记录 → 取「该月超额中位」前 3（**当前成分**，偏差已声明）
+    mem_cache = {}
+    for p in patterns:
+        if p["kind"] != "concept_basket":
+            continue
+        row = conn.execute("SELECT v FROM scan_meta WHERE k=?", ("members:" + p["board_series"],)).fetchone()
+        if not row:
+            continue
+        syms = json.loads(row[0])
+        q = ",".join("?" * len(syms))
+        rows_by = {}
+        for sid, d, close in conn.execute(
+                "SELECT series_id, trade_date, close FROM scan_daily WHERE series_id IN (%s) AND close>0" % q, syms):
+            rows_by.setdefault(sid, []).append((d.replace("-", ""), close))
+        scored = []
+        for sid, rs in rows_by.items():
+            mrets = []
+            bym = {}
+            for d, c in rs:
+                bym.setdefault(d[:6], [c, c])[1] = c
+            for ym, (c0, c1) in bym.items():
+                if int(ym[4:6]) != p["month"] or c0 <= 0:
+                    continue
+                b = bm.get("%s-%s" % (ym[:4], ym[4:6]))
+                if not b:
+                    continue
+                mrets.append((c1 / c0 - 1) * 100 - (b[1] / b[0] - 1) * 100)
+            if len(mrets) >= 6:
+                scored.append((sid, round(statistics.median(mrets), 2), len(mrets)))
+        scored.sort(key=lambda x: -x[1])
+        p["representative_stocks"] = [{"series_id": s_, "median_excess_pct": v, "years": n}
+                                      for s_, v, n in scored[:3]]
     patterns.sort(key=lambda p: (-p["median_excess_pct"], -p["hit_rate"]))
 
     cur_month = int(as_of[5:7])

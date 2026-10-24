@@ -3,14 +3,15 @@
  * ★ 只展示 STRICT（预先声明标准）与少量 EXPLORATORY；每条必须带年份数、命中率、中位超额。
  * ★ 当前状态：IN_WINDOW（当月）/ PRE_WINDOW（下月，前置观察）。
  */
-import raw from '@current/pattern_discovery_v0_3.json';
+import raw from '@current/pattern_discovery_v0_4.json';
 import { RichText } from '../RichText';
 
 interface P {
   pattern_id: string; board: string; month: number; n_years: number; years: string[];
   median_excess_pct: number; hit_rate: number; tier: string;
-  current_status: string; best_year: { year: string; excess_pct: number };
+  current_status: string; kind: string; best_year: { year: string; excess_pct: number };
   worst_year: { year: string; excess_pct: number };
+  representative_stocks?: { series_id: string; median_excess_pct: number; years: number }[];
 }
 interface D {
   as_of: string; coverage: string; criteria: { min_years: number; min_median_excess: number; min_hit_rate: number };
@@ -38,6 +39,7 @@ export function DiscoveredPatterns() {
               data-tier={p.tier} data-status={p.current_status}>
             <div className="fwd-pattern-head">
               <strong>{p.board} · {p.month} 月</strong>
+              <span className="fwd-role-asof">{p.kind === 'concept_basket' ? '自建概念等权' : '行业板块'}</span>
               <span className={`fwd-status ${p.tier === 'STRICT' ? 'st-a_repeated' : 'st-c_exploratory'}`}>
                 {p.tier === 'STRICT' ? 'A · 达到预先标准' : 'C · 探索线索'}
               </span>
@@ -49,6 +51,13 @@ export function DiscoveredPatterns() {
               · 最好 {p.best_year.year} {p.best_year.excess_pct > 0 ? '+' : ''}{p.best_year.excess_pct}%
               / 最差 {p.worst_year.year} {p.worst_year.excess_pct}%
             </p>
+            {(p.representative_stocks ?? []).length > 0 && (
+              <p className="fwd-stats" data-rep-stocks={p.representative_stocks!.length}>
+                代表性股票（当前成分）：{p.representative_stocks!.map((x) =>
+                  `${x.series_id} ${x.median_excess_pct > 0 ? '+' : ''}${x.median_excess_pct}%`).join(' · ')}
+                <span className="fwd-note">★ 当前成分回溯，非当年成分</span>
+              </p>
+            )}
           </li>
         ))}
       </ul>
