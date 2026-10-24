@@ -3,7 +3,7 @@
  * ★ 只展示 STRICT（预先声明标准）与少量 EXPLORATORY；每条必须带年份数、命中率、中位超额。
  * ★ 当前状态：IN_WINDOW（当月）/ PRE_WINDOW（下月，前置观察）。
  */
-import raw from '@current/pattern_discovery_v0_5.json';
+import raw from '@current/pattern_discovery_v0_6.json';
 import { RichText } from '../RichText';
 
 interface P {
@@ -16,9 +16,13 @@ interface P {
   oos_tests?: number; oos_hit_rate?: number | null; oos_median_excess_pct?: number | null;
   oos_status?: string; oos_note?: string | null;
 }
+interface Cov { series: number; rows: number; first_date: string | null; last_date: string | null }
 interface D {
-  as_of: string; coverage: string; criteria: { min_years: number; min_median_excess: number; min_hit_rate: number };
-  source: { boards_scanned: number; provider: string };
+  as_of: string;
+  coverage_detail: { stocks: Cov; industry_boards: Cov; concept_baskets: Cov; indices: Cov };
+  criteria: { min_years: number; min_median_excess: number; min_hit_rate: number; min_train_years?: number;
+    min_oos_tests?: number; in_sample_min_years?: number };
+  source: { industry_boards: string; concept_baskets: string; benchmark: string };
   patterns: P[]; current_windows: P[]; tier_note: string; limitations: string[];
 }
 const doc = raw as unknown as D;
@@ -30,11 +34,21 @@ export function DiscoveredPatterns() {
   const top = [...doc.current_windows].sort((a, b) => b.median_excess_pct - a.median_excess_pct).slice(0, 6);
   return (
     <section className="fwd-disc" aria-label="数据发现的历史季节性结构" data-discovery-as-of={doc.as_of}>
-      <h4 className="fwd-sub">三、从多年行情发现的结构（{doc.source.boards_scanned} 个行业板块 · 覆盖 {doc.coverage}）</h4>
+      <h4 className="fwd-sub">
+        三、从多年行情发现的结构（行业 {doc.coverage_detail.industry_boards.series} 个 · 概念{' '}
+        {doc.coverage_detail.concept_baskets.series} 个 · 覆盖{' '}
+        {doc.coverage_detail.industry_boards.first_date}–{doc.coverage_detail.industry_boards.last_date}）
+      </h4>
       <p className="fwd-cand-note" data-discovery-counts={`${strict.length}/${doc.patterns.length}`}>
         STRICT <strong>{strict.length}</strong> 条（标准：≥{doc.criteria.min_years} 年 · 中位超额 ≥
         {doc.criteria.min_median_excess}pp · 命中 ≥ {(doc.criteria.min_hit_rate * 100).toFixed(0)}%）
         · 探索 {doc.patterns.length - strict.length} 条 · 当前/下月窗口 <strong>{doc.current_windows.length}</strong> 条
+        <span className="fwd-note">
+          数据：股票 {doc.coverage_detail.stocks.series} 只（{doc.coverage_detail.stocks.first_date}–
+          {doc.coverage_detail.stocks.last_date}）· 概念 {doc.coverage_detail.concept_baskets.rows.toLocaleString()} 行
+          · 仅用<strong>已完成月份</strong>做历史统计；样本外训练 ≥{doc.criteria.min_train_years ?? 5} 年、
+          报告需 ≥{doc.criteria.min_oos_tests ?? 5} 个检验年
+        </span>
       </p>
       <ul className="fwd-patterns">
         {top.map((p) => (

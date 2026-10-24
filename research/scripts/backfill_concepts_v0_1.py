@@ -148,18 +148,37 @@ def build_concepts(c, min_members=8, max_members=120):
             series.setdefault(d, {})[sid] = close
         prev_map = {}
         level = 1000.0
-        cov = []
+        raw = []          # [(date, level, covered)]
+        n = len(syms)
+        min_need = max(3, int(0.2 * n))
         for d in sorted(series):
             cur = series[d]
             rets = [cur[s] / prev_map[s] - 1.0 for s in cur if s in prev_map and prev_map[s] > 0]
             if rets:
                 level *= 1.0 + statistics.fmean(rets)
-            # ★★ volume 字段**不塞成分数**：合成序列没有成交量 → 写 0，成分覆盖另存 meta
-            out.append([d, level, level, level, level, 0.0])
-            cov.append(len(rets))
+            raw.append((d, level, len(rets)))
             prev_map = cur
-        if len(out) < 250 or (cov and min(cov) < max(3, 0.3 * len(syms))):
-            continue   # ★ 覆盖率过低的日子（停牌/未上市）过多 → 不生成，避免假序列
+        # ★★ 只保留「覆盖达到下限」的交易日；早年被少量成分主导的区段**截掉**（不伪造历史）
+        start_i = next((i for i, (_, _, cov_i) in enumerate(raw) if cov_i >= min_need), None)
+        if start_i is None:
+            out, cov = [], []
+        else:
+            kept = raw[start_i:]
+            out = [[d, lv, lv, lv, lv, 0.0] for d, lv, _ in kept]
+            cov = [c for _, _, c in kept]
+        med_cov = statistics.median(cov) if cov else 0
+        ok = len(out) >= 250 and med_cov >= max(min_need, 0.5 * n)
+        if not ok:
+            # ★ 覆盖不合格：删除旧序列并标 REJECTED（不静默留旧数据给扫描器）
+            sid_bad = "CPT_" + cpt["node"].replace("gn_", "")
+            c.execute("DELETE FROM scan_daily WHERE series_id=?", (sid_bad,))
+            c.execute("INSERT OR REPLACE INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                      (sid_bad, cpt["name"], "concept_basket", "sina+selfbuild", cpt["node"], "raw",
+                       None, None, 0, time.strftime("%Y-%m-%d %H:%M:%S"), "REJECTED",
+                       "重建未达标（有效日 %d，中位覆盖 %.0f%%，需 ≥250 日且 ≥50%%）"
+                       % (len(out), (med_cov / n * 100) if n else 0)))
+            c.commit()
+            continue
         sid = "CPT_" + cpt["node"].replace("gn_", "")
         c.execute("INSERT OR REPLACE INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                   (sid, cpt["name"], "concept_basket", "sina+selfbuild", cpt["node"], "raw",
@@ -173,6 +192,10 @@ def build_concepts(c, min_members=8, max_members=120):
                   ("coverage:" + sid, json.dumps({"members": len(syms),
                                                   "avg_daily_covered": round(sum(cov) / len(cov), 1) if cov else 0,
                                                   "min_daily_covered": min(cov) if cov else 0,
+                                                  "required_min_covered": min_need,
+                                                  "median_covered": med_cov,
+                                                  "valid_days": len(out),
+                                                  "coverage_rule": "仅统计可计算收益的交易日（排除首日/停牌）",
                                                   "snapshot_at": time.strftime("%Y-%m-%d %H:%M:%S")},
                                                  ensure_ascii=False)))
         c.commit()

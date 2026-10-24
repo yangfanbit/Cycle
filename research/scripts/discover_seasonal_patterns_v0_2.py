@@ -22,6 +22,7 @@ OUT_RE = re.compile(r"pattern_discovery_v0_(\d+)\.json$")
 MIN_YEARS, MIN_MEDIAN, MIN_HIT = 8, 1.5, 0.6
 EXP_MEDIAN, EXP_HIT = 0.8, 0.55
 MIN_TRAIN_YEARS, MIN_OOS_TESTS, MIN_STOCK_YEARS = 5, 5, 6
+# ★ 口径：样本内需 ≥8 年；样本外**训练**只需 ≥5 年且满足同一阈值（与 criteria 一致）
 
 
 def norm(d):
@@ -53,8 +54,8 @@ def month_returns(series, bounds):
     return out
 
 
-def judge(vals):
-    if len(vals) < MIN_YEARS:
+def judge(vals, min_years=MIN_YEARS):
+    if len(vals) < min_years:
         return None
     exs = [v for _, v in vals]
     med, hit = statistics.median(exs), sum(1 for x in exs if x > 0) / len(exs)
@@ -72,7 +73,7 @@ def walk_forward(vals):
     tests = []
     for i, (y, ex) in enumerate(vals):
         train = vals[:i]
-        if len(train) < MIN_TRAIN_YEARS or judge(train) is None:
+        if len(train) < MIN_TRAIN_YEARS or judge(train, MIN_TRAIN_YEARS) is None:
             continue
         tests.append({"year": y, "excess_pct": round(ex, 2), "hit": ex > 0})
     if not tests:
@@ -126,14 +127,18 @@ def main(argv):
         print("FAIL: 缺基准"); return 1
     as_of = bench[-1][0]
     bounds = month_bounds(bench)
-    bench_ret = month_returns(bench, bounds)
+    # ★★ 当月未走完 → 从**历史统计**中剔除（仍可标 IN_WINDOW，但不作为完整月度样本）
+    cur_ym = as_of[:6]
+    incomplete = {ym for ym in bounds if ym >= cur_ym}
+    bounds_hist = {ym: v for ym, v in bounds.items() if ym not in incomplete}
+    bench_ret = month_returns(bench, bounds_hist)
     series_rows = conn.execute(
         "SELECT series_id, name, kind, first_date, last_date, rows FROM scan_series "
-        "WHERE kind IN ('industry_board','concept_basket') AND rows>0").fetchall()
+        "WHERE kind IN ('industry_board','concept_basket') AND rows>0 AND status='OK'").fetchall()
 
     patterns = []
     for sid, name, kind, first, last, nrows in series_rows:
-        mr = month_returns(load(conn, sid), bounds)
+        mr = month_returns(load(conn, sid), bounds_hist)
         by_month = {}
         for ym, ret in mr.items():
             if ym in bench_ret:
@@ -169,7 +174,7 @@ def main(argv):
             by_sym.setdefault(sid, []).append((norm(d), close))
         scored = []
         for sid, rs in by_sym.items():
-            mr = month_returns(rs, bounds)
+            mr = month_returns(rs, bounds_hist)
             exs = [ret - bench_ret[ym] for ym, ret in mr.items()
                    if ym in bench_ret and int(ym[4:6]) == p["month"]]
             if len(exs) >= MIN_STOCK_YEARS:
@@ -199,6 +204,7 @@ def main(argv):
         "artifact": "pattern_discovery", "artifact_version": "0.5",
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "as_of": as_of,
+        "history_excludes_incomplete_month": True,
         "as_of_source": "history_scan.db · CSI300 最后一根日线（原始收盘）",
         "coverage_detail": {"stocks": cov("stock"), "industry_boards": cov("industry_board"),
                             "concept_baskets": cov("concept_basket"), "indices": cov("index")},
@@ -206,6 +212,9 @@ def main(argv):
             "min_years": MIN_YEARS, "min_median_excess": MIN_MEDIAN, "min_hit_rate": MIN_HIT,
             "exploratory": {"min_median_excess": EXP_MEDIAN, "min_hit_rate": EXP_HIT},
             "min_train_years": MIN_TRAIN_YEARS, "min_oos_tests": MIN_OOS_TESTS,
+            "in_sample_min_years": MIN_YEARS,
+            "training_rule": "样本外训练：仅用检验年之前的年份，≥5 年且满足 STRICT 阈值（与样本内同一阈值）",
+            "completed_months_only": True,
             "month_boundary": "基准（沪深300）当月首/末交易日；序列两端都要有收盘",
             "rule": "月度持有收益 = 末收/首收−1；超额 = 序列 − 基准同区间",
         },
