@@ -4214,3 +4214,9 @@ html, body {
 .cd-fl-meta { margin-left: 8px; font-size: 10.5px; color: var(--ink-3); }
 .cd-fl-hist { display: block; font-size: 11px; color: var(--ink-3); }
 @media (max-width: 640px) { .cd-panel, .cd-panel-wide { width: 100%; } }
+
+/* ★★ v0.39.1 精选行：视觉截断（不截断字符串） */
+.cr-line2 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.cd-kv { margin: 4px 0; }
+.cd-dims { margin: 4px 0; padding-left: 16px; }
+.cd-h4-sub { margin: 8px 0 2px; font-size: 12px; color: var(--ink-2); }

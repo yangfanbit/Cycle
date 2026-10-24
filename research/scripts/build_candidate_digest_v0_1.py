@@ -80,6 +80,7 @@ def main(argv):
                         "hit_rate": p["hit_rate"], "tier": p["tier"],
                         "oos_status": p.get("oos_status"), "oos_tests": p.get("oos_tests"),
                         "oos_hit_rate": p.get("oos_hit_rate"),
+                        "oos_median_excess_pct": p.get("oos_median_excess_pct"),
                         "years": p.get("years")},
             "representative_stocks": p.get("representative_stocks") or [],
             "gap": ("行业板块无历史成分 → 不绑个股" if p["kind"] != "concept_basket" else
@@ -155,9 +156,44 @@ def main(argv):
         c["dates"]["research_days_old"] = n
         c["dates"]["research_stale"] = bool(n is not None and n > 7)
     order = {"G1": 0, "G2": 1, "G3": 2, "G4": 3}
-    cards.sort(key=lambda c: (order[c["group"]],
-                              -(c["history"].get("median_excess_pct") or -99),
-                              -(c["history"].get("oos_hit_rate") or 0)))
+
+    def rank_key(c):
+        """★ 精选排序：样本外证据 > 检验样本数 > 历史复现年数 > 当前时间位置 > 中位超额（不是只看收益）。"""
+        h = c["history"]
+        oos_ok = 1 if h.get("oos_status") == "REPORTED" else 0
+        oos_tests = h.get("oos_tests") or 0
+        oos_hit = h.get("oos_hit_rate") or 0
+        n_years = h.get("n_years") or 0
+        pos = {"IN_WINDOW": 3, "PRE_WINDOW": 2}.get(c["time_position"], 1)
+        return (order[c["group"]], -oos_ok, -oos_tests, -oos_hit, -n_years, -pos,
+                -(h.get("median_excess_pct") or -99))
+
+    cards.sort(key=rank_key)
+
+    # ★★ 首页精选：最多 6 条；同月份季节窗口 ≤2；同类型 ≤3；当前题材保底 1 条
+    featured, months, kinds = [], {}, {}
+    for c in cards:
+        if len(featured) >= 6:
+            break
+        m = re.search(r"·\s*(\d+)\s*月", c["title"])
+        mk = m.group(1) if m else None
+        if c["kind"] == "SEASONAL_WINDOW" and mk and months.get(mk, 0) >= 2:
+            continue
+        if kinds.get(c["kind"], 0) >= 3:
+            continue
+        featured.append(c["id"])
+        if c["kind"] == "SEASONAL_WINDOW" and mk:
+            months[mk] = months.get(mk, 0) + 1
+        kinds[c["kind"]] = kinds.get(c["kind"], 0) + 1
+    cur_ids = [c["id"] for c in cards if c["kind"] == "CURRENT_OBJECT"]
+    if cur_ids and not any(i in cur_ids for i in featured):
+        # 当前题材没进精选 → 用最靠前的一条替换掉末位季节窗口（保留 6 条）
+        target = next((i for i in reversed(featured) if i.startswith("SEAS-")), None)
+        if target:
+            featured[featured.index(target)] = cur_ids[0]
+        else:
+            featured = (featured[:5] + [cur_ids[0]]) if len(featured) >= 6 else featured + [cur_ids[0]]
+    featured = featured[:6]
 
     doc = {
         "artifact": "candidate_digest", "artifact_version": "0.1",
@@ -190,6 +226,10 @@ def main(argv):
              "date": (snaps[-1] or {}).get("snapshot_date") if snaps else None},
         ],
         "cards": cards,
+        "featured": featured,
+        "featured_note": ("精选 6 条：按「样本外证据 → 检验年数 → 历史年数 → 时间位置 → 中位超额」排序，"
+                          "并限制同月份季节窗口 ≤2、同类型 ≤3、当前题材保底 1 条；"
+                          "仅代表研究浏览顺序，不是收益预测。"),
         "limitations": [
             "★ 不同来源日期不同（研究记录 / 行情 / 快照），卡片分别标注，不统一改写为最新。",
             "★ 分组是研究浏览优先顺序，不是概率、胜率或荐股。",
