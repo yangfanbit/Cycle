@@ -4,7 +4,7 @@
  * ★ 详情按**字段真实结构**渲染（对象/数组不转字符串）；无数据时诚实显示。
  */
 import { useEffect, useMemo, useState } from 'react';
-import raw from '@current/candidate_digest_v0_3.json';
+import raw from '@current/candidate_digest_v0_4.json';
 import { RichText } from '../RichText';
 
 interface Card {
@@ -23,7 +23,8 @@ interface Card {
     reference_cases?: { campaign_id?: string; note?: string }[] | null;
     source_summary?: string | null;
   } | null;
-  dates: { price_as_of?: string | null; research_as_of?: string | null;
+  dates: { price_as_of?: string | null; research_as_of?: string | null; data_as_of?: string | null;
+    artifact_generated_at?: string | null;
     research_days_old?: number | null; research_stale?: boolean };
   evidence_ref?: Record<string, string>;
 }
@@ -43,7 +44,9 @@ const TIME_LABEL: Record<string, string> = {
   INSUFFICIENT: '证据不足', WATCH_ONLY: '事件驱动', UNKNOWN: '状态未知', PASSED: '窗口已过', LATER: '窗口较远',
 };
 const TIME_ORDER = ['PRE_WINDOW', 'IN_WINDOW', 'ALREADY_WARM', 'DATA_STALE', 'INSUFFICIENT',
-  'WATCH_ONLY', 'UNKNOWN', 'PASSED', 'LATER'];
+  'WATCH_ONLY', 'UNKNOWN', 'PASSED', 'LATER',
+  // ★ 当前题材的阶段状态（attention_state）也参与「时间位置」
+  'THEME_FORMING', 'BROAD_CONFIRMATION', 'EXPANSION', 'COOLING', 'DORMANT'];
 const ATTENTION_LABEL: Record<string, string> = {
   THEME_FORMING: '主题形成中', BROAD_CONFIRMATION: '广泛确认', EXPANSION: '扩散阶段',
   COOLING: '降温', DORMANT: '沉寂', UNKNOWN: '未知',
@@ -58,6 +61,11 @@ const EVIDENCE_DIM: Record<string, string> = {
 const EVIDENCE_VAL: Record<string, string> = {
   EMERGING: '初现', PRESENT: '已出现', ABSENT: '缺失', STRONG: '强', WEAK: '弱', UNKNOWN: '未知',
 };
+
+/** ★ 统一「时间位置 / 阶段」标签：时间状态优先，其次阶段状态，未知保留原值 */
+function timeLabel(tp: string): string {
+  return TIME_LABEL[tp] ?? ATTENTION_LABEL[tp] ?? tp;
+}
 
 const num = (v: unknown, s = '%') => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}${s}` : '—');
 const asList = (v: string[] | string | null | undefined): string[] =>
@@ -106,7 +114,7 @@ function Detail({ c, onClose }: { c: Card; onClose: () => void }) {
             <h3>{c.title}</h3>
             <p className="cd-sub">
               {KIND_LABEL[c.kind] ?? c.kind}{c.subtitle ? ` · ${c.subtitle}` : ''} ·
-              {TIME_LABEL[c.time_position] ?? c.time_position} · {GROUP_OF[c.group]}
+              {timeLabel(c.time_position)} · {GROUP_OF[c.group]}
             </p>
           </div>
           <button type="button" className="cd-close" onClick={onClose} aria-label="关闭详情">✕</button>
@@ -202,8 +210,15 @@ function Detail({ c, onClose }: { c: Card; onClose: () => void }) {
 
         <section className="cd-sec">
           <h4>数据日期与限制</h4>
-          <p>行情 {c.dates.price_as_of ?? '—'} · 研究记录 {c.dates.research_as_of ?? '—'}
-            {c.dates.research_stale ? `（比行情基准早 ${c.dates.research_days_old} 天，当前状态待确认）` : ''}</p>
+          <p>
+            {c.dates.research_as_of
+              ? <>研究记录 {c.dates.research_as_of}
+                {c.dates.research_stale ? `（比行情基准早 ${c.dates.research_days_old} 天，当前状态待确认）` : ''}
+                {' · '}</>
+              : <>统计截至 {c.dates.data_as_of ?? c.dates.price_as_of ?? '—'}（模式统计，无研究对象记录日）· </>}
+            行情 {c.dates.price_as_of ?? '—'}
+            {c.dates.artifact_generated_at ? ` · 产物生成 ${c.dates.artifact_generated_at}` : ''}
+          </p>
           {unc.length > 0 && (
             <>
               <h4 className="cd-h4-sub">不确定项</h4>
@@ -231,7 +246,9 @@ function FullList({ cards, onPick, onClose }: { cards: Card[]; onPick: (c: Card)
   }, [cards]);
   const times = useMemo(() => {
     const present = new Set(cards.map((c) => c.time_position));
-    return TIME_ORDER.filter((t) => present.has(t) || TIME_LABEL[t]);
+    const known = TIME_ORDER.filter((t) => present.has(t));
+    const unknown = [...present].filter((t) => !TIME_ORDER.includes(t)).sort();
+    return [...known, ...unknown];   // ★ 未知新状态保留原值，不被静默过滤
   }, [cards]);
   const list = useMemo(() => cards.filter((c) => {
     if (q && !c.title.includes(q)) return false;
@@ -267,7 +284,7 @@ function FullList({ cards, onPick, onClose }: { cards: Card[]; onPick: (c: Card)
           </select>
           <select aria-label="时间位置" value={time} onChange={(e) => setTime(e.target.value)}>
             <option value="all">全部时机</option>
-            {times.map((t) => <option key={t} value={t}>{TIME_LABEL[t] ?? t}</option>)}
+            {times.map((t) => <option key={t} value={t}>{timeLabel(t)}</option>)}
           </select>
         </div>
         <ul className="cd-full-list">
@@ -275,7 +292,7 @@ function FullList({ cards, onPick, onClose }: { cards: Card[]; onPick: (c: Card)
             <li key={c.id}>
               <button type="button" onClick={() => onPick(c)}>
                 <span className="cd-fl-title">{c.title}</span>
-                <span className="cd-fl-meta">{KIND_LABEL[c.kind] ?? c.kind} · {TIME_LABEL[c.time_position] ?? c.time_position} · {GROUP_OF[c.group]}</span>
+                <span className="cd-fl-meta">{KIND_LABEL[c.kind] ?? c.kind} · {timeLabel(c.time_position)} · {GROUP_OF[c.group]}</span>
                 <span className="cd-fl-hist">{historyLine(c)}</span>
               </button>
             </li>
@@ -318,7 +335,7 @@ export function CurrentCandidatesSection() {
               <span className="cr-line1">
                 <strong>{c.title}</strong>
                 <span className="cr-chip">{KIND_LABEL[c.kind] ?? c.kind}</span>
-                <span className={`cr-time t-${c.time_position.toLowerCase()}`}>{TIME_LABEL[c.time_position] ?? c.time_position}</span>
+                <span className={`cr-time t-${c.time_position.toLowerCase()}`}>{timeLabel(c.time_position)}</span>
                 <span className="cr-group">{GROUP_OF[c.group]}</span>
                 {c.dates.research_stale && <span className="cr-stale">研究记录较旧</span>}
               </span>

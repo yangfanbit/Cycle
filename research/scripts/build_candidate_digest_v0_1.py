@@ -88,7 +88,9 @@ def main(argv):
             "watch_next": "窗口内该板块相对沪深300的 20 日超额与广度",
             "invalidate_if": "窗口结束前中位超额 ≤ 0 且广度 < 0.5",
             "trigger_type": "CALENDAR_WINDOW",
-            "dates": {"price_as_of": iso(pd["as_of"]), "research_as_of": iso(pd["generated_at"])},
+            "dates": {"price_as_of": iso(pd["as_of"]), "data_as_of": iso(pd["as_of"]),
+                      "research_as_of": None,   # ★ 模式统计不是「研究对象记录日」
+                      "artifact_generated_at": iso(pd["generated_at"])},
             "evidence_ref": {"artifact": pd_file, "pattern_id": p["pattern_id"]},
         })
 
@@ -106,7 +108,9 @@ def main(argv):
             "watch_next": c.get("what_to_watch"), "invalidate_if": c.get("invalidate_if"),
             "trigger_type": "ASSUMPTION",
             "dates": {"price_as_of": iso((c.get("current_performance") or {}).get("price_as_of")),
-                      "research_as_of": iso((fwd or {}).get("as_of"))},
+                      "data_as_of": iso((fwd or {}).get("as_of")),
+                      "research_as_of": None,
+                      "artifact_generated_at": iso((fwd or {}).get("as_of"))},
             "evidence_ref": {"artifact": "forward_observation_v0_2.json", "candidate_id": c["candidate_id"]},
         })
 
@@ -119,7 +123,7 @@ def main(argv):
         cards.append({
             "id": x["candidate_id"], "source": ["current_candidates"], "kind": "CURRENT_OBJECT",
             "title": x.get("display_name"), "subtitle": x.get("theme_type") or "",
-            "why_now": (x.get("core_narrative") or "")[:180],
+            "why_now": x.get("core_narrative") or "",   # ★ 保留全文（首页用 CSS line-clamp 控制行数）
             "time_position": x.get("attention_state") or "UNKNOWN", "group": g,
             "history": {"reference_cases": refs},
             "trigger": {"type": "CURRENT_FACT+EXPECTATION",
@@ -152,7 +156,9 @@ def main(argv):
 
     for c in cards:
         d = c["dates"].get("research_as_of")
-        n = days_old(d, pd["as_of"])
+        n = days_old(d, pd["as_of"]) if d else None
+        if n is not None and n < 0:
+            n = None   # ★ 研究记录日晚于行情基准 → 不作为「陈旧天数」，也不显示负数
         c["dates"]["research_days_old"] = n
         c["dates"]["research_stale"] = bool(n is not None and n > 7)
     order = {"G1": 0, "G2": 1, "G3": 2, "G4": 3}
@@ -165,8 +171,9 @@ def main(argv):
         oos_hit = h.get("oos_hit_rate") or 0
         n_years = h.get("n_years") or 0
         pos = {"IN_WINDOW": 3, "PRE_WINDOW": 2}.get(c["time_position"], 1)
-        return (order[c["group"]], -oos_ok, -oos_tests, -oos_hit, -n_years, -pos,
-                -(h.get("median_excess_pct") or -99))
+        # ★ 顺序与 featured_note 一致：OOS 证据 → 检验年数 → 历史年数 → 时间位置 → 中位超额 → 分组
+        return (-oos_ok, -oos_tests, -oos_hit, -n_years, -pos,
+                -(h.get("median_excess_pct") or -99), order[c["group"]])
 
     cards.sort(key=rank_key)
 
@@ -227,7 +234,7 @@ def main(argv):
         ],
         "cards": cards,
         "featured": featured,
-        "featured_note": ("精选 6 条：按「样本外证据 → 检验年数 → 历史年数 → 时间位置 → 中位超额」排序，"
+        "featured_note": ("精选 6 条：按「样本外证据 → 检验年数 → 历史年数 → 时间位置 → 中位超额 → 分组」排序，"
                           "并限制同月份季节窗口 ≤2、同类型 ≤3、当前题材保底 1 条；"
                           "仅代表研究浏览顺序，不是收益预测。"),
         "limitations": [
