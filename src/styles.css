@@ -4166,3 +4166,51 @@ html, body {
 .cand-limits ul { margin: 4px 0 0; padding-left: 16px; }
 .fwd-mode-block { margin: 12px 0; font-size: 12px; }
 .fwd-mode-block > summary { cursor: pointer; color: var(--ink-2); font-weight: 600; }
+
+/* ★★ v0.39 紧凑候选列表 + 详情抽屉 */
+.cand-rows { list-style: none; margin: 6px 0; padding: 0; }
+.cand-row { border-bottom: 1px solid var(--line); }
+.cand-row:last-child { border-bottom: none; }
+.cand-row-btn { display: block; width: 100%; text-align: left; padding: 9px 4px; background: transparent;
+  border: 0; cursor: pointer; color: var(--ink); }
+.cand-row-btn:hover { background: rgba(0,0,0,0.02); }
+.cr-line1 { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; font-size: 13px; }
+.cr-chip { font-size: 10.5px; color: var(--ink-3); }
+.cr-time { font-size: 10.5px; padding: 0 6px; border-radius: 8px; background: #eef3f8; color: var(--accent); }
+.cr-time.t-data_stale, .cr-time.t-already_warm, .cr-time.t-insufficient { background: #fdecec; color: #a33232; }
+.cr-group { font-size: 10.5px; color: var(--ink-3); }
+.cr-stale { font-size: 10px; color: var(--preheat-ink); }
+.cr-line2 { display: block; margin-top: 2px; font-size: 11.5px; color: var(--ink-2); }
+.cr-line3 { display: block; margin-top: 1px; font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+.cand-actions { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+.cand-all { font-size: 12px; padding: 4px 12px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--accent); cursor: pointer; }
+.cand-note { font-size: 11px; color: var(--ink-3); }
+
+.cd-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.28); z-index: 90;
+  display: flex; justify-content: flex-end; }
+.cd-panel { width: min(560px, 94vw); height: 100%; overflow-y: auto; background: #fff;
+  padding: 16px 18px 40px; box-shadow: -6px 0 24px rgba(0,0,0,0.12); }
+.cd-panel-wide { width: min(760px, 96vw); }
+.cd-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
+  position: sticky; top: 0; background: #fff; padding-bottom: 8px; }
+.cd-head h3 { margin: 0; font-size: 15px; }
+.cd-sub { margin: 2px 0 0; font-size: 11.5px; color: var(--ink-3); }
+.cd-close { border: 1px solid var(--line); background: transparent; border-radius: 8px;
+  width: 28px; height: 28px; cursor: pointer; color: var(--ink-2); }
+.cd-sec { margin: 12px 0; font-size: 12px; color: var(--ink-2); line-height: 1.7; }
+.cd-sec h4 { margin: 0 0 4px; font-size: 12.5px; color: var(--ink); }
+.cd-sec ul { margin: 4px 0; padding-left: 16px; }
+.cd-gap { color: var(--ink-3); font-size: 11px; }
+.cd-per { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+.cd-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
+.cd-filters input, .cd-filters select { font-size: 12px; padding: 4px 8px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--panel); color: var(--ink-2); }
+.cd-filters input { flex: 1 1 160px; }
+.cd-full-list { list-style: none; margin: 0; padding: 0; }
+.cd-full-list button { display: block; width: 100%; text-align: left; padding: 7px 4px; border: 0;
+  border-bottom: 1px solid var(--line); background: transparent; cursor: pointer; }
+.cd-fl-title { font-size: 12.5px; font-weight: 600; }
+.cd-fl-meta { margin-left: 8px; font-size: 10.5px; color: var(--ink-3); }
+.cd-fl-hist { display: block; font-size: 11px; color: var(--ink-3); }
+@media (max-width: 640px) { .cd-panel, .cd-panel-wide { width: 100%; } }

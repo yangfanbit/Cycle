@@ -41,7 +41,6 @@ import type { CurrentCandidateDataset } from './data/timeline/currentCandidate';
 import { selectCurrentCandidateDataset } from './data/timeline/appDatasets';
 import { buildProvenance, PROVENANCE_NOT_AVAILABLE } from './data/buildProvenance';
 import { CurrentMarketStrip } from './components/CurrentMarket/CurrentMarketStrip';
-import { CurrentWatchboardSection } from './components/CurrentWatchboard/CurrentWatchboardSection';
 import { marketTodayISO } from './utils';
 
 /**
@@ -462,9 +461,7 @@ export default function App() {
             ★★★ 但它**不是**「可能性排序」：项目禁止概率 / 评分 / 预测，且**一旦排序就会被当作推荐**。
             因此按**阶段**分组（封闭枚举）、组内按**阶段起点时间序**，核心列是「**还缺什么**」。
             点击对象 → 复用既有 focusObject（展开当前时间透镜并滚动过去），只做导航、不做判定。 */}
-        {!verifiedMode && (
-          <CurrentWatchboardSection onOpenCandidate={focusObject} />
-        )}
+        {/* ★ v0.39：观察台已并入「当前候选前瞻」详情面板，首页不再单独渲染 */}
 
         {/* verified 模式且 verified 层为空：提示回到默认 Research 数据源 */}
         {verifiedMode && allCampaigns.length === 0 && (

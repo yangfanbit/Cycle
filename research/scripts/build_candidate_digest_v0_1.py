@@ -22,6 +22,23 @@ CURRENT = os.path.join(REPO, "research", "current")
 OUT_RE = re.compile(r"candidate_digest_v0_(\d+)\.json$")
 
 
+def iso(d):
+    """20261023 / 2026-10-23 / 2026-10-23T.. → 2026-10-23"""
+    if not d:
+        return None
+    d = str(d)[:10]
+    return "%s-%s-%s" % (d[:4], d[4:6], d[6:8]) if "-" not in d else d
+
+
+def days_old(d, ref):
+    from datetime import date
+    try:
+        a = date.fromisoformat(iso(d)); b = date.fromisoformat(iso(ref))
+        return (b - a).days
+    except Exception:
+        return None
+
+
 def load(name):
     p = os.path.join(CURRENT, name)
     return json.load(open(p, encoding="utf-8")) if os.path.exists(p) else None
@@ -70,7 +87,7 @@ def main(argv):
             "watch_next": "窗口内该板块相对沪深300的 20 日超额与广度",
             "invalidate_if": "窗口结束前中位超额 ≤ 0 且广度 < 0.5",
             "trigger_type": "CALENDAR_WINDOW",
-            "dates": {"price_as_of": pd["as_of"], "research_as_of": pd["generated_at"][:10]},
+            "dates": {"price_as_of": iso(pd["as_of"]), "research_as_of": iso(pd["generated_at"])},
             "evidence_ref": {"artifact": pd_file, "pattern_id": p["pattern_id"]},
         })
 
@@ -87,8 +104,8 @@ def main(argv):
             "gap": c.get("not_a_candidate_reason"),
             "watch_next": c.get("what_to_watch"), "invalidate_if": c.get("invalidate_if"),
             "trigger_type": "ASSUMPTION",
-            "dates": {"price_as_of": (c.get("current_performance") or {}).get("price_as_of"),
-                      "research_as_of": (fwd or {}).get("as_of")},
+            "dates": {"price_as_of": iso((c.get("current_performance") or {}).get("price_as_of")),
+                      "research_as_of": iso((fwd or {}).get("as_of"))},
             "evidence_ref": {"artifact": "forward_observation_v0_2.json", "candidate_id": c["candidate_id"]},
         })
 
@@ -110,7 +127,20 @@ def main(argv):
             "watch_next": (x.get("research_questions") or [None])[0],
             "invalidate_if": None,
             "trigger_type": "CURRENT_FACT",
-            "dates": {"research_as_of": x.get("snapshot_date") or (cand or {}).get("generated_at", "")[:10],
+            "watchboard": {
+                "attention_state": x.get("attention_state"),
+                "candidate_status": x.get("candidate_status"),
+                "theme_type": x.get("theme_type"),
+                "phase_window": x.get("phase_window"),
+                "phase_evidence": x.get("phase_evidence"),
+                "narrative_types": x.get("narrative_types"),
+                "conflict_notes": x.get("conflict_notes"),
+                "uncertainty_notes": x.get("uncertainty_notes"),
+                "research_questions": x.get("research_questions"),
+                "source_summary": x.get("source_summary"),
+                "reference_cases": x.get("reference_cases"),
+            },
+            "dates": {"research_as_of": iso(x.get("snapshot_date") or (cand or {}).get("generated_at")),
                       "price_as_of": None},
             "evidence_ref": {"artifact": "current_candidates.json", "candidate_id": x["candidate_id"]},
         })
@@ -119,6 +149,11 @@ def main(argv):
     snaps = (snap or {}).get("snapshots") or []
     canonical = [s for s in snaps if s.get("status") == "CANONICAL"]
 
+    for c in cards:
+        d = c["dates"].get("research_as_of")
+        n = days_old(d, pd["as_of"])
+        c["dates"]["research_days_old"] = n
+        c["dates"]["research_stale"] = bool(n is not None and n > 7)
     order = {"G1": 0, "G2": 1, "G3": 2, "G4": 3}
     cards.sort(key=lambda c: (order[c["group"]],
                               -(c["history"].get("median_excess_pct") or -99),
@@ -127,7 +162,7 @@ def main(argv):
     doc = {
         "artifact": "candidate_digest", "artifact_version": "0.1",
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
-        "as_of": pd["as_of"],
+        "as_of": iso(pd["as_of"]),
         "group_rule": {
             "G1": "历史重复 STRICT + 样本外 REPORTED 且命中≥50% + 当前/下月窗口",
             "G2": "历史重复 STRICT（无合格 OOS）或有结构参照的当前对象 / 前置观察",
@@ -138,8 +173,9 @@ def main(argv):
         "counts": {g: sum(1 for c in cards if c["group"] == g) for g in ("G1", "G2", "G3", "G4")},
         "data_dates": {
             "price_as_of": pd["as_of"],
-            "research_candidates_as_of": (cand or {}).get("generated_at", "")[:10],
-            "pattern_discovery_generated_at": pd["generated_at"],
+            "research_candidates_as_of": iso((cand or {}).get("generated_at")),
+            "research_candidates_days_old": days_old((cand or {}).get("generated_at"), pd["as_of"]),
+            "pattern_discovery_generated_at": iso(pd["generated_at"]),
             "snapshot_latest_canonical": (canonical[-1] if canonical else None),
             "snapshot_latest_any": (snaps[-1] if snaps else None),
             "market_strip_note": "市场状态条行情截至 2026-10-20（另有数据源）",
