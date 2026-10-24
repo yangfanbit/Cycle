@@ -167,12 +167,14 @@
       "observation_type": "POLICY",
       "direction": "SUPPORTIVE",
       "evidence_strength": "STRONG",
-      "claim": "国家药品监督管理局批准浙江诺尔康神经电子科技股份有限公司「听觉脑干植入体」创新产品注册申请；官方原文称其为「国内首创的听觉脑干植入体（ABI）」「我国第一个在脑干区域进行电刺激和神经信号提取的产品」。★ 原文未使用「脑机接口」表述。",
+      "claim": "国家药品监督管理局批准浙江诺尔康神经电子科技股份有限公司「听觉脑干植入体」创新产品注册申请；官方原文称其为「国内首创的听觉脑干植入体（ABI）」「我国第一个在脑干区域进行电刺激和神经信号提取的产品」。★ 原文未使用「脑机接口」表述，属**听觉神经假体（相邻方向）**；**不构成 BCI 分类下已取得注册证的证据**，也不构成规模商业化证明。",
       "source_tier": "T1",
       "source_title": "国家药监局《听觉脑干植入体获批上市》（2026-10-20）",
       "temporal_relation": "BEFORE_SNAPSHOT",
       "linked_object_id": "CC-2026-BCI-MEDTECH",
-      "source_url": "https://www.nmpa.gov.cn/zhuanti/cxylqx/cxylqxlm/20261020110807191.html"
+      "source_url": "https://www.nmpa.gov.cn/zhuanti/cxylqx/cxylqxlm/20261020110807191.html",
+      "adjacent_direction": true,
+      "counts_as_bci_registration": false
     },
     {
       "observation_id": "OBS-2026-10-002",

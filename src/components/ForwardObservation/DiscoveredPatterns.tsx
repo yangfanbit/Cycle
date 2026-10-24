@@ -1,15 +1,16 @@
 /**
- * 从多年行情**发现**的季节性结构（v0.34 · v0.40 起接时点验证产物）。
+ * 从多年行情**发现**的季节性结构（v0.34 · v0.41 起接双层时点资格产物）。
  * ★ 只展示 STRICT（预先声明标准）与少量 EXPLORATORY；每条必须带年份数、命中率、中位超额。
  * ★ 当前状态：IN_WINDOW（当月）/ PRE_WINDOW（下月，前置观察）。
- * ★★ 三层口径分开显示：① 历史统计（n_years/中位/命中）② 滚动检验（逐年训练+测试）
- *    ③ 时点结论（oos_* / evidence_grade）。**历史命中率不是未来概率**。
- * ★★ 时点可发现性：`pit_eligible_years = 0` 表示该模式**只有回看才成立**（当年无法被发现），
- *    必须显式标注，不得与「当时可预判」混为一谈。
+ * ★★ 三层口径分开显示：① 历史统计（n_years/中位/命中）② 滚动检验（逐年训练+测试，双层资格）
+ *    ③ 时点结论（oos_* / oos_by_train_tier / evidence_grade）。**历史命中率不是未来概率**。
+ * ★★ `pit_eligible_years` 是「**历史序列时点资格**」——按**当前**序列、只用过去数据取得的**统计**资格，
+ *    不等于当时的分类/成分/研究机会可得；0 表示只有回看才成立。
  */
-import raw from '@current/pattern_discovery_v0_8.json';
+import raw from '@current/pattern_discovery_v0_9.json';
 import { RichText } from '../RichText';
 
+interface TierStat { tests: number; hit_rate: number | null; median_excess_pct: number | null; status?: string }
 interface P {
   pattern_id: string; board: string; month: number; n_years: number; years: string[];
   median_excess_pct: number; hit_rate: number; tier: string;
@@ -20,7 +21,8 @@ interface P {
   rep_stock_gap?: string;
   oos_tests?: number; oos_hit_rate?: number | null; oos_median_excess_pct?: number | null;
   oos_status?: string; oos_note?: string | null;
-  pit_eligible_years?: number; pit_first_year?: string | null;
+  oos_by_train_tier?: { STRICT: TierStat; EXPLORATORY: TierStat };
+  pit_eligible_years?: number; pit_first_year?: string | null; pit_basis?: string;
   discovery_basis?: string; evidence_grade?: string;
 }
 interface Cov { series: number; rows: number; first_date: string | null; last_date: string | null }
@@ -32,6 +34,14 @@ interface D {
   source: { industry_boards: string; concept_baskets: string; benchmark: string };
   patterns: P[]; current_windows: P[]; tier_note: string; limitations: string[];
   pit_only_count?: number;
+  pit_only_summary?: {
+    total: number;
+    by_history_tier?: { INSUFFICIENT_HISTORY?: number; BELOW_THRESHOLD?: number };
+    oos_reportable?: number;
+    oos_reportable_hit_rate?: number | null;
+    median_positive?: number;
+    note?: string;
+  };
 }
 const doc = raw as unknown as D;
 
@@ -60,9 +70,14 @@ export function DiscoveredPatterns() {
         </span>
       </p>
       <p className="fwd-note" data-pit-only={doc.pit_only_count ?? 0}>
-        ★ 另有 <strong>{doc.pit_only_count ?? 0}</strong> 个模式「只在时点上曾达标、全样本不达标」——
-        旧方法（先按全样本筛选）看不到它们；本页不展示，仅作为方法对照记录在产物里。
-        时点可发现 ≠ 未来有效：<strong>历史命中率不是成功概率</strong>。
+        ★ 另有 <strong>{doc.pit_only_count ?? 0}</strong> 个模式「曾在历史序列上取得时点资格、但全样本等级不达标」：
+        历史样本不足 8 年 <strong>{doc.pit_only_summary?.by_history_tier?.INSUFFICIENT_HISTORY ?? 0}</strong> 个 ·
+        ≥8 年但未达阈值 <strong>{doc.pit_only_summary?.by_history_tier?.BELOW_THRESHOLD ?? 0}</strong> 个；
+        其中 <strong>{doc.pit_only_summary?.oos_reportable ?? 0}</strong> 个具备可报告的样本外结果，
+        这些里样本外命中率 ≥50% 的占{' '}
+        <strong>{Math.round((doc.pit_only_summary?.oos_reportable_hit_rate ?? 0) * 100)}%</strong>。
+        本轮<strong>不放进首页</strong>，仅作为方法对照留在产物里 —— 是否开独立探索入口需另行评估。
+        时点资格 ≠ 未来有效：<strong>历史命中率不是成功概率</strong>。
       </p>
       <ul className="fwd-patterns">
         {top.map((p) => (
@@ -83,14 +98,22 @@ export function DiscoveredPatterns() {
               / 最差 {p.worst_year.year} {p.worst_year.excess_pct}%
             </p>
             <p className="fwd-stats" data-oos={p.oos_status ?? ''}>
-              样本外（滚动）：{p.oos_status === 'REPORTED'
+              样本外（滚动 · 两层合并）：{p.oos_status === 'REPORTED'
                 ? <>检验 <strong>{p.oos_tests}</strong> 年 · 命中 <strong>{((p.oos_hit_rate ?? 0) * 100).toFixed(0)}%</strong>
                     · 中位超额 <strong>{p.oos_median_excess_pct}%</strong></>
                 : <span className="fwd-note">证据不足（{p.oos_note ?? '检验年数不足，不作结论'}）</span>}
             </p>
+            {p.oos_by_train_tier && (
+              <p className="fwd-stats" data-oos-by-tier="1">
+                分训练层级：STRICT 训练 <strong>{p.oos_by_train_tier.STRICT.tests}</strong> 年
+                （命中 {((p.oos_by_train_tier.STRICT.hit_rate ?? 0) * 100).toFixed(0)}%）·
+                EXPLORATORY 训练 <strong>{p.oos_by_train_tier.EXPLORATORY.tests}</strong> 年
+                （命中 {((p.oos_by_train_tier.EXPLORATORY.hit_rate ?? 0) * 100).toFixed(0)}%）
+              </p>
+            )}
             <p className="fwd-stats" data-pit={p.pit_eligible_years ?? 0}>
-              时点可发现：{(p.pit_eligible_years ?? 0) > 0
-                ? <><strong>{p.pit_eligible_years}</strong> 个年份在「只用之前年份」的条件下取得检验资格
+              历史序列时点资格：{(p.pit_eligible_years ?? 0) > 0
+                ? <><strong>{p.pit_eligible_years}</strong> 个年份在「只用该年之前的数据」下取得统计资格
                     {p.pit_first_year ? `（最早 ${p.pit_first_year}）` : ''}</>
                 : <span className="fwd-note">★ 0 次 —— 该窗口<strong>只有回看才成立</strong>（当年无法被发现），不得当作「当时可预判」</span>}
             </p>
@@ -112,6 +135,11 @@ export function DiscoveredPatterns() {
       </ul>
       <p className="fwd-bias" data-discovery-tier-note="1"><RichText text={doc.tier_note} /></p>
       <p className="fwd-bias"><RichText text={doc.limitations[0]} /></p>
+      <p className="fwd-bias" data-pit-limitation="1">
+        ★ 时点资格的边界：概念成员与板块分类都是<strong>当前口径回溯</strong>，退市股不在库内 ——
+        滚动检验只能约束「有没有用未来数据」，<strong>不能</strong>消除成分/分类回溯与幸存者偏差；
+        它也不是当时可得的研究机会。
+      </p>
     </section>
   );
 }

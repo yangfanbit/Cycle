@@ -5,7 +5,7 @@
 把四类来源合并成**一份**候选池，按可解释规则分组排序：
   · current_candidates.json       当前研究对象（6 个，研究记录 2026-10-23）
   · forward_observation_v0_2.json 专项前瞻候选（生肖 / 流感 / 台海）
-  · pattern_discovery_v0_8.json   自动发现的当前/下月窗口（204 条，含时点可发现性）
+  · pattern_discovery_v0_9.json   自动发现的当前/下月窗口（204 条，含双层时点资格）
   · market_snapshots/index.json   本期快照状态（已签发/草稿）
 
 ★ 合并只按**明确 ID**；名称相近不合并（宁可分开）。
@@ -95,11 +95,16 @@ def main(argv):
                         # ★ 时点可发现性 + 证据等级（新方法新增，产品据此降级）
                         "pit_eligible_years": p.get("pit_eligible_years"),
                         "pit_first_year": p.get("pit_first_year"),
+                        "pit_basis": p.get("pit_basis"),
                         "discovery_basis": p.get("discovery_basis"),
-                        "evidence_grade": p.get("evidence_grade")},
+                        "evidence_grade": p.get("evidence_grade"),
+                        # ★ 两层训练的样本外统计分开保留（不把两类混成一个数）
+                        "oos_by_train_tier": p.get("oos_by_train_tier"),
+                        "oos_scope": p.get("oos_scope")},
             "representative_stocks": p.get("representative_stocks") or [],
-            "gap": ("行业板块无历史成分 → 不绑个股" if p["kind"] != "concept_basket" else
-                    p.get("rep_stock_gap")),
+            "gap": ("；".join(x for x in (
+                        ("行业板块无历史成分 → 不绑个股" if p["kind"] != "concept_basket" else p.get("rep_stock_gap")),
+                        "时点资格为「按当前序列、只用过去数据」的统计资格，不代表当时分类/成分可得") if x)),
             "watch_next": "窗口内该板块相对沪深300的 20 日超额与广度",
             "invalidate_if": "窗口结束前中位超额 ≤ 0 且广度 < 0.5",
             "trigger_type": "CALENDAR_WINDOW",
@@ -229,6 +234,9 @@ def main(argv):
             "note": "排序=研究浏览优先顺序，不是收益预测；同组按中位超额与 OOS 命中排序",
         },
         "counts": {g: sum(1 for c in cards if c["group"] == g) for g in ("G1", "G2", "G3", "G4")},
+        # ★ 时点资格的规模与质量分层（不把 960 条塞进首页，先交代数量与口径）
+        "pattern_pit_summary": (pd.get("pit_only_summary") or {}),
+        "pattern_scan_audit": (pd.get("scan_audit") or {}),
         "data_dates": {
             "price_as_of": pd["as_of"],
             # ★ 研究记录日 = 研究侧的 PIT 基准（`snapshot_date`），**不是**产物写出时间。
