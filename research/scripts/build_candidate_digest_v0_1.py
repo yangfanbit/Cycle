@@ -39,6 +39,11 @@ def days_old(d, ref):
         return None
 
 
+def _non_negative(n):
+    """★ 负数天数一律置空：研究记录日**晚于**行情基准时，「早 N 天」的说法不成立。"""
+    return None if (isinstance(n, int) and n < 0) else n
+
+
 def load(name):
     p = os.path.join(CURRENT, name)
     return json.load(open(p, encoding="utf-8")) if os.path.exists(p) else None
@@ -216,12 +221,18 @@ def main(argv):
         "counts": {g: sum(1 for c in cards if c["group"] == g) for g in ("G1", "G2", "G3", "G4")},
         "data_dates": {
             "price_as_of": pd["as_of"],
-            "research_candidates_as_of": iso((cand or {}).get("generated_at")),
-            "research_candidates_days_old": days_old((cand or {}).get("generated_at"), pd["as_of"]),
+            # ★ 研究记录日 = 研究侧的 PIT 基准（`snapshot_date`），**不是**产物写出时间。
+            #   用 generated_at 会把「今天写文件」当成「今天做了研究」，刷新后立刻出现负天数。
+            "research_candidates_as_of": iso((cand or {}).get("snapshot_date") or (cand or {}).get("generated_at")),
+            "research_candidates_generated_at": iso((cand or {}).get("generated_at")),
+            "research_candidates_days_old": _non_negative(
+                days_old((cand or {}).get("snapshot_date") or (cand or {}).get("generated_at"), pd["as_of"])),
             "pattern_discovery_generated_at": iso(pd["generated_at"]),
             "snapshot_latest_canonical": (canonical[-1] if canonical else None),
             "snapshot_latest_any": (snaps[-1] if snaps else None),
-            "market_strip_note": "市场状态条行情截至 2026-10-20（另有数据源）",
+            # ★ 不再写死日期：行情基准与快照日都由数据决定，避免字段之间互相矛盾。
+            "market_strip_note": "市场状态条行情截至 %s；最新已签发快照 %s" % (
+                iso(pd["as_of"]), (canonical[-1] or {}).get("snapshot_date") if canonical else "—"),
         },
         "sources": [
             {"id": "current_candidates", "file": "current_candidates.json", "count": len((cand or {}).get("candidates", [])),

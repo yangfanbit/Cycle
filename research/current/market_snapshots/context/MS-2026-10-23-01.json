@@ -1,0 +1,15 @@
+{
+  "contract": "market_snapshot_context",
+  "context_version": "0.1",
+  "research_question": "截至本快照日，哪些方向已形成可核验的连续证据，值得进入历史结构比对？",
+  "research_method": "market_regime 由本地 EOD 序列按接口规范 §2 计算（20/60 交易日窗口，单日数据不定档）→ observations 逐条挂来源与日期（PIT：date ≤ snapshot_date）→ research_objects 取自 2026-10-23 轮当前研究对象 → historical_candidates 复用冻结 SA v0.3 比较结果（回指 structural_analogy_explanations_v0_13.json）。",
+  "source_policy": "Tier 1（官方发布）优先；Tier 2 为公司公告、采购/环评公示与交易所行情数据；Tier 3 仅用于转述 T1/T2 事实，不单独承担结论。发布日晚于 snapshot_date 的报道一律不纳入。",
+  "coverage_note": "历史研究覆盖至 2025；当前年份无历史研究数据。本轮研究对象记录更新至 2026-10-23，行情序列同样截至 2026-10-23。",
+  "known_limitations": [
+    "market_regime.liquidity_state = UNKNOWN：本环境取不到两市成交额的可计算序列（东方财富 EOD 空响应、网易 502；本地库仅有成交量无成交额），按规范不以成交量或单日成交额替代。",
+    "market_regime 的 broad / breadth / risk_appetite 三维均由本地 EOD 序列（history_scan.db）计算，属自建序列而非交易所直连口径。",
+    "research_objects 的阶段（attention_state）与 phase_evidence 沿用 2026-10-08 轮判定：2026-10 新证据支持方向延续，但不足以改变阶段归类，故未强改。",
+    "研究对象行情层证据（板块指数、资金流）口径受限，市场层证据不参与阶段定档。",
+    "historical_candidates 直接复用冻结 SA v0.3 的 v0.13 解释产物，本轮未重跑 SA 规则。"
+  ]
+}

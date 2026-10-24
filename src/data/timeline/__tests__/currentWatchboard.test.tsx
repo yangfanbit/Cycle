@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
+import canonicalJson from '@current/current_candidates.json';
 
 import { buildWatchboard, WATCHBOARD_DISCLAIMER } from '../currentWatchboard';
 import { CurrentWatchboardSection } from '../../../components/CurrentWatchboard/CurrentWatchboardSection';
@@ -89,13 +90,17 @@ describe('currentWatchboard · 阶段来源（真实数据）', () => {
 
   it('★★ 记录日与「距记录日天数」取自**数据集快照日**（不用「今天」，避免漂移）', () => {
     const wb = buildWatchboard();
-    // ★ 2026-10-08：快照日已由 2026-09-15 推进到 2026-10-08（修契约违规，见 archive 说明）
-    expect(wb.asOf).toBe('2026-10-08');
+    // ★ 不变量：记录日 == 数据集快照日（**不写死字面量** —— 研究轮次推进时不该让本测试变成旧行为快照）
+    const dsDate = (canonicalJson as { snapshot_date: string }).snapshot_date;
+    expect(wb.asOf).toBe(dsDate);
     const bci = wb.groups.flatMap((g) => g.items).find((x) => x.candidateId === 'CC-2026-BCI-MEDTECH')!;
     expect(bci.phaseStart).toBe('2026-06-30');
-    expect(bci.snapshotDate).toBe('2026-10-08');
-    // 2026-06-30 → 2026-10-08 = 100 天
-    expect(bci.daysSincePhaseStart).toBe(100);
+    expect(bci.snapshotDate).toBe(dsDate);
+    // 天数必须由「快照日 − 阶段起点」算出，而不是写死
+    const expectDays = Math.round(
+      (Date.parse(dsDate) - Date.parse('2026-06-30')) / 86_400_000,
+    );
+    expect(bci.daysSincePhaseStart).toBe(expectDays);
   });
 
   it('★ 语义边界：视图模型**不含**任何 score / 概率 / 排名字段', () => {

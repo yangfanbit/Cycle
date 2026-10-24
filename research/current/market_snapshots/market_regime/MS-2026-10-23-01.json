@@ -1,0 +1,82 @@
+{
+  "contract": "market_regime_draft",
+  "market_regime_version": "0.1",
+  "snapshot_date": "2026-10-23",
+  "generated_by": "ai-offline",
+  "generated_at": "2026-10-24T20:10:00",
+  "ai_model": "离线计算 + 人工填报（数据来自本地 EOD 序列，非实时）",
+  "market_regime": {
+    "broad_index_state": "DOWN",
+    "breadth_state": "NORMAL",
+    "liquidity_state": "UNKNOWN",
+    "risk_appetite_state": "RISK_OFF",
+    "beta_note": "2026-10 区间为「宽基下跌 + 结构剧烈分化」：沪深300 近 20 交易日 -7.96%（已破 -5% 档），同期深证成指 -12.95%、创业板指 -18.62%，高β与低β相差 10.67 个百分点 —— β 不可分离程度**高**，跨标的比较必须以同一区间口径为准，**不得用单一指数代表全市场**。另有 2 个单日极值已明确排除出定档：2026-10-22 全市场上涨家数占比仅 9.6%（普跌日）、2026-10-23 反弹至 83.2%（涨停 83 家），单日数据不用于任何维度定档。",
+    "evidence_refs": ["MR-EV-01", "MR-EV-02", "MR-EV-03", "MR-EV-04", "MR-EV-05"]
+  },
+  "evidence": [
+    {
+      "evidence_id": "MR-EV-01",
+      "dimension": "broad_index_state",
+      "metric": "沪深300 近 20 交易日区间涨跌",
+      "value_text": "4105.329 / 4460.156 − 1 = -7.96% → 跌破 -5% 档 → DOWN",
+      "window": "2026-09-17 ~ 2026-10-23（20 个交易日）",
+      "source_tier": "T2",
+      "source_title": "本地 EOD 序列（history_scan.db · CSI300 · 源自新浪日线，2026-10-24 回补至 2026-10-23）",
+      "source_date": "2026-10-23",
+      "claim": "沪深300 指数自 2026-09-17 收 4460.156 点回落至 2026-10-23 收 4105.329 点，区间 -7.96%。"
+    },
+    {
+      "evidence_id": "MR-EV-02",
+      "dimension": "breadth_state",
+      "metric": "全市场上涨家数占比 · 近 4 个自然周周均",
+      "value_text": "周均 42.6% / 45.9% / 32.2% / 48.2% → 4 周均值 42.23%（40%–60% 档）→ NORMAL",
+      "window": "2026 年第 40–43 周（2026-09-28 ~ 2026-10-23，每日可比样本 ≥3000 只）",
+      "source_tier": "T2",
+      "source_title": "本地 EOD 序列（history_scan.db · 5,576 只个股日收盘，逐日统计上涨/下跌家数）",
+      "source_date": "2026-10-23",
+      "claim": "近 4 个自然周的每日上涨家数占比均值依次为 42.6%、45.9%、32.2%、48.2%，4 周均值 42.23%。"
+    },
+    {
+      "evidence_id": "MR-EV-03",
+      "dimension": "risk_appetite_state",
+      "metric": "高β（创业板指）与低β（沪深300）近 20 交易日相对表现",
+      "value_text": "创业板指 -18.62% − 沪深300 -7.96% = -10.67 个百分点 → 高β显著跑输",
+      "window": "2026-09-17 ~ 2026-10-23（20 个交易日）",
+      "source_tier": "T2",
+      "source_title": "本地 EOD 序列（history_scan.db · CHINEXT / CSI300）",
+      "source_date": "2026-10-23",
+      "claim": "创业板指区间 -18.62%、沪深300 区间 -7.96%，高β相对低β低 10.67 个百分点。"
+    },
+    {
+      "evidence_id": "MR-EV-04",
+      "dimension": "risk_appetite_state",
+      "metric": "涨停家数 · 周均（近 4 周 vs 前 4 周）",
+      "value_text": "近 4 周 52.1 家/日 vs 前 4 周 61.5 家/日 = -15.2% → 情绪强度回落",
+      "window": "2026 年第 40–43 周 vs 第 36–39 周（按板块×时期涨跌幅档位判定，ST 不检测）",
+      "source_tier": "T2",
+      "source_title": "本地 EOD 序列（history_scan.db · 个股日涨跌幅 + 板块涨跌幅档位）",
+      "source_date": "2026-10-23",
+      "claim": "近 4 个自然周日均涨停 52.1 家，前 4 个自然周日均 61.5 家，环比 -15.2%。"
+    },
+    {
+      "evidence_id": "MR-EV-05",
+      "dimension": "liquidity_state",
+      "metric": "两市日均成交额（20 日 vs 60 日）· 取数失败记录",
+      "value_text": "不可得 → 记 UNKNOWN，不以成交量或单日成交额替代",
+      "window": "2026-07-24 ~ 2026-10-23（60 个交易日，未取到）",
+      "source_tier": "T2",
+      "source_title": "取数尝试记录：东方财富 push2his EOD 接口（本环境空响应，HTTP 000）；网易财经 chddata（502）；本地库 market_daily.amount 对 SH000300 全为 NULL、history_scan 仅有 volume 无 amount",
+      "source_date": "2026-10-23",
+      "claim": "本环境未能取到两市成交额的可计算序列：东方财富 EOD 接口返回空响应，网易财经历史接口 502，本地两个行情库均无可用成交额列。"
+    }
+  ],
+  "unknown_notes": {
+    "liquidity_state": "成交额序列不可得（G1 首选源东方财富在本环境空响应；网易 502；本地 market_data.db 的 amount 对 SH000300 为 NULL、history_scan 只有 volume）。按接口规范 §2.7 第 3/4 条：不得用「成交量」换算或用单日成交额（腾讯/新浪仅提供当日快照）替代 20/60 日均值口径，故记 UNKNOWN，不用更短窗口凑档位。"
+  },
+  "review": {
+    "status": "PENDING",
+    "reviewer": null,
+    "decided_at": null,
+    "rationale": null
+  }
+}

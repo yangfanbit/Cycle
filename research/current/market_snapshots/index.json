@@ -99,6 +99,13 @@
       "snapshot_date": "2026-10-13",
       "snapshot_id": "MS-2026-10-13-01",
       "status": "CANONICAL"
+    },
+    {
+      "file": "MS-2026-10-23-01.json",
+      "market_snapshot_version": "0.3",
+      "snapshot_date": "2026-10-23",
+      "snapshot_id": "MS-2026-10-23-01",
+      "status": "DRAFT"
     }
   ]
 }
