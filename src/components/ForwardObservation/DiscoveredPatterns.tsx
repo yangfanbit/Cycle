@@ -86,7 +86,7 @@ export function DiscoveredPatterns() {
               样本外（滚动）：{p.oos_status === 'REPORTED'
                 ? <>检验 <strong>{p.oos_tests}</strong> 年 · 命中 <strong>{((p.oos_hit_rate ?? 0) * 100).toFixed(0)}%</strong>
                     · 中位超额 <strong>{p.oos_median_excess_pct}%</strong></>
-                : <span className="fwd-note">证据不足（{p.oos_note ?? '检验年数不足'}）—— 不作结论</span>}
+                : <span className="fwd-note">证据不足（{p.oos_note ?? '检验年数不足，不作结论'}）</span>}
             </p>
             <p className="fwd-stats" data-pit={p.pit_eligible_years ?? 0}>
               时点可发现：{(p.pit_eligible_years ?? 0) > 0
