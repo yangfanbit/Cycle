@@ -11,9 +11,11 @@
  *      `INSUFFICIENT`（证据不足）/ `WATCH_ONLY`（事件驱动，无时间优势）；
  *   3. 概念成分与证券名称都是**当前快照**回溯，存在幸存者/成分变更偏差（产物已逐条写）。
  */
-import raw from '@current/forward_observation_v0_1.json';
+// ★ v0.33.1：v0_2 —— 三段口径（pre / event_day / post5·10·20）+ 事件阶段 + 数据新鲜度
+import raw from '@current/forward_observation_v0_2.json';
 
-export type EvidenceStatus = 'PRE_OBSERVATION' | 'ALREADY_WARM' | 'INSUFFICIENT' | 'WATCH_ONLY';
+export type EvidenceStatus = 'PRE_OBSERVATION' | 'ALREADY_WARM' | 'INSUFFICIENT' | 'WATCH_ONLY'
+  | 'DATA_STALE' | 'UNKNOWN';
 export type PatternStatus = 'A_REPEATED' | 'B_REPEATED' | 'C_EXPLORATORY';
 
 export interface PatternStats {
@@ -61,7 +63,8 @@ export interface ForwardCandidate {
   why_now: string;
   evidence_status: EvidenceStatus;
   historical_stats?: Record<string, unknown>;
-  current_performance?: { participants_with_data?: number; median_20d_excess_pct?: number; breadth_20d?: number } | null;
+  current_performance?: { participants_with_data?: number; median_20d_excess_pct?: number; breadth_20d?: number;
+    price_as_of?: string | null; stale?: boolean; stale_note?: string | null } | null;
   what_to_watch?: string;
   invalidate_if?: string;
   not_a_candidate_reason?: string;
@@ -100,6 +103,8 @@ export const EVIDENCE_STATUS_LABEL: Record<EvidenceStatus, string> = {
   ALREADY_WARM: '已升温（不是提前发现）',
   INSUFFICIENT: '证据不足（不可执行）',
   WATCH_ONLY: '事件驱动（当前无时间优势）',
+  DATA_STALE: '数据陈旧（无法确认当前状态）',
+  UNKNOWN: '状态未知（缺当前行情）',
 };
 
 /** ★ 只有 PRE_OBSERVATION 才允许被页面说成「现在可以看」 */

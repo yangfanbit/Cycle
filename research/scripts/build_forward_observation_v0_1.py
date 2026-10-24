@@ -110,7 +110,7 @@ SINA_KLINE = ("https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/
               "CN_MarketData.getKLineData?symbol=%s&scale=240&ma=no&datalen=%d")
 
 
-def fetch_kline(symbol: str, datalen: int = 3000) -> list:
+def fetch_kline(symbol: str, datalen: int = 3000) -> tuple:
     """日线（**不复权**，原始收盘）。优先新浪（一次 3000 根，实测 2014-06 起），腾讯备用。
 
     返回 [[date, open, close, high, low, volume], ...]，按日期升序。
@@ -122,7 +122,7 @@ def fetch_kline(symbol: str, datalen: int = 3000) -> list:
         rows = [[x["day"], float(x["open"]), float(x["close"]), float(x["high"]),
                  float(x["low"]), float(x["volume"])] for x in d]
         if rows:
-            return rows
+            return rows, "sina"
     except Exception:
         pass
     # 备用：腾讯 GTIMG（单次 ≤800 根）
@@ -132,9 +132,19 @@ def fetch_kline(symbol: str, datalen: int = 3000) -> list:
         d = json.loads(_get(url).decode("utf-8", "replace"))
         node = (d.get("data") or {}).get(symbol) or {}
         rows = node.get("day") or node.get("qfqday") or []
-        return [[r[0], float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5])] for r in rows]
+        return [[r[0], float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5])] for r in rows], "tencent"
     except Exception:
-        return []
+        return [], "unavailable"
+
+
+def merge_series(old: list, new: list) -> list:
+    """按日期合并去重（新数据覆盖同日旧值）。★ 增量刷新：旧数据不会因为「条数够多」被永久跳过。"""
+    merged = {}
+    for r in (old or []):
+        merged[r[0]] = r
+    for r in (new or []):
+        merged[r[0]] = r
+    return [merged[d] for d in sorted(merged)]
 
 
 def fetch_universe() -> list:
@@ -273,79 +283,121 @@ def limit_up_days(rows: list, symbol: str, start: str, end: str) -> int:
     return n
 
 
-def basket_window(members: dict, bench: list, anchor: str, pre: int = 20, post: int = 20) -> dict:
-    """篮子相对基准的窗口表现（成员与基准按**各自**交易日索引对齐到同一日历区间）。"""
+def event_study(members: dict, bench: list, anchor_date: str, pre: int = 20,
+                post_ks=(5, 10, 20)) -> dict:
+    """★★ v0.33.1：**三个口径分开算**的事件研究（不再用「前 20 → 后 20」总收益冒充事件响应）。
+
+    · `pre`：事件前 20 个交易日（事件前一交易日往前 20 日）相对基准超额；
+    · `event_day`：**事件前一交易日收盘 → 事件日（或事件后第一个交易日）收盘** ——
+      覆盖周末/节假日事件的首日跳空；
+    · `post_k`：事件日收盘 → 事件后第 k 个交易日收盘，k ∈ {5,10,20}；
+    · `responded` **只看事件后 20 日**（中位超额 > 0 且广度 ≥ 0.5），不看事件前。
+
+    `anchor_date` 若落在非交易日，取**其后第一个交易日**为 `anchor_trading_day`（并记录原事件日）。
+    """
     bdays = trading_days(bench)
-    if anchor not in bdays:
-        later = [d for d in bdays if d > anchor]
-        if not later:
-            return {"status": "NO_ANCHOR"}
-        anchor = later[0]
-    ai = bdays.index(anchor)
-    s_idx, e_idx = ai - pre, ai + post
-    if s_idx < 0 or e_idx >= len(bdays):
-        return {"status": "OUT_OF_RANGE", "anchor": anchor}
-    start_d, end_d = bdays[s_idx], bdays[e_idx]
-    bench_ret = bench[e_idx][2] / bench[s_idx][2] - 1.0
+    ai = next((i for i, d in enumerate(bdays) if d >= anchor_date), None)
+    if ai is None or ai - 1 - pre < 0:
+        return {"status": "OUT_OF_RANGE", "anchor_event_date": anchor_date}
+    prev = ai - 1
+    out = {"status": "OK", "anchor_event_date": anchor_date,
+           "anchor_trading_day": bdays[ai], "prev_trading_day": bdays[prev],
+           "window_non_trading": bdays[ai] != anchor_date}
+    bench_idx = {d: i for i, d in enumerate(bdays)}
 
-    pre_bench = bench[ai - 1][2] / bench[s_idx][2] - 1.0 if ai - 1 > s_idx else 0.0
-    post_bench = bench[e_idx][2] / bench[ai][2] - 1.0 if e_idx > ai else 0.0
-
-    excess, pre_ex, post_ex, lu = [], [], [], 0
-    for sym, rows in members.items():
-        idx = {r[0]: i for i, r in enumerate(rows)}
-        if start_d not in idx or end_d not in idx:
-            continue
-        r0, r1 = rows[idx[start_d]][2], rows[idx[end_d]][2]
-        if r0 <= 0:
-            continue
-        ret = r1 / r0 - 1.0
-        excess.append((ret - bench_ret) * 100.0)
-        a = idx.get(anchor)
-        if a is not None and a > 0 and start_d in idx:
-            pre_ex.append((rows[a - 1][2] / rows[idx[start_d]][2] - 1.0 - pre_bench) * 100.0)
-        if a is not None and end_d in idx:
-            post_ex.append((rows[idx[end_d]][2] / rows[a][2] - 1.0 - post_bench) * 100.0)
-        lu += limit_up_days(rows, sym, start_d, end_d)
-    if not excess:
-        return {"status": "NO_MEMBERS_WITH_DATA", "anchor": anchor}
-    breadth = sum(1 for x in excess if x > 0) / len(excess)
-    return {
-        "status": "OK", "anchor": anchor, "window": [start_d, end_d],
-        "members_with_data": len(excess),
-        "median_excess_pct": round(statistics.median(excess), 2),
-        "mean_excess_pct": round(sum(excess) / len(excess), 2),
-        "breadth": round(breadth, 3),
-        "pre_median_excess_pct": round(statistics.median(pre_ex), 2) if pre_ex else None,
-        "post_median_excess_pct": round(statistics.median(post_ex), 2) if post_ex else None,
-        "limit_up_days_total": lu,
-        "responded": bool(statistics.median(excess) > 0 and breadth >= 0.5),
-    }
-
-
-def lead_days(members: dict, bench: list, anchor: str, lookback: int = 20) -> int | None:
-    """首轮异动：篮子中位**累计超额**首次转正且 ≥ +2pp 的交易日（相对 anchor 的偏移，负数=提前）。"""
-    bdays = trading_days(bench)
-    if anchor not in bdays:
-        return None
-    ai = bdays.index(anchor)
-    if ai - lookback < 0:
-        return None
-    for k in range(lookback, 0, -1):
-        d0, d1 = bdays[ai - k], bdays[ai - k + 1]
-        bench_ret = bench[ai - k + 1][2] / bench[ai - k][2] - 1.0
-        ex = []
+    def excess_between(d0: str, d1: str) -> list:
+        if d0 not in bench_idx or d1 not in bench_idx:
+            return []
+        i0, i1 = bench_idx[d0], bench_idx[d1]
+        if i1 <= i0:
+            return []
+        b = bench[i1][2] / bench[i0][2] - 1.0
+        vals = []
         for sym, rows in members.items():
-            idx = {r[0]: i for i, r in enumerate(rows)}
-            if d0 not in idx or d1 not in idx:
+            m = {r[0]: r[2] for r in rows}
+            if d0 not in m or d1 not in m or m[d0] <= 0:
                 continue
-            r0 = rows[idx[d0]][2]
-            if r0 <= 0:
+            vals.append((m[d1] / m[d0] - 1.0 - b) * 100.0)
+        return vals
+
+    # ① 事件前 20 日
+    d_pre0 = bdays[prev - pre]
+    pre_vals = excess_between(d_pre0, bdays[prev])
+    out["pre"] = {
+        "window": [d_pre0, bdays[prev]],
+        "members_with_data": len(pre_vals),
+        "median_excess_pct": round(statistics.median(pre_vals), 2) if pre_vals else None,
+        "breadth": round(sum(1 for x in pre_vals if x > 0) / len(pre_vals), 3) if pre_vals else None,
+    }
+    # ② 事件日（前收 → 事件日/其后首个交易日收）
+    day_vals = excess_between(bdays[prev], bdays[ai])
+    out["event_day"] = {
+        "window": [bdays[prev], bdays[ai]],
+        "members_with_data": len(day_vals),
+        "median_excess_pct": round(statistics.median(day_vals), 2) if day_vals else None,
+        "breadth": round(sum(1 for x in day_vals if x > 0) / len(day_vals), 3) if day_vals else None,
+        "gap_included": bdays[ai] != anchor_date,
+    }
+    # ③ 事件后 k 日
+    out["post"] = {}
+    for k in post_ks:
+        j = ai + k
+        if j >= len(bdays):
+            out["post"]["post%d" % k] = {"status": "INSUFFICIENT_FUTURE_DATA",
+                                         "required_end": "第 %d 个交易日后" % k}
+            continue
+        vals = excess_between(bdays[ai], bdays[j])
+        out["post"]["post%d" % k] = {
+            "status": "OK", "window": [bdays[ai], bdays[j]],
+            "members_with_data": len(vals),
+            "median_excess_pct": round(statistics.median(vals), 2) if vals else None,
+            "breadth": round(sum(1 for x in vals if x > 0) / len(vals), 3) if vals else None,
+        }
+    p20 = out["post"].get("post20") or {}
+    if p20.get("status") == "OK" and p20.get("median_excess_pct") is not None:
+        out["responded"] = bool(p20["median_excess_pct"] > 0 and (p20["breadth"] or 0) >= 0.5)
+        out["response_basis"] = "post20"
+    else:
+        out["responded"] = None
+        out["response_basis"] = "INSUFFICIENT_FUTURE_DATA"
+    return out
+
+
+def cumulative_lead(members: dict, bench: list, anchor_date: str, lookback: int = 20,
+                    threshold_pct: float = 2.0) -> dict:
+    """★★ 提前量：**累计超额**首次 ≥ 阈值 的交易日（负 = 事件前）。
+
+    ★ 只是**价格信号时间**，不证明因果，也不证明信息泄露。
+    样本不足（没有成员覆盖整段、或从未达到阈值）→ `lead_days = None` 并写原因，
+    **不输出误导性的中位提前天数**。
+    """
+    bdays = trading_days(bench)
+    ai = next((i for i, d in enumerate(bdays) if d >= anchor_date), None)
+    if ai is None or ai - lookback < 1:
+        return {"lead_days": None, "reason": "基准日历不足（事件前 20 个交易日不可用）"}
+    base = bdays[ai - lookback]
+    covered = 0
+    for sym, rows in members.items():
+        m = {r[0]: r[2] for r in rows}
+        if base in m and bdays[ai - 1] in m:
+            covered += 1
+    if covered < 3:
+        return {"lead_days": None, "reason": "覆盖事件前窗口的成员不足 3 只，无法计算累计超额"}
+    for k in range(1, lookback + 1):
+        d = bdays[ai - lookback + k]
+        b = bench[ai - lookback + k][2] / bench[ai - lookback][2] - 1.0
+        vals = []
+        for sym, rows in members.items():
+            m = {r[0]: r[2] for r in rows}
+            if base not in m or d not in m or m[base] <= 0:
                 continue
-            ex.append((rows[idx[d1]][2] / r0 - 1.0 - bench_ret) * 100.0)
-        if ex and statistics.median(ex) >= 2.0:
-            return -k
-    return None
+            vals.append((m[d] / m[base] - 1.0 - b) * 100.0)
+        if len(vals) >= 3 and statistics.median(vals) >= threshold_pct:
+            return {"lead_days": k - lookback, "reason": None,
+                    "basis": "累计超额首次 ≥ +%.1fpp（起点 %s）" % (threshold_pct, base),
+                    "note": "★ 仅为价格信号时间，不证明因果或信息泄露"}
+    return {"lead_days": None,
+            "reason": "事件前 %d 个交易日内累计超额从未达到 +%.1fpp" % (lookback, threshold_pct)}
 
 
 def build_zodiac_pattern(universe: list, bench: list, cache: dict) -> dict:
@@ -370,14 +422,17 @@ def build_zodiac_pattern(universe: list, bench: list, cache: dict) -> dict:
                 if rows:
                     members[sym] = rows
             if lny <= bench[-1][0]:
-                w = basket_window(members, bench, lny)
-                rec.update({"window": w, "lead_days": lead_days(members, bench, w.get("anchor", lny))})
+                w = event_study(members, bench, lny)
+                lead = cumulative_lead(members, bench, lny)
+                rec.update({"window": w, "lead_days": lead.get("lead_days"),
+                            "lead_note": lead.get("reason") or lead.get("basis"),
+                            "responded": w.get("responded")})
             else:
                 rec["window"] = {"status": "FUTURE", "anchor": lny}
         years.append(rec)
 
     tested = [y for y in years if y.get("window", {}).get("status") == "OK"]
-    resp = [y for y in tested if y["window"].get("responded")]
+    resp = [y for y in tested if y["window"].get("responded") is True]
     leads = [y["lead_days"] for y in tested if y.get("lead_days") is not None]
     return {
         "pattern_id": "ZODIAC_NAME",
@@ -407,31 +462,91 @@ def build_zodiac_pattern(universe: list, bench: list, cache: dict) -> dict:
     }
 
 
+def _cluster_stages(events: list, gap_days: int = 20) -> list:
+    """★★ 把「同一轮、窗口高度重叠」的事件归入同一**事件阶段**（避免重复计数）。
+
+    规则：按事件日排序；若下一事件日距上一事件**不足 20 个交易日**（≈ 统计窗口重叠），
+    归入同一阶段。阶段是统计单位；原始事件仍逐条保留可追溯。
+    """
+    stages = []
+    for e in sorted(events, key=lambda x: x["event_date"]):
+        if not stages:
+            stages.append({"stage_id": "S1", "events": [e["event_id"]],
+                           "first_event_date": e["event_date"], "last_event_date": e["event_date"],
+                           "_dates": [e["event_date"]]})
+            continue
+        cur = stages[-1]
+        # 粗略交易日近似：自然日 ×5/7
+        gap = (__import__("datetime").date.fromisoformat(e["event_date"])
+               - __import__("datetime").date.fromisoformat(cur["last_event_date"])).days
+        if gap * 5 / 7 <= gap_days:
+            cur["events"].append(e["event_id"])
+            cur["last_event_date"] = e["event_date"]
+            cur["_dates"].append(e["event_date"])
+        else:
+            stages.append({"stage_id": "S%d" % (len(stages) + 1), "events": [e["event_id"]],
+                           "first_event_date": e["event_date"], "last_event_date": e["event_date"],
+                           "_dates": [e["event_date"]]})
+    return stages
+
+
 def build_strait_pattern(bench: list, cache: dict, members_meta: dict) -> dict:
     syms = [m["symbol"] if isinstance(m, dict) else m for m in members_meta]
     members = {s: cache["stocks"][s] for s in syms if s in cache.get("stocks", {})}
     events = []
     for ev in STRAIT_EVENTS:
-        w = basket_window(members, bench, ev["event_date"])
         rec = dict(ev)
+        # ★★ 事件发生日 ≠ 首次公开日：没有独立核实的公开日一律 None
+        rec["published_at"] = ev.get("published_at") or None
+        rec["published_at_status"] = ("VERIFIED" if ev.get("published_at") else "UNKNOWN")
+        w = event_study(members, bench, ev["event_date"])
         rec["window"] = w
         if w.get("status") == "OK":
-            rec["lead_days"] = lead_days(members, bench, w["anchor"])
+            lead = cumulative_lead(members, bench, ev["event_date"])
+            rec["lead_days"] = lead.get("lead_days")
+            rec["lead_note"] = lead.get("reason") or lead.get("basis")
             rec["responded"] = w.get("responded")
         events.append(rec)
     ok = [e for e in events if e["window"].get("status") == "OK"]
-    resp = [e for e in ok if e.get("responded")]
+    resp = [e for e in ok if e.get("responded") is True]
     leads = [e["lead_days"] for e in ok if e.get("lead_days") is not None]
-    pre = [e["window"]["pre_median_excess_pct"] for e in ok
-           if e["window"].get("pre_median_excess_pct") is not None]
-    post = [e["window"]["post_median_excess_pct"] for e in ok
-            if e["window"].get("post_median_excess_pct") is not None]
+
+    # ★★ 按事件阶段去重计数
+    stages = _cluster_stages(events)
+    by_id = {e["event_id"]: e for e in events}
+    for st in stages:
+        st["responded"] = any(by_id[x].get("responded") is True for x in st["events"])
+        st["post20"] = [by_id[x]["window"].get("post", {}).get("post20", {}).get("median_excess_pct")
+                        for x in st["events"]]
+        st.pop("_dates", None)
+    stage_ok = [st for st in stages if any(by_id[x]["window"].get("status") == "OK" for x in st["events"])]
+    stage_resp = [st for st in stage_ok if st["responded"]]
+
+    def med(key, sub=None):
+        vals = []
+        for e in ok:
+            v = (e["window"].get(key) or {})
+            if sub:
+                v = (v.get(sub) or {})
+            v = v.get("median_excess_pct")
+            if v is not None:
+                vals.append(v)
+        return round(statistics.median(vals), 2) if vals else None
+
     return {
         "pattern_id": "TAIWAN_STRAIT_EVENT",
         "family": "B_EVENT",
         "title": "台海事件 → 海峡西岸概念（事件驱动，无固定日历）",
         "hypothesis": ("台海相关事件（政策表态 / 军事演训 / 交流）会反复引发「海峡西岸」概念股的短期超额；"
                        "**不声称存在季节性**。"),
+        "method": {
+            "pre": "事件前 20 个交易日（相对基准超额）",
+            "event_day": "事件前一交易日收盘 → 事件日（或其后首个交易日）收盘，含跳空",
+            "post": "事件日收盘 → 后 5 / 10 / 20 个交易日收盘",
+            "responded": "**只看 post20**：中位超额 > 0 且广度 ≥ 0.5",
+            "stages": "同一轮窗口重叠的事件归入一个阶段；occurrence/response 按**阶段**统计",
+            "lead": "累计超额首次 ≥ +2pp 的交易日；仅为价格信号时间，不证明因果",
+        },
         "basket": {
             "concept": "海峡西岸", "node": STRAIT_CONCEPT_NODE,
             "members": len(members_meta), "members_with_data": len(members),
@@ -439,22 +554,31 @@ def build_strait_pattern(bench: list, cache: dict, members_meta: dict) -> dict:
                                "历史成分变化无法还原，属已知偏差。",
         },
         "events": events,
+        "stages": stages,
         "stats": {
-            "occurrence_count": len(ok),
-            "response_count": len(resp),
-            "response_rate": round(len(resp) / len(ok), 3) if ok else None,
-            "median_lead_days": statistics.median(leads) if leads else None,
-            "median_pre_excess_pct": round(statistics.median(pre), 2) if pre else None,
-            "median_post_excess_pct": round(statistics.median(post), 2) if post else None,
+            "occurrence_count": len(stage_ok),
+            "response_count": len(stage_resp),
+            "response_rate": round(len(stage_resp) / len(stage_ok), 3) if stage_ok else None,
+            "raw_event_count": len(ok),
+            "raw_event_response_count": len(resp),
+            "median_lead_days": statistics.median(leads) if len(leads) >= 3 else None,
+            "lead_sample_count": len(leads),
+            "lead_days_reason": (None if len(leads) >= 3 else
+                                 ("仅 %d 个事件有可计算的提前量（<3）→ 不给中位提前量" % len(leads))),
+            "median_pre_excess_pct": med("pre"),
+            "median_event_day_excess_pct": med("event_day"),
+            "median_post5_excess_pct": med("post", "post5"),
+            "median_post20_excess_pct": med("post", "post20"),
             "sample_years": sorted({int(e["event_date"][:4]) for e in ok}),
         },
         "known_biases": [
             "概念成分为当前成分 → 幸存者偏差 + 成分变更偏差。",
-            "事件日选取为公开事实日；**信息是否提前泄露**无法用行情证明（lead_days 只描述价格，不证明因果）。",
-            "样本 7 个事件、跨 2016–2024，事件强度不可比（政策表态 vs 军事演训）。",
+            "★★ 事件发生日 ≠ 信息首次公开日；未独立核实公开日的事件 `published_at` 保持 null。",
+            "★★ 提前量只是价格信号时间，不证明因果或信息泄露。",
+            "样本 7 个原始事件 / 归并为阶段后见 occurrence_count，事件强度不可比（政策表态 vs 军事演训）。",
         ],
-        "status": "B_REPEATED" if len(ok) >= 5 and len(resp) >= 3 else "C_EXPLORATORY",
-        "status_reason": "多个独立事件 + 响应反复出现 → 重复迹象；但时间不固定，属事件驱动，不是季节规律。",
+        "status": "B_REPEATED" if len(stage_ok) >= 5 and len(stage_resp) >= 3 else "C_EXPLORATORY",
+        "status_reason": "按事件阶段统计；时间不固定，属事件驱动，不是季节规律。",
     }
 
 
@@ -482,35 +606,55 @@ def build(fetch: bool = False) -> dict:
     cache.setdefault("boards", {})
 
     if fetch:
-        if not os.path.exists(UNIVERSE):
-            json.dump(fetch_universe(), open(UNIVERSE, "w", encoding="utf-8"), ensure_ascii=False)
-        universe = json.load(open(UNIVERSE, encoding="utf-8"))
-        # 指数（一次 3000 根，覆盖 2014 起）
+        # ★★ v0.33.1：**每次都刷新**（不再「条数够了就永久跳过」），按日期合并去重
+        cache.setdefault("sources", {})
+        cache["universe"] = fetch_universe()
+        json.dump(cache["universe"], open(UNIVERSE, "w", encoding="utf-8"), ensure_ascii=False)
+        universe = cache["universe"]
         for sid, name, sym in INDICES:
-            if len(cache.get(sid) or []) < 2000:
-                cache[sid] = fetch_kline(sym, 3000)
-                time.sleep(PACING)
-        # 生肖候选（2024 龙 / 2026 马 / 2027 羊）
+            rows, src = fetch_kline(sym, 3000)
+            if rows:
+                cache[sid] = merge_series(cache.get(sid), rows)
+            cache["sources"][sid] = {"provider": src, "fetched_at": GENERATED_AT,
+                                     "last_date": (cache.get(sid) or [[None]])[-1][0],
+                                     "rows": len(cache.get(sid) or [])}
+            time.sleep(PACING)
         zsyms = set()
         for y in (2024, 2026, 2027):
             a = ZODIAC[y]
             zsyms |= {u["symbol"] for u in universe if a in (u.get("name") or "")}
-        # 海峡西岸成分
         members = fetch_concept_members(STRAIT_CONCEPT_NODE)
         cache["strait_members"] = [{"symbol": m["symbol"], "name": m["name"]} for m in members]
+        cache["sources"]["strait_members"] = {"provider": "sina", "fetched_at": GENERATED_AT,
+                                              "count": len(members)}
         msyms = {m["symbol"] for m in members}
         targets = zsyms | msyms
         for i, sym in enumerate(sorted(targets)):
-            if len(cache["stocks"].get(sym) or []) >= 2000:
-                continue
-            cache["stocks"][sym] = fetch_kline(sym, 3000)
+            rows, src = fetch_kline(sym, 3000)
+            if rows:
+                cache["stocks"][sym] = merge_series(cache["stocks"].get(sym), rows)
+            cache["sources"][sym] = {"provider": src, "fetched_at": GENERATED_AT,
+                                     "last_date": (cache["stocks"].get(sym) or [[None]])[-1][0]}
             time.sleep(PACING)
             if i % 20 == 0:
                 json.dump(cache, open(CACHE, "w", encoding="utf-8"), ensure_ascii=False)
-        # 行业板块
-        boards = fetch_industry_boards()
-        for b in boards:
-            cache["boards"][b["code"]] = dict(b)
+        # ★★ 板块刷新失败**不致命**：保留旧数据，但把状态与日期显式写出来
+        try:
+            boards = fetch_industry_boards()
+            for b in boards:
+                cache["boards"][b["code"]] = dict(b)
+            cache["sources"]["ths_board"] = {"provider": "ths", "fetched_at": GENERATED_AT,
+                                             "status": "OK", "boards": len(boards),
+                                             "last_date": max((b.get("last_date") or "") for b in boards) if boards else None}
+        except Exception as exc:  # noqa: BLE001
+            old = cache.get("boards") or {}
+            cache["sources"]["ths_board"] = {
+                "provider": "ths", "fetched_at": GENERATED_AT, "status": "REFRESH_FAILED",
+                "error": "%s: %s" % (type(exc).__name__, str(exc)[:120]),
+                "boards": len(old),
+                "last_date": max((v.get("last_date") or "") for v in old.values()) if old else None,
+                "note": "★ 沿用上次成功抓取的板块数据（状态见 status / last_date）",
+            }
         json.dump(cache, open(CACHE, "w", encoding="utf-8"), ensure_ascii=False)
 
     universe = json.load(open(UNIVERSE, encoding="utf-8")) if os.path.exists(UNIVERSE) else []
@@ -535,23 +679,41 @@ def build(fetch: bool = False) -> dict:
         "generated_by": "research/scripts/build_forward_observation_v0_1.py",
         "supersedes": None,
         "as_of": as_of,
-        "as_of_source": "腾讯 GTIMG 沪深300(sh000300) 最后一根完整日线",
+        "as_of_source": ("%s · 沪深300(sh000300) 最后一根完整日线（%s）"
+                         % ((cache.get("sources", {}).get("CSI300") or {}).get("provider", "unknown"), as_of)),
+        "method_version": "v0_2",
         "data_sources": [
-            {"id": "tencent_gtimg", "used_for": "指数 / 个股日线（原始收盘，不复权）",
-             "endpoint": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get",
-             "status": "OK", "note": "单次最多约 800 根日线；长区间分段取并按日期去重"},
-            {"id": "sina_universe", "used_for": "全 A 股名称与代码（5,576 只）",
-             "endpoint": "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData",
-             "status": "OK"},
-            {"id": "sina_concept", "used_for": "概念成分（海峡西岸 78 只）",
-             "endpoint": "同上 node=gn_hxxa", "status": "OK",
-             "note": "★ 当前成分，非历史成分"},
-            {"id": "ths_board", "used_for": "行业板块当年日线（140 个）",
-             "endpoint": "http://d.10jqka.com.cn/v6/line/bk_881xxx/01/last.js",
-             "status": "OK", "note": "★ 仅当年数据；概念板块（30xxxx）该接口 404 → 概念用成分篮子替代"},
+            {"id": "sina_kline", "used_for": "指数 / 个股日线（原始收盘，不复权）",
+             "endpoint": SINA_KLINE % ("<symbol>", 3000), "status": "PRIMARY",
+             "note": "一次最多 3000 根；按日期合并去重（增量刷新）",
+             "series_from_sina": sum(1 for v in (cache.get("sources") or {}).values()
+                                     if isinstance(v, dict) and v.get("provider") == "sina")},
+            {"id": "tencent_gtimg", "used_for": "日线备用源（新浪失败时）",
+             "endpoint": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get", "status": "FALLBACK",
+             "note": "单次 ≤800 根；批量请求会触发 501 WAF",
+             "series_from_tencent": sum(1 for v in (cache.get("sources") or {}).values()
+                                        if isinstance(v, dict) and v.get("provider") == "tencent")},
+            {"id": "sina_universe", "used_for": "全 A 股名称与代码（每次 --fetch 刷新）",
+             "endpoint": "Market_Center.getHQNodeData?node=hs_a", "status": "OK",
+             "count": len(universe)},
+            {"id": "sina_concept", "used_for": "概念成分（海峡西岸）",
+             "endpoint": "Market_Center.getHQNodeData?node=%s" % STRAIT_CONCEPT_NODE, "status": "OK",
+             "note": "★ 当前成分，非历史成分",
+             "count": len(cache.get("strait_members") or [])},
+            {"id": "ths_board", "used_for": "行业板块当年日线",
+             "endpoint": "http://d.10jqka.com.cn/v6/line/bk_881xxx/01/last.js", "status": "OK",
+             "note": "★ 仅当年数据；概念板块（30xxxx）该接口 404 → 概念用成分篮子替代",
+             "count": len(cache.get("boards") or {})},
             {"id": "eastmoney", "used_for": "（未使用）", "endpoint": "push2*.eastmoney.com",
-             "status": "UNAVAILABLE", "note": "本机实测 RemoteDisconnected（含直连与代理）→ 未采用，不用文档推定"},
+             "status": "UNAVAILABLE", "note": "本机实测 RemoteDisconnected（含直连与代理）→ 未采用"},
         ],
+        "refresh": {
+            "policy": "每次 --fetch 全量刷新 + 按日期合并（不因条数够多而跳过）",
+            "series_last_date": {k: v.get("last_date") for k, v in (cache.get("sources") or {}).items()
+                                 if isinstance(v, dict) and v.get("last_date")},
+            "stale_series": sorted(k for k, v in (cache.get("sources") or {}).items()
+                                   if isinstance(v, dict) and v.get("last_date") and v["last_date"] < as_of),
+        },
         "benchmark": {
             "series_id": "CSI300", "name": "沪深300", "close": bench[-1][2],
             "ret_5d": perf(5), "ret_10d": perf(10), "ret_20d": perf(20), "ret_60d": perf(60),
@@ -638,9 +800,16 @@ def build_seasonal_windows(doc: dict) -> dict:
                 b = brows[0][1] / brows[-1][1] - 1
                 ex.append((r - b) * 100)
             if ex:
+                # ★★ 记录价格实际截至日（market_data.db 的最后一行），并与 as_of 对齐判定
+                last = conn.execute("SELECT MAX(trade_date) FROM market_daily WHERE price_type='raw'").fetchone()[0]
                 perf = {"participants_with_data": len(ex),
                         "median_20d_excess_pct": round(statistics.median(ex), 2),
-                        "breadth_20d": round(sum(1 for x in ex if x > 0) / len(ex), 3)}
+                        "breadth_20d": round(sum(1 for x in ex if x > 0) / len(ex), 3),
+                        "price_as_of": last,
+                        "stale": bool(last and last < as_of),
+                        "stale_note": (None if (last and last >= as_of) else
+                                       "★ 行情截至 %s，早于观察时点 %s —— 不得据此断言「已升温/前置观察」"
+                                       % (last, as_of))}
         out.append({
             "theme_id": t["theme_id"], "label": t["label"],
             "occurrence_count": len(t["events"]),
@@ -698,7 +867,9 @@ def select_candidates(doc: dict) -> list:
             "historical_stats": {"occurrence_count": t["occurrence_count"],
                                  "sample_windows": [e["window"] for e in t["events"]]},
             "current_performance": perf,
-            "evidence_status": ("PRE_OBSERVATION" if (med is None or med < 10) else "ALREADY_WARM"),
+            "evidence_status": ("DATA_STALE" if (perf or {}).get("stale")
+                                else "UNKNOWN" if med is None
+                                else "PRE_OBSERVATION" if med < 10 else "ALREADY_WARM"),
             "what_to_watch": "窗口内该题材参与者的 20 日超额与广度是否转正；是否出现可核实的前置催化（带发布日）。",
             "invalidate_if": "窗口结束前中位超额 ≤ 0 且广度 < 0.5。",
             "fact_vs_assumption": {
@@ -734,37 +905,55 @@ def artifact_path(version=None):
 
 
 def check(doc: dict) -> list:
+    """产物自检（不联网）：口径一致性 + 三段窗口独立 + PIT 截止。"""
     errs = []
     if not re.match(r"^\d{4}-\d{2}-\d{2}$", doc.get("as_of", "")):
         errs.append("as_of 缺失或格式错")
     for p in doc["patterns"]:
         st = p.get("stats") or {}
-        tested = [y for y in p.get("years", []) if (y.get("window") or {}).get("status") == "OK"] \
-            if p["pattern_id"] == "ZODIAC_NAME" else \
-            [e for e in p.get("events", []) if (e.get("window") or {}).get("status") == "OK"]
-        if st.get("occurrence_count") != len(tested):
-            errs.append("%s occurrence_count 与明细不一致" % p["pattern_id"])
-        resp = [y for y in tested if (y.get("window") or {}).get("responded")] \
-            if p["pattern_id"] == "ZODIAC_NAME" else [e for e in tested if e.get("responded")]
-        if st.get("response_count") != len(resp):
-            errs.append("%s response_count 与明细不一致" % p["pattern_id"])
-        if tested and st.get("response_rate") is not None:
+        if p["pattern_id"] == "ZODIAC_NAME":
+            tested = [y for y in p.get("years", []) if (y.get("window") or {}).get("status") == "OK"]
+            resp = [y for y in tested if y["window"].get("responded") is True]
+        else:
+            tested = [e for e in p.get("events", []) if (e.get("window") or {}).get("status") == "OK"]
+            resp = [e for e in tested if e.get("responded") is True]
+            stages = p.get("stages") or []
+            if not stages:
+                errs.append("%s 缺事件阶段（不能只给原始事件）" % p["pattern_id"])
+            if st.get("occurrence_count") != len(stages):
+                errs.append("%s occurrence_count 应按**阶段**统计" % p["pattern_id"])
+        for e in tested:
+            w = e["window"]
+            for k in ("pre", "event_day", "post"):
+                if k not in w:
+                    errs.append("%s 缺 %s 段（三段口径必须独立）" % (e.get("event_id") or e.get("year"), k))
+            # ★ responded 只能由 post20 决定
+            p20 = (w.get("post") or {}).get("post20") or {}
+            if p20.get("status") == "OK":
+                expect = bool((p20.get("median_excess_pct") or 0) > 0 and (p20.get("breadth") or 0) >= 0.5)
+                if e.get("responded") is not expect:
+                    errs.append("%s responded 与 post20 不一致" % (e.get("event_id") or e.get("year")))
+        if p["pattern_id"] == "ZODIAC_NAME" and st.get("response_rate") is not None and tested:
             if abs(st["response_rate"] - round(len(resp) / len(tested), 3)) > 1e-9:
                 errs.append("%s response_rate 与明细不一致" % p["pattern_id"])
         if not p.get("known_biases"):
             errs.append("%s 缺 known_biases" % p["pattern_id"])
-    # ★ PIT：任何事件窗口不得引用 as_of 之后的数据
     for p in doc["patterns"]:
         for e in p.get("events", []):
             if e["event_date"] > doc["as_of"]:
                 errs.append("%s 事件日晚于 as_of" % e["event_id"])
             w = e.get("window") or {}
-            if w.get("status") == "OK" and w["window"][1] > doc["as_of"]:
-                errs.append("%s 窗口结束晚于 as_of（用了未来数据）" % e["event_id"])
-    for y in next(p for p in doc["patterns"] if p["pattern_id"] == "ZODIAC_NAME")["years"]:
-        w = y.get("window") or {}
-        if w.get("status") == "OK" and w["window"][1] > doc["as_of"]:
-            errs.append("%s 生肖窗口结束晚于 as_of" % y["year"])
+            if w.get("status") == "OK":
+                for seg in [w.get("pre") or {}, w.get("event_day") or {}] + \
+                           list((w.get("post") or {}).values()):
+                    win = seg.get("window")
+                    if win and win[1] > doc["as_of"]:
+                        errs.append("%s 窗口结束晚于 as_of（用了未来数据）" % e["event_id"])
+    # ★ 数据新鲜度：stale 的候选不得给出「已升温 / 前置观察」
+    for c in doc.get("candidates", []):
+        perf = c.get("current_performance") or {}
+        if perf.get("stale") and c.get("evidence_status") in ("ALREADY_WARM", "PRE_OBSERVATION"):
+            errs.append("%s 行情陈旧却给了结论状态" % c["candidate_id"])
     return errs
 
 
@@ -810,20 +999,18 @@ def main(argv):
         print("FAIL: --write 必须显式给 --version N")
         return 1
     out = artifact_path(a.version)
-    if os.path.exists(out):
-        print("FAIL: 目标已存在，拒绝覆盖：%s" % os.path.relpath(out, REPO))
-        return 1
+    os.makedirs(SNAP_DIR, exist_ok=True)
+    snap = os.path.join(SNAP_DIR, "FO-%s-%s.json" % (doc["as_of"], doc.get("method_version", "v0_2")))
+    # ★★ 先确认两个路径都可用，再写任何一个
+    for path in (out, snap):
+        if os.path.exists(path):
+            print("FAIL: 目标已存在，拒绝覆盖：%s" % os.path.relpath(path, REPO))
+            return 1
     doc["artifact_version"] = "0.%d" % a.version
     if a.version > 1:
         doc["supersedes"] = "research/current/forward_observation_v0_%d.json" % (a.version - 1)
     with open(out, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
-    # ★ 带日期的历史快照（不可覆盖）
-    os.makedirs(SNAP_DIR, exist_ok=True)
-    snap = os.path.join(SNAP_DIR, "FO-%s.json" % doc["as_of"])
-    if os.path.exists(snap):
-        print("FAIL: 该 as_of 的快照已存在，拒绝覆盖：%s" % os.path.relpath(snap, REPO))
-        return 1
     with open(snap, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
     print("已生成 %s" % os.path.relpath(out, REPO))

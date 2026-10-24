@@ -1,0 +1,1477 @@
+{
+ "artifact": "forward_observation",
+ "artifact_version": "0.2",
+ "generated_at": "2026-10-24",
+ "generated_by": "research/scripts/build_forward_observation_v0_1.py",
+ "supersedes": "research/current/forward_observation_v0_1.json",
+ "as_of": "2026-10-23",
+ "as_of_source": "sina · 沪深300(sh000300) 最后一根完整日线（2026-10-23）",
+ "method_version": "v0_2",
+ "data_sources": [
+  {
+   "id": "sina_kline",
+   "used_for": "指数 / 个股日线（原始收盘，不复权）",
+   "endpoint": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=<symbol>&scale=240&ma=no&datalen=3000",
+   "status": "PRIMARY",
+   "note": "一次最多 3000 根；按日期合并去重（增量刷新）",
+   "series_from_sina": 199
+  },
+  {
+   "id": "tencent_gtimg",
+   "used_for": "日线备用源（新浪失败时）",
+   "endpoint": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get",
+   "status": "FALLBACK",
+   "note": "单次 ≤800 根；批量请求会触发 501 WAF",
+   "series_from_tencent": 0
+  },
+  {
+   "id": "sina_universe",
+   "used_for": "全 A 股名称与代码（每次 --fetch 刷新）",
+   "endpoint": "Market_Center.getHQNodeData?node=hs_a",
+   "status": "OK",
+   "count": 5576
+  },
+  {
+   "id": "sina_concept",
+   "used_for": "概念成分（海峡西岸）",
+   "endpoint": "Market_Center.getHQNodeData?node=gn_hxxa",
+   "status": "OK",
+   "note": "★ 当前成分，非历史成分",
+   "count": 78
+  },
+  {
+   "id": "ths_board",
+   "used_for": "行业板块当年日线",
+   "endpoint": "http://d.10jqka.com.cn/v6/line/bk_881xxx/01/last.js",
+   "status": "OK",
+   "note": "★ 仅当年数据；概念板块（30xxxx）该接口 404 → 概念用成分篮子替代",
+   "count": 90
+  },
+  {
+   "id": "eastmoney",
+   "used_for": "（未使用）",
+   "endpoint": "push2*.eastmoney.com",
+   "status": "UNAVAILABLE",
+   "note": "本机实测 RemoteDisconnected（含直连与代理）→ 未采用"
+  }
+ ],
+ "refresh": {
+  "policy": "每次 --fetch 全量刷新 + 按日期合并（不因条数够多而跳过）",
+  "series_last_date": {
+   "CSI300": "2026-10-23",
+   "SSE": "2026-10-23",
+   "SZSE": "2026-10-23",
+   "CHINEXT": "2026-10-23",
+   "bj920075": "2026-10-23",
+   "bj920086": "2026-10-23",
+   "bj920117": "2026-10-23",
+   "bj920161": "2026-10-23",
+   "bj920188": "2026-10-23",
+   "bj920445": "2026-10-23",
+   "bj920971": "2026-10-23",
+   "sh600033": "2026-10-23",
+   "sh600057": "2026-10-23",
+   "sh600059": "2026-10-23",
+   "sh600067": "2026-10-23",
+   "sh600103": "2026-10-23",
+   "sh600125": "2026-10-23",
+   "sh600153": "2026-10-23",
+   "sh600159": "2026-10-23",
+   "sh600163": "2026-10-23",
+   "sh600173": "2026-10-23",
+   "sh600203": "2026-10-23",
+   "sh600222": "2026-10-23",
+   "sh600352": "2026-10-23",
+   "sh600375": "2026-10-23",
+   "sh600388": "2026-10-23",
+   "sh600436": "2026-10-23",
+   "sh600483": "2026-10-23",
+   "sh600491": "2026-10-23",
+   "sh600493": "2026-10-23",
+   "sh600549": "2026-10-23",
+   "sh600563": "2026-10-23",
+   "sh600580": "2026-10-23",
+   "sh600592": "2026-10-23",
+   "sh600630": "2026-10-23",
+   "sh600660": "2026-10-23",
+   "sh600686": "2026-10-23",
+   "sh600693": "2026-10-23",
+   "sh600711": "2026-10-23",
+   "sh600734": "2026-10-23",
+   "sh600755": "2026-10-23",
+   "sh600769": "2026-10-23",
+   "sh600802": "2026-10-23",
+   "sh600808": "2026-10-23",
+   "sh600810": "2026-10-23",
+   "sh600815": "2026-10-23",
+   "sh600853": "2026-10-23",
+   "sh600897": "2026-10-23",
+   "sh600993": "2026-10-23",
+   "sh601123": "2026-10-23",
+   "sh601188": "2026-10-23",
+   "sh601377": "2026-10-23",
+   "sh601566": "2026-10-23",
+   "sh601828": "2026-10-23",
+   "sh601933": "2026-10-23",
+   "sh603004": "2026-10-23",
+   "sh603130": "2026-10-23",
+   "sh603158": "2026-10-23",
+   "sh603178": "2026-10-23",
+   "sh603181": "2026-10-23",
+   "sh603266": "2026-10-23",
+   "sh603332": "2026-10-23",
+   "sh603341": "2026-10-23",
+   "sh603380": "2026-10-23",
+   "sh603406": "2026-10-23",
+   "sh603530": "2026-10-23",
+   "sh603668": "2026-10-23",
+   "sh603686": "2026-10-23",
+   "sh603729": "2026-10-23",
+   "sh603767": "2026-10-23",
+   "sh603779": "2026-10-23",
+   "sh603906": "2026-10-23",
+   "sh603949": "2026-10-23",
+   "sh603969": "2026-10-23",
+   "sh605016": "2026-10-23",
+   "sh605086": "2026-10-23",
+   "sh605318": "2026-10-23",
+   "sh605378": "2026-10-23",
+   "sh605577": "2026-10-23",
+   "sh688047": "2026-10-23",
+   "sh688055": "2026-10-23",
+   "sh688078": "2026-10-23",
+   "sh688170": "2026-10-23",
+   "sh688357": "2026-10-23",
+   "sh688360": "2026-10-23",
+   "sh688486": "2026-10-23",
+   "sh688575": "2026-10-23",
+   "sh688721": "2026-10-23",
+   "sz000050": "2026-10-23",
+   "sz000526": "2026-10-23",
+   "sz000536": "2026-10-23",
+   "sz000547": "2026-10-23",
+   "sz000572": "2026-10-23",
+   "sz000592": "2026-10-23",
+   "sz000593": "2026-10-23",
+   "sz000632": "2026-10-23",
+   "sz000663": "2026-10-23",
+   "sz000671": "2023-06-09",
+   "sz000677": "2026-10-23",
+   "sz000701": "2026-10-23",
+   "sz000712": "2026-10-23",
+   "sz000732": "2023-06-02",
+   "sz000753": "2026-10-23",
+   "sz000766": "2026-10-23",
+   "sz000797": "2026-10-23",
+   "sz000905": "2026-10-23",
+   "sz000935": "2026-10-23",
+   "sz000955": "2026-10-23",
+   "sz000993": "2026-10-23",
+   "sz000997": "2026-10-23",
+   "sz001257": "2026-10-23",
+   "sz001289": "2026-10-23",
+   "sz001317": "2026-10-23",
+   "sz001386": "2026-10-23",
+   "sz002029": "2026-10-23",
+   "sz002070": "2019-07-08",
+   "sz002093": "2026-10-23",
+   "sz002098": "2026-10-23",
+   "sz002102": "2026-10-23",
+   "sz002110": "2026-10-23",
+   "sz002210": "2026-10-23",
+   "sz002222": "2026-10-23",
+   "sz002228": "2026-10-23",
+   "sz002229": "2026-10-23",
+   "sz002235": "2026-10-23",
+   "sz002264": "2026-10-23",
+   "sz002276": "2026-10-23",
+   "sz002298": "2026-10-23",
+   "sz002312": "2026-10-23",
+   "sz002396": "2026-10-23",
+   "sz002398": "2026-10-23",
+   "sz002417": "2023-07-07",
+   "sz002442": "2026-10-23",
+   "sz002457": "2026-10-23",
+   "sz002474": "2026-10-23",
+   "sz002490": "2026-10-23",
+   "sz002509": "2020-07-17",
+   "sz002517": "2026-10-23",
+   "sz002529": "2026-10-23",
+   "sz002536": "2026-10-23",
+   "sz002563": "2026-10-23",
+   "sz002578": "2026-10-23",
+   "sz002593": "2026-10-23",
+   "sz002601": "2026-10-23",
+   "sz002614": "2026-10-23",
+   "sz002626": "2026-10-23",
+   "sz002639": "2026-10-23",
+   "sz002658": "2026-10-23",
+   "sz002671": "2026-10-23",
+   "sz002674": "2026-10-23",
+   "sz002679": "2026-10-23",
+   "sz002682": "2026-10-23",
+   "sz002702": "2026-10-23",
+   "sz002726": "2026-10-23",
+   "sz002748": "2026-10-23",
+   "sz002783": "2026-10-23",
+   "sz002864": "2026-10-23",
+   "sz002882": "2026-10-23",
+   "sz002931": "2026-10-23",
+   "sz003040": "2026-10-23",
+   "sz300032": "2026-10-23",
+   "sz300051": "2026-10-23",
+   "sz300054": "2026-10-23",
+   "sz300056": "2026-10-23",
+   "sz300062": "2026-10-23",
+   "sz300063": "2026-10-23",
+   "sz300096": "2026-10-23",
+   "sz300102": "2026-10-23",
+   "sz300105": "2026-10-23",
+   "sz300132": "2026-10-23",
+   "sz300171": "2026-10-23",
+   "sz300174": "2026-10-23",
+   "sz300188": "2026-10-23",
+   "sz300198": "2026-10-23",
+   "sz300299": "2026-10-23",
+   "sz300341": "2026-10-23",
+   "sz300589": "2026-10-23",
+   "sz300591": "2026-10-23",
+   "sz300650": "2026-10-23",
+   "sz300688": "2026-10-23",
+   "sz300698": "2026-10-23",
+   "sz300740": "2026-10-23",
+   "sz300756": "2026-10-23",
+   "sz300759": "2026-10-23",
+   "sz300835": "2026-10-23",
+   "sz300883": "2026-10-23",
+   "sz300912": "2026-10-23",
+   "sz300913": "2026-10-23",
+   "sz300945": "2026-10-23",
+   "sz300993": "2026-10-23",
+   "sz300999": "2026-10-23",
+   "sz301131": "2026-10-23",
+   "sz301151": "2026-10-23",
+   "sz301178": "2026-10-23",
+   "sz301308": "2026-10-23",
+   "sz301357": "2026-10-23",
+   "sz301413": "2026-10-23",
+   "sz301533": "2026-10-23",
+   "ths_board": "20261023"
+  },
+  "stale_series": [
+   "sz000671",
+   "sz000732",
+   "sz002070",
+   "sz002417",
+   "sz002509"
+  ]
+ },
+ "benchmark": {
+  "series_id": "CSI300",
+  "name": "沪深300",
+  "close": 4105.329,
+  "ret_5d": -1.57,
+  "ret_10d": -4.91,
+  "ret_20d": -7.96,
+  "ret_60d": -13.17
+ },
+ "indices": [
+  {
+   "series_id": "CSI300",
+   "name": "沪深300",
+   "close": 4105.329,
+   "ret_5d": -1.57,
+   "ret_20d": -7.96,
+   "ret_60d": -13.17
+  },
+  {
+   "series_id": "SSE",
+   "name": "上证综指",
+   "close": 3690.475,
+   "ret_5d": -0.69,
+   "ret_20d": -4.78,
+   "ret_60d": -4.81
+  },
+  {
+   "series_id": "SZSE",
+   "name": "深证成指",
+   "close": 11673.826,
+   "ret_5d": -1.09,
+   "ret_20d": -12.95,
+   "ret_60d": -17.34
+  },
+  {
+   "series_id": "CHINEXT",
+   "name": "创业板指",
+   "close": 2684.097,
+   "ret_5d": -3.18,
+   "ret_20d": -18.62,
+   "ret_60d": -24.93
+  }
+ ],
+ "sector_scan": {
+  "source": "同花顺行业板块（bk_881xxx）· 当年日线",
+  "boards_scanned": 90,
+  "as_of_note": "板块序列为**当年**（2026）日线，仅用于当前强弱定位，不用于多年季节性统计。",
+  "top_20d": [
+   {
+    "code": "881274",
+    "name": "影视院线",
+    "close": 1454.386,
+    "ret_20d": 6.1,
+    "ret_60d": 24.18
+   },
+   {
+    "code": "881277",
+    "name": "电机",
+    "close": 3307.828,
+    "ret_20d": 4.94,
+    "ret_60d": 8.98
+   },
+   {
+    "code": "881164",
+    "name": "文化传媒",
+    "close": 2796.023,
+    "ret_20d": 4.67,
+    "ret_60d": 18.54
+   },
+   {
+    "code": "881173",
+    "name": "小家电",
+    "close": 4097.584,
+    "ret_20d": 3.84,
+    "ret_60d": 11.41
+   },
+   {
+    "code": "881272",
+    "name": "软件开发",
+    "close": 1896.177,
+    "ret_20d": 3.76,
+    "ret_60d": 12.25
+   },
+   {
+    "code": "881273",
+    "name": "白酒",
+    "close": 1963.175,
+    "ret_20d": 2.33,
+    "ret_60d": -0.01
+   },
+   {
+    "code": "881174",
+    "name": "厨卫电器",
+    "close": 5936.354,
+    "ret_20d": 2.22,
+    "ret_60d": 13.67
+   },
+   {
+    "code": "881268",
+    "name": "工程机械",
+    "close": 2922.075,
+    "ret_20d": 0.72,
+    "ret_60d": 1.26
+   },
+   {
+    "code": "881271",
+    "name": "IT服务",
+    "close": 11597.96,
+    "ret_20d": 0.42,
+    "ret_60d": 4.74
+   },
+   {
+    "code": "881269",
+    "name": "轨交设备",
+    "close": 984.13,
+    "ret_20d": 0.19,
+    "ret_60d": 7.99
+   }
+  ],
+  "bottom_20d": [
+   {
+    "code": "881129",
+    "name": "通信设备",
+    "close": 8232.929,
+    "ret_20d": -15.76,
+    "ret_60d": 0.07
+   },
+   {
+    "code": "881169",
+    "name": "贵金属",
+    "close": 4676.605,
+    "ret_20d": -15.97,
+    "ret_60d": -3.92
+   },
+   {
+    "code": "881270",
+    "name": "元件",
+    "close": 23431.011,
+    "ret_20d": -16.42,
+    "ret_60d": 12.9
+   },
+   {
+    "code": "881267",
+    "name": "能源金属",
+    "close": 23841.789,
+    "ret_20d": -17.54,
+    "ret_60d": -18.06
+   },
+   {
+    "code": "881172",
+    "name": "电子化学品",
+    "close": 69785.458,
+    "ret_20d": -22.48,
+    "ret_60d": -14.12
+   }
+  ]
+ },
+ "seasonal_windows": {
+  "source": "既有历史题材产物（market_performance.window）+ market_data.db",
+  "criterion": "窗口起始月 ∈ {8,9,10} 且结束月 ∈ {12,1,2}，且同题材 ≥2 个事件",
+  "themes": [
+   {
+    "theme_id": "FLU",
+    "label": "流感 / 邻近公共卫生",
+    "occurrence_count": 2,
+    "events": [
+     {
+      "event_id": "FLU-2018-SEASONAL",
+      "window": [
+       "2017-09-01",
+       "2018-01-31"
+      ]
+     },
+     {
+      "event_id": "FLU-2024-SEASONAL",
+      "window": [
+       "2024-09-01",
+       "2025-01-31"
+      ]
+     }
+    ],
+    "projected_window": [
+     "2026-09-01",
+     "2027-01-31"
+    ],
+    "as_of_inside": true,
+    "current_performance": {
+     "participants_with_data": 20,
+     "median_20d_excess_pct": 21.57,
+     "breadth_20d": 0.95,
+     "price_as_of": "2026-10-20",
+     "stale": true,
+     "stale_note": "★ 行情截至 2026-10-20，早于观察时点 2026-10-23 —— 不得据此断言「已升温/前置观察」"
+    },
+    "data_note": "参与者 20 日超额来自 market_data.db（原始收盘，截至其最后一行，可能早于 as_of）"
+   }
+  ]
+ },
+ "patterns": [
+  {
+   "pattern_id": "ZODIAC_NAME",
+   "family": "A_CALENDAR",
+   "title": "生肖名称炒作（春节前 20 交易日 ~ 节后 20 交易日）",
+   "hypothesis": "A 股在农历新年前后对「名称含当年生肖字」的股票存在符号型情绪炒作；与基本面无关，属情绪/符号型，不得赋予行业属性。",
+   "years": [
+    {
+     "year": 2016,
+     "animal": "猴",
+     "lunar_new_year": "2016-02-08",
+     "name_matches": 0,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「猴」的只有 0 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2017,
+     "animal": "鸡",
+     "lunar_new_year": "2017-01-28",
+     "name_matches": 1,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「鸡」的只有 1 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2018,
+     "animal": "狗",
+     "lunar_new_year": "2018-02-16",
+     "name_matches": 0,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「狗」的只有 0 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2019,
+     "animal": "猪",
+     "lunar_new_year": "2019-02-05",
+     "name_matches": 0,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「猪」的只有 0 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2020,
+     "animal": "鼠",
+     "lunar_new_year": "2020-01-25",
+     "name_matches": 1,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「鼠」的只有 1 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2021,
+     "animal": "牛",
+     "lunar_new_year": "2021-02-12",
+     "name_matches": 4,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「牛」的只有 4 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2022,
+     "animal": "虎",
+     "lunar_new_year": "2022-02-01",
+     "name_matches": 0,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「虎」的只有 0 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2023,
+     "animal": "兔",
+     "lunar_new_year": "2023-01-22",
+     "name_matches": 1,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「兔」的只有 1 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2024,
+     "animal": "龙",
+     "lunar_new_year": "2024-02-10",
+     "name_matches": 90,
+     "testable": true,
+     "why_not_testable": null,
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2024-02-10",
+      "anchor_trading_day": "2024-02-19",
+      "prev_trading_day": "2024-02-08",
+      "window_non_trading": true,
+      "pre": {
+       "window": [
+        "2024-01-11",
+        "2024-02-08"
+       ],
+       "members_with_data": 83,
+       "median_excess_pct": -29.48,
+       "breadth": 0.036
+      },
+      "event_day": {
+       "window": [
+        "2024-02-08",
+        "2024-02-19"
+       ],
+       "members_with_data": 83,
+       "median_excess_pct": 2.75,
+       "breadth": 0.759,
+       "gap_included": true
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2024-02-19",
+         "2024-02-26"
+        ],
+        "members_with_data": 83,
+        "median_excess_pct": 9.1,
+        "breadth": 0.916
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2024-02-19",
+         "2024-03-04"
+        ],
+        "members_with_data": 83,
+        "median_excess_pct": 8.18,
+        "breadth": 0.819
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2024-02-19",
+         "2024-03-18"
+        ],
+        "members_with_data": 83,
+        "median_excess_pct": 11.31,
+        "breadth": 0.819
+       }
+      },
+      "responded": true,
+      "response_basis": "post20"
+     },
+     "lead_days": null,
+     "lead_note": "事件前 20 个交易日内累计超额从未达到 +2.0pp",
+     "responded": true
+    },
+    {
+     "year": 2025,
+     "animal": "蛇",
+     "lunar_new_year": "2025-01-29",
+     "name_matches": 1,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「蛇」的只有 1 只（缺历史名称快照，无法重建当年候选池）"
+    },
+    {
+     "year": 2026,
+     "animal": "马",
+     "lunar_new_year": "2026-02-17",
+     "name_matches": 31,
+     "testable": true,
+     "why_not_testable": null,
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2026-02-17",
+      "anchor_trading_day": "2026-02-24",
+      "prev_trading_day": "2026-02-13",
+      "window_non_trading": true,
+      "pre": {
+       "window": [
+        "2026-01-16",
+        "2026-02-13"
+       ],
+       "members_with_data": 30,
+       "median_excess_pct": -3.4,
+       "breadth": 0.267
+      },
+      "event_day": {
+       "window": [
+        "2026-02-13",
+        "2026-02-24"
+       ],
+       "members_with_data": 30,
+       "median_excess_pct": -0.6,
+       "breadth": 0.267,
+       "gap_included": true
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2026-02-24",
+         "2026-03-03"
+        ],
+        "members_with_data": 30,
+        "median_excess_pct": -7.18,
+        "breadth": 0.133
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2026-02-24",
+         "2026-03-10"
+        ],
+        "members_with_data": 30,
+        "median_excess_pct": -4.92,
+        "breadth": 0.167
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2026-02-24",
+         "2026-03-24"
+        ],
+        "members_with_data": 30,
+        "median_excess_pct": -10.01,
+        "breadth": 0.067
+       }
+      },
+      "responded": false,
+      "response_basis": "post20"
+     },
+     "lead_days": null,
+     "lead_note": "事件前 20 个交易日内累计超额从未达到 +2.0pp",
+     "responded": false
+    },
+    {
+     "year": 2027,
+     "animal": "羊",
+     "lunar_new_year": "2027-02-06",
+     "name_matches": 2,
+     "testable": false,
+     "why_not_testable": "当前证券名称里含「羊」的只有 2 只（缺历史名称快照，无法重建当年候选池）"
+    }
+   ],
+   "stats": {
+    "occurrence_count": 2,
+    "response_count": 1,
+    "response_rate": 0.5,
+    "median_lead_days": null,
+    "sample_years": [
+     2024,
+     2026
+    ],
+    "testable_years": [
+     2024,
+     2026
+    ],
+    "not_testable_years": [
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2025,
+     2027
+    ]
+   },
+   "known_biases": [
+    "★★ 名称用**当前**证券简称回溯，没有历史名称快照 → 2016–2023 的候选池被严重低估（多为 0–4 只），这**不是**「当年没有生肖炒作」，而是「本数据无法重建当年候选池」。",
+    "候选含**非符号型**同名股（如「招商蛇口」「马钢股份」），会把篮子稀释；因此同时给中位超额与广度，不用均值。",
+    "样本年份少（可检验年份见 sample_years），单年极端行情会主导结论。"
+   ],
+   "status": "C_EXPLORATORY",
+   "status_reason": "可检验年份不足（<5）且名称快照缺失；只能作为探索线索，不得声称已验证。"
+  },
+  {
+   "pattern_id": "TAIWAN_STRAIT_EVENT",
+   "family": "B_EVENT",
+   "title": "台海事件 → 海峡西岸概念（事件驱动，无固定日历）",
+   "hypothesis": "台海相关事件（政策表态 / 军事演训 / 交流）会反复引发「海峡西岸」概念股的短期超额；**不声称存在季节性**。",
+   "method": {
+    "pre": "事件前 20 个交易日（相对基准超额）",
+    "event_day": "事件前一交易日收盘 → 事件日（或其后首个交易日）收盘，含跳空",
+    "post": "事件日收盘 → 后 5 / 10 / 20 个交易日收盘",
+    "responded": "**只看 post20**：中位超额 > 0 且广度 ≥ 0.5",
+    "stages": "同一轮窗口重叠的事件归入一个阶段；occurrence/response 按**阶段**统计",
+    "lead": "累计超额首次 ≥ +2pp 的交易日；仅为价格信号时间，不证明因果"
+   },
+   "basket": {
+    "concept": "海峡西岸",
+    "node": "gn_hxxa",
+    "members": 78,
+    "members_with_data": 78,
+    "membership_bias": "★★ 概念成分为**当前**成分（新浪概念节点），不是各事件当年的成分；历史成分变化无法还原，属已知偏差。"
+   },
+   "events": [
+    {
+     "event_id": "TS-2016-0520",
+     "event_date": "2016-05-20",
+     "published_at": "2016-05-20",
+     "label": "台湾地区领导人就职（两岸表述变化）",
+     "category": "POLICY_STATEMENT",
+     "published_at_status": "VERIFIED",
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2016-05-20",
+      "anchor_trading_day": "2016-05-20",
+      "prev_trading_day": "2016-05-19",
+      "window_non_trading": false,
+      "pre": {
+       "window": [
+        "2016-04-20",
+        "2016-05-19"
+       ],
+       "members_with_data": 65,
+       "median_excess_pct": -4.78,
+       "breadth": 0.246
+      },
+      "event_day": {
+       "window": [
+        "2016-05-19",
+        "2016-05-20"
+       ],
+       "members_with_data": 68,
+       "median_excess_pct": 0.38,
+       "breadth": 0.647,
+       "gap_included": false
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2016-05-20",
+         "2016-05-27"
+        ],
+        "members_with_data": 68,
+        "median_excess_pct": 0.67,
+        "breadth": 0.632
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2016-05-20",
+         "2016-06-03"
+        ],
+        "members_with_data": 68,
+        "median_excess_pct": 2.46,
+        "breadth": 0.706
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2016-05-20",
+         "2016-06-21"
+        ],
+        "members_with_data": 67,
+        "median_excess_pct": 1.64,
+        "breadth": 0.612
+       }
+      },
+      "responded": true,
+      "response_basis": "post20"
+     },
+     "lead_days": -12,
+     "lead_note": "累计超额首次 ≥ +2.0pp（起点 2016-04-21）",
+     "responded": true
+    },
+    {
+     "event_id": "TS-2019-0102",
+     "event_date": "2019-01-02",
+     "published_at": "2019-01-02",
+     "label": "《告台湾同胞书》发表 40 周年纪念",
+     "category": "POLICY_STATEMENT",
+     "published_at_status": "VERIFIED",
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2019-01-02",
+      "anchor_trading_day": "2019-01-02",
+      "prev_trading_day": "2018-12-28",
+      "window_non_trading": false,
+      "pre": {
+       "window": [
+        "2018-11-30",
+        "2018-12-28"
+       ],
+       "members_with_data": 77,
+       "median_excess_pct": -0.19,
+       "breadth": 0.481
+      },
+      "event_day": {
+       "window": [
+        "2018-12-28",
+        "2019-01-02"
+       ],
+       "members_with_data": 77,
+       "median_excess_pct": 1.73,
+       "breadth": 0.779,
+       "gap_included": false
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2019-01-02",
+         "2019-01-09"
+        ],
+        "members_with_data": 77,
+        "median_excess_pct": 0.69,
+        "breadth": 0.545
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2019-01-02",
+         "2019-01-16"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": -0.42,
+        "breadth": 0.461
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2019-01-02",
+         "2019-01-30"
+        ],
+        "members_with_data": 77,
+        "median_excess_pct": -7.2,
+        "breadth": 0.182
+       }
+      },
+      "responded": false,
+      "response_basis": "post20"
+     },
+     "lead_days": null,
+     "lead_note": "事件前 20 个交易日内累计超额从未达到 +2.0pp",
+     "responded": false
+    },
+    {
+     "event_id": "TS-2022-0802",
+     "event_date": "2022-08-02",
+     "published_at": "2022-08-02",
+     "label": "美国众议长访台（事件日）",
+     "category": "DIPLOMATIC_VISIT",
+     "published_at_status": "VERIFIED",
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2022-08-02",
+      "anchor_trading_day": "2022-08-02",
+      "prev_trading_day": "2022-08-01",
+      "window_non_trading": false,
+      "pre": {
+       "window": [
+        "2022-07-04",
+        "2022-08-01"
+       ],
+       "members_with_data": 76,
+       "median_excess_pct": 6.24,
+       "breadth": 0.855
+      },
+      "event_day": {
+       "window": [
+        "2022-08-01",
+        "2022-08-02"
+       ],
+       "members_with_data": 76,
+       "median_excess_pct": -2.27,
+       "breadth": 0.158,
+       "gap_included": false
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2022-08-02",
+         "2022-08-09"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": 0.74,
+        "breadth": 0.566
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2022-08-02",
+         "2022-08-16"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": 2.81,
+        "breadth": 0.724
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2022-08-02",
+         "2022-08-30"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": 3.35,
+        "breadth": 0.658
+       }
+      },
+      "responded": true,
+      "response_basis": "post20"
+     },
+     "lead_days": -14,
+     "lead_note": "累计超额首次 ≥ +2.0pp（起点 2022-07-05）",
+     "responded": true
+    },
+    {
+     "event_id": "TS-2022-0804",
+     "event_date": "2022-08-04",
+     "published_at": "2022-08-04",
+     "label": "环台岛军事演训开始",
+     "category": "MILITARY_DRILL",
+     "published_at_status": "VERIFIED",
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2022-08-04",
+      "anchor_trading_day": "2022-08-04",
+      "prev_trading_day": "2022-08-03",
+      "window_non_trading": false,
+      "pre": {
+       "window": [
+        "2022-07-06",
+        "2022-08-03"
+       ],
+       "members_with_data": 76,
+       "median_excess_pct": 5.4,
+       "breadth": 0.763
+      },
+      "event_day": {
+       "window": [
+        "2022-08-03",
+        "2022-08-04"
+       ],
+       "members_with_data": 76,
+       "median_excess_pct": 0.29,
+       "breadth": 0.579,
+       "gap_included": false
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2022-08-04",
+         "2022-08-11"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": 0.13,
+        "breadth": 0.539
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2022-08-04",
+         "2022-08-18"
+        ],
+        "members_with_data": 75,
+        "median_excess_pct": 1.39,
+        "breadth": 0.64
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2022-08-04",
+         "2022-09-01"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": 1.56,
+        "breadth": 0.566
+       }
+      },
+      "responded": true,
+      "response_basis": "post20"
+     },
+     "lead_days": -16,
+     "lead_note": "累计超额首次 ≥ +2.0pp（起点 2022-07-07）",
+     "responded": true
+    },
+    {
+     "event_id": "TS-2023-0408",
+     "event_date": "2023-04-08",
+     "published_at": "2023-04-08",
+     "label": "环台岛战备警巡与「联合利剑」演习",
+     "category": "MILITARY_DRILL",
+     "published_at_status": "VERIFIED",
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2023-04-08",
+      "anchor_trading_day": "2023-04-10",
+      "prev_trading_day": "2023-04-07",
+      "window_non_trading": true,
+      "pre": {
+       "window": [
+        "2023-03-09",
+        "2023-04-07"
+       ],
+       "members_with_data": 76,
+       "median_excess_pct": -5.97,
+       "breadth": 0.211
+      },
+      "event_day": {
+       "window": [
+        "2023-04-07",
+        "2023-04-10"
+       ],
+       "members_with_data": 76,
+       "median_excess_pct": -1.42,
+       "breadth": 0.211,
+       "gap_included": true
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2023-04-10",
+         "2023-04-17"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": -0.3,
+        "breadth": 0.461
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2023-04-10",
+         "2023-04-24"
+        ],
+        "members_with_data": 76,
+        "median_excess_pct": -0.55,
+        "breadth": 0.434
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2023-04-10",
+         "2023-05-11"
+        ],
+        "members_with_data": 75,
+        "median_excess_pct": 0.78,
+        "breadth": 0.533
+       }
+      },
+      "responded": true,
+      "response_basis": "post20"
+     },
+     "lead_days": null,
+     "lead_note": "事件前 20 个交易日内累计超额从未达到 +2.0pp",
+     "responded": true
+    },
+    {
+     "event_id": "TS-2024-0520",
+     "event_date": "2024-05-20",
+     "published_at": "2024-05-20",
+     "label": "台湾地区领导人就职",
+     "category": "POLICY_STATEMENT",
+     "published_at_status": "VERIFIED",
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2024-05-20",
+      "anchor_trading_day": "2024-05-20",
+      "prev_trading_day": "2024-05-17",
+      "window_non_trading": false,
+      "pre": {
+       "window": [
+        "2024-04-16",
+        "2024-05-17"
+       ],
+       "members_with_data": 73,
+       "median_excess_pct": 6.51,
+       "breadth": 0.726
+      },
+      "event_day": {
+       "window": [
+        "2024-05-17",
+        "2024-05-20"
+       ],
+       "members_with_data": 73,
+       "median_excess_pct": -0.35,
+       "breadth": 0.384,
+       "gap_included": false
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2024-05-20",
+         "2024-05-27"
+        ],
+        "members_with_data": 73,
+        "median_excess_pct": -1.72,
+        "breadth": 0.247
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2024-05-20",
+         "2024-06-03"
+        ],
+        "members_with_data": 73,
+        "median_excess_pct": -4.39,
+        "breadth": 0.137
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2024-05-20",
+         "2024-06-18"
+        ],
+        "members_with_data": 73,
+        "median_excess_pct": -7.64,
+        "breadth": 0.164
+       }
+      },
+      "responded": false,
+      "response_basis": "post20"
+     },
+     "lead_days": -12,
+     "lead_note": "累计超额首次 ≥ +2.0pp（起点 2024-04-17）",
+     "responded": false
+    },
+    {
+     "event_id": "TS-2024-0523",
+     "event_date": "2024-05-23",
+     "published_at": "2024-05-23",
+     "label": "「联合利剑-2024A」演习",
+     "category": "MILITARY_DRILL",
+     "published_at_status": "VERIFIED",
+     "window": {
+      "status": "OK",
+      "anchor_event_date": "2024-05-23",
+      "anchor_trading_day": "2024-05-23",
+      "prev_trading_day": "2024-05-22",
+      "window_non_trading": false,
+      "pre": {
+       "window": [
+        "2024-04-19",
+        "2024-05-22"
+       ],
+       "members_with_data": 73,
+       "median_excess_pct": 1.85,
+       "breadth": 0.575
+      },
+      "event_day": {
+       "window": [
+        "2024-05-22",
+        "2024-05-23"
+       ],
+       "members_with_data": 73,
+       "median_excess_pct": -1.34,
+       "breadth": 0.164,
+       "gap_included": false
+      },
+      "post": {
+       "post5": {
+        "status": "OK",
+        "window": [
+         "2024-05-23",
+         "2024-05-30"
+        ],
+        "members_with_data": 73,
+        "median_excess_pct": -0.93,
+        "breadth": 0.342
+       },
+       "post10": {
+        "status": "OK",
+        "window": [
+         "2024-05-23",
+         "2024-06-06"
+        ],
+        "members_with_data": 73,
+        "median_excess_pct": -10.23,
+        "breadth": 0.151
+       },
+       "post20": {
+        "status": "OK",
+        "window": [
+         "2024-05-23",
+         "2024-06-21"
+        ],
+        "members_with_data": 73,
+        "median_excess_pct": -7.58,
+        "breadth": 0.151
+       }
+      },
+      "responded": false,
+      "response_basis": "post20"
+     },
+     "lead_days": -18,
+     "lead_note": "累计超额首次 ≥ +2.0pp（起点 2024-04-22）",
+     "responded": false
+    }
+   ],
+   "stages": [
+    {
+     "stage_id": "S1",
+     "events": [
+      "TS-2016-0520"
+     ],
+     "first_event_date": "2016-05-20",
+     "last_event_date": "2016-05-20",
+     "responded": true,
+     "post20": [
+      1.64
+     ]
+    },
+    {
+     "stage_id": "S2",
+     "events": [
+      "TS-2019-0102"
+     ],
+     "first_event_date": "2019-01-02",
+     "last_event_date": "2019-01-02",
+     "responded": false,
+     "post20": [
+      -7.2
+     ]
+    },
+    {
+     "stage_id": "S3",
+     "events": [
+      "TS-2022-0802",
+      "TS-2022-0804"
+     ],
+     "first_event_date": "2022-08-02",
+     "last_event_date": "2022-08-04",
+     "responded": true,
+     "post20": [
+      3.35,
+      1.56
+     ]
+    },
+    {
+     "stage_id": "S4",
+     "events": [
+      "TS-2023-0408"
+     ],
+     "first_event_date": "2023-04-08",
+     "last_event_date": "2023-04-08",
+     "responded": true,
+     "post20": [
+      0.78
+     ]
+    },
+    {
+     "stage_id": "S5",
+     "events": [
+      "TS-2024-0520",
+      "TS-2024-0523"
+     ],
+     "first_event_date": "2024-05-20",
+     "last_event_date": "2024-05-23",
+     "responded": false,
+     "post20": [
+      -7.64,
+      -7.58
+     ]
+    }
+   ],
+   "stats": {
+    "occurrence_count": 5,
+    "response_count": 3,
+    "response_rate": 0.6,
+    "raw_event_count": 7,
+    "raw_event_response_count": 4,
+    "median_lead_days": -14,
+    "lead_sample_count": 5,
+    "lead_days_reason": null,
+    "median_pre_excess_pct": 1.85,
+    "median_event_day_excess_pct": -0.35,
+    "median_post5_excess_pct": 0.13,
+    "median_post20_excess_pct": 0.78,
+    "sample_years": [
+     2016,
+     2019,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "known_biases": [
+    "概念成分为当前成分 → 幸存者偏差 + 成分变更偏差。",
+    "★★ 事件发生日 ≠ 信息首次公开日；未独立核实公开日的事件 `published_at` 保持 null。",
+    "★★ 提前量只是价格信号时间，不证明因果或信息泄露。",
+    "样本 7 个原始事件 / 归并为阶段后见 occurrence_count，事件强度不可比（政策表态 vs 军事演训）。"
+   ],
+   "status": "B_REPEATED",
+   "status_reason": "按事件阶段统计；时间不固定，属事件驱动，不是季节规律。"
+  }
+ ],
+ "candidates": [
+  {
+   "candidate_id": "CAND-ZODIAC-2027",
+   "title": "2027 羊年「生肖名称」窗口（前置观察）",
+   "window": {
+    "start": "2026-12-15",
+    "peak": "2027-02-06",
+    "end": "2027-03-05"
+   },
+   "why_now": "距下一个农历新年（2027-02-06）约 4 个月，历史上该窗口的观察点在春节前 20 个交易日。",
+   "historical_stats": {
+    "occurrence_count": 2,
+    "response_count": 1,
+    "response_rate": 0.5,
+    "median_lead_days": null,
+    "sample_years": [
+     2024,
+     2026
+    ],
+    "testable_years": [
+     2024,
+     2026
+    ],
+    "not_testable_years": [
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2025,
+     2027
+    ]
+   },
+   "evidence_status": "INSUFFICIENT",
+   "not_a_candidate_reason": "★ 当前名称里含「羊」的只有 2 只 → **无法构成篮子**，本轮不列为可执行候选。",
+   "what_to_watch": "是否有新的「羊」字证券上市/改名，以及节前 20 个交易日的板块成交与涨停分布。",
+   "invalidate_if": "春节前 20 个交易日篮子中位超额 ≤ 0 且广度 < 0.5。",
+   "fact_vs_assumption": {
+    "fact": "农历新年日期与名称匹配数量为计算事实",
+    "assumption": "「生肖符号炒作」在 2027 年仍会重演 —— 未验证"
+   }
+  },
+  {
+   "candidate_id": "CAND-SEASONAL-FLU",
+   "title": "流感 / 邻近公共卫生 · 秋冬窗口（2026-09-01 → 2027-01-31）",
+   "window": {
+    "start": "2026-09-01",
+    "peak": null,
+    "end": "2027-01-31"
+   },
+   "why_now": "as_of 2026-10-23 落在该题材历史上反复出现的秋冬窗口内（同题材 2 个事件）。",
+   "historical_stats": {
+    "occurrence_count": 2,
+    "sample_windows": [
+     [
+      "2017-09-01",
+      "2018-01-31"
+     ],
+     [
+      "2024-09-01",
+      "2025-01-31"
+     ]
+    ]
+   },
+   "current_performance": {
+    "participants_with_data": 20,
+    "median_20d_excess_pct": 21.57,
+    "breadth_20d": 0.95,
+    "price_as_of": "2026-10-20",
+    "stale": true,
+    "stale_note": "★ 行情截至 2026-10-20，早于观察时点 2026-10-23 —— 不得据此断言「已升温/前置观察」"
+   },
+   "evidence_status": "DATA_STALE",
+   "what_to_watch": "窗口内该题材参与者的 20 日超额与广度是否转正；是否出现可核实的前置催化（带发布日）。",
+   "invalidate_if": "窗口结束前中位超额 ≤ 0 且广度 < 0.5。",
+   "fact_vs_assumption": {
+    "fact": "窗口日期、事件数与当前 20 日超额为计算事实",
+    "assumption": "该秋冬窗口在 2026–27 会重复出现 —— 仅 2 个历史事件支持，证据不足"
+   }
+  },
+  {
+   "candidate_id": "CAND-STRAIT-WATCH",
+   "title": "台海事件 → 海峡西岸概念（事件驱动，无常设窗口）",
+   "window": {
+    "start": null,
+    "peak": null,
+    "end": null
+   },
+   "why_now": "无固定日历；只有出现新的可核实事件（政策表态 / 演训 / 交流）时才进入观察窗口。",
+   "historical_stats": {
+    "occurrence_count": 5,
+    "response_count": 3,
+    "response_rate": 0.6,
+    "raw_event_count": 7,
+    "raw_event_response_count": 4,
+    "median_lead_days": -14,
+    "lead_sample_count": 5,
+    "lead_days_reason": null,
+    "median_pre_excess_pct": 1.85,
+    "median_event_day_excess_pct": -0.35,
+    "median_post5_excess_pct": 0.13,
+    "median_post20_excess_pct": 0.78,
+    "sample_years": [
+     2016,
+     2019,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "evidence_status": "WATCH_ONLY",
+   "not_a_candidate_reason": "as_of 之前没有已公开、且尚未发生的台海事件 → 当前**没有时间优势**。",
+   "what_to_watch": "官方公告/演训通告的**发布日**（不是传闻日）；事件后 1–20 个交易日概念篮子相对沪深300的超额与广度。",
+   "invalidate_if": "事件后 20 个交易日中位超额 ≤ 0 或广度 < 0.5。",
+   "fact_vs_assumption": {
+    "fact": "历史事件的窗口超额为计算事实",
+    "assumption": "同一概念会对下一次事件重复响应 —— 仅部分支持"
+   }
+  }
+ ],
+ "limitations": [
+  "★★ 所有超额均为**价格结果**，不证明因果；「响应」不等于「未来必涨」。",
+  "★★ 概念/名称候选池用当前快照回溯 → 存在幸存者偏差与成分变更偏差（各模式已单独标注）。",
+  "★ 板块序列只有当年（2026）数据 → 不做板块多年季节性统计，只做当前强弱定位。",
+  "★ ST / 退市整理 / 新股首日无法从库内判定 → 涨停计数为**漏报方向**。",
+  "★ 未使用复权价做窗口收益（原始价更接近当时可见的涨跌幅）；跨除权日的个别标的会有偏差。"
+ ]
+}

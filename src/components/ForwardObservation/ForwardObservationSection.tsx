@@ -54,10 +54,16 @@ function PatternRow({ p }: { p: ForwardPattern }) {
       {p.pattern_id === 'TAIWAN_STRAIT_EVENT' && p.events && (
         <p className="fwd-detail" data-strait-events="1">
           {p.events.map((e) => (
-            <span key={e.event_id} className={`fwd-chip ${e.responded ? 'is-hit' : ''}`} data-event={e.event_id}>
-              {e.event_date} {e.label.slice(0, 12)} · {e.responded ? '有响应' : '无响应'}
+            <span key={e.event_id} className={`fwd-chip ${e.responded === true ? 'is-hit' : ''}`} data-event={e.event_id}
+                  data-responded={String(e.responded)}>
+              {e.event_date} {e.label.slice(0, 12)} ·{' '}
+              {e.responded === true ? '有响应' : e.responded === false ? '无响应' : '数据不足'}
             </span>
           ))}
+          <span className="fwd-note" data-stages={p.stats.occurrence_count}>
+            ★ 统计按<strong>事件阶段</strong>去重：{p.stats.occurrence_count} 个阶段（原始 {p.events.length} 个事件），
+            响应率 {((p.stats.response_rate ?? 0) * 100).toFixed(1)}%。
+          </span>
           {p.basket && (
             <span className="fwd-note">
               篮子：{p.basket.concept}（当前成分 {p.basket.members} 只 / 有数据 {p.basket.members_with_data} 只）——
@@ -89,10 +95,13 @@ function CandidateRow({ c }: { c: ForwardCandidate }) {
         </p>
       )}
       {perf && (
-        <p className="fwd-perf" data-current-perf="1">
+        <p className="fwd-perf" data-current-perf="1" data-price-as-of={perf.price_as_of ?? ''}>
           当前 20 日：中位超额 <strong>{num(perf.median_20d_excess_pct)}</strong> ·
           广度 <strong>{perf.breadth_20d?.toFixed(2) ?? '—'}</strong> ·
-          有数据 {perf.participants_with_data ?? 0} 只
+          有数据 {perf.participants_with_data ?? 0} 只 · 行情截至 <code>{perf.price_as_of ?? '—'}</code>
+          {perf.stale && (
+            <span className="fwd-stale" data-stale="1">★ 行情早于观察时点 → 当前状态<strong>无法确认</strong></span>
+          )}
         </p>
       )}
       {c.not_a_candidate_reason && (

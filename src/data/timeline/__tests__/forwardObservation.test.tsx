@@ -57,9 +57,28 @@ describe('当前前瞻观察 · 数据与渲染', () => {
       expect(html).toContain(`data-candidate-id="${c.candidate_id}"`);
       expect(html).toContain(`data-evidence-status="${c.evidence_status}"`);
     }
-    // 「已升温」必须带「不是提前发现」的提示
+    // ★ 行情陈旧时不得给出「已升温 / 前置观察」，页面必须显式写「无法确认」
+    for (const c of FORWARD_OBSERVATION.candidates) {
+      if (c.current_performance?.stale) {
+        expect(c.evidence_status).toBe('DATA_STALE');
+        expect(html).toContain('data-stale="1"');
+        expect(html).toContain('无法确认');
+      }
+    }
+    // 「已升温」必须带「不是提前发现」的提示（若存在）
     if (FORWARD_OBSERVATION.candidates.some((c) => c.evidence_status === 'ALREADY_WARM')) {
       expect(html).toContain('不得');
+    }
+  });
+
+  it('★★ 台海按**事件阶段**去重：阶段数 < 原始事件数，且三段口径都渲染', () => {
+    const t = FORWARD_OBSERVATION.patterns.find((p) => p.pattern_id === 'TAIWAN_STRAIT_EVENT')!;
+    expect(t.stats.occurrence_count).toBeLessThan(t.events!.length);
+    expect(html).toContain(`data-stages="${t.stats.occurrence_count}"`);
+    for (const e of t.events!) {
+      expect(e.window).toHaveProperty('pre');
+      expect(e.window).toHaveProperty('event_day');
+      expect(e.window).toHaveProperty('post');
     }
   });
 
