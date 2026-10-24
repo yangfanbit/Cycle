@@ -339,7 +339,8 @@ export default function App() {
           </button>
         </div>
 
-        {!verifiedMode && mapTab === 'seasonal' && mapRows.length > 0 && (
+        <div hidden={mapTab !== 'seasonal'}>
+        {!verifiedMode && mapRows.length > 0 && (
           <SeasonalMap
             rows={mapRows}
             today={today}
@@ -350,6 +351,7 @@ export default function App() {
           />
         )}
 
+        </div>
         {/* 一句数据语义说明（首页唯一的数据口径声明） */}
         {!verifiedMode && mapRows.length > 0 && (
           <p className="seasonal-note">
@@ -370,7 +372,8 @@ export default function App() {
             ★ 复用 `HistoricalEventMap`（事件卡 / 跨年份比较 / 经验基准概率原样），
               题材清单由 `historical_event_maps_index.json` 驱动。
             ★ 与下方外部雷达**职责分离**：本区 = ThreeC 从历史数据得到；雷达 = 外部资料声称。 */}
-        {!verifiedMode && mapTab === 'events' && (
+        <div hidden={mapTab !== 'events'}>
+        {!verifiedMode && (
           <HistoricalThemeMaps
             activeThemeId={mapTheme ?? undefined}
             onSelectTheme={setMapTheme}
@@ -380,6 +383,7 @@ export default function App() {
             canOpenCurrentObject={canOpenCurrentObject}
           />
         )}
+        </div>
 
         {/* ★ 外部季节性观察雷达（2026-10-13 新增）——
             ★★ 与上方地图**并列但来源分离**：上方是 ThreeC **从历史数据得到的**窗口（研究结果），
@@ -387,6 +391,21 @@ export default function App() {
                两者**不得**混为一个没有来源区分的指标体系。 */}
                 {/* ★ C. 外部季节性线索：只作参考资料，默认折叠；状态来自**证据核验**产物 */}
         {!verifiedMode && <ExternalClaimsSummary />}
+
+        {/* ★ C2. 外部季节性观察雷达：保留完整能力，但**默认折叠**（不再占首屏） */}
+        <details className="fwd-ext-ref" data-external-radar-collapsed="1">
+          <summary>外部季节性观察雷达（参考资料 · 默认折叠）</summary>
+  {!verifiedMode && (
+            <ExternalSeasonalRadar
+              today={today}
+              onOpenMap={openMapTheme}
+              onRequestDraft={bringExternalLead}
+              onOpenObject={openHistoricalObject}
+              canOpenObject={canOpenHistoricalObject}
+              macroRows={macroThemeRows}
+            />
+          )}
+        </details>
 
         {/* ★ 覆盖边界（ThreeC 1.2 · Usage-Driven）
             用户拿一个真实方向来问（例如「文化传媒」）时，第一件要知道的是「它在不在覆盖内」。
