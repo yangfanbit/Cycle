@@ -589,13 +589,53 @@ def _db_last_day():
     return _norm(r[0]) if r and r[0] else None
 
 
-# ─────────────────────────── 落盘（拒绝静默覆盖） ───────────────────────────
+# ─────────────────────────── 落盘（先检查，后写入） ───────────────────────────
+#
+# ★★★ v0.52 修复：旧顺序是「写形成快照 → 追加形成日志 → 才检查结算快照与 latest」，
+#   一旦后两步拒绝，**形成日志已经被改过** —— 拒绝却没有回到操作前状态。
+#   现在拆成两个阶段：
+#     ① `preflight()` 把**所有**冲突判断做完（纯读，不写任何文件）；
+#     ② 只有全部通过，才按固定顺序落盘（此时不会再有「因冲突而失败」的写入）。
+#   不引入事务框架：冲突类失败全部由预检拦截，落盘阶段只剩 I/O 失败（会由 --check 报出）。
+
+def write_guard_problem(path, body):
+    """★ 纯检查：返回拒绝原因（`None` = 可以写）。**不修改任何文件。**"""
+    if not os.path.exists(path):
+        return None
+    if io.open(path, encoding="utf-8").read() == body:
+        return None
+    return "已存在且内容不同（冻结文件只能写一次）"
+
+
+def log_append_problem(old, new):
+    """★ 纯检查：追加式约束。返回拒绝原因（`None` = 可以追加）。**不修改任何文件。**"""
+    if old is None:
+        return None
+    old_by = {b["batch_id"]: b for b in old["batches"]}
+    for b in new["batches"]:
+        if b["batch_id"] in old_by and _dump(old_by[b["batch_id"]]) != _dump(b):
+            return "历史批次 %s 被改动" % b["batch_id"]
+    if [b["batch_id"] for b in old["batches"]] != [
+            b["batch_id"] for b in new["batches"][:len(old["batches"])]]:
+        return "批次顺序被改动"
+    return None
+
+
+def latest_ledger_problem(out, body, market_as_of):
+    """★ 纯检查：同一 `market_as_of` 下 latest 账本不得变形（行情推进则允许更新）。"""
+    if not os.path.exists(out):
+        return None
+    if _read(out).get("market_as_of") != market_as_of:
+        return None
+    if io.open(out, encoding="utf-8").read() == body:
+        return None
+    return "同一 market_as_of（%s）下内容发生变化" % market_as_of
+
 
 def _write_guard(path, body, what):
-    """★★ 冻结文件不可被静默覆盖：内容不同 → 拒绝（返回 False）。"""
+    """★ 冻结文件不可被静默覆盖：内容不同 → 拒绝（返回 False）。"""
     if os.path.exists(path):
-        old = io.open(path, encoding="utf-8").read()
-        if old == body:
+        if write_guard_problem(path, body) is None:
             print("  不变（已存在且一致）：%s" % os.path.relpath(path, REPO))
             return True
         print("REFUSE: %s 已存在且内容不同 → 拒绝覆盖（冻结文件只能写一次）" % what)
@@ -611,20 +651,57 @@ def _write_guard(path, body, what):
 def save_log(log):
     """★ 追加式：已有批次必须逐字节保留，只允许追加新批次。"""
     path = os.path.join(CURRENT, LOG_NAME)
-    if os.path.exists(path):
-        old = _read(path)
-        old_by = {b["batch_id"]: b for b in old["batches"]}
-        for b in log["batches"]:
-            if b["batch_id"] in old_by and _dump(old_by[b["batch_id"]]) != _dump(b):
-                print("REFUSE: 形成日志中的历史批次 %s 被改动 → 拒绝写入" % b["batch_id"])
-                return False
-        if [b["batch_id"] for b in old["batches"]] != [
-                b["batch_id"] for b in log["batches"][:len(old["batches"])]]:
-            print("REFUSE: 形成日志的批次顺序被改动 → 拒绝写入")
-            return False
+    p = log_append_problem(_read(path) if os.path.exists(path) else None, log)
+    if p:
+        print("REFUSE: 形成日志：%s → 拒绝写入" % p)
+        return False
     io.open(path, "w", encoding="utf-8", newline="\n").write(_dump(log))
     print("  已写 %s" % os.path.relpath(path, REPO))
     return True
+
+
+def preflight(new_log, batch, market_as_of, body, out, snap):
+    """★★ 把所有「会不会被拒绝」的判断**在写任何文件之前**做完。
+
+    返回 `(problems, plan)`：`problems` 非空 → 一个字节都不写；否则 `plan` 是按序落盘的动作。
+    ★ 顺序：形成日志（提交点）→ 形成快照 → 结算快照 → latest。
+      日志先写，是为了让「快照缺失」变成 `--check` 的 F6 FAIL（**响亮**），
+      而不是留下一个没人检查的孤儿快照。
+    """
+    problems, plan = [], []
+    old_log = load_log()
+
+    # 1) 形成日志的追加式约束（无新批次时根本不重写这个文件）
+    p = log_append_problem(old_log, new_log)
+    if p:
+        problems.append("形成日志：%s" % p)
+    elif batch:
+        plan.append(("log", None, None, "形成日志"))
+
+    # 2) 冻结形成快照是否允许创建
+    if batch:
+        path = os.path.join(SNAP_DIR, "%s.json" % batch["batch_id"])
+        p = write_guard_problem(path, _dump(batch))
+        if p:
+            problems.append("形成快照 %s：%s" % (batch["batch_id"], p))
+        else:
+            plan.append(("guard", path, _dump(batch), "形成快照 %s" % batch["batch_id"]))
+
+    # 3) 同一 market_as_of 的结算快照
+    p = write_guard_problem(snap, body)
+    if p:
+        problems.append("结算快照 CL-%s-v0_2：%s" % (market_as_of, p))
+    else:
+        plan.append(("guard", snap, body, "结算快照 CL-%s-v0_2" % market_as_of))
+
+    # 4) 同一结算日的 latest 账本
+    p = latest_ledger_problem(out, body, market_as_of)
+    if p:
+        problems.append("latest 账本：%s" % p)
+    else:
+        plan.append(("plain", out, body, "latest 账本"))
+
+    return problems, plan
 
 
 # ─────────────────────────── 入口 ───────────────────────────
@@ -663,10 +740,16 @@ def main(argv):
                         "形成记录只写「形成当时知道的事」，结算结果不写在这里。"),
                "instance_id_rule": "<board_series>__<window_year>-<MM>",
                "batches": [batch]}
-        if not _write_guard(os.path.join(SNAP_DIR, "%s.json" % batch["batch_id"]),
-                            _dump(batch), "形成快照 %s" % batch["batch_id"]):
+        # ★ v0.52：同样先检查后写入（避免「写了形成快照、日志却被拒」留下孤儿快照）。
+        #   顺序 = 快照 → 日志：一次性迁移若在日志处失败，可原样重跑（快照内容一致 → 幂等）。
+        cf = os.path.join(SNAP_DIR, "%s.json" % batch["batch_id"])
+        p = write_guard_problem(cf, _dump(batch))
+        if p:
+            print("REFUSE: 形成快照 %s：%s → **未修改任何文件**" % (batch["batch_id"], p))
             return 2
+        _write_guard(cf, _dump(batch), "形成快照 %s" % batch["batch_id"])
         if not save_log(log):
+            print("FAIL: 形成日志落盘被拒绝 → 请跑 --check 核对当前状态")
             return 2
         print("bootstrap 完成：%d 个实例 → 批次 %s" % (batch["counts"]["new_instances"],
                                                      batch["batch_id"]))
@@ -768,26 +851,32 @@ def main(argv):
         print("（未写盘；加 --write 落盘）")
         return 0
 
-    ok = True
-    if batch:
-        ok &= _write_guard(os.path.join(SNAP_DIR, "%s.json" % batch["batch_id"]),
-                           _dump(batch), "形成快照 %s" % batch["batch_id"])
-        if ok:
-            ok &= save_log(new_log)
-    if ok:
-        ok &= _write_guard(snap, body, "结算快照 CL-%s-v0_2" % market_as_of)
-    if ok:
-        # latest 是**派生视图**，允许随行情更新；但不允许在「同一 market_as_of」下悄悄变形
-        if os.path.exists(out):
-            old = _read(out)
-            if (old.get("market_as_of") == market_as_of
-                    and io.open(out, encoding="utf-8").read() != body):
-                print("REFUSE: 同一 market_as_of（%s）下账本内容发生变化 → 拒绝覆盖" % market_as_of)
-                print("        这说明源数据或形成日志被改过；请先查清再决定是否升版本。")
+    # ★★ v0.52：**先检查，后写入**。任何一项拒绝 → 一个字节都不写，返回 2。
+    problems, plan = preflight(new_log, batch, market_as_of, body, out, snap)
+    if problems:
+        print("REFUSE: 预检未通过 → **未修改任何文件**"
+              "（形成日志 / 冻结形成快照 / 冻结结算快照 / latest 账本 均保持操作前状态）")
+        for p in problems:
+            print("  - %s" % p)
+        print("  若确需新版本：升 artifact 版本（v0_2 → v0_3），不要改旧文件。")
+        return 2
+
+    # 预检通过 → 按 plan 顺序落盘；此时不存在「因冲突而失败」的写入
+    for kind, path, payload, label in plan:
+        if kind == "log":
+            if not save_log(new_log):
+                # 只可能是落盘瞬间被外部改动（预检已通过）→ 立即停下并指向 --check
+                print("FAIL: %s 落盘时被拒绝 → 请跑 --check 核对当前状态" % label)
                 return 2
-        io.open(out, "w", encoding="utf-8", newline="\n").write(body)
-        print("  已写 %s" % os.path.relpath(out, REPO))
-    return 0 if ok else 2
+        elif kind == "guard":
+            _write_guard(path, payload, label)
+        else:
+            if os.path.exists(path) and io.open(path, encoding="utf-8").read() == payload:
+                print("  不变（已存在且一致）：%s" % os.path.relpath(path, REPO))
+            else:
+                io.open(path, "w", encoding="utf-8", newline="\n").write(payload)
+                print("  已写 %s" % os.path.relpath(path, REPO))
+    return 0
 
 
 if __name__ == "__main__":

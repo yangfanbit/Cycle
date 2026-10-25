@@ -5,6 +5,56 @@
 > 原 Cycle-Research 的历史记录保留在 `research/` 内的报告文件中
 > （`RESEARCH_MODEL_V1_FREEZE_REPORT.md`、`HISTORICAL_DATA_PRODUCTION_V1_REPORT.md` 等）。
 
+> ★ **维护缺口（如实说明）**：本文件自 v0.16（2026-10-18）之后**没有继续逐版追加**；
+> v0.17–v0.51 的变更记录在 `docs/PROJECT_STATE.md`（逐轮小节，最全）与 `docs/ROADMAP.md`
+> §0.1/§0.4/§0.5 中，提交信息亦逐条可查。此处**只补记本轮**，不回溯补齐（补齐需重写约 35 版，
+> 属单独的资料整理轮次，不在本轮范围内）。
+
+---
+
+## 2026-10-25 · **v0.52 —— 修复候选账本 `--write` 拒绝写入时留下部分修改**
+
+**性质：Research 脚本缺陷修复（无产物变更）。** ✔ 只改脚本与测试。
+**未修改**：`candidate_formation_log_v0_1.json` · `candidate_ledger_v0_2.json` ·
+`CF-2026-10-23-01.json` · `CL-2026-10-23-v0_2.json` · `pattern_discovery_summary_v0_1.json`
+（全部逐字节未动，`--check` 通过）· 未升版 · 未重生成任何历史快照 · 未新增 CI Job ·
+未触碰 Research Core / SA 规则 / Schema / 风险偏好接口 · 快照 `MS-2026-10-23-01` 未签发未归档。
+
+### 缺陷
+
+`build_candidate_ledger_v0_2.py --write` 的落盘顺序是「写形成快照 → 追加形成日志 →
+才检查同日结算快照 → 才检查 latest」。后两步拒绝时，**形成日志已经被改过**：
+退出码是 2，但状态没有回到操作前 —— 「同一 `market_as_of` 内容变化必须拒绝」只做到了一半。
+
+### 修复
+
+- 拆出三个**纯检查**函数（不碰文件）：`write_guard_problem()` / `log_append_problem()` /
+  `latest_ledger_problem()`。
+- 新增 `preflight()`：一次做完四类检查（日志追加式约束 / 新形成快照能否创建 /
+  同日结算快照是否已存在且一致 / 同日 latest 是否出现不可接受变化）。
+- 任一不通过 → 返回 **2**、打印「**未修改任何文件**」与逐条原因、**不写任何文件**。
+- 通过后按固定顺序落盘：**形成日志（提交点）→ 形成快照 → 结算快照 → latest**。
+  日志先写是为了让「快照缺失」变成 `--check` 的 F6 FAIL（响亮），不留孤儿快照。
+- `--bootstrap` 同样先检查后写入（快照 → 日志，失败可原样重跑）。
+- 正常路径变干净：无新批次不再重写日志；内容一致的 latest 不再重写。
+
+### 回归
+
+`test_T12_refusal_leaves_no_partial_write`（新增，账本测试 11 → **12 项**）：
+预置同日冻结结算快照 → 模拟上游多一条窗口 → ① 对照幂等（`rc=0` 且零修改）
+② 冲突拒绝（`rc=2`、四个文件 sha256 全不变、新批次快照未创建）
+③ 反证场景非空（挪开两个冲突源后 `rc=0`、批次 1→2、账本 205 条）。
+
+**修复前后实测对照（同一场景）**：旧 `5cfb361` → `rc=2` 但**形成日志已被修改**、
+新批次快照**已创建**；新 `v0.52` → `rc=2`、**零修改**、快照**未创建**。
+
+### 验证
+
+账本 12 项 · 涨停 10 项 · 季节性 30 项 · 相关前端 20 项全过；
+`build_candidate_ledger_v0_2 --check` / `build_pattern_summary_v0_1 --check` PASS；
+`refresh_downstream --check` 0 FAIL；`tsc -b --force` 干净；
+`monthly_candidate_ledger --write` 幂等（新增 0 / 重现 204 / 新结算 0）。
+
 ---
 
 ## 2026-10-18 · **v0.16 —— 第 6 个历史题材（半导体 / AI 算力 / 存储）+ 反例与证据不足语义分离**

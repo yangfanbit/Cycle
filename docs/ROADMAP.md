@@ -22,6 +22,7 @@
 | v0.49 | `SEMI-2021-EQUIPMENT` → RESEARCHED_PIT（+2 角色：中微 medium/2 组、中芯 medium/1 组）+ **修正可观测性表述**（拓荆 2022-04-20 才上市 → 不可观测，不是「实测 0 次」） | `historical_market_roles_v0_11.json` · `limit_up_audit_v0_8.json` · `2021_equipment_point_in_time.md` · `point_in_time_semi_2021_equipment.csv` |
 | v0.50 | 候选快照 + 5/10/20 交易日表现账本（第二阶段核心收尾） | `build_candidate_ledger_v0_1.py` · `candidate_ledger_v0_1.json` · `CL-2026-10-23-v0_1.json` |
 | v0.51 | **候选追踪闭环**：形成日志（追加式）+ 结算视图（钉 `market_as_of`）+ 稳定实例 ID + 冻结快照拒绝覆盖 + `--check` 拆成「形成稳定性 / 结算一致性」；月度刷新入口；产品「四、候选追踪」；行业板块成分映射试点（结论：保留缺口） | `candidate_formation_log_v0_1.json` · `candidate_ledger_v0_2.json` · `CF-2026-10-23-01.json` · `CL-2026-10-23-v0_2.json` · `build_candidate_ledger_v0_2.py` · `test_candidate_ledger_v0_2.py`（11 项负向对照）· `monthly_candidate_ledger.py` · `CandidateTracking.tsx` · `industry_board_constituent_pilot_v0_1.json` |
+| v0.52 | **修复 `--write` 拒绝时的部分修改**：四类冲突检查全部前置（`preflight`），拒绝即返回 2 且**零修改**；落盘顺序改为「日志（提交点）→ 快照 → latest」；新增定向回归 T12（含「反证场景非空」） | `build_candidate_ledger_v0_2.py`（`write_guard_problem` / `log_append_problem` / `latest_ledger_problem` / `preflight`）· `test_candidate_ledger_v0_2.py`（12 项）。**产物版本与冻结文件全部不变** |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
@@ -130,6 +131,21 @@
    产生首批 `FORWARD_PENDING → 结算` 的真实结果（这是第二阶段收官判据 2 的唯一缺口，属时间门槛）。
 2. 剩余 9 个历史事件按「需要什么」分三类推进（§0.2-1）。
 3. 官方概念指数历史（方向 3）—— 与方向 2 同源问题，先确认数据可得性再立项。
+
+### 0.6 第三阶段验收结论（2026-10-25 · v0.52）
+
+| # | 第三阶段要求 | 结论 | 可核验证据 |
+|---|---|---|---|
+| 1 | 账本长期生命周期：形成与结算分离、跨月滚动、稳定实例 ID、快照不被静默覆盖 | ✅ **通过**（v0.51 + v0.52 修完写入原子性） | `candidate_formation_log_v0_1` + `candidate_ledger_v0_2`；204 条全部识别为「重现」；T8/T10/T12 |
+| 2 | `--check` 拆成「形成稳定性 / 结算一致性」，不再要求最新账本等于最初快照 | ✅ **通过** | `--check-formations`（F1–F6，CI 可跑）/ `--check-settlement`（S1–S5，落后只 WARN）；T11 |
+| 3 | 可重复的月度刷新入口（不新增 CI Job） | ✅ **通过** | `monthly_candidate_ledger.py`；幂等实测「新增 0 / 重现 204 / 新结算 0」 |
+| 4 | 产品支持连续追踪（不评分不排名） | ✅ **通过** | `CandidateTracking`（204 行，行序与产物一致）+ 6 项渲染测试 + 真实浏览器探针 `problems: []` |
+| 5 | 一个行业板块历史成分映射试点 | ✅ **通过（结论是「不做」）** | `industry_board_constituent_pilot_v0_1.json`：`PROXY_NOT_ACCEPTABLE` → 保留 75 条缺口 |
+
+> **尚待验证的唯一事项**：`FORWARD_PENDING → 结算` 的**真实前瞻周期**。
+> 现有 204 条里 52 条是 `IN_WINDOW_PARTIAL`（形成时窗口已开始，**不是**样本外前瞻），
+> 152 条尚未开始。因此「账本能走完一个完整前瞻→结算周期」**目前没有实证**，
+> 必须等 2026-11 窗口开始后跑一次月度刷新才能确认。**在此之前不得声称前瞻有效性已被验证。**
 
 ## 1. 已完成基座
 

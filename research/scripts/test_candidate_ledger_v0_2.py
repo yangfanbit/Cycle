@@ -50,6 +50,14 @@ def setUpModule():
     warnings.simplefilter("ignore", ResourceWarning)
 
 
+def _latest_in(pattern, folder):
+    """按版本号（数字）取某个目录下的最新产物 —— `L._latest` 只会读全局 CURRENT。"""
+    hits = [(int(pattern.match(f).group(1)), f) for f in os.listdir(folder) if pattern.match(f)]
+    if not hits:
+        raise AssertionError("缺产物 %s in %s" % (pattern.pattern, folder))
+    return os.path.join(folder, sorted(hits)[-1][1])
+
+
 class _Temp:
     """把 CURRENT / SNAP_DIR 指到临时目录，并在退出时还原。"""
 
@@ -250,6 +258,88 @@ class TestLedgerV02(unittest.TestCase):
             self.assertTrue(any(x.startswith("S5") for x in w),
                             "账本落后于行情必须给出 S5 WARN，实际：%s" % w)
             self.assertIn("落后", " ".join(w))
+
+    # ── T12 ★★ 拒绝写入时不得留下部分修改（v0.52 修复的正是这个）──
+    @unittest.skipUnless(HAS_DB, "缺 history_scan.db → 跳过写入类用例")
+    def test_T12_refusal_leaves_no_partial_write(self):
+        """预置同日冻结结算快照 → 模拟上游产物改变（多出一条窗口）→ 执行 --write。
+
+        旧顺序会「先写形成快照、再追加形成日志、最后才发现结算快照冲突」→
+        **拒绝却已改了形成日志**。本用例断言：拒绝 + 四个目标文件逐字节未变。
+        """
+        import contextlib
+        import hashlib
+
+        def sha(p):
+            return hashlib.sha256(io.open(p, "rb").read()).hexdigest()
+
+        with _Temp() as t:
+            real_current = t.old[0]
+            # 摘要与候选源都要就位（main 会读 _latest(PD_RE) / _latest(DIGEST_RE)）
+            for pat in (L.PD_RE, L.DIGEST_RE):
+                src = _latest_in(pat, real_current)
+                shutil.copy2(src, os.path.join(L.CURRENT, os.path.basename(src)))
+
+            log_p = os.path.join(L.CURRENT, L.LOG_NAME)
+            out_p = os.path.join(L.CURRENT, L.OUT_NAME)
+            led = t.ledger()
+            cl_p = t.snap("CL-%s-v0_2.json" % led["market_as_of"])
+            cf_p = t.snap("%s.json" % t.log()["batches"][0]["batch_id"])
+            before = {k: sha(p) for k, p in
+                      (("log", log_p), ("latest", out_p), ("CL", cl_p), ("CF", cf_p))}
+
+            # 对照 1：没有上游改动时，同一条路径应当成功且**零修改**（幂等）
+            buf0 = io.StringIO()
+            with contextlib.redirect_stdout(buf0):
+                rc0 = L.main(["--write"])
+            self.assertEqual(rc0, 0, "无冲突时应成功：%s" % buf0.getvalue()[-600:])
+            for name, p in (("log", log_p), ("latest", out_p), ("CL", cl_p), ("CF", cf_p)):
+                self.assertEqual(sha(p), before[name], "无冲突重跑不应改变 %s" % name)
+
+            # 模拟上游改变：多出一条窗口 → 形成内容变化 → 同日结算快照必然不同
+            pd_src = _latest_in(L.PD_RE, real_current)
+            pd = json.load(io.open(pd_src, encoding="utf-8"))
+            extra = copy.deepcopy(pd["current_windows"][0])
+            extra.update({"pattern_id": "SEAS-BK881121-M12", "board": "半导体",
+                          "board_series": "BK881121", "kind": "industry_board",
+                          "month": 12, "representative_stocks": None,
+                          "rep_stock_gap": "行业板块无历史成分 → 不绑个股"})
+            pd["current_windows"] = list(pd["current_windows"]) + [extra]
+            new_pd = os.path.join(L.CURRENT, "pattern_discovery_v0_99.json")
+            io.open(new_pd, "w", encoding="utf-8", newline="\n").write(
+                json.dumps(pd, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
+
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = L.main(["--write"])
+            out = buf.getvalue()
+
+            self.assertEqual(rc, 2, "冲突必须返回非零退出码，实际 %r\n%s" % (rc, out[-800:]))
+            self.assertIn("未修改任何文件", out)
+            self.assertIn("结算快照", out, "拒绝原因应指向结算快照冲突")
+            for name, p in (("log", log_p), ("latest", out_p), ("CL", cl_p), ("CF", cf_p)):
+                self.assertEqual(sha(p), before[name],
+                                 "%s 在拒绝后仍被修改了（这就是 v0.52 要修的缺陷）" % name)
+            # 新批次的形成快照**不得**被创建（旧顺序会留下它）
+            self.assertFalse(os.path.exists(t.snap("CF-2026-10-23-02.json")),
+                             "拒绝时不得创建新批次的形成快照")
+
+            # ★★ 反证「场景非空」：把**两个**冲突的冻结目标（同日结算快照 + 同日 latest）挪开再跑 ——
+            #    若这时确实新增了批次，就说明上一步的拒绝不是「本来无事可做」，而是真的被冲突挡住了。
+            #    ★ 注意 latest 与结算快照是**两个独立**的冲突源（都按同一 market_as_of 拒绝）。
+            os.rename(cl_p, cl_p + ".bak")
+            os.rename(out_p, out_p + ".bak")
+            buf3 = io.StringIO()
+            with contextlib.redirect_stdout(buf3):
+                rc3 = L.main(["--write"])
+            self.assertEqual(rc3, 0, "移开两个冲突源后应成功：%s" % buf3.getvalue()[-800:])
+            self.assertEqual(len(t.log()["batches"]), 2,
+                             "该场景本应新增 1 个批次 —— 否则 T12 是空断言")
+            self.assertTrue(os.path.exists(t.snap("CF-2026-10-23-02.json")),
+                            "成功路径应当写出新批次的形成快照")
+            self.assertNotEqual(sha(log_p), before["log"], "成功路径应当追加了形成日志")
+            self.assertEqual(t.ledger()["summary"]["candidates"], 205,
+                             "成功路径的账本应当包含新实例")
 
 
 if __name__ == "__main__":
