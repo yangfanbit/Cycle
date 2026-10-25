@@ -4,20 +4,24 @@
 > |---|---|
 > | 审阅对象 | `research/current/market_snapshots/snapshots/MS-2026-10-23-01.json`（**status = DRAFT**） |
 > | 对照基线 | `MS-2026-10-13-01`（当前唯一 **CANONICAL**） |
-> | 依据 HEAD | `61359e0`（2026-10-25） |
+> | 依据 HEAD | `fc0abf3`（输入收口提交）· 快照重生成于 `2026-10-25T14:53:04+08:00` |
 > | 材料性质 | **独立审阅材料** —— 不是批准、不是签发、不替代治理 C-4 的人工决定 |
-> | 编写方式 | 全部数字由脚本从产物实测（命令见 §11），未手工抄录 |
+> | 修订 | **v0.45（2026-10-25）**：完成 `risk_appetite` 反向信号审查；修正流动性失败记录的契约兼容；填写 `source_commit` |
+> | 编写方式 | 全部数字由脚本从产物/数据库实测（命令见 §11），未手工抄录 |
 >
-> ★★ **本文件不复制 `MS-2026-10-13-01` 的审阅结论。** 上一份快照的批准只对它自己有效；
-> 本次审阅重新核对每一项，并对「上一份 CANONICAL 本身存在的瑕疵」单列（§9.3）。
+> ★★ **本文件不复制 `MS-2026-10-13-01` 的审阅结论。** 上一份快照的批准只对它自己有效。
+> ★ v0.44 版提出的 7 条保留意见中，**2 条已处理、1 条已消除**，其余保留并在 §10.2 重新编号说明。
 
 ---
 
 ## 0. 一句话结论
 
-**结构与 PIT 校验全部通过、输入全部按快照 ID 落盘、`--check` 逐字节可复现 → 具备签发条件；
-但有 1 项会影响结论的保留意见（`risk_appetite` 缺「反向信号检查」记录）与 4 项非阻塞瑕疵，
-建议由人工在签发前决定「先补 / 接受并留痕」。**
+**结构与 PIT 校验全部通过、输入按快照 ID 落盘、`--check` 逐字节可复现、`source_commit` 已绑定到实际生成树
+→ 技术上具备签发条件。**
+
+剩余**唯一需要人工判断的实质问题**不是数据错误，而是**口径一致性**：
+2026-10-13 轮曾把「题材个股大涨」当作反向信号判 `NEUTRAL`（超出接口规范 §2.5 列举范围），
+本轮按 §2.5 严格判定为 `RISK_OFF`。两期口径不同，**是否统一需人工决定**（§5.2 / §10.3-②）。
 
 ---
 
@@ -29,11 +33,11 @@
 |---|---|---|---|
 | `snapshot_date` | 2026-10-13 | **2026-10-23** | 最后一个完整交易日（10-24 为周六） |
 | `status` | CANONICAL | **DRAFT** | 本轮**未**执行 `--canonical` |
-| `timestamp` | `2026-10-14T11:28:32+00:00` | `2026-10-24T20:30:00+08:00` | 时区表示不同（UTC vs +08:00） |
-| `provenance.reviewed_by` / `reviewed_at` | `yangfan` / `2026-10-14T11:28:32+00:00` | **`null` / `null`** | 未评审 —— 与 DRAFT 状态一致 |
-| `provenance.research_round` | `ThreeC 1.1 Phase 1.2` | `… · Round 2026-10-23（月度刷新）` | — |
+| `timestamp` | `2026-10-14T11:28:32+00:00` | **`2026-10-25T14:53:04+08:00`** | v0.45 重生成（原 `2026-10-24T20:30:00+08:00`） |
+| `provenance.reviewed_by` / `reviewed_at` | `yangfan` / `2026-10-14T11:28:32+00:00` | **`null` / `null`** | 未评审 —— 与 DRAFT 一致 |
+| `provenance.source_commit` | `""`（空） | **`fc0abf3f3d4efd3ae7d1d82c2ce8615b547a9968`** | v0.45 新增，见 §8 |
 | `provenance.supersedes` | `MS-2026-10-12-01` | **`null`** | 未建立替代关系（未签发） |
-| `provenance.rule_set_version` | `structural-analogy-ruleset-v0.3` | **同** | 冻结规则未变 |
+| `provenance.rule_set_version` | `…-ruleset-v0.3` | **同** | 冻结规则未变 |
 | `market_snapshot_version` | `0.3` | **`0.3`** | 契约未变 |
 
 ### 1.2 内容量
@@ -41,27 +45,30 @@
 | 段 | 10-13 | 10-23 | 差异 |
 |---|---|---|---|
 | `observations` | 13 | **25** | **+12**（旧 13 条逐字段未变，见 §2） |
-| `research_objects` | 6 | 6 | 同一批 `object_id`，`evidence_sequence` 共 **+12** 条（见 §3） |
+| `research_objects` | 6 | 6 | 同一批 `object_id`，`evidence_sequence` 共 **+12**（见 §3） |
 | `historical_candidates` | 534 | 534 | **逐字段完全一致**（见 §4） |
-| `market_regime` 四维 | DOWN / NORMAL / STABLE / NEUTRAL | DOWN / NORMAL / **UNKNOWN** / **RISK_OFF** | 2 维变化（见 §5–§6） |
-| `research_context` | 5 段 | 5 段 | 重写（新增行情/研究记录日期与 5 条 known_limitations） |
+| `market_regime` 四维 | DOWN / NORMAL / STABLE / NEUTRAL | DOWN / NORMAL / **UNKNOWN** / **RISK_OFF** | 2 维变化（§5–§6） |
+| `market_regime.evidence_refs` | MR-EV-01…08（8 条，来自 10-06 输入） | **MR-EV-01…04（4 条）** | 见 §7 |
+| `research_context` | 5 段 | 5 段 + **6 条 known_limitations** | v0.45 新增第 6 条（反向信号审查范围） |
 
-**实质变化 = ① 12 条新观察；② 研究对象证据序列 +12 条（阶段全部未改）；③ 2 个 regime 维度改档。
-历史候选、冻结 SA、契约版本、对象清单都没有变化。**
+**实质变化 = ① 12 条新观察；② 研究对象证据序列 +12（阶段全部未改）；③ 2 个 regime 维度改档；
+④ 流动性失败记录移出 `evidence[]`；⑤ `source_commit` 绑定。**
+历史候选、冻结 SA、契约版本、对象清单都没有变化。
 
-### 1.3 可追溯性差异（重要，对签发有利）
+### 1.3 可追溯性差异（对签发有利）
 
 | 输入 | 10-13 实际来源 | 10-23 实际来源 |
 |---|---|---|
 | `market_regime` | `market_regime/MS-2026-10-06-10.json`（该文件 `snapshot_date = 2026-10-06`，证据最晚 `source_date = 2026-09-30`） | `market_regime/MS-2026-10-23-01.json`（`snapshot_date = 2026-10-23`） |
 | `observations` | `observations/MS-2026-10-06-10.json` | `observations/MS-2026-10-23-01.json` |
-| `research_context` | **等于 `context/MS-2026-09-15-01.json` 的 5 个字段**（9 月 15 日的上下文） | `context/MS-2026-10-23-01.json`（与快照逐字段一致，仅多两个信封字段 `contract` / `context_version`） |
-| 是否存在同名输入文件 | **三份全部 MISSING** | **三份全部存在** |
+| `research_context` | **等于 `context/MS-2026-09-15-01.json` 的 5 个字段**（9 月 15 日的上下文） | `context/MS-2026-10-23-01.json`（与快照逐字段一致，仅多 `contract` / `context_version` 两个信封字段） |
+| 同名输入文件 | **三份全部 MISSING** | **三份全部存在** |
+| `source_commit` | 空 | **`fc0abf3`（可核验，见 §8）** |
 
-> ★ 也就是说：**当前 CANONICAL 的 `market_regime` 证据比它的 `snapshot_date` 早 13 天，
-> `research_context` 是 9-15 的；而新 DRAFT 的三份输入都按快照 ID 落盘且日期对齐。**
-> 新快照在「可复现 / 可追溯」这一维度上**强于**现有 CANONICAL。这一点必须写进签发说明，
-> 否则会被误读成「新快照在追赶一个更严谨的基线」。
+> ★ 结论不变：**当前 CANONICAL 的 `market_regime` 证据比它的 `snapshot_date` 早 13 天，
+> `research_context` 是 9-15 的**；新 DRAFT 三份输入都按 ID 落盘且日期对齐。
+> 新快照在「可复现 / 可追溯」这一维度上**强于**现有 CANONICAL —— 不应被误读成
+> 「新快照在追赶一个更严谨的基线」。
 
 ---
 
@@ -72,12 +79,12 @@
 ```
 旧观察 13 条 · 新观察 25 条
 被删除的旧 observation_id：[]            ← 0 条
-逐字段完全一致（含 source_tier / direction / evidence_strength / temporal_relation / linked_object_id）：13 / 13
+逐字段完全一致：13 / 13
 被改写的旧 observation_id：[]            ← 0 条
 ```
 
-> 校验器的「跨快照 append-only 自检」亦 PASS（27 个 observation_id）。
-> 字段集合也一致：新旧观察的 key 集合无差异；`linked_object_id` 仍是**可选**字段（8 条旧观察有、5 条旧观察没有，与本轮无关）。
+> 校验器的「跨快照 append-only 自检」亦 PASS（25 个 observation_id）。
+> 字段集合一致；`linked_object_id` 仍是**可选**字段（8 条旧观察有、5 条没有）。
 
 ### 2.2 新增 12 条逐项
 
@@ -103,8 +110,9 @@
 - 全部 25 条 `temporal_relation = BEFORE_SNAPSHOT`；`max(date) = 2026-10-23` = `snapshot_date`，**无一条越界**。
 - ★ **1 条属事后补录**：`OBS-2026-10-004` 日期 **2026-10-12**，早于上一快照日 10-13，但本轮才登记。
   这**合法**（append-only 允许补录历史事实），但**不得**据此声称「10-13 当时已知」。
-  同理，研究对象证据里也有 2 条日期早于 10-13 的追加项（§3）。签发说明里应保留这句限定。
-- 发布晚于 10-23 的材料已主动排除（例：某央企 10-23 采购公告只能经 10-24 报道核实 → 未纳入）。
+- ★ **一处数字口径提示（不影响定档）**：`OBS-2026-10-010` 写「5,432 只可比样本」，独立复算 10-22 为
+  **5,531** 只（10-23 为 5,432）。上涨占比 9.6% 复算一致；差异来自可比样本口径，属**既有观察记录**
+  （append-only 不改），仅在此登记，供后续轮次修订时参考。
 
 ---
 
@@ -124,17 +132,16 @@
 
 合计 **+12 条**，与 §2 的 12 条新观察一一对应（同一批事实）。
 
-### 3.1 ★ 必须知道的限制：`stage_review` 没有进入快照
+### 3.1 ★ 仍保留的限制：`stage_review` 没有进入快照
 
-`research/current/current_candidates.json` 本轮新增了 `stage_review`
-（`status = REVIEWED_MAINTAINED` + 逐对象维持理由），但 `project_cc_to_objects_v0_1.py` 是**白名单投影**，
-`research_objects` 只有 11 个字段，**不含 `stage_review`**。
+`research/current/current_candidates.json` 有 `stage_review`（`REVIEWED_MAINTAINED` + 逐对象维持理由），
+但 `project_cc_to_objects_v0_1.py` 是**白名单投影**（`research_objects` 只有 11 个字段），**不含该字段**。
 
 后果：**只看快照的人无法区分「本轮重新检查证据后决定维持阶段」与「沿用旧判断、尚未重新评估」。**
 `research_context.known_limitations` 第 3 条写的是「沿用 2026-10-08 轮判定……故未强改」，
-与 `current_candidates.json` 里的 `REVIEWED_MAINTAINED` 措辞并不完全一致（前者听起来像「没重查」）。
+与 `current_candidates.json` 的 `REVIEWED_MAINTAINED` 措辞不完全一致。
 
-→ 这是**待人工决定事项**（§10-④）：接受该限制并在签发说明中写明，还是先扩投影器（属代码变更，本轮不做）。
+→ **本任务不扩投影器**（边界），保留为已知限制，见 §10.2-④ / §10.3-⑤。
 
 ---
 
@@ -143,11 +150,11 @@
 | 检查 | 结果 |
 |---|---|
 | 条数 | 534 → **534** |
-| 逐字段比较（`sort_keys` 规范化后整段比对） | **完全一致（True）** —— 不是「数量相同」，是内容相同 |
-| `candidates_source.artifact` | `research/research/reports/structural_analogy_explanations_v0_13.json`（未变） |
-| `candidates_source.artifact_version` | `0.13`（未变） |
+| 逐字段比较（`sort_keys` 规范化后整段比对） | **完全一致（True）** |
+| `candidates_source.artifact` / `artifact_version` | `structural_analogy_explanations_v0_13.json` / `0.13`（未变） |
 | `candidates_source.rule_set_version` | `structural-analogy-ruleset-v0.3`（未变） |
-| 校验项 | `V8`（534 条轻量索引，无多余字段）PASS；`V8b`（回指校验）PASS |
+| 校验项 | `V8`（534 条轻量索引，无多余字段）PASS；`V8b`（回指）PASS |
+| 下游一致性 | `refresh_downstream --check` 的 `C0` PASS：89 = 62 + 27 = 534 / 6 |
 
 **结论：本轮未重跑、未改规则、未改结论；SA 侧与 10-13 等价。**
 
@@ -157,35 +164,67 @@
 
 | 维度 | 10-13 | 10-23 | 变化 | 依据（10-23） |
 |---|---|---|---|---|
-| `broad_index_state` | DOWN | **DOWN** | 档位未变，**幅度显著加深** | `MR-EV-01`：沪深300 `4105.329 / 4460.156 − 1 = -7.96%`（20 个交易日，2026-09-17→10-23），跌破 -5% 档 |
-| `breadth_state` | NORMAL | **NORMAL** | 档位未变，**证据质量提升** | `MR-EV-02`：近 4 自然周周均上涨家数占比 `42.6 / 45.9 / 32.2 / 48.2%` → 均值 **42.23%**（40–60% 档） |
-| `liquidity_state` | STABLE | **UNKNOWN** | **证据不可得**（不是市场变化，见 §6） | `MR-EV-05`：取数失败记录 |
-| `risk_appetite_state` | NEUTRAL | **RISK_OFF** | **档位改变**（见 §5.2） | `MR-EV-03` 高β跑输 10.67pp + `MR-EV-04` 涨停家数 -15.2% |
+| `broad_index_state` | DOWN | **DOWN** | 档位未变，**幅度加深** | `MR-EV-01`：`4105.329 / 4460.156 − 1 = -7.96%`（2026-09-17→10-23） |
+| `breadth_state` | NORMAL | **NORMAL** | 档位未变，**证据质量提升** | `MR-EV-02`：4 周周均 `42.6/45.9/32.2/48.2%` → 均值 **42.23%** |
+| `liquidity_state` | STABLE | **UNKNOWN** | **证据不可得**（§6） | 见 §6 |
+| `risk_appetite_state` | NEUTRAL | **RISK_OFF** | **档位改变**（§5.2） | `MR-EV-03` 高β跑输 10.67pp + `MR-EV-04` 涨停家数 -15.2% |
 
 ### 5.1 两个「档位未变」维度的证据其实换了
 
-- **broad**：10-13 是 `-5.50%`（4357.62/4611.44，窗口 09-01→09-30，来源「东方财富 EOD 前复权」T2）；
+- **broad**：10-13 是 `-5.50%`（4357.62/4611.44，窗口 09-01→09-30，东方财富 EOD，T2）；
   10-23 是 `-7.96%`（本地 `history_scan.db` CSI300，窗口 09-17→10-23，T2）。
-  **同一档位、不同窗口、不同数据源**。档位一致不等于「市场没变」——实际跌幅扩大了 2.46pp。
-- **breadth**：10-13 用的是 **4 个离散交易日的媒体报道**（T3，且自注「★ 不足规则要求的近 4 周周均」）；
-  10-23 是 **4 个自然周、每日 ≥3,000 只可比样本**的实测均值（T2）。
-  → 新证据**更强**，但两次的 NORMAL 不是同一个测量。
+  同档位、不同窗口、不同数据源 —— 档位一致**不等于**市场没变，实际跌幅扩大 2.46pp。
+- **breadth**：10-13 用 **4 个离散交易日的媒体报道**（T3，自注「★ 不足规则要求的近 4 周周均」）；
+  10-23 是 **4 个自然周、每日 ≥3,000 只可比样本**的实测均值（T2）→ 新证据**更强**，
+  但两次的 NORMAL 不是同一个测量。
 
-### 5.2 `risk_appetite` 从 NEUTRAL 到 RISK_OFF：为什么会变，以及一处需要回答的问题
+### 5.2 `risk_appetite`：RISK_OFF 的定档依据与反向信号审查（v0.45 完成）
 
-**10-13 判 NEUTRAL 的理由（原文 `MR-EV-07`）**：存在**方向相反**的信号 ——
-低 β 防御（银行股创历史新高、创业板跌超 8%）指向收缩，但同期题材投机仍活跃
+#### ① 支持 `RISK_OFF` 的两个信号（均为接口规范 §2.5 列举项）
+
+| 信号 | 窗口 | 计算依据 | 结果 |
+|---|---|---|---|
+| **S1** 高β vs 低β 20 日相对表现 | 2026-09-17 ~ 2026-10-23（21 个收盘 / 20 个交易日区间） | 创业板指 `CHINEXT` vs 沪深300 `CSI300`，本地 EOD 收盘 | 创业板 **-18.62%** − 沪深300 **-7.96%** = **-10.67pp**（独立复算完全一致） |
+| **S2** 涨停家数（周度） | 近 4 周（第 40–43 周）vs 前 4 周（第 36–39 周） | `history_scan.db` 个股日收盘 + 板块涨跌停带（主板 9.8–10.6%；创业板/科创板 19.5–21.2%；北交所不检测） | 近 4 周日均 **52.1** vs 前 4 周 **61.5** 家 = **-15.2%**（产物值） |
+
+> ★ 独立复算的差异（**未据此改数**）：涨停家数复算为 **52.7 vs 61.2 = -14.0%**，与产物差 ≤0.6 家/日；
+> 差异来自 ST 识别与周界（含国庆长假）处理。方向与量级一致，故**保留产物原值**，
+> 并把复算值一并留痕，供人工核对。
+
+#### ② 反向信号逐条审查（结论：**没有符合 §2.5 的矛盾信号**）
+
+| # | 候选反向信号 | 实测 | 是否具备定档资格 | 排除依据 |
+|---|---|---|---|---|
+| a | **2026-10-23 单日反弹**：上涨家数占比 83.2%、涨停 83 家（独立复算 80 家） | 10-22 仅 9.6%、10-23 83.2% | **否** | §2.1「禁止用单日数据定档」+ §2.7-5「单日极值 ≠ 均值口径」；且该日已在 20 日窗口内，未改变区间方向 |
+| b | **10-13 轮引用的题材强势**：近岸蛋白 / 澳弘电子 / 会稽山（2026-09 全月 +121.3% / +93.7% / +80.2%） | 本轮窗口（09-17~10-23）分别为 **+7.3% / +23.0% / -15.8%** | **否**（双重理由） | ① 窗口不同且**强势未延续**；② 「个股涨幅」**不在 §2.5 列举的 4 类信号内** |
+| c | **板块层**：是否有板块级强势 | 215 个可用行业板块中仅 **20 个上涨**、中位 **-5.73%**、最高 **+9.4%（出版）**，**无一个 > +10%**；跌幅前列为半导体材料 -20.9%、分立器件 -22.0%、电子化学品 -22.5% | **否** | 与 S1 同向（高β板块最弱），不构成反向证据 |
+| d | **个股层**：是否仍有大幅上涨 | 5,552 只可比个股中位 **-5.0%**；仅 **4 只 > +100%**、17 只 > +50%（0.1% / 0.3%）；跌幅 >20% 的 573 只（10.3%） | **否** | 属「**个股孤立表现**」，§2.5 未列为信号；占比 0.1% 不足以定性市场层 |
+| e | 融资余额（月度）/ 炸板率 / 新股·次新相对表现 | **未取到数据** | **不适用** | 无数据 → 不纳入定档、也不据此推断（不新造代理口径） |
+
+#### ③ 判定
+
+两个可用信号**同向指向收缩**，反向候选 a–d 均按既有规则排除、e 无数据 →
+按 §2.5「≥2 个信号同向 → 取该方向」，**保留 `RISK_OFF`**。
+审查范围、数字与排除理由已写入 `market_regime.beta_note`（随快照可见）与
+`research_context.known_limitations[6]`（快照内可见）。
+
+#### ④ ★ 必须由人工判断的一处口径不一致（不是数据错误）
+
+**10-13 轮判 `NEUTRAL` 的理由**（原文 `MR-EV-07`）：存在**方向相反**的信号 ——
+低β防御（银行创历史新高、创业板跌超 8%）指向收缩，但同期题材投机仍活跃
 （CRO 近岸蛋白 +133%、PCB 澳弘电子 +88%、黄酒会稽山 +93%）→ 按「信号冲突 → NEUTRAL」。
 
-**10-23 判 RISK_OFF 的理由**：两个**可计算**信号同向且无相反信号记录 ——
-① 高β（创业板指 -18.62%）相对低β（沪深300 -7.96%）**低 10.67pp**；
-② 近 4 周日均涨停 **52.1** 家 vs 前 4 周 **61.5** 家（**-15.2%**）。
+问题在于：**「题材个股大涨」并不在 §2.5 列举的 4 类信号里**（§2.5 的情绪强度口径是
+「涨停家数 / 炸板率（周度）」，不是个股涨幅）。所以：
 
-> ⚠️ **保留意见（唯一会影响结论的一项）**：10-23 的 regime 文件**没有记录「是否检查过反向信号」**。
-> 10-13 之所以是 NEUTRAL，正是因为有 MR-EV-07 这类反例；本轮没有对应的「已检查、未发现」记录。
-> 在签发前，建议补一句显式说明（检查了哪些方向、结论如何），否则无法排除
-> 「因为没找反例才得到 RISK_OFF」。**这不需要改数，只需要在 `MR-EV-03/04` 或 `unknown_notes`
-> 里留一句可核验的检查记录。**
+- 本轮按 **§2.5 严格口径** → 只有 S1/S2 两个信号，同向 → `RISK_OFF`；
+- 若沿用 **10-13 的宽松做法**（把个股涨幅当信号）→ 本轮也有 4 只 >+100%，
+  理论上可再判 `NEUTRAL`。
+
+**两种做法都不能说是「错」**，但**两期不一致**。本轮选择「按规范原文严格判定」，理由：
+① §2.5 是书面规则，MR-EV-07 的做法超出列举范围；② 用个股极值当信号会引入「挑样本」空间。
+**是否把 10-13 也按 §2.5 重述（属历史 artifact，需另立纠错流程），或反过来把「题材个股强度」
+正式写进 §2.5 成为第 5 类信号 —— 必须由人工决定，本轮不做。**（§10.3-②）
 
 ---
 
@@ -194,11 +233,9 @@
 ### 6.1 结论
 
 > **这是「成交额证据不可得」，不是「流动性已经恶化」。**
-> 不得把 UNKNOWN 读成 CONTRACTING，也不得读成「流动性转差」。
+> 不得把 `UNKNOWN` 读成 `CONTRACTING`，也不得读成「流动性转差」。
 
-### 6.2 证据
-
-`MR-EV-05` 记录了三路取数失败（`source_date = 2026-10-23`）：
+### 6.2 三条取数失败（完整保留在 `unknown_notes.liquidity_state`）
 
 | 尝试 | 结果 |
 |---|---|
@@ -208,95 +245,117 @@
 | 本地 `history_scan.db` | 只有 `volume`，**无 `amount`** |
 
 按 `MARKET_REGIME_AI_INTERFACE_v0.1` §2.7 第 3/4 条：**不得**用成交量换算、**不得**用单日成交额
-（腾讯/新浪只提供当日快照）替代 20/60 日均值口径，也**不得**缩短窗口凑档位 → 记 `UNKNOWN`，
-并在 `unknown_notes.liquidity_state` 里写明原因。校验项 `R7`（UNKNOWN 原因）PASS。
+（腾讯/新浪只提供当日快照）替代 20/60 日均值口径，也**不得**缩短窗口凑档位 → `UNKNOWN`。
+校验项 `R7`（UNKNOWN 原因）PASS。
 
 ### 6.3 一个必须一起说的背景：10-13 的 STABLE 本身是降级口径
 
-- 10-13 的 `MR-EV-03` 自注：`窗口 2026-08-03 ~ 2026-09-30（42 个交易日；★ 不足规则要求的 60 日）`，
-  结论 `近20日均值 18039 亿 vs 窗口均值 20269 亿 → -11.0%`，未达 CONTRACTING 门槛 → STABLE。
-- 数据源为「东方财富 EOD 日线」——**正是本轮已失效的那条源**。
+10-13 的 `MR-EV-03` 自注：`窗口 2026-08-03 ~ 2026-09-30（42 个交易日；★ 不足规则要求的 60 日）`，
+结论 `-11.0%` 未达 CONTRACTING 门槛 → STABLE；数据源正是**本轮已失效的东方财富 EOD**。
 
-> 所以真实的变化链是：**「降级口径的 STABLE」→「源不可用 → 诚实的 UNKNOWN」**，
-> 而不是「市场从稳定转为恶化」。签发说明里应这样表述，避免读者误读。
+> 真实变化链是：**「降级口径的 STABLE」→「源不可用 → 诚实的 UNKNOWN」**，
+> 不是「市场从稳定转为恶化」。
 
 ---
 
 ## 7. 新 `market_regime` 的证据、来源质量、PIT 与未解决限制
 
-### 7.1 五条证据
+### 7.1 四条支持性证据（v0.45：原 `MR-EV-05` 已移出）
 
 | id | 维度 | 指标 | 值 | 窗口 | tier | source_date |
 |---|---|---|---|---|---|---|
-| `MR-EV-01` | broad_index | 沪深300 20 日涨跌 | `4105.329/4460.156−1 = -7.96%` | 09-17→10-23（20 交易日） | T2 | 2026-10-23 |
+| `MR-EV-01` | broad_index | 沪深300 20 日涨跌 | `4105.329/4460.156−1 = -7.96%` | 09-17→10-23 | T2 | 2026-10-23 |
 | `MR-EV-02` | breadth | 上涨家数占比 4 周均值 | `42.6/45.9/32.2/48.2% → 42.23%` | 第 40–43 周（≥3,000 只/日） | T2 | 2026-10-23 |
 | `MR-EV-03` | risk_appetite | 高β−低β 20 日相对 | `-18.62% − (-7.96%) = -10.67pp` | 09-17→10-23 | T2 | 2026-10-23 |
-| `MR-EV-04` | risk_appetite | 涨停家数 周均环比 | `52.1 vs 61.5 家/日 = -15.2%` | 第 40–43 周 vs 36–39 周 | T2 | 2026-10-23 |
-| `MR-EV-05` | liquidity | 成交额 20/60 日 | **不可得 → UNKNOWN** | 07-24→10-23（未取到） | T2* | 2026-10-23 |
+| `MR-EV-04` | risk_appetite | 涨停家数 周均环比 | `52.1 vs 61.5 家/日 = -15.2%` | 第 40–43 vs 36–39 周 | T2 | 2026-10-23 |
 
-`evidence_refs` = 01–05，**全部可解析**（R4 PASS）；**全部 `source_date ≤ snapshot_date`**（R5 PASS）；
+`evidence_refs` = 01–04，**全部可解析**（R4 PASS）；**全部 `source_date ≤ snapshot_date`**（R5 PASS）；
 维度—证据配对合法（R6）；`risk_appetite` 有 **2 个独立信号**（R8）；红线词扫描通过（R9）。
 
-### 7.2 来源质量
+### 7.2 v0.45 的契约兼容修正（原 `MR-EV-05`）
 
-- 4 条来自**本地 EOD 序列** `history_scan.db`（5,576 只个股日收盘 / CSI300 / SZSE / CHINEXT），
-  按固定公式复算，属**可重复但非交易所直连**的口径 —— `research_context.known_limitations` 第 2 条已声明。
-- `beta_note` 明确写了「不得用单一指数代表全市场」，并显式排除 2 个单日极值
-  （10-22 上涨占比 9.6%、10-23 反弹 83.2% / 涨停 83 家），声明「单日数据不用于任何维度定档」。
-  **这是本轮做得比 10-13 更严谨的地方。**
+**问题**：v0.44 版把「取数失败记录」放在 `evidence[]` 里，并给了 `source_tier = "T2"`。
+Schema 的 `source_tier` 是**封闭枚举 `T1/T2/T3`**，无法写 `N/A`；而给一次**失败请求**贴上 T2，
+等于把它伪装成「已取得的市场数据证据」。
+
+**处理（最小合规修正，未升 Schema、未新增证据等级）**：
+
+| 动作 | 结果 |
+|---|---|
+| 从 `evidence[]` 删除该对象 | 证据 5 → **4 条** |
+| 从 `evidence_refs` 删除 `MR-EV-05` | refs 5 → **4 条** |
+| 失败事实去哪了 | 完整保留在 `unknown_notes.liquidity_state`（三条路径逐条列出 + 「不是流动性恶化」+「不得用成交量/单日成交额替代、不得缩窗口」），并注明「原 MR-EV-05 已移出 evidence[]」 |
+| 快照可见的限制说明 | `research_context.known_limitations[0]` 重写，补 `amount` 为 NULL 与「失败记录已移出 evidence[]」 |
+| 状态 | `liquidity_state` 仍 **UNKNOWN**（未假造数据、未改档） |
+| 校验 | regime 文件 **12 PASS / 0 WARN / 0 FAIL**（R4 4 条、R6 配对、R7 原因、R8 2 个信号） |
+
+> ★ 这不是「删掉不利证据」：`UNKNOWN` 的状态没变，失败原因一字未减，只是**不再占用证据层级**。
+> 依 §2.7 第 6 条「每次降级都要在 `evidence[]` 留一条对照记录」——该条针对的是**用低等级证据定档**的
+> 情形；本轮 liquidity 根本没有定档（`UNKNOWN`），故不适用。
 
 ### 7.3 未解决限制（签发时应一并写明）
 
-| # | 限制 | 影响 |
+| # | 限制 | 状态 |
 |---|---|---|
-| L1 | `liquidity_state` 无可用成交额序列 | 四维只有三维可判定 |
-| L2 | 行情序列来自本地自建库（`history_scan.db`，**1.3GB 未入库**） | 外部读者**无法独立复算**这四个数；只能复核公式与输入文件 |
-| L3 | `risk_appetite` 缺「反向信号检查」记录 | 见 §5.2 保留意见 |
-| L4 | `MR-EV-05` 是「取数失败记录」，却标了 `source_tier: "T2"` | 元数据小瑕疵：失败记录不应占一个来源层级，建议改 `N/A`（不改数） |
-| L5 | `market_regime.generated_at = 2026-10-24T20:10:00`（**无时区**） | 与快照 `timestamp` 的 `+08:00` 表示不一致，跨时区读者可能误解 |
-| L6 | `market_data.db` 仍截至 **2026-10-20**，与 `history_scan.db` 的 10-23 **不同** | 两库日期不得互相冒充；本快照只用后者 |
-| L7 | breadth 未说明是否剔除 ST / 停牌（仅写「每日可比样本 ≥3,000 只」） | 口径可复核性略弱 |
+| L1 | `liquidity_state` 无可用成交额序列 → 四维只有三维可判定 | **仍保留** |
+| L2 | 行情序列来自本地自建库（`history_scan.db`，**1.3 GB 未入库**）→ 外部读者无法独立复算，只能复核公式与输入文件 | **仍保留** |
+| L3 | `risk_appetite` 缺反向信号审查记录 | ✅ **v0.45 已解决**（§5.2，写入 `beta_note` + `known_limitations`） |
+| L4 | `MR-EV-05` 把「取数失败记录」标成 T2 | ✅ **v0.45 已解决**（移出 `evidence[]`，见 §7.2） |
+| L5 | `market_regime.generated_at` 无时区 | ✅ **v0.45 已解决**（改为 `2026-10-25T14:51:52+08:00`） |
+| L6 | `market_data.db` 截至 **2026-10-20**，与 `history_scan.db` 的 10-23 不同 | **仍保留**（两库日期不得互相冒充） |
+| L7 | breadth 未说明是否剔除 ST / 停牌（仅写「每日可比样本 ≥3,000 只」） | **仍保留** |
+| L8 | 涨停家数独立复算与产物差 ≤0.6 家/日（ST 识别与周界） | **新增登记**（未改数） |
 
 ---
 
-## 8. `provenance.source_commit` 为空的可追溯性影响
+## 8. `provenance.source_commit`（v0.45 已填写）
 
-| 项 | 10-13 | 10-23 |
-|---|---|---|
-| `provenance.source_commit` | `""` | `""` |
+| 项 | 10-13 | 10-23（v0.44） | 10-23（v0.45） |
+|---|---|---|---|
+| `source_commit` | `""` | `""` | **`fc0abf3f3d4efd3ae7d1d82c2ce8615b547a9968`** |
+
+**填写依据（可核验，不是拿 HEAD 冒充历史）**：
+
+1. v0.45 的输入修改（`market_regime/MS-2026-10-23-01.json` + `context/MS-2026-10-23-01.json`）
+   先**单独提交**为 `fc0abf3`；
+2. 随后在该提交上、**工作区仅有两个 0 字节未跟踪库残留**（`cycle_research.db` / `market_data.db`，
+   不是任何输入）的状态下生成快照 → `git rev-parse HEAD` = `fc0abf3…`；
+3. 生成时显式传入 `--source-commit fc0abf3…`，生成器写入 `provenance.source_commit`；
+4. 因此「检出 `fc0abf3` + 按 §11 命令重跑」可复现本快照（`--check` 已 PASS）。
 
 **影响**：
-1. 快照**无法绑定到生成它的那棵树** —— 不能证明它是用哪一版 `current_candidates.json` /
-   SA 解释产物 / observations 输入生成的。
-2. 快照提交进 git 之后，`git log` 只能证明「这个文件何时被提交」，**不能**证明「生成时的源码状态」。
-   若之后 `current_candidates.json` 再被刷新，`--check` 复现会失败，而读者无从判断差异来自数据还是代码。
-3. 治理 C-4（版本替换）要求「留痕」；`reviewed_by/at` 能记录**谁批的**，
-   `source_commit` 才能记录**批的是哪一版**。
-
-**缓解（本轮已具备的）**：
-- 三份输入**按快照 ID 落盘**且与快照内容逐字段一致（regime / observations 全等；context 仅差两个信封字段）；
-- `--check` **逐字节一致**（固定 `--timestamp` 后复现成功）；
-- `historical_candidates` 通过 `candidates_source` **回指**带版本号的 SA artifact（`0.13` + `rule_set v0.3`）；
-- 观测/对象都带日期，PIT 可核。
-
-**建议（不改产物，交人工决定）**：
-生成器**已支持** `--source-commit`（`build_market_snapshot_v0_1.py` 里 `args.source_commit`），
-只是本轮未传。若决定补，需**重新生成**该 DRAFT（本轮任务禁止），或用一次专门的「元数据补录」轮次处理。
-**注意：10-13 CANONICAL 同样是空 —— 这不是新回归，而是既有治理缺口，签发时应作为待办记录。**
+- ✅ 快照现在**绑定到生成它的树** —— 可回答「这是用哪一版 regime/context/observations/SA 生成的」；
+- ⚠️ 两个投影输入（`objects` / `candidates`）是 `.tmp/` 下的**未跟踪中间产物**，
+  由已提交的 `current_candidates.json` 与 SA v0.13 确定性投影得到，需按 §11 重新生成（未入库是既有约定）；
+- ⚠️ **10-13 CANONICAL 仍为空** —— 属既有治理缺口，本轮不追溯补（补它需要重生成 CANONICAL）。
 
 ---
 
 ## 9. 校验结果与 8 条 WARN 的具体归属
 
-### 9.1 总览
+### 9.1 总览（v0.45 实测）
 
 ```
 validate_market_snapshot_v0_1.py（全目录，只读）
-结果: 370 通过 / 8 警告 / 0 失败
+  结果: 370 通过 / 8 警告 / 0 失败
+
+build_market_snapshot_v0_1.py … --check（固定 timestamp + source-commit）
+  PASS  --check 逐字节一致（可复现）
+
+regime 单文件校验（--file market_regime/MS-2026-10-23-01.json）
+  结果: 12 通过 / 0 警告 / 0 失败
+
+context 单文件校验（--file context/MS-2026-10-23-01.json）
+  结果: 2 通过 / 0 警告 / 0 失败
+
+refresh_downstream.py --check
+  12 项 PASS / **0 项 FAIL**（`^\s+FAIL` 实测 0 行）
+  PASS  C0 一致性基线：对象数 = 89（= export 62+27 = SA 每候选解释数 = 快照 534 / 6）
 ```
 
-`build_market_snapshot_v0_1.py … --out <现有快照> --check`
-→ `PASS  --check 逐字节一致（可复现）`（固定 `--timestamp 2026-10-24T20:30:00+08:00`）
+> ★ 口径提醒：该脚本末尾固定打印「请先修掉上面的 FAIL，再 --apply」——那是**模板提示语**，
+> 不是失败项。判定失败必须看**行首缩进的 `FAIL` 行**（实测 0 行）。同理，任何「汇总数字」
+> 都不能替代逐行归属（§9.2 的 8 条 WARN 就是例子）。
 
 ### 9.2 8 条 WARN 逐条归属 —— 全部是**历史遗留**，与本快照无关
 
@@ -307,9 +366,9 @@ validate_market_snapshot_v0_1.py（全目录，只读）
 - 这 8 个文件是 **10-06 系列快照**的观察输入（对应 `MS-2026-10-06-01`…`-08`，均 `ARCHIVED`），
   **既不是 10-13 的输入，也不是 10-23 的输入**。
 - **`MS-2026-10-23-01` 及其三份输入：0 WARN。**
-- 处置建议：**不修**（它们是归档快照的历史输入，改了就破坏 append-only）。这不是签发阻塞项。
+- 处置建议：**不修**（归档快照的历史输入，改了会破坏 append-only）。不是签发阻塞项。
 
-### 9.3 与新快照相关的 PASS 明细（节选，均为实测输出）
+### 9.3 与新快照相关的 PASS 明细（节选，实测输出）
 
 ```
 snapshots/MS-2026-10-23-01.json · V1 contract / version 0.3 / snapshot_id 命名空间   PASS
@@ -318,22 +377,20 @@ snapshots/MS-2026-10-23-01.json · V3 snapshot_date = 2026-10-23                
 snapshots/MS-2026-10-23-01.json · V5 market_regime 四维 + beta_note 齐备            PASS
 snapshots/MS-2026-10-23-01.json · V6 observations 结构校验（25 条）                  PASS
 snapshots/MS-2026-10-23-01.json · V7 research_objects 校验（6 条）                  PASS
-snapshots/MS-2026-10-23-01.json · V8 historical_candidates 轻量索引（534 条，无多余字段） PASS
+snapshots/MS-2026-10-23-01.json · V8 historical_candidates 轻量索引（534 条）        PASS
 snapshots/MS-2026-10-23-01.json · V8b candidates_source 回指校验                    PASS
 snapshots/MS-2026-10-23-01.json · L1 观察→对象关联（17 条已关联）                    PASS
-market_regime/MS-2026-10-23-01.json · R1/R2/R3/R4/R5/R6/R7/R8/R9/R10               PASS
+market_regime/MS-2026-10-23-01.json · R1–R10（含 R4 4 条 / R7 UNKNOWN 原因 / R8 2 信号） PASS
 context/MS-2026-10-23-01.json · C1/C2                                              PASS
-observations/MS-2026-10-23-01.json · O1/O3/O4/O5（25 条）                           PASS
-跨快照 append-only 自检（27 个 observation_id）                                      PASS
+跨快照 append-only 自检（25 个 observation_id）                                      PASS
 index.json · I5 索引与目录一致（15 份）/ I6 CANONICAL 唯一（MS-2026-10-13-01）        PASS
 ```
 
 ### 9.4 索引状态（只读核对，未修改）
 
-`index.json` 共 15 条：`MS-2026-10-13-01` = **CANONICAL**（唯一）；`MS-2026-10-23-01` = **DRAFT**；
-其余 13 份 `ARCHIVED` 或 `DRAFT`（`MS-2026-09-15-01` 为 DRAFT）。
-★ `index.json` 条目**不含 `supersedes` 字段** —— 版本链只存在于快照 `provenance` 里，
-签发时若要查「谁替代谁」，必须读快照本体，不能只读索引。
+`index.json` 共 15 条：**`MS-2026-10-13-01` = CANONICAL（唯一）**；**`MS-2026-10-23-01` = DRAFT**；
+其余 13 份为 `ARCHIVED`（12）或 `DRAFT`（`MS-2026-09-15-01`）。
+★ `index.json` 条目**不含 `supersedes` 字段** —— 版本链只存在于快照 `provenance` 里。
 
 ---
 
@@ -341,51 +398,45 @@ index.json · I5 索引与目录一致（15 份）/ I6 CANONICAL 唯一（MS-202
 
 ### 10.1 建议
 
-**技术条件已具备**：结构 / PIT / SA 回指 / 索引 / 复现性全部通过，输入可追溯性**优于**现有 CANONICAL。
+**技术条件已具备**：结构 / PIT / SA 回指 / 索引 / 复现性 / `source_commit` 全部通过，
+输入可追溯性**优于**现有 CANONICAL，且 v0.44 提出的 3 条证据层问题已处理。
 
-**建议路径（二选一，均由人工决定）**：
+**建议：可以进入签发流程**，签发说明中须原文写入 §7.3 的 L1 / L2 / L6 / L7 / L8 与 §5.2-④ 的口径问题。
 
-- **路径 A（推荐）**：先在 DRAFT 上补两条**不改数**的记录，再签发 ——
-  ① `risk_appetite` 的反向信号检查说明（§5.2）；② `MR-EV-05` 的 `source_tier` 改为 `N/A`（§7.3 L4）。
-  两者都只动 regime 输入文件的文字/元数据，需要重建快照（`--check` 会随之更新）。
-- **路径 B**：接受现状直接签发，并在签发说明中把 §5.2 / §7.3 / §8 的限制**原文写进** `review` 留痕。
+### 10.2 保留意见（按严重度，已重新编号）
 
-> 若选 B，**必须**在签发说明里明确三句：① liquidity UNKNOWN ≠ 流动性恶化；
-> ② risk_appetite 缺反向信号检查记录；③ `source_commit` 为空、版本链仅存于快照本体。
-
-### 10.2 保留意见（按严重度）
-
-| # | 保留意见 | 严重度 | 是否阻塞 |
+| # | 保留意见 | 严重度 | 状态 |
 |---|---|---|---|
-| 1 | `risk_appetite` 从 NEUTRAL 改 RISK_OFF，但**没有记录反向信号检查**（10-13 正是因为反例才 NEUTRAL） | **高** | 建议不阻塞，但必须留痕 |
-| 2 | `liquidity_state = UNKNOWN`：四维只有三维可判定 | 中 | 否（`UNKNOWN` 是契约合法状态，`R7` PASS） |
-| 3 | `provenance.source_commit` 为空 | 中 | 否（10-13 同样为空，属既有缺口） |
-| 4 | `stage_review`（重查后维持）未进入快照，读者无法区分「重查维持 / 沿用未查」 | 中 | 否（需人工决定是否扩投影器） |
-| 5 | `MR-EV-05` 以 T2 标注一条取数失败记录 | 低 | 否 |
-| 6 | `generated_at` 无时区；`timestamp` 与快照用不同时区表示 | 低 | 否 |
-| 7 | 行情序列在未入库的 1.3GB 本地库，外部无法独立复算 | 中 | 否（`known_limitations` 已声明） |
+| ① | `risk_appetite` 从 NEUTRAL 改 RISK_OFF，且 **10-13 与本轮口径不一致**（10-13 把个股涨幅当信号） | **中高** | 审查已完成（§5.2），**口径是否统一待人工决定** |
+| ② | `liquidity_state = UNKNOWN`：四维只有三维可判定 | 中 | 否（`UNKNOWN` 是契约合法状态，`R7` PASS） |
+| ③ | `stage_review`（重查后维持）未进入快照，读者无法区分「重查维持 / 沿用未查」 | 中 | **仍保留**（不扩投影器） |
+| ④ | 行情序列在未入库的 1.3 GB 本地库，外部无法独立复算 | 中 | **仍保留**（`known_limitations` 已声明） |
+| ⑤ | 涨停家数独立复算与产物差 ≤0.6 家/日 | 低 | **新增登记**（未改数） |
+| ⑥ | breadth 未说明是否剔除 ST / 停牌 | 低 | **仍保留** |
+| ~~⑦~~ | ~~`MR-EV-05` 以 T2 标注取数失败记录~~ | — | ✅ **v0.45 已处理** |
+| ~~⑧~~ | ~~`generated_at` 无时区~~ | — | ✅ **v0.45 已处理** |
+| ~~⑨~~ | ~~`source_commit` 为空~~ | — | ✅ **v0.45 已填（`fc0abf3`）** |
 
 ### 10.3 必须由人工决定（治理 C-4 / C-1）
 
 | # | 决定事项 | 说明 |
 |---|---|---|
 | ① | **是否签发**，以及 `reviewer` 署名与 `decided_at` | 只能由人执行 `--canonical --reviewer <name> --supersedes MS-2026-10-13-01`；**本轮未执行** |
-| ② | 走路径 A（先补两条记录）还是路径 B（接受并留痕） | 见 §10.1 |
+| ② | **两期 `risk_appetite` 口径是否统一** | 选项：(a) 维持本轮严格按 §2.5（10-13 的做法视为历史偏差，另立纠错）；(b) 把「题材个股强度」正式写进 §2.5 成为第 5 类信号并**两期同算**（属接口规范变更，需单独评审） |
 | ③ | 是否接受 `liquidity_state = UNKNOWN` 作为 CANONICAL 快照的状态 | 治理 §D：`UNKNOWN` 合法，不得当 `NO` |
-| ④ | 是否要求先补 `source_commit`（需重生成 DRAFT） | 生成器已支持 `--source-commit` |
+| ④ | 是否同时归档 `MS-2026-10-13-01` | 签发时由生成器自动置 `ARCHIVED`；**本轮未归档** |
 | ⑤ | 是否扩展 `project_cc_to_objects` 白名单以携带 `stage_review` | 属代码变更，本轮**未做** |
-| ⑥ | 是否同时归档 `MS-2026-10-13-01` | 签发时由生成器自动置 `ARCHIVED`；**本轮未归档** |
-| ⑦ | 是否接受「10-13 的 regime / context 输入滞后」这一既有瑕疵不被追溯修正 | 见 §1.3；修它需要重生成 CANONICAL，风险更大 |
-| ⑧ | 历史候选（C-1 结构确认）是否沿用 10-13 的取舍 | 本轮 534 条逐字段一致，未重跑 SA |
+| ⑥ | 是否追溯补 `MS-2026-10-13-01` 的 `source_commit` / 输入落盘 | 需要重生成 CANONICAL，风险更大；本轮**未做** |
+| ⑦ | 历史候选（C-1 结构确认）是否沿用 10-13 的取舍 | 本轮 534 条逐字段一致，未重跑 SA |
 
 ### 10.4 本轮**没有**做的事（边界声明）
 
 - ❌ 未运行 `--canonical`；未改任何 `status`；未改 `index.json`；未改 `supersedes` 链
 - ❌ 未归档 `MS-2026-10-13-01`
-- ❌ 未重新生成快照 / 历史角色 / 季节性产物（只读校验）
-- ❌ 未改 Research DB / schema / 冻结 SA 规则 / 角色支持等级
-- ❌ 未把 `liquidity_state` 改成任何其他状态
-- ❌ 未实现「负面点名」新口径
+- ❌ 未改冻结 SA 规则 / Research Model / 数据库 Schema / 快照合同 / 前端
+- ❌ 未新增「负面点名」口径、未扩张历史事件
+- ❌ 未把 `liquidity_state` 改成任何其他状态（未假造成交额数据）
+- ❌ 未新增证据等级、未放宽任何阈值、未删除任何反向证据
 
 ---
 
@@ -394,14 +445,17 @@ index.json · I5 索引与目录一致（15 份）/ I6 CANONICAL 唯一（MS-202
 ```bash
 S=research/current/market_snapshots
 PY=~/.workbuddy-ai/binaries/python/envs/default/bin/python
+TS=2026-10-25T14:53:04+08:00
+SRC=fc0abf3f3d4efd3ae7d1d82c2ce8615b547a9968
 
-# 全目录校验（只读）
-$PY $S/scripts/validate_market_snapshot_v0_1.py
+# ① 投影输入（确定性；未入库，需现生成）
+$PY $S/scripts/project_cc_to_objects_v0_1.py --all --out .tmp/objects-1023.json
+$PY $S/scripts/project_sa_to_candidates_v0_9.py --all --out .tmp/candidates-1023.json
 
-# 复现性（只读；固定 timestamp）
+# ② 复现性（只读；必须固定 timestamp 与 source-commit）
 $PY $S/scripts/build_market_snapshot_v0_1.py \
   --snapshot-date 2026-10-23 --snapshot-id MS-2026-10-23-01 \
-  --timestamp "2026-10-24T20:30:00+08:00" \
+  --timestamp "$TS" --source-commit "$SRC" \
   --regime $S/market_regime/MS-2026-10-23-01.json \
   --context $S/context/MS-2026-10-23-01.json \
   --objects .tmp/objects-1023.json \
@@ -409,10 +463,28 @@ $PY $S/scripts/build_market_snapshot_v0_1.py \
   --candidates .tmp/candidates-1023.json \
   --research-round "ThreeC 1.1 Phase 1.2 · Round 2026-10-23（月度刷新）" \
   --out $S/snapshots/MS-2026-10-23-01.json --check
+
+# ③ 全目录 / 单文件校验
+$PY $S/scripts/validate_market_snapshot_v0_1.py
+$PY $S/scripts/validate_market_snapshot_v0_1.py --file $S/market_regime/MS-2026-10-23-01.json
+$PY $S/scripts/validate_market_snapshot_v0_1.py --file $S/context/MS-2026-10-23-01.json
+
+# ④ 下游一致性
+$PY research/scripts/refresh_downstream.py --check
 ```
 
-其余差异统计（append-only、四维对比、输入一致性、WARN 归属）均由一次性只读 Python 片段对上述 4 个 JSON
-逐字段比对得出，未写入任何文件。
+反向信号审查的数字由一次性只读脚本从 `research/database/history_scan.db` 复算
+（指数区间涨跌、逐日涨停家数按板块档位、板块/个股窗口收益分布），**未写入任何文件**；
+关键值已逐条抄入 §5.2 与本提交说明。
+
+---
+
+## 12. 修订记录
+
+| 版本 | 日期 | 变更 |
+|---|---|---|
+| v0.44 | 2026-10-25 | 首版审阅材料（10 项核对；7 条保留意见；发现 10-13 输入未落盘） |
+| **v0.45** | 2026-10-25 | ① 完成 `risk_appetite` 反向信号审查（§5.2），结论保留 `RISK_OFF`；② 流动性失败记录移出 `evidence[]`（§7.2，Schema 兼容）；③ 填 `source_commit = fc0abf3`（§8）；④ 修 `generated_at` 时区；⑤ 重新生成 DRAFT（`--check` PASS），observations / objects / candidates **逐条未变**；⑥ 保留意见 9 → 6，新增 1 条复算差异登记 |
 
 ---
 

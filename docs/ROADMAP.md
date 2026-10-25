@@ -15,7 +15,8 @@
 | v0.43 | 季节性校验器收口（`reconcile` 在 `--check` 时重算、窗口 OOS 指标全查、合成 SQLite 测试） | `test_discover_seasonal_patterns_v0_5.py` |
 | v0.43 | 5 个历史事件补 PIT 报道证据（机器人 2023 / 存储 2025 / 黄金 2024 / 白酒 2019 / 游戏版号 2018） | `historical_market_roles_v0_7.json` · 5 份 CSV + 5 份方法记录 |
 | v0.44 | `MEDIA_NAMED_PERIOD_STAT` 可读（标签 + 限制说明 + **全部支持性来源**）；第二批 3 个事件补证 | `historical_market_roles_v0_8.json`（73 条角色）· `limit_up_audit_v0_5.json` · 3 份 CSV + 3 份方法记录 |
-| — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md` |
+| v0.45 | 快照签发前证据收口：`risk_appetite` 反向信号审查（保留 RISK_OFF）+ 流动性失败记录移出 `evidence[]` + `source_commit` 绑定 | `market_regime/MS-2026-10-23-01.json` · `context/MS-2026-10-23-01.json` · 快照重生成（`--check` PASS） |
+| — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
 
@@ -25,9 +26,10 @@
    ② **需换证据类型**：窗口内没有「点名 + 涨幅」报道的（`FLU-2018-SEASONAL`、`SEMI-2020/2021/2022/2023`
       多数窗口）→ 只能走**连板盘面**判据（现有自动判据 + 涨停审计）；
    ③ **需历史成分快照**：`AUTO-2019-ADAS`、`CONS-2016-BAIJIU` 等，退市 / 改名股绑定仍需成分回溯。
-2. **Market Snapshot 可追溯性**：`provenance.source_commit` 为空（10-13 与 10-23 **都是**）。
-   生成器已支持 `--source-commit`，需在下次生成时传入；另需决定是否把 `stage_review` 纳入
-   `project_cc_to_objects` 白名单（当前快照无法区分「重查后维持」与「沿用未查」）。
+2. **Market Snapshot 可追溯性**：`MS-2026-10-23-01` 的 `provenance.source_commit` **已填**
+   （`fc0abf3`，v0.45；先提交输入再生成，可核验）。**仍未解决**：① `MS-2026-10-13-01` 仍为空
+   （补它需重生成 CANONICAL，风险更大）；② `stage_review` 未进快照（`project_cc_to_objects` 白名单
+   只有 11 字段）→ 快照无法区分「重查后维持」与「沿用未查」，需决定是否扩白名单（属代码变更）。
 3. **`liquidity_state` 的成交额源**：东方财富 EOD 空响应、网易 502、本地两库无 `amount` →
    持续 `UNKNOWN`。恢复任一条源后再谈四维齐备。
 4. **季节性 960 条「仅时点资格」模式**：已分层（可报告 OOS 125 条、中位为正 596 条），
@@ -42,6 +44,7 @@
 | 3 | 「负面点名」角色等级是否立项 | 属**研究口径变更**，须单独评审，不得顺手加 |
 | 4 | 是否接受 `liquidity_state = UNKNOWN` 作为 CANONICAL 状态 | `UNKNOWN` 是契约合法状态（`R7` PASS），但四维只有三维可判定 |
 | 5 | 960 条仅时点资格模式是否开首页入口 | 与「不为增加候选数量而扩展研究对象」的边界相关 |
+| 6 | **两期 `risk_appetite` 口径是否统一** | 10-13 把「题材个股大涨」当反向信号判 NEUTRAL（超出接口规范 §2.5 列举范围）；v0.45 按 §2.5 严格判 RISK_OFF。选项：(a) 维持严格口径、把 10-13 的做法另立纠错；(b) 把「题材个股强度」正式写进 §2.5 成为第 5 类信号并两期同算（属接口规范变更，需单独评审） |
 
 > ★ 边界：以上任何一项都**不**通过改阈值、改规则、改状态来「让结果好看」。
 
