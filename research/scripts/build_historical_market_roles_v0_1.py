@@ -174,6 +174,22 @@ PIT_SOURCE_BY_EVENT = {
                                 "★ 同日报道也点名京能电力，但它不是本事件参与者 → 不建角色"},
         ],
     },
+    # ★★ v0.47：AI 算力事件补证（3 只均为「报道点名 + 涨停/涨幅」；无连板，故无盘面角色）。
+    "SEMI-2023-AI-COMPUTE": {
+        "csv": "research/research/c2/point_in_time_semi_2023_ai_compute.csv",
+        "record": "research/research/c2/2023_ai_compute_point_in_time.md",
+        "slices": [
+            {"date": "2023-03-17", "documented_members": ["CAMBRICON"],
+             "documented_status": "NOT_USABLE",
+             "documented_note": "仅寒武纪 1 只（证券时报收盘综述点名 20% 涨停）→ 不足 2 只，尚不足以认定题材篮子"},
+            {"date": "2023-03-23", "documented_members": ["CAMBRICON", "GIGADEVICE"],
+             "documented_status": "USABLE",
+             "documented_note": "2 只：新增兆易创新（每经 13:45 涨停 + 证券之星收盘 116.66 元涨停）"},
+            {"date": "2023-03-29", "documented_members": ["CAMBRICON", "GIGADEVICE", "NAURA"],
+             "documented_status": "USABLE",
+             "documented_note": "3 只：新增北方华创（两来源措辞不同：涨超 9% / 触及涨停，无精确收盘涨幅）"},
+        ],
+    },
     "FLU-2023-H1N1": {
         "csv": "research/research/c2/point_in_time_flu_2023_h1n1.csv",
         "record": "research/research/c2/2023_h1n1_point_in_time.md",
@@ -190,10 +206,31 @@ PIT_SOURCE_BY_EVENT = {
 RESEARCH_GAP_BY_EVENT = {
     "FLU-2018-SEASONAL": (
         "2017-09～2018-01 期间点名华兰生物 / 达安基因 / 香雪制药 / 天康生物**并给出当日涨幅或涨停**的"
-        "同期报道（带 URL 与发布日）—— 现有材料不足以建角色。"
-        "★ 已查过：华尔街见闻 2018-01-15《流感肆虐全球，防治药物紧俏脱销…》"
+        "同期报道（带 URL 与发布日），或该窗口内出现**连板**。"
+        "★ 已查过（v0.47 盘面复核）：按现有连板判据逐只复算 4 个参与标的在 2017-09-01~2018-01-31 的行情，"
+        "**4 只均 0 次涨停信号** → 无连板对，不产生盘面角色。"
+        "★ 已查过（报道）：华尔街见闻 2018-01-15《流感肆虐全球，防治药物紧俏脱销…》"
         "（https://baijiahao.baidu.com/s?id=1589626172474777826）确认疫情事实与中疾控 ILI% 数据，"
         "但属**名单/科普**体，**未点名个股并给出涨幅** → 不满足「点名 + 涨幅」门槛，故不设角色。"),
+    "SEMI-2020-CHIPSHORTAGE": (
+        "2020-12～2021-12 窗口内至少一次**相邻连板**，或点名卓胜微 / 长电科技 / 通富微电并给出当日涨幅的"
+        "**T1/T2 级**同期报道。"
+        "★ 已查过（v0.47 盘面复核）：卓胜微 1 次信号（2021-04-30，basis=adjusted_ratio_action_day，**+2.00%**）、"
+        "长电科技与通富微电各 0 次 → **无连板对**，不产生盘面角色；该 1 次信号属「公司行为日」分支且"
+        "不在涨停带内，实为判据误报（缺陷已登记，本轮不改判据）。"
+        "★ 已查过（报道）：2021-04-02 有转载稿点名「卓胜微涨 5.92%、长电科技涨超 4%」，"
+        "但仅**单一 T3 转载组**、无原始页与第二独立来源 → **未达建角色门槛**，需补原始来源或第二组。"),
+    "SEMI-2021-EQUIPMENT": (
+        "2021-04～2021-07 窗口内至少一次**相邻连板**，或点名中微公司 / 沪硅产业 / 中芯国际 / 拓荆科技"
+        "并给出当日涨幅的同期报道。"
+        "★ 已查过（v0.47 盘面复核）：4 个参与标的在该窗口内**均 0 次涨停信号**（科创板档位 19.5–21.2%，"
+        "窗口内无达标日）→ 无连板对，不产生盘面角色；本批未检索到点名 + 涨幅的 T1/T2 报道。"),
+    "SEMI-2022-DOWNTURN": (
+        "**这是对照事件（下行周期）**：窗口内本就不应出现涨停潮，无角色是预期结果、不是数据缺失。"
+        "★ 已查过（v0.47 盘面复核）：卓胜微 1 次（2022-06-30，action_day 分支 +3.67%）、"
+        "圣邦股份 1 次（2022-06-22，action_day 分支 **−3.37%**）、海光信息 0 次 → **无连板对**。"
+        "★ 上述 2 次均属「公司行为日」分支且不在涨停带内（其中一次还是负收益），实为判据误报；"
+        "若需为对照事件建立「当时无盘面核心」的正面证据，需先修正该分支（缺陷已登记）。"),
     "POWER-2024-SUMMER-COUNTEREXAMPLE": (
         "先定义「负面点名」等级与其边界（属研究口径变更，须单独评审）—— 现有等级只有「点名 + 上涨」，"
         "负向报道无处安放，本轮**不建角色**、也不硬套成上涨角色。"
@@ -849,7 +886,7 @@ def derive_market_roles(conn, event, evidence_ev, cal_index, ev_rel=None):
                          "创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；"
                          "ST 状态无法从库内判定 —— 主板 ST（2026-07-06 前 5%）与创业板改革前 ST（5%）"
                          "落在带外（漏报方向），创业板/科创板 ST 与主板新规后 ST 与普通股同带"),
-                "audit": "research/research/reports/limit_up_audit_v0_5.json",
+                "audit": "research/research/reports/limit_up_audit_v0_6.json",
             },
             "pit_safe": bool(all(x["date"] <= ident for x in as_of)),
             "posthoc": False,
