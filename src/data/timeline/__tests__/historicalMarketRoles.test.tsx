@@ -116,10 +116,11 @@ describe('历史市场角色 · 数据', () => {
     expect(roleCounts('MEDIA-2018-GAMELICENSE').leaderNamed).toBe(0);
     for (const r of e.roles) {
       // 每个角色都必须带 URL + 支持性证据，且证据日期 ≤ 识别日
-      expect(r.evidence.url, r.security_id).toMatch(/^https?:\/\//);
-      expect(r.pit_safe, r.security_id).toBe(true);
+      const label = String(r.security_id);
+      expect(String(r.evidence.url ?? ''), label).toMatch(/^https?:\/\//);
+      expect(r.pit_safe, label).toBe(true);
       for (const x of r.evidence.supporting_evidence ?? []) {
-        expect(x.date <= r.identified_date, `${r.security_id} 证据 ${x.date}`).toBe(true);
+        expect(x.date <= r.identified_date, `${label} 证据 ${x.date}`).toBe(true);
       }
     }
   });
