@@ -58,6 +58,22 @@
   "caliber": {
    "anchor": "窗口首个交易日收盘",
    "excess": "板块收益 − 沪深300 同区间收益（pp）",
+   "formation_fields": [
+    "instance_id",
+    "candidate_id",
+    "group",
+    "direction",
+    "board",
+    "board_series",
+    "kind",
+    "month",
+    "window_year",
+    "window_declared",
+    "formed_at",
+    "selection_basis",
+    "representative_stocks",
+    "rep_stock_gap"
+   ],
    "horizons": [
     5,
     10,
@@ -67,11 +83,20 @@
     "FORWARD_PENDING": "形成日早于窗口起点 → 真正的前瞻候选，尚未结算",
     "IN_WINDOW_PARTIAL": "形成日已在窗口内 → 已实现部分不是样本外前瞻"
    },
-   "representative_stocks": "直接用 pattern_discovery 的 representative_stocks（当前口径），取中位数",
-   "return": "close[anchor+h] / close[anchor] − 1"
+   "representative_stocks": "直接用形成记录里的 representative_stocks（当前口径），取中位数",
+   "return": "close[anchor+h] / close[anchor] − 1",
+   "settlement_fields": [
+    "anchor",
+    "window",
+    "status",
+    "outcome_type",
+    "outcome"
+   ],
+   "settlement_pin": "结算固定在 market_as_of 重算：日历截断到该日，因此同一 market_as_of 永远得到同一结果"
   },
-  "file": "candidate_ledger_v0_1.json",
-  "sha256": "dc7a85916c7dcb02f13c113f859fa995b75766063d3869dd9c3721981d4a0da4",
+  "file": "candidate_ledger_v0_2.json",
+  "market_as_of": "2026-10-23",
+  "sha256": "4ab7fa2a1f79c0ae1208dc3477cf8a066e7eef7c708132ae76e5d20bc9afd087",
   "summary": {
    "by_outcome_type": {
     "FORWARD_PENDING": 152,
@@ -868,5 +893,7596 @@
     "2025"
    ]
   }
- ]
+ ],
+ "tracking": {
+  "batches": [
+   {
+    "batch_id": "CF-2026-10-23-01",
+    "formed_at": "2026-10-23",
+    "new_instances": 204,
+    "reappeared": 0
+   }
+  ],
+  "by_outcome_type": {
+   "FORWARD_PENDING": 152,
+   "IN_WINDOW_PARTIAL": 52
+  },
+  "formation_log": {
+   "batches": 1,
+   "earliest_formed_at": "2026-10-23",
+   "file": "candidate_formation_log_v0_1.json",
+   "instances": 204,
+   "sha256": "d28e2718a4e6e3babdc801f9f38eb6cc5cfecdc553a81f4191e03af07bd5f075"
+  },
+  "formation_run": {
+   "batch_id": null,
+   "formed_at": "2026-10-23",
+   "new_instances": 0,
+   "note": "新增 0 时不追加批次；重现事件（同一 instance_id 再次被选中）只记在本字段，不写入形成日志（形成日志只记「第一次形成」）",
+   "reappeared": 204,
+   "skipped": null,
+   "source_as_of": "2026-10-23"
+  },
+  "instances": [
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "上海自贸",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -5.94,
+      "excess_pp": 0.42,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -4.4,
+      "excess_pp": -1.05,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_shzm__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.45,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "专用设备",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -7.74,
+      "excess_pp": -1.38,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.21,
+      "excess_pp": -3.86,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881118__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.38,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "专精特新",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -7.15,
+      "excess_pp": -0.79,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.14,
+      "excess_pp": -3.79,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_zjtx__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.49,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "互联网电商",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -5.41,
+      "excess_pp": 0.95,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -1.02,
+      "excess_pp": 2.33,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881177__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.95,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "京津冀",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -8.59,
+      "excess_pp": -2.23,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.91,
+      "excess_pp": -2.56,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_jjj__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.95,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "仿制药",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -1.46,
+      "excess_pp": 4.9,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -0.54,
+      "excess_pp": 2.81,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_fzy__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.25,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "充电桩",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -5.4,
+      "excess_pp": 0.96,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.67,
+      "excess_pp": -2.32,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_cdz__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.05,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "公路铁路运输",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -1.23,
+      "excess_pp": 5.13,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": 0.37,
+      "excess_pp": 3.72,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881149__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.93,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "其他电子",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -9.76,
+      "excess_pp": -3.4,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -9.79,
+      "excess_pp": -6.44,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881123__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.78,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "农化制品",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -8.05,
+      "excess_pp": -1.69,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -6.53,
+      "excess_pp": -3.18,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881263__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.5,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "包装印刷",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -7.73,
+      "excess_pp": -1.37,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.32,
+      "excess_pp": -1.97,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881138__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.77,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "化学制品",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -9.06,
+      "excess_pp": -2.7,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.85,
+      "excess_pp": -2.5,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881109__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.4,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "华为概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -9.04,
+      "excess_pp": -2.68,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -8.62,
+      "excess_pp": -5.27,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_hwgn__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.91,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "华为汽车",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -6.27,
+      "excess_pp": 0.09,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.31,
+      "excess_pp": -3.96,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_hwqc__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.43,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "固态电池",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -13.39,
+      "excess_pp": -7.03,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -6.38,
+      "excess_pp": -3.03,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_gtdc__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.27,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "塑料制品",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -7.75,
+      "excess_pp": -1.39,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.36,
+      "excess_pp": -4.01,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881265__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.52,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "外资背景",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -5.89,
+      "excess_pp": 0.47,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -4.12,
+      "excess_pp": -0.77,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_wzbj__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.99,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "大飞机",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -4.05,
+      "excess_pp": 2.31,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.65,
+      "excess_pp": -2.3,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_dfj__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.31,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "天津自贸",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -5.99,
+      "excess_pp": 0.37,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -4.78,
+      "excess_pp": -1.43,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_mtjzm__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.32,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "建筑装饰",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -6.81,
+      "excess_pp": -0.45,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.24,
+      "excess_pp": -1.89,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881116__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.07,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "振兴沈阳",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -1.98,
+      "excess_pp": 4.38,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -0.69,
+      "excess_pp": 2.66,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_zxsy__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.42,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "教育",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -10.8,
+      "excess_pp": -4.44,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -3.87,
+      "excess_pp": -0.52,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881178__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 2.65,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "服装家纺",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -6.3,
+      "excess_pp": 0.06,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -2.99,
+      "excess_pp": 0.36,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881136__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.08,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "机场航运",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -3.15,
+      "excess_pp": 3.21,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -1.04,
+      "excess_pp": 2.31,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881151__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 3.09,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "水产品",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -3.15,
+      "excess_pp": 3.21,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -0.71,
+      "excess_pp": 2.64,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_scp1__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.33,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "水域改革",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": 0.52,
+      "excess_pp": 6.88,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": 3.72,
+      "excess_pp": 7.07,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_sygg__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.83,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "汽车整车",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -8.1,
+      "excess_pp": -1.74,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.15,
+      "excess_pp": -1.8,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881125__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 2.77,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "汽车零部件",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": -4.99,
+      "excess_pp": 1.37,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.07,
+      "excess_pp": -3.72,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881126__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.2,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "海峡西岸",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -5.83,
+      "excess_pp": 0.53,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -4.2,
+      "excess_pp": -0.85,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_hxxa__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.83,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "物流",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -7.19,
+      "excess_pp": -0.83,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -3.65,
+      "excess_pp": -0.3,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881152__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 2.41,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "生物疫苗",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -4.85,
+      "excess_pp": 1.51,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -2.88,
+      "excess_pp": 0.47,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_swym__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.2,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "甲型流感",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -5.45,
+      "excess_pp": 0.91,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -2.86,
+      "excess_pp": 0.49,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_jxlg__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.04,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "电力",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -6.65,
+      "excess_pp": -0.29,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -4.06,
+      "excess_pp": -0.71,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881145__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.36,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "电池",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -14.61,
+      "excess_pp": -8.25,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.57,
+      "excess_pp": -4.22,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881281__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 2.3,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "电网设备",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -6.42,
+      "excess_pp": -0.06,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -6.23,
+      "excess_pp": -2.88,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881278__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 0.81,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "电解液",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": -12.69,
+      "excess_pp": -6.33,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.94,
+      "excess_pp": -4.59,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_djy__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.35,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "百度概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -9.67,
+      "excess_pp": -3.31,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -8.22,
+      "excess_pp": -4.87,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_bdgn__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.18,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "纺织制造",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -5.5,
+      "excess_pp": 0.86,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -3.43,
+      "excess_pp": -0.08,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881135__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.69,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "聚氨酯",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -9.14,
+      "excess_pp": -2.78,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -6.01,
+      "excess_pp": -2.66,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_jaz__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.07,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "股期概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -6.66,
+      "excess_pp": -0.3,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -3.62,
+      "excess_pp": -0.27,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_gqgn__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.55,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "能源金属",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -16.4,
+      "excess_pp": -10.04,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -9.96,
+      "excess_pp": -6.61,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881267__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 2.32,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "苹果概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -6.47,
+      "excess_pp": -0.11,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -5.9,
+      "excess_pp": -2.55,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_pggn__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.58,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "证券",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -1.98,
+      "excess_pp": 4.38,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": 2.79,
+      "excess_pp": 6.14,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881157__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 0.95,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "资产注入",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -4.53,
+      "excess_pp": 1.83,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -2.79,
+      "excess_pp": 0.56,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_zczr__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.14,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "赛马概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -5.53,
+      "excess_pp": 0.83,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -2.77,
+      "excess_pp": 0.58,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_smgn__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.44,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "迪士尼",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -6.61,
+      "excess_pp": -0.25,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -4.9,
+      "excess_pp": -1.55,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_dsn__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.69,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "钠电池",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -12.46,
+      "excess_pp": -6.1,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.52,
+      "excess_pp": -4.17,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_ndc__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.39,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "锂电池",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -10.07,
+      "excess_pp": -3.71,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -6.83,
+      "excess_pp": -3.48,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_ldc__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.67,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "锂矿",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": -12.14,
+      "excess_pp": -5.78,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -8.45,
+      "excess_pp": -5.1,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_lk__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.24,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "非金属材料",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.636,
+    "horizons": {
+     "10": {
+      "board_ret": -10.87,
+      "excess_pp": -4.51,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -7.35,
+      "excess_pp": -4.0,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881167__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 2.07,
+    "month": 10,
+    "n_years": 11,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "食品加工制造",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -3.82,
+      "excess_pp": 2.54,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -2.24,
+      "excess_pp": 1.11,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "BK881134__2026-10",
+    "kind": "industry_board",
+    "median_excess_pct": 1.82,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": "2026-10-08",
+    "batch_id": "CF-2026-10-23-01",
+    "board": "高压快充",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": -7.55,
+      "excess_pp": -1.19,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "board_ret": -6.56,
+      "excess_pp": -3.21,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "instance_id": "CPT_gykc__2026-10",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.29,
+    "month": 10,
+    "n_years": 12,
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "status": "IN_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "CRO概念",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_CROgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "CXO概念",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_CXOgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.48,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "QFII重仓",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_QFIIzc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.74,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "ST板块",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_stbk__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "三板精选",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_sbjx__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.49,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "三沙概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_ssgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.68,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "专精特新",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zjtx__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "业绩预升",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_yjys__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.57,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "业绩预降",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_yjyj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.24,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "中药",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881141__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.7,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "乡村振兴",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_xczx__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.87,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "京津冀",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_jjj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.86,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "低碳经济",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_dtjj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.07,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "体育概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_tygn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.09,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "保险",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881156__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.51,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "保险重仓",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_bxzc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.46,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "信托重仓",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_xtzc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.84,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "光学光电子",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881122__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.6,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "免疫治疗",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_myzl__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.3,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "公交",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK884200__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.01,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "公路铁路运输",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881149__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 0.94,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "其他社会服务",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881179__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.64,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "养殖业",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881102__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.48,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "军工电子",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881276__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.23,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "军工装备",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.636,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881166__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.52,
+    "month": 11,
+    "n_years": 11,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "农产品加工",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881103__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.82,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "农化制品",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881263__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.05,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "准ST股",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zSTg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.27,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "出口退税",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_ckts__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.69,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "券商重仓",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_qszc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.93,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "前海概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_qhgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.26,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "化学制品",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881109__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.03,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "化学制药",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881140__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 0.98,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "化学原料",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881108__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.8,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "化学纤维",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881264__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.05,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "医药商业",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881143__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.99,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "医药流通",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK884199__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.25,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "半导体",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881121__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.1,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "华为概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hwgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.66,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "华为汽车",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hwqc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.41,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "华为海思",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hwhs__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.41,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "博彩概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_bcgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.58,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "厨卫电器",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881174__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.17,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "参股金融",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_cgjr__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.78,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "含B股",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hBg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.82,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "含H股",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hHg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.15,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "固废处理",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_gfcl__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.15,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "固态电池",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_gtdc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.23,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "图们江",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_tmj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.76,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "土地流转",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_tdlz__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.99,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "地热能",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_drn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.08,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "基因测序",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_jycx__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.03,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "基金重仓",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_jjzc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.82,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "塑料制品",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881265__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.17,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "外资背景",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_wzbj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.91,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "大飞机",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_dfj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.06,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "天津自贸",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_mtjzm__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.94,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "央企50",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_yq50__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.81,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "奢侈品",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_scp__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.88,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "家居用品",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881139__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.23,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "小米概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_xmgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.19,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "工业金属",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881168__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 0.87,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "建筑材料",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881115__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.68,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "建筑装饰",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881116__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.99,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "成渝特区",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_cytq__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.14,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "房地产",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881153__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.81,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "抗癌",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_ka__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.91,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "振兴沈阳",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zxsy__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.14,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "摘帽概念",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zmgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.95,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "教育",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881178__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.21,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "整体上市",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_ztss__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.53,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "文化传媒",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881164__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 5.07,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "新能源",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_xny__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.02,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "旅游及酒店",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881160__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 4.17,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "智能家居",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_znjj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.29,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "智能穿戴",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zncd__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.07,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "服装家纺",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881136__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.42,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "朝鲜改革",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_cxgg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.32,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "未股改",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_wgg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "橡胶制品",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881266__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.77,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "民营医院",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_myyy__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.56,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "民营银行",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_myyx__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.93,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "水产品",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_scp1__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 5.1,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "水域改革",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_sygg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 4.88,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "汽车整车",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881125__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 4.4,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "汽车服务及其他",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881128__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.44,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "油气开采及服务",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881107__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.61,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "油气改革",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_yqgg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.11,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "沿海发展",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_yhfz__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.66,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "海南自贸",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hnzm__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "海峡西岸",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hxxa__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.63,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "海工装备",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hgzb__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.37,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "海水淡化",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hsdh__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.91,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "涉矿概念",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_skgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 4.19,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "深圳本地",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_szbd__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.02,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "港口航运",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881148__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.15,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "游戏",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881275__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.74,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "燃气",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881146__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.53,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "特斯拉",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_tsl__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.34,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "生态农业",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_stny__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.68,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "生物燃料",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_swrl__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.52,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "生物育种",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_swyz__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.59,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "电商概念",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_dsgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.65,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "电池",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881281__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 4.0,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "白酒概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_bjgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.13,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "百度概念",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_bdgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.87,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "皖江区域",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_wjqy__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.32,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "盐湖提锂",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_yhtl__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.83,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "石墨烯",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_smx__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.84,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "石油加工贸易",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881180__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.87,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "碳中和",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_tzh__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.74,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "碳交易",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_tjy__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.79,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "社保重仓",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_sbzc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.88,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "种植业与林业",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881101__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.75,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "稀缺资源",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_xqzy__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.66,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "纺织制造",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881135__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.47,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "维生素",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_wss__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.11,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "综合",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881165__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.23,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "绿色照明",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_lszm__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.55,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "网络游戏",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_wlyx__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.15,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "美容护理",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881182__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.54,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "聚氨酯",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_jaz__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "股期概念",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_gqgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 4.19,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "能源金属",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881267__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 5.49,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "自动化设备",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881171__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.94,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "自贸区",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zmq__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.09,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "融资融券",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_rzrq__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.63,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "证券",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881157__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.18,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "贸易",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881159__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 3.68,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "资产注入",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zczr__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.32,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "赛马概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_smgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.34,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "超大盘",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_cdp__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "超导概念",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_cdgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.12,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "超级细菌",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_cjxj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.62,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "造纸",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881137__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 4.35,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "重组概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_zzgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.31,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "金融参股",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_jrcg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.74,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "金融改革",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_jrgg__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.23,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "钒电池",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_fdc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 0.96,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "钢铁",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881112__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.12,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "锂电池",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_ldc__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.01,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "锂矿",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_lk__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 5.95,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "长株潭",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_czt__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.22,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "陕甘宁",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_sgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 3.71,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "雄安新区",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.75,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_xaxq__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 2.36,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "零售",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881158__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 4.63,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "非金属材料",
+    "evidence_grade": "OOS_REPORTED",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881167__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 5.15,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "页岩气",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_yyq__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.63,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "食品加工制造",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881134__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 1.91,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "饮料制造",
+    "evidence_grade": "OOS_INSUFFICIENT",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.667,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "BK881133__2026-11",
+    "kind": "industry_board",
+    "median_excess_pct": 2.97,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "STRICT",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "鸿蒙概念",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hmgn__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.87,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   },
+   {
+    "anchor": null,
+    "batch_id": "CF-2026-10-23-01",
+    "board": "黄河三角",
+    "evidence_grade": "NOT_DISCOVERABLE_IN_TIME",
+    "formed_at": "2026-10-23",
+    "hit_rate": 0.583,
+    "horizons": {
+     "10": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "board_ret": null,
+      "excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "instance_id": "CPT_hhsj__2026-11",
+    "kind": "concept_basket",
+    "median_excess_pct": 1.76,
+    "month": 11,
+    "n_years": 12,
+    "outcome_type": "FORWARD_PENDING",
+    "status": "PRE_WINDOW",
+    "tier": "EXPLORATORY",
+    "window_year": 2026
+   }
+  ],
+  "market_as_of": "2026-10-23",
+  "pending": {
+   "10d": 152,
+   "20d": 204,
+   "5d": 152
+  },
+  "settled": {
+   "10d": 52,
+   "20d": 0,
+   "5d": 52
+  }
+ }
 }

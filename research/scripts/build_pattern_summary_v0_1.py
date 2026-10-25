@@ -82,6 +82,46 @@ def _outcome_of(entry):
     }
 
 
+def _tracking(ledger):
+    """★★ 连续追踪：**全部形成批次**的实例（不只当前窗口），形成字段来自不可变日志。
+
+    v0_1 的账本只跟着 `current_windows` 走 → 上一批候选在新一版里直接消失，
+    产品上根本无法「连续追踪」。这里按形成日志的全量实例输出，跨月滚动。
+    """
+    if not ledger:
+        return None
+    s = ledger["summary"]
+    inst = []
+    for c in ledger["candidates"]:
+        sb = c.get("selection_basis") or {}
+        hz = {}
+        for h in ("5", "10", "20"):
+            o = (c.get("outcome") or {}).get(h) or {}
+            hz[h] = {"status": o.get("status"), "board_ret": o.get("board_ret"),
+                     "excess_pp": o.get("excess_pp"), "settle_date": o.get("settle_date")}
+        inst.append({
+            "instance_id": c["instance_id"], "board": c["board"], "month": c["month"],
+            "window_year": c["window_year"], "formed_at": c["formed_at"],
+            "batch_id": c.get("batch_id"), "kind": c["kind"],
+            "tier": sb.get("tier"), "n_years": sb.get("n_years"),
+            "median_excess_pct": sb.get("median_excess_pct"),
+            "hit_rate": sb.get("hit_rate"), "evidence_grade": sb.get("evidence_grade"),
+            "anchor": c.get("anchor"), "status": c.get("status"),
+            "outcome_type": c.get("outcome_type"), "horizons": hz,
+        })
+    inst.sort(key=lambda x: (x["batch_id"] or "", x["window_year"], x["month"], x["board"]))
+    return {
+        "market_as_of": ledger["market_as_of"],
+        "formation_log": ledger.get("formation_log"),
+        "formation_run": ledger.get("formation_run"),
+        "batches": s.get("batches"),
+        "settled": s.get("settled"),
+        "pending": s.get("pending"),
+        "by_outcome_type": s.get("by_outcome_type"),
+        "instances": inst,
+    }
+
+
 def build(src_path: str) -> dict:
     raw = io.open(src_path, "rb").read()
     doc = json.loads(raw.decode("utf-8"))
@@ -123,11 +163,14 @@ def build(src_path: str) -> dict:
         "ledger": ({
             "file": os.path.basename(ledger_path),
             "as_of": ledger.get("as_of"),
+            "market_as_of": ledger.get("market_as_of"),
             "sha256": hashlib.sha256(io.open(ledger_path, "rb").read()).hexdigest(),
             "caliber": ledger.get("caliber"),
             "summary": {k: ledger["summary"].get(k) for k in
                         ("candidates", "by_outcome_type", "horizon_status")},
         } if ledger else None),
+        # ★ 连续追踪（全量形成批次；形成字段来自不可变日志）
+        "tracking": _tracking(ledger),
         "top_windows": [
             dict({k: p.get(k) for k in WINDOW_FIELDS if k in p},
                  outcome=(_outcome_of(led_by_id[p["pattern_id"]])
