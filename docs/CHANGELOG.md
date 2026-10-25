@@ -12,6 +12,45 @@
 
 ---
 
+## 2026-10-25 · **v0.58 —— Wave 2.2：11 月首批前瞻结算（阻断，未写入）**
+
+**性质：核查 + 报告。零产物变更。**
+**未修改**：`candidate_ledger_v0_2.json` · 形成日志 · 全部冻结快照 · 派生摘要 ·
+Research Model · `schema.sql` · Export Contract · 冻结 SA / TO / Driver · Market Snapshot 与 `index.json`。
+
+### 阻断原因（日历事实）
+
+`history_scan.db` 归一化后最新交易日 **2026-10-23**；CSI300 日历中 **2026-11 交易日 0 个**；
+`market_data.db` 止于 2026-10-20；当前自然时间 2026-10-25 → **11 月尚未开始**。
+dry-run 输出「**② 行情推进：否**」→ 按规则**不执行 `--write`**、不建快照、不重试、不模拟行情。
+
+★ 踩坑：`trade_date > '2026-10-23'` 返回 **193** 是**混格式字符串比较**假象（板块存紧凑 `20261023`），
+归一化后为 **0** —— 「有没有新数据」必须先归一化日期。
+
+### 窗口前审计（152 条）
+
+`formed_at` 全 2026-10-23 · `anchor` 全 `null` · `window.start/end` 全 `null` ·
+全 `FORWARD_PENDING` / `PRE_WINDOW` · 5/10/20 全 `NOT_STARTED` · **无 `settle_date`、无收益数字**。
+首个交易日**未硬编码**。
+
+### 独立复算（证明结算数学未漂移）
+
+用 10 月已结算样本（`anchor = 2026-10-08`）抽 3 条重算 5/10 日共 **6 个数据点**：
+`status` / `settle_date` / `board_ret` / `excess_pp` **6/6 一致**。
+
+### 三档状态（本轮全部未达成）
+
+① 账本已结算 **0 条** · ② 部分期限已成熟 **无** · ③ 前瞻有效性已验证 **否**。
+
+### 校验
+
+账本 `--check` PASS · 摘要 `--check` PASS · `refresh_downstream --check` 0 FAIL ·
+`test_candidate_ledger_v0_2.py` 12 项 OK · `test_official_index_parallel.py` 17 项 OK。
+
+报告：`docs/FORWARD_SETTLEMENT_2026_11_WAVE2_2_v0_1.md`
+
+---
+
 ## 2026-10-25 · **v0.57 —— Wave 2.1.1：修复官方指数授权闸门 + 11 月前瞻窗口启动准备**
 
 **性质：安全修复（脚本）+ 运维准备（文档）。** ✔ 无产物变更、无数据变更。
