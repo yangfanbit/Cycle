@@ -16,6 +16,7 @@
 | v0.43 | 5 个历史事件补 PIT 报道证据（机器人 2023 / 存储 2025 / 黄金 2024 / 白酒 2019 / 游戏版号 2018） | `historical_market_roles_v0_7.json` · 5 份 CSV + 5 份方法记录 |
 | v0.44 | `MEDIA_NAMED_PERIOD_STAT` 可读（标签 + 限制说明 + **全部支持性来源**）；第二批 3 个事件补证 | `historical_market_roles_v0_8.json`（73 条角色）· `limit_up_audit_v0_5.json` · 3 份 CSV + 3 份方法记录 |
 | v0.45 | 快照签发前证据收口：`risk_appetite` 反向信号审查（保留 RISK_OFF）+ 流动性失败记录移出 `evidence[]` + `source_commit` 绑定 | `market_regime/MS-2026-10-23-01.json` · `context/MS-2026-10-23-01.json` · 快照重生成（`--check` PASS） |
+| v0.46 | 两项统计口径收口：`breadth` 精确复现 42.23%（24 变体全 NORMAL）+ 涨停家数复算 51.8/62.0 并归因（ST 排除）+ 单日 83/79 统一表述 | `research/scripts/recompute_market_regime_metrics_v0_1.py`（只读复算）· `market_regime/MS-2026-10-23-01.json` · 快照重生成（`--check` PASS） |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
@@ -44,6 +45,7 @@
 | 3 | 「负面点名」角色等级是否立项 | 属**研究口径变更**，须单独评审，不得顺手加 |
 | 4 | 是否接受 `liquidity_state = UNKNOWN` 作为 CANONICAL 状态 | `UNKNOWN` 是契约合法状态（`R7` PASS），但四维只有三维可判定 |
 | 5 | 960 条仅时点资格模式是否开首页入口 | 与「不为增加候选数量而扩展研究对象」的边界相关 |
+| 6a | 涨停家数**主值**是否改用可复现的复算值（51.8 / 62.0） | 现状保留原记录 52.1 / 61.5 并并列复算值；差异已归因、方向一致 |
 | 6 | **两期 `risk_appetite` 口径是否统一** | 10-13 把「题材个股大涨」当反向信号判 NEUTRAL（超出接口规范 §2.5 列举范围）；v0.45 按 §2.5 严格判 RISK_OFF。选项：(a) 维持严格口径、把 10-13 的做法另立纠错；(b) 把「题材个股强度」正式写进 §2.5 成为第 5 类信号并两期同算（属接口规范变更，需单独评审） |
 
 > ★ 边界：以上任何一项都**不**通过改阈值、改规则、改状态来「让结果好看」。
