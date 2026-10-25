@@ -25,6 +25,7 @@
 | v0.52 | **修复 `--write` 拒绝时的部分修改**：四类冲突检查全部前置（`preflight`），拒绝即返回 2 且**零修改**；落盘顺序改为「日志（提交点）→ 快照 → latest」；新增定向回归 T12（含「反证场景非空」） | `build_candidate_ledger_v0_2.py`（`write_guard_problem` / `log_append_problem` / `latest_ledger_problem` / `preflight`）· `test_candidate_ledger_v0_2.py`（12 项）。**产物版本与冻结文件全部不变** |
 | v0.53 | **历史机会地图 Wave 1**：2 个事件 `NOT_RESEARCHED` → `RESEARCHED_PIT`（浙江世宝 2025-06-24 一字板、亚太股份 2019-09-20 盘中涨停）；5 个事件写清「为什么推不动」（含「查到涨停但机制不同轴 → 不建角色」） | `historical_market_roles_v0_12.json`（33 事件 · 角色 80→82 · `NOT_RESEARCHED` 9→7 · PIT 0 违规）· `limit_up_audit_v0_9.json` · `2025_robotaxi_point_in_time.md` + `point_in_time_auto_2025_robotaxi.csv` · `2019_adas_point_in_time.md` + `point_in_time_auto_2019_adas.csv` · 角色测试 22→25 项 |
 | v0.54 | **Wave 1.1 两项定向补证**：`CONS-2022-SERVICE-REBOUND` → `RESEARCHED_PIT`（中国经济网 2022-12-14 给出锦江 +1.58% / 首旅 +2.45%，库内逐字互证；切片 **USABLE**）；`POWER-2017` 定向检索后判定**机制不匹配 → 停止**；`NOT_RESEARCHED` 文案改「尚无已登记的时点角色」 | `historical_market_roles_v0_13.json`（33 事件 · 角色 82→84 · `RESEARCHED_PIT` 14→15 · `NOT_RESEARCHED` 7→6 · PIT 0 违规）· `limit_up_audit_v0_10.json` · `2022_service_rebound_point_in_time.md` + `point_in_time_cons_2022_service_rebound.csv` · `historicalMarketRoles.ts`（文案+升版）· 角色测试 25→27 项 |
+| v0.55 | **Wave 2 指数数据源调查**：中证官网公开无 token 日线接口（5,296 行 / 2005 起）；半导体 `H30184` **GO**（OFFICIAL_EXACT）、电力 `H30199` **NO-GO 作火电替代**（含水电核电，POWER-2024 上与板块方向相反）、医药 `000933` GO（有限，仅代理）；成分名单按历史日期 **ACCESS_GATED** | `docs/INDEX_DATA_FEASIBILITY_WAVE2_v0_1.md` · `research/research/reports/index_data_pilot_v0_1.json`（15 KB）· `research/scripts/probe_csindex_official_v0_1.py` |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
@@ -118,7 +119,7 @@
 |---|---|---|
 | 1 | 结算闭环自动化（月度账本滚动，**不新增 CI Job**） | ✅ **v0.51 完成**：`monthly_candidate_ledger.py`，幂等实测通过 |
 | 2 | 行业板块历史成分 → 补 75 条「不绑个股」 | ⛔ **试点判定不可行**（见下），**保留缺口**，不再按「批量补」推进 |
-| 3 | 官方概念 / 主题指数历史 | 未开始（仍用当前成分合成的等权序列） |
+| 3 | 官方概念 / 主题指数历史 | **已调查（v0.55 Wave 2）**：中证官网可公开取日线（无 token）；半导体 `H30184` **GO**、医药 `000933` GO（有限代理）、电力 `H30199` **不作火电替代**；详见 `docs/INDEX_DATA_FEASIBILITY_WAVE2_v0_1.md`。**尚未接入生产管线** |
 | 4 | 退市股与历史名称快照 | 未开始 |
 | 5 | 剩余 6 个历史事件按需补证 | 部分推进：v0.53 转 2 个（2025 Robotaxi / 2019 ADAS）、v0.54 转 1 个（2022 服务消费修复）；余 6 个已逐条写明阻塞（不设阻塞条件） |
 

@@ -1,0 +1,570 @@
+{
+ "access": {
+  "cons_file": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/file/autofile/cons/<code>cons.xls",
+  "daily_api": "https://www.csindex.com.cn/csindex-home/perf/index-perf?indexCode=<code>&startDate=<code>&endDate=<code>",
+  "daily_api_auth": "无 token、无积分、无需登录（公开 GET）",
+  "factsheet": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/<code>factsheet.pdf",
+  "note": "★ 东方财富 push2his 在本机持续空响应（Empty reply），故未采用；新浪可取部分官方指数但 H 代码不可得。"
+ },
+ "artifact": "index_data_pilot",
+ "artifact_version": "0.1",
+ "generated_by": "research/scripts/probe_csindex_official_v0_1.py",
+ "indexes": {
+  "000300": {
+   "api_first": "2005-01-01",
+   "api_last": "2026-10-23",
+   "api_rows": 5295,
+   "base_date": "2004-12-31",
+   "base_value": 1000,
+   "identity": "BENCHMARK",
+   "match_note": "基准，不参与题材匹配判断",
+   "name": "沪深300指数",
+   "published": "2005-04-08",
+   "recompute": {
+    "gt_0_01pp": 2,
+    "max_abs_diff_pp": 1.901029,
+    "median_abs_diff_pp": 0.002476,
+    "n": 5294,
+    "outliers": [
+     {
+      "api_changePct": -1.72,
+      "close_ratio_pct": 0.0,
+      "date": "2005-01-04",
+      "diff_pp": 1.72
+     },
+     {
+      "api_changePct": 0.0,
+      "close_ratio_pct": 1.901,
+      "date": "2005-04-08",
+      "diff_pp": 1.901
+     }
+    ],
+    "outliers_note": "★ 不一致只出现在「序列首行」与「发布日当天」，属口径差异、非数据错误"
+   },
+   "rows_after_publish": 5233,
+   "rows_before_publish": 62,
+   "short": "沪深300",
+   "theme": "基准"
+  },
+  "000933": {
+   "api_first": "2005-01-01",
+   "api_last": "2026-10-23",
+   "api_rows": 5296,
+   "base_date": "2004-12-31",
+   "base_value": 1000,
+   "cons_anchors": [
+    {
+     "cons_number": 78,
+     "date": "2019-06-28"
+    },
+    {
+     "cons_number": 81,
+     "date": "2023-03-31"
+    },
+    {
+     "cons_number": 71,
+     "date": "2026-10-23"
+    }
+   ],
+   "cons_file": {
+    "file_date": "20261023",
+    "rows": 71,
+    "unique_codes": 71
+   },
+   "cons_file_error": null,
+   "cons_file_matches_latest": true,
+   "identity": "OFFICIAL_PROXY",
+   "match_note": "医药卫生整体，不含「流感」这一子主题 → 只能作为医药健康方向的代理",
+   "name": "中证医药卫生指数",
+   "published": "2009-07-03",
+   "recompute": {
+    "gt_0_01pp": 2,
+    "max_abs_diff_pp": 1.59,
+    "median_abs_diff_pp": 0.002467,
+    "n": 5295,
+    "outliers": [
+     {
+      "api_changePct": -1.59,
+      "close_ratio_pct": 0.0,
+      "date": "2005-01-04",
+      "diff_pp": 1.59
+     },
+     {
+      "api_changePct": 0.0,
+      "close_ratio_pct": 0.8127,
+      "date": "2009-07-03",
+      "diff_pp": 0.8127
+     }
+    ],
+    "outliers_note": "★ 不一致只出现在「序列首行」与「发布日当天」，属口径差异、非数据错误"
+   },
+   "rows_after_publish": 4204,
+   "rows_before_publish": 1092,
+   "short": "800医卫",
+   "theme": "医药健康（含流感相关）"
+  },
+  "H30184": {
+   "api_first": "2005-01-01",
+   "api_last": "2026-10-23",
+   "api_rows": 5296,
+   "base_date": "2004-12-31",
+   "base_value": 1000,
+   "cons_anchors": [
+    {
+     "cons_number": 30,
+     "date": "2019-06-28"
+    },
+    {
+     "cons_number": 64,
+     "date": "2023-03-31"
+    },
+    {
+     "cons_number": 87,
+     "date": "2026-10-23"
+    }
+   ],
+   "cons_file": {
+    "file_date": "20261023",
+    "rows": 87,
+    "unique_codes": 87
+   },
+   "cons_file_error": null,
+   "cons_file_matches_latest": true,
+   "identity": "OFFICIAL_EXACT",
+   "match_note": "编制方案为「半导体产品与设备」全产业链（设计/制造/封测/设备/材料），与 SEMI-* 事件的研究对象一致 → 精确匹配",
+   "name": "中证全指半导体产品与设备指数",
+   "published": "2013-07-15",
+   "recompute": {
+    "gt_0_01pp": 1,
+    "max_abs_diff_pp": 0.55,
+    "median_abs_diff_pp": 0.002566,
+    "n": 5293,
+    "outliers": [
+     {
+      "api_changePct": -0.55,
+      "close_ratio_pct": 0.0,
+      "date": "2005-01-04",
+      "diff_pp": 0.55
+     }
+    ],
+    "outliers_note": "★ 不一致只出现在「序列首行」与「发布日当天」，属口径差异、非数据错误"
+   },
+   "rows_after_publish": 3228,
+   "rows_before_publish": 2068,
+   "short": "中证全指半导体",
+   "theme": "半导体 / AI 算力"
+  },
+  "H30199": {
+   "api_first": "2005-01-01",
+   "api_last": "2026-10-23",
+   "api_rows": 5296,
+   "base_date": "2004-12-31",
+   "base_value": 1000,
+   "cons_anchors": [
+    {
+     "cons_number": 50,
+     "date": "2019-06-28"
+    },
+    {
+     "cons_number": 54,
+     "date": "2023-03-31"
+    },
+    {
+     "cons_number": 59,
+     "date": "2026-10-23"
+    }
+   ],
+   "cons_file": {
+    "file_date": "20261023",
+    "rows": 59,
+    "unique_codes": 59
+   },
+   "cons_file_error": null,
+   "cons_file_matches_latest": true,
+   "identity": "OFFICIAL_PROXY",
+   "match_note": "行业分类为「电力公用事业」，成分含水电与核电；POWER-* 事件研究对象是**火电** → 只能作为代理，**不得**当作火电机制的精确匹配",
+   "name": "中证全指电力公用事业指数",
+   "published": "2013-07-15",
+   "recompute": {
+    "gt_0_01pp": 1,
+    "max_abs_diff_pp": 1.78,
+    "median_abs_diff_pp": 0.002444,
+    "n": 5293,
+    "outliers": [
+     {
+      "api_changePct": -1.78,
+      "close_ratio_pct": 0.0,
+      "date": "2005-01-04",
+      "diff_pp": 1.78
+     }
+    ],
+    "outliers_note": "★ 不一致只出现在「序列首行」与「发布日当天」，属口径差异、非数据错误"
+   },
+   "rows_after_publish": 3228,
+   "rows_before_publish": 2068,
+   "short": "电力指数",
+   "theme": "电力运营（含水电/核电）"
+  }
+ },
+ "limitations": [
+  "★ 官方接口返回的序列**含发布日之前的部分**（H30199/H30184/000933 均从 2005-01-01 起），该段是**事后回溯/补算**，不是当时已公开可交易的指数点位 —— 只能用于「事后回看」，不得用于「当时可识别」的时点论证。",
+  "★ 成分：接口只给逐日**成分数量** `consNumber`；官方只提供**最新**成分快照文件与调样公告，**没有**按历史日期查询成员名单的公开接口 → 历史成员名单属 ACCESS_GATED。",
+  "★ 本脚本只写小体积统计摘要，不落任何行情明细；生产集成前需另行决定入库方式。"
+ ],
+ "position": "Wave 2 数据源调查的实测证据：只证明「官方指数能否公开取得、能否复算、与仓库合成序列差多少」；**不含**任何评分/排名/预测。",
+ "power_participants": {
+  "POWER-2017-SUMMER-COUNTEREXAMPLE": {
+   "sh600027": {
+    "excess_pp": -17.301,
+    "name": "华电国际",
+    "ret_pct": -8.2164
+   },
+   "sh600509": {
+    "excess_pp": -2.8657,
+    "name": "天富能源",
+    "ret_pct": 6.2189
+   },
+   "sh600578": {
+    "excess_pp": -12.1751,
+    "name": "京能电力",
+    "ret_pct": -3.0905
+   },
+   "sz000600": {
+    "excess_pp": -36.4994,
+    "name": "建投能源",
+    "ret_pct": -27.4148
+   }
+  },
+  "POWER-2024-SUMMER-COUNTEREXAMPLE": {
+   "sh600027": {
+    "excess_pp": -6.6184,
+    "name": "华电国际",
+    "ret_pct": -12.518
+   },
+   "sh600509": {
+    "excess_pp": -7.8225,
+    "name": "天富能源",
+    "ret_pct": -13.7221
+   },
+   "sh600578": {
+    "excess_pp": 2.4808,
+    "name": "京能电力",
+    "ret_pct": -3.4188
+   },
+   "sh600905": {
+    "excess_pp": 8.4312,
+    "name": "三峡能源",
+    "ret_pct": 2.5316
+   },
+   "sz000600": {
+    "excess_pp": -20.6629,
+    "name": "建投能源",
+    "ret_pct": -26.5625
+   },
+   "sz000862": {
+    "excess_pp": -11.1459,
+    "name": "银星能源",
+    "ret_pct": -17.0455
+   }
+  }
+ },
+ "raw_samples": {
+  "000933": [
+   {
+    "changePct": 1.31,
+    "close": 10935.93,
+    "consNumber": 81,
+    "date": "2023-02-20"
+   }
+  ],
+  "H30184": [
+   {
+    "changePct": -0.18,
+    "close": 5604.16,
+    "consNumber": 64,
+    "date": "2023-01-30"
+   },
+   {
+    "changePct": -3.75,
+    "close": 6628.78,
+    "consNumber": 64,
+    "date": "2023-04-10"
+   }
+  ],
+  "H30199": [
+   {
+    "changePct": -0.12,
+    "close": 2662.95,
+    "consNumber": 50,
+    "date": "2017-07-31"
+   }
+  ]
+ },
+ "windows": {
+  "FLU-2023-H1N1": {
+   "benchmark": {
+    "close_end": 4092.0,
+    "close_start": 4133.49,
+    "compounding_vs_close_diff_pp": 0.036158,
+    "end_date": "2023-04-14",
+    "n_days": 39,
+    "ret_pct": -1.0038,
+    "ret_pct_by_daily_compounding": -0.9676,
+    "ret_pct_from_prev_close": 1.425,
+    "start_date": "2023-02-20"
+   },
+   "index": "000933",
+   "official": {
+    "close_end": 10696.6,
+    "close_start": 10935.93,
+    "compounding_vs_close_diff_pp": 0.009028,
+    "end_date": "2023-04-14",
+    "n_days": 39,
+    "ret_pct": -2.1885,
+    "ret_pct_by_daily_compounding": -2.1794,
+    "ret_pct_from_prev_close": -0.9103,
+    "start_date": "2023-02-20"
+   },
+   "official_excess_pp": -1.1847,
+   "window": [
+    "2023-02-20",
+    "2023-04-15"
+   ]
+  },
+  "POWER-2017-SUMMER-COUNTEREXAMPLE": {
+   "benchmark": {
+    "close_end": 3737.87,
+    "close_start": 3426.58,
+    "compounding_vs_close_diff_pp": 0.055267,
+    "end_date": "2017-07-31",
+    "n_days": 63,
+    "ret_pct": 9.0846,
+    "ret_pct_by_daily_compounding": 9.1398,
+    "ret_pct_from_prev_close": 8.6669,
+    "start_date": "2017-05-02"
+   },
+   "common_days": 63,
+   "daily_corr_in_window": 0.8996,
+   "excess_gap_pp": 2.2433,
+   "index": "H30199",
+   "official": {
+    "close_end": 2662.95,
+    "close_start": 2684.37,
+    "compounding_vs_close_diff_pp": 0.005683,
+    "end_date": "2017-07-31",
+    "n_days": 63,
+    "ret_pct": -0.798,
+    "ret_pct_by_daily_compounding": -0.7923,
+    "ret_pct_from_prev_close": -1.5472,
+    "start_date": "2017-05-02"
+   },
+   "official_excess_pp": -9.8826,
+   "official_minus_repo_pp": 2.2433,
+   "repo": {
+    "close_end": 1196.012,
+    "close_start": 1233.527,
+    "compounding_vs_close_diff_pp": null,
+    "end_date": "2017-07-31",
+    "n_days": 63,
+    "ret_pct": -3.0413,
+    "ret_pct_by_daily_compounding": null,
+    "ret_pct_from_prev_close": -3.1586,
+    "start_date": "2017-05-02"
+   },
+   "repo_excess_pp": -12.1259,
+   "repo_series": "BK881145",
+   "window": [
+    "2017-05-01",
+    "2017-07-31"
+   ]
+  },
+  "POWER-2024-SUMMER-COUNTEREXAMPLE": {
+   "benchmark": {
+    "close_end": 3442.08,
+    "close_start": 3657.88,
+    "compounding_vs_close_diff_pp": 0.01215,
+    "end_date": "2024-07-31",
+    "n_days": 62,
+    "ret_pct": -5.8996,
+    "ret_pct_by_daily_compounding": -5.8874,
+    "ret_pct_from_prev_close": -4.5031,
+    "start_date": "2024-05-06"
+   },
+   "common_days": 62,
+   "daily_corr_in_window": 0.7257,
+   "excess_gap_pp": 7.4163,
+   "index": "H30199",
+   "official": {
+    "close_end": 2986.0,
+    "close_start": 2935.12,
+    "compounding_vs_close_diff_pp": -0.035543,
+    "end_date": "2024-07-31",
+    "n_days": 62,
+    "ret_pct": 1.7335,
+    "ret_pct_by_daily_compounding": 1.6979,
+    "ret_pct_from_prev_close": 2.9904,
+    "start_date": "2024-05-06"
+   },
+   "official_excess_pp": 7.6331,
+   "official_minus_repo_pp": 7.4163,
+   "repo": {
+    "close_end": 1385.675,
+    "close_start": 1469.164,
+    "compounding_vs_close_diff_pp": null,
+    "end_date": "2024-07-31",
+    "n_days": 62,
+    "ret_pct": -5.6828,
+    "ret_pct_by_daily_compounding": null,
+    "ret_pct_from_prev_close": -3.1125,
+    "start_date": "2024-05-06"
+   },
+   "repo_excess_pp": 0.2168,
+   "repo_series": "BK881145",
+   "window": [
+    "2024-05-01",
+    "2024-07-31"
+   ]
+  },
+  "SEMI-2019-LOCALIZATION": {
+   "benchmark": {
+    "close_end": 4806.69,
+    "close_start": 3743.96,
+    "compounding_vs_close_diff_pp": 0.072281,
+    "end_date": "2020-07-14",
+    "n_days": 284,
+    "ret_pct": 28.3852,
+    "ret_pct_by_daily_compounding": 28.4575,
+    "ret_pct_from_prev_close": 28.9663,
+    "start_date": "2019-05-16"
+   },
+   "common_days": 284,
+   "daily_corr_in_window": 0.9382,
+   "excess_gap_pp": 59.285,
+   "index": "H30184",
+   "official": {
+    "close_end": 8250.22,
+    "close_start": 2951.75,
+    "compounding_vs_close_diff_pp": -0.172888,
+    "end_date": "2020-07-14",
+    "n_days": 284,
+    "ret_pct": 179.5027,
+    "ret_pct_by_daily_compounding": 179.3298,
+    "ret_pct_from_prev_close": 177.4274,
+    "start_date": "2019-05-16"
+   },
+   "official_excess_pp": 151.1175,
+   "official_minus_repo_pp": 59.285,
+   "repo": {
+    "close_end": 7376.209,
+    "close_start": 3349.508,
+    "compounding_vs_close_diff_pp": null,
+    "end_date": "2020-07-14",
+    "n_days": 284,
+    "ret_pct": 120.2177,
+    "ret_pct_by_daily_compounding": null,
+    "ret_pct_from_prev_close": 119.2982,
+    "start_date": "2019-05-16"
+   },
+   "repo_excess_pp": 91.8325,
+   "repo_series": "BK881121",
+   "window": [
+    "2019-05-16",
+    "2020-07-14"
+   ]
+  },
+  "SEMI-2022-DOWNTURN": {
+   "benchmark": {
+    "close_end": 3784.31,
+    "close_start": 4917.77,
+    "compounding_vs_close_diff_pp": 0.044761,
+    "end_date": "2022-10-12",
+    "n_days": 185,
+    "ret_pct": -23.0483,
+    "ret_pct_by_daily_compounding": -23.0035,
+    "ret_pct_from_prev_close": -23.4003,
+    "start_date": "2022-01-04"
+   },
+   "common_days": 185,
+   "daily_corr_in_window": 0.9481,
+   "excess_gap_pp": -6.6497,
+   "index": "H30184",
+   "official": {
+    "close_end": 4825.5,
+    "close_start": 7999.09,
+    "compounding_vs_close_diff_pp": -0.00991,
+    "end_date": "2022-10-12",
+    "n_days": 185,
+    "ret_pct": -39.6744,
+    "ret_pct_by_daily_compounding": -39.6843,
+    "ret_pct_from_prev_close": -40.8277,
+    "start_date": "2022-01-04"
+   },
+   "official_excess_pp": -16.6261,
+   "official_minus_repo_pp": -6.6497,
+   "repo": {
+    "close_end": 5982.04,
+    "close_start": 8931.713,
+    "compounding_vs_close_diff_pp": null,
+    "end_date": "2022-10-12",
+    "n_days": 185,
+    "ret_pct": -33.0247,
+    "ret_pct_by_daily_compounding": null,
+    "ret_pct_from_prev_close": -33.9082,
+    "start_date": "2022-01-04"
+   },
+   "repo_excess_pp": -9.9764,
+   "repo_series": "BK881121",
+   "window": [
+    "2022-01-04",
+    "2022-10-12"
+   ]
+  },
+  "SEMI-2023-AI-COMPUTE": {
+   "benchmark": {
+    "close_end": 4104.81,
+    "close_start": 4201.35,
+    "compounding_vs_close_diff_pp": 0.031762,
+    "end_date": "2023-04-10",
+    "n_days": 50,
+    "ret_pct": -2.2978,
+    "ret_pct_by_daily_compounding": -2.2661,
+    "ret_pct_from_prev_close": -1.8347,
+    "start_date": "2023-01-30"
+   },
+   "common_days": 50,
+   "daily_corr_in_window": 0.9527,
+   "excess_gap_pp": 2.7382,
+   "index": "H30184",
+   "official": {
+    "close_end": 6628.78,
+    "close_start": 5604.16,
+    "compounding_vs_close_diff_pp": -0.034333,
+    "end_date": "2023-04-10",
+    "n_days": 50,
+    "ret_pct": 18.2832,
+    "ret_pct_by_daily_compounding": 18.2489,
+    "ret_pct_from_prev_close": 18.0704,
+    "start_date": "2023-01-30"
+   },
+   "official_excess_pp": 20.581,
+   "official_minus_repo_pp": 2.7382,
+   "repo": {
+    "close_end": 8190.651,
+    "close_start": 7088.71,
+    "compounding_vs_close_diff_pp": null,
+    "end_date": "2023-04-10",
+    "n_days": 50,
+    "ret_pct": 15.545,
+    "ret_pct_by_daily_compounding": null,
+    "ret_pct_from_prev_close": 16.0572,
+    "start_date": "2023-01-30"
+   },
+   "repo_excess_pp": 17.8428,
+   "repo_series": "BK881121",
+   "window": [
+    "2023-01-30",
+    "2023-04-10"
+   ]
+  }
+ }
+}
