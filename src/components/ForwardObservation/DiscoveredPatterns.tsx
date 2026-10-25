@@ -7,8 +7,9 @@
  *
  * ★★★ v0.42 数据源变更：此前静态 import 完整研究产物（~5.7MB），组件实际只用
  *   计数 / 覆盖 / 标准 / 限制 / 排序前 6 的窗口。现改读 `pattern_discovery_summary_v0_1.json`
- *   （由 `build_pattern_summary_v0_1.py` 从完整产物**确定性派生**，~12KB，带 sha256 指纹）。
+ *   （由 `build_pattern_summary_v0_1.py` 从完整产物**确定性派生**，带 sha256 指纹）。
  *   完整产物仍在仓库中，供研究与审计；本组件**不再**读它。
+ *   ★ v0.51 起该摘要还带 `tracking`（跨月滚动的候选追踪），由 `CandidateTracking` 消费。
  *
  * ★★★ v0.50：接入**候选账本**（`candidate_ledger_v0_1.json` 经摘要带入）——
  *   每条候选显示「窗口内 5 / 10 / 20 个交易日的实际表现」：板块 / 基准 / 超额 / 代表股中位超额。

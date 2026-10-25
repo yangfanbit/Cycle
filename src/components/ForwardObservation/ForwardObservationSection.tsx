@@ -13,6 +13,7 @@ import {
 } from '../../data/timeline/forwardObservation';
 import { RichText } from '../RichText';
 import { DiscoveredPatterns } from './DiscoveredPatterns';
+import { CandidateTracking } from './CandidateTracking';
 
 function num(v: number | null | undefined, suffix = '%'): string {
   return v === null || v === undefined ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}${suffix}`;
@@ -158,6 +159,7 @@ export function ForwardObservationSection() {
       </p>
 
       <DiscoveredPatterns />
+      <CandidateTracking />
 
       <details className="fwd-limits">
         <summary>已知限制（必读）</summary>
