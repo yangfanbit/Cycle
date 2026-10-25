@@ -34,7 +34,9 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 CURRENT = os.path.join(REPO, "research", "current")
 OUT_RE = re.compile(r"pattern_discovery_v0_(\d+)\.json$")
 OUT_NAME = "pattern_discovery_summary_v0_1.json"
+LEDGER_RE = re.compile(r"candidate_ledger_v0_(\d+)\.json$")
 TOP_N = 6          # 与组件现有排序/切片逻辑一致：按 median_excess_pct 降序取前 6
+REALIZED_N = 3     # 本月已开始窗口里再取 3 条展示「实际结果」（同样按历史中位超额，不做结果排名）
 
 # 组件真正渲染的窗口字段（其余一律不进摘要）
 WINDOW_FIELDS = (
@@ -55,10 +57,37 @@ def latest_source() -> str:
     return os.path.join(CURRENT, files[-1])
 
 
+def latest_ledger():
+    """候选账本（可选）：存在就带上「5/10/20 日实际结果」，不存在则摘要照常生成。"""
+    files = [f for f in os.listdir(CURRENT) if LEDGER_RE.match(f)]
+    if not files:
+        return None, None
+    path = os.path.join(CURRENT, sorted(files, key=lambda f: int(LEDGER_RE.match(f).group(1)))[-1])
+    return path, json.loads(io.open(path, "rb").read().decode("utf-8"))
+
+
+def _outcome_of(entry):
+    """只保留前端要用的字段（不含代表股票逐只明细）。"""
+    hz = {}
+    for h in ("5", "10", "20"):
+        o = (entry.get("outcome") or {}).get(h) or {}
+        hz[h] = {k: o.get(k) for k in
+                 ("status", "settle_date", "board_ret", "bench_ret", "excess_pp",
+                  "rep_median_excess_pp", "n_reps") if k in o}
+    return {
+        "outcome_type": entry.get("outcome_type"),
+        "anchor": entry.get("anchor"),
+        "window_note": (entry.get("window") or {}).get("note"),
+        "horizons": hz,
+    }
+
+
 def build(src_path: str) -> dict:
     raw = io.open(src_path, "rb").read()
     doc = json.loads(raw.decode("utf-8"))
     windows = sorted(doc["current_windows"], key=lambda p: -p["median_excess_pct"])[:TOP_N]
+    ledger_path, ledger = latest_ledger()
+    led_by_id = {c["candidate_id"]: c for c in (ledger or {}).get("candidates") or []}
     strict = sum(1 for p in doc["patterns"] if p["tier"] == "STRICT")
     expl = sum(1 for p in doc["patterns"] if p["tier"] == "EXPLORATORY")
     return {
@@ -91,7 +120,30 @@ def build(src_path: str) -> dict:
         "pit_only_summary": doc.get("pit_only_summary"),
         "tier_note": doc.get("tier_note"),
         "limitations": doc.get("limitations"),
-        "top_windows": [{k: p.get(k) for k in WINDOW_FIELDS if k in p} for p in windows],
+        "ledger": ({
+            "file": os.path.basename(ledger_path),
+            "as_of": ledger.get("as_of"),
+            "sha256": hashlib.sha256(io.open(ledger_path, "rb").read()).hexdigest(),
+            "caliber": ledger.get("caliber"),
+            "summary": {k: ledger["summary"].get(k) for k in
+                        ("candidates", "by_outcome_type", "horizon_status")},
+        } if ledger else None),
+        "top_windows": [
+            dict({k: p.get(k) for k in WINDOW_FIELDS if k in p},
+                 outcome=(_outcome_of(led_by_id[p["pattern_id"]])
+                          if p["pattern_id"] in led_by_id else None))
+            for p in windows
+        ],
+        # ★ 本月已开始的窗口：**按历史中位超额**取前 N（不按结果排序，避免变成「业绩榜」）
+        "realized_windows": [
+            dict({k: p.get(k) for k in ("pattern_id", "board", "month", "kind", "tier",
+                                        "median_excess_pct", "hit_rate", "current_status")},
+                 outcome=_outcome_of(led_by_id[p["pattern_id"]]))
+            for p in sorted([p for p in doc["current_windows"]
+                             if p["pattern_id"] in led_by_id
+                             and led_by_id[p["pattern_id"]].get("outcome_type") == "IN_WINDOW_PARTIAL"],
+                            key=lambda p: -p["median_excess_pct"])[:REALIZED_N]
+        ],
     }
 
 

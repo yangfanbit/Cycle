@@ -53,6 +53,47 @@
   "selection_rule": "模式是否进入产物 = 曾有时点资格 OR 历史等级达标；历史等级**不**决定谁被检验",
   "training_rule": "每年资格只用该年之前的年份；训练年数 ≥5；训练集满足 STRICT（中位≥1.5pp 且命中≥60%）**或** EXPLORATORY（中位≥0.8pp 且命中≥55%）→ 该年具资格（双层，预先声明，不随结果调整）"
  },
+ "ledger": {
+  "as_of": "2026-10-23",
+  "caliber": {
+   "anchor": "窗口首个交易日收盘",
+   "excess": "板块收益 − 沪深300 同区间收益（pp）",
+   "horizons": [
+    5,
+    10,
+    20
+   ],
+   "outcome_type": {
+    "FORWARD_PENDING": "形成日早于窗口起点 → 真正的前瞻候选，尚未结算",
+    "IN_WINDOW_PARTIAL": "形成日已在窗口内 → 已实现部分不是样本外前瞻"
+   },
+   "representative_stocks": "直接用 pattern_discovery 的 representative_stocks（当前口径），取中位数",
+   "return": "close[anchor+h] / close[anchor] − 1"
+  },
+  "file": "candidate_ledger_v0_1.json",
+  "sha256": "dc7a85916c7dcb02f13c113f859fa995b75766063d3869dd9c3721981d4a0da4",
+  "summary": {
+   "by_outcome_type": {
+    "FORWARD_PENDING": 152,
+    "IN_WINDOW_PARTIAL": 52
+   },
+   "candidates": 204,
+   "horizon_status": {
+    "10d": {
+     "AVAILABLE": 52,
+     "NOT_STARTED": 152
+    },
+    "20d": {
+     "NOT_STARTED": 152,
+     "PENDING": 52
+    },
+    "5d": {
+     "AVAILABLE": 52,
+     "NOT_STARTED": 152
+    }
+   }
+  }
+ },
  "limitations": [
   "★ 自建概念指数是**合成研究序列**（当前成分等权、成交量无意义），不等于官方概念指数。",
   "★ 概念成员与板块分类均为**当前**口径回溯，历史成分/分类变更无法还原 → walk-forward **不能**消除该偏差。",
@@ -74,6 +115,140 @@
   "oos_reportable_hit_rate": 0.24,
   "total": 960
  },
+ "realized_windows": [
+  {
+   "board": "天津自贸",
+   "current_status": "IN_WINDOW",
+   "hit_rate": 0.667,
+   "kind": "concept_basket",
+   "median_excess_pct": 3.32,
+   "month": 10,
+   "outcome": {
+    "anchor": "2026-10-08",
+    "horizons": {
+     "10": {
+      "bench_ret": -6.36,
+      "board_ret": -5.99,
+      "excess_pp": 0.37,
+      "n_reps": 3,
+      "rep_median_excess_pp": 2.69,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "bench_ret": -3.35,
+      "board_ret": -4.78,
+      "excess_pp": -1.43,
+      "n_reps": 3,
+      "rep_median_excess_pp": -0.38,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "window_note": "窗口进行中：end 为当前已知的最后一个交易日，非月末"
+   },
+   "pattern_id": "SEAS-CPT_mtjzm-M10",
+   "tier": "STRICT"
+  },
+  {
+   "board": "机场航运",
+   "current_status": "IN_WINDOW",
+   "hit_rate": 0.667,
+   "kind": "industry_board",
+   "median_excess_pct": 3.09,
+   "month": 10,
+   "outcome": {
+    "anchor": "2026-10-08",
+    "horizons": {
+     "10": {
+      "bench_ret": -6.36,
+      "board_ret": -3.15,
+      "excess_pp": 3.21,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "bench_ret": -3.35,
+      "board_ret": -1.04,
+      "excess_pp": 2.31,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "window_note": "窗口进行中：end 为当前已知的最后一个交易日，非月末"
+   },
+   "pattern_id": "SEAS-BK881151-M10",
+   "tier": "STRICT"
+  },
+  {
+   "board": "汽车整车",
+   "current_status": "IN_WINDOW",
+   "hit_rate": 0.667,
+   "kind": "industry_board",
+   "median_excess_pct": 2.77,
+   "month": 10,
+   "outcome": {
+    "anchor": "2026-10-08",
+    "horizons": {
+     "10": {
+      "bench_ret": -6.36,
+      "board_ret": -8.1,
+      "excess_pp": -1.74,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": "2026-10-22",
+      "status": "AVAILABLE"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "PENDING"
+     },
+     "5": {
+      "bench_ret": -3.35,
+      "board_ret": -5.15,
+      "excess_pp": -1.8,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": "2026-10-15",
+      "status": "AVAILABLE"
+     }
+    },
+    "outcome_type": "IN_WINDOW_PARTIAL",
+    "window_note": "窗口进行中：end 为当前已知的最后一个交易日，非月末"
+   },
+   "pattern_id": "SEAS-BK881125-M10",
+   "tier": "STRICT"
+  }
+ ],
  "source": {
   "artifact": "pattern_discovery",
   "artifact_version": "0.8",
@@ -118,6 +293,40 @@
    "oos_note": "检验年数 < 5，不作结论",
    "oos_status": "INSUFFICIENT_OOS",
    "oos_tests": 3,
+   "outcome": {
+    "anchor": null,
+    "horizons": {
+     "10": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "outcome_type": "FORWARD_PENDING",
+    "window_note": "窗口尚未开始（起点待交易日历确认）"
+   },
    "pattern_id": "SEAS-CPT_lk-M11",
    "pit_eligible_years": 3,
    "pit_first_year": 2021,
@@ -198,6 +407,40 @@
    "oos_note": "检验年数 < 5，不作结论",
    "oos_status": "INSUFFICIENT_OOS",
    "oos_tests": 3,
+   "outcome": {
+    "anchor": null,
+    "horizons": {
+     "10": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "outcome_type": "FORWARD_PENDING",
+    "window_note": "窗口尚未开始（起点待交易日历确认）"
+   },
    "pattern_id": "SEAS-BK881267-M11",
    "pit_eligible_years": 3,
    "pit_first_year": 2021,
@@ -252,6 +495,40 @@
    "oos_note": null,
    "oos_status": "REPORTED",
    "oos_tests": 6,
+   "outcome": {
+    "anchor": null,
+    "horizons": {
+     "10": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "outcome_type": "FORWARD_PENDING",
+    "window_note": "窗口尚未开始（起点待交易日历确认）"
+   },
    "pattern_id": "SEAS-BK881167-M11",
    "pit_eligible_years": 6,
    "pit_first_year": 2019,
@@ -306,6 +583,40 @@
    "oos_note": null,
    "oos_status": "REPORTED",
    "oos_tests": 6,
+   "outcome": {
+    "anchor": null,
+    "horizons": {
+     "10": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "outcome_type": "FORWARD_PENDING",
+    "window_note": "窗口尚未开始（起点待交易日历确认）"
+   },
    "pattern_id": "SEAS-CPT_scp1-M11",
    "pit_eligible_years": 6,
    "pit_first_year": 2019,
@@ -386,6 +697,40 @@
    "oos_note": "检验年数 < 5，不作结论",
    "oos_status": "INSUFFICIENT_OOS",
    "oos_tests": 3,
+   "outcome": {
+    "anchor": null,
+    "horizons": {
+     "10": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "outcome_type": "FORWARD_PENDING",
+    "window_note": "窗口尚未开始（起点待交易日历确认）"
+   },
    "pattern_id": "SEAS-BK881164-M11",
    "pit_eligible_years": 3,
    "pit_first_year": 2023,
@@ -440,6 +785,40 @@
    "oos_note": "检验年数 < 5，不作结论",
    "oos_status": "INSUFFICIENT_OOS",
    "oos_tests": 4,
+   "outcome": {
+    "anchor": null,
+    "horizons": {
+     "10": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "20": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     },
+     "5": {
+      "bench_ret": null,
+      "board_ret": null,
+      "excess_pp": null,
+      "n_reps": 0,
+      "rep_median_excess_pp": null,
+      "settle_date": null,
+      "status": "NOT_STARTED"
+     }
+    },
+    "outcome_type": "FORWARD_PENDING",
+    "window_note": "窗口尚未开始（起点待交易日历确认）"
+   },
    "pattern_id": "SEAS-CPT_sygg-M11",
    "pit_eligible_years": 4,
    "pit_first_year": 2022,

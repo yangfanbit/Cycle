@@ -9,6 +9,11 @@
  *   计数 / 覆盖 / 标准 / 限制 / 排序前 6 的窗口。现改读 `pattern_discovery_summary_v0_1.json`
  *   （由 `build_pattern_summary_v0_1.py` 从完整产物**确定性派生**，~12KB，带 sha256 指纹）。
  *   完整产物仍在仓库中，供研究与审计；本组件**不再**读它。
+ *
+ * ★★★ v0.50：接入**候选账本**（`candidate_ledger_v0_1.json` 经摘要带入）——
+ *   每条候选显示「窗口内 5 / 10 / 20 个交易日的实际表现」：板块 / 基准 / 超额 / 代表股中位超额。
+ *   ★ 必须区分两种结果类型：`FORWARD_PENDING`（窗口开始前形成 → 真前瞻，未结算）
+ *     与 `IN_WINDOW_PARTIAL`（形成日已在窗口内 → 已实现部分**不是**样本外前瞻）。
  */
 import raw from '@current/pattern_discovery_summary_v0_1.json';
 import { RichText } from '../RichText';
@@ -27,6 +32,17 @@ interface P {
   oos_by_train_tier?: { STRICT: TierStat; EXPLORATORY: TierStat };
   pit_eligible_years?: number; pit_first_year?: string | null; pit_basis?: string;
   discovery_basis?: string; evidence_grade?: string;
+  outcome?: Outcome | null;
+}
+interface Horizon {
+  status: string; settle_date?: string | null;
+  board_ret?: number | null; bench_ret?: number | null; excess_pp?: number | null;
+  rep_median_excess_pp?: number | null; n_reps?: number;
+}
+interface Outcome {
+  outcome_type: 'FORWARD_PENDING' | 'IN_WINDOW_PARTIAL' | string;
+  anchor?: string | null; window_note?: string | null;
+  horizons: Record<'5' | '10' | '20', Horizon>;
 }
 interface Cov { series: number; rows: number; first_date: string | null; last_date: string | null }
 interface D {
@@ -37,6 +53,15 @@ interface D {
   source: { file: string; artifact_version: string; sha256: string; bytes: number };
   counts: { patterns: number; strict: number; exploratory: number; current_windows: number; top_windows: number };
   top_windows: P[]; tier_note: string; limitations: string[];
+  ledger?: {
+    file: string; as_of: string; sha256: string;
+    summary: { candidates: number; by_outcome_type: Record<string, number>;
+      horizon_status: Record<string, Record<string, number>> };
+  } | null;
+  realized_windows?: {
+    pattern_id: string; board: string; month: number; kind: string; tier: string;
+    median_excess_pct: number; hit_rate: number; current_status: string; outcome: Outcome;
+  }[];
   pit_only_count?: number;
   pit_only_summary?: {
     total: number;
@@ -50,6 +75,32 @@ interface D {
 const doc = raw as unknown as D;
 
 const STATUS: Record<string, string> = { IN_WINDOW: '当月窗口', PRE_WINDOW: '下月窗口（前置）' };
+
+const pct = (v?: number | null) => (v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}%`);
+const pp = (v?: number | null) => (v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}pp`);
+const HZ = ['5', '10', '20'] as const;
+/** 单个 horizon 的展示：已结算给三行数字，未结算给明确状态（不补 0）。 */
+function Hz({ o }: { o: Horizon }) {
+  if (o.status === 'AVAILABLE') {
+    return (
+      <>
+        板块 <strong>{pct(o.board_ret)}</strong> / 基准 {pct(o.bench_ret)} /
+        超额 <strong>{pp(o.excess_pp)}</strong>
+        {o.rep_median_excess_pp != null && (
+          <span className="fwd-note">（代表股中位超额 {pp(o.rep_median_excess_pp)}·n={o.n_reps}）</span>
+        )}
+      </>
+    );
+  }
+  if (o.status === 'PENDING') return <span className="fwd-note">待结算（交易日不足）</span>;
+  if (o.status === 'NOT_STARTED') return <span className="fwd-note">窗口未开始</span>;
+  return <span className="fwd-note">{o.status}</span>;
+}
+
+const OUTCOME_NOTE: Record<string, string> = {
+  FORWARD_PENDING: '★ 该候选在窗口开始前形成 → 这是**真正的前瞻**，尚未结算（PENDING 是正确状态）',
+  IN_WINDOW_PARTIAL: '★ 形成日已在窗口内 → 已实现的天数**不是**样本外前瞻，只是窗口内已发生的部分',
+};
 
 export function DiscoveredPatterns() {
   const strictN = doc.counts.strict;
@@ -74,6 +125,46 @@ export function DiscoveredPatterns() {
           {doc.criteria.min_train_years ?? 5} 年、报告需 ≥{doc.criteria.min_oos_tests ?? 5} 个检验年）
         </span>
       </p>
+      {doc.ledger && (
+        <p className="fwd-note" data-ledger={doc.ledger.as_of}>
+          候选账本（{doc.ledger.as_of}）：<strong>{doc.ledger.summary.candidates}</strong> 个候选 ·
+          5 日已结算 <strong>{doc.ledger.summary.horizon_status['5']?.AVAILABLE ?? 0}</strong> ·
+          10 日已结算 <strong>{doc.ledger.summary.horizon_status['10']?.AVAILABLE ?? 0}</strong> ·
+          20 日待结算 <strong>{doc.ledger.summary.horizon_status['20']?.PENDING ?? 0}</strong> ·
+          待窗口开始 <strong>{doc.ledger.summary.by_outcome_type.FORWARD_PENDING ?? 0}</strong>
+          <span className="fwd-note">（锚点=窗口首个交易日；超额=板块−沪深300）</span>
+        </p>
+      )}
+      {(doc.realized_windows ?? []).length > 0 && (
+        <div className="fwd-realized" data-realized-windows={doc.realized_windows!.length}>
+          <p className="fwd-note" data-realized-title="1">
+            <strong>本月窗口已实现部分</strong>（按<strong>历史</strong>中位超额排序，<strong>不按结果排名</strong>；
+            锚点 = 窗口首个交易日；超额 = 板块 − 沪深300）：
+          </p>
+          <ul>
+            {doc.realized_windows!.map((w) => (
+              <li key={w.pattern_id} data-realized={w.pattern_id}
+                  data-anchor={w.outcome.anchor ?? ''}>
+                <strong>{w.board} · {w.month} 月</strong>
+                <span className="fwd-note">
+                  历史中位 {w.median_excess_pct > 0 ? '+' : ''}{w.median_excess_pct}%
+                  · 命中 {(w.hit_rate * 100).toFixed(0)}%
+                </span>
+                {' — '}
+                {HZ.map((h, i) => (
+                  <span key={h} data-h={h} data-h-status={w.outcome.horizons[h].status}>
+                    {i > 0 ? ' · ' : ''}{h} 日 <Hz o={w.outcome.horizons[h]} />
+                  </span>
+                ))}
+              </li>
+            ))}
+          </ul>
+          <p className="fwd-note" data-realized-caveat="1">
+            ★ 这些窗口在<strong>形成日之前</strong>就已开始 → 已实现部分<strong>不是</strong>样本外前瞻，
+            只是窗口内已发生的部分；20 日待结算。代表股为<strong>当前</strong>名单，含幸存者偏差。
+          </p>
+        </div>
+      )}
       <p className="fwd-note" data-pit-only={doc.pit_only_count ?? 0}>
         ★ 另有 <strong>{doc.pit_only_count ?? 0}</strong> 个模式「曾在历史序列上取得时点资格、但全样本等级不达标」：
         历史样本不足 8 年 <strong>{doc.pit_only_summary?.by_history_tier?.INSUFFICIENT_HISTORY ?? 0}</strong> 个 ·
@@ -122,6 +213,27 @@ export function DiscoveredPatterns() {
                     {p.pit_first_year ? `（最早 ${p.pit_first_year}）` : ''}</>
                 : <span className="fwd-note">★ 0 次 —— 该窗口<strong>只有回看才成立</strong>（当年无法被发现），不得当作「当时可预判」</span>}
             </p>
+            {p.outcome && (
+              <>
+                <p className="fwd-stats" data-outcome={p.outcome.outcome_type}
+                   data-anchor={p.outcome.anchor ?? ''}>
+                  窗口内实际（锚点 {p.outcome.anchor ?? '—'}）：
+                  {HZ.map((h, i) => {
+                    const o = p.outcome!.horizons[h];
+                    return (
+                      <span key={h} data-h={h} data-h-status={o.status}>
+                        {i > 0 ? ' · ' : ''}
+                        {h} 日 <Hz o={o} />
+                      </span>
+                    );
+                  })}
+                </p>
+                <p className="fwd-note" data-outcome-note={p.outcome.outcome_type}>
+                  <RichText text={OUTCOME_NOTE[p.outcome.outcome_type] ?? ''} />
+                  {p.outcome.window_note ? `（${p.outcome.window_note}）` : ''}
+                </p>
+              </>
+            )}
             {(p.representative_stocks ?? []).length > 0 && (
               <p className="fwd-stats" data-rep-stocks={p.representative_stocks!.length}>
                 代表性股票（当前成分）：{p.representative_stocks!.map((x) =>

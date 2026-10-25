@@ -4120,6 +4120,10 @@ html, body {
 .fwd-bench { margin: 4px 0 8px; font-size: 11.5px; color: var(--ink-3); font-family: var(--mono); }
 .fwd-sub { margin: 12px 0 4px; font-size: 12.5px; }
 .fwd-patterns, .fwd-cands { margin: 0; padding-left: 16px; }
+/* ★★ v0.50：候选账本 —— 本月已实现部分（列表 + 5/10/20 日实际结果） */
+.fwd-realized { margin: 6px 0 8px; padding: 6px 8px; border-left: 2px solid var(--line); background: #fafbfc; }
+.fwd-realized ul { margin: 2px 0; padding-left: 16px; }
+.fwd-realized li { margin: 3px 0; font-size: 11.5px; color: var(--ink-2); line-height: 1.7; }
 .fwd-pattern, .fwd-cand { margin: 6px 0 10px; font-size: 12px; }
 .fwd-pattern-head, .fwd-cand-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
 .fwd-status, .fwd-ev { font-size: 10.5px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--line); }
