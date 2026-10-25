@@ -213,6 +213,11 @@ CONTRACT = {
         "EARLY_LOW_CONFIDENCE_OBSERVATION": (
             "★ 早期低置信观察：当日有盘面/研究记录，但**不满足**自动盘面判据"
             "（未涨停 / 未连板）→ 只作早期线索，不构成「当时已确认的盘面核心」"),
+        # ★ v0.43：区间统计类报道 —— 与「当日点名」区分，避免把年度回顾当成当日领涨
+        "MEDIA_NAMED_PERIOD_STAT": (
+            "★ 同期报道点名并给出**区间累计涨幅**（如年度回顾），**不是**当日涨停/领涨；"
+            "识别日 = 报道发布日。只证明「当时媒体已把它列为强势标的」，"
+            "不证明某日已确认盘面核心"),
     },
     "legacy_pit_records": {
         "csv": "research/research/c2/point_in_time_leaders.csv",
@@ -795,7 +800,7 @@ def derive_market_roles(conn, event, evidence_ev, cal_index, ev_rel=None):
                          "创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；"
                          "ST 状态无法从库内判定 —— 主板 ST（2026-07-06 前 5%）与创业板改革前 ST（5%）"
                          "落在带外（漏报方向），创业板/科创板 ST 与主板新规后 ST 与普通股同带"),
-                "audit": "research/research/reports/limit_up_audit_v0_3.json",
+                "audit": "research/research/reports/limit_up_audit_v0_4.json",
             },
             "pit_safe": bool(all(x["date"] <= ident for x in as_of)),
             "posthoc": False,

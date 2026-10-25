@@ -452,8 +452,10 @@ class MarketRolesTest(unittest.TestCase):
 
     def test_support_levels_cover_all_roles(self):
         """★ 每条角色都有 support_level，且取值在合同内。"""
-        allowed = {"AUTO_RULE_MET", "MEDIA_NAMED_SAME_DAY", "REPORT_BACKED",
-                   "EARLY_LOW_CONFIDENCE_OBSERVATION"}
+        # ★ v0.43：允许集合**从合同读** —— 新增等级必须先写进合同，否则这里立刻失败
+        allowed = set((self.doc.get("historical_market_roles_contract") or {})
+                      .get("support_levels") or {})
+        self.assertGreaterEqual(len(allowed), 4, "合同 support_levels 过少，疑似被清空")
         n = 0
         for eid, ev in self.doc["events"].items():
             for r in ev["roles"]:
