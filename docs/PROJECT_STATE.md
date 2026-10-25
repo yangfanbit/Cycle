@@ -3,6 +3,43 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
+## ★★ 2026-10-25（v0.42）季节性校验补齐 + 首页数据瘦身
+
+> **A · 校验与审计口径**
+> ① **阈值校验遗漏已补**：`criteria.exploratory.min_hit_rate` 此前**没查**（只查 median），
+> 改 EXP_HIT 也能通过 → 现在逐一比对脚本常量。
+> ② **结构检查覆盖四类**：STRICT / EXPLORATORY / `INSUFFICIENT_HISTORY` / OOS 不足；
+> EXPLORATORY 若实际已达 STRICT 阈值 → 判错（防降档）；`INSUFFICIENT_OOS` 却有 ≥5 次检验 → 判错
+> （防用历史统计替代）；`oos_by_train_tier` 的 STRICT+EXPLORATORY 检验数必须等于 `oos_tests`；
+> `pit_only_patterns` 同样做 OOS 状态与次数检查（不再只看字段存在）。
+> ③ **`scan_audit` 改互斥分组**（旧 `pairs_history_lt_8` 实际只含 6–7 年，名字误导）：
+> 年限 `<6=318 / 6–7=414 / ≥8=4056`（合计 4,788 = 有数据组合数）·
+> 资格 `有资格 2,190 / 无资格 2,280`（合计 4,470 = 4,788 − 318）·
+> 有资格内 `历史<8 年 190 / ≥8 年 2,000` · 历史等级 `STRICT 893 / 探索 407 / 未达阈值 2,756`（合计 4,056）。
+> 另加 `records`（patterns 1,300 = 时点 1,230 + 仅全样本 70；pit_only 960 = 190 + 770）与
+> `reconcile` 七条自洽断言，`--check` 逐条断言。
+> ④ **检查承诺与范围对齐**：数据库可用时做的是「**窗口指标核对**」
+> （n_years / 中位 / 命中 / tier / 时点资格 / OOS 次数与分层 / 两层加总），
+> **不是**完整产物逐字节复现 —— 输出里已明确这么写；无库时打印 `SKIP 源数据核对` 并只做结构校验。
+> ⑤ 新增 `test_discover_seasonal_patterns_v0_5.py`（**18 个用例**）：改 `exploratory.min_hit_rate`
+> 必失败 · 分组互斥与加总 · OOS 不足双向判错 + 伪造 REPORTED 必失败 · 三层漂移（中位/时点/分层）必报错 ·
+> 无库时输出区分「仅结构」与「SKIP」。CI 里同一 Job 追加这两条命令。
+>
+> **B · 首页数据瘦身**
+> 新增 `build_pattern_summary_v0_1.py` → `pattern_discovery_summary_v0_1.json`
+> （**确定性派生**：不写当前时间、键序固定、带源产物 `sha256` 指纹；`--check` 逐字节比对 + 校验指纹）。
+> `DiscoveredPatterns.tsx` 改为只读摘要；完整产物仍留在仓库供研究/审计。
+> | 项 | 瘦身前 | 瘦身后 | 变化 |
+> |---|---|---|---|
+> | 组件静态数据 | `pattern_discovery_v0_10.json` 5,591.8 KB | `…_summary_v0_1.json` 11.8 KB | **−99.8%**（475×） |
+> | 主包 JS | 7,311.11 KB | 4,550.34 KB | **−2,760.77 KB（−37.8%）** |
+> | 主包 gzip | 913.36 KB | 678.23 KB | **−235.13 KB（−25.7%）** |
+> 渲染逻辑、排序（中位超额降序取前 6）、卡片措辞与日期语义**均未变**。
+>
+> **产物版本**：`pattern_discovery_v0_10.json`（artifact_version 0.8，`seasonal_walk_forward_pit_v2` 规则不变）·
+> `candidate_digest_v0_9.json` · `pattern_discovery_summary_v0_1.json`；v0_1–v0_9 / digest v0_1–v0_8 全部保留。
+> **快照**：`MS-2026-10-23-01` 仍 **DRAFT**，未执行 `--canonical`，`MS-2026-10-13-01` 未归档。
+
 ## ★★ 2026-10-25（v0.41）季节性口径校准（双层资格 + 历史门槛分离）+ BCI 语义校准
 
 > **B1 · 资格规则是双层的 —— v0_40 的声明写错了**

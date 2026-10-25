@@ -192,13 +192,17 @@ jobs:
 
       # ★★ v0.33 / v0.35：当前前瞻观察 + 季节性发现（**不联网**，只校验最新产物）
       # ★ v0.40：季节性改用 v0_3 校验器（protocol / pit_eligible_years / bias_audit / walk_forward_audit）。
-      # ★ v0.41：改用 v0_4 —— 额外校验 ① as_of == 当前基准最后交易日 ② criteria 与脚本常量一致
-      #   ③ oos_summary 两层统计齐备 ④ **重算每个当前窗口并与产物逐字段比对**（源数据一致性）。
+      # ★ v0.41：改用 v0_4 —— 额外校验 as_of == 基准最后交易日、criteria 与脚本常量一致、
+      #   oos_summary 两层统计齐备、重算当前窗口（无库时显式 SKIP 源数据核对）。
+      # ★ v0.42：改用 v0_5 —— 补 exploratory.min_hit_rate、四类结构检查、两层加总对账、
+      #   scan_audit 互斥分组自洽；并加前端摘要一致性 + 校验器不变量测试（同一 Job）。
       - name: Forward observation + seasonal discovery (--check)
         run: |
           set -euo pipefail
           python research/scripts/build_forward_observation_v0_1.py --check
-          python research/scripts/discover_seasonal_patterns_v0_4.py --check
+          python research/scripts/discover_seasonal_patterns_v0_5.py --check
+          python research/scripts/build_pattern_summary_v0_1.py --check
+          python research/scripts/test_discover_seasonal_patterns_v0_5.py
 
       - name: Research read-only gates
         run: |

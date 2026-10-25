@@ -1,0 +1,493 @@
+{
+ "artifact": "pattern_discovery_summary",
+ "as_of": "20261023",
+ "counts": {
+  "current_windows": 204,
+  "exploratory": 407,
+  "patterns": 1300,
+  "strict": 893,
+  "top_windows": 6
+ },
+ "coverage_detail": {
+  "concept_baskets": {
+   "first_date": "20120829",
+   "last_date": "20261023",
+   "rows": 545477,
+   "series": 173
+  },
+  "indices": {
+   "first_date": "20140620",
+   "last_date": "20261023",
+   "rows": 12000,
+   "series": 4
+  },
+  "industry_boards": {
+   "first_date": "20100104",
+   "last_date": "20261023",
+   "rows": 577467,
+   "series": 226
+  },
+  "stocks": {
+   "first_date": "20041104",
+   "last_date": "20261023",
+   "rows": 11873493,
+   "series": 5576
+  }
+ },
+ "criteria": {
+  "completed_months_only": true,
+  "exploratory": {
+   "min_hit_rate": 0.55,
+   "min_median_excess": 0.8
+  },
+  "history_rule": "历史等级（STRICT/EXPLORATORY）需要全样本 ≥8 年；不足 8 年记 INSUFFICIENT_HISTORY，不计算等级",
+  "in_sample_min_years": 8,
+  "min_hit_rate": 0.6,
+  "min_median_excess": 1.5,
+  "min_oos_tests": 5,
+  "min_total_years_for_test": 6,
+  "min_train_years": 5,
+  "min_years": 8,
+  "month_boundary": "基准（沪深300）当月首/末交易日；序列两端都要有收盘",
+  "rule": "月度持有收益 = 末收/首收−1；超额 = 序列 − 基准同区间",
+  "selection_rule": "模式是否进入产物 = 曾有时点资格 OR 历史等级达标；历史等级**不**决定谁被检验",
+  "training_rule": "每年资格只用该年之前的年份；训练年数 ≥5；训练集满足 STRICT（中位≥1.5pp 且命中≥60%）**或** EXPLORATORY（中位≥0.8pp 且命中≥55%）→ 该年具资格（双层，预先声明，不随结果调整）"
+ },
+ "limitations": [
+  "★ 自建概念指数是**合成研究序列**（当前成分等权、成交量无意义），不等于官方概念指数。",
+  "★ 概念成员与板块分类均为**当前**口径回溯，历史成分/分类变更无法还原 → walk-forward **不能**消除该偏差。",
+  "★ 行业板块**没有历史成分** → 不绑定个股；概念代表股票来自**当前成分**，不是当年龙头。",
+  "★ 退市股不在库内 → 早期年份存在幸存者偏差。",
+  "★ 样本外检验按年份滚动；检验年数 <5 标 INSUFFICIENT_OOS，不作结论。",
+  "★ pit_eligible_years 是**统计资格**，不等于当时可得的研究机会；discovery_basis = FULL_SAMPLE_ONLY 的模式在当年无法被发现。"
+ ],
+ "note": "★ 派生缓存：由完整产物确定性生成，仅供前端渲染；研究结论以源产物为准。本文件只含统计计数、覆盖、资格标准、限制说明与排序前 6 的窗口。",
+ "pit_only_count": 960,
+ "pit_only_summary": {
+  "by_history_tier": {
+   "BELOW_THRESHOLD": 770,
+   "INSUFFICIENT_HISTORY": 190
+  },
+  "median_positive": 596,
+  "note": "这些模式**只在时点上曾具资格**（全样本不达标或历史样本 <8 年），本轮**不进入首页**；若要开独立探索入口，建议以 oos_reportable 且 median_positive 为最低门槛。",
+  "oos_reportable": 125,
+  "oos_reportable_hit_rate": 0.24,
+  "total": 960
+ },
+ "source": {
+  "artifact": "pattern_discovery",
+  "artifact_version": "0.8",
+  "as_of": "20261023",
+  "bytes": 5726020,
+  "file": "pattern_discovery_v0_10.json",
+  "generated_at": "2026-10-25T09:03:58",
+  "protocol": "seasonal_walk_forward_pit_v2",
+  "sha256": "6d896f4ac9feb2993f54c9b858ac09edd76d9fce13f5f9d4e70f5c00c838b6bb"
+ },
+ "summary_version": "0.1",
+ "tier_note": "STRICT/EXPLORATORY = 全样本历史描述（预先声明阈值）；INSUFFICIENT_HISTORY = 历史样本 <8 年但曾在时点上具资格。**样本内通过 ≠ 已验证规律**；请同时看 evidence_grade / oos_by_train_tier / pit_eligible_years。",
+ "top_windows": [
+  {
+   "best_year": {
+    "excess_pct": 20.72,
+    "year": "2015"
+   },
+   "board": "锂矿",
+   "current_status": "PRE_WINDOW",
+   "hit_rate": 0.583,
+   "kind": "concept_basket",
+   "median_excess_pct": 5.95,
+   "month": 11,
+   "n_years": 12,
+   "oos_by_train_tier": {
+    "EXPLORATORY": {
+     "hit_rate": 0.5,
+     "median_excess_pct": 6.1,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 2
+    },
+    "STRICT": {
+     "hit_rate": 0.0,
+     "median_excess_pct": -3.04,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 1
+    }
+   },
+   "oos_hit_rate": 0.333,
+   "oos_median_excess_pct": -1.83,
+   "oos_note": "检验年数 < 5，不作结论",
+   "oos_status": "INSUFFICIENT_OOS",
+   "oos_tests": 3,
+   "pattern_id": "SEAS-CPT_lk-M11",
+   "pit_eligible_years": 3,
+   "pit_first_year": 2021,
+   "representative_stocks": [
+    {
+     "median_excess_pct": 9.9,
+     "name": "永兴材料",
+     "name_status": "RESOLVED",
+     "series_id": "sz002756",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 10
+    },
+    {
+     "median_excess_pct": 9.48,
+     "name": "融捷股份",
+     "name_status": "RESOLVED",
+     "series_id": "sz002192",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 12
+    },
+    {
+     "median_excess_pct": 8.27,
+     "name": "万里石",
+     "name_status": "RESOLVED",
+     "series_id": "sz002785",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 10
+    }
+   ],
+   "tier": "EXPLORATORY",
+   "worst_year": {
+    "excess_pct": -9.36,
+    "year": "2017"
+   },
+   "years": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ]
+  },
+  {
+   "best_year": {
+    "excess_pct": 45.22,
+    "year": "2015"
+   },
+   "board": "能源金属",
+   "current_status": "PRE_WINDOW",
+   "hit_rate": 0.583,
+   "kind": "industry_board",
+   "median_excess_pct": 5.49,
+   "month": 11,
+   "n_years": 12,
+   "oos_by_train_tier": {
+    "EXPLORATORY": {
+     "hit_rate": 0.5,
+     "median_excess_pct": 9.57,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 2
+    },
+    "STRICT": {
+     "hit_rate": 0.0,
+     "median_excess_pct": -6.35,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 1
+    }
+   },
+   "oos_hit_rate": 0.333,
+   "oos_median_excess_pct": -3.12,
+   "oos_note": "检验年数 < 5，不作结论",
+   "oos_status": "INSUFFICIENT_OOS",
+   "oos_tests": 3,
+   "pattern_id": "SEAS-BK881267-M11",
+   "pit_eligible_years": 3,
+   "pit_first_year": 2021,
+   "tier": "EXPLORATORY",
+   "worst_year": {
+    "excess_pct": -10.86,
+    "year": "2017"
+   },
+   "years": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ]
+  },
+  {
+   "best_year": {
+    "excess_pct": 148.09,
+    "year": "2014"
+   },
+   "board": "非金属材料",
+   "current_status": "PRE_WINDOW",
+   "hit_rate": 0.667,
+   "kind": "industry_board",
+   "median_excess_pct": 5.15,
+   "month": 11,
+   "n_years": 12,
+   "oos_by_train_tier": {
+    "EXPLORATORY": {
+     "hit_rate": 1.0,
+     "median_excess_pct": 12.37,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 2
+    },
+    "STRICT": {
+     "hit_rate": 0.5,
+     "median_excess_pct": 0.86,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 4
+    }
+   },
+   "oos_hit_rate": 0.667,
+   "oos_median_excess_pct": 3.4,
+   "oos_note": null,
+   "oos_status": "REPORTED",
+   "oos_tests": 6,
+   "pattern_id": "SEAS-BK881167-M11",
+   "pit_eligible_years": 6,
+   "pit_first_year": 2019,
+   "tier": "STRICT",
+   "worst_year": {
+    "excess_pct": -2.21,
+    "year": "2016"
+   },
+   "years": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ]
+  },
+  {
+   "best_year": {
+    "excess_pct": 16.29,
+    "year": "2020"
+   },
+   "board": "水产品",
+   "current_status": "PRE_WINDOW",
+   "hit_rate": 0.75,
+   "kind": "concept_basket",
+   "median_excess_pct": 5.1,
+   "month": 11,
+   "n_years": 12,
+   "oos_by_train_tier": {
+    "EXPLORATORY": {
+     "hit_rate": 1.0,
+     "median_excess_pct": 3.74,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 1
+    },
+    "STRICT": {
+     "hit_rate": 0.8,
+     "median_excess_pct": 12.04,
+     "status": "REPORTED",
+     "tests": 5
+    }
+   },
+   "oos_hit_rate": 0.833,
+   "oos_median_excess_pct": 7.89,
+   "oos_note": null,
+   "oos_status": "REPORTED",
+   "oos_tests": 6,
+   "pattern_id": "SEAS-CPT_scp1-M11",
+   "pit_eligible_years": 6,
+   "pit_first_year": 2019,
+   "representative_stocks": [
+    {
+     "median_excess_pct": 6.82,
+     "name": "国联水产",
+     "name_status": "RESOLVED",
+     "series_id": "sz300094",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 11
+    },
+    {
+     "median_excess_pct": 6.72,
+     "name": "东方海洋",
+     "name_status": "RESOLVED",
+     "series_id": "sz002086",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 12
+    },
+    {
+     "median_excess_pct": 6.31,
+     "name": "大湖股份",
+     "name_status": "RESOLVED",
+     "series_id": "sh600257",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 11
+    }
+   ],
+   "tier": "STRICT",
+   "worst_year": {
+    "excess_pct": -7.27,
+    "year": "2017"
+   },
+   "years": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ]
+  },
+  {
+   "best_year": {
+    "excess_pct": 20.31,
+    "year": "2015"
+   },
+   "board": "文化传媒",
+   "current_status": "PRE_WINDOW",
+   "hit_rate": 0.667,
+   "kind": "industry_board",
+   "median_excess_pct": 5.07,
+   "month": 11,
+   "n_years": 12,
+   "oos_by_train_tier": {
+    "EXPLORATORY": {
+     "hit_rate": 1.0,
+     "median_excess_pct": 11.67,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 1
+    },
+    "STRICT": {
+     "hit_rate": 1.0,
+     "median_excess_pct": 9.82,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 2
+    }
+   },
+   "oos_hit_rate": 1.0,
+   "oos_median_excess_pct": 11.67,
+   "oos_note": "检验年数 < 5，不作结论",
+   "oos_status": "INSUFFICIENT_OOS",
+   "oos_tests": 3,
+   "pattern_id": "SEAS-BK881164-M11",
+   "pit_eligible_years": 3,
+   "pit_first_year": 2023,
+   "tier": "STRICT",
+   "worst_year": {
+    "excess_pct": -11.93,
+    "year": "2014"
+   },
+   "years": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ]
+  },
+  {
+   "best_year": {
+    "excess_pct": 18.19,
+    "year": "2015"
+   },
+   "board": "水域改革",
+   "current_status": "PRE_WINDOW",
+   "hit_rate": 0.75,
+   "kind": "concept_basket",
+   "median_excess_pct": 4.88,
+   "month": 11,
+   "n_years": 12,
+   "oos_by_train_tier": {
+    "EXPLORATORY": {
+     "hit_rate": null,
+     "median_excess_pct": null,
+     "status": "NO_TEST",
+     "tests": 0
+    },
+    "STRICT": {
+     "hit_rate": 1.0,
+     "median_excess_pct": 12.18,
+     "status": "INSUFFICIENT_OOS",
+     "tests": 4
+    }
+   },
+   "oos_hit_rate": 1.0,
+   "oos_median_excess_pct": 12.18,
+   "oos_note": "检验年数 < 5，不作结论",
+   "oos_status": "INSUFFICIENT_OOS",
+   "oos_tests": 4,
+   "pattern_id": "SEAS-CPT_sygg-M11",
+   "pit_eligible_years": 4,
+   "pit_first_year": 2022,
+   "representative_stocks": [
+    {
+     "median_excess_pct": 6.82,
+     "name": "国联水产",
+     "name_status": "RESOLVED",
+     "series_id": "sz300094",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 11
+    },
+    {
+     "median_excess_pct": 6.72,
+     "name": "东方海洋",
+     "name_status": "RESOLVED",
+     "series_id": "sz002086",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 12
+    },
+    {
+     "median_excess_pct": 6.31,
+     "name": "大湖股份",
+     "name_status": "RESOLVED",
+     "series_id": "sh600257",
+     "source": "当前概念成分 + 基准日历对齐",
+     "years": 11
+    }
+   ],
+   "tier": "STRICT",
+   "worst_year": {
+    "excess_pct": -7.95,
+    "year": "2014"
+   },
+   "years": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ]
+  }
+ ]
+}

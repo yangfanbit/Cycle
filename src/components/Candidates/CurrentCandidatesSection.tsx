@@ -4,7 +4,7 @@
  * ★ 详情按**字段真实结构**渲染（对象/数组不转字符串）；无数据时诚实显示。
  */
 import { useEffect, useMemo, useState } from 'react';
-import raw from '@current/candidate_digest_v0_8.json';
+import raw from '@current/candidate_digest_v0_9.json';
 import { RichText } from '../RichText';
 
 interface Card {

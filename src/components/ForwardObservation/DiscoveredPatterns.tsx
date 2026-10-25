@@ -1,13 +1,16 @@
 /**
- * 从多年行情**发现**的季节性结构（v0.34 · v0.41 起接双层时点资格产物）。
+ * 从多年行情**发现**的季节性结构（v0.34 · v0.42 起改读**前端摘要**）。
  * ★ 只展示 STRICT（预先声明标准）与少量 EXPLORATORY；每条必须带年份数、命中率、中位超额。
  * ★ 当前状态：IN_WINDOW（当月）/ PRE_WINDOW（下月，前置观察）。
- * ★★ 三层口径分开显示：① 历史统计（n_years/中位/命中）② 滚动检验（逐年训练+测试，双层资格）
- *    ③ 时点结论（oos_* / oos_by_train_tier / evidence_grade）。**历史命中率不是未来概率**。
- * ★★ `pit_eligible_years` 是「**历史序列时点资格**」——按**当前**序列、只用过去数据取得的**统计**资格，
- *    不等于当时的分类/成分/研究机会可得；0 表示只有回看才成立。
+ * ★★ 三层口径分开显示：① 历史统计 ② 滚动检验（双层资格）③ 时点结论。**历史命中率不是未来概率**。
+ * ★★ `pit_eligible_years` 是「**历史序列时点资格**」——按**当前**序列、只用过去数据取得的**统计**资格。
+ *
+ * ★★★ v0.42 数据源变更：此前静态 import 完整研究产物（~5.7MB），组件实际只用
+ *   计数 / 覆盖 / 标准 / 限制 / 排序前 6 的窗口。现改读 `pattern_discovery_summary_v0_1.json`
+ *   （由 `build_pattern_summary_v0_1.py` 从完整产物**确定性派生**，~12KB，带 sha256 指纹）。
+ *   完整产物仍在仓库中，供研究与审计；本组件**不再**读它。
  */
-import raw from '@current/pattern_discovery_v0_9.json';
+import raw from '@current/pattern_discovery_summary_v0_1.json';
 import { RichText } from '../RichText';
 
 interface TierStat { tests: number; hit_rate: number | null; median_excess_pct: number | null; status?: string }
@@ -31,8 +34,9 @@ interface D {
   coverage_detail: { stocks: Cov; industry_boards: Cov; concept_baskets: Cov; indices: Cov };
   criteria: { min_years: number; min_median_excess: number; min_hit_rate: number; min_train_years?: number;
     min_oos_tests?: number; in_sample_min_years?: number };
-  source: { industry_boards: string; concept_baskets: string; benchmark: string };
-  patterns: P[]; current_windows: P[]; tier_note: string; limitations: string[];
+  source: { file: string; artifact_version: string; sha256: string; bytes: number };
+  counts: { patterns: number; strict: number; exploratory: number; current_windows: number; top_windows: number };
+  top_windows: P[]; tier_note: string; limitations: string[];
   pit_only_count?: number;
   pit_only_summary?: {
     total: number;
@@ -48,9 +52,10 @@ const doc = raw as unknown as D;
 const STATUS: Record<string, string> = { IN_WINDOW: '当月窗口', PRE_WINDOW: '下月窗口（前置）' };
 
 export function DiscoveredPatterns() {
-  const strict = doc.patterns.filter((p) => p.tier === 'STRICT');
-  const expl = doc.patterns.filter((p) => p.tier === 'EXPLORATORY');
-  const top = [...doc.current_windows].sort((a, b) => b.median_excess_pct - a.median_excess_pct).slice(0, 6);
+  const strictN = doc.counts.strict;
+  const explN = doc.counts.exploratory;
+  // ★ 摘要已按 median_excess_pct 降序排好前 N 条（与旧逻辑 sort+slice 等价），此处不再重排
+  const top = doc.top_windows;
   return (
     <section className="fwd-disc" aria-label="数据发现的历史季节性结构" data-discovery-as-of={doc.as_of}>
       <h4 className="fwd-sub">
@@ -58,10 +63,10 @@ export function DiscoveredPatterns() {
         {doc.coverage_detail.concept_baskets.series} 个 · 覆盖{' '}
         {doc.coverage_detail.industry_boards.first_date}–{doc.coverage_detail.industry_boards.last_date}）
       </h4>
-      <p className="fwd-cand-note" data-discovery-counts={`${strict.length}/${doc.patterns.length}`}>
-        STRICT <strong>{strict.length}</strong> 条（标准：≥{doc.criteria.min_years} 年 · 中位超额 ≥
+      <p className="fwd-cand-note" data-discovery-counts={`${strictN}/${doc.counts.patterns}`}>
+        STRICT <strong>{strictN}</strong> 条（标准：≥{doc.criteria.min_years} 年 · 中位超额 ≥
         {doc.criteria.min_median_excess}pp · 命中 ≥ {(doc.criteria.min_hit_rate * 100).toFixed(0)}%）
-        · 探索 <strong>{expl.length}</strong> 条 · 当前/下月窗口 <strong>{doc.current_windows.length}</strong> 条
+        · 探索 <strong>{explN}</strong> 条 · 当前/下月窗口 <strong>{doc.counts.current_windows}</strong> 条
         <span className="fwd-note">
           数据：股票 {doc.coverage_detail.stocks.series} 只（{doc.coverage_detail.stocks.first_date}–
           {doc.coverage_detail.stocks.last_date}）· 概念 {doc.coverage_detail.concept_baskets.rows.toLocaleString()} 行
