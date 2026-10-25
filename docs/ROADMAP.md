@@ -23,17 +23,23 @@
 | v0.50 | 候选快照 + 5/10/20 交易日表现账本（第二阶段核心收尾） | `build_candidate_ledger_v0_1.py` · `candidate_ledger_v0_1.json` · `CL-2026-10-23-v0_1.json` |
 | v0.51 | **候选追踪闭环**：形成日志（追加式）+ 结算视图（钉 `market_as_of`）+ 稳定实例 ID + 冻结快照拒绝覆盖 + `--check` 拆成「形成稳定性 / 结算一致性」；月度刷新入口；产品「四、候选追踪」；行业板块成分映射试点（结论：保留缺口） | `candidate_formation_log_v0_1.json` · `candidate_ledger_v0_2.json` · `CF-2026-10-23-01.json` · `CL-2026-10-23-v0_2.json` · `build_candidate_ledger_v0_2.py` · `test_candidate_ledger_v0_2.py`（11 项负向对照）· `monthly_candidate_ledger.py` · `CandidateTracking.tsx` · `industry_board_constituent_pilot_v0_1.json` |
 | v0.52 | **修复 `--write` 拒绝时的部分修改**：四类冲突检查全部前置（`preflight`），拒绝即返回 2 且**零修改**；落盘顺序改为「日志（提交点）→ 快照 → latest」；新增定向回归 T12（含「反证场景非空」） | `build_candidate_ledger_v0_2.py`（`write_guard_problem` / `log_append_problem` / `latest_ledger_problem` / `preflight`）· `test_candidate_ledger_v0_2.py`（12 项）。**产物版本与冻结文件全部不变** |
+| v0.53 | **历史机会地图 Wave 1**：2 个事件 `NOT_RESEARCHED` → `RESEARCHED_PIT`（浙江世宝 2025-06-24 一字板、亚太股份 2019-09-20 盘中涨停）；5 个事件写清「为什么推不动」（含「查到涨停但机制不同轴 → 不建角色」） | `historical_market_roles_v0_12.json`（33 事件 · 角色 80→82 · `NOT_RESEARCHED` 9→7 · PIT 0 违规）· `limit_up_audit_v0_9.json` · `2025_robotaxi_point_in_time.md` + `point_in_time_auto_2025_robotaxi.csv` · `2019_adas_point_in_time.md` + `point_in_time_auto_2019_adas.csv` · 角色测试 22→25 项 |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
 
-1. **历史事件证据覆盖**：仍有 **9 个事件 `NOT_RESEARCHED`**（v0.49 起；`SEMI-2023-AI-COMPUTE`、
-   `SEMI-2020-CHIPSHORTAGE`、`SEMI-2021-EQUIPMENT` 已转 `RESEARCHED_PIT`），按「需要什么」分三类 ——
+1. **历史事件证据覆盖**：仍有 **7 个事件 `NOT_RESEARCHED`**（v0.53 起；`AUTO-2025-ROBOTAXI`、
+   `AUTO-2019-ADAS` 本轮已转 `RESEARCHED_PIT`），按「**推不动的原因**」分三类 ——
    ① **需先定口径**：反例事件的「**负面点名**」等级（`POWER-2024-SUMMER-COUNTEREXAMPLE` 已查到
       负向点名报道，但现有等级只有「点名 + 上涨」，故不建角色）；
-   ② **需换证据类型**：窗口内没有「点名 + 涨幅」报道的（`FLU-2018-SEASONAL`、`SEMI-2020/2021/2022/2023`
-      多数窗口）→ 只能走**连板盘面**判据（现有自动判据 + 涨停审计）；
-   ③ **需历史成分快照**：`AUTO-2019-ADAS`、`CONS-2016-BAIJIU` 等，退市 / 改名股绑定仍需成分回溯。
+   ② **证据不足（已查，缺的是「点名 + 涨幅」报道或连板）**：`FLU-2018-SEASONAL`（季窗整体下跌，
+      更像反向年份）、`SEMI-2022-DOWNTURN`（对照事件，0 涨停属预期）、`CONS-2022-SERVICE-REBOUND`
+      （缓涨，最大单日 +5.02%）、`CONS-2024-TRADE-IN`（峰值同日且为全市场普涨日，无法与 β 分离）；
+   ③ **需人工/口径前置**：`CONS-2016-BAIJIU`（窗口 19 个月属长周期，需分年度检索；**不做**历史成分
+      或名称的代理映射）、`POWER-2017-SUMMER-COUNTEREXAMPLE`（查到 2017-05-17 建投能源涨停报道，
+      但归因**雄安概念**，与迎峰度夏机制不同轴 → 按纪律不建角色）。
+   ★ **自动盘面判据在全部 9 个事件的 30 个参与标的上一次都不成立**（无任何连板对）——
+   这 7 个事件要推进，只能补「同期点名 + 涨停/涨幅」的报道。
 2. **Market Snapshot 可追溯性**：`MS-2026-10-23-01` 的 `provenance.source_commit` **已填**
    （`fc0abf3`，v0.45；先提交输入再生成，可核验）。**仍未解决**：① `MS-2026-10-13-01` 仍为空
    （补它需重生成 CANONICAL，风险更大）；② `stage_review` 未进快照（`project_cc_to_objects` 白名单
@@ -113,7 +119,7 @@
 | 2 | 行业板块历史成分 → 补 75 条「不绑个股」 | ⛔ **试点判定不可行**（见下），**保留缺口**，不再按「批量补」推进 |
 | 3 | 官方概念 / 主题指数历史 | 未开始（仍用当前成分合成的等权序列） |
 | 4 | 退市股与历史名称快照 | 未开始 |
-| 5 | 剩余 9 个历史事件按需补证 | 未开始（不设阻塞） |
+| 5 | 剩余 7 个历史事件按需补证 | 部分推进：v0.53 已把 2 个转 `RESEARCHED_PIT`（2025 Robotaxi / 2019 ADAS），余 7 个已逐条写明阻塞（不设阻塞条件） |
 
 **方向 2 的试点结论（`industry_board_constituent_pilot_v0_1.json`）**
 
@@ -129,7 +135,8 @@
 **下一轮优先级建议**
 1. **等 2026-11 行情**：跑一次 `monthly_candidate_ledger.py --write`，
    产生首批 `FORWARD_PENDING → 结算` 的真实结果（这是第二阶段收官判据 2 的唯一缺口，属时间门槛）。
-2. 剩余 9 个历史事件按「需要什么」分三类推进（§0.2-1）。
+2. 剩余 7 个历史事件按「推不动的原因」分三类推进（§0.2-1）；★ 自动盘面判据在全部 30 个参与标的上
+   一次都不成立，因此**只能补同期点名报道**，不要再指望连板路径。
 3. 官方概念指数历史（方向 3）—— 与方向 2 同源问题，先确认数据可得性再立项。
 
 ### 0.6 第三阶段验收结论（2026-10-25 · v0.52）

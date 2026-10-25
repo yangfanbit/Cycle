@@ -20,7 +20,7 @@
 // ★ v0.31：v0_3 —— PIT 证据时间封口（as_of / retrospective 拆分）
 // ★ v0.32：v0_4 —— PIT **全路径**封口：legacy CSV 也走同一时点合同
 //   （support_level / supporting_evidence / posthoc_background / evidence_as_of_date）
-import raw from '@current/historical_market_roles_v0_11.json';
+import raw from '@current/historical_market_roles_v0_12.json';
 
 export type MarketRoleType =
   | 'PIT_MEDIA_NAMED_LEADER'

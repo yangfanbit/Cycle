@@ -163,6 +163,69 @@ class MarketRolesTest(unittest.TestCase):
         for r in ev["roles"]:
             self.assertEqual(r["identified_date"], "2019-04-11", r["security_id"])
 
+    def test_robotaxi_2025_pit_role(self):
+        """★★ v0.53：2025 Robotaxi 只有浙江世宝 1 条角色，且必须
+        ① 识别日 = 窗口末日（一字板当日）；② 次日连板只进事后背景、不得进支持性证据；
+        ③ 切片如实标 NOT_USABLE（成员 <2）。
+        """
+        ev = self.doc["events"]["AUTO-2025-ROBOTAXI"]
+        self.assertEqual(ev["research_status"], "RESEARCHED_PIT")
+        self.assertEqual(len(ev["roles"]), 1)
+        r = ev["roles"][0]
+        self.assertEqual(r["security_id"], "ZHEJIANGSHISHI")
+        self.assertEqual(r["role"], "PIT_MEDIA_NAMED_MOVER")
+        self.assertEqual(r["identified_date"], "2025-06-24")
+        self.assertEqual(ev["window"][1], "2025-06-24", "识别日不得晚于窗口末日")
+        self.assertTrue(r["pit_safe"])
+        self.assertEqual(r["support_level"], "MEDIA_NAMED_SAME_DAY")
+        # 来源组数写进证据，且必须 >1（三源互证）
+        self.assertGreaterEqual(r["evidence"]["independent_source_groups"], 2)
+        # ★ 事后背景里的次日连板不得出现在支持性证据中
+        sup_dates = [x["date"] for x in r["evidence"]["supporting_evidence"]]
+        ph_dates = [x["date"] for x in (r["evidence"].get("posthoc_background") or [])]
+        self.assertTrue(all(d <= r["identified_date"] for d in sup_dates), sup_dates)
+        self.assertIn("2025-06-25", ph_dates, "次日连板必须记在事后背景")
+        self.assertFalse(set(sup_dates) & set(ph_dates))
+        # 切片：成员 <2 → NOT_USABLE，且与文档声明一致（FULL）
+        s = ev["pit_slices"][0]
+        self.assertEqual(s["basket_status"], "NOT_USABLE")
+        self.assertEqual(len(s["members"]), 1)
+        self.assertEqual(s["match_scope"], "FULL")
+
+    def test_adas_2019_intraday_limit_up_not_close(self):
+        """★★ v0.53：2019 ADAS 的亚太股份是「**盘中**触及涨停、收盘未封板」——
+        角色成立（报道点名 + 涨停），但 notes 必须显式写明未封板，不得让读者以为收盘涨停。
+        """
+        ev = self.doc["events"]["AUTO-2019-ADAS"]
+        self.assertEqual(ev["research_status"], "RESEARCHED_PIT")
+        self.assertEqual(len(ev["roles"]), 1)
+        r = ev["roles"][0]
+        self.assertEqual(r["security_id"], "YATAI")
+        self.assertEqual(r["identified_date"], "2019-09-20")
+        self.assertTrue(r["pit_safe"])
+        note = r["notes"] or ""
+        self.assertIn("未封板", note, "必须写明收盘未封板")
+        self.assertIn("盘中", note, "必须写明是盘中涨停")
+        # 单一来源组 → 置信度只能是 medium / low，不得上调
+        self.assertIn(r["confidence"], ("medium", "low"))
+        self.assertEqual(r["evidence"]["independent_source_groups"], 1)
+        self.assertEqual(ev["pit_slices"][0]["basket_status"], "NOT_USABLE")
+
+    def test_remaining_not_researched_have_concrete_blockers(self):
+        """★ v0.53：NOT_RESEARCHED 不是「没查」—— 每条 gap 必须写出**结论类别**与实测依据，
+        不得只剩「尚未做研究」的通用话术。
+        """
+        must = ("FLU-2018-SEASONAL", "SEMI-2022-DOWNTURN", "POWER-2017-SUMMER-COUNTEREXAMPLE",
+                "POWER-2024-SUMMER-COUNTEREXAMPLE", "CONS-2016-BAIJIU",
+                "CONS-2022-SERVICE-REBOUND", "CONS-2024-TRADE-IN")
+        for eid in must:
+            ev = self.doc["events"][eid]
+            self.assertEqual(ev["research_status"], "NOT_RESEARCHED", eid)
+            gap = " ".join(ev["gaps"])
+            self.assertIn("结论", gap, "%s 的 gap 没写结论类别" % eid)
+            self.assertIn("★", gap, "%s 的 gap 没写实测依据" % eid)
+            self.assertNotIn("尚未做 PIT 角色研究", gap, "%s 仍用通用话术" % eid)
+
     def test_market_role_requires_consecutive_limit_up(self):
         """★★ 盘面角色（PIT_MARKET_OBSERVED）必须满足**可复核判据**：
         截至识别日 ≥2 次信号且至少一次相邻交易日连板，识别日 = 首次连板的第二个信号日。
