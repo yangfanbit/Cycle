@@ -20,6 +20,8 @@
 | v0.47 | 统计收尾：`MR-EV-04` 主值改用可复现的 51.8/62.0（旧值 52.1/61.5 标注不可复现）+ 敏感性收敛为脚本可复现的 4 场景；第一批事件补证：`SEMI-2023-AI-COMPUTE` → RESEARCHED_PIT（+3 角色） | `historical_market_roles_v0_9.json` · `limit_up_audit_v0_6.json` · 新事件 CSV + 方法记录 · 快照重生成（`--check` PASS） |
 | v0.48 | 修正「公司行为日」分支不做涨停带校验的误报（两处统一）+ 回归 10 项；信号 137→135、**角色关键字段零变化**；`SEMI-2020-CHIPSHORTAGE` → RESEARCHED_PIT（+2 角色，medium/low） | `historical_market_roles_v0_10.json` · `limit_up_audit_v0_7.json` · `test_limit_up_action_day_v0_48.py` · `2020_chipshortage_point_in_time.md` |
 | v0.49 | `SEMI-2021-EQUIPMENT` → RESEARCHED_PIT（+2 角色：中微 medium/2 组、中芯 medium/1 组）+ **修正可观测性表述**（拓荆 2022-04-20 才上市 → 不可观测，不是「实测 0 次」） | `historical_market_roles_v0_11.json` · `limit_up_audit_v0_8.json` · `2021_equipment_point_in_time.md` · `point_in_time_semi_2021_equipment.csv` |
+| v0.50 | 候选快照 + 5/10/20 交易日表现账本（第二阶段核心收尾） | `build_candidate_ledger_v0_1.py` · `candidate_ledger_v0_1.json` · `CL-2026-10-23-v0_1.json` |
+| v0.51 | **候选追踪闭环**：形成日志（追加式）+ 结算视图（钉 `market_as_of`）+ 稳定实例 ID + 冻结快照拒绝覆盖 + `--check` 拆成「形成稳定性 / 结算一致性」；月度刷新入口；产品「四、候选追踪」；行业板块成分映射试点（结论：保留缺口） | `candidate_formation_log_v0_1.json` · `candidate_ledger_v0_2.json` · `CF-2026-10-23-01.json` · `CL-2026-10-23-v0_2.json` · `build_candidate_ledger_v0_2.py` · `test_candidate_ledger_v0_2.py`（11 项负向对照）· `monthly_candidate_ledger.py` · `CandidateTracking.tsx` · `industry_board_constituent_pilot_v0_1.json` |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
@@ -39,9 +41,9 @@
    持续 `UNKNOWN`。恢复任一条源后再谈四维齐备。
 4. **季节性 960 条「仅时点资格」模式**：已分层（可报告 OOS 125 条、中位为正 596 条），
    **暂不**上首页；是否开独立探索入口待判断。
-5. **候选账本滚动（v0.50 起）**：每月结算一次 —— 上月窗口补 20 日、本月窗口开始跟踪；
-   产物 `candidate_ledger_v0_1.json` + `candidate_ledger_snapshots/CL-<as_of>-v0_1.json`，
-   摘要与 UI 自动跟随（`build_pattern_summary_v0_1.py --write`）。
+5. ~~**候选账本滚动（v0.50 起）**~~ → **v0.51 已机制化**：`monthly_candidate_ledger.py` 一条命令
+   完成「结算旧候选 + 形成新候选 + 刷新账本/摘要 + 三校验 + 报告」，**未新增 CI Job**。
+   剩余动作是**时间**：2026-11 窗口开始后跑一次，即可产生首批 `FORWARD_PENDING` 的真实结算。
 
 ### 0.3 需人工决策（不由脚本 / AI 代劳）
 
@@ -99,6 +101,35 @@
 **按需推进（明确不设为统一阻塞条件）**
 - 官方概念指数**全覆盖**、退市股**全覆盖**、剩余历史事件**全部研究完** —— 这三项都是「遇到具体研究问题再补」，
   不作为第二阶段收官或第三阶段启动的前置条件。
+
+### 0.5 第三阶段进展（2026-10-25 · v0.51）
+
+对照 §0.4「第三阶段建议方向」五条：
+
+| # | 方向 | 状态 |
+|---|---|---|
+| 1 | 结算闭环自动化（月度账本滚动，**不新增 CI Job**） | ✅ **v0.51 完成**：`monthly_candidate_ledger.py`，幂等实测通过 |
+| 2 | 行业板块历史成分 → 补 75 条「不绑个股」 | ⛔ **试点判定不可行**（见下），**保留缺口**，不再按「批量补」推进 |
+| 3 | 官方概念 / 主题指数历史 | 未开始（仍用当前成分合成的等权序列） |
+| 4 | 退市股与历史名称快照 | 未开始 |
+| 5 | 剩余 9 个历史事件按需补证 | 未开始（不设阻塞） |
+
+**方向 2 的试点结论（`industry_board_constituent_pilot_v0_1.json`）**
+
+- 本仓库 `scan_meta` 的 `members:` 有 173 条，**全部是自建概念篮子**，`members:BK*` 为 **0**
+  → 行业板块**连当前成分都没有**，更没有历史成分。
+- 61 个未绑定板块 × 173 个概念篮子：**精确同名 0**；名称近义仅 3 个，其中 2 个是子集关系。
+- 用 `游戏 ↔ 网络游戏` 做单板块试点（预先声明判据）：
+  `median|Δ超额| = 2.19pp`（阈值 ≤2.0，✗）· 同向率 `0.833`（≥0.80，✓）·
+  幸存者占比 `0.297`（≤0.20，✗）· `r = 0.947` → **`PROXY_NOT_ACCEPTABLE`**。
+- → **不批量补 75 条**。要继续打开行业级个股映射，必须先取得**可核的历史成分快照**
+  （属数据采购/授权问题，不是代码问题），届时另立轮次。
+
+**下一轮优先级建议**
+1. **等 2026-11 行情**：跑一次 `monthly_candidate_ledger.py --write`，
+   产生首批 `FORWARD_PENDING → 结算` 的真实结果（这是第二阶段收官判据 2 的唯一缺口，属时间门槛）。
+2. 剩余 9 个历史事件按「需要什么」分三类推进（§0.2-1）。
+3. 官方概念指数历史（方向 3）—— 与方向 2 同源问题，先确认数据可得性再立项。
 
 ## 1. 已完成基座
 
