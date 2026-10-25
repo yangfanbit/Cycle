@@ -18,9 +18,20 @@
 ## ★★ 授权边界（写进代码，不靠口头约定）
 
 中证官网的接口**公开无 token**，但「可公开访问」≠「许可公开再发布派生数据」。
-本轮未找到明确许可 → **默认拒绝**写入 `research/current/`（生产产物），
-真实派生数值只写 `.tmp/` 本地实验输出；确需生产写入必须显式 `--i-have-license`
-并在产物里带 `license_basis`，否则直接 `REFUSE` 退出。
+本轮未找到明确许可 → 默认 `state = UNCLEAR`，**不会**因为命令行开关变成「已确认」。
+
+写入目标只有两个允许范围：
+
+| 目标 | 授权要求 |
+|---|---|
+| `.tmp/`（既定本地实验目录，默认） | 无需授权 |
+| `research/current/`（唯一授权生产目录） | **必须同时**给 `--i-have-license` 与**非空** `--license-basis`，缺一即拒绝 |
+| 其余一切（仓库内其他受跟踪目录 / 仓库外） | **FORBIDDEN** —— 不允许「换个目录就绕过」 |
+
+- 拒绝时退出码 **2**，且**不联网、不建目录、不生成任何文件**（闸门在任何 I/O 之前）。
+- 目标路径先 `abspath` + `realpath` **解析符号链接**再判定，防止 `.tmp/x -> research/current` 这类别名。
+- 生产写入时，`--license-basis` 原样记入 `license.operator_attestation.basis`，并注明
+  **这是操作人员提交的依据、程序未独立核验**（`program_verified` 恒为 `false`）。
 
 ## 用法
 
@@ -70,6 +81,8 @@ BENCH = {
 }
 
 # ★ 授权状态：本轮实测结论，写进产物，避免下游误以为已获许可
+#   ★★ 默认 UNCLEAR，**不得**因为命令行开关而改变 —— 开关只代表「操作人员声明」，
+#      不代表「程序核验过许可」。
 LICENSE_STATUS = {
     "state": "UNCLEAR",
     "checked_at": "2026-10-25",
@@ -79,6 +92,80 @@ LICENSE_STATUS = {
                     "只落 `.tmp/` 本地实验输出，供内部复核。"),
     "to_resolve": "需人工向中证指数确认授权范围（属治理决策，本轮不做）。",
 }
+
+# ─────────────────────────── 写入闸门（纯函数，不联网/不建目录/不写文件） ───────────────────────────
+#
+# ★★ 三条硬规则：
+#   ① 只有两个允许的目标范围：`.tmp/`（既定本地实验目录）与 `research/current/`（唯一授权生产目录）；
+#      仓库内**其他**受 Git 跟踪的路径一律 FORBIDDEN —— 不允许「换个目录就绕过闸门」。
+#   ② 生产写入必须**同时**具备 `--i-have-license` 与**非空** `--license-basis`，缺一即拒绝。
+#   ③ 目标路径先 `abspath` + `realpath` **解析符号链接**再分类，防止用 `.tmp/xxx -> research/current`
+#      这类别名绕过。
+
+REPO_ROOT = os.path.realpath(REPO)
+LOCAL_EXPERIMENT_DIR = os.path.realpath(os.path.join(REPO, ".tmp"))
+PRODUCTION_DIR = os.path.realpath(CURRENT)
+
+
+def _is_within(path, parent):
+    try:
+        return os.path.commonpath([path, parent]) == parent
+    except ValueError:      # 跨盘符等
+        return False
+
+
+def classify_target(path):
+    """★ 规范化后分类：返回 `(kind, resolved)`。
+
+    - `LOCAL_EXPERIMENT`：仅 `.tmp/` 下 —— 无需授权；
+    - `PRODUCTION`：`research/current/` 下 —— 需授权；
+    - `FORBIDDEN`：其余一切（仓库内其他受跟踪路径 / 仓库外路径）。
+    """
+    resolved = os.path.realpath(os.path.abspath(path))
+    if _is_within(resolved, LOCAL_EXPERIMENT_DIR):
+        return "LOCAL_EXPERIMENT", resolved
+    if _is_within(resolved, PRODUCTION_DIR):
+        return "PRODUCTION", resolved
+    return "FORBIDDEN", resolved
+
+
+def check_write_gate(path, i_have_license, license_basis):
+    """★ 纯函数：返回 `(kind, resolved, problems)`；`problems` 非空 → 必须 REFUSE。
+
+    **不联网、不创建目录、不生成文件** —— 调用方必须在任何 I/O 之前调用它。
+    """
+    kind, resolved = classify_target(path)
+    problems = []
+    if kind == "FORBIDDEN":
+        problems.append("目标不在允许范围：只允许 `.tmp/`（本地实验）或 `research/current/`（授权生产）；"
+                        "实际解析为 %s" % resolved)
+    elif kind == "PRODUCTION":
+        if not i_have_license:
+            problems.append("生产写入缺 `--i-have-license`")
+        if not (license_basis or "").strip():
+            problems.append("生产写入缺非空 `--license-basis`（须写明授权依据与链接）")
+    return kind, resolved, problems
+
+
+def build_license_record(kind, license_basis):
+    """★ 严格区分「操作人员提交的授权依据」与「程序独立核验的许可事实」。
+
+    - `state` / `program_verified` **不因命令行开关而改变**（默认 UNCLEAR / false）；
+    - 生产写入时把调用者提供的依据**原样**记进 `operator_attestation`，并注明程序未核验。
+    """
+    rec = dict(LICENSE_STATUS)
+    rec["program_verified"] = False
+    rec["target_kind"] = kind
+    rec["operator_attestation"] = None
+    if kind == "PRODUCTION":
+        rec["operator_attestation"] = {
+            "claimed": True,
+            "basis": (license_basis or "").strip(),
+            "note": ("★ 这是**操作人员提交的授权依据**；程序**未**独立核验其真伪与范围，"
+                     "因此 `program_verified` 仍为 false、`state` 仍为 `UNCLEAR`。"
+                     "不得据此对外声称「已获中证授权」。"),
+        }
+    return rec
 
 
 # ─────────────────────────── 纯计算（可单测，无网络） ───────────────────────────
@@ -214,17 +301,25 @@ def main(argv):
     ap.add_argument("--out", default=DEFAULT_OUT)
     ap.add_argument("--i-have-license", action="store_true",
                     help="仅在**已确认**可公开再发布中证派生数据时使用")
-    ap.add_argument("--license-basis", default="")
+    ap.add_argument("--license-basis", default="",
+                    help="授权依据与链接（**必须**与 --i-have-license 同时提供，否则拒绝生产写入）")
     a = ap.parse_args(argv)
 
-    out_abs = os.path.abspath(a.out)
-    under_current = os.path.commonpath([out_abs, CURRENT]) == CURRENT
-    if under_current and not a.i_have_license:
-        print("REFUSE: 目标是生产目录 `research/current/`，但授权状态 = %s。" % LICENSE_STATUS["state"])
-        print("        %s" % LICENSE_STATUS["finding"])
-        print("        真实派生数值只写本地实验输出（默认 `.tmp/`）。")
-        print("        确需生产写入：加 `--i-have-license --license-basis \"<依据与链接>\"`。")
+    # ★★ 闸门必须在**任何 I/O 之前**：拒绝时不联网、不建目录、不生成文件。
+    kind, resolved, problems = check_write_gate(a.out, a.i_have_license, a.license_basis)
+    if problems:
+        print("REFUSE: 写入闸门未通过（授权状态 = %s）→ **未联网、未建目录、未生成任何文件**"
+              % LICENSE_STATUS["state"])
+        for p in problems:
+            print("  - %s" % p)
+        print("  %s" % LICENSE_STATUS["finding"])
+        print("  允许的目标：`.tmp/`（本地实验，无需授权）或 `research/current/`（需授权）。")
+        print("  生产写入示例：--out research/current/<file>.json --i-have-license "
+              "--license-basis \"<授权依据与链接>\"")
         return 2
+
+    out_abs = resolved
+    license_record = build_license_record(kind, a.license_basis)
 
     ev_path = latest_events_path()
     events_doc = json.loads(io.open(ev_path, encoding="utf-8").read())
@@ -254,14 +349,18 @@ def main(argv):
                                        "identity_note", "published_from", "base_date",
                                        "base_value", "price_basis")},
         "benchmark": BENCH,
-        "license": LICENSE_STATUS,
+        "license": license_record,
         "events_source": {"file": os.path.basename(ev_path),
                           "events": len(events_doc["events"])},
         "events": entries,
         "summary": {"events": len(entries), "computed": n_ok,
                     "gaps": [x["event_id"] for x in entries if x["status"] != "COMPUTED"],
                     "windows_with_backfill": [x["event_id"] for x in entries if x["backfilled"]],
-                    "note": "★ 本文件是**本地实验输出**，未提交到仓库；授权明确前不进入生产产物。"},
+                    "target_kind": kind,
+                    "note": ("★ 本文件是**本地实验输出**，未提交到仓库；授权明确前不进入生产产物。"
+                             if kind == "LOCAL_EXPERIMENT" else
+                             "★ 生产写入：授权依据由**操作人员**提交（见 license.operator_attestation），"
+                             "程序未独立核验，`state` 仍为 UNCLEAR。")},
     }
     body = json.dumps(doc, ensure_ascii=False, indent=1, sort_keys=True) + "\n"
 
@@ -270,9 +369,12 @@ def main(argv):
         io.open(out_abs, "w", encoding="utf-8", newline="\n").write(body)
         print("\n已写 %s（%.1f KB）%s" % (
             os.path.relpath(out_abs, REPO), len(body.encode()) / 1024.0,
-            "" if under_current else "（本地实验输出，不入库）"))
-        if under_current:
-            print("★ 生产写入已启用，license_basis = %r" % a.license_basis)
+            "" if kind == "PRODUCTION" else "（本地实验输出，不入库）"))
+        if kind == "PRODUCTION":
+            print("★ 生产写入已执行。license.state 仍为 %s、program_verified = false；"
+                  % license_record["state"])
+            print("  operator_attestation.basis = %r（**操作人员提交**，程序未独立核验）"
+                  % license_record["operator_attestation"]["basis"])
     else:
         print("\n（未写盘；加 --write 输出到 .tmp/）")
     return 0

@@ -3,6 +3,75 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
+## ★★ 2026-10-25（v0.57）Wave 2.1.1：修复官方指数授权闸门 + 11 月前瞻窗口启动准备
+
+**A · 闸门修复（P0）：三条硬规则写进代码**
+
+| 目标范围 | 授权要求 |
+|---|---|
+| `.tmp/`（既定本地实验目录，默认） | 无需授权 |
+| `research/current/`（唯一授权生产目录） | **必须同时**有 `--i-have-license` 与**非空** `--license-basis`，缺一即拒绝 |
+| 其余一切（仓库内其他受跟踪目录 / 仓库外） | **FORBIDDEN** —— 不允许「换个目录就绕过」 |
+
+- **拒绝时机**：闸门在**任何 I/O 之前**（不联网、不建目录、不生成文件），退出码 **2**。
+- **路径规范化**：`abspath` + **`realpath` 解析符号链接**后再分类 →
+  `.tmp/x -> research/current` 这类别名会被识别为 `PRODUCTION` 并要求授权（有测试）。
+- **授权记录分层**：生产写入时 `--license-basis` 原样记入
+  `license.operator_attestation.basis`，并注明**这是操作人员提交的依据、程序未独立核验**；
+  `license.state` 恒为 **`UNCLEAR`**、`program_verified` 恒为 **`false`** ——
+  **不因命令行开关把状态改成「已确认」**。
+- 默认 `.tmp/` 本地实验输出**不受影响**（无需授权即可写）。
+
+**B · 测试（8 → 17 项，全部合成数据、不联网）**
+
+无授权 / 只有开关 / 只有依据 / **空白依据** → 全部拒绝；合法组合 → `PRODUCTION` 且记录分层正确；
+符号链接与 `research/research/reports`、`docs`、`src`、仓库外路径 → 全部不可绕过；
+拒绝时 **fetch 计数 = 0** 且不建文件；`.tmp/` 默认路径照常可写。
+
+**C · 2026 年 11 月前瞻窗口启动准备（只做准备，不预生成结果）**
+
+现状（`candidate_ledger_v0_2.json`，`market_as_of = 2026-10-23`）：
+
+| 项 | 值 |
+|---|---|
+| 累计候选 | 204（批次 `CF-2026-10-23-01`） |
+| **2026-11 窗口** | **152 条**（概念篮子 100 · 行业板块 52），**全部 `PRE_WINDOW` / `FORWARD_PENDING`** |
+| 其 `anchor` | **`null`** —— 窗口尚未开始，首个交易日须由**实际交易日历**给出，**不预先写死** |
+| 其 5/10/20 | 全部 `NOT_STARTED`（**未结算，不得标为完整**） |
+| 行情最后交易日 | 2026-10-23 |
+
+**首次执行命令**（行情推进到 11 月后）：
+
+```bash
+# 完整周期：结算旧候选 + 形成下一批新候选（推荐）
+python research/scripts/monthly_candidate_ledger.py --write --with-discovery
+
+# 只要结算、不形成新批次（候选源落后时也可用）
+python research/scripts/monthly_candidate_ledger.py --write
+```
+
+- **前置数据**：`research/database/history_scan.db` 必须先更新到含 11 月交易日（否则 `market_as_of` 仍是 10-23，
+  脚本会打印「行情推进：否」并直接返回）。
+- **落盘位置**：`candidate_ledger_v0_2.json`（latest）· `candidate_ledger_snapshots/CL-<market_as_of>-v0_2.json`
+  （新结算日快照，**不可覆盖**）· 需要时追加形成批次 `CF-<formed_at>-NN` ·
+  派生摘要 `pattern_discovery_summary_v0_1.json`（产品数据）· 报告
+  `research/research/reports/candidate_ledger_refresh_<market_as_of>.json`。
+- **预计结算节奏**（★ 仅供参考，**必须以实际交易日历为准**）：若首个交易日为 2026-11-02，
+  则 5 日 ≈ 11-09、10 日 ≈ 11-16、20 日 ≈ 11-30；在此之前一律保持 `PENDING`。
+- ★ 这是**第一次真正的 `FORWARD_PENDING → 结算` 前瞻周期**（形成日 2026-10-23 早于窗口起点），
+  也是第二阶段收官判据 2 的唯一缺口 —— **在跑完并核验前，不得声称前瞻有效性已被验证**。
+
+**D · 本轮不改代码的部分**
+
+`monthly_candidate_ledger.py` 与 `build_candidate_ledger_v0_2.py` **未改动** —— 现有流程已满足：
+窗口起止取自交易日历、`anchor` 未开始即 `null`、5/10/20 未到即 `PENDING/NOT_STARTED`、
+结算钉 `market_as_of`、快照不可覆盖。**不为改代码而改代码。**
+
+**E · 边界**
+
+未改 Research Model / Schema / Export Contract / 冻结 SA·TO·Driver；未签发或归档 Market Snapshot、
+未改 `index.json`；未新增 CI Job；未预生成任何 11 月观测结果；未把未成熟结果标为完整。
+
 ## ★★ 2026-10-25（v0.56）Wave 2.1：半导体官方指数并列展示试点（能力已建，生产接入因授权暂缓）
 
 > 交付报告：**`docs/OFFICIAL_INDEX_PARALLEL_WAVE2_1_v0_1.md`**。

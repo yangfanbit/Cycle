@@ -12,6 +12,46 @@
 
 ---
 
+## 2026-10-25 · **v0.57 —— Wave 2.1.1：修复官方指数授权闸门 + 11 月前瞻窗口启动准备**
+
+**性质：安全修复（脚本）+ 运维准备（文档）。** ✔ 无产物变更、无数据变更。
+**未修改**：`research/current/*` · Research Model · `schema.sql` · Export Contract ·
+冻结 SA / TO / Driver · Market Snapshot 与 `index.json` · `monthly_candidate_ledger.py`（本轮无需改）。
+
+### 1 · 闸门修复
+
+| 目标范围 | 授权要求 |
+|---|---|
+| `.tmp/`（既定本地实验，默认） | 无需授权 |
+| `research/current/`（唯一授权生产目录） | **必须同时** `--i-have-license` + **非空** `--license-basis` |
+| 其余（仓库内其他受跟踪目录 / 仓库外） | **FORBIDDEN** |
+
+- 拒绝在**任何 I/O 之前**发生（不联网、不建目录、不写文件），退出码 **2**；
+- `abspath` + **`realpath`** 解析符号链接后再分类 → `.tmp/x -> research/current` 不能绕过；
+- 生产写入时 `--license-basis` 原样记入 `license.operator_attestation.basis`，并注明
+  **操作人员提交、程序未独立核验**；`license.state` 恒 `UNCLEAR`、`program_verified` 恒 `false`；
+- 默认 `.tmp/` 输出不受影响。
+
+### 2 · 测试（8 → **17** 项，全合成数据、不联网）
+
+无授权 / 只有开关 / 只有依据 / 空白依据 → 全部拒绝；合法组合 → `PRODUCTION` 且记录分层正确；
+符号链接、`research/research/reports`、`docs`、`src`、仓库外 → 全部不可绕过；
+拒绝时 **fetch 计数 = 0** 且不建文件；`.tmp/` 默认路径照常可写。
+
+### 3 · 11 月前瞻窗口启动准备（只准备，不预生成结果）
+
+`candidate_ledger_v0_2.json`（`market_as_of = 2026-10-23`）：204 候选，其中 **2026-11 窗口 152 条**
+（概念篮子 100 · 行业板块 52），**全部 `PRE_WINDOW` / `FORWARD_PENDING`**、`anchor = null`、
+5/10/20 全部 `NOT_STARTED`（**未结算，不得标为完整**）。
+
+首次执行（行情推进到 11 月后）：
+`python research/scripts/monthly_candidate_ledger.py --write --with-discovery`；
+落盘：`candidate_ledger_v0_2.json` · `candidate_ledger_snapshots/CL-<market_as_of>-v0_2.json` ·
+`pattern_discovery_summary_v0_1.json` · `reports/candidate_ledger_refresh_<market_as_of>.json`。
+★ 这是**第一次真正的 `FORWARD_PENDING → 结算`**；在跑完并核验前不得声称前瞻有效性已被验证。
+
+---
+
 ## 2026-10-25 · **v0.56 —— Wave 2.1：半导体官方指数并列展示试点（能力已建，生产接入因授权暂缓）**
 
 **性质：新增计算/类型/展示/测试 + 授权闸门。** ✔ 生产事件产物**零改动**。
