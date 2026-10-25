@@ -12,7 +12,9 @@
  *   3. 概念成分与证券名称都是**当前快照**回溯，存在幸存者/成分变更偏差（产物已逐条写）。
  */
 // ★ v0.33.1：v0_2 —— 三段口径（pre / event_day / post5·10·20）+ 事件阶段 + 数据新鲜度
-import raw from '@current/forward_observation_v0_2.json';
+// ★ v0.59：v0_3 修正 `current_performance` 口径（基准按参与者同段日期对齐、
+//   `price_as_of` = 实际参与序列最早末日、剔除落后 >5 个交易日的参与者）
+import raw from '@current/forward_observation_v0_3.json';
 
 export type EvidenceStatus = 'PRE_OBSERVATION' | 'ALREADY_WARM' | 'INSUFFICIENT' | 'WATCH_ONLY'
   | 'DATA_STALE' | 'UNKNOWN';
@@ -63,8 +65,13 @@ export interface ForwardCandidate {
   why_now: string;
   evidence_status: EvidenceStatus;
   historical_stats?: Record<string, unknown>;
-  current_performance?: { participants_with_data?: number; median_20d_excess_pct?: number; breadth_20d?: number;
-    price_as_of?: string | null; stale?: boolean; stale_note?: string | null } | null;
+  current_performance?: { participants_with_data?: number; participants_total?: number;
+    stale_participants?: number; median_20d_excess_pct?: number; breadth_20d?: number;
+    /** ★ v0_3：实际参与计算的序列中**最早的末日**（不是全库最大值） */
+    price_as_of?: string | null; stale?: boolean; stale_note?: string | null;
+    /** ★ v0_3：参与者 20 日窗口的并集（基准按每只参与者自己的这段日期对齐） */
+    participants_window?: [string, string] | null;
+    stale_participants_note?: string | null } | null;
   what_to_watch?: string;
   invalidate_if?: string;
   not_a_candidate_reason?: string;

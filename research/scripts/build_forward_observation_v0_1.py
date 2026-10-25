@@ -49,6 +49,9 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 CURRENT = os.path.join(REPO, "research", "current")
 CACHE_DIR = os.path.join(REPO, "research", "data", "forward_scan")
 CACHE = os.path.join(CACHE_DIR, "cache_v0_1.json")
+
+# ★ v0.59（Wave 2.3）：参与者末日距 as_of 超过这么多个交易日 → 剔除（不参与中位数、不补造）
+MAX_STALE_TRADING_DAYS = 5
 UNIVERSE = os.path.join(CACHE_DIR, "universe_v0_1.json")
 SNAP_DIR = os.path.join(CURRENT, "forward_observation_snapshots")
 OUT_RE = re.compile(r"forward_observation_v0_(\d+)\.json$")
@@ -681,7 +684,8 @@ def build(fetch: bool = False) -> dict:
         "as_of": as_of,
         "as_of_source": ("%s · 沪深300(sh000300) 最后一根完整日线（%s）"
                          % ((cache.get("sources", {}).get("CSI300") or {}).get("provider", "unknown"), as_of)),
-        "method_version": "v0_2",
+        # ★ v0_3：`current_performance` 口径变更（基准按参与者同段日期对齐、`price_as_of` = 实际参与序列最早末日、剔除落后参与者）
+        "method_version": "v0_3",
         "data_sources": [
             {"id": "sina_kline", "used_for": "指数 / 个股日线（原始收盘，不复权）",
              "endpoint": SINA_KLINE % ("<symbol>", 3000), "status": "PRIMARY",
@@ -786,30 +790,59 @@ def build_seasonal_windows(doc: dict) -> dict:
             sids = [p["security_id"] for e in (theme_doc or {}).get("events", [])
                     for p in (e.get("participants") or [])]
             sids = sorted(set(sids))
-            ex = []
+            # ★★ v0.59 修复（Wave 2.3）：原实现有两个口径错误 ——
+            #   ① 基准固定取「as_of 最近 21 根」，而参与者可能停在几个月前 →
+            #      两段窗口**完全不重叠**，「超额」在口径上不成立；
+            #   ② `price_as_of` 取**全库** raw 最大日（往往是基准自己的最新日），
+            #      会把「参与者其实停在 2026-01-30」显示成「行情截至 2026-10-23」。
+            #   现改为：基准按**参与者自己的首末日**取；`price_as_of` 取**实际参与计算的那些序列
+            #   中最早的末日**；并对「末日距 as_of 超过 MAX_STALE_TRADING_DAYS 个交易日」的参与者
+            #   直接剔除并计数（不参与中位数，不补造）。
+            ex, used_last, used_win, stale_sids = [], [], [], []
             for sid in sids:
                 rows = conn.execute(
                     "SELECT trade_date, close FROM market_daily WHERE series_id=? AND price_type='raw' "
                     "AND trade_date<=? ORDER BY trade_date DESC LIMIT 21", (sid, as_of)).fetchall()
+                if len(rows) < 21:
+                    continue
+                d0, d1 = rows[-1][0], rows[0][0]
+                # 交易日间隔（用基准自身的交易日计数，避免把自然日当交易日）
+                gap = conn.execute(
+                    "SELECT COUNT(*) FROM market_daily WHERE series_id='SH000300' AND price_type='raw' "
+                    "AND trade_date>? AND trade_date<=?", (d1, as_of)).fetchone()[0]
+                if gap > MAX_STALE_TRADING_DAYS:
+                    stale_sids.append(sid)
+                    continue
+                # ★ 基准必须落在**同一段**日期上（参与者自己的首末日）
                 brows = conn.execute(
                     "SELECT trade_date, close FROM market_daily WHERE series_id='SH000300' AND price_type='raw' "
-                    "AND trade_date<=? ORDER BY trade_date DESC LIMIT 21", (as_of,)).fetchall()
-                if len(rows) < 21 or len(brows) < 21:
+                    "AND trade_date BETWEEN ? AND ? ORDER BY trade_date", (d0, d1)).fetchall()
+                if len(brows) < 2 or brows[0][0] != d0 or brows[-1][0] != d1:
                     continue
                 r = rows[0][1] / rows[-1][1] - 1
-                b = brows[0][1] / brows[-1][1] - 1
+                b = brows[-1][1] / brows[0][1] - 1
                 ex.append((r - b) * 100)
+                used_last.append(d1)
+                used_win.append((d0, d1))
             if ex:
-                # ★★ 记录价格实际截至日（market_data.db 的最后一行），并与 as_of 对齐判定
-                last = conn.execute("SELECT MAX(trade_date) FROM market_daily WHERE price_type='raw'").fetchone()[0]
+                # ★★ price_as_of = **实际参与计算的序列里最早的末日**（不是全库最大值）
+                last = min(used_last)
                 perf = {"participants_with_data": len(ex),
+                        "participants_total": len(sids),
+                        "stale_participants": len(stale_sids),
                         "median_20d_excess_pct": round(statistics.median(ex), 2),
                         "breadth_20d": round(sum(1 for x in ex if x > 0) / len(ex), 3),
                         "price_as_of": last,
                         "stale": bool(last and last < as_of),
                         "stale_note": (None if (last and last >= as_of) else
-                                       "★ 行情截至 %s，早于观察时点 %s —— 不得据此断言「已升温/前置观察」"
-                                       % (last, as_of))}
+                                       "★ 参与计算的序列最早只到 %s，早于观察时点 %s —— "
+                                       "不得据此断言「已升温/前置观察」" % (last, as_of)),
+                        # ★ 参与者 20 日窗口的并集（基准按每只参与者自己的这段日期对齐）
+                        "participants_window": ([min(x[0] for x in used_win), max(x[1] for x in used_win)]
+                                                if used_win else None),
+                        "stale_participants_note": (
+                            ("★ 另有 %d 只参与者因行情落后 >%d 个交易日被**剔除**（不参与中位数、不补造）"
+                             % (len(stale_sids), MAX_STALE_TRADING_DAYS)) if stale_sids else None)}
         out.append({
             "theme_id": t["theme_id"], "label": t["label"],
             "occurrence_count": len(t["events"]),
@@ -817,7 +850,8 @@ def build_seasonal_windows(doc: dict) -> dict:
             "projected_window": [cur_start, cur_end],
             "as_of_inside": inside,
             "current_performance": perf,
-            "data_note": "参与者 20 日超额来自 market_data.db（原始收盘，截至其最后一行，可能早于 as_of）",
+            "data_note": ("参与者 20 日超额来自 market_data.db（**原始收盘**，基准按参与者同一段日期对齐）；"
+                          "`price_as_of` = 实际参与计算的序列中最早的末日，落后过多的参与者被剔除并计数"),
         })
     if conn is not None:
         conn.close()
@@ -1000,7 +1034,7 @@ def main(argv):
         return 1
     out = artifact_path(a.version)
     os.makedirs(SNAP_DIR, exist_ok=True)
-    snap = os.path.join(SNAP_DIR, "FO-%s-%s.json" % (doc["as_of"], doc.get("method_version", "v0_2")))
+    snap = os.path.join(SNAP_DIR, "FO-%s-%s.json" % (doc["as_of"], doc.get("method_version", "v0_3")))
     # ★★ 先确认两个路径都可用，再写任何一个
     for path in (out, snap):
         if os.path.exists(path):
