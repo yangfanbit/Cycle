@@ -807,8 +807,13 @@ export function EventCardBody({
                         {(x.evidence.posthoc_background ?? []).length > 0 && (
                           <span className="fem-role-posthoc" data-posthoc-background-list="1">
                             <strong>事后背景</strong>（识别日之后，<strong>不参与</strong>本角色成立判断）：
-                            {(x.evidence.posthoc_background ?? [])
-                              .map((i) => `${i.date} ${i.text}`).join('；')}
+                            {/* ★★ v0.53：此前是裸渲染（`.join('；')`），研究侧文本里的 `**` 会原样显示星号
+                                —— 与「研究侧字符串一律过 RichText」的规则冲突。改为逐条过 RichText。 */}
+                            {(x.evidence.posthoc_background ?? []).map((i, k) => (
+                              <span key={k}>
+                                {k > 0 ? '；' : ''}{i.date} <RichText text={i.text} />
+                              </span>
+                            ))}
                           </span>
                         )}
                         {(x.support_limits ?? []).length > 0 && (

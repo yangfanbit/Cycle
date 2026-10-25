@@ -57,6 +57,9 @@ Research Model · `schema.sql` · Export Contract · 冻结 SA / TO / Driver · 
 - `limit_up_audit_v0_9.json`：135 信号日（与 v0_8 一致，本轮未改判据）。
 - 产品 `historicalMarketRoles.ts` 改读 v0_12；角色测试 22 → **25 项**（新增：2025 角色与事后背景分离、
   2019 盘中涨停口径、剩余 7 条 gap 必须写结论与实测依据）。
+- ★ **修一处渲染陷阱**（被本轮数据暴露的既有缺陷）：`HistoricalEventMap` 的「事后背景」此前是**裸渲染**
+  （`map(...).join('；')`），研究侧文本里的 `**` 会原样显示星号 → 改为逐条过 `RichText`。
+  CI 首轮因此失败 1 项，已修复并全量复跑。
 - 校验：角色 `--check` / 审计 `--check` / `refresh_downstream --check`（0 FAIL）/ 相关前端 1056 项全过。
 
 ---

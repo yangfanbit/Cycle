@@ -64,6 +64,11 @@
 产品侧 `historicalMarketRoles.ts` 改读 v0_12。角色测试 22 → **25 项**（新增 3 项：2025 角色/事后背景分离、
 2019 盘中涨停口径、剩余 7 条 gap 必须写结论与实测依据）。
 
+★ **顺带修一处渲染陷阱**：`HistoricalEventMap` 的「事后背景」此前是**裸渲染**
+（`map(...).join('；')`），研究侧文本里的 `**` 会原样显示星号 —— 与本项目「研究侧字符串一律过
+`RichText`」的规则冲突。本轮新数据的 `posthoc_background` 正好含 `**`，CI 抓到（1 项失败），
+已改为逐条过 `RichText`。这是**被本轮数据暴露的既有缺陷**，不是新功能。
+
 **F · 边界**
 
 未改 Research Model / Schema / Export Contract / 冻结 SA·TO·Driver；未新增评分/排名/概率/预测；
