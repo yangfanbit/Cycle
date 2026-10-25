@@ -128,9 +128,10 @@ export function DiscoveredPatterns() {
       {doc.ledger && (
         <p className="fwd-note" data-ledger={doc.ledger.as_of}>
           候选账本（{doc.ledger.as_of}）：<strong>{doc.ledger.summary.candidates}</strong> 个候选 ·
-          5 日已结算 <strong>{doc.ledger.summary.horizon_status['5']?.AVAILABLE ?? 0}</strong> ·
-          10 日已结算 <strong>{doc.ledger.summary.horizon_status['10']?.AVAILABLE ?? 0}</strong> ·
-          20 日待结算 <strong>{doc.ledger.summary.horizon_status['20']?.PENDING ?? 0}</strong> ·
+          {/* ★ 键是产物里的 "5d"/"10d"/"20d"（带 d），不是 "5" —— 写错会静默显示 0 */}
+          5 日已结算 <strong>{doc.ledger.summary.horizon_status['5d']?.AVAILABLE ?? 0}</strong> ·
+          10 日已结算 <strong>{doc.ledger.summary.horizon_status['10d']?.AVAILABLE ?? 0}</strong> ·
+          20 日待结算 <strong>{doc.ledger.summary.horizon_status['20d']?.PENDING ?? 0}</strong> ·
           待窗口开始 <strong>{doc.ledger.summary.by_outcome_type.FORWARD_PENDING ?? 0}</strong>
           <span className="fwd-note">（锚点=窗口首个交易日；超额=板块−沪深300）</span>
         </p>

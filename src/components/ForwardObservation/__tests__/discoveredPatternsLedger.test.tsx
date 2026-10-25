@@ -28,6 +28,12 @@ describe('季节性发现 · 候选账本渲染', () => {
     // 计数与产物一致（不写死数字，按产物断言）
     expect(d.ledger.summary.candidates).toBeGreaterThan(0);
     expect(html).toContain(String(d.ledger.summary.candidates));
+    // ★★ 键是 "5d"/"10d"/"20d"：写错成 "5" 会静默显示 0 —— 必须按产物断言真实数字
+    const hs = d.ledger.summary.horizon_status;
+    expect(hs['5d']?.AVAILABLE ?? 0).toBeGreaterThan(0);
+    expect(html).toContain(`5 日已结算 <strong>${hs['5d'].AVAILABLE}</strong>`);
+    expect(html).toContain(`10 日已结算 <strong>${hs['10d'].AVAILABLE}</strong>`);
+    expect(html).toContain(`20 日待结算 <strong>${hs['20d'].PENDING}</strong>`);
   });
 
   it('★★ 本月已实现部分：带锚点、5/10 日有数字、20 日待结算', () => {
