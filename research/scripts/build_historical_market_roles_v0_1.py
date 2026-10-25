@@ -174,6 +174,17 @@ PIT_SOURCE_BY_EVENT = {
                                 "★ 同日报道也点名京能电力，但它不是本事件参与者 → 不建角色"},
         ],
     },
+    # ★★ v0.49：半导体设备事件补证（2 只；中微 2 组 / 中芯 1 组；沪硅无点名、拓荆窗口内未上市）。
+    "SEMI-2021-EQUIPMENT": {
+        "csv": "research/research/c2/point_in_time_semi_2021_equipment.csv",
+        "record": "research/research/c2/2021_equipment_point_in_time.md",
+        "slices": [
+            {"date": "2021-04-01", "documented_members": ["AMEC", "SMIC"],
+             "documented_status": "USABLE",
+             "documented_note": "2 只：中微公司（界面收盘涨超 5% + 证券时报网盘中超 7%，2 组）·"
+                                "中芯国际（界面 +2.89%，1 组）；沪硅产业无点名、拓荆科技 2022-04-20 才上市"},
+        ],
+    },
     # ★★ v0.48：缺芯事件补证（2 只；单一来源组 → medium / low，通富微电无点名不建角色）。
     "SEMI-2020-CHIPSHORTAGE": {
         "csv": "research/research/c2/point_in_time_semi_2020_chipshortage.csv",
@@ -223,11 +234,6 @@ RESEARCH_GAP_BY_EVENT = {
         "★ 已查过（报道）：华尔街见闻 2018-01-15《流感肆虐全球，防治药物紧俏脱销…》"
         "（https://baijiahao.baidu.com/s?id=1589626172474777826）确认疫情事实与中疾控 ILI% 数据，"
         "但属**名单/科普**体，**未点名个股并给出涨幅** → 不满足「点名 + 涨幅」门槛，故不设角色。"),
-    "SEMI-2021-EQUIPMENT": (
-        "2021-04～2021-07 窗口内至少一次**相邻连板**，或点名中微公司 / 沪硅产业 / 中芯国际 / 拓荆科技"
-        "并给出当日涨幅的同期报道。"
-        "★ 已查过（v0.48 盘面复核，判据已修正）：4 个参与标的在该窗口内**均 0 次涨停信号**（科创板档位 19.5–21.2%，"
-        "窗口内无达标日）→ 无连板对，不产生盘面角色；本批未检索到点名 + 涨幅的 T1/T2 报道。"),
     "SEMI-2022-DOWNTURN": (
         "**这是对照事件（下行周期）**：窗口内本就不应出现涨停潮，无角色是预期结果、不是数据缺失。"
         "★ 已查过（v0.48 盘面复核，判据已修正）：3 个参与标的**均 0 次涨停信号** → 无连板对。"
@@ -893,7 +899,7 @@ def derive_market_roles(conn, event, evidence_ev, cal_index, ev_rel=None):
                          "创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；"
                          "ST 状态无法从库内判定 —— 主板 ST（2026-07-06 前 5%）与创业板改革前 ST（5%）"
                          "落在带外（漏报方向），创业板/科创板 ST 与主板新规后 ST 与普通股同带"),
-                "audit": "research/research/reports/limit_up_audit_v0_7.json",
+                "audit": "research/research/reports/limit_up_audit_v0_8.json",
             },
             "pit_safe": bool(all(x["date"] <= ident for x in as_of)),
             "posthoc": False,

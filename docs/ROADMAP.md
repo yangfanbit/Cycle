@@ -19,12 +19,13 @@
 | v0.46 | 两项统计口径收口：`breadth` 精确复现 42.23%（24 变体全 NORMAL）+ 涨停家数复算 51.8/62.0 并归因（ST 排除）+ 单日 83/79 统一表述 | `research/scripts/recompute_market_regime_metrics_v0_1.py`（只读复算）· `market_regime/MS-2026-10-23-01.json` · 快照重生成（`--check` PASS） |
 | v0.47 | 统计收尾：`MR-EV-04` 主值改用可复现的 51.8/62.0（旧值 52.1/61.5 标注不可复现）+ 敏感性收敛为脚本可复现的 4 场景；第一批事件补证：`SEMI-2023-AI-COMPUTE` → RESEARCHED_PIT（+3 角色） | `historical_market_roles_v0_9.json` · `limit_up_audit_v0_6.json` · 新事件 CSV + 方法记录 · 快照重生成（`--check` PASS） |
 | v0.48 | 修正「公司行为日」分支不做涨停带校验的误报（两处统一）+ 回归 10 项；信号 137→135、**角色关键字段零变化**；`SEMI-2020-CHIPSHORTAGE` → RESEARCHED_PIT（+2 角色，medium/low） | `historical_market_roles_v0_10.json` · `limit_up_audit_v0_7.json` · `test_limit_up_action_day_v0_48.py` · `2020_chipshortage_point_in_time.md` |
+| v0.49 | `SEMI-2021-EQUIPMENT` → RESEARCHED_PIT（+2 角色：中微 medium/2 组、中芯 medium/1 组）+ **修正可观测性表述**（拓荆 2022-04-20 才上市 → 不可观测，不是「实测 0 次」） | `historical_market_roles_v0_11.json` · `limit_up_audit_v0_8.json` · `2021_equipment_point_in_time.md` · `point_in_time_semi_2021_equipment.csv` |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
 
-1. **历史事件证据覆盖**：仍有 **10 个事件 `NOT_RESEARCHED`**（v0.48 起；`SEMI-2023-AI-COMPUTE`、
-   `SEMI-2020-CHIPSHORTAGE` 已转 `RESEARCHED_PIT`），按「需要什么」分三类 ——
+1. **历史事件证据覆盖**：仍有 **9 个事件 `NOT_RESEARCHED`**（v0.49 起；`SEMI-2023-AI-COMPUTE`、
+   `SEMI-2020-CHIPSHORTAGE`、`SEMI-2021-EQUIPMENT` 已转 `RESEARCHED_PIT`），按「需要什么」分三类 ——
    ① **需先定口径**：反例事件的「**负面点名**」等级（`POWER-2024-SUMMER-COUNTEREXAMPLE` 已查到
       负向点名报道，但现有等级只有「点名 + 上涨」，故不建角色）；
    ② **需换证据类型**：窗口内没有「点名 + 涨幅」报道的（`FLU-2018-SEASONAL`、`SEMI-2020/2021/2022/2023`
