@@ -342,13 +342,20 @@ describe('历史市场角色 · 渲染', () => {
     expect(flu.research_status).toBe('NOT_RESEARCHED');
     expect(flu.roles).toHaveLength(0);
     const g = flu.gaps.join(' ');
-    expect(g).toContain('已检索');          // 不是「没查」
+    expect(g).toContain('已查过');          // 不是「没查」
     expect(g).toContain('未点名个股');      // 说明为什么不建角色
     expect(g).toMatch(/https?:\/\//);      // 附上查过的真实来源
+    // ★ 且必须**渲染出来**（此前 UI 只显示 gaps[0]，第二条会被吞掉）
+    const html = renderToStaticMarkup(<EventCardBody e={eventOf('FLU', 'FLU-2018-SEASONAL')} />);
+    expect(html).toContain('已查过');
+    expect(html).toContain('baijiahao.baidu.com');
+    expect(html).toContain('不设角色');
 
     const p24 = eventRoles('POWER-2024-SUMMER-COUNTEREXAMPLE')!;
     expect(p24.research_status).toBe('NOT_RESEARCHED');
     expect(p24.gaps.join(' ')).toContain('负向点名');
+    expect(renderToStaticMarkup(<EventCardBody e={eventOf('POWER_SUMMER', 'POWER-2024-SUMMER-COUNTEREXAMPLE')} />))
+      .toContain('负向点名');
   });
 
   it('★ v0.44：第二批 3 个事件已转 RESEARCHED_PIT，且角色仍带 URL / 证据 ≤ 识别日', () => {

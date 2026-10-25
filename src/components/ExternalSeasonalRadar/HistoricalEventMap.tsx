@@ -721,9 +721,17 @@ export function EventCardBody({
                 </p>
                 {r.roles.length === 0 && (
                   <p className="fem-roles-empty">
-                    本事件尚未做角色研究 —— <strong>不设角色</strong>，也不从涨幅倒推。
+                    本事件<strong>不设角色</strong> —— 不从涨幅 / 涨停次数倒推媒体定性。
+                    {/* ★★ v0.44：把**全部**缺口写出来（此前只显示第 1 条，
+                        「查过什么、为什么不够」会被吞掉）。 */}
                     {r.gaps.length > 0 && (
-                      <span className="fem-roles-gap"><RichText text={`需补：${r.gaps[0]}`} /></span>
+                      <span className="fem-roles-gap">
+                        {r.gaps.map((g, i) => (
+                          <span key={i} data-gap-index={i}>
+                            <RichText text={`${i === 0 ? '需补：' : '· '}${g}`} />
+                          </span>
+                        ))}
+                      </span>
                     )}
                   </p>
                 )}
