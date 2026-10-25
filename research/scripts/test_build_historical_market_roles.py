@@ -211,13 +211,51 @@ class MarketRolesTest(unittest.TestCase):
         self.assertEqual(r["evidence"]["independent_source_groups"], 1)
         self.assertEqual(ev["pit_slices"][0]["basket_status"], "NOT_USABLE")
 
+    def test_service_rebound_2022_roles_and_slice(self):
+        """★★ v0.54：疫后服务消费修复 —— 中国经济网 2022-12-14 给出两只个股当日涨幅。
+        ① 2 条角色、识别日 = 报道发布日；② 切片 USABLE 且与文档 FULL 一致；
+        ③ notes 必须写明两只在**涨幅榜后四位**（防被读成领涨/龙头）。
+        """
+        ev = self.doc["events"]["CONS-2022-SERVICE-REBOUND"]
+        self.assertEqual(ev["research_status"], "RESEARCHED_PIT")
+        self.assertEqual(len(ev["roles"]), 2)
+        got = {r["security_id"]: r for r in ev["roles"]}
+        self.assertEqual(set(got), {"JINJIANG", "BTG"})
+        for sid, r in got.items():
+            self.assertEqual(r["identified_date"], "2022-12-14", sid)
+            self.assertEqual(r["role"], "PIT_MEDIA_NAMED_MOVER")
+            self.assertTrue(r["pit_safe"], sid)
+            self.assertIn(r["confidence"], ("medium", "low"), "单一来源组不得上调")
+            self.assertEqual(r["evidence"]["independent_source_groups"], 1)
+            self.assertIn("涨幅榜后四位", r["notes"] or "", "%s 未说明是相对落后的正涨幅" % sid)
+            # 支持性证据不得晚于识别日
+            for x in r["evidence"]["supporting_evidence"]:
+                self.assertLessEqual(x["date"], r["identified_date"])
+        s = ev["pit_slices"][0]
+        self.assertEqual(s["basket_status"], "USABLE")
+        self.assertEqual(s["match_scope"], "FULL")
+        self.assertTrue(s["matches_document"])
+        self.assertEqual(sorted(s["members"]), ["BTG", "JINJIANG"])
+
+    def test_power_2017_gap_records_mechanism_mismatch(self):
+        """★★ v0.54：2017 迎峰度夏反例 —— 只检索「归因迎峰度夏」的报道，未找到；
+        反而找到方向相反的同期材料（迎峰度夏推高煤价、挤压火电）。必须写进 gap 且不建角色。
+        """
+        ev = self.doc["events"]["POWER-2017-SUMMER-COUNTEREXAMPLE"]
+        self.assertEqual(ev["research_status"], "NOT_RESEARCHED")
+        self.assertEqual(len(ev["roles"]), 0)
+        g = " ".join(ev["gaps"])
+        self.assertIn("机制不匹配", g)
+        self.assertIn("未重扫涨停", g, "必须写明本轮没有重走盘面路径")
+        self.assertIn("cs.com.cn", g, "必须附上方向相反的同期来源")
+        self.assertIn("雄安", g, "必须保留「归因雄安 → 不同轴」的记录")
+
     def test_remaining_not_researched_have_concrete_blockers(self):
-        """★ v0.53：NOT_RESEARCHED 不是「没查」—— 每条 gap 必须写出**结论类别**与实测依据，
+        """★ v0.53/v0.54：NOT_RESEARCHED 不是「没查」—— 每条 gap 必须写出**结论类别**与实测依据，
         不得只剩「尚未做研究」的通用话术。
         """
         must = ("FLU-2018-SEASONAL", "SEMI-2022-DOWNTURN", "POWER-2017-SUMMER-COUNTEREXAMPLE",
-                "POWER-2024-SUMMER-COUNTEREXAMPLE", "CONS-2016-BAIJIU",
-                "CONS-2022-SERVICE-REBOUND", "CONS-2024-TRADE-IN")
+                "POWER-2024-SUMMER-COUNTEREXAMPLE", "CONS-2016-BAIJIU", "CONS-2024-TRADE-IN")
         for eid in must:
             ev = self.doc["events"][eid]
             self.assertEqual(ev["research_status"], "NOT_RESEARCHED", eid)

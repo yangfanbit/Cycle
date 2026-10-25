@@ -282,13 +282,59 @@ describe('历史市场角色 · 渲染', () => {
     expect([...seen].some((x) => x.includes('participant_evidence_v0_4.json'))).toBe(true);
   });
 
-  it('★ 未研究事件显示「不设角色」+ 缺什么（不展示假角色）', () => {
+  it('★ 无已登记角色的事件显示准确文案 + 「不设角色」+ 缺什么（不展示假角色）', () => {
     // ★ v0.44：POWER-2022-SUMMER 已补证 → 空态断言改用仍未研究的事件
     const e = eventOf('POWER_SUMMER', 'POWER-2017-SUMMER-COUNTEREXAMPLE');
     const html = renderToStaticMarkup(<EventCardBody e={e} />);
-    expect(html).toContain('尚未研究');
+    // ★★ v0.54：文案从「尚未研究」改为「尚无已登记的时点角色」——
+    //    该事件已做过盘面核算与来源检索（并写明了负向结论），说「尚未研究」与事实不符。
+    expect(html).toContain('尚无已登记的时点角色');
+    expect(html).not.toContain('尚未研究');
     expect(html).toContain('不设角色');
     expect(html).toContain('需补');
+  });
+
+  it('★★ v0.54：新增角色 + 四条「不得混用」的语义必须在页面上成立', () => {
+    // ① CONS-2022：2 条「点名 + 当日涨幅」，切片 USABLE；但两只都在「涨幅榜后四位」→ 不是领涨
+    const sb = eventOf('CONSUMER_SEASON', 'CONS-2022-SERVICE-REBOUND');
+    const h1 = renderToStaticMarkup(<EventCardBody e={sb} />);
+    expect(eventRoles('CONS-2022-SERVICE-REBOUND')!.research_status).toBe('RESEARCHED_PIT');
+    expect(h1).toContain('已做 Point-in-Time 研究');
+    expect(h1).toContain('data-basket="USABLE"');
+    expect(h1).toContain('可识别 2 只');
+    expect(h1).toContain('涨幅榜后四位');   // 相对落后的正涨幅，不得读成领涨
+    expect(h1).toContain('报道称龙头 0');
+
+    // ② NOT_USABLE 的切片**不得**被描述成「可识别的题材篮子」
+    const adas = eventOf('AUTO_INTELLIGENCE', 'AUTO-2019-ADAS');
+    const h2 = renderToStaticMarkup(<EventCardBody e={adas} />);
+    expect(h2).toContain('data-basket="NOT_USABLE"');
+    expect(h2).toContain('不可用');
+    expect(h2).not.toContain('可识别 1 只');
+
+    // ③ 盘中触及涨停 与 收盘涨停 严格区分（2019 ADAS）
+    expect(h2).toContain('盘中');
+    expect(h2).toContain('未封板');
+
+    // ④ 识别日之后的事实只作事后背景（2025 Robotaxi：次日连板）
+    const rb = eventOf('AUTO_INTELLIGENCE', 'AUTO-2025-ROBOTAXI');
+    const h3 = renderToStaticMarkup(<EventCardBody e={rb} />);
+    expect(h3).toContain('data-posthoc-background-list="1"');
+    expect(h3).toContain('事后背景');
+    expect(h3).toContain('不参与');
+    const r = marketRoleOf('AUTO-2025-ROBOTAXI', 'ZHEJIANGSHISHI')!;
+    const sup = r.evidence.supporting_evidence ?? [];
+    const ph = r.evidence.posthoc_background ?? [];
+    expect(sup.length).toBeGreaterThan(0);
+    expect(sup.every((x) => x.date <= r.identified_date)).toBe(true);
+    expect(ph.length).toBeGreaterThan(0);
+    expect(ph.every((x) => x.date > r.identified_date)).toBe(true);
+
+    // ⑤ 「报道点名」不得显示成「龙头」
+    expect(MARKET_ROLE_LABEL.PIT_MEDIA_NAMED_MOVER).not.toContain('龙头');
+    for (const eid of ['CONS-2022-SERVICE-REBOUND', 'AUTO-2025-ROBOTAXI', 'AUTO-2019-ADAS']) {
+      expect(roleCounts(eid).leaderNamed, eid).toBe(0);
+    }
   });
 
   it('★★ v0.43：补证后的事件渲染出角色 + 来源原文链接，且仍标「报道称龙头 0」', () => {

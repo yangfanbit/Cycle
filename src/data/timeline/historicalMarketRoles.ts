@@ -20,7 +20,7 @@
 // ★ v0.31：v0_3 —— PIT 证据时间封口（as_of / retrospective 拆分）
 // ★ v0.32：v0_4 —— PIT **全路径**封口：legacy CSV 也走同一时点合同
 //   （support_level / supporting_evidence / posthoc_background / evidence_as_of_date）
-import raw from '@current/historical_market_roles_v0_12.json';
+import raw from '@current/historical_market_roles_v0_13.json';
 
 export type MarketRoleType =
   | 'PIT_MEDIA_NAMED_LEADER'
@@ -269,7 +269,9 @@ export const RESEARCH_STATUS_LABEL: Record<ResearchStatus, string> = {
   RESEARCHED_PIT: '已做 Point-in-Time 研究',
   DERIVED_FROM_REPORT: '由同期报道推导（未做完整 PIT 切片）',
   DERIVED_FROM_MARKET: '仅由盘面连板推导（无媒体报道）',
-  NOT_RESEARCHED: '尚未研究',
+  // ★ v0.54：原文案「尚未研究」与事实不符 —— 部分事件已做过盘面核算与来源检索，
+  //   只是还没有**可登记**的时点角色（详细原因在事件级 `gaps`）。
+  NOT_RESEARCHED: '尚无已登记的时点角色',
 };
 
 /** ★ 切片匹配范围文案（FULL / SUBSET / MISMATCH） */

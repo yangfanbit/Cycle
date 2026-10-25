@@ -1,0 +1,166 @@
+{
+ "artifact": "limit_up_audit",
+ "artifact_version": "0.10",
+ "generated_at": "2026-10-23",
+ "generated_by": "research/scripts/audit_market_limit_up_v0_1.py",
+ "supersedes": "research/research/reports/limit_up_audit_v0_9.json",
+ "audited_roles_artifact": "research/current/historical_market_roles_v0_13.json",
+ "st_rules": {
+  "detectable_from_db": false,
+  "why": "`securities` 只有 security_id / ticker / name / exchange，**没有** ST/*ST 标记 → 无法逐日判定某只股票在某个交易日是否处于风险警示状态。",
+  "bands_by_board_and_period": {
+   "MAIN": [
+    {
+     "period": "<= 2026-07-05",
+     "limit_pct": 5,
+     "consequence": "落在 9.8–10.6% 带**之外** → 不被识别（**漏报方向**）"
+    },
+    {
+     "period": ">= 2026-07-06",
+     "limit_pct": 10,
+     "consequence": "与主板普通股同带（9.8–10.6%）→ **不漏报**（规则已放宽）"
+    }
+   ],
+   "GEM": [
+    {
+     "period": "<= 2020-08-23",
+     "limit_pct": 5,
+     "consequence": "落在 9.8–10.6% 带外 → 漏报"
+    },
+    {
+     "period": ">= 2020-08-24",
+     "limit_pct": 20,
+     "consequence": "与创业板普通股同带（19.5–21.2%）→ 不漏报"
+    }
+   ],
+   "STAR": [
+    {
+     "period": "全部",
+     "limit_pct": 20,
+     "consequence": "与科创板普通股同带（19.5–21.2%）→ 不漏报"
+    }
+   ]
+  },
+  "sources": [
+   {
+    "title": "关于创业板风险警示股票和退市整理期股票交易制度安排的通知（深证上〔2020〕620 号）",
+    "url": "https://www.szse.cn/disclosure/notice/general/t20200710_579459.html",
+    "date": "2020-07-10",
+    "quote": "《特别规定》实施前，创业板风险警示股票 …… 价格涨跌幅限制比例为 5%；《特别规定》正式实施后，创业板风险警示股票涨跌幅限制比例为 20%。"
+   },
+   {
+    "title": "深交所投教：风险警示股票价格涨跌幅限制比例是多少？",
+    "url": "https://www.szse.cn/www/investor/knowledge/stock/deal/t20210127_584469.html",
+    "date": "2021-01-27",
+    "quote": "深交所对风险警示股票实行价格涨跌幅限制，主板、中小企业板风险警示股票价格涨跌幅限制比例为 5%，创业板风险警示股票价格涨跌幅限制比例为 20%。"
+   },
+   {
+    "title": "A股交易新规 7 月 6 日起施行（证监会上海监管局转载证券日报）",
+    "url": "https://www.csrc.gov.cn/shanghai/c105566/c7643909/content.shtml",
+    "date": "2026-07-06",
+    "quote": "沪深交易所将主板风险警示股票的涨跌幅限制由 5% 放宽至 10%，创业板和科创板的风险警示股票涨跌幅限制此前已统一为 20%，北交所风险警示股票为 30%，均维持不变。"
+   }
+  ],
+  "impact_on_current_universe": "本产物涉及的事件行情窗口最晚到 **2025-12-26**（< 2026-07-06）→ 主板 ST 的 5% 档在本库历史窗口内仍然适用；创业板 2020-08-24 前后已按日期分带处理。",
+  "not_verified": [
+   "《特别规定》的正式实施日未在该通知原文中给出；本库按首批注册制股票上市日 2020-08-24 近似，未逐日核对交易所公告。",
+   "科创板风险警示股票的 20% 未取得交易所原文（本轮只核到证监会转载与投教材料），按「与科创板普通股同带」处理。",
+   "退市整理期股票（主板 / 创业板 / 科创板）的涨跌幅与风险警示股票不同，本轮未独立核实，且库内无退市整理期标记 → 未纳入检测。",
+   "北交所（8/4 开头）风险警示股票为 30%，本库 `board_of()` 会误判为主板；当前事件参与者里**没有**北交所代码（实测前缀仅 600/601/603/000/001/002/003/300/301/688），故不影响既有结论，但属已知限制。"
+  ]
+ },
+ "schema_facts": {
+  "market_daily_columns": [
+   "series_id",
+   "trade_date",
+   "open",
+   "high",
+   "low",
+   "close",
+   "adj_close",
+   "price_type",
+   "volume",
+   "amount",
+   "data_source",
+   "retrieved_at"
+  ],
+  "price_types": [
+   "raw",
+   "adjusted"
+  ],
+  "has_pre_close": false,
+  "pre_close_consequence": "★ 库内**没有** `pre_close`（交易所参考前收）→ 官方「当日涨跌幅」无法直接取到，只能用相邻交易日比值近似。",
+  "securities_columns": [
+   "security_id",
+   "ticker",
+   "name",
+   "exchange"
+  ],
+  "has_st_flag": false,
+  "st_consequence": "★ `securities` 无 ST 标记 → ST 状态**无法从库内判定**。但「ST 一律 5%、一律漏报」的说法**不成立**（v0.32 按板块与时期更正）：主板 ST 5%（≤2026-07-05）/ 10%（≥2026-07-06）、创业板 ST 5%（≤2020-08-23）/ 20%（≥2020-08-24）、科创板 ST 20%。⇒ 只有主板新规前与创业板改革前的 ST 落在带外（漏报）；其余与普通股同带，**不会被漏掉**。详见 `st_rules`。"
+ },
+ "adjustment_relation": {
+  "finding": "★★ 该 provider 的前复权与原始价是**仿射**关系：`adj_close ≈ k·raw_close − c`（k/c 只在公司行为日变化）。",
+  "samples": [
+   {
+    "security_id": "MOUTAI",
+    "range": [
+     "2016-06-20",
+     "2016-06-30"
+    ],
+    "k": 1.0,
+    "c": -297.755,
+    "note": "k=1 → 纯加法复权（c=累计分红调整，故早年高分红段出现负价）"
+   },
+   {
+    "security_id": "GIGADEVICE",
+    "range": [
+     "2020-04-28",
+     "2020-05-06"
+    ],
+    "k": 0.510216,
+    "c": -3.367,
+    "note": "k≠1 → 仿射复权；adj_close 比值会偏离原始价环比"
+   }
+  ],
+  "consequence": "★ 因此 `adj_close` 比值**不能**等同于官方涨跌幅：偏移（c）越大，比值偏离越大；茅台 2016 段 c=−297.755 已使 adj_close 变负（`non_positive_adj_close`）。"
+ },
+ "final_rule": {
+  "primary": "非公司行为日取**原始价收盘环比**（= 官方涨跌幅）",
+  "action_day": "|raw 环比| > 21.6%（拆股/送转/大额除权）→ 取复权环比",
+  "cross_check": "同时用复权环比核验：两者都在带内 → `both_series_agree`；仅复权在带内 → `adjusted_ratio_ex_dividend`（当日除息，官方以复权为准）；**仅原始价在带内 → 不确认**",
+  "bands": {
+   "MAIN": "9.8–10.6%",
+   "GEM_before_2020-08-24": "9.8–10.6%",
+   "GEM_after_2020-08-24": "19.5–21.2%",
+   "STAR": "19.5–21.2%"
+  },
+  "why_band": "用「带」而非「≥阈值」：复权噪声会产生 13%/16% 这类非涨停跳变"
+ },
+ "rejected_approach": {
+  "formula": "pre_close_t = raw_{t-1} − (offset_t − offset_{t-1})，offset = adj − raw",
+  "why_rejected": "★ 该公式假设复权是**纯加法**（k=1）。实测存在 k≠1 的序列（兆易创新 k≈0.51）→ 会把 2020-05-06 的真实 +10.0% 算成 +4.86%，从而漏判涨停。已改用双口径规则，此处留证避免重复踩。"
+ },
+ "verdict": {
+  "signal_days_audited": 135,
+  "by_board": {
+   "GEM": 27,
+   "MAIN": 101,
+   "STAR": 7
+  },
+  "basis_agree_with_artifact": 135,
+  "basis_mismatch": 0,
+  "not_a_signal_under_final_rule": 0,
+  "raw_adj_differ_gt_0_5pp": 5,
+  "missing_rows": 0,
+  "mismatch_samples": []
+ },
+ "limits": [
+  "★ 识别结果是「价格区间信号」，不是交易所官方涨停认定；没有 pre_close 字段，除权除息日的官方涨跌幅无法逐日复算。",
+  "★ ST 状态无法从库内判定；漏报范围**按板块与时期**不同（见 `st_rules`）—— 只有主板 2026-07-06 之前、创业板 2020-08-24 之前的 ST 落在带外；创业板/科创板 ST 与主板新规后的 ST 与普通股同带。",
+  "★ 退市整理期 / 新股上市首日等特殊状态同样无法从库内判定 → 不检测；相关规则本轮未独立核实（见 `st_rules.not_verified`）。",
+  "★ 板块规则按 ticker 前缀与日期近似；规则生效日（科创板 2019-07-22、创业板 2020-08-24）边界日未逐日核对交易所公告。",
+  "★ 小额除息日（原始价跳变在日涨跌停范围内）无法与普通交易日区分 → 此类日子原始价环比会略低于官方涨跌幅，可能漏报（方向可接受）。",
+  "★ 盘面异动只能证明「当时观察到某种市场行为」，**不能**证明该股是题材核心、当时公认的龙头或题材上涨的驱动者。"
+ ]
+}
