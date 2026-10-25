@@ -19,6 +19,7 @@ import io
 import json
 import os
 import shutil
+import sqlite3
 import sys
 import tempfile
 import unittest
@@ -29,17 +30,23 @@ sys.path.insert(0, REPO)
 
 from research.scripts import discover_seasonal_patterns_v0_5 as m  # noqa: E402
 
-DB_PRESENT = os.path.exists(m.DB)
+DB_PRESENT = os.path.exists(m.DB) and os.environ.get("SEAS_NO_DB") != "1"   # 便于本地模拟 CI 场景
 SRC = os.path.join(m.CURRENT, sorted(
     [f for f in os.listdir(m.CURRENT) if m.OUT_RE.match(f)],
     key=lambda f: int(m.OUT_RE.match(f).group(1)))[-1])
+
+
+def _read_json(path):
+    """显式关闭文件句柄（消除 ResourceWarning）。"""
+    with io.open(path, encoding="utf-8") as f:
+        return json.load(f)
 
 
 def _run_check(doc_mutator=None, src_checked=True):
     """在临时目录里放一份（可被改坏的）产物，调用 check() 并捕获输出。"""
     tmp = tempfile.mkdtemp(prefix="seas_check_")
     try:
-        doc = json.load(open(SRC, encoding="utf-8"))
+        doc = _read_json(SRC)
         if doc_mutator:
             doc_mutator(doc)
         dst = os.path.join(tmp, os.path.basename(SRC))
@@ -95,7 +102,7 @@ class TestScanAudit(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.doc = json.load(open(SRC, encoding="utf-8"))
+        cls.doc = _read_json(SRC)
         cls.sa = cls.doc["scan_audit"]
 
     def test_groups_are_mutually_exclusive_and_sum(self):
@@ -139,7 +146,7 @@ class TestOOSInsufficiency(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.doc = json.load(open(SRC, encoding="utf-8"))
+        cls.doc = _read_json(SRC)
 
     def test_no_reported_below_threshold(self):
         bad = [p["pattern_id"] for p in self.doc["patterns"]
@@ -231,6 +238,172 @@ class TestNoDatabase(unittest.TestCase):
         rc, out = _run_check(mutate, src_checked=False)
         self.assertEqual(rc, 1, out)
         self.assertIn("protocol", out)
+
+
+class TestSyntheticDatabase(unittest.TestCase):
+    """★ A3：用**小型临时 SQLite** 跑与真实数据相同的核对逻辑（不依赖 1.3GB 大库）。
+
+    合成口径：2012–2022 共 11 个 3 月样本；板块 A 每月 3 月 +3%（STRICT），
+    板块 B +1%（EXPLORATORY）→ 训练 5 年后逐年具资格，检验年 2017–2022 共 6 个（可报告）。
+    基准为平盘，故超额 = 板块月收益。
+    """
+
+    YEARS = list(range(2012, 2023))
+    MARCH_PCT = {"BK_TEST_A": 3.0, "BK_TEST_B": 1.0}
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="seas_fixture_")
+        self.db = os.path.join(self.tmp, "fixture.db")
+        self._build_db()
+        self._old = (m.DB, m.CURRENT)
+        m.DB, m.CURRENT = self.db, self.tmp
+        rc = m.main(["--write", "--version", "1"])
+        self.assertEqual(rc, 0, "合成库上生成产物失败")
+        self.art = os.path.join(self.tmp, "pattern_discovery_v0_1.json")
+
+    def tearDown(self):
+        m.DB, m.CURRENT = self._old
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    # ---------- fixture ----------
+    def _build_db(self):
+        conn = sqlite3.connect(self.db)
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE scan_series (series_id TEXT PRIMARY KEY, name TEXT, kind TEXT, "
+                    "provider TEXT, symbol TEXT, price_type TEXT, first_date TEXT, last_date TEXT, "
+                    "rows INTEGER, fetched_at TEXT, status TEXT, note TEXT)")
+        cur.execute("CREATE TABLE scan_daily (series_id TEXT, trade_date TEXT, open REAL, high REAL, "
+                    "low REAL, close REAL, volume REAL)")
+        cur.execute("CREATE TABLE scan_meta (k TEXT PRIMARY KEY, v TEXT)")
+        days = (5, 15, 25)
+        bench = {}
+        for y in self.YEARS:
+            for mo in range(1, 13):
+                for d in days:
+                    bench["%04d%02d%02d" % (y, mo, d)] = 1000.0 + y + mo
+        for d in days:                      # as_of 落点：2023-03（当月未走完）
+            bench["202303%02d" % d] = 1000.0 + 2023 + 3
+        cur.executemany("INSERT INTO scan_daily VALUES (?,?,?,?,?,?,?)",
+                        [("CSI300", ds, cl, cl, cl, cl, 0.0) for ds, cl in bench.items()])
+        cur.execute("INSERT INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                    ("CSI300", "沪深300", "index", "fixture", "sh000300", "raw",
+                     "20120105", "20230325", len(bench), "fixture", "OK", None))
+        for sid, pct in self.MARCH_PCT.items():
+            rows = []
+            for y in self.YEARS:
+                for mo in range(1, 13):
+                    mult = 1.0 + (pct / 100.0 if mo == 3 else 0.0)
+                    for d in days:
+                        ds = "%04d%02d%02d" % (y, mo, d)
+                        cl = 1000.0 * (mult if d == 25 else 1.0)
+                        rows.append((sid, ds, cl, cl, cl, cl, 0.0))
+            cur.executemany("INSERT INTO scan_daily VALUES (?,?,?,?,?,?,?)", rows)
+            cur.execute("INSERT INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                        (sid, "测试板块" + sid[-1], "industry_board", "fixture", sid.lower(),
+                         "raw", "20120105", "20221225", len(rows), "fixture", "OK", None))
+        conn.commit()
+        conn.close()
+
+    # ---------- helpers ----------
+    def _check(self):
+        conn = sqlite3.connect(self.db)
+        try:
+            bench = m.load(conn, "CSI300")
+            as_of = bench[-1][0]
+            bounds = m.month_bounds(bench)
+            bh = {ym: v for ym, v in bounds.items() if ym < as_of[:6]}
+            br = m.month_returns(bench, bh)
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = m.check(conn, as_of, bh, br)
+            return rc, buf.getvalue()
+        finally:
+            conn.close()
+
+    def _mutate(self, fn):
+        doc = _read_json(self.art)
+        fn(doc)
+        with io.open(self.art, "w", encoding="utf-8") as f:
+            json.dump(doc, f, ensure_ascii=False)
+
+    # ---------- cases ----------
+    def test_fixture_artifact_is_wellformed(self):
+        doc = _read_json(self.art)
+        self.assertEqual(len(doc["current_windows"]), 2, "两个板块的 3 月窗口都应进入 current_windows")
+        win = {p["board_series"]: p for p in doc["current_windows"]}
+        a, b = win["BK_TEST_A"], win["BK_TEST_B"]
+        self.assertEqual(a["tier"], "STRICT")
+        self.assertEqual(b["tier"], "EXPLORATORY")
+        self.assertEqual(a["n_years"], 11)
+        self.assertEqual(a["oos_tests"], 6)
+        self.assertEqual(a["oos_status"], "REPORTED")
+        self.assertEqual(a["oos_hit_rate"], 1.0)
+        self.assertEqual(a["oos_median_excess_pct"], 3.0)
+        self.assertEqual(a["oos_by_train_tier"]["STRICT"]["tests"], 6)
+        self.assertEqual(a["oos_by_train_tier"]["EXPLORATORY"]["tests"], 0)
+        self.assertEqual(b["oos_by_train_tier"]["EXPLORATORY"]["tests"], 6)
+
+    def test_clean_fixture_passes(self):
+        rc, out = self._check()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("窗口指标核对", out)
+
+    def test_oos_hit_rate_drift_detected(self):
+        self._mutate(lambda d: d["current_windows"][0].update(oos_hit_rate=0.5))
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("oos_hit_rate", out)
+
+    def test_oos_years_drift_detected(self):
+        def mut(d):
+            d["current_windows"][0]["oos_years"] = d["current_windows"][0]["oos_years"][:-1]
+        self._mutate(mut)
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("oos_years", out)
+
+    def test_tier_median_drift_detected(self):
+        def mut(d):
+            d["current_windows"][0]["oos_by_train_tier"]["STRICT"]["median_excess_pct"] = 9.9
+        self._mutate(mut)
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("oos_by_train_tier.STRICT.median_excess_pct", out)
+
+    def test_tier_status_drift_detected(self):
+        def mut(d):
+            d["current_windows"][0]["oos_by_train_tier"]["EXPLORATORY"]["status"] = "REPORTED"
+        self._mutate(mut)
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("oos_by_train_tier.EXPLORATORY.status", out)
+
+    # ★ A1 负向：只改分组计数、保留 reconcile=true → 必须失败
+    def test_forged_reconcile_cannot_hide_lt6_error(self):
+        def mut(d):
+            d["scan_audit"]["years_group"]["lt_6"] += 1     # reconcile 仍是全 true
+        self._mutate(mut)
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("分组计数不自洽", out)
+        self.assertIn("years_group_sums_to_with_data", out)
+
+    def test_forged_reconcile_cannot_hide_eligible_error(self):
+        def mut(d):
+            d["scan_audit"]["eligibility_group"]["pit_eligible"] += 1
+        self._mutate(mut)
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("分组计数不自洽", out)
+
+    def test_stale_true_flag_detected_even_if_relation_holds(self):
+        """关系本身成立、但记录值与重算不一致（例如少记一条键）→ 必须失败。"""
+        def mut(d):
+            d["scan_audit"]["reconcile"].pop("pit_only_splits")
+        self._mutate(mut)
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("键集合", out)
 
 
 if __name__ == "__main__":

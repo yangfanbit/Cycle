@@ -75,7 +75,8 @@ INDEX_PATH = os.path.join(CURRENT, "historical_event_maps_index.json")
 EVIDENCE_VERSION = "0_4"
 EVIDENCE_REL = "research/current/participant_evidence_v%s.json" % EVIDENCE_VERSION
 EVIDENCE_PATH = os.path.join(REPO, EVIDENCE_REL)
-PIT_CSV = os.path.join(REPO, "research", "research", "c2", "point_in_time_leaders.csv")
+PIT_CSV_REL = "research/research/c2/point_in_time_leaders.csv"
+PIT_CSV = os.path.join(REPO, *PIT_CSV_REL.split("/"))
 GENERATED_AT = "2026-10-23"
 
 # ★ PIT CSV 的 identification_type → 本产物 role
@@ -98,6 +99,56 @@ PIT_SOURCE_BY_EVENT = {
             {"date": "2024-07-15",
              "documented_members": ["DAZHONGTONG", "JINJIANG", "XINGYUYUDA", "TIANMAI", "JINLONG"],
              "documented_status": "USABLE", "documented_note": "5 只；至此与事后集合一致（识别顺序有先后）"},
+        ],
+    },
+    # ★★ v0.43：新增 5 个事件的 PIT 研究记录（每事件一份 CSV + 一份方法记录）。
+    #    只收**同期报道明确点名**的标的；未点名的一律留缺口，不用行情/涨停倒推角色。
+    "ROBOTICS-2023-HUMANOID": {
+        "csv": "research/research/c2/point_in_time_robotics_2023_humanoid.csv",
+        "record": "research/research/c2/2023_humanoid_point_in_time.md",
+        "slices": [
+            {"date": "2023-08-29", "documented_members": ["KINCO", "LEADERDRIVE"],
+             "documented_status": "USABLE",
+             "documented_note": "2 只：步科股份（20cm 涨停）、绿的谐波（涨超 10–12%）；均为当日报道点名"},
+        ],
+    },
+    "SEMI-2025-MEMORY": {
+        "csv": "research/research/c2/point_in_time_semi_2025_memory.csv",
+        "record": "research/research/c2/2025_memory_point_in_time.md",
+        "slices": [
+            {"date": "2025-10-27", "documented_members": ["LONGYS", "GIGADEVICE", "BIWIN"],
+             "documented_status": "USABLE",
+             "documented_note": "3 只：江波龙 +19.82%、兆易创新 +10%、佰维存储 +7.31%（当日收盘报道）"},
+        ],
+    },
+    "RES-2024-GOLD": {
+        "csv": "research/research/c2/point_in_time_res_2024_gold.csv",
+        "record": "research/research/c2/2024_gold_point_in_time.md",
+        "slices": [
+            {"date": "2024-04-12", "documented_members": ["CFGOLD", "SDGOLD", "ZJGOLD"],
+             "documented_status": "USABLE",
+             "documented_note": "3 只：赤峰（涨超 6%）、山东（涨幅居前）、中金（跟涨）"},
+            {"date": "2025-04-21", "documented_members": ["CFGOLD", "SDGOLD", "ZJGOLD", "ZIJIN"],
+             "documented_status": "USABLE",
+             "documented_note": "4 只：新增紫金矿业（涨幅超 5%）；赤峰当日涨停"},
+        ],
+    },
+    "CONS-2019-BAIJIU-CORE": {
+        "csv": "research/research/c2/point_in_time_cons_2019_baijiu.csv",
+        "record": "research/research/c2/2019_baijiu_point_in_time.md",
+        "slices": [
+            {"date": "2020-01-13", "documented_members": ["MOUTAI", "WULIANGYE", "FENJIU"],
+             "documented_status": "USABLE",
+             "documented_note": "3 只：2019 全年累计涨幅 >100% 的年度回顾报道点名（区间统计，非当日涨停）"},
+        ],
+    },
+    "MEDIA-2018-GAMELICENSE": {
+        "csv": "research/research/c2/point_in_time_media_2018_gamelicense.csv",
+        "record": "research/research/c2/2018_gamelicense_point_in_time.md",
+        "slices": [
+            {"date": "2018-12-22", "documented_members": ["PERFECTWORLD", "SANQI"],
+             "documented_status": "USABLE",
+             "documented_note": "2 只：完美世界 +6.67%、三七互娱 +3.13%（版号重启消息次日收盘报道）"},
         ],
     },
 }
@@ -224,9 +275,10 @@ def load_theme_docs(index):
             yield entry, json.load(open(path, encoding="utf-8"))
 
 
-def load_pit_rows():
+def load_pit_rows(path=None):
+    """读取 PIT 研究记录 CSV。★ v0.43：支持**按事件**指定路径（每个事件一份 CSV）。"""
     rows = []
-    with open(PIT_CSV, encoding="utf-8-sig") as fh:
+    with open(path or PIT_CSV, encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             rows.append(r)
     return rows
@@ -316,7 +368,7 @@ def _split_dates(raw):
     return [x.strip() for x in str(raw or "").split(";") if x.strip()]
 
 
-def derive_pit_roles(event_id, rows, binding):
+def derive_pit_roles(event_id, rows, binding, source_record=None):
     """把 PIT CSV 行转成本产物的角色记录（保留原始识别类型与置信度）。
 
     ★★ v0.32：人工 PIT 记录也必须满足**同一套**时点合同 ——
@@ -338,7 +390,20 @@ def derive_pit_roles(event_id, rows, binding):
         sup_dates = _split_dates(r.get("supporting_evidence_dates")) or ([ident] if sup_text else [])
         ph_text = (r.get("posthoc_background") or "").strip()
         ph_dates = _split_dates(r.get("posthoc_background_dates"))
-        supporting = [{"date": d, "text": sup_text, "kind": "SUPPORTING"} for d in sup_dates]
+        # ★ v0.43：CSV 可带 `sources_json`（每来源 publisher/url/published_at/text/source_group/tier），
+        #   有则逐来源生成支持性证据（每条日期 ≤ 识别日），并把独立来源组计数写进证据。
+        raw_sources = (r.get("sources_json") or "").strip()
+        sources = json.loads(raw_sources) if raw_sources else []
+        if sources:
+            supporting = [{"date": (s.get("published_at") or ident),
+                           "text": s.get("text") or "",
+                           "kind": "SUPPORTING",
+                           "publisher": s.get("publisher"),
+                           "url": s.get("url"),
+                           "source_group": s.get("source_group"),
+                           "source_tier": s.get("tier")} for s in sources]
+        else:
+            supporting = [{"date": d, "text": sup_text, "kind": "SUPPORTING"} for d in sup_dates]
         posthoc = [{"date": d, "text": ph_text, "kind": "SUBSEQUENT_FACT"} for d in ph_dates]
         support_level = (r.get("support_level") or "").strip() or (
             "MEDIA_NAMED_SAME_DAY" if r["identification_type"] == "media_identified"
@@ -362,7 +427,11 @@ def derive_pit_roles(event_id, rows, binding):
                 "source_type": ("同期报道（媒体归因）" if r["identification_type"] == "media_identified"
                                 else "当日盘面可观察信息（无媒体定性）"),
                 "source_text": r["identification_source"],
-                "url": None,
+                "url": ((sources[0].get("url") if sources else None) or r.get("url") or None),
+                "sources": sources or None,
+                "independent_source_groups": (
+                    len({s.get("source_group") for s in sources if s.get("source_group")})
+                    if sources else None),
                 # ★ 盘面记录没有「报道发布日」→ 不得把识别日冒充成发布日
                 "published_at": ident if r["identification_type"] == "media_identified" else None,
                 "evidence_as_of_date": as_of,
@@ -379,7 +448,7 @@ def derive_pit_roles(event_id, rows, binding):
             "posthoc": False,
             "support_limits": limits,
             "notes": r["notes"],
-            "source_record": "research/research/c2/point_in_time_leaders.csv",
+            "source_record": source_record or PIT_CSV_REL,
         })
     return out
 
@@ -801,7 +870,6 @@ def build(conn=None) -> dict:
         raise SystemExit("FAIL: 输入产物路径不存在：%s" % ev_rel)
     if ev_rel != EVIDENCE_REL:
         raise SystemExit("FAIL: 输入产物版本 %s 与常量 %s 不一致" % (ev_rel, EVIDENCE_REL))
-    pit_rows = load_pit_rows()
     own_conn = conn is None
     if own_conn:
         conn = db.connect()
@@ -824,8 +892,10 @@ def build(conn=None) -> dict:
                 media_roles = derive_report_roles(ev_e, e, ev_rel)
                 if source:
                     # 有正式 PIT 研究的事件：以**研究记录**为准，不混入自动盘面角色
+                    # ★ v0.43：每个事件读自己的 CSV（此前所有事件共用同一份 → 会串数据）
+                    pit_rows = load_pit_rows(os.path.join(REPO, source["csv"]))
                     binding = bind_pit_ids(eid, pit_rows, e.get("participants") or [], secs)
-                    roles = derive_pit_roles(eid, pit_rows, binding)
+                    roles = derive_pit_roles(eid, pit_rows, binding, source["csv"])
                     status = "RESEARCHED_PIT"
                 else:
                     market_roles = derive_market_roles(conn, e, ev_e, cal_index, ev_rel)

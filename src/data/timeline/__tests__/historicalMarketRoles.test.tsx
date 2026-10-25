@@ -102,10 +102,26 @@ describe('历史市场角色 · 数据', () => {
   });
 
   it('★ 未研究的事件必须写明缺什么（不得静默留空）', () => {
-    const e = eventRoles('MEDIA-2018-GAMELICENSE')!;
+    // ★ v0.43：GAMELICENSE 已补 PIT 报道证据 → 空态断言改用**仍未研究**的事件
+    const e = eventRoles('POWER-2022-SUMMER')!;
     expect(e.research_status).toBe('NOT_RESEARCHED');
     expect(e.roles).toHaveLength(0);
     expect(e.gaps.length).toBeGreaterThan(0);
+  });
+
+  it('★★ v0.43：补证后的事件必须转为 RESEARCHED_PIT，且仍不出现「报道称龙头」', () => {
+    const e = eventRoles('MEDIA-2018-GAMELICENSE')!;
+    expect(e.research_status).toBe('RESEARCHED_PIT');
+    expect(e.roles.length).toBeGreaterThanOrEqual(2);
+    expect(roleCounts('MEDIA-2018-GAMELICENSE').leaderNamed).toBe(0);
+    for (const r of e.roles) {
+      // 每个角色都必须带 URL + 支持性证据，且证据日期 ≤ 识别日
+      expect(r.evidence.url, r.security_id).toMatch(/^https?:\/\//);
+      expect(r.pit_safe, r.security_id).toBe(true);
+      for (const x of r.evidence.supporting_evidence ?? []) {
+        expect(x.date <= r.identified_date, `${r.security_id} 证据 ${x.date}`).toBe(true);
+      }
+    }
   });
 });
 
@@ -265,10 +281,20 @@ describe('历史市场角色 · 渲染', () => {
   });
 
   it('★ 未研究事件显示「不设角色」+ 缺什么（不展示假角色）', () => {
-    const e = eventOf('MEDIA', 'MEDIA-2018-GAMELICENSE');
+    // ★ v0.43：改用仍未研究的事件（GAMELICENSE 已有 PIT 角色）
+    const e = eventOf('POWER_SUMMER', 'POWER-2022-SUMMER');
     const html = renderToStaticMarkup(<EventCardBody e={e} />);
     expect(html).toContain('尚未研究');
     expect(html).toContain('不设角色');
     expect(html).toContain('需补');
+  });
+
+  it('★★ v0.43：补证后的事件渲染出角色 + 来源原文链接，且仍标「报道称龙头 0」', () => {
+    const e = eventOf('MEDIA', 'MEDIA-2018-GAMELICENSE');
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(html).toContain('已做 Point-in-Time 研究');
+    expect(html).toContain('报道称龙头 0');
+    expect(html).toContain('data-role-url="1"');
+    expect(html).toContain('时间切片');
   });
 });

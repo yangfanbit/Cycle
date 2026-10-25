@@ -3,6 +3,40 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
+## ★★ 2026-10-25（v0.43）校验器收口 + 5 个历史事件补齐 PIT 报道证据
+
+> **A · 校验器收口（`discover_seasonal_patterns_v0_5.py`）**
+> ① **`reconcile` 改为在 `--check` 时重算**（此前只读产物里存的 `true`）：按 `years_group` /
+> `eligibility_group` / `pit_eligible_detail` / `history_group` / `records` + **实际数组长度**
+> 重算 8 条关系，逐项与产物比对，并校验**键集合**一致（少一条键也算错）。
+> 负向实测：只改 `years_group.lt_6`（或 `eligibility_group.pit_eligible`）、保留 `reconcile=true` → **检查失败**。
+> ② **窗口可见 OOS 指标全部纳入核对**：`oos_hit_rate` / `oos_median_excess_pct` / `oos_years` /
+> `oos_status` / 分层四项（tests·hit·median·status）/ 分层与合并的计数关系。
+> ③ **检查范围写清**：库可用时是「**窗口指标核对**」（不是完整产物逐字节复现）；无库时 `SKIP 源数据核对`。
+> ④ **合成库测试**（不依赖 1.3GB 大库）：临时 SQLite + 同一生成/校验路径，覆盖 OOS 漂移、分层漂移、
+> 窗口漂移与伪造 `reconcile`。测试计数：**本地 27 跑 0 跳 / CI 模拟 27 跑 4 跳**（跳的 4 个是依赖真实库的类）。
+> ⑤ 修掉校验器自身的 `ResourceWarning`（`json.load(open(...))` → 显式关闭）。
+> ★ 文档口径更正：`reconcile` 实际是 **8 条**（此前误写「七条」）。
+>
+> **B · 历史事件证据扩展（5 个事件：`NOT_RESEARCHED` → `RESEARCHED_PIT`）**
+> 产物 `historical_market_roles_v0_5.json`：角色 **53 → 67**（+14，全部 `PIT_MEDIA_NAMED_MOVER`）；
+> `RESEARCHED_PIT` 事件 **1 → 6**；`NOT_RESEARCHED` **20 → 15**；`pit_safe_violations = 0`；
+> **「报道称龙头」仍为 0**。每来源带 **URL / 发布日 / 来源组 / 层级**（新 `sources_json` 列 + 每事件一份 CSV）。
+> | 事件 | 角色（识别日） | 独立来源组 | 缺口 |
+> |---|---|---|---|
+> | ROBOTICS-2023-HUMANOID | 步科股份、绿的谐波（2023-08-29） | 2 / 2 | 埃夫特、雷赛、兆威无点名 |
+> | SEMI-2025-MEMORY | 江波龙、兆易创新、佰维存储（2025-10-27） | 2 / 2 / 1 | 寒武纪无点名 |
+> | RES-2024-GOLD | 赤峰、山东、中金（2024-04-12）、紫金（2025-04-21） | 1 / 2 / 1 / 1 | 3 只仅 1 组来源 |
+> | CONS-2019-BAIJIU-CORE | 茅台、五粮液、汾酒（2020-01-13） | 2 / 2 / 2 | 海天、伊利无点名；**区间统计**非当日涨停 |
+> | MEDIA-2018-GAMELICENSE | 完美世界、三七互娱（2018-12-22） | 2 / 2 | 巨人网络无点名 |
+> ★ 方法论：识别日 = 报道发布日；支持性证据 ≤ 识别日；同源转载只算 1 组；
+> 未点名的一律**不建角色**（不用涨停次数/区间涨幅倒推「媒体称龙头」）。
+> 生成器同步修了一个**真 bug**：此前 `load_pit_rows()` 全局只读一份 CSV，多事件会**串数据**；
+> 现在按事件读自己的 CSV，`source_record` 也逐事件写入。
+> **产物**：`historical_market_roles_v0_5.json` + 5 份 CSV + 5 份方法记录（`research/research/c2/*_point_in_time.md`）；
+> v0_1–v0_4 全部保留。`participant_evidence` / `theme_market_performance` 输入未变 → 版本不动（`--check` PASS）。
+> **快照**：`MS-2026-10-23-01` 仍 **DRAFT**（未 `--canonical`、未归档 10-13）。
+
 ## ★★ 2026-10-25（v0.42）季节性校验补齐 + 首页数据瘦身
 
 > **A · 校验与审计口径**

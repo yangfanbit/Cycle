@@ -542,6 +542,68 @@ def main(argv):
     return 0
 
 
+def _recompute_reconcile(sa, n_patterns, n_pit_only):
+    """★ A1：按产物内的分组计数与**实际数组长度**重算全部 8 条自洽关系。
+
+    返回 (relations, detail)：relations 与 `scan_audit.reconcile` 的键一一对应；
+    detail 给出每条关系的实算数字，便于报错时定位（不是只给一个 false）。
+    """
+    yg = sa.get("years_group") or {}
+    eg = sa.get("eligibility_group") or {}
+    pd = sa.get("pit_eligible_detail") or {}
+    hg = sa.get("history_group") or {}
+    rec = sa.get("records") or {}
+    with_data = sa.get("pairs_with_data")
+
+    lt6 = yg.get("lt_6", 0)
+    testable = (with_data - lt6) if isinstance(with_data, int) else None
+    rel = {
+        "years_group_sums_to_with_data":
+            lt6 + yg.get("6_to_7", 0) + yg.get("ge_8", 0) == with_data,
+        "eligibility_sums_to_testable":
+            (eg.get("pit_eligible", 0) + eg.get("never_eligible", 0) == testable
+             if testable is not None else False),
+        "pit_detail_sums_to_eligible":
+            pd.get("history_lt_8", 0) + pd.get("history_ge_8", 0) == eg.get("pit_eligible", 0),
+        "history_group_sums_to_ge_8":
+            (hg.get("strict", 0) + hg.get("exploratory", 0) + hg.get("below_threshold", 0)
+             == yg.get("ge_8", 0)),
+        "patterns_equal_history_qualified":
+            n_patterns == hg.get("strict", 0) + hg.get("exploratory", 0),
+        "pit_only_equal_eligible_minus_history_qualified":
+            n_pit_only == eg.get("pit_eligible", 0) - rec.get("patterns_point_in_time", 0),
+        "total_pit_eligible_equal":
+            rec.get("patterns_point_in_time", 0) + n_pit_only == eg.get("pit_eligible", 0),
+        "pit_only_splits":
+            n_pit_only == (rec.get("pit_only_insufficient_history", 0)
+                           + rec.get("pit_only_below_threshold", 0)),
+    }
+    detail = {
+        "years_group_sums_to_with_data":
+            "lt6+6to7+ge8=%d vs with_data=%r" % (lt6 + yg.get("6_to_7", 0) + yg.get("ge_8", 0), with_data),
+        "eligibility_sums_to_testable":
+            "eligible+never=%d vs testable=%r" % (eg.get("pit_eligible", 0) + eg.get("never_eligible", 0), testable),
+        "pit_detail_sums_to_eligible":
+            "lt8+ge8=%d vs eligible=%r" % (pd.get("history_lt_8", 0) + pd.get("history_ge_8", 0),
+                                           eg.get("pit_eligible")),
+        "history_group_sums_to_ge_8":
+            "strict+expl+below=%d vs ge8=%r" % (hg.get("strict", 0) + hg.get("exploratory", 0)
+                                                + hg.get("below_threshold", 0), yg.get("ge_8")),
+        "patterns_equal_history_qualified":
+            "patterns=%d vs strict+expl=%d" % (n_patterns, hg.get("strict", 0) + hg.get("exploratory", 0)),
+        "pit_only_equal_eligible_minus_history_qualified":
+            "pit_only=%d vs eligible-pit=%d" % (n_pit_only, eg.get("pit_eligible", 0)
+                                                - rec.get("patterns_point_in_time", 0)),
+        "total_pit_eligible_equal":
+            "pit+pitonly=%d vs eligible=%r" % (rec.get("patterns_point_in_time", 0) + n_pit_only,
+                                               eg.get("pit_eligible")),
+        "pit_only_splits":
+            "pit_only=%d vs lt8+below=%d" % (n_pit_only, rec.get("pit_only_insufficient_history", 0)
+                                             + rec.get("pit_only_below_threshold", 0)),
+    }
+    return rel, detail
+
+
 def check(conn, as_of, bounds_hist, bench_ret):
     """--check：结构不变量 + **源数据一致性**（重算当前窗口并与产物逐字段比对）。
 
@@ -553,7 +615,8 @@ def check(conn, as_of, bounds_hist, bench_ret):
     if not files:
         print("FAIL: 产物不存在"); return 1
     path = os.path.join(CURRENT, files[-1])
-    doc = json.load(open(path, encoding="utf-8"))
+    with open(path, encoding="utf-8") as fh:      # ★ 显式关闭句柄（避免 ResourceWarning）
+        doc = json.load(fh)
     errs = []
     src_checked = conn is not None
     c = doc.get("criteria") or {}
@@ -662,21 +725,30 @@ def check(conn, as_of, bounds_hist, bench_ret):
     if not (doc.get("scan_audit") or {}).get("pairs_scanned"):
         errs.append("缺 scan_audit（候选扫描量未交代）")
 
-    # ④b ★ A3：跨块对账（计数与汇总必须互相说得通）
+    # ④b ★ A1：跨块对账 —— **在检查时重算**，不信任产物里的布尔值
     sa = doc.get("scan_audit") or {}
     rec = sa.get("records") or {}
-    rc = sa.get("reconcile") or {}
-    bad = [k for k, v in rc.items() if v is not True]
-    if not rc:
+    rc_stored = sa.get("reconcile") or {}
+    n_patterns, n_pit_only = len(doc["patterns"]), len(doc.get("pit_only_patterns") or [])
+    rc_calc, rc_detail = _recompute_reconcile(sa, n_patterns, n_pit_only)
+    if not rc_stored:
         errs.append("缺 scan_audit.reconcile（扫描口径未自洽校验）")
-    elif bad:
-        errs.append("scan_audit.reconcile 不成立: %s" % bad)
-    if rec.get("patterns") != len(doc["patterns"]):
-        errs.append("scan_audit.records.patterns %r ≠ 实际 patterns %d"
-                    % (rec.get("patterns"), len(doc["patterns"])))
-    if rec.get("pit_only") != len(doc.get("pit_only_patterns") or []):
-        errs.append("scan_audit.records.pit_only %r ≠ 实际 pit_only %d"
-                    % (rec.get("pit_only"), len(doc.get("pit_only_patterns") or [])))
+    else:
+        missing = sorted(set(rc_calc) - set(rc_stored))
+        extra = sorted(set(rc_stored) - set(rc_calc))
+        if missing or extra:
+            errs.append("reconcile 键集合与实现不一致 —— 缺 %s / 多 %s" % (missing or "-", extra or "-"))
+        broken = [k for k, v in rc_calc.items() if not v]
+        if broken:
+            errs.append("分组计数不自洽: %s（实算 %s）"
+                        % (broken, {k: rc_detail[k] for k in broken}))
+        forged = [k for k in rc_calc if rc_stored.get(k) is not rc_calc[k]]
+        if forged:
+            errs.append("reconcile 记录与重算不一致（疑似留旧 true）: %s" % forged)
+    if rec.get("patterns") != n_patterns:
+        errs.append("scan_audit.records.patterns %r ≠ 实际 patterns %d" % (rec.get("patterns"), n_patterns))
+    if rec.get("pit_only") != n_pit_only:
+        errs.append("scan_audit.records.pit_only %r ≠ 实际 pit_only %d" % (rec.get("pit_only"), n_pit_only))
     bias = doc.get("bias_audit") or {}
     newm = (bias.get("new_method") or {}).get("tests")
     all_tests = sum(p.get("oos_tests", 0) for p in doc["patterns"]) + \
@@ -710,27 +782,37 @@ def check(conn, as_of, bounds_hist, bench_ret):
             exs = [v for _, v in vals]
             recs, elig = walk_forward(vals)
             hist = tier_of(vals, MIN_YEARS) if len(vals) >= MIN_YEARS else None
-            by = {}
-            for t in ("STRICT", "EXPLORATORY"):
-                by[t] = sum(1 for e in elig if e["train_tier"] == t)
+            oos = summarise(elig)          # 与生成器同一函数：OOS 次数/状态/命中/中位/年份/分层
             got = {
                 "n_years": len(vals),
                 "median_excess_pct": round(statistics.median(exs), 2),
                 "hit_rate": round(sum(1 for x in exs if x > 0) / len(exs), 3),
                 "tier": hist,
                 "pit_eligible_years": len(elig),
-                "oos_tests": len(elig),
-                "oos_status": "REPORTED" if len(elig) >= MIN_OOS_TESTS else "INSUFFICIENT_OOS",
                 "discovery_basis": "POINT_IN_TIME" if elig else "FULL_SAMPLE_ONLY",
+                # ★ A2：页面可见的样本外统计全部纳入核对
+                "oos_tests": oos["oos_tests"],
+                "oos_status": oos["oos_status"],
+                "oos_hit_rate": oos.get("oos_hit_rate"),
+                "oos_median_excess_pct": oos.get("oos_median_excess_pct"),
+                "oos_years": oos.get("oos_years"),
             }
             for k, v in got.items():
                 if p.get(k) != v:
                     drift.append("%s.%s 产物 %r ≠ 重算 %r" % (p["pattern_id"], k, p.get(k), v))
+            # 分层统计：次数 / 命中 / 中位 / 状态，逐项比对
             obt = p.get("oos_by_train_tier") or {}
             for t in ("STRICT", "EXPLORATORY"):
-                if (obt.get(t) or {}).get("tests") != by[t]:
-                    drift.append("%s.oos_by_train_tier.%s.tests 产物 %r ≠ 重算 %d"
-                                 % (p["pattern_id"], t, (obt.get(t) or {}).get("tests"), by[t]))
+                exp = oos["oos_by_train_tier"][t]
+                got_t = obt.get(t) or {}
+                for f in ("tests", "hit_rate", "median_excess_pct", "status"):
+                    if got_t.get(f) != exp.get(f):
+                        drift.append("%s.oos_by_train_tier.%s.%s 产物 %r ≠ 重算 %r"
+                                     % (p["pattern_id"], t, f, got_t.get(f), exp.get(f)))
+            # 分层与合并的计数关系（重算侧再确认一次）
+            if (obt.get("STRICT", {}).get("tests", 0)
+                    + obt.get("EXPLORATORY", {}).get("tests", 0)) != p.get("oos_tests", 0):
+                drift.append("%s 分层检验数之和 ≠ oos_tests（产物侧）" % p["pattern_id"])
     if drift:
         errs.extend(drift[:6])
         if len(drift) > 6:
