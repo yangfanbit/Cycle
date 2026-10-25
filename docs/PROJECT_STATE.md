@@ -3,6 +3,46 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
+## ★★ 2026-10-25（v0.47）统计口径收尾 + 第一批历史事件补证（快照仍 DRAFT）
+
+> **A · 快照统计收尾（不改任何判定）**
+> ① `MR-EV-04` **主值改用可复现的 51.8 / 62.0 = -16.5%**；旧记录 52.1 / 61.5 = -15.2% 明确标注
+> 「v0.45 及以前、**无法由任一口径精确复现**、仅作历史留痕」。`value_text` / `claim` / `window`
+> 三处统一，`window` 写明「**ST 不剔除**、北交所不检测」。
+> ② 敏感性表述从「24 种口径组合」**收敛为脚本可复现的 4 种场景**
+> （`--denominator {updn,all}` × `--exclude-st`）：**42.23 / 41.20 / 42.33 / 41.38%** →
+> 区间 41.20–42.33%，**全部 > 40%**（最保守 +1.20pp）；并注明「相邻性与池化是**固定实现**、不是开关，
+> 故不列入敏感性」。→ 「24 种」是一次性探针，**不再声称脚本可复现 24 种**。
+> ③ `research_context.known_limitations` 同步为 51.8 / 62.0 与「原记录 83 / 复算 79」。
+> ④ 四维状态未变（DOWN / NORMAL / UNKNOWN / RISK_OFF）；`OBS-2026-10-011` 未改写；`liquidity_state` 仍 UNKNOWN。
+>
+> **B · 第一批 5 个未研究事件（逐只复核，不降门槛）**
+> 方法：先核事件参与者身份，再用**现有连板判据**（相邻交易日信号 ≥2 且至少一次相邻连板）复算窗口行情；
+> 不使用新判据、不新增「负面点名」等级。
+> | 事件 | 结果 | 依据 |
+> |---|---|---|
+> | `SEMI-2023-AI-COMPUTE` | **→ RESEARCHED_PIT（+3 角色）** | 寒武纪 2023-03-17（证券时报·e公司 T2，20% 涨停，1 组 → medium）· 兆易创新 2023-03-23（每经 T2 + 证券之星 T3 → high）· 北方华创 2023-03-29（两 T3，措辞「涨超 9% / 触及涨停」→ medium） |
+> | `SEMI-2020-CHIPSHORTAGE` | 仍 NOT_RESEARCHED | 卓胜微 1 次（2021-04-30 action_day +2.00%）、长电/通富 0 次 → 无连板对；报道线索仅单一 T3 转载组 |
+> | `SEMI-2021-EQUIPMENT` | 仍 NOT_RESEARCHED | 4 只（中微/沪硅/中芯/拓荆）窗口内**均 0 次信号** |
+> | `SEMI-2022-DOWNTURN` | 仍 NOT_RESEARCHED（对照事件） | 卓胜微 +3.67%、圣邦 **−3.37%**（均 action_day 分支，实为误报）、海光 0 次 → 无连板对；下行窗口无涨停潮属预期 |
+> | `FLU-2018-SEASONAL` | 仍 NOT_RESEARCHED | 4 只参与标的窗口内**均 0 次信号**；报道侧仍是名单/科普体、未点名给涨幅 |
+> 产物：`historical_market_roles_v0_9.json`（角色 73 → **76**；RESEARCHED_PIT 9 → **10**；
+> NOT_RESEARCHED 12 → **11**；`pit_safe_violations` 0；「报道称龙头」仍 **0**）+ `limit_up_audit_v0_6.json`
+> （互指一致）+ 新事件 CSV 与方法记录。4 个未研究事件的 `gaps` 改写为「需要什么 + 已查过什么（含逐只信号数）」。
+>
+> **★ 顺带登记一个判据缺陷（本轮不改，避免动冻结判据）**
+> `classify()` 在「公司行为日」分支（|raw| > ACTION_DAY_PCT）**不做涨停带校验**，直接把 `adj_pct` 当信号 ——
+> 实测把 **+2.00% / +3.67% / −3.37%** 也算成「涨停信号」。现有 roles 中 2 条此类信号均落在
+> **retrospective** 列表（不影响任何角色成立与识别日），但会虚增「识别日之后 N 次信号」。
+> 修正会改变 audit 信号日计数与 roles 事后列表 → **单列下一轮**。
+>
+> **C · 快照与验证**
+> 输入先提交 `e9863c4` → 在该提交上重生成快照并传 `--source-commit` → `source_commit = e9863c4`。
+> 快照仅 3 行变化（`beta_note` / `timestamp` / `source_commit`）；observations 25 · objects 6 · candidates 534
+> **逐条未变**；`status` 仍 **DRAFT**；`index.json` 未改；10-13 仍唯一 CANONICAL、未归档。
+> 校验：regime 12 PASS · context 2 PASS · `--check` 逐字节一致 · 全目录 370 PASS / 8 WARN / 0 FAIL ·
+> 角色 `--check`（76 条 / PIT 0 违规）· 审计 `--check`（137 信号日）· 角色不变量 22 项 · `tsc -b --force` 0 错。
+
 ## ★★ 2026-10-25（v0.46）收口 breadth / 涨停家数两项统计口径（快照仍 DRAFT）
 
 > **问题**：`MR-EV-02`（breadth 42.23%）与 `MR-EV-04`（涨停 52.1 / 61.5）原先**只有一次性探针**，
