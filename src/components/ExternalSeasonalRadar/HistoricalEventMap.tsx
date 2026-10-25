@@ -46,11 +46,13 @@ import {
   MARKET_ROLE_MEANING,
   RESEARCH_STATUS_LABEL,
   SLICE_SCOPE_LABEL,
+  SUPPORT_LEVEL_LABEL,
   SUPPORT_LEVEL_MEANING,
   eventRoles,
   marketRoleOf,
   roleCounts,
 } from '../../data/timeline/historicalMarketRoles';
+import type { MarketRole } from '../../data/timeline/historicalMarketRoles';
 import { EmpiricalProbabilityBlock } from './EmpiricalProbabilityBlock';
 import { RichText, plain } from '../RichText';
 import {
@@ -383,6 +385,65 @@ export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: Historic
 }
 
 /**
+ * ★★ v0.44：角色的**全部支持性来源**（不再只显示单一 `evidence.url`）。
+ *
+ * 数据来源优先用 `evidence.supporting_evidence`（逐来源带 publisher / url / date /
+ * source_group / source_tier / text）；老记录没有这些字段时回退到 `evidence.url`。
+ * ★ 条数 ≠ 独立证据数：独立来源组单独标注。
+ */
+function RoleSources({ x }: { x: MarketRole }) {
+  const sup = (x.evidence.supporting_evidence ?? []).filter(
+    (i) => !!i.url || !!i.publisher || !!i.text,
+  );
+  // ★★ 兼容：只有**带来源元信息**（publisher / url）的记录才渲染来源清单；
+  //   盘面派生 / 旧 PIT 记录没有这些字段 → 维持原有「来源：<类型>」或单一链接。
+  const hasMeta = sup.some((i) => !!i.url || !!i.publisher);
+  if (!hasMeta) {
+    return x.evidence.url ? (
+      <a href={x.evidence.url} target="_blank" rel="noreferrer"
+         className="fem-role-src" data-role-url="1">来源原文</a>
+    ) : (
+      <span className="fem-role-src muted">来源：{x.evidence.source_type}</span>
+    );
+  }
+  const groups = x.evidence.independent_source_groups
+    ?? new Set(sup.map((i) => i.source_group).filter(Boolean)).size;
+  return (
+    <div className="fem-role-sources" data-role-sources={sup.length}
+         data-source-groups={groups}>
+      <span className="fem-role-sources-title">
+        支持性来源 {sup.length} 条 · 独立来源组 <strong>{groups}</strong>
+        <span className="fem-role-src-meta">
+          （同源转载只算 1 组；条数 ≠ 独立证据数）
+        </span>
+      </span>
+      <ul>
+        {sup.map((s, i) => (
+          <li key={`${s.url ?? s.publisher ?? i}`} data-role-source={i}
+              data-source-group={s.source_group ?? ''}
+              data-source-tier={s.source_tier ?? ''}>
+            {s.url ? (
+              <a href={s.url} target="_blank" rel="noreferrer"
+                 className="fem-role-src" data-role-url="1">
+                {s.publisher ?? '来源原文'}
+              </a>
+            ) : (
+              <span className="fem-role-src">{s.publisher ?? '来源'}</span>
+            )}
+            <span className="fem-role-src-meta">
+              {s.date}
+              {s.source_group ? ` · ${s.source_group}` : ''}
+              {s.source_tier ? ` · ${s.source_tier}` : ''}
+            </span>
+            {s.text && <span className="fem-role-src-text"><RichText text={s.text} /></span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/**
  * ★★ 事件卡**展开后的正文**（单独导出：`EventCard` 只负责折叠状态，
  *   正文抽出来才能被测试直接渲染 —— 单一实现，不为测试复制逻辑）。
  */
@@ -648,6 +709,10 @@ export function EventCardBody({
                       {c.earlyLowConfidence > 0 && (
                         <> · <strong>早期低置信观察 {c.earlyLowConfidence}</strong>（不满足自动盘面判据）</>
                       )}
+                      {/* ★★ v0.44：区间统计（回顾报道）单独计数 —— 不并入「当日点名」 */}
+                      {c.periodStat > 0 && (
+                        <> · <strong>区间统计 {c.periodStat}</strong>（回顾报道，非当日涨停/领涨）</>
+                      )}
                     </>
                   )}
                   {r.posthoc_leader_set && (
@@ -697,16 +762,25 @@ export function EventCardBody({
                             早期低置信观察
                           </span>
                         )}
+                        {/* ★★ v0.44：区间统计（回顾报道）—— 与「当日点名」严格区分 */}
+                        {x.support_level === 'MEDIA_NAMED_PERIOD_STAT' && (
+                          <span className="fem-role-support is-period"
+                                data-support-badge="MEDIA_NAMED_PERIOD_STAT"
+                                title={plain(SUPPORT_LEVEL_MEANING.MEDIA_NAMED_PERIOD_STAT)}>
+                            {SUPPORT_LEVEL_LABEL.MEDIA_NAMED_PERIOD_STAT}
+                          </span>
+                        )}
                         {x.evidence.evidence_as_of_date && (
                           <span className="fem-role-asof" data-support-as-of-label="1">
                             支持性证据截至 {x.evidence.evidence_as_of_date}
                           </span>
                         )}
-                        {x.evidence.url ? (
-                          <a href={x.evidence.url} target="_blank" rel="noreferrer"
-                             className="fem-role-src" data-role-url="1">来源原文</a>
-                        ) : (
-                          <span className="fem-role-src muted">来源：{x.evidence.source_type}</span>
+                        <RoleSources x={x} />
+                        {/* ★★ v0.44：区间统计等级必须显式写出「不意味着什么」 */}
+                        {x.support_level === 'MEDIA_NAMED_PERIOD_STAT' && (
+                          <span className="fem-role-period-caveat" data-period-stat-caveat="1">
+                            <RichText text={SUPPORT_LEVEL_MEANING.MEDIA_NAMED_PERIOD_STAT} />
+                          </span>
                         )}
                         {/* ★★ v0.31：盘面信号分「截至识别日（支持角色）」与「识别日之后（全窗口事后统计）」两行 */}
                         {(x.evidence.limit_up_days_as_of || x.evidence.retrospective_limit_up_days) && (

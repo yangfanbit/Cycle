@@ -20,7 +20,7 @@
 // ★ v0.31：v0_3 —— PIT 证据时间封口（as_of / retrospective 拆分）
 // ★ v0.32：v0_4 —— PIT **全路径**封口：legacy CSV 也走同一时点合同
 //   （support_level / supporting_evidence / posthoc_background / evidence_as_of_date）
-import raw from '@current/historical_market_roles_v0_7.json';
+import raw from '@current/historical_market_roles_v0_8.json';
 
 export type MarketRoleType =
   | 'PIT_MEDIA_NAMED_LEADER'
@@ -61,7 +61,14 @@ export type RoleSupportLevel =
   /** 由参与者证据的报道背书派生（发布日 = 识别日） */
   | 'REPORT_BACKED'
   /** ★ 早期低置信观察：当日有盘面/研究记录，但不满足自动判据（未涨停 / 未连板） */
-  | 'EARLY_LOW_CONFIDENCE_OBSERVATION';
+  | 'EARLY_LOW_CONFIDENCE_OBSERVATION'
+  /**
+   * ★★ v0.44：同期报道点名并给出**区间累计涨幅**（年度/季度回顾类），
+   * 不是当日涨停/领涨。识别日 = 报道发布日。
+   * 只证明「报道发布时媒体已把它列为强势标的」，
+   * **不证明**区间起点即可识别、也**不证明**发布当日涨停/领涨/盘面核心。
+   */
+  | 'MEDIA_NAMED_PERIOD_STAT';
 
 /** ★★ v0.32：一条带日期的事实（支持性证据或事后背景） */
 export interface DatedEvidence {
@@ -69,6 +76,13 @@ export interface DatedEvidence {
   text: string;
   /** SUPPORTING / LIMIT_UP_SIGNAL / REPORT / SUBSEQUENT_FACT */
   kind?: string | null;
+  /** ★★ v0.44：逐来源元信息 —— 老记录可能没有这些字段（可选，缺省不显示） */
+  publisher?: string | null;
+  url?: string | null;
+  /** 独立来源组（同一发布主体/同源转载只算 1 组） */
+  source_group?: string | null;
+  /** 来源层级 T1/T2/T3（缺省不显示） */
+  source_tier?: string | null;
 }
 
 export interface RoleEvidence {
@@ -90,6 +104,13 @@ export interface RoleEvidence {
   rule?: string | null;
   /** ★★ v0.32：支持性证据清单（每条自带事实日期，全部 ≤ 识别日） */
   supporting_evidence?: DatedEvidence[] | null;
+  /** ★★ v0.44：逐来源明细（publisher / url / published_at / source_group / tier / text） */
+  sources?: {
+    publisher?: string | null; url?: string | null; published_at?: string | null;
+    source_group?: string | null; tier?: string | null; text?: string | null;
+  }[] | null;
+  /** ★★ v0.44：独立来源组数（同源转载只算 1 组；条数 ≠ 独立证据数） */
+  independent_source_groups?: number | null;
   /** ★★ v0.32：识别日**之后**的后续事实 —— 仅事后背景，不参与成立判断 */
   posthoc_background?: DatedEvidence[] | null;
   posthoc_note?: string | null;
@@ -226,6 +247,8 @@ export const SUPPORT_LEVEL_LABEL: Record<string, string> = {
   MEDIA_NAMED_SAME_DAY: '报道当日点名',
   REPORT_BACKED: '报道背书',
   EARLY_LOW_CONFIDENCE_OBSERVATION: '早期低置信观察',
+  // ★★ v0.44：区间统计（回顾报道）—— 与「当日点名」严格区分
+  MEDIA_NAMED_PERIOD_STAT: '区间统计（回顾报道）',
 };
 
 export const SUPPORT_LEVEL_MEANING: Record<string, string> = {
@@ -235,6 +258,11 @@ export const SUPPORT_LEVEL_MEANING: Record<string, string> = {
   EARLY_LOW_CONFIDENCE_OBSERVATION:
     '★ 当日只有盘面异动（未涨停 / 未连板），**不满足**自动盘面判据 → 只作早期线索，'
     + '**不构成**「当时已确认的盘面核心」。',
+  // ★★ v0.44
+  MEDIA_NAMED_PERIOD_STAT:
+    '★ 同期报道在**发布日**点名该股并给出**区间累计涨幅**（如年度/季度回顾）。'
+    + '这只证明「报道发布时媒体已把它列为强势标的」；'
+    + '**不证明**它在区间起点已可识别，**也不证明**它在报道发布当日涨停、领涨或成为盘面核心。',
 };
 
 export const RESEARCH_STATUS_LABEL: Record<ResearchStatus, string> = {
@@ -260,7 +288,7 @@ export function hasRoleEvidence(eventId: string): boolean {
 /** 事件级角色统计（页面可核对口径） */
 export function roleCounts(eventId: string) {
   const e = eventRoles(eventId);
-  if (!e) return { pit: 0, media: 0, observed: 0, posthoc: 0, leaderNamed: 0, earlyLowConfidence: 0 };
+  if (!e) return { pit: 0, media: 0, observed: 0, posthoc: 0, leaderNamed: 0, earlyLowConfidence: 0, periodStat: 0 };
   return {
     pit: e.roles.length,
     media: e.roles.filter((r) => r.role === 'PIT_MEDIA_NAMED_MOVER').length,
@@ -271,5 +299,7 @@ export function roleCounts(eventId: string) {
     // ★★ v0.32：降级为「早期低置信观察」的角色数（不满足自动判据）
     earlyLowConfidence: e.roles.filter(
       (r) => r.support_level === 'EARLY_LOW_CONFIDENCE_OBSERVATION').length,
+    // ★★ v0.44：区间统计（回顾报道）的角色数 —— 与「报道当日点名」分开计
+    periodStat: e.roles.filter((r) => r.support_level === 'MEDIA_NAMED_PERIOD_STAT').length,
   };
 }

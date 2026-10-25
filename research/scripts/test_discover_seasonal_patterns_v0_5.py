@@ -348,6 +348,33 @@ class TestSyntheticDatabase(unittest.TestCase):
         self.assertEqual(rc, 0, out)
         self.assertIn("窗口指标核对", out)
 
+    # ★★ B（v0.44）：**历史窗口指标**漂移的负向回归 —— 数据库不动、只改产物
+    def test_history_median_drift_detected(self):
+        """只改 current_windows 的 median_excess_pct（历史中位超额）→ 必须失败并指出字段。"""
+        self._mutate(lambda d: d["current_windows"][0].update(median_excess_pct=8.8))
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("median_excess_pct", out)
+        self.assertIn("产物 8.8 ≠ 重算", out)
+
+    def test_history_hit_rate_drift_detected(self):
+        """只改历史命中率（hit_rate）→ 必须失败并指出字段。"""
+        self._mutate(lambda d: d["current_windows"][0].update(hit_rate=0.5))
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("hit_rate", out)
+        self.assertIn("产物 0.5 ≠ 重算", out)
+
+    def test_history_n_years_drift_detected(self):
+        """只改历史样本年数（n_years）→ 必须失败并指出字段。"""
+        def mut(d):
+            d["current_windows"][0]["n_years"] += 1
+        self._mutate(mut)
+        rc, out = self._check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("n_years", out)
+        self.assertIn("≠ 重算", out)
+
     def test_oos_hit_rate_drift_detected(self):
         self._mutate(lambda d: d["current_windows"][0].update(oos_hit_rate=0.5))
         rc, out = self._check()

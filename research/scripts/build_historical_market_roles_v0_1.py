@@ -151,6 +151,54 @@ PIT_SOURCE_BY_EVENT = {
              "documented_note": "2 只：完美世界 +6.67%、三七互娱 +3.13%（版号重启消息次日收盘报道）"},
         ],
     },
+    # ★★ v0.44：第二批 3 个事件（电力 2022 / 电力 2023 / 流感 2023）。
+    "POWER-2022-SUMMER": {
+        "csv": "research/research/c2/point_in_time_power_2022_summer.csv",
+        "record": "research/research/c2/2022_power_summer_point_in_time.md",
+        "slices": [
+            {"date": "2022-07-08", "documented_members": ["HUADIAN", "JIANTONENERGY"],
+             "documented_status": "USABLE",
+             "documented_note": "2 只：华电国际（07-04 盘中封涨停 +9.9%）、建投能源（07-08 涨停，3 家同日快讯）"},
+        ],
+    },
+    "POWER-2023-SUMMER": {
+        "csv": "research/research/c2/point_in_time_power_2023_summer.csv",
+        "record": "research/research/c2/2023_power_summer_point_in_time.md",
+        "slices": [
+            {"date": "2023-05-29", "documented_members": ["HUADIAN"],
+             "documented_status": "NOT_USABLE",
+             "documented_note": "仅华电国际 1 只（收盘涨停 7.12 元）→ 不足 2 只，尚不足以认定题材篮子"},
+            {"date": "2023-07-07", "documented_members": ["HUADIAN", "TIANFUENERGY"],
+             "documented_status": "USABLE",
+             "documented_note": "2 只：新增天富能源（07-07 被点名，但仅定性「跟涨/走高」，无涨幅）；"
+                                "★ 同日报道也点名京能电力，但它不是本事件参与者 → 不建角色"},
+        ],
+    },
+    "FLU-2023-H1N1": {
+        "csv": "research/research/c2/point_in_time_flu_2023_h1n1.csv",
+        "record": "research/research/c2/2023_h1n1_point_in_time.md",
+        "slices": [
+            {"date": "2023-03-09", "documented_members": ["HUALANVAX", "JINDIKE"],
+             "documented_status": "USABLE",
+             "documented_note": "2 只：华兰疫苗（涨超 4%）、金迪克（大涨 6%）；均为同一快讯源，独立来源组 2"},
+        ],
+    },
+}
+
+# ★★ v0.44：**已检索但未建立角色**的事件 —— 必须写明「查过什么、为什么不够」，
+#   不得让 NOT_RESEARCHED 看起来像「没查」。
+RESEARCH_GAP_BY_EVENT = {
+    "FLU-2018-SEASONAL": (
+        "已检索 2017-09～2018-01 的同期报道：华尔街见闻 2018-01-15《流感肆虐全球，防治药物紧俏脱销…》"
+        "（https://baijiahao.baidu.com/s?id=1589626172474777826）确认疫情事实与中疾控 ILI% 数据，"
+        "但属**名单/科普**体，未点名个股并给出涨幅 → 不满足「点名 + 涨幅」的建角色门槛，故仍不设角色。"
+        "需补：2017-09～2018-01 期间点名华兰生物 / 达安基因 / 香雪制药 / 天康生物**并给出当日涨幅或涨停**的报道（带 URL 与发布日）。"),
+    "POWER-2024-SUMMER-COUNTEREXAMPLE": (
+        "已检索 2024-05～07 的同期报道：金融界 2024-07-14《一周复盘｜建投能源本周累计下跌 7.54%…》"
+        "（https://m.jrj.com.cn/madapter/stock/2024/07/14103441561445.shtml）点名建投能源周跌 7.54%、"
+        "华电国际周跌 11.79% —— **是负向点名**。现有角色等级只有「点名 + 上涨」（PIT_MEDIA_NAMED_MOVER），"
+        "缺「负面点名」口径 → 本轮**不建角色**，也不把负向报道硬套成上涨角色。"
+        "需补：先定义「负面点名」等级与其边界（属研究口径变更，须单独评审）。"),
 }
 
 CONTRACT = {
@@ -800,7 +848,7 @@ def derive_market_roles(conn, event, evidence_ev, cal_index, ev_rel=None):
                          "创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；"
                          "ST 状态无法从库内判定 —— 主板 ST（2026-07-06 前 5%）与创业板改革前 ST（5%）"
                          "落在带外（漏报方向），创业板/科创板 ST 与主板新规后 ST 与普通股同带"),
-                "audit": "research/research/reports/limit_up_audit_v0_4.json",
+                "audit": "research/research/reports/limit_up_audit_v0_5.json",
             },
             "pit_safe": bool(all(x["date"] <= ident for x in as_of)),
             "posthoc": False,
@@ -945,6 +993,9 @@ def build(conn=None) -> dict:
                 if status == "NOT_RESEARCHED":
                     gaps.append("该事件尚未做 PIT 角色研究：需要同期报道（带日期与 URL），"
                                 "或窗口内至少一次**连板**的盘面数据")
+                # ★★ v0.44：已检索但未建角色的事件必须写明「查过什么、为什么不够」
+                if RESEARCH_GAP_BY_EVENT.get(eid):
+                    gaps.append(RESEARCH_GAP_BY_EVENT[eid])
                 if status == "DERIVED_FROM_REPORT" and not roles:
                     gaps.append("事件有报道基础，但没有参与者同时具备「报道发布日 + 可对上该股的涨跌」"
                                 "→ 无法定位识别日")

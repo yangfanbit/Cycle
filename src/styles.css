@@ -3549,6 +3549,22 @@ html, body {
 /* ★★ v0.32：支持等级 / 证据截止日 / 事后背景（与支持性证据严格分开） */
 .fem-role-support { font-size: 10px; padding: 0 5px; border-radius: 8px; }
 .fem-role-support.is-low { background: #fdf3e3; color: var(--preheat-ink); border: 1px dashed var(--preheat-ink); }
+/* ★★ v0.44：区间统计（回顾报道）—— 与「报道当日点名」在视觉上也要区分开 */
+.fem-role-support.is-period { background: #eef3f8; color: var(--accent); border: 1px dashed var(--accent); }
+.fem-role-period-caveat {
+  flex-basis: 100%; font-size: 10.5px; color: var(--ink-3);
+  border-left: 2px solid var(--line); padding-left: 6px;
+}
+/* ★★ v0.44：角色的全部支持性来源（条数 ≠ 独立证据数） */
+.fem-role-sources { flex-basis: 100%; margin: 2px 0 0; }
+.fem-role-sources-title { display: block; font-size: 10.5px; color: var(--ink-3); }
+.fem-role-sources ul { list-style: none; margin: 2px 0 0; padding: 0 0 0 10px; }
+.fem-role-sources li {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline;
+  padding: 1px 0; font-size: 10.5px;
+}
+.fem-role-src-meta { color: var(--ink-3); font-family: var(--mono); font-size: 10px; }
+.fem-role-src-text { flex-basis: 100%; color: var(--ink-2); }
 .fem-role-asof { font-size: 10px; color: var(--ink-3); font-family: var(--mono); }
 .fem-role-posthoc { flex-basis: 100%; font-size: 10.5px; color: var(--ink-3); border-left: 2px dashed var(--line); padding-left: 6px; }
 .fem-role-limits { flex-basis: 100%; font-size: 10.5px; color: var(--preheat-ink); }

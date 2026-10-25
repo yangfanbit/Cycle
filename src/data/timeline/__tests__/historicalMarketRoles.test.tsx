@@ -12,6 +12,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import {
   MARKET_ROLE_LABEL,
   MARKET_ROLE_MEANING,
+  SUPPORT_LEVEL_LABEL,
   eventRoles,
   marketRoleOf,
   roleCounts,
@@ -102,8 +103,8 @@ describe('历史市场角色 · 数据', () => {
   });
 
   it('★ 未研究的事件必须写明缺什么（不得静默留空）', () => {
-    // ★ v0.43：GAMELICENSE 已补 PIT 报道证据 → 空态断言改用**仍未研究**的事件
-    const e = eventRoles('POWER-2022-SUMMER')!;
+    // ★ v0.44：POWER-2022-SUMMER 已补 PIT 报道证据 → 空态断言改用**仍未研究**的事件
+    const e = eventRoles('POWER-2017-SUMMER-COUNTEREXAMPLE')!;
     expect(e.research_status).toBe('NOT_RESEARCHED');
     expect(e.roles).toHaveLength(0);
     expect(e.gaps.length).toBeGreaterThan(0);
@@ -282,8 +283,8 @@ describe('历史市场角色 · 渲染', () => {
   });
 
   it('★ 未研究事件显示「不设角色」+ 缺什么（不展示假角色）', () => {
-    // ★ v0.43：改用仍未研究的事件（GAMELICENSE 已有 PIT 角色）
-    const e = eventOf('POWER_SUMMER', 'POWER-2022-SUMMER');
+    // ★ v0.44：POWER-2022-SUMMER 已补证 → 空态断言改用仍未研究的事件
+    const e = eventOf('POWER_SUMMER', 'POWER-2017-SUMMER-COUNTEREXAMPLE');
     const html = renderToStaticMarkup(<EventCardBody e={e} />);
     expect(html).toContain('尚未研究');
     expect(html).toContain('不设角色');
@@ -297,5 +298,86 @@ describe('历史市场角色 · 渲染', () => {
     expect(html).toContain('报道称龙头 0');
     expect(html).toContain('data-role-url="1"');
     expect(html).toContain('时间切片');
+  });
+
+  // ★★ v0.44：区间统计等级必须**渲染出来**（不能只存在于 JSON）
+  it('★★ v0.44 白酒：MEDIA_NAMED_PERIOD_STAT 标签 + 限制说明 + 全部来源链接', () => {
+    const e = eventOf('CONSUMER_SEASON', 'CONS-2019-BAIJIU-CORE');
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+
+    // ① 等级标签与徽标
+    expect(SUPPORT_LEVEL_LABEL.MEDIA_NAMED_PERIOD_STAT).toBe('区间统计（回顾报道）');
+    expect(html).toContain('区间统计（回顾报道）');
+    expect(html).toContain('data-support-badge="MEDIA_NAMED_PERIOD_STAT"');
+
+    // ② 限制说明：必须写清「不证明区间起点可识别 / 不证明当日涨停领涨」
+    expect(html).toContain('data-period-stat-caveat="1"');
+    expect(html).toContain('区间起点已可识别');
+    expect(html).toContain('不证明');
+    expect(html).toContain('当日涨停');
+
+    // ③ 多来源：茅台有 2 条支持性证据（凤凰网 / 界面新闻），都必须渲染成链接
+    const role = marketRoleOf('CONS-2019-BAIJIU-CORE', 'MOUTAI')!;
+    expect(role.support_level).toBe('MEDIA_NAMED_PERIOD_STAT');
+    expect(role.evidence.supporting_evidence).toHaveLength(2);
+    const links = [...html.matchAll(/data-role-url="1"/g)].length;
+    expect(links, '每个支持性来源都要有链接，不是只显示 evidence.url').toBeGreaterThanOrEqual(2);
+    expect(html).toContain('凤凰网');
+    expect(html).toContain('界面新闻');
+    expect(html).toContain('https://jiu.ifeng.com/c/7tC94yxLlLc');
+    expect(html).toContain('https://m.jiemian.com/article/4198602.html');
+    // 来源组与层级必须可见（条数 ≠ 独立证据数）
+    expect(html).toContain('data-source-groups="2"');
+    expect(html).toContain('独立来源组');
+    expect(html).toContain('data-source-tier="T3"');
+
+    // ④ 仍然不得把「报道点名」写成「龙头」
+    expect(html).toContain('报道称龙头 0');
+    expect(html).not.toContain('报道称龙头 1');
+  });
+
+  it('★★ v0.44：查过但未建角色的事件必须写明「查过什么、为什么不够」', () => {
+    // FLU-2018-SEASONAL / POWER-2024-SUMMER-COUNTEREXAMPLE：都做过检索，只是没有合规证据
+    const flu = eventRoles('FLU-2018-SEASONAL')!;
+    expect(flu.research_status).toBe('NOT_RESEARCHED');
+    expect(flu.roles).toHaveLength(0);
+    const g = flu.gaps.join(' ');
+    expect(g).toContain('已检索');          // 不是「没查」
+    expect(g).toContain('未点名个股');      // 说明为什么不建角色
+    expect(g).toMatch(/https?:\/\//);      // 附上查过的真实来源
+
+    const p24 = eventRoles('POWER-2024-SUMMER-COUNTEREXAMPLE')!;
+    expect(p24.research_status).toBe('NOT_RESEARCHED');
+    expect(p24.gaps.join(' ')).toContain('负向点名');
+  });
+
+  it('★ v0.44：第二批 3 个事件已转 RESEARCHED_PIT，且角色仍带 URL / 证据 ≤ 识别日', () => {
+    for (const eid of ['POWER-2022-SUMMER', 'POWER-2023-SUMMER', 'FLU-2023-H1N1']) {
+      const e = eventRoles(eid)!;
+      expect(e.research_status, eid).toBe('RESEARCHED_PIT');
+      expect(e.roles.length, eid).toBeGreaterThanOrEqual(2);
+      expect(roleCounts(eid).leaderNamed, eid).toBe(0);
+      for (const r of e.roles) {
+        const label = String(r.security_id);
+        expect(String(r.evidence.url ?? ''), label).toMatch(/^https?:\/\//);
+        expect(r.pit_safe, label).toBe(true);
+        for (const x of r.evidence.supporting_evidence ?? []) {
+          expect(x.date <= r.identified_date, `${label} 证据 ${x.date}`).toBe(true);
+        }
+      }
+    }
+    // ★ 同一电头的转载不能算成多个独立来源组
+    const h1n1 = marketRoleOf('FLU-2023-H1N1', 'HUALANVAX')!;
+    expect(h1n1.evidence.sources!.length).toBe(3);
+    expect(h1n1.evidence.independent_source_groups).toBe(2);
+  });
+
+  it('★ v0.44：旧记录（无来源元信息）维持原渲染，不出现空的「支持性来源 0 条」', () => {
+    // 盘面派生 / 旧 PIT 记录没有 publisher·url → 走兼容分支（单链接或「来源：<类型>」）
+    const e = eventOf('AUTO_INTELLIGENCE', 'AUTO-2024-ROBOTAXI');
+    const html = renderToStaticMarkup(<EventCardBody e={e} />);
+    expect(html).not.toContain('data-role-sources');
+    expect(html).toContain('来源：');
+    expect(html).not.toContain('支持性来源 0 条');
   });
 });
