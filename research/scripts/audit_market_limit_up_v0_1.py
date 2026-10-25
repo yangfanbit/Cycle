@@ -139,9 +139,15 @@ def both_pcts(con, sid, dt):
 
 
 def classify(raw_pct, adj_pct, lo, hi):
-    """与角色层一致的双口径分类。"""
+    """与角色层一致的双口径分类。
+
+    ★★ v0.48：公司行为日（|raw| > ACTION_DAY_PCT）**也必须落在当前板块当日的涨停带内**
+      才返回涨停候选；此前直接返回 adj_pct，把 +2.00% / +3.67% / −3.37% 也算成「涨停」。
+    """
     if raw_pct is not None and abs(raw_pct) > ACTION_DAY_PCT:
         if adj_pct is None:
+            return None, None
+        if not (lo <= adj_pct <= hi):
             return None, None
         return "adjusted_ratio_action_day", adj_pct
     in_raw = raw_pct is not None and lo <= raw_pct <= hi
