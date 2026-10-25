@@ -19,7 +19,7 @@
 > ★ 文档口径更正：`reconcile` 实际是 **8 条**（此前误写「七条」）。
 >
 > **B · 历史事件证据扩展（5 个事件：`NOT_RESEARCHED` → `RESEARCHED_PIT`）**
-> 产物 `historical_market_roles_v0_5.json`：角色 **53 → 67**（+14，全部 `PIT_MEDIA_NAMED_MOVER`）；
+> 产物 `historical_market_roles_v0_6.json`：角色 **53 → 67**（+14，全部 `PIT_MEDIA_NAMED_MOVER`）；
 > `RESEARCHED_PIT` 事件 **1 → 6**；`NOT_RESEARCHED` **20 → 15**；`pit_safe_violations = 0`；
 > **「报道称龙头」仍为 0**。每来源带 **URL / 发布日 / 来源组 / 层级**（新 `sources_json` 列 + 每事件一份 CSV）。
 > | 事件 | 角色（识别日） | 独立来源组 | 缺口 |
@@ -33,8 +33,12 @@
 > 未点名的一律**不建角色**（不用涨停次数/区间涨幅倒推「媒体称龙头」）。
 > 生成器同步修了一个**真 bug**：此前 `load_pit_rows()` 全局只读一份 CSV，多事件会**串数据**；
 > 现在按事件读自己的 CSV，`source_record` 也逐事件写入。
-> **产物**：`historical_market_roles_v0_5.json` + 5 份 CSV + 5 份方法记录（`research/research/c2/*_point_in_time.md`）；
-> v0_1–v0_4 全部保留。`participant_evidence` / `theme_market_performance` 输入未变 → 版本不动（`--check` PASS）。
+> **产物**：`historical_market_roles_v0_6.json`（v0_5 是中间态，保留）+ `limit_up_audit_v0_3.json`
+> + 5 份 CSV + 5 份方法记录（`research/research/c2/*_point_in_time.md`）；旧版本全部保留。
+> ★ 连带修了两处**链式依赖/版本写死**：① 涨停审计绑定「审计的角色产物版本」→ 角色升版后必须重生成审计
+> （现 v0_3 审计 v0_6 角色，互相指向一致）；② 审计产物的 `artifact_version`/`supersedes` 原为写死
+> （v0_3 仍写 0.2、指向 v0_1）→ 改为按 `--version` 推导。
+> `participant_evidence` / `theme_market_performance` 输入未变 → 版本不动（`--check` PASS）。
 > **快照**：`MS-2026-10-23-01` 仍 **DRAFT**（未 `--canonical`、未归档 10-13）。
 
 ## ★★ 2026-10-25（v0.42）季节性校验补齐 + 首页数据瘦身

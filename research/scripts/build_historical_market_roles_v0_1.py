@@ -795,7 +795,7 @@ def derive_market_roles(conn, event, evidence_ev, cal_index, ev_rel=None):
                          "创业板 2020-08-24 前 9.8–10.6%、之后 19.5–21.2%；科创板 19.5–21.2%；"
                          "ST 状态无法从库内判定 —— 主板 ST（2026-07-06 前 5%）与创业板改革前 ST（5%）"
                          "落在带外（漏报方向），创业板/科创板 ST 与主板新规后 ST 与普通股同带"),
-                "audit": "research/research/reports/limit_up_audit_v0_1.json",
+                "audit": "research/research/reports/limit_up_audit_v0_3.json",
             },
             "pit_safe": bool(all(x["date"] <= ident for x in as_of)),
             "posthoc": False,

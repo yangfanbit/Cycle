@@ -217,7 +217,7 @@ ST_RULES = {
 }
 
 
-def audit():
+def audit(version=2):
     index = json.load(open(os.path.join(CURRENT, "historical_event_maps_index.json"),
                            encoding="utf-8"))
     tickers = load_tickers(index)
@@ -303,10 +303,11 @@ def audit():
     }
     doc = {
         "artifact": "limit_up_audit",
-        "artifact_version": "0.2",
+        "artifact_version": "0.%d" % version,
         "generated_at": GENERATED_AT,
         "generated_by": "research/scripts/audit_market_limit_up_v0_1.py",
-        "supersedes": "research/research/reports/limit_up_audit_v0_1.json",
+        "supersedes": ("research/research/reports/limit_up_audit_v0_%d.json" % (version - 1)
+                       if version > 1 else None),
         # ★ v0.32：审计对象可追溯（读的是哪个版本的角色产物）
         "audited_roles_artifact": os.path.relpath(roles_path, REPO).replace(os.sep, "/"),
         "st_rules": ST_RULES,
@@ -378,7 +379,7 @@ def main(argv):
     ap.add_argument("--version", type=int, default=None,
                     help="写产物时的版本号（--check 恒用最新版本）")
     a = ap.parse_args(argv)
-    doc = audit()
+    doc = audit(a.version or 2)
     v = doc["verdict"]
     print("审计信号日: %d（%s）" % (v["signal_days_audited"], v["by_board"]))
     print("  与产物计算基础一致: %d | 不一致: %d | 按最终规则不算信号: %d"
@@ -391,7 +392,8 @@ def main(argv):
         if not os.path.exists(out_path):
             print("FAIL: 审计产物不存在：%s" % os.path.relpath(out_path, REPO))
             return 1
-        cur = json.load(open(out_path, encoding="utf-8"))
+        with open(out_path, encoding="utf-8") as fh:
+            cur = json.load(fh)
         # ★ v0.32：审计必须对齐**当前最新角色产物**，否则「审的是旧角色」
         if cur.get("audited_roles_artifact") != doc["audited_roles_artifact"]:
             print("FAIL: 审计产物审计的角色版本不是最新：%s vs %s"
