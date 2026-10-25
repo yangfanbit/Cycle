@@ -174,7 +174,56 @@ export interface HistoricalEvent {
     reported_same_day_moves?: Record<string, string>;
   };
   market_performance?: MarketPerformance;
+  /**
+   * ★ v0.56（Wave 2.1）：官方指数**并列**行情 —— 与 `market_performance` 是**两套口径**，
+   *   **不得**合并成同一个收益值、**不得**用它改写 `market_performance` 或事件机制结论。
+   *   授权明确前生产产物**不含**该字段（真实派生数值只在本地实验输出）。
+   */
+  official_index?: OfficialIndexPerformance | null;
   known_gaps: string[];
+}
+
+/**
+ * ★ v0.56：官方指数并列行情对象。
+ *
+ * 口径（生成端 `research/scripts/build_official_index_parallel_v0_1.py` 统一实现）：
+ * - 区间收益 = 末交易日 close / 首交易日 close − 1
+ * - 基准 = 官方 000300 同窗口区间收益；超额 = 本指数 − 基准（pp）
+ * - `rows_before_publish` 由**实际获取的完整序列**计算；`backfilled` 是**事件窗口级**标记
+ *
+ * ★★ `backfilled` 三态：`true` 窗口含发布前数据点（不得作当时可知证据）/
+ *    `false` 窗口全在发布日之后 / `null` 无窗口或未知（**不得**当作 false）。
+ */
+export interface OfficialIndexPerformance {
+  provider: string;
+  index_code: string;
+  index_name: string;
+  identity: string;
+  identity_note?: string;
+  published_from: string;
+  base_date: string;
+  base_value: number;
+  source_first_date: string;
+  source_last_date: string;
+  rows_before_publish: number;
+  backfilled: boolean | null;
+  window: [string, string] | null;
+  window_actual?: {
+    first_trade_date: string; last_trade_date: string;
+    first_close: number; last_close: number; trading_days: number;
+  } | null;
+  period_return_pct: number | null;
+  benchmark_index_code: string;
+  benchmark_index_name?: string;
+  benchmark_return_pct: number | null;
+  excess_period_pp: number | null;
+  price_basis: string;
+  source_url: string;
+  benchmark_source_url?: string;
+  status?: string;
+  error?: string | null;
+  calculation_note: string;
+  missing_required_fields?: string[];
 }
 
 export interface ThemeDisplay {

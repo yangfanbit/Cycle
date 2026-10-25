@@ -3,6 +3,46 @@
 > 动态接班文档：只回答“现在是什么状态、哪里有问题、下一步做什么”。
 > 长期规则见 `AGENTS.md`；未来路线见 `docs/ROADMAP.md`；历史细节见 `docs/CHANGELOG.md`。
 
+## ★★ 2026-10-25（v0.56）Wave 2.1：半导体官方指数并列展示试点（能力已建，生产接入因授权暂缓）
+
+> 交付报告：**`docs/OFFICIAL_INDEX_PARALLEL_WAVE2_1_v0_1.md`**。
+> 脚本 `research/scripts/build_official_index_parallel_v0_1.py` · 测试 8 项 + 前端 7 项。
+
+**A · 覆盖：7 个事件（以仓库清单为准，不硬编码）**
+
+从 `semiconductor_ai_compute_historical_events_v0_6.json` 读取实际清单 → **7 个**，
+全部有规范 `market_performance.window`，**0 个缺口**（不从 `window_text` 猜日期）。
+
+**B · 计算（统一口径，与 `market_performance` 并列不合并）**
+
+`H30184` 中证全指半导体产品与设备（发布 2013-07-15 / 基日 2004-12-31）vs 基准 `000300`：
+区间收益 = 末交易日 close / 首交易日 close − 1；超额 = 本指数 − 基准（pp）；
+只取**实际存在的交易日**，**不插值、不补造**；首尾口径在 `calculation_note` 里写明。
+→ **7/7 计算完成**；`rows_before_publish = 2,068`（由实际序列统计，非手写常数）；
+`backfilled` 窗口级 **7/7 = false**（窗口起点均 ≥ 2019，晚于发布日）。
+
+★★ **不列每个事件的真实收益数值** —— 授权未明确，真实派生数值只落 `.tmp/` 本地实验输出。
+
+**C · 授权：未解决（UNCLEAR）**
+
+中证接口公开可访问、无 token，但**未找到**允许「公开再发布派生数据」的明确许可 →
+判定 `UNCLEAR`。按边界：**公开可访问 ≠ 许可再发布**。
+→ 真实派生收益**不写入** `research/current/`、**不上**公开页面；闸门写在代码里
+（写生产目录必须 `--i-have-license --license-basis`，否则 `REFUSE` + rc=2 且不建文件，有测试）。
+
+**D · 展示层（已实现，生产当前不渲染）**
+
+`HistoricalEventMap` 新增 `OfficialIndexBlock`（在「实测行情」之后、独立成区）：
+指数/窗口/区间收益/基准/超额 + 发布日/基日/基点 + **发布前数据点行数** + 价格口径 + 来源链接；
+**回溯三态**（`true` 强警示 / `false` 说明「窗口在发布后但序列仍含回溯段」/ `null` 显示「未知」）。
+★ 不合并口径、不改机制结论、不改研究状态；缺失字段显示「字段缺失」**不补 0**。
+
+**E · 边界**
+
+未改 Research Model / Schema / Export Contract / 冻结 SA·TO·Driver；未签发或归档 Market Snapshot、
+未改 `index.json`；未新增 CI Job；未把官方行情写入 `market_data.db` / `history_scan.db`；
+未用当前成分冒充历史成分；未购买或绕过任何授权限制。
+
 ## ★★ 2026-10-25（v0.55）Wave 2：官方指数数据源调查 + 首个可复算样例（半导体 GO）
 
 > 完整报告：**`docs/INDEX_DATA_FEASIBILITY_WAVE2_v0_1.md`**；机器可读摘要：

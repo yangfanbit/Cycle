@@ -234,8 +234,143 @@ export function MarketPerformanceBlock({ e }: { e: HistoricalEvent }) {
   );
 }
 
+/* ------------------------------------------------------ 官方指数并列行情（v0.56） */
+
+const OI_NUM_SUFFIX: Record<string, string> = { pct: '%', pp: 'pp' };
+
+/** ★ 缺失值一律显示「字段缺失」，**不补 0**、不静默成 false。 */
+function oiNum(v: unknown, kind: 'pct' | 'pp'): string {
+  if (typeof v !== 'number' || !Number.isFinite(v)) return '字段缺失';
+  return `${v > 0 ? '+' : ''}${v.toFixed(2)}${OI_NUM_SUFFIX[kind]}`;
+}
+
+function oiText(v: unknown): string {
+  return typeof v === 'string' && v.trim() ? v : '字段缺失';
+}
+
+/**
+ * ★★ v0.56（Wave 2.1）：官方指数**并列**行情展示区。
+ *
+ * 三条纪律：
+ *  ① **不合并口径** —— 官方指数区间收益与上方 `market_performance`（板块/个股）是两个独立区块，
+ *    不出现「综合收益」这类合成值；
+ *  ② **不改结论** —— 本区只陈述行情，不参与机制判定，也不改变参与者的研究状态；
+ *  ③ **回溯三态** —— `backfilled = true` 必须显式警示「含发布前数据、不得作当时可知证据」；
+ *    `false` 说明窗口全在发布日之后；`null` 显示「未知」，**不得**当成 false。
+ *
+ * ★ 授权明确前生产事件产物**不含** `official_index`，因此本区在生产页面不渲染（返回 null）。
+ */
+export function OfficialIndexBlock({ e }: { e: HistoricalEvent }) {
+  const oi = e.official_index;
+  if (!oi) return null;
+  const win = Array.isArray(oi.window) && oi.window.length === 2 ? oi.window : null;
+  const backfillState = oi.backfilled === true ? 'true' : oi.backfilled === false ? 'false' : 'unknown';
+  return (
+    <section className="fem-official-index" data-official-index={oi.index_code}
+             data-oi-status={oi.status ?? 'UNKNOWN'}
+             data-oi-backfilled={backfillState}>
+      <h5>
+        官方指数并列行情（与上方板块 / 个股口径<strong>分开</strong>）
+      </h5>
+      <p className="fem-oi-caveat" data-oi-separate="1">
+        ★★ 本区是<strong>官方指数</strong>口径，与上方 <code>market_performance</code>
+        （板块 / 个股，含当前成分回溯）是<strong>两套独立口径</strong>：
+        <strong>不合并成一个收益值</strong>，也<strong>不</strong>因为官方指数涨或跌而改变事件机制结论。
+      </p>
+
+      <table className="fem-table fem-oi-table">
+        <thead>
+          <tr>
+            <th>指数</th><th>窗口（声明）</th><th>区间收益</th><th>基准</th><th>超额</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-oi-row="1">
+            <td>
+              <strong>{oiText(oi.index_name)}</strong>
+              <code className="fem-oi-code">{oiText(oi.index_code)}</code>
+              <span className="fem-oi-identity" data-oi-identity={oi.identity ?? ''}>
+                {oiText(oi.identity)}
+              </span>
+            </td>
+            <td>
+              {win ? <>{win[0]} ~ {win[1]}</> : <span className="fem-null">字段缺失</span>}
+              {oi.window_actual && (
+                <span className="fem-oi-actual" data-oi-actual="1">
+                  实际首末交易日 {oi.window_actual.first_trade_date} ~ {oi.window_actual.last_trade_date}
+                  （{oi.window_actual.trading_days} 个交易日）
+                </span>
+              )}
+            </td>
+            <td data-oi-field="period_return_pct">{oiNum(oi.period_return_pct, 'pct')}</td>
+            <td data-oi-field="benchmark_return_pct">
+              {oiText(oi.benchmark_index_code)}
+              <span className="fem-oi-bench">{oiNum(oi.benchmark_return_pct, 'pct')}</span>
+            </td>
+            <td data-oi-field="excess_period_pp"><strong>{oiNum(oi.excess_period_pp, 'pp')}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      {oi.error && (
+        <p className="fem-oi-error" data-oi-error="1">缺口：{oi.error}</p>
+      )}
+      {(oi.missing_required_fields ?? []).length > 0 && (
+        <p className="fem-oi-error" data-oi-missing={oi.missing_required_fields!.join(',')}>
+          ★ 缺失的强制字段：{oi.missing_required_fields!.join(' / ')}（<strong>不补 0、不填 false</strong>）
+        </p>
+      )}
+
+      <p className="fem-oi-meta">
+        发布日 <strong>{oiText(oi.published_from)}</strong> · 基日 {oiText(oi.base_date)} ·
+        基点 {typeof oi.base_value === 'number' ? oi.base_value : '字段缺失'} ·
+        官方序列覆盖 {oiText(oi.source_first_date)} ~ {oiText(oi.source_last_date)} ·
+        <strong>发布前数据点 {typeof oi.rows_before_publish === 'number' ? oi.rows_before_publish : '字段缺失'} 行</strong>
+        <span className="fem-oi-basis"> · 价格口径：{oiText(oi.price_basis)}</span>
+      </p>
+
+      <p className="fem-oi-backfill" data-oi-backfill-note={backfillState}>
+        {backfillState === 'true' && (
+          <>★★ <strong>本窗口含发布日之前的数据点</strong>（`backfilled = true`）：
+            那段是指数公司<strong>事后回溯/补算</strong>的，当时市场上并不存在这个可交易指数
+            → <strong>不得</strong>用作「当时已可知」的证据。</>
+        )}
+        {backfillState === 'false' && (
+          <>★ 本窗口<strong>全部落在发布日之后</strong>（`backfilled = false`）：
+            窗口内的点位是当时已公开发布的。★ 但指数序列本身仍含发布前的回溯段
+            （见上方「发布前数据点」行数），该段同样不得用作当时可知证据。</>
+        )}
+        {backfillState === 'unknown' && (
+          <>★ 回溯状态<strong>未知</strong>（`backfilled` 缺失或无窗口）——
+            <strong>不得</strong>当作 `false` 使用。</>
+        )}
+      </p>
+
+      {oi.identity_note && (
+        <p className="fem-oi-note"><RichText text={oi.identity_note} /></p>
+      )}
+      <p className="fem-oi-note" data-oi-calc-note="1"><RichText text={oi.calculation_note} /></p>
+
+      <p className="fem-oi-src">
+        来源：
+        <a href={oi.source_url} target="_blank" rel="noreferrer" data-oi-source-url="1">
+          {oi.index_code} 官方日线
+        </a>
+        {oi.benchmark_source_url && (
+          <> · <a href={oi.benchmark_source_url} target="_blank" rel="noreferrer"
+                 data-oi-bench-url="1">{oi.benchmark_index_code} 官方日线</a></>
+        )}
+        <span className="fem-oi-note">
+          ★ 官方接口公开可访问 <strong>≠</strong> 许可公开再发布派生数据；授权未明确时本区不进入生产产物。
+        </span>
+      </p>
+    </section>
+  );
+}
+
 /** ★ 导出以便测试直接渲染（页面仍只经 `EventCard` 使用） */
 export function ParticipantRow({ p, e }: { p: HistoricalParticipant; e: HistoricalEvent }) {
+
   // ★ 四类状态：已计算 / 该窗口未计算 / 行情不可得 / 覆盖不足 —— 不得用 0 代表缺失
   const coverage = marketDataCoverage(e, p.security_id);
   const status = coverage.status;
@@ -911,6 +1046,7 @@ export function EventCardBody({
           )}
 
           <MarketPerformanceBlock e={e} />
+          <OfficialIndexBlock e={e} />
 
           <h5>报道当日涨幅</h5>
           <p className="fem-perf-note"><RichText text={e.observed_performance.note} /></p>
