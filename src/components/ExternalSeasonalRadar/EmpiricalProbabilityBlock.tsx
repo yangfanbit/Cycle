@@ -19,6 +19,7 @@
  *    `UNKNOWN_PUBLIC_HEALTH`，**不是**流感驱动）。
  */
 import {
+  DENOMINATOR_SCOPE_NOTE,
   EMPIRICAL_PROBABILITY_DISCLAIMER,
   EMPIRICAL_PROBABILITY_LABEL,
   EVIDENCE_TIER_NOTE,
@@ -90,6 +91,10 @@ export function EmpiricalProbabilityBlock({
         <dd className="fem-ep-rule"><RichText text={target.outcomeRule} /></dd>
         <dt>分母口径</dt>
         <dd><RichText text={DENOMINATOR_RULE} /></dd>
+        <dt>分母范围（这个分母覆盖的是谁）</dt>
+        <dd className="fem-ep-scope" data-ep-denominator-scope="1">
+          <RichText text={DENOMINATOR_SCOPE_NOTE} />
+        </dd>
       </dl>
 
       {/* ---------- 结果分布（分母内） ---------- */}

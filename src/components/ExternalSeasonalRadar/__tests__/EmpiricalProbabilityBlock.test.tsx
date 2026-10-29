@@ -77,6 +77,18 @@ describe('经验基准概率 · 渲染事实', () => {
     expect(t).toContain('经验证的预测模型');
   });
 
+  it('★★ v0.60：区分「可比较年份的分母」与「完整观察总体」（缺的是后者）', () => {
+    const html = renderPower();
+    expect(html).toContain('data-ep-denominator-scope="1"');
+    const t = textOf(html);
+    expect(t).toContain('分母范围 ≠ 完整观察总体');
+    // ★ 关键：本题材分母 ≠ 所有可能题材（含未成势）的总体 → 不能外推成跨题材基准率
+    expect(t).toContain('未成势');
+    expect(t).toContain('不能');
+    // ★ 不得因为「范围不够」就说「没有分母」—— 分母已逐条列明
+    expect(t).toContain('不缺');
+  });
+
   it('★★ 流感：唯一成功年 2019 标注 UNKNOWN_PUBLIC_HEALTH（不是流感驱动）', () => {
     const html = renderFlu();
     expect(html).toContain('data-ep-success="2019"');

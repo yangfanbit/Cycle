@@ -33,6 +33,11 @@ export function CurrentMarketStrip() {
         {m.seriesId} {m.asOf} · 量分位 {num(o.volPct60)} · 20 日 {num(o.ret20Pct, 1, '%')} · 波动率比{' '}
         {num(o.volRatio)} · MA20 {o.aboveMa20 ? '上' : '下'} · MA60 {o.aboveMa60 ? '上' : '下'}
       </span>
+      {/* ★ v0.60：把**口径与来源**就地写出来 —— 只给数字不给口径，等于让使用者
+          自己猜「这是复权还是未复权、哪个库、哪个窗口」。 */}
+      <span className="am-src" data-market-source="1">
+        口径：原始收盘（未复权）· 20 日 = 最近 21 根收盘 · 量分位 = 60 日窗口 · 来源：market_data.db
+      </span>
       <span className="am-note">仅陈述当下状态；不与任何历史行情并列，也不作任何匹配判定</span>
     </div>
   );

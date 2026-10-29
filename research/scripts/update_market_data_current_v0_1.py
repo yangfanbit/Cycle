@@ -34,9 +34,11 @@
 from __future__ import annotations
 
 import argparse
+import glob
 import io
 import json
 import os
+import re
 import sqlite3
 import sys
 import time
@@ -85,7 +87,13 @@ def latest_trade_day():
 def target_series():
     """forward_observation 的季节窗口所引用的题材参与者 + 基准。"""
     idx = json.loads(io.open(os.path.join(CURRENT, "historical_event_maps_index.json"), encoding="utf-8").read())
-    fo = json.loads(io.open(os.path.join(CURRENT, "forward_observation_v0_2.json"), encoding="utf-8").read())
+    # ★★ v0.60：原来硬编码 v0_2 —— 升到 v0_3/v0_4 后仍读旧文件，参与者集合会悄悄停在旧版。
+    #   改为**取版本号最大的** forward_observation_v*.json。
+    _fo = sorted(glob.glob(os.path.join(CURRENT, "forward_observation_v*.json")),
+                 key=lambda p: int(re.sub(r"\D", "", os.path.basename(p)) or 0))
+    if not _fo:
+        raise SystemExit("找不到 forward_observation_v*.json")
+    fo = json.loads(io.open(_fo[-1], encoding="utf-8").read())
     theme_files = {e["theme_id"]: e["file"] for e in idx["maps"]}
     out = set()
     for w in fo.get("seasonal_windows", {}).get("themes", []) or []:

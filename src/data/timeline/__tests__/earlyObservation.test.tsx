@@ -83,16 +83,24 @@ describe('earlyObservation · L2 标的层（事后选定 → 必须带偏差警
 });
 
 describe('earlyObservation · 当前市场状态（只供全局位置）', () => {
-  it('★ 取最新可得交易日（asOf 随数据刷新，断言与产物交叉一致）', () => {
-    // ★ v0.25：旧断言写死 `2026-09-30 / 4357.62 / -5.5` —— 那是**旧行为快照**，
-    //   每补一次行情就得改测试。改为「与产物逐字一致」的交叉断言（唯一写死的数字是
-    //   本轮实测值，作为**回归基线**，下次刷新时连同 docs 一起更新）。
+  it('★ 取最新可得交易日（只断言不变量，不写死某次刷新的日期）', () => {
+    // ★★ v0.60：旧断言写死 `2026-10-20 / 4152.11 / -7.3` —— 那是**旧行为快照**：
+    //   每补一次行情就要改测试，且它并不检验「是否真的刷新过」。
+    //   改为**不变量**断言：显示日期必须与观测点日期自洽、数值必须落在合理区间、
+    //   日期不得回退到明显过旧的区间（松散下限，几乎不需维护）。
+    //   「是否陈旧」由产物侧校验（`build_early_observation` / `refresh_downstream`）负责。
     const m = currentMarketOf()!;
     expect(m.seriesId).toBe('SH000300');
     expect(m.asOf).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-    expect(m.asOf).toBe('2026-10-20');            // 本轮实测：最后交易日（v0.26 刷新）
-    expect(m.observables!.close).toBe(4152.11);    // 产物 current_market 逐字一致
-    expect(m.observables!.ret20Pct).toBeCloseTo(-7.3, 1);
+    // ① 显示日期 === 观测点自身日期（同一份数据，不得两套日期）
+    expect(m.asOf).toBe(m.observables!.date);
+    // ② 数值形态：收盘为正有限数；20 日收益在合理范围内
+    expect(Number.isFinite(m.observables!.close!)).toBe(true);
+    expect(m.observables!.close!).toBeGreaterThan(0);
+    expect(Number.isFinite(m.observables!.ret20Pct!)).toBe(true);
+    expect(Math.abs(m.observables!.ret20Pct!)).toBeLessThan(50);
+    // ③ 松散下限：防止整条链路回退到很久以前的数据
+    expect(m.asOf! >= '2026-10-01').toBe(true);
   });
 
   it('artifact 中没有的对象 → null（**不造默认值**）', () => {

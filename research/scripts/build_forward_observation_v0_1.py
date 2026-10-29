@@ -55,7 +55,10 @@ MAX_STALE_TRADING_DAYS = 5
 UNIVERSE = os.path.join(CACHE_DIR, "universe_v0_1.json")
 SNAP_DIR = os.path.join(CURRENT, "forward_observation_snapshots")
 OUT_RE = re.compile(r"forward_observation_v0_(\d+)\.json$")
-GENERATED_AT = "2026-10-24"
+# ★★ v0.60：原为硬编码 `"2026-10-24"` —— 之后每次刷新都会把「抓取日」写成 10-24，
+#   与实际抓取日期不符（溯源字段说谎）。改为**运行时实际日期**。
+#   本产物是**版本化快照**（每次 --write 生成新版本文件），因此不要求跨日字节一致。
+GENERATED_AT = time.strftime("%Y-%m-%d")
 
 PACING = 0.22
 UA = {"User-Agent": "Mozilla/5.0"}

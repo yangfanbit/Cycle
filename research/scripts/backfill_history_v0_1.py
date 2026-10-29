@@ -92,6 +92,17 @@ def refresh_stats(c, sid):
 
 def upsert_series(c, sid, name, kind, provider, symbol, rows, status="OK", note=None):
     if not rows:
+        # ★★ v0.60：**不得**用空结果覆盖已有序列的元数据。
+        #   原实现无条件 `INSERT OR REPLACE ... rows=0 / first=NULL / last=NULL`，
+        #   于是一次限流或空响应就会把该序列从所有 `WHERE rows>0` 的查询里抹掉
+        #   （数据还在 `scan_daily`，但扫描层再也看不到它）。
+        #   现在：已有数据的序列只更新状态与说明，不动 rows/first/last。
+        old = c.execute("SELECT rows FROM scan_series WHERE series_id=?", (sid,)).fetchone()
+        if old and old[0]:
+            c.execute("UPDATE scan_series SET status=?, note=? WHERE series_id=?",
+                      (status, note or "本轮抓取为空 —— 保留既有数据，未清零", sid))
+            c.commit()
+            return
         c.execute("INSERT OR REPLACE INTO scan_series VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                   (sid, name, kind, provider, symbol, "raw", None, None, 0,
                    time.strftime("%Y-%m-%d %H:%M:%S"), status, note))
@@ -256,14 +267,25 @@ def _latest_trade_day(c):
 
 
 def merge_rows(old, new):
-    """按日期合并（新值覆盖旧值），日期统一为无横线格式。"""
+    """按日期合并（新值覆盖旧值）。
+
+    ★★ v0.60：日期格式**沿用既有行的格式**（带横线 / 紧凑），**不得混写**。
+    原实现无条件统一成紧凑格式，而库内个股历史是**带横线**格式 →
+    一次 `--stocks` 刷新就把每只股票的整段历史**复制成两份**
+    （实测 2,520 只多出 5,155,656 行重复，已清理）。当日增量请用
+    `update_scan_stocks_v0_1.py`（只追加、保格式），本函数仅作整段重建时使用。
+    """
+    dashed = any("-" in str(r[0]) for r in old) if old else True
+
+    def _k(d):
+        s = str(d)
+        return s if dashed else s.replace("-", "")
+
     m = {}
     for r in old:
-        d = str(r[0]).replace("-", "")
-        m[d] = [d, r[1], r[2], r[3], r[4], r[5]]
+        m[_k(r[0])] = [_k(r[0]), r[1], r[2], r[3], r[4], r[5]]
     for r in new:
-        d = str(r[0]).replace("-", "")
-        m[d] = [d, r[1], r[2], r[3], r[4], r[5]]
+        m[_k(r[0])] = [_k(r[0]), r[1], r[2], r[3], r[4], r[5]]
     return [m[d] for d in sorted(m)]
 
 

@@ -14,7 +14,8 @@
 // ★ v0.33.1：v0_2 —— 三段口径（pre / event_day / post5·10·20）+ 事件阶段 + 数据新鲜度
 // ★ v0.59：v0_3 修正 `current_performance` 口径（基准按参与者同段日期对齐、
 //   `price_as_of` = 实际参与序列最早末日、剔除落后 >5 个交易日的参与者）
-import raw from '@current/forward_observation_v0_3.json';
+// ★ v0.60：v0_4 = 行情刷新到 2026-10-29（口径仍 v0_3，未变）
+import raw from '@current/forward_observation_v0_4.json';
 
 export type EvidenceStatus = 'PRE_OBSERVATION' | 'ALREADY_WARM' | 'INSUFFICIENT' | 'WATCH_ONLY'
   | 'DATA_STALE' | 'UNKNOWN';

@@ -255,8 +255,12 @@ def main():
             "as_of": current_market["date"] if current_market else None,
             "observables": current_market,
             "series": current_market_series,
-            "note": ("取**最新可得交易日**。当前快照日为 2026-09-15；"
-                     "行情已补至 2026-09-30（国庆假期后无新交易日）。"),
+            # ★★ v0.60：原文案是**硬编码的过期事实**（写死「快照日 2026-09-15；行情已补至
+            #   2026-09-30」），行情更新后它仍在骗人。改为**由实际数据生成**：日期取自
+            #   序列最后一行的 `trade_date`，口径写明 raw（未复权）收盘。
+            "note": ("取**最新可得交易日** = %s（`market_data.db` 的 `%s` 原始收盘 `price_type='raw'`，"
+                     "未复权）。只使用该日及之前的行情（ex-ante），不含相似度 / 匹配 / 概率 / 预测。"
+                     % (current_market["date"] if current_market else "—", BENCH)),
         },
         "summary": tally,
         "by_campaign": out,

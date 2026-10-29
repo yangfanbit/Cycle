@@ -3169,6 +3169,8 @@ html, body {
 }
 .am-vals { font-family: var(--mono); }
 .am-note { color: var(--ink-3); }
+/* ★ v0.60：口径 / 来源行（比免责声明更「技术」，用更弱的颜色，避免抢主数字） */
+.am-src { color: var(--ink-3); font-size: 11px; opacity: 0.85; }
 .eo-layer { display: flex; flex-direction: column; gap: 4px; }
 
 /* ---------- 当前观察台（ThreeC 1.2 · 状态陈列，不是可能性排序） ---------- */

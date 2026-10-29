@@ -66,7 +66,11 @@ def main(argv):
 
     pd_file = latest("pattern_discovery")
     pd = load(pd_file)
-    fwd = load("forward_observation_v0_2.json")
+    # ★★ v0.60：原硬编码 `forward_observation_v0_2.json` —— 前瞻产物升到 v0_3/v0_4 后，
+    #   摘要里的 `price_as_of` / `data_as_of` 会**停在旧版**（实测仍显示 2026-10-20），
+    #   与页面其他位置显示的行情日期自相矛盾。改为取版本号最大的。
+    fwd_file = latest("forward_observation")
+    fwd = load(fwd_file) if fwd_file else None
     cand = load("current_candidates.json")
     snap = load(os.path.join("market_snapshots", "index.json"))
 
@@ -131,7 +135,7 @@ def main(argv):
                       "data_as_of": iso((fwd or {}).get("as_of")),
                       "research_as_of": None,
                       "artifact_generated_at": iso((fwd or {}).get("as_of"))},
-            "evidence_ref": {"artifact": "forward_observation_v0_2.json", "candidate_id": c["candidate_id"]},
+            "evidence_ref": {"artifact": fwd_file, "candidate_id": c["candidate_id"]},
         })
 
     # ③ 当前研究对象
@@ -255,7 +259,7 @@ def main(argv):
         "sources": [
             {"id": "current_candidates", "file": "current_candidates.json", "count": len((cand or {}).get("candidates", [])),
              "date": (cand or {}).get("generated_at", "")[:10]},
-            {"id": "forward_observation", "file": "forward_observation_v0_2.json",
+            {"id": "forward_observation", "file": fwd_file,
              "count": len((fwd or {}).get("candidates", [])), "date": (fwd or {}).get("as_of")},
             {"id": "pattern_discovery", "file": pd_file, "count": len(pd["current_windows"]), "date": pd["as_of"]},
             {"id": "market_snapshots", "file": "market_snapshots/index.json", "count": len(snaps),

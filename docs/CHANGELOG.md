@@ -12,6 +12,54 @@
 
 ---
 
+## 2026-10-29 · **v0.60 —— 当下行情刷新到 2026-10-29 + 公开表达口径修正 + 4 个数据完整性缺陷**
+
+**性质：真实数据更新（两个行情库 + 快照 + 派生链）+ 数据完整性修复 + 公开表达修正 + 前端切版。**
+**未修改**：Research Model · `schema.sql` · Export Contract · 冻结 SA / TO / Driver ·
+Market Snapshot 与 `index.json` / `supersedes` 链 · 官方指数派生数值（授权仍 UNCLEAR）。
+
+### 1 · 真实更新
+
+| 数据集 | 前 | 后 |
+|---|---|---|
+| `history_scan.db` 指数 / 板块 / 个股 / 概念篮子 | 2026-10-23 | **2026-10-29**（222/226 · 5,568/5,576 · 173/173） |
+| `scan_daily` 总行数 | 13,008,438 | **13,034,444**（+26,006） |
+| `market_data.db` `raw`（21 条当前序列 + 基准） | 2026-10-23 | **2026-10-29**（+84 行） |
+| `market_daily` / 快照 | 416,109 / 6.74 MiB | **416,193 / 419,271 行 / 6.75 MiB**（`restore --check` PASS） |
+| `early_observation` `current_market.as_of` | **2026-10-20** | **2026-10-29** |
+| `forward_observation` | v0_3 | **v0_4** |
+| `pattern_discovery` / 摘要 / 候选摘要 | v0_10 / ←v0_10 / v0_9 | **v0_11 / ←v0_11 / v0_10** |
+| `candidate_ledger` | market_as_of 2026-10-23 | **2026-10-29** + `CL-2026-10-29-v0_2.json` |
+
+★ 4 个板块停 10-28（上游文件滞后）、8 只个股停更早（停牌/退市），**未补造**。
+
+### 2 · 修掉 4 类缺陷
+
+1. ★★ **日期格式混写 → 整段历史被复制**：`--stocks` 的 `merge_rows` 统一成紧凑格式，而个股历史是
+   带横线格式 → 2,520 只股票**多出 5,155,656 行重复**。已精确清理并修根因；新增
+   `update_scan_stocks_v0_1.py`（只追加、保格式、同日收盘重叠校验）。
+2. **空结果覆盖元数据**：`upsert_series` 抓空时把 `rows/first/last` 清零 → 序列从 `rows>0` 查询消失。已加守卫。
+3. **硬编码**：`early_observation` note 写死过期事实；`GENERATED_AT` 写死 2026-10-24；
+   `update_market_data_current` 与 `build_candidate_digest` 写死读 `forward_observation_v0_2`
+   （摘要 `price_as_of` 停在 10-20）。全部改为由数据派生。
+4. **旧行为快照型测试**：账本 T12 写死批次号 `CF-2026-10-23-02` → 改为按 `formed_at` 推导。
+
+### 3 · 公开表达（定向）
+
+README「核心价值 = 机会发现」→ **长期目标 + 增量价值待验证**；新增**三层能力表**
+（历史证据整理 ✅ / 研究线索发现 ✅ 但有效性未验证 / 已验证预测能力 ❌ 不存在）；
+经验基准概率**就地**补样本量、观察期限、**分母范围**、三条限制；
+`PRODUCT_PURPOSE` 修掉与 `AGENTS.md` §3.1 冲突的旧禁令；
+`EmpiricalProbabilityBlock` 新增「**分母范围 ≠ 完整观察总体**」；`CurrentMarketStrip` 补口径与来源。
+
+### 4 · 校验
+
+`restore --check` · 季节性 `--check`（as_of 20261029）· 摘要 / 账本 / 候选摘要 / 前瞻 / 题材行情 /
+参与者证据 / 涨停审计 / 角色 `--check` **全 PASS** · `refresh_downstream --check` **0 FAIL** ·
+季节性测试 30 · 账本测试 12 · `tsc -b --force` 干净 · 前端 **1494/1494**。
+
+> 交付报告：`docs/MARKET_DATA_REFRESH_2026-10-29_v0_1.md`
+
 ## 2026-10-25 · **v0.59 —— 当下行情更新 + 修掉「基准/参与者窗口错配」口径 bug**
 
 **性质：真实数据更新（行情库 + 快照）+ 计算口径修复 + 前端切版。**

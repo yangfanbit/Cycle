@@ -305,6 +305,15 @@ class TestLedgerV02(unittest.TestCase):
                           "month": 12, "representative_stocks": None,
                           "rep_stock_gap": "行业板块无历史成分 → 不绑个股"})
             pd["current_windows"] = list(pd["current_windows"]) + [extra]
+            # ★★ v0.60：批次号 = `CF-<候选源 as_of>-NN`，**由数据派生**。
+            #   原用例写死 `CF-2026-10-23-02` —— 那是**旧行为快照**：候选源 as_of 一变
+            #   （v0_10 20261023 → v0_11 20261029），批次号自然变成 CF-2026-10-29-01，
+            #   用例就与事实脱节。改为按 PD 的 as_of 推导，断言的是**不变量**
+            #   （「拒绝时不得新建批次快照 / 成功时必须新建」），而不是某个日期。
+            _a = str(pd["as_of"])
+            _formed = _a if "-" in _a else "%s-%s-%s" % (_a[:4], _a[4:6], _a[6:])
+            _same = sum(1 for x in t.log()["batches"] if x["formed_at"] == _formed)
+            _expect_batch = "CF-%s-%02d" % (_formed, _same + 1)
             new_pd = os.path.join(L.CURRENT, "pattern_discovery_v0_99.json")
             io.open(new_pd, "w", encoding="utf-8", newline="\n").write(
                 json.dumps(pd, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
@@ -321,8 +330,8 @@ class TestLedgerV02(unittest.TestCase):
                 self.assertEqual(sha(p), before[name],
                                  "%s 在拒绝后仍被修改了（这就是 v0.52 要修的缺陷）" % name)
             # 新批次的形成快照**不得**被创建（旧顺序会留下它）
-            self.assertFalse(os.path.exists(t.snap("CF-2026-10-23-02.json")),
-                             "拒绝时不得创建新批次的形成快照")
+            self.assertFalse(os.path.exists(t.snap("%s.json" % _expect_batch)),
+                             "拒绝时不得创建新批次的形成快照（%s）" % _expect_batch)
 
             # ★★ 反证「场景非空」：把**两个**冲突的冻结目标（同日结算快照 + 同日 latest）挪开再跑 ——
             #    若这时确实新增了批次，就说明上一步的拒绝不是「本来无事可做」，而是真的被冲突挡住了。
@@ -335,8 +344,8 @@ class TestLedgerV02(unittest.TestCase):
             self.assertEqual(rc3, 0, "移开两个冲突源后应成功：%s" % buf3.getvalue()[-800:])
             self.assertEqual(len(t.log()["batches"]), 2,
                              "该场景本应新增 1 个批次 —— 否则 T12 是空断言")
-            self.assertTrue(os.path.exists(t.snap("CF-2026-10-23-02.json")),
-                            "成功路径应当写出新批次的形成快照")
+            self.assertTrue(os.path.exists(t.snap("%s.json" % _expect_batch)),
+                            "成功路径应当写出新批次的形成快照（%s）" % _expect_batch)
             self.assertNotEqual(sha(log_p), before["log"], "成功路径应当追加了形成日志")
             self.assertEqual(t.ledger()["summary"]["candidates"], 205,
                              "成功路径的账本应当包含新实例")

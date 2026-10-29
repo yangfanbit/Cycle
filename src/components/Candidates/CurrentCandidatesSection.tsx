@@ -4,7 +4,8 @@
  * ★ 详情按**字段真实结构**渲染（对象/数组不转字符串）；无数据时诚实显示。
  */
 import { useEffect, useMemo, useState } from 'react';
-import raw from '@current/candidate_digest_v0_9.json';
+// ★ v0.60：v0_10 = 行情刷新到 2026-10-29 后重算的候选摘要
+import raw from '@current/candidate_digest_v0_10.json';
 import { RichText } from '../RichText';
 
 interface Card {

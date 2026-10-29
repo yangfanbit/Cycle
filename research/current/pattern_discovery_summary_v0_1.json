@@ -1,6 +1,6 @@
 {
  "artifact": "pattern_discovery_summary",
- "as_of": "20261023",
+ "as_of": "20261029",
  "counts": {
   "current_windows": 204,
   "exploratory": 407,
@@ -11,26 +11,26 @@
  "coverage_detail": {
   "concept_baskets": {
    "first_date": "20120829",
-   "last_date": "20261023",
-   "rows": 545477,
+   "last_date": "20261029",
+   "rows": 546170,
    "series": 173
   },
   "indices": {
    "first_date": "20140620",
-   "last_date": "20261023",
-   "rows": 12000,
+   "last_date": "20261029",
+   "rows": 12016,
    "series": 4
   },
   "industry_boards": {
    "first_date": "20100104",
-   "last_date": "20261023",
-   "rows": 577467,
+   "last_date": "20261029",
+   "rows": 580490,
    "series": 226
   },
   "stocks": {
    "first_date": "20041104",
-   "last_date": "20261023",
-   "rows": 11873493,
+   "last_date": "20261029",
+   "rows": 11895768,
    "series": 5576
   }
  },
@@ -54,7 +54,7 @@
   "training_rule": "每年资格只用该年之前的年份；训练年数 ≥5；训练集满足 STRICT（中位≥1.5pp 且命中≥60%）**或** EXPLORATORY（中位≥0.8pp 且命中≥55%）→ 该年具资格（双层，预先声明，不随结果调整）"
  },
  "ledger": {
-  "as_of": "2026-10-23",
+  "as_of": "2026-10-29",
   "caliber": {
    "anchor": "窗口首个交易日收盘",
    "excess": "板块收益 − 沪深300 同区间收益（pp）",
@@ -95,8 +95,8 @@
    "settlement_pin": "结算固定在 market_as_of 重算：日历截断到该日，因此同一 market_as_of 永远得到同一结果"
   },
   "file": "candidate_ledger_v0_2.json",
-  "market_as_of": "2026-10-23",
-  "sha256": "4ab7fa2a1f79c0ae1208dc3477cf8a066e7eef7c708132ae76e5d20bc9afd087",
+  "market_as_of": "2026-10-29",
+  "sha256": "5494c624e2e9a32214b614ed64af98f17342f7f9da548c36c2fcff87dc9e46ee",
   "summary": {
    "by_outcome_type": {
     "FORWARD_PENDING": 152,
@@ -128,17 +128,17 @@
   "★ pit_eligible_years 是**统计资格**，不等于当时可得的研究机会；discovery_basis = FULL_SAMPLE_ONLY 的模式在当年无法被发现。"
  ],
  "note": "★ 派生缓存：由完整产物确定性生成，仅供前端渲染；研究结论以源产物为准。本文件只含统计计数、覆盖、资格标准、限制说明与排序前 6 的窗口。",
- "pit_only_count": 960,
+ "pit_only_count": 967,
  "pit_only_summary": {
   "by_history_tier": {
    "BELOW_THRESHOLD": 770,
-   "INSUFFICIENT_HISTORY": 190
+   "INSUFFICIENT_HISTORY": 197
   },
-  "median_positive": 596,
+  "median_positive": 603,
   "note": "这些模式**只在时点上曾具资格**（全样本不达标或历史样本 <8 年），本轮**不进入首页**；若要开独立探索入口，建议以 oos_reportable 且 median_positive 为最低门槛。",
   "oos_reportable": 125,
   "oos_reportable_hit_rate": 0.24,
-  "total": 960
+  "total": 967
  },
  "realized_windows": [
   {
@@ -277,12 +277,12 @@
  "source": {
   "artifact": "pattern_discovery",
   "artifact_version": "0.8",
-  "as_of": "20261023",
-  "bytes": 5726020,
-  "file": "pattern_discovery_v0_10.json",
-  "generated_at": "2026-10-25T09:03:58",
+  "as_of": "20261029",
+  "bytes": 5734523,
+  "file": "pattern_discovery_v0_11.json",
+  "generated_at": "2026-10-30T00:13:53",
   "protocol": "seasonal_walk_forward_pit_v2",
-  "sha256": "6d896f4ac9feb2993f54c9b858ac09edd76d9fce13f5f9d4e70f5c00c838b6bb"
+  "sha256": "d448b258711956a0e7c439302bd6a4ec324194a4c3542ae33f5a436955dcbd89"
  },
  "summary_version": "0.1",
  "tier_note": "STRICT/EXPLORATORY = 全样本历史描述（预先声明阈值）；INSUFFICIENT_HISTORY = 历史样本 <8 年但曾在时点上具资格。**样本内通过 ≠ 已验证规律**；请同时看 evidence_grade / oos_by_train_tier / pit_eligible_years。",
@@ -916,12 +916,12 @@
   },
   "formation_run": {
    "batch_id": null,
-   "formed_at": "2026-10-23",
+   "formed_at": "2026-10-29",
    "new_instances": 0,
    "note": "新增 0 时不追加批次；重现事件（同一 instance_id 再次被选中）只记在本字段，不写入形成日志（形成日志只记「第一次形成」）",
    "reappeared": 204,
    "skipped": null,
-   "source_as_of": "2026-10-23"
+   "source_as_of": "2026-10-29"
   },
   "instances": [
    {
@@ -8473,7 +8473,7 @@
     "window_year": 2026
    }
   ],
-  "market_as_of": "2026-10-23",
+  "market_as_of": "2026-10-29",
   "pending": {
    "10d": 152,
    "20d": 204,
