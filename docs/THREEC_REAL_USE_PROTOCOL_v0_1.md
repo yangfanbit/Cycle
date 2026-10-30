@@ -76,24 +76,44 @@ ThreeC 目前有：8 题材 / 33 事件的历史地图、1,300 条季节性模�
 
 ★★ **必须在看到后续行情结果之前**冻结。冻结后**不得反向修改**当时写下的线索内容。
 
-### 3.1 冻结字段（缺一项即视为该条记录无效）
+### 3.1 冻结字段：**12 个通用必填 + 1 个条件字段**（共 13 个顶层字段）
+
+★ 字段数以**这份清单**为准（不再使用「14 个字段」的旧说法）。分两类：
+
+**（一）所有触发类型都必须填的 12 个字段**
 
 | 字段 | 说明 |
 |---|---|
-| `record_id` | 唯一 ID，格式 `RU-<YYYYMMDD>-NN`（同日递增） |
+| `record_id` | 唯一 ID，`RU-<YYYYMMDD>-NN`（同日递增） |
 | `frozen_at` | 记录时间（ISO 8601，含时分） |
 | `data_as_of` | **当时实际行情截至日期**（从页面/产物读，不凭记忆） |
 | `question` | 研究问题（一句话，可复核） |
-| `background` | 触发这个问题的背景（新闻 / 财报 / 政策 / 盘面 / 他人提问） |
-| `threec_output` | ThreeC 当时给出的**具体**线索：题材 / 事件 / 年份 / 参与标的 / 理由 / 来源链接 |
-| `artifact_ref` | 输出文件版本 + 页面区块 + **可追溯 commit**（`git rev-parse HEAD` 或页面 Build Provenance） |
-| `novelty_self` | 作者自评：**新颖 / 已知 / 不确定** + **理由**（★ 弱证据，见 §5） |
+| `background` | 触发背景（新闻 / 财报 / 政策 / 盘面 / 他人提问） |
+| `artifact_ref` | `commit`（`git rev-parse HEAD` 或 Build Provenance）+ `page_blocks`（看了哪些区块/产物） |
+| `novelty_self` | `新颖` / `已知` / `不确定`（三选一） |
+| `novelty_why` | 理由（★ 弱证据，见 §5） |
 | `worth_researching` | 是否值得继续研究 + 理由 |
-| `conventional_methods` | 当时是否有常规方法可用；**实际用了哪些**（Wind/Choice/研报/搜索/记忆） |
+| `conventional_methods` | `available`（当时有哪些常规方法）+ `actually_used`（实际用了哪些） |
 | `frozen_verdict` | `LEAD` / `CONFIRM` / `REJECT` / `NO_LEAD` / `BLOCKED` / `UI_FRICTION` |
 | `cluster_id` | 关联簇（同题材/同事件/同催化共用） |
 
-### 3.2 预留字段（**T 时刻留空，事后另行追加**）
+**（二）条件字段：`threec_output`（仅当存在候选输出时必填）**
+
+| `frozen_verdict` | `threec_output` 怎么填 |
+|---|---|
+| `LEAD` / `CONFIRM` / `REJECT` | **必填**：`theme` + `events` + `rationale` + `sources`（有标的则 `securities`） |
+| `NO_LEAD` / `BLOCKED` / `UI_FRICTION` | 填 **`NONE` 或 `NOT_APPLICABLE`**，并在 `output_absent_reason` 写明**为什么没有输出** |
+
+★★ **不得为了「字段完整」而编造线索**。没有候选输出是**合法且常见**的状态：
+`NO_LEAD` 本来就没有线索；`BLOCKED` 是数据/口径卡住；`UI_FRICTION` 是页面没帮上忙。
+这三类的价值在于**记录「看了什么、为什么没结果」**，不在于填一个假的 `theme`。
+
+★ 三类负向记录的 `artifact_ref.page_blocks` 与 `background` **必须写具体**
+（例如「查了 流感 / 电力 两个题材的事件卡与跨年份区段，未找到 2025 年后的对应」），
+否则这条记录无法复核。
+
+
+### 3.2 事后字段（写进**独立**的 `<record_id>.eval.md`，不写回冻结正文）
 
 | 字段 | 何时填 |
 |---|---|
@@ -103,17 +123,61 @@ ThreeC 目前有：8 题材 / 33 事件的历史地图、1,300 条季节性模�
 | `evidence_quality` | 事后：证据等级（报道点名 / 盘面 / 仅推断 / 无法核实） |
 | `outcome` | 事后：研究结论（成势 / 未成势 / 仍在进行 / 无法判断） |
 | `evaluated_at` | 评估日期 |
-| `evaluation_note` | 事后说明，**不得修改** §3.1 的任何字段 |
+| `evaluation_note` | 事后说明 |
 
-★ 追加时**只写 §3.2**；若确实需要更正 §3.1，必须新增 `amendments[]` 条目（写明原值、新值、
-原因、时间），**不得静默覆盖**。
+★★ **事后字段一律不写回 `<record_id>.md`** —— 那个文件与它的 `.sha256` 是 T 时刻的证据，
+一旦改动就无法再证明「当时写的是什么」。事后内容写 `<record_id>.eval.md`（可多次追加）。
+★ 若确需更正冻结内容，新建 `<record_id>.amend-NN.md`（原值 / 新值 / 原因 / 时间），**不覆盖原文件**。
 
-### 3.3 冻结的技术保证
 
-- 记录文件放 `.tmp/real_use/records/`（**gitignored**，见 §6）。
-- 每次冻结后立即 `git rev-parse HEAD` 写入 `artifact_ref.commit`，并在文件末尾追加该条的
-  `sha256`（可用 `shasum -a 256`）→ 事后可证明「这一条在 T 时刻就是这样」。
-- **不要求**把日志提交到仓库；冻结靠「本地只追加 + 哈希」即可。
+### 3.3 冻结的技术做法（**外置摘要 + 独立评估文件**）
+
+★★ **不要**把 `record_sha256` 写在被哈希的同一个文件里 —— 那是自引用（写入摘要会改变内容，
+摘要随即失效）。正确做法是把摘要**外置**，并把事后结果放进**另一个文件**。
+
+#### 文件布局（每个记录 ID 一组，全部只追加）
+
+```
+.tmp/real_use/records/
+├── RU-20261030-01.md            # T 时刻冻结正文（写完**不再修改**）
+├── RU-20261030-01.md.sha256     # 外置摘要（shasum 输出，一行）
+├── RU-20261030-01.eval.md       # 事后评估（可多次追加，独立文件）
+└── RU-20261030-01.amend-01.md   # 需要更正时新建（不覆盖上面任何文件）
+```
+
+#### 操作（普通文件命令即可，无需任何框架）
+
+```bash
+cd .tmp/real_use/records
+
+# ① T 时刻：写完正文后立即生成外置摘要
+shasum -a 256 RU-20261030-01.md > RU-20261030-01.md.sha256
+
+# ② 事后核对（内容与摘要是否一致）
+shasum -a 256 -c RU-20261030-01.md.sha256
+
+# ③ 事后结果 → 另建 eval 文件（不动正文）
+$EDITOR RU-20261030-01.eval.md
+```
+
+★ 正文里的 `artifact_ref.commit` 用 `git rev-parse HEAD` 或页面 Build Provenance 填入 ——
+它是「当时产物版本」的证据，与哈希互补。
+
+#### ★★ SHA-256 能证明什么、不能证明什么
+
+| 能 | 不能 |
+|---|---|
+| 核对「这份内容」与「这个摘要」是否一致 | **不能**证明创建时间 —— 摘要本身可以在事后重算 |
+| 发现正文被改动过（与摘要不符） | **不能**证明「这是最早的那一版」（没有可信时间源） |
+| 让「事后追加」与「当时冻结」物理分开 | **不能**替代第三方时间戳存证 |
+
+→ 若要时间证据，另存**可核的时间痕迹**（当时的检索记录、笔记、对话历史、带日期的 commit）；
+本协议**不为此增加任何流程门禁**，也不要求外部存证服务。
+
+★ 不要求把日志提交到仓库；冻结靠「只追加 + 外置摘要 + 独立评估文件」即可。
+★ 若确实需要更正 T 时刻内容：**新建 `amend-NN.md`**（写明原值、新值、原因、时间），
+**绝不覆盖**原冻结文件与它的 `.sha256`。
+
 
 ---
 
@@ -175,7 +239,7 @@ ThreeC 目前有：8 题材 / 33 事件的历史地图、1,300 条季节性模�
 
 ```
 .tmp/real_use/
-├── records/            # 每条记录一个 md 或 jsonl（RU-YYYYMMDD-NN）
+├── records/            # 每条一组：RU-YYYYMMDD-NN.md + .md.sha256 + .eval.md（+ amend-NN.md）
 ├── sessions.md         # 每次使用的触发量（打开哪些页面、查了什么、耗时）
 └── summary.md          # 收口时的汇总（条目数 / cluster 数 / 正负分布）
 ```
@@ -204,8 +268,9 @@ ThreeC 目前有：8 题材 / 33 事件的历史地图、1,300 条季节性模�
 ## 8 · 本轮状态（如实）
 
 - 协议：**已定义**（本文件）。
-- 模板：**已提供**（`docs/templates/REAL_USE_RECORD_TEMPLATE_v0_1.md`、
-  `docs/templates/REAL_USE_EXTERNAL_REFERENCE_TEMPLATE_v0_1.md`）。
+- 模板：**已提供**（`docs/templates/REAL_USE_RECORD_TEMPLATE_v0_1.md`（T 时刻冻结正文）、
+  `docs/templates/REAL_USE_EVAL_TEMPLATE_v0_1.md`（事后评估 + 更正记录）、
+  `docs/templates/REAL_USE_EXTERNAL_REFERENCE_TEMPLATE_v0_1.md`（外部对照））。
 - 真实记录：**0 条**。
 - 外部参照：**0 位**。
 - → 当前**不能**对「ThreeC 是否有增量价值」作任何判断。

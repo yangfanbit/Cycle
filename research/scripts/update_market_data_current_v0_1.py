@@ -51,7 +51,11 @@ CURRENT = os.path.join(REPO, "research", "current")
 DB = os.path.join(REPO, "research", "database", "market_data.db")
 BENCH = "SH000300"
 
-API = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?"
+# ★★ v0.62：`web.ifzq.gtimg.cn` 的 `fqkline/get` 会被 WAF 拦截 —— 返回 **HTTP 501 + JS 挑战页**
+#   （2026-10-30 实测：`web.` 前缀 100% 失败，同路径去掉 `web.` 后 200 正常）。
+#   已验证 `ifzq.gtimg.cn` 返回**同一字段顺序、同一数值**（sh000300 2026-10-30 close 3985.500，
+#   与新浪 3985.501 仅三位小数舍入差异）→ 换主机不换路径，不改变任何口径。
+API = "https://ifzq.gtimg.cn/appstock/app/fqkline/get?"
 HDRS = {"User-Agent": "Mozilla/5.0", "Referer": "https://gu.qq.com/"}
 PACING = 1.2
 

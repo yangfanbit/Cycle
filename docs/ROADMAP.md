@@ -2,7 +2,7 @@
 
 > 路线图只描述当前之后的工作；历史实施细节见 `docs/CHANGELOG.md`。
 
-## 0. 当前主线（2026-10-25 更新）
+## 0. 当前主线（2026-10-30 更新）
 
 > 只写「现在到下一步」。**已完成的用户研究请求、题材地图、工作流功能一律不再重新规划**，
 > 历史实施记录见 §1 之后各节与 `docs/CHANGELOG.md`。
@@ -32,6 +32,7 @@
 | v0.59 | **当下行情更新 + 口径 bug 修复**：21 条当前序列补到 2026-10-23（净增 21,071 行）·快照重生成 · `forward_observation` v0_2→**v0_3**（基准按参与者同段对齐 / `price_as_of` 取实际最早末日 /剔除落后参与者）→ 流感 20 日超额 **21.57%→4.60%**、状态 `DATA_STALE`→`PRE_OBSERVATION` | `update_market_data_current_v0_1.py` · `forward_observation_v0_3.json` + `FO-2026-10-23-v0_3.json` · `docs/MARKET_DATA_REFRESH_2026-10-25_v0_1.md` |
 | v0.60 | **当下行情刷新到 2026-10-29 + 公开表达修正 + 4 个数据完整性缺陷**：两个行情库与派生链全部推进（`scan_daily` 13,008,438→**13,034,444**；`market_daily` 416,109→**416,193**，快照 419,271 行 `restore --check` PASS）；`forward_observation` v0_3→**v0_4**、`pattern_discovery` v0_10→**v0_11**、`candidate_digest` v0_9→**v0_10**、账本 market_as_of→2026-10-29；★ 修掉「日期格式混写导致整段历史被复制」（实测多出 5,155,656 行，已清理）等 4 类缺陷；README/PRODUCT_PURPOSE/概率区块改为「三层能力 + 分母范围≠完整观察总体」 | `update_scan_stocks_v0_1.py` · `extend_concept_baskets_v0_1.py` · `docs/MARKET_DATA_REFRESH_2026-10-29_v0_1.md` |
 | v0.61 | **真实使用记录协议 + 分母工程可行性审查（只读）**：协议定义六类触发 + T 时刻 14 字段冻结 + cluster 计数 + 外部参照流程（记录 0 条）；分母审查结论 **PARTIAL GO** —— A 已具备（`n_years` 上限 13）、B 须改名收缩（Campaign 库 0 条 failed、判据含定性项、中位时长 387 天）、C 须先预注册；★★ 两个关键发现：**个股被 3,000 根上限截断**（41% 个股、茅台库内起点 2014-06-20 → 实质覆盖 ≈12 年）、**脉冲被 β 污染**（11 天贡献 36.8%，2024-02-20 单日 155 板块） | `docs/THREEC_REAL_USE_PROTOCOL_v0_1.md` · `docs/DENOMINATOR_FEASIBILITY_REVIEW_v0_1.md` · `docs/templates/REAL_USE_*_TEMPLATE_v0_1.md` |
+| v0.62 | **行情推进到 2026-10-30 + 协议可执行性修正 + 分母结论范围收紧**：两个行情库与派生链全部到 10-30（`scan_daily` 13,034,444→**13,040,398**；`market_daily` 416,193→**416,214**，快照 419,292 行 PASS）；`forward_observation` v0_5、`pattern_discovery` v0_12、`candidate_digest` v0_11、账本 market_as_of→10-30（**新增结算 0**）；★ 修 `web.ifzq.gtimg.cn` 的 501 WAF（改用 `ifzq.gtimg.cn`，数值一致）；★ 协议字段统一为 12 通用 + 1 条件、哈希改外置 `.sha256`、负向记录允许 `NOT_APPLICABLE`；★ 分母结论改为**按序列类型分列**（`n_years` 上限 13 源于基准 CSI300 截断，非「板块只有 13 年」） | `docs/THREEC_REAL_USE_PROTOCOL_v0_1.md` · `docs/DENOMINATOR_FEASIBILITY_REVIEW_v0_1.md` · `docs/templates/REAL_USE_EVAL_TEMPLATE_v0_1.md` |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前待办（研究侧，按优先级）
@@ -82,7 +83,7 @@
 | # | 路径 | 状态 |
 |---|---|---|
 | 1 | 行业板块历史成分（哪怕近似）→ 打开行业级个股映射 | **未完成**（75 条行业窗口仍「不绑个股」）· **按需推进** |
-| 2 | 官方概念 / 主题指数历史（替代自建合成序列） | **未完成**（仍用当前成分合成的等权序列）· **按需推进** |
+| 2 | 官方概念 / 主题指数历史（替代自建合成序列） | **已调查（v0.55，见 §0.5-3）**：中证官网可取 2005 起日线；`H30184` GO / `000933` GO（有限代理）/ `H30199` 不作火电替代；**尚未接入生产**（授权 `UNCLEAR`） |
 | 3 | 把「窗口 + 代表股票」固化为候选快照 + 5/10/20 交易日回填 | ✅ **v0.50 已完成** |
 | 4 | 退市股与历史名称快照 | **未完成**（生肖类研究前置条件）· **按需推进** |
 

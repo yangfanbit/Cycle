@@ -46,26 +46,17 @@
  },
  "current_market": {
   "series_id": "SH000300",
-  "as_of": "2026-10-29",
+  "as_of": "2026-10-30",
   "observables": {
-   "date": "2026-10-29",
-   "close": 4041.84,
-   "vol_pct60": 0.317,
-   "ret_20_pct": -10.52,
-   "vol_ratio": 1.026,
+   "date": "2026-10-30",
+   "close": 3985.5,
+   "vol_pct60": 0.633,
+   "ret_20_pct": -10.22,
+   "vol_ratio": 1.0,
    "above_ma20": false,
    "above_ma60": false
   },
   "series": [
-   {
-    "date": "2026-09-24",
-    "close": 4439.14,
-    "vol_pct60": 0.067,
-    "ret_20_pct": -4.13,
-    "vol_ratio": 0.555,
-    "above_ma20": false,
-    "above_ma60": false
-   },
    {
     "date": "2026-09-28",
     "close": 4340.76,
@@ -236,9 +227,18 @@
     "vol_ratio": 1.026,
     "above_ma20": false,
     "above_ma60": false
+   },
+   {
+    "date": "2026-10-30",
+    "close": 3985.5,
+    "vol_pct60": 0.633,
+    "ret_20_pct": -10.22,
+    "vol_ratio": 1.0,
+    "above_ma20": false,
+    "above_ma60": false
    }
   ],
-  "note": "取**最新可得交易日** = 2026-10-29（`market_data.db` 的 `SH000300` 原始收盘 `price_type='raw'`，未复权）。只使用该日及之前的行情（ex-ante），不含相似度 / 匹配 / 概率 / 预测。"
+  "note": "取**最新可得交易日** = 2026-10-30（`market_data.db` 的 `SH000300` 原始收盘 `price_type='raw'`，未复权）。只使用该日及之前的行情（ex-ante），不含相似度 / 匹配 / 概率 / 预测。"
  },
  "summary": {
   "OK": 54,

@@ -1,7 +1,7 @@
 {
  "artifact": "candidate_ledger",
  "artifact_version": "0.2",
- "as_of": "2026-10-29",
+ "as_of": "2026-10-30",
  "caliber": {
   "anchor": "窗口首个交易日收盘",
   "excess": "板块收益 − 沪深300 同区间收益（pp）",
@@ -494,7 +494,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -803,7 +803,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -958,7 +958,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -1190,7 +1190,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -1268,7 +1268,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -1423,7 +1423,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -1655,7 +1655,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -1810,7 +1810,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -1965,7 +1965,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -2197,7 +2197,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -2583,7 +2583,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -2815,7 +2815,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -2970,7 +2970,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -3048,7 +3048,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -3280,7 +3280,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -3897,7 +3897,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -4283,7 +4283,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -4361,7 +4361,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -4747,7 +4747,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -4979,7 +4979,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -5211,7 +5211,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -5520,7 +5520,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -5598,7 +5598,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -6340,7 +6340,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -6953,7 +6953,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -7668,7 +7668,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -7873,7 +7873,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -8180,7 +8180,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -8487,7 +8487,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -8692,7 +8692,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -8897,7 +8897,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -9102,7 +9102,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -9919,7 +9919,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -10226,7 +10226,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -10431,7 +10431,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -10636,7 +10636,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -10841,7 +10841,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -11352,7 +11352,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -11659,7 +11659,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -11864,7 +11864,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -12171,7 +12171,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -12682,7 +12682,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -12785,7 +12785,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -13398,7 +13398,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -13807,7 +13807,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -14012,7 +14012,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -14727,7 +14727,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -14932,7 +14932,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -16259,7 +16259,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -17892,7 +17892,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -18097,7 +18097,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -18812,7 +18812,7 @@
    "status": "IN_WINDOW",
    "window": {
     "complete": false,
-    "end": "2026-10-29",
+    "end": "2026-10-30",
     "note": "窗口进行中：end 为当前已知的最后一个交易日，非月末",
     "start": "2026-10-08",
     "year": 2026
@@ -19037,12 +19037,12 @@
  },
  "formation_run": {
   "batch_id": null,
-  "formed_at": "2026-10-29",
+  "formed_at": "2026-10-30",
   "new_instances": 0,
   "note": "新增 0 时不追加批次；重现事件（同一 instance_id 再次被选中）只记在本字段，不写入形成日志（形成日志只记「第一次形成」）",
   "reappeared": 204,
   "skipped": null,
-  "source_as_of": "2026-10-29"
+  "source_as_of": "2026-10-30"
  },
  "generated_by": "research/scripts/build_candidate_ledger_v0_2.py",
  "limitations": [
@@ -19053,23 +19053,23 @@
   "形成记录来自形成日志，**不随行情改写**；本文件的结算字段在 market_as_of 重算。",
   "本账本只做描述：不含评分、排名、预测或买卖信号。"
  ],
- "market_as_of": "2026-10-29",
+ "market_as_of": "2026-10-30",
  "sources": {
   "candidate_digest": {
    "artifact_version": "0.1",
-   "file": "candidate_digest_v0_10.json",
-   "sha256": "89c1fa80afca401c36d9d91602316321375fc238dfb352bfa3db2770d6fbf531"
+   "file": "candidate_digest_v0_11.json",
+   "sha256": "fbfe32dffe1fcfbb7d34f5fd05d86178cc4be9911a657cd7c7cba7d879628eb3"
   },
   "market": {
    "benchmark": "CSI300",
-   "calendar_last": "2026-10-29",
-   "calendar_last_all": "2026-10-29",
+   "calendar_last": "2026-10-30",
+   "calendar_last_all": "2026-10-30",
    "db": "research/database/history_scan.db"
   },
   "pattern_discovery": {
    "artifact_version": "0.8",
-   "file": "pattern_discovery_v0_11.json",
-   "sha256": "d448b258711956a0e7c439302bd6a4ec324194a4c3542ae33f5a436955dcbd89"
+   "file": "pattern_discovery_v0_12.json",
+   "sha256": "a4d6fc9a776f8dc7e721c3e780526bec01cc7dc955677f8062b6d8b58774ae30"
   }
  },
  "summary": {

@@ -5,7 +5,8 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 // ★ v0.60：v0_10 = 行情刷新到 2026-10-29 后重算的候选摘要
-import raw from '@current/candidate_digest_v0_10.json';
+// ★ v0.62：v0_11 = 行情刷新到 2026-10-30 后重算的候选摘要
+import raw from '@current/candidate_digest_v0_11.json';
 import { RichText } from '../RichText';
 
 interface Card {

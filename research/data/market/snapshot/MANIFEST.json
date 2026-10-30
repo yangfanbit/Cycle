@@ -26,7 +26,7 @@
  ],
  "tables": {
   "market_daily": {
-   "bytes": 7057789,
+   "bytes": 7058277,
    "columns": [
     "series_id",
     "trade_date",
@@ -41,7 +41,7 @@
     "data_source",
     "retrieved_at"
    ],
-   "rows": 416193,
+   "rows": 416214,
    "shard_count": 12,
    "shards": {
     "2015": {
@@ -111,10 +111,10 @@
      "sha256": "bb863610dcd8779c8a42bd2993ef989e53f5fadc130c22e74e38951d1bef3b9a"
     },
     "2026": {
-     "bytes": 128785,
+     "bytes": 129273,
      "file": "market_daily/2026.csv.gz",
-     "rows": 8283,
-     "sha256": "d6c099f744bd2c171305d2c65af64454555b6a1f2f07c03dfe5690e62ae28e23"
+     "rows": 8304,
+     "sha256": "2a074f5c801db3124b1ab829eb0a3234cfec5e3a67fcb57f5662b7c497cb4fb6"
     }
    }
   },
@@ -163,7 +163,7 @@
    }
   }
  },
- "total_bytes": 7072480,
- "total_rows": 419271,
+ "total_bytes": 7072968,
+ "total_rows": 419292,
  "why": "`cycle_research.db` 曾达 66 MB（market_daily 373k 行占绝大部分），超过 GitHub 建议的 50 MB。行情三表拆出为不入库的本地 `market_data.db`，由本快照恢复。"
 }
