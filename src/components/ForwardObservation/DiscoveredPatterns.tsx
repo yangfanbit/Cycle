@@ -119,10 +119,16 @@ export function DiscoveredPatterns() {
         STRICT <strong>{strictN}</strong> 条（标准：≥{doc.criteria.min_years} 年 · 中位超额 ≥
         {doc.criteria.min_median_excess}pp · 命中 ≥ {(doc.criteria.min_hit_rate * 100).toFixed(0)}%）
         · 探索 <strong>{explN}</strong> 条 · 当前/下月窗口 <strong>{doc.counts.current_windows}</strong> 条
-        {/* ★ v0.65：同一批模式在首页还有一处**预览**入口 —— 不说明关系会被读成两套发现结果 */}
-        <span className="fwd-note" data-same-source-as-digest="1">
-          （与「当前候选前瞻 · 季节性统计窗口」是<strong>同一批</strong>模式：那里只放预览，
-          这里给全量、分层标准与结算状态；不是两套发现结果。）
+        {/* ★★ v0.66 更正：v0.65 这里写「同一批模式」是**错的** —— 实测两处六条**没有交集**。
+            两处读的是同一份历史模式数据（pattern_discovery），但选取规则不同：
+              · 首页预览：候选综合排序（样本外证据 → 检验年数 → 命中率 → 年数 → 时间位置），
+                且限制同月份 ≤3 条；
+              · 本区：完整模式按**历史中位超额**排序取前六。
+            所以「展示条目可能不一致」是正常结果，不是缺陷；**不为了对齐而强行统一选择器**。 */}
+        <span className="fwd-note" data-source-note="same-artifact-different-selection">
+          （与「当前候选前瞻 · 季节性统计窗口」<strong>来自同一份历史模式数据</strong>，
+          但<strong>筛选与排序规则不同</strong>，展示条目<strong>可能不一致</strong>：
+          首页按候选综合排序并限制同月份 ≤3 条，本区按历史中位超额取前六。）
         </span>
         <span className="fwd-note">
           数据：股票 {doc.coverage_detail.stocks.series} 只（{doc.coverage_detail.stocks.first_date}–

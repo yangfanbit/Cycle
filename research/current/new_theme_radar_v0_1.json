@@ -1,0 +1,3707 @@
+{
+ "artifact": "new_theme_radar",
+ "artifact_version": "0.1",
+ "generated_at": "2026-10-31T15:56:44",
+ "as_of": "2026-10-30",
+ "source_kind": "AUTO_DISCOVERED_EVENT",
+ "coverage": {
+  "publisher": "国家发展改革委",
+  "sources": [
+   {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "pages": [
+     "",
+     "index_1.html"
+    ]
+   },
+   {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "pages": [
+     "",
+     "index_1.html"
+    ]
+   }
+  ],
+  "pages_fetched": [
+   {
+    "source": "NDRC_ZCFB_TZ",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "bytes": 34149,
+    "items": 15
+   },
+   {
+    "source": "NDRC_ZCFB_TZ",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/index_1.html",
+    "bytes": 43433,
+    "items": 10
+   },
+   {
+    "source": "NDRC_XWFB",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "bytes": 8031,
+    "items": 25
+   },
+   {
+    "source": "NDRC_XWFB",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/index_1.html",
+    "bytes": 7945,
+    "items": 25
+   }
+  ],
+  "date_range": [
+   "2025-12-26",
+   "2026-10-30"
+  ],
+  "events": 75,
+  "by_source": {
+   "NDRC_ZCFB_TZ": 25,
+   "NDRC_XWFB": 50
+  },
+  "limits": [
+   "**单一发布机构（国家发改委）、两个栏目**：政策通知 + 新闻发布，不是全市场新闻挖掘",
+   "**类别有限**：只覆盖「政策/通知/价格机制」类发布，不含部委标准、地方政策、公司公告",
+   "参与广度不可得：行业板块无历史成分 → 只给板块收益与相对基准，不给广度",
+   "个股映射未做：首版只到行业板块级，未建立证券级映射",
+   "事件日期取列表页标注日，可能与正文发布时点相差 1 个工作日",
+   "**不是预测**：`CANDIDATE` 只是「值得人工看一眼」的机械筛选，需人工复核"
+  ]
+ },
+ "rules": {
+  "reaction_trading_days": 3,
+  "min_observation_trading_days": 3,
+  "max_event_age_days": 45,
+  "candidate_requires": [
+   "有逐字关键词命中的板块关联（THEME_KEYWORDS）",
+   "行情可核验：observation_trading_days >= 3",
+   "板块相对基准超额 > 0（方向与事件一致）",
+   "event_date 距 as_of <= 45 天"
+  ],
+  "not_scored": "不含打分 / 概率 / 收益排序 / 交易信号；is_candidate 只是机械筛选，需人工复核"
+ },
+ "theme_keywords": [
+  {
+   "keyword": "成品油价格",
+   "board_series": "BK881180",
+   "board_name": "石油加工贸易",
+   "relation": "DIRECT",
+   "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+  },
+  {
+   "keyword": "油价",
+   "board_series": "BK881180",
+   "board_name": "石油加工贸易",
+   "relation": "DIRECT",
+   "rationale": "成品油/原油价格机制调整作用于炼化环节"
+  },
+  {
+   "keyword": "电价",
+   "board_series": "BK881145",
+   "board_name": "电力",
+   "relation": "DIRECT",
+   "rationale": "电价机制与输配电价调整直接影响发电侧收入"
+  },
+  {
+   "keyword": "电力市场",
+   "board_series": "BK881145",
+   "board_name": "电力",
+   "relation": "DIRECT",
+   "rationale": "电力市场规则变动影响发电与售电主体"
+  },
+  {
+   "keyword": "光伏",
+   "board_series": "BK881279",
+   "board_name": "光伏设备",
+   "relation": "DIRECT",
+   "rationale": "光伏政策与装机目标直接作用于设备端"
+  },
+  {
+   "keyword": "风电",
+   "board_series": "BK881280",
+   "board_name": "风电设备",
+   "relation": "DIRECT",
+   "rationale": "风电政策与装机目标直接作用于设备端"
+  },
+  {
+   "keyword": "储能",
+   "board_series": "BK881281",
+   "board_name": "电池",
+   "relation": "PROXY",
+   "rationale": "储能支持政策主要作用于电池环节；首版用「电池」板块代理，非储能专营板块"
+  },
+  {
+   "keyword": "算力",
+   "board_series": "BK881162",
+   "board_name": "通信服务",
+   "relation": "PROXY",
+   "rationale": "算力/数据中心政策主要作用于 IDC 与通信服务；首版用「通信服务」代理"
+  },
+  {
+   "keyword": "半导体",
+   "board_series": "BK881121",
+   "board_name": "半导体",
+   "relation": "DIRECT",
+   "rationale": "集成电路政策直接作用于半导体板块"
+  },
+  {
+   "keyword": "集成电路",
+   "board_series": "BK881121",
+   "board_name": "半导体",
+   "relation": "DIRECT",
+   "rationale": "集成电路政策直接作用于半导体板块"
+  },
+  {
+   "keyword": "新能源汽车",
+   "board_series": "BK881125",
+   "board_name": "汽车整车",
+   "relation": "DIRECT",
+   "rationale": "新能源汽车政策直接作用于整车环节"
+  }
+ ],
+ "summary": {
+  "events": 75,
+  "by_status": {
+   "NO_THEME_LINK": 59,
+   "WATCH": 14,
+   "PENDING_MARKET": 1,
+   "CANDIDATE": 1
+  },
+  "candidates": 1
+ },
+ "status_legend": {
+  "CANDIDATE": "值得人工看一眼的线索（机械筛选，需人工复核；不是买卖建议）",
+  "WATCH": "有板块关联但市场反应不支持 / 事件已过窗口 → 只留档",
+  "PENDING_MARKET": "事件后交易日不足，暂不判定",
+  "INSUFFICIENT": "行情或关联不足，无法核验",
+  "NO_THEME_LINK": "未命中显式关键词表 → 不建立板块关联"
+ },
+ "events": [
+  {
+   "event_id": "EVT-ZCFB_TZ-20261030-1408459",
+   "title": "关于加强消费基础设施建设 促进消费投资良性互动的指导意见(发改就业〔2026〕1508号)",
+   "event_date": "2026-10-30",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202610/t20261030_1408459.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委等部门关于",
+   "evidence_sha256_16": "6cc5b2bc22e71ede",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261030-1408463",
+   "title": "中共国家发展改革委党组召开扩大会议传达学习贯彻党的二十届五中全会精神",
+   "event_date": "2026-10-30",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261030_1408463.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "10月30日，国家发展改革委党组召开扩大会议，传达学习贯彻党的二十届五中全会精神和习近平总书记重要讲话精神，研究部署全委学习宣传贯彻工作。国家发展改革委党组书记、主任郑栅洁主持会议并讲话。 会议认为，党的二十届五中全会是在基本实现社会主义现代化的关键时期召开的一次十分重要的会议。全会审议通过的《中共中央关于持之以恒推进全面从严治党若干重大问题的决定》和习近平总书记在全会上的重要讲话，对持之以恒推进全面从严治党作出系统部署，强调增强共产党人的党性，严格贯彻执行民主集中制，锻造堪当民族复兴重任的高素质干部队伍，建设上下贯通、执行有力的严密组织体系，驰而不息正风肃纪，坚定不移一体推进不敢腐不能腐不想",
+   "evidence_sha256_16": "b78a5bd54f11b9ea",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261029-1408449",
+   "title": "2026年10月29日国家再次实施调控，成品油价格适当调整",
+   "event_date": "2026-10-29",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261029_1408449.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "10月15日国内成品油价格调整以来，中东地缘紧张局势升级，国际市场原油价格大幅上涨。为减缓对国内的冲击，国家再次对成品油价格采取调控措施。根据现行价格机制计算，自10月29日24时起，国内汽、柴油（标准品）价格每吨分别应上调440元、420元，统筹兼顾减轻下游用户负担和保障成品油安全稳定供应，调控后实际上调345元、335元。",
+   "evidence_sha256_16": "def136ca102dfa3d",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-10-28",
+     "2026-10-30"
+    ],
+    "board_ret_pct": -2.88,
+    "bench_ret_pct": -2.41,
+    "excess_pp": -0.47,
+    "observation_trading_days": 2,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 1,
+    "drift": {
+     "window": [
+      "2026-10-28",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -2.88,
+     "bench_ret_pct": -2.41,
+     "excess_pp": -0.47,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "PENDING_MARKET",
+   "gaps": [
+    "事件后交易日仅 2 个（< 3）→ 观察窗口不足，暂不判定",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20261028-1408423",
+   "title": "关于同意南方区域电力市场转入正式运行的复函(发改办体改〔2026〕715号)",
+   "event_date": "2026-10-28",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202610/t20261028_1408423.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委办公厅 国家能源局综合司",
+   "evidence_sha256_16": "18a65cbafe7b0737",
+   "theme_links": [
+    {
+     "keyword": "电力市场",
+     "matched_in": "TITLE",
+     "board_series": "BK881145",
+     "board_name": "电力",
+     "relation": "DIRECT",
+     "rationale": "电力市场规则变动影响发电与售电主体"
+    }
+   ],
+   "market": {
+    "board_series": "BK881145",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-10-27",
+     "2026-10-30"
+    ],
+    "board_ret_pct": -1.93,
+    "bench_ret_pct": -1.58,
+    "excess_pp": -0.35,
+    "observation_trading_days": 3,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 2,
+    "drift": {
+     "window": [
+      "2026-10-27",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -1.93,
+     "bench_ret_pct": -1.58,
+     "excess_pp": -0.35,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "板块相对基准超额 -0.35pp ≤ 0 → 市场反应方向与事件不一致，不升级为线索",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261027-1408419",
+   "title": "周海兵副主任会见法国财政总署署长杜蒙",
+   "event_date": "2026-10-27",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261027_1408419.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "10月23日下午，国家发展改革委副主任周海兵在委内会见法国财政总署署长杜蒙，双方就“十五五”规划、中法宏观经济形势、扩大双向投资、能源等议题进行了交流。",
+   "evidence_sha256_16": "5519925ac3241bba",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261020-1408278",
+   "title": "国家发展改革委举行10月份新闻发布会",
+   "event_date": "2026-10-20",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261020_1408278.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "10月20日上午，国家发展改革委举行10月份新闻发布会。国家发展改革委政策研究室副主任、委新闻发言人李超主持发布会，国民经济综合司副司长左刚、民营经济发展局副局长刘丹、创新和高技术发展司副司长任中保出席发布会，介绍《关于发展新质生产力的意见》、《关于进一步完善价格形成机制 推动普惠养老服务提质扩面的指导意见》等政策文件以及场景培育和开放、要素市场化配置等改革举措，并就宏观经济形势、标志性重大应用场景项目、普惠养老服务、要素市场化配置综合改革试点、扩大内需政策、民营企业座谈会、民间投资项目推介、因地制宜发展新质生产力、产业协调协同发展等方面问题，回应媒体关切。60余家媒体70余名记者参加本场发布",
+   "evidence_sha256_16": "cefb25d0b962e24d",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261015-1408170",
+   "title": "2026年10月15日国内成品油价格不作调整",
+   "event_date": "2026-10-15",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261015_1408170.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月24日国内成品油价格调整以来，中东地缘局势复杂多变，国际市场原油价格短暂回落后又出现较大幅度上涨。根据国际市场油价变化情况，本次汽、柴油价格不作调整。",
+   "evidence_sha256_16": "30bff17a5745cec6",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-10-14",
+     "2026-10-20"
+    ],
+    "board_ret_pct": -2.89,
+    "bench_ret_pct": -1.55,
+    "excess_pp": -1.34,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-10-14",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -6.69,
+     "bench_ret_pct": -5.5,
+     "excess_pp": -1.18,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "板块相对基准超额 -1.34pp ≤ 0 → 市场反应方向与事件不一致，不升级为线索",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261013-1408128",
+   "title": "国家发展改革委组织召开中央区域办专题会议协调推进西部大开发重点事项",
+   "event_date": "2026-10-13",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261013_1408128.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "近日，国家发展改革委党组成员、副主任王昌林同志主持召开中央区域办专题会议，深入学习贯彻习近平总书记重要讲话和指示批示精神，落实党中央关于西部大开发的战略部署，推进国务院印发的有关政策文件实施，研究协调重点事项，部署下一步重点工作。会上，国家发展改革委区域司介绍了有关文件落实进展，贵州、广西、云南、内蒙古等四省区分别汇报了需研究协调事项，国务院有关部门和国家发展改革委相关司局就研究协调事项作了交流沟通。会议要求，要深入贯彻落实党中央决策部署，准确把握西部大开发在推进中国式现代化建设中的定位和使命，支持四省区因地制宜促进高质量发展。要强化政策措施协同，结合“十五五”时期新形势新要求，进一步加大抓落",
+   "evidence_sha256_16": "d9de10cc6c1a833b",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261010-1408066",
+   "title": "郑栅洁主任主持召开民营企业座谈会 围绕准确把握三季度经济形势、积极应对国际供需情况变化听取意见建议",
+   "event_date": "2026-10-10",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261010_1408066.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "10月10日，国家发展改革委主任郑栅洁主持召开民营企业座谈会，围绕准确把握三季度经济形势、积极应对国际供需情况变化，与来自石油化工、天然气供应、农业机械、人工智能应用等领域的盛虹控股、东明石化、新奥集团、吉峰三农、晶泰科技等企业负责人深入交流，听取意见建议。",
+   "evidence_sha256_16": "1f0ffdb8e6b8d4e0",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20261009-1408037",
+   "title": "国家发展改革委有关负责同志就《关于发展新质生产力的意见》答记者问",
+   "event_date": "2026-10-09",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261009_1408037.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "近日，中共中央、国务院印发《关于发展新质生产力的意见》（以下简称《意见》）。国家发展改革委有关负责同志就《意见》接受采访，回答记者提问。",
+   "evidence_sha256_16": "6473b51e2104af70",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260930-1407977",
+   "title": "国家发展改革委举行升国旗仪式庆祝中华人民共和国成立77周年",
+   "event_date": "2026-09-30",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260930_1407977.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月30日上午，国家发展改革委举行升国旗仪式，庆祝中华人民共和国成立77周年。委党组书记、主任郑栅洁，委党组成员，秘书长、副秘书长出席仪式。",
+   "evidence_sha256_16": "950b6987b06b21ec",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260929-1407929",
+   "title": "国家发展改革委举行专题新闻发布会 介绍推进服务业扩能提质有关情况",
+   "event_date": "2026-09-29",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260929_1407929.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月29日上午，国家发展改革委举行专题新闻发布会，国家发展改革委产业发展司副司长李春芳、自然资源部自然资源开发利用司副司长宁镇亚、中国人民银行信贷市场司副司长车士义、浙江省发展改革委副主任张曙明、陕西省发展改革委副主任张昭出席发布会，国家发展改革委政研室副主任、委新闻发言人李超主持发布会。发布会介绍了推进服务业扩能提质的最新进展和下一步工作安排，并就先进制造业和现代服务业融合发展、盘活存量用地、引导金融资源投向、细分赛道攻坚、数智化转型、生活性服务业发展、中国品牌建设等方面问题，回答了记者提问。40余家境内外媒体的50余名记者参加本场发布会。",
+   "evidence_sha256_16": "f0983f7a66d6a280",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260924-1407824",
+   "title": "2026年9月24日国家继续实施调控，成品油价格适当调整",
+   "event_date": "2026-09-24",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260924_1407824.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月11日国内成品油价格调整以来，中东地缘局势复杂多变，国际市场原油价格快速上涨后回落，近日又再度冲高。为减缓国际油价上涨对国内的冲击，国家继续对成品油价格采取调控措施。根据现行价格机制计算，自9月24日24时起，国内汽、柴油（标准品）价格每吨分别应上调830元、800元，调控后实际上调395元、385元。",
+   "evidence_sha256_16": "5da32970725847f2",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-09-23",
+     "2026-09-30"
+    ],
+    "board_ret_pct": -1.79,
+    "bench_ret_pct": -3.53,
+    "excess_pp": 1.75,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-09-23",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -9.64,
+     "bench_ret_pct": -11.77,
+     "excess_pp": 2.13,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "CANDIDATE",
+   "gaps": [
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260922-1407781",
+   "title": "国家发展改革委举行9月份新闻发布会",
+   "event_date": "2026-09-22",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260922_1407781.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月22日上午，国家发展改革委举行9月份新闻发布会。国家发展改革委政策研究室副主任、委新闻发言人李超出席发布会，就重要工业品低价无序竞争成本核算、民间投资、粮食安全、北斗规模应用、“双一流”高校新校区建设等方面问题，回应媒体关切。50余家媒体60余名记者参加本场发布会。",
+   "evidence_sha256_16": "8a2ea40c9c2d1d33",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260921-1407748",
+   "title": "关于印发浙江高质量发展建设共同富裕示范区经验做法(第三批)的通知(发改办就业〔2026〕610号)",
+   "event_date": "2026-09-21",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202609/t20260921_1407748.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委办公厅关于印发浙江高质量发展建设共同富裕示范区经验做法（第三批）的通知",
+   "evidence_sha256_16": "3f1e2fea7ab5bfa0",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260917-1407697",
+   "title": "郑栅洁主任会见印尼国家经济委员会主席卢胡特",
+   "event_date": "2026-09-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260917_1407697.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月17日，国家发展改革委主任郑栅洁会见来华访问的印尼国家经济委员会主席卢胡特。双方围绕深化中印尼多领域务实合作进行了友好深入交流，并就下一步合作方向达成共识。",
+   "evidence_sha256_16": "bfb30167a76b66ad",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260915-1407645",
+   "title": "郑栅洁主任主持召开民营企业座谈会 围绕优化发展环境、拓展投资空间听取意见建议",
+   "event_date": "2026-09-15",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260915_1407645.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月15日，国家发展改革委主任郑栅洁主持召开民营企业座谈会，围绕优化发展环境、拓展投资空间听取意见建议。来自电气设备、算力基础设施、文化旅游服务、养老服务、商业航天领域的德力西集团、润泽科技、清明上河园、瑞芝康健、蓝箭航天等5家企业负责人参加座谈会。",
+   "evidence_sha256_16": "b1aab7ebb6138c09",
+   "theme_links": [
+    {
+     "keyword": "算力",
+     "matched_in": "QUOTE",
+     "board_series": "BK881162",
+     "board_name": "通信服务",
+     "relation": "PROXY",
+     "rationale": "算力/数据中心政策主要作用于 IDC 与通信服务；首版用「通信服务」代理"
+    }
+   ],
+   "market": {
+    "board_series": "BK881162",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-09-14",
+     "2026-09-18"
+    ],
+    "board_ret_pct": 0.36,
+    "bench_ret_pct": 0.61,
+    "excess_pp": -0.25,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-09-14",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -14.6,
+     "bench_ret_pct": -11.04,
+     "excess_pp": -3.56,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "板块相对基准超额 -0.25pp ≤ 0 → 市场反应方向与事件不一致，不升级为线索",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260911-1407585",
+   "title": "周海兵副主任会见秘鲁能矿部长新野",
+   "event_date": "2026-09-11",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260911_1407585.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月11日上午，国家发展改革委副主任周海兵在委内会见秘鲁能矿部长新野。双方就推进中秘能矿、投资等领域合作进行了交流。",
+   "evidence_sha256_16": "a84762fbfb2767f6",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260911-1407564",
+   "title": "2026年9月11日国家对成品油价格实施调控",
+   "event_date": "2026-09-11",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260911_1407564.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "8月28日国内成品油价格调整以来，美伊冲突再度升级，国际市场原油价格持续大幅上涨。为减缓国际油价上涨对国内的冲击，在保持现行价格机制框架的基础上，对国内成品油价格采取临时调控措施。根据现行价格机制计算，9月11日国内汽、柴油（标准品）价格每吨分别应上调435元、420元，调控后实际上调260元、250元。",
+   "evidence_sha256_16": "14bafbf43ab3b7f4",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-09-10",
+     "2026-09-16"
+    ],
+    "board_ret_pct": -4.13,
+    "bench_ret_pct": -1.5,
+    "excess_pp": -2.63,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-09-10",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -12.58,
+     "bench_ret_pct": -12.38,
+     "excess_pp": -0.2,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 49 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260910-1407529",
+   "title": "拥抱“十五五” 共谋新发展 “国家发展改革委与美在华跨国企业高层圆桌会”在京举行",
+   "event_date": "2026-09-10",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260910_1407529.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月10日上午，以“拥抱‘十五五’ 共谋新发展”为主题的“国家发展改革委与美在华跨国企业高层圆桌会”在京成功举行。国家发展改革委副主任周海兵，北京市常务副市长夏林茂等出席活动并致辞。中国美国商会、美中贸易全国委员会和60余家美在华跨国企业代表近百人参会。",
+   "evidence_sha256_16": "69613371ba9beb40",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260909-1407499",
+   "title": "国家发展改革委召开“六张网”重大项目协调推进会 研究加强要素保障工作",
+   "event_date": "2026-09-09",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260909_1407499.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "近日，国家发展改革委党组成员、副主任岳修虎同志主持召开“六张网”重大项目协调推进会，研究加强要素保障工作。会议提出，要充分发挥各级要素保障机制作用，主动加强与项目单位的对接，精准高效做好用地、用海、环评等要素保障，共同推动“六张网”重大项目加快落地实施。国家发展改革委、财政部、自然资源部、生态环境部、中国人民银行、国家能源局、国家数据局、国家林草局有关司局负责同志参加会议。",
+   "evidence_sha256_16": "3807d0a8fdb1460f",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260908-1407472",
+   "title": "周海兵副主任会见芬兰经济事务与就业部经济事务部长普伊斯托",
+   "event_date": "2026-09-08",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260908_1407472.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "9月7日上午，周海兵副主任在委内会见芬兰经济事务与就业部经济事务部长普伊斯托，就中芬循环经济合作、扩大双边投资等双方共同关心的议题进行了交流。",
+   "evidence_sha256_16": "7e2f9272cf9b8d88",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260907-1407449",
+   "title": "国家发展改革委与埃及有关部门签署共建“一带一路”等合作文件",
+   "event_date": "2026-09-07",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260907_1407449.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "2026年9月2日，在中埃两国元首共同见证下，国家发展改革委主任郑栅洁与埃及外交、国际合作和海外侨民部负责人签署《中华人民共和国国家发展和改革委员会和阿拉伯埃及共和国外交、国际合作和海外侨民部关于共建“一带一路”倡议与“2030愿景”对接的重点合作事项谅解备忘录》，将推动在共建“一带一路”合作框架下各领域务实合作，实现互利共赢。",
+   "evidence_sha256_16": "f2408ed5fa8c0b71",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260904-1407416",
+   "title": "国家发展改革委召开“十五五”规划《纲要》重大工程建设推进会议 调度109项重大工程项目实施",
+   "event_date": "2026-09-04",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260904_1407416.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "2026年9月3日，国家发展改革委党组成员、副主任岳修虎同志主持召开“十五五”规划《纲要》重大工程建设推进会议，调度109项重大工程建设进展，加快推进在建项目实施，推动一批新项目尽早开工建设，进一步强化要素保障，压实项目质量和安全管理责任，形成共同推进重大工程建设合力，为实现“十五五”良好开局提供有力支撑。教育部、科技部、工业和信息化部、生态环境部、交通运输部、水利部、农业农村部分别作了发言。国家发展改革委、民政部、自然资源部、住房城乡建设部、国家卫生健康委、国家能源局、国家数据局有关司局负责同志参加会议。",
+   "evidence_sha256_16": "7ed461d1ed1e9e5d",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260903-1407399",
+   "title": "国家发展改革委召开“六张网”重大项目协调推进机制会 研究完善政银企协作机制和项目库建设",
+   "event_date": "2026-09-03",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202609/t20260903_1407399.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "2026年9月2日，国家发展改革委党组成员、副主任岳修虎同志主持召开“六张网”重大项目协调推进机制会，研究完善政银企协作机制和项目库建设。会议专题研究推动各牵头部门和地方加快建设“六张网”项目库，加强与金融机构的信息共享，实现高效“投贷联动”；加快梳理一批具有吸引力的工程项目向社会公开推介，鼓励多元主体参与；更好发挥政府投资的撬动作用，同步完善价费形成等机制和配套支持政策，推动商业模式创新，形成共同推进“六张网”建设的合力。国家发展改革委、工业和信息化部、住房城乡建设部、水利部、国务院国资委、金融监管总局、国家能源局等部门，国家开发银行、中国工商银行、招商银行、中国人寿、国家融资担保基金等金融",
+   "evidence_sha256_16": "203fff8167629932",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260828-1407266",
+   "title": "国家发展改革委召开全国投资工作推进会议",
+   "event_date": "2026-08-28",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260828_1407266.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "8月28日，国家发展改革委联合有关部门召开全国投资工作推进会议，认真学习领会习近平总书记在中央经济工作会议、中央政治局会议上对投资工作作出的重要指示精神，贯彻党中央和国务院部署要求，深入分析当前投资形势，研究布置重点任务，加力加紧做好稳投资各项工作，努力推动投资止跌回稳。国家发展改革委主任郑栅洁、工业和信息化部部长李乐成、住房城乡建设部部长倪虹、交通运输部部长刘伟、水利部副部长孙志禹、国家能源局局长王宏志讲话，国家发展改革委副主任岳修虎主持。",
+   "evidence_sha256_16": "58727ffdb6f0da48",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260828-1407257",
+   "title": "国家发展改革委举行8月份新闻发布会",
+   "event_date": "2026-08-28",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260828_1407257.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "8月28日上午，国家发展改革委举行8月份新闻发布会。国家发展改革委政策研究室副主任、委新闻发言人李超出席发布会，介绍促进有效投资、《物流网建设实施方案》有关情况，并就物流网、集成电路、迎峰度夏、具身智能、煤电转型、雨带北移、中国挤压论等方面问题，回应媒体关切。50余家境内外媒体60余名记者参加本场发布会。",
+   "evidence_sha256_16": "fa08444acf8bc46d",
+   "theme_links": [
+    {
+     "keyword": "集成电路",
+     "matched_in": "QUOTE",
+     "board_series": "BK881121",
+     "board_name": "半导体",
+     "relation": "DIRECT",
+     "rationale": "集成电路政策直接作用于半导体板块"
+    }
+   ],
+   "market": {
+    "board_series": "BK881121",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-08-27",
+     "2026-09-02"
+    ],
+    "board_ret_pct": -3.27,
+    "bench_ret_pct": -1.78,
+    "excess_pp": -1.49,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-08-27",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -28.84,
+     "bench_ret_pct": -13.93,
+     "excess_pp": -14.91,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 63 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260828-1407254",
+   "title": "2026年8月28日国内成品油价格调整",
+   "event_date": "2026-08-28",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260828_1407254.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "8月14日国内成品油价格调整以来，国际市场原油价格震荡运行，本次调价的前10个工作日平均价格高于上次调价前10个工作日平均价格。根据国际市场油价变化情况，自8月28日24时起，国内汽、柴油（标准品）价格每吨分别上调375元、360元。",
+   "evidence_sha256_16": "a6b8528f87afa950",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-08-27",
+     "2026-09-02"
+    ],
+    "board_ret_pct": 2.2,
+    "bench_ret_pct": -1.78,
+    "excess_pp": 3.97,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-08-27",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -8.07,
+     "bench_ret_pct": -13.93,
+     "excess_pp": 5.86,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 63 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260826-1407203",
+   "title": "中阿投资合作高级别委员会秘书处会议在京召开",
+   "event_date": "2026-08-26",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260826_1407203.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "8月25日下午，国家发展改革委副主任周海兵与阿联酋投资部副部长阿尔哈维在京共同主持召开中阿投资合作高级别委员会秘书处会议。双方全面回顾了秘书处近期工作进展，围绕协调推进有关投资合作项目、成立企业咨询委员会、组织企业对接活动、开展金融市场专项合作等议题充分交换了意见。双方就下一步工作安排达成共识，愿继续深化发展政策对接和务实项目合作，推动中阿双向投资合作迈上新台阶。",
+   "evidence_sha256_16": "0a96a165b2a8764f",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260826-1407198",
+   "title": "努力实现“十五五”良好开局——从计划执行报告看下半年经济工作重点",
+   "event_date": "2026-08-26",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260826_1407198.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "新华社北京8月25日电 题：努力实现“十五五”良好开局——从计划执行报告看下半年经济工作重点",
+   "evidence_sha256_16": "eb2e31573340905b",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260825-1407189",
+   "title": "国家发展改革委召开“六网协同”协调推进工作会 研究“六张网”投融资机制和支持政策",
+   "event_date": "2026-08-25",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260825_1407189.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "2026年8月25日，国家发展改革委党组成员、副主任岳修虎同志主持召开“六网协同”协调推进工作会，研究“六张网”投融资机制和支持政策。会议专题研究完善“六张网”多元化投融资模式，分类细化财政、金融、投资、价格等支持政策，创新政策工具，优化政策组合，推动建立健全与不同领域不同类型工程项目相适配的投融资机制，为重大工程项目加快开工建设提供有力支撑。国家发展改革委、工业和信息化部、财政部、住房城乡建设部、交通运输部、水利部、中国人民银行、金融监管总局、中国证监会、国家能源局有关司局负责同志参加会议。",
+   "evidence_sha256_16": "6f31d9effff909a2",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260820-1407094",
+   "title": "关于印发第五批全国社会信用体系建设示范区名单的通知(发改办财金〔2026〕589号)",
+   "event_date": "2026-08-20",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202608/t20260820_1407094.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委办公厅 中国人民银行办公厅",
+   "evidence_sha256_16": "1954db1627bc13a6",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260820-1407120",
+   "title": "郑栅洁主任主持召开民营企业座谈会 围绕稳定经济运行促进有效投资听取意见建议",
+   "event_date": "2026-08-20",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260820_1407120.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "为深入贯彻中央政治局会议精神，落实国务院第十二次全体会议部署，8月20日，国家发展改革委主任郑栅洁主持召开座谈会，围绕稳定经济运行、促进有效投资听取民营企业意见建议。来自电气设备、制药装备、消费服务、智能终端、纺织服装及冶金化工领域的特锐德电气、楚天科技、誉存科技、雷鸟创新、鄂尔多斯资源等5家企业负责人参加座谈会。",
+   "evidence_sha256_16": "ece0da0b09bc5a00",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260820-1407119",
+   "title": "周海兵副主任会见智利外交部长佩雷斯",
+   "event_date": "2026-08-20",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260820_1407119.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "8月19日下午，国家发展改革委副主任周海兵在委内会见智利外交部长佩雷斯，双方就推进中智双边关系、拓展中智务实合作等议题进行了交流。",
+   "evidence_sha256_16": "b3ab08495d4c705c",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260817-1407041",
+   "title": "关于印发《石油天然气发展“十五五”规划》的通知(发改能源〔2026〕1055号)",
+   "event_date": "2026-08-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202608/t20260817_1407041.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 国家能源局关于印发",
+   "evidence_sha256_16": "2b1c801a79bff835",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260814-1406999",
+   "title": "2026年8月14日国内成品油价格调整",
+   "event_date": "2026-08-14",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202608/t20260814_1406999.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月31日国内成品油价格调整以来，国际市场原油价格快速回落后震荡运行，本次调价的前10个工作日平均价格低于上次调价前10个工作日平均价格。根据国际市场油价变化情况，自8月14日24时起，国内汽、柴油（标准品）价格每吨分别下调230元、220元。",
+   "evidence_sha256_16": "6008336ee642f039",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-08-13",
+     "2026-08-19"
+    ],
+    "board_ret_pct": 0.88,
+    "bench_ret_pct": -1.61,
+    "excess_pp": 2.49,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-08-13",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -3.0,
+     "bench_ret_pct": -14.55,
+     "excess_pp": 11.54,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 77 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260803-1406883",
+   "title": "关于印发《新型电力系统建设“十五五”规划》的通知(发改能源〔2026〕942号)",
+   "event_date": "2026-08-03",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202608/t20260803_1406883.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 国家能源局关于印发",
+   "evidence_sha256_16": "2b1c801a79bff835",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260803-1406880",
+   "title": "关于开展2026年全国生态日活动的通知(发改办环资〔2026〕520号)",
+   "event_date": "2026-08-03",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202608/t20260803_1406880.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委办公厅关于开展2026年",
+   "evidence_sha256_16": "d9b2c6c921d43d40",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260731-1406862",
+   "title": "国家发展改革委举行7月份新闻发布会",
+   "event_date": "2026-07-31",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260731_1406862.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月31日上午，国家发展改革委举行7月份新闻发布会。国家发展改革委政策研究室主任、委新闻发言人蒋毅主持发布会，国民经济综合司副司长周宏伟出席发布会，解读上半年宏观经济形势以及109项重大工程、共建“一带一路”、中央预算内投资下达等工作进展，并就“六张网”建设、能源保障、扩大内需、人工智能发展态势、全国统一大市场建设、下半年经济工作、新兴支柱产业培育以及价格走势等方面问题，回应媒体关切。60余家媒体70余名记者参加本场发布会。",
+   "evidence_sha256_16": "733da710d868f11e",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260731-1406853",
+   "title": "2026年7月31日国内成品油价格调整",
+   "event_date": "2026-07-31",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260731_1406853.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月17日国内成品油价格调整以来，国际市场原油价格剧烈震荡，前几日连续大幅上涨后回落，近日又再度冲高，本次调价的前10个工作日平均价格高于上次调价前10个工作日平均价格。根据国际市场油价变化情况，自7月31日24时起，国内汽、柴油（标准品）价格每吨分别上调685元、655元。",
+   "evidence_sha256_16": "ac1483892c6ec223",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-07-30",
+     "2026-08-05"
+    ],
+    "board_ret_pct": 3.92,
+    "bench_ret_pct": 2.38,
+    "excess_pp": 1.54,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-07-30",
+      "2026-10-30"
+     ],
+     "board_ret_pct": 2.06,
+     "bench_ret_pct": -12.4,
+     "excess_pp": 14.47,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 91 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260731-1406802",
+   "title": "国家发展改革委召开上半年发展改革形势通报会",
+   "event_date": "2026-07-31",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260731_1406802.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月30日，国家发展改革委召开2026年上半年发展改革形势通报会，认真学习领会习近平总书记在中央政治局常委会会议、中央政治局会议上的重要讲话精神，深入贯彻落实党中央、国务院关于上半年经济形势和做好下半年经济工作的决策部署以及对发展改革工作的各项要求，扎实做好下半年发展改革工作。国家发展改革委党组书记、主任郑栅洁主持会议并讲话。",
+   "evidence_sha256_16": "5bb209c8f5827195",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260728-1406749",
+   "title": "国家发展改革委举行专题新闻发布会 介绍中欧班列统一品牌十周年发展成效",
+   "event_date": "2026-07-28",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260728_1406749.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月28日上午，国家发展改革委举行专题新闻发布会，国家发展改革委开放司司长梁林冲，国铁集团货运部兼物流中心主任吴兆新，海关总署监管司副司长章涛，云南省发展改革委副主任连利军，浙江省发展改革委二级巡视员叶建军出席发布会，国家发展改革委政研室副主任、委新闻发言人李超主持发布会。发布会介绍了中欧班列统一品牌十周年来的发展成效，并就中欧班列国际合作、运输服务质量、海关监管模式、保障产业链供应链稳定、服务重点企业和行业发展、南通道建设、义乌中欧班列经验做法、中老铁路取得成效、“十五五”时期推动中欧班列发展重点工作等方面问题，回答了记者提问。近50家境内外媒体的60余名记者参加了本场发布会。",
+   "evidence_sha256_16": "220b02aa0e09c0f2",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260720-1406606",
+   "title": "郑栅洁主任主持召开民营企业座谈会 围绕上半年经济形势和做好下半年经济工作听取意见建议",
+   "event_date": "2026-07-20",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260720_1406606.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月20日，国家发展改革委主任郑栅洁主持召开民营企业座谈会，与来自食品加工、工业自动化测试设备制造、营销服务、人形机器人研发、物联网服务等领域的三全食品、华兴源创、易点天下、银河通用机器人、飞尚科技等5家企业负责人沟通交流，围绕上半年经济形势和下半年经济工作听取意见建议。 会上，参会企业负责人围绕会议主题，结合各自行业特点与企业生产经营情况等，对上半年经济形势进行了分析。大家普遍认为，今年以来外部不稳定不确定因素增多，我国经济顶住压力、稳中有进，展现出强大韧性和活力，目前企业生产经营平稳，市场预期稳步改善，有能力、有信心完成全年生产经营目标。参会企业还围绕推动产业链上下游协同、促进传统产业改造",
+   "evidence_sha256_16": "f7bc66cafe67cdbe",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260717-1406562",
+   "title": "人工智能合作发展行动计划",
+   "event_date": "2026-07-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260717_1406562.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "一、优质数据供给行动",
+   "evidence_sha256_16": "2383263027560b5a",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260717-1406560",
+   "title": "世界人工智能大会期间国家发展改革委发布2项重要成果",
+   "event_date": "2026-07-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260717_1406560.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月17日（周五），2026世界人工智能大会暨人工智能全球治理高级别会议在上海召开。会上，国家发展改革委会同教育部、科技部、工业和信息化部、国家数据局和中央广播电视总台等共同发布了《人工智能合作发展行动计划》《中国智·惠世界（2026）》案例集两项成果。",
+   "evidence_sha256_16": "a86a2abd23602d99",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260717-1406559",
+   "title": "2026年7月17日国内成品油价格调整",
+   "event_date": "2026-07-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260717_1406559.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "7月3日国内成品油价格调整以来，国际市场原油价格震荡上涨，本次调价的前10个工作日平均价格高于上次调价前10个工作日平均价格。根据国际市场油价变化情况，自7月17日24时起，国内汽、柴油（标准品）价格每吨分别上调300元、290元。",
+   "evidence_sha256_16": "b945bb9a5448652f",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-07-16",
+     "2026-07-22"
+    ],
+    "board_ret_pct": -1.68,
+    "bench_ret_pct": 0.4,
+    "excess_pp": -2.08,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-07-16",
+      "2026-10-30"
+     ],
+     "board_ret_pct": 2.0,
+     "bench_ret_pct": -15.17,
+     "excess_pp": 17.18,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 105 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260710-1406431",
+   "title": "关于第四监管周期省级电网输配电价、区域电网输电价格及有关事项的通知(发改价格〔2026〕1077号)",
+   "event_date": "2026-07-10",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202607/t20260710_1406431.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委关于第四监管周期省级电网",
+   "evidence_sha256_16": "919a024996614f2d",
+   "theme_links": [
+    {
+     "keyword": "电价",
+     "matched_in": "TITLE",
+     "board_series": "BK881145",
+     "board_name": "电力",
+     "relation": "DIRECT",
+     "rationale": "电价机制与输配电价调整直接影响发电侧收入"
+    }
+   ],
+   "market": {
+    "board_series": "BK881145",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-07-09",
+     "2026-07-15"
+    ],
+    "board_ret_pct": 1.49,
+    "bench_ret_pct": -1.84,
+    "excess_pp": 3.32,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-07-09",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -4.12,
+     "bench_ret_pct": -18.27,
+     "excess_pp": 14.15,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 112 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260703-1406245",
+   "title": "2026年7月3日国内成品油价格调整",
+   "event_date": "2026-07-03",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260703_1406245.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "6月18日国内成品油价格调整以来，国际市场原油价格快速回落后小幅波动运行，本次调价的前10个工作日平均价格低于上次调价前10个工作日平均价格。根据国际市场油价变化情况，自7月3日24时起，国内汽、柴油（标准品）价格每吨分别下调950元、915元。",
+   "evidence_sha256_16": "c7641bccb0e7800c",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-07-02",
+     "2026-07-08"
+    ],
+    "board_ret_pct": -2.21,
+    "bench_ret_pct": -1.18,
+    "excess_pp": -1.03,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-07-02",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -1.54,
+     "bench_ret_pct": -17.18,
+     "excess_pp": 15.64,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 119 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260702-1406211",
+   "title": "郑栅洁同志讲授树立和践行正确政绩观学习教育专题党课并赴中国共产党历史展览馆开展主题党日活动",
+   "event_date": "2026-07-02",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260702_1406211.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "按照深入开展树立和践行正确政绩观学习教育相关安排，日前国家发展改革委党组书记、主任郑栅洁为全委党员干部讲授专题党课，并与委党组同志赴中国共产党历史展览馆开展主题党日活动。",
+   "evidence_sha256_16": "08ff3761c089dfcc",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260701-1406193",
+   "title": "全国促进民营经济发展壮大现场会在江苏省南京市召开",
+   "event_date": "2026-07-01",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260701_1406193.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "6月30日，国家发展改革委在江苏省南京市组织召开促进民营经济发展壮大现场会，深入贯彻落实党的二十届四中全会和习近平总书记在民营企业座谈会上的重要讲话精神，进一步优环境、强服务，全力促进民间投资高质量发展。",
+   "evidence_sha256_16": "7ff2ea9239486fe4",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260701-1406173",
+   "title": "国家发展改革委召开树立和践行正确政绩观学习教育工作推进会",
+   "event_date": "2026-07-01",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260701_1406173.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "近日，国家发展改革委召开树立和践行正确政绩观学习教育工作推进会，深入学习贯彻习近平总书记关于树立和践行正确政绩观的重要指示精神，落实中央党的建设工作领导小组和中央层面学习教育工作专班部署要求，通报全委开展学习教育进展和督导检查情况，对抓好重点任务作出部署、提出要求。",
+   "evidence_sha256_16": "cc5460b6c6ad08b4",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260625-1406079",
+   "title": "关于印发《新型能源体系建设“十五五”规划》的通知(发改能源〔2026〕884号)",
+   "event_date": "2026-06-25",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202606/t20260625_1406079.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 国家能源局关于印发",
+   "evidence_sha256_16": "2b1c801a79bff835",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260618-1405995",
+   "title": "国家发展改革委举行6月份新闻发布会",
+   "event_date": "2026-06-18",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202606/t20260618_1405995.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "6月18日上午，国家发展改革委举行6月份新闻发布会。国家发展改革委政策研究室副主任、委新闻发言人李超出席发布会，介绍2026年全国节能宣传周、贯彻实施民营经济促进法典型案例有关情况，并就算力网、物流网、输电权市场化交易、“两新”政策实施成效、煤炭安全生产供应、中国产业竞争力、“两高”项目管理、综合改革试点经验推广等方面问题，回应媒体关切。60余家境内外媒体70余名记者参加本场发布会。 发布会实录",
+   "evidence_sha256_16": "ae77365932377c56",
+   "theme_links": [
+    {
+     "keyword": "算力",
+     "matched_in": "QUOTE",
+     "board_series": "BK881162",
+     "board_name": "通信服务",
+     "relation": "PROXY",
+     "rationale": "算力/数据中心政策主要作用于 IDC 与通信服务；首版用「通信服务」代理"
+    }
+   ],
+   "market": {
+    "board_series": "BK881162",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-06-17",
+     "2026-06-24"
+    ],
+    "board_ret_pct": 0.78,
+    "bench_ret_pct": 0.24,
+    "excess_pp": 0.54,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-06-17",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -21.53,
+     "bench_ret_pct": -19.18,
+     "excess_pp": -2.35,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 134 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260618-1405994",
+   "title": "国家发展改革委、人力资源社会保障部有关负责人就《实施就业优先战略“十五五”规划》答记者问",
+   "event_date": "2026-06-18",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202606/t20260618_1405994.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "新华社北京6月17日电 题：国家发展改革委、人力资源社会保障部有关负责人就《实施就业优先战略“十五五”规划》答记者问",
+   "evidence_sha256_16": "c4c9b26496fe41bb",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260618-1405957",
+   "title": "2026年6月18日国内成品油价格调整",
+   "event_date": "2026-06-18",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202606/t20260618_1405957.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "6月4日国内成品油价格调整以来，国际市场原油价格高位震荡后近日快速回落，本次调价的前10个工作日平均价格低于上次调价前10个工作日平均价格。根据国际市场油价变化情况，自6月18日24时起，国内汽、柴油（标准品）价格每吨分别下调515元、495元。",
+   "evidence_sha256_16": "feb7211a9780ef32",
+   "theme_links": [
+    {
+     "keyword": "成品油价格",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "发改委成品油价格调控直接作用于炼化与成品油销售环节"
+    },
+    {
+     "keyword": "油价",
+     "matched_in": "TITLE",
+     "board_series": "BK881180",
+     "board_name": "石油加工贸易",
+     "relation": "DIRECT",
+     "rationale": "成品油/原油价格机制调整作用于炼化环节"
+    }
+   ],
+   "market": {
+    "board_series": "BK881180",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-06-17",
+     "2026-06-24"
+    ],
+    "board_ret_pct": -1.15,
+    "bench_ret_pct": 0.24,
+    "excess_pp": -1.38,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-06-17",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -5.55,
+     "bench_ret_pct": -19.18,
+     "excess_pp": 13.63,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 134 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260617-1405913",
+   "title": "署名文章丨努力开创服务业高质量发展新局面（深入学习贯彻习近平新时代中国特色社会主义思想）",
+   "event_date": "2026-06-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202606/t20260617_1405913.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "党中央、国务院高度重视服务业工作。党的十八大以来，习近平总书记围绕服务业发展作出一系列重要指示批示，为做好服务业工作提供了根本遵循。今年4月，在全国服务业大会召开之际，习近平总书记再次就服务业发展作出重要指示。我们要认真学习领会、坚决贯彻落实，深入推进服务业扩能提质，培育更多“中国服务”品牌，努力开创服务业高质量发展新局面。",
+   "evidence_sha256_16": "20660ac7b6f44684",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260617-1405912",
+   "title": "中央和国家机关开展党员第四次“同上一堂课”",
+   "event_date": "2026-06-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202606/t20260617_1405912.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "【中央和国家机关开展党员第四次“同上一堂课”】-国家发展和改革委员会 首页 &gt; 新闻动态 &gt; 新闻发布 中央和国家机关开展党员第四次“同上一堂课” 发布时间：2026/06/17 来源： 政研室 [ 打印 ] 6月16日，中央和国家机关工委组织开展中央和国家机关党员第四次“同上一堂课”，国家发展改革委党组书记、主任郑栅洁围绕“深入学习贯彻习近平经济思想，扎实推动‘十五五’高质量发展”作专题辅导，中央和国家机关工委分管日常工作的副书记郭文奇主持并讲话。",
+   "evidence_sha256_16": "4771d224a302b0f4",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260617-1405904",
+   "title": "郑栅洁主任主持召开民营企业座谈会 围绕系统推进“六张网”建设听取意见建议",
+   "event_date": "2026-06-17",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202606/t20260617_1405904.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "6月16日上午，国家发展改革委主任郑栅洁主持召开座谈会，邀请奥德集团、哈尔滨九洲集团、上海瀚讯信息技术、河北宝信物流等5家相关领域民营企业负责人沟通交流，围绕当前经济形势和系统推进“六张网”建设、扩大国内有效需求，听取意见建议。",
+   "evidence_sha256_16": "adc77383e0f8ffee",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-XWFB-20260616-1405883",
+   "title": "“信用数智创新发展”总观摩会在北京召开",
+   "event_date": "2026-06-16",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_XWFB",
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202606/t20260616_1405883.html",
+    "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/",
+    "category": "POLICY_NEWS",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "6月5日，“信用数智创新发展”总观摩会在北京召开，北京、上海、江苏、湖南、广东等5个省份和滨海新区、苏州、杭州、宁波、厦门、开封、南阳、广州、深圳、兰州、石河子等11个城市围绕公共信用数据开发利用、“信用+”应用场景、“信用+AI大模型”进行了现场展示。国家发展改革委党组成员、副主任李春临同志出席会议并讲话。",
+   "evidence_sha256_16": "c5a7f79fa3322c69",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260608-1405753",
+   "title": "关于印发《生态保护修复领域中央预算内投资专项管理办法》的通知(发改农经〔2026〕713号)",
+   "event_date": "2026-06-08",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202606/t20260608_1405753.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委关于印发《生态保护修复领域中央",
+   "evidence_sha256_16": "e7a81a6b3b3fe4a8",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260605-1405707",
+   "title": "关于总结推广上海浦东新区、深圳、厦门综合改革试点创新举措和经验做法的通知(发改体改〔2026〕695号)",
+   "event_date": "2026-06-05",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202606/t20260605_1405707.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委关于总结推广上海浦东新区、",
+   "evidence_sha256_16": "1b6f6842ecd41032",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260602-1405666",
+   "title": "关于在云霄直流开展输电权市场化交易的通知(发改体改〔2026〕734号)",
+   "event_date": "2026-06-02",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202606/t20260602_1405666.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 国家能源局关于",
+   "evidence_sha256_16": "593377823d518a3e",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260528-1405517",
+   "title": "关于印发贯彻实施民营经济促进法典型案例(第一批)的通知(发改民营〔2026〕708号)",
+   "event_date": "2026-05-28",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202605/t20260528_1405517.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 最高人民法院关于印发",
+   "evidence_sha256_16": "e9161ad7149fae99",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260525-1405460",
+   "title": "关于2026—2028年棉花目标价格政策的通知(发改价格〔2026〕733号)",
+   "event_date": "2026-05-25",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202605/t20260525_1405460.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 财政部关于",
+   "evidence_sha256_16": "b702d3e8425f5964",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260520-1405333",
+   "title": "关于开展2026年全国节能宣传周和全国低碳日活动的通知(发改环资〔2026〕664号)",
+   "event_date": "2026-05-20",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202605/t20260520_1405333.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 生态环境部关于",
+   "evidence_sha256_16": "49b4807ddd262a0c",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260519-1405304",
+   "title": "关于印发“法治护航民营经济”行动方案的通知(发改民营〔2026〕637号)",
+   "event_date": "2026-05-19",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202605/t20260519_1405304.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委关于印发",
+   "evidence_sha256_16": "534b24af74cb3aac",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260511-1405152",
+   "title": "关于核定南水北调中线干线工程供水价格的通知(发改价格〔2026〕630号)",
+   "event_date": "2026-05-11",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202605/t20260511_1405152.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委关于核定",
+   "evidence_sha256_16": "2f0d71954168b458",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260427-1404891",
+   "title": "关于印发《西藏生态安全屏障保护与建设规划(修编)》的通知(发改农经〔2026〕508号)",
+   "event_date": "2026-04-27",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202604/t20260427_1404891.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委关于印发《西藏生态安全",
+   "evidence_sha256_16": "7670cb6dfdf9f629",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260424-1404861",
+   "title": "关于修订省间电力现货交易规则的复函(发改办体改〔2026〕275号)",
+   "event_date": "2026-04-24",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202604/t20260424_1404861.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委办公厅 国家能源局综合司",
+   "evidence_sha256_16": "18a65cbafe7b0737",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260409-1404580",
+   "title": "关于做好2026年享受税收优惠政策的集成电路企业或项目、软件企业清单制定工作的通知(发改高技〔2026〕487号)",
+   "event_date": "2026-04-09",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202604/t20260409_1404580.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委等部门关于",
+   "evidence_sha256_16": "6cc5b2bc22e71ede",
+   "theme_links": [
+    {
+     "keyword": "集成电路",
+     "matched_in": "TITLE",
+     "board_series": "BK881121",
+     "board_name": "半导体",
+     "relation": "DIRECT",
+     "rationale": "集成电路政策直接作用于半导体板块"
+    }
+   ],
+   "market": {
+    "board_series": "BK881121",
+    "as_of": "2026-10-30",
+    "window": [
+     "2026-04-08",
+     "2026-04-14"
+    ],
+    "board_ret_pct": 4.16,
+    "bench_ret_pct": 2.3,
+    "excess_pp": 1.86,
+    "observation_trading_days": 4,
+    "breadth": null,
+    "status": "OBSERVED",
+    "gaps": [
+     "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+    ],
+    "reaction_days_after_event": 3,
+    "drift": {
+     "window": [
+      "2026-04-08",
+      "2026-10-30"
+     ],
+     "board_ret_pct": -9.18,
+     "bench_ret_pct": -13.27,
+     "excess_pp": 4.09,
+     "note": "事件至今的整体漂移，**不参与**候选判定"
+    }
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "WATCH",
+   "gaps": [
+    "事件已过去 204 天（> 45）→ 不再作为「新」线索，仅留档",
+    "行业板块无历史成分 → 参与广度无法计算（不以当前成分替代）"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260403-1404508",
+   "title": "关于印发《全国公共信用信息基础目录(2026年版)》和《全国失信惩戒措施基础清单(2026年版)》的通知(发改财金〔2026〕447号)",
+   "event_date": "2026-04-03",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202604/t20260403_1404508.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 中国人民银行关于印发",
+   "evidence_sha256_16": "79346c1c1c1b57bd",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260327-1404395",
+   "title": "关于优化完善无线电频率占用费标准的通知(发改价格〔2026〕413号)",
+   "event_date": "2026-03-27",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202603/t20260327_1404395.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委 财政部关于优化完善",
+   "evidence_sha256_16": "a8202bd83893fc62",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260213-1403763",
+   "title": "关于加强投资项目在线审批监管平台和工程建设项目审批管理系统数据共享的通知(发改办投资〔2026〕88号)",
+   "event_date": "2026-02-13",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202602/t20260213_1403763.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委办公厅 住房城乡建设部办公厅",
+   "evidence_sha256_16": "b1bb11733ac8f3b7",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20260205-1403611",
+   "title": "关于做好2026年春耕及全年化肥保供稳价工作的通知(发改经贸〔2026〕149号)",
+   "event_date": "2026-02-05",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202602/t20260205_1403611.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委关于做好2026年春耕及全年化肥保供稳价工作的通知",
+   "evidence_sha256_16": "0a74d5a78a5b63dc",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  },
+  {
+   "event_id": "EVT-ZCFB_TZ-20251226-1402632",
+   "title": "关于印发《国家级零碳园区建设名单(第一批)》的通知(发改办环资〔2025〕1082号)",
+   "event_date": "2025-12-26",
+   "first_seen": "2026-10-31T15:56:44",
+   "source": {
+    "id": "NDRC_ZCFB_TZ",
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202512/t20251226_1402632.html",
+    "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/",
+    "category": "POLICY_NOTICE",
+    "access": "PUBLIC_HTML"
+   },
+   "evidence_quote": "国家发展改革委办公厅 工业和信息化部办公厅",
+   "evidence_sha256_16": "7c5a64cc4c6577ec",
+   "theme_links": [],
+   "market": {
+    "board_series": null,
+    "as_of": "2026-10-30",
+    "window": null,
+    "board_ret_pct": null,
+    "bench_ret_pct": null,
+    "excess_pp": null,
+    "observation_trading_days": null,
+    "breadth": null,
+    "status": "INSUFFICIENT",
+    "gaps": [
+     "未建立板块关联或行情库不可用"
+    ]
+   },
+   "security_mapping": {
+    "status": "NOT_MAPPED",
+    "reason": "首版不做个股级映射：仅关联到行业板块序列；个股映射需另行按名称+代码核验"
+   },
+   "status": "NO_THEME_LINK",
+   "gaps": [
+    "事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）",
+    "未建立板块关联或行情库不可用"
+   ]
+  }
+ ]
+}

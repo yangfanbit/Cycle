@@ -4271,3 +4271,40 @@ html, body {
 .cd-kv { margin: 4px 0; }
 .cd-dims { margin: 4px 0; padding-left: 16px; }
 .cd-h4-sub { margin: 8px 0 2px; font-size: 12px; color: var(--ink-2); }
+
+/* ★★ v0.66：自动发现的新题材线索（与候选/季节/假设三类视觉上分开） */
+.ntr { margin: 18px 0 10px; }
+.ntr-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.ntr-h2 { margin: 0; font-size: 16px; }
+.ntr-badge { font-size: 10.5px; padding: 1px 7px; border-radius: 999px;
+  border: 1px solid var(--line-strong); color: var(--ink-2); }
+.ntr-meta { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+.ntr-lead { margin: 6px 0; font-size: 12px; color: var(--ink-2); line-height: 1.75; }
+.ntr-coverage { margin: 4px 0; font-size: 11.5px; color: var(--ink-2); font-family: var(--mono); }
+.ntr-legend { margin: 4px 0 8px; font-size: 10.5px; color: var(--ink-3); display: flex;
+  flex-wrap: wrap; gap: 4px 12px; }
+.ntr-list { list-style: none; margin: 0; padding: 0; }
+.ntr-row { border-top: 1px solid var(--line); padding: 7px 0; }
+.ntr-row1 { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.ntr-date { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+.ntr-title { font-size: 12.5px; color: var(--ink); text-decoration: none; }
+.ntr-title:hover { text-decoration: underline; }
+.ntr-st { font-size: 10.5px; padding: 1px 7px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--ink-2); }
+.ntr-st.st-candidate { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.ntr-st.st-watch { color: var(--ink-2); }
+.ntr-st.st-pending_market, .ntr-st.st-insufficient, .ntr-st.st-no_theme_link { color: var(--ink-3); }
+.ntr-row2 { margin-top: 2px; font-size: 11px; color: var(--ink-2); }
+.ntr-link { margin-right: 10px; }
+.ntr-link.ntr-none { color: var(--ink-3); }
+.ntr-row3 { margin-top: 2px; font-size: 11px; color: var(--ink-2); font-family: var(--mono); }
+.ntr-drift { color: var(--ink-3); }
+.ntr-gaps { margin: 3px 0 0; padding-left: 16px; font-size: 10.5px; color: var(--ink-3); }
+.ntr-evi { margin-top: 3px; font-size: 11px; color: var(--ink-2); }
+.ntr-evi summary { cursor: pointer; color: var(--ink-3); }
+.ntr-evi p { margin: 4px 0; line-height: 1.7; }
+.ntr-src { font-size: 10.5px; color: var(--ink-3); word-break: break-all; }
+.ntr-note { font-size: 10.5px; color: var(--ink-3); margin: 4px 0; }
+.ntr-limits { margin-top: 8px; font-size: 11px; color: var(--ink-2); }
+.ntr-limits summary { cursor: pointer; color: var(--ink-3); }
+.ntr-limits ul { margin: 4px 0; padding-left: 16px; }

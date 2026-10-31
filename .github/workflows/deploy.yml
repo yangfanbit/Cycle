@@ -213,6 +213,13 @@ jobs:
           echo "::endgroup::"
           python research/scripts/test_candidate_ledger_v0_2.py
 
+          # ★ v0.66：自动发现的新题材线索（公开政策事件 → 板块关联 → 行情核验）。
+          #   校验结构 / 来源 URL / 关联依据 / 状态机自洽 / 去重；行情复算在 CI 里**显式 SKIP**
+          #   （无 1.3GB history_scan.db），不会被静默通过。
+          echo "::group::build_new_theme_radar_v0_1 --check"
+          python research/scripts/build_new_theme_radar_v0_1.py --check
+          echo "::endgroup::"
+
       - name: Research read-only gates
         run: |
           set -euo pipefail

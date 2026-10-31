@@ -6,6 +6,8 @@ import { ExternalSeasonalRadar } from './components/ExternalSeasonalRadar/Extern
 import { ForwardObservationSection } from './components/ForwardObservation/ForwardObservationSection';
 import { ExternalClaimsSummary } from './components/ForwardObservation/ExternalClaimsSummary';
 import { CurrentCandidatesSection } from './components/Candidates/CurrentCandidatesSection';
+// ★ v0.66：自动发现的新题材线索（公开政策事件 → 板块关联 → 行情核验），与人工主题 / 季节窗口 / 专项假设分开
+import { NewThemeRadarSection } from './components/NewThemeRadar/NewThemeRadarSection';
 import { CurrentTimeLens } from './components/CurrentTimeLens/CurrentTimeLens';
 import { HistoricalPanorama } from './components/HistoricalPanorama/HistoricalPanorama';
 import {
@@ -412,6 +414,11 @@ export default function App() {
 
         {/* ★★ 第二主模块：统一当前候选前瞻（v0.38） */}
         {!verifiedMode && <CurrentCandidatesSection />}
+
+        {/* ★★ v0.66：自动发现的新题材线索（独立入口）——
+            来源 = 公开政策事件；与「人工当前主题 / 月度收益模式 / 专项假设」三类**分开呈现**。
+            覆盖有限（单一发布机构、两个栏目），在组件内就地写明。 */}
+        {!verifiedMode && <NewThemeRadarSection />}
 
         {/* ★★ 第三模块：模式发现与验证（默认收起，不抢首屏） */}
         <details className="fwd-mode-block" data-mode-block="1">
