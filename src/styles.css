@@ -4308,3 +4308,13 @@ html, body {
 .ntr-limits { margin-top: 8px; font-size: 11px; color: var(--ink-2); }
 .ntr-limits summary { cursor: pointer; color: var(--ink-3); }
 .ntr-limits ul { margin: 4px 0; padding-left: 16px; }
+
+/* ★★ v0.69：事件性质 / 研究方向 / 来源 */
+.ntr-nat { font-size: 10.5px; padding: 1px 7px; border-radius: 999px; border: 1px dashed var(--line-strong);
+  color: var(--ink-2); }
+.ntr-nat.nat-new_catalyst { border-style: solid; border-color: var(--accent); color: var(--accent); }
+.ntr-nat.nat-routine_recurring { color: var(--ink-3); }
+.ntr-nat.nat-background, .ntr-nat.nat-unclassified { color: var(--ink-3); border-style: dotted; }
+.ntr-dir { margin-right: 10px; font-size: 11px; color: var(--accent); }
+.ntr-dirhead { margin: 10px 0 2px; font-size: 12.5px; color: var(--ink); }
+.ntr-empty { margin: 4px 0 8px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }

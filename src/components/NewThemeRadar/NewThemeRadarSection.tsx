@@ -1,5 +1,5 @@
 /**
- * 自动发现的新题材线索（v0.68 · 产物 `new_theme_radar_v0_3`）。
+ * 自动发现的新题材线索（v0.69 · 产物 `new_theme_radar_v0_4`）。
  *
  * ## 两个区域，职责分开（v0.68 修复）
  *
@@ -21,7 +21,7 @@
  *
  * 只展示事实 + 核验状态；不含打分 / 概率 / 收益排序 / 交易信号；覆盖范围就地写明。
  */
-import raw from '@current/new_theme_radar_v0_3.json';
+import raw from '@current/new_theme_radar_v0_4.json';
 import { RichText } from '../RichText';
 
 interface ThemeLink {
@@ -45,13 +45,18 @@ interface Evidence {
   published?: { date?: string | null; time?: string | null } | null;
   note?: string | null;
 }
+interface Nature { kind: string; basis: string; note: string;
+  repeat_group?: string; repeat_count?: number; repeat_note?: string }
 interface RadarEvent {
   event_id: string; title: string; event_date: string; doc_type?: string;
+  nature?: Nature | null;
+  research_directions?: string[];
   first_seen: string; last_seen?: string; seen_count?: number;
   presence?: 'IN_LATEST_LIST' | 'HISTORICAL_ONLY';
   source: { id?: string; name: string; publisher: string; url: string; category?: string };
   time?: { basis_day?: string | null; observe_from?: string | null; reaction_basis?: string;
-    published_date?: string | null; published_time?: string | null; note?: string };
+    event_date_source?: string; published_date?: string | null; published_time?: string | null;
+    note?: string };
   evidence?: Evidence | null;
   theme_links: ThemeLink[];
   rejected_links?: { keyword: string; doc_type?: string; reason: string }[];
@@ -70,9 +75,13 @@ interface Doc {
     historical_only?: number;
     limits?: string[] };
   rules?: { reaction_trading_days?: number; candidate_meaning?: string; count_semantics?: string;
-    time_rule?: string; not_scored?: string };
+    time_rule?: string; not_scored?: string; nature_rule?: string; research_direction_rule?: string };
+  nature_legend?: Record<string, string>;
+  research_directions?: { direction: string; series: string[] }[];
   summary: { events: number; by_status: Record<string, number>; candidates: number;
-    candidates_are?: string; by_presence?: Record<string, number>; review_verdicts?: Record<string, number> };
+    candidates_are?: string; by_presence?: Record<string, number>; review_verdicts?: Record<string, number>;
+    by_nature?: Record<string, number>; by_direction?: Record<string, number>;
+    routine_repeat_groups?: Record<string, number> };
   status_legend: Record<string, string>;
   events: RadarEvent[];
 }
@@ -90,6 +99,17 @@ const EVIDENCE_LABEL: Record<string, string> = {
   ATTACHMENT_ONLY: '正文在附件内（未解析）',
   NONE: '无正文',
 };
+const NATURE_LABEL: Record<string, string> = {
+  ROUTINE_RECURRING: '常规重复事件',
+  NEW_CATALYST: '新出现的产业催化',
+  BACKGROUND: '背景信息',
+  UNCLASSIFIED: '性质未分类',
+};
+const DATE_SOURCE_LABEL: Record<string, string> = {
+  LIST_PAGE: '列表页标注日',
+  URL_PATH: '文章路径日期',
+};
+
 const REVIEW_LABEL: Record<string, string> = {
   IRRELEVANT: '与产业无关',
   INCIDENTAL_MENTION: '背景性提及',
@@ -121,12 +141,24 @@ function EventRow({ e }: { e: RadarEvent }) {
           {e.title}
         </a>
         <span className={`ntr-st st-${e.status.toLowerCase()}`}>{STATUS_LABEL[e.status] ?? e.status}</span>
+        {/* ★ 事件性质与「状态」是两件事：状态=市场相对表现；性质=事件本身是否新催化 */}
+        {e.nature ? (
+          <span className={`ntr-nat nat-${e.nature.kind.toLowerCase()}`} data-nature={e.nature.kind}
+                title={e.nature.basis}>
+            {NATURE_LABEL[e.nature.kind] ?? e.nature.kind}
+            {e.nature.kind === 'ROUTINE_RECURRING' && e.nature.repeat_count
+              ? `（同机制第 ${e.nature.repeat_count} 条记录）` : ''}
+          </span>
+        ) : null}
         {e.presence === 'HISTORICAL_ONLY' && (
           <span className="ntr-hist" data-historical-only="1">历史保留（本次列表未见）</span>
         )}
       </div>
 
       <div className="ntr-row2">
+        {(e.research_directions ?? []).map((d) => (
+          <span key={d} className="ntr-dir" data-direction={d}>研究方向：{d}</span>
+        ))}
         {e.theme_links.length > 0 ? e.theme_links.map((l, i) => (
           <span key={i} className="ntr-link" data-relation={l.relation}>
             关联 <strong>{l.board_name}</strong>（{l.board_series}）· 命中「{l.keyword}」于
@@ -199,7 +231,16 @@ function EventRow({ e }: { e: RadarEvent }) {
         {e.time?.basis_day ? (
           <p className="ntr-note">
             时点口径：基准日 <code>{e.time.basis_day}</code> · 观察起点 <code>{e.time.observe_from}</code>
+            {e.time.event_date_source
+              ? <> · 事件日期来源 {DATE_SOURCE_LABEL[e.time.event_date_source] ?? e.time.event_date_source}</>
+              : null}
             {' '}· <RichText text={e.time.note ?? ''} />
+          </p>
+        ) : null}
+        {e.nature ? (
+          <p className="ntr-note" data-nature-basis={e.nature.kind}>
+            性质判据：<RichText text={e.nature.basis} /> · <RichText text={e.nature.note} />
+            {e.nature.repeat_note ? <> · <RichText text={e.nature.repeat_note} /></> : null}
           </p>
         ) : null}
         <p className="ntr-src">
@@ -218,11 +259,20 @@ export function NewThemeRadarSection() {
   const srcNames = (c.sources ?? []).map((s) => s.name).join(' / ') || c.publisher || '—';
   const cats = [...new Set((c.sources ?? []).map((s) => s.category).filter(Boolean))].join(' / ');
 
-  // ★★ v0.68：候选事件**全部**展示（不截断、不按收益排序），近期区只给最近 N 条并去重
+  // ★★ v0.68：候选事件**全部**展示（不截断、不按收益排序）
   const candidates = doc.events.filter((e) => e.status === 'CANDIDATE');
   const candIds = new Set(candidates.map((e) => e.event_id));
-  const recentAll = doc.events.filter((e) => !candIds.has(e.event_id));
-  const recent = recentAll.slice(0, RECENT_LIMIT);
+  // ★★ v0.69：与当前研究方向相关的事件**全部**展示（同样不截断、不按收益排序）
+  const dirEvents = doc.events.filter(
+    (e) => !candIds.has(e.event_id) && (e.research_directions ?? []).length > 0);
+  const dirIds = new Set(dirEvents.map((e) => e.event_id));
+  // 近期区：既不候选、也不方向相关的事件，取最近 N 条（三段互不重复）
+  const recent = doc.events
+    .filter((e) => !candIds.has(e.event_id) && !dirIds.has(e.event_id))
+    .slice(0, RECENT_LIMIT);
+  const dirGroups = (doc.research_directions ?? [])
+    .map((d) => ({ ...d, events: dirEvents.filter((e) => (e.research_directions ?? []).includes(d.direction)) }))
+    .filter((g) => g.events.length > 0);
 
   return (
     <section className="ntr" aria-label="自动发现的新题材线索" data-radar-as-of={doc.as_of}
@@ -253,6 +303,10 @@ export function NewThemeRadarSection() {
         {doc.rules?.reaction_trading_days != null && (
           <> · 反应窗口 = 事件后 {doc.rules.reaction_trading_days} 个交易日</>
         )}
+        {doc.summary.by_nature ? (
+          <> · 性质：新催化 {doc.summary.by_nature.NEW_CATALYST ?? 0} / 常规重复{' '}
+            {doc.summary.by_nature.ROUTINE_RECURRING ?? 0} / 背景 {doc.summary.by_nature.BACKGROUND ?? 0}</>
+        ) : null}
       </p>
 
       {(c.failures ?? []).length > 0 && (
@@ -284,18 +338,54 @@ export function NewThemeRadarSection() {
         </p>
       )}
 
-      {/* ---------- 二、最近事件：只给最近 N 条，排除已在上方展示的候选 ---------- */}
-      <h3 className="ntr-h3" data-cand-section="recent">
-        二、最近事件（{recent.length}）
+      {/* ---------- 二、与当前研究方向相关的事件：全部展示 ---------- */}
+      <h3 className="ntr-h3" data-cand-section="directions">
+        二、与当前研究方向相关的事件（{dirEvents.length}）
       </h3>
       <p className="ntr-note">
-        最近 {RECENT_LIMIT} 条中<strong>不在候选区</strong>的事件
-        {candIds.size > 0 ? <>（已在上面展示的 {candIds.size} 条候选事件不重复列出）</> : null}。
-        全部 {doc.events.length} 条（含历史保留）都在产物 <code>new_theme_radar_v0_3.json</code> 内。
+        只列<strong>已建立可核验序列映射</strong>的研究方向；映射表写死在产物
+        <code> research_directions</code>（序列 → 方向），<strong>没有合适序列的主题不出现</strong>，
+        不强行代理。这里<strong>不按收益排序</strong>，也不代表这些方向已被验证。
+      </p>
+      {dirGroups.length > 0 ? dirGroups.map((g) => (
+        <div key={g.direction} data-direction-group={g.direction}>
+          <p className="ntr-dirhead">
+            <strong>{g.direction}</strong>
+            <span className="ntr-note"> · 序列 {g.series.join(' / ')} · {g.events.length} 条事件</span>
+          </p>
+          <ol className="ntr-list" data-rows="directions">
+            {g.events.map((e) => <EventRow key={e.event_id} e={e} />)}
+          </ol>
+        </div>
+      )) : (
+        <p className="ntr-empty" data-empty="directions">
+          本次抓取范围内<strong>没有</strong>与已映射研究方向相关的事件。
+          这是采集覆盖的缺口，<strong>不代表</strong>这些方向没有发生事情。
+        </p>
+      )}
+
+      {/* ---------- 三、最近事件：只给最近 N 条，排除已展示的候选与方向事件 ---------- */}
+      <h3 className="ntr-h3" data-cand-section="recent">
+        三、最近事件（{recent.length}）
+      </h3>
+      <p className="ntr-note">
+        最近 {RECENT_LIMIT} 条中<strong>既不在候选区、也不属已映射研究方向</strong>的事件
+        {candIds.size + dirIds.size > 0
+          ? <>（已展示的 {candIds.size} 条候选 + {dirIds.size} 条方向事件不重复列出）</> : null}。
+        全部 {doc.events.length} 条（含历史保留）都在产物 <code>new_theme_radar_v0_4.json</code> 内。
       </p>
       <ol className="ntr-list" data-rows="recent">
         {recent.map((e) => <EventRow key={e.event_id} e={e} />)}
       </ol>
+
+      {/* ★ v0.69：事件性质图例（状态=市场相对表现；性质=事件本身是否新催化，两者不可混读） */}
+      <p className="ntr-legend" data-nature-legend="1">
+        {Object.entries(doc.nature_legend ?? {}).map(([k, v]) => (
+          <span key={k} className="ntr-lg">
+            <code>{k}</code> {NATURE_LABEL[k] ?? k}：<RichText text={v} />
+          </span>
+        ))}
+      </p>
 
       <p className="ntr-legend" data-status-legend="1">
         {Object.entries(doc.status_legend).map(([k, v]) => (

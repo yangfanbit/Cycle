@@ -57,6 +57,69 @@ class TestTimeBasis(unittest.TestCase):
         self.assertIsNone(tb["basis_day"])
 
 
+class TestPublishedTime(unittest.TestCase):
+    """★ v0.69：有到分钟的发布时间时，只在无歧义情形使用。"""
+
+    def test_T2c_after_close_uses_event_day_close(self):
+        tb = B.time_basis_of("2026-09-24", CAL, {"time": "18:00", "precision": "MINUTE"})
+        self.assertEqual(tb["rule"], "PUBLISHED_AFTER_CLOSE")
+        self.assertEqual(tb["basis_day"], "2026-09-24")
+        self.assertEqual(tb["observe_from"], "2026-09-28")
+
+    def test_T2d_before_open_uses_prior_close(self):
+        tb = B.time_basis_of("2026-09-24", CAL, {"time": "08:30", "precision": "MINUTE"})
+        self.assertEqual(tb["rule"], "PUBLISHED_BEFORE_OPEN")
+        self.assertEqual(tb["basis_day"], "2026-09-23")
+        self.assertEqual(tb["observe_from"], "2026-09-24")
+
+    def test_T2e_intraday_falls_back_to_conservative(self):
+        """盘中发布无法判断先后 → 退回保守规则（事件日涨跌不计入）。"""
+        tb = B.time_basis_of("2026-09-24", CAL, {"time": "11:00", "precision": "MINUTE"})
+        self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"))
+
+
+class TestNature(unittest.TestCase):
+    """★ v0.69：事件性质只在证据明确时分类。"""
+
+    def test_T6a_routine_recurring(self):
+        n = B.nature_of("2026年9月24日国家继续实施调控，成品油价格适当调整", "OTHER", [])
+        self.assertEqual(n["kind"], "ROUTINE_RECURRING")
+        self.assertIn("成品油价格", n["basis"])
+
+    def test_T6b_policy_instrument_is_new_catalyst(self):
+        n = B.nature_of("关于印发《新型电力系统建设规划》的通知", "POLICY_INSTRUMENT", [])
+        self.assertEqual(n["kind"], "NEW_CATALYST")
+
+    def test_T6c_activity_words_override_to_background(self):
+        """「大赛名单」文档类型像政策工具，但本质是活动 → 只算背景。"""
+        n = B.nature_of("2026全球脑机接口×医保创新场景大赛决赛入围项目名单", "POLICY_INSTRUMENT", [])
+        self.assertEqual(n["kind"], "BACKGROUND")
+        self.assertIn("大赛", n["basis"])
+
+    def test_T6d_meeting_is_background(self):
+        self.assertEqual(B.nature_of("国家发展改革委举行10月份新闻发布会", "PRESS", [])["kind"],
+                         "BACKGROUND")
+
+
+class TestDirections(unittest.TestCase):
+    """★ v0.69：研究方向只能由**已映射的序列**推出。"""
+
+    def test_T7a_maps_known_series(self):
+        links = [{"board_series": "BK881144"}]
+        self.assertEqual(B.directions_of(links), ["医疗器械与脑机接口"])
+
+    def test_T7b_unknown_series_yields_nothing(self):
+        self.assertEqual(B.directions_of([{"board_series": "BK999999"}]), [])
+
+    def test_T7c_dedupes(self):
+        links = [{"board_series": "BK881280"}, {"board_series": "CPT_fd"}]
+        self.assertEqual(B.directions_of(links), ["海上风电与风电设备"])
+
+    def test_T7d_all_mapped_series_exist_in_direction_table(self):
+        for d in B.RESEARCH_DIRECTIONS:
+            self.assertTrue(d["series"], d["direction"])
+
+
 class TestLinks(unittest.TestCase):
     def test_T3_title_hit_creates_link(self):
         links, rejected = B.theme_links("关于印发《新型电力系统建设规划》的通知", {})

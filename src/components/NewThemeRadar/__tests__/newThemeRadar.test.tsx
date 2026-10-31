@@ -1,5 +1,5 @@
 /**
- * ★★ v0.68：自动发现的新题材线索 —— 候选可见性与逐板块语义（产物 `new_theme_radar_v0_3`）。
+ * ★★ v0.69：自动发现的新题材线索 —— 候选可见性 / 逐板块语义 / 研究方向段 / 事件性质（产物 `new_theme_radar_v0_4`）。
  *
  * 两个真实缺陷的回归：
  *  A. 原实现只渲染 `events.slice(0, 12)` → **较早的候选事件在页面上根本找不到**
@@ -12,24 +12,31 @@ import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { NewThemeRadarSection, relationLabel } from '../NewThemeRadarSection';
-import raw from '@current/new_theme_radar_v0_3.json';
+import raw from '@current/new_theme_radar_v0_4.json';
 
 interface D {
   as_of: string; artifact_version?: string;
   coverage: { sources?: { name: string }[]; date_range?: [string, string] | null; events: number;
     failures?: unknown[] };
-  summary: { events: number; candidates: number; candidates_are?: string };
+  summary: { events: number; candidates: number; candidates_are?: string;
+    by_nature?: Record<string, number>; by_direction?: Record<string, number>;
+    routine_repeat_groups?: Record<string, number> };
+  nature_legend?: Record<string, string>;
+  research_directions?: { direction: string; series: string[] }[];
   status_legend: Record<string, string>;
   rules?: { count_semantics?: string };
   events: {
     event_id: string; event_date: string; status: string;
-    source: { url: string };
+    nature?: { kind: string; basis: string; repeat_count?: number } | null;
+    research_directions?: string[];
+    source: { id?: string; url: string; name?: string };
     theme_links: { board_series: string; board_name: string; keyword: string; relation: string }[];
     markets?: { board_series: string; board_name?: string; window?: [string, string] | null;
       excess_pp?: number | null; board_ret_pct?: number | null; observation_trading_days?: number | null;
       assessment?: { relative_positive: boolean; absolute_positive: boolean; note: string } | null;
       status: string }[];
     assessment?: unknown;
+    time?: { event_date_source?: string; basis_day?: string | null };
     review?: { verdict: string } | null;
     gaps: string[];
   }[];
@@ -37,13 +44,18 @@ interface D {
 const doc = raw as unknown as D;
 const html = renderToStaticMarkup(<NewThemeRadarSection />);
 const text = html.replace(/<[^>]+>/g, ' ');
+/** ★ 不含原文引用（<details> 内是来源正文，可能出现「排名」等词，不是我们的措辞） */
+const chromeText = html.replace(/<details[\s\S]*?<\/details>/g, ' ').replace(/<[^>]+>/g, ' ');
 
 /** 候选区 HTML（切到「二、最近事件」之前）；用区块标记切分，避免 indexOf 找不到时切成 -1 */
-function sectionHtml(name: 'candidates' | 'recent'): string {
+function sectionHtml(name: 'candidates' | 'directions' | 'recent'): string {
   const startTag = `data-cand-section="${name}"`;
   const i = html.indexOf(startTag);
   if (i < 0) return '';
-  const nextIdx = name === 'candidates' ? html.indexOf('data-cand-section="recent"') : html.indexOf('data-status-legend');
+  const order = ['data-cand-section="candidates"', 'data-cand-section="directions"',
+    'data-cand-section="recent"', 'data-nature-legend'];
+  const nextTag = order[order.indexOf(startTag) + 1];
+  const nextIdx = nextTag ? html.indexOf(nextTag) : -1;
   return html.slice(i, nextIdx > i ? nextIdx : html.length);
 }
 
@@ -128,11 +140,60 @@ describe('v0.68 逐板块语义', () => {
     expect(text).toContain('基准日');
     expect(text).toContain('观察起点');
     expect(html).toMatch(/data-gaps="\d+"/);
+    // ★ 只检查本组件的文案：原文引用（<details>）是来源正文，不参与禁用词判定
     for (const banned of ['买入', '卖出', '目标价', '仓位', '胜率', '评分', '排名', '止损']) {
-      expect(text, `不得出现「${banned}」`).not.toContain(banned);
+      expect(chromeText, `不得出现「${banned}」`).not.toContain(banned);
     }
     expect(text).toContain('不是买卖建议');
     expect(text).not.toContain('**');
+  });
+
+  it('★★ 与当前研究方向相关的事件：全部展示且不与候选/近期区重复', () => {
+    const dirEvents = doc.events.filter(
+      (e) => e.status !== 'CANDIDATE' && (e.research_directions ?? []).length > 0);
+    const dirHtml = sectionHtml('directions');
+    if (dirEvents.length > 0) {
+      expect(html).toContain(`data-cand-section="directions"`);
+      for (const e of dirEvents) {
+        expect(dirHtml, `方向事件 ${e.event_id} 必须展示`).toContain(`data-event="${e.event_id}"`);
+        expect(dirHtml).toContain(`data-direction-group="${e.research_directions![0]}"`);
+      }
+      // 不重复：近期区不得再出现这些事件
+      const recentHtml = sectionHtml('recent');
+      for (const e of dirEvents) expect(recentHtml).not.toContain(`data-event="${e.event_id}"`);
+    }
+    // 研究方向对应表必须来自产物（序列 → 方向），且只含已存在序列
+    expect((doc.research_directions ?? []).length).toBeGreaterThan(0);
+    for (const d of doc.research_directions ?? []) expect(d.series.length).toBeGreaterThan(0);
+  });
+
+  it('★★ 事件性质：常规重复可识别、新催化与背景可区分（不靠关键词编造）', () => {
+    const routine = doc.events.filter((e) => e.nature?.kind === 'ROUTINE_RECURRING');
+    expect(routine.length, '产物应有常规重复事件（成品油价格）').toBeGreaterThan(1);
+    // 每个常规重复事件都带同组计数，且计数与产物一致
+    for (const e of routine) {
+      expect(e.nature!.repeat_count).toBe(routine.length);
+    }
+    expect(html).toContain('data-nature="ROUTINE_RECURRING"');
+    expect(text).toContain('常规重复事件');
+    expect(text).toContain('同机制第');
+    // 性质不等于状态：常规重复里也可能有 CANDIDATE
+    const kinds = new Set(doc.events.map((e) => e.nature?.kind).filter(Boolean));
+    expect(kinds.size).toBeGreaterThan(1);
+    // 性质图例与判据都来自产物
+    for (const k of Object.keys(doc.nature_legend ?? {})) expect(text).toContain(k);
+    expect(html).toMatch(/data-nature-basis="/);
+  });
+
+  it('★ 新来源（医保局）事件可进入产物并带来源与日期来源', () => {
+    const nhsa = doc.events.filter((e) => e.source.id === 'NHSA_NOTICE');
+    if (nhsa.length > 0) {
+      expect(text).toContain('国家医疗保障局');
+      const withDir = nhsa.find((e) => (e.research_directions ?? []).length > 0);
+      if (withDir) expect(html).toContain(withDir.source.url);
+      // 日期来源必须显式（列表页 / 文章路径）
+      expect(text).toMatch(/列表页标注日|文章路径日期/);
+    }
   });
 
   it('★ 状态图例与来源链接仍在', () => {

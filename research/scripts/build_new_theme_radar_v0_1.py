@@ -50,10 +50,20 @@ BENCH = "CSI300"
 SOURCES = [
     {"id": "NDRC_ZCFB_TZ", "name": "国家发展改革委 · 政策通知", "publisher": "国家发展改革委",
      "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/", "pages": ["", "index_1.html"],
-     "category": "POLICY_NOTICE", "access_note": "公开 HTML 列表页（服务端渲染）"},
+     "category": "POLICY_NOTICE", "adapter": "NDRC", "date_source": "LIST_PAGE",
+     "access_note": "公开 HTML 列表页（服务端渲染）；详情页正文在 div.article_con，附件 PDF/OFD 单列"},
     {"id": "NDRC_XWFB", "name": "国家发展改革委 · 新闻发布", "publisher": "国家发展改革委",
      "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/", "pages": ["", "index_1.html"],
-     "category": "POLICY_NEWS", "access_note": "公开 HTML 列表页（服务端渲染）"},
+     "category": "POLICY_NEWS", "adapter": "NDRC", "date_source": "LIST_PAGE",
+     "access_note": "公开 HTML 列表页（服务端渲染）；详情页正文在 div.article_con"},
+    # ★ v0.69 新增（经真实访问验证）：列表页服务端渲染 45 条/页、日期在 URL 路径
+    #   `/art/YYYY/M/D/art_...html`，详情页正文在 `div#zoom`，且 `<meta name="PubDate">`
+    #   带**到分钟**的发布时间 → 可用于「有可信发布时间」的时点判定。
+    {"id": "NHSA_NOTICE", "name": "国家医疗保障局 · 通知公告", "publisher": "国家医疗保障局",
+     "list_url": "https://www.nhsa.gov.cn/col/col109/index.html", "pages": [""],
+     "category": "POLICY_NOTICE", "adapter": "NHSA", "date_source": "URL_PATH",
+     "access_note": "公开 HTML 列表页（服务端渲染，无分页链接）；日期取自文章路径，"
+                    "详情页正文在 div#zoom，PubDate meta 提供到分钟的发布时间"},
 ]
 SRC_BY_ID = {x["id"]: x for x in SOURCES}
 
@@ -82,8 +92,74 @@ THEME_KEYWORDS = [
     ("集成电路", "BK881121", "半导体", "DIRECT", "集成电路政策直接作用于半导体板块"),
     ("新能源汽车", "BK881125", "汽车整车", "DIRECT", "新能源汽车政策直接作用于整车环节"),
     ("棉花目标价格", "BK881101", "种植业与林业", "PROXY", "棉花目标价格政策作用于种植端；库内无棉花专营板块，用种植业与林业代理"),
+    # ── v0.69：与当前研究主题对应的序列（ID 全部取自 history_scan.db，覆盖到 2026-10-30）──
+    ("医疗器械", "BK881144", "医疗器械", "DIRECT", "医疗器械监管/编码/价格政策直接作用于医疗器械板块"),
+    ("医用耗材", "BK881144", "医疗器械", "DIRECT", "耗材分类与代码属医疗器械监管范围，直接作用于该板块"),
+    ("脑机接口", "BK881144", "医疗器械", "PROXY",
+     "库内无脑机接口专营序列；脑机接口器械归入医疗器械监管，故用「医疗器械」代理，非主题本身"),
+    ("人形机器人", "CPT_zjqrgn", "机器人概念", "DIRECT", "人形机器人政策/项目直接作用于机器人概念篮子"),
+    ("机器人", "CPT_zjqrgn", "机器人概念", "DIRECT", "机器人产业政策/标准直接作用于机器人概念篮子"),
+    ("海上风电", "BK881280", "风电设备", "DIRECT", "海上风电项目/规划直接作用于风电设备板块"),
+    ("光模块", "BK881129", "通信设备", "DIRECT", "光模块属通信设备行业，订单/技术迁移直接作用于该板块"),
+    ("智能驾驶", "CPT_qcdz", "汽车电子", "PROXY",
+     "库内无智驾专营序列；智驾产业链主要在汽车电子，故用「汽车电子」代理，非主题本身"),
 ]
 KW_BY_NAME = {k[0]: k for k in THEME_KEYWORDS}
+
+# ─────────────── 当前研究主题 ↔ 可核验序列（用于「与当前研究方向相关的事件」） ───────────────
+# ★ 只写**已存在且覆盖可用**的序列；没有合适序列的主题不出现在这里（不强行代理）。
+RESEARCH_DIRECTIONS = [
+    {"direction": "具身智能与人形机器人", "series": ["CPT_zjqrgn"]},
+    {"direction": "海上风电与风电设备", "series": ["BK881280", "CPT_fd"]},
+    {"direction": "算电协同 / 算力与光互联", "series": ["BK881162", "BK881129"]},
+    {"direction": "智能驾驶与汽车产业", "series": ["BK881125", "CPT_qcdz"]},
+    {"direction": "医疗器械与脑机接口", "series": ["BK881144"]},
+]
+DIRECTION_BY_SERIES = {sid: d["direction"] for d in RESEARCH_DIRECTIONS for sid in d["series"]}
+
+# ─────────────── 事件性质（区分常规重复 / 新催化 / 背景信息） ───────────────
+# 只在**证据明确**时分类；判据全部可核（标题 + 文档类型），不做语义猜测。
+NATURE_LEGEND = {
+    "ROUTINE_RECURRING": "按既有机制周期性重复发布（如成品油价格按调价窗口调整）",
+    "NEW_CATALYST": "新出现的政策 / 标准 / 规划 / 名单 / 项目等具体行动",
+    "BACKGROUND": "会议、会见、发布会、宣传等背景性信息，无具体产业行动",
+    "UNCLASSIFIED": "未满足上述明确判据",
+}
+ROUTINE_PATTERNS = (
+    # (关键词, 说明) —— 成品油价格按 10 个工作日调价窗口重复发布
+    ("成品油价格", "成品油价格按既有调价机制周期性发布（上调/下调/不作调整），属常规重复事件"),
+)
+# ★ 活动/评选类：标题出现这些词时，即使文档类型像政策工具（如「名单」），也只算背景信息
+ACTIVITY_WORDS = ("大赛", "评选", "征集", "获奖", "入围", "观摩", "座谈", "恳谈", "宣传")
+
+
+def nature_of(title, doc_type, links):
+    """★ 事件性质：常规重复 / 新催化 / 背景 / 未分类。只在证据明确时给结论。"""
+    for kw, note in ROUTINE_PATTERNS:
+        if kw in (title or ""):
+            return {"kind": "ROUTINE_RECURRING", "basis": "标题含「%s」" % kw, "note": note}
+    for w in ACTIVITY_WORDS:
+        if w in (title or ""):
+            return {"kind": "BACKGROUND", "basis": "标题含活动类词「%s」" % w,
+                    "note": "活动/评选/征集/宣传类信息，无具体产业行动 → 不作产业催化"}
+    if doc_type == "POLICY_INSTRUMENT":
+        return {"kind": "NEW_CATALYST",
+                "basis": "文档类型 = POLICY_INSTRUMENT（通知/复函/规划/办法/名单/指导意见等）",
+                "note": "属具体政策工具或行动计划，可作为新出现的产业催化候选"}
+    if doc_type in ("MEETING", "CEREMONY", "PRESS"):
+        return {"kind": "BACKGROUND",
+                "basis": "文档类型 = %s" % doc_type,
+                "note": "会议/仪式/发布会类，无具体产业行动，不作产业催化"}
+    return {"kind": "UNCLASSIFIED", "basis": "未命中上述判据", "note": "不做推断"}
+
+
+def directions_of(links):
+    out = []
+    for L in links or []:
+        d = DIRECTION_BY_SERIES.get(L["board_series"])
+        if d and d not in out:
+            out.append(d)
+    return out
 
 # ─────────────────── 文档类型（决定「正文命中」是否足以建立关联） ───────────────────
 DOC_TYPE_PATTERNS = [
@@ -92,7 +168,9 @@ DOC_TYPE_PATTERNS = [
                  "会议", "研讨会", "论坛", "专题会")),
     ("PRESS", ("新闻发布会", "答记者问", "署名文章", "专访", "发表讲话")),
     ("POLICY_INSTRUMENT", ("通知", "复函", "办法", "规划", "名单", "指导意见", "行动计划",
-                           "行动方案", "目录", "清单", "规则", "政策")),
+                           "行动方案", "目录", "清单", "规则", "政策",
+                           # ★ v0.69：官方「发布/印发/公布《…》」也是政策工具（医保局常见表述）
+                           "发布《", "印发《", "公布《", "发布")),
 ]
 # ★★ v0.67：**只按标题建立关联** —— 政策标题即政策对象。
 #   正文/附件里的提及一律只记入 `rejected_links`，不建关联：
@@ -179,6 +257,11 @@ RULES = {
     "not_scored": "不含打分 / 概率 / 收益排序 / 交易信号；状态只是机械筛选，需人工复核",
     "count_semantics": ("`CANDIDATE` 计数是**事件条数**，不是独立新题材数：同一政策/题材在不同日期"
                         "多次发布时，每次事件分别计数；无可靠主题唯一标识 → 不输出「题材数」"),
+    "nature_rule": ("事件性质只在**证据明确**时给结论：标题含「成品油价格」→ 常规重复（按既有调价机制）；"
+                    "文档类型为政策工具（通知/复函/规划/办法/名单/指导意见等）→ 新催化；"
+                    "会议/仪式/发布会 → 背景信息；其余 → 未分类。性质**不影响**状态判定。"),
+    "research_direction_rule": ("研究方向对应关系写死在 `RESEARCH_DIRECTIONS`（序列 → 方向），"
+                                "只写**已存在且覆盖可用**的序列；没有合适序列的主题不出现，不强行代理"),
 }
 
 STATUS_LEGEND = {
@@ -222,9 +305,9 @@ def _clean(s):
     return re.sub(r"\s+", " ", s).strip()
 
 
-def _div_inner(html, cls_kw):
-    """★ 深度感知地取某个 class 的 div 内部 HTML（正则 `.*?</div>` 会在第一个嵌套 </div> 截断）。"""
-    m = re.search(r'<div[^>]*class="[^"]*%s[^"]*"[^>]*>' % cls_kw, html)
+def _block_inner(html, open_re):
+    """★ 深度感知地取某个 div 的内部 HTML（正则 `.*?</div>` 会在第一个嵌套 </div> 截断）。"""
+    m = re.search(open_re, html)
     if not m:
         return None
     i, depth = m.end(), 1
@@ -235,8 +318,13 @@ def _div_inner(html, cls_kw):
     return html[i:]
 
 
+def _div_inner(html, cls_kw):
+    """按 class 关键字取 div 内部 HTML（NDRC 用）。"""
+    return _block_inner(html, r'<div[^>]*class="[^"]*%s[^"]*"[^>]*>' % cls_kw)
+
+
 # ─────────────────────────── 抓取 ───────────────────────────
-def _parse_list(html, list_url, source_id):
+def _parse_list_ndrc(html, src):
     out = []
     for block in re.findall(r"<li[^>]*>(.*?)</li>", html, re.S):
         a = re.search(r'<a[^>]*href="([^"]+)"[^>]*title="([^"]*)"', block, re.S)
@@ -244,11 +332,29 @@ def _parse_list(html, list_url, source_id):
         if not (a and d):
             continue
         href = a.group(1)
-        full = href if href.startswith("http") else list_url + href.lstrip("./")
+        full = href if href.startswith("http") else src["list_url"] + href.lstrip("./")
         out.append({"title": _clean(a.group(2)), "url": full,
                     "date": "%s-%02d-%02d" % (d.group(1), int(d.group(2)), int(d.group(3))),
-                    "source_id": source_id})
+                    "date_source": "LIST_PAGE", "source_id": src["id"]})
     return out
+
+
+def _parse_list_nhsa(html, src):
+    """★ 医保局列表页**不在锚点里给日期** → 日期取自文章路径 `/art/YYYY/M/D/art_*.html`。
+    这是可核验的（点开 URL 即可看到路径日期），因此记 `date_source = URL_PATH`。"""
+    out, seen = [], set()
+    for href, title in re.findall(r'<a[^>]+href="(/art/[^"]+)"[^>]*title="([^"]+)"', html):
+        m = re.search(r"/art/(\d{4})/(\d{1,2})/(\d{1,2})/", href)
+        if not m or href in seen:
+            continue
+        seen.add(href)
+        out.append({"title": _clean(title), "url": "https://www.nhsa.gov.cn" + href,
+                    "date": "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3))),
+                    "date_source": "URL_PATH", "source_id": src["id"]})
+    return out
+
+
+PARSE_LIST = {"NDRC": _parse_list_ndrc, "NHSA": _parse_list_nhsa}
 
 
 def fetch_list():
@@ -261,9 +367,10 @@ def fetch_list():
             if not h:
                 failures.append({"source": src["id"], "url": url, "reason": "HTTP/网络失败"})
                 continue
-            got = _parse_list(h, src["list_url"], src["id"])
+            got = PARSE_LIST[src["adapter"]](h, src)
             if not got:
-                failures.append({"source": src["id"], "url": url, "reason": "页面结构变化或该页无条目"})
+                failures.append({"source": src["id"], "url": url,
+                                 "reason": "页面结构变化或该页无条目"})
             pages.append({"source": src["id"], "url": url, "bytes": len(h), "items": len(got)})
             items.extend(got)
             time.sleep(1.2)
@@ -276,26 +383,48 @@ def fetch_list():
     return uniq, pages, failures
 
 
-def fetch_article(url):
-    """取正文 / 附件 / 文章页发布时间。正文取不到就如实标 ATTACHMENT_ONLY 或 NONE。"""
-    h = _get(url)
-    if not h:
-        return {"kind": "NONE", "quote": None, "quote_sha256_16": None,
-                "attachments": [], "published": None, "note": "详情页取数失败"}
+def _article_ndrc(h):
     body = _div_inner(h, "article_con") or _div_inner(h, "TRS_Editor") or ""
     text = _clean(body)
     pub = re.search(r"发布时间[:：]\s*(\d{4})[/-](\d{1,2})[/-](\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?", h)
     published = None
     if pub:
         published = {"date": "%s-%02d-%02d" % (pub.group(1), int(pub.group(2)), int(pub.group(3))),
-                     "time": ("%s:%s" % (pub.group(4), pub.group(5))) if pub.group(4) else None}
+                     "time": ("%s:%s" % (pub.group(4), pub.group(5))) if pub.group(4) else None,
+                     "precision": "MINUTE" if pub.group(4) else "DATE"}
     att = []
     ab = _div_inner(h, "attachment_r") or ""
     for href, name in re.findall(r'<a[^>]*href="([^"]+)"[^>]*>([^<]*)</a>', ab):
         full = href if href.startswith("http") else "https://www.ndrc.gov.cn" + href.lstrip("./")
         att.append({"name": _clean(name), "url": full})
+    return text, published, att
+
+
+def _article_nhsa(h):
+    body = _block_inner(h, r'<div[^>]*id="zoom"[^>]*>') or ""
+    text = _clean(body)
+    published = None
+    m = re.search(r'<meta[^>]*name=["\']PubDate["\'][^>]*content=["\']'
+                  r'(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?', h)
+    if m:
+        published = {"date": "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3))),
+                     "time": ("%s:%s" % (m.group(4), m.group(5))) if m.group(4) else None,
+                     "precision": "MINUTE" if m.group(4) else "DATE"}
+    return text, published, []
+
+
+ARTICLE = {"NDRC": _article_ndrc, "NHSA": _article_nhsa}
+
+
+def fetch_article(url, adapter):
+    """取正文 / 附件 / 发布时间。正文取不到就如实标 ATTACHMENT_ONLY 或 NONE。"""
+    h = _get(url)
+    if not h:
+        return {"kind": "NONE", "quote": None, "quote_sha256_16": None,
+                "attachments": [], "published": None, "note": "详情页取数失败"}
+    text, published, att = ARTICLE[adapter](h)
     if len(text) >= 40:
-        # ★★ 哈希必须算**落盘的那一段**（先截断再哈希）—— 用全文哈希会让 `--check` 永远不匹配
+        # ★★ 哈希必须算**落盘的那一段**（先截断再哈希）
         quote = text[:400]
         return {"kind": "BODY_TEXT", "quote": quote,
                 "quote_sha256_16": hashlib.sha256(quote.encode("utf-8")).hexdigest()[:16],
@@ -336,24 +465,51 @@ def _cal(con):
                    for r in con.execute("SELECT trade_date FROM scan_daily WHERE series_id=?", (BENCH,))})
 
 
-def time_basis_of(event_date, cal):
-    """★★ 保守可用时点：只有日期时，**事件日当天的涨跌不算事件后反应**。"""
+def time_basis_of(event_date, cal, published=None):
+    """★★ 可用时点判定。
+
+    有**到分钟**的可信发布时间时，只在**无歧义**的情形下用它：
+    - 发布时间 ≥ 15:00（收盘后）→ 基准 = 事件日收盘（事件日为交易日时），观察次日；
+    - 发布时间 < 09:30（开盘前）→ 基准 = 事件前最近交易日收盘，**从事件日**起观察；
+    - 盘中发布（09:30–15:00）→ 无法判断信息公开时点与收盘的先后 → 退回保守规则。
+    只有日期时，一律用保守规则（事件日涨跌**不计入**事件后反应）。
+    """
     if not cal:
         return {"rule": "NO_CALENDAR", "basis_day": None, "observe_from": None,
                 "note": "无交易日历，无法确定可用基准"}
-    if event_date in cal:
+    is_trading = event_date in cal
+    t = (published or {}).get("time")
+    precise = bool(t) and (published or {}).get("precision") == "MINUTE"
+    if precise:
+        try:
+            hh, mm = [int(x) for x in t.split(":")[:2]]
+        except Exception:
+            hh = mm = -1
+        if (hh, mm) >= (15, 0):
+            if is_trading:
+                i = cal.index(event_date)
+                return {"rule": "PUBLISHED_AFTER_CLOSE", "basis_day": event_date,
+                        "observe_from": cal[i + 1] if i + 1 < len(cal) else None,
+                        "note": "发布时间 %s（收盘后）→ 以事件日收盘为基准，从次一交易日起观察" % t}
+        elif (0, 0) <= (hh, mm) < (9, 30):
+            prior = [d for d in cal if d < event_date]
+            if prior:
+                start = event_date if is_trading else next((d for d in cal if d > event_date), None)
+                return {"rule": "PUBLISHED_BEFORE_OPEN", "basis_day": prior[-1],
+                        "observe_from": start,
+                        "note": "发布时间 %s（开盘前）→ 以事件前最近交易日收盘为基准，从事件日起观察" % t}
+    if is_trading:
         i = cal.index(event_date)
-        basis, start = event_date, (cal[i + 1] if i + 1 < len(cal) else None)
-        rule = "DATE_ONLY_CONSERVATIVE_TRADING_DAY"
-        note = ("事件日为交易日：以**当日收盘**为基准，从**次一交易日**起观察 —— "
-                "事件日当天的涨跌可能发生在信息公开之前，不计入事件后反应")
-    else:
-        prior = [d for d in cal if d < event_date]
-        after = [d for d in cal if d > event_date]
-        basis, start = (prior[-1] if prior else None), (after[0] if after else None)
-        rule = "DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY"
-        note = "事件日非交易日：以事件前最近交易日收盘为基准，从事件后首个交易日起观察"
-    return {"rule": rule, "basis_day": basis, "observe_from": start, "note": note}
+        return {"rule": "DATE_ONLY_CONSERVATIVE_TRADING_DAY", "basis_day": event_date,
+                "observe_from": cal[i + 1] if i + 1 < len(cal) else None,
+                "note": ("事件日为交易日：以**当日收盘**为基准，从**次一交易日**起观察 —— "
+                         "事件日当天的涨跌可能发生在信息公开之前，不计入事件后反应")}
+    prior = [d for d in cal if d < event_date]
+    after = [d for d in cal if d > event_date]
+    return {"rule": "DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY",
+            "basis_day": (prior[-1] if prior else None),
+            "observe_from": (after[0] if after else None),
+            "note": "事件日非交易日：以事件前最近交易日收盘为基准，从事件后首个交易日起观察"}
 
 
 def market_of(con, cal, sid, basis_day, observe_from, as_of):
@@ -508,15 +664,15 @@ def build(fetch=False, prev=None):
 
     events, carried = [], 0
     for it in items:
-        ev = fetch_article(it["url"]) if fetch else {
+        src = SRC_BY_ID[it["source_id"]]
+        ev = fetch_article(it["url"], src["adapter"]) if fetch else {
             "kind": "NONE", "quote": None, "quote_sha256_16": None,
             "attachments": [], "published": None, "note": "未抓取"}
         if fetch:
             time.sleep(1.0)
-        src = SRC_BY_ID[it["source_id"]]
         eid = event_id_of(it["url"], it["source_id"])
         links, rejected = theme_links(it["title"], ev)
-        tb = time_basis_of(it["date"], cal)
+        tb = time_basis_of(it["date"], cal, ev.get("published"))
         markets = []
         if con and links:
             done = set()
@@ -545,7 +701,8 @@ def build(fetch=False, prev=None):
                        "url": it["url"], "list_url": src["list_url"],
                        "category": src["category"], "access": "PUBLIC_HTML"},
             "time": {
-                "event_date": it["date"], "event_date_source": "LIST_PAGE",
+                "event_date": it["date"],
+                "event_date_source": it.get("date_source") or src.get("date_source") or "LIST_PAGE",
                 "published_date": (ev.get("published") or {}).get("date"),
                 "published_time": (ev.get("published") or {}).get("time"),
                 "time_precision": "MINUTE" if (ev.get("published") or {}).get("time") else "DATE_ONLY",
@@ -558,6 +715,9 @@ def build(fetch=False, prev=None):
             "markets": markets,
             "security_mapping": {"status": "NOT_MAPPED",
                                  "reason": "首版只到行业板块级；个股映射需按名称+代码另行核验"},
+            # ★ v0.69：事件性质（常规重复 / 新催化 / 背景 / 未分类）+ 与当前研究方向的对应
+            "nature": nature_of(it["title"], doc_type_of(it["title"]), links),
+            "research_directions": directions_of(links),
         }
         evt["status"], evt["gaps"] = classify(evt, as_of) if as_of else ("INSUFFICIENT", ["无行情基准日"])
         extra = [g for m in markets for g in (m.get("gaps") or []) if g not in evt["gaps"]]
@@ -614,6 +774,31 @@ def build(fetch=False, prev=None):
         v = (e.get("review") or {}).get("verdict")
         if v:
             review_counts[v] = review_counts.get(v, 0) + 1
+    # ★ 常规重复事件：给出「同一机制重复出现几次」的计数（**不合并、不删除**任何事件）
+    routine_groups = {}
+    for e in uniq:
+        n = e.get("nature") or {}
+        if n.get("kind") != "ROUTINE_RECURRING":
+            continue
+        for kw, _ in ROUTINE_PATTERNS:
+            if kw in (e.get("title") or ""):
+                routine_groups.setdefault(kw, []).append(e)
+                n["repeat_group"] = kw
+                break
+    for kw, evs in routine_groups.items():
+        for e in evs:
+            e["nature"]["repeat_count"] = len(evs)
+            e["nature"]["repeat_note"] = ("同一机制（%s）在本产物中重复出现 %d 次；"
+                                          "每次事件**分别计数**，不合并、不删除" % (kw, len(evs)))
+    by_nature = {}
+    for e in uniq:
+        k = (e.get("nature") or {}).get("kind")
+        if k:
+            by_nature[k] = by_nature.get(k, 0) + 1
+    by_direction = {}
+    for e in uniq:
+        for d in (e.get("research_directions") or []):
+            by_direction[d] = by_direction.get(d, 0) + 1
     prev_name = None
     if prev:
         # artifact_version "0.1" → 文件名 new_theme_radar_v0_1.json（不是 v0_0_1）
@@ -621,14 +806,17 @@ def build(fetch=False, prev=None):
         prev_name = "new_theme_radar_v0_%s.json" % ver.split(".")[-1]
 
     return {
-        "artifact": "new_theme_radar", "artifact_version": "0.3",
+        "artifact": "new_theme_radar", "artifact_version": "0.4",
         "generated_at": now, "as_of": as_of,
         "source_kind": "AUTO_DISCOVERED_EVENT",
         "supersedes": prev_name,
         "coverage": {
-            "publisher": "国家发展改革委",
-            "sources": [{"id": x["id"], "name": x["name"], "list_url": x["list_url"],
-                         "category": x["category"], "pages": x["pages"]} for x in SOURCES],
+            "publishers": sorted({x["publisher"] for x in SOURCES}),
+            "sources": [{"id": x["id"], "name": x["name"], "publisher": x["publisher"],
+                         "list_url": x["list_url"], "category": x["category"],
+                         "pages": x["pages"], "adapter": x["adapter"],
+                         "date_source": x["date_source"], "access_note": x["access_note"]}
+                        for x in SOURCES],
             "pages_fetched": pages, "failures": failures,
             "date_range": [min(dates), max(dates)] if dates else None,
             "events": len(uniq),
@@ -648,6 +836,8 @@ def build(fetch=False, prev=None):
             ],
         },
         "rules": RULES, "status_legend": STATUS_LEGEND,
+        "nature_legend": NATURE_LEGEND,
+        "research_directions": RESEARCH_DIRECTIONS,
         "theme_keywords": [{"keyword": k, "board_series": s, "board_name": n,
                             "relation": r, "rationale": w} for k, s, n, r, w in THEME_KEYWORDS],
         "summary": {"events": len(uniq), "by_status": by_status,
@@ -656,7 +846,10 @@ def build(fetch=False, prev=None):
                     "by_presence": {
                         "IN_LATEST_LIST": sum(1 for e in uniq if e["presence"] == "IN_LATEST_LIST"),
                         "HISTORICAL_ONLY": sum(1 for e in uniq if e["presence"] == "HISTORICAL_ONLY")},
-                    "review_verdicts": review_counts},
+                    "review_verdicts": review_counts,
+                    "by_nature": by_nature,
+                    "by_direction": by_direction,
+                    "routine_repeat_groups": {k: len(v) for k, v in routine_groups.items()}},
         "events": uniq,
     }
 
@@ -724,11 +917,46 @@ def check():
                 if m.get("board_series") in direct_sids and m.get("status") != "OBSERVED":
                     errs.append("%s 标 CANDIDATE 但 DIRECT 板块 %s 未核验"
                                 % (eid, m.get("board_series")))
+        # ④b v0.69：来源 / 日期来源 / 事件性质 / 研究方向 必须合法且自洽
+        if (e.get("source") or {}).get("id") not in SRC_BY_ID:
+            errs.append("%s 来源 ID 不在注册表（%s）" % (eid, (e.get("source") or {}).get("id")))
+        if (e.get("time") or {}).get("event_date_source") not in ("LIST_PAGE", "URL_PATH"):
+            errs.append("%s 事件日期来源非法（%s）"
+                        % (eid, (e.get("time") or {}).get("event_date_source")))
+        nat = e.get("nature") or {}
+        if nat.get("kind") not in NATURE_LEGEND:
+            errs.append("%s 事件性质非法（%s）" % (eid, nat.get("kind")))
+        if not nat.get("basis"):
+            errs.append("%s 事件性质缺判据" % eid)
+        dirs = e.get("research_directions") or []
+        valid_dirs = set(DIRECTION_BY_SERIES.values())
+        for x in dirs:
+            if x not in valid_dirs:
+                errs.append("%s 研究方向不在对应表（%s）" % (eid, x))
+        # 研究方向必须能由关联序列推出（不能凭关键词直接写）
+        for x in dirs:
+            if not any(DIRECTION_BY_SERIES.get(L.get("board_series")) == x
+                       for L in (e.get("theme_links") or [])):
+                errs.append("%s 研究方向 %s 与关联序列不符" % (eid, x))
         # ④ 状态自洽
         if d.get("as_of"):
             want, _ = classify(e, d["as_of"])
             if want != e.get("status"):
                 errs.append("%s 状态不自洽（产物 %s vs 规则 %s）" % (eid, e.get("status"), want))
+    # ⑤b 常规重复：repeat_count 必须等于同组实际事件数（不得手写）
+    grp = {}
+    for e in d.get("events") or []:
+        n = e.get("nature") or {}
+        if n.get("kind") == "ROUTINE_RECURRING" and n.get("repeat_group"):
+            grp.setdefault(n["repeat_group"], 0)
+            grp[n["repeat_group"]] += 1
+    for e in d.get("events") or []:
+        n = e.get("nature") or {}
+        if n.get("kind") == "ROUTINE_RECURRING":
+            want = grp.get(n.get("repeat_group"))
+            if want and n.get("repeat_count") != want:
+                errs.append("%s repeat_count 不一致（产物 %s vs 实际 %s）"
+                            % (e["event_id"], n.get("repeat_count"), want))
     keys = [(e["event_date"], re.sub(r"\s+", "", e["title"])) for e in d.get("events") or []]
     if len(keys) != len(set(keys)):
         errs.append("存在重复事件（同日期 + 同标题）")
