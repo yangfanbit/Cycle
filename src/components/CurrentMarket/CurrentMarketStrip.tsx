@@ -1,6 +1,22 @@
 import { currentMarketOf } from '../../data/timeline/earlyObservation';
 
 /**
+ * ★★ v0.64：均线位置的三态显示。
+ *
+ * 原实现用 `o.aboveMa20 ? '上' : '下'` —— 类型允许 `null`（当日无均线可比），
+ * 而 `null` 会被当成 `false` **显示为「下」**，把「不知道」说成「在下方」。
+ * 这是**推断**，违反「缺失就是缺失」。
+ *
+ * 三态：`true` → 上 · `false` → 下 · `null`/缺失 → `—`。
+ * 导出以便单测直接断言（页面仍只经 `CurrentMarketStrip` 使用）。
+ */
+export function maPositionLabel(v: boolean | null | undefined): '上' | '下' | '—' {
+  if (v === true) return '上';
+  if (v === false) return '下';
+  return '—';
+}
+
+/**
  * 当前市场状态（ThreeC 1.2 · 只读描述性产物）。
  *
  * ## ★★ 为什么它必须是**独立组件、且只出现在全局位置**
@@ -22,16 +38,16 @@ export function CurrentMarketStrip() {
   const m = currentMarketOf();
   if (!m?.observables) return null;
   const o = m.observables;
-  /** 数值展示：缺值显示「—」，不补零、不推断 */
-  const num = (v: number | null, digits = 2, suffix = '') =>
-    v === null || v === undefined ? '—' : `${v.toFixed(digits)}${suffix}`;
+  /** 数值展示：缺值显示「—」，不补零、不推断（NaN / Infinity 同样算缺失） */
+  const num = (v: number | null | undefined, digits = 2, suffix = '') =>
+    typeof v === 'number' && Number.isFinite(v) ? `${v.toFixed(digits)}${suffix}` : '—';
 
   return (
     <div className="app-market">
       <span className="am-label">当前市场状态</span>
       <span className="am-vals">
         {m.seriesId} {m.asOf} · 量分位 {num(o.volPct60)} · 20 日 {num(o.ret20Pct, 1, '%')} · 波动率比{' '}
-        {num(o.volRatio)} · MA20 {o.aboveMa20 ? '上' : '下'} · MA60 {o.aboveMa60 ? '上' : '下'}
+        {num(o.volRatio)} · MA20 {maPositionLabel(o.aboveMa20)} · MA60 {maPositionLabel(o.aboveMa60)}
       </span>
       {/* ★ v0.60：把**口径与来源**就地写出来 —— 只给数字不给口径，等于让使用者
           自己猜「这是复权还是未复权、哪个库、哪个窗口」。 */}

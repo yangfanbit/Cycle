@@ -67,6 +67,9 @@ html, body {
   color: var(--ink);
 }
 .year-switch button:hover { background: var(--line); }
+/* ★ v0.64：到最早 / 最新可用年份时按钮禁用 —— 必须有可见反馈，
+   否则用户点了没反应、以为界面坏了。 */
+.year-switch button:disabled { opacity: 0.35; cursor: not-allowed; background: var(--panel); }
 .year-switch .year-label { font-family: var(--mono); font-weight: 600; min-width: 44px; text-align: center; }
 
 .app-main { padding: 16px 28px 48px; }
@@ -4160,7 +4163,7 @@ html, body {
 .fwd-track-table tr[data-otype='IN_WINDOW_PARTIAL'] td:first-child { color: var(--ink-2); }
 
 /* ★★ v0.37 首页：地图标签 + 外部线索摘要 */
-.hm-tabs { display: flex; gap: 8px; margin: 10px 0 6px; }
+.hm-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 6px; }
 .hm-tab { font-size: 12.5px; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px;
   background: var(--panel); color: var(--ink-2); cursor: pointer; }
 .hm-tab.is-active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }

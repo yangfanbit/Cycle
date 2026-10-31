@@ -177,6 +177,20 @@ export function CampaignDetail({
   onBackToAnalogy,
 }: CampaignDetailProps) {
   const m = normalize(campaign);
+  /**
+   * ★★ v0.64：详情面板支持 **Escape 关闭** —— 与候选详情（`CurrentCandidatesSection`）
+   * 保持一致。原先这里只有右上角关闭按钮，同一类弹层键盘行为不一致：
+   * 用户按 Esc 在候选详情有效、在历史案例 / 研究对象详情却毫无反应。
+   * 只加关闭通道，不改面板内容与判定。
+   */
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', fn);
+    return () => document.removeEventListener('keydown', fn);
+  }, [onClose]);
+
   const rule = ruleById.get(m.ruleId);
   // ★ K 线证实状态：**只读** Research artifact（不改动任何研究数据、不重算峰值）。
   //   artifact 中无该对象时返回 null → 整个区块不渲染（**不造默认值**）。

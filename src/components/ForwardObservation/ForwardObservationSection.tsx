@@ -19,6 +19,18 @@ function num(v: number | null | undefined, suffix = '%'): string {
   return v === null || v === undefined ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}${suffix}`;
 }
 
+/**
+ * ★★ v0.64：响应率的显示 —— 缺失（`null`）必须显示 `—`，**不得表达成「0 响应」**。
+ *
+ * 台海专项分支原写 `((p.stats.response_rate ?? 0) * 100).toFixed(1)` → `null` 被补成 `0`
+ * 显示「响应率 0.0%」，等于把「没有可计算值」说成「一次都没响应」。
+ * 与通用统计（本文件 `PatternRow` 的响应率）保持一致：只有有限数值才给百分比。
+ * 只改显示，不改事件判定、响应口径或统计产物。
+ */
+export function rateText(v: number | null | undefined): string {
+  return typeof v === 'number' && Number.isFinite(v) ? `${(v * 100).toFixed(1)}%` : '—';
+}
+
 function PatternRow({ p }: { p: ForwardPattern }) {
   const s = p.stats;
   return (
@@ -30,7 +42,7 @@ function PatternRow({ p }: { p: ForwardPattern }) {
       <p className="fwd-stats" data-stats="1">
         独立事件/年份 <strong>{s.occurrence_count}</strong> ·
         出现响应 <strong>{s.response_count}</strong> ·
-        响应率 <strong>{s.response_rate === null ? '—' : `${(s.response_rate * 100).toFixed(1)}%`}</strong>
+        响应率 <strong>{rateText(s.response_rate)}</strong>
         {s.median_lead_days !== null && s.median_lead_days !== undefined && (
           <> · 典型提前量 <strong>{s.median_lead_days}</strong> 个交易日</>
         )}
@@ -64,7 +76,7 @@ function PatternRow({ p }: { p: ForwardPattern }) {
           ))}
           <span className="fwd-note" data-stages={p.stats.occurrence_count}>
             ★ 统计按<strong>事件阶段</strong>去重：{p.stats.occurrence_count} 个阶段（原始 {p.events.length} 个事件），
-            响应率 {((p.stats.response_rate ?? 0) * 100).toFixed(1)}%。
+            响应率 {rateText(p.stats.response_rate)}。
           </span>
           {p.basket && (
             <span className="fwd-note">

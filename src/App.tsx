@@ -194,18 +194,43 @@ export default function App() {
    * 由外部雷达的「在历史题材地图中查看」联动 —— 点一下即选中并滚到该区块。
    */
   const [mapTheme, setMapTheme] = useState<string | null>(null);
+  /**
+   * ★★ v0.64：默认标签 = **年内窗口**。
+   * 页头与下方注释都把「历史季节性机会地图」定义为**首页第一视觉**，但默认值曾是
+   * `events` —— 打开页面看到的是题材事件列表，看不到「今天处在年内的什么位置」。
+   * README 与产品定位（「看今天处于一年中的什么位置 → 看历史同期」）没有相反要求，
+   * 故按第一视觉改为 `seasonal`；**未改布局**，只改默认选中项。
+   */
+  const [mapTab, setMapTab] = useState<'seasonal' | 'events'>('seasonal');
+  /**
+   * ★★ v0.64：跨模块跳转必须**同时**切标签。
+   *
+   * 原实现只 `setMapTheme` + `scrollIntoView`，但题材地图挂在
+   * `<div hidden={mapTab !== 'events'}>` 里 —— 用户若停在「年内窗口」标签，
+   * 目标区域是 `display:none`，滚动到的是**隐藏节点**，点击看起来「没反应」。
+   *
+   * 修法：先切到 `events`，等标签切换后的内容真正渲染/可见再滚动（双 rAF）。
+   * 不引入路由，也不新增导航状态。
+   */
   const openMapTheme = useCallback((themeId: string) => {
     setMapTheme(themeId);
+    setMapTab('events');
     // SSR / 无 DOM 环境 → 只改状态，不滚动（不得假装滚动了）
     if (typeof document === 'undefined') return;
-    const el = document.getElementById(HISTORICAL_THEME_MAPS_ID);
-    if (el && typeof el.scrollIntoView === 'function') {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const scroll = () => {
+      const el = document.getElementById(HISTORICAL_THEME_MAPS_ID);
+      if (el && typeof el.scrollIntoView === 'function') {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => requestAnimationFrame(scroll));
+    } else {
+      scroll();
     }
   }, []);
 
   const [openTheme, setOpenTheme] = useState<string | null>(null);
-  const [mapTab, setMapTab] = useState<'seasonal' | 'events'>('events');
   const openThemeRow = useMemo(
     () => allThemeRows.find((r) => themeKey(r) === openTheme) ?? null,
     [allThemeRows, openTheme],
@@ -349,8 +374,11 @@ export default function App() {
         )}
 
         </div>
-        {/* 一句数据语义说明（首页唯一的数据口径声明） */}
-        {!verifiedMode && mapRows.length > 0 && (
+        {/* 一句数据语义说明（首页唯一的数据口径声明）
+            ★★ v0.64：这段只描述**年内窗口图**（横轴 1–12 月 / 条形 = 历史炒作窗口），
+            必须只在 `seasonal` 标签下出现；原实现无条件渲染，切到「历史题材 / 事件」
+            仍显示只适用于季节图的解释 → 与当前视图不符。 */}
+        {mapTab === 'seasonal' && !verifiedMode && mapRows.length > 0 && (
           <p className="seasonal-note">
             横轴 1–12 月、每行一个{granularityNoun(granularity)}；条形为该主题历史<strong>主要炒作</strong>
             在年内的窗口（长周期仅标起始位置）；「历史 N 次 / 覆盖 N 个年份」是<strong>计数事实</strong>
@@ -715,6 +743,26 @@ function DrillSection({
   );
 }
 
+/**
+ * ★★ v0.64：年份步进只能落在 `availableYears` 里**真实存在**的年份上。
+ *
+ * 原实现 `setYear((y) => y - 1)` 直接加减 → 能越过数据边界：在最早年份再点「上一年」，
+ * `year` 进入一个没有数据的年份，Timeline 与历史全景双双变空，而界面没有任何提示。
+ *
+ * 年份集合**不保证连续**（Research 源可能缺年），所以按「排序去重后取相邻项」，
+ * 不能用 ±1。导出以便单测（含「不连续」与「首尾边界」两种情形）。
+ */
+export function stepYear(year: number, dir: -1 | 1, availableYears: number[]): number {
+  const ys = [...new Set(availableYears)].sort((a, b) => a - b);
+  if (ys.length === 0) return year;
+  if (dir === -1) {
+    const earlier = ys.filter((y) => y < year);
+    return earlier.length > 0 ? earlier[earlier.length - 1] : year;
+  }
+  const later = ys.filter((y) => y > year);
+  return later.length > 0 ? later[0] : year;
+}
+
 /** 年份切换（原首页顶部控件，随逐年视图一并下移到钻取区） */
 function YearSwitch({
   year,
@@ -725,14 +773,33 @@ function YearSwitch({
   setYear: (fn: (y: number) => number) => void;
   availableYears: number[];
 }) {
+  const ys = useMemo(
+    () => [...new Set(availableYears)].sort((a, b) => a - b),
+    [availableYears],
+  );
+  const prevYear = stepYear(year, -1, ys);
+  const nextYear = stepYear(year, 1, ys);
+  // 已到最早 / 最新可用年份 → 按钮禁用（不能进入不存在的年份）
+  const canPrev = ys.length > 0 && prevYear !== year;
+  const canNext = ys.length > 0 && nextYear !== year;
   return (
     <>
       <span className="year-switch">
-        <button onClick={() => setYear((y) => y - 1)} aria-label="上一年">
+        <button
+          onClick={() => setYear(() => prevYear)}
+          aria-label="上一年"
+          disabled={!canPrev}
+          title={canPrev ? `${prevYear} 年` : '已是最早可用年份'}
+        >
           ‹
         </button>
         <span className="year-label">{year}</span>
-        <button onClick={() => setYear((y) => y + 1)} aria-label="下一年">
+        <button
+          onClick={() => setYear(() => nextYear)}
+          aria-label="下一年"
+          disabled={!canNext}
+          title={canNext ? `${nextYear} 年` : '已是最新可用年份'}
+        >
           ›
         </button>
       </span>

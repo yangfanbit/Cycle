@@ -70,6 +70,17 @@ function timeLabel(tp: string): string {
 }
 
 const num = (v: unknown, s = '%') => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}${s}` : '—');
+/**
+ * ★★ v0.64：比例（命中率）的显示 —— **0 是有效值**，不能与「缺失」混为一谈。
+ *
+ * 原实现用 truthy 判断 `h.hit_rate ? … : '—'` → `hit_rate === 0`（真实存在、就是 0%）
+ * 被当成缺失显示「—」，把「0% 命中」读成「没有数据」。
+ * 判据改为**显式数值判断**：有限数值 → 百分比（含 0%）；其余 → `—`。
+ * 不改统计口径与排序逻辑。
+ */
+export const pctOrDash = (v: unknown): string =>
+  typeof v === 'number' && Number.isFinite(v) ? `${Math.round(v * 100)}%` : '—';
+
 const asList = (v: string[] | string | null | undefined): string[] =>
   Array.isArray(v) ? v : (typeof v === 'string' && v.trim() ? [v] : []);
 
@@ -77,7 +88,7 @@ function historyLine(c: Card): string {
   const h = c.history as Record<string, unknown>;
   if (typeof h.n_years === 'number') {
     const oos = h.oos_status === 'REPORTED'
-      ? ` · 样本外 ${h.oos_tests} 年命中 ${Math.round(Number(h.oos_hit_rate ?? 0) * 100)}%`
+      ? ` · 样本外 ${h.oos_tests} 年命中 ${pctOrDash(h.oos_hit_rate)}`
       : ' · 样本外证据不足';
     return `历史 ${h.n_years} 年 · 中位 ${num(h.median_excess_pct)}${oos}`;
   }
@@ -152,9 +163,9 @@ function Detail({ c, onClose }: { c: Card; onClose: () => void }) {
           {typeof h.n_years === 'number' ? (
             <>
               <p>样本 {h.n_years} 年（{years.length ? `${years[0]}–${years[years.length - 1]}` : '—'}）
-                · 中位超额 {num(h.median_excess_pct)} · 命中 {h.hit_rate ? `${Math.round(Number(h.hit_rate) * 100)}%` : '—'}</p>
+                · 中位超额 {num(h.median_excess_pct)} · 命中 {pctOrDash(h.hit_rate)}</p>
               <p>样本外：{h.oos_status === 'REPORTED'
-                ? `${h.oos_tests} 个检验年 · 命中 ${Math.round(Number(h.oos_hit_rate ?? 0) * 100)}% · 中位 ${num(h.oos_median_excess_pct)}`
+                ? `${h.oos_tests} 个检验年 · 命中 ${pctOrDash(h.oos_hit_rate)} · 中位 ${num(h.oos_median_excess_pct)}`
                 : '证据不足，不作结论'}</p>
               {per.length > 0 && (
                 <p className="cd-per">逐年：{per.map((x) => `${x.year} ${x.excess_pct > 0 ? '+' : ''}${x.excess_pct}%`).join(' · ')}</p>
