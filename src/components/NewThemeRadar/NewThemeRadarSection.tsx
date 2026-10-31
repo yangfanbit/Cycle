@@ -1,28 +1,27 @@
 /**
- * 自动发现的新题材线索（v0.67 · 产物 `new_theme_radar_v0_2`）。
+ * 自动发现的新题材线索（v0.68 · 产物 `new_theme_radar_v0_3`）。
  *
- * ## 它和现有三个入口的区别（不得混为一谈）
+ * ## 两个区域，职责分开（v0.68 修复）
  *
- * | 入口 | 谁产出的 | 单位 |
- * |---|---|---|
- * | **当前研究主题** | 人工提出的研究方向（研究记录） | 主题 |
- * | **季节性统计窗口** | 月度收益模式（自动统计，历史重复） | 板块 × 月份 |
- * | **专项假设的历史检验** | 人工预设假设（生肖 / 台海 / 流感） | 假设 |
- * | **本区：自动发现的新题材线索** | 公开政策事件 → 关键词关联 → 行情核验 | 事件 |
+ * - **一、当前候选事件**：列出**全部** `CANDIDATE` 事件（按日期倒序，**不按收益率排序**）。
+ *   原实现只渲染「最近 12 条」，导致较早的候选（如 2026-09-24 成品油）在页面上**根本找不到**。
+ * - **二、最近事件**：仍只给最近 12 条，但**排除**已在上方候选区出现的条目（避免重复展示）。
  *
- * ## v0.67 的三处口径（UI 必须如实呈现，不得简化成一个「好/坏」结论）
+ * ## 计数语义（v0.68）
  *
- * 1. **时间**：只有日期时用保守时点 —— 事件日当天的涨跌**不计入**事件后反应；
- *    基准日与观察起点都显示出来，用户可自行核对。
- * 2. **相对 vs 绝对**：`CANDIDATE` 只表示「事件后窗口内**相对**沪深300为正」。
- *    板块绝对收益为负时必须显式写出「正超额不证明因果」。
- * 3. **逐板块**：一条事件命中多个板块时，**每个板块**各自的窗口与超额都列出。
+ * `CANDIDATE` 计数是**事件条数**，不是「独立新题材数」：同一政策在不同日期多次发布时，
+ * 每次事件分别计数。没有可靠的主题唯一标识 → **不输出题材数**，也不靠关键词相同就合并。
+ *
+ * ## 逐板块（v0.68）
+ *
+ * 每个板块各自给窗口 / 绝对收益 / 相对超额 / **各自**的「绝对 vs 相对」说明；
+ * 不再由第一条已观察板块生成一个可能与其他板块矛盾的整体结论。
  *
  * ## 红线
  *
  * 只展示事实 + 核验状态；不含打分 / 概率 / 收益排序 / 交易信号；覆盖范围就地写明。
  */
-import raw from '@current/new_theme_radar_v0_2.json';
+import raw from '@current/new_theme_radar_v0_3.json';
 import { RichText } from '../RichText';
 
 interface ThemeLink {
@@ -36,6 +35,7 @@ interface MarketRow {
   board_ret_pct?: number | null; bench_ret_pct?: number | null; excess_pp?: number | null;
   observation_trading_days?: number | null; breadth?: number | null;
   drift?: { window: [string, string]; excess_pp: number; note?: string } | null;
+  assessment?: { relative_positive: boolean; absolute_positive: boolean; note: string } | null;
   status: string; gaps?: string[];
 }
 interface Evidence {
@@ -56,7 +56,6 @@ interface RadarEvent {
   theme_links: ThemeLink[];
   rejected_links?: { keyword: string; doc_type?: string; reason: string }[];
   markets?: MarketRow[];
-  assessment?: { relative_positive: boolean; absolute_positive: boolean; note: string } | null;
   review?: { verdict: string; note: string } | null;
   security_mapping?: { status: string; reason?: string } | null;
   status: string;
@@ -70,10 +69,10 @@ interface Doc {
     failures?: { source: string; url: string; reason: string }[];
     historical_only?: number;
     limits?: string[] };
-  rules?: { reaction_trading_days?: number; candidate_meaning?: string;
+  rules?: { reaction_trading_days?: number; candidate_meaning?: string; count_semantics?: string;
     time_rule?: string; not_scored?: string };
   summary: { events: number; by_status: Record<string, number>; candidates: number;
-    by_presence?: Record<string, number>; review_verdicts?: Record<string, number> };
+    candidates_are?: string; by_presence?: Record<string, number>; review_verdicts?: Record<string, number> };
   status_legend: Record<string, string>;
   events: RadarEvent[];
 }
@@ -99,21 +98,136 @@ const REVIEW_LABEL: Record<string, string> = {
   MAPPED_AFTER_REVIEW: '本轮已补关联',
 };
 
+/** ★ 关联性质标签：PROXY 必须显式说明「代理板块，非主题本身」（导出以便单测） */
+export const relationLabel = (relation?: string): string =>
+  relation === 'PROXY' ? '代理板块，非主题本身' : '直接';
+
 const num = (v: number | null | undefined, suffix = '', digits = 2) =>
   typeof v === 'number' && Number.isFinite(v)
     ? `${v > 0 ? '+' : ''}${v.toFixed(digits)}${suffix}` : '—';
 
-const SHOW_LIMIT = 12;
+const RECENT_LIMIT = 12;
+
+/** 单条事件卡片（候选区与最近区共用同一渲染，字段一致） */
+function EventRow({ e }: { e: RadarEvent }) {
+  const ev = e.evidence ?? { kind: 'NONE' as const };
+  const ms = e.markets ?? [];
+  return (
+    <li className="ntr-row" data-event={e.event_id}
+        data-status={e.status} data-presence={e.presence ?? 'IN_LATEST_LIST'}>
+      <div className="ntr-row1">
+        <span className="ntr-date">{e.event_date}</span>
+        <a href={e.source.url} target="_blank" rel="noreferrer noopener" className="ntr-title">
+          {e.title}
+        </a>
+        <span className={`ntr-st st-${e.status.toLowerCase()}`}>{STATUS_LABEL[e.status] ?? e.status}</span>
+        {e.presence === 'HISTORICAL_ONLY' && (
+          <span className="ntr-hist" data-historical-only="1">历史保留（本次列表未见）</span>
+        )}
+      </div>
+
+      <div className="ntr-row2">
+        {e.theme_links.length > 0 ? e.theme_links.map((l, i) => (
+          <span key={i} className="ntr-link" data-relation={l.relation}>
+            关联 <strong>{l.board_name}</strong>（{l.board_series}）· 命中「{l.keyword}」于
+            {l.matched_in === 'TITLE' ? '标题' : '原文'} · {l.relation === 'PROXY' ? '代理' : '直接'}
+          </span>
+        )) : (
+          <span className="ntr-link ntr-none">
+            未命中显式关键词表 → 不建立板块关联
+            {e.review ? <>（复核结论：<strong>{REVIEW_LABEL[e.review.verdict] ?? e.review.verdict}</strong>）</> : null}
+          </span>
+        )}
+      </div>
+
+      {/* ★ 逐板块：每个板块各自的窗口、收益与「绝对 vs 相对」说明 */}
+      {ms.length > 0 && (
+        <ul className="ntr-markets" data-markets={ms.length}>
+          {ms.map((m) => (
+            <li key={m.board_series} data-market-board={m.board_series} data-market-status={m.status}>
+              <strong>{m.board_name ?? m.board_series}</strong>
+              {m.relation === 'PROXY' ? <span className="ntr-proxy">（{relationLabel(m.relation)}）</span> : null}
+              {m.status === 'OBSERVED' ? (
+                <>
+                  {' '}窗口 <code>{m.window?.[0]} → {m.window?.[1]}</code>
+                  （{m.observation_trading_days} 个交易日）· 板块 <strong>{num(m.board_ret_pct, '%')}</strong>
+                  {' '}· 沪深300 <strong>{num(m.bench_ret_pct, '%')}</strong>
+                  {' '}· 超额 <strong>{num(m.excess_pp, 'pp')}</strong>
+                  {m.drift ? (
+                    <span className="ntr-drift">
+                      {' '}· 事件至今（背景，不参与判定）超额 {num(m.drift.excess_pp, 'pp')}
+                    </span>
+                  ) : null}
+                  {m.assessment ? (
+                    <span className="ntr-assess" data-assess={m.assessment.relative_positive ? 'REL_POS' : 'REL_NEG'}>
+                      {' '}· <RichText text={m.assessment.note} />
+                    </span>
+                  ) : null}
+                </>
+              ) : (
+                <> 行情不可核验（{m.gaps?.[0] ?? '原因未记录'}）</>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {e.review ? <p className="ntr-review" data-review={e.review.verdict}><RichText text={e.review.note} /></p> : null}
+
+      {e.gaps.length > 0 && (
+        <ul className="ntr-gaps" data-gaps={e.gaps.length}>
+          {e.gaps.map((g, i) => <li key={i}><RichText text={g} /></li>)}
+        </ul>
+      )}
+
+      <details className="ntr-evi">
+        <summary>
+          原文与来源 · {EVIDENCE_LABEL[ev.kind] ?? ev.kind}
+          {e.time?.published_date ? ` · 文章页发布时间 ${e.time.published_date}` : ''}
+          {e.time?.published_time ? ` ${e.time.published_time}` : ''}
+        </summary>
+        {ev.quote ? <p><RichText text={ev.quote} /></p> : null}
+        {ev.note ? <p className="ntr-note"><RichText text={ev.note} /></p> : null}
+        {(ev.attachments ?? []).length > 0 && (
+          <p className="ntr-src">
+            附件：
+            {(ev.attachments ?? []).map((x, i) => (
+              <span key={i}><a href={x.url} target="_blank" rel="noreferrer noopener">{x.name}</a>{' '}</span>
+            ))}
+          </p>
+        )}
+        {e.time?.basis_day ? (
+          <p className="ntr-note">
+            时点口径：基准日 <code>{e.time.basis_day}</code> · 观察起点 <code>{e.time.observe_from}</code>
+            {' '}· <RichText text={e.time.note ?? ''} />
+          </p>
+        ) : null}
+        <p className="ntr-src">
+          来源：{e.source.name} · <a href={e.source.url} target="_blank" rel="noreferrer noopener">
+            {e.source.url}
+          </a>
+          {ev.quote_sha256_16 ? <> · 原文摘要 <code>{ev.quote_sha256_16}</code></> : null}
+        </p>
+      </details>
+    </li>
+  );
+}
 
 export function NewThemeRadarSection() {
   const c = doc.coverage;
   const srcNames = (c.sources ?? []).map((s) => s.name).join(' / ') || c.publisher || '—';
   const cats = [...new Set((c.sources ?? []).map((s) => s.category).filter(Boolean))].join(' / ');
-  const shown = doc.events.slice(0, SHOW_LIMIT);
+
+  // ★★ v0.68：候选事件**全部**展示（不截断、不按收益排序），近期区只给最近 N 条并去重
+  const candidates = doc.events.filter((e) => e.status === 'CANDIDATE');
+  const candIds = new Set(candidates.map((e) => e.event_id));
+  const recentAll = doc.events.filter((e) => !candIds.has(e.event_id));
+  const recent = recentAll.slice(0, RECENT_LIMIT);
 
   return (
     <section className="ntr" aria-label="自动发现的新题材线索" data-radar-as-of={doc.as_of}
-             data-radar-events={doc.summary.events} data-radar-version={doc.artifact_version ?? ''}>
+             data-radar-events={doc.summary.events} data-radar-version={doc.artifact_version ?? ''}
+             data-candidates={candidates.length}>
       <div className="ntr-head">
         <h2 className="ntr-h2">自动发现的新题材线索</h2>
         <span className="ntr-badge">第一版 · 覆盖有限</span>
@@ -134,13 +248,13 @@ export function NewThemeRadarSection() {
         {c.date_range ? <> · 覆盖 <code>{c.date_range[0]}</code> → <code>{c.date_range[1]}</code></> : null}
         {' '}· 事件 <strong>{c.events}</strong> 条
         {c.historical_only ? `（其中历史保留 ${c.historical_only} 条）` : ''}
-        {' '}· 候选线索 <strong data-candidate-count={doc.summary.candidates}>{doc.summary.candidates}</strong> 条
+        {' '}· 候选<strong>事件</strong>{' '}
+        <strong data-candidate-count={doc.summary.candidates}>{doc.summary.candidates}</strong> 条
         {doc.rules?.reaction_trading_days != null && (
           <> · 反应窗口 = 事件后 {doc.rules.reaction_trading_days} 个交易日</>
         )}
       </p>
 
-      {/* ★ 部分来源失败必须暴露，不能把部分抓取伪装成完整抓取 */}
       {(c.failures ?? []).length > 0 && (
         <p className="ntr-fail" data-failures={c.failures!.length}>
           ⚠ 本次有 {c.failures!.length} 个列表页未成功抓取：
@@ -149,126 +263,45 @@ export function NewThemeRadarSection() {
         </p>
       )}
 
+      {/* ---------- 一、当前候选事件：全部展示 ---------- */}
+      <h3 className="ntr-h3" data-cand-section="candidates">
+        一、当前候选事件（{candidates.length}）
+      </h3>
+      <p className="ntr-note" data-count-semantics="EVENTS_NOT_THEMES">
+        这里是<strong>事件条数</strong>，不是「独立新题材数」：同一政策在不同日期多次发布时，
+        每次事件<strong>分别计数</strong>；系统没有可靠的主题唯一标识，因此
+        <strong>不输出题材数</strong>，也不因为命中同一关键词就把两条事件合并成一条。
+        {doc.rules?.count_semantics ? <RichText text={doc.rules.count_semantics} /> : null}
+      </p>
+      {candidates.length > 0 ? (
+        <ol className="ntr-list" data-rows="candidates">
+          {candidates.map((e) => <EventRow key={e.event_id} e={e} />)}
+        </ol>
+      ) : (
+        <p className="ntr-empty" data-empty="candidates">
+          当前<strong>没有</strong>满足规则的候选事件（事件后 3 个交易日内相对基准为正、且全部必要
+          DIRECT 板块都可核验）。这是正常结果，<strong>不会</strong>为了填满区域而放宽规则。
+        </p>
+      )}
+
+      {/* ---------- 二、最近事件：只给最近 N 条，排除已在上方展示的候选 ---------- */}
+      <h3 className="ntr-h3" data-cand-section="recent">
+        二、最近事件（{recent.length}）
+      </h3>
+      <p className="ntr-note">
+        最近 {RECENT_LIMIT} 条中<strong>不在候选区</strong>的事件
+        {candIds.size > 0 ? <>（已在上面展示的 {candIds.size} 条候选事件不重复列出）</> : null}。
+        全部 {doc.events.length} 条（含历史保留）都在产物 <code>new_theme_radar_v0_3.json</code> 内。
+      </p>
+      <ol className="ntr-list" data-rows="recent">
+        {recent.map((e) => <EventRow key={e.event_id} e={e} />)}
+      </ol>
+
       <p className="ntr-legend" data-status-legend="1">
         {Object.entries(doc.status_legend).map(([k, v]) => (
           <span key={k} className="ntr-lg"><code>{k}</code> <RichText text={v} /></span>
         ))}
       </p>
-
-      <ol className="ntr-list">
-        {shown.map((e) => {
-          const ev = e.evidence ?? { kind: 'NONE' as const };
-          const ms = e.markets ?? [];
-          const a = e.assessment;
-          return (
-            <li key={e.event_id} className="ntr-row" data-event={e.event_id}
-                data-status={e.status} data-presence={e.presence ?? 'IN_LATEST_LIST'}>
-              <div className="ntr-row1">
-                <span className="ntr-date">{e.event_date}</span>
-                <a href={e.source.url} target="_blank" rel="noreferrer noopener" className="ntr-title">
-                  {e.title}
-                </a>
-                <span className={`ntr-st st-${e.status.toLowerCase()}`}>{STATUS_LABEL[e.status] ?? e.status}</span>
-                {e.presence === 'HISTORICAL_ONLY' && (
-                  <span className="ntr-hist" data-historical-only="1">历史保留（本次列表未见）</span>
-                )}
-              </div>
-
-              <div className="ntr-row2">
-                {e.theme_links.length > 0 ? e.theme_links.map((l, i) => (
-                  <span key={i} className="ntr-link" data-relation={l.relation}>
-                    关联 <strong>{l.board_name}</strong>（{l.board_series}）· 命中「{l.keyword}」于
-                    {l.matched_in === 'TITLE' ? '标题' : '原文'} · {l.relation === 'PROXY' ? '代理' : '直接'}
-                  </span>
-                )) : (
-                  <span className="ntr-link ntr-none">
-                    未命中显式关键词表 → 不建立板块关联
-                    {e.review ? <>（复核结论：<strong>{REVIEW_LABEL[e.review.verdict] ?? e.review.verdict}</strong>）</> : null}
-                  </span>
-                )}
-              </div>
-
-              {/* ★ 逐板块：每个板块各自的窗口与超额，不合并成一个数 */}
-              {ms.length > 0 && (
-                <ul className="ntr-markets" data-markets={ms.length}>
-                  {ms.map((m) => (
-                    <li key={m.board_series} data-market-board={m.board_series} data-market-status={m.status}>
-                      <strong>{m.board_name ?? m.board_series}</strong>
-                      {m.status === 'OBSERVED' ? (
-                        <>
-                          {' '}窗口 <code>{m.window?.[0]} → {m.window?.[1]}</code>
-                          （{m.observation_trading_days} 个交易日）· 板块 <strong>{num(m.board_ret_pct, '%')}</strong>
-                          {' '}· 沪深300 <strong>{num(m.bench_ret_pct, '%')}</strong>
-                          {' '}· 超额 <strong>{num(m.excess_pp, 'pp')}</strong>
-                          {m.drift ? (
-                            <span className="ntr-drift">
-                              {' '}· 事件至今（背景，不参与判定）超额 {num(m.drift.excess_pp, 'pp')}
-                            </span>
-                          ) : null}
-                        </>
-                      ) : (
-                        <> 行情不可核验（{m.gaps?.[0] ?? '原因未记录'}）</>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* ★ 相对 vs 绝对：候选必须写清「正超额 ≠ 绝对上涨 ≠ 因果」 */}
-              {a ? (
-                <p className="ntr-assess" data-assess={a.relative_positive ? 'REL_POS' : 'REL_NEG'}>
-                  <RichText text={a.note} />
-                </p>
-              ) : null}
-
-              {e.review ? <p className="ntr-review" data-review={e.review.verdict}><RichText text={e.review.note} /></p> : null}
-
-              {e.gaps.length > 0 && (
-                <ul className="ntr-gaps" data-gaps={e.gaps.length}>
-                  {e.gaps.map((g, i) => <li key={i}><RichText text={g} /></li>)}
-                </ul>
-              )}
-
-              <details className="ntr-evi">
-                <summary>
-                  原文与来源 · {EVIDENCE_LABEL[ev.kind] ?? ev.kind}
-                  {e.time?.published_date ? ` · 文章页发布时间 ${e.time.published_date}` : ''}
-                  {e.time?.published_time ? ` ${e.time.published_time}` : ''}
-                </summary>
-                {ev.quote ? <p><RichText text={ev.quote} /></p> : null}
-                {ev.note ? <p className="ntr-note"><RichText text={ev.note} /></p> : null}
-                {(ev.attachments ?? []).length > 0 && (
-                  <p className="ntr-src">
-                    附件：
-                    {(ev.attachments ?? []).map((x, i) => (
-                      <span key={i}><a href={x.url} target="_blank" rel="noreferrer noopener">{x.name}</a>{' '}</span>
-                    ))}
-                  </p>
-                )}
-                {e.time?.basis_day ? (
-                  <p className="ntr-note">
-                    时点口径：基准日 <code>{e.time.basis_day}</code> · 观察起点 <code>{e.time.observe_from}</code>
-                    {' '}· <RichText text={e.time.note ?? ''} />
-                  </p>
-                ) : null}
-                <p className="ntr-src">
-                  来源：{e.source.name} · <a href={e.source.url} target="_blank" rel="noreferrer noopener">
-                    {e.source.url}
-                  </a>
-                  {ev.quote_sha256_16 ? <> · 原文摘要 <code>{ev.quote_sha256_16}</code></> : null}
-                </p>
-              </details>
-            </li>
-          );
-        })}
-      </ol>
-
-      {doc.events.length > shown.length && (
-        <p className="ntr-note">
-          本区只列最近 {shown.length} 条（共 {doc.events.length} 条，其余在产物
-          <code> new_theme_radar_v0_2.json</code> 内）；不做筛选与排序工作台。
-        </p>
-      )}
 
       <details className="ntr-limits">
         <summary>覆盖范围与已知局限（必读）</summary>

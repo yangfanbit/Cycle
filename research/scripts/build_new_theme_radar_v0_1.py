@@ -173,9 +173,12 @@ RULES = {
         "该板块相对基准超额 > 0",
         "event_date 距 as_of <= 45 天",
         "★ 多板块事件：要求**全部 DIRECT 板块**超额 > 0（不挑选表现好的板块）",
+        "★ 任一必要 DIRECT 板块缺行情记录 / 不可核验 → INSUFFICIENT；观察期不足 → PENDING_MARKET",
     ],
     "quote_match_scope": "正文关键词只在政策工具类文档（通知/复函/规划/办法/名单/指导意见等）中建立关联",
     "not_scored": "不含打分 / 概率 / 收益排序 / 交易信号；状态只是机械筛选，需人工复核",
+    "count_semantics": ("`CANDIDATE` 计数是**事件条数**，不是独立新题材数：同一政策/题材在不同日期"
+                        "多次发布时，每次事件分别计数；无可靠主题唯一标识 → 不输出「题材数」"),
 }
 
 STATUS_LEGEND = {
@@ -399,48 +402,82 @@ def market_of(con, cal, sid, basis_day, observe_from, as_of):
 
 
 def classify(event, as_of):
-    """状态机：CANDIDATE 只表示「相对基准为正」。多板块要求全部 DIRECT 板块为正。"""
+    """状态机。
+
+    ★★ v0.68：候选判定的**必要条件 = 全部 DIRECT 关联板块**。
+    原实现先筛 `OBSERVED` 再看超额 → 某个 DIRECT 板块行情缺失时会被忽略，
+    另一个板块正超额就能升级（等于挑表现好的板块）。现在按必要性逐个检查：
+
+    - 任一必要 DIRECT 板块**没有独立行情记录** → `INSUFFICIENT`；
+    - 任一必要板块**行情不可核验**（缺收盘价 / 无序列）→ `INSUFFICIENT`；
+    - 任一必要板块**观察期不足** → `PENDING_MARKET`（不因另一板块已成熟而升级）；
+    - 任一必要板块**超额 ≤ 0** → `WATCH`；
+    - 全部必要板块满足 → `CANDIDATE`（仅表示**相对**基准为正）。
+    """
     links = event["theme_links"]
     if not links:
         return "NO_THEME_LINK", ["事件标题与原文均未命中显式关键词表 → 不建立板块关联（不猜）"]
     ms = event.get("markets") or []
-    obs = [m for m in ms if m["status"] == "OBSERVED"]
-    if not obs:
-        reason = "；".join(g for m in ms for g in (m.get("gaps") or []))
-        return "INSUFFICIENT", ["行情无法核验：" + (reason[:200] or "未知原因")]
-    min_obs = min(m["observation_trading_days"] for m in obs)
+    by_sid = {}
+    for m in ms:
+        by_sid.setdefault(m["board_series"], m)
+    need = list(dict.fromkeys(L["board_series"] for L in links
+                              if (L.get("relation") or "DIRECT") == "DIRECT"))
+    if not need:      # 只有 PROXY 关联时，退化为「全部关联板块」
+        need = list(dict.fromkeys(L["board_series"] for L in links))
+    missing = [s for s in need if s not in by_sid]
+    if missing:
+        return "INSUFFICIENT", ["必要 DIRECT 板块缺少独立行情记录（%s）→ 不升级："
+                                "不能只凭其他板块的正超额判定" % "、".join(missing)]
+    need_ms = [by_sid[s] for s in need]
+    bad = [m for m in need_ms if m["status"] != "OBSERVED"]
+    if bad:
+        first = bad[0]
+        return "INSUFFICIENT", ["必要 DIRECT 板块行情不可核验：%s（%s）→ 不升级"
+                                % (first.get("board_name") or first["board_series"],
+                                   (first.get("gaps") or ["原因未记录"])[0])]
+    min_obs = min(m["observation_trading_days"] for m in need_ms)
     if min_obs < RULES["min_observation_trading_days"]:
-        return "PENDING_MARKET", ["事件后交易日仅 %d 个（< %d）→ 观察窗口不足，暂不判定"
-                                  % (min_obs, RULES["min_observation_trading_days"])]
+        short = min(need_ms, key=lambda m: m["observation_trading_days"])
+        return "PENDING_MARKET", ["必要 DIRECT 板块中最小观察期仅 %d 个交易日（< %d，%s）"
+                                  "→ 观察窗口不足，暂不判定"
+                                  % (min_obs, RULES["min_observation_trading_days"],
+                                     short.get("board_name") or short["board_series"])]
     age = (date.fromisoformat(as_of) - date.fromisoformat(event["event_date"])).days
     if age > RULES["max_event_age_days"]:
         return "WATCH", ["事件已过去 %d 天（> %d）→ 不再作为「新」线索，仅留档"
                          % (age, RULES["max_event_age_days"])]
-    direct = [m for m in obs if (m.get("relation") or "DIRECT") == "DIRECT"]
-    gating = direct or obs
-    bad = [m for m in gating if (m["excess_pp"] or 0) <= 0]
-    if bad:
-        return "WATCH", ["板块 %s 相对基准超额 %+.2fpp ≤ 0 → 相对表现不支持，不升级为线索"
-                         % (bad[0]["board_name"], bad[0]["excess_pp"] or 0)]
+    nonpos = [m for m in need_ms if (m["excess_pp"] or 0) <= 0]
+    if nonpos:
+        return "WATCH", ["必要 DIRECT 板块 %s 相对基准超额 %+.2fpp ≤ 0 → 相对表现不支持，不升级"
+                         % (nonpos[0].get("board_name") or nonpos[0]["board_series"],
+                            nonpos[0]["excess_pp"] or 0)]
     return "CANDIDATE", []
 
 
-def assessment_of(event):
-    """绝对 vs 相对：候选只说明**相对**为正，必须显式区分。"""
-    ms = [m for m in (event.get("markets") or []) if m["status"] == "OBSERVED"]
-    if not ms:
-        return None
-    m = ms[0]
+def assessment_of_market(m):
+    """★ v0.68：**逐板块**的绝对 vs 相对说明。
+
+    多板块事件不得只按第一条已观察板块给一个整体结论 —— 那会与其它板块矛盾。
+    每条市场观察各自带 `assessment`，前端逐条展示，可分别核对。
+    """
     rel_pos = (m["excess_pp"] or 0) > 0
     abs_pos = (m["board_ret_pct"] or 0) > 0
     if rel_pos and not abs_pos:
-        note = ("板块绝对收益为负（%+.2f%%）；正超额只说明**相对**沪深300更强，"
+        note = ("本板块绝对收益为负（%+.2f%%）；正超额只说明**相对**沪深300更强，"
                 "**不证明**事件产生了正向因果效果" % (m["board_ret_pct"] or 0))
     elif rel_pos and abs_pos:
-        note = "板块绝对收益与相对超额同为正；仍只表示事后同向，**不证明**因果关系"
+        note = ("本板块绝对收益与相对超额同为正（%+.2f%% / %+.2fpp）；仍只表示事后同向，"
+                "**不证明**因果关系" % (m["board_ret_pct"] or 0, m["excess_pp"] or 0))
     else:
-        note = "相对超额非正；不构成候选"
+        note = "本板块相对超额 %+.2fpp 非正；不构成候选" % (m["excess_pp"] or 0)
     return {"relative_positive": rel_pos, "absolute_positive": abs_pos, "note": note}
+
+
+def attach_assessments(markets):
+    for m in markets or []:
+        m["assessment"] = assessment_of_market(m) if m.get("status") == "OBSERVED" else None
+    return markets
 
 
 # ─────────────────────────── 事件装配 ───────────────────────────
@@ -525,7 +562,8 @@ def build(fetch=False, prev=None):
         evt["status"], evt["gaps"] = classify(evt, as_of) if as_of else ("INSUFFICIENT", ["无行情基准日"])
         extra = [g for m in markets for g in (m.get("gaps") or []) if g not in evt["gaps"]]
         evt["gaps"] = evt["gaps"] + extra
-        evt["assessment"] = assessment_of(evt)
+        # ★ v0.68：绝对/相对说明挂在**每个板块**上，不再给事件一个整体结论
+        attach_assessments(evt["markets"])
         evt["review"] = review_of(it["title"], evt["status"])
         events.append(evt)
 
@@ -551,10 +589,10 @@ def build(fetch=False, prev=None):
                               tb.get("observe_from"), as_of)
                 m["board_name"], m["relation"] = L["board_name"], L["relation"]
                 ms.append(m)
-            keep["markets"] = ms
+            keep["markets"] = attach_assessments(ms)
             keep["status"], base_gaps = classify(keep, as_of)
             keep["gaps"] = base_gaps + keep["gaps"]
-            keep["assessment"] = assessment_of(keep)
+            keep.pop("assessment", None)     # 事件级整体说明已废弃（逐板块代替）
         events.append(keep)
     if con:
         con.close()
@@ -583,7 +621,7 @@ def build(fetch=False, prev=None):
         prev_name = "new_theme_radar_v0_%s.json" % ver.split(".")[-1]
 
     return {
-        "artifact": "new_theme_radar", "artifact_version": "0.2",
+        "artifact": "new_theme_radar", "artifact_version": "0.3",
         "generated_at": now, "as_of": as_of,
         "source_kind": "AUTO_DISCOVERED_EVENT",
         "supersedes": prev_name,
@@ -614,6 +652,7 @@ def build(fetch=False, prev=None):
                             "relation": r, "rationale": w} for k, s, n, r, w in THEME_KEYWORDS],
         "summary": {"events": len(uniq), "by_status": by_status,
                     "candidates": by_status.get("CANDIDATE", 0),
+                    "candidates_are": "EVENTS_NOT_THEMES",
                     "by_presence": {
                         "IN_LATEST_LIST": sum(1 for e in uniq if e["presence"] == "IN_LATEST_LIST"),
                         "HISTORICAL_ONLY": sum(1 for e in uniq if e["presence"] == "HISTORICAL_ONLY")},
@@ -674,6 +713,17 @@ def check():
         if link_sids and d.get("as_of") and sorted(set(link_sids)) != sorted(set(mk_sids)):
             errs.append("%s 行情板块与关联板块不一致（links=%s markets=%s）"
                         % (eid, sorted(set(link_sids)), sorted(set(mk_sids))))
+        # ★★ v0.68：每个**必要 DIRECT** 板块都必须有独立行情记录（缺一即不得 CANDIDATE）
+        direct_sids = [L.get("board_series") for L in (e.get("theme_links") or [])
+                       if (L.get("relation") or "DIRECT") == "DIRECT"]
+        for sid in dict.fromkeys(direct_sids):
+            if sid not in mk_sids:
+                errs.append("%s 必要 DIRECT 板块 %s 缺独立行情记录" % (eid, sid))
+        if e.get("status") == "CANDIDATE" and direct_sids:
+            for m in (e.get("markets") or []):
+                if m.get("board_series") in direct_sids and m.get("status") != "OBSERVED":
+                    errs.append("%s 标 CANDIDATE 但 DIRECT 板块 %s 未核验"
+                                % (eid, m.get("board_series")))
         # ④ 状态自洽
         if d.get("as_of"):
             want, _ = classify(e, d["as_of"])

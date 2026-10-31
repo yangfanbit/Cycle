@@ -115,12 +115,79 @@ class TestClassify(unittest.TestCase):
         self.assertEqual(B.classify(e, "2026-10-30")[0], "WATCH")
 
     def test_T4h_assessment_separates_absolute_and_relative(self):
-        """★★ 绝对为负、相对为正时必须显式写出「不证明因果」。"""
-        a = B.assessment_of(mk_event(markets=[mk_market(board_ret_pct=-1.27, excess_pp=0.57)]))
+        """★★ 绝对为负、相对为正时必须显式写出「不证明因果」（逐板块）。"""
+        a = B.assessment_of_market(mk_market(board_ret_pct=-1.27, excess_pp=0.57))
         self.assertTrue(a["relative_positive"])
         self.assertFalse(a["absolute_positive"])
         self.assertIn("绝对收益为负", a["note"])
         self.assertIn("不证明", a["note"])
+
+    # ── v0.68：必要 DIRECT 板块的边界（缺行情 / 观察期不足 / 非正超额 都不得升级）──
+    def test_T4i_missing_market_for_a_direct_board_blocks_candidate(self):
+        """一个 DIRECT 正超额、另一个必要 DIRECT 板块**缺行情记录** → 不得 CANDIDATE。"""
+        e = mk_event(
+            theme_links=[{"board_series": "BK881145", "relation": "DIRECT"},
+                         {"board_series": "BK881279", "relation": "DIRECT"}],
+            markets=[mk_market(board_series="BK881145", excess_pp=1.0)],   # 缺 BK881279
+        )
+        st, gaps = B.classify(e, "2026-10-30")
+        self.assertEqual(st, "INSUFFICIENT")
+        self.assertIn("缺少独立行情记录", gaps[0])
+
+    def test_T4j_one_direct_board_insufficient_blocks_candidate(self):
+        """一个已观察、另一个必要 DIRECT 板块行情不可核验 → INSUFFICIENT。"""
+        e = mk_event(
+            theme_links=[{"board_series": "BK881145", "relation": "DIRECT"},
+                         {"board_series": "BK881279", "relation": "DIRECT"}],
+            markets=[mk_market(board_series="BK881145", excess_pp=1.0),
+                     mk_market(board_series="BK881279", board_name="光伏设备",
+                               status="INSUFFICIENT", gaps=["缺收盘价"])],
+        )
+        st, gaps = B.classify(e, "2026-10-30")
+        self.assertEqual(st, "INSUFFICIENT")
+        self.assertIn("不可核验", gaps[0])
+
+    def test_T4k_one_direct_board_pending_blocks_candidate(self):
+        """一个已观察、另一个必要 DIRECT 板块观察日不足 → PENDING_MARKET（不升级）。"""
+        e = mk_event(
+            theme_links=[{"board_series": "BK881145", "relation": "DIRECT"},
+                         {"board_series": "BK881279", "relation": "DIRECT"}],
+            markets=[mk_market(board_series="BK881145", excess_pp=1.0, observation_trading_days=5),
+                     mk_market(board_series="BK881279", board_name="光伏设备",
+                               excess_pp=2.0, observation_trading_days=1)],
+        )
+        st, gaps = B.classify(e, "2026-10-30")
+        self.assertEqual(st, "PENDING_MARKET")
+        self.assertIn("< 3", gaps[0])
+
+    def test_T4l_all_direct_boards_positive_is_candidate(self):
+        e = mk_event(
+            theme_links=[{"board_series": "BK881145", "relation": "DIRECT"},
+                         {"board_series": "BK881279", "relation": "DIRECT"}],
+            markets=[mk_market(board_series="BK881145", excess_pp=1.0),
+                     mk_market(board_series="BK881279", board_name="光伏设备", excess_pp=0.4)],
+        )
+        self.assertEqual(B.classify(e, "2026-10-30")[0], "CANDIDATE")
+
+    def test_T4m_proxy_board_does_not_gate_but_is_reported(self):
+        """PROXY 不参与必要条件；但只有 PROXY 时退化为「全部关联板块」。"""
+        e = mk_event(
+            theme_links=[{"board_series": "BK881145", "relation": "DIRECT"},
+                         {"board_series": "BK881162", "relation": "PROXY"}],
+            markets=[mk_market(board_series="BK881145", excess_pp=1.0),
+                     mk_market(board_series="BK881162", board_name="通信服务",
+                               status="INSUFFICIENT", gaps=["缺收盘价"])],
+        )
+        self.assertEqual(B.classify(e, "2026-10-30")[0], "CANDIDATE")
+
+    def test_T4n_single_direct_link_unchanged(self):
+        """单一 DIRECT 关联的既有行为不得被改变。"""
+        ok = mk_event(theme_links=[{"board_series": "BK881145", "relation": "DIRECT"}],
+                      markets=[mk_market(excess_pp=0.57)])
+        self.assertEqual(B.classify(ok, "2026-10-30")[0], "CANDIDATE")
+        bad = mk_event(theme_links=[{"board_series": "BK881145", "relation": "DIRECT"}],
+                       markets=[mk_market(excess_pp=-0.35)])
+        self.assertEqual(B.classify(bad, "2026-10-30")[0], "WATCH")
 
 
 class TestIncremental(unittest.TestCase):
