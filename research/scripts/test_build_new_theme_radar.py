@@ -1,0 +1,143 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""test_build_new_theme_radar.py —— 新题材雷达的口径与增量合并回归（v0.67）。
+
+只测**纯函数**（不联网、不读大库）：
+  T1  保守时点：事件日为交易日 → 基准=当日、起点=次一交易日（事件日涨跌不计入反应）
+  T2  保守时点：事件日非交易日 → 基准=事件前最近交易日、起点=事件后首个交易日
+  T3  关联只在标题命中时建立；正文命中只进 rejected（不建关联）
+  T4  状态机：无关联 / 行情不足 / 观察日不足 / 过窗口 / 超额非正 / 全部 DIRECT 为正
+  T5  增量合并：上一版事件本次未再出现 → 保留为 HISTORICAL_ONLY，且 first_seen 不被刷新
+
+运行：`python research/scripts/test_build_new_theme_radar.py`
+"""
+import os
+import sys
+import unittest
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import build_new_theme_radar_v0_1 as B  # noqa: E402
+
+CAL = ["2026-09-22", "2026-09-23", "2026-09-24", "2026-09-28", "2026-09-29", "2026-09-30"]
+
+
+def mk_event(**kw):
+    e = {"event_id": "EVT-T-1", "event_date": "2026-09-24", "title": "t",
+         "doc_type": "POLICY_INSTRUMENT", "theme_links": [], "markets": [], "gaps": []}
+    e.update(kw)
+    return e
+
+
+def mk_market(**kw):
+    m = {"board_series": "BK881145", "board_name": "电力", "relation": "DIRECT",
+         "status": "OBSERVED", "observation_trading_days": 3,
+         "board_ret_pct": -1.0, "bench_ret_pct": -2.0, "excess_pp": 1.0,
+         "window": ["2026-09-24", "2026-09-30"], "gaps": []}
+    m.update(kw)
+    return m
+
+
+class TestTimeBasis(unittest.TestCase):
+    def test_T1_trading_day_excludes_event_day_move(self):
+        tb = B.time_basis_of("2026-09-24", CAL)
+        self.assertEqual(tb["basis_day"], "2026-09-24")      # 以事件日收盘为基准
+        self.assertEqual(tb["observe_from"], "2026-09-28")    # 从次一交易日起观察（09-25 非交易日）
+        self.assertIn("不计入", tb["note"])
+        self.assertTrue(tb["rule"].endswith("TRADING_DAY"))
+
+    def test_T2_non_trading_day_uses_prior_close(self):
+        tb = B.time_basis_of("2026-09-26", CAL)              # 周六
+        self.assertEqual(tb["basis_day"], "2026-09-24")
+        self.assertEqual(tb["observe_from"], "2026-09-28")
+        self.assertTrue(tb["rule"].endswith("NON_TRADING_DAY"))
+
+    def test_T2b_no_calendar(self):
+        tb = B.time_basis_of("2026-09-24", [])
+        self.assertEqual(tb["rule"], "NO_CALENDAR")
+        self.assertIsNone(tb["basis_day"])
+
+
+class TestLinks(unittest.TestCase):
+    def test_T3_title_hit_creates_link(self):
+        links, rejected = B.theme_links("关于印发《新型电力系统建设规划》的通知", {})
+        self.assertTrue(links)
+        self.assertEqual(links[0]["matched_in"], "TITLE")
+        self.assertEqual(links[0]["board_series"], "BK881145")
+        self.assertEqual(rejected, [])
+
+    def test_T3b_quote_only_does_not_create_link(self):
+        """★★ 正文提及不建关联（实测「综合改革试点」正文提到人工智能会被误关联）。"""
+        ev = {"quote": "本通知涉及人工智能与集成电路等领域的经验推广。"}
+        links, rejected = B.theme_links("关于总结推广综合改革试点创新举措的通知", ev)
+        self.assertEqual(links, [])
+        self.assertTrue(rejected)
+        self.assertTrue(all(r["reason"] for r in rejected))
+
+
+class TestClassify(unittest.TestCase):
+    def test_T4_no_link(self):
+        st, gaps = B.classify(mk_event(), "2026-10-30")
+        self.assertEqual(st, "NO_THEME_LINK")
+        self.assertTrue(gaps)
+
+    def test_T4b_insufficient(self):
+        e = mk_event(theme_links=[{"board_series": "BK881145"}],
+                     markets=[mk_market(status="INSUFFICIENT", gaps=["缺收盘价"])])
+        self.assertEqual(B.classify(e, "2026-10-30")[0], "INSUFFICIENT")
+
+    def test_T4c_pending_market(self):
+        e = mk_event(theme_links=[{"board_series": "BK881145"}],
+                     markets=[mk_market(observation_trading_days=2)])
+        st, gaps = B.classify(e, "2026-10-30")
+        self.assertEqual(st, "PENDING_MARKET")
+        self.assertIn("< 3", gaps[0])
+
+    def test_T4d_old_event_only_kept(self):
+        e = mk_event(event_date="2026-08-01", theme_links=[{"board_series": "BK881145"}],
+                     markets=[mk_market()])
+        self.assertEqual(B.classify(e, "2026-10-30")[0], "WATCH")
+
+    def test_T4e_negative_excess_not_candidate(self):
+        e = mk_event(theme_links=[{"board_series": "BK881145"}],
+                     markets=[mk_market(excess_pp=-0.35)])
+        self.assertEqual(B.classify(e, "2026-10-30")[0], "WATCH")
+
+    def test_T4f_all_direct_positive_is_candidate(self):
+        e = mk_event(theme_links=[{"board_series": "BK881145"}],
+                     markets=[mk_market(excess_pp=0.57)])
+        self.assertEqual(B.classify(e, "2026-10-30")[0], "CANDIDATE")
+
+    def test_T4g_multi_board_requires_all_direct_positive(self):
+        """★ 多板块事件不得挑表现好的板块：任一 DIRECT 板块非正 → 不升级。"""
+        e = mk_event(theme_links=[{"board_series": "BK881145"}, {"board_series": "BK881279"}],
+                     markets=[mk_market(excess_pp=1.0),
+                              mk_market(board_series="BK881279", board_name="光伏设备", excess_pp=-0.5)])
+        self.assertEqual(B.classify(e, "2026-10-30")[0], "WATCH")
+
+    def test_T4h_assessment_separates_absolute_and_relative(self):
+        """★★ 绝对为负、相对为正时必须显式写出「不证明因果」。"""
+        a = B.assessment_of(mk_event(markets=[mk_market(board_ret_pct=-1.27, excess_pp=0.57)]))
+        self.assertTrue(a["relative_positive"])
+        self.assertFalse(a["absolute_positive"])
+        self.assertIn("绝对收益为负", a["note"])
+        self.assertIn("不证明", a["note"])
+
+
+class TestIncremental(unittest.TestCase):
+    def test_T5_unseen_events_are_retained_with_first_seen(self):
+        prev = {"artifact_version": "0.1", "events": [
+            {"event_id": "EVT-OLD-1", "title": "旧事件", "event_date": "2026-01-05",
+             "first_seen": "2026-02-01T00:00:00", "last_seen": "2026-02-01T00:00:00",
+             "presence": "IN_LATEST_LIST", "source": {"url": "https://x/1.html"},
+             "theme_links": [], "markets": [], "status": "NO_THEME_LINK", "gaps": []},
+        ]}
+        doc = B.build(fetch=False, prev=prev)
+        kept = [e for e in doc["events"] if e["event_id"] == "EVT-OLD-1"]
+        self.assertEqual(len(kept), 1, "本次未出现的历史事件必须保留")
+        self.assertEqual(kept[0]["presence"], "HISTORICAL_ONLY")
+        self.assertEqual(kept[0]["first_seen"], "2026-02-01T00:00:00", "first_seen 不得被刷新")
+        self.assertTrue(any("历史记录保留" in g for g in kept[0]["gaps"]))
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
