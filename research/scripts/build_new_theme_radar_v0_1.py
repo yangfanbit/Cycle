@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""build_new_theme_radar_v0_1.py —— 「自动发现的新题材线索」构建器（v0.66 起，v0.67 扩展）。
+"""build_new_theme_radar_v0_1.py —— 「自动发现的新题材线索」构建器（v0.66 起，v0.70 扩展）。
 
 ## 链路
 
@@ -20,6 +20,15 @@
 3. **增量追踪**：读上一版产物合并；`first_seen` 只在首次出现时写，
    新增 `last_seen` / `presence`（源站仍可见 vs 仅历史保留），**不因列表滚动而删除**。
 
+## v0.70 的三处修正
+
+1. **市场状态 ≠ 事件性质**：`status` 只反映「事后相对基准表现」，`nature.kind` 只反映
+   「事件本身是否新催化」。两者**正交**，产物与前端都不得把「相对为正」写成因果。
+2. **覆盖说明由注册表生成**：`coverage.limits` / `rules.time_rule` 不再是手写常量
+   （手写会在新增来源后过期），改为从 `SOURCES` + 实际产物派生，并由 `--check` 交叉校验。
+3. **主题标签按实际命中关键词**：`theme_tags` 来自 `THEME_TAG_BY_KEYWORD`（显式映射），
+   `research_directions` 降级为**上层分组**，不得再用共享代理序列反推具体主题。
+
 ## 硬边界
 
 - 关联只来自 `THEME_KEYWORDS` **逐字短语**（每条带 rationale + DIRECT/PROXY），不做模糊匹配；
@@ -37,7 +46,7 @@ python research/scripts/build_new_theme_radar_v0_1.py --check     # 只读，不
 """
 from __future__ import annotations
 
-import argparse, hashlib, json, os, re, sqlite3, sys, time, urllib.request
+import argparse, hashlib, json, os, re, sqlite3, sys, time, urllib.parse, urllib.request
 from datetime import date
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -46,7 +55,8 @@ OUT_RE = re.compile(r"new_theme_radar_v0_(\d+)\.json$")
 SCAN_DB = os.path.join(REPO, "research", "database", "history_scan.db")
 BENCH = "CSI300"
 
-# ─────────────────────────── 事件源（两个栏目，同属发改委） ───────────────────────────
+# ─────────────────────────── 事件源注册表 ───────────────────────────
+# ★★ v0.70：`coverage.limits` / `rules.time_rule` 由本表 + 实际产物派生，不再手写。
 SOURCES = [
     {"id": "NDRC_ZCFB_TZ", "name": "国家发展改革委 · 政策通知", "publisher": "国家发展改革委",
      "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/", "pages": ["", "index_1.html"],
@@ -64,6 +74,28 @@ SOURCES = [
      "category": "POLICY_NOTICE", "adapter": "NHSA", "date_source": "URL_PATH",
      "access_note": "公开 HTML 列表页（服务端渲染，无分页链接）；日期取自文章路径，"
                     "详情页正文在 div#zoom，PubDate meta 提供到分钟的发布时间"},
+    # ★★ v0.70 新增（实测 2026-10-31）：能源局**总目录页是 JS 外壳**（/policy/tz.htm 3.5 KB），
+    #   但**新能源和可再生能源司**栏目是服务端渲染的旧版页面 —— 268 KB / 157 个 c.html 链接 /
+    #   111 条带 `<span class="time">YYYY-MM-DD</span>`。链接是 `../../YYYYMMDD/<uuid>/c.html`
+    #   相对路径（urljoin 解析）。文章页正文在 `div.article-content`，`<meta name="PubDate">`
+    #   带**到秒**的成文时间。★ 注意列表日期与成文日期可能不一致（提案答复函实测差 51 天）。
+    {"id": "NEA_XNY", "name": "国家能源局 · 新能源和可再生能源司", "publisher": "国家能源局",
+     "list_url": "https://www.nea.gov.cn/sjzz/xny/index.htm", "pages": [""],
+     "category": "POLICY_NOTICE", "adapter": "NEA", "date_source": "LIST_PAGE",
+     "access_note": "公开 HTML 列表页（服务端渲染旧版页，无分页链接）；日期在 span.time，"
+                    "链接为 ../../YYYYMMDD/<uuid>/c.html 相对路径；详情页正文在 div.article-content，"
+                    "PubDate meta 为到秒的**成文时间**（可能与列表上网日不同）"},
+    # ★★ v0.70 新增（实测 2026-10-31）：工信部**总目录与多数司局栏目是 JS 外壳 / 403**，
+    #   但**科技司**栏目服务端渲染 —— 34 KB / 48 个 art 链接 / 42 条带日期。
+    #   ★ 该站对 UA 敏感：Chrome UA 返回 403，本脚本的研究 UA 返回 200。
+    #   文章页正文在 `div#con_con`，`<meta name="PubDate">` 到分钟。
+    {"id": "MIIT_KJS", "name": "工业和信息化部 · 科技司", "publisher": "工业和信息化部",
+     "list_url": "https://www.miit.gov.cn/jgsj/kjs/index.html", "pages": [""],
+     "category": "POLICY_NOTICE", "adapter": "MIIT", "date_source": "LIST_PAGE",
+     "referer": "https://www.miit.gov.cn/",
+     "access_note": "公开 HTML 列表页（服务端渲染）；日期在 li 内，链接为绝对路径 /jgsj/kjs/...；"
+                    "详情页正文在 div#con_con，PubDate meta 到分钟。"
+                    "★ 该站对浏览器 UA 返回 403，需用研究型 UA"},
 ]
 SRC_BY_ID = {x["id"]: x for x in SOURCES}
 
@@ -103,19 +135,89 @@ THEME_KEYWORDS = [
     ("光模块", "BK881129", "通信设备", "DIRECT", "光模块属通信设备行业，订单/技术迁移直接作用于该板块"),
     ("智能驾驶", "CPT_qcdz", "汽车电子", "PROXY",
      "库内无智驾专营序列；智驾产业链主要在汽车电子，故用「汽车电子」代理，非主题本身"),
+    # ── v0.70：支撑新来源（能源局新能源司 / 工信部科技司）的**真实事件**，逐条对应实测标题 ──
+    ("自动紧急制动", "CPT_qcdz", "汽车电子", "PROXY",
+     "AEB 强制标准作用于感知与制动控制环节，属汽车电子；库内无智驾专营序列 → 代理，非主题本身"),
+    ("风光", "BK881280", "风电设备", "PROXY",
+     "「风光」是风电+光伏合计口径，库内无综合序列 → 用「风电设备」代理；"
+     "★ 会漏掉光伏部分，故只用于装机/建设类统计，不得当成风电专营政策"),
+    ("绿电", "BK881145", "电力", "DIRECT",
+     "绿电消费/消纳责任权重直接作用于发电与售电侧结算"),
+    ("可再生能源电力", "BK881145", "电力", "DIRECT",
+     "可再生能源消纳责任权重与并网运行直接作用于发电侧"),
 ]
 KW_BY_NAME = {k[0]: k for k in THEME_KEYWORDS}
 
 # ─────────────── 当前研究主题 ↔ 可核验序列（用于「与当前研究方向相关的事件」） ───────────────
 # ★ 只写**已存在且覆盖可用**的序列；没有合适序列的主题不出现在这里（不强行代理）。
 RESEARCH_DIRECTIONS = [
-    {"direction": "具身智能与人形机器人", "series": ["CPT_zjqrgn"]},
-    {"direction": "海上风电与风电设备", "series": ["BK881280", "CPT_fd"]},
-    {"direction": "算电协同 / 算力与光互联", "series": ["BK881162", "BK881129"]},
-    {"direction": "智能驾驶与汽车产业", "series": ["BK881125", "CPT_qcdz"]},
-    {"direction": "医疗器械与脑机接口", "series": ["BK881144"]},
+    {"direction": "具身智能与人形机器人", "series": ["CPT_zjqrgn"],
+     "scope_note": "机器人概念篮子；★ 当前采集范围内**未发现**命中「机器人 / 人形机器人」关键词的事件"
+                   "（工信部装备工业司栏目 404、机器人相关司局为 JS 外壳）→ 属采集覆盖缺口"},
+    {"direction": "海上风电与风电设备", "series": ["BK881280", "CPT_fd"],
+     "scope_note": "覆盖风电设备环节；具体主题可能是「风电」或「风光装机统计」，"
+                   "**不都是海上风电** —— 看事件上的「主题：」标签"},
+    {"direction": "算电协同 / 算力与光互联", "series": ["BK881162", "BK881129"],
+     "scope_note": "算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，"
+                   "具体主题见「主题：」标签"},
+    {"direction": "智能驾驶与汽车产业", "series": ["BK881125", "CPT_qcdz"],
+     "scope_note": "整车（DIRECT）与汽车电子（PROXY）分开；智驾相关多为汽车电子代理"},
+    {"direction": "医疗器械与脑机接口", "series": ["BK881144"],
+     "scope_note": "★ 该序列同时承载「医疗器械监管 / 医用耗材分类与价格 / 脑机接口」三个**不同主题** —— "
+                   "按序列反推会把它们合并，故必须看事件上的「主题：」标签"},
 ]
 DIRECTION_BY_SERIES = {sid: d["direction"] for d in RESEARCH_DIRECTIONS for sid in d["series"]}
+
+# ─────────────── 具体主题标签（v0.70）─────────────────────────
+# ★★ 为什么需要这一层：`RESEARCH_DIRECTIONS` 是「研究方向」= **上层分组**，一个方向可能挂
+#   多个序列（如「算电协同 / 算力与光互联」同时挂 BK881162 与 BK881129）。若直接按序列反推，
+#   命中「医用耗材」的事件会被标成「医疗器械与脑机接口」，把共享代理序列的不同主题合并。
+#   → 具体主题必须依据**实际命中的关键词**（显式映射，逐条可核），研究方向只作上层归类。
+THEME_TAG_BY_KEYWORD = {
+    "成品油价格": "成品油价格机制",
+    "油价": "成品油价格机制",
+    "石油天然气": "油气产业链",
+    "电价": "电价机制",
+    "电力市场": "电力市场规则",
+    "电力现货": "电力现货市场",
+    "输电权": "输电权交易",
+    "新型电力系统": "新型电力系统",
+    "新型能源体系": "新型能源体系",
+    "绿电": "绿电消费与消纳",
+    "可再生能源电力": "可再生能源消纳与并网",
+    "光伏": "光伏",
+    "风电": "风电",
+    "风光": "风光装机统计",
+    "储能": "储能",
+    "算力": "算力基础设施",
+    "人工智能": "人工智能",
+    "半导体": "半导体",
+    "集成电路": "集成电路",
+    "新能源汽车": "新能源汽车",
+    "棉花目标价格": "棉花目标价格",
+    "医疗器械": "医疗器械监管",
+    "医用耗材": "医用耗材分类与价格",
+    "脑机接口": "脑机接口",
+    "人形机器人": "人形机器人",
+    "机器人": "机器人产业",
+    "海上风电": "海上风电",
+    "光模块": "光互联（光模块）",
+    "智能驾驶": "智能驾驶",
+    "自动紧急制动": "智能驾驶（AEB 强制标准）",
+}
+# ★ 同一关键词必须有一条主题标签 —— 新增关键词时忘了加会在 --check 里被拦下。
+assert set(THEME_TAG_BY_KEYWORD) == {k[0] for k in THEME_KEYWORDS}, \
+    "关键词与主题标签映射不一致：%s" % (set(k[0] for k in THEME_KEYWORDS) ^ set(THEME_TAG_BY_KEYWORD))
+
+
+def theme_tags_of(links):
+    """★ v0.70：具体主题 = 实际命中关键词对应的标签；**不从序列反推**。"""
+    out = []
+    for L in links or []:
+        tag = THEME_TAG_BY_KEYWORD.get(L.get("keyword"))
+        if tag and tag not in out:
+            out.append(tag)
+    return out
 
 # ─────────────── 事件性质（区分常规重复 / 新催化 / 背景信息） ───────────────
 # 只在**证据明确**时分类；判据全部可核（标题 + 文档类型），不做语义猜测。
@@ -154,6 +256,11 @@ def nature_of(title, doc_type, links):
 
 
 def directions_of(links):
+    """★ v0.70：**上层研究方向**（用于「与当前研究方向相关的事件」分组）。
+
+    ★★ 它只能做**分组**，不能当具体主题：一个方向挂多个序列（算电协同同时挂通信服务与
+    通信设备），按序列反推会把不同主题合并。具体主题见 `theme_tags_of`。
+    """
     out = []
     for L in links or []:
         d = DIRECTION_BY_SERIES.get(L["board_series"])
@@ -170,7 +277,10 @@ DOC_TYPE_PATTERNS = [
     ("POLICY_INSTRUMENT", ("通知", "复函", "办法", "规划", "名单", "指导意见", "行动计划",
                            "行动方案", "目录", "清单", "规则", "政策",
                            # ★ v0.69：官方「发布/印发/公布《…》」也是政策工具（医保局常见表述）
-                           "发布《", "印发《", "公布《", "发布")),
+                           "发布《", "印发《", "公布《", "发布",
+                           # ★ v0.70：工信部的「公开征求…意见的公示」是标准制修订的具体程序节点
+                           #   （实测 AEB 强制标准报批稿），属政策工具而非背景信息
+                           "公示")),
 ]
 # ★★ v0.67：**只按标题建立关联** —— 政策标题即政策对象。
 #   正文/附件里的提及一律只记入 `rejected_links`，不建关联：
@@ -207,6 +317,22 @@ REVIEW_OVERRIDES = [
     ("与埃及有关部门签署", "IRRELEVANT", "外事合作文件，无产业行动与板块指向"),
     ("计划执行报告", "INCIDENTAL_MENTION", "综合经济形势回顾，无单一行业指向"),
     ("信用数智创新发展", "IRRELEVANT", "信用信息化观摩会，与行业景气无直接关系"),
+    # ── v0.70：新来源（能源局新能源司 / 工信部科技司）的高频未关联类型 ──
+    # ★ 顺序敏感：`if key in title` 按列表顺序取第一个命中 → **更具体的必须放前面**
+    ("提案答复的函", "IRRELEVANT",
+     "对政协提案的书面答复：标题只含提案编号，产业指向写在正文，**按标题无法绑定单一板块** → 不建关联"),
+    ("建议的答复", "IRRELEVANT",
+     "对人大建议的书面答复：标题只含建议编号，产业指向写在正文 → 不建关联（不按正文猜板块）"),
+    ("彩色冲洗设备", "IRRELEVANT", "照相冲印设备安全标准，与 A 股板块无对应关系"),
+    ("实验室废弃化学品", "IRRELEVANT", "实验室安全标准，无行业景气指向"),
+    ("无线电发射设备安全要求", "NO_SERIES_AVAILABLE",
+     "无线电发射设备安全强标；影响分散在通信设备/消费电子，库内无对应细分序列 → 不强行映射"),
+    ("产业技术基础公共服务平台", "NO_SERIES_AVAILABLE",
+     "申报通知面向检验检测/计量等公共服务机构，库内无对应板块序列 → 不强行映射"),
+    ("工业产品质量控制和技术评价实验室", "NO_SERIES_AVAILABLE",
+     "实验室资质申报，跨行业，库内无对应板块序列"),
+    ("公开征求", "NO_SERIES_AVAILABLE",
+     "标准制修订**征求意见**公示：多标准合并发布、跨多个行业 → 只有当标题出现具体产业词时才建关联"),
 ]
 
 
@@ -235,14 +361,35 @@ def review_of(title, status):
             "note": "已逐条查看标题与原文，未命中显式关键词表；不按相似名称强行关联"}
 
 
-# ─────────────────────────── 判定规则（v0.2，冻结在产物里） ───────────────────────────
+# ─────────────────────────── 判定规则（v0.5，冻结在产物里） ───────────────────────────
+# ★★ v0.70：`time_rule` 改为**逐规则结构化描述**（`time_rules`）+ 一句总述。
+#   原实现只写了 DATE_ONLY 保守规则，但 v0.69 起已有「到分钟发布时间」的三种情形 →
+#   覆盖说明与实际实现不一致（旧文案过期）。现在 `--check` 会核对「实际出现的每条规则
+#   都在这里被描述」，新增规则忘了写说明会被拦下。
+TIME_RULES = {
+    "DATE_ONLY_CONSERVATIVE_TRADING_DAY": (
+        "只有日期、且事件日是交易日：基准 = **当日收盘**，从**次一交易日**起观察 3 个交易日；"
+        "事件日当天涨跌**不计入**事件后反应（可能发生在信息公开之前）"),
+    "DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY": (
+        "只有日期、且事件日非交易日：基准 = **事件前最近交易日收盘**，从**事件后首个交易日**起观察"),
+    "PUBLISHED_AFTER_CLOSE": (
+        "有到分钟的发布时间且 **>= 15:00**（收盘后）：基准 = 事件日收盘，从**次一交易日**起观察"),
+    "PUBLISHED_BEFORE_OPEN": (
+        "有到分钟的发布时间且 **< 09:30**（开盘前）：基准 = **事件前最近交易日收盘**，从**事件日**起观察"),
+    "NO_CALENDAR": "无交易日历 → 无法确定可用基准，不给收益结论",
+}
 RULES = {
     "reaction_trading_days": 3,
     "min_observation_trading_days": 3,
     "max_event_age_days": 45,
-    "time_rule": ("DATE_ONLY_CONSERVATIVE：只有日期时，事件日为交易日 → 以当日收盘为基准、"
-                  "从次一交易日起观察 3 个交易日；事件日非交易日 → 以事件前最近交易日收盘为基准、"
-                  "从事件后首个交易日起观察。**事件日当天涨跌不计入事件后反应**"),
+    "time_rule": (
+        "**优先用「保守可用时点」，只有无歧义时才用精确发布时间**："
+        "① 只有日期 → 保守规则（事件日涨跌不计入反应）；"
+        "② 有到分钟发布时间且 ≥15:00 → 当日收盘为基准、次日观察；"
+        "③ 有到分钟发布时间且 <09:30 → 前一日收盘为基准、事件日起观察；"
+        "④ 盘中发布（09:30–15:00）→ 无法判断公开时点与收盘先后，**退回保守规则**。"
+        "逐规则说明见 `time_rules`；`--check` 核对实际出现的规则都被描述"),
+    "time_rules": TIME_RULES,
     "candidate_meaning": ("事件后窗口内**相对基准**（沪深300）表现为正，值得人工复核；"
                           "**不代表**板块绝对收益为正，**不代表**事件与行情存在因果关系"),
     "candidate_requires": [
@@ -283,11 +430,14 @@ def iso(d):
     return "%s-%s-%s" % (d[:4], d[4:6], d[6:8]) if "-" not in d else d
 
 
-def _get(url, retries=2):
+def _get(url, retries=2, headers=None):
     last = None
+    hd = dict(UA)
+    if headers:
+        hd.update(headers)
     for i in range(retries + 1):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=25) as r:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=hd), timeout=25) as r:
                 return r.read().decode("utf-8", "ignore")
         except Exception as e:
             last = e
@@ -354,7 +504,53 @@ def _parse_list_nhsa(html, src):
     return out
 
 
-PARSE_LIST = {"NDRC": _parse_list_ndrc, "NHSA": _parse_list_nhsa}
+def _parse_list_nea(html, src):
+    """★ v0.70：能源局新能源司。日期在 `<span class="time">`，链接是 `../../YYYYMMDD/<uuid>/c.html`。
+
+    ★★ 不能用 URL 路径日期：实测「2025年光伏发电建设情况」列表日 2026-02-21、URL 是 20260305，
+    两者不同（URL 是入库日）。→ `date_source = LIST_PAGE`。
+    """
+    out, seen = [], set()
+    for block in re.findall(r"<li[^>]*>(.*?)</li>", html, re.S):
+        a = re.search(r'<a[^>]*href="([^"]*c\.html)"[^>]*>(.*?)</a>', block, re.S)
+        d = re.search(r'<span class="time">\s*(\d{4})-(\d{2})-(\d{2})\s*</span>', block)
+        if not (a and d):
+            continue
+        title = _clean(a.group(2))
+        full = urllib.parse.urljoin(src["list_url"], a.group(1))
+        if not title or full in seen:
+            continue
+        seen.add(full)
+        out.append({"title": title, "url": full,
+                    "date": "%s-%s-%s" % (d.group(1), d.group(2), d.group(3)),
+                    "date_source": "LIST_PAGE", "source_id": src["id"]})
+    return out
+
+
+def _parse_list_miit(html, src):
+    """★ v0.70：工信部科技司。日期在 li 内，链接为绝对路径 `/jgsj/kjs/.../art/YYYY/art_*.html`。
+
+    ★ 该列表会**重复列出同一篇**（同一标题出现 2–3 次）→ 按 URL 去重。
+    """
+    out, seen = [], set()
+    for block in re.findall(r"<li[^>]*>(.*?)</li>", html, re.S):
+        a = re.search(r'<a[^>]*href="([^"]*art/\d{4}/art_[a-f0-9]+\.html)"[^>]*>(.*?)</a>', block, re.S)
+        d = re.search(r"(\d{4})-(\d{2})-(\d{2})", block)
+        if not (a and d):
+            continue
+        title = _clean(a.group(2))
+        full = urllib.parse.urljoin(src["list_url"], a.group(1))
+        if not title or full in seen:
+            continue
+        seen.add(full)
+        out.append({"title": title, "url": full,
+                    "date": "%s-%s-%s" % (d.group(1), d.group(2), d.group(3)),
+                    "date_source": "LIST_PAGE", "source_id": src["id"]})
+    return out
+
+
+PARSE_LIST = {"NDRC": _parse_list_ndrc, "NHSA": _parse_list_nhsa,
+              "NEA": _parse_list_nea, "MIIT": _parse_list_miit}
 
 
 def fetch_list():
@@ -363,7 +559,7 @@ def fetch_list():
     for src in SOURCES:
         for p in src["pages"]:
             url = src["list_url"] + p
-            h = _get(url)
+            h = _get(url, headers={"Referer": src["referer"]} if src.get("referer") else None)
             if not h:
                 failures.append({"source": src["id"], "url": url, "reason": "HTTP/网络失败"})
                 continue
@@ -413,12 +609,42 @@ def _article_nhsa(h):
     return text, published, []
 
 
-ARTICLE = {"NDRC": _article_ndrc, "NHSA": _article_nhsa}
+def _article_nea(h):
+    """★ v0.70：正文在 `div.article-content`；`<meta name="PubDate" content="YYYY-MM-DD HH:MM:SS">`
+    是**成文时间**（可能早于列表上网日 → 两个日期都记录，事件日期仍取列表页）。"""
+    body = _block_inner(h, r'<div[^>]*class="article-content"[^>]*>') or ""
+    text = _clean(body)
+    published = None
+    m = re.search(r'<meta[^>]*name=["\']PubDate["\'][^>]*content=["\']'
+                  r'(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?', h)
+    if m:
+        published = {"date": "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3))),
+                     "time": ("%02d:%s" % (int(m.group(4)), m.group(5))) if m.group(4) else None,
+                     "precision": "MINUTE" if m.group(4) else "DATE"}
+    return text, published, []
 
 
-def fetch_article(url, adapter):
+def _article_miit(h):
+    """★ v0.70：正文在 `div#con_con`；PubDate 到分钟。"""
+    body = _block_inner(h, r'<div[^>]*id="con_con"[^>]*>') or ""
+    text = _clean(body)
+    published = None
+    m = re.search(r'<meta[^>]*name=["\']PubDate["\'][^>]*content=["\']'
+                  r'(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?', h)
+    if m:
+        published = {"date": "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3))),
+                     "time": ("%02d:%s" % (int(m.group(4)), m.group(5))) if m.group(4) else None,
+                     "precision": "MINUTE" if m.group(4) else "DATE"}
+    return text, published, []
+
+
+ARTICLE = {"NDRC": _article_ndrc, "NHSA": _article_nhsa,
+           "NEA": _article_nea, "MIIT": _article_miit}
+
+
+def fetch_article(url, adapter, src=None):
     """取正文 / 附件 / 发布时间。正文取不到就如实标 ATTACHMENT_ONLY 或 NONE。"""
-    h = _get(url)
+    h = _get(url, headers={"Referer": src["referer"]} if (src or {}).get("referer") else None)
     if not h:
         return {"kind": "NONE", "quote": None, "quote_sha256_16": None,
                 "attachments": [], "published": None, "note": "详情页取数失败"}
@@ -455,6 +681,7 @@ def theme_links(title, evidence):
             continue
         seen.add((sid, kw))
         links.append({"keyword": kw, "matched_in": "TITLE" if in_title else "QUOTE",
+                      "theme_tag": THEME_TAG_BY_KEYWORD[kw],
                       "board_series": sid, "board_name": sname,
                       "relation": rel, "rationale": why})
     return links, rejected
@@ -665,7 +892,7 @@ def build(fetch=False, prev=None):
     events, carried = [], 0
     for it in items:
         src = SRC_BY_ID[it["source_id"]]
-        ev = fetch_article(it["url"], src["adapter"]) if fetch else {
+        ev = fetch_article(it["url"], src["adapter"], src) if fetch else {
             "kind": "NONE", "quote": None, "quote_sha256_16": None,
             "attachments": [], "published": None, "note": "未抓取"}
         if fetch:
@@ -717,6 +944,8 @@ def build(fetch=False, prev=None):
                                  "reason": "首版只到行业板块级；个股映射需按名称+代码另行核验"},
             # ★ v0.69：事件性质（常规重复 / 新催化 / 背景 / 未分类）+ 与当前研究方向的对应
             "nature": nature_of(it["title"], doc_type_of(it["title"]), links),
+            # ★ v0.70：具体主题按**实际命中关键词**；研究方向只作上层分组
+            "theme_tags": theme_tags_of(links),
             "research_directions": directions_of(links),
         }
         evt["status"], evt["gaps"] = classify(evt, as_of) if as_of else ("INSUFFICIENT", ["无行情基准日"])
@@ -738,6 +967,11 @@ def build(fetch=False, prev=None):
         keep["last_seen"] = old.get("last_seen") or old.get("first_seen")
         keep["gaps"] = list(keep.get("gaps") or []) + [
             "本次列表页未再出现（可能已翻页下沉）→ 历史记录保留，不视为删除"]
+        # ★ v0.70：旧版产物没有 theme_tag / theme_tags → 从关联关键词补齐（不改旧事件的其他字段）
+        for L in (keep.get("theme_links") or []):
+            if not L.get("theme_tag"):
+                L["theme_tag"] = THEME_TAG_BY_KEYWORD.get(L.get("keyword"))
+        keep["theme_tags"] = theme_tags_of(keep.get("theme_links") or [])
         tb, links = keep.get("time") or {}, keep.get("theme_links") or []
         if con and as_of and links and tb.get("basis_day"):
             ms, done = [], set()
@@ -806,7 +1040,7 @@ def build(fetch=False, prev=None):
         prev_name = "new_theme_radar_v0_%s.json" % ver.split(".")[-1]
 
     return {
-        "artifact": "new_theme_radar", "artifact_version": "0.4",
+        "artifact": "new_theme_radar", "artifact_version": "0.5",
         "generated_at": now, "as_of": as_of,
         "source_kind": "AUTO_DISCOVERED_EVENT",
         "supersedes": prev_name,
@@ -825,20 +1059,21 @@ def build(fetch=False, prev=None):
                           for sid in SRC_BY_ID},
             "carried_over": carried,
             "historical_only": sum(1 for e in uniq if e["presence"] == "HISTORICAL_ONLY"),
-            "limits": [
-                "**单一发布机构（国家发改委）、两个栏目**：政策通知 + 新闻发布，不是全市场新闻挖掘",
-                "**类别有限**：只覆盖「政策/通知/规划/价格机制」类发布，不含部委标准、地方政策、公司公告",
-                "**正文可得性不同**：政策通知正文常在 PDF/OFD 附件里 → `evidence.kind = ATTACHMENT_ONLY`，只有标题与附件可核",
-                "参与广度不可得：行业板块无历史成分 → 只给板块收益与相对基准，不给广度",
-                "个股映射未做：首版只到行业板块级，未建立证券级映射",
-                "事件日期取列表页标注日；文章页「发布时间」多为日期级（无时分），故采用保守时点规则",
-                "**不是预测**：`CANDIDATE` 只是「相对基准为正、值得人工复核」的机械筛选",
-            ],
+            # ★★ v0.70：覆盖说明**由注册表 + 实际产物派生**，不再手写（手写必过期）
+            "limits": coverage_limits(uniq, pages, failures),
+            "evidence_kinds": _count_by(uniq, lambda e: (e.get("evidence") or {}).get("kind")),
+            "event_date_sources": _count_by(uniq, lambda e: (e.get("time") or {}).get("event_date_source")),
+            "reaction_bases": _count_by(uniq, lambda e: (e.get("time") or {}).get("reaction_basis")),
         },
         "rules": RULES, "status_legend": STATUS_LEGEND,
         "nature_legend": NATURE_LEGEND,
         "research_directions": RESEARCH_DIRECTIONS,
+        "research_direction_role": "UPPER_GROUPING_ONLY",
+        "theme_tag_rule": ("`theme_tags` 来自 `THEME_TAG_BY_KEYWORD`（关键词 → 具体主题，显式映射）；"
+                           "`research_directions` 只是**上层分组**，不得用共享代理序列反推具体主题"),
+        "theme_tags_by_keyword": THEME_TAG_BY_KEYWORD,
         "theme_keywords": [{"keyword": k, "board_series": s, "board_name": n,
+                            "theme_tag": THEME_TAG_BY_KEYWORD[k],
                             "relation": r, "rationale": w} for k, s, n, r, w in THEME_KEYWORDS],
         "summary": {"events": len(uniq), "by_status": by_status,
                     "candidates": by_status.get("CANDIDATE", 0),
@@ -849,9 +1084,71 @@ def build(fetch=False, prev=None):
                     "review_verdicts": review_counts,
                     "by_nature": by_nature,
                     "by_direction": by_direction,
+                    "by_theme_tag": _count_by(uniq, lambda e: None, multi="theme_tags"),
                     "routine_repeat_groups": {k: len(v) for k, v in routine_groups.items()}},
         "events": uniq,
     }
+
+
+def _count_by(events, fn, multi=None):
+    """计数工具：给 `multi` 时按该字段的列表逐项计数，否则按 `fn(e)` 的标量计数。"""
+    out = {}
+    for e in events:
+        if multi:
+            keys = e.get(multi) or []
+        else:
+            keys = [fn(e)]
+        for k in keys:
+            if k:
+                out[k] = out.get(k, 0) + 1
+    return out
+
+
+def coverage_limits(uniq, pages, failures):
+    """★★ v0.70：覆盖限制说明**由注册表与实际产物生成**。
+
+    原实现是手写常量，v0.69 加了医保局、v0.70 又加了能源局与工信部之后仍写着
+    「单一发布机构（国家发改委）、两个栏目」—— 说明与实现不符。现在每次构建都重算，
+    `--check` 再核对「声明的机构/来源数 == 注册表」。
+    """
+    pubs = sorted({x["publisher"] for x in SOURCES})
+    ds = _count_by(uniq, lambda e: (e.get("time") or {}).get("event_date_source"))
+    ek = _count_by(uniq, lambda e: (e.get("evidence") or {}).get("kind"))
+    rb = _count_by(uniq, lambda e: (e.get("time") or {}).get("reaction_basis"))
+    # ★ 列表日与成文日不一致的条数 —— 必须由实际数据统计，不手写
+    diff = sum(1 for e in uniq
+               if (e.get("time") or {}).get("published_date")
+               and (e.get("time") or {}).get("published_date") != e.get("event_date"))
+    ds_txt = "、".join("%s %d 条" % (k, v) for k, v in sorted(ds.items())) or "无"
+    rb_txt = "、".join("%s %d 条" % (k, v) for k, v in sorted(rb.items())) or "无"
+    # ★ 日期范围容易被误读成「研究覆盖」：来源栏目里混有早年归档文档（工信部科技司实测有 2006 年）
+    dmin = min(((e.get("event_date") or "") for e in uniq), default="")
+    recent_n = sum(1 for e in uniq if (e.get("event_date") or "") >= "2025-01-01")
+    old_n = len(uniq) - recent_n
+    return [
+        "**发布机构 %d 个（%s）、来源 %d 个、列表页 %d 个**：只覆盖以下机构的指定栏目，"
+        "**不是全市场新闻挖掘**" % (len(pubs), "、".join(pubs), len(SOURCES), len(pages)),
+        "**类别有限**：只覆盖政策/通知/规划/标准公示/价格机制/运行数据类发布；"
+        "不含地方政策、公司公告、券商研报、行业协会（除明确标注者）",
+        "**日期范围不等于研究覆盖**：最早一条 %s，其中 2025 年以来 %d 条、更早 %d 条 —— "
+        "更早的是来源栏目内的**归档文档**（部门栏目不做时间裁剪），"
+        "不代表系统在持续跟踪那些年份" % (dmin or "—", recent_n, old_n),
+        "**日期来源不统一**：%s —— 列表页日期与文章页「成文日期」**可能不一致**"
+        "（本产物有 %d 条不一致）→ 事件日期统一取**列表页上网日**（信息实际可获得的时点），"
+        "成文日单列在 `time.published_date`" % (ds_txt, diff),
+        "**正文可得性不同**：%s —— 无正文的多为图片/表格型统计发布或提案答复函，"
+        "此时只有标题与 URL 可核，`evidence.kind` 如实标注"
+        % ("、".join("%s %d 条" % (k, v) for k, v in sorted(ek.items())) or "无"),
+        "**时点规则按证据强度分级**：%s —— 逐规则说明见 `rules.time_rules`" % rb_txt,
+        "参与广度不可得：行业板块无历史成分 → 只给板块收益与相对基准，不给广度",
+        "个股映射未做：只到行业板块级，未建立证券级映射",
+        "**无法稳定解析而未接入的栏目**：工信部总目录 `/zwgk/zcwj/` 与装备工业司 `/jgsj/zbys/`"
+        "（JS 外壳 / 404 → **机器人方向的官方来源因此缺失**）、能源局总目录 `/policy/tz.htm` "
+        "与多数司局栏目（3–5 KB JS 外壳）、国家药监局（HTTP 412 反爬）、国家数据局（193 B）",
+        "**未覆盖的方向按「当前采集范围未发现」处理**：不得表述为现实中没发生",
+        "**不是预测**：`CANDIDATE` 只是「事件后窗口内相对基准为正、待人工复核」的机械筛选，"
+        "**不表示**绝对收益为正、**不表示**事件与行情有因果关系",
+    ]
 
 
 # ─────────────────────────── 校验 ───────────────────────────
@@ -866,6 +1163,35 @@ def check():
     errs = []
     if not d.get("events"):
         errs.append("零事件产物不得通过校验（%s）" % files[-1])
+    # ★★ v0.70：**覆盖说明与来源注册表必须对得上** —— 这是「两份真相」检查：
+    #   声明的机构/来源/日期来源/时点规则，与实际注册表与事件数据逐项比对。
+    cov = d.get("coverage") or {}
+    want_pubs = sorted({x["publisher"] for x in SOURCES})
+    if sorted(cov.get("publishers") or []) != want_pubs:
+        errs.append("coverage.publishers 与注册表不一致（产物 %s vs 注册表 %s）"
+                    % (cov.get("publishers"), want_pubs))
+    if sorted(x.get("id") for x in (cov.get("sources") or [])) != sorted(SRC_BY_ID):
+        errs.append("coverage.sources 与注册表 ID 集合不一致")
+    if sorted((cov.get("by_source") or {})) != sorted(SRC_BY_ID):
+        errs.append("coverage.by_source 键集合与注册表不一致")
+    # 声明的「发布机构 N 个 / 来源 N 个」必须与注册表一致（防止手写文案过期）
+    lim0 = (cov.get("limits") or [""])[0]
+    if str(len(want_pubs)) not in lim0 or str(len(SOURCES)) not in lim0:
+        errs.append("coverage.limits 首条未反映真实机构/来源数（应为 %d 个机构、%d 个来源）"
+                    % (len(want_pubs), len(SOURCES)))
+    # 实际出现的每条时点规则都必须被 rules.time_rules 描述（新增规则忘了写说明会被拦下）
+    tr = (d.get("rules") or {}).get("time_rules") or {}
+    for basis in sorted({(e.get("time") or {}).get("reaction_basis") for e in d.get("events") or []}):
+        if basis and basis not in tr:
+            errs.append("时点规则 %s 出现在产物里但未被 rules.time_rules 描述" % basis)
+    # 声明的 event_date_source / reaction_basis 计数必须与实际一致
+    for key, fn in (("event_date_sources", lambda e: (e.get("time") or {}).get("event_date_source")),
+                    ("reaction_bases", lambda e: (e.get("time") or {}).get("reaction_basis")),
+                    ("evidence_kinds", lambda e: (e.get("evidence") or {}).get("kind"))):
+        want = _count_by(d.get("events") or [], fn)
+        if (cov.get(key) or {}) != want:
+            errs.append("coverage.%s 与事件实际分布不一致（产物 %s vs 实际 %s）"
+                        % (key, cov.get(key), want))
     for e in d.get("events") or []:
         eid = e.get("event_id")
         if not e.get("source", {}).get("url"):
@@ -928,6 +1254,18 @@ def check():
             errs.append("%s 事件性质非法（%s）" % (eid, nat.get("kind")))
         if not nat.get("basis"):
             errs.append("%s 事件性质缺判据" % eid)
+        # ★★ v0.70：具体主题必须由**实际命中关键词**推出，不得从共享代理序列反推
+        for L in e.get("theme_links") or []:
+            want_tag = THEME_TAG_BY_KEYWORD.get(L.get("keyword"))
+            if not want_tag:
+                errs.append("%s 关联关键词 %s 没有主题标签映射" % (eid, L.get("keyword")))
+            elif L.get("theme_tag") != want_tag:
+                errs.append("%s 主题标签与关键词映射不一致（%s：产物 %s vs 映射 %s）"
+                            % (eid, L.get("keyword"), L.get("theme_tag"), want_tag))
+        want_tags = theme_tags_of(e.get("theme_links") or [])
+        if (e.get("theme_tags") or []) != want_tags:
+            errs.append("%s theme_tags 与关联关键词不一致（产物 %s vs 推导 %s）"
+                        % (eid, e.get("theme_tags"), want_tags))
         dirs = e.get("research_directions") or []
         valid_dirs = set(DIRECTION_BY_SERIES.values())
         for x in dirs:
@@ -957,6 +1295,11 @@ def check():
             if want and n.get("repeat_count") != want:
                 errs.append("%s repeat_count 不一致（产物 %s vs 实际 %s）"
                             % (e["event_id"], n.get("repeat_count"), want))
+    # ★★ v0.70：状态（市场反应）与性质（事件本身）是两套枚举，**不得混用键名**
+    if set(d.get("status_legend") or {}) & set(d.get("nature_legend") or {}):
+        errs.append("status_legend 与 nature_legend 出现同名键（市场状态与事件性质被混用）")
+    if not d.get("nature_legend") or not d.get("status_legend"):
+        errs.append("缺少 status_legend 或 nature_legend")
     keys = [(e["event_date"], re.sub(r"\s+", "", e["title"])) for e in d.get("events") or []]
     if len(keys) != len(set(keys)):
         errs.append("存在重复事件（同日期 + 同标题）")
@@ -972,7 +1315,9 @@ def check():
         for e in d.get("events") or []:
             t = e.get("time") or {}
             for m in e.get("markets") or []:
-                if m.get("status") != "OBSERVED":
+                # ★ v0.70：不只看 OBSERVED —— PENDING_MARKET 的板块也有部分窗口收益，
+                #   同样必须可复算（否则「观察期不足」的产物数字无人核对）。
+                if m.get("window") is None:
                     continue
                 re_m = market_of(con, cal, m["board_series"], t.get("basis_day"),
                                  t.get("observe_from"), d["as_of"])

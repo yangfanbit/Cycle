@@ -269,5 +269,75 @@ class TestIncremental(unittest.TestCase):
         self.assertTrue(any("历史记录保留" in g for g in kept[0]["gaps"]))
 
 
+class TestThemeTags(unittest.TestCase):
+    """★★ v0.70：具体主题由**实际命中关键词**映射，不得由共享代理序列反推。"""
+
+    def test_T8a_tag_comes_from_keyword_not_series(self):
+        links = [{"keyword": "医用耗材", "board_series": "BK881144",
+                  "board_name": "医疗器械", "relation": "DIRECT"}]
+        self.assertEqual(B.theme_tags_of(links), ["医用耗材分类与价格"])
+        # 同一序列、不同关键词 → 必须给出不同主题（这正是 v0.69 的缺陷）
+        other = [{"keyword": "脑机接口", "board_series": "BK881144",
+                  "board_name": "医疗器械", "relation": "PROXY"}]
+        self.assertEqual(B.theme_tags_of(other), ["脑机接口"])
+        self.assertNotEqual(B.theme_tags_of(links), B.theme_tags_of(other))
+        # 但两者的**上层方向**相同 —— 说明为什么不能只看方向
+        self.assertEqual(B.directions_of(links), B.directions_of(other))
+
+    def test_T8b_every_keyword_has_a_tag(self):
+        kws = {k[0] for k in B.THEME_KEYWORDS}
+        self.assertEqual(kws, set(B.THEME_TAG_BY_KEYWORD), "关键词与主题标签必须一一对应")
+
+    def test_T8c_unknown_keyword_yields_no_tag(self):
+        self.assertEqual(B.theme_tags_of([{"keyword": "不存在的词"}]), [])
+
+    def test_T8d_tags_are_deduped_and_ordered(self):
+        links = [{"keyword": "光伏"}, {"keyword": "光伏"}, {"keyword": "风电"}]
+        self.assertEqual(B.theme_tags_of(links), ["光伏", "风电"])
+
+
+class TestCoverageDerivation(unittest.TestCase):
+    """★★ v0.70：覆盖说明必须由注册表 + 实际产物派生（旧实现是手写常量，加来源后过期）。"""
+
+    def test_T9a_limits_reflect_registry(self):
+        pubs = sorted({x["publisher"] for x in B.SOURCES})
+        lim = B.coverage_limits([], [], [])
+        self.assertIn(str(len(pubs)), lim[0])
+        self.assertIn(str(len(B.SOURCES)), lim[0])
+        for p in pubs:
+            self.assertIn(p, lim[0])
+        self.assertNotIn("单一发布机构", lim[0])
+
+    def test_T9b_limits_state_unreachable_sources(self):
+        all_txt = " ".join(B.coverage_limits([], [], []))
+        self.assertIn("未接入", all_txt)
+        self.assertIn("412", all_txt)
+
+    def test_T9c_time_rules_describe_every_emitted_rule(self):
+        """time_basis_of 可能返回的每条规则，都必须被 rules.time_rules 描述。"""
+        emitted = {
+            B.time_basis_of("2026-09-24", CAL)["rule"],                        # 交易日
+            B.time_basis_of("2026-09-26", CAL)["rule"],                        # 非交易日
+            B.time_basis_of("2026-09-24", CAL, {"time": "15:30", "precision": "MINUTE"})["rule"],
+            B.time_basis_of("2026-09-24", CAL, {"time": "08:00", "precision": "MINUTE"})["rule"],
+            B.time_basis_of("2026-09-24", CAL, {"time": "10:00", "precision": "MINUTE"})["rule"],
+            B.time_basis_of("2026-09-24", [])["rule"],
+        }
+        for r in emitted:
+            self.assertIn(r, B.TIME_RULES, "规则 %s 没有写进 rules.time_rules" % r)
+
+    def test_T9d_intraday_falls_back_so_no_intraday_rule_exists(self):
+        """盘中发布退回保守规则 → 不应存在「盘中」专用规则（否则说明判定逻辑被改坏）。"""
+        tb = B.time_basis_of("2026-09-24", CAL, {"time": "10:00", "precision": "MINUTE"})
+        self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"))
+        self.assertFalse(any("INTRADAY" in k for k in B.TIME_RULES))
+
+    def test_T9e_status_and_nature_legends_do_not_overlap(self):
+        self.assertFalse(set(B.STATUS_LEGEND) & set(B.NATURE_LEGEND),
+                         "市场状态与事件性质是两套枚举，不得混用键名")
+        self.assertEqual(set(B.NATURE_LEGEND),
+                         {"ROUTINE_RECURRING", "NEW_CATALYST", "BACKGROUND", "UNCLASSIFIED"})
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

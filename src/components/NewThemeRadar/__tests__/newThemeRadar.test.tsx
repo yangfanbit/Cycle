@@ -1,42 +1,51 @@
 /**
- * ★★ v0.69：自动发现的新题材线索 —— 候选可见性 / 逐板块语义 / 研究方向段 / 事件性质（产物 `new_theme_radar_v0_4`）。
+ * ★★ v0.70：自动发现的新题材线索 —— 市场状态 vs 事件性质 / 主题粒度 / 覆盖说明（产物 `new_theme_radar_v0_5`）。
  *
- * 两个真实缺陷的回归：
- *  A. 原实现只渲染 `events.slice(0, 12)` → **较早的候选事件在页面上根本找不到**
- *     （实测 2026-09-24 成品油候选不在最近 12 条内）。现在候选区**全部展示**，近期区排除已展示的候选。
- *  B. 多板块事件不得只凭第一条已观察板块给整体说明 —— 绝对/相对说明已下沉到**每个板块**。
+ * 本轮回归的三类缺陷：
+ *  A. **把「相对表现为正」读成「新催化」**：候选区标题必须只描述**市场条件**，
+ *     `CANDIDATE` 文案必须是「待人工复核」；性质=背景/常规重复的事件即使进候选区，
+ *     也必须显式标注「只作市场观察，不构成产业催化」。
+ *  B. **覆盖说明是旧文案**：`coverage.limits` / `rules.time_rule` 必须与实际来源注册表、
+ *     实际出现的时点规则对得上（不得写着「单一发布机构」而实际有 4 个机构）。
+ *  C. **主题标签由共享代理序列反推**：`theme_tags` 必须来自实际命中的关键词，
+ *     `research_directions` 只是上层分组（同一个方向可能挂多条序列）。
  *
- * 另断言：计数语义（候选**事件**数 ≠ 独立题材数）、禁用词、裸 Markdown。
+ * 另保留 v0.68/v0.69 的回归：候选可见性、逐板块语义、计数语义、禁用词、裸 Markdown。
  */
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { NewThemeRadarSection, relationLabel } from '../NewThemeRadarSection';
-import raw from '@current/new_theme_radar_v0_4.json';
+import { NewThemeRadarSection, relationLabel, natureCaveat } from '../NewThemeRadarSection';
+import raw from '@current/new_theme_radar_v0_5.json';
 
 interface D {
   as_of: string; artifact_version?: string;
-  coverage: { sources?: { name: string }[]; date_range?: [string, string] | null; events: number;
-    failures?: unknown[] };
+  coverage: { publishers?: string[]; publisher?: string; sources?: { id: string; name: string }[];
+    date_range?: [string, string] | null; events: number; failures?: unknown[];
+    limits?: string[]; event_date_sources?: Record<string, number>;
+    reaction_bases?: Record<string, number> };
   summary: { events: number; candidates: number; candidates_are?: string;
     by_nature?: Record<string, number>; by_direction?: Record<string, number>;
-    routine_repeat_groups?: Record<string, number> };
+    by_theme_tag?: Record<string, number>; routine_repeat_groups?: Record<string, number> };
   nature_legend?: Record<string, string>;
   research_directions?: { direction: string; series: string[] }[];
+  theme_tags_by_keyword?: Record<string, string>;
   status_legend: Record<string, string>;
-  rules?: { count_semantics?: string };
+  rules?: { count_semantics?: string; time_rule?: string; time_rules?: Record<string, string> };
   events: {
     event_id: string; event_date: string; status: string;
     nature?: { kind: string; basis: string; repeat_count?: number } | null;
+    theme_tags?: string[];
     research_directions?: string[];
     source: { id?: string; url: string; name?: string };
-    theme_links: { board_series: string; board_name: string; keyword: string; relation: string }[];
+    theme_links: { board_series: string; board_name: string; keyword: string; relation: string;
+      theme_tag?: string | null }[];
     markets?: { board_series: string; board_name?: string; window?: [string, string] | null;
       excess_pp?: number | null; board_ret_pct?: number | null; observation_trading_days?: number | null;
       assessment?: { relative_positive: boolean; absolute_positive: boolean; note: string } | null;
       status: string }[];
     assessment?: unknown;
-    time?: { event_date_source?: string; basis_day?: string | null };
+    time?: { event_date_source?: string; basis_day?: string | null; reaction_basis?: string };
     review?: { verdict: string } | null;
     gaps: string[];
   }[];
@@ -73,8 +82,9 @@ describe('v0.68 候选可见性', () => {
     for (const e of candidates) {
       expect(candHtml, `候选 ${e.event_id} 必须在候选区出现`).toContain(`data-event="${e.event_id}"`);
     }
-    // 候选区数量 = 产物候选数
-    expect(candHtml).toContain(`一、当前候选事件（${candidates.length}）`);
+    // ★ 标题由产物计数推导（不写死数字）：只断言前缀与计数一致
+    expect(candHtml).toContain('一、市场反应筛选结果（');
+    expect(candHtml).toContain(`${candidates.length} 条事件`);
   });
 
   it('★★ 近期区不重复展示已在上方出现的候选事件', () => {
@@ -185,19 +195,161 @@ describe('v0.68 逐板块语义', () => {
     expect(html).toMatch(/data-nature-basis="/);
   });
 
-  it('★ 新来源（医保局）事件可进入产物并带来源与日期来源', () => {
-    const nhsa = doc.events.filter((e) => e.source.id === 'NHSA_NOTICE');
-    if (nhsa.length > 0) {
-      expect(text).toContain('国家医疗保障局');
-      const withDir = nhsa.find((e) => (e.research_directions ?? []).length > 0);
-      if (withDir) expect(html).toContain(withDir.source.url);
-      // 日期来源必须显式（列表页 / 文章路径）
-      expect(text).toMatch(/列表页标注日|文章路径日期/);
+  it('★ 新来源（医保局 / 能源局 / 工信部）事件可进入产物并带来源与日期来源', () => {
+    const ids = new Set(doc.events.map((e) => e.source.id));
+    // v0.69 医保局、v0.70 能源局与工信部 —— 至少各有一条事件进入产物
+    for (const sid of ['NHSA_NOTICE', 'NEA_XNY', 'MIIT_KJS']) {
+      expect(ids, `来源 ${sid} 应至少产生一条事件`).toContain(sid);
     }
+    for (const p of ['国家医疗保障局', '国家能源局', '工业和信息化部']) {
+      expect(text, `页面必须展示机构「${p}」`).toContain(p);
+    }
+    // 日期来源必须显式（列表页 / 文章路径）
+    expect(text).toMatch(/列表页标注日|文章路径日期/);
   });
 
   it('★ 状态图例与来源链接仍在', () => {
     for (const k of Object.keys(doc.status_legend)) expect(text).toContain(k);
     expect(html).toContain(`href="${doc.events[0].source.url}"`);
+  });
+});
+
+describe('v0.70 市场状态 ≠ 事件性质', () => {
+  it('★★ 候选区标题只描述**市场条件**，不得暗示都是新催化', () => {
+    const candHtml = sectionHtml('candidates');
+    expect(candHtml).toContain('市场反应筛选结果');
+    // 旧标题「当前候选事件」会让读者以为这些是「被选中的题材」
+    expect(candHtml).not.toContain('当前候选事件');
+    // 必须说明筛选条件只有市场条件、且待人工复核
+    expect(candHtml).toContain('data-market-filter-note="1"');
+    expect(candHtml).toContain('待人工复核');
+    expect(candHtml).toContain('不代表');
+  });
+
+  it('★★ `CANDIDATE` 文案是「相对基准为正 · 待人工复核」，不是「利好 / 催化」', () => {
+    // 直接断言渲染出的状态标签（不依赖哪条事件）
+    expect(chromeText).toContain('相对基准为正 · 待人工复核');
+    for (const bad of ['利好', '催化确认', '建议关注', '推荐']) {
+      expect(chromeText, `状态文案不得出现「${bad}」`).not.toContain(bad);
+    }
+  });
+
+  it('★★ 性质=背景/常规重复 的事件进候选区时，必须显式说明「只作市场观察」', () => {
+    // ① 纯函数：四种性质的交叉说明（这是语义不变量，不依赖产物里恰好有哪种组合）
+    expect(natureCaveat('BACKGROUND', 'CANDIDATE')).toContain('不构成产业催化');
+    expect(natureCaveat('ROUTINE_RECURRING', 'CANDIDATE')).toContain('不是新催化');
+    expect(natureCaveat('UNCLASSIFIED', 'CANDIDATE')).toContain('不推断');
+    expect(natureCaveat('NEW_CATALYST', 'CANDIDATE'), '新催化不需要反向说明').toBeNull();
+    // 非候选不产生该说明（避免把留档事件也说成催化）
+    expect(natureCaveat('BACKGROUND', 'WATCH')).toBeNull();
+
+    // ② 渲染：产物里若存在「背景/常规 + 候选」的组合，必须带 data-nature-caveat
+    const candHtml = sectionHtml('candidates');
+    const mixed = candidates.filter(
+      (e) => e.nature?.kind === 'BACKGROUND' || e.nature?.kind === 'ROUTINE_RECURRING');
+    for (const e of mixed) {
+      const row = candHtml.slice(candHtml.indexOf(`data-event="${e.event_id}"`));
+      const end = row.indexOf('data-event="', 10);
+      expect((end > 0 ? row.slice(0, end) : row), `${e.event_id}（${e.nature!.kind}）必须带性质说明`)
+        .toContain(`data-nature-caveat="${e.nature!.kind}"`);
+    }
+    // ③ 正交说明与两套图例都在
+    expect(html).toContain('data-orthogonal="1"');
+    expect(html).toContain('data-nature-legend="1"');
+    expect(html).toContain('data-status-legend="1"');
+  });
+
+  it('★★ 性质与状态是两套独立枚举：产物里不得混用键名，且候选区可含非新催化', () => {
+    const sk = Object.keys(doc.status_legend);
+    const nk = Object.keys(doc.nature_legend ?? {});
+    expect(nk.length, '四种性质都必须有图例').toBe(4);
+    for (const k of nk) expect(sk, `性质 ${k} 不得同时是状态枚举`).not.toContain(k);
+    // 产物层面：CANDIDATE 不全是 NEW_CATALYST（否则说明状态被性质污染了）
+    const candKinds = new Set(candidates.map((e) => e.nature?.kind));
+    expect(candKinds.size, '候选区应能出现多种性质（证明两者正交）').toBeGreaterThan(1);
+  });
+});
+
+describe('v0.70 覆盖说明与实现一致', () => {
+  it('★★ coverage.limits 的机构/来源数必须与真实注册表一致（不是旧文案）', () => {
+    const pubs = doc.coverage.publishers ?? [];
+    expect(pubs.length, '应有多个发布机构').toBeGreaterThan(1);
+    const lim0 = (doc.coverage.limits ?? [])[0] ?? '';
+    expect(lim0).toContain(`${pubs.length} 个`);
+    expect(lim0).toContain(`${(doc.coverage.sources ?? []).length} 个`);
+    for (const p of pubs) expect(lim0, `首条覆盖说明必须列出机构「${p}」`).toContain(p);
+    // 旧文案的典型错误表述不得残留
+    expect(lim0).not.toContain('单一发布机构');
+  });
+
+  it('★★ rules.time_rule 必须覆盖实际出现的每条时点规则（不得只写保守规则）', () => {
+    const tr = doc.rules?.time_rules ?? {};
+    expect(Object.keys(tr).length, '应有多条时点规则说明').toBeGreaterThanOrEqual(3);
+    const used = new Set(doc.events.map((e) => e.time?.reaction_basis).filter(Boolean) as string[]);
+    for (const b of used) {
+      expect(tr, `产物用了时点规则 ${b}，但 rules.time_rules 没描述它`).toHaveProperty([b]);
+    }
+    // 总述必须提到「收盘后 / 开盘前 / 盘中退回保守」三种情形
+    const total = doc.rules?.time_rule ?? '';
+    expect(total).toContain('15:00');
+    expect(total).toContain('09:30');
+    expect(total).toContain('退回保守');
+    // 覆盖说明里的时点统计必须与实际一致（按**事件逐条**计数，不是按规则去重）
+    const rb: Record<string, number> = {};
+    for (const e of doc.events) {
+      const b = e.time?.reaction_basis;
+      if (b) rb[b] = (rb[b] ?? 0) + 1;
+    }
+    expect(doc.coverage.reaction_bases).toEqual(rb);
+    expect(Object.keys(rb).length).toBeGreaterThan(1);
+  });
+
+  it('★ 覆盖说明必须写明「无法稳定解析而未接入」的栏目（不能只写好话）', () => {
+    const all = (doc.coverage.limits ?? []).join(' ');
+    expect(all).toContain('未接入');
+    expect(all).toContain('工信部');
+    expect(all).toContain('能源局');
+  });
+});
+
+describe('v0.70 主题粒度：具体主题 ≠ 上层方向', () => {
+  it('★★ theme_tags 必须由实际命中关键词映射而来，不得由共享序列反推', () => {
+    const map = doc.theme_tags_by_keyword ?? {};
+    expect(Object.keys(map).length, '应有显式关键词→主题映射表').toBeGreaterThan(0);
+    for (const e of doc.events) {
+      const want = [...new Set(e.theme_links.map((l) => map[l.keyword]).filter(Boolean))];
+      expect(e.theme_tags ?? [], `${e.event_id} 的 theme_tags 必须由关键词映射推出`)
+        .toEqual(want);
+      for (const l of e.theme_links) {
+        if (map[l.keyword]) expect(l.theme_tag).toBe(map[l.keyword]);
+      }
+    }
+  });
+
+  it('★★ 同一上层方向下的不同关键词，必须给出不同的具体主题', () => {
+    // 反例回归：医用耗材与脑机接口都挂 BK881144，但主题不同
+    const bySid = new Map<string, Set<string>>();
+    for (const e of doc.events) {
+      for (const l of e.theme_links) {
+        if (!bySid.has(l.board_series)) bySid.set(l.board_series, new Set());
+        if (l.theme_tag) bySid.get(l.board_series)!.add(l.theme_tag);
+      }
+    }
+    const shared = [...bySid.entries()].filter(([, tags]) => tags.size > 1);
+    expect(shared.length, '应存在「同一序列对应多个具体主题」的情形（这正是本轮要修的）')
+      .toBeGreaterThan(0);
+    // 且这些不同主题在上层方向里被合并成一个 —— 说明为什么需要 theme_tags
+    const dirOf = new Map((doc.research_directions ?? []).flatMap(
+      (d) => d.series.map((s) => [s, d.direction] as const)));
+    const merged = shared.filter(([sid]) => dirOf.has(sid));
+    expect(merged.length).toBeGreaterThan(0);
+  });
+
+  it('★ 页面上「主题：」与「上层方向：」同时出现且可区分', () => {
+    expect(chromeText).toContain('主题：');
+    expect(chromeText).toContain('上层方向：');
+    expect(html).toMatch(/data-theme-tag="/);
+    // 研究方向段必须说明「方向是上层分组、具体主题看主题标签」
+    expect(sectionHtml('directions')).toContain('上层分组');
   });
 });

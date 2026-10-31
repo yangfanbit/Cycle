@@ -1,31 +1,41 @@
 /**
- * 自动发现的新题材线索（v0.69 · 产物 `new_theme_radar_v0_4`）。
+ * 自动发现的新题材线索（v0.70 · 产物 `new_theme_radar_v0_5`）。
  *
- * ## 两个区域，职责分开（v0.68 修复）
+ * ## 市场状态 ≠ 事件性质（v0.70 核心修正）
  *
- * - **一、当前候选事件**：列出**全部** `CANDIDATE` 事件（按日期倒序，**不按收益率排序**）。
- *   原实现只渲染「最近 12 条」，导致较早的候选（如 2026-09-24 成品油）在页面上**根本找不到**。
- * - **二、最近事件**：仍只给最近 12 条，但**排除**已在上方候选区出现的条目（避免重复展示）。
+ * `status` 是**机械的市场反应筛选**（事件后窗口内是否跑赢沪深300），`nature.kind` 是
+ * **事件本身的性质**（新催化 / 常规重复 / 背景 / 未分类）。两者**正交**：
  *
- * ## 计数语义（v0.68）
+ * - 候选区的标题必须写成「市场反应筛选结果」，**不能**暗示这些都属于新催化；
+ * - `CANDIDATE` 的文案是「相对基准为正、待人工复核」，不是「利好」「催化已确认」；
+ * - **背景类事件（会议/活动/评选）即使窗口内跑赢基准，也只作市场观察**，
+ *   页面上显式标注，不得称为产业催化。
  *
- * `CANDIDATE` 计数是**事件条数**，不是「独立新题材数」：同一政策在不同日期多次发布时，
- * 每次事件分别计数。没有可靠的主题唯一标识 → **不输出题材数**，也不靠关键词相同就合并。
+ * ## 具体主题 ≠ 研究方向（v0.70）
  *
- * ## 逐板块（v0.68）
+ * `theme_tags` 由**实际命中的关键词**映射而来（如「医用耗材」→ 医用耗材分类与价格）；
+ * `research_directions` 只是**上层分组**（一个方向可能挂多个共享序列），
+ * 用它反推具体主题会把不同主题合并。
  *
- * 每个板块各自给窗口 / 绝对收益 / 相对超额 / **各自**的「绝对 vs 相对」说明；
- * 不再由第一条已观察板块生成一个可能与其他板块矛盾的整体结论。
+ * ## 区域划分（v0.68/v0.69）
+ *
+ * - **一、市场反应筛选结果**：全部 `CANDIDATE` 事件（不截断、不按收益率排序）；
+ * - **二、与当前研究方向相关的事件**：全部，按上层方向分组；
+ * - **三、最近事件**：最近 12 条，排除前两段已展示的。
+ *
+ * ## 计数语义
+ *
+ * `CANDIDATE` 计数是**事件条数**，不是「独立新题材数」。
  *
  * ## 红线
  *
  * 只展示事实 + 核验状态；不含打分 / 概率 / 收益排序 / 交易信号；覆盖范围就地写明。
  */
-import raw from '@current/new_theme_radar_v0_4.json';
+import raw from '@current/new_theme_radar_v0_5.json';
 import { RichText } from '../RichText';
 
 interface ThemeLink {
-  keyword: string; matched_in: 'TITLE' | 'QUOTE';
+  keyword: string; matched_in: 'TITLE' | 'QUOTE'; theme_tag?: string | null;
   board_series: string; board_name: string;
   relation: 'DIRECT' | 'PROXY'; rationale: string;
 }
@@ -50,6 +60,7 @@ interface Nature { kind: string; basis: string; note: string;
 interface RadarEvent {
   event_id: string; title: string; event_date: string; doc_type?: string;
   nature?: Nature | null;
+  theme_tags?: string[];
   research_directions?: string[];
   first_seen: string; last_seen?: string; seen_count?: number;
   presence?: 'IN_LATEST_LIST' | 'HISTORICAL_ONLY';
@@ -68,7 +79,7 @@ interface RadarEvent {
 }
 interface Doc {
   as_of: string; generated_at: string; artifact_version?: string;
-  coverage: { publisher?: string; sources?: { id: string; name: string; category?: string }[];
+  coverage: { publisher?: string; publishers?: string[]; sources?: { id: string; name: string; category?: string }[];
     date_range?: [string, string] | null; events: number;
     pages_fetched?: { source: string; url: string; items: number }[];
     failures?: { source: string; url: string; reason: string }[];
@@ -77,7 +88,7 @@ interface Doc {
   rules?: { reaction_trading_days?: number; candidate_meaning?: string; count_semantics?: string;
     time_rule?: string; not_scored?: string; nature_rule?: string; research_direction_rule?: string };
   nature_legend?: Record<string, string>;
-  research_directions?: { direction: string; series: string[] }[];
+  research_directions?: { direction: string; series: string[]; scope_note?: string }[];
   summary: { events: number; by_status: Record<string, number>; candidates: number;
     candidates_are?: string; by_presence?: Record<string, number>; review_verdicts?: Record<string, number>;
     by_nature?: Record<string, number>; by_direction?: Record<string, number>;
@@ -88,7 +99,8 @@ interface Doc {
 const doc = raw as unknown as Doc;
 
 const STATUS_LABEL: Record<string, string> = {
-  CANDIDATE: '候选线索（相对为正）',
+  // ★★ v0.70：只说「相对基准为正、待人工复核」—— 不得写成「利好 / 催化确认 / 建议关注」
+  CANDIDATE: '相对基准为正 · 待人工复核',
   WATCH: '仅留档',
   PENDING_MARKET: '窗口不足',
   INSUFFICIENT: '无法核验',
@@ -128,10 +140,31 @@ const num = (v: number | null | undefined, suffix = '', digits = 2) =>
 
 const RECENT_LIMIT = 12;
 
+/**
+ * ★★ v0.70：**「相对为正」不等于「产业催化」** —— 当事件性质是背景信息或常规重复时，
+ * 即使市场反应筛选通过，也必须显式说明这只是市场观察。导出以便单测。
+ */
+export function natureCaveat(kind?: string | null, status?: string): string | null {
+  if (status !== 'CANDIDATE') return null;
+  if (kind === 'BACKGROUND') {
+    return '本条是**背景信息**（会议/活动/评选类）：窗口内跑赢基准只作**市场观察**，'
+      + '**不构成产业催化**，也不说明事件与行情有因果关系。';
+  }
+  if (kind === 'ROUTINE_RECURRING') {
+    return '本条是**按既有机制重复发布**的事件（如成品油调价）：行情表现属常规波动，'
+      + '**不是新催化**，不构成新的产业线索。';
+  }
+  if (kind === 'UNCLASSIFIED') {
+    return '本条**性质未分类**：只表示窗口内相对基准为正，**不推断**它是不是产业催化。';
+  }
+  return null;
+}
+
 /** 单条事件卡片（候选区与最近区共用同一渲染，字段一致） */
 function EventRow({ e }: { e: RadarEvent }) {
   const ev = e.evidence ?? { kind: 'NONE' as const };
   const ms = e.markets ?? [];
+  const caveat = natureCaveat(e.nature?.kind, e.status);
   return (
     <li className="ntr-row" data-event={e.event_id}
         data-status={e.status} data-presence={e.presence ?? 'IN_LATEST_LIST'}>
@@ -156,8 +189,12 @@ function EventRow({ e }: { e: RadarEvent }) {
       </div>
 
       <div className="ntr-row2">
+        {/* ★ v0.70：具体主题来自实际命中的关键词（不是由共享序列反推的上层方向） */}
+        {(e.theme_tags ?? []).map((t) => (
+          <span key={t} className="ntr-tag" data-theme-tag={t}>主题：{t}</span>
+        ))}
         {(e.research_directions ?? []).map((d) => (
-          <span key={d} className="ntr-dir" data-direction={d}>研究方向：{d}</span>
+          <span key={d} className="ntr-dir" data-direction={d}>上层方向：{d}</span>
         ))}
         {e.theme_links.length > 0 ? e.theme_links.map((l, i) => (
           <span key={i} className="ntr-link" data-relation={l.relation}>
@@ -171,6 +208,13 @@ function EventRow({ e }: { e: RadarEvent }) {
           </span>
         )}
       </div>
+
+      {/* ★★ v0.70：性质与状态的**交叉**说明 —— 防止「相对为正」被读成「产业催化」 */}
+      {caveat ? (
+        <p className="ntr-caveat" data-nature-caveat={e.nature?.kind}>
+          <RichText text={caveat} />
+        </p>
+      ) : null}
 
       {/* ★ 逐板块：每个板块各自的窗口、收益与「绝对 vs 相对」说明 */}
       {ms.length > 0 && (
@@ -270,9 +314,10 @@ export function NewThemeRadarSection() {
   const recent = doc.events
     .filter((e) => !candIds.has(e.event_id) && !dirIds.has(e.event_id))
     .slice(0, RECENT_LIMIT);
+  // ★ v0.70：方向分组**不过滤 0 条** —— 未覆盖的方向要显式写「当前采集范围未发现」，
+  //   否则读者会以为这些方向不存在（采集缺口 ≠ 现实没有发生）。
   const dirGroups = (doc.research_directions ?? [])
-    .map((d) => ({ ...d, events: dirEvents.filter((e) => (e.research_directions ?? []).includes(d.direction)) }))
-    .filter((g) => g.events.length > 0);
+    .map((d) => ({ ...d, events: dirEvents.filter((e) => (e.research_directions ?? []).includes(d.direction)) }));
 
   return (
     <section className="ntr" aria-label="自动发现的新题材线索" data-radar-as-of={doc.as_of}
@@ -291,21 +336,26 @@ export function NewThemeRadarSection() {
         用<strong>真实行情</strong>核验事件后窗口的相对基准表现。这里只给<strong>线索与核验状态</strong>：
         不含打分、概率、收益排序或交易信号；<strong>不是买卖建议</strong>，
         也不代表「题材已被确认」或「事件已产生因果效果」。
+        ★ 每条事件同时标注<strong>市场状态</strong>（是否跑赢基准）与<strong>事件性质</strong>
+        （是否新催化），两者<strong>互不替代</strong>。
       </p>
 
       <p className="ntr-coverage" data-coverage="1">
+        {c.publishers && c.publishers.length > 0
+          ? <>发布机构：<strong>{c.publishers.join(' / ')}</strong> · </>
+          : null}
         来源：<strong>{srcNames}</strong>{cats ? `（${cats}）` : ''}
         {c.date_range ? <> · 覆盖 <code>{c.date_range[0]}</code> → <code>{c.date_range[1]}</code></> : null}
         {' '}· 事件 <strong>{c.events}</strong> 条
         {c.historical_only ? `（其中历史保留 ${c.historical_only} 条）` : ''}
-        {' '}· 候选<strong>事件</strong>{' '}
-        <strong data-candidate-count={doc.summary.candidates}>{doc.summary.candidates}</strong> 条
+        {' '}· 市场反应筛选通过 <strong data-candidate-count={doc.summary.candidates}>{doc.summary.candidates}</strong> 条
         {doc.rules?.reaction_trading_days != null && (
           <> · 反应窗口 = 事件后 {doc.rules.reaction_trading_days} 个交易日</>
         )}
         {doc.summary.by_nature ? (
           <> · 性质：新催化 {doc.summary.by_nature.NEW_CATALYST ?? 0} / 常规重复{' '}
-            {doc.summary.by_nature.ROUTINE_RECURRING ?? 0} / 背景 {doc.summary.by_nature.BACKGROUND ?? 0}</>
+            {doc.summary.by_nature.ROUTINE_RECURRING ?? 0} / 背景 {doc.summary.by_nature.BACKGROUND ?? 0}{' '}
+            / 未分类 {doc.summary.by_nature.UNCLASSIFIED ?? 0}</>
         ) : null}
       </p>
 
@@ -317,10 +367,18 @@ export function NewThemeRadarSection() {
         </p>
       )}
 
-      {/* ---------- 一、当前候选事件：全部展示 ---------- */}
+      {/* ---------- 一、市场反应筛选结果：全部展示 ---------- */}
+      {/* ★★ v0.70：标题不得暗示「这些都是新催化」—— 这里筛的只是**市场相对表现** */}
       <h3 className="ntr-h3" data-cand-section="candidates">
-        一、当前候选事件（{candidates.length}）
+        一、市场反应筛选结果（{candidates.length} 条事件）
       </h3>
+      <p className="ntr-note" data-market-filter-note="1">
+        这一区的筛选条件<strong>只有市场条件</strong>：事件后 {doc.rules?.reaction_trading_days ?? 3}{' '}
+        个交易日内，<strong>全部必要 DIRECT 板块</strong>都跑赢沪深300（相对基准为正）。
+        它<strong>不代表</strong>这些事件都是新催化 —— 每条的性质（新催化 / 常规重复 / 背景 / 未分类）
+        单独标注在事件上；<strong>背景类与常规重复类即使行情为正，也只作市场观察</strong>。
+        结果<strong>待人工复核</strong>，不含打分、概率或买卖建议。
+      </p>
       <p className="ntr-note" data-count-semantics="EVENTS_NOT_THEMES">
         这里是<strong>事件条数</strong>，不是「独立新题材数」：同一政策在不同日期多次发布时，
         每次事件<strong>分别计数</strong>；系统没有可靠的主题唯一标识，因此
@@ -345,17 +403,31 @@ export function NewThemeRadarSection() {
       <p className="ntr-note">
         只列<strong>已建立可核验序列映射</strong>的研究方向；映射表写死在产物
         <code> research_directions</code>（序列 → 方向），<strong>没有合适序列的主题不出现</strong>，
-        不强行代理。这里<strong>不按收益排序</strong>，也不代表这些方向已被验证。
+        不强行代理。★ 这里的<strong>方向是上层分组</strong>（一个方向可能挂多个共享序列），
+        具体主题看每条事件上的<strong>「主题：」标签</strong>——它由实际命中的关键词映射而来，
+        <strong>不由序列反推</strong>。这里<strong>不按收益排序</strong>，也不代表这些方向已被验证。
       </p>
       {dirGroups.length > 0 ? dirGroups.map((g) => (
-        <div key={g.direction} data-direction-group={g.direction}>
+        <div key={g.direction} data-direction-group={g.direction}
+             data-direction-count={g.events.length}>
           <p className="ntr-dirhead">
             <strong>{g.direction}</strong>
             <span className="ntr-note"> · 序列 {g.series.join(' / ')} · {g.events.length} 条事件</span>
           </p>
-          <ol className="ntr-list" data-rows="directions">
-            {g.events.map((e) => <EventRow key={e.event_id} e={e} />)}
-          </ol>
+          {/* ★ v0.70：方向的**范围说明**由产物给出（避免「海上风电方向」被读成「发现了海上风电事件」） */}
+          {g.scope_note ? (
+            <p className="ntr-note" data-scope-note={g.direction}><RichText text={g.scope_note} /></p>
+          ) : null}
+          {g.events.length > 0 ? (
+            <ol className="ntr-list" data-rows="directions">
+              {g.events.map((e) => <EventRow key={e.event_id} e={e} />)}
+            </ol>
+          ) : (
+            <p className="ntr-empty" data-empty="direction">
+              <strong>当前采集范围未发现</strong>该方向的事件 —— 这是<strong>采集覆盖的缺口</strong>，
+              <strong>不代表</strong>现实中该方向没有发生事情。
+            </p>
+          )}
         </div>
       )) : (
         <p className="ntr-empty" data-empty="directions">
@@ -372,13 +444,18 @@ export function NewThemeRadarSection() {
         最近 {RECENT_LIMIT} 条中<strong>既不在候选区、也不属已映射研究方向</strong>的事件
         {candIds.size + dirIds.size > 0
           ? <>（已展示的 {candIds.size} 条候选 + {dirIds.size} 条方向事件不重复列出）</> : null}。
-        全部 {doc.events.length} 条（含历史保留）都在产物 <code>new_theme_radar_v0_4.json</code> 内。
+        全部 {doc.events.length} 条（含历史保留）都在产物 <code>new_theme_radar_v0_5.json</code> 内。
       </p>
       <ol className="ntr-list" data-rows="recent">
         {recent.map((e) => <EventRow key={e.event_id} e={e} />)}
       </ol>
 
-      {/* ★ v0.69：事件性质图例（状态=市场相对表现；性质=事件本身是否新催化，两者不可混读） */}
+      {/* ★ v0.70：性质图例 + **正交说明**（状态=市场相对表现；性质=事件本身是否新催化） */}
+      <p className="ntr-note" data-orthogonal="1">
+        <strong>「状态」与「性质」是两个独立的维度</strong>：状态回答「事件后是否跑赢沪深300」，
+        性质回答「事件本身是不是新催化」。因此会出现「性质=背景信息、状态=相对为正」的组合 ——
+        那只是<strong>市场观察</strong>，<strong>不是</strong>产业催化，也<strong>不是</strong>因果结论。
+      </p>
       <p className="ntr-legend" data-nature-legend="1">
         {Object.entries(doc.nature_legend ?? {}).map(([k, v]) => (
           <span key={k} className="ntr-lg">

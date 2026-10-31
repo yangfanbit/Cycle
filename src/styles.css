@@ -4316,5 +4316,10 @@ html, body {
 .ntr-nat.nat-routine_recurring { color: var(--ink-3); }
 .ntr-nat.nat-background, .ntr-nat.nat-unclassified { color: var(--ink-3); border-style: dotted; }
 .ntr-dir { margin-right: 10px; font-size: 11px; color: var(--accent); }
+/* ★★ v0.70：具体主题（来自实际命中关键词）≠ 上层方向 —— 视觉上要能区分 */
+.ntr-tag { margin-right: 10px; font-size: 11px; color: var(--ink); font-weight: 600; }
+.ntr-caveat { margin: 4px 0 0; padding: 4px 8px; font-size: 10.5px; line-height: 1.7;
+  color: var(--ink-2); background: var(--bg-2); border-left: 2px solid var(--line-strong);
+  border-radius: 2px; }
 .ntr-dirhead { margin: 10px 0 2px; font-size: 12.5px; color: var(--ink); }
 .ntr-empty { margin: 4px 0 8px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
