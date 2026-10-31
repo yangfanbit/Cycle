@@ -119,6 +119,11 @@ export function DiscoveredPatterns() {
         STRICT <strong>{strictN}</strong> 条（标准：≥{doc.criteria.min_years} 年 · 中位超额 ≥
         {doc.criteria.min_median_excess}pp · 命中 ≥ {(doc.criteria.min_hit_rate * 100).toFixed(0)}%）
         · 探索 <strong>{explN}</strong> 条 · 当前/下月窗口 <strong>{doc.counts.current_windows}</strong> 条
+        {/* ★ v0.65：同一批模式在首页还有一处**预览**入口 —— 不说明关系会被读成两套发现结果 */}
+        <span className="fwd-note" data-same-source-as-digest="1">
+          （与「当前候选前瞻 · 季节性统计窗口」是<strong>同一批</strong>模式：那里只放预览，
+          这里给全量、分层标准与结算状态；不是两套发现结果。）
+        </span>
         <span className="fwd-note">
           数据：股票 {doc.coverage_detail.stocks.series} 只（{doc.coverage_detail.stocks.first_date}–
           {doc.coverage_detail.stocks.last_date}）· 概念 {doc.coverage_detail.concept_baskets.rows.toLocaleString()} 行

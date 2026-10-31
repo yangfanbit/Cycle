@@ -4222,6 +4222,12 @@ html, body {
 .cr-stale { font-size: 10px; color: var(--preheat-ink); }
 .cr-line2 { display: block; margin-top: 2px; font-size: 11.5px; color: var(--ink-2); }
 .cr-line3 { display: block; margin-top: 1px; font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+/* ★ v0.65：个股行（有 / 缺都显示，缺的是**原因**而不是空白） */
+.cr-line4 { display: block; margin-top: 2px; font-size: 11px; color: var(--ink-2); }
+/* ★ v0.65：三类入口的小标题与说明（当前主题 / 季节预览 / 专项假设） */
+.cand-sec-h3 { margin: 14px 0 2px; font-size: 13.5px; color: var(--ink); }
+.cand-sec-note { margin: 0 0 6px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+.cand-scale { margin: 0 0 6px; font-size: 11.5px; color: var(--ink-2); font-family: var(--mono); }
 .cand-actions { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
 .cand-all { font-size: 12px; padding: 4px 12px; border-radius: 8px; border: 1px solid var(--line);
   background: var(--panel); color: var(--accent); cursor: pointer; }
@@ -4242,6 +4248,11 @@ html, body {
 .cd-sec h4 { margin: 0 0 4px; font-size: 12.5px; color: var(--ink); }
 .cd-sec ul { margin: 4px 0; padding-left: 16px; }
 .cd-gap { color: var(--ink-3); font-size: 11px; }
+/* ★ v0.65：当前相关标的（带出处与原文片段） */
+.cd-secs { list-style: none; margin: 4px 0; padding-left: 0; }
+.cd-secs li { margin: 3px 0; }
+.cd-sec-basis { margin-left: 6px; font-size: 10.5px; color: var(--ink-3); }
+.cd-sec-quote { margin: 1px 0 4px; font-size: 10.5px; color: var(--ink-3); font-family: var(--mono); }
 .cd-per { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
 .cd-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
 .cd-filters input, .cd-filters select { font-size: 12px; padding: 4px 8px; border: 1px solid var(--line);

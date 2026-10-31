@@ -150,7 +150,17 @@ export function ForwardObservationSection() {
         20 日 {num(b.ret_20d)} · 60 日 {num(b.ret_60d)}
       </p>
 
-      <h4 className="fwd-sub">一、历史重复模式（验证到什么程度）</h4>
+      {/* ★★ v0.65：本段只有**两个预设假设**（生肖名称 / 台海事件）+ 流感季节性，
+          不是通用主题挖掘器 —— 原标题「历史重复模式」会让人以为这里是自动发现入口。
+          自动发现的月度收益模式在「当前候选前瞻 · 季节性统计窗口」；
+          生命周期时间观察在「单年明细 Timeline」，三者分母不同、不得混算。 */}
+      <h4 className="fwd-sub">一、专项假设的历史检验（验证到什么程度）</h4>
+      <p className="fwd-note" data-module-scope="special_hypothesis">
+        ★ 本段是<strong>人工预设</strong>的专项假设（生肖名称 / 台海事件 / 流感季节性），
+        <strong>不是</strong>通用主题挖掘器；下面「当前候选」只列这些假设的观察状态。
+        自动发现的月度收益模式见「当前候选前瞻 · 季节性统计窗口」，生命周期时间观察见「单年明细」，
+        <strong>三者分母不同，不得混算</strong>。
+      </p>
       <ul className="fwd-patterns">
         {D.patterns.map((p) => <PatternRow key={p.pattern_id} p={p} />)}
       </ul>

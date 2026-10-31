@@ -17,11 +17,144 @@
 """
 from __future__ import annotations
 
-import argparse, json, os, re, sys, time
+import argparse, json, os, re, sqlite3, sys, time
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CURRENT = os.path.join(REPO, "research", "current")
 OUT_RE = re.compile(r"candidate_digest_v0_(\d+)\.json$")
+SEC_DB = os.path.join(REPO, "research", "database", "cycle_research.db")
+
+# ★★ v0.65：三类对象**不再共用一组六条精选**。
+#   `sections` 明确给出三个互不替代的入口：当前研究主题（全部）/ 季节窗口预览 / 专项假设。
+#   卡片同时带 `discovery`（来源类别 · 方法版本 · as_of · 覆盖 · 跟踪入口）与
+#   `stock_gap_reason`（缺股**原因**，不是一律「没有成分」）。
+SOURCE_CLASS = {
+    "SEASONAL_WINDOW": "MONTHLY_RETURN_PATTERN",      # 月度收益模式（自动发现）
+    "SPECIAL_HYPOTHESIS": "SPECIAL_HYPOTHESIS",        # 人工预设假设的历史检验
+    "CURRENT_OBJECT": "CURRENT_THEME_EVIDENCE",        # 当前主题证据研究
+}
+# ★ 缺股原因三分 —— 前端必须分开显示，不能统一写成「没有可核实的成分」
+STOCK_GAP_TEXT = {
+    "NO_HISTORICAL_CONSTITUENTS":
+        "行业板块没有已接入的历史成分数据 → 不绑个股（不用当前成分冒充当年成分）",
+    "NO_SECURITY_MAPPING":
+        "当前研究主题尚未建立 A 股标的映射 → 不列个股",
+    "HYPOTHESIS_NO_SECURITY_LINK":
+        "专项假设未接入个股列表 → 不列个股",
+}
+# ★★ 当前研究主题的**可核验**标的映射（v0.65 新增）。
+#   每条 = (security_id, 名称, 出处字段)。构建时逐条校验：
+#     ① security_id 必须存在于 `securities` 注册表，且名称与注册表**完全一致**；
+#     ② 名称必须在指定出处文本里**逐字出现**（出处 = `core_narrative` 或某个 `evidence_id`）。
+#   校验不过 → 丢弃并写入 `dropped[]`（含原因），**绝不**静默输出。
+#   ★ 只收「研究正文点名的公司」，**不是**历史代表股、不是推荐、不参与排序。
+#   ★ 不用子串匹配自动抽取：实测会把「智元机器人」误判为新松机器人（300024）、
+#     把「东方财富网」当成分股 —— 名字比对没有证明力。
+RELATED_SECURITIES_BY_CANDIDATE = {
+    "CC-2026-OPTICAL-LINK": [
+        ("EOPTOLINK", "新易盛", "core_narrative"),
+        ("INNOLIGHT", "中际旭创", "core_narrative"),
+        ("TFC", "天孚通信", "core_narrative"),
+        ("ACCELINK", "光迅科技", "core_narrative"),
+    ],
+    "CC-2026-AUTO-SMARTDRIVE": [
+        ("BIDI", "比亚迪", "E-AUTO-03"),
+    ],
+}
+
+
+def load_securities():
+    """只读打开 canonical 研究库取证券注册表；库不存在时返回 {}（不崩、不静默通过）。"""
+    if not os.path.exists(SEC_DB):
+        return {}
+    con = sqlite3.connect("file:%s?mode=ro" % SEC_DB, uri=True)
+    try:
+        return {r[0]: {"name": r[1], "ticker": r[2]}
+                for r in con.execute("SELECT security_id, name, ticker FROM securities")}
+    finally:
+        con.close()
+
+
+def _field_text(x, field):
+    if field == "core_narrative":
+        return x.get("core_narrative") or ""
+    for e in (x.get("evidence") or []):
+        if e.get("evidence_id") == field:
+            return e.get("claim") or ""
+    return ""
+
+
+def _quote(text, name, pad=14):
+    i = text.find(name)
+    if i < 0:
+        return None
+    return text[max(0, i - pad): i + len(name) + pad]
+
+
+def related_securities_of(x, secs):
+    """当前研究主题 → 可核验的「当前相关标的」；无映射时给出**为什么**与下一步。"""
+    items, dropped = [], []
+    for sid, name, field in RELATED_SECURITIES_BY_CANDIDATE.get(x.get("candidate_id"), []):
+        reg = secs.get(sid)
+        text = _field_text(x, field)
+        if not reg:
+            dropped.append({"security_id": sid, "reason": "securities 注册表中无该 security_id"})
+            continue
+        if reg["name"] != name:
+            dropped.append({"security_id": sid,
+                            "reason": "注册表名称与映射不一致（%s ≠ %s）" % (reg["name"], name)})
+            continue
+        q = _quote(text, name)
+        if q is None:
+            dropped.append({"security_id": sid, "reason": "出处文本中未逐字出现该名称（%s）" % field})
+            continue
+        items.append({
+            "security_id": sid, "name": name, "ticker": reg["ticker"],
+            "basis": ("研究正文枚举点名" if field == "core_narrative" else "证据条目点名"),
+            "evidence_id": (None if field == "core_narrative" else field),
+            "quote": q,
+        })
+    out = {
+        "status": "MAPPED" if items else "NOT_MAPPED",
+        "label": "当前相关标的",
+        "nature": "研究正文点名的公司；**不是**历史代表股，不是推荐，也不参与排序",
+        "basis_rule": ("仅收录能在 securities 注册表按名称精确对应、且名称在研究正文中逐字出现的公司；"
+                       "每条附出处字段与原文片段"),
+        "as_of": iso(x.get("snapshot_date")),
+        "items": items,
+    }
+    if not items:
+        out["reason"] = ("本主题研究正文未出现可与 securities 注册表精确对应的公司名 "
+                         "→ 尚未建立标的映射")
+        out["what_is_needed"] = ("需把正文点名的公司解析为证券代码并登记到 securities 注册表，"
+                                 "再逐条标注出处；未解析前不列个股")
+    if dropped:
+        out["dropped"] = dropped
+    return out
+
+
+def _has_stocks(card):
+    """★★ 个股有无的口径**按类型分开**：
+    - 当前研究主题 → `related_securities.status == MAPPED`（「当前相关标的」，不是历史代表股）
+    - 季节窗口 / 专项假设 → `representative_stocks` 非空
+    两套语义不得互相顶替，所以不能只看一个字段。"""
+    if card.get("kind") == "CURRENT_OBJECT":
+        return (card.get("related_securities") or {}).get("status") == "MAPPED"
+    return bool(card.get("representative_stocks"))
+
+
+def discovery_of(kind, src, method_version, as_of, coverage, tracking, horizons=None):
+    """所有发现结果的公共元信息（来源类别 / 方法 / 时点 / 覆盖 / 跟踪入口）。"""
+    return {
+        "source_class": SOURCE_CLASS[kind],
+        "source": src,
+        "method_version": method_version,
+        "as_of": as_of,
+        "coverage": coverage,
+        "tracking": tracking,
+        "settlement_horizons": horizons,
+    }
+
 
 
 def iso(d):
@@ -106,6 +239,15 @@ def main(argv):
                         "oos_by_train_tier": p.get("oos_by_train_tier"),
                         "oos_scope": p.get("oos_scope")},
             "representative_stocks": p.get("representative_stocks") or [],
+            # ★★ v0.65：缺股要说明**原因**（行业板块无历史成分 ≠ 没数据）
+            "stock_gap_reason": (None if (p.get("representative_stocks") or []) else
+                                 ("NO_HISTORICAL_CONSTITUENTS" if p["kind"] != "concept_basket"
+                                  else "NO_SECURITY_MAPPING")),
+            "discovery": discovery_of(
+                "SEASONAL_WINDOW", ["pattern_discovery"], pd.get("artifact_version"), iso(pd["as_of"]),
+                # ★ 不重复 `history` 里的 n_years / tier（213 张卡片逐条重复会让摘要虚胖）
+                ("自建概念等权" if p["kind"] == "concept_basket" else "行业板块") + " · 历史重复统计",
+                "CANDIDATE_LEDGER", ["5d", "10d", "20d"]),
             "gap": ("；".join(x for x in (
                         ("行业板块无历史成分 → 不绑个股" if p["kind"] != "concept_basket" else p.get("rep_stock_gap")),
                         "时点资格为「按当前序列、只用过去数据」的统计资格，不代表当时分类/成分可得") if x)),
@@ -128,6 +270,14 @@ def main(argv):
             "why_now": c.get("why_now"), "time_position": st, "group": g,
             "history": c.get("historical_stats") or {},
             "current_performance": c.get("current_performance"),
+            # ★ v0.65：专项假设本轮未接入个股列表 —— 与「行业板块无历史成分」是不同原因
+            "stock_gap_reason": "HYPOTHESIS_NO_SECURITY_LINK",
+            "discovery": discovery_of(
+                "SPECIAL_HYPOTHESIS", ["forward_observation"], (fwd or {}).get("method_version"),
+                iso((fwd or {}).get("as_of")),
+                "预设假设 · 观察窗口 %s → %s" % ((c.get("window") or {}).get("start"),
+                                                (c.get("window") or {}).get("end")),
+                "FORWARD_OBSERVATION", None),
             "gap": c.get("not_a_candidate_reason"),
             "watch_next": c.get("what_to_watch"), "invalidate_if": c.get("invalidate_if"),
             "trigger_type": "ASSUMPTION",
@@ -139,17 +289,28 @@ def main(argv):
         })
 
     # ③ 当前研究对象
+    secs = load_securities()
     for x in (cand or {}).get("candidates", []):
         refs = x.get("reference_cases") or []
         drivers = x.get("drivers") or []
         scheduled = [d for d in drivers if d.get("category") in ("POLICY", "INDUSTRY", "STANDARD", "EVENT")]
         g = "G2" if refs else "G3"
+        rel = related_securities_of(x, secs)
         cards.append({
             "id": x["candidate_id"], "source": ["current_candidates"], "kind": "CURRENT_OBJECT",
             "title": x.get("display_name"), "subtitle": x.get("theme_type") or "",
             "why_now": x.get("core_narrative") or "",   # ★ 保留全文（首页用 CSS line-clamp 控制行数）
             "time_position": x.get("attention_state") or "UNKNOWN", "group": g,
             "history": {"reference_cases": refs},
+            # ★★ v0.65：当前研究主题的「当前相关标的」（可核验、带出处）+ 缺股原因
+            "related_securities": rel,
+            "stock_gap_reason": (None if rel["status"] == "MAPPED" else "NO_SECURITY_MAPPING"),
+            "discovery": discovery_of(
+                "CURRENT_OBJECT", ["current_candidates"], (cand or {}).get("current_candidates_version"),
+                iso(x.get("snapshot_date") or (cand or {}).get("generated_at")),
+                "当前主题证据研究（研究记录日 %s）· 不含历史重复统计"
+                % iso(x.get("snapshot_date") or (cand or {}).get("generated_at")),
+                "NONE", None),
             "trigger": {"type": "CURRENT_FACT+EXPECTATION",
                         "items": [{"category": d.get("category"), "note": (d.get("note") or "")[:160]}
                                   for d in scheduled[:3]]},
@@ -201,31 +362,59 @@ def main(argv):
 
     cards.sort(key=rank_key)
 
-    # ★★ 首页精选：最多 6 条；同月份季节窗口 ≤2；同类型 ≤3；当前题材保底 1 条
-    featured, months, kinds = [], {}, {}
-    for c in cards:
-        if len(featured) >= 6:
-            break
-        m = re.search(r"·\s*(\d+)\s*月", c["title"])
-        mk = m.group(1) if m else None
-        if c["kind"] == "SEASONAL_WINDOW" and mk and months.get(mk, 0) >= 2:
-            continue
-        if kinds.get(c["kind"], 0) >= 3:
-            continue
-        featured.append(c["id"])
-        if c["kind"] == "SEASONAL_WINDOW" and mk:
-            months[mk] = months.get(mk, 0) + 1
-        kinds[c["kind"]] = kinds.get(c["kind"], 0) + 1
-    cur_ids = [c["id"] for c in cards if c["kind"] == "CURRENT_OBJECT"]
-    if cur_ids and not any(i in cur_ids for i in featured):
-        # 当前题材没进精选 → 用最靠前的一条替换掉末位季节窗口（保留 6 条）
-        target = next((i for i in reversed(featured) if i.startswith("SEAS-")), None)
-        if target:
-            featured[featured.index(target)] = cur_ids[0]
-        else:
-            featured = (featured[:5] + [cur_ids[0]]) if len(featured) >= 6 else featured + [cur_ids[0]]
-    featured = featured[:6]
+    # ★★ v0.65：三类对象**各自成段**，不再共用一组六条精选。
+    #   原实现把 213 张卡片混排后取前 6（同月 ≤2 / 同类型 ≤3 / 当前题材保底 1）——
+    #   季节窗口一旦占满，6 个当前研究主题里就有 4 个被挤出主入口。
+    #   现在：当前主题**全部**展示；季节窗口只给预览（另附全量规模）；专项假设单独一段。
+    def _pick_seasonal(limit=6):
+        picked, months = [], {}
+        for c in cards:
+            if len(picked) >= limit:
+                break
+            if c["kind"] != "SEASONAL_WINDOW":
+                continue
+            m = re.search(r"·\s*(\d+)\s*月", c["title"])
+            mk = m.group(1) if m else None
+            # 预览要有月份多样性：同月份最多 3 条（原混合精选是 2 条；这里只放季节窗口，故放宽 1 条）
+            if mk and months.get(mk, 0) >= 3:
+                continue
+            picked.append(c["id"])
+            if mk:
+                months[mk] = months.get(mk, 0) + 1
+        return picked
 
+    seasonal_preview = _pick_seasonal(6)
+    cur_ids = [c["id"] for c in cards if c["kind"] == "CURRENT_OBJECT"]
+    hyp_ids = [c["id"] for c in cards if c["kind"] == "SPECIAL_HYPOTHESIS"]
+    sections = {
+        "current_objects": {
+            "ids": cur_ids,
+            "note": ("当前研究主题：独立入口、**全部展示**（不受统计候选数量影响）；属于当前主题证据研究，"
+                     "不是算法发现的季节窗口，也**不适用** 5/10/20 交易日结算。"),
+        },
+        "seasonal_preview": {
+            "ids": seasonal_preview,
+            "note": ("季节性统计窗口：这里只是**预览 %d 条**（同月份 ≤3 条，保证月份多样性），"
+                     "全量 %d 条当前/下月窗口见「查看全部」—— 预览不等于系统只发现了这几条。"
+                     % (len(seasonal_preview), len(pd["current_windows"]))),
+        },
+        "special_hypotheses": {
+            "ids": hyp_ids,
+            "note": ("专项假设的历史检验：**人工预设**假设（生肖名称 / 台海事件 / 流感季节性），"
+                     "不是通用主题挖掘器；与月度收益模式（季节窗口）的分母不同，不得混算。"),
+        },
+    }
+    _sa = pd.get("scan_audit") or {}
+    seasonal_scale = {
+        "patterns_total": len(pd["patterns"]),
+        "patterns_strict": (_sa.get("history_group") or {}).get("strict"),
+        "patterns_exploratory": (_sa.get("history_group") or {}).get("exploratory"),
+        "current_windows": len(pd["current_windows"]),
+        "oos_reportable": sum(1 for p in pd["patterns"] if p.get("evidence_grade") == "OOS_REPORTED"),
+        "pit_only": (_sa.get("records") or {}).get("pit_only"),
+        "note": ("四个数互不替代：全量模式统计 / 当前或下月窗口 / 样本外可报告 / 仅时点资格。"
+                 "**结算结果不在本产物**，见候选账本 `candidate_ledger_v0_2.json`。"),
+    }
     doc = {
         "artifact": "candidate_digest", "artifact_version": "0.1",
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -266,15 +455,16 @@ def main(argv):
              "date": (snaps[-1] or {}).get("snapshot_date") if snaps else None},
         ],
         "cards": cards,
-        "featured": featured,
-        "featured_note": ("精选 6 条：按「样本外证据（是否可报告 → 检验年数 → 样本外命中率）"
-                          " → 历史年数 → 时间位置 → 中位超额 → 分组」排序，"
-                          "并限制同月份季节窗口 ≤2、同类型 ≤3、当前题材保底 1 条；"
-                          "仅代表研究浏览顺序，不是收益预测。"),
+        # ★★ v0.65：三个入口各自成段（取代原 `featured` 单一 6 条混合精选）
+        "sections": sections,
+        # ★ 全量规模：避免「只有 6 条精选」被读成「系统只发现了 6 条」
+        "seasonal_scale": seasonal_scale,
         "limitations": [
             "★ 不同来源日期不同（研究记录 / 行情 / 快照），卡片分别标注，不统一改写为最新。",
             "★ 分组是研究浏览优先顺序，不是概率、胜率或荐股。",
-            "★ 行业板块无历史成分 → 不绑个股；概念代表股票为当前成分。",
+            "★ 缺股原因分三种：行业板块无历史成分 / 当前主题未建标的映射 / 专项假设未接入个股 —— "
+            "卡片按 `stock_gap_reason` 分别说明，不统一写成「没有成分」。",
+            "★ 当前相关标的是**研究正文点名的公司**（附出处），不是历史代表股，也不参与排序。",
             "★ 外部线索的内部同月结构支持 ≠ 外部报告已验证。",
         ],
     }
@@ -296,12 +486,46 @@ def main(argv):
                     errs.append("%s 进 G1 但证据不足" % c["id"])
                 if (h.get("pit_eligible_years") or 0) < 1:
                     errs.append("%s 进 G1 但时点不可发现（只在回看时成立）" % c["id"])
+            # ★★ v0.65：公共元信息必须齐全；缺股必须写清原因（不写就是「统一说没成分」）
+            disc = c.get("discovery") or {}
+            if disc.get("source_class") not in SOURCE_CLASS.values():
+                errs.append("%s 缺 discovery.source_class" % c["id"])
+            if not disc.get("tracking"):
+                errs.append("%s 缺 discovery.tracking" % c["id"])
+            if not _has_stocks(c) and not c.get("stock_gap_reason"):
+                errs.append("%s 无个股但未写 stock_gap_reason" % c["id"])
+            if c.get("stock_gap_reason") and c.get("stock_gap_reason") not in STOCK_GAP_TEXT:
+                errs.append("%s stock_gap_reason 非法（%s）" % (c["id"], c.get("stock_gap_reason")))
+            # ★ 当前研究主题**不适用** 5/10/20 日结算
+            if c["kind"] == "CURRENT_OBJECT":
+                if disc.get("settlement_horizons"):
+                    errs.append("%s 当前主题不得带结算期限" % c["id"])
+                rel = c.get("related_securities") or {}
+                if rel.get("status") == "MAPPED" and not (rel.get("items") or []):
+                    errs.append("%s 标的映射标 MAPPED 但 items 为空" % c["id"])
+                for it in (rel.get("items") or []):
+                    if not it.get("ticker") or not it.get("quote"):
+                        errs.append("%s 标的 %s 缺 ticker 或原文出处" % (c["id"], it.get("name")))
+        # ★ 三个入口必须覆盖全部同类对象（当前主题不得被精选挤出）
+        sec = d.get("sections") or {}
+        for key, kind in (("current_objects", "CURRENT_OBJECT"),
+                          ("special_hypotheses", "SPECIAL_HYPOTHESIS")):
+            want = [c["id"] for c in d["cards"] if c["kind"] == kind]
+            got = (sec.get(key) or {}).get("ids") or []
+            if sorted(got) != sorted(want):
+                errs.append("%s 未覆盖全部 %s（%d/%d）" % (key, kind, len(got), len(want)))
+        if not ((sec.get("seasonal_preview") or {}).get("ids")):
+            errs.append("seasonal_preview 为空")
         if len(d["cards"]) < 100:
             errs.append("候选过少（%d）—— 自动发现窗口未接入？" % len(d["cards"]))
         if errs:
             print("FAIL: %s" % errs[:5])
             return 1
-        print("PASS: 候选汇总一致（%d 张 · %s）" % (len(d["cards"]), d["counts"]))
+        print("PASS: 候选汇总一致（%d 张 · %s · 当前主题 %d / 专项假设 %d / 季节预览 %d）"
+              % (len(d["cards"]), d["counts"],
+                 len((sec.get("current_objects") or {}).get("ids") or []),
+                 len((sec.get("special_hypotheses") or {}).get("ids") or []),
+                 len((sec.get("seasonal_preview") or {}).get("ids") or [])))
         return 0
 
     print("候选 %d 张 · 分组 %s" % (len(cards), doc["counts"]))
