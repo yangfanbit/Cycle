@@ -4322,4 +4322,16 @@ html, body {
   color: var(--ink-2); background: var(--bg-2); border-left: 2px solid var(--line-strong);
   border-radius: 2px; }
 .ntr-dirhead { margin: 10px 0 2px; font-size: 12.5px; color: var(--ink); }
+/* ★★ v0.71：时点可信度 / 时点不确定 / 低信号归档 */
+.ntr-cert { font-size: 10px; padding: 1px 6px; border-radius: 999px;
+  border: 1px solid var(--line-strong); color: var(--ink-3); margin-right: 6px; }
+.ntr-cert.cert-exact { border-color: var(--accent); color: var(--accent); }
+.ntr-cert.cert-conservative { color: var(--ink-3); }
+.ntr-cert.cert-uncertain { border-style: dashed; color: var(--warn, #b45309); }
+.ntr-uncertain, .ntr-archive { margin-top: 10px; font-size: 11px; color: var(--ink-2); }
+.ntr-uncertain summary, .ntr-archive summary { cursor: pointer; color: var(--ink-3); }
+.ntr-archlist { margin: 4px 0 0; padding-left: 16px; font-size: 10.5px; }
+.ntr-archrow { margin: 2px 0; line-height: 1.6; word-break: break-word; }
+.ntr-dc { font-size: 10px; padding: 0 5px; border-radius: 3px;
+  border: 1px solid var(--line-strong); color: var(--ink-3); }
 .ntr-empty { margin: 4px 0 8px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }

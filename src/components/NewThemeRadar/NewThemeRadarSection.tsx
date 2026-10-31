@@ -1,37 +1,26 @@
 /**
- * 自动发现的新题材线索（v0.70 · 产物 `new_theme_radar_v0_5`）。
+ * 自动发现的新题材线索（v0.71 · 展示包 `new_theme_radar_v0_6_view`）。
  *
- * ## 市场状态 ≠ 事件性质（v0.70 核心修正）
+ * ## 本轮三件事
  *
- * `status` 是**机械的市场反应筛选**（事件后窗口内是否跑赢沪深300），`nature.kind` 是
- * **事件本身的性质**（新催化 / 常规重复 / 背景 / 未分类）。两者**正交**：
+ * **① 时点口径可解释（P0）** —— 每条事件必须能回答「为什么用/不用精确发布时间」：
+ * 只有「来源时间语义 = 首次公开时间 + 有到分钟时间 + `published_date == event_date`」
+ * 三条同时成立才用盘前/盘后规则；否则退回保守规则并在 `precise_time_rejected.reason`
+ * 写明原因。日期冲突严重（档案/迁移）→ `time_certainty = UNCERTAIN`，**不计算数值反应**。
  *
- * - 候选区的标题必须写成「市场反应筛选结果」，**不能**暗示这些都属于新催化；
- * - `CANDIDATE` 的文案是「相对基准为正、待人工复核」，不是「利好」「催化已确认」；
- * - **背景类事件（会议/活动/评选）即使窗口内跑赢基准，也只作市场观察**，
- *   页面上显式标注，不得称为产业催化。
+ * **② 低信号不再主导默认视图（P1）** —— `doc_class = ADMIN_REPLY`（提案/建议答复）
+ * 从最近事件区移到「低信号归档」，保留标题、URL、分类理由与统计。
  *
- * ## 具体主题 ≠ 研究方向（v0.70）
+ * **③ 主包轻量化（P1）** —— 只 import 展示包（`display = FULL | INDEX`）；
+ * 原文 / 附件 / 被拒关联在 `_evidence.json`，展开时按需动态加载。
  *
- * `theme_tags` 由**实际命中的关键词**映射而来（如「医用耗材」→ 医用耗材分类与价格）；
- * `research_directions` 只是**上层分组**（一个方向可能挂多个共享序列），
- * 用它反推具体主题会把不同主题合并。
+ * ## 不变的约束
  *
- * ## 区域划分（v0.68/v0.69）
- *
- * - **一、市场反应筛选结果**：全部 `CANDIDATE` 事件（不截断、不按收益率排序）；
- * - **二、与当前研究方向相关的事件**：全部，按上层方向分组；
- * - **三、最近事件**：最近 12 条，排除前两段已展示的。
- *
- * ## 计数语义
- *
- * `CANDIDATE` 计数是**事件条数**，不是「独立新题材数」。
- *
- * ## 红线
- *
- * 只展示事实 + 核验状态；不含打分 / 概率 / 收益排序 / 交易信号；覆盖范围就地写明。
+ * 市场状态（`status`）与事件性质（`nature.kind`）正交；`CANDIDATE` 只说「相对基准为正、
+ * 待人工复核」；具体主题看「主题：」（由实际命中关键词映射），方向只是上层分组。
  */
-import raw from '@current/new_theme_radar_v0_5.json';
+import { useState } from 'react';
+import raw from '@current/new_theme_radar_v0_6_view.json';
 import { RichText } from '../RichText';
 
 interface ThemeLink {
@@ -55,27 +44,43 @@ interface Evidence {
   published?: { date?: string | null; time?: string | null } | null;
   note?: string | null;
 }
+/** 时点冲突（v0.71）：普通不一致 vs 档案/迁移冲突必须分开 */
+interface DateConflict {
+  kind: string; published_date: string; delta_days: number | null;
+  shared_by?: number; semantics?: string; note: string;
+}
+interface TimeInfo {
+  basis_day?: string | null; observe_from?: string | null; reaction_basis?: string;
+  event_date_source?: string; published_date?: string | null; published_time?: string | null;
+  time_precision?: string;
+  time_field_semantics?: string;
+  time_certainty?: 'EXACT' | 'CONSERVATIVE' | 'UNCERTAIN';
+  precise_time_rejected?: { reason: string; published_date?: string | null;
+    published_time?: string | null; semantics?: string; note: string } | null;
+  date_conflict?: DateConflict | null;
+  note?: string;
+}
 interface Nature { kind: string; basis: string; note: string;
   repeat_group?: string; repeat_count?: number; repeat_note?: string }
 interface RadarEvent {
   event_id: string; title: string; event_date: string; doc_type?: string;
+  doc_class?: string;
   nature?: Nature | null;
   theme_tags?: string[];
   research_directions?: string[];
-  first_seen: string; last_seen?: string; seen_count?: number;
+  display?: 'FULL' | 'INDEX';
+  first_seen?: string; last_seen?: string; seen_count?: number;
   presence?: 'IN_LATEST_LIST' | 'HISTORICAL_ONLY';
-  source: { id?: string; name: string; publisher: string; url: string; category?: string };
-  time?: { basis_day?: string | null; observe_from?: string | null; reaction_basis?: string;
-    event_date_source?: string; published_date?: string | null; published_time?: string | null;
-    note?: string };
+  source: { id?: string; name?: string; publisher?: string; url: string; category?: string };
+  time?: TimeInfo;
   evidence?: Evidence | null;
-  theme_links: ThemeLink[];
+  theme_links?: ThemeLink[];
   rejected_links?: { keyword: string; doc_type?: string; reason: string }[];
   markets?: MarketRow[];
   review?: { verdict: string; note: string } | null;
   security_mapping?: { status: string; reason?: string } | null;
   status: string;
-  gaps: string[];
+  gaps?: string[];
 }
 interface Doc {
   as_of: string; generated_at: string; artifact_version?: string;
@@ -84,14 +89,24 @@ interface Doc {
     pages_fetched?: { source: string; url: string; items: number }[];
     failures?: { source: string; url: string; reason: string }[];
     historical_only?: number;
+    by_time_certainty?: Record<string, number>;
+    date_conflicts?: Record<string, { events: number; max_abs_days: number }>;
     limits?: string[] };
   rules?: { reaction_trading_days?: number; candidate_meaning?: string; count_semantics?: string;
-    time_rule?: string; not_scored?: string; nature_rule?: string; research_direction_rule?: string };
+    time_rule?: string; not_scored?: string; nature_rule?: string; research_direction_rule?: string;
+    time_rules?: Record<string, string>;
+    time_certainty_legend?: Record<string, string>;
+    time_field_semantics_legend?: Record<string, string> };
   nature_legend?: Record<string, string>;
+  doc_class_legend?: Record<string, string>;
+  low_signal_doc_classes?: string[];
   research_directions?: { direction: string; series: string[]; scope_note?: string }[];
+  source_artifact?: string;
+  display_policy?: Record<string, string>;
   summary: { events: number; by_status: Record<string, number>; candidates: number;
     candidates_are?: string; by_presence?: Record<string, number>; review_verdicts?: Record<string, number>;
     by_nature?: Record<string, number>; by_direction?: Record<string, number>;
+    by_doc_class?: Record<string, number>; low_signal_events?: number;
     routine_repeat_groups?: Record<string, number> };
   status_legend: Record<string, string>;
   events: RadarEvent[];
@@ -121,6 +136,26 @@ const DATE_SOURCE_LABEL: Record<string, string> = {
   LIST_PAGE: '列表页标注日',
   URL_PATH: '文章路径日期',
 };
+/** ★★ v0.71：时点可信度（决定能不能把「数值化反应」当事实看） */
+const CERTAINTY_LABEL: Record<string, string> = {
+  EXACT: '精确（收盘后/开盘前可判定）',
+  CONSERVATIVE: '保守（事件日涨跌不计入）',
+  UNCERTAIN: '时点不确定（不计算数值反应）',
+};
+/** ★★ v0.71：精确时间被拒的原因 —— 必须说清楚，不能静默退回 */
+const REJECT_LABEL: Record<string, string> = {
+  SEMANTICS_UNTRUSTED: '来源时间字段不是「首次公开时间」',
+  DATE_MISMATCH: '文章日期 ≠ 事件日期',
+  PRECISION_UNAVAILABLE: '无到分钟的发布时间',
+};
+const DOC_CLASS_LABEL: Record<string, string> = {
+  ADMIN_REPLY: '行政答复',
+  ACTIVITY_PROMO: '活动/宣传',
+  STANDARD_PROCEDURE: '标准程序节点',
+  INDUSTRY_DATA: '产业数据发布',
+  POLICY_ACTION: '政策行动',
+  OTHER: '未分类',
+};
 
 const REVIEW_LABEL: Record<string, string> = {
   IRRELEVANT: '与产业无关',
@@ -139,6 +174,26 @@ const num = (v: number | null | undefined, suffix = '', digits = 2) =>
     ? `${v > 0 ? '+' : ''}${v.toFixed(digits)}${suffix}` : '—';
 
 const RECENT_LIMIT = 12;
+
+/**
+ * ★★ v0.71 P1：原文 / 附件 / 被拒关联在独立文件里，**展开时才加载**。
+ * 只 import 一次（模块级 Promise），失败不影响主视图。
+ */
+interface EvDetail {
+  quote?: string;
+  attachments?: { name: string; url: string }[];
+  rejected_links?: { keyword: string; doc_type?: string; reason: string }[];
+}
+type EvMap = Record<string, EvDetail>;
+let evPromise: Promise<EvMap> | null = null;
+function loadEvidence(): Promise<EvMap> {
+  if (!evPromise) {
+    evPromise = import('@current/new_theme_radar_v0_6_evidence.json')
+      .then((m) => ((m as { default?: EvMap }).default ?? (m as unknown as EvMap)))
+      .catch(() => ({}));
+  }
+  return evPromise;
+}
 
 /**
  * ★★ v0.70：**「相对为正」不等于「产业催化」** —— 当事件性质是背景信息或常规重复时，
@@ -160,13 +215,43 @@ export function natureCaveat(kind?: string | null, status?: string): string | nu
   return null;
 }
 
+/**
+ * ★★ v0.71 P0：时点口径的可读解释。**必须能回答「为什么用/不用精确时间」**。
+ * 导出以便单测（这是本轮最核心的语义不变量）。
+ */
+export function timeExplain(t?: TimeInfo | null): string | null {
+  if (!t) return null;
+  const c = t.time_certainty;
+  if (c === 'UNCERTAIN') {
+    const d = t.date_conflict;
+    return `时点不确定：${d?.note ?? '日期冲突严重'} —— 因此**不计算**数值化事件反应。`;
+  }
+  const r = t.precise_time_rejected;
+  if (c === 'CONSERVATIVE' && r?.reason) {
+    return `退回保守规则（${REJECT_LABEL[r.reason] ?? r.reason}）：${r.note}`;
+  }
+  if (c === 'EXACT') {
+    return `精确时点：来源时间语义为首次公开时间，文章日期与事件日期同天，可用时分判断。`;
+  }
+  return null;
+}
+
 /** 单条事件卡片（候选区与最近区共用同一渲染，字段一致） */
 function EventRow({ e }: { e: RadarEvent }) {
   const ev = e.evidence ?? { kind: 'NONE' as const };
   const ms = e.markets ?? [];
+  const links = e.theme_links ?? [];
+  const gaps = e.gaps ?? [];
   const caveat = natureCaveat(e.nature?.kind, e.status);
+  const [extra, setExtra] = useState<EvDetail | null>(null);
+  const onToggle = (x: React.SyntheticEvent<HTMLDetailsElement>) => {
+    if (!x.currentTarget.open || extra) return;
+    loadEvidence().then((m) => setExtra(m[e.event_id] ?? null));
+  };
+  const quote = extra?.quote ?? ev.quote ?? null;
+  const atts = extra?.attachments ?? ev.attachments ?? [];
   return (
-    <li className="ntr-row" data-event={e.event_id}
+    <li className="ntr-row" data-event={e.event_id} data-display={e.display ?? 'FULL'}
         data-status={e.status} data-presence={e.presence ?? 'IN_LATEST_LIST'}>
       <div className="ntr-row1">
         <span className="ntr-date">{e.event_date}</span>
@@ -175,12 +260,20 @@ function EventRow({ e }: { e: RadarEvent }) {
         </a>
         <span className={`ntr-st st-${e.status.toLowerCase()}`}>{STATUS_LABEL[e.status] ?? e.status}</span>
         {/* ★ 事件性质与「状态」是两件事：状态=市场相对表现；性质=事件本身是否新催化 */}
-        {e.nature ? (
+        {e.nature?.kind ? (
           <span className={`ntr-nat nat-${e.nature.kind.toLowerCase()}`} data-nature={e.nature.kind}
                 title={e.nature.basis}>
             {NATURE_LABEL[e.nature.kind] ?? e.nature.kind}
             {e.nature.kind === 'ROUTINE_RECURRING' && e.nature.repeat_count
               ? `（同机制第 ${e.nature.repeat_count} 条记录）` : ''}
+          </span>
+        ) : null}
+        {/* ★★ v0.71：时点可信度必须可见 —— 不能让人把「保守规则」的数字当成精确反应 */}
+        {e.time?.time_certainty ? (
+          <span className={`ntr-cert cert-${e.time.time_certainty.toLowerCase()}`}
+                data-certainty={e.time.time_certainty}
+                title={CERTAINTY_LABEL[e.time.time_certainty]}>
+            {CERTAINTY_LABEL[e.time.time_certainty] ?? e.time.time_certainty}
           </span>
         ) : null}
         {e.presence === 'HISTORICAL_ONLY' && (
@@ -196,7 +289,7 @@ function EventRow({ e }: { e: RadarEvent }) {
         {(e.research_directions ?? []).map((d) => (
           <span key={d} className="ntr-dir" data-direction={d}>上层方向：{d}</span>
         ))}
-        {e.theme_links.length > 0 ? e.theme_links.map((l, i) => (
+        {links.length > 0 ? links.map((l, i) => (
           <span key={i} className="ntr-link" data-relation={l.relation}>
             关联 <strong>{l.board_name}</strong>（{l.board_series}）· 命中「{l.keyword}」于
             {l.matched_in === 'TITLE' ? '标题' : '原文'} · {l.relation === 'PROXY' ? '代理' : '直接'}
@@ -250,35 +343,59 @@ function EventRow({ e }: { e: RadarEvent }) {
 
       {e.review ? <p className="ntr-review" data-review={e.review.verdict}><RichText text={e.review.note} /></p> : null}
 
-      {e.gaps.length > 0 && (
-        <ul className="ntr-gaps" data-gaps={e.gaps.length}>
-          {e.gaps.map((g, i) => <li key={i}><RichText text={g} /></li>)}
+      {gaps.length > 0 && (
+        <ul className="ntr-gaps" data-gaps={gaps.length}>
+          {gaps.map((g, i) => <li key={i}><RichText text={g} /></li>)}
         </ul>
       )}
 
-      <details className="ntr-evi">
+      <details className="ntr-evi" onToggle={onToggle}>
         <summary>
           原文与来源 · {EVIDENCE_LABEL[ev.kind] ?? ev.kind}
-          {e.time?.published_date ? ` · 文章页发布时间 ${e.time.published_date}` : ''}
+          {e.time?.published_date ? ` · 文章日期 ${e.time.published_date}` : ''}
           {e.time?.published_time ? ` ${e.time.published_time}` : ''}
+          {e.time?.time_precision === 'MINUTE' && e.time.time_certainty !== 'EXACT'
+            ? '（未用于盘前/盘后判断）' : ''}
         </summary>
-        {ev.quote ? <p><RichText text={ev.quote} /></p> : null}
+        {/* ★★ v0.71：原文按需加载（主包只带哈希） */}
+        {quote ? <p><RichText text={quote} /></p> : (
+          <p className="ntr-note" data-evidence-pending="1">
+            原文按需加载中；若未显示，说明该事件只有标题与 URL 可核（原文摘要{' '}
+            <code>{ev.quote_sha256_16 ?? '—'}</code>）。
+          </p>
+        )}
         {ev.note ? <p className="ntr-note"><RichText text={ev.note} /></p> : null}
-        {(ev.attachments ?? []).length > 0 && (
+        {atts.length > 0 && (
           <p className="ntr-src">
             附件：
-            {(ev.attachments ?? []).map((x, i) => (
+            {atts.map((x, i) => (
               <span key={i}><a href={x.url} target="_blank" rel="noreferrer noopener">{x.name}</a>{' '}</span>
             ))}
           </p>
         )}
+        {/* ★★ v0.71：时点口径 —— 为什么用/不用精确时间，必须逐条可解释 */}
         {e.time?.basis_day ? (
-          <p className="ntr-note">
+          <p className="ntr-note" data-time-basis={e.time.reaction_basis}>
             时点口径：基准日 <code>{e.time.basis_day}</code> · 观察起点 <code>{e.time.observe_from}</code>
             {e.time.event_date_source
               ? <> · 事件日期来源 {DATE_SOURCE_LABEL[e.time.event_date_source] ?? e.time.event_date_source}</>
               : null}
+            {e.time.time_field_semantics
+              ? <> · 文章时间字段语义 <code>{e.time.time_field_semantics}</code></> : null}
             {' '}· <RichText text={e.time.note ?? ''} />
+          </p>
+        ) : null}
+        {timeExplain(e.time) ? (
+          <p className="ntr-note" data-time-explain={e.time?.time_certainty ?? ''}>
+            <RichText text={timeExplain(e.time) ?? ''} />
+          </p>
+        ) : null}
+        {e.time?.date_conflict ? (
+          <p className="ntr-note" data-date-conflict={e.time.date_conflict.kind}>
+            日期差异：事件日 <code>{e.event_date}</code> · 文章日期{' '}
+            <code>{e.time.date_conflict.published_date}</code>（{e.time.date_conflict.delta_days != null
+              ? `${e.time.date_conflict.delta_days > 0 ? '+' : ''}${e.time.date_conflict.delta_days} 天`
+              : '天数不可解析'}）· <RichText text={e.time.date_conflict.note} />
           </p>
         ) : null}
         {e.nature ? (
@@ -303,17 +420,25 @@ export function NewThemeRadarSection() {
   const srcNames = (c.sources ?? []).map((s) => s.name).join(' / ') || c.publisher || '—';
   const cats = [...new Set((c.sources ?? []).map((s) => s.category).filter(Boolean))].join(' / ');
 
+  // ★★ v0.71：只渲染展示包里的 `display === FULL` 事件（INDEX 是索引行，另有归档区）
+  const full = doc.events.filter((e) => (e.display ?? 'FULL') === 'FULL');
   // ★★ v0.68：候选事件**全部**展示（不截断、不按收益排序）
-  const candidates = doc.events.filter((e) => e.status === 'CANDIDATE');
+  const candidates = full.filter((e) => e.status === 'CANDIDATE');
   const candIds = new Set(candidates.map((e) => e.event_id));
   // ★★ v0.69：与当前研究方向相关的事件**全部**展示（同样不截断、不按收益排序）
-  const dirEvents = doc.events.filter(
+  const dirEvents = full.filter(
     (e) => !candIds.has(e.event_id) && (e.research_directions ?? []).length > 0);
   const dirIds = new Set(dirEvents.map((e) => e.event_id));
   // 近期区：既不候选、也不方向相关的事件，取最近 N 条（三段互不重复）
-  const recent = doc.events
+  const recent = full
     .filter((e) => !candIds.has(e.event_id) && !dirIds.has(e.event_id))
     .slice(0, RECENT_LIMIT);
+  // ★★ v0.71：日期冲突严重 → 不计算数值反应，但**必须在页面上显式披露**（不能静默消失）
+  const uncertain = doc.events.filter((e) => e.time?.time_certainty === 'UNCERTAIN');
+  // ★★ v0.71：低信号归档 —— 只隐藏展示，**不删除**：标题 / URL / 分类理由 / 统计都保留
+  const lowSignal = new Set(doc.low_signal_doc_classes ?? ['ADMIN_REPLY']);
+  const archived = doc.events.filter((e) => (e.display ?? 'FULL') === 'INDEX'
+    && lowSignal.has(e.doc_class ?? ''));
   // ★ v0.70：方向分组**不过滤 0 条** —— 未覆盖的方向要显式写「当前采集范围未发现」，
   //   否则读者会以为这些方向不存在（采集缺口 ≠ 现实没有发生）。
   const dirGroups = (doc.research_directions ?? [])
@@ -337,7 +462,10 @@ export function NewThemeRadarSection() {
         不含打分、概率、收益排序或交易信号；<strong>不是买卖建议</strong>，
         也不代表「题材已被确认」或「事件已产生因果效果」。
         ★ 每条事件同时标注<strong>市场状态</strong>（是否跑赢基准）与<strong>事件性质</strong>
-        （是否新催化），两者<strong>互不替代</strong>。
+        （是否新催化），两者<strong>互不替代</strong>。★ 另标注<strong>时点可信度</strong>：
+        只有「来源时间语义是首次公开时间 + 有到分钟时间 + 文章日期与事件日期同天」三条同时成立，
+        才用盘前/盘后规则；否则退回<strong>保守规则</strong>（事件日涨跌不计入反应），
+        并在原文区写明<strong>为什么没用精确时间</strong>。
       </p>
 
       <p className="ntr-coverage" data-coverage="1">
@@ -356,6 +484,13 @@ export function NewThemeRadarSection() {
           <> · 性质：新催化 {doc.summary.by_nature.NEW_CATALYST ?? 0} / 常规重复{' '}
             {doc.summary.by_nature.ROUTINE_RECURRING ?? 0} / 背景 {doc.summary.by_nature.BACKGROUND ?? 0}{' '}
             / 未分类 {doc.summary.by_nature.UNCLASSIFIED ?? 0}</>
+        ) : null}
+        {c.by_time_certainty ? (
+          <> · 时点：精确 {c.by_time_certainty.EXACT ?? 0} / 保守{' '}
+            {c.by_time_certainty.CONSERVATIVE ?? 0} / 不确定 {c.by_time_certainty.UNCERTAIN ?? 0}</>
+        ) : null}
+        {doc.summary.low_signal_events ? (
+          <> · 低信号归档 {doc.summary.low_signal_events} 条（不占默认视图）</>
         ) : null}
       </p>
 
@@ -443,12 +578,81 @@ export function NewThemeRadarSection() {
       <p className="ntr-note">
         最近 {RECENT_LIMIT} 条中<strong>既不在候选区、也不属已映射研究方向</strong>的事件
         {candIds.size + dirIds.size > 0
-          ? <>（已展示的 {candIds.size} 条候选 + {dirIds.size} 条方向事件不重复列出）</> : null}。
-        全部 {doc.events.length} 条（含历史保留）都在产物 <code>new_theme_radar_v0_5.json</code> 内。
+          ? <>（已展示的 {candIds.size} 条候选 + {dirIds.size} 条方向事件不重复列出）</> : null}
+        {archived.length > 0
+          ? <>；<strong>低信号文档（行政答复）已移出本区</strong>，见下方归档。</> : null}
+        展示包只带这 {full.length} 条的完整字段，其余 {doc.events.length - full.length} 条
+        以<strong>索引行</strong>保留在产物 <code>{doc.source_artifact ?? 'new_theme_radar_v0_6.json'}</code> 内。
       </p>
       <ol className="ntr-list" data-rows="recent">
         {recent.map((e) => <EventRow key={e.event_id} e={e} />)}
       </ol>
+
+      {/* ---------- 四、时点不确定：不计算数值反应，但必须披露 ---------- */}
+      {/* ★★ v0.71 P0：日期冲突严重的档案**不得伪造精确反应时点**，也不能静默消失。 */}
+      {uncertain.length > 0 && (
+        <details className="ntr-uncertain" data-uncertain-events={uncertain.length}>
+          <summary>
+            四、时点不确定（{uncertain.length} 条）—— 已停止计算数值化反应
+          </summary>
+          <p className="ntr-note" data-uncertain-note="1">
+            这些事件的<strong>列表日期与文章元数据冲突严重</strong>（相差超过一年，
+            或该文章日期被多条共享 = 网站迁移的批量赋值）→ 无法确认哪个日期才是可观察的事件日。
+            因此<strong>不计算</strong>板块收益 / 沪深300 / 相对超额，
+            <strong>不展示</strong>貌似精确的反应数值。原始标题、URL 与冲突说明保留在下方，可逐条核对。
+          </p>
+          <ul className="ntr-list ntr-archlist" data-rows="uncertain">
+            {uncertain.map((e) => (
+              <li key={e.event_id} className="ntr-archrow" data-event={e.event_id}
+                  data-certainty="UNCERTAIN" data-conflict={e.time?.date_conflict?.kind}>
+                <span className="ntr-date">{e.event_date}</span>{' '}
+                <a href={e.source.url} target="_blank" rel="noreferrer noopener">{e.title}</a>
+                {e.time?.date_conflict ? (
+                  <span className="ntr-note">
+                    {' '}· 文章日期 <code>{e.time.date_conflict.published_date}</code>
+                    {e.time.date_conflict.delta_days != null
+                      ? `（${e.time.date_conflict.delta_days > 0 ? '+' : ''}${e.time.date_conflict.delta_days} 天）`
+                      : ''}
+                    {' '}· <RichText text={e.time.date_conflict.note} />
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      {/* ---------- 五、低信号归档：不占默认视图，但**不删除** ---------- */}
+      {/* ★★ v0.71 P1：行政答复（提案/建议答复）标题只有编号，产业指向在正文 →
+          默认视图隐藏，但保留标题 / URL / 分类理由 / 统计，可追溯。 */}
+      {archived.length > 0 && (
+        <details className="ntr-archive" data-low-signal-archive={archived.length}>
+          <summary>
+            五、低信号归档（{archived.length} 条）—— 默认视图已隐藏，可追溯
+          </summary>
+          <p className="ntr-note" data-archive-note="1">
+            这些文档的<strong>标题只有行政编号</strong>（提案答复 / 建议答复），产业指向写在正文里，
+            按标题无法绑定板块 → 不进入默认视图，但<strong>不删除、不丢统计</strong>：
+            原始 URL、标题、分类理由都在这里，完整档案在产物内。
+            <strong>不是</strong>「与产业无关」的判断 —— 只是「标题不足以支撑板块关联」。
+          </p>
+          <ul className="ntr-list ntr-archlist" data-rows="archive">
+            {archived.map((e) => (
+              <li key={e.event_id} className="ntr-archrow" data-event={e.event_id}
+                  data-doc-class={e.doc_class}>
+                <span className="ntr-date">{e.event_date}</span>{' '}
+                <a href={e.source.url} target="_blank" rel="noreferrer noopener">{e.title}</a>
+                {' '}<span className="ntr-dc" data-doc-class={e.doc_class}>
+                  {DOC_CLASS_LABEL[e.doc_class ?? ''] ?? e.doc_class}
+                </span>
+                {e.review ? (
+                  <span className="ntr-note"> · <RichText text={e.review.note} /></span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
 
       {/* ★ v0.70：性质图例 + **正交说明**（状态=市场相对表现；性质=事件本身是否新催化） */}
       <p className="ntr-note" data-orthogonal="1">

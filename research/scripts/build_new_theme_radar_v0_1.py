@@ -57,15 +57,22 @@ BENCH = "CSI300"
 
 # ─────────────────────────── 事件源注册表 ───────────────────────────
 # ★★ v0.70：`coverage.limits` / `rules.time_rule` 由本表 + 实际产物派生，不再手写。
+# ★★ v0.71：新增 `time_field` —— **明确声明来源时间字段的语义**，不得凭字段名推定。
+#   只有 `semantics == PUBLICATION_TIME`（首次公开时间）才允许用时分判断盘前/盘后。
 SOURCES = [
     {"id": "NDRC_ZCFB_TZ", "name": "国家发展改革委 · 政策通知", "publisher": "国家发展改革委",
      "list_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/", "pages": ["", "index_1.html"],
      "category": "POLICY_NOTICE", "adapter": "NDRC", "date_source": "LIST_PAGE",
-     "access_note": "公开 HTML 列表页（服务端渲染）；详情页正文在 div.article_con，附件 PDF/OFD 单列"},
+     "access_note": "公开 HTML 列表页（服务端渲染）；详情页正文在 div.article_con，附件 PDF/OFD 单列",
+     "time_field": {"name": "发布时间", "semantics": "PUBLICATION_TIME",
+                    "evidence": "详情页正文区明写「发布时间：YYYY-MM-DD HH:MM」；"
+                                "实测 25/25 条 published_date == 列表页日期"}},
     {"id": "NDRC_XWFB", "name": "国家发展改革委 · 新闻发布", "publisher": "国家发展改革委",
      "list_url": "https://www.ndrc.gov.cn/xwdt/xwfb/", "pages": ["", "index_1.html"],
      "category": "POLICY_NEWS", "adapter": "NDRC", "date_source": "LIST_PAGE",
-     "access_note": "公开 HTML 列表页（服务端渲染）；详情页正文在 div.article_con"},
+     "access_note": "公开 HTML 列表页（服务端渲染）；详情页正文在 div.article_con",
+     "time_field": {"name": "发布时间", "semantics": "PUBLICATION_TIME",
+                    "evidence": "同上；实测 50/50 条 published_date == 列表页日期"}},
     # ★ v0.69 新增（经真实访问验证）：列表页服务端渲染 45 条/页、日期在 URL 路径
     #   `/art/YYYY/M/D/art_...html`，详情页正文在 `div#zoom`，且 `<meta name="PubDate">`
     #   带**到分钟**的发布时间 → 可用于「有可信发布时间」的时点判定。
@@ -73,7 +80,10 @@ SOURCES = [
      "list_url": "https://www.nhsa.gov.cn/col/col109/index.html", "pages": [""],
      "category": "POLICY_NOTICE", "adapter": "NHSA", "date_source": "URL_PATH",
      "access_note": "公开 HTML 列表页（服务端渲染，无分页链接）；日期取自文章路径，"
-                    "详情页正文在 div#zoom，PubDate meta 提供到分钟的发布时间"},
+                    "详情页正文在 div#zoom，PubDate meta 提供到分钟的发布时间",
+     "time_field": {"name": "meta PubDate", "semantics": "PUBLICATION_TIME",
+                    "evidence": "★ 不凭字段名推定：实测 45/45 条 PubDate 与列表页 URL 路径日期相同 "
+                                "→ 与上网日同源，可作为公开时间使用"}},
     # ★★ v0.70 新增（实测 2026-10-31）：能源局**总目录页是 JS 外壳**（/policy/tz.htm 3.5 KB），
     #   但**新能源和可再生能源司**栏目是服务端渲染的旧版页面 —— 268 KB / 157 个 c.html 链接 /
     #   111 条带 `<span class="time">YYYY-MM-DD</span>`。链接是 `../../YYYYMMDD/<uuid>/c.html`
@@ -84,7 +94,11 @@ SOURCES = [
      "category": "POLICY_NOTICE", "adapter": "NEA", "date_source": "LIST_PAGE",
      "access_note": "公开 HTML 列表页（服务端渲染旧版页，无分页链接）；日期在 span.time，"
                     "链接为 ../../YYYYMMDD/<uuid>/c.html 相对路径；详情页正文在 div.article-content，"
-                    "PubDate meta 为到秒的**成文时间**（可能与列表上网日不同）"},
+                    "PubDate meta 为到秒的**成文时间**（可能与列表上网日不同）",
+     # ★★ v0.71：实测 51/111 条 PubDate 早于列表上网日（最多 179 天）→ 是**成文日**，不是公开时间
+     "time_field": {"name": "meta PubDate", "semantics": "DOCUMENT_CREATION_TIME",
+                    "evidence": "实测 51/111 条 PubDate 早于列表上网日（最多 179 天，如答复函"
+                                "成文 2025-06-22 / 上网 2025-12-18）→ 不能当作首次公开时间"}},
     # ★★ v0.70 新增（实测 2026-10-31）：工信部**总目录与多数司局栏目是 JS 外壳 / 403**，
     #   但**科技司**栏目服务端渲染 —— 34 KB / 48 个 art 链接 / 42 条带日期。
     #   ★ 该站对 UA 敏感：Chrome UA 返回 403，本脚本的研究 UA 返回 200。
@@ -95,9 +109,18 @@ SOURCES = [
      "referer": "https://www.miit.gov.cn/",
      "access_note": "公开 HTML 列表页（服务端渲染）；日期在 li 内，链接为绝对路径 /jgsj/kjs/...；"
                     "详情页正文在 div#con_con，PubDate meta 到分钟。"
-                    "★ 该站对浏览器 UA 返回 403，需用研究型 UA"},
+                    "★ 该站对浏览器 UA 返回 403，需用研究型 UA",
+     # ★★ v0.71：13/32 条不一致，其中 6 条**统一为 2023-05-12**（网站迁移批量赋值）
+     "time_field": {"name": "meta PubDate", "semantics": "DOCUMENT_CREATION_TIME",
+                    "evidence": "实测 13/32 条与列表日期不一致，其中 6 条**统一为 2023-05-12**"
+                                "（网站改版迁移的批量赋值，不是任何单篇的公开时间）"}},
 ]
 SRC_BY_ID = {x["id"]: x for x in SOURCES}
+
+# ★★ v0.71：只有「首次公开时间」语义才允许用时分判断盘前/盘后
+TRUSTED_PUBLICATION_SEMANTICS = {"PUBLICATION_TIME"}
+# 日期冲突阈值：超过这个天数视为**档案/迁移冲突**，不再是「同日不同写法」
+ARCHIVE_CONFLICT_DAYS = 365
 
 # ─────────────────── 显式关键词 → 板块（逐字匹配；ID 取自 history_scan.db） ───────────────────
 # relation: DIRECT = 政策直接作用于该环节；PROXY = 首版用相近板块代理（必须说明原因）
@@ -343,6 +366,41 @@ def doc_type_of(title):
     return "OTHER"
 
 
+# ─────────────── 文档分类（v0.71：区分「低信号行政/活动类」与「真实产业行动」） ───────────────
+# ★ 目的不是压低 `NO_THEME_LINK` 数字，而是让**默认视图**优先展示可研究的产业行动。
+#   判据只用**标题格式**与文档类型（可核），不靠行业关键词硬过滤。
+DOC_CLASS_LEGEND = {
+    "ADMIN_REPLY": "行政答复（提案答复 / 建议答复）—— 标题只有编号，产业指向写在正文 → 低信号",
+    "ACTIVITY_PROMO": "活动 / 会议 / 宣传 / 评选 —— 无具体产业行动 → 低信号（但保留市场观察价值）",
+    "STANDARD_PROCEDURE": "标准制修订程序节点（公示 / 征求意见 / 报批稿）",
+    "INDUSTRY_DATA": "产业运行数据发布（建设情况 / 运行情况 / 装机统计）",
+    "POLICY_ACTION": "具体政策行动（通知 / 办法 / 规划 / 意见 / 名单 / 批复）",
+    "OTHER": "未分类",
+}
+# ★★ 默认视图隐藏的低信号类型 —— **只隐藏展示，不删除、不丢统计**
+LOW_SIGNAL_DOC_CLASSES = ("ADMIN_REPLY",)
+ADMIN_REPLY_MARKERS = ("提案答复的函", "建议的答复", "提案的答复摘要", "建议答复的函",
+                       "提案的答复", "建议的答复摘要")
+DATA_MARKERS = ("建设情况", "运行情况", "装机", "统计", "核发及交易数据", "并网运行")
+PROCEDURE_MARKERS = ("公示", "征求意见", "报批稿", "征求意见稿")
+
+
+def doc_class_of(title, doc_type):
+    """★ v0.71：文档分类。顺序敏感 —— 行政答复格式优先（其标题也可能含「公示」等词）。"""
+    t = title or ""
+    if any(k in t for k in ADMIN_REPLY_MARKERS):
+        return "ADMIN_REPLY"
+    if any(k in t for k in ACTIVITY_WORDS) or doc_type in ("MEETING", "CEREMONY", "PRESS"):
+        return "ACTIVITY_PROMO"
+    if any(k in t for k in PROCEDURE_MARKERS):
+        return "STANDARD_PROCEDURE"
+    if any(k in t for k in DATA_MARKERS):
+        return "INDUSTRY_DATA"
+    if doc_type == "POLICY_INSTRUMENT":
+        return "POLICY_ACTION"
+    return "OTHER"
+
+
 def review_of(title, status):
     """未关联事件给**可核**的审查结论；已关联的不需要。"""
     if status != "NO_THEME_LINK":
@@ -373,9 +431,15 @@ TIME_RULES = {
     "DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY": (
         "只有日期、且事件日非交易日：基准 = **事件前最近交易日收盘**，从**事件后首个交易日**起观察"),
     "PUBLISHED_AFTER_CLOSE": (
-        "有到分钟的发布时间且 **>= 15:00**（收盘后）：基准 = 事件日收盘，从**次一交易日**起观察"),
+        "有到分钟发布时间、来源时间语义为**首次公开时间**、且**文章日期 == 事件日期**，"
+        "时间 **>= 15:00**（收盘后）：基准 = 事件日收盘，从**次一交易日**起观察"),
     "PUBLISHED_BEFORE_OPEN": (
-        "有到分钟的发布时间且 **< 09:30**（开盘前）：基准 = **事件前最近交易日收盘**，从**事件日**起观察"),
+        "有到分钟发布时间、来源时间语义为**首次公开时间**、且**文章日期 == 事件日期**，"
+        "时间 **< 09:30**（开盘前）：基准 = **事件前最近交易日收盘**，从**事件日**起观察"),
+    "DATE_CONFLICT_UNCERTAIN": (
+        "事件日期与文章元数据**冲突严重**（相差 > %d 天，或该文章日期被多条共享 = 网站迁移批量赋值）"
+        "→ 观察日期本身不可信，**不计算数值化事件反应**，保留原始资料并标为时点不确定"
+        % ARCHIVE_CONFLICT_DAYS),
     "NO_CALENDAR": "无交易日历 → 无法确定可用基准，不给收益结论",
 }
 RULES = {
@@ -383,13 +447,25 @@ RULES = {
     "min_observation_trading_days": 3,
     "max_event_age_days": 45,
     "time_rule": (
-        "**优先用「保守可用时点」，只有无歧义时才用精确发布时间**："
-        "① 只有日期 → 保守规则（事件日涨跌不计入反应）；"
-        "② 有到分钟发布时间且 ≥15:00 → 当日收盘为基准、次日观察；"
-        "③ 有到分钟发布时间且 <09:30 → 前一日收盘为基准、事件日起观察；"
-        "④ 盘中发布（09:30–15:00）→ 无法判断公开时点与收盘先后，**退回保守规则**。"
+        "**优先用「保守可用时点」，只有三条同时成立才用精确发布时间**："
+        "① 来源的时间字段语义是 `PUBLICATION_TIME`（首次公开时间，不是成文时间/迁移赋值）；"
+        "② 有到分钟的精确时间；③ `published_date == event_date`。"
+        "任一不成立 → 用保守日期规则（事件日涨跌不计入反应），并在 "
+        "`time.precise_time_rejected.reason` 写明原因（SEMANTICS_UNTRUSTED / DATE_MISMATCH / "
+        "PRECISION_UNAVAILABLE）。**盘中发布（09:30–15:00）一律退回保守规则**。"
+        "日期冲突严重 → `time_certainty = UNCERTAIN`，不计算数值行情窗口。"
         "逐规则说明见 `time_rules`；`--check` 核对实际出现的规则都被描述"),
     "time_rules": TIME_RULES,
+    "time_certainty_legend": {
+        "EXACT": "用了精确发布时间（三条门槛全部满足）",
+        "CONSERVATIVE": "退回保守日期规则（原因见 precise_time_rejected）",
+        "UNCERTAIN": "日期冲突严重，观察日期不可信 → 不给数值化反应",
+    },
+    "time_field_semantics_legend": {
+        "PUBLICATION_TIME": "该来源的时间字段表示**首次公开时间**，可用于盘前/盘后判断",
+        "DOCUMENT_CREATION_TIME": "该来源的时间字段表示**文档成文时间**，不等于首次公开时间 → 不用于盘前/盘后判断",
+        "UNKNOWN": "语义未确认 → 一律按不可信处理",
+    },
     "candidate_meaning": ("事件后窗口内**相对基准**（沪深300）表现为正，值得人工复核；"
                           "**不代表**板块绝对收益为正，**不代表**事件与行情存在因果关系"),
     "candidate_requires": [
@@ -692,51 +768,131 @@ def _cal(con):
                    for r in con.execute("SELECT trade_date FROM scan_daily WHERE series_id=?", (BENCH,))})
 
 
-def time_basis_of(event_date, cal, published=None):
-    """★★ 可用时点判定。
+def date_conflict_of(event_date, published, semantics, bulk_dates=None):
+    """★★ v0.71：`published_date` 与 `event_date` 不一致时**分级**，不能笼统算「最大差 N 天」。
 
-    有**到分钟**的可信发布时间时，只在**无歧义**的情形下用它：
-    - 发布时间 ≥ 15:00（收盘后）→ 基准 = 事件日收盘（事件日为交易日时），观察次日；
-    - 发布时间 < 09:30（开盘前）→ 基准 = 事件前最近交易日收盘，**从事件日**起观察；
-    - 盘中发布（09:30–15:00）→ 无法判断信息公开时点与收盘的先后 → 退回保守规则。
-    只有日期时，一律用保守规则（事件日涨跌**不计入**事件后反应）。
+    - `PUBLISHED_DATE_DIFFERS`：普通不一致（成文日早于上网日，或晚几天）→ 日期本身仍可信；
+    - `ARCHIVE_METADATA_CONFLICT`：相差 > `ARCHIVE_CONFLICT_DAYS` → 档案/迁移导致，日期不可互证；
+    - `BULK_MIGRATION_ARTIFACT`：同一 `published_date` 被多条共享且都冲突 → 批量赋值（网站改版）。
+
+    ★ 只有 `None`（一致）或 `PUBLISHED_DATE_DIFFERS` 才允许把 `event_date` 当作可信观察日。
     """
+    pub = (published or {}).get("date")
+    if not pub or not event_date:
+        return None
+    if pub == event_date:
+        return None
+    try:
+        delta = (date.fromisoformat(pub) - date.fromisoformat(event_date)).days
+    except Exception:
+        return {"kind": "UNPARSEABLE_DATE", "published_date": pub, "delta_days": None,
+                "semantics": semantics,
+                "note": "日期无法解析 → 不用于时点判定"}
+    # ★ 批量赋值只在**差异已超阈值**时才细分：同一天成文的多份答复函（差 100–200 天）
+    #   是正常现象，不能因为「共享日期」就判成迁移污染。
+    if bulk_dates and bulk_dates.get(pub, 0) >= 3 and abs(delta) > ARCHIVE_CONFLICT_DAYS:
+        return {"kind": "BULK_MIGRATION_ARTIFACT", "published_date": pub, "delta_days": delta,
+                "shared_by": bulk_dates[pub], "semantics": semantics,
+                "note": ("同一 published_date（%s）被 %d 条事件共享且均与事件日相差 > %d 天 → "
+                         "判为网站迁移/批量赋值，不是该篇的公开时间"
+                         % (pub, bulk_dates[pub], ARCHIVE_CONFLICT_DAYS))}
+    if abs(delta) > ARCHIVE_CONFLICT_DAYS:
+        return {"kind": "ARCHIVE_METADATA_CONFLICT", "published_date": pub, "delta_days": delta,
+                "semantics": semantics,
+                "note": ("相差 %d 天（> %d）→ 档案/迁移冲突，两个日期不能互证"
+                         % (abs(delta), ARCHIVE_CONFLICT_DAYS))}
+    return {"kind": "PUBLISHED_DATE_DIFFERS", "published_date": pub, "delta_days": delta,
+            "semantics": semantics,
+            "note": ("成文日与列表上网日相差 %+d 天（同一篇文档的两个不同日期，均可能真实）"
+                     % delta)}
+
+
+def time_basis_of(event_date, cal, published=None, semantics="UNKNOWN", conflict=None):
+    """★★ 可用时点判定（v0.71 收紧）。
+
+    **只有同时满足三条**才允许用时分判断盘前/盘后：
+      ① 来源时间字段语义 = `PUBLICATION_TIME`（首次公开时间，不是成文时间）；
+      ② 有到分钟的精确时间；
+      ③ `published_date == event_date`（两个日期指同一天）。
+
+    其余情形一律用**保守日期规则**（事件日涨跌不计入反应），并在 `precise_time_rejected`
+    里写明**为什么**没用精确时间。日期冲突严重（`ARCHIVE_METADATA_CONFLICT` /
+    `BULK_MIGRATION_ARTIFACT`）时 `time_certainty = UNCERTAIN`，且不计算数值行情窗口。
+    """
+    res = {"rule": None, "basis_day": None, "observe_from": None, "note": None,
+           "time_certainty": "CONSERVATIVE", "precise_time_rejected": None,
+           "date_conflict": conflict}
     if not cal:
-        return {"rule": "NO_CALENDAR", "basis_day": None, "observe_from": None,
-                "note": "无交易日历，无法确定可用基准"}
+        res.update({"rule": "NO_CALENDAR", "time_certainty": "UNCERTAIN",
+                    "note": "无交易日历，无法确定可用基准"})
+        return res
+    pub = published or {}
+    t = pub.get("time")
+    precise = bool(t) and pub.get("precision") == "MINUTE"
+    same_day = bool(pub.get("date")) and pub.get("date") == event_date
+    # ★ 日期冲突严重 → 观察日期本身不可信，直接标不确定（不伪造精确时点）
+    if conflict and conflict.get("kind") in ("ARCHIVE_METADATA_CONFLICT",
+                                             "BULK_MIGRATION_ARTIFACT",
+                                             "UNPARSEABLE_DATE"):
+        res.update({"rule": "DATE_CONFLICT_UNCERTAIN", "time_certainty": "UNCERTAIN",
+                    "note": ("事件日期与文章元数据冲突（%s）→ **不计算数值化事件反应**，"
+                             "保留原始资料并标为时点不确定" % conflict.get("note"))})
+        return res
+
+    reject = None
+    if precise and semantics not in TRUSTED_PUBLICATION_SEMANTICS:
+        reject = "SEMANTICS_UNTRUSTED"
+    elif precise and not same_day:
+        reject = "DATE_MISMATCH"
+    elif not precise:
+        reject = "PRECISION_UNAVAILABLE"
+    if reject:
+        res["precise_time_rejected"] = {
+            "reason": reject, "published_date": pub.get("date"),
+            "published_time": t, "semantics": semantics,
+            "note": {"SEMANTICS_UNTRUSTED":
+                     "来源时间字段语义为 %s（不是首次公开时间）→ 不能用时分判断盘前/盘后" % semantics,
+                     "DATE_MISMATCH":
+                     "文章日期 %s ≠ 事件日期 %s → 不能用该元数据的时分判断事件日的位置"
+                     % (pub.get("date"), event_date),
+                     "PRECISION_UNAVAILABLE": "无到分钟的发布时间 → 用保守规则"}[reject]}
+
     is_trading = event_date in cal
-    t = (published or {}).get("time")
-    precise = bool(t) and (published or {}).get("precision") == "MINUTE"
-    if precise:
+    if precise and not reject:
         try:
             hh, mm = [int(x) for x in t.split(":")[:2]]
         except Exception:
             hh = mm = -1
-        if (hh, mm) >= (15, 0):
-            if is_trading:
-                i = cal.index(event_date)
-                return {"rule": "PUBLISHED_AFTER_CLOSE", "basis_day": event_date,
+        if (hh, mm) >= (15, 0) and is_trading:
+            i = cal.index(event_date)
+            res.update({"rule": "PUBLISHED_AFTER_CLOSE", "basis_day": event_date,
                         "observe_from": cal[i + 1] if i + 1 < len(cal) else None,
-                        "note": "发布时间 %s（收盘后）→ 以事件日收盘为基准，从次一交易日起观察" % t}
-        elif (0, 0) <= (hh, mm) < (9, 30):
+                        "time_certainty": "EXACT",
+                        "note": "发布时间 %s（收盘后）→ 以事件日收盘为基准，从次一交易日起观察" % t})
+            return res
+        if (0, 0) <= (hh, mm) < (9, 30):
             prior = [d for d in cal if d < event_date]
             if prior:
                 start = event_date if is_trading else next((d for d in cal if d > event_date), None)
-                return {"rule": "PUBLISHED_BEFORE_OPEN", "basis_day": prior[-1],
-                        "observe_from": start,
-                        "note": "发布时间 %s（开盘前）→ 以事件前最近交易日收盘为基准，从事件日起观察" % t}
+                res.update({"rule": "PUBLISHED_BEFORE_OPEN", "basis_day": prior[-1],
+                            "observe_from": start, "time_certainty": "EXACT",
+                            "note": "发布时间 %s（开盘前）→ 以事件前最近交易日收盘为基准，"
+                                    "从事件日起观察" % t})
+                return res
     if is_trading:
         i = cal.index(event_date)
-        return {"rule": "DATE_ONLY_CONSERVATIVE_TRADING_DAY", "basis_day": event_date,
-                "observe_from": cal[i + 1] if i + 1 < len(cal) else None,
-                "note": ("事件日为交易日：以**当日收盘**为基准，从**次一交易日**起观察 —— "
-                         "事件日当天的涨跌可能发生在信息公开之前，不计入事件后反应")}
+        res.update({"rule": "DATE_ONLY_CONSERVATIVE_TRADING_DAY", "basis_day": event_date,
+                    "observe_from": cal[i + 1] if i + 1 < len(cal) else None,
+                    "note": ("事件日为交易日：以**当日收盘**为基准，从**次一交易日**起观察 —— "
+                             "事件日当天的涨跌可能发生在信息公开之前，不计入事件后反应")})
+        return res
     prior = [d for d in cal if d < event_date]
     after = [d for d in cal if d > event_date]
-    return {"rule": "DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY",
-            "basis_day": (prior[-1] if prior else None),
-            "observe_from": (after[0] if after else None),
-            "note": "事件日非交易日：以事件前最近交易日收盘为基准，从事件后首个交易日起观察"}
+    res.update({"rule": "DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY",
+                "basis_day": (prior[-1] if prior else None),
+                "observe_from": (after[0] if after else None),
+                "note": "事件日非交易日：以事件前最近交易日收盘为基准，从事件后首个交易日起观察"})
+    return res
 
 
 def market_of(con, cal, sid, basis_day, observe_from, as_of):
@@ -889,7 +1045,10 @@ def build(fetch=False, prev=None):
     prev_by_id = {e["event_id"]: e for e in ((prev or {}).get("events") or [])}
     prev_by_url = {norm_url(e["source"]["url"]): e for e in ((prev or {}).get("events") or [])}
 
-    events, carried = [], 0
+    # ★★ v0.71：**两阶段** —— 先抓取并收集元数据，再统一判定时点。
+    #   原因：`BULK_MIGRATION_ARTIFACT`（同一 published_date 被多条共享）必须**全量统计**才能识别，
+    #   单条循环里看不到全局。
+    stage1, carried = [], 0
     for it in items:
         src = SRC_BY_ID[it["source_id"]]
         ev = fetch_article(it["url"], src["adapter"], src) if fetch else {
@@ -899,9 +1058,29 @@ def build(fetch=False, prev=None):
             time.sleep(1.0)
         eid = event_id_of(it["url"], it["source_id"])
         links, rejected = theme_links(it["title"], ev)
-        tb = time_basis_of(it["date"], cal, ev.get("published"))
+        old = prev_by_id.get(eid) or prev_by_url.get(norm_url(it["url"]))
+        if old:
+            carried += 1
+        stage1.append({"it": it, "src": src, "ev": ev, "eid": eid,
+                       "links": links, "rejected": rejected, "old": old})
+
+    # ★★ 全量统计 published_date 的重复值 → 识别「网站迁移批量赋值」
+    pub_counts = {}
+    for r in stage1:
+        pd_ = (r["ev"].get("published") or {}).get("date")
+        if pd_:
+            pub_counts[pd_] = pub_counts.get(pd_, 0) + 1
+
+    events = []
+    for r in stage1:
+        it, src, ev, eid, links, rejected, old = (r["it"], r["src"], r["ev"], r["eid"],
+                                                 r["links"], r["rejected"], r["old"])
+        sem = (src.get("time_field") or {}).get("semantics") or "UNKNOWN"
+        conflict = date_conflict_of(it["date"], ev.get("published"), sem, pub_counts)
+        tb = time_basis_of(it["date"], cal, ev.get("published"), sem, conflict)
         markets = []
-        if con and links:
+        # ★★ v0.71：日期冲突严重 → **不计算数值行情窗口**（不伪造精确反应）
+        if con and links and tb["time_certainty"] != "UNCERTAIN":
             done = set()
             for L in links:
                 if L["board_series"] in done:      # ★ 同一板块多个关键词命中 → 只算一次
@@ -911,14 +1090,12 @@ def build(fetch=False, prev=None):
                               tb["observe_from"], as_of)
                 m["board_name"], m["relation"] = L["board_name"], L["relation"]
                 markets.append(m)
-        old = prev_by_id.get(eid) or prev_by_url.get(norm_url(it["url"]))
-        if old:
-            carried += 1
         evt = {
             "event_id": eid,
             "title": it["title"],
             "event_date": it["date"],
             "doc_type": doc_type_of(it["title"]),
+            "doc_class": doc_class_of(it["title"], doc_type_of(it["title"])),
             "first_seen": (old or {}).get("first_seen") or now,
             "last_seen": now,
             "seen_count": ((old or {}).get("seen_count") if (old or {}).get("seen_count") is not None
@@ -927,12 +1104,17 @@ def build(fetch=False, prev=None):
             "source": {"id": src["id"], "name": src["name"], "publisher": src["publisher"],
                        "url": it["url"], "list_url": src["list_url"],
                        "category": src["category"], "access": "PUBLIC_HTML"},
+            # ★★ v0.71：时点字段必须能解释「为什么用/不用精确时间」
             "time": {
                 "event_date": it["date"],
                 "event_date_source": it.get("date_source") or src.get("date_source") or "LIST_PAGE",
                 "published_date": (ev.get("published") or {}).get("date"),
                 "published_time": (ev.get("published") or {}).get("time"),
                 "time_precision": "MINUTE" if (ev.get("published") or {}).get("time") else "DATE_ONLY",
+                "time_field_semantics": sem,
+                "time_certainty": tb["time_certainty"],
+                "precise_time_rejected": tb["precise_time_rejected"],
+                "date_conflict": tb["date_conflict"],
                 "reaction_basis": tb["rule"], "basis_day": tb["basis_day"],
                 "observe_from": tb["observe_from"], "note": tb["note"],
             },
@@ -949,6 +1131,9 @@ def build(fetch=False, prev=None):
             "research_directions": directions_of(links),
         }
         evt["status"], evt["gaps"] = classify(evt, as_of) if as_of else ("INSUFFICIENT", ["无行情基准日"])
+        if tb["time_certainty"] == "UNCERTAIN":
+            evt["gaps"] = ["时点不确定：%s → 不计算数值化事件反应" % (tb["date_conflict"] or {}).get("note")
+                           ] + evt["gaps"]
         extra = [g for m in markets for g in (m.get("gaps") or []) if g not in evt["gaps"]]
         evt["gaps"] = evt["gaps"] + extra
         # ★ v0.68：绝对/相对说明挂在**每个板块**上，不再给事件一个整体结论
@@ -972,8 +1157,27 @@ def build(fetch=False, prev=None):
             if not L.get("theme_tag"):
                 L["theme_tag"] = THEME_TAG_BY_KEYWORD.get(L.get("keyword"))
         keep["theme_tags"] = theme_tags_of(keep.get("theme_links") or [])
-        tb, links = keep.get("time") or {}, keep.get("theme_links") or []
-        if con and as_of and links and tb.get("basis_day"):
+        keep["doc_class"] = doc_class_of(keep.get("title"), doc_type_of(keep.get("title") or ""))
+        # ★★ v0.71：历史事件也必须用**新规则**重算时点 —— 否则旧产物里的错误
+        #   `reaction_basis`（不一致却用盘前/盘后）会被原样继承下来。
+        _sid = (keep.get("source") or {}).get("id")
+        _sem = ((SRC_BY_ID.get(_sid) or {}).get("time_field") or {}).get("semantics") or "UNKNOWN"
+        _pub = (keep.get("evidence") or {}).get("published")
+        _conf = date_conflict_of(keep.get("event_date"), _pub, _sem, pub_counts)
+        _tb = time_basis_of(keep.get("event_date"), cal, _pub, _sem, _conf)
+        keep["time"] = dict(keep.get("time") or {}, **{
+            "time_field_semantics": _sem,
+            "time_certainty": _tb["time_certainty"],
+            "precise_time_rejected": _tb["precise_time_rejected"],
+            "date_conflict": _tb["date_conflict"],
+            "reaction_basis": _tb["rule"], "basis_day": _tb["basis_day"],
+            "observe_from": _tb["observe_from"], "note": _tb["note"],
+        })
+        tb, links = keep["time"], keep.get("theme_links") or []
+        # ★ 日期冲突严重 → 清掉旧的数值行情（不保留「貌似精确」的旧结果）
+        if _tb["time_certainty"] == "UNCERTAIN":
+            keep["markets"] = []
+        if con and as_of and links and tb.get("basis_day") and _tb["time_certainty"] != "UNCERTAIN":
             ms, done = [], set()
             for L in links:
                 if L["board_series"] in done:
@@ -1033,6 +1237,30 @@ def build(fetch=False, prev=None):
     for e in uniq:
         for d in (e.get("research_directions") or []):
             by_direction[d] = by_direction.get(d, 0) + 1
+    by_doc_class = {}
+    for e in uniq:
+        k = e.get("doc_class")
+        if k:
+            by_doc_class[k] = by_doc_class.get(k, 0) + 1
+    by_certainty = {}
+    for e in uniq:
+        k = (e.get("time") or {}).get("time_certainty")
+        if k:
+            by_certainty[k] = by_certainty.get(k, 0) + 1
+    # ★★ v0.71：日期冲突**分级统计**（不得把全体最大差混成一句）
+    date_conflicts = {}
+    for e in uniq:
+        c = (e.get("time") or {}).get("date_conflict")
+        if not c:
+            continue
+        g = date_conflicts.setdefault(c["kind"], {"events": 0, "max_abs_days": 0,
+                                                  "shared_values": {}})
+        g["events"] += 1
+        d_ = c.get("delta_days")
+        if isinstance(d_, int):
+            g["max_abs_days"] = max(g["max_abs_days"], abs(d_))
+        if c["kind"] == "BULK_MIGRATION_ARTIFACT":
+            g["shared_values"][c["published_date"]] = c.get("shared_by")
     prev_name = None
     if prev:
         # artifact_version "0.1" → 文件名 new_theme_radar_v0_1.json（不是 v0_0_1）
@@ -1040,7 +1268,7 @@ def build(fetch=False, prev=None):
         prev_name = "new_theme_radar_v0_%s.json" % ver.split(".")[-1]
 
     return {
-        "artifact": "new_theme_radar", "artifact_version": "0.5",
+        "artifact": "new_theme_radar", "artifact_version": "0.6",
         "generated_at": now, "as_of": as_of,
         "source_kind": "AUTO_DISCOVERED_EVENT",
         "supersedes": prev_name,
@@ -1049,7 +1277,8 @@ def build(fetch=False, prev=None):
             "sources": [{"id": x["id"], "name": x["name"], "publisher": x["publisher"],
                          "list_url": x["list_url"], "category": x["category"],
                          "pages": x["pages"], "adapter": x["adapter"],
-                         "date_source": x["date_source"], "access_note": x["access_note"]}
+                         "date_source": x["date_source"], "access_note": x["access_note"],
+                         "time_field": x.get("time_field")}
                         for x in SOURCES],
             "pages_fetched": pages, "failures": failures,
             "date_range": [min(dates), max(dates)] if dates else None,
@@ -1059,6 +1288,9 @@ def build(fetch=False, prev=None):
                           for sid in SRC_BY_ID},
             "carried_over": carried,
             "historical_only": sum(1 for e in uniq if e["presence"] == "HISTORICAL_ONLY"),
+            "by_doc_class": by_doc_class,
+            "by_time_certainty": by_certainty,
+            "date_conflicts": date_conflicts,
             # ★★ v0.70：覆盖说明**由注册表 + 实际产物派生**，不再手写（手写必过期）
             "limits": coverage_limits(uniq, pages, failures),
             "evidence_kinds": _count_by(uniq, lambda e: (e.get("evidence") or {}).get("kind")),
@@ -1067,6 +1299,8 @@ def build(fetch=False, prev=None):
         },
         "rules": RULES, "status_legend": STATUS_LEGEND,
         "nature_legend": NATURE_LEGEND,
+        "doc_class_legend": DOC_CLASS_LEGEND,
+        "low_signal_doc_classes": list(LOW_SIGNAL_DOC_CLASSES),
         "research_directions": RESEARCH_DIRECTIONS,
         "research_direction_role": "UPPER_GROUPING_ONLY",
         "theme_tag_rule": ("`theme_tags` 来自 `THEME_TAG_BY_KEYWORD`（关键词 → 具体主题，显式映射）；"
@@ -1085,6 +1319,9 @@ def build(fetch=False, prev=None):
                     "by_nature": by_nature,
                     "by_direction": by_direction,
                     "by_theme_tag": _count_by(uniq, lambda e: None, multi="theme_tags"),
+                    "by_doc_class": by_doc_class,
+                    "low_signal_events": sum(1 for e in uniq
+                                             if e.get("doc_class") in LOW_SIGNAL_DOC_CLASSES),
                     "routine_repeat_groups": {k: len(v) for k, v in routine_groups.items()}},
         "events": uniq,
     }
@@ -1115,12 +1352,31 @@ def coverage_limits(uniq, pages, failures):
     ds = _count_by(uniq, lambda e: (e.get("time") or {}).get("event_date_source"))
     ek = _count_by(uniq, lambda e: (e.get("evidence") or {}).get("kind"))
     rb = _count_by(uniq, lambda e: (e.get("time") or {}).get("reaction_basis"))
-    # ★ 列表日与成文日不一致的条数 —— 必须由实际数据统计，不手写
-    diff = sum(1 for e in uniq
-               if (e.get("time") or {}).get("published_date")
-               and (e.get("time") or {}).get("published_date") != e.get("event_date"))
+    dc = _count_by(uniq, lambda e: (e.get("time") or {}).get("time_certainty"))
+    # ★★ v0.71：日期冲突**必须分级** —— 普通不一致与档案/迁移冲突不是一回事，
+    #   把「全体最大差」当成一个数字报出去会掩盖两类问题。
+    groups = {}
+    for e in uniq:
+        c = (e.get("time") or {}).get("date_conflict")
+        if not c:
+            continue
+        g = groups.setdefault(c["kind"], {"n": 0, "max": 0, "vals": {}})
+        g["n"] += 1
+        d_ = c.get("delta_days")
+        if isinstance(d_, int):
+            g["max"] = max(g["max"], abs(d_))
+        if c["kind"] == "BULK_MIGRATION_ARTIFACT":
+            g["vals"][c["published_date"]] = c.get("shared_by")
+    parts = []
+    for kind, g in sorted(groups.items()):
+        seg = "%s %d 条（最大差 %d 天）" % (kind, g["n"], g["max"])
+        if g["vals"]:
+            seg += "，共享日期 %s" % "、".join(
+                "%s×%d" % (k, v) for k, v in sorted(g["vals"].items()))
+        parts.append(seg)
     ds_txt = "、".join("%s %d 条" % (k, v) for k, v in sorted(ds.items())) or "无"
     rb_txt = "、".join("%s %d 条" % (k, v) for k, v in sorted(rb.items())) or "无"
+    dc_txt = "、".join("%s %d 条" % (k, v) for k, v in sorted(dc.items())) or "无"
     # ★ 日期范围容易被误读成「研究覆盖」：来源栏目里混有早年归档文档（工信部科技司实测有 2006 年）
     dmin = min(((e.get("event_date") or "") for e in uniq), default="")
     recent_n = sum(1 for e in uniq if (e.get("event_date") or "") >= "2025-01-01")
@@ -1133,13 +1389,19 @@ def coverage_limits(uniq, pages, failures):
         "**日期范围不等于研究覆盖**：最早一条 %s，其中 2025 年以来 %d 条、更早 %d 条 —— "
         "更早的是来源栏目内的**归档文档**（部门栏目不做时间裁剪），"
         "不代表系统在持续跟踪那些年份" % (dmin or "—", recent_n, old_n),
-        "**日期来源不统一**：%s —— 列表页日期与文章页「成文日期」**可能不一致**"
-        "（本产物有 %d 条不一致）→ 事件日期统一取**列表页上网日**（信息实际可获得的时点），"
-        "成文日单列在 `time.published_date`" % (ds_txt, diff),
-        "**正文可得性不同**：%s —— 无正文的多为图片/表格型统计发布或提案答复函，"
+        "**日期来源不统一**：%s。事件日期统一取**列表页上网日**（信息实际可获得的时点），"
+        "文章日期原值单列在 `time.published_date`，**不默认它等于首次公开时间**" % ds_txt,
+        "**列表日 ≠ 文章日期时按类型分开统计**：%s。★ `PUBLISHED_DATE_DIFFERS` 是同一篇文档"
+        "成文日与上网日的正常差异（日期仍可信）；`ARCHIVE_METADATA_CONFLICT` 与 "
+        "`BULK_MIGRATION_ARTIFACT` 是**档案/网站迁移导致的元数据污染**（如同一日期被多条共享），"
+        "这类事件**不计算数值行情窗口**" % ("；".join(parts) or "无"),
+        "**时点可信度分级**：%s —— `EXACT` = 来源时间语义为首次公开时间、有到分钟时间、"
+        "且文章日期与事件日期同一天；`CONSERVATIVE` = 退回保守日期规则；"
+        "`UNCERTAIN` = 日期冲突严重，不给数值化反应" % dc_txt,
+        "**正文可得性不同**：%s —— 无正文的多为图片/表格型统计发布或行政答复，"
         "此时只有标题与 URL 可核，`evidence.kind` 如实标注"
         % ("、".join("%s %d 条" % (k, v) for k, v in sorted(ek.items())) or "无"),
-        "**时点规则按证据强度分级**：%s —— 逐规则说明见 `rules.time_rules`" % rb_txt,
+        "**时点规则分布**：%s —— 逐规则说明见 `rules.time_rules`" % rb_txt,
         "参与广度不可得：行业板块无历史成分 → 只给板块收益与相对基准，不给广度",
         "个股映射未做：只到行业板块级，未建立证券级映射",
         "**无法稳定解析而未接入的栏目**：工信部总目录 `/zwgk/zcwj/` 与装备工业司 `/jgsj/zbys/`"
@@ -1151,9 +1413,134 @@ def coverage_limits(uniq, pages, failures):
     ]
 
 
+# ─────────────────────────── 展示包派生（v0.71 P1：主包轻量化） ───────────────────────────
+# ★★ 为什么：完整产物 1.09 MB（gzip 156 KB）会整包进前端主 bundle。默认视图其实只需要
+#   「候选 + 方向 + 最近 12 条」的完整字段，其余事件只需要索引行。
+#   → 拆成三个文件，**完整产物仍是唯一真相**，其余两个是**确定性派生**（可逐字节复算）：
+#     · `<产物>.json`            完整事件档案（--check 的比对基准，前端不 import）
+#     · `<产物>_view.json`       展示包（前端 import；`display=FULL|INDEX`）
+#     · `<产物>_evidence.json`   原文证据 / 附件 / 被拒关联（前端展开时动态 import）
+VIEW_DISPLAY_LIMIT = 12          # 与前端 RECENT_LIMIT 保持一致
+VIEW_FULL_FIELDS = ("event_id", "title", "event_date", "doc_type", "doc_class",
+                    "first_seen", "last_seen", "seen_count", "presence",
+                    "source", "time", "theme_links", "theme_tags", "research_directions",
+                    "markets", "nature", "status", "gaps", "review", "security_mapping")
+VIEW_INDEX_FIELDS = ("event_id", "title", "event_date", "doc_class", "status", "presence")
+
+
+def split_evidence(doc):
+    """把「大字段」从完整产物里拆出来：`quote` / `attachments` / `rejected_links`。
+
+    ★ 不删除任何内容：`quote_sha256_16` 留在主产物里，原文进 evidence 文件，`--check` 两边对账。
+    """
+    ev = {}
+    for e in doc.get("events") or []:
+        rec = {}
+        q = (e.get("evidence") or {}).get("quote")
+        if q:
+            rec["quote"] = q
+        if (e.get("evidence") or {}).get("attachments"):
+            rec["attachments"] = e["evidence"]["attachments"]
+        if e.get("rejected_links"):
+            rec["rejected_links"] = e["rejected_links"]
+        if rec:
+            ev[e["event_id"]] = rec
+    return ev
+
+
+def slim_doc(doc, evidence):
+    """完整产物 → 主包可承载的版本（evidence 只留 kind / 哈希 / 说明）。
+
+    ★ 与 `split_evidence` 配对使用：主产物里的 `evidence.quote` 置空但**保留哈希**，
+    原文与附件在 evidence 文件里；`rejected_links` 同样外置。
+    """
+    out = json.loads(json.dumps(doc))
+    for e in out.get("events") or []:
+        e["rejected_links"] = []
+        if e.get("evidence"):
+            e["evidence"] = {k: v for k, v in e["evidence"].items()
+                             if k not in ("quote", "attachments")}
+    return out
+
+
+def derive_view(doc):
+    """★★ 确定性派生展示包：无运行时当前时间、sort_keys、带源 sha256。
+
+    `display = FULL`：候选事件、与已映射研究方向相关的事件、最近 N 条（排除低信号）；
+    `display = INDEX`：其余（含低信号行政答复）→ 只给索引行，保证**完整可追溯**。
+    """
+    evs = doc.get("events") or []
+    cand = [e for e in evs if e.get("status") == "CANDIDATE"]
+    cand_ids = {e["event_id"] for e in cand}
+    dirs = [e for e in evs if e["event_id"] not in cand_ids and (e.get("research_directions") or [])]
+    dir_ids = {e["event_id"] for e in dirs}
+    rest = [e for e in evs
+            if e["event_id"] not in cand_ids and e["event_id"] not in dir_ids
+            and e.get("doc_class") not in LOW_SIGNAL_DOC_CLASSES]
+    recent_ids = {e["event_id"] for e in rest[:VIEW_DISPLAY_LIMIT]}
+    full_ids = cand_ids | dir_ids | recent_ids
+
+    rows = []
+    for e in evs:
+        if e["event_id"] in full_ids:
+            r = {k: e.get(k) for k in VIEW_FULL_FIELDS}
+            r["display"] = "FULL"
+        else:
+            r = {k: e.get(k) for k in VIEW_INDEX_FIELDS}
+            r["display"] = "INDEX"
+        r["source"] = {"id": (e.get("source") or {}).get("id"),
+                       "name": (e.get("source") or {}).get("name"),
+                       "publisher": (e.get("source") or {}).get("publisher"),
+                       "url": (e.get("source") or {}).get("url")}
+        if r["display"] == "INDEX":
+            # ★★ v0.71：时点口径对**每条**事件都必须可解释（P0 第一优先级）→
+            #   索引行也要带语义 / 可信度 / 拒绝原因 / 冲突类型，只是不带行情与原文。
+            r["time"] = {"time_certainty": (e.get("time") or {}).get("time_certainty"),
+                         "reaction_basis": (e.get("time") or {}).get("reaction_basis"),
+                         "event_date_source": (e.get("time") or {}).get("event_date_source"),
+                         "published_date": (e.get("time") or {}).get("published_date"),
+                         "published_time": (e.get("time") or {}).get("published_time"),
+                         "time_precision": (e.get("time") or {}).get("time_precision"),
+                         "time_field_semantics": (e.get("time") or {}).get("time_field_semantics"),
+                         "precise_time_rejected": (e.get("time") or {}).get("precise_time_rejected"),
+                         "date_conflict": (e.get("time") or {}).get("date_conflict")}
+            r["nature"] = {"kind": (e.get("nature") or {}).get("kind"),
+                           "repeat_count": (e.get("nature") or {}).get("repeat_count")}
+            r["review"] = e.get("review")
+            r["theme_tags"] = e.get("theme_tags") or []
+            r["research_directions"] = e.get("research_directions") or []
+            r["evidence"] = {"kind": (e.get("evidence") or {}).get("kind"),
+                             "quote_sha256_16": (e.get("evidence") or {}).get("quote_sha256_16")}
+        rows.append(r)
+
+    payload = json.dumps(doc, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    return {
+        "artifact": "new_theme_radar_view", "artifact_version": doc.get("artifact_version"),
+        "source_artifact": "new_theme_radar_v0_%s.json" % str(doc.get("artifact_version")).split(".")[-1],
+        "source_sha256_16": hashlib.sha256(payload).hexdigest()[:16],
+        "generated_at": doc.get("generated_at"), "as_of": doc.get("as_of"),
+        "coverage": doc.get("coverage"), "rules": doc.get("rules"),
+        "status_legend": doc.get("status_legend"), "nature_legend": doc.get("nature_legend"),
+        "doc_class_legend": doc.get("doc_class_legend"),
+        "low_signal_doc_classes": doc.get("low_signal_doc_classes"),
+        "research_directions": doc.get("research_directions"),
+        "research_direction_role": doc.get("research_direction_role"),
+        "theme_tags_by_keyword": doc.get("theme_tags_by_keyword"),
+        "summary": doc.get("summary"),
+        "display_policy": {
+            "full": "候选事件 + 与已映射研究方向相关的事件 + 最近 %d 条（排除低信号）" % VIEW_DISPLAY_LIMIT,
+            "index": "其余事件只给索引行（含低信号行政答复）→ 完整档案见 source_artifact",
+            "evidence": "原文 / 附件 / 被拒关联在 <产物>_evidence.json，按需加载",
+        },
+        "events": rows,
+    }
+
+
 # ─────────────────────────── 校验 ───────────────────────────
 def check():
-    files = sorted([f for f in os.listdir(CURRENT) if OUT_RE.match(f)],
+    # ★★ v0.71：只校验**完整产物**（`_view` / `_evidence` 是派生物，不参与选版）
+    files = sorted([f for f in os.listdir(CURRENT)
+                    if OUT_RE.match(f) and "_view" not in f and "_evidence" not in f],
                    key=lambda f: int(OUT_RE.match(f).group(1)))
     if not files:
         print("FAIL: 事件产物不存在")
@@ -1187,11 +1574,59 @@ def check():
     # 声明的 event_date_source / reaction_basis 计数必须与实际一致
     for key, fn in (("event_date_sources", lambda e: (e.get("time") or {}).get("event_date_source")),
                     ("reaction_bases", lambda e: (e.get("time") or {}).get("reaction_basis")),
-                    ("evidence_kinds", lambda e: (e.get("evidence") or {}).get("kind"))):
+                    ("evidence_kinds", lambda e: (e.get("evidence") or {}).get("kind")),
+                    ("by_doc_class", lambda e: e.get("doc_class")),
+                    ("by_time_certainty", lambda e: (e.get("time") or {}).get("time_certainty"))):
         want = _count_by(d.get("events") or [], fn)
         if (cov.get(key) or {}) != want:
             errs.append("coverage.%s 与事件实际分布不一致（产物 %s vs 实际 %s）"
                         % (key, cov.get(key), want))
+    # ★★ v0.71：日期冲突分级统计必须与事件实算一致（不得手写「最大差 N 天」）
+    want_dc = {}
+    for e in d.get("events") or []:
+        c = (e.get("time") or {}).get("date_conflict")
+        if not c:
+            continue
+        g = want_dc.setdefault(c["kind"], {"events": 0, "max_abs_days": 0, "shared_values": {}})
+        g["events"] += 1
+        if isinstance(c.get("delta_days"), int):
+            g["max_abs_days"] = max(g["max_abs_days"], abs(c["delta_days"]))
+        if c["kind"] == "BULK_MIGRATION_ARTIFACT":
+            g["shared_values"][c["published_date"]] = c.get("shared_by")
+    if (cov.get("date_conflicts") or {}) != want_dc:
+        errs.append("coverage.date_conflicts 与实算不一致（产物 %s vs 实际 %s）"
+                    % (cov.get("date_conflicts"), want_dc))
+
+    # ★★ v0.71：**派生物必须与完整产物一致** —— 展示包逐字段复算、证据哈希逐条核对。
+    base = path[:-len(".json")]
+    vpath, epath = base + "_view.json", base + "_evidence.json"
+    ev_map = {}
+    if os.path.exists(epath):
+        ev_map = json.load(open(epath, encoding="utf-8"))
+    else:
+        errs.append("缺少证据文件 %s（主产物已剥离原文）" % os.path.basename(epath))
+    for e in d.get("events") or []:
+        sha = (e.get("evidence") or {}).get("quote_sha256_16")
+        if not sha:
+            continue
+        q = (ev_map.get(e["event_id"]) or {}).get("quote")
+        if not q:
+            errs.append("%s 有原文哈希但证据文件里没有原文" % e["event_id"])
+        elif hashlib.sha256(q.encode("utf-8")).hexdigest()[:16] != sha:
+            errs.append("%s 证据文件里的原文哈希不匹配" % e["event_id"])
+    if os.path.exists(vpath):
+        got = json.load(open(vpath, encoding="utf-8"))
+        want = derive_view(d)
+        if got != want:
+            diff = [k for k in set(got) | set(want) if got.get(k) != want.get(k)]
+            errs.append("展示包与完整产物重新派生的结果不一致（差异键：%s）" % diff[:6])
+        else:
+            print("  展示包复算一致（%d 条事件，FULL %d / INDEX %d）"
+                  % (len(got.get("events") or []),
+                     sum(1 for x in got.get("events") or [] if x.get("display") == "FULL"),
+                     sum(1 for x in got.get("events") or [] if x.get("display") == "INDEX")))
+    else:
+        errs.append("缺少展示包 %s（前端将退回完整产物）" % os.path.basename(vpath))
     for e in d.get("events") or []:
         eid = e.get("event_id")
         if not e.get("source", {}).get("url"):
@@ -1219,12 +1654,11 @@ def check():
                 errs.append("%s matched_in 非法（%s）" % (eid, where))
             if where == "QUOTE" and e.get("doc_type") not in QUOTE_MATCH_DOC_TYPES:
                 errs.append("%s 正文命中但文档类型 %s 不允许建关联" % (eid, e.get("doc_type")))
-        # ② 原文哈希可复核
+        # ② 原文哈希可复核（★ v0.71：原文已拆到 evidence 文件，这里只在**内联**时校验；
+        #    拆分后的核对在下面的「证据文件 vs 哈希」一段）
         ev = e.get("evidence") or {}
-        if ev.get("quote_sha256_16"):
-            if not ev.get("quote"):
-                errs.append("%s 有哈希但无原文" % eid)
-            elif hashlib.sha256(ev["quote"].encode("utf-8")).hexdigest()[:16] != ev["quote_sha256_16"]:
+        if ev.get("quote_sha256_16") and ev.get("quote"):
+            if hashlib.sha256(ev["quote"].encode("utf-8")).hexdigest()[:16] != ev["quote_sha256_16"]:
                 errs.append("%s 原文哈希不匹配" % eid)
         # ③ 逐板块：markets 的板块集合必须与 theme_links 一致
         link_sids = [L.get("board_series") for L in (e.get("theme_links") or [])]
@@ -1254,6 +1688,37 @@ def check():
             errs.append("%s 事件性质非法（%s）" % (eid, nat.get("kind")))
         if not nat.get("basis"):
             errs.append("%s 事件性质缺判据" % eid)
+        # ★★ v0.71：时点口径的三条门槛必须**在产物里自洽** —— 这是本轮最核心的不变量
+        t_ = e.get("time") or {}
+        basis_ = t_.get("reaction_basis")
+        cert_ = t_.get("time_certainty")
+        sem_ = t_.get("time_field_semantics")
+        pub_d, ev_d = t_.get("published_date"), e.get("event_date")
+        if cert_ not in ("EXACT", "CONSERVATIVE", "UNCERTAIN"):
+            errs.append("%s time_certainty 非法（%s）" % (eid, cert_))
+        if basis_ in ("PUBLISHED_AFTER_CLOSE", "PUBLISHED_BEFORE_OPEN"):
+            # ① 语义必须可信 ② 日期必须同天 ③ 必须有精确时间
+            if sem_ not in TRUSTED_PUBLICATION_SEMANTICS:
+                errs.append("%s 用了盘前/盘后规则，但来源时间语义不可信（%s）" % (eid, sem_))
+            if not (pub_d and pub_d == ev_d):
+                errs.append("%s 用了盘前/盘后规则，但 published_date(%s) != event_date(%s)"
+                            % (eid, pub_d, ev_d))
+            if t_.get("time_precision") != "MINUTE":
+                errs.append("%s 用了盘前/盘后规则，但没有精确时间" % eid)
+            if cert_ != "EXACT":
+                errs.append("%s 用了盘前/盘后规则，但 time_certainty != EXACT（%s）" % (eid, cert_))
+        if cert_ == "UNCERTAIN":
+            if not t_.get("date_conflict"):
+                errs.append("%s 标 UNCERTAIN 但没记录日期冲突原因" % eid)
+            if e.get("markets"):
+                errs.append("%s 标 UNCERTAIN 却仍有数值行情记录（应不计算）" % eid)
+            if not any("时点不确定" in g for g in (e.get("gaps") or [])):
+                errs.append("%s 标 UNCERTAIN 但 gaps 里没有显式披露" % eid)
+        if pub_d and pub_d != ev_d and basis_ in ("PUBLISHED_AFTER_CLOSE",
+                                                  "PUBLISHED_BEFORE_OPEN"):
+            errs.append("%s 日期不一致却用了精确时点规则（%s）" % (eid, basis_))
+        if e.get("doc_class") not in DOC_CLASS_LEGEND:
+            errs.append("%s doc_class 非法（%s）" % (eid, e.get("doc_class")))
         # ★★ v0.70：具体主题必须由**实际命中关键词**推出，不得从共享代理序列反推
         for L in e.get("theme_links") or []:
             want_tag = THEME_TAG_BY_KEYWORD.get(L.get("keyword"))
@@ -1381,13 +1846,21 @@ def main(argv):
         if not doc["events"]:
             print("FAIL: 本次抓到 0 条事件 → 拒绝写入新版本（不覆盖有效产物）")
             return 1
-        out = os.path.join(CURRENT, "new_theme_radar_v0_%d.json" % a.version)
-        if os.path.exists(out):
-            print("FAIL: 目标已存在：%s" % out)
+        base = os.path.join(CURRENT, "new_theme_radar_v0_%d" % a.version)
+        outs = [base + ".json", base + "_view.json", base + "_evidence.json"]
+        exists = [p for p in outs if os.path.exists(p)]
+        if exists:
+            print("FAIL: 目标已存在：%s" % "、".join(os.path.basename(p) for p in exists))
             return 1
-        with open(out, "w", encoding="utf-8", newline="\n") as fh:
-            fh.write(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
-        print("已生成 %s" % os.path.relpath(out, REPO))
+        # ★★ v0.71：三个文件同源生成 —— 完整产物（真相）+ 展示包 + 按需证据
+        evidence = split_evidence(doc)
+        slim = slim_doc(doc, evidence)
+        view = derive_view(slim)
+        for path, obj in ((outs[0], slim), (outs[1], view), (outs[2], evidence)):
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(json.dumps(obj, ensure_ascii=False, indent=1,
+                                    sort_keys=(obj is evidence)) + "\n")
+            print("已生成 %s（%d 字节）" % (os.path.relpath(path, REPO), os.path.getsize(path)))
     return 0
 
 

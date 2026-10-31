@@ -1,53 +1,65 @@
 /**
- * ★★ v0.70：自动发现的新题材线索 —— 市场状态 vs 事件性质 / 主题粒度 / 覆盖说明（产物 `new_theme_radar_v0_5`）。
+ * ★★ v0.71：自动发现的新题材线索（展示包 `new_theme_radar_v0_6_view`）。
  *
  * 本轮回归的三类缺陷：
- *  A. **把「相对表现为正」读成「新催化」**：候选区标题必须只描述**市场条件**，
- *     `CANDIDATE` 文案必须是「待人工复核」；性质=背景/常规重复的事件即使进候选区，
- *     也必须显式标注「只作市场观察，不构成产业催化」。
- *  B. **覆盖说明是旧文案**：`coverage.limits` / `rules.time_rule` 必须与实际来源注册表、
- *     实际出现的时点规则对得上（不得写着「单一发布机构」而实际有 4 个机构）。
- *  C. **主题标签由共享代理序列反推**：`theme_tags` 必须来自实际命中的关键词，
- *     `research_directions` 只是上层分组（同一个方向可能挂多条序列）。
+ *  A. **时点口径不成立**：`published_date != event_date` 时仍用文章元数据的时分判断
+ *     盘前/盘后（实测 v0.5 有 58 条）→ 现在必须退回保守规则并写明原因；
+ *     日期冲突严重（档案/迁移）→ `UNCERTAIN` 且**不计算**数值反应。
+ *  B. **低信号主导默认视图**：行政答复（提案/建议答复）标题只有编号 →
+ *     移出最近区，但保留归档区（标题 / URL / 分类理由 / 统计）。
+ *  C. **主包过大**：只 import 展示包（FULL/INDEX），原文证据按需加载。
  *
- * 另保留 v0.68/v0.69 的回归：候选可见性、逐板块语义、计数语义、禁用词、裸 Markdown。
+ * 保留 v0.68–v0.70 的回归：候选可见性、逐板块语义、计数语义、性质正交、主题粒度、禁用词。
  */
 import { describe, it, expect } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { NewThemeRadarSection, relationLabel, natureCaveat } from '../NewThemeRadarSection';
-import raw from '@current/new_theme_radar_v0_5.json';
+import { NewThemeRadarSection, relationLabel, natureCaveat, timeExplain }
+  from '../NewThemeRadarSection';
+import raw from '@current/new_theme_radar_v0_6_view.json';
 
 interface D {
-  as_of: string; artifact_version?: string;
+  as_of: string; artifact_version?: string; source_artifact?: string;
   coverage: { publishers?: string[]; publisher?: string; sources?: { id: string; name: string }[];
     date_range?: [string, string] | null; events: number; failures?: unknown[];
     limits?: string[]; event_date_sources?: Record<string, number>;
+    by_time_certainty?: Record<string, number>;
+    date_conflicts?: Record<string, { events: number; max_abs_days: number }>;
     reaction_bases?: Record<string, number> };
   summary: { events: number; candidates: number; candidates_are?: string;
     by_nature?: Record<string, number>; by_direction?: Record<string, number>;
-    by_theme_tag?: Record<string, number>; routine_repeat_groups?: Record<string, number> };
+    by_theme_tag?: Record<string, number>; by_doc_class?: Record<string, number>;
+    low_signal_events?: number; routine_repeat_groups?: Record<string, number> };
   nature_legend?: Record<string, string>;
-  research_directions?: { direction: string; series: string[] }[];
+  doc_class_legend?: Record<string, string>;
+  low_signal_doc_classes?: string[];
+  research_directions?: { direction: string; series: string[]; scope_note?: string }[];
   theme_tags_by_keyword?: Record<string, string>;
   status_legend: Record<string, string>;
   rules?: { count_semantics?: string; time_rule?: string; time_rules?: Record<string, string> };
   events: {
-    event_id: string; event_date: string; status: string;
+    event_id: string; event_date: string; status: string; doc_class?: string;
+    display?: 'FULL' | 'INDEX';
     nature?: { kind: string; basis: string; repeat_count?: number } | null;
     theme_tags?: string[];
     research_directions?: string[];
     source: { id?: string; url: string; name?: string };
-    theme_links: { board_series: string; board_name: string; keyword: string; relation: string;
+    theme_links?: { board_series: string; board_name: string; keyword: string; relation: string;
       theme_tag?: string | null }[];
     markets?: { board_series: string; board_name?: string; window?: [string, string] | null;
       excess_pp?: number | null; board_ret_pct?: number | null; observation_trading_days?: number | null;
       assessment?: { relative_positive: boolean; absolute_positive: boolean; note: string } | null;
       status: string }[];
     assessment?: unknown;
-    time?: { event_date_source?: string; basis_day?: string | null; reaction_basis?: string };
-    review?: { verdict: string } | null;
-    gaps: string[];
+    time?: { event_date_source?: string; basis_day?: string | null; reaction_basis?: string;
+      published_date?: string | null; published_time?: string | null;
+      time_precision?: string; time_field_semantics?: string;
+      time_certainty?: 'EXACT' | 'CONSERVATIVE' | 'UNCERTAIN';
+      precise_time_rejected?: { reason: string; note: string } | null;
+      date_conflict?: { kind: string; published_date: string; delta_days: number | null;
+        note: string } | null };
+    review?: { verdict: string; note: string } | null;
+    gaps?: string[];
   }[];
 }
 const doc = raw as unknown as D;
@@ -61,11 +73,18 @@ function sectionHtml(name: 'candidates' | 'directions' | 'recent'): string {
   const startTag = `data-cand-section="${name}"`;
   const i = html.indexOf(startTag);
   if (i < 0) return '';
+  // ★ v0.71：recent 的终点是「低信号归档」区（否则归档内容会被算进最近区）
   const order = ['data-cand-section="candidates"', 'data-cand-section="directions"',
-    'data-cand-section="recent"', 'data-nature-legend'];
+    'data-cand-section="recent"', 'data-low-signal-archive', 'data-nature-legend'];
   const nextTag = order[order.indexOf(startTag) + 1];
   const nextIdx = nextTag ? html.indexOf(nextTag) : -1;
   return html.slice(i, nextIdx > i ? nextIdx : html.length);
+}
+
+/** 归档区 HTML（v0.71） */
+function archiveHtml(): string {
+  const i = html.indexOf('data-low-signal-archive');
+  return i < 0 ? '' : html.slice(i);
 }
 
 const candidates = doc.events.filter((e) => e.status === 'CANDIDATE');
@@ -138,11 +157,11 @@ describe('v0.68 逐板块语义', () => {
     );
     const proxyRendered = doc.events
       .filter((e) => rendered.has(e.event_id))
-      .flatMap((e) => e.theme_links)
+      .flatMap((e) => e.theme_links ?? [])
       .filter((l) => l.relation === 'PROXY');
     if (proxyRendered.length > 0) expect(text).toContain('代理板块，非主题本身');
     // ③ 产物里确实存在 PROXY 关联（若没有，说明代理映射被误删）
-    const proxyAll = doc.events.flatMap((e) => e.theme_links).filter((l) => l.relation === 'PROXY');
+    const proxyAll = doc.events.flatMap((e) => e.theme_links ?? []).filter((l) => l.relation === 'PROXY');
     expect(proxyAll.length, '产物应保留 PROXY 代理关联').toBeGreaterThan(0);
   });
 
@@ -317,10 +336,17 @@ describe('v0.70 主题粒度：具体主题 ≠ 上层方向', () => {
     const map = doc.theme_tags_by_keyword ?? {};
     expect(Object.keys(map).length, '应有显式关键词→主题映射表').toBeGreaterThan(0);
     for (const e of doc.events) {
-      const want = [...new Set(e.theme_links.map((l) => map[l.keyword]).filter(Boolean))];
+      // ★ v0.71：INDEX 行只保留索引字段（不含 theme_links），主题标签无从复算 →
+      //   只对 FULL 事件做「由关键词推出」的严格断言。
+      if (e.display !== 'FULL') {
+        expect(e.theme_tags, `${e.event_id} INDEX 行仍应保留主题标签`).toBeDefined();
+        continue;
+      }
+      const links = e.theme_links ?? [];
+      const want = [...new Set(links.map((l) => map[l.keyword]).filter(Boolean))];
       expect(e.theme_tags ?? [], `${e.event_id} 的 theme_tags 必须由关键词映射推出`)
         .toEqual(want);
-      for (const l of e.theme_links) {
+      for (const l of links) {
         if (map[l.keyword]) expect(l.theme_tag).toBe(map[l.keyword]);
       }
     }
@@ -330,7 +356,7 @@ describe('v0.70 主题粒度：具体主题 ≠ 上层方向', () => {
     // 反例回归：医用耗材与脑机接口都挂 BK881144，但主题不同
     const bySid = new Map<string, Set<string>>();
     for (const e of doc.events) {
-      for (const l of e.theme_links) {
+      for (const l of e.theme_links ?? []) {
         if (!bySid.has(l.board_series)) bySid.set(l.board_series, new Set());
         if (l.theme_tag) bySid.get(l.board_series)!.add(l.theme_tag);
       }
@@ -351,5 +377,196 @@ describe('v0.70 主题粒度：具体主题 ≠ 上层方向', () => {
     expect(html).toMatch(/data-theme-tag="/);
     // 研究方向段必须说明「方向是上层分组、具体主题看主题标签」
     expect(sectionHtml('directions')).toContain('上层分组');
+  });
+});
+
+describe('v0.71 时点口径可解释（P0）', () => {
+  const trusted = new Set(['PUBLICATION_TIME']);
+
+  it('★★ 每条 EXACT 事件必须同时满足三条门槛（产物自洽，不是只改标签）', () => {
+    const exact = doc.events.filter((e) => e.time?.time_certainty === 'EXACT');
+    expect(exact.length, '应存在满足三条门槛的精确时点事件').toBeGreaterThan(0);
+    for (const e of exact) {
+      expect(trusted.has(e.time!.time_field_semantics ?? ''), `${e.event_id} 语义不可信`).toBe(true);
+      expect(e.time!.published_date, `${e.event_id} 文章日期必须与事件日同天`)
+        .toBe(e.event_date);
+      expect(e.time!.time_precision).toBe('MINUTE');
+      expect(['PUBLISHED_AFTER_CLOSE', 'PUBLISHED_BEFORE_OPEN']).toContain(e.time!.reaction_basis);
+    }
+  });
+
+  it('★★ 用了盘前/盘后规则的事件，不得出现「日期不一致」或「语义不可信」', () => {
+    // 反例回归：v0.5 有 58 条违反（NEA 51 / MIIT 7）
+    const bad = doc.events.filter((e) =>
+      ['PUBLISHED_AFTER_CLOSE', 'PUBLISHED_BEFORE_OPEN'].includes(e.time?.reaction_basis ?? '')
+      && (e.time!.published_date !== e.event_date
+        || !trusted.has(e.time!.time_field_semantics ?? '')));
+    expect(bad.map((e) => e.event_id), '不得再用文章元数据的时分判断事件日的盘前/盘后').toEqual([]);
+  });
+
+  it('★★ 日期不一致时退回保守规则，并写明拒绝原因', () => {
+    // 排除 UNCERTAIN（那是「冲突严重」，单独一组断言）
+    const mismatched = doc.events.filter((e) => e.time?.published_date
+      && e.time.published_date !== e.event_date
+      && e.time.time_precision === 'MINUTE'
+      && e.time.time_certainty !== 'UNCERTAIN');
+    expect(mismatched.length, '产物里应存在「有精确时间但日期不一致」的事件').toBeGreaterThan(0);
+    for (const e of mismatched) {
+      expect(e.time!.reaction_basis, `${e.event_id} 应退回保守规则`)
+        .toMatch(/^DATE_ONLY_CONSERVATIVE/);
+      // 语义不可信会**优先**于日期不一致被拒；两者都必须有明确原因，不能静默退回
+      expect(['DATE_MISMATCH', 'SEMANTICS_UNTRUSTED'],
+        `${e.event_id} 必须写明拒绝原因`).toContain(e.time!.precise_time_rejected?.reason);
+    }
+  });
+
+  it('★★ 日期冲突严重（档案/迁移）必须标 UNCERTAIN 且不计算数值反应', () => {
+    const unc = doc.events.filter((e) => e.time?.time_certainty === 'UNCERTAIN');
+    expect(unc.length, '应存在档案日期冲突的事件').toBeGreaterThan(0);
+    for (const e of unc) {
+      expect(e.time!.date_conflict, `${e.event_id} 必须记录冲突类型`).toBeTruthy();
+      expect(['ARCHIVE_METADATA_CONFLICT', 'BULK_MIGRATION_ARTIFACT', 'UNPARSEABLE_DATE'])
+        .toContain(e.time!.date_conflict!.kind);
+      expect(e.time!.reaction_basis).toBe('DATE_CONFLICT_UNCERTAIN');
+      expect(e.markets ?? [], `${e.event_id} 不得保留数值行情`).toEqual([]);
+    }
+    // 页面上必须显式披露，不能静默
+    expect(html).toMatch(/data-certainty="UNCERTAIN"/);
+    // 披露区在 <details> 内 → 用 text（chromeText 会剥掉 details）
+    expect(text).toContain('时点不确定');
+    expect(text).toContain('不计算');
+  });
+
+  it('★★ 日期差异必须分级统计，不能把全体最大差当成一个数', () => {
+    const dc = doc.coverage.date_conflicts ?? {};
+    expect(Object.keys(dc).length, '应至少出现两类日期差异').toBeGreaterThanOrEqual(2);
+    expect(dc.PUBLISHED_DATE_DIFFERS, '普通不一致').toBeTruthy();
+    expect(dc.BULK_MIGRATION_ARTIFACT, '迁移批量赋值').toBeTruthy();
+    // 两类最大差不同 → 证明「最大差」不能笼统报
+    expect(dc.PUBLISHED_DATE_DIFFERS.max_abs_days)
+      .toBeLessThan(dc.BULK_MIGRATION_ARTIFACT.max_abs_days);
+    // 覆盖说明必须提到分级，而不是只给一个数字
+    const limits = (doc.coverage.limits ?? []).join(' ');
+    expect(limits).toContain('PUBLISHED_DATE_DIFFERS');
+    expect(limits).toContain('BULK_MIGRATION_ARTIFACT');
+  });
+
+  it('★★ timeExplain 纯函数：三种可信度都必须给出可读解释', () => {
+    expect(timeExplain(null)).toBeNull();
+    expect(timeExplain({ time_certainty: 'EXACT' })).toContain('精确时点');
+    const cons = timeExplain({ time_certainty: 'CONSERVATIVE',
+      precise_time_rejected: { reason: 'DATE_MISMATCH', note: '文章日期 2025-06-22 ≠ 事件日期' } });
+    expect(cons).toContain('退回保守规则');
+    expect(cons).toContain('文章日期 ≠ 事件日期');
+    const unc = timeExplain({ time_certainty: 'UNCERTAIN',
+      date_conflict: { kind: 'ARCHIVE_METADATA_CONFLICT', published_date: '2023-05-12',
+        delta_days: 6125, note: '相差 6125 天' } });
+    expect(unc).toContain('时点不确定');
+    expect(unc).toContain('不计算');
+    // 保守但无拒绝原因（纯日期事件）→ 不需要额外解释
+    expect(timeExplain({ time_certainty: 'CONSERVATIVE' })).toBeNull();
+  });
+
+  it('★ 来源注册表必须声明时间字段语义（不得凭字段名推定）', () => {
+    const srcs = doc.coverage.sources ?? [];
+    const withTf = srcs.filter((s) => (s as { time_field?: unknown }).time_field);
+    expect(withTf.length, '展示包应带上来源的时间字段语义').toBe(srcs.length);
+  });
+});
+
+describe('v0.71 低信号治理（P1）', () => {
+  it('★★ 低信号文档（行政答复）必须移出最近区，但保留归档与追溯入口', () => {
+    const low = new Set(doc.low_signal_doc_classes ?? []);
+    expect(low.size, '应声明低信号类别').toBeGreaterThan(0);
+    const archived = doc.events.filter((e) => low.has(e.doc_class ?? ''));
+    expect(archived.length, '应存在低信号归档事件').toBeGreaterThan(0);
+
+    const recentHtml = sectionHtml('recent');
+    for (const e of archived) {
+      expect(recentHtml, `低信号事件 ${e.event_id} 不应出现在最近区`)
+        .not.toContain(`data-event="${e.event_id}"`);
+    }
+    // 归档区必须存在，且每条带 URL 与分类理由
+    expect(html).toContain(`data-low-signal-archive="${archived.length}"`);
+    for (const e of archived) {
+      expect(html, `${e.event_id} 的原始链接必须保留`).toContain(e.source.url);
+    }
+    expect(text).toContain('低信号归档');
+    expect(text).toContain('不删除');
+  });
+
+  it('★★ 低信号不等于「与产业无关」：归档说明不得下无关结论', () => {
+    const arch = archiveHtml();
+    // 只看**我们的说明段落**（归档行的 review note 来自产物，可能含「与产业无关」这类既有措辞）
+    const noteStart = arch.indexOf('data-archive-note="1"');
+    const noteEnd = arch.indexOf('</p>', noteStart);
+    const ourNote = arch.slice(noteStart, noteEnd > 0 ? noteEnd : noteStart + 800);
+    expect(ourNote).toContain('标题不足以支撑板块关联');
+    // ★ 文案是「**不是**『与产业无关』的判断」—— 明确否定，不得改成肯定式定性
+    expect(ourNote).toContain('不是');
+    expect(ourNote).not.toContain('已确认无关');
+    expect(ourNote).not.toContain('与行业景气无直接关系');
+  });
+
+  it('★ 政策行动 / 标准程序 / 产业数据 不得被当成低信号隐藏', () => {
+    const low = new Set(doc.low_signal_doc_classes ?? []);
+    for (const c of ['POLICY_ACTION', 'STANDARD_PROCEDURE', 'INDUSTRY_DATA']) {
+      expect(low.has(c), `${c} 不应被隐藏`).toBe(false);
+    }
+    // 这几类必须出现在默认视图（FULL）里
+    const shown = new Set(doc.events.filter((e) => e.display === 'FULL').map((e) => e.doc_class));
+    expect(shown.has('POLICY_ACTION')).toBe(true);
+  });
+
+  it('★ 分类图例与统计齐全', () => {
+    const legend = doc.doc_class_legend ?? {};
+    expect(Object.keys(legend).length).toBe(6);
+    const stat = doc.summary.by_doc_class ?? {};
+    const total = Object.values(stat).reduce((a, b) => a + b, 0);
+    expect(total, '分类统计必须覆盖全部事件').toBe(doc.events.length);
+    for (const k of Object.keys(stat)) expect(legend).toHaveProperty([k]);
+  });
+});
+
+describe('v0.71 主包轻量化（P1）', () => {
+  it('★★ 只 import 展示包：FULL/INDEX 分工明确，完整档案可追溯', () => {
+    const full = doc.events.filter((e) => e.display === 'FULL');
+    const index = doc.events.filter((e) => e.display === 'INDEX');
+    expect(full.length, '应有完整展示的事件').toBeGreaterThan(0);
+    expect(index.length, '应有索引事件').toBeGreaterThan(0);
+    expect(full.length + index.length).toBe(doc.events.length);
+
+    // 候选与方向事件必须是 FULL（不能因为压缩而藏起来）
+    for (const e of doc.events.filter((x) => x.status === 'CANDIDATE')) {
+      expect(e.display, `候选 ${e.event_id} 必须完整展示`).toBe('FULL');
+    }
+    for (const e of doc.events.filter((x) => (x.research_directions ?? []).length > 0)) {
+      expect(e.display, `方向事件 ${e.event_id} 必须完整展示`).toBe('FULL');
+    }
+    // INDEX 行必须保留可追溯字段
+    for (const e of index) {
+      expect(e.event_id).toBeTruthy();
+      expect(e.event_date).toBeTruthy();
+      expect(e.source.url, `${e.event_id} 缺原始 URL`).toBeTruthy();
+    }
+    // 展示包必须指向完整产物
+    expect(doc.source_artifact).toMatch(/new_theme_radar_v0_\d+\.json$/);
+  });
+
+  it('★★ 原文不在主包内：主产物只有哈希，展开时才按需加载', () => {
+    // 主包（展示包）里不应内联长原文
+    const inlined = doc.events.filter((e) => ((e as { evidence?: { quote?: string } })
+      .evidence?.quote ?? '').length > 0);
+    expect(inlined.map((e) => e.event_id), '展示包不应内联原文').toEqual([]);
+    // 但哈希必须保留（可核验）—— 在展开的原文区里可见
+    const withSha = doc.events.filter((e) => (e as { evidence?: { quote_sha256_16?: string } })
+      .evidence?.quote_sha256_16);
+    expect(withSha.length, '必须保留原文哈希').toBeGreaterThan(0);
+    expect(text).toContain('原文摘要');
+  });
+
+  it('★ 计数与展示规模说明不得混淆「已展示」与「总条数」', () => {
+    expect(doc.summary.events).toBe(doc.events.length);
+    expect(chromeText).toContain('索引行');
   });
 });

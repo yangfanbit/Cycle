@@ -58,24 +58,172 @@ class TestTimeBasis(unittest.TestCase):
 
 
 class TestPublishedTime(unittest.TestCase):
-    """★ v0.69：有到分钟的发布时间时，只在无歧义情形使用。"""
+    """★ v0.69：有到分钟的发布时间时，只在无歧义情形使用。
+
+    ★★ v0.71 收紧：**三条门槛同时成立**才用精确时间 ——
+    来源语义为 `PUBLICATION_TIME`、有到分钟时间、且 `published_date == event_date`。
+    """
+
+    @staticmethod
+    def pub(t, d="2026-09-24"):
+        return {"date": d, "time": t, "precision": "MINUTE"}
 
     def test_T2c_after_close_uses_event_day_close(self):
-        tb = B.time_basis_of("2026-09-24", CAL, {"time": "18:00", "precision": "MINUTE"})
+        tb = B.time_basis_of("2026-09-24", CAL, self.pub("18:00"), "PUBLICATION_TIME")
         self.assertEqual(tb["rule"], "PUBLISHED_AFTER_CLOSE")
         self.assertEqual(tb["basis_day"], "2026-09-24")
         self.assertEqual(tb["observe_from"], "2026-09-28")
+        self.assertEqual(tb["time_certainty"], "EXACT")
 
     def test_T2d_before_open_uses_prior_close(self):
-        tb = B.time_basis_of("2026-09-24", CAL, {"time": "08:30", "precision": "MINUTE"})
+        tb = B.time_basis_of("2026-09-24", CAL, self.pub("08:30"), "PUBLICATION_TIME")
         self.assertEqual(tb["rule"], "PUBLISHED_BEFORE_OPEN")
         self.assertEqual(tb["basis_day"], "2026-09-23")
         self.assertEqual(tb["observe_from"], "2026-09-24")
+        self.assertEqual(tb["time_certainty"], "EXACT")
 
     def test_T2e_intraday_falls_back_to_conservative(self):
         """盘中发布无法判断先后 → 退回保守规则（事件日涨跌不计入）。"""
-        tb = B.time_basis_of("2026-09-24", CAL, {"time": "11:00", "precision": "MINUTE"})
+        tb = B.time_basis_of("2026-09-24", CAL, self.pub("11:00"), "PUBLICATION_TIME")
         self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"))
+        self.assertEqual(tb["time_certainty"], "CONSERVATIVE")
+
+
+class TestDateMismatchGate(unittest.TestCase):
+    """★★ v0.71 P0：`published_date != event_date` 时**禁止**用该元数据的时分判断盘前/盘后。
+
+    实测 v0.5 有 58 条违反（NEA 51 / MIIT 7）：列表上网日 2025-12-18、文章成文 2025-06-22，
+    却用成文日的 08:xx 判定「开盘前」→ 事件日的反应窗口被错位。
+    """
+
+    @staticmethod
+    def pub(t, d):
+        return {"date": d, "time": t, "precision": "MINUTE"}
+
+    def test_T2f_mismatch_blocks_after_close(self):
+        tb = B.time_basis_of("2026-09-24", CAL, self.pub("18:00", "2026-09-10"), "PUBLICATION_TIME")
+        self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"),
+                        "日期不一致时不得用盘后规则")
+        self.assertEqual(tb["precise_time_rejected"]["reason"], "DATE_MISMATCH")
+        self.assertIn("2026-09-10", tb["precise_time_rejected"]["note"])
+
+    def test_T2g_mismatch_blocks_before_open(self):
+        tb = B.time_basis_of("2026-09-24", CAL, self.pub("08:30", "2026-09-10"), "PUBLICATION_TIME")
+        self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"),
+                        "日期不一致时不得用盘前规则")
+        self.assertEqual(tb["precise_time_rejected"]["reason"], "DATE_MISMATCH")
+
+    def test_T2h_untrusted_semantics_blocks_precise_rules(self):
+        """成文时间语义 + 同一天 + 精确时间 → 仍不能用盘前/盘后。"""
+        tb = B.time_basis_of("2026-09-24", CAL, self.pub("18:00", "2026-09-24"),
+                             "DOCUMENT_CREATION_TIME")
+        self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"))
+        self.assertEqual(tb["precise_time_rejected"]["reason"], "SEMANTICS_UNTRUSTED")
+        # UNKNOWN 同样不可信
+        tb2 = B.time_basis_of("2026-09-24", CAL, self.pub("08:30", "2026-09-24"), "UNKNOWN")
+        self.assertEqual(tb2["precise_time_rejected"]["reason"], "SEMANTICS_UNTRUSTED")
+
+    def test_T2i_no_precise_time_reports_reason(self):
+        tb = B.time_basis_of("2026-09-24", CAL, {"date": "2026-09-24", "precision": "DATE"},
+                             "PUBLICATION_TIME")
+        self.assertEqual(tb["precise_time_rejected"]["reason"], "PRECISION_UNAVAILABLE")
+
+
+class TestDateConflict(unittest.TestCase):
+    """★★ v0.71：日期冲突必须分级，且冲突严重的档案**不得伪造精确反应时点**。"""
+
+    def test_T2j_ordinary_difference_keeps_date_usable(self):
+        c = B.date_conflict_of("2025-12-18", {"date": "2025-06-22"}, "DOCUMENT_CREATION_TIME")
+        self.assertEqual(c["kind"], "PUBLISHED_DATE_DIFFERS")
+        self.assertEqual(c["delta_days"], -179)
+        # 普通差异仍可用保守规则（日期可信）
+        tb = B.time_basis_of("2025-12-18", CAL, {"date": "2025-06-22"}, "DOCUMENT_CREATION_TIME", c)
+        self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"))
+        self.assertEqual(tb["time_certainty"], "CONSERVATIVE")
+
+    def test_T2k_archive_conflict_is_uncertain(self):
+        c = B.date_conflict_of("2006-08-04", {"date": "2023-05-12"}, "DOCUMENT_CREATION_TIME")
+        self.assertEqual(c["kind"], "ARCHIVE_METADATA_CONFLICT")
+        tb = B.time_basis_of("2006-08-04", CAL, {"date": "2023-05-12"}, "DOCUMENT_CREATION_TIME", c)
+        self.assertEqual(tb["rule"], "DATE_CONFLICT_UNCERTAIN")
+        self.assertEqual(tb["time_certainty"], "UNCERTAIN")
+        self.assertIn("不计算", tb["note"])
+
+    def test_T2l_bulk_migration_value_is_flagged(self):
+        """同一 published_date 被多条共享且差异超阈值 → 批量赋值（网站迁移）。
+
+        ★ 只共享日期但差异不大（如同一天成文的多份答复函）**不算**迁移污染。
+        """
+        bulk = {"2023-05-12": 6}
+        c = B.date_conflict_of("2006-08-04", {"date": "2023-05-12"}, "DOCUMENT_CREATION_TIME", bulk)
+        self.assertEqual(c["kind"], "BULK_MIGRATION_ARTIFACT")
+        self.assertEqual(c["shared_by"], 6)
+        tb = B.time_basis_of("2006-08-04", CAL, {"date": "2023-05-12"}, "DOCUMENT_CREATION_TIME", c)
+        self.assertEqual(tb["time_certainty"], "UNCERTAIN")
+        # 反例：差异小于阈值时，共享日期只算普通不一致（不能判成迁移污染）
+        c2 = B.date_conflict_of("2022-09-29", {"date": "2023-05-12"}, "DOCUMENT_CREATION_TIME", bulk)
+        self.assertEqual(c2["kind"], "PUBLISHED_DATE_DIFFERS")
+        self.assertEqual(c2["delta_days"], 225)
+
+    def test_T2m_same_day_is_not_a_conflict(self):
+        self.assertIsNone(B.date_conflict_of("2026-09-24", {"date": "2026-09-24"},
+                                             "PUBLICATION_TIME"))
+        self.assertIsNone(B.date_conflict_of("2026-09-24", None, "UNKNOWN"))
+
+
+class TestTimeFieldSemantics(unittest.TestCase):
+    """★★ v0.71：来源注册表必须**明确声明**时间字段语义（不得凭字段名推定）。"""
+
+    def test_T2n_every_source_declares_semantics(self):
+        allowed = {"PUBLICATION_TIME", "DOCUMENT_CREATION_TIME", "UNKNOWN"}
+        for s in B.SOURCES:
+            tf = s.get("time_field") or {}
+            self.assertIn(tf.get("semantics"), allowed, "%s 未声明时间语义" % s["id"])
+            self.assertTrue(tf.get("evidence"), "%s 的时间语义缺实测依据" % s["id"])
+
+    def test_T2o_semantics_match_observed_consistency(self):
+        """实证一致性：声明 PUBLICATION_TIME 的来源，其事件日期应与文章日期同源。"""
+        pub_srcs = {s["id"] for s in B.SOURCES
+                    if (s.get("time_field") or {}).get("semantics") == "PUBLICATION_TIME"}
+        # NDRC / NHSA 实测 100% 一致；NEA / MIIT 实测存在不一致 → 必须标成文时间
+        self.assertIn("NDRC_ZCFB_TZ", pub_srcs)
+        self.assertIn("NHSA_NOTICE", pub_srcs)
+        for sid in ("NEA_XNY", "MIIT_KJS"):
+            self.assertNotIn(sid, pub_srcs, "%s 实测日期不一致，不得声明为公开时间" % sid)
+
+
+class TestDocClass(unittest.TestCase):
+    """★ v0.71 P1：低信号文档分类（默认视图据此隐藏，但不删除、不丢统计）。"""
+
+    def test_T10a_admin_reply(self):
+        for t in ("关于全国政协十四届四次会议第01463号（城乡建设类037号）提案答复的函",
+                  "对十四届全国人大三次会议第8532号建议的答复",
+                  "关于政协第十四届全国委员会第三次会议第02983号提案的答复摘要"):
+            self.assertEqual(B.doc_class_of(t, B.doc_type_of(t)), "ADMIN_REPLY", t)
+
+    def test_T10b_activity_is_low_signal_but_classified(self):
+        self.assertEqual(B.doc_class_of("2026全球脑机接口×医保创新场景大赛决赛入围项目名单",
+                                        "POLICY_INSTRUMENT"), "ACTIVITY_PROMO")
+
+    def test_T10c_standard_procedure_and_data(self):
+        self.assertEqual(B.doc_class_of("关于公开征求《重型汽车自动紧急制动系统技术要求及试验方法》"
+                                        "强制性国家标准（报批稿）意见的公示", "POLICY_INSTRUMENT"),
+                         "STANDARD_PROCEDURE")
+        self.assertEqual(B.doc_class_of("2026年一季度光伏发电建设情况", "OTHER"), "INDUSTRY_DATA")
+
+    def test_T10d_policy_action_not_filtered(self):
+        t = "关于同意南方区域电力市场转入正式运行的复函(发改办体改〔2026〕715号)"
+        self.assertEqual(B.doc_class_of(t, B.doc_type_of(t)), "POLICY_ACTION")
+        # ★ 默认视图只隐藏 ADMIN_REPLY，政策行动绝不能被当成低信号
+        self.assertNotIn("POLICY_ACTION", B.LOW_SIGNAL_DOC_CLASSES)
+        self.assertNotIn("STANDARD_PROCEDURE", B.LOW_SIGNAL_DOC_CLASSES)
+
+    def test_T10e_every_class_has_legend(self):
+        self.assertEqual(set(B.DOC_CLASS_LEGEND),
+                         {"ADMIN_REPLY", "ACTIVITY_PROMO", "STANDARD_PROCEDURE",
+                          "INDUSTRY_DATA", "POLICY_ACTION", "OTHER"})
+        for c in B.LOW_SIGNAL_DOC_CLASSES:
+            self.assertIn(c, B.DOC_CLASS_LEGEND)
 
 
 class TestNature(unittest.TestCase):
