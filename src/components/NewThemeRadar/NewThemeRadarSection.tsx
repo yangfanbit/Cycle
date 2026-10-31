@@ -1,5 +1,5 @@
 /**
- * 自动发现的新题材线索（v0.71 · 展示包 `new_theme_radar_v0_6_view`）。
+ * 自动发现的新题材线索（v0.72 · 展示包 `new_theme_radar_v0_7_view`）。
  *
  * ## 本轮三件事
  *
@@ -20,7 +20,7 @@
  * 待人工复核」；具体主题看「主题：」（由实际命中关键词映射），方向只是上层分组。
  */
 import { useState } from 'react';
-import raw from '@current/new_theme_radar_v0_6_view.json';
+import raw from '@current/new_theme_radar_v0_7_view.json';
 import { RichText } from '../RichText';
 
 interface ThemeLink {
@@ -147,6 +147,10 @@ const REJECT_LABEL: Record<string, string> = {
   SEMANTICS_UNTRUSTED: '来源时间字段不是「首次公开时间」',
   DATE_MISMATCH: '文章日期 ≠ 事件日期',
   PRECISION_UNAVAILABLE: '无到分钟的发布时间',
+  // ★★ v0.72：三条门槛都满足、但规则仍用不上时的原因（v0.6 有 19 条缺这块）
+  INTRADAY_AMBIGUOUS: '发布时间在盘中（09:30–15:00）',
+  EVENT_DATE_NON_TRADING: '发布时间在收盘后，但事件日不是交易日',
+  CALENDAR_EDGE: '开盘前发布，但日历中没有更早的交易日',
 };
 const DOC_CLASS_LABEL: Record<string, string> = {
   ADMIN_REPLY: '行政答复',
@@ -186,14 +190,18 @@ interface EvDetail {
 }
 type EvMap = Record<string, EvDetail>;
 let evPromise: Promise<EvMap> | null = null;
+/** ★★ v0.72：**不在内部吞掉错误** —— 加载失败必须能被界面区分出来 */
 function loadEvidence(): Promise<EvMap> {
   if (!evPromise) {
-    evPromise = import('@current/new_theme_radar_v0_6_evidence.json')
-      .then((m) => ((m as { default?: EvMap }).default ?? (m as unknown as EvMap)))
-      .catch(() => ({}));
+    evPromise = import('@current/new_theme_radar_v0_7_evidence.json')
+      .then((m) => ((m as { default?: EvMap }).default ?? (m as unknown as EvMap)));
+    evPromise.catch(() => { evPromise = null; });   // 失败后允许重试
   }
   return evPromise;
 }
+
+/** ★★ v0.72：证据加载的四态 —— 不能凭 `quote == null` 就说「加载中」 */
+type EvState = 'IDLE' | 'LOADING' | 'LOADED' | 'ERROR';
 
 /**
  * ★★ v0.70：**「相对为正」不等于「产业催化」** —— 当事件性质是背景信息或常规重复时，
@@ -244,9 +252,17 @@ function EventRow({ e }: { e: RadarEvent }) {
   const gaps = e.gaps ?? [];
   const caveat = natureCaveat(e.nature?.kind, e.status);
   const [extra, setExtra] = useState<EvDetail | null>(null);
+  const [evState, setEvState] = useState<EvState>('IDLE');
+  const doLoad = () => {
+    setEvState('LOADING');
+    loadEvidence()
+      .then((m) => { setExtra(m[e.event_id] ?? null); setEvState('LOADED'); })
+      .catch(() => setEvState('ERROR'));
+  };
   const onToggle = (x: React.SyntheticEvent<HTMLDetailsElement>) => {
-    if (!x.currentTarget.open || extra) return;
-    loadEvidence().then((m) => setExtra(m[e.event_id] ?? null));
+    if (!x.currentTarget.open) return;
+    if (evState === 'LOADING' || evState === 'LOADED') return;
+    doLoad();
   };
   const quote = extra?.quote ?? ev.quote ?? null;
   const atts = extra?.attachments ?? ev.attachments ?? [];
@@ -357,13 +373,24 @@ function EventRow({ e }: { e: RadarEvent }) {
           {e.time?.time_precision === 'MINUTE' && e.time.time_certainty !== 'EXACT'
             ? '（未用于盘前/盘后判断）' : ''}
         </summary>
-        {/* ★★ v0.71：原文按需加载（主包只带哈希） */}
-        {quote ? <p><RichText text={quote} /></p> : (
-          <p className="ntr-note" data-evidence-pending="1">
-            原文按需加载中；若未显示，说明该事件只有标题与 URL 可核（原文摘要{' '}
-            <code>{ev.quote_sha256_16 ?? '—'}</code>）。
+        {/* ★★ v0.72：四态分开 —— 折叠未展开 / 加载中 / 已加载但无正文 / 加载失败 */}
+        {quote ? <p><RichText text={quote} /></p> : null}
+        {!quote && evState === 'LOADING' ? (
+          <p className="ntr-note" data-evidence-state="LOADING">正在加载原文…</p>
+        ) : null}
+        {!quote && evState === 'ERROR' ? (
+          <p className="ntr-note" data-evidence-state="ERROR">
+            原文加载失败（网络或资源不可用）。
+            <button type="button" className="ntr-retry" onClick={doLoad}>重试</button>
+            {' '}· 原始链接仍可直接打开
           </p>
-        )}
+        ) : null}
+        {!quote && evState === 'LOADED' ? (
+          <p className="ntr-note" data-evidence-state="NO_BODY">
+            已加载：该来源<strong>没有可提取的正文</strong>
+            （{EVIDENCE_LABEL[ev.kind] ?? ev.kind}）→ 只有标题、原始链接与原文摘要可核。
+          </p>
+        ) : null}
         {ev.note ? <p className="ntr-note"><RichText text={ev.note} /></p> : null}
         {atts.length > 0 && (
           <p className="ntr-src">
@@ -439,6 +466,25 @@ export function NewThemeRadarSection() {
   const lowSignal = new Set(doc.low_signal_doc_classes ?? ['ADMIN_REPLY']);
   const archived = doc.events.filter((e) => (e.display ?? 'FULL') === 'INDEX'
     && lowSignal.has(e.doc_class ?? ''));
+  // ★★ v0.72：**其他事件索引** —— INDEX 里除去「行政答复归档」与「时点不确定」的其余记录。
+  //   三个区域互斥：FULL 区 / 归档区 / 不确定区 / 本索引区 = 全部事件，不重不漏。
+  const archivedIds = new Set(archived.map((e) => e.event_id));
+  const uncertainIds = new Set(uncertain.map((e) => e.event_id));
+  const indexEvents = doc.events.filter((e) => (e.display ?? 'FULL') === 'INDEX'
+    && !archivedIds.has(e.event_id) && !uncertainIds.has(e.event_id));
+  // ★★ v0.72：索引区的本地筛选（标题关键词 + 来源 / 类别 / 状态），只用轻量字段
+  const [idxQ, setIdxQ] = useState('');
+  const [idxSrc, setIdxSrc] = useState('ALL');
+  const [idxClass, setIdxClass] = useState('ALL');
+  const [idxStatus, setIdxStatus] = useState('ALL');
+  const idxFiltered = indexEvents.filter((e) => {
+    if (idxSrc !== 'ALL' && (e.source.id ?? '') !== idxSrc) return false;
+    if (idxClass !== 'ALL' && (e.doc_class ?? '') !== idxClass) return false;
+    if (idxStatus !== 'ALL' && e.status !== idxStatus) return false;
+    const kw = idxQ.trim().toLowerCase();
+    if (kw && !(e.title ?? '').toLowerCase().includes(kw)) return false;
+    return true;
+  });
   // ★ v0.70：方向分组**不过滤 0 条** —— 未覆盖的方向要显式写「当前采集范围未发现」，
   //   否则读者会以为这些方向不存在（采集缺口 ≠ 现实没有发生）。
   const dirGroups = (doc.research_directions ?? [])
@@ -582,7 +628,7 @@ export function NewThemeRadarSection() {
         {archived.length > 0
           ? <>；<strong>低信号文档（行政答复）已移出本区</strong>，见下方归档。</> : null}
         展示包只带这 {full.length} 条的完整字段，其余 {doc.events.length - full.length} 条
-        以<strong>索引行</strong>保留在产物 <code>{doc.source_artifact ?? 'new_theme_radar_v0_6.json'}</code> 内。
+        以<strong>索引行</strong>保留在产物 <code>{doc.source_artifact ?? 'new_theme_radar_v0_7.json'}</code> 内。
       </p>
       <ol className="ntr-list" data-rows="recent">
         {recent.map((e) => <EventRow key={e.event_id} e={e} />)}
@@ -654,7 +700,94 @@ export function NewThemeRadarSection() {
         </details>
       )}
 
-      {/* ★ v0.70：性质图例 + **正交说明**（状态=市场相对表现；性质=事件本身是否新催化） */}
+      {/* ---------- 六、其他事件索引：让「没进默认视图」的事件也能被查到 ---------- */}
+      {/* ★★ v0.72 P1：INDEX 里除归档/不确定之外的其余记录（本轮 162 条）。
+          只用展示包的轻量字段，**不加载完整档案、不加载证据文件**；三个区域互斥。 */}
+      {indexEvents.length > 0 && (
+        <details className="ntr-index" data-event-index={indexEvents.length}>
+          <summary>
+            六、其他事件索引（{indexEvents.length} 条）—— 已采集但未进入上方区域
+          </summary>
+          <p className="ntr-note" data-index-note="1">
+            这里列的是<strong>已经采集、但未进入候选 / 方向 / 近期视图</strong>的事件
+            （多为未命中当前关键词表的潜在线索）。只用轻量索引字段，<strong>不加载</strong>
+            完整档案与原文；点标题可打开原始来源核对。
+            {' '}区域互斥：完整展示 {full.length} 条 + 时点不确定 {uncertain.length} 条 +
+            低信号归档 {archived.length} 条 + 本索引 {indexEvents.length} 条
+            = <strong>{doc.events.length}</strong> 条。
+          </p>
+
+          <div className="ntr-idxbar">
+            <input type="search" className="ntr-idxq" value={idxQ}
+                   placeholder="按标题关键词搜索…"
+                   aria-label="索引事件标题搜索"
+                   data-index-search="1"
+                   onChange={(ev) => setIdxQ(ev.currentTarget.value)} />
+            <select value={idxSrc} aria-label="按来源筛选" data-index-filter="source"
+                    onChange={(ev) => setIdxSrc(ev.currentTarget.value)}>
+              <option value="ALL">全部来源</option>
+              {(c.sources ?? []).map((s) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+            <select value={idxClass} aria-label="按文档类别筛选" data-index-filter="doc_class"
+                    onChange={(ev) => setIdxClass(ev.currentTarget.value)}>
+              <option value="ALL">全部类别</option>
+              {Object.keys(doc.doc_class_legend ?? {}).map((k) => (
+                <option key={k} value={k}>{DOC_CLASS_LABEL[k] ?? k}</option>
+              ))}
+            </select>
+            <select value={idxStatus} aria-label="按市场状态筛选" data-index-filter="status"
+                    onChange={(ev) => setIdxStatus(ev.currentTarget.value)}>
+              <option value="ALL">全部状态</option>
+              {Object.keys(doc.status_legend).map((k) => (
+                <option key={k} value={k}>{k}</option>
+              ))}
+            </select>
+            <span className="ntr-note" data-index-count={idxFiltered.length}>
+              命中 {idxFiltered.length} / {indexEvents.length}
+            </span>
+          </div>
+
+          <ul className="ntr-list ntr-archlist" data-rows="index">
+            {idxFiltered.map((e) => {
+              const tags = e.theme_tags ?? [];
+              return (
+                <li key={e.event_id} className="ntr-archrow" data-event={e.event_id}
+                    data-doc-class={e.doc_class} data-status={e.status}
+                    data-linked={tags.length > 0 ? '1' : '0'}>
+                  <span className="ntr-date">{e.event_date}</span>{' '}
+                  <a href={e.source.url} target="_blank" rel="noreferrer noopener">{e.title}</a>
+                  {' '}<span className="ntr-dc" data-doc-class={e.doc_class}>
+                    {DOC_CLASS_LABEL[e.doc_class ?? ''] ?? e.doc_class}
+                  </span>
+                  {' '}<span className="ntr-idxst" data-idx-status={e.status}>
+                    {STATUS_LABEL[e.status] ?? e.status}
+                  </span>
+                  {' '}<span className="ntr-note">· {e.source.name}</span>
+                  {/* ★ 区分「有明确主题关联」与「尚未建立关联」 */}
+                  {tags.length > 0 ? (
+                    <span className="ntr-idxtag" data-idx-linked="THEME">
+                      {' '}· 主题：{tags.join(' / ')}
+                    </span>
+                  ) : (
+                    <span className="ntr-idxtag ntr-none" data-idx-linked="NONE">
+                      {' '}· 尚未建立关联
+                      {e.review?.verdict === 'NO_SERIES_AVAILABLE'
+                        ? '（主题相关但库内无对应序列）' : ''}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          {idxFiltered.length === 0 ? (
+            <p className="ntr-empty" data-index-empty="1">
+              当前筛选条件下<strong>没有</strong>事件。清空关键词或改回「全部」即可恢复。
+            </p>
+          ) : null}
+        </details>
+      )}
       <p className="ntr-note" data-orthogonal="1">
         <strong>「状态」与「性质」是两个独立的维度</strong>：状态回答「事件后是否跑赢沪深300」，
         性质回答「事件本身是不是新催化」。因此会出现「性质=背景信息、状态=相对为正」的组合 ——

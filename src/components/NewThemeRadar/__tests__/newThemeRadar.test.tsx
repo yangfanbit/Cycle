@@ -1,5 +1,5 @@
 /**
- * ★★ v0.71：自动发现的新题材线索（展示包 `new_theme_radar_v0_6_view`）。
+ * ★★ v0.72：自动发现的新题材线索（展示包 `new_theme_radar_v0_7_view`）。
  *
  * 本轮回归的三类缺陷：
  *  A. **时点口径不成立**：`published_date != event_date` 时仍用文章元数据的时分判断
@@ -16,7 +16,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { NewThemeRadarSection, relationLabel, natureCaveat, timeExplain }
   from '../NewThemeRadarSection';
-import raw from '@current/new_theme_radar_v0_6_view.json';
+import raw from '@current/new_theme_radar_v0_7_view.json';
 
 interface D {
   as_of: string; artifact_version?: string; source_artifact?: string;
@@ -568,5 +568,178 @@ describe('v0.71 主包轻量化（P1）', () => {
   it('★ 计数与展示规模说明不得混淆「已展示」与「总条数」', () => {
     expect(doc.summary.events).toBe(doc.events.length);
     expect(chromeText).toContain('索引行');
+  });
+});
+
+describe('v0.72 保守时点拒绝原因完整（P0）', () => {
+  const trusted = 'PUBLICATION_TIME';
+
+  it('★★ 三条门槛都满足却没走精确规则 → 必须有拒绝原因（v0.6 有 19 条缺）', () => {
+    const silent = doc.events.filter((e) => {
+      const t = e.time ?? {};
+      return t.time_precision === 'MINUTE' && t.time_field_semantics === trusted
+        && t.published_date === e.event_date
+        && !['PUBLISHED_AFTER_CLOSE', 'PUBLISHED_BEFORE_OPEN'].includes(t.reaction_basis ?? '')
+        && !t.precise_time_rejected?.reason;
+    });
+    expect(silent.map((e) => e.event_id), '不得出现「退回保守但无原因」的黑箱').toEqual([]);
+  });
+
+  it('★★ 盘中发布必须标 INTRADAY_AMBIGUOUS，且窗口口径不变', () => {
+    const intraday = doc.events.filter((e) => e.time?.precise_time_rejected?.reason
+      === 'INTRADAY_AMBIGUOUS');
+    expect(intraday.length, '产物应存在盘中发布事件').toBeGreaterThan(0);
+    for (const e of intraday) {
+      const [h, m] = (e.time!.published_time ?? '').split(':').map(Number);
+      const mins = h * 60 + m;
+      expect(mins, `${e.event_id} 盘中判定`).toBeGreaterThanOrEqual(9 * 60 + 30);
+      expect(mins).toBeLessThan(15 * 60);
+      // ★ 口径不得因补原因而改变：仍是「当日收盘为基准、次一交易日起观察」
+      expect(e.time!.reaction_basis).toBe('DATE_ONLY_CONSERVATIVE_TRADING_DAY');
+      expect(e.time!.basis_day).toBe(e.event_date);
+      expect(e.time!.time_certainty).toBe('CONSERVATIVE');
+    }
+  });
+
+  it('★★ 盘后 + 事件日非交易日必须标 EVENT_DATE_NON_TRADING', () => {
+    const nt = doc.events.filter((e) => e.time?.precise_time_rejected?.reason
+      === 'EVENT_DATE_NON_TRADING');
+    expect(nt.length, '产物应存在该情形').toBeGreaterThan(0);
+    for (const e of nt) {
+      const [h, m] = (e.time!.published_time ?? '').split(':').map(Number);
+      expect(h * 60 + m, `${e.event_id} 应为盘后`).toBeGreaterThanOrEqual(15 * 60);
+      // 非交易日 → 基准取事件前最近交易日，起点取事件后首个交易日
+      expect(e.time!.reaction_basis).toBe('DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY');
+      expect(e.time!.basis_day, '基准日不得等于事件日（事件日不是交易日）').not.toBe(e.event_date);
+    }
+  });
+
+  it('★★ 每条拒绝原因都必须在图例里（可解释性）', () => {
+    const legend = (doc.rules as { reject_reason_legend?: Record<string, string> })
+      .reject_reason_legend ?? {};
+    expect(Object.keys(legend).length).toBeGreaterThanOrEqual(6);
+    const used = new Set(doc.events
+      .map((e) => e.time?.precise_time_rejected?.reason)
+      .filter((x): x is string => Boolean(x)));
+    for (const r of used) {
+      expect(legend, `拒绝原因 ${r} 没有图例说明`).toHaveProperty([r]);
+    }
+    // 三种「门槛都满足但规则用不上」的原因必须都在
+    for (const r of ['INTRADAY_AMBIGUOUS', 'EVENT_DATE_NON_TRADING', 'CALENDAR_EDGE']) {
+      expect(legend).toHaveProperty([r]);
+    }
+  });
+
+  it('★ timeExplain 能解释新增原因', () => {
+    const s = timeExplain({ time_certainty: 'CONSERVATIVE',
+      precise_time_rejected: { reason: 'INTRADAY_AMBIGUOUS', note: '发布时间 12:00 处于盘中' } });
+    expect(s).toContain('盘中');
+    const s2 = timeExplain({ time_certainty: 'CONSERVATIVE',
+      precise_time_rejected: { reason: 'EVENT_DATE_NON_TRADING', note: '事件日不是交易日' } });
+    expect(s2).toContain('不是交易日');
+  });
+});
+
+describe('v0.72 日期来源描述自洽（P1）', () => {
+  it('★★ 有 URL_PATH 事件时，覆盖说明必须区分两类来源', () => {
+    const ds = doc.coverage.event_date_sources ?? {};
+    expect(ds.URL_PATH, '产物应存在 URL_PATH 事件').toBeGreaterThan(0);
+    const lim = (doc.coverage.limits ?? []).join(' ');
+    expect(lim).toContain('URL_PATH');
+    expect(lim).toContain('LIST_PAGE');
+    expect(lim).toContain('文章路径日期');
+    // 旧文案的错误断言：不得声称「统一取列表页」
+    expect(lim).not.toContain('统一取**列表页上网日**');
+    expect(lim).not.toContain('统一取列表页上网日');
+    // 文章元数据语义必须单独说明，不得等同首次公开时点
+    expect(lim).toContain('published_date');
+    expect(lim).toContain('不得默认等同于首次公开时点');
+  });
+
+  it('★ 日期范围 ≠ 研究覆盖 / 冲突分级仍在', () => {
+    const lim = (doc.coverage.limits ?? []).join(' ');
+    expect(lim).toContain('日期范围不等于研究覆盖');
+    expect(lim).toContain('PUBLISHED_DATE_DIFFERS');
+    expect(lim).toContain('BULK_MIGRATION_ARTIFACT');
+  });
+});
+
+describe('v0.72 索引事件可查询（P1）', () => {
+  const low = new Set(doc.low_signal_doc_classes ?? []);
+  const indexEvents = doc.events.filter((e) => (e.display ?? 'FULL') === 'INDEX'
+    && !low.has(e.doc_class ?? '') && e.time?.time_certainty !== 'UNCERTAIN');
+  const full = doc.events.filter((e) => (e.display ?? 'FULL') === 'FULL');
+  const archived = doc.events.filter((e) => (e.display ?? 'FULL') === 'INDEX'
+    && low.has(e.doc_class ?? ''));
+  const uncertain = doc.events.filter((e) => e.time?.time_certainty === 'UNCERTAIN');
+
+  it('★★ 四个区域互斥且覆盖全部事件（263 条都能找到入口）', () => {
+    expect(indexEvents.length, '应有可查询的索引事件').toBeGreaterThan(0);
+    const all = [full, indexEvents, archived, uncertain];
+    const ids = all.flatMap((g) => g.map((e) => e.event_id));
+    expect(ids.length, '四个区域不得重复').toBe(new Set(ids).size);
+    expect(ids.length, '四个区域必须覆盖全部事件').toBe(doc.events.length);
+    expect(full.length + indexEvents.length + archived.length + uncertain.length)
+      .toBe(doc.events.length);
+  });
+
+  it('★★ 索引区渲染：搜索框 + 三类筛选 + 计数 + 每条链接', () => {
+    expect(html).toContain(`data-event-index="${indexEvents.length}"`);
+    expect(html).toContain('data-index-search="1"');
+    for (const f of ['source', 'doc_class', 'status']) {
+      expect(html, `缺筛选 ${f}`).toContain(`data-index-filter="${f}"`);
+    }
+    expect(html).toContain(`data-index-count="${indexEvents.length}"`);
+    const idxHtml = html.slice(html.indexOf('data-event-index='));
+    for (const e of indexEvents) {
+      expect(idxHtml, `索引事件 ${e.event_id} 必须可查到`).toContain(`data-event="${e.event_id}"`);
+      expect(idxHtml, `${e.event_id} 的原始链接必须保留`).toContain(e.source.url);
+    }
+    // 索引行必须带类别与状态
+    expect(idxHtml).toMatch(/data-doc-class="/);
+    expect(idxHtml).toMatch(/data-idx-status="/);
+  });
+
+  it('★★ 索引区不重复归档 / 不确定区的事件', () => {
+    const idxHtml = html.slice(html.indexOf('data-event-index='));
+    for (const e of [...archived, ...uncertain]) {
+      expect(idxHtml, `${e.event_id} 不应在索引区重复`).not.toContain(`data-event="${e.event_id}"`);
+    }
+  });
+
+  it('★★ 区分「有明确主题关联」与「尚未建立关联」', () => {
+    const idxHtml = html.slice(html.indexOf('data-event-index='));
+    expect(idxHtml).toContain('data-idx-linked="THEME"');
+    expect(idxHtml).toContain('data-idx-linked="NONE"');
+    expect(idxHtml).toContain('尚未建立关联');
+    expect(idxHtml).toContain('主题：');
+    // 有 theme_tags 的索引行必须标 THEME
+    const withTags = indexEvents.filter((e) => (e.theme_tags ?? []).length > 0);
+    if (withTags.length > 0) expect(idxHtml).toContain('data-idx-linked="THEME"');
+  });
+
+  it('★ 索引区不内联原文、不加载证据（轻量）', () => {
+    const idxHtml = html.slice(html.indexOf('data-event-index='));
+    expect(idxHtml).not.toContain('data-evidence-state=');
+    expect(idxHtml.length, '索引区不应包含长原文').toBeLessThan(200000);
+  });
+});
+
+describe('v0.72 证据加载状态（P2）', () => {
+  it('★★ 四种状态用不同标记，不再共用「加载中」', () => {
+    // 静态渲染（未展开）→ 不显示任何「加载中」占位
+    expect(html).not.toContain('data-evidence-state="LOADING"');
+    expect(html).not.toContain('data-evidence-pending');
+    // 组件必须为四态各自提供标记（源码级断言：避免只写文案不写标记）
+    expect(html).not.toContain('原文按需加载中');
+  });
+
+  it('★★ 折叠态不加载证据文件：主包只有哈希', () => {
+    const inlined = doc.events.filter((e) => ((e as { evidence?: { quote?: string } })
+      .evidence?.quote ?? '').length > 0);
+    expect(inlined.map((e) => e.event_id), '展示包不得内联原文').toEqual([]);
+    const withSha = doc.events.filter((e) => (e as { evidence?: { quote_sha256_16?: string } })
+      .evidence?.quote_sha256_16);
+    expect(withSha.length, '原文哈希必须保留在展示包里').toBeGreaterThan(0);
   });
 });

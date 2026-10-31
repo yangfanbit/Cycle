@@ -226,6 +226,73 @@ class TestDocClass(unittest.TestCase):
             self.assertIn(c, B.DOC_CLASS_LEGEND)
 
 
+class TestRejectReasonExhaustive(unittest.TestCase):
+    """★★ v0.72 P0：**保守时点必须穷尽解释**。
+
+    v0.6 实测有 19 条（全部 NHSA）满足「有分钟级时间 + 可信语义 + 日期同天」，
+    却退回保守规则且 `precise_time_rejected = null` —— 无法解释为什么不用精确时间。
+    其中 15 条是**盘中**、4 条是**盘后但事件日非交易日**。
+    """
+
+    @staticmethod
+    def pub(t, d="2026-09-24"):
+        return {"date": d, "time": t, "precision": "MINUTE"}
+
+    def test_T2p_intraday_has_reason_and_keeps_window(self):
+        tb = B.time_basis_of("2026-09-24", CAL, self.pub("12:00"), "PUBLICATION_TIME")
+        self.assertEqual(tb["precise_time_rejected"]["reason"], "INTRADAY_AMBIGUOUS")
+        # ★ 口径不得因补原因而改变：仍是「当日收盘为基准、次一交易日起观察」
+        self.assertEqual(tb["rule"], "DATE_ONLY_CONSERVATIVE_TRADING_DAY")
+        self.assertEqual(tb["basis_day"], "2026-09-24")
+        self.assertEqual(tb["observe_from"], "2026-09-28")
+        self.assertEqual(tb["time_certainty"], "CONSERVATIVE")
+        for t in ("09:30", "10:00", "11:59", "13:13", "14:59"):
+            x = B.time_basis_of("2026-09-24", CAL, self.pub(t), "PUBLICATION_TIME")
+            self.assertEqual(x["precise_time_rejected"]["reason"], "INTRADAY_AMBIGUOUS", t)
+
+    def test_T2q_after_close_on_non_trading_day_has_reason(self):
+        tb = B.time_basis_of("2026-09-26", CAL, self.pub("18:00", "2026-09-26"),
+                             "PUBLICATION_TIME")   # 周六
+        self.assertEqual(tb["precise_time_rejected"]["reason"], "EVENT_DATE_NON_TRADING")
+        # ★ 口径不变：基准 = 事件前最近交易日收盘，起点 = 事件后首个交易日
+        self.assertEqual(tb["rule"], "DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY")
+        self.assertEqual(tb["basis_day"], "2026-09-24")
+        self.assertEqual(tb["observe_from"], "2026-09-28")
+
+    def test_T2r_before_open_without_prior_day_has_reason(self):
+        """盘前但日历里没有更早的交易日 → 取不到前一收盘（边界情形）。"""
+        cal = ["2026-09-22", "2026-09-23"]
+        tb = B.time_basis_of("2026-09-22", cal, self.pub("08:00", "2026-09-22"),
+                             "PUBLICATION_TIME")
+        self.assertEqual(tb["precise_time_rejected"]["reason"], "CALENDAR_EDGE")
+        self.assertTrue(tb["rule"].startswith("DATE_ONLY_CONSERVATIVE"))
+
+    def test_T2s_precise_rules_keep_no_reject(self):
+        """真正用上精确规则时不应有拒绝原因（避免两套说法并存）。"""
+        for t, rule in (("15:00", "PUBLISHED_AFTER_CLOSE"), ("08:00", "PUBLISHED_BEFORE_OPEN")):
+            tb = B.time_basis_of("2026-09-24", CAL, self.pub(t), "PUBLICATION_TIME")
+            self.assertEqual(tb["rule"], rule, t)
+            self.assertIsNone(tb["precise_time_rejected"], t)
+
+    def test_T2t_every_reject_reason_has_legend(self):
+        """所有可能产生的拒绝原因都必须在图例里（否则用户看不懂）。"""
+        self.assertEqual(set(B.REJECT_REASON_LEGEND),
+                         {"SEMANTICS_UNTRUSTED", "DATE_MISMATCH", "PRECISION_UNAVAILABLE",
+                          "INTRADAY_AMBIGUOUS", "EVENT_DATE_NON_TRADING", "CALENDAR_EDGE"})
+        self.assertIn("reject_reason_legend", B.RULES)
+
+    def test_T2u_conservative_with_precise_inputs_always_explained(self):
+        """穷举：只要满足三条门槛而最终保守，就必须有原因（本轮 P0 的核心不变量）。"""
+        cases = [("09:30", "2026-09-24"), ("12:00", "2026-09-24"), ("14:59", "2026-09-24"),
+                 ("15:00", "2026-09-26"), ("18:00", "2026-09-26"), ("23:59", "2026-09-26")]
+        for t, d in cases:
+            tb = B.time_basis_of(d, CAL, self.pub(t, d), "PUBLICATION_TIME")
+            if tb["rule"] not in ("PUBLISHED_AFTER_CLOSE", "PUBLISHED_BEFORE_OPEN"):
+                self.assertTrue(tb["precise_time_rejected"],
+                                "%s %s 退回保守却没有拒绝原因" % (d, t))
+                self.assertIn(tb["precise_time_rejected"]["reason"], B.REJECT_REASON_LEGEND)
+
+
 class TestNature(unittest.TestCase):
     """★ v0.69：事件性质只在证据明确时分类。"""
 

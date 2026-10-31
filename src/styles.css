@@ -4334,4 +4334,19 @@ html, body {
 .ntr-archrow { margin: 2px 0; line-height: 1.6; word-break: break-word; }
 .ntr-dc { font-size: 10px; padding: 0 5px; border-radius: 3px;
   border: 1px solid var(--line-strong); color: var(--ink-3); }
+/* ★★ v0.72：其他事件索引（搜索 + 筛选 + 轻量行） */
+.ntr-index { margin-top: 10px; font-size: 11px; color: var(--ink-2); }
+.ntr-index summary { cursor: pointer; color: var(--ink-3); }
+.ntr-idxbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0; }
+.ntr-idxq { flex: 1 1 220px; min-width: 160px; padding: 3px 8px; font-size: 11px;
+  border: 1px solid var(--line-strong); border-radius: 4px; background: var(--bg-2);
+  color: var(--ink); }
+.ntr-idxbar select { padding: 3px 6px; font-size: 11px; border: 1px solid var(--line-strong);
+  border-radius: 4px; background: var(--bg-2); color: var(--ink); }
+.ntr-idxst { font-size: 10px; color: var(--ink-3); }
+.ntr-idxtag { font-size: 10.5px; color: var(--ink); }
+.ntr-idxtag.ntr-none { color: var(--ink-3); font-style: italic; }
+.ntr-retry { margin-left: 6px; padding: 1px 8px; font-size: 10.5px; cursor: pointer;
+  border: 1px solid var(--line-strong); border-radius: 4px; background: var(--bg-2);
+  color: var(--ink); }
 .ntr-empty { margin: 4px 0 8px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
