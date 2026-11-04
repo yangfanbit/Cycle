@@ -1,0 +1,111 @@
+/* ThreeC 研究工作台（v0.74）—— 独立样式，不引用旧站 styles.css。 */
+:root {
+  --wb-bg: #f7f8fa;
+  --wb-card: #ffffff;
+  --wb-ink: #1b2028;
+  --wb-ink2: #4c5663;
+  --wb-ink3: #7b8695;
+  --wb-line: #dfe4ea;
+  --wb-accent: #1f5fbf;
+  --wb-warn-bg: #fff8e6;
+  --wb-warn-line: #e3c46a;
+  --wb-hi: #b3352c;
+  --wb-ok: #1e7145;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--wb-bg); color: var(--wb-ink);
+  font: 14px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+.wb { max-width: 1040px; margin: 0 auto; padding: 20px 18px 48px; }
+.wb-head { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start;
+  justify-content: space-between; padding: 18px 20px; background: var(--wb-card);
+  border: 1px solid var(--wb-line); border-radius: 10px; }
+.wb h1 { margin: 0; font-size: 20px; letter-spacing: .3px; }
+.wb h2 { margin: 18px 0 8px; font-size: 17px; }
+.wb h3 { margin: 20px 0 8px; font-size: 14px; }
+.wb-sub { margin: 4px 0 0; color: var(--wb-ink2); font-size: 13px; }
+.wb-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wb-nav button, .wb-archive-link { font: inherit; font-size: 12.5px; padding: 6px 11px;
+  border: 1px solid var(--wb-line); border-radius: 6px; background: #fff;
+  color: var(--wb-ink2); text-decoration: none; cursor: pointer; }
+.wb-nav button.is-active { background: var(--wb-accent); border-color: var(--wb-accent); color: #fff; }
+.wb-archive-link:hover, .wb-nav button:hover { border-color: var(--wb-accent); color: var(--wb-accent); }
+.wb-nav button.is-active:hover { color: #fff; }
+.wb-caliber { margin: 12px 0 16px; padding: 10px 14px; background: #eef4ff;
+  border-left: 3px solid var(--wb-accent); border-radius: 4px; font-size: 12.5px; color: var(--wb-ink2); }
+.wb-caliber strong { color: var(--wb-ink); }
+.wb-main { background: var(--wb-card); border: 1px solid var(--wb-line);
+  border-radius: 10px; padding: 16px 20px 24px; }
+.wb-steps { display: flex; gap: 8px; list-style: none; margin: 0 0 18px; padding: 0; flex-wrap: wrap; }
+.wb-steps button { font: inherit; font-size: 13px; padding: 7px 14px; border: 1px solid var(--wb-line);
+  border-radius: 20px; background: #fff; color: var(--wb-ink2); cursor: pointer; }
+.wb-steps button.is-active { border-color: var(--wb-accent); color: var(--wb-accent); font-weight: 600; }
+.wb-panel { min-height: 220px; }
+.wb-field { display: block; margin: 10px 0; }
+.wb-field > span { display: block; font-size: 12px; color: var(--wb-ink2); margin-bottom: 4px; }
+.wb-field input, .wb-field textarea, .wb-field select { width: 100%; font: inherit; font-size: 13.5px;
+  padding: 8px 10px; border: 1px solid var(--wb-line); border-radius: 6px;
+  background: #fff; color: var(--wb-ink); }
+.wb-field textarea { resize: vertical; }
+.wb-field input:focus, .wb-field textarea:focus, .wb-field select:focus {
+  outline: 2px solid #c9dcff; outline-offset: 1px; }
+.wb-formrow { display: flex; gap: 14px; flex-wrap: wrap; }
+.wb-formrow .wb-field { flex: 1 1 240px; }
+.wb-btn { font: inherit; font-size: 13px; padding: 8px 14px; border: 1px solid var(--wb-line);
+  border-radius: 6px; background: #fff; color: var(--wb-ink2); cursor: pointer; margin: 6px 8px 6px 0; }
+.wb-btn.primary { background: var(--wb-accent); border-color: var(--wb-accent); color: #fff; }
+.wb-btn:disabled { opacity: .45; cursor: not-allowed; }
+.wb-hint, .wb-count, .wb-foot { font-size: 12px; color: var(--wb-ink3); }
+.wb-hint { margin: 10px 0 14px; }
+.wb-count { margin: 14px 0 8px; color: var(--wb-ink2); }
+.wb-empty { padding: 14px; background: #fafbfc; border: 1px dashed var(--wb-line);
+  border-radius: 6px; color: var(--wb-ink2); font-size: 13px; }
+.wb-results, .wb-records, .wb-related ul { list-style: none; margin: 0; padding: 0; }
+.wb-results > li { padding: 12px 0; border-bottom: 1px solid var(--wb-line); }
+.wb-r1 { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 11.5px; }
+.wb-kind { padding: 1px 7px; border: 1px solid var(--wb-line); border-radius: 3px; color: var(--wb-ink2); }
+.wb-date { color: var(--wb-ink3); }
+.wb-unc { padding: 1px 7px; border-radius: 3px; }
+.u-low { background: #eaf5ee; color: var(--wb-ok); }
+.u-medium { background: #fff4e3; color: #9a6410; }
+.u-high { background: #fdecea; color: var(--wb-hi); }
+.wb-linkbtn { display: block; text-align: left; font: inherit; font-size: 14px; font-weight: 600;
+  color: var(--wb-accent); background: none; border: 0; padding: 6px 0 2px; cursor: pointer; }
+.wb-linkbtn:hover { text-decoration: underline; }
+.wb-why { margin: 2px 0; font-size: 12.5px; color: var(--wb-ink2); }
+.wb-src { margin: 2px 0 0; font-size: 11.5px; color: var(--wb-ink3); }
+.wb-meta { font-size: 12.5px; color: var(--wb-ink2); }
+.wb-evidence { background: #fafbfc; border: 1px solid var(--wb-line); border-radius: 6px;
+  padding: 12px 14px; font-size: 13px; }
+.wb-evidence p { margin: 6px 0; }
+.wb-evidence a { color: var(--wb-accent); word-break: break-all; }
+.wb-related { margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--wb-line); }
+.wb-related li { padding: 3px 0; font-size: 13px; }
+.wb-related .wb-linkbtn { display: inline; font-size: 13px; padding: 0; }
+.wb-records > li { padding: 10px 0; border-bottom: 1px solid var(--wb-line); font-size: 12.5px; }
+.wb-records p { margin: 3px 0; color: var(--wb-ink2); }
+.wb-posthoc { margin-top: 18px; padding: 14px; background: #fafbfc;
+  border: 1px dashed var(--wb-line); border-radius: 6px; }
+.wb-posthoc h3 { margin-top: 0; }
+.wb-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--wb-line); }
+.wb-warn { background: var(--wb-warn-bg); border: 1px solid var(--wb-warn-line);
+  border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; }
+.wb-warn p { margin: 6px 0; }
+.wb-warn strong { color: var(--wb-hi); }
+.wb-eval { background: var(--wb-card); border: 1px solid var(--wb-line);
+  border-radius: 10px; padding: 16px 20px 24px; }
+.wb-table-wrap { overflow-x: auto; }
+.wb-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.wb-table th, .wb-table td { text-align: left; padding: 6px 8px;
+  border-bottom: 1px solid var(--wb-line); white-space: nowrap; }
+.wb-table th { color: var(--wb-ink2); font-weight: 600; background: #fafbfc; }
+.wb-sid { display: block; font-size: 10.5px; color: var(--wb-ink3); }
+.wb-score { font-variant-numeric: tabular-nums; font-weight: 600; }
+.wb-loading, .wb-error { padding: 20px; font-size: 13px; color: var(--wb-ink2); }
+.wb-error { color: var(--wb-hi); }
+code { font-size: 12px; background: #f0f2f5; padding: 1px 4px; border-radius: 3px; }
+@media (max-width: 680px) {
+  .wb { padding: 12px 10px 32px; }
+  .wb-head, .wb-main, .wb-eval { padding: 14px; }
+  .wb-formrow { flex-direction: column; gap: 0; }
+  .wb-nav { width: 100%; }
+}

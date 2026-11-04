@@ -334,6 +334,13 @@ export default function App() {
   return (
     <>
       <header className="app-header">
+        {/* ★★ v0.74：旧站退为**只读历史档案视图**。主入口改为独立的研究工作台，
+            这里只加一个非侵入链接与定位说明，不改动旧站任何既有内容与数据。 */}
+        <p className="app-archive-banner" data-archive-banner="1">
+          本页为<strong>历史档案视图</strong>（只读，保留 v0.66–v0.73 的全部历史能力）。
+          日常研究请使用 <a href="./workbench.html">ThreeC 研究工作台 ↗</a>
+          （提问 → 证据 → T 时刻冻结；有效性按<strong>研究增量</strong>评估，不按行情超额）。
+        </p>
         <h1 className="app-title">A股机会时间轴</h1>
         <p className="app-subtitle">一年中历史上哪些时间窗口反复出现过什么类型的题材炒作</p>
         <div className="app-today">

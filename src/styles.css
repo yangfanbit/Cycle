@@ -4350,3 +4350,10 @@ html, body {
   border: 1px solid var(--line-strong); border-radius: 4px; background: var(--bg-2);
   color: var(--ink); }
 .ntr-empty { margin: 4px 0 8px; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+
+/* v0.74：旧站退为历史档案视图的入口条 */
+.app-archive-banner { margin: 0 0 10px; padding: 8px 12px; font-size: 12.5px;
+  line-height: 1.6; color: var(--ink-2); background: #eef4ff;
+  border-left: 3px solid var(--accent); border-radius: 4px; }
+.app-archive-banner a { color: var(--accent); font-weight: 600; }
+.app-archive-banner strong { color: var(--ink); }

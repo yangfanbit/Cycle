@@ -70,6 +70,19 @@ export default defineConfig({
   base: resolveBase(),
   define: provenanceDefines(),
   plugins: [react()],
+  /**
+   * ★ v0.74：多入口。旧站 `/Cycle/` 保持**逐字节不变的默认入口**（全部既有测试与
+   * 历史行为不受影响）；研究工作台是**独立页面** `/Cycle/workbench.html`，
+   * 拥有独立 JS/CSS，不把新口径、内部评估数据或新 UI 塞回旧站主包。
+   */
+  build: {
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        workbench: fileURLToPath(new URL('./workbench.html', import.meta.url)),
+      },
+    },
+  },
   resolve: {
     alias: {
       '@exports': fileURLToPath(new URL('./exports', import.meta.url)),

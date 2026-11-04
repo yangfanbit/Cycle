@@ -422,9 +422,13 @@ def main(argv):
     if sa_n is None:
         return 1
     if args.check:
+        # ★ v0.74 自查修正：原结尾**无条件**打印「请先修掉上面的 FAIL」，
+        #   即使全部 PASS 也这么写 → 会被读成校验失败（实测 0 FAIL 仍出现该句）。
+        n_fail = sum(1 for l, _, _ in _results if l == FAIL)
         print()
-        print("--check：只读完成。请先修掉上面的 FAIL，再 --apply。")
-        return 1 if any(l == FAIL for l, _, _ in _results) else 0
+        print("--check：只读完成，%d 项 FAIL。%s" % (
+            n_fail, "请先修掉上面的 FAIL，再 --apply。" if n_fail else "全部 PASS。"))
+        return 1 if n_fail else 0
 
     # ---- ② 按序跑（版本自动发现，不硬编码）----
     print()
