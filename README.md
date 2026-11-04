@@ -68,7 +68,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.74**（基于 `6a190cf` + 存档 `3e6c91c`）· 按「重构方案 B」把旧站 `/Cycle/` 降级为**只读历史档案视图**，另起独立入口 `/Cycle/workbench.html` **研究工作台**（提问 → 证据 → T 时刻冻结）· **有效性口径改为「研究增量」**（见下） |
+| **当前主线** | **v0.74**（主交付 `ea3a757`；基线 `6a190cf` + 存档 `3e6c91c`）· 按「重构方案 B」把旧站 `/Cycle/` 降级为**只读历史档案视图**，另起独立入口 `/Cycle/workbench.html` **研究工作台**（提问 → 证据 → T 时刻冻结）· **有效性口径改为「研究增量」**（见下） |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
