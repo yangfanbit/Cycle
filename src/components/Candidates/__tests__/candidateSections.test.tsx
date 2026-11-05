@@ -16,12 +16,15 @@ import { createRoot, type Root } from 'react-dom/client';
 import { act } from 'react';
 
 import { CurrentCandidatesSection } from '../CurrentCandidatesSection';
-import raw from '@current/candidate_digest_v0_12.json';
+import raw from '@current/candidate_digest_v0_13.json';
 
 interface D {
   cards: { id: string; kind: string; title: string; stock_gap_reason?: string | null }[];
   sections?: { current_objects?: { ids: string[] }; seasonal_preview?: { ids: string[] };
     special_hypotheses?: { ids: string[] } };
+  seasonal_scale?: { patterns_total: number; patterns_strict: number;
+    patterns_exploratory: number; current_windows: number;
+    oos_reportable: number; pit_only: number };
 }
 const doc = raw as unknown as D;
 
@@ -75,12 +78,16 @@ describe('v0.65 发现链路：当前研究主题独立成段', () => {
     expect(note).toContain('预览');
     expect(note).toContain('不等于');
 
-    // 规模数字必须来自产物 seasonal_scale，且四类数字同时出现
+    // ★★ v0.76：旧断言写死 1300/204/736/967，是**旧行为快照**（行情推进后必变）。
+    //   改为按产物 seasonal_scale 动态核对：四个互不替代的数字都必须出现且来自同一产物。
     const scale = d.querySelector('[data-seasonal-scale]')!.textContent ?? '';
-    expect(scale).toContain('1300');       // 全量模式
-    expect(scale).toContain('204');        // 当前/下月窗口
-    expect(scale).toContain('736');        // 样本外可报告
-    expect(scale).toContain('967');        // 仅时点资格
+    const s = doc.seasonal_scale!;
+    expect(s.patterns_total).toBeGreaterThan(0);
+    for (const n of [s.patterns_total, s.patterns_strict, s.patterns_exploratory,
+      s.current_windows, s.oos_reportable, s.pit_only]) {
+      expect(scale, `规模说明必须含产物数字 ${n}`).toContain(String(n));
+    }
+    expect(scale).toContain('四个数互不替代');
 
     await act(async () => { root.unmount(); });
   });

@@ -1,7 +1,7 @@
 {
  "artifact": "workbench_index",
  "artifact_version": "0.1",
- "as_of": "2026-10-30",
+ "as_of": "2026-11-05",
  "caliber": {
   "effectiveness_definition": "研究增量（docs/EVALUATION_FRAMEWORK_v0_1.md），不是行情超额",
   "not": [
@@ -17,14 +17,346 @@
  "counts": {
   "by_kind": {
    "HISTORICAL_OBJECT": 89,
-   "POLICY_EVENT": 263,
+   "POLICY_EVENT": 278,
    "THEME_MAP_EVENT": 33
   },
-  "total": 385,
-  "with_external_url": 263
+  "total": 400,
+  "with_external_url": 278
  },
- "generated_at": "2026-11-04T23:37:31+08:00",
+ "generated_at": "2026-11-06T00:07:48+08:00",
  "items": [
+  {
+   "board_series": null,
+   "date": "2026-11-05",
+   "doc_class": "STANDARD_PROCEDURE",
+   "id": "EVT-MIIT_KJS-b15d2bec3467",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/zlpp/art/2026/art_a7430ae7edb64425a11c9cd0a9a266c4.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "第三批工业和信息化部重点培育中试平台初步名单公示",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/zlpp/art/2026/art_a7430ae7edb64425a11c9cd0a9a266c4.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-04",
+   "doc_class": "POLICY_ACTION",
+   "id": "EVT-ZCFB_TZ-20261104-1408585",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 政策通知",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_ZCFB_TZ",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202611/t20261104_1408585.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "关于印发《招标投标领域公共信用信息目录(2026年版)》的通知(发改法规〔2026〕1528号)",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202611/t20261104_1408585.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-04",
+   "doc_class": "ACTIVITY_PROMO",
+   "id": "EVT-XWFB-20261104-1408615",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_XWFB",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261104_1408615.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "国家发展改革委举行奋进“十五五”系列新闻发布会 介绍夯实发展支撑有关情况",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261104_1408615.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-04",
+   "doc_class": "POLICY_ACTION",
+   "id": "EVT-NHSA_NOTICE-e6d4bdd528e5",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家医疗保障局 · 通知公告",
+    "publisher": "国家医疗保障局",
+    "source_id": "NHSA_NOTICE",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23294.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "国家医保局发布第二十二批智能监管“两库”规则和知识点",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（INTRADAY_AMBIGUOUS），采用保守日期口径",
+   "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23294.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": "BK881144",
+   "date": "2026-11-04",
+   "doc_class": "POLICY_ACTION",
+   "id": "EVT-NHSA_NOTICE-6cf82015f053",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家医疗保障局 · 通知公告",
+    "publisher": "国家医疗保障局",
+    "source_id": "NHSA_NOTICE",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23295.html"
+   },
+   "status": "PENDING_MARKET",
+   "themes": [
+    "医用耗材分类与价格"
+   ],
+   "title": "关于调整神经介入与神经外科植入材料等7类医保医用耗材分类与代码的通知",
+   "uncertainty": "LOW",
+   "uncertainty_reason": "时点口径已确定（PUBLISHED_AFTER_CLOSE）",
+   "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23295.html",
+   "why": "标题命中「医用耗材」→ 关联 医疗器械（BK881144，DIRECT）；属显式关键词映射，不是语义判定，也不是因果结论",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-04",
+   "doc_class": "STANDARD_PROCEDURE",
+   "id": "EVT-MIIT_KJS-8e89f995def8",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_185cbe30ae39463494bf771964b0ea53.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "关于公开征求《石墨化增碳剂》等98项行业标准报批意见的公示",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_185cbe30ae39463494bf771964b0ea53.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-03",
+   "doc_class": "ACTIVITY_PROMO",
+   "id": "EVT-XWFB-20261103-1408537",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_XWFB",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261103_1408537.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "国家发展改革委举行奋进“十五五”系列新闻发布会 介绍培育壮大新动能有关情况",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261103_1408537.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-03",
+   "doc_class": "POLICY_ACTION",
+   "id": "EVT-MIIT_KJS-e077f7e6539a",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/wjfb/art/2026/art_42a845ab8895458ab9b1002605a38d38.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "工业和信息化部办公厅关于印发2026年第五批行业标准制修订项目计划的通知",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/wjfb/art/2026/art_42a845ab8895458ab9b1002605a38d38.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-02",
+   "doc_class": "ACTIVITY_PROMO",
+   "id": "EVT-XWFB-20261102-1408491",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_XWFB",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261102_1408491.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "郑栅洁主任会见澳大利亚西澳州州长库克并签署合作文件",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261102_1408491.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-02",
+   "doc_class": "OTHER",
+   "id": "EVT-XWFB-20261102-1408489",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_XWFB",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261102_1408489.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "国家发展改革委与阿曼有关部门签署北斗卫星等合作文件",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261102_1408489.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-02",
+   "doc_class": "STANDARD_PROCEDURE",
+   "id": "EVT-MIIT_KJS-68eb14dbdb91",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/gzdt/art/2026/art_e4e5b167a0c64a3384e82e7bb92f14c9.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "公开征求《创新型产业社区建设指引（试行）》（征求意见稿）的意见",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/gzdt/art/2026/art_e4e5b167a0c64a3384e82e7bb92f14c9.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-02",
+   "doc_class": "STANDARD_PROCEDURE",
+   "id": "EVT-MIIT_KJS-5e88e56b5f49",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_dbf4f2bb9759468a8a9707f7a5f97b7b.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "关于公开征求《元宇宙 通用服务 数字内容管理要求》等7项行业标准报批意见的公示",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_dbf4f2bb9759468a8a9707f7a5f97b7b.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-02",
+   "doc_class": "STANDARD_PROCEDURE",
+   "id": "EVT-MIIT_KJS-4498d671a510",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_ef6917d0271b4c48be7eb650a1e1bb79.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "关于公开征求《冲压车间安全生产要求》等3项强制性国家标准制修订计划项目意见的公示",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_ef6917d0271b4c48be7eb650a1e1bb79.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-02",
+   "doc_class": "STANDARD_PROCEDURE",
+   "id": "EVT-MIIT_KJS-3f8d6ddd5ce8",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_a2734913366e490caa6a74f276c8cb6d.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "关于公开征求《汽车座椅、座椅固定装置及头枕强度要求和试验方法》等5项强制性国家标准（报批稿）意见的公示",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_a2734913366e490caa6a74f276c8cb6d.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-01",
+   "doc_class": "ACTIVITY_PROMO",
+   "id": "EVT-NHSA_NOTICE-25f5624d895c",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家医疗保障局 · 通知公告",
+    "publisher": "国家医疗保障局",
+    "source_id": "NHSA_NOTICE",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.nhsa.gov.cn/art/2026/11/1/art_109_23271.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "2026年全民参保宣传短视频大赛结果名单",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（EVENT_DATE_NON_TRADING），采用保守日期口径",
+   "url": "https://www.nhsa.gov.cn/art/2026/11/1/art_109_23271.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
   {
    "board_series": null,
    "date": "2026-10-30",
@@ -82,7 +414,7 @@
     "source_kind": "PUBLIC_POLICY_PAGE",
     "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202610/t20261029_1408449.html"
    },
-   "status": "PENDING_MARKET",
+   "status": "CANDIDATE",
    "themes": [
     "成品油价格机制"
    ],
@@ -106,7 +438,7 @@
     "source_kind": "PUBLIC_POLICY_PAGE",
     "url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202610/t20261028_1408423.html"
    },
-   "status": "PENDING_MARKET",
+   "status": "CANDIDATE",
    "themes": [
     "电力市场规则"
    ],
@@ -130,7 +462,7 @@
     "source_kind": "PUBLIC_POLICY_PAGE",
     "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_c351fb59fb284c72ad8e7770b3d35c20.html"
    },
-   "status": "PENDING_MARKET",
+   "status": "WATCH",
    "themes": [
     "智能驾驶（AEB 强制标准）"
    ],
@@ -932,7 +1264,7 @@
     "source_kind": "PUBLIC_POLICY_PAGE",
     "url": "https://www.nhsa.gov.cn/art/2026/9/20/art_109_22286.html"
    },
-   "status": "CANDIDATE",
+   "status": "WATCH",
    "themes": [
     "脑机接口"
    ],
@@ -956,7 +1288,7 @@
     "source_kind": "PUBLIC_POLICY_PAGE",
     "url": "https://www.nhsa.gov.cn/art/2026/9/18/art_109_22278.html"
    },
-   "status": "CANDIDATE",
+   "status": "WATCH",
    "themes": [
     "医用耗材分类与价格"
    ],
@@ -8617,12 +8949,12 @@
    "sha256_16": "005dd7f7180383a4"
   },
   {
-   "file": "research/current/new_theme_radar_v0_7_view.json",
-   "sha256_16": "3cd9f3b8e0686e9a"
+   "file": "research/current/new_theme_radar_v0_9_view.json",
+   "sha256_16": "8b31455879e2ac8c"
   },
   {
-   "file": "research/current/pattern_discovery_v0_12.json",
-   "sha256_16": "a4d6fc9a776f8dc7"
+   "file": "research/current/pattern_discovery_v0_13.json",
+   "sha256_16": "3cd83ea540e7409f"
   },
   {
    "file": "research/current/historical_event_maps_index.json",

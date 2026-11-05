@@ -1,0 +1,35 @@
+{
+ "artifact": "candidate_ledger_refresh",
+ "artifact_version": "0.1",
+ "batches_total": 2,
+ "by_outcome_type": {
+  "FORWARD_PENDING": 168,
+  "IN_WINDOW_PARTIAL": 52
+ },
+ "formation_skipped": null,
+ "generated_by": "research/scripts/monthly_candidate_ledger.py",
+ "instances_total": 220,
+ "market_advanced": true,
+ "market_as_of": "2026-11-05",
+ "new_batches": 1,
+ "new_instances": 16,
+ "pending_total": {
+  "10d": 168,
+  "20d": 168,
+  "5d": 168
+ },
+ "position": "机械刷新记录：只搬运既有产物，不改任何 selection_basis；冻结快照不可覆盖。★ 本报告不是业绩评价，不含排名或信号。",
+ "previous_market_as_of": "2026-10-30",
+ "reappeared_instances": 152,
+ "settled_new": {
+  "10d": 0,
+  "20d": 52,
+  "5d": 0
+ },
+ "settled_total": {
+  "10d": 52,
+  "20d": 52,
+  "5d": 52
+ },
+ "upstream_can_form": true
+}

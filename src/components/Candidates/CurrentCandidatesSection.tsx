@@ -22,7 +22,7 @@ import { useEffect, useMemo, useState } from 'react';
 // ★ v0.60：v0_10 = 行情刷新到 2026-10-29 后重算的候选摘要
 // ★ v0.62：v0_11 = 行情刷新到 2026-10-30 后重算的候选摘要
 // ★ v0.65：v0_12 = 三类对象分段（sections）+ 缺股原因 + 当前主题标的映射
-import raw from '@current/candidate_digest_v0_12.json';
+import raw from '@current/candidate_digest_v0_13.json';
 import { RichText } from '../RichText';
 
 interface RelatedSecurity {

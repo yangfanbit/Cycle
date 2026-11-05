@@ -8968,6 +8968,1519 @@
      "sha256": "6d896f4ac9feb2993f54c9b858ac09edd76d9fce13f5f9d4e70f5c00c838b6bb"
     }
    }
+  },
+  {
+   "batch_id": "CF-2026-11-05-01",
+   "counts": {
+    "by_kind": {
+     "concept_basket": 5,
+     "industry_board": 11
+    },
+    "new_instances": 16,
+    "reappeared": 152
+   },
+   "formed_at": "2026-11-05",
+   "instances": [
+    {
+     "board": "饮料制造",
+     "board_series": "BK881133",
+     "candidate_id": "SEAS-BK881133-M12",
+     "direction": "饮料制造 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK881133__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_REPORTED",
+      "hit_rate": 0.583,
+      "median_excess_pct": 1.65,
+      "n_years": 12,
+      "oos_status": "REPORTED",
+      "oos_tests": 7,
+      "pit_eligible_years": 7,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "元件",
+     "board_series": "BK881270",
+     "candidate_id": "SEAS-BK881270-M12",
+     "direction": "元件 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK881270__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_REPORTED",
+      "hit_rate": 0.583,
+      "median_excess_pct": 1.06,
+      "n_years": 12,
+      "oos_status": "REPORTED",
+      "oos_tests": 6,
+      "pit_eligible_years": 6,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "种子生产",
+     "board_series": "BK884001",
+     "candidate_id": "SEAS-BK884001-M12",
+     "direction": "种子生产 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884001__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.83,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 3,
+      "pit_eligible_years": 3,
+      "tier": "STRICT"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "果蔬加工",
+     "board_series": "BK884009",
+     "candidate_id": "SEAS-BK884009-M12",
+     "direction": "果蔬加工 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884009__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.51,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 3,
+      "pit_eligible_years": 3,
+      "tier": "STRICT"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "其他金属新材料",
+     "board_series": "BK884056",
+     "candidate_id": "SEAS-BK884056-M12",
+     "direction": "其他金属新材料 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884056__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.96,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 1,
+      "pit_eligible_years": 1,
+      "tier": "STRICT"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "专业工程",
+     "board_series": "BK884068",
+     "candidate_id": "SEAS-BK884068-M12",
+     "direction": "专业工程 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884068__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.31,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 3,
+      "pit_eligible_years": 3,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "制冷空调设备",
+     "board_series": "BK884073",
+     "candidate_id": "SEAS-BK884073-M12",
+     "direction": "制冷空调设备 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884073__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.81,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 2,
+      "pit_eligible_years": 2,
+      "tier": "STRICT"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "高速公路",
+     "board_series": "BK884154",
+     "candidate_id": "SEAS-BK884154-M12",
+     "direction": "高速公路 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884154__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.27,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 3,
+      "pit_eligible_years": 3,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "百货零售",
+     "board_series": "BK884160",
+     "candidate_id": "SEAS-BK884160-M12",
+     "direction": "百货零售 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884160__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.15,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 2,
+      "pit_eligible_years": 2,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "航天装备",
+     "board_series": "BK884180",
+     "candidate_id": "SEAS-BK884180-M12",
+     "direction": "航天装备 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884180__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.625,
+      "median_excess_pct": 1.55,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 3,
+      "pit_eligible_years": 3,
+      "tier": "STRICT"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "啤酒",
+     "board_series": "BK884189",
+     "candidate_id": "SEAS-BK884189-M12",
+     "direction": "啤酒 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "BK884189__2026-12",
+     "kind": "industry_board",
+     "month": 12,
+     "rep_stock_gap": "行业板块无历史成分 → 不绑个股",
+     "representative_stocks": [],
+     "selection_basis": {
+      "evidence_grade": "OOS_INSUFFICIENT",
+      "hit_rate": 0.75,
+      "median_excess_pct": 4.15,
+      "n_years": 8,
+      "oos_status": "INSUFFICIENT_OOS",
+      "oos_tests": 3,
+      "pit_eligible_years": 3,
+      "tier": "STRICT"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "光伏概念",
+     "board_series": "CPT_gfgn",
+     "candidate_id": "SEAS-CPT_gfgn-M12",
+     "direction": "光伏概念 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "CPT_gfgn__2026-12",
+     "kind": "concept_basket",
+     "month": 12,
+     "rep_stock_gap": null,
+     "representative_stocks": [
+      {
+       "historical_median_excess_pct": 6.85,
+       "name": "福莱特",
+       "name_status": "RESOLVED",
+       "series_id": "sh601865",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 7
+      },
+      {
+       "historical_median_excess_pct": 5.62,
+       "name": "帝尔激光",
+       "name_status": "RESOLVED",
+       "series_id": "sz300776",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 7
+      },
+      {
+       "historical_median_excess_pct": 5.49,
+       "name": "迈为股份",
+       "name_status": "RESOLVED",
+       "series_id": "sz300751",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 8
+      }
+     ],
+     "selection_basis": {
+      "evidence_grade": "OOS_REPORTED",
+      "hit_rate": 0.583,
+      "median_excess_pct": 1.14,
+      "n_years": 12,
+      "oos_status": "REPORTED",
+      "oos_tests": 6,
+      "pit_eligible_years": 6,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "内贸规划",
+     "board_series": "CPT_nmgh",
+     "candidate_id": "SEAS-CPT_nmgh-M12",
+     "direction": "内贸规划 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "CPT_nmgh__2026-12",
+     "kind": "concept_basket",
+     "month": 12,
+     "rep_stock_gap": null,
+     "representative_stocks": [
+      {
+       "historical_median_excess_pct": 6.26,
+       "name": "永辉超市",
+       "name_status": "RESOLVED",
+       "series_id": "sh601933",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      },
+      {
+       "historical_median_excess_pct": 4.17,
+       "name": "中百集团",
+       "name_status": "RESOLVED",
+       "series_id": "sz000759",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      },
+      {
+       "historical_median_excess_pct": 2.49,
+       "name": "天虹股份",
+       "name_status": "RESOLVED",
+       "series_id": "sz002419",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      }
+     ],
+     "selection_basis": {
+      "evidence_grade": "OOS_REPORTED",
+      "hit_rate": 0.75,
+      "median_excess_pct": 1.92,
+      "n_years": 12,
+      "oos_status": "REPORTED",
+      "oos_tests": 5,
+      "pit_eligible_years": 5,
+      "tier": "STRICT"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "奢侈品",
+     "board_series": "CPT_scp",
+     "candidate_id": "SEAS-CPT_scp-M12",
+     "direction": "奢侈品 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "CPT_scp__2026-12",
+     "kind": "concept_basket",
+     "month": 12,
+     "rep_stock_gap": null,
+     "representative_stocks": [
+      {
+       "historical_median_excess_pct": 5.03,
+       "name": "中国中免",
+       "name_status": "RESOLVED",
+       "series_id": "sh601888",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      },
+      {
+       "historical_median_excess_pct": 2.16,
+       "name": "贵州茅台",
+       "name_status": "RESOLVED",
+       "series_id": "sh600519",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      },
+      {
+       "historical_median_excess_pct": 1.54,
+       "name": "潮宏基",
+       "name_status": "RESOLVED",
+       "series_id": "sz002345",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 11
+      }
+     ],
+     "selection_basis": {
+      "evidence_grade": "OOS_REPORTED",
+      "hit_rate": 0.583,
+      "median_excess_pct": 1.41,
+      "n_years": 12,
+      "oos_status": "REPORTED",
+      "oos_tests": 7,
+      "pit_eligible_years": 7,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "武汉规划",
+     "board_series": "CPT_whgh",
+     "candidate_id": "SEAS-CPT_whgh-M12",
+     "direction": "武汉规划 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "CPT_whgh__2026-12",
+     "kind": "concept_basket",
+     "month": 12,
+     "rep_stock_gap": null,
+     "representative_stocks": [
+      {
+       "historical_median_excess_pct": 4.17,
+       "name": "中百集团",
+       "name_status": "RESOLVED",
+       "series_id": "sz000759",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      },
+      {
+       "historical_median_excess_pct": 1.92,
+       "name": "楚天高速",
+       "name_status": "RESOLVED",
+       "series_id": "sh600035",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 11
+      },
+      {
+       "historical_median_excess_pct": 1.57,
+       "name": "武商集团",
+       "name_status": "RESOLVED",
+       "series_id": "sz000501",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 11
+      }
+     ],
+     "selection_basis": {
+      "evidence_grade": "OOS_REPORTED",
+      "hit_rate": 0.583,
+      "median_excess_pct": 0.91,
+      "n_years": 12,
+      "oos_status": "REPORTED",
+      "oos_tests": 5,
+      "pit_eligible_years": 5,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    },
+    {
+     "board": "新能源",
+     "board_series": "CPT_xny",
+     "candidate_id": "SEAS-CPT_xny-M12",
+     "direction": "新能源 · 12 月",
+     "formed_at": "2026-11-05",
+     "group": null,
+     "instance_id": "CPT_xny__2026-12",
+     "kind": "concept_basket",
+     "month": 12,
+     "rep_stock_gap": null,
+     "representative_stocks": [
+      {
+       "historical_median_excess_pct": 8.68,
+       "name": "湘电股份",
+       "name_status": "RESOLVED",
+       "series_id": "sh600416",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      },
+      {
+       "historical_median_excess_pct": 5.06,
+       "name": "中材科技",
+       "name_status": "RESOLVED",
+       "series_id": "sz002080",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 12
+      },
+      {
+       "historical_median_excess_pct": 4.17,
+       "name": "顺钠股份",
+       "name_status": "RESOLVED",
+       "series_id": "sz000533",
+       "source": "当前概念成分 + 基准日历对齐",
+       "years": 10
+      }
+     ],
+     "selection_basis": {
+      "evidence_grade": "OOS_REPORTED",
+      "hit_rate": 0.667,
+      "median_excess_pct": 0.96,
+      "n_years": 12,
+      "oos_status": "REPORTED",
+      "oos_tests": 7,
+      "pit_eligible_years": 7,
+      "tier": "EXPLORATORY"
+     },
+     "window_declared": {
+      "start": null,
+      "start_status": "UNKNOWN_AT_FORMATION"
+     },
+     "window_year": 2026
+    }
+   ],
+   "reappearances": [
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_lk__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881267__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881167__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_scp1__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881164__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_sygg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881158__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881125__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881137__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_skgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_gqgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881160__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881281__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881143__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zmgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_bdgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881275__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_sgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881159__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881179__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hxxa__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_swyz__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_sbjx__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881136__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hwhs__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_smgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zczr__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zSTg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK884199__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881139__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881165__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881174__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zxsy__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_bjgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_tygn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881264__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_tdlz__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881116__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881133__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hnzm__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_mtjzm__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881171__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_wzbj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_ka__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881180__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_xczx__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_jjj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_yhtl__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881153__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881108__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_cgjr__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_tmj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881101__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_jrcg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881141__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881115__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hwgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_dsgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881122__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_bcgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_myyy__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_lszm__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881146__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881166__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_swrl__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881156__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881102__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881135__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881128__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_xaxq__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_tsl__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_cxgg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_znjj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_qhgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_jrgg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_gtdc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881276__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881178__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_xmgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881157__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_wlyx__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_gfcl__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_cytq__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_yqgg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_wss__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881121__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_dtjj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881263__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_szbd__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_ldc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK884200__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_stbk__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_myyx__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_qszc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881134__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_scp__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hmgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_xtzc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hBg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881103__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_tjy__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881266__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hhsj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_QFIIzc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_tzh__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_ckts__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_ssgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_stny__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_xqzy__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_yhfz__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_rzrq__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_yyq__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_cjxj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881107__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_yjys__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881182__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_ztss__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_CXOgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_bxzc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hwqc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hgzb__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_wjqy__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zzgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_myzl__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_yjyj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_czt__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881265__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hHg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881148__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881112__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_cdgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zmq__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_drn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zncd__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_dfj__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881109__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_jycx__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_xny__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881140__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_jaz__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_cdp__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_fdc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_zjtx__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_CROgn__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_wgg__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881149__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_hsdh__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_sbzc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "BK881168__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_smx__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_jjzc__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    },
+    {
+     "first_batch": "CF-2026-10-23-01",
+     "first_formed_at": "2026-10-23",
+     "instance_id": "CPT_yq50__2026-11",
+     "note": "同一板块同一目标月份已登记 → 复用最初的形成记录，不重复登记"
+    }
+   ],
+   "source": {
+    "candidate_digest": {
+     "file": "candidate_digest_v0_12.json",
+     "sha256": "451ae9eab1ae05387393ec578b74dad9070beecf7285e3162accf5cc867da5b8"
+    },
+    "migrated_from": null,
+    "pattern_discovery": {
+     "as_of": "20261105",
+     "file": "pattern_discovery_v0_13.json",
+     "sha256": "3cd83ea540e7409f195d1751afb1c199b1a2c6de64a1c10a531701285dcd766e"
+    }
+   }
   }
  ],
  "generated_by": "research/scripts/build_candidate_ledger_v0_2.py",

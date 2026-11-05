@@ -46,53 +46,17 @@
  },
  "current_market": {
   "series_id": "SH000300",
-  "as_of": "2026-10-30",
+  "as_of": "2026-11-05",
   "observables": {
-   "date": "2026-10-30",
-   "close": 3985.5,
-   "vol_pct60": 0.633,
-   "ret_20_pct": -10.22,
-   "vol_ratio": 1.0,
+   "date": "2026-11-05",
+   "close": 4113.41,
+   "vol_pct60": 0.917,
+   "ret_20_pct": -4.57,
+   "vol_ratio": 1.102,
    "above_ma20": false,
    "above_ma60": false
   },
   "series": [
-   {
-    "date": "2026-09-28",
-    "close": 4340.76,
-    "vol_pct60": 0.167,
-    "ret_20_pct": -5.82,
-    "vol_ratio": 0.645,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-29",
-    "close": 4345.21,
-    "vol_pct60": 0.05,
-    "ret_20_pct": -6.05,
-    "vol_ratio": 0.639,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-09-30",
-    "close": 4357.62,
-    "vol_pct60": 0.133,
-    "ret_20_pct": -5.5,
-    "vol_ratio": 0.649,
-    "above_ma20": false,
-    "above_ma60": false
-   },
-   {
-    "date": "2026-10-08",
-    "close": 4310.28,
-    "vol_pct60": 0.433,
-    "ret_20_pct": -5.23,
-    "vol_ratio": 0.633,
-    "above_ma20": false,
-    "above_ma60": false
-   },
    {
     "date": "2026-10-09",
     "close": 4317.25,
@@ -236,9 +200,45 @@
     "vol_ratio": 1.0,
     "above_ma20": false,
     "above_ma60": false
+   },
+   {
+    "date": "2026-11-02",
+    "close": 4016.92,
+    "vol_pct60": 0.967,
+    "ret_20_pct": -7.46,
+    "vol_ratio": 0.954,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-11-03",
+    "close": 4008.87,
+    "vol_pct60": 0.983,
+    "ret_20_pct": -7.74,
+    "vol_ratio": 0.953,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-11-04",
+    "close": 4101.34,
+    "vol_pct60": 0.95,
+    "ret_20_pct": -5.88,
+    "vol_ratio": 1.093,
+    "above_ma20": false,
+    "above_ma60": false
+   },
+   {
+    "date": "2026-11-05",
+    "close": 4113.41,
+    "vol_pct60": 0.917,
+    "ret_20_pct": -4.57,
+    "vol_ratio": 1.102,
+    "above_ma20": false,
+    "above_ma60": false
    }
   ],
-  "note": "取**最新可得交易日** = 2026-10-30（`market_data.db` 的 `SH000300` 原始收盘 `price_type='raw'`，未复权）。只使用该日及之前的行情（ex-ante），不含相似度 / 匹配 / 概率 / 预测。"
+  "note": "取**最新可得交易日** = 2026-11-05（`market_data.db` 的 `SH000300` 原始收盘 `price_type='raw'`，未复权）。只使用该日及之前的行情（ex-ante），不含相似度 / 匹配 / 概率 / 预测。"
  },
  "summary": {
   "OK": 54,

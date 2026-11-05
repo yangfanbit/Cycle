@@ -87,10 +87,20 @@ describe('候选追踪 · 跨月滚动', () => {
     expect(html).toContain(`${v > 0 ? '+' : ''}${v.toFixed(2)}pp`);
   });
 
-  it('⑤ 行序与产物一致（不按结果重排）', () => {
+  it('⑤ 行序 = 形成批次倒序 + 组内产物顺序（不按结果重排）', () => {
+    // ★★ v0.76：旧断言直接期望「产物原序」，只在**单批次**时碰巧成立。
+    //   11-05 新增第 2 个形成批次后，组件按批次倒序分组（最新批次在前）→ 旧断言失败。
+    //   真实不变量是：**按形成批次分组、组内保持产物顺序，绝不按结果/收益重排**。
     const ids = [...html.matchAll(/data-track-row="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.length).toBe(d.instances.length);
-    expect(ids).toEqual(d.instances.map((i) => i.instance_id));
+    expect(new Set(ids).size).toBe(d.instances.length);   // 无遗漏、无重复
+    const order = d.batches.map((b) => b.batch_id);
+    const keys = [...new Set(d.instances.map((i) => i.batch_id ?? '（未知批次）'))]
+      .sort((a, b) => (order.indexOf(b) - order.indexOf(a)) || a.localeCompare(b));
+    const expected = keys.flatMap((k) => d.instances
+      .filter((i) => (i.batch_id ?? '（未知批次）') === k)
+      .map((i) => i.instance_id));
+    expect(ids).toEqual(expected);
   });
 
   it('⑥ 说明形成记录不可变 / 不排名 / 无信号', () => {

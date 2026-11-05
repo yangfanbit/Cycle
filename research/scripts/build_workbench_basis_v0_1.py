@@ -22,6 +22,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import sys
 from datetime import datetime
 
@@ -30,10 +31,21 @@ CURRENT = os.path.join(REPO, "research", "current")
 OUT_INDEX = os.path.join(CURRENT, "workbench_index_v0_1.json")
 OUT_EVAL = os.path.join(CURRENT, "workbench_eval_basis_v0_1.json")
 
+def _latest_versioned(prefix):
+    """★★ v0.76：源产物会随行情刷新升版，**不得硬编码「当前版本」**。
+    用 glob + 版本号数字排序取最新（不能按文件名字符串排序，否则 v0_9 < v0_12）。"""
+    fs = glob.glob(os.path.join(CURRENT, "%s_v0_*.json" % prefix))
+    fs = [f for f in fs if re.search(r"_v0_(\d+)\.json$", f)]
+    if not fs:
+        raise SystemExit("找不到 %s 的版本化产物" % prefix)
+    return os.path.relpath(max(fs, key=lambda f: int(re.search(r"_v0_(\d+)\.json$", f).group(1))), REPO)
+
+
 INPUTS = {
     "timeline": "exports/timeline_export_v1.json",
-    "radar": "research/current/new_theme_radar_v0_7_view.json",
-    "patterns": "research/current/pattern_discovery_v0_12.json",
+    # 展示包文件名带 `_view`，单独取最新版本
+    "radar": _latest_versioned("new_theme_radar").replace(".json", "_view.json"),
+    "patterns": _latest_versioned("pattern_discovery"),
     "maps_index": "research/current/historical_event_maps_index.json",
 }
 

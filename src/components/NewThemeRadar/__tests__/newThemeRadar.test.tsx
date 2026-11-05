@@ -1,5 +1,5 @@
 /**
- * ★★ v0.75：自动发现的新题材线索（展示包 `new_theme_radar_v0_8_view`）。
+ * ★★ v0.76：自动发现的新题材线索（展示包 `new_theme_radar_v0_9_view`）。
  *
  * 本轮回归的三类缺陷：
  *  A. **时点口径不成立**：`published_date != event_date` 时仍用文章元数据的时分判断
@@ -16,7 +16,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { NewThemeRadarSection, relationLabel, natureCaveat, timeExplain }
   from '../NewThemeRadarSection';
-import raw from '@current/new_theme_radar_v0_8_view.json';
+import raw from '@current/new_theme_radar_v0_9_view.json';
 
 interface D {
   as_of: string; artifact_version?: string; source_artifact?: string;

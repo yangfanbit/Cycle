@@ -12,7 +12,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { DiscoveredPatterns } from '../DiscoveredPatterns';
 import summary from '@current/pattern_discovery_summary_v0_1.json';
-import digest from '@current/candidate_digest_v0_12.json';
+import digest from '@current/candidate_digest_v0_13.json';
 
 const html = renderToStaticMarkup(<DiscoveredPatterns />);
 /** 首页「季节性统计窗口」预览的 6 条 id（用于核对两处列表的关系） */
@@ -41,44 +41,56 @@ describe('季节性发现 · 候选账本渲染', () => {
     expect(html).toContain(`20 日待结算 <strong>${hs['20d'].PENDING}</strong>`);
   });
 
-  it('★★ 本月已实现部分：带锚点、5/10 日有数字、20 日待结算', () => {
+  // ★★ v0.76：以下三条原为**旧行为快照**——写死「本月一定存在已实现窗口」。
+  //   行情推进到 11-05 后，11 月新窗口的 5/10 日交易日不足（仅 4 天），
+  //   realized_windows = 0 是**正确**状态。改为「按产物状态条件断言 + 绝不伪造」。
+  const realized = ((summary as unknown as { realized_windows?: unknown[] }).realized_windows ?? []);
+
+  it('★★ 本月已实现部分：有则带锚点与三档结果，无则不得伪造', () => {
     const d = summary as unknown as {
       realized_windows: {
         pattern_id: string; outcome: { anchor: string | null;
           horizons: Record<'5' | '10' | '20', { status: string; excess_pp?: number | null }> };
       }[];
     };
-    expect(d.realized_windows.length).toBeGreaterThan(0);
-    expect(html).toContain(`data-realized-windows="${d.realized_windows.length}"`);
-    for (const w of d.realized_windows) {
-      expect(html).toContain(`data-realized="${w.pattern_id}"`);
-      expect(w.outcome.anchor).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      // 5/10 已结算 → 必须有超额数字；20 日必须 PENDING（不补 0）
-      expect(w.outcome.horizons['5'].status).toBe('AVAILABLE');
-      expect(w.outcome.horizons['5'].excess_pp).not.toBeNull();
-      expect(w.outcome.horizons['20'].status).toBe('PENDING');
-      expect(w.outcome.horizons['20'].excess_pp).toBeNull();
+    if (d.realized_windows.length > 0) {
+      expect(html).toContain(`data-realized-windows="${d.realized_windows.length}"`);
+      for (const w of d.realized_windows) {
+        expect(html).toContain(`data-realized="${w.pattern_id}"`);
+        expect(w.outcome.anchor).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(w.outcome.horizons['5'].status).toBe('AVAILABLE');
+        expect(w.outcome.horizons['5'].excess_pp).not.toBeNull();
+        expect(w.outcome.horizons['20'].status).toBe('PENDING');
+        expect(w.outcome.horizons['20'].excess_pp).toBeNull();
+      }
+    } else {
+      expect(html).not.toContain('data-realized-windows=');
+      expect(html).not.toMatch(/data-realized="[^"]+"/);
     }
     expect(html).toContain('待结算');
   });
 
   it('★★ 未开始的候选写「窗口未开始」，不得用 0.00% 冒充', () => {
-    expect(html).toContain('窗口未开始');
-    // 账本里 NOT_STARTED 的候选其 excess 必为 null（结构断言）
     const d = summary as unknown as {
       top_windows: { outcome?: { horizons: Record<string, { status: string; excess_pp?: number | null }> } | null }[];
     };
     const notStarted = d.top_windows.filter((w) => w.outcome?.horizons['5']?.status === 'NOT_STARTED');
-    expect(notStarted.length).toBeGreaterThan(0);
+    if (notStarted.length > 0) expect(html).toContain('窗口未开始');
     for (const w of notStarted) {
       expect(w.outcome!.horizons['5'].excess_pp).toBeNull();
     }
+    // 无论是否有 NOT_STARTED，都不得把未观测写成一个具体数字
+    expect(html).not.toMatch(/NOT_STARTED[\s\S]{0,80}0\.00%/);
   });
 
-  it('★★ 必须显式说明「已实现部分不是样本外前瞻」', () => {
-    expect(html).toContain('data-realized-caveat="1"');
-    expect(html).toContain('不是');
-    expect(html).toContain('样本外前瞻');
+  it('★★ 已实现部分存在时必须说明「不是样本外前瞻」', () => {
+    if (realized.length > 0) {
+      expect(html).toContain('data-realized-caveat="1"');
+      expect(html).toContain('不是');
+      expect(html).toContain('样本外前瞻');
+    } else {
+      expect(html).not.toContain('data-realized-caveat="1"');
+    }
     // 也不得出现评分/排名式措辞
     expect(html).not.toMatch(/胜率|推荐|买入|目标价/);
   });
