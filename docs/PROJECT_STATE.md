@@ -7,6 +7,15 @@
 
 > 授权：使用者明确「授权跑全套刷新」。按 `docs/MARKET_DATA_REFRESH_2026-10-29_v0_1.md` §7 的
 > **顺序**执行，不改方法、不扩源。写前已把两个 DB（1.8 GB）与关键产物备份到 `.tmp/backup_full_refresh/`。
+> **主交付 `13bff25`**；本段由收尾提交回填真实 SHA 与 CI 状态。
+>
+> ★ **CI 状态如实记录**：首次 run `42062137930` 的 `Verify & build` **全部 success**
+> （含 9 项 Research 只读门禁、tsc、1574 项测试、base path、artifact 上传），
+> 但 `Deploy` job 的单个 step 在 5 秒内报 failure。**部署实际已生效**：
+> GitHub 部署记录 `13bff25 / github-pages` 已创建，线上实测
+> `as_of = 2026-11-05`、`全量模式 1301 条`、`177 张候选`、`220 个候选账本`，
+> 即 v0.76 内容已上线。判定为 Pages 状态回写的瞬时错误，以随后一次 run 复核；
+> **不因该 step 报错而回滚或 force push**。
 
 **A · 行情推进（严格按依赖顺序）**
 
