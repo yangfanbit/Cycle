@@ -11,8 +11,12 @@
 
 运行：`python research/scripts/test_build_new_theme_radar.py`
 """
+import hashlib
+import json
 import os
+import shutil
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -552,6 +556,49 @@ class TestCoverageDerivation(unittest.TestCase):
                          "市场状态与事件性质是两套枚举，不得混用键名")
         self.assertEqual(set(B.NATURE_LEGEND),
                          {"ROUTINE_RECURRING", "NEW_CATALYST", "BACKGROUND", "UNCLASSIFIED"})
+
+
+class TestEvidenceCarryOver(unittest.TestCase):
+    """★★ v0.75：重抓丢正文时，只能按哈希一致原则继承上一版原文，不得编造。"""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="threec_ev_")
+        self.quote = "工信部公示原文（上一版已核）"
+        self.sha = hashlib.sha256(self.quote.encode("utf-8")).hexdigest()[:16]
+        self.path = os.path.join(self.tmp, "new_theme_radar_v0_7_evidence.json")
+        with open(self.path, "w", encoding="utf-8") as fh:
+            json.dump({"EVT-A": {"quote": self.quote, "attachments": []}}, fh)
+        self.doc = {"events": [
+            {"event_id": "EVT-A", "evidence": {"kind": "BODY_TEXT", "quote": None,
+                                               "quote_sha256_16": self.sha}},
+            {"event_id": "EVT-B", "evidence": {"kind": "BODY_TEXT", "quote": None,
+                                               "quote_sha256_16": "deadbeefdeadbeef"}},
+        ]}
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_T11a_matching_hash_is_carried_with_provenance(self):
+        ev, n = B.carry_over_evidence(self.doc, {}, self.path)
+        self.assertEqual(n, 1)
+        self.assertEqual(ev["EVT-A"]["quote"], self.quote)
+        self.assertEqual(ev["EVT-A"]["carried_from"],
+                         "new_theme_radar_v0_7_evidence.json")
+
+    def test_T11b_mismatched_hash_is_refused(self):
+        ev, n = B.carry_over_evidence(self.doc, {}, self.path)
+        self.assertNotIn("EVT-B", ev, "哈希不一致不得沿用上一版原文")
+        self.assertEqual(n, 1)
+
+    def test_T11c_existing_quote_is_not_overwritten(self):
+        ev, n = B.carry_over_evidence(
+            self.doc, {"EVT-A": {"quote": "本次抓到的新正文"}}, self.path)
+        self.assertEqual(n, 0)
+        self.assertEqual(ev["EVT-A"]["quote"], "本次抓到的新正文")
+
+    def test_T11d_missing_prev_file_changes_nothing(self):
+        ev, n = B.carry_over_evidence(self.doc, {}, self.path + ".missing")
+        self.assertEqual((ev, n), ({}, 0))
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 /**
- * 自动发现的新题材线索（v0.72 · 展示包 `new_theme_radar_v0_7_view`）。
+ * 自动发现的新题材线索（v0.75 · 展示包 `new_theme_radar_v0_8_view`）。
  *
  * ## 本轮三件事
  *
@@ -20,7 +20,7 @@
  * 待人工复核」；具体主题看「主题：」（由实际命中关键词映射），方向只是上层分组。
  */
 import { useState } from 'react';
-import raw from '@current/new_theme_radar_v0_7_view.json';
+import raw from '@current/new_theme_radar_v0_8_view.json';
 import { RichText } from '../RichText';
 
 interface ThemeLink {
@@ -193,7 +193,7 @@ let evPromise: Promise<EvMap> | null = null;
 /** ★★ v0.72：**不在内部吞掉错误** —— 加载失败必须能被界面区分出来 */
 function loadEvidence(): Promise<EvMap> {
   if (!evPromise) {
-    evPromise = import('@current/new_theme_radar_v0_7_evidence.json')
+    evPromise = import('@current/new_theme_radar_v0_8_evidence.json')
       .then((m) => ((m as { default?: EvMap }).default ?? (m as unknown as EvMap)));
     evPromise.catch(() => { evPromise = null; });   // 失败后允许重试
   }
@@ -628,7 +628,7 @@ export function NewThemeRadarSection() {
         {archived.length > 0
           ? <>；<strong>低信号文档（行政答复）已移出本区</strong>，见下方归档。</> : null}
         展示包只带这 {full.length} 条的完整字段，其余 {doc.events.length - full.length} 条
-        以<strong>索引行</strong>保留在产物 <code>{doc.source_artifact ?? 'new_theme_radar_v0_7.json'}</code> 内。
+        以<strong>索引行</strong>保留在产物 <code>{doc.source_artifact ?? 'new_theme_radar_v0_8.json'}</code> 内。
       </p>
       <ol className="ntr-list" data-rows="recent">
         {recent.map((e) => <EventRow key={e.event_id} e={e} />)}

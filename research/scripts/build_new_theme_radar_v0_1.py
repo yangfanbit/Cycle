@@ -1516,6 +1516,38 @@ def split_evidence(doc):
     return ev
 
 
+def carry_over_evidence(doc, evidence, prev_ev_path):
+    """★★ v0.75：**重抓时丢失的原文，必须能从上一版继承**。
+
+    实测缺陷：v0_8 重抓时 6 条工信部历史文章没取到正文（远端临时不可用/页面变化），
+    但 `quote_sha256_16` 从上一版继承了 → 证据文件缺原文，`--check` 抓到
+    「有哈希但证据文件里没有原文」。按项目「完整档案可追溯、不得丢原文摘要」的边界，
+    必须补齐，**且不编造**：只有上一版原文重算哈希与本版一致时才沿用，并标 `carried_from`。
+    """
+    if not prev_ev_path or not os.path.exists(prev_ev_path):
+        return evidence, 0
+    try:
+        prev_ev = json.load(open(prev_ev_path, encoding="utf-8"))
+    except Exception:
+        return evidence, 0
+    n = 0
+    for e in doc.get("events") or []:
+        eid = e["event_id"]
+        sha = (e.get("evidence") or {}).get("quote_sha256_16")
+        if not sha or (evidence.get(eid) or {}).get("quote"):
+            continue
+        src = prev_ev.get(eid) or {}
+        q = src.get("quote")
+        if not q or hashlib.sha256(q.encode("utf-8")).hexdigest()[:16] != sha:
+            continue
+        rec = dict(evidence.get(eid) or {})
+        rec.update({k: v for k, v in src.items() if k != "carried_from"})
+        rec["carried_from"] = os.path.basename(prev_ev_path)
+        evidence[eid] = rec
+        n += 1
+    return evidence, n
+
+
 def slim_doc(doc, evidence):
     """完整产物 → 主包可承载的版本（evidence 只留 kind / 哈希 / 说明）。
 
@@ -1955,6 +1987,12 @@ def main(argv):
             return 1
         # ★★ v0.71：三个文件同源生成 —— 完整产物（真相）+ 展示包 + 按需证据
         evidence = split_evidence(doc)
+        # ★★ v0.75：本次重抓丢正文时，按哈希一致原则继承上一版原文（不编造、可追溯）
+        prev_ev_path = (os.path.join(CURRENT, prev_file.replace(".json", "_evidence.json"))
+                        if prev_file else None)
+        evidence, n_carried = carry_over_evidence(doc, evidence, prev_ev_path)
+        if n_carried:
+            print("  原文证据继承 %d 条（本次抓取无正文，哈希与上一版一致）" % n_carried)
         slim = slim_doc(doc, evidence)
         view = derive_view(slim)
         for path, obj in ((outs[0], slim), (outs[1], view), (outs[2], evidence)):

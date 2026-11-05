@@ -1,5 +1,5 @@
 /**
- * ★★ v0.72：自动发现的新题材线索（展示包 `new_theme_radar_v0_7_view`）。
+ * ★★ v0.75：自动发现的新题材线索（展示包 `new_theme_radar_v0_8_view`）。
  *
  * 本轮回归的三类缺陷：
  *  A. **时点口径不成立**：`published_date != event_date` 时仍用文章元数据的时分判断
@@ -16,7 +16,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { NewThemeRadarSection, relationLabel, natureCaveat, timeExplain }
   from '../NewThemeRadarSection';
-import raw from '@current/new_theme_radar_v0_7_view.json';
+import raw from '@current/new_theme_radar_v0_8_view.json';
 
 interface D {
   as_of: string; artifact_version?: string; source_artifact?: string;
@@ -51,7 +51,8 @@ interface D {
       assessment?: { relative_positive: boolean; absolute_positive: boolean; note: string } | null;
       status: string }[];
     assessment?: unknown;
-    time?: { event_date_source?: string; basis_day?: string | null; reaction_basis?: string;
+    time?: { event_date_source?: string; basis_day?: string | null;
+      observe_from?: string | null; reaction_basis?: string;
       published_date?: string | null; published_time?: string | null;
       time_precision?: string; time_field_semantics?: string;
       time_certainty?: 'EXACT' | 'CONSERVATIVE' | 'UNCERTAIN';
@@ -594,9 +595,28 @@ describe('v0.72 保守时点拒绝原因完整（P0）', () => {
       const mins = h * 60 + m;
       expect(mins, `${e.event_id} 盘中判定`).toBeGreaterThanOrEqual(9 * 60 + 30);
       expect(mins).toBeLessThan(15 * 60);
-      // ★ 口径不得因补原因而改变：仍是「当日收盘为基准、次一交易日起观察」
-      expect(e.time!.reaction_basis).toBe('DATE_ONLY_CONSERVATIVE_TRADING_DAY');
-      expect(e.time!.basis_day).toBe(e.event_date);
+      // ★★ v0.75：旧断言写死「盘中 → 一定是交易日」，是**旧行为快照**。
+      //   v0_8 新增的 11 月事件里出现「盘中发布 + 事件日非交易日」（周末/节假日），
+      //   此时保守规则应走「前一交易日收盘 + 事件后首个交易日」。
+      //   改为**语义不变量**：reaction_basis 必须与 basis_day 是否等于事件日自洽。
+      const onTradingDay = e.time!.basis_day === e.event_date;
+      expect(e.time!.reaction_basis).toBe(onTradingDay
+        ? 'DATE_ONLY_CONSERVATIVE_TRADING_DAY'
+        : 'DATE_ONLY_CONSERVATIVE_NON_TRADING_DAY');
+      if (onTradingDay) {
+        expect(e.time!.basis_day).toBe(e.event_date);
+      } else {
+        expect(e.time!.basis_day! < e.event_date).toBe(true);
+        // ★★ v0.75：非交易日的观察起点 = 事件后首个交易日；若库内日历尚未覆盖该日期
+        //   （v0_8 的 11 月事件：行情库停在 10-30），则如实为 null，**不得伪造窗口**。
+        //   此时事件必须停在无行情结论的状态，不能升级成候选。
+        const obs = e.time!.observe_from;
+        if (obs !== null && obs !== undefined) {
+          expect(obs > e.event_date).toBe(true);
+        } else {
+          expect(['NO_THEME_LINK', 'INSUFFICIENT', 'PENDING_MARKET']).toContain(e.status);
+        }
+      }
       expect(e.time!.time_certainty).toBe('CONSERVATIVE');
     }
   });
