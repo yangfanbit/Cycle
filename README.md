@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.77**（2026-11-07：工作台默认主入口改为**前瞻排程**，按双轨节奏主动推出「值得关注」的前置观察窗口 + 理由；行情/产物基线 v0.76 `13bff25`）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍为**研究增量** · **统计轨季度更新 / 机制轨每周更新**（使用者触发、AI 辅助，见 `docs/FRONTIER_CADENCE_v0_1.md`） |
+| **当前主线** | **v0.77**（2026-11-07：工作台默认主入口改为**前瞻排程**，按双轨节奏主动推出「值得关注」的前置观察窗口 + 理由；主交付 `7066403` · CI `42338011930` success · 行情/产物基线 v0.76 `13bff25`）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍为**研究增量** · **统计轨季度更新 / 机制轨每周更新**（使用者触发、AI 辅助，见 `docs/FRONTIER_CADENCE_v0_1.md`） |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
