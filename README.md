@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.78**（2026-11-07：默认页收口为**精选 6 条** + 命中率改口径 + 个股参照补回 + 真实 A 股 / 官方基准校正结论；行情/产物基线 v0.76 `13bff25`；v0.77 `7066403`）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周**（见 `docs/FRONTIER_CADENCE_v0_1.md`）· 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md` |
+| **当前主线** | **v0.78**（2026-11-07：默认页收口为**精选 6 条** + 命中率改口径 + 个股参照补回 + 真实 A 股 / 官方基准校正结论；行情/产物基线 v0.76 `13bff25`；v0.77 `7066403`）· 主交付 **`d7ba10f`** · CI **`42342906866` success**· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周**（见 `docs/FRONTIER_CADENCE_v0_1.md`）· 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md` |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |

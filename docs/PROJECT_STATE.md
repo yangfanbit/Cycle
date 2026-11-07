@@ -50,8 +50,16 @@
 
 ### D · 验证与交付
 
-待本轮收尾后回填：全套 `--check` / 前端测试 / tsc / build / 本地+线上双探针 / CI / SHA。
-文档 `docs/PRICE_CALIBRATION_v0_1.md`；`FRONTIER_CADENCE` 补行情校正节。
+主交付 **`d7ba10f`** · CI run **`42342906866` success** · 收尾回填见下方「收尾」。
+8 个 `--check` 全 PASS（frontier / benchmark / cross_check / workbench basis / radar /
+Python 雷达单测 65 / refresh_downstream / restore）· 前端 **1588 passed / 87 files**
+（工作台 28 项，新增 F 组 6 项）· `tsc -b --force` · `vite build` 双 HTML ·
+**本地 + 线上** v0.78 新探针与 v0.74 回归探针均 PASS
+（精选 6、名次 1-6、互斥 6+9+162、个股参照/缺股原因、行情校正折叠态零请求 / 展开按需 1 次、
+评估隔离）· 五文档一致性 0 缺失 · `git diff --check` · 全 LF · 无占位符 · 旧研究产物未改。
+体积：旧站主包 gzip **713 KB 未变**；工作台 chunk 56.8 → **67.3 KB**；
+校正 chunk **2.2 KB** 按需。
+文档 `docs/PRICE_CALIBRATION_v0_1.md`；`FRONTIER_CADENCE` 补 §10 行情校正。
 
 ---
 
