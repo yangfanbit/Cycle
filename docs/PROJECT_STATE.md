@@ -39,8 +39,16 @@ Top 6 原先只看证据强度、无可解释性门槛 → 统计假象被排到
 
 ### D · 验证与交付
 
-待收尾回填：全套 `--check` / 前端测试 / tsc / build / 本地+线上双探针 / CI / SHA。
-文档 `docs/BOARD_SEMANTICS_v0_1.md` · `docs/PHASE_GOVERNANCE_v0_1.md`。
+主交付 **`8d502c8`** · CI run **`42346030235` success** · 收尾回填见「收尾」。
+10 个 `--check` 全 PASS（board_semantics / theme_market / frontier / benchmark /
+cross_check / workbench basis / radar / Python 雷达单测 65 / refresh_downstream / restore）·
+前端 **1594 passed / 87 files**（工作台 34 项，新增 G 组 6 项）· `tsc -b --force` ·
+`vite build` 双 HTML · **本地 + 线上** v0.79 新探针与 v0.74 回归探针均 PASS
+（Top6 不含杂项桶、excluded 可见、父级类目、阶段与行情并列、背离信号、评估隔离）·
+六文档一致性 0 缺失 · `git diff --check` · 全 LF · 无占位符 · 旧研究产物未改 ·
+体积：旧站主包 gzip **713 KB 未变**；工作台 chunk 67.3 → **75.3 KB**。
+文档 `docs/BOARD_SEMANTICS_v0_1.md` · `docs/PHASE_GOVERNANCE_v0_1.md`；
+`FRONTIER_CADENCE` 补 §11 周更顺序。
 
 ---
 

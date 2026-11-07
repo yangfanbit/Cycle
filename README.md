@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.79**（2026-11-07：精选加**可解释性门槛**（杂项桶排除但单独展示并 research）、当前主题改为**产业阶段 vs 市场实测并列**、写清阶段判定来源与后续更新 SOP；行情/产物基线 v0.76 `13bff25`；v0.78 `d7ba10f`）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
+| **当前主线** | **v0.79**（2026-11-07：精选加**可解释性门槛**（杂项桶排除但单独展示并 research）、当前主题改为**产业阶段 vs 市场实测并列**、写清阶段判定来源与后续更新 SOP；行情/产物基线 v0.76 `13bff25`；v0.78 `d7ba10f`）· 主交付 **`8d502c8`** · CI **`42346030235` success** · 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
