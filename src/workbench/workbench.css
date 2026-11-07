@@ -197,3 +197,26 @@ code { font-size: 12px; background: #f0f2f5; padding: 1px 4px; border-radius: 3p
 .fb-fixed li { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline;
   padding: 6px 2px; border-bottom: 1px solid var(--wb-line); font-size: 12.5px; }
 .fb-sub2 { color: var(--wb-ink3); font-size: 11.5px; }
+
+/* ── v0.79 产业阶段 vs 市场实测 / 待解释板块 ── */
+.fb-theme-row { display: block; padding: 9px 2px; }
+.fb-theme-r1 { display: flex; flex-wrap: wrap; gap: 9px; align-items: baseline; }
+.fb-phase { font-size: 11.5px; color: var(--wb-ink2); background: #fff8e6;
+  border: 1px solid var(--wb-warn-line); border-radius: 3px; padding: 1px 7px; }
+.fb-market { margin: 5px 0 3px; font-size: 12px; color: var(--wb-ink2); line-height: 1.7; }
+.fb-market strong { color: var(--wb-hi); font-variant-numeric: tabular-nums; }
+.fb-signal { margin: 3px 0; font-size: 11.5px; color: var(--wb-hi);
+  border-left: 2px solid var(--wb-hi); padding: 2px 8px; }
+.fb-excluded { border: 1px solid var(--wb-line); border-left: 3px solid var(--wb-warn-line);
+  border-radius: 8px; padding: 10px 13px; margin: 10px 0; background: #fffdf7; }
+.fb-excluded h3 { margin: 0 0 8px; font-size: 13px; }
+.fb-excluded-row { font-size: 12.5px; line-height: 1.7; }
+.fb-excluded-row p { margin: 4px 0; }
+.fb-research { margin-top: 8px; padding: 8px 10px; border: 1px solid var(--wb-line);
+  border-radius: 6px; background: var(--wb-card); font-size: 12px; }
+.fb-research p { margin: 4px 0; line-height: 1.65; }
+.fb-research a { color: var(--wb-accent); text-decoration: none; }
+.fb-research code { margin-left: 3px; }
+.fb-fuzzylist { padding-left: 20px; font-size: 12px; line-height: 1.8; }
+.fb-fuzzylist li { margin: 3px 0; }
+.fb-parent { color: var(--wb-ok); font-size: 11.5px; }

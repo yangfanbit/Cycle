@@ -175,3 +175,22 @@ $P research/scripts/build_frontier_board_v0_1.py --write
 ★ **周更 SOP 不变**：校正产物是**对照证据**，不是新基准。
 若将来要把超额口径延长到 2005 年，必须单独一轮：落盘官方逐日点位 → 重算全派生链 →
 重排 Top 6，并声明回溯段不得用于时点判断。**不得在本周更流程里顺手替换基准。**
+
+---
+
+## 11 · 可解释性与阶段语义（v0.79 补）
+
+> 完整方法见 `docs/BOARD_SEMANTICS_v0_1.md` 与 `docs/PHASE_GOVERNANCE_v0_1.md`。
+
+- **精选硬门槛加 `interpretable=true`**：名称含「其他 / 综合」的同花顺分类兜底桶（27 个）
+  不进 Top 6，但统计不改、全量区可查、下方「待解释板块」区单独展示并给排除理由。
+- **当前研究主题的阶段是产业机制阶段**，不是行情状态。周更只刷新关联标的行情、
+  陈旧度（`REVIEW_STALE`）与产业/市场背离（`DIVERGENCE_INDUSTRY_VS_MARKET`）信号，
+  **不自动改阶段**；改阶段必须走人工研究轮次并留痕。
+- ★ **周更 SOP 增加两步**（在 §3 的第 ④ 步之前）：
+  ```
+  $P research/scripts/build_board_semantics_v0_1.py --write
+  $P research/scripts/build_theme_market_v0_1.py --write
+  $P research/scripts/build_frontier_board_v0_1.py --write
+  ```
+  顺序不可颠倒：frontier_board 会记录上游产物 sha256，上游重生成后必须重算排程。

@@ -332,10 +332,90 @@ describe('F · 精选 Top 6 / 命中率口径 / 个股参照', () => {
   it('★★ 行情校正折叠区默认 IDLE，不内联官方数值', () => {
     expect(html).toContain('data-price-calibration="1"');
     expect(html).toContain('data-price-state="IDLE"');
-    expect(html).toContain('五、历史行情校正');
+    expect(html).toContain('六、历史行情校正');
     expect(html).toContain('并列展示、不合并、不替换');
     // 官方逐日点位未落盘，也不内联在默认页面
     expect(html).not.toContain('BACKFILLED_NOT_PIT');
     expect(html).not.toContain('benchmark_parallel_v0_1.json');
+  });
+});
+
+/** ★★ v0.79：不可解释板块排除但可见 / 产业阶段与市场实测并列。 */
+describe('G · 可解释性门槛与阶段语义分离', () => {
+  const html = renderToStaticMarkup(<Workbench />);
+
+  it('★★ Top 6 不再出现「其他社会服务」，且每条都可解释', () => {
+    const top = html.slice(html.indexOf('data-frontier-list="top6"'),
+      html.indexOf('data-frontier-count='));
+    expect(top).not.toContain('其他社会服务');
+    for (const t of frontier.top6) {
+      const x = frontier.items.find((i) => i.id === t.id)!;
+      expect(x.interpretable).toBe(true);
+      expect(x.board_note ?? '').toBe('');
+    }
+  });
+
+  it('★★ 被排除的板块在下方单独显示，带排除理由与外部 research', () => {
+    expect(frontier.excluded_from_top6.length).toBeGreaterThan(0);
+    expect(html).toContain('data-excluded-row="SEAS-BK881179-M11"');
+    expect(html).toContain('三、待解释板块');
+    expect(html).toContain('data-board-research="BK881179"');
+    expect(html).toContain('检验检测认证');
+    expect(html).toContain('实朴检测');
+    expect(html).toContain('不是成分名单');
+    expect(html).toContain('CURRENT_CONSTITUENTS_UNAVAILABLE');
+  });
+
+  it('★★ 27 个模糊板块全部登记且仍可查，不删除', () => {
+    expect(frontier.board_semantics.entries.length).toBe(27);
+    for (const e of frontier.board_semantics.entries) {
+      expect(e.interpretable).toBe(false);
+      expect(e.classification_note.length).toBeGreaterThan(10);
+    }
+    expect(frontier.items.length).toBe(177);
+    expect(html).toContain('data-fuzzy-list="1"');
+    // 27 条都有「不模糊层」：从名称确定性派生的父级类目（零编造）
+    expect(frontier.board_semantics.entries.every((e) => e.inferred_parent_sector)).toBe(true);
+    const withParent = frontier.board_semantics.entries.filter(
+      (e) => e.inferred_parent_sector?.parent);
+    expect(withParent.length).toBeGreaterThanOrEqual(25);
+    expect(html).toContain('data-parent-sector=');
+  });
+
+  it('★★ 产业阶段 + 市场实测并列，阶段不被行情自动改写', () => {
+    expect(html).toContain('data-phase-governance="1"');
+    expect(html).toContain('产业机制阶段');
+    expect(html).toContain('市场层实测');
+    expect(html).toContain('不参与定档、不自动改阶段');
+    const gov = frontier.theme_market.phase_governance as {
+      update_policy: { auto_change_phase: boolean };
+    };
+    expect(gov.update_policy.auto_change_phase).toBe(false);
+    const themes = frontier.theme_market.themes;
+    expect(themes.length).toBe(6);
+    for (const t of themes) {
+      expect(t.market_as_of).toBeTruthy();
+      expect(t.equal_weight['20']).toBeTruthy();
+      expect(html).toContain(`data-fixed-row="${t.candidate_id}"`);
+    }
+  });
+
+  it('★★ 光互联：产业阶段「扩散」与 20 日相对超额背离被显式提示', () => {
+    const t = frontier.theme_market.themes.find(
+      (x) => x.candidate_id === 'CC-2026-OPTICAL-LINK')!;
+    expect(t.phase_label).toBe('扩散');
+    expect(t.equal_weight['20'].equal_weight_excess_pp).toBeLessThan(-10);
+    expect(t.signals.some((s) => s.id === 'DIVERGENCE_INDUSTRY_VS_MARKET')).toBe(true);
+    expect(t.signals.some((s) => s.id === 'REVIEW_STALE')).toBe(true);
+    expect(html).toContain('data-signal="DIVERGENCE_INDUSTRY_VS_MARKET"');
+    expect(html).toContain('data-signal="REVIEW_STALE"');
+  });
+
+  it('★★ 阶段判定来源与后续更新 SOP 在页面可查', () => {
+    expect(html).toContain('阶段当初怎么定的 / 后面怎么更新');
+    expect(html).toContain('R0_INSUFFICIENT_EVIDENCE');
+    expect(html).toContain('REVIEWED_MAINTAINED');
+    expect(html).toContain('不参与定档、不自动改阶段');
+    expect(html).toContain('不作反向证据');
   });
 });

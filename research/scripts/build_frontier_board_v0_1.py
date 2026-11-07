@@ -41,6 +41,8 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 CURRENT = os.path.join(REPO, "research", "current")
 OUT_BOARD = os.path.join(CURRENT, "frontier_board_v0_1.json")
 OUT_CALENDAR = os.path.join(CURRENT, "event_calendar_v0_1.json")
+BOARD_SEMANTICS = os.path.join(CURRENT, "board_semantics_v0_1.json")
+THEME_MARKET = os.path.join(CURRENT, "theme_market_v0_1.json")
 
 # ★ 一律动态选最新版本（版本号按**数字**排序，字符串排序会让 v0_9 < v0_12）
 PATTERNS = {
@@ -206,6 +208,16 @@ def build():
     now = datetime.now().astimezone().isoformat(timespec="seconds")
     paths = {k: _latest(k) for k in PATTERNS}
     digest, forward, radar = (_load(paths[k]) for k in ("digest", "forward", "radar_view"))
+    sem = _load(BOARD_SEMANTICS)
+    tmark = _load(THEME_MARKET)
+    fuzzy_series = {e["series_id"] for e in sem["entries"] if not e["interpretable"]}
+
+    def _card_series(cid):
+        m = re.match(r"SEAS-([A-Za-z0-9_]+)-M\d+$", cid or "")
+        return m.group(1) if m else None
+
+    def _interpretable(c):
+        return _card_series(c.get("id")) not in fuzzy_series
 
     # ── 日历事实：全部从既有产物抽取，不手写日期 ──
     zodiac = next((p for p in forward.get("patterns", [])
@@ -324,6 +336,11 @@ def build():
             "representative_stocks": (c.get("representative_stocks") or [])[:6],
             "representative_stocks_total": len(c.get("representative_stocks") or []),
             "stock_gap_reason": c.get("stock_gap_reason"),
+            # ★★ v0.79：名称可解释性（同花顺「其他/综合」杂项桶不进精选）
+            "interpretable": _interpretable(c),
+            "board_note": None if _interpretable(c) else (
+                next((e["classification_note"] for e in sem["entries"]
+                      if e["series_id"] == _card_series(c.get("id"))), None)),
         })
 
     # ── Top 6 精选：G1 硬门槛 + 证据强度排序，不加月份配额 ──
@@ -333,10 +350,31 @@ def build():
                 and h.get("oos_status") == "REPORTED"
                 and (h.get("oos_hit_rate") or 0) >= 0.5
                 and (h.get("pit_eligible_years") or 0) >= 1
-                and c.get("time_position") != "INSUFFICIENT")
+                and c.get("time_position") != "INSUFFICIENT"
+                and _interpretable(c))
 
     eligible = [c for c in cards if _gate(c)]
+    # ★ 因「名称不可解释」被挡在精选外的：不删除、写进 excluded、下方专区展示
+    excluded = [{"id": c["id"], "title": c.get("title"),
+                 "reason": next((e["exclude_reason"] for e in sem["entries"]
+                                 if e["series_id"] == _card_series(c.get("id"))),
+                                "名称不可解释")}
+                for c in cards
+                if not _interpretable(c)
+                and c.get("group") == "G1"
+                and (c.get("history") or {}).get("oos_status") == "REPORTED"]
     top_cards = sorted(eligible, key=_evidence_key)[:TOP_N]
+    theme_rows = [{
+        "candidate_id": t["candidate_id"], "display_name": t["display_name"],
+        "phase": t["industry_phase"]["declared"], "phase_label": t["industry_phase"]["label"],
+        "reviewed_at": t["industry_phase"]["reviewed_at"],
+        "research_days_old": t["industry_phase"]["research_days_old"],
+        "review_status": t["industry_phase"]["review_status"],
+        "market_as_of": t["market_layer"]["as_of"],
+        "equal_weight": t["market_layer"]["equal_weight"],
+        "signals": t["signals"],
+        "stock_count": len(t["reference_stocks"]),
+    } for t in tmark["themes"]]
     top6 = [{"id": c["id"], "rank": i + 1, "rank_reason": _rank_reason(c)}
             for i, c in enumerate(top_cards)]
     fixed = {
@@ -370,9 +408,26 @@ def build():
                        "不是收益排序、不是概率、不是买卖建议",
             "attention_label_rule": ATTENTION_BY_GROUP,
         },
-        "selection_rule": SELECTION_RULE,
+        "selection_rule": {**SELECTION_RULE,
+                           "hard_gate": SELECTION_RULE["hard_gate"] +
+                                        "；且 interpretable == true（名称不可解释的分类兜底桶不进精选）"},
         "top6": top6,
+        "excluded_from_top6": excluded,
         "fixed_sections": fixed,
+        "board_semantics": {
+            "source": os.path.basename(BOARD_SEMANTICS),
+            "counts": sem["counts"],
+            "known_gaps": sem["known_gaps"],
+            "entries": sem["entries"],
+        },
+        "theme_market": {
+            "source": os.path.basename(THEME_MARKET),
+            "as_of": tmark["as_of"], "cadence": tmark["cadence"],
+            "phase_governance": tmark["phase_governance"],
+            "counts": tmark["counts"],
+            "themes": theme_rows,
+            "limits": tmark["limits"],
+        },
         "hit_rate_definition": HIT_RATE_DEFINITION,
         "counts": {
             "items": len(items),
@@ -384,6 +439,9 @@ def build():
             "calendar_entries": len(cal_entries),
             "top6_eligible": len(eligible),
             "top6_selected": len(top6),
+            "excluded_from_top6": len(excluded),
+            "fuzzy_boards": len(sem["entries"]),
+            "theme_market_rows": len(theme_rows),
         },
         "limits": [
             "★ 两轨**并列**，统计理由与机制理由分别标注各自 as_of；不做因果拼接，"
@@ -402,11 +460,16 @@ def build():
             "行业板块无历史成分名单，如实标 NO_HISTORICAL_CONSTITUENTS，**不编造代表股**。",
             "★ 本产物不含启发式打分字段（评估视图的内部打分不进入默认页面）；"
             "wilson_ci_low 是公开统计区间下界，只作平局裁决与可核依据，不是分数。",
+            "★ 名称含「其他 / 综合」的分类兜底桶**不进精选**，但保留统计、单独展示并给出排除理由；"
+            "取不到当前/历史成分名单的缺口如实写明，不编造代表股。",
+            "★ 当前研究主题的「阶段」是**产业机制阶段（研究侧人工声明）**，不是行情状态；"
+            "市场层实测与之并列展示，不参与定档、不自动改阶段。",
         ],
         "items": items,
         "mechanism_feed": feed,
         "calendar_ref": os.path.basename(OUT_CALENDAR),
-        "source_sha256_16": {os.path.basename(p): _sha(p) for p in paths.values()},
+        "source_sha256_16": {os.path.basename(p): _sha(p)
+                             for p in list(paths.values()) + [BOARD_SEMANTICS, THEME_MARKET]},
     }
     return board, calendar, paths
 
@@ -496,20 +559,27 @@ def check():
               and h.get("oos_status") == "REPORTED"
               and (h.get("oos_hit_rate") or 0) >= 0.5
               and (h.get("pit_eligible_years") or 0) >= 1
-              and x.get("time_position") != "INSUFFICIENT")
+              and x.get("time_position") != "INSUFFICIENT"
+              and x.get("interpretable") is True)
         if not ok:
-            errs.append("Top 6 的 %s 不满足 G1 硬门槛" % t["id"])
+            errs.append("Top 6 的 %s 不满足 G1 / 可解释性硬门槛" % t["id"])
         if not t.get("rank_reason"):
             errs.append("Top 6 的 %s 缺可核排序理由" % t["id"])
     # 与按同一规则重算的前 6 完全一致
     cards = _load(paths["digest"]).get("cards") or []
+    sem = _load(BOARD_SEMANTICS)
+    fuzzy2 = {e["series_id"] for e in sem["entries"] if not e["interpretable"]}
+    def _interp2(c):
+        m = re.match(r"SEAS-([A-Za-z0-9_]+)-M\d+$", c.get("id") or "")
+        return (m.group(1) if m else None) not in fuzzy2
     def _gate2(c):
         h = c.get("history") or {}
         return (c.get("group") == "G1" and h.get("tier") == "STRICT"
                 and h.get("oos_status") == "REPORTED"
                 and (h.get("oos_hit_rate") or 0) >= 0.5
                 and (h.get("pit_eligible_years") or 0) >= 1
-                and c.get("time_position") != "INSUFFICIENT")
+                and c.get("time_position") != "INSUFFICIENT"
+                and _interp2(c))
     want = [c["id"] for c in sorted((c for c in cards if _gate2(c)),
                                     key=_evidence_key)[:TOP_N]]
     if [t["id"] for t in top] != want:
@@ -539,6 +609,33 @@ def check():
         errs.append("缺命中率定义")
     if cur_board.get("hit_rate_definition") != HIT_RATE_DEFINITION:
         errs.append("hit_rate_definition 与常量不一致")
+
+    # ── v0.79 板块可解释性 / 阶段语义不变量 ──
+    bs = cur_board.get("board_semantics") or {}
+    if len(bs.get("entries") or []) != cur_board["counts"]["fuzzy_boards"]:
+        errs.append("模糊板块条目数与 counts 不一致")
+    for e in bs.get("entries") or []:
+        if e["interpretable"] is not False or not e["classification_note"]:
+            errs.append("%s 语义登记不完整" % e["series_id"])
+    for x in items:
+        if "interpretable" not in x:
+            errs.append("%s 缺 interpretable 字段" % x["id"]); break
+        if not x["interpretable"] and not x.get("board_note"):
+            errs.append("%s 不可解释但未给口径说明" % x["id"]); break
+    ex = cur_board.get("excluded_from_top6") or []
+    for r in ex:
+        if not r.get("reason") or r["id"] not in by_id:
+            errs.append("排除项 %s 缺理由或不在 items" % r.get("id"))
+    tm = cur_board.get("theme_market") or {}
+    if len(tm.get("themes") or []) != len(fixed.get("current_objects") or []):
+        errs.append("主题行情行数与固定区当前主题数不一致")
+    if (tm.get("phase_governance") or {}).get("update_policy", {}).get("auto_change_phase") is not False:
+        errs.append("阶段被允许自动改写（违反 v0.79 决策）")
+    for t in tm.get("themes") or []:
+        if not t.get("market_as_of") or not t.get("phase_label"):
+            errs.append("%s 缺阶段/行情日期" % t.get("candidate_id"))
+        if not t.get("equal_weight"):
+            errs.append("%s 缺市场层实测" % t.get("candidate_id"))
 
     if errs:
         for e in errs:

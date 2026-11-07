@@ -31,6 +31,32 @@ export interface FrontierItem {
   representative_stocks?: { series_id: string; name?: string | null;
     median_excess_pct?: number; years?: number; source?: string }[];
   representative_stocks_total?: number; stock_gap_reason?: string | null;
+  interpretable?: boolean; board_note?: string | null;
+}
+
+export interface FuzzyBoard {
+  series_id: string; name: string; interpretable: boolean;
+  classification_note: string; exclude_reason: string;
+  inferred_parent_sector: null | { parent: string | null; derivation: string;
+                                   grade: string; note: string };
+  source: { member_count_current_snapshot?: number | null;
+            classification_page?: string; rows?: number };
+  research: null | {
+    classification: string; observed_business_types: string[];
+    external_source: { publisher: string; date: string; url: string; claim: string };
+    classification_source: { publisher: string; url: string; claim: string };
+    example_stocks_checked: { name: string; series_id: string | null; in_local_db: boolean }[];
+    evidence_grade: string; note: string;
+  };
+}
+export interface ThemeMarketRow {
+  candidate_id: string; display_name: string;
+  phase: string; phase_label: string; reviewed_at: string;
+  research_days_old: number | null; review_status: string;
+  market_as_of: string; stock_count: number;
+  equal_weight: Record<string, { covered: number; total: number;
+    equal_weight_return_pct: number | null; equal_weight_excess_pp: number | null }>;
+  signals: { id: string; detail: string }[];
 }
 export interface FrontierDoc {
   artifact: string; artifact_version: string; purpose: string;
@@ -43,6 +69,13 @@ export interface FrontierDoc {
                     month_quota_note: string; fixed_sections_not_competing: string[]; note: string };
   top6: { id: string; rank: number; rank_reason: string }[];
   fixed_sections: { current_objects: string[]; special_hypotheses: string[] };
+  excluded_from_top6: { id: string; title: string; reason: string }[];
+  board_semantics: { source: string; counts: Record<string, unknown>;
+                     known_gaps: { id: string; detail: string; blocks: string }[];
+                     entries: FuzzyBoard[] };
+  theme_market: { source: string; as_of: string; cadence: string;
+                  phase_governance: Record<string, unknown>; counts: Record<string, unknown>;
+                  themes: ThemeMarketRow[]; limits: string[] };
   hit_rate_definition: string;
   counts: Record<string, unknown>;
   limits: string[]; items: FrontierItem[];
@@ -379,37 +412,142 @@ export function FrontierView({ doc, cal, onRecord }: {
         )}
       </section>
 
-      {/* ── 二、固定区：当前研究主题 / 专项假设（不占精选名额） ── */}
+      {/* ── 二、当前研究主题（产业阶段 vs 市场实测）+ 专项假设 ── */}
       <section className="fb-section" data-frontier-section="fixed">
         <h2>二、当前研究主题与专项假设（{fixedIds.size} 条，固定区）</h2>
         <p className="fb-hint">
           这些对象在证据强度排序里排在末尾（无板块月度统计），
           但属于人工设定的研究对象，<strong>不与精选 6 条竞争名额</strong>，固定展示。
+          ★ 阶段是<strong>产业机制阶段（研究侧人工声明）</strong>，不是行情状态；
+          市场层实测<strong>并列展示</strong>，不参与定档、不自动改阶段。
         </p>
-        {([
-          ['当前研究主题', doc.fixed_sections.current_objects],
-          ['专项假设', doc.fixed_sections.special_hypotheses],
-        ] as [string, string[]][]).map(([label, ids]) => (
-          <div key={label} className="fb-fixed-group">
-            <h3>{label}（{ids.length}）</h3>
-            <ul className="fb-fixed">
-              {fixedRows(ids).map((x) => (
-                <li key={x.id} data-fixed-row={x.id}>
+        <details className="fb-rule" data-phase-governance="1">
+          <summary>阶段当初怎么定的 / 后面怎么更新</summary>
+          <p><strong>研究侧声明</strong>：{String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.criteria ?? '')}</p>
+          <p><strong>最近一次评审</strong>：{String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.last_review ?? '')} ·
+             {String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.last_verdict ?? '')}</p>
+          <p><strong>为什么没跟行情变</strong>：{String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.market_exclusion ?? '')}</p>
+          <p><strong>产品端推导</strong>：{String((doc.theme_market.phase_governance.product_inferred as Record<string, unknown>)?.engine ?? '')}；
+             {String((doc.theme_market.phase_governance.product_inferred as Record<string, unknown>)?.forbidden ?? '')}</p>
+          <p><strong>后续更新 SOP</strong>：{String((doc.theme_market.phase_governance.update_policy as Record<string, unknown>)?.weekly ?? '')}
+             {String((doc.theme_market.phase_governance.update_policy as Record<string, unknown>)?.manual_round ?? '')}</p>
+          <p className="fb-caveat">信号只提示人工复核，不构成阶段变更，也不参与验收。</p>
+        </details>
+        <div className="fb-fixed-group">
+          <h3>当前研究主题（{doc.theme_market.themes.length}）</h3>
+          <ul className="fb-fixed">
+            {doc.theme_market.themes.map((t) => (
+              <li key={t.candidate_id} data-fixed-row={t.candidate_id} data-phase={t.phase}
+                  className="fb-theme-row">
+                <div className="fb-theme-r1">
                   <button type="button" className="wb-linkbtn"
-                          onClick={() => onRecord(x.title, x.id)}>{x.title}</button>
-                  <span className="fb-date">{POS_LABEL[x.time_position ?? ''] ?? x.time_position}</span>
-                  {x.why_now && <span className="fb-sub2">{x.why_now}</span>}
-                  {x.gap && <span className="fb-sub2">缺口：{x.gap}</span>}
-                </li>
-              ))}
-            </ul>
+                          onClick={() => onRecord(t.display_name, t.candidate_id)}>{t.display_name}</button>
+                  <span className="fb-phase" data-industry-phase={t.phase}>
+                    产业机制阶段：<strong>{t.phase_label}</strong>（研究侧声明 {t.reviewed_at}，
+                    {t.research_days_old ?? '—'} 天前 · {t.review_status}）
+                  </span>
+                </div>
+                <p className="fb-market" data-market-as-of={t.market_as_of}>
+                  市场层实测 as_of <code>{t.market_as_of}</code>（{t.stock_count} 只人工声明标的等权，相对沪深300）：
+                  5 日 <strong>{t.equal_weight['5']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
+                  10 日 <strong>{t.equal_weight['10']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
+                  20 日 <strong>{t.equal_weight['20']?.equal_weight_excess_pp ?? '—'} pp</strong>
+                  <span className="fb-caveat">（只是事实陈列，不参与定档、不预测未来）</span>
+                </p>
+                {t.signals.map((sg) => (
+                  <p key={sg.id} className="fb-signal" data-signal={sg.id}>
+                    <strong>{sg.id}</strong>：{sg.detail}
+                  </p>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="fb-fixed-group">
+          <h3>专项假设（{doc.fixed_sections.special_hypotheses.length}）</h3>
+          <ul className="fb-fixed">
+            {fixedRows(doc.fixed_sections.special_hypotheses).map((x) => (
+              <li key={x.id} data-fixed-row={x.id}>
+                <button type="button" className="wb-linkbtn"
+                        onClick={() => onRecord(x.title, x.id)}>{x.title}</button>
+                <span className="fb-date">{POS_LABEL[x.time_position ?? ''] ?? x.time_position}</span>
+                {x.gap && <span className="fb-sub2">缺口：{x.gap}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ── 三、待解释板块（排除出精选，但不删除） ── */}
+      <section className="fb-section" data-frontier-section="fuzzy">
+        <h2>三、待解释板块（{doc.board_semantics.entries.length} 个，已排除出精选）</h2>
+        <p className="fb-hint">
+          名称含「其他 / 综合」的分类兜底桶：统计可能显著，但<strong>没有单一产业对象</strong>。
+          它们<strong>不进精选</strong>，统计数字一字未改，仍可在全量区查到。
+          下面给出口径、排除理由，以及能查证到的外部描述（不是成分名单）。
+        </p>
+        {doc.excluded_from_top6.length > 0 && (
+          <div className="fb-excluded" data-excluded={doc.excluded_from_top6.length}>
+            <h3>本次因名称不可解释被挡在精选外的（{doc.excluded_from_top6.length}）</h3>
+            {doc.excluded_from_top6.map((r) => {
+              const sid = (r.id.match(/SEAS-([A-Za-z0-9_]+)-M\d+/) ?? [])[1];
+              const e = doc.board_semantics.entries.find((x) => x.series_id === sid);
+              return (
+                <div key={r.id} className="fb-excluded-row" data-excluded-row={r.id}>
+                  <strong>{r.title}</strong> · <code>{r.id}</code>
+                  <p>{r.reason}</p>
+                  {e && <p className="fb-caveat">{e.classification_note}
+                    {e.source.member_count_current_snapshot != null
+                      ? ` 当前目录记录成分数 ${e.source.member_count_current_snapshot}（不是成员名单）。` : ''}
+                    {e.inferred_parent_sector?.parent
+                      ? ` 名称派生父级类目：「${e.inferred_parent_sector.parent}」大类下的兜底细分。` : ''}</p>}
+                  {e?.research && (
+                    <div className="fb-research" data-board-research={e.series_id}>
+                      <p><strong>已 research 的分类口径</strong>：{e.research.classification}
+                        {' '}业务类型：{e.research.observed_business_types.join(' / ')}。</p>
+                      <p>外部来源：<a href={e.research.external_source.url} target="_blank"
+                        rel="noreferrer noopener">{e.research.external_source.publisher}
+                        {' '}{e.research.external_source.date}</a> —— {e.research.external_source.claim}</p>
+                      <p>示例个股（库内已校验存在，<strong>不是成分名单</strong>）：
+                        {e.research.example_stocks_checked.map((x) => (
+                          <span key={x.name}> {x.name}
+                            {x.in_local_db ? <code>{x.series_id ?? ''}</code> : '（不在库内）'} ·</span>
+                        ))}</p>
+                      <p className="fb-caveat">{e.research.note}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        ))}
+        )}
+        <details className="fb-rule" data-fuzzy-list="1">
+          <summary>查看全部 {doc.board_semantics.entries.length} 个待解释板块与已知缺口</summary>
+          <ol className="fb-fuzzylist">
+            {doc.board_semantics.entries.map((e) => (
+              <li key={e.series_id} data-fuzzy={e.series_id}>
+                <strong>{e.name}</strong> <code>{e.series_id}</code>
+                <span className="fb-sub2"> · {e.classification_note}</span>
+                {e.inferred_parent_sector?.parent &&
+                  <span className="fb-parent" data-parent-sector={e.inferred_parent_sector.parent}>
+                    {' '}· 父级类目「{e.inferred_parent_sector.parent}」（名称派生，不是成分）</span>}
+                {e.source.member_count_current_snapshot != null &&
+                  <span className="fb-sub2"> · 当前目录成分数 {e.source.member_count_current_snapshot}</span>}
+              </li>
+            ))}
+          </ol>
+          <h4>已知缺口（不得绕过）</h4>
+          <ul className="fb-gaps">
+            {doc.board_semantics.known_gaps.map((g) => (
+              <li key={g.id}><strong>{g.id}</strong>：{g.detail}</li>
+            ))}
+          </ul>
+        </details>
       </section>
 
       {/* ── 二、机制轨独立信息流 ── */}
       <section className="fb-section" data-frontier-section="mechanism">
-        <h2>三、近 7 日可核事件（{feedRows.length} / {doc.mechanism_feed.length} 条）</h2>
+        <h2>四、近 7 日可核事件（{feedRows.length} / {doc.mechanism_feed.length} 条）</h2>
         <p className="fb-hint">
           动态窗口 = 雷达最新事件日往前 7 天（本期 {doc.tracks.mechanism.feed_window[0]} →{' '}
           {doc.tracks.mechanism.feed_window[1]}），不是自然周，也不等于「本周新增」。
@@ -439,7 +577,7 @@ export function FrontierView({ doc, cal, onRecord }: {
 
       {/* ── 三、已知日程与生肖试点 ── */}
       <section className="fb-section" data-frontier-section="calendar">
-        <h2>四、已知日程 / 前置观察窗口（{cal.entries.length} 条）</h2>
+        <h2>五、已知日程 / 前置观察窗口（{cal.entries.length} 条）</h2>
         <p className="fb-hint">{cal.scope_note}</p>
         <ol className="fb-cal" data-calendar-entries={cal.entries.length}>
           {cal.entries.map((e, i) => (
@@ -480,7 +618,7 @@ export function FrontierView({ doc, cal, onRecord }: {
 
       {/* ── 五、历史行情校正（真实 A 股 / 官方基准并列） ── */}
       <section className="fb-section" data-frontier-section="calibration">
-        <h2>五、历史行情校正</h2>
+        <h2>六、历史行情校正</h2>
         <p className="fb-hint">
           统计轨原本建立在「同花顺编制指数 / 当前成分等权自建篮子 / raw 未复权 / 新浪 CSI300」之上。
           这里给出用<strong>真实 A 股个股</strong>与<strong>中证官方基准</strong>做的独立复核，
