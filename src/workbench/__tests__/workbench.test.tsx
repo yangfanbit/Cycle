@@ -16,10 +16,15 @@ import {
 } from '../records';
 import indexRaw from '@current/workbench_index_v0_1.json';
 import evalRaw from '@current/workbench_eval_basis_v0_1.json';
+import frontierRaw from '@current/frontier_board_v0_1.json';
+import calendarRaw from '@current/event_calendar_v0_1.json';
 import type { EvalDoc, IndexDoc } from '../types';
+import type { FrontierDoc, EventCalendar } from '../FrontierView';
 
 const doc = indexRaw as unknown as IndexDoc;
 const evalDoc = evalRaw as unknown as EvalDoc;
+const frontier = frontierRaw as unknown as FrontierDoc;
+const calendar = calendarRaw as unknown as EventCalendar;
 
 beforeEach(() => {
   const mem = new Map<string, string>();
@@ -42,12 +47,16 @@ describe('A · 口径切换与默认页面隔离', () => {
     expect(html).toContain('不参与验收');
   });
 
-  it('★★ 默认页面不做优先级排序、不含任何内部评分数据', () => {
+  it('★★ v0.77：默认页按 G1→G4 研究浏览顺序，但仍不含任何启发式内部打分', () => {
+    // 排序分两种：产物已有的分组顺序可以上默认页；Wilson 打分只在评估视图。
     for (const banned of ['data-eval-row', 'INTERNAL_EVAL_ONLY', 'priority_score',
       'wilson_low', 'data-eval-view', 'calibrated']) {
       expect(html, `默认页面不得出现 ${banned}`).not.toContain(banned);
     }
-    expect(html).toContain('不做优先级排序');
+    expect(html).toContain('G1→G4 研究浏览顺序');
+    expect(html).toContain('无分数、不是收益排序');
+    expect(html).toContain('值得关注');
+    expect(html).toContain('不是买卖点');
   });
 
   it('★ 评估视图是主动入口，默认不渲染评估表格', () => {
@@ -55,9 +64,11 @@ describe('A · 口径切换与默认页面隔离', () => {
     expect(html).not.toContain('<table class="wb-table">');
   });
 
-  it('★ 检索结果按日期倒序，空 query 不铺 385 条', () => {
+  it('★ 历史检索仍按日期倒序、空 query 不铺全量（数据不变量）', () => {
     expect(searchItems(doc.items, '')).toEqual([]);
-    expect(html).toContain('按日期倒序');
+    expect(html).toContain('data-open-history="1"');
+    const dated = doc.items.map((x) => x.date).filter(Boolean) as string[];
+    expect([...dated]).toEqual([...dated].sort().reverse());
     expect(doc.counts.total).toBe(doc.items.length);
   });
 });
@@ -165,5 +176,94 @@ describe('D · 检索与可核性', () => {
       expect(doc.counts.by_kind[k]).toBeGreaterThan(0);
     }
     expect(doc.items.filter((x) => x.source.source_kind.startsWith('INTERNAL') && x.url).length).toBe(0);
+  });
+});
+
+/** ★★ v0.77：默认主入口改成「前瞻排程」（push / 事前），不再是提问式检索。 */
+describe('E · 前瞻排程（系统主动推出，双轨并列）', () => {
+  const html = renderToStaticMarkup(<Workbench />);
+
+  it('★★ 默认页是前瞻排程；历史检索 / 记录降级为二级入口', () => {
+    expect(html).toContain('data-frontier-view="1"');
+    expect(html).toContain('data-open-frontier="1"');
+    expect(html).toContain('data-open-history="1"');
+    // 提问框不应出现在默认首屏
+    expect(html).not.toContain('data-search=""');
+  });
+
+  it('★★ 双轨各自 as_of 与更新节奏独立标注，不做因果拼接', () => {
+    expect(html).toContain('统计轨 · 季度更新');
+    expect(html).toContain('机制轨 · 每周更新');
+    expect(html).toContain(frontier.tracks.statistical.as_of);
+    expect(html).toContain(frontier.tracks.mechanism.as_of);
+    expect(html).toContain('不做因果拼接');
+    expect(frontier.tracks.statistical.cadence).toBe('QUARTERLY');
+    expect(frontier.tracks.mechanism.cadence).toBe('WEEKLY');
+  });
+
+  it('★★ 默认按 G1→G4 研究浏览顺序，且每条带关注标签与双轨理由', () => {
+    const groups = [...html.matchAll(/data-group="(G\d)"/g)].map((m) => m[1]);
+    expect(groups.length).toBeGreaterThan(0);
+    const rank: Record<string, number> = { G1: 1, G2: 2, G3: 3, G4: 4 };
+    expect(groups).toEqual([...groups].sort((a, b) => rank[a] - rank[b]));
+    expect(html).toContain('data-reason="STATISTICAL"');
+    expect(html).toContain('data-reason="MECHANISM"');
+    expect(html).toContain('值得关注');
+    expect(html).toContain('可斟酌的决策点');
+    expect(html).toMatch(/data-record-from="/);
+  });
+
+  it('★★ 机制轨作为独立信息流，不给统计卡硬贴理由', () => {
+    expect(html).toContain(`data-mechanism-feed="${frontier.mechanism_feed.length}"`);
+    // 关键词同时筛选机制轨（否则政策事件里独有的词查不到）
+    expect(html).toContain(`data-mechanism-shown="${frontier.mechanism_feed.length}"`);
+    expect(html).toContain('上方关键词同时筛选这里');
+    expect(frontier.counts.with_mechanism_link).toBeLessThan(frontier.items.length / 10);
+    expect(html).toContain('本期机制轨');
+    expect(html).toContain('无可核关联');
+    for (const e of frontier.mechanism_feed) {
+      expect(e.url).toMatch(/^https?:\/\//);
+      expect(e.fact_vs_assumption).toBe('FACT_PUBLISHED_DOCUMENT');
+    }
+  });
+
+  it('★★ 机制理由只在精确序列匹配时出现，URL 可核', () => {
+    const linked = frontier.items.filter((x) => x.mechanism_reason);
+    expect(linked.length).toBe(frontier.counts.with_mechanism_link);
+    for (const x of linked) {
+      expect(x.mechanism_reason!.relation).toBe('EXACT_SERIES_MATCH');
+      expect(x.mechanism_reason!.url).toMatch(/^https?:\/\//);
+    }
+  });
+
+  it('★★ 生肖试点：谐音层标 UNVERIFIED、不进统计；PIT 名称缺口如实披露', () => {
+    expect(html).toContain('data-calendar-hypothesis="ZODIAC_NAME"');
+    expect(html).toContain('data-layer="HOMOPHONE"');
+    expect(html).toContain('data-layer-status="UNVERIFIED_ASSUMPTION"');
+    expect(html).toContain('九阳股份');
+    expect(html).toContain('不进统计、不参与排序、不构成篮子');
+    expect(html).toContain('data-gap="PIT_NAME_SNAPSHOT_MISSING"');
+    expect(html).toContain('行为假说，不是题材');
+    for (const l of calendar.hypotheses[0].mapping_layers) {
+      if (l.layer !== 'LITERAL') expect(l.status).toBe('UNVERIFIED_ASSUMPTION');
+    }
+  });
+
+  it('★★ 日历只含可核事实；产物与默认页均无内部评分字段', () => {
+    expect(html).toContain(`data-calendar-entries="${calendar.entries.length}"`);
+    for (const e of calendar.entries) expect(e.fact_vs_assumption.length).toBeGreaterThan(0);
+    const blob = JSON.stringify(frontier);
+    for (const banned of ['priority_score', 'wilson_low', 'INTERNAL_EVAL_ONLY']) {
+      expect(blob).not.toContain(banned);
+      expect(html).not.toContain(banned);
+    }
+  });
+
+  it('★★ 措辞放宽但仍无买卖执行类用语', () => {
+    for (const banned of ['买入', '卖出', '目标价', '仓位', '胜率', '推荐买入']) {
+      expect(html, `不应出现「${banned}」`).not.toContain(banned);
+    }
+    expect(html).toContain('具体的买卖决策由你自行做出');
+    expect(html).toContain('不是买卖点');
   });
 });

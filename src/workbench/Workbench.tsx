@@ -1,16 +1,24 @@
 /**
- * ThreeC 研究工作台（v0.74）—— 任务导向的**独立入口**，旧站 `/Cycle/` 退为只读档案。
+ * ThreeC 研究工作台（v0.77）—— 任务导向的**独立入口**，旧站 `/Cycle/` 退为只读档案。
  *
- * 三屏：① 我提问 → ② 给可核证据 → ③ T 时刻冻结我的判断（事后核对独立）。
+ * ★★ 方向纠正：默认主入口是「前瞻排程」（push / 事前）—— 系统主动推出
+ * 接下来值得关注的板块 / 概念窗口 + 双轨理由；原来的「我提问 → 历史对照」
+ * 降级为**历史检索**标签，只在用户想深挖某个已筛出的方向时使用。
+ * T 时刻冻结记录保留（改称对照记录），用于「研究增量」验收。
  *
- * ★★ 口径（`docs/EVALUATION_FRAMEWORK_v0_1.md`）：
+ * ★★ 口径（`docs/EVALUATION_FRAMEWORK_v0_1.md` + `docs/FRONTIER_CADENCE_v0_1.md`）：
  *  · 有效性 = **研究增量**，不是 5/10/20 日板块超额；
- *  · 默认页面**不做优先级排序**、不含任何评分/概率/推荐；
- *  · 内部排序只在用户主动打开的「内部评估视图」里出现，且数据按需加载。
+ *  · 默认页按 **G1→G4 研究浏览顺序**（产物已有分组，无分数、不是收益排序）；
+ *  · 启发式内部打分**只在**主动打开的评估视图，且按需加载，不进入默认页；
+ *  · 「值得关注」= 前置观察窗口 / 研究起点，**不是买卖点**。
  */
 import { useMemo, useState } from 'react';
 import raw from '@current/workbench_index_v0_1.json';
+import frontierRaw from '@current/frontier_board_v0_1.json';
+import calendarRaw from '@current/event_calendar_v0_1.json';
 import type { EvalDoc, IndexDoc, PosthocEval, RecordType, UseRecord, WorkbenchItem } from './types';
+import { FrontierView } from './FrontierView';
+import type { FrontierDoc, EventCalendar } from './FrontierView';
 import { EvalView } from './EvalView';
 import {
   downloadText, exportBundle, freezeRecord, loadEvals, loadRecords,
@@ -18,6 +26,8 @@ import {
 } from './records';
 
 const doc = raw as unknown as IndexDoc;
+const frontierDoc = frontierRaw as unknown as FrontierDoc;
+const eventCalendar = calendarRaw as unknown as EventCalendar;
 const TYPES: RecordType[] = ['LEAD', 'CONFIRM', 'REJECT', 'NO_LEAD', 'BLOCKED', 'UI_FRICTION'];
 const TYPE_LABEL: Record<RecordType, string> = {
   LEAD: '新线索', CONFIRM: '强化已有判断', REJECT: '放弃某方向',
@@ -28,15 +38,16 @@ const KIND_LABEL: Record<string, string> = {
 };
 
 type Step = 'ask' | 'evidence' | 'record';
-type View = 'workbench' | 'eval';
+type View = 'frontier' | 'workbench' | 'eval';
 
 export function Workbench() {
-  const [view, setView] = useState<View>('workbench');
+  const [view, setView] = useState<View>('frontier');
   const [step, setStep] = useState<Step>('ask');
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
   const [limit, setLimit] = useState(30);
   const [selected, setSelected] = useState<WorkbenchItem | null>(null);
+  const [frontierRef, setFrontierRef] = useState<string | null>(null);
 
   const [question, setQuestion] = useState('');
   const [verdict, setVerdict] = useState('');
@@ -75,6 +86,15 @@ export function Workbench() {
     }
   }
 
+  /** 从「值得关注」清单直接进入 T 时刻冻结：预填研究问题，不要求先检索 */
+  function recordFromFrontier(title: string, id: string) {
+    setQuestion(`「${title}」是否提示了一个值得继续研究的方向？我此前是否已考虑过？`);
+    setFrontierRef(id);
+    setSelected(null);
+    setView('workbench');
+    setStep('record');
+  }
+
   function openEvidence(it: WorkbenchItem) {
     setSelected(it);
     setStep('evidence');
@@ -85,7 +105,7 @@ export function Workbench() {
     if (!question.trim() || !verdict.trim()) return;
     const r = freezeRecord({
       question, verdict_at_T: verdict, type, cluster_id: cluster,
-      item_ref: selected?.id ?? null,
+      item_ref: selected?.id ?? frontierRef,
     }, doc, new Date(), records);
     setRecords(saveRecord(r));
     setVerdict('');
@@ -107,11 +127,16 @@ export function Workbench() {
       <header className="wb-head">
         <div>
           <h1>ThreeC 研究工作台</h1>
-          <p className="wb-sub">提问 → 证据 → 冻结判断。用来检验「工具是否改善了研究」，不是看板块后来涨没涨。</p>
+          <p className="wb-sub">
+            系统先推出「接下来值得关注」的前置观察窗口 + 双轨理由；点进去才是证据与来源。
+            用来检验「工具是否改善了研究」，不是看板块后来涨没涨。
+          </p>
         </div>
         <nav className="wb-nav">
+          <button type="button" className={view === 'frontier' ? 'is-active' : ''}
+                  onClick={() => setView('frontier')} data-open-frontier="1">前瞻排程</button>
           <button type="button" className={view === 'workbench' ? 'is-active' : ''}
-                  onClick={() => setView('workbench')}>研究</button>
+                  onClick={() => setView('workbench')} data-open-history="1">历史检索 / 记录</button>
           <button type="button" className={view === 'eval' ? 'is-active' : ''}
                   onClick={openEval} data-open-eval="1">内部评估视图</button>
           <a href="./index.html" className="wb-archive-link">历史档案视图（旧站）↗</a>
@@ -121,10 +146,12 @@ export function Workbench() {
       <p className="wb-caliber" data-caliber="1">
         <strong>有效性 = 研究增量</strong>（新线索率 / 耗时变化 / 事后可核性）。
         5/10/20 日板块超额只是<strong>行情附注</strong>，不参与验收。
-        默认页面<strong>不做优先级排序</strong>、不给概率、不给推荐，也不是买卖建议。
-        数据截止 <code>{doc.as_of}</code> · 索引 {doc.counts.total} 条（
-        {doc.counts.by_kind.HISTORICAL_OBJECT} 历史对象 / {doc.counts.by_kind.POLICY_EVENT} 政策事件 /{' '}
-        {doc.counts.by_kind.THEME_MAP_EVENT} 题材地图事件）。
+        默认页按 <strong>G1→G4 研究浏览顺序</strong>（产物已有分组，无分数、不是收益排序）；
+        启发式内部打分只在评估视图。<strong>「值得关注」= 前置观察窗口 / 研究起点，不是买卖点</strong>，
+        具体的买卖决策由你自行做出。
+        统计轨 as_of <code>{frontierDoc.tracks.statistical.as_of}</code>（季度） ·
+        机制轨 as_of <code>{frontierDoc.tracks.mechanism.as_of}</code>（周更） ·
+        检索索引 {doc.counts.total} 条。
       </p>
 
       {view === 'eval' ? (
@@ -132,6 +159,8 @@ export function Workbench() {
           : evalError ? <p className="wb-error">加载失败：{evalError}（可切回「研究」重试）</p>
             : evalDoc ? <EvalView doc={evalDoc} />
               : <p className="wb-error">未加载到评估数据。</p>
+      ) : view === 'frontier' ? (
+        <FrontierView doc={frontierDoc} cal={eventCalendar} onRecord={recordFromFrontier} />
       ) : (
         <main className="wb-main">
           <ol className="wb-steps" data-steps="1">
@@ -158,7 +187,8 @@ export function Workbench() {
               </button>
               <p className="wb-hint">
                 只按<strong>标题 / 主题 / 关联理由</strong>做字面匹配，不是语义理解；
-                结果<strong>按日期倒序</strong>（产物顺序），<strong>不做优先级排序</strong>。
+                结果<strong>按日期倒序</strong>（产物顺序），<strong>这里不引入优先级排序</strong>；
+                默认页「前瞻排程」的 G1→G4 分组顺序是另一件事，两者不混读。
               </p>
               {submitted && (
                 <>
@@ -276,7 +306,12 @@ export function Workbench() {
               </div>
               <button type="button" className="wb-btn primary" disabled={!question.trim() || !verdict.trim()}
                       onClick={freeze} data-freeze="1">冻结这条记录</button>
-              {selected && <p className="wb-hint">关联线索：<code>{selected.id}</code></p>}
+              {(selected || frontierRef) && (
+                <p className="wb-hint" data-record-ref="1">
+                  关联线索：<code>{selected?.id ?? frontierRef}</code>
+                  {frontierRef ? '（来自前瞻排程）' : ''}
+                </p>
+              )}
 
               <h3>已冻结正文（{records.length}）</h3>
               {records.length === 0 ? <p className="wb-empty">还没有记录。</p> : (
@@ -325,9 +360,11 @@ export function Workbench() {
       )}
 
       <footer className="wb-foot">
+        前瞻排程 <code>frontier_board_v0_1.json</code>（{frontierDoc.items.length} 条）+
+        日历 <code>event_calendar_v0_1.json</code>（{eventCalendar.entries.length} 条）
+        · 由既有产物确定性派生，<code>build_frontier_board_v0_1.py --check</code> 逐字段复算 ·
         检索索引 <code>workbench_index_v0_1.json</code>（{doc.counts.total} 条，
-        其中 {doc.counts.with_external_url} 条带原始 URL）· 由既有产物确定性派生，
-        可用 <code>build_workbench_basis_v0_1.py --check</code> 逐字段复算。
+        其中 {doc.counts.with_external_url} 条带原始 URL）·
         url 为 null 表示内部结构化对象，<strong>不编造外部来源</strong>。
       </footer>
     </div>

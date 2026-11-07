@@ -1,0 +1,236 @@
+{
+ "artifact": "event_calendar",
+ "artifact_version": "0.1",
+ "generated_at": "2026-11-07T12:04:52+08:00",
+ "as_of": "2026-11-05",
+ "track": "MECHANISM",
+ "cadence": "WEEKLY",
+ "scope_note": "本版只登记库内可核的日历事实与既有观察窗口；不含任何推测、编造或未来政策日程。周更时由可核来源逐条补入。",
+ "entries": [
+  {
+   "date": "2016-02-08",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2016,
+   "animal": "猴",
+   "name_matches_in_current_snapshot": 0,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2017-01-28",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2017,
+   "animal": "鸡",
+   "name_matches_in_current_snapshot": 1,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2018-02-16",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2018,
+   "animal": "狗",
+   "name_matches_in_current_snapshot": 0,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2019-02-05",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2019,
+   "animal": "猪",
+   "name_matches_in_current_snapshot": 0,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2020-01-25",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2020,
+   "animal": "鼠",
+   "name_matches_in_current_snapshot": 1,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2021-02-12",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2021,
+   "animal": "牛",
+   "name_matches_in_current_snapshot": 4,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2022-02-01",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2022,
+   "animal": "虎",
+   "name_matches_in_current_snapshot": 0,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2023-01-22",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2023,
+   "animal": "兔",
+   "name_matches_in_current_snapshot": 1,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2024-02-10",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2024,
+   "animal": "龙",
+   "name_matches_in_current_snapshot": 90,
+   "testable_in_existing_artifact": true,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2025-01-29",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2025,
+   "animal": "蛇",
+   "name_matches_in_current_snapshot": 1,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2026-02-17",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2026,
+   "animal": "马",
+   "name_matches_in_current_snapshot": 31,
+   "testable_in_existing_artifact": true,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2026-12-15",
+   "kind": "OBSERVATION_WINDOW",
+   "label": "前置观察窗口开始",
+   "candidate_id": "CAND-ZODIAC-2027",
+   "source": "forward_observation_v0_6.json:candidates[CAND-ZODIAC-2027].window",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "ASSUMPTION（窗口为人工设定的观察起点，不是行情启动日）"
+  },
+  {
+   "date": "2027-02-06",
+   "kind": "LUNAR_NEW_YEAR",
+   "year": 2027,
+   "animal": "羊",
+   "name_matches_in_current_snapshot": 2,
+   "testable_in_existing_artifact": false,
+   "source": "forward_observation_v0_6.json:patterns[ZODIAC_NAME].years",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "FACT"
+  },
+  {
+   "date": "2027-02-06",
+   "kind": "OBSERVATION_WINDOW",
+   "label": "农历新年 / 峰值",
+   "candidate_id": "CAND-ZODIAC-2027",
+   "source": "forward_observation_v0_6.json:candidates[CAND-ZODIAC-2027].window",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "ASSUMPTION（窗口为人工设定的观察起点，不是行情启动日）"
+  },
+  {
+   "date": "2027-03-05",
+   "kind": "OBSERVATION_WINDOW",
+   "label": "前置观察窗口结束",
+   "candidate_id": "CAND-ZODIAC-2027",
+   "source": "forward_observation_v0_6.json:candidates[CAND-ZODIAC-2027].window",
+   "verification": "DERIVED_FROM_EXISTING_ARTIFACT",
+   "fact_vs_assumption": "ASSUMPTION（窗口为人工设定的观察起点，不是行情启动日）"
+  }
+ ],
+ "hypotheses": [
+  {
+   "family": "A_CALENDAR",
+   "pattern_id": "ZODIAC_NAME",
+   "title": "生肖名称炒作（春节前 20 交易日 ~ 节后 20 交易日）",
+   "role": "BEHAVIORAL_HYPOTHESIS",
+   "not_a_theme": true,
+   "note": "与基本面无关、生命周期极短；既有产物明写「不得赋予行业属性」。只作为前置观察窗口接入，不升级为可执行候选。",
+   "mapping_layers": [
+    {
+     "layer": "LITERAL",
+     "rule": "证券名称含当年生肖字",
+     "examples": [],
+     "status": "IN_EXISTING_ARTIFACT",
+     "usage": "EXISTING_ARTIFACT",
+     "note": "现有假设只到这一层。2027 羊年当前名称仅 2 只 → 无法构成篮子，既有产物结论为 evidence_status=INSUFFICIENT，本轮不改写。"
+    },
+    {
+     "layer": "HOMOPHONE",
+     "rule": "同音/近音字映射（羊 / 洋 / 阳 / 扬）",
+     "examples": [
+      "九阳股份",
+      "圣阳股份",
+      "阳光电源"
+     ],
+     "status": "UNVERIFIED_ASSUMPTION",
+     "usage": "NOT_IN_STATISTICS_NOT_IN_RANKING_NOT_A_BASKET",
+     "note": "人工声明草案，来自使用者举例；系统未核验证券名称与历史时点，不进统计、不参与排序、不构成篮子。启用前必须另立 hypothesis_id。"
+    },
+    {
+     "layer": "SEMANTIC",
+     "rule": "语义关联（如「狼吃羊」类叙事）",
+     "examples": [],
+     "status": "UNVERIFIED_ASSUMPTION",
+     "usage": "NOT_IN_STATISTICS_NOT_IN_RANKING_NOT_A_BASKET",
+     "note": "外部事后报道出现过，库内无可核记录；只登记，不采信。"
+    }
+   ],
+   "status_in_existing_artifact": "C_EXPLORATORY"
+  }
+ ],
+ "known_gaps": [
+  {
+   "id": "PIT_NAME_SNAPSHOT_MISSING",
+   "detail": "历史证券名称 / 改名 / 上市退市快照缺失。既有 forward_observation.limitations 已自述「概念/名称候选池用当前快照回溯 → 存在幸存者偏差与成分变更偏差」；12 个年份里 10 个 testable=false 皆因此。周更行情不含此数据，本轮无法补齐。",
+   "blocks": "任何生肖历史统计升级为线索"
+  },
+  {
+   "id": "LAUNCH_DATE_DRIFTS",
+   "detail": "启动点逐年漂移（2026 马年 6 月、2027 羊年 11 月），无固定提前量；窗口 start 只是「最早开始观察」，不是启动日。应采用触发式观察。",
+   "blocks": "写死「提前 N 天」的日历规则"
+  },
+  {
+   "id": "ONLY_LITERAL_MATCH",
+   "detail": "现有假设只匹配生肖字面，不含谐音/语义；使用者举例的三只标的都不在池内。",
+   "blocks": "把谐音标的并入现有统计分母"
+  },
+  {
+   "id": "NO_FUTURE_POLICY_CALENDAR",
+   "detail": "本版日历只含库内可核的农历新年与既有观察窗口；两会 / 政策生效日 / 指数调样 / 行业大会等库内无可核来源，故不编造。周更时须由可核来源逐条补入。",
+   "blocks": "声称已覆盖完整未来事件日历"
+  }
+ ],
+ "source_sha256_16": {
+  "forward_observation_v0_6.json": "333d1cbe758c371a"
+ }
+}
