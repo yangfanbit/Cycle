@@ -1,0 +1,89 @@
+{
+ "artifact": "benchmark_parallel",
+ "artifact_version": "0.1",
+ "generated_at": "2026-11-07T13:20:36+08:00",
+ "purpose": "中证官方 000300 与库内 CSI300 并列对照；不合并、不替换、不重算历史统计",
+ "license": {
+  "state": "UNCLEAR",
+  "program_verified": false,
+  "operator_attestation": {
+   "basis": "使用者 2026-11-07 于对话中明确答复「允许」，授权接入中证官方 000300 公开日线作为并列对照；仅用于内部校验与并列展示，不对外发布为投资建议或买卖信号。此为操作人员提交的依据，程序未独立核验许可范围。",
+   "submitted_at": "2026-11-07T13:20:37+08:00",
+   "note": "操作人员提交的授权依据，程序未独立核验许可范围"
+  },
+  "note": "★ 公开可访问 ≠ 许可公开再发布。state 恒 UNCLEAR、program_verified 恒 false；授权属治理决策，不由命令行开关改变。"
+ },
+ "index": {
+  "code": "000300",
+  "name": "沪深300",
+  "published_from": "2005-04-08",
+  "published_from_source": "docs/INDEX_DATA_FEASIBILITY_WAVE2_v0_1.md（000300 发布日 2005-04-08，基期 2004-12-31=1000）",
+  "base_date": "2004-12-31",
+  "base_value": 1000
+ },
+ "source": {
+  "endpoint": "https://www.csindex.com.cn/csindex-home/perf/index-perf?indexCode=000300&startDate=20050101&endDate=20261107",
+  "rows": 5305,
+  "first_date": "20050101",
+  "last_date": "20261106",
+  "raw_sha256_16": "88b28a21a09d95b1"
+ },
+ "rows_before_publish": 62,
+ "segments": [
+  {
+   "status": "BACKFILLED_NOT_PIT",
+   "from": "20050101",
+   "to": "20050407",
+   "rows": 62,
+   "backfilled": true,
+   "note": "指数公司事后补算，发布日前市场上不存在该可交易指数；不得用于时点判断"
+  },
+  {
+   "status": "OFFICIAL_ONLY_PIT_ELIGIBLE",
+   "from": "20050408",
+   "to": "20140619",
+   "rows": 2233,
+   "backfilled": false,
+   "note": "发布日后、库内 CSI300 起点前的官方真实点位；可用但本轮不入库、不改历史统计"
+  },
+  {
+   "status": "OVERLAP_WITH_LOCAL",
+   "from": "20140620",
+   "to": "20261106",
+   "rows": 3010,
+   "backfilled": null,
+   "note": "与库内 CSI300 重叠段；backfilled=null 表示不适用（不是 false）"
+  }
+ ],
+ "overlap_check": {
+  "local_series": "CSI300（history_scan.db / provider=sina / price_type=raw）",
+  "local_first": "20140620",
+  "local_last": "20261105",
+  "matched_trading_days": 3009,
+  "exact_close_matches": 3009,
+  "exact_match_rate": 1.0,
+  "max_abs_close_diff": 0.005,
+  "median_abs_close_diff": 0.002,
+  "daily_return_correlation": 1.0,
+  "conclusion": "库内 CSI300 与官方 000300 在重叠交易日点位一致，差异仅在起点（库内被 3000 根截断）"
+ },
+ "cross_check_summary": {
+  "file": "research/research/reports/price_cross_check_v0_1.json",
+  "baskets_checked": 5,
+  "pearson_range": [
+   1.0,
+   1.0
+  ],
+  "median_abs_diff_pp_max": 0,
+  "listed_1y_diff_pp_max": 0.0662,
+  "conclusion": "自建概念篮子可被真实个股逐日复现（相关 1.0 / 中位差 0.0 pp）；偏差不在计算，而在『用当前成分名单回溯』这个对象定义"
+ },
+ "limits": [
+  "★ 并列不合并：本产物不替换现有 CSI300 基准，不改任何历史统计 / 账本 / 雷达产物。",
+  "★ 发布日前段为指数公司事后补算，标 BACKFILLED_NOT_PIT；不得当成『当时可知』用于 PIT 判断。",
+  "★ rows_before_publish 由实际序列统计；三段 rows 之和 = source.rows。",
+  "★ 官方数值来自公开接口，授权状态 UNCLEAR、程序未核验；不得对外发布为投资建议或买卖信号。",
+  "★ 远端可能已到库内最后交易日之后；本轮只做对照，不追加行情（未授权全套刷新）。",
+  "★ 行业板块为同花顺编制指数、概念篮子为当前成分等权自建，都不是真实可交易标的；个股偏差见 cross_check_summary。"
+ ]
+}

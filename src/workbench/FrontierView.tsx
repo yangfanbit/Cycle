@@ -28,6 +28,9 @@ export interface FrontierItem {
   trigger_type?: string | null; watch_next?: string | null; invalidate_if?: string | null;
   gap?: string | null; evidence_ref?: Record<string, unknown> | null;
   source_artifacts?: string[];
+  representative_stocks?: { series_id: string; name?: string | null;
+    median_excess_pct?: number; years?: number; source?: string }[];
+  representative_stocks_total?: number; stock_gap_reason?: string | null;
 }
 export interface FrontierDoc {
   artifact: string; artifact_version: string; purpose: string;
@@ -36,6 +39,11 @@ export interface FrontierDoc {
                          note: string; feed_window: [string, string] } };
   group_rule: { order: string[]; meaning: string;
                 attention_label_rule: Record<string, string> };
+  selection_rule: { hard_gate: string; sort_keys: string[]; month_quota: null | number;
+                    month_quota_note: string; fixed_sections_not_competing: string[]; note: string };
+  top6: { id: string; rank: number; rank_reason: string }[];
+  fixed_sections: { current_objects: string[]; special_hypotheses: string[] };
+  hit_rate_definition: string;
   counts: Record<string, unknown>;
   limits: string[]; items: FrontierItem[];
   mechanism_feed: { event_id: string; date: string; title: string; publisher?: string;
@@ -67,8 +75,172 @@ const POS_LABEL: Record<string, string> = {
 function num(v: unknown, digits = 2): string {
   return typeof v === 'number' ? v.toFixed(digits) : '—';
 }
-function pct(v: unknown): string {
-  return typeof v === 'number' ? `${(v * 100).toFixed(0)}%` : '—';
+
+const STOCK_GAP_LABEL: Record<string, string> = {
+  NO_HISTORICAL_CONSTITUENTS: '行业板块是编制指数，库内无历史成分名单 → 不列代表股（不编造）',
+  NO_SECURITY_MAPPING: '当前研究主题尚未建立标的映射',
+  HYPOTHESIS_NO_SECURITY_LINK: '专项假设未接入个股',
+};
+
+interface PriceDoc {
+  artifact: string;
+  index: { code: string; name: string; published_from: string; published_from_source: string };
+  source: { rows: number; first_date: string; last_date: string };
+  rows_before_publish: number;
+  segments: { status: string; from: string | null; to: string | null;
+              rows: number; backfilled: boolean | null; note: string }[];
+  overlap_check: { local_first: string; local_last: string; matched_trading_days: number;
+                   exact_close_matches: number; median_abs_close_diff: number;
+                   daily_return_correlation: number; conclusion: string };
+  cross_check_summary: { baskets_checked: number; pearson_range: number[];
+                         median_abs_diff_pp_max: number; listed_1y_diff_pp_max: number;
+                         conclusion: string } | null;
+  license: { state: string; program_verified: boolean;
+             operator_attestation: { basis: string } | null };
+  limits: string[];
+}
+
+/** 历史行情校正（官方基准并列 + 真实个股交叉校验）—— 折叠时才按需加载 */
+function PriceCalibration() {
+  const [state, setState] = useState<'IDLE' | 'LOADING' | 'LOADED' | 'ERROR'>('IDLE');
+  const [d, setD] = useState<PriceDoc | null>(null);
+  async function onToggle(e: React.SyntheticEvent<HTMLDetailsElement>) {
+    if (!e.currentTarget.open || state !== 'IDLE') return;
+    setState('LOADING');
+    try {
+      const m = await import('@current/benchmark_parallel_v0_1.json');
+      setD((m as { default?: PriceDoc }).default ?? (m as unknown as PriceDoc));
+      setState('LOADED');
+    } catch {
+      setState('ERROR');
+    }
+  }
+  return (
+    <details className="fb-rule" data-price-calibration="1"
+             data-price-state={state} onToggle={onToggle}>
+      <summary>查看历史行情校正结论（按需加载）</summary>
+      {state === 'LOADING' && <p>校正数据加载中…</p>}
+      {state === 'ERROR' && <p>加载失败；可收起后重新展开重试。</p>}
+      {state === 'LOADED' && d && (
+        <>
+          <p><strong>官方基准并列</strong>：中证 <code>{d.index.code}</code> {d.index.name}，
+             发布日 <code>{d.index.published_from}</code>（{d.index.published_from_source}）。
+             官方序列 <strong>{d.source.rows}</strong> 行（{d.source.first_date} → {d.source.last_date}）。</p>
+          <ul>
+            {d.segments.map((s) => (
+              <li key={s.status} data-segment={s.status}>
+                <code>{s.status}</code> · {s.from} → {s.to} · {s.rows} 行 ·
+                backfilled={String(s.backfilled)} — {s.note}
+              </li>
+            ))}
+          </ul>
+          <p><strong>与库内 CSI300 对照</strong>：重叠 {d.overlap_check.matched_trading_days} 个交易日，
+             0.01 容差内一致 {d.overlap_check.exact_close_matches} 日，
+             中位差 {d.overlap_check.median_abs_close_diff}（小数位精度），
+             日收益相关 {d.overlap_check.daily_return_correlation}。
+             {d.overlap_check.conclusion}</p>
+          {d.cross_check_summary && (
+            <p><strong>真实个股交叉校验</strong>：{d.cross_check_summary.baskets_checked} 个自建概念篮子，
+               与真实 A 股个股日收益相关 {d.cross_check_summary.pearson_range.join('–')}，
+               中位差上限 {d.cross_check_summary.median_abs_diff_pp_max} pp，
+               「已上市满 1 年」过滤后差异上限 {d.cross_check_summary.listed_1y_diff_pp_max} pp。
+               {d.cross_check_summary.conclusion}</p>
+          )}
+          <p><strong>授权</strong>：state <code>{d.license.state}</code> ·
+             program_verified <code>{String(d.license.program_verified)}</code> ·
+             依据为操作人员提交、程序未独立核验。</p>
+          <ul>{d.limits.map((t, i) => <li key={i}>{t}</li>)}</ul>
+        </>
+      )}
+    </details>
+  );
+}
+
+/** 单条完整卡片（精选区与全量区共用，字段一致） */
+function FrontierRow({ x, rank, rankReason, onRecord }: {
+  x: FrontierItem; rank?: number; rankReason?: string;
+  onRecord: (title: string, id: string) => void;
+}) {
+  const h = (x.statistical_reason ?? {}) as Record<string, unknown>;
+  const stocks = x.representative_stocks ?? [];
+  return (
+    <li className="fb-row" data-frontier-row={x.id} data-group={x.group}
+        data-track="STATISTICAL" data-attention={x.attention_label}
+        data-order={x.order} data-rank={rank ?? ''}>
+      <div className="fb-r1">
+        {rank ? <span className="fb-rank">#{rank}</span> : null}
+        <span className={`fb-grp g-${x.group.toLowerCase()}`}>{x.group}</span>
+        <span className="fb-att">{x.attention_label}</span>
+        <span className="fb-pos">{POS_LABEL[x.time_position ?? ''] ?? x.time_position}</span>
+        <span className="fb-win">{x.window_hint}</span>
+      </div>
+      {rankReason && (
+        <p className="fb-rankreason" data-rank-reason="1">
+          <strong>为什么排这里</strong>：{rankReason}
+        </p>
+      )}
+      <h3 className="fb-title">{x.title}</h3>
+      <p className="fb-sub">{x.subtitle} · {x.why_now ?? '—'}</p>
+
+      <div className="fb-reasons">
+        <div className="fb-reason" data-reason="STATISTICAL">
+          <span className="fb-reason-tag">统计理由（季度轨）</span>
+          {x.statistical_reason ? (
+            <p>
+              <strong>历史跑赢 {String(h.hit_years ?? '—')}/{String(h.n_years ?? '—')} 年</strong>
+              <span className="fb-def" title={String(h.hit_rate_definition ?? '')}>（口径？）</span> ·
+              历史中位超额 {num(h.median_excess_pct)} pp ·
+              样本外 {String(h.oos_status ?? '—')}（{String(h.oos_tests ?? 0)} 次） ·
+              时点资格 {String(h.pit_eligible_years ?? '—')} 年
+            </p>
+          ) : <p>本条为专项假设 / 当前对象，无板块月度统计。</p>}
+          <p className="fb-caveat">历史统计，未校准，不预测未来涨跌；只作行情附注，不参与研究增量验收。</p>
+        </div>
+        <div className="fb-reason" data-reason="MECHANISM">
+          <span className="fb-reason-tag">机制理由（周更轨）</span>
+          {x.mechanism_reason ? (
+            <p>
+              <a href={x.mechanism_reason.url} target="_blank" rel="noreferrer noopener">
+                {x.mechanism_reason.title}
+              </a>
+              （{x.mechanism_reason.event_date} · 序列 {x.mechanism_reason.board_series} 精确匹配）
+            </p>
+          ) : (
+            <p>本期机制轨<strong>无可核关联</strong> —— 不给统计卡硬贴理由。</p>
+          )}
+          <p className="fb-caveat">关联是序列匹配，不证明因果；机制轨整体见下方独立信息流。</p>
+        </div>
+      </div>
+
+      {stocks.length > 0 ? (
+        <p className="fb-stocks" data-stocks={x.representative_stocks_total}>
+          <strong>个股参照</strong>（当前概念成分 + 基准日历对齐，<strong>不是历史成分</strong>）：
+          {stocks.map((s) => (
+            <span key={s.series_id}> {s.name ?? s.series_id}
+              （历史中位超额 {num(s.median_excess_pct)} pp / {String(s.years ?? '—')} 年）·</span>
+          ))}
+          {(x.representative_stocks_total ?? 0) > stocks.length
+            ? ` …另 ${(x.representative_stocks_total ?? 0) - stocks.length} 只见产物` : ''}
+        </p>
+      ) : (
+        <p className="fb-stockgap" data-stock-gap={x.stock_gap_reason ?? 'NONE'}>
+          <strong>未列个股</strong>：{STOCK_GAP_LABEL[x.stock_gap_reason ?? ''] ?? '本条无个股参照'}
+        </p>
+      )}
+
+      <ul className="fb-meta">
+        {x.trigger_type && <li>触发类型：<code>{x.trigger_type}</code></li>}
+        {x.watch_next && <li>接下来看：<RichText text={x.watch_next} /></li>}
+        {x.invalidate_if && <li>失效条件：<RichText text={x.invalidate_if} /></li>}
+        {x.gap && <li>缺口：<RichText text={x.gap} /></li>}
+        <li>出处：<code>{String((x.evidence_ref ?? {}).artifact ?? '—')}</code></li>
+      </ul>
+      <button type="button" className="wb-btn" data-record-from={x.id}
+              onClick={() => onRecord(x.title, x.id)}>
+        记下我此刻的判断 →
+      </button>
+    </li>
+  );
 }
 
 export function FrontierView({ doc, cal, onRecord }: {
@@ -90,7 +262,21 @@ export function FrontierView({ doc, cal, onRecord }: {
     }
     return true;
   }), [doc.items, group, position, keyword]);
-  const shown = showAll ? rows : rows.slice(0, 30);
+  // ★★ v0.78：默认只显示按证据强度规则选出的 6 条；固定区不参与精选、不占名额。
+  const byId = useMemo(() => new Map(doc.items.map((x) => [x.id, x])), [doc.items]);
+  const topIds = useMemo(() => new Set(doc.top6.map((t) => t.id)), [doc.top6]);
+  const fixedIds = useMemo(() => new Set([
+    ...doc.fixed_sections.current_objects, ...doc.fixed_sections.special_hypotheses,
+  ]), [doc.fixed_sections]);
+  const topRows = doc.top6
+    .map((t) => ({ t, x: byId.get(t.id) }))
+    .filter((p): p is { t: typeof p.t; x: FrontierItem } => Boolean(p.x));
+  const restTotal = doc.items.length - topIds.size - fixedIds.size;
+  const restRows = showAll
+    ? rows.filter((x) => !topIds.has(x.id) && !fixedIds.has(x.id))
+    : [];
+  const fixedRows = (ids: string[]) => ids.map((id) => byId.get(id)).filter(
+    (x): x is FrontierItem => Boolean(x));
   const positions = [...new Set(doc.items.map((x) => x.time_position ?? ''))].filter(Boolean).sort();
   // ★ 关键词同时过滤机制轨事件（否则「医用耗材」这类只在政策事件里出现的词查不到）
   const feedRows = useMemo(() => {
@@ -127,107 +313,103 @@ export function FrontierView({ doc, cal, onRecord }: {
         两轨理由分别标注、<strong>不做因果拼接</strong>；内部评估打分只在单独的评估视图。
       </p>
 
-      {/* ── 一、值得关注（默认按 G1→G4 排序） ── */}
-      <section className="fb-section" data-frontier-section="items">
-        <h2>一、接下来值得关注（{doc.items.length} 条）</h2>
+      {/* ── 一、精选 Top 6（默认主入口） ── */}
+      <section className="fb-section" data-frontier-section="top6">
+        <h2>一、接下来值得关注 · 精选 {doc.top6.length} 条</h2>
         <p className="fb-hint">
-          统计理由来自历史重复与样本外检验，<strong>未校准、不是未来概率</strong>；
-          行情超额只作<strong>行情附注</strong>，不参与验收。
-          窗口只有<strong>月份级</strong>，不推算具体交易日。
+          只显示按<strong>证据强度规则</strong>选出的 {doc.top6.length} 条：
+          {doc.selection_rule.hard_gate}。排序键：{doc.selection_rule.sort_keys.slice(0, 4).join(' → ')}。
+          <strong>不设同月配额</strong>（{doc.selection_rule.month_quota_note}）。
+          统计理由来自历史重复与样本外检验，<strong>未校准、不预测未来涨跌</strong>；
+          行情超额只作<strong>行情附注</strong>，不参与验收。窗口只有<strong>月份级</strong>。
         </p>
-        <div className="fb-filters">
-          <label>分组
-            <select value={group} onChange={(e) => setGroup(e.target.value)} data-filter="group">
-              <option value="ALL">全部（G1→G4）</option>
-              {doc.group_rule.order.map((g) => (
-                <option key={g} value={g}>{g} · {GROUP_LABEL[g] ?? g}</option>
-              ))}
-            </select>
-          </label>
-          <label>时间位置
-            <select value={position} onChange={(e) => setPosition(e.target.value)} data-filter="position">
-              <option value="ALL">全部</option>
-              {positions.map((p) => <option key={p} value={p}>{POS_LABEL[p] ?? p}</option>)}
-            </select>
-          </label>
-          <label>关键词（标题 / 理由 / 接下来看）
-            <input value={keyword} onChange={(e) => setKeyword(e.target.value)}
-                   placeholder="例如：光伏、医用耗材、证券" data-filter="keyword" />
-          </label>
-        </div>
-        <p className="fb-count" data-frontier-count={rows.length}>
-          命中 <strong>{rows.length}</strong> 条 · 当前显示 {shown.length} 条
-        </p>
-
-        <ol className="fb-list" data-frontier-list="1">
-          {shown.map((x) => {
-            const h = (x.statistical_reason ?? {}) as Record<string, unknown>;
-            return (
-              <li key={x.id} className="fb-row" data-frontier-row={x.id}
-                  data-group={x.group} data-track="STATISTICAL"
-                  data-attention={x.attention_label} data-order={x.order}>
-                <div className="fb-r1">
-                  <span className={`fb-grp g-${x.group.toLowerCase()}`}>{x.group}</span>
-                  <span className="fb-att">{x.attention_label}</span>
-                  <span className="fb-pos">{POS_LABEL[x.time_position ?? ''] ?? x.time_position}</span>
-                  <span className="fb-win">{x.window_hint}</span>
-                </div>
-                <h3 className="fb-title">{x.title}</h3>
-                <p className="fb-sub">{x.subtitle} · {x.why_now ?? '—'}</p>
-
-                <div className="fb-reasons">
-                  <div className="fb-reason" data-reason="STATISTICAL">
-                    <span className="fb-reason-tag">统计理由（季度轨）</span>
-                    {x.statistical_reason ? (
-                      <p>
-                        {String(h.n_years ?? '—')} 年历史 · 命中率 {pct(h.hit_rate)} ·
-                        历史中位超额 {num(h.median_excess_pct)} pp ·
-                        样本外 {String(h.oos_status ?? '—')}（{String(h.oos_tests ?? 0)} 次） ·
-                        时点资格 {String(h.pit_eligible_years ?? '—')} 年
-                      </p>
-                    ) : <p>本条为专项假设 / 当前对象，无板块月度统计。</p>}
-                    <p className="fb-caveat">历史统计，未校准，不是未来概率；只作行情附注，不参与研究增量验收。</p>
-                  </div>
-                  <div className="fb-reason" data-reason="MECHANISM">
-                    <span className="fb-reason-tag">机制理由（周更轨）</span>
-                    {x.mechanism_reason ? (
-                      <p>
-                        <a href={x.mechanism_reason.url} target="_blank" rel="noreferrer noopener">
-                          {x.mechanism_reason.title}
-                        </a>
-                        （{x.mechanism_reason.event_date} · 序列 {x.mechanism_reason.board_series} 精确匹配）
-                      </p>
-                    ) : (
-                      <p>本期机制轨<strong>无可核关联</strong> —— 不给统计卡硬贴理由。</p>
-                    )}
-                    <p className="fb-caveat">关联是序列匹配，不证明因果；机制轨整体见下方独立信息流。</p>
-                  </div>
-                </div>
-
-                <ul className="fb-meta">
-                  {x.trigger_type && <li>触发类型：<code>{x.trigger_type}</code></li>}
-                  {x.watch_next && <li>接下来看：<RichText text={x.watch_next} /></li>}
-                  {x.invalidate_if && <li>失效条件：<RichText text={x.invalidate_if} /></li>}
-                  {x.gap && <li>缺口：<RichText text={x.gap} /></li>}
-                  <li>出处：<code>{String((x.evidence_ref ?? {}).artifact ?? '—')}</code></li>
-                </ul>
-                <button type="button" className="wb-btn" data-record-from={x.id}
-                        onClick={() => onRecord(x.title, x.id)}>
-                  记下我此刻的判断 →
-                </button>
-              </li>
-            );
-          })}
+        <details className="fb-rule" data-selection-rule="1">
+          <summary>查看完整排序规则与命中率定义</summary>
+          <p><strong>硬门槛</strong>：{doc.selection_rule.hard_gate}</p>
+          <ul>{doc.selection_rule.sort_keys.map((k) => <li key={k}>{k}</li>)}</ul>
+          <p><strong>命中率定义</strong>：{doc.hit_rate_definition}</p>
+          <p><strong>个股参照</strong>：来自当前概念成分 + 基准日历对齐（不是历史成分）；
+             行业板块无历史成分名单，如实标注不列代表股。</p>
+          <p>{doc.selection_rule.note}</p>
+        </details>
+        <ol className="fb-list" data-frontier-list="top6" data-top6={doc.top6.length}>
+          {topRows.map(({ t, x }) => (
+            <FrontierRow key={x.id} x={x} rank={t.rank} rankReason={t.rank_reason}
+                         onRecord={onRecord} />
+          ))}
         </ol>
-        {rows.length > shown.length && (
+        <p className="fb-count" data-frontier-count={rows.length} data-rest-total={restTotal}>
+          全部 {doc.items.length} 条 = 精选 {doc.top6.length} + 固定区 {fixedIds.size} + 其余 {restTotal}；
+          当前筛选命中 <strong>{rows.length}</strong> 条
+        </p>
+        {!showAll ? (
           <button type="button" className="wb-btn primary" data-show-all="1"
-                  onClick={() => setShowAll(true)}>显示全部 {rows.length} 条</button>
+                  onClick={() => setShowAll(true)}>
+            查看全部（其余 {restTotal} 条，可筛选）
+          </button>
+        ) : (
+          <div className="fb-rest" data-rest="1">
+            <h3>其余记录（{restRows.length} / {restTotal} 条）</h3>
+            <div className="fb-filters">
+              <label>分组
+                <select value={group} onChange={(e) => setGroup(e.target.value)} data-filter="group">
+                  <option value="ALL">全部（G1→G4）</option>
+                  {doc.group_rule.order.map((g) => (
+                    <option key={g} value={g}>{g} · {GROUP_LABEL[g] ?? g}</option>
+                  ))}
+                </select>
+              </label>
+              <label>时间位置
+                <select value={position} onChange={(e) => setPosition(e.target.value)} data-filter="position">
+                  <option value="ALL">全部</option>
+                  {positions.map((p) => <option key={p} value={p}>{POS_LABEL[p] ?? p}</option>)}
+                </select>
+              </label>
+              <label>关键词（标题 / 理由 / 接下来看）
+                <input value={keyword} onChange={(e) => setKeyword(e.target.value)}
+                       placeholder="例如：光伏、医用耗材、证券" data-filter="keyword" />
+              </label>
+            </div>
+            <ol className="fb-list" data-frontier-list="rest">
+              {restRows.map((x) => (
+                <FrontierRow key={x.id} x={x} onRecord={onRecord} />
+              ))}
+            </ol>
+          </div>
         )}
+      </section>
+
+      {/* ── 二、固定区：当前研究主题 / 专项假设（不占精选名额） ── */}
+      <section className="fb-section" data-frontier-section="fixed">
+        <h2>二、当前研究主题与专项假设（{fixedIds.size} 条，固定区）</h2>
+        <p className="fb-hint">
+          这些对象在证据强度排序里排在末尾（无板块月度统计），
+          但属于人工设定的研究对象，<strong>不与精选 6 条竞争名额</strong>，固定展示。
+        </p>
+        {([
+          ['当前研究主题', doc.fixed_sections.current_objects],
+          ['专项假设', doc.fixed_sections.special_hypotheses],
+        ] as [string, string[]][]).map(([label, ids]) => (
+          <div key={label} className="fb-fixed-group">
+            <h3>{label}（{ids.length}）</h3>
+            <ul className="fb-fixed">
+              {fixedRows(ids).map((x) => (
+                <li key={x.id} data-fixed-row={x.id}>
+                  <button type="button" className="wb-linkbtn"
+                          onClick={() => onRecord(x.title, x.id)}>{x.title}</button>
+                  <span className="fb-date">{POS_LABEL[x.time_position ?? ''] ?? x.time_position}</span>
+                  {x.why_now && <span className="fb-sub2">{x.why_now}</span>}
+                  {x.gap && <span className="fb-sub2">缺口：{x.gap}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </section>
 
       {/* ── 二、机制轨独立信息流 ── */}
       <section className="fb-section" data-frontier-section="mechanism">
-        <h2>二、近 7 日可核事件（{feedRows.length} / {doc.mechanism_feed.length} 条）</h2>
+        <h2>三、近 7 日可核事件（{feedRows.length} / {doc.mechanism_feed.length} 条）</h2>
         <p className="fb-hint">
           动态窗口 = 雷达最新事件日往前 7 天（本期 {doc.tracks.mechanism.feed_window[0]} →{' '}
           {doc.tracks.mechanism.feed_window[1]}），不是自然周，也不等于「本周新增」。
@@ -257,7 +439,7 @@ export function FrontierView({ doc, cal, onRecord }: {
 
       {/* ── 三、已知日程与生肖试点 ── */}
       <section className="fb-section" data-frontier-section="calendar">
-        <h2>三、已知日程 / 前置观察窗口（{cal.entries.length} 条）</h2>
+        <h2>四、已知日程 / 前置观察窗口（{cal.entries.length} 条）</h2>
         <p className="fb-hint">{cal.scope_note}</p>
         <ol className="fb-cal" data-calendar-entries={cal.entries.length}>
           {cal.entries.map((e, i) => (
@@ -294,6 +476,17 @@ export function FrontierView({ doc, cal, onRecord }: {
             </ul>
           </div>
         ))}
+      </section>
+
+      {/* ── 五、历史行情校正（真实 A 股 / 官方基准并列） ── */}
+      <section className="fb-section" data-frontier-section="calibration">
+        <h2>五、历史行情校正</h2>
+        <p className="fb-hint">
+          统计轨原本建立在「同花顺编制指数 / 当前成分等权自建篮子 / raw 未复权 / 新浪 CSI300」之上。
+          这里给出用<strong>真实 A 股个股</strong>与<strong>中证官方基准</strong>做的独立复核，
+          <strong>并列展示、不合并、不替换</strong>，也不改任何历史统计产物。
+        </p>
+        <PriceCalibration />
       </section>
 
       <p className="fb-foot" data-frontier-limits="1">

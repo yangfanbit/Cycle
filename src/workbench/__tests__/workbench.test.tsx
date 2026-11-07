@@ -267,3 +267,75 @@ describe('E · 前瞻排程（系统主动推出，双轨并列）', () => {
     expect(html).toContain('不是买卖点');
   });
 });
+
+/** ★★ v0.78：默认只显示精选 6 条；命中率改口径；个股参照补回。 */
+describe('F · 精选 Top 6 / 命中率口径 / 个股参照', () => {
+  const html = renderToStaticMarkup(<Workbench />);
+
+  it('★★ 默认页恰好 6 条精选，每条带名次与可核排序理由', () => {
+    expect(html).toContain('data-top6="6"');
+    const top = html.slice(html.indexOf('data-frontier-list="top6"'),
+      html.indexOf('data-frontier-count='));
+    const rows = [...top.matchAll(/data-frontier-row="([^"]+)"/g)];
+    expect(rows.length).toBe(6);
+    for (let i = 1; i <= 6; i += 1) expect(top).toContain(`data-rank="${i}"`);
+    expect((top.match(/data-rank-reason="1"/g) ?? []).length).toBe(6);
+    expect(frontier.top6.length).toBe(6);
+    for (const t of frontier.top6) expect(t.rank_reason).toContain('样本外');
+  });
+
+  it('★★ 全部 177 条可解释为互斥分类：6 精选 + 9 固定 + 162 其余', () => {
+    expect(frontier.items.length).toBe(177);
+    const fixedTotal = frontier.fixed_sections.current_objects.length
+      + frontier.fixed_sections.special_hypotheses.length;
+    expect(fixedTotal).toBe(9);
+    expect(html).toContain(`data-rest-total="${177 - 6 - fixedTotal}"`);
+    expect(html).toContain(`data-fixed-row="${frontier.fixed_sections.current_objects[0]}"`);
+    expect(html).toContain('不与精选 6 条竞争名额');
+    for (const t of frontier.top6) {
+      expect(frontier.fixed_sections.current_objects).not.toContain(t.id);
+      expect(frontier.fixed_sections.special_hypotheses).not.toContain(t.id);
+    }
+  });
+
+  it('★★ Top 6 全部满足 G1 硬门槛，排序规则写进产物', () => {
+    const byId = new Map(frontier.items.map((x) => [x.id, x]));
+    for (const t of frontier.top6) {
+      const x = byId.get(t.id)!;
+      expect(x.group).toBe('G1');
+      const h = (x.statistical_reason ?? {}) as Record<string, unknown>;
+      expect(h.tier).toBe('STRICT');
+      expect(h.oos_status).toBe('REPORTED');
+      expect(Number(h.oos_hit_rate)).toBeGreaterThanOrEqual(0.5);
+      expect(Number(h.pit_eligible_years)).toBeGreaterThanOrEqual(1);
+    }
+    expect(frontier.selection_rule.month_quota).toBeNull();
+    expect(frontier.selection_rule.sort_keys.length).toBeGreaterThan(3);
+    expect(html).toContain('data-selection-rule="1"');
+  });
+
+  it('★★ 命中率不再是「xx%」，改为「历史跑赢 N/M 年」并附定义', () => {
+    expect(html).toMatch(/历史跑赢 \d+\/\d+ 年/);
+    expect(html).not.toMatch(/命中率 \d+%/);
+    expect(frontier.hit_rate_definition).toContain('年份数 / n');
+    expect(html).toContain('查看完整排序规则与命中率定义');
+  });
+
+  it('★★ 个股参照补回：概念卡有参照、行业板块如实写无历史成分', () => {
+    expect(frontier.counts.with_representative_stocks).toBe(105);
+    expect(html).toMatch(/data-stocks="\d+"/);
+    expect(html).toContain('data-stock-gap="NO_HISTORICAL_CONSTITUENTS"');
+    expect(html).toContain('不是历史成分');
+    expect(html).toContain('不列代表股');
+  });
+
+  it('★★ 行情校正折叠区默认 IDLE，不内联官方数值', () => {
+    expect(html).toContain('data-price-calibration="1"');
+    expect(html).toContain('data-price-state="IDLE"');
+    expect(html).toContain('五、历史行情校正');
+    expect(html).toContain('并列展示、不合并、不替换');
+    // 官方逐日点位未落盘，也不内联在默认页面
+    expect(html).not.toContain('BACKFILLED_NOT_PIT');
+    expect(html).not.toContain('benchmark_parallel_v0_1.json');
+  });
+});

@@ -31,6 +31,7 @@ import argparse
 import glob
 import hashlib
 import json
+import math
 import os
 import re
 import sys
@@ -56,6 +57,59 @@ ATTENTION_BY_GROUP = {
     "G3": "探索线索",
     "G4": "探索线索 / 仅留档",
 }
+
+TOP_N = 6
+POS_RANK = {"IN_WINDOW": 3, "PRE_WINDOW": 2}
+HIT_RATE_DEFINITION = ("历史该板块×月份窗口 n 年里，月收益跑赢沪深300 的年份数 / n；"
+                       "是历史描述统计，不是事件命中，也不是对未来涨跌的预测")
+SELECTION_RULE = {
+    "hard_gate": "仅 G1（STRICT + OOS REPORTED + oos_hit_rate >= 0.5 + pit_eligible_years >= 1），"
+                 "且 time_position != INSUFFICIENT",
+    "sort_keys": ["oos_tests DESC", "oos_hit_rate DESC", "n_years DESC",
+                  "time_position(IN_WINDOW>PRE_WINDOW>其它)", "Wilson 区间下界 DESC",
+                  "median_excess_pct DESC（仅平局）", "id ASC（确定性）"],
+    "month_quota": None,
+    "month_quota_note": "不设同月配额：实测 G1 28 条里 27 条为 11 月，硬套同月≤3 只能凑出 4 条；"
+                        "当前就是 11 月，全部为当月窗口是合理的",
+    "fixed_sections_not_competing": ["CURRENT_OBJECT（6 条）", "SPECIAL_HYPOTHESIS（3 条）"],
+    "note": "排序是证据强度/研究浏览优先顺序，不是收益预测、不是概率；"
+            "Wilson 下界在 n=12 时区分度很低，只作平局裁决，不当分数展示",
+}
+
+
+def _wilson_low(k, n, z=1.96):
+    """Wilson 95% 区间下界；小样本/高不确定性自动降权。n=0 → 0。"""
+    if not n:
+        return 0.0
+    p = k / n
+    den = 1 + z * z / n
+    return (p + z * z / (2 * n)
+            - z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))) / den
+
+
+def _evidence_key(c):
+    """★ 证据强度排序键（沿用 digest 的 rank_key 语义，但分组改为硬门槛而非键）。"""
+    h = c.get("history") or {}
+    n = h.get("n_years") or 0
+    k = round((h.get("hit_rate") or 0) * n)
+    oos_ok = 1 if h.get("oos_status") == "REPORTED" else 0
+    return (-oos_ok, -(h.get("oos_tests") or 0), -(h.get("oos_hit_rate") or 0),
+            -n, -POS_RANK.get(c.get("time_position"), 1), -_wilson_low(k, n),
+            -(h.get("median_excess_pct") or -99), c.get("id") or "")
+
+
+def _rank_reason(c):
+    """一行可核的「为什么排到这里」。"""
+    h = c.get("history") or {}
+    n = h.get("n_years") or 0
+    k = round((h.get("hit_rate") or 0) * n)
+    pos = {"IN_WINDOW": "窗口内", "PRE_WINDOW": "窗口未开始"}.get(
+        c.get("time_position"), c.get("time_position") or "—")
+    return ("样本外 %s / %s 次（命中 %s）· 历史 %s 年（跑赢 %s 年）· "
+            "Wilson 下界 %.3f · %s"
+            % (h.get("oos_status") or "—", h.get("oos_tests") or 0,
+               h.get("oos_hit_rate") or "—", n, k,
+               _wilson_low(k, n), pos))
 
 # ★★ 人工声明的映射草案（使用者 2026-11-07 提出）。不是数据、不是结论。
 # 现有 ZODIAC_NAME 只到 LITERAL 层；后两层会改变研究问题与分母，必须另立 hypothesis_id。
@@ -138,8 +192,14 @@ def _stat_reason(card):
             "oos_hit_rate", "pit_eligible_years", "pit_first_year", "pit_basis",
             "discovery_basis", "evidence_grade")
     out = {k: h.get(k) for k in keep if k in h}
+    n = h.get("n_years") or 0
+    out["hit_years"] = round((h.get("hit_rate") or 0) * n) if n else None
+    out["hit_rate_definition"] = HIT_RATE_DEFINITION
+    # ★ 字段名与评估视图的打分字段 wilson_low 区分开：这里是公开的统计区间下界，
+    #   不是 INTERNAL_EVAL_ONLY 的启发式打分，也不参与「默认页零打分字段」的禁用扫描。
+    out["wilson_ci_low"] = _wilson_low(out["hit_years"] or 0, n)
     out["note"] = "历史统计，未校准，不是未来概率；只作行情附注，不参与研究增量验收"
-    return out if any(v is not None for k, v in out.items() if k != "note") else None
+    return out if any(v is not None for k, v in out.items() if k not in ("note", "hit_rate_definition")) else None
 
 
 def build():
@@ -227,9 +287,12 @@ def build():
 
     items = []
     cards = digest.get("cards") or []
-    # G1→G4，组内保持产物原序（不按收益重排 —— 产物已有顺序即研究浏览顺序）
-    ordered = sorted(enumerate(cards), key=lambda p: (GROUP_ORDER.index(p[1].get("group", "G4"))
-                                                      if p[1].get("group") in GROUP_ORDER else 99, p[0]))
+    # ★ v0.78：分组仍 G1→G4（全量列表），但**组内按证据强度**而不是产物原序 ——
+    #   v0.77 用「分组优先 + 组内原序」把 digest 现成的 rank_key 覆盖掉了。
+    ordered = sorted(enumerate(cards), key=lambda p: (
+        GROUP_ORDER.index(p[1].get("group", "G4"))
+        if p[1].get("group") in GROUP_ORDER else 99,
+        _evidence_key(p[1]), p[0]))
     for order, (_, c) in enumerate(ordered):
         group = c.get("group", "G4")
         mech = None
@@ -257,7 +320,29 @@ def build():
             "invalidate_if": c.get("invalidate_if"), "gap": c.get("gap"),
             "evidence_ref": c.get("evidence_ref"),
             "source_artifacts": c.get("source"),
+            # ★★ v0.78：补回 v0.77 派生时漏掉的个股参照（105 张概念卡本来就有）
+            "representative_stocks": (c.get("representative_stocks") or [])[:6],
+            "representative_stocks_total": len(c.get("representative_stocks") or []),
+            "stock_gap_reason": c.get("stock_gap_reason"),
         })
+
+    # ── Top 6 精选：G1 硬门槛 + 证据强度排序，不加月份配额 ──
+    def _gate(c):
+        h = c.get("history") or {}
+        return (c.get("group") == "G1" and h.get("tier") == "STRICT"
+                and h.get("oos_status") == "REPORTED"
+                and (h.get("oos_hit_rate") or 0) >= 0.5
+                and (h.get("pit_eligible_years") or 0) >= 1
+                and c.get("time_position") != "INSUFFICIENT")
+
+    eligible = [c for c in cards if _gate(c)]
+    top_cards = sorted(eligible, key=_evidence_key)[:TOP_N]
+    top6 = [{"id": c["id"], "rank": i + 1, "rank_reason": _rank_reason(c)}
+            for i, c in enumerate(top_cards)]
+    fixed = {
+        "current_objects": [c["id"] for c in cards if c.get("kind") == "CURRENT_OBJECT"],
+        "special_hypotheses": [c["id"] for c in cards if c.get("kind") == "SPECIAL_HYPOTHESIS"],
+    }
 
     board = {
         "artifact": "frontier_board", "artifact_version": "0.1", "generated_at": now,
@@ -281,17 +366,24 @@ def build():
         "group_rule": {
             "order": GROUP_ORDER,
             "source": digest.get("group_rule"),
-            "meaning": "研究浏览优先顺序（产物已有分组，无分数）；不是收益排序、不是概率、不是买卖建议",
+            "meaning": "研究浏览优先顺序：分组 G1→G4，组内按证据强度；"
+                       "不是收益排序、不是概率、不是买卖建议",
             "attention_label_rule": ATTENTION_BY_GROUP,
-            "internal_wilson_score": "本产物不含任何启发式打分字段；那类字段只存在于评估视图，用于对照实验",
         },
+        "selection_rule": SELECTION_RULE,
+        "top6": top6,
+        "fixed_sections": fixed,
+        "hit_rate_definition": HIT_RATE_DEFINITION,
         "counts": {
             "items": len(items),
             "by_group": {g: sum(1 for x in items if x["group"] == g) for g in GROUP_ORDER},
             "by_track": {"STATISTICAL": len(items)},
             "with_mechanism_link": sum(1 for x in items if x["mechanism_reason"]),
+            "with_representative_stocks": sum(1 for x in items if x["representative_stocks_total"]),
             "mechanism_feed": len(feed),
             "calendar_entries": len(cal_entries),
+            "top6_eligible": len(eligible),
+            "top6_selected": len(top6),
         },
         "limits": [
             "★ 两轨**并列**，统计理由与机制理由分别标注各自 as_of；不做因果拼接，"
@@ -304,7 +396,12 @@ def build():
             "★ 窗口只有**月份级**，产物无精确起止交易日，不推算具体交易日。",
             "★ 机制轨的事件标题/日期/URL 是可核事实，但与板块的关联是序列匹配，不证明因果。",
             "★ 日历只含库内可核事实；未来政策日程、历史证券名称快照尚未接入，见 event_calendar.known_gaps。",
-            "★ 本产物不含任何启发式打分字段（评估视图的内部排序不进入默认页面）。",
+            "★ 「命中率」= 历史该板块×月份窗口跑赢沪深300 的年份占比，**不是**事件命中，"
+            "也不预测未来涨跌；页面一律显示为「历史跑赢 N/M 年」。",
+            "★ 个股参照来自**当前概念成分 + 基准日历对齐**（幸存者/成分变更偏差）；"
+            "行业板块无历史成分名单，如实标 NO_HISTORICAL_CONSTITUENTS，**不编造代表股**。",
+            "★ 本产物不含启发式打分字段（评估视图的内部打分不进入默认页面）；"
+            "wilson_ci_low 是公开统计区间下界，只作平局裁决与可核依据，不是分数。",
         ],
         "items": items,
         "mechanism_feed": feed,
@@ -339,7 +436,7 @@ def check():
         errs.append("零条目前瞻排程不得通过校验")
     orders = [x["order"] for x in items]
     if orders != list(range(len(items))):
-        errs.append("order 必须连续，且按 G1→G4 后组内原序")
+        errs.append("order 必须连续，且按 G1→G4 后组内证据强度")
     groups = [x["group"] for x in items]
     if groups != sorted(groups, key=lambda g: GROUP_ORDER.index(g) if g in GROUP_ORDER else 99):
         errs.append("默认顺序不是 G1→G4 研究浏览顺序")
@@ -379,6 +476,69 @@ def check():
             break
     else:
         errs.append("日历缺 PIT_NAME_SNAPSHOT_MISSING 缺口声明")
+
+    # ── v0.78 Top 6 / 个股 / 命中率口径不变量 ──
+    by_id = {x["id"]: x for x in items}
+    top = cur_board.get("top6") or []
+    if len(top) != TOP_N:
+        errs.append("Top 6 精选必须恰好 %d 条，实际 %d" % (TOP_N, len(top)))
+    if len({t["id"] for t in top}) != len(top):
+        errs.append("Top 6 出现重复 id")
+    for i, t in enumerate(top, 1):
+        x = by_id.get(t["id"])
+        if not x:
+            errs.append("Top 6 的 %s 不在 items 里" % t["id"])
+            continue
+        if t["rank"] != i:
+            errs.append("Top 6 rank 不连续：%s" % t["id"])
+        h = x.get("statistical_reason") or {}
+        ok = (x["group"] == "G1" and h.get("tier") == "STRICT"
+              and h.get("oos_status") == "REPORTED"
+              and (h.get("oos_hit_rate") or 0) >= 0.5
+              and (h.get("pit_eligible_years") or 0) >= 1
+              and x.get("time_position") != "INSUFFICIENT")
+        if not ok:
+            errs.append("Top 6 的 %s 不满足 G1 硬门槛" % t["id"])
+        if not t.get("rank_reason"):
+            errs.append("Top 6 的 %s 缺可核排序理由" % t["id"])
+    # 与按同一规则重算的前 6 完全一致
+    cards = _load(paths["digest"]).get("cards") or []
+    def _gate2(c):
+        h = c.get("history") or {}
+        return (c.get("group") == "G1" and h.get("tier") == "STRICT"
+                and h.get("oos_status") == "REPORTED"
+                and (h.get("oos_hit_rate") or 0) >= 0.5
+                and (h.get("pit_eligible_years") or 0) >= 1
+                and c.get("time_position") != "INSUFFICIENT")
+    want = [c["id"] for c in sorted((c for c in cards if _gate2(c)),
+                                    key=_evidence_key)[:TOP_N]]
+    if [t["id"] for t in top] != want:
+        errs.append("Top 6 与证据强度规则复算不一致（产物 %s vs 复算 %s）"
+                    % ([t["id"] for t in top], want))
+    fixed = cur_board.get("fixed_sections") or {}
+    for key in ("current_objects", "special_hypotheses"):
+        for cid in fixed.get(key) or []:
+            if cid not in by_id:
+                errs.append("固定区 %s 的 %s 不在 items 里" % (key, cid))
+        if set(fixed.get(key) or []) & {t["id"] for t in top}:
+            errs.append("固定区 %s 与 Top 6 不得重复" % key)
+    # 个股字段必须完整，且无编造
+    if cur_board["counts"]["with_representative_stocks"] == 0:
+        errs.append("个股参照字段丢失（v0.77 的缺陷）")
+    for x in items:
+        if "representative_stocks" not in x or "stock_gap_reason" not in x:
+            errs.append("%s 缺个股/缺股原因字段" % x["id"])
+            break
+        if x["representative_stocks_total"] == 0 and not x["stock_gap_reason"] \
+           and x["kind"] == "SEASONAL_WINDOW":
+            errs.append("%s 无个股却未写明缺股原因" % x["id"])
+        for s in x["representative_stocks"]:
+            if not s.get("series_id") or not s.get("source"):
+                errs.append("%s 个股记录缺可核字段" % x["id"])
+    if HIT_RATE_DEFINITION not in json.dumps(cur_board, ensure_ascii=False):
+        errs.append("缺命中率定义")
+    if cur_board.get("hit_rate_definition") != HIT_RATE_DEFINITION:
+        errs.append("hit_rate_definition 与常量不一致")
 
     if errs:
         for e in errs:

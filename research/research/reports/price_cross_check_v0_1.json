@@ -1,0 +1,101 @@
+{
+ "artifact": "price_cross_check",
+ "artifact_version": "0.1",
+ "generated_at": "2026-11-07T13:19:29+08:00",
+ "purpose": "用真实 A 股个股日线独立复算概念篮子，量化自建序列可复现性与上市日偏差",
+ "source": {
+  "db": "research/database/history_scan.db",
+  "price_types": {
+   "raw": 5994
+  },
+  "price_type_note": "扫描层全部为 raw（未复权）；本报告不改写口径"
+ },
+ "baskets": [
+  {
+   "series_id": "CPT_hwhs",
+   "status": "OK",
+   "member_count": 36,
+   "trading_days_with_members": 3359,
+   "overlap_days": 3108,
+   "pearson_all_vs_own": 1.0,
+   "median_abs_diff_pp": 0.0,
+   "max_abs_diff_pp": 0.0,
+   "listed_1y_filter": {
+    "overlap_days": 3106,
+    "pearson_filtered_vs_all": 0.9666,
+    "median_abs_diff_pp": 0.0662,
+    "note": "只保留该交易日之前已上市满 365 天的成员；与『全部当前成分』的差异即上市日偏差"
+   }
+  },
+  {
+   "series_id": "CPT_scp1",
+   "status": "OK",
+   "member_count": 9,
+   "trading_days_with_members": 3213,
+   "overlap_days": 3163,
+   "pearson_all_vs_own": 1.0,
+   "median_abs_diff_pp": 0.0,
+   "max_abs_diff_pp": 0.0,
+   "listed_1y_filter": {
+    "overlap_days": 2969,
+    "pearson_filtered_vs_all": 0.993547,
+    "median_abs_diff_pp": 0.0,
+    "note": "只保留该交易日之前已上市满 365 天的成员；与『全部当前成分』的差异即上市日偏差"
+   }
+  },
+  {
+   "series_id": "CPT_gqgn",
+   "status": "OK",
+   "member_count": 28,
+   "trading_days_with_members": 3249,
+   "overlap_days": 3147,
+   "pearson_all_vs_own": 1.0,
+   "median_abs_diff_pp": 0.0,
+   "max_abs_diff_pp": 0.0,
+   "listed_1y_filter": {
+    "overlap_days": 3005,
+    "pearson_filtered_vs_all": 0.967164,
+    "median_abs_diff_pp": 0.0,
+    "note": "只保留该交易日之前已上市满 365 天的成员；与『全部当前成分』的差异即上市日偏差"
+   }
+  },
+  {
+   "series_id": "CPT_xny",
+   "status": "OK",
+   "member_count": 71,
+   "trading_days_with_members": 3454,
+   "overlap_days": 3159,
+   "pearson_all_vs_own": 1.0,
+   "median_abs_diff_pp": 0.0,
+   "max_abs_diff_pp": 0.0,
+   "listed_1y_filter": {
+    "overlap_days": 3159,
+    "pearson_filtered_vs_all": 0.981684,
+    "median_abs_diff_pp": 0.0,
+    "note": "只保留该交易日之前已上市满 365 天的成员；与『全部当前成分』的差异即上市日偏差"
+   }
+  },
+  {
+   "series_id": "CPT_hwqc",
+   "status": "OK",
+   "member_count": 97,
+   "trading_days_with_members": 3514,
+   "overlap_days": 3061,
+   "pearson_all_vs_own": 1.0,
+   "median_abs_diff_pp": 0.0,
+   "max_abs_diff_pp": 0.0,
+   "listed_1y_filter": {
+    "overlap_days": 3061,
+    "pearson_filtered_vs_all": 0.980852,
+    "median_abs_diff_pp": 0.0588,
+    "note": "只保留该交易日之前已上市满 365 天的成员；与『全部当前成分』的差异即上市日偏差"
+   }
+  }
+ ],
+ "limits": [
+  "CPT_* 是『当前成分等权自建』，不是官方概念指数；成员名单为当前快照，存在幸存者/成分变更偏差。",
+  "个股日为 raw 未复权收盘；除权除息日会造成单日跳变，本报告只做序列一致性复核，不修正历史。",
+  "行业板块 BK_* 是同花顺编制指数，库内无历史成分名单 → 无法用个股复现，未纳入本次抽样。",
+  "本报告不改写任何既有产物或数据库，也不构成对历史收益结论的重新认定。"
+ ]
+}

@@ -46,6 +46,7 @@
 | v0.71 | **时点口径纠正**：三条门槛（语义可信 + 到分钟 + 日期同天）才用盘前/盘后；日期冲突分级（普通差异 / 档案冲突 / 迁移批量赋值）→ `UNCERTAIN` 不计算反应；低信号治理（`doc_class`）+ 主包三文件拆分 | `new_theme_radar_v0_6.json`（+`_view`/`_evidence`）· 主包 gzip 851 → 754.5 KB |
 | v0.72 | **拒绝原因穷尽**（`INTRADAY_AMBIGUOUS` 15 / `EVENT_DATE_NON_TRADING` 4，不再有「退回保守但无原因」）+ **事件索引可查询**（162 条可搜索/筛选）+ **证据加载四态** + 原文哈希双向对账 | `new_theme_radar_v0_7.json`（+`_view`/`_evidence`）· 测试 61 + 48 · 全量 1560 |
 | v0.77 | **工作台方向纠正**：默认主入口从「用户提问」改为 **push / 事前的「前瞻排程」** —— 系统主动推出 177 条 G1→G4 研究浏览顺序的前置观察窗口 + **统计/机制双轨理由**；统计轨季度 / 机制轨每周（使用者触发 AI 辅助）· 排序回默认页（仅分组顺序，无分数）+ 措辞放宽（允许「值得关注」，仍无买卖点）· 生肖作为 `A_CALENDAR` 行为假说族并入机制轨，谐音层标 UNVERIFIED、PIT 名称快照缺失如实披露 | `FrontierView.tsx` · `frontier_board_v0_1.json` / `event_calendar_v0_1.json` · `build_frontier_board_v0_1.py --check` · `docs/FRONTIER_CADENCE_v0_1.md` |
+| v0.78 | **精选 6 条 + 口径修正 + 真实行情校正**：默认页收口为 G1 硬门槛 / OOS 优先的 **6 条精选**（固定区 9 条不占名额，互斥 6+9+162=177）；命中率改「历史跑赢 N/M 年」并附定义；**个股参照补回**（105 张概念卡 / 63 张行业板块如实写无历史成分）；L0 真实 A 股个股复算 5 个自建篮子（相关 1.0 / 中位差 0.0 pp）→ 偏差在名单不在计算；L2 中证官方 000300 **并列接入**（重叠 3,009 日一致、发布日前 62 行标 BACKFILLED_NOT_PIT、授权 state UNCLEAR / 程序未核验），**并列不合并、不替换基准、不重算历史统计** | `build_frontier_board_v0_1.py` · `cross_check_price_v0_1.py` · `build_benchmark_parallel_v0_1.py` · `docs/PRICE_CALIBRATION_v0_1.md` |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前主线：真实使用与前瞻验证（A → D，按顺序）

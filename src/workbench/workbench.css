@@ -173,3 +173,27 @@ code { font-size: 12px; background: #f0f2f5; padding: 1px 4px; border-radius: 3p
   .fb-tracks, .fb-reasons { grid-template-columns: 1fr; }
   .fb-win { margin-left: 0; }
 }
+
+/* ── v0.78 精选 Top 6 / 固定区 / 个股参照 ── */
+.fb-rank { font-weight: 700; color: #fff; background: var(--wb-hi);
+  border-radius: 3px; padding: 1px 7px; font-size: 11px; }
+.fb-rankreason { margin: 7px 0 3px; font-size: 11.5px; color: var(--wb-ink2);
+  background: #f3f6fc; border-left: 2px solid var(--wb-accent); padding: 5px 9px; border-radius: 3px; }
+.fb-rule { margin: 8px 0 12px; font-size: 12px; color: var(--wb-ink2);
+  border: 1px solid var(--wb-line); border-radius: 6px; padding: 7px 11px; }
+.fb-rule summary { cursor: pointer; font-weight: 600; color: var(--wb-accent); }
+.fb-rule p { margin: 6px 0; line-height: 1.6; }
+.fb-rule ul { margin: 4px 0; padding-left: 20px; }
+.fb-def { color: var(--wb-accent); cursor: help; border-bottom: 1px dotted var(--wb-accent); }
+.fb-stocks, .fb-stockgap { margin: 8px 0; font-size: 11.5px; line-height: 1.65;
+  color: var(--wb-ink2); background: #fbfcfe; border: 1px solid var(--wb-line);
+  border-radius: 5px; padding: 6px 9px; }
+.fb-stockgap { border-left: 2px solid var(--wb-warn-line); }
+.fb-rest { margin-top: 14px; border-top: 1px dashed var(--wb-line); padding-top: 12px; }
+.fb-rest h3 { margin: 0 0 8px; font-size: 13.5px; }
+.fb-fixed-group { margin: 10px 0; }
+.fb-fixed-group h3 { margin: 0 0 6px; font-size: 12.5px; color: var(--wb-ink2); }
+.fb-fixed { list-style: none; padding: 0; margin: 0; }
+.fb-fixed li { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline;
+  padding: 6px 2px; border-bottom: 1px solid var(--wb-line); font-size: 12.5px; }
+.fb-sub2 { color: var(--wb-ink3); font-size: 11.5px; }
