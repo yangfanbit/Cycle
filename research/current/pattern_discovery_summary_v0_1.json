@@ -54,7 +54,7 @@
   "training_rule": "每年资格只用该年之前的年份；训练年数 ≥5；训练集满足 STRICT（中位≥1.5pp 且命中≥60%）**或** EXPLORATORY（中位≥0.8pp 且命中≥55%）→ 该年具资格（双层，预先声明，不随结果调整）"
  },
  "ledger": {
-  "as_of": "2026-11-05",
+  "as_of": "2026-11-06",
   "caliber": {
    "anchor": "窗口首个交易日收盘",
    "excess": "板块收益 − 沪深300 同区间收益（pp）",
@@ -95,8 +95,8 @@
    "settlement_pin": "结算固定在 market_as_of 重算：日历截断到该日，因此同一 market_as_of 永远得到同一结果"
   },
   "file": "candidate_ledger_v0_2.json",
-  "market_as_of": "2026-11-05",
-  "sha256": "10205ff857c9c61ff6a70425b71d00d310f555cd4d61fef6cf39029f948a1379",
+  "market_as_of": "2026-11-06",
+  "sha256": "804074a8939ac9adc33d794e7ce15beb3cb158bfe6cf406ad2030b3f0fd38a17",
   "summary": {
    "by_outcome_type": {
     "FORWARD_PENDING": 168,
@@ -788,16 +788,16 @@
    "earliest_formed_at": "2026-10-23",
    "file": "candidate_formation_log_v0_1.json",
    "instances": 220,
-   "sha256": "d28e2718a4e6e3babdc801f9f38eb6cc5cfecdc553a81f4191e03af07bd5f075"
+   "sha256": "2e8ca9ad5367548c8a0d15ebbd489e1c8ca084fe4719ec23209bd6ff6fbcbc0c"
   },
   "formation_run": {
-   "batch_id": "CF-2026-11-05-01",
-   "formed_at": "2026-11-05",
-   "new_instances": 16,
+   "batch_id": null,
+   "formed_at": "2026-11-06",
+   "new_instances": 0,
    "note": "新增 0 时不追加批次；重现事件（同一 instance_id 再次被选中）只记在本字段，不写入形成日志（形成日志只记「第一次形成」）",
-   "reappeared": 152,
+   "reappeared": 168,
    "skipped": null,
-   "source_as_of": "2026-11-05"
+   "source_as_of": "2026-11-06"
   },
   "instances": [
    {
@@ -8941,7 +8941,7 @@
     "window_year": 2026
    }
   ],
-  "market_as_of": "2026-11-05",
+  "market_as_of": "2026-11-06",
   "pending": {
    "10d": 168,
    "20d": 168,
