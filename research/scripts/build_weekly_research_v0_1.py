@@ -77,6 +77,12 @@ def _latest_radar_view():
     return sorted(files, key=ver)[-1]
 
 
+def _latest_round():
+    """最新研究轮次（文件名含日期，字典序即时间序）—— 不硬编码某一轮。"""
+    files = glob.glob(os.path.join(CURRENT, "research_round_*_v0_1.json"))
+    return sorted(files)[-1] if files else None
+
+
 def _load(path):
     with open(path, encoding="utf-8") as f:
         return json.load(f)
@@ -98,7 +104,9 @@ def _dump(path, obj):
 
 def build():
     radar_path = _latest_radar_view()
+    round_path = _latest_round()
     radar, cal, board, cc = (_load(p) for p in (radar_path, CAL, BOARD, CC))
+    rd = _load(round_path) if round_path else None
     feed_window = board["tracks"]["mechanism"]["feed_window"]
     lo, hi = feed_window[0], feed_window[1]
 
@@ -193,7 +201,25 @@ def build():
     ]
     windows.sort(key=lambda x: x["date"])
 
-    sources = [radar_path, CAL, BOARD, CC]
+    # ★ 本轮研究结论由 Research 侧轮次产物投影，前端不重算、不改写
+    round_view = None
+    if rd:
+        round_view = {
+            "round_id": rd.get("round_id"),
+            "as_of": rd.get("as_of"),
+            "source_file": os.path.basename(round_path),
+            "counts": rd.get("counts"),
+            "theme_reviews": [
+                {"candidate_id": r["candidate_id"], "display_name": r["display_name"],
+                 "verdict": r.get("verdict"), "new_evidence_count": r.get("new_evidence_count"),
+                 "next_research_question": r.get("next_research_question")}
+                for r in (rd.get("theme_reviews") or [])
+            ],
+            "new_watch_directions": rd.get("new_watch_directions") or [],
+            "limits": rd.get("limits") or [],
+        }
+
+    sources = [radar_path, CAL, BOARD, CC] + ([round_path] if round_path else [])
     n_matched = sum(len(d["matched_events"]) for d in directions)
     return {
         "artifact": "weekly_research",
@@ -224,6 +250,7 @@ def build():
         },
         "observation_windows": windows,
         "dropped_mappings": dropped,
+        "research_round": round_view,
         "limits": LIMITS,
         "source_sha256_16": {os.path.basename(p): _sha(p) for p in sources},
     }
@@ -258,6 +285,14 @@ def check():
         if d is None or v["matched_count"] != len(d["matched_events"]) \
            or v["no_match_reason"] != d["no_match_reason"]:
             errs.append("theme_index 与 directions 不一致：%s" % cid)
+    rr = doc.get("research_round")
+    if rr:
+        review_ids = {r["candidate_id"] for r in rr.get("theme_reviews") or []}
+        if review_ids != set(doc.get("theme_index") or {}):
+            errs.append("research_round.theme_reviews 未覆盖全部当前研究主题")
+        for w in rr.get("new_watch_directions") or []:
+            if not str((w.get("event") or {}).get("url") or "").startswith(("http://", "https://")):
+                errs.append("观察方向缺可核 URL：%s" % w.get("direction_id"))
     for d in doc["directions"]:
         if not d["matched_events"] and not d["no_match_reason"]:
             errs.append("未命中方向缺原因：%s" % d["direction"])

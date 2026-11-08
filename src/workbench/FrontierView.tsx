@@ -106,6 +106,22 @@ export interface WeeklyResearchEvent {
   observe_from: string | null; observation_status: string[];
   caveat: string;
 }
+export interface ResearchRoundView {
+  round_id: string; as_of: string; source_file: string;
+  counts: Record<string, unknown>;
+  theme_reviews: {
+    candidate_id: string; display_name: string; verdict: string;
+    new_evidence_count: number; next_research_question: string;
+  }[];
+  new_watch_directions: {
+    direction_id: string; title: string; reason: string;
+    board_series: string | null; board_name?: string | null;
+    board_mapping_status: string; board_mapping_reason: string;
+    event: { date: string; title: string; url: string };
+    time_position: string; window_hint: string; caveat: string;
+  }[];
+  limits: string[];
+}
 export interface WeeklyResearchDoc {
   artifact: string; artifact_version: string; purpose: string;
   cadence: string; track: string; as_of: string;
@@ -128,8 +144,15 @@ export interface WeeklyResearchDoc {
     date: string; label: string | null; candidate_id: string | null;
     fact_vs_assumption: string | null; source: string | null;
   }[];
+  research_round: ResearchRoundView | null;
   limits: string[];
 }
+
+const VERDICT_LABEL: Record<string, string> = {
+  MAINTAINED_WITH_NEW_LEAD: '维持 · 新线索',
+  MAINTAINED_ADJACENT_EVIDENCE: '维持 · 相邻证据',
+  MAINTAINED_COVERAGE_GAP: '维持 · 覆盖缺口',
+};
 
 const GROUP_LABEL: Record<string, string> = {
   G1: '优先观察 · 值得关注', G2: '结构参照 · 可斟酌的决策点',
@@ -263,7 +286,6 @@ function FrontierRow({ x, rank, rankReason, onRecord }: {
               时点资格 {String(h.pit_eligible_years ?? '—')} 年
             </p>
           ) : <p>本条为专项假设 / 当前对象，无板块月度统计。</p>}
-          <p className="fb-caveat">历史统计，未校准，不预测未来涨跌；只作行情附注，不参与研究增量验收。</p>
         </div>
         <div className="fb-reason" data-reason="MECHANISM">
           <span className="fb-reason-tag">机制理由（周更轨）</span>
@@ -277,7 +299,6 @@ function FrontierRow({ x, rank, rankReason, onRecord }: {
           ) : (
             <p>本期机制轨<strong>无可核关联</strong> —— 不给统计卡硬贴理由。</p>
           )}
-          <p className="fb-caveat">关联是序列匹配，不证明因果；机制轨整体见下方独立信息流。</p>
         </div>
       </div>
 
@@ -367,35 +388,19 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
           <span className="fb-track-tag">统计轨 · 季度更新</span>
           <strong>历史重复与样本外检验</strong>
           <p>as_of <code>{doc.tracks.statistical.as_of}</code> · 来源 <code>{doc.tracks.statistical.source}</code></p>
-          <p className="fb-track-note">{doc.tracks.statistical.note}</p>
         </div>
         <div className="fb-track fb-mech" data-track="MECHANISM">
           <span className="fb-track-tag">机制轨 · 每周更新</span>
           <strong>本周新增可核事件 + 已知日程</strong>
           <p>as_of <code>{doc.tracks.mechanism.as_of}</code> · 本期窗口{' '}
              <code>{doc.tracks.mechanism.feed_window[0]}</code> → <code>{doc.tracks.mechanism.feed_window[1]}</code></p>
-          <p className="fb-track-note">{doc.tracks.mechanism.note}</p>
         </div>
       </section>
-
-      <p className="fb-caliber" data-frontier-caliber="1">
-        <strong>系统主动推出的前置观察清单</strong>：默认按 <strong>G1→G4 研究浏览顺序</strong>
-        （产物已有分组，<strong>无分数、不是收益排序</strong>）排列；
-        <strong>「值得关注 / 可斟酌的决策点」= 前置观察窗口 / 研究起点</strong>，
-        <strong>不是买卖点</strong>，具体的买卖决策由你自行做出。
-        两轨理由分别标注、<strong>不做因果拼接</strong>；内部评估打分只在单独的评估视图。
-      </p>
 
       {/* ── 一、精选 Top 6（默认主入口） ── */}
       <section className="fb-section" data-frontier-section="top6">
         <h2>一、接下来值得关注 · 精选 {doc.top6.length} 条</h2>
-        <p className="fb-hint">
-          只显示按<strong>证据强度规则</strong>选出的 {doc.top6.length} 条：
-          {doc.selection_rule.hard_gate}。排序键：{doc.selection_rule.sort_keys.slice(0, 4).join(' → ')}。
-          <strong>不设同月配额</strong>（{doc.selection_rule.month_quota_note}）。
-          统计理由来自历史重复与样本外检验，<strong>未校准、不预测未来涨跌</strong>；
-          行情超额只作<strong>行情附注</strong>，不参与验收。窗口只有<strong>月份级</strong>。
-        </p>
+        <p className="fb-hint">精选 {doc.top6.length} 条 · <strong>不设同月配额</strong> · 规则与命中率定义见下方折叠</p>
         <details className="fb-rule" data-selection-rule="1">
           <summary>查看完整排序规则与命中率定义</summary>
           <p><strong>硬门槛</strong>：{doc.selection_rule.hard_gate}</p>
@@ -455,12 +460,7 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
       {/* ── 二、当前研究主题：本周最新研究 + 行情附注 + 专项假设 ── */}
       <section className="fb-section" data-frontier-section="fixed">
         <h2>二、当前研究主题 · 本周最新研究（{fixedIds.size} 条，固定区）</h2>
-        <p className="fb-hint">
-          这些对象是人工设定的研究对象，<strong>不与精选 6 条竞争名额</strong>，固定展示。
-          ★ 默认页只给<strong>本周新增可核证据 / 对应板块 / 前置观察窗口</strong>与行情附注；
-          静态的产业机制阶段声明<strong>不在这里展示</strong>（行情持续更新时它没有信息量），
-          已下沉到<strong>内部评估视图</strong>的追加式声明日志，供日后回测留痕。
-        </p>
+        <p className="fb-hint">固定区 · <strong>不与精选 6 条竞争名额</strong> · 本周研究 + 行情附注；阶段声明在评估视图</p>
         <details className="fb-rule" data-declaration-policy="1">
           <summary>阶段声明去哪了 / 口径与后续更新 SOP</summary>
           <p><strong>为什么移走</strong>：产业机制阶段是人工研究轮次的判定，一次声明停在某个日期；
@@ -484,10 +484,9 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
           <h3>本周最新研究 · <code>{weekly.feed_window[0]}</code> → <code>{weekly.feed_window[1]}</code>
             （机制轨 as_of {weekly.as_of}）</h3>
           <p className="fb-hint">
-            本周窗口内 {weekly.counts.events_in_window} 条可核文件，其中{' '}
-            <strong>{weekly.counts.linked_to_direction}</strong> 条与已映射研究方向精确关联
-            （{weekly.counts.directions_with_match}/{weekly.counts.directions} 个方向命中）。
-            只按<strong>标题关键词</strong>关联板块，正文不建关联；未命中的方向如实写原因。
+            本周 {weekly.counts.events_in_window} 条可核文件 ·{' '}
+            <strong>{weekly.counts.linked_to_direction}</strong> 条精确关联 ·{' '}
+            {weekly.counts.directions_with_match}/{weekly.counts.directions} 方向命中 · 未命中写原因
           </p>
           <ol className="fb-weekly-list">
             {weekly.directions.map((d) => (
@@ -511,8 +510,7 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
                           </span>
                         ))}
                         <span className="fb-caveat">
-                          观察起点 {e.observe_from ?? '—'} · 状态{' '}
-                          {e.observation_status.join(' / ') || '—'}；{e.caveat}
+                          观察起点 {e.observe_from ?? '—'} · {e.observation_status.join(' / ') || '—'}
                         </span>
                       </li>
                     ))}
@@ -539,8 +537,47 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
               </li>
             ))}
           </ul>
-          <p className="fb-caveat">「值得关注 / 前置观察」= 研究起点，不是买卖点；具体买卖决策由你自行做出。</p>
         </div>
+
+        {weekly.research_round && (
+          <div className="fb-round" data-research-round="1">
+            <h3>本轮研究 · <code>{weekly.research_round.round_id}</code>
+              （{weekly.research_round.as_of}）</h3>
+            <p className="fb-hint">
+              {weekly.research_round.theme_reviews.length} 主题复查 ·{' '}
+              {weekly.research_round.new_watch_directions.length} 条新增观察方向 ·{' '}
+              {String(weekly.research_round.counts.sources ?? '—')} 来源
+            </p>
+            <ul className="fb-watch">
+              {weekly.research_round.new_watch_directions.map((w) => (
+                <li key={w.direction_id} data-watch-direction={w.direction_id}>
+                  <div><strong>{w.title}</strong>
+                    <span className="fb-date">{w.time_position} · {w.window_hint}</span></div>
+                  <span className="fb-sub2">
+                    {w.board_series
+                      ? `${w.board_name ?? ''}（${w.board_series} · ${w.board_mapping_status}）`
+                      : <>未映射板块：<RichText text={w.board_mapping_reason} /></>}
+                  </span>
+                  <p className="fb-round-reason"><RichText text={w.reason} /></p>
+                  <a href={w.event.url} target="_blank" rel="noreferrer">{w.event.title}</a>
+                  <span className="fb-caveat"> {w.event.date} · <RichText text={w.caveat} /></span>
+                </li>
+              ))}
+            </ul>
+            <details className="fb-rule" data-theme-reviews="1">
+              <summary>逐主题复查（{weekly.research_round.theme_reviews.length}）</summary>
+              <ul>
+                {weekly.research_round.theme_reviews.map((r) => (
+                  <li key={r.candidate_id} data-theme-review={r.candidate_id}>
+                    <strong>{r.display_name}</strong> · {VERDICT_LABEL[r.verdict] ?? r.verdict} ·
+                    新证据 {r.new_evidence_count} · 下一步：
+                    <RichText text={r.next_research_question} />
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
+        )}
 
         <div className="fb-fixed-group">
           <h3>当前研究主题（{doc.theme_market.themes.length}）· 本周研究与行情附注</h3>
@@ -568,7 +605,6 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
                   5 日 <strong>{t.equal_weight['5']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
                   10 日 <strong>{t.equal_weight['10']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
                   20 日 <strong>{t.equal_weight['20']?.equal_weight_excess_pp ?? '—'} pp</strong>
-                  <span className="fb-caveat">（只是事实陈列，不参与研究判断、不预测未来）</span>
                 </p>
                 {t.signals.map((sg) => (
                   <p key={sg.id} className="fb-signal" data-signal={sg.id}>
@@ -747,9 +783,22 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
         <PriceCalibration />
       </section>
 
-      <p className="fb-foot" data-frontier-limits="1">
-        {doc.limits.map((t, i) => <span key={i}><RichText text={t} />{' '}</span>)}
-      </p>
+      {/* ★ 单人工具：所有口径 / 免责 / 治理说明去重后只在这一个默认收起的入口出现 */}
+      <details className="fb-caliber-details" data-caliber-details="1" data-frontier-limits="1">
+        <summary>口径与边界 · {doc.limits.length + 3} 条</summary>
+        <div className="fb-caliber-body">
+          {[
+            '★ **有效性 = 研究增量**（新线索率 / 耗时变化 / 事后可核性）；'
+            + '5/10/20 日板块超额只是**行情附注**，不参与验收。',
+            '★ 默认页按 **G1→G4 研究浏览顺序**（无分数、不是收益排序），启发式内部打分只在评估视图。',
+            '★ **「值得关注 / 可斟酌的决策点」= 前置观察窗口 / 研究起点，不是买卖点**，'
+            + '具体的买卖决策由你自行做出；两轨理由分别标注、**不做因果拼接**，as_of 各自独立。',
+          ].map((t, i) => <p key={i}><RichText text={t} /></p>)}
+          <ul>
+            {doc.limits.map((t, i) => <li key={i}><RichText text={t} /></li>)}
+          </ul>
+        </div>
+      </details>
     </main>
   );
 }

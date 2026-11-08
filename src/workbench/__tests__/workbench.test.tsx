@@ -475,7 +475,14 @@ describe('H · 本周最新研究与阶段声明日志', () => {
     expect(evalHtml).toContain('data-phase-declarations="1"');
     expect(declarations.append_only).toBe(true);
     expect(declarations.counts.with_settlement_fields).toBe(0);
-    expect(declarations.counts.declarations).toBe(6);
+    // ★ 由产物推导，不写死条数：新一轮研究追加后声明会变多
+    expect(declarations.counts.declarations).toBe(declarations.declarations.length);
+    expect(declarations.counts.review_rounds).toBeGreaterThanOrEqual(2);
+    const newer = declarations.declarations.filter((d) => d.declared_at > '2026-10-23');
+    expect(newer.length).toBeGreaterThan(0);
+    for (const d of newer) {
+      expect(d.supersedes, `${d.declaration_id} 应指向上一轮声明`).toBeTruthy();
+    }
     const ids = new Set(declarations.declarations.map((d) => d.declaration_id));
     expect(ids.size).toBe(declarations.declarations.length);
     for (const d of declarations.declarations) {
@@ -485,6 +492,41 @@ describe('H · 本周最新研究与阶段声明日志', () => {
       expect((d as unknown as Record<string, unknown>).superseded_by).toBeUndefined();
       expect(evalHtml).toContain(`data-declaration-id="${d.declaration_id}"`);
     }
+  });
+
+  it('★ 本轮研究结论与新增观察方向在默认页可查（主题真正在演变）', () => {
+    expect(html).toContain('data-research-round="1"');
+    expect(html).toContain('本轮研究');
+    const r = weekly.research_round!;
+    expect(r.theme_reviews.length).toBe(frontier.theme_market.themes.length);
+    for (const w of r.new_watch_directions) {
+      expect(html).toContain(`data-watch-direction="${w.direction_id}"`);
+      expect(w.event.url).toMatch(/^https?:\/\//);
+      // 未映射的板块必须写原因，不能补造
+      if (!w.board_series) expect(w.board_mapping_reason.length).toBeGreaterThan(5);
+    }
+    for (const t of r.theme_reviews) {
+      expect(html).toContain(`data-theme-review="${t.candidate_id}"`);
+      expect(t.next_research_question.length).toBeGreaterThan(5);
+    }
+  });
+
+  it('★★ v0.81 单人工具：口径说明集中一处、默认收起、默认可见区不重复', () => {
+    expect(html).toContain('data-caliber-details="1"');
+    expect(html).not.toContain('data-frontier-caliber="1"');
+    const outside = html.split('data-caliber-details="1"')[0];
+    for (const s of ['有效性 = 研究增量', 'G1→G4 研究浏览顺序', '不是买卖点',
+      '不做因果拼接', '无分数、不是收益排序']) {
+      expect(outside, `默认可见区不得重复「${s}」`).not.toContain(s);
+      expect(html, `口径仍须可查「${s}」`).toContain(s);
+    }
+    // 每张卡重复挂的 caveat 已移除（177 张卡 × 2 条 → 0）
+    expect(html).not.toContain('历史统计，未校准，不预测未来涨跌；只作行情附注');
+    expect(html).not.toContain('关联是序列匹配，不证明因果；机制轨整体见下方独立信息流');
+    // 评估视图的免责也收进折叠，但必要声明仍在
+    expect(evalHtml).toContain('wb-eval-caliber');
+    expect(evalHtml).toContain('不是未来概率');
+    expect(evalHtml).toContain('不参与有效性验收');
   });
 
   it('★★ 工作台无裸 Markdown 星号（研究侧字符串一律过 RichText）', () => {

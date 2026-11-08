@@ -22,7 +22,7 @@
   "rows": 1301,
   "with_oos_tests": 1247
  },
- "generated_at": "2026-11-06T00:07:48+08:00",
+ "generated_at": "2026-11-08T18:55:50+08:00",
  "rows": [
   {
    "board": "其他电子",
@@ -31251,8 +31251,8 @@
  ],
  "source": {
   "artifact_version": "0.8",
-  "as_of": "20261105",
-  "file": "research/current/pattern_discovery_v0_13.json",
-  "sha256_16": "3cd83ea540e7409f"
+  "as_of": "20261106",
+  "file": "research/current/pattern_discovery_v0_14.json",
+  "sha256_16": "880041d58b30a90d"
  }
 }

@@ -1,0 +1,222 @@
+{
+ "artifact": "research_round",
+ "round_id": "RR-2026-11-08-01",
+ "artifact_version": "0.1",
+ "generated_by": "ai-offline",
+ "as_of": "2026-11-08",
+ "cadence": "WEEKLY",
+ "purpose": "新一轮离线研究复查：逐主题重审 10-24 以来的可核产业证据，并推出值得提前观察的方向与理由；结论由证据驱动，不由行情涨跌推导",
+ "scope": {
+  "from": "2026-10-24",
+  "to": "2026-11-08",
+  "note": "复查窗口自上轮快照 2026-10-23 次日起；本轮只登记取得可核来源的事实，媒体转述单列且不单独承担结论",
+  "market_data_as_of": "2026-11-06",
+  "market_data_role": "只作行情附注与 PIT 锚点参考，不参与阶段判定"
+ },
+ "sources": [
+  {
+   "source_id": "S1",
+   "title": "第三批工业和信息化部重点培育中试平台初步名单公示",
+   "publisher": "工业和信息化部科技司",
+   "date": "2026-11-05",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/gzdt/art/2026/art_a8782a3554114d579470aa783145e530.html",
+   "tier": "T1_OFFICIAL_ORIGINAL",
+   "verification": "FETCHED_ORIGINAL_2026-11-08",
+   "facts": [
+    "页面发布时间 2026-11-05 16:48，来源科技司",
+    "公示期 2026-11-06 至 2026-11-12",
+    "附件为《第三批工业和信息化部重点培育中试平台初步名单》PDF",
+    "依据工信厅科函〔2025〕456 号，经自愿申报、地方推荐、形式审查、专家评审、征求意见形成初步名单"
+   ],
+   "not_claimed": "原文未给出入选平台数量与领域分类，媒体归纳的数字不写入本产物"
+  },
+  {
+   "source_id": "S2",
+   "title": "关于调整神经介入与神经外科植入材料等7类医保医用耗材分类与代码的通知",
+   "publisher": "国家医疗保障局",
+   "date": "2026-11-04",
+   "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23295.html",
+   "tier": "T1_OFFICIAL_ORIGINAL",
+   "verification": "IN_NEW_THEME_RADAR_V0_10",
+   "facts": [
+    "新题材雷达按标题关键词「医用耗材」精确关联 BK881144 医疗器械（relation=DIRECT）",
+    "v0_10 中事件后观察期 2 个交易日（2026-11-04 → 2026-11-06），仍不足 3 日，雷达状态 PENDING_MARKET"
+   ],
+   "not_claimed": "该通知属医疗器械监管 / 耗材分类口径，不是脑机接口产品注册或商业化证据"
+  },
+  {
+   "source_id": "S3",
+   "title": "中际旭创 / 新易盛 / 天孚通信 2026-11-06 午间公告（媒体转述）",
+   "publisher": "财经媒体转述上市公司公告",
+   "date": "2026-11-06",
+   "url": "https://cj.sina.com.cn/articles/view/9110257132/21f037dec07201yws2",
+   "tier": "T3_MEDIA_TRANSCRIPT",
+   "verification": "MEDIA_ONLY_NO_ANNOUNCEMENT_ORIGINAL",
+   "facts": [
+    "多家媒体转述：中际旭创称主要客户订单基本覆盖 2027 年全年、部分重点客户给出 2028 年需求指引",
+    "转述称 800G / 1.6T 订单需求仍将快速增长，NPO / XPO 等下一代光互连产品需求预计明年下半年逐步释放",
+    "转述称新易盛在手订单充足、1.6T 已进入持续放量阶段"
+   ],
+   "not_claimed": "★ 未取得公司公告原文（交易所 / 巨潮），按 source_policy Tier 3 只登记为线索，不单独承担结论、不参与定档"
+  },
+  {
+   "source_id": "S4",
+   "title": "工业和信息化部文件公示列表（列表页观察）",
+   "publisher": "工业和信息化部",
+   "date": "2026-11-04",
+   "url": "https://www.miit.gov.cn/zwgk/wjgs/index.html",
+   "tier": "T1_OFFICIAL_LIST_PAGE",
+   "verification": "LIST_PAGE_OBSERVED_NOT_OPENED",
+   "facts": [
+    "列表页同期可见《关于2026年国家先进制造业集群名单的公示》（2026-11-04）",
+    "列表页同期可见《关于2026年度智能制造系统解决方案揭榜挂帅项目的公示》（2026-11-03）"
+   ],
+   "not_claimed": "只登记列表页可见的标题与日期，未逐条打开原文核实内容，不据此建板块关联"
+  }
+ ],
+ "theme_reviews": [
+  {
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "display_name": "高速光互联（1.6T / NPO / CPO 结构迁移）",
+   "declared_phase": "EXPANSION",
+   "verdict": "MAINTAINED_WITH_NEW_LEAD",
+   "new_evidence_count": 1,
+   "basis": "本轮（2026-11-08）复查 10-24 以来的可核来源：S3 多家媒体转述 11-06 三家公司午间公告，称订单覆盖 2027 年、1.6T 持续放量、NPO/XPO 明年下半年释放，方向上延续 10-23 的产业层证据；但 ★ 未取得公司公告原文，按 source_policy Tier 3 只登记为线索，不单独承担结论。故阶段维持 EXPANSION，不因媒体转述升 PEAK，也不因 10-23→11-06 的板块回调降档（市场层仍不参与定档）。",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "next_research_question": "取得三家公司 11-06 公告原文，核对订单覆盖口径、1.6T 放量与 NPO/XPO 时间表述是否为公司自述；再判断是否需要新开一轮人工改档"
+  },
+  {
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "display_name": "脑机接口医疗器械（标准—分类—临床—商业化）",
+   "declared_phase": "THEME_FORMING",
+   "verdict": "MAINTAINED_ADJACENT_EVIDENCE",
+   "new_evidence_count": 1,
+   "basis": "本轮复查发现 S2（2026-11-04 医保局 7 类神经介入 / 神经外科植入材料分类与代码调整），属医疗器械监管链条的相邻方向证据；沿用 10-23 口径，★ 相邻产品 / 耗材分类调整不能作为脑机接口分类下已有注册证或规模商业化的证据。装机量、手术量、收入口径仍无公开数据 → 阶段维持 THEME_FORMING。",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "next_research_question": "耗材分类与代码调整后，神经介入 / 神经外科植入类的注册证与定价口径是否出现可核更新"
+  },
+  {
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "display_name": "具身智能与人形机器人（量产—交付—在岗）",
+   "declared_phase": "EXPANSION",
+   "verdict": "MAINTAINED_COVERAGE_GAP",
+   "new_evidence_count": 0,
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据（出货 / 交付 / 在岗口径）。雷达采集方向已自述机器人相关司局列表页为 JS 外壳或 404，属采集覆盖缺口，不是「已核实没有新事实」。10-23 记录的出货 2.5 万台与在岗约 300 台差距仍未被可核数据消除 → 阶段维持 EXPANSION，不升 PEAK。",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "next_research_question": "寻找可核的在岗规模 / 订单转化口径，以检验「出货放量 ≠ 规模作业」这一未闭环判断"
+  },
+  {
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "display_name": "算电协同 / 算力基础设施",
+   "declared_phase": "BROAD_CONFIRMATION",
+   "verdict": "MAINTAINED_COVERAGE_GAP",
+   "new_evidence_count": 0,
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据；S1 中试平台名单与 S4 先进制造业集群公示属跨领域政策工具，未取得与算电协同直接对应的原文依据，不硬贴关联。阶段维持 BROAD_CONFIRMATION。",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "next_research_question": "中试平台 / 先进制造业集群名单原文中是否列出算力基础设施相关平台，可否建立可核关联"
+  },
+  {
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "display_name": "海上风电与风电设备",
+   "declared_phase": "THEME_FORMING",
+   "verdict": "MAINTAINED_COVERAGE_GAP",
+   "new_evidence_count": 0,
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据（项目核准 / 招标 / 装机口径）。阶段维持 THEME_FORMING。",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "next_research_question": "下一轮补入能源局项目核准 / 招标原文，检验是否有可核的订单侧变化"
+  },
+  {
+   "candidate_id": "CC-2026-AUTO-SMARTDRIVE",
+   "display_name": "智能驾驶与汽车产业",
+   "declared_phase": "THEME_FORMING",
+   "verdict": "MAINTAINED_COVERAGE_GAP",
+   "new_evidence_count": 0,
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据；S4 列表页可见《道路机动车辆生产企业及产品公告》相关条目，但未打开原文核实，不据此建关联。阶段维持 THEME_FORMING。",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "next_research_question": "核对车辆生产企业及产品公告原文中 L3 / 智能驾驶相关准入表述"
+  }
+ ],
+ "new_watch_directions": [
+  {
+   "direction_id": "WD-2026-11-08-01",
+   "title": "制造业中试平台体系化布局（第三批名单公示）",
+   "reason": "S1 官方原文已核实：工信部科技司 2026-11-05 公示第三批重点培育中试平台初步名单，公示期 11-06～11-12。中试平台处在产业化验证环节，名单落地后的设备 / 检测 / 材料环节值得提前观察；这是一个有明确时间窗口的研究起点，不是行情判断。",
+   "board_series": null,
+   "board_mapping_status": "NOT_MAPPED",
+   "board_mapping_reason": "公示原文只给名单附件，未取得逐平台名单与对应上市公司；★ 不做关键词硬贴板块，宁缺不编",
+   "event": {
+    "date": "2026-11-05",
+    "title": "第三批工业和信息化部重点培育中试平台初步名单公示",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/gzdt/art/2026/art_a8782a3554114d579470aa783145e530.html"
+   },
+   "time_position": "PRE_OBSERVATION",
+   "window_hint": "公示期 2026-11-06 → 2026-11-12（观察起点，不是行情启动日）",
+   "caveat": "初步名单公示 ≠ 政策生效、≠ 订单、≠ 板块成分；未取得名单明细前不建板块关联"
+  },
+  {
+   "direction_id": "WD-2026-11-08-02",
+   "title": "神经介入 / 神经外科植入材料分类与代码调整",
+   "reason": "S2 已在新题材雷达按标题关键词精确关联 BK881144 医疗器械（relation=DIRECT）；7 类耗材分类与代码调整属医疗器械监管链条延续，值得观察后续注册证与定价口径是否跟进。",
+   "board_series": "BK881144",
+   "board_name": "医疗器械",
+   "board_mapping_status": "EXACT_TITLE_KEYWORD_MATCH",
+   "board_mapping_reason": "来自 new_theme_radar theme_links（关键词「医用耗材」命中标题），不是正文匹配、不是模糊关联",
+   "event": {
+    "date": "2026-11-04",
+    "title": "关于调整神经介入与神经外科植入材料等7类医保医用耗材分类与代码的通知",
+    "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23295.html"
+   },
+   "time_position": "IN_WINDOW",
+   "window_hint": "事件后观察期 2 个交易日（< 3），雷达状态 PENDING_MARKET，未形成行情结论",
+   "caveat": "只作市场观察与后续研究起点；分类调整属监管口径，不证明因果、不构成产业催化的完成态"
+  }
+ ],
+ "counts": {
+  "sources": 4,
+  "theme_reviews": 6,
+  "verdicts": {
+   "MAINTAINED_WITH_NEW_LEAD": 1,
+   "MAINTAINED_ADJACENT_EVIDENCE": 1,
+   "MAINTAINED_COVERAGE_GAP": 4
+  },
+  "new_watch_directions": 2,
+  "tier3_media_only": 1
+ },
+ "limits": [
+  "★ 本轮结论由**可核产业证据**驱动，不由行情涨跌推导；市场层不参与定档。",
+  "★ Tier 3 媒体转述只登记为线索，不单独承担结论；未取得公告原文前不升档、不写进统计分母。",
+  "★ 「采集范围未发现」≠「已核实没有」；逐条写明覆盖缺口与下一步，不补造证据。",
+  "★ 新增观察方向是**研究起点 / 前置观察窗口**，不是买卖点，也不构成具体标的名单。",
+  "★ 初步名单公示、分类调整通知都不等于政策生效或订单落地；不据此推断收益。",
+  "★ 本产物不覆盖既有阶段判定；声明按追加式日志另立一条，旧声明逐字保留。"
+ ],
+ "referenced_artifacts": [
+  "new_theme_radar_v0_10_view.json",
+  "current_candidates.json"
+ ],
+ "checked_by": "research/scripts/check_research_round_v0_1.py --check"
+}

@@ -1,16 +1,16 @@
 {
  "artifact": "weekly_research",
  "artifact_version": "0.1",
- "as_of": "2026-11-05",
+ "as_of": "2026-11-06",
  "cadence": "WEEKLY",
  "counts": {
   "directions": 5,
   "directions_with_match": 1,
   "dropped_mappings": 0,
-  "events_in_window": 18,
+  "events_in_window": 22,
   "linked_to_direction": 1,
   "observation_windows": 3,
-  "other_verifiable_documents": 17
+  "other_verifiable_documents": 21
  },
  "directions": [
   {
@@ -19,7 +19,7 @@
    ],
    "direction": "具身智能与人形机器人",
    "matched_events": [],
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；机器人概念篮子；★ 当前采集范围内**未发现**命中「机器人 / 人形机器人」关键词的事件（工信部装备工业司栏目 404、机器人相关司局为 JS 外壳）→ 属采集覆盖缺口",
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；机器人概念篮子；★ 当前采集范围内**未发现**命中「机器人 / 人形机器人」关键词的事件（工信部装备工业司栏目 404、机器人相关司局为 JS 外壳）→ 属采集覆盖缺口",
    "scope_note": "机器人概念篮子；★ 当前采集范围内**未发现**命中「机器人 / 人形机器人」关键词的事件（工信部装备工业司栏目 404、机器人相关司局为 JS 外壳）→ 属采集覆盖缺口",
    "series": [
     "CPT_zjqrgn"
@@ -70,7 +70,7 @@
    ],
    "direction": "智能驾驶与汽车产业",
    "matched_events": [],
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；整车（DIRECT）与汽车电子（PROXY）分开；智驾相关多为汽车电子代理",
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；整车（DIRECT）与汽车电子（PROXY）分开；智驾相关多为汽车电子代理",
    "scope_note": "整车（DIRECT）与汽车电子（PROXY）分开；智驾相关多为汽车电子代理",
    "series": [
     "BK881125",
@@ -83,7 +83,7 @@
    ],
    "direction": "海上风电与风电设备",
    "matched_events": [],
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；覆盖风电设备环节；具体主题可能是「风电」或「风光装机统计」，**不都是海上风电** —— 看事件上的「主题：」标签",
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；覆盖风电设备环节；具体主题可能是「风电」或「风光装机统计」，**不都是海上风电** —— 看事件上的「主题：」标签",
    "scope_note": "覆盖风电设备环节；具体主题可能是「风电」或「风光装机统计」，**不都是海上风电** —— 看事件上的「主题：」标签",
    "series": [
     "BK881280",
@@ -97,7 +97,7 @@
    ],
    "direction": "算电协同 / 算力与光互联",
    "matched_events": [],
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，具体主题见「主题：」标签",
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，具体主题见「主题：」标签",
    "scope_note": "算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，具体主题见「主题：」标签",
    "series": [
     "BK881162",
@@ -107,8 +107,8 @@
  ],
  "dropped_mappings": [],
  "feed_window": [
-  "2026-10-29",
-  "2026-11-05"
+  "2026-10-30",
+  "2026-11-06"
  ],
  "feed_window_source": "frontier_board_v0_1.json:tracks.mechanism.feed_window",
  "limits": [
@@ -144,15 +144,117 @@
  ],
  "other_verifiable_documents": {
   "by_nature": {
-   "BACKGROUND": 5,
+   "BACKGROUND": 7,
    "NEW_CATALYST": 9,
-   "ROUTINE_RECURRING": 1,
-   "UNCLASSIFIED": 2
+   "UNCLASSIFIED": 5
   },
-  "count": 17,
+  "count": 21,
   "note": "本周窗口内未与已映射研究方向建立关联的可核文件；标题 / 日期 / URL 见「近 7 日可核事件」区，本产物不重复列一遍。"
  },
  "purpose": "本周新增可核证据 + 对应板块 + 前置观察窗口；替代默认页里的静态阶段声明",
+ "research_round": {
+  "as_of": "2026-11-08",
+  "counts": {
+   "new_watch_directions": 2,
+   "sources": 4,
+   "theme_reviews": 6,
+   "tier3_media_only": 1,
+   "verdicts": {
+    "MAINTAINED_ADJACENT_EVIDENCE": 1,
+    "MAINTAINED_COVERAGE_GAP": 4,
+    "MAINTAINED_WITH_NEW_LEAD": 1
+   }
+  },
+  "limits": [
+   "★ 本轮结论由**可核产业证据**驱动，不由行情涨跌推导；市场层不参与定档。",
+   "★ Tier 3 媒体转述只登记为线索，不单独承担结论；未取得公告原文前不升档、不写进统计分母。",
+   "★ 「采集范围未发现」≠「已核实没有」；逐条写明覆盖缺口与下一步，不补造证据。",
+   "★ 新增观察方向是**研究起点 / 前置观察窗口**，不是买卖点，也不构成具体标的名单。",
+   "★ 初步名单公示、分类调整通知都不等于政策生效或订单落地；不据此推断收益。",
+   "★ 本产物不覆盖既有阶段判定；声明按追加式日志另立一条，旧声明逐字保留。"
+  ],
+  "new_watch_directions": [
+   {
+    "board_mapping_reason": "公示原文只给名单附件，未取得逐平台名单与对应上市公司；★ 不做关键词硬贴板块，宁缺不编",
+    "board_mapping_status": "NOT_MAPPED",
+    "board_series": null,
+    "caveat": "初步名单公示 ≠ 政策生效、≠ 订单、≠ 板块成分；未取得名单明细前不建板块关联",
+    "direction_id": "WD-2026-11-08-01",
+    "event": {
+     "date": "2026-11-05",
+     "title": "第三批工业和信息化部重点培育中试平台初步名单公示",
+     "url": "https://www.miit.gov.cn/jgsj/kjs/gzdt/art/2026/art_a8782a3554114d579470aa783145e530.html"
+    },
+    "reason": "S1 官方原文已核实：工信部科技司 2026-11-05 公示第三批重点培育中试平台初步名单，公示期 11-06～11-12。中试平台处在产业化验证环节，名单落地后的设备 / 检测 / 材料环节值得提前观察；这是一个有明确时间窗口的研究起点，不是行情判断。",
+    "time_position": "PRE_OBSERVATION",
+    "title": "制造业中试平台体系化布局（第三批名单公示）",
+    "window_hint": "公示期 2026-11-06 → 2026-11-12（观察起点，不是行情启动日）"
+   },
+   {
+    "board_mapping_reason": "来自 new_theme_radar theme_links（关键词「医用耗材」命中标题），不是正文匹配、不是模糊关联",
+    "board_mapping_status": "EXACT_TITLE_KEYWORD_MATCH",
+    "board_name": "医疗器械",
+    "board_series": "BK881144",
+    "caveat": "只作市场观察与后续研究起点；分类调整属监管口径，不证明因果、不构成产业催化的完成态",
+    "direction_id": "WD-2026-11-08-02",
+    "event": {
+     "date": "2026-11-04",
+     "title": "关于调整神经介入与神经外科植入材料等7类医保医用耗材分类与代码的通知",
+     "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23295.html"
+    },
+    "reason": "S2 已在新题材雷达按标题关键词精确关联 BK881144 医疗器械（relation=DIRECT）；7 类耗材分类与代码调整属医疗器械监管链条延续，值得观察后续注册证与定价口径是否跟进。",
+    "time_position": "IN_WINDOW",
+    "title": "神经介入 / 神经外科植入材料分类与代码调整",
+    "window_hint": "事件后观察期 2 个交易日（< 3），雷达状态 PENDING_MARKET，未形成行情结论"
+   }
+  ],
+  "round_id": "RR-2026-11-08-01",
+  "source_file": "research_round_2026-11-08_v0_1.json",
+  "theme_reviews": [
+   {
+    "candidate_id": "CC-2026-OPTICAL-LINK",
+    "display_name": "高速光互联（1.6T / NPO / CPO 结构迁移）",
+    "new_evidence_count": 1,
+    "next_research_question": "取得三家公司 11-06 公告原文，核对订单覆盖口径、1.6T 放量与 NPO/XPO 时间表述是否为公司自述；再判断是否需要新开一轮人工改档",
+    "verdict": "MAINTAINED_WITH_NEW_LEAD"
+   },
+   {
+    "candidate_id": "CC-2026-BCI-MEDTECH",
+    "display_name": "脑机接口医疗器械（标准—分类—临床—商业化）",
+    "new_evidence_count": 1,
+    "next_research_question": "耗材分类与代码调整后，神经介入 / 神经外科植入类的注册证与定价口径是否出现可核更新",
+    "verdict": "MAINTAINED_ADJACENT_EVIDENCE"
+   },
+   {
+    "candidate_id": "CC-2026-EMBODIED-AI",
+    "display_name": "具身智能与人形机器人（量产—交付—在岗）",
+    "new_evidence_count": 0,
+    "next_research_question": "寻找可核的在岗规模 / 订单转化口径，以检验「出货放量 ≠ 规模作业」这一未闭环判断",
+    "verdict": "MAINTAINED_COVERAGE_GAP"
+   },
+   {
+    "candidate_id": "CC-2026-COMPUTE-POWER",
+    "display_name": "算电协同 / 算力基础设施",
+    "new_evidence_count": 0,
+    "next_research_question": "中试平台 / 先进制造业集群名单原文中是否列出算力基础设施相关平台，可否建立可核关联",
+    "verdict": "MAINTAINED_COVERAGE_GAP"
+   },
+   {
+    "candidate_id": "CC-2026-OFFSHORE-WIND",
+    "display_name": "海上风电与风电设备",
+    "new_evidence_count": 0,
+    "next_research_question": "下一轮补入能源局项目核准 / 招标原文，检验是否有可核的订单侧变化",
+    "verdict": "MAINTAINED_COVERAGE_GAP"
+   },
+   {
+    "candidate_id": "CC-2026-AUTO-SMARTDRIVE",
+    "display_name": "智能驾驶与汽车产业",
+    "new_evidence_count": 0,
+    "next_research_question": "核对车辆生产企业及产品公告原文中 L3 / 智能驾驶相关准入表述",
+    "verdict": "MAINTAINED_COVERAGE_GAP"
+   }
+  ]
+ },
  "rule": {
   "direction_role": "research_directions 是上层分组（UPPER_GROUPING_ONLY），不等于具体细分主题；具体主题看事件上的 theme_tags 与 theme_links.rationale",
   "matching": "只按事件标题命中的关键词 → theme_links.board_series 精确关联；正文不建关联、不做模糊匹配、不按方向名反推板块",
@@ -162,9 +264,10 @@
  },
  "source_sha256_16": {
   "current_candidates.json": "0a139533e00c99d3",
-  "event_calendar_v0_1.json": "88acdbb46b404ffd",
-  "frontier_board_v0_1.json": "9f3054d555bbfe18",
-  "new_theme_radar_v0_9_view.json": "8b31455879e2ac8c"
+  "event_calendar_v0_1.json": "89caab1d5b917e46",
+  "frontier_board_v0_1.json": "942090143f9b0829",
+  "new_theme_radar_v0_10_view.json": "682b879e7d6cec9e",
+  "research_round_2026-11-08_v0_1.json": "2ce6a0bf75be6ec9"
  },
  "theme_index": {
   "CC-2026-AUTO-SMARTDRIVE": {
@@ -173,7 +276,7 @@
    ],
    "direction": "智能驾驶与汽车产业",
    "matched_count": 0,
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；整车（DIRECT）与汽车电子（PROXY）分开；智驾相关多为汽车电子代理"
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；整车（DIRECT）与汽车电子（PROXY）分开；智驾相关多为汽车电子代理"
   },
   "CC-2026-BCI-MEDTECH": {
    "candidate_ids_in_direction": [
@@ -190,7 +293,7 @@
    ],
    "direction": "算电协同 / 算力与光互联",
    "matched_count": 0,
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，具体主题见「主题：」标签"
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，具体主题见「主题：」标签"
   },
   "CC-2026-EMBODIED-AI": {
    "candidate_ids_in_direction": [
@@ -198,7 +301,7 @@
    ],
    "direction": "具身智能与人形机器人",
    "matched_count": 0,
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；机器人概念篮子；★ 当前采集范围内**未发现**命中「机器人 / 人形机器人」关键词的事件（工信部装备工业司栏目 404、机器人相关司局为 JS 外壳）→ 属采集覆盖缺口"
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；机器人概念篮子；★ 当前采集范围内**未发现**命中「机器人 / 人形机器人」关键词的事件（工信部装备工业司栏目 404、机器人相关司局为 JS 外壳）→ 属采集覆盖缺口"
   },
   "CC-2026-OFFSHORE-WIND": {
    "candidate_ids_in_direction": [
@@ -206,7 +309,7 @@
    ],
    "direction": "海上风电与风电设备",
    "matched_count": 0,
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；覆盖风电设备环节；具体主题可能是「风电」或「风光装机统计」，**不都是海上风电** —— 看事件上的「主题：」标签"
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；覆盖风电设备环节；具体主题可能是「风电」或「风光装机统计」，**不都是海上风电** —— 看事件上的「主题：」标签"
   },
   "CC-2026-OPTICAL-LINK": {
    "candidate_ids_in_direction": [
@@ -215,7 +318,7 @@
    ],
    "direction": "算电协同 / 算力与光互联",
    "matched_count": 0,
-   "no_match_reason": "本周窗口（2026-10-29 → 2026-11-05）未发现标题关键词命中该方向的可核文件；算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，具体主题见「主题：」标签"
+   "no_match_reason": "本周窗口（2026-10-30 → 2026-11-06）未发现标题关键词命中该方向的可核文件；算力走通信服务（PROXY）、光互联走通信设备（DIRECT）；两条序列是**不同环节**，具体主题见「主题：」标签"
   }
  },
  "track": "MECHANISM"

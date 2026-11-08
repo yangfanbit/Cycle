@@ -136,10 +136,7 @@ export function Workbench() {
       <header className="wb-head">
         <div>
           <h1>ThreeC 研究工作台</h1>
-          <p className="wb-sub">
-            系统先推出「接下来值得关注」的前置观察窗口 + 双轨理由；点进去才是证据与来源。
-            用来检验「工具是否改善了研究」，不是看板块后来涨没涨。
-          </p>
+          <p className="wb-sub">前置观察窗口 · 双轨理由 · 证据可核</p>
         </div>
         <nav className="wb-nav">
           <button type="button" className={view === 'frontier' ? 'is-active' : ''}
@@ -153,14 +150,9 @@ export function Workbench() {
       </header>
 
       <p className="wb-caliber" data-caliber="1">
-        <strong>有效性 = 研究增量</strong>（新线索率 / 耗时变化 / 事后可核性）。
-        5/10/20 日板块超额只是<strong>行情附注</strong>，不参与验收。
-        默认页按 <strong>G1→G4 研究浏览顺序</strong>（产物已有分组，无分数、不是收益排序）；
-        启发式内部打分只在评估视图。<strong>「值得关注」= 前置观察窗口 / 研究起点，不是买卖点</strong>，
-        具体的买卖决策由你自行做出。
-        统计轨 as_of <code>{frontierDoc.tracks.statistical.as_of}</code>（季度） ·
-        机制轨 as_of <code>{frontierDoc.tracks.mechanism.as_of}</code>（周更） ·
-        检索索引 {doc.counts.total} 条。
+        统计轨 <code>{frontierDoc.tracks.statistical.as_of}</code>（季度） ·
+        机制轨 <code>{frontierDoc.tracks.mechanism.as_of}</code>（周更） ·
+        检索索引 {doc.counts.total} 条
       </p>
 
       {view === 'eval' ? (

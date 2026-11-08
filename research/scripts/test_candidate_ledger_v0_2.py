@@ -287,6 +287,10 @@ class TestLedgerV02(unittest.TestCase):
             cf_p = t.snap("%s.json" % t.log()["batches"][0]["batch_id"])
             before = {k: sha(p) for k, p in
                       (("log", log_p), ("latest", out_p), ("CL", cl_p), ("CF", cf_p))}
+            # ★★ 旧行为快照修正：批次 / 实例数必须由数据推导，不能写死「1 批 / 205 例」。
+            #    行情推进后形成日志会累积批次，写死数字会让 T12 误报。
+            batches_before = len(t.log()["batches"])
+            candidates_before = t.ledger()["summary"]["candidates"]
 
             # 对照 1：没有上游改动时，同一条路径应当成功且**零修改**（幂等）
             buf0 = io.StringIO()
@@ -342,12 +346,12 @@ class TestLedgerV02(unittest.TestCase):
             with contextlib.redirect_stdout(buf3):
                 rc3 = L.main(["--write"])
             self.assertEqual(rc3, 0, "移开两个冲突源后应成功：%s" % buf3.getvalue()[-800:])
-            self.assertEqual(len(t.log()["batches"]), 2,
+            self.assertEqual(len(t.log()["batches"]), batches_before + 1,
                              "该场景本应新增 1 个批次 —— 否则 T12 是空断言")
             self.assertTrue(os.path.exists(t.snap("%s.json" % _expect_batch)),
                             "成功路径应当写出新批次的形成快照（%s）" % _expect_batch)
             self.assertNotEqual(sha(log_p), before["log"], "成功路径应当追加了形成日志")
-            self.assertEqual(t.ledger()["summary"]["candidates"], 205,
+            self.assertEqual(t.ledger()["summary"]["candidates"], candidates_before + 1,
                              "成功路径的账本应当包含新实例")
 
 

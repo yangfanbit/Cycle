@@ -31,19 +31,15 @@ export function EvalView({ doc, declarations }: {
     <section className="wb-eval" data-eval-view="1">
       <div className="wb-warn" data-eval-warning="1">
         <strong>内部评估视图 · INTERNAL_EVAL_ONLY</strong>
-        <p>
-          这里的排序<strong>只用于生成对照实验的材料</strong>，不出现在默认页面，
-          <strong>不参与有效性验收</strong>，也<strong>不是</strong>推荐、买卖信号或选股清单。
-        </p>
-        <p>
-          <code>priority_score = Wilson 95% 区间下界</code>（输入为历史 <code>hit_rate</code> 与{' '}
-          <code>n_years</code>）：小样本与高不确定性自动降权。
-          <strong>不是未来概率、不是胜率、未校准</strong>；历史统计不能外推为未来表现。
-        </p>
-        <p>
-          有效性按 <strong>研究增量</strong> 判定（新线索率 / 耗时变化 / 事后可核性），
-          见 <code>docs/EVALUATION_FRAMEWORK_v0_1.md</code>。5/10/20 日板块超额已降级为行情附注。
-        </p>
+        <p><code>priority_score = Wilson 95% 区间下界</code> ·{' '}
+          <strong>不是未来概率、未校准</strong> · 不参与有效性验收</p>
+        <details className="wb-eval-caliber">
+          <summary>完整口径</summary>
+          <p>这里的排序<strong>只用于生成对照实验的材料</strong>，不出现在默认页面，
+            <strong>不参与有效性验收</strong>，也<strong>不是</strong>推荐、买卖信号或选股清单。</p>
+          <p>有效性按 <strong>研究增量</strong> 判定（新线索率 / 耗时变化 / 事后可核性），
+            见 <code>docs/EVALUATION_FRAMEWORK_v0_1.md</code>。5/10/20 日板块超额已降级为行情附注。</p>
+        </details>
       </div>
 
       <label className="wb-field">
@@ -91,17 +87,10 @@ export function EvalView({ doc, declarations }: {
         <section className="wb-decl" data-phase-declarations="1">
           <h2>产业机制阶段声明时间线 · 事后回测留痕</h2>
           <p className="wb-hint">
-            阶段声明是<strong>产业机制层的人工判定</strong>，不是行情状态。默认页不展示它
-            （行情持续更新时静态旧声明没有信息量）；这里按声明时间排列，每条带
-            <strong>当时可知信息的上界</strong>（PIT 锚点 = 声明日）。结算不写进声明，
-            事后核对另立一轮；日志<strong>只增不改</strong>，行情推进不改写历史声明。
-          </p>
-          <p className="wb-hint">
-            来源 <code>{declarations.source.file}</code> · sha256 前 16 位{' '}
-            <code>{declarations.source.sha256_16}</code> · as_of {declarations.as_of} ·{' '}
-            {declarations.counts.declarations} 条声明 /{' '}
-            {declarations.counts.review_rounds} 个研究轮次。
-            同轮同日的多主题声明不算独立观察，事后核对须先声明窗口与分母。
+            产业机制层人工声明 · PIT 锚点 = 声明日 · 只增不改、结算分离 ·{' '}
+            <code>{declarations.source.file}</code> · as_of {declarations.as_of} ·{' '}
+            {declarations.counts.declarations} 条 / {declarations.counts.review_rounds} 轮
+            （同轮同日不算独立观察）
           </p>
           <ol className="wb-decl-list">
             {declarations.declarations.map((d) => (

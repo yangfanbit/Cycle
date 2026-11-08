@@ -1,6 +1,6 @@
 {
  "artifact": "pattern_discovery_summary",
- "as_of": "20261105",
+ "as_of": "20261106",
  "counts": {
   "current_windows": 168,
   "exploratory": 385,
@@ -11,26 +11,26 @@
  "coverage_detail": {
   "concept_baskets": {
    "first_date": "20120829",
-   "last_date": "20261105",
-   "rows": 547035,
+   "last_date": "20261106",
+   "rows": 547208,
    "series": 173
   },
   "indices": {
    "first_date": "20140620",
-   "last_date": "20261105",
-   "rows": 12036,
+   "last_date": "20261106",
+   "rows": 12040,
    "series": 4
   },
   "industry_boards": {
    "first_date": "20100104",
-   "last_date": "20261105",
-   "rows": 581058,
+   "last_date": "20261106",
+   "rows": 581148,
    "series": 226
   },
   "stocks": {
    "first_date": "20041104",
-   "last_date": "20261105",
-   "rows": 11923610,
+   "last_date": "20261106",
+   "rows": 11929179,
    "series": 5576
   }
  },
@@ -147,12 +147,12 @@
  "source": {
   "artifact": "pattern_discovery",
   "artifact_version": "0.8",
-  "as_of": "20261105",
+  "as_of": "20261106",
   "bytes": 5509038,
-  "file": "pattern_discovery_v0_13.json",
-  "generated_at": "2026-11-05T23:59:45",
+  "file": "pattern_discovery_v0_14.json",
+  "generated_at": "2026-11-08T18:55:33",
   "protocol": "seasonal_walk_forward_pit_v2",
-  "sha256": "3cd83ea540e7409f195d1751afb1c199b1a2c6de64a1c10a531701285dcd766e"
+  "sha256": "880041d58b30a90d13287001ff247a25b1273c993d9d5facfbfa32aeecc363f9"
  },
  "summary_version": "0.1",
  "tier_note": "STRICT/EXPLORATORY = 全样本历史描述（预先声明阈值）；INSUFFICIENT_HISTORY = 历史样本 <8 年但曾在时点上具资格。**样本内通过 ≠ 已验证规律**；请同时看 evidence_grade / oos_by_train_tier / pit_eligible_years。",

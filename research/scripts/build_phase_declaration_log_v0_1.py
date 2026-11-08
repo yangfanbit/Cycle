@@ -26,6 +26,7 @@ git 历史不是可查询的研究数据，撑不起「日后回测研究的准�
 用法：--write / --check
 """
 import argparse
+import glob
 import hashlib
 import json
 import os
@@ -66,10 +67,10 @@ KNOWN_GAPS = [
         "blocks": "声称「声明日当时已知某段行情」",
     },
     {
-        "id": "SINGLE_ROUND_NOT_INDEPENDENT",
-        "detail": "现有 6 条声明同属 2026-10-23 一个研究轮次，不构成 6 个独立观察；"
-                  "同轮同日的多主题声明共享同一批宏观信息与同一次判断，样本内相关。",
-        "blocks": "把 6 条声明当作 n=6 独立样本直接算比例",
+        "id": "SAME_ROUND_NOT_INDEPENDENT",
+        "detail": "同一研究轮次、同一声明日的多主题声明不构成独立观察（现有两轮各 6 条）；"
+                  "同轮共享同一批宏观信息与同一次判断，样本内相关。跨轮次也不是随机抽样。",
+        "blocks": "把同轮多条声明当作 n 个独立样本直接算比例",
     },
     {
         "id": "SETTLEMENT_NOT_ATTACHED",
@@ -107,15 +108,48 @@ def _dump(path, obj):
         f.write("\n")
 
 
-def project(cc):
-    """从当前人工声明源投影出**本轮**声明；不读任何行情产物。"""
-    out = []
+def _round_files():
+    """所有研究轮次产物，按文件名（含日期）排序 —— 不硬编码「最新」。"""
+    return sorted(glob.glob(os.path.join(CURRENT, "research_round_*_v0_1.json")))
+
+
+def _load_rounds():
+    return [(_load(p), os.path.basename(p)) for p in _round_files()]
+
+
+def _pit_anchor(declared_at):
+    return {
+        "as_of": declared_at,
+        "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+        "price_data_available_at_declaration": "NOT_RECORDED",
+        "note": "声明日作为当时可知信息的上界，不是行情数据日期；"
+                "回测窗口起点必须严格晚于此日。",
+    }
+
+
+def project(cc, rounds=None):
+    """从人工声明源 + 各研究轮次投影出**全部**应入账的声明；不读任何行情产物。
+
+    ★ `supersedes` 只写在新条上（新 → 旧），旧条永不修改 —— 这是 append-only 的关键。
+    """
+    if rounds is None:
+        rounds = _load_rounds()
+    by_id = {}
+    by_candidate = {}
+
+    def add(d):
+        did = d["declaration_id"]
+        prev = by_candidate.get(d["candidate_id"])
+        d["supersedes"] = prev if prev and prev != did else None
+        by_id[did] = d
+        by_candidate[d["candidate_id"]] = did
+
     for c in sorted(cc.get("candidates") or [], key=lambda x: x.get("candidate_id") or ""):
         sr = c.get("stage_review") or {}
         declared_at = sr.get("reviewed_at")
         if not declared_at or not sr.get("declared_phase"):
             continue
-        out.append({
+        add({
             "declaration_id": "PD-%s-%s" % (c["candidate_id"], declared_at),
             "candidate_id": c["candidate_id"],
             "display_name": c["display_name"],
@@ -127,17 +161,36 @@ def project(cc):
             "basis": sr.get("basis") or "",
             "phase_evidence": c.get("phase_evidence") or {},
             "core_narrative": c.get("core_narrative") or "",
-            "market_anchor": {
-                "as_of": declared_at,
-                "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
-                "price_data_available_at_declaration": "NOT_RECORDED",
-                "note": "声明日作为当时可知信息的上界，不是行情数据日期；"
-                        "回测窗口起点必须严格晚于此日。",
-            },
+            "market_anchor": _pit_anchor(declared_at),
             "supersedes": None,
             "source_ref": "current_candidates.json:candidates[%s].stage_review" % c["candidate_id"],
         })
-    return out
+
+    cc_by_id = {c["candidate_id"]: c for c in (cc.get("candidates") or [])}
+    for rd, fname in rounds:
+        declared_at = rd.get("as_of")
+        for rv in sorted(rd.get("theme_reviews") or [], key=lambda x: x.get("candidate_id") or ""):
+            cid = rv.get("candidate_id")
+            if not declared_at or not cid:
+                continue
+            c = cc_by_id.get(cid) or {}
+            add({
+                "declaration_id": "PD-%s-%s" % (cid, declared_at),
+                "candidate_id": cid,
+                "display_name": rv.get("display_name") or c.get("display_name") or cid,
+                "declared_at": declared_at,
+                "declared_phase": rv.get("declared_phase") or c.get("attention_state"),
+                "attention_state": c.get("attention_state"),
+                "review_round": rd.get("round_id"),
+                "review_status": rv.get("verdict"),
+                "basis": rv.get("basis") or "",
+                "phase_evidence": c.get("phase_evidence") or {},
+                "core_narrative": c.get("core_narrative") or "",
+                "market_anchor": rv.get("market_anchor") or _pit_anchor(declared_at),
+                "supersedes": None,
+                "source_ref": "%s:theme_reviews[%s]" % (fname, cid),
+            })
+    return list(by_id.values())
 
 
 def assemble(cc, declarations):
@@ -154,6 +207,11 @@ def assemble(cc, declarations):
             "generated_by": cc.get("generated_by"),
             "snapshot_date": cc.get("snapshot_date"),
             "source_generated_at": cc.get("generated_at"),
+            "round_sources": [
+                {"file": name, "sha256_16": _sha(os.path.join(CURRENT, name)),
+                 "round_id": rd.get("round_id"), "as_of": rd.get("as_of")}
+                for rd, name in _load_rounds()
+            ],
         },
         "as_of": max((d["declared_at"] for d in declarations), default=None),
         "caliber": CALIBER,

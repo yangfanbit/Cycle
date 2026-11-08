@@ -1,7 +1,7 @@
 {
  "artifact": "workbench_index",
  "artifact_version": "0.1",
- "as_of": "2026-11-05",
+ "as_of": "2026-11-06",
  "caliber": {
   "effectiveness_definition": "研究增量（docs/EVALUATION_FRAMEWORK_v0_1.md），不是行情超额",
   "not": [
@@ -17,14 +17,124 @@
  "counts": {
   "by_kind": {
    "HISTORICAL_OBJECT": 89,
-   "POLICY_EVENT": 278,
+   "POLICY_EVENT": 283,
    "THEME_MAP_EVENT": 33
   },
-  "total": 400,
-  "with_external_url": 278
+  "total": 405,
+  "with_external_url": 283
  },
- "generated_at": "2026-11-06T00:07:48+08:00",
+ "generated_at": "2026-11-08T18:55:50+08:00",
  "items": [
+  {
+   "board_series": null,
+   "date": "2026-11-06",
+   "doc_class": "ACTIVITY_PROMO",
+   "id": "EVT-XWFB-20261106-1408664",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_XWFB",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261106_1408664.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "国家发展改革委举行奋进“十五五”系列新闻发布会 介绍筑牢安全底座有关情况",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261106_1408664.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-06",
+   "doc_class": "ACTIVITY_PROMO",
+   "id": "EVT-XWFB-20261106-1408663",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_XWFB",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261106_1408663.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "国家发展改革委召开“六张网”重大项目建设总体调度会议",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261106_1408663.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-06",
+   "doc_class": "OTHER",
+   "id": "EVT-XWFB-20261106-1408661",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "国家发展改革委 · 新闻发布",
+    "publisher": "国家发展改革委",
+    "source_id": "NDRC_XWFB",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261106_1408661.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "第六次中澳战略经济对话成功召开",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（PRECISION_UNAVAILABLE），采用保守日期口径",
+   "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261106_1408661.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-06",
+   "doc_class": "OTHER",
+   "id": "EVT-MIIT_KJS-e19e7d731cdd",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/gzdt/art/2026/art_fcc0322e38dc4cbe8f5d84fd3a405aac.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "科技成果赋智企业“深度行”（昆山站）活动成功举办",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/gzdt/art/2026/art_fcc0322e38dc4cbe8f5d84fd3a405aac.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
+  {
+   "board_series": null,
+   "date": "2026-11-06",
+   "doc_class": "OTHER",
+   "id": "EVT-MIIT_KJS-ba3d75fe7fd4",
+   "kind": "POLICY_EVENT",
+   "source": {
+    "name": "工业和信息化部 · 科技司",
+    "publisher": "工业和信息化部",
+    "source_id": "MIIT_KJS",
+    "source_kind": "PUBLIC_POLICY_PAGE",
+    "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/zscqhcggl/art/2026/art_7ffcb62ab6414adb8be78392c4c41827.html"
+   },
+   "status": "NO_THEME_LINK",
+   "themes": [],
+   "title": "科技成果赋智企业“深度行”（无锡站）活动成功举办",
+   "uncertainty": "MEDIUM",
+   "uncertainty_reason": "精确发布时间被拒（SEMANTICS_UNTRUSTED），采用保守日期口径",
+   "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/zscqhcggl/art/2026/art_7ffcb62ab6414adb8be78392c4c41827.html",
+   "why": "标题未命中显式关键词表 → 未建立板块关联；产业指向可能在正文，需人工核对原始 URL",
+   "year": 2026
+  },
   {
    "board_series": null,
    "date": "2026-11-05",
@@ -8949,12 +9059,12 @@
    "sha256_16": "005dd7f7180383a4"
   },
   {
-   "file": "research/current/new_theme_radar_v0_9_view.json",
-   "sha256_16": "8b31455879e2ac8c"
+   "file": "research/current/new_theme_radar_v0_10_view.json",
+   "sha256_16": "682b879e7d6cec9e"
   },
   {
-   "file": "research/current/pattern_discovery_v0_13.json",
-   "sha256_16": "3cd83ea540e7409f"
+   "file": "research/current/pattern_discovery_v0_14.json",
+   "sha256_16": "880041d58b30a90d"
   },
   {
    "file": "research/current/historical_event_maps_index.json",

@@ -1,9 +1,9 @@
 {
  "artifact": "theme_market",
  "artifact_version": "0.1",
- "generated_at": "2026-11-08T17:15:49+08:00",
+ "generated_at": "2026-11-08T18:53:09+08:00",
  "purpose": "在内部评估视图并列『产业机制阶段』与『市场层实测』；默认页只给行情附注与本周最新研究，不展示阶段声明；不自动改阶段",
- "as_of": "20261105",
+ "as_of": "20261106",
  "cadence": "WEEKLY",
  "phase_governance": {
   "research_declared": {
@@ -64,7 +64,7 @@
     "label": "主题形成中",
     "source": "研究侧人工声明（ai-offline），不是行情推导",
     "reviewed_at": "2026-10-23",
-    "research_days_old": 13,
+    "research_days_old": 14,
     "review_status": "REVIEWED_MAINTAINED",
     "review_round": "Round 2026-10-23（月度刷新）",
     "basis": "本轮（2026-10-23，2026-10-25 校准）重查 2026-10-09~10-23 官方与产业信息后维持 THEME_FORMING：制度链条（分类/命名/标准）延续；产业侧出现**相邻方向**产品获批（听觉脑干植入体，2026-10-20，官方原文未称脑机接口），以及大湾区产业联盟与区域标准体系建设（2026-10-21）。但 ① 该产品属听觉神经假体，**不能作为 BCI 分类下已有注册证的证据**；② 装机量、手术量、收入口径仍无公开数据 → **单一（相邻）产品获批不构成规模商业化**；③ 市场关注度自 2026-01 高位回落的格局未变。故阶段维持，不因「有更新」而改档。",
@@ -76,7 +76,7 @@
     "market_excluded_from_phase": true
    },
    "market_layer": {
-    "as_of": "20261105",
+    "as_of": "20261106",
     "price_type": "raw（未复权，既有口径）",
     "benchmark": "CSI300",
     "horizons_trading_days": [
@@ -88,20 +88,20 @@
      "5": {
       "covered": 2,
       "total": 2,
-      "equal_weight_return_pct": 2.79,
-      "equal_weight_excess_pp": 1.01
+      "equal_weight_return_pct": 1.91,
+      "equal_weight_excess_pp": 0.18
      },
      "10": {
       "covered": 2,
       "total": 2,
-      "equal_weight_return_pct": 1.27,
-      "equal_weight_excess_pp": -0.64
+      "equal_weight_return_pct": -5.11,
+      "equal_weight_excess_pp": -3.87
      },
      "20": {
       "covered": 2,
       "total": 2,
-      "equal_weight_return_pct": -0.87,
-      "equal_weight_excess_pp": 3.7
+      "equal_weight_return_pct": -3.54,
+      "equal_weight_excess_pp": 2.55
      }
     },
     "note": "只是事实陈列；不参与阶段判定、不预测未来"
@@ -113,17 +113,17 @@
      "name_in_db": "麦澜德",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 1025,
+     "rows": 1026,
      "limited_history": false,
      "return_pct": {
-      "5": 4.3,
-      "10": 2.32,
-      "20": -4.81
+      "5": 3.02,
+      "10": -5.43,
+      "20": -6.82
      },
      "excess_pp": {
-      "5": 2.53,
-      "10": 0.41,
-      "20": -0.24
+      "5": 1.29,
+      "10": -4.19,
+      "20": -0.73
      }
     },
     {
@@ -132,24 +132,24 @@
      "name_in_db": "翔宇医疗",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 1357,
+     "rows": 1358,
      "limited_history": false,
      "return_pct": {
-      "5": 1.27,
-      "10": 0.22,
-      "20": 3.07
+      "5": 0.8,
+      "10": -4.79,
+      "20": -0.25
      },
      "excess_pp": {
-      "5": -0.5,
-      "10": -1.69,
-      "20": 7.64
+      "5": -0.93,
+      "10": -3.55,
+      "20": 5.84
      }
     }
    ],
    "signals": [
     {
      "id": "REVIEW_STALE",
-     "detail": "阶段判定距今 13 天（> 7）→ 待人工重评"
+     "detail": "阶段判定距今 14 天（> 7）→ 待人工重评"
     }
    ],
    "core_narrative_excerpt": "脑机接口医疗器械在 2026 年 6—10 月完成『标准—分类—命名』制度链条：6 月产品分类界定与通用名称命名指导原则 → 8 月产业标准体系建设指南征求意见稿 → 9 月第三项行业标准（YY/T 2029—2026）；10 月 21 日大湾区脑机接口产业创新大会成立创新联合体并启动区域标准体系建设。★ 产业侧的**相邻方向**出现产品落地：10 月 20 日国家药监局批准诺尔康「听觉脑干植入体」创新产品注册申请（官方称「国内首创的 ABI」），但原文**未使用「脑机接口」表述**，属听觉神经假体方向，**不能据"
@@ -162,7 +162,7 @@
     "label": "广泛确认",
     "source": "研究侧人工声明（ai-offline），不是行情推导",
     "reviewed_at": "2026-10-23",
-    "research_days_old": 13,
+    "research_days_old": 14,
     "review_status": "REVIEWED_MAINTAINED",
     "review_round": "Round 2026-10-23（月度刷新）",
     "basis": "本轮重查后维持 BROAD_CONFIRMATION：新增园区级绿电使用率 85%、浙江四个算力项目备案（合计约 44.25 亿元）等落地证据，属「多源共同验证」的延续；但仍无「算电协同」独立官方统计口径，不足以升入 EXPANSION（缺少扩散广度与信息边际证据）。",
@@ -174,7 +174,7 @@
     "market_excluded_from_phase": true
    },
    "market_layer": {
-    "as_of": "20261105",
+    "as_of": "20261106",
     "price_type": "raw（未复权，既有口径）",
     "benchmark": "CSI300",
     "horizons_trading_days": [
@@ -186,20 +186,20 @@
      "5": {
       "covered": 1,
       "total": 1,
-      "equal_weight_return_pct": -1.21,
-      "equal_weight_excess_pp": -2.98
+      "equal_weight_return_pct": 1.33,
+      "equal_weight_excess_pp": -0.4
      },
      "10": {
       "covered": 1,
       "total": 1,
-      "equal_weight_return_pct": 1.25,
-      "equal_weight_excess_pp": -0.66
+      "equal_weight_return_pct": 4.39,
+      "equal_weight_excess_pp": 5.63
      },
      "20": {
       "covered": 1,
       "total": 1,
-      "equal_weight_return_pct": 2.33,
-      "equal_weight_excess_pp": 6.9
+      "equal_weight_return_pct": 5.62,
+      "equal_weight_excess_pp": 11.71
      }
     },
     "note": "只是事实陈列；不参与阶段判定、不预测未来"
@@ -211,24 +211,24 @@
      "name_in_db": "中国移动",
      "verified": true,
      "basis": "EXPLICIT_IN_NARRATIVE",
-     "rows": 1170,
+     "rows": 1171,
      "limited_history": false,
      "return_pct": {
-      "5": -1.21,
-      "10": 1.25,
-      "20": 2.33
+      "5": 1.33,
+      "10": 4.39,
+      "20": 5.62
      },
      "excess_pp": {
-      "5": -2.98,
-      "10": -0.66,
-      "20": 6.9
+      "5": -0.4,
+      "10": 5.63,
+      "20": 11.71
      }
     }
    ],
    "signals": [
     {
      "id": "REVIEW_STALE",
-     "detail": "阶段判定距今 13 天（> 7）→ 待人工重评"
+     "detail": "阶段判定距今 14 天（> 7）→ 待人工重评"
     }
    ],
    "core_narrative_excerpt": "算电协同自 2026 年 5 月四部门行动方案与《政府工作报告》表述后进入落地期：10 月 12 日内蒙古自治区能源局披露和林格尔新区已投运算力中心绿电使用比例超过 85%，中国移动呼和浩特智算中心部署约 2 万张 AI 芯片、国产化率超 89%，首次给出可核验的『绿电—算力』落地比例。但『算电协同』仍无独立官方统计口径（项目数 / 绿电直连并网容量），电网投资中属于算电协同的比例亦未公开，落地进度只能以园区级个案举证。"
@@ -241,7 +241,7 @@
     "label": "扩散",
     "source": "研究侧人工声明（ai-offline），不是行情推导",
     "reviewed_at": "2026-10-23",
-    "research_days_old": 13,
+    "research_days_old": 14,
     "review_status": "REVIEWED_MAINTAINED",
     "review_round": "Round 2026-10-23（月度刷新）",
     "basis": "本轮重查后维持 EXPANSION：出货 2.5 万台（2026H1，同比 +432.1%）、智元累计交付 2 万台、商务部前三季度重点平台具身智能机器人销售额 +22.6% 均支持扩散；但在岗规模仅约 300 台，订单结构未验证，故不升 PEAK、也不因单季数据降档。",
@@ -253,7 +253,7 @@
     "market_excluded_from_phase": true
    },
    "market_layer": {
-    "as_of": "20261105",
+    "as_of": "20261106",
     "price_type": "raw（未复权，既有口径）",
     "benchmark": "CSI300",
     "horizons_trading_days": [
@@ -265,20 +265,20 @@
      "5": {
       "covered": 3,
       "total": 3,
-      "equal_weight_return_pct": 7.09,
-      "equal_weight_excess_pp": 5.32
+      "equal_weight_return_pct": 4.9,
+      "equal_weight_excess_pp": 3.17
      },
      "10": {
       "covered": 3,
       "total": 3,
-      "equal_weight_return_pct": 22.4,
-      "equal_weight_excess_pp": 20.49
+      "equal_weight_return_pct": 2.3,
+      "equal_weight_excess_pp": 3.54
      },
      "20": {
       "covered": 3,
       "total": 3,
-      "equal_weight_return_pct": 35.84,
-      "equal_weight_excess_pp": 40.41
+      "equal_weight_return_pct": 30.02,
+      "equal_weight_excess_pp": 36.11
      }
     },
     "note": "只是事实陈列；不参与阶段判定、不预测未来"
@@ -290,17 +290,17 @@
      "name_in_db": "宇树科技",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 51,
+     "rows": 52,
      "limited_history": true,
      "return_pct": {
-      "5": 3.25,
-      "10": 31.53,
-      "20": 59.87
+      "5": 1.48,
+      "10": 5.23,
+      "20": 52.0
      },
      "excess_pp": {
-      "5": 1.48,
-      "10": 29.62,
-      "20": 64.44
+      "5": -0.25,
+      "10": 6.47,
+      "20": 58.09
      }
     },
     {
@@ -309,17 +309,17 @@
      "name_in_db": "领益智造",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": 6.24,
-      "10": 9.36,
-      "20": 4.38
+      "5": 3.38,
+      "10": 0.69,
+      "20": 4.3
      },
      "excess_pp": {
-      "5": 4.47,
-      "10": 7.45,
-      "20": 8.95
+      "5": 1.65,
+      "10": 1.93,
+      "20": 10.39
      }
     },
     {
@@ -328,24 +328,24 @@
      "name_in_db": "奥比中光",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 1050,
+     "rows": 1051,
      "limited_history": false,
      "return_pct": {
-      "5": 11.78,
-      "10": 26.31,
-      "20": 43.27
+      "5": 9.84,
+      "10": 0.97,
+      "20": 33.75
      },
      "excess_pp": {
-      "5": 10.01,
-      "10": 24.4,
-      "20": 47.84
+      "5": 8.11,
+      "10": 2.21,
+      "20": 39.84
      }
     }
    ],
    "signals": [
     {
      "id": "REVIEW_STALE",
-     "detail": "阶段判定距今 13 天（> 7）→ 待人工重评"
+     "detail": "阶段判定距今 14 天（> 7）→ 待人工重评"
     }
    ],
    "core_narrative_excerpt": "具身智能正从『技术展示』转向『商业交付』：2026 年上半年全球人形机器人出货接近 2.5 万台（同比 +432.1%），智元累计交付第 20000 台；商务部商务大数据显示前三季度重点平台具身智能机器人销售额增长 22.6%。但出货规模与实际在岗规模差距显著（长隆园区常态化运转约 300 台），消费级交付刚起步，订单结构、真实作业强度与整机可靠性仍是未验证环节。"
@@ -358,7 +358,7 @@
     "label": "扩散",
     "source": "研究侧人工声明（ai-offline），不是行情推导",
     "reviewed_at": "2026-10-23",
-    "research_days_old": 13,
+    "research_days_old": 14,
     "review_status": "REVIEWED_MAINTAINED",
     "review_round": "Round 2026-10-23（月度刷新）",
     "basis": "本轮重查后维持 EXPANSION：10-22/23 新易盛、中际旭创、天孚通信、光迅科技等回应**生产经营正常、订单交付有序、1.6T 持续放量**（来源为投资者关系回应，未出现「订单饱满」的原始表述，媒体标题的「订单饱满」不作为证据用语）；产业层证据延续。10-22 板块回调**无法与全市场普跌分离**（当日上涨家数占比 9.6%），按既有口径记 NEUTRAL，不作反向证据。★ 若把该回调当作反向证据，产品侧规则引擎会把「市场关注」判为转弱并推出 UNKNOWN —— 本轮明确不采用该处理。",
@@ -370,7 +370,7 @@
     "market_excluded_from_phase": true
    },
    "market_layer": {
-    "as_of": "20261105",
+    "as_of": "20261106",
     "price_type": "raw（未复权，既有口径）",
     "benchmark": "CSI300",
     "horizons_trading_days": [
@@ -382,20 +382,20 @@
      "5": {
       "covered": 4,
       "total": 4,
-      "equal_weight_return_pct": -16.81,
-      "equal_weight_excess_pp": -18.58
+      "equal_weight_return_pct": -14.94,
+      "equal_weight_excess_pp": -16.67
      },
      "10": {
       "covered": 4,
       "total": 4,
-      "equal_weight_return_pct": -25.62,
-      "equal_weight_excess_pp": -27.53
+      "equal_weight_return_pct": -32.3,
+      "equal_weight_excess_pp": -31.06
      },
      "20": {
       "covered": 4,
       "total": 4,
-      "equal_weight_return_pct": -42.22,
-      "equal_weight_excess_pp": -37.65
+      "equal_weight_return_pct": -45.61,
+      "equal_weight_excess_pp": -39.52
      }
     },
     "note": "只是事实陈列；不参与阶段判定、不预测未来"
@@ -407,17 +407,17 @@
      "name_in_db": "新易盛",
      "verified": true,
      "basis": "EXPLICIT_IN_STAGE_REVIEW",
-     "rows": 2592,
+     "rows": 2593,
      "limited_history": false,
      "return_pct": {
-      "5": -18.73,
-      "10": -28.06,
-      "20": -50.96
+      "5": -12.19,
+      "10": -34.06,
+      "20": -53.51
      },
      "excess_pp": {
-      "5": -20.5,
-      "10": -29.97,
-      "20": -46.39
+      "5": -13.92,
+      "10": -32.82,
+      "20": -47.42
      }
     },
     {
@@ -426,17 +426,17 @@
      "name_in_db": "中际旭创",
      "verified": true,
      "basis": "EXPLICIT_IN_STAGE_REVIEW",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": -15.24,
-      "10": -16.4,
-      "20": -36.99
+      "5": -18.99,
+      "10": -26.87,
+      "20": -42.22
      },
      "excess_pp": {
-      "5": -17.01,
-      "10": -18.31,
-      "20": -32.42
+      "5": -20.72,
+      "10": -25.63,
+      "20": -36.13
      }
     },
     {
@@ -445,17 +445,17 @@
      "name_in_db": "天孚通信",
      "verified": true,
      "basis": "EXPLICIT_IN_STAGE_REVIEW",
-     "rows": 2833,
+     "rows": 2834,
      "limited_history": false,
      "return_pct": {
-      "5": -19.86,
-      "10": -34.26,
-      "20": -44.91
+      "5": -17.57,
+      "10": -39.25,
+      "20": -48.09
      },
      "excess_pp": {
-      "5": -21.63,
-      "10": -36.17,
-      "20": -40.34
+      "5": -19.3,
+      "10": -38.01,
+      "20": -42.0
      }
     },
     {
@@ -464,28 +464,28 @@
      "name_in_db": "光迅科技",
      "verified": true,
      "basis": "EXPLICIT_IN_STAGE_REVIEW",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": -13.4,
-      "10": -23.75,
-      "20": -36.0
+      "5": -11.01,
+      "10": -29.02,
+      "20": -38.61
      },
      "excess_pp": {
-      "5": -15.17,
-      "10": -25.66,
-      "20": -31.43
+      "5": -12.74,
+      "10": -27.78,
+      "20": -32.52
      }
     }
    ],
    "signals": [
     {
      "id": "REVIEW_STALE",
-     "detail": "阶段判定距今 13 天（> 7）→ 待人工重评"
+     "detail": "阶段判定距今 14 天（> 7）→ 待人工重评"
     },
     {
      "id": "DIVERGENCE_INDUSTRY_VS_MARKET",
-     "detail": "产业机制阶段=扩散，关联标的 20 日等权相对超额 -37.65 pp（< -10）"
+     "detail": "产业机制阶段=扩散，关联标的 20 日等权相对超额 -39.52 pp（< -10）"
     }
    ],
    "core_narrative_excerpt": "AI 算力驱动的 1.6T 光模块放量延续：10 月 22—23 日新易盛、中际旭创、天孚通信、光迅科技等相继回应订单交付有序、1.6T 持续放量；同期板块整体回调（10-22 光通信板块大跌，同日全市场上涨家数占比仅 9.6%）。产业层证据（订单、产能、交付）与市场层方向（资金收缩、估值回调）不一致，属于『产业推进 / 市场降温』组合，阶段判断只依据产业层证据。"
@@ -498,7 +498,7 @@
     "label": "主题形成中",
     "source": "研究侧人工声明（ai-offline），不是行情推导",
     "reviewed_at": "2026-10-23",
-    "research_days_old": 13,
+    "research_days_old": 14,
     "review_status": "REVIEWED_MAINTAINED",
     "review_round": "Round 2026-10-23（月度刷新）",
     "basis": "本轮重查后维持 THEME_FORMING：射阳 100 万千瓦一期首批机组并网（2026-10-10）、湛江徐闻东三示范项目环评拟批公示（2026-10-20）属项目推进，但推进集中在少数基地/示范项目，全国「规划规模大、实际开工慢」格局未变，且缺年度开工分解与全国新增并网口径 → 不足以升 BROAD_CONFIRMATION。",
@@ -510,7 +510,7 @@
     "market_excluded_from_phase": true
    },
    "market_layer": {
-    "as_of": "20261105",
+    "as_of": "20261106",
     "price_type": "raw（未复权，既有口径）",
     "benchmark": "CSI300",
     "horizons_trading_days": [
@@ -522,20 +522,20 @@
      "5": {
       "covered": 4,
       "total": 4,
-      "equal_weight_return_pct": 5.23,
-      "equal_weight_excess_pp": 3.46
+      "equal_weight_return_pct": 5.83,
+      "equal_weight_excess_pp": 4.09
      },
      "10": {
       "covered": 4,
       "total": 4,
-      "equal_weight_return_pct": 7.93,
-      "equal_weight_excess_pp": 6.02
+      "equal_weight_return_pct": 3.52,
+      "equal_weight_excess_pp": 4.76
      },
      "20": {
       "covered": 4,
       "total": 4,
-      "equal_weight_return_pct": -11.76,
-      "equal_weight_excess_pp": -7.19
+      "equal_weight_return_pct": -8.71,
+      "equal_weight_excess_pp": -2.62
      }
     },
     "note": "只是事实陈列；不参与阶段判定、不预测未来"
@@ -547,17 +547,17 @@
      "name_in_db": "明阳智能",
      "verified": true,
      "basis": "EXPLICIT_IN_NARRATIVE",
-     "rows": 1878,
+     "rows": 1879,
      "limited_history": false,
      "return_pct": {
-      "5": 2.03,
-      "10": -0.58,
-      "20": -10.56
+      "5": 2.45,
+      "10": -4.79,
+      "20": -12.11
      },
      "excess_pp": {
-      "5": 0.26,
-      "10": -2.49,
-      "20": -5.99
+      "5": 0.72,
+      "10": -3.55,
+      "20": -6.02
      }
     },
     {
@@ -566,17 +566,17 @@
      "name_in_db": "龙源电力",
      "verified": true,
      "basis": "EXPLICIT_IN_NARRATIVE",
-     "rows": 1157,
+     "rows": 1158,
      "limited_history": false,
      "return_pct": {
-      "5": 3.52,
-      "10": 4.09,
-      "20": 0.27
+      "5": 3.6,
+      "10": 3.89,
+      "20": -0.53
      },
      "excess_pp": {
-      "5": 1.75,
-      "10": 2.18,
-      "20": 4.84
+      "5": 1.87,
+      "10": 5.13,
+      "20": 5.56
      }
     },
     {
@@ -585,17 +585,17 @@
      "name_in_db": "大金重工",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": 7.01,
-      "10": 10.89,
-      "20": -28.37
+      "5": 8.87,
+      "10": 1.43,
+      "20": -23.66
      },
      "excess_pp": {
-      "5": 5.24,
-      "10": 8.98,
-      "20": -23.8
+      "5": 7.14,
+      "10": 2.67,
+      "20": -17.57
      }
     },
     {
@@ -604,24 +604,24 @@
      "name_in_db": "天顺风能",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": 8.36,
-      "10": 17.33,
-      "20": -8.38
+      "5": 8.38,
+      "10": 13.54,
+      "20": 1.46
      },
      "excess_pp": {
-      "5": 6.59,
-      "10": 15.42,
-      "20": -3.81
+      "5": 6.65,
+      "10": 14.78,
+      "20": 7.55
      }
     }
    ],
    "signals": [
     {
      "id": "REVIEW_STALE",
-     "detail": "阶段判定距今 13 天（> 7）→ 待人工重评"
+     "detail": "阶段判定距今 14 天（> 7）→ 待人工重评"
     }
    ],
    "core_narrative_excerpt": "海上风电从规划转向局部并网：10 月 10 日龙源电力江苏射阳 100 万千瓦项目一期首批机组并网发电；10 月 20 日广东省生态环境厅公示明阳巴斯夫湛江徐闻东三示范项目环评拟批准。推进仍集中在少数基地与示范项目，全国层面『规划规模大、实际开工慢』的格局未变，风机价格与年度开工分解目标仍缺可核验口径。"
@@ -634,7 +634,7 @@
     "label": "主题形成中",
     "source": "研究侧人工声明（ai-offline），不是行情推导",
     "reviewed_at": "2026-10-23",
-    "research_days_old": 13,
+    "research_days_old": 14,
     "review_status": "REVIEWED_MAINTAINED",
     "review_round": "Round 2026-10-23（月度刷新）",
     "basis": "本轮重查后维持 THEME_FORMING：工信部 2026-10-22 表示 L3 第二批准入试点正在进行，仍属「试点扩容」阶段；试点车辆限区域运营、个人消费者不可购买，商业化收入未形成可核验规模。★ 产品侧规则引擎对该对象的推导值为 UNKNOWN（R8，证据组合不满足任何阶段规则），与声明值并列披露，不静默取一。",
@@ -646,7 +646,7 @@
     "market_excluded_from_phase": true
    },
    "market_layer": {
-    "as_of": "20261105",
+    "as_of": "20261106",
     "price_type": "raw（未复权，既有口径）",
     "benchmark": "CSI300",
     "horizons_trading_days": [
@@ -658,20 +658,20 @@
      "5": {
       "covered": 3,
       "total": 3,
-      "equal_weight_return_pct": 4.33,
-      "equal_weight_excess_pp": 2.56
+      "equal_weight_return_pct": 3.8,
+      "equal_weight_excess_pp": 2.07
      },
      "10": {
       "covered": 3,
       "total": 3,
-      "equal_weight_return_pct": 5.24,
-      "equal_weight_excess_pp": 3.33
+      "equal_weight_return_pct": 1.48,
+      "equal_weight_excess_pp": 2.72
      },
      "20": {
       "covered": 3,
       "total": 3,
-      "equal_weight_return_pct": -0.3,
-      "equal_weight_excess_pp": 4.27
+      "equal_weight_return_pct": -3.03,
+      "equal_weight_excess_pp": 3.06
      }
     },
     "note": "只是事实陈列；不参与阶段判定、不预测未来"
@@ -683,17 +683,17 @@
      "name_in_db": "长安汽车",
      "verified": true,
      "basis": "NARRATIVE_ENTITY_MAPPED（正文「长安」）",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": 2.55,
-      "10": 3.57,
-      "20": 2.98
+      "5": 2.28,
+      "10": 1.41,
+      "20": 1.56
      },
      "excess_pp": {
-      "5": 0.78,
-      "10": 1.66,
-      "20": 7.55
+      "5": 0.55,
+      "10": 2.65,
+      "20": 7.65
      }
     },
     {
@@ -702,17 +702,17 @@
      "name_in_db": "北汽蓝谷",
      "verified": true,
      "basis": "NARRATIVE_ENTITY_MAPPED（正文「北汽」）",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": 5.88,
-      "10": 4.35,
-      "20": -9.43
+      "5": 4.73,
+      "10": -1.64,
+      "20": -10.99
      },
      "excess_pp": {
-      "5": 4.11,
-      "10": 2.44,
-      "20": -4.86
+      "5": 3.0,
+      "10": -0.4,
+      "20": -4.9
      }
     },
     {
@@ -721,24 +721,24 @@
      "name_in_db": "比亚迪",
      "verified": true,
      "basis": "RESEARCHER_DECLARED_SUPPLY_CHAIN",
-     "rows": 3009,
+     "rows": 3010,
      "limited_history": false,
      "return_pct": {
-      "5": 4.55,
-      "10": 7.79,
-      "20": 5.54
+      "5": 4.38,
+      "10": 4.68,
+      "20": 0.33
      },
      "excess_pp": {
-      "5": 2.78,
-      "10": 5.88,
-      "20": 10.11
+      "5": 2.65,
+      "10": 5.92,
+      "20": 6.42
      }
     }
    ],
    "signals": [
     {
      "id": "REVIEW_STALE",
-     "detail": "阶段判定距今 13 天（> 7）→ 待人工重评"
+     "detail": "阶段判定距今 14 天（> 7）→ 待人工重评"
     }
    ],
    "core_narrative_excerpt": "智能驾驶处于『L3 准入试点扩容』阶段：2025-12 长安、北汽两款车型获附条件准入许可；2026-10-22 工信部在世界智能网联汽车大会表示 L3 第二批准入试点工作正在进行；《智能网联汽车 自动驾驶系统安全要求》强制性国标报批稿拟 2027-07-01 实施。制度路径清晰，但试点车辆仍限区域运营、个人消费者不可购买，商业化收入尚未形成可核验规模。"

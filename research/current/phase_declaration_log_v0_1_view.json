@@ -2,7 +2,7 @@
  "append_only": true,
  "artifact": "phase_declaration_log_view",
  "artifact_version": "0.1",
- "as_of": "2026-10-23",
+ "as_of": "2026-11-08",
  "caliber": {
   "append_only": "只增不改；取代关系写在新条的 supersedes，旧条永不修改",
   "not": [
@@ -17,9 +17,9 @@
  },
  "counts": {
   "candidates": 6,
-  "declarations": 6,
-  "review_rounds": 1,
-  "superseded_links": 0,
+  "declarations": 12,
+  "review_rounds": 2,
+  "superseded_links": 6,
   "with_settlement_fields": 0
  },
  "declarations": [
@@ -136,6 +136,114 @@
    "review_status": "REVIEWED_MAINTAINED",
    "source_ref": "current_candidates.json:candidates[CC-2026-OPTICAL-LINK].stage_review",
    "supersedes": null
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据；S4 列表页可见《道路机动车辆生产企业及产品公告》相关条目，但未打开原文核实，不据此建关联。阶段维持 THEME_FORMING。",
+   "candidate_id": "CC-2026-AUTO-SMARTDRIVE",
+   "declaration_id": "PD-CC-2026-AUTO-SMARTDRIVE-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "智能驾驶与汽车产业",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-AUTO-SMARTDRIVE]",
+   "supersedes": "PD-CC-2026-AUTO-SMARTDRIVE-2026-10-23"
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮复查发现 S2（2026-11-04 医保局 7 类神经介入 / 神经外科植入材料分类与代码调整），属医疗器械监管链条的相邻方向证据；沿用 10-23 口径，★ 相邻产品 / 耗材分类调整不能作为脑机接口分类下已有注册证或规模商业化的证据。装机量、手术量、收入口径仍无公开数据 → 阶段维持 THEME_FORMING。",
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "declaration_id": "PD-CC-2026-BCI-MEDTECH-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "脑机接口医疗器械（标准—分类—临床—商业化）",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_ADJACENT_EVIDENCE",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-BCI-MEDTECH]",
+   "supersedes": "PD-CC-2026-BCI-MEDTECH-2026-10-23"
+  },
+  {
+   "attention_state": "BROAD_CONFIRMATION",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据；S1 中试平台名单与 S4 先进制造业集群公示属跨领域政策工具，未取得与算电协同直接对应的原文依据，不硬贴关联。阶段维持 BROAD_CONFIRMATION。",
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "declaration_id": "PD-CC-2026-COMPUTE-POWER-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "BROAD_CONFIRMATION",
+   "display_name": "算电协同 / 算力基础设施",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-COMPUTE-POWER]",
+   "supersedes": "PD-CC-2026-COMPUTE-POWER-2026-10-23"
+  },
+  {
+   "attention_state": "EXPANSION",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据（出货 / 交付 / 在岗口径）。雷达采集方向已自述机器人相关司局列表页为 JS 外壳或 404，属采集覆盖缺口，不是「已核实没有新事实」。10-23 记录的出货 2.5 万台与在岗约 300 台差距仍未被可核数据消除 → 阶段维持 EXPANSION，不升 PEAK。",
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "declaration_id": "PD-CC-2026-EMBODIED-AI-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "EXPANSION",
+   "display_name": "具身智能与人形机器人（量产—交付—在岗）",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-EMBODIED-AI]",
+   "supersedes": "PD-CC-2026-EMBODIED-AI-2026-10-23"
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据（项目核准 / 招标 / 装机口径）。阶段维持 THEME_FORMING。",
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "declaration_id": "PD-CC-2026-OFFSHORE-WIND-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "海上风电与风电设备",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-OFFSHORE-WIND]",
+   "supersedes": "PD-CC-2026-OFFSHORE-WIND-2026-10-23"
+  },
+  {
+   "attention_state": "EXPANSION",
+   "basis": "本轮（2026-11-08）复查 10-24 以来的可核来源：S3 多家媒体转述 11-06 三家公司午间公告，称订单覆盖 2027 年、1.6T 持续放量、NPO/XPO 明年下半年释放，方向上延续 10-23 的产业层证据；但 ★ 未取得公司公告原文，按 source_policy Tier 3 只登记为线索，不单独承担结论。故阶段维持 EXPANSION，不因媒体转述升 PEAK，也不因 10-23→11-06 的板块回调降档（市场层仍不参与定档）。",
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "declaration_id": "PD-CC-2026-OPTICAL-LINK-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "EXPANSION",
+   "display_name": "高速光互联（1.6T / NPO / CPO 结构迁移）",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_WITH_NEW_LEAD",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-OPTICAL-LINK]",
+   "supersedes": "PD-CC-2026-OPTICAL-LINK-2026-10-23"
   }
  ],
  "known_gaps": [
@@ -145,9 +253,9 @@
    "id": "DECLARATION_TIME_PRICE_CUTOFF_NOT_RECORDED"
   },
   {
-   "blocks": "把 6 条声明当作 n=6 独立样本直接算比例",
-   "detail": "现有 6 条声明同属 2026-10-23 一个研究轮次，不构成 6 个独立观察；同轮同日的多主题声明共享同一批宏观信息与同一次判断，样本内相关。",
-   "id": "SINGLE_ROUND_NOT_INDEPENDENT"
+   "blocks": "把同轮多条声明当作 n 个独立样本直接算比例",
+   "detail": "同一研究轮次、同一声明日的多主题声明不构成独立观察（现有两轮各 6 条）；同轮共享同一批宏观信息与同一次判断，样本内相关。跨轮次也不是随机抽样。",
+   "id": "SAME_ROUND_NOT_INDEPENDENT"
   },
   {
    "blocks": "直接从本日志读出任何「准确率」数字",
@@ -164,6 +272,6 @@
  ],
  "source": {
   "file": "phase_declaration_log_v0_1.json",
-  "sha256_16": "93a57ca55e07de0b"
+  "sha256_16": "cf10bc35890c7941"
  }
 }

@@ -65,15 +65,21 @@ $P research/scripts/build_new_theme_radar_v0_1.py --fetch --write --version <N>
 # ③ 未来事件日历增补：只加**可核来源**的条目，逐条写 source / 核验状态；
 #    不得推测或编造两会、政策生效日、调样日等。无新事实时本步跳过。
 
-# ④ 重算前瞻排程（确定性派生缓存，原地更新，见 §5）
+# ④ 研究轮次（离线研究产物）先校验，再让周更视图投影最新一轮
+$P research/scripts/check_research_round_v0_1.py --check
+
+# ⑤ 重算前瞻排程（确定性派生缓存，原地更新，见 §5）
 $P research/scripts/build_theme_market_v0_1.py --write
 $P research/scripts/build_frontier_board_v0_1.py --write
 # ★ v0.80：本周研究视图读排程的 feed_window 并记录其 sha256 → 必须排在 board 之后
 $P research/scripts/build_weekly_research_v0_1.py --write
-# ★ v0.80：行情推进不得改写历史阶段声明；只有人工改档才跑 --write
-$P research/scripts/build_phase_declaration_log_v0_1.py --check
+# ★ v0.81：新增研究轮次后要 --write 追加新声明（旧声明逐字保留）；
+#   只跑 --check 会因 source.round_sources 的 sha256 变化而 FAIL。行情推进本身不改声明。
+$P research/scripts/build_phase_declaration_log_v0_1.py --write
 
-# ⑤ 验证
+# ⑥ 验证
+$P research/scripts/check_research_round_v0_1.py --check
+$P research/scripts/build_phase_declaration_log_v0_1.py --check
 $P research/scripts/build_theme_market_v0_1.py --check
 $P research/scripts/build_frontier_board_v0_1.py --check
 $P research/scripts/build_weekly_research_v0_1.py --check

@@ -2,7 +2,7 @@
  "append_only": true,
  "artifact": "phase_declaration_log",
  "artifact_version": "0.1",
- "as_of": "2026-10-23",
+ "as_of": "2026-11-08",
  "caliber": {
   "append_only": "只增不改；取代关系写在新条的 supersedes，旧条永不修改",
   "not": [
@@ -17,9 +17,9 @@
  },
  "counts": {
   "candidates": 6,
-  "declarations": 6,
-  "review_rounds": 1,
-  "superseded_links": 0,
+  "declarations": 12,
+  "review_rounds": 2,
+  "superseded_links": 6,
   "with_settlement_fields": 0
  },
  "declarations": [
@@ -172,6 +172,150 @@
    "review_status": "REVIEWED_MAINTAINED",
    "source_ref": "current_candidates.json:candidates[CC-2026-OPTICAL-LINK].stage_review",
    "supersedes": null
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据；S4 列表页可见《道路机动车辆生产企业及产品公告》相关条目，但未打开原文核实，不据此建关联。阶段维持 THEME_FORMING。",
+   "candidate_id": "CC-2026-AUTO-SMARTDRIVE",
+   "core_narrative": "智能驾驶处于『L3 准入试点扩容』阶段：2025-12 长安、北汽两款车型获附条件准入许可；2026-10-22 工信部在世界智能网联汽车大会表示 L3 第二批准入试点工作正在进行；《智能网联汽车 自动驾驶系统安全要求》强制性国标报批稿拟 2027-07-01 实施。制度路径清晰，但试点车辆仍限区域运营、个人消费者不可购买，商业化收入尚未形成可核验规模。",
+   "declaration_id": "PD-CC-2026-AUTO-SMARTDRIVE-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "智能驾驶与汽车产业",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "phase_evidence": {
+    "breadth": "UNKNOWN",
+    "information_marginal": "UNKNOWN",
+    "narrative": "PRESENT"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-AUTO-SMARTDRIVE]",
+   "supersedes": "PD-CC-2026-AUTO-SMARTDRIVE-2026-10-23"
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮复查发现 S2（2026-11-04 医保局 7 类神经介入 / 神经外科植入材料分类与代码调整），属医疗器械监管链条的相邻方向证据；沿用 10-23 口径，★ 相邻产品 / 耗材分类调整不能作为脑机接口分类下已有注册证或规模商业化的证据。装机量、手术量、收入口径仍无公开数据 → 阶段维持 THEME_FORMING。",
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "core_narrative": "脑机接口医疗器械在 2026 年 6—10 月完成『标准—分类—命名』制度链条：6 月产品分类界定与通用名称命名指导原则 → 8 月产业标准体系建设指南征求意见稿 → 9 月第三项行业标准（YY/T 2029—2026）；10 月 21 日大湾区脑机接口产业创新大会成立创新联合体并启动区域标准体系建设。★ 产业侧的**相邻方向**出现产品落地：10 月 20 日国家药监局批准诺尔康「听觉脑干植入体」创新产品注册申请（官方称「国内首创的 ABI」），但原文**未使用「脑机接口」表述**，属听觉神经假体方向，**不能据此认定 BCI 分类下已有注册证或已规模商业化**。BCI 本方向仍缺装机量、手术量与收入口径，板块热度自 2026 年 1 月高位回落的格局未改变，仍是『制度推进 / 市场冷却』的方向分歧。",
+   "declaration_id": "PD-CC-2026-BCI-MEDTECH-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "脑机接口医疗器械（标准—分类—临床—商业化）",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "phase_evidence": {
+    "breadth": "EMERGING",
+    "information_marginal": "EMERGING",
+    "narrative": "PRESENT"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_ADJACENT_EVIDENCE",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-BCI-MEDTECH]",
+   "supersedes": "PD-CC-2026-BCI-MEDTECH-2026-10-23"
+  },
+  {
+   "attention_state": "BROAD_CONFIRMATION",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据；S1 中试平台名单与 S4 先进制造业集群公示属跨领域政策工具，未取得与算电协同直接对应的原文依据，不硬贴关联。阶段维持 BROAD_CONFIRMATION。",
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "core_narrative": "算电协同自 2026 年 5 月四部门行动方案与《政府工作报告》表述后进入落地期：10 月 12 日内蒙古自治区能源局披露和林格尔新区已投运算力中心绿电使用比例超过 85%，中国移动呼和浩特智算中心部署约 2 万张 AI 芯片、国产化率超 89%，首次给出可核验的『绿电—算力』落地比例。但『算电协同』仍无独立官方统计口径（项目数 / 绿电直连并网容量），电网投资中属于算电协同的比例亦未公开，落地进度只能以园区级个案举证。",
+   "declaration_id": "PD-CC-2026-COMPUTE-POWER-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "BROAD_CONFIRMATION",
+   "display_name": "算电协同 / 算力基础设施",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "phase_evidence": {
+    "breadth": "EMERGING",
+    "information_marginal": "PRESENT",
+    "narrative": "STRONG"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-COMPUTE-POWER]",
+   "supersedes": "PD-CC-2026-COMPUTE-POWER-2026-10-23"
+  },
+  {
+   "attention_state": "EXPANSION",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据（出货 / 交付 / 在岗口径）。雷达采集方向已自述机器人相关司局列表页为 JS 外壳或 404，属采集覆盖缺口，不是「已核实没有新事实」。10-23 记录的出货 2.5 万台与在岗约 300 台差距仍未被可核数据消除 → 阶段维持 EXPANSION，不升 PEAK。",
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "core_narrative": "具身智能正从『技术展示』转向『商业交付』：2026 年上半年全球人形机器人出货接近 2.5 万台（同比 +432.1%），智元累计交付第 20000 台；商务部商务大数据显示前三季度重点平台具身智能机器人销售额增长 22.6%。但出货规模与实际在岗规模差距显著（长隆园区常态化运转约 300 台），消费级交付刚起步，订单结构、真实作业强度与整机可靠性仍是未验证环节。",
+   "declaration_id": "PD-CC-2026-EMBODIED-AI-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "EXPANSION",
+   "display_name": "具身智能与人形机器人（量产—交付—在岗）",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "phase_evidence": {
+    "breadth": "STRONG",
+    "information_marginal": "PRESENT",
+    "narrative": "STRONG"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-EMBODIED-AI]",
+   "supersedes": "PD-CC-2026-EMBODIED-AI-2026-10-23"
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮采集范围内未发现 10-24 以来可核的新增产业证据（项目核准 / 招标 / 装机口径）。阶段维持 THEME_FORMING。",
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "core_narrative": "海上风电从规划转向局部并网：10 月 10 日龙源电力江苏射阳 100 万千瓦项目一期首批机组并网发电；10 月 20 日广东省生态环境厅公示明阳巴斯夫湛江徐闻东三示范项目环评拟批准。推进仍集中在少数基地与示范项目，全国层面『规划规模大、实际开工慢』的格局未变，风机价格与年度开工分解目标仍缺可核验口径。",
+   "declaration_id": "PD-CC-2026-OFFSHORE-WIND-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "海上风电与风电设备",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "phase_evidence": {
+    "breadth": "EMERGING",
+    "information_marginal": "PRESENT",
+    "narrative": "PRESENT"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_COVERAGE_GAP",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-OFFSHORE-WIND]",
+   "supersedes": "PD-CC-2026-OFFSHORE-WIND-2026-10-23"
+  },
+  {
+   "attention_state": "EXPANSION",
+   "basis": "本轮（2026-11-08）复查 10-24 以来的可核来源：S3 多家媒体转述 11-06 三家公司午间公告，称订单覆盖 2027 年、1.6T 持续放量、NPO/XPO 明年下半年释放，方向上延续 10-23 的产业层证据；但 ★ 未取得公司公告原文，按 source_policy Tier 3 只登记为线索，不单独承担结论。故阶段维持 EXPANSION，不因媒体转述升 PEAK，也不因 10-23→11-06 的板块回调降档（市场层仍不参与定档）。",
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "core_narrative": "AI 算力驱动的 1.6T 光模块放量延续：10 月 22—23 日新易盛、中际旭创、天孚通信、光迅科技等相继回应订单交付有序、1.6T 持续放量；同期板块整体回调（10-22 光通信板块大跌，同日全市场上涨家数占比仅 9.6%）。产业层证据（订单、产能、交付）与市场层方向（资金收缩、估值回调）不一致，属于『产业推进 / 市场降温』组合，阶段判断只依据产业层证据。",
+   "declaration_id": "PD-CC-2026-OPTICAL-LINK-2026-11-08",
+   "declared_at": "2026-11-08",
+   "declared_phase": "EXPANSION",
+   "display_name": "高速光互联（1.6T / NPO / CPO 结构迁移）",
+   "market_anchor": {
+    "as_of": "2026-11-08",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界；不是行情数据日期，回测窗口起点必须严格晚于此日"
+   },
+   "phase_evidence": {
+    "breadth": "STRONG",
+    "information_marginal": "PRESENT",
+    "narrative": "STRONG"
+   },
+   "review_round": "RR-2026-11-08-01",
+   "review_status": "MAINTAINED_WITH_NEW_LEAD",
+   "source_ref": "research_round_2026-11-08_v0_1.json:theme_reviews[CC-2026-OPTICAL-LINK]",
+   "supersedes": "PD-CC-2026-OPTICAL-LINK-2026-10-23"
   }
  ],
  "known_gaps": [
@@ -181,9 +325,9 @@
    "id": "DECLARATION_TIME_PRICE_CUTOFF_NOT_RECORDED"
   },
   {
-   "blocks": "把 6 条声明当作 n=6 独立样本直接算比例",
-   "detail": "现有 6 条声明同属 2026-10-23 一个研究轮次，不构成 6 个独立观察；同轮同日的多主题声明共享同一批宏观信息与同一次判断，样本内相关。",
-   "id": "SINGLE_ROUND_NOT_INDEPENDENT"
+   "blocks": "把同轮多条声明当作 n 个独立样本直接算比例",
+   "detail": "同一研究轮次、同一声明日的多主题声明不构成独立观察（现有两轮各 6 条）；同轮共享同一批宏观信息与同一次判断，样本内相关。跨轮次也不是随机抽样。",
+   "id": "SAME_ROUND_NOT_INDEPENDENT"
   },
   {
    "blocks": "直接从本日志读出任何「准确率」数字",
@@ -202,6 +346,14 @@
  "source": {
   "file": "current_candidates.json",
   "generated_by": "ai-offline",
+  "round_sources": [
+   {
+    "as_of": "2026-11-08",
+    "file": "research_round_2026-11-08_v0_1.json",
+    "round_id": "RR-2026-11-08-01",
+    "sha256_16": "2ce6a0bf75be6ec9"
+   }
+  ],
   "sha256_16": "0a139533e00c99d3",
   "snapshot_date": "2026-10-23",
   "source_generated_at": "2026-10-24T20:20:00"

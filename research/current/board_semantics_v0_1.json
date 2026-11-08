@@ -1,7 +1,7 @@
 {
  "artifact": "board_semantics",
  "artifact_version": "0.1",
- "generated_at": "2026-11-07T14:07:55+08:00",
+ "generated_at": "2026-11-08T18:55:51+08:00",
  "purpose": "给名称不可解释的行业板块登记口径与排除理由；不删除、不隐藏，单独展示",
  "rule": {
   "fuzzy_name_pattern": "其他|综合",
@@ -54,8 +54,8 @@
     "symbol": "bk_881123",
     "classification_page": "http://q.10jqka.com.cn/thshy/detail/code/881123/",
     "series_first_date": "20100104",
-    "series_last_date": "20261105",
-    "rows": 4087,
+    "series_last_date": "20261106",
+    "rows": 4088,
     "member_count_current_snapshot": 140,
     "member_count_note": "来自 cache_v0_1.json 的当前目录条目；不是成员名单"
    },
@@ -78,8 +78,8 @@
     "symbol": "bk_881128",
     "classification_page": "http://q.10jqka.com.cn/thshy/detail/code/881128/",
     "series_first_date": "20100104",
-    "series_last_date": "20261105",
-    "rows": 4087,
+    "series_last_date": "20261106",
+    "rows": 4088,
     "member_count_current_snapshot": 140,
     "member_count_note": "来自 cache_v0_1.json 的当前目录条目；不是成员名单"
    },
@@ -102,8 +102,8 @@
     "symbol": "bk_881165",
     "classification_page": "http://q.10jqka.com.cn/thshy/detail/code/881165/",
     "series_first_date": "20100104",
-    "series_last_date": "20261105",
-    "rows": 4087,
+    "series_last_date": "20261106",
+    "rows": 4088,
     "member_count_current_snapshot": 140,
     "member_count_note": "来自 cache_v0_1.json 的当前目录条目；不是成员名单"
    },
@@ -126,8 +126,8 @@
     "symbol": "bk_881179",
     "classification_page": "http://q.10jqka.com.cn/thshy/detail/code/881179/",
     "series_first_date": "20100104",
-    "series_last_date": "20261105",
-    "rows": 4088,
+    "series_last_date": "20261106",
+    "rows": 4089,
     "member_count_current_snapshot": 140,
     "member_count_note": "来自 cache_v0_1.json 的当前目录条目；不是成员名单"
    },
@@ -197,8 +197,8 @@
     "symbol": "bk_881282",
     "classification_page": "http://q.10jqka.com.cn/thshy/detail/code/881282/",
     "series_first_date": "20100104",
-    "series_last_date": "20261105",
-    "rows": 4088,
+    "series_last_date": "20261106",
+    "rows": 4089,
     "member_count_current_snapshot": 140,
     "member_count_note": "来自 cache_v0_1.json 的当前目录条目；不是成员名单"
    },
