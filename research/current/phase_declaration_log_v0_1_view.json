@@ -1,0 +1,169 @@
+{
+ "append_only": true,
+ "artifact": "phase_declaration_log_view",
+ "artifact_version": "0.1",
+ "as_of": "2026-10-23",
+ "caliber": {
+  "append_only": "只增不改；取代关系写在新条的 supersedes，旧条永不修改",
+  "not": [
+   "不是买卖信号 / 荐股 / 选股清单",
+   "不是对未来涨跌的预测",
+   "不是已验证模型（ThreeC 目前没有这一层）"
+  ],
+  "pit": "market_anchor.as_of = 声明日，是当时可知信息的上界；回测窗口起点必须严格晚于此日",
+  "settlement_rule": "结算字段不写入本日志；回测时按声明日 + 前向窗口另行重算",
+  "what": "产业机制阶段的人工声明历史；不是行情状态、不是概率、不是预测，不含启发式排序",
+  "win_rate_caveat": "任何事后核对比例的表述必须写明口径七要素 + 95% Wilson + 未校准；本产物不提供该比例"
+ },
+ "counts": {
+  "candidates": 6,
+  "declarations": 6,
+  "review_rounds": 1,
+  "superseded_links": 0,
+  "with_settlement_fields": 0
+ },
+ "declarations": [
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮重查后维持 THEME_FORMING：工信部 2026-10-22 表示 L3 第二批准入试点正在进行，仍属「试点扩容」阶段；试点车辆限区域运营、个人消费者不可购买，商业化收入未形成可核验规模。★ 产品侧规则引擎对该对象的推导值为 UNKNOWN（R8，证据组合不满足任何阶段规则），与声明值并列披露，不静默取一。",
+   "candidate_id": "CC-2026-AUTO-SMARTDRIVE",
+   "declaration_id": "PD-CC-2026-AUTO-SMARTDRIVE-2026-10-23",
+   "declared_at": "2026-10-23",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "智能驾驶合规化（L3/L4 强制国标—责任划分—量产准入）",
+   "market_anchor": {
+    "as_of": "2026-10-23",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界，不是行情数据日期；回测窗口起点必须严格晚于此日。",
+    "price_data_available_at_declaration": "NOT_RECORDED"
+   },
+   "review_round": "Round 2026-10-23（月度刷新）",
+   "review_status": "REVIEWED_MAINTAINED",
+   "source_ref": "current_candidates.json:candidates[CC-2026-AUTO-SMARTDRIVE].stage_review",
+   "supersedes": null
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮（2026-10-23，2026-10-25 校准）重查 2026-10-09~10-23 官方与产业信息后维持 THEME_FORMING：制度链条（分类/命名/标准）延续；产业侧出现**相邻方向**产品获批（听觉脑干植入体，2026-10-20，官方原文未称脑机接口），以及大湾区产业联盟与区域标准体系建设（2026-10-21）。但 ① 该产品属听觉神经假体，**不能作为 BCI 分类下已有注册证的证据**；② 装机量、手术量、收入口径仍无公开数据 → **单一（相邻）产品获批不构成规模商业化**；③ 市场关注度自 2026-01 高位回落的格局未变。故阶段维持，不因「有更新」而改档。",
+   "candidate_id": "CC-2026-BCI-MEDTECH",
+   "declaration_id": "PD-CC-2026-BCI-MEDTECH-2026-10-23",
+   "declared_at": "2026-10-23",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "脑机接口医疗器械（标准—分类—临床—商业化）",
+   "market_anchor": {
+    "as_of": "2026-10-23",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界，不是行情数据日期；回测窗口起点必须严格晚于此日。",
+    "price_data_available_at_declaration": "NOT_RECORDED"
+   },
+   "review_round": "Round 2026-10-23（月度刷新）",
+   "review_status": "REVIEWED_MAINTAINED",
+   "source_ref": "current_candidates.json:candidates[CC-2026-BCI-MEDTECH].stage_review",
+   "supersedes": null
+  },
+  {
+   "attention_state": "BROAD_CONFIRMATION",
+   "basis": "本轮重查后维持 BROAD_CONFIRMATION：新增园区级绿电使用率 85%、浙江四个算力项目备案（合计约 44.25 亿元）等落地证据，属「多源共同验证」的延续；但仍无「算电协同」独立官方统计口径，不足以升入 EXPANSION（缺少扩散广度与信息边际证据）。",
+   "candidate_id": "CC-2026-COMPUTE-POWER",
+   "declaration_id": "PD-CC-2026-COMPUTE-POWER-2026-10-23",
+   "declared_at": "2026-10-23",
+   "declared_phase": "BROAD_CONFIRMATION",
+   "display_name": "算电协同（算力网与新型电力系统协同）",
+   "market_anchor": {
+    "as_of": "2026-10-23",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界，不是行情数据日期；回测窗口起点必须严格晚于此日。",
+    "price_data_available_at_declaration": "NOT_RECORDED"
+   },
+   "review_round": "Round 2026-10-23（月度刷新）",
+   "review_status": "REVIEWED_MAINTAINED",
+   "source_ref": "current_candidates.json:candidates[CC-2026-COMPUTE-POWER].stage_review",
+   "supersedes": null
+  },
+  {
+   "attention_state": "EXPANSION",
+   "basis": "本轮重查后维持 EXPANSION：出货 2.5 万台（2026H1，同比 +432.1%）、智元累计交付 2 万台、商务部前三季度重点平台具身智能机器人销售额 +22.6% 均支持扩散；但在岗规模仅约 300 台，订单结构未验证，故不升 PEAK、也不因单季数据降档。",
+   "candidate_id": "CC-2026-EMBODIED-AI",
+   "declaration_id": "PD-CC-2026-EMBODIED-AI-2026-10-23",
+   "declared_at": "2026-10-23",
+   "declared_phase": "EXPANSION",
+   "display_name": "具身智能与人形机器人（标准—实训—供应链）",
+   "market_anchor": {
+    "as_of": "2026-10-23",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界，不是行情数据日期；回测窗口起点必须严格晚于此日。",
+    "price_data_available_at_declaration": "NOT_RECORDED"
+   },
+   "review_round": "Round 2026-10-23（月度刷新）",
+   "review_status": "REVIEWED_MAINTAINED",
+   "source_ref": "current_candidates.json:candidates[CC-2026-EMBODIED-AI].stage_review",
+   "supersedes": null
+  },
+  {
+   "attention_state": "THEME_FORMING",
+   "basis": "本轮重查后维持 THEME_FORMING：射阳 100 万千瓦一期首批机组并网（2026-10-10）、湛江徐闻东三示范项目环评拟批公示（2026-10-20）属项目推进，但推进集中在少数基地/示范项目，全国「规划规模大、实际开工慢」格局未变，且缺年度开工分解与全国新增并网口径 → 不足以升 BROAD_CONFIRMATION。",
+   "candidate_id": "CC-2026-OFFSHORE-WIND",
+   "declaration_id": "PD-CC-2026-OFFSHORE-WIND-2026-10-23",
+   "declared_at": "2026-10-23",
+   "declared_phase": "THEME_FORMING",
+   "display_name": "海上风电与整机价格修复（『十五五』规模化 + 出海）",
+   "market_anchor": {
+    "as_of": "2026-10-23",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界，不是行情数据日期；回测窗口起点必须严格晚于此日。",
+    "price_data_available_at_declaration": "NOT_RECORDED"
+   },
+   "review_round": "Round 2026-10-23（月度刷新）",
+   "review_status": "REVIEWED_MAINTAINED",
+   "source_ref": "current_candidates.json:candidates[CC-2026-OFFSHORE-WIND].stage_review",
+   "supersedes": null
+  },
+  {
+   "attention_state": "EXPANSION",
+   "basis": "本轮重查后维持 EXPANSION：10-22/23 新易盛、中际旭创、天孚通信、光迅科技等回应**生产经营正常、订单交付有序、1.6T 持续放量**（来源为投资者关系回应，未出现「订单饱满」的原始表述，媒体标题的「订单饱满」不作为证据用语）；产业层证据延续。10-22 板块回调**无法与全市场普跌分离**（当日上涨家数占比 9.6%），按既有口径记 NEUTRAL，不作反向证据。★ 若把该回调当作反向证据，产品侧规则引擎会把「市场关注」判为转弱并推出 UNKNOWN —— 本轮明确不采用该处理。",
+   "candidate_id": "CC-2026-OPTICAL-LINK",
+   "declaration_id": "PD-CC-2026-OPTICAL-LINK-2026-10-23",
+   "declared_at": "2026-10-23",
+   "declared_phase": "EXPANSION",
+   "display_name": "高速光互联（1.6T / NPO / CPO 结构迁移）",
+   "market_anchor": {
+    "as_of": "2026-10-23",
+    "basis": "DECLARATION_DATE_AS_PIT_UPPER_BOUND",
+    "note": "声明日作为当时可知信息的上界，不是行情数据日期；回测窗口起点必须严格晚于此日。",
+    "price_data_available_at_declaration": "NOT_RECORDED"
+   },
+   "review_round": "Round 2026-10-23（月度刷新）",
+   "review_status": "REVIEWED_MAINTAINED",
+   "source_ref": "current_candidates.json:candidates[CC-2026-OPTICAL-LINK].stage_review",
+   "supersedes": null
+  }
+ ],
+ "known_gaps": [
+  {
+   "blocks": "声称「声明日当时已知某段行情」",
+   "detail": "声明当时可见的最新行情截止日未单独落盘；故以声明日作为 PIT 上界（更保守）。回测时窗口起点一律取声明日之后的第一个交易日，不得用 theme_market.as_of 回填。",
+   "id": "DECLARATION_TIME_PRICE_CUTOFF_NOT_RECORDED"
+  },
+  {
+   "blocks": "把 6 条声明当作 n=6 独立样本直接算比例",
+   "detail": "现有 6 条声明同属 2026-10-23 一个研究轮次，不构成 6 个独立观察；同轮同日的多主题声明共享同一批宏观信息与同一次判断，样本内相关。",
+   "id": "SINGLE_ROUND_NOT_INDEPENDENT"
+  },
+  {
+   "blocks": "直接从本日志读出任何「准确率」数字",
+   "detail": "本产物只保留声明，不附结算。事后核对比例必须另立一轮，先声明观察窗口、分母、排除规则，再按 §3.1 输出未校准经验基准。",
+   "id": "SETTLEMENT_NOT_ATTACHED"
+  }
+ ],
+ "limits": [
+  "★ 阶段是**产业机制阶段（研究侧人工声明）**，不是行情状态；市场层不参与定档。",
+  "★ 默认页不展示本日志；它只在**内部评估视图**出现，用途是事后可核与回测留痕。",
+  "★ 本日志只增不改；行情推进**不得**改写任何历史声明。",
+  "★ `supersedes` 由新条指向旧条，旧条不含 `superseded_by`（否则违反只增不改）。",
+  "★ 行情推进后 `theme_market` / `frontier_board` 会重算，但本日志必须逐字节不变。"
+ ],
+ "source": {
+  "file": "phase_declaration_log_v0_1.json",
+  "sha256_16": "93a57ca55e07de0b"
+ }
+}

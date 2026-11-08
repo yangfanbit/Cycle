@@ -98,7 +98,9 @@ PHASE_GOVERNANCE = {
                  "+ 新增信息边际",
         "r4_expansion": "market ≥ PRESENT 且 breadth ≥ PRESENT 且 narrative ≥ PRESENT",
         "forbidden": "明确禁止 `涨幅 > X ⇒ EXPANSION`；证据不足返回 UNKNOWN",
-        "ui_rule": "agreesWithDeclared = false 时 UI **必须并列显示**研究声明与推导值，不得静默取一",
+        "ui_rule": "agreesWithDeclared = false 时**内部评估视图**必须并列显示研究声明与推导值；"
+                   "v0.80 起默认页不展示阶段字段（静态旧声明随行情更新失去信息量），"
+                   "并列只发生在评估视图",
     },
     "update_policy": {
         "auto_change_phase": False,
@@ -110,6 +112,11 @@ PHASE_GOVERNANCE = {
         "triggers": ["research_days_old > 7 → REVIEW_STALE",
                      "产业阶段属扩散/广泛确认/峰值 且 20 日相对超额 < -10pp → DIVERGENCE_INDUSTRY_VS_MARKET"],
         "signals_are_not_verdicts": "信号只提示人工复核，不构成阶段变更、不参与验收",
+        "default_page": "v0.80 起默认页固定区改给「本周最新研究」（weekly_research_v0_1.json："
+                        "本周新增可核事件 + 对应板块 + 前置观察窗口），本产物的 5/10/20 日"
+                        "超额只作行情附注；阶段声明不在默认页出现",
+        "declaration_log": "阶段声明历史在 phase_declaration_log_v0_1.json（追加式、只增不改、"
+                           "带 PIT 锚点、不含结算字段），供内部评估视图与日后回测",
     },
 }
 
@@ -219,7 +226,8 @@ def build():
         con.close()
     return {
         "artifact": "theme_market", "artifact_version": "0.1", "generated_at": now,
-        "purpose": "把研究侧『产业机制阶段』与『市场层实测』并列；不自动改阶段",
+        "purpose": "在内部评估视图并列『产业机制阶段』与『市场层实测』；默认页只给行情附注"
+                   "与本周最新研究，不展示阶段声明；不自动改阶段",
         "as_of": as_of, "cadence": "WEEKLY",
         "phase_governance": PHASE_GOVERNANCE,
         "counts": {
@@ -239,6 +247,8 @@ def build():
             "★ 行情用 raw 未复权收盘、基准对齐 CSI300 交易日历；除权日可能有跳变。",
             "★ 信号只提示人工复核，不构成阶段变更，也不参与有效性验收。",
             "★ 周更只刷新行情与信号；改阶段必须走人工研究轮次并留痕（见 phase_governance.update_policy）。",
+            "★ v0.80 起阶段声明**不进默认页**：静态旧声明随行情更新失去信息量，已下沉到"
+            "内部评估视图的追加式声明日志（带 PIT 锚点、不含结算字段），供日后回测留痕。",
         ],
         "themes": themes,
         "source_sha256_16": {os.path.basename(CANDIDATES): _sha(CANDIDATES)},

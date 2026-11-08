@@ -66,10 +66,17 @@ $P research/scripts/build_new_theme_radar_v0_1.py --fetch --write --version <N>
 #    不得推测或编造两会、政策生效日、调样日等。无新事实时本步跳过。
 
 # ④ 重算前瞻排程（确定性派生缓存，原地更新，见 §5）
+$P research/scripts/build_theme_market_v0_1.py --write
 $P research/scripts/build_frontier_board_v0_1.py --write
+# ★ v0.80：本周研究视图读排程的 feed_window 并记录其 sha256 → 必须排在 board 之后
+$P research/scripts/build_weekly_research_v0_1.py --write
+# ★ v0.80：行情推进不得改写历史阶段声明；只有人工改档才跑 --write
+$P research/scripts/build_phase_declaration_log_v0_1.py --check
 
 # ⑤ 验证
+$P research/scripts/build_theme_market_v0_1.py --check
 $P research/scripts/build_frontier_board_v0_1.py --check
+$P research/scripts/build_weekly_research_v0_1.py --check
 npx tsc -b --force && npx vitest run && npx vite build
 ```
 
@@ -181,6 +188,13 @@ $P research/scripts/build_frontier_board_v0_1.py --write
 ## 11 · 可解释性与阶段语义（v0.79 补）
 
 > 完整方法见 `docs/BOARD_SEMANTICS_v0_1.md` 与 `docs/PHASE_GOVERNANCE_v0_1.md`。
+>
+> ★★ **v0.80 勘误（2026-11-08）**：本节第 3 条「当前研究主题的阶段是产业机制阶段，不是行情状态」
+> 的**治理结论不变**，但「并列展示」的位置变了 —— **默认页不再展示阶段声明**，
+> 改给本周最新研究（`weekly_research_v0_1.json`）与行情附注；阶段声明下沉到
+> 内部评估视图的**追加式声明日志**（`phase_declaration_log_v0_1.json`），供日后回测留痕。
+> 周更 SOP 相应增加两步（见 §3 第 ④ 步）；`REVIEW_STALE` / `DIVERGENCE_*` 信号保留，
+> 它们是「提醒人工写新声明」的触发器。原句保留不改，此处仅作展示层勘误。
 
 - **精选硬门槛加 `interpretable=true`**：名称含「其他 / 综合」的同花顺分类兜底桶（27 个）
   不进 Top 6，但统计不改、全量区可查、下方「待解释板块」区单独展示并给排除理由。

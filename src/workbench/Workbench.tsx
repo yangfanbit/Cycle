@@ -16,9 +16,10 @@ import { useMemo, useState } from 'react';
 import raw from '@current/workbench_index_v0_1.json';
 import frontierRaw from '@current/frontier_board_v0_1.json';
 import calendarRaw from '@current/event_calendar_v0_1.json';
-import type { EvalDoc, IndexDoc, PosthocEval, RecordType, UseRecord, WorkbenchItem } from './types';
+import weeklyRaw from '@current/weekly_research_v0_1.json';
+import type { DeclarationView, EvalDoc, IndexDoc, PosthocEval, RecordType, UseRecord, WorkbenchItem } from './types';
 import { FrontierView } from './FrontierView';
-import type { FrontierDoc, EventCalendar } from './FrontierView';
+import type { FrontierDoc, EventCalendar, WeeklyResearchDoc } from './FrontierView';
 import { EvalView } from './EvalView';
 import {
   downloadText, exportBundle, freezeRecord, loadEvals, loadRecords,
@@ -28,6 +29,7 @@ import {
 const doc = raw as unknown as IndexDoc;
 const frontierDoc = frontierRaw as unknown as FrontierDoc;
 const eventCalendar = calendarRaw as unknown as EventCalendar;
+const weeklyDoc = weeklyRaw as unknown as WeeklyResearchDoc;
 const TYPES: RecordType[] = ['LEAD', 'CONFIRM', 'REJECT', 'NO_LEAD', 'BLOCKED', 'UI_FRICTION'];
 const TYPE_LABEL: Record<RecordType, string> = {
   LEAD: '新线索', CONFIRM: '强化已有判断', REJECT: '放弃某方向',
@@ -60,6 +62,8 @@ export function Workbench() {
   const [evalNote, setEvalNote] = useState('');
 
   const [evalDoc, setEvalDoc] = useState<EvalDoc | null>(null);
+  // ★ v0.80：声明日志与评估基础数据一样按需加载 —— 默认包零阶段声明数据
+  const [declDoc, setDeclDoc] = useState<DeclarationView | null>(null);
   const [evalLoading, setEvalLoading] = useState(false);
   const [evalError, setEvalError] = useState<string | null>(null);
 
@@ -77,8 +81,13 @@ export function Workbench() {
     setEvalLoading(true);
     setEvalError(null);
     try {
-      const m = await import('@current/workbench_eval_basis_v0_1.json');
+      const [m, dm] = await Promise.all([
+        import('@current/workbench_eval_basis_v0_1.json'),
+        import('@current/phase_declaration_log_v0_1_view.json'),
+      ]);
       setEvalDoc((m as { default?: EvalDoc }).default ?? (m as unknown as EvalDoc));
+      setDeclDoc((dm as { default?: DeclarationView }).default
+        ?? (dm as unknown as DeclarationView));
     } catch (e) {
       setEvalError(String(e));
     } finally {
@@ -157,10 +166,11 @@ export function Workbench() {
       {view === 'eval' ? (
         evalLoading ? <p className="wb-loading">内部评估数据按需加载中…</p>
           : evalError ? <p className="wb-error">加载失败：{evalError}（可切回「研究」重试）</p>
-            : evalDoc ? <EvalView doc={evalDoc} />
+            : evalDoc && declDoc ? <EvalView doc={evalDoc} declarations={declDoc} />
               : <p className="wb-error">未加载到评估数据。</p>
       ) : view === 'frontier' ? (
-        <FrontierView doc={frontierDoc} cal={eventCalendar} onRecord={recordFromFrontier} />
+        <FrontierView doc={frontierDoc} cal={eventCalendar} weekly={weeklyDoc}
+                      onRecord={recordFromFrontier} />
       ) : (
         <main className="wb-main">
           <ol className="wb-steps" data-steps="1">

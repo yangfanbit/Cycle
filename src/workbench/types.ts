@@ -111,3 +111,36 @@ export interface PosthocEval {
   is_new_correspondence: 'YES' | 'NO' | 'UNVERIFIABLE';
   note: string;
 }
+
+/** v0.80 · 人工阶段声明的追加式记录（只在内部评估视图出现）。 */
+export interface DeclarationRow {
+  declaration_id: string;
+  candidate_id: string;
+  display_name: string;
+  declared_at: string;
+  declared_phase: string;
+  attention_state: string | null;
+  review_round: string | null;
+  review_status: string | null;
+  basis: string;
+  market_anchor: {
+    as_of: string;
+    basis: string;
+    price_data_available_at_declaration: string;
+    note: string;
+  };
+  supersedes: string | null;
+  source_ref: string;
+}
+
+export interface DeclarationView {
+  artifact: string;
+  artifact_version: string;
+  source: { file: string; sha256_16: string };
+  as_of: string;
+  append_only: boolean;
+  counts: Record<string, number>;
+  declarations: DeclarationRow[];
+  known_gaps: { id: string; detail: string; blocks: string }[];
+  limits: string[];
+}

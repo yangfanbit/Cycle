@@ -95,6 +95,42 @@ export interface EventCalendar {
   known_gaps: { id: string; detail: string; blocks: string }[];
 }
 
+/** v0.80 · 本周最新研究：事件 / 板块 / 前置观察窗口全部由 Research 侧投影，前端不重算。 */
+export interface WeeklyResearchEvent {
+  event_id: string; title: string; event_date: string; url: string | null;
+  publisher: string | null; doc_class: string | null;
+  nature_kind: string | null; status: string | null;
+  theme_tags: string[];
+  boards: { board_series: string | null; board_name: string | null;
+            relation: string | null; rationale: string }[];
+  observe_from: string | null; observation_status: string[];
+  caveat: string;
+}
+export interface WeeklyResearchDoc {
+  artifact: string; artifact_version: string; purpose: string;
+  cadence: string; track: string; as_of: string;
+  feed_window: [string, string];
+  rule: Record<string, string>;
+  counts: Record<string, number>;
+  directions: {
+    direction: string; series: string[]; scope_note: string;
+    candidate_ids: string[]; matched_events: WeeklyResearchEvent[];
+    no_match_reason: string | null;
+  }[];
+  theme_index: Record<string, {
+    direction: string; matched_count: number; no_match_reason: string | null;
+    candidate_ids_in_direction: string[];
+  }>;
+  other_verifiable_documents: {
+    count: number; by_nature: Record<string, number>; note: string;
+  };
+  observation_windows: {
+    date: string; label: string | null; candidate_id: string | null;
+    fact_vs_assumption: string | null; source: string | null;
+  }[];
+  limits: string[];
+}
+
 const GROUP_LABEL: Record<string, string> = {
   G1: '优先观察 · 值得关注', G2: '结构参照 · 可斟酌的决策点',
   G3: '结构参照（证据不足）', G4: '探索线索 / 仅留档',
@@ -276,9 +312,13 @@ function FrontierRow({ x, rank, rankReason, onRecord }: {
   );
 }
 
-export function FrontierView({ doc, cal, onRecord }: {
-  doc: FrontierDoc; cal: EventCalendar; onRecord: (title: string, id: string) => void;
+export function FrontierView({ doc, cal, weekly, onRecord }: {
+  doc: FrontierDoc; cal: EventCalendar; weekly: WeeklyResearchDoc;
+  onRecord: (title: string, id: string) => void;
 }) {
+  // ★ 研究侧字符串一律过 RichText：产物文案含 ** 强调标记，直接 String() 会把星号原样显示
+  const phaseGov = doc.theme_market.phase_governance as Record<string, Record<string, unknown>>;
+  const govText = (group: string, key: string) => String(phaseGov[group]?.[key] ?? '');
   const [group, setGroup] = useState('ALL');
   const [position, setPosition] = useState('ALL');
   const [keyword, setKeyword] = useState('');
@@ -412,47 +452,123 @@ export function FrontierView({ doc, cal, onRecord }: {
         )}
       </section>
 
-      {/* ── 二、当前研究主题（产业阶段 vs 市场实测）+ 专项假设 ── */}
+      {/* ── 二、当前研究主题：本周最新研究 + 行情附注 + 专项假设 ── */}
       <section className="fb-section" data-frontier-section="fixed">
-        <h2>二、当前研究主题与专项假设（{fixedIds.size} 条，固定区）</h2>
+        <h2>二、当前研究主题 · 本周最新研究（{fixedIds.size} 条，固定区）</h2>
         <p className="fb-hint">
-          这些对象在证据强度排序里排在末尾（无板块月度统计），
-          但属于人工设定的研究对象，<strong>不与精选 6 条竞争名额</strong>，固定展示。
-          ★ 阶段是<strong>产业机制阶段（研究侧人工声明）</strong>，不是行情状态；
-          市场层实测<strong>并列展示</strong>，不参与定档、不自动改阶段。
+          这些对象是人工设定的研究对象，<strong>不与精选 6 条竞争名额</strong>，固定展示。
+          ★ 默认页只给<strong>本周新增可核证据 / 对应板块 / 前置观察窗口</strong>与行情附注；
+          静态的产业机制阶段声明<strong>不在这里展示</strong>（行情持续更新时它没有信息量），
+          已下沉到<strong>内部评估视图</strong>的追加式声明日志，供日后回测留痕。
         </p>
-        <details className="fb-rule" data-phase-governance="1">
-          <summary>阶段当初怎么定的 / 后面怎么更新</summary>
-          <p><strong>研究侧声明</strong>：{String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.criteria ?? '')}</p>
-          <p><strong>最近一次评审</strong>：{String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.last_review ?? '')} ·
-             {String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.last_verdict ?? '')}</p>
-          <p><strong>为什么没跟行情变</strong>：{String((doc.theme_market.phase_governance.research_declared as Record<string, unknown>)?.market_exclusion ?? '')}</p>
-          <p><strong>产品端推导</strong>：{String((doc.theme_market.phase_governance.product_inferred as Record<string, unknown>)?.engine ?? '')}；
-             {String((doc.theme_market.phase_governance.product_inferred as Record<string, unknown>)?.forbidden ?? '')}</p>
-          <p><strong>后续更新 SOP</strong>：{String((doc.theme_market.phase_governance.update_policy as Record<string, unknown>)?.weekly ?? '')}
-             {String((doc.theme_market.phase_governance.update_policy as Record<string, unknown>)?.manual_round ?? '')}</p>
-          <p className="fb-caveat">信号只提示人工复核，不构成阶段变更，也不参与验收。</p>
+        <details className="fb-rule" data-declaration-policy="1">
+          <summary>阶段声明去哪了 / 口径与后续更新 SOP</summary>
+          <p><strong>为什么移走</strong>：产业机制阶段是人工研究轮次的判定，一次声明停在某个日期；
+            行情每周更新，静态旧声明放在首屏既不能说明当下，也容易被误读成行情状态。</p>
+          <p><strong>保留在哪</strong>：<code>phase_declaration_log_v0_1.json</code>（追加式、只增不改、
+            带 PIT 锚点、不含结算字段），可在「内部评估视图」按声明时间查看完整依据与当时的推理。</p>
+          <p><strong>研究侧声明</strong>：<RichText text={govText('research_declared', 'criteria')} /></p>
+          <p><strong>最近一次评审</strong>：<RichText text={govText('research_declared', 'last_review')} /> ·
+             <RichText text={govText('research_declared', 'last_verdict')} /></p>
+          <p><strong>为什么没跟行情变</strong>：<RichText text={govText('research_declared', 'market_exclusion')} /></p>
+          <p><strong>产品端推导</strong>：<RichText text={govText('product_inferred', 'engine')} />；
+             <RichText text={govText('product_inferred', 'forbidden')} /></p>
+          <p><strong>后续更新 SOP</strong>：<RichText text={govText('update_policy', 'weekly')} />
+             <RichText text={govText('update_policy', 'manual_round')} /></p>
+          <p><strong>默认页口径</strong>：<RichText text={govText('update_policy', 'default_page')} /></p>
+          <p><strong>声明日志</strong>：<RichText text={govText('update_policy', 'declaration_log')} /></p>
+          <p className="fb-caveat">信号只提示人工复核，不构成阶段变更，不参与定档、不自动改阶段，也不参与验收。</p>
         </details>
+
+        <div className="fb-weekly" data-weekly-research="1">
+          <h3>本周最新研究 · <code>{weekly.feed_window[0]}</code> → <code>{weekly.feed_window[1]}</code>
+            （机制轨 as_of {weekly.as_of}）</h3>
+          <p className="fb-hint">
+            本周窗口内 {weekly.counts.events_in_window} 条可核文件，其中{' '}
+            <strong>{weekly.counts.linked_to_direction}</strong> 条与已映射研究方向精确关联
+            （{weekly.counts.directions_with_match}/{weekly.counts.directions} 个方向命中）。
+            只按<strong>标题关键词</strong>关联板块，正文不建关联；未命中的方向如实写原因。
+          </p>
+          <ol className="fb-weekly-list">
+            {weekly.directions.map((d) => (
+              <li key={d.direction} data-weekly-direction={d.direction}
+                  data-weekly-match={d.matched_events.length}>
+                <div className="fb-weekly-head">
+                  <strong>{d.direction}</strong> · 板块 <code>{d.series.join(' / ') || '—'}</code>
+                  {' '}· 对应当前研究主题 {d.candidate_ids.length} 个
+                </div>
+                {d.matched_events.length > 0 ? (
+                  <ul className="fb-weekly-events">
+                    {d.matched_events.map((e) => (
+                      <li key={e.event_id} data-weekly-event={e.event_id}>
+                        <a href={e.url ?? '#'} target="_blank" rel="noreferrer">{e.title}</a>
+                        <span className="fb-date">{e.event_date} · {e.publisher ?? '来源未标注'}</span>
+                        <span className="fb-sub2">主题：{e.theme_tags.join(' / ') || '—'}</span>
+                        {e.boards.map((b) => (
+                          <span key={`${e.event_id}-${b.board_series}`} className="fb-sub2"
+                                data-weekly-board={b.board_series ?? ''}>
+                            {b.board_name}（{b.board_series} · {b.relation}）：{b.rationale}
+                          </span>
+                        ))}
+                        <span className="fb-caveat">
+                          观察起点 {e.observe_from ?? '—'} · 状态{' '}
+                          {e.observation_status.join(' / ') || '—'}；{e.caveat}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="fb-gap" data-weekly-gap={d.direction}>
+                    <RichText text={d.no_match_reason ?? '本周无可核新增事件（原因未标注）'} />
+                  </p>
+                )}
+              </li>
+            ))}
+          </ol>
+          <p className="fb-hint">
+            本周其它可核文件 {weekly.other_verifiable_documents.count} 条
+            （{Object.entries(weekly.other_verifiable_documents.by_nature)
+              .map(([k, v]) => `${k} ${v}`).join(' · ')}）：{weekly.other_verifiable_documents.note}
+          </p>
+          <h3>前置观察窗口（库内可核）</h3>
+          <ul className="fb-weekly-windows">
+            {weekly.observation_windows.map((w) => (
+              <li key={`${w.date}-${w.label}`} data-observation-window={w.date}>
+                <strong>{w.date}</strong> · {w.label ?? '—'}
+                <span className="fb-caveat"> {w.fact_vs_assumption ?? ''}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="fb-caveat">「值得关注 / 前置观察」= 研究起点，不是买卖点；具体买卖决策由你自行做出。</p>
+        </div>
+
         <div className="fb-fixed-group">
-          <h3>当前研究主题（{doc.theme_market.themes.length}）</h3>
+          <h3>当前研究主题（{doc.theme_market.themes.length}）· 本周研究与行情附注</h3>
           <ul className="fb-fixed">
             {doc.theme_market.themes.map((t) => (
-              <li key={t.candidate_id} data-fixed-row={t.candidate_id} data-phase={t.phase}
+              <li key={t.candidate_id} data-fixed-row={t.candidate_id}
                   className="fb-theme-row">
                 <div className="fb-theme-r1">
                   <button type="button" className="wb-linkbtn"
                           onClick={() => onRecord(t.display_name, t.candidate_id)}>{t.display_name}</button>
-                  <span className="fb-phase" data-industry-phase={t.phase}>
-                    产业机制阶段：<strong>{t.phase_label}</strong>（研究侧声明 {t.reviewed_at}，
-                    {t.research_days_old ?? '—'} 天前 · {t.review_status}）
+                  <span className="fb-weekly-link"
+                        data-weekly-theme-count={weekly.theme_index[t.candidate_id]?.matched_count ?? 0}>
+                    本周研究：{weekly.theme_index[t.candidate_id]
+                      ? `${weekly.theme_index[t.candidate_id].direction} · ${weekly.theme_index[t.candidate_id].matched_count} 条命中`
+                      : '当前采集范围未建立方向映射'}
                   </span>
                 </div>
+                {weekly.theme_index[t.candidate_id]?.no_match_reason && (
+                  <p className="fb-gap" data-weekly-theme-gap={t.candidate_id}>
+                    <RichText text={weekly.theme_index[t.candidate_id].no_match_reason ?? ''} />
+                  </p>
+                )}
                 <p className="fb-market" data-market-as-of={t.market_as_of}>
-                  市场层实测 as_of <code>{t.market_as_of}</code>（{t.stock_count} 只人工声明标的等权，相对沪深300）：
+                  行情附注 as_of <code>{t.market_as_of}</code>（{t.stock_count} 只人工声明标的等权，相对沪深300）：
                   5 日 <strong>{t.equal_weight['5']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
                   10 日 <strong>{t.equal_weight['10']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
                   20 日 <strong>{t.equal_weight['20']?.equal_weight_excess_pp ?? '—'} pp</strong>
-                  <span className="fb-caveat">（只是事实陈列，不参与定档、不预测未来）</span>
+                  <span className="fb-caveat">（只是事实陈列，不参与研究判断、不预测未来）</span>
                 </p>
                 {t.signals.map((sg) => (
                   <p key={sg.id} className="fb-signal" data-signal={sg.id}>
@@ -471,7 +587,7 @@ export function FrontierView({ doc, cal, onRecord }: {
                 <button type="button" className="wb-linkbtn"
                         onClick={() => onRecord(x.title, x.id)}>{x.title}</button>
                 <span className="fb-date">{POS_LABEL[x.time_position ?? ''] ?? x.time_position}</span>
-                {x.gap && <span className="fb-sub2">缺口：{x.gap}</span>}
+                {x.gap && <span className="fb-sub2">缺口：<RichText text={x.gap} /></span>}
               </li>
             ))}
           </ul>
@@ -495,25 +611,29 @@ export function FrontierView({ doc, cal, onRecord }: {
               return (
                 <div key={r.id} className="fb-excluded-row" data-excluded-row={r.id}>
                   <strong>{r.title}</strong> · <code>{r.id}</code>
-                  <p>{r.reason}</p>
-                  {e && <p className="fb-caveat">{e.classification_note}
-                    {e.source.member_count_current_snapshot != null
-                      ? ` 当前目录记录成分数 ${e.source.member_count_current_snapshot}（不是成员名单）。` : ''}
-                    {e.inferred_parent_sector?.parent
-                      ? ` 名称派生父级类目：「${e.inferred_parent_sector.parent}」大类下的兜底细分。` : ''}</p>}
+                  <p><RichText text={r.reason} /></p>
+                  {e && <p className="fb-caveat">
+                    <RichText text={[
+                      e.classification_note,
+                      e.source.member_count_current_snapshot != null
+                        ? ` 当前目录记录成分数 ${e.source.member_count_current_snapshot}（不是成员名单）。` : '',
+                      e.inferred_parent_sector?.parent
+                        ? ` 名称派生父级类目：「${e.inferred_parent_sector.parent}」大类下的兜底细分。` : '',
+                    ].join('')} /></p>}
                   {e?.research && (
                     <div className="fb-research" data-board-research={e.series_id}>
-                      <p><strong>已 research 的分类口径</strong>：{e.research.classification}
-                        {' '}业务类型：{e.research.observed_business_types.join(' / ')}。</p>
+                      <p><strong>已 research 的分类口径</strong>：
+                        <RichText text={`${e.research.classification} 业务类型：${e.research.observed_business_types.join(' / ')}。`} /></p>
                       <p>外部来源：<a href={e.research.external_source.url} target="_blank"
                         rel="noreferrer noopener">{e.research.external_source.publisher}
-                        {' '}{e.research.external_source.date}</a> —— {e.research.external_source.claim}</p>
+                        {' '}{e.research.external_source.date}</a> ——{' '}
+                        <RichText text={e.research.external_source.claim} /></p>
                       <p>示例个股（库内已校验存在，<strong>不是成分名单</strong>）：
                         {e.research.example_stocks_checked.map((x) => (
                           <span key={x.name}> {x.name}
                             {x.in_local_db ? <code>{x.series_id ?? ''}</code> : '（不在库内）'} ·</span>
                         ))}</p>
-                      <p className="fb-caveat">{e.research.note}</p>
+                      <p className="fb-caveat"><RichText text={e.research.note} /></p>
                     </div>
                   )}
                 </div>

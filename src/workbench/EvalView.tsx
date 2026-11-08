@@ -8,11 +8,14 @@
  *  · 有效性 = 研究增量（新线索率 / 耗时变化 / 事后可核性），不是行情超额。
  */
 import { useMemo, useState } from 'react';
-import type { EvalDoc } from './types';
+import { RichText } from '../components/RichText';
+import type { DeclarationView, EvalDoc } from './types';
 
 const PAGE = 40;
 
-export function EvalView({ doc }: { doc: EvalDoc }) {
+export function EvalView({ doc, declarations }: {
+  doc: EvalDoc; declarations?: DeclarationView;
+}) {
   const [q, setQ] = useState('');
   const [limit, setLimit] = useState(PAGE);
   const rows = useMemo(() => {
@@ -83,6 +86,53 @@ export function EvalView({ doc }: { doc: EvalDoc }) {
         <button type="button" className="wb-btn" onClick={() => setLimit(limit + PAGE)}>
           再显示 {PAGE} 行
         </button>
+      )}
+      {declarations && (
+        <section className="wb-decl" data-phase-declarations="1">
+          <h2>产业机制阶段声明时间线 · 事后回测留痕</h2>
+          <p className="wb-hint">
+            阶段声明是<strong>产业机制层的人工判定</strong>，不是行情状态。默认页不展示它
+            （行情持续更新时静态旧声明没有信息量）；这里按声明时间排列，每条带
+            <strong>当时可知信息的上界</strong>（PIT 锚点 = 声明日）。结算不写进声明，
+            事后核对另立一轮；日志<strong>只增不改</strong>，行情推进不改写历史声明。
+          </p>
+          <p className="wb-hint">
+            来源 <code>{declarations.source.file}</code> · sha256 前 16 位{' '}
+            <code>{declarations.source.sha256_16}</code> · as_of {declarations.as_of} ·{' '}
+            {declarations.counts.declarations} 条声明 /{' '}
+            {declarations.counts.review_rounds} 个研究轮次。
+            同轮同日的多主题声明不算独立观察，事后核对须先声明窗口与分母。
+          </p>
+          <ol className="wb-decl-list">
+            {declarations.declarations.map((d) => (
+              <li key={d.declaration_id} data-declaration-id={d.declaration_id}>
+                <div className="wb-decl-head">
+                  <strong>{d.display_name}</strong> · <code>{d.declared_phase}</code> · 声明日{' '}
+                  <code>{d.declared_at}</code> · {d.review_status ?? '—'}
+                </div>
+                <div className="wb-decl-anchor">
+                  PIT 锚点 <code>{d.market_anchor.as_of}</code>（{d.market_anchor.basis}） ·{' '}
+                  {d.supersedes ? `取代 ${d.supersedes}` : '首轮声明'} ·{' '}
+                  {d.market_anchor.price_data_available_at_declaration === 'NOT_RECORDED'
+                    ? '声明时行情截止日未单独落盘' : '声明时行情截止日已记录'}
+                </div>
+                <p><RichText text={d.basis} /></p>
+                <p className="wb-foot">来源：{d.source_ref}</p>
+              </li>
+            ))}
+          </ol>
+          <details className="wb-decl-gaps">
+            <summary>已知缺口与边界</summary>
+            <ul>
+              {declarations.known_gaps.map((g) => (
+                <li key={g.id}>
+                  <strong>{g.id}</strong>：<RichText text={g.detail} />
+                  <span className="wb-foot"> · 限制：{g.blocks}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </section>
       )}
       <p className="wb-foot">
         数据来源：<code>{doc.source.file}</code> · sha256 前 16 位{' '}
