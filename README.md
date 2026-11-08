@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.80**（2026-11-08：默认页**移除静态「产业机制阶段（研究侧声明 2026-10-23）」**，改给**本周最新研究**（本周新增可核事件 + 对应板块 + 前置观察窗口），5/10/20 日超额降为行情附注；原阶段考虑保留为**追加式声明日志**（只增不改 / PIT 锚点 = 声明日 / 结算字段分离），只在内部评估视图展示，供日后回测留痕；**治理结论不变**）· 版本基线：v0.76 `13bff25` · v0.78 `d7ba10f` · 上一轮 v0.79 主交付 `8d502c8` / CI `42346030235` success · 本轮交付信息以收尾提交为准 · 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
+| **当前主线** | **v0.80**（2026-11-08：默认页**移除静态「产业机制阶段（研究侧声明 2026-10-23）」**，改给**本周最新研究**（本周新增可核事件 + 对应板块 + 前置观察窗口），5/10/20 日超额降为行情附注；原阶段考虑保留为**追加式声明日志**（只增不改 / PIT 锚点 = 声明日 / 结算字段分离），只在内部评估视图展示，供日后回测留痕；**治理结论不变**）· 版本基线：v0.76 `13bff25` · v0.78 `d7ba10f` · 上一轮 v0.79 主交付 `8d502c8` / CI `42346030235` success · 主交付 **`861b31f`** · CI **`42468050815` success** · 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
