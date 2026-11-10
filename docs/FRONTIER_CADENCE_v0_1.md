@@ -76,6 +76,9 @@ $P research/scripts/build_weekly_research_v0_1.py --write
 # ★ v0.81：新增研究轮次后要 --write 追加新声明（旧声明逐字保留）；
 #   只跑 --check 会因 source.round_sources 的 sha256 变化而 FAIL。行情推进本身不改声明。
 $P research/scripts/build_phase_declaration_log_v0_1.py --write
+# ★ v0.82：默认页主题挖掘读雷达最新版 + 排程 feed_window + 行情库 → 必须排在 ②⑤ 之后；
+#   它依赖 1.3 GB history_scan.db，CI 无大库时 --check 会自动显式 SKIP 行情复算并打印范围。
+$P research/scripts/build_theme_discovery_v0_1.py --write
 
 # ⑥ 验证
 $P research/scripts/check_research_round_v0_1.py --check
@@ -83,8 +86,14 @@ $P research/scripts/build_phase_declaration_log_v0_1.py --check
 $P research/scripts/build_theme_market_v0_1.py --check
 $P research/scripts/build_frontier_board_v0_1.py --check
 $P research/scripts/build_weekly_research_v0_1.py --check
+$P research/scripts/build_theme_discovery_v0_1.py --check
 npx tsc -b --force && npx vitest run && npx vite build
 ```
+
+★★ **v0.82 信息架构**：默认页「二」是 `theme_discovery_v0_1.json`（**当前主题挖掘**），
+不再放历史研究对象。`weekly_research` / `research_round` / `phase_declaration_log` 仍照常产出，
+但只在**「档案（待复核）」**入口与**内部评估视图**消费；周更不改它们的治理含义。
+**主题挖掘不预设主题集合**，词表扩表必须先过构建时双向校验（序列必须在库内存在）。
 
 ★ 周更**不重算** `pattern_discovery` / `candidate_digest` → 统计轨 `as_of` 保持上季度值，
 这是设计如此，不是数据缺失。页面必须能看出两轨日期不同。

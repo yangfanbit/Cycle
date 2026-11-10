@@ -106,6 +106,71 @@ export interface WeeklyResearchEvent {
   observe_from: string | null; observation_status: string[];
   caveat: string;
 }
+/** v0.82 · 当前主题挖掘：候选由本周可核信息 + 客观行情结构聚合，不预设主题集合。 */
+export interface ThemeDiscoveryEvent {
+  event_id: string; title: string; event_date: string; url: string | null;
+  publisher: string | null; doc_class: string | null; nature_kind: string | null;
+  first_seen: string | null; keyword: string; relation: string; rationale: string;
+}
+export interface ThemeRole {
+  event_id: string; security_id: string | null; name: string | null; role: string;
+  identified_date: string; support_level: string | null;
+  evidence_url: string | null; source_record: string | null;
+}
+export interface ThemeCandidate {
+  theme_id: string; section: string; time_position: string;
+  board_series: string; board_name: string; board_kind: string | null;
+  theme_tag: string; interpretable: boolean;
+  information_side: {
+    event_count: number; independent_publishers: number; independent_urls: number;
+    first_seen_in_window: boolean; events: ThemeDiscoveryEvent[];
+  };
+  market_side: {
+    board_name?: string; board_kind?: string; as_of?: string; common_trading_days?: number;
+    excess_5_pp?: number | null; excess_10_pp?: number | null; excess_20_pp?: number | null;
+    amount_ratio_20_over_prev20?: number | null; volatility_20_pct?: number | null;
+    market_gate_hit?: boolean; status?: string; reason?: string;
+  };
+  market_gate_hit: boolean;
+  constituent_availability: { status: string; reason: string };
+  why_now: string; caveat: string; gap_reason: string | null;
+  historical_roles: {
+    status: string; theme_id: string | null; event_count: number; role_count: number;
+    roles: ThemeRole[]; reason?: string; note?: string;
+  };
+}
+export interface ThemeMarketRowLite {
+  board_series: string; board_name: string; board_kind: string;
+  excess_20_pp: number | null; amount_ratio_20_over_prev20: number | null;
+  volatility_20_pct: number | null; note: string;
+}
+export interface ThemeDiscoveryDoc {
+  artifact: string; artifact_version: string; purpose: string;
+  as_of: string; market_as_of: string; feed_window: [string, string];
+  rules: Record<string, unknown>;
+  counts: Record<string, unknown>;
+  sections: {
+    G1: { label: string; items: ThemeCandidate[] };
+    G2: { label: string; items: ThemeMarketRowLite[] };
+    G3: { label: string; items: ThemeCandidate[] };
+    G4: { label: string; items: []; total: number; reason: string;
+          excluded_interpretable_false: { count: number; reason: string } };
+  };
+  historical_role_archive: {
+    purpose: string;
+    theme_families: {
+      theme_id: string; event_count: number; pit_safe_role_count: number;
+      roles: ThemeRole[]; roles_truncated: boolean;
+    }[];
+    total_events: number; total_pit_safe_roles: number; note: string;
+  };
+  observation_windows: {
+    date: string; label: string | null; candidate_id: string | null;
+    fact_vs_assumption: string | null;
+  }[];
+  limits: string[];
+  source_sha256_16: Record<string, string>;
+}
 export interface ResearchRoundView {
   round_id: string; as_of: string; source_file: string;
   counts: Record<string, unknown>;
@@ -148,11 +213,44 @@ export interface WeeklyResearchDoc {
   limits: string[];
 }
 
-const VERDICT_LABEL: Record<string, string> = {
-  MAINTAINED_WITH_NEW_LEAD: '维持 · 新线索',
-  MAINTAINED_ADJACENT_EVIDENCE: '维持 · 相邻证据',
-  MAINTAINED_COVERAGE_GAP: '维持 · 覆盖缺口',
-};
+/** 单个主题候选卡：信息侧证据 + 行情侧客观结构量 + 成分可得性 + 历史角色状态。 */
+function ThemeCard({ c }: { c: ThemeCandidate }) {
+  const ms = c.market_side;
+  return (
+    <li data-theme-candidate={c.theme_id} data-theme-section={c.section}
+        data-theme-board={c.board_series}>
+      <div>
+        <strong>{c.board_name}</strong> <code>{c.board_series}</code> · {c.theme_tag} · {c.time_position}
+      </div>
+      <p className="fb-round-reason"><RichText text={c.why_now} /></p>
+      <span className="fb-sub2">
+        行情附注（历史描述，非预测）：5 日 {ms.excess_5_pp ?? '—'} pp ·
+        10 日 {ms.excess_10_pp ?? '—'} pp · 20 日 {ms.excess_20_pp ?? '—'} pp ·
+        放量 {ms.amount_ratio_20_over_prev20 ?? '—'} × · 波动 {ms.volatility_20_pct ?? '—'} %
+        {ms.status === 'NO_MARKET_DATA' && <> · <RichText text={ms.reason ?? ''} /></>}
+      </span>
+      <span className="fb-sub2">
+        成分：{c.constituent_availability.status} —{' '}
+        <RichText text={c.constituent_availability.reason} />
+      </span>
+      <ul className="fb-discovery-events">
+        {c.information_side.events.map((e) => (
+          <li key={e.event_id} data-theme-event={e.event_id}>
+            <a href={e.url ?? '#'} target="_blank" rel="noreferrer">{e.title}</a>
+            <span className="fb-date">{e.event_date} · {e.publisher ?? '来源未标注'} · {e.doc_class ?? '—'}</span>
+            <span className="fb-sub2">{e.relation}（关键词「{e.keyword}」）：
+              <RichText text={e.rationale} /></span>
+          </li>
+        ))}
+      </ul>
+      <span className="fb-caveat">
+        历史角色：{c.historical_roles.status}
+        {c.historical_roles.reason
+          ? <> — <RichText text={c.historical_roles.reason} /></> : null}
+      </span>
+    </li>
+  );
+}
 
 const GROUP_LABEL: Record<string, string> = {
   G1: '优先观察 · 值得关注', G2: '结构参照 · 可斟酌的决策点',
@@ -333,13 +431,12 @@ function FrontierRow({ x, rank, rankReason, onRecord }: {
   );
 }
 
-export function FrontierView({ doc, cal, weekly, onRecord }: {
-  doc: FrontierDoc; cal: EventCalendar; weekly: WeeklyResearchDoc;
+export function FrontierView({ doc, cal, td, onRecord }: {
+  doc: FrontierDoc; cal: EventCalendar;
+  td: ThemeDiscoveryDoc;
   onRecord: (title: string, id: string) => void;
 }) {
   // ★ 研究侧字符串一律过 RichText：产物文案含 ** 强调标记，直接 String() 会把星号原样显示
-  const phaseGov = doc.theme_market.phase_governance as Record<string, Record<string, unknown>>;
-  const govText = (group: string, key: string) => String(phaseGov[group]?.[key] ?? '');
   const [group, setGroup] = useState('ALL');
   const [position, setPosition] = useState('ALL');
   const [keyword, setKeyword] = useState('');
@@ -369,8 +466,6 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
   const restRows = showAll
     ? rows.filter((x) => !topIds.has(x.id) && !fixedIds.has(x.id))
     : [];
-  const fixedRows = (ids: string[]) => ids.map((id) => byId.get(id)).filter(
-    (x): x is FrontierItem => Boolean(x));
   const positions = [...new Set(doc.items.map((x) => x.time_position ?? ''))].filter(Boolean).sort();
   // ★ 关键词同时过滤机制轨事件（否则「医用耗材」这类只在政策事件里出现的词查不到）
   const feedRows = useMemo(() => {
@@ -457,177 +552,76 @@ export function FrontierView({ doc, cal, weekly, onRecord }: {
         )}
       </section>
 
-      {/* ── 二、当前研究主题：本周最新研究 + 行情附注 + 专项假设 ── */}
-      <section className="fb-section" data-frontier-section="fixed">
-        <h2>二、当前研究主题 · 本周最新研究（{fixedIds.size} 条，固定区）</h2>
-        <p className="fb-hint">固定区 · <strong>不与精选 6 条竞争名额</strong> · 本周研究 + 行情附注；阶段声明在评估视图</p>
-        <details className="fb-rule" data-declaration-policy="1">
-          <summary>阶段声明去哪了 / 口径与后续更新 SOP</summary>
-          <p><strong>为什么移走</strong>：产业机制阶段是人工研究轮次的判定，一次声明停在某个日期；
-            行情每周更新，静态旧声明放在首屏既不能说明当下，也容易被误读成行情状态。</p>
-          <p><strong>保留在哪</strong>：<code>phase_declaration_log_v0_1.json</code>（追加式、只增不改、
-            带 PIT 锚点、不含结算字段），可在「内部评估视图」按声明时间查看完整依据与当时的推理。</p>
-          <p><strong>研究侧声明</strong>：<RichText text={govText('research_declared', 'criteria')} /></p>
-          <p><strong>最近一次评审</strong>：<RichText text={govText('research_declared', 'last_review')} /> ·
-             <RichText text={govText('research_declared', 'last_verdict')} /></p>
-          <p><strong>为什么没跟行情变</strong>：<RichText text={govText('research_declared', 'market_exclusion')} /></p>
-          <p><strong>产品端推导</strong>：<RichText text={govText('product_inferred', 'engine')} />；
-             <RichText text={govText('product_inferred', 'forbidden')} /></p>
-          <p><strong>后续更新 SOP</strong>：<RichText text={govText('update_policy', 'weekly')} />
-             <RichText text={govText('update_policy', 'manual_round')} /></p>
-          <p><strong>默认页口径</strong>：<RichText text={govText('update_policy', 'default_page')} /></p>
-          <p><strong>声明日志</strong>：<RichText text={govText('update_policy', 'declaration_log')} /></p>
-          <p className="fb-caveat">信号只提示人工复核，不构成阶段变更，不参与定档、不自动改阶段，也不参与验收。</p>
-        </details>
+      {/* ── 二、当前主题挖掘（数据驱动，不预设主题集合） ── */}
+      <section className="fb-section" data-frontier-section="discovery">
+        <h2>二、当前主题挖掘 · as_of <code>{td.as_of}</code></h2>
+        <p className="fb-hint">
+          扫描 <strong>{String(td.counts.scanned_series)}</strong> 个板块/篮子序列 ·
+          行情结构命中 <strong>{String(td.counts.market_gate_hit)}</strong> ·
+          本周 <strong>{String(td.counts.events_in_window)}</strong> 条可核文件 /
+          <strong>{String(td.counts.events_with_board_link)}</strong> 个事件命中词表 ·
+          <strong>{String(td.counts.board_link_entries)}</strong> 条板块关联 ·
+          主题候选 <strong>{String(td.counts.theme_candidates)}</strong> 个
+        </p>
 
-        <div className="fb-weekly" data-weekly-research="1">
-          <h3>本周最新研究 · <code>{weekly.feed_window[0]}</code> → <code>{weekly.feed_window[1]}</code>
-            （机制轨 as_of {weekly.as_of}）</h3>
-          <p className="fb-hint">
-            本周 {weekly.counts.events_in_window} 条可核文件 ·{' '}
-            <strong>{weekly.counts.linked_to_direction}</strong> 条精确关联 ·{' '}
-            {weekly.counts.directions_with_match}/{weekly.counts.directions} 方向命中 · 未命中写原因
-          </p>
-          <ol className="fb-weekly-list">
-            {weekly.directions.map((d) => (
-              <li key={d.direction} data-weekly-direction={d.direction}
-                  data-weekly-match={d.matched_events.length}>
-                <div className="fb-weekly-head">
-                  <strong>{d.direction}</strong> · 板块 <code>{d.series.join(' / ') || '—'}</code>
-                  {' '}· 对应当前研究主题 {d.candidate_ids.length} 个
-                </div>
-                {d.matched_events.length > 0 ? (
-                  <ul className="fb-weekly-events">
-                    {d.matched_events.map((e) => (
-                      <li key={e.event_id} data-weekly-event={e.event_id}>
-                        <a href={e.url ?? '#'} target="_blank" rel="noreferrer">{e.title}</a>
-                        <span className="fb-date">{e.event_date} · {e.publisher ?? '来源未标注'}</span>
-                        <span className="fb-sub2">主题：{e.theme_tags.join(' / ') || '—'}</span>
-                        {e.boards.map((b) => (
-                          <span key={`${e.event_id}-${b.board_series}`} className="fb-sub2"
-                                data-weekly-board={b.board_series ?? ''}>
-                            {b.board_name}（{b.board_series} · {b.relation}）：{b.rationale}
-                          </span>
-                        ))}
-                        <span className="fb-caveat">
-                          观察起点 {e.observe_from ?? '—'} · {e.observation_status.join(' / ') || '—'}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="fb-gap" data-weekly-gap={d.direction}>
-                    <RichText text={d.no_match_reason ?? '本周无可核新增事件（原因未标注）'} />
-                  </p>
-                )}
-              </li>
-            ))}
-          </ol>
-          <p className="fb-hint">
-            本周其它可核文件 {weekly.other_verifiable_documents.count} 条
-            （{Object.entries(weekly.other_verifiable_documents.by_nature)
-              .map(([k, v]) => `${k} ${v}`).join(' · ')}）：{weekly.other_verifiable_documents.note}
-          </p>
-          <h3>前置观察窗口（库内可核）</h3>
-          <ul className="fb-weekly-windows">
-            {weekly.observation_windows.map((w) => (
-              <li key={`${w.date}-${w.label}`} data-observation-window={w.date}>
-                <strong>{w.date}</strong> · {w.label ?? '—'}
-                <span className="fb-caveat"> {w.fact_vs_assumption ?? ''}</span>
-              </li>
-            ))}
+        <div className="fb-discovery" data-theme-discovery="1">
+          <h3>信息已到、行情未动 · 提前观察（{td.sections.G3.items.length}）</h3>
+          <ul className="fb-watch">
+            {td.sections.G3.items.map((c) => <ThemeCard key={c.theme_id} c={c} />)}
+          </ul>
+          <h3>双轨命中（{td.sections.G1.items.length}）</h3>
+          <ul className="fb-watch">
+            {td.sections.G1.items.map((c) => <ThemeCard key={c.theme_id} c={c} />)}
           </ul>
         </div>
 
-        {weekly.research_round && (
-          <div className="fb-round" data-research-round="1">
-            <h3>本轮研究 · <code>{weekly.research_round.round_id}</code>
-              （{weekly.research_round.as_of}）</h3>
-            <p className="fb-hint">
-              {weekly.research_round.theme_reviews.length} 主题复查 ·{' '}
-              {weekly.research_round.new_watch_directions.length} 条新增观察方向 ·{' '}
-              {String(weekly.research_round.counts.sources ?? '—')} 来源
-            </p>
-            <ul className="fb-watch">
-              {weekly.research_round.new_watch_directions.map((w) => (
-                <li key={w.direction_id} data-watch-direction={w.direction_id}>
-                  <div><strong>{w.title}</strong>
-                    <span className="fb-date">{w.time_position} · {w.window_hint}</span></div>
-                  <span className="fb-sub2">
-                    {w.board_series
-                      ? `${w.board_name ?? ''}（${w.board_series} · ${w.board_mapping_status}）`
-                      : <>未映射板块：<RichText text={w.board_mapping_reason} /></>}
-                  </span>
-                  <p className="fb-round-reason"><RichText text={w.reason} /></p>
-                  <a href={w.event.url} target="_blank" rel="noreferrer">{w.event.title}</a>
-                  <span className="fb-caveat"> {w.event.date} · <RichText text={w.caveat} /></span>
-                </li>
-              ))}
-            </ul>
-            <details className="fb-rule" data-theme-reviews="1">
-              <summary>逐主题复查（{weekly.research_round.theme_reviews.length}）</summary>
+        <details className="fb-rule" data-market-only="1">
+          <summary>仅行情结构 · {td.sections.G2.items.length} 条（无可核信息侧理由）</summary>
+          <ul className="fb-market-only">
+            {td.sections.G2.items.map((x) => (
+              <li key={x.board_series} data-market-only-row={x.board_series}>
+                <strong>{x.board_name}</strong> <code>{x.board_series}</code> ·
+                20 日超额 {x.excess_20_pp ?? '—'} pp ·
+                放量 {x.amount_ratio_20_over_prev20 ?? '—'} × ·
+                波动 {x.volatility_20_pct ?? '—'} %
+              </li>
+            ))}
+          </ul>
+        </details>
+        <p className="fb-gap" data-insufficient="1">
+          证据不足 {td.sections.G4.total} 条：<RichText text={td.sections.G4.reason} />
+          {' '}另有 <strong data-excluded-fuzzy={td.sections.G4.excluded_interpretable_false.count}>
+            {td.sections.G4.excluded_interpretable_false.count} 条不可解释杂项桶
+          </strong>行情命中但按可解释性门槛排除：<RichText
+            text={td.sections.G4.excluded_interpretable_false.reason} />
+        </p>
+
+        <details className="fb-rule" data-role-archive="1">
+          <summary>历史 PIT 角色档案 · {td.historical_role_archive.total_pit_safe_roles} 条 /
+            {' '}{td.historical_role_archive.theme_families.length} 族</summary>
+          <p className="fb-caveat"><RichText text={td.historical_role_archive.note} /></p>
+          {td.historical_role_archive.theme_families.map((f) => (
+            <div key={f.theme_id} className="fb-role-family" data-role-family={f.theme_id}>
+              <strong>{f.theme_id}</strong> · {f.event_count} 事件 / {f.pit_safe_role_count} 条角色
               <ul>
-                {weekly.research_round.theme_reviews.map((r) => (
-                  <li key={r.candidate_id} data-theme-review={r.candidate_id}>
-                    <strong>{r.display_name}</strong> · {VERDICT_LABEL[r.verdict] ?? r.verdict} ·
-                    新证据 {r.new_evidence_count} · 下一步：
-                    <RichText text={r.next_research_question} />
+                {f.roles.map((r) => (
+                  <li key={`${r.event_id}-${r.security_id}`} data-role-row={r.security_id ?? ''}>
+                    {r.name ?? r.security_id} · {r.role} · {r.identified_date} · {r.support_level ?? '—'}
+                    {r.evidence_url
+                      ? <> · <a href={r.evidence_url} target="_blank" rel="noreferrer">来源</a></>
+                      : ' · 盘面观察（无外部 URL）'}
                   </li>
                 ))}
               </ul>
-            </details>
-          </div>
-        )}
+              {f.roles_truncated && <span className="fb-caveat">仅列前 6 条（完整档案见产物）</span>}
+            </div>
+          ))}
+        </details>
 
-        <div className="fb-fixed-group">
-          <h3>当前研究主题（{doc.theme_market.themes.length}）· 本周研究与行情附注</h3>
-          <ul className="fb-fixed">
-            {doc.theme_market.themes.map((t) => (
-              <li key={t.candidate_id} data-fixed-row={t.candidate_id}
-                  className="fb-theme-row">
-                <div className="fb-theme-r1">
-                  <button type="button" className="wb-linkbtn"
-                          onClick={() => onRecord(t.display_name, t.candidate_id)}>{t.display_name}</button>
-                  <span className="fb-weekly-link"
-                        data-weekly-theme-count={weekly.theme_index[t.candidate_id]?.matched_count ?? 0}>
-                    本周研究：{weekly.theme_index[t.candidate_id]
-                      ? `${weekly.theme_index[t.candidate_id].direction} · ${weekly.theme_index[t.candidate_id].matched_count} 条命中`
-                      : '当前采集范围未建立方向映射'}
-                  </span>
-                </div>
-                {weekly.theme_index[t.candidate_id]?.no_match_reason && (
-                  <p className="fb-gap" data-weekly-theme-gap={t.candidate_id}>
-                    <RichText text={weekly.theme_index[t.candidate_id].no_match_reason ?? ''} />
-                  </p>
-                )}
-                <p className="fb-market" data-market-as-of={t.market_as_of}>
-                  行情附注 as_of <code>{t.market_as_of}</code>（{t.stock_count} 只人工声明标的等权，相对沪深300）：
-                  5 日 <strong>{t.equal_weight['5']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
-                  10 日 <strong>{t.equal_weight['10']?.equal_weight_excess_pp ?? '—'} pp</strong> ·
-                  20 日 <strong>{t.equal_weight['20']?.equal_weight_excess_pp ?? '—'} pp</strong>
-                </p>
-                {t.signals.map((sg) => (
-                  <p key={sg.id} className="fb-signal" data-signal={sg.id}>
-                    <strong>{sg.id}</strong>：{sg.detail}
-                  </p>
-                ))}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="fb-fixed-group">
-          <h3>专项假设（{doc.fixed_sections.special_hypotheses.length}）</h3>
-          <ul className="fb-fixed">
-            {fixedRows(doc.fixed_sections.special_hypotheses).map((x) => (
-              <li key={x.id} data-fixed-row={x.id}>
-                <button type="button" className="wb-linkbtn"
-                        onClick={() => onRecord(x.title, x.id)}>{x.title}</button>
-                <span className="fb-date">{POS_LABEL[x.time_position ?? ''] ?? x.time_position}</span>
-                {x.gap && <span className="fb-sub2">缺口：<RichText text={x.gap} /></span>}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <p className="fb-hint">
+          历史人工研究对象、本周研究明细、研究轮次复查与专项假设已移至<strong>「档案（待复核）」</strong>入口，不占默认工作台。
+        </p>
+
       </section>
 
       {/* ── 三、待解释板块（排除出精选，但不删除） ── */}

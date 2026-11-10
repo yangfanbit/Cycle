@@ -1,0 +1,1883 @@
+{
+ "artifact": "theme_discovery",
+ "artifact_version": "0.1",
+ "as_of": "2026-11-06",
+ "counts": {
+  "board_link_entries": 8,
+  "by_section": {
+   "G1": 1,
+   "G2": 103,
+   "G3": 4,
+   "G4": 296
+  },
+  "dropped_mappings": 0,
+  "events_in_window": 22,
+  "events_with_board_link": 5,
+  "excluded_fuzzy_gate_hit": 10,
+  "fuzzy_boards_excluded": 27,
+  "historical_role_families": 8,
+  "market_gate_hit": 114,
+  "no_link_reasons": {
+   "BACKGROUND_OR_UNCLASSIFIED": 11,
+   "GENERIC_POLICY_NO_TITLE_KEYWORD": 6
+  },
+  "scanned_series": 414,
+  "series_with_market_structure": 399,
+  "theme_candidates": 5
+ },
+ "dropped_mappings": [],
+ "feed_window": [
+  "2026-10-30",
+  "2026-11-06"
+ ],
+ "feed_window_source": "frontier_board_v0_1.json:tracks.mechanism.feed_window（同源，不另算）",
+ "historical_role_archive": {
+  "note": "★ 全部是既有历史记录，带识别日与来源；不是当前标的判断、不是当前材料、不构成推荐。只取 pit_safe == True，事后信息未当事前证据。按历史题材族组织，★ 不把某个族硬贴到当前主题（同轴才映射，见 historical_roles 字段）。",
+  "purpose": "历史同类事件里的 PIT 角色档案（合规替代材料，按历史题材族组织）",
+  "theme_families": [
+   {
+    "event_count": 6,
+    "pit_safe_role_count": 15,
+    "roles": [
+     {
+      "event_id": "AUTO-2019-ADAS",
+      "evidence_url": "https://m.jiemian.com/article/3518938.html",
+      "identified_date": "2019-09-20",
+      "name": "亚太股份",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "YATAI",
+      "source_record": "research/research/c2/point_in_time_auto_2019_adas.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "AUTO-2023-NOA",
+      "evidence_url": null,
+      "identified_date": "2023-07-04",
+      "name": "浙江世宝",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "ZHEJIANGSHISHI",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "AUTO-2023-NOA",
+      "evidence_url": null,
+      "identified_date": "2023-07-04",
+      "name": "众泰汽车",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "ZTELEVISION",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "AUTO-2023-NOA",
+      "evidence_url": null,
+      "identified_date": "2023-07-11",
+      "name": "万安科技",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "WANAN",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "AUTO-2023-HUAWEI",
+      "evidence_url": null,
+      "identified_date": "2023-10-26",
+      "name": "江淮汽车",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "JAC",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "AUTO-2023-HUAWEI",
+      "evidence_url": null,
+      "identified_date": "2023-10-26",
+      "name": "铭科精技",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "MINGKEJINGJI",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     }
+    ],
+    "roles_truncated": true,
+    "theme_id": "AUTO_INTELLIGENCE"
+   },
+   {
+    "event_count": 5,
+    "pit_safe_role_count": 6,
+    "roles": [
+     {
+      "event_id": "CONS-2019-BAIJIU-CORE",
+      "evidence_url": "https://jiu.ifeng.com/c/7tC94yxLlLc",
+      "identified_date": "2020-01-13",
+      "name": "山西汾酒",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "FENJIU",
+      "source_record": "research/research/c2/point_in_time_cons_2019_baijiu.csv",
+      "support_level": "MEDIA_NAMED_PERIOD_STAT"
+     },
+     {
+      "event_id": "CONS-2019-BAIJIU-CORE",
+      "evidence_url": "https://jiu.ifeng.com/c/7tC94yxLlLc",
+      "identified_date": "2020-01-13",
+      "name": "贵州茅台",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "MOUTAI",
+      "source_record": "research/research/c2/point_in_time_cons_2019_baijiu.csv",
+      "support_level": "MEDIA_NAMED_PERIOD_STAT"
+     },
+     {
+      "event_id": "CONS-2019-BAIJIU-CORE",
+      "evidence_url": "https://jiu.ifeng.com/c/7tC94yxLlLc",
+      "identified_date": "2020-01-13",
+      "name": "五粮液",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "WULIANGYE",
+      "source_record": "research/research/c2/point_in_time_cons_2019_baijiu.csv",
+      "support_level": "MEDIA_NAMED_PERIOD_STAT"
+     },
+     {
+      "event_id": "CONS-2020-DUTYFREE",
+      "evidence_url": null,
+      "identified_date": "2020-07-06",
+      "name": "中国中免",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "CTGDF",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "CONS-2022-SERVICE-REBOUND",
+      "evidence_url": "http://m.ce.cn/bwzg/202212/14/t20221214_38288742.shtml",
+      "identified_date": "2022-12-14",
+      "name": "首旅酒店",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "BTG",
+      "source_record": "research/research/c2/point_in_time_cons_2022_service_rebound.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "CONS-2022-SERVICE-REBOUND",
+      "evidence_url": "http://m.ce.cn/bwzg/202212/14/t20221214_38288742.shtml",
+      "identified_date": "2022-12-14",
+      "name": "锦江酒店",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "JINJIANG",
+      "source_record": "research/research/c2/point_in_time_cons_2022_service_rebound.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     }
+    ],
+    "roles_truncated": false,
+    "theme_id": "CONSUMER_SEASON"
+   },
+   {
+    "event_count": 6,
+    "pit_safe_role_count": 31,
+    "roles": [
+     {
+      "event_id": "FLU-2017-AVIAN",
+      "evidence_url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "identified_date": "2017-02-15",
+      "name": "达安基因",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "DAAN-002030",
+      "source_record": "research/current/participant_evidence_v0_4.json",
+      "support_level": "REPORT_BACKED"
+     },
+     {
+      "event_id": "FLU-2017-AVIAN",
+      "evidence_url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "identified_date": "2017-02-15",
+      "name": "海王生物",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "HAIWANG-000078",
+      "source_record": "research/current/participant_evidence_v0_4.json",
+      "support_level": "REPORT_BACKED"
+     },
+     {
+      "event_id": "FLU-2017-AVIAN",
+      "evidence_url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "identified_date": "2017-02-15",
+      "name": "华兰生物",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "HUALAN-002007",
+      "source_record": "research/current/participant_evidence_v0_4.json",
+      "support_level": "REPORT_BACKED"
+     },
+     {
+      "event_id": "FLU-2017-AVIAN",
+      "evidence_url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "identified_date": "2017-02-15",
+      "name": "莱茵生物",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "LAYNE-002166",
+      "source_record": "research/current/participant_evidence_v0_4.json",
+      "support_level": "REPORT_BACKED"
+     },
+     {
+      "event_id": "FLU-2017-AVIAN",
+      "evidence_url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "identified_date": "2017-02-15",
+      "name": "联环药业",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "LIANHUAN-600513",
+      "source_record": "research/current/participant_evidence_v0_4.json",
+      "support_level": "REPORT_BACKED"
+     },
+     {
+      "event_id": "FLU-2017-AVIAN",
+      "evidence_url": "https://finance.sina.com.cn/stock/jsy/2017-02-15/doc-ifyameqr7529138.shtml",
+      "identified_date": "2017-02-15",
+      "name": "鲁抗医药",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "LUKANG-600789",
+      "source_record": "research/current/participant_evidence_v0_4.json",
+      "support_level": "REPORT_BACKED"
+     }
+    ],
+    "roles_truncated": true,
+    "theme_id": "FLU"
+   },
+   {
+    "event_count": 2,
+    "pit_safe_role_count": 3,
+    "roles": [
+     {
+      "event_id": "MEDIA-2018-GAMELICENSE",
+      "evidence_url": "https://www.toutiao.com/article/6637564467888521735/",
+      "identified_date": "2018-12-22",
+      "name": "完美世界",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "PERFECTWORLD",
+      "source_record": "research/research/c2/point_in_time_media_2018_gamelicense.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "MEDIA-2018-GAMELICENSE",
+      "evidence_url": "https://www.nbd.com.cn/articles/1284167",
+      "identified_date": "2018-12-22",
+      "name": "三七互娱",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "SANQI",
+      "source_record": "research/research/c2/point_in_time_media_2018_gamelicense.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "MEDIA-2021-METAVERSE",
+      "evidence_url": null,
+      "identified_date": "2021-09-08",
+      "name": "中青宝",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "ZHONGQINGBAO",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     }
+    ],
+    "roles_truncated": false,
+    "theme_id": "MEDIA"
+   },
+   {
+    "event_count": 4,
+    "pit_safe_role_count": 4,
+    "roles": [
+     {
+      "event_id": "POWER-2022-SUMMER",
+      "evidence_url": "https://stock.stockstar.com/RB2022070400001285.shtml",
+      "identified_date": "2022-07-04",
+      "name": "华电国际",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "HUADIAN",
+      "source_record": "research/research/c2/point_in_time_power_2022_summer.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "POWER-2022-SUMMER",
+      "evidence_url": "https://finance.sina.com.cn/roll/2022-07-08/doc-imizmscv0638224.shtml",
+      "identified_date": "2022-07-08",
+      "name": "建投能源",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "JIANTONENERGY",
+      "source_record": "research/research/c2/point_in_time_power_2022_summer.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "POWER-2023-SUMMER",
+      "evidence_url": "https://news.sohu.com/a/680013706_115377",
+      "identified_date": "2023-05-29",
+      "name": "华电国际",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "HUADIAN",
+      "source_record": "research/research/c2/point_in_time_power_2023_summer.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "POWER-2023-SUMMER",
+      "evidence_url": "https://m.cls.cn/detail/1397722",
+      "identified_date": "2023-07-07",
+      "name": "天富能源",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "TIANFUENERGY",
+      "source_record": "research/research/c2/point_in_time_power_2023_summer.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     }
+    ],
+    "roles_truncated": false,
+    "theme_id": "POWER_SUMMER"
+   },
+   {
+    "event_count": 2,
+    "pit_safe_role_count": 8,
+    "roles": [
+     {
+      "event_id": "RES-2020-RAREEARTH",
+      "evidence_url": null,
+      "identified_date": "2021-01-21",
+      "name": "中国稀土",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "CNRAREEARTH",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "RES-2020-RAREEARTH",
+      "evidence_url": null,
+      "identified_date": "2021-01-21",
+      "name": "广晟有色",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "GUANGSHENG",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "RES-2020-RAREEARTH",
+      "evidence_url": null,
+      "identified_date": "2021-02-03",
+      "name": "盛和资源",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "SHENGHE",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "RES-2020-RAREEARTH",
+      "evidence_url": null,
+      "identified_date": "2021-07-12",
+      "name": "北方稀土",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "NPRARE",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "RES-2024-GOLD",
+      "evidence_url": "http://finance.sina.com.cn/jjxw/2024-04-12/doc-inarpwqz0404504.shtml",
+      "identified_date": "2024-04-12",
+      "name": "赤峰黄金",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "CFGOLD",
+      "source_record": "research/research/c2/point_in_time_res_2024_gold.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "RES-2024-GOLD",
+      "evidence_url": "http://finance.sina.com.cn/jjxw/2024-04-12/doc-inarpwqz0404504.shtml",
+      "identified_date": "2024-04-12",
+      "name": "山东黄金",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "SDGOLD",
+      "source_record": "research/research/c2/point_in_time_res_2024_gold.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     }
+    ],
+    "roles_truncated": true,
+    "theme_id": "RESOURCE_METAL"
+   },
+   {
+    "event_count": 1,
+    "pit_safe_role_count": 2,
+    "roles": [
+     {
+      "event_id": "ROBOTICS-2023-HUMANOID",
+      "evidence_url": "https://m.hx168.com.cn/article/edbe84159b1a7195fd545e0e36d8d79c.html",
+      "identified_date": "2023-08-29",
+      "name": "步科股份",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "KINCO",
+      "source_record": "research/research/c2/point_in_time_robotics_2023_humanoid.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "ROBOTICS-2023-HUMANOID",
+      "evidence_url": "https://m.gelonghui.com/p/638819",
+      "identified_date": "2023-08-29",
+      "name": "绿的谐波",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "LEADERDRIVE",
+      "source_record": "research/research/c2/point_in_time_robotics_2023_humanoid.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     }
+    ],
+    "roles_truncated": false,
+    "theme_id": "ROBOTICS"
+   },
+   {
+    "event_count": 7,
+    "pit_safe_role_count": 15,
+    "roles": [
+     {
+      "event_id": "SEMI-2019-LOCALIZATION",
+      "evidence_url": null,
+      "identified_date": "2019-07-16",
+      "name": "卓胜微",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "MAXSCEND",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "SEMI-2019-LOCALIZATION",
+      "evidence_url": null,
+      "identified_date": "2020-05-06",
+      "name": "兆易创新",
+      "role": "PIT_MARKET_OBSERVED",
+      "security_id": "GIGADEVICE",
+      "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+      "support_level": "AUTO_RULE_MET"
+     },
+     {
+      "event_id": "SEMI-2021-EQUIPMENT",
+      "evidence_url": "https://www.jiemian.com/article/5897578.html",
+      "identified_date": "2021-04-01",
+      "name": "中微公司",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "AMEC",
+      "source_record": "research/research/c2/point_in_time_semi_2021_equipment.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "SEMI-2021-EQUIPMENT",
+      "evidence_url": "https://www.jiemian.com/article/5897578.html",
+      "identified_date": "2021-04-01",
+      "name": "中芯国际",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "SMIC",
+      "source_record": "research/research/c2/point_in_time_semi_2021_equipment.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "SEMI-2020-CHIPSHORTAGE",
+      "evidence_url": "https://baijiahao.baidu.com/s?id=1695894956538246621&wfr=spider&for=pc",
+      "identified_date": "2021-04-02",
+      "name": "长电科技",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "JCET",
+      "source_record": "research/research/c2/point_in_time_semi_2020_chipshortage.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     },
+     {
+      "event_id": "SEMI-2020-CHIPSHORTAGE",
+      "evidence_url": "https://baijiahao.baidu.com/s?id=1695894956538246621&wfr=spider&for=pc",
+      "identified_date": "2021-04-02",
+      "name": "卓胜微",
+      "role": "PIT_MEDIA_NAMED_MOVER",
+      "security_id": "MAXSCEND",
+      "source_record": "research/research/c2/point_in_time_semi_2020_chipshortage.csv",
+      "support_level": "MEDIA_NAMED_SAME_DAY"
+     }
+    ],
+    "roles_truncated": true,
+    "theme_id": "SEMICONDUCTOR_AI"
+   }
+  ],
+  "total_events": 33,
+  "total_pit_safe_roles": 84
+ },
+ "limits": [
+  "★ 主题候选由**本周可核信息 + 客观行情结构**聚合产生，不预设主题集合；两轨并列、不做因果拼接。",
+  "★ 行情量（相对超额 / 放量比值 / 波动率）是**历史描述统计**，不是预测，不构成买卖点。",
+  "★ 词表是显式映射，构建时校验板块序列必须在库内存在；不做正文匹配、不补造关联。",
+  "★ 「采集范围未发现」≠「已核实没有」，逐条写原因与下一步。",
+  "★ G1–G4 是**互斥类型分组，不是排序**；不产出 score / ranking / probability / prediction。",
+  "★ 计数单位是**去重事件数**，不是关联条目数；一条事件标题可命中多个关键词，两类数量分别登记。",
+  "★ G1–G4 与「不可解释杂项桶中行情命中被排除」合计覆盖全部扫描序列，没有静默丢失。",
+  "★ 个股层只给历史同类事件里的 PIT 角色记录（带来源与识别日），不给当前标的判断、不给推荐标签。",
+  "★ 不可解释的杂项桶（board_semantics.interpretable=false）不进 G1/G3，单列规模与原因。"
+ ],
+ "market_as_of": "2026-11-06",
+ "observation_windows": [
+  {
+   "candidate_id": "CAND-ZODIAC-2027",
+   "date": "2026-12-15",
+   "fact_vs_assumption": "ASSUMPTION（窗口为人工设定的观察起点，不是行情启动日）",
+   "label": "前置观察窗口开始"
+  },
+  {
+   "candidate_id": "CAND-ZODIAC-2027",
+   "date": "2027-02-06",
+   "fact_vs_assumption": "ASSUMPTION（窗口为人工设定的观察起点，不是行情启动日）",
+   "label": "农历新年 / 峰值"
+  },
+  {
+   "candidate_id": "CAND-ZODIAC-2027",
+   "date": "2027-03-05",
+   "fact_vs_assumption": "ASSUMPTION（窗口为人工设定的观察起点，不是行情启动日）",
+   "label": "前置观察窗口结束"
+  }
+ ],
+ "purpose": "从本周可核市场信息 + 客观行情结构聚合出当前值得研究的概念板块与理由；不预设主题集合",
+ "rules": {
+  "benchmark": "CSI300（raw 收盘，dashed 日期）；板块序列日期归一后按基准交易日对齐",
+  "count_units": {
+   "board_link_entries": "事件×关键词产生的**关联条目数**（≥ 事件数）",
+   "events_with_board_link": "窗口内**去重事件数**（一个事件标题可命中多个关键词）",
+   "invariant": "events_with_board_link + sum(no_link_reasons.values()) == events_in_window",
+   "no_link_reasons": "窗口内**未命中词表的事件数**，按原因互斥分组"
+  },
+  "lookback_trading_days": 280,
+  "market_gate": {
+   "abs_excess20_pp_gt": 5.0,
+   "amount_ratio_20_over_prev20_gt": 1.5,
+   "basis": "399 个可算序列实测：|20 日超额|>5pp 命中 113 条，短期放量>1.5x 命中 9 条，取并集后 114 条（28.6%）。成交额代理不用「历史分位」——成交量长期增长会让近 20 日均值几乎恒为历史最高（实测 176/399 处于 >90% 分位），那是趋势不是异动。",
+   "logic": "OR"
+  },
+  "matching": "只匹配事件标题；词表显式映射；不做正文匹配、不做公司名子串匹配、不做模糊关联",
+  "min_common_trading_days": 60,
+  "not_a_ranking": "G1–G4 是互斥类型分组，不是优先级排序；分组内按 board_series 字典序，确定性",
+  "not_a_recommendation": "所有行情量是历史描述统计，不是预测、不是打分、不构成买卖点；历史角色是既有 PIT 记录，不是当前标的判断",
+  "pit": "历史角色只取 pit_safe == True；事后信息不当事前证据；每条带来源与识别日",
+  "section_coverage": "G1–G4 + excluded_fuzzy_gate_hit = scanned_series，互斥且全覆盖；名称不可解释的杂项桶即使行情命中也不单列主题，另计规模与原因",
+  "sections": {
+   "G1": "双轨命中：有可核信息侧关联 + 行情结构命中门槛",
+   "G2": "仅行情结构：无可核信息侧理由，只给规模与紧凑列表（默认折叠）",
+   "G3": "仅信息侧：有可核官方文件关联但行情未命中 —— 提前观察的重点",
+   "G4": "证据不足：两侧都不命中，只给规模与原因，不逐条铺开"
+  }
+ },
+ "sections": {
+  "G1": {
+   "items": [
+    {
+     "board_kind": "industry_board",
+     "board_name": "文化传媒",
+     "board_series": "BK881164",
+     "caveat": "标题/日期/URL 为可核事实；与板块的关联是显式词表映射，不证明因果；行情量是历史描述统计，不是预测。",
+     "constituent_availability": {
+      "reason": "行业板块是编制指数，库内无历史成分名单（ACCESS_GATED）；如实标注，不编造代表股",
+      "status": "NO_HISTORICAL_CONSTITUENTS"
+     },
+     "gap_reason": null,
+     "historical_roles": {
+      "event_count": 2,
+      "note": "★ 这些是历史同类事件里的 PIT 角色记录（带识别日与来源），不是当前标的判断、不是推荐；事后信息未当事前证据。",
+      "role_count": 3,
+      "roles": [
+       {
+        "event_id": "MEDIA-2018-GAMELICENSE",
+        "evidence_url": "https://www.toutiao.com/article/6637564467888521735/",
+        "identified_date": "2018-12-22",
+        "name": "完美世界",
+        "role": "PIT_MEDIA_NAMED_MOVER",
+        "security_id": "PERFECTWORLD",
+        "source_record": "research/research/c2/point_in_time_media_2018_gamelicense.csv",
+        "support_level": "MEDIA_NAMED_SAME_DAY"
+       },
+       {
+        "event_id": "MEDIA-2018-GAMELICENSE",
+        "evidence_url": "https://www.nbd.com.cn/articles/1284167",
+        "identified_date": "2018-12-22",
+        "name": "三七互娱",
+        "role": "PIT_MEDIA_NAMED_MOVER",
+        "security_id": "SANQI",
+        "source_record": "research/research/c2/point_in_time_media_2018_gamelicense.csv",
+        "support_level": "MEDIA_NAMED_SAME_DAY"
+       },
+       {
+        "event_id": "MEDIA-2021-METAVERSE",
+        "evidence_url": null,
+        "identified_date": "2021-09-08",
+        "name": "中青宝",
+        "role": "PIT_MARKET_OBSERVED",
+        "security_id": "ZHONGQINGBAO",
+        "source_record": "research/database/market_data.db（market_daily.raw / .adjusted）",
+        "support_level": "AUTO_RULE_MET"
+       }
+      ],
+      "status": "PIT_SAFE_ROLES",
+      "theme_id": "MEDIA"
+     },
+     "information_side": {
+      "event_count": 2,
+      "events": [
+       {
+        "doc_class": "STANDARD_PROCEDURE",
+        "event_date": "2026-11-02",
+        "event_id": "EVT-MIIT_KJS-5e88e56b5f49",
+        "first_seen": null,
+        "keyword": "元宇宙",
+        "nature_kind": "NEW_CATALYST",
+        "publisher": "工业和信息化部 · 科技司",
+        "rationale": "数字内容管理要求属文化传媒/数字内容监管范围，为代理关联",
+        "relation": "PROXY",
+        "title": "关于公开征求《元宇宙 通用服务 数字内容管理要求》等7项行业标准报批意见的公示",
+        "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_dbf4f2bb9759468a8a9707f7a5f97b7b.html"
+       },
+       {
+        "doc_class": "STANDARD_PROCEDURE",
+        "event_date": "2026-11-02",
+        "event_id": "EVT-MIIT_KJS-5e88e56b5f49",
+        "first_seen": null,
+        "keyword": "数字内容",
+        "nature_kind": "NEW_CATALYST",
+        "publisher": "工业和信息化部 · 科技司",
+        "rationale": "数字内容管理要求属文化传媒/数字内容监管范围，为代理关联",
+        "relation": "PROXY",
+        "title": "关于公开征求《元宇宙 通用服务 数字内容管理要求》等7项行业标准报批意见的公示",
+        "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_dbf4f2bb9759468a8a9707f7a5f97b7b.html"
+       }
+      ],
+      "first_seen_in_window": false,
+      "independent_publishers": 1,
+      "independent_urls": 1
+     },
+     "interpretable": true,
+     "market_gate_hit": true,
+     "market_side": {
+      "amount_ratio_20_over_prev20": 1.441,
+      "as_of": "2026-11-06",
+      "board_kind": "industry_board",
+      "board_name": "文化传媒",
+      "common_trading_days": 280,
+      "excess_10_pp": 5.18,
+      "excess_20_pp": 9.31,
+      "excess_5_pp": 12.09,
+      "market_gate_hit": true,
+      "volatility_20_pct": 3.26
+     },
+     "section": "G1",
+     "theme_id": "TD-BK881164-e412b022",
+     "theme_tag": "数字内容管理",
+     "time_position": "IN_WINDOW",
+     "why_now": "本周 2 条官方文件标题命中「数字内容管理」，映射 BK881164（文化传媒，PROXY）；行情结构已命中门槛，属双轨并列"
+    }
+   ],
+   "label": "双轨命中：有可核信息侧关联 + 行情结构命中门槛"
+  },
+  "G2": {
+   "items": [
+    {
+     "amount_ratio_20_over_prev20": 0.462,
+     "board_kind": "industry_board",
+     "board_name": "种植业与林业",
+     "board_series": "BK881101",
+     "excess_20_pp": -10.34,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.05
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.793,
+     "board_kind": "industry_board",
+     "board_name": "煤炭开采加工",
+     "board_series": "BK881105",
+     "excess_20_pp": -6.32,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.57
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.743,
+     "board_kind": "industry_board",
+     "board_name": "化学原料",
+     "board_series": "BK881108",
+     "excess_20_pp": -6.49,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.55
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.879,
+     "board_kind": "industry_board",
+     "board_name": "化学制品",
+     "board_series": "BK881109",
+     "excess_20_pp": -6.33,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.05
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.872,
+     "board_kind": "industry_board",
+     "board_name": "半导体",
+     "board_series": "BK881121",
+     "excess_20_pp": -8.53,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 4.16
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.625,
+     "board_kind": "industry_board",
+     "board_name": "通信设备",
+     "board_series": "BK881129",
+     "excess_20_pp": -13.52,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.3
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.767,
+     "board_kind": "industry_board",
+     "board_name": "造纸",
+     "board_series": "BK881137",
+     "excess_20_pp": -5.4,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.4
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.409,
+     "board_kind": "industry_board",
+     "board_name": "公路铁路运输",
+     "board_series": "BK881149",
+     "excess_20_pp": 7.01,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.0
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.064,
+     "board_kind": "industry_board",
+     "board_name": "机场航运",
+     "board_series": "BK881151",
+     "excess_20_pp": 10.74,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.17
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.583,
+     "board_kind": "industry_board",
+     "board_name": "房地产",
+     "board_series": "BK881153",
+     "excess_20_pp": -7.59,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.78
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.385,
+     "board_kind": "industry_board",
+     "board_name": "银行",
+     "board_series": "BK881155",
+     "excess_20_pp": 8.65,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.99
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.699,
+     "board_kind": "industry_board",
+     "board_name": "工业金属",
+     "board_series": "BK881168",
+     "excess_20_pp": -5.65,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.83
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.813,
+     "board_kind": "industry_board",
+     "board_name": "贵金属",
+     "board_series": "BK881169",
+     "excess_20_pp": -5.79,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.34
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.582,
+     "board_kind": "industry_board",
+     "board_name": "电子化学品",
+     "board_series": "BK881172",
+     "excess_20_pp": -11.18,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.73
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.819,
+     "board_kind": "industry_board",
+     "board_name": "教育",
+     "board_series": "BK881178",
+     "excess_20_pp": -6.23,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.53
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.538,
+     "board_kind": "industry_board",
+     "board_name": "橡胶制品",
+     "board_series": "BK881266",
+     "excess_20_pp": -6.15,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.91
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.035,
+     "board_kind": "industry_board",
+     "board_name": "能源金属",
+     "board_series": "BK881267",
+     "excess_20_pp": -8.88,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.4
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.991,
+     "board_kind": "industry_board",
+     "board_name": "工程机械",
+     "board_series": "BK881268",
+     "excess_20_pp": 5.52,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.95
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.713,
+     "board_kind": "industry_board",
+     "board_name": "元件",
+     "board_series": "BK881270",
+     "excess_20_pp": -17.03,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.88
+    },
+    {
+     "amount_ratio_20_over_prev20": 2.093,
+     "board_kind": "industry_board",
+     "board_name": "白酒",
+     "board_series": "BK881273",
+     "excess_20_pp": 15.49,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.32
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.925,
+     "board_kind": "industry_board",
+     "board_name": "影视院线",
+     "board_series": "BK881274",
+     "excess_20_pp": 16.91,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.73
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.625,
+     "board_kind": "industry_board",
+     "board_name": "游戏",
+     "board_series": "BK881275",
+     "excess_20_pp": 11.64,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.42
+    },
+    {
+     "amount_ratio_20_over_prev20": 2.257,
+     "board_kind": "industry_board",
+     "board_name": "电机",
+     "board_series": "BK881277",
+     "excess_20_pp": 4.33,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.91
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.181,
+     "board_kind": "industry_board",
+     "board_name": "光伏设备",
+     "board_series": "BK881279",
+     "excess_20_pp": 7.19,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.84
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.149,
+     "board_kind": "industry_board",
+     "board_name": "电池",
+     "board_series": "BK881281",
+     "excess_20_pp": -7.73,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.62
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.79,
+     "board_kind": "industry_board",
+     "board_name": "环保设备",
+     "board_series": "BK881284",
+     "excess_20_pp": -6.15,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.31
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.383,
+     "board_kind": "industry_board",
+     "board_name": "种子生产",
+     "board_series": "BK884001",
+     "excess_20_pp": -10.5,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.2
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.374,
+     "board_kind": "industry_board",
+     "board_name": "粮食种植",
+     "board_series": "BK884002",
+     "excess_20_pp": 6.38,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.76
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.77,
+     "board_kind": "industry_board",
+     "board_name": "林业",
+     "board_series": "BK884004",
+     "excess_20_pp": -11.96,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.62
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.72,
+     "board_kind": "industry_board",
+     "board_name": "油气开采",
+     "board_series": "BK884016",
+     "excess_20_pp": 7.6,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.1
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.821,
+     "board_kind": "industry_board",
+     "board_name": "油服工程",
+     "board_series": "BK884018",
+     "excess_20_pp": 9.3,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.19
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.554,
+     "board_kind": "industry_board",
+     "board_name": "无机盐",
+     "board_series": "BK884024",
+     "excess_20_pp": -8.2,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.38
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.302,
+     "board_kind": "industry_board",
+     "board_name": "氮肥",
+     "board_series": "BK884026",
+     "excess_20_pp": -6.04,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.19
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.392,
+     "board_kind": "industry_board",
+     "board_name": "磷肥及磷化工",
+     "board_series": "BK884027",
+     "excess_20_pp": -5.19,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.74
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.817,
+     "board_kind": "industry_board",
+     "board_name": "涂料油墨",
+     "board_series": "BK884030",
+     "excess_20_pp": -8.74,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.0
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.619,
+     "board_kind": "industry_board",
+     "board_name": "氟化工",
+     "board_series": "BK884036",
+     "excess_20_pp": -7.4,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.83
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.742,
+     "board_kind": "industry_board",
+     "board_name": "粘胶",
+     "board_series": "BK884043",
+     "excess_20_pp": 5.96,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.3
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.783,
+     "board_kind": "industry_board",
+     "board_name": "改性塑料",
+     "board_series": "BK884048",
+     "excess_20_pp": -11.88,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.02
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.434,
+     "board_kind": "industry_board",
+     "board_name": "炭黑",
+     "board_series": "BK884051",
+     "excess_20_pp": -6.64,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.87
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.44,
+     "board_kind": "industry_board",
+     "board_name": "铜",
+     "board_series": "BK884054",
+     "excess_20_pp": -10.72,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.9
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.45,
+     "board_kind": "industry_board",
+     "board_name": "铅锌",
+     "board_series": "BK884055",
+     "excess_20_pp": -7.35,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.79
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.879,
+     "board_kind": "industry_board",
+     "board_name": "磁性材料",
+     "board_series": "BK884057",
+     "excess_20_pp": -6.18,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.34
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.538,
+     "board_kind": "industry_board",
+     "board_name": "玻璃玻纤",
+     "board_series": "BK884059",
+     "excess_20_pp": -12.97,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.87
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.618,
+     "board_kind": "industry_board",
+     "board_name": "装饰园林",
+     "board_series": "BK884065",
+     "excess_20_pp": -7.77,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.96
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.833,
+     "board_kind": "industry_board",
+     "board_name": "专业工程",
+     "board_series": "BK884068",
+     "excess_20_pp": -5.23,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.29
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.492,
+     "board_kind": "industry_board",
+     "board_name": "磨具磨料",
+     "board_series": "BK884071",
+     "excess_20_pp": -14.03,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.53
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.538,
+     "board_kind": "industry_board",
+     "board_name": "制冷空调设备",
+     "board_series": "BK884073",
+     "excess_20_pp": -7.41,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.01
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.045,
+     "board_kind": "industry_board",
+     "board_name": "纺织服装设备",
+     "board_series": "BK884076",
+     "excess_20_pp": -8.64,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.24
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.132,
+     "board_kind": "industry_board",
+     "board_name": "印刷包装机械",
+     "board_series": "BK884081",
+     "excess_20_pp": -5.24,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.3
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.8,
+     "board_kind": "industry_board",
+     "board_name": "楼宇设备",
+     "board_series": "BK884083",
+     "excess_20_pp": -6.41,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.85
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.808,
+     "board_kind": "industry_board",
+     "board_name": "输变电设备",
+     "board_series": "BK884088",
+     "excess_20_pp": -5.46,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.6
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.696,
+     "board_kind": "industry_board",
+     "board_name": "分立器件",
+     "board_series": "BK884090",
+     "excess_20_pp": -23.73,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.0
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.934,
+     "board_kind": "industry_board",
+     "board_name": "半导体材料",
+     "board_series": "BK884091",
+     "excess_20_pp": -23.49,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.8
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.814,
+     "board_kind": "industry_board",
+     "board_name": "印制电路板",
+     "board_series": "BK884092",
+     "excess_20_pp": -21.63,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.98
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.549,
+     "board_kind": "industry_board",
+     "board_name": "被动元件",
+     "board_series": "BK884093",
+     "excess_20_pp": -16.33,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.48
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.669,
+     "board_kind": "industry_board",
+     "board_name": "面板",
+     "board_series": "BK884094",
+     "excess_20_pp": -12.13,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.95
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.835,
+     "board_kind": "industry_board",
+     "board_name": "光学元件",
+     "board_series": "BK884096",
+     "excess_20_pp": -14.86,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.86
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.775,
+     "board_kind": "industry_board",
+     "board_name": "消费电子零部件及组装",
+     "board_series": "BK884098",
+     "excess_20_pp": -9.62,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.49
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.251,
+     "board_kind": "industry_board",
+     "board_name": "空调",
+     "board_series": "BK884113",
+     "excess_20_pp": 6.31,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.05
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.647,
+     "board_kind": "industry_board",
+     "board_name": "家电零部件",
+     "board_series": "BK884116",
+     "excess_20_pp": -7.02,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.9
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.899,
+     "board_kind": "industry_board",
+     "board_name": "彩电",
+     "board_series": "BK884117",
+     "excess_20_pp": -8.83,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.55
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.704,
+     "board_kind": "industry_board",
+     "board_name": "调味发酵品",
+     "board_series": "BK884124",
+     "excess_20_pp": 7.66,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.05
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.094,
+     "board_kind": "industry_board",
+     "board_name": "乳品",
+     "board_series": "BK884125",
+     "excess_20_pp": 6.9,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.95
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.166,
+     "board_kind": "industry_board",
+     "board_name": "棉纺",
+     "board_series": "BK884128",
+     "excess_20_pp": -5.13,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.5
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.364,
+     "board_kind": "industry_board",
+     "board_name": "饰品",
+     "board_series": "BK884141",
+     "excess_20_pp": -5.25,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.57
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.821,
+     "board_kind": "industry_board",
+     "board_name": "火电",
+     "board_series": "BK884146",
+     "excess_20_pp": 5.44,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.17
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.295,
+     "board_kind": "industry_board",
+     "board_name": "水电",
+     "board_series": "BK884147",
+     "excess_20_pp": 5.92,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.27
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.83,
+     "board_kind": "industry_board",
+     "board_name": "热力",
+     "board_series": "BK884149",
+     "excess_20_pp": -6.16,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.53
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.866,
+     "board_kind": "industry_board",
+     "board_name": "港口",
+     "board_series": "BK884153",
+     "excess_20_pp": 9.03,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.06
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.36,
+     "board_kind": "industry_board",
+     "board_name": "高速公路",
+     "board_series": "BK884154",
+     "excess_20_pp": 13.23,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.98
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.363,
+     "board_kind": "industry_board",
+     "board_name": "铁路运输",
+     "board_series": "BK884155",
+     "excess_20_pp": 12.07,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.84
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.871,
+     "board_kind": "industry_board",
+     "board_name": "机场",
+     "board_series": "BK884156",
+     "excess_20_pp": 8.67,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.88
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.893,
+     "board_kind": "industry_board",
+     "board_name": "航空运输",
+     "board_series": "BK884157",
+     "excess_20_pp": 7.35,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.16
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.613,
+     "board_kind": "industry_board",
+     "board_name": "百货零售",
+     "board_series": "BK884160",
+     "excess_20_pp": 5.18,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.06
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.344,
+     "board_kind": "industry_board",
+     "board_name": "酒店",
+     "board_series": "BK884167",
+     "excess_20_pp": 5.55,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.36
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.572,
+     "board_kind": "industry_board",
+     "board_name": "电视广播",
+     "board_series": "BK884172",
+     "excess_20_pp": 8.05,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.94
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.574,
+     "board_kind": "industry_board",
+     "board_name": "出版",
+     "board_series": "BK884176",
+     "excess_20_pp": 13.6,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.66
+    },
+    {
+     "amount_ratio_20_over_prev20": 1.652,
+     "board_kind": "industry_board",
+     "board_name": "啤酒",
+     "board_series": "BK884189",
+     "excess_20_pp": 8.22,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.27
+    },
+    {
+     "amount_ratio_20_over_prev20": 0.94,
+     "board_kind": "industry_board",
+     "board_name": "仪器仪表",
+     "board_series": "BK884192",
+     "excess_20_pp": -10.58,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.35
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "QFII重仓",
+     "board_series": "CPT_QFIIzc",
+     "excess_20_pp": 5.56,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.97
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "白酒概念",
+     "board_series": "CPT_bjgn",
+     "excess_20_pp": 8.69,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.65
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "保险重仓",
+     "board_series": "CPT_bxzc",
+     "excess_20_pp": 6.06,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.81
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "超大盘",
+     "board_series": "CPT_cdp",
+     "excess_20_pp": 7.96,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.72
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "超级细菌",
+     "board_series": "CPT_cjxj",
+     "excess_20_pp": 5.72,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.62
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "触摸屏",
+     "board_series": "CPT_cmp",
+     "excess_20_pp": -5.31,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.53
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "电解液",
+     "board_series": "CPT_djy",
+     "excess_20_pp": -9.64,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.18
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "钒电池",
+     "board_series": "CPT_fdc",
+     "excess_20_pp": -6.29,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.81
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "仿制药",
+     "board_series": "CPT_fzy",
+     "excess_20_pp": 5.18,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.23
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "高校背景",
+     "board_series": "CPT_gxbj",
+     "excess_20_pp": -7.13,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.81
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "华为概念",
+     "board_series": "CPT_hwgn",
+     "excess_20_pp": -6.58,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.88
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "基金重仓",
+     "board_series": "CPT_jjzc",
+     "excess_20_pp": 6.69,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.8
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "宽带提速",
+     "board_series": "CPT_kdts",
+     "excess_20_pp": -11.11,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 3.16
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "锂矿",
+     "board_series": "CPT_lk",
+     "excess_20_pp": -5.47,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.01
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "民营医院",
+     "board_series": "CPT_myyy",
+     "excess_20_pp": 5.04,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.43
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "前海概念",
+     "board_series": "CPT_qhgn",
+     "excess_20_pp": -5.06,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.74
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "氢能源",
+     "board_series": "CPT_qny",
+     "excess_20_pp": -5.85,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.87
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "水产品",
+     "board_series": "CPT_scp1",
+     "excess_20_pp": 7.12,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.23
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "石墨烯",
+     "board_series": "CPT_smx",
+     "excess_20_pp": -7.92,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.0
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "三沙概念",
+     "board_series": "CPT_ssgn",
+     "excess_20_pp": -6.92,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.89
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "水域改革",
+     "board_series": "CPT_sygg",
+     "excess_20_pp": 11.99,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.28
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "小米概念",
+     "board_series": "CPT_xmgn",
+     "excess_20_pp": -5.12,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 2.58
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "稀缺资源",
+     "board_series": "CPT_xqzy",
+     "excess_20_pp": -6.81,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 1.75
+    },
+    {
+     "amount_ratio_20_over_prev20": null,
+     "board_kind": "concept_basket",
+     "board_name": "央企50",
+     "board_series": "CPT_yq50",
+     "excess_20_pp": 5.88,
+     "note": "行情结构命中，但本周采集范围未发现可核的标题关键词关联 → 无可核理由，只作观察起点",
+     "volatility_20_pct": 0.77
+    }
+   ],
+   "label": "仅行情结构：无可核信息侧理由，只给规模与紧凑列表（默认折叠）"
+  },
+  "G3": {
+   "items": [
+    {
+     "board_kind": "industry_board",
+     "board_name": "钢铁",
+     "board_series": "BK881112",
+     "caveat": "标题/日期/URL 为可核事实；与板块的关联是显式词表映射，不证明因果；行情量是历史描述统计，不是预测。",
+     "constituent_availability": {
+      "reason": "行业板块是编制指数，库内无历史成分名单（ACCESS_GATED）；如实标注，不编造代表股",
+      "status": "NO_HISTORICAL_CONSTITUENTS"
+     },
+     "gap_reason": null,
+     "historical_roles": {
+      "event_count": 0,
+      "reason": "库内有 33 个历史题材事件 / 84 条 PIT 角色，但没有与该标签精确同轴的 theme_id；相邻不同轴的族不做模糊关联（宁缺不编）",
+      "role_count": 0,
+      "roles": [],
+      "status": "NO_MAPPED_HISTORY_THEME",
+      "theme_id": null
+     },
+     "information_side": {
+      "event_count": 1,
+      "events": [
+       {
+        "doc_class": "STANDARD_PROCEDURE",
+        "event_date": "2026-11-04",
+        "event_id": "EVT-MIIT_KJS-8e89f995def8",
+        "first_seen": "2026-11-05T22:27:46",
+        "keyword": "石墨化增碳剂",
+        "nature_kind": "NEW_CATALYST",
+        "publisher": "工业和信息化部 · 科技司",
+        "rationale": "增碳剂用于炼钢环节，属钢铁上游辅料，为代理关联",
+        "relation": "PROXY",
+        "title": "关于公开征求《石墨化增碳剂》等98项行业标准报批意见的公示",
+        "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_185cbe30ae39463494bf771964b0ea53.html"
+       }
+      ],
+      "first_seen_in_window": true,
+      "independent_publishers": 1,
+      "independent_urls": 1
+     },
+     "interpretable": true,
+     "market_gate_hit": false,
+     "market_side": {
+      "amount_ratio_20_over_prev20": 0.837,
+      "as_of": "2026-11-06",
+      "board_kind": "industry_board",
+      "board_name": "钢铁",
+      "common_trading_days": 280,
+      "excess_10_pp": -0.53,
+      "excess_20_pp": -1.16,
+      "excess_5_pp": 2.08,
+      "market_gate_hit": false,
+      "volatility_20_pct": 1.24
+     },
+     "section": "G3",
+     "theme_id": "TD-BK881112-6e50380d",
+     "theme_tag": "钢铁上游辅料",
+     "time_position": "PRE_OBSERVATION",
+     "why_now": "本周 1 条官方文件标题命中「钢铁上游辅料」，映射 BK881112（钢铁，PROXY）；行情结构未命中门槛，属前置观察窗口，行情未启动不等于无效"
+    },
+    {
+     "board_kind": "industry_board",
+     "board_name": "汽车零部件",
+     "board_series": "BK881126",
+     "caveat": "标题/日期/URL 为可核事实；与板块的关联是显式词表映射，不证明因果；行情量是历史描述统计，不是预测。",
+     "constituent_availability": {
+      "reason": "行业板块是编制指数，库内无历史成分名单（ACCESS_GATED）；如实标注，不编造代表股",
+      "status": "NO_HISTORICAL_CONSTITUENTS"
+     },
+     "gap_reason": null,
+     "historical_roles": {
+      "event_count": 0,
+      "reason": "库内有 33 个历史题材事件 / 84 条 PIT 角色，但没有与该标签精确同轴的 theme_id；相邻不同轴的族不做模糊关联（宁缺不编）",
+      "role_count": 0,
+      "roles": [],
+      "status": "NO_MAPPED_HISTORY_THEME",
+      "theme_id": null
+     },
+     "information_side": {
+      "event_count": 2,
+      "events": [
+       {
+        "doc_class": "STANDARD_PROCEDURE",
+        "event_date": "2026-11-02",
+        "event_id": "EVT-MIIT_KJS-3f8d6ddd5ce8",
+        "first_seen": null,
+        "keyword": "汽车座椅",
+        "nature_kind": "NEW_CATALYST",
+        "publisher": "工业和信息化部 · 科技司",
+        "rationale": "座椅及头枕强度标准直接作用于汽车零部件环节",
+        "relation": "DIRECT",
+        "title": "关于公开征求《汽车座椅、座椅固定装置及头枕强度要求和试验方法》等5项强制性国家标准（报批稿）意见的公示",
+        "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_a2734913366e490caa6a74f276c8cb6d.html"
+       },
+       {
+        "doc_class": "STANDARD_PROCEDURE",
+        "event_date": "2026-11-02",
+        "event_id": "EVT-MIIT_KJS-3f8d6ddd5ce8",
+        "first_seen": null,
+        "keyword": "头枕强度",
+        "nature_kind": "NEW_CATALYST",
+        "publisher": "工业和信息化部 · 科技司",
+        "rationale": "头枕强度强制性国家标准直接作用于汽车零部件环节",
+        "relation": "DIRECT",
+        "title": "关于公开征求《汽车座椅、座椅固定装置及头枕强度要求和试验方法》等5项强制性国家标准（报批稿）意见的公示",
+        "url": "https://www.miit.gov.cn/jgsj/kjs/jscx/bzgf/art/2026/art_a2734913366e490caa6a74f276c8cb6d.html"
+       }
+      ],
+      "first_seen_in_window": false,
+      "independent_publishers": 1,
+      "independent_urls": 1
+     },
+     "interpretable": true,
+     "market_gate_hit": false,
+     "market_side": {
+      "amount_ratio_20_over_prev20": 1.061,
+      "as_of": "2026-11-06",
+      "board_kind": "industry_board",
+      "board_name": "汽车零部件",
+      "common_trading_days": 280,
+      "excess_10_pp": -1.69,
+      "excess_20_pp": 0.68,
+      "excess_5_pp": 1.39,
+      "market_gate_hit": false,
+      "volatility_20_pct": 2.34
+     },
+     "section": "G3",
+     "theme_id": "TD-BK881126-368521c5",
+     "theme_tag": "汽车零部件标准",
+     "time_position": "WATCH_ONLY",
+     "why_now": "本周 2 条官方文件标题命中「汽车零部件标准」，映射 BK881126（汽车零部件，DIRECT）；行情结构未命中门槛，属前置观察窗口，行情未启动不等于无效"
+    },
+    {
+     "board_kind": "industry_board",
+     "board_name": "医疗器械",
+     "board_series": "BK881144",
+     "caveat": "标题/日期/URL 为可核事实；与板块的关联是显式词表映射，不证明因果；行情量是历史描述统计，不是预测。",
+     "constituent_availability": {
+      "reason": "行业板块是编制指数，库内无历史成分名单（ACCESS_GATED）；如实标注，不编造代表股",
+      "status": "NO_HISTORICAL_CONSTITUENTS"
+     },
+     "gap_reason": null,
+     "historical_roles": {
+      "event_count": 0,
+      "reason": "库内有 33 个历史题材事件 / 84 条 PIT 角色，但没有与该标签精确同轴的 theme_id；相邻不同轴的族不做模糊关联（宁缺不编）",
+      "role_count": 0,
+      "roles": [],
+      "status": "NO_MAPPED_HISTORY_THEME",
+      "theme_id": null
+     },
+     "information_side": {
+      "event_count": 2,
+      "events": [
+       {
+        "doc_class": "POLICY_ACTION",
+        "event_date": "2026-11-04",
+        "event_id": "EVT-NHSA_NOTICE-6cf82015f053",
+        "first_seen": "2026-11-05T22:27:46",
+        "keyword": "医用耗材",
+        "nature_kind": "NEW_CATALYST",
+        "publisher": "国家医疗保障局 · 通知公告",
+        "rationale": "耗材分类与代码属医疗器械监管范围，直接作用于该板块",
+        "relation": "DIRECT",
+        "title": "关于调整神经介入与神经外科植入材料等7类医保医用耗材分类与代码的通知",
+        "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23295.html"
+       },
+       {
+        "doc_class": "POLICY_ACTION",
+        "event_date": "2026-11-04",
+        "event_id": "EVT-NHSA_NOTICE-6cf82015f053",
+        "first_seen": "2026-11-05T22:27:46",
+        "keyword": "神经介入",
+        "nature_kind": "NEW_CATALYST",
+        "publisher": "国家医疗保障局 · 通知公告",
+        "rationale": "神经介入植入材料属医疗器械监管范围",
+        "relation": "DIRECT",
+        "title": "关于调整神经介入与神经外科植入材料等7类医保医用耗材分类与代码的通知",
+        "url": "https://www.nhsa.gov.cn/art/2026/11/4/art_109_23295.html"
+       }
+      ],
+      "first_seen_in_window": true,
+      "independent_publishers": 1,
+      "independent_urls": 1
+     },
+     "interpretable": true,
+     "market_gate_hit": false,
+     "market_side": {
+      "amount_ratio_20_over_prev20": 1.071,
+      "as_of": "2026-11-06",
+      "board_kind": "industry_board",
+      "board_name": "医疗器械",
+      "common_trading_days": 280,
+      "excess_10_pp": 0.26,
+      "excess_20_pp": 0.06,
+      "excess_5_pp": 0.62,
+      "market_gate_hit": false,
+      "volatility_20_pct": 1.82
+     },
+     "section": "G3",
+     "theme_id": "TD-BK881144-a81c6672",
+     "theme_tag": "医用耗材分类与价格",
+     "time_position": "PRE_OBSERVATION",
+     "why_now": "本周 2 条官方文件标题命中「医用耗材分类与价格」，映射 BK881144（医疗器械，DIRECT）；行情结构未命中门槛，属前置观察窗口，行情未启动不等于无效"
+    },
+    {
+     "board_kind": "industry_board",
+     "board_name": "军工电子",
+     "board_series": "BK881276",
+     "caveat": "标题/日期/URL 为可核事实；与板块的关联是显式词表映射，不证明因果；行情量是历史描述统计，不是预测。",
+     "constituent_availability": {
+      "reason": "行业板块是编制指数，库内无历史成分名单（ACCESS_GATED）；如实标注，不编造代表股",
+      "status": "NO_HISTORICAL_CONSTITUENTS"
+     },
+     "gap_reason": null,
+     "historical_roles": {
+      "event_count": 0,
+      "reason": "库内有 33 个历史题材事件 / 84 条 PIT 角色，但没有与该标签精确同轴的 theme_id；相邻不同轴的族不做模糊关联（宁缺不编）",
+      "role_count": 0,
+      "roles": [],
+      "status": "NO_MAPPED_HISTORY_THEME",
+      "theme_id": null
+     },
+     "information_side": {
+      "event_count": 1,
+      "events": [
+       {
+        "doc_class": "OTHER",
+        "event_date": "2026-11-02",
+        "event_id": "EVT-XWFB-20261102-1408489",
+        "first_seen": null,
+        "keyword": "北斗卫星",
+        "nature_kind": "UNCLASSIFIED",
+        "publisher": "国家发展改革委 · 新闻发布",
+        "rationale": "北斗卫星合作文件涉及卫星导航应用，军工电子为代理关联",
+        "relation": "PROXY",
+        "title": "国家发展改革委与阿曼有关部门签署北斗卫星等合作文件",
+        "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261102_1408489.html"
+       }
+      ],
+      "first_seen_in_window": false,
+      "independent_publishers": 1,
+      "independent_urls": 1
+     },
+     "interpretable": true,
+     "market_gate_hit": false,
+     "market_side": {
+      "amount_ratio_20_over_prev20": 0.935,
+      "as_of": "2026-11-06",
+      "board_kind": "industry_board",
+      "board_name": "军工电子",
+      "common_trading_days": 280,
+      "excess_10_pp": -3.42,
+      "excess_20_pp": -0.36,
+      "excess_5_pp": 2.54,
+      "market_gate_hit": false,
+      "volatility_20_pct": 2.64
+     },
+     "section": "G3",
+     "theme_id": "TD-BK881276-d52bb5d5",
+     "theme_tag": "卫星导航",
+     "time_position": "WATCH_ONLY",
+     "why_now": "本周 1 条官方文件标题命中「卫星导航」，映射 BK881276（军工电子，PROXY）；行情结构未命中门槛，属前置观察窗口，行情未启动不等于无效"
+    }
+   ],
+   "label": "仅信息侧：有可核官方文件关联但行情未命中 —— 提前观察的重点"
+  },
+  "G4": {
+   "excluded_interpretable_false": {
+    "count": 10,
+    "reason": "名称含「其他/综合」的兜底桶没有单一产业对象；其中行情结构命中的 10 条按可解释性门槛排除，不计入 G2/G4，也不单列为主题"
+   },
+   "items": [],
+   "label": "证据不足：两侧都不命中，只给规模与原因，不逐条铺开",
+   "reason": "两轨都不命中门槛的序列只给规模，不逐条铺开（避免用数量决定可见性）",
+   "total": 296
+  }
+ },
+ "source_sha256_16": {
+  "board_semantics_v0_1.json": "d564abe667d69bed",
+  "event_calendar_v0_1.json": "89caab1d5b917e46",
+  "frontier_board_v0_1.json": "942090143f9b0829",
+  "historical_market_roles_v0_13.json": "d429f863c2c70acc",
+  "new_theme_radar_v0_10_view.json": "682b879e7d6cec9e"
+ }
+}

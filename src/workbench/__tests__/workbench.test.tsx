@@ -10,6 +10,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Workbench } from '../Workbench';
 import { EvalView } from '../EvalView';
+import { ArchiveView } from '../ArchiveView';
 import {
   exportBundle, freezeRecord, loadEvals, loadRecords, nextRecordId,
   saveEval, saveRecord, searchItems,
@@ -20,8 +21,9 @@ import frontierRaw from '@current/frontier_board_v0_1.json';
 import calendarRaw from '@current/event_calendar_v0_1.json';
 import weeklyRaw from '@current/weekly_research_v0_1.json';
 import declarationsRaw from '@current/phase_declaration_log_v0_1_view.json';
+import themeRaw from '@current/theme_discovery_v0_1.json';
 import type { DeclarationView, EvalDoc, IndexDoc } from '../types';
-import type { FrontierDoc, EventCalendar, WeeklyResearchDoc } from '../FrontierView';
+import type { FrontierDoc, EventCalendar, ThemeDiscoveryDoc, WeeklyResearchDoc } from '../FrontierView';
 
 const doc = indexRaw as unknown as IndexDoc;
 const evalDoc = evalRaw as unknown as EvalDoc;
@@ -29,6 +31,10 @@ const frontier = frontierRaw as unknown as FrontierDoc;
 const calendar = calendarRaw as unknown as EventCalendar;
 const weekly = weeklyRaw as unknown as WeeklyResearchDoc;
 const declarations = declarationsRaw as unknown as DeclarationView;
+const td = themeRaw as unknown as ThemeDiscoveryDoc;
+/** v0.82：历史研究对象 / 本周研究明细 / 研究轮次都在独立档案视图，不在默认工作台。 */
+const archiveHtml = renderToStaticMarkup(
+  <ArchiveView doc={frontier} weekly={weekly} onRecord={() => {}} />);
 
 beforeEach(() => {
   const mem = new Map<string, string>();
@@ -288,14 +294,16 @@ describe('F · 精选 Top 6 / 命中率口径 / 个股参照', () => {
     for (const t of frontier.top6) expect(t.rank_reason).toContain('样本外');
   });
 
-  it('★★ 全部 177 条可解释为互斥分类：6 精选 + 9 固定 + 162 其余', () => {
+  it('★★ v0.82：177 条仍互斥分类，历史固定区下沉档案、不再占默认页', () => {
     expect(frontier.items.length).toBe(177);
     const fixedTotal = frontier.fixed_sections.current_objects.length
       + frontier.fixed_sections.special_hypotheses.length;
     expect(fixedTotal).toBe(9);
-    expect(html).toContain(`data-rest-total="${177 - 6 - fixedTotal}"`);
-    expect(html).toContain(`data-fixed-row="${frontier.fixed_sections.current_objects[0]}"`);
-    expect(html).toContain('不与精选 6 条竞争名额');
+    expect(html).toContain(`data-rest-total="${frontier.items.length - frontier.top6.length - fixedTotal}"`);
+    // ★ 旧行为快照已撤销：人工设定的固定区行只在档案视图
+    expect(html).not.toContain('data-fixed-row=');
+    expect(archiveHtml).toContain(`data-fixed-row="${frontier.fixed_sections.current_objects[0]}"`);
+    expect(archiveHtml).toContain('存档待复核');
     for (const t of frontier.top6) {
       expect(frontier.fixed_sections.current_objects).not.toContain(t.id);
       expect(frontier.fixed_sections.special_hypotheses).not.toContain(t.id);
@@ -344,8 +352,8 @@ describe('F · 精选 Top 6 / 命中率口径 / 个股参照', () => {
   });
 });
 
-/** ★★ v0.80：不可解释板块排除但可见 / 阶段声明下沉、默认页改给本周研究。 */
-describe('G · 可解释性门槛与阶段语义分离', () => {
+/** ★★ v0.82：不可解释板块排除但可见 / 历史研究档案整体退出默认页。 */
+describe('G · 可解释性门槛与默认页/档案分离', () => {
   const html = renderToStaticMarkup(<Workbench />);
 
   it('★★ Top 6 不再出现「其他社会服务」，且每条都可解释', () => {
@@ -386,16 +394,23 @@ describe('G · 可解释性门槛与阶段语义分离', () => {
     expect(html).toContain('data-parent-sector=');
   });
 
-  it('★★ v0.80：默认页不展示阶段声明，改给本周最新研究与行情附注', () => {
-    expect(html).toContain('data-weekly-research="1"');
-    expect(html).toContain('本周最新研究');
-    expect(html).toContain('行情附注 as_of');
-    expect(html).toContain('data-declaration-policy="1"');
-    // ★ 旧行为快照已撤销：静态阶段字段不得出现在默认页
-    expect(html).not.toContain('产业机制阶段：');
-    expect(html).not.toContain('研究侧声明 2026-10-23');
-    expect(html).not.toContain('data-industry-phase=');
-    expect(html).not.toContain('data-phase-governance=');
+  it('★★ v0.82：默认页只给数据挖出的主题，历史研究对象整块退出', () => {
+    expect(html).toContain('data-frontier-section="discovery"');
+    expect(html).toContain('data-theme-discovery="1"');
+    expect(html).toContain('档案（待复核）');
+    // ★ 旧行为快照已撤销：默认页不得再出现历史研究档案的任何痕迹
+    for (const s of ['data-weekly-research="1"', 'data-research-round="1"',
+      'data-declaration-policy="1"', 'data-fixed-row=', 'data-archived-themes="1"',
+      '产业机制阶段：', '研究侧声明 2026-10-23', '行情附注 as_of',
+      'data-industry-phase=', 'data-phase-governance=']) {
+      expect(html, `默认页不得出现 ${s}`).not.toContain(s);
+    }
+    // 归档内容整体可在独立档案视图查到，不丢失、不删除
+    expect(archiveHtml).toContain('data-archive-view="1"');
+    expect(archiveHtml).toContain('data-archived-themes="1"');
+    expect(archiveHtml).toContain('data-weekly-archive="1"');
+    expect(archiveHtml).toContain('data-declaration-policy="1"');
+    expect(archiveHtml).toContain('本周研究明细 · 存档待复核');
     const gov = frontier.theme_market.phase_governance as {
       update_policy: { auto_change_phase: boolean };
     };
@@ -405,37 +420,39 @@ describe('G · 可解释性门槛与阶段语义分离', () => {
     for (const t of themes) {
       expect(t.market_as_of).toBeTruthy();
       expect(t.equal_weight['20']).toBeTruthy();
-      expect(html).toContain(`data-fixed-row="${t.candidate_id}"`);
+      expect(archiveHtml).toContain(`data-fixed-row="${t.candidate_id}"`);
     }
   });
 
-  it('★★ 光互联：阶段字段仍留在产物供评估视图，背离信号照常提示人工复核', () => {
+  it('★★ 光互联：阶段/背离信号留在档案，默认页不拿历史对象占位置', () => {
     const t = frontier.theme_market.themes.find(
       (x) => x.candidate_id === 'CC-2026-OPTICAL-LINK')!;
     expect(t.phase_label).toBe('扩散');
     expect(t.equal_weight['20'].equal_weight_excess_pp).toBeLessThan(-10);
     expect(t.signals.some((s) => s.id === 'DIVERGENCE_INDUSTRY_VS_MARKET')).toBe(true);
     expect(t.signals.some((s) => s.id === 'REVIEW_STALE')).toBe(true);
-    expect(html).toContain('data-signal="DIVERGENCE_INDUSTRY_VS_MARKET"');
-    expect(html).toContain('data-signal="REVIEW_STALE"');
+    expect(archiveHtml).toContain('data-signal="DIVERGENCE_INDUSTRY_VS_MARKET"');
+    expect(archiveHtml).toContain('data-signal="REVIEW_STALE"');
+    expect(html).not.toContain('data-signal=');
   });
 
-  it('★★ 阶段声明下沉说明与后续更新 SOP 在页面可查', () => {
-    expect(html).toContain('阶段声明去哪了 / 口径与后续更新 SOP');
-    expect(html).toContain('R0_INSUFFICIENT_EVIDENCE');
-    expect(html).toContain('REVIEWED_MAINTAINED');
-    expect(html).toContain('不参与定档、不自动改阶段');
-    expect(html).toContain('不作反向证据');
-    expect(html).toContain('phase_declaration_log_v0_1.json');
+  it('★★ 阶段声明 SOP 在档案视图可查，默认页不再重复', () => {
+    expect(archiveHtml).toContain('阶段声明去哪了 / 口径与后续更新 SOP');
+    expect(archiveHtml).toContain('R0_INSUFFICIENT_EVIDENCE');
+    expect(archiveHtml).toContain('REVIEWED_MAINTAINED');
+    expect(archiveHtml).toContain('不参与定档、不自动改阶段');
+    expect(archiveHtml).toContain('不作反向证据');
+    expect(archiveHtml).toContain('phase_declaration_log_v0_1.json');
+    expect(html).not.toContain('阶段声明去哪了');
   });
 });
 
-/** ★★ v0.80：本周研究视图 + 追加式阶段声明日志（默认页 / 评估视图分离）。 */
-describe('H · 本周最新研究与阶段声明日志', () => {
+/** ★★ v0.82：历史研究周报下沉档案 / 追加式阶段声明日志只在评估视图。 */
+describe('H · 历史研究周报（档案）与阶段声明日志（评估视图）', () => {
   const html = renderToStaticMarkup(<Workbench />);
   const evalHtml = renderToStaticMarkup(<EvalView doc={evalDoc} declarations={declarations} />);
 
-  it('★ 默认页每个方向都有本周结论，缺命中必须写原因', () => {
+  it('★ 档案里每个方向都有本周结论，缺命中必须写原因', () => {
     expect(weekly.artifact).toBe('weekly_research');
     expect(weekly.cadence).toBe('WEEKLY');
     expect(weekly.feed_window[0] <= weekly.feed_window[1]).toBe(true);
@@ -443,30 +460,30 @@ describe('H · 本周最新研究与阶段声明日志', () => {
     expect(weekly.counts.events_in_window).toBe(
       weekly.counts.linked_to_direction + weekly.counts.other_verifiable_documents);
     for (const d of weekly.directions) {
-      expect(html).toContain(`data-weekly-direction="${d.direction}"`);
+      expect(archiveHtml).toContain(`data-weekly-direction="${d.direction}"`);
       if (d.matched_events.length === 0) {
         expect(d.no_match_reason).toBeTruthy();
-        expect(html).toContain(`data-weekly-gap="${d.direction}"`);
+        expect(archiveHtml).toContain(`data-weekly-gap="${d.direction}"`);
       } else {
         for (const e of d.matched_events) {
           expect(e.url).toMatch(/^https?:\/\//);
-          expect(html).toContain(`data-weekly-event="${e.event_id}"`);
+          expect(archiveHtml).toContain(`data-weekly-event="${e.event_id}"`);
           expect(e.boards.length).toBeGreaterThan(0);
         }
       }
     }
   });
 
-  it('★ 主题索引由产物给出（前端不重算），6 个主题全覆盖', () => {
+  it('★ 主题索引由产物给出（前端不重算），6 个历史主题在档案全覆盖', () => {
     const ids = frontier.theme_market.themes.map((t) => t.candidate_id);
     for (const id of ids) {
       expect(weekly.theme_index[id]).toBeTruthy();
-      expect(html).toContain(`data-weekly-theme-count="${weekly.theme_index[id].matched_count}"`);
+      expect(archiveHtml).toContain(`data-weekly-theme-count="${weekly.theme_index[id].matched_count}"`);
     }
     expect(Object.keys(weekly.theme_index).length).toBe(ids.length);
-    expect(html).toContain('前置观察窗口（库内可核）');
+    expect(archiveHtml).toContain('前置观察窗口（库内可核）');
     for (const w of weekly.observation_windows) {
-      expect(html).toContain(`data-observation-window="${w.date}"`);
+      expect(archiveHtml).toContain(`data-observation-window="${w.date}"`);
     }
   });
 
@@ -494,19 +511,19 @@ describe('H · 本周最新研究与阶段声明日志', () => {
     }
   });
 
-  it('★ 本轮研究结论与新增观察方向在默认页可查（主题真正在演变）', () => {
-    expect(html).toContain('data-research-round="1"');
-    expect(html).toContain('本轮研究');
+  it('★ 历史研究轮次与观察方向在档案可查，不占默认页', () => {
+    expect(archiveHtml).toContain('data-research-round="1"');
+    expect(html).not.toContain('data-research-round="1"');
     const r = weekly.research_round!;
     expect(r.theme_reviews.length).toBe(frontier.theme_market.themes.length);
     for (const w of r.new_watch_directions) {
-      expect(html).toContain(`data-watch-direction="${w.direction_id}"`);
+      expect(archiveHtml).toContain(`data-watch-direction="${w.direction_id}"`);
       expect(w.event.url).toMatch(/^https?:\/\//);
       // 未映射的板块必须写原因，不能补造
       if (!w.board_series) expect(w.board_mapping_reason.length).toBeGreaterThan(5);
     }
     for (const t of r.theme_reviews) {
-      expect(html).toContain(`data-theme-review="${t.candidate_id}"`);
+      expect(archiveHtml).toContain(`data-theme-review="${t.candidate_id}"`);
       expect(t.next_research_question.length).toBeGreaterThan(5);
     }
   });
@@ -529,18 +546,154 @@ describe('H · 本周最新研究与阶段声明日志', () => {
     expect(evalHtml).toContain('不参与有效性验收');
   });
 
-  it('★★ 工作台无裸 Markdown 星号（研究侧字符串一律过 RichText）', () => {
+  it('★★ 三个视图都无裸 Markdown 星号（研究侧字符串一律过 RichText）', () => {
     expect(html).not.toContain('**');
     expect(evalHtml).not.toContain('**');
+    expect(archiveHtml).not.toContain('**');
   });
 
-  it('★★ 新增区块不出现禁用措辞', () => {
-    const weeklyBlock = html.slice(html.indexOf('data-weekly-research="1"'),
+  it('★★ 主题挖掘区与档案区不出现禁用措辞', () => {
+    const discoveryBlock = html.slice(html.indexOf('data-frontier-section="discovery"'),
       html.indexOf('data-frontier-section="fuzzy"'));
+    const weeklyBlock = archiveHtml.slice(archiveHtml.indexOf('data-weekly-archive="1"'),
+      archiveHtml.indexOf('data-archived-themes="1"'));
     const declBlock = evalHtml.slice(evalHtml.indexOf('data-phase-declarations="1"'));
-    for (const banned of ['买入', '卖出', '目标价', '仓位', '胜率', '评分']) {
-      expect(weeklyBlock, `本周研究区不得出现 ${banned}`).not.toContain(banned);
+    for (const banned of ['买入', '卖出', '目标价', '仓位', '胜率', '评分', '龙头', '弹性']) {
+      expect(discoveryBlock, `主题挖掘区不得出现 ${banned}`).not.toContain(banned);
+      expect(weeklyBlock, `档案周报区不得出现 ${banned}`).not.toContain(banned);
       expect(declBlock, `声明时间线不得出现 ${banned}`).not.toContain(banned);
     }
+    expect(discoveryBlock.length).toBeGreaterThan(100);
+    expect(weeklyBlock.length).toBeGreaterThan(100);
   });
 });
+
+/** ★★ v0.82：默认工作台换成「从行情 + 信息挖出来的主题」，不是历史研究记录。 */
+describe('I · 数据驱动的主题挖掘（不预设主题集合）', () => {
+  const html = renderToStaticMarkup(<Workbench />);
+
+  it('★★ 主题由两轨输入聚出，sections 由产物给出（前端不重算）', () => {
+    expect(td.artifact).toBe('theme_discovery');
+    expect(td.as_of).toBe(td.market_as_of);
+    expect(td.feed_window[0] <= td.feed_window[1]).toBe(true);
+    const ruleSections = td.rules.sections as unknown as Record<string, string>;
+    const bySection = td.counts.by_section as unknown as Record<string, number>;
+    for (const k of ['G1', 'G2', 'G3', 'G4'] as const) {
+      expect(ruleSections[k]).toBeTruthy();
+      expect(bySection[k]).toBe(k === 'G4' ? td.sections.G4.total : td.sections[k].items.length);
+    }
+    expect(html).toContain(`data-theme-discovery="1"`);
+    expect(html).toContain(`as_of <code>${td.as_of}</code>`);
+    // G3 是「信息已到、行情未动」的提前观察重点，必须在默认页可见
+    for (const c of td.sections.G3.items) {
+      expect(html).toContain(`data-theme-candidate="${c.theme_id}"`);
+      expect(html).toContain(`data-theme-section="G3"`);
+      expect(html).toContain(`data-theme-board="${c.board_series}"`);
+    }
+    for (const c of td.sections.G1.items) {
+      expect(html).toContain(`data-theme-candidate="${c.theme_id}"`);
+    }
+  });
+
+  it('★★ 每个主题候选都有可核信息侧 URL + 客观行情量 + 成分/角色缺口原因', () => {
+    const all = [...td.sections.G1.items, ...td.sections.G3.items];
+    expect(all.length).toBe(td.counts.theme_candidates);
+    for (const c of all) {
+      expect(c.information_side.events.length).toBeGreaterThan(0);
+      expect(c.why_now.length).toBeGreaterThan(10);
+      expect(c.caveat.length).toBeGreaterThan(10);
+      expect(c.constituent_availability.reason.length).toBeGreaterThan(5);
+      expect(c.historical_roles.status.length).toBeGreaterThan(0);
+      for (const e of c.information_side.events) {
+        expect(e.url).toMatch(/^https?:\/\//);
+        expect(e.rationale.length).toBeGreaterThan(0);
+        expect(html).toContain(`data-theme-event="${e.event_id}"`);
+      }
+      // 行情量是历史描述统计；缺数据必须写原因而不是显示 0
+      expect(['number', 'object']).toContain(typeof c.market_side.excess_20_pp);
+    }
+  });
+
+  it('★★ 零打分零排序零推荐：宪法字段与措辞都不进产物和页面', () => {
+    // ★ 只查真实键名：产物里的「不产出 score / ranking…」是否定式声明文字，不是字段
+    const keys = new Set<string>();
+    const walk = (v: unknown) => {
+      if (Array.isArray(v)) v.forEach(walk);
+      else if (v && typeof v === 'object') {
+        for (const [k, x] of Object.entries(v as Record<string, unknown>)) { keys.add(k); walk(x); }
+      }
+    };
+    walk(td);
+    for (const banned of ['priority_score', 'wilson_low', 'calibrated', 'is_probability',
+      'ranking', 'score', 'recommendation', 'prediction']) {
+      expect(keys.has(banned), `产物不得有字段 ${banned}`).toBe(false);
+    }
+    for (const banned of ['龙头', '弹性', '荐股', '选股清单', '买入', '卖出', '评分']) {
+      expect(html, `默认页不得含 ${banned}`).not.toContain(banned);
+    }
+    expect(String(td.rules.not_a_ranking)).toContain('不是优先级排序');
+    expect(String(td.rules.not_a_recommendation)).toContain('不是预测');
+    // 分组内按 board_series 字典序，确定性（不是按涨幅排序）
+    const ids = td.sections.G3.items.map((c) => c.theme_id);
+    expect(ids).toEqual([...ids].sort());
+  });
+
+  it('★★ 词表显式映射，构建时双向校验；未命中逐条写原因', () => {
+    const noLink = td.counts.no_link_reasons as unknown as Record<string, number>;
+    const bySection = td.counts.by_section as unknown as Record<string, number>;
+    expect(td.counts.dropped_mappings).toBe(0);
+    expect(td.counts.events_with_board_link).toBeGreaterThan(0);
+    expect(noLink).toBeTruthy();
+    expect(Object.values(noLink).every((n) => Number(n) > 0)).toBe(true);
+    // ★★ 单位守恒：命中「事件数」+ 未命中「事件数」== 窗口事件数；关联条目数另算
+    expect(Number(td.counts.events_with_board_link) + Object.values(noLink)
+      .reduce((a, b) => a + Number(b), 0)).toBe(td.counts.events_in_window);
+    expect(Number(td.counts.board_link_entries))
+      .toBeGreaterThanOrEqual(Number(td.counts.events_with_board_link));
+    // ★★ 互斥全覆盖：G1–G4 + 显式排除的杂项桶 == 扫描序列数
+    expect(['G1', 'G2', 'G3', 'G4'].reduce((a, k) => a + bySection[k], 0)
+      + Number(td.counts.excluded_fuzzy_gate_hit)).toBe(td.counts.scanned_series);
+    expect(td.sections.G4.excluded_interpretable_false.count)
+      .toBe(td.counts.excluded_fuzzy_gate_hit);
+    expect(html).toContain(`data-excluded-fuzzy="${td.counts.excluded_fuzzy_gate_hit}"`);
+    expect(html).toContain('不可解释杂项桶');
+    expect(td.sections.G4.reason.length).toBeGreaterThan(10);
+    expect(html).toContain('data-insufficient="1"');
+    expect(html).toContain('证据不足');
+    expect(html).toContain(`data-market-only="1"`);
+    expect(html).toContain(`data-market-only-row=`);
+  });
+
+  it('★★ 个股层只给历史 PIT 角色记录（带来源），不给当前标的判断', () => {
+    const a = td.historical_role_archive;
+    expect(a.theme_families.length).toBe(td.counts.historical_role_families);
+    expect(a.total_pit_safe_roles).toBeGreaterThan(0);
+    expect(html).toContain('data-role-archive="1"');
+    for (const f of a.theme_families) {
+      expect(html).toContain(`data-role-family="${f.theme_id}"`);
+      expect(f.roles.length).toBeGreaterThan(0);
+      for (const r of f.roles) {
+        // 产物只保留 pit_safe 记录（由 --check 保证），每条带识别日与来源
+        expect(r.identified_date).toBeTruthy();
+        expect(r.role.length).toBeGreaterThan(0);
+        expect(r.source_record || r.evidence_url).toBeTruthy();
+        expect(html).toContain(`data-role-row="${r.security_id ?? ''}"`);
+      }
+    }
+    expect(a.note).toContain('历史');
+    expect(html).toContain(data_role_note(a.note));
+  });
+
+  it('★★ as_of / 计数由产物派生，页面与产物对得上', () => {
+    expect(html).toContain(`<strong>${td.counts.scanned_series}</strong>`);
+    expect(html).toContain(`<strong>${td.counts.theme_candidates}</strong>`);
+    expect(html).toContain(`主题候选`);
+    expect(td.source_sha256_16).toBeTruthy();
+    expect(Object.keys(td.source_sha256_16).length).toBeGreaterThanOrEqual(4);
+  });
+});
+
+/** 产物里的 note 含 ** 强调，页面过 RichText；这里只取纯文字片段做对账。 */
+function data_role_note(note: string): string {
+  return note.replace(/\*\*/g, '').split('；')[0].slice(0, 12);
+}

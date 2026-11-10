@@ -223,6 +223,13 @@ jobs:
           echo "::endgroup::"
           python research/scripts/test_build_new_theme_radar.py
 
+          # ★ v0.82：默认页的主题挖掘产物（信息侧精确关联 + 客观行情结构量）。
+          #   CI 无 1.3GB history_scan.db → 行情复算与词表→库内序列存在性**显式 SKIP 并打印范围**；
+          #   互斥计数 / 事件 URL / 成分与角色缺口原因 / 禁用字段与措辞**照常校验**，不静默通过。
+          echo "::group::build_theme_discovery_v0_1 --check"
+          python research/scripts/build_theme_discovery_v0_1.py --check
+          echo "::endgroup::"
+
       - name: Research read-only gates
         run: |
           set -euo pipefail

@@ -17,9 +17,11 @@ import raw from '@current/workbench_index_v0_1.json';
 import frontierRaw from '@current/frontier_board_v0_1.json';
 import calendarRaw from '@current/event_calendar_v0_1.json';
 import weeklyRaw from '@current/weekly_research_v0_1.json';
+import themeDiscoveryRaw from '@current/theme_discovery_v0_1.json';
 import type { DeclarationView, EvalDoc, IndexDoc, PosthocEval, RecordType, UseRecord, WorkbenchItem } from './types';
 import { FrontierView } from './FrontierView';
-import type { FrontierDoc, EventCalendar, WeeklyResearchDoc } from './FrontierView';
+import type { FrontierDoc, EventCalendar, ThemeDiscoveryDoc, WeeklyResearchDoc } from './FrontierView';
+import { ArchiveView } from './ArchiveView';
 import { EvalView } from './EvalView';
 import {
   downloadText, exportBundle, freezeRecord, loadEvals, loadRecords,
@@ -30,6 +32,7 @@ const doc = raw as unknown as IndexDoc;
 const frontierDoc = frontierRaw as unknown as FrontierDoc;
 const eventCalendar = calendarRaw as unknown as EventCalendar;
 const weeklyDoc = weeklyRaw as unknown as WeeklyResearchDoc;
+const themeDiscovery = themeDiscoveryRaw as unknown as ThemeDiscoveryDoc;
 const TYPES: RecordType[] = ['LEAD', 'CONFIRM', 'REJECT', 'NO_LEAD', 'BLOCKED', 'UI_FRICTION'];
 const TYPE_LABEL: Record<RecordType, string> = {
   LEAD: '新线索', CONFIRM: '强化已有判断', REJECT: '放弃某方向',
@@ -40,7 +43,7 @@ const KIND_LABEL: Record<string, string> = {
 };
 
 type Step = 'ask' | 'evidence' | 'record';
-type View = 'frontier' | 'workbench' | 'eval';
+type View = 'frontier' | 'workbench' | 'eval' | 'archive';
 
 export function Workbench() {
   const [view, setView] = useState<View>('frontier');
@@ -145,6 +148,8 @@ export function Workbench() {
                   onClick={() => setView('workbench')} data-open-history="1">历史检索 / 记录</button>
           <button type="button" className={view === 'eval' ? 'is-active' : ''}
                   onClick={openEval} data-open-eval="1">内部评估视图</button>
+          <button type="button" className={view === 'archive' ? 'is-active' : ''}
+                  onClick={() => setView('archive')} data-open-archive="1">档案（待复核）</button>
           <a href="./index.html" className="wb-archive-link">历史档案视图（旧站）↗</a>
         </nav>
       </header>
@@ -160,9 +165,11 @@ export function Workbench() {
           : evalError ? <p className="wb-error">加载失败：{evalError}（可切回「研究」重试）</p>
             : evalDoc && declDoc ? <EvalView doc={evalDoc} declarations={declDoc} />
               : <p className="wb-error">未加载到评估数据。</p>
+      ) : view === 'archive' ? (
+        <ArchiveView doc={frontierDoc} weekly={weeklyDoc} onRecord={recordFromFrontier} />
       ) : view === 'frontier' ? (
-        <FrontierView doc={frontierDoc} cal={eventCalendar} weekly={weeklyDoc}
-                      onRecord={recordFromFrontier} />
+        <FrontierView doc={frontierDoc} cal={eventCalendar}
+                      td={themeDiscovery} onRecord={recordFromFrontier} />
       ) : (
         <main className="wb-main">
           <ol className="wb-steps" data-steps="1">
