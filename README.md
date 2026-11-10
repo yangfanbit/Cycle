@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.82**（2026-11-10：默认工作台换成**从行情 + 市场信息挖出的主题** `theme_discovery_v0_1.json`（不预设主题集合），历史人工研究对象 / 本周研究明细 / 研究轮次整块移入独立「档案（待复核）」入口；个股层按合规替代给**板块结构卡 + 历史 PIT 角色档案**，不给龙头/弹性标签、不排名、不推荐）· 版本基线：v0.79 `8d502c8` · v0.80 `861b31f` · v0.81 主交付 `f0e8e54` / 修复 `90b2be5` / 收尾 `934275b` · **本轮交付信息以收尾提交为准** · 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
+| **当前主线** | **v0.82**（2026-11-10：默认工作台换成**从行情 + 市场信息挖出的主题** `theme_discovery_v0_1.json`（不预设主题集合），历史人工研究对象 / 本周研究明细 / 研究轮次整块移入独立「档案（待复核）」入口；个股层按合规替代给**板块结构卡 + 历史 PIT 角色档案**，不给龙头/弹性标签、不排名、不推荐）· 版本基线：v0.79 `8d502c8` · v0.80 `861b31f` · v0.81 主交付 `f0e8e54` / 修复 `90b2be5` / 收尾 `934275b` · 主交付 **`c9dd4d5`** / CI **`42838078929` success**（已部署，线上三视图探针 PASS）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
