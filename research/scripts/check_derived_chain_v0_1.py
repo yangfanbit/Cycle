@@ -19,6 +19,9 @@ v0.81 主交付首跑 CI 变红，根因是 `build_candidate_ledger_v0_2.py --wr
 ## 边界
 - 不读 `history_scan.db`（1.3 GB 未入库）；CI 与本地行为一致，无需 SKIP 降级。
 - 产物缺失时**显式 SKIP 降级并打印范围**，不静默通过、不直接崩。
+- ★ `cache_v0_1.json` 由本地抓数生成、**不入库**（`git ls-files` 无此文件），
+  CI 干净 checkout 必然缺 → 登记为 `optional_missing`，该项跳过并打印范围，
+  **其余 20 项声明仍逐项核对**。此规则是 v0.83 首跑 CI 变红后补的实测结论。
 - 不新增 CI Job：由 `.github/workflows/deploy.yml` 现有只读门禁 step 调用。
 
 用法：--check
@@ -59,7 +62,10 @@ CHAIN = [
     {
         "artifact": "board_semantics_v0_1.json", "order": 2,
         "decl": {"kind": "EXTERNAL_FILE", "path": ("source_sha256_16",), "width": 16,
-                 "search": [CURRENT, os.path.join(ROOT, "research", "data", "forward_scan")]},
+                 "search": [CURRENT, os.path.join(ROOT, "research", "data", "forward_scan")],
+                 # ★ cache_v0_1.json 由本地抓数生成、不入库（git ls-files 无此文件）。
+                 #   CI 干净 checkout 里必然缺失 → 显式 SKIP 并打印范围，不得静默通过或直接崩。
+                 "optional_missing": ["cache_v0_1.json"]},
     },
     {
         "artifact": "event_calendar_v0_1.json", "order": 3,
@@ -167,7 +173,12 @@ def check():
                 for fname, declared in sorted(val.items()):
                     target = _resolve(fname, spec["search"])
                     if not target:
-                        errs.append("%s 声明的上游文件找不到：%s" % (art, fname))
+                        if fname in spec.get("optional_missing", ()):
+                            skips.append("%s 的可选上游 %s 未入库（CI 干净 checkout 必然缺失），"
+                                         "该项指纹不计入核对；其余声明照常校验"
+                                         % (art, fname))
+                        else:
+                            errs.append("%s 声明的上游文件找不到：%s" % (art, fname))
                         continue
                     actual = _sha(target, spec["width"])
                     checked += 1
