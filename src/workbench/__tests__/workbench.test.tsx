@@ -74,6 +74,17 @@ describe('A · 口径切换与默认页面隔离', () => {
     expect(html).not.toContain('<table class="wb-table">');
   });
 
+  it('★★ v0.83 零摩擦记录入口：默认页一键直达 T 时刻冻结，不新增说明段', () => {
+    expect(html).toContain('data-quick-record="1"');
+    expect(html).toContain('记一条');
+    // 正向/负向/零触发/摩擦同等记录的提醒放在 title，不占默认页版面
+    expect(html).toMatch(/data-quick-record="1"[^>]*title="[^"]*零触发/);
+    expect(html).not.toContain('data-steps="1"');
+    // 判定阈值在文档里锁死，页面不重复铺口径
+    expect(html).not.toContain('INSUFFICIENT_SAMPLE');
+    expect(html).not.toContain('REAL_USE_DECISION_RULE');
+  });
+
   it('★ 历史检索仍按日期倒序、空 query 不铺全量（数据不变量）', () => {
     expect(searchItems(doc.items, '')).toEqual([]);
     expect(html).toContain('data-open-history="1"');

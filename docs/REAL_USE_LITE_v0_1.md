@@ -1,3 +1,13 @@
+> ★★ **v0.83 补记（2026-11-12）**：判定阈值、样本量门槛、首次判断计分与防回填纪律
+> 已在**第 1 条记录产生之前**冻结于 `docs/REAL_USE_DECISION_RULE_v0_1.md`，
+> 指纹由 `research/scripts/check_real_use_protocol_v0_1.py --check` 锁定；
+> 日常记录用 `docs/templates/REAL_USE_RECORD_LITE_TEMPLATE_v0_1.md`（3 字段）。
+> 原 13 字段模板已加勘误块，保留作方法论参考。
+> ★ 字段口径对齐：下文 §1 把 `type` / `cluster_id` 列作「自动字段」，工作台实际需要选择/填写；
+> 真正自动的只有 `record_id` / `frozen_at` / `data_as_of` / `artifact_ref`。
+> `posthoc_check` 物理上独立存储（导出为 `evals[]`，字段 `is_new_correspondence`），
+> 不属于 T 时刻正文。**以工作台实际与轻量模板为准**，下方原句不删不改。
+
 # 真实使用记录 · 轻量协议 v0.1（2026-11-04 生效）
 
 > 取代 `THREEC_REAL_USE_PROTOCOL_v0_1.md` 的 **12 通用 + 1 条件字段**流程。
@@ -53,6 +63,10 @@
 
 ## 4 · 收口
 
-按 `docs/EVALUATION_FRAMEWORK_v0_1.md` §5 判定：先报触发量与负向记录，
+按 `docs/EVALUATION_FRAMEWORK_v0_1.md` §5 与**事前冻结的**
+`docs/REAL_USE_DECISION_RULE_v0_1.md` 判定：先报触发量与负向记录，
 再判断是否有**可核的新线索**、是否省了时间、有哪些盲区，最后才决定是否派发开发任务。
 **在 C（真实使用）产生记录之前，不以「功能还不够」为由启动新一轮开发。**
+★ v0.83 补记：使用者逐轮明确授权的轮次是例外（v0.79→v0.82 均属此类，已留痕）；
+纪律约束的是「以功能不足为借口的自动派发」，不否定使用者本人的授权，
+也**不改变「有效性未验证」这一结论**。

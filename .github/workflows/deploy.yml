@@ -254,6 +254,19 @@ jobs:
           python research/scripts/refresh_downstream.py --check
           echo "::endgroup::"
 
+          # ★ v0.83：周更派生链「声明 vs 实际」对账。把依赖与重算顺序写进注册表，
+          #   逐项核对上游 sha256，专治「账本重算后摘要指纹未同步」这类 CI 首跑变红
+          #   （v0.81 的实际故障）。不读 1.3GB 大库；产物缺失时显式 SKIP 并打印范围。
+          echo "::group::check_derived_chain_v0_1 --check"
+          python research/scripts/check_derived_chain_v0_1.py --check
+          echo "::endgroup::"
+
+          # ★ v0.83：真实使用验证协议的事前判定规则指纹锁定。
+          #   CI 无 .tmp/real_use/（gitignore）→ 显式打印 NO_RECORDS，不下结论、不静默通过。
+          echo "::group::check_real_use_protocol_v0_1 --check"
+          python research/scripts/check_real_use_protocol_v0_1.py --check
+          echo "::endgroup::"
+
       # GITHUB_ACTIONS 由 GitHub 内置，vite.config.ts 据此取 base = /Cycle/
       - name: Build (base = /Cycle/)
         run: npm run build

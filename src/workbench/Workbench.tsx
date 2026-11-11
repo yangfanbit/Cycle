@@ -99,6 +99,16 @@ export function Workbench() {
   }
 
   /** 从「值得关注」清单直接进入 T 时刻冻结：预填研究问题，不要求先检索 */
+  /** ★ v0.83 零摩擦：不经过「提问 → 看证据」，直接进 T 时刻冻结（含零触发/摩擦记录）。 */
+  function quickRecord() {
+    setQuestion('');
+    setVerdict('');
+    setSelected(null);
+    setFrontierRef(null);
+    setView('workbench');
+    setStep('record');
+  }
+
   function recordFromFrontier(title: string, id: string) {
     setQuestion(`「${title}」是否提示了一个值得继续研究的方向？我此前是否已考虑过？`);
     setFrontierRef(id);
@@ -146,6 +156,9 @@ export function Workbench() {
                   onClick={() => setView('frontier')} data-open-frontier="1">前瞻排程</button>
           <button type="button" className={view === 'workbench' ? 'is-active' : ''}
                   onClick={() => setView('workbench')} data-open-history="1">历史检索 / 记录</button>
+          <button type="button"
+                  onClick={quickRecord} data-quick-record="1"
+                  title="直接冻结 T 时刻判断；正向 / 负向 / 零触发 / 摩擦同等记录">记一条</button>
           <button type="button" className={view === 'eval' ? 'is-active' : ''}
                   onClick={openEval} data-open-eval="1">内部评估视图</button>
           <button type="button" className={view === 'archive' ? 'is-active' : ''}

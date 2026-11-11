@@ -1,3 +1,9 @@
+> ★★ **v0.83 勘误（2026-11-12）**：本模板属于**已被取代的 13 字段协议**，
+> 日常记录请用 `REAL_USE_RECORD_LITE_TEMPLATE_v0_1.md`（3 字段轻量版）。
+> 原协议实测 0 条记录，记录成本高于研究本身；`docs/REAL_USE_LITE_v0_1.md` 已生效。
+> 本文件保留作完整方法论参考，**下方原句不删不改**。判定阈值见
+> `docs/REAL_USE_DECISION_RULE_v0_1.md`（事前冻结、指纹锁定）。
+
 # 真实使用记录模板 v0.1（空白 · 复制到 `.tmp/real_use/records/` 填写）
 
 > 使用说明见 `docs/THREEC_REAL_USE_PROTOCOL_v0_1.md` §3。

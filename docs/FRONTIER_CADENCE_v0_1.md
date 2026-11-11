@@ -87,8 +87,21 @@ $P research/scripts/build_theme_market_v0_1.py --check
 $P research/scripts/build_frontier_board_v0_1.py --check
 $P research/scripts/build_weekly_research_v0_1.py --check
 $P research/scripts/build_theme_discovery_v0_1.py --check
+# ★ v0.83：派生链「声明 vs 实际」总对账 —— 放在所有 --write 之后，
+#   能抓到「上游重算了但下游声明的 sha256 没同步」（v0.81 CI 首跑变红的根因）。
+#   重算顺序注册表在 check_derived_chain_v0_1.py 的 CHAIN 常量里，新增产物必须同步登记。
+$P research/scripts/check_derived_chain_v0_1.py --check
+$P research/scripts/check_real_use_protocol_v0_1.py --check
 npx tsc -b --force && npx vitest run && npx vite build
 ```
+
+★★ **v0.83 派生链声明化**：`check_derived_chain_v0_1.py` 的 `CHAIN` 是重算顺序的**唯一真相**：
+每个产物登记「依赖哪些上游、声明字段在哪、指纹宽度、顺序号」，`--check` 逐项对账
+「声明 sha256 vs 实际文件 sha256」并断言顺序无倒置。
+★ 区分两类指纹：`EXTERNAL`（上游文件）要对账；`INTERNAL`（雷达 view 的 payload 自证摘要）
+与 `NO_DECL`（账本无指纹声明）**显式 SKIP 并打印**，不当作依赖。
+★ **新增 / 改名产物必须同步改 `CHAIN`**，否则 `--check` 不会覆盖新依赖。
+本校验器不读 1.3 GB 大库，CI 与本地行为一致；产物缺失时显式 SKIP 降级。
 
 ★★ **v0.82 信息架构**：默认页「二」是 `theme_discovery_v0_1.json`（**当前主题挖掘**），
 不再放历史研究对象。`weekly_research` / `research_round` / `phase_declaration_log` 仍照常产出，
