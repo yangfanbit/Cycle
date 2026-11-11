@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.83**（2026-11-12：**真实使用验证协议收口 + 派生链声明化** —— 事前冻结判定规则（指纹锁定，防事后改阈值）、轻量 3 字段模板、零摩擦「记一条」入口、修订过期的治理表述；新增派生链「声明 vs 实际」只读对账，把重算顺序写进注册表）· 版本基线：v0.80 `861b31f` · v0.81 `f0e8e54` / `90b2be5` · v0.82 主交付 `c9dd4d5` / 收尾 `33dd632` · **本轮交付信息以收尾提交为准** · 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量**，**真实使用记录仍 0 条、有效性未验证** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
+| **当前主线** | **v0.83**（2026-11-12：**真实使用验证协议收口 + 派生链声明化** —— 事前冻结判定规则（指纹锁定，防事后改阈值）、轻量 3 字段模板、零摩擦「记一条」入口、修订过期的治理表述；新增派生链「声明 vs 实际」只读对账，把重算顺序写进注册表）· 版本基线：v0.80 `861b31f` · v0.81 `f0e8e54` / `90b2be5` · v0.82 主交付 `c9dd4d5` / 收尾 `33dd632` · 主交付 **`cc9f8ae`**（首跑 CI `43058732633` 因未入库的可选上游 `cache_v0_1.json` 失败）· 修复 **`3589ec6`** / CI **`43059670281` success**（已部署，线上三视图 + 「记一条」点击探针 PASS）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量**，**真实使用记录仍 0 条、有效性未验证** · **统计轨季度 / 机制轨每周** · 行情校正见 `docs/PRICE_CALIBRATION_v0_1.md`、板块语义见 `docs/BOARD_SEMANTICS_v0_1.md`、阶段治理见 `docs/PHASE_GOVERNANCE_v0_1.md` |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
