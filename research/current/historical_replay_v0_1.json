@@ -1,0 +1,1738 @@
+{
+ "artifact": "historical_replay",
+ "artifact_version": "0.1",
+ "as_of": "2026-11-06",
+ "benchmark": {
+  "first_date": "2014-06-20",
+  "last_date": "2026-11-06",
+  "price_type": "raw",
+  "series_id": "CSI300",
+  "trading_days": 3010
+ },
+ "caliber_seven": {
+  "denominator": "comparable===true；主统计按冻结日聚簇，逐观察数只报规模",
+  "exclusions": {
+   "INCOMPLETE_SERIES_WINDOW": 12,
+   "INSUFFICIENT_PRE_WINDOW": 187,
+   "NOT_INTERPRETABLE": 1323,
+   "NO_CLOSE_AT_T": 2555
+  },
+  "observation_window": "事前 T-60..T；结算 T+1..T+20（严格晚于 T）",
+  "sample_scope": "history_scan.db 的 241 行业板块 + 173 概念篮子，冻结点从基准第 61 个交易日起、步长 60、窗口 20",
+  "source": "scan_daily.close raw（provider=sina）+ CSI300 + board_semantics_v0_1.json；不取官方指数、不联网",
+  "target": "FORWARD_EXCESS_POSITIVE：T+20 相对 CSI300 累计超额 > 0（沿用既有 test_hit=ex>0）",
+  "uncertainty": "二元比例一律 95% Wilson；n=0→null；样本相关，不做显著性检验"
+ },
+ "calibration_bins": [
+  {
+   "bin": "1/5",
+   "mean_predicted": 0.3685,
+   "n": 925,
+   "observed_frequency": 0.7849
+  },
+  {
+   "bin": "2/5",
+   "mean_predicted": 0.5438,
+   "n": 23330,
+   "observed_frequency": 0.6037
+  },
+  {
+   "bin": "3/5",
+   "mean_predicted": 0.6352,
+   "n": 5962,
+   "observed_frequency": 0.5275
+  },
+  {
+   "bin": "4/5",
+   "mean_predicted": 0.8073,
+   "n": 241,
+   "observed_frequency": 0.0083
+  }
+ ],
+ "clusters": [
+  {
+   "comparable_observations": 245,
+   "freeze_date": "2014-09-15",
+   "gate_hit_observations": 192,
+   "historical_frequency": {
+    "all": {
+     "k": 192,
+     "n": 245,
+     "point": 0.7837,
+     "wilson95": [
+      0.7279,
+      0.8306
+     ]
+    },
+    "gate_hit": {
+     "k": 155,
+     "n": 192,
+     "point": 0.8073,
+     "wilson95": [
+      0.7457,
+      0.8568
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": null,
+    "EX_ANTE_GATE_HIT": null,
+    "EX_ANTE_GATE_MISS": null
+   },
+   "train_pool_size": 0
+  },
+  {
+   "comparable_observations": 251,
+   "freeze_date": "2014-12-15",
+   "gate_hit_observations": 241,
+   "historical_frequency": {
+    "all": {
+     "k": 5,
+     "n": 251,
+     "point": 0.0199,
+     "wilson95": [
+      0.0085,
+      0.0458
+     ]
+    },
+    "gate_hit": {
+     "k": 2,
+     "n": 241,
+     "point": 0.0083,
+     "wilson95": [
+      0.0023,
+      0.0297
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.7836734693877551,
+    "EX_ANTE_GATE_HIT": 0.8072916666666666,
+    "EX_ANTE_GATE_MISS": 0.6981132075471698
+   },
+   "train_pool_size": 245
+  },
+  {
+   "comparable_observations": 252,
+   "freeze_date": "2015-03-18",
+   "gate_hit_observations": 233,
+   "historical_frequency": {
+    "all": {
+     "k": 163,
+     "n": 252,
+     "point": 0.6468,
+     "wilson95": [
+      0.586,
+      0.7032
+     ]
+    },
+    "gate_hit": {
+     "k": 153,
+     "n": 233,
+     "point": 0.6567,
+     "wilson95": [
+      0.5936,
+      0.7146
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.3971774193548387,
+    "EX_ANTE_GATE_HIT": 0.3625866050808314,
+    "EX_ANTE_GATE_MISS": 0.6349206349206349
+   },
+   "train_pool_size": 496
+  },
+  {
+   "comparable_observations": 249,
+   "freeze_date": "2015-06-12",
+   "gate_hit_observations": 242,
+   "historical_frequency": {
+    "all": {
+     "k": 4,
+     "n": 249,
+     "point": 0.0161,
+     "wilson95": [
+      0.0063,
+      0.0406
+     ]
+    },
+    "gate_hit": {
+     "k": 1,
+     "n": 242,
+     "point": 0.0041,
+     "wilson95": [
+      0.0007,
+      0.023
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.48128342245989303,
+    "EX_ANTE_GATE_HIT": 0.46546546546546547,
+    "EX_ANTE_GATE_MISS": 0.6097560975609756
+   },
+   "train_pool_size": 748
+  },
+  {
+   "comparable_observations": 248,
+   "freeze_date": "2015-09-09",
+   "gate_hit_observations": 192,
+   "historical_frequency": {
+    "all": {
+     "k": 228,
+     "n": 248,
+     "point": 0.9194,
+     "wilson95": [
+      0.8787,
+      0.9472
+     ]
+    },
+    "gate_hit": {
+     "k": 182,
+     "n": 192,
+     "point": 0.9479,
+     "wilson95": [
+      0.9068,
+      0.9715
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.3650952858575727,
+    "EX_ANTE_GATE_HIT": 0.34251101321585903,
+    "EX_ANTE_GATE_MISS": 0.5955056179775281
+   },
+   "train_pool_size": 997
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2015-12-09",
+   "gate_hit_observations": 105,
+   "historical_frequency": {
+    "all": {
+     "k": 60,
+     "n": 253,
+     "point": 0.2372,
+     "wilson95": [
+      0.1889,
+      0.2933
+     ]
+    },
+    "gate_hit": {
+     "k": 23,
+     "n": 105,
+     "point": 0.219,
+     "wilson95": [
+      0.1506,
+      0.3073
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.4755020080321285,
+    "EX_ANTE_GATE_HIT": 0.4481818181818182,
+    "EX_ANTE_GATE_MISS": 0.6827586206896552
+   },
+   "train_pool_size": 1245
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2016-03-10",
+   "gate_hit_observations": 134,
+   "historical_frequency": {
+    "all": {
+     "k": 249,
+     "n": 253,
+     "point": 0.9842,
+     "wilson95": [
+      0.9601,
+      0.9938
+     ]
+    },
+    "gate_hit": {
+     "k": 132,
+     "n": 134,
+     "point": 0.9851,
+     "wilson95": [
+      0.9472,
+      0.9959
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.43524699599465955,
+    "EX_ANTE_GATE_HIT": 0.42821576763485475,
+    "EX_ANTE_GATE_MISS": 0.4641638225255973
+   },
+   "train_pool_size": 1498
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2016-06-06",
+   "gate_hit_observations": 66,
+   "historical_frequency": {
+    "all": {
+     "k": 203,
+     "n": 253,
+     "point": 0.8024,
+     "wilson95": [
+      0.7489,
+      0.8468
+     ]
+    },
+    "gate_hit": {
+     "k": 52,
+     "n": 66,
+     "point": 0.7879,
+     "wilson95": [
+      0.6749,
+      0.8692
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5145631067961165,
+    "EX_ANTE_GATE_HIT": 0.4839432412247946,
+    "EX_ANTE_GATE_MISS": 0.6140776699029126
+   },
+   "train_pool_size": 1751
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2016-08-31",
+   "gate_hit_observations": 22,
+   "historical_frequency": {
+    "all": {
+     "k": 156,
+     "n": 253,
+     "point": 0.6166,
+     "wilson95": [
+      0.5554,
+      0.6743
+     ]
+    },
+    "gate_hit": {
+     "k": 10,
+     "n": 22,
+     "point": 0.4545,
+     "wilson95": [
+      0.2692,
+      0.6534
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5508982035928144,
+    "EX_ANTE_GATE_HIT": 0.498220640569395,
+    "EX_ANTE_GATE_MISS": 0.674457429048414
+   },
+   "train_pool_size": 2004
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2016-12-02",
+   "gate_hit_observations": 123,
+   "historical_frequency": {
+    "all": {
+     "k": 212,
+     "n": 253,
+     "point": 0.8379,
+     "wilson95": [
+      0.7875,
+      0.8782
+     ]
+    },
+    "gate_hit": {
+     "k": 97,
+     "n": 123,
+     "point": 0.7886,
+     "wilson95": [
+      0.7083,
+      0.8515
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5582631812140009,
+    "EX_ANTE_GATE_HIT": 0.49754730203223546,
+    "EX_ANTE_GATE_MISS": 0.6626506024096386
+   },
+   "train_pool_size": 2257
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2017-03-06",
+   "gate_hit_observations": 53,
+   "historical_frequency": {
+    "all": {
+     "k": 38,
+     "n": 253,
+     "point": 0.1502,
+     "wilson95": [
+      0.1114,
+      0.1994
+     ]
+    },
+    "gate_hit": {
+     "k": 20,
+     "n": 53,
+     "point": 0.3774,
+     "wilson95": [
+      0.2594,
+      0.5119
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5864541832669322,
+    "EX_ANTE_GATE_HIT": 0.5206451612903226,
+    "EX_ANTE_GATE_MISS": 0.6927083333333334
+   },
+   "train_pool_size": 2510
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2017-06-05",
+   "gate_hit_observations": 242,
+   "historical_frequency": {
+    "all": {
+     "k": 118,
+     "n": 253,
+     "point": 0.4664,
+     "wilson95": [
+      0.4059,
+      0.5279
+     ]
+    },
+    "gate_hit": {
+     "k": 115,
+     "n": 242,
+     "point": 0.4752,
+     "wilson95": [
+      0.4132,
+      0.538
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5465074194715889,
+    "EX_ANTE_GATE_HIT": 0.5159076731129133,
+    "EX_ANTE_GATE_MISS": 0.5887931034482758
+   },
+   "train_pool_size": 2763
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2017-08-28",
+   "gate_hit_observations": 26,
+   "historical_frequency": {
+    "all": {
+     "k": 182,
+     "n": 253,
+     "point": 0.7194,
+     "wilson95": [
+      0.661,
+      0.7711
+     ]
+    },
+    "gate_hit": {
+     "k": 23,
+     "n": 26,
+     "point": 0.8846,
+     "wilson95": [
+      0.7102,
+      0.96
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5397877984084881,
+    "EX_ANTE_GATE_HIT": 0.510569105691057,
+    "EX_ANTE_GATE_MISS": 0.5858240819812126
+   },
+   "train_pool_size": 3016
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2017-11-27",
+   "gate_hit_observations": 219,
+   "historical_frequency": {
+    "all": {
+     "k": 59,
+     "n": 253,
+     "point": 0.2332,
+     "wilson95": [
+      0.1853,
+      0.2891
+     ]
+    },
+    "gate_hit": {
+     "k": 45,
+     "n": 219,
+     "point": 0.2055,
+     "wilson95": [
+      0.1573,
+      0.2638
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5536861425512389,
+    "EX_ANTE_GATE_HIT": 0.515766969535008,
+    "EX_ANTE_GATE_MISS": 0.6044349070100143
+   },
+   "train_pool_size": 3269
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2018-02-27",
+   "gate_hit_observations": 18,
+   "historical_frequency": {
+    "all": {
+     "k": 244,
+     "n": 253,
+     "point": 0.9644,
+     "wilson95": [
+      0.9338,
+      0.9812
+     ]
+    },
+    "gate_hit": {
+     "k": 16,
+     "n": 18,
+     "point": 0.8889,
+     "wilson95": [
+      0.672,
+      0.969
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.530664395229983,
+    "EX_ANTE_GATE_HIT": 0.48325358851674644,
+    "EX_ANTE_GATE_MISS": 0.5998603351955307
+   },
+   "train_pool_size": 3522
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2018-05-28",
+   "gate_hit_observations": 74,
+   "historical_frequency": {
+    "all": {
+     "k": 8,
+     "n": 253,
+     "point": 0.0316,
+     "wilson95": [
+      0.0161,
+      0.0611
+     ]
+    },
+    "gate_hit": {
+     "k": 3,
+     "n": 74,
+     "point": 0.0405,
+     "wilson95": [
+      0.0139,
+      0.1125
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5597350993377483,
+    "EX_ANTE_GATE_HIT": 0.48671726755218214,
+    "EX_ANTE_GATE_MISS": 0.6520695860827834
+   },
+   "train_pool_size": 3775
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2018-08-21",
+   "gate_hit_observations": 34,
+   "historical_frequency": {
+    "all": {
+     "k": 53,
+     "n": 253,
+     "point": 0.2095,
+     "wilson95": [
+      0.1639,
+      0.2638
+     ]
+    },
+    "gate_hit": {
+     "k": 10,
+     "n": 34,
+     "point": 0.2941,
+     "wilson95": [
+      0.1683,
+      0.4617
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5265640516385303,
+    "EX_ANTE_GATE_HIT": 0.4715857011915674,
+    "EX_ANTE_GATE_MISS": 0.5915492957746479
+   },
+   "train_pool_size": 4028
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2018-11-21",
+   "gate_hit_observations": 234,
+   "historical_frequency": {
+    "all": {
+     "k": 38,
+     "n": 253,
+     "point": 0.1502,
+     "wilson95": [
+      0.1114,
+      0.1994
+     ]
+    },
+    "gate_hit": {
+     "k": 31,
+     "n": 234,
+     "point": 0.1325,
+     "wilson95": [
+      0.0949,
+      0.1819
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.507825274468582,
+    "EX_ANTE_GATE_HIT": 0.46886281588447654,
+    "EX_ANTE_GATE_MISS": 0.549636803874092
+   },
+   "train_pool_size": 4281
+  },
+  {
+   "comparable_observations": 253,
+   "freeze_date": "2019-02-22",
+   "gate_hit_observations": 93,
+   "historical_frequency": {
+    "all": {
+     "k": 249,
+     "n": 253,
+     "point": 0.9842,
+     "wilson95": [
+      0.9601,
+      0.9938
+     ]
+    },
+    "gate_hit": {
+     "k": 90,
+     "n": 93,
+     "point": 0.9677,
+     "wilson95": [
+      0.9094,
+      0.989
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.4878694309660344,
+    "EX_ANTE_GATE_HIT": 0.43673469387755104,
+    "EX_ANTE_GATE_MISS": 0.5479846449136276
+   },
+   "train_pool_size": 4534
+  },
+  {
+   "comparable_observations": 359,
+   "freeze_date": "2019-05-23",
+   "gate_hit_observations": 152,
+   "historical_frequency": {
+    "all": {
+     "k": 57,
+     "n": 359,
+     "point": 0.1588,
+     "wilson95": [
+      0.1246,
+      0.2002
+     ]
+    },
+    "gate_hit": {
+     "k": 32,
+     "n": 152,
+     "point": 0.2105,
+     "wilson95": [
+      0.1533,
+      0.2821
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5141006893670357,
+    "EX_ANTE_GATE_HIT": 0.45615414864333464,
+    "EX_ANTE_GATE_MISS": 0.5797682709447415
+   },
+   "train_pool_size": 4787
+  },
+  {
+   "comparable_observations": 359,
+   "freeze_date": "2019-08-16",
+   "gate_hit_observations": 99,
+   "historical_frequency": {
+    "all": {
+     "k": 321,
+     "n": 359,
+     "point": 0.8942,
+     "wilson95": [
+      0.858,
+      0.9219
+     ]
+    },
+    "gate_hit": {
+     "k": 91,
+     "n": 99,
+     "point": 0.9192,
+     "wilson95": [
+      0.8486,
+      0.9585
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.4893120870579091,
+    "EX_ANTE_GATE_HIT": 0.4423005565862709,
+    "EX_ANTE_GATE_MISS": 0.5410036719706243
+   },
+   "train_pool_size": 5146
+  },
+  {
+   "comparable_observations": 360,
+   "freeze_date": "2019-11-18",
+   "gate_hit_observations": 127,
+   "historical_frequency": {
+    "all": {
+     "k": 299,
+     "n": 360,
+     "point": 0.8306,
+     "wilson95": [
+      0.7884,
+      0.8658
+     ]
+    },
+    "gate_hit": {
+     "k": 108,
+     "n": 127,
+     "point": 0.8504,
+     "wilson95": [
+      0.7781,
+      0.9021
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5157129881925522,
+    "EX_ANTE_GATE_HIT": 0.45919828203292773,
+    "EX_ANTE_GATE_MISS": 0.5739579490962744
+   },
+   "train_pool_size": 5505
+  },
+  {
+   "comparable_observations": 346,
+   "freeze_date": "2020-02-19",
+   "gate_hit_observations": 156,
+   "historical_frequency": {
+    "all": {
+     "k": 279,
+     "n": 346,
+     "point": 0.8064,
+     "wilson95": [
+      0.7615,
+      0.8445
+     ]
+    },
+    "gate_hit": {
+     "k": 114,
+     "n": 156,
+     "point": 0.7308,
+     "wilson95": [
+      0.6562,
+      0.7942
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5350383631713554,
+    "EX_ANTE_GATE_HIT": 0.4762067785005135,
+    "EX_ANTE_GATE_MISS": 0.5934103260869565
+   },
+   "train_pool_size": 5865
+  },
+  {
+   "comparable_observations": 351,
+   "freeze_date": "2020-05-19",
+   "gate_hit_observations": 136,
+   "historical_frequency": {
+    "all": {
+     "k": 212,
+     "n": 351,
+     "point": 0.604,
+     "wilson95": [
+      0.552,
+      0.6538
+     ]
+    },
+    "gate_hit": {
+     "k": 84,
+     "n": 136,
+     "point": 0.6176,
+     "wilson95": [
+      0.5338,
+      0.695
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5501529544356787,
+    "EX_ANTE_GATE_HIT": 0.4891127721806955,
+    "EX_ANTE_GATE_MISS": 0.6100829610721124
+   },
+   "train_pool_size": 6211
+  },
+  {
+   "comparable_observations": 351,
+   "freeze_date": "2020-08-13",
+   "gate_hit_observations": 142,
+   "historical_frequency": {
+    "all": {
+     "k": 64,
+     "n": 351,
+     "point": 0.1823,
+     "wilson95": [
+      0.1455,
+      0.2261
+     ]
+    },
+    "gate_hit": {
+     "k": 23,
+     "n": 142,
+     "point": 0.162,
+     "wilson95": [
+      0.1104,
+      0.2313
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5530326120085339,
+    "EX_ANTE_GATE_HIT": 0.49455337690631807,
+    "EX_ANTE_GATE_MISS": 0.6091370558375635
+   },
+   "train_pool_size": 6562
+  },
+  {
+   "comparable_observations": 352,
+   "freeze_date": "2020-11-13",
+   "gate_hit_observations": 134,
+   "historical_frequency": {
+    "all": {
+     "k": 89,
+     "n": 352,
+     "point": 0.2528,
+     "wilson95": [
+      0.2103,
+      0.3007
+     ]
+    },
+    "gate_hit": {
+     "k": 44,
+     "n": 134,
+     "point": 0.3284,
+     "wilson95": [
+      0.2546,
+      0.4117
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5342109069868364,
+    "EX_ANTE_GATE_HIT": 0.48047690014903127,
+    "EX_ANTE_GATE_MISS": 0.5848791455874086
+   },
+   "train_pool_size": 6913
+  },
+  {
+   "comparable_observations": 350,
+   "freeze_date": "2021-02-08",
+   "gate_hit_observations": 275,
+   "historical_frequency": {
+    "all": {
+     "k": 346,
+     "n": 350,
+     "point": 0.9886,
+     "wilson95": [
+      0.971,
+      0.9955
+     ]
+    },
+    "gate_hit": {
+     "k": 272,
+     "n": 275,
+     "point": 0.9891,
+     "wilson95": [
+      0.9684,
+      0.9963
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5205781142463868,
+    "EX_ANTE_GATE_HIT": 0.47463456577815993,
+    "EX_ANTE_GATE_MISS": 0.5630296610169492
+   },
+   "train_pool_size": 7265
+  },
+  {
+   "comparable_observations": 363,
+   "freeze_date": "2021-05-14",
+   "gate_hit_observations": 122,
+   "historical_frequency": {
+    "all": {
+     "k": 226,
+     "n": 363,
+     "point": 0.6226,
+     "wilson95": [
+      0.5717,
+      0.6709
+     ]
+    },
+    "gate_hit": {
+     "k": 63,
+     "n": 122,
+     "point": 0.5164,
+     "wilson95": [
+      0.4286,
+      0.6032
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5420879842416284,
+    "EX_ANTE_GATE_HIT": 0.512221041445271,
+    "EX_ANTE_GATE_MISS": 0.5712801869644248
+   },
+   "train_pool_size": 7615
+  },
+  {
+   "comparable_observations": 363,
+   "freeze_date": "2021-08-09",
+   "gate_hit_observations": 162,
+   "historical_frequency": {
+    "all": {
+     "k": 315,
+     "n": 363,
+     "point": 0.8678,
+     "wilson95": [
+      0.829,
+      0.8988
+     ]
+    },
+    "gate_hit": {
+     "k": 142,
+     "n": 162,
+     "point": 0.8765,
+     "wilson95": [
+      0.817,
+      0.9186
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5457508147405364,
+    "EX_ANTE_GATE_HIT": 0.5123520329387545,
+    "EX_ANTE_GATE_MISS": 0.5774682306940372
+   },
+   "train_pool_size": 7978
+  },
+  {
+   "comparable_observations": 363,
+   "freeze_date": "2021-11-10",
+   "gate_hit_observations": 149,
+   "historical_frequency": {
+    "all": {
+     "k": 252,
+     "n": 363,
+     "point": 0.6942,
+     "wilson95": [
+      0.645,
+      0.7394
+     ]
+    },
+    "gate_hit": {
+     "k": 104,
+     "n": 149,
+     "point": 0.698,
+     "wilson95": [
+      0.6201,
+      0.766
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5597650161851097,
+    "EX_ANTE_GATE_HIT": 0.5269268774703557,
+    "EX_ANTE_GATE_MISS": 0.590729093873748
+   },
+   "train_pool_size": 8341
+  },
+  {
+   "comparable_observations": 349,
+   "freeze_date": "2022-02-10",
+   "gate_hit_observations": 129,
+   "historical_frequency": {
+    "all": {
+     "k": 291,
+     "n": 349,
+     "point": 0.8338,
+     "wilson95": [
+      0.7912,
+      0.8692
+     ]
+    },
+    "gate_hit": {
+     "k": 98,
+     "n": 129,
+     "point": 0.7597,
+     "wilson95": [
+      0.6791,
+      0.8252
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5653722426470589,
+    "EX_ANTE_GATE_HIT": 0.5329997617345723,
+    "EX_ANTE_GATE_MISS": 0.5955180829820279
+   },
+   "train_pool_size": 8704
+  },
+  {
+   "comparable_observations": 358,
+   "freeze_date": "2022-05-12",
+   "gate_hit_observations": 119,
+   "historical_frequency": {
+    "all": {
+     "k": 224,
+     "n": 358,
+     "point": 0.6257,
+     "wilson95": [
+      0.5745,
+      0.6742
+     ]
+    },
+    "gate_hit": {
+     "k": 66,
+     "n": 119,
+     "point": 0.5546,
+     "wilson95": [
+      0.465,
+      0.6408
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5757207555506462,
+    "EX_ANTE_GATE_HIT": 0.5397595931576514,
+    "EX_ANTE_GATE_MISS": 0.6086312671884917
+   },
+   "train_pool_size": 9053
+  },
+  {
+   "comparable_observations": 358,
+   "freeze_date": "2022-08-05",
+   "gate_hit_observations": 203,
+   "historical_frequency": {
+    "all": {
+     "k": 272,
+     "n": 358,
+     "point": 0.7598,
+     "wilson95": [
+      0.7129,
+      0.8011
+     ]
+    },
+    "gate_hit": {
+     "k": 135,
+     "n": 203,
+     "point": 0.665,
+     "wilson95": [
+      0.5976,
+      0.7264
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5776219317819573,
+    "EX_ANTE_GATE_HIT": 0.5401574803149606,
+    "EX_ANTE_GATE_MISS": 0.6111558598469593
+   },
+   "train_pool_size": 9411
+  },
+  {
+   "comparable_observations": 358,
+   "freeze_date": "2022-11-07",
+   "gate_hit_observations": 278,
+   "historical_frequency": {
+    "all": {
+     "k": 158,
+     "n": 358,
+     "point": 0.4413,
+     "wilson95": [
+      0.3908,
+      0.4931
+     ]
+    },
+    "gate_hit": {
+     "k": 94,
+     "n": 278,
+     "point": 0.3381,
+     "wilson95": [
+      0.2851,
+      0.3956
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5842972668645716,
+    "EX_ANTE_GATE_HIT": 0.5456110154905336,
+    "EX_ANTE_GATE_MISS": 0.6194102714313611
+   },
+   "train_pool_size": 9769
+  },
+  {
+   "comparable_observations": 351,
+   "freeze_date": "2023-02-07",
+   "gate_hit_observations": 108,
+   "historical_frequency": {
+    "all": {
+     "k": 232,
+     "n": 351,
+     "point": 0.661,
+     "wilson95": [
+      0.6099,
+      0.7085
+     ]
+    },
+    "gate_hit": {
+     "k": 55,
+     "n": 108,
+     "point": 0.5093,
+     "wilson95": [
+      0.4163,
+      0.6016
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5792436062012442,
+    "EX_ANTE_GATE_HIT": 0.5339017458384084,
+    "EX_ANTE_GATE_MISS": 0.622188040761392
+   },
+   "train_pool_size": 10127
+  },
+  {
+   "comparable_observations": 360,
+   "freeze_date": "2023-05-08",
+   "gate_hit_observations": 107,
+   "historical_frequency": {
+    "all": {
+     "k": 323,
+     "n": 360,
+     "point": 0.8972,
+     "wilson95": [
+      0.8615,
+      0.9245
+     ]
+    },
+    "gate_hit": {
+     "k": 87,
+     "n": 107,
+     "point": 0.8131,
+     "wilson95": [
+      0.7289,
+      0.8756
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.581981294140103,
+    "EX_ANTE_GATE_HIT": 0.533373063170441,
+    "EX_ANTE_GATE_MISS": 0.6269287288758266
+   },
+   "train_pool_size": 10478
+  },
+  {
+   "comparable_observations": 360,
+   "freeze_date": "2023-08-02",
+   "gate_hit_observations": 124,
+   "historical_frequency": {
+    "all": {
+     "k": 209,
+     "n": 360,
+     "point": 0.5806,
+     "wilson95": [
+      0.529,
+      0.6304
+     ]
+    },
+    "gate_hit": {
+     "k": 78,
+     "n": 124,
+     "point": 0.629,
+     "wilson95": [
+      0.5413,
+      0.709
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5924524820077505,
+    "EX_ANTE_GATE_HIT": 0.5391947092005447,
+    "EX_ANTE_GATE_MISS": 0.6405125504651571
+   },
+   "train_pool_size": 10838
+  },
+  {
+   "comparable_observations": 360,
+   "freeze_date": "2023-11-02",
+   "gate_hit_observations": 96,
+   "historical_frequency": {
+    "all": {
+     "k": 353,
+     "n": 360,
+     "point": 0.9806,
+     "wilson95": [
+      0.9604,
+      0.9905
+     ]
+    },
+    "gate_hit": {
+     "k": 92,
+     "n": 96,
+     "point": 0.9583,
+     "wilson95": [
+      0.8977,
+      0.9837
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5920700125022326,
+    "EX_ANTE_GATE_HIT": 0.5413105413105413,
+    "EX_ANTE_GATE_MISS": 0.6371144446317208
+   },
+   "train_pool_size": 11198
+  },
+  {
+   "comparable_observations": 346,
+   "freeze_date": "2024-01-26",
+   "gate_hit_observations": 172,
+   "historical_frequency": {
+    "all": {
+     "k": 8,
+     "n": 346,
+     "point": 0.0231,
+     "wilson95": [
+      0.0118,
+      0.045
+     ]
+    },
+    "gate_hit": {
+     "k": 6,
+     "n": 172,
+     "point": 0.0349,
+     "wilson95": [
+      0.0161,
+      0.074
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.6041702716732998,
+    "EX_ANTE_GATE_HIT": 0.548778213019959,
+    "EX_ANTE_GATE_MISS": 0.6520897208326609
+   },
+   "train_pool_size": 11558
+  },
+  {
+   "comparable_observations": 353,
+   "freeze_date": "2024-05-06",
+   "gate_hit_observations": 136,
+   "historical_frequency": {
+    "all": {
+     "k": 44,
+     "n": 353,
+     "point": 0.1246,
+     "wilson95": [
+      0.0942,
+      0.1632
+     ]
+    },
+    "gate_hit": {
+     "k": 15,
+     "n": 136,
+     "point": 0.1103,
+     "wilson95": [
+      0.068,
+      0.174
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5872815860215054,
+    "EX_ANTE_GATE_HIT": 0.532803180914513,
+    "EX_ANTE_GATE_MISS": 0.634594255218961
+   },
+   "train_pool_size": 11904
+  },
+  {
+   "comparable_observations": 353,
+   "freeze_date": "2024-07-30",
+   "gate_hit_observations": 43,
+   "historical_frequency": {
+    "all": {
+     "k": 99,
+     "n": 353,
+     "point": 0.2805,
+     "wilson95": [
+      0.2361,
+      0.3295
+     ]
+    },
+    "gate_hit": {
+     "k": 12,
+     "n": 43,
+     "point": 0.2791,
+     "wilson95": [
+      0.1675,
+      0.4269
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5739577384351799,
+    "EX_ANTE_GATE_HIT": 0.52266713706121,
+    "EX_ANTE_GATE_MISS": 0.6180935033394049
+   },
+   "train_pool_size": 12257
+  },
+  {
+   "comparable_observations": 353,
+   "freeze_date": "2024-10-31",
+   "gate_hit_observations": 331,
+   "historical_frequency": {
+    "all": {
+     "k": 288,
+     "n": 353,
+     "point": 0.8159,
+     "wilson95": [
+      0.7721,
+      0.8528
+     ]
+    },
+    "gate_hit": {
+     "k": 268,
+     "n": 331,
+     "point": 0.8097,
+     "wilson95": [
+      0.7639,
+      0.8483
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5657414750198255,
+    "EX_ANTE_GATE_HIT": 0.5208333333333334,
+    "EX_ANTE_GATE_MISS": 0.6029283850391418
+   },
+   "train_pool_size": 12610
+  },
+  {
+   "comparable_observations": 343,
+   "freeze_date": "2025-01-24",
+   "gate_hit_observations": 23,
+   "historical_frequency": {
+    "all": {
+     "k": 300,
+     "n": 343,
+     "point": 0.8746,
+     "wilson95": [
+      0.8354,
+      0.9056
+     ]
+    },
+    "gate_hit": {
+     "k": 20,
+     "n": 23,
+     "point": 0.8696,
+     "wilson95": [
+      0.6787,
+      0.9546
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5725526498495719,
+    "EX_ANTE_GATE_HIT": 0.536653979811352,
+    "EX_ANTE_GATE_MISS": 0.6039017341040462
+   },
+   "train_pool_size": 12963
+  },
+  {
+   "comparable_observations": 356,
+   "freeze_date": "2025-04-29",
+   "gate_hit_observations": 77,
+   "historical_frequency": {
+    "all": {
+     "k": 321,
+     "n": 356,
+     "point": 0.9017,
+     "wilson95": [
+      0.8663,
+      0.9285
+     ]
+    },
+    "gate_hit": {
+     "k": 61,
+     "n": 77,
+     "point": 0.7922,
+     "wilson95": [
+      0.6888,
+      0.8678
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.580339696377574,
+    "EX_ANTE_GATE_HIT": 0.5379162545334653,
+    "EX_ANTE_GATE_MISS": 0.6158839779005525
+   },
+   "train_pool_size": 13306
+  },
+  {
+   "comparable_observations": 356,
+   "freeze_date": "2025-07-28",
+   "gate_hit_observations": 82,
+   "historical_frequency": {
+    "all": {
+     "k": 125,
+     "n": 356,
+     "point": 0.3511,
+     "wilson95": [
+      0.3034,
+      0.4021
+     ]
+    },
+    "gate_hit": {
+     "k": 25,
+     "n": 82,
+     "point": 0.3049,
+     "wilson95": [
+      0.2158,
+      0.4114
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5887132191480018,
+    "EX_ANTE_GATE_HIT": 0.5411036952629008,
+    "EX_ANTE_GATE_MISS": 0.6276100545285277
+   },
+   "train_pool_size": 13662
+  },
+  {
+   "comparable_observations": 356,
+   "freeze_date": "2025-10-28",
+   "gate_hit_observations": 82,
+   "historical_frequency": {
+    "all": {
+     "k": 305,
+     "n": 356,
+     "point": 0.8567,
+     "wilson95": [
+      0.8165,
+      0.8893
+     ]
+    },
+    "gate_hit": {
+     "k": 56,
+     "n": 82,
+     "point": 0.6829,
+     "wilson95": [
+      0.576,
+      0.7735
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5826794121843344,
+    "EX_ANTE_GATE_HIT": 0.537991967871486,
+    "EX_ANTE_GATE_MISS": 0.6183754651610419
+   },
+   "train_pool_size": 14018
+  },
+  {
+   "comparable_observations": 356,
+   "freeze_date": "2026-01-22",
+   "gate_hit_observations": 258,
+   "historical_frequency": {
+    "all": {
+     "k": 272,
+     "n": 356,
+     "point": 0.764,
+     "wilson95": [
+      0.7173,
+      0.8052
+     ]
+    },
+    "gate_hit": {
+     "k": 212,
+     "n": 258,
+     "point": 0.8217,
+     "wilson95": [
+      0.7704,
+      0.8636
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5894670933630165,
+    "EX_ANTE_GATE_HIT": 0.5398763278896465,
+    "EX_ANTE_GATE_MISS": 0.6282385025412173
+   },
+   "train_pool_size": 14374
+  },
+  {
+   "comparable_observations": 372,
+   "freeze_date": "2026-04-27",
+   "gate_hit_observations": 197,
+   "historical_frequency": {
+    "all": {
+     "k": 63,
+     "n": 372,
+     "point": 0.1694,
+     "wilson95": [
+      0.1347,
+      0.2108
+     ]
+    },
+    "gate_hit": {
+     "k": 31,
+     "n": 197,
+     "point": 0.1574,
+     "wilson95": [
+      0.1131,
+      0.2147
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5936863543788188,
+    "EX_ANTE_GATE_HIT": 0.550952018278751,
+    "EX_ANTE_GATE_MISS": 0.6280465401102265
+   },
+   "train_pool_size": 14730
+  },
+  {
+   "comparable_observations": 372,
+   "freeze_date": "2026-07-24",
+   "gate_hit_observations": 189,
+   "historical_frequency": {
+    "all": {
+     "k": 363,
+     "n": 372,
+     "point": 0.9758,
+     "wilson95": [
+      0.9547,
+      0.9872
+     ]
+    },
+    "gate_hit": {
+     "k": 185,
+     "n": 189,
+     "point": 0.9788,
+     "wilson95": [
+      0.9469,
+      0.9917
+     ]
+    }
+   },
+   "predictors": {
+    "BASELINE": 0.5832340087405642,
+    "EX_ANTE_GATE_HIT": 0.5394853593611357,
+    "EX_ANTE_GATE_MISS": 0.6187050359712231
+   },
+   "train_pool_size": 15102
+  }
+ ],
+ "denominator_reconciliation": {
+  "comparable": 15474,
+  "excluded": 4077,
+  "freeze_points": 49,
+  "gross_observations": 19551,
+  "identity": "gross = comparable + excluded（杂项桶按每个冻结点重复排除，不是一次性排除）",
+  "universe_series": 399
+ },
+ "design": "docs/HISTORICAL_REPLAY_DESIGN_v0_1.md",
+ "duplicate_date_count": 0,
+ "duplicate_dates": [],
+ "excluded_observations": {
+  "INCOMPLETE_SERIES_WINDOW": 12,
+  "INSUFFICIENT_PRE_WINDOW": 187,
+  "NOT_INTERPRETABLE": 1323,
+  "NO_CLOSE_AT_T": 2555
+ },
+ "exploratory_baseline_probability": {
+  "calibrated": false,
+  "gate_better_than_baseline_clusters": {
+   "k": 30,
+   "n": 48,
+   "point": 0.625,
+   "unit": "Brier 逐簇比较（冻结日）",
+   "wilson95": [
+    0.4836,
+    0.7478
+   ]
+  },
+  "layer": "②",
+  "not_a_model": true,
+  "not_future_probability": true,
+  "note": "探索性经验基准概率，未校准；仅限②层表述，不得外推或作结论性宣称",
+  "primary": {
+   "k": 21,
+   "n": 49,
+   "name": "gate 组横截面命中率高于全体的冻结日占比",
+   "point": 0.4286,
+   "wilson95": [
+    0.3002,
+    0.5673
+   ]
+  },
+  "primary_unit": "冻结日（独立观察单位）",
+  "secondary_by_observation": {
+   "all": {
+    "k": 9171,
+    "n": 15474,
+    "point": 0.5927,
+    "wilson95": [
+     0.5849,
+     0.6004
+    ]
+   },
+   "gate_hit": {
+    "k": 3833,
+    "n": 6951,
+    "point": 0.5514,
+    "wilson95": [
+     0.5397,
+     0.5631
+    ]
+   },
+   "non_independent": true,
+   "note": "逐观察比例仅作规模描述，不作②层分母",
+   "pseudo_precision": true
+  }
+ },
+ "freeze_schedule": {
+  "first": "2014-09-15",
+  "freeze_points": 49,
+  "horizon_trading_days": 20,
+  "last": "2026-07-24",
+  "min_training_observations": 20,
+  "pre_days": 60,
+  "step_trading_days": 60
+ },
+ "historical_statistics": {
+  "all": {
+   "k": 9171,
+   "n": 15474,
+   "non_independent": true,
+   "note": "同日板块共享市场冲击；此区间仅供描述规模，不作②层分母",
+   "point": 0.5927,
+   "pseudo_precision": true,
+   "unit": "逐观察（非独立）",
+   "wilson95": [
+    0.5849,
+    0.6004
+   ]
+  },
+  "by_cluster": {
+   "comparable_clusters": 49,
+   "cross_sectional_hit_rate": {
+    "cross_sectional_hit_rate_max": 0.9886,
+    "cross_sectional_hit_rate_mean": 0.5835,
+    "cross_sectional_hit_rate_min": 0.0161,
+    "interpretation": "横截面命中率簇间剧烈摆动 → 目标几乎由市场整体状态决定，不是板块选择能力；逐观察比例不可当独立样本。"
+   },
+   "unit": "冻结日（独立观察单位）"
+  },
+  "comparable_observations": 15474,
+  "description": "① 层历史统计描述；逐观察数只报规模，主统计按冻结日聚簇",
+  "gate_hit": {
+   "k": 3833,
+   "n": 6951,
+   "non_independent": true,
+   "point": 0.5514,
+   "pseudo_precision": true,
+   "unit": "逐观察（非独立）",
+   "wilson95": [
+    0.5397,
+    0.5631
+   ]
+  },
+  "independent_clusters": 49
+ },
+ "layer3_gate": {
+  "actual_ex_ante_features": 2,
+  "actual_steps": 49,
+  "meets_threshold": false,
+  "reason": "步数达标但事前特征仅 2 个，且未做样本外校准与多重检验修正 → ③ 层仍不成立",
+  "required_ex_ante_features": 3,
+  "required_walk_forward_steps": 30
+ },
+ "limits": [
+  "★ 行情描述统计，不参与「研究增量」验收；有效性仍需真实使用记录。",
+  "★ 同一冻结日的板块共享市场冲击，不是独立样本；② 层主口径按冻结日聚簇，逐观察 Wilson 明确标为伪精度，只作规模描述。",
+  "★ 横截面命中率簇间剧烈摆动，说明目标几乎由市场整体状态决定（β 污染），不是板块选择能力；本轮未做板块中性化，结论不得外推。",
+  "★ 阈值沿用已发布规则、本轮未调参；未做多重检验修正（DSR/PBO）。",
+  "★ 探索性经验基准概率**未校准**，仅限②层表述，不构成任何买卖信号或标的清单。",
+  "★ 板块宇宙随时间扩张，早期冻结点可比序列少是数据边界，不补造。",
+  "★ 相对超额已减 β，但价格规则测出的延续不等于定性「成势」判据。"
+ ],
+ "predictors": {
+  "BASELINE": "严格早于 T 的已结算观察中 FORWARD_EXCESS_POSITIVE 的频率（climatology）",
+  "EX_ANTE_GATE": "只用 ≤T 的两个事前特征分组的历史频率；分组训练不足回退 BASELINE"
+ },
+ "purpose": "历史冻结重放：验证事前特征规则在 PIT expanding-window 下的可核区分度；不建立验证过的预测模型、不参与有效性验收",
+ "scores": {
+  "BASELINE": {
+   "brier_mean_by_cluster": 0.258372,
+   "independent_clusters": 48,
+   "logloss_mean_by_cluster": 0.712327,
+   "scored_observations": 15229
+  },
+  "EX_ANTE_GATE": {
+   "brier_mean_by_cluster": 0.26059,
+   "independent_clusters": 48,
+   "logloss_mean_by_cluster": 0.718192,
+   "scored_observations": 15229
+  }
+ },
+ "scoring_coverage": {
+  "baseline_scored_observations": 15229,
+  "gate_fallback_to_baseline": 0,
+  "gate_scored_observations": 15229,
+  "note": "评分逐观察计算但按冻结日聚簇取均值；逐观察数非独立样本"
+ },
+ "source_sha256_16": {
+  "HISTORICAL_REPLAY_DESIGN_v0_1.md": "73858f2633d787eb",
+  "board_semantics_v0_1.json": "d564abe667d69bed",
+  "theme_discovery_v0_1.json": "cf707027d254826e"
+ },
+ "validated_model": false
+}

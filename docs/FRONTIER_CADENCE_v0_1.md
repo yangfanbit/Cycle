@@ -92,6 +92,11 @@ $P research/scripts/build_theme_discovery_v0_1.py --check
 #   重算顺序注册表在 check_derived_chain_v0_1.py 的 CHAIN 常量里，新增产物必须同步登记。
 $P research/scripts/check_derived_chain_v0_1.py --check
 $P research/scripts/check_real_use_protocol_v0_1.py --check
+# ★ v0.84：历史冻结重放是**独立研究产物**，不是周更派生链的一环；
+#   行情推进后需单独 --write 重放，再 --check 复算口径与 PIT 不变量。
+#   设计口径在 docs/HISTORICAL_REPLAY_DESIGN_v0_1.md，阈值不因结果调整。
+$P research/scripts/build_historical_replay_v0_1.py --write
+$P research/scripts/build_historical_replay_v0_1.py --check
 npx tsc -b --force && npx vitest run && npx vite build
 ```
 

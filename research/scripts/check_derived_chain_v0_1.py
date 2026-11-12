@@ -116,6 +116,14 @@ CHAIN = [
                  "file_key": ("source", "file"),
                  "reason": "评估基础数据引用的完整季节性产物指纹"},
     },
+    {
+        "artifact": "historical_replay_v0_1.json", "order": 11,
+        # ★ v0.84：独立研究产物（非周更派生链），但声明了上游门槛与设计文档指纹；
+        #   设计文档在 docs/ 下，需加入 search 才能对账「改口径必被抓到」。
+        "decl": {"kind": "EXTERNAL_FILE", "path": ("source_sha256_16",), "width": 16,
+                 "search": [CURRENT, os.path.join(ROOT, "docs")],
+                 "optional_missing": []},
+    },
 ]
 
 

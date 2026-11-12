@@ -52,6 +52,7 @@
 | v0.81 | **重启研究更新 + 单人工具 UI 精简**：明确当前研究主题是 `ai-offline` 人工离线轮次产物、不是也不该由行情推演；按周更 SOP 推进行情与机制轨派生链；新增**离线研究轮次** `research_round_2026-11-08_v0_1.json`（逐主题复查可核产业证据 + 2 条新增观察方向），阶段声明日志**追加第二轮**（12 条 / 2 轮 / `supersedes` 链）；默认页精简为数据 + 本周研究 + 本轮研究结论，重复口径去重后收进一个默认折叠的「口径与边界」 | `research_round_2026-11-08_v0_1.json` · `check_research_round_v0_1.py` · `build_phase_declaration_log_v0_1.py` · `build_weekly_research_v0_1.py` · `FrontierView.tsx` / `EvalView.tsx` / `Workbench.tsx` |
 | v0.82 | **默认页换成数据驱动的主题挖掘 + 历史档案下沉**：使用者指出要的是「根据市场行情和信息挖主题」，不是历史遗留 research 记录。新建 `theme_discovery_v0_1.json`（不预设主题集合：标题显式词表精确关联 + 库内 OHLCV 客观结构量双轨聚合，G1/G3 给候选、G2/G4 只给规模与原因，零打分零排序零推荐）；6 个人工研究对象 / 本周研究明细 / 研究轮次 / 专项假设 / 阶段声明 SOP 整块移入独立「档案（待复核）」入口。个股层按**合规替代**只给板块结构卡 + 历史 PIT 角色记录，**不改宪法 §1 / §5.1**、不给龙头/弹性/推荐 | `build_theme_discovery_v0_1.py` · `theme_discovery_v0_1.json` · `ArchiveView.tsx` · `FrontierView.tsx` / `Workbench.tsx` · `.github/workflows/deploy.yml`（新 `--check`，无大库显式 SKIP） |
 | v0.83 | **真实使用验证准备 + 派生链声明化**（按全面 review 的建议顺序）：事前冻结判定规则（指纹锁定，防事后改阈值）、轻量 3 字段模板、零摩擦「记一条」直达冻结、修订过期的治理表述；派生链重算顺序与上游 sha256 声明写进 `CHAIN` 注册表，逐项对账「声明 vs 实际」。★ **真实使用记录仍 0 条，须由使用者本人产生**；其余 P1/P2 按建议等日志结论后再决定投入 | `docs/REAL_USE_DECISION_RULE_v0_1.md` · `REAL_USE_RECORD_LITE_TEMPLATE_v0_1.md` · `check_real_use_protocol_v0_1.py` · `check_derived_chain_v0_1.py` · `Workbench.tsx` · `.github/workflows/deploy.yml` |
+| v0.84 | **历史冻结重放可行性评估**（使用者纠正：回测不必等未来行情）：设计先冻结口径七要素 → PIT expanding-window 重放 49 冻结点 / 15,474 可比观察；② 层簇级 21/49（Wilson 0.300–0.567）、Brier 0.2606 未优于基准 0.2584、实证 β 污染（横截面命中率 0.016–0.989）。★ **结论：技术可行、统计否定、③ 层仍不存在**；价格回测答不了研究增量，P0 仍是真实使用记录 | `docs/HISTORICAL_REPLAY_DESIGN_v0_1.md` · `docs/HISTORICAL_REPLAY_FEASIBILITY_v0_1.md` · `build_historical_replay_v0_1.py` · `historical_replay_v0_1.json` |
 | — | Market Snapshot 月度刷新（**DRAFT，未签发**） | `MS-2026-10-23-01.json` + 三份按 ID 落盘的输入 · 审阅材料 `docs/SNAPSHOT_SIGNING_REVIEW_MS-2026-10-23-01.md`（v0.45） |
 
 ### 0.2 当前主线：真实使用与前瞻验证（A → D，按顺序）
@@ -98,7 +99,7 @@
 | **全量历史成分及退市股覆盖** | **暂缓** | 历史成员名单 **ACCESS_GATED**（只有逐日 `consNumber` + 最新 `cons.xls`）；**不得**用当前名单冒充历史名单 |
 | **所有历史事件的 PIT 补证** | **按需推进** | 只对「被真实研究问题点名」的事件补；剩 6 个 `NOT_RESEARCHED` 已逐条写明**为什么推不动**，不是「没查」 |
 | **新题材雷达的无差别扩源** | **暂缓** | 本轮明确不新增来源；机器人方向官方来源 **404** 已记录为覆盖缺口。扩源必须由「某个方向确有研究需求」触发，且先实测可解析性 |
-| **预测模型训练** | **暂缓** | 门槛未达（样本外 4–6 步 << 30，事前特征 0 个）；v0.74 的 `priority_score` **不是**预测模型，只是历史统计的 Wilson 下界 |
+| **预测模型训练** | **暂缓**（v0.84 复核后仍暂缓） | 门槛仍未达：v0.84 历史冻结重放已把步数推到 **49 ≥ 30**，但事前特征 **2 < 3**，且 Brier 未优于简单历史基准、未校准、实证 β 污染（见 `docs/HISTORICAL_REPLAY_FEASIBILITY_v0_1.md`）；v0.74 的 `priority_score` **不是**预测模型，只是历史统计的 Wilson 下界 |
 | **内部评分 / 排序体系** | ✅ **v0.74 解禁；v0.77 修订** | **启发式打分**仍只允许出现在评估视图（`INTERNAL_EVAL_ONLY`、未校准、非概率、不参与验收），默认页零打分字段；**默认页的 G1→G4 分组顺序已恢复**（产物已有，无分数、不是收益排序）。若要对外发布打分或把分数放上默认页，**需重新单独评审** |
 | **新增 CI Job / 大规模测试体系** | **暂缓** | 现有门禁（Product + Research 只读）已覆盖；只为**已知缺陷**加定向回归，不为覆盖率加测试 |
 

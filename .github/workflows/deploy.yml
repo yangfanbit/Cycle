@@ -267,6 +267,12 @@ jobs:
           python research/scripts/check_real_use_protocol_v0_1.py --check
           echo "::endgroup::"
 
+          # ★ v0.84：历史冻结重放的口径与 PIT 不变量。CI 无 1.3GB history_scan.db
+          #   → 行情复算显式 SKIP 并打印范围，形状/语义/三层口径/禁用措辞照常校验。
+          echo "::group::build_historical_replay_v0_1 --check"
+          python research/scripts/build_historical_replay_v0_1.py --check
+          echo "::endgroup::"
+
       # GITHUB_ACTIONS 由 GitHub 内置，vite.config.ts 据此取 base = /Cycle/
       - name: Build (base = /Cycle/)
         run: npm run build
