@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.84**（2026-11-13：**历史冻结重放可行性评估** —— 使用者指出回测不必等未来行情；已按事前冻结口径跑通 49 个冻结点 / 15,474 条可比观察的 PIT expanding-window 重放。**结论：技术上可行，但统计结论是否定的** —— 事前规则 Brier 0.2606 未优于简单历史基准 0.2584，② 层簇级比例 21/49（95% Wilson 0.300–0.567）无可分辨方向，③ 层预测能力仍不存在；横截面命中率簇间 0.016–0.989 摆动，实证 β 污染）· 版本基线：v0.82 `c9dd4d5` / `33dd632` · v0.83 `cc9f8ae` / `3589ec6` / `2becdda` · **本轮交付信息以收尾提交为准** · 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量**，**真实使用记录仍 0 条、有效性未验证**（价格回测答不了这个）· **统计轨季度 / 机制轨每周** · 设计见 `docs/HISTORICAL_REPLAY_DESIGN_v0_1.md`、评估见 `docs/HISTORICAL_REPLAY_FEASIBILITY_v0_1.md` |
+| **当前主线** | **v0.84**（2026-11-13：**历史冻结重放可行性评估** —— 使用者指出回测不必等未来行情；已按事前冻结口径跑通 49 个冻结点 / 15,474 条可比观察的 PIT expanding-window 重放。**结论：技术上可行，但统计结论是否定的** —— 事前规则 Brier 0.2606 未优于简单历史基准 0.2584，② 层簇级比例 21/49（95% Wilson 0.300–0.567）无可分辨方向，③ 层预测能力仍不存在；横截面命中率簇间 0.016–0.989 摆动，实证 β 污染）· 版本基线：v0.82 `c9dd4d5` / `33dd632` · v0.83 `cc9f8ae` / `3589ec6` / `2becdda` · 主交付 **`bfe530e`** / CI **`43258890142` success**（已部署，线上双探针 PASS）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量**，**真实使用记录仍 0 条、有效性未验证**（价格回测答不了这个）· **统计轨季度 / 机制轨每周** · 设计见 `docs/HISTORICAL_REPLAY_DESIGN_v0_1.md`、评估见 `docs/HISTORICAL_REPLAY_FEASIBILITY_v0_1.md` |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
