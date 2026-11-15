@@ -73,7 +73,7 @@
 
 | 项 | 当前基线 |
 |---|---|
-| **当前主线** | **v0.85**（2026-11-15：**按 v0.84 的 P1/P2 建议继续做完** —— 目标改**横截面中性化**（簇间命中率极差 0.973 → **0.002**，β 确实压掉）、补第 **3 个信息侧事前特征**、加 purge/embargo 20 日、cluster bootstrap（B=2000）+ Holm 修正、2010 起绝对收益敏感性对照。**结论仍是否定且更明确**：中性化后 BASELINE Brier **0.249999** 优于 `EX_ANTE_3F` 0.250086 / `EX_ANTE_GATE` 0.250692，两个主检验区间都跨 0；信息侧特征覆盖率 **0.53%**（82/15,474）未达预先写死的 5% 必要条件 → 有效事前特征仍 **2**，③ 层**仍不存在**）· 版本基线：v0.83 `cc9f8ae` / `3589ec6` / `2becdda` · v0.84 `bfe530e` / `17cc2ba` · **本轮交付信息以收尾提交为准** · 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量**，**真实使用记录仍 0 条、有效性未验证**（价格回测答不了这个）· **统计轨季度 / 机制轨每周** · 设计 `docs/HISTORICAL_REPLAY_DESIGN_v0_2.md`、评估 `docs/HISTORICAL_REPLAY_FEASIBILITY_v0_2.md`（v0.1 三份逐字节保留） |
+| **当前主线** | **v0.85**（2026-11-15：**按 v0.84 的 P1/P2 建议继续做完** —— 目标改**横截面中性化**（簇间命中率极差 0.973 → **0.002**，β 确实压掉）、补第 **3 个信息侧事前特征**、加 purge/embargo 20 日、cluster bootstrap（B=2000）+ Holm 修正、2010 起绝对收益敏感性对照。**结论仍是否定且更明确**：中性化后 BASELINE Brier **0.249999** 优于 `EX_ANTE_3F` 0.250086 / `EX_ANTE_GATE` 0.250692，两个主检验区间都跨 0；信息侧特征覆盖率 **0.53%**（82/15,474）未达预先写死的 5% 必要条件 → 有效事前特征仍 **2**，③ 层**仍不存在**）· 版本基线：v0.83 `cc9f8ae` / `3589ec6` / `2becdda` · v0.84 `bfe530e` / `17cc2ba` · 主交付 **`5e68210`** / CI **`43716926641` success**（首跑即绿，已部署，线上三视图 + 「记一条」双探针 PASS）· 旧站 `/Cycle/` 为只读档案，`/Cycle/workbench.html` 为研究主入口 · 有效性口径仍是**研究增量**，**真实使用记录仍 0 条、有效性未验证**（价格回测答不了这个）· **统计轨季度 / 机制轨每周** · 设计 `docs/HISTORICAL_REPLAY_DESIGN_v0_2.md`、评估 `docs/HISTORICAL_REPLAY_FEASIBILITY_v0_2.md`（v0.1 三份逐字节保留） |
 | Historical Universe | **89** Historical Objects（**62 Campaign** + 27 Research Candidate） |
 | Macro Theme roots | **13**（DB `themes` 共 59 行） |
 | Export Contract | **v1.2**（含 `macro_theme_root` + `taxonomy` 段） |
