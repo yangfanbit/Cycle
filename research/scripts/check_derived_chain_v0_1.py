@@ -124,6 +124,16 @@ CHAIN = [
                  "search": [CURRENT, os.path.join(ROOT, "docs")],
                  "optional_missing": []},
     },
+    {
+        "artifact": "historical_replay_v0_2.json", "order": 12,
+        # ★ v0.85：重放 v0.2 除行情外还依赖雷达 / 历史角色 / 词表脚本 / 设计文档。
+        #   词表脚本在 research/scripts 下，必须加入 search；设计文档指纹另行由
+        #   build_historical_replay_v0_2.py --check 的 LOCKED_DESIGN_SHA16 锁定。
+        "decl": {"kind": "EXTERNAL_FILE", "path": ("source_sha256_16",), "width": 16,
+                 "search": [CURRENT, os.path.join(ROOT, "docs"),
+                            os.path.join(ROOT, "research", "scripts")],
+                 "optional_missing": []},
+    },
 ]
 
 

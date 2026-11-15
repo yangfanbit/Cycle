@@ -92,11 +92,15 @@ $P research/scripts/build_theme_discovery_v0_1.py --check
 #   重算顺序注册表在 check_derived_chain_v0_1.py 的 CHAIN 常量里，新增产物必须同步登记。
 $P research/scripts/check_derived_chain_v0_1.py --check
 $P research/scripts/check_real_use_protocol_v0_1.py --check
-# ★ v0.84：历史冻结重放是**独立研究产物**，不是周更派生链的一环；
-#   行情推进后需单独 --write 重放，再 --check 复算口径与 PIT 不变量。
-#   设计口径在 docs/HISTORICAL_REPLAY_DESIGN_v0_1.md，阈值不因结果调整。
-$P research/scripts/build_historical_replay_v0_1.py --write
-$P research/scripts/build_historical_replay_v0_1.py --check
+# ★ v0.85：历史冻结重放是**独立研究产物**，不是周更派生链的一环；行情推进后
+#   只对**当前版本** v0.2 重放。设计口径在 docs/HISTORICAL_REPLAY_DESIGN_v0_2.md，
+#   全文 sha256_16 锁在脚本里，改口径必须升 v0.3 + 留痕，不得原地改阈值。
+$P research/scripts/build_historical_replay_v0_2.py --write
+$P research/scripts/build_historical_replay_v0_2.py --check
+# ★ v0.84 的 historical_replay_v0_1.json 已**冻结为历史基线**（v0.2 的 --check 会核对
+#   三份 v0.1 文件指纹）：不再 --write；CI 无大库时只跑形状校验。本地行情推进后
+#   不要跑 v0.1 --check（逐字节复算必然报上游漂移，属预期而非故障）。
+#   新口径一律新建 v0.3 文件，旧版逐字节保留。
 npx tsc -b --force && npx vitest run && npx vite build
 ```
 

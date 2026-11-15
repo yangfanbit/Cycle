@@ -1,0 +1,1155 @@
+{
+ "artifact": "historical_replay",
+ "artifact_version": "0.2",
+ "as_of": "2026-11-06",
+ "benchmark": {
+  "first_date": "2014-06-20",
+  "last_date": "2026-11-06",
+  "price_type": "raw",
+  "series_id": "CSI300",
+  "trading_days": 3010
+ },
+ "beta_neutralization": {
+  "criterion": "主轨极差 <= 0.02 且敏感性轨极差更大",
+  "effective": true,
+  "main_track_range": 0.002,
+  "note": "结构性判据：只说明目标定义是否去掉市场共同因子，不代表规则有选择能力",
+  "sensitivity_track_range": 1.0
+ },
+ "caliber_seven": {
+  "denominator": "comparable===true；主统计按冻结日聚簇，逐观察数只报规模",
+  "exclusions": {
+   "INCOMPLETE_SERIES_WINDOW": 12,
+   "INSUFFICIENT_PRE_WINDOW": 187,
+   "NOT_INTERPRETABLE": 1323,
+   "NO_CLOSE_AT_T": 2555
+  },
+  "observation_window": "事前 T-60..T；结算 T+1..T+20；信息侧另回看 365 自然日",
+  "sample_scope": "history_scan.db 的 241 行业板块 + 173 概念篮子；CSI300 日历；冻结点从基准第 61 个交易日起、步长 60、窗口 20",
+  "source": "scan_daily.close raw + CSI300 + board_semantics + theme_discovery 门槛 + 雷达与历史角色事件表；不取官方指数、不联网",
+  "target": "CROSS_SECTIONAL_OUTPERFORM：T+20 板块收益减去同簇全可比板块收益中位数 > 0",
+  "uncertainty": "比例给 95% Wilson（n=0→null）；主检验给 cluster bootstrap 95% / 97.5% 区间并做 Holm 修正"
+ },
+ "calibration": {
+  "bins": [
+   {
+    "bin": "0/5",
+    "mean_predicted": null,
+    "n": 0,
+    "observed_frequency": null
+   },
+   {
+    "bin": "1/5",
+    "mean_predicted": null,
+    "n": 0,
+    "observed_frequency": null
+   },
+   {
+    "bin": "2/5",
+    "mean_predicted": 0.4988,
+    "n": 15216,
+    "observed_frequency": 0.4991
+   },
+   {
+    "bin": "3/5",
+    "mean_predicted": 0.6303,
+    "n": 13,
+    "observed_frequency": 0.3846
+   },
+   {
+    "bin": "4/5",
+    "mean_predicted": null,
+    "n": 0,
+    "observed_frequency": null
+   }
+  ],
+  "max_abs_gap": 0.2457,
+  "monotone_with_tolerance": false,
+  "note": "描述性；按设计 §8.1 的固定容差判定，不按结果调整",
+  "passes": false,
+  "tolerance": {
+   "max_abs_gap": 0.2,
+   "monotone": 0.05
+  }
+ },
+ "cluster_bootstrap": {
+  "B": 2000,
+  "alpha": 0.05,
+  "dsr": "NOT_APPLICABLE",
+  "dsr_reason": "DSR 修正策略收益 Sharpe 的多重试验膨胀；本产物是概率评分、无收益序列与 Sharpe",
+  "holm_procedure": "p 升序，依次对 alpha/2 与 alpha 判定；通过还需 97.5% 区间上界 < 0",
+  "pbo": "NOT_ESTIMABLE",
+  "pbo_reason": "PBO/CSCV 需多个候选配置的排名分布；本轮只预先注册 2 个检验、3 个预测器，试验次数不足以估计，显式不计算",
+  "resample_unit": "冻结日整簇（簇内观察不独立）",
+  "scored_clusters": 48,
+  "seed": 20261113,
+  "tests": [
+   {
+    "ci95": [
+     -8.3e-05,
+     0.000258
+    ],
+    "ci975_holm": [
+     -0.000107,
+     0.000284
+    ],
+    "conclusion": "未通过：区间跨 0 或 Holm 未拒绝 → 无可分辨改善",
+    "delta_brier_point": 8.7e-05,
+    "holm_alpha": 0.05,
+    "holm_reject": false,
+    "holm_upper_lt_zero": false,
+    "name": "H1_3F_VS_BASELINE",
+    "p_empirical": 0.322,
+    "passes": false,
+    "reference": "BASELINE"
+   },
+   {
+    "ci95": [
+     -0.001354,
+     4.5e-05
+    ],
+    "ci975_holm": [
+     -0.001456,
+     0.00012
+    ],
+    "conclusion": "未通过：区间跨 0 或 Holm 未拒绝 → 无可分辨改善",
+    "delta_brier_point": -0.000606,
+    "holm_alpha": 0.025,
+    "holm_reject": false,
+    "holm_upper_lt_zero": false,
+    "name": "H2_3F_VS_GATE",
+    "p_empirical": 0.07,
+    "passes": false,
+    "reference": "EX_ANTE_GATE"
+   }
+  ],
+  "trial_count": 2
+ },
+ "clusters": [
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 245,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 233,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2014-09-15",
+   "outcome_k": 122,
+   "predictors": {
+    "BASELINE": null,
+    "EX_ANTE_GATE_HIT": null,
+    "EX_ANTE_GATE_MISS": null
+   },
+   "train_pool_size": 0
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 251,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 239,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2014-12-15",
+   "outcome_k": 125,
+   "predictors": {
+    "BASELINE": 0.49795918367346936,
+    "EX_ANTE_GATE_HIT": 0.5260416666666666,
+    "EX_ANTE_GATE_MISS": 0.39622641509433965
+   },
+   "train_pool_size": 245
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 252,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 240,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2015-03-18",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.49798387096774194,
+    "EX_ANTE_GATE_HIT": 0.5011547344110855,
+    "EX_ANTE_GATE_MISS": 0.47619047619047616
+   },
+   "train_pool_size": 496
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 249,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 237,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2015-06-12",
+   "outcome_k": 124,
+   "predictors": {
+    "BASELINE": 0.49866310160427807,
+    "EX_ANTE_GATE_HIT": 0.5,
+    "EX_ANTE_GATE_MISS": 0.4878048780487805
+   },
+   "train_pool_size": 748
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 248,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 236,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2015-09-09",
+   "outcome_k": 124,
+   "predictors": {
+    "BASELINE": 0.49849548645937813,
+    "EX_ANTE_GATE_HIT": 0.4966960352422907,
+    "EX_ANTE_GATE_MISS": 0.5168539325842697
+   },
+   "train_pool_size": 997
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2015-12-09",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.4987951807228916,
+    "EX_ANTE_GATE_HIT": 0.5109090909090909,
+    "EX_ANTE_GATE_MISS": 0.4068965517241379
+   },
+   "train_pool_size": 1245
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2016-03-10",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.4986648865153538,
+    "EX_ANTE_GATE_HIT": 0.5029045643153527,
+    "EX_ANTE_GATE_MISS": 0.4812286689419795
+   },
+   "train_pool_size": 1498
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2016-06-06",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.4985722444317533,
+    "EX_ANTE_GATE_HIT": 0.5182972367438387,
+    "EX_ANTE_GATE_MISS": 0.4344660194174757
+   },
+   "train_pool_size": 1751
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2016-08-31",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.49850299401197606,
+    "EX_ANTE_GATE_HIT": 0.5238434163701068,
+    "EX_ANTE_GATE_MISS": 0.43906510851419034
+   },
+   "train_pool_size": 2004
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2016-12-02",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.4984492689410722,
+    "EX_ANTE_GATE_HIT": 0.5206727400140154,
+    "EX_ANTE_GATE_MISS": 0.4602409638554217
+   },
+   "train_pool_size": 2257
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2017-03-06",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.49840637450199204,
+    "EX_ANTE_GATE_HIT": 0.5096774193548387,
+    "EX_ANTE_GATE_MISS": 0.48020833333333335
+   },
+   "train_pool_size": 2510
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2017-06-05",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.498371335504886,
+    "EX_ANTE_GATE_HIT": 0.5146600124766063,
+    "EX_ANTE_GATE_MISS": 0.47586206896551725
+   },
+   "train_pool_size": 2763
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2017-08-28",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.498342175066313,
+    "EX_ANTE_GATE_HIT": 0.5138211382113821,
+    "EX_ANTE_GATE_MISS": 0.4739538855678907
+   },
+   "train_pool_size": 3016
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2017-11-27",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.49831752829611503,
+    "EX_ANTE_GATE_HIT": 0.5163014430785676,
+    "EX_ANTE_GATE_MISS": 0.4742489270386266
+   },
+   "train_pool_size": 3269
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2018-02-27",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.49829642248722317,
+    "EX_ANTE_GATE_HIT": 0.5100478468899522,
+    "EX_ANTE_GATE_MISS": 0.48114525139664804
+   },
+   "train_pool_size": 3522
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2018-05-28",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.4982781456953642,
+    "EX_ANTE_GATE_HIT": 0.5080645161290323,
+    "EX_ANTE_GATE_MISS": 0.4859028194361128
+   },
+   "train_pool_size": 3775
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2018-08-21",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.49826216484607744,
+    "EX_ANTE_GATE_HIT": 0.5077910174152154,
+    "EX_ANTE_GATE_MISS": 0.4869989165763814
+   },
+   "train_pool_size": 4028
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2018-11-21",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.4982480728801682,
+    "EX_ANTE_GATE_HIT": 0.5076714801444043,
+    "EX_ANTE_GATE_MISS": 0.488135593220339
+   },
+   "train_pool_size": 4281
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 253,
+   "cross_sectional_hit_rate": 0.498,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 241,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2019-02-22",
+   "outcome_k": 126,
+   "predictors": {
+    "BASELINE": 0.49823555359505955,
+    "EX_ANTE_GATE_HIT": 0.5053061224489795,
+    "EX_ANTE_GATE_MISS": 0.4899232245681382
+   },
+   "train_pool_size": 4534
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 359,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 347,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2019-05-23",
+   "outcome_k": 179,
+   "predictors": {
+    "BASELINE": 0.4982243576352622,
+    "EX_ANTE_GATE_HIT": 0.5037357451828549,
+    "EX_ANTE_GATE_MISS": 0.4919786096256685
+   },
+   "train_pool_size": 4787
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 359,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 347,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2019-08-16",
+   "outcome_k": 179,
+   "predictors": {
+    "BASELINE": 0.4982510687912942,
+    "EX_ANTE_GATE_HIT": 0.5076066790352505,
+    "EX_ANTE_GATE_MISS": 0.4879640962872297
+   },
+   "train_pool_size": 5146
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 360,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 348,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2019-11-18",
+   "outcome_k": 180,
+   "predictors": {
+    "BASELINE": 0.49827429609445956,
+    "EX_ANTE_GATE_HIT": 0.5046528274874732,
+    "EX_ANTE_GATE_MISS": 0.4917004795278495
+   },
+   "train_pool_size": 5505
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 346,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 334,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2020-02-19",
+   "outcome_k": 173,
+   "predictors": {
+    "BASELINE": 0.49838022165387896,
+    "EX_ANTE_GATE_HIT": 0.5049640534063676,
+    "EX_ANTE_GATE_MISS": 0.49184782608695654
+   },
+   "train_pool_size": 5865
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 351,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 339,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2020-05-19",
+   "outcome_k": 175,
+   "predictors": {
+    "BASELINE": 0.49847045564321363,
+    "EX_ANTE_GATE_HIT": 0.5004874878128047,
+    "EX_ANTE_GATE_MISS": 0.4964901084875558
+   },
+   "train_pool_size": 6211
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 351,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 339,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2020-08-13",
+   "outcome_k": 175,
+   "predictors": {
+    "BASELINE": 0.49847607436757085,
+    "EX_ANTE_GATE_HIT": 0.5017117958294429,
+    "EX_ANTE_GATE_MISS": 0.4953717527620185
+   },
+   "train_pool_size": 6562
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 352,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 340,
+   "f3_one": 0,
+   "f3_zero": 12,
+   "freeze_date": "2020-11-13",
+   "outcome_k": 176,
+   "predictors": {
+    "BASELINE": 0.49848112252278315,
+    "EX_ANTE_GATE_HIT": 0.49746646795827126,
+    "EX_ANTE_GATE_MISS": 0.49943788645306353
+   },
+   "train_pool_size": 6913
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 350,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 338,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2021-02-08",
+   "outcome_k": 175,
+   "predictors": {
+    "BASELINE": 0.49855471438403304,
+    "EX_ANTE_GATE_HIT": 0.49699054170249357,
+    "EX_ANTE_GATE_MISS": 0.5
+   },
+   "train_pool_size": 7265
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 363,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 351,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2021-05-14",
+   "outcome_k": 181,
+   "predictors": {
+    "BASELINE": 0.49862114248194356,
+    "EX_ANTE_GATE_HIT": 0.4973432518597237,
+    "EX_ANTE_GATE_MISS": 0.4998701635938717
+   },
+   "train_pool_size": 7615
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 363,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 351,
+   "f3_one": 1,
+   "f3_zero": 11,
+   "freeze_date": "2021-08-09",
+   "outcome_k": 181,
+   "predictors": {
+    "BASELINE": 0.4986212083228879,
+    "EX_ANTE_GATE_HIT": 0.4961399897066392,
+    "EX_ANTE_GATE_MISS": 0.5009775171065494
+   },
+   "train_pool_size": 7978
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 363,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 351,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2021-11-10",
+   "outcome_k": 181,
+   "predictors": {
+    "BASELINE": 0.4986212684330416,
+    "EX_ANTE_GATE_HIT": 0.4980237154150198,
+    "EX_ANTE_GATE_MISS": 0.49918471931050545
+   },
+   "train_pool_size": 8341
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 349,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 337,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2022-02-10",
+   "outcome_k": 174,
+   "predictors": {
+    "BASELINE": 0.49862132352941174,
+    "EX_ANTE_GATE_HIT": 0.49845127472003814,
+    "EX_ANTE_GATE_MISS": 0.49877967605946305
+   },
+   "train_pool_size": 8704
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 358,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 346,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2022-05-12",
+   "outcome_k": 179,
+   "predictors": {
+    "BASELINE": 0.49861924224014137,
+    "EX_ANTE_GATE_HIT": 0.497457235321313,
+    "EX_ANTE_GATE_MISS": 0.4996826740004231
+   },
+   "train_pool_size": 9053
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 358,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 346,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2022-08-05",
+   "outcome_k": 179,
+   "predictors": {
+    "BASELINE": 0.49867176708107536,
+    "EX_ANTE_GATE_HIT": 0.4949381327334083,
+    "EX_ANTE_GATE_MISS": 0.5020136931131696
+   },
+   "train_pool_size": 9411
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 358,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 346,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2022-11-07",
+   "outcome_k": 179,
+   "predictors": {
+    "BASELINE": 0.4987204422151704,
+    "EX_ANTE_GATE_HIT": 0.48838209982788294,
+    "EX_ANTE_GATE_MISS": 0.5081038859597735
+   },
+   "train_pool_size": 9769
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 351,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 339,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2023-02-07",
+   "outcome_k": 175,
+   "predictors": {
+    "BASELINE": 0.49876567591586846,
+    "EX_ANTE_GATE_HIT": 0.4831506293138449,
+    "EX_ANTE_GATE_MISS": 0.5135550855604691
+   },
+   "train_pool_size": 10127
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 360,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 348,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2023-05-08",
+   "outcome_k": 180,
+   "predictors": {
+    "BASELINE": 0.4987593052109181,
+    "EX_ANTE_GATE_HIT": 0.4813269765593961,
+    "EX_ANTE_GATE_MISS": 0.5148787656135194
+   },
+   "train_pool_size": 10478
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 360,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 348,
+   "f3_one": 4,
+   "f3_zero": 8,
+   "freeze_date": "2023-08-02",
+   "outcome_k": 180,
+   "predictors": {
+    "BASELINE": 0.49880051670049824,
+    "EX_ANTE_GATE_HIT": 0.4823964209297802,
+    "EX_ANTE_GATE_MISS": 0.5136036510444093
+   },
+   "train_pool_size": 10838
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 360,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 348,
+   "f3_one": 4,
+   "f3_zero": 8,
+   "freeze_date": "2023-11-02",
+   "outcome_k": 180,
+   "predictors": {
+    "BASELINE": 0.49883907840685837,
+    "EX_ANTE_GATE_HIT": 0.4849002849002849,
+    "EX_ANTE_GATE_MISS": 0.5112084948592618
+   },
+   "train_pool_size": 11198
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 346,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 334,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2024-01-26",
+   "outcome_k": 173,
+   "predictors": {
+    "BASELINE": 0.4988752379304378,
+    "EX_ANTE_GATE_HIT": 0.4877821301995896,
+    "EX_ANTE_GATE_MISS": 0.5084718412134904
+   },
+   "train_pool_size": 11558
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 353,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 341,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2024-05-06",
+   "outcome_k": 176,
+   "predictors": {
+    "BASELINE": 0.4989079301075269,
+    "EX_ANTE_GATE_HIT": 0.49087294415326227,
+    "EX_ANTE_GATE_MISS": 0.5058860461466018
+   },
+   "train_pool_size": 11904
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 353,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 341,
+   "f3_one": 2,
+   "f3_zero": 10,
+   "freeze_date": "2024-07-30",
+   "outcome_k": 176,
+   "predictors": {
+    "BASELINE": 0.49889858856163827,
+    "EX_ANTE_GATE_HIT": 0.4887987299347328,
+    "EX_ANTE_GATE_MISS": 0.5075895567698846
+   },
+   "train_pool_size": 12257
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 353,
+   "cross_sectional_hit_rate": 0.4986,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 341,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2024-10-31",
+   "outcome_k": 176,
+   "predictors": {
+    "BASELINE": 0.49888977002379065,
+    "EX_ANTE_GATE_HIT": 0.4882703081232493,
+    "EX_ANTE_GATE_MISS": 0.5076833864888374
+   },
+   "train_pool_size": 12610
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 343,
+   "cross_sectional_hit_rate": 0.4985,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 331,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2025-01-24",
+   "outcome_k": 171,
+   "predictors": {
+    "BASELINE": 0.4988814317673378,
+    "EX_ANTE_GATE_HIT": 0.4889955320205196,
+    "EX_ANTE_GATE_MISS": 0.507514450867052
+   },
+   "train_pool_size": 12963
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 356,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 344,
+   "f3_one": 5,
+   "f3_zero": 7,
+   "freeze_date": "2025-04-29",
+   "outcome_k": 178,
+   "predictors": {
+    "BASELINE": 0.49887268901247556,
+    "EX_ANTE_GATE_HIT": 0.48911968348170126,
+    "EX_ANTE_GATE_MISS": 0.5070441988950276
+   },
+   "train_pool_size": 13306
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 356,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 344,
+   "f3_one": 4,
+   "f3_zero": 8,
+   "freeze_date": "2025-07-28",
+   "outcome_k": 178,
+   "predictors": {
+    "BASELINE": 0.4989020641194554,
+    "EX_ANTE_GATE_HIT": 0.4885235227087742,
+    "EX_ANTE_GATE_MISS": 0.507381300704881
+   },
+   "train_pool_size": 13662
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 356,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 344,
+   "f3_one": 4,
+   "f3_zero": 8,
+   "freeze_date": "2025-10-28",
+   "outcome_k": 178,
+   "predictors": {
+    "BASELINE": 0.4989299472107291,
+    "EX_ANTE_GATE_HIT": 0.48771084337349396,
+    "EX_ANTE_GATE_MISS": 0.5078916976774028
+   },
+   "train_pool_size": 14018
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 356,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 344,
+   "f3_one": 4,
+   "f3_zero": 8,
+   "freeze_date": "2026-01-22",
+   "outcome_k": 178,
+   "predictors": {
+    "BASELINE": 0.49895644914428827,
+    "EX_ANTE_GATE_HIT": 0.48771206595845884,
+    "EX_ANTE_GATE_MISS": 0.5077476137349697
+   },
+   "train_pool_size": 14374
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 372,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 360,
+   "f3_one": 4,
+   "f3_zero": 8,
+   "freeze_date": "2026-04-27",
+   "outcome_k": 186,
+   "predictors": {
+    "BASELINE": 0.4989816700610998,
+    "EX_ANTE_GATE_HIT": 0.49124143183549124,
+    "EX_ANTE_GATE_MISS": 0.5052051439069197
+   },
+   "train_pool_size": 14730
+  },
+  {
+   "cluster_excluded": false,
+   "comparable_observations": 372,
+   "cross_sectional_hit_rate": 0.5,
+   "embargo_trading_days": 20,
+   "f3_no_coverage": 360,
+   "f3_one": 3,
+   "f3_zero": 9,
+   "freeze_date": "2026-07-24",
+   "outcome_k": 186,
+   "predictors": {
+    "BASELINE": 0.4990067540723083,
+    "EX_ANTE_GATE_HIT": 0.4900916888494528,
+    "EX_ANTE_GATE_MISS": 0.5062350119904077
+   },
+   "train_pool_size": 15102
+  }
+ ],
+ "denominator_reconciliation": {
+  "comparable": 15474,
+  "excluded": 4077,
+  "freeze_points": 49,
+  "gross_observations": 19551,
+  "identity": "gross = comparable + excluded（杂项桶按每冻结点重复排除）",
+  "universe_series": 399
+ },
+ "design": "docs/HISTORICAL_REPLAY_DESIGN_v0_2.md",
+ "design_sha256_16_locked": "32ad700f0e0a2692",
+ "duplicate_date_count": 0,
+ "duplicate_dates": [],
+ "ex_ante_features": {
+  "F1_GATE_HIT": "价格侧：沿用已发布 market_gate 门槛",
+  "F2_EXCESS20_SIGN": "价格侧：近 20 日相对 CSI300 超额 > 0",
+  "F3_INFO_EVENT_365D": "信息侧：T 前 365 自然日内该板块是否有已登记可核事件；三态 0/1/NO_COVERAGE",
+  "declared_count": 3,
+  "effective_count": 2,
+  "necessary_conditions": {
+   "C1_coverage_ge_5pct": {
+    "passes": false,
+    "required": 0.05,
+    "value": 0.005299
+   },
+   "C2_clusters_with_both_ge_20": {
+    "passes": true,
+    "required": 20,
+    "value": 34
+   },
+   "C3_distinct_series_ge_5": {
+    "passes": true,
+    "required": 5,
+    "value": 8
+   }
+  },
+  "note": "判定只由覆盖率与分布计算，不看任何收益结果；不足时有效特征数仍按 2 计",
+  "verdict": "INSUFFICIENT_VARIATION"
+ },
+ "freeze_schedule": {
+  "embargo_trading_days": 20,
+  "first": "2014-09-15",
+  "freeze_points": 49,
+  "horizon_trading_days": 20,
+  "info_lookback_days": 365,
+  "last": "2026-07-24",
+  "min_cross_section": 30,
+  "min_training_observations": 20,
+  "pre_days": 60,
+  "step_trading_days": 60
+ },
+ "historical_statistics": {
+  "comparable_observations": 15474,
+  "cross_sectional_hit_rate_by_cluster": {
+   "max": 0.5,
+   "mean": 0.4989,
+   "min": 0.498
+  },
+  "description": "① 层历史统计描述；主统计按冻结日聚簇",
+  "excluded_observations": 4077,
+  "independent_clusters": 49
+ },
+ "information_coverage": {
+  "clusters_with_both_f3_values": 34,
+  "distinct_series_with_f3_one": 8,
+  "f3_fallback_to_baseline": 14807,
+  "f3_no_coverage": 14886,
+  "f3_no_coverage_fallback": 14653,
+  "f3_one": 82,
+  "f3_zero": 506,
+  "gate_fallback_to_baseline": 0,
+  "identity": "OBSERVATIONS = F3_ONE + F3_ZERO + F3_NO_COVERAGE",
+  "observations_total": 15474
+ },
+ "information_side": {
+  "event_date_max": "2026-11-04",
+  "event_date_min": "2017-05-01",
+  "keyword_count": 15,
+  "mapped_series": [
+   "BK881112",
+   "BK881121",
+   "BK881126",
+   "BK881144",
+   "BK881145",
+   "BK881164",
+   "BK881276",
+   "BK881279",
+   "BK881280",
+   "CPT_cxy",
+   "CPT_gtdc",
+   "CPT_zjqrgn"
+  ],
+  "mapped_series_count": 12,
+  "no_exact_mapping_themes": {
+   "CONSUMER_SEASON": 5,
+   "FLU": 6,
+   "RESOURCE_METAL": 2
+  },
+  "radar_event_count": 283,
+  "radar_matched_pairs": 33,
+  "role_event_count": 33,
+  "role_mapped_pairs": 20,
+  "rule": "只用标题关键词精确匹配；正文不建关联；NO_EXACT_MAPPING 逐族写原因",
+  "total_info_events": 53
+ },
+ "layer3_gate": {
+  "actual_effective_ex_ante_features": 2,
+  "actual_steps": 49,
+  "conditions": {
+   "1_steps_ge_30": true,
+   "2_effective_features_ge_3": false,
+   "3_h1_passes": false,
+   "4_h2_passes": false,
+   "5_calibration_ok": false,
+   "6_trial_count_consistent": true
+  },
+  "meets_threshold": false,
+  "reason": "按设计 §8 六条逐项判定；任一不满足即维持③层不成立",
+  "required_ex_ante_features": 3,
+  "required_walk_forward_steps": 30
+ },
+ "limits": [
+  "★ 行情描述统计，不参与「研究增量」验收；有效性仍需真实使用记录。",
+  "★ 同一冻结日的板块共享市场冲击，不是独立样本；bootstrap 以整簇为重抽样单位。",
+  "★ 横截面中性化只去掉市场共同因子，不等于规则具备板块选择能力。",
+  "★ 阈值沿用已发布规则、本轮未调参；检验族与容差在跑 outcome 之前写死。",
+  "★ ② 层经验基准概率**未校准**，仅限描述，不构成任何交易信号或标的清单。",
+  "★ 信息侧事件覆盖有限且集中在后期；NO_COVERAGE 单独三态，不当作「无事件」。",
+  "★ 敏感性对照轨 β 更重、样本更脏，只作摆动幅度对照，不作推断。",
+  "★ 板块宇宙随时间扩张，早期冻结点可比序列少是数据边界，不补造。",
+  "★ PBO 与 DSR 未估算 / 不适用，原因写在 cluster_bootstrap，不以其他指标冒充。"
+ ],
+ "predictors": {
+  "BASELINE": "purge 后全体可比观察的历史频率（climatology）",
+  "EX_ANTE_3F": "F1×F2×F3 共 8 分组频率；NO_COVERAGE 或训练不足回退 BASELINE",
+  "EX_ANTE_GATE": "仅 F1 分组频率，分组训练不足回退 BASELINE"
+ },
+ "purpose": "历史冻结重放 v0.2：横截面中性化目标 + 第 3 信息侧特征 + purge/embargo + cluster bootstrap + Holm + 早期敏感性对照；不建立验证过的预测模型",
+ "scores": {
+  "BASELINE": {
+   "brier_mean_by_cluster": 0.249999,
+   "independent_clusters": 48,
+   "logloss_mean_by_cluster": 0.693145,
+   "scored_observations": 15229
+  },
+  "EX_ANTE_3F": {
+   "brier_mean_by_cluster": 0.250086,
+   "independent_clusters": 48,
+   "logloss_mean_by_cluster": 0.69332,
+   "scored_observations": 15229
+  },
+  "EX_ANTE_GATE": {
+   "brier_mean_by_cluster": 0.250692,
+   "independent_clusters": 48,
+   "logloss_mean_by_cluster": 0.694542,
+   "scored_observations": 15229
+  }
+ },
+ "sensitivity_track": {
+  "brier_mean_by_cluster": {
+   "BASELINE": 0.263493,
+   "EX_ANTE_GATE": 0.271872
+  },
+  "calendar": "全库归一交易日（不依赖 CSI300），按设计 §6 截断到声明起点",
+  "calendar_days": 4089,
+  "calendar_first": "2010-01-04",
+  "calendar_last": "2026-11-06",
+  "calendar_start_declared": "2010-01-01",
+  "cross_sectional_hit_rate_max": 1.0,
+  "cross_sectional_hit_rate_min": 0.0,
+  "cross_sectional_hit_rate_range": 1.0,
+  "freeze_points_skipped_below_min_cross_section": 1,
+  "freeze_points_total": 67,
+  "freeze_points_used": 66,
+  "label": "SENSITIVITY_ONLY",
+  "note": "β 更重、样本更长更脏；只用于对照横截面中性化是否压掉市场共同因子，不参与 bootstrap / Holm / ③ 层判定，不作推断",
+  "target": "FORWARD_ABSOLUTE_POSITIVE（板块绝对收益 > 0，不减基准、不减横截面中位数）"
+ },
+ "source_sha256_16": {
+  "HISTORICAL_REPLAY_DESIGN_v0_2.md": "32ad700f0e0a2692",
+  "board_semantics_v0_1.json": "d564abe667d69bed",
+  "build_theme_discovery_v0_1.py": "ef0200eca849f254",
+  "historical_market_roles_v0_13.json": "d429f863c2c70acc",
+  "new_theme_radar_v0_10_view.json": "682b879e7d6cec9e",
+  "theme_discovery_v0_1.json": "cf707027d254826e"
+ },
+ "supersedes": "historical_replay_v0_1.json（逐字节保留，未覆盖）",
+ "v0_1_baseline_sha256_16": {
+  "HISTORICAL_REPLAY_DESIGN_v0_1.md": "73858f2633d787eb",
+  "build_historical_replay_v0_1.py": "9e30d8cb0ef3ac0d",
+  "historical_replay_v0_1.json": "6297e9be8c8a3226"
+ },
+ "validated_model": false
+}

@@ -273,6 +273,14 @@ jobs:
           python research/scripts/build_historical_replay_v0_1.py --check
           echo "::endgroup::"
 
+          # ★ v0.85：历史冻结重放 v0.2（横截面中性化 + 信息侧第 3 特征 +
+          #   purge/embargo + cluster bootstrap/Holm + 2010 起敏感性对照）。
+          #   设计文档 sha256_16 锁在脚本里，改口径必被抓到；v0.1 三份基线逐字核对。
+          #   CI 无 1.3GB 大库 → 行情复算显式 SKIP，形状/语义/守恒/禁用措辞照常。
+          echo "::group::build_historical_replay_v0_2 --check"
+          python research/scripts/build_historical_replay_v0_2.py --check
+          echo "::endgroup::"
+
       # GITHUB_ACTIONS 由 GitHub 内置，vite.config.ts 据此取 base = /Cycle/
       - name: Build (base = /Cycle/)
         run: npm run build
