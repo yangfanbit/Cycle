@@ -134,6 +134,24 @@ CHAIN = [
                             os.path.join(ROOT, "research", "scripts")],
                  "optional_missing": []},
     },
+    {
+        "artifact": "historical_info_events_v0_1.json", "order": 13,
+        # ★ v0.86：历史列表页快照。声明 7 项上游（含 docs 设计文档与 3 个 scripts 脚本）。
+        #   抓取是联网快照、CI 不重抓；此处只做「声明 vs 实际」指纹对账。
+        "decl": {"kind": "EXTERNAL_FILE", "path": ("source_sha256_16",), "width": 16,
+                 "search": [CURRENT, os.path.join(ROOT, "docs"),
+                            os.path.join(ROOT, "research", "scripts")],
+                 "optional_missing": []},
+    },
+    {
+        "artifact": "historical_replay_v0_3.json", "order": 14,
+        # ★ v0.86：直接复用 v0.2 模块常量，事件表来自 order 13 的快照。
+        #   --check 另核对 v0.1+v0.2 六份基线指纹与继承常量。
+        "decl": {"kind": "EXTERNAL_FILE", "path": ("source_sha256_16",), "width": 16,
+                 "search": [CURRENT, os.path.join(ROOT, "docs"),
+                            os.path.join(ROOT, "research", "scripts")],
+                 "optional_missing": []},
+    },
 ]
 
 

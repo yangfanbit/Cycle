@@ -281,6 +281,18 @@ jobs:
           python research/scripts/build_historical_replay_v0_2.py --check
           echo "::endgroup::"
 
+          # ★ v0.86：历史信息侧数据源（60 页 / 1274 条可核历史文件）与重放 v0.3。
+          #   ★ CI 绝不联网：采集脚本只跑 --check（页级指纹 / 覆盖守恒 / 三层映射
+          #   双向校验 / 事后检索声明），重抓 --fetch 只在本地人工执行并升版。
+          echo "::group::build_historical_info_events_v0_1 --check"
+          python research/scripts/build_historical_info_events_v0_1.py --check
+          echo "::endgroup::"
+          #   v0.3 直接复用 v0.2 模块常量与检验族，--check 逐项对账继承常量、
+          #   v0.1+v0.2 六份基线指纹、C1 阈值 0.05 未被改动。
+          echo "::group::build_historical_replay_v0_3 --check"
+          python research/scripts/build_historical_replay_v0_3.py --check
+          echo "::endgroup::"
+
       # GITHUB_ACTIONS 由 GitHub 内置，vite.config.ts 据此取 base = /Cycle/
       - name: Build (base = /Cycle/)
         run: npm run build
