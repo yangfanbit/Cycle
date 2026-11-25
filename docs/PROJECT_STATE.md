@@ -5,10 +5,18 @@
 
 ### 交付与 CI（实测）
 
-**v0.86 交付信息以收尾提交为准**（CI 结论出来后回填真实 SHA / 运行号）。
-上一轮 v0.85 主交付 `5e68210` · CI `43716926641` = success 为历史记录。
+**主交付 `8f884f9` · CI `45634690307` = success**（首跑即绿，无返工）。
+部署完成后线上 `/Cycle/` 与 `/Cycle/workbench.html` 均 200，
+**线上三视图渲染探针 + 「记一条」真实点击探针 PASS**。
+★ 线上 `workbench` chunk hash 与本地不同（`Joz1X_OK` vs `DOmVjlLH`），
+已实测归因：**字节数完全相同（815,736）、把 chunk 引用 hash 归一化后内容逐字一致**
+→ 差异来自构建路径，不是源码不同；本轮未改前端。
+上一轮 v0.85 主交付 `5e68210` / CI `43716926641` success 为历史记录。
 ★ 本轮延续纪律：提前用 `git archive` 干净 checkout 复现 CI 无大库路径，
-并确认**采集脚本在 CI 只跑 `--check`、绝不联网**。
+并确认**采集脚本在 CI 只跑 `--check`、绝不联网**（按「非注释行」判定，注释里出现 `--fetch` 不算）。
+★ 推送实测新判据：代理 7897 未运行、`secure-transport` 报 SSL handshake aborted、
+`openssl` 后端可连通；但 **`postBuffer` 524MB / 1GB 反而超时或 broken pipe，
+默认 postBuffer 一次成功**——大 buffer 不是万能，先试默认再调。
 
 ## ★★ 2026-11-15（v0.86）补历史信息侧数据源 · 瓶颈转移到来源专指性
 
